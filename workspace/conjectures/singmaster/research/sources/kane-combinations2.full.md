@@ -1,0 +1,612 @@
+<!-- source: http://cseweb.ucsd.edu/~dakane/combinations2.pdf | converted from PDF -->
+
+Improved Bounds on the Number of was of
+Expressing t as a Binomial Coeﬃcient
+
+Daniel M. Kane
+
+February 27, 2007
+
+Abstract
+
+Let N (t) denote the number of ways of writing t as a binomial coeﬃ-
+
+cient. We show that N (t) = O  (log t)(log log log t)
+(log log t)3  .
+
+1 Introduction
+
+As in [2] we deﬁne
+ N (t) = ∣
+∣
+∣
+∣
+{
+(n, m) ∈ Z
+2 : ( n
+m
+
+) = t}∣
+∣
+∣
+∣
+
+to be the number of ways of writing an integer t > 1 as a binomial coeﬃcient.
+N (3003) = 8, and N (t) ≥ 6 for inﬁnitely many t, but essentially no other
+lower bounds on N (t) are known. Singmaster conjectured in [2] that N (t) =
+O(1). Although no one has yet managed to achieve this bound (or even gotten
+particularly close), there has been some work on bounding the size of N (t)
+(see [1, 2, 3]). The record was that N (t) = O ( (log t)(log log log t)
+(log log t)2 ) proved by the
+author in [1]. Using a reﬁnement of this argument we improve this bound by a
+factor of log log t.
+
+2 Overview of Our Technique
+
+We recall the basics of the argument from [1]. First we note that it suﬃces to
+consider only solutions of the form t = ( n
+m
+) where n > 2m, since for any other
+solution (n, m) with n < 2m, we have the solution (n, n − m) with n > 2m
+(there is at most one solution with n = 2m).
+Next we consider the implicitly deﬁned function f (x) given by
+(f (x)
+x
+ ) = t.
+
+By interpolating the binomial coeﬃcient using the Γ-function, we make f (x)
+smooth. We now are trying to bound that number of solutions to f (m) = n, or
+
+1
+
+in other words the number of lattice points on the graph of the smooth function
+f . We will use the fact that f has derivatives (of appropriate order) that are
+small but non-zero to bound the number of integral points on its graph.
+
+3 Review of Previous Results
+
+With f (x) deﬁned as above, we have from [1] that f can be extended to a
+complex analytic function, so that
+
+f (z) = exp ( log t + Γ(z + 1)
+z
+ ) + z − 1
+2 + O ( z2
+
+f (z)
+ ) (1)
+
+uniformly where |f (z)| > |2z|, which holds as long as
+∣
+∣
+∣
+∣exp ( log t + Γ(z + 1)
+z
+ )∣
+∣
+∣
+∣ > |6z|.
+
+We deﬁne the function α(x) = log f (x)
+log x , so f (x) = x
+α(x). Using Equation 1
+and Sterling’s formula, we obtain that as long as α > 1 + ϵ (for some constant
+ϵ > 0) that
+ α(x) ∼ log t
+x log x + 1 (2)
+
+uniformly as t → ∞.
+Also in [1] it is shown that for t suﬃciently large, and k and integer more
+than 1, if x
+7α/4−2 > 3k+1k! (3)
+
+then
+ 0 < ∣
+∣
+∣
+∣ 1
+k! ∂k
+
+∂xk f (x)
+∣
+∣
+∣
+∣ < 2x
+α−ke
+2α(log x)
+k. (4)
+
+Note that for k large, this will imply that the kth derivative of f is small but
+non-zero.
+In order to relate derivatives of f to integer points on its graph, we use the
+following lemma from [1]:
+
+Lemma 1. If F (x) : R → R is an inﬁnitely diﬀerentiable function and if F (x) =
+0 for x = x1, x2, ..., xn+1 (where x1 < x2 < ... < xn+1), then F (n)(y) = 0 for
+some y ∈ (x1, xn+1).
+
+Proof. We proceed by induction on n. The case of n = 1 is Rolle’s Theorem.
+Given the statement of Lemma 2.1 for n − 1, if there exists such an F with
+n + 1 zeroes, x1 < x2 < ... < xn+1, then by Rolle’s theorem, there exist points
+yi ∈ (xi, xi+1) (1 ≤ i ≤ n) so that F ′(yi) = 0. Then since F ′ has at least n roots,
+by the induction hypothesis there exists a y with x1 < y1 < y < yn < xn+1,
+and F (n)(y) = (F ′)
+(n−1)(y) = 0.
+ 2
+
+Suppose now that f has k + 1 integer points on its graph, f (mi) = ni, for
+1 ≤ i ≤ k + 1. We let
+ g(x) =
+ k+1∑
+
+i=1 ni ∏
+
+j̸=i
+ (x − mj)
+(mi − mj)
+
+be the polynomial of degree k that interpolates f at these points. By letting
+F (x) = f (x) − g(x) and applying Lemma 1 we get that for some y between the
+largest and smallest of the mi, that
+
+1
+k! ∂k
+
+∂xk f (y) = 1
+k! ∂k
+
+∂xk g(y) =
+ k+1∑
+
+i=1
+ ni∏
+j̸=i(mi − mj) = A
+B(m1, . . . , mk+1) (5)
+
+for some integer A and B(m1, . . . , mk+1) = LCMi (∏
+j̸=i(mi − mj)
+). Our strat-
+
+egy will be to show that B is and thus that the kth derivative of f is either 0 or
+a multiple of B (which is large), leading to a contradiction.
+
+4 The New Bound
+
+Here we prove the new result that will give us the improvement over [1].
+
+Proposition 2. If mi are integers where the largest and smallest diﬀer by at
+most S,
+ log(B(m1, . . . , mk)) = O (S max(1, log ( k2 log S
+S
+ ))
+) .
+
+Proof. We ﬁrst show that
+
+log(B(m1, . . . , mk)) = O(S log(k))
+
+thus proving our bound for k > S2/3. We note that B is at most
+
+LCM
+ k−1∏
+
+i=1 ri
+
+where the LCM is over all sequences of k − 1 distinct non-zero numbers of
+absolute value at most S. We compute this by counting the number of multiples
+of each prime p. Each power of a prime, pn, can divide at most max(k−1, 2 ⌊ S
+pn ⌋
+)
+
+of the ri (k − 1 being the number of ri and 2 ⌊ S
+pn ⌋ the number of non-zero terms
+of absolute value at most S divisible by pn). Therefore we have that
+
+log(B) ≤ ∑
+
+pn max(k − 1, 2 ⌊ S
+pn
+ ⌋) log p ≤ ∑
+
+pn<S/k(k − 1) log p + 2 ∑
+
+S≥pn≥S/k S log p
+pn .
+
+3
+
+Using integration by parts we ﬁnd that this is at most
+
+(k − 1)ψ ( S
+k
+ ) + 2S
+ (∫ S
+
+S/k
+ ψ(x)dx
+x2 + ψ(S)
+S − ψ(S/k)
+S/k
+ )
+
+where ψ(x) is Chebyshev’s function ∑
+
+pn<x log p, the sum being over powers of
+primes, pn that are less than x. Using the prime number theorem, this is at
+most
+
+O
+ (
+
+(k − 1) S
+k + 2S
+ (∫ S
+
+S/k
+ dx
+x + S
+S
+ ))
+ = O(S + 1 + S log k) = O(S log k).
+
+We now assume that k < S2/3. We note that since B does not decrease
+when we add more mi’s, that it suﬃces to show that
+
+log(B(m1, . . . , mk)) = O(S(1 + log(k2 log S/S)))
+
+when k > 2√ S
+log S .
+
+Consider ﬁrst the contribution to log(B) from powers of primes less than S
+k .
+There are π ( S
+k ) such primes. The power of such a prime dividing any (mi −mj)
+is at most S. Therefore, the power of such a prime dividing B is at most Sk.
+Hence the contribution to log(B) from such primes is at most
+
+π ( S
+k
+ ) k log(S) = O
+ (
+
+S log S
+log ( S
+k )
+ )
+
+by the prime number theorem. This in turn is O(S) if k < S2/3 and hence is
+O(S(1 + log(k2 log S/S))).
+Next consider the contribution from primes larger than S2
+k2 log S . For each such
+prime, p, we note that in any term, ∏
+j̸=i(mi − mj), since the (mi − mj) are
+distinct, non-zero integers of absolute value at most S, p divides at most O(S/p)
+of them. Furthermore, since k < S2/3, none are divisible by p3. Therefore, B
+is divisible by O(S/p) powers of p. Hence the contribution to log(B) of these
+primes is (using integration by parts)
+
+O
+ (
+∑
+
+p
+ S
+p log p
+)
+ =O
+ 
+
+ ∑
+
+S2/(k2 log S)<pn<S
+ S
+pn log p
+
+
+
+
+=O
+ (
+
+S
+ (∫ S
+
+S2/(k2 log S)
+ ψ(x)
+x2 dx + ψ(S)
+S
+ ))
+ ,
+
+Using the prime number theorem, this is
+
+O
+ (
+
+S
+ (∫ S
+
+S2/(k2 log S)
+ dx
+x + S
+S
+ ))
+ = O (S(1 + log(k2 log S/S))
+) .
+
+4
+
+Lastly, we consider the contribution to B from primes between S/k and
+S2
+k2 log S . The contribution to log B from each such prime, p is at most log S
+times the maximum (over i) of the number of terms mi − mj divisible by p.
+Note that since each such p is bigger than S1/3, no mi − mj is divisible by more
+than 2 of them. Let l be the number of such primes. Let d1, d2, . . . , dl be deﬁned
+by letting da be the maximum number of mi − mj (for some i ﬁxed) divisible
+by the a
+th of these primes. Therefore the contribution to log B by these primes
+is O(log S ∑ di). Next note that there are da + 1 m
+′s congruent modulo the a
+th
+
+of these primes. Hence da(da + 1)/2 > d2
+a/2 of the mi − mj are divisible by this
+prime. Hence since there are at most k2/2 pairs, each divisible by at most two
+primes, ∑ d2
+a < 2k2. Hence by Cauchy-Schwartz,
+
+∑
+
+a da ≤
+ √
+√
+√
+√
+(
+∑
+
+a d2
+a
+) (
+∑
+
+a 1
+)
+ ≤ √2k2l = O(k√l)
+
+Now since l is clearly at most π ( S2
+k2 log S ) and since S2
+k2 log S > S1/3, the prime
+
+number theorem implies that l = O ( S2
+
+k2 log2 S ). Therefore, the contribution to
+log B from these primes is
+ O(log Sk√l) = O(S).
+
+This completes the proof.
+
+5 Cases
+
+Let
+ D(t) = ∣
+∣
+∣
+∣
+{
+(n, m) ∈ Z
+2 : ( n
+m
+
+) = t, n > 2m, n < m
+ log log t
+24 log log log t }∣
+∣
+∣
+∣ ,
+
+E(t) = ∣
+∣
+∣
+∣
+{
+(n, m) ∈ Z
+2 : ( n
+m
+) = t, n > m
+ log log t
+24 log log log t , n < m
+(log log t)3}∣
+∣
+∣
+∣ ,
+
+F (t) = ∣
+∣
+∣
+∣
+{
+(n, m) ∈ Z
+2 : ( n
+m
+
+) = t, n > m
+(log log t)3}∣
+∣
+∣
+∣ .
+
+Recalling that we can restrict our attention to solutions where n > 2m, we
+ﬁnd that N (t) = O(D(t) + E(t) + F (t)). (6)
+
+6 The Easy Cases
+
+From [1] we know that
+ D(t) = O ( log t
+(log log t)3
+ ) . (7)
+
+5
+
+Furthermore, if α > (log log t)
+3, then by Equation 2, we have that m = O ( log t
+α ) =
+
+O ( log t
+(log log t)3 ) . Since each solution has a distinct value of m, this implies that
+
+F (t) = O ( log t
+(log log t)3
+ ) . (8)
+
+7 The Bound on E(t)
+
+Let α0 = log log t
+24 log log log t . Let Ei(t) be the number of solutions with 2iα0 ≤ α ≤
+2i+1α0. Let ki = 2i+2α0. Suppose that we have ki + 1 integer points on the
+graph of f , in the range where 2
+iα0 ≤ α ≤ 2
+i+1α0 (α < (log log t)
+3). Suppose
+that these points are separated by a total distance of S. Notice that by Equation
+2 that in this range, log x = Θ(log log t). In this range, Equation 3 holds since
+
+log (x
+7/4α−2) = log x((7/4)α − 2) ≫ (log log t)
+2
+
+log log log t > ki log ki ≫ log(3ki+1ki!).
+
+Therefore, Equation 4 holds and
+
+0 < ∣
+∣
+∣
+∣ 1
+ki! ∂ki
+
+∂xki f (x)
+∣
+∣
+∣
+∣ < 2e
+2αx
+α−ki(log x)
+k
+i = exp (−Ω (ki(log log t))) .
+
+On the other hand, if we have solutions with integer points (ni, mi) for 1 ≤
+i ≤ ki + 1 in this range, where the mi have maximum separation S, then this
+derivative is at least
+1
+B(m1, . . . , mki+1) = exp(−O(S max(1, log(k2
+i (log S)/S))))
+
+by Proposition 2. Let D = S
+ki . Comparing these two bounds on the size of the
+kth derivative of f , we have that
+
+D max (1, log ( ki log ki
+D
+ )) > C log log t
+
+where C is some positive constant. So either D > C log log t, or (substituting
+the value of ki),
+ D log (( log log t
+D
+ ) 2i+2) > C log log t.
+
+The latter implies that D = Ω((log log t)/(i + 1)). Hence
+
+D = Ω ( log log t
+(i + 1)
+ ) .
+
+Note that by Equation 2 that for 2iα0 ≤ α (assuming that i = O(log log log t))
+that
+ x = O ( log t
+2iα0 log log t
+ ) = O ( (log t)(log log log t)
+2i(log log t)2
+ ) .
+
+6
+
+By the above, any ki + 1 solutions must be separated by a total distance of at
+least Dki. Therefore, since the total range of all solutions is O ( (log t)(log log log t)
+2i(log log t)2 ),
+we have that
+ Dki
+ ⌊ Ei(t)
+ki
+ ⌋ = O ( (log t)(log log log t)
+2i(log log t)2
+ ) .
+
+Therefore,
+
+Ei(t) = O ( 1
+D (log t)(log log log t)
+2i(log log t)2 + ki
+) = O (( i + 1
+2i
+ ) ( (log t)(log log log t)
+(log log t)3
+ )) .
+
+Summing the above over all i from 0 to log log log t yields that
+
+E(t) = O ( (log t)(log log log t)
+(log log t)3
+ ) . (9)
+
+Now by combining Equations 6,7,8,9 we get our result that
+
+N (t) = O ( (log t)(log log log t)
+(log log t)3
+ ) .
+
+8 Further Work
+
+It should be noted that the bound we obtained can not be improved by much
+more using this technique. This is because if we have k2 = Ω(S), then B can
+be as large as exp(Ω(S)). This comes from the fact that if we pick k elements
+of {1, 2, . . . , S} randomly and independently, there is a constant probability
+that any prime p < S/2 will divide a diﬀerence of some two elements. Since
+the product of these primes is exp(Ω(S)) by the prime number theorem, the
+expected size of log B is Ω(S).
+Consider the region where α > log log t. The kth derivative of f over k! has
+log of size about (log x)(α − k). Therefore, to get any useful information we
+need to set k > α. We then obtain a bound looking something like log(B) >
+k(log log t). By the above, this can be satisﬁed with S as small as O(k(log log t)).
+Therefore, we can only prove that the inverse density of solutions is O(log log t)
+(but no better). Therefore, since there are Θ ( log t
+(log log t)2 ) values of m in this
+range, we cannot by this technique alone exclude the possibility of as many as
+O ( (log t)
+(log log t)3 ) solutions.
+It would be interesting to improve this gap some. This leads to the problem
+of ﬁnding the correct bounds on log(B) for given values of k and S. The known
+upper bounds are O (S max(1, log ( k2 log S
+S ))
+) (Prop 2) and O(k2 log(S)) (by
+B < ∏
+i,j,i̸=j(mi − mj)). The randomized construction gives the lower bound
+of Ω(k2(1 + log(S/k2))) if S > k2 and Ω(S) otherwise. It should be noted that
+the upper and lower bounds agree if k < S1/2−ϵ.
+
+7
+
+References
+
+[1] D. Kane, On the Number of Representations of t as a Binomial Coeﬃcient,
+Integers: Electronic Journal of Combinatorial Number Theory, 4, (2004),
+#A07, pp. 1-10.
+
+[2] D. Singmaster, How often Does an Integer Occur as a Binomial Coeﬃ-
+cient?, American Mathematical Monthly, 78, (1971) 385-386
+
+[3] H. L. Abbott, P. Erd¨os and D. Hanson, On the number of times an inte-
+ger occurs as a binomial coeﬃcient, American Mathematical Monthly, 81,
+(1974) 256-261.
+ 8

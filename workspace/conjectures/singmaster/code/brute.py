@@ -39,10 +39,18 @@ if __name__ == "__main__":
     witness_a = [3003, 120, 210, 1540, 7140, 11628, 24310]
 
     for a in witness_a:
-        occ = occurrences(a, n_max=a)
+        # Nontrivial occurrences have k>=2, and C(n,2)<=a bounds their n.
+        # Find the largest n with C(n,2) <= a; the trivial pair C(a,1) we add
+        # explicitly.  This keeps the oracle naive but feasible.
+        n_bound = 2
+        while comb(n_bound, 2) <= a:
+            n_bound += 1
+        n_bound -= 1
+        occ = occurrences(a, n_max=n_bound)
+        occ = sorted(set(occ) | {(a, 1), (a, a - 1)})
         nontriv = sorted({(min(n, k), max(n, k)) for (n, k) in occ
                           if (n, k) not in ((a, 1), (a, a - 1))})
-        N = multiplicity(a, n_max=a)
+        N = len(occ)
         print(f"a={a}: N(a)={N}")
         print(f"   occurrences={sorted(occ)}")
         print(f"   nontrivial (n,k) pairs k<=n/2 = {nontriv}")
