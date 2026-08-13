@@ -1,117 +1,48 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/elsholtz-tao-counting.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Elsholtz & Tao, *Counting the number of solutions to the Erdős–Straus equation on unit fractions*
 
-<!-- source: https://terrytao.files.wordpress.com/2011/07/egyptian-count13.pdf | converted from PDF -->
+Source: arXiv:1107.1010 (J. Aust. Math. Soc. 94 (2013) 50–105).
+Full text: `research/sources/elsholtz-tao-counting.full.md` (also complete text
+stored under `research/sources/pomerance-erdos-straus.full.md`, a misnamed copy
+of the ar5iv HTML of this same paper).
 
-## What it claims
+## What it establishes (sourced)
 
-Abstract. For any positive integer n, let f (n) denote the number of solutions to the Diophantine
-equation 4
-n = 1
-x + 1
-y + 1
-z with x, y, z positive integers. The Erd˝os-Straus conjecture asserts that
-f (n) > 0 for every n ⩾ 2. To solve this conjecture, it suﬃces without loss of generality to consider
-the case when n is a prime p. In this paper we consider the question of bounding the sum ∑p<N f (p)
-asymptotically as N → ∞, where p ranges over primes. Our main result establishes the asymptotic
-upper and lower bounds
- N log2 N ≪ ∑
+- **Prime reduction** (intro): since `f(nm) >= f(n)`, it suffices to solve the
+  conjecture for `n` prime. `f(n)` counts `(x,y,z) in N^3` with
+  `4/n=1/x+1/y+1/z`. Example values: f(1)=0, f(2)=3, f(3)=12, f(4)=10, f(5)=12.
+- **Type I / Type II** (Sec 1): Type I = `n` divides exactly one of `x,y,z`
+  (the one divisible denominator); Type II = `n` divides exactly two. For odd
+  prime `p`, at least one denominator is divisible by `p`, not all three, so
+  `f(p) = 3 f_I(p) + 3 f_II(p)`.
+- **Proposition 1.6 (Vanishing)**: for any odd perfect square `n`,
+  `f_I(n) = f_II(n) = 0`. No Type-I and no Type-II solution exists at an odd
+  square. Proof uses quadratic reciprocity; goes back to Schinzel (1967 refs)
+  and Yamamoto (1965). This is the structural fact behind why the six open
+  classes (all squares mod 840) resist Type-I/II polynomial identities. Does
+  NOT show `f(n)=0` — a solution may be of neither type at a square.
+- **Proposition 1.9 (Solvable congruences)**: a complete classification of
+  primitive residue classes solvable by polynomials, Type I (4 families) and
+  Type II (3 families). Type I families all put `n` in classes of the form
+  `n ≡ −f mod 4ad` (with `f | 4a²d+1`), `n ≡ −f mod 4ac & n ≡ −c/a mod f`,
+  `n ≡ −f mod 4cd & n² ≡ −4c²d mod f`, `n ≡ −1/e mod 4ab`.
+- **Textbook result on `n mod 840`**: any primitive residue class `n ≡ r mod
+  840` is solvable by polynomials unless `r` is a perfect square. Perfect
+  square primitive classes cannot be solved by polynomials.
+- Counting results (used for context, not for construction): average value of
+  `f`, `f_I`, `f_II`; `f(p) = O(log^3 p log log p)` for density-1 primes;
+  `f(p) ≪ p^{3/5+o(1)}`; lower bounds `f(p) >= (log p)^{0.549}` for density-1
+  primes.
+- Verification history (Table 1): Straus ≤5000 (1950), ..., Swett 10^14
+  (1999), 2×10^14 (2012), Salez 10^17 (2014).
 
-p⩽N f (p) ≪ N log2 N log log N.
+## Implication for this run
 
-In particular, f (p) = Oδ(log3 p log log p) for a subset of primes of density δ arbitrarily close to 1. Also,
-for a subset of the primes with density 1 the following lower bound holds: f (p) ≫ (log p)0.549. These
-upper and lower bounds show that a typical prime has a small number of solutions to the Erd˝os-
-Straus Diophantine equation; small, when compared with other additive problems, like Waring’s
-problem. We establish several more results on f and related quantities, for instance the bound
-
-f (p) ≪ p 3
-5 +O( 1
-log log…
-
-## Statements it makes
-
-Theorem 1.1 (Average value of fI, fII). For all suﬃciently large N , one has the bounds
-
-Proposition 1.4 (Average value of τ (kab2 + 1)). For any A, B > 1, and any positive integer k ≪
-(AB)
-O(1), one has X
-
-Proposition 1.6 (Vanishing). For any odd perfect square n, we have fI(n) = fII(n) = 0.
-
-Proposition 1.7 (Upper bounds). For any n ∈ N, one has
-
-Theorem 1.8 (Lower bounds). For inﬁnitely many n, one has
-
-Proposition 1.9 (Solvable congruences). Let q mod r be a primitive residue class. If this class is
-Type I solvable by polynomials, then all suﬃciently large primes in this class belong to one of the
-following sets:
-• {n = −f mod 4ad}, where a, d, f ∈ N are such that f |4a2d + 1. [43]
-• {n = −f mod 4ac} ∩ {n = − c
-a mod f }, where a, c, f ∈ N are such that (4ac, f ) = 1.
-• {n = −f mod 4cd} ∩ {n2 = −4c
-2d mod f }, where c, d, f ∈ N are such that (4cd, f ) = 1.
-• {n = − 1
-e mod 4ab}, where a, b, e ∈ N are such that e|a + b and (e, 4ab) = 1. [1], [52]
-Conversely, any residue class in one of the above four sets is solvable by polynomials.
-Similarly, q mod r is Type II solvable by polynomials if…
-
-Theorem 1.11. Let m > k ⩾ 3 be ﬁxed. Then, for N suﬃciently large, one has
-
-Corollary 1.13. Let k ⩾ 3. The number of integer points of the following generalization of Cayley’s
-cubic surface,
- 0 =
- kX
- i=0
- 1
-ti ,
-
-Proposition 2.1 (Description of Type I solutions). Let n ∈ N, and let (x, y, z) be a Type I solution.
-Then there exists a unique (a, b, c, d, e, f ) ∈ N6 ∩ ΣI
-n with abcd coprime to n and a, b, c having no
-common factor, such that πI
-n(a, b, c, d, e, f ) = (x, y, z).
-
-Proposition 2.2. Let n be a natural number. Then the following are equivalent:
-
-Proposition 2.5 (Description of Type II solutions). Let n ∈ N, and let (x, y, z) be a Type II solution.
-Then there exists a unique (a, b, c, d, e, f ) ∈ N6 ∩ΣII
-n with abd coprime to n and a, b, c having no common
-factor, such that πI
-n(a, b, c, d, e, f ) = (x, y, z).
-
-Proposition 2.6. Let n be a natural number. Then the following are equivalent:
-
-Lemma 2.7. Let n ∈ N, and suppose that (x, y, z) = πI(a, b, c, d, e, f ) is a Type I solution such that
-y ⩽ z. Then
- a ⩽ b
-1
-4 n < acd ⩽ 3
-4 n
-
-Proposition 2.10. Let m
-p = 1
-x + 1
-y + 1
-z where m > 3, p is a prime not dividing m, and x, y, z are
-natural numbers. Then none of x, y, z are divisible by p.
-
-Theorem 7.1 (Erd˝os-type bound). Let N > 1, let P be a polynomial with degree D and coeﬃcients
-being non-negative integers of magnitude at most N l. For any natural number m, let ρ(m) be the
-number of roots of P mod m in Z/mZ, and suppose one has the bound
-
-Lemma 7.3. Let C ′ be a ﬁxed constant. For all but at most O(N log−C′ N ) values of n in the range
-1 ⩽ n ⩽ N , either (7.7) holds, or one has
-
-Corollary 7.4. If a, b, N are natural numbers with a, b ≪ N O(1), then
-X
-
-Proposition 7.5 (Average value of τ3(ab + 1)). For any A, B > 1, one has
-
-Proposition 7.6…
-
-Lemma…
-
-
-*[further statements in the full text]*
-
-*[digest of a 112215 character source; every section, statement, and proof in full at `research/sources/elsholtz-tao-counting.full.md`]*
+The six open classes `n ≡ 1,121,169,289,361,529 (mod 840)` are exactly the
+primitive classes mod 840 that are perfect squares, hence **cannot** be solved
+by Type-I/II polynomial identities. Any new family must therefore be of a
+genuinely new type (not one of the 7 constant-coefficient modular equations of
+Salez) or a non-polynomial / rational-parametric construction whose positivity
+holds on the class. The vanishing fact (Prop 1.6) is the precise obstruction a
+new ansatz must dodge: the construction must fail *necessarily* at odd squares,
+so a cover that would also cover a square is self-defeating only because a
+square *could* still have a neither-type solution.

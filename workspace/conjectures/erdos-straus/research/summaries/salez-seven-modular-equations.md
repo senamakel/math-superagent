@@ -1,59 +1,36 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/salez-seven-modular-equations.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Salez, "The Erdős–Straus conjecture: New modular equations and checking up to N=10^17"
 
-<!-- source: https://arxiv.org/html/1406.6307v1 | converted from HTML -->
+Source: arXiv:1406.6307.
+Full text: `research/sources/salez-seven-modular-equations.full.md`
 
-## What is in it
+## What it establishes (sourced)
 
-- The Erdős-Straus conjecture
-New modular equations
-and checking up to N = 10 17 N=10^{17}
-        - Abstract
-  - 1 Basic formulas
-    - 1.1 Reduction
-    - 1.2 Rosati’s formulas
-        - Proposition 1
-    - 1.3 Notations
-  - 2 Generalization
-    - 2.1 Definitions
-    - 2.2 First application
-        - Proposition 2
-    - 2.3 Modular equations
-        - Lemma 1
-        - Proposition 3
-    - 2.4 Application to the integers
-        - Corollary 1
-      - Comparison with previous results
-      - "Complete" set of modular equations
-    - 2.5 Examples
-  - 3 Modular sieve
-    - 3.1 Modular filters
-    - 3.2 Shortened filters
-  - 4 Checking of the conjecture
-    - 4.1 Choice of the progressions
-    - 4.2 Optimized sieve
-- …
+- **Rosati parametrisation (Prop 1)**: for `p` an odd prime, `4/p` is
+  3-Egyptian iff there are positive integers `A,B,C,D` with
+  `4ABCD = A+B+pC` and `(ABD,p)=1`  (Type I / equation (1))
+  OR `4ABCD = p(A+B)+C` and `(ABCD,p)=1` (Type II / equation (2)).
+  Converse is *sufficient* (not necessary) for composite `n`.
+- **Complete set of 7 modular equations (Prop 3 + Lemma 1 + Cor 1)**: for
+  `p` an odd prime polynomial of degree 1, `4/p` is 3-Egyptian iff one of
+  seven modular equations (14a,b,c and 15a,b,c,d) holds. This is a *complete*
+  set for degree-1 prime polynomials: no other constant-coefficient modular
+  equation can solve such a class. Three of the seven are new (14c, 15c, 15d);
+  the other four reduce to Rosati (1954) and Yamamoto (1965).
+- Only the residual six residues survive the sieve to `N=10^17`.
+- **Reduction to `n ≡ 1 mod 24`**: by simple identities, handled if
+  `n ≡ −1 mod 3`, `n ≡ −1 mod 4`, or `n ≡ −3 mod 8`; hence it suffices to
+  treat primes `p ≡ 1 mod 24`. The six open residues {1,121,169,289,361,529}
+  mod 840 are exactly the `p ≡ 1 mod 24` class after intersecting with the
+  `mod 5` & `mod 7` filters (Swett's choice).
+- Verification: sieve over `n ≡ r mod 892371480`, `r` in the residual set,
+  claims every `n < 10^17` (non-square) has a modular certificate; checked
+  51.7M squares separately. Program in C++.
 
+## Implication for the run
 
-## What it claims
-
-In 1999 Allan Swett [5] checked (in 150 hours) the Erdős-Straus conjecture up to N = 10 14 N=10^{14} with a sieve based on a single modular equation. After having proved the existence of a "complete" set of seven modular equations (including three new ones), this paper offers an optimized sieve based on these equations. A program written in C++ (and given elsewhere) allows then to make a checking whose running time, on a typical computer 1 1 1 AMD TurionII Dual-Core Mobile M250 ( 64 64 bits, 16 100 16\,100 MIPS)., range from few minutes for N = 10 14 N=10^{14} to about 16 hours for N = 10 17 N=10^{17}.
-
-## Statements it makes
-
-###### Proposition 1
-
-###### Proposition 2
-
-###### Lemma 1
-
-###### Proposition 3
-
-###### Corollary 1
-
-Definition : A sieve is a sorted set of filters.
-
-Definition : A filter 9 9 9 We use the terminology given by Swett. If an integer n ∈ ℕ 0 n\in\mathbb{N}_{0} is such that n % ​ m ∈ F n\%m\in F then n n verifies the conjecture and n n is ”trapped” by the filter. Otherwise n n ”pass through”. modulo m m is a set F F such that for any n ∈ ℕ 0 n\in\mathbb{N}_{0}
-
-Definition: The shortened filter S m ∗ S^{*}_{m} is the set of all x ∈ S m x\in S_{m} such that
-
-*[digest of a 47736 character source; every section, statement, and proof in full at `research/sources/salez-seven-modular-equations.full.md`]*
+This is the definitive statement of the modular-equation obstruction: the
+seven equations are **exhaustive**. Therefore a new identity family covering
+`n ≡ 1 (mod 840)` *cannot* be expressed as one of these seven constant-
+coefficient modular equations; it must be of "a still unknown new type", in
+Salez's own words. This bounds what a symbolic ansatz search can legitimately
+find — anything that collapses to one of the seven shapes is a rediscovery.

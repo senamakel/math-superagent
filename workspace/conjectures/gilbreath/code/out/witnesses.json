@@ -1,0 +1,281 @@
+{
+ "generated_by": "operator, exact integer arithmetic, sieve to 400000",
+ "conjecture": "the first entry of every iterated absolute-difference row of the primes is 1 (Gilbreath 1958, Proth 1878)",
+ "primes_used": 33860,
+ "depth_verified": 600,
+ "A_1_first_12": [
+  1,
+  2,
+  2,
+  4,
+  2,
+  4,
+  2,
+  4,
+  6,
+  2,
+  6,
+  4
+ ],
+ "A_2_first_12": [
+  1,
+  0,
+  2,
+  2,
+  2,
+  2,
+  2,
+  2,
+  4,
+  4,
+  2,
+  2
+ ],
+ "A_3_first_12": [
+  1,
+  2,
+  0,
+  0,
+  0,
+  0,
+  0,
+  2,
+  0,
+  2,
+  0,
+  0
+ ],
+ "A_4_first_12": [
+  1,
+  2,
+  0,
+  0,
+  0,
+  0,
+  2,
+  2,
+  2,
+  2,
+  0,
+  0
+ ],
+ "A_5_first_12": [
+  1,
+  2,
+  0,
+  0,
+  0,
+  2,
+  0,
+  0,
+  0,
+  2,
+  0,
+  2
+ ],
+ "leading_entry_is_1_for_all_k": true,
+ "second_entry_always_0_or_2": true,
+ "min_leading_02_block": 2,
+ "block_profile_first_40": [
+  {
+   "k": 1,
+   "second": 2,
+   "block": 2
+  },
+  {
+   "k": 2,
+   "second": 0,
+   "block": 7
+  },
+  {
+   "k": 3,
+   "second": 2,
+   "block": 13
+  },
+  {
+   "k": 4,
+   "second": 2,
+   "block": 13
+  },
+  {
+   "k": 5,
+   "second": 2,
+   "block": 24
+  },
+  {
+   "k": 6,
+   "second": 2,
+   "block": 23
+  },
+  {
+   "k": 7,
+   "second": 2,
+   "block": 22
+  },
+  {
+   "k": 8,
+   "second": 2,
+   "block": 21
+  },
+  {
+   "k": 9,
+   "second": 0,
+   "block": 24
+  },
+  {
+   "k": 10,
+   "second": 0,
+   "block": 58
+  },
+  {
+   "k": 11,
+   "second": 0,
+   "block": 97
+  },
+  {
+   "k": 12,
+   "second": 0,
+   "block": 96
+  },
+  {
+   "k": 13,
+   "second": 0,
+   "block": 97
+  },
+  {
+   "k": 14,
+   "second": 0,
+   "block": 96
+  },
+  {
+   "k": 15,
+   "second": 2,
+   "block": 173
+  },
+  {
+   "k": 16,
+   "second": 2,
+   "block": 175
+  },
+  {
+   "k": 17,
+   "second": 0,
+   "block": 175
+  },
+  {
+   "k": 18,
+   "second": 2,
+   "block": 175
+  },
+  {
+   "k": 19,
+   "second": 2,
+   "block": 175
+  },
+  {
+   "k": 20,
+   "second": 0,
+   "block": 290
+  },
+  {
+   "k": 21,
+   "second": 0,
+   "block": 289
+  },
+  {
+   "k": 22,
+   "second": 2,
+   "block": 288
+  },
+  {
+   "k": 23,
+   "second": 2,
+   "block": 739
+  },
+  {
+   "k": 24,
+   "second": 2,
+   "block": 873
+  },
+  {
+   "k": 25,
+   "second": 0,
+   "block": 872
+  },
+  {
+   "k": 26,
+   "second": 0,
+   "block": 871
+  },
+  {
+   "k": 27,
+   "second": 0,
+   "block": 872
+  },
+  {
+   "k": 28,
+   "second": 2,
+   "block": 871
+  },
+  {
+   "k": 29,
+   "second": 2,
+   "block": 870
+  },
+  {
+   "k": 30,
+   "second": 0,
+   "block": 869
+  },
+  {
+   "k": 31,
+   "second": 2,
+   "block": 868
+  },
+  {
+   "k": 32,
+   "second": 0,
+   "block": 867
+  },
+  {
+   "k": 33,
+   "second": 0,
+   "block": 866
+  },
+  {
+   "k": 34,
+   "second": 0,
+   "block": 865
+  },
+  {
+   "k": 35,
+   "second": 2,
+   "block": 2179
+  },
+  {
+   "k": 36,
+   "second": 2,
+   "block": 2178
+  },
+  {
+   "k": 37,
+   "second": 0,
+   "block": 2177
+  },
+  {
+   "k": 38,
+   "second": 0,
+   "block": 2176
+  },
+  {
+   "k": 39,
+   "second": 0,
+   "block": 2770
+  },
+  {
+   "k": 40,
+   "second": 0,
+   "block": 2769
+  }
+ ]
+}

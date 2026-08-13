@@ -1,7 +1,7 @@
 ```thread
 question: Is the 2-to-1 lifting of A_k provable via LTE, giving |A_k| = 2^(k-1) unconditionally?
 status: live
-rests-on: ternary-sieve-count-doubles (checked k <= 22), 2^{2·3^(k-2)} ≡ 1 mod 3^(k-1) (standard LTE)
+rests-on: ternary-sieve-count-doubles
 blocked-by: verifying c = (2^{2·3^(k-2)} - 1)/3^(k-1) mod 3 is nonzero
 next: compute c for small k; verify v_3(2^{2·3^(k-2)} - 1) = k-1 exactly
 ```

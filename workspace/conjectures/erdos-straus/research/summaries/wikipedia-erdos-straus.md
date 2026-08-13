@@ -1,32 +1,40 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wikipedia-erdos-straus.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wikipedia, "Erdős–Straus conjecture"
 
-<!-- source: https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Straus_conjecture | converted from HTML -->
+Source: https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Straus_conjecture
+Full text: `research/sources/wikipedia-erdos-straus.full.md`
 
-## What is in it
+## What it establishes (sourced, tertiary but uses primary refs)
 
-  - Background and history
-  - Formulation
-    - Distinct unit fractions
-    - Negative-number solutions
-  - Computational results
-  - Theoretical results
-    - Modular identities
-    - Nonexistence of identities
-    - The number of solutions
-  - Generalizations
-  - See also
-  - Notes
-  - References
+- Statement: for every integer `n >= 2` there exist positive integers
+  `x,y,z` with `4/n = 1/x+1/y+1/z`. Equivalent polynomial form:
+  `4xyz = n(xy+xz+yz)`.
+- Distinct-unit-fraction requirement is immaterial for `n >= 3` (two identical
+  terms can be split).
+- Negative-number relaxation is trivial for odd `n`
+  (`4/n = 1/((n-1)/2)+1/((n+1)/2)-1/(n(n-1)(n+1)/4)`).
+- **Composite reduction**: if `4/n` has a 3-term expansion then `4/(mn)` does
+  (divide by `m`), so composite counterexamples would have a smaller prime
+  one. Verification bound: `n <= 10^17` (Salez 2014).
+- **Modular identities (Mordell 1967)**: polynomial identities give 3-term
+  solutions when `n` is `2 mod 3`, `3 mod 4`, `2 or 3 mod 5`, `3/5/6 mod 7`,
+  `5 mod 8`. Combinations cover all `n` except possibly `n ≡ 1,121,169,289,
+  361,529 mod 840`. Smallest prime not covered is 1009.
+- **Nonexistence of identities (Mordell 1967)**: a polynomial identity giving
+  solutions for `n ≡ r mod p` can exist only when `r` is NOT a square mod `p`
+  (quadratic non-residue). Since `1` is a square mod every `n`, no complete
+  covering system of modular identities exists. (Hasse–Minkowski: every prime
+  `p` is a non-residue mod some larger prime `q`, giving a possible approach.)
+- **No Brauer–Manin obstruction** (Bright & Loughran 2020).
+- Average number of solutions bounded polylogarithmically (Elsholtz–Tao 2013).
 
+## Check values / examples
 
-## What it claims
+- `4/5 = 1/2+1/4+1/20 = 1/2+1/5+1/10`.
+- Sequence of distinct-solution counts for `n=3,4,5,...`: 1,1,2,5,5,6,4,9,7,...
+  (matches OEIS A073101).
 
-Does 4 n = 1 x + 1 y + 1 z {\displaystyle {\tfrac {4}{n}}={\tfrac {1}{x}}+{\tfrac {1}{y}}+{\tfrac {1}{z}}}[image: {\displaystyle {\tfrac {4}{n}}={\tfrac {1}{x}}+{\tfrac {1}{y}}+{\tfrac {1}{z}}}] have a positive integer solution for every integer n ≥ 2 {\displaystyle n\geq 2}[image: {\displaystyle n\geq 2}]?
+## Implication
 
-[More unsolved problems in mathematics][2]
-
-The **Erdős–Straus conjecture**is an [unproven statement][3] in [number theory][4]. The conjecture is that, for every [integer][5] n {\displaystyle n}[image: {\displaystyle n}] that is greater than or equal to 2, there exist positive integers x {\displaystyle x}[image: {\displaystyle x}], y {\displaystyle y}[image: {\displaystyle y}], and z {\displaystyle z}[image: {\displaystyle z}] for which 4 n = 1 x + 1 y + 1 z. {\displaystyle {\frac {4}{n}}={\frac {1}{x}}+{\frac {1}{y}}+{\frac {1}{z}}.}[image: {\displaystyle {\frac {4}{n}}={\frac {1}{x}}+{\frac {1}{y}}+{\frac {1}{z}}.}] In other words, the number 4 / n {\displaystyle 4/n}[image: {\displaystyle 4/n}] can be written as a sum of three positive [unit fractions][6].
-
-The conjecture is…
-
-*[digest of a 62200 character source; every section, statement, and proof in full at `research/sources/wikipedia-erdos-straus.full.md`]*
+Confirms the six open classes and the fundamental obstruction (residue must be
+a non-residue for a polynomial identity to exist). Any construction reaching
+`n ≡ 1 (mod 840)` cannot be a single Mordell-type modular identity.
