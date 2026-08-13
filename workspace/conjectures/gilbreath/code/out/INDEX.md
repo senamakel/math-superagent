@@ -30,6 +30,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check_runcount_lemma.captured.txt` | _(undescribed)_ |
 | `check_runcount_lemma.py` | _(undescribed)_ |
 | `check_runcount_lemma_class.captured.txt` | _(undescribed)_ |
+| `directive24_compute.captured.txt` | Output of `directive24/compute_width_degradation_and_growth.py`: (a) flooring(r)=(W−r−1)−b[r−1], k*=162 = first row with flooring<1000 (flooring drops 176,182→0 exactly, all rows 162..1000 have flooring=0); flooring at the 13 giant event rows (all genuine gaps, i=161 capped); (b) geometric-vs-linear fit of the 12 genuine (and all-13) post-jump blocks: GEOMETRIC wins, slope +0.519764, R²=0.943852 vs linear 0.783043, doubling factor 1.6816/event; per-step ratios; exact Fraction fits. |
+| `directive24_verify.captured.txt` | Independent numpy verification of the directive24 compute: k*=162, flooring(r)=0 on all 839 rows 162..1000, 13/13 giant landing floors match the characterization table, 43 b-increasing steps with exactly the 13 giants having jump>1000, both fits reproduced to 6 decimals. |
+| `directive24_width_degradation.md` | Markdown finding (a): width-degradation caveat. k*=162; all measurements at rows ≥162 are LOWER BOUNDS (block glued to finite right edge from row 162); the 12 genuine giants all have event-row flooring ≥ 536,885 — none width-limited; first row past each giant with flooring<1000 is row 162 for all 13; table of 13 event rows with exact b_i, b_{i+1}, floors. |
+| `directive24_geometric_growth.md` | Markdown finding (b): geometric growth test. Geometric fit (log b vs event index) beats linear fit on both the 12 genuine giants (R² 0.9439 vs 0.7830; slope +0.519764; ×1.6816/event, doubling every ≈1.33 events) and all 13 (R² 0.9421 vs 0.8072); per-step ratios, residuals, caveats (12-point sample, description not proof). |
 | `cht_hyp_check.captured.txt` | _(undescribed)_ |
 | `cht_hyp_check.notes.md` | _(undescribed)_ |
 | `cht_hypotheses.captured.txt` | _(undescribed)_ |
