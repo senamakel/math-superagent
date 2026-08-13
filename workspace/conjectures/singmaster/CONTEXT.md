@@ -110,12 +110,23 @@ notes; agents should not rebuild them from disk.
   member of the Fibonacci family is boundary. `k/n → 1/φ²` exactly (ratio of
   consecutive Fibonacci numbers), so `log k ∼ log n` and
   `log(cut)/log(k) = (log n)^{2/3+ε − 1} = (log n)^{ε − 1/3} → ∞` for
-  ε > 1/3. For ε = 1/2 (run's standard), `cut/k = (log n)^{1/6} → ∞`.
-  **Effective** and **uniform in j**. Verified numerically j=1..12
+  ε > 1/3. For ε ≤ 1/3 only finitely many j are boundary. `j0(eps)` is
+  computable from `4j log φ < (4j log φ)^{2/3+eps}`. For ε = 1/2 (run's
+  standard), `cut/k = (log n)^{1/6} → ∞`. **Effective** and **uniform in j**.
+  Verified numerically j=1..12
   (`code/out/boundary_family_always_boundary.captured.txt`).
-  **Open question:** each a_j carries at least 2 boundary reps (the
-  (k,k+1) collision); do any carry more? 3003 (j=1) has 3 — counting
-  all nontrivial boundary reps for j=2..12 is the next task (directive 25).
+  **Consequence for G-boundary-uniform-count (directive 26):** the bound
+  must hold for every eps in (0,1). Larger eps → larger cut → MORE
+  boundary reps, so the binding case is eps → 1. The family is boundary
+  throughout (1/3, 1) — most of the admissible range — so it cannot be
+  set aside as interior by choosing a small eps; any C must cover it.
+  **Decisive open question (directives 25–26):** each a_j carries at least
+  2 boundary reps (the (k,k+1) collision). 3003 (j=1) has 3. For
+  j=2..12: are there exactly 2 boundary reps per a_j, or do additional
+  reps (e.g. k=2 collisions) appear and grow with j? If the count stays
+  at 2, C≥3 remains the live lower bound. If it grows, C is unbounded,
+  G-boundary-uniform-count is FALSE, and singmaster-uniform-bound is
+  broken — a genuine refutation of the decomposition.
 
 - **MRSTT interior, the current record. `sourced`** (arXiv:2106.03335,
   QJM 2022, Thm 1.3). Fixed 0<ε<1, t large: at most 2 solutions in
