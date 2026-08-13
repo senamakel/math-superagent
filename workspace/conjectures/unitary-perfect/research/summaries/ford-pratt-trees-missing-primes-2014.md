@@ -1,85 +1,39 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/ford-pratt-trees-missing-primes-2014.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Ford (2014), *The distribution of integers with a divisor in a given interval* / Ford, *A new proof of the large sieve* — actually: **Ford, "The number of primes in a Pratt tree"** — the source actually fetched is **arXiv:1212.3498**, *On a problem of Erdős and Graham* — corrected below.
 
-<!-- source: https://arxiv.org/pdf/1212.3498 | converted from PDF -->
+Full text: [[ford-pratt-trees-missing-primes-2014.full]] (readable OCR). **Title per the abstract:** "Either P contains all of the primes or the counting function of P is O(x^{1−c})".
 
-## What is in it
+**Setup.** `P` a set of primes satisfying the downward-closure / Pratt condition
+```
+(1.1)  p ∈ P  ⇒  ∀ q | (p−1), q ∈ P.
+```
+Let `p0` be the smallest prime not in `P` (odd, since `2 ∉ P ⇒ P = ∅`), and `P(x) = #{p ≤ x : p ∈ P}`.
 
-- {n ⩽ x/m : ∀r ̸∈ P, r ∤ n(n + 1)(mn + 1)} ≪ x/m
-log3(x/m)
- ∏
+**Main result (Theorem 1).** Let `P` satisfy (1.1) and omit `p0`. There are constants `δ > 0`, `c > 0` depending only on `p0` with
+```
+P(x) ≤ c x^(1−δ).
+```
+So either `P` is the set of all primes or it is a very thin set of primes. The new sieve exploits the "large prime" restrictions (`p > √x`) that the elementary `≪ x/log² x` sieve (Prop. 1) and the `≪ x (log x)^{−5/2}` (Lemma 2.1) bounds cannot see.
 
+**Why relevant.** The 3-Higgs primes `𝒫₃` satisfy (1.1) (downward-closed) and omit `17` (`17 − 1 = 2^4`, `v2 = 4 > 3`), so `p0 = 17` and Theorem 1 gives the power-saving thinness `Π₃(x) ≪ x^{1−δ}`. This is exactly the engine of Maciejewski's Theorem 21 (`#H_even ≤ x^{1−η}`) via the Rankin trick over the Higgs-cubefree semigroup `𝒮₃^{(≤3)}`. The run's `heven-thinness-not-finiteness` claim rests on it.
 
-## What it claims
+**Hypotheses.** Verified: `𝒫₃` is downward-closed (a 3-Higgs prime's `p−1` has all prime factors 3-Higgs), omits 17, `p0 = 17` odd. So the theorem applies.
 
-ABSTRACT. Suppose P is a set of primes, such that for every p ∈ P, every prime factor of p − 1 is also in P.
-We apply a new sieve method to show that either P contains all of the primes or the counting function of P is
-O(x1−c) for some c > 0, where c depends only on the smallest prime not in P. Our proof makes use of results
-connected with Artin's primitive root conjecture.
+**Caution on naming.** The captured file is titled "On a problem of Erdős and Graham" in the run's earlier note; the abstract here is the Pratt-tree / downward-closed prime-set thinness paper (arXiv:1212.3498, Ford 2014). I record it under the abstract that is actually on the page. The result is asserted (proved in the source, not re-checked here).
 
-1 Introduction
-
-Consider a set P of primes satisfying the condition:
-
-(1.1) p ∈ P =⇒ ∀q|(p − 1), q ∈ P.
-
-Here and throughout, the letters p, q and r denote primes. Trivial examples of sets P are the empty set and
-the set of all primes.
-We are concerned in this note with nontrivial examples, nonempty P omitting at least one prime (since
-2 ̸∈ P implies that P is empty, the smallest omitted prime must be odd). Let p0 denote the smallest prime
-not in P and let P (x) = #{p ∈ P : p ⩽ x} be the associated counting function. Our main result is the
-following.
-
-Theorem 1. Let P be a set of primes satisfying (1.1) that does not contain the prime p0. There are constants
-δ > 0 and c > 0, depending only on p0, such that P (x)…
-
-## Statements it makes
-
-Theorem 1. Let P be a set of primes satisfying (1.1) that does not contain the prime p0. There are constants
-δ > 0 and c > 0, depending only on p0, such that P (x) ⩽ cx1−δ.
-
-Theorem 1 implies that either P is the set of all primes or P is a very “thin” set of primes. The elements
-of P have the property that for every prime p ̸∈ P, P omits the residue classes 0, 1 mod p. Standard
-application of sieve methods produce only the much weaker bound P (x) ≪ x/ log2 x (see Proposition 1
-below). The weakness stems from the fact that sieve methods ignore congruential restrictions for “large”
-primes (i.e., those primes > √x, when bounding the number of elements of a set that are ⩽ x). With our
-new method, we are able exploit these large prime restrictions.
-To the author's knowledge, sets of primes satisfying (1.1) w ere ﬁrst considered by R. D. Carmichael [2, 3]
-in his…
-
-Conjecture 1 (Carmichael's Conjecture) . For every positive integer a, there is an positive integer b ̸= a
-such that φ(b) = φ(a).
-
-Corollary 1. For every prime r ⩾ 3, there is a constant s < 1 so that #{n ⩽ x : r ∤ F (n)} ≪ xs.
-
-Conjecture 2. Each set Pr is inﬁnite.
-
-Conjecture 3. For each r, there is a number δr > 0 such that P (x) = x1−δr+o(1) as x → ∞.
-
-Proposition 1. We have P (x) ≪ x/ log2 x and ∑
-
-Lemma 2.1. We have P (x) ≪ x(log x)−5/2.
-
-Lemma 3.1. For every h ⩾ 1, Vh(s) is continuous for 0 < s ⩽ 1.
-
-Lemma 3.2. For k > j ⩾ 1 and s > 0, we have
-∑
-
-Lemma 3.3. Suppose that n ∈ N, h > j ⩾ n, Q ∈ N and Pj−n contains every prime in P which divides
-Q. Then, for M = Ms,j,Q,
-
-Lemma 3.4. Suppose that for some y and for Q = ∏
-p⩽y p, M1,∞,Q is a contracting matrix. Then for some
-s < 1, V∞(s) is ﬁnite.
-
-Lemma 4.1. For any b ∈ UQ, let d = (b − 1, Q) and b′ = b−1
-d . Then
-
-Lemma 4.2. Suppose p ̸∈ P and 2 is a primitive root of p. Then, for large enough y depending on p,
-
-Lemma 4.3. For ≫ x/ log2 x primes p ⩽ x, (Z/pZ)∗ is generated by 2, 3 and 5.
-
-Lemma 4.4. Let p be a prime in P with 2 as a primitive root, and let n ∈ T∞ satisfy n|Q and p ∤ n. Let
-u ∈ N. Suppose that for large y and for all b ≡ 1 (mod pn), Cb(M u) ⩽ 1 − δ where δ > 0. Then, for
-large enough y (depending on p, n, δ, p0, u) and all b ≡ 1 (mod n), Cb(M u+1) ⩽ 1 − δ′, where
-
-*[digest of a 28906 character source; every section, statement, and proof in full at `research/sources/ford-pratt-trees-missing-primes-2014.full.md`]*
+```claim
+id: ford-thinness-downward-closed-primes
+statement: If P is a set of primes satisfying p in P => all q | p-1 in P, and P
+  omits the odd prime p0, then #{p<=x : p in P} <= c x^(1-delta) for
+  delta,c > 0 depending only on p0.
+hypotheses: downward-closure (1.1); P nonempty omitting an odd p0 (so P is not
+  all primes)
+holds-here: yes - the 3-Higgs primes satisfy (1.1) and omit 17, giving
+  power-saving thinness; this is the engine of heven-thinness-not-finiteness
+status: asserted (proved in source, not re-verified here)
+bearing: proves rarity (power-saving thinness) of the 3-Higgs primes and hence
+  of H; explicitly NOT finiteness, since at the primitive-divisor height the
+  bound is still exponential in p (see the thread)
+anchor: research/notes/heven-and-3-higgs-structure.md
+contradicts: (none)
+answers: whether-P3-is-thin
+```

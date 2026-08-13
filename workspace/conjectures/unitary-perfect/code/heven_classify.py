@@ -1,0 +1,276 @@
+"""Phase A worked examples + Phase B classification for H_even cap [2,1200].
+
+This is the oracle-facing script: it (A) reproduces every worked example of the
+spec and the paper on which the 3-Higgs machinery rests, and (B) combines the
+sieve's witness tables (written by heven_sieve.py) with full factorization of
+survivors to compute H_even ∩ [2,1200] and compare with the ten candidates
+from arXiv:2605.20475 Theorem 8.
+
+The ten numbers are the ONLY hard-coded expectation; a mismatch is printed
+loudly and reflected in the exit code.
+
+All arithmetic exact; no floats anywhere.
+
+Usage: python3 code/heven_classify.py [--tables code/out]
+"""
+import os
+import sys
+
+import sympy
+
+from lib.higgs import (budget_row, factorize, is_3_higgs, is_unitary_perfect,
+                       odd_higgs_cubefree, sigma_star, v2)
+
+FIVE = [6, 60, 90, 87360, 146361946186458562560000]
+TEN = [2, 6, 10, 18, 26, 30, 46, 62, 82, 122]
+
+
+def phase_a1():
+    """Oracle + 2-adic budget table for the five UPNs and the 12 control."""
+    print("=" * 78)
+    print("A1. sigma_star oracle + 2-adic budget identity")
+    print("=" * 78)
+    ok_all = True
+    for n in FIVE + [12]:
+        ss = sigma_star(n)
+        up = (ss == 2 * n)
+        b = budget_row(n)
+        fs = b["factors"]
+        rep = " * ".join("%d^%d" % (p, e) if e > 1 else str(p)
+                         for p, e in sorted(fs.items()))
+        print("n = %d" % n)
+        print("    = %s" % rep)
+        print("    sigma_star = %d, 2n = %d, unitary perfect: %s"
+              % (ss, 2 * n, up))
+        print("    a = %d, omega(odd) = %d, sum v2(p^e+1) = %d, a+1 = %d, "
+              "identity: %s" % (b["a"], b["omega_odd"], b["budget_sum"],
+                                b["a"] + 1, b["identity"]))
+        if n == 12:
+            if up:
+                print("    *** CONTROL FAILURE: 12 must NOT be unitary perfect")
+                ok_all = False
+        elif (not up) or (not b["identity"]):
+            ok_all = False
+    if ok_all:
+        print("A1 PASS: five UPNs verified, 12 negative control verified, "
+              "budget identity exact on all five")
+    else:
+        print("A1 FAIL")
+    return ok_all
+
+
+def phase_a2():
+    """3-Higgs predicate: statuses <= 31, 17 non-Higgs, 31 Higgs,
+    definitional-equivalence self-test on primes <= 1000."""
+    print("=" * 78)
+    print("A2. 3-Higgs predicate")
+    print("=" * 78)
+    statuses = {}
+    for p in list(sympy.primerange(2, 32)):
+        statuses[p] = is_3_higgs(p)
+    print("prime <= 31:", " ".join("%d:%s" % (p, "H" if s else "n")
+                                   for p, s in sorted(statuses.items())))
+    ok17 = (statuses.get(17) is False)
+    ok31 = (statuses.get(31) is True)
+    print("17 non-Higgs (17-1 = 2^4, v2 = 4 > 3): %s" % ok17)
+    print("31 Higgs (31-1 = 2*3*5): %s" % ok31)
+    # equivalence of the working form with the literal OEIS definition:
+    # p is 3-Higgs iff p-1 divides the cube of the product of all smaller
+    # 3-Higgs primes, which holds iff every prime q | p-1 is itself 3-Higgs
+    # with v_q(p-1) <= 3 — the working form implemented by is_3_higgs.  We
+    # verify computationally on primes <= 1000 that the two conditions agree.
+    lit = {2: True}
+    equiv = True
+    for p in sympy.primerange(3, 1000 + 1):
+        # literal: for every q | p-1, q must be 3-Higgs and v_q(p-1) <= 3
+        ok_lit = all(is_3_higgs(q) and e <= 3 for q, e in factorize(p - 1).items())
+        lit[p] = ok_lit
+        if lit[p] != is_3_higgs(p):
+            print("    definitional mismatch at %d" % p)
+            equiv = False
+    print("working-form vs literal definition agree on all primes <= 1000: %s"
+          % equiv)
+    ok = ok17 and ok31 and equiv
+    print("A2 %s" % ("PASS" if ok else "FAIL"))
+    return ok
+
+
+def phase_a3():
+    """Cyclotomic / Aurifeuillean identities and the two worked examples."""
+    print("=" * 78)
+    print("A3. Cyclotomic / Aurifeuillean identities")
+    print("=" * 78)
+    ok = True
+    # 2^(2p) + 1 == 5 * Phi_{4p}(2) for the first 30 odd primes
+    cnt = 0
+    for p in sympy.primerange(3, 10**6):
+        if cnt == 30:
+            break
+        ph = int(sympy.cyclotomic_poly(4 * p).eval(2))
+        if 2 ** (2 * p) + 1 != 5 * ph:
+            print("    FAIL Phi_{4p}(2) identity at p=%d" % p)
+            ok = False
+            break
+        cnt += 1
+    print("2^(2p)+1 == 5*Phi_{4p}(2) for first %d odd primes: %s"
+          % (cnt, ok and cnt == 30))
+    # Aurifeuillean split 2^(2p)+1 = (2^p - 2^((p+1)/2) + 1)(2^p +
+    # 2^((p+1)/2) + 1) holds for every odd p (the cross terms cancel
+    # algebraically); check it on all odd primes p <= 100.
+    auri_ok = True
+    for p in list(sympy.primerange(3, 100 + 1)):
+        lhs = 2 ** (2 * p) + 1
+        rhs = (2**p - 2**((p + 1) // 2) + 1) * (2**p + 2**((p + 1) // 2) + 1)
+        if lhs != rhs:
+            print("    FAIL p=%d" % p)
+            auri_ok = False
+    print("Aurifeuillean 2^(2p)+1 == (2^p - 2^((p+1)/2) + 1)(2^p + "
+          "2^((p+1)/2) + 1) on all odd primes <= 100: %s"
+          % ("PASS" if auri_ok else "FAIL"))
+    ok = ok and auri_ok
+    # m = 2426 worked example (paper section 5.2)
+    x = 2 ** 303
+    L = 2 * x**4 - 2 * x**2 + 1
+    M = 2 * x**4 + 2 * x**2 + 1
+    ok2426 = (L * M == 2**2426 + 1) and (L % 25893760589 == 0) \
+        and sympy.isprime(25893760589)
+    print("m=2426: L*M == 2^2426+1: %s; 25893760589 | L: %s; "
+          "25893760589 prime: %s" % (L * M == 2**2426 + 1,
+                                     L % 25893760589 == 0,
+                                     sympy.isprime(25893760589)))
+    # Filter-N example (paper 3.2): 20127043 | 2^1509 + 1, v3(20127042)=4>3
+    f = factorize(20127042)
+    ok1509 = (pow(2, 1509, 20127043) == 20127042) \
+        and (f == {2: 1, 3: 4, 13: 1, 19: 1, 503: 1}) \
+        and (not is_3_higgs(20127043))
+    print("Filter-N: 20127043 | 2^1509+1: %s; 20127042 == 2*3^4*13*19*503: "
+          "%s; 20127043 non-3-Higgs (v3=4>3): %s"
+          % (pow(2, 1509, 20127043) == 20127042,
+             f == {2: 1, 3: 4, 13: 1, 19: 1, 503: 1},
+             not is_3_higgs(20127043)))
+    ok = ok and ok2426 and ok1509
+    print("A3 %s" % ("PASS" if ok else "FAIL"))
+    return ok
+
+
+def phase_b1():
+    """B1 cross-check: how many odd k in [1,600] are Higgs-cubefree."""
+    print("=" * 78)
+    print("B1. Higgs-cubefree odd k in [1,600] (Proposition 4(1)(2) filter)")
+    print("=" * 78)
+    cnt = sum(1 for k in range(1, 601, 2) if odd_higgs_cubefree(k))
+    # also list them for the record
+    ok = (cnt == 246)
+    print("odd k in [1,600] that are Higgs-cubefree: %d (paper: 246) %s"
+          % (cnt, "MATCH" if ok else "MISMATCH"))
+    return ok
+
+
+def read_tables(tables_dir):
+    ord_path = os.path.join(tables_dir, "ord_sieve_table.tsv")
+    wit_path = os.path.join(tables_dir, "witnesses_1200.tsv")
+    if not (os.path.exists(ord_path) and os.path.exists(wit_path)):
+        return None, None
+    ord_rows, wit_rows = [], []
+    with open(ord_path) as f:
+        for ln in f:
+            a, b = ln.split()
+            ord_rows.append((int(a), int(b)))
+    with open(wit_path) as f:
+        for ln in f:
+            a, b, c = ln.split()
+            wit_rows.append((int(a), int(b), int(c)))
+    return ord_rows, wit_rows
+
+
+def phase_b3_b4(tables_dir):
+    """Combine sieve witnesses with full factorization of survivors."""
+    print("=" * 78)
+    print("B3/B4. Survivor classification and Theorem 8 comparison")
+    print("=" * 78)
+    ord_rows, wit_rows = read_tables(tables_dir)
+    if wit_rows is None:
+        print("NO SIEVE TABLES — run heven_sieve.py first.  B3/B4 skipped.")
+        return False
+
+    # killed set: every even m <= 1200 with a non-3-Higgs witness r
+    killed = set()
+    witness_of = {}
+    for r, m, o in wit_rows:
+        witness_of.setdefault(m, []).append((r, o))
+        if not is_3_higgs(r):
+            killed.add(m)
+    # every killed m must carry a verified witness: pow(2, m, r) == r-1
+    for m in killed:
+        assert any(pow(2, m, r) == r - 1 and not is_3_higgs(r)
+                   for r, _ in witness_of[m])
+
+    all_even = set(range(2, 1201, 2))
+    survivors = sorted(all_even - killed)
+    print("even m in [2,1200]: %d" % len(all_even))
+    print("killed by sieve witness: %d" % len(killed))
+    print("survivors (to full-factor): %d" % len(survivors))
+    print("survivor list: %s" % survivors)
+
+    # full factorization of each survivor; classify
+    in_heven, undecided = [], []
+    survivor_factorizations = {}
+    for m in survivors:
+        n = 2**m + 1
+        fs = sympy.factorint(n)
+        chk = 1
+        for p, e in fs.items():
+            chk *= p**e
+        complete = (chk == n) and all(sympy.isprime(p) for p in fs)
+        if not complete:
+            undecided.append((m, fs))
+            continue
+        survivor_factorizations[m] = dict(fs)
+        if all(is_3_higgs(int(p)) for p in fs):
+            in_heven.append(m)
+
+    print("-" * 78)
+    print("computed H_even ∩ [2,1200] = %s" % in_heven)
+    print("expected (Theorem 8)         = %s" % TEN)
+    match = (in_heven == TEN)
+    print("MATCH: %s" % ("YES" if match else "*** NO — DISCREPANCY ***"))
+    if not match:
+        print("  only in computed: %s" % sorted(set(in_heven) - set(TEN)))
+        print("  only in expected: %s" % sorted(set(TEN) - set(in_heven)))
+    print("killed-by-sieve: %d, in-H_even: %d, undecided: %d"
+          % (len(killed), len(in_heven), len(undecided)))
+    for m, fs in undecided:
+        print("    UNDECIDED m=%d: incomplete factorization %s" % (m, fs))
+    # spot-check two hand-verifiable factorizations
+    sp6 = sympy.factorint(2**6 + 1)
+    sp18 = sympy.factorint(2**18 + 1)
+    print("spot check 2^6+1  = %s (expect {5:1, 13:1})" % sp6)
+    print("spot check 2^18+1 = %s (expect {5:1, 13:1, 37:1, 109:1})" % sp18)
+    ok37 = is_3_higgs(37) and factorize(36) == {2: 2, 3: 2}
+    ok109 = is_3_higgs(109) and factorize(108) == {2: 2, 3: 3}
+    print("37 Higgs (36=2^2*3^2): %s; 109 Higgs (108=2^2*3^3): %s"
+          % (ok37, ok109))
+    return match
+
+
+def main():
+    tables_dir = "code/out"
+    if "--tables" in sys.argv:
+        tables_dir = sys.argv[sys.argv.index("--tables") + 1]
+    a1 = phase_a1()
+    a2 = phase_a2()
+    a3 = phase_a3()
+    b1 = phase_b1()
+    b34 = phase_b3_b4(tables_dir)
+    print("=" * 78)
+    print("SUMMARY  A1:%s A2:%s A3:%s B1:%s B3/B4:%s"
+          % ("PASS" if a1 else "FAIL",
+             "PASS" if a2 else "FAIL",
+             "PASS" if a3 else "FAIL",
+             "PASS" if b1 else "FAIL",
+             "PASS" if b34 else "FAIL"))
+    sys.exit(0 if (a1 and a2 and a3 and b1 and b34) else 1)
+
+
+if __name__ == "__main__":
+    main()

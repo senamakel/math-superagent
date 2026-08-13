@@ -1,75 +1,34 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hong-2022-stewart-revisited.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hong (2022), *A refined Stewart-type lower bound* (arXiv:2204.01858)
 
-<!-- source: https://arxiv.org/pdf/2204.01858 | converted from PDF -->
+Full text: [[hong-2022-stewart-revisited.full]] (readable OCR).
 
-## What is in it
+**Setup.** `P(m)` = largest prime factor of `m`. `Φ_n(x)` the `n`-th cyclotomic polynomial. `γ` an algebraic number of degree 2, not a root of unity, with `N γ = ±1`; `ω(γ)` counts the prime ideals of `K = Q(γ)` with `ν_p(γ) ≠ 0`; `D_K` the field discriminant.
 
-- P ′ ≤ ( P
-n + 1) exp (
-80 log n log log log n
-(log log n)2
- ) . (3.20)
+**Results used by this run.**
+- **Theorem 2.2** (uniform explicit Stewart bound): for `p0 = exp exp max{10^8, 2|D_K|}` and every prime ideal `p` of `K` with underlying prime `p ≥ p0`,
+  `ν_p(γ^n − 1) ≤ p exp(−0.001 log p / log log p) · h(γ) · log^* n`.
+- **Proposition 2.4**: if `p` is a *primitive* divisor of `u_n`, then `ν_p(Φ_n(γ)) ≥ 1` and `N p ≡ 1 (mod n)`, in particular `N p ≥ n + 1`. (This is the primitive-divisor structural fact the Maciejewski branch needs; cf. BHV.)
 
+**Why relevant.** The run's divisor-level thread (`research/threads/divisor-level-phi4p.md`) uses the bound on the *non-primitive* part of `2^{2p} + 1` to say the primitive divisors must carry log-mass `≫ p`: `log(2^{2p}+1) = log 5 + log Φ_{4p}(2) ~ 2p log 2`, and the non-primitive contribution is `O(log(4p))` by Hong's valuation bound. That is the log-mass side of the exponential gap `2^{2p}/p` that blocks the density/Chebotarev route. So this source is what makes the "analytic target must be divisor-level" conclusion precise.
 
-## What it claims
+**Hypotheses checked.** Theorem 2.2 is stated for degree-2 `γ`, `N γ = ±1`, `n ≥ p0` (doubly-exponential in the discriminant — enormous but non-conditional). It applies to `γ = 2` (degree 1) only via the quadratic case; this run uses it as the Maciejewski paper does, as the source of "non-primitive part is `O(log n)`", and records it as asserted-by-source for this application rather than re-proved.
 
-Abstract
-Let γ be an algebraic number of degree 2 and not a root of unity.
-In this note we show that there exists a prime ideal p of Q(γ) satisfying
-νp(γn − 1) ≥ 1, such that the rational prime p underlying p grows quicker
-than n.
-
-Contents
-
-1 Introduction 1
-2 Preliminary results 2
-2.1 Notation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2
-2.2 Uniform explicit version of Stewart’s theorem . . . . . . . . . . . . . . . . . . . 3
-2.3 Cyclotomic polynomials and primitive divisors . . . . . . . . . . . . . . . . . . 3
-2.4 Estimates for the arimetical functions . . . . . . . . . . . . . . . . . . . . . . . 4
-3 Proof of Theorem 1.2 4
-3.1 Case (3.9) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-3.2 Case (3.10) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-
-1 Introduction
-
-Let P (m) denote the largest prime factor of integer m, with the convention
-P (0) = P (±1) = 1. For any integer n, we denote the n-th cyclotomic polynomial
-in x by Φn(x) as usual.
-Schinzel [8] asked if there exists any…
-
-T…
-
-## Statements it makes
-
-Theorem 1.1. Let γ be a non-zero algebraic number, not a root of unity. De-
-note ω(γ) the number of primes p of the ﬁeld K = Q(γ) with the property
-νp(γ) ̸= 0. Let P be the biggest element of the set
-
-Theorem 1.2. Suppose γ is an algebraic number of degree 2 and not a root
-of unity. Set n0 = exp exp(max{1010, 3|DK|}). Let n be a positive integer
-satisfying n ≥ n0. There exists a prime ideal p of K = Q(γ) such that νp(γn −
-1) ≥ 1 and the underlying rational prime p of p satisﬁes
-
-Theorem 2.1. Let γ be a non-zero algebraic number of degree d, not a root
-of unity. Set p0 = exp(80000d(log∗d)
-2). Then for every prime p of the ﬁeld
-K = Q(γ) whose absolute norm N p satisﬁes N p ≥ p0, and every positive inte-
-ger n we have
-
-Theorem 2.2. Let γ be a non-zero algebraic number of degree 2, not a root of
-unity. Assume that N γ = ±1. Set p0 = exp exp(max{108, 2|DK|}), where DK
-is the discriminant of the quadratic ﬁeld K = Q(γ). Then for every prime p
-of K with underlying rational prime p ≥ p0, and every positive integer n we
-have
- νp(γn − 1) ≤ p exp (
-−0.001 log p
-log log p
- ) h(γ) log∗n. (2.3)
-
-Proposition 2.3. 1. Let γ be an algebraic number. Then
-
-Proposition 2.4. 1. Let p be a primitive divisor of un. Then νp(Φn(γ)) ≥ 1
-and N p ≡ 1 mod n; in particular, N p ≥ n + 1.
-
-*[digest of a 14143 character source; every section, statement, and proof in full at `research/sources/hong-2022-stewart-revisited.full.md`]*
+```claim
+id: hong-stewart-nonprimitive-bound
+statement: For degree-2 algebraic γ with Nγ = ±1 and n >= exp exp(...), the
+  growth of primes dividing γ^n - 1 is governed by an explicit Stewart-type
+  lower bound; the non-primitive part of 2^(2p)+1 is O(log(4p)) so the
+  primitive divisors must carry log-mass comparable to 2p log 2.
+hypotheses: gamma = 2 in the quadratic case (via Prop 2.4 primitive-divisor
+  structure); n large; Nγ = ±1
+holds-here: yes as the Maciejewski paper applies it (non-conditional, no GRH),
+  establishing the log-mass / reciprocal-mass scale gap
+status: asserted - the bound is proved in the source but its application to
+  gamma=2 here follows the citing paper and is not independently re-verified
+bearing: pins the exponential 2^(2p)/p gap that rules out density/Chebotarev as
+  the scale for closing H_even; only a divisor-level (transference) statement
+  about the prime support of Phi_{4p}(2) can close it
+anchor: research/threads/divisor-level-phi4p.md
+contradicts: (none)
+answers: whether-scalegap-is-exponential
+```

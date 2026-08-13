@@ -1,0 +1,2 @@
+[event-rate] 1154 sequences across 26 workers, expected single-core ~12694s
+[parallel] event-rate: families x seeds across 26 worker(s) of 28 CPUs
