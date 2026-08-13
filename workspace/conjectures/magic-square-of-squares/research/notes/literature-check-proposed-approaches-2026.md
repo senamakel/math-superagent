@@ -77,3 +77,21 @@ eq. (12)–(13) gives the explicit quartics. The adopted file now says so and no
 genus-1 computation. The adopted status is unchanged; what closed `quadratic-chabauty-7to8`
 also narrows what `chabauty-coleman` can directly attack (the Category VII eq. (13) curves
 are elliptic, needing 2-descent, not Chabauty).
+
+```claim
+id: root-number-parity-refuted-four-curves
+statement: The root-number/parity argument on the four congruent-number curves
+  E_d (d = u, v, u+v, u-v) cannot force non-existence: by Birch-Stephens the parity
+  of R(n)=ord_{s=1}L(E_n,s) is fixed by n mod 8 (odd iff n ≡ 5,6,7 mod 8), which is a
+  necessary condition compatible with any configuration of four rank-≥1 curves;
+  the hoped-for additive-relation-to-root-number contradiction is unestablished;
+  and a Q-level mod-2 parity framework cannot separate Q from the extension fields
+  over which MSS provably exist.
+hypotheses: E_d: y^2 = x^3 - d^2 x, CM by Z[i], parity conjecture/BSD for the rank.
+holds-here: n/a (approach refuted; it cannot be the whole obstruction)
+status: refuted
+bearing: closes root-number-parity-four-curves; the 7->8 sub-question should be
+  attacked by elliptic 2-descent/Selmer on the explicit Bremner II eq.(13) quartics
+  (genus 1), not by root-number parity or by Chabauty.
+anchor: research/approaches/root-number-parity-four-curves.md
+```
