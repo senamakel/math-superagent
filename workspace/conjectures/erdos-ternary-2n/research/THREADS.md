@@ -14,7 +14,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 Each blocked or dead thread and what would move it. A blocker stated precisely is the next research request; one left blank is a mood.
 
-- [[lifting-proof]] (dead): _no blocker recorded — say what would unstick it, or the row is only a mood_
+- [[lifting-proof]] (dead): none — the theorem was proved, not blocked; superseded by the Lean formalisation and DH-1 × Lagarias directions
 
 ## Threads that could not be read
 

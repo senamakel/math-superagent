@@ -2,6 +2,8 @@
 question: Is the 2-to-1 lifting of A_k provable via LTE, giving |A_k| = 2^(k-1) unconditionally?
 status: dead — PROVED unconditionally (ternary-lifting-theorem)
 rests-on: ternary-sieve-count-doubles, SIEVE-EXACT, SAYE-2, SAYE-3
+blocked-by: none — the theorem was proved, not blocked; superseded by the Lean
+  formalisation and DH-1 × Lagarias directions
 result: The theorem is proved via the three-lemma argument in code/out/lifting_theorem.md.
   |A_k| = 2^(k-1) for all k. The sieve never closes.
 next: superseded by Lean formalisation (lean-formalization) and DH-1 × Lagarias (dh1-gap)

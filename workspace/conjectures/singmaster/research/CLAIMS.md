@@ -6,7 +6,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
-| `best-unconditional-bound` | Best known unconditional bound on N(a) grows with a: Kane 2007 gives N(t)=O((log t)(log_3 t)/(log_2 t)^3). Historical: Singmaster O(log a); Abbott-Erdos-Hanson O(log a/log_2 a); Kane 2004 O(log t log_3 t/log_2^2 t).… | yes | asserted | `research/notes/established-review.md` |
+| `best-unconditional-bound` | Best known unconditional bound on N(a) grows with a: Kane 2007 gives N(t)=O((log t)(log_3 t)/(log_2 t)^3). Historical, all primary-sourced: Singmaster 1971 O(log a); Abbott-Erdos-Hanson 1974 O(log a/log_2 a) [AMM 81… | yes | checked | `research/notes/established-review.md` |
 | `convention-n3003-eight` | Under the both-mirrors-including-trivial-pair convention, N(3003)=8 via (3003,1),(78,2),(15,5),(14,6) and their four mirrors. MRSTT (1.2) lists all eight. | yes | checked | `research/summaries/singmaster-literature-exact.md` |
 | `deweger-smallk-effective` | For fixed (k,l), C(n,k)=C(m,l) is solved effectively (explicit constants) only in specific cases: (2,3) Avanesov; (2,4) de Weger/Pinter via Gelfond-Baker; (3,4) de Weger via Mordell (C(n,3)=C(m,4) is genus 3… | yes | asserted | `research/summaries/singmaster-literature-exact.md` |
 | `fibonacci-n6-family` | For each j>=1, n=F_{2j+2}F_{2j+3}-1, m=F_{2j}F_{2j+3}-1 give C(n+1,m+1)=C(n,m+2); the common value occurs at least 6 times (2 interior + 2 mirrors + trivial pair). j=1 gives C(15,5)=C(14,6)=3003, N(3003)=8. | yes | asserted | `research/summaries/singmaster-literature-exact.md` |
@@ -20,7 +20,6 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
-- `best-unconditional-bound` (research/notes/established-review.md) — asserted by the source, not proved there and not checked here
 - `deweger-smallk-effective` (research/summaries/singmaster-literature-exact.md) — asserted by the source, not proved there and not checked here
 - `fibonacci-n6-family` (research/summaries/singmaster-literature-exact.md) — asserted by the source, not proved there and not checked here
 - `mrstt-interior-boundary` (research/notes/established-review.md) — asserted by the source, not proved there and not checked here
