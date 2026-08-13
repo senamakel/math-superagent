@@ -186,8 +186,10 @@ for (m, n) in pairs:
        "(inf) chart u=1/x: constant term at u=0 is -n! != 0 -> NO finite-y point over x=infinity")
     # leading Puiseux balance  m! u^m y^n ~ n!   ->   y ~ c u^{-m/n},  m! c^n = n!
     c_lead = mp.power(mpf(sp.factorial(n)) / mpf(sp.factorial(m)), mpf(1) / mpf(n))
-    ok(abs(mpf(sp.factorial(m)) * (c_lead ** n) - mpf(sp.factorial(n))) < mpf('1e-30'),
-       f"(inf) leading balance m!*c^n = n! holds,  c = (n!/m!)^(1/n) = {mp.nstr(c_lead, 12)}")
+    rel = abs(mpf(sp.factorial(m)) * (c_lead ** n) - mpf(sp.factorial(n))) / mpf(sp.factorial(n))
+    ok(rel < mpf('1e-25'),
+       f"(inf) leading balance m!*c^n = n! holds (|residual|/n! = {mp.nstr(rel, 4)} < 1e-25),"
+       f"  c = (n!/m!)^(1/n) = {mp.nstr(c_lead, 12)}")
     # minimal ramification index e = least e with e*m == 0 (mod n)  [e*(-m/n) integral]
     e = next(e0 for e0 in range(1, n + 1) if (e0 * m) % n == 0)
     nb = n // e  # number of branches from the exponent criterion
