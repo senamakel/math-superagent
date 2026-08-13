@@ -41,3 +41,7 @@
 Two live threads:
 - `research/threads/rule90-regeneration.md` — test depth d=2^j prediction against block-length data (item 7 above). Null check done, tol=1 signal marginal, tol=0 dead. Expansion-event angle may differ.
 - `research/threads/regeneration.md` — the honest open question: is there a k with block length 0? Local criterion established; recurrence mechanism still open.
+
+## Note appended after execution (2026)
+
+The queued empirical check in `research/approaches/block-apex-parity-forcing.md` — "no whole-block constant {0,2} block of length ≥ 3 in the 161 live prime rows" — is now EXECUTED and TRUE to depth 1000 (capture `code/out/block_constancy.captured.txt`, JSON `code/out/block_constancy.json`; block lengths agree 1000/1000 with the independent oracle `blocks_depth1000.json`). It does not revive the refuted approach: non-constancy never drives regeneration (60/60 regenerations are at boundary (edge=2,intruder=4)), and the all-2 constant block reappears in the finite-width regime (k=811..818).
