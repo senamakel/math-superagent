@@ -45,14 +45,17 @@ first-step: Reproduce the divisor tables of Φ_{4p}(2) = (2^{2p}+1)/5 for
 
 ## Notes for the research check
 
-- **Distinct from the adopted `biquadratic-character-divisors`**: the adopted
-  file aims at *existence* of one r ≡ 1 mod 16 (a (H1)-type statement, strictly
-  weaker than C29) via quartic reciprocity alone, and carries the M1/M2/M3
+- **Absorbs `biquadratic-character-divisors` (now closed as standalone)**: that
+  route aimed at *existence* of one r ≡ 1 mod 16 (the (H1) form, strictly
+  weaker than C29) via quartic reciprocity alone, and carried the M1/M2/M3
   mismatches documented in
-  `research/notes/divisor-level-target-extraction.md` §7. This proposal's
-  mechanism is *orthogonality + second moment*, and its deliverable is the
-  *proportional* lower bound C29. The quartic character appears only as the
-  explicit evaluation of the first moment, not as the whole method.
+  `research/notes/divisor-level-target-extraction.md` §7. Its verified
+  one-way generator equivalence (2/r)_4 = 1 ⟺ r ≡ 1 mod 16 (all 71 primitive
+  divisors through p = 61, two independent ways) is retained here as the
+  evaluation of the first moment S_χ. This proposal's mechanism is
+  *orthogonality + second moment*, and its deliverable is the *proportional*
+  lower bound C29. The quartic character appears only as the explicit
+  evaluation of the first moment, not as the whole method.
 - **Falsifier**: if the divisors of Φ_{4p}(2) are *not* equidistributed mod 16 —
   i.e. the empirical variance shows systematic bias into the class r ≡ 9 mod 16
   (which would be a genuine conspiracy, since 9 ≡ 1 mod 8 so quartic characters
