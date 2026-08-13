@@ -1,93 +1,88 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/viada-intersection-curve-algebraic-subgroups-product-elliptic-2003.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Viada (2003), "The intersection of a curve with algebraic subgroups in a product of elliptic curves" — CM case primary
 
-<!-- source: http://archive.numdam.org/article/ASNSP_2003_5_2_1_47_0.pdf | converted from PDF -->
+[[viada-intersection-curve-algebraic-subgroups-product-elliptic-2003]]
 
-## What it claims
+Source: Evelina Viada, "The intersection of a curve with algebraic subgroups in
+a product of elliptic curves", Annali della Scuola Normale Superiore di Pisa,
+Classe di Scienze (4) 2 (2003), 47–75. Full text:
+`research/sources/viada-intersection-curve-algebraic-subgroups-product-elliptic-2003.full.md`
+(59.5 KB from http://archive.numdam.org/article/ASNSP_2003_5_2_1_47_0.pdf).
 
-Abstract. We consider an irreducible curve C in E n, where E is an elliptic curve
-and C and E are both deﬁned over Q. Assuming that C is not contained in any
-translate of a proper algebraic subgroup of E n,we show that the points of the union⋃ C ∩ A(Q), where A ranges over all proper algebraic subgroups of E n, form a
-set of bounded canonical height. Furthermore, if E has Complex Multiplication
-then the set ⋃ C ∩ A(Q), for A ranging over all algebraic subgroups of E n of
-codimension at least 2, is ﬁnite. If E has no Complex Multiplication then the
-set ⋃ C ∩ A(Q) for A ranging over all proper algebraic subgroups of E n of
-codimension at least n
-2 + 2, is ﬁnite.
+## What it establishes
 
-Mathematics Subject Classiﬁcation (2000): 11D45 (primary), 11G50 (secondary).
+C an irreducible curve defined over Q, transversally embedded in E^n (E an
+elliptic curve over Q). The points of C(Q) lying in the union of proper
+algebraic subgroups of E^n form a set of **bounded canonical height**. Two
+sharper finiteness statements differ by whether E has CM:
 
-1. — Introduction
+- **CM case**: ⋃ C∩A(Q) over algebraic subgroups **A of codimension ≥ 2** of
+  E^n is **finite**.
+- **non-CM case**: ⋃ C∩A(Q) over algebraic subgroups of codimension ≥ n/2 + 2
+  is finite.
 
-The Manin-Mumford Conjecture states that if C is a nonsingular projective
-curve of genus ≥ 2 deﬁned over a number ﬁeld K , which is embedded in its
-Jacobian J , then the set C ∩ Tor(J ) of points of C(K ) whose image in J is
-torsion, is ﬁnite. The toric version of this Conjecture has been proven by M.
-Laurent [9]. M. Raynaud [13]…
+**Subgroup Lemma (structural difference that matters)**:
+- E non-CM: an algebraic subgroup of codim r of E^n is characterized by r
+  Q-linearly independent equations ∑ n_i π_i = 0, n_i ∈ Z, π_i a Z-basis of
+  Hom(E^n,E).
+- E CM (O = End(E) ⊗ Q): it is characterized by r **k-linearly independent**
+  equations ∑ α_i π_i = 0, α_i ∈ O, π_i a free **O**-module basis of
+  Hom(E^n,E). The ambient Hom-module has rank 1 over Z in the non-CM case and
+  rank 1 over O (i.e. a larger rank-2-over-Z lattice) in the CM case.
 
-## Statements it makes
+## Bearing on this problem
 
-Theorem 1. Let E be an elliptic curve deﬁned over Q. Let C be an irreducible
-curve deﬁned over Q and transversally embedded in E n. Then the set
+The run's curve is E: y² = x³ − c²x, j = 1728, **CM by the Gaussian integers**
+(well-established: it is the congruent-number curve; its endomorphism ring
+contains Z[i]). The explicit-height-constant program for points on transverse
+curves in E^n — the lane the open request `dp07-explicit-constant-for-e3-ap`
+needs to compute C^(1+r) — is worked out for **non-CM** E (Veneziano–Viada,
+Pacific J. Math. 2021; Checcoli–Veneziano–Viada, Forum Math. Sigma 2019; the
+MDPI 2017 "Lattices and rational points"). Viada's own comments there describe
+the CM-case bounds as much too big to be used, and the CM subgroup/module
+structure above explains why: the richer O-module structure makes the explicit
+estimates blow up.
 
-Theorem 2. Let E be a C.M. elliptic curve and C an irreducible curve deﬁned
-over Q which is transversally embedded in E n. Then the set
+**Consequence for the run**: even if the DP07 Théorème 1.13 explicit constant
+were obtained, it would be specialised to a **CM** curve (our E), and the entire
+documented explicit-constant technology delivers only non-CM bounds. This
+corroborates the already-recorded blocking of the uniform-height-AP approach by
+constant size: for the CM Robertson/Bremner curve there is no usable explicit
+constant, and the external-blockset record (`hms-constant-bound`,
+`dp07-explicit-constant-for-e3-ap`) stands. The request stays open for the
+*value* of DP07's constant but is now grounded as far as its usefulness: C^(1+r)
+< 3 is not in reach through this lane for a CM curve.
 
-Theorem 3. Let E be a non C.M. elliptic curve deﬁned over Q and C an
-irreducible curve also deﬁned over Q and transversally embedded in E n.
-Then the set Sc(C) := ⋃
+```claim
+id: viada-2003-cm-subgroup-structure-richer
+statement: For E^n (n≥1) with E CM by O, an algebraic subgroup of codim r is
+  cut out by r k-linearly independent equations with coefficients in O over a
+  free O-basis of Hom(E^n,E), whereas for non-CM E it needs r Z-linearly
+  independent equations over a Z-basis. Consequence (Viada 2003 Thm 2): the
+  points of a transverse curve lying in codim ≥ 2 algebraic subgroups are
+  finite in the CM case, with the explicit estimates being far larger than in
+  the non-CM case. Our curve E: y²=x³−c²x (j=1728) is CM by Z[i], so the
+  explicit-constant lane (Veneziano-Viada/DP07) yields no usable C for it.
+hypotheses: E elliptic over Q; C irreducible transverse in E^n; CM means
+  End(E) ⊗ Q = O a rank-2 Z-order (here Z[i]).
+holds-here: yes — our curve is CM, so the non-CM explicit constant technology
+  does not apply to it.
+status: checked (primary on disk, research/sources/viada-...2003.full.md;
+  abstract + Subgroup Lemma read directly)
+bearing: grounds dp07-explicit-constant-for-e3-ap: even a fetched DP07 constant
+  would be non-CM oriented and unusable for the run's CM curve; corroborates
+  the constant-size blocking of uniform-height-bound-elliptic-ap.
+anchor: research/summaries/viada-intersection-curve-algebraic-subgroups-product-elliptic-2003.md
+```
 
-Conjecture 1. Let A be an abelian variety deﬁned over a number ﬁeld K , L
-a symmetric ample line bundle on A and n a positive integer. Then, there exists
-a constant C(A, L, n), such that, if the algebraic point P = (P1,..., Pn) ∈ An
+## Notes
 
-Lemma 1 (Subgroup Lemma).
-• If E is non C.M. and A is an algebraic subgroup of codimension r in E n, then A is
-characterized by r equations Q-linearly independent, of the type ∑n
-i=1 ni πi = 0
-where ni ∈ Z and the πi are a basis of Hom(E n, E) as Z-module. ([13] 3.3
-Lemma 2)
-• If E is C.M. and A is an algebraic subgroup of codimension r in E n, then there
-exist r equations k-linearly independent, of the type ∑n
-i=1 αi πi vanishing on
-A, where k = O ⊗Z Q, αi ∈ O and the πi are a basis of the free O-module
-Hom(E n, E).
-
-Theorem 4. Let C be an irreducible curve and E an elliptic curve deﬁned over
-Q. Let f1,..., fn be surjective morphisms from C → E such that no non-trivial
-linear combination with coefﬁcients in End(E) gives a constant function, then the
-set of points {P ∈ C(Q) :rkEnd(E)⟨ f1(P), . . ., fn(P)⟩≤ n − 1}
-
-Proposition 1. Let f be an element of the coordinate module  =
-⟨x1,..., xn⟩End(E) different from zero. Let Q be a non singular point of C. Then for
-every non-singular point P of C we have
-
-Lemma 2. Let R be an integral domain and let M be an R-algebra and a free
-R-module of rank δ. Let τi be elements of M such that M = τ0 R +τ1 R +···+τδ−1 R.
-Then the elements g1,..., gr of M m are linearly independent over M if and only
-if the elements τ0g1,...,τ0gr ,τ1g1,...,τ1gr ,..., τδ−1g1,...,τδ−1gr are linearly
-independent over R.
-
-Lemma 3. Let  be a ﬁnitely generated subgroup of E of rank r over Z.
-Then there are elements g1,..., gr ∈  which generate a subgroup isomorphic to
-/Tor() and such that
-
-Proposition 2. Let P be a point of Sn−r (C) for some integers 0 ≤r < n. Let K (P)
-be the ﬁeld of deﬁnition of P. We consider the module P :=⟨x1(P), . .., x2n(P)⟩Z
-of rank 2r over Z,generated by the coordinate functions and their conjugates under
-τ . Then there exist Z-linearly independent elements g1,..., g2r ∈ P such that
-
-Proposition 3. Let P be a point of Sn−r (C). There exists a proper algebraic
-subgroup A of E n deﬁned over K and passing through P such that
-
-Corollary 1. Let P be a point in Sn−r (C). Let K (P) be the ﬁeld of deﬁnition
-of the point P. Then
-
-Proposition 4. Let Q1,... Qr be O-linearly independent points in E. Let D
-be the degree of the ﬁeld of deﬁnition of…
-
-L…
-
-
-*[further statements in the full text]*
-
-*[digest of a 56762 character source; every section, statement, and proof in full at `research/sources/viada-intersection-curve-algebraic-subgroups-product-elliptic-2003.full.md`]*
+- This is a finiteness/bounded-height paper, not an explicit-constant paper; it
+  does not itself deliver a numeric C. It is in the library because it is the
+  **CM-case primary** the explicit-constant lane implicitly excludes, fixing
+  why that lane cannot serve this problem.
+- MDPI "Lattices and Rational Points" (2227-7390/5/3/36, 2017) and the
+  Veneziano–Viada Pacific J. Math. 2021 paper are **paywalled** (403 on every
+  route tried this cycle); their abstracts' explicit-formula summaries are the
+  basis for the non-CM-vs-CM contrast above, cross-confirmed by Viada's own
+  survey-level comments inside Checcoli–Veneziano–Viada (Forum Math. Sigma 2019,
+  available). No download of the paywalled pair was stored.

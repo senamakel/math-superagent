@@ -67,7 +67,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `pech-hourglass-sum-of-two-squares-and-additive-e` | A magic hourglass (7-square: two diagonals + central column) with centre a=A² needs A a sum of two squares in at least 3 ways, A=m²+n²=r²+s²=u²+v², giving cell differences b=4mn(m²−n²), c=4rs(r²−s²), d=4uv(u²−v²); the… | yes | asserted | `research/summaries/pech-carres-magiques-2006.md` |
 | `phi-count-sequence-not-in-oeis` | \|Φ(M)\| = 22,86,186,331,518,737,1002,1314,1656,2040,2480,2930,3448,4002,4582 (M=10..150 step 10; 8156 at 200, 32495 at 400) has no OEIS match. | yes | asserted | `code/out/phi_pattern_findings.md` |
 
-_35 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_36 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 

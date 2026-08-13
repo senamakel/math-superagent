@@ -33,50 +33,29 @@ Each marked with evidence class and a link.
   in Jenkins' family with infinitely many lattice points (a=b=1). Any `B<6`
   is refuted.
 
-- **Genus grid — the complete two-parameter Faltings threshold. `computed`, two
-  independent CAS engines agree on the original 8x11 grid and the k2=3,4,5
-  extended rows (Singular `normal.lib::genus` and Sage `Curve.genus` output
-  identical). The 23 rows added since (k2=6 n=13..18, k2=7..10 n=13..19) rest
-  on Singular alone — the Sage check errored (`NameError: name 'PolynomialRing'
-  is not defined`) and never ran. Do not describe the new rows as independently
-  verified.** `genus(k1,k2)` of `C(x,k1)=C(y,k2)`
-  computed for 2<=k1,k2<=12, extended to k1=24 for k2=3,4,5; outputs identical.
-  This **supersedes** the operator's three-diagonal salvage
-  (`code/out/genus_closed_forms.md`, now corroboration only).
-  **Faltings threshold: genus = 1 exactly for {2,3} and {2,4}; genus >= 2 for
-  every other distinct pair.** So Faltings applies to essentially every distinct
-  pair — the complete answer to the GOAL.md deliverable.
-  This delivers the Faltings threshold but NOT a uniform bound — per-pair
-  finiteness is ineffective. Full grid in `code/out/genus_table.captured.txt`;
-  approach in `research/approaches/genus-computation.md`.
-  **Closed forms verified against every computed entry (k1<=24).**
-  `{2,n}`: `y(y-1)=2C(x,n)` hyperelliptic, `genus=floor((n-1)/2)`.
-  `{3,n}`: `Y^3-Y=6C(x,n)` (Y=y-1) cyclic-trigonal, `genus=n-1` if 3∤n else `n-2`.
-  Both rows now have a primary anchor: the superelliptic Riemann–Hurwitz formula
-  `g=((d−2)(m−1)+m−gcd(m,d))/2` (m=2,3; Sutherland 2020 eq. (1),
-  Shorey–Tijdeman) — claim `superelliptic-genus-formula`, `checked` — so the
-  {2,n}/{3,n} closed forms are explained, not merely fitted.
-  `{4,n}`: 2:1 cover of `w^2=1+24C(x,n)` via `w=y^2-3y+1`, `genus=3(n-1)/2`
-  (n odd), `3(n-2)/2+1` (n≡2 mod 4), `3(n-2)/2` (n≡0 mod 4).
-  **`{5,n}` now established:** `genus = 2n-2 except 2n-4 when 5|n` — exact on
-  all 19 points n=6..24, zero mismatches, operator-checked.
-  **Slope conjecture established.** Mean first-difference over WHOLE periods is
-  exactly `(m-1)/2` for m=2,3,4,5, with period-m diff patterns:
-  m=2: [0,1]; m=3: [1,0,2]; m=4: [1,2,0,3]; m=5: [2,2,2,0,4]. Operator-checked,
-  zero mismatches. **Trap:** a truncated window (not a whole number of periods)
-  gives a mean below `(m-1)/2` and looks like a refutation. State periodicity
-  first, mean second.
-  **Diagonal closed forms (operator salvage, supplementary corroboration).**
-  `g(n)=(n−1)(n−2)/2` for `C(x,n−1)=C(y,n)`; `g(n)=⌊(n−1)(n−3)/2⌋` for
-  `C(x,n−2)=C(y,n)`; `g(n)=⌊(n+1)(n−1)/2⌋` for `C(x,n+2)=C(y,n)` — all 55
-  points fit with zero mismatches (claim `genus-closed-forms-three-diagonals`,
-  `checked`). These are three diagonals of the full two-parameter table now
-  established above; the three Singular runs used to compute them each
-  terminated `halt 1` (partial outputs of errored runs), while the genus_table
-  grid was computed with both Singular and Sage and completed cleanly.
-  Consistent with BST Thm 2.2: the only non-diagonal genus-1 pairs are (2,3)
-  and (2,4). These are the structural small-column content — the k=2/3 columns
-  that carry all multiplicity.
+- **Genus of `C(x,m)=C(y,n)` — one closed form, the complete Faltings
+  threshold. `checked` against all 111 Singular-computed values (zero
+  mismatches), NOT proved (becomes a derivation via Riemann–Hurwitz/Plücker).**
+  For distinct `m,n>=2` the geometric genus of the projective closure is
+  `g(m,n)=((m-1)n-(m-2)-gcd(n,m))/2` (symmetric in m,n; numerator always even).
+  Reduces by substitution to the per-column forms ({2,n}→`floor((n-1)/2)`
+  hyperelliptic; {3,n}→n-1/n-2; {4,n}→3(n-1)/2 etc.; {5,n}→2n-2, 2n-4 if 5|n)
+  and adjacent {n-1,n}→`(n-1)(n-2)/2`; it supersedes all prior per-column and
+  diagonal grids. Genus is 1 exactly for **{2,3} and {2,4}**, >=2 for every
+  other distinct pair (matches BST Thm 2.2, a primary-source proof; cross-checks
+  Jenkins (2,2)=3 and de Weger (3,4)=3). **So Faltings applies to every distinct
+  pair — the Faltings-threshold deliverable — but per-pair finiteness is
+  ineffective, and a quadratically-growing genus makes uniformity harder, not
+  easier (the standing trap).** Diagonal m=n reducible (contains x=y). Single
+  formula: `code/out/genus_single_closed_form.md`, claim
+  `genus-single-closed-form-all-pairs`. **Two caveats an agent must not
+  overstate:** (a) the original 8x11 grid was two-CAS (Singular+Sage agree),
+  but the 23 rows added since (k2=6..10) rest on Singular alone — the Sage check
+  errored (`NameError: PolynomialRing`) and never ran, so do not call them
+  independently verified; (b) the slope-of-mean trap — a truncated (non-whole-
+  period) window gives a mean below `(m-1)/2` and looks like a refutation;
+  state periodicity first, mean second (whole-period mean is exactly (m-1)/2
+  for m=2..5).
 
 - **Known bounds (all grow with a; reproducing one is NOT a result). `sourced`
   from primary where noted; Singmaster 1971 Monthly still NOT held.**
