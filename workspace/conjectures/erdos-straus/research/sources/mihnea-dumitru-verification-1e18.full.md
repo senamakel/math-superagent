@@ -1,225 +1,69 @@
-<!-- source: https://arxiv.org/abs/2509.00128 | converted from HTML -->
+<!-- source: https://arxiv.org/html/2509.00128v1 | converted from HTML -->
 
-[2509.00128] Further verification and empirical evidence for the Erdős-Straus conjecture
+Further verification and empirical evidence for the Erdős-Straus conjecture
 
-Skip to main content
+arXiv is now an independent nonprofit! [Learn more][1] ×
 
-Press Enter to search &middot; [Advanced search][1]
+[License: arXiv.org perpetual non-exclusive license][2]
 
--->
+arXiv:2509.00128v1 [math.NT] 29 Aug 2025
 
-# Mathematics > Number Theory
+# Further verification and empirical evidence for the Erdős-Straus conjecture
 
-**arXiv:2509.00128**(math)
+Spiridon Mihnea Bogdan C. Dumitru Thanks: Faculty of Mathematics and Computer Science, University of Bucharest.
 
-[Submitted on 29 Aug 2025]
+August, 2025
 
-# Title: Further verification and empirical evidence for the Erdős-Straus conjecture
+###### Abstract
 
-Authors: [Spiridon Mihnea][2], [Dumitru C. Bogdan][3]
+We provide empirical evidence for the Erdős-Straus conjecture by improving computational bounds to 10 18 10^{18} and by evaluating the solution-counting function f ⁡ ( p) f(p) for this conjecture.
 
-View a PDF of the paper titled Further verification and empirical evidence for the Erd\H{o}s-Straus conjecture, by Spiridon Mihnea and 1 other authors
+## 1 Background
 
-[View PDF][4] [HTML (experimental)][5]
+The Erdős-Straus conjecture states that every fraction of the form 4 n \frac{4}{n} can be expanded as the sum of 3 unit fractions 1 x + 1 y + 1 z \frac{1}{x}+\frac{1}{y}+\frac{1}{z} with x, y, z ∈ ℕ ∗ x,y,z\in\mathbb{N^{*}}. The study of this conjecture is concerned with the case where n n is a prime number, as unit fraction decompositions for composite numbers n n can be obtained from smaller prime numbers: if n = k ​ p n=kp for some prime p p, and Erdős-Straus holds for p p, then 4 p = 1 x + 1 y + 1 z \frac{4}{p}=\frac{1}{x}+\frac{1}{y}+\frac{1}{z} and consequently 4 n = 4 k ​ p = 1 k ​ x + 1 k ​ y + 1 k ​ z \frac{4}{n}=\frac{4}{kp}=\frac{1}{kx}+\frac{1}{ky}+\frac{1}{kz}.
 
-Abstract: We provide empirical evidence for the Erdős-Straus conjecture by improving computational bounds to $10^{18}$ and by evaluating the solution-counting function $f(p)$ for this conjecture.
+## 2 Extending Salez bounds
 
-Subjects: | Number Theory (math.NT) |
+Many attempts to prove the full conjecture use modular identities involving p p. For instance, Mordell [3] was the first to show that the conjecture is true for all primes, except possibly a small subset given by the modular identity p ≡ r p\equiv r (mod 840 840), where r ∈ { 1,121,169,289,361, 529 } r\in\{1,121,169,289,361,529\}. Currently, the known sets of modular identities are not enough to completely exhaust all possibilities for p p. However, this approach leads to computational methods that allow the conjecture to be verified up to a large bound. The best-performing method of this type is described by Salez [4], whose result we extend.
 
-Cite as: | [arXiv:2509.00128][6] [math.NT] |
+### 2.1 Process
 
- | (or [arXiv:2509.00128v1][7] [math.NT] for this version)  |
+Salez defined a modular filter S m S_{m} as the set of residue classes mod m m for which the conjecture is known to be true and offered an algorithm to produce these filters. Using modular filters, Salez immediately obtains the Mordell result by applying the Chinese remainder theorem on the identities implied by S 5 = { 0, 2, 3 } S_{5}=\{0,2,3\} and S 7 = { 0, 3, 5, 6 } S_{7}=\{0,3,5,6\}. By performing this process with the first 7 7 prime filters, up to S 23 S_{23}, Salez obtained the set R 7 R_{7} of residues modulo some G 7 G_{7} that must be checked. Proof for p ≤ 10 17 p\leq 10^{17} follows by verification of integers that escape filtering up to that bound.
 
- | [https://doi.org/10.48550/arXiv.2509.00128][8]
+We improved this bound to p ≤ 10 18 p\leq 10^{18} by extending this approach with S 29 S_{29}, obtaining a set R 8 R_{8} with | R 8 | = 2101514 |R_{8}|=2101514 residue classes modulo G 8 = 25878772920 G_{8}=25878772920 for which we must check the conjecture. Considering the efficiency ratios G 7 | R 7 | \frac{G_{7}}{|R_{7}|} and G 8 | R 8 | \frac{G_{8}}{|R_{8}|}, this set is roughly twice as efficient.
 
-Focus to learn more
+We divided work in batches B k = { r + k ​ G 8 | r ∈ R 8 } B_{k}=\{r+kG_{8}\,|\,r\in R_{8}\} for the sake of multithreading. Verifying the conjecture for all primes p ≤ 10 18 p\leq 10^{18} is equivalent to checking all batches up to k = 38641709 k=38641709, which can be done in parallel. Additionally, the original 10 17 10^{17} result saves us the need to check the first k = 3864170 k=3864170 batches. To verify the integers in any given batch B k B_{k}, we used Salez’ algorithm to precompute a set 𝒮 \mathcal{S} of prime filters with | 𝒮 | = 140000 |\mathcal{S}|=140000. Then, for each n ∈ B k n\in B_{k}, we iterated over each S m ∈ 𝒮 S_{m}\in\mathcal{S} and checked if n n is filtered by S m S_{m}.
 
-arXiv-issued DOI via DataCite
+### 2.2 Details
 
- |
+We note a few things about this process. First, not all integers are filtered by filters in 𝒮 \mathcal{S}. We saved these numbers for later processing and found that none of them were prime, therefore they are accounted for by some earlier prime p p which was filtered out. Second, some filters are more efficient than others, in that they appear to filter more numbers. We ran our C++ checking program over the first k = 7100 k=7100 batches and found that, for instance, S 31 S_{31} filtered out a majority of numbers, while most filters were successful 0 0 times. After each of these k k batches, we sorted the filters according to the total number of integers they filtered. By using the most efficient filters first, we decrease the time it takes to check a batch.
 
-## Submission history
+We also remark that computer-aided checking of numbers greater than 10 17 10^{17} requires us to work around the integer size limits of most programming languages. We generated R 8 R_{8} using a Python rewrite of Salez’ algorithm, as the language does not have integer limits, and checked the remaining integers in C++ using the arbitrary-precision integer library GMP 1 1 1 [https://github.com/esc-paper/erdos-straus][3]. The inability to use a machine integer for calculations incurred a significant runtime penalty. Our process completed in about 2 weeks with a medium setup.
 
-From: Bogdan Dumitru C [[view email][9]]
-**[v1]**Fri, 29 Aug 2025 11:38:51 UTC (853 KB)
+## 3 Solution counting
 
-Full-text links:
+Another approach to the Erdős-Straus conjecture is based on a solution-counting function f ⁡ ( p) = | { ( x, y, z) | 4 p = 1 x + 1 y + 1 z } | f(p)=|\{(x,y,z)\,|\,\frac{4}{p}=\frac{1}{x}+\frac{1}{y}+\frac{1}{z}\}| for p ∈ ℕ ∗ p\in\mathbb{N^{*}}. Elsholtz and Tao [2] proved that f ⁡ ( p) f(p) is upper-bounded polylogarithmically. Furthermore, Bradford [1] shows that for any given p p, all possible x x belong to a finite search space ⌈ p 4 ⌉ ≤ x ≤ ⌈ p 2 ⌉ \lceil\frac{p}{4}\rceil\leq x\leq\lceil\frac{p}{2}\rceil and provides an explicit construction of y y and z z from x x, given the existence of some divisor d | x 2 d\mid x^{2} that verifies one of two identities, which we may term the Bradford conditions, depending on the type of the solution, that is, if p ∤ y p\nmid y (Type-1) or if p | y p\mid y (Type-2). This allows us to evaluate f ⁡ ( p) f(p), although we remark this is computationally expensive for large p p.
 
-## Access Paper:
+The Erdős-Straus conjecture itself is equivalent to the statement f ⁡ ( p) > 0 ​ ∀ p ∈ ℕ ∗ f(p)>0\;\,\forall p\in\mathbb{N^{*}}. We considered only the ordered set 𝒫 = { p | p prime, p ≡ r (mod 840), r ∈ { 1,121,169,289,361, 529 } } \mathcal{P}=\{p\;|\;p\,\textrm{prime},\,p\equiv r\,\textrm{(mod 840)},\,r\in\{1,121,169,289,361,529\}\}, as for all other primes the conjecture is known to be true [3]. We evaluated f ⁡ ( 𝒫 i) f(\mathcal{P}_{i}) for i ∈ 1, N ¯ i\in\overline{1,N}, where N = 66737 N=66737 and 𝒫 i \mathcal{P}_{i} denotes the i i -th element of 𝒫 \mathcal{P}. This corresponds to the "difficult" primes p ≤ 3.5 ⋅ 10 7 p\leq 3.5\cdot 10^{7}.
 
-View a PDF of the paper titled Further verification and empirical evidence for the Erd\H{o}s-Straus conjecture, by Spiridon Mihnea and 1 other authors
+Counting the number of divisors verifying the Bradford conditions across all possible x x for some prime p p is equivalent to computing f ⁡ ( p) f(p). We checked these conditions for a total of T = 29860049601808 T=29860049601808 divisors of squares of allowable x x for primes p p in our considered subset of 𝒫 \mathcal{P} and found that S = 18601583 S=18601583 of those divisors satisfied at least one of the identities, producing one valid solution to the conjecture for p p.
 
-- [View PDF][4]
-- [HTML (experimental)][5]
-- [TeX Source][10]
+[image: Refer to caption] Figure 1: Semi-logarithmic scatter plot of f ⁡ ( 𝒫 i) f(\mathcal{P}_{i}) for i ∈ 1, N ¯ i\in\overline{1,N}, by solution type
 
-[view license][11]
+Based on this trial, we find that, empirically, f ⁡ ( p) f(p) appears to be increasing consistent with the Elsholtz-Tao upper bound, and furthermore that solutions of Type-1 abound relative to those of Type-2, having found S 1 = 12763383 S_{1}=12763383 solutions of Type-1 and only S 2 = 5838200 S_{2}=5838200 of Type-2. Figure 1 shows a scatter plot of our f ⁡ ( p) f(p) data.
 
-### Current browse context:
+## 4 Bibliography
 
-math.NT
+## References
 
-[< prev][12] | [next >][13]
-
-[new][14] | [recent][15] | [2025-09][16]
-
-Change to browse by:
-
-[math][17]
-
-### References & Citations
-
-- [NASA ADS][18]
-- [Google Scholar][19]
-- [Semantic Scholar][20]
-
-export BibTeX citation Loading...
-
-## BibTeX formatted citation
-
-×
-
-loading...
-
-Data provided by:
-
-### Bookmark
-
-[image: BibSonomy] [21][image: Reddit] [22]
-
-Bibliographic Tools
-
-# Bibliographic and Citation Tools
-
-Bibliographic Explorer Toggle
-
-Bibliographic Explorer*( [What is the Explorer?][23])*
-
-Connected Papers Toggle
-
-Connected Papers*( [What is Connected Papers?][24])*
-
-Litmaps Toggle
-
-Litmaps*( [What is Litmaps?][25])*
-
-scite.ai Toggle
-
-scite Smart Citations*( [What are Smart Citations?][26])*
-
-Code, Data, Media
-
-# Code, Data and Media Associated with this Article
-
-alphaXiv Toggle
-
-alphaXiv*( [What is alphaXiv?][27])*
-
-Links to Code Toggle
-
-CatalyzeX Code Finder for Papers*( [What is CatalyzeX?][28])*
-
-DagsHub Toggle
-
-DagsHub*( [What is DagsHub?][29])*
-
-GotitPub Toggle
-
-Gotit.pub*( [What is GotitPub?][30])*
-
-Huggingface Toggle
-
-Hugging Face*( [What is Huggingface?][31])*
-
-ScienceCast Toggle
-
-ScienceCast*( [What is ScienceCast?][32])*
-
-Demos
-
-# Demos
-
-Replicate Toggle
-
-Replicate*( [What is Replicate?][33])*
-
-Spaces Toggle
-
-Hugging Face Spaces*( [What is Spaces?][34])*
-
-Spaces Toggle
-
-TXYZ.AI*( [What is TXYZ.AI?][35])*
-
-Related Papers
-
-# Recommenders and Search Tools
-
-Link to Influence Flower
-
-Influence Flower*( [What are Influence Flowers?][36])*
-
-Core recommender toggle
-
-CORE Recommender*( [What is CORE?][37])*
-
-- Author
-- Venue
-- Institution
-- Topic
-
-About arXivLabs
-
-# arXivLabs: experimental projects with community collaborators
-
-arXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.
-
-Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
-
-Have an idea for a project that will add value for arXiv's community? ****[Learn more about arXivLabs][38].
-
-[Which authors of this paper are endorsers?][39] | Disable MathJax ( [What is MathJax?][40])
+- [1] Kyle Bradford. Elemental patterns from the erdos straus conjecture, 2024.
+- [2] Christian Elsholtz and Terence Tao. Counting the number of solutions to the erdos-straus equation on unit fractions, 2015.
+- [3] L. J. Mordell. Diophantine equations, volume 30 of Pure and applied mathematics (Academic Press). Academic Press, London, New York, 1969.
+- [4] Serge E. Salez. The erdos-straus conjecture new modular equations and checking up to n = 10 17 n=10^{17}, 2014.
 
 
 ## Links
 
-[1]: https://arxiv.org/search/advanced
-[2]: https://arxiv.org/search/math?searchtype=author&amp;query=Mihnea,+S
-[3]: https://arxiv.org/search/math?searchtype=author&amp;query=Bogdan,+D+C
-[4]: /pdf/2509.00128
-[5]: https://arxiv.org/html/2509.00128v1
-[6]: https://arxiv.org/abs/2509.00128
-[7]: https://arxiv.org/abs/2509.00128v1
-[8]: https://doi.org/10.48550/arXiv.2509.00128
-[9]: /show-email/7a073813/2509.00128
-[10]: /src/2509.00128
-[11]: http://arxiv.org/licenses/nonexclusive-distrib/1.0/
-[12]: /prevnext?id=2509.00128&amp;function=prev&amp;context=math.NT
-[13]: /prevnext?id=2509.00128&amp;function=next&amp;context=math.NT
-[14]: /list/math.NT/new
-[15]: /list/math.NT/recent
-[16]: /list/math.NT/2025-09
-[17]: /abs/2509.00128?context=math
-[18]: https://ui.adsabs.harvard.edu/abs/arXiv:2509.00128
-[19]: https://scholar.google.com/scholar_lookup?arxiv_id=2509.00128
-[20]: https://api.semanticscholar.org/arXiv:2509.00128
-[21]: http://www.bibsonomy.org/BibtexHandler?requTask=upload&amp;url=https://arxiv.org/abs/2509.00128&amp;description=Further verification and empirical evidence for the Erd\H{o}s-Straus conjecture
-[22]: https://reddit.com/submit?url=https://arxiv.org/abs/2509.00128&amp;title=Further verification and empirical evidence for the Erd\H{o}s-Straus conjecture
-[23]: https://info.arxiv.org/labs/showcase.html#arxiv-bibliographic-explorer
-[24]: https://www.connectedpapers.com/about
-[25]: https://www.litmaps.co/
-[26]: https://www.scite.ai/
-[27]: https://alphaxiv.org/
-[28]: https://www.catalyzex.com
-[29]: https://dagshub.com/
-[30]: http://gotit.pub/faq
-[31]: https://huggingface.co/huggingface
-[32]: https://sciencecast.org/welcome
-[33]: https://replicate.com/docs/arxiv/about
-[34]: https://huggingface.co/docs/hub/spaces
-[35]: https://txyz.ai
-[36]: https://influencemap.cmlab.dev/
-[37]: https://core.ac.uk/services/recommender
-[38]: https://info.arxiv.org/labs/index.html
-[39]: /auth/show-endorsers/2509.00128
-[40]: https://info.arxiv.org/help/mathjax.html
+[1]: https://info.arxiv.org/about
+[2]: https://info.arxiv.org/help/license/index.html#licenses-available
+[3]: https://github.com/esc-paper/erdos-straus
