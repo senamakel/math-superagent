@@ -112,7 +112,17 @@ where one does not, "the evidence has to be in the report" means no evidence.
 Reflection answers in three verdicts, not two. SOLVED needs a specific final
 answer *and* a second independent route, and it needs a program on disk — a
 claimed answer with nothing executable in the workspace is rejected outright, and
-that gate covers the third verdict too. UNVERIFIED is the third: a specific final
+that gate covers the third verdict too. It also needs the reflection to agree
+with itself: `SOLVED` beside `PROGRESS: NO` is rejected, because solving the
+problem is progress and a reply asserting both is contradicting itself. A live
+Gilbreath run ended on exactly that. Its `goals` agent timed out, the salvage
+path re-ran an already-queued script that re-confirmed an already-hand-checked
+refutation, and the reflection wrote SOLVED over PROGRESS: NO. The program gate
+did not catch it, because the salvage really had run a program — what no file on
+disk can show is that it established nothing the run already had. The reflection
+knew, and said so in the lesson it left for the next attempt, but the verdict had
+already routed the run to `done`. All three conditions exist because a live run
+ended on the case each one rules out. UNVERIFIED is the third: a specific final
 answer that exactly one route supports, where the reflection can say concretely
 why no second route is available. Said twice it routes to `Route::Reported`,
 which is terminal, and the run ends saying what it has and what is missing.
