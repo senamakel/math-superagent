@@ -99,6 +99,13 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   divisible by 3 has `2^m | n` with `m ≥ 144`, ≥ 144 odd components,
   `n > 10^440`. Primary text not in the library. Load-bearing for the
   "is 3 | n forced?" question.
+- **(sourced, library artifact) Lean formalisation of the problem exists**:
+  `research/summaries/erdos-1052-formal-lean-statement.md`
+  (google-deepmind/formal-conjectures `ErdosProblems/1052.lean`) defines
+  `IsUnitaryPerfect`, asserts all five known are UPN, and marks "all UPNs are
+  even" formally proved by AlphaProof per a linked fork — the fetched copy
+  carries `sorry` bodies. Pointer for any lean_prover work; build nothing on
+  it unverified.
 
 ## Ruled out
 
@@ -146,10 +153,14 @@ Every claim marked with its evidence class; all anchors are in this workspace.
   does not depend on classify.
 - **Sieve**: `sieve_test_1000` (old filter) and `sieve_test_10000` (complement
   sweep: 1859 witness pairs, 401 killed, incl. m=14) are small-range tests
-  only. **The full passes to 10^8 and 10^9 have no completed capture**
-  (`sieve_pass_1e8.captured.txt`, `sieve_timing_1e6.captured.txt` empty). The
-  1346-direct-pairs oracle equality quoted in earlier context was against the
-  old buggy sieve — stale; re-run it against the fixed sieve.
+  only. **No completed full pass to 10^8 / 10^9** — `sieve_pass_1e8` and
+  `sieve_timing_1e6` carry "not run: superseded by the --lo/--hi interface"
+  notes, not zero-byte files. `witnesses_1200.tsv` / `ord_sieve_table.tsv` on
+  disk came from an uncertified partial sweep (largest witness prime 858001,
+  e.g. `858001 | 2^104+1`, ord 104); re-run the sieve with --lo/--hi to a
+  stated bound before trusting any B classification. The 1346-direct-pairs
+  oracle equality quoted earlier was against the old buggy sieve — stale;
+  re-run against the fixed sieve.
 - **Claim ledger warning:** the Contradictions table of `research/CLAIMS.md`
   is corrupted (word-token garbage rows, from the derive script misreading the
   free-text `contradicts:` fields in the wall-1975 and subbarao-1970 notes).
@@ -185,6 +196,17 @@ Durable Cognee memory from earlier runs; consistent with Established here
 - **Verify harness vs expectation:** current `heven_classify` Phase A fails
   its self-tests while earlier CONTEXT described the pipeline as passing;
   nothing built on classify's Phase A/B output is certified until green.
+- **Counting bounds: 279 vs 272.** Memory recall of the paper's full text
+  surfaces "the factor-cache verification alone yields
+  `|H_even∩[2,50000]| ≤ 279`"; the abstract's 272 is the final rigorous bound
+  after Lemma 20's seven closures (six APR-CL-verified candidates plus 30882
+  via Prop 4(3): 279 − 7 = 272). Same pipeline, two stages — not a
+  disagreement. The 820 / 782 / 38 figures in the same passage
+  (Higgs-cubefree m=2k candidates / killed by a verified non-3-Higgs witness /
+  partial-cofactor unknowns, primitive cases m=2p) are a coarser enumeration
+  level than the 10 verified + 262 undecided split; how they fold into the
+  stages is not pinned in the extraction note — read paper §5 before quoting
+  any of them.
 
 ## Gaps
 
@@ -207,3 +229,12 @@ Durable Cognee memory from earlier runs; consistent with Established here
 5. Sources not in library: Frei 1978 (e-periodica Heft 4 URL known), Goto
    2007 (paywalled), the 10^102 anchor (Wall–Hagis 1972 letter scanned with
    no OCR; Guy UPNT §B3 paywalled).
+6. **`code/higgs/check_a057447.py` is execution-ready and has never been
+   run** — no capture exists, and the script's own docstring says so. It is
+   the true literal-definition check A2 was meant to be: generate 3-Higgs
+   primes exactly per the OEIS A057447 name line, compare all 58 DATA terms,
+   re-verify the five witnesses and the fifth term's EXAMPLE factorization,
+   and test "every prime divisor of a UPN is 3-Higgs". Run
+   `timeout 540 python3 code/higgs/check_a057447.py 2>&1 | tee
+   code/out/higgs_a057447.captured.txt; echo EXIT_CODE=$?` — it closes the
+   definitional-equivalence hole independently of the broken A2 self-test.

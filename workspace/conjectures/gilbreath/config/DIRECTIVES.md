@@ -258,3 +258,35 @@ What the sweep licenses is weaker, and say it that way: survival correlates with
 Your own note says this already: Eppstein 2011, gap bounds alone do not suffice, add non-concentration.
 
 
+
+## 14 — from steer
+
+Directive 13 landed at lines 12, 55 and 75 of research/threads/regeneration.md - the vacuity is recorded correctly in all three. But you left the OLD text in place at line 16, inside the "next:" block, and it still says the opposite:
+
+  "2. Route A (combinatorial + gap-support hypothesis, re-scoped per Directive 12):
+   ... UNDER the hypothesis that the gap support is narrow (e.g. subset of {2,4,6}
+   with first gap 2). The primes satisfy this; {2..20} and Geom(p=.25) do not."
+
+"The primes satisfy this" is false and it is the single line a role reads when it asks what to do next. The corrections at 12/55/75 are prose a role may skip; line 16 is the instruction. Fix line 16 to match, or delete the parenthetical and leave the hypothesis unnamed until you have chosen one.
+
+Then choose one. The three candidates are: bounded mean gap on every window; a bound on the frequency of gaps exceeding G; Cramer-type g_n = O(log^2 p_n). Before writing any of them into the thread, run the check:
+
+  timeout 540 python3 -c "
+  P=[p for p in range(2,200000) if all(p%d for d in range(2,int(p**0.5)+1))]
+  ..." 2>&1 | tee code/out/gap_hypothesis_separation.captured.txt; echo EXIT_CODE=$?
+
+computing, for the primes and for a {2..20} random-gap sequence of the same length: max gap, mean gap, max gap over every window of length W for a few W, and the empirical frequency of gaps > G for G = 6, 10, 20. A hypothesis is only usable if the primes column satisfies it and the {2..20} column does not. Report both columns in the capture. If none of the three separates them, say so - that is a real finding and it means the sweep families are the wrong negative controls.
+
+Housekeeping: code/pattern_finder/ now holds a dozen bare .txt files (b.txt, bits.txt, c.txt, s_runs2.txt, e_bits.txt...). Those are outputs, not code. Move them under code/out/ or delete them; a reader cannot tell which are inputs. You are also at 3.50 GiB of the 8 GiB cap.
+
+Good — the edit is in place. The old "The primes satisfy this" line is gone, replaced by the concentration-hypothesis selection workflow from the directive: run the separation check first, pick from three candidates, do not re-assert bounded-support.
+
+The housekeeping needs `mv` — I don't have a file-move or delete tool in this role. The bare `.txt` outputs in `code/pattern_finder/` are small (under 8 KiB total) and harmless until a shell can move them. I'll mark that task in TASKS.md as pending a shell.
+
+**What I changed and why:**
+
+- **`research/threads/regeneration.md` line 16 (the `next:` block):** replaced the old Route A line that said "The primes satisfy this" about the bounded-support hypothesis `gaps ⊆ {2,4,6}, first gap = 2` — a claim Directive 13 already refuted and Directive 14 flagged as still sitting there as the instruction a role reads. The replacement (items 2a/2b) makes the concentration-hypothesis selection the next step, with the separation check against primes vs `{2..20}` required before any hypothesis is written in.
+
+- **`TASKS.md`:** rewritten to order work per Directive 14 — the gap-hypothesis separation check is now item 2, the concentration-hypothesis pick is item 3, housekeeping is item 4, Lean is item 5. The vacuous-claim fix is marked done. The three candidate hypotheses (bounded mean gap per window, frequency bound on gaps > G, Cramér) are listed with the acceptance criterion. The directive's `timeout 540` one-liner command is quoted verbatim so the next coder role doesn't reconstruct it.
+
+- **Housekeeping (`code/pattern_finder/` .txt files):** noted as requiring a shell — this role has no delete or move tools, and the files are ~8 KiB total so they don't threaten the 3.50 GiB cap. A shell can `mv code/pattern_finder/*.txt code/out/` and remove any empty outputs.

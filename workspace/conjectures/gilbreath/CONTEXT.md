@@ -131,7 +131,7 @@ away.
   `code/regeneration/check_regenerate_lemma.py`,
   `code/out/check_regenerate_lemma.captured.txt`, thread
   `research/threads/regeneration.md`.
-- **Step law + recharge identity — ESTABLISHED (independent re-derivation).**
+- **Step law + recharge identity — PROVED as general theorems (this run).**
   With the intruder pair `(x,y)=(row[b_k], row[b_k+1])`, exactly:
   `b_{k+1} ≥ b_k ⟺ (x,y)=(2,4)`, and `b_{k+1} = b_k − 1` otherwise (the
   erosion rate is exactly 1 per row, not "≥ b_k−1"). The recharge identity
@@ -139,21 +139,18 @@ away.
   the `−(k−1)` term *is* the Odlyzko protection constant 1, and the `(2,4)`-
   events are the *only* growth mechanism. **This is the narrowed target**:
   the conjecture holds iff `(2,4)`-events arrive so fast that `Σ(j_i+1)` never
-  falls `k−1` behind. Verified by a fully independent implementation (own
-  sieve/generation/block measure) on primes < 3·10⁶ (216,816 primes) to depth
-  800: 0 step-law failures over 799 transitions, 0 recharge failures, 42
-  events, min b=2, margin 216,812 vs 798 consumption (≈272× surplus — but
-  recharge ≈ row width, so a single event refills nearly the whole block and
-  the surplus must not be read as a trend). Also confirmed: the **drain law**
-  `y_{k+1} = y_k − 2·[x_k=2]` on erosion steps (101/101) — and the step law
-  **holds on random non-prime arrays** (3,521 rows, 610 events, zero failures),
-  so these are combinatorial facts about the absolute-difference operator,
-  provable outright, with primes entering only through event density. Caveat
-  carried by the claim's hypotheses: the law needs an intruder pair to exist
-  (`b_k+1 < row width`); when the block runs to the end of a *finite* row
-  there is no pair, and that row erodes by 1 — the finite-width artifact
-  documented under Numbers. Anchor:
-  `code/out/step_law_and_recharge_verified.md` (claim `step-law-and-recharge-identity`). Do not re-derive.
+  falls `k−1` behind. **STATUS: these are now PROVED theorems of the
+  absolute-difference operator for ANY array (no parity, no primes)** — the
+  proof (positions 1..b_k−1 stay in {0,2} by closure; position b_k is
+  |x−y| ∈ {0,2} iff (x,y)=(2,4)) is in `research/notes/step_law_proved.md`,
+  claim `step-law-theorem-proved`; it upgrades the earlier depth-1000
+  observation (`regeneration-lemma-edge-2-intruder-4-established`).
+  Corollaries (also proved): drain law `y_{k+1} = y_k − 2·[x_k=2]` on erosion;
+  intruder-4 absorbing under erosion (every maximal 4-run ends in
+  regeneration). Verified on real primes (depth 1000, 60 events) and 400
+  random nonneg arrays (3,521 rows, 610 events, zero failures). Anchor:
+  `research/notes/step_law_proved.md`, `code/regeneration/step_law_theorem.py`,
+  `code/out/step_law_and_recharge_verified.md` (earlier computed form). Do not re-derive — only the (2,4)-event RATE is open.
 - **Mod-4 linearization (invariant candidate).** For k≥1, n≥2 where entries are
   even, `d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4)` (Odlyzko §2 eq.201). Turns the
   absolute-value problem into linear Pascal-triangle congruences mod 4 — the
@@ -406,11 +403,7 @@ recalled claim is relied on whose hypotheses fail here.
   be carved down (add non-concentration/randomness, or restrict to primes), and
   this is unresolved. Colonna's g=4 deletion example sharpens it further (see
   Ruled out): only gaps ≤ 3 is un-refuted as a plain bounded-gap class.
-- **`research/CLAIMS.md` is a generated ledger with a broken contradictions
-  section** (a long claim block gets mis-parsed into spurious "contradicts"
-  rows). `research/notes/library-state.md` is the authoritative, hand-maintained
-  claim ledger and holds the same content formatted correctly — read
-  library-state.md for the current ledger.
+- **`research/CLAIMS.md` is a generated ledger; the contradictions section is now clean** (one legitimate row: `odlyzko-block-lemma-exact` vs `odlyzko-block-lemma-asserted` — the earlier ~20 spurious "contradicts <word>" rows came from one freetext `contradicts:` value in `research/notes/block_lemma.md` and were fixed by restricting it to the real claim id). `research/notes/library-state.md` is the authoritative, hand-maintained claim ledger; read it for the current ledger in full.
 
 ## Gaps
 
@@ -454,3 +447,14 @@ recalled claim is relied on whose hypotheses fail here.
   CHT inverse theorem does not bite here. `code/out/cht_hyp_check.captured.txt`,
   claim `cht-inverse-theorem-hyp-check`. Do NOT re-run the check or re-flag the
   claim unchecked — the determination is final.
+- **Lean 4 deliverable — PARTIALLY STARTED (no-sorry parity lemmas exist).**
+  `code/lean/t8.lean`/`t9.lean` prove `dist_dist_even` and `dist_odd_even`
+  (the entrywise shape-preservation lemmas: `Nat.dist` of two evens is even,
+  of an odd and an even is odd) with **no `sorry`**, on mathlib4's `Nat.dist`
+  (the correct primitive per `deepmind-formal-conjectures-gilbreath-lean`).
+  Still to write: the full (odd, even, even, …) row-shape theorem as a
+  statement about the sequence operator, the reduction of the conjecture to the
+  {0,2} second-entry claim, and the `#print axioms` output + every remaining
+  `sorry` report. The t5.lean draft with sorries is superseded by t8/t9. A Lean
+  file asserting the kernel-checked result needs `#print axioms` beside it to
+  count as the GOAL.md deliverable.

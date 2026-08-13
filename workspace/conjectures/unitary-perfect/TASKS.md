@@ -7,21 +7,23 @@ paper proves only the counting bounds `|H_even ∩ [2,40000]| ≤ 201` and
 `|H_even ∩ [2,50000]| ≤ 272`; an independent exact verification of the small
 end of this set is the concrete first step.
 
-- [ ] **Independent verification of the equality-case elimination** — the result
-      in `research/notes/equality-case-eliminated.md` is already filed as claim
-      `budget-equality-case-impossible` but was adopted from operator
-      computation, not reproduced here. Write a fresh program (do not reuse
-      `code/equality_case.py`) that: (a) recomputes `T(a) = 2^{a+1}/(2^a+1)`
-      and the max product over the `a+1` smallest admissible sizes in exact
-      `Fraction` arithmetic for `a = 1..30`; (b) confirms 257 is prime and
-      forced at `a=8`, and confirms 9 and 49 are admissible while 3 and 7 are
-      not (3 mod 4, so their minimal admissible power is the square); (c)
-      confirms the `a=1` equality `T(1) = max = 4/3` is exact in rational
-      arithmetic and attained by `{5,9}`, matching the odd part of `n=90`; (d)
-      confirms the `a=8` deficit in exact arithmetic. Output to
-      `code/out/equality_case_independent.captured.txt`. This is a verification
-      of an already-filed result, not a new claim; a discrepancy is a loud
-      contradiction. Bounded `timeout 120` — it's arithmetic, not factoring.
+- [ ] **Independent reproduction of the equality-case elimination** — claim
+      `budget-equality-case-impossible` was adopted from operator computation
+      (`code/out/equality_case_elimination.captured.txt`), not reproduced by
+      this run. Directive 7: run the existing program, capture, and confirm the
+      four facts by the run's own Fraction arithmetic (not the operator's).
+      Command:
+      ```
+      timeout 540 python3 code/equality_case.py 2>&1 | tee code/out/equality_case_reproduced.captured.txt; echo EXIT_CODE=$?
+      ```
+      Then confirm by reading the capture:
+      (1) at `a=1` the maximum product equals `4/3` EXACTLY, extremal multiset
+      `{5,9}` is the odd part of 90; (2) `2^8+1 = 257` is prime, forced at
+      `a=8`; (3) `9 = 3^2` and `49 = 7^2` are admissible while 3 and 7 are not;
+      (4) exclusion runs `2 ≤ a ≤ 28` and stops at 29. This converts
+      `budget-equality-case-impossible` from `source: operator-computation` to
+      `status: checked` by this run — the only item in view that moves checked
+      off 4. A discrepancy is a loud contradiction.
 
 - [ ] **Independent exact verification of `H_even ∩ [2,1200]`** — implement and
       run `code/H_EVEN_VERIFY_SPEC.md`: reproduce the Phase A worked examples
@@ -48,9 +50,19 @@ on; a run that printed nothing gets one line in the file saying what happened
 
 ## What this run is doing
 
-Not searching for a sixth unitary perfect number — Wall cleared past `10^102`
-(see GOAL.md). Not re-deriving the 2-adic budget identity or the
+Not searching for a sixth unitary perfect number — Wall's verification bound is
+`≈ 1.46 × 10^23` (not `10^102`; see Contradictions in CONTEXT.md), far beyond
+anything reachable here. Not re-deriving the 2-adic budget identity or the
 no-odd-unitary-perfect-number theorem, both already proved in this workspace.
-The active work is exact verification of the `H_even` classification below
-~1200, which independently checks the paper's Theorem 8 on the reachable end of
-the one remaining branch, ahead of any divisor-level attack on `Φ_{4p}(2)`.
+
+**Immediate: independent reproduction of the equality-case elimination.**
+Directive 7: claim `budget-equality-case-impossible` was inherited from operator
+computation and must be reproduced by this run's own execution before it counts
+as `checked`. Run `code/equality_case.py` under `timeout 540`, capture, and
+confirm the four arithmetic facts. This is the one item in view that moves
+`checked` off 4.
+
+After the equality case is confirmed checked: independent verification of
+`H_even ∩ [2,1200]` (the paper's Theorem 8), then any divisor-level attack on
+`Φ_{4p}(2)`. Three approaches are proposed but unchecked against the literature
+(`research/approaches/`); none is active until the equality case is closed.

@@ -179,3 +179,41 @@ That same cycle recorded "progress no". Since the previous verdict this workspac
 Priority: directive 4. Independently reproduce the equality-case result, especially that at a=1 the maximum equals 4/3 EXACTLY in Fraction arithmetic and the extremal multiset {5,9} is the odd part of 90. That check is the difference between checked and asserted.
 
 Two zero-byte captures repaired with explanatory lines. The standing rule against empty captures is now in both `TASKS.md` and `code/out/README.md`. Priority unchanged — the equality-case independent reproduction (directive 4) was already the top unchecked task, ahead of the H_even verification. No other files changed.
+
+## 7 — from steer
+
+Correction to directive 6, which blamed the wrong thing for one of your two "progress no" verdicts.
+
+The [62:25] one was the empty capture - the judge read a 0-byte file and returned 4/5 steer. That part stands, and clearing the zero-byte captures is still right.
+
+The [74:08] one was NOT your fault. The log says:
+
+  [72:51] judge/agent-run-34 run FAILED: run timed out: model call for
+          run `agent-run-34` exceeded its remaining wall-clock budget (74554 ms)
+  [73:49] orchestrator solution loop: judge scored unreadably and returned proceed
+
+The judge timed out and produced nothing, so "progress no, kind unstated" is a parse failure, not an assessment of your work. Do not treat it as feedback and do not change direction because of it. Two of your three run-failed count are this.
+
+What to actually fix is the drift. Since the run began: asserted 8 -> 18, while checked has stayed at 4 and proved at 1. Three new approaches appeared this cycle (three-divisibility-mod-3, biquadratic-character-divisors, aurifeuillean-perfect-power) and one new note. Opening approaches is cheap; the ledger only moves when one closes.
+
+Close the one you already have. Directive 4 asked for independent reproduction of the equality-case elimination and it has not been done. Specifically:
+
+  timeout 540 python3 code/equality_case.py 2>&1 | tee code/out/equality_case_reproduced.captured.txt; echo EXIT_CODE=$?
+
+then confirm by your own Fraction arithmetic, not mine:
+  1. at a=1 the maximum product equals 4/3 EXACTLY, and the extremal multiset {5,9} is the odd part of 90;
+  2. 2^8+1 = 257 is prime, so 257 is forced as a component when a=8;
+  3. 9 = 3^2 and 49 = 7^2 are admissible while 3 and 7 are not;
+  4. the exclusion runs 2 <= a <= 28 and stops at 29.
+
+That converts budget-equality-case-impossible from a claim you inherited into one this run checked, and it is the only item in view that moves checked off 4.
+
+Now let me write the reply. The only file that needed changing is TASKS.md — the directive asked for one specific action, and that action is now the top task. No thread status changes needed (the `a-ge-8-bound` thread already says "next: independent verification"), no new approaches to open or close, and CONTEXT.md doesn't need amendment because the knowledge is unchanged — the directive is about execution, not about what the run knows.
+
+---
+
+**Reply:**
+
+Changed `TASKS.md` only: replaced the equality-case task ("write a fresh program") with the directive's exact instruction — run the existing `code/equality_case.py`, capture to `code/out/equality_case_reproduced.captured.txt`, and confirm the four arithmetic facts by reading the output. The directive says to reproduce, not rewrite, so the "write a fresh program" instruction was the wrong one. The task is now the first and immediate item ahead of the `H_even` sieve, and the "What this run is doing" summary now names it as the single next action.
+
+The `a-ge-8-bound` thread already had `next: independent verification (see TASKS.md item 1)`, so its status is unchanged. The three proposed approaches under `research/approaches/` remain proposed — none becomes active until the equality case is confirmed checked, per the directive's point about drift (asserted grew 8→18 while checked stayed at 4).
