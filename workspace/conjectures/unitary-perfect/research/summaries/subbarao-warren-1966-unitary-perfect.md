@@ -1,41 +1,29 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/subbarao-warren-1966-unitary-perfect.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Subbarao–Warren (1966), *Unitary perfect numbers*
 
-<!-- source: https://www.cambridge.org/core/services/aop-cambridge-core/content/view/741FD190AF22FFAC67645BCB29324531/S000843950005267Xa.pdf/unitary-perfect-numbers.pdf | converted from PDF -->
+Full text: [[subbarao-warren-1966-unitary-perfect.full]] (Canad. Math. Bull. 9 (1966) 147–153; OCR is poor).
 
-## What it claims
+**Setup.** `σ*(N) = Π (p_i^{a_i} + 1)` over `p_i^{a_i} || N` is multiplicative; `N` is unitary perfect iff `σ*(N) = 2N`. First four found: `6, 60, 90, 87360` (the fifth, in the authors' footnote, was overlooked in an earlier abstract of one of them).
 
-It i s easil y see n tha t cr*(N) i s multiplicative . In fac t cr*(l) = 1
-1 r
-<r*(N) = (1 + p ) . . . (1 + p ) if N > 1 ha s the prim e decom -
-cr a
-1 r
-positio n N = p . . . p . Le t u s define a positiv e intege r
-to b e unitar y perfec t wheneve r <r*(N) = 2N . The firs t four
-suc h number s ar e 6, 60, 90 and 87, 360 . In a recen t abstrac t
-[l ] publishe d by one of us , the las t of thes e number s wa s over -
-looked . No othe r unitar y perfec t number s ar e known to the
-autho r s .
+**Establishments relevant here.**
+- The paper begins the parity argument: it is easy to see no odd UPN exists, and Lemma 1 handles `N = 2n`; Lemma 2 the case `3 | N` (this is the ancestor of the run's 2-adic budget identity, which is proved cleanly in `research/notes/parity-and-2-adic-budget.md`).
+- **Theorem 4 (finiteness in fixed `ω`):** there are at most finitely many UPNs with a fixed number of distinct prime factors. This is the reason the finiteness question is at bottom a question about how many distinct primes can occur — the direct ancestor of the run's `|H_even| ≤ 4^N` prime-case reduction and Wall 1988's `ω(odd) ≥ 9`.
 
-It would appea r fro m som e of the result s to follow tha t the
-nex t unitar y perfec t number , if it exists , mus t indeed be quite
-large . It migh t see m reasonabl e to conjectur e tha t ther e i s no
-unitar y perfec t numbe r large r tha n 87, 360. When the proble m
-of the determinatio n of al l unitar y perfec t number s wa s mentione d
-to P . Erdos , he expresse d the opinion tha t it migh t be a difficult
-one , comparabl e to the proble m of odd perfec t numbers . We
-presen t her e a partia l solution .
+**Consequence for this run.** Theorem 4 is the historical grounding for "rarity in a fixed `ω` is plausible, but growth of `ω` is open" — exactly the dichotomy GOAL.md warns about (rarity ≠ finiteness). The paper's Conjecture (`n > 87360 ⇒ no more`) is the original Subbarao–Warren conjecture this run attacks.
 
-2* Notation . In al l tha t follows , unles s otherwis e
-specified , n represent s…
+**Hypotheses.** Results are for UPNs generally; the first-four enumeration is historical and consistent with the run's re-derived five witnesses (`code/out/known_five_verified.captured.txt`).
 
-## Statements it makes
-
-LEMMA 1. If N = 2 n is unitary perfect, then:
-
-LEMMA 2. If N = 2 m n is unitary perfect, and 3 | N,
-then:
-
-THEOREM 4. There is at mos t a finite number of
-unitary perfect numbers with a fixed number of primes .
-
-*[digest of a 11070 character source; every section, statement, and proof in full at `research/sources/subbarao-warren-1966-unitary-perfect.full.md`]*
+```claim
+id: sw1966-finiteness-fixed-omega
+statement: There are at most finitely many unitary perfect numbers with a fixed
+  number of distinct prime factors.
+hypotheses: sigma* multiplicative; N unitary perfect iff sigma*(N) = 2N
+holds-here: yes - a sixth UPN, if it exists, therefore has arbitrarily large
+  omega, tying growth of omega(odd) to the finiteness question
+status: proved in source (Theorem 4); not re-derived here
+bearing: justifies that the open question reduces to whether omega(odd) can
+  grow; the run's a >= 8 and Wall 1988's omega(odd) >= 9 are steps in that
+  direction but do not bound omega above
+anchor: research/sources/subbarao-warren-1966-unitary-perfect.full.md
+contradicts: (none)
+answers: whether-finiteness-reduces-to-omega-growth
+```

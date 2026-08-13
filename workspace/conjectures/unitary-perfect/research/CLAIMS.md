@@ -20,6 +20,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `heven-verified-members` | H_even ∩ [2,1200] = {2, 6, 10, 18, 26, 30, 46, 62, 82, 122}, so H_even has exactly these ten verified elements through 1200 and no verified element in (122, 1200]. | yes | asserted | `research/notes/heven-and-3-higgs-structure.md` |
 | `heven-verified-members` | H_even ∩ [2,1200] = {2,6,10,18,26,30,46,62,82,122}; no verified element of H_even in (122,1200]. | yes | asserted | `research/notes/paper-extraction.md` |
 | `structural-search-cannot-reach` | The backtracking search over the product form prod (q_i+1)/q_i = 2, with q_i prime powers of distinct primes and the denominator rule forcing the next prime whenever the remaining target is not an integer, recovers… | yes | checked | `research/notes/why-the-search-is-closed.md` |
+| `sw1966-finiteness-fixed-omega` | There are at most finitely many unitary perfect numbers with a fixed number of distinct prime factors. | yes | proved | `research/summaries/subbarao-warren-1966-unitary-perfect.md` |
 | `unitary-perfect-2-adic-budget` | Every unitary perfect number is even (Subbarao-Warren 1966), and for n = 2^a * prod_i p_i^{e_i} unitary perfect with p_i odd and distinct, a >= 1, the identity sum_i v2(p_i^{e_i} + 1) = a + 1 holds exactly. Consequently… | yes | proved | `research/notes/parity-and-2-adic-budget.md` |
 | `unitary-perfect-lower-bound-on-a` | Any unitary perfect number other than the five known ones satisfies a >= omega(odd part) - 1 >= 8, where 2^a \|\| n. Equivalently 2^8 = 256 divides any sixth unitary perfect number. This follows by combining Wall (1988),… | yes | checked | `research/notes/lower-bound-on-a.md` |
 | `wall1987-largest-odd-component` | Except for the five known UPNs, a unitary perfect number has an odd component larger than 2^15 (smallest candidate 32771); and among primes p < 3*10^9 only 1093 and 3511 satisfy p^2 \| 1 + 2^A for their entry point A. | yes | asserted | `research/summaries/wall-1987-largest-odd-component.md` |
@@ -29,6 +30,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 Resolve these before building on either side.
 
+- `sw1966-finiteness-fixed-omega` (research/summaries/subbarao-warren-1966-unitary-perfect.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wall1987-largest-odd-component` (research/summaries/wall-1987-largest-odd-component.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `wall1988-nine-odd-components` (research/summaries/wall-1988-nine-odd-components.md) contradicts `(none)` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
