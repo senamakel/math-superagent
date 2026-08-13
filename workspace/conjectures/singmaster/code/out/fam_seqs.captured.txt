@@ -1,0 +1,1 @@
+code/pattern/fam_seqs.py EXIT_CODE=124 CAPTURED=code/out/fam_seqs.captured.txt

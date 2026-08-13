@@ -4,3 +4,4 @@ C(x,2)=C(y,3): after w=2x-1, curve is w^2 = 4*y**3/3 - 4*y**2 + 8*y/3 + 1
 C(x,2)=C(y,5): after w=2x-1, curve is w^2 = y**5/15 - 2*y**4/3 + 7*y**3/3 - 10*y**2/3 + 8*y/5 + 1
    RHS degree in y = 5, hyperelliptic genus floor((deg-1)/2) = 2
    -> genus 2 hyperelliptic (w^2 = quintic); effective tool: BMSST hyperelliptic method (g=2).
+code/effectivegenus/rep_pairs.py EXIT_CODE=0 CAPTURED=code/out/rep_pairs.captured.txt
