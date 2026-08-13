@@ -1,80 +1,72 @@
 # Tasks
 
-Priority follows operator directive 3: the 554 subprogression families are
-real (operator-verified, 554/554 polynomial identities in ℤ[k]), they cover
-94.72% of n ≡ 1 mod 840, but they touch only one of the six open classes and
-novelty against Elsholtz–Tao is unchecked.
+## Directive 4 (steer): stop generating, attack one modulus
 
-## 1. Promote the subprogression claim — done this cycle
+The operator's coverage recomputation across all three capture files gives 1451 blocks,
+123 distinct (m,s) classes, 96.112676% coverage. The uncovered density factors over
+independent prime groups as a product of (p − c_p)/p, every factor strictly positive,
+so it is strictly positive for any finite set of families and converges to a positive
+limit. It reaches zero only if for some single modulus m the generator realises **all**
+m residues. That is now the whole problem.
 
-- [x] Claim `subprogression-families-verified-and-coverage` exists in
-      `code/out/subprogression_coverage.md` with a proper claim block. It must
-      be absorbed into `research/CLAIMS.md` (the ledger is auto-derived from
-      claim blocks, so the block in the coverage file is sufficient — the next
-      re-derivation will pick it up). Status in the block is `checked`, backed
-      by the operator's exact integer polynomial arithmetic pass (554/554).
+## 1. The saturation question — modulus 23
 
-## 2. Novelty check — the next work
+23 is the smallest modulus with room: currently 9/23 residues realised, 14 avoided.
+The finite, checkable question: can the Salez seven-equation generator produce
+families for all 23 residues t mod 23? Either:
 
-- [ ] For each of the 554 families, determine whether the shape is a
-      rediscovery of a known Elsholtz–Tao type (Type I / Type II polynomial
-      family from E-T Prop 1.9 / Salez seven equations) in different
-      coordinates, or genuinely new. Use
-      `research/sources/elsholtz-sums-of-k-unit-fractions.full.md` and
-      `research/sources/elsholtz-tao-counting.full.md` as the reference. A
-      rediscovery honestly labelled is fine; a rediscovery announced as new is
-      the failure the operator named.
-- [ ] State for each of the 12 moduli m ∈ {11,13,17,19,22,23,26,29,31,33,34,37}
-      which E-T family (if any) produces that modulus, and whether the 83
-      residue classes of t are a subset of what E-T already classifies.
+- [ ] **Exhibit families** for the 14 missing t-residues of modulus 23.
+      Missing: [0,1,2,3,4,6,7,8,10,11,14,16,21,22] (against covered
+      [5,9,12,13,15,17,18,19,20]).
+      Use `search_subprogression.py` (the Salez-converse engine, 7 equations
+      enumerated over (A,B,C,D,E,F) sextuples) focused on a = 840×23 = 19320,
+      and check whether any (a,b) pair with the missing residue t appears.
+- [ ] If some residues remain unrealised after a bounded search (state the search
+      bounds), determine the **obstruction** — the arithmetic condition that stops
+      those residues being reachable by the seven-equation generator. An obstruction
+      is a proof about the method, worth more than another increment of coverage.
+- [ ] State the result: either "modulus 23 can be saturated" (with the families) or
+      "modulus 23 cannot be saturated, here is why."
 
-## 3. State the positive-density gap — what closes it
+## 2. Promote asserted families to checked — in bulk
 
-- [ ] The uncovered 5.28% of n ≡ 1 mod 840 is 7375872/139671337, a positive
-      density. No further family with the same 12 moduli can close it — the
-      complement is a union of full residue classes of t. State what a closing
-      mechanism would look like: new moduli m coprime to the existing set
-      {11,13,17,19,23,29,31,37} (with 2 and 3 already at full density within
-      the class via the classical families), or a different family shape
-      (non-ℤ[k]-polynomial, rational-function, or per-prime rather than
-      per-progression).
-- [ ] Compute the exact uncovered residue classes of t and state what prime
-      moduli would close which fraction of them.
+The operator's ledger count: asserted went 36→50 while checked went 3→4. Every
+family the generator has produced is provable in ℤ[k] by the cleared-denominator
+test — that is mechanical. Do it in bulk:
 
-## 4. The other five classes — state explicitly
+- [ ] Run a script that reads all FOUND lines across all three capture files
+      (`subprogression.captured.txt`, `extended_subprogression.full.txt`,
+      `extended_subprogression.captured.txt`), re-derives x(k), y(k), z(k) from
+      the Salez-equation parameters in each FOUND line, and runs `is_identity`
+      (sympy `simplify(4/n - 1/x - 1/y - 1/z) == 0`) on every one.
+- [ ] Report: total families, identity-pass count, identity-fail count.
+      Write a claim block with all passing families at `status: checked`.
+- [ ] Every family that passes is now `checked`, not `asserted`. This moves the
+      bulk of them into the checked column at once.
 
-- [ ] n ≡ 121, 169, 289, 361, 529 (mod 840) have zero families from the
-      subprogression sweep. State in every report: "one of six open classes
-      touched; about 0.1128% of all n settled." Do not say "progress on the
-      open classes" plural.
+## 3. Fix the failing command
 
-## 5. Stop the exa_search
+From `code/out/commands.log`: recent runs have retry 6 and run-failed 5.
+Read the log, identify which command is failing and why, and fix it before
+writing new programs.
 
-- [x] The exa_search went from 29 to 44 with no claim changed. The operator
-      has directed: stop it. It is dead.
+- [ ] Read the failing-command entry in commands.log.
+- [ ] Fix the syntax or logic error.
+- [ ] Re-run to confirm it passes.
+
+## 4. Coverage update (operator-verified)
+
+- [x] The operator has re-parsed all three capture files and recomputed
+      coverage: 1451 families, 123 distinct (m,s) classes, 96.112676%
+      coverage within n ≡ 1 (mod 840). Recorded in
+      `code/out/coverage_update_extended.md`.
+- [ ] Absorb the updated coverage claim into CONTEXT.md (replace the old
+      94.72% figure; the 96.11% figure is now the established one).
 
 ## Done (prior cycles)
 
 Oracle (`code/oracle.py`), parallel self-check, witness cross-check (12/12),
 small brute sweep n≤200, the corrected n≡3 (mod 4) + even-case identities, and
 the eight classical covering identities — all captured, identity-checked, and
-recorded.
-
-## Source integrity (operator directive 2) — done
-
-- [x] Yamamoto 1965 tombstoned; claim demoted to asserted-never-read.
-- [x] MathWorld annotated as orientation-only.
-- [x] Eight classical identities identity-checked (last block of
-      `code/out/commands.log`).
-
-## Claim conversion (operator directive 2) — superseded by directive 3
-
-The eight classical identities are identity-checked but still `asserted` in
-the ledger. Promoting them from asserted → checked is still needed but is
-lower priority than the novelty check; the subprogression 554 are now the
-largest block of proved-identity claims and those get promoted first.
-
-- [ ] Promote the eight classical identities to `checked` with explicit
-      identity proofs documented in claim blocks.
-- [ ] Promote `prime-reduction` and `reduction-mod24` to `checked` by
-      verifying the scaling lift in exact arithmetic.
+recorded. Yamamoto 1965 tombstoned. MathWorld annotated as orientation-only.
+The exa_search is dead (operator directive).
