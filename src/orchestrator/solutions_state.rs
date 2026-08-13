@@ -138,14 +138,23 @@ pub(super) async fn run(
         &mut state,
     );
 
-    let graph = GraphBuilder::<SolutionState, SolutionState>::overwrite()
+    let library_agents = subagents.clone();
+    let pattern_agents = subagents.clone();
+    let invention_agents = subagents;
+    let invention_workspace = diversify_workspace.clone();
+
+    let graph = GraphBuilder::<SolutionState, LoopUpdate>::new()
+        .set_reducer(ClosureStateReducer::new(reduce))
+        // Without this the runtime runs one node at a time, and the three
+        // diversify arms would take turns rather than run together.
+        .with_parallel(true)
         .add_node("attempt", move |state: SolutionState, _ctx: NodeContext| {
             let subagents = attempt_agents.clone();
             let tracer = attempt_tracer.clone();
             let workspace = attempt_workspace.clone();
             let mailboxes = attempt_mailboxes.clone();
             async move {
-                Ok(NodeResult::Update(
+                Ok(NodeResult::Update(LoopUpdate::whole(
                     attempt_step(
                         &subagents,
                         tracer.as_ref(),
@@ -154,7 +163,7 @@ pub(super) async fn run(
                         state,
                     )
                     .await,
-                ))
+                )))
             }
         })
         .add_node("judge", move |state: SolutionState, _ctx: NodeContext| {
@@ -162,9 +171,9 @@ pub(super) async fn run(
             let tracer = judge_tracer.clone();
             let workspace = judge_workspace.clone();
             async move {
-                Ok(NodeResult::Update(
+                Ok(NodeResult::Update(LoopUpdate::whole(
                     judge_step(&subagents, tracer.as_ref(), workspace.as_deref(), state).await,
-                ))
+                )))
             }
         })
         .add_node("reflect", move |state: SolutionState, _ctx: NodeContext| {
@@ -174,7 +183,7 @@ pub(super) async fn run(
             let workspace = reflect_workspace.clone();
             let memory = reflect_memory.clone();
             async move {
-                Ok(NodeResult::Update(
+                Ok(NodeResult::Update(LoopUpdate::whole(
                     reflect_step(
                         &subagents,
                         tracer.as_ref(),
@@ -184,26 +193,53 @@ pub(super) async fn run(
                         state,
                     )
                     .await,
-                ))
+                )))
             }
         })
         .add_node(
             "diversify",
-            move |state: SolutionState, _ctx: NodeContext| {
-                let subagents = diversify_agents.clone();
+            move |_state: SolutionState, _ctx: NodeContext| {
                 let tracer = diversify_tracer.clone();
-                let workspace = diversify_workspace.clone();
+                async move { Ok(diversify_open(tracer.as_ref())) }
+            },
+        )
+        .add_node(
+            "diversify_library",
+            move |state: SolutionState, _ctx: NodeContext| {
+                let subagents = library_agents.clone();
+                async move { Ok(diversify_library_arm(&subagents, &state).await) }
+            },
+        )
+        .add_node(
+            "diversify_patterns",
+            move |state: SolutionState, _ctx: NodeContext| {
+                let subagents = pattern_agents.clone();
+                async move { Ok(diversify_pattern_arm(&subagents, &state).await) }
+            },
+        )
+        .add_node(
+            "diversify_invention",
+            move |state: SolutionState, _ctx: NodeContext| {
+                let subagents = invention_agents.clone();
+                let workspace = invention_workspace.clone();
                 async move {
-                    Ok(NodeResult::Update(
-                        diversify_step(&subagents, tracer.as_ref(), workspace.as_deref(), state)
-                            .await,
-                    ))
+                    Ok(diversify_invention_arm(&subagents, workspace.as_deref(), &state).await)
                 }
             },
         )
         .add_node(
+            DIVERSIFY_MERGE,
+            |state: SolutionState, _ctx: NodeContext| async move {
+                Ok(NodeResult::Update(LoopUpdate::whole(diversify_merge(
+                    state,
+                ))))
+            },
+        )
+        .add_node(
             "done",
-            |state: SolutionState, _ctx: NodeContext| async move { Ok(NodeResult::Update(state)) },
+            |state: SolutionState, _ctx: NodeContext| async move {
+                Ok(NodeResult::Update(LoopUpdate::whole(state)))
+            },
         );
     let graph = wire_routes(graph).compile().map_err(from_graph)?;
 
@@ -241,7 +277,13 @@ pub(super) const ENTRY: &str = "attempt";
 pub(super) const FINISH: &str = "done";
 
 /// The edges that always fire, as `(from, to)`.
-pub(super) const DIRECT_EDGES: [(&str, &str); 2] = [("attempt", "judge"), ("diversify", "attempt")];
+///
+/// `diversify` is deliberately absent: it fans out with a [`Command`] rather
+/// than a static edge, because the builder holds one static successor per node
+/// and a fan-out needs three. Its destinations are declared in
+/// [`DIVERSIFY_ARMS`] and wired below.
+pub(super) const DIRECT_EDGES: [(&str, &str); 2] =
+    [("attempt", "judge"), (DIVERSIFY_MERGE, "attempt")];
 
 /// Where the judge sends the run, as `(verdict, node)`.
 pub(super) const JUDGE_ROUTES: [(Judged, &str); 2] =
@@ -271,12 +313,23 @@ pub(super) const REFLECT_ROUTES: [(Route, &str); 5] = [
 /// wiring separately is a diagram that goes quietly out of date. Reading both
 /// from one table means a rendered picture cannot disagree with what runs.
 fn wire_routes(
-    builder: GraphBuilder<SolutionState, SolutionState>,
-) -> GraphBuilder<SolutionState, SolutionState> {
+    builder: GraphBuilder<SolutionState, LoopUpdate>,
+) -> GraphBuilder<SolutionState, LoopUpdate> {
     let mut builder = builder
         .set_entry(ENTRY)
         .add_conditional_edges("judge", judged_route, JUDGE_ROUTES)
-        .add_conditional_edges("reflect", route, REFLECT_ROUTES);
+        .add_conditional_edges("reflect", route, REFLECT_ROUTES)
+        // Declared unconditional because it is: `diversify` runs every arm
+        // every time. The barrier below relies on that promise — a node that
+        // *chose* between arms would leave the merge waiting on one that never
+        // runs, and the runtime cannot tell the two apart without being told.
+        .with_unconditional_fanout("diversify", DIVERSIFY_ARMS);
+    for arm in DIVERSIFY_ARMS {
+        // A waiting edge rather than a plain one: the merge activates once
+        // *every* registered predecessor has finished, which is what makes it a
+        // join rather than three separate arrivals each starting an attempt.
+        builder = builder.add_waiting_edge(arm, DIVERSIFY_MERGE);
+    }
     for (from, to) in DIRECT_EDGES {
         builder = builder.add_edge(from, to);
     }

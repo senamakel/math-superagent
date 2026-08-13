@@ -36,13 +36,16 @@ use std::sync::Arc;
 
 use super::vector::VectorStore;
 use crate::agent::Result;
-use crate::agent::flow::{GraphBuilder, NodeContext, NodeResult, from_graph};
+use crate::agent::flow::{
+    ClosureStateReducer, Command, GraphBuilder, GraphResult, NodeContext, NodeResult, from_graph,
+};
 use crate::agent::trace::RunTracer;
 
 use super::async_subagents::AsyncSubagentManager;
 use super::teams::TeamHandle;
 
 include!("solutions_attempt.rs");
+include!("solutions_parallel.rs");
 include!("solutions_judging.rs");
 include!("solutions_routing.rs");
 include!("solutions_state.rs");

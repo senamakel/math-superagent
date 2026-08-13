@@ -123,6 +123,13 @@ pub(super) struct SolutionState {
     /// Consecutive attempts that reached a specific final answer supported by
     /// exactly one route, with no second route available to build.
     unverified: usize,
+    /// What the diversify arms have reported so far, one slot each.
+    ///
+    /// Filled by arms running concurrently and drained by `diversify_merge`,
+    /// which is why it is a struct of named slots rather than one string: two
+    /// arms finishing in the same superstep write different fields, so the
+    /// reducer never has to pick a winner between them.
+    diversify: DiversifyFindings,
     /// Completed cycles since the goal was last decomposed into lemmas.
     ///
     /// Unlike every other counter here, nothing in [`route`] reads it. It paces
@@ -149,6 +156,7 @@ impl SolutionState {
             blocked: 0,
             computational: 0,
             unverified: 0,
+            diversify: DiversifyFindings::default(),
             // At the threshold, not at zero, so the counter is already due
             // when `run` opens a reduction beside the first attempt — before
             // any cycle completes, since "what would be enough to prove this"

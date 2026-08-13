@@ -39,8 +39,16 @@
 //! failed is not.
 
 pub use tinyflows::graph::{
-    CompiledGraph, GraphBuilder, GraphError, GraphExecution, NodeContext, NodeResult,
+    ClosureStateReducer, Command, CompiledGraph, GraphBuilder, GraphError, GraphExecution,
+    NodeContext, NodeResult,
 };
+
+/// The graph runtime's own result type.
+///
+/// Named separately from [`crate::agent::Result`], which is the harness's, so
+/// a signature says which side of the seam it is on rather than leaving a
+/// reader to work it out from the error it returns.
+pub type GraphResult<T> = std::result::Result<T, GraphError>;
 
 use tinyagents::TinyAgentsError;
 
