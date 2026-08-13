@@ -20,21 +20,20 @@ P1. Direct equal-products linear form at all known solutions (d = 0)
 P3. Oracle: all solutions of C(x,2)=C(y,3) with 1 <= y <= 10^6 (exact discriminant test, x = (1+isqrt(1+8a))/2)
 ==============================================================================
 [P3] y<=10^6 oracle found 5 pairs: [(2, 3), (5, 5), (16, 10), (56, 22), (120, 36)]
-[P3] RESULT: MISMATCH
+[P3] expected Avanesov/SDW complete set (y<=10^6): [(2, 3), (5, 5), (16, 10), (56, 22), (120, 36)]
+[P3] RESULT: EXACTLY the Avanesov/SDW set, consistent
 ==============================================================================
 P2. Matveev 2000 Thm 2.2/2.3 constants on nonzero difference forms
     C(x,2) = C(y,3) + d  <=>  U - V = 6d,  Lambda = ln(U/V) != 0
 ==============================================================================
      d   anchor (x,y)   n   log10|L| bound   log10 y max        B
-    -3         (2, 4)   1       24234608.3     8078203.3     2.00
-        Kummer OK: True; nonzero form: True; C1=5.391e+00 C2=4.644e+02 omega=2.761e+01 C0'=8.141
+    -3         (2, 4)   1  Skipped: 1-term form violates Thm 2.2 n>=2
     -2   none in y<=10^6 (GRKTU: finitely many total)
     -1         (3, 4)   2    85521233680.7 28507077893.9     1.26
         Kummer OK: True; nonzero form: True; C1=1.016e+01 C2=1.385e+04 omega=1.162e+03 C0'=14.182
      1         (7, 6)   4 2848349715355321344.0 949449905118440448.0     1.00
         Kummer OK: True; nonzero form: True; C1=2.386e+01 C2=3.361e+06 omega=2.286e+07 C0'=28.135
-     2         (3, 3)   1       27253713.9     9084571.8     1.00
-        Kummer OK: True; nonzero form: True; C1=5.391e+00 C2=4.644e+02 omega=4.376e+01 C0'=8.141
+     2         (3, 3)   1  Skipped: 1-term form violates Thm 2.2 n>=2
      3      (368, 75)   6 10195700114698301552870817792.0 3398566704899433850956939264.0     1.00
         Kummer OK: True; nonzero form: True; C1=4.311e+01 C2=4.562e+08 omega=9.110e+13 C0'=46.542
 ==============================================================================
