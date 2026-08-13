@@ -344,3 +344,11 @@ row 341: b=50847192 floor=0 intruder=None
 row 342: b=50847191 floor=0 intruder=None
 row 343: b=50847190 floor=0 intruder=None
 row 344: b=50847189 floor=0 intruder=None
+row 345: b=50847188 floor=0 intruder=None
+row 346: b=50847187 floor=0 intruder=None
+row 347: b=50847186 floor=0 intruder=None
+row 348: b=50847185 floor=0 intruder=None
+row 349: b=50847184 floor=0 intruder=None
+row 350: b=50847183 floor=0 intruder=None  [166s]
+row 351: b=50847182 floor=0 intruder=None
+row 352: b=50847181 floor=0 intruder=None
