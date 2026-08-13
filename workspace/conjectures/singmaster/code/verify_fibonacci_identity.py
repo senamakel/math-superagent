@@ -117,8 +117,8 @@ for j in range(1, 7):
 print()
 print("=== Exact N(a) for the first three family members (fast inversion) ===")
 for j, a in [(1, 3003),
-             (2, comb(fib(6)*fib(7), fib(4)*fib(7) + 1)),
-             (3, comb(fib(8)*fib(9), fib(6)*fib(9) + 1))]:
+             (2, comb(fib(6)*fib(7), fib(4)*fib(7))),
+             (3, comb(fib(8)*fib(9), fib(6)*fib(9)))]:
     total, reps = fast_multiplicity(a)
     print(f"j={j}: a has {len(str(a))} digits;  N(a) = {total} = 2 (trivial) "
           f"+ {sum(1 if 2*k == n else 2 for (n,k) in reps)} "
