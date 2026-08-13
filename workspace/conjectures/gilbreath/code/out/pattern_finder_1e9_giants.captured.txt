@@ -1,0 +1,10 @@
+sieve 1000000000: W = 50847534 primes (pi(1e9) = 50847534, diff +0) in 10.1s
+row 1: b=2 floor=50847530 intruder=4
+row 2: b=7 floor=50847524 intruder=4
+row 3: b=13 floor=50847517 intruder=4
+row 4: b=13 floor=50847516 intruder=4
+row 5: b=24 floor=50847504 intruder=8
+row 6: b=23 floor=50847504 intruder=8
+row 7: b=22 floor=50847504 intruder=6
+row 8: b=21 floor=50847504 intruder=4
+row 9: b=24 floor=50847500 intruder=4
