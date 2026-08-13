@@ -1,0 +1,14 @@
+```approach
+idea: Frey-curve / modular method (Darmon–Granville, Ribet level-lowering, Bennett–Skinner) applied to the equal-products-of-consecutive-integers equation — the Diophantine reduction of C(x,k1) = C(y,k2). This is the same machinery that proved Fermat's Last Theorem and Catalan's conjecture, applied here to classify all integer solutions when one of the column indices is fixed.
+
+mechanism: The equality C(x,k1) = C(y,k2) is equivalent to the equal-products equation
+  x(x-1)...(x-k1+1) · k2! = y(y-1)...(y-k2+1) · k1!.
+For fixed k1, this is an equation of the form
+  f(x) = g(y)   where f(x) = x(x-1)...(x-k1+1) · k2! / gcd(k1!,k2!)
+and similarly for g(y). When k1 and k2 are small (the boundary regime where all witnesses live), the integers involved have controlled prime support, and the Frey curve attached to a hypothetical large solution has a conductor whose radical is bounded by the primes dividing k1!k2! times the primes ≤ max(k1,k2). Ribet's level-lowering then forces a congruence between a newform of controlled level and an elliptic curve, giving an effective contradiction beyond some computable bound. The Darmon–Granville theorem (1995, for the generalized Fermat equation x^p + y^q = z^r with 1/p+1/q+1/r < 1) provides the template; the equal-products equation with fixed column indices is a "signature" (p,q) family where the modular method has been applied successfully to similar equations (e.g., Bennett 2001 on (x+1)...(x+k) = y^n, and the Bugeaud–Mignotte–Siksek–Stoll–Tengely solution of (2,5)). The novelty here is to systematize this for the FULL small-(k1,k2) boundary family, pushing the modular method to cover all pairs up to, say, k1,k2 ≤ 10, which would exhaust the regime where the known witnesses and the infinite family live.
+
+The deliverable: an effective bound on max(x,y) for each fixed (k1,k2) with explicit constants, and — crucially — a proof that for sufficiently large k2 with k1 fixed (say k1=2, the triangular column), there are NO non-trivial integer solutions. This would show that the k=2 column (which carries all known high-multiplicity values) has bounded intersection with every other column, reducing the uniform-bound problem to the case where both k1,k2 are small and both are ≥ 3 — a finite set of curves to analyze.
+
+status: proposed
+first-step: Rewrite C(x,2)=C(y,k) for k≥3 in the Darmon–Granville signature framework: (1/2) + (1/k) + (1/R) < 1 for some R, identify the attached Frey curve, and check whether the Bennett–Skinner results on products of consecutive integers already cover some infinite subfamily. The concrete check: does the equation x(x-1)·k! = 2·y(y-1)...(y-k+1) fit a known modular template?
+```
