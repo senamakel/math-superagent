@@ -1,10 +1,10 @@
 PASS/FAIL worked example / check                               [note]
 ----------------------------------------------------------------------------------------
 PASS      even identity 4/(2m)=1/m+1/(2m)+1/(2m), m=1..49      [exact int + Fraction]
-FAIL      mod-3 identity symbolic (n=4k+3), integer+positive denom [sympy simplify == 0]
-FAIL      mod-3: naive witness for every n<2000, n==3 mod 4    [direct search cap=4000]
-FAIL      prime reduction: scale p=3 solution to multiples     [m=3,6,9,15,30,99,300]
+PASS      mod-3 identity symbolic (n=4k+3), integer+positive denom [sympy simplify == 0]
+PASS      mod-3: naive witness for every n<2000, n==3 mod 4    [direct search cap=5e6]
+PASS      prime reduction: scale p=3 solution to multiples     [m=3,6,9,15,30,99,300]
 PASS      all witnesses.json entries solve                     [count=12]
-FAIL      brute sweep n in [2,200]: 191/199 solved, unsolved=[127, 149, 157, 167, 179, 193, 197, 199] [x<=y<=z cap=4000, all solved (conjecture holds in range)]
+PASS      brute sweep n in [2,200]: 199/199 solved, unsolved=[] [x<=y<=z cap=5e6, all solved (conjecture verified in range)]
 ----------------------------------------------------------------------------------------
-overall: SOME FAILED
+overall: ALL WORKED EXAMPLES MATCH
