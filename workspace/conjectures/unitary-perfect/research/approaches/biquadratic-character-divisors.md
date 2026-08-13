@@ -79,14 +79,16 @@ first-step: (1) [done] Verify the generator equivalence on every primitive
   not exist; only the product formula (step 2) is a viable exact route.
 ```
 
-## Corrections applied (from the literature check)
+## Corrections applied (from the literature check and computed evidence)
 
-The original file carried three errors, all now fixed:
+The original file carried three errors (M1–M3), plus the shortcut refuted by
+the computed table (M4):
 
 - **M1 — no longer conflates C29 with existence.** The file now states
-  plainly that the deliverable is the (H1)-existence form for one mod-8
-  class, weaker than Conjecture 29's proportional `c·ω` statement, and
-  that this does not close C6 for the other mod-8 classes.
+  plainly that the deliverable is the (H1)-existence form via the product
+  formula, weaker than Conjecture 29's proportional `c·ω` statement, and
+  that this does not close C6 on its own — it requires the companion ω-growth
+  hypothesis (H2) or a finiteness argument on the H_even survivor set.
 - **M2 — the iff is now one-way.** `(2/r)_4 = 1 ⟺ 16p | r−1` is retained
   (it is correct), but the chain to "3-Higgs" stops at the forward
   implication `v2(r−1) ≥ 4 ⟹ r ∉ P_3`, with the paper's own Lemma 20
@@ -95,12 +97,18 @@ The original file carried three errors, all now fixed:
   algebraic factorization route as its own next step" is removed; the
   paper's §6 names no such step (it names BHV primitive-divisor bounds
   plus shifted-prime smoothness).
+- **M4 (computed evidence) — the per-class shortcut is refuted.** The
+  conjecture "for a fixed p mod 8, one of L_p, M_p has a divisor r ≡ 1
+  (mod 16)" is false: H_even members p = 3, 5, 13, 23, 31, 41, 61 span
+  all four classes mod 8 and have zero such divisors; heads (r ≡ 1 mod 16)
+  occur in all four classes for non-members. Only the product formula
+  Π (2/π)_4^e = (2/(2^p+i))_4 is a viable exact route.
 
 ## Why this beat the others
 
 | Candidate | Status | Reason |
 | --- | --- | --- |
-| `biquadratic-character-divisors` | **adopted** | Attacks the divisor-level gap — the paper's own named analytic target for (H1) — with named algebraic machinery (quartic reciprocity in Z[i]), no GRH, no Chebotarev, no density. The Aurifeuillean split is catalogued; the BHV primitive-divisor theorem is catalogued; the generator equivalence `(2/r)_4 = 1 ⟺ r ≡ 1 (mod 16)` is elementary. The gap is the divisor-transference theorem the paper says does not exist in the literature; quartic reciprocity is a concrete algebraic candidate for it. |
-| `higgs-depth-bound` | refuted | 3-Higgs primes are infinite (OEIS A057447 b-file continues), so Pratt depth is unbounded; the paper's own m=2426 example has a fully 3-Higgs divisor P=25893760589 with nontrivial Pratt descent. The fallback reduces to thinness constraints the paper already makes via Ford's theorem, and thinness does not close (paper §5.3). |
-| `p-adic-baker-obstruction` | refuted | Two fatal obstacles: (1) Iwasawa p-adic log diverges for every odd p_i ≠ ℓ (v_ℓ(1/p_i^{e_i}) = 0 < 1/(ℓ−1)); (2) Baker-type bounds apply to nonzero linear forms, but the form is identically zero by construction — it is the logarithm of the balance equation, a multiplicative dependence, not an inequality. |
-| `archimedean-baker-sum-reciprocals` | refuted | Baker's theorem bounds nonzero linear forms; the proposed homogeneous form is identically zero (the log of the balance), so "0 = |Λ| > exp(−C···)" is a category error. The honest Archimedean route Σ 1/p_i^{e_i} ≈ log 2 gives lower bound m > exp(a/C) and upper bound log m ≤ 3(a+1)log(a+1), same asymptotic scale — no contradiction, as the file itself shows. |
+| `biquadratic-character-divisors` | **adopted** | Attacks the divisor-level gap — the paper's own named analytic target — with quartic reciprocity in Z[i] on the Gaussian factorization 2^{2p}+1 = (2^p+i)(2^p−i). Step (1) is verified: the equivalence (2/r)_4 = 1 ⟺ r ≡ 1 (mod 16) holds on all 71 primitive divisors through p=61, the H_even p-slice {3,5,13,23,31,41,61} is reproduced. Step (2) — the multiplicative product identity Π (2/π)_4^e = (2/(2^p+i))_4 evaluated via the supplementary law — is a divisor-transference theorem in algebraic form: determine how many divisors of Φ_{4p}(2) are ≡ 1 (mod 16) from p mod 16 alone, without factoring 2^p+i. |
+| `higgs-depth-bound` | refuted | 3-Higgs primes are infinite (OEIS A057447), so Pratt depth is unbounded; the paper's m=2426 example has the fully 3-Higgs divisor P=25893760589. Thinness fallback = paper §5.3. |
+| `p-adic-baker-obstruction` | refuted | Iwasawa p-adic log diverges (v_ℓ(1/p_i^{e_i}) = 0 < 1/(ℓ−1) for odd p_i ≠ ℓ); Baker bounds apply to nonzero forms but the form is zero (the balance). |
+| `archimedean-baker-sum-reciprocals` | refuted | Same Baker error plus the honest Archimedean route gives same asymptotic scale — no contradiction. |
