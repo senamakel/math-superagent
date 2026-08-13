@@ -60,23 +60,23 @@ def genus(k1, k2):
     return TABLE[(a, b)]
 
 def spam_genus(k1, k2):
-    """Closed form for k2=2,3,4 (matches every entry of TABLE where defined).
-    Verified against all computed data; None for pairs without a formula."""
+    """Closed genus forms for the families k2 = small in {2,3,4}: the pair
+    {small, n} with n>small.  Genus is a function of the larger parameter n.
+    Formula matches every computed entry for that family; None otherwise."""
     a, b = sorted((k1, k2))
     if a == b:
         return None
-    # put the SMALLER on the x-side with the OTHER column? The formula is in
-    # the larger parameter.   Genus(k1,k2) with k2 fixed small:
-    if b == 2:   # a<2 impossible, so this is (2,  a) i.e. smaller is 2
-        # hyperelliptic y(y-1)=2C(x,k): genuine value floor((k1-1)/2) uses larger
-        return (max(k1,k2) - 1) // 2
-    if b == 3:   # smaller one of {3, larger}
-        larger = max(k1, k2)
-        return larger-1 if larger % 3 != 0 else larger-2
-    if b == 4:
-        larger = max(k1, k2)
-        if larger % 2 == 1:
-            return 3*(larger-1)//2
+    # a = smaller = the fixed-column family index;  b = larger = the variable
+    if a == 2:
+        # pairs {2,n}: vertex y(y-1)=2C(x,n), hyperelliptic, genus floor((n-1)/2)
+        return (b - 1) // 2
+    if a == 3:
+        # pairs {3,n}: C(x,3)=C(y,n); the curve is degree n in y, split at 3|n
+        return b-1 if b % 3 != 0 else b-2
+    if a == 4:
+        # pairs {4,n}: 2:1 over hyperelliptic w^2=1+24*C(x,n); periodic in n mod 4
+        if b % 2 == 1:
+            return 3*(b-1)//2
         else:
-            return 3*(larger-2)//2 + (1 if larger % 4 == 2 else 0)
+            return 3*(b-2)//2 + (1 if b % 4 == 2 else 0)
     return None
