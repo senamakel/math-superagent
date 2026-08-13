@@ -6,7 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[lifting-proof]] | Is the 2-to-1 lifting of A_k provable via LTE, giving \|A_k\| = 2^(k-1) unconditionally? | open | ternary-sieve-count-doubles, SIEVE-EXACT | compute c for small k; verify v_3(2^{2·3^(k-2)} - 1) = k-1 exactly |
+| [[lifting-proof]] | Is the 2-to-1 lifting of A_k provable via LTE, giving \|A_k\| = 2^(k-1) unconditionally? | open | ternary-sieve-count-doubles, SIEVE-EXACT, SAYE-2, SAYE-3 | connect the LTE mechanism to SAYE-2 class-splitting; verify c ≡ d_1(2^j) (mod 3) |
 | [[narkiewicz-bound]] | What is the exact statement, constant, and method of Narkiewicz's bound on {n <= x : 2^n digit-2-free}? | open | EP-406, LAG-2 | locate and download Narkiewicz (1980); verify constant and method against EP-406 and LAG-2 |
 
 ## Threads that could not be read

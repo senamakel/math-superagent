@@ -19,6 +19,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `SAYE-2` | u_k = 2·3^(k-1) is both φ(3^k) and the order of 2 modulo 3^k; the map n → 2^n mod 3^k has period u_k, and classes split under the digit recursion given by d_{k+1}(2^(i u_k + j)) ≡ d_{k+1}(2^j) + i·d_1(2^j) (mod 3). | yes | proved | `research/summaries/saye-ar5iv-full.md` |
 | `SAYE-3` | The recursion that generates n with prescribed trailing ternary digits runs in Θ(2^K) time for depth K, versus Θ(3^K) for exhaustive testing; every n < 2^u_K is covered. | yes | proved | `research/summaries/saye-ar5iv-full.md` |
 | `SIEVE-EXACT` | \|A_k\| = 2^(k-1) exactly for all k ≥ 1; Φ_k: n mod 2·3^(k-1) ↦ 2^n mod 3^k is a bijection onto (Z/3^k)^×; the extension map A_{k+1} → A_k is exactly 2-to-1; no class dies and no two classes collide at any finite level. | yes | proved | `research/threads/sieve-dynamics.md` |
+| `STOLL-1` | Narkiewicz's method: 2^n mod 3^k, expressed as sum of distinct powers of 3, has exactly 2^{k-1} possible residues among the units; by primitivity of 2 mod 3^k, n lies in only 2^{k-1} residue classes mod 2·3^{k-1};… | yes | asserted | `research/summaries/stoll-erdos-termary-digits-slides.md` |
+| `STOLL-2` | Stewart (1980): for a,b multiplicatively independent, the number of nonzero digits of n in base a plus in base b is ≥ c log n / log log n; applied to (2^n)_3 this gives (count of 1s) + (count of 2s) ≥ c log n / log log… | yes | proved | `research/summaries/stoll-erdos-termary-digits-slides.md` |
+| `STOLL-3` | Kaneko–Stoll (2018): for any finite ternary pattern P, a positive proportion of n have ≥ c_1 log n occurrences of P in (2^n)_3... (their theorem is stated for (m^n)_p generally, p prime, m not a power of p). | yes | proved | `research/summaries/stoll-erdos-termary-digits-slides.md` |
 | `ternary-sieve-count-doubles` | Let A_k be the set of residues r mod 2*3^(k-1) for which the low k ternary digits of 2^r mod 3^k all lie in {0,1}. Then \|A_k\| = 2^(k-1) for every k = 1..22, verified exactly by lifting. The density \|A_k\|/(2*3^(k-1)) =… | yes | checked | `code/out/sieve_cannot_close.md` |
 
 ## Load-bearing but unverified
@@ -29,3 +32,4 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `LAG-1` (research/summaries/lagarias-ar5iv-full.md) — asserted by the source, not proved there and not checked here
 - `LAG-4` (research/summaries/lagarias-ar5iv-full.md) — asserted by the source, not proved there and not checked here
 - `SAYE-1` (research/summaries/saye-ar5iv-full.md) — asserted by the source, not proved there and not checked here
+- `STOLL-1` (research/summaries/stoll-erdos-termary-digits-slides.md) — asserted by the source, not proved there and not checked here

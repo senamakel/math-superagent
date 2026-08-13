@@ -1,9 +1,9 @@
 ```thread
 question: Is the 2-to-1 lifting of A_k provable via LTE, giving |A_k| = 2^(k-1) unconditionally?
 status: live
-rests-on: ternary-sieve-count-doubles, SIEVE-EXACT
-blocked-by: verifying c = (2^{2·3^(k-2)} - 1)/3^(k-1) mod 3 is nonzero
-next: compute c for small k; verify v_3(2^{2·3^(k-2)} - 1) = k-1 exactly
+rests-on: ternary-sieve-count-doubles, SIEVE-EXACT, SAYE-2, SAYE-3
+blocked-by: LTE carry analysis (fragile); bijection route is already complete and preferred
+next: connect the LTE mechanism to SAYE-2 class-splitting; verify c ≡ d_1(2^j) (mod 3)
 ```
 
 # Proving the 2-to-1 lifting
@@ -14,8 +14,9 @@ next: compute c for small k; verify v_3(2^{2·3^(k-2)} - 1) = k-1 exactly
 
 Data (`code/out/sieve_Ak.captured.txt`, `code/out/sieve_cannot_close.md`,
 and the librarian's own derivation in `research/threads/sieve-dynamics.md`):
-`|A_k| = 2^(k-1)` for every k = 1..22, computed by lifting. Each class in
-`A_k` lifts to three candidates in `A_{k+1}`, and exactly two survive.
+`|A_k| = 2^(k-1)` for every k = 1..26, computed by lifting. **Directive: k=26
+used 333s and 2.1 GiB; no more sieving by materialising A_k as a set.** Each
+class in `A_k` lifts to three candidates in `A_{k+1}`, and exactly two survive.
 
 ## The bijective-structure derivation (librarian, elementary)
 
