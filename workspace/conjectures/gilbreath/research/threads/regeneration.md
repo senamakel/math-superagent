@@ -1,6 +1,6 @@
 ```thread
-question: Can we bound the (2,4)-event rate from below, and does that bound suffice to keep b_k ≥ 1 for all k?
-status: open — step law + recharge identity PROVED; Route A SUPPORTED (conditional-rate experiment: family-independent post-startup rate, p=0.68 over 8 families); the gap is a LOWER BOUND on the rate for all k (λ̂=0.585 is measured, not bounded)
+question: What makes the giant jumps recur? The surplus is heavy-tailed, so the object to bound is the gap between consecutive large jumps, not the mean event rate.
+status: open — step law + recharge identity PROVED; Directive 23 reframing: the surplus is HEAVY-TAILED (a few giant jumps carry S_1000 = 1,270,603), so λ̂ = 0.585 (a mean event rate) is the wrong summary — the target is the gap between consecutive large jumps, not a mean-rate lower bound
 rests-on: |
   - Step law (PROVED): b_{k+1} ≥ b_k ⟺ (x,y) = (2,4), else b_{k+1} = b_k − 1. Theorems of the absolute-difference operator for ANY array (no parity, no primes), proof in research/notes/step_law_proved.md; verified on real primes depth 1000 (0 failures) and 400 random arrays (3,521 rows, 610 events, 0 failures).
   - Recharge identity (PROVED): b_k = b_1 + Σ_{events i<k} (j_i + 1) − (k−1). research/notes/step_law_proved.md. The conjecture holds iff Σ (j_i + 1) ≥ k−1−b_1 for all k.
@@ -14,10 +14,9 @@ rests-on: |
   - Directive 13 stands independently: bounded finite support is vacuous for the primes (gaps 8,10,12,14,34 below 2000; unbounded).
 blocked-by: nothing — the mechanism is proved combinatorial; the conditional-rate experiment is done and supports Route A; the gap is a rate lower bound
 next: |
-  1. **Bound the (2,4)-event rate from below, not estimate it.** The conditional-rate experiment measured λ̂=0.585 at D=400 — a point estimate. The conjecture needs Σ(j_i+1) ≥ k−2 for all k, which needs a rate lower bound holding everywhere. State the lemma that would close the gap and test it on the surviving sweep families.
-  2. Route A (combinatorial): prove a worst-case bound on erosion between events from the drain law + edge-flip dynamics. The edge flips between 0 and 2 under Rule 90 interior XOR; the intruder drains at 2 per edge=2 row. If the longest possible run of (edge=0, intruder=4) before edge flips to 2 is bounded by a function of block length b, events cannot be arbitrarily far apart — and that gives a rate lower bound.
-  3. Route B (analytic, secondary): assume a prime-gap concentration hypothesis, derive a lower bound on event density. Must state how it beats Eppstein and Colonna's g=4 deletion.
-  4. Deliverable: a theorem of the form "under hypothesis H, the event rate ≥ r, and r suffices."
+  1. **Characterise the big jumps (j > 1000).** Print i, j, b_i, (edge, intruder), and whether the row sits at a block boundary or row-length/width reset. i=161 lands at b≈1.27M = width−1 (the known finite-width artifact). Say whether the giant jumps are genuine dynamics or boundary artifacts — this determines whether the heavy tail survives at larger width.
+  2. **State the correct object.** The conjecture needs Σ(j_i+1) ≥ k−1−b_1 for all k. At depth 1000 this holds with enormous slack (b_1000 = 1.27M ≫ 1). The conjecture is tight only if the big jumps stop. The target: bound the GAP between consecutive large jumps from below — i.e. show that a jump exceeding threshold J arrives at least once every T(J) rows. A mean-rate bound controls the wrong quantity.
+  3. **Test on the sweep families.** For sequences that survived beyond k=10 in the event-rate sweep, compute the jump-size distribution and identify the heavy-tail regime. Does the tail appear in all families, or only in wide-support ones? If the tail vanishes in narrow-support families, the heavy tail is a width/range effect, not a structural renewal property.
 
 lean-formalisation: |
   COMPLETE (Directive 17 verified). Nine theorems kernel-checked. gilbreath_reduction : GilbreathConjecture X ↔ SecondEntryIn02 X is an IFF — the {0,2} second-entry statement is exactly as hard as the conjecture, not a simplification. Axiom footprint [propext, Classical.choice, Quot.sound]. Zero sorry/sorryAx. claim: gilbreath-second-entry-equivalence, anchor: code/lean/gilbreath_reduction.lean.
