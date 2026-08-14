@@ -1,0 +1,8 @@
+E1 exhaustive string-counting f, m=1..3 (every x): checked=39960 holds=True
+E2 exhaustive closed form, m=4 (every x): checked=399960 holds=True
+E3 sampled closed form, m=5..12 (3000 x per (d,k)): holds=True
+
+TOTAL residue-identity checks: 1263960; failures: 0
+
+Controlled break at k=d, m=10:  f(d*10^10+x,d)-f(x,d)-d*10^10 == x+1 ?
+  break identity holds on 200 sampled x per d: True

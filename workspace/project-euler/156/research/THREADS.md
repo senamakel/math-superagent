@@ -6,7 +6,13 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[pe156-fixed-points]] | What is Σ_{d=1}^{9} s(d) for PE156, and what program/claims make that number exact? | open | G1-digit-count-closed-form, G1-checked, G2-solution-bound, km-prop91-bound, km-lemma71-skip, oeis-per-digit-counts | implement code/solution.py per the skeleton research/backward/fixed-point-enumeration.md; verify against oracle + naive counts on [0,10^5] + A130432 counts;… |
+| [[pe156-fixed-points]] | What is Σ_{d=1}^{9} s(d) for PE156, and what program/claims make that number exact? | open | G1-digit-count-closed-form, G1-checked, G2-solution-bound, km-prop91-bound, km-lemma71-skip, oeis-per-digit-counts, ruskey-theorem5-digit-count-generating-function, (corrected) | tool_builder runs code/out/indep-total-check.py as a third independent aggregation; then close the thread. |
+
+## Resting on nothing recorded
+
+Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
+
+- [[pe156-fixed-points]] rests on `(corrected)`, which no claim block on disk establishes
 
 ## Threads that could not be read
 

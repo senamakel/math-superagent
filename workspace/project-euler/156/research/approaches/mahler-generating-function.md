@@ -29,7 +29,13 @@ solutions off the equation.
   `research/notes/oeis-catalogue-pe156.md` (sourced OEIS entry on disk). The
   theorem that a sequence is k-regular iff its generating function satisfies
   a linear Mahler functional equation is standard (Becker 1994; see
-  Allouche–Shallit Ch. 5).
+  Allouche–Shallit Ch. 5). The Mahler ⟺ regular side of that correspondence
+  is now pinned by a modern peer-reviewed source on disk:
+  Adamczewski, Bell & Smertnig, "A height gap theorem for coefficients of
+  Mahler functions", JEMS 25 (2023) 2525–2571, arXiv:2003.03429 —
+  "a k-Mahler function is k-regular if and only if its coefficients have
+  height in O(log n)" — full text at
+  `research/sources/abs-height-gap-mahler-regular.full.md`.
 - **Speculation.** That the specific Mahler system for G_d is algebraically
   tractable enough to *read off* the fixed points in closed form; nothing on
   disk has derived the system for general d yet. This is a genuine transform
