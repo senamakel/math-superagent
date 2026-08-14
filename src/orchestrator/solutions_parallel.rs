@@ -51,6 +51,9 @@ pub(super) enum Slot {
     Grounding,
     /// The line of attack the inventor settled on.
     Chosen,
+    /// What working backward from the goal says would suffice, and what is
+    /// still open.
+    Skeleton,
 }
 
 /// One arm's contribution to a diversify.
@@ -83,6 +86,7 @@ pub(super) struct DiversifyFindings {
     patterns: String,
     grounding: String,
     chosen: String,
+    skeleton: String,
 }
 
 impl DiversifyFindings {
@@ -91,13 +95,14 @@ impl DiversifyFindings {
     /// One list, read by both directions of the round trip, so a slot cannot be
     /// written under one name and read under another — which is precisely how
     /// an arm's findings go missing without an error anywhere.
-    fn slots(&mut self) -> [(&'static str, &mut String); 5] {
+    fn slots(&mut self) -> [(&'static str, &mut String); 6] {
         [
             ("library", &mut self.library),
             ("digest", &mut self.digest),
             ("patterns", &mut self.patterns),
             ("grounding", &mut self.grounding),
             ("chosen", &mut self.chosen),
+            ("skeleton", &mut self.skeleton),
         ]
     }
 
@@ -109,6 +114,7 @@ impl DiversifyFindings {
             Slot::Patterns => &mut self.patterns,
             Slot::Grounding => &mut self.grounding,
             Slot::Chosen => &mut self.chosen,
+            Slot::Skeleton => &mut self.skeleton,
         };
         *slot = finding.text;
     }
@@ -166,7 +172,7 @@ impl DiversifyFindings {
     /// The findings as the labelled sections `merge_context` expects, in the
     /// order a reader wants them: what was gathered, what it means, what the
     /// numbers show, and what to do next.
-    pub(super) fn sections(&self) -> [(&'static str, &str); 5] {
+    pub(super) fn sections(&self) -> [(&'static str, &str); 6] {
         [
             ("Reference material", self.library.as_str()),
             ("What the sources establish", self.digest.as_str()),
@@ -176,6 +182,7 @@ impl DiversifyFindings {
                 self.grounding.as_str(),
             ),
             ("Line of attack chosen", self.chosen.as_str()),
+            ("What would suffice, and what is still open", self.skeleton.as_str()),
         ]
     }
 }

@@ -179,7 +179,11 @@ impl OrchestratorAgent {
             skeletons: skeletons.clone(),
         };
         let beside = solutions::Beside {
-            patterns,
+            // The same mailbox the standing teams post to, and the same one the
+            // attempt drains. A literature sweep and a team report are both
+            // "what arrived beside the loop since the last attempt", so they
+            // are rendered under that one heading rather than two.
+            library: patterns,
             reduction: solutions::Reduction {
                 outbox: skeletons,
                 // One gate for the run, so a reduction that outlives the cycle
