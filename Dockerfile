@@ -162,6 +162,55 @@ RUN apt-get update \
     && su agent -s /bin/sh -c 'sage -c "print(factor(2^67-1))" | grep -q 193707721' \
     && rm /tmp/smoke.p /tmp/smoke.sing
 
+# Vampire, for the half of first-order reasoning `eprover` cannot do.
+#
+# E saturates toward a refutation, so on a *false* conjecture it runs until its
+# clock stops and reports nothing. Vampire's `--saturation_algorithm fmb`
+# searches for a finite model instead, and a model is a counterexample: it
+# answers `SZS status CounterSatisfiable` and prints the interpretation that
+# breaks the statement. That is the engine the `refuter` needs, and no other
+# binary in this image provides it — cvc5's `--finite-model-find` works over
+# theories rather than a TPTP axiomatisation, and Prover9/Mace4, which is the
+# tool this job usually names, was dropped from Debian.
+#
+# It is the technique that carried the Equational Theories Project, and by a
+# margin worth recording: 524 small finite magmas refuted 13.6 million of its
+# 22 million implications — 13.3 million at order 3 alone — for 165 CPU-hours,
+# before any clever proof search ran. Refutation is not the consolation prize
+# for a failed proof; on that evidence it is the cheap majority of the work.
+#
+# Fetched from the project's release rather than apt because Debian does not
+# package it. Pinned to a version, like every other dependency here: `latest`
+# would make the image a moving target and a build that succeeded yesterday
+# would not be the one running today. The archive holds one static binary, so
+# there is nothing to link against and nothing to configure.
+#
+# Two smoke tests rather than one, because the two modes fail independently and
+# only the second is the reason this is here: a build where the prover works and
+# the model builder does not would install exactly what `eprover` already gave
+# us and report success.
+ARG VAMPIRE_VERSION=v5.1.0
+RUN set -eu \
+    && case "$(dpkg --print-architecture)" in \
+         amd64) vampire_arch=X64 ;; \
+         arm64) vampire_arch=ARM64 ;; \
+         *) echo "unsupported architecture for vampire: $(dpkg --print-architecture)" >&2; exit 1 ;; \
+       esac \
+    && curl -sSfL -o /tmp/vampire.zip \
+       "https://github.com/vprover/vampire/releases/download/${VAMPIRE_VERSION}/vampire-Linux-${vampire_arch}.zip" \
+    && python3 -c "import zipfile,sys; zipfile.ZipFile('/tmp/vampire.zip').extract('vampire', '/usr/local/bin')" \
+    && chmod 0755 /usr/local/bin/vampire \
+    && rm /tmp/vampire.zip \
+    && printf '%s\n' 'fof(a1, axiom, ![X]: (p(X) => q(X))).' 'fof(a2, axiom, p(a)).' \
+       'fof(goal, conjecture, q(a)).' > /tmp/prove.p \
+    && printf '%s\n' 'fof(a1, axiom, ![X,Y]: (r(X,Y) => r(Y,X))).' 'fof(a2, axiom, r(a,b)).' \
+       'fof(goal, conjecture, r(a,a)).' > /tmp/refute.p \
+    && chmod 0644 /tmp/prove.p /tmp/refute.p \
+    && su agent -s /bin/sh -c 'vampire --time_limit 30 /tmp/prove.p | grep -q "SZS status Theorem"' \
+    && su agent -s /bin/sh -c 'vampire --saturation_algorithm fmb --time_limit 30 /tmp/refute.p \
+       | grep -q "SZS status CounterSatisfiable"' \
+    && rm /tmp/prove.p /tmp/refute.p
+
 COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
 
 USER agent
