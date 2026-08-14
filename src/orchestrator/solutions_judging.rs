@@ -21,7 +21,7 @@
 /// check values its problem supplied, to all ten digits, and had 38 exact points
 /// cross-validated by two independent enumerators. The judge could not see any
 /// of it: it was scoring silence and calling it no progress.
-async fn judge_step(
+pub(in crate::orchestrator) async fn judge_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
@@ -487,7 +487,7 @@ async fn log_reflection(
 }
 
 /// Judges the last attempt and records the lesson it yields.
-async fn reflect_step(
+pub(in crate::orchestrator) async fn reflect_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,

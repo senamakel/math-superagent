@@ -327,24 +327,20 @@ turn runs next. A new graph is built with `agent::flow`, never with
 
 TinyFlows has two layers and this crate now uses both, for different things.
 
-`graph` is the state-graph runtime the solution loop executes on by default:
-nodes are Rust closures, there are no node kinds, and it is reached through
-`agent::flow`.
+The solution loop **runs on the declarative workflow engine**. The engine owns
+the routing — the `loop` head with the run's state as its accumulator, and the
+ladders as `switch` nodes carrying jq — and each step is a `tool_call` into the
+Rust that was written against live runs. That split is the point: the control
+flow is a document an outside agent can read and patch, and the steps that
+drain a directive, salvage a timed-out attempt, and open the arms beside the
+loop are not reimplemented in JSON.
 
-`MATH_AGENT_ENGINE=workflow` runs the same loop on the declarative engine
-instead. Opt-in for a release, and it fails safe — an unrecognised value selects
-the state graph rather than stopping the run, because an operator who mistypes
-the variable should get the proven path. Both engines are proven to route
-identically (`orchestrator::parity`, exhaustive) and to report identically
-(`SolutionState::from_accumulator` feeds the same `outcome`). Neither has yet
-run an hour of live mathematics, which is why the default has not moved.
-
-The declarative workflow engine is reached through `OrchestratorAgent`:
-`workflow_capabilities` supplies the host traits, `workflow_agents` derives the
-role registry, `workflow_graph` authors the loop as a document, and
-`WorkflowCatalog` stores and patches it. The loop authored there is proven to
-decide identically to the running one by `orchestrator::parity`, which is a
-test-only module and must stay one.
+`agent::flow` is the lower-level state-graph runtime. It still drives each
+detached sub-agent's own single-node graph, and `solve_on_state_graph` is kept
+unused for one release as the way back — the workflow loop has not yet run an
+hour of live mathematics, and a cutover whose predecessor was deleted in the
+same commit leaves nothing to compare a surprising run against. Delete it once
+the first live runs agree.
 
 Three rules hold across both:
 
@@ -357,9 +353,14 @@ Three rules hold across both:
   `orchestrator::caps::execution` and `::network` — running a command means
   declaring a complexity class first, and reaching the network means going
   through a tool that bounds the response and that research gating can withhold.
-- The parity harness is not optional. Any change to the routing ladder on either
-  side must keep `orchestrator::parity` green, and it is exhaustive rather than
-  sampled precisely so an off-by-one cannot slip through.
+- The parity harness is not optional. `route` and `judged_route` are no longer
+  what a run executes; they are the executable specification of the routing
+  policy, and `orchestrator::parity` proves the jq the engine runs agrees with
+  them. It is exhaustive rather than sampled so an off-by-one cannot slip
+  through. Any change to either side must keep it green.
+- The body has one exit. Every path back to the loop head goes through `pass`,
+  because the engine's `nodes` map is cumulative and a fold with more than one
+  node to read will eventually read a stale one.
 
 Do not edit vendored code through the parent repository. Make TinyAgents or
 TinyFlows changes upstream, push them there, then update this repository's

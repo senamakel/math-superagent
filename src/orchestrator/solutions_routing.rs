@@ -74,7 +74,7 @@ fn diversify_open(tracer: Option<&Arc<RunTracer>>) -> NodeResult<LoopUpdate> {
 /// nothing — and acquiring without reading is the gap this closes, since a
 /// downloaded paper nobody has read has cost the run context and taught it
 /// nothing. Two nodes would say the same thing with an extra edge.
-async fn diversify_library_arm(
+pub(in crate::orchestrator) async fn diversify_library_arm(
     subagents: &AsyncSubagentManager,
     state: &SolutionState,
 ) -> Vec<Finding> {
@@ -113,7 +113,7 @@ async fn diversify_library_arm(
 }
 
 /// The structure arm: what the numbers this run has already produced show.
-async fn diversify_pattern_arm(
+pub(in crate::orchestrator) async fn diversify_pattern_arm(
     subagents: &AsyncSubagentManager,
     state: &SolutionState,
 ) -> Vec<Finding> {
@@ -133,7 +133,7 @@ async fn diversify_pattern_arm(
 }
 
 /// The invention arm: propose, ground, converge.
-async fn diversify_invention_arm(
+pub(in crate::orchestrator) async fn diversify_invention_arm(
     subagents: &AsyncSubagentManager,
     workspace: Option<&Path>,
     state: &SolutionState,
@@ -150,7 +150,7 @@ async fn diversify_invention_arm(
 /// Reached once all three arms have arrived — that is what the waiting edges
 /// registering them buy — so it can fold the slots into one briefing without
 /// checking whether anything is still running.
-fn diversify_merge(mut state: SolutionState) -> SolutionState {
+pub(in crate::orchestrator) fn diversify_merge(mut state: SolutionState) -> SolutionState {
     // Merged rather than assigned: the reflection that routed here has already
     // put this attempt's pattern analysis, and possibly a literature rescue,
     // into the same field. Overwriting would throw away the findings that

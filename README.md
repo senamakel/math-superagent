@@ -346,19 +346,16 @@ Pass a positive problem number to the Project Euler wrapper:
 ./euler 10 "also compare the optimized method with a brute-force check"
 ```
 
-The solution loop runs on the state-graph runtime by default. The same loop is
-also authored as a declarative workflow, which `MATH_AGENT_ENGINE=workflow`
-selects:
+The solution loop runs on a declarative workflow graph. The engine owns the
+routing — which attempt follows which verdict — and each step is a call into
+the same Rust the loop has always used. So the control flow is a document that
+can be read, patched through validated operations, and rendered, while the
+steps that carry a directive into an attempt or salvage a timed-out one are
+unchanged.
 
 ```sh
-MATH_AGENT_ENGINE=workflow ./euler 66
+cargo run --features graph-debug --bin graph-render -- loop.png
 ```
-
-Opt-in while it earns its keep, and it fails safe: an unrecognised value gets
-the default rather than a stopped run. The two are proven to take the same
-routing decisions and to report the same result; what the workflow path buys is
-a loop that is a document — one an agent can read, patch through validated
-operations, and see rendered — rather than Rust that has to be recompiled.
 
 ### Open conjectures
 

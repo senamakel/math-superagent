@@ -18,6 +18,7 @@ mod exec;
 mod folder_index;
 mod frontier;
 mod layout;
+mod loop_steps;
 mod oeis;
 mod patch;
 // Test-only, and deliberately so: this exists to compare the two engines'

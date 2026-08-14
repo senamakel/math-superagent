@@ -104,15 +104,15 @@ pub(super) struct SolutionState {
     /// Accumulated lessons, newest last.
     pub(in crate::orchestrator) lessons: Vec<String>,
     /// Material gathered by the diversify step, fed into the next attempt.
-    fresh_context: String,
+    pub(in crate::orchestrator) fresh_context: String,
     /// Whether reflection judged the problem solved and verified.
     pub(in crate::orchestrator) solved: bool,
     /// The judge's steer for the next attempt, if it gave one.
-    steer: String,
+    pub(in crate::orchestrator) steer: String,
     /// Restarts the judge has already forced.
     pub(in crate::orchestrator) restarts: usize,
     /// The judge's score for each attempt so far, oldest first.
-    scores: Vec<u8>,
+    pub(in crate::orchestrator) scores: Vec<u8>,
     /// What the judge made of the attempt just finished.
     pub(in crate::orchestrator) judged: Verdict,
     /// Consecutive attempts that produced nothing but a provider failure.
@@ -136,7 +136,7 @@ pub(super) struct SolutionState {
     /// an arm that runs beside the loop rather than inside it, which is the
     /// whole reason a proof skeleton can be produced without any attempt
     /// waiting for one.
-    since_reduction: usize,
+    pub(in crate::orchestrator) since_reduction: usize,
 }
 
 impl SolutionState {
@@ -546,7 +546,7 @@ fn salvage_prompt(problem: &str) -> String {
 }
 
 /// Carries out one attempt at the problem, briefed with every lesson so far.
-async fn attempt_step(
+pub(in crate::orchestrator) async fn attempt_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,

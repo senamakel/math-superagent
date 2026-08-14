@@ -8,7 +8,6 @@ use tinyflows::validate::validate_all;
 use super::*;
 use crate::orchestrator::definitions::workflow_agents;
 use crate::orchestrator::default_registry;
-use crate::orchestrator::solutions::DIVERSIFY_MERGE;
 
 fn graph() -> WorkflowGraph {
     let registry = default_registry(true).expect("the default registry builds");
@@ -101,7 +100,11 @@ async fn no_binding_in_the_loop_resolves_to_nothing() {
 /// working, the excluded bindings would be genuinely null and this would fail.
 #[tokio::test]
 async fn the_accumulator_carries_the_reflection_forward() {
+    // A whole state, because the fold replaces rather than merges: a step
+    // returns everything it knows, and a fixture that returned only the
+    // counters would be testing a step that had lost the problem statement.
     let run = run_with(json!({
+        "problem": "find the largest x",
         "attempts": 3, "solved": true, "unproductive": 1, "blocked": 0,
         "computational": 0, "unverified": 0, "restarts": 0,
         "lesson": "the lesson", "fresh_context": "gathered"
@@ -130,8 +133,9 @@ async fn a_solved_reflection_leaves_the_loop() {
     }))
     .await;
     run.assert_node_ran("report");
-    // One pass: solved on the first reflection must not attempt again.
-    run.assert_call_count("agent", Some("goals"), 1);
+    // One pass. Four steps run in it — attempt, judge, reflect, and the merge
+    // is not reached — so a second pass would show as more than four.
+    run.assert_call_count(tinyflows::testkit::capability::TOOLS, Some("run_loop_step"), 3);
 }
 
 /// The arm that catches a run doing well by its own report and going nowhere.
@@ -212,96 +216,44 @@ async fn a_completed_run_has_nothing_to_diagnose() {
 }
 
 
-/// The end-to-end gate for the switch: the whole loop, on the real capability
-/// bundle and the real reflection parser, with only the roles themselves
-/// standing in. Everything between the reflection's prose and the routing
-/// decision is production code here — the tool invoker, `record_verdict`, the
-/// envelope, the fold, and the ladder.
+/// The end-to-end gate for the cutover: the loop, on the real engine, with the
+/// real state serialization at every boundary.
 ///
-/// This is the piece that had to exist before a launcher could be switched: an
-/// `agent` node returns text, and until the parser was wired the accumulator
-/// had nothing to fold.
+/// Only the step *bodies* stand in — those need a live subagent manager and a
+/// vector store. Everything between them is production code: `to_accumulator`
+/// writes the state, the engine folds it, `from_accumulator` reads it back for
+/// the ladder, and `outcome` turns the finished accumulator into the report a
+/// caller sees.
 #[tokio::test]
-async fn the_loop_runs_end_to_end_on_the_real_parser() {
-    use std::sync::Arc;
+async fn the_loop_runs_end_to_end_on_the_real_state_serialization() {
+    use crate::orchestrator::solutions::SolutionState;
 
-    use tinyflows::compiler::compile;
-    use tinyflows::engine::run;
+    let mut solved = SolutionState::new("find the largest x");
+    solved.attempts = 2;
+    solved.solved = true;
+    solved.last_attempt = "the proof, in full".into();
+    solved.lessons = vec!["the bound is tight".into()];
 
-    use crate::agent::budget::RunBudget;
-    use crate::agent::{MockModel, Tool};
-    use crate::orchestrator::async_subagents::{AgentExecutor, AsyncSubagentManager};
-    use crate::orchestrator::caps;
-    use crate::orchestrator::reflection_tool::ParseReflection;
-    use crate::orchestrator::runner::{SubagentAgentRunner, SubagentTaskRunner};
-
-    /// A role that answers with whatever it was registered to say.
-    struct Fixed(&'static str);
-
-    #[async_trait::async_trait]
-    impl AgentExecutor for Fixed {
-        async fn execute(
-            &self,
-            _run_id: &str,
-            _input: String,
-            _steering: tinyagents::harness::steering::SteeringHandle,
-            _tracer: Option<Arc<crate::agent::trace::RunTracer>>,
-        ) -> Result<String, tinyagents::TinyAgentsError> {
-            Ok(self.0.to_string())
-        }
-    }
-
-    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
-    for (role, reply) in [
-        ("goals", "attempted the thing"),
-        ("judge", "SCORE: 4\nVERDICT: PROCEED"),
-        // The real parser reads this prose. No workspace is passed, so the
-        // executable-artifact check cannot run and `solved` rests on the
-        // verdict and the progress line agreeing — which is the documented
-        // behaviour for an absent workspace, not a shortcut.
-        (
-            "reflection",
-            "VERDICT: SOLVED\nPROGRESS: YES\nKIND: MATHEMATICAL\nLESSON: the bound is tight",
-        ),
-    ] {
-        manager
-            .register_executor(role, Arc::new(Fixed(reply)))
-            .expect("registering a role once succeeds");
-    }
-
-    let workspace = std::env::temp_dir().join(format!("riemann-e2e-{}", std::process::id()));
-    std::fs::create_dir_all(&workspace).expect("a scratch workspace can be created");
-
-    let caps = caps::bundle(
-        Arc::new(MockModel::constant("unused: every node names a role")),
-        &workspace,
-        [Arc::new(ParseReflection::new(None)) as Arc<dyn Tool<()>>],
-        SubagentTaskRunner::new(manager.clone()),
-        SubagentAgentRunner::new(manager),
-    );
-
-    let compiled = compile(&graph()).expect("the loop is structurally valid");
-    let outcome = run(&compiled, json!({}), &caps)
+    let run = TestHarness::new(&graph())
+        // The real serialization, not a hand-written fixture: if a field stopped
+        // round-tripping, this is where the loop would start reading nulls.
+        .mock_tool("run_loop_step", Respond::value(solved.to_accumulator()))
+        .run()
         .await
         .expect("the loop runs to completion");
 
-    let state = outcome
-        .output
+    run.assert_completed();
+    run.assert_node_ran("report");
+
+    let finished = run
+        .output()
         .pointer(&format!("/nodes/{LOOP_NODE}/state"))
         .cloned()
         .unwrap_or(Value::Null);
-    // The reflection's prose became the counter that ended the run, through
-    // production code the whole way.
-    assert_eq!(state["solved"], json!(true), "{state}");
-    assert!(
-        outcome.output.pointer("/nodes/report").is_some(),
-        "the loop never reached its terminal node: {}",
-        outcome.output
-    );
-
-    let _ = std::fs::remove_dir_all(&workspace);
+    let report = SolutionState::from_accumulator("", &finished).outcome();
+    assert!(report.contains("Solved after 2 attempt(s)"), "{report}");
+    assert!(report.contains("the proof, in full"), "{report}");
 }
-
 
 /// The two engines must *report* the same, not only route the same. The report
 /// wording is written against specific ways a run can end, so rebuilding the
@@ -345,58 +297,39 @@ fn a_finished_accumulator_reports_what_the_state_graph_would() {
     }
 }
 
-/// The attempt's prose has to survive to the end, or a finished run holds every
-/// counter and none of the text those counters are about.
-#[tokio::test]
-async fn the_attempt_report_reaches_the_accumulator() {
-    let run = run_with(json!({
-        "attempts": 1, "solved": true, "unproductive": 0, "blocked": 0,
-        "computational": 0, "unverified": 0, "restarts": 0,
-        "lesson": "done", "fresh_context": ""
-    }))
-    .await;
-
-    let state = run
-        .output()
-        .pointer(&format!("/nodes/{LOOP_NODE}/state"))
-        .cloned()
-        .unwrap_or(Value::Null);
-    assert_eq!(state["last_attempt"], json!("attempted"), "{state}");
-}
-
-
-/// The body must have exactly one exit, or the fold reads a stale node.
-///
-/// The engine's `nodes` map is cumulative, so if a diversify pass could return
-/// to the loop head through the merge, the fold would keep reading that merge
-/// long after the pass that produced it. Every pass ends at `reflect` instead.
+/// The whole state crosses the boundary and comes back, not only the counters.
+/// A field dropped in the round trip is a field silently reset on every pass,
+/// and the dangerous ones are the quiet ones — `steer` is the judge's direction
+/// for the next attempt, `since_reduction` paces the decomposition arm.
 #[test]
-fn only_one_node_returns_to_the_loop_head() {
-    let graph = graph();
-    let returning: Vec<&str> = graph
-        .edges
-        .iter()
-        .filter(|edge| edge.to_node.as_str() == LOOP_NODE)
-        .map(|edge| edge.from_node.as_str())
-        .collect();
-    // `start` seeds the loop; everything else arrives through the one pass node.
-    let mut returning: Vec<&str> = returning;
-    returning.sort_unstable();
-    returning.dedup();
-    assert_eq!(
-        returning,
-        ["start", PASS_NODE],
-        "more than one node returns to the loop head, so the fold can read a stale pass"
-    );
-    // ...and every body path really does reach it.
-    for from in ["route", DIVERSIFY_MERGE] {
-        assert!(
-            graph
-                .edges
-                .iter()
-                .any(|edge| edge.from_node.as_str() == from
-                    && edge.to_node.as_str() == PASS_NODE),
-            "`{from}` does not lead to the pass node"
-        );
-    }
+fn every_field_survives_the_accumulator_round_trip() {
+    use crate::orchestrator::solutions::{SolutionState, Verdict};
+
+    let mut original = SolutionState::new("find the largest x");
+    original.attempts = 4;
+    original.unproductive = 2;
+    original.blocked = 1;
+    original.computational = 3;
+    original.unverified = 1;
+    original.restarts = 2;
+    original.since_reduction = 2;
+    original.solved = true;
+    original.last_attempt = "what the attempt said".into();
+    original.fresh_context = "gathered material".into();
+    original.steer = "try the other reduction".into();
+    original.judged = Verdict::Restart;
+    original.scores = vec![3, 4, 2];
+    original.lessons = vec!["first".into(), "second".into()];
+
+    let returned = SolutionState::from_accumulator("", &original.to_accumulator());
+
+    assert_eq!(returned.to_accumulator(), original.to_accumulator());
+    // Spot-checked individually too, so a round trip that lost a field on both
+    // sides at once would still fail.
+    assert_eq!(returned.steer, "try the other reduction");
+    assert_eq!(returned.since_reduction, 2);
+    assert_eq!(returned.judged, Verdict::Restart);
+    assert_eq!(returned.scores, vec![3, 4, 2]);
+    assert_eq!(returned.lessons.len(), 2);
+    assert_eq!(returned.problem(), "find the largest x");
 }

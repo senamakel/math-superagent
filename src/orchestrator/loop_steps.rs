@@ -118,16 +118,23 @@ impl LoopSteps {
                 )
                 .await
             }
+            // The arm reads the state and the fold writes it, so the read has
+            // to finish first — `&state` while `state` is being moved into the
+            // fold is the same aliasing the concurrent version avoids by giving
+            // each arm its own activation.
             "diversify_library" => {
-                fold_arm(state, diversify_library_arm(&self.subagents, &state).await)
+                let findings = diversify_library_arm(&self.subagents, &state).await;
+                fold_arm(state, findings)
             }
             "diversify_patterns" => {
-                fold_arm(state, diversify_pattern_arm(&self.subagents, &state).await)
+                let findings = diversify_pattern_arm(&self.subagents, &state).await;
+                fold_arm(state, findings)
             }
-            "diversify_invention" => fold_arm(
-                state,
-                diversify_invention_arm(&self.subagents, workspace, &state).await,
-            ),
+            "diversify_invention" => {
+                let findings =
+                    diversify_invention_arm(&self.subagents, workspace, &state).await;
+                fold_arm(state, findings)
+            }
             "diversify_merge" => diversify_merge(state),
             _ => {
                 return Err(tinyagents::TinyAgentsError::Validation(format!(
@@ -136,6 +143,16 @@ impl LoopSteps {
             }
         })
     }
+}
+
+/// Whether `step` is one this tool runs.
+///
+/// Pure, so it is testable without a run's context — the tool itself needs a
+/// live subagent manager and a vector store, which a unit test has no business
+/// standing up. What can go wrong here is a workflow naming a step that does
+/// not exist, and that is answerable from the name alone.
+pub(super) fn known_step(step: &str) -> bool {
+    STEPS.contains(&step)
 }
 
 /// Files one arm's findings into the state's slots.
@@ -191,6 +208,11 @@ impl Tool<()> for LoopSteps {
             .ok_or_else(|| {
                 tinyagents::TinyAgentsError::Validation("run_loop_step needs a `step`".into())
             })?;
+        if !known_step(step) {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "unknown loop step `{step}`; expected one of {STEPS:?}"
+            )));
+        }
         let accumulator = call.arguments.get("state").cloned().unwrap_or(Value::Null);
         let state = SolutionState::from_accumulator("", &accumulator);
         let next = self.run(step, state).await?;

@@ -71,9 +71,9 @@ const NODES: [(&str, &str); 9] = [
 /// - `solve` — the `loop` head. It exists to own the accumulator and to
 ///   recognise a finished run; the state graph keeps both in `SolutionState`
 ///   and needs no node for them.
-/// - `parse` — an `agent` node returns prose, so the verdict has to become
-///   counters before the ladder can read them. The state graph does that
-///   inside its reflect node.
+/// - `pass` — the body's single exit. The engine's `nodes` map is cumulative,
+///   so a fold with more than one node to read would read a stale one; the
+///   state graph's edges carry that ordering implicitly and need no node.
 /// - `judged` and `route` — the routing ladders as their own `switch` nodes.
 ///   The state graph carries both as router *closures* attached to an edge, so
 ///   they are decisions without nodes; a document has to name them to hold
@@ -84,7 +84,7 @@ const NODES: [(&str, &str); 9] = [
 /// Pinned so a fourth difference is a decision somebody makes here rather than
 /// a drift nobody notices.
 #[cfg(test)]
-pub(super) const WORKFLOW_ONLY: [&str; 5] = ["solve", "parse", "judged", "route", "report"];
+pub(super) const WORKFLOW_ONLY: [&str; 5] = ["solve", "pass", "judged", "route", "report"];
 
 /// Builds the solution loop as a `TinyFlows` workflow graph.
 ///

@@ -254,9 +254,31 @@ impl OrchestratorAgent {
     async fn solve_on_workflow(&self, problem: &str) -> Result<String> {
         let patterns = solutions::Mailbox::default();
         let directives = solutions::Mailbox::default();
+        let skeletons = solutions::Mailbox::default();
         let support = self.spawn_support_teams(problem, &patterns, &directives);
 
-        let outcome = self.run_workflow_loop(problem).await;
+        // The same mailboxes and beside-arms the state graph gave its steps.
+        // They are what carries a directive into an attempt and what opens the
+        // pattern and reduction arms, and the steps drain them exactly as
+        // before — see `loop_steps`.
+        let mailboxes = solutions::Mailboxes {
+            patterns: patterns.clone(),
+            directives,
+            skeletons: skeletons.clone(),
+        };
+        let beside = solutions::Beside {
+            patterns,
+            reduction: solutions::Reduction {
+                outbox: skeletons,
+                // One gate for the run, so a reduction that outlives the cycle
+                // that opened it cannot be joined by a second one writing the
+                // same file.
+                gate: solutions::ReductionGate::default(),
+            },
+            teams: support.clone(),
+        };
+
+        let outcome = self.run_workflow_loop(problem, beside, mailboxes).await;
 
         for team in &support {
             team.cancel();
@@ -292,9 +314,22 @@ impl OrchestratorAgent {
     /// not be called solved, a provider failure must not read as a
     /// mathematical one — and a second version of it would get one of them
     /// wrong.
-    async fn run_workflow_loop(&self, problem: &str) -> Result<String> {
+    async fn run_workflow_loop(
+        &self,
+        problem: &str,
+        beside: solutions::Beside,
+        mailboxes: solutions::Mailboxes,
+    ) -> Result<String> {
         let graph = self.workflow_graph(problem);
-        let capabilities = self.workflow_capabilities([])?;
+        let steps = Arc::new(loop_steps::LoopSteps::new(
+            self.subagents.clone(),
+            Some(self.tracer.clone()),
+            Some(self.workspace.clone()),
+            self.memory.clone(),
+            beside,
+            mailboxes,
+        )) as Arc<dyn Tool<()>>;
+        let capabilities = self.workflow_capabilities([steps])?;
         let compiled = tinyflows::compiler::compile(&graph).map_err(|error| {
             tinyagents::TinyAgentsError::Graph(format!("the loop graph is invalid: {error}"))
         })?;
