@@ -41,74 +41,105 @@ impl OrchestratorAgent {
         let checkpoint: Arc<dyn tinyagents::harness::middleware::Middleware<()>> = Arc::new(
             checkpoint::WorkspaceCheckpoint::new(workspace.clone(), Some(tracer.clone())),
         );
-        let mut prompts = RolePrompts::load(&workspace)?;
-
         let search = search_tools(research_enabled, &documents)?;
 
-        let mut research_harness = build_research_harness(
-            &model,
-            budget,
-            &tracer,
-            &documents,
-            &vector_store,
-            search.clone(),
-        );
-        research_harness.push_middleware(checkpoint.clone());
-        async_subagents.register(
-            "research",
-            Arc::new(research_harness),
-            std::mem::take(&mut prompts.research),
-        )?;
+        // Every school gets its own copy of every role, because a role's prompt
+        // is where the school actually lives. They share one manager, and so
+        // one concurrency semaphore, one trace and one budget pool: two schools
+        // competing for the same fifty slots is the point, and a second manager
+        // would give each of them fifty.
+        let schools = schools::selected();
+        let mut opening: Option<(AgentHarness<()>, String)> = None;
+        for school in &schools {
+            // Qualified only when there is more than one. A lone school
+            // registers unqualified, so the single-school run is today's run to
+            // the byte rather than today's run with a suffix on every name.
+            let scoped = if schools.len() > 1 {
+                async_subagents.for_school(school.slug)
+            } else {
+                async_subagents.clone()
+            };
+            let mut prompts = RolePrompts::for_school(&workspace, school)?;
 
-        register_code_writing_agents(
-            &async_subagents,
-            &CodeWriters {
-                model: &model,
+            let mut research_harness = build_research_harness(
+                &model,
                 budget,
-                tracer: &tracer,
-                workspace: &workspace,
-                documents: &documents,
-                checkpoint: &checkpoint,
-                vector_store: &vector_store,
-            },
-            prompts.code_writers(),
-        )?;
+                &tracer,
+                &documents,
+                &vector_store,
+                search.clone(),
+            );
+            research_harness.push_middleware(checkpoint.clone());
+            scoped.register(
+                "research",
+                Arc::new(research_harness),
+                std::mem::take(&mut prompts.research),
+            )?;
 
-        register_support_agents(
-            &async_subagents,
-            &SupportAgents {
-                model: &model,
-                reasoning: &reasoning,
-                budget,
-                tracer: &tracer,
-                documents: &documents,
-                vector_store: vector_store.clone(),
-                search: search.clone(),
-                workspace: workspace.clone(),
-                delegation: async_subagents.tools(PATTERN_DELEGATES),
-            },
-            prompts.support(),
-        )?;
+            register_code_writing_agents(
+                &scoped,
+                &CodeWriters {
+                    model: &model,
+                    budget,
+                    tracer: &tracer,
+                    workspace: &workspace,
+                    documents: &documents,
+                    checkpoint: &checkpoint,
+                    vector_store: &vector_store,
+                },
+                prompts.code_writers(),
+            )?;
 
-        let orchestrator_harness = register_planners(
-            &async_subagents,
-            &Planners {
-                model: &model,
-                budget,
-                tracer: &tracer,
-                documents: &documents,
-                vector_store: &vector_store,
-            },
-            std::mem::take(&mut prompts.goals),
-        )?;
+            register_support_agents(
+                &scoped,
+                &SupportAgents {
+                    model: &model,
+                    reasoning: &reasoning,
+                    budget,
+                    tracer: &tracer,
+                    documents: &documents,
+                    vector_store: vector_store.clone(),
+                    search: search.clone(),
+                    workspace: workspace.clone(),
+                    // Resolved through the scoped handle, so a pattern agent
+                    // delegating to `tool_builder` reaches its own school's.
+                    delegation: scoped.tools(PATTERN_DELEGATES),
+                    school: school.slug,
+                },
+                prompts.support(),
+            )?;
+
+            let orchestrator_harness = register_planners(
+                &scoped,
+                &Planners {
+                    model: &model,
+                    budget,
+                    tracer: &tracer,
+                    documents: &documents,
+                    vector_store: &vector_store,
+                },
+                std::mem::take(&mut prompts.goals),
+            )?;
+            // `run` gives one agent a single turn, so it belongs to one school:
+            // the first selected, which is the control unless an operator
+            // deliberately ordered the list otherwise. Schools are a property
+            // of the solution loop, and a single-turn delegation is not one.
+            if opening.is_none() {
+                opening = Some((orchestrator_harness, prompts.orchestrator));
+            }
+        }
+        let (orchestrator_harness, system_prompt) = opening.ok_or_else(|| {
+            tinyagents::TinyAgentsError::Config("no school was selected for this run".into())
+        })?;
 
         let registry = Arc::new(default_registry(research_enabled)?);
 
         Ok(Self {
             inner: ObservedAgent::from_harness(orchestrator_harness)?.with_tracer(tracer.clone()),
             registry,
-            system_prompt: prompts.orchestrator,
+            system_prompt,
             subagents: async_subagents,
+            schools,
             tracer,
             workspace,
             memory: vector_store,
@@ -150,37 +181,62 @@ impl OrchestratorAgent {
     /// failing specialist is still a lesson rather than a failure: that is the
     /// roles' behaviour, not the engine's, and it is unchanged here.
     async fn solve_on_workflow(&self, problem: &str) -> Result<String> {
+        // One set of standing teams for the whole run, not one per school.
+        // Three librarians on one library is waste rather than diversity: what
+        // differs between schools is how they attack the problem, and gathering
+        // sources is the same job whoever asked for them. Their reports reach
+        // every school, through the fan-out below.
         let patterns = solutions::Mailbox::default();
         let directives = solutions::Mailbox::default();
-        let skeletons = solutions::Mailbox::default();
         let support = self.spawn_support_teams(problem, &patterns, &directives);
 
-        // The same mailboxes and beside-arms the state graph gave its steps.
-        // They are what carries a directive into an attempt and what opens the
-        // pattern and reduction arms, and the steps drain them exactly as
-        // before — see `loop_steps`.
-        let mailboxes = solutions::Mailboxes {
-            patterns: patterns.clone(),
-            directives,
-            skeletons: skeletons.clone(),
-        };
-        let beside = solutions::Beside {
-            // The same mailbox the standing teams post to, and the same one the
-            // attempt drains. A literature sweep and a team report are both
-            // "what arrived beside the loop since the last attempt", so they
-            // are rendered under that one heading rather than two.
-            library: patterns,
-            reduction: solutions::Reduction {
-                outbox: skeletons,
-                // One gate for the run, so a reduction that outlives the cycle
-                // that opened it cannot be joined by a second one writing the
-                // same file.
-                gate: solutions::ReductionGate::default(),
-            },
-            teams: support.clone(),
-        };
+        // Each school drains its own mailboxes, so each needs its own. A single
+        // shared mailbox would be drained by whichever school asked first and
+        // the others would never see the report at all.
+        let mut lanes = Vec::new();
+        for school in &self.schools {
+            let library = solutions::Mailbox::default();
+            let direction = solutions::Mailbox::default();
+            let skeletons = solutions::Mailbox::default();
+            let mailboxes = solutions::Mailboxes {
+                patterns: library.clone(),
+                directives: direction.clone(),
+                skeletons: skeletons.clone(),
+            };
+            let beside = solutions::Beside {
+                // The same mailbox the standing teams post to, and the same one
+                // the attempt drains. A literature sweep and a team report are
+                // both "what arrived beside the loop since the last attempt",
+                // so they are rendered under that one heading rather than two.
+                library: library.clone(),
+                reduction: solutions::Reduction {
+                    outbox: skeletons,
+                    // One gate per school rather than one per run. Its purpose
+                    // is that two decompositions cannot write the same
+                    // `research/backward/<slug>.md`, and two schools reducing
+                    // the same goal are exactly that collision — but they are
+                    // also the diversity the schools exist for, so they are
+                    // separated by writing under their own names rather than by
+                    // one being made to wait for the other.
+                    gate: solutions::ReductionGate::default(),
+                },
+                teams: support.clone(),
+            };
+            lanes.push((*school, library, direction, beside, mailboxes));
+        }
 
-        let outcome = self.run_workflow_loop(problem, beside, mailboxes).await;
+        // What the standing teams found reaches every school, and so does what
+        // an operator asked for. `take_directives` drains the queue exactly
+        // once — the cursor is single-consumer by design — so the fan-out is
+        // here, after the drain, rather than by giving each school its own
+        // reader of the same file.
+        let fanout = solutions::Fanout::new(
+            lanes.iter().map(|lane| lane.1.clone()).collect(),
+            lanes.iter().map(|lane| lane.2.clone()).collect(),
+        );
+        fanout.attach(&patterns, &directives);
+
+        let outcome = self.run_schools(problem, lanes).await;
 
         // The teams are normally already stopped: the loop's `stand_down` node
         // does it the moment the loop ends, so they take no cycles while the

@@ -580,6 +580,10 @@ fn library_agents(
                 "await_agents",
             ]
             .into_iter()
+            // The role that decides what the next run is spent on, and so the
+            // one placed to say what it is about to spend it on before a
+            // sibling spends the same run twice.
+            .chain(BOARD_TOOLS)
             .chain(memory_tools)
             .chain(SCRATCH_TOOLS)
             .chain(document_tools),

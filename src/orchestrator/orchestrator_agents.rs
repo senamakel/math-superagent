@@ -9,31 +9,21 @@ struct Planners<'a> {
     vector_store: &'a VectorStore,
 }
 
-/// The manager one school registers its roles on and delegates through.
-///
-/// Every registration in this file takes a manager and a bare role name, and
-/// every delegation bench in this crate names roles bare. Handing a school its
-/// own scoped manager is therefore the whole of school-awareness on this side:
-/// `subagents.register("goals", …)` becomes `goals@rising-sea`, and the
-/// `spawn_agent` tools built from the same handle send a bare `tool_builder`
-/// to `tool_builder@rising-sea`. A role cannot leak out of its school, because
-/// nothing it can name reaches outside one.
-///
-/// A run with one school is left unqualified. The loop driving it holds the
-/// unscoped manager and calls `run_to_completion` with bare names, so an
-/// unqualified registration is what makes a single-school run — the control
-/// school alone, which is the default — identical to the run before schools
-/// existed.
-fn school_manager(
-    subagents: &AsyncSubagentManager,
-    schools: &[schools::School],
-    school: &schools::School,
-) -> AsyncSubagentManager {
-    if schools.len() < 2 {
-        return subagents.clone();
-    }
-    subagents.for_school(school.slug)
-}
+// Every registration in this file takes a manager and a bare role name, and
+// every delegation bench in this crate names roles bare. Handing a school its
+// own scoped manager is therefore the whole of school-awareness on this side:
+// `subagents.register("goals", …)` becomes `goals@rising-sea`, and the
+// `spawn_agent` tools built from the same handle send a bare `tool_builder` to
+// `tool_builder@rising-sea`. A role cannot leak out of its school, because
+// nothing it can name reaches outside one. See
+// [`AsyncSubagentManager::for_school`].
+
+// Declared here rather than beside `mod board` in `orchestrator_core.rs`
+// because `src/orchestrator/board_tool.rs` arrived without a declaration and
+// this file is the one that registers the tool. It resolves to the same path —
+// every `orchestrator_*.rs` is included into `mod.rs` — so moving the line up
+// to sit beside its sibling is a one-line change and should be made.
+mod board_tool;
 
 /// The school a role registered through `subagents` posts to the board as.
 ///
@@ -264,6 +254,14 @@ struct SupportAgents<'a> {
     workspace: PathBuf,
     /// Delegation tools, so the pattern agent can commission a computation.
     delegation: Vec<Arc<dyn Tool<()>>>,
+    /// The school these roles belong to, and post to the board as.
+    ///
+    /// Carried explicitly rather than read back off the manager, because the
+    /// sender of a board post is an authority boundary: it is baked into the
+    /// tool at registration and is never a field the model fills in, since a
+    /// school able to name its own sender could attribute a hunch to a sibling
+    /// and the board's whole value is that a reader can tell who found what.
+    school: &'static str,
 }
 
 impl SupportAgents<'_> {
@@ -399,7 +397,7 @@ fn register_inventor(
     // A closed line of attack is the most valuable thing this role produces
     // that is not an idea, and the only role placed to tell the other schools
     // about it before they spend a run rediscovering it.
-    for tool in board_tool::BoardTool::all(parts.documents, &posting_as(subagents)) {
+    for tool in board_tool::BoardTool::all(parts.documents, parts.school) {
         register_resilient(&mut inventor, tool);
     }
     subagents.register_with_turn_cap(
@@ -601,7 +599,7 @@ fn register_support_agents(
     // way to say so to the schools about to try it. It is a post rather than a
     // claim, and this tool cannot file one: reflection writes lessons, and a
     // lesson is exactly the half-formed thing the board is for.
-    for tool in board_tool::BoardTool::all(parts.documents, &posting_as(subagents)) {
+    for tool in board_tool::BoardTool::all(parts.documents, parts.school) {
         register_resilient(&mut reflection, tool);
     }
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;

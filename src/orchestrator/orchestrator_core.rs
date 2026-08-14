@@ -391,6 +391,13 @@ pub struct OrchestratorAgent {
     registry: Arc<AgentRegistry>,
     system_prompt: String,
     subagents: AsyncSubagentManager,
+    /// The schools this run works in, in the order they were selected.
+    ///
+    /// Resolved once at construction rather than read from the environment
+    /// where it is used, so registration and the solution loop cannot disagree
+    /// about which schools exist — the loop drives exactly the roles that were
+    /// registered, and a second read is a second answer.
+    schools: Vec<schools::School>,
     tracer: Arc<RunTracer>,
     workspace: PathBuf,
     memory: VectorStore,
