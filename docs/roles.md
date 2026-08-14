@@ -187,11 +187,9 @@ The runtime has twenty-one roles plus an explicit solution loop.
   the difficulties that make the goal hard, then writes a ladder of weakened
   versions to `research/weakened/<slug>.md` — each rung saying which
   difficulties are switched off and what turning the next one back on would
-  take — and `research/WEAKENED.md` is derived from those files. It exists
-  because `solved` was binary: a run that proved a weakened case had one word
-  for it, and that word was *unsolved*. A rung does not imply the goal, which is
-  not a defect in it. A rung that was attacked and failed stays on the ladder
-  with the reason, because deleting it is how the same one is proposed again
+  take — and `research/WEAKENED.md` is derived from those files. A rung does not
+  imply the goal, which is not a defect in it. A failed rung stays on the ladder
+  with its reason, because deleting it is how the same one is proposed again
   three attempts later. Its tool set is the reducer's exactly, for the reducer's
   reasons, and it is on the stronger reasoning model because a statement
   weakened until it is vacuous reads exactly like one weakened until it is
@@ -204,26 +202,24 @@ The runtime has twenty-one roles plus an explicit solution loop.
   since a construction with a readable program behind it is an explanation where
   a number is only an answer. Three of the four ingredients (one evolved
   function, best-shot prompting, an island population) are bookkeeping and live
-  in Rust: a model recalling which of four hundred programs scored best is
-  spending its turn on arithmetic nothing can get wrong in code.
+  in Rust: a model recalling which of four hundred programs scored best spends
+  its turn on arithmetic nothing can get wrong in code.
 
   **Its authority is a set of absences.** No `write_tool_file`, no
   `execute_command`, no patch tool. `submit_candidate` is its only route to
   disk, and it writes into `candidates/` and scores what it wrote in the same
   call — so a candidate cannot be recorded without having been executed, and
-  `score.py` is unreachable. The second is the load-bearing one and the risk is
-  measured rather than hypothetical: AlphaEvolve proved "extremely good at
-  locating exploits in the verification code", satisfying a minimum-distance
-  constraint by stacking points nearly on top of one another, and Tao's team
-  rewrote every verifier in exact arithmetic in response. A searcher that could
-  edit its verifier would be grading its own work. A test asserts the absences,
-  because this boundary is the kind that erodes one convenient grant at a time.
+  `score.py` is unreachable. The second is load-bearing and the risk is
+  measured: AlphaEvolve proved "extremely good at locating exploits in the
+  verification code", satisfying a minimum-distance constraint by stacking
+  points nearly on top of one another, and Tao's team rewrote every verifier in
+  exact arithmetic in response. A test asserts the absences, because this is the
+  kind of boundary that erodes one convenient grant at a time.
 
   A rejected candidate costs one line and no lesson — a search is wrong
-  thousands of times cheaply, and per-rejection guidance would be re-read on
-  every one — but it is still *recorded*, so the board can say how many
-  candidates bought the best score. Four hundred without improvement is a
-  finding no leaderboard of winners can show.
+  thousands of times cheaply — but it is still *recorded*, so the board can say
+  how many candidates bought the best score. Four hundred without improvement is
+  a finding no leaderboard of winners can show.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
