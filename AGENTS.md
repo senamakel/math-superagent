@@ -28,6 +28,9 @@ evidence for it stays available.
   tracing that makes a run legible.
 - [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the
   research tree, the six derived ledgers, and checkpointing.
+- [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
+  harness is measured against, the two-layer evidence screen, and why blocking
+  retrieval is not the same as blocking recall.
 
 Keep them consistent with the code. A rule here that the code does not enforce
 is the failure this repository keeps recording: a prompt instruction is not a
@@ -126,6 +129,51 @@ continues from what is on disk.
 The runtime's console arrives on the container's **stderr**, not its stdout —
 a live container had 643 lines there and none on stdout — so `docker logs`
 needs `2>&1` and any follower must read both streams.
+
+## Calibration runs
+
+Nothing measures whether the harness is working. A run against an open
+conjecture produces notes, ledgers and code, but with no known destination there
+is no way to tell a harness closing in on a proof from one generating plausible
+mathematical activity, so every architecture change is made blind.
+
+A **calibration run** supplies the reference: a conjecture that has already been
+solved, stated as open, with the literature carrying its answer withheld.
+
+```sh
+./calibrate unit-distance-plane-chromatic     # start or continue
+./diagnose  --workspace conjectures/unit-distance-plane-chromatic
+./euler-tui --workspace conjectures/unit-distance-plane-chromatic
+scripts/eval-report unit-distance-plane-chromatic
+```
+
+The rules:
+
+- **The answer key never enters the container.** `GROUND_TRUTH.md`, `RUBRIC.md`
+  and the plaintext `screen.terms` live under `evals/<slug>/`, outside
+  `workspace/`, which is the only tree bind-mounted. `./calibrate` refuses to
+  start if one has been copied into the mount.
+- **The compiled blocklist is hashed.** `execute_command` can read any file the
+  runtime can, so a plaintext blocklist mounted for the screen would hand the
+  run the names it withholds. `scripts/compile-screen` emits salted digests;
+  the ledger records decisions and never terms.
+- **The screen is two layers and only the first two are controls.** The proxy
+  in `compose.eval.yaml` decides which hosts are reachable — it is what closes
+  `execute_command`, which otherwise reaches any paper on the web without
+  touching a screened tool. `orchestrator::screen` sees plaintext and decides
+  whether an allowed source reveals the answer. The host-side leakage audit is
+  not a control; it catches recall, which no control can stop.
+- **`MATH_AGENT_SCREEN` absent means no screen**, so an ordinary run is
+  untouched. Named but unreadable is a hard startup failure: an unscreened
+  calibration run looks entirely normal and measures nothing.
+- **A seed is a time capsule, not a puzzle.** `evals/<slug>/seed/problem.md`
+  states the art as of the year before the solution, honestly, including the
+  obstruction and the leads genuinely available then. Where a seed hints
+  substantially, `GROUND_TRUTH.md` records how much so the score can account
+  for it.
+- Do not add a fourth problem without a `GROUND_TRUTH.md` recording its
+  de-naming strength, and a `RUBRIC.md` whose milestones require an artifact
+  rather than a statement.
 
 ## Docker and workspace rules
 
