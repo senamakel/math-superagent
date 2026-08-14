@@ -1,0 +1,19 @@
+{"at":"1786726860","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786726860","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786726888","decision":"denied","detail":"term matched in 12133 characters","stage":"result","tool":"exa_search"}
+{"at":"1786726923","decision":"denied","detail":"term matched in 12103 characters","stage":"result","tool":"exa_search"}
+{"at":"1786726939","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786726939","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786726959","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786726974","decision":"denied","detail":"term matched in 12105 characters","stage":"result","tool":"exa_search"}
+{"at":"1786726995","decision":"denied","detail":"term matched in 12139 characters","stage":"result","tool":"exa_search"}
+{"at":"1786726995","decision":"denied","detail":"term matched in 12147 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727006","decision":"denied","detail":"term matched in 12149 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727006","decision":"denied","detail":"term matched in 12134 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727056","decision":"denied","detail":"term matched in 12092 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727076","decision":"denied","detail":"term matched in 12082 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727077","decision":"denied","detail":"term matched in 12080 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727113","decision":"denied","detail":"term matched in 12094 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727128","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786727129","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"read_sources"}
+{"at":"1786727135","decision":"denied","detail":"term matched in 12160 characters","stage":"result","tool":"exa_search"}
