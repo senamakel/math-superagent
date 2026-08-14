@@ -67,19 +67,17 @@ available, so the agent can still record and recall its own findings.
 ## Schools
 
 A *school* is one way of attacking a problem; two or three run concurrently on
-one workspace, sharing the ledgers and a board. Each one's bet is in
-[`docs/schools.md`](docs/schools.md).
+one workspace, sharing the ledgers and a board. Each one's bet:
+[`docs/schools.md`](docs/schools.md). Not a second loop, graph, or set of roles.
 
-- **Four things, and it must stay four:** a method-policy overlay layered
-  *after* the shared policy, per-role overlays, a bench, and its `Thresholds`.
-  Not a second loop, graph, workspace, or set of roles.
-- **The control does not move.** `chisel` is the runtime as it has always been,
-  is what an unset `MATH_AGENT_SCHOOLS` selects, and has an empty overlay; the
-  tests assert its prompts are byte-identical rather than trusting it.
-- **Thresholds are a struct, not a second set of constants.** `route` and the jq
-  the engine runs both read one, and `orchestrator::parity` proves they agree
-  for *every* school. None may move `blocked` — a provider failure is not a
-  methodological question.
+- **Four things, and it must stay four:** a method-policy overlay layered *after*
+  the shared policy, per-role overlays, a bench, its `Thresholds`.
+- **The control does not move.** `chisel` is today's runtime, is what an unset
+  `MATH_AGENT_SCHOOLS` selects, and has an empty overlay; the tests assert its
+  prompts are byte-identical rather than trusting it.
+- **Thresholds are a struct, not a second set of constants.** `route` and the
+  jq the engine runs both read one, and `orchestrator::parity` proves they
+  agree for *every* school. None may move `blocked`.
 - **A board post is asserted, never established.** `teams/BOARD.md` is derived
   from an append-only queue and never feeds a ledger; the posting school is
   baked into the tool, so none can post as another.
