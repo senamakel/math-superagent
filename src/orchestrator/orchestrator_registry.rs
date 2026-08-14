@@ -96,12 +96,25 @@ const DISCOVERY_TOOLS: [&str; 4] = [
     "deep_research",
 ];
 
+/// The registry this run's roles are declared in.
+///
+/// One copy of every role per school this run was asked for, which for the
+/// default selection — the control school alone — is exactly the registry the
+/// runtime declared before schools existed. See [`schooled_registry`].
+///
+/// # Errors
+///
+/// Returns an error when a definition cannot be registered.
+fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
+    schooled_registry(research_enabled, &schools::selected())
+}
+
 /// The registry for a run, with one copy of every role per school.
 ///
-/// Derived from [`default_registry`] rather than assembled a second time: a
-/// school changes what a role is *told*, never what it may touch, so a second
-/// list of tool grants would be a second answer to a question about authority.
-/// Ids match the names the harness registers under, which is what
+/// Derived from [`role_registry`] rather than assembled a second time: a school
+/// changes what a role is *told*, never what it may touch, so a second list of
+/// tool grants would be a second answer to a question about authority. Ids
+/// match the names the harness registers under, which is what
 /// [`AsyncSubagentManager::for_school`] produces, so an `agent_ref` in a
 /// workflow, a `spawn_agent` argument, and a registration are one vocabulary.
 ///
@@ -118,7 +131,7 @@ fn schooled_registry(
     research_enabled: bool,
     schools: &[schools::School],
 ) -> Result<AgentRegistry> {
-    let base = default_registry(research_enabled)?;
+    let base = role_registry(research_enabled)?;
     if schools.len() < 2 {
         return Ok(base);
     }
@@ -134,7 +147,8 @@ fn schooled_registry(
     Ok(registry)
 }
 
-fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
+/// Every role once, under its bare name: the tool grants a school inherits.
+fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
     let document_tools = [
         "download_document",
         "read_document",

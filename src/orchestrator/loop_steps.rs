@@ -181,14 +181,14 @@ impl LoopSteps {
     /// Nothing is cancelled mid-attempt and no work already paid for is thrown
     /// away.
     fn expired(&self) -> bool {
-        if self
-            .solved_elsewhere
-            .as_ref()
-            .is_some_and(|solved| solved.load(std::sync::atomic::Ordering::Relaxed))
-        {
-            return true;
-        }
-        self.started.elapsed() >= super::solutions::run_ceiling()
+        stop_requested(self.started, self.solved_elsewhere.as_deref())
+    }
+
+    /// Whether a sibling school got there first.
+    fn overtaken(&self) -> bool {
+        self.solved_elsewhere
+            .as_deref()
+            .is_some_and(overtaken_by_a_sibling)
     }
 
     /// Runs one step against `state`, and returns the accumulator it produced.
@@ -233,6 +233,19 @@ impl LoopSteps {
         // `fold_evaluation`, which folds numbers as deltas from the base and
         // would turn one into arithmetic on timestamps.
         merged.expired = self.expired();
+        // Said out loud, because it is the one ending a reader would otherwise
+        // have to infer. A school that stops here has no counter at its
+        // threshold and no clock spent; without this line its console simply
+        // ends, which is the shape of a crash rather than of a decision.
+        if merged.expired
+            && self.overtaken()
+            && let Some(tracer) = self.tracer.as_ref()
+        {
+            tracer.note(&format!(
+                "solution loop: {} stands down, another school verified a solution first",
+                self.school.unwrap_or("this loop")
+            ));
+        }
         merged.to_accumulator()
     }
 
@@ -376,6 +389,31 @@ impl LoopSteps {
         }
         Ok(carried)
     }
+}
+
+/// Whether the flag a sibling school sets on a verified solve is set.
+///
+/// A free function, and `Relaxed` because there is nothing to order against:
+/// the flag is one bit read once per pass, and a school that reads it a
+/// microsecond late simply stops one pass later than it could have.
+fn overtaken_by_a_sibling(solved_elsewhere: &std::sync::atomic::AtomicBool) -> bool {
+    solved_elsewhere.load(std::sync::atomic::Ordering::Relaxed)
+}
+
+/// Whether a run that has just finished a pass should not start another.
+///
+/// Pure, and separate from [`LoopSteps::expired`] for the reason [`known_step`]
+/// is separate from the tool: what can go wrong here is answerable from a clock
+/// and a flag, while a [`LoopSteps`] needs a live subagent manager and a vector
+/// store, which a unit test has no business standing up.
+fn stop_requested(
+    started: std::time::Instant,
+    solved_elsewhere: Option<&std::sync::atomic::AtomicBool>,
+) -> bool {
+    if solved_elsewhere.is_some_and(overtaken_by_a_sibling) {
+        return true;
+    }
+    started.elapsed() >= super::solutions::run_ceiling()
 }
 
 /// Establishes what the run is working on, before the first attempt.
