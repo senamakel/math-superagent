@@ -10,6 +10,11 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | --- | --- | --- | --- | --- |
 | `coprimality-iff-visible` | A lattice point (x,y) is visible from the origin iff gcd(x,y) = 1; a point is hidden iff its coordinates have gcd > 1, since then (x/g,y/g) is a strictly closer lattice point on the same ray. | yes | asserted | `research/notes/pe351-governing-theory.md` |
 | `gauss-divisor-sum-of-totient` | sum_{d\|n} phi(d) = n for every positive integer n (Gauss); hence sum_{d=1..n} Phi(floor(n/d)) = n(n+1)/2, which rearranges to the summatory recursion Phi(n) = n(n+1)/2 - sum_{d=2..n} Phi(floor(n/d)), evaluated in… | yes | asserted | `research/notes/pe351-governing-theory.md` |
+| `heath-brown-mobius-identity` | For u ≥ √x, μ(n) = − Σ_{m1 m2 n1 = n, m1,m2 ≤ u} μ(m1)μ(m2) + 2μ(n)·[n ≤ u]; summing over n ≤ x gives M(x) = 2M(u) − Σ_{m1,m2 ≤ u} μ(m1)μ(m2)⌊x/(m1 m2)⌋. | yes | asserted | `research/summaries/springer-helfgott-thompson-summing-mu.md` |
+| `hexagonal-orchard-closed-form` | For every n ≥ 1, H(n) = 6·(C(n+1,2) − Σ_{k=1..n} φ(k)) = 6·Σ_{k=1..n}(k − φ(k)). | yes | asserted | `research/summaries/oeis-A216453-hexagonal-orchard-hidden.md` |
+| `lehman-mertens-identity` | For 1 ≤ u ≤ x, M(x) = M(u) − Σ_{m≤u} μ(m) Σ_{u/m<n≤x/m} M(⌊x/(mn)⌋), with M(t) = Σ_{k≤t} μ(k). | yes | asserted | `research/summaries/deleglise-rivat-summatory-mobius-correct.md` |
+| `mertens-first-totient-formula` | For ab = n, Φ(n) = Σ_{x≤a} μ(x)·⌊n/x⌋(⌊n/x⌋+1)/2 + Σ_{y≤b} y·M(⌊n/y⌋) − (b(b+1)/2)·M(a). | yes | asserted | `research/summaries/arxiv-2506.07386-totient-summatory.html.md` |
+| `mertens-recursion` | For αβ = n, M(n) = 1 + ⌊β⌋M(α) − Σ_{x≤α} μ(x)⌊n/x⌋ − Σ_{y=2..β} M(⌊n/y⌋). | yes | asserted | `research/summaries/arxiv-2506.07386-totient-summatory.html.md` |
 | `pe351-hidden-formula` | H(n) = 6 * (C(n+1,2) - sum_{i=1..n} phi(i)) = 6 * sum_{i=1..n} (i - phi(i)), where phi is Euler's totient function. Equivalently H(n) = 6 * A063985(n). | yes | asserted | `research/notes/pe351-governing-theory.md` |
 | `summatory-totient-mobius-identity` | sum_{i=1..n} phi(i) = (1/2) * (1 + sum_{d=1..n} mu(d) * floor(n/d)^2), where mu is the Moebius function. Equivalently Phi(n) = (1/2) * sum_{d=1..n} mu(d) * floor(n/d) * (1 + floor(n/d)). | yes | asserted | `research/notes/pe351-governing-theory.md` |
 | `totient-sum-fast-recursion` | A063985(n) = (2*n + c - j) // 2 where j starts at 2 and the sum c = sum over distinct values k1 = n//j of (j2-j)*(k1*(k1+1) - 2*A063985(k1) - 1) with j2 = n//k1 + 1, iterating while k1 > 1 (Chai Wah Wu's recursion,… | yes | asserted | `research/notes/pe351-governing-theory.md` |
@@ -21,6 +26,11 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 - `coprimality-iff-visible` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `gauss-divisor-sum-of-totient` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `heath-brown-mobius-identity` (research/summaries/springer-helfgott-thompson-summing-mu.md) — asserted by the source, not proved there and not checked here
+- `hexagonal-orchard-closed-form` (research/summaries/oeis-A216453-hexagonal-orchard-hidden.md) — asserted by the source, not proved there and not checked here
+- `lehman-mertens-identity` (research/summaries/deleglise-rivat-summatory-mobius-correct.md) — asserted by the source, not proved there and not checked here
+- `mertens-first-totient-formula` (research/summaries/arxiv-2506.07386-totient-summatory.html.md) — asserted by the source, not proved there and not checked here
+- `mertens-recursion` (research/summaries/arxiv-2506.07386-totient-summatory.html.md) — asserted by the source, not proved there and not checked here
 - `pe351-hidden-formula` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `summatory-totient-mobius-identity` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `totient-sum-fast-recursion` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here

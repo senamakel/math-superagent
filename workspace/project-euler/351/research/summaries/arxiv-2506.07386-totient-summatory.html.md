@@ -1,84 +1,72 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/arxiv-2506.07386-totient-summatory.html.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Brown, "Computation of the Totient Summatory Function" (arXiv:2506.07386, HTML full text)
 
-<!-- source: https://arxiv.org/html/2506.07386v1 | converted from HTML -->
+Source: https://arxiv.org/html/2506.07386v1 — full text at
+`research/sources/arxiv-2506.07386-totient-summatory.html.full.md`
+(companion PDF digest: `research/summaries/arxiv-2506.07386-totient-summatory.md`).
 
-## What is in it
+## What this source establishes
 
-- Computation of the Totient Summatory Function
-        - Abstract
-  - 1 Introduction
-    - 1.1 Conventions
-    - 1.2 Overview of the paper
-  - 2 Existing algorithms
-    - 2.1 The Mertens-first algorithm
-  - 3 The Mertens-first algorithm in less space
-  - 4 Analysis of Algorithm 13
-        - 1.
-        - 2.
-        - 3.
-        - 4.
-        - 5.
-        - 6.
-        - 7.
-  - 5 Computational results
-  - 6 Supporting lemmas
-        - 8.
-        - 9.
-        - 10.
-        - 11.
-        - 12.
-        - 13.
-        - 14.
-        - 15.
-        - 16.
-        - 17.
-  - References
+The canonical reference for computing the totient summatory function
+Φ(n) = φ(1) + … + φ(n) at large n. This is exactly the quantity PE 351 reduces
+to: H(n) = 6·(C(n+1,2) − Φ(n)) = 3n² + 3n − 6Φ(n).
 
+**The Mertens-first formula** (Dirichlet hyperbola method applied to the
+convolution φ = μ ∗ id, with a·b = n):
 
-## What it claims
+    Φ(n) = Σ_{x≤a} μ(x)·⌊n/x⌋(⌊n/x⌋+1)/2        (term X)
+         + Σ_{y≤b} y·M(⌊n/y⌋)                     (term Y)
+         − b(b+1)/2 · M(a)                        (term Z)
 
-An algorithm is devised for computing Φ ⁡ ( n) = ϕ ⁡ ( 1) + ϕ ⁡ ( 2) + ⋯ + ϕ ⁡ ( n) \Phi(n)=\phi(1)+\phi(2)+\cdots+\phi(n) in time Θ ~ ​ ( n 2 / 3) \widetilde{\Theta}(n^{2/3}) and space Θ ~ ​ ( n 1 / 3) \widetilde{\Theta}(n^{1/3}). The starting point is an existing algorithm based on the Dirichlet hyperbola method and the Mertens function. The algorithm is then used to compute Φ ⁡ ( 10 19) = 30396355092701331435065976498046398788 \Phi(10^{19})=30396355092701331435065976498046398788.
+**Mertens recursion** (from δ = μ ∗ 1, α·β = n):
 
-## Statements it makes
+    M(n) = 1 + ⌊β⌋·M(α) − Σ_{x≤α} μ(x)·⌊n/x⌋ − Σ_{y=2..β} M(⌊n/y⌋)
 
-Algorithm 1 Compute Φ ⁡ ( n) \Phi(n) in Θ ~ ​ ( n 2 / 3) \widetilde{\Theta}(n^{2/3}) time and Θ ~ ​ ( n 1 / 2) \widetilde{\Theta}(n^{1/2}) space [6].
+**Algorithm 1** (Mertens-first): sieves μ up to a = Θ̃(n^{2/3}), computes M up
+to √n directly, evaluates the remaining M values at ⌊n/y⌋ via the recursion,
+then assembles X + Y − Z. Time Θ̃(n^{2/3}), space Θ̃(n^{1/2}).
 
-Algorithm 1 has four phases:
+**Algorithm 13** (the paper's contribution): same time Θ̃(n^{2/3}), space
+reduced to Θ̃(n^{1/3}) by batching the M(⌊n/y⌋) updates through phases 1–3.
+Theorem 7: with a = Θ((n/log log n)^{2/3}), time Θ(n^{2/3}·(log log n)^{1/3}),
+space Θ(n^{1/3}·(log log n)^{2/3}).
 
-Algorithm 1 takes Θ ~ ​ ( n 2 / 3) \widetilde{\Theta}(n^{2/3}) time: phases 0–2 combined clearly take Θ ~ ​ ( a) \widetilde{\Theta}(a) time, and phase 3 takes time
+**Reference values** (Table 1; match OEIS A064018):
 
-Algorithm 1 takes Θ ~ ​ ( n) \widetilde{\Theta}(\sqrt{n}) space: we use three arrays of Θ ⁡ ( n) \Theta(\sqrt{n}) elements each to store the Möbius and Mertens values, the Möbius sieving consumes O ~ ​ ( a) \widetilde{O}(\sqrt{a}) space, and everything else fits in O ⁡ ( 1) O(1) space.
+    Φ(10^16) = 30396355092701332166351822199504
+    Φ(10^17) = 3039635509270133156701800820366346
+    Φ(10^18) = 303963550927013314319686824781290348
+    Φ(10^19) = 30396355092701331435065976498046398788
 
-Algorithm 2 An extract from Algorithm 1
+The computation of Φ(10^19) is new to this paper; it was run twice and the
+results matched. The reference implementation `totientsum.py` is stored at
+`research/sources/brown-totientsum-ancillary.full.md`.
 
-Algorithm 3 Algorithm 2, reordered
+## Why it matters here
 
-Algorithm 4 An extract from Algorithm 1
+For n = 10^8, the space-Θ̃(n^{1/2}) Algorithm 1 is entirely feasible (arrays of
+size ~10^4 each), so we do not need Algorithm 13's space reduction; but the
+paper's formula (1) + (2) is exactly the efficient method the run should
+implement, and its Table 1 plus the ancillary code give independent checks at
+Φ(10^8) = 303963552391 (the run's target value appears in OEIS A064018 b-file).
 
-Algorithm 5 Algorithm 4, redone
+## Claims
 
-Algorithm 6 Algorithm 4, redone again
+```claim
+id: mertens-first-totient-formula
+statement: For ab = n, Φ(n) = Σ_{x≤a} μ(x)·⌊n/x⌋(⌊n/x⌋+1)/2 + Σ_{y≤b} y·M(⌊n/y⌋) − (b(b+1)/2)·M(a).
+hypotheses: n ≥ 1; a, b positive integers with ab ≥ n (taken ab = n); μ the Möbius function, M(x) = Σ_{k≤x} μ(k).
+holds-here: yes — this is the formula used to evaluate Φ(10^8) sublinearly.
+status: sourced
+bearing: reduces H(10^8) = 3·10^8·(10^8+1) − 6·Φ(10^8) to a Θ̃(n^{2/3}) computation.
+anchor: research/summaries/arxiv-2506.07386-totient-summatory.html.md
+```
 
-Algorithm 7 Compute Φ ⁡ ( n) \Phi(n) in Θ ~ ​ ( n 2 / 3) \widetilde{\Theta}(n^{2/3}) time and Θ ~ ​ ( n 1 / 2) \widetilde{\Theta}(n^{1/2}) space.
-
-Algorithm 8 An extract from Algorithm 7
-
-Algorithm 8 is therefore essentially equivalent to
-
-Algorithm 9 Algorithm 8, redone
-
-Algorithm 10 Compute Φ ⁡ ( n) \Phi(n) in Θ ~ ​ ( n 2 / 3) \widetilde{\Theta}(n^{2/3}) time and Θ ~ ​ ( n 1 / 2) \widetilde{\Theta}(n^{1/2}) space.
-
-Algorithm 11 An extract from Algorithm 10
-
-Algorithm 12 Compute Φ ⁡ ( n) \Phi(n) in Θ ~ ​ ( n 2 / 3) \widetilde{\Theta}(n^{2/3}) time and Θ ~ ​ ( n 1 / 3) \widetilde{\Theta}(n^{1/3}) space.
-
-Algorithm 13 Compute Φ ⁡ ( n) \Phi(n) in Θ ~ ​ ( n 2 / 3) \widetilde{\Theta}(n^{2/3}) time and Θ ~ ​ ( n 1 / 3) \widetilde{\Theta}(n^{1/3}) space.
-
-Algorithm 14 An extract from Algorithm 13, with x = b x=b
-
-Algorithm 15 An extract from Algorithm 13, with x = ⌊ n ⌋ ≢ 0 ( mod b) x={\left\lfloor\sqrt{n}\right\rfloor}\not\equiv 0\pmod{b}
-
-Algorithm 13 computes Φ ⁡ ( n) \Phi(n) in Θ ⁡ ( n 1 / 3 ⋅ ( ln ⁡ ( ln ⁡ ( n))) 2 / 3) \Theta\left(n^{1/3}\cdot(\ln(\ln(n)))^{2/3}\right) space and Θ ⁡ ( n 2 / 3 ⋅ ( ln ⁡ ( ln ⁡ ( n))) 1 / 3) \Theta\left(n^{2/3}\cdot(\ln(\ln(n)))^{1/3}\right) time.
-
-*[digest of a 82040 character source; every section, statement, and proof in full at `research/sources/arxiv-2506.07386-totient-summatory.html.full.md`]*
+```claim
+id: mertens-recursion
+statement: For αβ = n, M(n) = 1 + ⌊β⌋M(α) − Σ_{x≤α} μ(x)⌊n/x⌋ − Σ_{y=2..β} M(⌊n/y⌋).
+hypotheses: n ≥ 1; α, β positive integers with αβ ≥ n (taken αβ = n).
+holds-here: yes — used to obtain M(⌊n/y⌋) for y ≤ b from the sieved μ and M up to √n.
+status: sourced
+bearing: supplies the Mertens values the totient formula needs.
+anchor: research/summaries/arxiv-2506.07386-totient-summatory.html.md
+```

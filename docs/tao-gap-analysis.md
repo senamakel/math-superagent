@@ -426,6 +426,19 @@ worth keeping. `precedent:` holds URLs rather than ids and needed its own
 splitter, which is how the shape rule announced that it was one rule doing two
 jobs.
 
+**The fourth bug is the one worth stating plainly: the closure could not have
+worked at all.** Eleven minutes in, the run derived `research/ENTAILMENT.md` and
+it was empty — as it is over all eight committed workspaces, and for the same
+reason. No prompt in `src/prompts/` contained the string `follows-from`. The
+field was parsed, closed transitively, rendered, routed to three roles and
+briefed into every attempt, and the one role that writes claim blocks was never
+told the field exists. A feature complete in every part except the sentence
+asking for it produces exactly the reading a fixture gives: all the code paths
+work. `scholar.md` now carries `follows-from` in the block schema and a
+paragraph on why to draw the edge, and a test asserts that prompt names every
+field the claim parser reads — because a parsed field no prompt asks for is a
+field nothing ever writes, and nothing else would have caught it.
+
 **What the two new files cost.** Both are routed narrowly — the graph to the
 orchestrator, the goals agent and the reducer, the closure to the orchestrator,
 the goals agent and the scholar, and to nobody else, which `dump_prompts`

@@ -109,6 +109,10 @@ anchor: research/sources/mathworld-totient-function.full.md
 2. H(n) = 6 * (n(n+1)/2 - Phi(n)) = 3*n*(n+1) - 6*Phi(n).
 3. Check against Phi(10^8) = 3039635516365908 (A064018).
 
-Expected magnitude: H(10^8) = 3e8*(1e8+1) - 6*3039635516365908
-= 3.00000003e16 - 1.823781309819545e13 = ~2.998176218690e16, so the answer has
-17 digits. (Numerical estimate only — final value from the program.)
+Expected magnitude: H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8)
+= 30000003000000000 - 6*3039635516365908
+= 30000003000000000 - 18237813098195448
+= 11762189901804552  (17 digits).
+This is the check anchor: the program's final answer must equal this integer,
+which follows from the catalogued Phi(10^8) value.  The magnitude is
+H(n) ~ 3n^2(1 - 6/pi^2) ~ 1.176e16 at n=10^8, consistent.

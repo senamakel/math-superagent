@@ -502,6 +502,37 @@ fn the_director_team_is_budgeted_to_outlast_a_run_of_idling() {
     assert_eq!(budget.min_interval, std::time::Duration::ZERO);
 }
 
+/// A parsed field no prompt asks for is a field nothing ever writes.
+///
+/// The entailment closure shipped derived, routed, and documented in its own
+/// derived file — and a live run wrote no edges at all, because the claim-block
+/// schema in the one prompt that writes claim blocks never mentioned
+/// `follows-from`. The whole of that feature depended on one line of prose that
+/// was not there.
+#[test]
+fn the_scholar_is_told_about_every_claim_field_the_ledger_reads() {
+    use super::SCHOLAR_PROMPT;
+
+    for field in [
+        "id",
+        "statement",
+        "hypotheses",
+        "holds-here",
+        "status",
+        "bearing",
+        "anchor",
+        "contradicts",
+        "follows-from",
+        "answers",
+    ] {
+        assert!(
+            SCHOLAR_PROMPT.contains(field),
+            "the claim parser reads `{field}` and the only role that writes claim blocks is \
+             never told it exists"
+        );
+    }
+}
+
 #[test]
 fn every_built_in_prompt_is_present_and_bounded() {
     use super::{

@@ -4,7 +4,15 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[pe351-phi-1e8]] | What is the summatory totient Phi(10^8) = sum_{k<=10^8} phi(k), and hence H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8)? | open | gauss-divisor-sum-of-totient, (research/notes/pe351-governing-theory.md);, summatory-totient-mobius-identity;, totient-sum-verification-values;, totient-sum-fast-recursion. | tool_builder implements one of the three routes: (a) linear/segmented sieve for phi up to 10^8 (O(n log log n), ~400 MB uint32; machine has 30 GiB/28 cores, so… |
+
+## Resting on nothing recorded
+
+Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
+
+- [[pe351-phi-1e8]] rests on `(research/notes/pe351-governing-theory.md);`, `summatory-totient-mobius-identity;`, `totient-sum-verification-values;`, `totient-sum-fast-recursion.`, which no claim block on disk establishes
 
 ## Threads that could not be read
 

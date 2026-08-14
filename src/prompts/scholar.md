@@ -43,8 +43,21 @@ status: proved
 bearing: warrants modelling the skip as a stopper, so the fixpoint terminates
 anchor: research/L0.1/siegel.full.md
 contradicts: skip-equals-difference
+follows-from: skip-budget-monotone, stopper-fixpoint
 answers: whether-pass-loop-a1c3
 ```
+
+`follows-from` names the claims this one is a consequence of, and it is the
+only field here that the runtime *reasons* with rather than files. The edges are
+closed transitively into `research/ENTAILMENT.md`, which then tells the run
+three things nothing else can: which claims it has already established without
+noticing, so an attempt is not spent proving what the library hands it; which
+proposals add nothing, because the library already entails them; and which two
+held beliefs cannot both be true when no single block says so. Draw the edge
+whenever a source derives one of its results from another, or whenever a claim
+you are writing is a corollary of claims already on disk. An edge you do not
+draw is not a missing convenience — it is a lemma the run will pay to prove
+twice.
 
 `holds-here` is the field that earns its place: a true theorem whose hypotheses
 fail for this problem is worse than no theorem, because it looks like progress.

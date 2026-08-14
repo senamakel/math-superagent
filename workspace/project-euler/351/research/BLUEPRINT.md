@@ -23,10 +23,15 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | --- | --- | --- | --- | --- |
 | `coprimality-iff-visible` | claim | **ready** | — | A lattice point (x,y) is visible from the origin iff gcd(x,y) = 1; a point is hidden iff its coordinates have gcd > 1, since then (x/g,y/g)… |
 | `gauss-divisor-sum-of-totient` | claim | **ready** | — | sum_{d\|n} phi(d) = n for every positive integer n (Gauss); hence sum_{d=1..n} Phi(floor(n/d)) = n(n+1)/2, which rearranges to the summatory… |
+| `heath-brown-mobius-identity` | claim | **ready** | — | For u ≥ √x, μ(n) = − Σ_{m1 m2 n1 = n, m1,m2 ≤ u} μ(m1)μ(m2) + 2μ(n)·[n ≤ u]; summing over n ≤ x gives M(x) = 2M(u) − Σ_{m1,m2 ≤ u}… |
+| `hexagonal-orchard-closed-form` | claim | **ready** | — | For every n ≥ 1, H(n) = 6·(C(n+1,2) − Σ_{k=1..n} φ(k)) = 6·Σ_{k=1..n}(k − φ(k)). |
 | `hexorchard-totient` | goal | blocked | `hexorchard-totient/G-answer-verification`, `hexorchard-totient/G-hexorchard-visibility`, `hexorchard-totient/G-summatory-totient-value` | Determine H(100000000) exactly, via the closed form H(n) = 3n^2 + 3n - 6*Phi(n),  Phi(n) = sum_{k=1..n} phi(k), evaluated at n = 10^8. |
 | `hexorchard-totient/G-answer-verification` | lemma | **ready** | — | The value H(10^8) = 3*10^8*(10^8 + 1) - 6V produced from G1 and G2 is the true H(10^8): both the closed form and the computed V are… |
 | `hexorchard-totient/G-hexorchard-visibility` | lemma | **ready** | — | For every n >= 1, the hexagonal orchard of order n contains 3n^2 + 3n + 1 lattice points, of which exactly 1 + 6*Phi(n), Phi(n) =… |
 | `hexorchard-totient/G-summatory-totient-value` | lemma | **ready** | — | Phi(10^8) = sum_{k=1}^{10^8} phi(k) has an exact integer value V, computable by an established algorithm: the Euler-totient sieve over k <=… |
+| `lehman-mertens-identity` | claim | **ready** | — | For 1 ≤ u ≤ x, M(x) = M(u) − Σ_{m≤u} μ(m) Σ_{u/m<n≤x/m} M(⌊x/(mn)⌋), with M(t) = Σ_{k≤t} μ(k). |
+| `mertens-first-totient-formula` | claim | **ready** | — | For ab = n, Φ(n) = Σ_{x≤a} μ(x)·⌊n/x⌋(⌊n/x⌋+1)/2 + Σ_{y≤b} y·M(⌊n/y⌋) − (b(b+1)/2)·M(a). |
+| `mertens-recursion` | claim | **ready** | — | For αβ = n, M(n) = 1 + ⌊β⌋M(α) − Σ_{x≤α} μ(x)⌊n/x⌋ − Σ_{y=2..β} M(⌊n/y⌋). |
 | `pe351-hidden-formula` | claim | **ready** | — | H(n) = 6 * (C(n+1,2) - sum_{i=1..n} phi(i)) = 6 * sum_{i=1..n} (i - phi(i)), where phi is Euler's totient function. Equivalently H(n) = 6 *… |
 | `summatory-totient-mobius-identity` | claim | **ready** | — | sum_{i=1..n} phi(i) = (1/2) * (1 + sum_{d=1..n} mu(d) * floor(n/d)^2), where mu is the Moebius function. Equivalently Phi(n) = (1/2) *… |
 | `totient-sum-fast-recursion` | claim | **ready** | — | A063985(n) = (2*n + c - j) // 2 where j starts at 2 and the sum c = sum over distinct values k1 = n//j of (j2-j)*(k1*(k1+1) - 2*A063985(k1)… |
