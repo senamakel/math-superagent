@@ -15,29 +15,23 @@ turns that vanishing condition into a functional identity analysed
 10-adically layer by layer (blocks of 10^m consecutive coefficients), which
 has a chance of yielding a recurrence or closed form for the solutions —
 rather than a numeric search over the interval.
-status: proposed
-first-step: derive G_d(x) directly from the place-value closed form (or from
-the c_d(10n+r) recurrence), substitute, and produce the linear Mahler
-functional equation for each d; check that the d=1 case reduces exactly to
-the quoted A094798 equation, then attempt to read the coefficient-equality
-solutions off the equation.
+status: refuted
+killed-by: the Mahler equation gives a coefficient/evaluation engine, not a
+classification. Reading the zero set of a Mahler function off its functional
+equation is intractable here (no closed form for the zero coefficients), and
+the route still leans on the Prop 9.1 bound for finiteness. The adopted
+block-transfer theorem is strictly stronger: it classifies the entire
+solution set as translates of one seed set and gives s(d) in closed form.
 ```
 
-## Which parts are established, which are speculation
+## Why it was not adopted
 
-- **Established.** The A094798 generating-function equation is quoted in
-  `research/notes/oeis-catalogue-pe156.md` (sourced OEIS entry on disk). The
-  theorem that a sequence is k-regular iff its generating function satisfies
-  a linear Mahler functional equation is standard (Becker 1994; see
-  Allouche–Shallit Ch. 5). The Mahler ⟺ regular side of that correspondence
-  is now pinned by a modern peer-reviewed source on disk:
-  Adamczewski, Bell & Smertnig, "A height gap theorem for coefficients of
-  Mahler functions", JEMS 25 (2023) 2525–2571, arXiv:2003.03429 —
-  "a k-Mahler function is k-regular if and only if its coefficients have
-  height in O(log n)" — full text at
-  `research/sources/abs-height-gap-mahler-regular.full.md`.
-- **Speculation.** That the specific Mahler system for G_d is algebraically
-  tractable enough to *read off* the fixed points in closed form; nothing on
-  disk has derived the system for general d yet. This is a genuine transform
-  route — the generating function, not pointwise digit arithmetic — and is
-  research-checkable against the Mahler-function literature.
+The correspondence "k-regular ⟺ Mahler functional equation" is sound, sourced
+theory (Becker 1994; Adamczewski–Bell–Smertnig JEMS 2023, on disk), and the
+d=1 instance really is A094798's equation. But the step that mattered — turning
+the functional equation into the *set of fixed points* — was the speculation,
+and nothing in the Mahler-function literature gives a general way to extract a
+zero-coefficient set in closed form. It would have produced at best a fourth
+evaluator. The block-transfer route turned out to be a true classification
+theorem (residue identity proven; bijection verified against all 661 solutions
+on disk), which the Mahler route cannot match for this problem.

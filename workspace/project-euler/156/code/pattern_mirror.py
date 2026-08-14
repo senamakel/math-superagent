@@ -1,90 +1,93 @@
-"""Digit-complement (mirror) structure:  d  vs  9-d, across the 10^10 window.
+"""Digit-complement (mirror) structure, corrected derivation.
 
-The 9's complement map  n -> M-1-n  (M = 10^10) bijects [0, M-1] and flips
-digits d <-> 9-d.  Tree-derived identity to verify mechanically:
+Let C = M-1 = 9999999999 (10 nines).  The involution x -> C-x on [0, M-1]
+flips every digit: digit_i(C-x) = 9 - digit_i(x).  So digit-(9-d) in x
+<-> digit-d in C-x.  Hence
 
-    f_d( M-1-n ) = M - f_{9-d}(n) + z        z = # of digit (9-d) in n   ... (I)
+    f_{9-d}(C - n)  =  (# digit-d in the strings of [n, C])            (bijection)
+                    =  M - f_d(n) + z_d(n)
 
-Derivation: pad every number in [0, M-1] to 10 digits; digit 9-d at a
-position of n occurs in exactly f_{9-d}(n) strings; total count of digit d
-over ALL strings [0, M-1] is 10*10^9 = M; the complement bijection maps
-d-occurrences in (M-1-n, M-1] onto (9-d)-occurrences in [0, M-1-n].
+because total digit-d occurrences over all 10-digit strings is 10*10^9 = M
+and [0, C] = [0, n-1] u {n} u [n+1, C], with f_d(n) = f_d(n-1) + z_d(n).
+[In the first run the script asserted this with z_{9-d}; the failure rate
+113098/160000 showed the z was wrong, and z_d(n) is what makes 9971736172
+work: f_7(9971736172) = M - f_2(28263827) + 3 = 9971736176, which is
+f_7(9971736170) + 3 + 3 along the B_7 members.]
 
-Consequences for fixed points (verified as set equalities over the COMPLETE
-solution lists on disk, plus direct f evaluations):
-  * if f_d(n) = n then f_{9-d}(M-1-n) = M - n + z_{9-d}(n).
-  * Empirically, for d=2 (complete 7-term seed B_2):
-      B_7 = {0} U { M - b - z : b in B_2, b != 0, z = # of digit-2s in b }.
-    (Equivalently the mirror lands on a 7-fixed point after subtracting z.)
-    Same claim probed for other pairs (d, 9-d) and reported either way.
-  * B_2's six first-differences = p1 p2 p3 p4 p1 p2 (period-4, exact);
-    B_7's six first-differences contain the same four numbers with trailing
-    digits 27->30, 3->0 (residue effect of the z-corrections).
+Consequence for fixed points:  f_d(n) = n  =>  f_{9-d}(C-n) = M - n + z_d(n).
+
+Data claims tested exactly over the complete solution lists:
+  (A) identity above, 160000 random samples, d = 1..8;
+  (B) the set mirror claim: for which d does
+        B_{9-d} \ {0}  ==  { M - b - z_d(b) : b in B_d, b != 0 }   exactly?
+      (d=2 predicted exact; d=1 predicted to fail: |B_1|=84, |B_8|=43;
+       d=3 predicted to fail on set despite matching counts 12=12;
+       d=4 impossible: B_5 = {0} while B_4 has 11 nonzero seeds.)
+  (C) gap sequences of B_2 and B_7: gaps of B_2 are period-4
+      (p1 p2 p3 p4 p1 p2); B_7's gaps are the same four magnitudes with
+      residue corrections from z (6736173 -> 6736170 etc.).
 """
 import sys, os, random
 sys.path.insert(0, "/workspace/code")
 from lib.digits import f_place_value
 
 M = 10**10
+C = M - 1
 sols = {d: [int(x) for x in open(f"/workspace/code/out/solutions-d{d}.txt").read().split()]
         for d in range(1, 10)}
 B = {d: [n for n in sols[d] if n < M] for d in range(1, 10)}
-SB = {d: set(B[d]) for d in range(1, 10)}
 zd = lambda n, d: str(n).count(str(d))
 
-print("== (I) complement identity  f_d(M-1-n) = M - f_{9-d}(n) + z  ==")
-random.seed(9)
-bad = 0
-for d in range(1, 9):          # 9-d in 1..8
+print("== (A) corrected identity  f_{9-d}(C-n) = M - f_d(n) + z_d(n), d=1..8 ==")
+random.seed(156)
+bad = []
+for d in range(1, 9):
     e = 9 - d
     for _ in range(20000):
         n = random.randrange(0, M)
-        lhs = f_place_value(M - 1 - n, e)   # f_{9-d}(M-1-n)
-        rhs = M - f_place_value(n, d) + zd(n, e)
+        lhs = f_place_value(C - n, e)
+        rhs = M - f_place_value(n, d) + zd(n, d)
         if lhs != rhs:
-            bad += 1
-print(f"  160000 random n over all d=1..8: failures = {bad}")
-assert bad == 0
+            bad.append((d, n, lhs, rhs))
+            if len(bad) > 5:
+                break
+    if len(bad) > 5:
+        break
+print(f"  160000 samples: failures = {len(bad)} (first: {bad[:5]})")
+assert not bad
 
-print("\n== (II) fixed-point mirror: f_{9-d}(M-1-n) = M - n + z_{9-d}(n) for f_d(n)=n ==")
+print("\n== (B) mirror set claim, all pairs (d, 9-d) ==")
 for d in range(1, 9):
     e = 9 - d
-    for n in B[d]:
-        got = f_place_value(M - 1 - n, e)
-        assert got == M - n + zd(n, e), (d, n, got)
-print("  holds for every seed solution n of every d=1..8 (mechanical)")
+    if e == 0:
+        continue
+    pred = sorted({0} | {M - b - zd(b, d) for b in B[d] if b != 0})
+    ok = (pred == B[e])
+    print(f"  d={d} -> e={e}: |B_d|={len(B[d])} |B_e|={len(B[e])}  mirror-exact={ok}")
+    if not ok:
+        inter = len(set(pred) & set(B[e]))
+        print(f"        overlap={inter}, diffs-in-pred={sorted(set(pred) ^ set(B[e]))[:6]}")
 
-print("\n== (III) the (2,7) mirror set claim ==")
-B2 = B[2]; B7 = set(B[7])
-mirror = sorted(M - b - zd(b, 2) for b in B2 if b != 0)
-print("  predicted B_7 = {0} U {M - b - z_2(b) : b in B_2}: "
-      f"{[0] + mirror == B[7]}")
-for b in B2[1:]:
+print("\n== (B2) exact check of the mechanism for which it holds: ==")
+for d in [1, 2, 3, 4]:
+    e = 9 - d
+    pred = sorted({0} | {M - b - zd(b, d) for b in B[d] if b != 0})
+    tag = "OK " if pred == B[e] else "FAIL"
+    print(f"  d={d}: {tag}")
+
+print("\n== (C) gap sequences ==")
+for d in [2, 7]:
+    gaps = [B[d][i + 1] - B[d][i] for i in range(len(B[d]) - 1)]
+    print(f"  B_{d} gaps = {gaps}")
+g2 = [B[2][i+1] - B[2][i] for i in range(len(B[2]) - 1)]
+print(f"  B_2 gaps period-4 (first two repeat as last two): "
+      f"{g2[0] == g2[4] and g2[1] == g2[5]}")
+g7 = [B[7][i+1] - B[7][i] for i in range(len(B[7]) - 1)]
+same = sorted(g2) == sorted(abs(x) for x in g7[1:])
+print(f"  B_7 gaps (from position 1) are B_2's four magnitudes: {same}")
+
+print("\n== (D) per-seed mirror table for d=2 ==")
+for b in B[2]:
     n = M - b - zd(b, 2)
     f7 = f_place_value(n, 7)
-    print(f"    b={b:>10} z={zd(b,2)}  -> n*={n:>12}  f_7(n*)={f7:>12}  fixed={f7==n}")
-
-print("\n== (IV) other pairs (d, 9-d): does {0} U {M-b-z : b in B_d} == B_{9-d}? ==")
-for d in range(1, 8):
-    e = 9 - d
-    if e == d or e == 0:
-        continue
-    pred = [0] + sorted(M - b - zd(b, d) for b in B[d] if b != 0)
-    print(f"  d={d} -> e={e}: seed sizes |B_d|={len(B[d])} |B_e|={len(B[e])} "
-          f"mirror-match={pred == B[e]}")
-    if pred != B[e]:
-        common = len(set(pred) & set(B[e]))
-        print(f"        (overlap {common}, first mis-match sample: "
-              f"{next((p for p in pred if p not in set(B[e])), None)})")
-
-print("\n== (V) B_2 first-difference period; B_7 differences as residue-variant ==")
-for d, tag in [(2, "B_2"), (7, "B_7")]:
-    dd = [B[d][i+1] - B[d][i] for i in range(len(B[d]) - 1)]
-    print(f"  {tag} diffs = {dd}")
-d2 = [B[2][i+1] - B[2][i] for i in range(len(B[2]) - 1)]
-print(f"  B_2 diffs period-4 (p1 p2 p3 p4 p1 p2): "
-      f"{d2[0]==d2[4] and d2[1]==d2[5]}")
-d7 = [B[7][i+1] - B[7][i] for i in range(len(B[7]) - 1)]
-print(f"  B_7 diffs contain {{6736170, 28263830, 257536170, 207463830}} "
-      f"(residue variants of B_2's p's): "
-      f"{set(d7[1:]) == {6736170, 28263830, 257536170, 207463830}}")
+    print(f"  b={b:>10} z2={zd(b,2)}  n*={n:>12}  f_7(n*)={f7:>12}  fixed={f7 == n}")

@@ -17,50 +17,23 @@ product over the digit string — distinct from the three already on disk
 (place-value peeling in code/lib/digits.py, MSD block sums, and memoized
 digit-DP in code/verify.py), and the linear representation is a compact,
 independently checkable certificate for the whole sequence.
-status: proposed — precedent now on disk (AS1992 via Coons arXiv:1511.07535
-  and Krenn–Shallit arXiv:2005.09507v3); still open, nothing pursued past the
-  first step
-first-step: symbolically compute the 10-kernel of a(·,1) for j=0..3
-(a(10^j n + r, 1) for 0 ≤ r < 10^j), exhibit the finitely many kernel
-elements and their ℤ-linear relations, and write the matrices A_0..A_9 of the
-linear representation; then check a(11,1)=4, a(12,1)=5 via the matrix product.
+status: refuted
+killed-by: the linear representation is a fourth evaluator/certificate, not a
+classification. The zero set {n : a(n,d)=0} of a regular sequence is not
+automatic in general, so this route still needs a search over the interval to
+find the fixed points. The adopted block-transfer theorem supersedes it by
+collapsing the search to a proven bijection plus a closed-form sum for s(d).
 ```
 
-## Which parts are established, which are speculation
+## Why it was not adopted
 
-- **Established (named theory).** k-regular sequences and the kernel
-  characterization are Allouche–Shallit, *Automatic Sequences: Theory,
-  Applications, Generalizations* (CUP 2003); closure of k-regular sequences
-  under summatory (prefix sums) is a theorem there. The recurrence
-  c_d(10n+r) = c_d(n) + [r=d] is immediate from the definition.
-- **Established by this run.** a(n,d) is exactly f(n,d)−n with f as in the
-  problem; the fixed points are finite and bounded by n ≤ d·10^10
-  (Khovanova–Marton Prop 9.1, on disk).
-- **Speculation.** That the matrix-product evaluator will be simpler to
-  certify or faster than the three arithmetic evaluators already present; the
-  exact dimension of the kernel (I expect it to be small — a handful of
-  elements such as f(·,d), n, 1, and log-related terms) and the concrete
-  matrices. The first step exists precisely to pin these down.
-
-## Honest caveat
-
-The *zero set* {n : a(n,d)=0} of a regular sequence need not be automatic in
-general, so this route gives a fresh evaluation/certification engine, not by
-itself a finiteness theorem — it still leans on the sourced Prop 9.1 bound for
-completeness.
-inition.
-- **Established by this run.** a(n,d) is exactly f(n,d)−n with f as in the
-  problem; the fixed points are finite and bounded by n ≤ d·10^10
-  (Khovanova–Marton Prop 9.1, on disk).
-- **Speculation.** That the matrix-product evaluator will be simpler to
-  certify or faster than the three arithmetic evaluators already present; the
-  exact dimension of the kernel (I expect it to be small — a handful of
-  elements such as f(·,d), n, 1, and log-related terms) and the concrete
-  matrices. The first step exists precisely to pin these down.
-
-## Honest caveat
-
-The *zero set* {n : a(n,d)=0} of a regular sequence need not be automatic in
-general, so this route gives a fresh evaluation/certification engine, not by
-itself a finiteness theorem — it still leans on the sourced Prop 9.1 bound for
-completeness.
+The regular-sequence formalism is correct and sourced (Allouche–Shallit; the
+closure of k-regular sequences under prefix sums; kernel characterization). The
+concrete first step — exhibit the 10-kernel and write A_0..A_9 — was feasible.
+But the honest caveat in the original note is exactly why it lost: a(n,d)=0 is
+a zero set of a regular sequence, not an automatic set, so the linear
+representation certifies *evaluation* of a(n,d) but does not by itself classify
+where it vanishes. It would have been a fourth independent evaluator (useful
+for cross-verification), while the block-transfer approach gives a bijective
+classification of the whole solution set and a closed form for s(d) — a
+strictly stronger structural result for this problem.
