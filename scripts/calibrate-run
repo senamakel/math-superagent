@@ -1,0 +1,171 @@
+#!/bin/sh
+# Start or continue a calibration run against a solved conjecture.
+#
+# A calibration run works on a problem that has **already been solved**, stated
+# to the harness as open, with the literature carrying its answer withheld in
+# code. The point is measurement: an ordinary run produces notes, ledgers and
+# code, but with no known destination there is no way to tell a harness closing
+# in on a proof from one generating plausible mathematical activity. Here the
+# destination is known, so the trajectory can be scored against the milestone
+# ladder in `evals/<slug>/RUBRIC.md`.
+#
+# Usage: ./calibrate [--no-research] <slug> [extra instructions...]
+#
+# This is a thin, careful wrapper around `scripts/solve-conjecture`. It does the
+# four things that must happen before that script runs, and then hands over —
+# the task prompt, the phases and the run budget are the conjecture launcher's,
+# and duplicating them here is how the two drift apart.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+cd "$repository_root"
+
+usage() {
+    echo "usage: ./calibrate [--no-research] <slug> [extra instructions...]" >&2
+    echo "" >&2
+    echo "  <slug>  a problem under evals/, e.g. unit-distance-plane-chromatic" >&2
+    echo "" >&2
+    echo "Available:" >&2
+    for available in evals/*/; do
+        [ -f "$available/screen.terms" ] || continue
+        echo "  $(basename "$available")" >&2
+    done
+}
+
+research_flag=""
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --no-research) research_flag="--no-research"; shift ;;
+        --research) research_flag=""; shift ;;
+        -h|--help) usage; exit 0 ;;
+        *) break ;;
+    esac
+done
+
+if [ "$#" -lt 1 ]; then
+    usage
+    exit 2
+fi
+
+slug=$1
+shift
+
+# Same validation as `scripts/solve-conjecture`, for the same reason: this value
+# becomes a path, and a prompt instruction is not a security control.
+case "$slug" in
+    ""|*/*|.*)
+        echo "slug must be a plain folder name under evals/" >&2
+        exit 2
+        ;;
+esac
+
+problem_dir=evals/$slug
+if [ ! -d "$problem_dir" ]; then
+    echo "no calibration problem at $problem_dir" >&2
+    usage
+    exit 2
+fi
+for required in screen.terms GROUND_TRUTH.md RUBRIC.md seed/problem.md seed/GOAL.md; do
+    if [ ! -f "$problem_dir/$required" ]; then
+        echo "$problem_dir is missing $required" >&2
+        exit 2
+    fi
+done
+
+workspace_subdir=conjectures/$slug
+workspace_path=$repository_root/workspace/$workspace_subdir
+
+# ---------------------------------------------------------------------------
+# 1. Refuse to start a second run on this workspace.
+#
+# Two containers on one workspace is the failure to look for and it is silent:
+# both runs work, both write, and the damage appears later as a checkpoint
+# history interleaving two investigations. Resolved by **mount**, not by name,
+# because the name is generated and a second run gets a different one.
+# ---------------------------------------------------------------------------
+running=$(docker ps --format '{{.Names}}' 2>/dev/null || true)
+for name in $running; do
+    mounts=$(docker inspect "$name" --format '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' 2>/dev/null || true)
+    for mount in $mounts; do
+        if [ "$mount" = "$workspace_path" ]; then
+            echo "a container is already running on workspace/$workspace_subdir:" >&2
+            echo "  $name" >&2
+            echo "" >&2
+            echo "Stop it with 'docker rm -f $name' before starting another." >&2
+            echo "The workspace survives; the next run continues from what is on disk." >&2
+            exit 2
+        fi
+    done
+done
+
+# ---------------------------------------------------------------------------
+# 2. Compile the blocklist.
+#
+# Plaintext terms live under `evals/` on the host and are never mounted. The
+# compiled `screen.json` carries every term as a salted digest, because
+# `execute_command` can read any file the runtime can and a plaintext blocklist
+# inside the container would hand the run the names it is meant to withhold.
+# ---------------------------------------------------------------------------
+echo "calibrate: compiling the blocklist for $slug" >&2
+python3 scripts/compile-screen "$slug" >&2
+
+# ---------------------------------------------------------------------------
+# 3. Seed the workspace, never overwriting.
+#
+# `--update=none` so a continued run keeps everything it has written. The seed
+# is the reproducible source; the workspace is where the run works.
+# ---------------------------------------------------------------------------
+mkdir -p "$workspace_path"
+cp -R --update=none "$problem_dir/seed/." "$workspace_path/"
+
+# The answer key must never be reachable from the container. This is a cheap
+# assertion against the one mistake that would invalidate every result: a
+# `GROUND_TRUTH.md` or a `*.terms` copied into the mounted tree.
+for leaked in GROUND_TRUTH.md RUBRIC.md screen.terms screen.json; do
+    if [ -e "$workspace_path/$leaked" ]; then
+        echo "$leaked is inside the mounted workspace; the run could read it" >&2
+        echo "remove workspace/$workspace_subdir/$leaked and start again" >&2
+        exit 2
+    fi
+done
+
+# ---------------------------------------------------------------------------
+# 4. Bring up this problem's memory stack with no route to the internet.
+#
+# `--eval` marks the stack's network internal, so the agent that joins it to
+# reach `cognee:8000` does not also get a default route out. Everything the run
+# legitimately needs then arrives through `screen-proxy`.
+# ---------------------------------------------------------------------------
+COGNEE_NETWORK=$(scripts/memory-up --eval "$workspace_subdir")
+export COGNEE_NETWORK
+
+# The Langfuse host has to reach the proxy allowlist, and it is deployment
+# specific. Read from `.env` without printing it: only the host is extracted,
+# and nothing here echoes a credential.
+if [ -f .env ]; then
+    MATH_AGENT_LANGFUSE_HOST=$(
+        sed -n 's|^LANGFUSE_BASE_URL=.*://\([^/@]*@\)\?\([^/:]*\).*|\2|p' .env | head -1
+    )
+    export MATH_AGENT_LANGFUSE_HOST
+fi
+
+MATH_AGENT_EVAL_SLUG=$slug
+export MATH_AGENT_EVAL_SLUG
+MATH_AGENT_COMPOSE_EXTRA=compose.eval.yaml
+export MATH_AGENT_COMPOSE_EXTRA
+
+echo "calibrate: $slug" >&2
+echo "  workspace  workspace/$workspace_subdir" >&2
+echo "  screen     evals/.build/$slug/screen.json" >&2
+echo "  network    $COGNEE_NETWORK (internal)" >&2
+echo "  egress     screen-proxy allowlist only" >&2
+echo "" >&2
+echo "  watch      ./euler-tui --workspace $workspace_subdir" >&2
+echo "  diagnose   ./diagnose --workspace $workspace_subdir" >&2
+echo "  score      scripts/eval-report $slug" >&2
+echo "" >&2
+
+# Hand over. The task prompt, the phase structure and the run budget belong to
+# the conjecture launcher; a copy here would drift from it.
+# shellcheck disable=SC2086
+exec scripts/solve-conjecture $research_flag "$slug" "$@"

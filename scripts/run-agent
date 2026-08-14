@@ -51,6 +51,31 @@ if [ "$workspace_subdir" = template ]; then
     exit 2
 fi
 
+# Extra compose files, applied to every invocation below.
+#
+# `./calibrate` sets this to `compose.eval.yaml`, which takes the container's
+# default route away and mounts the compiled blocklist. It is an environment
+# variable rather than a flag because the caller that needs it is another
+# script, and because an ordinary run must be able to ignore it entirely.
+compose_extra=""
+if [ -n "${MATH_AGENT_COMPOSE_EXTRA:-}" ]; then
+    for extra in $MATH_AGENT_COMPOSE_EXTRA; do
+        if [ ! -f "$repository_root/$extra" ]; then
+            echo "no compose overlay at $extra" >&2
+            exit 2
+        fi
+        compose_extra="$compose_extra -f $extra"
+    done
+fi
+
+# Every compose invocation carries the same file list, or an overlay would
+# apply to the build and not to the run that uses it.
+#
+# `compose_files` rather than a shell function, because the invocations that
+# hand the terminal over use `exec`, and `exec` needs a program rather than a
+# function. Unquoted on use, which is what splits it into arguments.
+compose_files="-f compose.yaml$compose_extra"
+
 action=run
 if [ "$#" -gt 0 ]; then
     case "$1" in
@@ -95,7 +120,8 @@ export MATH_AGENT_LOCAL_UID=$(id -u)
 export MATH_AGENT_LOCAL_GID=$(id -g)
 
 if [ "$action" = build ]; then
-    exec docker compose build agent
+    # shellcheck disable=SC2086
+    exec docker compose $compose_files build agent
 fi
 
 # Prompt inspection runs on the host. It reads workspace files and renders the
@@ -126,8 +152,11 @@ if [ -z "${COGNEE_NETWORK:-}" ]; then
 fi
 
 if [ "$action" = shell ]; then
-    exec docker compose run --rm --entrypoint /bin/sh agent
+    # shellcheck disable=SC2086
+    exec docker compose $compose_files run --rm --entrypoint /bin/sh agent
 fi
 
-docker compose build --quiet agent
-exec docker compose run --rm agent "$@"
+# shellcheck disable=SC2086
+docker compose $compose_files build --quiet agent
+# shellcheck disable=SC2086
+exec docker compose $compose_files run --rm agent "$@"
