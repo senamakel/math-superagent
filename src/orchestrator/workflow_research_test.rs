@@ -86,7 +86,7 @@ async fn what_the_child_established_reaches_the_parent() {
         .await
         .expect("the child runs to completion on mocks");
 
-    let state = established(&run.output()).unwrap_or(Value::Null);
+    let state = established(run.output()).unwrap_or(Value::Null);
     assert_eq!(
         state.get("fresh_context"),
         Some(&json!("what stage one found")),

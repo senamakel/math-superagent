@@ -436,7 +436,7 @@ pub(in crate::orchestrator) fn route(state: &SolutionState) -> Route {
 // is discarded, `restarts` is incremented, the steer is written for the next
 // attempt, and the run is marked unproductive. The bound that matters,
 // `MAX_RESTARTS`, is enforced there and always was.
-///
+//
 // So there is one ladder, `route`, and `orchestrator::parity` holds the
 // engine's jq to it.
 
