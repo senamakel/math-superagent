@@ -406,6 +406,26 @@ entailed claim filed weaker appeared under both *established for free* and
 *already entailed*, one heading saying settle it and the other saying it is not
 a result.
 
+**A live run, and the third bug.** `./euler 351` — chosen because brute force
+over 10^8 is impossible, so the problem has to be reduced before it can be
+computed. Eight minutes in, `reducer` wrote its skeleton and the graph was
+derived from it correctly: three lemmas ready to be picked up independently, the
+goal blocked on all three, which is the right shape for a problem whose whole
+difficulty is one summatory-totient evaluation. It also reported eleven edges
+resting on things that do not exist — on `is`, on `the`, on `covers`. Asked what
+its skeleton rested on, `reducer` had written `rests-on: none (research/CLAIMS.md
+is empty; no claim in the ledger covers this)`, which is a good answer to the
+question and not a list, and `identifiers` split it on whitespace. The split is
+older than any of this work; the graph is simply the first thing that ever
+*read* those edges out loud. Eleven invented faults are worse than none, because
+the report that finds a real misspelling is the same report. A field opening
+with `none` now lists nothing, a parenthetical is a comment rather than a
+member, and a token that is not id-shaped is dropped instead of reported —
+while a misspelled id, still id-shaped, is still reported, which is the case
+worth keeping. `precedent:` holds URLs rather than ids and needed its own
+splitter, which is how the shape rule announced that it was one rule doing two
+jobs.
+
 **What the two new files cost.** Both are routed narrowly — the graph to the
 orchestrator, the goals agent and the reducer, the closure to the orchestrator,
 the goals agent and the scholar, and to nobody else, which `dump_prompts`

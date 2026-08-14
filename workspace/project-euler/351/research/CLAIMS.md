@@ -6,4 +6,22 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `coprimality-iff-visible` | A lattice point (x,y) is visible from the origin iff gcd(x,y) = 1; a point is hidden iff its coordinates have gcd > 1, since then (x/g,y/g) is a strictly closer lattice point on the same ray. | yes | asserted | `research/notes/pe351-governing-theory.md` |
+| `gauss-divisor-sum-of-totient` | sum_{d\|n} phi(d) = n for every positive integer n (Gauss); hence sum_{d=1..n} Phi(floor(n/d)) = n(n+1)/2, which rearranges to the summatory recursion Phi(n) = n(n+1)/2 - sum_{d=2..n} Phi(floor(n/d)), evaluated in… | yes | asserted | `research/notes/pe351-governing-theory.md` |
+| `pe351-hidden-formula` | H(n) = 6 * (C(n+1,2) - sum_{i=1..n} phi(i)) = 6 * sum_{i=1..n} (i - phi(i)), where phi is Euler's totient function. Equivalently H(n) = 6 * A063985(n). | yes | asserted | `research/notes/pe351-governing-theory.md` |
+| `summatory-totient-mobius-identity` | sum_{i=1..n} phi(i) = (1/2) * (1 + sum_{d=1..n} mu(d) * floor(n/d)^2), where mu is the Moebius function. Equivalently Phi(n) = (1/2) * sum_{d=1..n} mu(d) * floor(n/d) * (1 + floor(n/d)). | yes | asserted | `research/notes/pe351-governing-theory.md` |
+| `totient-sum-fast-recursion` | A063985(n) = (2*n + c - j) // 2 where j starts at 2 and the sum c = sum over distinct values k1 = n//j of (j2-j)*(k1*(k1+1) - 2*A063985(k1) - 1) with j2 = n//k1 + 1, iterating while k1 > 1 (Chai Wah Wu's recursion,… | yes | asserted | `research/notes/pe351-governing-theory.md` |
+| `totient-sum-verification-values` | Phi(10^k) for k = 0..8 is 1, 32, 3044, 304192, 30397486, 3039650754, 303963552392, 30396356427242, 3039635516365908  (OEIS A064018). | yes | asserted | `research/notes/pe351-governing-theory.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `coprimality-iff-visible` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `gauss-divisor-sum-of-totient` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `pe351-hidden-formula` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `summatory-totient-mobius-identity` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `totient-sum-fast-recursion` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `totient-sum-verification-values` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here

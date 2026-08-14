@@ -1,4 +1,4 @@
-use super::{Holds, Status, collect, is_note, parse};
+use super::{Holds, Status, collect, identifiers, is_note, parse};
 
 fn note(body: &str) -> String {
     format!("# A note\n\nSome prose.\n\n```claim\n{body}\n```\n\nMore prose.\n")
@@ -585,4 +585,39 @@ fn an_ordinary_claim_is_not_asked_for_a_counterexample() -> std::io::Result<()> 
     assert_eq!(ledger.established(), 1);
     assert!(!ledger.render().contains("find_counterexample"));
     Ok(())
+}
+
+/// Both of these are sentences a live run actually wrote into a `rests-on:`
+/// field, and the whitespace split turned each into a handful of identifiers
+/// that no file could ever carry. Eleven invented dangling edges hide the one
+/// real misspelling the same report exists to catch.
+#[test]
+fn a_field_that_says_there_is_nothing_lists_nothing() {
+    assert!(
+        identifiers("none (research/CLAIMS.md is empty; no claim in the ledger covers this)")
+            .is_empty(),
+        "an answer that opens with `none` is an answer, not a list"
+    );
+    assert!(identifiers("n/a").is_empty());
+    assert!(identifiers("  ").is_empty());
+}
+
+/// The shape filter drops prose without touching a real list — including the
+/// misspelled entries the dangling-edge report is for.
+#[test]
+fn prose_is_dropped_while_identifiers_survive() {
+    assert_eq!(
+        identifiers("alpha-lemma, beta/gamma.2"),
+        vec!["alpha-lemma".to_string(), "beta/gamma.2".to_string()]
+    );
+    assert_eq!(
+        identifiers("alpha-lemma (proved; see below)"),
+        vec!["alpha-lemma".to_string()],
+        "the id survives and the parenthetical does not"
+    );
+    assert_eq!(
+        identifiers("mispelt-lemma"),
+        vec!["mispelt-lemma".to_string()],
+        "a misspelling is still id-shaped, so it is still reported as dangling"
+    );
 }

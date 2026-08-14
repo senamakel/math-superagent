@@ -438,12 +438,66 @@ fn is_known(key: &str) -> bool {
 }
 
 /// Splits a comma- or whitespace-separated list of identifiers.
+///
+/// Two rules beyond the split, and a live run wrote the sentence that needed
+/// both. Asked for what its skeleton rests on, `reducer` answered
+/// `rests-on: none (research/CLAIMS.md is empty; no claim in the ledger covers
+/// this)` — which is a true, useful answer to the question and not a list. The
+/// split turned it into eleven identifiers, and the statement graph dutifully
+/// reported that the goal rested on `is`, on `the`, and on `covers`, none of
+/// which exist. Eleven false faults are worse than none, because the report
+/// that finds a genuine misspelling is the same report.
+///
+/// So: a field that opens by saying there is nothing lists nothing, whatever
+/// follows; and a token that is not shaped like an identifier is dropped rather
+/// than reported as missing. Both are deliberately narrow. A misspelled id is
+/// still id-shaped and still reported, which is the case worth keeping.
 pub(super) fn identifiers(value: &str) -> Vec<String> {
+    // A parenthetical is a comment on the list, never a member of it, and the
+    // words inside one are as id-shaped as anything else.
+    let value = value.split('(').next().unwrap_or(value);
+    let mut parts = value
+        .split(|c: char| c == ',' || c.is_whitespace())
+        .map(|id| id.trim_matches(['`', '[', ']']))
+        .filter(|id| !id.is_empty());
+    let Some(first) = parts.next() else {
+        return Vec::new();
+    };
+    if matches!(
+        first.trim_end_matches([':', '.', ';']).to_lowercase().as_str(),
+        "none" | "no" | "nothing" | "n/a" | "na" | "tbd" | "-" | "—"
+    ) {
+        return Vec::new();
+    }
+    std::iter::once(first)
+        .chain(parts)
+        .filter(|id| is_identifier(id))
+        .map(str::to_string)
+        .collect()
+}
+
+/// Splits a list whose entries are not identifiers — URLs and citations.
+///
+/// The lenient split, kept for the fields that hold them. A URL is not
+/// id-shaped and must not be filtered out for failing to be.
+pub(super) fn references(value: &str) -> Vec<String> {
     value
         .split(|c: char| c == ',' || c.is_whitespace())
         .map(|id| id.trim_matches(['`', '[', ']']).to_string())
         .filter(|id| !id.is_empty())
         .collect()
+}
+
+/// Whether a token could be an identifier somebody wrote in a block.
+///
+/// Shape only. Whether it names anything is the derived ledger's question, and
+/// answering it here would silence the misspelling report that is the reason
+/// dangling edges are collected at all.
+fn is_identifier(token: &str) -> bool {
+    token.starts_with(|c: char| c.is_ascii_alphanumeric())
+        && token
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | '/' | '.'))
 }
 
 /// Reads every claim block in `text`, attributing each to `source`.
