@@ -1,0 +1,96 @@
+# Blocklist — unit-distance-plane-chromatic
+#
+# PLAINTEXT. Host-side only. This file is never mounted into the container;
+# `scripts/compile-screen` turns it into two artifacts:
+#
+#   evals/.build/<slug>/screen.json  — mounted read-only into the agent
+#                                      container. Every term appears only as a
+#                                      salted hash, because `execute_command`
+#                                      can read any file the runtime can, and a
+#                                      plaintext blocklist would hand the run
+#                                      the names it is meant to withhold.
+#   evals/.build/<slug>/proxy.deny   — mounted into the proxy container only,
+#                                      which the agent cannot read, so hosts
+#                                      stay plaintext there.
+#
+# Terms are normalised (lowercased, diacritics folded, non-alphanumerics
+# collapsed to single spaces) and matched as token n-grams, so `de Grey`
+# matches `Aubrey D. N. J. de Grey`.
+#
+#   [block]      a match denies the text outright.
+#   [flag]       a match does not deny; it forces the text to the adjudicator
+#                and records a ledger entry. For terms too common to block.
+#   [host.deny]  never reachable, enforced at the proxy.
+#
+# Note what is deliberately NOT denied: arxiv.org and the scholarly indexes stay
+# reachable. PDFs are text-extracted before the screen sees them, so the paper
+# that contains the answer is withheld by its content while the pre-2018
+# literature around it stays available. Withholding the venue would test a
+# different and less interesting harness.
+
+salt = 7c1f4a9e2b6d80351ea4c7f9b2360d84
+
+[block]
+
+# The solver and the paper
+de Grey
+Aubrey de Grey
+chromatic number of the plane is at least 5
+chromatic number of the plane is at least five
+1804.02385
+
+# The name of the problem, and of the calibration graph
+Hadwiger Nelson
+Moser spindle
+
+# The follow-up programme
+Polymath16
+Polymath 16
+Jaan Parts
+
+# The result, described rather than named
+1581 vertex unit distance
+1345 vertex graph
+509 vertex unit distance
+five chromatic unit distance graph
+5 chromatic unit distance graph
+non 4 colourable unit distance graph
+non 4 colorable unit distance graph
+unit distance graph with chromatic number 5
+chromatic number of the plane is 5
+chromatic number of the plane at least five
+
+[flag]
+
+# Individually innocuous, jointly revealing. These escalate to the adjudicator
+# rather than denying, because each has legitimate uses in this problem.
+1581
+1345
+509
+chromatic number of the plane
+Minkowski sum unit distance chromatic
+Isbell
+Soifer
+mathematical coloring book
+Geombinatorics
+
+[host.deny]
+
+# The encyclopedia and Q&A tier, where a solved problem's answer is stated as a
+# bare fact in the first paragraph. Cheap to withhold and nothing is lost:
+# these are not primary sources, and CLAUDE.md already prefers primary ones.
+en.wikipedia.org
+en.m.wikipedia.org
+simple.wikipedia.org
+mathworld.wolfram.com
+math.stackexchange.com
+mathoverflow.net
+stackoverflow.com
+www.quantamagazine.org
+quantamagazine.org
+
+# The specific write-ups of this specific result.
+dustingmixon.wordpress.com
+terrytao.wordpress.com
+michaelnielsen.org
+asone.ai
