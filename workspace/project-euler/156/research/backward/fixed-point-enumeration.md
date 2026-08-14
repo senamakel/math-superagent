@@ -57,24 +57,20 @@ next: >
 id: G2-solution-bound
 lemma: >
   For every digit d in {1,...,9}, every n with f(n,d)=n satisfies n ≤ d·10^10.
-  This is the base-10, d>0 instance of Proposition 9.1 of the "sticker
-  numbers / exactly numbers" paper (recalled in memory, identity not yet on
-  disk). Hypothesis check needed before use: the paper's fd(x,b) counts
-  occurrences of digit d in the base-b writings of the numbers 1..x; because
-  0 contributes no occurrence of any digit d>0, fd(x,10) = f(x,d) for d>0, so
-  the bound transfers verbatim.
-status: open
-discharged-by: none
+  This is the base-10, d>0 instance of Proposition 9.1 of Khovanova & Marton,
+  "Archive Labeling Sequences" (arXiv:2305.10357v2, published Amer. Math.
+  Monthly 132(8) 2025 780-787). Hypothesis check completed: the paper's
+  fd(x,b) counts occurrences of digit d in the base-b writings of 1..x;
+  because 0 contributes no occurrence of any digit d>0, fd(x,10) = f(x,d) for
+  d>0, so the bound transfers verbatim. The bound is proven in the source
+  (Prop 9.1 with proof), not conjectured.
+status: discharged
+discharged-by: km-prop91-bound (= G2-solution-bound)
 thread: none
 next: >
-  librarian/theorem_prover: fill request `identify-sticker-numbers-eeda`
-  (already posted in research/REQUESTS.md) — download the identifiable paper,
-  extract Lemma 5.1 and Proposition 9.1, and confirm (a) the 1-based vs
-  0-based count agrees for d>0 and (b) the bound is proven, not conjectured.
-  Record the bound as a `claim` block with hypotheses and anchor URL. If the
-  source cannot be identified, the fallback is an independent proof of the
-  bound, which is a separate theorem_prover task and should be filed rather
-  than silently assumed.
+  tool_builder: use n ≤ d·10^10 as the search ceiling in code/solution.py and
+  assert every solution found lies below it; the solver's completeness rests
+  on this lemma together with G1 and G3.
 ```
 
 ```gap
