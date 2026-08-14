@@ -43,11 +43,7 @@ impl OrchestratorAgent {
         );
         let mut prompts = RolePrompts::load(&workspace)?;
 
-        let SearchTools {
-            exa,
-            oeis,
-            discovery,
-        } = search_tools(research_enabled, &documents)?;
+        let search = search_tools(research_enabled, &documents)?;
 
         let mut research_harness = build_research_harness(
             &model,
@@ -55,11 +51,7 @@ impl OrchestratorAgent {
             &tracer,
             &documents,
             &vector_store,
-            SearchTools {
-                exa: exa.clone(),
-                oeis: oeis.clone(),
-                discovery: discovery.clone(),
-            },
+            search.clone(),
         );
         research_harness.push_middleware(checkpoint.clone());
         async_subagents.register(
@@ -91,9 +83,7 @@ impl OrchestratorAgent {
                 tracer: &tracer,
                 documents: &documents,
                 vector_store: vector_store.clone(),
-                exa: exa.clone(),
-                oeis: oeis.clone(),
-                discovery: discovery.clone(),
+                search: search.clone(),
                 workspace: workspace.clone(),
                 delegation: async_subagents.tools(PATTERN_DELEGATES),
             },

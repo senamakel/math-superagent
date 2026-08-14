@@ -183,20 +183,15 @@ struct SupportAgents<'a> {
     tracer: &'a Arc<RunTracer>,
     documents: &'a WorkspaceDocuments,
     vector_store: VectorStore,
-    exa: Option<Arc<dyn Tool<()>>>,
-    /// The OEIS adapter, empty when research is disabled.
+    /// Everything that reaches outside the run, empty when research is off.
     ///
-    /// Held as a list rather than an option because a source adapter is one of
-    /// a family: the shape a second one slots into is a list, and the shape it
-    /// would have to rewrite is an option.
-    oeis: Vec<Arc<dyn Tool<()>>>,
-    /// The ways onto the web that are not a query, empty when research is off.
-    ///
-    /// Reaches the librarian and nothing else in this group. The pattern agent
-    /// and the inventor take [`Self::oeis`] and deliberately not this: both are
-    /// denied web search in the registry, and a harness that registered these
-    /// anyway would make that denial a comment.
-    discovery: Vec<Arc<dyn Tool<()>>>,
+    /// Held whole rather than as separate fields because the three lists inside
+    /// it have different audiences and the boundary between them is the point:
+    /// `search` and `oeis` go to the pattern agent and the inventor, and
+    /// `discovery` does not, because both are denied web search in the registry
+    /// and a harness that registered these anyway would make that denial a
+    /// comment.
+    search: SearchTools,
     /// The jail root, for the one support agent allowed to execute.
     workspace: PathBuf,
     /// Delegation tools, so the pattern agent can commission a computation.
@@ -281,7 +276,7 @@ fn register_pattern_agent(
     // become one: the terms either match a catalogued sequence or they do not.
     // It is also the role holding the terms, so making it ask another agent to
     // run the lookup would spend a child run to pass a list of integers along.
-    for tool in parts.oeis.iter().cloned() {
+    for tool in parts.search.oeis.iter().cloned() {
         register_resilient(&mut pattern, tool);
     }
     register_memory(&mut pattern, &parts.vector_store);
@@ -315,10 +310,10 @@ fn register_inventor(
         "inventor",
         parts.tracer,
     );
-    if let Some(exa) = parts.exa.clone() {
+    if let Some(exa) = parts.search.exa.clone() {
         register_resilient(&mut inventor, exa);
     }
-    for tool in parts.oeis.iter().cloned() {
+    for tool in parts.search.oeis.iter().cloned() {
         register_resilient(&mut inventor, tool);
     }
     for tool in parts.documents.tools() {
@@ -433,16 +428,16 @@ fn register_support_agents(
         "librarian",
         parts.tracer,
     );
-    if let Some(exa) = parts.exa.clone() {
+    if let Some(exa) = parts.search.exa.clone() {
         register_resilient(&mut librarian, exa);
     }
-    for tool in parts.oeis.iter().cloned() {
+    for tool in parts.search.oeis.iter().cloned() {
         register_resilient(&mut librarian, tool);
     }
     // The role whose whole subject is coverage gets every way onto the web
     // there is. It is one of the two roles the registry grants these to, and
     // the harness has to agree with the registry or the grant is a document.
-    for tool in parts.discovery.iter().cloned() {
+    for tool in parts.search.discovery.iter().cloned() {
         register_resilient(&mut librarian, tool);
     }
     for tool in parts.documents.tools() {

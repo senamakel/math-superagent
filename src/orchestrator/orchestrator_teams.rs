@@ -57,6 +57,58 @@ fn review_team() -> (
         )
 }
 
+/// What the librarian team is told each cycle.
+///
+/// Held as a constant rather than inline because it is the longest brief
+/// here by a wide margin — it carries the two live failures that justify the
+/// team and the four ways onto the web it must actually use — and inlining it
+/// pushed the function that lists every team past what anyone reads at once.
+const LIBRARIAN_BRIEF: &str = "Build this run's reference library, and keep building it. A run cannot use what \
+             it has no source for, and the failure this team exists to prevent is not an \
+             over-full library — it is a run reasoning from what the model remembers \
+             instead of from what it can read. A live Erdős–Gyárfás workspace cited \
+             Wikipedia and Wolfram MathWorld in three notes with neither on disk, and a \
+             live Project Euler run invented plausible arXiv identifiers and filed \
+             unrelated papers under the names it wanted them to have. Both are what an \
+             empty library looks like from the inside.\n\
+             Search first and search widely. `exa_search` is the strongest instrument \
+             here and the one most often left unused: a query costs a fraction of a \
+             download and tells you what exists, what it is called, and who wrote it, \
+             which is what turns a guess at a URL into a citation. Never download a URL \
+             you have not seen in a search result, in `research/FRONTIER.md`, or in a \
+             source you already hold — a fetch of an invented address succeeds and \
+             stores the wrong paper.\n\
+             Cover the subject rather than one thread of it. Each cycle, pick the angle \
+             the library is thinnest on: the encyclopedic and problem-collection entries \
+             that fix the statement and the names, the surveys, the methods that failed \
+             and why, the adjacent problems, the computational attacks, the \
+             counterexample constructions, and whatever the run's own sources cite. \
+             `research/FRONTIER.md` is ranked by how many of your own sources cite each \
+             target; work the top of it, because a source three of your papers cite is \
+             the standard reference and no rephrasing of a query surfaces that.\n\
+             A query is only one of your four ways onto the web, and it is the one that \
+             depends on having guessed the subject's name — which at the start of a run \
+             you have not. `citation_graph` takes a DOI, an arXiv number, or a title and \
+             returns what that paper cites and what cites it; run it on every source \
+             worth holding, because a citation was chosen by somebody who had read the \
+             subject and no rewording of a query recovers that. `find_similar_sources` \
+             queries with a page instead of a phrase, which is what breaks a search that \
+             keeps returning the same six results. `deep_research` takes a question you \
+             cannot decompose into queries yourself and returns a synthesis — never a \
+             claim, but the best source of the vocabulary your next search needs. \
+             Triage before you fetch: `read_sources` reads twenty candidates in one call \
+             and stores none, so you find the three worth having without paying the \
+             conversion for the other seventeen. Narrow with `include_domains`, \
+             `exclude_domains`, and the date bounds rather than with adjectives.\n\
+             Two things still bound you, and they are about waste rather than volume. \
+             Use `recall_memory` before fetching so known material is not fetched twice, \
+             and prefer the primary statement to a retelling of it. When a cycle genuinely \
+             has nothing to add — every angle covered, the frontier worked, no request \
+             open — say NOTHING FURTHER and spend nothing; you will be asked again, so \
+             that is a pause and not a retirement. File what you gather under `research/`, \
+             describe it, and store the verified finding with `remember_memory` so later \
+             runs can recall it.";
+
 /// The teams that run beside the solve, each with the brief it wakes up to.
 ///
 /// Lifted out of [`OrchestratorAgent::spawn_support_teams`] so the briefs — the
@@ -102,51 +154,7 @@ fn standing_teams() -> [(
             "librarian",
             teams::Completion::Standing,
             teams::TeamBudget::acquiring(),
-            "Build this run's reference library, and keep building it. A run cannot use what \
-                 it has no source for, and the failure this team exists to prevent is not an \
-                 over-full library — it is a run reasoning from what the model remembers \
-                 instead of from what it can read. A live Erdős–Gyárfás workspace cited \
-                 Wikipedia and Wolfram MathWorld in three notes with neither on disk, and a \
-                 live Project Euler run invented plausible arXiv identifiers and filed \
-                 unrelated papers under the names it wanted them to have. Both are what an \
-                 empty library looks like from the inside.\n\
-                 Search first and search widely. `exa_search` is the strongest instrument \
-                 here and the one most often left unused: a query costs a fraction of a \
-                 download and tells you what exists, what it is called, and who wrote it, \
-                 which is what turns a guess at a URL into a citation. Never download a URL \
-                 you have not seen in a search result, in `research/FRONTIER.md`, or in a \
-                 source you already hold — a fetch of an invented address succeeds and \
-                 stores the wrong paper.\n\
-                 Cover the subject rather than one thread of it. Each cycle, pick the angle \
-                 the library is thinnest on: the encyclopedic and problem-collection entries \
-                 that fix the statement and the names, the surveys, the methods that failed \
-                 and why, the adjacent problems, the computational attacks, the \
-                 counterexample constructions, and whatever the run's own sources cite. \
-                 `research/FRONTIER.md` is ranked by how many of your own sources cite each \
-                 target; work the top of it, because a source three of your papers cite is \
-                 the standard reference and no rephrasing of a query surfaces that.\n\
-                 A query is only one of your four ways onto the web, and it is the one that \
-                 depends on having guessed the subject's name — which at the start of a run \
-                 you have not. `citation_graph` takes a DOI, an arXiv number, or a title and \
-                 returns what that paper cites and what cites it; run it on every source \
-                 worth holding, because a citation was chosen by somebody who had read the \
-                 subject and no rewording of a query recovers that. `find_similar_sources` \
-                 queries with a page instead of a phrase, which is what breaks a search that \
-                 keeps returning the same six results. `deep_research` takes a question you \
-                 cannot decompose into queries yourself and returns a synthesis — never a \
-                 claim, but the best source of the vocabulary your next search needs. \
-                 Triage before you fetch: `read_sources` reads twenty candidates in one call \
-                 and stores none, so you find the three worth having without paying the \
-                 conversion for the other seventeen. Narrow with `include_domains`, \
-                 `exclude_domains`, and the date bounds rather than with adjectives.\n\
-                 Two things still bound you, and they are about waste rather than volume. \
-                 Use `recall_memory` before fetching so known material is not fetched twice, \
-                 and prefer the primary statement to a retelling of it. When a cycle genuinely \
-                 has nothing to add — every angle covered, the frontier worked, no request \
-                 open — say NOTHING FURTHER and spend nothing; you will be asked again, so \
-                 that is a pause and not a retirement. File what you gather under `research/`, \
-                 describe it, and store the verified finding with `remember_memory` so later \
-                 runs can recall it."
+            LIBRARIAN_BRIEF
         ),
         review_team(),
         (
