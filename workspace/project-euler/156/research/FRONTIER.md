@@ -6,7 +6,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 5 | https://doi.org/10.1080/00029890.2025.2525050 | Archive Labeling Sequences | p. 183. LINKS Graeme McRae, May 26 2007, [Table of n, a(n) for n = 1..84][14] (complete sequence) Tanya Khovanova and Gregory Marton, [Archive Labeling Sequences][15], Amer. Math. Monthly 132(8)… |
+| 6 | https://doi.org/10.1080/00029890.2025.2525050 | Archive Labeling Sequences | p. 183. LINKS Graeme McRae, May 26 2007, [Table of n, a(n) for n = 1..84][14] (complete sequence) Tanya Khovanova and Gregory Marton, [Archive Labeling Sequences][15], Amer. Math. Monthly 132(8)… |
 | 3 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][53] [Format][54] [Style Sheet][55] [Transforms][56] [Superseeker][57] [Recents][58] [The OEIS Community][59] Maintained by [The OEIS Foundation Inc.][60] Last modified August 14 08:47… |
 | 3 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A014778 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A014778 - OEIS] [3] A014778 Numbers k equal to the number of 1's in the decimal digits… |
 | 2 | https://www.geeksforgeeks.org/ | — | Occurrences of 2 as a Digit in 0 to n - GeeksforGeeks [image: geeksforgeeks] [1] [image: search icon] - Courses Sale ** - Tutorials ** - Interview Prep ** ** - [DSA][2] - [Practice Problems][3] -… |
