@@ -760,40 +760,6 @@ impl Ladders {
     }
 }
 
-impl Ladder {
-    /// Renders one ladder for the dossier, in full rather than as a row.
-    ///
-    /// The tables truncate every field and scatter the rungs across sections.
-    /// That is right for a file somebody scans and wrong for the dossier, where
-    /// a role is handed a ladder precisely so it does not rebuild one: there
-    /// the goal, the difficulties, and every rung's standing have to arrive
-    /// whole, together.
-    pub(super) fn full(&self) -> String {
-        let mut out = format!("### {} ({})\n", self.slug, self.stance.label());
-        if !self.goal.trim().is_empty() {
-            let _ = writeln!(out, "- Goal: {}", self.goal.trim());
-        }
-        if !self.difficulties.is_empty() {
-            let _ = writeln!(out, "- Difficulties: {}", self.difficulties.join(", "));
-        }
-        for rung in self.ordered() {
-            let off = if rung.off.is_empty() {
-                "nothing off".to_string()
-            } else {
-                format!("off: {}", rung.off.join(", "))
-            };
-            let _ = writeln!(
-                out,
-                "- Rung `{}` ({}): {} [{off}]",
-                rung.id,
-                rung.stance.label(),
-                rung.statement.trim()
-            );
-        }
-        out
-    }
-}
-
 impl Rung {
     /// Renders one rung for the next attempt's prompt.
     ///

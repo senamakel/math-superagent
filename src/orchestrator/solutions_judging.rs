@@ -512,7 +512,13 @@ pub(in crate::orchestrator) async fn reflect_step(
          the literature leaves this case open, or every independent construction the run built \
          fails to reproduce values that are already known. Name the answer and the missing \
          route in LESSON when you say UNVERIFIED; it ends the run, so do not use it while a \
-         second route is merely unbuilt. Otherwise UNSOLVED.\n\
+         second route is merely unbuilt. BANKED if the attempt did not reach the goal but settled \
+         something short of it that the run should keep — a weakened case proved, a conditional \
+         result, a method ruled out with the reason, a barrier showing why an approach cannot \
+         work. BANKED does not end the run and is not a consolation verdict: a no-go result is \
+         often what tells the next attempt where the difficulty actually is. It counts only if \
+         the result was written down as a `claim` block, so say in LESSON which claim id carries \
+         it. Otherwise UNSOLVED.\n\
          PROGRESS: YES if this attempt established something the previous ones had not; \
          otherwise NO.\n\
          KIND: MATHEMATICAL if what it established is a fact, bound, structure, or refutation \
@@ -857,7 +863,44 @@ pub(in crate::orchestrator) fn record_verdict(
     // nothing new. The reflection knew — its own lesson for the next attempt
     // said the salvage "was reported as task completion when it advanced
     // nothing" — but the verdict had already routed the run to `done`.
-    let progressed = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
+    let stated_progress = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
+    // The fourth verdict, and the only one checked against the workspace rather
+    // than against itself.
+    //
+    // `solved` was binary, so a run that proved a weakened case, ruled a method
+    // out, or established a conditional result had exactly one word for it:
+    // unsolved. That is not how the problems this runtime is pointed at are
+    // actually made progress on — Greenfeld and Tao published two no-go results
+    // before the periodic tiling counterexample, and the 2021 one is what told
+    // them their encoding could not work and to change it. Scored here, both
+    // would have read as failures.
+    //
+    // BANKED says the attempt settled something short of the goal. It never
+    // ends the run, so the cost of a wrong one is bounded — but it counts as
+    // progress, and progress resets `unproductive`, which is the only route
+    // into `diversify`. A verdict a model can assert freely would therefore let
+    // a stuck run keep itself out of diversification forever by claiming a
+    // small win every time. So it is honoured only when the claim ledger
+    // actually grew: `established` counts proved, formalised, and checked
+    // claims, and it is derived from the notes on disk rather than from
+    // anything this reply says.
+    let banked = upper.contains("VERDICT: BANKED") || upper.contains("VERDICT:BANKED");
+    let grew = match workspace {
+        Some(workspace) => {
+            let now = super::claims::collect(workspace).established();
+            let grew = now > state.established;
+            state.established = now;
+            grew
+        }
+        // With no workspace to check against there is nothing to game and
+        // nothing to verify, which is the shape every unit test runs in.
+        None => banked,
+    };
+    let banked = banked && grew;
+    if banked {
+        state.banked += 1;
+    }
+    let progressed = stated_progress || banked;
     state.solved = claimed && evidenced && progressed;
     if unverified && evidenced {
         state.unverified += 1;
@@ -884,6 +927,19 @@ pub(in crate::orchestrator) fn record_verdict(
         );
         if let Some(tracer) = tracer {
             tracer.note("solution loop: SOLVED rejected, the reflection also reported no progress");
+        }
+    }
+    if (upper.contains("VERDICT: BANKED") || upper.contains("VERDICT:BANKED")) && !banked {
+        state.lessons.push(
+            "Reported BANKED, but no new claim reached research/CLAIMS.md. A result is banked by \
+             writing it down as a claim — a fenced `claim` block in a note under `research/` or \
+             beside the output in `code/out/`, with its hypotheses, its status, and what it lets \
+             the run conclude. A result that exists only in an attempt's report is lost when the \
+             attempt ends."
+                .to_string(),
+        );
+        if let Some(tracer) = tracer {
+            tracer.note("solution loop: BANKED rejected, the claim ledger did not grow");
         }
     }
     // A blocked attempt is counted before progress is judged, because

@@ -1,5 +1,7 @@
 #![allow(clippy::expect_used)]
 
+use std::fmt::Write as _;
+
 use super::{LadderStance, RungStance, collect, is_weakened};
 
 fn ladder(root: &std::path::Path, slug: &str, body: &str) -> std::io::Result<()> {
@@ -519,27 +521,18 @@ fn the_current_rung_briefs_the_next_attempt_with_its_merge() -> std::io::Result<
     Ok(())
 }
 
-/// The dossier is handed a ladder whole rather than as truncated rows, because
-/// the goal, the difficulties, and each rung's standing only stop a rebuild if
-/// they arrive together.
+/// An open rung carries the ladder it came from, so a briefing can name its
+/// source and a reader can open the file it was written in.
 #[test]
-fn a_ladder_renders_whole_for_the_dossier() -> std::io::Result<()> {
-    let root = workspace("dossier")?;
+fn an_open_rung_names_the_ladder_it_came_from() -> std::io::Result<()> {
+    let root = workspace("provenance")?;
     ladder(&root, "cycle-length", &erdos_ladder())?;
     let ladders = collect(&root);
-    let rung = ladders
-        .open_rungs()
-        .first()
-        .copied()
-        .expect("the ladder has an open rung")
-        .clone();
-    assert_eq!(rung.ladder, "cycle-length");
-
-    let full = super::collect(&root)
-        .settled()
-        .next()
-        .map(|settled| settled.id.clone())
-        .expect("the ladder has a settled rung");
-    assert_eq!(full, "R-0");
+    let rungs = ladders.open_rungs();
+    let first = rungs.first().expect("the ladder has an open rung");
+    assert_eq!(first.ladder, "cycle-length");
+    assert_eq!(first.id, "R-1");
+    assert_eq!(first.stance, RungStance::Open);
+    assert_eq!(first.off.len(), 2);
     Ok(())
 }

@@ -130,6 +130,22 @@ pub(super) struct SolutionState {
     /// arms finishing in the same superstep write different fields, so the
     /// reducer never has to pick a winner between them.
     diversify: DiversifyFindings,
+    /// Established claims the ledger held at the end of the last attempt.
+    ///
+    /// The one field here read off the *workspace* rather than off a model's
+    /// reply, and that is what it is for. A `BANKED` verdict says the attempt
+    /// settled something short of the goal, which is a claim about the world
+    /// that the run can check: the claim ledger either grew or it did not.
+    /// Without this the verdict would be a word, and a word that resets
+    /// `unproductive` is a word that can keep a run out of `diversify`
+    /// indefinitely — the failure `computational` was added to close, one
+    /// verdict wider.
+    pub(in crate::orchestrator) established: usize,
+    /// Attempts that banked a result short of the goal.
+    ///
+    /// Nothing in [`route`] reads it; it is what the outcome reports, so a run
+    /// that ends unsolved can still say what it settled on the way.
+    pub(in crate::orchestrator) banked: usize,
     /// Completed cycles since the goal was last decomposed into lemmas.
     ///
     /// Unlike every other counter here, nothing in [`route`] reads it. It paces
@@ -156,6 +172,8 @@ impl SolutionState {
             blocked: 0,
             computational: 0,
             unverified: 0,
+            established: 0,
+            banked: 0,
             diversify: DiversifyFindings::default(),
             // At the threshold, not at zero, so the counter is already due
             // when `run` opens a reduction beside the first attempt — before
@@ -228,6 +246,8 @@ impl SolutionState {
             "blocked": self.blocked,
             "computational": self.computational,
             "unverified": self.unverified,
+            "established": self.established,
+            "banked": self.banked,
             "since_reduction": self.since_reduction,
             // The arms run as separate nodes, so this is the only way what they
             // found reaches the merge that turns it into the next attempt's
@@ -268,6 +288,8 @@ impl SolutionState {
         rebuilt.blocked = count("blocked");
         rebuilt.computational = count("computational");
         rebuilt.unverified = count("unverified");
+        rebuilt.established = count("established");
+        rebuilt.banked = count("banked");
         rebuilt.restarts = count("restarts");
         rebuilt.since_reduction = count("since_reduction");
         rebuilt.solved = state

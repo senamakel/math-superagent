@@ -260,13 +260,13 @@ path too, a machine proof "deconstructed" into a two-line human argument.
 - **`@[equational_result]`** — an attribute CI harvests to rebuild the whole
   implication graph from the codebase. The graph is *derived*, never restated.
 - **`proof_wanted`** — records a non-Lean or machine-generated result as a
-  **conjecture** on the dashboard, upgradeable to `theorem` later. Status is
-  explicit in the type, not in prose.
+  **conjecture** on the dashboard, upgradeable to `theorem` later. Status lives
+  in the type, not in prose.
 - GitHub Projects issues with **CI-enforced single-claimant locking**: "The CI
   ensured that at most one contributor could claim a task at any time."
 - A five-column dashboard (explicit/implicit × true/false, plus unresolved) as
-  the quantitative progress metric, plus Equation Explorer, Graphiti and the
-  Finite Magma Explorer as views.
+  the progress metric, plus Equation Explorer, Graphiti and the Finite Magma
+  Explorer as views.
 
 **Human insight multiplies the solver rather than replacing it.** Daniel Weber's
 observation that one could restrict to magmas whose squaring map is injective,
@@ -276,9 +276,9 @@ to apply — which "has helped tremendously with 'weapon selection'".
 
 **Granularity was the design variable.** Day 1: "the atomic tasks to complete
 are very small and most of them do not require extensive expertise in either
-Lean or math." Day 2: "projects that consist of extremely large numbers of
-independent pieces, each of which are easy to understand and attackable by a
-variety of methods, are a very good use case for these crowdsourced projects."
+Lean or math." Day 2: such projects, "extremely large numbers of independent
+pieces, each of which are easy to understand and attackable by a variety of
+methods, are a very good use case".
 
 **Tao's ex-ante criteria for whether a problem is crowdsourcable at all** — the
 best available triage checklist, from the slides: **modularity**;
@@ -361,21 +361,21 @@ routine pre-publication sanity check, with negative results systematically
 recorded rather than left as folklore.
 https://terrytao.wordpress.com/2025/11/05/mathematical-exploration-and-discovery-at-scale/
 
-## II.7 Summary: mechanism → what it buys → what breaks without it
+## II.7 Summary: mechanism → what breaks without it
 
-| Mechanism | Buys | Without it |
-|---|---|---|
-| Statement/proof dependency split | Parallelism across the DAG | Work serialises behind unproved upstream nodes |
-| `sorry`-able stated contract | Downstream starts immediately | Every contributor waits |
-| Compiler as arbiter | Unbounded, untrusted contributors | Trust caps the team at ~5 |
-| Status lattice + dashboard | Progress is measurable in units | No way to see whether a run is advancing |
-| `@[equational_result]`-style derivation | One source of truth for the graph | A second list that disagrees |
-| `proof_wanted` | Conjectures visible but not load-bearing | Unverified results silently satisfy goals |
-| CI-enforced task claiming | No duplicated or clobbered work | Two workers on one node |
-| Transitive closure + symmetry | ~37× amplification (EQT) | 37× the proving cost |
-| Cheap-first ladder | 22M → ~1,000 before the expensive tier | Frontier-model spend on brute-force work |
-| Immunity metadata | Weapon selection | Re-attempting known-dead techniques |
-| Exact-arithmetic verifier | Search results mean something | Exploits reported as progress |
+| Mechanism | Without it |
+|---|---|
+| Statement/proof dependency split | Work serialises behind unproved upstream nodes |
+| `sorry`-able stated contract | Every contributor waits |
+| Compiler as arbiter | Trust caps the team at ~5 |
+| Status lattice + dashboard | No way to see whether a run is advancing |
+| Derived graph (`@[equational_result]`) | A second list that disagrees |
+| `proof_wanted` | Unverified results silently satisfy goals |
+| CI-enforced task claiming | Two workers on one node |
+| Transitive closure + symmetry | 37× the proving cost (EQT) |
+| Cheap-first ladder | Frontier-model spend on brute-force work |
+| Immunity metadata | Re-attempting known-dead techniques |
+| Exact-arithmetic verifier | Exploits reported as progress |
 
 ---
 
@@ -466,35 +466,35 @@ lands in this repository.
 - **R35 Refute-then-repair.** A refutation schedules a weakened or corrected
   variant rather than closing the line. *Evidence:* the knot conjecture killed
   by braids and repaired via the injectivity radius — Tao's "promising
-  paradigm". See `04b`.
-- **R28 Non-redundancy filter.** A generated conjecture is discarded unless it
-  says something not implied by the existing claim and theorem list. *Test:*
-  given a known theorem and a trivial consequence, neither is emitted.
-  *Evidence:* Dalmatian tests informativeness *before* correctness, and "more
-  than half of the program" is the triviality filter.
+  paradigm" (`04b`).
+- **R28 Non-redundancy filter.** A conjecture is discarded unless it says
+  something not implied by the existing claim and theorem list. *Test:* given a
+  known theorem and a trivial consequence, neither is emitted. *Evidence:*
+  Dalmatian tests informativeness *before* correctness; "more than half of the
+  program" is the triviality filter.
 - **R29 Defined stopping rule.** Conjecture generation halts on a condition,
-  not on budget exhaustion, and the run reports which fired. *Evidence:*
-  Graffiti's "Bingo" coverage condition.
+  not on budget exhaustion, and reports which fired. *Evidence:* Graffiti's
+  "Bingo" coverage condition.
 - **R30 One-line objective swap.** A new extremal problem is posed by supplying
   a scorer alone. *Evidence:* Wagner — "the only thing we need to change … is
   the function that calculates the score".
 - **R31 Soft scoring available.** Penalised violations, not only hard
-  constraints; the penalised form is the default for constrained construction
-  search. *Evidence:* `edges − 2·triangles` outperforming the hard constraint.
+  constraints, and the penalised form is the default for constrained
+  construction search. *Evidence:* `edges − 2·triangles` beating the hard form.
 - **R32 Population diversity.** Island-model or otherwise partitioned
-  populations with best-shot prompting, not a single hill-climbing lineage;
+  populations with best-shot prompting rather than one hill-climbing lineage;
   collapse is detected. *Evidence:* FunSearch's four ingredients.
 
 ## III.4 Verifiers and tools
 
-- **R6 Adversarial verifier.** Any scored search uses exact arithmetic and
+- **R6 Adversarial verifier.** Scored search uses exact arithmetic and
   conservative bounds, and the agent is assumed to be attacking it. *Test:* a
-  deliberately loose verifier is exploited in a regression test and the
-  hardened one is not. *Evidence:* AlphaEvolve.
-- **R17 Ground the toolchain.** Formal or library-dependent output is checked
-  against the *current* library, not the model's memory of it. *Test:*
-  generated Lean compiles against pinned mathlib in CI. *Evidence:* the o1 Lean
-  experiment; EQT's version-drift warning.
+  deliberately loose verifier is exploited in a regression test, the hardened
+  one is not. *Evidence:* AlphaEvolve.
+- **R17 Ground the toolchain.** Library-dependent output is checked against the
+  *current* library, not the model's memory of it. *Test:* generated Lean
+  compiles against pinned mathlib in CI. *Evidence:* the o1 Lean experiment;
+  EQT's version drift.
 - **R26 Pin and bump deliberately.** Library and solver versions are pinned per
   workspace; a bump is an explicit, tested, visible event.
 - **R36 Off-the-shelf over bespoke ML.** No component requires per-problem
@@ -507,8 +507,7 @@ lands in this repository.
 ## III.5 Honesty about the harness
 
 R14 (budget honesty) and R15 (methodology declared in advance) expand into one
-table, derived directly from §I.4. Six of the seven map onto files this
-repository already has.
+table, from §I.4. Six of the seven map onto files this repo already has.
 
 | Tao's knob | Field the run must record |
 |---|---|
@@ -520,14 +519,14 @@ repository already has.
 | Best solution submitted, rest discarded | attempts generated vs attempts submitted |
 | **Silent withdrawal when nothing works** | attempts abandoned, and the run reported *even on failure* |
 
-- **R24 Quantitative progress metric and rendered frontier.** A small set of
-  counters that move on incremental contributions, plus a renderable goal
-  graph. *Test:* every attempt either moves a counter or is recorded as a dead
-  end. *Evidence:* two of Tao's seven crowdsourcability criteria.
-- **R19 Failure ledger.** Dead ends, refuted conjectures and exploited
-  verifiers are recorded and consulted. *Evidence:* Tao's proposal that
-  negative results stop being folklore; PatternBoost reporting its failure to
-  beat a conjectured bound as weak evidence *for* it.
+- **R24 Quantitative progress metric and rendered frontier.** Counters that move
+  on incremental contributions, plus a renderable goal graph. *Test:* every
+  attempt either moves a counter or is recorded as a dead end. *Evidence:* two
+  of Tao's seven crowdsourcability criteria.
+- **R19 Failure ledger.** Dead ends, refuted conjectures and exploited verifiers
+  are recorded and consulted. *Evidence:* Tao's proposal that negative results
+  stop being folklore; PatternBoost reporting its failure to beat a conjectured
+  bound as weak evidence *for* it.
 
 ## III.6 Scope, direction and delivery
 
@@ -535,13 +534,12 @@ repository already has.
   problem against Tao's seven criteria — modularity, verifiability, elementary
   components, diversity of technique, transferability, quantitative progress
   metric, visualizability — and report which are absent. *Test:* a monolithic,
-  non-verifiable problem is flagged rather than silently fed to the
-  decomposition machinery.
-- **R16 Brainstorming mode, kept out of the claim ledger.** The agent can
-  enumerate candidate strategies with rationales for selection, distinctly from
-  asserting a result. *Test:* strategy proposals are filed as directives, never
-  as claims. *Repo:* already the `director` role's rule. *Evidence:* Tao's
-  "drawing out a user's latent knowledge … by being a good listener".
+  non-verifiable problem is flagged, not fed to the decomposition machinery.
+- **R16 Brainstorming mode, kept out of the claim ledger.** Candidate strategies
+  are enumerated with rationales, distinctly from asserting a result. *Test:*
+  strategy proposals are filed as directives, never as claims. *Repo:* already
+  the `director` role's rule. *Evidence:* Tao's "drawing out a user's latent
+  knowledge … by being a good listener".
 - **R18 Digestion, not just generation.** A result is done when it has a
   human-readable exposition tied to the machine-checked artefact — the
   blueprint's two-column discipline. *Test:* every proved node has both.
