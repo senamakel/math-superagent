@@ -1,7 +1,9 @@
     use serde_json::json;
 
     use super::{
-        durable_node_sets, library_node_set, point_id, render_result, scratch_node_set,
+        CHUNK_SEARCH, DEFAULT_LIMIT, EXTENDED_GRAPH_SEARCH, GRAPH_SEARCH, MAX_LIMIT,
+        SCOPE_SAFE_SEARCH_TYPES, TRIPLET_SEARCH, durable_node_sets, library_node_set,
+        limit_argument, limit_property, point_id, render_result, scratch_node_set,
         session_node_set, slug, source_file_name, source_mime, visible_datasets,
     };
 
@@ -218,6 +220,71 @@
         assert_eq!(session_node_set(project), format!("project:{project}"));
         assert_eq!(scratch_node_set(project), format!("scratch:{project}"));
         assert_eq!(library_node_set(project), format!("library:{project}"));
+    }
+
+    /// Every search type the runtime can ask for is one the server will
+    /// actually scope.
+    ///
+    /// `node_name` is the only filter this deployment applies — dataset
+    /// filtering needs `ENABLE_BACKEND_ACCESS_CONTROL`, which the memory
+    /// compose file turns off — so a retriever that ignores it searches every
+    /// problem on the box. That is the leak `visible_datasets` closed, and
+    /// naming a different search type is the way back into it.
+    #[test]
+    fn no_search_type_the_server_cannot_scope_is_reachable() {
+        for unscoped in [
+            // Takes `top_k` and a session id, and no node filter at all.
+            "SUMMARIES",
+            // BM25, and takes `top_k` alone. The exact-identifier search this
+            // costs us is covered on disk by `search_documents` instead.
+            "CHUNKS_LEXICAL",
+            // Run against the whole graph by construction.
+            "CYPHER",
+            "NATURAL_LANGUAGE",
+            "CODE",
+            "CODING_RULES",
+        ] {
+            assert!(
+                !SCOPE_SAFE_SEARCH_TYPES.contains(&unscoped),
+                "{unscoped} does not honour node_name and must stay unreachable"
+            );
+        }
+        // And everything the tools do reach is on the list, so the guard in
+        // `search_in` cannot refuse a call a tool is able to make.
+        for used in [
+            CHUNK_SEARCH,
+            TRIPLET_SEARCH,
+            GRAPH_SEARCH,
+            EXTENDED_GRAPH_SEARCH,
+        ] {
+            assert!(SCOPE_SAFE_SEARCH_TYPES.contains(&used), "{used} is unreachable");
+        }
+    }
+
+    /// The advertised bounds and the enforced ones are the same numbers,
+    /// because a schema promising more than the clamp allows is a limit the
+    /// model is invited to exceed and never told it did.
+    #[test]
+    fn the_recall_limit_is_advertised_exactly_as_it_is_enforced() {
+        let property = limit_property();
+        assert_eq!(property["maximum"], json!(MAX_LIMIT));
+        assert_eq!(property["minimum"], json!(1));
+        assert_eq!(property["default"], json!(DEFAULT_LIMIT));
+
+        let read = |arguments| {
+            limit_argument(&crate::agent::ToolCall {
+                id: "call-1".into(),
+                name: "recall_memory".into(),
+                invalid: None,
+                arguments,
+            })
+        };
+        assert_eq!(read(json!({})), DEFAULT_LIMIT);
+        assert_eq!(read(json!({ "limit": 25 })), 25);
+        // Out of range in either direction is clamped rather than refused: a
+        // recall is not worth failing over an argument nobody has to get right.
+        assert_eq!(read(json!({ "limit": 500 })), MAX_LIMIT);
+        assert_eq!(read(json!({ "limit": 0 })), 1);
     }
 
     #[test]

@@ -222,6 +222,37 @@ on terms that role has already computed cannot become one. It is also the role
 holding the terms, so delegating the lookup would spend a child run to pass a
 list of integers along.
 
+### The four ways onto the web that are not a query
+
+`oeis_lookup` escapes the phrasing problem by keying on numbers. Four more tools
+escape it other ways, and none of what they find is reachable by rephrasing.
+`citation_graph` (`openalex.rs`) is the second structured adapter: given a DOI,
+an arXiv identifier, an OpenAlex id, or a title it returns what that work cites
+and what cites it, with each work's authors, year, venue, and citation count. A
+query ranks pages by what the wider web thinks; a citation was chosen by
+somebody who had read the subject. The directions are different leads: what a
+paper cites is the foundation the run needs before the paper means anything,
+while what cites it is who took it further or found the error — what a run stuck
+on a 1974 bound wants and rarely asks for. `frontier.rs` already made this
+argument for the anchors an HTML page carries, which reaches nothing inside a
+PDF; asking a bibliographic index is the same idea without that limit.
+
+The other three are Exa endpoints (`exa.rs`). `find_similar_sources` queries
+with a page instead of a phrase, which breaks a library gone circular when three
+searches return the same six pages. `read_sources` reads up to twenty candidates
+in one request and stores none: triage, because the only way to learn what a
+page said was `download_document`, which converts, digests, archives, files, and
+indexes — right for a source the run will use, paid twenty times to find that
+seventeen were not it. `deep_research` hands one question to Exa's own
+agent, riding on `/search` with `type: deep-reasoning` rather than the
+`/research/v1` task API deprecated on 1 May 2026, so there is no polling loop;
+its reply synthesises pages the run has not read, so the result says it is a
+lead and never a claim. All four file what they find into the frontier and none
+judges — whether a source is worth downloading stays the librarian's call — all
+take `include_domains`, `exclude_domains`, and published-date bounds, and all
+are withheld with `exa_search` under `MATH_AGENT_RESEARCH` by not being
+registered, then granted to `research` and `librarian` alone.
+
 ## Recall: the two ways back into what is known
 
 A run accumulates faster than any one agent can hold, and four tools answer
@@ -270,6 +301,33 @@ reading — a live judge already did that with the document tools alone. The
 cannot turn into an investigation. The **tool-builder** gets `recall_research`
 but not `search_workspace`: it writes probes and throwaway experiments, so a
 similarity search over its own output would mostly return them.
+
+### What a recall actually asks for
+
+`recall_memory` runs two retrievers and returns both, not the single `CHUNKS`
+search it used to. Passages and graph edges miss in opposite
+directions: a passage is what one source said in one place, an edge is what the
+run connected across sources and never wrote down. Asking only for passages
+makes a graph store behave like a search box, which is what every role got for
+as long as the graph half was reachable only through a second tool most never
+called. The two run concurrently, and one failing degrades to the other with a
+line naming the missing half rather than failing the recall.
+`strategy: "passages"` asks for text alone; `relate_memory` gains
+`reach: "extended"`, which walks further out, where a link through an
+intermediate nobody named lives. The cap rose from ten to forty, because ten
+split across two retrievers is five passages.
+
+Which search types are reachable is a **security** boundary, not a menu.
+`node_name` is the only scoping this deployment applies — dataset filtering
+needs `ENABLE_BACKEND_ACCESS_CONTROL`, which `compose.memory.yaml` sets to
+`false`, and that is the explanation for the leak `visible_datasets` closed. So
+a type is usable exactly when its retriever accepts `node_name`, and several do
+not: `SUMMARIES` and `CHUNKS_LEXICAL` take a `top_k` and nothing else, `CYPHER`
+and `NATURAL_LANGUAGE` run against the whole graph. `SCOPE_SAFE_SEARCH_TYPES`
+lists the four that are safe, `search_in` refuses the rest, and a test asserts
+both halves. The loss is worth naming: `CHUNKS_LEXICAL` would match the exact
+identifiers a dense vector rounds off, and that gap is covered instead by
+`search_documents`, which cannot see another project by construction.
 
 ## Workspace context routing
 
