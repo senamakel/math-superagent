@@ -97,6 +97,7 @@ impl OrchestratorAgent {
                 pattern: prompts.pattern,
                 inventor: prompts.inventor,
                 reducer: prompts.reducer,
+                weakener: prompts.weakener,
                 librarian: prompts.librarian,
                 scholar: prompts.scholar,
                 curator: prompts.curator,

@@ -101,6 +101,7 @@ const SPECIALISTS: [&str; 14] = [
     "pattern_finder",
     "inventor",
     "reducer",
+    "weakener",
     "librarian",
     "scholar",
 ];

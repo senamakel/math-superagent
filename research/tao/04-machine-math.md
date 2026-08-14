@@ -4,34 +4,30 @@ What Terence Tao has actually said about machine-assisted and AI mathematics,
 the mechanisms that made his machine-assisted projects work, and the design
 requirements those imply for an autonomous math-solving agent.
 
-Every claim carries a URL. Material that reached us through a page summarizer
+Every claim carries a URL; material that reached us through a page summarizer
 rather than raw bytes is marked `[secondary]`. Conjecture-generation mechanisms
 are in the companion file `04b-conjecture-generation.md`, split out to keep both
-under the repository's 500-line cap.
+under the 500-line cap.
 
-**Primary sources used throughout.** *Machine assisted proof*, Notices AMS
-72(1) 6–13, Jan 2025 — cited below as **[MAP]**, read from
+**Primary sources.** *Machine assisted proof*, Notices AMS 72(1) 6–13, Jan 2025
+— cited as **[MAP]**, read from
 https://terrytao.wordpress.com/wp-content/uploads/2024/03/machine-assisted-proof-notices.pdf
-(the AMS copy at `ams.org/notices/202501/rnoti-p6.pdf` returns 403). Note its
-preprint is dated 10 Feb 2024 and therefore **predates AlphaProof**; it cites
-AlphaGeometry but must not be cited for AlphaProof commentary. Mastodon threads
-are quoted from `mathstodon.xyz/api/v1/statuses/<id>` and `/context`, which
-serve the post body where the HTML page does not.
+(the AMS copy at `ams.org/notices/202501/rnoti-p6.pdf` returns 403). Its
+preprint is dated 10 Feb 2024 and therefore **predates AlphaProof**: it cites
+AlphaGeometry but must not be cited for AlphaProof commentary. Mastodon is
+quoted from `mathstodon.xyz/api/v1/statuses/<id>` and `/context`, which serve
+the post body where the HTML page does not.
 
 ## Known gap in this file
 
-Item 5 of the research brief is only **partly** covered. The mechanisms of
-machine conjecture generation are in `04b`, and Tao's AlphaEvolve work is in
-§II.6 below. **Not yet covered, and not reconstructed from memory:**
-
-- Tao's own remarks on numerical/experimental exploration preceding proof —
-  how he uses numerics to decide what is worth trying to prove.
-- The Erdős problems database (`erdosproblems.com`, `teorth/erdosproblems`)
-  and his involvement in it, beyond the single #728 episode quoted in §I.
-- OEIS-driven discovery and sequence lookup as a conjecture engine.
-
-The research pass covering these was lost in transit rather than completed. It
-is a gap, recorded as one; do not treat §I and §II as complete on this point.
+Item 5 of the brief is only **partly** covered — conjecture-generation
+mechanisms are in `04b` and AlphaEvolve is in §II.6, but three things are **not
+covered, and not reconstructed from memory**: Tao's own remarks on
+numerical/experimental exploration preceding proof and how he uses numerics to
+decide what is worth trying to prove; the Erdős problems database
+(`erdosproblems.com`, `teorth/erdosproblems`) and his involvement in it beyond
+the #728 episode in §I.3; and OEIS-driven discovery as a conjecture engine. The
+research pass covering these was lost in transit rather than completed.
 
 ---
 
@@ -106,17 +102,13 @@ magnitude) depending on what resources and assistance one gives the tool, and
 how one reports their results."
 https://mathstodon.xyz/@tao/114881418225852441
 
-He then lists what happens if you change the IMO's format — days instead of
-hours (or "some sort of expensive and energy-intensive time acceleration
-machine"); problems rewritten by the team leader before the exam; unlimited
-tools and internet; six students on one problem sharing partial progress; the
-leader steering away from unpromising directions; only the best of six
-solutions submitted; and, last:
-
-> "If none of the students on the team obtains a satisfactory solution, the
-> team leader does not submit any solution at all, and silently withdraws from
-> the competition without their participation ever being noted."
-
+He then lists seven ways to change the IMO's format — days instead of hours (or
+"some sort of expensive and energy-intensive time acceleration machine");
+problems rewritten by the team leader beforehand; unlimited tools and internet;
+six students on one problem sharing partial progress; steering away from
+unpromising directions; best-of-six submitted; and, last, "the team leader does
+not submit any solution at all, and silently withdraws from the competition
+without their participation ever being noted."
 https://mathstodon.xyz/@tao/114881419368778558
 
 Conclusion: "in the absence of a controlled test methodology that was not
@@ -126,9 +118,9 @@ self-reported AI competition performance results for which the methodology was
 not disclosed in advance of the competition."
 https://mathstodon.xyz/@tao/114881420636881657
 
-Each bullet maps to a real practice — AlphaProof's three days per problem, its
+Each knob maps to a real practice — AlphaProof's three days per problem, its
 hand formalisation, tool access, parallel search, steering, best-of-n, and
-selective non-reporting. §III.5 turns the list into recorded fields.
+selective non-reporting. §III.5 turns all seven into recorded fields.
 
 ---
 
@@ -185,9 +177,7 @@ Tao states it twice, and it is the load-bearing claim of this whole file.
 > understand the project as a whole." — **[MAP]**
 
 And on the blog: "it is not necessary to wait for earlier stages of the
-argument to be fully formalized to start working on later stages"; contributors
-"can work on one small corner of the project without necessarily needing to
-understand all the mathematics that goes into the project as a whole."
+argument to be fully formalized to start working on later stages".
 
 Three separable properties, worth naming individually because an agent runtime
 can have some without the others:
@@ -215,22 +205,19 @@ believe there is no fundamental obstacle to dropping this ratio below one,
 especially with increased integration with AI, SMT solvers, and other tools;
 this would be transformative to our field."
 
-**And it has already gone below one, once.** On the hardest EQT result:
-
-> "This was perhaps a situation in which the current state of formalization was
-> sufficient to make the completion of the proof *faster* than if it was done
-> by traditional pen-and-paper methods, because of the burden of redoing a
-> large number of case checks every time the definitions were updated."
-
+**And it has already gone below one, once.** On the hardest EQT result: "This
+was perhaps a situation in which the current state of formalization was
+sufficient to make the completion of the proof *faster* than if it was done by
+traditional pen-and-paper methods, because of the burden of redoing a large
+number of case checks every time the definitions were updated."
 https://github.com/teorth/equational_theories/wiki/Terence-Tao's-personal-log
 
-The mechanism is specific and reusable: the construction required over a
-hundred non-collision checks, the definition of "partial solution" changed
-several times, and "with each such change, Lean could verify a significant
-number of the previous proofs continued to work under the new definitions."
-Formalisation pays off exactly where a definition is unstable and the checking
-burden is mechanical — which is the situation an autonomous agent is in
-constantly.
+The mechanism is reusable: the construction required over a hundred
+non-collision checks, the definition of "partial solution" changed several
+times, and "with each such change, Lean could verify a significant number of
+the previous proofs continued to work under the new definitions." Formalisation
+pays off exactly where a definition is unstable and the checking burden is
+mechanical — the situation an autonomous agent is in constantly.
 
 ## II.4 The Equational Theories Project — the scaled version
 
@@ -326,13 +313,13 @@ libraries."
 
 **AlphaGeometry** (*Nature* 625, Jan 2024): a language model proposing **one
 auxiliary construction** at a time around a symbolic deduction engine (DD+AR)
-run to saturation. The LM exists only because auxiliary constructions come from
-an infinite space no symbolic search can enumerate. Trained on 100M synthetic
-theorem-proof pairs from 1B random diagrams, 9M needing an auxiliary
-construction — no human proofs. 25/30 on IMO-AG-30 against 14 for the symbolic
-engine alone. **AlphaGeometry2** (arXiv:2502.03544) reached 84%, and raised
-formal-language coverage from 66% to 88% of IMO geometry problems: a third of
-them previously could not even be *stated*.
+run to saturation — the LM exists only because auxiliary constructions come
+from an infinite space no symbolic search can enumerate. Trained on 100M
+synthetic theorem-proof pairs from 1B random diagrams, 9M needing an auxiliary
+construction, no human proofs; 25/30 on IMO-AG-30 against 14 for the symbolic
+engine alone. **AlphaGeometry2** (arXiv:2502.03544) reached 84% and raised
+formal-language coverage from 66% to 88% of IMO geometry problems — a third
+previously could not even be *stated*.
 
 **AlphaProof** (*Nature*, 12 Nov 2025, DOI 10.1038/s41586-025-09833-y; blog
 https://deepmind.google/blog/ai-solves-imo-problems-at-silver-medal-level/):
@@ -349,26 +336,25 @@ geometry effectively solved; significant compute per problem and human help on
 formalisation; "the database of formal proofs generated by this effort could be
 a useful resource if shared more openly"; and, per the AI effect, "once
 explained, it does not 'feel' like an exhibition of human-like intelligence".
-He immediately contrasts NuminaMath, "fully automated and orders of magnitude
-more resource efficient", using an LLM to generate Python that brute-forces
-numerical answers — "the multidimensional nature of the general challenge".
-https://mathstodon.xyz/@tao/112850769040110612
-
-In 2025 Gemini Deep Think scored 35/42 end-to-end in natural language inside the
-4.5-hour limit, officially certified — with Buzzard's summary of the two years
-worth keeping beside it: "what the last 12 months have given us is a one point
-improvement." https://xenaproject.wordpress.com/2025/08/03/ai-at-imo-2025-a-round-up/
+He contrasts NuminaMath, "fully automated and orders of magnitude more resource
+efficient", using an LLM to generate Python that brute-forces numerical answers
+— "the multidimensional nature of the general challenge".
+https://mathstodon.xyz/@tao/112850769040110612 · In 2025 Gemini Deep Think
+scored 35/42 end-to-end in natural language inside the 4.5-hour limit,
+officially certified, against Buzzard's summary of the two years: "what the last
+12 months have given us is a one point improvement."
+https://xenaproject.wordpress.com/2025/08/03/ai-at-imo-2025-a-round-up/
 
 **mathlib and what reuse buys.** 284,375 theorems and 135,578 definitions
 across ~2.1M lines (https://leanprover-community.github.io/mathlib_stats.html);
 maintenance practice in arXiv:2508.21593. Tao: a formalisation project "will
 typically contribute many basic mathematical results generated through the
 course of the project to a common mathematical library, which makes it easier
-for future formalization projects to proceed" — **[MAP]**. The honest
-counterpoint is EQT, which "only had a modest reliance on Lean's Mathlib":
-reuse pays where the domain is deep and prerequisites are shared, little where
-the problem is elementary and self-contained. An agent should not assume a
-library is its bottleneck without checking.
+for future formalization projects to proceed" — **[MAP]**. The counterpoint is
+EQT, which "only had a modest reliance on Lean's Mathlib": reuse pays where the
+domain is deep and prerequisites are shared, little where the problem is
+elementary and self-contained. An agent should not assume a library is its
+bottleneck without checking.
 
 ## II.6 AlphaEvolve — search whose verifier is the security boundary
 

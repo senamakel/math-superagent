@@ -231,6 +231,7 @@ struct SupportPrompts {
     pattern: String,
     inventor: String,
     reducer: String,
+    weakener: String,
     librarian: String,
     scholar: String,
     curator: String,
@@ -388,6 +389,45 @@ fn register_reducer(
     )
 }
 
+/// Registers the weakener, which lowers the target rather than reaching it.
+///
+/// Assembled exactly as the reducer is, and that is the argument for it rather
+/// than a coincidence: both take the goal and produce a document about what to
+/// attack instead of attacking anything, so both need a widened turn for the
+/// mathematics and neither may compute. Where they differ is only in what the
+/// document says — lemmas that would imply the goal, against targets that
+/// deliberately would not.
+///
+/// It holds all three memory tools for the reducer's reason, and the reason is
+/// if anything stronger here. A ladder of weakened versions of a famous problem,
+/// with the difficulty that defeats each rung named beside it, is a durable fact
+/// about the *problem* rather than about this run's approach to it: it survives
+/// the method that produced it, and a later run rebuilding it pays the full cost
+/// of rediscovering where the difficulty lives.
+fn register_weakener(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let budget = parts.budget.for_invention();
+    let mut weakener = specialist_harness(
+        parts.model_for("weakener"),
+        budget,
+        "weakener",
+        parts.tracer,
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut weakener, tool);
+    }
+    register_memory(&mut weakener, &parts.vector_store);
+    subagents.register_with_turn_cap(
+        "weakener",
+        Arc::new(weakener),
+        prompt,
+        budget.max_turn_output_tokens,
+    )
+}
+
 /// Registers the reflection, pattern, inventor, reducer, and librarian agents.
 ///
 /// Each gets only the tools its role needs: reflection has no research or
@@ -432,6 +472,7 @@ fn register_support_agents(
     register_inventor(subagents, parts, prompts.inventor)?;
 
     register_reducer(subagents, parts, prompts.reducer)?;
+    register_weakener(subagents, parts, prompts.weakener)?;
 
     let mut librarian = specialist_harness(
         parts.model_for("librarian"),

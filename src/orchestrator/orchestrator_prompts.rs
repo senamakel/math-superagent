@@ -16,6 +16,7 @@ struct RolePrompts {
     pattern: String,
     inventor: String,
     reducer: String,
+    weakener: String,
     librarian: String,
     scholar: String,
     curator: String,
@@ -102,6 +103,7 @@ impl RolePrompts {
             ("pattern_finder", self.pattern.as_str()),
             ("inventor", self.inventor.as_str()),
             ("reducer", self.reducer.as_str()),
+            ("weakener", self.weakener.as_str()),
             ("librarian", self.librarian.as_str()),
             ("scholar", self.scholar.as_str()),
             ("context_curator", self.curator.as_str()),
@@ -217,6 +219,24 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/THREADS.md",
             "CONTEXT.md",
         ],
+        // The weakener is sent its own ladder, the goal it is lowering, and
+        // what the run has actually established — that last one being what
+        // decides which rung is next, since a rung the claims ledger already
+        // covers is settled whether or not the ladder says so.
+        //
+        // It is denied `research/APPROACHES.md` for the reducer's reason, and
+        // `research/BACKWARD.md` for one of its own: a proof skeleton is a
+        // decomposition of the *full-strength* goal, and a role whose whole
+        // job is to lower that goal should not be reading a document that
+        // assumes it fixed. The two ledgers meet in the attempt, which is
+        // where they should.
+        "weakener" => &[
+            "GOAL.md",
+            "research/WEAKENED.md",
+            "research/CLAIMS.md",
+            "research/THREADS.md",
+            "CONTEXT.md",
+        ],
         // The curator writes the shared brief, so it is the one role that
         // needs to see the brief *and* the material it is written from: what
         // the run is for, what it is attempting, what the library establishes,
@@ -286,6 +306,7 @@ impl RolePrompts {
             pattern: role("pattern_finder", PATTERN_PROMPT)?,
             inventor: role("inventor", INVENTOR_PROMPT)?,
             reducer: role("reducer", REDUCER_PROMPT)?,
+            weakener: role("weakener", WEAKENER_PROMPT)?,
             librarian: role("librarian", LIBRARIAN_PROMPT)?,
             scholar: role("scholar", SCHOLAR_PROMPT)?,
             curator: role("context_curator", CONTEXT_CURATOR_PROMPT)?,
