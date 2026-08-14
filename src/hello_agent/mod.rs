@@ -307,6 +307,38 @@ impl Tool<()> for ExaSearchTool {
                         "type": "string",
                         "description": "Narrows the search to one kind of source.",
                         "enum": ["research paper", "pdf", "news", "company", "github"]
+                    },
+                    "include_domains": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "description": "Only return results from these domains, e.g. \
+                                        [\"arxiv.org\"]. Use it when a subject's name collides \
+                                        with something popular, which is what buries a \
+                                        mathematical query under an unrelated field."
+                    },
+                    "exclude_domains": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "description": "Never return results from these domains. Use it to push \
+                                        past the encyclopedic retellings once the run holds them."
+                    },
+                    "start_published_date": {
+                        "type": "string",
+                        "description": "ISO 8601 date; only results published after it. Use it to \
+                                        find what came after a result the run is stuck on."
+                    },
+                    "end_published_date": {
+                        "type": "string",
+                        "description": "ISO 8601 date; only results published before it. Use it \
+                                        to reach the original treatment rather than its \
+                                        retellings."
+                    },
+                    "num_results": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 25,
+                        "description": "How many results to return. Raise it when surveying a \
+                                        subject rather than checking one fact."
                     }
                 },
                 "required": ["query"],
@@ -321,10 +353,15 @@ impl Tool<()> for ExaSearchTool {
             .get("query")
             .and_then(serde_json::Value::as_str)
             .ok_or_else(|| tinyagents::TinyAgentsError::Validation("query is required".into()))?;
+        let requested = call
+            .arguments
+            .get("num_results")
+            .and_then(Value::as_u64)
+            .map_or_else(exa_results, |count| count.clamp(1, 25) as usize);
         let mut request = json!({
             "query": query,
             "type": "auto",
-            "numResults": exa_results(),
+            "numResults": requested,
             // A summary says what the source is; highlights say why it matched.
             // Asking for both is what makes a result decidable without a
             // download, which is the expensive step this is trying to target.
@@ -338,6 +375,44 @@ impl Tool<()> for ExaSearchTool {
             && let Some(object) = request.as_object_mut()
         {
             object.insert("category".to_string(), json!(category.trim()));
+        }
+        // A filter is only sent when it carries something. An empty list is not
+        // "no filter" to Exa — `includeDomains: []` matches nothing — so a
+        // model that names the argument and leaves it blank must not silently
+        // get an empty search.
+        if let Some(object) = request.as_object_mut() {
+            for (argument, field) in [
+                ("include_domains", "includeDomains"),
+                ("exclude_domains", "excludeDomains"),
+            ] {
+                let domains: Vec<&str> = call
+                    .arguments
+                    .get(argument)
+                    .and_then(Value::as_array)
+                    .into_iter()
+                    .flatten()
+                    .filter_map(Value::as_str)
+                    .map(str::trim)
+                    .filter(|domain| !domain.is_empty())
+                    .collect();
+                if !domains.is_empty() {
+                    object.insert(field.to_string(), json!(domains));
+                }
+            }
+            for (argument, field) in [
+                ("start_published_date", "startPublishedDate"),
+                ("end_published_date", "endPublishedDate"),
+            ] {
+                if let Some(date) = call
+                    .arguments
+                    .get(argument)
+                    .and_then(Value::as_str)
+                    .map(str::trim)
+                    .filter(|date| !date.is_empty())
+                {
+                    object.insert(field.to_string(), json!(date));
+                }
+            }
         }
         let response = self
             .client

@@ -75,7 +75,13 @@ impl Mailbox {
 /// signature.
 #[derive(Clone)]
 pub(super) struct Mailboxes {
-    /// What the pattern team found, drained by the attempt and the reflection.
+    /// What the standing teams and the detached literature sweep found,
+    /// drained by the attempt.
+    ///
+    /// The reflection drained it too until the pattern agent moved onto the
+    /// evaluation fan-out, where it is awaited rather than posted. What is left
+    /// here is what genuinely arrives on its own schedule, and the attempt is
+    /// the only thing that should read that.
     pub(super) patterns: Mailbox,
     /// What a person asked for, drained by the attempt alone.
     pub(super) directives: Mailbox,

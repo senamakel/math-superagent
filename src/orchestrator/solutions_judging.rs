@@ -487,6 +487,13 @@ async fn log_reflection(
 }
 
 /// Judges the last attempt and records the lesson it yields.
+///
+/// One question, asked once. It used to carry three other arms inside it — the
+/// pattern drain, the literature rescue, and the line-of-attack search — which
+/// made the reflection the place every other role was smuggled in and made none
+/// of them visible to the graph. Each is a node beside this one now, so the
+/// graph can show them, bound them, and checkpoint between them; what stays
+/// here is the reflection itself and the counters its verdict moves.
 pub(in crate::orchestrator) async fn reflect_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
@@ -495,7 +502,6 @@ pub(in crate::orchestrator) async fn reflect_step(
     beside: &Beside,
     mut state: SolutionState,
 ) -> SolutionState {
-    let mailbox = &beside.patterns;
     let prompt = format!(
         "Judge one attempt at a problem and extract the lesson.\n\nProblem:\n{}\n\n\
          Attempt report:\n{}\n\n{}\n\n\
@@ -522,71 +528,17 @@ pub(in crate::orchestrator) async fn reflect_step(
         state.last_attempt,
         state.lesson_briefing()
     );
-    let reflection = delegate(subagents, "reflection", prompt);
-    // Reflection judges; the pattern agent looks at the same attempt for
-    // structure the judgement cannot see. They run concurrently because
-    // neither reads the other's output, and because reflection is on the
-    // critical path of every single attempt — making it wait for a sequence
-    // analysis would tax the common case to serve the occasional one.
-    //
-    // The pattern agent runs after *every* attempt rather than only when the
-    // loop is stuck, because the exploitable regularity in a sequence is
-    // usually visible in the first few terms a run computes. Waiting for two
-    // consecutive unproductive attempts means the run has already spent the
-    // budget the pattern would have saved.
-    //
-    // Whatever earlier pattern runs have finished by now joins this attempt's
-    // context. The report is no less true for arriving an attempt late.
-    let patterns = mailbox.collect();
-    // Past the rescue threshold the literature is re-opened on every
-    // reflection, with what the run now knows rather than what it knew at the
-    // start.
-    let rescue = async {
-        if state.solved || state.attempts < RESEARCH_RESCUE_ATTEMPTS {
-            return String::new();
-        }
-        if let Some(tracer) = tracer {
-            tracer.note(&format!(
-                "solution loop: {} attempts without a verified answer, re-opening the literature",
-                state.attempts
-            ));
-        }
-        delegate(
-            subagents,
-            "research",
-            format!(
-                "This investigation has made {} attempts without reaching a verified answer. \
-                 Search for how this problem, or the structure it reduces to, has actually been \
-                 solved. Read the workspace first so your queries use what the run now knows — \
-                 the methods it tried, why they failed, and the numbers it computed — rather than \
-                 the statement alone. Search several distinct phrasings, including the named \
-                 theory, the sequence values themselves, and any classification the objects \
-                 belong to. Return concrete methods with source URLs, and say which of the \
-                 approaches already tried each one supersedes.\n\nProblem:\n{}\n\n{}",
-                state.attempts,
-                state.problem,
-                state.lesson_briefing()
-            ),
-        )
-        .await
-    };
-    let (reflection, rescue) = tokio::join!(reflection, rescue);
+    let reflection = delegate(subagents, "reflection", prompt).await;
     log_reflection(memory, state.attempts, &reflection, tracer).await;
-    state.fresh_context = merge_context(&[("Pattern analysis", &patterns), ("Research", &rescue)]);
 
     let progressed = record_verdict(&reflection, tracer, workspace, &mut state);
     let lesson = extract_lesson(&reflection);
     tell_teams(&beside.teams, &state, progressed, &lesson);
     state.lessons.push(lesson);
-    // Every completed cycle opens a line-of-attack search, not only a stuck
-    // one. Spawned last, once the verdict and the lesson are in the state, so
-    // the inventor is told what this attempt actually established.
-    open_invention(subagents, tracer, workspace, mailbox, &state);
-    // And the other question nothing in the loop asks by itself: not what else
-    // could get us there, but what would be enough. The cadence is counted here
-    // and read by the `goals` sub-workflow, which decides whether this cycle is
-    // the one that decomposes — see `super::workflow_goals`. Counting it here
-    // rather than there keeps the loop head the accumulator's sole writer.
+    // The cadence the `goals` sub-workflow reads to decide whether this cycle
+    // is the one that decomposes — see `super::workflow_goals`. Counted here
+    // rather than there because the loop head is the accumulator's sole writer,
+    // and this arm is the one that runs on every completed cycle.
     state.since_reduction += 1;
     state
 }
@@ -605,8 +557,12 @@ const REDUCTION_BLIND_SPOTS: [&str; 2] = ["backward", "BACKWARD.md"];
 /// does not wait for — and the alternative is a signature nobody can read.
 #[derive(Clone)]
 pub(super) struct Beside {
-    /// What the pattern team found, drained here and by the attempt.
-    pub(super) patterns: Mailbox,
+    /// What the detached literature sweep found, drained by the next attempt.
+    ///
+    /// The pattern team's outbox until the pattern agent became a blocking
+    /// evaluation arm. It is the same mailbox doing the same job for the one
+    /// arm that is still worth reading an attempt late.
+    pub(super) library: Mailbox,
     /// The reduction arm's outbox and the gate admitting one of it at a time.
     pub(super) reduction: Reduction,
     /// The standing teams, told after every verdict how the attempt went.
@@ -699,12 +655,17 @@ impl ReductionGate {
 /// A live Gilbreath workspace contains that statement and it took sixteen
 /// operator directives to produce.
 ///
-/// Detached, and that is [`open_invention`]'s argument rather than a new one: a
-/// skeleton is worth as much an attempt later, nothing in [`route`] reads it,
-/// and awaiting one would put a child run of unbounded length between the
-/// reflection and the next attempt — which is the failure [`Mailbox`] was
-/// written about, where a live run sat 33 minutes unable to start an attempt it
-/// was ready for.
+/// Awaited, alongside the other evaluation arms rather than beside the loop.
+/// It was detached for a real reason — a live run once sat 33 minutes unable to
+/// start an attempt it was ready for, which is the failure [`Mailbox`] was
+/// written about — and the reason it can be awaited now is that it no longer
+/// runs *after* the reflection but *with* it. The pass costs the slowest arm,
+/// not the sum, and the arms that were already unavoidable are agent runs of
+/// the same order. What is bought for that is that the next attempt sees this
+/// cycle's skeleton rather than the previous cycle's.
+///
+/// The cadence below is what keeps that affordable: most cycles hold, and a
+/// cycle that holds costs nothing at all.
 ///
 /// Three conditions, because there are three different ways this can go wrong.
 /// The interval bounds what the ledger costs. The fingerprint bounds waste: the
@@ -721,15 +682,15 @@ impl ReductionGate {
 /// about the workspace and about what is already running, and neither is
 /// expressible as jq over the loop's state.
 ///
-/// Returns whether a reduction was opened, which is what the caller resets the
-/// cadence counter on.
-pub(in crate::orchestrator) fn open_reduction(
+/// Returns whether a reduction ran — which is what the caller resets the
+/// cadence counter on — and what it produced.
+pub(in crate::orchestrator) async fn reduce_arm(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
     reduction: &Reduction,
     state: &SolutionState,
-) -> bool {
+) -> (bool, String) {
     // Excluding what the reducer itself writes, or it would wake forever on its
     // own output — the reason `fingerprint_excluding` exists at all.
     let fingerprint = workspace.map(|workspace| {
@@ -747,76 +708,103 @@ pub(in crate::orchestrator) fn open_reduction(
         // been declined, so the caller leaves the counter where it is and the
         // next cycle asks again rather than waiting another full interval for
         // evidence that may have arrived meanwhile.
-        return false;
+        return (false, String::new());
     }
     if !reduction.gate.claim() {
         if let Some(tracer) = tracer {
             tracer.note("solution loop: a reduction is already in flight, not opening another");
         }
-        return false;
+        return (false, String::new());
     }
     if let Some(fingerprint) = fingerprint {
         reduction.gate.remember(fingerprint);
     }
     if let Some(tracer) = tracer {
-        tracer.note("solution loop: decomposing the goal beside the next attempt");
+        tracer.note("solution loop: decomposing the goal");
     }
-    let subagents = subagents.clone();
-    let workspace = workspace.map(Path::to_path_buf);
-    let outbox = reduction.outbox.clone();
-    let gate = reduction.gate.clone();
-    let state = state.clone();
-    tokio::spawn(async move {
-        let report = reduction_arm(&subagents, workspace.as_deref(), &state).await;
-        outbox.post(report);
-        gate.release();
-    });
-    true
+    let report = reduction_arm(subagents, workspace, state).await;
+    reduction.gate.release();
+    // Posted rather than returned into the state, and the heading is the
+    // reason: `gap_briefing` renders open gaps as targets with a first move
+    // named, which is a different kind of thing from the material
+    // `fresh_context` carries. One mailbox cannot render both under the right
+    // heading, which is the argument `Mailboxes` was built on.
+    reduction.outbox.post(report);
+    (true, String::new())
 }
 
-/// Opens a line-of-attack search beside the loop at the end of a full cycle.
+/// Opens the literature sweep beside the loop, and does not wait for it.
 ///
-/// The inventor used to run only inside `diversify`, on two consecutive
-/// unproductive attempts. That gate is reachable in principle and was not
-/// reached in practice: it needs two completed attempt/judge/reflect cycles,
-/// and a run whose attempts take the better part of an hour spends its whole
-/// wall clock inside the first one. Across a day of live runs on three
-/// workspaces the inventor was spawned once, and the approach ledger it writes
-/// to never existed on disk — so the cheapest question in the runtime, "is
-/// there a different line of attack", was the one never asked.
+/// The one arm that stays detached, and the reason is what it is for rather
+/// than what it costs. Every other evaluation arm answers a question *about
+/// this attempt* — was it conducted well, what did it establish, what structure
+/// is in its numbers, what would suffice — so a report that arrives an attempt
+/// late is a report about the wrong attempt. The literature is not about this
+/// attempt at all. A paper is no less relevant for being found one cycle later,
+/// and the librarian's own work is downloading and indexing, which is the
+/// slowest thing in the runtime and the least urgent.
 ///
-/// This is the pattern agent's argument one role wider. A proposal is worth as
-/// much an attempt later, so nothing waits on it: the arm is detached and its
-/// report is posted to the same mailbox the next attempt drains. Diversify
-/// still runs its own arm and still *awaits* it, because there the whole point
-/// is to change direction before trying again.
+/// So it is posted to the mailbox the next attempt drains. Past
+/// [`RESEARCH_RESCUE_ATTEMPTS`] the same arm asks the harder question — not
+/// "what is the reference material" but "how has this actually been solved" —
+/// because by then the run knows what it tried and what failed, which is a far
+/// better query than anything available at the start.
 ///
-/// It runs only on `Retry`. `Diversify` runs the same arm one step later and
-/// would make it twice; `Solved` and `Blocked` end the loop, and proposing new
-/// mathematics to a run that has stopped is spending a child run on nobody.
-fn open_invention(
+/// `diversify` still runs the same sweep and still *awaits* it: there the whole
+/// point is to change direction before attempting again, so a report arriving
+/// afterwards would be a report the run had already acted without.
+pub(in crate::orchestrator) fn open_library(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
-    workspace: Option<&Path>,
     outbox: &Mailbox,
     state: &SolutionState,
 ) {
-    if route(state) != Route::Retry {
+    if state.solved {
         return;
     }
+    let rescue = state.attempts >= RESEARCH_RESCUE_ATTEMPTS;
     if let Some(tracer) = tracer {
-        tracer.note("solution loop: opening a line-of-attack search beside the next attempt");
+        tracer.note(if rescue {
+            "solution loop: re-opening the literature beside the next attempt"
+        } else {
+            "solution loop: opening a literature sweep beside the next attempt"
+        });
     }
     let subagents = subagents.clone();
-    let workspace = workspace.map(Path::to_path_buf);
     let outbox = outbox.clone();
     let state = state.clone();
     tokio::spawn(async move {
-        let (candidates, grounding) = invention_arm(&subagents, workspace.as_deref(), &state).await;
-        let report = merge_context(&[
-            ("Proposed lines of attack", &candidates),
-            ("What the literature says about them", &grounding),
-        ]);
+        let report = if rescue {
+            delegate(
+                &subagents,
+                "research",
+                format!(
+                    "This investigation has made {} attempts without reaching a verified answer. \
+                     Search for how this problem, or the structure it reduces to, has actually \
+                     been solved. Read the workspace first so your queries use what the run now \
+                     knows — the methods it tried, why they failed, and the numbers it computed — \
+                     rather than the statement alone. Search several distinct phrasings, \
+                     including the named theory, the sequence values themselves, and any \
+                     classification the objects belong to. Return concrete methods with source \
+                     URLs, and say which of the approaches already tried each one \
+                     supersedes.\n\nProblem:\n{}\n\n{}",
+                    state.attempts,
+                    state.problem,
+                    state.lesson_briefing()
+                ),
+            )
+            .await
+        } else {
+            let findings = diversify_library_arm(&subagents, &state).await;
+            let sections: Vec<(&str, &str)> = findings
+                .iter()
+                .map(|finding| match finding.slot {
+                    Slot::Digest => ("What the sources establish", finding.text.as_str()),
+                    _ => ("Reference material", finding.text.as_str()),
+                })
+                .collect();
+            merge_context(&sections)
+        };
         outbox.post(report);
     });
 }

@@ -274,11 +274,13 @@ and omit trailing punctuation.
 ## Tools and research changes
 
 Tools are authority boundaries. Give each specialist only the tools it needs.
-The research agent gets Exa and both Qdrant note tools. The tool-builder gets
-workspace file and command tools. The orchestrator gets specialist delegation
-tools, not direct shell access. Recall is the one thing granted broadly rather
-than narrowly, and the argument for it is the same one: reading what the run
-already established is how a role avoids re-establishing it. See
+The research agent and the librarian get the ways onto the web — search,
+similarity, contents, deep research, and the two structured adapters — and
+every one is withheld under `MATH_AGENT_RESEARCH` by not being registered. The
+tool-builder gets workspace file and command tools. The orchestrator gets
+specialist delegation tools, not direct shell access. Recall is granted broadly
+rather than narrowly, and the argument for it is the same one: reading what the
+run already established is how a role avoids re-establishing it. See
 [*Recall: the two ways back into what is known*](docs/roles.md#recall-the-two-ways-back-into-what-is-known)
 for who is excluded and why.
 

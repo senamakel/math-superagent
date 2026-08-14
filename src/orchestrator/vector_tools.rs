@@ -66,7 +66,12 @@ impl Tool<()> for RecallMemoryTool {
     }
 
     fn description(&self) -> &'static str {
-        "Recalls shared durable findings and research plus session memory from this project/run only."
+        "Recalls what this run has established, gathered, and concluded: the shared durable \
+         findings, this project's downloaded library, and its completed agent sessions. By \
+         default it returns both the passages nearest your phrasing and the connections the \
+         memory holds around it, because the two miss in opposite directions — a passage is what \
+         one source said, a connection is what the run linked across sources and never wrote down \
+         in one place."
     }
 
     fn schema(&self) -> ToolSchema {
@@ -77,11 +82,14 @@ impl Tool<()> for RecallMemoryTool {
                 "type": "object",
                 "properties": {
                     "query": { "type": "string" },
-                    "limit": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 10,
-                        "default": 5
+                    "limit": limit_property(),
+                    "strategy": {
+                        "type": "string",
+                        "enum": ["fused", "passages"],
+                        "description": "`fused` (the default) returns passages and graph \
+                                        connections together. `passages` returns text only — use \
+                                        it when you want to quote a source verbatim and the \
+                                        connections would be noise."
                     }
                 },
                 "required": ["query"],
@@ -93,7 +101,17 @@ impl Tool<()> for RecallMemoryTool {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let query = string_argument(&call, "query")?;
         let limit = limit_argument(&call);
-        let rendered = self.store.search(&query, CHUNK_SEARCH, limit).await?;
+        // Fused by default, and that is the change rather than the option. For
+        // as long as recall meant one `CHUNKS` search, every role that reached
+        // for the memory got a better filename index and nothing else, while
+        // the graph half — the thing a graph store is *for* — was reachable
+        // only through a second tool most roles never called.
+        let rendered = if call.arguments.get("strategy").and_then(Value::as_str) == Some("passages")
+        {
+            self.store.search(&query, CHUNK_SEARCH, limit).await?
+        } else {
+            self.store.search_fused(&query, limit).await?
+        };
         Ok(ToolResult::text(
             call.id,
             self.name(),
@@ -131,7 +149,9 @@ impl Tool<()> for RelateMemoryTool {
     fn description(&self) -> &'static str {
         "Returns what this project's memory connects a subject to — the relationships between \
          entities rather than the passages mentioning them. Use it to find a link the run \
-         established but never stated in one place; use recall_memory when you want the text."
+         established but never stated in one place; use recall_memory when you want the text. \
+         Set `reach` to `extended` to walk further out, which is where a link nobody stated \
+         actually lives."
     }
 
     fn schema(&self) -> ToolSchema {
@@ -142,11 +162,15 @@ impl Tool<()> for RelateMemoryTool {
                 "type": "object",
                 "properties": {
                     "query": { "type": "string" },
-                    "limit": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 10,
-                        "default": 5
+                    "limit": limit_property(),
+                    "reach": {
+                        "type": "string",
+                        "enum": ["direct", "extended"],
+                        "description": "`direct` (the default) returns the immediate \
+                                        neighbourhood of the subject. `extended` walks further \
+                                        before answering — slower, and the setting that finds a \
+                                        connection running through an intermediate nobody \
+                                        thought to ask about."
                     }
                 },
                 "required": ["query"],
@@ -158,7 +182,12 @@ impl Tool<()> for RelateMemoryTool {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let query = string_argument(&call, "query")?;
         let limit = limit_argument(&call);
-        let rendered = self.store.search(&query, GRAPH_SEARCH, limit).await?;
+        let reach = if call.arguments.get("reach").and_then(Value::as_str) == Some("extended") {
+            EXTENDED_GRAPH_SEARCH
+        } else {
+            GRAPH_SEARCH
+        };
+        let rendered = self.store.search(&query, reach, limit).await?;
         Ok(ToolResult::text(
             call.id,
             self.name(),
@@ -270,12 +299,7 @@ impl Tool<()> for RecallScratchTool {
                 "type": "object",
                 "properties": {
                     "query": { "type": "string" },
-                    "limit": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 10,
-                        "default": 5
-                    }
+                    "limit": limit_property()
                 },
                 "required": ["query"],
                 "additionalProperties": false

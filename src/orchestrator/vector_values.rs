@@ -3,8 +3,23 @@ fn limit_argument(call: &ToolCall) -> u64 {
     call.arguments
         .get("limit")
         .and_then(Value::as_u64)
-        .unwrap_or(5)
-        .clamp(1, 10)
+        .unwrap_or(DEFAULT_LIMIT)
+        .clamp(1, MAX_LIMIT)
+}
+
+/// The schema fragment both recall tools use for `limit`.
+///
+/// Written once because the two are the same control over the same budget, and
+/// a cap that differed between them would be a cap somebody had to look up.
+fn limit_property() -> Value {
+    json!({
+        "type": "integer",
+        "minimum": 1,
+        "maximum": MAX_LIMIT,
+        "default": DEFAULT_LIMIT,
+        "description": "How many results to return. Raise it when surveying what the run knows \
+                        about a subject; leave it alone when checking one specific thing."
+    })
 }
 
 fn string_argument(call: &ToolCall, name: &str) -> Result<String> {

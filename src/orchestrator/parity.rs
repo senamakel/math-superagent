@@ -27,7 +27,7 @@
 
 use serde_json::{Value, json};
 
-use super::solutions::{Judged, Route, SolutionState};
+use super::solutions::{Route, SolutionState};
 use super::workflow::LOOP_NODE;
 
 /// The scope a `switch` node's expression is resolved against.
@@ -55,23 +55,6 @@ pub(super) fn workflow_route(state: &Value) -> String {
         .to_string()
 }
 
-/// The port the workflow's judge ladder selects, given a verdict.
-pub(super) fn workflow_judged(state: &Value, verdict: &str) -> String {
-    // The judge's verdict rides on the same state the counters do, which is
-    // what `to_accumulator` produces. Building this scope by hand is what let a
-    // mismatch between the ladder and the graph survive once, so
-    // `the_ladders_read_fields_a_step_actually_emits` checks the spelling.
-    let mut with_verdict = state.clone();
-    if let Some(map) = with_verdict.as_object_mut() {
-        map.insert("judged".into(), json!(verdict));
-    }
-    let scope = scope_for(&with_verdict);
-    tinyflows::expr::evaluate(&json!(super::workflow::judge_ladder()), &scope)
-        .as_str()
-        .unwrap_or("<null>")
-        .to_string()
-}
-
 /// The port name the state graph's [`Route`] corresponds to.
 ///
 /// Written out rather than derived from `Display`, so the two vocabularies are
@@ -85,14 +68,6 @@ pub(super) fn route_port(route: Route) -> &'static str {
         Route::Retry => "retry",
         Route::Diversify => "diversify",
         Route::Blocked => "blocked",
-    }
-}
-
-/// The port name the state graph's [`Judged`] corresponds to.
-pub(super) fn judged_port(judged: Judged) -> &'static str {
-    match judged {
-        Judged::Reflect => "reflect",
-        Judged::Restart => "restart",
     }
 }
 

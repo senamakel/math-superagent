@@ -52,16 +52,19 @@ use super::vector::VectorStore;
 /// A closed set, matched by name. An unknown step is an error rather than a
 /// no-op: a workflow naming a step that does not exist would otherwise run,
 /// change nothing, and route on a state nobody advanced.
-const STEPS: [&str; 9] = [
+const STEPS: [&str; 12] = [
+    "init_context",
+    "seed_context",
     "attempt",
     "judge",
     "reflect",
-    "diversify_library",
-    "diversify_patterns",
-    "diversify_invention",
-    "diversify_merge",
+    "eval_patterns",
+    "eval_invention",
+    "eval_library",
+    "eval_merge",
     "goal_gate",
     "goal_apply",
+    "diversify_library",
 ];
 
 /// The slug a workflow node names this tool by.
@@ -122,16 +125,18 @@ impl LoopSteps {
     async fn run(&self, step: &str, state: SolutionState, args: &Value) -> Result<Value> {
         let tracer = self.tracer.as_ref();
         let workspace = self.workspace.as_deref();
-        // Not part of the state, so it is answered before the match and folded
-        // into the returned object afterwards.
+        // Two steps say something that is not part of the state, so they are
+        // answered before the match and their extra field is folded into the
+        // returned object afterwards.
         if step == "goal_gate" {
-            let opened = super::solutions::open_reduction(
+            let (opened, _) = super::solutions::reduce_arm(
                 &self.subagents,
                 tracer,
                 workspace,
                 &self.beside.reduction,
                 &state,
-            );
+            )
+            .await;
             let mut carried = state.to_accumulator();
             if let Some(object) = carried.as_object_mut() {
                 object.insert(
@@ -140,6 +145,27 @@ impl LoopSteps {
                 );
             }
             return Ok(carried);
+        }
+        // The barrier the evaluation arms converge on. It reads whole states
+        // rather than one, so it cannot go through the match below, which is
+        // written for a step that takes the state and returns it.
+        if step == "eval_merge" {
+            let arms: Vec<Value> = args
+                .get(ARMS_ARG)
+                .and_then(Value::as_array)
+                .cloned()
+                .unwrap_or_default();
+            let merged = super::solutions::fold_evaluation(&state.to_accumulator(), &arms);
+            let merged = SolutionState::from_accumulator("", &merged);
+            return Ok(super::solutions::evaluation_merge(merged).to_accumulator());
+        }
+        // Stage one crossing back into the loop. Like `goal_apply` it reads a
+        // child's whole run state rather than an accumulator, and like
+        // `eval_merge` what it returns is not the state it was handed.
+        if step == "seed_context" {
+            let decision = args.get(DECISION_ARG).cloned().unwrap_or(Value::Null);
+            return Ok(super::workflow_research::established(&decision)
+                .unwrap_or_else(|| state.to_accumulator()));
         }
         let next = match step {
             "attempt" => {
@@ -157,24 +183,39 @@ impl LoopSteps {
                 )
                 .await
             }
+            "init_context" => init_context_step(&self.subagents, tracer, state).await,
             // The arm reads the state and the fold writes it, so the read has
             // to finish first — `&state` while `state` is being moved into the
             // fold is the same aliasing the concurrent version avoids by giving
             // each arm its own activation.
-            "diversify_library" => {
-                let findings = diversify_library_arm(&self.subagents, &state).await;
-                fold_arm(state, findings)
-            }
-            "diversify_patterns" => {
+            "eval_patterns" => {
                 let findings = diversify_pattern_arm(&self.subagents, &state).await;
                 fold_arm(state, findings)
             }
-            "diversify_invention" => {
-                let findings =
-                    diversify_invention_arm(&self.subagents, workspace, &state).await;
+            "eval_invention" => {
+                let findings = diversify_invention_arm(&self.subagents, workspace, &state).await;
                 fold_arm(state, findings)
             }
-            "diversify_merge" => diversify_merge(collect_arms(state, args)),
+            // The one arm that returns before its work does. It starts the
+            // literature sweep and hands the state straight back, so the
+            // barrier below is never waiting on it — see `open_library` for why
+            // this is the arm that can afford to arrive an attempt late.
+            "eval_library" => {
+                super::solutions::open_library(
+                    &self.subagents,
+                    tracer,
+                    &self.beside.library,
+                    &state,
+                );
+                state
+            }
+            // The escalation, and the only place the sweep is awaited: a run
+            // that has stopped making progress should not attempt again before
+            // reading what it just gathered.
+            "diversify_library" => {
+                let findings = diversify_library_arm(&self.subagents, &state).await;
+                diversify_merge(fold_arm(state, findings))
+            }
             "goal_apply" => apply_goal_decision(state, args),
             _ => {
                 return Err(tinyagents::TinyAgentsError::Validation(format!(
@@ -182,34 +223,43 @@ impl LoopSteps {
                 )));
             }
         };
-        Ok(next.to_accumulator())
+        let mut carried = next.to_accumulator();
+        // Stamped unconditionally rather than for the steps that fan out, so
+        // there is no second list of which nodes are arms to disagree with the
+        // graph. The merge strips it, and on the paths that do not reach a merge
+        // it is inert: the next `to_accumulator` writes a fresh object, so it
+        // survives exactly one hop and nothing reads it.
+        if let Some(object) = carried.as_object_mut() {
+            object.insert(
+                super::solutions::ARM_FIELD.to_string(),
+                Value::String(step.to_string()),
+            );
+        }
+        Ok(carried)
     }
 }
 
-/// Folds every arm's findings into the state the merge is about to read.
+/// Establishes what the run is working on, before the first attempt.
 ///
-/// The three arms are separate nodes running concurrently, so each one's
-/// findings come back as its own whole state and the base state — the loop's
-/// accumulator — knows about none of them. Without this the merge would compose
-/// a briefing out of five empty slots, having spent three child agent runs
-/// filling them, and nothing in the trace would say the findings had been
-/// dropped.
+/// The loop's opening state is a problem statement and eleven zeroes. Every
+/// role that then runs is handed that and told to read the workspace itself,
+/// which on a conjecture workspace — a research tree, a claim ledger, threads,
+/// and whatever the last run left — is a substantial read that each of them
+/// pays for separately and none of them shares.
 ///
-/// Order-independent, because [`DiversifyFindings::absorb`] skips empty slots:
-/// the arms write disjoint ones, so folding them in whatever order the engine
-/// finished them in gives the same state.
-fn collect_arms(mut state: SolutionState, args: &Value) -> SolutionState {
-    let arms = args
-        .get(ARMS_ARG)
-        .and_then(Value::as_array)
-        .cloned()
-        .unwrap_or_default();
-    for arm in arms {
-        let findings = SolutionState::from_accumulator("", &arm);
-        state
-            .diversify_mut()
-            .absorb(SolutionState::diversify(&findings));
+/// The curator does it once and writes down what it found, so the first attempt
+/// starts from what is already established rather than from the statement. On a
+/// fresh Project Euler problem it finds an empty workspace and says so in a
+/// sentence, which costs one child run.
+async fn init_context_step(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    mut state: SolutionState,
+) -> SolutionState {
+    if let Some(tracer) = tracer {
+        tracer.note("solution loop: establishing the run's context");
     }
+    state.fresh_context = super::solutions::curate_context(subagents, &state).await;
     state
 }
 

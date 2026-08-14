@@ -424,44 +424,20 @@ pub(in crate::orchestrator) fn route(state: &SolutionState) -> Route {
     }
 }
 
-/// Where the loop goes after the judge has spoken.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(in crate::orchestrator) enum Judged {
-    /// Carry on to the reflection, which decides whether the run is done.
-    Reflect,
-    /// Discard this direction and attempt again.
-    Restart,
-}
-
-impl std::fmt::Display for Judged {
-    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        formatter.write_str(match self {
-            Self::Reflect => "reflect",
-            Self::Restart => "restart",
-        })
-    }
-}
-
-/// Routes out of the judge node.
+/// The judge no longer has a routing arm of its own, and that is a consequence
+/// of the evaluation fan-out rather than a simplification for its own sake.
 ///
-/// A plain function of the state for the same reason [`route`] is: it is a
-/// policy, it is easy to get wrong, and a live run is an expensive place to
-/// find that out. The attempt ceiling outranks a restart — a run at its last
-/// attempt must reflect on what it has rather than throw it away and stop with
-/// nothing.
-// No longer executed: the engine routes on the jq in `workflow::judge_ladder`.
-// This is the *specification* that ladder is held to — `orchestrator::parity`
-// runs both over every state and refuses a divergence — so it is kept, and kept
-// exact, rather than deleted with the loop that used to call it. Deleting it
-// would leave the running ladder with nothing to be checked against.
-#[cfg_attr(not(test), allow(dead_code))]
-pub(in crate::orchestrator) fn judged_route(state: &SolutionState) -> Judged {
-    if state.judged == Verdict::Restart && state.attempts < MAX_ATTEMPTS {
-        Judged::Restart
-    } else {
-        Judged::Reflect
-    }
-}
+/// A restart used to be a *route*: the judge ran first, and a restart verdict
+/// skipped the reflection and spent a fresh attempt. The judge and the
+/// reflection now run concurrently, so by the time anything routes, the
+/// reflection has already happened — there is no longer a reflection to skip.
+/// What a restart still does is everything `judge_step` records: the direction
+/// is discarded, `restarts` is incremented, the steer is written for the next
+/// attempt, and the run is marked unproductive. The bound that matters,
+/// [`MAX_RESTARTS`], is enforced there and always was.
+///
+/// So there is one ladder, [`route`], and `orchestrator::parity` holds the
+/// engine's jq to it.
 
 /// Whether an attempt's report is nothing but the model provider refusing.
 ///

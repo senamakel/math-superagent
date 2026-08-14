@@ -43,7 +43,7 @@ impl OrchestratorAgent {
         );
         let mut prompts = RolePrompts::load(&workspace)?;
 
-        let SearchTools { exa, oeis } = search_tools(research_enabled, &documents)?;
+        let search = search_tools(research_enabled, &documents)?;
 
         let mut research_harness = build_research_harness(
             &model,
@@ -51,10 +51,7 @@ impl OrchestratorAgent {
             &tracer,
             &documents,
             &vector_store,
-            SearchTools {
-                exa: exa.clone(),
-                oeis: oeis.clone(),
-            },
+            search.clone(),
         );
         research_harness.push_middleware(checkpoint.clone());
         async_subagents.register(
@@ -86,8 +83,7 @@ impl OrchestratorAgent {
                 tracer: &tracer,
                 documents: &documents,
                 vector_store: vector_store.clone(),
-                exa: exa.clone(),
-                oeis: oeis.clone(),
+                search: search.clone(),
                 workspace: workspace.clone(),
                 delegation: async_subagents.tools(PATTERN_DELEGATES),
             },
@@ -179,7 +175,11 @@ impl OrchestratorAgent {
             skeletons: skeletons.clone(),
         };
         let beside = solutions::Beside {
-            patterns,
+            // The same mailbox the standing teams post to, and the same one the
+            // attempt drains. A literature sweep and a team report are both
+            // "what arrived beside the loop since the last attempt", so they
+            // are rendered under that one heading rather than two.
+            library: patterns,
             reduction: solutions::Reduction {
                 outbox: skeletons,
                 // One gate for the run, so a reduction that outlives the cycle

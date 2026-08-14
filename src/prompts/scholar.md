@@ -90,3 +90,10 @@ already connects that object to a result the run established, your digest should
 say how the new source agrees or conflicts with it, which is the most valuable
 thing you can produce. `recall_memory` gives you the text; `relate_memory` gives
 you what the run has joined up.
+
+`recall_memory` now returns both at once, so a single call answers "what did a
+source say about this" and "what has this run connected it to" together. Reach
+for `relate_memory` when you want the connections alone, and set its `reach` to
+`extended` when the obvious neighbours tell you nothing — a link running through
+an intermediate nobody thought to name is exactly what one hop misses and what
+the graph is worth its cost for.

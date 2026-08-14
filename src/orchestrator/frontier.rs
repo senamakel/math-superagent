@@ -220,13 +220,42 @@ pub(super) async fn record(
     links: &[LinkRecord],
     goal: &str,
 ) {
+    record_from(documents, Some((source_url, stored_path)), links, goal).await;
+}
+
+/// Files leads that came from no document of the run's own.
+///
+/// The discovery tools in [`super::exa`] return sources without storing any:
+/// a similarity expansion, a triage read, a synthesised answer. Their results
+/// are leads in exactly the sense this module means, but there is no *source
+/// document* to mark as fetched — and passing one anyway is a bug that reached
+/// a live workspace, where `https://api.exa.ai/search` sat in the frontier as
+/// an unlabelled row offering the run its own API endpoint to go and read.
+pub(super) async fn record_leads(
+    documents: &WorkspaceDocuments,
+    links: &[LinkRecord],
+    goal: &str,
+) {
+    record_from(documents, None, links, goal).await;
+}
+
+/// Files leads, marking a source as fetched when there is one.
+async fn record_from(
+    documents: &WorkspaceDocuments,
+    source: Option<(&str, &str)>,
+    links: &[LinkRecord],
+    goal: &str,
+) {
+    let source_url = source.map_or("", |(url, _)| url);
     let mut ledger = load(documents).await;
     // The source itself is now in the library, so it leaves the frontier
     // whether or not anything had cited it.
-    ledger
-        .entry(super::readable::clean_url(source_url))
-        .or_default()
-        .path = stored_path.to_string();
+    if let Some((url, stored_path)) = source {
+        ledger
+            .entry(super::readable::clean_url(url))
+            .or_default()
+            .path = stored_path.to_string();
+    }
     for link in links
         .iter()
         .filter(|link| worth_offering(&link.url))

@@ -67,10 +67,9 @@ fn every_arms_findings_survive_the_fold_in_any_order() {
     let mut folded = Vec::new();
     for order in orders {
         let ordered: Vec<Value> = order.iter().map(|index| arms[*index].clone()).collect();
-        let state = collect_arms(
-            SolutionState::new("a problem"),
-            &json!({ ARMS_ARG: ordered }),
-        );
+        let base = SolutionState::new("a problem").to_accumulator();
+        let merged = super::super::solutions::fold_evaluation(&base, &ordered);
+        let state = SolutionState::from_accumulator("a problem", &merged);
         let sections: Vec<String> = SolutionState::diversify(&state)
             .sections()
             .iter()

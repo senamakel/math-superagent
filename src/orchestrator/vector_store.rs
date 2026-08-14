@@ -69,6 +69,17 @@ impl VectorStore {
         if datasets.is_empty() || node_sets.is_empty() {
             return Ok(None);
         }
+        // The one place every recall passes through, so the one place worth
+        // checking that what is being asked for can be scoped at all. See
+        // [`SCOPE_SAFE_SEARCH_TYPES`]: a retriever that ignores `node_name`
+        // searches every project on the server, and this runtime has already
+        // shipped that leak once through the dataset field.
+        if !SCOPE_SAFE_SEARCH_TYPES.contains(&search_type) {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "`{search_type}` cannot be scoped to one project on this server and must not be \
+                 used"
+            )));
+        }
         let response = self
             .client
             .post(format!("{}/api/v1/recall", self.base_url))
@@ -110,6 +121,71 @@ impl VectorStore {
                 .collect::<Vec<_>>()
                 .join("\n\n"),
         ))
+    }
+
+    /// Runs two searches at once and returns both answers under one heading
+    /// each.
+    ///
+    /// The two retrievers answer different questions about the same memory and
+    /// miss in opposite directions. `CHUNKS` returns the passages nearest a
+    /// phrase, so it finds what a source said and is blind to anything nobody
+    /// wrote in one place. `TRIPLET_COMPLETION` returns the graph's own
+    /// subject–predicate–object edges, so it finds what the run connected
+    /// across sources and is blind to the wording. A run that only ever asks
+    /// for chunks is paying for a graph store and using it as a search box —
+    /// which is what this runtime did for as long as recall meant one search.
+    ///
+    /// Concurrent because they are independent and the slower one is what the
+    /// caller waits for either way; sequential would make the richer answer
+    /// cost twice the latency, which is how a richer answer stops being asked
+    /// for.
+    ///
+    /// One side failing is not a failed recall. A graph half that errors while
+    /// the passage half answers still leaves the caller better off than the
+    /// error would, so a failure becomes a line in the result saying which half
+    /// is missing. Both failing propagates the passage side's error, because
+    /// then there is nothing to return and silence would read as "nothing
+    /// known".
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when both searches fail.
+    pub(super) async fn search_fused(&self, query: &str, limit: u64) -> Result<Option<String>> {
+        // Split between the two, with the passage side favoured: it is the one
+        // that returns readable text, and a triple is worth less per row.
+        let graph_limit = (limit / 3).max(1);
+        let chunk_limit = limit.saturating_sub(graph_limit).max(1);
+        let (passages, triples) = tokio::join!(
+            self.search(query, CHUNK_SEARCH, chunk_limit),
+            self.search(query, TRIPLET_SEARCH, graph_limit)
+        );
+        let passages = match passages {
+            Ok(found) => found,
+            Err(error) => {
+                let Ok(triples) = triples else {
+                    return Err(error);
+                };
+                return Ok(triples.map(|triples| {
+                    format!(
+                        "## What this memory connects\n\n{triples}\n\n(The passage search failed: \
+                         {error}. Only the graph half of this recall answered.)"
+                    )
+                }));
+            }
+        };
+        let mut sections: Vec<String> = Vec::new();
+        if let Some(passages) = passages {
+            sections.push(format!("## Passages\n\n{passages}"));
+        }
+        match triples {
+            Ok(Some(triples)) => sections.push(format!("## What this memory connects\n\n{triples}")),
+            Ok(None) => {}
+            Err(error) => sections.push(format!(
+                "(The graph half of this recall failed: {error}. What is above is the passage \
+                 search alone.)"
+            )),
+        }
+        Ok((!sections.is_empty()).then(|| sections.join("\n\n")))
     }
 
     pub(super) fn from_env() -> Result<Self> {
