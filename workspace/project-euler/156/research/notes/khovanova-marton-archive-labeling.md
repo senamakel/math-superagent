@@ -50,6 +50,7 @@ statement: For any digit d>0 in base b>d, every x with f_d(x,b)=x satisfies x �
 hypotheses: f_d(x,b) counts occurrences of digit d in the base-b spellings of 1..x; b>d; d≠0.
 holds-here: holds. Problem 156's f(n,d) counts 0..n, and 0 contributes no occurrences of any d∈{1..9}, so f(n,d) = f_d(n,10). Bound n ≤ d·10^10 applies.
 status: sourced (Khovanova & Marton, arXiv:2305.10357v2 Prop 9.1, on disk)
+answers: identify-sticker-numbers-eeda
 bearing: finite search bound; makes finding all fixed points a provably finite computation to d·10^10 with no enumeration of the interval.
 anchor: research/sources/archive-labeling-arxiv-latest.full.md
 ```

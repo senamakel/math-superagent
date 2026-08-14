@@ -6,14 +6,24 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `G1-digit-count-closed-form` | > For n ≥ 0 with decimal digits x_k ... x_0 (x_k the digit in the k-th place from the right), fd(n) = Σ_k c_d(x_k), where with Y = floor(n/10^k)·10^(k-1): c_d(x_k) = Y when d>0 and x_k < d; c_d(x_k) = Y + (n mod… | yes | asserted | `research/notes/claim-g1-digit-count-closed-form.md` |
+| `G2-solution-bound` | > For any base b > 1 and digit d > 0 with b > d, every x such that fd(x,b) = x satisfies x ≤ d·b^b, where fd(x,b) counts the occurrences of the digit d in the base-b writings of the numbers 1..x.  For base b = 10 and d… | yes | proved | `research/notes/claim-g2-solution-bound.md` |
+| `bentley-yao-unbounded-search` | Unbounded searching (locating the unique change-point of a monotone predicate on an unbounded ordered domain) can be done with about 2·lg n + 1 predicate evaluations via a doubling probe followed by binary search, and… | yes | asserted | `research/notes/bentley-yao-unbounded-searching.md` |
+| `d1-sequence-finiteness` | A014778 (fixed points of f(n,1)=n) is finite with 84 terms, the last being 1111111110; it consists of six runs of ten consecutive numbers, ten pairs, and four isolated numbers. The finiteness follows from A(k)/k → ∞… | yes | asserted | `research/notes/oeis-catalogue-pe156.md` |
 | `km-lemma71-skip` | If a≥(d) > x and f_d(y) < x for some y > x, then a≥(d) > y. (f_d non-decreasing, so the whole interval [x,y] stays below the index.) | yes | asserted | `research/notes/khovanova-marton-archive-labeling.md` |
 | `km-prop91-bound` | For any digit d>0 in base b>d, every x with f_d(x,b)=x satisfies x ≤ d·b^b; in particular in base 10 all solutions of f(n,d)=n for d=1..9 have n ≤ d·10^10. | yes | asserted | `research/notes/khovanova-marton-archive-labeling.md` |
+| `oeis-not-answer-source` | OEIS A216398 (per-digit sums s(d)) and the per-digit b-files are the published answer data for PE156 and are excluded from the library by the contest-answer rule. | **unchecked** | asserted | `research/notes/oeis-catalogue-pe156.md` |
+| `oeis-per-digit-counts` | The number of fixed points of f(n,d)=n (counting n=0) for d=1..9 is 84, 14, 36, 48, 5, 72, 49, 344, 9 (OEIS A130432); positive-only counts are 83, 13, 35, 47, 4, 71, 48, 343, 8. | yes | asserted | `research/notes/oeis-catalogue-pe156.md` |
 | `place-value-closed-form` | For d>0, f_d(x) = Σ_k c_d(x_k) where c_d(x_k) = floor(x/10^k)·10^(k-1) if x_k<d; floor(x/10^k)·10^(k-1) + (x mod 10^(k-1)) + 1 if x_k=d; floor(x/10^k)·10^(k-1) + 10^(k-1) if x_k>d. | yes | asserted | `research/notes/khovanova-marton-archive-labeling.md` |
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `G1-digit-count-closed-form` (research/notes/claim-g1-digit-count-closed-form.md) — asserted by the source, not proved there and not checked here
+- `bentley-yao-unbounded-search` (research/notes/bentley-yao-unbounded-searching.md) — asserted by the source, not proved there and not checked here
+- `d1-sequence-finiteness` (research/notes/oeis-catalogue-pe156.md) — asserted by the source, not proved there and not checked here
 - `km-lemma71-skip` (research/notes/khovanova-marton-archive-labeling.md) — asserted by the source, not proved there and not checked here
 - `km-prop91-bound` (research/notes/khovanova-marton-archive-labeling.md) — asserted by the source, not proved there and not checked here
+- `oeis-per-digit-counts` (research/notes/oeis-catalogue-pe156.md) — asserted by the source, not proved there and not checked here
 - `place-value-closed-form` (research/notes/khovanova-marton-archive-labeling.md) — asserted by the source, not proved there and not checked here
