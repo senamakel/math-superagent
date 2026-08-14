@@ -224,7 +224,7 @@ pub(super) fn terminal_condition() -> String {
 /// buys nothing.
 #[must_use]
 pub(super) fn initial_state(problem: &str) -> Value {
-    json!({
+    let mut state = json!({
         "problem": problem,
         "attempts": 0,
         "unproductive": 0,
