@@ -105,6 +105,7 @@ pub use diagram::{render_flows, render_solution_loop};
 ///
 /// The briefings are included beside the rendered files because they, not the
 /// files, are what reaches an attempt and a judge.
+#[must_use]
 pub fn ledger_report(workspace: &Path) -> String {
     let graph = blueprint::collect(workspace);
     let entailment = closure::collect(workspace);

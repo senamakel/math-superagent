@@ -106,6 +106,13 @@ pub(super) struct Closure {
     dangling: Vec<(String, String)>,
     /// Claims that transitively support themselves.
     circular: Vec<String>,
+    /// Every claim the library entails, whatever its own block says.
+    ///
+    /// Separate from `redundant` because the two answer different questions.
+    /// The report lists what adds nothing *new*; the graph asks whether a
+    /// lemma is settled, and one the library establishes for free is settled
+    /// whether or not anybody has updated its status line yet.
+    covered: BTreeSet<String>,
 }
 
 /// Everything reachable from each claim by following `follows-from` backwards.
@@ -257,7 +264,15 @@ pub(super) fn build(ledger: &Ledger) -> Closure {
                 support: established.clone(),
             });
         }
+        // Only what the run already calls established. A claim that is
+        // entailed *and* filed weaker is one fact, and it belongs under the
+        // upgrade — where the line says what to do about it. Listing it here
+        // as well printed the same id twice under two headings that read as
+        // opposite advice: settle it, and it is not a result.
         if fully_supported {
+            closure.covered.insert(claim.id.clone());
+        }
+        if fully_supported && is_established(claim.status) {
             closure.redundant.push(Redundant {
                 id: claim.id.clone(),
                 statement: claim.statement.clone(),
@@ -301,7 +316,7 @@ impl Closure {
     /// somebody proved, and a graph that only read written statuses would leave
     /// it blocked and offer the run its own theorem as work.
     pub(super) fn is_covered(&self, id: &str) -> bool {
-        self.redundant.iter().any(|entry| entry.id == id)
+        self.covered.contains(id)
     }
 
     /// How many free upgrades and unseen conflicts the closure found.

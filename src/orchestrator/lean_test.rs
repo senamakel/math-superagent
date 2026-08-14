@@ -242,3 +242,87 @@ fn a_default_verdict_is_not_verified() {
     // be the shape that passes.
     assert!(!Verdict::default().verified());
 }
+
+/// Every string below is verbatim container output, from `lean` 4 with the
+/// image's Mathlib, run over four files written to exercise exactly these four
+/// outcomes. The parser had only ever been tested against text this file
+/// authored, and two of the four disagreed with the real thing.
+mod what_lean_actually_prints {
+    use super::parse;
+
+    /// The clean case, and the one the earlier parser rejected: Lean says a
+    /// proof needs no axioms in words that contain neither `axioms:` nor a
+    /// list, so the check read the strictest possible result as *nothing was
+    /// reported* and refused it.
+    #[test]
+    fn a_proof_that_needs_no_axiom_at_all_passes() {
+        let checked = parse(
+            "code/good.lean",
+            true,
+            "'two_le_four' does not depend on any axioms\n",
+        );
+        assert!(checked.compiled);
+        assert!(checked.untrusted_axioms().is_empty());
+        assert!(
+            checked.verified(),
+            "an axiom-free kernel-checked proof is the best result available: {:?}",
+            checked.objection()
+        );
+    }
+
+    /// Lean writes the warning with backticks. The straight-quoted form this
+    /// parser looked for never appears, so no `sorry` was ever recorded.
+    #[test]
+    fn a_sorry_warning_is_recorded_in_the_form_lean_emits_it() {
+        let checked = parse(
+            "code/sorry.lean",
+            true,
+            "/workspace/Sorry.lean:1:8: warning: declaration uses `sorry`\n\
+             'hard' depends on axioms: [sorryAx]\n",
+        );
+        assert_eq!(checked.sorries.len(), 1, "the warning is the primary signal");
+        assert!(!checked.verified());
+        assert!(
+            checked
+                .objection()
+                .expect("a sorry is an objection")
+                .contains("`sorry`"),
+            "the objection should name the sorry, not only the axiom behind it"
+        );
+    }
+
+    /// The file this control was written for: it compiles, warns nothing, and
+    /// proves the theorem from an axiom the run declared itself.
+    #[test]
+    fn a_self_declared_axiom_is_caught_in_lean_s_own_wording() {
+        let checked = parse(
+            "code/assumed.lean",
+            true,
+            "'main' depends on axioms: [key_estimate]\n",
+        );
+        assert!(checked.compiled && checked.sorries.is_empty());
+        assert!(!checked.verified());
+        assert_eq!(checked.untrusted_axioms(), vec!["key_estimate".to_string()]);
+    }
+
+    /// `native_decide` does not print `Lean.ofReduceBool` on this toolchain; it
+    /// prints a generated per-declaration axiom. Naming untrusted axioms by
+    /// what is *not* on the trusted list, rather than by a denylist, is why the
+    /// check still holds when the toolchain changes the name.
+    #[test]
+    fn native_decide_is_refused_under_the_name_this_toolchain_gives_it() {
+        let checked = parse(
+            "code/native.lean",
+            true,
+            "'big' depends on axioms: [big._native.native_decide.ax_1_1]\n",
+        );
+        assert!(!checked.verified());
+        assert!(
+            checked
+                .objection()
+                .expect("a native_decide axiom is an objection")
+                .contains("native_decide"),
+            "the objection names the generated axiom, so the role can see where it came from"
+        );
+    }
+}
