@@ -1,13 +1,9 @@
 # The solution loop
 
-`orchestrator::solutions` is a `TinyFlows` graph rather than a prompt. This file records how it routes, why each threshold is the number it is, and how a failure anywhere inside it is kept from ending a run.
-
-The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
-
-
-## The solution loop
-
-`orchestrator::solutions` is a `TinyFlows` graph, not a prompt:
+`orchestrator::solutions` is a `TinyFlows` graph rather than a prompt. This file
+records how it routes, why each threshold is the number it is, and how a failure
+anywhere inside it is kept from ending a run. The working agreement is
+[`AGENTS.md`](../AGENTS.md); this file is the part that goes deeper than a rule.
 
 ```text
   research ──> seed goals ──> solve ─── done ──> report
@@ -405,19 +401,23 @@ derived from those files, and the open gaps reach the next attempt under their
 own heading — as targets rather than as gathered material, which is why they
 travel in a third `Mailbox` rather than in `fresh_context`.
 
-Detached for `open_invention`'s reason and one more. Nothing in `route` reads a
-skeleton, so a gap is worth as much an attempt later; and awaiting a reducer
-would put a child run of unbounded length between the reflection and the next
-attempt, which is the failure `Mailbox` was written about — a live run sat 33
-minutes unable to start an attempt it was ready for. That is why the child costs
-the loop nothing to call: all it does is *decide*, in milliseconds, and the arm
-it opens is a detached agent run whose report reaches the next attempt through a
-mailbox.
+Awaited now, and the change is worth stating precisely because the old reason
+for detaching it was real. Nothing in `route` reads a skeleton, so a gap is
+worth as much an attempt later — and awaiting a reducer *after* the reflection
+put a child run of unbounded length between the reflection and the next attempt,
+which is the failure `Mailbox` was written about, where a live run sat 33 minutes
+unable to start an attempt it was ready for.
+
+What changed is that it no longer runs after the reflection. It runs *with* it,
+as one of the evaluation arms, so a pass costs the slowest arm rather than the
+sum and the next attempt sees this cycle's skeleton instead of the previous
+cycle's. The cadence is what keeps that affordable: most cycles hold, and a
+cycle that holds costs one expression.
 
 Three conditions, because there are three separate ways this goes wrong. The
 first is in the child's opening `switch`, as jq, because "how often" is the
 decision an operator most wants to change without a rebuild. The other two are in
-`open_reduction`, because a workspace that has not moved and a reducer already in
+`reduce_arm`, because a workspace that has not moved and a reducer already in
 flight are facts about the world rather than about the loop's state, and neither
 is expressible as an expression over an accumulator.
 
@@ -517,7 +517,9 @@ more thing to get wrong.
 
 The judge scores an attempt when the attempt returns, and the attempt is a single `goals` run told to pursue the goal until it is met. On an open conjecture it is never met. Four live runs sat inside attempt 1 for thirty-six minutes with zero judge verdicts, zero reflections and zero inventor spawns between them, while all the work happened in children the attempt had spawned — 231 model calls, 47 searches and 36 downloads on one of them, none of it ever assessed. `open_invention` needs a completed cycle and `diversify` needs two consecutive stuck attempts, so both were unreachable by construction.
 
-Two changes make the loop turn over. The run wall clock is thirty minutes rather than two hours, so an attempt concludes and is judged four times in the span it used to be judged once. And a `review` team runs beside the solve every twenty minutes (`MATH_AGENT_REVIEW_MINUTES`), spawning the judge against the workspace as it stands and posting the verdict into the mailbox the attempt already drains. It asks the three questions worth asking mid-flight: whether the method can settle the question or is scaling something that already failed smaller, whether what the run believes is supported by what it computed, and what the single most valuable next move is.
+Two changes make the loop turn over. The run wall clock is thirty minutes rather than two hours, so an attempt concludes and is judged four times in the span it used to be judged once. And a `review` team runs beside the solve every twenty minutes (`MATH_AGENT_REVIEW_MINUTES`), spawning the judge against the workspace as it stands and posting the verdict into the mailbox the attempt already drains.
+
+This team and the loop's own `judge` arm are now the same role asked the same kind of question from two places, and the same is true of `patterns`/`eval_patterns`, `context`/`init_context`, and `research`/`eval_library`. Four of the five standing teams overlap an arm. The teams are idle-gated on a workspace fingerprint so the duplication is bounded rather than doubled, but it is duplication nobody chose, and on a run whose binding constraint is its budget it should be resolved by measurement rather than left standing. It asks the three questions worth asking mid-flight: whether the method can settle the question or is scaling something that already failed smaller, whether what the run believes is supported by what it computed, and what the single most valuable next move is.
 
 The review is the judge rather than a second solver, so it inherits `RunBudget::for_judging` — twelve model calls and a five-minute ceiling — and an unchanged workspace is skipped before the agent runs rather than by asking a model to notice. The wall-clock change is the one with a cost: it bounds every agent run, not only the attempt, and a live `tool_builder` spent 1,362 seconds inside a single model call. That path does not honour `StopWithPartial`, so a child that meets it loses its context and its report — but not its files, and `continuation_briefing` is what lets the next attempt resume from them.
 
