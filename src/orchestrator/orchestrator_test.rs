@@ -13,3 +13,4 @@ use crate::agent;
 include!("orchestrator_registry_test.rs");
 include!("orchestrator_roles_test.rs");
 include!("orchestrator_policy_test.rs");
+include!("orchestrator_schools_test.rs");

@@ -99,6 +99,18 @@ pub(super) struct LoopSteps {
     /// child, which on a live run was eight minutes of the budget it is meant
     /// to bound.
     started: std::time::Instant,
+    /// The school this loop belongs to, when several are running at once.
+    ///
+    /// `None` is a run with one school, which is every run before this existed
+    /// and every run that does not ask for more — and it is why the tracer is
+    /// left exactly as it was in that case. A single-school run's console is
+    /// unchanged.
+    school: Option<&'static str>,
+    /// Set by whichever school verifies a solution first.
+    ///
+    /// See [`LoopSteps::expired`] for why "another school got there" is read
+    /// through the wall clock's field rather than through one of its own.
+    solved_elsewhere: Option<Arc<std::sync::atomic::AtomicBool>>,
 }
 
 impl std::fmt::Debug for LoopSteps {
@@ -125,11 +137,57 @@ impl LoopSteps {
             beside,
             mailboxes,
             started: std::time::Instant::now(),
+            school: None,
+            solved_elsewhere: None,
         }
     }
 
-    /// Whether this run has spent its wall-clock ceiling.
+    /// Names the school this loop is running for, and the flag that says one of
+    /// its siblings has already arrived.
+    ///
+    /// The tracer is *relabelled* rather than the notes being prefixed, because
+    /// what a reader and `euler-tui` both split on is the line's `who` field,
+    /// which is the tracer's label and not part of the message. A child tracer
+    /// shares the counters and the journal and reports under its own label, so
+    /// one tab per school costs nothing and every note a step makes — not only
+    /// the ones written here — is attributed to the school that made it.
+    pub(super) fn in_school(
+        mut self,
+        slug: &'static str,
+        solved_elsewhere: Arc<std::sync::atomic::AtomicBool>,
+    ) -> Self {
+        self.tracer = self.tracer.map(|tracer| tracer.child(format!("{slug}/loop")));
+        self.school = Some(slug);
+        self.solved_elsewhere = Some(solved_elsewhere);
+        self
+    }
+
+    /// Whether this run should stop between passes.
+    ///
+    /// Two facts, and they are the same *shape* of fact, which is why they
+    /// share a field. `expired` exists because every other terminal condition
+    /// counts events, and a loop that has stopped producing them stops
+    /// approaching all of them at once — so the run needed one condition that
+    /// is about the run rather than about its mathematics. "Another school
+    /// verified it first" is the second such condition: no counter on this
+    /// school's state will ever move because of it, and nothing this school
+    /// attempts can change it.
+    ///
+    /// Riding on `expired` is also what makes the stop graceful rather than an
+    /// abort. It is stamped at `eval_merge`, the last thing every pass does,
+    /// and read by `terminal_condition` at the top of the next one — so a
+    /// school that loses the race finishes the attempt it is in, files what it
+    /// found, and leaves through the same `done` port as any other ending.
+    /// Nothing is cancelled mid-attempt and no work already paid for is thrown
+    /// away.
     fn expired(&self) -> bool {
+        if self
+            .solved_elsewhere
+            .as_ref()
+            .is_some_and(|solved| solved.load(std::sync::atomic::Ordering::Relaxed))
+        {
+            return true;
+        }
         self.started.elapsed() >= super::solutions::run_ceiling()
     }
 

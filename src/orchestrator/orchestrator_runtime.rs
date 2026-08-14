@@ -320,7 +320,7 @@ impl OrchestratorAgent {
             running.spawn(lane);
         }
         let mut reached: Vec<(&'static str, String)> = Vec::new();
-        let mut failure: Option<crate::agent::Error> = None;
+        let mut failure: Option<tinyagents::TinyAgentsError> = None;
         // Tracked rather than inferred from the reports. Deciding "did anything
         // work" by looking at the wording of the outcomes would make the run's
         // exit depend on prose the model influences.
