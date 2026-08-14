@@ -55,6 +55,39 @@ case "$problem_number" in
         ;;
 esac
 
+# A second pass, because everything after the number is free-text instructions
+# and a flag written there would otherwise be swallowed into them silently. That
+# is not hypothetical: `./euler 1006 --schools chisel,rising-sea` reads as the
+# documented order to anyone who has typed `git log -n 5`, and it started a
+# single-school run with "--schools chisel,rising-sea" appended to the task —
+# a run that looks entirely normal and is not the one that was asked for. The
+# flags are recognised in either position and stripped from the instructions.
+remaining=""
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --no-research)
+            research=off
+            shift
+            ;;
+        --research)
+            research=on
+            shift
+            ;;
+        --schools)
+            if [ "$#" -lt 2 ]; then
+                usage
+                exit 2
+            fi
+            schools=$2
+            shift 2
+            ;;
+        *)
+            remaining="$remaining${remaining:+ }$1"
+            shift
+            ;;
+    esac
+done
+
 workspace_subdir=project-euler/$problem_number
 workspace_path=$repository_root/workspace/$workspace_subdir
 mkdir -p "$workspace_path"
