@@ -272,11 +272,25 @@ struct Malformed {
     reason: &'static str,
 }
 
+/// A claim that called itself formalised and was not, and why.
+///
+/// Kept separate from [`Malformed`], which is about a block that could not be
+/// *read*. This one read perfectly well and said something the workspace does
+/// not support, which is a different accusation and asks for different work:
+/// one wants the note fixed, the other wants the proof finished.
+#[derive(Clone, Debug)]
+struct Unbacked {
+    id: String,
+    source: String,
+    objection: String,
+}
+
 /// What one derivation found across the whole library.
 #[derive(Debug, Default)]
 pub(super) struct Ledger {
     claims: Vec<Claim>,
     malformed: Vec<Malformed>,
+    unbacked: Vec<Unbacked>,
 }
 
 /// The library's block format: a fenced block of `key: value` lines.
@@ -634,6 +648,11 @@ impl Ledger {
              `bearing`, and `anchor` lines. A result this run *computed* belongs here as much as \
              one it read: write the note beside the output in `code/out/` and mark it \
              `status: checked`.\n\n\
+             `status: formalised` is the one status this file does not take on trust. It means \
+             the Lean kernel checked it *here*, so it needs a `formalisation:` line naming the \
+             `.lean` file and a passing `lean_check` verdict for that file; without one the row \
+             is recorded as `asserted` and listed below with the reason. Everything else on this \
+             page is a word somebody typed.\n\n\
              `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose \
              hypotheses fail here is worse than no theorem, because it looks like progress.\n\n",
         );
@@ -664,6 +683,7 @@ impl Ledger {
             );
         }
         self.append_contradictions(&mut out);
+        self.append_unbacked(&mut out);
         self.append_unverified(&mut out);
         self.append_catalogued(&mut out);
         self.append_faults(&mut out);
@@ -701,6 +721,35 @@ impl Ledger {
         }
         out.push_str("\n## Contradictions\n\nResolve these before building on either side.\n\n");
         out.push_str(&rows);
+    }
+
+    /// Lists claims that called themselves formalised and were downgraded.
+    ///
+    /// Reported rather than silently corrected, and placed above *Load-bearing
+    /// but unverified* because it is the more specific accusation: those rows
+    /// are claims nobody said were checked, and these are claims somebody said
+    /// were checked and the kernel does not agree. A downgrade that showed up
+    /// only as a changed word in the table would be indistinguishable from the
+    /// role having written `asserted` in the first place, which is exactly the
+    /// confusion this status exists to end.
+    fn append_unbacked(&self, out: &mut String) {
+        if self.unbacked.is_empty() {
+            return;
+        }
+        out.push_str(
+            "\n## Called formalised, not backed by the kernel\n\nEach of these was written as a \
+             formalised claim and has been recorded as `asserted` instead, because no passing \
+             `lean_check` verdict on disk supports it. Nothing here says the statement is false; \
+             it says the workspace does not yet contain a proof of it. Run `lean_check` over the \
+             file, fix what it reports, and the status returns on the next derivation.\n\n",
+        );
+        for row in &self.unbacked {
+            let _ = writeln!(
+                out,
+                "- `{}` ({}) — {}",
+                row.id, row.source, row.objection
+            );
+        }
     }
 
     /// Lists claims the run is leaning on without having verified them.
