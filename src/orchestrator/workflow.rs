@@ -411,7 +411,7 @@ pub(super) fn solution_loop(
                 // Seeded from stage one rather than from the literal, so the
                 // first attempt starts from what the run established rather
                 // than from the statement and eleven zeroes.
-                "state": { "init": seeded, "update": state_update() },
+                "state": { "init": opening.clone(), "update": state_update() },
             }),
         ),
         // Stage two. The only step that reads the accumulator, because it is the

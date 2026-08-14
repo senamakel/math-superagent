@@ -757,6 +757,28 @@ async fn the_loop_runs_a_second_pass() {
         .filter(|step| step.node_id == "attempt")
         .count();
     assert!(attempts >= 2, "the loop never started a second pass");
+
+    let count = |node: &str| {
+        run.trace()
+            .steps
+            .iter()
+            .filter(|step| step.node_id == node)
+            .count()
+    };
+    // The merge is a barrier: one run per pass, however many arms arrive. A
+    // merge that fired once per arriving arm would multiply every node after it
+    // by six on every pass, which is invisible in a one-pass test and is a run
+    // that never finishes in a real one.
+    assert_eq!(
+        count(EVAL_MERGE),
+        attempts,
+        "the merge ran {} times over {attempts} passes: attempt={} route={} pass={} solve={}",
+        count(EVAL_MERGE),
+        count("attempt"),
+        count("route"),
+        count(PASS_NODE),
+        count(LOOP_NODE)
+    );
 }
 
 /// One diversify, then done.
@@ -784,5 +806,23 @@ async fn the_escalation_returns_to_the_loop() {
         .await
         .expect("the loop runs to completion on mocks");
     run.assert_node_ran("diversify_library");
+    run.assert_node_ran("report");
+}
+
+/// A run that never converges stops at the ceiling rather than never stopping.
+///
+/// `until` only fires on a terminal verdict, so the ceiling is the only thing
+/// standing between a run whose every attempt looks the same and a loop with no
+/// end. Nothing else in this file tests it: every other fixture converges,
+/// which is exactly why an unbounded loop could hide behind a green suite.
+#[tokio::test]
+async fn a_run_that_never_converges_stops_at_the_ceiling() {
+    let run = run_with(json!({
+        "problem": "find the largest x",
+        "attempts": 1, "solved": false, "unproductive": 0, "blocked": 0,
+        "computational": 0, "unverified": 0, "restarts": 0,
+        "lesson": "no progress", "fresh_context": ""
+    }))
+    .await;
     run.assert_node_ran("report");
 }
