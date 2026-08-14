@@ -100,7 +100,15 @@ impl DocumentTool {
         }
         if super::backward::is_backward(path) {
             super::backward::refresh(&self.documents).await;
-            return format!(" and re-derived {}", super::backward::BACKWARD_PATH);
+            // The graph is drawn from the skeletons' own edges, so a skeleton
+            // write is the one thing that can change its shape rather than
+            // only its statuses.
+            super::blueprint::refresh(&self.documents).await;
+            return format!(
+                " and re-derived {} and {}",
+                super::backward::BACKWARD_PATH,
+                super::blueprint::BLUEPRINT_PATH
+            );
         }
         if super::weakened::is_weakened(path) {
             super::weakened::refresh(&self.documents).await;
@@ -122,12 +130,19 @@ impl DocumentTool {
         // settled one. A ladder still pointing at a rung the run has already
         // proved is how the next attempt spends itself re-proving it.
         super::weakened::refresh(&self.documents).await;
+        // Last, and after the skeletons: the graph reads both ledgers, and a
+        // claim that discharges a gap changes a node's standing and every
+        // standing above it. Re-derived from disk rather than from what the
+        // two refreshes above returned, so the order they ran in cannot leave
+        // it holding half of one derivation and half of another.
+        super::blueprint::refresh(&self.documents).await;
         format!(
-            " and re-derived {}, {}, {} and {}",
+            " and re-derived {}, {}, {}, {} and {}",
             super::claims::CLAIMS_PATH,
             super::threads::THREADS_PATH,
             super::backward::BACKWARD_PATH,
-            super::weakened::WEAKENED_PATH
+            super::weakened::WEAKENED_PATH,
+            super::blueprint::BLUEPRINT_PATH
         )
     }
 

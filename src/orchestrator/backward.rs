@@ -157,7 +157,7 @@ pub(super) struct Gap {
     /// Where it stands.
     pub(super) stance: GapStance,
     /// The claim id or note path that closed it.
-    discharged_by: String,
+    pub(super) discharged_by: String,
     /// The thread attacking it, when the run has opened one.
     thread: String,
     /// The first concrete move a forward attempt could make today.
@@ -170,7 +170,7 @@ pub(super) struct Skeleton {
     /// The file's stem, which is how a reader names the skeleton.
     pub(super) slug: String,
     /// The proposition this file is a proof skeleton of.
-    goal: String,
+    pub(super) goal: String,
     /// How the lemmas combine to give the goal — the inference itself.
     ///
     /// The load-bearing field. The failure mode of any decomposition is three
@@ -180,11 +180,11 @@ pub(super) struct Skeleton {
     /// Where it stands.
     pub(super) stance: Stance,
     /// Claim ids the reduction takes as already established.
-    rests_on: Vec<String>,
+    pub(super) rests_on: Vec<String>,
     /// Why it is broken or spent.
     killed_by: String,
     /// The lemmas, open and closed alike.
-    gaps: Vec<Gap>,
+    pub(super) gaps: Vec<Gap>,
 }
 
 impl Skeleton {
@@ -204,6 +204,16 @@ pub(super) struct Skeletons {
 }
 
 impl Skeletons {
+    /// Every skeleton read, in file order.
+    ///
+    /// The blueprint needs all of them, not one of the filtered views: a
+    /// dependency graph that dropped the broken and spent reductions could not
+    /// say that an open gap rests on one, which is the most useful thing it
+    /// has to report.
+    pub(super) fn all(&self) -> &[Skeleton] {
+        &self.skeletons
+    }
+
     /// The skeletons that are closed, for the dossier.
     pub(super) fn closed(&self) -> impl Iterator<Item = &Skeleton> {
         self.skeletons

@@ -3,6 +3,7 @@ mod approaches;
 mod authoring;
 pub(crate) mod async_subagents;
 mod backward;
+mod blueprint;
 mod caps;
 mod checkpoint;
 mod claims;
