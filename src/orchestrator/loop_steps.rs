@@ -180,6 +180,14 @@ impl LoopSteps {
 
     async fn run(&self, step: &str, state: SolutionState, args: &Value) -> Result<Value> {
         let tracer = self.tracer.as_ref();
+        // The school's bounds, read off the node's own arguments rather than
+        // held on this tool. One `LoopSteps` serves every school's graph —
+        // there is one subagent manager, one budget pool and one workspace —
+        // so which school a step belongs to is a property of the step, and the
+        // graph is where it is already written down. A node built without them
+        // reads the control school's, which is what every graph did before
+        // schools existed.
+        let thresholds = super::workflow::thresholds_from(args);
         let workspace = self.workspace.as_deref();
         // Two steps say something that is not part of the state, so they are
         // answered before the match and their extra field is folded into the
@@ -218,7 +226,7 @@ impl LoopSteps {
             "attempt" => {
                 attempt_step(&self.subagents, tracer, workspace, &self.mailboxes, state).await
             }
-            "judge" => judge_step(&self.subagents, tracer, workspace, state).await,
+            "judge" => judge_step(&self.subagents, tracer, workspace, &thresholds, state).await,
             "reflect" => {
                 reflect_step(
                     &self.subagents,
@@ -226,6 +234,7 @@ impl LoopSteps {
                     workspace,
                     &self.memory,
                     &self.beside,
+                    &thresholds,
                     state,
                 )
                 .await
@@ -434,6 +443,10 @@ impl Tool<()> for LoopSteps {
                     DECISION_ARG: {
                         "type": "object",
                         "description": "The goals child's run state, for the cadence to read."
+                    },
+                    super::workflow::THRESHOLDS_ARG: {
+                        "type": "object",
+                        "description": "The school's bounds. Absent means the control school's."
                     }
                 },
                 "required": ["step", "state"],

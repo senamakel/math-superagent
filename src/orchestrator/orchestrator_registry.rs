@@ -80,6 +80,44 @@ const DISCOVERY_TOOLS: [&str; 4] = [
     "deep_research",
 ];
 
+/// The registry for a run, with one copy of every role per school.
+///
+/// Derived from [`default_registry`] rather than assembled a second time: a
+/// school changes what a role is *told*, never what it may touch, so a second
+/// list of tool grants would be a second answer to a question about authority.
+/// Ids match the names the harness registers under, which is what
+/// [`AsyncSubagentManager::for_school`] produces, so an `agent_ref` in a
+/// workflow, a `spawn_agent` argument, and a registration are one vocabulary.
+///
+/// One school is registered unqualified. That is not a special case for
+/// tidiness: a single-school run is today's run, its roles are addressed by
+/// bare name from an unscoped manager, and qualifying them would rename every
+/// registration in the run to prove a point about a school that has no rival.
+///
+/// # Errors
+///
+/// Returns an error when a definition cannot be registered — which for a
+/// well-formed school list means two schools sharing a slug.
+fn schooled_registry(
+    research_enabled: bool,
+    schools: &[schools::School],
+) -> Result<AgentRegistry> {
+    let base = default_registry(research_enabled)?;
+    if schools.len() < 2 {
+        return Ok(base);
+    }
+    let mut registry = AgentRegistry::new();
+    for school in schools {
+        for definition in base.definitions() {
+            let mut definition = definition.clone();
+            definition.name = format!("{} ({})", definition.name, school.slug);
+            definition.id = school.role(&definition.id);
+            registry.register(definition)?;
+        }
+    }
+    Ok(registry)
+}
+
 fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     let document_tools = [
         "download_document",

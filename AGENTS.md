@@ -67,41 +67,27 @@ available, so the agent can still record and recall its own findings.
 ## Schools
 
 A *school* is one way of attacking a problem, and two or three run concurrently
-on one workspace. `chisel` — attack where it stands, compute first — is the
-runtime as it has always been, and is both the default and the control:
-`MATH_AGENT_SCHOOLS` unset means `chisel` alone, and its overlay is the empty
-string so its prompts stay byte-identical to what preceded schools.
-`rising-sea` enlarges the setting instead of attacking the goal; `adversarial`
-refutes a statement before spending an attempt proving it.
+on one workspace, sharing the ledgers and a board. Why these three, and what
+each is a bet on: [`docs/schools.md`](docs/schools.md).
 
-```sh
-./euler 1006 --schools chisel,rising-sea,adversarial
-```
-
-A school is four things and must stay four: a method-policy overlay layered
-*after* the shared policy, optional per-role overlays, a bench, and its
-`Thresholds`. Not a second loop, graph, workspace, or set of roles — those are
-shared, because the point is several mathematicians in one workspace rather than
-several runtimes in one container. Four rules hold:
-
-- **The control does not move.** Anything changing what `chisel` sends changes
-  the baseline every other school is measured against; the tests assert
-  byte-identity rather than trusting it.
+- **A school is four things and must stay four:** a method-policy overlay
+  layered *after* the shared policy, optional per-role overlays, a bench, and
+  its `Thresholds`. Not a second loop, graph, workspace, or set of roles.
+- **The control does not move.** `chisel` is the runtime as it has always been
+  and is what an unset `MATH_AGENT_SCHOOLS` selects. Its overlay is the empty
+  string, and the tests assert its prompts are byte-identical rather than
+  trusting it — every other school is measured against that baseline.
 - **Thresholds are a struct, not a second set of constants.** `route` and the
   jq the engine runs both read one `Thresholds`, and `orchestrator::parity`
   proves they agree for *every* school, exhaustively. No school may move
   `blocked`: a provider failure is not a methodological question.
 - **A board post is asserted, never established.** `teams/BOARD.md` is derived
-  from an append-only queue and is never an input to a derived ledger. The
-  posting school is baked into the tool at registration rather than being an
-  argument, so none can post as another.
+  from an append-only queue and never feeds a derived ledger. The posting school
+  is baked into the tool at registration, so none can post as another.
 - **A lock is taken at a tool-call boundary and never below one.**
   `src/orchestrator/worklock.rs` serialises the write cascade and the git
   checkpoint; `tokio::sync::Mutex` is not reentrant, so a lock at the leaf would
   stop the run.
-
-Rationale and the mathematicians behind each school:
-[`docs/schools.md`](docs/schools.md).
 
 ## Running and watching a run
 

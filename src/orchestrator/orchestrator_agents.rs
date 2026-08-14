@@ -9,6 +9,32 @@ struct Planners<'a> {
     vector_store: &'a VectorStore,
 }
 
+/// The manager one school registers its roles on and delegates through.
+///
+/// Every registration in this file takes a manager and a bare role name, and
+/// every delegation bench in this crate names roles bare. Handing a school its
+/// own scoped manager is therefore the whole of school-awareness on this side:
+/// `subagents.register("goals", …)` becomes `goals@rising-sea`, and the
+/// `spawn_agent` tools built from the same handle send a bare `tool_builder`
+/// to `tool_builder@rising-sea`. A role cannot leak out of its school, because
+/// nothing it can name reaches outside one.
+///
+/// A run with one school is left unqualified. The loop driving it holds the
+/// unscoped manager and calls `run_to_completion` with bare names, so an
+/// unqualified registration is what makes a single-school run — the control
+/// school alone, which is the default — identical to the run before schools
+/// existed.
+fn school_manager(
+    subagents: &AsyncSubagentManager,
+    schools: &[schools::School],
+    school: &schools::School,
+) -> AsyncSubagentManager {
+    if schools.len() < 2 {
+        return subagents.clone();
+    }
+    subagents.for_school(school.slug)
+}
+
 /// Registers the goals agent and returns the orchestrator's harness.
 ///
 /// They are built together because they are the same role at two depths: both

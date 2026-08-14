@@ -442,6 +442,27 @@ fn step_with(id: &str, state: &str, extra: &Value) -> Node {
     step_as(id, id, &json!(state), extra)
 }
 
+/// Writes the school's bounds into a step node's arguments.
+///
+/// Does nothing to any other kind of node: a `switch` carries its bounds inside
+/// the jq it already holds, and a `sub_workflow` carries whatever child it was
+/// built with.
+fn carry_thresholds(node: &mut Node, thresholds: &Thresholds) {
+    if !matches!(node.kind, NodeKind::ToolCall) {
+        return;
+    }
+    if let Some(args) = node
+        .config
+        .get_mut("args")
+        .and_then(serde_json::Value::as_object_mut)
+    {
+        args.insert(
+            THRESHOLDS_ARG.to_string(),
+            thresholds_json(thresholds),
+        );
+    }
+}
+
 /// What the attempt's report is addressed as.
 ///
 /// Every evaluation arm reads this and nothing else. They are concurrent, so an
@@ -691,6 +712,14 @@ pub(super) fn solution_loop_for(
         edge("diversify_library", "main", PASS_NODE),
         edge(PASS_NODE, "main", LOOP_NODE),
     ];
+    // Every step, rather than the two that read a bound today. A list of which
+    // steps need the school's numbers would be a list to keep in step with the
+    // steps themselves, and the failure it produces is the quiet one: a step
+    // that silently falls back to the control school's bounds while running
+    // under another school's name.
+    for node in &mut nodes {
+        carry_thresholds(node, thresholds);
+    }
     // One fan-out and one barrier, both built from the same list, so an arm
     // cannot be started without being waited for or waited for without being
     // started.
