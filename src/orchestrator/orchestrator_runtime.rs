@@ -182,12 +182,25 @@ impl OrchestratorAgent {
 
         let outcome = self.run_workflow_loop(problem, beside, mailboxes).await;
 
+        // The teams are normally already stopped: the loop's `stand_down` node
+        // does it the moment the loop ends, so they take no cycles while the
+        // novelty check and the judge run. This stays as the backstop for the
+        // paths that never reach that node — a workflow error, a compile
+        // failure — and it reports which case happened, because "the run
+        // finished and the teams were still going" is the defect this pair of
+        // calls exists to make visible rather than to hide.
         for team in &support {
+            let already = team.is_cancelled();
             team.cancel();
             self.tracer.note(&format!(
-                "team {}: {} cycle(s) alongside the solve",
+                "team {}: {} cycle(s) alongside the solve, {}",
                 team.name(),
-                team.cycles()
+                team.cycles(),
+                if already {
+                    "stood down when the loop ended"
+                } else {
+                    "still running at the end of the run"
+                }
             ));
         }
 

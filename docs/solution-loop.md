@@ -8,7 +8,7 @@ next, and why each threshold is the number it is, is in
 [`AGENTS.md`](../AGENTS.md); this file is the part that goes deeper than a rule.
 
 ```text
-  research ──> seed goals ──> solve ─── done ──> novelty ──> judge ──> report
+  research ──> seed goals ──> solve ─ done ─> stand down ─> novelty ─> judge ─> report
                                 │
                                 └─ body ─> attempt ──┬─> reflect ────────┐
                                    ▲                 ├─> patterns ───────┤
@@ -28,8 +28,41 @@ what the workspace already has, then go looking for what it does not.
 and merges their answers before anything routes. Five are about the attempt;
 the sixth is not, and is described below.
 
-Two nodes sit on the way *out*, after the loop and before the report, and the
-order between them is deliberate. `novelty` checks the literature — but only
+Three nodes sit on the way *out*, after the loop and before the report, and the
+order between them is deliberate.
+
+`stand_down` goes first and does one thing: it cancels the standing teams. They
+were always cancelled — but in `orchestrator_runtime`, *after* the whole
+workflow returns, and the judge runs inside that workflow. So every cycle a
+team took between the loop ending and the judge finishing was work on a question
+already answered, and the code looked right where it was.
+
+A live `./euler 351` measured it. The loop recorded `verdict solved` at minute
+29, on an answer two independent programs had agreed on at minute 15. Thirty
+more sub-agents were spawned over the next 62 minutes, the judge did not start
+until minute 92, and the run was killed at 96 — roughly 85% of the wall clock
+and $32 of the $35 spent after the problem was solved. A standing team never
+retires on its own, by construction: `Completion::Standing` maps "nothing
+further to do" to `Idle` rather than `Finished`, because on an open conjecture
+there is always one more source to fetch. Nothing but this node ends one.
+
+Cancelling asks rather than kills — a team finishes the cycle it is in and does
+not start another. Work already in flight has been paid for and may as well be
+filed, and a team torn down mid-write is how a half-written note reaches the
+workspace. The call in `orchestrator_runtime` stays as the backstop for paths
+that never reach this node, and now reports which case happened, because "the
+run finished and the teams were still going" is the thing the pair exists to
+make visible.
+
+One more thing came out of that run and is worth stating on its own: for those
+62 minutes the console printed no orchestrator line at all. Which node was
+holding could not be read off the log, only guessed at from which sub-agents
+happened to be spawning. Every step now notes when it is entered and how long it
+took — one line per node per pass, against a run that makes a thousand model
+calls — so "the run stalled" is a question the log answers rather than a thing
+somebody reconstructs afterwards.
+
+`novelty` checks the literature — but only
 when the run believes it has solved the problem, which is the exact inverse of
 every other sweep here. `open_library` returns early on `state.solved`, so until
 this node existed the one moment the literature was most worth reading was the

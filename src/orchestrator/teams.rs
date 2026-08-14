@@ -224,6 +224,16 @@ impl TeamHandle {
         self.cancelled.store(true, Ordering::Relaxed);
     }
 
+    /// Whether this team has been asked to stop.
+    ///
+    /// Read by the closing report and by the test that the run's end actually
+    /// reaches the teams. Cancellation used to be observable only by watching
+    /// a team stop spawning, which is what made it possible for the call to sit
+    /// in the wrong place for as long as it did.
+    pub(super) fn is_cancelled(&self) -> bool {
+        self.cancelled.load(Ordering::Relaxed)
+    }
+
     /// Returns how many cycles the team has completed.
     pub(super) fn cycles(&self) -> u64 {
         self.cycles.load(Ordering::Relaxed)

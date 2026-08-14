@@ -52,7 +52,7 @@ use super::vector::VectorStore;
 /// A closed set, matched by name. An unknown step is an error rather than a
 /// no-op: a workflow naming a step that does not exist would otherwise run,
 /// change nothing, and route on a state nobody advanced.
-const STEPS: [&str; 14] = [
+const STEPS: [&str; 15] = [
     "init_context",
     "seed_context",
     "attempt",
@@ -67,6 +67,7 @@ const STEPS: [&str; 14] = [
     "goal_apply",
     "diversify_library",
     "novelty",
+    "stand_down",
 ];
 
 /// The slug a workflow node names this tool by.
@@ -138,6 +139,45 @@ impl LoopSteps {
     /// something to say that is not part of the state: `goal_gate` reports
     /// whether it opened a decomposition, which the loop needs in order to
     /// reset the cadence and which has no business becoming a permanent field.
+    /// Opens a decomposition if the gate admits one, and says whether it did.
+    async fn open_decomposition(&self, state: &SolutionState) -> Value {
+        let (opened, _) = super::solutions::reduce_arm(
+            &self.subagents,
+            self.tracer.as_ref(),
+            self.workspace.as_deref(),
+            &self.beside.reduction,
+            state,
+        )
+        .await;
+        let mut carried = state.to_accumulator();
+        if let Some(object) = carried.as_object_mut() {
+            object.insert(
+                super::workflow_goals::OPENED_FIELD.to_string(),
+                Value::Bool(opened),
+            );
+        }
+        carried
+    }
+
+    /// Folds the evaluation arms into one state, and stamps the clock.
+    fn merge_evaluation(&self, state: &SolutionState, args: &Value) -> Value {
+        let arms: Vec<Value> = args
+            .get(ARMS_ARG)
+            .and_then(Value::as_array)
+            .cloned()
+            .unwrap_or_default();
+        let merged = super::solutions::fold_evaluation(&state.to_accumulator(), &arms);
+        let merged = SolutionState::from_accumulator("", &merged);
+        let mut merged = super::solutions::evaluation_merge(merged);
+        // Stamped after the fold rather than on an arm. Every pass ends here,
+        // so this is the last thing written before the head tests `until` — and
+        // an arm that stamped it would send a clock reading through
+        // `fold_evaluation`, which folds numbers as deltas from the base and
+        // would turn one into arithmetic on timestamps.
+        merged.expired = self.expired();
+        merged.to_accumulator()
+    }
+
     async fn run(&self, step: &str, state: SolutionState, args: &Value) -> Result<Value> {
         let tracer = self.tracer.as_ref();
         let workspace = self.workspace.as_deref();
@@ -145,42 +185,13 @@ impl LoopSteps {
         // answered before the match and their extra field is folded into the
         // returned object afterwards.
         if step == "goal_gate" {
-            let (opened, _) = super::solutions::reduce_arm(
-                &self.subagents,
-                tracer,
-                workspace,
-                &self.beside.reduction,
-                &state,
-            )
-            .await;
-            let mut carried = state.to_accumulator();
-            if let Some(object) = carried.as_object_mut() {
-                object.insert(
-                    super::workflow_goals::OPENED_FIELD.to_string(),
-                    Value::Bool(opened),
-                );
-            }
-            return Ok(carried);
+            return Ok(self.open_decomposition(&state).await);
         }
         // The barrier the evaluation arms converge on. It reads whole states
         // rather than one, so it cannot go through the match below, which is
         // written for a step that takes the state and returns it.
         if step == "eval_merge" {
-            let arms: Vec<Value> = args
-                .get(ARMS_ARG)
-                .and_then(Value::as_array)
-                .cloned()
-                .unwrap_or_default();
-            let merged = super::solutions::fold_evaluation(&state.to_accumulator(), &arms);
-            let merged = SolutionState::from_accumulator("", &merged);
-            let mut merged = super::solutions::evaluation_merge(merged);
-            // Stamped after the fold rather than on an arm. Every pass ends
-            // here, so this is the last thing written before the head tests
-            // `until` — and an arm that stamped it would send a clock reading
-            // through `fold_evaluation`, which folds numbers as deltas from the
-            // base and would turn one into arithmetic on timestamps.
-            merged.expired = self.expired();
-            return Ok(merged.to_accumulator());
+            return Ok(self.merge_evaluation(&state, args));
         }
         // Stage one crossing back into the loop. Like `goal_apply` it reads a
         // child's whole run state rather than an accumulator, and like
@@ -189,6 +200,19 @@ impl LoopSteps {
             let decision = args.get(DECISION_ARG).cloned().unwrap_or(Value::Null);
             return Ok(super::workflow_research::established(&decision)
                 .unwrap_or_else(|| state.to_accumulator()));
+        }
+        // Every step, with how long it took, and a live run is why. `./euler
+        // 351` recorded `verdict solved` at minute 29 and its judge did not
+        // start until minute 92, and the console said nothing at all in
+        // between: sixty-two minutes with no orchestrator line to attribute
+        // them to. Which node was holding is exactly the question the log
+        // should answer and could not, so the answer had to be guessed at from
+        // which sub-agents happened to be spawning. Cheap — one note per node
+        // per pass, against a run that makes a thousand model calls — and the
+        // only thing that turns "the run stalled" into a defect report.
+        let started = std::time::Instant::now();
+        if let Some(tracer) = tracer {
+            tracer.note(&format!("solution loop: step {step} entered"));
         }
         let next = match step {
             "attempt" => {
@@ -246,6 +270,14 @@ impl LoopSteps {
             // Runs once, after the loop, and does nothing unless the run
             // ended believing it was solved — the arm itself makes that call,
             // so the graph does not need a switch to express it.
+            // The first node after the loop, and the whole of what it does is
+            // stop the standing teams. They are `Completion::Standing`, so
+            // nothing retires them on their own, and every cycle they take from
+            // here on is work on a question the loop has already answered.
+            "stand_down" => {
+                stand_down(&self.beside.teams, tracer);
+                state
+            }
             "novelty" => {
                 let findings = novelty_arm(&self.subagents, workspace, &state).await;
                 fold_arm(state, findings)
@@ -257,6 +289,12 @@ impl LoopSteps {
                 )));
             }
         };
+        if let Some(tracer) = tracer {
+            tracer.note(&format!(
+                "solution loop: step {step} finished in {:.1}s",
+                started.elapsed().as_secs_f64()
+            ));
+        }
         let mut carried = next.to_accumulator();
         // Stamped unconditionally rather than for the steps that fan out, so
         // there is no second list of which nodes are arms to disagree with the
@@ -331,6 +369,37 @@ pub(super) fn known_step(step: &str) -> bool {
 /// The arms write disjoint slots, so folding them one at a time here gives the
 /// same state as the concurrent fan-out does — the property the parallel
 /// version rests on, reused rather than restated.
+/// Stops the standing teams, because the run they stand beside has ended.
+///
+/// They were always stopped — in `orchestrator_runtime`, after the whole
+/// workflow returns. The final judge runs *inside* that workflow, so every
+/// cycle a team takes between the loop ending and the judge finishing was work
+/// on a question already answered, and nothing in the code said otherwise
+/// because the call looked correct where it was.
+///
+/// What it cost is measured. A live `./euler 351` recorded `verdict solved` at
+/// minute 29 on an answer two independent programs had agreed on at 15, then
+/// spawned thirty more sub-agents over the following 62 minutes and did not
+/// start its judge until minute 92 — 85% of the run, and roughly $32 of $35,
+/// after the problem was solved.
+///
+/// Cancelling is a request rather than a kill: a team finishes the cycle it is
+/// in and does not start another. That is the right strength here. Work already
+/// in flight has been paid for and may as well be filed, and a team torn down
+/// mid-write is how a half-written note reaches the workspace.
+fn stand_down(teams: &[super::teams::TeamHandle], tracer: Option<&Arc<RunTracer>>) {
+    for team in teams {
+        team.cancel();
+        if let Some(tracer) = tracer {
+            tracer.note(&format!(
+                "team {}: stood down after {} cycle(s), the run has ended",
+                team.name(),
+                team.cycles()
+            ));
+        }
+    }
+}
+
 fn fold_arm(mut state: SolutionState, findings: Vec<super::solutions::Finding>) -> SolutionState {
     for finding in findings {
         state.diversify_mut().set(finding);
