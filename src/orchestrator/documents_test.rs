@@ -549,19 +549,17 @@ async fn a_reader_never_sees_a_half_written_document() -> Result<()> {
         tokio::spawn(async move {
             let mut reads = 0usize;
             while !stop.load(std::sync::atomic::Ordering::Relaxed) {
-                match tokio::fs::read_to_string(&file).await {
-                    Ok(seen) => {
-                        assert!(
-                            seen == old || seen == new,
-                            "a reader observed {} bytes, which is neither content whole",
-                            seen.len()
-                        );
-                        reads += 1;
-                    }
-                    // The destination is replaced by a rename, so it is never
-                    // absent; anything else is the platform, not the property.
-                    Err(error) => panic!("the document must always be readable: {error}"),
-                }
+                // The destination is replaced by a rename rather than
+                // truncated, so it is never absent and never empty.
+                let seen = tokio::fs::read_to_string(&file)
+                    .await
+                    .expect("a document replaced by rename is readable throughout");
+                assert!(
+                    seen == old || seen == new,
+                    "a reader observed {} bytes, which is neither content whole",
+                    seen.len()
+                );
+                reads += 1;
                 tokio::task::yield_now().await;
             }
             reads

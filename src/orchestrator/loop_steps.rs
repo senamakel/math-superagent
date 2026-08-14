@@ -181,7 +181,11 @@ impl LoopSteps {
     /// Nothing is cancelled mid-attempt and no work already paid for is thrown
     /// away.
     fn expired(&self) -> bool {
-        stop_requested(self.started, self.solved_elsewhere.as_deref())
+        stop_requested(
+            self.started,
+            super::solutions::run_ceiling(),
+            self.solved_elsewhere.as_deref(),
+        )
     }
 
     /// Whether a sibling school got there first.
@@ -408,12 +412,13 @@ fn overtaken_by_a_sibling(solved_elsewhere: &std::sync::atomic::AtomicBool) -> b
 /// store, which a unit test has no business standing up.
 fn stop_requested(
     started: std::time::Instant,
+    ceiling: std::time::Duration,
     solved_elsewhere: Option<&std::sync::atomic::AtomicBool>,
 ) -> bool {
     if solved_elsewhere.is_some_and(overtaken_by_a_sibling) {
         return true;
     }
-    started.elapsed() >= super::solutions::run_ceiling()
+    started.elapsed() >= ceiling
 }
 
 /// Establishes what the run is working on, before the first attempt.

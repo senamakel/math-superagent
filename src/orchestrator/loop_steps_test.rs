@@ -289,14 +289,15 @@ fn a_sibling_school_solving_stops_this_one() {
     use std::sync::atomic::{AtomicBool, Ordering};
 
     let started = std::time::Instant::now();
+    let ceiling = std::time::Duration::from_hours(1);
     let solved = AtomicBool::new(false);
     assert!(
-        !stop_requested(started, Some(&solved)),
+        !stop_requested(started, ceiling, Some(&solved)),
         "a school with time left and no sibling arrived keeps going"
     );
     solved.store(true, Ordering::Relaxed);
     assert!(
-        stop_requested(started, Some(&solved)),
+        stop_requested(started, ceiling, Some(&solved)),
         "a school whose sibling verified a solution stops, with the clock untouched"
     );
 }
@@ -310,12 +311,11 @@ fn a_sibling_school_solving_stops_this_one() {
 fn a_run_with_no_school_stops_only_on_its_clock() {
     let started = std::time::Instant::now();
     assert!(
-        !stop_requested(started, None),
+        !stop_requested(started, std::time::Duration::from_hours(1), None),
         "a fresh run has not spent its ceiling"
     );
-    let spent = started - super::super::solutions::run_ceiling();
     assert!(
-        stop_requested(spent, None),
+        stop_requested(started, std::time::Duration::ZERO, None),
         "a run that has spent its ceiling still stops on the clock alone"
     );
 }
