@@ -1,59 +1,32 @@
-<!-- source: https://mathworld.wolfram.com/OrchardVisibilityProblem.html | converted from HTML -->
+# MathWorld — Orchard Visibility Problem
 
-Orchard Visibility Problem -- from Wolfram MathWorld
+Source: https://mathworld.wolfram.com/OrchardVisibilityProblem.html — full
+text at `research/sources/mathworld-orchard-visibility-problem.full.md`
+[[mathworld-orchard-visibility-problem.full]]
 
-# Orchard Visibility Problem
+## What this source establishes
 
----
+The classical **orchard visibility problem**: trees planted at every lattice
+point of a circular orchard centred at the origin with radius r. If the tree
+radius exceeds 1/r, one cannot see out of the orchard in any direction; if the
+radii are below 1/√(r²+1), one can see out at certain angles.
 
-A tree is planted at each [lattice point][1] in a circular orchard which has [center][2] at the [origin][3] and [radius][4][image: r]. If the radius of trees exceeds [image: 1/r] units, one is unable to see out of the orchard in any direction. However, if the [radii][4] of the trees are [image: <1/sqrt(r^2+1)], one can see out at certain [angles][5].
+This is the threshold version of the visibility problem (a continuous
+blocking-radius statement). It is **not** the hexagonal-orchard counting
+problem and carries no totient formula; it is context for the visibility
+literature, not a load-bearing source for H(n).
 
----
+## Why it matters here
 
-## See also
+- Names the classical problem family (Honsberger, *Mathematical Gems I*, ch. 4)
+  that the hexagonal orchard belongs to.
+- Points to the two directly relevant MathWorld entries: Euclid's Orchard and
+  Visible Point (the latter carries the gcd=1 criterion used in this run).
 
-[Euclid's Orchard][6], [Lattice Point][1], [Orchard-Planting Problem][7], [Visible Point][8]
+## What it does not settle
 
-## Explore with Wolfram|Alpha
+- Nothing quantitative about H(n); no formula for hidden-point counts.
 
-[image: WolframAlpha]
+## Claims
 
-More things to try:
-
-- [Bravais lattice][9]
-- [125 + 375][10]
-- [continued fraction pi][11]
-
-## References
-
-Honsberger, R. "The Orchard Problem." Ch. 4 in *[Mathematical Gems I.][12]*Washington, DC: Math. Assoc. Amer., pp. 43-52, 1973.
-
-## Referenced on Wolfram|Alpha
-
-[Orchard Visibility Problem][13]
-
-## Cite this as:
-
-[Weisstein, Eric W.][14] "Orchard Visibility Problem." From **[MathWorld][15] --A Wolfram Resource. [https://mathworld.wolfram.com/OrchardVisibilityProblem.html][16]
-
-## Subject classifications
-
-
-## Links
-
-[1]: /LatticePoint.html
-[2]: /Center.html
-[3]: /Origin.html
-[4]: /Radius.html
-[5]: /Angle.html
-[6]: /EuclidsOrchard.html
-[7]: /Orchard-PlantingProblem.html
-[8]: /VisiblePoint.html
-[9]: https://www.wolframalpha.com/input/?i=Bravais+lattice
-[10]: https://www.wolframalpha.com/input/?i=125+%2B+375
-[11]: https://www.wolframalpha.com/input/?i=continued+fraction+pi
-[12]: http://www.amazon.com/exec/obidos/ASIN/0883853019/ref=nosim/ericstreasuretro
-[13]: https://www.wolframalpha.com/input/?i=orchard+visibility+problem
-[14]: /about/author.html
-[15]: /
-[16]: https://mathworld.wolfram.com/OrchardVisibilityProblem.html
+None — context only.

@@ -1,123 +1,57 @@
-<!-- source: https://oeis.org/A216453 | converted from HTML -->
+# OEIS A216453 — hidden points in a hexagonal orchard
 
-A216453 - OEIS
+Source: https://oeis.org/A216453 — full text at
+`research/sources/oeis-A216453-hexagonal-orchard-hidden.full.md`
+[[oeis-A216453-hexagonal-orchard-hidden.full]]
 
-[login][1]
+## What this source establishes
 
-The OEIS is supported by [the many generous donors to the OEIS Foundation][2].
+The exact sequence for PE 351:
 
-[image: A216453 - OEIS] [3]
+    a(n) = number of points hidden from the central point by a closer point
+           in a hexagonal orchard of order n.
+    a(1..30) = 0, 6, 12, 24, 30, 54, 60, 84, 102, 138, 144, 192, 198, 246,
+               288, 336, 342, 414, 420, 492, 546, 618, 624, 720, 750, 834,
+               888, 984, 990, 1122, ...
 
-A216453
+**FORMULA (the closed form this run uses):**
 
-Number of points hidden from the central point by a closer point in a hexagonal orchard of order n.
+    a(n) = 6·(C(n+1, 2) − Σ_{i=1..n} φ(i))     [corrected by Piyush Kumar
+                                                and Robert Israel, Aug 2014]
+    a(n) = 6·A063985(n)                        [Jon Maiga, Jan 2019]
 
-1
+where C(n+1,2) = n(n+1)/2 and A063985(n) = Σ_{k≤n}(k − φ(k)) is the partial
+sums of the cototient.
 
-0, 6, 12, 24, 30, 54, 60, 84, 102, 138, 144, 192, 198, 246, 288, 336, 342, 414, 420, 492, 546, 618, 624, 720, 750, 834, 888, 984, 990, 1122, 1128, 1224, 1302, 1410, 1476, 1620, 1626, 1746, 1836, 1980, 1986, 2166, 2172, 2316, 2442, 2586, 2592, 2784, 2826, 3006, 3120, 3288, 3294, 3510, 3600, 3792, 3918
+**Cross-checks against the statement's oracles:**
+- a(5) = 30 ✓ (matches H(5) = 30)
+- a(10) = 138 ✓ (matches H(10) = 138)
+- a(1000) = 6·(1000·1001/2 − Φ(1000)) with Φ(1000) = 304192 gives
+  6·(500500 − 304192) = 6·196308 = 1177848 ✓ (matches H(1000) = 1177848)
 
-( [list][4]; [graph][5]; [refs][6]; [listen][7]; [history][8]; [text][9]; [internal format][10])
+**OEIS lookup cross-check (this run):** the 20 computed terms
+0,6,12,24,30,54,60,84,102,138,144,192,198,246,288,336,342,414,420,492 were
+sent to oeis_lookup and matched A216453 exactly — the run's own sieve output
+is the sequence, not a read from the catalogue.
 
-OFFSET
+## Why it matters here
 
-1,2
+This is the encyclopedic record tying the geometric definition to the totient
+summatory function, and the source of the closed form H(n) = 6·(C(n+1,2) −
+Φ(n)). The run's `code/solution.py` reproduces a(n) for every n the brute
+force can reach, and the final H(10^8) is a(10^8).
 
-LINKS
+## Claims
 
-Vincenzo Librandi, [Table of n, a(n) for n = 1..5000][11]
-
-Project Euler, [Problem 351: Hexagonal orchards][12].
-
-FORMULA
-
-a(n) = 6 * (C(n+1,2) - Sum_{i=1..n} phi(i)). - corrected by [Piyush Kumar][13] and [Robert Israel][14], Aug 26 2014
-
-a(n) = 6*[A063985][15] (n). - [Jon Maiga][16], Jan 12 2019
-
-MATHEMATICA
-
-Table[6*Sum[k - EulerPhi[k], {k, n}], {n, 100}] (* [Jon Maiga][16], Jan 12 2019 *)
-
-PROG
-
-(PARI) for(i=1, 100, print1(6*(binomial(i+1, 2)-sum(X=1, i, eulerphi(X))), ", "))
-
-CROSSREFS
-
-Cf. [A063985][15].
-
-Sequence in context: [A358526][17] [A069171][18] [A071611][19] * [A119500][20] [A260633][21] [A348632][22]
-
-Adjacent sequences: [A216450][23] [A216451][24] [A216452][25] * [A216454][26] [A216455][27] [A216456][28]
-
-KEYWORD
-
-nonn
-
-AUTHOR
-
-[V. Raman][29], Sep 07 2012
-
-STATUS
-
-approved
-
-[Lookup][3] [Welcome][30] [Wiki][31] [Register][32] [Music][33] [Plot 2][34] [Demos][35] [Index][36] [WebCam][37] [Contribute][38] [Format][39] [Style Sheet][40] [Transforms][41] [Superseeker][42] [Recents][43]
-
-[The OEIS Community][44]
-
-Maintained by [The OEIS Foundation Inc.][45]
-
-Last modified August 14 12:36 EDT 2026. Contains 398312 sequences.
-
-[License Agreements, Terms of Use, Privacy Policy][46]
-
-
-## Links
-
-[1]: /login?redirect=%2fA216453
-[2]: http://oeisf.org/#DONATE
-[3]: /
-[4]: /A216453/list
-[5]: /A216453/graph
-[6]: /search?q=A216453+-id:A216453
-[7]: /A216453/listen
-[8]: /history?seq=A216453
-[9]: /search?q=id:A216453&fmt=text
-[10]: /A216453/internal
-[11]: /A216453/b216453.txt
-[12]: http://projecteuler.net/problem=351
-[13]: /wiki/User:Piyush_Kumar
-[14]: /wiki/User:Robert_Israel
-[15]: /A063985
-[16]: /wiki/User:Jon_Maiga
-[17]: /A358526
-[18]: /A069171
-[19]: /A071611
-[20]: /A119500
-[21]: /A260633
-[22]: /A348632
-[23]: /A216450
-[24]: /A216451
-[25]: /A216452
-[26]: /A216454
-[27]: /A216455
-[28]: /A216456
-[29]: /wiki/User:V._Raman
-[30]: /wiki/Welcome
-[31]: /wiki/Main_Page
-[32]: /wiki/Special:RequestAccount
-[33]: /play.html
-[34]: /plot2.html
-[35]: /demo1.html
-[36]: /wiki/Index_to_OEIS
-[37]: /webcam
-[38]: /Submit.html
-[39]: /eishelp2.html
-[40]: /wiki/Style_Sheet
-[41]: /transforms.html
-[42]: /ol.html
-[43]: /recent
-[44]: /community.html
-[45]: http://oeisf.org
-[46]: /wiki/Legal_Documents
+```claim
+id: hexagonal-orchard-closed-form
+statement: For every n ≥ 1, H(n) = 6·(C(n+1,2) − Σ_{k=1..n} φ(k)) = 6·Σ_{k=1..n}(k − φ(k)).
+hypotheses: n ≥ 1; H(n) the number of points hidden from the centre in a hexagonal orchard of order n; φ Euler's totient.
+holds-here: yes — reproduces H(5)=30, H(10)=138, H(1000)=1177848.
+status: checked — solution.py reproduces H(5)=30, H(10)=138, H(1000)=1177848
+against the brute-force oracle, and H(10^8)=11762187201804552 against the
+catalogued Φ(10^8); general identity sourced from OEIS A216453 (Kumar–Israel
+formula); 20 computed terms match the OEIS entry via oeis_lookup.
+bearing: reduces the problem to computing Φ(10^8) = Σ_{k≤10^8} φ(k).
+anchor: research/summaries/oeis-A216453-hexagonal-orchard-hidden.md
+```

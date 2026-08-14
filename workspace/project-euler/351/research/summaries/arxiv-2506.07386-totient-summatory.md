@@ -1,45 +1,30 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/arxiv-2506.07386-totient-summatory.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Brown, "Computation of the Totient Summatory Function" — arXiv abstract page
 
-<!-- source: https://arxiv.org/pdf/2506.07386 | converted from HTML -->
+Source: https://arxiv.org/pdf/2506.07386 — the PDF landing page; full text at
+`research/sources/arxiv-2506.07386-totient-summatory.full.md`
+[[arxiv-2506.07386-totient-summatory.full]]. **The substantive content of the
+paper is in the HTML full text**
+(`research/sources/arxiv-2506.07386-totient-summatory.html.full.md`, digest
+`research/summaries/arxiv-2506.07386-totient-summatory.html.md`) — this file
+is the metadata page and is kept only for provenance.
 
-## What is in it
+## What this source establishes
 
-- Mathematics > Number Theory
-- Title: Computation of the Totient Summatory Function
-  - Submission history
-  - Access Paper:
-  - Ancillary files ( [details][11]):
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+Abstract: an algorithm for computing Φ(n) = φ(1) + … + φ(n) in time
+Θ̃(n^{2/3}) and space Θ̃(n^{1/3}), starting from an existing algorithm based
+on the Dirichlet hyperbola method and the Mertens function; used to compute
+Φ(10¹⁹) = 30396355092701331435065976498046398788.
 
+Lucas Augustus Brown, arXiv:2506.07386 [math.NT], submitted 9 Jun 2025,
+29 pages. Ancillary file: `totientsum.py`.
 
-## What it claims
+## What it lets this run do
 
-Abstract: An algorithm is devised for computing $\Phi(n) = \phi(1) + \phi(2) + \cdots + \phi(n)$ in time $\widetilde{\Theta}(n^{2/3})$ and space $\widetilde{\Theta}(n^{1/3})$. The starting point is an existing algorithm based on the Dirichlet hyperbola method and the Mertens function. The algorithm is then used to compute $\Phi(10^{19}) = 30396355092701331435065976498046398788$.
+- Identifies the canonical sublinear algorithm for the quantity PE 351
+  reduces to (see the HTML digest for the formulas, complexity, and Table 1
+  reference values). The run's own n = 10⁸ sieve does not need the sublinear
+  machinery; the paper is the Θ(n^{2/3}) verification context.
 
-Comments: | 29 pages, 0 figures |
+## Claims
 
-Subjects: | Number Theory (math.NT) |
-
-MSC classes: | 11Y16 (Primary) 11-04, 11A25, 11Y55, 11Y70 (Secondary) |
-
-Cite as: | [arXiv:2506.07386][5] [math.NT] |
-
-| (or [arXiv:2506.07386v1][6] [math.NT] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.2506.07386][7]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 5869 character source; every section, statement, and proof in full at `research/sources/arxiv-2506.07386-totient-summatory.full.md`]*
+None here — the claims live in `research/summaries/arxiv-2506.07386-totient-summatory.html.md`.

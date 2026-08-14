@@ -1,42 +1,43 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/kulkov-dirichlet-convolution-fast-prefix-sums.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Kulkov, "Dirichlet convolution and fast prefix sums" (Codeforces blog)
 
-<!-- source: https://codeforces.com/blog/entry/117635 | converted from HTML -->
+Source: https://codeforces.com/blog/entry/117635 — full text at
+`research/sources/kulkov-dirichlet-convolution-fast-prefix-sums.full.md`
+[[kulkov-dirichlet-convolution-fast-prefix-sums.full]]
 
-## What is in it
+## What this source establishes
 
-- | User | Rating |
-- | User | Contrib. |
-    - [adamant's blog][88]
-    - Dirichlet convolution
-      - Hyperbola method
-      - Choosing a better splitting point
-      - Adding precomputation
-      - Adding even more precomputation
-    - Dirichlet inverse
-    - Further reading
-- Returns a list of tuples (L, R, t)
-# such that n//k = t <=> t in [L, R]
-def…
-- Returns a list of tuples (L, R, t)
-# such that n//k = t <=> t in [L, R]
-def…
+A general framework (adamant / Nisiyama_Suzune, Codeforces) for computing
+prefix sums of multiplicative functions by Dirichlet convolution and the
+hyperbola method, with floor-quotient grouping.
 
+**Claim.** Let h = f ∗ g, and let the prefix sums F(⌊n/k⌋), G(⌊n/k⌋) be known
+for all possible arguments. Then the prefix sum H(n) can be computed in
+O(√n); and H(⌊n/k⌋) for all possible arguments in O(n^{2/3}).
 
-## What it claims
+**Claim.** If F(⌊n/k⌋) is available for all possible arguments in O(n^{2/3}),
+then the prefix sums of the Dirichlet inverse f^{−1} are available for all
+possible arguments in O(n^{2/3}}.
 
-We need to compute a prefix sum of the [Dirichlet convolution][97] $$$(f * g)(n)$$$. In this article, we will consider some general methods, and show how to do so in $$$O(n^{2/3})$$$ if we can compute prefix sums of $$$F(n)$$$ and $$$G(n)$$$ in all possible values of $$$\lfloor n/k \rfloor$$$ in this complexity.
+The blog covers choosing a better splitting point, adding precomputation, and
+the Dirichlet inverse, with code for the floor-quotient enumeration.
 
-- **Part 1: Fast prefix sum computation**
-- **[Part 2: Dirichlet series and prime counting][98]**
+## Hypotheses
 
-[e cnerwala][99] previously [mentioned][100] that it is possible, but did not go into much detail. There is also a [blog][101] by [Nisiyama_Suzune][102], which covers prefix sums of Dirichlet inverses in $$$O(n^{2/3})$$$.
+Multiplicative/completely multiplicative functions on N; the standard floor-
+quotient machinery. Applies to φ = μ ∗ id (the totient summatory) — this is
+exactly the machinery behind the Θ(n^{2/3}) summatory-totient algorithms.
 
----
+## What it lets this run do
 
-## Statements it makes
+- Justifies the sublinear complexity tier of the alternative Φ(10⁸) routes
+  (Brown 2025; the Gauss-recursion approach in
+  `research/approaches/dirichlet-hyperbola-gauss-2-3.md`): context, not the
+  adopted method — the run computes Φ(10⁸) by a direct sieve at n = 10⁸.
 
-**Claim**: Let $$$f(n)$$$ and $$$g(n)$$$ be such that $$$F\left(\lfloor n/k\rfloor\right)$$$ and $$$G\left(\lfloor n/k\rfloor\right)$$$ are known for all possible arguments. Then we can compute prefix sum $$$H(n)$$$ of $$$h(n) = (f * g)(n)$$$ in $$$O(\sqrt n)$$$. Moreover, we can find $$$H(\lfloor n/k \rfloor)$$$ for all possible arguments in $$$O(n^{2/3})$$$.
+## What it does not settle
 
-**Claim**: Let $$$f(n)$$$ be such that we can find values of $$$F\left(\left\lfloor n/k\right\rfloor\right)$$$ for all possible arguments in $$$O(n^{2/3})$$$. Then we can also find the prefix sums for all possible arguments of the Dirichlet inverse $$$f^{-1}(n)$$$ in $$$O(n^{2/3})$$$.
+- No numerical values; no orchard geometry; no closed form for Φ.
 
-*[digest of a 52704 character source; every section, statement, and proof in full at `research/sources/kulkov-dirichlet-convolution-fast-prefix-sums.full.md`]*
+## Claims
+
+None — algorithmic context only.

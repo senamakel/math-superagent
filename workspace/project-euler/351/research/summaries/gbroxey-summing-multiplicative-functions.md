@@ -1,62 +1,37 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gbroxey-summing-multiplicative-functions.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# gbroxey, "Summing multiplicative functions" (blog, 2023)
 
-<!-- source: https://gbroxey.github.io/blog/2023/04/30/mult-sum-1.html | converted from HTML -->
+Source: https://gbroxey.github.io/blog/2023/04/30/mult-sum-1.html — full text
+at `research/sources/gbroxey-summing-multiplicative-functions.full.md`
+[[gbroxey-summing-multiplicative-functions.full]]
 
-## What is in it
+## What this source establishes
 
-    - Contents
-  - Techniques
-    - Naive Method
-    - Dirichlet Hyperbola Method
-    - Tangent: Linear Sieving
-    - Summing Generalized Divisor Functions
-      - Algorithm (Computing $D_k$(x) Iteratively)
-    - Summing $\mu$ and $\varphi$
-      - Computing $M(x)$ in Sublinear Time
-      - Algorithm (Mertens in $O(x^{3/4})$)
-      - Algorithm (Mertens in $O(x^{2/3})$)
-      - Doing It For $\varphi$?
-    - Powerful Numbers Trick
-      - Bell Series
-      - Algorithm (Powerful Numbers Iterator)
-      - Note on Picking $g$
-    - Tangent: How Not To Count Primes
-    - Black Algorithm and Min-25 Sieve
-  - Code
+A tutorial collection of methods for computing partial sums of multiplicative
+functions: the naive method, the Dirichlet hyperbola method, linear sieving,
+summing generalized divisor functions D_k(x) iteratively, summing μ and φ —
+Mertens in O(x^{3/4}) and O(x^{2/3}) — and the "powerful numbers" trick with
+Bell series and the Min-25 sieve.
 
+**Relevant method.** Mertens M(x) in O(x^{2/3}) via the floor-quotient /
+hyperbola recursion; the section "Doing It For φ?" notes the totient summatory
+is handled the same way (φ = μ ∗ id), i.e. Φ(x) in O(x^{2/3}) with a μ prefix
+sum — the same complexity class as Brown's Algorithm 1 (arXiv:2506.07386).
 
-## What it claims
+## Hypotheses
 
-**Abstract.**I’ll exhibit some methods for computing partial sums of multiplicative functions. Knowledge of how to sum more basic functions is assumed. We’ll use the square root trick constantly, as well as some basic number theory.
+Multiplicative functions on N; standard floor-quotient grouping. Holds here.
 
----
+## What it lets this run do
 
-A function $f(n)$ which maps the naturals to the set of complex numbers is called “multiplicative” if $f(mn) = f(m)f(n)$ for any $m, n$ such that $\gcd(m, n) = 1$. There are a few obvious examples and a few less obvious examples:
+- Corroborates, from a computational-number-theory blog, the O(n^{2/3})
+  floor-grouped route to Φ(10⁸) that is the independent-verification
+  context of the run. Not the adopted method (direct sieve).
 
-- $I(1) = 1$ and $I(n) = 0$ for $n > 1$
-- $u(n) = 1$ for all $n$
-- $N(n) = n$ for all $n$
-- $d(n)$, the number of divisors of $n$
-- $\sigma_\alpha(n)$, the sum of $d^\alpha$ over all divisors $d$ of $n$
-- $\mu(n)$, the [Möbius function][1]
-- $\varphi(n)$, the [totient function][2]
+## What it does not settle
 
-Some of these are also completely multiplicative, meaning that $f(mn) = f(m)f(n)$ even if $\gcd(m, n) > 1$. This is true of $I$, $u$, and $N$, but not of the rest.
+- No numerical values at 10⁸; no orchard geometry; blog is not peer-reviewed
+  (secondary source).
 
-One operation which is incredibly helpful in the context of multiplicative functions is Dirichlet convolution, defined as
+## Claims
 
-\[(f*g)(n) = \sum_{ab=n} f(a)g(b)\]
-
-This convolution has…
-
-## Statements it makes
-
-#### Algorithm (Computing $D_k$(x) Iteratively)
-
-#### Algorithm (Mertens in $O(x^{3/4})$)
-
-#### Algorithm (Mertens in $O(x^{2/3})$)
-
-#### Algorithm (Powerful Numbers Iterator)
-
-*[digest of a 47894 character source; every section, statement, and proof in full at `research/sources/gbroxey-summing-multiplicative-functions.full.md`]*
+None — algorithmic context only.

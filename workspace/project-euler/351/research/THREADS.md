@@ -6,13 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[pe351-phi-1e8]] | What is the summatory totient Phi(10^8) = sum_{k<=10^8} phi(k), and hence H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8)? | open | gauss-divisor-sum-of-totient, (research/notes/pe351-governing-theory.md);, summatory-totient-mobius-identity;, totient-sum-verification-values;, totient-sum-fast-recursion. | none — the final answer is computed and cross-checked three ways. |
-
-## Resting on nothing recorded
-
-Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
-
-- [[pe351-phi-1e8]] rests on `(research/notes/pe351-governing-theory.md);`, `summatory-totient-mobius-identity;`, `totient-sum-verification-values;`, `totient-sum-fast-recursion.`, which no claim block on disk establishes
+| [[pe351-phi-1e8]] | What is the summatory totient Phi(10^8) = sum_{k<=10^8} phi(k), and hence H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8)? | open | gauss-divisor-sum-of-totient, summatory-totient-mobius-identity, totient-sum-verification-values, totient-sum-fast-recursion, hexagonal-orchard-closed-form | none — the final answer is computed and cross-checked three ways |
 
 ## Threads that could not be read
 

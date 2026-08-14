@@ -1,55 +1,69 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/helfgott-thompson-summing-mobius.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Helfgott & Thompson, "Summing μ(n): a faster elementary algorithm" — full Springer text
 
-<!-- source: https://doi.org/10.1007/s40993-022-00408-8 | converted from HTML -->
+Source: https://doi.org/10.1007/s40993-022-00408-8 — full text at
+`research/sources/helfgott-thompson-summing-mobius.full.md`
+[[helfgott-thompson-summing-mobius.full]]
 
-## What is in it
+## Correction of an earlier mislabel
 
-- Summing \(\mu (n)\): a faster elementary algorithm
-  - Abstract
-    - Similar content being viewed by others
-    - [A note on the partial sum of Apostol's Möbius function][8]
-    - [Monotone Nondecreasing Sequences of the Euler Totient Function][9]
-    - [On the Missing Log Factor][10]
-    - Explore related subjects
-  - 1 Introduction
-    - MainTheorem
-    - 1.1 Our approach
-    - 1.2 Alternatives
-    - 1.3 Notation and algorithmic conventions
-  - 2 Preparatory work: identities
-  - 3 The case of a large non-free variable
-    - Lemma 3.1
-    - Proof
-    - Proposition 3.2
-    - Proof
-  - 4 The case of a large free variable
-    - 4.1 A first try
-    - 4.2 Handling the difference between reality and an approximation
-- …
+This file is **the complete Research in Number Theory 9(1):6 (2023)
+article** — main theorem, Sections 1–7, Appendix A (alternative algorithm),
+Appendix B (pseudocode) — not an abstract page. An earlier note called it
+"the arXiv abstract page; do not cite"; that was wrong (the arXiv *ID*
+1801.07931 is a different paper, Barczy–Bősze–Pap; the *DOI* 10.1007/
+s40993-022-00408-8 is this article). Cite this file freely; it is a duplicate
+of `research/sources/springer-helfgott-thompson-summing-mu.full.md` (same
+DOI, same text).
 
+## What this source establishes
 
-## What it claims
+Main theorem: M(x) = Σ_{n≤x} μ(n) computed in
 
-We present a new elementary algorithm that takes \( \textrm{time} \ \ O_\epsilon \left( x^{\frac{3}{5}} (\log x)^{\frac{8}{5}+\epsilon } \right) \ \ \textrm{and} \ \textrm{space} \ \ O\left( x^{\frac{3}{10}} (\log x)^{\frac{13}{10}} \right) \) (measured bitwise) for computing \(M(x) = \sum _{n \le x} \mu (n),\) where \(\mu (n)\) is the Möbius function. This is the first improvement in the exponent of *x*for an elementary algorithm since 1985. We also show that it is possible to reduce space consumption to \(O(x^{1/5} (\log x)^{5/3})\) by the use of (Helfgott in: Math Comput 89:333–350, 2020), at the cost of letting time rise to the order of \(x^{3/5} (\log x)^2 \log \log x\).
+    time  O(x^{3/5} (log x)^{8/5} (log log x)^{7/5})   (bit operations)
+    space O(x^{3/10} (log x)^{13/10} (log log x)^{-3/10})  (bits)
 
-## Statements it makes
+the first improvement in the exponent of x for an elementary algorithm since
+1985. Space can be reduced to O(x^{1/5}(log x)^{5/3}) by using Helfgott's
+improved sieve of Eratosthenes (Math. Comput. 89:333–350, 2020), raising time
+to O(x^{3/5}(log x)^2 log log x).
 
-### Lemma 3.1
+**Method.** K = 2 Heath-Brown identity for μ (eq. 2.1, valid for u ≥ √x):
 
-### Proposition 3.2
+    μ(n) = − Σ_{m1 m2 n1 = n, m1,m2 ≤ u} μ(m1)μ(m2) + {2μ(n) if n ≤ u; 0 else}
 
-Algorithm 23 computes *D*(*n*; *a*) recursively: it calls itself to compute \(D(n_0;a)\) and \(D(n_0;a/p_r)\), where \(n_0 = p_1 p_2 \cdots p_{r-1}\), and then returns \(D(n;a) = D(n_0;a) - D(n_0;a/p_r)\). The contribution of \(D(n_0;a)\) is that of divisors \(\ell |n\) with \(p_r\not \mid \ell \), whereas the contribution of \(D(n_0;a/p_r)\) corresponds to that of divisors \(\ell |n\) with \(p_r|\ell \).
+which summed over n ≤ x gives (eq. 2.2, u = √x):
 
-### Lemma 4.1
+    M(x) = 2M(u) − Σ_{m1,m2 ≤ u} μ(m1)μ(m2)⌊x/(m1 m2)⌋
 
-### Lemma 4.2
+with the double sum split at v = x^{2/5} (Sect. 4 handles m1,m2 ≤ v by local
+linear approximation of x/(mn) + Diophantine approximation + floor-difference
+tables, Lemmas 4.1–4.6). Lehman's identity (eq. 2.3, credited to Lehman,
+Math. Comp. 1960, p. 314) is stated equivalent for u = √x.
 
-### Lemma 4.3
+**Numerics.** M(10^n) for n ≤ 23 and M(2^n) for n ≤ 75, beating previous
+records; found a sign error in Kuznetsov's table for M(10^21). M(10^23) took
+~18.6 days on an 80-core machine.
 
-### Lemma 4.4
+## Why it matters here
 
-### Lemma 4.5
+The fastest elementary Mertens subroutine Brown's totient paper cites; the
+identity (2.1) is an independent derivation of the M(⌊n/y⌋) recursion used in
+the Mertens-first route to Φ(10^8). For n = 10^8 the run's own sieve routes
+need no Mertens machinery, so this is theoretical context and source of check
+values, not load-bearing for the answer.
 
-### Lemma 4.6
+## Claims
 
-*[digest of a 100197 character source; every section, statement, and proof in full at `research/sources/helfgott-thompson-summing-mobius.full.md`]*
+```claim
+id: heath-brown-mobius-identity
+statement: For u ≥ √x, μ(n) = − Σ_{m1 m2 n1 = n, m1,m2 ≤ u} μ(m1)μ(m2) +
+2μ(n)·[n ≤ u]; summing over n ≤ x gives M(x) = 2M(u) −
+Σ_{m1,m2 ≤ u} μ(m1)μ(m2)⌊x/(m1 m2)⌋.
+hypotheses: x ≥ 1; u ≥ √x; μ the Möbius function.
+holds-here: yes — an independent route to the Mertens recursion the totient
+solver uses.
+status: sourced (Helfgott–Thompson 2023, eq. 2.1–2.2)
+bearing: supplies the identity behind M(⌊n/y⌋) evaluation and the check value
+M(10^8).
+anchor: research/summaries/helfgott-thompson-summing-mobius.md
+```

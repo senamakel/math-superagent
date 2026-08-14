@@ -13,11 +13,17 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `coprimality-iff-visible` | A lattice point (x,y) is visible from the origin iff gcd(x,y) = 1; a point is hidden iff its coordinates have gcd > 1, since then (x/g,y/g) is a strictly closer lattice point on the same ray. | yes | checked | `research/summaries/mathworld-visible-point.md` |
 | `coprime-pairs-square-recursion` | a(n) = n² − Σ_{j=2..n} a(⌊n/j⌋) for a(n) = #{(x,y): 1≤x,y≤n, gcd(x,y)=1} (OEIS A018805); equivalently a(n) = 2Φ(n) − 1. | yes | asserted | `research/summaries/oeis-A018805-coprime-pairs.md` |
 | `cototient-definition` | The cototient is n − φ(n); its partial sums are A063985(n), and H(n) = 6·A063985(n) for the hexagonal orchard. | yes | asserted | `research/summaries/oeis-A051953-cototient.md` |
+| `ehrhart-lattice-polygon-count` | For a lattice d-polytope P, ehr_P(k) = \|kP ∩ Z^d\| is a polynomial of degree d with constant term 1 and leading coefficient vol(P); for a lattice polygon, Pick's formula area = i + b/2 − 1 holds. | yes | asserted | `research/summaries/haase-nill-paffenholz-lattice-polytopes.md` |
+| `euler-phi-mobius-convolution` | φ(n) = Σ_{d\|n} μ(d)·(n/d) for every positive integer n (φ = μ ∗ id); summing over n ≤ N gives Φ(N) = (1/2)Σ_{d≤N} μ(d)⌊N/d⌋(1+⌊N/d⌋). | yes | checked | `research/summaries/mathworld-totient-function.md` |
 | `euler-phi-mobius-convolution` | φ(n) = Σ_{d\|n} μ(d)·(n/d) for every positive integer n (φ = μ ∗ id); summing over n ≤ N gives Φ(N) = (1/2)Σ_{d≤N} μ(d)⌊N/d⌋(1+⌊N/d⌋). | yes | checked | `research/summaries/proofwiki-euler-phi-mobius.md` |
 | `farey-length-totient` | \|F_n\| = 1 + Φ(n): the Farey sequence of order n has length 1 + Σ_{k=1..n} φ(k). | yes | asserted | `research/summaries/wikipedia-farey-sequence.md` |
 | `gauss-divisor-sum-of-totient` | sum_{d\|n} phi(d) = n for every positive integer n (Gauss); hence sum_{d=1..n} Phi(floor(n/d)) = n(n+1)/2, which rearranges to the summatory recursion Phi(n) = n(n+1)/2 - sum_{d=2..n} Phi(floor(n/d)), evaluated in… | yes | asserted | `research/notes/pe351-governing-theory.md` |
+| `gauss-divisor-sum-of-totient` | Σ_{d\|n} φ(d) = n for every positive integer n (Gauss); hence Σ_{d=1..n} Φ(⌊n/d⌋) = n(n+1)/2, which rearranges to the summatory recursion Φ(n) = n(n+1)/2 − Σ_{d=2..n} Φ(⌊n/d⌋), evaluated in O(√n) distinct floor values… | yes | checked | `research/summaries/mathworld-totient-function.md` |
 | `gauss-divisor-sum-of-totient` | Σ_{d\|n} φ(d) = n for every positive integer n (Gauss); hence Σ_{d=1..n} Φ(⌊n/d⌋) = n(n+1)/2, which rearranges to the summatory recursion Φ(n) = n(n+1)/2 − Σ_{d=2..n} Φ(⌊n/d⌋), evaluated in O(√n) distinct floor values… | yes | asserted | `research/summaries/wikipedia-totient-summatory-function.md` |
+| `heath-brown-mobius-identity` | For u ≥ √x, μ(n) = − Σ_{m1 m2 n1 = n, m1,m2 ≤ u} μ(m1)μ(m2) + 2μ(n)·[n ≤ u]; summing over n ≤ x gives M(x) = 2M(u) − Σ_{m1,m2 ≤ u} μ(m1)μ(m2)⌊x/(m1 m2)⌋. | yes | asserted | `research/summaries/helfgott-thompson-summing-mobius.md` |
 | `heath-brown-mobius-identity` | For u ≥ √x, μ(n) = − Σ_{m1 m2 n1 = n, m1,m2 ≤ u} μ(m1)μ(m2) + 2μ(n)·[n ≤ u]; summing over n ≤ x gives M(x) = 2M(u) − Σ_{m1,m2 ≤ u} μ(m1)μ(m2)⌊x/(m1 m2)⌋. | yes | asserted | `research/summaries/springer-helfgott-thompson-summing-mu.md` |
+| `hexagonal-orchard-closed-form` | For every n ≥ 1, H(n) = 6·(C(n+1,2) − Σ_{k=1..n} φ(k)) = 6·Σ_{k=1..n}(k − φ(k)). | yes | checked | `research/summaries/oeis-A216453-hexagonal-orchard-hidden.md` |
+| `invisible-rectangle-classification` | A lattice point (x,y) is visible iff gcd(x,y)=1 (Murphy–Schmiedeler–Stonner Thm 2.1, citing Goins et al. Prop 3); closest invisible n×m rectangles for 1≤n,m≤4 classified (4×4 first at (7247643,10199370)); every… | yes | asserted | `research/summaries/murphy-schmiedeler-stonner-invisible-patterns.md` |
 | `lehman-mertens-identity` | For 1 ≤ u ≤ x, M(x) = M(u) − Σ_{m≤u} μ(m) Σ_{u/m<n≤x/m} M(⌊x/(mn)⌋), with M(t) = Σ_{k≤t} μ(k). | yes | asserted | `research/summaries/deleglise-rivat-summatory-mobius-correct.md` |
 | `mertens-computation-context` | M(x) can be computed for all x ≤ 10^16 and powers of two to 2^73; Mertens conjecture false; \|M(x)/√x\| bounds ±1.8376/1.8261. | yes | catalogued | `research/summaries/hurst-mertens-function-computations.md` |
 | `mertens-first-totient-formula` | For ab = n, Φ(n) = Σ_{x≤a} μ(x)·⌊n/x⌋(⌊n/x⌋+1)/2 + Σ_{y≤b} y·M(⌊n/y⌋) − (b(b+1)/2)·M(a). | yes | asserted | `research/summaries/arxiv-2506.07386-totient-summatory.html.md` |
@@ -26,7 +32,11 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `mertens-values-catalogued` | M(n) = Σ_{k≤n} μ(k); M(10^n) = 1, −1, 1, 2, −23, −48, 212, 1037, 1928, −222, … for n = 0..9. | yes | catalogued | `research/summaries/oeis-A002321-mertens-function.md` |
 | `mobius-function-definition` | μ(1)=1; μ(n) = (−1)^k for n a product of k distinct primes, μ(n) = 0 if n has a squared prime factor; φ(n) = Σ_{d\|n} μ(d)·(n/d). | yes | asserted | `research/summaries/oeis-A008683-mobius-function.md` |
 | `mobius-inversion-formula` | f(n) = Σ_{d\|n} g(d) for all n ⟺ g(n) = Σ_{d\|n} μ(d) f(n/d); hence φ(n) = Σ_{d\|n} μ(d)·(n/d) and Φ(N) = (1/2)Σ_{d≤N} μ(d)⌊N/d⌋(1+⌊N/d⌋). | yes | asserted | `research/summaries/wikipedia-mobius-function.md` |
+| `orchard-lattice-triangular` | The hexagonal orchard of order n is the order-n hexagon of the triangular (hexagonal) lattice, the 2D Bravais lattice with equal primitive vectors at 120° and wallpaper group p6m. Its n-th point count is the centered… | yes | asserted | `research/summaries/wikipedia-triangular-lattice.md` |
+| `pe351-axis-visible-claim-refuted` | In the first-step derivation of G-hexorchard-visibility, the claim "the six boundary axes contribute n visible points each" is false: each of the six axis rays of the order-n hexagonal orchard carries exactly ONE… | yes | checked | `research/notes/pe351-axis-subclaim-refuted.md` |
+| `pe351-h6a063985-identity` | H(n) = 6*A063985(n) = 3n(n+1) - 6*Phi(n) for every n, with Phi(n) = sum_{k<=n} phi(k) and A063985(n) = sum_{k<=n} (k - phi(k)). | yes | checked | `code/out/pe351-pattern-findings.md` |
 | `pe351-hidden-formula` | H(n) = 6 * (C(n+1,2) - sum_{i=1..n} phi(i)) = 6 * sum_{i=1..n} (i - phi(i)), where phi is Euler's totient function. Equivalently H(n) = 6 * A063985(n). | yes | asserted | `research/notes/pe351-governing-theory.md` |
+| `pe351-mod12-period4` | For every n >= 2, H(n) mod 12 = 6*((n+1)//2 mod 2); equivalently H(n) mod 12 is periodic with period 4, residues 6,0,0,6 for n = 2,3,4,5 (mod 4). | yes | checked | `code/out/pe351-pattern-findings.md` |
 | `polygon-primitive-point-asymptotic` | #(tA ∩ P) = (6/π²)t²Area(A) + E_A(t) for rational polygons A, with E_A(t) = Ω±(t log log t) and matching upper bounds. | yes | asserted | `research/summaries/primitive-points-rational-polygons.md` |
 | `primitive-pairs-contour-asymptotic` | P(r) = (6/π)r + O_ε(r^{1/2} exp(−c√log r)) for relatively prime pairs in a circle of radius r; error depends on the contour's curvature. | yes | asserted | `research/summaries/hensley-visible-lattice-points-contour.md` |
 | `summatory-totient-counts-visible-pairs` | Φ(n) counts the ordered pairs (x,y) with 1 ≤ x ≤ y ≤ n and gcd(x,y) = 1; hence the number of visible points in one sector of the hexagonal orchard of order n (pairs with 1 ≤ x+y ≤ n, x,y ≥ 1, gcd=1) is Φ(n). | yes | asserted | `research/summaries/oeis-A002088-summatory-totient.md` |
@@ -38,6 +48,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `totient-sum-fast-recursion` | A063985(n) = (2*n + c - j) // 2 where j starts at 2 and the sum c = sum over distinct values k1 = n//j of (j2-j)*(k1*(k1+1) - 2*A063985(k1) - 1) with j2 = n//k1 + 1, iterating while k1 > 1 (Chai Wah Wu's recursion,… | yes | asserted | `research/notes/pe351-governing-theory.md` |
 | `totient-sum-fast-recursion` | A063985(n) = (2n + c − j)//2 with j starting at 2 and c = Σ over distinct values k1 = n//j of (j2−j)·(k1(k1+1) − 2·A063985(k1) − 1), j2 = n//k1 + 1, iterating while k1 > 1 (Chai Wah Wu, Mar 24 2021). | yes | checked | `research/summaries/oeis-A063985-partial-sums-n-minus-phi.md` |
 | `totient-sum-verification-values` | Phi(10^k) for k = 0..8 is 1, 32, 3044, 304192, 30397486, 3039650754, 303963552392, 30396356427242, 3039635516365908  (OEIS A064018). | yes | asserted | `research/notes/pe351-governing-theory.md` |
+| `totient-sum-verification-values` | Φ(10^k) for k=0..8 is 1, 32, 3044, 304192, 30397486, 3039650754, 303963552392, 30396356427242, 3039635516365908 (OEIS A064018 b-file). | yes | catalogued | `research/summaries/oeis-A064018-totient-summatory-powers-of-10.md` |
+| `visibility-criterion-adhikari-granville` | In Z^D (D >= 2), a point a is visible from b (no lattice point on the open segment between them) iff gcd of the coordinates of a - b equals 1. In the plane, (a,b) is visible from (c,d) iff gcd(c-a, d-b) = 1; hence a… | yes | asserted | `research/summaries/adhikari-granville-visibility-in-the-plane.md` |
+| `visible-density-zeta-goins` | The proportion of lattice points in Z^2 visible from the origin is 1/zeta(2) = 6/pi^2 (Sylvester 1883); a point (r,s) is visible from (0,0) iff gcd(r,s) = 1. Goins-Harris-Kubik-Mbirika (AMM 125(7):593-601, 2018,… | yes | asserted | `research/summaries/arxiv-1710.04554-goins-html.md` |
 | `visible-point-density-zeta` | The visible points of a lattice Γ ⊂ R^n have density dens(Γ)/ζ(n) (6/π² in 2D). | yes | asserted | `research/summaries/arxiv-math9906132-visible-lattice-points.md` |
 | `visible-points-primitive-corroboration` | The visible points of a lattice are its primitive points (gcd = 1 in a lattice basis); corroborates the coprimality-iff-visible criterion from the physics literature. | yes | asserted | `research/summaries/baake-grimm-warrington-visible-points-lattice.md` |
 
@@ -49,15 +62,19 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `coprimality-iff-visible` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `coprime-pairs-square-recursion` (research/summaries/oeis-A018805-coprime-pairs.md) — asserted by the source, not proved there and not checked here
 - `cototient-definition` (research/summaries/oeis-A051953-cototient.md) — asserted by the source, not proved there and not checked here
+- `ehrhart-lattice-polygon-count` (research/summaries/haase-nill-paffenholz-lattice-polytopes.md) — asserted by the source, not proved there and not checked here
 - `farey-length-totient` (research/summaries/wikipedia-farey-sequence.md) — asserted by the source, not proved there and not checked here
 - `gauss-divisor-sum-of-totient` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `gauss-divisor-sum-of-totient` (research/summaries/wikipedia-totient-summatory-function.md) — asserted by the source, not proved there and not checked here
+- `heath-brown-mobius-identity` (research/summaries/helfgott-thompson-summing-mobius.md) — asserted by the source, not proved there and not checked here
 - `heath-brown-mobius-identity` (research/summaries/springer-helfgott-thompson-summing-mu.md) — asserted by the source, not proved there and not checked here
+- `invisible-rectangle-classification` (research/summaries/murphy-schmiedeler-stonner-invisible-patterns.md) — asserted by the source, not proved there and not checked here
 - `lehman-mertens-identity` (research/summaries/deleglise-rivat-summatory-mobius-correct.md) — asserted by the source, not proved there and not checked here
 - `mertens-first-totient-formula` (research/summaries/arxiv-2506.07386-totient-summatory.html.md) — asserted by the source, not proved there and not checked here
 - `mertens-recursion` (research/summaries/arxiv-2506.07386-totient-summatory.html.md) — asserted by the source, not proved there and not checked here
 - `mobius-function-definition` (research/summaries/oeis-A008683-mobius-function.md) — asserted by the source, not proved there and not checked here
 - `mobius-inversion-formula` (research/summaries/wikipedia-mobius-function.md) — asserted by the source, not proved there and not checked here
+- `orchard-lattice-triangular` (research/summaries/wikipedia-triangular-lattice.md) — asserted by the source, not proved there and not checked here
 - `pe351-hidden-formula` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `polygon-primitive-point-asymptotic` (research/summaries/primitive-points-rational-polygons.md) — asserted by the source, not proved there and not checked here
 - `primitive-pairs-contour-asymptotic` (research/summaries/hensley-visible-lattice-points-contour.md) — asserted by the source, not proved there and not checked here
@@ -67,6 +84,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `totient-magnitude-anchor` (research/summaries/mathworld-totient-summatory-function.md) — asserted by the source, not proved there and not checked here
 - `totient-sum-fast-recursion` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `totient-sum-verification-values` (research/notes/pe351-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `visibility-criterion-adhikari-granville` (research/summaries/adhikari-granville-visibility-in-the-plane.md) — asserted by the source, not proved there and not checked here
+- `visible-density-zeta-goins` (research/summaries/arxiv-1710.04554-goins-html.md) — asserted by the source, not proved there and not checked here
 - `visible-point-density-zeta` (research/summaries/arxiv-math9906132-visible-lattice-points.md) — asserted by the source, not proved there and not checked here
 - `visible-points-primitive-corroboration` (research/summaries/baake-grimm-warrington-visible-points-lattice.md) — asserted by the source, not proved there and not checked here
 
@@ -77,3 +96,4 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 - `mertens-computation-context` (research/summaries/hurst-mertens-function-computations.md) — read from a catalogue; no derivation here reproduces it
 - `mertens-function-reference` (research/summaries/mathworld-mertens-function.md) — read from a catalogue; no derivation here reproduces it
 - `mertens-values-catalogued` (research/summaries/oeis-A002321-mertens-function.md) — read from a catalogue; no derivation here reproduces it
+- `totient-sum-verification-values` (research/summaries/oeis-A064018-totient-summatory-powers-of-10.md) — read from a catalogue; no derivation here reproduces it
