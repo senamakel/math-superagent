@@ -127,9 +127,9 @@ fn append_markdown(workspace: &Path, entry: &Entry, stamp: &str) {
         let _ = std::fs::create_dir_all(parent);
     }
     let mut row = String::new();
-    let _ = write!(
+    let _ = writeln!(
         row,
-        "| {stamp} | `{}` | {} | {} | {} |\n",
+        "| {stamp} | `{}` | {} | {} | {} |",
         entry.tool,
         entry.stage.as_str(),
         entry.decision,

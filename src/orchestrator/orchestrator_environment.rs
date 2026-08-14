@@ -286,6 +286,40 @@ fn start_tracer(workspace: &Path, budget: RunBudget, research_enabled: bool) -> 
     tracer
 }
 
+/// Builds the evidence screen, and announces it when there is one.
+///
+/// Present only on a **calibration** run — one against a conjecture that has
+/// already been solved, stated as open, where the literature carrying its
+/// answer has to be withheld for the run to measure anything at all.
+/// `MATH_AGENT_SCREEN` names the compiled policy; unset means no screen, and
+/// then nothing is wrapped and an ordinary run is untouched.
+///
+/// The header line matters as much as the screening does. An operator reading a
+/// journal has to be able to tell a calibration run from an ordinary one, and
+/// the two are otherwise indistinguishable from the outside.
+///
+/// # Errors
+///
+/// Returns an error when the variable names a policy that cannot be read or
+/// parsed. Degrading to no screening is the one outcome that must not happen:
+/// it produces a run that looks entirely normal, spends hours of provider
+/// credit, and measures nothing, with no visible symptom anywhere.
+fn start_screen(
+    workspace: &Path,
+    model: &Arc<dyn ChatModel<()>>,
+    tracer: &Arc<RunTracer>,
+) -> Result<Option<screen::Screen>> {
+    let screen = screen::Screen::from_env(workspace, Some(model.clone()))?;
+    if let Some(active) = screen.as_ref() {
+        tracer.note(&format!(
+            "evidence screen active for `{}`: this is a calibration run, and research sources \
+             and downloads are screened",
+            active.slug()
+        ));
+    }
+    Ok(screen)
+}
+
 /// Returns whether the research agent may reach the web this run.
 ///
 /// Set `MATH_AGENT_RESEARCH=off` to withhold `exa_search`. The workspace note

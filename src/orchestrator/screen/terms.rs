@@ -107,6 +107,40 @@ fn is_combining(character: char) -> bool {
     )
 }
 
+/// Contiguous ranges of precomposed Latin letters, and the base each folds to.
+///
+/// At module scope because an item declared *after* a statement inside a
+/// function reads as though it were scoped to the code above it, and it is not.
+const RANGES: &[(char, char, char)] = &[
+    ('à', 'å', 'a'),
+    ('è', 'ë', 'e'),
+    ('ì', 'ï', 'i'),
+    ('ò', 'ö', 'o'),
+    ('ù', 'ü', 'u'),
+    ('ā', 'ą', 'a'),
+    ('ć', 'č', 'c'),
+    ('ď', 'ď', 'd'),
+    ('ē', 'ě', 'e'),
+    ('ĝ', 'ģ', 'g'),
+    ('ĥ', 'ĥ', 'h'),
+    ('ĩ', 'į', 'i'),
+    ('ĵ', 'ĵ', 'j'),
+    ('ķ', 'ķ', 'k'),
+    ('ĺ', 'ľ', 'l'),
+    ('ń', 'ň', 'n'),
+    ('ō', 'ő', 'o'),
+    ('ŕ', 'ř', 'r'),
+    ('ś', 'š', 's'),
+    ('ţ', 'ť', 't'),
+    ('ũ', 'ų', 'u'),
+    ('ŵ', 'ŵ', 'w'),
+    ('ŷ', 'ÿ', 'y'),
+    ('ź', 'ž', 'z'),
+    ('ñ', 'ñ', 'n'),
+    ('ç', 'ç', 'c'),
+    ('ý', 'ý', 'y'),
+];
+
 /// Folds one precomposed Latin letter to its base.
 ///
 /// Covers Latin-1 Supplement and Latin Extended-A, which is the range every
@@ -116,35 +150,6 @@ fn fold_precomposed(character: char) -> char {
     if let Some((_, folded)) = EXPLICIT_FOLD.iter().find(|(from, _)| *from == character) {
         return *folded;
     }
-    const RANGES: &[(char, char, char)] = &[
-        ('à', 'å', 'a'),
-        ('è', 'ë', 'e'),
-        ('ì', 'ï', 'i'),
-        ('ò', 'ö', 'o'),
-        ('ù', 'ü', 'u'),
-        ('ā', 'ą', 'a'),
-        ('ć', 'č', 'c'),
-        ('ď', 'ď', 'd'),
-        ('ē', 'ě', 'e'),
-        ('ĝ', 'ģ', 'g'),
-        ('ĥ', 'ĥ', 'h'),
-        ('ĩ', 'į', 'i'),
-        ('ĵ', 'ĵ', 'j'),
-        ('ķ', 'ķ', 'k'),
-        ('ĺ', 'ľ', 'l'),
-        ('ń', 'ň', 'n'),
-        ('ō', 'ő', 'o'),
-        ('ŕ', 'ř', 'r'),
-        ('ś', 'š', 's'),
-        ('ţ', 'ť', 't'),
-        ('ũ', 'ų', 'u'),
-        ('ŵ', 'ŵ', 'w'),
-        ('ŷ', 'ÿ', 'y'),
-        ('ź', 'ž', 'z'),
-        ('ñ', 'ñ', 'n'),
-        ('ç', 'ç', 'c'),
-        ('ý', 'ý', 'y'),
-    ];
     RANGES
         .iter()
         .find_map(|(low, high, base)| {

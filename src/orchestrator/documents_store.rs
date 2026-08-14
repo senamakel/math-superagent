@@ -21,7 +21,17 @@ impl WorkspaceDocuments {
             client,
             index_lock: Arc::new(tokio::sync::Mutex::new(())),
             library: None,
+            screen: None,
         })
+    }
+
+    /// Screens what `download_document` brings back, on a calibration run.
+    ///
+    /// `None` is every ordinary run and leaves the tool untouched.
+    #[must_use]
+    pub(super) fn with_screen(mut self, screen: Option<super::screen::Screen>) -> Self {
+        self.screen = screen;
+        self
     }
 
     /// Files every later download in durable memory as well as on disk.
@@ -42,10 +52,19 @@ impl WorkspaceDocuments {
         DocumentToolKind::ALL
             .into_iter()
             .map(|kind| {
-                Arc::new(DocumentTool {
+                let tool = Arc::new(DocumentTool {
                     kind,
                     documents: self.clone(),
-                }) as Arc<dyn Tool<()>>
+                }) as Arc<dyn Tool<()>>;
+                // Only the download reaches outside the workspace, so only the
+                // download is screened. Wrapping the file tools too would put
+                // an adjudicator in front of the run reading its own notes.
+                match kind {
+                    DocumentToolKind::Download => {
+                        super::screen::wrap_one(self.screen.as_ref(), tool)
+                    }
+                    _ => tool,
+                }
             })
             // Every agent that can create a file can describe it, so the
             // index tools travel with the document tools rather than being

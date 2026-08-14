@@ -7,20 +7,36 @@
 /// an answer up, and a catalogued sequence is the lookup most likely to hand a
 /// run its closed form outright.
 ///
+/// On a calibration run, `screen` wraps every one of them. That happens here,
+/// at construction, rather than at registration, because these same `Arc`s are
+/// handed to `caps::tools::WorkspaceTools` for the workflow path, which has no
+/// harness and no middleware stack in between. Wrapping the value means both
+/// paths carry the same screened object and there is no second place to
+/// remember. `None` leaves them untouched, which is every ordinary run.
+///
 /// # Errors
 ///
 /// Returns an error when the search key is missing while research is enabled.
-fn search_tools(research_enabled: bool, documents: &WorkspaceDocuments) -> Result<SearchTools> {
+fn search_tools(
+    research_enabled: bool,
+    documents: &WorkspaceDocuments,
+    screen: Option<&screen::Screen>,
+) -> Result<SearchTools> {
     if !research_enabled {
         return Ok(SearchTools::default());
     }
     Ok(SearchTools {
-        exa: Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>),
-        oeis: oeis::OeisTool::all(documents),
-        discovery: openalex::CitationGraphTool::all(documents)
-            .into_iter()
-            .chain(exa::tools(research_enabled, documents)?)
-            .collect(),
+        exa: Some(screen::wrap_one(
+            screen,
+            Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>,
+        )),
+        oeis: screen::wrap_all(screen, oeis::OeisTool::all(documents)),
+        discovery: screen::wrap_all(
+            screen,
+            openalex::CitationGraphTool::all(documents)
+                .into_iter()
+                .chain(exa::tools(research_enabled, documents)?),
+        ),
     })
 }
 

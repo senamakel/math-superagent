@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 use super::*;
 
 /// The salt the pinned fixtures below were generated under.

@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 use std::sync::Arc;
 
 use async_trait::async_trait;
@@ -15,10 +17,10 @@ struct Echo {
 
 #[async_trait]
 impl Tool<()> for Echo {
-    fn name(&self) -> &str {
+    fn name(&self) -> &'static str {
         "exa_search"
     }
-    fn description(&self) -> &str {
+    fn description(&self) -> &'static str {
         "test double"
     }
     fn schema(&self) -> ToolSchema {
@@ -184,10 +186,10 @@ async fn a_tool_error_is_forwarded_rather_than_screened() {
     struct Failing;
     #[async_trait]
     impl Tool<()> for Failing {
-        fn name(&self) -> &str {
+        fn name(&self) -> &'static str {
             "exa_search"
         }
-        fn description(&self) -> &str {
+        fn description(&self) -> &'static str {
             "test double"
         }
         fn schema(&self) -> ToolSchema {

@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 use super::*;
 
 fn workspace(name: &str) -> std::path::PathBuf {

@@ -164,6 +164,14 @@ impl Screen {
     }
 }
 
+/// Wraps one tool when a screen is active, and returns it untouched otherwise.
+pub(super) fn wrap_one(screen: Option<&Screen>, tool: Arc<dyn Tool<()>>) -> Arc<dyn Tool<()>> {
+    match screen {
+        Some(screen) => screen.wrap(tool),
+        None => tool,
+    }
+}
+
 /// Wraps `tools` when a screen is active, and returns them untouched otherwise.
 ///
 /// The helper exists so a call site reads as one expression rather than as a
