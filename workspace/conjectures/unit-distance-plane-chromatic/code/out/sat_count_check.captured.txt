@@ -1,0 +1,7 @@
+graph: n=7, edges=11, edge list=[(0, 1), (0, 2), (0, 4), (0, 5), (1, 2), (1, 3), (2, 3), (3, 6), (4, 5), (4, 6), (5, 6)]
+k=1  brute_count=0  sat_count=0  agree=True
+k=2  brute_count=0  sat_count=0  agree=True
+k=3  brute_count=0  sat_count=0  agree=True
+k=4  brute_count=384  sat_count=384  agree=True
+k=5  brute_count=5040  sat_count=5040  agree=True
+count cross-check: all k agree exactly; no floats used.

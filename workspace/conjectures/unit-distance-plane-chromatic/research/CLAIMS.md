@@ -6,4 +6,20 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `debruijn-erdos-1951` | For any graph G, chi(G) = sup { chi(H) : H finite subgraph of G }. | yes | asserted | `research/sources/debruijn-erdos-1951-chromatic-reduction.md` |
+| `einstein-lattice-unit-distance` | The Eisenstein integers Z[omega], omega = e^{2 pi i /3}, form the triangular lattice; its unit vectors are the six powers of a primitive 6th root of unity, all of modulus 1, so adjacent lattice points differ by a unit… | yes | asserted | `research/sources/eisenstein-integers-triangular-lattice.md` |
+| `minkowski-sum-dense-graphs` | Minkowski sums of small unit-distance graphs produce larger unit-distance graphs with more unit distances per vertex than their size suggests; many densest-known small UDGs are such sums. | yes | asserted | `research/sources/minkowski-sums-rotations-construction.md` |
+| `minkowski-sum-unit-distance-condition` | For finite point sets A, B in the plane, a pair of points a1+b1 and a2+b2 of A+B is at Euclidean distance 1 iff \|(a1-a2) + (b1-b2)\| = 1. | yes | asserted | `research/sources/minkowski-sums-rotations-construction.md` |
+| `unit-distance-upper-bound` | u_2(n), the maximum number of unit distances among n plane points, is O(n^{4/3}). | yes | asserted | `research/sources/spencer-szemeredi-trotter-unit-distance-bound.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `debruijn-erdos-1951` (research/sources/debruijn-erdos-1951-chromatic-reduction.md) — asserted by the source, not proved there and not checked here
+- `einstein-lattice-unit-distance` (research/sources/eisenstein-integers-triangular-lattice.md) — asserted by the source, not proved there and not checked here
+- `minkowski-sum-dense-graphs` (research/sources/minkowski-sums-rotations-construction.md) — asserted by the source, not proved there and not checked here
+- `minkowski-sum-unit-distance-condition` (research/sources/minkowski-sums-rotations-construction.md) — asserted by the source, not proved there and not checked here
+- `unit-distance-upper-bound` (research/sources/spencer-szemeredi-trotter-unit-distance-bound.md) — asserted by the source, not proved there and not checked here
