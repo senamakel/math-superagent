@@ -602,48 +602,63 @@ async fn concurrent_note_writes_all_reach_the_derived_ledger() -> Result<()> {
         .cloned()
         .expect("write_document is registered");
 
-    let notes = 40;
-    let mut tasks = tokio::task::JoinSet::new();
-    for n in 0..notes {
-        let write = std::sync::Arc::clone(&write);
-        tasks.spawn(async move {
-            write
-                .call(
-                    &(),
-                    crate::agent::ToolCall {
-                        id: format!("call-{n}"),
-                        name: "write_document".into(),
-                        invalid: None,
-                        arguments: serde_json::json!({
-                            "path": format!("research/L1.0/finding{n}.md"),
-                            // Padded deliberately. The lost update is the
-                            // window between a re-derivation reading the notes
-                            // off disk and writing the ledger it rendered from
-                            // them, and that window is proportional to how much
-                            // there is to read.
-                            "content": format!(
-                                "# Finding {n}\n\n```claim\nid: finding-{n}\nstatement: The {n}th \
-                                 bound is attained.\nholds-here: yes\nstatus: proved\n```\n\n{}",
-                                "Supporting prose, at the length a real note runs to. ".repeat(400)
-                            ),
-                        }),
-                    },
-                )
-                .await
-        });
-    }
-    while let Some(joined) = tasks.join_next().await {
-        joined.expect("a note write must not panic")?;
-    }
+    // Written in rounds rather than as one burst. What is lost is one
+    // re-derivation's rendering, overwritten by another that read the notes
+    // before it existed, and whether that lands on the *last* write of a burst
+    // is chance. Several rounds, each checked, turn a race that shows itself
+    // occasionally into one that shows itself.
+    // Fifty notes in total, under the sixty rows the rendered ledger carries,
+    // so a missing row is a lost write rather than the cap doing its job.
+    let (rounds, per_round) = (5, 10);
+    let mut expected: Vec<String> = Vec::new();
+    for round in 0..rounds {
+        let mut tasks = tokio::task::JoinSet::new();
+        for n in 0..per_round {
+            // Zero-padded, so no identifier is a prefix of another and a
+            // `contains` cannot pass on the strength of a longer id.
+            let id = format!("finding-{round:02}-{n:03}");
+            expected.push(id.clone());
+            let write = std::sync::Arc::clone(&write);
+            tasks.spawn(async move {
+                write
+                    .call(
+                        &(),
+                        crate::agent::ToolCall {
+                            id: format!("call-{id}"),
+                            name: "write_document".into(),
+                            invalid: None,
+                            arguments: serde_json::json!({
+                                "path": format!("research/L1.0/{id}.md"),
+                                // Padded deliberately: the window between a
+                                // re-derivation reading the notes off disk and
+                                // writing what it rendered from them is
+                                // proportional to how much there is to read.
+                                "content": format!(
+                                    "# {id}\n\n```claim\nid: {id}\nstatement: This bound is \
+                                     attained.\nholds-here: yes\nstatus: proved\n```\n\n{}",
+                                    "Supporting prose, at the length a real note runs to. "
+                                        .repeat(400)
+                                ),
+                            }),
+                        },
+                    )
+                    .await
+            });
+        }
+        while let Some(joined) = tasks.join_next().await {
+            joined.expect("a note write must not panic")?;
+        }
 
-    let ledger = documents
-        .read_runtime(crate::orchestrator::claims::CLAIMS_PATH)
-        .await?;
-    for n in 0..notes {
-        assert!(
-            ledger.contains(&format!("finding-{n}")),
-            "the ledger lost claim finding-{n}:\n{ledger}"
-        );
+        let ledger = documents
+            .read_runtime(crate::orchestrator::claims::CLAIMS_PATH)
+            .await?;
+        for id in &expected {
+            assert!(
+                ledger.contains(id),
+                "round {round} left the ledger without `{id}`; it renders {} rows:\n{ledger}",
+                ledger.lines().filter(|line| line.contains("finding-")).count()
+            );
+        }
     }
     let _ = std::fs::remove_dir_all(root);
     Ok(())

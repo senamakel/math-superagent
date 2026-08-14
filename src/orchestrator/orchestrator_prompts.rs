@@ -193,6 +193,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
             // see this schedules an attempt at something the run already holds,
             // which is the most expensive mistake available to it.
             "research/ENTAILMENT.md",
+            // What the other schools have said. A planner deciding what to
+            // spend the next run on is the reader a dead end found once and
+            // paid for once was written for.
+            board::PATH,
             "CONTEXT.md",
         ],
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
@@ -213,9 +217,18 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // would credit an attempt for approaches it can see on disk but that
         // the report never mentions. The evidence has to be in the report, or
         // the score is not about the attempt.
+        // Not sent the board either, and for the reason that decides who reads
+        // it at all: a post is *asserted* rather than established — a hunch, a
+        // dead end, a half-formed lesson, offered precisely because it is
+        // unfinished — so it goes to the roles choosing what to do next and is
+        // withheld from every role that weighs evidence or files sources. A
+        // judge scoring an attempt beside a sibling's unevidenced sentence is
+        // one prompt away from scoring the sentence. It is the same boundary
+        // that keeps `research/CLAIMS.md` away from the director, which acts on
+        // an assertion and must never file one.
         "judge" => &["GOAL.md", "INDEX.md"],
-        "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md"],
-        "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", "CONTEXT.md"],
+        "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md", board::PATH],
+        "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", board::PATH, "CONTEXT.md"],
         // The scholar writes the claim blocks, so it is the role that draws the
         // `follows-from:` edges — and the one that should see what those edges
         // already establish before recording a statement the library entails.
@@ -245,6 +258,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/THREADS.md",
             "research/APPROACHES.md",
             "research/CLAIMS.md",
+            // The role asked for something genuinely different is the one that
+            // most needs to know which different things a sibling has already
+            // walked into.
+            board::PATH,
             "CONTEXT.md",
         ],
         // Also handed a dossier built from disk at delegation time, for the
@@ -268,6 +285,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/BLUEPRINT.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
+            board::PATH,
             "CONTEXT.md",
         ],
         // The weakener is sent its own ladder, the goal it is lowering, and
@@ -286,6 +304,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/WEAKENED.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
+            board::PATH,
             "CONTEXT.md",
         ],
         // The searcher is routed almost nothing, and that is the shape of the
