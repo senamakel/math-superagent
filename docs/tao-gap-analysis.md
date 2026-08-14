@@ -45,12 +45,78 @@ change is described at the end.
 
 ## The nine that were closed, and why those nine
 
-Three of them are places the runtime already had the machinery and was one
+Most of them are places the runtime already had the machinery and was one
 control short of using it — a different and much cheaper kind of gap than
-"build a cross-problem library". The other two, scored program search and
-refutation, are new capabilities; both are here because their loops are
-*programs* rather than prompts, which is this repository's own thesis about
-where control flow belongs.
+"build a cross-problem library". Two, scored program search and refutation, are
+new capabilities; both are here because their loops are *programs* rather than
+prompts, which is this repository's own thesis about where control flow belongs.
+
+Four of the nine are pure *derivation*: they add no role, no tool, and no file
+an agent writes. The statement graph, the entailment closure, the Dalmatian
+filter and the assumed-axiom check are all computed from what was already on
+disk, and each existed only as prose asking a role to check for it. That ratio
+is the finding worth keeping from the whole exercise — the cheapest large gains
+here were not missing capabilities but relations nothing had ever followed.
+
+### The graph the ledgers already implied
+
+`research/BACKWARD.md` held every edge and drew none of them. A skeleton names
+its gaps and the claims it rests on; a gap is discharged by a claim or by
+another skeleton proving it outright. `blueprint.rs` follows those edges and
+answers three questions no single file could.
+
+Which lemma can somebody start on *now* — every dependency settled, no need to
+have read the rest of the argument. That is what Massot's blueprint bought the
+PFR formalisation: ~25 contributors in three weeks, the author writing about 5%
+of the Lean. The detached sub-agents here were already concurrent and there was
+no way to say which lemma was safe to hand one.
+
+Whether the argument is circular. Skeleton `A` needing a lemma `B` proves from
+`A` reads as two sound reductions in two files and proves nothing as a cycle. A
+flat ledger cannot detect this in principle: the fault is in no single row.
+
+And blocked against ready, which the open-gap list flattens — every unproved
+lemma looks equally attackable there and most are not.
+
+### The library knew more than it said
+
+The claim ledger stored statements and never reasoned over them. One new field,
+`follows-from:`, closed transitively, and three things fall out. A claim whose
+support is established *is* established, whatever its own block says — a run
+that proves one again has spent an attempt on something it held. EQT measured
+what this is worth: 597,582 facts closed into answers for all 22,028,942
+implications, about 37×. A statement the library already entails is not a
+result, which is Fajtlowicz's Dalmatian heuristic exactly — more than half of
+Graffiti was the triviality filter rather than the generator. And a
+contradiction can be real while no block states it: `a` gives `c`, `c`
+contradicts `b`, the run holds both.
+
+Both readings are refused in the strict direction, because the permissive one
+would be worse than no closure at all: `asserted` never propagates, and a claim
+that supports itself settles nothing.
+
+### One `axiom` line passed every check there was
+
+`lean_check` already caught a file that failed to compile, one that compiled
+with `sorry`, one that printed no axioms, and one resting on `sorryAx`. It
+accepted this:
+
+```text
+axiom key_estimate : ∀ n, f n ≤ 2 * n
+theorem main : … := by … key_estimate …
+```
+
+It compiles, warns nothing, prints its axioms honestly, and proves the theorem
+*given* something nobody established. The verdict now fails on any axiom outside
+Lean's own three and names it, so the role knows what to go and prove.
+`Lean.ofReduceBool` is refused with them: `native_decide` trusts the compiler
+rather than the kernel, and the whole argument for ranking a Lean result above
+everything else here is that the kernel checked it.
+
+This is the hole `lean4checker` is usually reached for, and it needed no second
+binary. Kernel replay guards against an environment that lied about what it
+checked; what actually happens is simpler and far likelier, because it is one
+line a model writes while doing exactly what it was asked.
 
 ### Verification was held to a weaker standard than path traversal
 
@@ -249,6 +315,39 @@ concurrent runs turned `recall_memory` into a ten-minute hang ending in `409
 Conflict`. `COGNEE_NETWORK` already opts back into sharing. This is an
 operational decision about a store's availability, not a missing capability, and
 it is the user's to make.
+
+## What is still open, and why each was left
+
+Four rows in the table are still `Absent` or `Partly`, and none of them is
+cheap in the way the nine closed ones were.
+
+**Cheap tools first, the expensive reasoner last.** An attempt *is* a model
+call, so there is no ladder to climb and no cost-per-subgoal measurement to
+climb it by. Building one means instrumenting every delegation with a price and
+a success rate, then routing on the pair. That is a real subsystem, not a
+control, and it is worth doing after the statement graph has produced enough
+ready nodes to make the scheduling question concrete.
+
+**Fund the branch that is not currently winning.** `diversify` fires only after
+two consecutive unproductive attempts, which is the opposite of Polymath8's
+lesson — the winning branch was funded *while* another was ahead. Doing this
+properly means running two lines of attack concurrently and splitting budget
+between them, which changes what a run *is* rather than adding an arm to it.
+
+**Rewrite someone else's fresh proof in a cleaner formalism.** Two of the
+fastest results in `02`'s sample came from exactly this. It is a role and a
+prompt, and it is cheap — but it only pays once the librarian is reliably
+acquiring proofs worth rewriting, and on the runs measured so far it is not.
+
+**Techniques known not to apply, scheduled on.** `research/APPROACHES.md` closes
+a route with a reason and nothing reads that reason when choosing the next one.
+Now that the entailment closure exists, the natural form of this is an edge in
+the same relation rather than a new ledger, which is a reason to wait rather
+than to build it twice.
+
+**A monotone statistic to steer on** is listed below rather than here: the
+score already exists and is simply not read, which is a wiring question and
+described with the other two findings.
 
 ## Two findings unrelated to Tao, raised rather than folded in
 

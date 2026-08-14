@@ -332,18 +332,18 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `research/BLUEPRINT.md`, `research/ENTAILMENT.md`, `CONTEXT.md` — the graph says which open gap is *ready*, which the flat list cannot, and the entailment report says what the run already holds |
 | tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files, minus the threads, plus `code/AGENTS.md` and `code/INDEX.md` |
 | judge | `GOAL.md`, `INDEX.md` |
 | reflection | the judge's files plus `TASKS.md` |
 | pattern_finder | `GOAL.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
 | librarian, research | `GOAL.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/FRONTIER.md`, `CONTEXT.md` |
 | inventor | `GOAL.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/CLAIMS.md`, `CONTEXT.md`, plus a dossier built at delegation time |
-| reducer | `GOAL.md`, `research/BACKWARD.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `research/APPROACHES.md` |
+| reducer | `GOAL.md`, `research/BACKWARD.md`, `research/BLUEPRINT.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `research/APPROACHES.md`. It is the only role that can fix a decomposition that proves its own hypothesis, and until the graph existed the only one that could not see one |
 | weakener | `GOAL.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` — and deliberately **not** `research/APPROACHES.md` or `research/BACKWARD.md` |
 | searcher | `GOAL.md`, `research/CLAIMS.md`, `CONTEXT.md` — everything about the search itself arrives through `search_brief`, because it changes with every candidate |
 | refuter | `GOAL.md`, `research/BACKWARD.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `CONTEXT.md` — the two ledgers holding statements somebody committed to proving, which are the ones worth attacking |
-| scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/ENTAILMENT.md`, `research/THREADS.md`, `CONTEXT.md` — it draws the `follows-from:` edges, so it sees what they already establish |
 | context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
 | director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |
 | organizer | none — it falls through to the empty default |

@@ -183,6 +183,16 @@ fn role_context(role: &str) -> &'static [&'static str] {
             // with a first move somebody could make today. A planner that
             // cannot see them plans around them.
             "research/BACKWARD.md",
+            // And the graph over them, which answers the question the flat list
+            // cannot: which of those tasks can be handed to a sub-agent *now*,
+            // because everything it rests on is settled. A planner routing work
+            // to concurrent children needs exactly that distinction, and
+            // `BACKWARD.md` makes every open gap look equally attackable.
+            "research/BLUEPRINT.md",
+            // What the library gives without new work. A planner that cannot
+            // see this schedules an attempt at something the run already holds,
+            // which is the most expensive mistake available to it.
+            "research/ENTAILMENT.md",
             "CONTEXT.md",
         ],
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
@@ -206,10 +216,14 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "judge" => &["GOAL.md", "INDEX.md"],
         "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md"],
         "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", "CONTEXT.md"],
+        // The scholar writes the claim blocks, so it is the role that draws the
+        // `follows-from:` edges — and the one that should see what those edges
+        // already establish before recording a statement the library entails.
         "scholar" => &[
             "GOAL.md",
             "TASKS.md",
             "research/CLAIMS.md",
+            "research/ENTAILMENT.md",
             "research/THREADS.md",
             "CONTEXT.md",
         ],
@@ -241,9 +255,17 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // *method*, and a role holding it drifts into proposing methods — which
         // is the inventor's job and the one confusion this role must not
         // create. It is asked what would suffice, not how to get there.
+        //
+        // It is sent the graph over its own skeletons, and that is the one
+        // check on this role nothing else performs: a decomposition whose gap
+        // is proved by a skeleton that assumes the goal reads as sound in both
+        // files and is circular across them. The reducer is the only role that
+        // can fix it, and until `BLUEPRINT.md` existed it was the only role
+        // that could not see it.
         "reducer" => &[
             "GOAL.md",
             "research/BACKWARD.md",
+            "research/BLUEPRINT.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
             "CONTEXT.md",
