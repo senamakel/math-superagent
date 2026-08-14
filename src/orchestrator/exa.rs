@@ -31,6 +31,23 @@
 //! has ever cited. That is what turns three tools into a library rather than
 //! three transcripts.
 //!
+//! # What a live run showed about trusting any of it
+//!
+//! A smoke test pointed all three at `https://arxiv.org/abs/math/0211159` —
+//! Perelman's entropy-formula paper. Exa's index returned, for that URL, a 2026
+//! crank preprint on "topological hydrodynamics" attributed to *Grisha
+//! Perelman*, and `find_similar_sources` duly reported its neighbourhood as
+//! more of the same. Nothing in this module was wrong: the summaries, the
+//! provenance line, and the extracted links all described exactly what the
+//! index held.
+//!
+//! That is the case these tools have to be safe in, and it is why every one of
+//! them says in its own result that what it returns is a lead and not a claim,
+//! and why the leads go to [`super::frontier`] to be ranked rather than into a
+//! note. A run that treats a summary as evidence will file a crank preprint
+//! under a Fields medallist's name, which is the failure the librarian's brief
+//! already records in a different form. Read the source before believing it.
+//!
 //! # Why these are separate tools rather than flags on `exa_search`
 //!
 //! Because they cost differently and a run should be seen to have chosen.

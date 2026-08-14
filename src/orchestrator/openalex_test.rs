@@ -155,7 +155,7 @@ fn a_work_found_twice_is_one_lead() {
 /// and names the case a live run actually hit.
 ///
 /// The failure this replaced was a raw 404 with the whole query string in it.
-/// `math/0211159` is the real example: OpenAlex indexes pre-2007 arXiv
+/// `math/0211159` is the real example: `OpenAlex` indexes pre-2007 arXiv
 /// preprints without a DOI, so the identifier arXiv would mint resolves to
 /// nothing at all.
 #[test]
