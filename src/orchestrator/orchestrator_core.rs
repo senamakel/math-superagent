@@ -33,6 +33,7 @@ mod reflection_tool;
 mod requests;
 mod runner;
 mod runs;
+mod search;
 mod shared_context;
 mod solutions;
 mod teams;
@@ -90,7 +91,7 @@ pub use tinyagents::harness::host::AgentDefinition;
 pub use diagram::{render_flows, render_solution_loop};
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 14] = [
+const SPECIALISTS: [&str; 15] = [
     "research",
     "tool_builder",
     "coder",
@@ -103,6 +104,7 @@ const SPECIALISTS: [&str; 14] = [
     "inventor",
     "reducer",
     "weakener",
+    "searcher",
     "librarian",
     "scholar",
 ];
@@ -179,7 +181,7 @@ const REASONING_ROLES: [&str; 6] = [
 ];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 16] = [
+const DELEGATES: [&str; 17] = [
     "research",
     "tool_builder",
     "coder",
@@ -194,6 +196,7 @@ const DELEGATES: [&str; 16] = [
     "inventor",
     "reducer",
     "weakener",
+    "searcher",
     "librarian",
     "scholar",
 ];
@@ -239,6 +242,9 @@ const REDUCER_PROMPT: &str = include_str!("../prompts/reducer.md");
 /// The role that lowers the target rather than looking for a way to the one it
 /// was given.
 const WEAKENER_PROMPT: &str = include_str!("../prompts/weakener.md");
+
+/// The role that searches over programs rather than reasoning toward one.
+const SEARCHER_PROMPT: &str = include_str!("../prompts/searcher.md");
 
 const LIBRARIAN_PROMPT: &str = include_str!("../prompts/librarian.md");
 

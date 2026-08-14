@@ -315,22 +315,27 @@ fn support_agents(
     .collect()
 }
 
-/// Returns the two roles that change what the run attacks without attacking it.
+/// Returns the three roles whose authority is defined by what they may not do.
 ///
-/// The reducer decomposes the goal and the weakener lowers it, and they are
-/// declared together because they share a tool boundary exactly — the document
-/// tools and the memory tools, and nothing else. That is the same grant
-/// reflection has, and not by coincidence: all three read the whole workspace,
-/// write prose about it, and must not start solving.
+/// The reducer decomposes the goal, the weakener lowers it, and the searcher
+/// hunts a construction for it. What groups them is not their mandate, which is
+/// different in each case, but that each one's tool list is a *denial* — and
+/// each denial closes a specific way the role could otherwise mark its own
+/// homework.
 ///
-/// No `exa_search` or `oeis_lookup`, because a role that can search turns "what
-/// would suffice" or "what would be easier" into another literature survey,
-/// which is the librarian's errand and is already commissioned at every
+/// The reducer and the weakener get the document tools and the memory tools and
+/// nothing else, which is the same grant reflection has and not by coincidence:
+/// all three read the whole workspace, write prose about it, and must not start
+/// solving. No `exa_search` or `oeis_lookup`, because a role that can search
+/// turns "what would suffice" or "what would be easier" into another literature
+/// survey, which is the librarian's errand and is already commissioned at every
 /// diversify. Nothing that computes, because a gap is discharged by a proof or
 /// a claim and a rung by the forward loop attacking it, never by a program
 /// either role wrote. No delegation bench, which would be a second
 /// investigation beside the first. No scratch, because provisional arithmetic
 /// nobody has settled is not a task the forward loop can close.
+///
+/// The searcher's denial is narrower and sharper, and is documented beside it.
 fn planning_agents(
     document_tools: [&'static str; 11],
     memory_tools: [&'static str; 3],
@@ -357,6 +362,30 @@ fn planning_agents(
         )
         .with_model("openrouter")
         .with_tools(memory_tools.into_iter().chain(document_tools)),
+        // The searcher is the one role here whose tool list is defined by what
+        // it is *denied*. It holds no `write_tool_file` and no
+        // `execute_command`, so the only thing it can put on disk is a
+        // candidate, through `submit_candidate`, which scores it in the same
+        // call. That is not tidiness: the scorer is the thing a scored search
+        // learns to exploit — AlphaEvolve satisfied a minimum-distance
+        // constraint by stacking points on top of each other — and a searcher
+        // that could edit its own verifier would be grading its own work. The
+        // document tools stay so it can read the problem and report; the memory
+        // tools stay because a construction that scored well is worth carrying
+        // to the next problem.
+        AgentDefinition::new(
+            "searcher",
+            "Program Search Agent",
+            "Searches over programs that construct candidate objects, scored by a verifier it \
+             cannot edit, and reports the construction rather than only the number.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            ["search_brief", "submit_candidate"]
+                .into_iter()
+                .chain(memory_tools)
+                .chain(document_tools),
+        ),
     ]
 }
 
