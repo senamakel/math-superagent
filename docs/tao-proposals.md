@@ -2,12 +2,12 @@
 
 Read [`docs/tao-gap-analysis.md`](tao-gap-analysis.md) first; this file is what
 follows from it. Every entry names the Tao evidence, the gap, what to build,
-where it lives, and roughly what it costs. The four at the top are **done on
+where it lives, and roughly what it costs. The five at the top are **done on
 this branch**; the rest are not, and the reasoning is kept here so that a later
 decision starts from it rather than from nothing.
 
 Ranking is by *value per unit of change*, not by importance. The single most
-valuable change in this file is #5, and it is fifth because it is an
+valuable change in this file is #6, and it is sixth because it is an
 operational decision rather than a piece of code.
 
 ---
@@ -91,11 +91,37 @@ learning is hard!", it trains a transformer per problem, and requirement R36
 from the same research says off-the-shelf over bespoke ML. FunSearch trains
 nothing, which is why it is here and PatternBoost is not.
 
+### 5. Vampire and the `refuter` arm
+
+**Tao / EQT:** "spend the first ten minutes looking for a counterexample"
+(`01`§10). The Equational Theories Project put a number on it: 524 small finite
+structures refuted 13.6 million of 22 million implications, 13.3 million at size
+3 alone, for 165 CPU-hours, before any clever proof search ran.
+
+**Gap:** four proving roles, every one *delegated to*, none scheduled *against*
+the statement being pursued.
+
+**Built:** Vampire 5.1.0 in the image, pinned and smoke-tested in both modes —
+its `--saturation_algorithm fmb` searches for a finite model, which is what
+`eprover` cannot do and what answers a *false* conjecture instead of timing out
+on it. `src/orchestrator/refute.rs` parses the SZS status into four findings and
+files a verdict; `refuter` runs as a sixth evaluation arm against the open gaps
+and the current weakened rung. A claim citing a refutation is checked against
+the verdict, as a formalised claim is checked against the kernel. The role
+writes files but has no shell, so it cannot hand-roll the search.
+
+**Cost:** ~700 lines plus 22 tests, and ~55 MB in the image.
+
+**The verdict that justified it:** `ContradictoryAxioms`. Everything follows
+from contradictory hypotheses, so a broken axiomatisation proves the goal — the
+way a bad encoding looks like a triumph. It was a prompt instruction to check
+for; it is now a status the runtime reads.
+
 ---
 
 ## Not built
 
-### 5. A shared technique library across problems
+### 6. A shared technique library across problems
 
 **Tao:** `01`§27 (archive everything); `04` R13. Mathlib is the mechanised form
 of the argument, and the two fastest results in `02` — the sunflower rewrite and
@@ -114,7 +140,7 @@ without the problem's own notation.
 
 **Cost:** an afternoon to measure; unknown to fix if it does not hold.
 
-### 6. A cheap-first ladder with cost instrumentation
+### 7. A cheap-first ladder with cost instrumentation
 
 **Tao / EQT:** 22,028,942 implications went to ~1,000 by running finite model
 builders and ATPs first, because they are "far cheaper to run and already
@@ -131,25 +157,6 @@ warns about — reaching for computation before the problem is parameterised.
 
 **Cost:** instrumentation small; the scheduler large, and only justified by what
 the instrumentation says.
-
-### 7. A refutation arm beside the proof arm
-
-**Tao:** "spend the first ten minutes looking for a counterexample" (`01`§10);
-`04` R11. Autograph, 1989, is the standing example of a system that refutes
-rather than producing a plausible proof.
-
-**Gap:** `sat_solver` and `smt_solver` exist and are *delegated to*, never
-*scheduled against* the proof attempt. Nothing runs refutation on its own budget.
-
-**What to build:** an evaluation arm that takes the current rung or gap and
-spends a bounded budget trying to break it, posting to the mailbox the next
-attempt drains. The fan-out already supports this shape exactly; the work is the
-prompt and the budget, not the graph.
-
-**Cost:** moderate. It pairs naturally with #2 and #4 — a weakened rung is the
-right size of statement to attack, and a refutation *is* a scored search whose
-score is "does this candidate break the statement", so the engine already
-exists.
 
 ### 8. Closure of the claim set under implication
 
