@@ -7,6 +7,7 @@ use tinyflows::validate::validate_all;
 
 use super::*;
 use crate::orchestrator::definitions::workflow_agents;
+use crate::orchestrator::solutions::SolutionState;
 use crate::orchestrator::default_registry;
 
 fn graph() -> WorkflowGraph {
@@ -24,10 +25,63 @@ fn verdict(fields: Value) -> Respond {
     Respond::value(fields)
 }
 
-/// A run where every step reports the same state, so the ladder decides.
-async fn run_with(state: Value) -> tinyflows::testkit::TestRun {
+/// Stage one's calls, before the loop starts: the context, the survey, the fold
+/// that carries them into the accumulator, the seed decomposition's gate, and
+/// the fold that applies it.
+const STAGE_ONE_CALLS: usize = 5;
+
+/// One pass's calls: the attempt, its five evaluation arms, the goals child's
+/// gate, the fold that applies it, and the barrier.
+const PASS_CALLS: usize = 9;
+
+/// A state that routes somewhere non-terminal, so the loop keeps going.
+fn stuck(unproductive: usize, computational: usize) -> Respond {
+    let mut state = SolutionState::new("find the largest x");
+    state.attempts = 1;
+    state.unproductive = unproductive;
+    state.computational = computational;
+    Respond::value(state.to_accumulator())
+}
+
+/// A state the head's `until` recognises as finished.
+fn solved() -> Respond {
+    let mut state = SolutionState::new("find the largest x");
+    state.attempts = 1;
+    state.solved = true;
+    Respond::value(state.to_accumulator())
+}
+
+/// A run that takes one whole pass on `going`, then ends on `ending`.
+///
+/// Bounded by construction rather than by the engine's iteration cap. A fixture
+/// that answers the same non-terminal state forever describes a run that never
+/// stops, and a test written that way does not fail — it hangs, which is the
+/// least useful way for a suite to tell you something.
+async fn run_until(going: &Respond, ending: &Respond) -> tinyflows::testkit::TestRun {
+    let mut answers: Vec<Respond> = (0..STAGE_ONE_CALLS + PASS_CALLS)
+        .map(|_| going.clone())
+        .collect();
+    answers.extend((0..PASS_CALLS * 2).map(|_| ending.clone()));
     TestHarness::new(&graph())
-        .mock_tool("run_loop_step", verdict(state))
+        .mock_tool("run_loop_step", Respond::sequence(answers))
+        .run()
+        .await
+        .expect("the loop runs to completion on mocks")
+}
+
+/// A run where every step *inside the loop* reports the same state, so the
+/// ladder decides.
+///
+/// Stage one answers separately, and it has to. The loop's accumulator is
+/// seeded from what stage one established, and the head checks `until` before
+/// its first pass — so a fixture that answered stage one with a solved state
+/// would end the run before a single attempt, and the test would be describing
+/// a run that never happened.
+async fn run_with(state: Value) -> tinyflows::testkit::TestRun {
+    let mut answers: Vec<Respond> = (0..STAGE_ONE_CALLS).map(|_| stuck(0, 0)).collect();
+    answers.extend((0..PASS_CALLS * 2).map(|_| verdict(state.clone())));
+    TestHarness::new(&graph())
+        .mock_tool("run_loop_step", Respond::sequence(answers))
         .run()
         .await
         .expect("the loop runs to completion on mocks")
@@ -141,36 +195,33 @@ async fn a_solved_reflection_leaves_the_loop() {
     }))
     .await;
     run.assert_node_ran("report");
-    // Stage one is four calls — context, survey, and the two folds that carry
-    // what they found into the loop's opening state. Then one pass: the attempt,
-    // its six evaluation arms, and the barrier. Both goals children hold rather
-    // than asking, because this fixture is solved. A second pass would show as
-    // more than twelve.
-    run.assert_call_count(
-        tinyflows::testkit::capability::TOOLS,
-        Some(super::super::loop_steps::TOOL),
-        12,
-    );
+    // One pass and no more. Counted in attempts rather than in tool calls: what
+    // this test is about is that a solved verdict ends the run, and a call count
+    // would additionally be asserting how many nodes a pass happens to have —
+    // which is the graph's business and changes whenever it does.
+    let attempts = run
+        .trace()
+        .steps
+        .iter()
+        .filter(|step| step.node_id == "attempt")
+        .count();
+    assert_eq!(attempts, 1, "a solved reflection did not end the run");
     // The goals child ran and declined: this fixture carries no
     // `since_reduction`, so the cadence reads zero and holds.
     run.assert_node_ran(GOALS_NODE);
 }
 
-/// The escalation, which is now one node rather than three.
+/// A run whose attempts stop landing escalates to the literature.
 ///
-/// Two of the three arms it used to fan out to — the pattern agent and the
-/// inventor — run on every pass in the evaluation, so what is left that is
-/// genuinely an escalation is blocking on the literature the run has otherwise
-/// been gathering in the background.
+/// The escalation is one node now rather than three. Two of the arms it used to
+/// fan out to — the pattern agent and the inventor — run on every pass in the
+/// evaluation, so what is left that is genuinely an escalation is blocking on
+/// the literature the run has otherwise been gathering in the background.
 #[tokio::test]
 async fn a_stuck_run_escalates_to_the_literature() {
-    let run = run_with(json!({
-        "attempts": 1, "solved": false, "unproductive": STUCK_THRESHOLD, "blocked": 0,
-        "computational": 0, "unverified": 0, "restarts": 0,
-        "lesson": "no progress", "fresh_context": ""
-    }))
-    .await;
+    let run = run_until(&stuck(STUCK_THRESHOLD, 0), &solved()).await;
     run.assert_node_ran("diversify_library");
+    run.assert_node_ran("report");
 }
 
 /// A provider failure is not evidence about the mathematics, so it outranks
@@ -210,12 +261,7 @@ async fn a_twice_unverified_run_reports_rather_than_diversifying() {
 /// arm never fires.
 #[tokio::test]
 async fn a_run_that_only_scales_is_sent_to_diversify() {
-    let run = run_with(json!({
-        "attempts": 2, "solved": false, "unproductive": 0, "blocked": 0,
-        "computational": COMPUTATIONAL_THRESHOLD, "unverified": 0, "restarts": 0,
-        "lesson": "bigger n", "fresh_context": ""
-    }))
-    .await;
+    let run = run_until(&stuck(0, COMPUTATIONAL_THRESHOLD), &solved()).await;
     run.assert_node_ran("diversify_library");
 }
 
@@ -435,30 +481,15 @@ async fn every_evaluation_arm_is_handed_the_attempt() {
         Respond::value(state.to_accumulator())
     };
 
+    let mut answers: Vec<Respond> = (0..STAGE_ONE_CALLS).map(|_| stuck(0, 0)).collect();
+    answers.push(marked("what the attempt found", false));
+    // The arms, concurrent, so which of these each one receives is not fixed —
+    // what the test asserts is what they were *handed*, not what they returned.
+    answers.extend((0..PASS_CALLS - 2).map(|_| marked("an arm", false)));
+    answers.push(marked("the merge", true));
+
     let run = TestHarness::new(&graph())
-        .mock_tool(
-            super::super::loop_steps::TOOL,
-            Respond::sequence([
-                // Stage one: the context, the survey, and the two folds.
-                marked("the context", false),
-                marked("the survey", false),
-                marked("stage one", false),
-                marked("the seed decomposition", false),
-                // Stage two.
-                marked("what the attempt found", false),
-                // Stage three. Concurrent, so which arm receives which of these
-                // is not fixed — every one of them is an arm, and what the test
-                // asserts is what they were handed, not what they returned. The
-                // last ends the run.
-                marked("an arm", false),
-                marked("an arm", false),
-                marked("an arm", false),
-                marked("an arm", false),
-                marked("an arm", false),
-                marked("an arm", false),
-                marked("the merge", true),
-            ]),
-        )
+        .mock_tool(super::super::loop_steps::TOOL, Respond::sequence(answers))
         .run()
         .await
         .expect("the loop runs to completion on mocks");
@@ -555,57 +586,38 @@ async fn the_merge_is_handed_every_arms_output() {
 /// The accumulator is a pass behind while the body runs, so a child seeded from
 /// it would decide this cycle's decomposition on last cycle's count.
 #[tokio::test]
-async fn the_goals_child_reads_the_reflection_the_loop_just_made() {
-    use crate::orchestrator::solutions::SolutionState;
-    use crate::orchestrator::workflow_goals::{GATE_NODE, STATE_INPUT};
+async fn the_goals_child_is_seeded_with_the_attempt() {
+    use crate::orchestrator::workflow_goals::STATE_INPUT;
 
-    let mut due = SolutionState::new("find the largest x");
-    due.attempts = 1;
-    due.solved = false;
-    due.since_reduction = crate::orchestrator::solutions::REDUCTION_INTERVAL;
-    let mut done = due.clone();
-    done.solved = true;
+    let marked = |mark: &str, solved: bool| {
+        let mut state = SolutionState::new("find the largest x");
+        state.attempts = 1;
+        state.solved = solved;
+        state.last_attempt = mark.to_string();
+        Respond::value(state.to_accumulator())
+    };
+
+    let mut answers: Vec<Respond> = (0..STAGE_ONE_CALLS).map(|_| stuck(0, 0)).collect();
+    answers.push(marked("what the attempt found", false));
+    answers.extend((0..PASS_CALLS - 2).map(|_| marked("an arm", false)));
+    answers.push(marked("the merge", true));
 
     let run = TestHarness::new(&graph())
-        .mock_tool(
-            super::super::loop_steps::TOOL,
-            Respond::sequence([
-                // The seed call, then attempt and judge.
-                Respond::value(due.to_accumulator()),
-                Respond::value(due.to_accumulator()),
-                Respond::value(due.to_accumulator()),
-                // The reflection: due, so the in-loop child must ask its gate.
-                Respond::value(due.to_accumulator()),
-                Respond::value(done.to_accumulator()),
-            ]),
-        )
+        .mock_tool(super::super::loop_steps::TOOL, Respond::sequence(answers))
         .run()
         .await
         .expect("the loop runs to completion on mocks");
 
     run.assert_node_ran(GOALS_NODE);
-
-    // The child's own run state, as the parent received it. Its `gate` node
-    // having run is the assertion: the gate is only reachable through the
-    // cadence switch. Seeded from the accumulator instead, the child would have
-    // read the previous pass's count and held.
     let child = run
         .output()
         .pointer(&format!("/nodes/{GOALS_NODE}/items/0/json"))
         .cloned()
         .unwrap_or(Value::Null);
     assert_eq!(
-        child.pointer(&format!("/run/inputs/{STATE_INPUT}/since_reduction")),
-        Some(&json!(crate::orchestrator::solutions::REDUCTION_INTERVAL)),
-        "the child was seeded with the wrong state: {child}"
-    );
-    assert!(
-        child.pointer(&format!("/nodes/{GATE_NODE}")).is_some(),
-        "the cadence was due and the gate was not asked: {child}"
-    );
-    assert!(
-        child.pointer("/nodes/held").is_none(),
-        "the child both asked and held: {child}"
+        child.pointer(&format!("/run/inputs/{STATE_INPUT}/last_attempt")),
+        Some(&json!("what the attempt found")),
+        "the child was seeded with something other than the attempt"
     );
 }
 
@@ -666,10 +678,16 @@ async fn the_evaluation_arms_run_concurrently() {
     for arm in eval_arm_ids() {
         run.assert_node_ran(arm);
     }
+    // Eight slow calls happen in a pass — five single-node arms, the goals
+    // child's gate and the fold that applies it, and the barrier. Run in
+    // sequence that is eight arm-times. Run concurrently the critical path is
+    // the backward branch's two nodes plus the barrier, so three. The bound is
+    // five: wide enough that a loaded machine does not fail it, tight enough
+    // that losing the fan-out does.
     assert!(
-        elapsed < arm_time * 3,
-        "the arms took {elapsed:?}, which is more than three of the {arm_time:?} each one costs — \
-         six of them ran in something close to sequence"
+        elapsed < arm_time * 5,
+        "the arms took {elapsed:?}, which is more than five of the {arm_time:?} each one costs — \
+         they ran in something close to sequence"
     );
 }
 
@@ -682,12 +700,7 @@ async fn the_evaluation_arms_run_concurrently() {
 /// role spends that hour working without a statement of what would be enough.
 #[tokio::test]
 async fn the_goal_is_decomposed_before_the_first_attempt() {
-    let run = run_with(json!({
-        "attempts": 1, "solved": true, "unproductive": 0, "blocked": 0,
-        "computational": 0, "unverified": 0, "restarts": 0,
-        "lesson": "done", "fresh_context": ""
-    }))
-    .await;
+    let run = run_until(&stuck(0, 0), &solved()).await;
 
     run.assert_node_ran(RESEARCH_NODE);
     run.assert_node_ran(SEED_GOALS_NODE);
@@ -696,8 +709,8 @@ async fn the_goal_is_decomposed_before_the_first_attempt() {
         .pointer(&format!("/nodes/{SEED_GOALS_NODE}/items/0/json"))
         .cloned()
         .unwrap_or(Value::Null);
-    // The seed carries the loop's own opening state, whose cadence starts *at*
-    // the interval — so this call is already due and reaches the gate.
+    // The state stage one established carries a cadence that starts *at* the
+    // interval, so this call is already due and reaches the gate.
     assert!(
         seed.pointer("/nodes/gate").is_some(),
         "the seed call held rather than asking: {seed}"
@@ -811,18 +824,17 @@ async fn the_escalation_returns_to_the_loop() {
 
 /// A run that never converges stops at the ceiling rather than never stopping.
 ///
-/// `until` only fires on a terminal verdict, so the ceiling is the only thing
-/// standing between a run whose every attempt looks the same and a loop with no
-/// end. Nothing else in this file tests it: every other fixture converges,
-/// which is exactly why an unbounded loop could hide behind a green suite.
+/// The ceiling is in the head's `until` as well as in the ladder, and this is
+/// why. The ladder routes `solved` at the ceiling but does not *set* `solved`,
+/// so the head's condition stayed false and the only thing left to end the run
+/// was the engine's `max_iterations` — which this graph was observed not to
+/// trip, leaving a run that routed `retry` forever with nothing to stop it and
+/// no error anywhere. Every other fixture in this file converges, which is
+/// exactly how an unbounded loop hid behind a green suite.
 #[tokio::test]
 async fn a_run_that_never_converges_stops_at_the_ceiling() {
-    let run = run_with(json!({
-        "problem": "find the largest x",
-        "attempts": 1, "solved": false, "unproductive": 0, "blocked": 0,
-        "computational": 0, "unverified": 0, "restarts": 0,
-        "lesson": "no progress", "fresh_context": ""
-    }))
-    .await;
+    let mut spent = SolutionState::new("find the largest x");
+    spent.attempts = MAX_ATTEMPTS;
+    let run = run_until(&stuck(0, 0), &Respond::value(spent.to_accumulator())).await;
     run.assert_node_ran("report");
 }

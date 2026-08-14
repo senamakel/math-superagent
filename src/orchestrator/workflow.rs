@@ -161,18 +161,29 @@ pub(super) fn reflect_ladder() -> String {
 
 /// When the loop is finished, as jq.
 ///
-/// The three terminal arms of [`reflect_ladder`], and deliberately the same
-/// numbers: a run stops when the reflection judged it solved, when the provider
-/// blocked it, or when it has twice said it has an answer with only one route
-/// behind it. `retry` and `diversify` are absent because both continue.
+/// The terminal arms of [`reflect_ladder`], and deliberately the same numbers: a
+/// run stops when the reflection judged it solved, when the provider blocked it,
+/// when it has twice said it has an answer with only one route behind it, or
+/// when it has spent its attempts. `retry` and `diversify` are absent because
+/// both continue.
 ///
 /// This exists because a `route` port cannot leave the loop directly. Every arm
 /// routes back to the head — the head owns the accumulator — so recognising a
 /// finished run is the head's job, and `until` is where it is written.
+///
+/// The attempt ceiling is here as well as in the ladder, and that is the fix for
+/// a run that would otherwise never stop. The ladder routes `solved` at the
+/// ceiling, but it does not *set* `solved`, so the head's `until` stayed false
+/// and the only thing left to end the run was the engine's `max_iterations` —
+/// which this graph was observed not to trip. A loop whose termination rests on
+/// a counter the graph cannot see is a loop nobody can reason about; the ceiling
+/// belongs in the condition that ends it, beside the other three, where the
+/// ladder already agrees with it.
 #[must_use]
 pub(super) fn terminal_condition() -> String {
     format!(
-        "=.state.solved or .state.blocked >= {BLOCKED_THRESHOLD} \
+        "=.state.solved or .state.attempts >= {MAX_ATTEMPTS} \
+         or .state.blocked >= {BLOCKED_THRESHOLD} \
          or .state.unverified >= {UNVERIFIED_THRESHOLD}"
     )
 }
@@ -411,7 +422,7 @@ pub(super) fn solution_loop(
                 // Seeded from stage one rather than from the literal, so the
                 // first attempt starts from what the run established rather
                 // than from the statement and eleven zeroes.
-                "state": { "init": opening.clone(), "update": state_update() },
+                "state": { "init": seeded, "update": state_update() },
             }),
         ),
         // Stage two. The only step that reads the accumulator, because it is the

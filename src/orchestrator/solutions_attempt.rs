@@ -190,6 +190,7 @@ impl SolutionState {
     }
 
     /// The diversify slots, read-only.
+    #[cfg(test)]
     pub(in crate::orchestrator) fn diversify(&self) -> &DiversifyFindings {
         &self.diversify
     }
@@ -424,20 +425,20 @@ pub(in crate::orchestrator) fn route(state: &SolutionState) -> Route {
     }
 }
 
-/// The judge no longer has a routing arm of its own, and that is a consequence
-/// of the evaluation fan-out rather than a simplification for its own sake.
+// The judge no longer has a routing arm of its own, and that is a consequence
+// of the evaluation fan-out rather than a simplification for its own sake.
+//
+// A restart used to be a *route*: the judge ran first, and a restart verdict
+// skipped the reflection and spent a fresh attempt. The judge and the
+// reflection now run concurrently, so by the time anything routes, the
+// reflection has already happened — there is no longer a reflection to skip.
+// What a restart still does is everything `judge_step` records: the direction
+// is discarded, `restarts` is incremented, the steer is written for the next
+// attempt, and the run is marked unproductive. The bound that matters,
+// `MAX_RESTARTS`, is enforced there and always was.
 ///
-/// A restart used to be a *route*: the judge ran first, and a restart verdict
-/// skipped the reflection and spent a fresh attempt. The judge and the
-/// reflection now run concurrently, so by the time anything routes, the
-/// reflection has already happened — there is no longer a reflection to skip.
-/// What a restart still does is everything `judge_step` records: the direction
-/// is discarded, `restarts` is incremented, the steer is written for the next
-/// attempt, and the run is marked unproductive. The bound that matters,
-/// [`MAX_RESTARTS`], is enforced there and always was.
-///
-/// So there is one ladder, [`route`], and `orchestrator::parity` holds the
-/// engine's jq to it.
+// So there is one ladder, `route`, and `orchestrator::parity` holds the
+// engine's jq to it.
 
 /// Whether an attempt's report is nothing but the model provider refusing.
 ///

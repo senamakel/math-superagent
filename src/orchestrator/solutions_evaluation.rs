@@ -87,8 +87,8 @@ fn fold_field(
 ) -> Option<serde_json::Value> {
     match base {
         serde_json::Value::Number(_) => fold_counter(base, incoming),
-        serde_json::Value::Array(base_items) => fold_list(base_items, incoming),
-        serde_json::Value::Object(_) => fold_findings(base, incoming),
+        serde_json::Value::Array(base_items) => Some(fold_list(base_items, incoming)),
+        serde_json::Value::Object(_) => Some(fold_findings(base, incoming)),
         _ => incoming
             .iter()
             .find(|value| **value != base)
@@ -118,7 +118,7 @@ fn fold_counter(
 fn fold_list(
     base_items: &[serde_json::Value],
     incoming: &[&serde_json::Value],
-) -> Option<serde_json::Value> {
+) -> serde_json::Value {
     let mut items = base_items.to_vec();
     for value in incoming {
         let Some(arm_items) = value.as_array() else {
@@ -128,7 +128,7 @@ fn fold_list(
             items.extend_from_slice(&arm_items[base_items.len()..]);
         }
     }
-    Some(serde_json::Value::Array(items))
+    serde_json::Value::Array(items)
 }
 
 /// Absorbs every arm's filled slots, which is the one fold that was already
@@ -136,12 +136,12 @@ fn fold_list(
 fn fold_findings(
     base: &serde_json::Value,
     incoming: &[&serde_json::Value],
-) -> Option<serde_json::Value> {
+) -> serde_json::Value {
     let mut findings = DiversifyFindings::from_json(base);
     for value in incoming {
         findings.absorb(&DiversifyFindings::from_json(value));
     }
-    Some(findings.to_json())
+    findings.to_json()
 }
 
 /// Establishes what the run already has, once, before the first attempt.

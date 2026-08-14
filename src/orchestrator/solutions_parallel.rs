@@ -28,9 +28,6 @@
 // either order and give the same state, because they never touch the same
 // slot. `diversify_merge` is where the slots become prose again.
 
-/// Where the arms converge.
-pub(super) const DIVERSIFY_MERGE: &str = "diversify_merge";
-
 /// One slot a diversify arm writes.
 ///
 /// Two slots per arm in two cases, because those arms are sequential pairs
