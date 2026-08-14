@@ -1,0 +1,21 @@
+# Which schools attack this problem, and why.
+#
+# The published solution is a construction: a finite unit-distance graph that a
+# machine can check. `chisel` — compute before reasoning about it — is the
+# method that ought to find one, and it is the control, so it runs.
+#
+# `adversarial` runs beside it because this problem has the sharpest available
+# test of whether that school wastes a run. The statement offered to the harness
+# is *determine chi*, with 4 <= chi <= 7 the standing bracket, and the true
+# answer is that the lower bound moves. A school told to try to refute before
+# attempting will spend budget arguing chi = 4 is consistent. Either it prices
+# that quickly and turns the failed refutation into the construction — which is
+# exactly the Erdos move and would be the strongest result on this branch — or
+# it burns an attempt and we learn the pairing is wrong for construction
+# problems. Both readings are worth the credits; neither is available from the
+# control alone.
+#
+# `rising-sea` is deliberately *not* here. Enlarging the setting is what the
+# literature already did to this problem for sixty years without moving the
+# bracket, so it is the pairing least likely to separate the schools.
+schools=chisel,adversarial

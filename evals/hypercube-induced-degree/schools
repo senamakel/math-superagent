@@ -1,0 +1,18 @@
+# Which schools attack this problem, and why.
+#
+# This is the pairing the schools module was built for. The published solution
+# leaves the graph entirely: it puts a signed matrix on the cube and reads the
+# answer off an eigenvalue interlacing argument. That is a change of ground, not
+# an attack on the target, so `rising-sea` is the school whose whole bet is that
+# such a move exists here — and the seed names eigenvalues nowhere, so if the
+# school reaches for spectra it did so from its stance rather than from recall.
+#
+# `chisel` is the control and must run: it will enumerate `Q_n` for small `n`,
+# which is the honest thing to do and which the true solution does not need.
+# The measurement is the divergence between the two, on one workspace, with the
+# board carrying whatever one finds to the other.
+#
+# `adversarial` is left out to keep the comparison two-sided. Three schools
+# share one concurrency semaphore and one budget pool, so a third is paid for
+# out of the other two's attempts.
+schools=chisel,rising-sea

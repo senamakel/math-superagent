@@ -9,7 +9,7 @@
 # destination is known, so the trajectory can be scored against the milestone
 # ladder in `evals/<slug>/RUBRIC.md`.
 #
-# Usage: ./calibrate [--no-research] <slug> [extra instructions...]
+# Usage: ./calibrate [--no-research] [--schools a,b] <slug> [extra instructions...]
 #
 # This is a thin, careful wrapper around `scripts/solve-conjecture`. It does the
 # four things that must happen before that script runs, and then hands over —
@@ -21,9 +21,10 @@ repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
 cd "$repository_root"
 
 usage() {
-    echo "usage: ./calibrate [--no-research] <slug> [extra instructions...]" >&2
+    echo "usage: ./calibrate [--no-research] [--schools a,b] <slug> [instructions...]" >&2
     echo "" >&2
-    echo "  <slug>  a problem under evals/, e.g. unit-distance-plane-chromatic" >&2
+    echo "  <slug>      a problem under evals/, e.g. unit-distance-plane-chromatic" >&2
+    echo "  --schools   override this problem's evals/<slug>/schools file" >&2
     echo "" >&2
     echo "Available:" >&2
     for available in evals/*/; do
@@ -33,10 +34,19 @@ usage() {
 }
 
 research_flag=""
+schools=""
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --no-research) research_flag="--no-research"; shift ;;
         --research) research_flag=""; shift ;;
+        --schools)
+            if [ "$#" -lt 2 ]; then
+                echo "--schools needs a comma-separated list" >&2
+                exit 2
+            fi
+            schools=$2
+            shift 2
+            ;;
         -h|--help) usage; exit 0 ;;
         *) break ;;
     esac
@@ -71,6 +81,29 @@ for required in screen.terms GROUND_TRUTH.md RUBRIC.md seed/problem.md seed/GOAL
         exit 2
     fi
 done
+
+# Which schools attack this problem is a property of the problem, not of the
+# launcher: the pairing is an argument about method — for the hypercube problem
+# the published solution is itself a change of setting, so running `rising-sea`
+# beside the control is the experiment — and an argument belongs beside the
+# statement it is about. `--schools` overrides it for a one-off comparison.
+if [ -z "$schools" ] && [ -f "$problem_dir/schools" ]; then
+    schools=$(sed -n 's/^schools=//p' "$problem_dir/schools" | head -1)
+fi
+if [ -z "$schools" ]; then
+    echo "$problem_dir has no schools file and --schools was not given" >&2
+    echo "a calibration run must name its schools: the control has to be one" >&2
+    echo "of them, or the alternative cannot be read as evidence" >&2
+    exit 2
+fi
+case ",$schools," in
+    *,chisel,*) ;;
+    *)
+        echo "the control school 'chisel' must be among --schools ($schools)" >&2
+        echo "a school is only evidence if today's runtime runs beside it" >&2
+        exit 2
+        ;;
+esac
 
 workspace_subdir=conjectures/$slug
 workspace_path=$repository_root/workspace/$workspace_subdir
@@ -156,6 +189,7 @@ export MATH_AGENT_COMPOSE_EXTRA
 
 echo "calibrate: $slug" >&2
 echo "  workspace  workspace/$workspace_subdir" >&2
+echo "  schools    $schools" >&2
 echo "  screen     evals/.build/$slug/screen.json" >&2
 echo "  network    $COGNEE_NETWORK (internal)" >&2
 echo "  egress     screen-proxy allowlist only" >&2
@@ -168,4 +202,4 @@ echo "" >&2
 # Hand over. The task prompt, the phase structure and the run budget belong to
 # the conjecture launcher; a copy here would drift from it.
 # shellcheck disable=SC2086
-exec scripts/solve-conjecture $research_flag "$slug" "$@"
+exec scripts/solve-conjecture $research_flag --schools "$schools" "$slug" "$@"

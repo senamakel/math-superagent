@@ -1,7 +1,0 @@
-n(k) factor: (k + 1)*(k + 2)*(k**2 + 3*k + 3)/6
-e(k) factor: (9*k**4 + 16*k**3 + 12*k**2 + 77*k - 60)/6
-n(k) at k=0: 1  e(k) at k=0: -10
-e quartic exact on k=2..10: True
-e(11) pred: 25884
-n(11) pred: 4082
-n(12) pred: 5551  e(12) pred: 36144
