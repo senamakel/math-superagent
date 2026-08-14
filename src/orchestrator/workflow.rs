@@ -60,8 +60,21 @@ pub(super) const PASS_NODE: &str = "pass";
 /// The loop head, and the accumulator's address.
 pub(super) const LOOP_NODE: &str = "solve";
 
-/// The node that calls the goals child.
+/// The node that calls the goals child from inside the loop.
 pub(super) const GOALS_NODE: &str = "goals";
+
+/// The node that calls it once more, before the loop starts.
+///
+/// The reducer works backward from the problem statement, so its input is
+/// present before anything has been attempted, and the arm is detached, so
+/// asking here delays the graph by nothing. Waiting for a completed cycle would
+/// mean that on a conjecture run — where an attempt/judge/reflect pass is the
+/// better part of an hour — every role spent that hour working without a
+/// statement of what would be enough.
+///
+/// It is the same child, through the same gate, so the first completed cycle
+/// cannot open a second decomposition on top of this one.
+pub(super) const SEED_GOALS_NODE: &str = "seed_goals";
 
 /// The freshest state on the body's path, once the cycle's steps have run.
 ///
@@ -241,7 +254,7 @@ fn edge(from: &str, from_port: &str, to: &str) -> Edge {
 /// routing — which is what a declarative loop is for — and the steps stay the
 /// Rust written against live runs.
 fn step(id: &str) -> Node {
-    step_with(id, format!("=.nodes.{LOOP_NODE}.state"), Value::Null)
+    step_with(id, &format!("=.nodes.{LOOP_NODE}.state"), &Value::Null)
 }
 
 /// A step reading a named state, with extra arguments merged in.
@@ -250,7 +263,7 @@ fn step(id: &str) -> Node {
 /// outputs rather than the accumulator, because the accumulator predates them;
 /// `goal_apply` reads the reflection's output, because the accumulator is a
 /// pass behind by the time the body runs.
-fn step_with(id: &str, state: String, extra: Value) -> Node {
+fn step_with(id: &str, state: &str, extra: &Value) -> Node {
     let mut args = json!({ "step": id, "state": state });
     if let (Some(args), Some(extra)) = (args.as_object_mut(), extra.as_object()) {
         for (key, value) in extra {
@@ -277,6 +290,22 @@ fn arm_outputs() -> String {
         .map(|(id, _)| format!(".nodes.{id}.item.json"))
         .collect();
     format!("=[{}]", arms.join(", "))
+}
+
+/// A node that runs the goals child over `state`.
+///
+/// Both callers build it here rather than each writing the config out, so the
+/// two cannot disagree about which child they are calling or how it is seeded.
+fn goals_call(id: &str, state: Value) -> Node {
+    node(
+        id,
+        NodeKind::SubWorkflow,
+        json!({
+            "workflow": serde_json::to_value(super::workflow_goals::goals_workflow())
+                .unwrap_or(Value::Null),
+            "inputs": { super::workflow_goals::STATE_INPUT: state },
+        }),
+    )
 }
 
 /// Assembles the solution loop.
@@ -313,37 +342,31 @@ pub(super) fn solution_loop(
         // that runs at the top of a pass, where the accumulator is what the last
         // pass folded. Every step after it reads the step before it.
         step("attempt"),
-        step_with("judge", "=.nodes.attempt.item.json".into(), Value::Null),
+        step_with("judge", "=.nodes.attempt.item.json", &Value::Null),
         node(
             "judged",
             NodeKind::Switch,
             json!({ "expression": judge_ladder() }),
         ),
-        step_with("reflect", "=.nodes.judge.item.json".into(), Value::Null),
+        step_with("reflect", "=.nodes.judge.item.json", &Value::Null),
         // The other question nothing in the loop asks by itself: not what else
         // could get the run there, but what would be enough. A child workflow
         // rather than three more nodes here, because the cadence and the gate
         // are its own policy — see `super::workflow_goals`, which also says why
         // calling it costs the loop nothing.
-        node(
-            GOALS_NODE,
-            NodeKind::SubWorkflow,
-            json!({
-                "workflow": serde_json::to_value(super::workflow_goals::goals_workflow())
-                    .unwrap_or(Value::Null),
-                "inputs": {
-                    super::workflow_goals::STATE_INPUT: "=.nodes.reflect.item.json",
-                },
-            }),
-        ),
+        goals_call(GOALS_NODE, json!("=.nodes.reflect.item.json")),
+        // The same child, before the first attempt. See [`SEED_GOALS_NODE`]:
+        // seeded with the loop's own opening state, which starts the cadence at
+        // the interval so this call is already due.
+        goals_call(SEED_GOALS_NODE, initial_state(problem)),
         step_with(
             "goal_apply",
-            "=.nodes.reflect.item.json".into(),
+            "=.nodes.reflect.item.json",
             // `item` rather than `item.json`: a `sub_workflow` emits the child's
             // run state unwrapped, where a `tool_call` emits the
             // `{ json, text, raw }` envelope every other step here is addressed
             // through.
-            json!({ super::loop_steps::DECISION_ARG: format!("=.nodes.{GOALS_NODE}.item") }),
+            &json!({ super::loop_steps::DECISION_ARG: format!("=.nodes.{GOALS_NODE}.item") }),
         ),
         node(
             "route",
@@ -352,19 +375,20 @@ pub(super) fn solution_loop(
         ),
         step_with(
             "diversify_merge",
-            BODY_STATE.into(),
-            json!({ super::loop_steps::ARMS_ARG: arm_outputs() }),
+            BODY_STATE,
+            &json!({ super::loop_steps::ARMS_ARG: arm_outputs() }),
         ),
         node(PASS_NODE, NodeKind::Transform, Value::Null),
         node("report", NodeKind::Transform, Value::Null),
     ];
     nodes.extend(
         ARMS.iter()
-            .map(|(id, _)| step_with(id, BODY_STATE.into(), Value::Null)),
+            .map(|(id, _)| step_with(id, BODY_STATE, &Value::Null)),
     );
 
     let mut edges = vec![
-        edge("start", "main", LOOP_NODE),
+        edge("start", "main", SEED_GOALS_NODE),
+        edge(SEED_GOALS_NODE, "main", LOOP_NODE),
         edge(LOOP_NODE, "body", "attempt"),
         edge(LOOP_NODE, "done", "report"),
         edge("attempt", "main", "judge"),

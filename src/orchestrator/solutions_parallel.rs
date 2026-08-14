@@ -149,17 +149,16 @@ impl DiversifyFindings {
     /// property that made the arms safe to run concurrently in the first place.
     pub(in crate::orchestrator) fn absorb(&mut self, other: &Self) {
         let mut other = other.clone();
-        let filled: Vec<(&'static str, String)> = other
+        // Zipped by position rather than matched by name, because both sides are
+        // the same list in the same order — the one [`Self::slots`] exists to be.
+        let filled: Vec<Option<String>> = other
             .slots()
             .into_iter()
-            .filter(|(_, text)| !text.trim().is_empty())
-            .map(|(name, text)| (name, text.clone()))
+            .map(|(_, text)| (!text.trim().is_empty()).then(|| std::mem::take(text)))
             .collect();
-        for (name, text) in filled {
-            for (slot_name, slot) in self.slots() {
-                if slot_name == name {
-                    *slot = text.clone();
-                }
+        for ((_, slot), incoming) in self.slots().into_iter().zip(filled) {
+            if let Some(text) = incoming {
+                *slot = text;
             }
         }
     }

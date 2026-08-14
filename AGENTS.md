@@ -336,13 +336,17 @@ drain a directive, salvage a timed-out attempt, and open the arms beside the
 loop are not reimplemented in JSON.
 
 `agent::flow` is the lower-level state-graph runtime. It still drives each
-detached sub-agent's own single-node graph, and `solve_on_state_graph` is kept
-unused for one release as the way back — the workflow loop has not yet run an
-hour of live mathematics, and a cutover whose predecessor was deleted in the
-same commit leaves nothing to compare a surprising run against. Delete it once
-the first live runs agree.
+detached sub-agent's own single-node graph. The state-graph solution loop is
+gone; the workflow engine is the only path, and it has not yet run an hour of
+live mathematics.
 
-Three rules hold across both:
+The loop calls one child workflow, `orchestrator::workflow_goals`, which decides
+on a cadence whether to decompose the goal. It is a child rather than three more
+nodes because the cadence and the gate are its own policy, and calling it costs
+the loop nothing: it decides in milliseconds, and the decomposition itself is a
+detached agent run whose report reaches the next attempt through a mailbox.
+
+Five rules hold across both:
 
 - Derive, never restate. The workflow role registry is read off `AgentRegistry`,
   the routing ladder's thresholds are generated from the Rust constants, and
@@ -360,7 +364,15 @@ Three rules hold across both:
   through. Any change to either side must keep it green.
 - The body has one exit. Every path back to the loop head goes through `pass`,
   because the engine's `nodes` map is cumulative and a fold with more than one
-  node to read will eventually read a stale one.
+  node to read will eventually read a stale one. A restart goes through it too:
+  re-entering `attempt` directly would undo the judge's own `restarts`
+  increment, so the cap that bounds restarts would never trip.
+- Every step reads the step before it, never the accumulator. The head folds at
+  the *top* of a pass, so for the whole of a pass `nodes.solve.state` is what the
+  *previous* one ended with. Only `attempt` reads it, because only `attempt` runs
+  there. This class of bug is invisible to a constant mock — pass N−1 and pass N
+  look identical — so a test that varies its answers per call is the only kind
+  that catches it.
 
 Do not edit vendored code through the parent repository. Make TinyAgents or
 TinyFlows changes upstream, push them there, then update this repository's

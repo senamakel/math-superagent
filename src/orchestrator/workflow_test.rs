@@ -96,9 +96,7 @@ async fn no_binding_in_the_loop_resolves_to_nothing() {
         // against a scope that has no `inputs`. That they resolve where they are
         // actually evaluated is asserted in `workflow_goals_test.rs`, which runs
         // the child and reads what the gate was handed.
-        .filter(|(node, binding)| {
-            !(*node == GOALS_NODE && binding.location.starts_with("workflow."))
-        })
+        .filter(|(_, binding)| !binding.location.starts_with("workflow."))
         .map(|(node, binding)| format!("{node}.{} = {}", binding.location, binding.expression))
         .collect();
     assert!(unexplained.is_empty(), "{unexplained:#?}");
@@ -149,7 +147,7 @@ async fn a_solved_reflection_leaves_the_loop() {
     run.assert_call_count(
         tinyflows::testkit::capability::TOOLS,
         Some(super::super::loop_steps::TOOL),
-        4,
+        5,
     );
     // The goals child ran and declined: this fixture carries no
     // `since_reduction`, so the cadence reads zero and holds.
