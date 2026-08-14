@@ -33,6 +33,22 @@ evidence for it stays available.
 - [`docs/ledgers.md`](docs/ledgers.md) — the nine derived ledgers: what each
   holds, and the failure each was written to stop.
 
+Two pairs read a mathematician's method against this runtime and say what to
+build next. They are why several of the rules above exist, so a change to a
+control should start from the argument that produced it:
+
+- [`docs/tao-gap-analysis.md`](docs/tao-gap-analysis.md) and
+  [`docs/tao-proposals.md`](docs/tao-proposals.md) — Terence Tao's method set
+  against the runtime, and the ranked list five built controls came out of.
+  Research in [`research/tao/`](research/tao/).
+- [`docs/methods-gap-analysis.md`](docs/methods-gap-analysis.md) and
+  [`docs/methods-proposals.md`](docs/methods-proposals.md) — ten more
+  mathematicians, chosen so the set spans the method space rather than one
+  corner of it, and read for where they *disagree* with Tao and with each other.
+  Research in [`research/mathematicians/`](research/mathematicians/), whose
+  `11-harness-inventory.md` is the current capability map and supersedes
+  `research/tao/03-harness-inventory.md`.
+
 Keep them consistent with the code. A rule here that the code does not enforce
 is the failure this repository keeps recording: a prompt instruction is not a
 control, and neither is a document.
