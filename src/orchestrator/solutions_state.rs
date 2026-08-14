@@ -261,14 +261,14 @@ fn add_diversify_arms(
             "diversify_library",
             move |state: SolutionState, _ctx: NodeContext| {
                 let subagents = library_agents.clone();
-                async move { Ok(diversify_library_arm(&subagents, &state).await) }
+                async move { Ok(LoopUpdate::findings(diversify_library_arm(&subagents, &state).await)) }
             },
         )
         .add_node(
             "diversify_patterns",
             move |state: SolutionState, _ctx: NodeContext| {
                 let subagents = pattern_agents.clone();
-                async move { Ok(diversify_pattern_arm(&subagents, &state).await) }
+                async move { Ok(LoopUpdate::findings(diversify_pattern_arm(&subagents, &state).await)) }
             },
         )
         .add_node(
@@ -277,7 +277,9 @@ fn add_diversify_arms(
                 let subagents = invention_agents.clone();
                 let workspace = invention_workspace.clone();
                 async move {
-                    Ok(diversify_invention_arm(&subagents, workspace.as_deref(), &state).await)
+                    Ok(LoopUpdate::findings(
+                        diversify_invention_arm(&subagents, workspace.as_deref(), &state).await,
+                    ))
                 }
             },
         )

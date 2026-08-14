@@ -8,43 +8,27 @@ use tinyflows::validate::validate_all;
 use super::*;
 use crate::orchestrator::definitions::workflow_agents;
 use crate::orchestrator::default_registry;
+use crate::orchestrator::solutions::DIVERSIFY_MERGE;
 
 fn graph() -> WorkflowGraph {
     let registry = default_registry(true).expect("the default registry builds");
     solution_loop("find the largest x", workflow_agents(&registry))
 }
 
-/// One set of parsed counters, in the shape the accumulator folds.
+/// One loop state, as `run_loop_step` returns it.
 ///
-/// Mocked at the `parse_reflection` tool rather than at the reflection agent,
-/// because that is where the counters are decided on the live path too: an
-/// `agent` node returns prose, and the tool turns it into these numbers. The
-/// tool's own agreement with the state graph is asserted in
-/// `reflection_tool_test.rs`; this fixes the counters so the *routing* is what
-/// these tests are about.
-///
-/// The invoker returns a tool's structure as the result, so the envelope puts
-/// it at `item.json` — which is what the fold reads.
+/// Every step now returns the whole state, so a test fixes the state once and
+/// the routing is what the test is about. The steps' own behaviour is covered
+/// where it lives — `solutions_test.rs` for the policy, `loop_steps_test.rs`
+/// for the tool boundary.
 fn verdict(fields: Value) -> Respond {
     Respond::value(fields)
 }
 
-/// A run where every attempt reports the same thing, so the ladder decides.
-async fn run_with(reflection: Value) -> tinyflows::testkit::TestRun {
+/// A run where every step reports the same state, so the ladder decides.
+async fn run_with(state: Value) -> tinyflows::testkit::TestRun {
     TestHarness::new(&graph())
-        .mock_agent("goals", Respond::value(json!({ "text": "attempted" })))
-        .mock_agent("judge", Respond::value(json!({ "verdict": "proceed" })))
-        .mock_agent(
-            "reflection",
-            Respond::value(json!({ "text": "VERDICT: recorded" })),
-        )
-        .mock_tool("parse_reflection", verdict(reflection))
-        .mock_agent("librarian", Respond::value(json!({ "text": "papers" })))
-        .mock_agent(
-            "pattern_finder",
-            Respond::value(json!({ "text": "a regularity" })),
-        )
-        .mock_agent("inventor", Respond::value(json!({ "text": "a new angle" })))
+        .mock_tool("run_loop_step", verdict(state))
         .run()
         .await
         .expect("the loop runs to completion on mocks")
@@ -378,4 +362,41 @@ async fn the_attempt_report_reaches_the_accumulator() {
         .cloned()
         .unwrap_or(Value::Null);
     assert_eq!(state["last_attempt"], json!("attempted"), "{state}");
+}
+
+
+/// The body must have exactly one exit, or the fold reads a stale node.
+///
+/// The engine's `nodes` map is cumulative, so if a diversify pass could return
+/// to the loop head through the merge, the fold would keep reading that merge
+/// long after the pass that produced it. Every pass ends at `reflect` instead.
+#[test]
+fn only_one_node_returns_to_the_loop_head() {
+    let graph = graph();
+    let returning: Vec<&str> = graph
+        .edges
+        .iter()
+        .filter(|edge| edge.to_node.as_str() == LOOP_NODE)
+        .map(|edge| edge.from_node.as_str())
+        .collect();
+    // `start` seeds the loop; everything else arrives through the one pass node.
+    let mut returning: Vec<&str> = returning;
+    returning.sort_unstable();
+    returning.dedup();
+    assert_eq!(
+        returning,
+        ["start", PASS_NODE],
+        "more than one node returns to the loop head, so the fold can read a stale pass"
+    );
+    // ...and every body path really does reach it.
+    for from in ["route", DIVERSIFY_MERGE] {
+        assert!(
+            graph
+                .edges
+                .iter()
+                .any(|edge| edge.from_node.as_str() == from
+                    && edge.to_node.as_str() == PASS_NODE),
+            "`{from}` does not lead to the pass node"
+        );
+    }
 }

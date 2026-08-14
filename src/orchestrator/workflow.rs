@@ -39,6 +39,24 @@ use super::solutions::{
     UNVERIFIED_THRESHOLD,
 };
 
+/// The body's single exit, and the only node the fold reads.
+///
+/// Every path back to the loop head goes through here: a retry, each terminal
+/// verdict, and a diversify once its arms have merged. That is what makes the
+/// fold correct rather than merely usually correct.
+///
+/// The engine's `nodes` map is cumulative — a node's output stays addressable
+/// long after the pass that produced it — so a fold reading "the merge if it
+/// ran, else the reflection" would keep reading a merge from three passes ago
+/// for the rest of the run, silently reverting the state each time. A node
+/// every pass runs is never stale.
+///
+/// The obvious alternative, routing the merge straight back into `attempt`, is
+/// worse and was tried: it makes an inner cycle the loop head never sees, so
+/// `max_iterations` cannot bound it and a run that keeps diversifying never
+/// terminates.
+pub(super) const PASS_NODE: &str = "pass";
+
 /// The loop head, and the accumulator's address.
 pub(super) const LOOP_NODE: &str = "solve";
 
@@ -151,39 +169,14 @@ pub(super) fn initial_state(problem: &str) -> Value {
 /// thin but genuine progress every time never reach diversify.
 #[must_use]
 pub(super) fn state_update() -> Value {
-    // The `=` prefix belongs to the whole expression, once. Writing it here as
-    // well as in the path produced `==.nodes…`, which is not an expression at
-    // all: every binding resolved to null, the accumulator never moved, and the
-    // ladder read its seed values on every pass. The run still completed and
-    // still reported success — which is exactly the failure
-    // `assert_no_null_bindings` exists to catch, and did.
-    // Read off the parser, not the reflection: an `agent` node returns prose,
-    // and the counters are a function of that prose *and* of what is on disk.
-    // `parse_reflection` is where those meet, and its structured output lands
-    // in `raw` because the tool invoker returns `{ text, raw }`.
-    let reflect = ".nodes.parse.item.json";
-    // `// .state.<key>` is load-bearing on two passes, not one. The loop head
-    // runs *before* the body on the first activation, so there is no reflection
-    // to fold and every field would otherwise be assigned null — wiping the
-    // seed. And a reflection that omits a field would wipe that field for the
-    // rest of the run. Falling back to the previous value makes the fold a
-    // merge of what was reported over what was already known, which is what a
-    // fold should be.
-    let fold = |key: &str| format!("={reflect}.{key} // .state.{key}");
-    json!({
-        "attempts": fold("attempts"),
-        "solved": fold("solved"),
-        "unproductive": fold("unproductive"),
-        "blocked": fold("blocked"),
-        "computational": fold("computational"),
-        "unverified": fold("unverified"),
-        "restarts": fold("restarts"),
-        "lesson": fold("lesson"),
-        "fresh_context": fold("fresh_context"),
-        // From the attempt rather than the parser: it is what the attempt
-        // said, not what the reflection made of it.
-        "last_attempt": "=.nodes.attempt.item.text // .state.last_attempt",
-    })
+    // The program form: one expression producing the whole next accumulator.
+    // Each step returns the entire state, because a step may touch anything on
+    // it — a lesson, a steer, the reduction cadence — and an update naming
+    // fields would silently freeze whatever it forgot to name.
+    //
+    // `// .state` keeps the previous value when there is nothing to fold, which
+    // is every activation the loop head makes before its body has run.
+    json!(format!("=.nodes.{PASS_NODE}.item.json // .nodes.{LOOP_NODE}.state"))
 }
 
 /// Builds one node.
@@ -209,12 +202,22 @@ fn edge(from: &str, from_port: &str, to: &str) -> Edge {
     }
 }
 
-/// An `agent` node that runs a registered role.
-fn role(id: &str, agent_ref: &str, prompt: &str) -> Node {
+/// A node that runs one of the loop's steps.
+///
+/// A `tool_call` rather than an `agent` node, and the difference is the whole
+/// argument in `super::loop_steps`: a bare `agent_ref` would run the role and
+/// lose the mailbox drain that carries a directive, the salvage that rescues a
+/// timed-out attempt, and the arms opened beside the loop. The engine owns the
+/// routing — which is what a declarative loop is for — and the steps stay the
+/// Rust written against live runs.
+fn step(id: &str) -> Node {
     node(
         id,
-        NodeKind::Agent,
-        json!({ "agent_ref": agent_ref, "prompt": prompt }),
+        NodeKind::ToolCall,
+        json!({
+            "slug": "run_loop_step",
+            "args": { "step": id, "state": format!("=.nodes.{LOOP_NODE}.state") },
+        }),
     )
 }
 
@@ -248,51 +251,24 @@ pub(super) fn solution_loop(
                 "state": { "init": initial_state(problem), "update": state_update() },
             }),
         ),
-        role(
-            "attempt",
-            "goals",
-            "Take the next step on this problem, briefed by the last lesson.",
-        ),
-        role(
-            "judge",
-            "judge",
-            "Score how the attempt just finished was conducted.",
-        ),
+        step("attempt"),
+        step("judge"),
         node(
             "judged",
             NodeKind::Switch,
             json!({ "expression": judge_ladder() }),
         ),
-        role(
-            "reflect",
-            "reflection",
-            "Is the answer right, and what did this attempt teach the next one?",
-        ),
-        node(
-            "parse",
-            NodeKind::ToolCall,
-            json!({
-                "slug": "parse_reflection",
-                "args": {
-                    "reflection": "=.item.text",
-                    "state": format!("=.nodes.{LOOP_NODE}.state"),
-                    "last_attempt": "=.nodes.attempt.item.text",
-                    "problem": format!("=.nodes.{LOOP_NODE}.state.problem"),
-                },
-            }),
-        ),
+        step("reflect"),
         node(
             "route",
             NodeKind::Switch,
             json!({ "expression": reflect_ladder() }),
         ),
-        node("diversify_merge", NodeKind::Merge, Value::Null),
+        step("diversify_merge"),
+        node(PASS_NODE, NodeKind::Transform, Value::Null),
         node("report", NodeKind::Transform, Value::Null),
     ];
-    nodes.extend(
-        ARMS.iter()
-            .map(|(id, agent)| role(id, agent, "Break the stall from your own angle.")),
-    );
+    nodes.extend(ARMS.iter().map(|(id, _)| step(id)));
 
     let mut edges = vec![
         edge("start", "main", LOOP_NODE),
@@ -305,16 +281,22 @@ pub(super) fn solution_loop(
         // reflecting, so it costs a judge call rather than a judge call plus a
         // reflection about to be thrown away.
         edge("judged", "restart", "attempt"),
-        edge("reflect", "main", "parse"),
-        edge("parse", "main", "route"),
-        edge("route", "retry", LOOP_NODE),
-        edge("route", "solved", LOOP_NODE),
-        edge("route", "reported", LOOP_NODE),
-        edge("route", "blocked", LOOP_NODE),
+        edge("reflect", "main", "route"),
+        edge("route", "retry", PASS_NODE),
+        edge("route", "solved", PASS_NODE),
+        edge("route", "reported", PASS_NODE),
+        edge("route", "blocked", PASS_NODE),
+        edge(PASS_NODE, "main", LOOP_NODE),
         edge("route", "diversify", "diversify_library"),
         edge("route", "diversify", "diversify_patterns"),
         edge("route", "diversify", "diversify_invention"),
-        edge("diversify_merge", "main", LOOP_NODE),
+        // Back into an attempt, not into the head. The head folds whatever its
+        // body last produced and the engine's `nodes` map is cumulative, so a
+        // merge that returned here would keep being read as "this pass's
+        // result" for the rest of the run. Every pass ends at `reflect`
+        // instead — which is also what the state graph does, where diversifying
+        // leads to another attempt rather than to a new cycle.
+        edge("diversify_merge", "main", PASS_NODE),
     ];
     edges.extend(
         ARMS.iter()

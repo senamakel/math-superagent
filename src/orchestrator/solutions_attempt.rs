@@ -190,6 +190,43 @@ impl SolutionState {
     }
 
     /// Returns the loop's outcome for the caller.
+    /// The diversify slots, for a caller folding one arm at a time.
+    pub(in crate::orchestrator) fn diversify_mut(&mut self) -> &mut DiversifyFindings {
+        &mut self.diversify
+    }
+
+    /// The whole state, as the workflow accumulator carries it.
+    ///
+    /// Every field, not only the counters the ladder routes on. A field left
+    /// out here is a field silently reset on every pass, and the ones that are
+    /// not obviously load-bearing are the dangerous ones: `steer` is the
+    /// judge's direction for the next attempt, `since_reduction` paces the arm
+    /// that decomposes the goal, and `scores` is what the judge's own history
+    /// is read from. A round trip that dropped any of them would look like a
+    /// working loop that had quietly forgotten something.
+    ///
+    /// [`Self::round_trips`] is the test that this and
+    /// [`Self::from_accumulator`] agree about all of them.
+    pub(in crate::orchestrator) fn to_accumulator(&self) -> serde_json::Value {
+        serde_json::json!({
+            "problem": self.problem,
+            "attempts": self.attempts,
+            "unproductive": self.unproductive,
+            "last_attempt": self.last_attempt,
+            "lessons": self.lessons,
+            "fresh_context": self.fresh_context,
+            "solved": self.solved,
+            "steer": self.steer,
+            "restarts": self.restarts,
+            "scores": self.scores,
+            "judged": self.judged.to_string(),
+            "blocked": self.blocked,
+            "computational": self.computational,
+            "unverified": self.unverified,
+            "since_reduction": self.since_reduction,
+        })
+    }
+
     /// Rebuilds a state from the workflow accumulator, for its report.
     ///
     /// The workflow engine's `loop` head carries the counters as JSON, so the
@@ -212,20 +249,52 @@ impl SolutionState {
                 .unwrap_or_default()
                 .to_string()
         };
-        let mut rebuilt = Self::new(problem);
+        let mut rebuilt = Self::new(if problem.is_empty() {
+            text("problem")
+        } else {
+            problem.to_string()
+        });
         rebuilt.attempts = count("attempts");
         rebuilt.unproductive = count("unproductive");
         rebuilt.blocked = count("blocked");
         rebuilt.computational = count("computational");
         rebuilt.unverified = count("unverified");
         rebuilt.restarts = count("restarts");
+        rebuilt.since_reduction = count("since_reduction");
         rebuilt.solved = state
             .get("solved")
             .and_then(serde_json::Value::as_bool)
             .unwrap_or_default();
         rebuilt.last_attempt = text("last_attempt");
+        rebuilt.fresh_context = text("fresh_context");
+        rebuilt.steer = text("steer");
+        rebuilt.judged = Verdict::parse(&text("judged"));
+        rebuilt.scores = state
+            .get("scores")
+            .and_then(serde_json::Value::as_array)
+            .map(|scores| {
+                scores
+                    .iter()
+                    .filter_map(serde_json::Value::as_u64)
+                    .filter_map(|score| u8::try_from(score).ok())
+                    .collect()
+            })
+            .unwrap_or_default();
+        rebuilt.lessons = state
+            .get("lessons")
+            .and_then(serde_json::Value::as_array)
+            .map(|lessons| {
+                lessons
+                    .iter()
+                    .filter_map(serde_json::Value::as_str)
+                    .map(ToString::to_string)
+                    .collect()
+            })
+            .unwrap_or_default();
+        // The single-lesson spelling the earlier fold used. Kept so an
+        // accumulator written by a previous release still reads.
         let lesson = text("lesson");
-        if !lesson.is_empty() {
+        if !lesson.is_empty() && !rebuilt.lessons.contains(&lesson) {
             rebuilt.lessons.push(lesson);
         }
         rebuilt
@@ -715,6 +784,42 @@ pub(super) enum Verdict {
     Steer,
     /// Wrong in a way continuing will not repair.
     Restart,
+}
+
+impl Verdict {
+    /// The word this verdict round-trips through the accumulator as.
+    ///
+    /// Written out rather than derived from `Debug`, because a `Debug`
+    /// rendering is not a wire format: it changes when somebody renames a
+    /// variant, and the change would be a state that silently reads back as
+    /// `Proceed`.
+    pub(in crate::orchestrator) fn as_str(self) -> &'static str {
+        match self {
+            Self::Proceed => "proceed",
+            Self::Steer => "steer",
+            Self::Restart => "restart",
+        }
+    }
+
+    /// Reads a verdict back.
+    ///
+    /// Anything unrecognised is [`Verdict::Proceed`], on the same rule the
+    /// judge's own parser follows: the expensive outcome needs the explicit
+    /// word, and a verdict the loop cannot read must not throw an attempt away
+    /// by accident.
+    pub(in crate::orchestrator) fn parse(word: &str) -> Self {
+        match word.trim().to_ascii_lowercase().as_str() {
+            "restart" => Self::Restart,
+            "steer" => Self::Steer,
+            _ => Self::Proceed,
+        }
+    }
+}
+
+impl std::fmt::Display for Verdict {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str(self.as_str())
+    }
 }
 
 /// Reads the judge's reply.

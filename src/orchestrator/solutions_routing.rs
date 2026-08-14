@@ -77,7 +77,7 @@ fn diversify_open(tracer: Option<&Arc<RunTracer>>) -> NodeResult<LoopUpdate> {
 async fn diversify_library_arm(
     subagents: &AsyncSubagentManager,
     state: &SolutionState,
-) -> NodeResult<LoopUpdate> {
+) -> Vec<Finding> {
     let library = delegate(
         subagents,
         "librarian",
@@ -106,17 +106,17 @@ async fn diversify_library_arm(
         ),
     )
     .await;
-    LoopUpdate::findings(vec![
+    vec![
         Finding::new(Slot::Library, library),
         Finding::new(Slot::Digest, digest),
-    ])
+    ]
 }
 
 /// The structure arm: what the numbers this run has already produced show.
 async fn diversify_pattern_arm(
     subagents: &AsyncSubagentManager,
     state: &SolutionState,
-) -> NodeResult<LoopUpdate> {
+) -> Vec<Finding> {
     let patterns = delegate(
         subagents,
         "pattern_finder",
@@ -129,7 +129,7 @@ async fn diversify_pattern_arm(
         ),
     )
     .await;
-    LoopUpdate::findings(vec![Finding::new(Slot::Patterns, patterns)])
+    vec![Finding::new(Slot::Patterns, patterns)]
 }
 
 /// The invention arm: propose, ground, converge.
@@ -137,12 +137,12 @@ async fn diversify_invention_arm(
     subagents: &AsyncSubagentManager,
     workspace: Option<&Path>,
     state: &SolutionState,
-) -> NodeResult<LoopUpdate> {
+) -> Vec<Finding> {
     let (grounding, chosen) = invention_arm(subagents, workspace, state).await;
-    LoopUpdate::findings(vec![
+    vec![
         Finding::new(Slot::Grounding, grounding),
         Finding::new(Slot::Chosen, chosen),
-    ])
+    ]
 }
 
 /// The barrier every arm converges on, and the only node that reads them all.

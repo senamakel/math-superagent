@@ -97,7 +97,7 @@ pub(super) struct DiversifyFindings {
 
 impl DiversifyFindings {
     /// Files one arm's report.
-    fn set(&mut self, finding: Finding) {
+    pub(in crate::orchestrator) fn set(&mut self, finding: Finding) {
         let slot = match finding.slot {
             Slot::Library => &mut self.library,
             Slot::Digest => &mut self.digest,
