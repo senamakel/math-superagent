@@ -22,6 +22,8 @@ The workspace root is an allowlist, not a default. It holds the run's Markdown
 | plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index, the frontier and request ledgers | `config/` |
 | operator direction: the queue, its cursor, and the receipt | `config/` |
 | untouched download bytes | `raw/` |
+| one school's own working files | `teams/<slug>/` |
+| what the schools tell each other | `teams/board.jsonl`, derived into `teams/BOARD.md` |
 
 `layout::placed` decides this in the write path — `write_document` and an
 `apply_patch` `*** Add File:` — for the same reason `documents::research_path`

@@ -73,11 +73,10 @@ one workspace, sharing the ledgers and a board. Each one's bet:
 - **Four things, and it must stay four:** a method-policy overlay layered *after*
   the shared policy, per-role overlays, a bench, its `Thresholds`.
 - **The control does not move.** `chisel` is today's runtime, is what an unset
-  `MATH_AGENT_SCHOOLS` selects, and has an empty overlay; the tests assert its
-  prompts are byte-identical rather than trusting it.
-- **Thresholds are a struct, not a second set of constants.** `route` and the
-  jq the engine runs both read one, and `orchestrator::parity` proves they
-  agree for *every* school. None may move `blocked`.
+  `MATH_AGENT_SCHOOLS` selects, and has an empty overlay — asserted, not assumed.
+- **Thresholds are a struct, not a second set of constants.** `route` and the jq
+  both read one, and `orchestrator::parity` proves they agree for *every*
+  school. None may move `blocked`.
 - **A board post is asserted, never established.** `teams/BOARD.md` is derived
   from an append-only queue and never feeds a ledger; the posting school is
   baked into the tool, so none can post as another.

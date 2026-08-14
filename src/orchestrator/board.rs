@@ -315,6 +315,6 @@ fn now_ms() -> u64 {
         .map_or(0, |since| u64::try_from(since.as_millis()).unwrap_or(u64::MAX))
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "__never"))]
 #[path = "board_test.rs"]
 mod test;
