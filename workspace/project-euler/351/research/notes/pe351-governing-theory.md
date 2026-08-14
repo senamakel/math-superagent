@@ -110,9 +110,12 @@ anchor: research/sources/mathworld-totient-function.full.md
 3. Check against Phi(10^8) = 3039635516365908 (A064018).
 
 Expected magnitude: H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8)
-= 30000003000000000 - 6*3039635516365908
-= 30000003000000000 - 18237813098195448
-= 11762189901804552  (17 digits).
+= 30000000300000000 - 6*3039635516365908      [3*10^8*(10^8+1) = 3*10000000100000000]
+= 30000000300000000 - 18237813098195448
+= 11762187201804552  (17 digits).
+[Corrected by librarian 2026-08-14: the earlier draft wrote
+30000003000000000 (dropped a 0) and 11762189901804552; the exact value is
+30000000300000000 and 11762187201804552. Verify with a program before use.]
 This is the check anchor: the program's final answer must equal this integer,
 which follows from the catalogued Phi(10^8) value.  The magnitude is
 H(n) ~ 3n^2(1 - 6/pi^2) ~ 1.176e16 at n=10^8, consistent.

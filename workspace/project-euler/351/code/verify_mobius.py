@@ -31,7 +31,7 @@ def sum_phi_mobius(N):
     primes = phi_sieve_primes(N)
     for p in primes.tolist():
         mu[p::p] *= -1
-        mu[p * p::p] = 0
+        mu[p * p::p * p] = 0   # numbers divisible by p^2
     k = np.arange(1, N + 1, dtype=np.int64)
     t = N // k
     term = (t * (t + 1) // 2) * mu[1:].astype(np.int64)
