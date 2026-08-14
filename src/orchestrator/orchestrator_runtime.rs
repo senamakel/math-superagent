@@ -181,60 +181,70 @@ impl OrchestratorAgent {
     /// failing specialist is still a lesson rather than a failure: that is the
     /// roles' behaviour, not the engine's, and it is unchanged here.
     async fn solve_on_workflow(&self, problem: &str) -> Result<String> {
-        // One set of standing teams for the whole run, not one per school.
-        // Three librarians on one library is waste rather than diversity: what
-        // differs between schools is how they attack the problem, and gathering
-        // sources is the same job whoever asked for them. Their reports reach
-        // every school, through the fan-out below.
-        let patterns = solutions::Mailbox::default();
-        let directives = solutions::Mailbox::default();
-        let support = self.spawn_support_teams(problem, &patterns, &directives);
-
-        // Each school drains its own mailboxes, so each needs its own. A single
-        // shared mailbox would be drained by whichever school asked first and
-        // the others would never see the report at all.
+        // Each school drains its own mailboxes, so each needs its own. One
+        // shared mailbox would be emptied by whichever school asked first, and
+        // the others would never see the report at all — `Mailbox::collect`
+        // takes what is there and leaves nothing behind, which is right for one
+        // reader and silently wrong for several.
         let mut lanes = Vec::new();
         for school in &self.schools {
             let library = solutions::Mailbox::default();
             let direction = solutions::Mailbox::default();
             let skeletons = solutions::Mailbox::default();
-            let mailboxes = solutions::Mailboxes {
-                patterns: library.clone(),
-                directives: direction.clone(),
-                skeletons: skeletons.clone(),
-            };
-            let beside = solutions::Beside {
-                // The same mailbox the standing teams post to, and the same one
-                // the attempt drains. A literature sweep and a team report are
-                // both "what arrived beside the loop since the last attempt",
-                // so they are rendered under that one heading rather than two.
-                library: library.clone(),
-                reduction: solutions::Reduction {
-                    outbox: skeletons,
-                    // One gate per school rather than one per run. Its purpose
-                    // is that two decompositions cannot write the same
-                    // `research/backward/<slug>.md`, and two schools reducing
-                    // the same goal are exactly that collision — but they are
-                    // also the diversity the schools exist for, so they are
-                    // separated by writing under their own names rather than by
-                    // one being made to wait for the other.
-                    gate: solutions::ReductionGate::default(),
-                },
-                teams: support.clone(),
-            };
-            lanes.push((*school, library, direction, beside, mailboxes));
+            lanes.push((
+                *school,
+                library.clone(),
+                direction.clone(),
+                skeletons.clone(),
+            ));
         }
 
-        // What the standing teams found reaches every school, and so does what
-        // an operator asked for. `take_directives` drains the queue exactly
-        // once — the cursor is single-consumer by design — so the fan-out is
-        // here, after the drain, rather than by giving each school its own
-        // reader of the same file.
-        let fanout = solutions::Fanout::new(
-            lanes.iter().map(|lane| lane.1.clone()).collect(),
-            lanes.iter().map(|lane| lane.2.clone()).collect(),
-        );
-        fanout.attach(&patterns, &directives);
+        // One set of standing teams for the whole run, not one per school.
+        // Three librarians on one library is waste rather than diversity: what
+        // differs between schools is how they attack the problem, and gathering
+        // a source is the same job whoever asked for it. So the teams post once
+        // and every school's mailbox receives it, and the directive queue keeps
+        // its single consumer — the cursor is what makes delivery exactly-once,
+        // and a second reader of the same file would break that rather than
+        // share it.
+        let libraries: Vec<solutions::Mailbox> =
+            lanes.iter().map(|lane| lane.1.clone()).collect();
+        let directions: Vec<solutions::Mailbox> =
+            lanes.iter().map(|lane| lane.2.clone()).collect();
+        let support = self.spawn_support_teams(problem, &libraries, &directions);
+
+        let lanes: Vec<_> = lanes
+            .into_iter()
+            .map(|(school, library, direction, skeletons)| {
+                let mailboxes = solutions::Mailboxes {
+                    patterns: library.clone(),
+                    directives: direction,
+                    skeletons: skeletons.clone(),
+                };
+                let beside = solutions::Beside {
+                    // The same mailbox the standing teams post to, and the same
+                    // one the attempt drains. A literature sweep and a team
+                    // report are both "what arrived beside the loop since the
+                    // last attempt", so they are rendered under that one
+                    // heading rather than two.
+                    library,
+                    reduction: solutions::Reduction {
+                        outbox: skeletons,
+                        // One gate per school rather than one per run. Its
+                        // purpose is that two decompositions cannot be in
+                        // flight writing the same skeleton, and within a school
+                        // that is still exactly what it prevents. Across
+                        // schools a shared gate would be worse than useless: it
+                        // would make one school wait on another's reduction,
+                        // which is the serialisation the schools exist to
+                        // avoid.
+                        gate: solutions::ReductionGate::default(),
+                    },
+                    teams: support.clone(),
+                };
+                (school, beside, mailboxes)
+            })
+            .collect();
 
         let outcome = self.run_schools(problem, lanes).await;
 
@@ -276,67 +286,210 @@ impl OrchestratorAgent {
         Ok(outcome)
     }
 
-    /// Compiles and runs the loop graph, and reports what it reached.
+    /// Runs every selected school concurrently and reports what each reached.
     ///
-    /// The report is built by rebuilding a `SolutionState` from the
-    /// accumulator and calling the same `outcome` the state graph calls, rather
-    /// than by describing the numbers here. That wording is written against
-    /// specific ways a run can end — an answer with one route behind it must
-    /// not be called solved, a provider failure must not read as a
-    /// mathematical one — and a second version of it would get one of them
-    /// wrong.
-    async fn run_workflow_loop(
+    /// The schools share the workspace and the standing teams, and are
+    /// otherwise independent: each drives its own loop, on its own thresholds,
+    /// against its own copy of every role.
+    ///
+    /// **First verified solve wins, and there is no scheduler.** When one school
+    /// reaches a genuine solve the others are asked to stand down, and the run
+    /// reports its answer. `docs/tao-gap-analysis.md` is right that deciding to
+    /// fund the branch that is *not* winning is a judgement this runtime cannot
+    /// make well, so it does not try: the split is equal and fixed, and the only
+    /// cross-school decision is the one that needs no judgement.
+    ///
+    /// Standing down is asked for rather than imposed. Aborting a task
+    /// mid-attempt would drop it between a write and the ledger re-derivation
+    /// that follows, so instead a flag is set, every school reads it at its own
+    /// next pass boundary — beside `expired`, which exists for the same reason —
+    /// and each ends its own loop tidily.
+    async fn run_schools(
         &self,
         problem: &str,
-        beside: solutions::Beside,
-        mailboxes: solutions::Mailboxes,
+        lanes: Vec<(schools::School, solutions::Beside, solutions::Mailboxes)>,
     ) -> Result<String> {
-        let graph = self.workflow_graph(problem);
-        let steps = Arc::new(loop_steps::LoopSteps::new(
-            self.subagents.clone(),
-            Some(self.tracer.clone()),
-            Some(self.workspace.clone()),
-            self.memory.clone(),
-            beside,
-            mailboxes,
-        )) as Arc<dyn Tool<()>>;
-        let capabilities = self.workflow_capabilities([steps])?;
-        let compiled = tinyflows::compiler::compile(&graph).map_err(|error| {
-            tinyagents::TinyAgentsError::Graph(format!("the loop graph is invalid: {error}"))
-        })?;
-        let finished = tinyflows::engine::run(&compiled, serde_json::json!({}), &capabilities)
-            .await
-            .map_err(|error| {
-                tinyagents::TinyAgentsError::Graph(format!("the loop graph failed: {error}"))
-            })?;
-        let accumulator = finished
-            .output
-            .pointer(&format!("/nodes/{}/state", workflow::LOOP_NODE))
-            .cloned()
-            .unwrap_or(serde_json::Value::Null);
-        // The judge runs on the way out, after the head has folded its last
-        // pass, so its score is in its own output and not in the accumulator.
-        // Reading only the accumulator would spend a whole agent run scoring the
-        // work and then report a state that had never heard of it.
-        let accumulator = finished
-            .output
-            .pointer(&format!("/nodes/{}/item/json", workflow::FINAL_JUDGE))
-            .cloned()
-            .unwrap_or(accumulator);
-        Ok(solutions::SolutionState::from_accumulator(problem, &accumulator).outcome())
+        let solved = Arc::new(std::sync::atomic::AtomicBool::new(false));
+        let mut running = tokio::task::JoinSet::new();
+        for (school, beside, mailboxes) in lanes {
+            let lane = self.school_lane(problem, school, beside, mailboxes, &solved)?;
+            running.spawn(lane);
+        }
+        let mut reached: Vec<(&'static str, String)> = Vec::new();
+        let mut failure: Option<crate::agent::Error> = None;
+        while let Some(finished) = running.join_next().await {
+            match finished {
+                Ok((slug, Ok(state))) => {
+                    if state.solved {
+                        solved.store(true, std::sync::atomic::Ordering::Relaxed);
+                        self.tracer
+                            .note(&format!("school {slug}: solved; the others stand down"));
+                    }
+                    reached.push((slug, state.outcome()));
+                }
+                Ok((slug, Err(error))) => {
+                    // One school failing is a lesson about that school, not
+                    // about the run: the others are still working and one of
+                    // them may arrive. The error is kept only in case every
+                    // school fails, which is the case that has nothing to
+                    // report and must not read as a mathematical result.
+                    self.tracer
+                        .note(&format!("school {slug}: the loop failed: {error}"));
+                    reached.push((slug, format!("the {slug} loop failed: {error}")));
+                    failure.get_or_insert(error);
+                }
+                Err(error) => {
+                    self.tracer
+                        .note(&format!("a school ended abnormally: {error}"));
+                }
+            }
+        }
+        match failure {
+            // Every school failed, so there is no answer and nothing to choose
+            // between. Reporting the first failure is honest; folding them into
+            // a summary would read as a run that concluded something.
+            Some(error) if reached.iter().all(|(_, text)| text.starts_with("the ")) => Err(error),
+            _ => Ok(combined_outcome(&reached)),
+        }
     }
 
+    /// Builds one school's whole run as a future that owns everything it needs.
+    ///
+    /// Owned rather than borrowing `self`, because the lanes are spawned onto
+    /// the runtime and a borrow would tie every school's lifetime to this
+    /// frame. Everything it captures is either an `Arc` or a cheap clone that
+    /// shares its backing — the manager's semaphore and registry above all, so
+    /// three schools compete for one concurrency cap rather than three.
+    ///
+    /// The report is built by rebuilding a `SolutionState` from the accumulator
+    /// and calling the same `outcome` the state graph calls, rather than by
+    /// describing the numbers here. That wording is written against specific
+    /// ways a run can end — an answer with one route behind it must not be
+    /// called solved, a provider failure must not read as a mathematical one —
+    /// and a second version of it would get one of them wrong.
+    fn school_lane(
+        &self,
+        problem: &str,
+        school: schools::School,
+        beside: solutions::Beside,
+        mailboxes: solutions::Mailboxes,
+        solved: &Arc<std::sync::atomic::AtomicBool>,
+    ) -> Result<impl std::future::Future<Output = (&'static str, Result<solutions::SolutionState>)> + Send + use<>>
+    {
+        let graph = workflow::solution_loop_for(
+            problem,
+            self.workflow_agents(),
+            &school.thresholds,
+        );
+        // Scoped only when more than one school is running, matching how they
+        // were registered: a lone school registered unqualified, so a scoped
+        // handle would resolve every role by falling back anyway.
+        let subagents = if self.schools.len() > 1 {
+            self.subagents.for_school(school.slug)
+        } else {
+            self.subagents.clone()
+        };
+        let steps = Arc::new(
+            loop_steps::LoopSteps::new(
+                subagents,
+                Some(self.tracer.clone()),
+                Some(self.workspace.clone()),
+                self.memory.clone(),
+                beside,
+                mailboxes,
+            )
+            .in_school(school.slug, Arc::clone(solved)),
+        ) as Arc<dyn Tool<()>>;
+        let capabilities = self.workflow_capabilities([steps])?;
+        let problem = problem.to_string();
+        Ok(async move {
+            (
+                school.slug,
+                run_compiled_loop(&graph, &capabilities, &problem).await,
+            )
+        })
+    }
+}
+
+/// The run's report when more than one school worked the problem.
+///
+/// One school's outcome is returned unchanged, so a single-school run reports
+/// exactly what it always did — the wording in
+/// [`SolutionState::outcome`](solutions::SolutionState::outcome) is written
+/// against specific ways a run can end and must not be wrapped in anything that
+/// weakens it.
+///
+/// With several, every school is named and reported. That is the *"report how
+/// many distinct approaches a run actually pursued"* that
+/// `docs/tao-proposals.md` asks for as the honest small version of funding an
+/// orthogonal branch — except that here it is a by-product of the run having
+/// actually pursued them, rather than a count of how often it did not.
+fn combined_outcome(reached: &[(&'static str, String)]) -> String {
+    if let [(_, only)] = reached {
+        return only.clone();
+    }
+    let mut out = String::from("Several schools worked this problem.\n");
+    for (slug, outcome) in reached {
+        let _ = write!(out, "\n## {slug}\n\n{}\n", outcome.trim());
+    }
+    out
+}
+
+/// Compiles and runs one loop graph, and reports the state it ended in.
+///
+/// A free function rather than a method, so a lane can own it: the future a
+/// school is spawned as must not borrow the orchestrator.
+async fn run_compiled_loop(
+    graph: &tinyflows::model::WorkflowGraph,
+    capabilities: &tinyflows::caps::Capabilities,
+    problem: &str,
+) -> Result<solutions::SolutionState> {
+    let compiled = tinyflows::compiler::compile(graph).map_err(|error| {
+        tinyagents::TinyAgentsError::Graph(format!("the loop graph is invalid: {error}"))
+    })?;
+    let finished = tinyflows::engine::run(&compiled, serde_json::json!({}), capabilities)
+        .await
+        .map_err(|error| {
+            tinyagents::TinyAgentsError::Graph(format!("the loop graph failed: {error}"))
+        })?;
+    let accumulator = finished
+        .output
+        .pointer(&format!("/nodes/{}/state", workflow::LOOP_NODE))
+        .cloned()
+        .unwrap_or(serde_json::Value::Null);
+    // The judge runs on the way out, after the head has folded its last pass,
+    // so its score is in its own output and not in the accumulator. Reading
+    // only the accumulator would spend a whole agent run scoring the work and
+    // then report a state that had never heard of it.
+    let accumulator = finished
+        .output
+        .pointer(&format!("/nodes/{}/item/json", workflow::FINAL_JUDGE))
+        .cloned()
+        .unwrap_or(accumulator);
+    Ok(solutions::SolutionState::from_accumulator(
+        problem,
+        &accumulator,
+    ))
+}
+
+impl OrchestratorAgent {
     /// Starts the long-lived teams that work alongside the solution loop.
     ///
     /// Each gets its own budget and wall clock: `RunBudget` bounds a single
     /// agent run, and a team runs many, so a per-run bound says nothing about
     /// what the team as a whole costs. A team that exhausts its allowance stops
     /// and says so while the others carry on.
+    ///
+    /// One set of teams serves every school, so what a team finds is delivered
+    /// to *all* of `patterns`, and a drained directive to all of `directives`.
+    /// A single shared mailbox would not do: `Mailbox::collect` takes what is
+    /// there and leaves nothing, so the first school to ask would consume a
+    /// report meant for all of them, and the loss would be silent.
     fn spawn_support_teams(
         &self,
         problem: &str,
-        patterns: &solutions::Mailbox,
-        directives: &solutions::Mailbox,
+        patterns: &[solutions::Mailbox],
+        directives: &[solutions::Mailbox],
     ) -> Vec<teams::TeamHandle> {
         let mut handles = Vec::new();
         for (name, agent, completion, budget, brief) in standing_teams() {
@@ -345,8 +498,8 @@ impl OrchestratorAgent {
             }
             let subagents = self.subagents.clone();
             let workspace = self.workspace.clone();
-            let outbox = patterns.clone();
-            let direction = directives.clone();
+            let outbox = patterns.to_vec();
+            let direction = directives.to_vec();
             let tracer = self.tracer.clone();
             // What the pattern team has already looked at. Idleness has to be
             // decided *before* the agent runs: asking it to notice that

@@ -829,3 +829,99 @@ fn a_school_policy_sits_after_the_shared_policy_and_before_the_role_prompt() {
     assert!(shared < school, "the school policy preceded the shared one");
     assert!(school < role, "the role prompt preceded the school policy");
 }
+
+/// The board reaches the roles that decide what to do next, and no others.
+///
+/// A post is asserted rather than established — a hunch, a dead end, a lesson
+/// offered because it is unfinished — so it goes to the roles choosing the next
+/// move and is withheld from every role that weighs evidence or files sources.
+#[test]
+fn the_board_reaches_the_roles_that_decide_what_to_do_next() {
+    use super::{RolePrompts, board, schools};
+
+    let root = std::env::temp_dir().join(format!(
+        "math-agent-board-context-{}",
+        std::process::id()
+    ));
+    let _ = std::fs::create_dir_all(root.join("teams"));
+    let _ = std::fs::write(
+        root.join(board::PATH),
+        "# Board\n\n- rising-sea, dead-end: the sheaf route needs f D-finite and it is not\n",
+    );
+    let prompts =
+        RolePrompts::for_school(&root, &schools::ALL[1]).expect("the rising-sea prompts assemble");
+    let prompt_for = |role: &str| {
+        prompts
+            .by_role()
+            .into_iter()
+            .find(|(name, _)| *name == role)
+            .map(|(_, prompt)| prompt.to_string())
+            .unwrap_or_else(|| panic!("`{role}` has a prompt"))
+    };
+    let inventor = prompt_for("inventor");
+    assert!(
+        inventor.contains(board::PATH),
+        "the inventor is not sent the board"
+    );
+    assert!(
+        inventor.contains("needs f D-finite"),
+        "the board is listed but its contents never arrive"
+    );
+    assert!(
+        !prompt_for("judge").contains(board::PATH),
+        "the judge is scoring an attempt beside a sibling's unevidenced sentence"
+    );
+    let _ = std::fs::remove_dir_all(&root);
+
+    for role in [
+        "orchestrator",
+        "goals",
+        "inventor",
+        "reducer",
+        "weakener",
+        "reflection",
+        "pattern_finder",
+    ] {
+        assert!(
+            role_context(role).contains(&board::PATH),
+            "`{role}` decides what to do next and cannot see what the others found"
+        );
+    }
+    for role in ["judge", "scholar", "librarian", "searcher", "refuter"] {
+        assert!(
+            !role_context(role).contains(&board::PATH),
+            "`{role}` weighs evidence and must not be reading assertions beside it"
+        );
+    }
+}
+
+/// Only the three roles that report may post to the board.
+#[test]
+fn only_the_roles_that_report_may_post_to_the_board() {
+    let registry = default_registry(true).expect("the default registry builds");
+    let posts = |role: &str| {
+        registry
+            .get(role)
+            .unwrap_or_else(|| panic!("`{role}` is registered"))
+            .tools
+            .iter()
+            .any(|tool| tool == "post_board")
+    };
+    for role in ["reflection", "inventor", "goals"] {
+        assert!(posts(role), "`{role}` cannot tell the other schools anything");
+    }
+    for role in [
+        "judge",
+        "scholar",
+        "librarian",
+        "searcher",
+        "refuter",
+        "research",
+        "context_curator",
+    ] {
+        assert!(
+            !posts(role),
+            "`{role}` can post an assertion the run will read as a finding"
+        );
+    }
+}
