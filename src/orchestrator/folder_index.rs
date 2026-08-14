@@ -220,6 +220,16 @@ pub(super) struct FolderIndexTool {
 ///
 /// Best effort by contract. The description is a convenience; failing to write
 /// it must never fail the download that produced the file.
+///
+/// Lock-free by contract, too, and this is the one function in this module that
+/// is. Every caller reaches it from inside a ledger re-derivation — the
+/// `refresh` in [`super::claims`], [`super::threads`], [`super::backward`],
+/// [`super::weakened`], [`super::blueprint`], [`super::closure`],
+/// [`super::frontier`] and [`super::requests`] — and those run under
+/// [`super::worklock::writes`], already held by the tool call that started the
+/// cascade. [`tokio::sync::Mutex`] is not reentrant, so taking it here would
+/// stop the run rather than order it. The two tools below take it instead,
+/// because they are reached from a tool call and nothing else.
 pub(super) async fn record_description(
     documents: &WorkspaceDocuments,
     relative: &str,
@@ -452,6 +462,17 @@ impl Tool<()> for FolderIndexTool {
     }
 
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
+        // Both arms read an index, change one row of it, and write the whole
+        // file back. Describing two files in one folder at once is the ordinary
+        // case — a model issues several `describe_file` calls in a turn and the
+        // harness runs them concurrently — and unserialised the second write
+        // carries a table that was parsed before the first row existed.
+        //
+        // The lock is taken here, at the tool-call boundary, and nothing below
+        // takes it again. `record_description` above is the same
+        // read-modify-write reached from under an already-held lock, which is
+        // why it is a separate function rather than this one called internally.
+        let _guard = super::worklock::writes().await;
         let message = match self.kind {
             IndexToolKind::Describe => self.describe(&call).await?,
             IndexToolKind::Refresh => self.refresh(&call).await?,

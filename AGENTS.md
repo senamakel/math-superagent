@@ -32,6 +32,8 @@ evidence for it stays available.
   research tree, the scratch, and checkpointing.
 - [`docs/ledgers.md`](docs/ledgers.md) — the nine derived ledgers: what each
   holds, and the failure each was written to stop.
+- [`docs/schools.md`](docs/schools.md) — why several mathematicians run on one
+  problem, what each school is a bet on, and the locking that made it safe.
 
 Two pairs read a mathematician's method against this runtime and say what to
 build next. They are why several of the rules above exist, so a change to a
@@ -61,6 +63,49 @@ problem tests the runtime's reasoning rather than its ability to look an answer
 up. It is enforced by not registering the tool, not by asking the model to
 abstain: a prompt instruction is not a control. The workspace note tools stay
 available, so the agent can still record and recall its own findings.
+
+## Schools
+
+A *school* is one way of attacking a problem, and two or three of them run
+concurrently on one workspace. `chisel` is the runtime as it has always been —
+attack where it stands, compute first — and it is the default and the control:
+`MATH_AGENT_SCHOOLS` unset means `chisel` alone, and its prompt overlay is the
+empty string so its assembled prompts stay byte-identical to what preceded
+schools. `rising-sea` enlarges the setting instead of attacking the goal;
+`adversarial` tries to refute a statement before spending an attempt proving it.
+
+```sh
+./euler 1006 --schools chisel,rising-sea,adversarial
+./conjecture erdos-gyarfas --schools chisel,rising-sea
+```
+
+A school is four things and must stay four things: a method-policy overlay
+layered *after* the shared policy and never replacing it, optional per-role
+overlays, a bench, and its `Thresholds`. It is not a second loop, a second
+graph, a second workspace, or a second set of roles — all of those are shared,
+because the point is several mathematicians in one workspace rather than several
+runtimes in one container.
+
+Three rules hold:
+
+- **The control does not move.** Anything that changes what `chisel` sends is a
+  change to the baseline every other school is measured against, and the tests
+  assert byte-identity rather than trusting it.
+- **Thresholds are a struct, not a second set of constants.** `route` and the
+  jq the engine runs both read one `Thresholds`, and `orchestrator::parity`
+  proves they agree for *every* school, exhaustively. A school may not move
+  `blocked`: a provider failure is not a methodological question.
+- **A board post is asserted, never established.** `teams/BOARD.md` is derived
+  from an append-only queue and is never an input to a derived ledger. The
+  posting school is baked into the tool at registration rather than being an
+  argument, so no school can post as another.
+
+Writes are serialised by `src/orchestrator/worklock.rs`, whose one rule is that
+a lock is taken at a tool-call boundary and **never** below one — the write path
+is a cascade and `tokio::sync::Mutex` is not reentrant.
+
+The rationale, and the mathematicians behind each school, are in
+[`docs/schools.md`](docs/schools.md).
 
 ## Running and watching a run
 

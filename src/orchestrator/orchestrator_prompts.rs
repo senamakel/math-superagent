@@ -350,21 +350,83 @@ fn role_context(role: &str) -> &'static [&'static str] {
     }
 }
 
+/// Per-role prompt overlays, keyed by school slug and role name.
+///
+/// A table rather than a directory walk, because these are compiled-in assets:
+/// probing the filesystem at startup would make a role's brief depend on what
+/// happens to be beside the binary, and a typo in a slug would read as "this
+/// school says nothing extra to that role" rather than failing to build. An
+/// entry is added here with an `include_str!` beside it; there are none yet,
+/// and a school whose whole policy fits in its method-policy overlay needs
+/// none.
+const SCHOOL_ROLE_OVERLAYS: [(&str, &str, &str); 0] = [];
+
+/// The overlay `slug` writes for `role` in particular, or nothing.
+fn school_role_overlay(slug: &str, role: &str) -> &'static str {
+    SCHOOL_ROLE_OVERLAYS
+        .iter()
+        .find(|(school, name, _)| *school == slug && *name == role)
+        .map_or("", |(_, _, overlay)| *overlay)
+}
+
+/// What a school adds to `role`'s brief, ready to prefix the built-in prompt.
+///
+/// Returns the empty string when the school says nothing — which is the whole
+/// of [`schools::ALL`]'s control school, and is why this returns a prefix
+/// rather than a section: an empty overlay must add nothing at all, not a blank
+/// line and not a separator, or `chisel`'s assembled prompts stop being
+/// byte-identical to the ones the runtime sent before schools existed.
+///
+/// It sits *after* the shared method policy and before the role prompt.
+/// [`workspace_prompt`] puts the shared policy first because the provider cache
+/// is keyed on that prefix, and a school is per-run text: leading with it would
+/// give every school its own cache namespace and lose the one identical opening
+/// block every role in every run shares.
+fn school_layer(school: &schools::School, role: &str) -> String {
+    let mut layer = String::new();
+    for part in [school.policy, school_role_overlay(school.slug, role)] {
+        let part = part.trim();
+        if !part.is_empty() {
+            layer.push_str(part);
+            layer.push_str("\n\n");
+        }
+    }
+    layer
+}
+
 impl RolePrompts {
     /// Loads each role's prompt: built-in policy, the workspace context that
     /// role is entitled to, then its `prompts/<role>.md` guidance.
+    ///
+    /// The control school's prompts, which are the prompts this runtime sent
+    /// before schools existed. Shares its whole body with
+    /// [`Self::for_school`] rather than restating it, so the two cannot drift.
     ///
     /// # Errors
     ///
     /// Returns an error when a workspace file is unreadable, oversized, or not
     /// UTF-8. A file that is simply absent is skipped.
     fn load(workspace: &Path) -> Result<Self> {
+        Self::for_school(workspace, &schools::ALL[0])
+    }
+
+    /// The same prompts, with `school`'s policy layered into every one.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when a workspace file is unreadable, oversized, or not
+    /// UTF-8. A file that is simply absent is skipped.
+    fn for_school(workspace: &Path, school: &schools::School) -> Result<Self> {
         let role = |name: &str, base: &str| -> Result<String> {
             let mut files: Vec<&str> = UNIVERSAL_CONTEXT.to_vec();
             files.extend_from_slice(role_context(name));
             let context = load_workspace_files(workspace, &files)?;
             let guidance = load_workspace_files(workspace, &[&format!("prompts/{name}.md")])?;
-            Ok(workspace_prompt(base, &context, &guidance))
+            // Concatenated rather than branched: an empty layer leaves `base`
+            // exactly as it was, and `workspace_prompt` trims what it is given,
+            // so the control school's output is unchanged to the byte.
+            let base = format!("{}{base}", school_layer(school, name));
+            Ok(workspace_prompt(&base, &context, &guidance))
         };
         Ok(Self {
             orchestrator: role("orchestrator", ORCHESTRATOR_PROMPT)?,

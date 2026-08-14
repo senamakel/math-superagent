@@ -35,10 +35,16 @@
 use serde_json::{Value, json};
 use tinyflows::model::{Edge, Node, NodeKind, WorkflowGraph};
 
-use super::solutions::{
-    BLOCKED_THRESHOLD, COMPUTATIONAL_THRESHOLD, MAX_ATTEMPTS, STUCK_THRESHOLD,
-    UNVERIFIED_THRESHOLD,
-};
+use super::schools::Thresholds;
+
+/// The argument every step node carries its school's bounds in.
+///
+/// The graph is where they travel, because the graph is already per-school:
+/// [`solution_loop_for`] builds one for each, and a step that had to be told
+/// which school it belonged to some other way would be a second answer to a
+/// question the document already answers. See [`thresholds_json`] for the shape
+/// and [`thresholds_from`] for the read.
+pub(super) const THRESHOLDS_ARG: &str = "thresholds";
 
 /// The evaluation arms, and the barrier they converge on.
 ///

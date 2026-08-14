@@ -4,8 +4,11 @@
 /// what the run learned, and it is the only thing that can end the loop. The
 /// judge asks a narrower question — was this attempt *conducted* in a way the
 /// next one should inherit — and its expensive answer is bounded by
-/// [`MAX_RESTARTS`], because a judge that dislikes the run's whole direction
-/// could otherwise reset it until the attempt ceiling stopped the loop.
+/// [`Thresholds::max_restarts`], because a judge that dislikes the run's whole
+/// direction could otherwise reset it until the attempt ceiling stopped the
+/// loop. The bound is the school's rather than [`MAX_RESTARTS`] directly, so a
+/// school with a longer leash is one value rather than a second enforcement
+/// site; the control school's value *is* that constant.
 ///
 /// It runs before the reflection rather than after, so a restart costs the run
 /// a judge call rather than a judge call plus a reflection it is about to
@@ -25,15 +28,17 @@ pub(in crate::orchestrator) async fn judge_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
+    thresholds: &Thresholds,
     mut state: SolutionState,
 ) -> SolutionState {
+    let ceiling = thresholds.max_attempts;
     let prompt = format!(
         "Judge how this attempt was conducted.\n\nProblem:\n{}\n\n\
-         This is attempt {} of at most {MAX_ATTEMPTS}. {}\n\n\
+         This is attempt {} of at most {ceiling}. {}\n\n\
          The attempt reported:\n{}\n{}",
         state.problem,
         state.attempts,
-        if state.restarts >= MAX_RESTARTS {
+        if state.restarts >= thresholds.max_restarts {
             "The run has already been restarted as often as it may be, so RESTART is no \
              longer available to you: score, and PROCEED or STEER."
         } else {
@@ -49,7 +54,7 @@ pub(in crate::orchestrator) async fn judge_step(
         state.scores.push(score);
     }
     let mut verdict = judge_verdict(&reply);
-    if verdict == Verdict::Restart && state.restarts >= MAX_RESTARTS {
+    if verdict == Verdict::Restart && state.restarts >= thresholds.max_restarts {
         // The ceiling outranks the verdict, exactly as the attempt ceiling
         // outranks the stuck rule: a bound that a model can talk its way past
         // is not a bound.
@@ -542,6 +547,7 @@ pub(in crate::orchestrator) async fn reflect_step(
     workspace: Option<&Path>,
     memory: &VectorStore,
     beside: &Beside,
+    thresholds: &Thresholds,
     mut state: SolutionState,
 ) -> SolutionState {
     let prompt = format!(
@@ -579,7 +585,7 @@ pub(in crate::orchestrator) async fn reflect_step(
     let reflection = delegate(subagents, "reflection", prompt).await;
     log_reflection(memory, state.attempts, &reflection, tracer).await;
 
-    let progressed = record_verdict(&reflection, tracer, workspace, &mut state);
+    let progressed = record_verdict_under(&reflection, tracer, workspace, thresholds, &mut state);
     let lesson = extract_lesson(&reflection);
     tell_teams(&beside.teams, &state, progressed, &lesson);
     state.lessons.push(lesson);
@@ -894,10 +900,28 @@ pub(in crate::orchestrator) fn open_library(
 /// explicit positive verdict, an executable artifact on disk, and a reflection
 /// that does not contradict itself by reporting no progress. Each was added
 /// after a live run ended on the case it rules out.
+/// Reads a reflection under the control school's bounds.
+///
+/// The bounds reach exactly one line of this function — the tracer note that
+/// says where the run goes next — so a caller with no school in scope loses
+/// nothing by taking them. `parse_reflection` is that caller, and it passes no
+/// tracer at all: the line is never rendered there. Every caller that *does*
+/// trace one belongs to a school and goes through [`record_verdict_under`].
 pub(in crate::orchestrator) fn record_verdict(
     reflection: &str,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
+    state: &mut SolutionState,
+) -> bool {
+    record_verdict_under(reflection, tracer, workspace, &Thresholds::chisel(), state)
+}
+
+/// Reads a reflection into the counters, under one school's bounds.
+pub(in crate::orchestrator) fn record_verdict_under(
+    reflection: &str,
+    tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
+    thresholds: &Thresholds,
     state: &mut SolutionState,
 ) -> bool {
     let upper = reflection.to_uppercase();
@@ -1050,7 +1074,7 @@ pub(in crate::orchestrator) fn record_verdict(
                 Progress::Unstated => "kind unstated",
             },
             state.computational,
-            route(state)
+            route(state, thresholds)
         ));
     }
     progressed
