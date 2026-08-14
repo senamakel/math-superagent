@@ -56,49 +56,55 @@ const EXPLICIT_FOLD: &[(char, char)] = &[
     ('þ', 't'),
 ];
 
-/// Characters that separate tokens as well as whitespace does.
-///
-/// Every dash, not just the ASCII hyphen. Mathematics writes a two-name result
-/// with an **en dash** — `Hadwiger–Nelson`, `Erdős–Gyárfás` — and treating that
-/// as an intra-word character collapses the pair into one token, so a term
-/// written `Hadwiger Nelson` would never match the text that actually appears
-/// in a paper. This list is duplicated in `scripts/compile-screen`; the two
-/// must stay equal.
-const SEPARATORS: &[char] = &[
-    '-',        // hyphen-minus
-    '\u{2010}', // hyphen
-    '\u{2011}', // non-breaking hyphen
-    '\u{2012}', // figure dash
-    '\u{2013}', // en dash
-    '\u{2014}', // em dash
-    '\u{2015}', // horizontal bar
-    '\u{2212}', // minus sign
-    '/',
-    '_',
-];
-
 /// Splits text into the normalised tokens the digests are computed over.
 ///
-/// Case is folded; every dash separates, so `Hadwiger-Nelson`,
-/// `Hadwiger–Nelson` and `Hadwiger Nelson` all agree; every remaining
-/// non-alphanumeric character is dropped, which removes punctuation and —
-/// since Unicode combining marks are not alphanumeric — also completes the
-/// diacritic folding for text that arrives decomposed. Precomposed letters are
-/// folded by [`EXPLICIT_FOLD`] and by [`fold_precomposed`].
+/// **Every non-alphanumeric character separates.** That is the whole rule, and
+/// it is chosen over a list of separators because the alternatives silently
+/// lose matches in two directions at once. Mathematics writes a two-name result
+/// with an en dash — `Hadwiger–Nelson`, `Erdős–Gyárfás` — so a rule that splits
+/// only on the ASCII hyphen collapses the pair into one token and the term
+/// never matches a real paper. And an identifier arrives as `arXiv:1804.02385`,
+/// so a rule that *drops* punctuation inside a token welds it into
+/// `arxiv180402385`, which matches nothing either. Splitting on everything
+/// makes both work: the term and the text tokenise the same way, and a
+/// multi-token term is found as an n-gram.
+///
+/// Case is folded, and precomposed Latin letters are folded by
+/// [`EXPLICIT_FOLD`] and [`fold_precomposed`], so `Mihăilescu` and
+/// `MIHAILESCU` agree. Combining marks are not alphanumeric, so they separate
+/// and then vanish, which completes the folding for decomposed text.
+///
+/// This must stay in exact agreement with `normalise` in
+/// `scripts/compile-screen`.
 pub(super) fn tokenise(text: &str) -> Vec<String> {
-    text.split(|character: char| {
-        character.is_whitespace() || SEPARATORS.contains(&character)
-    })
-        .filter_map(|word| {
-            let token: String = word
-                .chars()
-                .flat_map(char::to_lowercase)
-                .map(fold_precomposed)
-                .filter(|character| character.is_alphanumeric())
-                .collect();
-            (!token.is_empty()).then_some(token)
-        })
+    let folded: String = text
+        .chars()
+        .flat_map(char::to_lowercase)
+        .map(fold_precomposed)
+        // Combining marks are DROPPED, not treated as separators. Text that
+        // arrives decomposed — some PDF text layers do — writes `ă` as `a`
+        // plus a combining breve, and the breve is not alphanumeric, so
+        // splitting on it would cut `mihailescu` into `miha` and `ilescu`.
+        .filter(|character| !is_combining(*character))
+        .collect();
+    folded
+        .split(|character: char| !character.is_alphanumeric())
+        .filter(|token| !token.is_empty())
+        .map(ToOwned::to_owned)
         .collect()
+}
+
+/// Whether a character is a Unicode combining mark.
+///
+/// The four blocks that carry Latin diacritics. This is not a complete
+/// combining-mark table and does not need to be: the script's NFKD pass is
+/// what produces marks in the compiled terms, and it produces them only for
+/// letters in the ranges [`fold_precomposed`] covers.
+fn is_combining(character: char) -> bool {
+    matches!(
+        character as u32,
+        0x0300..=0x036F | 0x1AB0..=0x1AFF | 0x1DC0..=0x1DFF | 0x20D0..=0x20FF
+    )
 }
 
 /// Folds one precomposed Latin letter to its base.

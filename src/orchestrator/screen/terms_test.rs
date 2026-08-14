@@ -36,10 +36,24 @@ const PINNED: &[(&str, &[&str], &str)] = &[
     ),
     (
         "1804.02385",
-        &["180402385"],
-        "e738f4b3ca7bdfe202ae8eb157aa44ca",
+        &["1804", "02385"],
+        "8867919690f1129942439532f57985c9",
     ),
 ];
+
+#[test]
+fn an_identifier_matches_inside_a_citation() {
+    // The reason every non-alphanumeric character separates: a term compiled
+    // from `1804.02385` has to be found in text that writes it
+    // `arXiv:1804.02385`. Welding punctuation away instead of splitting on it
+    // would produce `arxiv180402385` here and match nothing.
+    let salt = "s";
+    let needle = digest(salt, &tokenise("1804.02385"));
+    assert!(
+        digests_of(salt, "see arXiv:1804.02385 for the construction", 10).contains(&needle),
+        "an arXiv identifier must match inside a citation"
+    );
+}
 
 #[test]
 fn normalisation_agrees_with_the_compiler_script() {
@@ -130,6 +144,17 @@ fn an_ngram_longer_than_the_text_is_not_searched() {
         3,
         "two tokens yield exactly two unigrams and one bigram"
     );
+}
+
+#[test]
+fn a_combining_mark_does_not_split_a_token() {
+    // `Mihăilescu` written in decomposed form, as some PDF text layers emit it.
+    // Combining marks are dropped rather than treated as separators; treating
+    // them as separators cuts the name into `miha` and `ilescu` and the term
+    // stops matching, silently.
+    let decomposed = "Miha\u{0306}ilescu";
+    assert_eq!(tokenise(decomposed), vec!["mihailescu".to_string()]);
+    assert_eq!(tokenise("Mihăilescu"), tokenise(decomposed));
 }
 
 #[test]

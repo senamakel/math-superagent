@@ -55,13 +55,6 @@ EXPLICIT_FOLD = {
     "ı": "i", "ŧ": "t", "æ": "a", "ß": "s", "þ": "t",
 }
 
-# Characters that separate tokens as well as whitespace does — every dash, not
-# just the ASCII hyphen. Mathematics writes a two-name result with an en dash
-# (`Hadwiger–Nelson`, `Erdős–Gyárfás`), and treating that as an intra-word
-# character collapses the pair into a single token, so a term written
-# `Hadwiger Nelson` would never match the text that appears in a paper.
-# Duplicated as `SEPARATORS` in src/orchestrator/screen/terms.rs; keep equal.
-SEPARATORS = "-‐‑‒–—―−/_"
 
 
 def normalise(text: str) -> list[str]:
@@ -70,17 +63,50 @@ def normalise(text: str) -> list[str]:
     `Mihăilescu` and `MIHAILESCU` both become `["mihailescu"]`, which is what
     lets the compiled hash match text the screen has never seen.
 
+    Every non-alphanumeric character separates. That rule is chosen over a list
+    of separators because the alternatives lose matches in two directions at
+    once: mathematics writes `Hadwiger–Nelson` with an en dash, so splitting
+    only on the ASCII hyphen welds the pair into one token; and an identifier
+    arrives as `arXiv:1804.02385`, so dropping punctuation *inside* a token
+    welds it into `arxiv180402385`. Splitting on everything makes both work.
+
     This must stay in exact agreement with `tokenise` in
     `src/orchestrator/screen/terms.rs`. A divergence does not fail loudly — the
     screen simply stops matching — so both sides keep the rules small and
     identical, and the Rust tests pin digests produced by this function.
+
+    Regenerate those pins with:
+
+        python3 - <<'EOF'
+        from importlib.machinery import SourceFileLoader
+        cs = SourceFileLoader("cs", "scripts/compile-screen").load_module()
+        SALT = "pinned-fixture-salt-0123456789abcdef"
+        for s in ["de Grey", "Mihăilescu"]:
+            t = cs.normalise(s); print(s, t, cs.digest(SALT, t))
+        EOF
     """
     lowered = "".join(EXPLICIT_FOLD.get(c, c) for c in text.lower())
-    folded = unicodedata.normalize("NFKD", lowered)
-    stripped = "".join(c for c in folded if not unicodedata.combining(c))
-    return ["".join(ch for ch in tok if ch.isalnum())
-            for tok in stripped.replace("-", " ").split()
-            if any(ch.isalnum() for ch in tok)]
+    decomposed = unicodedata.normalize("NFKD", lowered)
+    # Combining marks are DROPPED, not treated as separators. NFKD turns `ă`
+    # into `a` plus a combining breve, and the breve is not alphanumeric, so
+    # splitting on it would cut `mihailescu` into `miha` and `ilescu`.
+    stripped = "".join(c for c in decomposed if not unicodedata.combining(c))
+    return ["".join(run) for run in _runs(stripped)]
+
+
+def _runs(text: str) -> list[list[str]]:
+    """Maximal runs of alphanumeric characters, in order."""
+    runs: list[list[str]] = []
+    current: list[str] = []
+    for character in text:
+        if character.isalnum():
+            current.append(character)
+        elif current:
+            runs.append(current)
+            current = []
+    if current:
+        runs.append(current)
+    return runs
 
 
 def digest(salt: str, tokens: list[str]) -> str:
