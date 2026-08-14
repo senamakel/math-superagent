@@ -6,4 +6,14 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `PE1006-factors-dependent-slop-only` | Two Sturmian words have the same set of factors iff they have the same slope; the length-k factor set depends only on slope, not on intercept or finite truncation. | yes | asserted | `research/notes/governing-theory-sturmian.md` |
+| `PE1006-kplus1-FACT` | The infinite Fibonacci word F (fixed point of 0->01,1->0, slope (3-sqrt5)/2) is a Sturmian word, so it has exactly k+1 distinct factors of length k for every k>=1; and this equals the set of the problem's length-k… | yes | asserted | `research/notes/governing-theory-sturmian.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `PE1006-factors-dependent-slop-only` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
+- `PE1006-kplus1-FACT` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here

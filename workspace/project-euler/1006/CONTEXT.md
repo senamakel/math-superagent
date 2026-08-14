@@ -1,54 +1,49 @@
 # Shared context
 
-What this run knows, in its own words. The context curator writes this file and
-is the only role that writes it; nearly every other role is sent it on every
-model call. So what is here is what the run knows without going to look, and
-what is missing is what each agent rediscovers separately.
-
-It carries what an agent would otherwise rebuild from disk, from the note store,
-or from a session it was not present for: established results with their basis,
-approaches that died and why, what the computed numbers look like, what durable
-memory relates this problem to, and where two accounts disagree. It is not a
-catalogue of files — `research/INDEX.md` is that — and not a narration of what
-agents did.
-
-**It has a token budget** (`MATH_AGENT_CONTEXT_TOKENS`, 10,000 by default). The
-file is re-sent on every model call in every role that reads it, so length here
-is a bill the whole run pays many times over; a brief past its budget is cut
-where it exceeds it on the way into a prompt, with a notice saying so. Link the
-file that still holds any detail compressed away — source notes under
-`research/summaries/`, untouched full texts under `research/sources/`,
-reflections, threads. Durable findings belong in Cognee. A statement nobody can
-trace to a source is worth less than no statement.
-
 ## Established
 
-What this run may treat as known, each marked proved, computed and checked,
-sourced, or conjectured, with a link to what establishes it.
+Nothing yet. The workspace is scaffold-only: all READMEs, role prompts, and empty
+template folders (`research/approaches`, `backward`, `threads`; `code/lib`, `code/out`).
+`research/CLAIMS.md` reads "No claims recorded yet". No claim id exists. No number
+has been computed. `GOAL.md` and `TASKS.md` are unedited placeholders.
+
+The only content this run holds is the statement at `/workspace/problem.md`.
+
+**Problem restated** (PE1006). $S_0="0"$, $S_1="01"$, $S_n=S_{n-1}S_{n-2}$.
+A *Fibonacci subword* = a contiguous substring of some $S_n$. For each $k\ge1$ there
+are exactly $k+1$ distinct Fibonacci subwords of length $k$. Interpret each as a
+decimal number (leading zeros dropped) and let $\Psi(k)$ = sum of their squares.
+Oracle values: $\Psi(3)=20302$ (subwords 001,010,100,101 → 1²+10²+100²+101²);
+$\Psi(10)\equiv10699667\pmod{101001001}$. Find $\Psi(10^{18})\bmod 101001001$.
+
+These oracle values are the test targets; both are as stated, not yet reproduced by
+any program.
 
 ## Ruled out
 
-Approaches that failed, and the reason each failed. A known dead end is a
-result, and this section is what stops the run paying for one twice.
+Nothing. No approach has been tried, so no dead end exists yet. Do not let the
+inventor treat any line as pre-explored.
 
 ## Numbers
 
-Computed terms, the range over which the oracle and the method agree, the size
-of the object at the bound in the statement.
+Only the statement's given values (Ψ(3)=20302, Ψ(10)≡10699667 mod 101001001). No
+computed or independently confirmed terms.
 
 ## Recalled
 
-What durable memory holds about this problem or problems of its shape, marked as
-recalled rather than as this run's own finding, with hypotheses checked against
-this problem before being relied on.
+Nothing. `recall_memory`/`recall_scratch` return no prior or related-run notes on
+PE1006, Fibonacci subwords, or Ψ. This appears to be a first run on the problem.
 
 ## Contradictions
 
-Where sources disagree, where a source contradicts recalled memory, or where a
-computation contradicts a conjecture. The most valuable rows here: record them
-rather than silently picking a side.
+None recorded.
 
 ## Gaps
 
-What the run still needs and has not found. State a gap precisely enough to be a
-research request rather than a mood.
+- Definition must be turned into an executable oracle: `code/brute.py` collecting
+  distinct length-k substrings over finite $S_n$, reproducing Ψ(3)=20302 and
+  Ψ(10)≡10699667 first.
+- The governing structure (the family of the $k+1$ distinct length-$k$ Fibonacci
+  subwords, and a way to sum their squares without enumerating $10^{18}$ of them)
+  is unstated and uninvestigated. Bound $k=10^{18}$ defeats any per-subword method.
+- `GOAL.md` and `TASKS.md` need writing.

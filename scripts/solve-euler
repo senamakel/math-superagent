@@ -118,7 +118,7 @@ else
     research_clause="Use research for mathematical definitions, named theorems, and standard algorithms, and cite the returned URLs. Never search for a published Project Euler answer, solution, or forum thread; searching for the answer invalidates the run."
 fi
 
-extra_instructions=$*
+extra_instructions=$remaining
 task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.md.
 
 Work in this order. Steps 1 and 2 together should take a small part of the run; most of it belongs in 3 and 4.

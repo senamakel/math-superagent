@@ -58,6 +58,27 @@ case "$slug" in
         ;;
 esac
 
+# A second pass over what follows the slug, because everything there is free-text
+# instructions and a flag written among them would otherwise be folded into them
+# silently — starting a run that looks normal and is not the one that was asked
+# for. See the same block in `solve-euler`, where it was found.
+remaining=""
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --no-research) research=off; shift ;;
+        --research) research=on; shift ;;
+        --schools)
+            if [ "$#" -lt 2 ]; then
+                usage
+                exit 2
+            fi
+            schools=$2
+            shift 2
+            ;;
+        *) remaining="$remaining${remaining:+ }$1"; shift ;;
+    esac
+done
+
 # A conjecture takes the same wall clock as anything else, and the twelve hours
 # that used to be set here is the reason to say so explicitly.
 #
@@ -111,7 +132,7 @@ else
     method="Choose the line of attack the problem calls for and say which one you have chosen and why. Reason about the structure a counterexample or a solution must have, and use every other capability in service of that argument rather than instead of it."
 fi
 
-extra_instructions=$*
+extra_instructions=$remaining
 task="Attack the open conjecture stated in /workspace/problem.md. Your objective and the criteria that end this run are in /workspace/GOAL.md. Read both before doing anything else.
 
 This is an open problem. It has resisted specialists for decades, so the working assumption is that you will not prove it, and the deliverable is a genuine partial result stated exactly rather than a claim of the whole. Claiming the conjecture on an argument that has not survived attack is the one outright failure available here.
