@@ -51,12 +51,22 @@ use super::solutions::{
 /// than one: the goals child decides whether this cycle decomposes, and
 /// `goal_apply` folds what it decided back onto the loop's own path. It is the
 /// branch's last node that converges, so `goal_apply` joins the list below.
-pub(super) const EVAL_ARMS: [&str; 4] = [
-    "judge",
-    "reflect",
-    "eval_patterns",
-    "eval_invention",
-];
+pub(super) const EVAL_ARMS: [&str; 3] = ["reflect", "eval_patterns", "eval_invention"];
+
+/// The node that scores the run, once, after the loop has finished.
+///
+/// Not an evaluation arm, and the difference is what the judge is *for*. The
+/// reflection asks whether the answer is right and can end the run; the judge
+/// asks whether the work was conducted in a way to be inherited. Asked after
+/// every attempt that was a per-pass cost paid for a per-pass steer — and the
+/// steer only reached anything because a further attempt followed it.
+///
+/// Asked once at the end it is an assessment of the whole run, which is the
+/// question a reader of the outcome actually has. Mid-flight judgement has not
+/// been lost: the standing `review` team spawns a judge against the workspace as
+/// it stands and posts the verdict into the mailbox the next attempt drains, on
+/// its own cadence rather than on every pass.
+pub(super) const FINAL_JUDGE: &str = "judge";
 
 /// The arm that returns before its work does.
 ///
@@ -431,7 +441,6 @@ pub(super) fn solution_loop(
         step("attempt"),
         // Stage three, and the reason this graph changed shape. Each of these
         // reads the attempt and nothing else.
-        step_with("judge", ATTEMPT_OUTPUT, &Value::Null),
         step_with("reflect", ATTEMPT_OUTPUT, &Value::Null),
         step_with("eval_patterns", ATTEMPT_OUTPUT, &Value::Null),
         step_with("eval_invention", ATTEMPT_OUTPUT, &Value::Null),
@@ -463,6 +472,12 @@ pub(super) fn solution_loop(
         // genuinely an escalation is blocking on the literature the run has been
         // gathering in the background rather than attempting without it.
         step_with("diversify_library", BODY_STATE, &Value::Null),
+        step_as(
+            FINAL_JUDGE,
+            "judge",
+            &json!(format!("=.nodes.{LOOP_NODE}.state")),
+            &Value::Null,
+        ),
         node(PASS_NODE, NodeKind::Transform, Value::Null),
         node("report", NodeKind::Transform, Value::Null),
     ];
@@ -474,7 +489,10 @@ pub(super) fn solution_loop(
         edge(SEED_GOALS_NODE, "main", SEED_APPLY_NODE),
         edge(SEED_APPLY_NODE, "main", LOOP_NODE),
         edge(LOOP_NODE, "body", "attempt"),
-        edge(LOOP_NODE, "done", "report"),
+        // The run's last act, on the way out. It reads the accumulator because
+        // by here that is the finished run: the head has folded every pass.
+        edge(LOOP_NODE, "done", FINAL_JUDGE),
+        edge(FINAL_JUDGE, "main", "report"),
         // The backward branch is two nodes, so it fans out from the attempt like
         // the others and converges from its own last node.
         edge("attempt", "main", GOALS_NODE),

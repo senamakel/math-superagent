@@ -41,7 +41,7 @@ pub(super) const STATE_INPUT: &str = "state";
 /// The node that reads the workspace.
 pub(super) const CONTEXT_NODE: &str = "context";
 
-/// The node that goes looking for what the workspace does not have.
+/// The node that starts the search for what the workspace does not have.
 pub(super) const SURVEY_NODE: &str = "survey";
 
 /// Builds one node.
@@ -69,10 +69,10 @@ fn edge(from: &str, to: &str) -> Edge {
 
 /// Assembles the research workflow.
 ///
-/// The survey is the same `diversify_library` step the loop escalates to when
-/// it gets stuck, run here against the context the curator just established.
-/// One step, two callers: a run should not have two different ideas of what
-/// "gather the literature" means depending on when it asks.
+/// The survey is the same `eval_library` step the loop runs after every attempt:
+/// it spawns the sweep and hands the state straight back. One step, two callers,
+/// so a run does not have two different ideas of what "gather the literature"
+/// means depending on when it asks.
 #[must_use]
 pub(super) fn research_workflow() -> WorkflowGraph {
     let nodes = vec![
@@ -95,7 +95,7 @@ pub(super) fn research_workflow() -> WorkflowGraph {
             json!({
                 "slug": super::loop_steps::TOOL,
                 "args": {
-                    "step": "diversify_library",
+                    "step": "eval_library",
                     "state": format!("=.nodes.{CONTEXT_NODE}.item.json"),
                 },
             }),

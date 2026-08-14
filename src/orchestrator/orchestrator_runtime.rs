@@ -259,6 +259,14 @@ impl OrchestratorAgent {
             .pointer(&format!("/nodes/{}/state", workflow::LOOP_NODE))
             .cloned()
             .unwrap_or(serde_json::Value::Null);
+        // The judge runs on the way out, after the head has folded its last
+        // pass, so its score is in its own output and not in the accumulator.
+        // Reading only the accumulator would spend a whole agent run scoring the
+        // work and then report a state that had never heard of it.
+        let accumulator = output
+            .pointer(&format!("/nodes/{}/item/json", workflow::FINAL_JUDGE))
+            .cloned()
+            .unwrap_or(accumulator);
         Ok(solutions::SolutionState::from_accumulator(problem, &accumulator).outcome())
     }
 
