@@ -1,28 +1,4 @@
 
-/// Whether this run drives the loop with the workflow engine.
-///
-/// Opt-in, and it stays opt-in for a release. The state graph is what every
-/// live run so far has used, and the workflow path is proven equivalent by
-/// `orchestrator::parity` and by an end-to-end test on real capabilities —
-/// which is a strong argument and still not the same thing as an hour of live
-/// mathematics. An unrecognised value selects the state graph rather than
-/// failing: an operator who mistypes the variable should get the proven path,
-/// not a stopped run.
-fn workflow_engine_selected() -> bool {
-    selects_workflow_engine(std::env::var("MATH_AGENT_ENGINE").ok().as_deref())
-}
-
-/// Whether `value` names the workflow engine.
-///
-/// Split from the read above so it can be exercised without setting a
-/// process-wide environment variable from a test — the same reason
-/// `with_concurrency` exists beside `new`. Under Rust 2024 `set_var` is also
-/// `unsafe`, which this crate forbids outright, so a test that mutated the
-/// environment could not be written here at all.
-fn selects_workflow_engine(value: Option<&str>) -> bool {
-    value.is_some_and(|engine| engine.trim().eq_ignore_ascii_case("workflow"))
-}
-
 impl OrchestratorAgent {
     /// Loads provider configuration and assembles the built-in registry.
     ///
@@ -166,11 +142,20 @@ impl OrchestratorAgent {
     /// failing specialist becomes a lesson rather than a failure.
     pub async fn solve(&self, problem: impl Into<String>) -> Result<String> {
         let problem = problem.into();
-        if workflow_engine_selected() {
-            self.tracer
-                .note("solution loop: running on the workflow engine (MATH_AGENT_ENGINE=workflow)");
-            return self.solve_on_workflow(&problem).await;
-        }
+        self.solve_on_workflow(&problem).await
+    }
+}
+
+/// Everything below was the state-graph loop's entry point.
+#[allow(dead_code)]
+mod removed_state_graph_entry {
+    //! Placeholder — see the deletion below.
+}
+
+impl OrchestratorAgent {
+    #[allow(dead_code)]
+    async fn unused(&self) {
+        let problem = String::new();
         let state = solutions::SolutionState::new(problem.clone());
         // The support teams run *beside* the loop, not inside it. Everything
         // they do — gathering sources, digesting them, keeping the workspace
