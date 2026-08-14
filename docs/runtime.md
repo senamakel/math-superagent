@@ -36,7 +36,8 @@ src/
 examples/
 ├── orchestrator.rs     # Docker runtime entry point
 └── hello_agent.rs      # direct provider example
-vendor/tinyagents/      # pinned upstream TinyAgents checkout
+vendor/tinyagents/      # pinned upstream TinyAgents checkout (one agent turn)
+vendor/tinyflows/       # pinned upstream TinyFlows checkout (the state graph)
 agent                   # user-facing helper
 euler                   # Project Euler problem-number wrapper
 compose.yaml            # agent and Qdrant services

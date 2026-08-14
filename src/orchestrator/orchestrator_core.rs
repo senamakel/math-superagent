@@ -1,9 +1,16 @@
 
 mod approaches;
+mod authoring;
 pub(crate) mod async_subagents;
 mod backward;
+mod caps;
 mod checkpoint;
 mod claims;
+// The renderer writes files and pulls in raster encoders, so it is compiled
+// only when somebody asks to draw the loop.
+#[cfg(feature = "graph-debug")]
+mod diagram;
+mod definitions;
 mod digest;
 mod documents;
 mod dossier;
@@ -11,18 +18,28 @@ mod exec;
 mod folder_index;
 mod frontier;
 mod layout;
+mod loop_steps;
 mod oeis;
 mod patch;
+// Test-only, and deliberately so: this exists to compare the two engines'
+// decisions, and nothing a run does should ever call it.
+#[cfg(test)]
+mod parity;
 mod paths;
 mod patterns;
 mod readable;
+mod reflection_tool;
 mod requests;
+mod runner;
+mod runs;
 mod shared_context;
 mod solutions;
 mod teams;
 mod text;
 mod threads;
 mod vector;
+mod workflow;
+mod workflow_goals;
 
 use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
@@ -63,7 +80,11 @@ use vector::{
     VectorStore,
 };
 
+pub use authoring::WorkflowCatalog;
+pub use runner::{SubagentAgentRunner, SubagentTaskRunner};
 pub use tinyagents::harness::host::AgentDefinition;
+#[cfg(feature = "graph-debug")]
+pub use diagram::render_solution_loop;
 
 /// Specialists the goals agent may delegate to.
 const SPECIALISTS: [&str; 13] = [
@@ -296,6 +317,91 @@ pub struct OrchestratorAgent {
     tracer: Arc<RunTracer>,
     workspace: PathBuf,
     memory: VectorStore,
+}
+
+impl OrchestratorAgent {
+    /// This orchestrator's specialists, offered to `TinyFlows` as background
+    /// work a workflow can start and not wait for.
+    ///
+    /// The registry is already populated when this is called, so the runner
+    /// starts exactly the roles this orchestrator knows — a workflow cannot
+    /// spawn a specialist that was never registered, and finds that out at the
+    /// spawn rather than at a gate.
+    ///
+    /// Public because the caller is outside this crate by definition: it is a
+    /// host assembling `TinyFlows` capabilities for a workflow run. Nothing in
+    /// this crate's own solution loop uses it — that loop is built on the
+    /// state-graph runtime, which has no `spawn` node. See
+    /// [`crate::agent::flow`].
+    #[must_use]
+    pub fn task_runner(&self) -> SubagentTaskRunner {
+        SubagentTaskRunner::new(self.subagents.clone())
+    }
+
+    /// The capability bundle a `TinyFlows` workflow run is handed.
+    ///
+    /// `tools` is the run's authority and is deliberately a parameter rather
+    /// than this orchestrator's whole registry: a `tool_call` node can reach
+    /// anything the bundle holds, so handing over everything would dissolve the
+    /// per-role tool boundaries this crate maintains. Pass exactly what the
+    /// workflow may use.
+    ///
+    /// State is kept under this orchestrator's workspace, and background work
+    /// goes to its specialists. Execution and outbound HTTP are refused — see
+    /// `caps::execution` and `caps::network` for why that is a decision rather
+    /// than an omission.
+    ///
+    /// The roles a workflow may name in an `agent_ref`, derived from this
+    /// orchestrator's own registry.
+    ///
+    /// Derived rather than restated, so a workflow's view of what a role may
+    /// touch cannot drift from the run's. See `definitions` for why that is the
+    /// one thing this must not be a second list of.
+    #[must_use]
+    pub fn workflow_agents(&self) -> Vec<tinyflows::model::AgentDefinition> {
+        definitions::workflow_agents(&self.registry)
+    }
+
+    /// The solution loop as a workflow graph.
+    ///
+    /// The same attempt/judge/reflect loop the run executes, authored
+    /// declaratively: a `loop` head carrying the counters as its accumulator,
+    /// `switch` nodes carrying the routing ladder as jq, and the diversify arms
+    /// as parallel successors converging on a `merge`. Every threshold in it is
+    /// the Rust constant, generated rather than typed, so the document and the
+    /// running loop cannot disagree about a number.
+    ///
+    /// Not yet what a run executes — the state graph still is. This is the
+    /// document that has to be proven equivalent to it first.
+    #[must_use]
+    pub fn workflow_graph(&self, problem: &str) -> tinyflows::model::WorkflowGraph {
+        workflow::solution_loop(problem, self.workflow_agents())
+    }
+
+    /// # Errors
+    ///
+    /// Returns an error when the provider model cannot be configured from the
+    /// environment.
+    pub fn workflow_capabilities(
+        &self,
+        tools: impl IntoIterator<Item = Arc<dyn Tool<()>>>,
+    ) -> Result<tinyflows::caps::Capabilities> {
+        // The reflection parser is added rather than left to the caller. It is
+        // not a tool a workflow author chooses — the loop cannot route without
+        // it, and a caller who forgot it would get a graph that runs, folds
+        // nulls, and never leaves the first verdict.
+        let tools = tools.into_iter().chain(std::iter::once(Arc::new(
+            reflection_tool::ParseReflection::new(Some(self.workspace.clone())),
+        )
+            as Arc<dyn Tool<()>>));
+        Ok(caps::bundle(
+            openrouter_model_from_env()?,
+            &self.workspace,
+            tools,
+            self.task_runner(),
+            SubagentAgentRunner::new(self.subagents.clone()),
+        ))
+    }
 }
 
 impl std::fmt::Debug for OrchestratorAgent {

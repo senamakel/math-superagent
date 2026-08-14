@@ -55,22 +55,17 @@ fn tell_teams(teams: &[TeamHandle], state: &SolutionState, progressed: bool, les
     }
 }
 
-/// Runs three arms concurrently to break a stalled loop.
+/// The gather-and-read arm: the librarian fetches, then the scholar reads.
 ///
-/// Two are gathering: the library arm fetches and reads, the pattern arm looks
-/// at the numbers already computed. The third is invention, and unlike the
-/// other two it is a conversation rather than an errand — see
-/// [`invention_arm`]. The three do not read each other, which is what lets them
-/// run at once.
-async fn diversify_step(
+/// Sequential inside one node on purpose. The scholar reads what the librarian
+/// just downloaded, so a digest written before the documents land describes
+/// nothing — and acquiring without reading is the gap this closes, since a
+/// downloaded paper nobody has read has cost the run context and taught it
+/// nothing. Two nodes would say the same thing with an extra edge.
+pub(in crate::orchestrator) async fn diversify_library_arm(
     subagents: &AsyncSubagentManager,
-    tracer: Option<&Arc<RunTracer>>,
-    workspace: Option<&Path>,
-    mut state: SolutionState,
-) -> SolutionState {
-    if let Some(tracer) = tracer {
-        tracer.note("solution loop: stuck, gathering new angles");
-    }
+    state: &SolutionState,
+) -> Vec<Finding> {
     let library = delegate(
         subagents,
         "librarian",
@@ -82,7 +77,34 @@ async fn diversify_step(
             state.problem,
             state.lesson_briefing()
         ),
-    );
+    )
+    .await;
+    let digest = delegate(
+        subagents,
+        "scholar",
+        format!(
+            "Read the reference library against this investigation and turn it into usable \
+             knowledge. For each source that bears on the problem, record what it actually \
+             establishes and what it implies here. Store source-backed durable findings with \
+             remember_memory. Say which sources do not help and why. Flag anything that \
+             contradicts recalled memory.\n\n\
+             Problem:\n{}\n\nJust gathered:\n{library}\n\n{}",
+            state.problem,
+            state.lesson_briefing()
+        ),
+    )
+    .await;
+    vec![
+        Finding::new(Slot::Library, library),
+        Finding::new(Slot::Digest, digest),
+    ]
+}
+
+/// The structure arm: what the numbers this run has already produced show.
+pub(in crate::orchestrator) async fn diversify_pattern_arm(
+    subagents: &AsyncSubagentManager,
+    state: &SolutionState,
+) -> Vec<Finding> {
     let patterns = delegate(
         subagents,
         "pattern_finder",
@@ -93,48 +115,42 @@ async fn diversify_step(
              and say plainly that they are conjectures.\n\nProblem:\n{}",
             state.problem
         ),
-    );
-    let invention = invention_arm(subagents, workspace, &state);
-    // Gathering and digesting are one sequential arm, run concurrently with
-    // the other two. The scholar has to follow the librarian rather than join
-    // it: it reads what was just downloaded, and a digest written before the
-    // documents land describes nothing. Acquiring without reading is the gap
-    // this closes — a downloaded paper nobody has read has cost the run
-    // context and taught it nothing.
-    let reading = async {
-        let library = library.await;
-        let digest = delegate(
-            subagents,
-            "scholar",
-            format!(
-                "Read the reference library against this investigation and turn it into usable \
-                 knowledge. For each source that bears on the problem, record what it actually \
-                 establishes and what it implies here. Store source-backed durable findings with \
-                 remember_memory. Say which sources do not help and why. Flag anything that \
-                 contradicts recalled memory.\n\n\
-                 Problem:\n{}\n\nJust gathered:\n{library}\n\n{}",
-                state.problem,
-                state.lesson_briefing()
-            ),
-        )
-        .await;
-        (library, digest)
-    };
-    let ((library, digest), patterns, (grounding, chosen)) =
-        tokio::join!(reading, patterns, invention);
+    )
+    .await;
+    vec![Finding::new(Slot::Patterns, patterns)]
+}
 
+/// The invention arm: propose, ground, converge.
+pub(in crate::orchestrator) async fn diversify_invention_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> Vec<Finding> {
+    let (grounding, chosen) = invention_arm(subagents, workspace, state).await;
+    vec![
+        Finding::new(Slot::Grounding, grounding),
+        Finding::new(Slot::Chosen, chosen),
+    ]
+}
+
+/// The barrier every arm converges on, and the only node that reads them all.
+///
+/// Reached once all three arms have arrived — that is what the waiting edges
+/// registering them buy — so it can fold the slots into one briefing without
+/// checking whether anything is still running.
+pub(in crate::orchestrator) fn diversify_merge(mut state: SolutionState) -> SolutionState {
     // Merged rather than assigned: the reflection that routed here has already
     // put this attempt's pattern analysis, and possibly a literature rescue,
     // into the same field. Overwriting would throw away the findings that
     // motivated diversifying in the first place.
-    state.fresh_context = merge_context(&[
-        ("Carried forward", &state.fresh_context.clone()),
-        ("Reference material", &library),
-        ("What the sources establish", &digest),
-        ("Structural observations", &patterns),
-        ("What the literature says about the candidates", &grounding),
-        ("Line of attack chosen", &chosen),
-    ]);
+    let carried = state.fresh_context.clone();
+    let findings = state.diversify.sections();
+    let mut sections: Vec<(&str, &str)> = vec![("Carried forward", carried.as_str())];
+    sections.extend(findings);
+    state.fresh_context = merge_context(&sections);
+    // Cleared so the next diversify starts from nothing rather than inheriting
+    // this one's slots, which would let a stale arm's report be merged twice.
+    state.diversify = DiversifyFindings::default();
     state.unproductive = 0;
     // Diversifying *is* the answer to a run that has only been scaling, so the
     // count that routed here is cleared with the other one. Leaving it set

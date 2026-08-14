@@ -307,15 +307,76 @@ new dependencies:
 - add a comment in `Cargo.toml` explaining the dependency;
 - keep `Cargo.lock` committed.
 
-TinyAgents lives at `vendor/tinyagents` as a Git submodule. Initialize it with:
+Two crates are vendored as Git submodules. Initialize both with:
 
 ```sh
 git submodule update --init --recursive
 ```
 
-Do not edit vendored code through the parent repository. Make TinyAgents
-changes upstream, push them there, then update this repository's gitlink in a
-separate commit.
+- `vendor/tinyagents` — the harness that runs one agent turn: the model
+  providers, the tool runtime, middleware, and steering.
+- `vendor/tinyflows` — the state-graph runtime every control-flow graph in this
+  crate is built on, reached through `agent::flow`. It is the same runtime that
+  used to be consumed from TinyAgents, extracted into TinyFlows and maintained
+  there.
+
+The split is the rule to keep: TinyAgents runs a turn, TinyFlows decides which
+turn runs next. A new graph is built with `agent::flow`, never with
+`tinyagents::graph`, and the two error types are converted only by
+`agent::flow::into_graph` / `from_graph`.
+
+TinyFlows has two layers and this crate now uses both, for different things.
+
+The solution loop **runs on the declarative workflow engine**. The engine owns
+the routing — the `loop` head with the run's state as its accumulator, and the
+ladders as `switch` nodes carrying jq — and each step is a `tool_call` into the
+Rust that was written against live runs. That split is the point: the control
+flow is a document an outside agent can read and patch, and the steps that
+drain a directive, salvage a timed-out attempt, and open the arms beside the
+loop are not reimplemented in JSON.
+
+`agent::flow` is the lower-level state-graph runtime. It still drives each
+detached sub-agent's own single-node graph. The state-graph solution loop is
+gone; the workflow engine is the only path, and it has not yet run an hour of
+live mathematics.
+
+The loop calls one child workflow, `orchestrator::workflow_goals`, which decides
+on a cadence whether to decompose the goal. It is a child rather than three more
+nodes because the cadence and the gate are its own policy, and calling it costs
+the loop nothing: it decides in milliseconds, and the decomposition itself is a
+detached agent run whose report reaches the next attempt through a mailbox.
+
+Five rules hold across both:
+
+- Derive, never restate. The workflow role registry is read off `AgentRegistry`,
+  the routing ladder's thresholds are generated from the Rust constants, and
+  `parse_reflection` calls `record_verdict` rather than reimplementing it. A
+  second list is a second answer to a question about authority, about a
+  threshold that cost a live run to learn, or about what ends a run.
+- Execution and outbound HTTP are refused from a workflow. See
+  `orchestrator::caps::execution` and `::network` — running a command means
+  declaring a complexity class first, and reaching the network means going
+  through a tool that bounds the response and that research gating can withhold.
+- The parity harness is not optional. `route` and `judged_route` are no longer
+  what a run executes; they are the executable specification of the routing
+  policy, and `orchestrator::parity` proves the jq the engine runs agrees with
+  them. It is exhaustive rather than sampled so an off-by-one cannot slip
+  through. Any change to either side must keep it green.
+- The body has one exit. Every path back to the loop head goes through `pass`,
+  because the engine's `nodes` map is cumulative and a fold with more than one
+  node to read will eventually read a stale one. A restart goes through it too:
+  re-entering `attempt` directly would undo the judge's own `restarts`
+  increment, so the cap that bounds restarts would never trip.
+- Every step reads the step before it, never the accumulator. The head folds at
+  the *top* of a pass, so for the whole of a pass `nodes.solve.state` is what the
+  *previous* one ended with. Only `attempt` reads it, because only `attempt` runs
+  there. This class of bug is invisible to a constant mock — pass N−1 and pass N
+  look identical — so a test that varies its answers per call is the only kind
+  that catches it.
+
+Do not edit vendored code through the parent repository. Make TinyAgents or
+TinyFlows changes upstream, push them there, then update this repository's
+gitlink in a separate commit.
 
 Never export `CARGO_TARGET_DIR` or send build output to a temporary directory.
 Use the checkout's normal target configuration.

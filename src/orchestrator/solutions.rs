@@ -7,12 +7,19 @@
 //! judgement:
 //!
 //! ```text
-//!   attempt ──> judge ──┬─ restart ──────────────────> attempt
-//!      ▲                └─ reflect ──┬─ solved ──────> done
-//!      │                             ├─ retry ───────> attempt
-//!      │                             └─ stuck ──> diversify ──┐
-//!      └──────────────────────────────────────────────────────┘
+//!   attempt ──> judge ──┬─ restart ─────────────────────────> pass ──┐
+//!      ▲                └─ reflect ──> goals ──> route ──┬─ solved ──┤
+//!      │                                (child)          ├─ retry ───┤
+//!      │                                                 └─ stuck ─> diversify ──┐
+//!      │                                                              (3 arms) ──┘
+//!      └───────────────────────── the loop head, which folds ────────────────────┘
 //! ```
+//!
+//! Every path back to the head goes through one node, and every step reads the
+//! step before it rather than the head's accumulator — the head folds at the top
+//! of a pass, so during a pass the accumulator is what the *last* one ended
+//! with. `goals` is a child workflow that decides, on a cadence, whether to open
+//! a decomposition of the goal beside the loop; see `super::workflow_goals`.
 //!
 //! The two judgements are separate on purpose. `reflect` asks whether the
 //! answer is right and what the run learned, and it alone can end the loop.
@@ -34,16 +41,14 @@ use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use tinyagents::graph::{GraphBuilder, NodeContext, NodeResult};
-
 use super::vector::VectorStore;
-use crate::agent::Result;
 use crate::agent::trace::RunTracer;
 
 use super::async_subagents::AsyncSubagentManager;
 use super::teams::TeamHandle;
 
 include!("solutions_attempt.rs");
+include!("solutions_parallel.rs");
 include!("solutions_judging.rs");
 include!("solutions_routing.rs");
 include!("solutions_state.rs");

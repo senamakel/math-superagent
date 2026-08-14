@@ -1,21 +1,36 @@
 # The solution loop
 
-`orchestrator::solutions` is a `TinyAgents` graph rather than a prompt. This file records how it routes, why each threshold is the number it is, and how a failure anywhere inside it is kept from ending a run.
+`orchestrator::solutions` is a `TinyFlows` graph rather than a prompt. This file records how it routes, why each threshold is the number it is, and how a failure anywhere inside it is kept from ending a run.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
 
 ## The solution loop
 
-`orchestrator::solutions` is a `TinyAgents` graph, not a prompt:
+`orchestrator::solutions` is a `TinyFlows` graph, not a prompt:
 
 ```text
-  attempt ──> judge ──┬─ restart ──────────────────> attempt
-     ▲                └─ reflect ──┬─ solved ──────> done
-     │                             ├─ retry ───────> attempt
-     │                             └─ stuck / scaling ──> diversify ──┐
-     └────────────────────────────────────────────────────────────────┘
+  seed goals ──> attempt ──> judge ──┬─ restart ─────────────────────> pass ──┐
+       ▲                             └─ reflect ──> goals ──> route ──┬─ solved
+       │                                             (child)          ├─ retry
+       │                                                              └─ stuck /
+       │                                                       scaling ──> diversify
+       └────────────── the loop head, which folds each pass ─────────────── (3 arms)
 ```
+
+Two rules the picture cannot show and the engine will not enforce. Every path
+back to the head goes through one node (`pass`), because the engine's `nodes`
+map is cumulative and a fold with more than one node to read eventually reads a
+stale one. And every step reads the step *before* it rather than the head's
+accumulator: the head folds at the top of a pass, so for the whole of a pass the
+accumulator is what the previous one ended with. Only `attempt` reads it, because
+only `attempt` runs there.
+
+The graph runtime is `TinyFlows`', reached through `agent::flow`; the agent
+turn each node runs is `TinyAgents`'. The two used to be one crate, and the
+distinction is worth keeping in mind while reading the rest of this file: every
+threshold below bounds a *turn*, and every arrow bounds which turn happens
+next.
 
 The judge and the reflection answer different questions. Reflection asks
 whether the answer is right and what the run learned, and it alone can end the
@@ -334,9 +349,9 @@ replacing it.
 
 ## The reduction runs beside the loop too
 
-`open_reduction` sits next to `open_invention` at the tail of `reflect`, and is
-called once more from `run` before the graph starts. It answers the question the
-loop never asks by itself. Every cycle asks how the
+The decomposition is a child workflow, `orchestrator::workflow_goals`. The loop
+calls it twice — once from `start`, before the first attempt, and once after
+every reflection — and it answers the question the loop never asks by itself. Every cycle asks how the
 last attempt went. None of them asks what a proof of the goal would *consist
 of*, and the two have different answers: a run can report genuine progress every
 single attempt — a bound pushed further, more cases verified — and spend its
@@ -353,14 +368,20 @@ own heading — as targets rather than as gathered material, which is why they
 travel in a third `Mailbox` rather than in `fresh_context`.
 
 Detached for `open_invention`'s reason and one more. Nothing in `route` reads a
-skeleton, so a gap is worth as much an attempt later; and a `reduce` node in the
-graph would put a child run of unbounded length between the reflection and the
-next attempt, which is the failure `Mailbox` was written about — a live run sat
-33 minutes unable to start an attempt it was ready for. Keeping it out of the
-graph also leaves `Route` untouched, so no routing test changes and
-`open_invention`'s own `Route::Retry` gate stays correct.
+skeleton, so a gap is worth as much an attempt later; and awaiting a reducer
+would put a child run of unbounded length between the reflection and the next
+attempt, which is the failure `Mailbox` was written about — a live run sat 33
+minutes unable to start an attempt it was ready for. That is why the child costs
+the loop nothing to call: all it does is *decide*, in milliseconds, and the arm
+it opens is a detached agent run whose report reaches the next attempt through a
+mailbox.
 
-Three conditions, because there are three separate ways this goes wrong.
+Three conditions, because there are three separate ways this goes wrong. The
+first is in the child's opening `switch`, as jq, because "how often" is the
+decision an operator most wants to change without a rebuild. The other two are in
+`open_reduction`, because a workspace that has not moved and a reducer already in
+flight are facts about the world rather than about the loop's state, and neither
+is expressible as an expression over an accumulator.
 
 `REDUCTION_INTERVAL = 3` bounds what the ledger *costs*. It is the one threshold
 here that is not two, and deliberately: every two answers "is this a pattern or a
@@ -370,9 +391,9 @@ one of its gaps, which takes a full cycle plus whatever the standing teams
 delivered beside it. Against `MAX_ATTEMPTS = 8` it buys two or three skeletons.
 Because the arm is detached the interval bounds spend rather than latency, so it
 is set on what the ledger costs rather than on how long the loop can afford to
-wait. `since_reduction` starts *at* the threshold, and `run` opens a reduction
-from that state before the graph starts, so the first skeleton is written beside
-the first attempt rather than after it. Waiting for a completed cycle was the
+wait. `since_reduction` starts *at* the threshold, and the `seed_goals` node runs
+the child from that state before the loop starts, so the first skeleton is
+written beside the first attempt rather than after it. Waiting for a completed cycle was the
 same mistake `open_invention` recorded one role wider: on a conjecture run an
 attempt/judge/reflect pass is the better part of an hour, and every role spent it
 working without a statement of what would be enough. Nothing justified the wait —

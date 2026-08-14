@@ -28,6 +28,20 @@ crate-type = ["rlib", "cdylib"]
 # TinyAgents provides the provider-neutral agent loop and tool runtime. The
 # vendored checkout is intentionally used without SQLite, REPL, or RLM features.
 tinyagents = { path = "vendor/tinyagents", default-features = false }
+# TinyFlows owns the state-graph runtime the agent loop is built on. The same
+# runtime used to be consumed from TinyAgents; it was extracted into TinyFlows,
+# where it is maintained, and carries the scheduling this loop wants — per-node
+# concurrency bounds and mixed `Command::route` fan-out — which the TinyAgents
+# copy does not. Default features only: the workflow engine's host capabilities,
+# Chrome companion, and durable store are all a host concern this crate already
+# solves its own way.
+tinyflows = { path = "vendor/tinyflows", default-features = false, features = ["store"] }
+# The workflow testkit: programmable capability mocks, a structured run trace,
+# and named assertions. A dev dependency on the same path, because it is only
+# ever needed by tests — and `assert_no_null_bindings` is the reason it is here
+# at all. The engine will happily run a graph whose every `=`-binding resolved
+# to null and report success, which is exactly how a routing ladder translated
+# into jq fails silently.
 # Implements the asynchronous TinyAgents `Tool` trait for the bundled basic
 # tools without hand-written future boxing.
 async-trait = "0.1"
@@ -56,12 +70,24 @@ ratatui = { version = "0.29", optional = true }
 # by ratatui already; named here because this code uses it directly.
 crossterm = { version = "0.28", optional = true }
 
+[dev-dependencies]
+tinyflows = { path = "vendor/tinyflows", default-features = false, features = ["store", "testkit"] }
+
 [features]
 default = []
 # Builds the `euler-tui` binary. Enabled by the `./euler-tui` wrapper and by
 # `--all-features`, so the code is linted and compiled in CI like everything
 # else.
 tui = ["dep:ratatui", "dep:crossterm"]
+# Builds the `graph-render` binary, which draws the solution loop with
+# TinyFlows' own renderer. Off by default so the runtime image does not carry
+# raster encoders it can never use; a run renders nothing.
+graph-debug = ["tinyflows/graph-debug"]
+
+[[bin]]
+name = "graph-render"
+path = "src/bin/graph_render.rs"
+required-features = ["graph-debug"]
 
 [[bin]]
 name = "euler-tui"

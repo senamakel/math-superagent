@@ -104,3 +104,4 @@ fn the_inventors_bench_is_a_registered_agent() -> agent::Result<()> {
     assert!(!SPECIALISTS.contains(&"goals"));
     Ok(())
 }
+

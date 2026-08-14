@@ -7,6 +7,7 @@ use super::{
     evidence_briefing, extract_lesson, gap_briefing, kind_of, provider_blocked, record_verdict,
     route, skeleton_fingerprint,
 };
+use super::{Finding, Slot, diversify_merge};
 
 fn state() -> SolutionState {
     SolutionState::new("find the largest x")
@@ -1128,4 +1129,67 @@ fn a_run_with_no_output_is_not_told_its_ledger_is_empty() -> std::io::Result<()>
         "the fault needs captured output to fire"
     );
     Ok(())
+}
+
+
+/// The property the diversify fan-out rests on: arms write disjoint slots, so
+/// the order they are folded in cannot change the state they produce.
+///
+/// The engine now folds them one at a time through `loop_steps::fold_arm`
+/// rather than concurrently through a reducer, and the property is what makes
+/// that substitution safe rather than merely convenient.
+#[test]
+fn arm_findings_merge_to_the_same_state_in_any_order() {
+    let findings = [
+        Finding::new(Slot::Library, "papers"),
+        Finding::new(Slot::Digest, "what they say"),
+        Finding::new(Slot::Patterns, "a regularity"),
+        Finding::new(Slot::Grounding, "already known"),
+        Finding::new(Slot::Chosen, "try the other reduction"),
+    ];
+
+    let fold = |order: &[usize]| {
+        let mut state = SolutionState::new("problem");
+        for index in order {
+            state.diversify_mut().set(findings[*index].clone());
+        }
+        state.diversify().sections().map(|(_, body)| body.to_string())
+    };
+
+    assert_eq!(fold(&[0, 1, 2, 3, 4]), fold(&[4, 3, 2, 1, 0]));
+    assert_eq!(fold(&[0, 1, 2, 3, 4]), fold(&[2, 0, 4, 1, 3]));
+}
+
+/// The merge is the only node that reads every slot, and the only one that
+/// clears them. A diversify that inherited the last one's findings would merge
+/// a stale arm's report into a briefing it has nothing to do with.
+#[test]
+fn the_merge_folds_the_slots_and_then_empties_them() {
+    let mut state = SolutionState::new("problem");
+    state.unproductive = 3;
+    state.computational = 2;
+    state.fresh_context = "already carried".to_string();
+    for finding in [
+        Finding::new(Slot::Library, "papers"),
+        Finding::new(Slot::Patterns, "a regularity"),
+    ] {
+        state.diversify_mut().set(finding);
+    }
+
+    let merged = diversify_merge(state);
+
+    assert!(merged.fresh_context.contains("already carried"));
+    assert!(merged.fresh_context.contains("papers"));
+    assert!(merged.fresh_context.contains("a regularity"));
+    // Both counters that can route to a diversify are cleared, or the very next
+    // reflection routes straight back here.
+    assert_eq!(merged.unproductive, 0);
+    assert_eq!(merged.computational, 0);
+    assert!(
+        merged
+            .diversify()
+            .sections()
+            .iter()
+            .all(|(_, body)| body.is_empty())
+    );
 }

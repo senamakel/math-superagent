@@ -3,16 +3,16 @@
 /// Raised past the research rescue below so the rescue has attempts left to
 /// pay off in. A ceiling that trips first would spend a fresh literature
 /// search and then stop.
-const MAX_ATTEMPTS: usize = 8;
+pub(in crate::orchestrator) const MAX_ATTEMPTS: usize = 8;
 /// Consecutive unproductive attempts before diversifying rather than retrying.
-const STUCK_THRESHOLD: usize = 2;
+pub(in crate::orchestrator) const STUCK_THRESHOLD: usize = 2;
 /// Consecutive attempts lost to the provider before the loop stops trying.
 ///
 /// Two rather than one, because a single upstream blip is exactly what the
 /// retry ladder and `ReroutingModel` exist to absorb, and ending a run on one
 /// would throw away work they would have recovered. Two in a row is a wall
 /// rather than a blip, and no number of further attempts gets past it.
-const BLOCKED_THRESHOLD: usize = 2;
+pub(in crate::orchestrator) const BLOCKED_THRESHOLD: usize = 2;
 /// Attempts after which each reflection also re-opens the literature.
 ///
 /// Diversification triggers on *consecutive* unproductive attempts, so a run
@@ -38,7 +38,7 @@ const RESEARCH_RESCUE_ATTEMPTS: usize = 5;
 /// whole budget that way, each attempt genuinely progressing and the method
 /// never changing. Two is the same evidence bar the unproductive count uses:
 /// once is what an attempt looks like, twice is a pattern.
-const COMPUTATIONAL_THRESHOLD: usize = 2;
+pub(in crate::orchestrator) const COMPUTATIONAL_THRESHOLD: usize = 2;
 
 /// Consecutive attempts reaching the same single-route answer before the loop
 /// stops asking for a second route and reports what it has.
@@ -59,7 +59,7 @@ const COMPUTATIONAL_THRESHOLD: usize = 2;
 /// first UNVERIFIED is an attempt saying it could not find a second route, and
 /// the run should try once more with the lesson before that becomes the
 /// finding. Twice is the run having tried.
-const UNVERIFIED_THRESHOLD: usize = 2;
+pub(in crate::orchestrator) const UNVERIFIED_THRESHOLD: usize = 2;
 
 /// Completed cycles between one decomposition of the goal and the next.
 ///
@@ -77,7 +77,7 @@ const UNVERIFIED_THRESHOLD: usize = 2;
 /// how long the loop waits — nothing waits. What it does not bound is waste on
 /// a tick where nothing has changed; the research-tree fingerprint does that,
 /// and the in-flight gate bounds collision. Three failures, three bounds.
-const REDUCTION_INTERVAL: usize = 3;
+pub(in crate::orchestrator) const REDUCTION_INTERVAL: usize = 3;
 
 /// Restarts the judge may force in one run.
 ///
@@ -88,7 +88,7 @@ const REDUCTION_INTERVAL: usize = 3;
 /// nothing to its conclusion. Two is enough for the fault the judge exists to
 /// catch — a run building on something untrue — to be caught twice, and few
 /// enough that the loop still spends most of its attempts attempting.
-const MAX_RESTARTS: usize = 2;
+pub(in crate::orchestrator) const MAX_RESTARTS: usize = 2;
 
 /// State carried around the solution loop.
 #[derive(Clone, Debug)]
@@ -96,40 +96,47 @@ pub(super) struct SolutionState {
     /// The problem as posed.
     problem: String,
     /// Attempts made so far.
-    attempts: usize,
+    pub(in crate::orchestrator) attempts: usize,
     /// Consecutive attempts that did not advance the work.
-    unproductive: usize,
+    pub(in crate::orchestrator) unproductive: usize,
     /// The most recent attempt's report.
-    last_attempt: String,
+    pub(in crate::orchestrator) last_attempt: String,
     /// Accumulated lessons, newest last.
-    lessons: Vec<String>,
+    pub(in crate::orchestrator) lessons: Vec<String>,
     /// Material gathered by the diversify step, fed into the next attempt.
-    fresh_context: String,
+    pub(in crate::orchestrator) fresh_context: String,
     /// Whether reflection judged the problem solved and verified.
-    solved: bool,
+    pub(in crate::orchestrator) solved: bool,
     /// The judge's steer for the next attempt, if it gave one.
-    steer: String,
+    pub(in crate::orchestrator) steer: String,
     /// Restarts the judge has already forced.
-    restarts: usize,
+    pub(in crate::orchestrator) restarts: usize,
     /// The judge's score for each attempt so far, oldest first.
-    scores: Vec<u8>,
+    pub(in crate::orchestrator) scores: Vec<u8>,
     /// What the judge made of the attempt just finished.
-    judged: Verdict,
+    pub(in crate::orchestrator) judged: Verdict,
     /// Consecutive attempts that produced nothing but a provider failure.
-    blocked: usize,
+    pub(in crate::orchestrator) blocked: usize,
     /// Consecutive attempts whose only gain was a larger instance of something
     /// an earlier attempt already computed.
-    computational: usize,
+    pub(in crate::orchestrator) computational: usize,
     /// Consecutive attempts that reached a specific final answer supported by
     /// exactly one route, with no second route available to build.
-    unverified: usize,
+    pub(in crate::orchestrator) unverified: usize,
+    /// What the diversify arms have reported so far, one slot each.
+    ///
+    /// Filled by arms running concurrently and drained by `diversify_merge`,
+    /// which is why it is a struct of named slots rather than one string: two
+    /// arms finishing in the same superstep write different fields, so the
+    /// reducer never has to pick a winner between them.
+    diversify: DiversifyFindings,
     /// Completed cycles since the goal was last decomposed into lemmas.
     ///
     /// Unlike every other counter here, nothing in [`route`] reads it. It paces
     /// an arm that runs beside the loop rather than inside it, which is the
     /// whole reason a proof skeleton can be produced without any attempt
     /// waiting for one.
-    since_reduction: usize,
+    pub(in crate::orchestrator) since_reduction: usize,
 }
 
 impl SolutionState {
@@ -149,6 +156,7 @@ impl SolutionState {
             blocked: 0,
             computational: 0,
             unverified: 0,
+            diversify: DiversifyFindings::default(),
             // At the threshold, not at zero, so the counter is already due
             // when `run` opens a reduction beside the first attempt — before
             // any cycle completes, since "what would be enough to prove this"
@@ -181,8 +189,129 @@ impl SolutionState {
         rendered
     }
 
-    /// Returns the loop's outcome for the caller.
-    pub(super) fn outcome(&self) -> String {
+    /// The diversify slots, read-only.
+    pub(in crate::orchestrator) fn diversify(&self) -> &DiversifyFindings {
+        &self.diversify
+    }
+
+    /// The diversify slots, for a caller folding one arm at a time.
+    pub(in crate::orchestrator) fn diversify_mut(&mut self) -> &mut DiversifyFindings {
+        &mut self.diversify
+    }
+
+    /// The whole state, as the workflow accumulator carries it.
+    ///
+    /// Every field, not only the counters the ladder routes on. A field left
+    /// out here is a field silently reset on every pass, and the ones that are
+    /// not obviously load-bearing are the dangerous ones: `steer` is the
+    /// judge's direction for the next attempt, `since_reduction` paces the arm
+    /// that decomposes the goal, and `scores` is what the judge's own history
+    /// is read from. A round trip that dropped any of them would look like a
+    /// working loop that had quietly forgotten something.
+    ///
+    /// [`Self::round_trips`] is the test that this and
+    /// [`Self::from_accumulator`] agree about all of them.
+    pub(in crate::orchestrator) fn to_accumulator(&self) -> serde_json::Value {
+        serde_json::json!({
+            "problem": self.problem,
+            "attempts": self.attempts,
+            "unproductive": self.unproductive,
+            "last_attempt": self.last_attempt,
+            "lessons": self.lessons,
+            "fresh_context": self.fresh_context,
+            "solved": self.solved,
+            "steer": self.steer,
+            "restarts": self.restarts,
+            "scores": self.scores,
+            "judged": self.judged.to_string(),
+            "blocked": self.blocked,
+            "computational": self.computational,
+            "unverified": self.unverified,
+            "since_reduction": self.since_reduction,
+            // The arms run as separate nodes, so this is the only way what they
+            // found reaches the merge that turns it into the next attempt's
+            // briefing.
+            "diversify": self.diversify.to_json(),
+        })
+    }
+
+    /// Rebuilds a state from the workflow accumulator, for its report.
+    ///
+    /// The workflow engine's `loop` head carries the counters as JSON, so the
+    /// run that finishes there has numbers rather than a [`SolutionState`]. The
+    /// report those numbers describe is [`Self::outcome`], which is thirty
+    /// lines of wording each written against a specific way a run can end — a
+    /// single-route answer that must not be called solved, a provider failure
+    /// that must not read as a mathematical one. Rebuilding the state and
+    /// calling that method is how the two engines report identically instead of
+    /// approximately.
+    pub(in crate::orchestrator) fn from_accumulator(problem: &str, state: &serde_json::Value) -> Self {
+        let count = |key: &str| {
+            usize::try_from(state.get(key).and_then(serde_json::Value::as_u64).unwrap_or(0))
+                .unwrap_or(usize::MAX)
+        };
+        let text = |key: &str| {
+            state
+                .get(key)
+                .and_then(serde_json::Value::as_str)
+                .unwrap_or_default()
+                .to_string()
+        };
+        let mut rebuilt = Self::new(if problem.is_empty() {
+            text("problem")
+        } else {
+            problem.to_string()
+        });
+        rebuilt.attempts = count("attempts");
+        rebuilt.unproductive = count("unproductive");
+        rebuilt.blocked = count("blocked");
+        rebuilt.computational = count("computational");
+        rebuilt.unverified = count("unverified");
+        rebuilt.restarts = count("restarts");
+        rebuilt.since_reduction = count("since_reduction");
+        rebuilt.solved = state
+            .get("solved")
+            .and_then(serde_json::Value::as_bool)
+            .unwrap_or_default();
+        rebuilt.last_attempt = text("last_attempt");
+        rebuilt.fresh_context = text("fresh_context");
+        rebuilt.steer = text("steer");
+        rebuilt.judged = Verdict::parse(&text("judged"));
+        rebuilt.scores = state
+            .get("scores")
+            .and_then(serde_json::Value::as_array)
+            .map(|scores| {
+                scores
+                    .iter()
+                    .filter_map(serde_json::Value::as_u64)
+                    .filter_map(|score| u8::try_from(score).ok())
+                    .collect()
+            })
+            .unwrap_or_default();
+        rebuilt.lessons = state
+            .get("lessons")
+            .and_then(serde_json::Value::as_array)
+            .map(|lessons| {
+                lessons
+                    .iter()
+                    .filter_map(serde_json::Value::as_str)
+                    .map(ToString::to_string)
+                    .collect()
+            })
+            .unwrap_or_default();
+        // The single-lesson spelling the earlier fold used. Kept so an
+        // accumulator written by a previous release still reads.
+        let lesson = text("lesson");
+        if !lesson.is_empty() && !rebuilt.lessons.contains(&lesson) {
+            rebuilt.lessons.push(lesson);
+        }
+        if let Some(findings) = state.get("diversify") {
+            rebuilt.diversify = DiversifyFindings::from_json(findings);
+        }
+        rebuilt
+    }
+
+    pub(in crate::orchestrator) fn outcome(&self) -> String {
         let mut report = if self.solved {
             format!("Solved after {} attempt(s).\n\n", self.attempts)
         } else if self.unverified >= UNVERIFIED_THRESHOLD {
@@ -228,7 +357,7 @@ impl SolutionState {
 
 /// Routes taken out of the reflection node.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Route {
+pub(in crate::orchestrator) enum Route {
     /// Reflection judged the work complete and verified.
     Solved,
     /// An answer was reached that only one route supports, and no second route
@@ -260,7 +389,7 @@ impl std::fmt::Display for Route {
 /// Kept as a free function so the policy is unit-testable without a provider:
 /// the routing rule is the part of this design most likely to be wrong, and it
 /// is the part a live run is least able to demonstrate cheaply.
-fn route(state: &SolutionState) -> Route {
+pub(in crate::orchestrator) fn route(state: &SolutionState) -> Route {
     // Checked before anything else, and before the attempt ceiling. An attempt
     // that died on the provider is not evidence about the mathematics, so
     // spending the ceiling on more of them is spending the run's one budget on
@@ -297,7 +426,7 @@ fn route(state: &SolutionState) -> Route {
 
 /// Where the loop goes after the judge has spoken.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Judged {
+pub(in crate::orchestrator) enum Judged {
     /// Carry on to the reflection, which decides whether the run is done.
     Reflect,
     /// Discard this direction and attempt again.
@@ -320,7 +449,13 @@ impl std::fmt::Display for Judged {
 /// find that out. The attempt ceiling outranks a restart — a run at its last
 /// attempt must reflect on what it has rather than throw it away and stop with
 /// nothing.
-fn judged_route(state: &SolutionState) -> Judged {
+// No longer executed: the engine routes on the jq in `workflow::judge_ladder`.
+// This is the *specification* that ladder is held to — `orchestrator::parity`
+// runs both over every state and refuses a divergence — so it is kept, and kept
+// exact, rather than deleted with the loop that used to call it. Deleting it
+// would leave the running ladder with nothing to be checked against.
+#[cfg_attr(not(test), allow(dead_code))]
+pub(in crate::orchestrator) fn judged_route(state: &SolutionState) -> Judged {
     if state.judged == Verdict::Restart && state.attempts < MAX_ATTEMPTS {
         Judged::Restart
     } else {
@@ -428,7 +563,7 @@ fn salvage_prompt(problem: &str) -> String {
 }
 
 /// Carries out one attempt at the problem, briefed with every lesson so far.
-async fn attempt_step(
+pub(in crate::orchestrator) async fn attempt_step(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
@@ -666,6 +801,42 @@ pub(super) enum Verdict {
     Steer,
     /// Wrong in a way continuing will not repair.
     Restart,
+}
+
+impl Verdict {
+    /// The word this verdict round-trips through the accumulator as.
+    ///
+    /// Written out rather than derived from `Debug`, because a `Debug`
+    /// rendering is not a wire format: it changes when somebody renames a
+    /// variant, and the change would be a state that silently reads back as
+    /// `Proceed`.
+    pub(in crate::orchestrator) fn as_str(self) -> &'static str {
+        match self {
+            Self::Proceed => "proceed",
+            Self::Steer => "steer",
+            Self::Restart => "restart",
+        }
+    }
+
+    /// Reads a verdict back.
+    ///
+    /// Anything unrecognised is [`Verdict::Proceed`], on the same rule the
+    /// judge's own parser follows: the expensive outcome needs the explicit
+    /// word, and a verdict the loop cannot read must not throw an attempt away
+    /// by accident.
+    pub(in crate::orchestrator) fn parse(word: &str) -> Self {
+        match word.trim().to_ascii_lowercase().as_str() {
+            "restart" => Self::Restart,
+            "steer" => Self::Steer,
+            _ => Self::Proceed,
+        }
+    }
+}
+
+impl std::fmt::Display for Verdict {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str(self.as_str())
+    }
 }
 
 /// Reads the judge's reply.

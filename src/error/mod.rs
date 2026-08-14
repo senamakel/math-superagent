@@ -31,6 +31,30 @@ pub enum Error {
         /// Characters the rejected directive held.
         actual: usize,
     },
+    /// A workflow document could not be read, written, or changed.
+    ///
+    /// Carries what was being attempted as well as what went wrong, because the
+    /// same underlying failure — a validation refusal — means something
+    /// different when previewing a change than when saving one.
+    #[error("could not {action} the workflow: {reason}")]
+    Workflow {
+        /// What was being attempted, as a gerund.
+        action: String,
+        /// What the store or the validator reported.
+        reason: String,
+    },
+    /// A workflow diagram could not be rendered to an image file.
+    ///
+    /// Carries the path rather than only the reason, because the two failures
+    /// behind it — an extension the renderer does not support, and a directory
+    /// that does not exist — are both answered by looking at the path.
+    #[error("could not render the graph diagram to {path}: {reason}")]
+    GraphRender {
+        /// The image file that could not be written.
+        path: String,
+        /// What the renderer reported.
+        reason: String,
+    },
     /// The directive queue, its cursor, or its ledger could not be read or
     /// written.
     #[error("directive queue at {path} is unusable: {reason}")]

@@ -1,3 +1,4 @@
+
 impl OrchestratorAgent {
     /// Loads provider configuration and assembles the built-in registry.
     ///
@@ -141,43 +142,56 @@ impl OrchestratorAgent {
     /// failing specialist becomes a lesson rather than a failure.
     pub async fn solve(&self, problem: impl Into<String>) -> Result<String> {
         let problem = problem.into();
-        let state = solutions::SolutionState::new(problem.clone());
-        // The support teams run *beside* the loop, not inside it. Everything
-        // they do — gathering sources, digesting them, keeping the workspace
-        // navigable — is work the solver benefits from but must never wait on.
-        // Inside the loop they were exactly that wait: a live run spent 56 of
-        // its 74 minutes unable to start its second attempt because a support
-        // agent had not finished.
-        // One mailbox, shared: the pattern team posts what it finds and the
-        // loop drains it at the next attempt or reflection, whichever reaches
-        // it first. Nothing waits on it.
+        self.solve_on_workflow(&problem).await
+    }
+
+    /// Runs the same loop on the workflow engine.
+    ///
+    /// The support teams still run beside it, unchanged: they are host-side
+    /// tasks with their own budgets, they outlive any single graph run, and
+    /// folding them into the graph would tie their lifetime to it — which is
+    /// the thing `teams.rs` exists to prevent.
+    ///
+    /// The tool set is deliberately narrow. A `tool_call` node can reach
+    /// anything the bundle holds, and the only tool this graph calls is the
+    /// reflection parser — which `workflow_capabilities` supplies itself. Every
+    /// other tool a role uses reaches it through the role, where the per-role
+    /// grants still apply.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the graph fails to compile or the run fails. A
+    /// failing specialist is still a lesson rather than a failure: that is the
+    /// roles' behaviour, not the engine's, and it is unchanged here.
+    async fn solve_on_workflow(&self, problem: &str) -> Result<String> {
         let patterns = solutions::Mailbox::default();
-        // The second mailbox carries what a person asked for while the run was
-        // going. It is filled by the director team rather than by the loop, so
-        // that reading the queue costs a file read on a team's own cycle rather
-        // than a stat on the critical path of every attempt.
         let directives = solutions::Mailbox::default();
-        let support = self.spawn_support_teams(state.problem(), &patterns, &directives);
-        let finished = solutions::run(
-            self.subagents.clone(),
-            Some(self.tracer.clone()),
-            Some(self.workspace.clone()),
-            self.memory.clone(),
-            support.clone(),
-            solutions::Mailboxes {
-                patterns,
-                directives,
-                // Nothing outside the loop posts to this one: the reduction arm
-                // the loop opens is its only writer, so it is created here
-                // rather than threaded in from the teams above.
-                skeletons: solutions::Mailbox::default(),
+        let skeletons = solutions::Mailbox::default();
+        let support = self.spawn_support_teams(problem, &patterns, &directives);
+
+        // The same mailboxes and beside-arms the state graph gave its steps.
+        // They are what carries a directive into an attempt and what opens the
+        // pattern and reduction arms, and the steps drain them exactly as
+        // before — see `loop_steps`.
+        let mailboxes = solutions::Mailboxes {
+            patterns: patterns.clone(),
+            directives,
+            skeletons: skeletons.clone(),
+        };
+        let beside = solutions::Beside {
+            patterns,
+            reduction: solutions::Reduction {
+                outbox: skeletons,
+                // One gate for the run, so a reduction that outlives the cycle
+                // that opened it cannot be joined by a second one writing the
+                // same file.
+                gate: solutions::ReductionGate::default(),
             },
-            state,
-        )
-        .await;
-        // The solve is the run. Once it is done the teams have nobody left to
-        // serve, so they stop rather than spending the rest of their budgets
-        // enriching a workspace no attempt will read.
+            teams: support.clone(),
+        };
+
+        let outcome = self.run_workflow_loop(problem, beside, mailboxes).await;
+
         for team in &support {
             team.cancel();
             self.tracer.note(&format!(
@@ -186,21 +200,62 @@ impl OrchestratorAgent {
                 team.cycles()
             ));
         }
-        let outcome = match finished {
-            Ok(finished) => finished.outcome(),
+
+        let outcome = match outcome {
+            Ok(outcome) => outcome,
             Err(error) => {
                 self.record_session(
                     "solution-loop",
-                    &problem,
+                    problem,
                     &format!("SESSION FAILED: {error}"),
                 )
                 .await;
                 return Err(error);
             }
         };
-        self.record_session("solution-loop", &problem, &outcome)
-            .await;
+        self.record_session("solution-loop", problem, &outcome).await;
         Ok(outcome)
+    }
+
+    /// Compiles and runs the loop graph, and reports what it reached.
+    ///
+    /// The report is built by rebuilding a `SolutionState` from the
+    /// accumulator and calling the same `outcome` the state graph calls, rather
+    /// than by describing the numbers here. That wording is written against
+    /// specific ways a run can end — an answer with one route behind it must
+    /// not be called solved, a provider failure must not read as a
+    /// mathematical one — and a second version of it would get one of them
+    /// wrong.
+    async fn run_workflow_loop(
+        &self,
+        problem: &str,
+        beside: solutions::Beside,
+        mailboxes: solutions::Mailboxes,
+    ) -> Result<String> {
+        let graph = self.workflow_graph(problem);
+        let steps = Arc::new(loop_steps::LoopSteps::new(
+            self.subagents.clone(),
+            Some(self.tracer.clone()),
+            Some(self.workspace.clone()),
+            self.memory.clone(),
+            beside,
+            mailboxes,
+        )) as Arc<dyn Tool<()>>;
+        let capabilities = self.workflow_capabilities([steps])?;
+        let compiled = tinyflows::compiler::compile(&graph).map_err(|error| {
+            tinyagents::TinyAgentsError::Graph(format!("the loop graph is invalid: {error}"))
+        })?;
+        let finished = tinyflows::engine::run(&compiled, serde_json::json!({}), &capabilities)
+            .await
+            .map_err(|error| {
+                tinyagents::TinyAgentsError::Graph(format!("the loop graph failed: {error}"))
+            })?;
+        let accumulator = finished
+            .output
+            .pointer(&format!("/nodes/{}/state", workflow::LOOP_NODE))
+            .cloned()
+            .unwrap_or(serde_json::Value::Null);
+        Ok(solutions::SolutionState::from_accumulator(problem, &accumulator).outcome())
     }
 
     /// Starts the long-lived teams that work alongside the solution loop.

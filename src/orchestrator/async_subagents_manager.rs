@@ -14,7 +14,7 @@ impl AsyncSubagentManager {
     ) -> Self {
         Self {
             agents: Arc::default(),
-            store: Arc::new(InMemoryTaskStore::new()),
+            store: RunStore::new(),
             steering: SteeringRegistry::new(),
             budget,
             tracer,
@@ -86,7 +86,7 @@ impl AsyncSubagentManager {
         )
     }
 
-    fn register_executor(
+    pub(super) fn register_executor(
         &self,
         name: impl Into<String>,
         executor: Arc<dyn AgentExecutor>,
@@ -136,22 +136,14 @@ impl AsyncSubagentManager {
         let executor = self.executor_for(agent_name)?;
         let sequence = NEXT_RUN_ID.fetch_add(1, Ordering::Relaxed);
         let task_id = TaskId::new(format!("agent-run-{sequence}"));
-        let spec = OrchestrationTaskSpec::new(
-            task_id.clone(),
-            OrchestrationTaskKind::SubAgent {
-                agent: agent_name.to_string(),
-            },
-        )
-        .with_timeout_ms(self.budget.run_timeout_ms())
-        .with_input(json!({ "prompt": input }));
-        self.store.insert(spec)?;
+        self.store.insert(task_id.clone(), agent_name)?;
 
         let store = self.store.clone();
         let steering_registry = self.steering.clone();
         let spawned_task_id = task_id.clone();
         let run_id = task_id.as_str().to_string();
         let steering = SteeringHandle::allow_all();
-        steering_registry.register(task_id.clone(), steering.clone());
+        steering_registry.register(&task_id, steering.clone());
         let run_timeout = self.budget.run_timeout;
         let tracer = self
             .tracer
@@ -182,7 +174,7 @@ impl AsyncSubagentManager {
             // queue drains behind it. The run deadline starts after the wait,
             // so a queued run is not charged for time it spent waiting.
             let _permit = slots.acquire().await;
-            let _ = store.mark_running(&spawned_task_id);
+            store.mark_running(&spawned_task_id);
             let graph = GraphBuilder::<RunState, RunState>::overwrite()
                 .add_node(
                     "subagent",
@@ -193,7 +185,8 @@ impl AsyncSubagentManager {
                         async move {
                             let response = executor
                                 .execute(&state.run_id, state.input.clone(), steering, tracer)
-                                .await?;
+                                .await
+                                .map_err(crate::agent::flow::into_graph)?;
                             state.response = Some(response);
                             Ok(NodeResult::Update(state))
                         }
@@ -214,7 +207,7 @@ impl AsyncSubagentManager {
                     }),
                 )
                 .await
-                .map_err(|_| tinyagents::TinyAgentsError::Timeout("subagent run timed out".into()))
+                .map_err(|_| GraphError::Timeout("subagent run timed out".into()))
                 .and_then(|result| result),
                 Err(error) => Err(error),
             };
@@ -269,7 +262,51 @@ impl AsyncSubagentManager {
         })
     }
 
-    fn record(&self, task_id: &str) -> Result<tinyagents::graph::OrchestrationTaskRecord> {
+    /// Starts `agent` on `input` without waiting, returning its run id.
+    ///
+    /// The same detached spawn the model-visible `spawn_agent` tool performs,
+    /// named for the `TinyFlows` [`TaskRunner`](super::runner::SubagentTaskRunner)
+    /// that offers it to a `spawn` node. Separate from the private `spawn` only
+    /// in visibility: a capability implementation lives outside this module and
+    /// must not reach into it for anything wider.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when `agent` is not registered, or when the run
+    /// registry refuses the new id.
+    pub(super) fn spawn_detached(&self, agent: &str, input: String) -> Result<TaskId> {
+        self.spawn(agent, input)
+    }
+
+    /// Reads a run's record, or nothing when the id was never issued.
+    ///
+    /// Returns an `Option` rather than this crate's `Result` because the one
+    /// caller outside this module distinguishes "unknown ticket" from every
+    /// other failure and has its own error type to say so in.
+    pub(super) fn task_record(&self, task_id: &str) -> Option<RunRecord> {
+        self.record(task_id).ok()
+    }
+
+    /// Asks a live run to stop, cooperatively.
+    ///
+    /// Delivered through the same steering channel a human directive uses, so a
+    /// run stops at its next boundary rather than being killed mid-tool-call and
+    /// leaving a half-written workspace file behind.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the run is unknown, already terminal, or has no
+    /// steering handle registered.
+    pub(super) fn stop_run(&self, task_id: &str) -> Result<()> {
+        self.steer(
+            task_id,
+            "Stop this run now. Write down what you have established so far and \
+             finish; do not start anything new."
+                .to_string(),
+        )
+    }
+
+    fn record(&self, task_id: &str) -> Result<RunRecord> {
         let task_id = TaskId::new(task_id);
         self.store.get(&task_id).ok_or_else(|| {
             tinyagents::TinyAgentsError::Validation(format!("unknown agent run `{task_id}`"))
@@ -284,15 +321,9 @@ impl AsyncSubagentManager {
     /// out of a previous tool result to say so.
     fn outstanding_runs(&self) -> Vec<String> {
         self.store
-            .list(tinyagents::graph::OrchestrationTaskFilter::default())
+            .list()
             .into_iter()
-            .filter(|record| {
-                matches!(
-                    record.status,
-                    tinyagents::graph::OrchestrationTaskStatus::Pending
-                        | tinyagents::graph::OrchestrationTaskStatus::Running
-                )
-            })
+            .filter(|record| matches!(record.status, RunStatus::Pending | RunStatus::Running))
             .map(|record| record.task_id().to_string())
             .collect()
     }
@@ -320,7 +351,7 @@ impl AsyncSubagentManager {
         &self,
         task_id: &str,
         wait_seconds: u64,
-    ) -> Result<tinyagents::graph::OrchestrationTaskRecord> {
+    ) -> Result<RunRecord> {
         let deadline = tokio::time::Instant::now()
             + Duration::from_secs(wait_seconds.min(self.max_await_seconds()));
         loop {

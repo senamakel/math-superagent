@@ -7,10 +7,6 @@ use std::time::Duration;
 
 use async_trait::async_trait;
 use serde_json::{Value, json};
-use tinyagents::graph::{
-    GraphBuilder, InMemoryTaskStore, NodeContext, NodeResult, OrchestrationTaskKind,
-    OrchestrationTaskResult, OrchestrationTaskSpec, SteeringRegistry, TaskStore,
-};
 use tinyagents::harness::context::{RunConfig, RunContext};
 use tinyagents::harness::events::{AgentEvent, EventSink};
 use tinyagents::harness::ids::{RunId, TaskId};
@@ -22,9 +18,11 @@ use tinyagents::harness::steering::{SteeringCommand, SteeringHandle};
 use tokio::sync::Semaphore;
 
 use crate::agent::budget::RunBudget;
+use crate::agent::flow::{GraphBuilder, GraphError, GraphExecution, NodeContext, NodeResult};
 use crate::agent::trace::RunTracer;
 use crate::agent::{AgentHarness, Message, Result, Tool, ToolCall, ToolResult, ToolSchema};
 
+use super::runs::{RunOutcome, RunRecord, RunStatus, RunStore, SteeringRegistry};
 use super::vector::VectorStore;
 
 static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
@@ -66,7 +64,7 @@ struct Recording<'a> {
     agent: &'a str,
     run_id: &'a str,
     input: &'a str,
-    store: &'a Arc<InMemoryTaskStore>,
+    store: &'a RunStore,
     task_id: &'a TaskId,
     /// Where a failure to record is said out loud.
     ///
@@ -105,25 +103,20 @@ async fn record_session(into: &Recording<'_>, output: &str) {
 /// is built, run, timed out, recorded, and followed up; the recording half
 /// reads the same whichever way the run ended.
 async fn record_outcome(
-    outcome: std::result::Result<
-        tinyagents::graph::GraphExecution<RunState>,
-        tinyagents::TinyAgentsError,
-    >,
+    outcome: std::result::Result<GraphExecution<RunState>, GraphError>,
     into: &Recording<'_>,
 ) -> bool {
     match outcome {
         Ok(execution) => {
             let response = execution.state.response.unwrap_or_default();
             record_session(into, &response).await;
-            let _ = into
-                .store
-                .complete(into.task_id, OrchestrationTaskResult::text(response));
+            into.store.complete(into.task_id, RunOutcome::text(response));
             true
         }
         Err(error) => {
             let error = error.to_string();
             record_session(into, &format!("SESSION FAILED: {error}")).await;
-            let _ = into.store.fail(into.task_id, error);
+            into.store.fail(into.task_id, error);
             false
         }
     }
@@ -188,7 +181,7 @@ impl FollowUp {
 }
 
 #[async_trait]
-trait AgentExecutor: Send + Sync {
+pub(super) trait AgentExecutor: Send + Sync {
     async fn execute(
         &self,
         run_id: &str,
@@ -381,7 +374,7 @@ fn session_id() -> Arc<str> {
 #[derive(Clone)]
 pub(crate) struct AsyncSubagentManager {
     agents: Arc<RwLock<HashMap<String, Arc<dyn AgentExecutor>>>>,
-    store: Arc<InMemoryTaskStore>,
+    store: RunStore,
     steering: SteeringRegistry,
     budget: RunBudget,
     tracer: Option<Arc<RunTracer>>,

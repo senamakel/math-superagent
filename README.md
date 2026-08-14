@@ -346,6 +346,17 @@ Pass a positive problem number to the Project Euler wrapper:
 ./euler 10 "also compare the optimized method with a brute-force check"
 ```
 
+The solution loop runs on a declarative workflow graph. The engine owns the
+routing — which attempt follows which verdict — and each step is a call into
+the same Rust the loop has always used. So the control flow is a document that
+can be read, patched through validated operations, and rendered, while the
+steps that carry a directive into an attempt or salvage a timed-out one are
+unchanged.
+
+```sh
+cargo run --features graph-debug --bin graph-render -- loop.png
+```
+
 ### Open conjectures
 
 A Project Euler problem has one number as its answer and a ceiling on how long
@@ -578,7 +589,8 @@ src/orchestrator/           registry, specialists, workspace and document tools
 src/bin/euler_tui.rs        the tabbed console, behind the `tui` feature
 examples/                   the Docker entry point and two direct examples
 docs/                       the rationale behind the rules in AGENTS.md
-vendor/tinyagents/          pinned TinyAgents submodule
+vendor/tinyagents/          pinned TinyAgents submodule (the agent turn)
+vendor/tinyflows/           pinned TinyFlows submodule (the state graph)
 ```
 
 [`docs/runtime.md`](docs/runtime.md) carries the module-by-module map and says
@@ -587,12 +599,14 @@ file-level tree in a README drifts silently: nothing fails when a module is
 added, so the map quietly stops describing the crate.
 
 The crate deliberately leaves out TinyAgents memory domains, channels, Web3,
-SQLite persistence, REPL, and RLM features. The goal is a small mathematical
+SQLite persistence, REPL, and RLM features, and takes TinyFlows with default
+features only — its workflow engine, host capabilities, Chrome companion, and
+durable store are all a host concern this crate already solves its own way. The goal is a small mathematical
 research runtime, not a general agent platform.
 
 ## Development
 
-Initialize the vendored dependency and run the build contract:
+Initialize the vendored dependencies and run the build contract:
 
 ```sh
 git submodule update --init --recursive
