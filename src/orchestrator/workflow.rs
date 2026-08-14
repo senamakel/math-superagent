@@ -1,9 +1,10 @@
 //! The solution loop as a `WorkflowGraph`.
 //!
-//! The same attempt/judge/reflect loop `solutions` runs on the state graph,
-//! authored declaratively: a `loop` head carrying the run's counters as its
-//! accumulator, `switch` nodes carrying the routing ladder as jq, and the
-//! diversify arms as parallel successors converging on a `merge`.
+//! The attempt/judge/reflect loop, authored declaratively: a `loop` head
+//! carrying the run's counters as its accumulator, `switch` nodes carrying the
+//! routing ladder as jq, the diversify arms as concurrent successors converging
+//! on a `merge`, and the goal's decomposition as a child workflow — see
+//! [`super::workflow_goals`].
 //!
 //! # Where the state lives
 //!
@@ -122,12 +123,13 @@ pub(super) fn reflect_ladder() -> String {
 
 /// The ladder out of the judge, as jq.
 ///
-/// Reads the judge step's own output for the same reason
-/// [`reflect_ladder`] does, and with a sharper edge: a restart re-enters
-/// `attempt` without passing the loop head, so the accumulator is frozen for
-/// the whole restart cycle. Reading it there means `restarts` never appears to
-/// grow, the cap never trips, and a judge that keeps saying restart spins until
-/// the graph's recursion limit.
+/// Reads the judge step's own output for the same reason [`reflect_ladder`]
+/// does. It mattered most here while a restart re-entered `attempt` directly:
+/// the accumulator was frozen for the whole restart cycle, so `restarts` never
+/// appeared to grow, the cap never tripped, and a judge that kept saying restart
+/// span to the graph's recursion limit. The restart now goes back through the
+/// head, which fixes that independently — and reading the step's own output is
+/// still right, because the head has not folded this pass yet.
 ///
 /// Reads `judged`, which is what `SolutionState::to_accumulator` calls the
 /// judge's verdict. It read `verdict` until a breakdown of the graph caught it:
@@ -296,7 +298,7 @@ fn arm_outputs() -> String {
 ///
 /// Both callers build it here rather than each writing the config out, so the
 /// two cannot disagree about which child they are calling or how it is seeded.
-fn goals_call(id: &str, state: Value) -> Node {
+fn goals_call(id: &str, state: &Value) -> Node {
     node(
         id,
         NodeKind::SubWorkflow,
@@ -354,11 +356,11 @@ pub(super) fn solution_loop(
         // rather than three more nodes here, because the cadence and the gate
         // are its own policy — see `super::workflow_goals`, which also says why
         // calling it costs the loop nothing.
-        goals_call(GOALS_NODE, json!("=.nodes.reflect.item.json")),
+        goals_call(GOALS_NODE, &json!("=.nodes.reflect.item.json")),
         // The same child, before the first attempt. See [`SEED_GOALS_NODE`]:
         // seeded with the loop's own opening state, which starts the cadence at
         // the interval so this call is already due.
-        goals_call(SEED_GOALS_NODE, initial_state(problem)),
+        goals_call(SEED_GOALS_NODE, &initial_state(problem)),
         step_with(
             "goal_apply",
             "=.nodes.reflect.item.json",

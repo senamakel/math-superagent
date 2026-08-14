@@ -141,9 +141,9 @@ async fn a_solved_reflection_leaves_the_loop() {
     }))
     .await;
     run.assert_node_ran("report");
-    // One pass. Four steps run in it — attempt, judge, reflect, goal_apply —
-    // and neither the merge nor the goals gate is reached, so a second pass
-    // would show as more than four.
+    // The seed call's gate, then one pass: attempt, judge, reflect, goal_apply.
+    // The merge is not reached, and the in-loop goals child holds rather than
+    // asking, so a second pass would show as more than five.
     run.assert_call_count(
         tinyflows::testkit::capability::TOOLS,
         Some(super::super::loop_steps::TOOL),
@@ -392,11 +392,13 @@ fn the_ladders_read_fields_a_step_actually_emits() {
 /// actually reach another attempt rather than being routed to a reflection.
 ///
 /// The sequence advances `restarts` the way `judge_step` does, because that is
-/// what bounds the arm: `judged --restart--> attempt` is an inner cycle the loop
-/// head never counts, so `max_iterations` cannot stop it and the ladder's
-/// `restarts >= MAX_RESTARTS` is the only thing that does. A mock returning a
-/// fixed state span until the recursion limit — which is the honest shape of
-/// the risk, and why the cap is load-bearing rather than a nicety.
+/// what bounds the arm. The restart goes back through the loop head, so
+/// `max_iterations` now bounds it as well — but the ladder's
+/// `restarts >= MAX_RESTARTS` is what makes it stop *for the right reason*,
+/// having explored something to its conclusion rather than having run out of
+/// attempts. A mock returning a fixed state span to the recursion limit when the
+/// arm re-entered `attempt` directly, which is why the cap is load-bearing
+/// rather than a nicety.
 #[tokio::test]
 async fn a_restart_verdict_reaches_another_attempt_and_is_capped() {
     use crate::orchestrator::solutions::{SolutionState, Verdict};
@@ -414,7 +416,12 @@ async fn a_restart_verdict_reaches_another_attempt_and_is_capped() {
         .mock_tool(
             "run_loop_step",
             Respond::sequence([
+                // The seed call to the goals child, then attempt/judge pairs: a
+                // restart re-enters through the loop head, so each one is a pass.
                 restarting(0, false),
+                restarting(0, false),
+                restarting(0, false),
+                restarting(1, false),
                 restarting(1, false),
                 restarting(MAX_RESTARTS, false),
                 // Past the cap the ladder must route to a reflection, and this
@@ -469,6 +476,8 @@ async fn each_step_is_handed_what_the_step_before_it_produced() {
             // attempt, judge, reflect, goal_apply. The last is solved, so the
             // fold ends the run after one pass.
             Respond::sequence([
+                // The seed call to the goals child, before the loop starts.
+                marked("the seed decomposition", false),
                 marked("what the attempt found", false),
                 marked("what the judge made of it", false),
                 marked("what the reflection concluded", false),
@@ -523,6 +532,8 @@ async fn the_merge_is_handed_every_arms_output() {
             // which reports solved so the run ends rather than diversifying
             // forever.
             Respond::sequence([
+                // The seed call, then attempt, judge, reflect, goal_apply.
+                Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
@@ -576,9 +587,11 @@ async fn the_goals_child_reads_the_reflection_the_loop_just_made() {
         .mock_tool(
             super::super::loop_steps::TOOL,
             Respond::sequence([
+                // The seed call, then attempt and judge.
                 Respond::value(due.to_accumulator()),
                 Respond::value(due.to_accumulator()),
-                // The reflection: due, so the child must ask its gate.
+                Respond::value(due.to_accumulator()),
+                // The reflection: due, so the in-loop child must ask its gate.
                 Respond::value(due.to_accumulator()),
                 Respond::value(done.to_accumulator()),
             ]),
@@ -642,8 +655,10 @@ async fn the_diversify_arms_run_concurrently() {
         .mock_tool(
             super::super::loop_steps::TOOL,
             Respond::sequence([
-                // The four steps on the path answer immediately; only the three
-                // arms are slow, so what is measured is the fan-out alone.
+                // The seed call and the four steps on the path answer
+                // immediately; only the three arms are slow, so what is measured
+                // is the fan-out alone.
+                Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
@@ -666,5 +681,48 @@ async fn the_diversify_arms_run_concurrently() {
         elapsed < arm_time * 2,
         "the arms took {elapsed:?}, which is more than two of the {arm_time:?} each one costs — \
          they ran in sequence"
+    );
+}
+
+/// The goal is decomposed beside the *first* attempt, not after it.
+///
+/// The reducer works backward from the problem statement, so its input exists
+/// before anything has been attempted; the arm is detached, so asking costs the
+/// graph nothing. Waiting for a completed cycle means that on a conjecture run —
+/// where one attempt/judge/reflect pass is the better part of an hour — every
+/// role spends that hour working without a statement of what would be enough.
+#[tokio::test]
+async fn the_goal_is_decomposed_before_the_first_attempt() {
+    let run = run_with(json!({
+        "attempts": 1, "solved": true, "unproductive": 0, "blocked": 0,
+        "computational": 0, "unverified": 0, "restarts": 0,
+        "lesson": "done", "fresh_context": ""
+    }))
+    .await;
+
+    run.assert_node_ran(SEED_GOALS_NODE);
+    let seed = run
+        .output()
+        .pointer(&format!("/nodes/{SEED_GOALS_NODE}/items/0/json"))
+        .cloned()
+        .unwrap_or(Value::Null);
+    // The seed carries the loop's own opening state, whose cadence starts *at*
+    // the interval — so this call is already due and reaches the gate.
+    assert!(
+        seed.pointer("/nodes/gate").is_some(),
+        "the seed call held rather than asking: {seed}"
+    );
+
+    // And it ran before the loop, which is the whole point.
+    let order = |node: &str| {
+        run.trace()
+            .steps
+            .iter()
+            .position(|step| step.node_id == node)
+            .unwrap_or(usize::MAX)
+    };
+    assert!(
+        order(SEED_GOALS_NODE) < order("attempt"),
+        "the seed decomposition ran after the first attempt"
     );
 }

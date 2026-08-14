@@ -48,8 +48,9 @@ use super::solutions::DIVERSIFY_MERGE;
 /// Node identity still comes from the edge table: a node named here but
 /// unreachable renders detached, which is the renderer's way of showing
 /// exactly that mistake.
-const NODES: [(&str, &str); 12] = [
+const NODES: [(&str, &str); 13] = [
     ("start", "start"),
+    (super::workflow::SEED_GOALS_NODE, "seed goals"),
     (super::workflow::LOOP_NODE, "solve"),
     ("attempt", "attempt"),
     ("judge", "judge"),
