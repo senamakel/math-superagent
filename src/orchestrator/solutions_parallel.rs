@@ -28,16 +28,6 @@
 // either order and give the same state, because they never touch the same
 // slot. `diversify_merge` is where the slots become prose again.
 
-/// The arms `diversify` fans out to, and the barrier they converge on.
-///
-/// Named here rather than at the call sites so the fan-out, the barrier
-/// registration, and the rendered picture cannot name different sets.
-pub(super) const DIVERSIFY_ARMS: [&str; 3] = [
-    "diversify_library",
-    "diversify_patterns",
-    "diversify_invention",
-];
-
 /// Where the arms converge.
 pub(super) const DIVERSIFY_MERGE: &str = "diversify_merge";
 
@@ -123,66 +113,4 @@ impl DiversifyFindings {
             ("Line of attack chosen", self.chosen.as_str()),
         ]
     }
-}
-
-/// What a node hands back to the loop.
-///
-/// See the module documentation: the two variants exist because a node on the
-/// sequential path owns the whole state, and an arm running beside two others
-/// owns only its own slot.
-#[derive(Clone, Debug)]
-pub(super) enum LoopUpdate {
-    /// The whole next state, from a node nothing is running beside.
-    ///
-    /// Boxed because [`SolutionState`] is much the larger variant, and an
-    /// unboxed enum costs every arm's small update the size of a whole state.
-    Whole(Box<SolutionState>),
-    /// One arm's findings, merged by slot.
-    Findings(Vec<Finding>),
-}
-
-impl LoopUpdate {
-    /// Wraps a whole state.
-    pub(super) fn whole(state: SolutionState) -> Self {
-        Self::Whole(Box::new(state))
-    }
-
-    /// Wraps one arm's findings as a node result.
-    pub(super) fn findings(findings: Vec<Finding>) -> NodeResult<Self> {
-        NodeResult::Update(Self::Findings(findings))
-    }
-}
-
-/// Folds one node's update into the run's state.
-///
-/// Total and order-independent for the concurrent case, which is the property
-/// the fan-out rests on: findings are written to disjoint slots, so merging
-/// two arms in either order gives the same state, and the runtime is free to
-/// commit them as they arrive.
-// The `Result` is the reducer trait's, not a claim that this can fail: a fold
-// over disjoint slots has no failure mode. Keeping the signature is what lets
-// it be passed to `ClosureStateReducer` at all.
-#[allow(clippy::unnecessary_wraps)]
-pub(super) fn reduce(mut state: SolutionState, update: LoopUpdate) -> GraphResult<SolutionState> {
-    match update {
-        LoopUpdate::Whole(next) => Ok(*next),
-        LoopUpdate::Findings(findings) => {
-            for finding in findings {
-                state.diversify.set(finding);
-            }
-            Ok(state)
-        }
-    }
-}
-
-/// Fans out to every arm at once.
-///
-/// A plain edge cannot express this — the builder holds one static successor
-/// per node — so the fan-out is a [`Command`], and the builder is told the
-/// destination set separately with `with_unconditional_fanout`. Declaring it
-/// as *unconditional* is what lets the barrier downstream reason about which
-/// predecessors are really coming: a node that chose between arms would leave
-/// the merge waiting on one that never runs.
-pub(super) fn fan_out_to_arms() -> NodeResult<LoopUpdate> {
-    NodeResult::Command(Command::goto(DIVERSIFY_ARMS))
 }

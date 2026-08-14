@@ -190,6 +190,12 @@ impl SolutionState {
     }
 
     /// Returns the loop's outcome for the caller.
+    /// The diversify slots, read-only.
+    #[cfg(test)]
+    pub(in crate::orchestrator) fn diversify(&self) -> &DiversifyFindings {
+        &self.diversify
+    }
+
     /// The diversify slots, for a caller folding one arm at a time.
     pub(in crate::orchestrator) fn diversify_mut(&mut self) -> &mut DiversifyFindings {
         &mut self.diversify
@@ -438,6 +444,12 @@ impl std::fmt::Display for Judged {
 /// find that out. The attempt ceiling outranks a restart — a run at its last
 /// attempt must reflect on what it has rather than throw it away and stop with
 /// nothing.
+// No longer executed: the engine routes on the jq in `workflow::judge_ladder`.
+// This is the *specification* that ladder is held to — `orchestrator::parity`
+// runs both over every state and refuses a divergence — so it is kept, and kept
+// exact, rather than deleted with the loop that used to call it. Deleting it
+// would leave the running ladder with nothing to be checked against.
+#[cfg_attr(not(test), allow(dead_code))]
 pub(in crate::orchestrator) fn judged_route(state: &SolutionState) -> Judged {
     if state.judged == Verdict::Restart && state.attempts < MAX_ATTEMPTS {
         Judged::Restart

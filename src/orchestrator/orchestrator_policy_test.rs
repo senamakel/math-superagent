@@ -105,25 +105,3 @@ fn the_inventors_bench_is_a_registered_agent() -> agent::Result<()> {
     Ok(())
 }
 
-/// The engine switch is opt-in, and an unrecognised value selects the proven
-/// path rather than failing: an operator who mistypes the variable should get
-/// the state graph, not a stopped run.
-#[test]
-fn the_workflow_engine_is_opt_in_and_fails_safe() {
-    for (value, expected) in [
-        (None, false),
-        (Some(""), false),
-        (Some("graph"), false),
-        // A typo is the case that matters. It must not be read as consent.
-        (Some("wrokflow"), false),
-        (Some("workflow"), true),
-        (Some("  Workflow  "), true),
-        (Some("WORKFLOW"), true),
-    ] {
-        assert_eq!(
-            super::selects_workflow_engine(value),
-            expected,
-            "MATH_AGENT_ENGINE={value:?}"
-        );
-    }
-}

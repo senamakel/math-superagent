@@ -7,7 +7,7 @@ use super::{
     evidence_briefing, extract_lesson, gap_briefing, kind_of, provider_blocked, record_verdict,
     route, skeleton_fingerprint,
 };
-use super::{Finding, LoopUpdate, Slot, diversify_merge, reduce};
+use super::{Finding, Slot, diversify_merge};
 
 fn state() -> SolutionState {
     SolutionState::new("find the largest x")
@@ -1132,8 +1132,12 @@ fn a_run_with_no_output_is_not_told_its_ledger_is_empty() -> std::io::Result<()>
 }
 
 
-/// The property the concurrent fan-out rests on: arms write disjoint slots, so
-/// the order the runtime commits them in cannot change the state it produces.
+/// The property the diversify fan-out rests on: arms write disjoint slots, so
+/// the order they are folded in cannot change the state they produce.
+///
+/// The engine now folds them one at a time through `loop_steps::fold_arm`
+/// rather than concurrently through a reducer, and the property is what makes
+/// that substitution safe rather than merely convenient.
 #[test]
 fn arm_findings_merge_to_the_same_state_in_any_order() {
     let findings = [
@@ -1147,36 +1151,13 @@ fn arm_findings_merge_to_the_same_state_in_any_order() {
     let fold = |order: &[usize]| {
         let mut state = SolutionState::new("problem");
         for index in order {
-            state = reduce(
-                state,
-                LoopUpdate::Findings(vec![findings[*index].clone()]),
-            )
-            .expect("folding a finding never fails");
+            state.diversify_mut().set(findings[*index].clone());
         }
-        state.diversify.sections().map(|(_, body)| body.to_string())
+        state.diversify().sections().map(|(_, body)| body.to_string())
     };
 
     assert_eq!(fold(&[0, 1, 2, 3, 4]), fold(&[4, 3, 2, 1, 0]));
     assert_eq!(fold(&[0, 1, 2, 3, 4]), fold(&[2, 0, 4, 1, 3]));
-}
-
-#[test]
-fn a_whole_state_update_replaces_rather_than_merges() {
-    let mut carrying = SolutionState::new("problem");
-    carrying = reduce(
-        carrying,
-        LoopUpdate::Findings(vec![Finding::new(Slot::Patterns, "a regularity")]),
-    )
-    .expect("folding a finding never fails");
-
-    let mut replacement = SolutionState::new("problem");
-    replacement.attempts = 7;
-    let merged = reduce(carrying, LoopUpdate::whole(replacement))
-        .expect("replacing the whole state never fails");
-
-    assert_eq!(merged.attempts, 7);
-    // A node on the sequential path owns the whole state, findings included.
-    assert!(merged.diversify.sections().iter().all(|(_, body)| body.is_empty()));
 }
 
 /// The merge is the only node that reads every slot, and the only one that
@@ -1192,8 +1173,7 @@ fn the_merge_folds_the_slots_and_then_empties_them() {
         Finding::new(Slot::Library, "papers"),
         Finding::new(Slot::Patterns, "a regularity"),
     ] {
-        state = reduce(state, LoopUpdate::Findings(vec![finding]))
-            .expect("folding a finding never fails");
+        state.diversify_mut().set(finding);
     }
 
     let merged = diversify_merge(state);
@@ -1205,5 +1185,11 @@ fn the_merge_folds_the_slots_and_then_empties_them() {
     // reflection routes straight back here.
     assert_eq!(merged.unproductive, 0);
     assert_eq!(merged.computational, 0);
-    assert!(merged.diversify.sections().iter().all(|(_, body)| body.is_empty()));
+    assert!(
+        merged
+            .diversify()
+            .sections()
+            .iter()
+            .all(|(_, body)| body.is_empty())
+    );
 }

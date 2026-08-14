@@ -29,14 +29,12 @@
 
 use std::path::Path;
 
-use tinyflows::model::{Edge, Node, NodeKind, WorkflowGraph};
+use tinyflows::model::WorkflowGraph;
 use tinyflows::visualization::render_graph;
 
 use crate::error::{Error, Result};
 
-use super::solutions::{
-    DIRECT_EDGES, DIVERSIFY_ARMS, DIVERSIFY_MERGE, ENTRY, FINISH, JUDGE_ROUTES, REFLECT_ROUTES,
-};
+use super::solutions::DIVERSIFY_MERGE;
 
 /// The loop's nodes, as `(id, name)`.
 ///
@@ -50,122 +48,41 @@ use super::solutions::{
 /// Node identity still comes from the edge table: a node named here but
 /// unreachable renders detached, which is the renderer's way of showing
 /// exactly that mistake.
-const NODES: [(&str, &str); 9] = [
+const NODES: [(&str, &str); 10] = [
+    ("start", "start"),
+    (super::workflow::LOOP_NODE, "solve"),
     ("attempt", "attempt"),
     ("judge", "judge"),
     ("reflect", "reflect"),
-    ("diversify", "diversify"),
     ("diversify_library", "library"),
     ("diversify_patterns", "patterns"),
     ("diversify_invention", "invention"),
     (DIVERSIFY_MERGE, "merge"),
-    ("done", "done"),
+    ("report", "report"),
 ];
 
-/// Where the workflow-engine loop legitimately differs from the drawn one.
-///
-/// The two are meant to decide identically, not to be identical: one is a state
-/// graph of Rust closures and the other a document of typed nodes, and three
-/// differences follow from that rather than from anyone's choice.
-///
-/// - `solve` — the `loop` head. It exists to own the accumulator and to
-///   recognise a finished run; the state graph keeps both in `SolutionState`
-///   and needs no node for them.
-/// - `pass` — the body's single exit. The engine's `nodes` map is cumulative,
-///   so a fold with more than one node to read would read a stale one; the
-///   state graph's edges carry that ordering implicitly and need no node.
-/// - `judged` and `route` — the routing ladders as their own `switch` nodes.
-///   The state graph carries both as router *closures* attached to an edge, so
-///   they are decisions without nodes; a document has to name them to hold
-///   them.
-/// - `report` — the same terminal as `done`, named for what it does with the
-///   accumulator it is handed.
-///
-/// Pinned so a fourth difference is a decision somebody makes here rather than
-/// a drift nobody notices.
-#[cfg(test)]
-pub(super) const WORKFLOW_ONLY: [&str; 5] = ["solve", "pass", "judged", "route", "report"];
 
-/// Builds the solution loop as a `TinyFlows` workflow graph.
+/// The solution loop, as the engine runs it.
 ///
-/// The result is a description for rendering and inspection, not something to
-/// run: the nodes carry no configuration, because the work each one does is a
-/// Rust handler in `solutions_state.rs` rather than a workflow node kind.
+/// Previously this assembled a parallel description of the loop from the state
+/// graph's routing tables, and the tests below existed to stop the two drifting.
+/// There is nothing to drift from now: the loop *is* a `WorkflowGraph`, so the
+/// diagram renders that graph rather than a drawing of it. A picture that can
+/// disagree with what runs is no longer expressible here.
 ///
-/// The renderer captions an edge `from_port -> to_port`, so the verdict goes
-/// in `from_port` and the destination in `to_port`: an edge reads
-/// `solved -> done`. An unconditional edge is captioned `always`, so a reader
-/// can tell a branch that happens to have one arm from an edge that is not a
-/// branch. The verdicts are the routers' own `Display` output — the string the
-/// runtime resolves a branch by — so a caption cannot name a route the router
-/// does not produce. The renderer truncates a caption at eighteen characters,
-/// which bites only `reported unverified`; the arrow still shows where it
-/// goes.
+/// Node names are shortened for the renderer, which draws a name at double
+/// scale inside a fixed 240px box and truncates on character count rather than
+/// width — so anything past about thirteen characters runs out of its box.
 #[must_use]
 pub(super) fn solution_loop() -> WorkflowGraph {
-    let mut graph = WorkflowGraph {
-        name: format!("solution loop: {ENTRY} -> {FINISH}"),
-        ..WorkflowGraph::default()
-    };
-    graph.nodes = NODES
-        .iter()
-        .map(|(id, name)| Node {
-            id: (*id).into(),
-            // Every node but the terminal one runs an agent turn; `done` only
-            // passes the final state through.
-            kind: if *id == FINISH {
-                NodeKind::Transform
-            } else {
-                NodeKind::Agent
-            },
-            type_version: 1,
-            name: (*name).to_string(),
-            config: serde_json::Value::Null,
-            ports: Vec::new(),
-            position: None,
-        })
-        .collect();
-
-    let mut edges: Vec<Edge> = DIRECT_EDGES
-        .iter()
-        .map(|(from, to)| edge(from, "always", to))
-        .collect();
-    // The fan-out and the join. Captioned distinctly from `always` because they
-    // are the two edges in the loop that are not one-in-one-out: `fanout` marks
-    // three successors leaving together, and `join` marks an arrival the merge
-    // waits on rather than acts on.
-    edges.extend(
-        DIVERSIFY_ARMS
-            .iter()
-            .map(|arm| edge("diversify", "fanout", arm)),
-    );
-    edges.extend(
-        DIVERSIFY_ARMS
-            .iter()
-            .map(|arm| edge(arm, "join", DIVERSIFY_MERGE)),
-    );
-    edges.extend(
-        JUDGE_ROUTES
-            .iter()
-            .map(|(verdict, to)| edge("judge", &verdict.to_string(), to)),
-    );
-    edges.extend(
-        REFLECT_ROUTES
-            .iter()
-            .map(|(verdict, to)| edge("reflect", &verdict.to_string(), to)),
-    );
-    graph.edges = edges;
-    graph
-}
-
-/// One captioned edge.
-fn edge(from: &str, caption: &str, to: &str) -> Edge {
-    Edge {
-        from_node: from.into(),
-        from_port: caption.to_string(),
-        to_node: to.into(),
-        to_port: to.to_string(),
+    let mut graph = super::workflow::solution_loop("", Vec::new());
+    graph.name = "solution loop".to_string();
+    for node in &mut graph.nodes {
+        if let Some((_, short)) = NODES.iter().find(|(id, _)| *id == node.id.as_str()) {
+            node.name = (*short).to_string();
+        }
     }
+    graph
 }
 
 /// Renders the solution loop to `path`, which must end in `.png`, `.jpg`, or

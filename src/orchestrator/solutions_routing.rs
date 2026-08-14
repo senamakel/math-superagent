@@ -55,18 +55,6 @@ fn tell_teams(teams: &[TeamHandle], state: &SolutionState, progressed: bool, les
     }
 }
 
-/// Opens a diversify: says so, then fans out to the three arms.
-///
-/// The arms are graph nodes rather than joined futures, so this does no work of
-/// its own — it exists to be the single point the fan-out leaves from, which is
-/// what lets the barrier downstream know how many predecessors to wait for.
-fn diversify_open(tracer: Option<&Arc<RunTracer>>) -> NodeResult<LoopUpdate> {
-    if let Some(tracer) = tracer {
-        tracer.note("solution loop: stuck, gathering new angles in parallel");
-    }
-    fan_out_to_arms()
-}
-
 /// The gather-and-read arm: the librarian fetches, then the scholar reads.
 ///
 /// Sequential inside one node on purpose. The scholar reads what the librarian
