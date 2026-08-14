@@ -51,7 +51,11 @@ pub(super) fn workflow_route(state: &Value) -> String {
 pub(super) fn workflow_judged(state: &Value, verdict: &str) -> String {
     let mut scope = scope_for(state);
     if let Some(map) = scope.as_object_mut() {
-        map.insert("item".into(), json!({ "json": { "verdict": verdict } }));
+        // The field a step really emits. Building this scope by hand is what
+        // let a mismatch between the ladder and the graph survive once, so it
+        // is built from `to_accumulator`'s own spelling now, and
+        // `the_ladders_read_fields_a_step_actually_emits` checks the rest.
+        map.insert("item".into(), json!({ "json": { "judged": verdict } }));
     }
     tinyflows::expr::evaluate(&json!(super::workflow::judge_ladder()), &scope)
         .as_str()

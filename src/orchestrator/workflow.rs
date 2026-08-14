@@ -94,6 +94,14 @@ pub(super) fn reflect_ladder() -> String {
 
 /// The ladder out of the judge, as jq.
 ///
+/// Reads `judged`, which is what `SolutionState::to_accumulator` calls the
+/// judge's verdict. It read `verdict` until a breakdown of the graph caught it:
+/// nothing emits that field, so the comparison was `null == "restart"`, the
+/// restart arm was unreachable, and a judge that wanted the run to start over
+/// was silently overruled on every attempt. The parity harness did not catch it
+/// because it feeds the ladder a scope it builds itself — proving the ladder
+/// right while the graph fed it something else.
+///
 /// Two rules the Rust carries and this must not lose. A restart is bounded by
 /// `MAX_RESTARTS`, because a judge that dislikes the run's whole approach would
 /// otherwise reset it until the attempt ceiling stopped the loop and the run
@@ -105,7 +113,7 @@ pub(super) fn judge_ladder() -> String {
     format!(
         "=if .nodes.{LOOP_NODE}.state.attempts >= {MAX_ATTEMPTS} then \"reflect\" \
          elif .nodes.{LOOP_NODE}.state.restarts >= {MAX_RESTARTS} then \"reflect\" \
-         elif .item.json.verdict == \"restart\" then \"restart\" \
+         elif .item.json.judged == \"restart\" then \"restart\" \
          else \"reflect\" end"
     )
 }
@@ -290,12 +298,12 @@ pub(super) fn solution_loop(
         edge("route", "diversify", "diversify_library"),
         edge("route", "diversify", "diversify_patterns"),
         edge("route", "diversify", "diversify_invention"),
-        // Back into an attempt, not into the head. The head folds whatever its
-        // body last produced and the engine's `nodes` map is cumulative, so a
-        // merge that returned here would keep being read as "this pass's
-        // result" for the rest of the run. Every pass ends at `reflect`
-        // instead — which is also what the state graph does, where diversifying
-        // leads to another attempt rather than to a new cycle.
+        // Through the pass node like every other path, not straight back to
+        // the head. Two things were tried first and both were wrong: returning
+        // to the head directly gives the fold two nodes to read and it
+        // eventually reads the stale one, and returning into `attempt` makes an
+        // inner cycle the head never sees, so `max_iterations` cannot bound a
+        // run that keeps diversifying.
         edge("diversify_merge", "main", PASS_NODE),
     ];
     edges.extend(

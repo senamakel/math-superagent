@@ -333,3 +333,71 @@ fn every_field_survives_the_accumulator_round_trip() {
     assert_eq!(returned.lessons.len(), 2);
     assert_eq!(returned.problem(), "find the largest x");
 }
+
+
+/// The gap that let an unreachable restart arm ship: the parity harness feeds
+/// the ladders a scope it builds itself, so a ladder can be provably correct
+/// and still read a field no step emits.
+///
+/// This checks the other half — that every `.item.json.<field>` and
+/// `.state.<field>` the ladders read is one a real state actually carries.
+#[test]
+fn the_ladders_read_fields_a_step_actually_emits() {
+    use crate::orchestrator::solutions::SolutionState;
+
+    let emitted = SolutionState::new("a problem").to_accumulator();
+    let mut missing = Vec::new();
+
+    for ladder in [reflect_ladder(), judge_ladder(), terminal_condition()] {
+        for prefix in [".item.json.", ".state.", &format!(".nodes.{LOOP_NODE}.state.")] {
+            let mut rest = ladder.as_str();
+            while let Some(at) = rest.find(prefix) {
+                rest = &rest[at + prefix.len()..];
+                let field: String = rest
+                    .chars()
+                    .take_while(|c| c.is_alphanumeric() || *c == '_')
+                    .collect();
+                if !field.is_empty() && emitted.get(&field).is_none() {
+                    missing.push(field);
+                }
+            }
+        }
+    }
+
+    missing.sort_unstable();
+    missing.dedup();
+    assert!(
+        missing.is_empty(),
+        "the ladders read fields no state carries: {missing:?}"
+    );
+}
+
+/// The restart arm, end to end. A judge that wants the run to start over must
+/// actually reach another attempt rather than being routed to a reflection.
+#[tokio::test]
+async fn a_restart_verdict_reaches_another_attempt() {
+    use crate::orchestrator::solutions::{SolutionState, Verdict};
+
+    let mut restarting = SolutionState::new("a problem");
+    restarting.attempts = 1;
+    restarting.judged = Verdict::Restart;
+
+    let run = TestHarness::new(&graph())
+        .mock_tool("run_loop_step", Respond::value(restarting.to_accumulator()))
+        .run()
+        .await
+        .expect("the loop runs to completion");
+
+    // A restart re-enters the attempt without reflecting, so the run keeps
+    // attempting until the ceiling rather than settling after one pass.
+    let attempts = run
+        .trace()
+        .steps
+        .iter()
+        .filter(|step| step.node_id == "attempt")
+        .count();
+    assert!(
+        attempts > 1,
+        "the restart arm never re-attempted; it is unreachable"
+    );
+}
