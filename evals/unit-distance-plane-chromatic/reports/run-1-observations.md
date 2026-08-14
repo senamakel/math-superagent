@@ -124,3 +124,115 @@ reason. The rule held under a live test.
   watch: `GOAL.md` requires the oracle to be calibrated against the 7-vertex
   graph before anything measured with it is trusted, and a run with code but no
   claims has not yet established anything.
+
+## At 16:00 — the documented phase-1 trap, reproduced exactly
+
+| | |
+| --- | --- |
+| sources | 14 |
+| `research/ROOT.md` | 97 lines |
+| claim blocks filed | **0** |
+| `CONTEXT.md` Established | **empty placeholder** |
+| `code/brute.py` | written, **never executed** |
+| `code/out/` | empty |
+| librarian share of model calls | 58.5%, still climbing |
+
+`AGENTS.md` already records this failure, from a previous run: *"a live run spent
+twenty-seven uninterrupted minutes there, reached fifty-three sources and a rich
+ROOT.md, and never wrote a single belief into the brief every role reads — it
+had read everything and concluded nothing."*
+
+The conjecture task prompt anticipates it in as many words — *"You are behind if
+research/ has content and CONTEXT.md's Established section is empty"* — and the
+run did it anyway, at 16 minutes, against a 30-minute attempt budget.
+
+### The framework finding
+
+**This is the repository's own principle failing on its own terms: a prompt
+instruction is not a control.**
+
+Phase 1's exit condition is written into the task prompt and enforced by
+nothing. There is no counter, no threshold, and no routing arm that notices
+`sources > 0 && claims == 0`. The loop's thresholds — `STUCK_THRESHOLD`,
+`COMPUTATIONAL_THRESHOLD`, `UNVERIFIED_THRESHOLD` — all measure what happens
+*after* an attempt is judged, and this run has not produced a judge verdict yet,
+so none of them can fire. The run can spend its entire attempt budget in
+gathering and the graph has no way to see it.
+
+Candidate remedies, for the supervision document rather than for now:
+
+1. A **derived counter** on the extraction ratio — sources filed versus claim
+   blocks written — with a routing arm that forces extraction when it diverges.
+   It is a cheap, exactly-measurable quantity and it is already on disk.
+2. A **budget on the librarian's share** of model calls within one attempt.
+   58.5% with zero claims is the signature, and it is visible to `./diagnose`
+   from outside, so the runtime can see it too.
+3. Failing both, make the phase-1 exit test a **tool** the run has to call, so
+   that not exiting is something a reader can see it never did.
+
+Steered as directive 2, which is the operator remedy the design already
+provides. That it *needed* an operator is the finding.
+
+## Final state at 82:30, when the run was stopped
+
+Stopped by the operator. The workspace survives with its own checkpoint history,
+so `./calibrate unit-distance-plane-chromatic` continues from what is on disk.
+
+| | |
+| --- | --- |
+| model calls | 651, across 12 roles |
+| attempts / verdicts | 1 / 0 |
+| sources | 36 |
+| captured output files | 23 |
+| **claim blocks filed** | **0** |
+| **`CONTEXT.md` Established** | **still the empty placeholder** |
+| screen decisions | 118 |
+
+Role spend: librarian 38.2%, pattern_finder 20.4%, tool_builder 14.1%,
+scholar 12.9%, then nine others under 4% each.
+
+The one loop line recorded: `verdict unsolved, progress no (computational,
+1 consecutive scaling), next retry`.
+
+### What the run did do
+
+Real computation, and a lot of it: 23 captured output files including a spindle
+census, a `k11` extension, and an edge-fit analysis. `tool_builder` and
+`pattern_finder` together took 34.5% of the calls. This is not a run that only
+talked.
+
+### What it never did, in 82 minutes and after being told twice
+
+**File a single claim, or write one belief into `CONTEXT.md`.**
+
+Directive 2 asked for exactly this, in as many words, and the run acknowledged
+it and still did not do it. That upgrades the finding: the phase-1 extraction
+gap is not a matter of the run not having been *told*. It was told by the task
+prompt, and then told again by an operator directive, and the ledger the whole
+design routes through stayed empty.
+
+So the remedy cannot be a better instruction. It has to be a control — a derived
+counter on the extraction ratio, a cap on the librarian's share, or a tool the
+run must call to leave the phase. The three candidates in the section above
+stand, and the second directive is the evidence that the prompt-level fix has
+already been tried and failed.
+
+### The screen, over a full run
+
+```
+denied                   92
+denied-host               6
+allowed-by-adjudicator   19
+denied-by-adjudicator     1
+```
+
+by tool: `exa_search` 86, `read_sources` 16, `citation_graph` 7,
+`find_similar_sources` 4, `download_document` 4, `deep_research` 1.
+by stage: 47 arguments, 71 result.
+
+Two things worth keeping from this. The adjudicator is **discriminating rather
+than rubber-stamping** — 19 allows against 1 deny, on text the deterministic
+stage had already flagged, which is the ratio a useful second stage should show.
+And the screen reached **every** research tool, not just `exa_search`: the
+`citation_graph`, `find_similar_sources` and `deep_research` counts are the
+evidence that wrapping at construction covered the whole surface.
