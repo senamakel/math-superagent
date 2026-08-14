@@ -23,25 +23,31 @@
 //! patched without reference to the ladder — which is exactly the boundary
 //! [`tinyflows::model::NodeKind::SubWorkflow`] exists to draw.
 //!
-//! # Why this does not block the loop
+//! # What this costs the loop
 //!
-//! The child returns in the time it takes to decide, because deciding is all it
-//! does. The decomposition itself is a detached agent run: [`open_reduction`]
-//! spawns it and posts its report to the mailbox the next attempt drains. That
-//! is not an optimisation, it is the constraint — a reducer is a child run of
-//! unbounded length, and awaiting one between the reflection and the next
-//! attempt is the failure the mailboxes were written about, where a live run
-//! sat 33 minutes unable to start an attempt it was ready for.
+//! On most cycles, nothing: the cadence holds and the child returns in the time
+//! it takes to evaluate one expression. On the cycle it does not hold, the
+//! decomposition is awaited — it is one of the evaluation arms, running beside
+//! the reflection rather than after it, so the pass costs the slowest arm and
+//! not the sum.
+//!
+//! It was detached before, for a reason that was real: awaiting a reducer
+//! *after* the reflection put a child run of unbounded length between the
+//! reflection and the next attempt, which is the failure the mailboxes were
+//! written about, where a live run sat 33 minutes unable to start an attempt it
+//! was ready for. Running it *with* the reflection is what changed. What that
+//! buys is that the next attempt sees this cycle's skeleton rather than the
+//! previous one's.
 //!
 //! # What each half owns
 //!
 //! The cadence is here, in jq, because "how often" is the decision an operator
 //! most wants to change without a rebuild. The fingerprint and the claim are in
-//! [`open_reduction`], because a workspace that has not moved and a reducer
-//! already in flight are facts about the world rather than about the loop's
-//! state, and neither is expressible as an expression over an accumulator.
+//! [`reduce_arm`], because a workspace that has not moved and a reducer already
+//! in flight are facts about the world rather than about the loop's state, and
+//! neither is expressible as an expression over an accumulator.
 //!
-//! [`open_reduction`]: super::solutions
+//! [`reduce_arm`]: super::solutions
 
 use serde_json::{Value, json};
 use tinyflows::model::{
@@ -174,30 +180,52 @@ pub(super) fn goals_workflow() -> WorkflowGraph {
 /// silent, because a missing pointer reads exactly like "did not open".
 #[must_use]
 pub(super) fn opened(child: &Value) -> bool {
-    let Some(nodes) = child.get("nodes").and_then(Value::as_object) else {
-        return false;
-    };
-    nodes.values().any(|slot| {
-        slot.get("items")
-            .and_then(Value::as_array)
-            .into_iter()
-            .flatten()
-            .any(|item| {
-                // Both shapes, because the child's two arms are different node
-                // kinds: a `tool_call` wraps its result in the
-                // `{ json, text, raw }` envelope, a `transform` passes its item
-                // through bare. Reading only one would make the answer depend on
-                // which arm ran, which is exactly what this must not do.
-                let payload = item.get("json");
-                let inner = payload.and_then(|json| json.get("json"));
-                [payload, inner].into_iter().flatten().any(|carrier| {
-                    carrier
-                        .get(OPENED_FIELD)
-                        .and_then(Value::as_bool)
-                        .unwrap_or_default()
-                })
-            })
+    gate_state(child).is_some()
+}
+
+/// The state the gate produced, when it ran and opened a decomposition.
+///
+/// The parent needs more than the yes/no: the reducer's report rides back in
+/// the state's own findings slot, and a caller that read only the flag would
+/// reset the cadence having thrown the skeleton away.
+#[must_use]
+pub(super) fn gate_state(child: &Value) -> Option<Value> {
+    carriers(child).find(|carrier| {
+        carrier
+            .get(OPENED_FIELD)
+            .and_then(Value::as_bool)
+            .unwrap_or_default()
     })
+}
+
+/// Every object in a child run state that could be carrying the gate's answer.
+///
+/// Reads the whole run state and looks for the answer wherever it is, rather
+/// than pointing at one node's first item. The child has two terminal arms and
+/// only one of them runs, so a fixed pointer would have to name both and would
+/// break the moment either is renamed — and the failure would be silent,
+/// because a missing pointer reads exactly like "did not open".
+fn carriers(child: &Value) -> impl Iterator<Item = Value> + '_ {
+    child
+        .get("nodes")
+        .and_then(Value::as_object)
+        .into_iter()
+        .flat_map(|nodes| nodes.values())
+        .filter_map(|slot| slot.get("items").and_then(Value::as_array))
+        .flatten()
+        .flat_map(|item| {
+            // Both shapes, because the child's two arms are different node
+            // kinds: a `tool_call` wraps its result in the `{ json, text, raw }`
+            // envelope, a `transform` passes its item through bare. Reading only
+            // one would make the answer depend on which arm ran, which is
+            // exactly what this must not do.
+            let payload = item.get("json").cloned();
+            let inner = payload
+                .as_ref()
+                .and_then(|json| json.get("json"))
+                .cloned();
+            [payload, inner].into_iter().flatten()
+        })
 }
 
 #[cfg(test)]

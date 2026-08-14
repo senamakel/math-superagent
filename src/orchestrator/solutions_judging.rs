@@ -747,7 +747,7 @@ pub(in crate::orchestrator) async fn reduce_arm(
 /// `diversify` still runs the same sweep and still *awaits* it: there the whole
 /// point is to change direction before attempting again, so a report arriving
 /// afterwards would be a report the run had already acted without.
-fn open_library(
+pub(in crate::orchestrator) fn open_library(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     outbox: &Mailbox,

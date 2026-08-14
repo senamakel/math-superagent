@@ -50,6 +50,7 @@ use super::teams::TeamHandle;
 include!("solutions_attempt.rs");
 include!("solutions_parallel.rs");
 include!("solutions_judging.rs");
+include!("solutions_evaluation.rs");
 include!("solutions_routing.rs");
 include!("solutions_state.rs");
 

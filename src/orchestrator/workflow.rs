@@ -36,9 +36,41 @@ use serde_json::{Value, json};
 use tinyflows::model::{Edge, Node, NodeKind, WorkflowGraph};
 
 use super::solutions::{
-    BLOCKED_THRESHOLD, COMPUTATIONAL_THRESHOLD, MAX_ATTEMPTS, MAX_RESTARTS, STUCK_THRESHOLD,
+    BLOCKED_THRESHOLD, COMPUTATIONAL_THRESHOLD, MAX_ATTEMPTS, STUCK_THRESHOLD,
     UNVERIFIED_THRESHOLD,
 };
+
+/// The evaluation arms, and the barrier they converge on.
+///
+/// Five questions about one attempt, asked at once. They fan out from the
+/// attempt because none of them reads another's output — each reads the same
+/// report — so a pass costs the slowest of them rather than the sum, which is
+/// what a serial chain of the same five cost.
+///
+/// The backward arm is absent from this list because it is two nodes rather
+/// than one: the goals child decides whether this cycle decomposes, and
+/// `goal_apply` folds what it decided back onto the loop's own path. It is the
+/// branch's last node that converges, so `goal_apply` joins the list below.
+pub(super) const EVAL_ARMS: [&str; 4] = [
+    "judge",
+    "reflect",
+    "eval_patterns",
+    "eval_invention",
+];
+
+/// The arm that returns before its work does.
+///
+/// A node like the others as far as the graph is concerned, and that is the
+/// point of giving it one: the literature sweep is started here, visibly, at a
+/// place a checkpoint can land, rather than as a side effect hidden inside
+/// whichever step happened to be holding the subagent manager.
+pub(super) const LIBRARY_ARM: &str = "eval_library";
+
+/// Where the evaluation arms converge.
+pub(super) const EVAL_MERGE: &str = "eval_merge";
+
+/// The node that folds the goals child's decision back onto the loop's path.
+pub(super) const GOAL_APPLY: &str = "goal_apply";
 
 /// The body's single exit, and the only node the fold reads.
 ///
@@ -118,40 +150,6 @@ pub(super) fn reflect_ladder() -> String {
          elif .item.json.unproductive >= {STUCK_THRESHOLD} then \"diversify\" \
          elif .item.json.computational >= {COMPUTATIONAL_THRESHOLD} then \"diversify\" \
          else \"retry\" end"
-    )
-}
-
-/// The ladder out of the judge, as jq.
-///
-/// Reads the judge step's own output for the same reason [`reflect_ladder`]
-/// does. It mattered most here while a restart re-entered `attempt` directly:
-/// the accumulator was frozen for the whole restart cycle, so `restarts` never
-/// appeared to grow, the cap never tripped, and a judge that kept saying restart
-/// span to the graph's recursion limit. The restart now goes back through the
-/// head, which fixes that independently — and reading the step's own output is
-/// still right, because the head has not folded this pass yet.
-///
-/// Reads `judged`, which is what `SolutionState::to_accumulator` calls the
-/// judge's verdict. It read `verdict` until a breakdown of the graph caught it:
-/// nothing emits that field, so the comparison was `null == "restart"`, the
-/// restart arm was unreachable, and a judge that wanted the run to start over
-/// was silently overruled on every attempt. The parity harness did not catch it
-/// because it feeds the ladder a scope it builds itself — proving the ladder
-/// right while the graph fed it something else.
-///
-/// Two rules the Rust carries and this must not lose. A restart is bounded by
-/// `MAX_RESTARTS`, because a judge that dislikes the run's whole approach would
-/// otherwise reset it until the attempt ceiling stopped the loop and the run
-/// would end having explored nothing to its conclusion. And the attempt ceiling
-/// outranks a restart, so a run on its last attempt reflects on what it has
-/// rather than stopping with nothing.
-#[must_use]
-pub(super) fn judge_ladder() -> String {
-    format!(
-        "=if .item.json.attempts >= {MAX_ATTEMPTS} then \"reflect\" \
-         elif .item.json.restarts >= {MAX_RESTARTS} then \"reflect\" \
-         elif .item.json.judged == \"restart\" then \"restart\" \
-         else \"reflect\" end"
     )
 }
 
