@@ -39,6 +39,7 @@ mod text;
 mod threads;
 mod vector;
 mod workflow;
+mod workflow_goals;
 
 use std::fmt::Write as _;
 use std::path::{Path, PathBuf};

@@ -60,6 +60,17 @@ pub(super) const PASS_NODE: &str = "pass";
 /// The loop head, and the accumulator's address.
 pub(super) const LOOP_NODE: &str = "solve";
 
+/// The node that calls the goals child.
+pub(super) const GOALS_NODE: &str = "goals";
+
+/// The freshest state on the body's path, once the cycle's steps have run.
+///
+/// The accumulator is a pass behind while the body runs — the head folds at the
+/// top of a pass — so anything downstream of the reflection reads the last step
+/// that touched the state instead. `goal_apply` is that step: it is on every
+/// path out of the reflection, and it is the last thing before the routing.
+pub(super) const BODY_STATE: &str = "=.nodes.goal_apply.item.json";
+
 /// The diversify arms, matching the state graph's.
 pub(super) const ARMS: [(&str, &str); 3] = [
     ("diversify_library", "librarian"),
@@ -230,14 +241,42 @@ fn edge(from: &str, from_port: &str, to: &str) -> Edge {
 /// routing — which is what a declarative loop is for — and the steps stay the
 /// Rust written against live runs.
 fn step(id: &str) -> Node {
+    step_with(id, format!("=.nodes.{LOOP_NODE}.state"), Value::Null)
+}
+
+/// A step reading a named state, with extra arguments merged in.
+///
+/// Two steps need one or the other. `diversify_merge` reads the arms' own
+/// outputs rather than the accumulator, because the accumulator predates them;
+/// `goal_apply` reads the reflection's output, because the accumulator is a
+/// pass behind by the time the body runs.
+fn step_with(id: &str, state: String, extra: Value) -> Node {
+    let mut args = json!({ "step": id, "state": state });
+    if let (Some(args), Some(extra)) = (args.as_object_mut(), extra.as_object()) {
+        for (key, value) in extra {
+            args.insert(key.clone(), value.clone());
+        }
+    }
     node(
         id,
         NodeKind::ToolCall,
-        json!({
-            "slug": "run_loop_step",
-            "args": { "step": id, "state": format!("=.nodes.{LOOP_NODE}.state") },
-        }),
+        json!({ "slug": super::loop_steps::TOOL, "args": args }),
     )
+}
+
+/// Where the merge reads each arm's findings from, as jq.
+///
+/// The arms are concurrent nodes and each returns a whole state, so their
+/// findings exist only in their own outputs. This node used to read the loop's
+/// accumulator like every other step, which meant a diversify spent three child
+/// agent runs and merged none of what they found.
+#[must_use]
+fn arm_outputs() -> String {
+    let arms: Vec<String> = ARMS
+        .iter()
+        .map(|(id, _)| format!(".nodes.{id}.item.json"))
+        .collect();
+    format!("=[{}]", arms.join(", "))
 }
 
 /// Assembles the solution loop.
@@ -270,24 +309,55 @@ pub(super) fn solution_loop(
                 "state": { "init": initial_state(problem), "update": state_update() },
             }),
         ),
+        // The only step that reads the accumulator, because it is the only one
+        // that runs at the top of a pass, where the accumulator is what the last
+        // pass folded. Every step after it reads the step before it.
         step("attempt"),
-        step("judge"),
+        step_with("judge", "=.nodes.attempt.item.json".into(), Value::Null),
         node(
             "judged",
             NodeKind::Switch,
             json!({ "expression": judge_ladder() }),
         ),
-        step("reflect"),
+        step_with("reflect", "=.nodes.judge.item.json".into(), Value::Null),
+        // The other question nothing in the loop asks by itself: not what else
+        // could get the run there, but what would be enough. A child workflow
+        // rather than three more nodes here, because the cadence and the gate
+        // are its own policy — see `super::workflow_goals`, which also says why
+        // calling it costs the loop nothing.
+        node(
+            GOALS_NODE,
+            NodeKind::SubWorkflow,
+            json!({
+                "workflow": serde_json::to_value(super::workflow_goals::goals_workflow())
+                    .unwrap_or(Value::Null),
+                "inputs": {
+                    super::workflow_goals::STATE_INPUT: "=.nodes.reflect.item.json",
+                },
+            }),
+        ),
+        step_with(
+            "goal_apply",
+            "=.nodes.reflect.item.json".into(),
+            json!({ super::loop_steps::DECISION_ARG: format!("=.nodes.{GOALS_NODE}.item.json") }),
+        ),
         node(
             "route",
             NodeKind::Switch,
             json!({ "expression": reflect_ladder() }),
         ),
-        step("diversify_merge"),
+        step_with(
+            "diversify_merge",
+            BODY_STATE.into(),
+            json!({ super::loop_steps::ARMS_ARG: arm_outputs() }),
+        ),
         node(PASS_NODE, NodeKind::Transform, Value::Null),
         node("report", NodeKind::Transform, Value::Null),
     ];
-    nodes.extend(ARMS.iter().map(|(id, _)| step(id)));
+    nodes.extend(
+        ARMS.iter()
+            .map(|(id, _)| step_with(id, BODY_STATE.into(), Value::Null)),
+    );
 
     let mut edges = vec![
         edge("start", "main", LOOP_NODE),
@@ -296,11 +366,24 @@ pub(super) fn solution_loop(
         edge("attempt", "main", "judge"),
         edge("judge", "main", "judged"),
         edge("judged", "reflect", "reflect"),
-        // A restart discards the direction and re-enters the attempt without
-        // reflecting, so it costs a judge call rather than a judge call plus a
-        // reflection about to be thrown away.
-        edge("judged", "restart", "attempt"),
-        edge("reflect", "main", "route"),
+        // A restart skips the reflection, so it costs a judge call rather than a
+        // judge call plus a reflection about to be thrown away — but it goes
+        // back through the head like every other path rather than straight into
+        // another attempt.
+        //
+        // Re-entering `attempt` directly was tried and is wrong twice over. The
+        // accumulator is only folded at the head, so the second attempt would
+        // read the state from *before* the first one and the judge's own
+        // `restarts` increment would be undone — a judge that keeps asking to
+        // restart then spins until the graph's recursion limit, because the cap
+        // that is supposed to stop it is reset every time round. And it makes an
+        // inner cycle the head never sees, so `max_iterations` cannot bound it
+        // either. Through the head, a restart costs an iteration, which is
+        // right: a restart *is* another attempt.
+        edge("judged", "restart", PASS_NODE),
+        edge("reflect", "main", GOALS_NODE),
+        edge(GOALS_NODE, "main", "goal_apply"),
+        edge("goal_apply", "main", "route"),
         edge("route", "retry", PASS_NODE),
         edge("route", "solved", PASS_NODE),
         edge("route", "reported", PASS_NODE),

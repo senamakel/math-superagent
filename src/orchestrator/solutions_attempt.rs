@@ -189,9 +189,7 @@ impl SolutionState {
         rendered
     }
 
-    /// Returns the loop's outcome for the caller.
     /// The diversify slots, read-only.
-    #[cfg(test)]
     pub(in crate::orchestrator) fn diversify(&self) -> &DiversifyFindings {
         &self.diversify
     }

@@ -206,7 +206,9 @@ fn collect_arms(mut state: SolutionState, args: &Value) -> SolutionState {
         .unwrap_or_default();
     for arm in arms {
         let findings = SolutionState::from_accumulator("", &arm);
-        state.diversify_mut().absorb(findings.diversify());
+        state
+            .diversify_mut()
+            .absorb(SolutionState::diversify(&findings));
     }
     state
 }
@@ -255,7 +257,7 @@ fn fold_arm(mut state: SolutionState, findings: Vec<super::solutions::Finding>) 
 #[async_trait]
 impl Tool<()> for LoopSteps {
     fn name(&self) -> &'static str {
-        "run_loop_step"
+        TOOL
     }
 
     fn description(&self) -> &'static str {
@@ -270,7 +272,16 @@ impl Tool<()> for LoopSteps {
                 "type": "object",
                 "properties": {
                     "step": { "type": "string", "enum": STEPS },
-                    "state": { "type": "object", "description": "The loop's accumulator." }
+                    "state": { "type": "object", "description": "The loop's accumulator." },
+                    ARMS_ARG: {
+                        "type": "array",
+                        "description": "Each diversify arm's state, for the merge to fold.",
+                        "items": { "type": "object" }
+                    },
+                    DECISION_ARG: {
+                        "type": "object",
+                        "description": "The goals child's run state, for the cadence to read."
+                    }
                 },
                 "required": ["step", "state"],
                 "additionalProperties": false
@@ -300,8 +311,7 @@ impl Tool<()> for LoopSteps {
         }
         let accumulator = call.arguments.get("state").cloned().unwrap_or(Value::Null);
         let state = SolutionState::from_accumulator("", &accumulator);
-        let next = self.run(step, state).await?;
-        let carried = next.to_accumulator();
+        let carried = self.run(step, state, &call.arguments).await?;
         let mut result = ToolResult::text(call.id, self.name(), carried.to_string());
         result.raw = Some(carried);
         Ok(result)
