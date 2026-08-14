@@ -51,8 +51,15 @@
 //! `judge` asks the narrower question of whether the attempt was *conducted*
 //! in a way the next one should inherit, scores it, and may throw the current
 //! direction away — bounded by `MAX_RESTARTS`, and never on an unreadable
-//! reply. It runs first so a restart costs a judge call rather than a judge
-//! call plus a reflection about to be discarded.
+//! reply.
+//!
+//! It ran *first* while the two were in a line, so a restart cost a judge call
+//! rather than a judge call plus a reflection about to be discarded. They are
+//! concurrent now, which trades that saving for the pass being one call deep
+//! instead of two — and it means a restart is no longer a route. There is no
+//! reflection left to skip by the time anything routes, so what a restart does
+//! is entirely what the judge writes into the state: the direction is
+//! discarded, the steer is set, and the run is marked unproductive.
 //!
 //! `reflect` runs after *every* attempt, not only after a failure, because the
 //! lesson from a partial success is what stops the next attempt repeating it.

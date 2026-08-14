@@ -122,3 +122,113 @@ fn only_an_opened_decomposition_resets_the_cadence() {
         );
     }
 }
+
+/// A reset and an increment on the same counter compose.
+///
+/// The fold's whole reason for summing deltas rather than picking a winner. The
+/// reflection zeroes `unproductive` on a productive attempt and the judge adds
+/// one for a restart, concurrently, from the same base — so "last arm wins"
+/// gives 0 or 4 depending on which finished last, and neither is the answer.
+#[test]
+fn a_reset_and_an_increment_on_one_counter_compose() {
+    use super::super::solutions::{SolutionState, fold_evaluation};
+
+    let base = {
+        let mut state = SolutionState::new("a problem");
+        state.unproductive = 3;
+        state.to_accumulator()
+    };
+    let reflected = {
+        let mut state = SolutionState::from_accumulator("a problem", &base);
+        state.unproductive = 0;
+        state.to_accumulator()
+    };
+    let judged = {
+        let mut state = SolutionState::from_accumulator("a problem", &base);
+        state.unproductive = 4;
+        state.restarts = 1;
+        state.to_accumulator()
+    };
+
+    for arms in [
+        vec![reflected.clone(), judged.clone()],
+        vec![judged.clone(), reflected.clone()],
+    ] {
+        let merged = fold_evaluation(&base, &arms);
+        assert_eq!(
+            merged.get("unproductive"),
+            Some(&json!(1)),
+            "3, reset to 0, plus the restart's 1: {merged}"
+        );
+        assert_eq!(merged.get("restarts"), Some(&json!(1)), "{merged}");
+    }
+}
+
+/// A counter cannot be folded below zero.
+///
+/// Two arms each resetting the same counter give two negative deltas, and a
+/// count is a `usize` on the other side of the boundary — an unclamped sum would
+/// deserialize as either a very large number or a zero, and the first would
+/// trip every threshold in the ladder at once.
+#[test]
+fn a_counter_folded_below_zero_is_clamped() {
+    use super::super::solutions::{SolutionState, fold_evaluation};
+
+    let base = {
+        let mut state = SolutionState::new("a problem");
+        state.unproductive = 2;
+        state.to_accumulator()
+    };
+    let reset = {
+        let mut state = SolutionState::from_accumulator("a problem", &base);
+        state.unproductive = 0;
+        state.to_accumulator()
+    };
+    let merged = fold_evaluation(&base, &[reset.clone(), reset]);
+    assert_eq!(merged.get("unproductive"), Some(&json!(0)), "{merged}");
+}
+
+/// Everything each arm appended survives, and nothing is duplicated.
+#[test]
+fn every_arms_lesson_survives_the_fold() {
+    use super::super::solutions::{SolutionState, fold_evaluation};
+
+    let base = {
+        let mut state = SolutionState::new("a problem");
+        state.lessons.push("what an earlier attempt taught".into());
+        state.to_accumulator()
+    };
+    let with = |lesson: &str| {
+        let mut state = SolutionState::from_accumulator("a problem", &base);
+        state.lessons.push(lesson.into());
+        state.to_accumulator()
+    };
+
+    let merged = fold_evaluation(&base, &[with("the reflection's lesson")]);
+    let lessons = merged
+        .get("lessons")
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default();
+    assert_eq!(lessons.len(), 2, "{merged}");
+    assert_eq!(lessons[0], json!("what an earlier attempt taught"));
+    assert_eq!(lessons[1], json!("the reflection's lesson"));
+}
+
+/// The tag every arm stamps itself with never becomes part of the state.
+///
+/// It exists so the fold can order the arms before reading them. A tag that
+/// survived the merge would be routed on, checkpointed, and eventually read by
+/// something that thought it meant a step.
+#[test]
+fn the_arm_tag_does_not_survive_the_merge() {
+    use super::super::solutions::{ARM_FIELD, SolutionState, fold_evaluation};
+
+    let base = SolutionState::new("a problem").to_accumulator();
+    let mut arm = base.clone();
+    if let Some(object) = arm.as_object_mut() {
+        object.insert(ARM_FIELD.to_string(), json!("judge"));
+    }
+    let merged = fold_evaluation(&base, &[arm]);
+    assert!(merged.get(ARM_FIELD).is_none(), "{merged}");
+}

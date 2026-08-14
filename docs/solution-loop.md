@@ -10,21 +10,49 @@ The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of i
 `orchestrator::solutions` is a `TinyFlows` graph, not a prompt:
 
 ```text
-  seed goals ──> attempt ──> judge ──┬─ restart ─────────────────────> pass ──┐
-       ▲                             └─ reflect ──> goals ──> route ──┬─ solved
-       │                                             (child)          ├─ retry
-       │                                                              └─ stuck /
-       │                                                       scaling ──> diversify
-       └────────────── the loop head, which folds each pass ─────────────── (3 arms)
+  research ──> seed goals ──> solve ─── done ──> report
+                                │
+                                └─ body ─> attempt ──┬─> judge ──────────┐
+                                   ▲                 ├─> reflect ────────┤
+                                   │                 ├─> patterns ───────┤
+                                   │                 ├─> invention ──────┼─> merge
+                                   │                 ├─> library (opens) ┤     │
+                                   │                 └─> goals ─> cadence┘     │
+                                   │                                        route
+                                   │                                           │
+                                   └──── pass <── escalate <── diversify ──────┤
+                                   └──── pass <───── solved/retry/... ─────────┘
 ```
 
-Two rules the picture cannot show and the engine will not enforce. Every path
+Three stages, and the middle one is one node. **Research** runs once: establish
+what the workspace already has, then go looking for what it does not.
+**Attempt** is one attempt. **Evaluation** asks five questions about that
+attempt at the same time and merges their answers before anything routes.
+
+The fan-out is the change worth understanding. Those five used to run in a
+line, and three of them were not nodes at all — the pattern agent, the inventor,
+and the literature rescue were `tokio::spawn`s inside `reflect_step`'s body.
+That made the reflection the place every other role was smuggled in: the graph
+could not draw them, graph policy could not bound them, and no checkpoint could
+land between them. A pass now costs the slowest arm rather than the sum.
+
+Three rules the picture cannot show and the engine will not enforce. Every path
 back to the head goes through one node (`pass`), because the engine's `nodes`
 map is cumulative and a fold with more than one node to read eventually reads a
-stale one. And every step reads the step *before* it rather than the head's
-accumulator: the head folds at the top of a pass, so for the whole of a pass the
-accumulator is what the previous one ended with. Only `attempt` reads it, because
-only `attempt` runs there.
+stale one. Every evaluation arm reads the *attempt* — not another arm, which may
+not have run, and not the head's accumulator, which is a pass behind because the
+head folds at the top of a pass. And the merge folds counters by **delta**: each
+arm's value minus the base, summed. That is what makes a reset and an increment
+compose, which they must, because the reflection zeroes `unproductive` on a
+productive attempt while the judge adds one for a restart, from the same base, at
+the same time.
+
+One arm is deliberately not awaited. `library` starts a literature sweep and
+returns immediately, because a paper is no less relevant for being found a cycle
+later — while a report about *this attempt* arriving next cycle is a report
+about the wrong attempt. Its findings reach the next attempt through a mailbox.
+The `diversify` escalation is the same sweep, awaited: a run that has stopped
+making progress should read what it gathered before attempting again.
 
 The graph runtime is `TinyFlows`', reached through `agent::flow`; the agent
 turn each node runs is `TinyAgents`'. The two used to be one crate, and the
@@ -38,8 +66,18 @@ loop. The judge asks whether the attempt was *conducted* in a way the next one
 should inherit: it scores it out of five against what the attempt actually did
 — executed and checked, executed but thin, wrote code without running it, prose
 only — and returns PROCEED, STEER, or RESTART. STEER's one sentence is carried
-into the next attempt's prompt; RESTART discards the direction and re-enters
-`attempt` without reflecting.
+into the next attempt's prompt.
+
+RESTART is no longer a *route*, and that follows from the fan-out rather than
+being a decision about restarts. The judge ran first while the two were in a
+line, so a restart could skip the reflection and save a call; they are
+concurrent now, so by the time anything routes the reflection has already
+happened and there is nothing left to skip. What a restart does is everything
+`judge_step` writes: the direction is discarded, the steer is set for the next
+attempt, `restarts` is incremented, and the attempt is marked unproductive.
+`MAX_RESTARTS` is enforced there, and always was — the ladder's copy of it was
+belt-and-braces. There is one ladder now, and `orchestrator::parity` holds the
+engine's jq to it.
 
 It is given the workspace as well as the report, because the report is the first
 thing lost: the ordinary way an attempt ends is the run cap killing it, which

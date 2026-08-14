@@ -141,13 +141,15 @@ async fn a_solved_reflection_leaves_the_loop() {
     }))
     .await;
     run.assert_node_ran("report");
-    // The seed call's gate, then one pass: attempt, judge, reflect, goal_apply.
-    // The merge is not reached, and the in-loop goals child holds rather than
-    // asking, so a second pass would show as more than five.
+    // Stage one is four calls — context, survey, and the two folds that carry
+    // what they found into the loop's opening state. Then one pass: the attempt,
+    // its six evaluation arms, and the barrier. Both goals children hold rather
+    // than asking, because this fixture is solved. A second pass would show as
+    // more than twelve.
     run.assert_call_count(
         tinyflows::testkit::capability::TOOLS,
         Some(super::super::loop_steps::TOOL),
-        5,
+        12,
     );
     // The goals child ran and declined: this fixture carries no
     // `since_reduction`, so the cadence reads zero and holds.
@@ -409,18 +411,20 @@ fn nothing_in_the_graph_routes_on_a_restart() {
     );
 }
 
-/// The state chains through a pass rather than every step reading the pass's
-/// opening accumulator.
+/// Every evaluation arm is handed the attempt, and nothing else.
 ///
-/// The loop head folds at the *top* of a pass, so `nodes.solve.state` is what
-/// the *previous* pass ended with for the whole of this one. Every step reading
-/// it meant the judge scored the previous attempt's report and the reflection
-/// overwrote both — the attempt's counters and the judge's verdict were computed
-/// and then thrown away, once per pass, with nothing in the trace to say so. A
-/// fixed mock hides it completely, which is why the mock here answers each call
-/// differently and the assertion is on what each step was *handed*.
+/// This is the invariant the fan-out rests on, and it has two halves that fail
+/// differently. An arm reading another arm's output would be reading a node
+/// that may not have run yet — the arms are concurrent, so there is no "before".
+/// An arm reading the loop's accumulator would be reading the *previous* pass,
+/// because the head folds at the top of a pass; that is the bug the serial
+/// version had, where the judge scored the previous attempt's report.
+///
+/// A fixed mock hides both completely, which is why the mock here answers each
+/// call differently and the assertion is on what each node was *handed* rather
+/// than on what came out.
 #[tokio::test]
-async fn each_step_is_handed_what_the_step_before_it_produced() {
+async fn every_evaluation_arm_is_handed_the_attempt() {
     use crate::orchestrator::solutions::SolutionState;
 
     let marked = |mark: &str, solved: bool| {
@@ -434,15 +438,25 @@ async fn each_step_is_handed_what_the_step_before_it_produced() {
     let run = TestHarness::new(&graph())
         .mock_tool(
             super::super::loop_steps::TOOL,
-            // attempt, judge, reflect, goal_apply. The last is solved, so the
-            // fold ends the run after one pass.
             Respond::sequence([
-                // The seed call to the goals child, before the loop starts.
+                // Stage one: the context, the survey, and the two folds.
+                marked("the context", false),
+                marked("the survey", false),
+                marked("stage one", false),
                 marked("the seed decomposition", false),
+                // Stage two.
                 marked("what the attempt found", false),
-                marked("what the judge made of it", false),
-                marked("what the reflection concluded", false),
-                marked("what the goals step passed on", true),
+                // Stage three. Concurrent, so which arm receives which of these
+                // is not fixed — every one of them is an arm, and what the test
+                // asserts is what they were handed, not what they returned. The
+                // last ends the run.
+                marked("an arm", false),
+                marked("an arm", false),
+                marked("an arm", false),
+                marked("an arm", false),
+                marked("an arm", false),
+                marked("an arm", false),
+                marked("the merge", true),
             ]),
         )
         .run()
@@ -459,9 +473,16 @@ async fn each_step_is_handed_what_the_step_before_it_produced() {
             .to_string()
     };
 
-    assert_eq!(handed("judge"), "what the attempt found");
-    assert_eq!(handed("reflect"), "what the judge made of it");
-    assert_eq!(handed("goal_apply"), "what the reflection concluded");
+    for arm in eval_arm_ids() {
+        assert_eq!(
+            handed(arm),
+            "what the attempt found",
+            "`{arm}` was handed something other than the attempt"
+        );
+    }
+    // And the barrier folds onto the same base the arms were given, so an arm's
+    // change is a delta from something it actually saw.
+    assert_eq!(handed(EVAL_MERGE), "what the attempt found");
 }
 
 /// The arms' findings reach the merge.
@@ -529,11 +550,10 @@ async fn the_merge_is_handed_every_arms_output() {
     }
 }
 
-/// The goals child is handed the reflection's state, not the accumulator.
+/// The goals child is handed the attempt's state, not the accumulator.
 ///
-/// The cadence counter it reads is moved by the reflection, and the accumulator
-/// is a pass behind while the body runs — so a child seeded from the accumulator
-/// would decide this cycle's decomposition on last cycle's count.
+/// The accumulator is a pass behind while the body runs, so a child seeded from
+/// it would decide this cycle's decomposition on last cycle's count.
 #[tokio::test]
 async fn the_goals_child_reads_the_reflection_the_loop_just_made() {
     use crate::orchestrator::solutions::SolutionState;
@@ -567,9 +587,8 @@ async fn the_goals_child_reads_the_reflection_the_loop_just_made() {
 
     // The child's own run state, as the parent received it. Its `gate` node
     // having run is the assertion: the gate is only reachable through the
-    // cadence switch, and the cadence only comes due on the count the reflection
-    // just moved. Seeded from the accumulator instead, the child would have read
-    // the previous pass's count and held.
+    // cadence switch. Seeded from the accumulator instead, the child would have
+    // read the previous pass's count and held.
     let child = run
         .output()
         .pointer(&format!("/nodes/{GOALS_NODE}/items/0/json"))
@@ -670,6 +689,7 @@ async fn the_goal_is_decomposed_before_the_first_attempt() {
     }))
     .await;
 
+    run.assert_node_ran(RESEARCH_NODE);
     run.assert_node_ran(SEED_GOALS_NODE);
     let seed = run
         .output()
@@ -694,5 +714,11 @@ async fn the_goal_is_decomposed_before_the_first_attempt() {
     assert!(
         order(SEED_GOALS_NODE) < order("attempt"),
         "the seed decomposition ran after the first attempt"
+    );
+    // Stage one runs before it, so the decomposition is worked out against what
+    // the run established rather than against the statement alone.
+    assert!(
+        order(RESEARCH_NODE) < order(SEED_GOALS_NODE),
+        "the goal was decomposed before the run knew anything"
     );
 }
