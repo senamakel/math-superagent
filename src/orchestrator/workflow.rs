@@ -207,16 +207,76 @@ pub(super) const BODY_STATE: &str = "=.nodes.eval_merge.item.json";
 /// second route accumulates exactly the unproductive count that would otherwise
 /// send it to diversify, and diversifying spends three child runs hunting a new
 /// line of attack on a problem whose answer is already on disk.
+///
+/// The numbers are the school's, not the constants', for the same reason the
+/// Rust reads them off a parameter: several schools run at once and each brings
+/// its own. The control school's are the constants, so its ladder is character
+/// for character the one this generated before schools existed.
 #[must_use]
-pub(super) fn reflect_ladder() -> String {
+pub(super) fn reflect_ladder(thresholds: &Thresholds) -> String {
+    let Thresholds {
+        max_attempts,
+        stuck,
+        blocked,
+        computational,
+        unverified,
+        ..
+    } = *thresholds;
     format!(
-        "=if .item.json.blocked >= {BLOCKED_THRESHOLD} then \"blocked\" \
-         elif .item.json.solved or .item.json.attempts >= {MAX_ATTEMPTS} then \"solved\" \
-         elif .item.json.unverified >= {UNVERIFIED_THRESHOLD} then \"reported\" \
-         elif .item.json.unproductive >= {STUCK_THRESHOLD} then \"diversify\" \
-         elif .item.json.computational >= {COMPUTATIONAL_THRESHOLD} then \"diversify\" \
+        "=if .item.json.blocked >= {blocked} then \"blocked\" \
+         elif .item.json.solved or .item.json.attempts >= {max_attempts} then \"solved\" \
+         elif .item.json.unverified >= {unverified} then \"reported\" \
+         elif .item.json.unproductive >= {stuck} then \"diversify\" \
+         elif .item.json.computational >= {computational} then \"diversify\" \
          else \"retry\" end"
     )
+}
+
+/// One school's bounds, as the graph carries them.
+///
+/// Written out field by field rather than derived, because [`Thresholds`] is
+/// not a wire type and a `Debug` or a serde rendering would change the day
+/// somebody renamed a field — silently, into a step that reads its default and
+/// runs the control school's numbers under another school's name.
+/// [`thresholds_from`] is the other half and is kept beside it.
+#[must_use]
+pub(super) fn thresholds_json(thresholds: &Thresholds) -> Value {
+    json!({
+        "max_attempts": thresholds.max_attempts,
+        "stuck": thresholds.stuck,
+        "blocked": thresholds.blocked,
+        "computational": thresholds.computational,
+        "unverified": thresholds.unverified,
+        "max_restarts": thresholds.max_restarts,
+        "reduction_interval": thresholds.reduction_interval,
+    })
+}
+
+/// Reads a step's bounds back out of its arguments.
+///
+/// A missing or unreadable field falls back to the control school's value, on
+/// the rule every override in this runtime follows: a malformed value keeps the
+/// default rather than silently removing a bound.
+#[must_use]
+pub(super) fn thresholds_from(args: &Value) -> Thresholds {
+    let carried = args.get(THRESHOLDS_ARG);
+    let chisel = Thresholds::chisel();
+    let read = |key: &str, fallback: usize| {
+        carried
+            .and_then(|carried| carried.get(key))
+            .and_then(Value::as_u64)
+            .and_then(|value| usize::try_from(value).ok())
+            .unwrap_or(fallback)
+    };
+    Thresholds {
+        max_attempts: read("max_attempts", chisel.max_attempts),
+        stuck: read("stuck", chisel.stuck),
+        blocked: read("blocked", chisel.blocked),
+        computational: read("computational", chisel.computational),
+        unverified: read("unverified", chisel.unverified),
+        max_restarts: read("max_restarts", chisel.max_restarts),
+        reduction_interval: read("reduction_interval", chisel.reduction_interval),
+    }
 }
 
 /// When the loop is finished, as jq.
@@ -249,11 +309,17 @@ pub(super) fn reflect_ladder() -> String {
 ///
 /// [`solutions::run_ceiling`]: super::solutions::run_ceiling
 #[must_use]
-pub(super) fn terminal_condition() -> String {
+pub(super) fn terminal_condition(thresholds: &Thresholds) -> String {
+    let Thresholds {
+        max_attempts,
+        blocked,
+        unverified,
+        ..
+    } = *thresholds;
     format!(
-        "=.state.solved or .state.{EXPIRED_FIELD} or .state.attempts >= {MAX_ATTEMPTS} \
-         or .state.blocked >= {BLOCKED_THRESHOLD} \
-         or .state.unverified >= {UNVERIFIED_THRESHOLD}"
+        "=.state.solved or .state.{EXPIRED_FIELD} or .state.attempts >= {max_attempts} \
+         or .state.blocked >= {blocked} \
+         or .state.unverified >= {unverified}"
     )
 }
 
@@ -264,7 +330,7 @@ pub(super) fn terminal_condition() -> String {
 /// decomposable from the problem statement alone, so waiting a full interval
 /// buys nothing.
 #[must_use]
-pub(super) fn initial_state(problem: &str) -> Value {
+pub(super) fn initial_state(problem: &str, thresholds: &Thresholds) -> Value {
     let mut state = json!({
         "problem": problem,
         "attempts": 0,
@@ -274,7 +340,7 @@ pub(super) fn initial_state(problem: &str) -> Value {
         "unverified": 0,
         "restarts": 0,
         "solved": false,
-        "since_reduction": super::solutions::REDUCTION_INTERVAL,
+        "since_reduction": thresholds.reduction_interval,
         "lesson": "",
         "fresh_context": "",
         // The attempt report, carried so the run's final outcome can be built
@@ -488,7 +554,21 @@ pub(super) fn solution_loop(
     problem: &str,
     agents: Vec<tinyflows::model::AgentDefinition>,
 ) -> WorkflowGraph {
-    let opening = initial_state(problem);
+    solution_loop_for(problem, agents, &Thresholds::chisel())
+}
+
+/// The same loop, under one school's bounds.
+///
+/// Every school runs this graph — the schools are a method policy, a set of
+/// prompt overlays and a [`Thresholds`], not a second loop — so what differs
+/// between two of them is the numbers in the ladder, in the condition that ends
+/// the run, and in the arguments each step carries.
+pub(super) fn solution_loop_for(
+    problem: &str,
+    agents: Vec<tinyflows::model::AgentDefinition>,
+    thresholds: &Thresholds,
+) -> WorkflowGraph {
+    let opening = initial_state(problem, thresholds);
     let seeded = format!("=.nodes.{SEED_APPLY_NODE}.item.json");
     let mut nodes = stage_one(&opening);
     nodes.extend([
@@ -496,7 +576,7 @@ pub(super) fn solution_loop(
             LOOP_NODE,
             NodeKind::Loop,
             json!({
-                "max_iterations": MAX_ATTEMPTS,
+                "max_iterations": thresholds.max_attempts,
                 // Reaching the ceiling is not a failure: the run reports the
                 // furthest progress it reached, which is what `on_exceeded`
                 // continuing to the `done` port expresses.
@@ -507,7 +587,7 @@ pub(super) fn solution_loop(
                 // that recognises a finished run and leaves through `done`.
                 // Checked against the post-fold accumulator, so the verdict
                 // that just arrived is the one it reads.
-                "until": terminal_condition(),
+                "until": terminal_condition(thresholds),
                 // Seeded from stage one rather than from the literal, so the
                 // first attempt starts from what the run established rather
                 // than from the statement and eleven zeroes.
@@ -550,7 +630,7 @@ pub(super) fn solution_loop(
         node(
             "route",
             NodeKind::Switch,
-            json!({ "expression": reflect_ladder() }),
+            json!({ "expression": reflect_ladder(thresholds) }),
         ),
         // The escalation. One node rather than three, because the two arms that
         // used to run only here now run on every pass; what is left that is

@@ -22,7 +22,72 @@ impl AsyncSubagentManager {
             slots: Arc::new(Semaphore::new(concurrency)),
             session: session_id(),
             memory: None,
+            school: None,
         }
+    }
+
+    /// This manager seen from inside one school.
+    ///
+    /// A cheap clone: the registry, the concurrency semaphore, the run store,
+    /// the tracer and the budget pool are all shared, which is the point of
+    /// qualifying a name rather than standing up a second manager. Two schools
+    /// running at once must compete for the same fifty slots and appear in the
+    /// same trace, or the cap bounds nothing and the run is unreadable.
+    ///
+    /// What changes is only the naming: registering `goals` here registers
+    /// `goals@<slug>`, and spawning `goals` here reaches that registration.
+    /// Every bench in this crate names roles bare — `SPECIALISTS`,
+    /// `INVENTION_BENCH` and the rest — so an agent built from a school-scoped
+    /// handle can only reach its own school's copy of a role, and the solution
+    /// loop keeps calling [`Self::run_to_completion`] with bare names.
+    ///
+    /// Scope only when more than one school is running. A single school must
+    /// register unqualified, because the loop that drives it holds the
+    /// unscoped manager, and an unqualified run is today's run to the byte.
+    pub(in crate::orchestrator) fn for_school(&self, slug: &str) -> Self {
+        Self {
+            school: Some(Arc::from(slug)),
+            ..self.clone()
+        }
+    }
+
+    /// The name `name` is registered under from this handle.
+    ///
+    /// Idempotent: a name that already carries a school is left alone, so
+    /// qualifying at both the turn-cap and the executor layer cannot produce
+    /// `goals@chisel@chisel`.
+    fn qualified(&self, name: String) -> String {
+        match self.school.as_deref() {
+            Some(school) if !name.contains('@') => format!("{name}@{school}"),
+            _ => name,
+        }
+    }
+
+    /// The registration a bare role name reaches from this handle.
+    ///
+    /// Falls back to the unqualified name when this school has no copy of the
+    /// role, so a role registered once for the whole run — or a caller that
+    /// already wrote the qualified name — still resolves.
+    fn resolve(&self, agent: &str) -> String {
+        let Some(school) = self.school.as_deref() else {
+            return agent.to_string();
+        };
+        if agent.contains('@') {
+            return agent.to_string();
+        }
+        let qualified = format!("{agent}@{school}");
+        if self.knows_exactly(&qualified) {
+            qualified
+        } else {
+            agent.to_string()
+        }
+    }
+
+    /// Whether this exact registration name exists, without resolving it.
+    fn knows_exactly(&self, agent: &str) -> bool {
+        self.agents
+            .read()
+            .is_ok_and(|agents| agents.contains_key(agent))
     }
 
     /// Ingests every completed child session into Cognee.
@@ -71,7 +136,9 @@ impl AsyncSubagentManager {
         system_prompt: impl Into<String>,
         max_turn_output_tokens: u32,
     ) -> Result<()> {
-        let name = name.into();
+        // Qualified here as well as in `register_executor`, so the trace name
+        // says which school produced a turn. The qualification is idempotent.
+        let name = self.qualified(name.into());
         let role = name.clone();
         self.register_executor(
             name,
@@ -91,7 +158,7 @@ impl AsyncSubagentManager {
         name: impl Into<String>,
         executor: Arc<dyn AgentExecutor>,
     ) -> Result<()> {
-        let name = name.into();
+        let name = self.qualified(name.into());
         let mut agents = self.agents.write().map_err(|_| {
             tinyagents::TinyAgentsError::Tool("async subagent registry lock is poisoned".into())
         })?;
@@ -103,11 +170,12 @@ impl AsyncSubagentManager {
         Ok(())
     }
 
-    /// Reports whether an agent is registered under this name.
+    /// Reports whether this handle can reach an agent by that name.
+    ///
+    /// Resolved through the school, so a caller asking about `scholar` on a
+    /// school-scoped handle is asking about that school's scholar.
     pub(super) fn knows(&self, agent: &str) -> bool {
-        self.agents
-            .read()
-            .is_ok_and(|agents| agents.contains_key(agent))
+        self.knows_exactly(&self.resolve(agent))
     }
 
     /// Looks up a registered agent by name.
@@ -133,6 +201,12 @@ impl AsyncSubagentManager {
     }
 
     fn spawn(&self, agent_name: &str, input: String) -> Result<TaskId> {
+        // Resolved once, and everything downstream — the run record, the trace
+        // child, the session memory — is written under the resolved name, so
+        // which school ran a turn is answerable from the record rather than
+        // only from whoever spawned it.
+        let agent_name = self.resolve(agent_name);
+        let agent_name = agent_name.as_str();
         let executor = self.executor_for(agent_name)?;
         let sequence = NEXT_RUN_ID.fetch_add(1, Ordering::Relaxed);
         let task_id = TaskId::new(format!("agent-run-{sequence}"));
@@ -162,7 +236,7 @@ impl AsyncSubagentManager {
         let session_run_id = run_id.clone();
         let follow_up = FOLLOW_UPS
             .iter()
-            .find(|(after, _)| *after == agent_name)
+            .find(|(after, _)| *after == base_role(agent_name))
             .map(|(_, steps)| FollowUp {
                 manager: self.clone(),
                 steps,

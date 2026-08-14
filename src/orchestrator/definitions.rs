@@ -37,6 +37,7 @@ use tinyflows::model::{AgentDefinition as FlowAgent, AgentLimits, ToolGrant};
 
 use crate::agent::budget::RunBudget;
 
+use super::async_subagents::base_role;
 use super::{AgentRegistry, REASONING_ROLES};
 
 /// The budget a role runs on.
@@ -46,9 +47,12 @@ use super::{AgentRegistry, REASONING_ROLES};
 /// calls reading files while the finished attempt waited on it. Housekeeping
 /// has the same shape and the same fix. Carrying them here keeps a definition
 /// honest about what the role is actually given.
+/// A school qualifies a registration — `judge@rising-sea` — and the budget is
+/// the *judge's* whichever school is asking, so the suffix is stripped here
+/// rather than every school growing a row of its own in the match below.
 fn budget_for(role: &str) -> RunBudget {
     let base = RunBudget::from_env();
-    match role {
+    match base_role(role) {
         "judge" | "reflection" => base.for_judging(),
         "context_curator" | "librarian" => base.for_housekeeping(),
         "inventor" => base.for_invention(),
@@ -83,7 +87,7 @@ fn limits_for(role: &str) -> AgentLimits {
 /// The list is `REASONING_ROLES`, which carries the two-question test for
 /// membership. Read rather than copied, for the same reason the tools are.
 fn is_reasoning_role(role: &str) -> bool {
-    REASONING_ROLES.contains(&role)
+    REASONING_ROLES.contains(&base_role(role))
 }
 
 /// Derives the workflow agent registry from the run's own registry.
