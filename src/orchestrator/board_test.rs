@@ -1,3 +1,6 @@
+//! Unit tests for the board and its append-only queue.
+#![allow(clippy::expect_used)]
+
 use std::sync::Arc;
 
 use super::{Kind, PATH, QUEUE, collect, post, render};

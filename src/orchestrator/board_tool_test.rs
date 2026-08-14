@@ -1,3 +1,6 @@
+//! Unit tests for the `post_board` tool.
+#![allow(clippy::expect_used)]
+
 use serde_json::json;
 
 use super::BoardTool;

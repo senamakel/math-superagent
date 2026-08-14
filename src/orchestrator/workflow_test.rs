@@ -943,3 +943,60 @@ fn the_field_the_merge_stamps_is_the_field_the_condition_reads() {
         "the condition that ends the loop does not read the stamped field"
     );
 }
+
+/// A school's numbers reach the steps, not only the ladder.
+///
+/// The ladder is the visible half and the easy one to check; the half that
+/// fails quietly is a step node built without them, which reads the control
+/// school's bounds and enforces a restart cap the school never chose. Asserted
+/// over every `tool_call` in the graph rather than the two that read a bound
+/// today, because a step added later is a step nobody would think to add here.
+#[test]
+fn every_step_carries_its_schools_thresholds() {
+    let patient = Thresholds {
+        stuck: chisel().stuck + 2,
+        max_restarts: chisel().max_restarts + 1,
+        ..chisel()
+    };
+    let graph = solution_loop_for("find the largest x", Vec::new(), &patient);
+
+    let mut steps = 0;
+    for node in &graph.nodes {
+        let Some(args) = node.config.get("args") else {
+            continue;
+        };
+        if args.get("step").is_none() {
+            continue;
+        }
+        steps += 1;
+        assert_eq!(
+            thresholds_from(args),
+            patient,
+            "step node `{}` does not carry its school's bounds",
+            node.id
+        );
+    }
+    assert!(steps > 0, "the graph has no steps to carry anything");
+
+    let ladder = reflect_ladder(&patient);
+    assert!(
+        ladder.contains(&format!(">= {}", patient.stuck)),
+        "the ladder is not the school's: {ladder}"
+    );
+}
+
+/// A step node built before schools existed — or by a graph that names no
+/// thresholds — runs the control school's numbers rather than none.
+///
+/// The rule every override in this runtime follows, and the one that matters
+/// most here: the alternative to a default is a bound that silently reads as
+/// zero, which routes a run out of the loop on its first pass.
+#[test]
+fn a_step_with_no_thresholds_reads_the_controls() {
+    assert_eq!(thresholds_from(&json!({ "step": "attempt" })), chisel());
+    assert_eq!(
+        thresholds_from(&json!({ "thresholds": { "stuck": "two" } })),
+        chisel(),
+        "an unreadable value keeps the bound rather than removing it"
+    );
+}
