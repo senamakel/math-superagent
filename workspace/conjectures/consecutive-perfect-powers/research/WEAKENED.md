@@ -11,7 +11,6 @@ Rungs are listed weakest first, which is the order to climb them. Attack the cur
 | Ladder | Full-strength goal | Difficulties | Status |
 | --- | --- | --- | --- |
 | [[catalan-ladder]] | determine all integer solutions of x^p - y^q = 1 with x,y > 0, p,q > 1; believed to be exactly (x,p,y,q) = (3,2,2,3) | negative-claim, unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness | open |
-| [[catalan]] | determine all integer solutions of x^p - y^q = 1 with x,y>0 and p,q>1; the conjecture is that (x,p,y,q)=(3,2,2,3) is the only one | odd-prime-both, nonprincipal-ideals, unbounded-exponents, independent-pq, unconditional-class-number, astronomical-bound | open |
 
 ## The rungs, weakest first
 
@@ -20,37 +19,32 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
 | `R-known-instance` | [[catalan-ladder]] | the instance (x,p,y,q) = (3,2,2,3) satisfies 3^2 - 2^3 = 1 | negative-claim, unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness | **settled** |
-| `R-cat-x2y3` | [[catalan]] | all integer solutions of x^2 - y^3 = 1 with x,y>0; claim exactly (x,y)=(3,2) | odd-prime-both, nonprincipal-ideals, unbounded-exponents, independent-pq, unconditional-class-number, astronomical-bound | open |
-| `R-trivial-bases` | [[catalan-ladder]] | there is no solution with x = 1 or y = 1; equivalently every solution has x >= 2 and y >= 2 | unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q | open |
-| `R-cat-x2yq` | [[catalan]] | all integer solutions of x^2 - y^q = 1 with x,y>0 and q an odd prime; claim exactly (3,2,2,3) | odd-prime-both, nonprincipal-ideals, unbounded-exponents, independent-pq, unconditional-class-number | open |
-| `R-cat-xpy2` | [[catalan]] | all integer solutions of x^p - y^2 = 1 with x,y>0 and p an odd prime; claim none | odd-prime-both, nonprincipal-ideals, unbounded-exponents, independent-pq, unconditional-class-number | open |
-| `R-cat-35` | [[catalan]] | all integer solutions of x^3 - y^5 = 1 with x,y>0; claim none | nonprincipal-ideals, unbounded-exponents, independent-pq, unconditional-class-number, astronomical-bound | open |
+| `R-trivial-bases` | [[catalan-ladder]] | there is no solution with x = 1 or y = 1; equivalently every solution has x >= 2 and y >= 2 | unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness | open |
 | `R-fixed-23` | [[catalan-ladder]] | x^2 - y^3 = 1 has (x,y) = (3,2) as its only solution in integers x,y > 0; the known solution (3,2,2,3) is exactly the claimed one | unbounded-exponents, both-odd, class-group, p-neq-q | open |
-| `R-cat-fixed` | [[catalan]] | for a fixed pair (p,q) of odd primes, all integer solutions of x^p - y^q = 1 with x,y>0; claim none for any odd-prime pair | unbounded-exponents, unconditional-class-number, astronomical-bound, independent-pq | open |
 | `R-exp2` | [[catalan-ladder]] | for every odd prime q, x^2 - y^q = 1 has (x,y,q) = (3,2,3) as its only solution in x,y > 0; the known solution sits at q = 3 | both-odd, class-group, p-neq-q | open |
 | `R-exp2-mirror` | [[catalan-ladder]] | for every odd prime p, x^p - y^2 = 1 has no solution in x,y > 0; the known solution has q = 3, so it sits outside this rung's case | both-odd, class-group, p-neq-q | open |
+| `R-p-eq-q` | [[catalan-ladder]] | for every odd prime p, x^p - y^p = 1 has no solution in x,y > 0; the known solution has p = 2 != 3 = q, so it sits outside | p-neq-q, class-group, uniqueness | open |
+| `R-35` | [[catalan-ladder]] | x^3 - y^5 = 1 has no solution in integers x,y > 0; the known solution has p = 2, so it sits outside this rung's case | class-group, unbounded-exponents, uniqueness | open |
 | `R-fixed-pq` | [[catalan-ladder]] | for every fixed pair (p,q) of distinct odd primes, x^p - y^q = 1 has at most finitely many solutions in x,y > 0, and the solutions are effectively computable;… | unbounded-exponents, uniqueness, negative-claim | open |
 | `R-uniform-finite` | [[catalan-ladder]] | the full equation x^p - y^q = 1 has finitely many solutions over all x,y > 0, p,q > 1; the known solution (3,2,2,3) is one of the finitely many | uniqueness, negative-claim | open |
-| `R-p-eq-q` | [[catalan-ladder]] | for every odd prime p, x^p - y^p = 1 has no solution in x,y > 0; the known solution has p = 2 != 3 = q, so it sits outside | p-neq-q | open |
 | `R-cassels` | [[catalan-ladder]] | if x^p - y^q = 1 with p,q odd primes, then p \| y and q \| x; the known solution has p = 2, q = 3, giving 2 \| 2 and 3 \| 3, so it is consistent but sits outside… | negative-claim | open |
 | `R-double-wieferich` | [[catalan-ladder]] | if x^p - y^q = 1 with p,q odd primes, then p^{q-1} = 1 (mod q^2) and q^{p-1} = 1 (mod p^2); the known solution has p = 2, so 3^1 != 1 (mod 4) — it fails, and… | negative-claim | open |
 | `R-regular` | [[catalan-ladder]] | if p and q are distinct odd primes with p ∤ h_p and q ∤ h_q (h_m = class number of Q(zeta_m)), then x^p - y^q = 1 has no solution in x,y > 0; the known… | class-group | open |
-| `R-cat-x3yq` | [[catalan]] | all integer solutions of x^3 - y^q = 1 with x,y>0 and q an odd prime; claim none | independent-pq | open |
-| `R-cat-full` | [[catalan]] | all integer solutions of x^p - y^q = 1 with x,y>0 and p,q odd primes; claim exactly (3,2,2,3) overall | — | open |
 
 ## The current rung — attack this one
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
 - [[catalan-ladder]] → `R-trivial-bases`: there is no solution with x = 1 or y = 1; equivalently every solution has x >= 2 and y >= 2
-  - switched off: unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q
-  - to merge the next difficulty back: one-line proof available for the forward loop: x=1 forces y^q = 0 (excluded), y=1 forces x^p = 2 (impossible for integer x>=1, p>=2). Turning unbounded-bases back on with the single smallest nontrivial exponent pair is R-fixed-23; first move: factor y^3 = (x-1)(x+1) with gcd(x-1,x+1) in {1,2}.
-- [[catalan]] → `R-cat-x2y3`: all integer solutions of x^2 - y^3 = 1 with x,y>0; claim exactly (x,y)=(3,2)
-  - switched off: odd-prime-both, nonprincipal-ideals, unbounded-exponents, independent-pq, unconditional-class-number, astronomical-bound
-  - to merge the next difficulty back: (x-1)(x+1)=y^3 over Z with gcd(x-1,x+1) | 2 splits into two cases, both forced to cubes. The same two-case argument is uniform in the odd exponent, so promote to x^2 - y^q = 1 (R-cat-x2yq) at no new cost.
+  - switched off: unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness
+  - to merge the next difficulty back: one-line proof for the forward loop: x=1 forces y^q = 0 (excluded by y>0), and y=1 forces x^p = 2 (impossible for integer x>=1, p>=2). negative-claim stays on — the claim is still an exclusion — but the known solution (3,2,2,3) has both bases >= 2, so it is not eliminated. This is the rung to settle today. Turning unbounded-bases back on at the single smallest nontrivial exponent pair is R-fixed-23; first move: factor y^3 = (x-1)(x+1) with gcd(x-1,x+1) in {1,2}.
 
 ## Settled — what this run owns
 
 Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
 
 - [[catalan-ladder]] `R-known-instance`: the instance (x,p,y,q) = (3,2,2,3) satisfies 3^2 - 2^3 = 1 (off: negative-claim, unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness; _nothing named — say which claim established it, or a reader cannot check it_)
+
+## Ladders that could not be read
+
+- `catalan` has no ladder block, so nothing can say what goal its rungs weaken

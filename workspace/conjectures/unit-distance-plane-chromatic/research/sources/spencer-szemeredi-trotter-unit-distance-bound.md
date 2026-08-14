@@ -43,6 +43,7 @@ status: asserted-by-source (Spencer–Szemerédi–Trotter 1984; a standard theo
 bearing: tells us density cannot be bought; drives the search toward rigid,
   algebraically structured point sets, matching problem.md's framing.
 anchor: research/sources/spencer-szemeredi-trotter-unit-distance-bound.md
+follows-from: szemeredi-trotter-incidence
 falsifies: a construction of n plane points with > C n^{4/3} unit distances
-  for all C — would contradict a classical theorem; none known.
+  for all C -- would contradict a classical theorem; none known.
 ```

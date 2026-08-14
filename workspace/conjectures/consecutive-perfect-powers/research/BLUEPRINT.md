@@ -16,6 +16,14 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/both-odd-primes.md`
 - `both-odd-primes/G-exclude` (lemma) — There are no integers x,y>0 and odd primes p,q with x^p - y^q = 1 satisfying both p^{q-1} ≡ 1 (mod q^2) and q^{p-1} ≡ 1 (mod p^2).
   - open `research/backward/both-odd-primes.md`
+- `cassels-selfcontained/cv-cyclo-coprime` (lemma) — > In Z[zeta_p] (p an odd prime), for distinct i, j in {1,...,p-1} the ideals (x - zeta_p^i) and (x - zeta_p^j) have gcd supported only on…
+  - open `research/backward/cassels-selfcontained.md`
+- `cassels-selfcontained/cv-lte` (lemma) — > Lifting-the-exponent (both signs). For an odd prime r and integers a, b with r \| (a - b) and r ∤ ab: v_r(a^r - b^r) = v_r(a - b) + 1.…
+  - open `research/backward/cassels-selfcontained.md`
+- `cassels-selfcontained/cv-vp-transfer` (lemma) — > The valuation-transfer descent, p \| y half. Let x^p - 1 = y^q with p, q distinct odd primes, x, y > 0. From G-cv-cyclo-coprime, each…
+  - open `research/backward/cassels-selfcontained.md`
+- `cassels-selfcontained/cv-vq-transfer` (lemma) — > The mirror valuation-transfer descent, q \| x half. Let y^q + 1 = x^p with p, q distinct odd primes, x, y > 0. Factoring y^q + 1 = (y + 1)…
+  - open `research/backward/cassels-selfcontained.md`
 - `catalan-mihailescu-full/cassels-divisibility` (lemma) — > If x^p - y^q = 1 with x, y > 0 and p, q distinct odd primes, then q \| x and p \| y.
   - open `research/backward/catalan-mihailescu-full.md`
 - `catalan-mihailescu-full/double-wieferich` (lemma) — > If x^p - y^q = 1 with x, y > 0 and p, q distinct odd primes, then q^{p-1} = 1 (mod p^2) and p^{q-1} = 1 (mod q^2).
@@ -32,6 +40,12 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/conditional-non-wieferich.md`
 - `conditional-non-wieferich/cond-wieferich` (lemma) — > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q^(p-1) = 1 (mod p^2) and p^(q-1) = 1 (mod q^2).
   - open `research/backward/conditional-non-wieferich.md`
+- `exponent-2-in-full/exp2-a-even` (lemma) — > x^2 - y^q = 1 with x, y > 0, x even, and q an odd prime, has no solution.
+  - open `research/backward/exponent-2-in-full.md`
+- `exponent-2-in-full/exp2-a-odd-descent` (lemma) — > x^2 - y^q = 1 with x >= 3 odd, y > 0, and q an odd prime, has exactly the solution (x, y, q) = (3, 2, 3).
+  - open `research/backward/exponent-2-in-full.md`
+- `exponent-2-in-full/exp2-b-nosolution` (lemma) — > x^p - y^2 = 1 with x, y > 0 and p an odd prime has no solution.
+  - open `research/backward/exponent-2-in-full.md`
 - `full-conjecture/G-full-case-p2` (lemma) — The only solution of x^2 - y^q = 1 in integers x,y >= 1, q >= 2 prime, is (x,y,q) = (3,2,3).
   - open `research/backward/full-conjecture.md`
 - `full-conjecture/G-full-case-q2` (lemma) — x^p - y^2 = 1 has no solution in integers x,y >= 1, p >= 2 prime.
@@ -63,6 +77,11 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `both-odd-primes/G-Cassels` | lemma | **ready** | — | If x^p - y^q = 1 with x,y>0 and p,q odd primes, then p \| y and q \| x. |
 | `both-odd-primes/G-double-wieferich` | lemma | **ready** | — | If x^p - y^q = 1 with x,y>0 and p,q odd primes, then p^{q-1} ≡ 1 (mod q^2) and q^{p-1} ≡ 1 (mod p^2). |
 | `both-odd-primes/G-exclude` | lemma | **ready** | — | There are no integers x,y>0 and odd primes p,q with x^p - y^q = 1 satisfying both p^{q-1} ≡ 1 (mod q^2) and q^{p-1} ≡ 1 (mod p^2). |
+| `cassels-selfcontained` | goal | blocked | `cassels-selfcontained/cv-cyclo-coprime`, `cassels-selfcontained/cv-lte`, `cassels-selfcontained/cv-vp-transfer`, `cassels-selfcontained/cv-vq-transfer` | If x^p - y^q = 1 with x, y > 0 and p, q distinct odd primes, then p \| y and q \| x. |
+| `cassels-selfcontained/cv-cyclo-coprime` | lemma | **ready** | — | > In Z[zeta_p] (p an odd prime), for distinct i, j in {1,...,p-1} the ideals (x - zeta_p^i) and (x - zeta_p^j) have gcd supported only on… |
+| `cassels-selfcontained/cv-lte` | lemma | **ready** | — | > Lifting-the-exponent (both signs). For an odd prime r and integers a, b with r \| (a - b) and r ∤ ab: v_r(a^r - b^r) = v_r(a - b) + 1.… |
+| `cassels-selfcontained/cv-vp-transfer` | lemma | **ready** | — | > The valuation-transfer descent, p \| y half. Let x^p - 1 = y^q with p, q distinct odd primes, x, y > 0. From G-cv-cyclo-coprime, each… |
+| `cassels-selfcontained/cv-vq-transfer` | lemma | **ready** | — | > The mirror valuation-transfer descent, q \| x half. Let y^q + 1 = x^p with p, q distinct odd primes, x, y > 0. Factoring y^q + 1 = (y + 1)… |
 | `catalan-mihailescu-full` | goal | blocked | `catalan-mihailescu-full/cassels-divisibility`, `catalan-mihailescu-full/double-wieferich`, `catalan-mihailescu-full/exp2-case-x-squared`, `catalan-mihailescu-full/exp2-case-y-squared`, `catalan-mihailescu-full/odd-prime-contradiction`, `catalan-mihailescu-full/red-prime-exponents` | The only solution of x^p - y^q = 1 in integers x, y > 0, p, q > 1 is (x, p, y, q) = (3, 2, 2, 3). |
 | `catalan-mihailescu-full/cassels-divisibility` | lemma | **ready** | — | > If x^p - y^q = 1 with x, y > 0 and p, q distinct odd primes, then q \| x and p \| y. |
 | `catalan-mihailescu-full/double-wieferich` | lemma | **ready** | — | > If x^p - y^q = 1 with x, y > 0 and p, q distinct odd primes, then q^{p-1} = 1 (mod p^2) and p^{q-1} = 1 (mod q^2). |
@@ -70,14 +89,23 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `catalan-mihailescu-full/exp2-case-y-squared` | lemma | **ready** | — | > x^p - y^2 = 1 with x, y > 0 and p an odd prime has no solution. |
 | `catalan-mihailescu-full/odd-prime-contradiction` | lemma | **ready** | — | > There do not exist distinct odd primes p, q and positive integers x, y with x^p - y^q = 1, q \| x, p \| y, q^{p-1} = 1 (mod p^2) and… |
 | `catalan-mihailescu-full/red-prime-exponents` | lemma | **ready** | — | > Every solution x^p - y^q = 1 with p, q > 1 yields a solution x'^{p'} - y'^{q'} = 1 with p', q' prime: if p = a b then (x', p') = (x^a, b)… |
+| `circular-units-index-plus-part` | claim | **ready** | — | > For an imaginary cyclotomic field, the index [E+ : C+] of the circular units in the full unit group of the real subfield is h^+ up to a… |
 | `conditional-non-wieferich` | goal | blocked | `conditional-non-wieferich/cond-cassels`, `conditional-non-wieferich/cond-wieferich` | > For all odd primes p, q with p^(q-1) != 1 (mod q^2) or q^(p-1) != 1 (mod p^2) (i.e. (p,q) is NOT a double-Wieferich pair), the equation… |
 | `conditional-non-wieferich/cond-cassels` | lemma | **ready** | — | > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q \| x and p \| y. (Cassels, 1960.) |
 | `conditional-non-wieferich/cond-wieferich` | lemma | **ready** | — | > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q^(p-1) = 1 (mod p^2) and p^(q-1) = 1 (mod q^2). |
+| `exponent-2-in-full` | goal | blocked | `exponent-2-in-full/exp2-a-even`, `exponent-2-in-full/exp2-a-odd-descent`, `exponent-2-in-full/exp2-b-nosolution` | > (A) x^2 - y^q = 1 with x, y > 0 and q prime has exactly the solution (x, y, q) = (3, 2, 3); and (B) x^p - y^2 = 1 with x, y > 0 and p… |
+| `exponent-2-in-full/exp2-a-even` | lemma | **ready** | — | > x^2 - y^q = 1 with x, y > 0, x even, and q an odd prime, has no solution. |
+| `exponent-2-in-full/exp2-a-odd-descent` | lemma | **ready** | — | > x^2 - y^q = 1 with x >= 3 odd, y > 0, and q an odd prime, has exactly the solution (x, y, q) = (3, 2, 3). |
+| `exponent-2-in-full/exp2-b-nosolution` | lemma | **ready** | — | > x^p - y^2 = 1 with x, y > 0 and p an odd prime has no solution. |
+| `faktor-pairwise-coprime-off-ramified` | claim | **ready** | — | > For x in Z[zeta_p] and i != j, the ideals (x - zeta_p^i) and (x - zeta_p^j) have gcd contained in (1 - zeta_p); they are pairwise coprime… |
 | `full-conjecture` | goal | blocked | `full-conjecture/G-full-case-p2`, `full-conjecture/G-full-case-q2`, `full-conjecture/G-full-odd-odd`, `full-conjecture/G-full-prime-reduction` | The only solution of x^p - y^q = 1 in integers x,y > 0, p,q > 1 is (x,p,y,q) = (3,2,2,3). |
 | `full-conjecture/G-full-case-p2` | lemma | **ready** | — | The only solution of x^2 - y^q = 1 in integers x,y >= 1, q >= 2 prime, is (x,y,q) = (3,2,3). |
 | `full-conjecture/G-full-case-q2` | lemma | **ready** | — | x^p - y^2 = 1 has no solution in integers x,y >= 1, p >= 2 prime. |
 | `full-conjecture/G-full-odd-odd` | lemma | **ready** | — | x^p - y^q = 1 has no solution in integers x,y >= 2 with p,q odd primes. |
 | `full-conjecture/G-full-prime-reduction` | lemma | **ready** | — | If x^p - y^q = 1 with x,y >= 2 and p,q >= 2 integers, then there exist X,Y >= 2 and primes P,Q with X^P - Y^Q = 1; concretely, writing p =… |
+| `iwasawa-index-of-stickelberger` | claim | **ready** | — | > [Z[G]^- : s^-] = h^-(Q(zeta_p)), the relative class number. |
+| `minus-class-computable-plus-not` | claim | **ready** | — | > h^- of Q(zeta_p) is given by an explicit Bernoulli-number product and is easy to compute for very large odd primes p; h^+ of Q(zeta_p) is… |
+| `minus-class-number-formula` | claim | **ready** | — | > For K = Q(zeta_p), p odd prime, the relative (minus) class number is h^-(K) = 2p * prod_{chi odd mod p} (-1/2 B_{1,chi}), with B_{1,chi}… |
 | `odd-prime-case` | goal | blocked | `odd-prime-case/G-odd-cassels`, `odd-prime-case/G-odd-descent`, `odd-prime-case/G-odd-wieferich` | x^p - y^q = 1 has no solution in integers x,y >= 2 with p,q odd primes. |
 | `odd-prime-case/G-odd-cassels` | lemma | **ready** | — | For p,q odd primes and x,y >= 2, x^p - y^q = 1 implies p \| y and q \| x. (Cassels, 1960.) |
 | `odd-prime-case/G-odd-descent` | lemma | **ready** | — | There is no solution x^p - y^q = 1 with p,q odd primes, x,y >= 2 satisfying p \| y, q \| x, p^(q-1) = 1 (mod q^2), q^(p-1) = 1 (mod p^2).… |
@@ -85,5 +113,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `reduce-to-prime-exponents` | goal | blocked | `reduce-to-prime-exponents/G-exp2-a`, `reduce-to-prime-exponents/G-exp2-b`, `reduce-to-prime-exponents/G-odd-prime`, `reduce-to-prime-exponents/G-prime-reduction` | x^p - y^q = 1 with x,y>0, p,q>1 has (x,p,y,q)=(3,2,2,3) as its only solution. |
 | `reduce-to-prime-exponents/G-exp2-a` | lemma | **ready** | — | x^2 - y^q = 1 with x,y>0 and q prime has the unique solution (x,y,q)=(3,2,3). |
 | `reduce-to-prime-exponents/G-exp2-b` | lemma | **ready** | — | x^p - y^2 = 1 with x,y>0 and p prime has no solutions. |
-| `reduce-to-prime-exponents/G-odd-prime` | lemma | **ready** | — | x^p - y^q = 1 has no solution with p,q odd primes. |
-| `reduce-to-prime-exponents/G-prime-reduction` | lemma | **ready** | — | If (x,p,y,q) solves x^p - y^q = 1 with x,y>0, p,q>1, and p=a·p', q=b·q' with p',q' prime, then (x^a,p',y^b,q') also solves it; moreover… |
+
+_6 further nodes not shown._

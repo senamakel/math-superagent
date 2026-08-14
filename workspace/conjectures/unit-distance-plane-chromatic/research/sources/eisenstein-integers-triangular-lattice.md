@@ -22,12 +22,14 @@ structure / rings of integers).
   are the rational primes `p ≡ 2 (mod 3)` and the Eisenstein primes whose norm
   is a rational prime.
 - The geometry: `Z[omega]` sits on the **triangular lattice** (hexagonal
-  lattice). The unit vectors of this lattice are `1, omega, omega^2, ...`,
-  each of modulus 1, so the six directions `{1, omega, omega^2, omega^3,
-  omega^4, omega^5}` (powers of a primitive 6th root of unity, or ±1 and
-  rotations by 60°) connect lattice points at exactly distance 1. This makes
-  the triangular lattice and its finite subsets the natural source of
-  unit-distance graphs with abundant unit distances.
+  lattice). The unit vectors of this lattice are
+  `1, 1+omega, omega, -1, -1-omega, -omega` — i.e. the six powers of
+  `1+omega = e^{i pi/3}`, a primitive **6th** root of unity. (Careful:
+  `omega = e^{2 pi i/3}` is a primitive **3rd** root, `omega^3 = 1`, so powers
+  of `omega` alone give only three distinct directions 0,120,240 deg; the full
+  six come from the primitive 6th root `1+omega`.) The six directions
+  `{1, 1+omega, omega, -1, -1-omega, -omega}` (rotations by 60°) connect
+  lattice points at exactly distance 1, giving abundant unit distances.
 
 ## Relevance
 - `problem.md` and the standard construction tier both use rotations by pi/3

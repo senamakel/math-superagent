@@ -1,0 +1,23 @@
+n=1: 0 kernel members (min-degree>=4 connected graph on 1 verts)
+n=2: 0 kernel members (min-degree>=4 connected graph on 2 verts)
+n=3: 0 kernel members (min-degree>=4 connected graph on 3 verts)
+n=4: 0 kernel members (min-degree>=4 connected graph on 4 verts)
+n=5: 0 kernel members (min-degree>=4 connected graph on 5 verts)
+n=6: 0 kernel members (min-degree>=4 connected graph on 6 verts)
+n=7: 0 kernel members (min-degree>=4 connected graph on 7 verts)
+n=8: 1 kernel members tested, all 4-colourable=True
+n=9: 4 kernel members tested, all 4-colourable=True
+n=10: 16 kernel members tested, all 4-colourable=True
+============================================================
+RESULT: largest N<=8 with every C_N member 4-colourable: N=8
+Per-N kernel counts:
+  n=1  kernel=0  all4color=True  failures=0
+  n=2  kernel=0  all4color=True  failures=0
+  n=3  kernel=0  all4color=True  failures=0
+  n=4  kernel=0  all4color=True  failures=0
+  n=5  kernel=0  all4color=True  failures=0
+  n=6  kernel=0  all4color=True  failures=0
+  n=7  kernel=0  all4color=True  failures=0
+  n=8  kernel=1  all4color=True  failures=0
+  n=9  kernel=4  all4color=True  failures=0
+  n=10  kernel=16  all4color=True  failures=0

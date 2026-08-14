@@ -6,4 +6,29 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `beltran-ivanisvili-madrid-sharp-avg-boundary` | For all A ⊆ {0,1}^n, E[h_A^β] has a sharp lower bound in terms of µ(A) for β ≥ 1/2 (e.g. β=0.53 case), minimised by subcubes; the bound is on an average vertex outer-boundary quantity. | yes | asserted | `research/sources/beltran-ivanisvili-madrid-sharp-isoperimetric-hypercube.md` |
+| `durcik-ivanisvili-roos-critical-exponent` | For β ≥ 0.50057 and \|A\| ≤ 1/2, E[h_A^β] ≥ \|A\|(log2(1/\|A\|))^β, with equality for subcubes (and an analogous bound for \|A\| ≥ 1/2). | yes | asserted | `research/sources/durcik-ivanisvili-roos-critical-exponent.md` |
+| `f-exact-1..4` | f(1)=1, f(2)=2, f(3)=2, f(4)=2, where f(n)=min D(S) over S⊆{0,1}^n, \|S\|=2^{n-1}+1. | yes | checked | `code/out/f-exact-note.md` |
+| `falik-samorodnitsky-edge-isoperimetric` | For A ⊆ {0,1}^n with µ = \|A\|/2^n ≤ 1/2, the total influence Σ_i I_i(A) ≥ 2 log2(1/µ)·µ (edge-isoperimetric inequality, with the KKL bound as a corollary: some variable has influence ≥ Ω(log n / n) for balanced f). | **unchecked** | asserted | `research/sources/falik-samorodnitsky-edge-isoperimetric-influences.md` |
+| `harper-vertex-isoperimetric-hamming-ball` | Among subsets A of Q_n of a fixed size k, the vertex boundary is minimised by a Hamming ball B_r with k = sum_{i<=r} C(n,i) (Harper 1999); compression proves it. | yes | asserted | `research/sources/harper-hamming-isoperimetric-1999.md` |
+| `harper-vertex-isoperimetric-min-boundary` | Among subsets A ⊆ {0,1}^n of a given size m, the vertex boundary \|∂v(A)\| is minimised by an initial segment I_m in the simplicial order (Harper's theorem), and near-minimisers are close to generalised Hamming balls… | yes | asserted | `research/sources/keevash-long-stability-vertex-isoperimetry-cube.md` |
+| `induced-subgraphs-hypercube-full-vertices-kk` | The maximum number of full (internal-degree-k) vertices in an n-vertex induced subgraph of Q_k is exactly φ_k(n), given by a recursive Kruskal-Katona/shadow formula (Theorem 3.2), and the edge-cover min-max is the… | yes | asserted | `research/sources/induced-subgraphs-hypercubes-kk-2012.md` |
+| `kkl-balance-influence` | Every balanced Boolean function on {0,1}^n (µ = 1/2) has a variable with influence ≥ c·(log n)/n for an absolute constant c > 0 (Kahn–Kalai–Linial 1988; combinatorial proof in Falik–Samorodnitsky 2007). | **unchecked** | asserted | `research/sources/falik-samorodnitsky-edge-isoperimetric-influences.md` |
+| `kkl-influence-balanced` | Every Boolean f: {0,1}^n -> {0,1} with E f = a has a coordinate of influence >= c·a(1-a)·log(n)/n (KKL 1988, harmonic analysis + hypercontractivity). | yes | asserted | `research/sources/kkl-influence-1988.md` |
+| `kruskal-katona-shadow-formula` | For a family U of m k-sets, \|lower shadow\| >= C(a_k,k-1)+C(a_{k-1},k-2)+... where the a's come from the k-binomial decomposition of m; equality (extremal complexes) are vertex decomposable / Cohen-Macaulay (KK;… | yes | asserted | `research/sources/kruskal-katona-shadow-vertex-decomposable.md` |
+| `survey-cube-isoperimetric-profile` | On the hypercube, min edge boundary for fixed size is given by subcubes and min vertex boundary by Hamming balls (Harper/Lindsey/Bernstein/ Hart); these optimise outer boundary, not internal max degree (survey). | yes | asserted | `research/sources/barber-erde-isoperimetry-lattices-2018.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `beltran-ivanisvili-madrid-sharp-avg-boundary` (research/sources/beltran-ivanisvili-madrid-sharp-isoperimetric-hypercube.md) — asserted by the source, not proved there and not checked here
+- `durcik-ivanisvili-roos-critical-exponent` (research/sources/durcik-ivanisvili-roos-critical-exponent.md) — asserted by the source, not proved there and not checked here
+- `harper-vertex-isoperimetric-hamming-ball` (research/sources/harper-hamming-isoperimetric-1999.md) — asserted by the source, not proved there and not checked here
+- `harper-vertex-isoperimetric-min-boundary` (research/sources/keevash-long-stability-vertex-isoperimetry-cube.md) — asserted by the source, not proved there and not checked here
+- `induced-subgraphs-hypercube-full-vertices-kk` (research/sources/induced-subgraphs-hypercubes-kk-2012.md) — asserted by the source, not proved there and not checked here
+- `kkl-influence-balanced` (research/sources/kkl-influence-1988.md) — asserted by the source, not proved there and not checked here
+- `kruskal-katona-shadow-formula` (research/sources/kruskal-katona-shadow-vertex-decomposable.md) — asserted by the source, not proved there and not checked here
+- `survey-cube-isoperimetric-profile` (research/sources/barber-erde-isoperimetry-lattices-2018.md) — asserted by the source, not proved there and not checked here

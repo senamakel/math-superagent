@@ -8,22 +8,38 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `critical-minimum-degree` | Every k-critical graph has minimum degree at least k-1; in particular every 5-critical (minimal non-4-colourable) graph has delta >= 4. | yes | asserted | `research/sources/colour-critical-graphs-structure.md` |
 | `debruijn-erdos-1951` | For any graph G, chi(G) = sup { chi(H) : H finite subgraph of G }. | yes | asserted | `research/sources/debruijn-erdos-1951-chromatic-reduction.md` |
 | `einstein-lattice-unit-distance` | The Eisenstein integers Z[omega], omega = e^{2 pi i /3}, form the triangular lattice; its unit vectors are the six powers of a primitive 6th root of unity, all of modulus 1, so adjacent lattice points differ by a unit… | yes | asserted | `research/sources/eisenstein-integers-triangular-lattice.md` |
+| `exact-coordinate-certification` | A faithful unit-distance graph realisation has algebraic coordinates (solutions of a rational-coefficient polynomial system with each edge a quadratic), and its exactness is certified by an O(n^2) procedure: rank-2… | yes | asserted | `research/sources/exact-coordinate-certification-unit-distance.md` |
+| `k-critical-minimum-degree` | Every k-critical graph has minimum degree at least k-1, hence at least ((k-1)/2)n edges on n vertices; if a graph has chromatic number at least k it contains a k-critical subgraph. Consequently any 5-chromatic graph… | yes | asserted | `research/sources/colour-critical-hajos-construction.md` |
+| `kempe-universality` | Every plane algebraic curve (zero set of a real polynomial) can be traced by a finite pinned planar linkage; Maehara's converse — every positive algebraic number is a rigid-unit-distance-graph distance — is proved… | yes | asserted | `research/sources/kempe-universality-linkages.md` |
 | `maehara-algebraic-rigid-distances` | A number d > 0 appears as the Euclidean distance between two vertices of some rigid unit-distance graph in the plane if and only if d is an algebraic number; equivalently, every coordinate of a rigid unit-distance graph… | yes | asserted | `research/sources/maehara-1991-algebraic-rigid-distances.md` |
 | `minkowski-sum-dense-graphs` | Minkowski sums of small unit-distance graphs produce larger unit-distance graphs with more unit distances per vertex than their size suggests; many densest-known small UDGs are such sums. | yes | asserted | `research/sources/minkowski-sums-rotations-construction.md` |
 | `minkowski-sum-unit-distance-condition` | For finite point sets A, B in the plane, a pair of points a1+b1 and a2+b2 of A+B is at Euclidean distance 1 iff \|(a1-a2) + (b1-b2)\| = 1. | yes | asserted | `research/sources/minkowski-sums-rotations-construction.md` |
+| `number-field-extremal-constructions` | Sharp Szemerédi-Trotter-type incidence constructions exist over any number field K/Q using a nice basis Lambda (an integral basis always qualifies): the point set A_r(Lambda) x A_{N/r}(Lambda) with slopes and intercepts… | yes | asserted | `research/sources/szemeredi-trotter-arbitrary-number-fields.md` |
 | `sat-k-colourability-encoding` | G = (V,E) is C-colourable iff the CNF consisting of (i) at-least-one  OR_i x_{v,i} for every v, and (ii) properness  (not x_{u,i} OR not x_{v,i}) for every edge {u,v} and every i, is satisfiable; a satisfying assignment… | yes | asserted | `research/sources/sat-colourability-encoding.md` |
+| `szemeredi-trotter-algebraic-extremal` | For m plane points P and n lines L, the number of point-line incidences I(P,L) = O(m^{2/3} n^{2/3} + m + n), tight up to constants; and the extremal configurations are built from algebraic number fields Q(sqrt k), with… | yes | asserted | `research/sources/szemeredi-trotter-incidence-algebraic-extremal.md` |
+| `szemeredi-trotter-incidence` | For m points and n lines in the plane, I(P,L) = O(m^{2/3} n^{2/3} + m + n); equivalently the number of r-rich lines through n points is O(n^2 r^{-3} + n r^{-1}). | yes | asserted | `research/sources/szemeredi-trotter-incidence-theorem.md` |
+| `unit-distance-dense-upper-bound-tight` | u(n), the max unit-distance pairs among n plane points, satisfies Omega(n^{1+c/log log n}) <= u(n) <= O(n^{4/3}); the upper bound is the classical Spencer-Szemeredi-Trotter 1984 result proved via point-circle incidences… | yes | asserted | `research/sources/matousek-unit-distance-problem.md` |
 | `unit-distance-upper-bound` | u_2(n), the maximum number of unit distances among n plane points, is O(n^{4/3}). | yes | asserted | `research/sources/spencer-szemeredi-trotter-unit-distance-bound.md` |
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `critical-minimum-degree` (research/sources/colour-critical-graphs-structure.md) — asserted by the source, not proved there and not checked here
 - `debruijn-erdos-1951` (research/sources/debruijn-erdos-1951-chromatic-reduction.md) — asserted by the source, not proved there and not checked here
 - `einstein-lattice-unit-distance` (research/sources/eisenstein-integers-triangular-lattice.md) — asserted by the source, not proved there and not checked here
+- `exact-coordinate-certification` (research/sources/exact-coordinate-certification-unit-distance.md) — asserted by the source, not proved there and not checked here
+- `k-critical-minimum-degree` (research/sources/colour-critical-hajos-construction.md) — asserted by the source, not proved there and not checked here
+- `kempe-universality` (research/sources/kempe-universality-linkages.md) — asserted by the source, not proved there and not checked here
 - `maehara-algebraic-rigid-distances` (research/sources/maehara-1991-algebraic-rigid-distances.md) — asserted by the source, not proved there and not checked here
 - `minkowski-sum-dense-graphs` (research/sources/minkowski-sums-rotations-construction.md) — asserted by the source, not proved there and not checked here
 - `minkowski-sum-unit-distance-condition` (research/sources/minkowski-sums-rotations-construction.md) — asserted by the source, not proved there and not checked here
+- `number-field-extremal-constructions` (research/sources/szemeredi-trotter-arbitrary-number-fields.md) — asserted by the source, not proved there and not checked here
 - `sat-k-colourability-encoding` (research/sources/sat-colourability-encoding.md) — asserted by the source, not proved there and not checked here
+- `szemeredi-trotter-algebraic-extremal` (research/sources/szemeredi-trotter-incidence-algebraic-extremal.md) — asserted by the source, not proved there and not checked here
+- `szemeredi-trotter-incidence` (research/sources/szemeredi-trotter-incidence-theorem.md) — asserted by the source, not proved there and not checked here
+- `unit-distance-dense-upper-bound-tight` (research/sources/matousek-unit-distance-problem.md) — asserted by the source, not proved there and not checked here
 - `unit-distance-upper-bound` (research/sources/spencer-szemeredi-trotter-unit-distance-bound.md) — asserted by the source, not proved there and not checked here

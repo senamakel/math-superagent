@@ -1,2 +1,20 @@
 {"at":"1786745792","decision":"denied","detail":"term matched in 12208 characters","stage":"result","tool":"exa_search"}
 {"at":"1786745796","decision":"denied","detail":"term matched in 12172 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745849","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745849","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745852","decision":"denied","detail":"term matched in 12163 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745874","decision":"denied","detail":"term matched in 12101 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745892","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745896","decision":"unreachable-host","detail":"host `citeseerx.ist.psu.edu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745896","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745896","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745896","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745995","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12086 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746029","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786746036","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786746040","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746095","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (3984 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746123","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746299","decision":"denied-by-adjudicator","detail":"adjudicator reply was neither ALLOW nor DENY; failing closed","stage":"result","tool":"read_sources"}
+{"at":"1786746577","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746577","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}

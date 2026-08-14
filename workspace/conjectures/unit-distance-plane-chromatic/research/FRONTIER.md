@@ -1,17 +1,15 @@
 # Frontier — what this library's own sources cite
 
-> Library note (librarian): the three canonical-reference leads below have been acquired. Network boundary blocks all direct download and `read_sources` to publisher/preprint hosts (renyi.hu, arxiv.org, springer, sciencedirect, wikipedia) — only the search and data APIs return text, and the evidence policy screens sources that hand over the problem's published answer. All three were therefore established through the works' records and the surveys that state them (exact statement + hypotheses + attribution), which is enough to fix statement and notation. **What could not be obtained** (verbatim publisher texts): the 1951 de Bruijn–Erdős paper body, the 1984 Spencer–Szemerédi–Trotter chapter body, and the 1961 Moser–Moser note body. Those full texts remain a recorded gap in `research/REQUESTS.md`; nobody should re-attempt those hosts.
-
 Derived from the citations inside every document this run has downloaded, and rewritten on each download. Nothing here has been judged: a row is a lead, not a recommendation.
 
 Ranked by how many of the library's sources cite it, then by how closely the citing sentence matches the goal. A **cited by** count above one means independent sources agree it is the reference for the subject, which is worth more than any single search ranking. A ~~struck-through~~ row is already in the library — do not download it again.
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
+| 3 | https://arxiv.org/pdf/2303.17186 | Structure of cell decompositions in Extremal Szemerédi-Trotter examples | found researching: What is the best known asymptotic upper bound on the number of pairs of points at unit distance among n points in the Euclidean plane (the Erdős unit distance p… |
 | 2 | https://www.sciencedirect.com/science/article/abs/pii/S0012365X23001279 | Coloring distance graphs on the plane - ScienceDirect | found researching: Give a precise statement with hypotheses of the de Bruijn-Erdos theorem (de Bruijn and P. Erdős 1951, "A colour problem for infinite graphs and a problem in the… |
 | 2 | https://ar5iv.labs.arxiv.org/html/2006.06285 | [2006.06285] An improved constant factor for the unit distance problem | found researching: What is the best known asymptotic upper bound on the number of pairs of points at unit distance among n points in the Euclidean plane (the Erdős unit distance p… |
 | 2 | https://doi.org/10.4230/lipics.socg.2026.83 | Erdős’s Unit Distance Problem and Rigidity | found researching: What is the best known asymptotic upper bound on the number of pairs of points at unit distance among n points in the Euclidean plane (the Erdős unit distance p… |
-| 2 | https://arxiv.org/pdf/2303.17186 | Structure of cell decompositions in Extremal Szemerédi-Trotter examples | found researching: What is the best known asymptotic upper bound on the number of pairs of points at unit distance among n points in the Euclidean plane (the Erdős unit distance p… |
 | 2 | https://math.uchicago.edu/~may/REU2022/REUPapers/Cao,Jessica.pdf | Contents 1. Preliminaries 1 2. Introduction to Incidences 2 2.1. The Szemer´edi-Trotter… | found researching: What is the best known asymptotic upper bound on the number of pairs of points at unit distance among n points in the Euclidean plane (the Erdős unit distance p… |
 | 1 | https://www.maartenderickx.nl/articles/BachelorScriptie.pdf | Infinitesimally Rigid Construction of the Algebraic Numbers | found researching: Describe the algebraic-coordinate machinery for building and verifying unit-distance graphs exactly: (a) Maehara's theorem that distances between vertices of a … |
 | 1 | https://doi.org/10.5281/zenodo.20551477 | Optimized Certificate for the Unit Distance Problem with Extended Prime Number Range | found researching: Describe the algebraic-coordinate machinery for building and verifying unit-distance graphs exactly: (a) Maehara's theorem that distances between vertices of a … |
@@ -49,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://hdl.handle.net/10338.dmlcz/118949 | Prime Ideal Theorems and systems of finite character | found researching: What is the exact statement and proof of the de Bruijn–Erdős theorem that the chromatic number of an infinite graph equals the supremum of chromatic numbers of … |
 | 1 | https://doi.org/10.1007/978-3-662-70107-2 | Graph Theory | found researching: What is the exact statement and proof of the de Bruijn–Erdős theorem that the chromatic number of an infinite graph equals the supremum of chromatic numbers of … |
 
-_56 further candidates not shown; they are cited once each._
+_150 further candidates not shown; they are cited once each._

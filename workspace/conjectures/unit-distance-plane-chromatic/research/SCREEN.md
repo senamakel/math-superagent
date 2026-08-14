@@ -74,3 +74,13 @@ prevent.
 | 1786744743 | `exa_search` | arguments | allowed-by-adjudicator | flagged, then allowed |
 | 1786744749 | `exa_search` | result | denied | term matched in 12108 characters |
 | 1786744758 | `exa_search` | arguments | denied | term matched |
+| 1786745866 | `read_sources` | result | denied | term matched in 12154 characters |
+| 1786745866 | `exa_search` | result | denied | term matched in 12156 characters |
+| 1786745897 | `download_document` | arguments | unreachable-host | host `ar5iv.labs.arxiv.org` is not on the egress allowlist |
+| 1786745940 | `exa_search` | result | denied | term matched in 12217 characters |
+| 1786746020 | `exa_search` | result | denied | term matched in 12172 characters |
+| 1786746053 | `exa_search` | result | denied | term matched in 12135 characters |
+| 1786746069 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |
+| 1786746069 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |
+| 1786746322 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786746325 | `read_sources` | result | denied | term matched in 3999 characters |

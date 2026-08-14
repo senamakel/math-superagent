@@ -16,6 +16,12 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/5chromatic-size-lower-bound.md`
 - `5chromatic-size-lower-bound/S-universe-4color` (lemma) — For the largest N the finite check reaches (target >= 7), every graph on <= N vertices with minimum degree >= 4, K4-free and K_{2,3}-free…
   - open `research/backward/5chromatic-size-lower-bound.md`
+- `5chromatic-udg-min-size/sharp-critical-degree` (lemma) — > Every graph G with chi(G) = k contains a k-critical (vertex-critical) subgraph, and every k-critical graph has minimum degree at least…
+  - open `research/backward/5chromatic-udg-min-size.md`
+- `5chromatic-udg-min-size/sharp-kernel-4color` (lemma) — > For the largest N the finite check reaches (start at N = 7), every graph on <= N vertices with minimum degree >= 4, K4-free,…
+  - open `research/backward/5chromatic-udg-min-size.md`
+- `5chromatic-udg-min-size/sharp-nbhd-local` (lemma) — > In any unit-distance graph in R^2: (i) no four vertices are pairwise at unit distance — three pairwise-unit points form a unit…
+  - open `research/backward/5chromatic-udg-min-size.md`
 - `chi-plane-lower-bound-5/G5-construction` (lemma) — > There is a finite point set S in R^2, with coordinates in an exact algebraic number field, whose unit-distance graph G[S] has chromatic…
   - open `research/backward/chi-plane-lower-bound-5.md`
 - `chi-plane-lower-bound-5/G5-debruijn-erdos` (lemma) — > For the unit-distance graph G on R^2, chi(G) >= 5 if and only if some finite unit-distance subgraph of G has chromatic number >= 5, under…
@@ -36,6 +42,12 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/lower-bound-via-spindle.md`
 - `lower-bound-via-spindle/G-spindling-closure` (lemma) — If H is a unit-distance graph with chi(H)=4 and vertices u,v, u≠v, d=\|u-v\|>=1/2, such that every proper 4-colouring of H has c(u)=c(v),…
   - open `research/backward/lower-bound-via-spindle.md`
+- `size-lower-bound-neighborhood/N-critical-degree` (lemma) — Every vertex-critical graph with chromatic number k has minimum degree at least k-1; in particular every 5-critical graph has minimum…
+  - open `research/backward/size-lower-bound-neighborhood.md`
+- `size-lower-bound-neighborhood/N-nbhd-circle` (lemma) — In any unit-distance graph in R^2, for every vertex v the subgraph induced by the neighbourhood N(v) is a disjoint union of paths and…
+  - open `research/backward/size-lower-bound-neighborhood.md`
+- `size-lower-bound-neighborhood/N-universe-4color` (lemma) — For the largest N the finite check reaches (target >= 7), every graph on <= N vertices with minimum degree >= 4 and every neighbourhood a…
+  - open `research/backward/size-lower-bound-neighborhood.md`
 
 ## Every node
 
@@ -45,6 +57,10 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `5chromatic-size-lower-bound/S-critical-degree` | lemma | **ready** | — | Every vertex-critical graph with chromatic number k has minimum degree at least k-1; in particular every 5-critical graph has no vertex of… |
 | `5chromatic-size-lower-bound/S-nbhd-bound` | lemma | **ready** | — | In any unit-distance graph in R^2: (i) two distinct vertices have at most two common neighbours, because a common neighbour lies on the… |
 | `5chromatic-size-lower-bound/S-universe-4color` | lemma | **ready** | — | For the largest N the finite check reaches (target >= 7), every graph on <= N vertices with minimum degree >= 4, K4-free and K_{2,3}-free… |
+| `5chromatic-udg-min-size` | goal | blocked | `5chromatic-udg-min-size/sharp-critical-degree`, `5chromatic-udg-min-size/sharp-kernel-4color`, `5chromatic-udg-min-size/sharp-nbhd-local` | For a concrete integer N, pushed as large as the finite check reaches (start at N = 7, since the 7-vertex Moser spindle is 4-chromatic),… |
+| `5chromatic-udg-min-size/sharp-critical-degree` | lemma | **ready** | — | > Every graph G with chi(G) = k contains a k-critical (vertex-critical) subgraph, and every k-critical graph has minimum degree at least… |
+| `5chromatic-udg-min-size/sharp-kernel-4color` | lemma | **ready** | — | > For the largest N the finite check reaches (start at N = 7), every graph on <= N vertices with minimum degree >= 4, K4-free,… |
+| `5chromatic-udg-min-size/sharp-nbhd-local` | lemma | **ready** | — | > In any unit-distance graph in R^2: (i) no four vertices are pairwise at unit distance — three pairwise-unit points form a unit… |
 | `chi-plane-lower-bound-5` | goal | blocked | `chi-plane-lower-bound-5/G5-construction`, `chi-plane-lower-bound-5/G5-debruijn-erdos`, `chi-plane-lower-bound-5/G5-edge-cert`, `chi-plane-lower-bound-5/G5-non4col` | chi(G) >= 5, where G is the unit-distance graph on R^2 (every pair at distance exactly 1 is an edge). |
 | `chi-plane-lower-bound-5/G5-construction` | lemma | **ready** | — | > There is a finite point set S in R^2, with coordinates in an exact algebraic number field, whose unit-distance graph G[S] has chromatic… |
 | `chi-plane-lower-bound-5/G5-debruijn-erdos` | lemma | **ready** | — | > For the unit-distance graph G on R^2, chi(G) >= 5 if and only if some finite unit-distance subgraph of G has chromatic number >= 5, under… |
@@ -54,8 +70,12 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `chi-plane-upper-bound-6/U6-covering` | lemma | **ready** | — | > The region family of U6-region-design covers the plane, and the boundary tie-break is consistent (each point assigned exactly one colour… |
 | `chi-plane-upper-bound-6/U6-margin` | lemma | **ready** | — | > For the colour classes of U6-region-design + U6-covering, the exact minimum distance between two points in the same class is > 1. |
 | `chi-plane-upper-bound-6/U6-region-design` | lemma | **ready** | — | > There is a family of plane regions and a 6-colour assignment of them such that any two points in regions of the same colour are at… |
+| `critical-minimum-degree` | claim | **ready** | — | Every k-critical graph has minimum degree at least k-1; in particular every 5-critical (minimal non-4-colourable) graph has delta >= 4. |
 | `debruijn-erdos-1951` | claim | **ready** | — | For any graph G, chi(G) = sup { chi(H) : H finite subgraph of G }. |
 | `einstein-lattice-unit-distance` | claim | **ready** | — | The Eisenstein integers Z[omega], omega = e^{2 pi i /3}, form the triangular lattice; its unit vectors are the six powers of a primitive… |
+| `exact-coordinate-certification` | claim | **ready** | — | A faithful unit-distance graph realisation has algebraic coordinates (solutions of a rational-coefficient polynomial system with each edge… |
+| `k-critical-minimum-degree` | claim | **ready** | — | Every k-critical graph has minimum degree at least k-1, hence at least ((k-1)/2)n edges on n vertices; if a graph has chromatic number at… |
+| `kempe-universality` | claim | **ready** | — | Every plane algebraic curve (zero set of a real polynomial) can be traced by a finite pinned planar linkage; Maehara's converse — every… |
 | `lower-bound-via-spindle` | goal | blocked | `lower-bound-via-spindle/G-de-bruijn-erdos-reduction`, `lower-bound-via-spindle/G-forced-pair-exists`, `lower-bound-via-spindle/G-spindling-closure` | chi(G) >= 5 for G the unit-distance graph on R^2 (vertices all points, x ~ y iff \|x-y\| = 1) — equivalently a finite unit-distance graph… |
 | `lower-bound-via-spindle/G-de-bruijn-erdos-reduction` | lemma | **ready** | — | chi(G) equals the supremum of chi(H) over finite subgraphs H of the unit-distance graph on R^2; in particular chi(G) >= 5 iff some finite… |
 | `lower-bound-via-spindle/G-forced-pair-exists` | lemma | **ready** | — | There exists a 4-chromatic unit-distance graph H and two vertices u,v with \|u-v\|>=1/2 that receive the same colour in every proper… |
@@ -63,5 +83,13 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `maehara-algebraic-rigid-distances` | claim | **ready** | — | A number d > 0 appears as the Euclidean distance between two vertices of some rigid unit-distance graph in the plane if and only if d is an… |
 | `minkowski-sum-dense-graphs` | claim | **ready** | — | Minkowski sums of small unit-distance graphs produce larger unit-distance graphs with more unit distances per vertex than their size… |
 | `minkowski-sum-unit-distance-condition` | claim | **ready** | — | For finite point sets A, B in the plane, a pair of points a1+b1 and a2+b2 of A+B is at Euclidean distance 1 iff \|(a1-a2) + (b1-b2)\| = 1. |
+| `number-field-extremal-constructions` | claim | **ready** | — | Sharp Szemerédi-Trotter-type incidence constructions exist over any number field K/Q using a nice basis Lambda (an integral basis always… |
 | `sat-k-colourability-encoding` | claim | **ready** | — | G = (V,E) is C-colourable iff the CNF consisting of (i) at-least-one  OR_i x_{v,i} for every v, and (ii) properness  (not x_{u,i} OR not… |
+| `size-lower-bound-neighborhood` | goal | blocked | `debruijn-erdos-1951`, `sat-k-colourability-encoding`, `size-lower-bound-neighborhood/N-critical-degree`, `size-lower-bound-neighborhood/N-nbhd-circle`, `size-lower-bound-neighborhood/N-universe-4color` | For a concrete integer N (target >= 7, the calibrated baseline), every unit-distance graph in R^2 on at most N vertices is 4-colourable;… |
+| `size-lower-bound-neighborhood/N-critical-degree` | lemma | **ready** | — | Every vertex-critical graph with chromatic number k has minimum degree at least k-1; in particular every 5-critical graph has minimum… |
+| `size-lower-bound-neighborhood/N-nbhd-circle` | lemma | **ready** | — | In any unit-distance graph in R^2, for every vertex v the subgraph induced by the neighbourhood N(v) is a disjoint union of paths and… |
+| `size-lower-bound-neighborhood/N-universe-4color` | lemma | **ready** | — | For the largest N the finite check reaches (target >= 7), every graph on <= N vertices with minimum degree >= 4 and every neighbourhood a… |
+| `szemeredi-trotter-algebraic-extremal` | claim | **ready** | — | For m plane points P and n lines L, the number of point-line incidences I(P,L) = O(m^{2/3} n^{2/3} + m + n), tight up to constants; and the… |
+| `szemeredi-trotter-incidence` | claim | **ready** | — | For m points and n lines in the plane, I(P,L) = O(m^{2/3} n^{2/3} + m + n); equivalently the number of r-rich lines through n points is… |
+| `unit-distance-dense-upper-bound-tight` | claim | **ready** | — | u(n), the max unit-distance pairs among n plane points, satisfies Omega(n^{1+c/log log n}) <= u(n) <= O(n^{4/3}); the upper bound is the… |
 | `unit-distance-upper-bound` | claim | **ready** | — | u_2(n), the maximum number of unit distances among n plane points, is O(n^{4/3}). |

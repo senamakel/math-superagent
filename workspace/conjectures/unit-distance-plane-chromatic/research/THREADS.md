@@ -4,7 +4,9 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[minkowski-rigidity]] | Can accumulating rigidity from small unit-distance graphs — via Minkowski sums A+B and rotation/spindling — force a pair (u,v) with \|u-v\| >= 1/2 that is… | open | minkowski-sum-unit-distance-condition, minkowski-sum-dense-graphs, sat-k-colourability-encoding, critical-minimum-degree | feed denser / more rigid candidate base graphs through the SAME complete forced-pair SAT harness (code/forced_pair.py): other Minkowski sums (triangle+wheel,… |
 
 ## Threads that could not be read
 

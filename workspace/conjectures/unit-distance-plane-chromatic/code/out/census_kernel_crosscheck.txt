@@ -1,0 +1,7 @@
+Independent cross-check via lib.coloring backtracking at k=4:
+  n 8 idx 0 4col True 3col False
+  n 9 idx 0 4col True 3col True
+  n 9 idx 1 4col True 3col False
+  n 9 idx 2 4col True 3col True
+  n 9 idx 3 4col True 3col True
+ALL kernel members 4-colourable (independent backtracking route). DONE

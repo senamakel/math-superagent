@@ -1,0 +1,35 @@
+==============================================================================
+sharp-nbhd-local exact symbolic certificate (no floats)
+==============================================================================
+------------------------------------------------------------------------------
+(i) K4-free: empty variety
+  polynomials: ['x**2 + y**2 - 1', 'x**2 - 2*x + y**2', 'x**2 - x + y**2 - sqrt(3)*y']
+  groebner_basis: ["Poly(1, x, y, domain='EX')"]
+  unit_ideal: True
+  solve_returns_empty: True
+  VERDICT: PASS
+  reason: Groebner basis equals the unit ideal [1], so the radical ideal is everything and the variety over the algebraic closure is empty: no point is at distance 1 from all three vertices of a unit equilateral triangle.
+------------------------------------------------------------------------------
+(ii) K_{2,3}-free: at most 2 common neighbours
+  resultant_eliminating_y: d**4 - 4*d**3*x + 4*d**2*x**2
+  forced_x: ['d/2']
+  quadratic_in_y_after_substitution: Poly(y**2 + d**2/4 - 1, y, domain='QQ[d]')
+  y_squared_rhs: (4 - d**2)/4
+  unit_ideal: -
+  solve_returns_empty: -
+  VERDICT: PASS
+  reason: Elimination forces the single value x = d/2 (a point on the perpendicular bisector of segment uw).  Substitution leaves y satisfying a real quadratic (y^2 = 1 - d^2/4), which has at most two real roots.  Hence |x-u|=|x-w|=1 has at most 2 real solutions for any distinct u, w, so no two vertices share more than two common neighbours: the graph is K_{2,3}-free.
+------------------------------------------------------------------------------
+(iii) neighbourhood max degree <= 2
+  sqdist_in_terms_of_angles: 2 - 2*cos(t1 - t2)
+  sqdist_at_plus60deg: 1
+  solutions_of_sqdist_eq_1: ['pi/3', '5*pi/3']
+  cos(pi/3): 1/2
+  sin(pi/3): sqrt(3)/2
+  sqdist_at_minus60deg: 1
+  unit_ideal: -
+  solve_returns_empty: -
+  VERDICT: PASS
+  reason: |x-y|^2 = 2 - 2 cos(theta1 - theta2) exactly by the cosine difference identity, and 2 - 2 cos(delta) = 1 forces cos(delta) = 1/2, i.e. delta = +-60 deg (exact cos(pi/3)=1/2). So two neighbours of a vertex are adjacent iff their angular separation is 60 deg, giving at most 2 neighbours-of-neighbours: N(v) has maximum degree <= 2 and induces a disjoint union of paths and 6-cycles.
+------------------------------------------------------------------------------
+OVERALL: ALL CERTIFICATES PASS

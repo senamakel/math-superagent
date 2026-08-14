@@ -1,0 +1,7 @@
+N=9        result=[(3, 2, 2, 3)]  OK  0.000s
+N=100      result=[(3, 2, 2, 3)]  OK  0.000s
+N=1000     result=[(3, 2, 2, 3)]  OK  0.000s
+N=10000    result=[(3, 2, 2, 3)]  OK  0.000s
+N=100000   result=[(3, 2, 2, 3)]  OK  0.000s
+N=1000000  result=[(3, 2, 2, 3)]  OK  0.000s
+Naive oracle returns exactly (3,2,2,3) for every N in {9, 100, 1000, 1e4, 1e5, 1e6}.

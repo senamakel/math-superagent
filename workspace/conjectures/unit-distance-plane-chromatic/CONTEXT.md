@@ -84,8 +84,16 @@ supply. See "Ruled out" below.
 - Minkowski sums of small unit-distance graphs give denser large UDGs; many
   densest-known small UDGs are such sums. (id `minkowski-sum-dense-graphs`)
 
-All seven are `asserted-by-source` in `research/CLAIMS.md`; their network-level
-sourcing is recorded in `research/sources/`.
+All ten are `asserted-by-source` in `research/CLAIMS.md`; their network-level
+sourcing is recorded in `research/sources/`. Note: `szemeredi-trotter-incidence`
+(incidence bound) and `szemeredi-trotter-algebraic-extremal` (same bound +
+that extremal point-line configs are built from Q(sqrt k)) were two separate
+source records that briefly shared one id; the latter now has its own id and
+the collision is resolved. `unit-distance-upper-bound` is an entailment
+corollary of `szemeredi-trotter-incidence` (follows-from edge drawn in the
+notes). The Eisenstein note's exposition was corrected: omega is a primitive
+3rd root, the six unit vectors are +-1,+-omega,+-(1+omega) (sixth root
+1+omega=e^{i pi/3}).
 
 ## Ruled out — closed directions and the obstruction
 
@@ -95,11 +103,21 @@ sourcing is recorded in `research/sources/`.
   spindle itself. The spindle-based route needs a strictly richer base graph.
 - **Moser+Moser (26v, 69e) has no forced pair and is 4-colourable.** A first
   Minkowski sum does not supply the rigidity; sums of colourable graphs can
-  stay colourable (the run's core open question `REQUESTS` row).
+  stay colourable (the run's core open question `REQUESTS` row). Live thread
+  `research/threads/minkowski-rigidity.md` tracks this crux; next move is
+  richer base graphs through the same forced-pair harness.
 - **A floating-point `=1` edge check failed to certify the construction**
   during development (`commands.log`: sympy `simplify()` was needed to certify
   squared distances equal 1) — confirms the exact-arithmetic discipline is
   load-bearing, not cosmetic.
+
+## Cross-school note
+
+The decomposition school's gap `S-critical-degree` (every 5-critical graph has
+min degree >= 4) is **already discharged** by the library claim
+`critical-minimum-degree` (`research/sources/colour-critical-graphs-structure.md`),
+same statement and same four-line proof. The size-bound skeleton needs no more
+work on that lemma, though it remains `asserted`, not machine-checked.
 
 ## Tried but NOT executed — do not trust the file descriptions
 

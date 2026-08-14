@@ -6,4 +6,27 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `circular-units-index-plus-part` | > For an imaginary cyclotomic field, the index [E+ : C+] of the circular units in the full unit group of the real subfield is h^+ up to a power of 2 (Sinnott's formula; exact statement in the source). | yes | asserted | `research/sources/stickelberger-cyclotomic-units.md` |
+| `faktor-pairwise-coprime-off-ramified` | > For x in Z[zeta_p] and i != j, the ideals (x - zeta_p^i) and (x - zeta_p^j) have gcd contained in (1 - zeta_p); they are pairwise coprime off the unique ramified prime. In particular, if x is an integer with x != 1… | yes | asserted | `research/sources/zetap-ring-ramification.md` |
+| `iwasawa-index-of-stickelberger` | > [Z[G]^- : s^-] = h^-(Q(zeta_p)), the relative class number. | yes | asserted | `research/sources/stickelberger-cyclotomic-units.md` |
+| `minus-class-computable-plus-not` | > h^- of Q(zeta_p) is given by an explicit Bernoulli-number product and is easy to compute for very large odd primes p; h^+ of Q(zeta_p) is not known for any single prime p >= 71. | yes | asserted | `research/sources/relative-class-number-analytic.md` |
+| `minus-class-number-formula` | > For K = Q(zeta_p), p odd prime, the relative (minus) class number is h^-(K) = 2p * prod_{chi odd mod p} (-1/2 B_{1,chi}), with B_{1,chi} = (1/p) sum_{a=1}^{p} chi(a) a for chi non-trivial, B_{1,1} = -1/2. For a proper… | **unchecked** | asserted | `research/sources/relative-class-number-analytic.md` |
+| `stickelberger-annihilates-plus-index-formula` | > The Stickelberger ideal s = Z[G]theta cap Z[G] annihilates the class group of Q(zeta_p), and [Z[G]^- : s^-] = h^-. | yes | asserted | `research/sources/relative-class-number-analytic.md` |
+| `stickelberger-annihilator` | > For F = Q(zeta_p), p an odd prime, the Stickelberger ideal s = Z[G]theta cap Z[G] (theta the Stickelberger element) annihilates the class group Cl(F): for every fractional ideal A and every beta in I0, A^{beta theta}… | yes | asserted | `research/sources/stickelberger-cyclotomic-units.md` |
+| `valuation-identity-xp-1` | > For an integer x with p ∤ x, v_p(x^p - 1) = 1 + v_p(x - 1); mirror: for an integer y with q ∤ y, v_q(y^q + 1) = 1 + v_q(y + 1). | yes | asserted | `research/sources/zetap-ring-ramification.md` |
+| `zeta-p-ring-and-ramification` | > The ring of integers of Q(zeta_p) (p odd prime) is Z[zeta_p]; p is totally ramified with (p) = (1 - zeta_p)^{p-1}; the ideal (1-zeta_p) has residue degree 1 and ramification index p-1. | yes | asserted | `research/sources/zetap-ring-ramification.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `circular-units-index-plus-part` (research/sources/stickelberger-cyclotomic-units.md) — asserted by the source, not proved there and not checked here
+- `faktor-pairwise-coprime-off-ramified` (research/sources/zetap-ring-ramification.md) — asserted by the source, not proved there and not checked here
+- `iwasawa-index-of-stickelberger` (research/sources/stickelberger-cyclotomic-units.md) — asserted by the source, not proved there and not checked here
+- `minus-class-computable-plus-not` (research/sources/relative-class-number-analytic.md) — asserted by the source, not proved there and not checked here
+- `stickelberger-annihilates-plus-index-formula` (research/sources/relative-class-number-analytic.md) — asserted by the source, not proved there and not checked here
+- `stickelberger-annihilator` (research/sources/stickelberger-cyclotomic-units.md) — asserted by the source, not proved there and not checked here
+- `valuation-identity-xp-1` (research/sources/zetap-ring-ramification.md) — asserted by the source, not proved there and not checked here
+- `zeta-p-ring-and-ramification` (research/sources/zetap-ring-ramification.md) — asserted by the source, not proved there and not checked here

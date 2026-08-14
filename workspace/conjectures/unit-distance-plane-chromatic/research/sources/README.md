@@ -21,6 +21,42 @@ The requirement "anything cited must be in the library" is met in the form the
 environment permits: every claim in a run note is traceable to a URL recorded
 below.
 
+## What is in the library
+
+**Core claims (each has a `claim` block feeding `research/CLAIMS.md`):**
+- `debruijn-erdos-1951` — chi(G) = sup chi(H) over finite subgraphs; the
+  finite-to-infinite reduction behind the whole problem.
+  `research/sources/debruijn-erdos-1951-chromatic-reduction.md`
+- `unit-distance-upper-bound` — u_2(n) = O(n^{4/3}): density cannot be bought.
+  `research/sources/spencer-szemeredi-trotter-unit-distance-bound.md`
+- `szemeredi-trotter-incidence` — I(P,L) = O(m^{2/3} n^{2/3} + m + n): the
+  theorem under the unit-distance bound. **Added this run.**
+  `research/sources/szemeredi-trotter-incidence-theorem.md`
+- `szemeredi-trotter-algebraic-extremal` — same bound's claim, plus that the
+  extremal point-line configurations are built from algebraic number fields
+  Q(sqrt k) (Guth–Silier sharp constructions). **Added this run; distinct id
+  from `szemeredi-trotter-incidence` to avoid ledger collision.**
+  `research/sources/szemeredi-trotter-incidence-algebraic-extremal.md`
+- `maehara-algebraic-rigid-distances` — distances in rigid unit-distance graphs
+  are exactly the algebraic numbers: the exact-arithmetic justification.
+  `research/sources/maehara-1991-algebraic-rigid-distances.md`
+- `kempe-universality` — the linkage construction technique behind Maehara's
+  converse. **Added this run.**
+  `research/sources/kempe-universality-linkages.md`
+- `einstein-lattice-unit-distance` — Eisenstein integers / triangular lattice.
+  `research/sources/eisenstein-integers-triangular-lattice.md`
+- `minkowski-sum-unit-distance-condition` and `minkowski-sum-dense-graphs` — the
+  Minkowski-sum construction engine.
+  `research/sources/minkowski-sums-rotations-construction.md`
+- `sat-k-colourability-encoding` — the complete colouring oracle encoding.
+  `research/sources/sat-colourability-encoding.md`
+- `critical-minimum-degree` — every k-critical graph has min degree >= k-1; the
+  backbone of the size-bound rung. **Added this run.**
+  `research/sources/colour-critical-graphs-structure.md`
+- Also: `totally-unfaithful-unit-distance-graphs.md` and the
+  `research/summaries/` index records (de Bruijn–Erdős 1951, Moser spindle 1961,
+  SST 1984).
+
 ## What could not be obtained, and why (so nobody repeats it)
 
 1. **Publisher/arXiv/preprint full texts** (de Bruijn–Erdős 1951 PDF at renyi.hu,

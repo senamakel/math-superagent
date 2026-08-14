@@ -1,0 +1,27 @@
+=== Part 3 first: WORKED EXAMPLE — even-weight set is independent ===
+  n=1: |S|=1 (want 1), D(S)=0, independent=True, profile={0: 1}
+  n=2: |S|=2 (want 2), D(S)=0, independent=True, profile={0: 2}
+  n=3: |S|=4 (want 4), D(S)=0, independent=True, profile={0: 4}
+  n=4: |S|=8 (want 8), D(S)=0, independent=True, profile={0: 8}
+
+=== Parts 1 & 2: exhaustive f(n) with spectral cross-check ===
+  n=1: f(n)=1, |S|=2, achieving S=[0, 1]
+      degree profile={1: 2}
+      D(S)=1; λ_max(A_n[S,S])=1.000000; sqrt(n)=1.000000
+      λ_max <= D(S)? True;  λ_max >= sqrt(n)? True
+      (over all 1 admissible sets of size 2: interlacing holds in 1/1, degree bound holds in 1/1, both in 1/1; worst λ_max seen = 1.000000 on |S|=2, D=1)
+  n=2: f(n)=2, |S|=3, achieving S=[0, 1, 2]
+      degree profile={1: 2, 2: 1}
+      D(S)=2; λ_max(A_n[S,S])=1.414214; sqrt(n)=1.414214
+      λ_max <= D(S)? True;  λ_max >= sqrt(n)? True
+      (over all 4 admissible sets of size 3: interlacing holds in 4/4, degree bound holds in 4/4, both in 4/4; worst λ_max seen = 1.414214 on |S|=3, D=2)
+  n=3: f(n)=2, |S|=5, achieving S=[0, 1, 2, 5, 6]
+      degree profile={1: 2, 2: 3}
+      D(S)=2; λ_max(A_n[S,S])=1.732051; sqrt(n)=1.732051
+      λ_max <= D(S)? True;  λ_max >= sqrt(n)? True
+      (over all 56 admissible sets of size 5: interlacing holds in 56/56, degree bound holds in 56/56, both in 56/56; worst λ_max seen = 1.732051 on |S|=5, D=2)
+  n=4: f(n)=2, |S|=9, achieving S=[0, 1, 2, 5, 6, 11, 12, 13, 14]
+      degree profile={0: 1, 2: 8}
+      D(S)=2; λ_max(A_n[S,S])=2.000000; sqrt(n)=2.000000
+      λ_max <= D(S)? True;  λ_max >= sqrt(n)? True
+      (over all 11440 admissible sets of size 9: interlacing holds in 11440/11440, degree bound holds in 11440/11440, both in 11440/11440; worst λ_max seen = 2.000000 on |S|=9, D=4)
