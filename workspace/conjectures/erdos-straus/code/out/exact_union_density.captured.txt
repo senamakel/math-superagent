@@ -1,9 +1,0 @@
-cov moduli: [11, 13, 17, 19, 22, 23, 26, 29, 31, 33, 34, 37]
-
-EXACT union density of n=840K+1 covered = 0.945305
-  K≡0 mod2, K≡0 mod3: branch coverage 0.92968  cov={11: 3, 13: 4, 17: 6, 19: 5, 23: 9, 29: 6, 31: 7, 37: 8}
-  K≡0 mod2, K≡1 mod3: branch coverage 0.93847  cov={11: 4, 13: 4, 17: 6, 19: 5, 23: 9, 29: 6, 31: 7, 37: 8}
-  K≡0 mod2, K≡2 mod3: branch coverage 0.94726  cov={11: 5, 13: 4, 17: 6, 19: 5, 23: 9, 29: 6, 31: 7, 37: 8}
-  K≡1 mod2, K≡0 mod3: branch coverage 0.94531  cov={11: 3, 13: 6, 17: 6, 19: 5, 23: 9, 29: 6, 31: 7, 37: 8}
-  K≡1 mod2, K≡1 mod3: branch coverage 0.95214  cov={11: 4, 13: 6, 17: 6, 19: 5, 23: 9, 29: 6, 31: 7, 37: 8}
-  K≡1 mod2, K≡2 mod3: branch coverage 0.95898  cov={11: 5, 13: 6, 17: 6, 19: 5, 23: 9, 29: 6, 31: 7, 37: 8}

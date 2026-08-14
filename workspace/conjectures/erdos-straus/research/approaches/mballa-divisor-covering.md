@@ -1,8 +1,0 @@
-```approach
-idea: Mballa divisor-covering — a density argument via the b ≡ 3 (mod 4) divisor condition, not an identity-family construction
-mechanism: Mballa (arXiv:2602.20036) proved that if n has a divisor b ≡ 3 (mod 4), then 4/n has a symmetric solution (y=z) given by an explicit formula. For n = 840k + r with r in an open class, the condition "b | n" for fixed b ≡ 3 (mod 4) with gcd(b,840)=1 gives a linear congruence k ≡ −r·840⁻¹ (mod b) — a single arithmetic progression. The union over all b ≡ 3 (mod 4) in some range [3, B] gives a covering set whose exact CRT-union density is computable. Mballa already proved the exceptional set (n ≡ 1 mod 4 with no b ≡ 3 mod 4 divisor) has natural density zero; the task here is to make the constant explicit for the open classes and measure the convergence rate. This is fundamentally different from the existing proposals: it is not a polynomial-identity search or an ansatz enumeration — it is a direct covering argument using divisibility of n itself, with the solution constructed from the divisor. The Schinzel obstruction does not apply because the construction is per-n (choosing b that divides n), not a single polynomial identity in k. The question is whether the union of the arithmetic progressions for b ≤ B already covers all k for some finite B, which would settle an open class completely.
-status: proposed
-precedent: none yet
-first-step: For each b ≡ 3 (mod 4) with gcd(b,840)=1 and b ≤ 100, compute the residue class of k modulo b for which b | (840k+r) for each r in {1,121,169,289,361,529}, then compute the exact CRT-union density of all such classes and measure coverage over k ≤ 10⁶.
-killed-by:
-```

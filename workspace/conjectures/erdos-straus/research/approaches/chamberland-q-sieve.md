@@ -1,8 +1,0 @@
-```approach
-idea: Chamberland Type-II q-sieve — finite covering by the necessary-and-sufficient parametrization
-mechanism: Chamberland (Integers 2026, Theorem 1) proved that for prime p, 4/p has a Type-II solution iff p = qr − 4s₁s₂ for some q ≡ 3 (mod 4) with s₁,s₂ | (q+1)/4. For fixed (q,s₁,s₂) this is a single linear congruence p ≡ −4s₁s₂ (mod q). Enumerating all triples (q,s₁,s₂) with q ≤ Q gives finitely many congruence classes; their CRT union density is exactly computable via inclusion–exclusion. The complement is the set of primes with no Type-II solution from q ≤ Q. As Q → ∞, if the complement density → 0, then almost all primes have a Type-II solution — a genuine density result. The gap is primes that have only Type-I solutions (no Type-II), which must then be attacked separately via the Type-I parametrization (p ≡ −a/c mod 4acd−1). The key difference from the existing subprogression sweep: Chamberland's condition is necessary-and-sufficient (not just sufficient), so the sieve is complete for Type-II — every Type-II-solvable prime is in the union for some sufficiently large q. The finite computation measures how much of the open classes is Type-II-reachable at each q-bound.
-status: proposed
-precedent: none yet
-first-step: For q ∈ {3,7,11,19,23,31,43,47,59,67,71,79,83} (primes ≡ 3 mod 4), enumerate all (s₁,s₂) with s₁,s₂ | (q+1)/4, compute the congruence class p ≡ −4s₁s₂ (mod q) in each open residue r mod 840 via CRT, and measure the union density over k ≤ 10⁶.
-killed-by:
-```

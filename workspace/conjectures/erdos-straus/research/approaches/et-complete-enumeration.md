@@ -1,8 +1,0 @@
-```approach
-idea: Elsholtz–Tao complete parametrization bounded enumeration — exhaust the full 4-parameter Type-I/II congruence families up to a parameter bound and measure the residual set
-mechanism: The Bloom–Elsholtz survey Theorem 1 gives a complete two-family parametrization: ESC holds for prime p iff p lies in a Type-I class p ≡ −a/c (mod 4acd−1) for some a,c,d ≥ 1, or a Type-II class p ≡ −(4c²d+1)/k (mod 4cd) for some c,d,k ≥ 1 with k | 4c²d+1. For each fixed bound N on the parameters (a,c,d,k ≤ N), this generates finitely many congruence classes mod M for various moduli M = 4acd−1 or 4cd. The union of all these classes, intersected with the six open residues mod 840 via CRT, gives the set of primes ≤ N-parameter-reachable. As N grows, the union should approach density 1 (the conjecture). The computation measures exactly how much of each open class is covered at each N, and identifies the residual classes — the "hardest" congruences that need the largest parameters. This is different from the Salez seven-equation enumeration (which is the degree-1 / linear-a-subcase) and from the subprogression sweep (which enumerates Salez equations over 840M, not the full ET families). It is the natural exhaustive attack on the full parametrization space, parameterized by a,c,d bound rather than by modulus.
-status: proposed
-precedent: none yet
-first-step: For a,c,d,k ≤ 20, enumerate all Type-I and Type-II congruence classes, intersect with the six open residues mod 840 via CRT, and compute the exact union density within each open class — measuring how close the bounded-parameter ET families get to covering everything.
-killed-by:
-```

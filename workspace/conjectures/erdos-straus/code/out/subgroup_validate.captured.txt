@@ -1,7 +1,0 @@
-rows with gcd(n*x_e, 4e+3)==1 (criterion applies): 2705/2705
-minimal e in subgroup: 2705/2705  (violations [])
-all e'<e outside subgroup: 2649/2705  (violations [(3, 1, 2521, 5, 2), (3, 1, 2521, 5, 4), (37, 1, 31081, 3, 2), (119, 1, 99961, 7, 4), (124, 1, 104161, 5, 2)])
-subgroup-yes but brute-force-no splits: 0 []
-d=7 criterion (q%7 in {3,5,6} divides n or (n+7)/4): 2705/2705 rows agree
-d=3 criterion (q%3==2 divides n or (n+3)/4): 2705/2705 rows agree
-done in 1.7s
