@@ -26,6 +26,22 @@ use crate::agent::{Result, TinyAgentsError};
 /// Environment variable naming the compiled policy.
 pub(crate) const SCREEN_PATH_ENV: &str = "MATH_AGENT_SCREEN";
 
+/// The compiled policy this run was pointed at, if any.
+///
+/// The whole of the environment read, kept to one function because the crate
+/// forbids `unsafe` and mutating the process environment is the only way a test
+/// could exercise it. Everything downstream takes a path, so everything
+/// downstream is testable.
+///
+/// An empty value is treated as unset, so `MATH_AGENT_SCREEN=` in a compose
+/// file — which is how an unset variable arrives through Docker's `${VAR:-}`
+/// idiom — means "no screen" rather than "a policy at the empty path".
+pub(crate) fn configured_path() -> Option<PathBuf> {
+    let raw = std::env::var_os(SCREEN_PATH_ENV)?;
+    let path = PathBuf::from(raw);
+    (!path.as_os_str().is_empty()).then_some(path)
+}
+
 /// What the screen decided about one piece of text.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum Verdict {
@@ -59,25 +75,6 @@ pub(crate) struct ScreenPolicy {
 }
 
 impl ScreenPolicy {
-    /// Loads the policy named by `MATH_AGENT_SCREEN`, or `None` when unset.
-    ///
-    /// # Errors
-    ///
-    /// Returns an error when the variable is set but the file is missing,
-    /// unreadable, not JSON, or missing a required field. This is deliberate:
-    /// see the module documentation for why a named-but-broken policy must stop
-    /// the run rather than degrade to no screening.
-    pub(crate) fn from_env() -> Result<Option<Self>> {
-        let Some(raw) = std::env::var_os(SCREEN_PATH_ENV) else {
-            return Ok(None);
-        };
-        let path = PathBuf::from(&raw);
-        if path.as_os_str().is_empty() {
-            return Ok(None);
-        }
-        Self::load(&path).map(Some)
-    }
-
     /// Reads and validates a compiled policy from `path`.
     ///
     /// # Errors

@@ -97,9 +97,28 @@ impl Screen {
         workspace: &Path,
         model: Option<Arc<dyn ChatModel<()>>>,
     ) -> crate::agent::Result<Option<Self>> {
-        let Some(policy) = ScreenPolicy::from_env()? else {
-            return Ok(None);
-        };
+        match policy::configured_path() {
+            Some(path) => Self::load(&path, workspace, model).map(Some),
+            None => Ok(None),
+        }
+    }
+
+    /// Builds the screen from a compiled policy at `path`.
+    ///
+    /// [`Self::from_env`] is a thin wrapper around this, so that everything
+    /// except reading one environment variable is reachable from a test — the
+    /// crate forbids `unsafe`, and mutating the process environment is the only
+    /// way to test the variable itself.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the policy cannot be read or parsed.
+    pub(super) fn load(
+        path: &Path,
+        workspace: &Path,
+        model: Option<Arc<dyn ChatModel<()>>>,
+    ) -> crate::agent::Result<Self> {
+        let policy = ScreenPolicy::load(path)?;
         // The statement is what the adjudicator is asked about. Read once, at
         // startup: it is seeded before the run begins, and re-reading it later
         // would hand the adjudicator whatever the run has since written into
@@ -110,12 +129,12 @@ impl Screen {
         // is failing and the run should continue on the deterministic stage
         // alone, which is the control in any case.
         let model = model.filter(|_| policy.adjudicator_enabled);
-        Ok(Some(Self {
+        Ok(Self {
             policy: Arc::new(policy),
             workspace: workspace.to_path_buf(),
             problem: Arc::new(problem),
             model,
-        }))
+        })
     }
 
     /// The calibration problem this screen belongs to.

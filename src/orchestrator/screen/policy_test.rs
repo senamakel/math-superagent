@@ -54,25 +54,38 @@ fn a_lookalike_host_is_not_denied() {
 }
 
 #[test]
-fn a_non_url_argument_denies_nothing() {
+fn a_bare_hostname_is_denied_too() {
+    // A tool argument spelled without a scheme still names the host, and the
+    // safe reading of `arxiv.org` is the one that withholds it.
     let policy = ScreenPolicy::for_test(&["x"], &[], &["arxiv.org"]);
-    for text in ["", "not a url", "arxiv.org"] {
-        assert!(!policy.denies_host(text));
+    assert!(policy.denies_host("arxiv.org"));
+    assert!(policy.denies_host("arxiv.org/abs/1804.02385"));
+}
+
+#[test]
+fn text_that_is_not_a_url_denies_nothing() {
+    // The input here is a model-supplied string that may not be a URL at all,
+    // and the right answer for "not a URL" is "no host" rather than an error.
+    let policy = ScreenPolicy::for_test(&["x"], &[], &["arxiv.org"]);
+    for text in ["", "not a url", "   ", "/abs/1804.02385"] {
+        assert!(!policy.denies_host(text), "{text:?} names no denied host");
     }
 }
 
-/// Writes a compiled-policy fixture and returns its path plus the temporary
-/// directory that owns it.
-fn write_policy(body: &str) -> (std::path::PathBuf, tempdir::TempDir) {
-    let dir = tempdir::TempDir::new();
-    let path = dir.path().join("screen.json");
+/// Writes a compiled-policy fixture under a name unique to this test.
+fn write_policy(name: &str, body: &str) -> std::path::PathBuf {
+    let root = std::env::temp_dir().join(format!("math-agent-screen-{name}"));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root).expect("the fixture directory must be creatable");
+    let path = root.join("screen.json");
     std::fs::write(&path, body).expect("the fixture policy must be writable");
-    (path, dir)
+    path
 }
 
 #[test]
 fn a_well_formed_policy_loads() {
-    let (path, _dir) = write_policy(
+    let path = write_policy(
+        "well-formed",
         r#"{"slug":"p","salt":"0123456789abcdef0","max_ngram":4,
             "block":["aa"],"flag":[],"deny_hosts":[],
             "adjudicator":{"enabled":false,"timeout_seconds":7,"max_chars":11}}"#,
@@ -99,13 +112,14 @@ fn a_missing_policy_file_is_an_error_not_a_silent_pass() {
 
 #[test]
 fn a_policy_that_is_not_json_is_an_error() {
-    let (path, _dir) = write_policy("not json at all");
+    let path = write_policy("not-json", "not json at all");
     assert!(ScreenPolicy::load(&path).is_err());
 }
 
 #[test]
 fn a_policy_with_a_short_salt_is_an_error() {
-    let (path, _dir) = write_policy(
+    let path = write_policy(
+        "short-salt",
         r#"{"slug":"p","salt":"short","max_ngram":4,"block":["aa"]}"#,
     );
     let error = ScreenPolicy::load(&path).expect_err("a short salt must not load");
@@ -116,7 +130,8 @@ fn a_policy_with_a_short_salt_is_an_error() {
 fn a_policy_with_no_blocked_terms_is_an_error() {
     // An empty block list is almost always a compilation mistake, and it would
     // produce a run that is screened in name only.
-    let (path, _dir) = write_policy(
+    let path = write_policy(
+        "empty-block",
         r#"{"slug":"p","salt":"0123456789abcdef0","max_ngram":4,"block":[]}"#,
     );
     let error = ScreenPolicy::load(&path).expect_err("an empty blocklist must not load");
@@ -125,7 +140,8 @@ fn a_policy_with_no_blocked_terms_is_an_error() {
 
 #[test]
 fn a_policy_with_no_ngram_width_is_an_error() {
-    let (path, _dir) = write_policy(
+    let path = write_policy(
+        "no-ngram",
         r#"{"slug":"p","salt":"0123456789abcdef0","block":["aa"]}"#,
     );
     assert!(ScreenPolicy::load(&path).is_err());
