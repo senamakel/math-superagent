@@ -354,7 +354,13 @@ impl RunBudget {
     }
 }
 
-fn positive_env(name: &str) -> Option<u64> {
+/// Reads a positive integer from the environment, or nothing.
+///
+/// Shared with the solution loop's own wall-clock ceiling rather than copied
+/// there: "a missing, empty, unparsable, or zero value keeps the default" is a
+/// rule about how this runtime treats overrides, and a second implementation of
+/// it is a second answer to that question.
+pub(crate) fn positive_env(name: &str) -> Option<u64> {
     std::env::var(name)
         .ok()?
         .trim()

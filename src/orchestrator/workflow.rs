@@ -100,6 +100,15 @@ pub(super) const GOAL_APPLY: &str = "goal_apply";
 /// terminates.
 pub(super) const PASS_NODE: &str = "pass";
 
+/// The accumulator field carrying whether the run has spent its wall clock.
+///
+/// Named once because three places have to agree on it: `initial_state` seeds
+/// it, `eval_merge` stamps it at the end of every pass, and
+/// [`terminal_condition`] ends the run on it. A literal in each is three
+/// answers to the same question, and two of them are jq, where a typo is not a
+/// compile error but a condition that is silently never true.
+pub(super) const EXPIRED_FIELD: &str = "expired";
+
 /// The loop head, and the accumulator's address.
 pub(super) const LOOP_NODE: &str = "solve";
 
@@ -189,10 +198,19 @@ pub(super) fn reflect_ladder() -> String {
 /// a counter the graph cannot see is a loop nobody can reason about; the ceiling
 /// belongs in the condition that ends it, beside the other three, where the
 /// ladder already agrees with it.
+///
+/// `expired` is the fifth arm and the only one that is not a count. The other
+/// four all assume the run is still producing passes; a loop that has stopped
+/// producing them stops approaching every one of them at once, which is exactly
+/// how a live run sat for half an hour after a rejected verdict without
+/// advancing `attempts` by one. See [`solutions::run_ceiling`] for what stamps
+/// it and why the per-agent budget could not.
+///
+/// [`solutions::run_ceiling`]: super::solutions::run_ceiling
 #[must_use]
 pub(super) fn terminal_condition() -> String {
     format!(
-        "=.state.solved or .state.attempts >= {MAX_ATTEMPTS} \
+        "=.state.solved or .state.{EXPIRED_FIELD} or .state.attempts >= {MAX_ATTEMPTS} \
          or .state.blocked >= {BLOCKED_THRESHOLD} \
          or .state.unverified >= {UNVERIFIED_THRESHOLD}"
     )
@@ -222,7 +240,16 @@ pub(super) fn initial_state(problem: &str) -> Value {
         // from the accumulator alone. Without it the loop finishes holding
         // every counter and none of the prose those counters are about.
         "last_attempt": "",
-    })
+    });
+    // Seeded false rather than left absent so the condition that ends the run
+    // has something to read before the first pass stamps it. It is not a field
+    // of `SolutionState`: the ceiling is a fact about the run's clock rather
+    // than about its mathematics, so the one place that knows the clock —
+    // `eval_merge` — is the only place that writes it.
+    if let Some(object) = state.as_object_mut() {
+        object.insert(EXPIRED_FIELD.to_string(), Value::Bool(false));
+    }
+    state
 }
 
 /// How each pass folds into the accumulator.

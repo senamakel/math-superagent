@@ -88,6 +88,14 @@ pub(super) struct LoopSteps {
     memory: VectorStore,
     beside: Beside,
     mailboxes: Mailboxes,
+    /// When this run started, for the loop's own wall-clock ceiling.
+    ///
+    /// Taken at construction rather than at the first pass, because the tool is
+    /// built immediately before the engine runs and stage one is inside that —
+    /// a clock started at the first `eval_merge` would not count the research
+    /// child, which on a live run was eight minutes of the budget it is meant
+    /// to bound.
+    started: std::time::Instant,
 }
 
 impl std::fmt::Debug for LoopSteps {
@@ -113,7 +121,13 @@ impl LoopSteps {
             memory,
             beside,
             mailboxes,
+            started: std::time::Instant::now(),
         }
+    }
+
+    /// Whether this run has spent its wall-clock ceiling.
+    fn expired(&self) -> bool {
+        self.started.elapsed() >= super::solutions::run_ceiling()
     }
 
     /// Runs one step against `state`, and returns the accumulator it produced.
@@ -157,7 +171,16 @@ impl LoopSteps {
                 .unwrap_or_default();
             let merged = super::solutions::fold_evaluation(&state.to_accumulator(), &arms);
             let merged = SolutionState::from_accumulator("", &merged);
-            return Ok(super::solutions::evaluation_merge(merged).to_accumulator());
+            let mut merged = super::solutions::evaluation_merge(merged).to_accumulator();
+            // Stamped after the fold rather than carried through it. Every pass
+            // ends here, so this is the last thing the head reads before it
+            // tests `until` — and stamping it on an arm instead would put a
+            // clock reading through `fold_evaluation`, which folds numbers as
+            // deltas and would turn one into arithmetic on timestamps.
+            if let Some(object) = merged.as_object_mut() {
+                object.insert(EXPIRED_FIELD.to_string(), Value::Bool(self.expired()));
+            }
+            return Ok(merged);
         }
         // Stage one crossing back into the loop. Like `goal_apply` it reads a
         // child's whole run state rather than an accumulator, and like

@@ -61,6 +61,48 @@ pub(in crate::orchestrator) const COMPUTATIONAL_THRESHOLD: usize = 2;
 /// finding. Twice is the run having tried.
 pub(in crate::orchestrator) const UNVERIFIED_THRESHOLD: usize = 2;
 
+/// Wall-clock hours a whole run may spend before the loop stops itself.
+///
+/// Every other terminal condition counts *events*, and a run that stops
+/// producing them stops approaching all of them at once. That is not
+/// hypothetical: a live Project Euler 156 run reached a correct, independently
+/// verified answer at forty-one minutes, had its SOLVED rejected, routed to
+/// retry, and then sat for another half hour without starting the next attempt
+/// — every arm it spawned was born into an exhausted per-agent budget and
+/// killed before it could return, so the fan-out barrier never closed,
+/// `attempts` never advanced, and nothing in the condition that ends the loop
+/// could ever become true. The container ran until it was killed by hand.
+///
+/// So this is the one condition that does not depend on the run making
+/// progress, which is the whole point of it: it is a backstop against a stalled
+/// loop, not a policy about how long good work may take. Four hours is chosen
+/// to be out of reach of a productive run — a conjecture workspace runs the
+/// same loop and legitimately spends hours on it — while still bounding a
+/// container that has stopped getting anywhere.
+///
+/// [`RunBudget::run_timeout`] does not cover this and cannot: it bounds *one
+/// agent run*, so it is what killed each of those arms while leaving the thing
+/// that spawned them untouched.
+///
+/// [`RunBudget::run_timeout`]: crate::agent::budget::RunBudget::run_timeout
+const RUN_CEILING_HOURS: u64 = 4;
+
+/// The resolved wall-clock ceiling for a whole run.
+///
+/// `MATH_AGENT_LOOP_MINUTES` overrides it, under the same rule as every other
+/// override in this runtime: a missing, empty, unparsable, or zero value keeps
+/// the default, so a malformed override never silently removes the backstop.
+/// An operator running Project Euler, where a run that has not arrived in an
+/// hour is not going to, sets it far below the default; a conjecture run raises
+/// it.
+#[must_use]
+pub(in crate::orchestrator) fn run_ceiling() -> std::time::Duration {
+    crate::agent::budget::positive_env("MATH_AGENT_LOOP_MINUTES").map_or(
+        std::time::Duration::from_secs(RUN_CEILING_HOURS * 60 * 60),
+        |minutes| std::time::Duration::from_secs(minutes.saturating_mul(60)),
+    )
+}
+
 /// Completed cycles between one decomposition of the goal and the next.
 ///
 /// Three rather than the two every other threshold here uses, and the
