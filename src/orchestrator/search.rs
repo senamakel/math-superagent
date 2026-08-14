@@ -1,19 +1,19 @@
-//! Scored program search: the FunSearch loop, with the verifier put out of the
+//! Scored program search: the `FunSearch` loop, with the verifier put out of the
 //! searcher's reach.
 //!
 //! The runtime could already write a program, run it, and read what it printed.
 //! What it had no version of is *search over programs* — propose, score,
-//! keep the good ones, propose again from those — which is how FunSearch
+//! keep the good ones, propose again from those — which is how `FunSearch`
 //! improved the cap-set lower bound past twenty years of work and how
-//! AlphaEvolve matched or beat the literature on 20 of 67 problems. The move
+//! `AlphaEvolve` matched or beat the literature on 20 of 67 problems. The move
 //! that makes it worth having is not the loop; it is what the loop produces.
-//! FunSearch's own statement of it: "we do not just discover the set of 512
+//! `FunSearch`'s own statement of it: "we do not just discover the set of 512
 //! eight-dimensional vectors in itself, but a program that generates it …
 //! Through inspecting the code, we obtain a degree of understanding of what
 //! this set is." A number is an answer; a program is an explanation, which is
 //! this repository's stated standard for what a result has to be.
 //!
-//! Three of FunSearch's four ingredients are bookkeeping and therefore live
+//! Three of `FunSearch`'s four ingredients are bookkeeping and therefore live
 //! here in Rust rather than in a prompt: the skeleton with exactly one evolved
 //! function, best-shot prompting, and the island population. A model asked to
 //! remember which programs scored best, and to sample them in the right order,
@@ -23,7 +23,7 @@
 //! # The verifier is an adversarial boundary
 //!
 //! This is the part that is not a convenience. Tao, Georgiev, Gómez-Serrano and
-//! Wagner found that AlphaEvolve is "extremely good at locating exploits in the
+//! Wagner found that `AlphaEvolve` is "extremely good at locating exploits in the
 //! verification code", in one case satisfying a minimum-distance constraint by
 //! placing points nearly on top of one another; they rewrote their verifiers in
 //! exact arithmetic with conservative bounds, and warn that "blindly trusting
@@ -40,7 +40,7 @@
 //!
 //! # Cheap rejection, counted
 //!
-//! FunSearch discards what does not run: "Programs that were incorrect (that
+//! `FunSearch` discards what does not run: "Programs that were incorrect (that
 //! did not execute within the imposed time and memory limits, or produced
 //! invalid outputs) are discarded." That cuts against this runtime, which
 //! reflects on failures and writes a lesson from each — correctly, for an
@@ -62,7 +62,7 @@ use std::time::Duration;
 use async_trait::async_trait;
 use serde_json::json;
 
-use super::{paths, string_argument};
+use super::string_argument;
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
 /// Root of the search tree, one subdirectory per search.
@@ -86,7 +86,7 @@ pub(super) const BOARD: &str = "SEARCH.md";
 
 /// How many islands the population is split across.
 ///
-/// FunSearch's third ingredient: "we maintain a large pool of diverse programs
+/// `FunSearch`'s third ingredient: "we maintain a large pool of diverse programs
 /// by using an island-based evolutionary method that encourages exploration and
 /// avoids local optima." Four rather than the paper's ten because this runtime
 /// samples a frontier model at a few hundred candidates per run, not Codey at
@@ -103,7 +103,7 @@ const BEST_SHOT: usize = 2;
 
 /// Candidates an island may record without improving before it is reseeded.
 ///
-/// FunSearch resets the worst islands on a wall-clock cadence. A cadence is the
+/// `FunSearch` resets the worst islands on a wall-clock cadence. A cadence is the
 /// wrong instrument here, because this runtime's searches are bounded by a run
 /// budget rather than by hours — so the trigger is staleness, which is what the
 /// cadence was a proxy for. A reseeded island restarts from the best program in
@@ -118,7 +118,7 @@ const ISLAND_STALE: usize = 12;
 /// ten minutes is one the search cannot afford to call a thousand times, and
 /// discovering that at candidate four hundred is worse than discovering it at
 /// candidate one.
-const SCORE_TIMEOUT: Duration = Duration::from_secs(60);
+const SCORE_TIMEOUT: Duration = Duration::from_mins(1);
 
 /// How much of a scorer's output is kept.
 const MAX_SCORE_OUTPUT: usize = 8 * 1024;
@@ -249,7 +249,7 @@ impl Population {
 
     /// The programs one proposal is shown, worst first.
     ///
-    /// Worst-to-best is FunSearch's order and not an arbitrary one: the last
+    /// Worst-to-best is `FunSearch`'s order and not an arbitrary one: the last
     /// thing in the prompt is the thing the model is most likely to build on,
     /// so the ordering makes "improve on this" the default reading without a
     /// sentence asking for it.
@@ -279,12 +279,12 @@ impl Population {
              nothing can record one.\n\n"
         );
         if self.candidates.is_empty() {
-            let _ = write!(
+            let _ = writeln!(
                 out,
                 "_Nothing scored yet. Write `{SCORER}` first: it takes a candidate module path \
                  on argv, and prints one `{SCORE_MARK} <value>` line or one `{INVALID_MARK} \
                  <reason>` line. Use exact arithmetic — a search finds the slack in a verifier \
-                 before it finds the mathematics._\n"
+                 before it finds the mathematics._"
             );
             return out;
         }

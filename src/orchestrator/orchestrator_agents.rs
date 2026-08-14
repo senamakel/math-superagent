@@ -232,6 +232,7 @@ struct SupportPrompts {
     inventor: String,
     reducer: String,
     weakener: String,
+    searcher: String,
     librarian: String,
     scholar: String,
     curator: String,
@@ -428,6 +429,50 @@ fn register_weakener(
     )
 }
 
+/// Registers the searcher, whose authority is what it is not given.
+///
+/// Every other role that puts a program on disk holds `write_tool_file` and
+/// `execute_command`. This one holds neither, and that pair of absences is the
+/// whole safety argument for a scored search: the only path from this role to
+/// the filesystem is `submit_candidate`, which writes into `candidates/` and
+/// runs the scorer over what it wrote in the same call.
+///
+/// Two things follow that a prompt could not guarantee. A candidate cannot be
+/// recorded without having been executed, so the board never carries a program
+/// nobody ran. And `score.py` is unreachable, so a search that would rather
+/// move the goalposts than the construction has no way to — which matters
+/// because that is the documented behaviour of systems in this shape, not a
+/// hypothetical: `AlphaEvolve` satisfied a minimum-distance constraint by placing
+/// points nearly on top of one another, and Tao's team rewrote every verifier
+/// in exact arithmetic in response. See [`super::search`].
+fn register_searcher(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let mut searcher = specialist_harness(
+        parts.model_for("searcher"),
+        parts.budget,
+        "searcher",
+        parts.tracer,
+    );
+    register_resilient(
+        &mut searcher,
+        Arc::new(search::SearchBrief::new(parts.workspace.clone())),
+    );
+    register_resilient(
+        &mut searcher,
+        Arc::new(search::SubmitCandidate::new(parts.workspace.clone())),
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut searcher, tool);
+    }
+    // A construction that scored well is worth carrying to the next problem —
+    // the one durable thing a search produces besides the number.
+    register_memory(&mut searcher, &parts.vector_store);
+    subagents.register("searcher", Arc::new(searcher), prompt)
+}
+
 /// Registers the reflection, pattern, inventor, reducer, and librarian agents.
 ///
 /// Each gets only the tools its role needs: reflection has no research or
@@ -473,6 +518,7 @@ fn register_support_agents(
 
     register_reducer(subagents, parts, prompts.reducer)?;
     register_weakener(subagents, parts, prompts.weakener)?;
+    register_searcher(subagents, parts, prompts.searcher)?;
 
     let mut librarian = specialist_harness(
         parts.model_for("librarian"),

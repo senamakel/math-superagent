@@ -239,6 +239,17 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/THREADS.md",
             "CONTEXT.md",
         ],
+        // The searcher is routed almost nothing, and that is the shape of the
+        // role rather than an oversight. Everything it needs about the search
+        // itself — the problem, the scorer, the programs that scored best —
+        // changes with every candidate, so it arrives through `search_brief`
+        // rather than through a system prompt assembled once per run. What is
+        // routed is the run's standing beliefs, which do not change that fast
+        // and which stop it hunting a construction the library already rules
+        // out. It is denied the threads and the approach ledger for the reason
+        // the judge is: a role scoring hundreds of candidates must not spend
+        // its budget reading about the investigation around it.
+        "searcher" => &["GOAL.md", "research/CLAIMS.md", "CONTEXT.md"],
         // The curator writes the shared brief, so it is the one role that
         // needs to see the brief *and* the material it is written from: what
         // the run is for, what it is attempting, what the library establishes,

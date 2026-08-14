@@ -235,7 +235,7 @@ fn islands_are_handed_out_round_robin_over_the_recorded_count() {
     assert_eq!(seen, vec![0, 1, 2, 3, 0, 1]);
 }
 
-/// FunSearch's ordering, and the reason the brief reads as "improve on the last
+/// `FunSearch`'s ordering, and the reason the brief reads as "improve on the last
 /// one": the last program in the prompt is the one the model builds on, so the
 /// best has to be last. Reversing this would ask every proposal to improve on
 /// the worst program the island has.
@@ -247,7 +247,8 @@ fn a_best_shot_carries_two_programs_worst_first() {
     text.push_str(&scored_row("c0002", 0, "7"));
     write_ledger(&workspace, "order", &text);
 
-    let sample = Population::load(&workspace, "order").best_shot(0);
+    let population = Population::load(&workspace, "order");
+    let sample = population.best_shot(0);
     let ids: Vec<&str> = sample.iter().map(|c| c.id.as_str()).collect();
     assert_eq!(ids, vec!["c0002", "c0001"], "worst first, best last");
 }
@@ -522,7 +523,7 @@ async fn a_brief_without_a_scorer_says_the_scorer_is_not_the_searchers_to_write(
             call("search_brief", serde_json::json!({ "slug": "unscored" })),
         )
         .await;
-    let message = refused.err().expect("a search with no scorer is refused");
+    let message = refused.expect_err("a search with no scorer is refused");
     assert!(format!("{message}").contains(SCORER));
 }
 
