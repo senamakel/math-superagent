@@ -54,7 +54,7 @@ use tinyflows::model::{
     Edge, InputType, Node, NodeKind, TriggerKind, WorkflowGraph, WorkflowInput,
 };
 
-use super::solutions::REDUCTION_INTERVAL;
+use super::schools::Thresholds;
 
 /// The child's name, and how the loop's diagram labels the node that calls it.
 pub(super) const GOALS_WORKFLOW: &str = "goals";
@@ -81,14 +81,17 @@ pub(super) const OPENED_FIELD: &str = "reduction_opened";
 ///
 /// Two ways to decline and they are different: a solved run has no use for a
 /// decomposition of a goal it has already reached, and a run inside the
-/// interval has one recently enough. The interval is read from the Rust
-/// constant for the reason every threshold in `super::workflow` is — a second
-/// copy is a second answer.
+/// interval has one recently enough. The interval comes from the school's
+/// [`Thresholds`] for the reason every threshold in `super::workflow` does — a
+/// second copy is a second answer, and here the second answer would be silent:
+/// a school that decomposed on a different cadence would get the control's
+/// instead, and nothing about the run would look wrong.
 #[must_use]
-pub(super) fn cadence() -> String {
+pub(super) fn cadence(thresholds: &Thresholds) -> String {
+    let interval = thresholds.reduction_interval;
     format!(
         "=if .inputs.{STATE_INPUT}.solved then \"hold\" \
-         elif (.inputs.{STATE_INPUT}.since_reduction // 0) < {REDUCTION_INTERVAL} then \"hold\" \
+         elif (.inputs.{STATE_INPUT}.since_reduction // 0) < {interval} then \"hold\" \
          else \"check\" end"
     )
 }
@@ -124,14 +127,14 @@ fn edge(from: &str, from_port: &str, to: &str) -> Edge {
 /// would hang the child. The parent reads whichever arm ran out of the child's
 /// run state; see [`super::loop_steps`].
 #[must_use]
-pub(super) fn goals_workflow() -> WorkflowGraph {
+pub(super) fn goals_workflow(thresholds: &Thresholds) -> WorkflowGraph {
     let nodes = vec![
         node(
             "goal_start",
             NodeKind::Trigger,
             json!({ "kind": TriggerKind::ExecuteByWorkflow }),
         ),
-        node("due", NodeKind::Switch, json!({ "expression": cadence() })),
+        node("due", NodeKind::Switch, json!({ "expression": cadence(thresholds) })),
         node(
             GATE_NODE,
             NodeKind::ToolCall,

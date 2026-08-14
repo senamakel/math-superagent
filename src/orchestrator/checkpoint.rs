@@ -125,7 +125,17 @@ impl WorkspaceCheckpoint {
     ///
     /// A commit with nothing staged is not an error: two tools can write the
     /// same content, and the second finding no change is normal.
+    ///
+    /// Serialised across the process. This middleware is attached to every
+    /// agent harness and up to fifty sub-agents may run at once, so without the
+    /// lock two of them reach `git add --all` on one index together: the loser
+    /// fails, leaves a stranded `index.lock` behind, and — because a checkpoint
+    /// failure is deliberately swallowed below — says so nowhere. A live
+    /// Erdős–Gyárfás workspace still carries one such zero-byte lock file. The
+    /// staged set is the whole work tree, so a serialised commit loses nothing:
+    /// the run that waits commits everything the run before it did not.
     async fn commit(&self, message: &str) -> Result<Option<String>> {
+        let _guard = super::worklock::commits().await;
         self.initialise().await?;
         self.git(&["add", "--all"]).await?;
         let staged = self.git(&["diff", "--cached", "--name-only"]).await?;

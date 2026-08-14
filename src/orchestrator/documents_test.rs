@@ -489,3 +489,175 @@ async fn a_non_http_scheme_is_refused() -> Result<()> {
     assert!(refused.is_err(), "only HTTP and HTTPS are fetchable");
     Ok(())
 }
+
+/// Concurrent writes to different paths all survive.
+///
+/// The shape several schools on one workspace make ordinary: a dozen roles
+/// writing at once, none of them to the same file. Nothing here contends, so
+/// nothing may be lost — a serialisation that dropped a write would be worse
+/// than the race it replaced.
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn concurrent_writes_to_different_paths_all_survive() -> Result<()> {
+    let path = workspace("write-race")?;
+    let documents = WorkspaceDocuments::new(path.clone())?;
+
+    let mut tasks = tokio::task::JoinSet::new();
+    for n in 0..16 {
+        let documents = documents.clone();
+        tasks.spawn(async move {
+            documents
+                .write_document(&format!("notes/finding{n}.md"), &format!("claim number {n}"))
+                .await
+        });
+    }
+    while let Some(joined) = tasks.join_next().await {
+        joined.expect("a write task must not panic")?;
+    }
+
+    for n in 0..16 {
+        let content = documents
+            .read_document(&format!("notes/finding{n}.md"))
+            .await?;
+        assert_eq!(content, format!("claim number {n}"), "write {n} was lost");
+    }
+    let _ = std::fs::remove_dir_all(path);
+    Ok(())
+}
+
+/// A reader sees the old bytes or the new ones, never half of each.
+///
+/// `tokio::fs::write` truncates and then writes, which is two operations: a
+/// reader between them sees an empty or partial file. That is not theoretical
+/// here — three concurrent writes to the document index left four stranded
+/// bytes on the end and invalid JSON behind them on Euler 579. The two
+/// contents differ in length deliberately, so a torn read is a value equal to
+/// neither rather than one that happens to look plausible.
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn a_reader_never_sees_a_half_written_document() -> Result<()> {
+    let root = workspace("write-tearing")?;
+    let documents = WorkspaceDocuments::new(root.clone())?;
+    let old = "old".repeat(4_000);
+    let new = "new-and-rather-longer".repeat(4_000);
+    documents.write_document("notes/derivation.md", &old).await?;
+
+    let file = root.join("notes/derivation.md");
+    let stop = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let reader = {
+        let file = file.clone();
+        let stop = std::sync::Arc::clone(&stop);
+        let (old, new) = (old.clone(), new.clone());
+        tokio::spawn(async move {
+            let mut reads = 0usize;
+            while !stop.load(std::sync::atomic::Ordering::Relaxed) {
+                // The destination is replaced by a rename rather than
+                // truncated, so it is never absent and never empty.
+                let seen = tokio::fs::read_to_string(&file)
+                    .await
+                    .expect("a document replaced by rename is readable throughout");
+                assert!(
+                    seen == old || seen == new,
+                    "a reader observed {} bytes, which is neither content whole",
+                    seen.len()
+                );
+                reads += 1;
+                tokio::task::yield_now().await;
+            }
+            reads
+        })
+    };
+
+    for turn in 0..60 {
+        let content = if turn % 2 == 0 { &new } else { &old };
+        documents.write_document("notes/derivation.md", content).await?;
+        tokio::task::yield_now().await;
+    }
+    stop.store(true, std::sync::atomic::Ordering::Relaxed);
+    let reads = reader.await.expect("the reader must not panic");
+    assert!(reads > 0, "the reader never got a look in");
+
+    let _ = std::fs::remove_dir_all(root);
+    Ok(())
+}
+
+/// Concurrent note writes all reach the ledger derived from them.
+///
+/// A note write does not only write a note: it re-derives up to six ledgers,
+/// each by walking the notes on disk and rewriting a whole file. Two of those
+/// cascades interleaved leave a ledger rendered from one write and missing the
+/// other — and a derived file that disagrees with its sources is worse than no
+/// derived file, because the next reader trusts the row instead of opening the
+/// note. Driven through the tool rather than through the store, because the
+/// lock is taken at the tool-call boundary and this is what that boundary is
+/// for.
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn concurrent_note_writes_all_reach_the_derived_ledger() -> Result<()> {
+    let root = workspace("ledger-race")?;
+    let documents = WorkspaceDocuments::new(root.clone())?;
+    let tools = documents.tools();
+    let write = tools
+        .iter()
+        .find(|tool| tool.name() == "write_document")
+        .cloned()
+        .expect("write_document is registered");
+
+    // Written in rounds rather than as one burst. What is lost is one
+    // re-derivation's rendering, overwritten by another that read the notes
+    // before it existed, and whether that lands on the *last* write of a burst
+    // is chance. Several rounds, each checked, turn a race that shows itself
+    // occasionally into one that shows itself.
+    // Fifty notes in total, under the sixty rows the rendered ledger carries,
+    // so a missing row is a lost write rather than the cap doing its job.
+    let (rounds, per_round) = (5, 10);
+    let mut expected: Vec<String> = Vec::new();
+    for round in 0..rounds {
+        let mut tasks = tokio::task::JoinSet::new();
+        for n in 0..per_round {
+            // Zero-padded, so no identifier is a prefix of another and a
+            // `contains` cannot pass on the strength of a longer id.
+            let id = format!("finding-{round:02}-{n:03}");
+            expected.push(id.clone());
+            let write = std::sync::Arc::clone(&write);
+            tasks.spawn(async move {
+                write
+                    .call(
+                        &(),
+                        crate::agent::ToolCall {
+                            id: format!("call-{id}"),
+                            name: "write_document".into(),
+                            invalid: None,
+                            arguments: serde_json::json!({
+                                "path": format!("research/L1.0/{id}.md"),
+                                // Padded deliberately: the window between a
+                                // re-derivation reading the notes off disk and
+                                // writing what it rendered from them is
+                                // proportional to how much there is to read.
+                                "content": format!(
+                                    "# {id}\n\n```claim\nid: {id}\nstatement: This bound is \
+                                     attained.\nholds-here: yes\nstatus: proved\n```\n\n{}",
+                                    "Supporting prose, at the length a real note runs to. "
+                                        .repeat(400)
+                                ),
+                            }),
+                        },
+                    )
+                    .await
+            });
+        }
+        while let Some(joined) = tasks.join_next().await {
+            joined.expect("a note write must not panic")?;
+        }
+
+        let ledger = documents
+            .read_runtime(crate::orchestrator::claims::CLAIMS_PATH)
+            .await?;
+        for id in &expected {
+            assert!(
+                ledger.contains(id),
+                "round {round} left the ledger without `{id}`; it renders {} rows:\n{ledger}",
+                ledger.lines().filter(|line| line.contains("finding-")).count()
+            );
+        }
+    }
+    let _ = std::fs::remove_dir_all(root);
+    Ok(())
+}

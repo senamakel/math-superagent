@@ -9,6 +9,32 @@ struct Planners<'a> {
     vector_store: &'a VectorStore,
 }
 
+// Every registration in this file takes a manager and a bare role name, and
+// every delegation bench in this crate names roles bare. Handing a school its
+// own scoped manager is therefore the whole of school-awareness on this side:
+// `subagents.register("goals", …)` becomes `goals@rising-sea`, and the
+// `spawn_agent` tools built from the same handle send a bare `tool_builder` to
+// `tool_builder@rising-sea`. A role cannot leak out of its school, because
+// nothing it can name reaches outside one. See
+// [`AsyncSubagentManager::for_school`].
+
+/// The school a role registered through `subagents` posts to the board as.
+///
+/// The sender is not an argument — a school able to name its own sender could
+/// attribute a hunch to a sibling — so it is fixed here, at registration. An
+/// unscoped handle is a single-school run, and [`schools::selected`] names
+/// which school that is; falling back to the control's slug means a run with no
+/// selection at all still posts under a name rather than under none.
+fn posting_as(subagents: &AsyncSubagentManager) -> String {
+    if let Some(school) = subagents.school() {
+        return school.to_string();
+    }
+    schools::selected()
+        .first()
+        .map_or(schools::ALL[0].slug, |school| school.slug)
+        .to_string()
+}
+
 /// Registers the goals agent and returns the orchestrator's harness.
 ///
 /// They are built together because they are the same role at two depths: both
@@ -58,8 +84,16 @@ fn build_planner_harness<const N: usize>(
     register_memory(&mut harness, parts.vector_store);
     // The goals agent drives an attempt and carries its half-finished
     // arithmetic between turns; the orchestrator delegates and has none.
+    //
+    // It also carries the board, for the same reason it is the role that
+    // decides what the next run is spent on: it is about to commission work a
+    // sibling school may already have walked into, and saying so before it
+    // starts is the one moment the saving is available.
     if role == "goals" {
         register_scratch(&mut harness, parts.vector_store, true);
+        for tool in board_tool::BoardTool::all(parts.documents, &posting_as(subagents)) {
+            register_resilient(&mut harness, tool);
+        }
     }
     harness
 }
@@ -213,6 +247,14 @@ struct SupportAgents<'a> {
     workspace: PathBuf,
     /// Delegation tools, so the pattern agent can commission a computation.
     delegation: Vec<Arc<dyn Tool<()>>>,
+    /// The school these roles belong to, and post to the board as.
+    ///
+    /// Carried explicitly rather than read back off the manager, because the
+    /// sender of a board post is an authority boundary: it is baked into the
+    /// tool at registration and is never a field the model fills in, since a
+    /// school able to name its own sender could attribute a hunch to a sibling
+    /// and the board's whole value is that a reader can tell who found what.
+    school: &'static str,
 }
 
 impl SupportAgents<'_> {
@@ -345,6 +387,12 @@ fn register_inventor(
         register_resilient(&mut inventor, tool);
     }
     register_memory(&mut inventor, &parts.vector_store);
+    // A closed line of attack is the most valuable thing this role produces
+    // that is not an idea, and the only role placed to tell the other schools
+    // about it before they spend a run rediscovering it.
+    for tool in board_tool::BoardTool::all(parts.documents, parts.school) {
+        register_resilient(&mut inventor, tool);
+    }
     subagents.register_with_turn_cap(
         "inventor",
         Arc::new(inventor),
@@ -540,6 +588,13 @@ fn register_support_agents(
         register_resilient(&mut reflection, tool);
     }
     register_memory(&mut reflection, &parts.vector_store);
+    // The role that has just worked out why an attempt failed, given the one
+    // way to say so to the schools about to try it. It is a post rather than a
+    // claim, and this tool cannot file one: reflection writes lessons, and a
+    // lesson is exactly the half-formed thing the board is for.
+    for tool in board_tool::BoardTool::all(parts.documents, parts.school) {
+        register_resilient(&mut reflection, tool);
+    }
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
 
     // The judge is as tool-poor as reflection, and for the same reason: a

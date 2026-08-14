@@ -1,8 +1,16 @@
+use super::schools::Thresholds;
+
 /// Attempts allowed before the loop reports what it has.
 ///
 /// Raised past the research rescue below so the rescue has attempts left to
 /// pay off in. A ceiling that trips first would spend a fresh literature
 /// search and then stop.
+///
+/// This and every constant beside it are the *control school's* numbers, and
+/// they stay constants because each one carries the live run that set it —
+/// [`Thresholds::chisel`] reads them rather than repeating them, so a school
+/// that differs is a different value of one type instead of a second copy of
+/// the evidence.
 pub(in crate::orchestrator) const MAX_ATTEMPTS: usize = 8;
 /// Consecutive unproductive attempts before diversifying rather than retrying.
 pub(in crate::orchestrator) const STUCK_THRESHOLD: usize = 2;
@@ -469,7 +477,14 @@ impl std::fmt::Display for Route {
 /// Kept as a free function so the policy is unit-testable without a provider:
 /// the routing rule is the part of this design most likely to be wrong, and it
 /// is the part a live run is least able to demonstrate cheaply.
-pub(in crate::orchestrator) fn route(state: &SolutionState) -> Route {
+///
+/// Every bound is read off `thresholds` rather than off the constants, because
+/// the constants are one school's answer and there are now several running at
+/// once. The arms below are unchanged and the control school's numbers are the
+/// constants themselves, so a run under [`Thresholds::chisel`] routes exactly
+/// as it always did — `orchestrator::parity` proves that for every school's
+/// numbers, against the jq the engine actually runs.
+pub(in crate::orchestrator) fn route(state: &SolutionState, thresholds: &Thresholds) -> Route {
     // Checked before anything else, and before the attempt ceiling. An attempt
     // that died on the provider is not evidence about the mathematics, so
     // spending the ceiling on more of them is spending the run's one budget on
@@ -478,11 +493,11 @@ pub(in crate::orchestrator) fn route(state: &SolutionState) -> Route {
     // each one recording the same quota error as the lesson learned, and ended
     // reporting "not solved within 8 attempts" — which reads as a mathematical
     // failure and is not one.
-    if state.blocked >= BLOCKED_THRESHOLD {
+    if state.blocked >= thresholds.blocked {
         Route::Blocked
-    } else if state.solved || state.attempts >= MAX_ATTEMPTS {
+    } else if state.solved || state.attempts >= thresholds.max_attempts {
         Route::Solved
-    } else if state.unverified >= UNVERIFIED_THRESHOLD {
+    } else if state.unverified >= thresholds.unverified {
         // Ahead of the two stuck arms, which would otherwise claim this: an
         // attempt that reaches the same answer it already had reports no
         // progress, so the unproductive count is exactly what an UNVERIFIED run
@@ -491,9 +506,9 @@ pub(in crate::orchestrator) fn route(state: &SolutionState) -> Route {
         // and the thing actually missing — a second independent route — is the
         // one thing the run has just said twice that it cannot build.
         Route::Reported
-    } else if state.unproductive >= STUCK_THRESHOLD {
+    } else if state.unproductive >= thresholds.stuck {
         Route::Diversify
-    } else if state.computational >= COMPUTATIONAL_THRESHOLD {
+    } else if state.computational >= thresholds.computational {
         // Progress that is only ever a bigger instance of the same computation
         // routes here too. This arm is the one that catches a run doing well by
         // its own report and going nowhere: every attempt establishes something

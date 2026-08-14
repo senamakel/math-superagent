@@ -99,6 +99,18 @@ pub(super) struct LoopSteps {
     /// child, which on a live run was eight minutes of the budget it is meant
     /// to bound.
     started: std::time::Instant,
+    /// The school this loop belongs to, when several are running at once.
+    ///
+    /// `None` is a run with one school, which is every run before this existed
+    /// and every run that does not ask for more — and it is why the tracer is
+    /// left exactly as it was in that case. A single-school run's console is
+    /// unchanged.
+    school: Option<&'static str>,
+    /// Set by whichever school verifies a solution first.
+    ///
+    /// See [`LoopSteps::expired`] for why "another school got there" is read
+    /// through the wall clock's field rather than through one of its own.
+    solved_elsewhere: Option<Arc<std::sync::atomic::AtomicBool>>,
 }
 
 impl std::fmt::Debug for LoopSteps {
@@ -125,12 +137,62 @@ impl LoopSteps {
             beside,
             mailboxes,
             started: std::time::Instant::now(),
+            school: None,
+            solved_elsewhere: None,
         }
     }
 
-    /// Whether this run has spent its wall-clock ceiling.
+    /// Names the school this loop is running for, and the flag that says one of
+    /// its siblings has already arrived.
+    ///
+    /// The tracer is *relabelled* rather than the notes being prefixed, because
+    /// what a reader and `euler-tui` both split on is the line's `who` field,
+    /// which is the tracer's label and not part of the message. A child tracer
+    /// shares the counters and the journal and reports under its own label, so
+    /// one tab per school costs nothing and every note a step makes — not only
+    /// the ones written here — is attributed to the school that made it.
+    pub(super) fn in_school(
+        mut self,
+        slug: &'static str,
+        solved_elsewhere: Arc<std::sync::atomic::AtomicBool>,
+    ) -> Self {
+        self.tracer = self.tracer.map(|tracer| tracer.child(format!("{slug}/loop")));
+        self.school = Some(slug);
+        self.solved_elsewhere = Some(solved_elsewhere);
+        self
+    }
+
+    /// Whether this run should stop between passes.
+    ///
+    /// Two facts, and they are the same *shape* of fact, which is why they
+    /// share a field. `expired` exists because every other terminal condition
+    /// counts events, and a loop that has stopped producing them stops
+    /// approaching all of them at once — so the run needed one condition that
+    /// is about the run rather than about its mathematics. "Another school
+    /// verified it first" is the second such condition: no counter on this
+    /// school's state will ever move because of it, and nothing this school
+    /// attempts can change it.
+    ///
+    /// Riding on `expired` is also what makes the stop graceful rather than an
+    /// abort. It is stamped at `eval_merge`, the last thing every pass does,
+    /// and read by `terminal_condition` at the top of the next one — so a
+    /// school that loses the race finishes the attempt it is in, files what it
+    /// found, and leaves through the same `done` port as any other ending.
+    /// Nothing is cancelled mid-attempt and no work already paid for is thrown
+    /// away.
     fn expired(&self) -> bool {
-        self.started.elapsed() >= super::solutions::run_ceiling()
+        stop_requested(
+            self.started,
+            super::solutions::run_ceiling(),
+            self.solved_elsewhere.as_deref(),
+        )
+    }
+
+    /// Whether a sibling school got there first.
+    fn overtaken(&self) -> bool {
+        self.solved_elsewhere
+            .as_deref()
+            .is_some_and(overtaken_by_a_sibling)
     }
 
     /// Runs one step against `state`, and returns the accumulator it produced.
@@ -175,11 +237,32 @@ impl LoopSteps {
         // `fold_evaluation`, which folds numbers as deltas from the base and
         // would turn one into arithmetic on timestamps.
         merged.expired = self.expired();
+        // Said out loud, because it is the one ending a reader would otherwise
+        // have to infer. A school that stops here has no counter at its
+        // threshold and no clock spent; without this line its console simply
+        // ends, which is the shape of a crash rather than of a decision.
+        if merged.expired
+            && self.overtaken()
+            && let Some(tracer) = self.tracer.as_ref()
+        {
+            tracer.note(&format!(
+                "solution loop: {} stands down, another school verified a solution first",
+                self.school.unwrap_or("this loop")
+            ));
+        }
         merged.to_accumulator()
     }
 
     async fn run(&self, step: &str, state: SolutionState, args: &Value) -> Result<Value> {
         let tracer = self.tracer.as_ref();
+        // The school's bounds, read off the node's own arguments rather than
+        // held on this tool. One `LoopSteps` serves every school's graph —
+        // there is one subagent manager, one budget pool and one workspace —
+        // so which school a step belongs to is a property of the step, and the
+        // graph is where it is already written down. A node built without them
+        // reads the control school's, which is what every graph did before
+        // schools existed.
+        let thresholds = super::workflow::thresholds_from(args);
         let workspace = self.workspace.as_deref();
         // Two steps say something that is not part of the state, so they are
         // answered before the match and their extra field is folded into the
@@ -218,7 +301,7 @@ impl LoopSteps {
             "attempt" => {
                 attempt_step(&self.subagents, tracer, workspace, &self.mailboxes, state).await
             }
-            "judge" => judge_step(&self.subagents, tracer, workspace, state).await,
+            "judge" => judge_step(&self.subagents, tracer, workspace, &thresholds, state).await,
             "reflect" => {
                 reflect_step(
                     &self.subagents,
@@ -226,6 +309,7 @@ impl LoopSteps {
                     workspace,
                     &self.memory,
                     &self.beside,
+                    &thresholds,
                     state,
                 )
                 .await
@@ -309,6 +393,32 @@ impl LoopSteps {
         }
         Ok(carried)
     }
+}
+
+/// Whether the flag a sibling school sets on a verified solve is set.
+///
+/// A free function, and `Relaxed` because there is nothing to order against:
+/// the flag is one bit read once per pass, and a school that reads it a
+/// microsecond late simply stops one pass later than it could have.
+fn overtaken_by_a_sibling(solved_elsewhere: &std::sync::atomic::AtomicBool) -> bool {
+    solved_elsewhere.load(std::sync::atomic::Ordering::Relaxed)
+}
+
+/// Whether a run that has just finished a pass should not start another.
+///
+/// Pure, and separate from [`LoopSteps::expired`] for the reason [`known_step`]
+/// is separate from the tool: what can go wrong here is answerable from a clock
+/// and a flag, while a [`LoopSteps`] needs a live subagent manager and a vector
+/// store, which a unit test has no business standing up.
+fn stop_requested(
+    started: std::time::Instant,
+    ceiling: std::time::Duration,
+    solved_elsewhere: Option<&std::sync::atomic::AtomicBool>,
+) -> bool {
+    if solved_elsewhere.is_some_and(overtaken_by_a_sibling) {
+        return true;
+    }
+    started.elapsed() >= ceiling
 }
 
 /// Establishes what the run is working on, before the first attempt.
@@ -434,6 +544,10 @@ impl Tool<()> for LoopSteps {
                     DECISION_ARG: {
                         "type": "object",
                         "description": "The goals child's run state, for the cadence to read."
+                    },
+                    super::workflow::THRESHOLDS_ARG: {
+                        "type": "object",
+                        "description": "The school's bounds. Absent means the control school's."
                     }
                 },
                 "required": ["step", "state"],

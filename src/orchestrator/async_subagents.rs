@@ -154,6 +154,18 @@ fn max_concurrent_agents() -> usize {
         .unwrap_or(DEFAULT_MAX_CONCURRENT_AGENTS)
 }
 
+/// The role a possibly school-qualified name addresses.
+///
+/// `judge@rising-sea` is the judge. Every table keyed on a role name — the
+/// budgets in [`super::definitions`], the reasoning-model split, the follow-up
+/// sequences above — is keyed on the role rather than on the registration, so
+/// each of them strips the suffix here rather than growing an entry per school.
+/// One place, because a second answer to "which role is this" is a second
+/// answer to what a role is allowed to spend.
+pub(in crate::orchestrator) fn base_role(role: &str) -> &str {
+    role.split_once('@').map_or(role, |(base, _)| base)
+}
+
 /// A follow-up sequence queued behind another run's completion.
 struct FollowUp {
     manager: AsyncSubagentManager,
@@ -383,6 +395,16 @@ pub(crate) struct AsyncSubagentManager {
     slots: Arc<Semaphore>,
     /// Distinguishes this process's Langfuse traces from every other process's.
     session: Arc<str>,
+    /// The school this handle registers into and delegates within.
+    ///
+    /// `None` is one school running, which is every run that existed before
+    /// schools did: names are registered and resolved exactly as written. When
+    /// it is set, [`Self::qualified`] registers `goals` as `goals@<slug>` and
+    /// [`Self::resolve`] sends a bare `goals` to that same registration, which
+    /// is what keeps a delegating agent inside its own school without a single
+    /// bench, prompt, or loop step learning that schools exist. See
+    /// [`Self::for_school`].
+    school: Option<Arc<str>>,
     /// Best-effort sink for completed project/run-scoped agent sessions.
     memory: Option<VectorStore>,
 }

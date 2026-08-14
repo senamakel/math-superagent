@@ -733,3 +733,262 @@ fn only_the_lean_prover_can_mint_a_formalised_claim() -> agent::Result<()> {
     assert_eq!(holders, ["lean_prover"]);
     Ok(())
 }
+
+/// Where a school's prompts are assembled from, for the tests below.
+///
+/// The template workspace rather than a temporary directory: it carries the
+/// `AGENTS.md` and `prompts/` files a real run has, so these assert on the
+/// assembly a run actually sends rather than on a bare built-in prompt.
+fn template_workspace() -> &'static std::path::Path {
+    std::path::Path::new("workspace/template")
+}
+
+/// The control school's prompts are the prompts this runtime already sent.
+///
+/// Byte-identical, not merely similar. A school is only ever evidence if the
+/// control is running beside it unchanged, and an empty policy that added so
+/// much as a blank line would have moved the control.
+#[test]
+fn the_control_school_changes_no_prompt_by_one_byte() {
+    use super::{RolePrompts, schools};
+
+    let loaded = RolePrompts::load(template_workspace()).expect("prompts assemble");
+    let chisel = RolePrompts::for_school(template_workspace(), &schools::ALL[0], false)
+        .expect("the control school's prompts assemble");
+    assert_eq!(loaded.by_role(), chisel.by_role());
+}
+
+/// Every role that may post to the board is told the board exists.
+///
+/// This is the test the live run needed and did not have. Three schools ran an
+/// hour on Project Euler 1006, all three reached a verdict, all three ran the
+/// reflection — and `post_board` was called zero times, because the grant was
+/// in the registry and the instruction was nowhere. Registering a tool and
+/// asking for it are two different things, and only one of them was done.
+#[test]
+fn every_role_holding_the_board_tool_is_told_what_it_is_for() {
+    use super::{BOARD_ROLES, BOARD_TOOLS, RolePrompts, schools};
+
+    // The tool's own name, which is what is being asserted and which no other
+    // prompt in this crate mentions. A prose phrase was tried first and is the
+    // wrong marker: `board.md` is hard-wrapped, so a sentence spanning two
+    // lines never matches, and the test failed for a reason that had nothing to
+    // do with the behaviour under test.
+    let distinctive = "post_board";
+
+    for school in schools::ALL {
+        let prompts = RolePrompts::for_school(template_workspace(), &school, true)
+            .expect("prompts assemble");
+        for (role, prompt) in prompts.by_role() {
+            let told = prompt.contains(distinctive);
+            let granted = BOARD_ROLES.contains(&role);
+            assert_eq!(
+                told, granted,
+                "`{role}` in `{}`: told about the board = {told}, holds it = {granted}",
+                school.slug
+            );
+        }
+    }
+
+    // And the list this brief is routed by agrees with the bench that grants
+    // the tool. Neither can be derived from the other — the grants live in
+    // per-role `&'static str` arrays — so the agreement is asserted here.
+    let registry = default_registry(true).expect("the registry builds");
+    for role in BOARD_ROLES {
+        assert!(
+            registry
+                .get(role)
+                .is_some_and(|bench| bench.tools.iter().any(|tool| *tool == BOARD_TOOLS[0])),
+            "`{role}` is told to post to the board but is not a role that was granted \
+             `post_board`"
+        );
+    }
+}
+
+/// A school running alone is not told to talk to itself.
+///
+/// The board costs tokens in every one of those prompts and has no audience in
+/// a single-school run, and adding it unconditionally would also move the
+/// control off the prompts this runtime sent before schools existed — which
+/// [`the_control_school_changes_no_prompt_by_one_byte`] exists to prevent.
+#[test]
+fn a_lone_school_is_never_told_about_the_board() {
+    use super::{RolePrompts, schools};
+
+    let alone = RolePrompts::for_school(template_workspace(), &schools::ALL[0], false)
+        .expect("prompts assemble");
+    for (role, prompt) in alone.by_role() {
+        assert!(
+            !prompt.contains("post_board"),
+            "`{role}` is running alone and was told to post to a board nobody reads"
+        );
+    }
+}
+
+/// A school's policy reaches every role, and only that school's.
+#[test]
+fn a_school_policy_reaches_every_role_and_no_other_school() {
+    use super::{RolePrompts, schools};
+
+    // A phrase from `src/prompts/schools/rising-sea.md`, distinctive enough
+    // that it cannot arrive from anywhere else.
+    let distinctive = "Change the ground under it";
+    let sea = RolePrompts::for_school(template_workspace(), &schools::ALL[1], false)
+        .expect("the rising-sea prompts assemble");
+    let chisel = RolePrompts::for_school(template_workspace(), &schools::ALL[0], false)
+        .expect("the control school's prompts assemble");
+    for (role, prompt) in sea.by_role() {
+        assert!(
+            prompt.contains(distinctive),
+            "`{role}` was never told which school it is working in"
+        );
+    }
+    for (role, prompt) in chisel.by_role() {
+        assert!(
+            !prompt.contains(distinctive),
+            "`{role}` in the control school is carrying another school's policy"
+        );
+    }
+}
+
+/// The shared method policy still leads every prompt in every school.
+///
+/// The provider cache is keyed on the exact leading prefix, so a school layered
+/// in *front* of the shared policy would give each school its own cache
+/// namespace and lose the one identical opening block every role shares.
+#[test]
+fn the_method_policy_still_leads_every_prompt_in_every_school() {
+    use super::{RolePrompts, SHARED_METHOD_POLICY, schools};
+
+    for school in schools::ALL {
+        let prompts =
+            RolePrompts::for_school(template_workspace(), &school, false).expect("prompts assemble");
+        for (role, prompt) in prompts.by_role() {
+            assert!(
+                prompt.starts_with(SHARED_METHOD_POLICY.trim()),
+                "`{role}` in `{}` does not open with the shared method policy",
+                school.slug
+            );
+        }
+    }
+}
+
+/// The school's policy sits between the shared policy and the role's own brief.
+#[test]
+fn a_school_policy_sits_after_the_shared_policy_and_before_the_role_prompt() {
+    use super::{JUDGE_PROMPT, RolePrompts, SHARED_METHOD_POLICY, schools};
+
+    let sea = RolePrompts::for_school(template_workspace(), &schools::ALL[1], false)
+        .expect("the rising-sea prompts assemble");
+    let judge = sea
+        .by_role()
+        .into_iter()
+        .find(|(role, _)| *role == "judge")
+        .map(|(_, prompt)| prompt.to_string())
+        .expect("the judge has a prompt");
+    let shared = SHARED_METHOD_POLICY.trim().len();
+    let school = judge
+        .find(schools::ALL[1].policy.trim())
+        .expect("the school policy is in the prompt");
+    let role = judge
+        .find(JUDGE_PROMPT.trim())
+        .expect("the role prompt is in the prompt");
+    assert!(shared < school, "the school policy preceded the shared one");
+    assert!(school < role, "the role prompt preceded the school policy");
+}
+
+/// The board reaches the roles that decide what to do next, and no others.
+///
+/// A post is asserted rather than established — a hunch, a dead end, a lesson
+/// offered because it is unfinished — so it goes to the roles choosing the next
+/// move and is withheld from every role that weighs evidence or files sources.
+#[test]
+fn the_board_reaches_the_roles_that_decide_what_to_do_next() {
+    use super::{RolePrompts, board, schools};
+
+    let root = std::env::temp_dir().join(format!(
+        "math-agent-board-context-{}",
+        std::process::id()
+    ));
+    let _ = std::fs::create_dir_all(root.join("teams"));
+    let _ = std::fs::write(
+        root.join(board::PATH),
+        "# Board\n\n- rising-sea, dead-end: the sheaf route needs f D-finite and it is not\n",
+    );
+    let prompts =
+        RolePrompts::for_school(&root, &schools::ALL[1], false).expect("the rising-sea prompts assemble");
+    let prompt_for = |role: &str| {
+        prompts
+            .by_role()
+            .into_iter()
+            .find(|(name, _)| *name == role)
+            .map(|(_, prompt)| prompt.to_string())
+            .expect("the role has a prompt")
+    };
+    let inventor = prompt_for("inventor");
+    assert!(
+        inventor.contains(board::PATH),
+        "the inventor is not sent the board"
+    );
+    assert!(
+        inventor.contains("needs f D-finite"),
+        "the board is listed but its contents never arrive"
+    );
+    assert!(
+        !prompt_for("judge").contains(board::PATH),
+        "the judge is scoring an attempt beside a sibling's unevidenced sentence"
+    );
+    let _ = std::fs::remove_dir_all(&root);
+
+    for role in [
+        "orchestrator",
+        "goals",
+        "inventor",
+        "reducer",
+        "weakener",
+        "reflection",
+        "pattern_finder",
+    ] {
+        assert!(
+            role_context(role).contains(&board::PATH),
+            "`{role}` decides what to do next and cannot see what the others found"
+        );
+    }
+    for role in ["judge", "scholar", "librarian", "searcher", "refuter"] {
+        assert!(
+            !role_context(role).contains(&board::PATH),
+            "`{role}` weighs evidence and must not be reading assertions beside it"
+        );
+    }
+}
+
+/// Only the three roles that report may post to the board.
+#[test]
+fn only_the_roles_that_report_may_post_to_the_board() {
+    let registry = default_registry(true).expect("the default registry builds");
+    let posts = |role: &str| {
+        registry
+            .get(role)
+            .expect("the role is registered")
+            .tools
+            .iter()
+            .any(|tool| tool == "post_board")
+    };
+    for role in ["reflection", "inventor", "goals"] {
+        assert!(posts(role), "`{role}` cannot tell the other schools anything");
+    }
+    for role in [
+        "judge",
+        "scholar",
+        "librarian",
+        "searcher",
+        "refuter",
+        "research",
+        "context_curator",
+    ] {
+        assert!(
+            !posts(role),
+            "`{role}` can post an assertion the run will read as a finding"
+        );
+    }
+}

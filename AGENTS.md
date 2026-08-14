@@ -32,6 +32,8 @@ evidence for it stays available.
   research tree, the scratch, and checkpointing.
 - [`docs/ledgers.md`](docs/ledgers.md) — the nine derived ledgers: what each
   holds, and the failure each was written to stop.
+- [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
+  problem, each school's bet, and the locking that made it safe.
 
 Two pairs read a mathematician's method against this runtime and say what to
 build next. They are why several of the rules above exist, so a change to a
@@ -62,6 +64,25 @@ up. It is enforced by not registering the tool, not by asking the model to
 abstain: a prompt instruction is not a control. The workspace note tools stay
 available, so the agent can still record and recall its own findings.
 
+## Schools
+
+A *school* is one way of attacking a problem; two or three run concurrently on
+one workspace, sharing the ledgers and a board. Each one's bet:
+[`docs/schools.md`](docs/schools.md). Not a second loop, graph, or set of roles.
+
+- **Four things, and it must stay four:** a method-policy overlay layered *after*
+  the shared policy, per-role overlays, a bench, its `Thresholds`.
+- **The control does not move.** `chisel` is today's runtime, is what an unset
+  `MATH_AGENT_SCHOOLS` selects, and has an empty overlay — asserted, not assumed.
+- **Thresholds are a struct, not a second set of constants.** `route` and the jq
+  both read one, and `orchestrator::parity` proves they agree for *every*
+  school. None may move `blocked`.
+- **A board post is asserted, never established.** `teams/BOARD.md` is derived
+  from an append-only queue and never feeds a ledger; the posting school is
+  baked into the tool, so none can post as another.
+- **A lock is taken at a tool-call boundary, never below one.** `worklock.rs`
+  serialises the write cascade and the checkpoint; the mutex is not reentrant.
+
 ## Running and watching a run
 
 Starting a run and watching one are separate commands on purpose.
@@ -69,6 +90,7 @@ Starting a run and watching one are separate commands on purpose.
 ```sh
 ./euler 763                     # start or continue problem 763
 ./euler 763 --no-research       # the same, with web search withheld
+./euler 763 --schools chisel,rising-sea   # two schools, one workspace
 ./euler-tui 763                 # watch it, a tab per team
 ./euler-tui 763 --replay        # read the last run's log; touch nothing
 ./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting

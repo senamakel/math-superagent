@@ -309,11 +309,7 @@ impl WorkspaceDocuments {
                 "failed to create document directory: {error}"
             ))
         })?;
-        tokio::fs::write(path, bytes).await.map_err(|error| {
-            tinyagents::TinyAgentsError::Tool(format!(
-                "failed to write workspace document `{relative}`: {error}"
-            ))
-        })
+        replace_atomically(&path, bytes, &format!("workspace document `{relative}`")).await
     }
 
     /// Writes a document on an agent's behalf.
@@ -429,11 +425,12 @@ impl WorkspaceDocuments {
                 "document path resolves outside /workspace".into(),
             ));
         }
-        tokio::fs::write(path, content).await.map_err(|error| {
-            tinyagents::TinyAgentsError::Tool(format!(
-                "failed to write workspace document `{relative}`: {error}"
-            ))
-        })
+        replace_atomically(
+            &path,
+            content.as_bytes(),
+            &format!("workspace document `{relative}`"),
+        )
+        .await
     }
 
     /// Renders a bounded directory tree under `relative`.
@@ -513,26 +510,12 @@ impl WorkspaceDocuments {
     /// writer leaves the previous index intact rather than a truncated one.
     async fn write_index(&self, content: &str) -> Result<()> {
         let final_path = self.workspace.join(INDEX_PATH);
-        let temporary = self.workspace.join(format!("{INDEX_PATH}.tmp"));
         // The index lives under `config/`, which a fresh workspace does not
         // have until something writes there first.
         if let Some(parent) = final_path.parent() {
             let _ = tokio::fs::create_dir_all(parent).await;
         }
-        tokio::fs::write(&temporary, content)
-            .await
-            .map_err(|error| {
-                tinyagents::TinyAgentsError::Tool(format!(
-                    "failed to stage document index: {error}"
-                ))
-            })?;
-        tokio::fs::rename(&temporary, &final_path)
-            .await
-            .map_err(|error| {
-                tinyagents::TinyAgentsError::Tool(format!(
-                    "failed to replace document index: {error}"
-                ))
-            })
+        replace_atomically(&final_path, content.as_bytes(), "document index").await
     }
 
     async fn search(&self, query: &str) -> Result<Vec<Value>> {
@@ -582,4 +565,44 @@ impl WorkspaceDocuments {
             .map(|(_, value)| value)
             .collect())
     }
+}
+
+/// Replaces a file in one step that cannot be observed half-written.
+///
+/// A bare `tokio::fs::write` truncates and then writes, which is two operations
+/// rather than one: a reader between them sees an empty or partial file, and
+/// two writers interleave into a file that is neither's. That was already
+/// measured on the document index, where three concurrent writes left four
+/// stranded bytes on the end and invalid JSON behind them. Staging beside the
+/// destination and renaming over it is atomic within a directory, so a reader
+/// sees the old bytes or the new ones and never half of each.
+///
+/// The staged name carries the process id and a per-process ticket, so two
+/// writers racing for one destination do not also collide on the file they
+/// stage it through. It starts with a dot, which is what keeps a listing from
+/// advertising a file that exists for microseconds.
+///
+/// This is per-file atomicity only. Ordering a write against the ledgers
+/// derived from it is [`super::worklock::writes`]'s job, and is taken at the
+/// tool-call boundary rather than here.
+async fn replace_atomically(final_path: &std::path::Path, bytes: &[u8], what: &str) -> Result<()> {
+    static STAGED: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    let name = final_path
+        .file_name()
+        .map(|name| name.to_string_lossy().into_owned())
+        .unwrap_or_default();
+    let ticket = STAGED.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    let staged = final_path.with_file_name(format!(".{name}.{}.{ticket}.tmp", std::process::id()));
+    tokio::fs::write(&staged, bytes).await.map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("failed to stage {what}: {error}"))
+    })?;
+    if let Err(error) = tokio::fs::rename(&staged, final_path).await {
+        // The staged copy is nobody's document. Left behind it would be a file
+        // in the workspace that no index explains and no later write replaces.
+        let _ = tokio::fs::remove_file(&staged).await;
+        return Err(tinyagents::TinyAgentsError::Tool(format!(
+            "failed to replace {what}: {error}"
+        )));
+    }
+    Ok(())
 }

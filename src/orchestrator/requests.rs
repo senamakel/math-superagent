@@ -70,6 +70,12 @@ struct Request {
 /// Returns the sentence the tool reports. A request answered from disk is not
 /// queued: the run has it, and adding a row saying so would send somebody
 /// looking for what is already in front of them.
+///
+/// This is the outermost function `request_research` reaches, and where the
+/// queue's read-modify-write is serialised. Every role holds this tool, so two
+/// of them stating a gap in the same moment is ordinary rather than rare, and
+/// unserialised the second `store` writes back a queue loaded before the first
+/// one's row existed.
 pub(super) async fn post(
     documents: &WorkspaceDocuments,
     need: &str,
@@ -96,6 +102,7 @@ pub(super) async fn post(
         );
     }
 
+    let _guard = super::worklock::writes().await;
     let mut queue = load(documents).await;
     let id = identifier(need);
     queue.insert(
@@ -119,6 +126,11 @@ pub(super) async fn post(
 ///
 /// Which requests are answered is read from the claim ledger, so a request
 /// stays open until something on disk actually establishes an answer.
+///
+/// Takes no lock. It is a re-derivation, of the same kind the ones in
+/// [`super::claims`] are, and like them it is reached only from a caller that
+/// already holds [`super::worklock::writes`] — today that is [`post`]. Adding
+/// one here would deadlock the moment a research write path picked it up.
 pub(super) async fn refresh(documents: &WorkspaceDocuments) {
     let queue = load(documents).await;
     let ledger = super::claims::collect(documents.root());
