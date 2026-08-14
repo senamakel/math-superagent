@@ -69,6 +69,12 @@ pub(super) const ARMS: [(&str, &str); 3] = [
 
 /// The routing ladder out of the reflection, as jq.
 ///
+/// Reads `.item.json` — the reflection step's own output — rather than the
+/// accumulator. The loop head folds at the *top* of a pass, so during pass N
+/// the accumulator still holds pass N−1's state: a ladder reading it would
+/// route this attempt on the last one's verdict, always one behind. A constant
+/// mock hides that completely, since N−1 and N look identical.
+///
 /// The order is load-bearing and is the Rust function's, arm for arm. `blocked`
 /// is checked before anything else because an attempt that died on the provider
 /// is not evidence about the mathematics, and a live pair of runs once burned
@@ -81,18 +87,23 @@ pub(super) const ARMS: [(&str, &str); 3] = [
 #[must_use]
 pub(super) fn reflect_ladder() -> String {
     format!(
-        "=if .nodes.{LOOP_NODE}.state.blocked >= {BLOCKED_THRESHOLD} then \"blocked\" \
-         elif .nodes.{LOOP_NODE}.state.solved or .nodes.{LOOP_NODE}.state.attempts >= \
-         {MAX_ATTEMPTS} then \"solved\" \
-         elif .nodes.{LOOP_NODE}.state.unverified >= {UNVERIFIED_THRESHOLD} then \"reported\" \
-         elif .nodes.{LOOP_NODE}.state.unproductive >= {STUCK_THRESHOLD} then \"diversify\" \
-         elif .nodes.{LOOP_NODE}.state.computational >= {COMPUTATIONAL_THRESHOLD} then \
-         \"diversify\" \
+        "=if .item.json.blocked >= {BLOCKED_THRESHOLD} then \"blocked\" \
+         elif .item.json.solved or .item.json.attempts >= {MAX_ATTEMPTS} then \"solved\" \
+         elif .item.json.unverified >= {UNVERIFIED_THRESHOLD} then \"reported\" \
+         elif .item.json.unproductive >= {STUCK_THRESHOLD} then \"diversify\" \
+         elif .item.json.computational >= {COMPUTATIONAL_THRESHOLD} then \"diversify\" \
          else \"retry\" end"
     )
 }
 
 /// The ladder out of the judge, as jq.
+///
+/// Reads the judge step's own output for the same reason
+/// [`reflect_ladder`] does, and with a sharper edge: a restart re-enters
+/// `attempt` without passing the loop head, so the accumulator is frozen for
+/// the whole restart cycle. Reading it there means `restarts` never appears to
+/// grow, the cap never trips, and a judge that keeps saying restart spins until
+/// the graph's recursion limit.
 ///
 /// Reads `judged`, which is what `SolutionState::to_accumulator` calls the
 /// judge's verdict. It read `verdict` until a breakdown of the graph caught it:
@@ -111,8 +122,8 @@ pub(super) fn reflect_ladder() -> String {
 #[must_use]
 pub(super) fn judge_ladder() -> String {
     format!(
-        "=if .nodes.{LOOP_NODE}.state.attempts >= {MAX_ATTEMPTS} then \"reflect\" \
-         elif .nodes.{LOOP_NODE}.state.restarts >= {MAX_RESTARTS} then \"reflect\" \
+        "=if .item.json.attempts >= {MAX_ATTEMPTS} then \"reflect\" \
+         elif .item.json.restarts >= {MAX_RESTARTS} then \"reflect\" \
          elif .item.json.judged == \"restart\" then \"restart\" \
          else \"reflect\" end"
     )

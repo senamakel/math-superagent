@@ -36,7 +36,15 @@ use super::workflow::LOOP_NODE;
 /// publishes its accumulator, so the comparison has to present a state the same
 /// way the engine would.
 fn scope_for(state: &Value) -> Value {
-    json!({ "nodes": { LOOP_NODE: { "state": state } } })
+    // Both ladders read `.item.json` — the step output they immediately
+    // follow — so the comparison presents a state the way the engine does. The
+    // accumulator is also supplied, because a ladder that regressed to reading
+    // it would then still be *comparable* rather than resolving to null and
+    // looking like agreement.
+    json!({
+        "item": { "json": state },
+        "nodes": { LOOP_NODE: { "state": state } },
+    })
 }
 
 /// The port the workflow's reflection ladder selects for `state`.
@@ -49,14 +57,15 @@ pub(super) fn workflow_route(state: &Value) -> String {
 
 /// The port the workflow's judge ladder selects, given a verdict.
 pub(super) fn workflow_judged(state: &Value, verdict: &str) -> String {
-    let mut scope = scope_for(state);
-    if let Some(map) = scope.as_object_mut() {
-        // The field a step really emits. Building this scope by hand is what
-        // let a mismatch between the ladder and the graph survive once, so it
-        // is built from `to_accumulator`'s own spelling now, and
-        // `the_ladders_read_fields_a_step_actually_emits` checks the rest.
-        map.insert("item".into(), json!({ "json": { "judged": verdict } }));
+    // The judge's verdict rides on the same state the counters do, which is
+    // what `to_accumulator` produces. Building this scope by hand is what let a
+    // mismatch between the ladder and the graph survive once, so
+    // `the_ladders_read_fields_a_step_actually_emits` checks the spelling.
+    let mut with_verdict = state.clone();
+    if let Some(map) = with_verdict.as_object_mut() {
+        map.insert("judged".into(), json!(verdict));
     }
+    let scope = scope_for(&with_verdict);
     tinyflows::expr::evaluate(&json!(super::workflow::judge_ladder()), &scope)
         .as_str()
         .unwrap_or("<null>")

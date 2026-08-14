@@ -374,22 +374,42 @@ fn the_ladders_read_fields_a_step_actually_emits() {
 
 /// The restart arm, end to end. A judge that wants the run to start over must
 /// actually reach another attempt rather than being routed to a reflection.
+///
+/// The sequence advances `restarts` the way `judge_step` does, because that is
+/// what bounds the arm: `judged --restart--> attempt` is an inner cycle the loop
+/// head never counts, so `max_iterations` cannot stop it and the ladder's
+/// `restarts >= MAX_RESTARTS` is the only thing that does. A mock returning a
+/// fixed state span until the recursion limit — which is the honest shape of
+/// the risk, and why the cap is load-bearing rather than a nicety.
 #[tokio::test]
-async fn a_restart_verdict_reaches_another_attempt() {
+async fn a_restart_verdict_reaches_another_attempt_and_is_capped() {
     use crate::orchestrator::solutions::{SolutionState, Verdict};
 
-    let mut restarting = SolutionState::new("a problem");
-    restarting.attempts = 1;
-    restarting.judged = Verdict::Restart;
+    let restarting = |restarts: usize, solved: bool| {
+        let mut state = SolutionState::new("a problem");
+        state.attempts = 1;
+        state.restarts = restarts;
+        state.solved = solved;
+        state.judged = Verdict::Restart;
+        Respond::value(state.to_accumulator())
+    };
 
     let run = TestHarness::new(&graph())
-        .mock_tool("run_loop_step", Respond::value(restarting.to_accumulator()))
+        .mock_tool(
+            "run_loop_step",
+            Respond::sequence([
+                restarting(0, false),
+                restarting(1, false),
+                restarting(MAX_RESTARTS, false),
+                // Past the cap the ladder must route to a reflection, and this
+                // ends the run so the test cannot hang if it does not.
+                restarting(MAX_RESTARTS, true),
+            ]),
+        )
         .run()
         .await
         .expect("the loop runs to completion");
 
-    // A restart re-enters the attempt without reflecting, so the run keeps
-    // attempting until the ceiling rather than settling after one pass.
     let attempts = run
         .trace()
         .steps
@@ -400,4 +420,7 @@ async fn a_restart_verdict_reaches_another_attempt() {
         attempts > 1,
         "the restart arm never re-attempted; it is unreachable"
     );
+    // And it stopped: the cap is what makes the arm safe.
+    run.assert_completed();
+    run.assert_node_ran("reflect");
 }
