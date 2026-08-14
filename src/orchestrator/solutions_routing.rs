@@ -179,6 +179,64 @@ pub(in crate::orchestrator) async fn refutation_arm(
     vec![Finding::new(Slot::Refutation, merged)]
 }
 
+/// Checks the literature *after* the run believes it is done.
+///
+/// Every other literature sweep in this runtime runs while the run is stuck, to
+/// find a way forward. This one runs when the run thinks it has finished, and
+/// it is asking the opposite question: has this already been done, and is the
+/// argument too short for what it claims?
+///
+/// Tao's rule, and he states it about his own work: a proof that came out
+/// surprisingly quickly is more likely to be wrong or already known than to be
+/// a breakthrough, so the check after a solve is not optional politeness — it
+/// is the step that separates a result from a rediscovery. Until this node
+/// existed the runtime did the exact inverse: [`super::open_library`] returns
+/// early when `state.solved`, so the one moment the literature is most worth
+/// reading was the one moment nothing read it.
+///
+/// It cannot un-solve the run, and that is deliberate. What it produces is a
+/// finding filed beside the answer, for the reader who has to decide whether to
+/// believe it — a runtime that retracted its own verdict on a search result
+/// would be trusting a web query over a verified program.
+pub(in crate::orchestrator) async fn novelty_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> Vec<Finding> {
+    if !state.solved {
+        return Vec::new();
+    }
+    let established = workspace
+        .map(|workspace| super::claims::collect(workspace).established())
+        .unwrap_or_default();
+    let report = delegate(
+        subagents,
+        "research",
+        format!(
+            "This run believes it has solved the problem below. Do not try to solve it. Find out \
+             whether the result is already known, and whether the argument is strong enough for \
+             what it claims.\n\n\
+             Search for the statement itself, for the numbers the run produced, and for the named \
+             theory it sits in. Report, with URLs: whether this result is published and by whom, \
+             whether the method used here is the standard one, and anything the sources say that \
+             contradicts what the run concluded.\n\n\
+             Be blunt about the second question. A proof that arrived quickly is far more often \
+             wrong or already known than it is new, and saying so late is worth nothing. If the \
+             run reached this in {} attempt(s) on {established} established claim(s), say whether \
+             that is plausible for a result of this size.\n\n\
+             If it is already known, that is the finding, and it is a useful one: name the source \
+             so the derivation can cite it. If you cannot find it, say that plainly rather than \
+             padding the report — an unsuccessful search is evidence too.\n\nProblem:\n{}\n\n\
+             What the run concluded:\n{}",
+            state.attempts,
+            state.problem(),
+            state.last_attempt
+        ),
+    )
+    .await;
+    vec![Finding::new(Slot::Digest, report)]
+}
+
 /// The statements worth attacking, read off the two ledgers that hold them.
 fn refutation_targets(workspace: Option<&Path>) -> String {
     let Some(workspace) = workspace else {

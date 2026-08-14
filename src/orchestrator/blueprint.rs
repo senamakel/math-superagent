@@ -186,8 +186,18 @@ fn addressable(skeletons: &Skeletons, ledger: &Ledger) -> BTreeSet<String> {
     known
 }
 
-/// Builds the graph from the skeletons and the claim library.
-pub(super) fn build(skeletons: &Skeletons, ledger: &Ledger) -> Blueprint {
+/// Builds the graph from the skeletons, the claim library, and what it entails.
+///
+/// The closure is a third input rather than something read from statuses,
+/// because a claim the library *entails* is as good to build on as one somebody
+/// proved and its block says otherwise. A graph that read only written statuses
+/// would leave a lemma blocked behind a claim the run already holds, and then
+/// offer the run its own theorem back as work.
+pub(super) fn build(
+    skeletons: &Skeletons,
+    ledger: &Ledger,
+    closure: &super::closure::Closure,
+) -> Blueprint {
     let mut blueprint = Blueprint::default();
     let known = addressable(skeletons, ledger);
     // A gap whose id is a skeleton's slug is a lemma that skeleton proves.
@@ -211,7 +221,15 @@ pub(super) fn build(skeletons: &Skeletons, ledger: &Ledger) -> Blueprint {
                 statement: claim.statement.clone(),
                 home: claim.source.clone(),
                 needs: Vec::new(),
-                standing: claim_standing(claim.status),
+                // The entailed reading first: a claim the library derives is
+                // settled whatever word its own block carries, and taking the
+                // block's word here would discard the free upgrade before it
+                // ever reached a planning role.
+                standing: if closure.is_covered(&claim.id) {
+                    Standing::Established
+                } else {
+                    claim_standing(claim.status)
+                },
             },
         );
     }
@@ -652,10 +670,9 @@ pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) {
 
 /// Builds the graph from what is on disk.
 pub(super) fn collect(workspace: &Path) -> Blueprint {
-    build(
-        &super::backward::collect(workspace),
-        &super::claims::collect(workspace),
-    )
+    let ledger = super::claims::collect(workspace);
+    let closure = super::closure::build(&ledger);
+    build(&super::backward::collect(workspace), &ledger, &closure)
 }
 
 fn cell(text: &str) -> String {

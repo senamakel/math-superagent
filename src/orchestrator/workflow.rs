@@ -58,6 +58,15 @@ pub(super) const EVAL_ARMS: [&str; 4] = [
     "eval_refutation",
 ];
 
+/// The literature check that runs after the loop, and only on a solve.
+///
+/// A node of its own rather than a branch of the final judge, because it asks a
+/// question about the *world* rather than about the run: is this already known,
+/// and is the argument short enough to be suspicious? Every other sweep in this
+/// graph runs while the run is stuck and looks for a way forward. This one runs
+/// when the run thinks it is finished and looks for a reason to doubt it.
+pub(super) const NOVELTY_NODE: &str = "novelty";
+
 /// The node that scores the run, once, after the loop has finished.
 ///
 /// Not an evaluation arm, and the difference is what the judge is *for*. The
@@ -483,6 +492,11 @@ pub(super) fn solution_loop(
         // genuinely an escalation is blocking on the literature the run has been
         // gathering in the background rather than attempting without it.
         step_with("diversify_library", BODY_STATE, &Value::Null),
+        step_with(
+            NOVELTY_NODE,
+            &format!("=.nodes.{LOOP_NODE}.state"),
+            &Value::Null,
+        ),
         step_as(
             FINAL_JUDGE,
             "judge",
@@ -502,7 +516,12 @@ pub(super) fn solution_loop(
         edge(LOOP_NODE, "body", "attempt"),
         // The run's last act, on the way out. It reads the accumulator because
         // by here that is the finished run: the head has folded every pass.
-        edge(LOOP_NODE, "done", FINAL_JUDGE),
+        // The literature check first, then the judge, then the report. In that
+        // order because the judge is scoring the whole run and "this was
+        // already published in 1974" is the single most important thing it
+        // could be told before it does.
+        edge(LOOP_NODE, "done", NOVELTY_NODE),
+        edge(NOVELTY_NODE, "main", FINAL_JUDGE),
         edge(FINAL_JUDGE, "main", "report"),
         // The backward branch is two nodes, so it fans out from the attempt like
         // the others and converges from its own last node.

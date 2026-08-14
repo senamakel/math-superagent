@@ -43,7 +43,7 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 use super::async_subagents::AsyncSubagentManager;
 use super::solutions::{
     Beside, Mailboxes, SolutionState, attempt_step, diversify_invention_arm, diversify_library_arm,
-    diversify_merge, diversify_pattern_arm, judge_step, reflect_step, refutation_arm,
+    diversify_merge, diversify_pattern_arm, judge_step, novelty_arm, reflect_step, refutation_arm,
 };
 use super::vector::VectorStore;
 
@@ -52,7 +52,7 @@ use super::vector::VectorStore;
 /// A closed set, matched by name. An unknown step is an error rather than a
 /// no-op: a workflow naming a step that does not exist would otherwise run,
 /// change nothing, and route on a state nobody advanced.
-const STEPS: [&str; 13] = [
+const STEPS: [&str; 14] = [
     "init_context",
     "seed_context",
     "attempt",
@@ -66,6 +66,7 @@ const STEPS: [&str; 13] = [
     "goal_gate",
     "goal_apply",
     "diversify_library",
+    "novelty",
 ];
 
 /// The slug a workflow node names this tool by.
@@ -220,6 +221,13 @@ impl LoopSteps {
             "diversify_library" => {
                 let findings = diversify_library_arm(&self.subagents, &state).await;
                 diversify_merge(fold_arm(state, findings))
+            }
+            // Runs once, after the loop, and does nothing unless the run
+            // ended believing it was solved — the arm itself makes that call,
+            // so the graph does not need a switch to express it.
+            "novelty" => {
+                let findings = novelty_arm(&self.subagents, workspace, &state).await;
+                fold_arm(state, findings)
             }
             "goal_apply" => apply_goal_decision(state, args),
             _ => {
