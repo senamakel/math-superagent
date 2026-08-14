@@ -349,6 +349,71 @@ than to build it twice.
 score already exists and is simply not read, which is a wiring question and
 described with the other two findings.
 
+## What testing them against real work found
+
+The nine closures were built against fixtures. Fixtures are text this repository
+wrote, so a check that only ever met them is a check against its own
+assumptions, and three of the four newest were wrong in ways no fixture could
+show. `ledger_report` and `examples/derive_ledgers` exist so that the two
+reasoned ledgers can be re-derived on the host, without a container or a key,
+over a workspace a live run actually produced.
+
+**The statement graph, over eight committed workspaces.** Three carry
+decompositions; the other five have no `research/backward/` content and the
+graph correctly says nothing about them. Across the three it resolved 25 nodes
+into 23 ready and 5 blocked-or-refuted. The blocked ones are the finding, and
+one is a fault nothing could previously report: `singmaster`'s
+`boundary-finite-collisions` skeleton is headed `sketched` with four open gaps,
+while one of the lemmas it rests on is `refuted` — refuted by the run's own
+directive 24, whose note says the route was re-derived without it. Nobody
+updated the skeleton's dependency list, so the file still says the goal rests on
+something known to be false. Read one file at a time that is invisible; as a
+graph, refutation propagates upward and the goal comes back broken.
+
+**The Lean check, against the container's own `lean`.** Four probe files —
+clean, `sorry`, self-declared `axiom`, `native_decide` — run through the image's
+Lean 4 and Mathlib. Two of the four disagreed with the parser:
+
+- Lean writes the warning as ``declaration uses `sorry` ``, with backticks. The
+  parser looked for the straight-quoted form, so **no `sorry` was ever
+  recorded**. The verdict still came out false, because the same proof also
+  prints `sorryAx` — right answer, wrong reason, and an empty `sorries` list on
+  the record a later reader is meant to trust.
+- A proof needing no axiom at all prints `does not depend on any axioms`, which
+  contains neither `axioms:` nor a list. It was read as *no `#print axioms`
+  line* and refused. **The strictest possible result was the one result the
+  check rejected.**
+
+The third probe is the one the control was written for and it behaved: a
+theorem proved from `axiom key_estimate` compiles, warns nothing, and is now
+refused by name. The fourth validated the design rather than the code — this
+toolchain prints `big._native.native_decide.ax_1_1` for `native_decide`, not the
+`Lean.ofReduceBool` the comment predicted, and the check holds anyway because it
+names what is *not* on the trusted list rather than denylisting what is.
+
+**The entailment closure could not be tested retrospectively**, and that is
+itself a measurement. `follows-from:` is new, so no committed workspace has one
+— the closure reports nothing over all eight. Grepping the corpus for
+entailments stated in prose finds about 110, of which all but one point at an
+*external* theorem ("follows from Theorem 3.2") rather than at a claim the run
+holds. The runs almost never wrote an internal derivation down, which is both
+why nothing could follow the edges and a caution about the yield: the closure is
+worth exactly what the scholar puts into it. Re-run against a copy of the
+`gilbreath` library with one edge added where that library's own prose already
+states the derivation, it upgrades the consequence and briefs the next attempt
+not to prove it again. It also exposed a rendering fault, since fixed: an
+entailed claim filed weaker appeared under both *established for free* and
+*already entailed*, one heading saying settle it and the other saying it is not
+a result.
+
+**What the two new files cost.** Both are routed narrowly — the graph to the
+orchestrator, the goals agent and the reducer, the closure to the orchestrator,
+the goals agent and the scholar, and to nobody else, which `dump_prompts`
+confirms by name. Over the `gilbreath` library, which is 3.4 MB and the largest
+committed, they add about 18,000 tokens across all nineteen assembled prompts
+against roughly 731,000 — under three per cent, and the two roles that plan are
+where it lands.
+
 ## Two findings unrelated to Tao, raised rather than folded in
 
 **`--no-research` withholds discovery but not retrieval.** Only `exa_search` and

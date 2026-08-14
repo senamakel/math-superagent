@@ -203,6 +203,19 @@ itself transitively settles nothing and is excluded from every other section,
 because two claims each said to follow from the other would otherwise bootstrap
 each other into an establishment neither has.
 
+Both reasoned ledgers can be re-derived on the host, over any workspace,
+without a container or an API key:
+
+```sh
+cargo run --example derive_ledgers -- workspace/conjectures/singmaster
+```
+
+It prints both files and both briefings. That is how a change to either
+derivation is checked against a workspace a live run produced rather than only
+against a fixture, and it is how the stale dependency in `singmaster`'s
+`boundary-finite-collisions` skeleton was found — the header still says
+`sketched` while a lemma under it is `refuted`.
+
 `search_claims` and `request_research` travel with the document tools, for the
 same reason the index tools do: whichever role is working is the one that needs
 to know what the run establishes, or that walks into a gap.
