@@ -1,0 +1,31 @@
+# The egress allowlist for a calibration run.
+#
+# A calibration run works on a conjecture that has already been solved, stated
+# as open. That measures nothing unless the published answer is genuinely out of
+# reach, and the tool-layer screen in `orchestrator::screen` cannot make it so on
+# its own: `execute_command` runs Python inside the container, and the container
+# has unrestricted network, so three lines of `urllib` reach any paper on the
+# web without passing a single screened tool.
+#
+# So under `compose.eval.yaml` the agent container is put on an internal network
+# with no default route, and this is the only way out. It is a separate
+# container on purpose — the agent cannot read its filesystem, so the allowlist
+# and the denied hosts stay in plaintext here while the tool-layer blocklist has
+# to travel as salted digests.
+#
+# HTTPS CONNECT shows a proxy only `host:port`, never a path or a body. That is
+# the whole division of labour: this layer decides **which hosts are reachable
+# at all**, and the Rust screen — the only layer that sees plaintext — decides
+# **whether an allowed source reveals the answer**.
+FROM alpine:3.21
+
+RUN apk add --no-cache tinyproxy
+
+COPY scripts/proxy-entrypoint /usr/local/bin/proxy-entrypoint
+RUN chmod +x /usr/local/bin/proxy-entrypoint
+
+# Unprivileged, like the runtime it fronts.
+USER tinyproxy
+
+EXPOSE 8888
+ENTRYPOINT ["/usr/local/bin/proxy-entrypoint"]

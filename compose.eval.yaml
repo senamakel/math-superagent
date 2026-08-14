@@ -1,0 +1,122 @@
+# Overlay that turns an ordinary run into a calibration run.
+#
+#   docker compose -f compose.yaml -f compose.eval.yaml run --rm agent ...
+#
+# `./calibrate <slug>` does this for you and also compiles the blocklist,
+# checks nothing is already running on the workspace, and seeds the statement.
+# Use it rather than invoking compose directly.
+#
+# Nothing here changes `compose.yaml`, so an ordinary run against a genuinely
+# open conjecture is untouched by any of it.
+#
+# # What this file is for
+#
+# A calibration run works on a conjecture that has **already been solved**,
+# stated as open, so that the harness's trajectory can be scored against a known
+# destination. That measures nothing unless the published answer is out of
+# reach — and the tool-layer screen cannot manage that alone, because
+# `execute_command` runs Python in the container and the container has
+# unrestricted network. Three lines of `urllib` reach any paper on the web
+# without passing a single screened tool.
+#
+# So this overlay takes the container's default route away. All egress goes
+# through `screen-proxy`, which holds a host allowlist and refuses everything
+# else. HTTPS CONNECT shows a proxy only `host:port`, so the division of labour
+# is: **the proxy decides which hosts are reachable, and the Rust screen — the
+# only layer that sees plaintext — decides whether an allowed source reveals the
+# answer.**
+#
+# # The consequence, accepted deliberately
+#
+# `download_document` can only reach the hosts below, so a calibration run
+# cannot fetch an arbitrary page it found through search. Content still arrives:
+# Exa performs its own fetches server-side and returns the text through
+# `read_sources` and `deep_research`, which the Rust screen reads in plaintext.
+# That is the intended shape — the container talks to APIs, and *content* comes
+# through tools that can be screened.
+
+networks:
+  # `compose.yaml` declares this as the external network of the problem's own
+  # Cognee stack. `scripts/memory-up --eval` brings that stack up with
+  # `compose.memory.eval.yaml`, which marks the network `internal: true` and
+  # gives Cognee — and only Cognee — a second, routable network of its own.
+  #
+  # So the name and the externality are unchanged here; what changed is the
+  # network the name refers to, which now has no gateway. The agent keeps
+  # reaching `cognee:8000` and loses everything else.
+  memory:
+    external: true
+    name: ${COGNEE_NETWORK:?set COGNEE_NETWORK with scripts/memory-up --eval}
+
+  # The proxy's own way out. Only the proxy is on it.
+  egress:
+    driver: bridge
+
+services:
+  screen-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile.proxy
+    image: riemann-screen-proxy:local
+    restart: unless-stopped
+    networks:
+      - memory
+      - egress
+    # The allowlist. Every entry is an API the runtime itself needs, and
+    # nothing here serves documents to a human reader.
+    #
+    # Deliberately absent: arxiv.org, the encyclopedias, and the scholarly
+    # mirrors. Those are where a solved conjecture's answer is written down, and
+    # allowing them at this layer would reopen the `execute_command` path that
+    # this overlay exists to close. Their content is still reachable through
+    # Exa, whose fetches happen at Exa and come back through a screened tool.
+    environment:
+      ALLOWED_HOSTS: >-
+        openrouter.ai,
+        api.exa.ai,
+        oeis.org,
+        api.openalex.org,
+        pypi.org,
+        files.pythonhosted.org,
+        ${MATH_AGENT_LANGFUSE_HOST:-langfuse.invalid}
+    # Read-only and unprivileged, on the same argument as the runtime: this
+    # container decides what the run can reach, so it is worth at least as much
+    # hardening as the thing it constrains.
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=8m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 128m
+
+  agent:
+    depends_on:
+      - screen-proxy
+    environment:
+      # Convenience, not enforcement. Every HTTP client in the container reads
+      # these, so well-behaved traffic goes straight to the proxy — but a
+      # client that ignores them does not thereby escape, because there is no
+      # route out to ignore them *to*. The network is the control; these two
+      # lines only spare the run a pile of timeouts.
+      HTTP_PROXY: http://screen-proxy:8888
+      HTTPS_PROXY: http://screen-proxy:8888
+      http_proxy: http://screen-proxy:8888
+      https_proxy: http://screen-proxy:8888
+      # Reached over the internal network, so it must not be proxied.
+      NO_PROXY: cognee,neo4j,localhost,127.0.0.1
+      no_proxy: cognee,neo4j,localhost,127.0.0.1
+      # Arms the tool-layer screen. Named but unreadable is a hard startup
+      # failure by design; see `orchestrator::screen::policy`.
+      MATH_AGENT_SCREEN: /etc/riemann/screen.json
+    volumes:
+      # Exactly one file, read-only — not a directory and not the repository.
+      # It is the compiled blocklist, in which every term is a salted digest,
+      # because `execute_command` can read any file the runtime can and a
+      # plaintext blocklist here would hand the run the names it withholds.
+      - type: bind
+        source: ./evals/.build/${MATH_AGENT_EVAL_SLUG:?set MATH_AGENT_EVAL_SLUG, or use ./calibrate}/screen.json
+        target: /etc/riemann/screen.json
+        read_only: true

@@ -1,0 +1,73 @@
+#!/bin/sh
+# Generates tinyproxy's configuration from the environment, then runs it.
+#
+# The allowlist has to be a runtime input rather than a baked-in file because
+# one of its entries — the Langfuse host — comes from the operator's `.env` and
+# differs per deployment. Generating the config here keeps that out of the
+# image and out of Git.
+#
+# `FilterDefaultDeny Yes` turns tinyproxy's filter into an allowlist: a host
+# that matches no rule is refused. That default is the control. Everything below
+# only widens it, and only by exact host.
+set -eu
+
+config=/tmp/tinyproxy.conf
+filter=/tmp/tinyproxy.filter
+
+if [ -z "${ALLOWED_HOSTS:-}" ]; then
+    echo "proxy: ALLOWED_HOSTS is empty; refusing to start" >&2
+    echo "proxy: an empty allowlist with FilterDefaultDeny would deny the model" >&2
+    echo "proxy: provider itself, which reads as a broken run rather than a" >&2
+    echo "proxy: screened one" >&2
+    exit 2
+fi
+
+# One anchored rule per host, matching the host itself and any subdomain.
+#
+# Anchoring is not cosmetic. tinyproxy matches with `regexec`, which is
+# unanchored, so a bare `openrouter\.ai` would also allow
+# `openrouter.ai.attacker.example` — the allowlist would leak by suffix.
+: > "$filter"
+for host in $(echo "$ALLOWED_HOSTS" | tr ',' ' '); do
+    [ -n "$host" ] || continue
+    escaped=$(echo "$host" | sed 's/\./\\./g')
+    printf '^([a-z0-9_-]+\\.)*%s$\n' "$escaped" >> "$filter"
+done
+
+echo "proxy: allowlist" >&2
+cat "$filter" >&2
+
+cat > "$config" <<EOF
+User tinyproxy
+Group tinyproxy
+Port 8888
+Listen 0.0.0.0
+Timeout 600
+
+# Who may use the proxy. The agent is on an internal network and this container
+# is the only other thing on it, so the client-side restriction is the network,
+# not this line.
+Allow 0.0.0.0/0
+
+# The allowlist. Default deny is what makes this a control rather than a
+# preference: a host nobody listed is refused, including one reached by a
+# Python subprocess that never touched a screened tool.
+Filter "$filter"
+FilterDefaultDeny Yes
+FilterType ere
+FilterCaseSensitive Off
+# Match on the host, not the URL. An HTTPS request arrives as a CONNECT to
+# host:443 and carries no path at all, so host matching is the only rule that
+# applies uniformly to both schemes.
+FilterURLs Off
+
+# HTTPS and HTTP only. Without these, a tunnel could be opened to an arbitrary
+# port, on something the filter never considered.
+ConnectPort 443
+ConnectPort 80
+
+LogLevel Info
+EOF
+
+echo "proxy: starting on :8888" >&2
+exec tinyproxy -d -c "$config"
