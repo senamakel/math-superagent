@@ -10,7 +10,7 @@ Rungs are listed weakest first, which is the order to climb them. Attack the cur
 
 | Ladder | Full-strength goal | Difficulties | Status |
 | --- | --- | --- | --- |
-| [[plane-chi-ladder]] | determine chi(G) for the unit-distance graph G on R^2 (vertices = all points of the plane, edges iff \|x - y\| = 1 exactly), i.e. close the standing gap 4 <=… | unbounded-n, continuum-space, sparse-random, nonlocal-obstruction, exp-colour-test, direction-unknown, upper-novelty, exactness-trap | open |
+| [[plane-chi-ladder]] | determine chi(G) for the unit-distance graph on R^2 (known 4 <= chi(G) <= 7): either exhibit a unit-distance graph with chi >= 5 in exact algebraic… | unbounded-n, continuum-space, sparse-random, nonlocal-obstruction, exp-colour-test, direction-unknown, upper-novelty, exactness-trap | open |
 | [[unit-distance-chi]] | determine chi(G) for the unit-distance graph G on R^2 (all points of the plane, edges iff \|x - y\| = 1 exactly); close the standing gap 4 <= chi(G) <= 7 in… | infinite-target, continuum-search, exactness-trap, rigidity-deficit, exponential-test, colouring-construction | open |
 
 ## The rungs, weakest first
@@ -19,24 +19,20 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
-| `R-moser-calibration` | [[plane-chi-ladder]] | build the 7-vertex Moser spindle from problem.md (two unit rhombi sharing a vertex, rotated so the far vertices are at unit distance) in exact arithmetic;… | unbounded-n, continuum-space, sparse-random, nonlocal-obstruction, exp-colour-test, direction-unknown, upper-novelty | open |
-| `R-upper-bound-six` | [[plane-chi-ladder]] | give an explicit 6-colouring of the plane — a covering by 6 colour classes with a computed positive separation margin proving no two points at distance exactly… | unbounded-n, continuum-space, sparse-random, nonlocal-obstruction, exp-colour-test, direction-unknown | open |
-| `R-construction-census` | [[plane-chi-ladder]] | run the exact construction engine (Minkowski sums, rotations chosen for coincidence, spindling) over an explicitly bounded family of small seed graphs whose… | unbounded-n, continuum-space, sparse-random, direction-unknown, upper-novelty | open |
-| `R-size-bound` | [[plane-chi-ladder]] | prove that every unit-distance graph on at most N vertices is 4-colourable, for the largest N the run can establish, by a structural argument (a vertex of… | unbounded-n, sparse-random, nonlocal-obstruction, direction-unknown, upper-novelty | open |
+| `R-moser-calibration` | [[plane-chi-ladder]] | reproduce the calibration pair in exact arithmetic: the 7-vertex graph from problem.md (two unit rhombi sharing a vertex, rotated so the far vertices are at… | unbounded-n, continuum-space, sparse-random, nonlocal-obstruction, exp-colour-test, direction-unknown, upper-novelty | open |
 | `R-moser-calibration` | [[unit-distance-chi]] | Determine the chromatic number of the 7-vertex Moser spindle from problem.md in exact arithmetic: symbolically certify all 11 of its unit edges (\|x - y\|^2 = 1… | infinite-target, continuum-search, exponential-test, rigidity-deficit, colouring-construction | open |
 | `R-standing-bounds` | [[unit-distance-chi]] | Machine-verify the standing interval 4 <= chi(G) <= 7: the De Bruijn–Erdős lift of the verified Moser spindle gives the lower bound, and a hexagonal tiling… | continuum-search, exponential-test, rigidity-deficit, colouring-construction | open |
 | `R-construction-census-small` | [[unit-distance-chi]] | For a fixed, explicitly bounded family of structured constructions (Minkowski sums and spindles whose coordinates live in a fixed exact field such as… | exponential-test, rigidity-deficit, colouring-construction | open |
 | `R-size-bound` | [[unit-distance-chi]] | Theorem: every unit-distance graph on at most N vertices is 4-colourable, for the largest N this run can establish, by a structural argument (a vertex of… | rigidity-deficit, colouring-construction | open |
-| `R-lower-bound-five` | [[plane-chi-ladder]] | exhibit a unit-distance graph with chi >= 5, given as an explicit vertex list in exact algebraic coordinates, every edge certified \|x-y\|^2 = 1 symbolically,… | upper-novelty | open |
 | `R-lower-bound-closed` | [[unit-distance-chi]] | Close the lower bound within the exact pipeline: exhibit a unit-distance graph that is not 4-colourable (exact coordinates, every edge symbolically certified,… | colouring-construction | open |
 
 ## The current rung — attack this one
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
-- [[plane-chi-ladder]] → `R-moser-calibration`: build the 7-vertex Moser spindle from problem.md (two unit rhombi sharing a vertex, rotated so the far vertices are at unit distance) in exact arithmetic; symbolically certify all 11 claimed edges satisfy |x-y|^2 = 1 over the exact coordinate field; and by a complete k-colouring test prove chi = 4 (a 4-colouring exists, no 3-colouring exists)
+- [[plane-chi-ladder]] → `R-moser-calibration`: reproduce the calibration pair in exact arithmetic: the 7-vertex graph from problem.md (two unit rhombi sharing a vertex, rotated so the far vertices are at unit distance) has all 11 claimed edges certified |x-y|^2 = 1 symbolically, and a complete k-colouring test reports 4-colourable and not 3-colourable (a witness colouring at k=4, UNSAT at k=3)
   - switched off: unbounded-n, continuum-space, sparse-random, nonlocal-obstruction, exp-colour-test, direction-unknown, upper-novelty
-  - to merge the next difficulty back: oracle pair (exact edge certifier + complete colouring test) trusted; turn nonlocal-obstruction and exp-colour-test on by fixing the construction engine and censusing its outputs. First move: state and prove the exact pair-distance theorem for Minkowski sums A+B — which pairs (a1+b1, a2+b2) land at distance exactly 1 — over a fixed exact field such as Q(sqrt(3))
+  - to merge the next difficulty back: oracle pair exists and is trusted; next turn continuum-space back on by defining a construction family (Minkowski sums A+B of small seed graphs, rotations chosen for coincidence) and running its outputs through unit_graph — first move is the exact pair-distance theorem for Minkowski sums
 - [[unit-distance-chi]] → `R-moser-calibration`: Determine the chromatic number of the 7-vertex Moser spindle from problem.md in exact arithmetic: symbolically certify all 11 of its unit edges (|x - y|^2 = 1 over the exact coordinate field), and prove by a complete colouring test that chi = 4 (a 4-colouring exists, no 3-colouring exists).
   - switched off: infinite-target, continuum-search, exponential-test, rigidity-deficit, colouring-construction
   - to merge the next difficulty back: Turn infinite-target back on by applying De Bruijn–Erdős (record the choice hypothesis it needs) to lift the verified finite chi = 4 to chi(G) >= 4. First move: state the compactness theorem and check its hypotheses against G.

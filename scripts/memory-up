@@ -109,7 +109,10 @@ compose up -d >&2
 # and an agent that starts against an unhealthy server spends its first minutes
 # failing recall calls it will never retry.
 waited=0
-while [ "$waited" -lt 180 ]; do
+# 420s rather than 180s. A single stack comes up well inside three minutes; three
+# starting together do not, and the first symptom is a launcher giving up on a
+# server that is still initialising.
+while [ "$waited" -lt 420 ]; do
     state=$(compose ps \
         --format '{{.Service}} {{.Health}}' 2>/dev/null | grep '^cognee ' || true)
     case "$state" in
