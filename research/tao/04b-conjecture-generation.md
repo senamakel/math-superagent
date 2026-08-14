@@ -395,12 +395,32 @@ that the method is not gated on a frontier model.
 
 ## AlphaEvolve
 
-Covered in `04-machine-math.md` §II.6, because Tao is a co-author and the
-verifier-exploitation finding belongs with his own commentary. Summary of the
-part relevant here: the LLM evolves *code* that generates candidates rather
-than the candidates themselves; 67 problems, 20 matching or beating the
-literature; and the finding that the system is "extremely good at locating
-exploits in the verification code", forcing a rewrite in exact arithmetic.
+Tao, Georgiev, Gómez-Serrano and Wagner, *Mathematical exploration and discovery
+at scale* —
+https://terrytao.wordpress.com/2025/11/05/mathematical-exploration-and-discovery-at-scale/
+
+The system does not optimise inputs. An LLM evolves *code* that generates
+inputs, scored by an executable verifier. Across 67 problems: 20 matched or beat
+the literature, 39 met expectations, 8 fell short. It recovered exact solutions
+in readable form (the Talenti function for Gagliardo–Nirenberg), sometimes
+generalised a construction from small parameters to large, and struggled on
+analytic number theory even when given expert hints. On famous open problems
+(Sidorenko, Sendov, Crouzeix) it located the conjectured optimisers and found no
+counterexample — one-sided evidence, not resolution.
+
+The finding that matters most is that the generator attacks the verifier: the
+system is "extremely good at locating exploits in the verification code",
+satisfying an imprecise distance constraint by placing points nearly on top of
+one another. Tao's team rewrote the verifiers in exact arithmetic with
+conservative bounds, and he warns that "blindly trusting the AE values can be
+risky as they may be a consequence of verifier exploits rather than any true
+progress." This is the one row of the table above where the verifier is written
+by the same people the search is trying to fool, and it is the row an autonomous
+agent occupies by default.
+
+He also proposes making this routine: a standard sanity check run against a new
+conjecture *before* publication, with the negative results — currently folklore
+— systematically recorded.
 
 ## Sources
 

@@ -304,19 +304,38 @@ fn support_agents(
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
-        // The document tools and the memory tools, and nothing else — the same
-        // grant reflection has, and not by coincidence: both read the whole
-        // workspace, write prose about it, and must not start solving.
-        //
-        // No `exa_search` or `oeis_lookup`: a role that can search turns "what
-        // would suffice" into another literature survey, which is the
-        // librarian's errand and is already commissioned at every diversify.
-        // Nothing that computes, because a gap is discharged by a proof or a
-        // claim, never by a program this role wrote. No delegation bench,
-        // because a skeleton is checked by the forward loop attacking its gaps
-        // — a bench here would be a second investigation beside the first. No
-        // scratch, because a gap opened on arithmetic nobody has settled is a
-        // task the forward loop cannot close.
+    ]
+    .into_iter()
+    .chain(planning_agents(document_tools, memory_tools))
+    .chain(library_agents(
+        research_enabled,
+        document_tools,
+        memory_tools,
+    ))
+    .collect()
+}
+
+/// Returns the two roles that change what the run attacks without attacking it.
+///
+/// The reducer decomposes the goal and the weakener lowers it, and they are
+/// declared together because they share a tool boundary exactly — the document
+/// tools and the memory tools, and nothing else. That is the same grant
+/// reflection has, and not by coincidence: all three read the whole workspace,
+/// write prose about it, and must not start solving.
+///
+/// No `exa_search` or `oeis_lookup`, because a role that can search turns "what
+/// would suffice" or "what would be easier" into another literature survey,
+/// which is the librarian's errand and is already commissioned at every
+/// diversify. Nothing that computes, because a gap is discharged by a proof or
+/// a claim and a rung by the forward loop attacking it, never by a program
+/// either role wrote. No delegation bench, which would be a second
+/// investigation beside the first. No scratch, because provisional arithmetic
+/// nobody has settled is not a task the forward loop can close.
+fn planning_agents(
+    document_tools: [&'static str; 11],
+    memory_tools: [&'static str; 3],
+) -> Vec<AgentDefinition> {
+    vec![
         AgentDefinition::new(
             "reducer",
             "Reduction Agent",
@@ -330,13 +349,6 @@ fn support_agents(
         // other route reaches the goal; both keep the goal fixed. This one
         // lowers it deliberately, which is the move a mathematician makes
         // first and this runtime could not make at all.
-        //
-        // Its tools are the reducer's exactly, and for the reducer's reasons:
-        // no search, because a role that can search turns "what is easier"
-        // into a literature survey; nothing that computes, because a rung is
-        // settled by the forward loop attacking it and never by a program this
-        // role wrote; no delegation bench, which would be a second
-        // investigation beside the first.
         AgentDefinition::new(
             "weakener",
             "Weakening Agent",
@@ -346,13 +358,6 @@ fn support_agents(
         .with_model("openrouter")
         .with_tools(memory_tools.into_iter().chain(document_tools)),
     ]
-    .into_iter()
-    .chain(library_agents(
-        research_enabled,
-        document_tools,
-        memory_tools,
-    ))
-    .collect()
 }
 
 /// Returns the librarian, scholar, and goals definitions.

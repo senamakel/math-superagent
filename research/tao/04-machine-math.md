@@ -153,11 +153,9 @@ including the 'pfr' bubble at the bottom colored in green."
 **Consistency check.** `leanblueprint checkdecls` verifies that every Lean
 declaration named in the blueprint exists in the project or a dependency, and
 requires a completed `lake build` — so the blueprint cannot drift into citing
-declarations that were renamed or never written.
-
-**CI.** GitHub Actions rebuilds the graph, the HTML and PDF renders and the
-doc-gen4 API docs on every push, deploying to Pages. On PFR the rebuild took
-about half an hour: the dashboard is eventually consistent, not live.
+declarations that were renamed or never written. **CI**: GitHub Actions rebuilds
+the graph, the HTML and PDF renders and the doc-gen4 docs on every push. On PFR
+that took about half an hour — the dashboard is eventually consistent, not live.
 
 ## II.2 Why the DAG parallelises — the actual argument
 
@@ -177,10 +175,9 @@ Tao states it twice, and it is the load-bearing claim of this whole file.
 > understand the project as a whole." — **[MAP]**
 
 And on the blog: "it is not necessary to wait for earlier stages of the
-argument to be fully formalized to start working on later stages".
-
-Three separable properties, worth naming individually because an agent runtime
-can have some without the others:
+argument to be fully formalized to start working on later stages". Three
+separable properties, worth naming individually because an agent runtime can
+have some without the others:
 
 1. **A statement is a contract.** Once stated in Lean, it can be depended on
    while its proof is still `sorry`.
@@ -191,13 +188,11 @@ can have some without the others:
 ## II.3 PFR — the worked example
 
 33-page human proof; **about 20 collaborators; three weeks**; dependency graph
-fully green (**[MAP]**; announcement
-https://mathstodon.xyz/@tao/111526765350663641). Compare **[MAP]**'s other data
-points: Flyspeck took Hales and 21 contributors 11 years against a 20-year
-estimate; the Liquid Tensor Experiment took ~18 months for a 10-page proof.
-
-Formalisation found a real defect: "one of our lemmas had omitted by mistake the
-hypothesis that the ambient group be 2-torsion."
+fully green (**[MAP]**; https://mathstodon.xyz/@tao/111526765350663641). Compare
+**[MAP]**'s other data points: Flyspeck took Hales and 21 contributors 11 years
+against a 20-year estimate; the Liquid Tensor Experiment ~18 months for a
+10-page proof. Formalisation also found a real defect: "one of our lemmas had
+omitted by mistake the hypothesis that the ambient group be 2-torsion."
 
 Tao's cost estimate, from **[MAP]**: the de Bruijn factor — formal effort over
 informal effort — is "still well above one (I estimate ∼ 20), but dropping. I
@@ -358,22 +353,13 @@ bottleneck without checking.
 
 ## II.6 AlphaEvolve — search whose verifier is the security boundary
 
-Tao, Georgiev, Gómez-Serrano and Wagner, *Mathematical exploration and
-discovery at scale*:
+Tao, Georgiev, Gómez-Serrano and Wagner, *Mathematical exploration and discovery
+at scale* — full treatment in `04b`. Two findings feed §III: verifier
+exploitation (§I.3), which makes the verifier an adversarial boundary where
+exact arithmetic is not a nicety; and Tao's proposal that such search become a
+routine pre-publication sanity check, with negative results systematically
+recorded rather than left as folklore.
 https://terrytao.wordpress.com/2025/11/05/mathematical-exploration-and-discovery-at-scale/
-
-The system does not optimise inputs; an LLM evolves *code* that generates
-inputs, scored by an executable verifier. Across 67 problems: 20 matched or
-beat the literature, 39 met expectations, 8 fell short. It recovered exact
-solutions in readable form (the Talenti function for Gagliardo–Nirenberg),
-generalised constructions across parameters, and struggled on analytic number
-theory even with expert hints.
-
-Two findings for §III. First, verifier exploitation (quoted in §I.3) — the
-verifier is an adversarial boundary, and exact arithmetic is not a nicety.
-Second, Tao's suggestion that this kind of search become routine: a standard
-sanity check run against a new conjecture *before* publication, with negative
-results systematically recorded rather than left as folklore.
 
 ## II.7 Summary: mechanism → what it buys → what breaks without it
 

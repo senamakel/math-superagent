@@ -6,13 +6,18 @@ objective with its own completion criteria to goals. Delegate the building of a
 reference library to librarian, structure in results already computed to
 pattern_finder, a different line of attack when one has stalled to inventor,
 the decomposition of the goal into the lemmas that would suffice to reducer,
-the judging of an attempt to reflection, and the filing of the workspace to
-organizer.
+the lowering of the goal itself to weakener, the judging of an attempt to
+reflection, and the filing of the workspace to organizer.
 
-The last two of those answer opposite questions and are easy to confuse.
-inventor asks what *else* could get us there and answers with a route; reducer
-asks what would be *enough* and answers with lemmas. A run with a promising
-route and no statement of what a proof consists of needs the second one.
+Three of those answer different questions about the same stuck run and are easy
+to confuse. inventor asks what *else* could get us there and answers with a
+route; reducer asks what would be *enough* and answers with lemmas; weakener
+asks what would be *easier* and answers with a smaller problem. A run with a
+promising route and no statement of what a proof consists of needs the second.
+A run whose every route and every decomposition has failed against the full
+statement needs the third — and note that a weakener rung does not imply the
+goal and is not meant to. Solving one is a real result reported as what it is:
+the problem with named difficulties switched off.
 
 Five specialists exist beside those and are the ones a run forgets it has,
 because tool_builder will appear to answer their questions with a program that

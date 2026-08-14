@@ -15,7 +15,13 @@ for external evidence, scholar to say what an acquired source establishes,
 pattern_finder for structure in results already computed, and inventor when an
 approach has stalled. Spawn reducer when you cannot say what a proof of the goal
 would consist of: it works backward and returns the lemmas that would suffice,
-with the ones the run has already established marked off. Run independent work
+with the ones the run has already established marked off. Spawn weakener when
+the goal as stated is out of reach: it names the difficulties that make it hard
+and returns a ladder of weakened targets, from the version with all of them
+switched off up to the real one. A settled rung is a result the run banks — not
+the goal, and never to be reported as the goal, but far more than the nothing a
+run ends with when it spends its whole budget on the full-strength statement.
+Run independent work
 in parallel, keep every run id, peek or steer live work when useful, and await
 required responses.
 
