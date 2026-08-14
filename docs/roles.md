@@ -4,8 +4,6 @@ The twenty-one roles the runtime registers, the sources they read through, and t
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
-
-
 ## The frontier ranks citations, not indexes
 
 Two link classes flooded it, and each needed a different rule.
@@ -124,11 +122,11 @@ The runtime has twenty-one roles plus an explicit solution loop.
   the verdict under `code/out/lean/`. A claim may be `status: formalised` only
   with a `formalisation:` line naming a `.lean` file whose verdict passed;
   otherwise the ledger records it as `asserted` and says why, under *Called
-  formalised, not backed by the kernel*. The fourth passing condition reads as
-  strict on purpose — the file must contain a `#print axioms` line — because a
-  proof whose foundations are unstated has told the runtime nothing, and the
-  rule costs one line. The tool reaches this role and nothing else, since it
-  decides what the ledger's strongest evidence class may say.
+  formalised, not backed by the kernel*. The fourth passing condition is strict
+  on purpose — the file must contain a `#print axioms` line — because a proof
+  whose foundations are unstated has told the runtime nothing, and the rule
+  costs one line. The tool reaches this role and nothing else, since it decides
+  what the ledger's strongest evidence class may say.
 - The reflection agent judges one attempt and extracts one lesson. It has no
   research or execution tools on purpose: a judge that can start solving stops
   judging. Its hardest job is refusing to call an unverified answer solved.
@@ -197,13 +195,13 @@ The runtime has twenty-one roles plus an explicit solution loop.
   ledger records which difficulties were off when each one landed.
 - The searcher does not reason toward an object; it writes programs that build
   one, keeps what scores well, and proposes again from those. What makes the
-  FunSearch loop worth having is not the loop but its output — "not the set of
-  512 eight-dimensional vectors in itself, but a program that generates it" —
-  since a construction with a readable program behind it is an explanation where
-  a number is only an answer. Three of the four ingredients (one evolved
-  function, best-shot prompting, an island population) are bookkeeping and live
-  in Rust: a model recalling which of four hundred programs scored best spends
-  its turn on arithmetic nothing can get wrong in code.
+  FunSearch loop worth having is its output — "not the set of 512
+  eight-dimensional vectors in itself, but a program that generates it" — since
+  a construction with a readable program behind it is an explanation where a
+  number is only an answer. Three of the four ingredients (one evolved function,
+  best-shot prompting, an island population) are bookkeeping and live in Rust: a
+  model recalling which of four hundred programs scored best spends its turn on
+  arithmetic nothing can get wrong in code.
 
   **Its authority is a set of absences.** No `write_tool_file`, no
   `execute_command`, no patch tool. `submit_candidate` is its only route to
