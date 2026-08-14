@@ -89,7 +89,7 @@ pub use tinyagents::harness::host::AgentDefinition;
 pub use diagram::{render_flows, render_solution_loop};
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 13] = [
+const SPECIALISTS: [&str; 14] = [
     "research",
     "tool_builder",
     "coder",
@@ -146,6 +146,11 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 ///   definition of a judgement no tool can check: a decomposition into three
 ///   attractive statements that do not recombine reads exactly like one that
 ///   does. It writes one file and is opened at most a handful of times in a run.
+/// - `weakener` — which of a problem's difficulties can be switched off, and
+///   whether what is left is still worth solving. Nothing mechanical can check
+///   that: a statement weakened until it is vacuous reads exactly like one
+///   weakened until it is tractable, and only the second is worth an attempt.
+///   Like the reducer, it writes one file on a cadence.
 /// - `judge` — scores how an attempt was conducted and rarely stops the run.
 ///   Capped at twelve calls and five minutes, and answers in four lines.
 /// - `reflection` — solved, progressed, and now what *kind* of progress. That
@@ -162,10 +167,17 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 /// `scholar` and `research` read whole documents, so their turns are large.
 /// `pattern_finder` and the code writers execute rather than judge, and the
 /// planners drive every turn of the run.
-const REASONING_ROLES: [&str; 5] = ["inventor", "reducer", "judge", "reflection", "director"];
+const REASONING_ROLES: [&str; 6] = [
+    "inventor",
+    "reducer",
+    "weakener",
+    "judge",
+    "reflection",
+    "director",
+];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 15] = [
+const DELEGATES: [&str; 16] = [
     "research",
     "tool_builder",
     "coder",
@@ -179,6 +191,7 @@ const DELEGATES: [&str; 15] = [
     "pattern_finder",
     "inventor",
     "reducer",
+    "weakener",
     "librarian",
     "scholar",
 ];
@@ -220,6 +233,10 @@ const INVENTOR_PROMPT: &str = include_str!("../prompts/inventor.md");
 /// The role that works backward from the goal rather than forward from what the
 /// run holds.
 const REDUCER_PROMPT: &str = include_str!("../prompts/reducer.md");
+
+/// The role that lowers the target rather than looking for a way to the one it
+/// was given.
+const WEAKENER_PROMPT: &str = include_str!("../prompts/weakener.md");
 
 const LIBRARIAN_PROMPT: &str = include_str!("../prompts/librarian.md");
 

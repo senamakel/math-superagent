@@ -73,7 +73,7 @@ producing 92 — the failure is not the slip but the fluency of the recovery.
 vaguely worded query, GPT-4 "produced a string of mathematical nonsense, but
 curiously it did manage to reference the logarithmic moment generating
 function" — **[MAP]**. Surface-level topical correctness is not evidence of
-correctness, and it is precisely what makes the output hard to reject.
+correctness, and is precisely what makes such output hard to reject.
 
 **Verifier exploitation.** From his AlphaEvolve collaboration: the system is
 "extremely good at locating exploits in the verification code", placing points
@@ -83,22 +83,20 @@ conservative bounds, and he warns that "blindly trusting the AE values can be
 risky as they may be a consequence of verifier exploits rather than any true
 progress." https://terrytao.wordpress.com/2025/11/05/mathematical-exploration-and-discovery-at-scale/
 
-**Novelty that is not novel.** An Erdős problem (#728) was solved "more or less
-autonomously by AI", with the result apparently not in the literature. Tao
-later appended: "in the days after the above posts were made, it was discovered
-that the methods in these AI results were very similar to that of a 2014 paper
-of Pomerance, and in fact Pomerance has now released a short note showing how
-the methods of that paper also provide a solution to problem #728."
-https://mathstodon.xyz/@tao/115871649394962391 · summary at
-https://arxiv.org/abs/2601.07421 · caveats collected at
+**Novelty that is not novel.** Erdős problem #728 was solved "more or less
+autonomously by AI", apparently not replicating the literature. Tao later
+appended: "it was discovered that the methods in these AI results were very
+similar to that of a 2014 paper of Pomerance, and in fact Pomerance has now
+released a short note showing how the methods of that paper also provide a
+solution to problem #728." https://mathstodon.xyz/@tao/115871649394962391 ·
+https://arxiv.org/abs/2601.07421 · caveats at
 https://github.com/teorth/erdosproblems/wiki/AI-contributions-to-Erdős-problems
 
-The same thread records the AlphaProof team's earlier attempt at #728 finding
-"several trivial solutions, if 𝑎 or 𝑏 were allowed to be large compared with
-𝑛. This technically solved the problem, but was deemed not in the spirit of the
-question." https://mathstodon.xyz/@tao/115855845720777387 — a specification bug,
-found by a solver, which is the same phenomenon as verifier exploitation one
-level up.
+The same thread records an earlier AlphaProof attempt at #728 finding "several
+trivial solutions, if 𝑎 or 𝑏 were allowed to be large compared with 𝑛. This
+technically solved the problem, but was deemed not in the spirit of the
+question." https://mathstodon.xyz/@tao/115855845720777387 — a specification bug
+found by a solver, which is verifier exploitation one level up.
 
 ## I.4 Reported capability is a property of the harness, not the model
 
@@ -243,15 +241,15 @@ Slides (ICERM, 15 Sep 2025):
 https://app.icerm.brown.edu/assets/544/9916/9916_5552_Tao_091520251530_Slides.pdf
 
 **Scale.** 4,694 equational laws (≤4 applications of the magma operation);
-**22,028,942** ordered implication pairs. Final state: 0 unresolved for general
-magmas, 2 for finite magmas.
+**22,028,942** ordered implication pairs; 0 unresolved for general magmas, 2 for
+finite magmas.
 
-**The amplification, which is the single most important number here.** Only
-**10,657** positive implications and **586,925** negative ones were proved
-directly in Lean — **597,582 facts producing 22,028,942 answers, ~37×**, purely
-from transitive closure plus the duality symmetry `x◇y ↦ y◇x`.
+**The amplification, the single most important number here.** Only **10,657**
+positive implications and **586,925** negative ones were proved directly in
+Lean — **597,582 facts producing 22,028,942 answers, ~37×**, purely from
+transitive closure plus the duality symmetry `x◇y ↦ y◇x`.
 
-**The method ladder**, Tao's own words from the slides:
+**The method ladder**, from the slides:
 
 > "Most of the implications were 'low-hanging fruit' that could be resolved by
 > relatively simple techniques, such as: Brute force use of ATPs · Brute force
@@ -261,20 +259,17 @@ from transitive closure plus the duality symmetry `x◇y ↦ y◇x`.
 > transitive closure or duality. This reduced the original set of 22028942
 > problems to about a thousand."
 
-**524 finite magmas refuted 13.6 million implications** (13.3M at size 3
-alone), at a total cost of 165 CPU-hours. The residual ~1,000 problems then
-consumed the bulk of fifty people's remaining six months, and every one of them
-was negative.
+**524 finite magmas refuted 13.6 million implications** (13.3M at size 3 alone)
+for 165 CPU-hours. The residual ~1,000 then consumed the bulk of fifty people's
+remaining six months, and every one was negative.
 
-**Tools.** Vampire (saturation and finite model building), E, Z3,
-Prover9/Mace4, SAT inside the greedy-closure analysis; `egg` and `duper` only
-in forks, kept out of the base repository; `lean4checker`/`lean4lean` for
-kernel replay; `native_decide` banned to keep the trusted base small.
-
-**Ingestion of machine proofs.** Stefan Hetzl's pipeline, quoted in the slides:
-implication → Prover9 → gapt → resolution-to-sequent-calculus → line-by-line
-Lean emission. There was also a reverse path — a machine proof "deconstructed"
-into a two-line human argument.
+**Tools.** Vampire (saturation and finite model building), E, Z3, Prover9/Mace4,
+SAT inside the greedy-closure analysis; `egg` and `duper` only in forks, kept
+out of the base repo; `lean4checker`/`lean4lean` for kernel replay;
+`native_decide` banned to keep the trusted base small. Machine proofs were
+ingested by Stefan Hetzl's pipeline — implication → Prover9 → gapt →
+resolution-to-sequent-calculus → line-by-line Lean emission — with a reverse
+path too, a machine proof "deconstructed" into a two-line human argument.
 
 **Repo mechanics worth copying directly.**
 
@@ -291,12 +286,11 @@ into a two-line human argument.
   the quantitative progress metric, plus Equation Explorer, Graphiti and the
   Finite Magma Explorer as views.
 
-**Human insight as a multiplier on the solver, not a substitute.** Daniel
-Weber's observation that one could restrict to magmas whose squaring map is
-injective, added as an explicit axiom, "led to a 100x speedup in Vampire's
-algorithm." Related: the project tracked per-equation **"immunities"** — which
-technique classes are known not to apply — and Tao reports this "has helped
-tremendously with 'weapon selection' for these problems."
+**Human insight multiplies the solver rather than replacing it.** Daniel Weber's
+observation that one could restrict to magmas whose squaring map is injective,
+added as an explicit axiom, "led to a 100x speedup in Vampire's algorithm." The
+project also tracked per-equation **"immunities"** — technique classes known not
+to apply — which "has helped tremendously with 'weapon selection'".
 
 **Granularity was the design variable.** Day 1: "the atomic tasks to complete
 are very small and most of them do not require extensive expertise in either
@@ -304,46 +298,41 @@ Lean or math." Day 2: "projects that consist of extremely large numbers of
 independent pieces, each of which are easy to understand and attackable by a
 variety of methods, are a very good use case for these crowdsourced projects."
 
-**Tao's ex-ante criteria for whether a problem is crowdsourcable at all** —
-the best available triage checklist, from the slides: **modularity**;
+**Tao's ex-ante criteria for whether a problem is crowdsourcable at all** — the
+best available triage checklist, from the slides: **modularity**;
 **verifiability**; **elementary** components; **diversity of technique**;
 **transferability** between component problems; a **precisely defined goal with
-a quantitative metric of progress**, so that "even small incremental
-contributions can be seen to 'move the needle'"; and **visualizability**.
+a quantitative metric of progress**, so "even small incremental contributions
+can be seen to 'move the needle'"; and **visualizability**.
 
-**The dog that did not bark.** His own slide title. Modern ML contributed
-Copilot autocomplete (used mainly as a Lean↔LaTeX translation layer), Claude
-for building the visualisation tools, and one ChatGPT contribution to a
-confluence argument. The work was done by ATPs. His verdict:
-
-> "the older 'good old-fashioned AI' of automated theorem provers were far
-> cheaper to run and already handled the overwhelming majority of the
-> implications that the advanced AI tools could." [secondary — blog summary,
-> https://terrytao.wordpress.com/2025/12/09/the-equational-theories-project-advancing-collaborative-mathematical-research-at-scale/]
-
-He was told by a major AI company in the project's first days that their tools
-resolved over 99.9% of implications "but with quite long and inelegant proofs",
-and it did not change the project.
+**The dog that did not bark** — his own slide title. Modern ML contributed
+Copilot autocomplete (mainly as a Lean↔LaTeX translation layer), Claude for the
+visualisation tools, and one ChatGPT contribution to a confluence argument. The
+work was done by ATPs, which "were far cheaper to run and already handled the
+overwhelming majority of the implications that the advanced AI tools could"
+[secondary — https://terrytao.wordpress.com/2025/12/09/the-equational-theories-project-advancing-collaborative-mathematical-research-at-scale/].
+A major AI company told him in the first days that their tools resolved over
+99.9% of implications "but with quite long and inelegant proofs"; it did not
+change the project.
 
 **Two operational warnings.** Compile time became a scaling bottleneck ("50
-minutes in some cases … efficiency of compile time becomes a concern"). And
-delaying a Lean/mathlib bump makes a codebase rot: at some point such projects
-"will no longer be actively maintained, and their proofs, while still correct,
-will become gradually more incompatible with the latest versions of the core
-Lean libraries."
+minutes in some cases … efficiency of compile time becomes a concern"), and
+delaying a Lean/mathlib bump rots a codebase: such projects eventually "will no
+longer be actively maintained, and their proofs, while still correct, will
+become gradually more incompatible with the latest versions of the core Lean
+libraries."
 
 ## II.5 AlphaProof, AlphaGeometry, and mathlib
 
 **AlphaGeometry** (*Nature* 625, Jan 2024): a language model proposing **one
-auxiliary construction** at a time, wrapped around a symbolic deduction engine
-(DD+AR) run to saturation. The LM exists only because auxiliary constructions
-come from an infinite space no symbolic search can enumerate. Trained on 100M
-synthetic theorem-proof pairs derived from 1B random diagrams, 9M of which
-needed an auxiliary construction — no human proofs. Scored 25/30 on IMO-AG-30
-against 14 for the symbolic engine alone. **AlphaGeometry2** (arXiv:2502.03544)
-reached 84%, and — the more interesting number — raised formal-language
-coverage from 66% to 88% of IMO geometry problems: a third of them previously
-could not even be *stated*.
+auxiliary construction** at a time around a symbolic deduction engine (DD+AR)
+run to saturation. The LM exists only because auxiliary constructions come from
+an infinite space no symbolic search can enumerate. Trained on 100M synthetic
+theorem-proof pairs from 1B random diagrams, 9M needing an auxiliary
+construction — no human proofs. 25/30 on IMO-AG-30 against 14 for the symbolic
+engine alone. **AlphaGeometry2** (arXiv:2502.03544) reached 84%, and raised
+formal-language coverage from 66% to 88% of IMO geometry problems: a third of
+them previously could not even be *stated*.
 
 **AlphaProof** (*Nature*, 12 Nov 2025, DOI 10.1038/s41586-025-09833-y; blog
 https://deepmind.google/blog/ai-solves-imo-problems-at-silver-medal-level/):
@@ -351,37 +340,35 @@ AlphaZero-style RL over Lean. ~1M informal statements auto-formalised
 *stochastically* into ~80M Lean statements; proof-tree search with AND nodes
 for conjunctive subgoals; and **test-time RL** — on a hard target it generates
 variations of the theorem itself and trains on them live. IMO 2024: **28/42**
-(gold cutoff was 29), "one problem within minutes and up to three days to solve
-the others", after "the problems were manually translated into formal
-mathematical language". Formal proofs score 7/7 or 0.
+(gold cutoff 29), "one problem within minutes and up to three days to solve the
+others", after "the problems were manually translated into formal mathematical
+language". Formal proofs score 7/7 or 0.
 
-Tao's assessment, in full at https://mathstodon.xyz/@tao/112850716240504978:
-great work; geometry effectively solved; significant compute per problem and
-human help on formalisation; "the database of formal proofs generated by this
-effort could be a useful resource if shared more openly"; and, per the AI
-effect, "once explained, it does not 'feel' like an exhibition of human-like
-intelligence". He immediately contrasts NuminaMath, which "was fully automated
-and orders of magnitude more resource efficient", using an LLM to generate
-Python that brute-forces numerical answers — "the multidimensional nature of
-the general challenge". https://mathstodon.xyz/@tao/112850769040110612
+Tao's assessment (https://mathstodon.xyz/@tao/112850716240504978): great work;
+geometry effectively solved; significant compute per problem and human help on
+formalisation; "the database of formal proofs generated by this effort could be
+a useful resource if shared more openly"; and, per the AI effect, "once
+explained, it does not 'feel' like an exhibition of human-like intelligence".
+He immediately contrasts NuminaMath, "fully automated and orders of magnitude
+more resource efficient", using an LLM to generate Python that brute-forces
+numerical answers — "the multidimensional nature of the general challenge".
+https://mathstodon.xyz/@tao/112850769040110612
 
-In 2025 Gemini Deep Think scored 35/42 end-to-end in natural language inside
-the 4.5-hour limit, officially certified — but Buzzard's summary of the two
-years is worth keeping beside it: "what the last 12 months have given us is a
-one point improvement." https://xenaproject.wordpress.com/2025/08/03/ai-at-imo-2025-a-round-up/
+In 2025 Gemini Deep Think scored 35/42 end-to-end in natural language inside the
+4.5-hour limit, officially certified — with Buzzard's summary of the two years
+worth keeping beside it: "what the last 12 months have given us is a one point
+improvement." https://xenaproject.wordpress.com/2025/08/03/ai-at-imo-2025-a-round-up/
 
 **mathlib and what reuse buys.** 284,375 theorems and 135,578 definitions
 across ~2.1M lines (https://leanprover-community.github.io/mathlib_stats.html);
 maintenance practice in arXiv:2508.21593. Tao: a formalisation project "will
 typically contribute many basic mathematical results generated through the
 course of the project to a common mathematical library, which makes it easier
-for future formalization projects to proceed" — **[MAP]**.
-
-The honest counterpoint is EQT itself, which "was rather elementary in nature
-and only had a modest reliance on Lean's Mathlib". Reuse pays where the domain
-is deep and the prerequisites are shared; it pays little where the problem is
-elementary and self-contained. An agent should therefore not assume a library
-is its bottleneck without checking.
+for future formalization projects to proceed" — **[MAP]**. The honest
+counterpoint is EQT, which "only had a modest reliance on Lean's Mathlib":
+reuse pays where the domain is deep and prerequisites are shared, little where
+the problem is elementary and self-contained. An agent should not assume a
+library is its bottleneck without checking.
 
 ## II.6 AlphaEvolve — search whose verifier is the security boundary
 

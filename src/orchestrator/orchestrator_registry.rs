@@ -325,6 +325,26 @@ fn support_agents(
         )
         .with_model("openrouter")
         .with_tools(memory_tools.into_iter().chain(document_tools)),
+        // The third direction, and the only role allowed to move the target.
+        // The reducer asks what would be enough and the inventor asks what
+        // other route reaches the goal; both keep the goal fixed. This one
+        // lowers it deliberately, which is the move a mathematician makes
+        // first and this runtime could not make at all.
+        //
+        // Its tools are the reducer's exactly, and for the reducer's reasons:
+        // no search, because a role that can search turns "what is easier"
+        // into a literature survey; nothing that computes, because a rung is
+        // settled by the forward loop attacking it and never by a program this
+        // role wrote; no delegation bench, which would be a second
+        // investigation beside the first.
+        AgentDefinition::new(
+            "weakener",
+            "Weakening Agent",
+            "Names the difficulties that make the goal hard and builds a ladder of weakened \
+             targets from the version with all of them switched off up to the real one.",
+        )
+        .with_model("openrouter")
+        .with_tools(memory_tools.into_iter().chain(document_tools)),
     ]
     .into_iter()
     .chain(library_agents(
