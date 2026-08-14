@@ -29,19 +29,21 @@ change is described at the end.
 | Evolve *programs* that build the object, scored by a verifier | `04b` FunSearch, AlphaEvolve | Nothing searched over programs. A construction was reasoned toward or not found | **[closed]** |
 | Cheap tools first, the expensive reasoner last | `04` R5, EQT's 22M → ~1,000 | An attempt is a model call that may delegate. No ladder, no cost-per-subgoal instrumentation | Absent |
 | Prove and disprove concurrently; look for the counterexample first | `01`§10, `04` R11, EQT's 13.6M | Four proving roles, all delegated *to*, none scheduled *against* the statement | **[closed]** |
-| Propagate every established fact through the entailment relation before scheduling new work | `04` R5b (~37× in EQT) | `search_claims` retrieves; nothing closes the claim set under implication | Absent |
+| Propagate every established fact through the entailment relation before scheduling new work | `04` R5b (~37× in EQT) | `search_claims` retrieved; nothing closed the claim set under implication | **[closed]** |
 | Record which techniques are known not to apply to a subgoal | `01`§16, `04` R5c | `research/APPROACHES.md` closes a *route* with a reason; no per-subgoal immunity anything schedules on | Partly, unused |
-| Check the literature *after* a solve — a short proof raises the prior it is known | `01`§19, `04` R33 | No post-solve novelty check. Erdős #728 is the live example: an AI solution matching Pomerance 2014 | Absent |
+| Check the literature *after* a solve — a short proof raises the prior it is known | `01`§19, `04` R33 | No post-solve check, and `open_library` returned *early* on a solve. Erdős #728 is the live example: an AI solution matching Pomerance 2014 | **[closed]** |
 | Fund the branch that is not currently winning | `02` F4 — Polymath8's real lesson | One line of attack; `diversify` fires only after two consecutive unproductive attempts | Absent |
 | Rewrite someone else's fresh proof in a cleaner formalism | `01`§—, `02` G1–G3 | No simplification mode. The librarian acquires, the scholar digests, nobody rewrites | Absent |
-| A statement DAG with a status lattice, worked against admitted siblings | `04` R2/R3, the Lean blueprint | `research/BACKWARD.md` is the closest thing and is a flat skeleton-plus-gaps, not a DAG; no contract-first concurrency | Partly |
+| A statement DAG with a status lattice, worked against admitted siblings | `04` R2/R3, the Lean blueprint | `research/BACKWARD.md` was the closest thing and was a flat skeleton-plus-gaps, not a DAG | **[closed]** |
+| Test whether a conjecture is *informative* before testing whether it is true | Graffiti's Dalmatian heuristic, `04` R28 | Nothing filtered a proposal against what the library already gives | **[closed]** |
+| A theorem given an assumed axiom is a conditional result, not a theorem | `01`§21–23, `04` R1, lean4checker | `lean_check` accepted any file that compiled and printed axioms — one `axiom` line passed every check | **[closed]** |
 | Numerics before theory | `01`§20, `04` R10 | The method policy's first step is a naive oracle, and `attempt_step` spawns it rather than asking. This one the runtime already does | Present |
 | Direction reaches a live run, queued, never a claim | `04` R20 | `./steer` → `config/directives.jsonl`, `director` denied `research/CLAIMS.md` | Present |
 | Declare the harness's knobs, and report the run even on failure | `04` §III.5 | Six of seven knobs map to files that exist. Attempts abandoned are not counted | Partly |
 | One monotone, legible statistic; watch for the Zeno regime | `01`§35, `02` F3 | The judge's 1–5 score is pushed to `state.scores` (`solutions_judging.rs:49`) and read by no code | **Unused** |
 | Modularise so no participant needs the whole argument | `01`§34, `02` F2 | Twenty-two tool-boundaried roles, enforced in code. The runtime's real strength | Present |
 
-## The five that were closed, and why those five
+## The nine that were closed, and why those nine
 
 Three of them are places the runtime already had the machinery and was one
 control short of using it — a different and much cheaper kind of gap than

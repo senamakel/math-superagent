@@ -22,12 +22,16 @@ evidence for it stays available.
 
 - [`docs/roles.md`](docs/roles.md) — the twenty-two roles, the source adapters,
   the two recall paths, and which workspace files reach which role's prompt.
-- [`docs/solution-loop.md`](docs/solution-loop.md) — the attempt/judge/reflect
-  graph, its thresholds, and how a tool or provider failure is absorbed.
+- [`docs/solution-loop.md`](docs/solution-loop.md) — the attempt/evaluate graph,
+  the two child workflows, and how a tool or provider failure is absorbed.
+- [`docs/routing.md`](docs/routing.md) — which role answers which question, what
+  each verdict routes to, and the live run behind every threshold.
 - [`docs/runtime.md`](docs/runtime.md) — the crate layout, `RunBudget`, and the
   tracing that makes a run legible.
 - [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the
-  research tree, the seven derived ledgers, and checkpointing.
+  research tree, the scratch, and checkpointing.
+- [`docs/ledgers.md`](docs/ledgers.md) — the nine derived ledgers: what each
+  holds, and the failure each was written to stop.
 
 Keep them consistent with the code. A rule here that the code does not enforce
 is the failure this repository keeps recording: a prompt instruction is not a
