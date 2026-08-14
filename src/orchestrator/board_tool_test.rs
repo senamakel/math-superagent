@@ -21,7 +21,6 @@ async fn a_post_reaches_the_queue_and_the_board() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     let tool = tool(workspace.path(), "adversarial");
     let call = ToolCall {
-        invalid: None,
         id: "1".to_string(),
         name: "post_board".to_string(),
         arguments: json!({
@@ -29,6 +28,7 @@ async fn a_post_reaches_the_queue_and_the_board() {
             "body": "the generating-function route is dead: it needs f to be D-finite and it is not",
             "refers": ["claim-4"]
         }),
+        invalid: None,
     };
     let result = tool.call(&(), call).await.expect("the post must succeed");
     assert!(!result.is_error(), "a well-formed post must not error");
@@ -51,7 +51,6 @@ async fn the_sender_cannot_be_chosen_by_the_caller() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     let tool = tool(workspace.path(), "rising-sea");
     let call = ToolCall {
-        invalid: None,
         id: "1".to_string(),
         name: "post_board".to_string(),
         arguments: json!({
@@ -59,6 +58,7 @@ async fn the_sender_cannot_be_chosen_by_the_caller() {
             "body": "this may factor through the sheaf setting",
             "from": "chisel"
         }),
+        invalid: None,
     };
     // `additionalProperties: false` should refuse the extra field outright; if
     // validation is ever loosened, the attribution must still be the tool's.
@@ -85,10 +85,10 @@ async fn an_empty_body_is_refused() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     let tool = tool(workspace.path(), "chisel");
     let call = ToolCall {
-        invalid: None,
         id: "1".to_string(),
         name: "post_board".to_string(),
         arguments: json!({ "kind": "lesson", "body": "   " }),
+        invalid: None,
     };
     assert!(
         tool.call(&(), call).await.is_err(),

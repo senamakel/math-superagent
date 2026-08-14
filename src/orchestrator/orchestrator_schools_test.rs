@@ -1,4 +1,8 @@
 // How a run reports when more than one school worked the problem.
+//
+// A line comment rather than an inner doc comment: this file is `include!`d
+// into `orchestrator_test.rs`, and `//!` at the top of an included file is a
+// module attribute in the wrong place.
 
 use super::combined_outcome;
 
