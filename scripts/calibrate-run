@@ -184,6 +184,16 @@ fi
 
 MATH_AGENT_EVAL_SLUG=$slug
 export MATH_AGENT_EVAL_SLUG
+
+# Each calibration problem gets its own Compose project, so several can run at
+# once. Without this they share one project derived from the checkout directory,
+# and the shared pieces are not actually shareable: the project's `memory`
+# network resolves to `$COGNEE_NETWORK`, which is per-problem, so starting a
+# second run rewrites the first run's network reference and Compose recreates
+# services underneath a live container. The cost of isolating is one extra
+# proxy — five megabytes — per run.
+COMPOSE_PROJECT_NAME=calibrate-$slug
+export COMPOSE_PROJECT_NAME
 MATH_AGENT_COMPOSE_EXTRA=compose.eval.yaml
 export MATH_AGENT_COMPOSE_EXTRA
 
