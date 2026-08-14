@@ -8,12 +8,26 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
+| [[both-odd-primes]] | x^p - y^q = 1 has no solution with p,q odd primes. | Let (x,p,y,q) be a solution with p,q odd primes. G-Cassels gives p\|y and q\|x. G-double-wieferich turns those two divisibilities into the congruences p^{q-1}≡1… | sketched | 3 |
 | [[catalan-mihailescu-full]] | The only solution of x^p - y^q = 1 in integers x, y > 0, p, q > 1 is (x, p, y, q) = (3, 2, 2, 3). | > By G-red every solution descends to one with p and q prime. If p = q then x^p - y^p = 1 forces y = 0, since (y+1)^p - y^p >= 2^p - 1 >= 3 for p >= 2 and y >=… | live | 6 |
+| [[conditional-non-wieferich]] | > For all odd primes p, q with p^(q-1) != 1 (mod q^2) or q^(p-1) != 1 (mod p^2) (i.e. (p,q) is NOT a double-Wieferich pair), the equation x^p - y^q = 1 has no… | > Contraposition. Assume (x,p,y,q) is a solution with p,q odd primes. By cond-cassels, p \| y and q \| x. By cond-wieferich, applied to that same solution,… | sketched | 2 |
+| [[full-conjecture]] | The only solution of x^p - y^q = 1 in integers x,y > 0, p,q > 1 is (x,p,y,q) = (3,2,2,3). | Partition the prime-exponent pairs (p,q) into {p = 2}, {q = 2}, and {p,q both odd primes}; these three are exhaustive and disjoint. G-full-prime-reduction… | sketched | 4 |
+| [[odd-prime-case]] | x^p - y^q = 1 has no solution in integers x,y >= 2 with p,q odd primes. | Take any hypothetical solution (x,p,y,q) with p,q odd primes. G-odd-cassels forces p \| y and q \| x. G-odd-wieferich, applied to that same solution, then forces… | sketched | 3 |
+| [[reduce-to-prime-exponents]] | x^p - y^q = 1 with x,y>0, p,q>1 has (x,p,y,q)=(3,2,2,3) as its only solution. | Take any solution (x,p,y,q). Write p=a·p', q=b·q' with p',q' prime. By G-prime-reduction, (x^a,p',y^b,q') is a solution, and since 3 and 2 are not perfect… | sketched | 4 |
 
 ## The open gaps — each one is a task
 
 Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
 
+- [[both-odd-primes]] `G-Cassels` — If x^p - y^q = 1 with x,y>0 and p,q odd primes, then p | y and q | x.
+  - next: librarian fetches Cassels (1960, "On the equation a^x - b^y = 1") for the proof; theorem_prover formalises the statement in Lean/Mathlib. The known solution has p=2, so it is excluded by hypothesis (no conflict with 3^2-2^3=1). Check the direction p|y, q|x before trusting it downstream.
+  - _no thread — nothing is attacking this_
+- [[both-odd-primes]] `G-double-wieferich` — If x^p - y^q = 1 with x,y>0 and p,q odd primes, then p^{q-1} ≡ 1 (mod q^2) and q^{p-1} ≡ 1 (mod p^2).
+  - next: derive from G-Cassels via the cyclotomic factorisation x^p - 1 = ∏_{i=1}^{p-1}(x-ζ_p^i) in Z[ζ_p]; symbolic_math computes the ideal factorisation and what p|y forces about the ideals (x-ζ^i), theorem_prover formalises the resulting congruence. The librarian must confirm the exact index pairing against Mihailescu (2002) before this lemma is used — the problem.md placeholder "p^2 | y^{p-1}-1" does NOT match the known solution and is not the right form.
+  - _no thread — nothing is attacking this_
+- [[both-odd-primes]] `G-exclude` — There are no integers x,y>0 and odd primes p,q with x^p - y^q = 1 satisfying both p^{q-1} ≡ 1 (mod q^2) and q^{p-1} ≡ 1 (mod p^2).
+  - next: this is the genuinely hard step, and the equation must do the work — the double-Wieferich congruences alone do not exclude all pairs, so the cyclotomic structure is needed. First concrete move: symbolic_math computes, in Z[ζ_p], what the congruences force about the ideals (x-ζ^i) and the cyclotomic-unit/class-group relation, producing the precise obstruction statement; that statement is then handed to theorem_prover. Until the statement is precise, the exact form of the final step (Thaine's theorem / cyclotomic units) is a research request for the librarian rather than a task.
+  - _no thread — nothing is attacking this_
 - [[catalan-mihailescu-full]] `red-prime-exponents` — > Every solution x^p - y^q = 1 with p, q > 1 yields a solution x'^{p'} - y'^{q'} = 1 with p', q' prime: if p = a b then (x', p') = (x^a, b) preserves the equation and x' > 0; iterate while the exponent is composite, and likewise for q.
   - next: > Lean 4: formalise against Mathlib that composite exponent descends to prime exponent by iterated base change x -> x^a, p -> b, and report #print axioms. This is ~30 lines and is the formal prerequisite for every later lemma.
   - _no thread — nothing is attacking this_
@@ -31,6 +45,45 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
   - _no thread — nothing is attacking this_
 - [[catalan-mihailescu-full]] `odd-prime-contradiction` — > There do not exist distinct odd primes p, q and positive integers x, y with x^p - y^q = 1, q | x, p | y, q^{p-1} = 1 (mod p^2) and p^{q-1} = 1 (mod q^2).
   - next: > Extract the exact closing lemma of Mihailescu's proof — the short estimate that turns the double-Wieferich congruences plus q | x, p | y into a contradiction — and reduce it to a checkable inequality. Until the precise statement and proof are sourced, this is a research request rather than a task (see request_research below); afterwards it is a Lean 4 target.
+  - _no thread — nothing is attacking this_
+- [[conditional-non-wieferich]] `cond-cassels` — > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q | x and p | y. (Cassels, 1960.)
+  - next: > Re-derive via the two factorisations x^p - 1 = y^q in Z[zeta_p] and y^q + 1 = x^p in Z[zeta_q]: in Q(zeta_p) the prime (1-zeta_p) is the unique ramified prime and the ideals (x - zeta_p^i) are pairwise coprime off it, so the q-th-power valuation of y^q forces p | v_p(y); mirror for q | v_q(x). symbolic_math runs the valuation computation on small odd (p,q); theorem_prover formalises the resulting divisibility in Lean/Mathlib. Cross-check against the exact-integer oracle once built.
+  - _no thread — nothing is attacking this_
+- [[conditional-non-wieferich]] `cond-wieferich` — > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q^(p-1) = 1 (mod p^2) and p^(q-1) = 1 (mod q^2).
+  - next: > Derive from cond-cassels by the p-adic / cyclotomic-unit argument: p | y forces x^p = 1 (mod p^2) and a unit relation in Z[zeta_q] yields p^(q-1) = 1 (mod q^2); mirror for the other congruence. symbolic_math computes the ideal factorisation of (x^p - 1)/(x - 1) in Q(zeta_p) and the forced congruence; theorem_prover formalises the result. Then tool_builder implements check_conditions(p,q) evaluating both congruences by exact integer arithmetic — the direct, runnable form of the condition in the goal. CAUTION: the problem.md hint "p^2 | y^{p-1} - 1" contradicts p | y (it forces y^{p-1} = 0 mod p), so the exact form must be re-derived, not copied; the double-Wieferich form above is the one consistent with the known solution being excluded only by the odd-prime hypothesis.
+  - _no thread — nothing is attacking this_
+- [[full-conjecture]] `G-full-prime-reduction` — If x^p - y^q = 1 with x,y >= 2 and p,q >= 2 integers, then there exist X,Y >= 2 and primes P,Q with X^P - Y^Q = 1; concretely, writing p = P*a, q = Q*b with P,Q prime gives (X,Y) = (x^a, y^b). Consequently a classification of all prime-exponent solutions is a classification of all solutions.
+  - next: hand the statement to theorem_prover / lean_prover as a three-line argument (X = x^a preserves equality and positivity). Verify with the exact-integer oracle on composite exponents, e.g. (4,4,?): 2^4 = 4^2 = 16 has no y with y^q = 15; the reduction must only ever produce *existing* prime-exponent solutions from existing ones, never manufacture one.
+  - _no thread — nothing is attacking this_
+- [[full-conjecture]] `G-full-case-p2` — The only solution of x^2 - y^q = 1 in integers x,y >= 1, q >= 2 prime, is (x,y,q) = (3,2,3).
+  - next: rederive in Z: q = 2 gives (x-y)(x+y) = 1, no positive solution; q odd forces x odd, gcd(x-1,x+1) = 2, so (x-1)/2 and (x+1)/2 are coprime with product y^q/4, hence both q-th powers of coprime integers a,b with b - a = 1; force q = 3, a = 1, b = 2. Run the descent in symbolic_math, then formalise in Lean (Mathlib has the number-theory primitives).
+  - _no thread — nothing is attacking this_
+- [[full-conjecture]] `G-full-case-q2` — x^p - y^2 = 1 has no solution in integers x,y >= 1, p >= 2 prime.
+  - next: rederive in Z[i]: p = 2 gives (x-y)(x+y) = 1, impossible; p odd forces x odd and y even, x^p = (y+i)(y-i) with the two factors coprime in Z[i], so y+i = u(a+bi)^p for a unit u; subtracting the conjugate and comparing imaginary parts (binomial expansion) forces b = +-1 and then p | a^2+b^2, a contradiction. symbolic_math for the binomial step, then Lean.
+  - _no thread — nothing is attacking this_
+- [[full-conjecture]] `G-full-odd-odd` — x^p - y^q = 1 has no solution in integers x,y >= 2 with p,q odd primes.
+  - next: this is the open content and is itself a sub-goal; see research/backward/odd-prime-case.md. First concrete move: reconstruct Cassels' theorem (gap G-odd-cassels there) — p | y and q | x — which is the entry to every divisibility condition downstream.
+  - _no thread — nothing is attacking this_
+- [[odd-prime-case]] `G-odd-cassels` — For p,q odd primes and x,y >= 2, x^p - y^q = 1 implies p | y and q | x. (Cassels, 1960.)
+  - next: rederive using the two factorisations x^p - 1 = y^q in Z[zeta_p] and y^q + 1 = x^p in Z[zeta_q]. In Q(zeta_p) the prime (1-zeta_p) is the unique ramified prime and the ideals (x - zeta_p^i) are pairwise coprime off it; the q-th-power valuation of y^q there forces p | v_p(y), and the mirror argument forces q | v_q(x). Run the valuation computation in symbolic_math for a few small odd (p,q), then record Cassels 1960 as a sourced claim block. Falsifier: it must hold at (p,q)=(2,3) only trivially/externally, and must never claim p|y *because* p=2.
+  - _no thread — nothing is attacking this_
+- [[odd-prime-case]] `G-odd-wieferich` — For p,q odd primes and x,y >= 2, x^p - y^q = 1 implies p^(q-1) = 1 (mod q^2) and q^(p-1) = 1 (mod p^2). (Inkeri / Hyyrö refinement of Cassels; this is the "double-Wieferich pair" condition driving all computational searches.)
+  - next: rederive from G-odd-cassels by the p-adic / cyclotomic-unit argument (the second descent: p | y forces x^p = 1 mod p^2 and a unit relation in Z[zeta_q] yields p^(q-1) = 1 mod q^2). Then implement check_conditions(p,q) evaluating both congruences by exact integer arithmetic and calibrate so that (2,3) is excluded by hypothesis. Confirm the exact statement against a primary source (librarian) before trusting the exponent/placement.
+  - _no thread — nothing is attacking this_
+- [[odd-prime-case]] `G-odd-descent` — There is no solution x^p - y^q = 1 with p,q odd primes, x,y >= 2 satisfying p | y, q | x, p^(q-1) = 1 (mod q^2), q^(p-1) = 1 (mod p^2). (Equivalently, by the two gaps above: no solution at all with p,q odd primes. This is the deep content — Mihăilescu's 2002 class-group step.)
+  - next: this is the open content and has no cheap direct move; the structure is a minus-class-group argument in Q(zeta_p) via the Stickelberger ideal and cyclotomic units. First move today: (a) file research request REQ-1 for the exact statement of Mihăilescu's descent step; (b) in parallel, symbolic_math computes the minus class group of Q(zeta_p), Q(zeta_q) for the known odd double-Wieferich pairs (e.g. (83,4871)) to see which p-/q-Sylow relations hold, so the claim's hypotheses can be checked as soon as its statement lands.
+  - _no thread — nothing is attacking this_
+- [[reduce-to-prime-exponents]] `G-prime-reduction` — If (x,p,y,q) solves x^p - y^q = 1 with x,y>0, p,q>1, and p=a·p', q=b·q' with p',q' prime, then (x^a,p',y^b,q') also solves it; moreover (x,p,y,q)=(3,2,2,3) iff (x^a,p',y^b,q')=(3,2,2,3). In particular the conjecture reduces to prime exponents.
+  - next: theorem_prover — formalise in Lean 4/Mathlib: (x^a)^{p'}=x^p, the "3 and 2 are not perfect powers" uniqueness step, and the iff. Report #print axioms. This is the one-line reduction every downstream argument assumes, and it must be airtight before G-odd-prime is even considered.
+  - _no thread — nothing is attacking this_
+- [[reduce-to-prime-exponents]] `G-exp2-a` — x^2 - y^q = 1 with x,y>0 and q prime has the unique solution (x,y,q)=(3,2,3).
+  - next: theorem_prover — prove by factorising y^q=(x-1)(x+1) in Z; gcd(x-1,x+1)∈{1,2}, split on parity of x. The known solution (3,2,3) is exactly this q=3, x=3 case, so the lemma must return it, not exclude it. Classical (Lebesgue); redo in full here.
+  - _no thread — nothing is attacking this_
+- [[reduce-to-prime-exponents]] `G-exp2-b` — x^p - y^2 = 1 with x,y>0 and p prime has no solutions.
+  - next: theorem_prover — prove in Z[i]: x^p=(y+i)(y-i) with gcd(y+i,y-i) a unit times a power of (1+i); deduce y+i=u(a+bi)^p and compare imaginary parts via the binomial theorem to contradict odd p; p=2 is difference of squares. The known solution (3,2,2,3) has y-exponent 3, so it sits outside this case and nothing is excluded.
+  - _no thread — nothing is attacking this_
+- [[reduce-to-prime-exponents]] `G-odd-prime` — x^p - y^q = 1 has no solution with p,q odd primes.
+  - next: this is the open content; it is decomposed in research/backward/both-odd-primes.md. First concrete move there: G-Cassels (p|y, q|x), handed to theorem_prover with the Cassels 1960 source fetched by the librarian.
   - _no thread — nothing is attacking this_
 
 ## Skeletons that could not be read

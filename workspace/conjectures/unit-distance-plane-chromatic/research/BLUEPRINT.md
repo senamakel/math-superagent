@@ -10,6 +10,12 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
+- `5chromatic-size-lower-bound/S-critical-degree` (lemma) — Every vertex-critical graph with chromatic number k has minimum degree at least k-1; in particular every 5-critical graph has no vertex of…
+  - open `research/backward/5chromatic-size-lower-bound.md`
+- `5chromatic-size-lower-bound/S-nbhd-bound` (lemma) — In any unit-distance graph in R^2: (i) two distinct vertices have at most two common neighbours, because a common neighbour lies on the…
+  - open `research/backward/5chromatic-size-lower-bound.md`
+- `5chromatic-size-lower-bound/S-universe-4color` (lemma) — For the largest N the finite check reaches (target >= 7), every graph on <= N vertices with minimum degree >= 4, K4-free and K_{2,3}-free…
+  - open `research/backward/5chromatic-size-lower-bound.md`
 - `chi-plane-lower-bound-5/G5-construction` (lemma) — > There is a finite point set S in R^2, with coordinates in an exact algebraic number field, whose unit-distance graph G[S] has chromatic…
   - open `research/backward/chi-plane-lower-bound-5.md`
 - `chi-plane-lower-bound-5/G5-debruijn-erdos` (lemma) — > For the unit-distance graph G on R^2, chi(G) >= 5 if and only if some finite unit-distance subgraph of G has chromatic number >= 5, under…
@@ -35,6 +41,10 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `5chromatic-size-lower-bound` | goal | blocked | `5chromatic-size-lower-bound/S-critical-degree`, `5chromatic-size-lower-bound/S-nbhd-bound`, `5chromatic-size-lower-bound/S-universe-4color`, `debruijn-erdos-1951`, `sat-k-colourability-encoding` | For a concrete integer N, to be pushed as large as the finite check allows (starting from the calibrated 7-vertex baseline), every… |
+| `5chromatic-size-lower-bound/S-critical-degree` | lemma | **ready** | — | Every vertex-critical graph with chromatic number k has minimum degree at least k-1; in particular every 5-critical graph has no vertex of… |
+| `5chromatic-size-lower-bound/S-nbhd-bound` | lemma | **ready** | — | In any unit-distance graph in R^2: (i) two distinct vertices have at most two common neighbours, because a common neighbour lies on the… |
+| `5chromatic-size-lower-bound/S-universe-4color` | lemma | **ready** | — | For the largest N the finite check reaches (target >= 7), every graph on <= N vertices with minimum degree >= 4, K4-free and K_{2,3}-free… |
 | `chi-plane-lower-bound-5` | goal | blocked | `chi-plane-lower-bound-5/G5-construction`, `chi-plane-lower-bound-5/G5-debruijn-erdos`, `chi-plane-lower-bound-5/G5-edge-cert`, `chi-plane-lower-bound-5/G5-non4col` | chi(G) >= 5, where G is the unit-distance graph on R^2 (every pair at distance exactly 1 is an edge). |
 | `chi-plane-lower-bound-5/G5-construction` | lemma | **ready** | — | > There is a finite point set S in R^2, with coordinates in an exact algebraic number field, whose unit-distance graph G[S] has chromatic… |
 | `chi-plane-lower-bound-5/G5-debruijn-erdos` | lemma | **ready** | — | > For the unit-distance graph G on R^2, chi(G) >= 5 if and only if some finite unit-distance subgraph of G has chromatic number >= 5, under… |

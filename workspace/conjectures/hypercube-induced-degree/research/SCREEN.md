@@ -14,9 +14,5 @@ prevent.
 
 | when | tool | stage | decision | detail |
 | --- | --- | --- | --- | --- |
-| 1786745499 | `download_document` | arguments | unreachable-host | host `arxiv.org` is not on the egress allowlist |
-| 1786745499 | `download_document` | arguments | denied-host | host `en.wikipedia.org` |
-| 1786745534 | `download_document` | arguments | denied-host | host `en.wikipedia.org` |
-| 1786745534 | `download_document` | arguments | denied-host | host `en.wikipedia.org` |
-| 1786745823 | `exa_search` | arguments | denied | term matched |
-| 1786745823 | `exa_search` | arguments | denied | term matched |
+| 1786745792 | `exa_search` | result | denied | term matched in 12208 characters |
+| 1786745796 | `exa_search` | result | denied | term matched in 12172 characters |

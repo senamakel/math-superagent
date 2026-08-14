@@ -11,9 +11,10 @@ of every rung is a subset of these exact names.
   relation requires the relevant ideals to be principal; they need not be.
 - `unbounded-exponents` — `p, q` range over all odd primes, so the field
   `Q(zeta_p)` itself varies with `p`; no single fixed ring contains the argument.
-- `independent-pq` — no congruence or divisibility relation between `p` and `q`
-  is assumed; they are unrelated odd primes, so the double-Wieferich pair must be
-  excluded from scratch.
+- `independent-pq` — **both** `p` and `q` are arbitrary, unrelated odd primes, so
+  the double-Wieferich-type relations linking them must be excluded with no
+  fixed small prime as a handle. Off once either exponent is fixed to a concrete
+  prime or a concrete pair.
 - `unconditional-class-number` — the relevant class number (on Mihailescu's
   route, the minus part `h^-` of the cyclotomic field) must be controlled by a
   proved bound, not GRH or Cohen–Lenstra heuristics.
@@ -78,7 +79,7 @@ merge: drop the fixed exponent 3 and let both p,q be arbitrary odd primes; the t
 ```rung
 id: R-cat-full
 statement: all integer solutions of x^p - y^q = 1 with x,y>0 and p,q odd primes; claim exactly (3,2,2,3) overall
-off: none
+off:
 stance: open
-merge: this is the goal itself, every difficulty on. Reaching it from R-cat-x3yq needs (a) the double-Wieferich exclusion and (b) the unconditional class-number bound that the known proof of the conjecture uses.
+merge: this is the goal itself, every difficulty on. Reaching it from R-cat-x3yq needs (a) the double-Wieferich exclusion with both exponents free, and (b) an unconditional (non-GRH) bound on the relevant class number. These are the two ingredients problem.md names as the heart of the open content; neither is sourced in this run yet.
 ```

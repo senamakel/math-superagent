@@ -152,6 +152,19 @@ unavailable; `recall_memory` passage search still works.
 
 ## Gaps — the next unresolved thing, in order
 
+**Cheapest concrete next moves are the ready-but-unattacked lemmas** in
+`research/BLUEPRINT.md` ("Ready to work on": everything they rest on is
+settled, and none currently has a thread). Notably:
+- `S-nbhd-bound` (size-bound): two distinct vertices share <= 2 common
+  neighbours (two unit-circle intersections) => UDG is K_{2,3}-free; and no
+  four pairwise-unit points => K4-free. Clean exact-arithmetic Groebner
+  certificate, pure graph theory, no construction needed.
+- `S-critical-degree`: a k-critical graph has min degree >= k-1, so a minimal
+  5-chromatic UDG has min degree >= 4. Four-line proof.
+- `G5-construction`: run the finished construction engine (Minkowski sums,
+  spindling) on the calibrated spindle; first target is the smallest candidate
+  past the 7-vertex graph.
+
 The weakest ladder rung marked open, `R-moser-calibration`, is **done** (chi=4
 reproduced). The two live directions and their first move:
 

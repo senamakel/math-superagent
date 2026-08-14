@@ -1,2 +1,6 @@
 {"at":"1786745499","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
 {"at":"1786745499","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"download_document"}
+{"at":"1786745534","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"download_document"}
+{"at":"1786745534","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"download_document"}
+{"at":"1786745823","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786745823","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}

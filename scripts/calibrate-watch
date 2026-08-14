@@ -74,9 +74,22 @@ echo ""
 echo "  SCREEN    decisions by verdict, then by tool"
 ledger=$workspace/config/screen.jsonl
 if [ -f "$ledger" ]; then
-    python3 - "$ledger" <<'PY'
-import json, sys
+    python3 - "$ledger" "$(docker ps --format '{{.Names}}' | grep "agent-run" |
+        while read -r name; do
+            docker inspect "$name" --format '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' |
+                grep -qx "$PWD/$workspace" && docker inspect "$name" \
+                    --format '{{.State.StartedAt}}'
+        done | head -1)" <<'PY'
+import json, sys, datetime
 from collections import Counter
+# The ledger is append-only across restarts, so a run that was restarted to pick
+# up a fix still shows the decisions the fix was meant to stop. Counting from
+# the live container's start is what makes "did that change work" answerable.
+since = 0.0
+if len(sys.argv) > 2 and sys.argv[2].strip():
+    since = datetime.datetime.fromisoformat(
+        sys.argv[2].strip().replace("Z", "+00:00")
+    ).timestamp()
 verdicts, tools = Counter(), Counter()
 for line in open(sys.argv[1]):
     line = line.strip()
@@ -86,9 +99,11 @@ for line in open(sys.argv[1]):
         row = json.loads(line)
     except ValueError:
         continue
+    if float(row.get("at", 0)) < since:
+        continue
     verdicts[row.get("decision", "?")] += 1
     tools[row.get("tool", "?")] += 1
-print(f"    total    {sum(verdicts.values())}")
+print(f"    total    {sum(verdicts.values())} (this container)")
 for name, count in verdicts.most_common():
     print(f"      {name:<22} {count}")
 for name, count in tools.most_common():
