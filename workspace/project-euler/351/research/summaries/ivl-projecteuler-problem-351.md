@@ -1,73 +1,66 @@
-<!-- source: https://www.ivl-projecteuler.com/overview-of-problems/25-difficulty/problem-351 | converted from HTML -->
+# IVL Project Euler 351 — "Hexagonal Orchards" (solution write-up, 25% difficulty)
 
-IVL - Project Euler Solutions - Problem 351
+Source: https://www.ivl-projecteuler.com/overview-of-problems/25-difficulty/problem-351 — full text at
+`research/sources/ivl-projecteuler-problem-351.full.md`
+[[ivl-projecteuler-problem-351.full]]
 
-Search this site
+## What this source establishes
 
-Embedded Files
+A public solution write-up for PE 351 (author anonymous, IVL collection). Read
+in full this session.
 
-Skip to main content
+**The method (identical to this run's).** Consider one sixth of the hexagon and
+multiply by 6. In one sector, the points of the n-th layer represent the angles
+x/n, 1 ≤ x ≤ n; a point is hidden iff gcd(x, n) > 1 (the fraction x/n is not
+reduced, so a closer point with the same angle exists). On layer n, φ(n) of the
+n points have gcd(x,n) = 1, so n − φ(n) are hidden; hence
 
-Skip to navigation
+    H(n) = 6·Σ_{i=1..n}(i − φ(i)) = 6·(n(n+1)/2 − Φ(n)).
 
-#
+**The computation.** The author first evaluated the summatory totient with a
+Möbius sieve (~85 s), then implemented "algorithm 6" of the official PE 351
+overview PDF (a sublinear Totient Summatory Function evaluation) and dropped the
+runtime to ~1 s, adding it to his `mathslib` Python package
+(`mathslib.numtheory.mobius_k_sieve`).
 
-Project Euler 35 1 - Hexagonal Orchards
+## What it implies for this run
 
-Official link: [https://projecteuler.net/problem=351][1]
+A second independent public confirmation (with Brumme) that the six-sector /
+φ-per-layer derivation and the closed form H(n) = 6·(T(n) − Φ(n)) are the
+standard solution, and that the sublinear Φ-evaluation is the standard fast
+route. The page does not print the final integer H(10⁸), so it is not an answer
+source; it corroborates `hexagonal-orchard-closed-form` and the
+`summatory-totient-mobius-identity` route (the same Möbius identity the run's
+`verify_mobius.py` uses). It also corroborates the optional fourth route
+(`research/approaches/dirichlet-hyperbola-gauss-2-3.md`, Θ(n^{2/3})): the
+official overview's "algorithm 6" is that same floor-grouped summatory-totient
+evaluation.
 
-#
+```claim
+id: pe351-ivl-standard-method
+statement: A second public PE 351 write-up (IVL) uses the same six-sector derivation:
+layer n has n points with angles x/n, hidden iff gcd(x,n) > 1, so
+H(n) = 6*sum_{i<=n}(i - phi(i)) = 6*(n(n+1)/2 - Phi(n)); it evaluates Phi with a
+Mobius sieve and then with the overview PDF's sublinear totient-summatory algorithm 6.
+hypotheses: n >= 1; sixfold symmetry of the hexagon; gcd criterion.
+holds-here: yes — same problem definition; the identity matches this run's
+brute.py at n = 5, 10, 1000.
+status: asserted (independent corroboration of the already checked closed form;
+the page prints no final integer).
+bearing: corroborates hexagonal-orchard-closed-form and the sublinear-Phi route
+as the standard method; no new computation needed.
+anchor: research/summaries/ivl-projecteuler-problem-351.md
+```
 
-Thought Process
+## Hypotheses
 
-Clearly we only need to consider one sixth of the hexagon and then we can multiply the final answer by 6.
+n ≥ 1; the six-triangle symmetry and the gcd-per-layer criterion. Hold here
+(verified by brute.py and the identity at n = 5, 10, 1000).
 
-Lets focus on the top right triangle
+## Claims
 
-I include a diagram to help readers understand.
-
-Lets denote the angle between P0-P1 and P0-P2 as Angle 1. Then the angle between P0-P1 and P0-P3 is clearly 1/2 of Angle 1, lets call it Angle 1/2. Now clearly the angle between P0-P1 and P0-P4 is also Angle 1, we've already seen this angle before, hence the point will be hidden. Similarly we can see that between P0-P1 and P0-P5 we have Angle 1/3. In short each point, x, on the n -th layer represents Angle x/n.
-
-For example on the 4-th layer we have the 3rd point, P6, will have Angle 2/4 = Angle 1/2
-
-Now the problem is simple.
-
-We just need to find all of the points which have an angle x/n such that gcd(x, n) > 1. We know that on the n -th layer there are gonna be φ (n), where φ (n) is [Euler's Totient Function][2], numbers, x, such that gcd(x, n) = 1, therefore there are n - φ (n) numbers such that gcd(x, n) > 1.
-
-Then we have a nice formula for H(n). Take note of the [Totient Summatory Function][3]
-
-Originally just using the wiki page and my [mobius sieve][4] I could get the answer in ~85 seconds.
-
-After solving the problem you have access to the [PDF overview][5] of the problem, which shows you how to implement the Totient Summatory Function efficiently. I implemented algorithm 6 detailed on the PDF, then runtime has now dropped to ~1 second!
-
-This new algorithm has been added to my python package [mathslib][6]
-
-#
-
-Interactive Code
-
-Input an Integer ( yourinput)
-
-Code will output H(n)
-
-Google Sites
-
-Report abuse
-
-Page details
-
-Page updated
-
-Google Sites
-
-Report abuse
-
-
-## Links
-
-[1]: https://projecteuler.net/problem=351
-[2]: https://en.wikipedia.org/wiki/Euler%27s_totient_function
-[3]: https://en.wikipedia.org/wiki/Totient_summatory_function
-[4]: https://mathslib.readthedocs.io/en/latest/mathslib.html#mathslib.numtheory.mobius_k_sieve
-[5]: https://projecteuler.net/overview=0351
-[6]: https://mathslib.readthedocs.io/en/latest/index.html
+None new — corroborates `hexagonal-orchard-closed-form`,
+`summatory-totient-mobius-identity`, and the sublinear Φ route already claimed
+from OEIS A216453, Brown arXiv:2506.07386, and Brumme. Added
+`pe351-ivl-standard-method` (asserted) to record the corroboration with its
+URL.

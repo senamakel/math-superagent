@@ -568,16 +568,41 @@ impl Blueprint {
         out.push('\n');
     }
 
+    /// Whether any lemma is waiting on something unsettled.
+    ///
+    /// Separates the two ways the ready list comes back empty. A goal blocked
+    /// while every lemma under it is discharged is not the same problem as a
+    /// decomposition whose leaves all rest on each other, and the advice for
+    /// the two is opposite.
+    fn blocked_lemmas(&self) -> bool {
+        self.nodes
+            .values()
+            .any(|node| node.kind == Kind::Lemma && node.standing == Standing::Blocked)
+    }
+
     /// Lists what can be started immediately.
     fn append_ready(&self, out: &mut String) {
         let ready = self.ready();
         if ready.is_empty() {
-            out.push_str(
-                "## Ready to work on\n\n_Nothing is ready: every open lemma rests on another open \
-                 lemma. That is a decomposition problem rather than a proving one — the run needs \
-                 a reduction whose leaves are attackable, not another attempt at a blocked \
-                 node._\n\n",
-            );
+            out.push_str("## Ready to work on\n\n");
+            // Two very different states, and a live run reached the second one
+            // inside ninety minutes while the file told it the first. PE 351
+            // discharged all three of its lemmas and left only the goal open,
+            // waiting on claims nobody had verified — and the empty-list note
+            // said the run had a decomposition problem, which was both wrong
+            // and the opposite of what to do next. An empty list is honest; a
+            // diagnosis attached to it has to be earned.
+            out.push_str(if self.blocked_lemmas() {
+                "_Nothing is ready: every open lemma rests on another open lemma. That is a \
+                 decomposition problem rather than a proving one — the run needs a reduction \
+                 whose leaves are attackable, not another attempt at a blocked node._\n\n"
+            } else {
+                "_Nothing is ready, and no lemma is blocked either: every proposition the \
+                 decomposition names is settled, and what remains open is the goal itself. \
+                 Check what it rests on — a goal still blocked when its lemmas are all \
+                 discharged is resting on something nobody verified, or on an inference the \
+                 skeleton never wrote down._\n\n"
+            });
             return;
         }
         out.push_str(

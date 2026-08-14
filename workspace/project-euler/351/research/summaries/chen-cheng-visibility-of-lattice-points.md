@@ -19,8 +19,8 @@ The canonical modern definition used across the visibility literature:
 - Main results (extremal, for the Erdős–Gruber–Hammer question): with
   ∆ₖₙ = {(x₁,…,xₖ) ∈ ℤᵏ : 1 ≤ xᵢ ≤ n} and fₖ(n), Fₖ(n) the minimum size of a set
   from which ∆ₖₙ is visible (S ⊂ ℤᵏ resp. S ⊆ ∆ₖₙ):
-  - fₖ(n) ≥ ζ(k)·log n·log log n·(1+o(1))  (Theorem 1, k ≥ 2)
-  - Fₖ(n) ≤ ζ(k−1)·log n·log log n·(1+o(1))  (Theorem 2, k ≥ 3)
+  - fₖ(n) ≥ ζ(k)·(log n)/(log log n)·(1+o(1))  (Theorem 1, k ≥ 2)
+  - Fₖ(n) ≤ ζ(k−1)·(log n)/(log log n)·(1+o(1))  (Theorem 2, k ≥ 3)
 
 ## Why it is in this library
 

@@ -23,7 +23,7 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 | `R-linear-Phi-sieve-crosscheck` | [[hex-orchard-hidden-points]] | Implement an exact O(n log log n) sieve producing phi(k) and the prefix sum Phi(k) for k up to n, confirm Phi(1000)=304192, and cross-check H(n) against the R0… | n-bound-1e8, sublinear-Phi-recursion, answer-verification | open |
 | `R-Phi-1e8-linear-probe` | [[hex-orchard-hidden-points]] | Compute Phi(10^8) by the linear sieve (or a segmented variant) and hence H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8) exactly. This rung exists to test whether the… | sublinear-Phi-recursion, answer-verification | open |
 | `R-sublinear-Phi-recursion` | [[hex-orchard-hidden-points]] | Compute Phi(n) by the floor-grouped recursion Phi(n) = n(n+1)/2 - sum_{k=2..n} Phi(floor(n/k)) with memoization, prove its correctness, verify it reproduces… | answer-verification | open |
-| `R-goal-H-1e8-verified` | [[hex-orchard-hidden-points]] | H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8), computed exactly and confirmed by a second independent route; this is the full Project Euler 351 answer with no… | (none) | open |
+| `R-goal-H-1e8-verified` | [[hex-orchard-hidden-points]] | H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8), computed exactly and confirmed by a second independent route; this is the full Project Euler 351 answer with no… | — | open |
 
 ## The current rung — attack this one
 
@@ -31,8 +31,4 @@ The weakest statement nobody has settled yet. Aiming higher is how a run spends 
 
 - [[hex-orchard-hidden-points]] → `R-hex-brute-examples`: Enumerate the triangular-lattice points of the order-n hexagon, { (a,b) in Z^2 : |a|<=n, |b|<=n, |a+b|<=n }, for n in {5,10} and count those hidden from the center by the definition itself: a point (a,b) != (0,0) is hidden iff some lattice point lies strictly between it and the origin on the same ray (equivalently gcd(a,b)>1). Recover H(5)=30 and H(10)=138.
   - switched off: hex-geometry, compute-Phi-linear, n-bound-1e8, sublinear-Phi-recursion, answer-verification
-  - to merge the next difficulty back: turning hex-geometry back on. On this brute oracle, confirm hidden <=> gcd(a,b)>1, that the visible (gcd=1) points number 6*Phi(n)+1 counting the center, and that the total is 3n^2+3n+1, which yields H(n) = 3n^2+3n-6*Phi(n) = 6*A063985(n) with Phi(n)=sum_{k<=n} phi(k) and A063985(n)=sum_{k<=n}(k-phi(k)). This is the whole of R1.
-
-## Ladders that could not be read
-
-- `hex-orchard-hidden-points` rung `R-goal-H-1e8-verified` switches off `(none)`, which the ladder never declared as a difficulty — the rung and the header disagree about what makes the goal hard
+  - to merge the next difficulty back: DONE — brute.py reproduces H(5)=30, H(10)=138, H(1000)=1177848 and confirms hidden <=> gcd(a,b)>1, visible = 6*Phi(n)+1, total = 3n^2+3n+1.

@@ -8,14 +8,7 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 ## Ready to work on
 
-Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
-
-- `hexorchard-totient/G-answer-verification` (lemma) — The value H(10^8) = 3*10^8*(10^8 + 1) - 6V produced from G1 and G2 is the true H(10^8): both the closed form and the computed V are…
-  - open `research/backward/hexorchard-totient.md`
-- `hexorchard-totient/G-hexorchard-visibility` (lemma) — For every n >= 1, the hexagonal orchard of order n contains 3n^2 + 3n + 1 lattice points, of which exactly 1 + 6*Phi(n), Phi(n) =…
-  - open `research/backward/hexorchard-totient.md`
-- `hexorchard-totient/G-summatory-totient-value` (lemma) — Phi(10^8) = sum_{k=1}^{10^8} phi(k) has an exact integer value V, computable by an established algorithm: the Euler-totient sieve over k <=…
-  - open `research/backward/hexorchard-totient.md`
+_Nothing is ready: every open lemma rests on another open lemma. That is a decomposition problem rather than a proving one — the run needs a reduction whose leaves are attackable, not another attempt at a blocked node._
 
 ## Every node
 
@@ -31,10 +24,10 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `gauss-divisor-sum-of-totient` | claim | **ready** | — | Σ_{d\|n} φ(d) = n for every positive integer n (Gauss); hence Σ_{d=1..n} Φ(⌊n/d⌋) = n(n+1)/2, which rearranges to the summatory recursion… |
 | `heath-brown-mobius-identity` | claim | **ready** | — | For u ≥ √x, μ(n) = − Σ_{m1 m2 n1 = n, m1,m2 ≤ u} μ(m1)μ(m2) + 2μ(n)·[n ≤ u]; summing over n ≤ x gives M(x) = 2M(u) − Σ_{m1,m2 ≤ u}… |
 | `hexagonal-orchard-closed-form` | claim | established | — | For every n ≥ 1, H(n) = 6·(C(n+1,2) − Σ_{k=1..n} φ(k)) = 6·Σ_{k=1..n}(k − φ(k)). |
-| `hexorchard-totient` | goal | blocked | `hexorchard-totient/G-answer-verification`, `hexorchard-totient/G-hexorchard-visibility`, `hexorchard-totient/G-summatory-totient-value` | Determine H(100000000) exactly, via the closed form H(n) = 3n^2 + 3n - 6*Phi(n),  Phi(n) = sum_{k=1..n} phi(k), evaluated at n = 10^8. |
-| `hexorchard-totient/G-answer-verification` | lemma | **ready** | — | The value H(10^8) = 3*10^8*(10^8 + 1) - 6V produced from G1 and G2 is the true H(10^8): both the closed form and the computed V are… |
-| `hexorchard-totient/G-hexorchard-visibility` | lemma | **ready** | — | For every n >= 1, the hexagonal orchard of order n contains 3n^2 + 3n + 1 lattice points, of which exactly 1 + 6*Phi(n), Phi(n) =… |
-| `hexorchard-totient/G-summatory-totient-value` | lemma | **ready** | — | Phi(10^8) = sum_{k=1}^{10^8} phi(k) has an exact integer value V, computable by an established algorithm: the Euler-totient sieve over k <=… |
+| `hexorchard-totient` | goal | blocked | `gauss-divisor-sum-of-totient`, `hexagonal-orchard-closed-form`, `hexorchard-totient/G-answer-verification`, `hexorchard-totient/G-hexorchard-visibility`, `hexorchard-totient/G-summatory-totient-value`, `pe351-hidden-formula`, `summatory-totient-mobius-identity`, `totient-sum-fast-recursion`, `totient-sum-verification-values` | Determine H(100000000) exactly, via the closed form H(n) = 3n^2 + 3n - 6*Phi(n),  Phi(n) = sum_{k=1..n} phi(k), evaluated at n = 10^8. |
+| `hexorchard-totient/G-answer-verification` | lemma | established | `pe351-h6a063985-identity`, `pe351-mod12-period4` | The value H(10^8) = 3*10^8*(10^8 + 1) - 6V produced from G1 and G2 is the true H(10^8): both the closed form and the computed V are… |
+| `hexorchard-totient/G-hexorchard-visibility` | lemma | established | `hexagonal-orchard-closed-form`, `pe351-h6a063985-identity`, `pe351-hidden-formula` | For every n >= 1, the hexagonal orchard of order n contains 3n^2 + 3n + 1 lattice points, of which exactly 1 + 6*Phi(n), Phi(n) =… |
+| `hexorchard-totient/G-summatory-totient-value` | lemma | established | `totient-sum-fast-recursion`, `totient-sum-verification-values` | Phi(10^8) = sum_{k=1}^{10^8} phi(k) has an exact integer value V, computable by an established algorithm: the Euler-totient sieve over k <=… |
 | `invisible-rectangle-classification` | claim | **ready** | — | A lattice point (x,y) is visible iff gcd(x,y)=1 (Murphy–Schmiedeler–Stonner Thm 2.1, citing Goins et al. Prop 3); closest invisible n×m… |
 | `lehman-mertens-identity` | claim | **ready** | — | For 1 ≤ u ≤ x, M(x) = M(u) − Σ_{m≤u} μ(m) Σ_{u/m<n≤x/m} M(⌊x/(mn)⌋), with M(t) = Σ_{k≤t} μ(k). |
 | `mertens-computation-context` | claim | **ready** | — | M(x) can be computed for all x ≤ 10^16 and powers of two to 2^73; Mertens conjecture false; \|M(x)/√x\| bounds ±1.8376/1.8261. |
@@ -48,6 +41,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `pe351-axis-visible-claim-refuted` | claim | established | — | In the first-step derivation of G-hexorchard-visibility, the claim "the six boundary axes contribute n visible points each" is false: each… |
 | `pe351-h6a063985-identity` | claim | established | — | H(n) = 6*A063985(n) = 3n(n+1) - 6*Phi(n) for every n, with Phi(n) = sum_{k<=n} phi(k) and A063985(n) = sum_{k<=n} (k - phi(k)). |
 | `pe351-hidden-formula` | claim | **ready** | — | H(n) = 6 * (C(n+1,2) - sum_{i=1..n} phi(i)) = 6 * sum_{i=1..n} (i - phi(i)), where phi is Euler's totient function. Equivalently H(n) = 6 *… |
+| `pe351-ivl-standard-method` | claim | **ready** | — | A second public PE 351 write-up (IVL) uses the same six-sector derivation: layer n has n points with angles x/n, hidden iff gcd(x,n) > 1,… |
 | `pe351-mod12-period4` | claim | established | — | For every n >= 2, H(n) mod 12 = 6*((n+1)//2 mod 2); equivalently H(n) mod 12 is periodic with period 4, residues 6,0,0,6 for n = 2,3,4,5… |
 | `polygon-primitive-point-asymptotic` | claim | **ready** | — | #(tA ∩ P) = (6/π²)t²Area(A) + E_A(t) for rational polygons A, with E_A(t) = Ω±(t log log t) and matching upper bounds. |
 | `primitive-pairs-contour-asymptotic` | claim | **ready** | — | P(r) = (6/π)r + O_ε(r^{1/2} exp(−c√log r)) for relatively prime pairs in a circle of radius r; error depends on the contour's curvature. |
@@ -55,25 +49,10 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `summatory-totient-mobius-identity` | claim | established | — | Φ(n) = (1/2) Σ_{k=1..n} μ(k)⌊n/k⌋(1+⌊n/k⌋), μ the Möbius function. |
 | `totient-definition-and-growth` | claim | **ready** | — | φ(n) = #{1 ≤ k ≤ n : gcd(k,n)=1}; Σ_{k≤n} φ(k) ~ (3/π²)n². |
 | `totient-magnitude-anchor` | claim | **ready** | — | Φ(x) = 3x²/π² + O(x log x); hence Φ(10^8) ≈ 3.0396×10^15. |
+| `totient-position-diagonal-enumeration` | claim | **ready** | — | A092249(n) = A002088(n+1) = Phi(n+1): the position of the integer n in the standard diagonal enumeration of the positive rationals is the… |
 | `totient-sum-fast-recursion` | claim | established | — | A063985(n) = (2n + c − j)//2 with j starting at 2 and c = Σ over distinct values k1 = n//j of (j2−j)·(k1(k1+1) − 2·A063985(k1) − 1), j2 =… |
 | `totient-sum-verification-values` | claim | **ready** | — | Φ(10^k) for k=0..8 is 1, 32, 3044, 304192, 30397486, 3039650754, 303963552392, 30396356427242, 3039635516365908 (OEIS A064018 b-file). |
 | `visibility-criterion-adhikari-granville` | claim | **ready** | — | In Z^D (D >= 2), a point a is visible from b (no lattice point on the open segment between them) iff gcd of the coordinates of a - b equals… |
 | `visible-density-zeta-goins` | claim | **ready** | — | The proportion of lattice points in Z^2 visible from the origin is 1/zeta(2) = 6/pi^2 (Sylvester 1883); a point (r,s) is visible from (0,0)… |
-| `visible-point-density-zeta` | claim | **ready** | — | The visible points of a lattice Γ ⊂ R^n have density dens(Γ)/ζ(n) (6/π² in 2D). |
-| `visible-points-primitive-corroboration` | claim | **ready** | — | The visible points of a lattice are its primitive points (gcd = 1 in a lattice basis); corroborates the coprimality-iff-visible criterion… |
 
-## Resting on nothing that exists
-
-Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
-
-- `hexorchard-totient` rests on `none`, which does not exist
-- `hexorchard-totient` rests on `(research/CLAIMS.md`, which does not exist
-- `hexorchard-totient` rests on `is`, which does not exist
-- `hexorchard-totient` rests on `empty;`, which does not exist
-- `hexorchard-totient` rests on `no`, which does not exist
-- `hexorchard-totient` rests on `claim`, which does not exist
-- `hexorchard-totient` rests on `in`, which does not exist
-- `hexorchard-totient` rests on `the`, which does not exist
-- `hexorchard-totient` rests on `ledger`, which does not exist
-- `hexorchard-totient` rests on `covers`, which does not exist
-- `hexorchard-totient` rests on `this)`, which does not exist
+_3 further nodes not shown._

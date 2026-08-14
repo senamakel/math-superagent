@@ -3,7 +3,7 @@
 ```thread
 question: What is the summatory totient Phi(10^8) = sum_{k<=10^8} phi(k),
           and hence H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8)?
-status: closed
+status: resolved
 rests-on: gauss-divisor-sum-of-totient, summatory-totient-mobius-identity,
           totient-sum-verification-values, totient-sum-fast-recursion,
           hexagonal-orchard-closed-form

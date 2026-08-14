@@ -8,27 +8,15 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
-| [[hexorchard-totient]] | Determine H(100000000) exactly, via the closed form H(n) = 3n^2 + 3n - 6*Phi(n),  Phi(n) = sum_{k=1..n} phi(k), evaluated at n = 10^8. | Lemma G1 fixes H(n) = 3n^2 + 3n - 6*Phi(n) for every n >= 1, so the only unknown at n = 10^8 is Phi(10^8). Lemma G2 supplies the exact integer Phi(10^8) = V by… | sketched | 3 |
+| [[hexorchard-totient]] | Determine H(100000000) exactly, via the closed form H(n) = 3n^2 + 3n - 6*Phi(n),  Phi(n) = sum_{k=1..n} phi(k), evaluated at n = 10^8. | Lemma G1 fixes H(n) = 3n^2 + 3n - 6*Phi(n) for every n >= 1, so the only unknown at n = 10^8 is Phi(10^8). Lemma G2 supplies the exact integer Phi(10^8) = V by… | sketched | 0 |
 
-## The open gaps — each one is a task
+## Gaps already discharged
 
-Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
+Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
 
-- [[hexorchard-totient]] `G-hexorchard-visibility` — For every n >= 1, the hexagonal orchard of order n contains 3n^2 + 3n + 1 lattice points, of which exactly 1 + 6*Phi(n), Phi(n) = sum_{k=1..n} phi(k), are visible from the centre; hence H(n) = 3n^2 + 3n - 6*Phi(n) = 6 * sum_{k=1..n} (k - phi(k)).
-  - next: Write the axial-coordinate bijection: the six open 60-degree sectors have ring-k points {(a,b) : a,b >= 1, a+b = k}, and (a,b) is visible from the centre iff gcd(a,b) = 1, giving sum_{k=2..n} phi(k) visible points per sector; the six boundary axes contribute n visible points each and the centre contributes 1, so visible = 1 + 6*(n + sum_{k=2..n} phi(k)) = 1 + 6*Phi(n). Total points = 1 + 6*sum_{k=1..n} k = 3n^2 + 3n + 1. tool_builder: confirm the resulting formula against code/brute.py for n <= 30 and against the statement's oracle H(5)=30, H(10)=138, H(1000)=1177848.
-  - _no thread — nothing is attacking this_
-- [[hexorchard-totient]] `G-summatory-totient-value` — Phi(10^8) = sum_{k=1}^{10^8} phi(k) has an exact integer value V, computable by an established algorithm: the Euler-totient sieve over k <= 10^8 (O(n log log n) time, O(n) 32-bit memory), or the sublinear recurrence Phi(n) = n(n+1)/2 - sum_{d=2..n} Phi(floor(n/d)) — a direct consequence of sum_{d|m} phi(d) = m — evaluated in O(n^{2/3}) time with memoisation at the floor(n/d) points.
-  - next: tool_builder: implement one of these with exact integer arithmetic, output V, and assert it reproduces Phi(10) = 32 and Phi(1000) = 304192 (equivalently H(10)=138 and H(1000)=1177848 via G1) before evaluating n = 10^8.
-  - _no thread — nothing is attacking this_
-- [[hexorchard-totient]] `G-answer-verification` — The value H(10^8) = 3*10^8*(10^8 + 1) - 6V produced from G1 and G2 is the true H(10^8): both the closed form and the computed V are independently confirmed, so no arithmetic, off-by-one, or implementation error survives.
-  - next: tool_builder: run a second, independent computation of Phi(10^8) — a different algorithm from the one used for G2 (linear/interval sieve vs Dirichlet-hyperbola recursion) — and diff its V against the first; also diff code/solution.py against code/brute.py on every n the brute force can reach. Report which second route was used.
-  - _no thread — nothing is attacking this_
-
-## Resting on nothing recorded
-
-A reduction taking an unrecorded belief as input proves the goal from something nobody downstream can check. Either write the claim, or the id is misspelled.
-
-- [[hexorchard-totient]] rests on `none`, `(research/CLAIMS.md`, `is`, `empty;`, `no`, `claim`, `in`, `the`, `ledger`, `covers`, `this)`, which no claim block on disk establishes
+- [[hexorchard-totient]] `G-hexorchard-visibility` — For every n >= 1, the hexagonal orchard of order n contains 3n^2 + 3n + 1 lattice points, of which exactly 1 + 6*Phi(n), Phi(n) = sum_{k=1..n} phi(k), are visible from the centre; hence H(n) = 3n^2 + 3n - 6*Phi(n) = 6 * sum_{k=1..n} (k - phi(k)). (closed by pe351-hidden-formula, hexagonal-orchard-closed-form, pe351-h6a063985-identity)
+- [[hexorchard-totient]] `G-summatory-totient-value` — Phi(10^8) = sum_{k=1}^{10^8} phi(k) has an exact integer value V, computable by an established algorithm: the Euler-totient sieve over k <= 10^8 (O(n log log n) time, O(n) 32-bit memory), or the sublinear recurrence Phi(n) = n(n+1)/2 - sum_{d=2..n} Phi(floor(n/d)) — a direct consequence of sum_{d|m} phi(d) = m — evaluated in O(n^{2/3}) time with memoisation at the floor(n/d) points. (closed by totient-sum-verification-values, totient-sum-fast-recursion)
+- [[hexorchard-totient]] `G-answer-verification` — The value H(10^8) = 3*10^8*(10^8 + 1) - 6V produced from G1 and G2 is the true H(10^8): both the closed form and the computed V are independently confirmed, so no arithmetic, off-by-one, or implementation error survives. (closed by pe351-h6a063985-identity, pe351-mod12-period4)
 
 ## Skeletons that could not be read
 

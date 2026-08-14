@@ -332,3 +332,30 @@ fn a_settled_graph_briefs_nothing() {
         "a graph with no open work adds nothing to the prompt"
     );
 }
+
+/// PE 351 reached this state live inside ninety minutes: all three lemmas
+/// discharged, the goal still blocked on claims nobody had verified. The empty
+/// ready list told it the decomposition was at fault, which was both wrong and
+/// the opposite of what to do next.
+#[test]
+fn a_goal_left_blocked_by_its_claims_is_not_a_decomposition_problem() {
+    let root = workspace("goal-only");
+    claim(&root, "base", "id: base\nstatement: the tool\nstatus: asserted\n");
+    skeleton(
+        &root,
+        "alpha",
+        "goal: the theorem\nimplies: the theorem\nstatus: live\nrests-on: base\n",
+        &["id: A1\nlemma: the one lemma\nstatus: discharged\ndischarged-by: base\n"],
+    );
+
+    let graph = collect(&root);
+    let rendered = graph.render();
+    assert!(
+        !rendered.contains("decomposition problem"),
+        "no lemma is blocked, so the decomposition is not what is wrong: {rendered}"
+    );
+    assert!(
+        rendered.contains("what remains open is the goal itself"),
+        "the reader should be sent to what the goal rests on: {rendered}"
+    );
+}

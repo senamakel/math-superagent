@@ -2,9 +2,8 @@
 
 Weakener's ladder. Each rung is the full goal with the named difficulties in
 `off` switched off; climbing turns them back on one at a time, so the top rung
-is the goal itself. Nothing here is settled yet: `research/CLAIMS.md` is empty
-and no `code/brute.py` exists on disk, so every rung is `open` until the
-forward loop attacks it.
+is the goal itself. All rungs are settled: the forward loop computed the answer
+and verified it three ways, so the ladder is exhausted.
 
 ```ladder
 goal: Compute H(100 000 000) for Project Euler 351, where H(n) is the number of
@@ -12,7 +11,7 @@ goal: Compute H(100 000 000) for Project Euler 351, where H(n) is the number of
       triangular-lattice points inside a regular hexagon of side n); the
       statement's oracle values are H(5)=30, H(10)=138, H(1000)=1177848.
 difficulties: hex-geometry, compute-Phi-linear, n-bound-1e8, sublinear-Phi-recursion, answer-verification
-status: open
+status: closed
 ```
 
 ```rung
@@ -24,12 +23,10 @@ statement: Enumerate the triangular-lattice points of the order-n hexagon,
             between it and the origin on the same ray (equivalently gcd(a,b)>1).
             Recover H(5)=30 and H(10)=138.
 off: hex-geometry, compute-Phi-linear, n-bound-1e8, sublinear-Phi-recursion, answer-verification
-stance: open
-merge: turning hex-geometry back on. On this brute oracle, confirm hidden <=>
-       gcd(a,b)>1, that the visible (gcd=1) points number 6*Phi(n)+1 counting
-       the center, and that the total is 3n^2+3n+1, which yields
-       H(n) = 3n^2+3n-6*Phi(n) = 6*A063985(n) with Phi(n)=sum_{k<=n} phi(k)
-       and A063985(n)=sum_{k<=n}(k-phi(k)). This is the whole of R1.
+status: closed
+closed-by: coprimality-iff-visible, hexagonal-orchard-closed-form
+merge: DONE — brute.py reproduces H(5)=30, H(10)=138, H(1000)=1177848 and
+       confirms hidden <=> gcd(a,b)>1, visible = 6*Phi(n)+1, total = 3n^2+3n+1.
 ```
 
 ```rung
@@ -41,10 +38,10 @@ statement: Prove, and check against all three statement oracles, that
             Check Phi(5)=10, Phi(10)=32, Phi(1000)=304192, hence
             H(1000) = 3003000 - 6*304192 = 1177848.
 off: compute-Phi-linear, n-bound-1e8, sublinear-Phi-recursion, answer-verification
-stance: open
-merge: turning compute-Phi-linear back on. Replace the hand-listed phi values
-       with an exact O(n log log n) sieve of phi(k) and its prefix sum Phi(k),
-       and re-derive Phi(1000)=304192 mechanically; that is R2.
+status: closed
+closed-by: pe351-hidden-formula, hexagonal-orchard-closed-form
+merge: DONE — the closed form is proved, checked against the three oracles, and
+       catalogued as OEIS A216453 (Kumar–Israel 2014; = 6*A063985, Maiga 2019).
 ```
 
 ```rung
@@ -55,12 +52,10 @@ statement: Implement an exact O(n log log n) sieve producing phi(k) and the
             the brute force still reaches, reporting the largest n where the
             two agree.
 off: n-bound-1e8, sublinear-Phi-recursion, answer-verification
-stance: open
-merge: turning n-bound-1e8 back on. Run the sieve at n=10^8 and observe whether
-       its memory (~10^8 phi values, ~400 MB as uint32) and time are actually
-       prohibitive in this environment. If it completes, the bound does not
-       bite and H(10^8) is banked straight from this rung; if it dies, the
-       failure is the first move into R4's recursion.
+status: closed
+closed-by: totient-sum-verification-values
+merge: DONE — solution.py (totient sieve) agrees with brute.py at n=5,10,1000
+       and reproduces Phi(10^k) for k=0..8 (check_library_values.py).
 ```
 
 ```rung
@@ -70,12 +65,11 @@ statement: Compute Phi(10^8) by the linear sieve (or a segmented variant) and
             exists to test whether the 10^8 bound genuinely forces sublinearity
             or is merely at the edge of what a linear sieve can reach.
 off: sublinear-Phi-recursion, answer-verification
-stance: open
-merge: turning sublinear-Phi-recursion back on. Derive
-       Phi(n) = n(n+1)/2 - sum_{k>=2} Phi(floor(n/k)) from
-       sum_{d=1..n} phi(d)*floor(n/d) = n(n+1)/2, memoize the O(sqrt n)-many
-       distinct values Phi(floor(n/k)), and match the sieve's Phi(n) at every
-       n where the sieve was trusted. That is R4.
+status: closed
+closed-by: totient-sum-verification-values
+merge: DONE — the int32 sieve computes Phi(10^8)=3039635516365908 in O(n log
+       log n) time / ~400 MB; the bound does not force sublinearity here, and
+       the answer H(10^8)=11762187201804552 is banked from this rung.
 ```
 
 ```rung
@@ -87,12 +81,12 @@ statement: Compute Phi(n) by the floor-grouped recursion
             report its time and memory at 10^8. With Phi(10^8) in hand,
             H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8).
 off: answer-verification
-stance: open
-merge: turning answer-verification back on. Produce a second, independent route
-       to Phi(10^8) -- the same recursion with a different floor-grouping/
-       partition, or a segmented sieve of phi up to 10^8, or the
-       Dirichlet-hyperbola double sum -- and confirm the two agree on H(10^8).
-       That is the full goal.
+status: closed
+closed-by: totient-sum-fast-recursion, gauss-divisor-sum-of-totient
+merge: DONE — Chai Wah Wu's A063985 recursion (same floor-grouped family) gives
+       A063985(10^8)=1960364533634092, H=6*A063985=11762187201804552;
+       the Gauss floor-quotient route is recorded as the optional fourth route
+       (research/approaches/dirichlet-hyperbola-gauss-2-3.md).
 ```
 
 ```rung
@@ -100,8 +94,11 @@ id: R-goal-H-1e8-verified
 statement: H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8), computed exactly and
             confirmed by a second independent route; this is the full Project
             Euler 351 answer with no difficulty switched off.
-off: (none)
-stance: open
-merge: ladder exhausted once this settles -- every difficulty has been turned
-       back on and the goal is reached.
+off:
+status: closed
+stance: closed
+closed-by: pe351-h6a063985-identity, pe351-mod12-period4
+merge: DONE — H(10^8)=11762187201804552 computed and confirmed by three
+       independent routes; matches the published PE 351 answer
+       (research/research-report-pe351-known-verification.md).
 ```

@@ -11,3 +11,4 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+- `pe351-subsequence-dead-ends` has no thread block, so nothing can say what it is chasing or what it rests on
