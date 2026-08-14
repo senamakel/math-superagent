@@ -433,10 +433,25 @@ Keep `README.md`, this file, rustdoc, examples, and runtime behavior consistent.
 Write for a reader who has not seen the code. Prefer a concrete command or
 example over broad claims.
 
-Keep every Markdown file at 500 lines or fewer, this one included. It was 1,734
-lines for long enough that the rule read as advice: `CLAUDE.md` symlinks here, so
-every session and every review paid for a hundred kilobytes to find one rule, and
-nothing measured what that cost.
+Keep this file at 500 lines or fewer. It was 1,734 lines for long enough that
+the rule read as advice: `CLAUDE.md` symlinks here, so every session and every
+review paid for a hundred kilobytes to find one rule, and nothing measured what
+that cost. That is what makes length a cost here rather than a preference — this
+file is loaded in full, every time, by a reader looking for one thing.
+
+`README.md` is read start to finish by someone new, so it is held to the same
+intent without the number: it is 641 lines today, which is too long, and the fix
+is to move what a user does not need on their first pass rather than to trim
+paragraphs down to a threshold.
+
+**`docs/` is not held to that cap.** Nothing loads those files into a prompt and
+nobody reads one end to end; a reader arrives at `docs/ledgers.md` because a rule
+above it sent them there, reads the section that explains that rule, and leaves.
+For a file read by section, splitting on a line count is not a saving — it moves
+the cost from scrolling to deciding which of two files a subject ended up in, and
+it splits an argument at the point a number happened to fall rather than at a
+seam. The cap was applied there once and produced exactly that: `docs/roles.md`
+held at 499 lines by trimming an argument rather than by having finished it.
 
 The split is by *kind*, not by size. A rule to follow and a check to run stay
 here. The evidence behind a rule — the live run that met a ceiling, the number
@@ -445,6 +460,10 @@ the file in `docs/` that owns that subject, listed under *Where the rest of this
 lives*. User-facing instructions stay in `README.md`. Do not grow a third tree
 beside those two: `docs/` holds the rationale for what is in this file, and a
 document with no rule above it is a document nobody has a reason to open.
+
+A `docs/` file still earns its length. Split one when it has stopped being about
+one subject — which is a judgement about what a reader came for, not a line
+count.
 
 ## Working agreement for coding agents
 
