@@ -17,6 +17,10 @@ fn search_tools(research_enabled: bool, documents: &WorkspaceDocuments) -> Resul
     Ok(SearchTools {
         exa: Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>),
         oeis: oeis::OeisTool::all(documents),
+        discovery: openalex::CitationGraphTool::all(documents)
+            .into_iter()
+            .chain(exa::tools(research_enabled, documents)?)
+            .collect(),
     })
 }
 
@@ -28,7 +32,22 @@ struct SearchTools {
     exa: Option<Arc<dyn Tool<()>>>,
     /// Source adapters. A list because a second one slots into a list and
     /// would have to rewrite an option.
+    ///
+    /// This one reaches the OEIS and nothing else, and it is deliberately the
+    /// *narrow* list: it is registered into `pattern_finder` and `inventor`,
+    /// which have no web search on purpose. A tool that reaches the open web
+    /// must not be added here, because the registry says those roles cannot
+    /// search and the harness is what actually decides.
     oeis: Vec<Arc<dyn Tool<()>>>,
+    /// The ways onto the web that are not a query.
+    ///
+    /// Separate from [`Self::oeis`] because the two have different audiences,
+    /// and a list is where that distinction is enforced rather than described:
+    /// these go only to the roles the registry grants [`DISCOVERY_TOOLS`] to.
+    /// Folding them into the adapters would have handed `pattern_finder` a deep
+    /// research agent while the comment above its registration still read "the
+    /// one search this role may have".
+    discovery: Vec<Arc<dyn Tool<()>>>,
 }
 
 impl std::fmt::Debug for SearchTools {
@@ -37,9 +56,29 @@ impl std::fmt::Debug for SearchTools {
             .debug_struct("SearchTools")
             .field("exa", &self.exa.is_some())
             .field("oeis", &self.oeis.len())
+            .field("discovery", &self.discovery.len())
             .finish()
     }
 }
+
+/// The ways onto the web that are not a query.
+///
+/// Grouped because they answer the questions a query cannot, and a role that
+/// has one and not the others is a role that will fall back to rephrasing:
+/// `citation_graph` asks what a paper's own author thought was load-bearing,
+/// `find_similar_sources` uses a page rather than a phrase as the query,
+/// `read_sources` reads twenty candidates without storing any of them, and
+/// `deep_research` hands over a question the run cannot decompose into queries
+/// itself.
+///
+/// All four reach the open web, so all four are withheld with `exa_search`
+/// when research is off — by not being granted, not by being told to abstain.
+const DISCOVERY_TOOLS: [&str; 4] = [
+    "citation_graph",
+    "find_similar_sources",
+    "read_sources",
+    "deep_research",
+];
 
 fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     let document_tools = [
@@ -81,6 +120,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
+                .chain(research_enabled.then_some(DISCOVERY_TOOLS).into_iter().flatten())
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
@@ -328,6 +368,11 @@ fn library_agents(
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
+                // The role whose whole subject is coverage gets every way onto
+                // the web there is. A librarian that can only rephrase a query
+                // builds the library one vocabulary guess at a time, which is
+                // the failure its own brief opens with.
+                .chain(research_enabled.then_some(DISCOVERY_TOOLS).into_iter().flatten())
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
