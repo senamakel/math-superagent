@@ -29,7 +29,7 @@ fn the_cadence_carries_the_interval_the_rust_uses() {
 #[tokio::test]
 async fn a_solved_run_holds_even_when_the_interval_is_up() {
     let run = TestHarness::new(&goals_workflow())
-        .with_input(STATE_INPUT, json!({ "solved": true, "since_reduction": 99 }))
+        .input(STATE_INPUT, json!({ "solved": true, "since_reduction": 99 }))
         .mock_tool(super::super::loop_steps::TOOL, Respond::value(json!({})))
         .run()
         .await
@@ -43,7 +43,7 @@ async fn a_solved_run_holds_even_when_the_interval_is_up() {
 #[tokio::test]
 async fn a_run_inside_the_interval_holds() {
     let run = TestHarness::new(&goals_workflow())
-        .with_input(
+        .input(
             STATE_INPUT,
             json!({ "solved": false, "since_reduction": REDUCTION_INTERVAL - 1 }),
         )
@@ -63,7 +63,7 @@ async fn a_run_inside_the_interval_holds() {
 async fn a_due_run_asks_the_gate_and_reports_what_it_said() {
     for admitted in [true, false] {
         let run = TestHarness::new(&goals_workflow())
-            .with_input(
+            .input(
                 STATE_INPUT,
                 json!({ "solved": false, "since_reduction": REDUCTION_INTERVAL }),
             )

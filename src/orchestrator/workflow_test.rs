@@ -89,6 +89,16 @@ async fn no_binding_in_the_loop_resolves_to_nothing() {
         .filter(|(node, binding)| {
             !(*node == LOOP_NODE && binding.location.starts_with("state.update"))
         })
+        // The goals child's own expressions. The engine passes an inline
+        // `workflow` graph through untouched — its `=` values belong to the
+        // child's scope, not this one — but the recorder resolves every config
+        // string it walks, so the child's `=.inputs.state` is recorded as null
+        // against a scope that has no `inputs`. That they resolve where they are
+        // actually evaluated is asserted in `workflow_goals_test.rs`, which runs
+        // the child and reads what the gate was handed.
+        .filter(|(node, binding)| {
+            !(*node == GOALS_NODE && binding.location.starts_with("workflow."))
+        })
         .map(|(node, binding)| format!("{node}.{} = {}", binding.location, binding.expression))
         .collect();
     assert!(unexplained.is_empty(), "{unexplained:#?}");
@@ -133,9 +143,17 @@ async fn a_solved_reflection_leaves_the_loop() {
     }))
     .await;
     run.assert_node_ran("report");
-    // One pass. Four steps run in it — attempt, judge, reflect, and the merge
-    // is not reached — so a second pass would show as more than four.
-    run.assert_call_count(tinyflows::testkit::capability::TOOLS, Some("run_loop_step"), 3);
+    // One pass. Four steps run in it — attempt, judge, reflect, goal_apply —
+    // and neither the merge nor the goals gate is reached, so a second pass
+    // would show as more than four.
+    run.assert_call_count(
+        tinyflows::testkit::capability::TOOLS,
+        Some(super::super::loop_steps::TOOL),
+        4,
+    );
+    // The goals child ran and declined: this fixture carries no
+    // `since_reduction`, so the cadence reads zero and holds.
+    run.assert_node_ran(GOALS_NODE);
 }
 
 /// The arm that catches a run doing well by its own report and going nowhere.
@@ -423,4 +441,232 @@ async fn a_restart_verdict_reaches_another_attempt_and_is_capped() {
     // And it stopped: the cap is what makes the arm safe.
     run.assert_completed();
     run.assert_node_ran("reflect");
+}
+
+/// The state chains through a pass rather than every step reading the pass's
+/// opening accumulator.
+///
+/// The loop head folds at the *top* of a pass, so `nodes.solve.state` is what
+/// the *previous* pass ended with for the whole of this one. Every step reading
+/// it meant the judge scored the previous attempt's report and the reflection
+/// overwrote both — the attempt's counters and the judge's verdict were computed
+/// and then thrown away, once per pass, with nothing in the trace to say so. A
+/// fixed mock hides it completely, which is why the mock here answers each call
+/// differently and the assertion is on what each step was *handed*.
+#[tokio::test]
+async fn each_step_is_handed_what_the_step_before_it_produced() {
+    use crate::orchestrator::solutions::SolutionState;
+
+    let marked = |mark: &str, solved: bool| {
+        let mut state = SolutionState::new("find the largest x");
+        state.attempts = 1;
+        state.solved = solved;
+        state.last_attempt = mark.to_string();
+        Respond::value(state.to_accumulator())
+    };
+
+    let run = TestHarness::new(&graph())
+        .mock_tool(
+            super::super::loop_steps::TOOL,
+            // attempt, judge, reflect, goal_apply. The last is solved, so the
+            // fold ends the run after one pass.
+            Respond::sequence([
+                marked("what the attempt found", false),
+                marked("what the judge made of it", false),
+                marked("what the reflection concluded", false),
+                marked("what the goals step passed on", true),
+            ]),
+        )
+        .run()
+        .await
+        .expect("the loop runs to completion on mocks");
+
+    let handed = |node: &str| {
+        run.trace()
+            .calls_from(node)
+            .first()
+            .and_then(|call| call.args.pointer("/state/last_attempt"))
+            .and_then(Value::as_str)
+            .unwrap_or_default()
+            .to_string()
+    };
+
+    assert_eq!(handed("judge"), "what the attempt found");
+    assert_eq!(handed("reflect"), "what the judge made of it");
+    assert_eq!(handed("goal_apply"), "what the reflection concluded");
+}
+
+/// The arms' findings reach the merge.
+///
+/// Each arm is its own node returning its own whole state, so what they found
+/// exists only in their outputs. The merge read the loop's accumulator instead —
+/// which predates all three — so a diversify spent three child agent runs and
+/// composed the next attempt's briefing out of five empty slots. Nothing failed;
+/// the run simply carried on knowing none of it.
+#[tokio::test]
+async fn the_merge_is_handed_every_arms_output() {
+    let stuck = json!({
+        "attempts": 1, "solved": false, "unproductive": STUCK_THRESHOLD, "blocked": 0,
+        "computational": 0, "unverified": 0, "restarts": 0, "since_reduction": 0,
+        "lesson": "no progress", "fresh_context": "", "last_attempt": "the loop's own state"
+    });
+    // What only an arm returns. The accumulator and the arms are both states of
+    // the same shape, so a merge reading the wrong one still receives three
+    // plausible objects — this is what tells them apart.
+    let mut from_arm = stuck.clone();
+    from_arm["last_attempt"] = json!("what an arm found");
+    let mut finished = stuck.clone();
+    finished["solved"] = json!(true);
+
+    let run = TestHarness::new(&graph())
+        .mock_tool(
+            super::super::loop_steps::TOOL,
+            // attempt, judge, reflect, goal_apply, three arms, then the merge —
+            // which reports solved so the run ends rather than diversifying
+            // forever.
+            Respond::sequence([
+                Respond::value(stuck.clone()),
+                Respond::value(stuck.clone()),
+                Respond::value(stuck.clone()),
+                Respond::value(stuck.clone()),
+                Respond::value(from_arm.clone()),
+                Respond::value(from_arm.clone()),
+                Respond::value(from_arm.clone()),
+                Respond::value(finished),
+            ]),
+        )
+        .run()
+        .await
+        .expect("the loop runs to completion on mocks");
+
+    let arms = run
+        .trace()
+        .calls_from("diversify_merge")
+        .first()
+        .and_then(|call| call.args.get(super::super::loop_steps::ARMS_ARG).cloned())
+        .unwrap_or(Value::Null);
+
+    let arms = arms.as_array().cloned().unwrap_or_default();
+    assert_eq!(arms.len(), ARMS.len(), "{arms:#?}");
+    for arm in &arms {
+        assert_eq!(
+            arm.get("last_attempt"),
+            Some(&json!("what an arm found")),
+            "the merge was handed something other than an arm's output: {arm}"
+        );
+    }
+}
+
+/// The goals child is handed the reflection's state, not the accumulator.
+///
+/// The cadence counter it reads is moved by the reflection, and the accumulator
+/// is a pass behind while the body runs — so a child seeded from the accumulator
+/// would decide this cycle's decomposition on last cycle's count.
+#[tokio::test]
+async fn the_goals_child_reads_the_reflection_the_loop_just_made() {
+    use crate::orchestrator::solutions::SolutionState;
+    use crate::orchestrator::workflow_goals::{GATE_NODE, STATE_INPUT};
+
+    let mut due = SolutionState::new("find the largest x");
+    due.attempts = 1;
+    due.solved = false;
+    due.since_reduction = crate::orchestrator::solutions::REDUCTION_INTERVAL;
+    let mut done = due.clone();
+    done.solved = true;
+
+    let run = TestHarness::new(&graph())
+        .mock_tool(
+            super::super::loop_steps::TOOL,
+            Respond::sequence([
+                Respond::value(due.to_accumulator()),
+                Respond::value(due.to_accumulator()),
+                // The reflection: due, so the child must ask its gate.
+                Respond::value(due.to_accumulator()),
+                Respond::value(done.to_accumulator()),
+            ]),
+        )
+        .run()
+        .await
+        .expect("the loop runs to completion on mocks");
+
+    run.assert_node_ran(GOALS_NODE);
+
+    // The child's own run state, as the parent received it. Its `gate` node
+    // having run is the assertion: the gate is only reachable through the
+    // cadence switch, and the cadence only comes due on the count the reflection
+    // just moved. Seeded from the accumulator instead, the child would have read
+    // the previous pass's count and held.
+    let child = run
+        .output()
+        .pointer(&format!("/nodes/{GOALS_NODE}/items/0/json"))
+        .cloned()
+        .unwrap_or(Value::Null);
+    assert_eq!(
+        child.pointer(&format!("/run/inputs/{STATE_INPUT}/since_reduction")),
+        Some(&json!(crate::orchestrator::solutions::REDUCTION_INTERVAL)),
+        "the child was seeded with the wrong state: {child}"
+    );
+    assert!(
+        child.pointer(&format!("/nodes/{GATE_NODE}")).is_some(),
+        "the cadence was due and the gate was not asked: {child}"
+    );
+    assert!(
+        child.pointer("/nodes/held").is_none(),
+        "the child both asked and held: {child}"
+    );
+}
+
+/// The arms run at the same time, not one after another.
+///
+/// This is the property the fan-out exists for and the one no assertion about
+/// routing can see: three arms wired to the same port still produce the right
+/// answer run sequentially, just three times slower. Each arm here takes the
+/// same measurable time, so a sequential engine would take three of them.
+///
+/// Timing rather than instrumentation, because concurrency is a wall-clock claim
+/// and the margin is wide — a third of the sequential cost — rather than tight.
+#[tokio::test]
+async fn the_diversify_arms_run_concurrently() {
+    use std::time::{Duration, Instant};
+
+    let arm_time = Duration::from_millis(300);
+    let stuck = json!({
+        "attempts": 1, "solved": false, "unproductive": STUCK_THRESHOLD, "blocked": 0,
+        "computational": 0, "unverified": 0, "restarts": 0, "since_reduction": 0,
+        "lesson": "no progress", "fresh_context": ""
+    });
+    let mut finished = stuck.clone();
+    finished["solved"] = json!(true);
+    let slow = || Respond::Delay(arm_time, Box::new(Respond::value(stuck.clone())));
+
+    let started = Instant::now();
+    let run = TestHarness::new(&graph())
+        .mock_tool(
+            super::super::loop_steps::TOOL,
+            Respond::sequence([
+                // The four steps on the path answer immediately; only the three
+                // arms are slow, so what is measured is the fan-out alone.
+                Respond::value(stuck.clone()),
+                Respond::value(stuck.clone()),
+                Respond::value(stuck.clone()),
+                Respond::value(stuck.clone()),
+                slow(),
+                slow(),
+                slow(),
+                Respond::value(finished),
+            ]),
+        )
+        .run()
+        .await
+        .expect("the loop runs to completion on mocks");
+    let elapsed = started.elapsed();
+
+    for (arm, _) in ARMS {
+        run.assert_node_ran(arm);
+    }
+    assert!(
+        elapsed < arm_time * 2,
+        "the arms took {elapsed:?}, which is more than two of the {arm_time:?} each one costs — \
+         they ran in sequence"
+    );
 }

@@ -183,10 +183,19 @@ pub(super) fn opened(child: &Value) -> bool {
             .into_iter()
             .flatten()
             .any(|item| {
-                item.get("json")
-                    .and_then(|json| json.get(OPENED_FIELD))
-                    .and_then(Value::as_bool)
-                    .unwrap_or_default()
+                // Both shapes, because the child's two arms are different node
+                // kinds: a `tool_call` wraps its result in the
+                // `{ json, text, raw }` envelope, a `transform` passes its item
+                // through bare. Reading only one would make the answer depend on
+                // which arm ran, which is exactly what this must not do.
+                let payload = item.get("json");
+                let inner = payload.and_then(|json| json.get("json"));
+                [payload, inner].into_iter().flatten().any(|carrier| {
+                    carrier
+                        .get(OPENED_FIELD)
+                        .and_then(Value::as_bool)
+                        .unwrap_or_default()
+                })
             })
     })
 }

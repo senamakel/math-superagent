@@ -339,7 +339,11 @@ pub(super) fn solution_loop(
         step_with(
             "goal_apply",
             "=.nodes.reflect.item.json".into(),
-            json!({ super::loop_steps::DECISION_ARG: format!("=.nodes.{GOALS_NODE}.item.json") }),
+            // `item` rather than `item.json`: a `sub_workflow` emits the child's
+            // run state unwrapped, where a `tool_call` emits the
+            // `{ json, text, raw }` envelope every other step here is addressed
+            // through.
+            json!({ super::loop_steps::DECISION_ARG: format!("=.nodes.{GOALS_NODE}.item") }),
         ),
         node(
             "route",
