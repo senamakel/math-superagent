@@ -120,6 +120,78 @@ pub(in crate::orchestrator) async fn diversify_pattern_arm(
     vec![Finding::new(Slot::Patterns, patterns)]
 }
 
+/// The refutation arm: spend a bounded budget trying to break the statement.
+///
+/// It runs concurrently with the arms that assess the attempt, and that timing
+/// is the point rather than a convenience. The runtime had four ways to prove
+/// something — `sat_solver`, `smt_solver`, `theorem_prover`, `lean_prover` —
+/// and every one of them is *delegated to* when a role decides to ask. None was
+/// ever scheduled *against* the statement the run was pursuing, so a false
+/// conjecture was attacked by proof for as long as the budget lasted.
+///
+/// The Equational Theories Project is the measurement that justifies the slot:
+/// 524 small finite structures refuted 13.6 million of its 22 million
+/// implications, 13.3 million at size 3 alone, for 165 CPU-hours, before any
+/// clever proof search ran. Most false statements are false small, and finding
+/// that out cheaply is worth more than the proof attempt it replaces.
+///
+/// What it attacks is read off disk rather than passed in, and from the two
+/// ledgers that hold statements the run has committed to: the open gaps of the
+/// proof skeletons, and the current rung of each difficulty ladder. Those are
+/// exactly the propositions somebody has decided are worth proving, which makes
+/// them exactly the ones worth trying to break. With neither on disk the arm
+/// falls back to the goal itself.
+pub(in crate::orchestrator) async fn refutation_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> Vec<Finding> {
+    let targets = refutation_targets(workspace);
+    let report = delegate(
+        subagents,
+        "refuter",
+        format!(
+            "Try to break one of the statements this run is currently trying to prove. Pick the \
+             one most likely to be false rather than the one most central to the argument.\n\n\
+             Look by hand first — n = 0, 1, 2, the empty case, the degenerate case where two \
+             things coincide — because most false statements are false small and a counterexample \
+             you can write in one line beats any search. Then encode the smallest fragment that \
+             could still be false as a TPTP problem under `code/refute/<slug>.p` and call \
+             `find_counterexample` on it.\n\n\
+             Report which statement you attacked and which of the four answers came back. A \
+             counterexample is a result the run banks, and it needs checking against the original \
+             statement before you report it — the engine answers about what you wrote. A search \
+             that found nothing is also a result: say which sizes were covered, and do not \
+             upgrade that into `probably true`.\n\nProblem:\n{}\n\n{targets}",
+            state.problem()
+        ),
+    )
+    .await;
+    vec![Finding::new(Slot::Refutation, report)]
+}
+
+/// The statements worth attacking, read off the two ledgers that hold them.
+fn refutation_targets(workspace: Option<&Path>) -> String {
+    let Some(workspace) = workspace else {
+        return String::new();
+    };
+    let gaps = open_gap_briefing(Some(workspace));
+    let rungs = super::weakened::collect(workspace).briefing();
+    let sections: Vec<(&str, &str)> = vec![
+        ("Open lemmas the run needs", gaps.as_str()),
+        ("The weakened target currently being attacked", rungs.as_str()),
+    ];
+    let targets = merge_context(&sections);
+    if targets.trim().is_empty() {
+        // Deliberately not a heading with nothing under it. An arm told
+        // "statements to attack:" followed by silence reasonably concludes
+        // there are none, where the truth is that the ledgers have not been
+        // written yet and the goal is the only statement there is.
+        return String::new();
+    }
+    format!("Statements the run has committed to:\n{targets}")
+}
+
 /// The invention arm: propose, ground, converge.
 pub(in crate::orchestrator) async fn diversify_invention_arm(
     subagents: &AsyncSubagentManager,

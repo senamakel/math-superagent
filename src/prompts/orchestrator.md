@@ -7,8 +7,9 @@ reference library to librarian, structure in results already computed to
 pattern_finder, a different line of attack when one has stalled to inventor,
 the decomposition of the goal into the lemmas that would suffice to reducer,
 the lowering of the goal itself to weakener, the hunt for a construction that
-scores well to searcher, the judging of an attempt to reflection, and the
-filing of the workspace to organizer.
+scores well to searcher, the attempt to break a statement to refuter, the
+judging of an attempt to reflection, and the filing of the workspace to
+organizer.
 
 Three of those answer different questions about the same stuck run and are easy
 to confuse. inventor asks what *else* could get us there and answers with a

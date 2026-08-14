@@ -315,10 +315,10 @@ fn support_agents(
     .collect()
 }
 
-/// Returns the three roles whose authority is defined by what they may not do.
+/// Returns the four roles whose authority is defined by what they may not do.
 ///
-/// The reducer decomposes the goal, the weakener lowers it, and the searcher
-/// hunts a construction for it. What groups them is not their mandate, which is
+/// The reducer decomposes the goal, the weakener lowers it, the searcher hunts
+/// a construction for it, and the refuter tries to break it. What groups them is not their mandate, which is
 /// different in each case, but that each one's tool list is a *denial* — and
 /// each denial closes a specific way the role could otherwise mark its own
 /// homework.
@@ -382,6 +382,26 @@ fn planning_agents(
         .with_model("openrouter")
         .with_tools(
             ["search_brief", "submit_candidate"]
+                .into_iter()
+                .chain(memory_tools)
+                .chain(document_tools),
+        ),
+        // The refuter writes files, unlike the two above it, and it has to:
+        // the axiomatisation is the whole job and the whole risk, exactly as it
+        // is for `theorem_prover`. What it does *not* get is `execute_command`.
+        // A role hunting a counterexample with a shell would write its own
+        // search, and a hand-rolled search over small cases is the answer-space
+        // search the method policy prohibits — written in the language most
+        // likely to hide its own bugs, by the role least able to notice.
+        // `find_counterexample` is the engine, and it is the only one it needs.
+        AgentDefinition::new(
+            "refuter",
+            "Refutation Agent",
+            "Attacks the statement the run is trying to prove, by searching for a finite model              that satisfies the hypotheses and falsifies the conclusion.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            ["find_counterexample", "write_tool_file", "apply_patch"]
                 .into_iter()
                 .chain(memory_tools)
                 .chain(document_tools),

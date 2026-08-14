@@ -233,6 +233,7 @@ struct SupportPrompts {
     reducer: String,
     weakener: String,
     searcher: String,
+    refuter: String,
     librarian: String,
     scholar: String,
     curator: String,
@@ -473,6 +474,46 @@ fn register_searcher(
     subagents.register("searcher", Arc::new(searcher), prompt)
 }
 
+/// Registers the refuter, the one role scheduled against the run rather than
+/// for it.
+///
+/// It writes files, because the axiomatisation is the whole job and the whole
+/// risk — the same reason `theorem_prover` does. It has no `execute_command`,
+/// because a role hunting a counterexample with a shell writes its own search,
+/// and a hand-rolled search over small cases is the answer-space search the
+/// method policy prohibits. `find_counterexample` is the engine it is meant to
+/// use, and Vampire's finite model builder is the one in this image that can
+/// answer a *false* conjecture at all. See [`super::refute`].
+fn register_refuter(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let mut refuter = specialist_harness(
+        parts.model_for("refuter"),
+        parts.budget,
+        "refuter",
+        parts.tracer,
+    );
+    register_resilient(
+        &mut refuter,
+        Arc::new(refute::FindCounterexample::new(parts.workspace.clone())),
+    );
+    register_resilient(
+        &mut refuter,
+        Arc::new(WriteToolFile::new(parts.workspace.clone())),
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut refuter, tool);
+    }
+    register_resilient(&mut refuter, patch::tool(parts.documents.clone()));
+    // A counterexample is the most transferable thing this runtime produces: it
+    // is a fact about the mathematics rather than about this run's approach to
+    // it, and a later run rediscovering one has paid twice for the same search.
+    register_memory(&mut refuter, &parts.vector_store);
+    subagents.register("refuter", Arc::new(refuter), prompt)
+}
+
 /// Registers the reflection, pattern, inventor, reducer, and librarian agents.
 ///
 /// Each gets only the tools its role needs: reflection has no research or
@@ -519,6 +560,7 @@ fn register_support_agents(
     register_reducer(subagents, parts, prompts.reducer)?;
     register_weakener(subagents, parts, prompts.weakener)?;
     register_searcher(subagents, parts, prompts.searcher)?;
+    register_refuter(subagents, parts, prompts.refuter)?;
 
     let mut librarian = specialist_harness(
         parts.model_for("librarian"),

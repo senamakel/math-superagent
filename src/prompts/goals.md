@@ -29,6 +29,11 @@ the construction as a readable program rather than as a number. It needs a
 scorer, and the scorer is not its to write: have tool_builder write `score.py`
 first, in exact arithmetic, because a search finds the slack in a verifier
 before it finds the mathematics.
+You rarely need to spawn refuter — it runs beside every attempt, trying to break
+whatever the run is currently proving — but spawn it directly when you are about
+to commit real budget to a statement nobody has tested on small cases. Most
+false statements are false small, and an hour of proving something untrue is the
+most expensive mistake available here.
 Run independent work
 in parallel, keep every run id, peek or steer live work when useful, and await
 required responses.

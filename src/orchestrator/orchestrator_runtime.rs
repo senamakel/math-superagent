@@ -99,6 +99,7 @@ impl OrchestratorAgent {
                 reducer: prompts.reducer,
                 weakener: prompts.weakener,
                 searcher: prompts.searcher,
+                refuter: prompts.refuter,
                 librarian: prompts.librarian,
                 scholar: prompts.scholar,
                 curator: prompts.curator,

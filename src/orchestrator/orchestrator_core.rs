@@ -29,6 +29,7 @@ mod parity;
 mod paths;
 mod patterns;
 mod readable;
+mod refute;
 mod reflection_tool;
 mod requests;
 mod runner;
@@ -91,7 +92,7 @@ pub use tinyagents::harness::host::AgentDefinition;
 pub use diagram::{render_flows, render_solution_loop};
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 15] = [
+const SPECIALISTS: [&str; 16] = [
     "research",
     "tool_builder",
     "coder",
@@ -105,6 +106,7 @@ const SPECIALISTS: [&str; 15] = [
     "reducer",
     "weakener",
     "searcher",
+    "refuter",
     "librarian",
     "scholar",
 ];
@@ -181,7 +183,7 @@ const REASONING_ROLES: [&str; 6] = [
 ];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 17] = [
+const DELEGATES: [&str; 18] = [
     "research",
     "tool_builder",
     "coder",
@@ -197,6 +199,7 @@ const DELEGATES: [&str; 17] = [
     "reducer",
     "weakener",
     "searcher",
+    "refuter",
     "librarian",
     "scholar",
 ];
@@ -245,6 +248,9 @@ const WEAKENER_PROMPT: &str = include_str!("../prompts/weakener.md");
 
 /// The role that searches over programs rather than reasoning toward one.
 const SEARCHER_PROMPT: &str = include_str!("../prompts/searcher.md");
+
+/// The role that attacks the statement the rest of the run is proving.
+const REFUTER_PROMPT: &str = include_str!("../prompts/refuter.md");
 
 const LIBRARIAN_PROMPT: &str = include_str!("../prompts/librarian.md");
 

@@ -18,6 +18,7 @@ struct RolePrompts {
     reducer: String,
     weakener: String,
     searcher: String,
+    refuter: String,
     librarian: String,
     scholar: String,
     curator: String,
@@ -106,6 +107,7 @@ impl RolePrompts {
             ("reducer", self.reducer.as_str()),
             ("weakener", self.weakener.as_str()),
             ("searcher", self.searcher.as_str()),
+            ("refuter", self.refuter.as_str()),
             ("librarian", self.librarian.as_str()),
             ("scholar", self.scholar.as_str()),
             ("context_curator", self.curator.as_str()),
@@ -250,6 +252,20 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // the judge is: a role scoring hundreds of candidates must not spend
         // its budget reading about the investigation around it.
         "searcher" => &["GOAL.md", "research/CLAIMS.md", "CONTEXT.md"],
+        // The refuter is sent the two ledgers holding statements somebody has
+        // committed to proving, because those are the ones worth attacking, and
+        // the claim ledger so it does not spend a cycle refuting something the
+        // run already disproved. Not the threads or the approach ledger: which
+        // direction the run is pursuing is irrelevant to whether the statement
+        // is true, and a role given the method ledger drifts into commenting on
+        // the method.
+        "refuter" => &[
+            "GOAL.md",
+            "research/BACKWARD.md",
+            "research/WEAKENED.md",
+            "research/CLAIMS.md",
+            "CONTEXT.md",
+        ],
         // The curator writes the shared brief, so it is the one role that
         // needs to see the brief *and* the material it is written from: what
         // the run is for, what it is attempting, what the library establishes,
@@ -321,6 +337,7 @@ impl RolePrompts {
             reducer: role("reducer", REDUCER_PROMPT)?,
             weakener: role("weakener", WEAKENER_PROMPT)?,
             searcher: role("searcher", SEARCHER_PROMPT)?,
+            refuter: role("refuter", REFUTER_PROMPT)?,
             librarian: role("librarian", LIBRARIAN_PROMPT)?,
             scholar: role("scholar", SCHOLAR_PROMPT)?,
             curator: role("context_curator", CONTEXT_CURATOR_PROMPT)?,

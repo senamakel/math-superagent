@@ -51,7 +51,12 @@ use super::solutions::{
 /// than one: the goals child decides whether this cycle decomposes, and
 /// `goal_apply` folds what it decided back onto the loop's own path. It is the
 /// branch's last node that converges, so `goal_apply` joins the list below.
-pub(super) const EVAL_ARMS: [&str; 3] = ["reflect", "eval_patterns", "eval_invention"];
+pub(super) const EVAL_ARMS: [&str; 4] = [
+    "reflect",
+    "eval_patterns",
+    "eval_invention",
+    "eval_refutation",
+];
 
 /// The node that scores the run, once, after the loop has finished.
 ///
@@ -444,6 +449,12 @@ pub(super) fn solution_loop(
         step_with("reflect", ATTEMPT_OUTPUT, &Value::Null),
         step_with("eval_patterns", ATTEMPT_OUTPUT, &Value::Null),
         step_with("eval_invention", ATTEMPT_OUTPUT, &Value::Null),
+        // The one arm that is not an assessment of the attempt. The other four
+        // ask how it went; this one asks whether the thing it is trying to
+        // prove is true at all, which is a question nothing else in the loop
+        // ever puts. It belongs in the fan-out rather than beside it because it
+        // reads the same attempt, reads no other arm, and must not delay one.
+        step_with("eval_refutation", ATTEMPT_OUTPUT, &Value::Null),
         step_with(LIBRARY_ARM, ATTEMPT_OUTPUT, &Value::Null),
         goals_call(GOALS_NODE, &json!(ATTEMPT_OUTPUT)),
         step_as(
