@@ -85,7 +85,15 @@ const RESEARCH_NODES: [(&str, &str); 3] = [
 pub(super) fn flows() -> Vec<(&'static str, WorkflowGraph)> {
     vec![
         ("solution-loop", solution_loop()),
-        ("goals", shorten(super::workflow_goals::goals_workflow())),
+        // Drawn on the control's bounds, as the loop diagram is: a picture of
+        // the graph shows its shape, and every school's is the same shape with
+        // different numbers in the switches.
+        (
+            "goals",
+            shorten(super::workflow_goals::goals_workflow(
+                &super::schools::Thresholds::chisel(),
+            )),
+        ),
         (
             "research",
             shorten(super::workflow_research::research_workflow()),

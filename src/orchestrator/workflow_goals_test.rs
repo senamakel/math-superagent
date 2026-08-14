@@ -5,11 +5,12 @@ use serde_json::json;
 use tinyflows::testkit::{Respond, TestHarness};
 use tinyflows::validate::validate_all;
 
+use super::super::schools::Thresholds;
 use super::*;
 
 #[test]
 fn the_child_is_structurally_valid() {
-    let failures = validate_all(&goals_workflow());
+    let failures = validate_all(&goals_workflow(&Thresholds::chisel()));
     assert!(failures.is_empty(), "{failures:?}");
 }
 
@@ -17,10 +18,38 @@ fn the_child_is_structurally_valid() {
 /// operator changing how often the goal is decomposed edits one expression.
 #[test]
 fn the_cadence_carries_the_interval_the_rust_uses() {
-    let cadence = cadence();
+    let cadence = cadence(&Thresholds::chisel());
     assert!(
-        cadence.contains(&format!("< {REDUCTION_INTERVAL}")),
+        cadence.contains(&format!("< {}", Thresholds::chisel().reduction_interval)),
         "the interval is not the Rust constant: {cadence}"
+    );
+}
+
+/// The cadence follows the school rather than the control.
+///
+/// The failure this guards against is silent: a school that decomposes on a
+/// different interval would be handed a child built on the control's, and
+/// nothing about the run would look wrong. Written against a threshold value
+/// that no school currently holds, so it keeps testing the wiring rather than
+/// whichever numbers the schools happen to have today.
+#[test]
+fn the_cadence_follows_the_school() {
+    let patient = Thresholds {
+        reduction_interval: Thresholds::chisel().reduction_interval + 4,
+        ..Thresholds::chisel()
+    };
+    let cadence = cadence(&patient);
+    assert!(
+        cadence.contains(&format!("< {}", patient.reduction_interval)),
+        "the child was built on the control's interval: {cadence}"
+    );
+    assert!(
+        goals_workflow(&patient)
+            .nodes
+            .iter()
+            .any(|node| serde_json::to_string(&node.config)
+                .is_ok_and(|config| config.contains(&format!("< {}", patient.reduction_interval)))),
+        "the school's interval never reached the graph the engine runs"
     );
 }
 
@@ -28,7 +57,7 @@ fn the_cadence_carries_the_interval_the_rust_uses() {
 /// it reached, whatever the counter says.
 #[tokio::test]
 async fn a_solved_run_holds_even_when_the_interval_is_up() {
-    let run = TestHarness::new(&goals_workflow())
+    let run = TestHarness::new(&goals_workflow(&Thresholds::chisel()))
         .input(STATE_INPUT, json!({ "solved": true, "since_reduction": 99 }))
         .mock_tool(super::super::loop_steps::TOOL, Respond::value(json!({})))
         .run()
@@ -42,10 +71,10 @@ async fn a_solved_run_holds_even_when_the_interval_is_up() {
 
 #[tokio::test]
 async fn a_run_inside_the_interval_holds() {
-    let run = TestHarness::new(&goals_workflow())
+    let run = TestHarness::new(&goals_workflow(&Thresholds::chisel()))
         .input(
             STATE_INPUT,
-            json!({ "solved": false, "since_reduction": REDUCTION_INTERVAL - 1 }),
+            json!({ "solved": false, "since_reduction": Thresholds::chisel().reduction_interval - 1 }),
         )
         .mock_tool(super::super::loop_steps::TOOL, Respond::value(json!({})))
         .run()
@@ -62,10 +91,10 @@ async fn a_run_inside_the_interval_holds() {
 #[tokio::test]
 async fn a_due_run_asks_the_gate_and_reports_what_it_said() {
     for admitted in [true, false] {
-        let run = TestHarness::new(&goals_workflow())
+        let run = TestHarness::new(&goals_workflow(&Thresholds::chisel()))
             .input(
                 STATE_INPUT,
-                json!({ "solved": false, "since_reduction": REDUCTION_INTERVAL }),
+                json!({ "solved": false, "since_reduction": Thresholds::chisel().reduction_interval }),
             )
             .mock_tool(
                 super::super::loop_steps::TOOL,

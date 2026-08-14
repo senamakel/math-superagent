@@ -500,12 +500,17 @@ fn eval_arm_ids() -> Vec<&'static str> {
 }
 
 /// A node that runs the goals child over `state`.
-fn goals_call(id: &str, state: &Value) -> Node {
+///
+/// The child carries this school's thresholds because its cadence is one of
+/// them. A child built on the control's interval would decompose on the
+/// control's schedule whatever the school asked for, and nothing about the run
+/// would look wrong.
+fn goals_call(id: &str, state: &Value, thresholds: &Thresholds) -> Node {
     node(
         id,
         NodeKind::SubWorkflow,
         json!({
-            "workflow": serde_json::to_value(super::workflow_goals::goals_workflow())
+            "workflow": serde_json::to_value(super::workflow_goals::goals_workflow(thresholds))
                 .unwrap_or(Value::Null),
             "inputs": { super::workflow_goals::STATE_INPUT: state },
         }),
@@ -543,7 +548,7 @@ fn research_call(id: &str, state: &Value) -> Node {
 /// belong together for a reason beyond length: every one of them is a
 /// *precondition* — what the workspace already holds, what the literature adds,
 /// and what the goal decomposes into — and none of them ever runs again.
-fn stage_one(opening: &Value) -> Vec<Node> {
+fn stage_one(opening: &Value, thresholds: &Thresholds) -> Vec<Node> {
     vec![
         node("start", NodeKind::Trigger, Value::Null),
         research_call(RESEARCH_NODE, opening),
@@ -561,6 +566,7 @@ fn stage_one(opening: &Value) -> Vec<Node> {
         goals_call(
             SEED_GOALS_NODE,
             &json!(format!("=.nodes.{SEED_CONTEXT_NODE}.item.json")),
+            thresholds,
         ),
         step_as(
             SEED_APPLY_NODE,
@@ -591,7 +597,7 @@ pub(super) fn solution_loop_for(
 ) -> WorkflowGraph {
     let opening = initial_state(problem, thresholds);
     let seeded = format!("=.nodes.{SEED_APPLY_NODE}.item.json");
-    let mut nodes = stage_one(&opening);
+    let mut nodes = stage_one(&opening, thresholds);
     nodes.extend([
         node(
             LOOP_NODE,
@@ -631,7 +637,7 @@ pub(super) fn solution_loop_for(
         // reads the same attempt, reads no other arm, and must not delay one.
         step_with("eval_refutation", ATTEMPT_OUTPUT, &Value::Null),
         step_with(LIBRARY_ARM, ATTEMPT_OUTPUT, &Value::Null),
-        goals_call(GOALS_NODE, &json!(ATTEMPT_OUTPUT)),
+        goals_call(GOALS_NODE, &json!(ATTEMPT_OUTPUT), thresholds),
         step_as(
             GOAL_APPLY,
             "goal_apply",

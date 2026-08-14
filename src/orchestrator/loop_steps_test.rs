@@ -24,7 +24,7 @@ fn only_the_declared_steps_are_runnable() {
 #[test]
 fn the_graph_and_the_tool_agree_on_the_step_names() {
     let graph = crate::orchestrator::workflow::solution_loop("a problem", Vec::new());
-    let goals = crate::orchestrator::workflow_goals::goals_workflow();
+    let goals = crate::orchestrator::workflow_goals::goals_workflow(&crate::orchestrator::schools::Thresholds::chisel());
     for node in graph.nodes.iter().chain(goals.nodes.iter()) {
         let Some(step) = node
             .config
