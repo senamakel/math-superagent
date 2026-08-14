@@ -178,7 +178,7 @@ impl LoopSteps {
             // clock reading through `fold_evaluation`, which folds numbers as
             // deltas and would turn one into arithmetic on timestamps.
             if let Some(object) = merged.as_object_mut() {
-                object.insert(EXPIRED_FIELD.to_string(), Value::Bool(self.expired()));
+                object.insert(super::workflow::EXPIRED_FIELD.to_string(), Value::Bool(self.expired()));
             }
             return Ok(merged);
         }
