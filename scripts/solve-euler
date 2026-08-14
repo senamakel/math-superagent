@@ -5,11 +5,14 @@ repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$repository_root"
 
 usage() {
-    echo "usage: ./euler [--no-research] <positive-problem-number> [extra instructions...]" >&2
+    echo "usage: ./euler [--no-research] [--schools a,b] <positive-problem-number> [extra instructions...]" >&2
     echo "       --no-research  withhold web search, so the run is a test of reasoning" >&2
+    echo "       --schools a,b  run these schools concurrently (chisel, rising-sea," >&2
+    echo "                      adversarial); default is chisel alone" >&2
 }
 
 research=on
+schools=${MATH_AGENT_SCHOOLS:-}
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --no-research)
@@ -19,6 +22,14 @@ while [ "$#" -gt 0 ]; do
         --research)
             research=on
             shift
+            ;;
+        --schools)
+            if [ "$#" -lt 2 ]; then
+                usage
+                exit 2
+            fi
+            schools=$2
+            shift 2
             ;;
         -h|--help)
             usage
@@ -99,4 +110,5 @@ if [ -n "$extra_instructions" ]; then
 Additional instructions: $extra_instructions"
 fi
 
-exec env MATH_AGENT_RESEARCH="$research" ./agent --workspace "$workspace_subdir" "$task"
+exec env MATH_AGENT_RESEARCH="$research" MATH_AGENT_SCHOOLS="$schools" \
+    ./agent --workspace "$workspace_subdir" "$task"

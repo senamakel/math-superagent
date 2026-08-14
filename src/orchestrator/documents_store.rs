@@ -566,3 +566,43 @@ impl WorkspaceDocuments {
             .collect())
     }
 }
+
+/// Replaces a file in one step that cannot be observed half-written.
+///
+/// A bare `tokio::fs::write` truncates and then writes, which is two operations
+/// rather than one: a reader between them sees an empty or partial file, and
+/// two writers interleave into a file that is neither's. That was already
+/// measured on the document index, where three concurrent writes left four
+/// stranded bytes on the end and invalid JSON behind them. Staging beside the
+/// destination and renaming over it is atomic within a directory, so a reader
+/// sees the old bytes or the new ones and never half of each.
+///
+/// The staged name carries the process id and a per-process ticket, so two
+/// writers racing for one destination do not also collide on the file they
+/// stage it through. It starts with a dot, which is what keeps a listing from
+/// advertising a file that exists for microseconds.
+///
+/// This is per-file atomicity only. Ordering a write against the ledgers
+/// derived from it is [`super::worklock::writes`]'s job, and is taken at the
+/// tool-call boundary rather than here.
+async fn replace_atomically(final_path: &std::path::Path, bytes: &[u8], what: &str) -> Result<()> {
+    static STAGED: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
+    let name = final_path
+        .file_name()
+        .map(|name| name.to_string_lossy().into_owned())
+        .unwrap_or_default();
+    let ticket = STAGED.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
+    let staged = final_path.with_file_name(format!(".{name}.{}.{ticket}.tmp", std::process::id()));
+    tokio::fs::write(&staged, bytes).await.map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("failed to stage {what}: {error}"))
+    })?;
+    if let Err(error) = tokio::fs::rename(&staged, final_path).await {
+        // The staged copy is nobody's document. Left behind it would be a file
+        // in the workspace that no index explains and no later write replaces.
+        let _ = tokio::fs::remove_file(&staged).await;
+        return Err(tinyagents::TinyAgentsError::Tool(format!(
+            "failed to replace {what}: {error}"
+        )));
+    }
+    Ok(())
+}

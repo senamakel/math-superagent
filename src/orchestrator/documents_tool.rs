@@ -169,6 +169,19 @@ impl DocumentTool {
                 )));
             }
             let (bytes, content_type) = self.fetch(&url).await?;
+            // Everything from here down writes: two archives, a digest, the
+            // frontier's ledger and its rendered table, and an index row. The
+            // frontier in particular is a read-modify-write of one file, so two
+            // downloads landing together lose one of them.
+            //
+            // Taken after the transfer rather than at the top of the call, and
+            // this is the one place the boundary is drawn inside the handler
+            // instead of at the dispatch arm: a download's network time is
+            // unbounded by anything this runtime controls, and holding the
+            // write lock across it would stall every note write in the run
+            // behind whichever server is slowest. Nothing below may take it
+            // again — see [`super::worklock`].
+            let _guard = super::worklock::writes().await;
             // Convert to Markdown rather than storing raw bytes. A PDF or
             // a markup-heavy page is unreadable otherwise, and the old
             // UTF-8 check turned a PDF into an error that ended the run.
@@ -206,7 +219,7 @@ impl DocumentTool {
             // this is the only moment the citations are in hand. Best effort:
             // the download has already succeeded, and a lost lead must not
             // turn a stored document into a failed tool call.
-            super::frontier::record(
+            super::frontier::record_under_write_lock(
                 &self.documents,
                 &url,
                 &path,
