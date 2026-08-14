@@ -8,6 +8,9 @@ fast method will later be checked against.
 """
 
 
+import time
+
+
 def f_naive(n, d):
     """Total occurrences of digit d in the decimal strings of 0..n inclusive.
 
@@ -21,21 +24,28 @@ def f_naive(n, d):
 
 
 def f_incremental(limit, d):
-    """Return (listed_table, solutions) using one running total pass.
+    """Scan n = 0..limit once, maintaining one running total.
 
-    solutions  = [n in 0..limit with f(n,d) == n]
+    Returns (solutions, hit_three):
+      solutions  = [n in 0..limit with f(n,d) == n]
+      hit_three  = True if the running f ever equalled 3 (verifies the
+                   statement's "the value 3 never occurs" claim over the whole
+                   scanned range, not just the 13-row printed table).
     The running total makes a full scan of `limit` feasible; a per-n call to
     f_naive up to a large limit would be O(limit^2), so this is the pass used
     for the "find the next solutions" check.
     """
     total = 0
     solutions = []
+    hit_three = False
     ds = str(d)
     for i in range(limit + 1):
         total += str(i).count(ds)
         if total == i:
             solutions.append(i)
-    return solutions
+        if total == 3:
+            hit_three = True
+    return solutions, hit_three
 
 
 def main():
@@ -52,24 +62,28 @@ def main():
         all_ok = all_ok and ok
         print(f"  n={n:2d}  f={got:2d}  expected={expected[n]:2d}  {'OK' if ok else 'MISMATCH'}")
     print(f"  table all match: {all_ok}")
+    print(f"  value 3 never occurs in that table: {all(v != 3 for v in expected.values())}")
 
-    # Note: f(11,1)=4, f(12,1)=5 confirmed above; the statement's claim that
-    # f(n,1) never equals 3 is checked inside the solution scan below.
+    # --- Worked example 2 (statement): f(22,2) = 6 ------------------------
+    got22 = f_naive(22, 2)   # independent per-n counting, not the scan
+    print(f"\nf(22,2) = {got22}   expected 6: {got22 == 6}")
 
-    # --- Worked example 2: first solutions of f(n,1)=n are 0, 1, then 199981
-    # Run the scan only far enough past 199981 to confirm it is the third
-    # solution and no other solution appears between 2 and 199981.
-    LIMIT = 200000
-    sols = f_incremental(LIMIT, 1)
-    print(f"\nSolutions of f(n,1)=n in 0..{LIMIT}: {sols}")
+    # --- Worked example 3 (statement): first solutions of f(n,1) = n are
+    # 0, 1, then 199981.  One running-total pass to 300000 confirms 199981 is
+    # a solution, reports every solution up to 300000, and keeps the "3 never
+    # occurs" check over the whole scanned range.
+    LIMIT = 300000
+    t0 = time.perf_counter()
+    sols, hit_three = f_incremental(LIMIT, 1)
+    elapsed = time.perf_counter() - t0
+    print(f"\nSolutions of f(n,1)=n in 0..{LIMIT}:")
+    print(sols)
     print("  first three are 0, 1, 199981:", sols[:3] == [0, 1, 199981])
-    # value 3 never attained by f(n,1) for n in this range:
-    attained = set()
-    total = 0
-    for i in range(LIMIT + 1):
-        total += str(i).count("1")
-        attained.add(total)
-    print("  f(n,1)=3 ever occurs in 0..%d: %s" % (LIMIT, 3 in attained))
+    print("  199981 is among the solutions:", 199981 in sols)
+    print(f"  number of solutions up to {LIMIT}: {len(sols)}")
+    print("  solutions after 200000:", [n for n in sols if n > 200000])
+    print(f"  f(n,1)=3 ever occurs in the entire scanned range: {hit_three}")
+    print(f"  timing for the 0..{LIMIT} scan: {elapsed:.3f} s")
 
     print("\nNOTE: reproducing s(1) = 22786974071 by enumeration would need a")
     print("scan to ~2e10, which is exactly the size the brute-force bound is")
