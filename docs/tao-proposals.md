@@ -2,12 +2,12 @@
 
 Read [`docs/tao-gap-analysis.md`](tao-gap-analysis.md) first; this file is what
 follows from it. Every entry names the Tao evidence, the gap, what to build,
-where it lives, and roughly what it costs. The three at the top are **done on
+where it lives, and roughly what it costs. The four at the top are **done on
 this branch**; the rest are not, and the reasoning is kept here so that a later
 decision starts from it rather than from nothing.
 
 Ranking is by *value per unit of change*, not by importance. The single most
-valuable change in this file is #4, and it is fourth because it is an
+valuable change in this file is #5, and it is fifth because it is an
 operational decision rather than a piece of code.
 
 ---
@@ -67,11 +67,35 @@ it, so the routing policy and its parity harness are untouched.
 
 **Cost:** ~40 lines plus 3 tests.
 
+### 4. `searcher` — scored program search
+
+**Tao / FunSearch / AlphaEvolve:** FunSearch moved the cap-set lower bound past
+twenty years of work; AlphaEvolve matched or beat the literature on 20 of 67
+problems (`04b`). Both evolve *programs that build the object*, not the object.
+
+**Gap:** nothing here searched over programs. A construction was reasoned toward
+or not found.
+
+**Built:** `src/orchestrator/search.rs` — the island population, best-shot
+prompting, the score ledger and the derived board, in Rust because they are
+bookkeeping. `src/prompts/searcher.md` and a role whose authority is a set of
+absences: no file-write tool, no shell, so `submit_candidate` is its only route
+to disk and it scores what it writes in the same call. `score.py` is
+unreachable, which is the AlphaEvolve verifier-exploitation finding turned into
+a tool boundary. Two tests assert the absences.
+
+**Cost:** ~700 lines plus 25 tests. No new dependency, no image change.
+
+**What is deliberately not built:** PatternBoost. Its own authors write "machine
+learning is hard!", it trains a transformer per problem, and requirement R36
+from the same research says off-the-shelf over bespoke ML. FunSearch trains
+nothing, which is why it is here and PatternBoost is not.
+
 ---
 
 ## Not built
 
-### 4. A shared technique library across problems
+### 5. A shared technique library across problems
 
 **Tao:** `01`§27 (archive everything); `04` R13. Mathlib is the mechanised form
 of the argument, and the two fastest results in `02` — the sunflower rewrite and
@@ -90,7 +114,7 @@ without the problem's own notation.
 
 **Cost:** an afternoon to measure; unknown to fix if it does not hold.
 
-### 5. A cheap-first ladder with cost instrumentation
+### 6. A cheap-first ladder with cost instrumentation
 
 **Tao / EQT:** 22,028,942 implications went to ~1,000 by running finite model
 builders and ATPs first, because they are "far cheaper to run and already
@@ -108,7 +132,7 @@ warns about — reaching for computation before the problem is parameterised.
 **Cost:** instrumentation small; the scheduler large, and only justified by what
 the instrumentation says.
 
-### 6. A refutation arm beside the proof arm
+### 7. A refutation arm beside the proof arm
 
 **Tao:** "spend the first ten minutes looking for a counterexample" (`01`§10);
 `04` R11. Autograph, 1989, is the standing example of a system that refutes
@@ -122,10 +146,12 @@ spends a bounded budget trying to break it, posting to the mailbox the next
 attempt drains. The fan-out already supports this shape exactly; the work is the
 prompt and the budget, not the graph.
 
-**Cost:** moderate. It pairs naturally with #2 — a rung is the right size of
-statement to attack.
+**Cost:** moderate. It pairs naturally with #2 and #4 — a weakened rung is the
+right size of statement to attack, and a refutation *is* a scored search whose
+score is "does this candidate break the statement", so the engine already
+exists.
 
-### 7. Closure of the claim set under implication
+### 8. Closure of the claim set under implication
 
 **EQT:** propagating each established fact through the entailment relation and
 symmetry group gave ~37× more answers than direct proofs (`04` R5b).
@@ -141,7 +167,7 @@ prover.
 
 **Cost:** small for the transitive version, large for anything more.
 
-### 8. Post-solve novelty check
+### 9. Post-solve novelty check
 
 **Tao:** `01`§19 — a short proof of a famous problem raises the prior that it is
 already known. FunSearch's argument is that beating a numeric state of the art
@@ -158,7 +184,7 @@ proof is a second judge — only to attach the record.
 
 **Cost:** small, and it closes a real reporting risk.
 
-### 9. Fund the orthogonal branch
+### 10. Fund the orthogonal branch
 
 **Tao:** Polymath8's real lesson. Thirteen months drove 70,000,000 → 4,680;
 Maynard reached 600 independently while discarding the machinery the effort had
@@ -177,7 +203,7 @@ runtime has no way to make it well.
 
 **Cost:** the report is small. The mechanism is a redesign of the loop.
 
-### 10. Simplification as a mode
+### 11. Simplification as a mode
 
 **Tao:** the sunflower cascade — ALWZ → Rao → Tao → Bell–Chueluecha–Warnke, four
 rewrites in thirteen months against 59 years of near-stasis, and the extracted
@@ -191,7 +217,7 @@ becomes an identity" is not a schedulable action. Recorded because it is one of
 the highest-yield moves in the sample and the runtime has no version of it, not
 because a design follows.
 
-### 11. Two fixes unrelated to Tao
+### 12. Two fixes unrelated to Tao
 
 Both are described in the gap analysis and neither is folded into this work.
 

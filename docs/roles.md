@@ -1,6 +1,6 @@
 # Roles, adapters, and what each one can reach
 
-The twenty roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
+The twenty-one roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
@@ -51,7 +51,7 @@ Algebras of Maximal Class II* as `pitman_ballot_theorem.md`.
 
 ## Expected problem-solving behavior
 
-The runtime has twenty roles plus an explicit solution loop.
+The runtime has twenty-one roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -198,6 +198,38 @@ The runtime has twenty roles plus an explicit solution loop.
   weakened until it is vacuous reads exactly like one weakened until it is
   tractable. Its one dangerous failure is reporting a rung as the goal, so the
   ledger records which difficulties were off when each one landed.
+- The searcher does not reason toward an object; it writes programs that build
+  one, keeps what scores well, and proposes again from those. It is the
+  FunSearch loop, and the reason to have it is not the loop but what the loop
+  leaves behind: FunSearch's cap-set result was "not the set of 512
+  eight-dimensional vectors in itself, but a program that generates it", and a
+  construction with a readable program behind it is an explanation where a
+  number is only an answer. Three of the four ingredients — one evolved
+  function, best-shot prompting, an island population — are bookkeeping and
+  live in Rust, because a model asked to remember which of four hundred
+  programs scored best is spending its turn on arithmetic nothing can get wrong
+  in code.
+
+  **Its authority is a set of absences.** It holds no `write_tool_file`, no
+  `execute_command`, and no patch tool. `submit_candidate` is its only route to
+  disk, and that route writes into `candidates/` and runs the scorer over what
+  it wrote in the same call. Two things follow that no prompt could guarantee: a
+  candidate cannot be recorded without having been executed, and `score.py` is
+  unreachable. The second is the load-bearing one, and it is a measured risk
+  rather than a hypothetical — AlphaEvolve turned out to be "extremely good at
+  locating exploits in the verification code", satisfying a minimum-distance
+  constraint by placing points nearly on top of one another, and Tao's team
+  rewrote every verifier in exact arithmetic in response. A searcher that could
+  edit its own verifier would be grading its own work. A test asserts the
+  absences, because this is the kind of boundary that erodes one convenient
+  grant at a time.
+
+  A rejected candidate costs no reflection and no lesson — one line, and on to
+  the next, because a search is wrong thousands of times cheaply and a paragraph
+  of guidance per rejection would be re-read on every one. It is still
+  *recorded*, so the ledger can say how many candidates bought the best score,
+  and a search that has run four hundred without improving is a finding no
+  leaderboard of winners can show.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
@@ -322,6 +354,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | inventor | `GOAL.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/CLAIMS.md`, `CONTEXT.md`, plus a dossier built at delegation time |
 | reducer | `GOAL.md`, `research/BACKWARD.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `research/APPROACHES.md` |
 | weakener | `GOAL.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` — and deliberately **not** `research/APPROACHES.md` or `research/BACKWARD.md` |
+| searcher | `GOAL.md`, `research/CLAIMS.md`, `CONTEXT.md` — everything about the search itself arrives through `search_brief`, because it changes with every candidate |
 | scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
 | context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
 | director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |

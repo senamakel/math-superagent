@@ -554,3 +554,72 @@ fn the_method_policy_leads_every_assembled_prompt() {
     // silently invalidate every cached prefix.
     assert!(!assembled.contains("\n\n\n"), "{assembled}");
 }
+
+/// The searcher's authority is a set of absences, so the absences are asserted.
+///
+/// A scored search learns to attack its own verifier: `AlphaEvolve` satisfied a
+/// minimum-distance constraint by stacking points nearly on top of one another,
+/// and Tao's team rewrote every verifier in exact arithmetic in response. The
+/// defence here is that the role physically cannot reach `score.py` — it holds
+/// no file-write tool and no shell, so `submit_candidate` is its only route to
+/// disk and that route writes into `candidates/` and scores what it wrote in
+/// the same call.
+///
+/// This is exactly the kind of boundary that erodes one convenient grant at a
+/// time, which is why it is a test rather than a comment.
+#[test]
+fn the_searcher_cannot_reach_the_scorer_it_is_judged_by() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let searcher = registry
+        .get("searcher")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("searcher is registered".into()))?;
+
+    for granted in ["search_brief", "submit_candidate"] {
+        assert!(
+            searcher.tools.iter().any(|tool| tool == granted),
+            "the searcher needs `{granted}` to search at all"
+        );
+    }
+    for withheld in ["write_tool_file", "execute_command", "apply_patch"] {
+        assert!(
+            !searcher.tools.iter().any(|tool| tool == withheld),
+            "`{withheld}` would let the searcher edit the verifier that scores it"
+        );
+    }
+    Ok(())
+}
+
+/// The kernel check belongs to the role whose mandate is formalisation.
+///
+/// `lean_check` decides what `research/CLAIMS.md` may call formalised, which is
+/// the ledger's strongest evidence class. Granting it more widely would let a
+/// role with no formalisation mandate mint that class — so the grant is
+/// asserted to reach exactly one role, in a list that otherwise shares every
+/// tool.
+#[test]
+fn only_the_lean_prover_can_mint_a_formalised_claim() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let mut holders = Vec::new();
+    for name in [
+        "tool_builder",
+        "coder",
+        "sat_solver",
+        "smt_solver",
+        "theorem_prover",
+        "symbolic_math",
+        "lean_prover",
+        "searcher",
+        "reducer",
+        "weakener",
+        "research",
+    ] {
+        let Some(definition) = registry.get(name) else {
+            continue;
+        };
+        if definition.tools.iter().any(|tool| tool == "lean_check") {
+            holders.push(name);
+        }
+    }
+    assert_eq!(holders, ["lean_prover"]);
+    Ok(())
+}

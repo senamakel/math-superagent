@@ -372,6 +372,20 @@ as its own, because a claim can settle a rung, and a ladder still pointing at a
 rung the run has already proved is how the next attempt spends itself re-proving
 it.
 
+`code/search/<slug>/SEARCH.md` (`search.rs`) is the odd one out: it is derived
+like the rest, but from a score ledger rather than from notes, and it lives
+under `code/` because what it ranks is programs. A search holds `PROBLEM.md`,
+the scorer `score.py`, `candidates/` and the append-only `scores.jsonl` the
+board is derived from. Two rules about it are worth stating here. Nothing may
+put an `INDEX.md` anywhere under `code/search/` — `index_allowed` refuses it —
+because the board already carries the only fact anyone wants about a candidate,
+which is what it scored, and a search runs hundreds of them against a role twice
+measured spending 60% of a run's model calls on filing. And the board lists the
+discard *reasons with counts* rather than the discarded programs: a search whose
+rejections are all "did not finish in time" has a scorer too slow to search
+with, and one whose rejections are all the same constraint has found the
+constraint that actually binds. Neither is visible from a list of winners.
+
 `research/FRONTIER.md` (`frontier.rs`) is the citation graph the converter used
 to throw away. `readable.rs` has always parsed every anchor into a reference
 table and kept nothing; a converted PDF yields nothing at all, though a

@@ -15,7 +15,7 @@ Every row is one of three things, and the distinction is the point of the file:
   code stopped guaranteeing.
 - **Unused** — the code produces it and nothing reads it.
 
-Three rows were closed on this branch. They are marked **[closed]** and the
+Four rows were closed on this branch. They are marked **[closed]** and the
 change is described at the end.
 
 ## The table
@@ -26,6 +26,7 @@ change is described at the end.
 | A no-go result is navigational — publish it and use it to pick the next encoding | `02`§4, §9, D1–D3 | `solved` was binary; a proved barrier scored as an unsolved attempt | **[closed]** |
 | A proof is what the kernel accepted; everything else is a reason to believe | `01`§21–23, `04` R1/R8 | Lean and Mathlib in the image, no Rust ran either; `Status::Proved` was prose | **[closed]** |
 | Reuse what is already proved; never re-derive | `01`§27, `04` R13 | Per-problem Cognee stack: `scripts/run-agent:110-126`. Every run starts from zero technique | Absent |
+| Evolve *programs* that build the object, scored by a verifier | `04b` FunSearch, AlphaEvolve | Nothing searched over programs. A construction was reasoned toward or not found | **[closed]** |
 | Cheap tools first, the expensive reasoner last | `04` R5, EQT's 22M → ~1,000 | An attempt is a model call that may delegate. No ladder, no cost-per-subgoal instrumentation | Absent |
 | Prove and disprove concurrently; look for the counterexample first | `01`§10, `04` R11 | No refutation arm. `sat_solver`/`smt_solver` exist but are delegated, not scheduled against proof | Absent |
 | Propagate every established fact through the entailment relation before scheduling new work | `04` R5b (~37× in EQT) | `search_claims` retrieves; nothing closes the claim set under implication | Absent |
@@ -38,13 +39,16 @@ change is described at the end.
 | Direction reaches a live run, queued, never a claim | `04` R20 | `./steer` → `config/directives.jsonl`, `director` denied `research/CLAIMS.md` | Present |
 | Declare the harness's knobs, and report the run even on failure | `04` §III.5 | Six of seven knobs map to files that exist. Attempts abandoned are not counted | Partly |
 | One monotone, legible statistic; watch for the Zeno regime | `01`§35, `02` F3 | The judge's 1–5 score is pushed to `state.scores` (`solutions_judging.rs:49`) and read by no code | **Unused** |
-| Modularise so no participant needs the whole argument | `01`§34, `02` F2 | Nineteen tool-boundaried roles, enforced in code. The runtime's real strength | Present |
+| Modularise so no participant needs the whole argument | `01`§34, `02` F2 | Twenty-one tool-boundaried roles, enforced in code. The runtime's real strength | Present |
 
-## The three that were closed, and why those three
+## The four that were closed, and why those four
 
-They are not the three biggest gaps. They are the three where the runtime
-already had the machinery and was one control short of using it — which is a
-different and much cheaper kind of gap than "build a cross-problem library".
+Three of them are places the runtime already had the machinery and was one
+control short of using it — a different and much cheaper kind of gap than
+"build a cross-problem library". The fourth, scored program search, is a
+genuinely new capability, and it is here because its loop is a *program* rather
+than a prompt, which is this repository's own thesis about where control flow
+belongs.
 
 ### Verification was held to a weaker standard than path traversal
 
@@ -122,6 +126,56 @@ It shares the reduction arm rather than getting a node of its own, because it
 shares everything that decides when to run. It is deliberately *not* gated on
 the run being stuck: `open_invention`'s stuck-gate was reachable in principle and
 not in practice, and across a day of live runs the inventor was spawned once.
+
+### Nothing searched over programs
+
+FunSearch improved the cap-set lower bound from 2.2180 to 2.2202 — "a great
+improvement compared to research in the last 20 years" — and AlphaEvolve matched
+or beat the literature on 20 of 67 problems. Neither reasoned toward an answer.
+Both wrote programs that build candidate objects, scored them, and proposed
+again from what scored well.
+
+The reason to want it here is not the loop. It is what the loop leaves behind:
+"we do not just discover the set of 512 eight-dimensional vectors in itself, but
+a program that generates it … Through inspecting the code, we obtain a degree of
+understanding of what this set is." Jordan Ellenberg on the same output: "When I
+study them, I learn something." A number is an answer; a program is an
+explanation, which is what this repository says a result has to be.
+
+It also fits the architecture better than it fits most harnesses. Three of
+FunSearch's four ingredients — one evolved function, best-shot prompting, an
+island population — are bookkeeping, and bookkeeping in this runtime lives in
+Rust. A model asked to remember which of four hundred programs scored best, and
+to order them worst-to-best, is spending its turn on arithmetic nothing can get
+wrong in code. The fourth, asynchronous scaling, already exists.
+
+**The verifier is where the risk is, so it is a tool boundary.** AlphaEvolve is
+"extremely good at locating exploits in the verification code" — on a packing
+problem it satisfied a minimum-distance constraint by placing points nearly on
+top of one another, and scored beautifully. Tao's team rewrote every verifier in
+exact arithmetic and warned that trusting the numbers "can be risky as they may
+be a consequence of verifier exploits rather than any true progress." An
+autonomous agent occupies that row by default, because the search and the
+verifier are written by the same process.
+
+So the `searcher` holds no `write_tool_file`, no `execute_command`, and no patch
+tool. `submit_candidate` is its only route to disk; it writes into `candidates/`
+and runs the scorer over what it wrote in the same call. A candidate cannot be
+recorded without having been executed, and `score.py` is unreachable. Two
+mechanical checks back that up: a score that is not finite is a rejection rather
+than a leaderboard entry, which is the shape a verifier exploit usually takes,
+and a scorer printing both a rejection and a score has contradicted itself, so
+the rejection wins.
+
+**One design tension was resolved rather than inherited.** FunSearch discards
+what does not run — silently and cheaply, because its method is to be wrong
+thousands of times. This runtime reflects on failures and writes a lesson from
+each, which is right for an attempt that costs an hour and ruinous at this
+volume. Both survive by splitting the two meanings of "silent": a rejected
+candidate costs no reflection, no lesson, and one line of output, but it is
+recorded, and the board reports discard reasons with counts. A search that ran
+four hundred candidates without improving is a finding; a leaderboard of winners
+cannot show it.
 
 ## The largest gap was not closed
 

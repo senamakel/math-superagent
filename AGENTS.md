@@ -20,7 +20,7 @@ The design rationale behind them — every threshold that a live run has already
 met, and what it cost — is one level down, so that a rule stays readable and the
 evidence for it stays available.
 
-- [`docs/roles.md`](docs/roles.md) — the twenty roles, the source adapters,
+- [`docs/roles.md`](docs/roles.md) — the twenty-one roles, the source adapters,
   the two recall paths, and which workspace files reach which role's prompt.
 - [`docs/solution-loop.md`](docs/solution-loop.md) — the attempt/judge/reflect
   graph, its thresholds, and how a tool or provider failure is absorbed.
