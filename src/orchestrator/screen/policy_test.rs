@@ -148,3 +148,47 @@ fn a_policy_with_no_ngram_width_is_an_error() {
     );
     assert!(ScreenPolicy::load(&path).is_err());
 }
+
+#[test]
+fn a_host_outside_the_allowlist_is_unreachable() {
+    // Distinct from a *denied* host: nothing is being withheld, the network
+    // boundary simply does not permit it. The distinction is what the two
+    // refusal messages say, and it is what lets a run be pointed at a tool that
+    // can fetch the same material.
+    let mut policy = ScreenPolicy::for_test(&["x"], &[], &[]);
+    policy.allow_hosts = vec!["api.exa.ai".to_string(), "oeis.org".to_string()];
+
+    for url in [
+        "https://arxiv.org/abs/1804.02385",
+        "https://doi.org/10.1016/j.dam.2007.05.036",
+        "https://link.springer.com/article/1",
+    ] {
+        assert!(policy.host_unreachable(url), "{url} is off the allowlist");
+    }
+    for url in [
+        "https://api.exa.ai/search",
+        "https://oeis.org/A000045",
+        // Subdomains are covered, matching the proxy's own anchored rules.
+        "https://sub.oeis.org/x",
+    ] {
+        assert!(!policy.host_unreachable(url), "{url} is on the allowlist");
+    }
+}
+
+#[test]
+fn an_empty_allowlist_has_no_opinion() {
+    // Every ordinary run: no allowlist compiled, so nothing is pre-emptively
+    // refused and the network decides as it always did.
+    let policy = ScreenPolicy::for_test(&["x"], &[], &[]);
+    assert!(!policy.host_unreachable("https://arxiv.org/abs/1"));
+}
+
+#[test]
+fn a_lookalike_host_is_not_treated_as_allowed() {
+    let mut policy = ScreenPolicy::for_test(&["x"], &[], &[]);
+    policy.allow_hosts = vec!["oeis.org".to_string()];
+    // Suffix matching must be anchored at a dot, or `oeis.org` would also
+    // permit `notoeis.org` and `oeis.org.attacker.example`.
+    assert!(policy.host_unreachable("https://notoeis.org/x"));
+    assert!(policy.host_unreachable("https://oeis.org.attacker.example/x"));
+}

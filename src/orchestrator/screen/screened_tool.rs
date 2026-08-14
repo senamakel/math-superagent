@@ -56,6 +56,25 @@ refuse those too, and the attempts are recorded.
 Establish the point yourself instead: derive it, compute it, or find a primary \
 source that develops the technique rather than one that reports the result.";
 
+/// What a call naming an unreachable host returns.
+///
+/// Deliberately different from [`REFUSED_ARGUMENTS`]. Nothing is being withheld
+/// here — the host is simply outside what this run's network boundary permits —
+/// and saying so is what lets the run stop retrying and reach for a tool that
+/// works. A live run failed sixteen downloads out of sixteen against a
+/// transport error that carried none of this.
+const UNREACHABLE_HOST: &str = "\
+This call was not made. That host is not reachable from this run: the network \
+boundary permits only the search and data APIs, so publisher and preprint sites \
+fail regardless of the URL.
+
+This is a property of the environment, not of the source, and not a finding \
+about the mathematics. Retrying, or trying a mirror, will fail the same way.
+
+Fetch the same material with `read_sources` or `deep_research`, which retrieve \
+server-side and return the text. If a source is genuinely unreachable by any \
+route, record the gap in `research/FRONTIER.md` and move on.";
+
 /// What a screened call returns in place of a result it refused.
 const REFUSED_RESULT: &str = "\
 The source was reached but its contents were withheld by the run's evidence \
@@ -138,6 +157,15 @@ impl ScreenedTool {
                 let host = url.split('/').nth(2).unwrap_or("").to_string();
                 self.record(Stage::Arguments, "denied-host", format!("host `{host}`"));
                 return Some(REFUSED_ARGUMENTS.to_string());
+            }
+            if self.policy.host_unreachable(&url) {
+                let host = url.split('/').nth(2).unwrap_or("").to_string();
+                self.record(
+                    Stage::Arguments,
+                    "unreachable-host",
+                    format!("host `{host}` is not on the egress allowlist"),
+                );
+                return Some(UNREACHABLE_HOST.to_string());
             }
         }
 

@@ -43,7 +43,28 @@ from pathlib import Path
 # a term that is never matched is a hole nobody would notice.
 MAX_NGRAM = 10
 
-SECTIONS = ("block", "flag", "host.deny")
+SECTIONS = ("block", "flag", "host.deny", "host.allow")
+
+# The egress allowlist, when a problem does not state its own.
+#
+# Must stay equal to `ALLOWED_HOSTS` for `screen-proxy` in `compose.eval.yaml`.
+# The proxy is what enforces it; this copy exists only so the tool screen can
+# refuse an unreachable host *immediately*, with a message saying what to use
+# instead, rather than letting the request die at the network boundary after a
+# ten-second timeout and reporting `error sending request` to the model. A live
+# run failed 16 of 16 downloads that way and learned nothing from any of them.
+#
+# Drift here is safe in the direction that matters: this list only ever changes
+# how fast a refusal arrives and how well it explains itself. The proxy decides
+# what is actually reachable.
+DEFAULT_ALLOW_HOSTS = (
+    "openrouter.ai",
+    "api.exa.ai",
+    "oeis.org",
+    "api.openalex.org",
+    "pypi.org",
+    "files.pythonhosted.org",
+)
 
 
 # Latin letters that NFKD does NOT decompose. Without these, `ø` would survive
@@ -193,6 +214,9 @@ def main() -> None:
         compiled[name] = sorted(set(digests))
 
     hosts = sorted(set(h.lower() for h in sections["host.deny"]))
+    allow_hosts = sorted(
+        set(h.lower() for h in sections["host.allow"]) or DEFAULT_ALLOW_HOSTS
+    )
 
     policy = {
         "slug": args.slug,
@@ -205,6 +229,10 @@ def main() -> None:
         # argument before the request is even made, which produces a much better
         # ledger entry than a proxy 403 arriving as a network error.
         "deny_hosts": sorted(set(digest(salt, normalise(h)) for h in hosts)),
+        # Plaintext, unlike everything above. These are the APIs the runtime
+        # itself calls; knowing them tells a run nothing about the conjecture,
+        # and only the withheld terms have a reason to be hashed.
+        "allow_hosts": allow_hosts,
         "adjudicator": {
             # Fail-closed: an error, a timeout or an unparsable reply denies.
             "enabled": True,

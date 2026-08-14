@@ -39,9 +39,8 @@ chromatic number of the plane is at least 5
 chromatic number of the plane is at least five
 1804.02385
 
-# The name of the problem, and of the calibration graph
+# The name of the problem. Not the name of the calibration graph: see below.
 Hadwiger Nelson
-Moser spindle
 
 # The follow-up programme
 Polymath16
@@ -61,6 +60,16 @@ chromatic number of the plane is 5
 chromatic number of the plane at least five
 
 [flag]
+
+# `Moser spindle` was in [block] and that was over-blocking. It is the name of
+# the 7-vertex graph the seed asks the run to build, and of **spindling**, a
+# 1961 construction technique the seed's own leads section points at. Blocking
+# it stopped a live run researching a lead it had been given, which degrades the
+# research capability being measured rather than withholding the answer. Flagged
+# instead, so the adjudicator can pass a paper about the construction and refuse
+# one that announces the 2018 result.
+Moser spindle
+spindling unit distance
 
 # Individually innocuous, jointly revealing. These escalate to the adjudicator
 # rather than denying, because each has legitimate uses in this problem.

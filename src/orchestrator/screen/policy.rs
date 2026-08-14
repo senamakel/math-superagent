@@ -66,6 +66,23 @@ pub(crate) struct ScreenPolicy {
     block: HashSet<String>,
     flag: HashSet<String>,
     deny_hosts: HashSet<String>,
+    /// Hosts the run's network boundary permits, in plaintext.
+    ///
+    /// Plaintext because it reveals nothing: these are the search and data APIs
+    /// the runtime itself calls, and knowing them tells a run nothing about the
+    /// conjecture. Only the *withheld* terms have to be hashed.
+    ///
+    /// Its job is to fail fast. Under `compose.eval.yaml` the container has no
+    /// default route, so a fetch of a host outside this list dies at the
+    /// network boundary — after a five-to-twelve second timeout, and reported
+    /// to the model as `error sending request`. A live run spent 54% of its
+    /// model calls in the librarian and failed **16 of 16** downloads that way,
+    /// learning nothing from any of them, because a transport error does not
+    /// say that the host class is unreachable. Refusing here instead costs no
+    /// timeout and says what to do next.
+    ///
+    /// Empty means "no opinion", and every host is let through to the network.
+    allow_hosts: Vec<String>,
     /// Whether the semantic second stage runs at all.
     pub(crate) adjudicator_enabled: bool,
     /// How long one adjudication may take before it is treated as a denial.
@@ -135,6 +152,17 @@ impl ScreenPolicy {
             block: digest_set(&document, "block"),
             flag: digest_set(&document, "flag"),
             deny_hosts: digest_set(&document, "deny_hosts"),
+            allow_hosts: document
+                .get("allow_hosts")
+                .and_then(Value::as_array)
+                .map(|entries| {
+                    entries
+                        .iter()
+                        .filter_map(Value::as_str)
+                        .map(str::to_ascii_lowercase)
+                        .collect()
+                })
+                .unwrap_or_default(),
             adjudicator_enabled: adjudicator
                 .and_then(|section| section.get("enabled"))
                 .and_then(Value::as_bool)
@@ -193,6 +221,29 @@ impl ScreenPolicy {
         };
         let found = super::terms::digests_of(&self.salt, &host, self.max_ngram);
         !self.deny_hosts.is_disjoint(&found)
+    }
+
+    /// Whether `url` names a host the run's network boundary cannot reach.
+    ///
+    /// Distinct from [`Self::denies_host`], and the distinction is what the
+    /// two refusal messages say. A *denied* host is one this calibration
+    /// withholds; an *unreachable* one is simply not on the egress allowlist,
+    /// which is a property of the environment and says nothing about the
+    /// problem. Telling the two apart is what lets the run be advised to fetch
+    /// the same material through a tool that can.
+    ///
+    /// Subdomains are covered, matching the proxy's own anchored rules, so
+    /// `arxiv.org` on the allowlist would also permit `export.arxiv.org`.
+    pub(crate) fn host_unreachable(&self, url: &str) -> bool {
+        if self.allow_hosts.is_empty() {
+            return false;
+        }
+        let Some(host) = host_of(url) else {
+            return false;
+        };
+        !self.allow_hosts.iter().any(|allowed| {
+            host == *allowed || host.ends_with(&format!(".{allowed}"))
+        })
     }
 }
 
@@ -260,6 +311,9 @@ impl ScreenPolicy {
             block: compile(block),
             flag: compile(flag),
             deny_hosts: compile(deny_hosts),
+            // Empty by default: a test that cares sets it, and every other test
+            // then exercises the ordinary "no allowlist, no opinion" path.
+            allow_hosts: Vec::new(),
             adjudicator_enabled: true,
             adjudicator_timeout_seconds: 5,
             adjudicator_max_chars: 24_000,
