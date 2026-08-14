@@ -722,3 +722,67 @@ async fn the_goal_is_decomposed_before_the_first_attempt() {
         "the goal was decomposed before the run knew anything"
     );
 }
+
+/// The fan-in has to re-arm on every pass, not only the first.
+///
+/// A barrier that fires once and never again is invisible in any single-pass
+/// test — the whole suite can be green while the second attempt of every real
+/// run hangs forever with no error anywhere.
+#[tokio::test]
+async fn the_loop_runs_a_second_pass() {
+    use crate::orchestrator::solutions::SolutionState;
+
+    let state = |solved: bool| {
+        let mut state = SolutionState::new("find the largest x");
+        state.attempts = 1;
+        state.solved = solved;
+        Respond::value(state.to_accumulator())
+    };
+
+    // Two whole passes plus stage one, with only the last reporting solved.
+    // Anything that deadlocks mid-pass never reaches it.
+    let mut answers: Vec<Respond> = (0..23).map(|_| state(false)).collect();
+    answers.push(state(true));
+
+    let run = TestHarness::new(&graph())
+        .mock_tool(super::super::loop_steps::TOOL, Respond::sequence(answers))
+        .run()
+        .await
+        .expect("the loop runs to completion on mocks");
+
+    let attempts = run
+        .trace()
+        .steps
+        .iter()
+        .filter(|step| step.node_id == "attempt")
+        .count();
+    assert!(attempts >= 2, "the loop never started a second pass");
+}
+
+/// One diversify, then done.
+#[tokio::test]
+async fn the_escalation_returns_to_the_loop() {
+    use crate::orchestrator::solutions::SolutionState;
+
+    let state = |unproductive: usize, solved: bool| {
+        let mut state = SolutionState::new("find the largest x");
+        state.attempts = 1;
+        state.unproductive = unproductive;
+        state.solved = solved;
+        Respond::value(state.to_accumulator())
+    };
+
+    // Stage one is five calls and a pass is nine, so the fourteenth answer is
+    // the merge the routing reads. The fifteenth is the escalation itself,
+    // which reports solved so the head leaves rather than escalating forever.
+    let mut answers: Vec<Respond> = (0..14).map(|_| state(STUCK_THRESHOLD, false)).collect();
+    answers.push(state(0, true));
+
+    let run = TestHarness::new(&graph())
+        .mock_tool(super::super::loop_steps::TOOL, Respond::sequence(answers))
+        .run()
+        .await
+        .expect("the loop runs to completion on mocks");
+    run.assert_node_ran("diversify_library");
+    run.assert_node_ran("report");
+}
