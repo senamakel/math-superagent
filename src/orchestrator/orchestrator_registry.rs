@@ -127,18 +127,29 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
              with sympy, PARI/GP, and Singular.",
         ),
         (
-            "lean_prover",
+            lean::LEAN_ROLE,
             "Lean Formalisation Agent",
-            "Writes Lean 4 statements and proofs against Mathlib, and reports what the kernel \
-             actually checked.",
+            "Writes Lean 4 statements and proofs against Mathlib, and runs the kernel over them \
+             with lean_check, which is what a formalised claim is backed by.",
         ),
     ] {
+        // `lean_check` is the one grant in this list that is not shared. It
+        // decides what the claim ledger may call formalised, so it belongs to
+        // the role whose mandate is formalisation and to nothing else; see
+        // `register_code_writing_agents`, which enforces the same split when
+        // the harness is assembled.
+        let kernel: &[&str] = if name == lean::LEAN_ROLE {
+            &["lean_check"]
+        } else {
+            &[]
+        };
         registry.register(
             AgentDefinition::new(name, title, description)
                 .with_model("openrouter")
                 .with_tools(
                     ["write_tool_file", "execute_command", "apply_patch"]
                         .into_iter()
+                        .chain(kernel.iter().copied())
                         .chain(memory_tools)
                         .chain(SCRATCH_TOOLS)
                         .chain(document_tools),

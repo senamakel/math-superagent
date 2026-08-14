@@ -18,6 +18,7 @@ mod exec;
 mod folder_index;
 mod frontier;
 mod layout;
+mod lean;
 mod loop_steps;
 mod oeis;
 mod patch;

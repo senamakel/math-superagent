@@ -112,6 +112,14 @@ struct CodeWriters<'a> {
 /// visible: a tool granted here reaches all four, which is a decision worth
 /// seeing rather than one buried in four near-identical blocks.
 ///
+/// There is exactly one exception, and it is written as a branch rather than a
+/// second list so that it stays visible as an exception. `lean_check` reaches
+/// `lean_prover` alone, because it is the only tool here whose result decides
+/// what a *claim* may say: a `status: formalised` row is backed by a verdict
+/// this tool filed, so granting it more widely would let a role with no
+/// formalisation mandate mint the ledger's strongest evidence class. See
+/// [`super::lean`].
+///
 /// # Errors
 ///
 /// Returns an error when a name is already registered.
@@ -128,6 +136,15 @@ fn register_code_writing_agents(
             parts.workspace,
             parts.documents,
         );
+        if name == lean::LEAN_ROLE {
+            register_resilient(
+                &mut harness,
+                Arc::new(lean::LeanCheck::new(
+                    parts.workspace.to_path_buf(),
+                    parts.budget.tool_timeout,
+                )),
+            );
+        }
         harness.push_middleware(parts.checkpoint.clone());
         register_memory(&mut harness, parts.vector_store);
         register_scratch(&mut harness, parts.vector_store, true);
