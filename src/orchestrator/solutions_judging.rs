@@ -808,8 +808,12 @@ pub(in crate::orchestrator) async fn reduce_arm(
     // named, which is a different kind of thing from the material
     // `fresh_context` carries. One mailbox cannot render both under the right
     // heading, which is the argument `Mailboxes` was built on.
-    reduction.outbox.post(report);
-    (true, String::new())
+    reduction.outbox.post(report.clone());
+    // Returned as well as posted, because the outbox is *this* school's and the
+    // report is the one thing in a decomposition a sibling would pay to have.
+    // The caller has the school slug and the workspace, so it is the caller
+    // that puts it on the board — see `LoopSteps::open_decomposition`.
+    (true, report)
 }
 
 /// Opens the literature sweep beside the loop, and does not wait for it.

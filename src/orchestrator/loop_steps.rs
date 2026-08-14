@@ -203,7 +203,7 @@ impl LoopSteps {
     /// reset the cadence and which has no business becoming a permanent field.
     /// Opens a decomposition if the gate admits one, and says whether it did.
     async fn open_decomposition(&self, state: &SolutionState) -> Value {
-        let (opened, _) = super::solutions::reduce_arm(
+        let (opened, report) = super::solutions::reduce_arm(
             &self.subagents,
             self.tracer.as_ref(),
             self.workspace.as_deref(),
@@ -211,6 +211,9 @@ impl LoopSteps {
             state,
         )
         .await;
+        if opened {
+            self.offer_decomposition(&report);
+        }
         let mut carried = state.to_accumulator();
         if let Some(object) = carried.as_object_mut() {
             object.insert(
@@ -219,6 +222,50 @@ impl LoopSteps {
             );
         }
         carried
+    }
+
+    /// Puts a decomposition this school just opened on the shared board.
+    ///
+    /// The board is a capability nobody exercised. It is granted to three roles
+    /// — `reflection`, `inventor` and `goals` — and a live three-school hour on
+    /// Project Euler 1006 called `post_board` zero times. The diagnosis then was
+    /// that no prompt mentioned the board, and `src/prompts/board.md` was
+    /// written. A live calibration run afterwards, with that brief in place, put
+    /// `goals` through forty-six turns and still posted nothing.
+    ///
+    /// So this stops asking. A decomposition is the one thing in this loop that
+    /// is unambiguously worth a sibling's attention — *what would suffice* and
+    /// *what would be easier* are the questions every school is about to spend
+    /// an attempt on — and the loop already holds the report, the school it
+    /// belongs to and the workspace. Posting it here needs no model to comply,
+    /// which is the difference between a control and an instruction. The tool
+    /// stays exactly as it is, for the posts a model does choose to write.
+    ///
+    /// [`Kind::Offer`](super::board::Kind::Offer) is the honest label: this is
+    /// something the school holds that another may want, and like every post it
+    /// is asserted rather than established and never reaches a ledger.
+    ///
+    /// Silent on the paths that cannot post — a single-school run has nobody to
+    /// post to, and a failed append is not worth failing an attempt over.
+    fn offer_decomposition(&self, report: &str) {
+        let (Some(school), Some(workspace)) = (self.school, self.workspace.as_deref()) else {
+            return;
+        };
+        let Some(body) = decomposition_body(report) else {
+            return;
+        };
+        if let Err(error) = super::board::post(
+            workspace,
+            school,
+            super::board::Kind::Offer,
+            &body,
+            &[],
+        ) && let Some(tracer) = self.tracer.as_ref()
+        {
+            tracer.note(&format!(
+                "solution loop: the decomposition did not post: {error}"
+            ));
+        }
     }
 
     /// Folds the evaluation arms into one state, and stamps the clock.
@@ -462,6 +509,30 @@ fn apply_goal_decision(mut state: SolutionState, args: &Value) -> SolutionState 
         state.since_reduction = 0;
     }
     state
+}
+
+/// Shapes a decomposition report into a board body, or `None` if there is none.
+///
+/// Pure, and separated for one reason: the truncation is the part that can put
+/// this back where it started. `board::post` refuses a body over its cap, and
+/// two sub-agents writing more than two thousand characters between them is
+/// entirely ordinary — so an untruncated body would mean no post, which is the
+/// exact failure this whole path exists to fix, arriving silently and only on
+/// the long reports.
+fn decomposition_body(report: &str) -> Option<String> {
+    const HEAD: &str = "Decomposition just opened:\n\n";
+    const TAIL: &str = "\n\n[truncated — the full report is in this school's gap briefing]";
+    let report = report.trim();
+    if report.is_empty() {
+        return None;
+    }
+    if report.chars().count() <= super::board::MAX_BODY - HEAD.chars().count() {
+        return Some(format!("{HEAD}{report}"));
+    }
+    let room = super::board::MAX_BODY
+        .saturating_sub(HEAD.chars().count() + TAIL.chars().count());
+    let kept: String = report.chars().take(room).collect();
+    Some(format!("{HEAD}{kept}{TAIL}"))
 }
 
 /// Whether `step` is one this tool runs.

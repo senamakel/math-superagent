@@ -4,4 +4,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `CONTEXT.md` | Shared context brief routed to all roles: records that the run is fresh with an empty workspace, the oracle calibration that gates all progress, the floating-point trap, and the first gaps to attack. |
+| `CONTEXT.md` | Shared context brief routed to all roles: records the calibrated oracle pair (Moser spindle chi=4 verified four ways), the sourced claims (asserted, not machine-checked), the failed forced-pair route (spindle and Moser+Moser), and the live directions (forced-pair over richer bases, size-bound theorem). |
