@@ -182,7 +182,7 @@ missing — a result that exists only in an attempt's report is lost when the
 attempt ends. Nothing in `route` reads the counter, so the routing policy and its
 parity harness are untouched; what it changes is what an attempt is credited for.
 
-Reflection answers in three verdicts, not two. SOLVED needs a specific final
+The three that were there first are unchanged. SOLVED needs a specific final
 answer *and* a second independent route, and it needs a program on disk — a
 claimed answer with nothing executable in the workspace is rejected outright, and
 that gate covers the third verdict too. It also needs the reflection to agree
@@ -417,6 +417,27 @@ whole budget with a great deal of data and nothing that says what would have
 been enough. A live Gilbreath workspace holds exactly that statement, reducing
 the conjecture to an event-rate bound, and it took sixteen operator directives
 to produce.
+
+Two roles run in that arm now, concurrently, and they share it rather than
+getting one node each because they share everything that decides *when* to run:
+the same cadence, the same "has the workspace moved" fingerprint, and the same
+single-writer gate. A second node whose only difference is which prompt it sends
+would be a second answer to the question of how often a run reconsiders what it
+is attacking. They are concurrent rather than sequential because the arm is
+awaited and neither child reads the other's output, so a pass costs the slower of
+the two — the same argument the evaluation fan-out itself is built on.
+
+The `weakener` is the second, and it asks the question the reducer's dual leaves
+open. The reducer asks what would be *enough* and answers with lemmas that imply
+the goal; the weakener asks what would be *easier* and answers with a target that
+deliberately does not. It writes `research/weakened/<slug>.md` — the
+difficulties that make the goal hard, then a ladder of rungs each naming which of
+them are switched off — and `research/WEAKENED.md` is derived from those files.
+It is deliberately *not* gated on the run being stuck, and that is a lesson this
+repository has already paid for: `open_invention`'s stuck-gate was reachable in
+principle and not in practice, and across a day of live runs the inventor was
+spawned once. A ladder is most useful before the budget has gone on the
+full-strength statement, not after.
 
 So the `reducer` is delegated a decomposition: the goal, the lemmas that would
 imply it, the inference combining them, and one `gap` per lemma nobody has

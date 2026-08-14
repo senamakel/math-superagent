@@ -27,7 +27,7 @@ evidence for it stays available.
 - [`docs/runtime.md`](docs/runtime.md) — the crate layout, `RunBudget`, and the
   tracing that makes a run legible.
 - [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the
-  research tree, the six derived ledgers, and checkpointing.
+  research tree, the seven derived ledgers, and checkpointing.
 
 Keep them consistent with the code. A rule here that the code does not enforce
 is the failure this repository keeps recording: a prompt instruction is not a

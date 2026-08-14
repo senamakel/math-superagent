@@ -271,7 +271,7 @@ The librarian receives the root as context so it does not download the same
 paper twice. Toolkits keep the older flat shape: a folder, an `INDEX.md`, and
 one small file per helper.
 
-## The six derived ledgers
+## The seven derived ledgers
 
 Six files beside the library are written by code, never by an agent, and
 re-derived from disk on every relevant write. All six follow the rule `INDEX.md`
@@ -352,6 +352,25 @@ re-derived on a *note* write as well as its own, because a gap is discharged by
 a claim — so the same note that adds or removes one can close a gap or strand
 it. `discharged` is deliberately not a closed stance: it is the one terminal
 state that is a result.
+
+`research/WEAKENED.md` (`weakened.rs`) is the third axis and the only one that
+moves the target. An approach is a route to the goal and a skeleton is the goal
+decomposed; a ladder is the goal made *smaller*. A ladder is
+`research/weakened/<slug>.md` carrying one fenced `ladder` block — `goal`,
+`difficulties`, `status`, with stances `open`, `exhausted`, `abandoned` — and one
+fenced `rung` block per weakened target: `id`, `statement`, `off`, `stance`,
+`merge`. `difficulties` is load-bearing the way `implies` is: every `off` entry
+must name a difficulty the header declared, and a rung switching off something
+the ladder never named is reported as a fault rather than guessed at, because it
+means the two disagree about what the problem's difficulties actually are. Rungs
+render weakest-first, since that is the order they are meant to be climbed, and
+the table names the *current* rung — the weakest one still open — because that is
+the single fact the next attempt needs. A rung that was attacked and failed keeps
+its row and its reason: deleting it is how the same one is proposed again three
+attempts later. Like the skeleton ledger it is re-derived on a note write as well
+as its own, because a claim can settle a rung, and a ladder still pointing at a
+rung the run has already proved is how the next attempt spends itself re-proving
+it.
 
 `research/FRONTIER.md` (`frontier.rs`) is the citation graph the converter used
 to throw away. `readable.rs` has always parsed every anchor into a reference

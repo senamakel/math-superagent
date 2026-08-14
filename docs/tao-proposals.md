@@ -1,0 +1,224 @@
+# Proposals: what to build next, ranked
+
+Read [`docs/tao-gap-analysis.md`](tao-gap-analysis.md) first; this file is what
+follows from it. Every entry names the Tao evidence, the gap, what to build,
+where it lives, and roughly what it costs. The three at the top are **done on
+this branch**; the rest are not, and the reasoning is kept here so that a later
+decision starts from it rather than from nothing.
+
+Ranking is by *value per unit of change*, not by importance. The single most
+valuable change in this file is #4, and it is fourth because it is an
+operational decision rather than a piece of code.
+
+---
+
+## Done on this branch
+
+### 1. `lean_check` — make the kernel a control, not an instruction
+
+**Tao:** formal verification is what removes trust as a prerequisite, which is
+what let ~25 strangers formalise PFR in three weeks with the author writing ~5%
+of the Lean (`02`§6). His stated failure mode for AI mathematics is the
+plausible-but-wrong argument that "no human would have actually made that
+mistake" (`04`§I.3).
+
+**Gap:** Lean and Mathlib were the largest thing in the image and nothing ran
+them. `research/CLAIMS.md` could not distinguish a kernel-checked lemma from a
+sentence claiming one.
+
+**Built:** `src/orchestrator/lean.rs` — a tool that runs `lean`, parses
+compiled/`sorry`/`#print axioms`, and files a verdict under `code/out/lean/`.
+`Status::Formalised` in `claims.rs`, settable only against a passing verdict,
+downgraded to `asserted` with a stated reason otherwise. Granted to
+`lean_prover` alone.
+
+**Cost:** ~330 lines plus 12 tests, and one line in a Lean file per theorem.
+
+### 2. `weakener` — the third direction
+
+**Tao:** "find a version of the problem that turns off nine of the difficulties
+… and solve that" (`01`§1). Four of eleven programmes in `02` were solved by
+weakening the target along a named axis; a fifth by weakening the *hypothesis*.
+
+**Gap:** `reducer` asks what would be enough, `inventor` asks what other route
+reaches the goal. Both hold the goal fixed.
+
+**Built:** `src/prompts/weakener.md`, the role in the registry, and
+`src/orchestrator/weakened.rs` — the difficulty ladder as a seventh derived
+ledger (`research/weakened/<slug>.md` → `research/WEAKENED.md`). It runs
+concurrently with the reducer inside the existing reduction arm, sharing its
+cadence, fingerprint gate, and single-writer gate.
+
+**Cost:** ~830 lines plus 22 tests, and one extra child run per reduction
+cadence.
+
+### 3. `BANKED` — a partial or no-go result is a result
+
+**Tao:** Greenfeld–Tao's 2021 rigidity result proved their encoding could not
+work and is what sent them to the one that did (`02`§9). Two of eleven
+programmes were preceded by an explicit no-go; one *was* the no-go.
+
+**Gap:** `solved` was binary.
+
+**Built:** a fourth reflection verdict, honoured only when
+`claims::collect(workspace).established()` grew — so it cannot be asserted into
+existence, and cannot keep a stuck run out of `diversify`. `route` does not read
+it, so the routing policy and its parity harness are untouched.
+
+**Cost:** ~40 lines plus 3 tests.
+
+---
+
+## Not built
+
+### 4. A shared technique library across problems
+
+**Tao:** `01`§27 (archive everything); `04` R13. Mathlib is the mechanised form
+of the argument, and the two fastest results in `02` — the sunflower rewrite and
+PFR — both consisted of picking up existing output rather than starting cold.
+
+**Gap:** `scripts/run-agent:110-126` gives each problem its own Cognee stack.
+
+**What to build:** not a code change first. The decision is whether to run one
+shared store, and the comment at that line records why the previous shared
+arrangement was abandoned — four concurrent runs, a ten-minute `recall_memory`
+hang, `409 Conflict`. `COGNEE_NETWORK` already opts back in, so the cheapest
+honest experiment is to set it for two concurrent runs and measure recall
+latency before writing anything. If it holds, the code change that follows is a
+`remember_research` discipline: a claim worth carrying across problems is stated
+without the problem's own notation.
+
+**Cost:** an afternoon to measure; unknown to fix if it does not hold.
+
+### 5. A cheap-first ladder with cost instrumentation
+
+**Tao / EQT:** 22,028,942 implications went to ~1,000 by running finite model
+builders and ATPs first, because they are "far cheaper to run and already
+handled the overwhelming majority" (`04` R5).
+
+**Gap:** an attempt is a model call that may delegate to a solver. Nothing
+schedules the cheap rungs first, and nothing measures cost per resolved subgoal.
+
+**What to build:** instrument first, schedule second. `RunTracer` already sees
+every delegation; recording (role, wall-clock, tokens, whether the subgoal
+closed) would say whether the ladder is worth building for this workload at all.
+Building the scheduler before the measurement is the mistake `02`'s reading
+warns about — reaching for computation before the problem is parameterised.
+
+**Cost:** instrumentation small; the scheduler large, and only justified by what
+the instrumentation says.
+
+### 6. A refutation arm beside the proof arm
+
+**Tao:** "spend the first ten minutes looking for a counterexample" (`01`§10);
+`04` R11. Autograph, 1989, is the standing example of a system that refutes
+rather than producing a plausible proof.
+
+**Gap:** `sat_solver` and `smt_solver` exist and are *delegated to*, never
+*scheduled against* the proof attempt. Nothing runs refutation on its own budget.
+
+**What to build:** an evaluation arm that takes the current rung or gap and
+spends a bounded budget trying to break it, posting to the mailbox the next
+attempt drains. The fan-out already supports this shape exactly; the work is the
+prompt and the budget, not the graph.
+
+**Cost:** moderate. It pairs naturally with #2 — a rung is the right size of
+statement to attack.
+
+### 7. Closure of the claim set under implication
+
+**EQT:** propagating each established fact through the entailment relation and
+symmetry group gave ~37× more answers than direct proofs (`04` R5b).
+
+**Gap:** `search_claims` retrieves a claim; nothing derives one. A claim ledger
+that knows `A` and `A ⟹ B` does not know `B`.
+
+**What to build:** the general version is a theorem prover over the ledger and is
+too large. The narrow version is worth it on its own: a claim's `contradicts`
+field is already parsed and rendered, so the same machinery could carry
+`implies` edges and close over them transitively. That is a graph walk, not a
+prover.
+
+**Cost:** small for the transitive version, large for anything more.
+
+### 8. Post-solve novelty check
+
+**Tao:** `01`§19 — a short proof of a famous problem raises the prior that it is
+already known. FunSearch's argument is that beating a numeric state of the art
+is what distinguishes discovery from retrieval; its inverse is Erdős #728, where
+an AI solution turned out to match Pomerance 2014 (`04` R33).
+
+**Gap:** none of the three closing verdicts requires a literature check. A run
+can close `SOLVED` having never asked whether the result is known.
+
+**What to build:** a research delegation on the `Solved` and `Reported` routes,
+before the outcome is written, recording what it searched and what it found. It
+must not be able to *change* the verdict — a novelty check that can retract a
+proof is a second judge — only to attach the record.
+
+**Cost:** small, and it closes a real reporting risk.
+
+### 9. Fund the orthogonal branch
+
+**Tao:** Polymath8's real lesson. Thirteen months drove 70,000,000 → 4,680;
+Maynard reached 600 independently while discarding the machinery the effort had
+gone into (`02`§7 F4).
+
+**Gap:** the loop runs one line of attack and reaches `diversify` only after two
+consecutive unproductive attempts. A run making thin but genuine progress every
+cycle never diversifies at all — which the runtime already half-knows, since
+`COMPUTATIONAL_THRESHOLD` exists precisely to catch a run scaling one method.
+
+**What to build:** this one is genuinely hard and should not be attempted
+casually. The honest small version is a report, not a mechanism: record how many
+distinct approaches a run actually pursued, and surface a run that spent its
+whole budget on one. Deciding to fund a losing branch is a judgement, and the
+runtime has no way to make it well.
+
+**Cost:** the report is small. The mechanism is a redesign of the loop.
+
+### 10. Simplification as a mode
+
+**Tao:** the sunflower cascade — ALWZ → Rao → Tao → Bell–Chueluecha–Warnke, four
+rewrites in thirteen months against 59 years of near-stasis, and the extracted
+spread lemma outlived the application (`02`§8 G1–G3).
+
+**Gap:** the librarian acquires and the scholar digests. Nothing rewrites.
+
+**What to build:** unclear, and that is the finding. This is the move in the set
+that depends most on taste — "find the formalism in which the key inequality
+becomes an identity" is not a schedulable action. Recorded because it is one of
+the highest-yield moves in the sample and the runtime has no version of it, not
+because a design follows.
+
+### 11. Two fixes unrelated to Tao
+
+Both are described in the gap analysis and neither is folded into this work.
+
+- **`--no-research` does not withhold `download_document`**
+  (`orchestrator_registry.rs:46`). A one-line move into the gated set, plus a
+  test. Small, and it restores a control that reads as complete and is not.
+- **The judge's score is written and never read** (`solutions_judging.rs:49`),
+  and the judge runs once after the loop (`workflow.rs:56`). Recent and
+  apparently deliberate; if it stays, the run has no monotone progress statistic
+  anything acts on, which `01`§35 argues a long programme needs.
+
+---
+
+## What the research says about all of this
+
+Two readings from `02`'s ladder statistics are worth keeping in front of anyone
+picking from this list.
+
+**Programme length is unrelated to problem age.** An 83-year-old problem took
+5.5 years; a 59-year-old one took a month of rewriting. What predicts a solve is
+not effort on the frontier but *the arrival of an external tool* —
+Matomäki–Radziwiłł for the discrepancy problem, ALWZ for sunflowers. For this
+runtime that argues for #4 and #5 over #9: being able to pick up a new tool
+cheaply beats being able to grind harder.
+
+**Computation was decisive in exactly one of eleven cases and decorative in most
+of the rest.** Where it mattered it was the endgame of an already-parameterised
+problem. The 13 GB SAT certificate for the Erdős discrepancy problem settled one
+value of `C` and generalised to nothing. A runtime whose instinct is to compute
+should read that as a warning about its own default.
