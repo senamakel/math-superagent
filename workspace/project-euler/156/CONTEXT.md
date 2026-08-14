@@ -23,32 +23,60 @@ trace to a source is worth less than no statement.
 
 ## Established
 
-What this run may treat as known, each marked proved, computed and checked,
-sourced, or conjectured, with a link to what establishes it.
+**Problem definition (sourced: `problem.md`, downloaded from
+projecteuler.net/minimal=156).** Natural numbers are written consecutively in
+base 10. `f(n,d)` = total occurrences of digit `d` in all integers written from
+0 through `n` inclusive. Solve `f(n,d) = n` for each digit `d ∈ {1,...,9}`; let
+`s(d)` be the sum of all solution `n` (counting multiplicity across `d` per the
+final note). Answer required: `Σ s(d)` for d=1..9.
+
+**Worked examples — oracle (given in the statement, NOT yet reproduced by any
+program this run).** `f(n,1)` for n=0..12: 0,1,1,1,1,1,1,1,1,1,2,4,5. The
+value 3 never occurs. First solutions of `f(n,1)=n`: n=0, 1, then 199981.
+Given `s(1) = 22786974071`. These are the fixed targets `brute.py` must
+reproduce before any real method is trusted. **Status: the run has not yet
+executed these — brute.py does not exist.** This is the immediate next step.
+
+**Governing structure (conjectured, to be confirmed by the run's own
+programs).** `f(n,d)` is the digit-count function over 0..n. It is computable
+exactly in O(#digits) by a standard place-value decomposition (the classical
+"count occurrences of digit d in 1..n" identity); no enumeration of numbers
+needed. `f(n,d) ≈ n·(#digits)/10`, so `f(n,d) − n` grows superlinearly past a
+small `n`; hence for each `d` only finitely many solutions exist and the
+search can be pruned by bounding `n` rather than visiting the whole range.
+The given bound's shape (solutions near 2·10^8 and far larger) means a
+method that enumerates numbers up to the answer is the wrong method; the
+intended one evaluates `f` per candidate/interval. See `solution.md` for the
+derivation the run must write.
 
 ## Ruled out
 
-Approaches that failed, and the reason each failed. A known dead end is a
-result, and this section is what stops the run paying for one twice.
+Nothing yet — no approach has been attempted this run. (First candidate to
+rule in or out: naive per-`n` counting up to the answer is exponential in the
+sense of the bound and is prohibited; the O(digits) closed form for `f(n,d)`
+is what replaces it.)
 
 ## Numbers
 
-Computed terms, the range over which the oracle and the method agree, the size
-of the object at the bound in the statement.
+None computed yet this run. Targets from the statement: `f(11,1)=4`,
+`f(12,1)=5`, first solutions 0, 1, 199981, `s(1)=22786974071`. The full sum
+`Σ s(d)` is what the run must produce and independently verify.
 
 ## Recalled
 
-What durable memory holds about this problem or problems of its shape, marked as
-recalled rather than as this run's own finding, with hypotheses checked against
-this problem before being relied on.
+Durable memory (Cognee) currently returns nothing for this problem or for
+digit-counting problems of this shape; `relate_memory` likewise. Nothing
+carried over to check.
 
 ## Contradictions
 
-Where sources disagree, where a source contradicts recalled memory, or where a
-computation contradicts a conjecture. The most valuable rows here: record them
-rather than silently picking a side.
+None yet — no computation to disagree with a source
 
 ## Gaps
 
-What the run still needs and has not found. State a gap precisely enough to be a
-research request rather than a mood.
+- Reproduce the statement's examples with a naive oracle (`code/brute.py`):
+  this is step 1 and unblocks everything.
+- Establish the efficient `f(n,d)` evaluation and a bound on the solution set
+  per `d` (`code/solution.py`, `solution.md`), then verify the final sum by a
+  second independent route (e.g. a differently-structured counter-program
+  agreeing with brute.py over the range brute.py can reach).
