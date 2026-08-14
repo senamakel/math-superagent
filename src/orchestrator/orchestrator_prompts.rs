@@ -193,6 +193,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
             // see this schedules an attempt at something the run already holds,
             // which is the most expensive mistake available to it.
             "research/ENTAILMENT.md",
+            // What the other schools have said. A planner deciding what to
+            // spend the next run on is the reader a dead end found once and
+            // paid for once was written for.
+            board::PATH,
             "CONTEXT.md",
         ],
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
@@ -213,9 +217,18 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // would credit an attempt for approaches it can see on disk but that
         // the report never mentions. The evidence has to be in the report, or
         // the score is not about the attempt.
+        // Not sent the board either, and for the reason that decides who reads
+        // it at all: a post is *asserted* rather than established — a hunch, a
+        // dead end, a half-formed lesson, offered precisely because it is
+        // unfinished — so it goes to the roles choosing what to do next and is
+        // withheld from every role that weighs evidence or files sources. A
+        // judge scoring an attempt beside a sibling's unevidenced sentence is
+        // one prompt away from scoring the sentence. It is the same boundary
+        // that keeps `research/CLAIMS.md` away from the director, which acts on
+        // an assertion and must never file one.
         "judge" => &["GOAL.md", "INDEX.md"],
-        "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md"],
-        "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", "CONTEXT.md"],
+        "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md", board::PATH],
+        "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", board::PATH, "CONTEXT.md"],
         // The scholar writes the claim blocks, so it is the role that draws the
         // `follows-from:` edges — and the one that should see what those edges
         // already establish before recording a statement the library entails.
@@ -245,6 +258,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/THREADS.md",
             "research/APPROACHES.md",
             "research/CLAIMS.md",
+            // The role asked for something genuinely different is the one that
+            // most needs to know which different things a sibling has already
+            // walked into.
+            board::PATH,
             "CONTEXT.md",
         ],
         // Also handed a dossier built from disk at delegation time, for the
@@ -268,6 +285,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/BLUEPRINT.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
+            board::PATH,
             "CONTEXT.md",
         ],
         // The weakener is sent its own ladder, the goal it is lowering, and
@@ -286,6 +304,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "research/WEAKENED.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
+            board::PATH,
             "CONTEXT.md",
         ],
         // The searcher is routed almost nothing, and that is the shape of the
@@ -350,21 +369,122 @@ fn role_context(role: &str) -> &'static [&'static str] {
     }
 }
 
+/// Per-role prompt overlays, keyed by school slug and role name.
+///
+/// A table rather than a directory walk, because these are compiled-in assets:
+/// probing the filesystem at startup would make a role's brief depend on what
+/// happens to be beside the binary, and a typo in a slug would read as "this
+/// school says nothing extra to that role" rather than failing to build. An
+/// entry is added here with an `include_str!` beside it; there are none yet,
+/// and a school whose whole policy fits in its method-policy overlay needs
+/// none.
+const SCHOOL_ROLE_OVERLAYS: [(&str, &str, &str); 0] = [];
+
+/// The overlay `slug` writes for `role` in particular, or nothing.
+fn school_role_overlay(slug: &str, role: &str) -> &'static str {
+    SCHOOL_ROLE_OVERLAYS
+        .iter()
+        .find(|(school, name, _)| *school == slug && *name == role)
+        .map_or("", |(_, _, overlay)| *overlay)
+}
+
+/// What the roles holding `post_board` are told the board is for.
+///
+/// This exists because registering a tool is not the same as asking for it. A
+/// live three-school hour on Project Euler 1006 called `post_board` **zero**
+/// times: all three schools reached a verdict, all three ran the reflection —
+/// the role that holds the tool — and none posted. Nothing was broken. The
+/// grant was right, `teams/BOARD.md` was routed to every reader, and no prompt
+/// in this crate mentioned the board at all, so the only trace of it a model
+/// saw was an unexplained entry in a tool list, inside a call whose
+/// instructions end "Answer exactly these four things". It answered the four
+/// things. A capability nobody is told to use is not a capability.
+const BOARD_BRIEF: &str = include_str!("../prompts/board.md");
+
+/// The roles that receive [`BOARD_BRIEF`].
+///
+/// Derived from nothing, and it has to be: the grant lives in
+/// `orchestrator_registry`'s bench lists, which are `&'static str` arrays built
+/// per role rather than a queryable map, so there is no honest way to read this
+/// off the authority. A test asserts the two agree instead, because the failure
+/// this guards is silent in both directions — a role told to post that cannot,
+/// and a role that can post and was never asked.
+const BOARD_ROLES: [&str; 3] = ["reflection", "inventor", "goals"];
+
+/// What a school adds to `role`'s brief, ready to prefix the built-in prompt.
+///
+/// Returns the empty string when the school says nothing — which is the whole
+/// of [`schools::ALL`]'s control school, and is why this returns a prefix
+/// rather than a section: an empty overlay must add nothing at all, not a blank
+/// line and not a separator, or `chisel`'s assembled prompts stop being
+/// byte-identical to the ones the runtime sent before schools existed.
+///
+/// It sits *after* the shared method policy and before the role prompt.
+/// [`workspace_prompt`] puts the shared policy first because the provider cache
+/// is keyed on that prefix, and a school is per-run text: leading with it would
+/// give every school its own cache namespace and lose the one identical opening
+/// block every role in every run shares.
+///
+/// `siblings` is whether more than one school is running. It gates
+/// [`BOARD_BRIEF`] rather than the grant, because the board is the one part of
+/// a school's brief that is not about *its* method: a school running alone has
+/// nobody to tell, and telling it to post anyway would spend tokens on an
+/// audience of one and take the control school's prompts away from the ones
+/// this runtime sent before schools existed.
+fn school_layer(school: &schools::School, role: &str, siblings: bool) -> String {
+    let mut layer = String::new();
+    let board = if siblings && BOARD_ROLES.contains(&role) {
+        BOARD_BRIEF
+    } else {
+        ""
+    };
+    for part in [school.policy, school_role_overlay(school.slug, role), board] {
+        let part = part.trim();
+        if !part.is_empty() {
+            layer.push_str(part);
+            layer.push_str("\n\n");
+        }
+    }
+    layer
+}
+
 impl RolePrompts {
     /// Loads each role's prompt: built-in policy, the workspace context that
     /// role is entitled to, then its `prompts/<role>.md` guidance.
+    ///
+    /// The control school's prompts, which are the prompts this runtime sent
+    /// before schools existed. Shares its whole body with
+    /// [`Self::for_school`] rather than restating it, so the two cannot drift.
     ///
     /// # Errors
     ///
     /// Returns an error when a workspace file is unreadable, oversized, or not
     /// UTF-8. A file that is simply absent is skipped.
     fn load(workspace: &Path) -> Result<Self> {
+        Self::for_school(workspace, &schools::ALL[0], false)
+    }
+
+    /// The same prompts, with `school`'s policy layered into every one.
+    ///
+    /// `siblings` says whether this run has more than one school, and reaches
+    /// only [`school_layer`]'s board brief — see there for why the board is
+    /// told to a school with an audience and withheld from one without.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when a workspace file is unreadable, oversized, or not
+    /// UTF-8. A file that is simply absent is skipped.
+    fn for_school(workspace: &Path, school: &schools::School, siblings: bool) -> Result<Self> {
         let role = |name: &str, base: &str| -> Result<String> {
             let mut files: Vec<&str> = UNIVERSAL_CONTEXT.to_vec();
             files.extend_from_slice(role_context(name));
             let context = load_workspace_files(workspace, &files)?;
             let guidance = load_workspace_files(workspace, &[&format!("prompts/{name}.md")])?;
-            Ok(workspace_prompt(base, &context, &guidance))
+            // Concatenated rather than branched: an empty layer leaves `base`
+            // exactly as it was, and `workspace_prompt` trims what it is given,
+            // so the control school's output is unchanged to the byte.
+            let base = format!("{}{base}", school_layer(school, name, siblings));
+            Ok(workspace_prompt(&base, &context, &guidance))
         };
         Ok(Self {
             orchestrator: role("orchestrator", ORCHESTRATOR_PROMPT)?,

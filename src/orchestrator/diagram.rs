@@ -39,7 +39,7 @@ use crate::error::{Error, Result};
 /// Node identity still comes from the edge table: a node named here but
 /// unreachable renders detached, which is the renderer's way of showing
 /// exactly that mistake.
-const NODES: [(&str, &str); 19] = [
+const NODES: [(&str, &str); 20] = [
     ("start", "start"),
     (super::workflow::RESEARCH_NODE, "research"),
     (super::workflow::SEED_CONTEXT_NODE, "seed ctx"),
@@ -57,6 +57,7 @@ const NODES: [(&str, &str); 19] = [
     (super::workflow::GOAL_APPLY, "cadence"),
     (super::workflow::EVAL_MERGE, "merge"),
     ("diversify_library", "escalate"),
+    (super::workflow::STAND_DOWN, "stand down"),
     (super::workflow::NOVELTY_NODE, "novelty"),
     ("report", "report"),
 ];
@@ -84,7 +85,15 @@ const RESEARCH_NODES: [(&str, &str); 3] = [
 pub(super) fn flows() -> Vec<(&'static str, WorkflowGraph)> {
     vec![
         ("solution-loop", solution_loop()),
-        ("goals", shorten(super::workflow_goals::goals_workflow())),
+        // Drawn on the control's bounds, as the loop diagram is: a picture of
+        // the graph shows its shape, and every school's is the same shape with
+        // different numbers in the switches.
+        (
+            "goals",
+            shorten(super::workflow_goals::goals_workflow(
+                &super::schools::Thresholds::chisel(),
+            )),
+        ),
         (
             "research",
             shorten(super::workflow_research::research_workflow()),

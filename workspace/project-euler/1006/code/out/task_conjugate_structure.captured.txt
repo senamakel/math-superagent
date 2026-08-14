@@ -1,0 +1,64 @@
+# Conjugate+singular decomposition of the factor set: holds iff k is a Fibonacci index
+
+## Result (checked, exact, k = 1..60)
+
+For the Fibonacci word (Sturmian slope `1/phi^2`), the `k+1` distinct length-`k` factors
+are `{k distinct circular rotations (conjugates) of a single base word} ∪ {one singular
+factor}` **if and only if k is a Fibonacci number**.
+
+Grouping each length-`k` factor set (from `code/out/structure.json`) into rotation
+conjugacy classes and checking "one class of size `k`, one singleton":
+
+```
+valid at k: [1, 2, 3, 5, 8, 13, 21, 34, 55]
+fibonacci k<=60: [1, 2, 3, 5, 8, 13, 21, 34, 55]
+MATCH (valid == fibonacci): True
+```
+
+Every non-Fibonacci index fails the decomposition (k=4 -> sizes {1,2,2}; k=10 -> {1,1,4,5};
+k=16 -> {1,1,7,8}; k=42 -> {1,1,20,21}, etc.), with the rotation classes splitting into
+Fibonacci-structured block sizes.
+
+## Base words / singular factors at Fibonacci index k
+
+| k | base (rotation class)               | w(base) | singular            | w(sing) | Psi(k) |
+|---|---|---|---|---|---|
+| 2 | `01`                                | 1 | `00`                 | 0 | 101 |
+| 3 | `001`                               | 1 | `101`                | 2 | 20302 |
+| 5 | `00101`                             | 2 | `00100`              | 1 | 204252402 |
+| 8 | `00100101`                          | 3 | `10100101`           | 4 | 407470828064704 |
+| 13| `0010010100101`                     | 5 | `0010010100100`      | 4 | 5097153010831280092506905 |
+| 21| `001001010010010100101`             | 8 | `101001010010010100101` | 9 | 91717611506692920143934000827659500561609 |
+
+The base has `w = F_{m-2}` ones at `k = F_m` (k=8 -> 3=F5; k=13 -> 5=F6; k=21 -> 8=F7), the
+balanced count `floor(k·a)`, `a=(3-sqrt5)/2`; the singular factor has `F_{m-2}+1` ones at
+k=8,13,21.
+
+## Claim
+
+```claim
+id: PE1006-conjugate-singular-iff-fibonacci
+statement: For the Fibonacci word (Sturmian slope 1/phi^2), the k+1 distinct length-k
+  factors are {k distinct rotations of a single base Christoffel word} union {one singular
+  factor} iff k is a Fibonacci number. Verified exactly for all k = 1..60.
+hypotheses: length-k factors of the Fibonacci word, k = 1..60 (structure.json).
+holds-here: yes — checked over every k in 1..60 (partial case; k=10^18 open).
+status: checked
+bearing: the natural setting for a poly(log k) Psi evaluation is the Fibonacci-indexed
+  subsequence, where the factor set collapses to one rotation class plus a singular word;
+  non-Fibonacci k = 10^18 is reached from the nearest Fibonacci index by the extension
+  recurrence Psi(k+1) = 100(Psi(k)+v_R^2) + 20 P1 + N1.
+anchor: code/pe1006/task_conjugate_structure.py (run vs code/out/structure.json)
+```
+
+## Why this moves the run
+
+The solver threads (`psi-sum-squares-recurrence`, `factor-parameterization-psi`) were
+blocked needing a closed form for `Psi(k)` at `k = 10^18`. This establishes the *world* the
+factor set is native to: at every Fibonacci index the `k+1` factors are exactly the `k`
+conjugates of one Christoffel word plus one singular word, so `Psi(F_m)` is a
+rotation-sum over a single fixed word (a position-count structure the balanced/floor
+machinery already characterizes) plus one square. Since `10^18` sits between `F_86` and
+`F_87`, the ground is the Fibonacci subsequence, and the few non-Fibonacci steps to
+`10^18` use the already-verified extension recurrence. This is posted to the board so the
+solving school can grind the rotation-sum closed form.

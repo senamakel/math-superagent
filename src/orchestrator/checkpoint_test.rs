@@ -67,3 +67,65 @@ async fn checkpoints_commit_only_when_content_changed() {
 
     let _ = std::fs::remove_dir_all(&directory);
 }
+
+/// Concurrent checkpoints all land, and none leaves an `index.lock` behind.
+///
+/// The middleware is attached to every agent harness and up to fifty sub-agents
+/// run at once, so several of them reaching `git add --all` together is the
+/// ordinary case rather than a rare one. One git index cannot serve two of
+/// those: the loser fails, and its failure is deliberately swallowed so the
+/// tool whose work succeeded is not failed for it. The evidence that this
+/// happened is a stranded zero-byte `.workspace-history/index.lock` in a live
+/// Erdős–Gyárfás workspace, which is exactly what the loser leaves.
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn concurrent_checkpoints_all_land_and_leave_no_index_lock() {
+    let directory =
+        std::env::temp_dir().join(format!("math-agent-ckpt-race-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&directory);
+    std::fs::create_dir_all(&directory).expect("temporary workspace is creatable");
+
+    let checkpoint = std::sync::Arc::new(WorkspaceCheckpoint::new(directory.clone(), None));
+    if checkpoint.commit("seed").await.is_err() {
+        // git is unavailable here; the middleware degrades to a no-op by
+        // design, so there is nothing to serialise and nothing to assert.
+        let _ = std::fs::remove_dir_all(&directory);
+        return;
+    }
+
+    let writers = 12;
+    let mut tasks = tokio::task::JoinSet::new();
+    for n in 0..writers {
+        let checkpoint = std::sync::Arc::clone(&checkpoint);
+        let directory = directory.clone();
+        tasks.spawn(async move {
+            std::fs::write(directory.join(format!("note{n}.md")), format!("finding {n}"))
+                .expect("write is possible");
+            checkpoint.commit(&format!("write_document: note{n}.md")).await
+        });
+    }
+    while let Some(joined) = tasks.join_next().await {
+        joined
+            .expect("a checkpoint task must not panic")
+            .expect("every concurrent checkpoint must succeed");
+    }
+
+    // A commit that found nothing staged is normal — the one before it staged
+    // the whole work tree — so the property is that every file is tracked, not
+    // that every call produced its own commit.
+    let tracked = checkpoint
+        .git(&["ls-files"])
+        .await
+        .expect("the history lists its files");
+    for n in 0..writers {
+        assert!(
+            tracked.lines().any(|line| line == format!("note{n}.md")),
+            "note{n}.md was written but never committed; tracked: {tracked}"
+        );
+    }
+    assert!(
+        !history_directory(&directory).join("index.lock").exists(),
+        "a losing `git add` left its index lock behind"
+    );
+
+    let _ = std::fs::remove_dir_all(&directory);
+}

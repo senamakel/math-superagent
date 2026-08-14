@@ -32,6 +32,8 @@ evidence for it stays available.
   research tree, the scratch, and checkpointing.
 - [`docs/ledgers.md`](docs/ledgers.md) — the nine derived ledgers: what each
   holds, and the failure each was written to stop.
+- [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
+  problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
   harness is measured against, the two-layer evidence screen, and why blocking
   retrieval is not the same as blocking recall.
@@ -65,6 +67,25 @@ up. It is enforced by not registering the tool, not by asking the model to
 abstain: a prompt instruction is not a control. The workspace note tools stay
 available, so the agent can still record and recall its own findings.
 
+## Schools
+
+A *school* is one way of attacking a problem; two or three run concurrently on
+one workspace, sharing the ledgers and a board. Each one's bet:
+[`docs/schools.md`](docs/schools.md). Not a second loop, graph, or set of roles.
+
+- **Four things, and it must stay four:** a method-policy overlay layered *after*
+  the shared policy, per-role overlays, a bench, its `Thresholds`.
+- **The control does not move.** `chisel` is today's runtime, is what an unset
+  `MATH_AGENT_SCHOOLS` selects, and has an empty overlay — asserted, not assumed.
+- **Thresholds are a struct, not a second set of constants.** `route` and the jq
+  both read one, and `orchestrator::parity` proves they agree for *every*
+  school. None may move `blocked`.
+- **A board post is asserted, never established.** `teams/BOARD.md` is derived
+  from an append-only queue and never feeds a ledger; the posting school is
+  baked into the tool, so none can post as another.
+- **A lock is taken at a tool-call boundary, never below one.** `worklock.rs`
+  serialises the write cascade and the checkpoint; the mutex is not reentrant.
+
 ## Running and watching a run
 
 Starting a run and watching one are separate commands on purpose.
@@ -72,6 +93,7 @@ Starting a run and watching one are separate commands on purpose.
 ```sh
 ./euler 763                     # start or continue problem 763
 ./euler 763 --no-research       # the same, with web search withheld
+./euler 763 --schools chisel,rising-sea   # two schools, one workspace
 ./euler-tui 763                 # watch it, a tab per team
 ./euler-tui 763 --replay        # read the last run's log; touch nothing
 ./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting
@@ -474,10 +496,25 @@ Keep `README.md`, this file, rustdoc, examples, and runtime behavior consistent.
 Write for a reader who has not seen the code. Prefer a concrete command or
 example over broad claims.
 
-Keep every Markdown file at 500 lines or fewer, this one included. It was 1,734
-lines for long enough that the rule read as advice: `CLAUDE.md` symlinks here, so
-every session and every review paid for a hundred kilobytes to find one rule, and
-nothing measured what that cost.
+Keep this file at 500 lines or fewer. It was 1,734 lines for long enough that
+the rule read as advice: `CLAUDE.md` symlinks here, so every session and every
+review paid for a hundred kilobytes to find one rule, and nothing measured what
+that cost. That is what makes length a cost here rather than a preference — this
+file is loaded in full, every time, by a reader looking for one thing.
+
+`README.md` is read start to finish by someone new, so it is held to the same
+intent without the number: it is 641 lines today, which is too long, and the fix
+is to move what a user does not need on their first pass rather than to trim
+paragraphs down to a threshold.
+
+**`docs/` is not held to that cap.** Nothing loads those files into a prompt and
+nobody reads one end to end; a reader arrives at `docs/ledgers.md` because a rule
+above it sent them there, reads the section that explains that rule, and leaves.
+For a file read by section, splitting on a line count is not a saving — it moves
+the cost from scrolling to deciding which of two files a subject ended up in, and
+it splits an argument at the point a number happened to fall rather than at a
+seam. The cap was applied there once and produced exactly that: `docs/roles.md`
+held at 499 lines by trimming an argument rather than by having finished it.
 
 The split is by *kind*, not by size. A rule to follow and a check to run stay
 here. The evidence behind a rule — the live run that met a ceiling, the number
@@ -486,6 +523,10 @@ the file in `docs/` that owns that subject, listed under *Where the rest of this
 lives*. User-facing instructions stay in `README.md`. Do not grow a third tree
 beside those two: `docs/` holds the rationale for what is in this file, and a
 document with no rule above it is a document nobody has a reason to open.
+
+A `docs/` file still earns its length. Split one when it has stopped being about
+one subject — which is a judgement about what a reader came for, not a line
+count.
 
 ## Working agreement for coding agents
 

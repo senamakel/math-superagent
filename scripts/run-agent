@@ -11,10 +11,13 @@ usage() {
     echo "       ./agent [--workspace relative/path] shell" >&2
     echo "" >&2
     echo "  --no-research  withhold web search from the research agent" >&2
+    echo "  --schools a,b  run these schools concurrently on one workspace" >&2
+    echo "                 (chisel, rising-sea, adversarial; default chisel alone)" >&2
 }
 
 workspace_subdir=${MATH_AGENT_WORKSPACE:-default}
 research=${MATH_AGENT_RESEARCH:-on}
+schools=${MATH_AGENT_SCHOOLS:-}
 while [ "$#" -gt 0 ]; do
     case "${1-}" in
         --workspace)
@@ -33,12 +36,25 @@ while [ "$#" -gt 0 ]; do
             research=on
             shift
             ;;
+        --schools)
+            if [ "$#" -lt 2 ]; then
+                usage
+                exit 2
+            fi
+            schools=$2
+            shift 2
+            ;;
         *)
             break
             ;;
     esac
 done
 export MATH_AGENT_RESEARCH=$research
+# Passed through rather than validated here. The runtime keeps the default when
+# the value names nothing it knows, under the same rule every other override
+# follows, and a second list of the valid slugs in shell is exactly the
+# duplicate answer this repository keeps having to delete.
+export MATH_AGENT_SCHOOLS=$schools
 
 case "/$workspace_subdir/" in
     /*/../*|/*/./*|//*|/*\\*|/./)

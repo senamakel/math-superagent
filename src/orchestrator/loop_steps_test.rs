@@ -24,7 +24,7 @@ fn only_the_declared_steps_are_runnable() {
 #[test]
 fn the_graph_and_the_tool_agree_on_the_step_names() {
     let graph = crate::orchestrator::workflow::solution_loop("a problem", Vec::new());
-    let goals = crate::orchestrator::workflow_goals::goals_workflow();
+    let goals = crate::orchestrator::workflow_goals::goals_workflow(&crate::orchestrator::schools::Thresholds::chisel());
     for node in graph.nodes.iter().chain(goals.nodes.iter()) {
         let Some(step) = node
             .config
@@ -231,4 +231,91 @@ fn the_arm_tag_does_not_survive_the_merge() {
     }
     let merged = fold_evaluation(&base, &[arm]);
     assert!(merged.get(ARM_FIELD).is_none(), "{merged}");
+}
+
+/// The measured failure this node exists for: a run that had its answer kept
+/// paying three standing teams for another hour, because the only cancellation
+/// was after the whole workflow — judge included — had returned.
+///
+/// A standing team never retires on its own (`Completion::Standing` maps
+/// "nothing further to do" to `Idle`, not `Finished`), so nothing but this call
+/// ends one.
+#[tokio::test]
+async fn the_end_of_the_run_stops_the_work_beside_it() {
+    use std::sync::atomic::{AtomicU64, Ordering};
+
+    let cycles = Arc::new(AtomicU64::new(0));
+    let counted = cycles.clone();
+    let team = crate::orchestrator::teams::spawn(
+        "research",
+        crate::orchestrator::teams::TeamBudget::acquiring(),
+        None,
+        None,
+        move |_inbox| {
+            let counted = counted.clone();
+            async move {
+                counted.fetch_add(1, Ordering::Relaxed);
+                // Standing work: there is always one more source to fetch, so
+                // the team never reports itself finished.
+                crate::orchestrator::teams::Cycle::Worked
+            }
+        },
+    );
+
+    assert!(!team.is_cancelled(), "it starts running");
+    stand_down(std::slice::from_ref(&team), None);
+    assert!(
+        team.is_cancelled(),
+        "the run has ended, so the work beside it is asked to stop"
+    );
+}
+
+/// Cancelling nothing is not an error. A run whose teams never started — every
+/// unit test, and any run with the teams disabled — must still leave the loop
+/// through this node.
+#[test]
+fn standing_down_with_no_teams_is_not_a_failure() {
+    stand_down(&[], None);
+}
+
+/// The mechanism by which "first verified solve wins" reaches a school that is
+/// still working.
+///
+/// Asserted on the decision rather than on a `LoopSteps`, which needs a live
+/// subagent manager and a vector store — the clock and the flag are the whole
+/// of what this is about, and `LoopSteps::expired` is one line delegating here.
+#[test]
+fn a_sibling_school_solving_stops_this_one() {
+    use std::sync::atomic::{AtomicBool, Ordering};
+
+    let started = std::time::Instant::now();
+    let ceiling = std::time::Duration::from_hours(1);
+    let solved = AtomicBool::new(false);
+    assert!(
+        !stop_requested(started, ceiling, Some(&solved)),
+        "a school with time left and no sibling arrived keeps going"
+    );
+    solved.store(true, Ordering::Relaxed);
+    assert!(
+        stop_requested(started, ceiling, Some(&solved)),
+        "a school whose sibling verified a solution stops, with the clock untouched"
+    );
+}
+
+/// A run built without `in_school` is the run this loop has always been.
+///
+/// `None` rather than a flag that is merely never set, because the two differ
+/// in the failure that matters: a shared flag left in place by a single-school
+/// run is a stop condition nobody owns.
+#[test]
+fn a_run_with_no_school_stops_only_on_its_clock() {
+    let started = std::time::Instant::now();
+    assert!(
+        !stop_requested(started, std::time::Duration::from_hours(1), None),
+        "a fresh run has not spent its ceiling"
+    );
+    assert!(
+        stop_requested(started, std::time::Duration::ZERO, None),
+        "a run that has spent its ceiling still stops on the clock alone"
+    );
 }

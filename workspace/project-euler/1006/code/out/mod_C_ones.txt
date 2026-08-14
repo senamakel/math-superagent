@@ -1,0 +1,68 @@
+ONES DISTRIBUTION ANALYSIS
+
+For each k: T(k)=sum_i N(i;k)=total ones over all (k+1) factors;
+floor(ka)=ones per 'light' factor; r_k = number of factors with ceil(ka) ones.
+ k   : T(k)   : (k+1)*floor(ka) : r_k : T(k)/(k+1)*[a] : F-index
+  1   :      1 :      0 :   1 : ok=True
+  2   :      2 :      0 :   2 : ok=True
+  3   :      5 :      4 :   1 : ok=True
+  4   :      8 :      5 :   3 : ok=True
+  5   :     11 :      6 :   5 : ok=True
+  6   :     16 :     14 :   2 : ok=True
+  7   :     21 :     16 :   5 : ok=True
+  8   :     28 :     27 :   1 : ok=True
+  9   :     35 :     30 :   5 : ok=True
+ 10   :     42 :     33 :   9 : ok=True
+ 11   :     51 :     48 :   3 : ok=True
+ 12   :     60 :     52 :   8 : ok=True
+ 13   :     69 :     56 :  13 : ok=True
+ 14   :     80 :     75 :   5 : ok=True
+ 15   :     91 :     80 :  11 : ok=True
+ 16   :    104 :    102 :   2 : ok=True
+ 17   :    117 :    108 :   9 : ok=True
+ 18   :    130 :    114 :  16 : ok=True
+ 19   :    145 :    140 :   5 : ok=True
+ 20   :    160 :    147 :  13 : ok=True
+ 21   :    177 :    176 :   1 : ok=True
+ 22   :    194 :    184 :  10 : ok=True
+ 23   :    211 :    192 :  19 : ok=True
+ 24   :    230 :    225 :   5 : ok=True
+ 25   :    249 :    234 :  15 : ok=True
+ 26   :    268 :    243 :  25 : ok=True
+ 27   :    289 :    280 :   9 : ok=True
+ 28   :    310 :    290 :  20 : ok=True
+ 29   :    333 :    330 :   3 : ok=True
+ 30   :    356 :    341 :  15 : ok=True
+ 31   :    379 :    352 :  27 : ok=True
+ 32   :    404 :    396 :   8 : ok=True
+ 33   :    429 :    408 :  21 : ok=True
+ 34   :    454 :    420 :  34 : ok=True
+ 35   :    481 :    468 :  13 : ok=True
+ 36   :    508 :    481 :  27 : ok=True
+ 37   :    537 :    532 :   5 : ok=True
+ 38   :    566 :    546 :  20 : ok=True
+ 39   :    595 :    560 :  35 : ok=True
+ 40   :    626 :    615 :  11 : ok=True
+
+r_k table (excess count = # of 1-heavy factors):
+  1 2 1 3 5 2 5 1 5 9 3 8 13 5 11 2 9 16 5 13 1 10 19 5 15 25 9 20 3 15 27 8 21 34 13 27 5 20 35 11
+
+r_k vs Fibonacci structure:
+  k= 1 r_k=1  (k=F=1)
+  k= 2 r_k=2  (k=F=2)
+  k= 3 r_k=1  (k=F=3)
+  k= 5 r_k=5  (k=F=5)
+  k= 8 r_k=1  (k=F=8)
+  k=13 r_k=13  (k=F=13)
+  k=21 r_k=1  (k=F=21)
+  k=34 r_k=34  (k=F=34)
+
+Check T(k) = sum_i N(i;k) equals sum over factors of #ones:
+
+Per column: min/max and count of high columns:
+  k= 6: min=2 max=3 #high=4/6
+  k= 8: min=3 max=4 #high=4/8
+  k=11: min=4 max=5 #high=7/11
+  k=13: min=5 max=6 #high=4/13
+  k=16: min=6 max=7 #high=8/16
+  k=20: min=8 max=8 #high=20/20

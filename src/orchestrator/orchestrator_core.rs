@@ -4,6 +4,8 @@ mod authoring;
 pub(crate) mod async_subagents;
 mod backward;
 mod blueprint;
+mod board;
+mod board_tool;
 mod caps;
 mod checkpoint;
 mod claims;
@@ -38,6 +40,7 @@ mod reflection_tool;
 mod requests;
 mod runner;
 mod runs;
+mod schools;
 mod screen;
 mod search;
 mod shared_context;
@@ -47,6 +50,7 @@ mod text;
 mod threads;
 mod vector;
 mod weakened;
+mod worklock;
 mod workflow;
 mod workflow_goals;
 mod workflow_research;
@@ -389,6 +393,13 @@ pub struct OrchestratorAgent {
     registry: Arc<AgentRegistry>,
     system_prompt: String,
     subagents: AsyncSubagentManager,
+    /// The schools this run works in, in the order they were selected.
+    ///
+    /// Resolved once at construction rather than read from the environment
+    /// where it is used, so registration and the solution loop cannot disagree
+    /// about which schools exist — the loop drives exactly the roles that were
+    /// registered, and a second read is a second answer.
+    schools: Vec<schools::School>,
     tracer: Arc<RunTracer>,
     workspace: PathBuf,
     memory: VectorStore,

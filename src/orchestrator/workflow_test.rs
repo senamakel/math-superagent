@@ -7,8 +7,22 @@ use tinyflows::validate::validate_all;
 
 use super::*;
 use crate::orchestrator::definitions::workflow_agents;
-use crate::orchestrator::solutions::SolutionState;
+use crate::orchestrator::schools::Thresholds;
+use crate::orchestrator::solutions::{
+    BLOCKED_THRESHOLD, COMPUTATIONAL_THRESHOLD, MAX_ATTEMPTS, STUCK_THRESHOLD, SolutionState,
+    UNVERIFIED_THRESHOLD,
+};
 use crate::orchestrator::default_registry;
+
+/// The control school's bounds, which are the constants above.
+///
+/// Every fixture in this file is written against them, and that is deliberate:
+/// what these tests are about is the graph, and the graph a run has always
+/// executed is this one. The per-school translation is `orchestrator::parity`'s
+/// subject, and it proves it for every school rather than for this one.
+fn chisel() -> Thresholds {
+    Thresholds::chisel()
+}
 
 fn graph() -> WorkflowGraph {
     let registry = default_registry(true).expect("the default registry builds");
@@ -101,7 +115,7 @@ fn the_graph_is_structurally_valid() {
 /// document, and it is the one the Rust uses rather than a second copy.
 #[test]
 fn the_ladder_carries_the_thresholds_the_rust_uses() {
-    let ladder = reflect_ladder();
+    let ladder = reflect_ladder(&chisel());
     assert!(
         ladder.contains(&format!(">= {MAX_ATTEMPTS}")),
         "the attempt ceiling is not the Rust constant: {ladder}"
@@ -240,13 +254,22 @@ fn the_novelty_check_runs_before_the_run_is_scored() {
         Some(super::FINAL_JUDGE),
         "the novelty check hands off to the judge"
     );
+    // The loop's exit reaches it, through the stand-down that stops the work
+    // beside the run. That node sits between them deliberately: the teams must
+    // be told to stop before anything downstream spends time, or they keep
+    // spawning for as long as the tail of the graph takes.
     assert!(
         graph
             .edges
             .iter()
             .any(|edge| edge.from_node == super::LOOP_NODE
-                && edge.to_node == super::NOVELTY_NODE),
-        "and the loop's exit reaches it first"
+                && edge.to_node == super::STAND_DOWN),
+        "the loop's exit reaches the stand-down first"
+    );
+    assert_eq!(
+        edge_from(super::STAND_DOWN).as_deref(),
+        Some(super::NOVELTY_NODE),
+        "and the stand-down hands off to the novelty check"
     );
 }
 
@@ -449,7 +472,7 @@ fn the_ladders_read_fields_a_step_actually_emits() {
     let emitted = SolutionState::new("a problem").to_accumulator();
     let mut missing = Vec::new();
 
-    for ladder in [reflect_ladder(), terminal_condition()] {
+    for ladder in [reflect_ladder(&chisel()), terminal_condition(&chisel())] {
         for prefix in [".item.json.", ".state.", &format!(".nodes.{LOOP_NODE}.state.")] {
             let mut rest = ladder.as_str();
             while let Some(at) = rest.find(prefix) {
@@ -916,7 +939,64 @@ fn the_field_the_merge_stamps_is_the_field_the_condition_reads() {
         "the state does not carry the field the condition reads under that name"
     );
     assert!(
-        terminal_condition().contains(&format!(".state.{EXPIRED_FIELD}")),
+        terminal_condition(&chisel()).contains(&format!(".state.{EXPIRED_FIELD}")),
         "the condition that ends the loop does not read the stamped field"
+    );
+}
+
+/// A school's numbers reach the steps, not only the ladder.
+///
+/// The ladder is the visible half and the easy one to check; the half that
+/// fails quietly is a step node built without them, which reads the control
+/// school's bounds and enforces a restart cap the school never chose. Asserted
+/// over every `tool_call` in the graph rather than the two that read a bound
+/// today, because a step added later is a step nobody would think to add here.
+#[test]
+fn every_step_carries_its_schools_thresholds() {
+    let patient = Thresholds {
+        stuck: chisel().stuck + 2,
+        max_restarts: chisel().max_restarts + 1,
+        ..chisel()
+    };
+    let graph = solution_loop_for("find the largest x", Vec::new(), &patient);
+
+    let mut steps = 0;
+    for node in &graph.nodes {
+        let Some(args) = node.config.get("args") else {
+            continue;
+        };
+        if args.get("step").is_none() {
+            continue;
+        }
+        steps += 1;
+        assert_eq!(
+            thresholds_from(args),
+            patient,
+            "step node `{}` does not carry its school's bounds",
+            node.id
+        );
+    }
+    assert!(steps > 0, "the graph has no steps to carry anything");
+
+    let ladder = reflect_ladder(&patient);
+    assert!(
+        ladder.contains(&format!(">= {}", patient.stuck)),
+        "the ladder is not the school's: {ladder}"
+    );
+}
+
+/// A step node built before schools existed — or by a graph that names no
+/// thresholds — runs the control school's numbers rather than none.
+///
+/// The rule every override in this runtime follows, and the one that matters
+/// most here: the alternative to a default is a bound that silently reads as
+/// zero, which routes a run out of the loop on its first pass.
+#[test]
+fn a_step_with_no_thresholds_reads_the_controls() {
+    assert_eq!(thresholds_from(&json!({ "step": "attempt" })), chisel());
+    assert_eq!(
+        thresholds_from(&json!({ "thresholds": { "stuck": "two" } })),
+        chisel(),
+        "an unreadable value keeps the bound rather than removing it"
     );
 }

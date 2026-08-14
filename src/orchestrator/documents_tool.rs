@@ -85,6 +85,11 @@ impl DocumentTool {
     /// is worse than no derived file, because the next reader trusts the row
     /// instead of opening the note. Returns the sentence to append to the tool
     /// result — a model not told the ledger moved has no reason to read it.
+    ///
+    /// Takes no lock of its own, deliberately. Every caller is a dispatch arm
+    /// that already holds [`super::worklock::writes`] across its write and this
+    /// re-derivation, and a second acquisition here would deadlock rather than
+    /// wait.
     async fn reledger(&self, path: &str) -> String {
         if super::threads::is_thread(path) {
             super::threads::refresh(&self.documents).await;
@@ -169,6 +174,19 @@ impl DocumentTool {
                 )));
             }
             let (bytes, content_type) = self.fetch(&url).await?;
+            // Everything from here down writes: two archives, a digest, the
+            // frontier's ledger and its rendered table, and an index row. The
+            // frontier in particular is a read-modify-write of one file, so two
+            // downloads landing together lose one of them.
+            //
+            // Taken after the transfer rather than at the top of the call, and
+            // this is the one place the boundary is drawn inside the handler
+            // instead of at the dispatch arm: a download's network time is
+            // unbounded by anything this runtime controls, and holding the
+            // write lock across it would stall every note write in the run
+            // behind whichever server is slowest. Nothing below may take it
+            // again — see [`super::worklock`].
+            let _guard = super::worklock::writes().await;
             // Convert to Markdown rather than storing raw bytes. A PDF or
             // a markup-heavy page is unreadable otherwise, and the old
             // UTF-8 check turned a PDF into an error that ended the run.
@@ -206,7 +224,7 @@ impl DocumentTool {
             // this is the only moment the citations are in hand. Best effort:
             // the download has already succeeded, and a lost lead must not
             // turn a stored document into a failed tool call.
-            super::frontier::record(
+            super::frontier::record_under_write_lock(
                 &self.documents,
                 &url,
                 &path,
@@ -374,6 +392,14 @@ impl Tool<()> for DocumentTool {
                 // A run that writes its thirty-first program to the root has
                 // buried the two files carrying its derivation.
                 let path = super::layout::placed(&requested);
+                // Held across the write *and* the re-derivation it triggers.
+                // A note write re-derives up to six ledgers, each by walking
+                // the notes on disk and rewriting a whole file, so two writes
+                // that interleave leave a ledger rendered from one of them and
+                // missing the other. Taken here rather than in `reledger` or in
+                // the store, because those run below it and the mutex is not
+                // reentrant — see [`super::worklock`].
+                let _guard = super::worklock::writes().await;
                 self.documents.write(&path, &content).await?;
                 format!(
                     "wrote {} bytes to {path}{}{}",
@@ -386,6 +412,11 @@ impl Tool<()> for DocumentTool {
                 let path = required_string(&call.arguments, "path")?;
                 let old_text = required_string(&call.arguments, "old_text")?;
                 let new_text = string_value(&call.arguments, "new_text")?;
+                // An edit is a read-modify-write of the document as well as of
+                // everything derived from it, so the read belongs inside the
+                // lock too: two edits that both read before either wrote would
+                // each drop the other's replacement.
+                let _guard = super::worklock::writes().await;
                 let content = self.documents.read(&path).await?;
                 if !content.contains(&old_text) {
                     return Err(tinyagents::TinyAgentsError::Validation(

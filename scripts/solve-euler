@@ -5,11 +5,14 @@ repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$repository_root"
 
 usage() {
-    echo "usage: ./euler [--no-research] <positive-problem-number> [extra instructions...]" >&2
+    echo "usage: ./euler [--no-research] [--schools a,b] <positive-problem-number> [extra instructions...]" >&2
     echo "       --no-research  withhold web search, so the run is a test of reasoning" >&2
+    echo "       --schools a,b  run these schools concurrently (chisel, rising-sea," >&2
+    echo "                      adversarial); default is chisel alone" >&2
 }
 
 research=on
+schools=${MATH_AGENT_SCHOOLS:-}
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --no-research)
@@ -19,6 +22,14 @@ while [ "$#" -gt 0 ]; do
         --research)
             research=on
             shift
+            ;;
+        --schools)
+            if [ "$#" -lt 2 ]; then
+                usage
+                exit 2
+            fi
+            schools=$2
+            shift 2
             ;;
         -h|--help)
             usage
@@ -43,6 +54,39 @@ case "$problem_number" in
         exit 2
         ;;
 esac
+
+# A second pass, because everything after the number is free-text instructions
+# and a flag written there would otherwise be swallowed into them silently. That
+# is not hypothetical: `./euler 1006 --schools chisel,rising-sea` reads as the
+# documented order to anyone who has typed `git log -n 5`, and it started a
+# single-school run with "--schools chisel,rising-sea" appended to the task —
+# a run that looks entirely normal and is not the one that was asked for. The
+# flags are recognised in either position and stripped from the instructions.
+remaining=""
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --no-research)
+            research=off
+            shift
+            ;;
+        --research)
+            research=on
+            shift
+            ;;
+        --schools)
+            if [ "$#" -lt 2 ]; then
+                usage
+                exit 2
+            fi
+            schools=$2
+            shift 2
+            ;;
+        *)
+            remaining="$remaining${remaining:+ }$1"
+            shift
+            ;;
+    esac
+done
 
 workspace_subdir=project-euler/$problem_number
 workspace_path=$repository_root/workspace/$workspace_subdir
@@ -74,7 +118,7 @@ else
     research_clause="Use research for mathematical definitions, named theorems, and standard algorithms, and cite the returned URLs. Never search for a published Project Euler answer, solution, or forum thread; searching for the answer invalidates the run."
 fi
 
-extra_instructions=$*
+extra_instructions=$remaining
 task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.md.
 
 Work in this order. Steps 1 and 2 together should take a small part of the run; most of it belongs in 3 and 4.
@@ -99,4 +143,5 @@ if [ -n "$extra_instructions" ]; then
 Additional instructions: $extra_instructions"
 fi
 
-exec env MATH_AGENT_RESEARCH="$research" ./agent --workspace "$workspace_subdir" "$task"
+exec env MATH_AGENT_RESEARCH="$research" MATH_AGENT_SCHOOLS="$schools" \
+    ./agent --workspace "$workspace_subdir" "$task"

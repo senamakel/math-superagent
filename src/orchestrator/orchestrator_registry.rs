@@ -89,6 +89,22 @@ impl std::fmt::Debug for SearchTools {
 ///
 /// All four reach the open web, so all four are withheld with `exa_search`
 /// when research is off — by not being granted, not by being told to abstain.
+/// The one way a school speaks to its siblings.
+///
+/// Granted to three roles and no others: the reflection that has just learned
+/// why an attempt failed, the inventor that has just closed a line of attack,
+/// and the goals agent that is about to spend a run on something a sibling may
+/// already have tried. Every one of them is deciding or reporting what to do
+/// next, which is what a post is for.
+///
+/// It is withheld from everything that weighs evidence — the judge, the
+/// scholar, the librarian — for the reason the board is withheld from them as
+/// context: a post is asserted, never established, and a role that files
+/// sources or scores an attempt must not be able to mint unevidenced text into
+/// the run's record. The sender is fixed at registration rather than being an
+/// argument; see [`board_tool`].
+const BOARD_TOOLS: [&str; 1] = ["post_board"];
+
 const DISCOVERY_TOOLS: [&str; 4] = [
     "citation_graph",
     "find_similar_sources",
@@ -96,7 +112,59 @@ const DISCOVERY_TOOLS: [&str; 4] = [
     "deep_research",
 ];
 
+/// The registry this run's roles are declared in.
+///
+/// One copy of every role per school this run was asked for, which for the
+/// default selection — the control school alone — is exactly the registry the
+/// runtime declared before schools existed. See [`schooled_registry`].
+///
+/// # Errors
+///
+/// Returns an error when a definition cannot be registered.
 fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
+    schooled_registry(research_enabled, &schools::selected())
+}
+
+/// The registry for a run, with one copy of every role per school.
+///
+/// Derived from [`role_registry`] rather than assembled a second time: a school
+/// changes what a role is *told*, never what it may touch, so a second list of
+/// tool grants would be a second answer to a question about authority. Ids
+/// match the names the harness registers under, which is what
+/// [`AsyncSubagentManager::for_school`] produces, so an `agent_ref` in a
+/// workflow, a `spawn_agent` argument, and a registration are one vocabulary.
+///
+/// One school is registered unqualified. That is not a special case for
+/// tidiness: a single-school run is today's run, its roles are addressed by
+/// bare name from an unscoped manager, and qualifying them would rename every
+/// registration in the run to prove a point about a school that has no rival.
+///
+/// # Errors
+///
+/// Returns an error when a definition cannot be registered — which for a
+/// well-formed school list means two schools sharing a slug.
+fn schooled_registry(
+    research_enabled: bool,
+    schools: &[schools::School],
+) -> Result<AgentRegistry> {
+    let base = role_registry(research_enabled)?;
+    if schools.len() < 2 {
+        return Ok(base);
+    }
+    let mut registry = AgentRegistry::new();
+    for school in schools {
+        for definition in base.definitions() {
+            let mut definition = definition.clone();
+            definition.name = format!("{} ({})", definition.name, school.slug);
+            definition.id = school.role(&definition.id);
+            registry.register(definition)?;
+        }
+    }
+    Ok(registry)
+}
+
+/// Every role once, under its bare name: the tool grants a school inherits.
+fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
     let document_tools = [
         "download_document",
         "read_document",
@@ -268,7 +336,17 @@ fn support_agents(
             "Judges one attempt, extracts the lesson, and decides whether it is really done.",
         )
         .with_model("openrouter")
-        .with_tools(memory_tools.into_iter().chain(document_tools)),
+        // One of the three roles that may post to the board. A lesson drawn
+        // from an attempt that failed is what the other schools would
+        // otherwise pay to discover, and it is asserted rather than
+        // established, which is exactly what the board carries and the claim
+        // ledger must not.
+        .with_tools(
+            BOARD_TOOLS
+                .into_iter()
+                .chain(memory_tools)
+                .chain(document_tools),
+        ),
         AgentDefinition::new(
             "pattern_finder",
             "Pattern Recognition Agent",
@@ -357,6 +435,9 @@ fn support_agents(
                 // The singular pair, as with the pattern agent: this role asks
                 // one focused question, where the planners fan out.
                 .chain(["spawn_agent", "await_agent"])
+                // A line of attack this role has closed is a dead end the
+                // other schools should be told about rather than walk into.
+                .chain(BOARD_TOOLS)
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
@@ -529,6 +610,10 @@ fn library_agents(
                 "await_agents",
             ]
             .into_iter()
+            // The role that decides what the next run is spent on, and so the
+            // one placed to say what it is about to spend it on before a
+            // sibling spends the same run twice.
+            .chain(BOARD_TOOLS)
             .chain(memory_tools)
             .chain(SCRATCH_TOOLS)
             .chain(document_tools),

@@ -182,9 +182,17 @@ fn directives_waiting(workspace: &Path) -> Option<teams::Cycle> {
 /// text goes to the mailbox exactly as typed, which is what the next attempt is
 /// briefed with; the director agent gets the same text to act on, and may fail
 /// without costing the first delivery anything.
+///
+/// `mailboxes` holds one per school. The queue itself keeps its single
+/// consumer — the cursor is what makes delivery exactly-once, and a second
+/// reader of the same file would break that rather than share it — so a
+/// directive is drained here once and then handed to every school. An operator
+/// steering the run is steering all of it; a directive that reached whichever
+/// school happened to ask first would be worse than one that reached none,
+/// because nothing would say which had heard it.
 fn take_directives(
     workspace: &Path,
-    mailbox: &solutions::Mailbox,
+    mailboxes: &[solutions::Mailbox],
     tracer: &Arc<RunTracer>,
 ) -> Vec<crate::Directive> {
     let taken = match directives::drain(workspace) {
@@ -199,7 +207,9 @@ fn take_directives(
             "directive {} from {}: {}",
             directive.id, directive.from, directive.text
         ));
-        mailbox.post(directive.text.clone());
+        for mailbox in mailboxes {
+            mailbox.post(directive.text.clone());
+        }
     }
     taken
 }

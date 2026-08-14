@@ -8,6 +8,17 @@ use super::{
     route, skeleton_fingerprint,
 };
 use super::{Finding, Slot, diversify_merge};
+use crate::orchestrator::schools::{ALL, Thresholds};
+
+/// The control school's bounds.
+///
+/// Every assertion below was written against the constants, and `chisel()` is
+/// read off exactly those constants — so these tests say the same thing they
+/// said before `route` took its bounds as an argument, rather than a weaker
+/// version of it.
+fn chisel() -> Thresholds {
+    Thresholds::chisel()
+}
 
 fn state() -> SolutionState {
     SolutionState::new("find the largest x")
@@ -17,7 +28,7 @@ fn state() -> SolutionState {
 fn a_verified_solution_ends_the_loop() {
     let mut current = state();
     current.solved = true;
-    assert_eq!(route(&current), Route::Solved);
+    assert_eq!(route(&current, &chisel()), Route::Solved);
 }
 
 #[test]
@@ -25,7 +36,7 @@ fn productive_attempts_simply_retry() {
     let mut current = state();
     current.attempts = 1;
     current.unproductive = 0;
-    assert_eq!(route(&current), Route::Retry);
+    assert_eq!(route(&current, &chisel()), Route::Retry);
 }
 
 #[test]
@@ -33,7 +44,7 @@ fn repeated_unproductive_attempts_diversify_instead_of_retrying() {
     let mut current = state();
     current.attempts = 3;
     current.unproductive = STUCK_THRESHOLD;
-    assert_eq!(route(&current), Route::Diversify);
+    assert_eq!(route(&current, &chisel()), Route::Diversify);
 }
 
 /// The regression the whole change exists to prevent. A run that pushes the
@@ -48,7 +59,7 @@ fn scaling_the_same_method_diversifies_even_while_reporting_progress() {
     // Every attempt progressed, so the stuck rule is dormant by construction.
     current.unproductive = 0;
     current.computational = COMPUTATIONAL_THRESHOLD;
-    assert_eq!(route(&current), Route::Diversify);
+    assert_eq!(route(&current, &chisel()), Route::Diversify);
 }
 
 /// One scale-up is what an attempt looks like, not a pattern. The loop only
@@ -58,7 +69,7 @@ fn a_single_scale_up_still_retries() {
     let mut current = state();
     current.attempts = 2;
     current.computational = COMPUTATIONAL_THRESHOLD - 1;
-    assert_eq!(route(&current), Route::Retry);
+    assert_eq!(route(&current, &chisel()), Route::Retry);
 }
 
 /// An attempt that established something standing on its own has changed what
@@ -74,7 +85,7 @@ fn mathematical_progress_clears_the_scaling_count() {
         Progress::Unstated => {}
     }
     assert_eq!(current.computational, 0);
-    assert_eq!(route(&current), Route::Retry);
+    assert_eq!(route(&current, &chisel()), Route::Retry);
 }
 
 /// A reply the parser cannot read must not move the loop. Treating silence as
@@ -100,7 +111,7 @@ fn a_provider_wall_outranks_the_scaling_rule() {
     let mut current = state();
     current.computational = COMPUTATIONAL_THRESHOLD * 2;
     current.blocked = BLOCKED_THRESHOLD;
-    assert_eq!(route(&current), Route::Blocked);
+    assert_eq!(route(&current, &chisel()), Route::Blocked);
 }
 
 #[test]
@@ -109,7 +120,7 @@ fn the_loop_terminates_at_the_attempt_ceiling_even_when_unsolved() {
     current.attempts = MAX_ATTEMPTS;
     current.unproductive = STUCK_THRESHOLD * 4;
     // Must not diversify forever: the ceiling wins over the stuck rule.
-    assert_eq!(route(&current), Route::Solved);
+    assert_eq!(route(&current, &chisel()), Route::Solved);
 }
 
 #[test]
@@ -258,9 +269,9 @@ fn the_attempt_ceiling_outranks_a_restart() {
     let mut state = SolutionState::new("problem");
     state.judged = Verdict::Restart;
     state.attempts = MAX_ATTEMPTS;
-    assert_eq!(route(&state), Route::Solved);
+    assert_eq!(route(&state, &chisel()), Route::Solved);
     state.attempts = 1;
-    assert_eq!(route(&state), Route::Retry);
+    assert_eq!(route(&state, &chisel()), Route::Retry);
 }
 
 #[test]
@@ -333,24 +344,24 @@ fn a_finished_cycle_opens_an_invention_only_when_the_loop_will_try_again() {
     let mut retry = state();
     retry.attempts = 1;
     retry.unproductive = 0;
-    assert_eq!(route(&retry), Route::Retry, "the cycle that opens one");
+    assert_eq!(route(&retry, &chisel()), Route::Retry, "the cycle that opens one");
 
     // Diversify runs the same arm one step later and awaits it; opening one
     // here too would spend two inventor runs on a single cycle.
     let mut stuck = state();
     stuck.attempts = 3;
     stuck.unproductive = STUCK_THRESHOLD;
-    assert_eq!(route(&stuck), Route::Diversify);
+    assert_eq!(route(&stuck, &chisel()), Route::Diversify);
 
     // A run that has stopped has nobody to hand a new line of attack to.
     let mut solved = state();
     solved.solved = true;
-    assert_eq!(route(&solved), Route::Solved);
+    assert_eq!(route(&solved, &chisel()), Route::Solved);
 
     let mut blocked = state();
     blocked.attempts = 2;
     blocked.blocked = BLOCKED_THRESHOLD;
-    assert_eq!(route(&blocked), Route::Blocked);
+    assert_eq!(route(&blocked, &chisel()), Route::Blocked);
 }
 
 #[test]
@@ -503,12 +514,12 @@ fn a_provider_wall_stops_the_loop_instead_of_spending_the_attempt_ceiling() {
     // mathematics, so it must not be paid for out of the ceiling.
     let mut current = state();
     current.blocked = BLOCKED_THRESHOLD;
-    assert_eq!(route(&current), Route::Blocked);
+    assert_eq!(route(&current, &chisel()), Route::Blocked);
 
     // It outranks the ceiling, so the outcome says "blocked" rather than
     // "not solved within 8 attempts".
     current.attempts = MAX_ATTEMPTS;
-    assert_eq!(route(&current), Route::Blocked);
+    assert_eq!(route(&current, &chisel()), Route::Blocked);
     let outcome = current.outcome();
     assert!(outcome.contains("infrastructure failure"), "{outcome}");
     assert!(!outcome.starts_with("Not solved"), "{outcome}");
@@ -521,7 +532,7 @@ fn one_provider_failure_is_absorbed_rather_than_ending_the_run() {
     // have recovered.
     let mut current = state();
     current.blocked = BLOCKED_THRESHOLD - 1;
-    assert_eq!(route(&current), Route::Retry);
+    assert_eq!(route(&current, &chisel()), Route::Retry);
 }
 
 #[test]
@@ -991,7 +1002,7 @@ fn an_answer_with_one_route_and_no_second_available_ends_the_run() {
     // construction — it keeps reaching the answer it already had — so the
     // arm has to win against a state that would otherwise diversify.
     current.unproductive = STUCK_THRESHOLD;
-    assert_eq!(route(&current), Route::Reported);
+    assert_eq!(route(&current, &chisel()), Route::Reported);
     assert!(current.outcome().contains("not independently verified"));
 }
 
@@ -1002,7 +1013,7 @@ fn a_single_unverified_verdict_still_retries() {
     let mut current = state();
     current.attempts = 2;
     current.unverified = UNVERIFIED_THRESHOLD - 1;
-    assert_eq!(route(&current), Route::Retry);
+    assert_eq!(route(&current, &chisel()), Route::Retry);
 }
 
 /// UNVERIFIED carries SOLVED's evidence bar and clears the moment a reflection
@@ -1298,5 +1309,71 @@ fn banked_is_not_a_close() {
     record_verdict("VERDICT: BANKED\nPROGRESS: YES", None, None, &mut current);
     assert!(!current.solved);
     assert_eq!(current.unverified, 0, "it is not a qualified close either");
-    assert_ne!(route(&current), Route::Solved);
+    assert_ne!(route(&current, &chisel()), Route::Solved);
+}
+
+/// The control school is today's runtime under a name, and this is what that
+/// has to mean numerically.
+///
+/// Every boundary the ladder has, asserted against the constants themselves
+/// rather than against `chisel()`, so the two cannot agree by both being wrong.
+/// If `Thresholds::chisel` ever stopped reading the constants — or read one of
+/// them into the wrong field, which is the mistake a struct of seven `usize`s
+/// invites — the run would keep working and every routing test above would keep
+/// passing, because they would all be asking about the same drifted number.
+#[test]
+fn the_control_school_routes_on_the_constants_themselves() {
+    let at = |attempts, blocked, unproductive, computational, unverified| {
+        let mut current = state();
+        current.attempts = attempts;
+        current.blocked = blocked;
+        current.unproductive = unproductive;
+        current.computational = computational;
+        current.unverified = unverified;
+        route(&current, &chisel())
+    };
+    assert_eq!(at(0, BLOCKED_THRESHOLD, 0, 0, 0), Route::Blocked);
+    assert_eq!(at(0, BLOCKED_THRESHOLD - 1, 0, 0, 0), Route::Retry);
+    assert_eq!(at(MAX_ATTEMPTS, 0, 0, 0, 0), Route::Solved);
+    assert_eq!(at(MAX_ATTEMPTS - 1, 0, 0, 0, 0), Route::Retry);
+    assert_eq!(at(0, 0, 0, 0, UNVERIFIED_THRESHOLD), Route::Reported);
+    assert_eq!(at(0, 0, 0, 0, UNVERIFIED_THRESHOLD - 1), Route::Retry);
+    assert_eq!(at(0, 0, STUCK_THRESHOLD, 0, 0), Route::Diversify);
+    assert_eq!(at(0, 0, STUCK_THRESHOLD - 1, 0, 0), Route::Retry);
+    assert_eq!(at(0, 0, 0, COMPUTATIONAL_THRESHOLD, 0), Route::Diversify);
+    assert_eq!(at(0, 0, 0, COMPUTATIONAL_THRESHOLD - 1, 0), Route::Retry);
+}
+
+/// The whole reason a school owns its thresholds.
+///
+/// `research/mathematicians/12-cross-cutting.md` records that the rising sea is
+/// *"unaffordable under `MAX_ATTEMPTS = 8` and `STUCK_THRESHOLD = 2`"*, because
+/// a method whose goal deliberately does not move for a long time is
+/// indistinguishable, to the unproductive counter, from a run that is stuck. So
+/// the test is not that a number can be changed; it is that at the exact count
+/// where the control gives up on the method, the patient school is still
+/// working on it.
+#[test]
+fn a_patient_school_retries_where_the_control_diversifies() {
+    let patient = ALL
+        .iter()
+        .find(|school| school.slug == "rising-sea")
+        .expect("the rising sea school is registered");
+    assert!(
+        patient.thresholds.stuck > chisel().stuck,
+        "the rising sea school has no longer leash than the control"
+    );
+
+    let mut current = state();
+    current.unproductive = chisel().stuck;
+    assert_eq!(route(&current, &chisel()), Route::Diversify);
+    assert_eq!(
+        route(&current, &patient.thresholds),
+        Route::Retry,
+        "the patient school abandons its method at the control's count"
+    );
+
+    // Still bounded, and by its own number rather than by nothing.
+    current.unproductive = patient.thresholds.stuck;
+    assert_eq!(route(&current, &patient.thresholds), Route::Diversify);
 }

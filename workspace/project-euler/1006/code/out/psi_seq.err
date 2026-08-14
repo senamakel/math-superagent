@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/workspace/code/out/extract_psi.py", line 26, in <module>
+    main()
+  File "/workspace/code/out/extract_psi.py", line 18, in main
+    k = int(parts[0].strip())
+        ^^^^^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'k'
