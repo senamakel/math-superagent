@@ -230,6 +230,10 @@ impl SolutionState {
             "computational": self.computational,
             "unverified": self.unverified,
             "since_reduction": self.since_reduction,
+            // The arms run as separate nodes, so this is the only way what they
+            // found reaches the merge that turns it into the next attempt's
+            // briefing.
+            "diversify": self.diversify.to_json(),
         })
     }
 
@@ -302,6 +306,9 @@ impl SolutionState {
         let lesson = text("lesson");
         if !lesson.is_empty() && !rebuilt.lessons.contains(&lesson) {
             rebuilt.lessons.push(lesson);
+        }
+        if let Some(findings) = state.get("diversify") {
+            rebuilt.diversify = DiversifyFindings::from_json(findings);
         }
         rebuilt
     }

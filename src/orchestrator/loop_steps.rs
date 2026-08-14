@@ -52,7 +52,7 @@ use super::vector::VectorStore;
 /// A closed set, matched by name. An unknown step is an error rather than a
 /// no-op: a workflow naming a step that does not exist would otherwise run,
 /// change nothing, and route on a state nobody advanced.
-const STEPS: [&str; 7] = [
+const STEPS: [&str; 9] = [
     "attempt",
     "judge",
     "reflect",
@@ -60,7 +60,22 @@ const STEPS: [&str; 7] = [
     "diversify_patterns",
     "diversify_invention",
     "diversify_merge",
+    "goal_gate",
+    "goal_apply",
 ];
+
+/// The slug a workflow node names this tool by.
+///
+/// Here rather than spelled at each call site, so a graph and this tool cannot
+/// disagree about it — a `tool_call` naming a slug the registry does not hold
+/// fails the node, and a graph is not compiled against these strings.
+pub(super) const TOOL: &str = "run_loop_step";
+
+/// The argument the merge reads the arms' findings from.
+pub(super) const ARMS_ARG: &str = "arms";
+
+/// The argument `goal_apply` reads the goals child's run state from.
+pub(super) const DECISION_ARG: &str = "decision";
 
 /// Everything one step needs from the run.
 pub(super) struct LoopSteps {
@@ -98,11 +113,35 @@ impl LoopSteps {
         }
     }
 
-    /// Runs one step against `state`.
-    async fn run(&self, step: &str, state: SolutionState) -> Result<SolutionState> {
+    /// Runs one step against `state`, and returns the accumulator it produced.
+    ///
+    /// Returning JSON rather than a [`SolutionState`] because one step has
+    /// something to say that is not part of the state: `goal_gate` reports
+    /// whether it opened a decomposition, which the loop needs in order to
+    /// reset the cadence and which has no business becoming a permanent field.
+    async fn run(&self, step: &str, state: SolutionState, args: &Value) -> Result<Value> {
         let tracer = self.tracer.as_ref();
         let workspace = self.workspace.as_deref();
-        Ok(match step {
+        // Not part of the state, so it is answered before the match and folded
+        // into the returned object afterwards.
+        if step == "goal_gate" {
+            let opened = super::solutions::open_reduction(
+                &self.subagents,
+                tracer,
+                workspace,
+                &self.beside.reduction,
+                &state,
+            );
+            let mut carried = state.to_accumulator();
+            if let Some(object) = carried.as_object_mut() {
+                object.insert(
+                    super::workflow_goals::OPENED_FIELD.to_string(),
+                    Value::Bool(opened),
+                );
+            }
+            return Ok(carried);
+        }
+        let next = match step {
             "attempt" => {
                 attempt_step(&self.subagents, tracer, workspace, &self.mailboxes, state).await
             }
@@ -135,14 +174,60 @@ impl LoopSteps {
                     diversify_invention_arm(&self.subagents, workspace, &state).await;
                 fold_arm(state, findings)
             }
-            "diversify_merge" => diversify_merge(state),
+            "diversify_merge" => diversify_merge(collect_arms(state, args)),
+            "goal_apply" => apply_goal_decision(state, args),
             _ => {
                 return Err(tinyagents::TinyAgentsError::Validation(format!(
                     "unknown loop step `{step}`; expected one of {STEPS:?}"
                 )));
             }
-        })
+        };
+        Ok(next.to_accumulator())
     }
+}
+
+/// Folds every arm's findings into the state the merge is about to read.
+///
+/// The three arms are separate nodes running concurrently, so each one's
+/// findings come back as its own whole state and the base state — the loop's
+/// accumulator — knows about none of them. Without this the merge would compose
+/// a briefing out of five empty slots, having spent three child agent runs
+/// filling them, and nothing in the trace would say the findings had been
+/// dropped.
+///
+/// Order-independent, because [`DiversifyFindings::absorb`] skips empty slots:
+/// the arms write disjoint ones, so folding them in whatever order the engine
+/// finished them in gives the same state.
+fn collect_arms(mut state: SolutionState, args: &Value) -> SolutionState {
+    let arms = args
+        .get(ARMS_ARG)
+        .and_then(Value::as_array)
+        .cloned()
+        .unwrap_or_default();
+    for arm in arms {
+        let findings = SolutionState::from_accumulator("", &arm);
+        state.diversify_mut().absorb(findings.diversify());
+    }
+    state
+}
+
+/// Resets the decomposition cadence when the goals child opened one.
+///
+/// The counter lives in the loop's accumulator, whose sole writer is the loop
+/// head, and the child that decides is a separate run that cannot reach it. So
+/// the decision crosses back as the child's run state and is applied here, on
+/// the loop's own path, which is the only place a write to the accumulator is
+/// well defined.
+///
+/// A cycle that declined deliberately leaves the counter alone: the cadence has
+/// come due and been held, so the next cycle asks again rather than waiting
+/// another full interval for evidence that may have arrived meanwhile.
+fn apply_goal_decision(mut state: SolutionState, args: &Value) -> SolutionState {
+    let decision = args.get(DECISION_ARG).cloned().unwrap_or(Value::Null);
+    if super::workflow_goals::opened(&decision) {
+        state.since_reduction = 0;
+    }
+    state
 }
 
 /// Whether `step` is one this tool runs.

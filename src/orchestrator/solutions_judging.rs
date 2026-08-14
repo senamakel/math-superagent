@@ -583,9 +583,11 @@ pub(in crate::orchestrator) async fn reflect_step(
     // the inventor is told what this attempt actually established.
     open_invention(subagents, tracer, workspace, mailbox, &state);
     // And the other question nothing in the loop asks by itself: not what else
-    // could get us there, but what would be enough. Spawned beside the
-    // invention arm and on its own cadence — see [`open_reduction`].
-    open_reduction(subagents, tracer, workspace, &beside.reduction, &mut state);
+    // could get us there, but what would be enough. The cadence is counted here
+    // and read by the `goals` sub-workflow, which decides whether this cycle is
+    // the one that decomposes — see `super::workflow_goals`. Counting it here
+    // rather than there keeps the loop head the accumulator's sole writer.
+    state.since_reduction += 1;
     state
 }
 
@@ -711,17 +713,23 @@ impl ReductionGate {
 /// same evidence. The gate bounds collision. A tick that fails the fingerprint
 /// test deliberately does *not* reset the counter, so the next cycle tries
 /// again rather than waiting another full interval.
-fn open_reduction(
+///
+/// The first of those three — the cadence — is no longer here. It is the
+/// `goals` sub-workflow's opening switch (see `super::workflow_goals`), because
+/// "how often" is exactly the kind of decision an operator wants to change
+/// without a rebuild. The other two stay: a fingerprint and a claim are facts
+/// about the workspace and about what is already running, and neither is
+/// expressible as jq over the loop's state.
+///
+/// Returns whether a reduction was opened, which is what the caller resets the
+/// cadence counter on.
+pub(in crate::orchestrator) fn open_reduction(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
     workspace: Option<&Path>,
     reduction: &Reduction,
-    state: &mut SolutionState,
-) {
-    state.since_reduction += 1;
-    if state.solved || state.since_reduction < REDUCTION_INTERVAL {
-        return;
-    }
+    state: &SolutionState,
+) -> bool {
     // Excluding what the reducer itself writes, or it would wake forever on its
     // own output — the reason `fingerprint_excluding` exists at all.
     let fingerprint = workspace.map(|workspace| {
@@ -735,21 +743,21 @@ fn open_reduction(
                 "solution loop: nothing has landed since the last decomposition, not opening one",
             );
         }
-        // Deliberately without resetting the counter: the cadence has come due
-        // and been declined, so the next cycle asks again rather than waiting
-        // another full interval for evidence that may have arrived meanwhile.
-        return;
+        // Deliberately reported as "not opened": the cadence has come due and
+        // been declined, so the caller leaves the counter where it is and the
+        // next cycle asks again rather than waiting another full interval for
+        // evidence that may have arrived meanwhile.
+        return false;
     }
     if !reduction.gate.claim() {
         if let Some(tracer) = tracer {
             tracer.note("solution loop: a reduction is already in flight, not opening another");
         }
-        return;
+        return false;
     }
     if let Some(fingerprint) = fingerprint {
         reduction.gate.remember(fingerprint);
     }
-    state.since_reduction = 0;
     if let Some(tracer) = tracer {
         tracer.note("solution loop: decomposing the goal beside the next attempt");
     }
@@ -763,6 +771,7 @@ fn open_reduction(
         outbox.post(report);
         gate.release();
     });
+    true
 }
 
 /// Opens a line-of-attack search beside the loop at the end of a full cycle.

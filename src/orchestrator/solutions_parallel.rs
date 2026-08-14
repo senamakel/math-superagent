@@ -86,6 +86,21 @@ pub(super) struct DiversifyFindings {
 }
 
 impl DiversifyFindings {
+    /// The slots, by the name they carry across the workflow boundary.
+    ///
+    /// One list, read by both directions of the round trip, so a slot cannot be
+    /// written under one name and read under another — which is precisely how
+    /// an arm's findings go missing without an error anywhere.
+    fn slots(&mut self) -> [(&'static str, &mut String); 5] {
+        [
+            ("library", &mut self.library),
+            ("digest", &mut self.digest),
+            ("patterns", &mut self.patterns),
+            ("grounding", &mut self.grounding),
+            ("chosen", &mut self.chosen),
+        ]
+    }
+
     /// Files one arm's report.
     pub(in crate::orchestrator) fn set(&mut self, finding: Finding) {
         let slot = match finding.slot {
@@ -96,6 +111,57 @@ impl DiversifyFindings {
             Slot::Chosen => &mut self.chosen,
         };
         *slot = finding.text;
+    }
+
+    /// The slots as JSON, so they survive the workflow's state boundary.
+    ///
+    /// The arms are separate nodes now, which means each one's findings cross
+    /// back as JSON. A state that carried the counters and dropped these would
+    /// run three child agents, discard everything they found, and merge an
+    /// empty briefing — with nothing in the trace to say so.
+    pub(in crate::orchestrator) fn to_json(&self) -> serde_json::Value {
+        let mut copy = self.clone();
+        let mut map = serde_json::Map::new();
+        for (name, slot) in copy.slots() {
+            map.insert(name.to_string(), serde_json::Value::String(slot.clone()));
+        }
+        serde_json::Value::Object(map)
+    }
+
+    /// Reads the slots back, treating anything missing as empty.
+    pub(in crate::orchestrator) fn from_json(value: &serde_json::Value) -> Self {
+        let mut findings = Self::default();
+        for (name, slot) in findings.slots() {
+            if let Some(text) = value.get(name).and_then(serde_json::Value::as_str) {
+                *slot = text.to_string();
+            }
+        }
+        findings
+    }
+
+    /// Folds another set's filled slots over this one.
+    ///
+    /// Empty slots are skipped rather than assigned, and that is the whole
+    /// contract the fan-out rests on. Each arm returns a *whole* state, so an
+    /// arm that wrote `patterns` also carries an empty `library` — a plain
+    /// merge would let whichever arm the engine folded last blank out the other
+    /// two. Skipping empties makes the fold order-independent, which is the
+    /// property that made the arms safe to run concurrently in the first place.
+    pub(in crate::orchestrator) fn absorb(&mut self, other: &Self) {
+        let mut other = other.clone();
+        let filled: Vec<(&'static str, String)> = other
+            .slots()
+            .into_iter()
+            .filter(|(_, text)| !text.trim().is_empty())
+            .map(|(name, text)| (name, text.clone()))
+            .collect();
+        for (name, text) in filled {
+            for (slot_name, slot) in self.slots() {
+                if slot_name == name {
+                    *slot = text.clone();
+                }
+            }
+        }
     }
 
     /// The findings as the labelled sections `merge_context` expects, in the
