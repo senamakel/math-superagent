@@ -84,7 +84,7 @@ pub use authoring::WorkflowCatalog;
 pub use runner::{SubagentAgentRunner, SubagentTaskRunner};
 pub use tinyagents::harness::host::AgentDefinition;
 #[cfg(feature = "graph-debug")]
-pub use diagram::render_solution_loop;
+pub use diagram::{render_flows, render_solution_loop};
 
 /// Specialists the goals agent may delegate to.
 const SPECIALISTS: [&str; 13] = [

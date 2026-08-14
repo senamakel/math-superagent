@@ -53,9 +53,9 @@ pub use directives::Directive;
 pub use error::{Error, Result};
 pub use greeting::greet;
 pub use hello_agent::HelloAgent;
-#[cfg(feature = "graph-debug")]
-pub use orchestrator::render_solution_loop;
 pub use orchestrator::{
     AgentDefinition, AgentRegistry, OrchestratorAgent, SubagentAgentRunner, SubagentTaskRunner,
     WorkflowCatalog, prompt_report,
 };
+#[cfg(feature = "graph-debug")]
+pub use orchestrator::{render_flows, render_solution_loop};

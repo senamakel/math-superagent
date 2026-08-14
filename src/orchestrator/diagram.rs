@@ -1,31 +1,24 @@
-//! Renders the solution loop to an image with `TinyFlows`' graph renderer.
+//! Renders this crate's flows to images with `TinyFlows`' graph renderer.
 //!
 //! Behind the `graph-debug` feature, because it writes files and pulls in raster
 //! encoders that a run has no use for. Nothing in a run reaches this module; it
-//! exists so a reader can look at the loop rather than reconstruct it from
-//! `wire_routes`.
+//! exists so a reader can look at a flow rather than reconstruct it from the
+//! code that builds it.
 //!
 //! # Why this is not a drawing
 //!
-//! `TinyFlows` renders a [`WorkflowGraph`] — the declarative workflow model —
-//! while this crate's loop is built with the lower-level
-//! [`GraphBuilder`](crate::agent::flow::GraphBuilder) state graph, which
-//! exposes no way to read its edges back. So the two cannot be bridged
-//! automatically, and the obvious alternative — writing the picture out by hand
-//! — produces a diagram that is right on the day it is written and wrong from
-//! the first routing change nobody remembers to mirror.
+//! It renders the [`WorkflowGraph`]s the engine actually runs. There was a
+//! period when it could not: the loop was built with the lower-level state
+//! graph, which exposes no way to read its edges back, so the diagram was
+//! assembled from a parallel routing table and a pair of tests existed to stop
+//! the two drifting. The alternative then on offer — writing the picture out by
+//! hand — produces a diagram that is right on the day it is written and wrong
+//! from the first routing change nobody remembers to mirror.
 //!
-//! Instead the loop's edges live in one table (`ENTRY`, `FINISH`,
-//! `DIRECT_EDGES`, `JUDGE_ROUTES`, `REFLECT_ROUTES` in `solutions_state.rs`),
-//! `wire_routes` builds the running graph from it, and [`solution_loop`] builds
-//! the picture from it. A route added to the loop appears in the next render
-//! without anyone maintaining a second copy; a route removed disappears from
-//! it. The verdict labels are the same `Display` implementations the runtime
-//! resolves a branch by, so an edge cannot be captioned with a word the router
-//! does not actually produce.
-//!
-//! What this still does *not* prove is that a node does what its name says.
-//! The topology is shared; the handlers are not.
+//! Neither applies now. A flow *is* a graph, so the picture is that graph and a
+//! picture that disagrees with what runs is no longer expressible here. What
+//! this still does *not* prove is that a node does what its name says: the
+//! topology is shared, the handlers are not.
 
 use std::path::Path;
 
@@ -65,6 +58,35 @@ const NODES: [(&str, &str); 13] = [
 ];
 
 
+/// Every graph this crate runs, as `(file stem, the graph)`.
+///
+/// A list, and therefore something that can fall behind — so a test walks the
+/// loop's `sub_workflow` nodes and fails on a child no flow draws. That is the
+/// half worth enforcing: a top-level graph nobody renders is visible the moment
+/// someone looks for it, while an embedded child is a whole flow that runs
+/// inside a config value and appears in no picture at all.
+///
+/// The goals child appears twice in the loop — once seeded before the first
+/// attempt, once after every reflection — and is drawn once, because both calls
+/// embed the same graph.
+#[must_use]
+pub(super) fn flows() -> Vec<(&'static str, WorkflowGraph)> {
+    vec![
+        ("solution-loop", solution_loop()),
+        ("goals", shorten(super::workflow_goals::goals_workflow())),
+    ]
+}
+
+/// Replaces node names with the short ones the renderer can draw.
+fn shorten(mut graph: WorkflowGraph) -> WorkflowGraph {
+    for node in &mut graph.nodes {
+        if let Some((_, short)) = NODES.iter().find(|(id, _)| *id == node.id.as_str()) {
+            node.name = (*short).to_string();
+        }
+    }
+    graph
+}
+
 /// The solution loop, as the engine runs it.
 ///
 /// Previously this assembled a parallel description of the loop from the state
@@ -78,13 +100,8 @@ const NODES: [(&str, &str); 13] = [
 /// width — so anything past about thirteen characters runs out of its box.
 #[must_use]
 pub(super) fn solution_loop() -> WorkflowGraph {
-    let mut graph = super::workflow::solution_loop("", Vec::new());
+    let mut graph = shorten(super::workflow::solution_loop("", Vec::new()));
     graph.name = "solution loop".to_string();
-    for node in &mut graph.nodes {
-        if let Some((_, short)) = NODES.iter().find(|(id, _)| *id == node.id.as_str()) {
-            node.name = (*short).to_string();
-        }
-    }
     graph
 }
 
@@ -103,6 +120,29 @@ pub fn render_solution_loop(path: impl AsRef<Path>) -> Result<()> {
         path: path.display().to_string(),
         reason: error.to_string(),
     })
+}
+
+/// Renders every flow into `directory`, one `<stem>.png` each.
+///
+/// Returns what it wrote, in the order the flows are listed.
+///
+/// # Errors
+///
+/// Returns [`Error::GraphRender`] for the first flow that could not be written.
+/// The directory is not created; a missing one is reported rather than filled
+/// in, for the reason [`render_solution_loop`] gives.
+pub fn render_flows(directory: impl AsRef<Path>) -> Result<Vec<std::path::PathBuf>> {
+    let directory = directory.as_ref();
+    let mut written = Vec::new();
+    for (stem, graph) in flows() {
+        let path = directory.join(format!("{stem}.png"));
+        render_graph(&graph, &path).map_err(|error| Error::GraphRender {
+            path: path.display().to_string(),
+            reason: error.to_string(),
+        })?;
+        written.push(path);
+    }
+    Ok(written)
 }
 
 #[cfg(test)]
