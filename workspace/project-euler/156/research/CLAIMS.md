@@ -4,4 +4,16 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `km-lemma71-skip` | If a≥(d) > x and f_d(y) < x for some y > x, then a≥(d) > y. (f_d non-decreasing, so the whole interval [x,y] stays below the index.) | yes | asserted | `research/notes/khovanova-marton-archive-labeling.md` |
+| `km-prop91-bound` | For any digit d>0 in base b>d, every x with f_d(x,b)=x satisfies x ≤ d·b^b; in particular in base 10 all solutions of f(n,d)=n for d=1..9 have n ≤ d·10^10. | yes | asserted | `research/notes/khovanova-marton-archive-labeling.md` |
+| `place-value-closed-form` | For d>0, f_d(x) = Σ_k c_d(x_k) where c_d(x_k) = floor(x/10^k)·10^(k-1) if x_k<d; floor(x/10^k)·10^(k-1) + (x mod 10^(k-1)) + 1 if x_k=d; floor(x/10^k)·10^(k-1) + 10^(k-1) if x_k>d. | yes | asserted | `research/notes/khovanova-marton-archive-labeling.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `km-lemma71-skip` (research/notes/khovanova-marton-archive-labeling.md) — asserted by the source, not proved there and not checked here
+- `km-prop91-bound` (research/notes/khovanova-marton-archive-labeling.md) — asserted by the source, not proved there and not checked here
+- `place-value-closed-form` (research/notes/khovanova-marton-archive-labeling.md) — asserted by the source, not proved there and not checked here
