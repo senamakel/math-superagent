@@ -4,8 +4,6 @@ The nineteen roles the runtime registers, the sources they read through, and the
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
-
-
 ## The frontier ranks citations, not indexes
 
 Two link classes flooded it, and each needed a different rule.
@@ -229,13 +227,12 @@ escape it other ways, and none of what they find is reachable by rephrasing.
 `citation_graph` (`openalex.rs`) is the second structured adapter: given a DOI,
 an arXiv identifier, an OpenAlex id, or a title it returns what that work cites
 and what cites it, with each work's authors, year, venue, and citation count. A
-query ranks pages by what the wider web thinks; a citation was chosen by
-somebody who had read the subject. The directions are different leads: what a
-paper cites is the foundation the run needs before the paper means anything,
-while what cites it is who took it further or found the error — what a run stuck
-on a 1974 bound wants and rarely asks for. `frontier.rs` already made this
-argument for the anchors an HTML page carries, which reaches nothing inside a
-PDF; asking a bibliographic index is the same idea without that limit.
+query ranks pages by what the web thinks; a citation was chosen by somebody who
+had read the subject. The directions differ: what a paper cites is the
+foundation the run needs before the paper means anything, while what cites it is
+who took it further or found the error — what a run stuck on a 1974 bound wants
+and rarely asks for. It is what `frontier.rs` does for an
+HTML page's anchors, without the limit that reaches nothing inside a PDF.
 
 The other three are Exa endpoints (`exa.rs`). `find_similar_sources` queries
 with a page instead of a phrase, which breaks a library gone circular when three

@@ -313,6 +313,56 @@ fn pattern_finder_can_test_a_conjecture_but_not_search() -> agent::Result<()> {
     Ok(())
 }
 
+/// The four ways onto the web that are not a query reach exactly two roles.
+///
+/// They are gated with `exa_search` because they reach the same open web, and
+/// granted no more widely because everything else about the boundary already
+/// says so: the pattern agent is denied search so a bounded structural question
+/// cannot become a second investigation, and giving it a deep research agent
+/// would be a larger version of the same mistake.
+#[test]
+fn discovery_tools_reach_the_two_gathering_roles_and_are_gated_with_search()
+-> agent::Result<()> {
+    let enabled = default_registry(true)?;
+    for role in ["research", "librarian"] {
+        let agent = enabled
+            .get(role)
+            .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
+        for tool in DISCOVERY_TOOLS {
+            assert!(
+                agent.tools.iter().any(|granted| granted == tool),
+                "`{role}` must have `{tool}`"
+            );
+        }
+    }
+    for role in ["pattern_finder", "inventor", "scholar", "reducer", "coder"] {
+        let agent = enabled
+            .get(role)
+            .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
+        for tool in DISCOVERY_TOOLS {
+            assert!(
+                !agent.tools.iter().any(|granted| granted == tool),
+                "`{role}` must not reach the web through `{tool}`"
+            );
+        }
+    }
+    // Withheld by not being granted, on the rule the whole research gate rests
+    // on: a prompt instruction is not a control.
+    let disabled = default_registry(false)?;
+    for role in ["research", "librarian"] {
+        let agent = disabled
+            .get(role)
+            .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
+        for tool in DISCOVERY_TOOLS {
+            assert!(
+                !agent.tools.iter().any(|granted| granted == tool),
+                "`{role}` keeps `{tool}` with research disabled"
+            );
+        }
+    }
+    Ok(())
+}
+
 #[test]
 fn disabling_research_also_withholds_search_from_inventor_and_librarian() -> agent::Result<()> {
     let registry = default_registry(false)?;

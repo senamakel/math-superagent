@@ -312,7 +312,10 @@ fn render(index: usize, result: &Value) -> String {
     if !author.is_empty() || !published.is_empty() {
         let _ = write!(out, "\n{author}{}{published}", if author.is_empty() || published.is_empty() { "" } else { " · " });
     }
-    for (label, key) in [("", "summary"), ("Matching passages: ", "text")] {
+    // The summary says what the source is; the excerpt is the page itself. The
+    // passages that matched are the `highlights` below, which is a different
+    // question again and is labelled as one.
+    for (label, key) in [("", "summary"), ("Excerpt: ", "text")] {
         let value = field(result, key);
         if !value.is_empty() {
             let _ = write!(out, "\n{label}{}", clip(&value, RESULT_CHARS));

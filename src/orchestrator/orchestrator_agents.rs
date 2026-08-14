@@ -72,9 +72,13 @@ fn build_research_harness(
     vector_store: &VectorStore,
     search: SearchTools,
 ) -> AgentHarness<()> {
-    let SearchTools { exa, oeis } = search;
+    let SearchTools {
+        exa,
+        oeis,
+        discovery,
+    } = search;
     let mut harness = specialist_harness(model.clone(), budget, "research", tracer);
-    for tool in exa.into_iter().chain(oeis) {
+    for tool in exa.into_iter().chain(oeis).chain(discovery) {
         register_resilient(&mut harness, tool);
     }
     register_memory(&mut harness, vector_store);
@@ -186,6 +190,13 @@ struct SupportAgents<'a> {
     /// a family: the shape a second one slots into is a list, and the shape it
     /// would have to rewrite is an option.
     oeis: Vec<Arc<dyn Tool<()>>>,
+    /// The ways onto the web that are not a query, empty when research is off.
+    ///
+    /// Reaches the librarian and nothing else in this group. The pattern agent
+    /// and the inventor take [`Self::oeis`] and deliberately not this: both are
+    /// denied web search in the registry, and a harness that registered these
+    /// anyway would make that denial a comment.
+    discovery: Vec<Arc<dyn Tool<()>>>,
     /// The jail root, for the one support agent allowed to execute.
     workspace: PathBuf,
     /// Delegation tools, so the pattern agent can commission a computation.
@@ -426,6 +437,12 @@ fn register_support_agents(
         register_resilient(&mut librarian, exa);
     }
     for tool in parts.oeis.iter().cloned() {
+        register_resilient(&mut librarian, tool);
+    }
+    // The role whose whole subject is coverage gets every way onto the web
+    // there is. It is one of the two roles the registry grants these to, and
+    // the harness has to agree with the registry or the grant is a document.
+    for tool in parts.discovery.iter().cloned() {
         register_resilient(&mut librarian, tool);
     }
     for tool in parts.documents.tools() {
