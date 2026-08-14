@@ -399,6 +399,7 @@ impl Tool<()> for DocumentTool {
                 // missing the other. Taken here rather than in `reledger` or in
                 // the store, because those run below it and the mutex is not
                 // reentrant — see [`super::worklock`].
+                let _guard = super::worklock::writes().await;
                 self.documents.write(&path, &content).await?;
                 format!(
                     "wrote {} bytes to {path}{}{}",

@@ -1,4 +1,4 @@
-//! How a run reports when more than one school worked the problem.
+// How a run reports when more than one school worked the problem.
 
 use super::combined_outcome;
 

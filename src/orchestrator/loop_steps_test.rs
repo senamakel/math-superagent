@@ -277,3 +277,45 @@ async fn the_end_of_the_run_stops_the_work_beside_it() {
 fn standing_down_with_no_teams_is_not_a_failure() {
     stand_down(&[], None);
 }
+
+/// The mechanism by which "first verified solve wins" reaches a school that is
+/// still working.
+///
+/// Asserted on the decision rather than on a `LoopSteps`, which needs a live
+/// subagent manager and a vector store — the clock and the flag are the whole
+/// of what this is about, and `LoopSteps::expired` is one line delegating here.
+#[test]
+fn a_sibling_school_solving_stops_this_one() {
+    use std::sync::atomic::{AtomicBool, Ordering};
+
+    let started = std::time::Instant::now();
+    let solved = AtomicBool::new(false);
+    assert!(
+        !stop_requested(started, Some(&solved)),
+        "a school with time left and no sibling arrived keeps going"
+    );
+    solved.store(true, Ordering::Relaxed);
+    assert!(
+        stop_requested(started, Some(&solved)),
+        "a school whose sibling verified a solution stops, with the clock untouched"
+    );
+}
+
+/// A run built without `in_school` is the run this loop has always been.
+///
+/// `None` rather than a flag that is merely never set, because the two differ
+/// in the failure that matters: a shared flag left in place by a single-school
+/// run is a stop condition nobody owns.
+#[test]
+fn a_run_with_no_school_stops_only_on_its_clock() {
+    let started = std::time::Instant::now();
+    assert!(
+        !stop_requested(started, None),
+        "a fresh run has not spent its ceiling"
+    );
+    let spent = started - super::super::solutions::run_ceiling();
+    assert!(
+        stop_requested(spent, None),
+        "a run that has spent its ceiling still stops on the clock alone"
+    );
+}

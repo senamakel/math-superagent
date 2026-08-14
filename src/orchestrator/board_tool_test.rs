@@ -21,6 +21,7 @@ async fn a_post_reaches_the_queue_and_the_board() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     let tool = tool(workspace.path(), "adversarial");
     let call = ToolCall {
+        invalid: None,
         id: "1".to_string(),
         name: "post_board".to_string(),
         arguments: json!({
@@ -50,6 +51,7 @@ async fn the_sender_cannot_be_chosen_by_the_caller() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     let tool = tool(workspace.path(), "rising-sea");
     let call = ToolCall {
+        invalid: None,
         id: "1".to_string(),
         name: "post_board".to_string(),
         arguments: json!({
@@ -83,6 +85,7 @@ async fn an_empty_body_is_refused() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     let tool = tool(workspace.path(), "chisel");
     let call = ToolCall {
+        invalid: None,
         id: "1".to_string(),
         name: "post_board".to_string(),
         arguments: json!({ "kind": "lesson", "body": "   " }),
