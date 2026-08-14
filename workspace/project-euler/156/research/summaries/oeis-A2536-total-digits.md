@@ -1,6 +1,6 @@
 # OEIS search — "total number of digits" "numbers from 1 to n"
 
-**Source:** https://oeis.org/search?q=%22total+number+of+digits%22+%22numbers+from+1+to+n%22&fmt=text (OEIS search, witnessed). Full text: `research/sources/oeis-A2536-total-digits.full.md`.
+**Source:** https://oeis.org/search?q=%22total+number+of+digits%22+%22numbers+from+1+to+n%22&fmt=text (OEIS search, witnessed). No full text was downloaded — this is a negative search result, recorded only in this summary (there is no `research/sources/oeis-A2536-total-digits.full.md`).
 
 ## What it establishes
 

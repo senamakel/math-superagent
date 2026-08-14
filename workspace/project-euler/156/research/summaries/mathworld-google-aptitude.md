@@ -1,19 +1,34 @@
-# MathWorld — Mathematica's Google Aptitude (Oct 2004)
+# MathWorld Headline News — "Mathematica's Google Aptitude" (Oct 13 2004)
 
-**Source:** https://mathworld.wolfram.com/news/2004-10-13/google/ (MathWorld Headline News, Ed Pegg Jr. & Eric W. Weisstein, Oct 13 2004). Full text: `research/sources/mathworld-google-aptitude.full.md`.
+**Source:** https://mathworld.wolfram.com/news/2004-10-13/google/ . Full text: `[[mathworld-google-aptitude.full]]` — `research/sources/mathworld-google-aptitude.full.md`.
+
+Ed Pegg Jr. & Eric W. Weisstein's contemporary report on the Google Labs Aptitude Test, including a worked solution to the exact puzzle that became PE156's d=1 case. Useful as **provenance**, not as a method source.
 
 ## What it establishes
 
-- **Historical provenance** for PE156: problem 17 of the "Google Labs Aptitude Test" (Sept 30 2004) is exactly the digit-count fixed-point question — "a function which, for a given whole number n, returns the number of ones required when writing out all numbers between 0 and n. For example, f(13)=6. ... What is the next largest n such that f(n)=n?"
-- It reproduces the d=1 first solutions by brute-force Mathematica (cumulative DigitCount over 1..500000): positions where the cumulative count equals n are {1, 199981, ..., 199990, 200000, 200001}, and gives the "by hand" check that 1..199981 contains 199981 ones. This is an *independent*, 2004-era reproduction of the statement's fixed points 0 (origin-excluded), 1, 199981 — same oracle set the run's brute.py reproduces.
-- Points to OEIS A014778 for the full sequence, and to the same Google puzzle family the Khovanova–Marton paper credits.
-- The rest of the page is unrelated Google interview-puzzle content (WWWDOT-GOOGLE=DOTCOM, look-and-say, resistance on a lattice, etc.) — no bearing on PE156.
+- **Historical provenance:** the Google Labs Aptitude Test (Sept 30 2004) contained, as item 17, exactly: "Consider a function which, for a given whole number n, returns the number of ones required when writing out all numbers between 0 and n. For example, f(13)=6. Notice that f(1)=1. What is the next largest n such that f(n)=n?" This is the same puzzle as PE156 (d=1) and Khovanova & Marton's §2.
+- **Answer for d=1:** the Mathematica computation prints the fixed points of f(n)=n (f(1)=1, f(n)=n for n in 199981..199990, 200000, 200001) and identifies the sequence as **A014778**. The article's data = MapIndexed[#1 − #2[[1]] &, ...] plot is the "excess" f(n)−n.
+- Confirms f(199981)=199981 by direct count ("Checking by hand confirms …").
 
-## Implications for PE156
+## Hypotheses and hold-here
 
-- Nothing new mathematically (no closed form, no bound, no proof) — the 2004 Mathematica scan is the same O(n·digits) brute force the run's oracle uses, extended only to 500,000.
-- Useful as: (a) confirmation that f(13)=6 and the first-solutions run are the problem's own canonical examples (they agree with the run's oracle output); (b) provenance: the puzzle predates Project Euler, being Google's own — but the *solving* theory remains Khovanova–Marton + the closed form, not this page.
+- Counts 0..n for digit 1 — exactly PE156's f(n,1). The article does not treat digits 2..9, so it does not cover the full PE156 sum.
+
+## Implication for this run
+
+- Primary-source confirmation that PE156's d=1 problem is the 2004 Google Labs puzzle and that its solution sequence is A014778 (the same sequence whose b-file the run already holds). 
+- Corroborates the oracle: 199981..199990, 200000, 200001 are fixed points (matches `code/brute.py`).
 
 ## Does not settle
 
-- Any question of bound, finiteness for d>1, or the sums s(d). Not a primary mathematical source; treat as historical record only.
+Nothing about the full per-digit sum; nothing about digits 2–9; no bound proof. Not the answer source for the sum.
+
+```claim
+id: mathworld-provenance
+statement: The Google Labs Aptitude Test (Sept 30 2004, item 17) asked exactly the PE156 d=1 question (f(n) = number of 1s in 0..n; find the next n with f(n)=n), and its published solution identifies the fixed points (199981..199990, 200000, 200001) as OEIS A014778.
+hypotheses: decimal base, digit 1, counting 0..n.
+holds-here: yes
+status: asserted (contemporary news report; matches the oracle brute.py and the A014778 b-file)
+bearing: provenance for the puzzle family and for A014778; corroborates the oracle's d=1 solutions.
+anchor: research/sources/mathworld-google-aptitude.full.md
+```

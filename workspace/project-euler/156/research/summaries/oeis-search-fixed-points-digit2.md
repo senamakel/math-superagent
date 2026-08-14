@@ -1,6 +1,6 @@
 # OEIS search — "numbers k equal to the number of 2's in ... all numbers"
 
-**Source:** https://oeis.org/search?q=%22Numbers+k+equal+to+the+number+of+2%27s+in+the+decimal+digits+of+all+numbers%22&fmt=text (OEIS search, witnessed). Full text: `research/sources/oeis-search-fixed-points-digit2.full.md`.
+**Source:** https://oeis.org/search?q=%22Numbers+k+equal+to+the+number+of+2%27s+in+the+decimal+digits+of+all+numbers%22&fmt=text (OEIS search, witnessed). No full text was downloaded — this is a negative search result, recorded only in this summary (there is no `research/sources/oeis-search-fixed-points-digit2.full.md`).
 
 ## What it establishes
 

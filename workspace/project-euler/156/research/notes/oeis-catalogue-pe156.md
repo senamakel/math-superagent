@@ -1,6 +1,6 @@
 # OEIS catalogue of the PE156 fixed-point sequences
 
-Sourced from `research/sources/oeis-A014778-main.full.md`, `research/sources/oeis-A014778-full.md` (the b-file, 84 terms), `research/sources/oeis-search-fixed-points.full.md`, and the Khovanova–Marton full text (Table 2). All are on disk under research/sources/.
+Sourced from `research/sources/oeis-A014778-main.full.md`, the b-file recorded in `research/summaries/oeis-A014778-full.md` (all 84 terms, from https://oeis.org/A014778/b014778.txt), `research/sources/oeis-search-fixed-points.full.md`, and the Khovanova–Marton full text (Table 2). Note: the b-file content lives in that summary file; there is no `research/sources/oeis-A014778-full.md`.
 
 ## The per-digit solution sequences (fixed points of f(n,d)=n)
 

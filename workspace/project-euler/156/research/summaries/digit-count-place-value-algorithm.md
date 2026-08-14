@@ -1,20 +1,39 @@
-# GeeksforGeeks — count occurrences of digit in 1..n (place-value algorithm)
+# GeeksforGeeks — "Occurrences of a Digit in 1 to n" (place-value count)
 
-**Source:** https://www.geeksforgeeks.org/dsa/find-the-occurrences-of-y-in-the-range-of-x/ (GeeksforGeeks "Find the occurrences of a digit in the range of x", updated 2024). Full text: `research/sources/digit-count-place-value-algorithm.full.md`.
+**Source:** https://www.geeksforgeeks.org/dsa/find-the-occurrences-of-y-in-the-range-of-x/ . Full text: `[[digit-count-place-value-algorithm.full]]` — `research/sources/digit-count-place-value-algorithm.full.md`.
+
+A standard DSA write-up of the digit-occurrence counting problem. Not a primary research source; it is a tutorial corroborating the same closed form the run already sources from Khovanova & Marton §7.
 
 ## What it establishes
 
-- **Problem:** count total occurrences of digit d in all numbers 1..n (mod 10^9+7 in their statement, but the identity is exact).
-- **Naive approach:** enumerate every number 1..n, string- or digit-scan each; O(n·log₁₀ n) time. Works only for small n — exactly what PE156 prohibits.
-- **Expected approach (the one the run uses):** per-position contribution, O(len(n)·10) time with memoized Digit-DP, or the equivalent per-digit closed-form.
-- Example in the source: n=25, d=2 → 9 occurrences ("2","12","20","21","22"(2),"23","24","25"); n=25, d=3 → 3. These are cross-check targets for any implementation.
-- Complexity: O(number of digits) time, O(number of digits) space — independent of the magnitude of n's range.
+- **Problem:** count occurrences of digit d in the decimal writings of all numbers 1..n inclusive; worked examples: n="25", d=2 → 9; n="25", d=3 → 3. (Same function as PE156's f(n,d) for d ∈ {1..9}: 0 contributes no nonzero digit.)
+- **Naive approach:** loop 1..n, stringify, count — O(n·log₁₀ n) time, "will lead to TLE" for large n. This is precisely the oracle method `code/brute.py` uses for small ranges, and the method the bound n ≤ d·10^10 defeats.
+- **Efficient approach (Digit DP with count and contribution):** per-position place-value decomposition with (higher, current, lower) at each factor = 10^i:
+  - current < d: contribution higher·factor
+  - current == d: higher·factor + lower + 1
+  - current > d: (higher + 1)·factor
+  O(len(n)) time, O(len(n)) space (memoized DP).
+- This is the identical identity as `f_place_value` in `code/lib/digits.py` (which implements the equivalent `high*factor` / `high*factor+low+1` / `(high+1)*factor` branching), already computationally checked against the brute oracle (`claim G1-checked`).
 
-## Implications for PE156
+## Hypotheses and hold-here
 
-- Confirms from a standard algorithmic reference that the place-value identity (G1) is exact and O(#digits); matches `code/lib/digits.py::f_place_value` and the Khovanova–Marton §7 eq. (1).
-- The naive approach is the exact shape of the method the run must NOT use at full size (enumerating to ~2·10^10 is prohibited); the closed form is the replacement.
+- Counts 1..n (not 0..n): holds for d ∈ {1..9} because 0 contributes no occurrence of any nonzero digit.
+- d=0 handled via a `started` flag (skip leading zeros) — not needed for PE156.
+
+## Implication for this run
+
+Confirms `place-value-closed-form` by an independent tutorial treatment; adds nothing beyond it. The run's own verified implementation already matches it.
 
 ## Does not settle
 
-- Nothing about the solution set S_d, the bound d·10^10, or the search strategy; it is only the evaluation primitive. Use the Khovanova–Marton paper and OEIS catalogue for the rest.
+Nothing about the *bound* on solutions (the article never discusses f(n,d)=n fixed points) and nothing about the sum. Not the answer source.
+
+```claim
+id: gfG-place-value-corroboration
+statement: The GeeksforGeeks place-value/Digit-DP algorithm for counting occurrences of digit d in 1..n (per-position higher/current/lower branching: cur<d → high·f; cur==d → high·f+low+1; cur>d → (high+1)·f) gives the same O(#digits) closed form as Khovanova–Marton §7 eq. (1) and as code/lib/digits.py::f_place_value.
+hypotheses: d ∈ {1..9}; counting 1..n equals counting 0..n for nonzero d.
+holds-here: yes (d in 1..9, decimal base)
+status: asserted (tutorial, no proof; corroborates a form already verified computationally by G1-checked)
+bearing: independent corroboration of the closed form; no new bound or sum information.
+anchor: research/sources/digit-count-place-value-algorithm.full.md
+```
