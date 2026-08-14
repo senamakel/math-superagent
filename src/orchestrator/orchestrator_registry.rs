@@ -16,7 +16,13 @@ fn search_tools(research_enabled: bool, documents: &WorkspaceDocuments) -> Resul
     }
     Ok(SearchTools {
         exa: Some(Arc::new(ExaSearchTool::from_env()?) as Arc<dyn Tool<()>>),
-        oeis: oeis::OeisTool::all(documents),
+        oeis: oeis::OeisTool::all(documents)
+            .into_iter()
+            // A source adapter, on the same argument as the OEIS one: a lookup
+            // whose query is an identifier rather than a guess at a name.
+            .chain(openalex::CitationGraphTool::all(documents))
+            .chain(exa::tools(research_enabled, documents)?)
+            .collect(),
     })
 }
 
@@ -40,6 +46,25 @@ impl std::fmt::Debug for SearchTools {
             .finish()
     }
 }
+
+/// The ways onto the web that are not a query.
+///
+/// Grouped because they answer the questions a query cannot, and a role that
+/// has one and not the others is a role that will fall back to rephrasing:
+/// `citation_graph` asks what a paper's own author thought was load-bearing,
+/// `find_similar_sources` uses a page rather than a phrase as the query,
+/// `read_sources` reads twenty candidates without storing any of them, and
+/// `deep_research` hands over a question the run cannot decompose into queries
+/// itself.
+///
+/// All four reach the open web, so all four are withheld with `exa_search`
+/// when research is off — by not being granted, not by being told to abstain.
+const DISCOVERY_TOOLS: [&str; 4] = [
+    "citation_graph",
+    "find_similar_sources",
+    "read_sources",
+    "deep_research",
+];
 
 fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
     let document_tools = [
@@ -81,6 +106,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
+                .chain(research_enabled.then_some(DISCOVERY_TOOLS).into_iter().flatten())
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
@@ -328,6 +354,11 @@ fn library_agents(
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
+                // The role whose whole subject is coverage gets every way onto
+                // the web there is. A librarian that can only rephrase a query
+                // builds the library one vocabulary guess at a time, which is
+                // the failure its own brief opens with.
+                .chain(research_enabled.then_some(DISCOVERY_TOOLS).into_iter().flatten())
                 .chain(memory_tools)
                 .chain(document_tools),
         ),

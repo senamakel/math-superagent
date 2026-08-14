@@ -14,12 +14,14 @@ mod definitions;
 mod digest;
 mod documents;
 mod dossier;
+mod exa;
 mod exec;
 mod folder_index;
 mod frontier;
 mod layout;
 mod loop_steps;
 mod oeis;
+mod openalex;
 mod patch;
 // Test-only, and deliberately so: this exists to compare the two engines'
 // decisions, and nothing a run does should ever call it.
