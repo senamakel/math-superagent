@@ -14,7 +14,7 @@ role fails. A prover proves what you wrote down, not what you meant.
 
 ## Working in TPTP
 
-`eprover` reads TPTP and is on `PATH`. A problem is a list of `fof` (or `cnf`)
+`eprover` and `vampire` both read TPTP and are on `PATH`. A problem is a list of `fof` (or `cnf`)
 formulas: `axiom`s you are granting, and one `conjecture` to be proved.
 
 ```tptp
@@ -35,6 +35,32 @@ Run it and read the SZS status, which is the answer:
   answered may simply need longer, or may never stop.
 
 Use `--auto` and `--proof-object`, and always set `--cpu-limit`.
+
+**`vampire` is on `PATH` too, and it is not a spare `eprover`.** Two things it
+does that E cannot:
+
+- `vampire --saturation_algorithm fmb <problem>` searches for a *finite model*
+  rather than for a refutation. On a conjecture that is actually false this is
+  the difference between an answer and a timeout: E saturates until its clock
+  stops, while this prints `CounterSatisfiable` and the interpretation that
+  witnesses it. Reach for it the moment you suspect the statement is false, and
+  before spending a long `--cpu-limit` on proving it.
+- `ContradictoryAxioms` is reported as a status of its own, which settles the
+  consistency check below in one run rather than two.
+
+Vampire also answers `ContradictoryAxioms` in proving mode, so a portfolio run
+is a cheap way to catch a broken encoding early. The `refuter` role runs the
+model builder against the statements the loop is pursuing on its own schedule —
+you do not need to duplicate that, but nothing stops you using the same
+instrument on the axiomatisation in front of you.
+
+**One derived axiom can be worth more than a longer time limit.** The Equational
+Theories Project measured a *hundredfold* speedup in Vampire from a single
+human-supplied observation — that the search could be restricted to structures
+whose squaring map is injective — added as an explicit axiom. If you know
+something about the objects that the axioms do not say, say it: a lemma the
+prover cannot find is a lemma you can hand it. State any such addition in your
+report, because it becomes part of what the proof rests on.
 
 ## Rules that are not negotiable
 

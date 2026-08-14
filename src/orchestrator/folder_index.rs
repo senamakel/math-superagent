@@ -79,6 +79,22 @@ fn index_allowed(folder: &str) -> Result<()> {
             "`{root}/` uses Cognee for durable cataloguing and recall; do not create an INDEX.md there"
         )));
     }
+    // A search already has a catalogue, and it is a better one than an index
+    // could be: `SEARCH.md` is derived from the score ledger, so every row
+    // carries what the program scored, which is the only thing anyone wants to
+    // know about a candidate. An `INDEX.md` beside it would be a second answer
+    // to the same question, and a far more expensive one — a search runs
+    // hundreds of candidates, and describing each of them is hundreds of
+    // `describe_file` calls against a role that has twice been measured
+    // consuming 60% of a run's model calls on filing alone.
+    if folder == super::search::SEARCH_DIR || folder.starts_with("code/search/") {
+        return Err(tinyagents::TinyAgentsError::Validation(format!(
+            "`{}/` is catalogued by its own `{}`, which is derived from the score ledger; do not \
+             create an INDEX.md there",
+            super::search::SEARCH_DIR,
+            super::search::BOARD
+        )));
+    }
     Ok(())
 }
 

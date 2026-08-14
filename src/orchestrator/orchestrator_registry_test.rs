@@ -552,6 +552,37 @@ fn the_director_team_is_budgeted_to_outlast_a_run_of_idling() {
     assert_eq!(budget.min_interval, std::time::Duration::ZERO);
 }
 
+/// A parsed field no prompt asks for is a field nothing ever writes.
+///
+/// The entailment closure shipped derived, routed, and documented in its own
+/// derived file — and a live run wrote no edges at all, because the claim-block
+/// schema in the one prompt that writes claim blocks never mentioned
+/// `follows-from`. The whole of that feature depended on one line of prose that
+/// was not there.
+#[test]
+fn the_scholar_is_told_about_every_claim_field_the_ledger_reads() {
+    use super::SCHOLAR_PROMPT;
+
+    for field in [
+        "id",
+        "statement",
+        "hypotheses",
+        "holds-here",
+        "status",
+        "bearing",
+        "anchor",
+        "contradicts",
+        "follows-from",
+        "answers",
+    ] {
+        assert!(
+            SCHOLAR_PROMPT.contains(field),
+            "the claim parser reads `{field}` and the only role that writes claim blocks is \
+             never told it exists"
+        );
+    }
+}
+
 #[test]
 fn every_built_in_prompt_is_present_and_bounded() {
     use super::{
@@ -603,4 +634,102 @@ fn the_method_policy_leads_every_assembled_prompt() {
     // Trimmed, so an editor adding a trailing newline to a prompt file cannot
     // silently invalidate every cached prefix.
     assert!(!assembled.contains("\n\n\n"), "{assembled}");
+}
+
+/// The searcher's authority is a set of absences, so the absences are asserted.
+///
+/// A scored search learns to attack its own verifier: `AlphaEvolve` satisfied a
+/// minimum-distance constraint by stacking points nearly on top of one another,
+/// and Tao's team rewrote every verifier in exact arithmetic in response. The
+/// defence here is that the role physically cannot reach `score.py` — it holds
+/// no file-write tool and no shell, so `submit_candidate` is its only route to
+/// disk and that route writes into `candidates/` and scores what it wrote in
+/// the same call.
+///
+/// This is exactly the kind of boundary that erodes one convenient grant at a
+/// time, which is why it is a test rather than a comment.
+#[test]
+fn the_searcher_cannot_reach_the_scorer_it_is_judged_by() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let searcher = registry
+        .get("searcher")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("searcher is registered".into()))?;
+
+    for granted in ["search_brief", "submit_candidate"] {
+        assert!(
+            searcher.tools.iter().any(|tool| tool == granted),
+            "the searcher needs `{granted}` to search at all"
+        );
+    }
+    for withheld in ["write_tool_file", "execute_command", "apply_patch"] {
+        assert!(
+            !searcher.tools.iter().any(|tool| tool == withheld),
+            "`{withheld}` would let the searcher edit the verifier that scores it"
+        );
+    }
+    Ok(())
+}
+
+/// The refuter may write its axiomatisation but may not write its own search.
+///
+/// It needs `write_tool_file`, because the axiomatisation is the whole job and
+/// the whole risk — the same reason `theorem_prover` has it. It must not have
+/// `execute_command`: a role hunting a counterexample with a shell writes its
+/// own search over small cases, which is the answer-space search the method
+/// policy prohibits, in the language most likely to hide its own bugs, by the
+/// role least able to notice. `find_counterexample` is the engine it is for.
+#[test]
+fn the_refuter_gets_an_engine_rather_than_a_shell() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let refuter = registry
+        .get("refuter")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("refuter is registered".into()))?;
+
+    for granted in ["find_counterexample", "write_tool_file"] {
+        assert!(
+            refuter.tools.iter().any(|tool| tool == granted),
+            "the refuter needs `{granted}`"
+        );
+    }
+    assert!(
+        !refuter.tools.iter().any(|tool| tool == "execute_command"),
+        "a shell would let the refuter hand-roll the search the engine exists to run"
+    );
+    Ok(())
+}
+
+/// The kernel check belongs to the role whose mandate is formalisation.
+///
+/// `lean_check` decides what `research/CLAIMS.md` may call formalised, which is
+/// the ledger's strongest evidence class. Granting it more widely would let a
+/// role with no formalisation mandate mint that class — so the grant is
+/// asserted to reach exactly one role, in a list that otherwise shares every
+/// tool.
+#[test]
+fn only_the_lean_prover_can_mint_a_formalised_claim() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let mut holders = Vec::new();
+    for name in [
+        "tool_builder",
+        "coder",
+        "sat_solver",
+        "smt_solver",
+        "theorem_prover",
+        "symbolic_math",
+        "lean_prover",
+        "searcher",
+        "refuter",
+        "reducer",
+        "weakener",
+        "research",
+    ] {
+        let Some(definition) = registry.get(name) else {
+            continue;
+        };
+        if definition.tools.iter().any(|tool| tool == "lean_check") {
+            holders.push(name);
+        }
+    }
+    assert_eq!(holders, ["lean_prover"]);
+    Ok(())
 }

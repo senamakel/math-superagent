@@ -125,10 +125,32 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 .chain(document_tools),
         ),
     )?;
-    // The four roles carrying shell and file-write authority. They differ in
-    // mandate rather than in tools, so listing them together is what makes the
-    // fact that they share an authority boundary visible rather than buried in
-    // four near-identical blocks.
+    register_code_writing_definitions(&mut registry, document_tools, memory_tools)?;
+    for definition in support_agents(research_enabled, document_tools, memory_tools) {
+        registry.register(definition)?;
+    }
+    Ok(registry)
+}
+
+/// Declares the roles carrying shell and file-write authority.
+///
+/// Split out of [`default_registry`] rather than inlined, because the list
+/// grew a per-role branch: `lean_check` is granted to one member of it and the
+/// rest share everything, so the block is no longer the flat table it reads as
+/// from outside.
+///
+/// They differ in mandate rather than in tools, so listing them together is
+/// what makes the fact that they share an authority boundary visible rather
+/// than buried in seven near-identical blocks.
+///
+/// # Errors
+///
+/// Returns an error when a name is already registered.
+fn register_code_writing_definitions(
+    registry: &mut AgentRegistry,
+    document_tools: [&'static str; 11],
+    memory_tools: [&'static str; 3],
+) -> Result<()> {
     for (name, title, description) in [
         (
             "tool_builder",
@@ -167,28 +189,36 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
              with sympy, PARI/GP, and Singular.",
         ),
         (
-            "lean_prover",
+            lean::LEAN_ROLE,
             "Lean Formalisation Agent",
-            "Writes Lean 4 statements and proofs against Mathlib, and reports what the kernel \
-             actually checked.",
+            "Writes Lean 4 statements and proofs against Mathlib, and runs the kernel over them \
+             with lean_check, which is what a formalised claim is backed by.",
         ),
     ] {
+        // `lean_check` is the one grant in this list that is not shared. It
+        // decides what the claim ledger may call formalised, so it belongs to
+        // the role whose mandate is formalisation and to nothing else; see
+        // `register_code_writing_agents`, which enforces the same split when
+        // the harness is assembled.
+        let kernel: &[&str] = if name == lean::LEAN_ROLE {
+            &["lean_check"]
+        } else {
+            &[]
+        };
         registry.register(
             AgentDefinition::new(name, title, description)
                 .with_model("openrouter")
                 .with_tools(
                     ["write_tool_file", "execute_command", "apply_patch"]
                         .into_iter()
+                        .chain(kernel.iter().copied())
                         .chain(memory_tools)
                         .chain(SCRATCH_TOOLS)
                         .chain(document_tools),
                 ),
         )?;
     }
-    for definition in support_agents(research_enabled, document_tools, memory_tools) {
-        registry.register(definition)?;
-    }
-    Ok(registry)
+    Ok(())
 }
 
 /// Returns the judge, reflection, pattern, curator, director, inventor, and
@@ -314,19 +344,43 @@ fn support_agents(
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
-        // The document tools and the memory tools, and nothing else — the same
-        // grant reflection has, and not by coincidence: both read the whole
-        // workspace, write prose about it, and must not start solving.
-        //
-        // No `exa_search` or `oeis_lookup`: a role that can search turns "what
-        // would suffice" into another literature survey, which is the
-        // librarian's errand and is already commissioned at every diversify.
-        // Nothing that computes, because a gap is discharged by a proof or a
-        // claim, never by a program this role wrote. No delegation bench,
-        // because a skeleton is checked by the forward loop attacking its gaps
-        // — a bench here would be a second investigation beside the first. No
-        // scratch, because a gap opened on arithmetic nobody has settled is a
-        // task the forward loop cannot close.
+    ]
+    .into_iter()
+    .chain(planning_agents(document_tools, memory_tools))
+    .chain(library_agents(
+        research_enabled,
+        document_tools,
+        memory_tools,
+    ))
+    .collect()
+}
+
+/// Returns the four roles whose authority is defined by what they may not do.
+///
+/// The reducer decomposes the goal, the weakener lowers it, the searcher hunts
+/// a construction for it, and the refuter tries to break it. What groups them is not their mandate, which is
+/// different in each case, but that each one's tool list is a *denial* — and
+/// each denial closes a specific way the role could otherwise mark its own
+/// homework.
+///
+/// The reducer and the weakener get the document tools and the memory tools and
+/// nothing else, which is the same grant reflection has and not by coincidence:
+/// all three read the whole workspace, write prose about it, and must not start
+/// solving. No `exa_search` or `oeis_lookup`, because a role that can search
+/// turns "what would suffice" or "what would be easier" into another literature
+/// survey, which is the librarian's errand and is already commissioned at every
+/// diversify. Nothing that computes, because a gap is discharged by a proof or
+/// a claim and a rung by the forward loop attacking it, never by a program
+/// either role wrote. No delegation bench, which would be a second
+/// investigation beside the first. No scratch, because provisional arithmetic
+/// nobody has settled is not a task the forward loop can close.
+///
+/// The searcher's denial is narrower and sharper, and is documented beside it.
+fn planning_agents(
+    document_tools: [&'static str; 11],
+    memory_tools: [&'static str; 3],
+) -> Vec<AgentDefinition> {
+    vec![
         AgentDefinition::new(
             "reducer",
             "Reduction Agent",
@@ -335,14 +389,64 @@ fn support_agents(
         )
         .with_model("openrouter")
         .with_tools(memory_tools.into_iter().chain(document_tools)),
+        // The third direction, and the only role allowed to move the target.
+        // The reducer asks what would be enough and the inventor asks what
+        // other route reaches the goal; both keep the goal fixed. This one
+        // lowers it deliberately, which is the move a mathematician makes
+        // first and this runtime could not make at all.
+        AgentDefinition::new(
+            "weakener",
+            "Weakening Agent",
+            "Names the difficulties that make the goal hard and builds a ladder of weakened \
+             targets from the version with all of them switched off up to the real one.",
+        )
+        .with_model("openrouter")
+        .with_tools(memory_tools.into_iter().chain(document_tools)),
+        // The searcher is the one role here whose tool list is defined by what
+        // it is *denied*. It holds no `write_tool_file` and no
+        // `execute_command`, so the only thing it can put on disk is a
+        // candidate, through `submit_candidate`, which scores it in the same
+        // call. That is not tidiness: the scorer is the thing a scored search
+        // learns to exploit — AlphaEvolve satisfied a minimum-distance
+        // constraint by stacking points on top of each other — and a searcher
+        // that could edit its own verifier would be grading its own work. The
+        // document tools stay so it can read the problem and report; the memory
+        // tools stay because a construction that scored well is worth carrying
+        // to the next problem.
+        AgentDefinition::new(
+            "searcher",
+            "Program Search Agent",
+            "Searches over programs that construct candidate objects, scored by a verifier it \
+             cannot edit, and reports the construction rather than only the number.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            ["search_brief", "submit_candidate"]
+                .into_iter()
+                .chain(memory_tools)
+                .chain(document_tools),
+        ),
+        // The refuter writes files, unlike the two above it, and it has to:
+        // the axiomatisation is the whole job and the whole risk, exactly as it
+        // is for `theorem_prover`. What it does *not* get is `execute_command`.
+        // A role hunting a counterexample with a shell would write its own
+        // search, and a hand-rolled search over small cases is the answer-space
+        // search the method policy prohibits — written in the language most
+        // likely to hide its own bugs, by the role least able to notice.
+        // `find_counterexample` is the engine, and it is the only one it needs.
+        AgentDefinition::new(
+            "refuter",
+            "Refutation Agent",
+            "Attacks the statement the run is trying to prove, by searching for a finite model              that satisfies the hypotheses and falsifies the conclusion.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            ["find_counterexample", "write_tool_file", "apply_patch"]
+                .into_iter()
+                .chain(memory_tools)
+                .chain(document_tools),
+        ),
     ]
-    .into_iter()
-    .chain(library_agents(
-        research_enabled,
-        document_tools,
-        memory_tools,
-    ))
-    .collect()
 }
 
 /// Returns the librarian, scholar, and goals definitions.

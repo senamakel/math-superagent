@@ -120,6 +120,145 @@ pub(in crate::orchestrator) async fn diversify_pattern_arm(
     vec![Finding::new(Slot::Patterns, patterns)]
 }
 
+/// The refutation arm: spend a bounded budget trying to break the statement.
+///
+/// It runs concurrently with the arms that assess the attempt, and that timing
+/// is the point rather than a convenience. The runtime had four ways to prove
+/// something — `sat_solver`, `smt_solver`, `theorem_prover`, `lean_prover` —
+/// and every one of them is *delegated to* when a role decides to ask. None was
+/// ever scheduled *against* the statement the run was pursuing, so a false
+/// conjecture was attacked by proof for as long as the budget lasted.
+///
+/// The Equational Theories Project is the measurement that justifies the slot:
+/// 524 small finite structures refuted 13.6 million of its 22 million
+/// implications, 13.3 million at size 3 alone, for 165 CPU-hours, before any
+/// clever proof search ran. Most false statements are false small, and finding
+/// that out cheaply is worth more than the proof attempt it replaces.
+///
+/// What it attacks is read off disk rather than passed in, and from the two
+/// ledgers that hold statements the run has committed to: the open gaps of the
+/// proof skeletons, and the current rung of each difficulty ladder. Those are
+/// exactly the propositions somebody has decided are worth proving, which makes
+/// them exactly the ones worth trying to break. With neither on disk the arm
+/// falls back to the goal itself.
+pub(in crate::orchestrator) async fn refutation_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> Vec<Finding> {
+    let targets = refutation_targets(workspace);
+    let report = delegate(
+        subagents,
+        "refuter",
+        format!(
+            "Try to break one of the statements this run is currently trying to prove. Pick the \
+             one most likely to be false rather than the one most central to the argument.\n\n\
+             Look by hand first — n = 0, 1, 2, the empty case, the degenerate case where two \
+             things coincide — because most false statements are false small and a counterexample \
+             you can write in one line beats any search. Then encode the smallest fragment that \
+             could still be false as a TPTP problem under `code/refute/<slug>.p` and call \
+             `find_counterexample` on it.\n\n\
+             Report which statement you attacked and which of the four answers came back. A \
+             counterexample is a result the run banks, and it needs checking against the original \
+             statement before you report it — the engine answers about what you wrote. A search \
+             that found nothing is also a result: say which sizes were covered, and do not \
+             upgrade that into `probably true`.\n\nProblem:\n{}\n\n{targets}",
+            state.problem()
+        ),
+    )
+    .await;
+    // Beside the report rather than instead of it. The verdicts say what the
+    // engine established; the report says which statement was attacked and
+    // whether the counterexample survived being checked against the original,
+    // which is a judgement no file records.
+    let filed = workspace.map(super::refute::briefing).unwrap_or_default();
+    let merged = merge_context(&[
+        ("What the refuter reports", report.as_str()),
+        ("Verdicts on disk", filed.as_str()),
+    ]);
+    vec![Finding::new(Slot::Refutation, merged)]
+}
+
+/// Checks the literature *after* the run believes it is done.
+///
+/// Every other literature sweep in this runtime runs while the run is stuck, to
+/// find a way forward. This one runs when the run thinks it has finished, and
+/// it is asking the opposite question: has this already been done, and is the
+/// argument too short for what it claims?
+///
+/// Tao's rule, and he states it about his own work: a proof that came out
+/// surprisingly quickly is more likely to be wrong or already known than to be
+/// a breakthrough, so the check after a solve is not optional politeness — it
+/// is the step that separates a result from a rediscovery. Until this node
+/// existed the runtime did the exact inverse: [`super::open_library`] returns
+/// early when `state.solved`, so the one moment the literature is most worth
+/// reading was the one moment nothing read it.
+///
+/// It cannot un-solve the run, and that is deliberate. What it produces is a
+/// finding filed beside the answer, for the reader who has to decide whether to
+/// believe it — a runtime that retracted its own verdict on a search result
+/// would be trusting a web query over a verified program.
+pub(in crate::orchestrator) async fn novelty_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> Vec<Finding> {
+    if !state.solved {
+        return Vec::new();
+    }
+    let established = workspace
+        .map(|workspace| super::claims::collect(workspace).established())
+        .unwrap_or_default();
+    let report = delegate(
+        subagents,
+        "research",
+        format!(
+            "This run believes it has solved the problem below. Do not try to solve it. Find out \
+             whether the result is already known, and whether the argument is strong enough for \
+             what it claims.\n\n\
+             Search for the statement itself, for the numbers the run produced, and for the named \
+             theory it sits in. Report, with URLs: whether this result is published and by whom, \
+             whether the method used here is the standard one, and anything the sources say that \
+             contradicts what the run concluded.\n\n\
+             Be blunt about the second question. A proof that arrived quickly is far more often \
+             wrong or already known than it is new, and saying so late is worth nothing. If the \
+             run reached this in {} attempt(s) on {established} established claim(s), say whether \
+             that is plausible for a result of this size.\n\n\
+             If it is already known, that is the finding, and it is a useful one: name the source \
+             so the derivation can cite it. If you cannot find it, say that plainly rather than \
+             padding the report — an unsuccessful search is evidence too.\n\nProblem:\n{}\n\n\
+             What the run concluded:\n{}",
+            state.attempts,
+            state.problem(),
+            state.last_attempt
+        ),
+    )
+    .await;
+    vec![Finding::new(Slot::Digest, report)]
+}
+
+/// The statements worth attacking, read off the two ledgers that hold them.
+fn refutation_targets(workspace: Option<&Path>) -> String {
+    let Some(workspace) = workspace else {
+        return String::new();
+    };
+    let gaps = open_gap_briefing(Some(workspace));
+    let rungs = super::weakened::collect(workspace).briefing();
+    let sections: Vec<(&str, &str)> = vec![
+        ("Open lemmas the run needs", gaps.as_str()),
+        ("The weakened target currently being attacked", rungs.as_str()),
+    ];
+    let targets = merge_context(&sections);
+    if targets.trim().is_empty() {
+        // Deliberately not a heading with nothing under it. An arm told
+        // "statements to attack:" followed by silence reasonably concludes
+        // there are none, where the truth is that the ledgers have not been
+        // written yet and the goal is the only statement there is.
+        return String::new();
+    }
+    format!("Statements the run has committed to:\n{targets}")
+}
+
 /// The invention arm: propose, ground, converge.
 pub(in crate::orchestrator) async fn diversify_invention_arm(
     subagents: &AsyncSubagentManager,
@@ -351,9 +490,132 @@ async fn reduction_arm(
     .await;
     let reported = ensure_skeleton_written(subagents, workspace, &before, reported).await;
     let gaps = open_gap_briefing(workspace);
+    // The graph, beside the flat list, because the two answer different
+    // questions and the second one is the one that schedules work. The gap
+    // list says what is unproved; the blueprint says which of it rests on
+    // nothing still open, and is therefore the part somebody can start on
+    // without holding the rest of the argument in their head. It also carries
+    // the one fault a per-file ledger cannot show — a reduction that proves
+    // its own hypothesis — and that has to reach the attempt before the
+    // attempt spends itself inside the loop.
+    let graph = workspace
+        .map(|workspace| super::blueprint::collect(workspace).briefing())
+        .unwrap_or_default();
     merge_context(&[
         ("What the run says would suffice", &reported),
         ("Open gaps, read from the ledger", &gaps),
+        ("The statement graph: what is ready, and what is circular", &graph),
+    ])
+}
+
+/// The ladder as it stands, so a turn that changed nothing can be told so.
+///
+/// A fingerprint of `(ladder, rung, stance)` triples rather than a set of
+/// filenames, and the discriminator is inverted from the approach ledger's for
+/// the reason `ensure_skeleton_written` records: proposing means new files, but
+/// *refining* a live ladder — settling a rung, marking one failed, adding the
+/// next one up — is exactly the correct work from the second cadence onward and
+/// adds no name.
+fn ladder_fingerprint(
+    workspace: Option<&Path>,
+) -> BTreeSet<(String, String, super::weakened::RungStance)> {
+    workspace
+        .map(|workspace| super::weakened::collect(workspace).fingerprint())
+        .unwrap_or_default()
+}
+
+/// Re-issues once when the weakener reported a ladder it did not write.
+///
+/// The same control `ensure_skeleton_written` is, against the same measured
+/// failure: a live inventor ignored both its system prompt and its arm prompt
+/// and left its candidates in a turn that hit the output cap, and across three
+/// concurrent runs the ledger directory had never been created. A prompt
+/// instruction is not a control.
+///
+/// Re-issued once rather than until compliance. A second refusal means this
+/// turn is not going to write, and the prose it did report is still worth
+/// carrying into the attempt — so the reply is appended to it rather than
+/// replacing it.
+async fn ensure_ladder_written(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    before: &BTreeSet<(String, String, super::weakened::RungStance)>,
+    reported: String,
+) -> String {
+    if ladder_fingerprint(workspace) != *before {
+        return reported;
+    }
+    let retry = delegate(
+        subagents,
+        "weakener",
+        format!(
+            "You reported a ladder without writing it. Nothing under `research/weakened/` \
+             changed, so nothing survives this turn: no rung reaches the next attempt and the \
+             difficulties you named are lost with your context. Write it now with \
+             `write_document` to `research/weakened/<slug>.md`, as a fenced `ladder` block with \
+             `goal`, `difficulties`, and `status` lines, followed by one fenced `rung` block per \
+             weakened target with `id`, `statement`, `off`, `stance`, and `merge` lines. Do not \
+             revise the mathematics and do not add rungs — write down what you already have, then \
+             report the slug and the rung ids you wrote.\n\n\
+             What you reported:\n{reported}"
+        ),
+    )
+    .await;
+    format!("{reported}\n\n{retry}")
+}
+
+/// Lowers the goal and reports the rung the run should attack next.
+///
+/// Shaped exactly as [`reduction_arm`] is, and running beside it, because the
+/// two answer the same *kind* of question — what should the run attack instead
+/// of the goal as stated — and differ only in the direction of the answer. The
+/// reducer breaks the goal into lemmas that would imply it; this breaks it into
+/// targets that deliberately would not.
+///
+/// It is deliberately *not* gated on the run being stuck, and that is a lesson
+/// this repository already paid for once. `open_invention`'s stuck-gate was
+/// reachable in principle and not in practice — a diversify needs two
+/// consecutive unproductive attempts, which needs two completed cycles, and a
+/// run whose attempts take the better part of an hour spends its whole clock
+/// inside the first one. Across a day of live runs the inventor was spawned
+/// once. A ladder is most useful before the run has burned its budget on the
+/// full-strength statement, not after.
+async fn weakening_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> String {
+    let before = ladder_fingerprint(workspace);
+    let reported = delegate(
+        subagents,
+        "weakener",
+        format!(
+            "Name the difficulties that make this problem hard, then build the ladder of weakened \
+             versions of it. Not another route to the goal and not the lemmas that would imply \
+             it — smaller problems, each one the goal with named difficulties switched off. Write \
+             the result to `research/weakened/<slug>.md` as a fenced `ladder` block with `goal`, \
+             `difficulties`, and `status` lines, followed by one fenced `rung` block per weakened \
+             target with `id`, `statement`, `off`, `stance`, and `merge` lines.\n\n\
+             The bottom rung should be one an attempt could settle today — small n, one case, \
+             every convenience assumed. Check `research/CLAIMS.md` and `search_claims` before you \
+             call a rung open: a rung the run has already established is `settled`, and noticing \
+             that is the cheapest result available to you. A rung that was attacked and failed \
+             stays on the ladder with the reason, because deleting it is how the same one gets \
+             proposed again three attempts later.\n\n\
+             Report the slug, the rung you would attack next, and which difficulty you expect to \
+             be the one that actually bites.\n\nProblem:\n{}\n\n{}",
+            state.problem(),
+            state.lesson_briefing()
+        ),
+    )
+    .await;
+    let reported = ensure_ladder_written(subagents, workspace, &before, reported).await;
+    let ladder = workspace
+        .map(|workspace| super::weakened::collect(workspace).briefing())
+        .unwrap_or_default();
+    merge_context(&[
+        ("What the run says would be easier", &reported),
+        ("The ladder, read from the ledger", &ladder),
     ])
 }
 

@@ -181,6 +181,22 @@ pub(super) struct SolutionState {
     /// arms finishing in the same superstep write different fields, so the
     /// reducer never has to pick a winner between them.
     diversify: DiversifyFindings,
+    /// Established claims the ledger held at the end of the last attempt.
+    ///
+    /// The one field here read off the *workspace* rather than off a model's
+    /// reply, and that is what it is for. A `BANKED` verdict says the attempt
+    /// settled something short of the goal, which is a claim about the world
+    /// that the run can check: the claim ledger either grew or it did not.
+    /// Without this the verdict would be a word, and a word that resets
+    /// `unproductive` is a word that can keep a run out of `diversify`
+    /// indefinitely — the failure `computational` was added to close, one
+    /// verdict wider.
+    pub(in crate::orchestrator) established: usize,
+    /// Attempts that banked a result short of the goal.
+    ///
+    /// Nothing in [`route`] reads it; it is what the outcome reports, so a run
+    /// that ends unsolved can still say what it settled on the way.
+    pub(in crate::orchestrator) banked: usize,
     /// Completed cycles since the goal was last decomposed into lemmas.
     ///
     /// Unlike every other counter here, nothing in [`route`] reads it. It paces
@@ -208,6 +224,8 @@ impl SolutionState {
             blocked: 0,
             computational: 0,
             unverified: 0,
+            established: 0,
+            banked: 0,
             diversify: DiversifyFindings::default(),
             // At the threshold, not at zero, so the counter is already due
             // when `run` opens a reduction beside the first attempt — before
@@ -281,6 +299,8 @@ impl SolutionState {
             "blocked": self.blocked,
             "computational": self.computational,
             "unverified": self.unverified,
+            "established": self.established,
+            "banked": self.banked,
             "since_reduction": self.since_reduction,
             // The arms run as separate nodes, so this is the only way what they
             // found reaches the merge that turns it into the next attempt's
@@ -321,6 +341,8 @@ impl SolutionState {
         rebuilt.blocked = count("blocked");
         rebuilt.computational = count("computational");
         rebuilt.unverified = count("unverified");
+        rebuilt.established = count("established");
+        rebuilt.banked = count("banked");
         rebuilt.restarts = count("restarts");
         rebuilt.since_reduction = count("since_reduction");
         rebuilt.solved = state
@@ -646,7 +668,23 @@ pub(in crate::orchestrator) async fn attempt_step(
         state.attempts,
         workspace.is_some_and(has_executable_artifact),
     );
-    let prompt = attempt_prompt(&state, &continuation, &observations, &direction, &gaps);
+    // Read from disk rather than from a mailbox, because this is not something
+    // an arm reports — it is a fact about the library that becomes true the
+    // moment a note is written, whether or not anything was running at the
+    // time. It is also the one briefing that can save the whole attempt: an
+    // attempt about to prove a lemma its own library already entails will
+    // otherwise spend itself and report progress for it.
+    let entailed = workspace
+        .map(|workspace| super::closure::collect(workspace).briefing())
+        .unwrap_or_default();
+    let prompt = attempt_prompt(
+        &state,
+        &continuation,
+        &observations,
+        &direction,
+        &gaps,
+        &entailed,
+    );
     if !direction.is_empty()
         && let Some(tracer) = tracer
     {
@@ -736,6 +774,7 @@ fn attempt_prompt(
     observations: &str,
     direction: &str,
     gaps: &str,
+    entailed: &str,
 ) -> String {
     let fresh = if state.fresh_context.is_empty() {
         String::new()
@@ -753,10 +792,15 @@ fn attempt_prompt(
             state.steer
         )
     };
+    let entailed = if entailed.trim().is_empty() {
+        String::new()
+    } else {
+        format!("What the library already gives you, computed from its own edges:\n{entailed}\n\n")
+    };
     format!(
         "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n\
          {direction}{steer}{}\n\
-         {gaps}{observations}{fresh}\n\n\
+         {entailed}{gaps}{observations}{fresh}\n\n\
          Requirements for this attempt, all of them:\n\
          - You must end this attempt with at least one program written to the workspace and \
            executed. An attempt that produces only notes, plans, or restatements has failed, \

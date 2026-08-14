@@ -1,0 +1,32 @@
+<!-- source: https://oeis.org/A064018/b064018.txt | converted from plain text -->
+
+**CATALOGUE b-file — read from OEIS, not derived here.** These are the terms
+of A064018: a(n) = Φ(10^n) = Σ_{k ≤ 10^n} φ(k). Rows 0..18 by Yamanouchi,
+row 19 by Lucas A. Brown (arXiv:2506.07386, run twice). This run reproduces
+rows 0..8 by its own naive sieve (`code/out/check_library_values.py`) and
+recomputes row 8, Φ(10^8) = 3039635516365908, by two independent sieves
+(`code/solution.py`, `code/verify_mobius.py`); rows 9..19 are not
+independently reproduced here and must be reported as looked up.
+
+```
+0 1
+1 32
+2 3044
+3 304192
+4 30397486
+5 3039650754
+6 303963552392
+7 30396356427242
+8 3039635516365908
+9 303963551173008414
+10 30396355092886216366
+11 3039635509283386211140
+12 303963550927059804025910
+13 30396355092702898919527444
+14 3039635509270144893910357854
+15 303963550927013509478708835152
+16 30396355092701332166351822199504
+17 3039635509270133156701800820366346
+18 303963550927013314319686824781290348
+19 30396355092701331435065976498046398788
+```

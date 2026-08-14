@@ -1,4 +1,4 @@
-use super::{Holds, Status, collect, is_note, parse};
+use super::{Holds, Status, collect, identifiers, is_note, parse};
 
 fn note(body: &str) -> String {
     format!("# A note\n\nSome prose.\n\n```claim\n{body}\n```\n\nMore prose.\n")
@@ -397,4 +397,227 @@ fn a_holds_field_may_carry_the_reason_beside_the_answer() {
     assert_eq!(Holds::parse("notation differs"), Holds::Unchecked);
     assert_eq!(Holds::parse("yesterday's run said so"), Holds::Unchecked);
     assert_eq!(Holds::parse("probably not"), Holds::Unchecked);
+}
+
+/// A formalised claim is the one row the ledger checks rather than believes.
+///
+/// The failure being closed is the whole reason `Status::Formalised` exists:
+/// with Lean installed and no Rust running it, `research/CLAIMS.md` could not
+/// tell a kernel-checked lemma from a sentence claiming one, so it recorded
+/// both the same way. Here the same note is derived twice — once with a passing
+/// verdict on disk beside it and once without — and the two must disagree.
+#[test]
+fn a_formalised_claim_stands_only_when_the_kernel_backs_it() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-formalised");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: pigeonhole-bound\nstatement: Every 3-colouring of K_17 has a monochromatic \
+             triangle.\nholds-here: yes\nstatus: formalised\nformalisation: code/ramsey.lean",
+        ),
+    )?;
+
+    // No verdict on disk: the claim said `formalised` and nothing supports it.
+    let bare = collect(&root);
+    assert_eq!(bare.established(), 0, "an unbacked claim is not established");
+    assert_eq!(bare.asserted(), 1, "it is downgraded, not dropped");
+    let rendered = bare.render();
+    assert!(rendered.contains("`pigeonhole-bound`"), "the claim survives the downgrade");
+    assert!(rendered.contains("Called formalised, not backed by the kernel"));
+    assert!(
+        rendered.contains("no `lean_check` verdict exists"),
+        "the reason names what to do next: {rendered}"
+    );
+
+    // The same note, with a passing verdict beside it.
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_ramsey.lean.json"),
+        r#"{"file":"code/ramsey.lean","compiled":true,"sorries":[],
+            "axioms":["'ramsey' depends on axioms: [propext, Classical.choice]"]}"#,
+    )?;
+    let backed = collect(&root);
+    assert_eq!(backed.established(), 1, "a kernel-backed claim is established");
+    assert_eq!(backed.asserted(), 0);
+    assert!(!backed.render().contains("Called formalised"));
+    Ok(())
+}
+
+/// A verdict that exists and does not pass is worse than none, so it is named.
+#[test]
+fn a_formalisation_with_a_sorry_in_it_is_downgraded_and_says_why() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-sorry");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: half-proved\nstatement: The bound holds for every n.\nholds-here: yes\n\
+             status: formalised\nformalisation: code/bound.lean",
+        ),
+    )?;
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_bound.lean.json"),
+        r#"{"file":"code/bound.lean","compiled":true,
+            "sorries":["bound.lean:9:2: warning: declaration uses 'sorry'"],"axioms":[]}"#,
+    )?;
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 0);
+    assert!(
+        ledger.render().contains("`sorry` still in it"),
+        "the objection must name the sorry rather than say the check failed"
+    );
+    Ok(())
+}
+
+/// A claim that names no file at all is the easiest way to fake the status.
+#[test]
+fn a_formalised_claim_naming_no_file_is_refused() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-nofile");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: bare-assertion\nstatement: It is formalised, honestly.\nholds-here: yes\n\
+             status: formalised",
+        ),
+    )?;
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 0);
+    assert!(ledger.render().contains("names no `formalisation:` file"));
+    Ok(())
+}
+
+/// `formally proved` must not be read as the weaker, unchecked status.
+#[test]
+fn the_status_parse_prefers_formalised_over_proved() {
+    for spelling in [
+        "formalised",
+        "formalized",
+        "formally proved",
+        "lean",
+        "kernel-checked",
+    ] {
+        assert_eq!(
+            Status::parse(spelling),
+            Status::Formalised,
+            "`{spelling}` names a kernel check"
+        );
+    }
+    // The source proving it is still a different, weaker thing.
+    assert_eq!(Status::parse("proved"), Status::Proved);
+    assert_eq!(Status::parse("proven in the paper"), Status::Proved);
+}
+
+/// A claim citing the counterexample engine is checked against what it found.
+///
+/// The asymmetry with `formalised` is deliberate and worth pinning down: a
+/// `refutation:` line is optional, because a counterexample can be established
+/// by hand. What is checked is only the claim that *cites the engine* — and
+/// citing it falsely is the worst case available, since a refutation does not
+/// merely fail to establish the goal, it asserts the goal is false.
+#[test]
+fn a_claim_citing_a_refutation_needs_the_engine_to_have_made_one() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-refutation");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join(super::super::refute::VERDICT_DIR))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: girth-five-fails\nstatement: No such graph exists at order 7.\nholds-here: yes\n\
+             status: checked\nrefutation: code/refute/girth.p",
+        ),
+    )?;
+
+    // Nothing filed: the claim cites an engine run that never happened.
+    let bare = collect(&root);
+    assert_eq!(bare.established(), 0, "an uncited refutation is not established");
+    assert!(
+        bare.render().contains("no `find_counterexample` verdict exists"),
+        "the reason must name what is missing: {}",
+        bare.render()
+    );
+
+    // Filed, but the engine did not refute anything — it timed out.
+    std::fs::write(
+        root.join(super::super::refute::VERDICT_DIR)
+            .join("code_refute_girth.p.json"),
+        r#"{"problem":"code/refute/girth.p","finding":"undecided","status":"Timeout","model":""}"#,
+    )?;
+    let weak = collect(&root);
+    assert_eq!(weak.established(), 0);
+    assert!(
+        weak.render().contains("was not refuted"),
+        "a search that settled nothing is not a counterexample"
+    );
+
+    // Filed, and it really did find one.
+    std::fs::write(
+        root.join(super::super::refute::VERDICT_DIR)
+            .join("code_refute_girth.p.json"),
+        r#"{"problem":"code/refute/girth.p","finding":"refuted",
+            "status":"CounterSatisfiable","model":"tff(d,type,d: $tType)."}"#,
+    )?;
+    let backed = collect(&root);
+    assert_eq!(backed.established(), 1, "a real refutation stands");
+    assert!(!backed.render().contains("was not refuted"));
+    Ok(())
+}
+
+/// A claim with no `refutation:` line is untouched by the refutation check.
+#[test]
+fn an_ordinary_claim_is_not_asked_for_a_counterexample() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-no-refutation");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note("id: plain\nstatement: The sum is 12.\nholds-here: yes\nstatus: checked"),
+    )?;
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 1);
+    assert!(!ledger.render().contains("find_counterexample"));
+    Ok(())
+}
+
+/// Both of these are sentences a live run actually wrote into a `rests-on:`
+/// field, and the whitespace split turned each into a handful of identifiers
+/// that no file could ever carry. Eleven invented dangling edges hide the one
+/// real misspelling the same report exists to catch.
+#[test]
+fn a_field_that_says_there_is_nothing_lists_nothing() {
+    assert!(
+        identifiers("none (research/CLAIMS.md is empty; no claim in the ledger covers this)")
+            .is_empty(),
+        "an answer that opens with `none` is an answer, not a list"
+    );
+    assert!(identifiers("n/a").is_empty());
+    assert!(identifiers("  ").is_empty());
+}
+
+/// The shape filter drops prose without touching a real list — including the
+/// misspelled entries the dangling-edge report is for.
+#[test]
+fn prose_is_dropped_while_identifiers_survive() {
+    assert_eq!(
+        identifiers("alpha-lemma, beta/gamma.2"),
+        vec!["alpha-lemma".to_string(), "beta/gamma.2".to_string()]
+    );
+    assert_eq!(
+        identifiers("alpha-lemma (proved; see below)"),
+        vec!["alpha-lemma".to_string()],
+        "the id survives and the parenthetical does not"
+    );
+    assert_eq!(
+        identifiers("mispelt-lemma"),
+        vec!["mispelt-lemma".to_string()],
+        "a misspelling is still id-shaped, so it is still reported as dangling"
+    );
 }

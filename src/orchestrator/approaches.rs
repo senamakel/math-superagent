@@ -30,7 +30,7 @@
 use std::fmt::Write as _;
 use std::path::Path;
 
-use super::claims::{fenced, fields, identifiers};
+use super::claims::{fenced, fields, references};
 use super::text::truncate;
 
 /// Folder holding one file per candidate line of attack.
@@ -185,7 +185,7 @@ pub(super) fn collect(workspace: &Path) -> Approaches {
                 "idea" | "reformulation" => approach.idea = value,
                 "mechanism" | "why" => approach.mechanism = value,
                 "status" | "stance" => approach.stance = Stance::parse(&value),
-                "precedent" | "sources" => approach.precedent = identifiers(&value),
+                "precedent" | "sources" => approach.precedent = references(&value),
                 "first-step" | "next" => approach.first_step = value,
                 "killed-by" | "refuted-by" => approach.killed_by = value,
                 _ => {}

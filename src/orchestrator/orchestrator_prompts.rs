@@ -16,6 +16,9 @@ struct RolePrompts {
     pattern: String,
     inventor: String,
     reducer: String,
+    weakener: String,
+    searcher: String,
+    refuter: String,
     librarian: String,
     scholar: String,
     curator: String,
@@ -84,6 +87,31 @@ impl RolePrompts {
         ]
     }
 
+    /// The support roles' prompts, in one move.
+    ///
+    /// A method rather than a struct literal at the call site, for the reason
+    /// [`Self::code_writers`] is one: the list has grown past the point where
+    /// spelling it inline leaves `from_env` readable, and a set of prompts is
+    /// the kind of thing that should be assembled in one place so a role added
+    /// to the registry and forgotten here fails to compile rather than silently
+    /// running with an empty brief.
+    fn support(&mut self) -> SupportPrompts {
+        SupportPrompts {
+            reflection: std::mem::take(&mut self.reflection),
+            judge: std::mem::take(&mut self.judge),
+            pattern: std::mem::take(&mut self.pattern),
+            inventor: std::mem::take(&mut self.inventor),
+            reducer: std::mem::take(&mut self.reducer),
+            weakener: std::mem::take(&mut self.weakener),
+            searcher: std::mem::take(&mut self.searcher),
+            refuter: std::mem::take(&mut self.refuter),
+            librarian: std::mem::take(&mut self.librarian),
+            scholar: std::mem::take(&mut self.scholar),
+            curator: std::mem::take(&mut self.curator),
+            director: std::mem::take(&mut self.director),
+        }
+    }
+
     /// Returns each role's name paired with its assembled prompt.
     fn by_role(&self) -> Vec<(&'static str, &str)> {
         vec![
@@ -102,6 +130,9 @@ impl RolePrompts {
             ("pattern_finder", self.pattern.as_str()),
             ("inventor", self.inventor.as_str()),
             ("reducer", self.reducer.as_str()),
+            ("weakener", self.weakener.as_str()),
+            ("searcher", self.searcher.as_str()),
+            ("refuter", self.refuter.as_str()),
             ("librarian", self.librarian.as_str()),
             ("scholar", self.scholar.as_str()),
             ("context_curator", self.curator.as_str()),
@@ -152,6 +183,16 @@ fn role_context(role: &str) -> &'static [&'static str] {
             // with a first move somebody could make today. A planner that
             // cannot see them plans around them.
             "research/BACKWARD.md",
+            // And the graph over them, which answers the question the flat list
+            // cannot: which of those tasks can be handed to a sub-agent *now*,
+            // because everything it rests on is settled. A planner routing work
+            // to concurrent children needs exactly that distinction, and
+            // `BACKWARD.md` makes every open gap look equally attackable.
+            "research/BLUEPRINT.md",
+            // What the library gives without new work. A planner that cannot
+            // see this schedules an attempt at something the run already holds,
+            // which is the most expensive mistake available to it.
+            "research/ENTAILMENT.md",
             "CONTEXT.md",
         ],
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
@@ -175,10 +216,14 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "judge" => &["GOAL.md", "INDEX.md"],
         "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md"],
         "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", "CONTEXT.md"],
+        // The scholar writes the claim blocks, so it is the role that draws the
+        // `follows-from:` edges — and the one that should see what those edges
+        // already establish before recording a statement the library entails.
         "scholar" => &[
             "GOAL.md",
             "TASKS.md",
             "research/CLAIMS.md",
+            "research/ENTAILMENT.md",
             "research/THREADS.md",
             "CONTEXT.md",
         ],
@@ -210,11 +255,62 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // *method*, and a role holding it drifts into proposing methods — which
         // is the inventor's job and the one confusion this role must not
         // create. It is asked what would suffice, not how to get there.
+        //
+        // It is sent the graph over its own skeletons, and that is the one
+        // check on this role nothing else performs: a decomposition whose gap
+        // is proved by a skeleton that assumes the goal reads as sound in both
+        // files and is circular across them. The reducer is the only role that
+        // can fix it, and until `BLUEPRINT.md` existed it was the only role
+        // that could not see it.
         "reducer" => &[
             "GOAL.md",
             "research/BACKWARD.md",
+            "research/BLUEPRINT.md",
             "research/CLAIMS.md",
             "research/THREADS.md",
+            "CONTEXT.md",
+        ],
+        // The weakener is sent its own ladder, the goal it is lowering, and
+        // what the run has actually established — that last one being what
+        // decides which rung is next, since a rung the claims ledger already
+        // covers is settled whether or not the ladder says so.
+        //
+        // It is denied `research/APPROACHES.md` for the reducer's reason, and
+        // `research/BACKWARD.md` for one of its own: a proof skeleton is a
+        // decomposition of the *full-strength* goal, and a role whose whole
+        // job is to lower that goal should not be reading a document that
+        // assumes it fixed. The two ledgers meet in the attempt, which is
+        // where they should.
+        "weakener" => &[
+            "GOAL.md",
+            "research/WEAKENED.md",
+            "research/CLAIMS.md",
+            "research/THREADS.md",
+            "CONTEXT.md",
+        ],
+        // The searcher is routed almost nothing, and that is the shape of the
+        // role rather than an oversight. Everything it needs about the search
+        // itself — the problem, the scorer, the programs that scored best —
+        // changes with every candidate, so it arrives through `search_brief`
+        // rather than through a system prompt assembled once per run. What is
+        // routed is the run's standing beliefs, which do not change that fast
+        // and which stop it hunting a construction the library already rules
+        // out. It is denied the threads and the approach ledger for the reason
+        // the judge is: a role scoring hundreds of candidates must not spend
+        // its budget reading about the investigation around it.
+        "searcher" => &["GOAL.md", "research/CLAIMS.md", "CONTEXT.md"],
+        // The refuter is sent the two ledgers holding statements somebody has
+        // committed to proving, because those are the ones worth attacking, and
+        // the claim ledger so it does not spend a cycle refuting something the
+        // run already disproved. Not the threads or the approach ledger: which
+        // direction the run is pursuing is irrelevant to whether the statement
+        // is true, and a role given the method ledger drifts into commenting on
+        // the method.
+        "refuter" => &[
+            "GOAL.md",
+            "research/BACKWARD.md",
+            "research/WEAKENED.md",
+            "research/CLAIMS.md",
             "CONTEXT.md",
         ],
         // The curator writes the shared brief, so it is the one role that
@@ -286,6 +382,9 @@ impl RolePrompts {
             pattern: role("pattern_finder", PATTERN_PROMPT)?,
             inventor: role("inventor", INVENTOR_PROMPT)?,
             reducer: role("reducer", REDUCER_PROMPT)?,
+            weakener: role("weakener", WEAKENER_PROMPT)?,
+            searcher: role("searcher", SEARCHER_PROMPT)?,
+            refuter: role("refuter", REFUTER_PROMPT)?,
             librarian: role("librarian", LIBRARIAN_PROMPT)?,
             scholar: role("scholar", SCHOLAR_PROMPT)?,
             curator: role("context_curator", CONTEXT_CURATOR_PROMPT)?,

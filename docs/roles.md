@@ -1,6 +1,6 @@
 # Roles, adapters, and what each one can reach
 
-The nineteen roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
+The twenty-two roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
@@ -49,7 +49,7 @@ Algebras of Maximal Class II* as `pitman_ballot_theorem.md`.
 
 ## Expected problem-solving behavior
 
-The runtime has nineteen roles plus an explicit solution loop.
+The runtime has twenty-two roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -108,9 +108,18 @@ The runtime has nineteen roles plus an explicit solution loop.
 - The Lean prover writes Lean 4 against a pre-built Mathlib. It is the only
   role whose output is not evidence: everything else here — a program's output,
   a numerical check, an argument that reads well — is a reason to believe
-  something, and a proof that compiles with no `sorry` is the thing itself. It
-  is held to reporting `#print axioms` and every remaining `sorry`, because a
-  formalisation that hides one is worse than none.
+  something, and a proof that compiles with no `sorry` is the thing itself.
+
+  It *was* held to that by its prompt, which is this repository's own recurring
+  failure in the place it costs most: no line of Rust ran Lean, so
+  `research/CLAIMS.md` could not tell a kernel-checked lemma from a sentence
+  claiming one. `lean_check` is the control. It runs the kernel, parses the result — compiled
+  or not, every `sorry`, every `#print axioms` line — and files a verdict under
+  `code/out/lean/`. A claim may be `status: formalised` only with a
+  `formalisation:` line naming a file whose verdict passed; otherwise the ledger
+  records it as `asserted` and says why. Requiring the `#print axioms` line is
+  strict on purpose: a proof whose foundations are unstated has told the runtime
+  nothing. The tool reaches this role and nothing else.
 - The reflection agent judges one attempt and extracts one lesson. It has no
   research or execution tools on purpose: a judge that can start solving stops
   judging. Its hardest job is refusing to call an unverified answer solved.
@@ -162,6 +171,52 @@ The runtime has nineteen roles plus an explicit solution loop.
   proposing methods. Like the inventor it is on the stronger reasoning model:
   whether a set of lemmas actually implies the goal is the definition of a
   judgement no tool can check.
+- The weakener is the third direction, and the only role permitted to move the
+  target. The inventor asks what *else* reaches the goal and the reducer what
+  would be *enough*; both hold it fixed. This one asks what would be *easier*. It
+  names the difficulties, then writes a ladder of weakened versions to
+  `research/weakened/<slug>.md` — each rung saying which are switched off and
+  what turning the next one back on would take — from which
+  `research/WEAKENED.md` is derived. A rung does not imply the goal, which is not
+  a defect in it. A failed rung stays on the ladder with its reason, because
+  deleting it is how the same one is proposed again three attempts later. Its
+  tool set is the reducer's exactly, and it is on the stronger reasoning model
+  because a statement weakened until vacuous reads exactly like one weakened
+  until tractable. Its one dangerous failure is reporting a rung as the goal, so
+  the ledger records which difficulties were off when each one landed.
+- The searcher does not reason toward an object; it writes programs that build
+  one, keeps what scores well, and proposes again from those. What makes the
+  FunSearch loop worth having is its output — "not the set of 512
+  eight-dimensional vectors in itself, but a program that generates it" — an
+  explanation where a number is only an answer. Three of its four ingredients
+  are bookkeeping and live in Rust, because a model recalling which of four
+  hundred programs scored best spends its turn on arithmetic nothing can get
+  wrong in code.
+  **Its authority is a set of absences**, asserted by a test. No
+  `write_tool_file`, no `execute_command`, no patch tool: `submit_candidate` is
+  its only route to disk and it scores what it wrote in the same call, so a
+  candidate cannot be recorded unexecuted and `score.py` is unreachable. The
+  risk that justifies it is measured, not hypothetical — AlphaEvolve proved
+  "extremely good at locating exploits in the verification code". A rejected
+  candidate costs one line and no lesson, but is still recorded.
+- The refuter is the only role scheduled *against* the run rather than for it.
+  The four proving roles are delegated *to* when somebody asks, so a false
+  conjecture was attacked by proof for as long as the budget lasted. It runs as
+  an evaluation arm beside every attempt, takes the open gaps and the current
+  rung, and tries to break one — by hand first, then through
+  `find_counterexample`, Vampire's finite model builder. `eprover` saturates
+  toward a refutation and times out on a false statement; a finite model *is*
+  the counterexample. The Equational Theories Project measured the worth: 524
+  small structures refuted 13.6 million of 22 million implications in 165
+  CPU-hours, before any clever search ran.
+
+  Of its four verdicts the one worth building for is `ContradictoryAxioms`:
+  everything follows from contradictory hypotheses, so a broken encoding *proves
+  the goal*, and that is now a status the runtime reads rather than a discipline
+  it hopes for. It writes files — the axiomatisation is the whole job and the
+  whole risk — but has no `execute_command`, since a role hunting a
+  counterexample with a shell writes the answer-space search the method policy
+  prohibits. A claim citing a refutation is checked against the filed verdict.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
@@ -334,15 +389,18 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `research/BLUEPRINT.md`, `research/ENTAILMENT.md`, `CONTEXT.md` — the graph says which open gap is *ready*, which the flat list cannot, and the entailment report says what the run already holds |
 | tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files, minus the threads, plus `code/AGENTS.md` and `code/INDEX.md` |
 | judge | `GOAL.md`, `INDEX.md` |
 | reflection | the judge's files plus `TASKS.md` |
 | pattern_finder | `GOAL.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
 | librarian, research | `GOAL.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/FRONTIER.md`, `CONTEXT.md` |
 | inventor | `GOAL.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/CLAIMS.md`, `CONTEXT.md`, plus a dossier built at delegation time |
-| reducer | `GOAL.md`, `research/BACKWARD.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `research/APPROACHES.md` |
-| scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
+| reducer | `GOAL.md`, `research/BACKWARD.md`, `research/BLUEPRINT.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `research/APPROACHES.md`. It is the only role that can fix a decomposition that proves its own hypothesis, and until the graph existed the only one that could not see one |
+| weakener | `GOAL.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` — and deliberately **not** `research/APPROACHES.md` or `research/BACKWARD.md` |
+| searcher | `GOAL.md`, `research/CLAIMS.md`, `CONTEXT.md` — everything about the search itself arrives through `search_brief`, because it changes with every candidate |
+| refuter | `GOAL.md`, `research/BACKWARD.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `CONTEXT.md` — the two ledgers holding statements somebody committed to proving, which are the ones worth attacking |
+| scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/ENTAILMENT.md`, `research/THREADS.md`, `CONTEXT.md` — it draws the `follows-from:` edges, so it sees what they already establish |
 | context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
 | director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |
 | organizer | none — it falls through to the empty default |
