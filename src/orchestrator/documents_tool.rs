@@ -102,6 +102,10 @@ impl DocumentTool {
             super::backward::refresh(&self.documents).await;
             return format!(" and re-derived {}", super::backward::BACKWARD_PATH);
         }
+        if super::weakened::is_weakened(path) {
+            super::weakened::refresh(&self.documents).await;
+            return format!(" and re-derived {}", super::weakened::WEAKENED_PATH);
+        }
         if !super::claims::is_note(path) {
             return String::new();
         }
@@ -113,11 +117,17 @@ impl DocumentTool {
         // strand one — which is why the skeleton ledger follows a note write
         // and the approach ledger does not.
         super::backward::refresh(&self.documents).await;
+        // And the ladder, for the same reason one step weaker: a rung is
+        // settled by a claim, so a note can turn the current rung into a
+        // settled one. A ladder still pointing at a rung the run has already
+        // proved is how the next attempt spends itself re-proving it.
+        super::weakened::refresh(&self.documents).await;
         format!(
-            " and re-derived {}, {} and {}",
+            " and re-derived {}, {}, {} and {}",
             super::claims::CLAIMS_PATH,
             super::threads::THREADS_PATH,
-            super::backward::BACKWARD_PATH
+            super::backward::BACKWARD_PATH,
+            super::weakened::WEAKENED_PATH
         )
     }
 

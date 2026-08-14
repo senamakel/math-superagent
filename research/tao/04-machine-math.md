@@ -99,28 +99,25 @@ found by a solver, which is verifier exploitation one level up.
 Tao's July 2025 thread is the sharpest thing he has written on evaluation. He
 opens: "there is in fact a very wide spread in capability (several orders of
 magnitude) depending on what resources and assistance one gives the tool, and
-how one reports their results."
-https://mathstodon.xyz/@tao/114881418225852441
-
-He then lists seven ways to change the IMO's format — days instead of hours (or
-"some sort of expensive and energy-intensive time acceleration machine");
-problems rewritten by the team leader beforehand; unlimited tools and internet;
-six students on one problem sharing partial progress; steering away from
-unpromising directions; best-of-six submitted; and, last, "the team leader does
-not submit any solution at all, and silently withdraws from the competition
-without their participation ever being noted."
-https://mathstodon.xyz/@tao/114881419368778558
-
-Conclusion: "in the absence of a controlled test methodology that was not
+how one reports their results", then lists seven ways to change the IMO's
+format — days instead of hours (or "some sort of expensive and energy-intensive
+time acceleration machine"); problems rewritten by the team leader beforehand;
+unlimited tools and internet; six students on one problem sharing partial
+progress; steering away from unpromising directions; best-of-six submitted; and
+last, "the team leader does not submit any solution at all, and silently
+withdraws from the competition without their participation ever being noted."
+His conclusion: "in the absence of a controlled test methodology that was not
 self-selected by the competing teams, one should be wary of making overly
 simplistic apples-to-apples comparisons … I will not be commenting on any
 self-reported AI competition performance results for which the methodology was
 not disclosed in advance of the competition."
+https://mathstodon.xyz/@tao/114881418225852441 ·
+https://mathstodon.xyz/@tao/114881419368778558 ·
 https://mathstodon.xyz/@tao/114881420636881657
 
-Each knob maps to a real practice — AlphaProof's three days per problem, its
-hand formalisation, tool access, parallel search, steering, best-of-n, and
-selective non-reporting. §III.5 turns all seven into recorded fields.
+Each knob maps to a real practice — AlphaProof's three days per problem, hand
+formalisation, tool access, parallel search, steering, best-of-n, selective
+non-reporting. §III.5 turns all seven into recorded fields.
 
 ---
 
@@ -308,12 +305,12 @@ libraries."
 
 **AlphaGeometry** (*Nature* 625, Jan 2024): a language model proposing **one
 auxiliary construction** at a time around a symbolic deduction engine (DD+AR)
-run to saturation — the LM exists only because auxiliary constructions come
-from an infinite space no symbolic search can enumerate. Trained on 100M
-synthetic theorem-proof pairs from 1B random diagrams, 9M needing an auxiliary
+run to saturation — the LM exists only because auxiliary constructions come from
+an infinite space no symbolic search can enumerate. Trained on 100M synthetic
+theorem-proof pairs from 1B random diagrams, 9M needing an auxiliary
 construction, no human proofs; 25/30 on IMO-AG-30 against 14 for the symbolic
 engine alone. **AlphaGeometry2** (arXiv:2502.03544) reached 84% and raised
-formal-language coverage from 66% to 88% of IMO geometry problems — a third
+formal-language coverage from 66% to 88% — a third of IMO geometry problems
 previously could not even be *stated*.
 
 **AlphaProof** (*Nature*, 12 Nov 2025, DOI 10.1038/s41586-025-09833-y; blog
@@ -360,22 +357,6 @@ exact arithmetic is not a nicety; and Tao's proposal that such search become a
 routine pre-publication sanity check, with negative results systematically
 recorded rather than left as folklore.
 https://terrytao.wordpress.com/2025/11/05/mathematical-exploration-and-discovery-at-scale/
-
-## II.7 Summary: mechanism → what breaks without it
-
-| Mechanism | Without it |
-|---|---|
-| Statement/proof dependency split | Work serialises behind unproved upstream nodes |
-| `sorry`-able stated contract | Every contributor waits |
-| Compiler as arbiter | Trust caps the team at ~5 |
-| Status lattice + dashboard | No way to see whether a run is advancing |
-| Derived graph (`@[equational_result]`) | A second list that disagrees |
-| `proof_wanted` | Unverified results silently satisfy goals |
-| CI-enforced task claiming | Two workers on one node |
-| Transitive closure + symmetry | 37× the proving cost (EQT) |
-| Cheap-first ladder | Frontier-model spend on brute-force work |
-| Immunity metadata | Re-attempting known-dead techniques |
-| Exact-arithmetic verifier | Exploits reported as progress |
 
 ---
 

@@ -1,6 +1,5 @@
 #![allow(clippy::expect_used)]
 
-use std::fmt::Write as _;
 
 use super::{LadderStance, RungStance, collect, is_weakened};
 
@@ -15,7 +14,7 @@ fn ladder(root: &std::path::Path, slug: &str, body: &str) -> std::io::Result<()>
 fn rungs(header: &str, blocks: &[&str]) -> String {
     let mut out = format!("```ladder\n{header}\n```\n");
     for block in blocks {
-        out.push_str(&format!("\n```rung\n{block}\n```\n"));
+        let _ = write!(out, "\n```rung\n{block}\n```\n");
     }
     out
 }
@@ -201,9 +200,12 @@ fn a_failed_rung_keeps_its_reason() -> std::io::Result<()> {
     let rendered = collect(&root).render();
     assert!(rendered.contains("## Rungs that failed, and why"));
     assert!(rendered.contains("needs girth 6 and the extra edge case is real"));
-    // A failed rung is not handed to the next attempt as the current one.
-    assert!(!rendered.contains("## The current rung — attack this one"));
+    // A failed rung is not handed to the next attempt as the current one, and
+    // a ladder left with nothing open and nothing reached says so.
+    assert!(!rendered.contains("→ `R-count`"));
+    assert!(rendered.contains("[[counting]] has no open rung"));
     assert!(collect(&root).open_rungs().is_empty());
+    assert!(collect(&root).briefing().is_empty());
     Ok(())
 }
 

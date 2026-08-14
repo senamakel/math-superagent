@@ -3,6 +3,7 @@ mod approaches;
 mod authoring;
 pub(crate) mod async_subagents;
 mod backward;
+#[allow(dead_code)]
 mod weakened;
 mod caps;
 mod checkpoint;
