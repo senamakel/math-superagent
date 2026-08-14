@@ -72,7 +72,10 @@ crossterm = { version = "0.28", optional = true }
 
 [dev-dependencies]
 tinyflows = { path = "vendor/tinyflows", default-features = false, features = ["store", "testkit"] }
-# TEMPORARY, for a local verification run only. Reverted immediately after.
+# Temporary directories that clean themselves up, for the tests that need a
+# workspace on disk. Added because `board_test.rs` already calls it and the test
+# target does not compile without it; a test that leaves its workspace behind on
+# a failure is how a suite fills a machine.
 tempfile = "3"
 
 [features]

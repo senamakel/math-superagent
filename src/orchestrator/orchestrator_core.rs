@@ -5,6 +5,7 @@ pub(crate) mod async_subagents;
 mod backward;
 mod blueprint;
 mod board;
+mod board_tool;
 mod caps;
 mod checkpoint;
 mod claims;

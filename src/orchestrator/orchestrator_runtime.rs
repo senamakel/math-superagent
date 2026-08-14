@@ -59,73 +59,27 @@ impl OrchestratorAgent {
             } else {
                 async_subagents.clone()
             };
-            let mut prompts = RolePrompts::for_school(&workspace, school)?;
-
-            let mut research_harness = build_research_harness(
-                &model,
-                budget,
-                &tracer,
-                &documents,
-                &vector_store,
-                search.clone(),
-            );
-            research_harness.push_middleware(checkpoint.clone());
-            scoped.register(
-                "research",
-                Arc::new(research_harness),
-                std::mem::take(&mut prompts.research),
-            )?;
-
-            register_code_writing_agents(
+            let orchestrator_harness = register_school(
                 &scoped,
-                &CodeWriters {
+                school,
+                &Roster {
                     model: &model,
+                    reasoning: &reasoning,
                     budget,
                     tracer: &tracer,
                     workspace: &workspace,
                     documents: &documents,
                     checkpoint: &checkpoint,
                     vector_store: &vector_store,
+                    search: &search,
                 },
-                prompts.code_writers(),
-            )?;
-
-            register_support_agents(
-                &scoped,
-                &SupportAgents {
-                    model: &model,
-                    reasoning: &reasoning,
-                    budget,
-                    tracer: &tracer,
-                    documents: &documents,
-                    vector_store: vector_store.clone(),
-                    search: search.clone(),
-                    workspace: workspace.clone(),
-                    // Resolved through the scoped handle, so a pattern agent
-                    // delegating to `tool_builder` reaches its own school's.
-                    delegation: scoped.tools(PATTERN_DELEGATES),
-                    school: school.slug,
-                },
-                prompts.support(),
-            )?;
-
-            let orchestrator_harness = register_planners(
-                &scoped,
-                &Planners {
-                    model: &model,
-                    budget,
-                    tracer: &tracer,
-                    documents: &documents,
-                    vector_store: &vector_store,
-                },
-                std::mem::take(&mut prompts.goals),
             )?;
             // `run` gives one agent a single turn, so it belongs to one school:
             // the first selected, which is the control unless an operator
             // deliberately ordered the list otherwise. Schools are a property
             // of the solution loop, and a single-turn delegation is not one.
             if opening.is_none() {
-                opening = Some((orchestrator_harness, prompts.orchestrator));
+                opening = Some(orchestrator_harness);
             }
         }
         // `schools::selected` never returns an empty list — a malformed
@@ -424,6 +378,100 @@ impl OrchestratorAgent {
     }
 }
 
+/// Everything every school's roster is built from.
+///
+/// Gathered into one value because it is the same for all of them: the model,
+/// the budget, the workspace and the stores are the run's, and what a school
+/// changes is only which prompts its roles are given. Passing nine arguments to
+/// [`register_school`] once per school would say the opposite.
+struct Roster<'a> {
+    model: &'a Arc<dyn ChatModel<()>>,
+    reasoning: &'a Arc<dyn ChatModel<()>>,
+    budget: RunBudget,
+    tracer: &'a Arc<RunTracer>,
+    workspace: &'a PathBuf,
+    documents: &'a WorkspaceDocuments,
+    checkpoint: &'a Arc<dyn tinyagents::harness::middleware::Middleware<()>>,
+    vector_store: &'a VectorStore,
+    search: &'a SearchTools,
+}
+
+/// Registers one school's copy of every role, and returns its orchestrator.
+///
+/// `subagents` is the school-scoped handle, which is what makes the names
+/// qualified: `register("research", …)` here registers `research@<slug>`, and
+/// every bench in this crate names roles bare, so an agent built from this
+/// handle can only reach this school's copies. See
+/// [`AsyncSubagentManager::for_school`].
+fn register_school(
+    subagents: &AsyncSubagentManager,
+    school: &schools::School,
+    parts: &Roster<'_>,
+) -> Result<(AgentHarness<()>, String)> {
+    let mut prompts = RolePrompts::for_school(parts.workspace, school)?;
+
+    let mut research_harness = build_research_harness(
+        parts.model,
+        parts.budget,
+        parts.tracer,
+        parts.documents,
+        parts.vector_store,
+        parts.search.clone(),
+    );
+    research_harness.push_middleware(parts.checkpoint.clone());
+    subagents.register(
+        "research",
+        Arc::new(research_harness),
+        std::mem::take(&mut prompts.research),
+    )?;
+
+    register_code_writing_agents(
+        subagents,
+        &CodeWriters {
+            model: parts.model,
+            budget: parts.budget,
+            tracer: parts.tracer,
+            workspace: parts.workspace,
+            documents: parts.documents,
+            checkpoint: parts.checkpoint,
+            vector_store: parts.vector_store,
+        },
+        prompts.code_writers(),
+    )?;
+
+    register_support_agents(
+        subagents,
+        &SupportAgents {
+            model: parts.model,
+            reasoning: parts.reasoning,
+            budget: parts.budget,
+            tracer: parts.tracer,
+            documents: parts.documents,
+            vector_store: parts.vector_store.clone(),
+            search: parts.search.clone(),
+            workspace: parts.workspace.clone(),
+            // Resolved through the scoped handle, so a pattern agent
+            // delegating to `tool_builder` reaches its own school's.
+            delegation: subagents.tools(PATTERN_DELEGATES),
+            school: school.slug,
+        },
+        prompts.support(),
+    )?;
+
+    let orchestrator_harness = register_planners(
+        subagents,
+        &Planners {
+            model: parts.model,
+            budget: parts.budget,
+            tracer: parts.tracer,
+            documents: parts.documents,
+            vector_store: parts.vector_store,
+        },
+        std::mem::take(&mut prompts.goals),
+    )?;
+    Ok((orchestrator_harness, prompts.orchestrator))
+}
+
 /// The run's report when more than one school worked the problem.
 ///
 /// One school's outcome is returned unchanged, so a single-school run reports
@@ -432,18 +480,25 @@ impl OrchestratorAgent {
 /// against specific ways a run can end and must not be wrapped in anything that
 /// weakens it.
 ///
-/// With several, every school is named and reported. That is the *"report how
-/// many distinct approaches a run actually pursued"* that
-/// `docs/tao-proposals.md` asks for as the honest small version of funding an
-/// orthogonal branch — except that here it is a by-product of the run having
-/// actually pursued them, rather than a count of how often it did not.
+/// With several, every school is named, with the bet it was making, and
+/// reported. That is the *"report how many distinct approaches a run actually
+/// pursued"* that `docs/tao-proposals.md` asks for as the honest small version
+/// of funding an orthogonal branch — except that here it is a by-product of the
+/// run having actually pursued them, rather than a count of how often it did
+/// not. The stance is carried because an outcome is only readable against what
+/// the school was trying: "the goal did not move" is a failure for the chisel
+/// and an ordinary week for the rising sea.
 fn combined_outcome(reached: &[(&'static str, String)]) -> String {
     if let [(_, only)] = reached {
         return only.clone();
     }
     let mut out = String::from("Several schools worked this problem.\n");
     for (slug, outcome) in reached {
-        let _ = write!(out, "\n## {slug}\n\n{}\n", outcome.trim());
+        let stance = schools::ALL
+            .iter()
+            .find(|school| school.slug == *slug)
+            .map_or("", |school| school.stance);
+        let _ = write!(out, "\n## {slug}\n\n_{stance}_\n\n{}\n", outcome.trim());
     }
     out
 }

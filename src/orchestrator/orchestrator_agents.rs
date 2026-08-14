@@ -18,13 +18,6 @@ struct Planners<'a> {
 // nothing it can name reaches outside one. See
 // [`AsyncSubagentManager::for_school`].
 
-// Declared here rather than beside `mod board` in `orchestrator_core.rs`
-// because `src/orchestrator/board_tool.rs` arrived without a declaration and
-// this file is the one that registers the tool. It resolves to the same path —
-// every `orchestrator_*.rs` is included into `mod.rs` — so moving the line up
-// to sit beside its sibling is a one-line change and should be made.
-mod board_tool;
-
 /// The school a role registered through `subagents` posts to the board as.
 ///
 /// The sender is not an argument — a school able to name its own sender could
