@@ -77,6 +77,70 @@ fn sorry_ax_in_the_axioms_is_caught_when_no_warning_names_it() {
     );
 }
 
+/// The hole `lean4checker` is usually reached for, closed from output already
+/// on hand.
+///
+/// One `axiom` line is all it takes: the file compiles, warns nothing, prints
+/// its axioms exactly as asked, and proves the theorem *given* something nobody
+/// established. Every other check here passes it.
+#[test]
+fn a_proof_resting_on_an_assumed_axiom_does_not_pass() {
+    let checked = parse(
+        "code/lemma.lean",
+        true,
+        "'main' depends on axioms: [propext, key_estimate, Quot.sound]",
+    );
+    assert!(checked.compiled, "it does compile — that is the problem");
+    assert!(checked.sorries.is_empty(), "and nothing warned");
+    assert!(!checked.verified(), "but it is not a proof");
+    let objection = checked.objection().expect("an assumed axiom is an objection");
+    assert!(
+        objection.contains("key_estimate"),
+        "the objection names the axiom, so the role knows what to prove: {objection}"
+    );
+}
+
+/// `native_decide` trusts the compiler rather than the kernel, and the whole
+/// argument for filing a Lean result as the strongest row available is that the
+/// kernel checked it.
+#[test]
+fn a_proof_closed_by_native_decide_does_not_pass() {
+    let checked = parse(
+        "code/lemma.lean",
+        true,
+        "'main' depends on axioms: [propext, Lean.ofReduceBool]",
+    );
+    assert!(!checked.verified());
+    assert!(
+        checked
+            .objection()
+            .expect("ofReduceBool is an objection")
+            .contains("Lean.ofReduceBool")
+    );
+}
+
+/// The trusted three, in any order and any subset, are what a Mathlib proof
+/// actually rests on — so none of them may be read as untrusted.
+#[test]
+fn lean_s_own_axioms_are_not_treated_as_assumptions() {
+    for listed in [
+        "[propext]",
+        "[Quot.sound, propext]",
+        "[propext, Classical.choice, Quot.sound]",
+    ] {
+        let checked = parse(
+            "code/lemma.lean",
+            true,
+            &format!("'main' depends on axioms: {listed}"),
+        );
+        assert!(
+            checked.untrusted_axioms().is_empty(),
+            "{listed} is Lean's own foundation, not an assumption"
+        );
+        assert!(checked.verified(), "{listed} should pass");
+    }
+}
+
 #[test]
 fn a_proof_that_never_printed_its_axioms_does_not_pass() {
     let checked = parse("code/lemma.lean", true, "");

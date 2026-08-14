@@ -36,9 +36,20 @@ sentence.
 file `lean_check` reads, for every theorem a claim will rest on. This is a
 condition of the verdict passing, not a courtesy: a proof whose axioms are
 unstated does not back a formalised claim, and `lean_check` will say so.
+
 Anything beyond `propext`, `Classical.choice`, and `Quot.sound` means the proof
-rests on something the kernel did not check, and `sorryAx` means there is no
-proof.
+rests on something the kernel did not check, and `lean_check` now fails the
+verdict on it and names the axiom. `sorryAx` means there is no proof.
+`Lean.ofReduceBool` means `native_decide` closed the goal by trusting the
+compiler, which is the one tactic this runtime cannot accept — the entire reason
+a Lean result outranks everything else here is that the kernel checked it.
+
+**Declaring your own `axiom` does not make it true.** A file with
+`axiom key_estimate : …` compiles, warns nothing, prints its axioms honestly and
+proves the theorem *given* something nobody established. That is a conditional
+result and a perfectly good one — so write the assumption as its own claim and
+prove it, or file the theorem with a weaker status saying what it assumes. What
+you may not do is let it through as `formalised`; `lean_check` will not.
 
 **Never leave a `sorry` undeclared.** Every `sorry`, `admit`, `native_decide`,
 and `@[implemented_by]` in what you report must be listed explicitly, with what

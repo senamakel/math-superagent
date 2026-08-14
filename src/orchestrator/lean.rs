@@ -56,6 +56,35 @@ pub(super) const VERDICT_DIR: &str = "code/out/lean";
 /// repetition.
 const MAX_LEAN_OUTPUT_BYTES: usize = 32 * 1024;
 
+/// The axioms a proof may rest on and still be a proof.
+///
+/// Lean's own three, and nothing else. Mathlib is built on exactly these, so a
+/// theorem that needs a fourth is not a theorem in the sense this runtime means
+/// — it is a theorem *given* something the run assumed, and the assumption is
+/// invisible in every other artifact the run produces.
+///
+/// This is the gap `lean4checker` exists to close, and closing it needs no
+/// second binary. Replaying the kernel over the compiled `.olean` guards
+/// against an environment that lied about what it checked; what actually
+/// happens here is simpler and more likely, because it is one line a model can
+/// write while doing exactly what it was asked. A file containing
+///
+/// ```text
+/// axiom key_estimate : ∀ n, f n ≤ 2 * n
+/// theorem main : ... := by ... key_estimate ...
+/// ```
+///
+/// compiles cleanly, carries no `sorry`, prints its axioms as instructed, and
+/// proves nothing at all. Every check this file had before would pass it, and
+/// the claim ledger would carry it as `formalised` — the strongest row it has.
+///
+/// `Lean.ofReduceBool` and `Lean.ofReduceNat` are deliberately excluded even
+/// though Lean emits them for legitimate uses of `native_decide`. That tactic
+/// trusts the compiler and the machine rather than the kernel, and a runtime
+/// whose whole argument for Lean is "the kernel checked it" cannot then accept
+/// the one tactic that means it did not.
+const TRUSTED_AXIOMS: [&str; 3] = ["propext", "Classical.choice", "Quot.sound"];
+
 /// What Lean did with one file.
 ///
 /// The three fields are separate because the three ways a formalisation lies
@@ -93,6 +122,47 @@ impl Verdict {
             && self.sorries.is_empty()
             && !self.axioms.is_empty()
             && !self.axioms.iter().any(|line| line.contains("sorryAx"))
+            && self.untrusted_axioms().is_empty()
+    }
+
+    /// The axioms this proof rests on that are not Lean's own three.
+    ///
+    /// Returned rather than counted, because naming them is the whole value: a
+    /// role told "an untrusted axiom" learns nothing, and one told
+    /// "`key_estimate`" knows precisely which line to go and prove.
+    ///
+    /// `sorryAx` is not listed here even though it fails the same test. It has
+    /// its own objection above, which says what a reader needs to hear — the
+    /// proof is incomplete — where this list means something different and
+    /// worse: the proof is complete, and rests on something nobody proved.
+    pub(super) fn untrusted_axioms(&self) -> Vec<String> {
+        let mut found: Vec<String> = Vec::new();
+        for line in &self.axioms {
+            // Everything after the colon is the bracketed list Lean prints.
+            // Parsed rather than string-searched for each trusted name, because
+            // the containment test answers the wrong question: a line listing
+            // only `propext` and a line listing `propext` beside a bespoke
+            // axiom both contain it.
+            let Some((_, listed)) = line.split_once(':') else {
+                continue;
+            };
+            for axiom in listed
+                .trim()
+                .trim_start_matches('[')
+                .trim_end_matches(']')
+                .split(',')
+                .map(str::trim)
+                .filter(|axiom| !axiom.is_empty())
+            {
+                if !TRUSTED_AXIOMS.contains(&axiom)
+                    && axiom != "sorryAx"
+                    && !found.iter().any(|seen| seen == axiom)
+                {
+                    found.push(axiom.to_string());
+                }
+            }
+        }
+        found
     }
 
     /// Why this verdict does not stand behind a claim, for a reader.
@@ -120,6 +190,20 @@ impl Verdict {
         }
         if self.axioms.iter().any(|line| line.contains("sorryAx")) {
             return Some(format!("`{}` depends on `sorryAx`", self.file));
+        }
+        let untrusted = self.untrusted_axioms();
+        if !untrusted.is_empty() {
+            return Some(format!(
+                "`{}` rests on {}, which nothing proved — a theorem given an assumed axiom is a \
+                 conditional result, so state the assumption as its own claim and prove it, or \
+                 file this one as `status: asserted`",
+                self.file,
+                untrusted
+                    .iter()
+                    .map(|axiom| format!("`{axiom}`"))
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            ));
         }
         None
     }

@@ -396,20 +396,20 @@ fn research_call(id: &str, state: &Value) -> Node {
 /// `agents` is the derived role registry — see `super::definitions` — so the
 /// graph carries the same roles, tool grants, and budgets the run does.
 #[must_use]
-pub(super) fn solution_loop(
-    problem: &str,
-    agents: Vec<tinyflows::model::AgentDefinition>,
-) -> WorkflowGraph {
-    let opening = initial_state(problem);
-    let seeded = format!("=.nodes.{SEED_APPLY_NODE}.item.json");
-    let nodes = vec![
+/// The nodes that run once, before any attempt exists.
+///
+/// Split out so [`solution_loop`] reads as the loop it is named after. They
+/// belong together for a reason beyond length: every one of them is a
+/// *precondition* — what the workspace already holds, what the literature adds,
+/// and what the goal decomposes into — and none of them ever runs again.
+fn stage_one(opening: &Value) -> Vec<Node> {
+    vec![
         node("start", NodeKind::Trigger, Value::Null),
-        // Stage one. Runs once, before any attempt exists.
-        research_call(RESEARCH_NODE, &opening),
+        research_call(RESEARCH_NODE, opening),
         step_as(
             SEED_CONTEXT_NODE,
             "seed_context",
-            &opening,
+            opening,
             &json!({
                 super::loop_steps::DECISION_ARG: format!("=.nodes.{RESEARCH_NODE}.item"),
             }),
@@ -427,6 +427,17 @@ pub(super) fn solution_loop(
             &json!(format!("=.nodes.{SEED_CONTEXT_NODE}.item.json")),
             &json!({ super::loop_steps::DECISION_ARG: format!("=.nodes.{SEED_GOALS_NODE}.item") }),
         ),
+    ]
+}
+
+pub(super) fn solution_loop(
+    problem: &str,
+    agents: Vec<tinyflows::model::AgentDefinition>,
+) -> WorkflowGraph {
+    let opening = initial_state(problem);
+    let seeded = format!("=.nodes.{SEED_APPLY_NODE}.item.json");
+    let mut nodes = stage_one(&opening);
+    nodes.extend([
         node(
             LOOP_NODE,
             NodeKind::Loop,
@@ -505,7 +516,7 @@ pub(super) fn solution_loop(
         ),
         node(PASS_NODE, NodeKind::Transform, Value::Null),
         node("report", NodeKind::Transform, Value::Null),
-    ];
+    ]);
 
     let mut edges = vec![
         edge("start", "main", RESEARCH_NODE),
