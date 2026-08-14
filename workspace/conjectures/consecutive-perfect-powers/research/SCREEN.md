@@ -98,3 +98,7 @@ prevent.
 | 1786746530 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (9316 characters) |
 | 1786746645 | `exa_search` | result | denied | term matched in 12144 characters |
 | 1786746657 | `exa_search` | result | denied-by-adjudicator | adjudicator reply was neither ALLOW nor DENY; failing closed |
+| 1786746751 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |
+| 1786746751 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |
+| 1786746751 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |
+| 1786746751 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |

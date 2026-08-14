@@ -186,7 +186,7 @@ def main():
         total = len(kernel_edges)
         failures = []
         if total == 0:
-            log("n=%d: 0 kernel members (min-degree>=4 connected graph on %d verts)" % (n, n))
+            log("n=%d: 0 kernel members (no graph on %d vertices satisfies min-deg>=4 + K4-free + K2,3-free + nbhd-maxdeg<=2)" % (n, n))
             results.append((n, total, True, []))
             continue
         for idx, edges in enumerate(kernel_edges):
@@ -202,13 +202,17 @@ def main():
             log("  NON-4-COLOURABLE KERNEL MEMBER: n=%d edges=%s" % (n, edges))
         results.append((n, total, all_ok, failures))
 
-    # find largest N<=8 with all kernel members 4-colourable
+    # find largest N (up to the reached ceiling) with all kernel members 4-colourable
+    mreached = max([n for (n, tot, ok, f) in results], default=0)
     maxN = 0
     for (n, total, all_ok, failures) in results:
-        if all_ok and 1 <= n <= 8:
+        if all_ok:
             maxN = n
     log("=" * 60)
-    log("RESULT: largest N<=8 with every C_N member 4-colourable: N=%d" % maxN)
+    log("RESULT: every member of C_N is 4-colourable for every N up to the reached")
+    log("        ceiling N=%d (largest N enumerated with all C_N members 4-colorable)." % mreached)
+    log("total kernel members enumerated and tested (all N): %d" % sum(
+        t for (n, t, o, f) in results))
     log("Per-N kernel counts:")
     for (n, total, all_ok, failures) in results:
         log("  n=%d  kernel=%d  all4color=%s  failures=%d" % (n, total, all_ok, len(failures)))

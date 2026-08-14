@@ -49,6 +49,13 @@ ceil sqrt n maximum degree
 # adjudicator rather than denied.
 Chung Furedi Graham Seymour
 sensitivity
+# The surname alone. Not blocked — it is a common name and denying it would
+# refuse unrelated literature — but flagged, so the adjudicator sees it and, more
+# to the point, so the leakage audit does. A live run recalled the whole result
+# from weights and wrote `code/lib/huang.py` and "the recalled Huang lower
+# bound"; every blocked phrase here pairs the name with another word, so none of
+# them matched and the audit reported the workspace clean.
+Huang
 decision tree complexity
 degree of a boolean function
 Cauchy interlacing

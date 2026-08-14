@@ -1,0 +1,59 @@
+
+======================================================================
+PART 1 — exact sympy: A_n^2 == n*I, zero diagonal, support == cube edges
+======================================================================
+n= 1 N=2^1=   2 A^2==n*I:True  zero-diag:True  support==edges(Q_n):True  (0.0s)
+n= 2 N=2^2=   4 A^2==n*I:True  zero-diag:True  support==edges(Q_n):True  (0.0s)
+n= 3 N=2^3=   8 A^2==n*I:True  zero-diag:True  support==edges(Q_n):True  (0.0s)
+n= 4 N=2^4=  16 A^2==n*I:True  zero-diag:True  support==edges(Q_n):True  (0.0s)
+n= 5 N=2^5=  32 A^2==n*I:True  zero-diag:True  support==edges(Q_n):True  (0.0s)
+n= 6 N=2^6=  64 A^2==n*I:True  zero-diag:True  support==edges(Q_n):True  (0.1s)
+n= 7 N=2^7= 128 A^2==n*I:True  zero-diag:True  support==edges(Q_n):True  (0.2s)
+n= 8 N=2^8= 256 A^2==n*I:True  zero-diag:True  support==edges(Q_n):True  (0.8s)
+
+PART 1 overall: ALL OK
+
+======================================================================
+PART 2 — full spectrum of A_n, confirm eigenvalues are +-sqrt(n)
+======================================================================
+n= 2 exact-eigenvals distinct=[-sqrt(2)=2, sqrt(2)=2] mult+= 2 mult-= 2 only+-sqrt(n): True (0.1s)
+n= 3 exact-eigenvals distinct=[-sqrt(3)=4, sqrt(3)=4] mult+= 4 mult-= 4 only+-sqrt(n): True (0.0s)
+n= 4 exact-eigenvals distinct=[2=8, -2=8] mult+= 8 mult-= 8 only+-sqrt(n): True (0.0s)
+n= 5 exact-eigenvals distinct=[-sqrt(5)=16, sqrt(5)=16] mult+= 16 mult-= 16 only+-sqrt(n): True (0.1s)
+n= 6 exact-eigenvals distinct=[-sqrt(6)=32, sqrt(6)=32] mult+= 32 mult-= 32 only+-sqrt(n): True (0.5s)
+n= 7 exact-eigenvals distinct=[-sqrt(7)=64, sqrt(7)=64] mult+= 64 mult-= 64 only+-sqrt(n): True (3.2s)
+n= 8 numeric-eigenvals: +sqrt(n) x 128, -sqrt(n) x 128, other 0  (want 128 each, 0 other): True (0.3s)
+n= 9 numeric-eigenvals: +sqrt(n) x 256, -sqrt(n) x 256, other 0  (want 256 each, 0 other): True (3.4s)
+n=10 numeric-eigenvals: +sqrt(n) x 512, -sqrt(n) x 512, other 0  (want 512 each, 0 other): True (3.0s)
+
+======================================================================
+PART 3 — interlacing: lambda_max(B[S,S]) >= sqrt(n) for |S|=2^{n-1}+1
+======================================================================
+n= 2 N=   4 m=   3 trials= 5: min-lambda_max over trials >= sqrt(n) YES  (worst lambda_max=1.4142, sqrt(n)=1.4142)
+n= 3 N=   8 m=   5 trials= 5: min-lambda_max over trials >= sqrt(n) YES  (worst lambda_max=1.7321, sqrt(n)=1.7321)
+n= 4 N=  16 m=   9 trials= 5: min-lambda_max over trials >= sqrt(n) YES  (worst lambda_max=2.0000, sqrt(n)=2.0000)
+n= 5 N=  32 m=  17 trials= 5: min-lambda_max over trials >= sqrt(n) YES  (worst lambda_max=2.2361, sqrt(n)=2.2361)
+n= 6 N=  64 m=  33 trials= 5: min-lambda_max over trials >= sqrt(n) YES  (worst lambda_max=2.4495, sqrt(n)=2.4495)
+n= 7 N= 128 m=  65 trials= 5: min-lambda_max over trials >= sqrt(n) YES  (worst lambda_max=2.6458, sqrt(n)=2.6458)
+n= 8 N= 256 m= 129 trials= 5: min-lambda_max over trials >= sqrt(n) YES  (worst lambda_max=2.8284, sqrt(n)=2.8284)
+n= 9 N= 512 m= 257 trials= 5: min-lambda_max over trials >= sqrt(n) YES  (worst lambda_max=3.0000, sqrt(n)=3.0000)
+n=10 N=1024 m= 513 trials= 5: min-lambda_max over trials >= sqrt(n) YES  (worst lambda_max=3.1623, sqrt(n)=3.1623)
+
+PART 3 overall: ALL lambda_max >= sqrt(n)
+
+======================================================================
+PART 4 — quadratic form / degree: lambda_max(B) <= Delta(H)
+======================================================================
+n= 2 trials= 5: lambda_max <= Delta(H) YES  (worst lambda_max=1.41, worst Delta(H)=2, sqrt(n)=1.41)
+n= 3 trials= 5: lambda_max <= Delta(H) YES  (worst lambda_max=1.73, worst Delta(H)=3, sqrt(n)=1.73)
+n= 4 trials= 5: lambda_max <= Delta(H) YES  (worst lambda_max=2.00, worst Delta(H)=4, sqrt(n)=2.00)
+n= 5 trials= 5: lambda_max <= Delta(H) YES  (worst lambda_max=2.24, worst Delta(H)=5, sqrt(n)=2.24)
+n= 6 trials= 5: lambda_max <= Delta(H) YES  (worst lambda_max=2.45, worst Delta(H)=6, sqrt(n)=2.45)
+n= 7 trials= 5: lambda_max <= Delta(H) YES  (worst lambda_max=2.65, worst Delta(H)=7, sqrt(n)=2.65)
+n= 8 trials= 5: lambda_max <= Delta(H) YES  (worst lambda_max=2.83, worst Delta(H)=8, sqrt(n)=2.83)
+n= 9 trials= 5: lambda_max <= Delta(H) YES  (worst lambda_max=3.00, worst Delta(H)=9, sqrt(n)=3.00)
+n=10 trials= 5: lambda_max <= Delta(H) YES  (worst lambda_max=3.16, worst Delta(H)=9, sqrt(n)=3.16)
+
+PART 4 overall: ALL lambda_max <= Delta(H)
+
+Total runtime: 12.9s

@@ -93,6 +93,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `conditional-non-wieferich` | goal | blocked | `conditional-non-wieferich/cond-cassels`, `conditional-non-wieferich/cond-wieferich` | > For all odd primes p, q with p^(q-1) != 1 (mod q^2) or q^(p-1) != 1 (mod p^2) (i.e. (p,q) is NOT a double-Wieferich pair), the equation… |
 | `conditional-non-wieferich/cond-cassels` | lemma | **ready** | — | > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q \| x and p \| y. (Cassels, 1960.) |
 | `conditional-non-wieferich/cond-wieferich` | lemma | **ready** | — | > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q^(p-1) = 1 (mod p^2) and p^(q-1) = 1 (mod q^2). |
+| `exp2-independent-searches` | claim | established | — | Over x^2,y^q<=N for N in {1e6,1e7}, the equation x^2-y^q=1 (q prime) has exactly one solution (x,y,q)=(3,2,3); over x^p,y^2<=N the equation… |
 | `exponent-2-in-full` | goal | blocked | `exponent-2-in-full/exp2-a-even`, `exponent-2-in-full/exp2-a-odd-descent`, `exponent-2-in-full/exp2-b-nosolution` | > (A) x^2 - y^q = 1 with x, y > 0 and q prime has exactly the solution (x, y, q) = (3, 2, 3); and (B) x^p - y^2 = 1 with x, y > 0 and p… |
 | `exponent-2-in-full/exp2-a-even` | lemma | **ready** | — | > x^2 - y^q = 1 with x, y > 0, x even, and q an odd prime, has no solution. |
 | `exponent-2-in-full/exp2-a-odd-descent` | lemma | **ready** | — | > x^2 - y^q = 1 with x >= 3 odd, y > 0, and q an odd prime, has exactly the solution (x, y, q) = (3, 2, 3). |
@@ -112,6 +113,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `odd-prime-case/G-odd-wieferich` | lemma | **ready** | — | For p,q odd primes and x,y >= 2, x^p - y^q = 1 implies p^(q-1) = 1 (mod q^2) and q^(p-1) = 1 (mod p^2). (Inkeri / Hyyrö refinement of… |
 | `reduce-to-prime-exponents` | goal | blocked | `reduce-to-prime-exponents/G-exp2-a`, `reduce-to-prime-exponents/G-exp2-b`, `reduce-to-prime-exponents/G-odd-prime`, `reduce-to-prime-exponents/G-prime-reduction` | x^p - y^q = 1 with x,y>0, p,q>1 has (x,p,y,q)=(3,2,2,3) as its only solution. |
 | `reduce-to-prime-exponents/G-exp2-a` | lemma | **ready** | — | x^2 - y^q = 1 with x,y>0 and q prime has the unique solution (x,y,q)=(3,2,3). |
-| `reduce-to-prime-exponents/G-exp2-b` | lemma | **ready** | — | x^p - y^2 = 1 with x,y>0 and p prime has no solutions. |
 
-_6 further nodes not shown._
+_7 further nodes not shown._

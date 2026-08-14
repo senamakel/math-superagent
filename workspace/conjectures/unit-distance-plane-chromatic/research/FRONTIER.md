@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://hdl.handle.net/10338.dmlcz/118949 | Prime Ideal Theorems and systems of finite character | found researching: What is the exact statement and proof of the de Bruijn–Erdős theorem that the chromatic number of an infinite graph equals the supremum of chromatic numbers of … |
 | 1 | https://doi.org/10.1007/978-3-662-70107-2 | Graph Theory | found researching: What is the exact statement and proof of the de Bruijn–Erdős theorem that the chromatic number of an infinite graph equals the supremum of chromatic numbers of … |
 
-_150 further candidates not shown; they are cited once each._
+_186 further candidates not shown; they are cited once each._

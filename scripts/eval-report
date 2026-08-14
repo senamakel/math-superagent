@@ -255,13 +255,83 @@ def main() -> None:
         for term in find_terms(text, withheld):
             written_hits[term].append(str(path.relative_to(workspace)))
     if not written_hits:
-        add("No withheld term appears in anything the run wrote.")
+        add("No **blocked** term appears in anything the run wrote.")
     else:
-        add("| term | files |")
+        add("| blocked term | files |")
         add("| --- | --- |")
         for term, where in sorted(written_hits.items()):
             add(f"| {term} | {', '.join(where[:4])}{' …' if len(where) > 4 else ''} |")
     add("")
+
+    # Flagged terms in what the run *wrote*, which the audit used to ignore.
+    #
+    # It audited `[block]` only, and that made it silent on the class of term
+    # most diagnostic of recall. A flagged term is one that is legitimate *when
+    # derived* and damning when it arrives first — which is precisely the
+    # question this audit exists to answer, so excluding it removed the audit's
+    # whole subject. A live run wrote `code/lib/huang.py` and a note reading
+    # "the recalled Huang lower bound", and the audit reported "no withheld term
+    # appears in anything the run wrote".
+    flag_hits: dict[str, list[str]] = collections.defaultdict(list)
+    for path, text in files:
+        for term in find_terms(text, flagged):
+            flag_hits[term].append(str(path.relative_to(workspace)))
+    if flag_hits:
+        add("### Flagged terms the run wrote")
+        add("")
+        add("Legitimate once derived, and evidence of recall when they arrive")
+        add("before the derivation. Check each against the trace ordering below.")
+        add("")
+        add("| flagged term | files |")
+        add("| --- | --- |")
+        for term, where in sorted(flag_hits.items()):
+            add(f"| {term} | {', '.join(where[:4])}{' …' if len(where) > 4 else ''} |")
+        add("")
+
+    # The run naming its own recall, which no term list anticipates.
+    #
+    # A blocklist is written before the run and can only name what its author
+    # thought of. What it cannot name is the run *saying* it is recalling —
+    # "the recalled Huang bound", "as is well known", "the standard result" —
+    # and that phrasing is a stronger signal than any single term, because the
+    # run is reporting its own epistemic state rather than being caught with a
+    # word.
+    # `recall_memory` / `recall_scratch` are tool names and appear in every
+    # scaffold prompt, so a bare "recall" matches the seed on every run and the
+    # detector becomes noise nobody reads. What is wanted is the run using the
+    # word about *a result*.
+    admissions = [
+        r"recall(?:ed|ing)\s+(?:the\s+)?"
+        r"(?:\w+\s+)?(?:bound|theorem|result|proof|argument|prediction|construction|lemma)",
+        r"as is well[- ]known",
+        r"the (?:standard|classical|known|published) (?:result|theorem|proof|argument)",
+        r"from memory",
+        r"I (?:recall|remember|know) that",
+    ]
+    # The run's own prose only. `prompts/` and the scaffold `AGENTS.md` are
+    # instructions *to* the run about how to use its memory tools, not the run
+    # reporting where a result came from.
+    admitted: list[tuple[str, str]] = []
+    for path, text in files:
+        if path.name == "AGENTS.md" or "prompts" in path.parts:
+            continue
+        for pattern in admissions:
+            for match in re.finditer(pattern, text, re.IGNORECASE):
+                start = max(0, match.start() - 60)
+                snippet = " ".join(text[start : match.end() + 60].split())
+                admitted.append((str(path.relative_to(workspace)), snippet))
+    if admitted:
+        add("### The run describing its own recall")
+        add("")
+        add("Phrasing, not terms. A run that writes *recalled* is telling you")
+        add("where the result came from, and no blocklist has to have guessed")
+        add("the word.")
+        add("")
+        for where, snippet in admitted[:12]:
+            add(f"- `{where}` — …{snippet}…")
+        if len(admitted) > 12:
+            add(f"- …and {len(admitted) - 12} more")
+        add("")
 
     order = first_occurrence(events, withheld + flagged)
     if order:

@@ -82,3 +82,7 @@
 {"at":"1786746530","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (9316 characters)","stage":"result","tool":"read_sources"}
 {"at":"1786746645","decision":"denied","detail":"term matched in 12144 characters","stage":"result","tool":"exa_search"}
 {"at":"1786746657","decision":"denied-by-adjudicator","detail":"adjudicator reply was neither ALLOW nor DENY; failing closed","stage":"result","tool":"exa_search"}
+{"at":"1786746751","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746751","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746751","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746751","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}

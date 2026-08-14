@@ -9,6 +9,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `circular-units-index-plus-part` | > For an imaginary cyclotomic field, the index [E+ : C+] of the circular units in the full unit group of the real subfield is h^+ up to a power of 2 (Sinnott's formula; exact statement in the source). | yes | asserted | `research/sources/stickelberger-cyclotomic-units.md` |
+| `exp2-independent-searches` | Over x^2,y^q<=N for N in {1e6,1e7}, the equation x^2-y^q=1 (q prime) has exactly one solution (x,y,q)=(3,2,3); over x^p,y^2<=N the equation x^p-y^2=1 (p odd prime) has no solutions. | yes | checked | `code/out/exp2.md` |
 | `faktor-pairwise-coprime-off-ramified` | > For x in Z[zeta_p] and i != j, the ideals (x - zeta_p^i) and (x - zeta_p^j) have gcd contained in (1 - zeta_p); they are pairwise coprime off the unique ramified prime. In particular, if x is an integer with x != 1… | yes | asserted | `research/sources/zetap-ring-ramification.md` |
 | `iwasawa-index-of-stickelberger` | > [Z[G]^- : s^-] = h^-(Q(zeta_p)), the relative class number. | yes | asserted | `research/sources/stickelberger-cyclotomic-units.md` |
 | `minus-class-computable-plus-not` | > h^- of Q(zeta_p) is given by an explicit Bernoulli-number product and is easy to compute for very large odd primes p; h^+ of Q(zeta_p) is not known for any single prime p >= 71. | yes | asserted | `research/sources/relative-class-number-analytic.md` |

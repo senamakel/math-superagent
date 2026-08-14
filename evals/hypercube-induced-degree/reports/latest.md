@@ -9,19 +9,19 @@ evidence, assembled, so that a reader can.
 
 ## What the run built
 
-- files written: 24
-- program files: 0
-- captured output files: 1
+- files written: 74
+- program files: 10
+- captured output files: 7
 - claims recorded: 0
 - evidence classes: {'checked': 1, 'formalised': 1}
-- trace events: 300
+- trace events: 1649
 
 ## What the screen withheld
 
-- decisions: 4
-- by outcome: {'denied': 2, 'unreachable-host': 2}
-- by tool: {'exa_search': 2, 'download_document': 2}
-- by stage: {'result': 2, 'arguments': 2}
+- decisions: 20
+- by outcome: {'denied': 10, 'unreachable-host': 7, 'allowed-by-adjudicator': 2, 'denied-by-adjudicator': 1}
+- by tool: {'exa_search': 9, 'download_document': 7, 'read_sources': 4}
+- by stage: {'result': 7, 'arguments': 13}
 
 A denial at the `arguments` stage means the run *asked* for something
 withheld; at the `result` stage it means a source it reached carried
@@ -33,7 +33,40 @@ Blocking retrieval cannot block recall: the model weights already hold
 these results. So the question is not only whether a withheld term
 appears, but **when** — before the work that would derive it, or after.
 
-No withheld term appears in anything the run wrote.
+| blocked term | files |
+| --- | --- |
+| 1907.00847 | config/.requests.json, research/REQUESTS.md, research/sources/LIBRARY-STATUS.md |
+| induced subgraphs of hypercubes and a proof | config/.requests.json, research/REQUESTS.md, research/notes/huang-lead.md, research/sources/LIBRARY-STATUS.md |
+| sensitivity conjecture | code/spectral_verify.py, config/.requests.json, research/REQUESTS.md, research/notes/huang-lead.md … |
+
+### Flagged terms the run wrote
+
+Legitimate once derived, and evidence of recall when they arrive
+before the derivation. Check each against the trace ordering below.
+
+| flagged term | files |
+| --- | --- |
+| Cauchy interlacing | code/out/check_interlacing.py, config/.requests.json, research/REQUESTS.md, research/backward/bipartite-threshold-shadow.md … |
+| Huang | code/INDEX.md, code/f_exact_spectral_check.py, code/lib/huang.py, code/out/commands.log … |
+| interlacing theorem | research/BACKWARD.md, research/BLUEPRINT.md, research/backward/spectral-interlacing-sqrt-lower-bound.md, teams/board.jsonl |
+| sensitivity | code/spectral_verify.py, config/.requests.json, research/REQUESTS.md, research/notes/huang-lead.md … |
+| signed adjacency | code/INDEX.md, code/f_exact_spectral_check.py, code/lib/huang.py, code/out/INDEX.md … |
+
+### The run describing its own recall
+
+Phrasing, not terms. A run that writes *recalled* is telling you
+where the result came from, and no blocklist has to have guessed
+the word.
+
+- `code/out/f-exact-note.md` — …# f(n) for n = 1..4, and the cross-check against the recalled Huang prediction Backing program: `code/brute.py` (exhaustive oracle), outp…
+- `code/out/f-exact-note.md` — …nd, independent route (exact computation) agreeing with the recalled theorem's prediction at small n, but it does NOT prove the theorem…
+- `code/out/f-exact-note.md` — …a computed f(n) < ceil(sqrt(n)) for any n would refute the recalled Huang bound in that regime. anchor: code/out/brute.captured.txt ``` ##…
+- `code/out/f-exact-note.md` — …only says these exact small values are consistent with the recalled bound. The run's decisive open question — is the gap already clos…
+- `research/notes/huang-lead.md` — …trying to "close a gap" that may already be closed. ## The recalled theorem Hao Huang, "Induced subgraphs of hypercubes and a proof of…
+- `research/notes/huang-lead.md` — …degree. ## What follows if the theorem is correct If the recalled lower bound (every > 2^{n-1}-vertex induced subgraph has a vertex of in…
+- `research/notes/huang-lead.md` — …? If yes for small n, that is strong confirmation of the recalled theorem with a different route than the withheld paper. If no, the…
+- `research/notes/huang-lead.md` — …th a different route than the withheld paper. If no, the recalled theorem (or the construction) is wrong in detail. ## Integrity not…
+- `research/weakened/cube-max-degree.md` — …n) needs a quantity that bounds the maximum directly, which the known argument does not provide. ``` ```rung id: R8-constant-excess state…
 
 ### First mention in the trace, in order
 
@@ -42,15 +75,30 @@ early appearance is recall rather than derivation.
 
 | position | of | term |
 | --- | --- | --- |
-| 191 | 300 | who proved |
+| 191 | 1649 | who proved |
+| 354 | 1649 | induced subgraphs of hypercubes and a proof |
+| 354 | 1649 | 1907.00847 |
+| 354 | 1649 | sensitivity conjecture |
+| 354 | 1649 | block sensitivity |
+| 354 | 1649 | Nisan Szegedy |
+| 354 | 1649 | sensitivity |
+| 354 | 1649 | Huang |
+| 354 | 1649 | Cauchy interlacing |
+| 354 | 1649 | interlacing theorem |
+| 354 | 1649 | signed adjacency |
+| 467 | 1649 | signing of the hypercube |
+| 549 | 1649 | signed adjacency matrix hypercube |
+| 713 | 1649 | Annals of Mathematics 2019 |
+| 1250 | 1649 | Huang sensitivity conjecture |
+| 1266 | 1649 | Gotsman Linial |
 
 ## Negative markers to check by hand
 
 Named in `RUBRIC.md`. These are the ones a script can point at; the
 rest need reading.
 
-- tolerance-based comparison in Python: none found
-- program files with no captured output beside them: 0
+- tolerance-based comparison in Python: ['code/out/check_interlacing.py', 'code/spectral_verify.py']
+- program files with no captured output beside them: 5
 
 Still to read by hand: whether claims are proved or verified, whether
 the oracle was calibrated before it was trusted, and whether the run
