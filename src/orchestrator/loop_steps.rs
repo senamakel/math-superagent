@@ -52,8 +52,9 @@ use super::vector::VectorStore;
 /// A closed set, matched by name. An unknown step is an error rather than a
 /// no-op: a workflow naming a step that does not exist would otherwise run,
 /// change nothing, and route on a state nobody advanced.
-const STEPS: [&str; 11] = [
+const STEPS: [&str; 12] = [
     "init_context",
+    "seed_context",
     "attempt",
     "judge",
     "reflect",
@@ -128,7 +129,7 @@ impl LoopSteps {
         // answered before the match and their extra field is folded into the
         // returned object afterwards.
         if step == "goal_gate" {
-            let (opened, report) = super::solutions::reduce_arm(
+            let (opened, _) = super::solutions::reduce_arm(
                 &self.subagents,
                 tracer,
                 workspace,
@@ -136,15 +137,6 @@ impl LoopSteps {
                 &state,
             )
             .await;
-            let mut state = state;
-            if opened {
-                state
-                    .diversify_mut()
-                    .set(super::solutions::Finding::new(
-                        super::solutions::Slot::Skeleton,
-                        report,
-                    ));
-            }
             let mut carried = state.to_accumulator();
             if let Some(object) = carried.as_object_mut() {
                 object.insert(
@@ -166,6 +158,14 @@ impl LoopSteps {
             let merged = super::solutions::fold_evaluation(&state.to_accumulator(), &arms);
             let merged = SolutionState::from_accumulator("", &merged);
             return Ok(super::solutions::evaluation_merge(merged).to_accumulator());
+        }
+        // Stage one crossing back into the loop. Like `goal_apply` it reads a
+        // child's whole run state rather than an accumulator, and like
+        // `eval_merge` what it returns is not the state it was handed.
+        if step == "seed_context" {
+            let decision = args.get(DECISION_ARG).cloned().unwrap_or(Value::Null);
+            return Ok(super::workflow_research::established(&decision)
+                .unwrap_or_else(|| state.to_accumulator()));
         }
         let next = match step {
             "attempt" => {
@@ -276,18 +276,9 @@ async fn init_context_step(
 /// another full interval for evidence that may have arrived meanwhile.
 fn apply_goal_decision(mut state: SolutionState, args: &Value) -> SolutionState {
     let decision = args.get(DECISION_ARG).cloned().unwrap_or(Value::Null);
-    let Some(gate) = super::workflow_goals::gate_state(&decision) else {
-        return state;
-    };
-    state.since_reduction = 0;
-    // And the skeleton itself. The child ran a reducer to produce it, so a
-    // caller that took the flag and left the findings behind would have spent
-    // that run and merged nothing — the same way the diversify arms' findings
-    // were once dropped, with nothing in the trace to say so.
-    let produced = SolutionState::from_accumulator("", &gate);
-    state
-        .diversify_mut()
-        .absorb(SolutionState::diversify(&produced));
+    if super::workflow_goals::opened(&decision) {
+        state.since_reduction = 0;
+    }
     state
 }
 

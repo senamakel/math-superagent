@@ -27,8 +27,6 @@ use tinyflows::visualization::render_graph;
 
 use crate::error::{Error, Result};
 
-use super::solutions::DIVERSIFY_MERGE;
-
 /// The loop's nodes, as `(id, name)`.
 ///
 /// Names are short and ASCII because the renderer is: it draws a name at
@@ -41,20 +39,31 @@ use super::solutions::DIVERSIFY_MERGE;
 /// Node identity still comes from the edge table: a node named here but
 /// unreachable renders detached, which is the renderer's way of showing
 /// exactly that mistake.
-const NODES: [(&str, &str); 13] = [
+const NODES: [(&str, &str); 17] = [
     ("start", "start"),
+    (super::workflow::RESEARCH_NODE, "research"),
+    (super::workflow::SEED_CONTEXT_NODE, "seed ctx"),
     (super::workflow::SEED_GOALS_NODE, "seed goals"),
+    (super::workflow::SEED_APPLY_NODE, "seed apply"),
     (super::workflow::LOOP_NODE, "solve"),
     ("attempt", "attempt"),
     ("judge", "judge"),
     ("reflect", "reflect"),
+    ("eval_patterns", "patterns"),
+    ("eval_invention", "invention"),
+    (super::workflow::LIBRARY_ARM, "library"),
     (super::workflow::GOALS_NODE, "goals"),
-    ("goal_apply", "cadence"),
-    ("diversify_library", "library"),
-    ("diversify_patterns", "patterns"),
-    ("diversify_invention", "invention"),
-    (DIVERSIFY_MERGE, "merge"),
+    (super::workflow::GOAL_APPLY, "cadence"),
+    (super::workflow::EVAL_MERGE, "merge"),
+    ("diversify_library", "escalate"),
     ("report", "report"),
+];
+
+// The research child's nodes, which the loop's own list has no reason to name.
+const RESEARCH_NODES: [(&str, &str); 3] = [
+    ("research_start", "start"),
+    (super::workflow_research::CONTEXT_NODE, "context"),
+    (super::workflow_research::SURVEY_NODE, "survey"),
 ];
 
 
@@ -74,13 +83,21 @@ pub(super) fn flows() -> Vec<(&'static str, WorkflowGraph)> {
     vec![
         ("solution-loop", solution_loop()),
         ("goals", shorten(super::workflow_goals::goals_workflow())),
+        (
+            "research",
+            shorten(super::workflow_research::research_workflow()),
+        ),
     ]
 }
 
 /// Replaces node names with the short ones the renderer can draw.
 fn shorten(mut graph: WorkflowGraph) -> WorkflowGraph {
     for node in &mut graph.nodes {
-        if let Some((_, short)) = NODES.iter().find(|(id, _)| *id == node.id.as_str()) {
+        if let Some((_, short)) = NODES
+            .iter()
+            .chain(RESEARCH_NODES.iter())
+            .find(|(id, _)| *id == node.id.as_str())
+        {
             node.name = (*short).to_string();
         }
     }

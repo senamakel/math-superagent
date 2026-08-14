@@ -154,19 +154,21 @@ async fn a_solved_reflection_leaves_the_loop() {
     run.assert_node_ran(GOALS_NODE);
 }
 
-/// The arm that catches a run doing well by its own report and going nowhere.
+/// The escalation, which is now one node rather than three.
+///
+/// Two of the three arms it used to fan out to — the pattern agent and the
+/// inventor — run on every pass in the evaluation, so what is left that is
+/// genuinely an escalation is blocking on the literature the run has otherwise
+/// been gathering in the background.
 #[tokio::test]
-async fn a_stuck_run_fans_out_to_every_diversify_arm() {
+async fn a_stuck_run_escalates_to_the_literature() {
     let run = run_with(json!({
         "attempts": 1, "solved": false, "unproductive": STUCK_THRESHOLD, "blocked": 0,
         "computational": 0, "unverified": 0, "restarts": 0,
         "lesson": "no progress", "fresh_context": ""
     }))
     .await;
-    for (arm, _) in ARMS {
-        run.assert_node_ran(arm);
-    }
-    run.assert_node_ran("diversify_merge");
+    run.assert_node_ran("diversify_library");
 }
 
 /// A provider failure is not evidence about the mathematics, so it outranks
@@ -180,11 +182,9 @@ async fn a_blocked_run_stops_without_diversifying() {
     }))
     .await;
     run.assert_node_ran("report");
-    // Blocked outranks the stuck arms, so no arm may have run even though the
-    // unproductive count alone would have sent it there.
-    for (arm, _) in ARMS {
-        run.assert_node_skipped(arm);
-    }
+    // Blocked outranks the stuck arms, so the escalation may not have run even
+    // though the unproductive count alone would have sent it there.
+    run.assert_node_skipped("diversify_library");
 }
 
 /// An answer with one route behind it, said twice, is terminal — and it must
@@ -199,9 +199,7 @@ async fn a_twice_unverified_run_reports_rather_than_diversifying() {
     }))
     .await;
     run.assert_node_ran("report");
-    for (arm, _) in ARMS {
-        run.assert_node_skipped(arm);
-    }
+    run.assert_node_skipped("diversify_library");
 }
 
 /// Progress that is only ever a bigger instance of the same computation routes
@@ -216,7 +214,7 @@ async fn a_run_that_only_scales_is_sent_to_diversify() {
         "lesson": "bigger n", "fresh_context": ""
     }))
     .await;
-    run.assert_node_ran("diversify_merge");
+    run.assert_node_ran("diversify_library");
 }
 
 /// The diagnosis catches what the assertions above do not think to look for.
@@ -364,7 +362,7 @@ fn the_ladders_read_fields_a_step_actually_emits() {
     let emitted = SolutionState::new("a problem").to_accumulator();
     let mut missing = Vec::new();
 
-    for ladder in [reflect_ladder(), judge_ladder(), terminal_condition()] {
+    for ladder in [reflect_ladder(), terminal_condition()] {
         for prefix in [".item.json.", ".state.", &format!(".nodes.{LOOP_NODE}.state.")] {
             let mut rest = ladder.as_str();
             while let Some(at) = rest.find(prefix) {
@@ -388,64 +386,27 @@ fn the_ladders_read_fields_a_step_actually_emits() {
     );
 }
 
-/// The restart arm, end to end. A judge that wants the run to start over must
-/// actually reach another attempt rather than being routed to a reflection.
+/// The restart arm is gone from the graph, and that has to stay deliberate.
 ///
-/// The sequence advances `restarts` the way `judge_step` does, because that is
-/// what bounds the arm. The restart goes back through the loop head, so
-/// `max_iterations` now bounds it as well — but the ladder's
-/// `restarts >= MAX_RESTARTS` is what makes it stop *for the right reason*,
-/// having explored something to its conclusion rather than having run out of
-/// attempts. A mock returning a fixed state span to the recursion limit when the
-/// arm re-entered `attempt` directly, which is why the cap is load-bearing
-/// rather than a nicety.
-#[tokio::test]
-async fn a_restart_verdict_reaches_another_attempt_and_is_capped() {
-    use crate::orchestrator::solutions::{SolutionState, Verdict};
-
-    let restarting = |restarts: usize, solved: bool| {
-        let mut state = SolutionState::new("a problem");
-        state.attempts = 1;
-        state.restarts = restarts;
-        state.solved = solved;
-        state.judged = Verdict::Restart;
-        Respond::value(state.to_accumulator())
-    };
-
-    let run = TestHarness::new(&graph())
-        .mock_tool(
-            "run_loop_step",
-            Respond::sequence([
-                // The seed call to the goals child, then attempt/judge pairs: a
-                // restart re-enters through the loop head, so each one is a pass.
-                restarting(0, false),
-                restarting(0, false),
-                restarting(0, false),
-                restarting(1, false),
-                restarting(1, false),
-                restarting(MAX_RESTARTS, false),
-                // Past the cap the ladder must route to a reflection, and this
-                // ends the run so the test cannot hang if it does not.
-                restarting(MAX_RESTARTS, true),
-            ]),
-        )
-        .run()
-        .await
-        .expect("the loop runs to completion");
-
-    let attempts = run
-        .trace()
-        .steps
+/// A restart used to be a route: the judge ran first and a restart verdict
+/// skipped the reflection. The judge and the reflection are concurrent now, so
+/// by the time anything routes there is no reflection left to skip — the
+/// restart's whole effect is what `judge_step` writes into the state, and
+/// `MAX_RESTARTS` is enforced there. This asserts the graph does not quietly
+/// grow the port back, because a `restart` port with nowhere to go is a verdict
+/// silently dropped.
+#[test]
+fn nothing_in_the_graph_routes_on_a_restart() {
+    let graph = graph();
+    let ports: Vec<&str> = graph
+        .edges
         .iter()
-        .filter(|step| step.node_id == "attempt")
-        .count();
+        .map(|edge| edge.from_port.as_str())
+        .collect();
     assert!(
-        attempts > 1,
-        "the restart arm never re-attempted; it is unreachable"
+        !ports.contains(&"restart"),
+        "the graph has a restart port again: {ports:?}"
     );
-    // And it stopped: the cap is what makes the arm safe.
-    run.assert_completed();
-    run.assert_node_ran("reflect");
 }
 
 /// The state chains through a pass rather than every step reading the pass's
@@ -506,10 +467,10 @@ async fn each_step_is_handed_what_the_step_before_it_produced() {
 /// The arms' findings reach the merge.
 ///
 /// Each arm is its own node returning its own whole state, so what they found
-/// exists only in their outputs. The merge read the loop's accumulator instead —
-/// which predates all three — so a diversify spent three child agent runs and
-/// composed the next attempt's briefing out of five empty slots. Nothing failed;
-/// the run simply carried on knowing none of it.
+/// exists only in their outputs. An earlier merge read the loop's accumulator
+/// instead — which predates all of them — so the arms' child agent runs were
+/// spent and the next attempt's briefing was composed out of empty slots.
+/// Nothing failed; the run simply carried on knowing none of it.
 #[tokio::test]
 async fn the_merge_is_handed_every_arms_output() {
     let stuck = json!({
@@ -528,16 +489,18 @@ async fn the_merge_is_handed_every_arms_output() {
     let run = TestHarness::new(&graph())
         .mock_tool(
             super::super::loop_steps::TOOL,
-            // attempt, judge, reflect, goal_apply, three arms, then the merge —
-            // which reports solved so the run ends rather than diversifying
-            // forever.
+            // Stage one and the attempt answer with the loop's own state; every
+            // evaluation arm answers with something only an arm could have
+            // produced; the merge reports solved so the run ends.
             Respond::sequence([
-                // The seed call, then attempt, judge, reflect, goal_apply.
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
+                Respond::value(from_arm.clone()),
+                Respond::value(from_arm.clone()),
+                Respond::value(from_arm.clone()),
                 Respond::value(from_arm.clone()),
                 Respond::value(from_arm.clone()),
                 Respond::value(from_arm.clone()),
@@ -550,13 +513,13 @@ async fn the_merge_is_handed_every_arms_output() {
 
     let arms = run
         .trace()
-        .calls_from("diversify_merge")
+        .calls_from(EVAL_MERGE)
         .first()
         .and_then(|call| call.args.get(super::super::loop_steps::ARMS_ARG).cloned())
         .unwrap_or(Value::Null);
 
     let arms = arms.as_array().cloned().unwrap_or_default();
-    assert_eq!(arms.len(), ARMS.len(), "{arms:#?}");
+    assert_eq!(arms.len(), eval_arm_ids().len(), "{arms:#?}");
     for arm in &arms {
         assert_eq!(
             arm.get("last_attempt"),
@@ -627,17 +590,22 @@ async fn the_goals_child_reads_the_reflection_the_loop_just_made() {
     );
 }
 
-/// The arms run at the same time, not one after another.
+/// The evaluation arms run at the same time, not one after another.
 ///
-/// This is the property the fan-out exists for and the one no assertion about
-/// routing can see: three arms wired to the same port still produce the right
-/// answer run sequentially, just three times slower. Each arm here takes the
-/// same measurable time, so a sequential engine would take three of them.
+/// The property the fan-out exists for, and the one no assertion about routing
+/// can see: arms wired to the same port still produce the right answer run
+/// sequentially, just N times slower. Each arm here takes the same measurable
+/// time, so a sequential engine would take all of them end to end.
+///
+/// This is the whole claim of the three-stage shape. The five questions about
+/// an attempt used to be asked in a line — and three of them were not even
+/// nodes, they were spawns hidden inside the reflection's body, which meant the
+/// graph could not show them, bound them, or checkpoint between them.
 ///
 /// Timing rather than instrumentation, because concurrency is a wall-clock claim
-/// and the margin is wide — a third of the sequential cost — rather than tight.
+/// and the margin is wide rather than tight.
 #[tokio::test]
-async fn the_diversify_arms_run_concurrently() {
+async fn the_evaluation_arms_run_concurrently() {
     use std::time::{Duration, Instant};
 
     let arm_time = Duration::from_millis(300);
@@ -655,14 +623,16 @@ async fn the_diversify_arms_run_concurrently() {
         .mock_tool(
             super::super::loop_steps::TOOL,
             Respond::sequence([
-                // The seed call and the four steps on the path answer
-                // immediately; only the three arms are slow, so what is measured
-                // is the fan-out alone.
+                // Stage one and the attempt answer immediately; only the arms
+                // are slow, so what is measured is the fan-out alone.
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
                 Respond::value(stuck.clone()),
+                slow(),
+                slow(),
+                slow(),
                 slow(),
                 slow(),
                 slow(),
@@ -674,13 +644,13 @@ async fn the_diversify_arms_run_concurrently() {
         .expect("the loop runs to completion on mocks");
     let elapsed = started.elapsed();
 
-    for (arm, _) in ARMS {
+    for arm in eval_arm_ids() {
         run.assert_node_ran(arm);
     }
     assert!(
-        elapsed < arm_time * 2,
-        "the arms took {elapsed:?}, which is more than two of the {arm_time:?} each one costs — \
-         they ran in sequence"
+        elapsed < arm_time * 3,
+        "the arms took {elapsed:?}, which is more than three of the {arm_time:?} each one costs — \
+         six of them ran in something close to sequence"
     );
 }
 

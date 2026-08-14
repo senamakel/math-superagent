@@ -180,17 +180,7 @@ pub(super) fn goals_workflow() -> WorkflowGraph {
 /// silent, because a missing pointer reads exactly like "did not open".
 #[must_use]
 pub(super) fn opened(child: &Value) -> bool {
-    gate_state(child).is_some()
-}
-
-/// The state the gate produced, when it ran and opened a decomposition.
-///
-/// The parent needs more than the yes/no: the reducer's report rides back in
-/// the state's own findings slot, and a caller that read only the flag would
-/// reset the cadence having thrown the skeleton away.
-#[must_use]
-pub(super) fn gate_state(child: &Value) -> Option<Value> {
-    carriers(child).find(|carrier| {
+    carriers(child).any(|carrier| {
         carrier
             .get(OPENED_FIELD)
             .and_then(Value::as_bool)

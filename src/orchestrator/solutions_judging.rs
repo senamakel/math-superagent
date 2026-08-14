@@ -724,7 +724,13 @@ pub(in crate::orchestrator) async fn reduce_arm(
     }
     let report = reduction_arm(subagents, workspace, state).await;
     reduction.gate.release();
-    (true, report)
+    // Posted rather than returned into the state, and the heading is the
+    // reason: `gap_briefing` renders open gaps as targets with a first move
+    // named, which is a different kind of thing from the material
+    // `fresh_context` carries. One mailbox cannot render both under the right
+    // heading, which is the argument `Mailboxes` was built on.
+    reduction.outbox.post(report);
+    (true, String::new())
 }
 
 /// Opens the literature sweep beside the loop, and does not wait for it.

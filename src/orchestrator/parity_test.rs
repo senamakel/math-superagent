@@ -2,7 +2,7 @@
 #![allow(clippy::expect_used)]
 
 use super::*;
-use crate::orchestrator::solutions::{Verdict, judged_route, route};
+use crate::orchestrator::solutions::route;
 
 /// The gate. Every state in the corpus must route identically on both engines.
 ///
@@ -25,44 +25,6 @@ fn both_engines_route_every_state_identically() {
         "{} of {} states diverged:\n{}",
         divergences.len(),
         cases.len(),
-        divergences
-            .iter()
-            .take(20)
-            .cloned()
-            .collect::<Vec<_>>()
-            .join("\n")
-    );
-}
-
-/// The judge's ladder, over the same corpus and both verdicts.
-#[test]
-fn both_engines_judge_every_state_identically() {
-    let mut divergences = Vec::new();
-    let cases = corpus();
-    for case in &cases {
-        for verdict in ["proceed", "restart", "steer"] {
-            let mut state = case.state.clone();
-            // `judged_route` reads the recorded verdict off the state, so the
-            // two engines have to be given the same one.
-            state.judged = match verdict {
-                "restart" => Verdict::Restart,
-                "steer" => Verdict::Steer,
-                _ => Verdict::Proceed,
-            };
-            let rust = judged_port(judged_route(&state));
-            let flow = workflow_judged(&case.json, verdict);
-            if rust != flow {
-                divergences.push(format!(
-                    "{} verdict={verdict}: rust={rust} workflow={flow}",
-                    case.describe()
-                ));
-            }
-        }
-    }
-    assert!(
-        divergences.is_empty(),
-        "{} divergences:\n{}",
-        divergences.len(),
         divergences
             .iter()
             .take(20)

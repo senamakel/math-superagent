@@ -243,20 +243,24 @@ fn the_judges_score_and_guidance_are_read_when_they_are_there() {
     assert_eq!(judge_guidance("SCORE: 5/5\nVERDICT: PROCEED"), "");
 }
 
+/// The attempt ceiling still outranks a restart, and it is now the only thing
+/// that has to.
+///
+/// A restart stopped being a route when the judge and the reflection became
+/// concurrent — there is no reflection left to skip — so what is left to check
+/// is that a run at its ceiling ends on the reflection's terms rather than the
+/// judge's. The reflect ladder is the only ladder, and `solved` is what it
+/// answers at the ceiling however the judge scored the attempt.
 #[test]
 fn the_attempt_ceiling_outranks_a_restart() {
-    use super::{Judged, MAX_ATTEMPTS, SolutionState, Verdict, judged_route};
-    // A run at its last attempt must reflect on what it has rather than throw
-    // it away and stop with nothing.
+    use super::{MAX_ATTEMPTS, Route, SolutionState, Verdict, route};
+
     let mut state = SolutionState::new("problem");
     state.judged = Verdict::Restart;
-    state.attempts = 1;
-    assert_eq!(judged_route(&state), Judged::Restart);
     state.attempts = MAX_ATTEMPTS;
-    assert_eq!(judged_route(&state), Judged::Reflect);
-    state.judged = Verdict::Proceed;
+    assert_eq!(route(&state), Route::Solved);
     state.attempts = 1;
-    assert_eq!(judged_route(&state), Judged::Reflect);
+    assert_eq!(route(&state), Route::Retry);
 }
 
 #[test]
