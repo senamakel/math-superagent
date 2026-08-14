@@ -158,6 +158,30 @@ question the report cannot when the run cap has destroyed it — whether the
 attempt left anything behind at all. The original rule assumed a report exists;
 where one does not, "the evidence has to be in the report" means no evidence.
 
+Reflection answers in four verdicts now, and the fourth is the only one checked
+against the workspace rather than against itself. `solved` was binary, so a run
+that proved a weakened case, established a conditional result, or ruled a method
+out with a reason had exactly one word available: unsolved. That is not how the
+problems this runtime is pointed at are actually made progress on. Greenfeld and
+Tao published two no-go results before the periodic tiling counterexample, and
+the 2021 rigidity result is what told them their Wang-tile encoding could not
+work and to switch to a Sudoku one — scored here, both would have read as
+failures.
+
+`BANKED` says the attempt settled something short of the goal. It never ends the
+run, so a wrong one costs an attempt of optimism rather than a wrong final
+answer. But it counts as progress, and progress resets `unproductive`, which is
+the only route into `diversify` — so a verdict a model could assert freely would
+let a stuck run keep itself out of diversification indefinitely by claiming a
+small win every cycle. That is the failure `COMPUTATIONAL_THRESHOLD` was added to
+close, one verdict wider. So it is honoured only when the claim ledger actually
+grew: `established()` counts proved, formalised, and checked claims, and it is
+derived from the notes on disk rather than from anything the reply says. A
+`BANKED` over an unchanged ledger is rejected with a lesson naming what was
+missing — a result that exists only in an attempt's report is lost when the
+attempt ends. Nothing in `route` reads the counter, so the routing policy and its
+parity harness are untouched; what it changes is what an attempt is credited for.
+
 Reflection answers in three verdicts, not two. SOLVED needs a specific final
 answer *and* a second independent route, and it needs a program on disk — a
 claimed answer with nothing executable in the workspace is rejected outright, and

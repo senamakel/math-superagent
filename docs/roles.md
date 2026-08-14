@@ -1,6 +1,6 @@
 # Roles, adapters, and what each one can reach
 
-The nineteen roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
+The twenty roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
@@ -51,7 +51,7 @@ Algebras of Maximal Class II* as `pitman_ballot_theorem.md`.
 
 ## Expected problem-solving behavior
 
-The runtime has nineteen roles plus an explicit solution loop.
+The runtime has twenty roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -110,9 +110,26 @@ The runtime has nineteen roles plus an explicit solution loop.
 - The Lean prover writes Lean 4 against a pre-built Mathlib. It is the only
   role whose output is not evidence: everything else here — a program's output,
   a numerical check, an argument that reads well — is a reason to believe
-  something, and a proof that compiles with no `sorry` is the thing itself. It
-  is held to reporting `#print axioms` and every remaining `sorry`, because a
-  formalisation that hides one is worse than none.
+  something, and a proof that compiles with no `sorry` is the thing itself.
+
+  It *was* held to reporting `#print axioms` and every remaining `sorry` by its
+  prompt, which is this repository's own recurring failure written into the one
+  place it costs the most. Lean and Mathlib were the largest thing in the image
+  and no line of Rust ran either, so `research/CLAIMS.md` could not tell a
+  kernel-checked lemma from a sentence claiming one — and did not try. Formal
+  verification was held to a weaker standard than path traversal.
+
+  `lean_check` is the control. It runs the kernel, parses what came back —
+  compiled or not, every `sorry` warning, every `#print axioms` line — and
+  files the verdict under `code/out/lean/`. A claim may be `status: formalised`
+  only with a `formalisation:` line naming a `.lean` file whose verdict passed;
+  otherwise the ledger records it as `asserted` and says why, under *Called
+  formalised, not backed by the kernel*. Four conditions pass a verdict, and the
+  fourth reads as strict on purpose: the file must contain a `#print axioms`
+  line. A proof whose foundations are unstated has told the runtime nothing, and
+  the cost of the rule is one line in a Lean file. The tool is granted to this
+  role and to nothing else, because it decides what the ledger's strongest
+  evidence class may say.
 - The reflection agent judges one attempt and extracts one lesson. It has no
   research or execution tools on purpose: a judge that can start solving stops
   judging. Its hardest job is refusing to call an unverified answer solved.
@@ -164,6 +181,23 @@ The runtime has nineteen roles plus an explicit solution loop.
   proposing methods. Like the inventor it is on the stronger reasoning model:
   whether a set of lemmas actually implies the goal is the definition of a
   judgement no tool can check.
+- The weakener is the third direction, and the only role permitted to move the
+  target. The inventor asks what *else* reaches the goal and the reducer asks
+  what would be *enough*; both hold the goal fixed. This one asks what would be
+  *easier*, and answers with a problem that is deliberately smaller. It names
+  the difficulties that make the goal hard, then writes a ladder of weakened
+  versions to `research/weakened/<slug>.md` — each rung saying which
+  difficulties are switched off and what turning the next one back on would
+  take — and `research/WEAKENED.md` is derived from those files. It exists
+  because `solved` was binary: a run that proved a weakened case had one word
+  for it, and that word was *unsolved*. A rung does not imply the goal, which is
+  not a defect in it. A rung that was attacked and failed stays on the ladder
+  with the reason, because deleting it is how the same one is proposed again
+  three attempts later. Its tool set is the reducer's exactly, for the reducer's
+  reasons, and it is on the stronger reasoning model because a statement
+  weakened until it is vacuous reads exactly like one weakened until it is
+  tractable. Its one dangerous failure is reporting a rung as the goal, so the
+  ledger records which difficulties were off when each one landed.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
@@ -287,6 +321,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | librarian, research | `GOAL.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/FRONTIER.md`, `CONTEXT.md` |
 | inventor | `GOAL.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/CLAIMS.md`, `CONTEXT.md`, plus a dossier built at delegation time |
 | reducer | `GOAL.md`, `research/BACKWARD.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `research/APPROACHES.md` |
+| weakener | `GOAL.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` — and deliberately **not** `research/APPROACHES.md` or `research/BACKWARD.md` |
 | scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
 | context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
 | director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |

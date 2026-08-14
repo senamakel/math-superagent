@@ -154,6 +154,14 @@ fn evidence_briefing(workspace: &Path) -> String {
     let skeletons = super::backward::collect(workspace);
     let gaps_open = skeletons.open_gaps().len();
     let gaps_discharged = skeletons.discharged_ids().len();
+    // The ladder, counted the same way and for a reason the gap counts do not
+    // cover. A settled rung is the one kind of result this runtime used to have
+    // no word for: it is not the goal, so an attempt that produced one reports
+    // UNSOLVED, and a judge reading only that scores a run that proved
+    // something as a run that did nothing.
+    let ladders = super::weakened::collect(workspace);
+    let rungs_open = ladders.open_rungs().len();
+    let rungs_settled = ladders.settled().count();
 
     format!(
         "\nWhat the attempt left on disk, counted rather than reported — the report above is \
@@ -165,6 +173,7 @@ fn evidence_briefing(workspace: &Path) -> String {
          - approaches proposed: {approaches}\n\
          - threads open: {threads}\n\
          - gaps in the proof skeletons: {gaps_open} open, {gaps_discharged} discharged\n\
+         - rungs on the difficulty ladders: {rungs_open} open, {rungs_settled} settled\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
          nothing and left work here is not — score what is here.{}{}{}",
         captured.len(),

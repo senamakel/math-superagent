@@ -39,6 +39,7 @@ mod teams;
 mod text;
 mod threads;
 mod vector;
+mod weakened;
 mod workflow;
 mod workflow_goals;
 mod workflow_research;
