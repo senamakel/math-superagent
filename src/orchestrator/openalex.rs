@@ -31,7 +31,7 @@
 //! whether a source is worth a download is a judgement, and this module
 //! measures.
 //!
-//! # Why OpenAlex
+//! # Why `OpenAlex`
 //!
 //! It answers both directions with no key, which matters more than it sounds.
 //! A key is a thing that expires, is absent in a test, and turns a source
@@ -55,7 +55,7 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 /// The index every lookup here goes to.
 const API: &str = "https://api.openalex.org/works";
 
-/// The address OpenAlex asks callers to identify themselves with.
+/// The address `OpenAlex` asks callers to identify themselves with.
 ///
 /// It buys the "polite pool", which is a faster and more reliably available
 /// tier of the same free service. It is deliberately a project address rather
@@ -110,7 +110,7 @@ impl CitationGraphTool {
         })]
     }
 
-    /// Fetches one OpenAlex URL and parses the reply.
+    /// Fetches one `OpenAlex` URL and parses the reply.
     async fn get(&self, url: &reqwest::Url) -> Result<Value> {
         let body = self.documents.fetch_text(url.as_str()).await?;
         serde_json::from_str(&body).map_err(|error| {
@@ -161,7 +161,7 @@ impl CitationGraphTool {
 
     /// Returns the works on one side of the seed.
     ///
-    /// `cited_by` is OpenAlex's name for "works this one cites" and `cites` for
+    /// `cited_by` is `OpenAlex`'s name for "works this one cites" and `cites` for
     /// "works that cite this one", which read backwards and are the single
     /// easiest thing to get wrong here; they are written once, here, and the
     /// caller asks in the direction a reader would name.
@@ -237,7 +237,7 @@ fn direct(base: &str, select: &str) -> Result<reqwest::Url> {
     )
 }
 
-/// Reads an OpenAlex work identifier out of what the caller named.
+/// Reads an `OpenAlex` work identifier out of what the caller named.
 fn openalex_id(work: &str) -> Option<String> {
     let candidate = work
         .trim()
@@ -287,7 +287,7 @@ fn doi(work: &str) -> Option<String> {
 ///
 /// The DOI when it has one, because that is the address a reference list will
 /// carry and the one [`super::frontier`] can recognise as already fetched. The
-/// OpenAlex record otherwise, which at least names the work.
+/// `OpenAlex` record otherwise, which at least names the work.
 fn landing(work: &Value) -> String {
     if let Some(doi) = work.get("doi").and_then(Value::as_str)
         && !doi.is_empty()
@@ -349,7 +349,7 @@ fn citations(work: &Value) -> i64 {
     work.get("cited_by_count").and_then(Value::as_i64).unwrap_or(0)
 }
 
-/// Rebuilds an abstract from OpenAlex's inverted index.
+/// Rebuilds an abstract from `OpenAlex`'s inverted index.
 ///
 /// The index is a map from each word to the positions it occupies, which is a
 /// storage decision rather than a redaction: every word is present and the

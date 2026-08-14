@@ -357,8 +357,7 @@ impl Tool<()> for ExaSearchTool {
             .arguments
             .get("num_results")
             .and_then(Value::as_u64)
-            .map(|count| count.clamp(1, 25) as usize)
-            .unwrap_or_else(exa_results);
+            .map_or_else(exa_results, |count| count.clamp(1, 25) as usize);
         let mut request = json!({
             "query": query,
             "type": "auto",

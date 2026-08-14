@@ -183,20 +183,13 @@ fn synthesis(reply: &Value) -> String {
         vec!["content"],
         vec!["output", "text"],
     ] {
-        let mut node = reply;
-        let mut found = true;
+        let mut node = Some(reply);
         for key in path {
-            match node.get(key) {
-                Some(next) => node = next,
-                None => {
-                    found = false;
-                    break;
-                }
-            }
+            node = node.and_then(|value| value.get(key));
         }
-        if !found {
+        let Some(node) = node else {
             continue;
-        }
+        };
         let text = match node {
             Value::String(text) => text.clone(),
             other => serde_json::to_string_pretty(other).unwrap_or_default(),
