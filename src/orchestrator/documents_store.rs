@@ -309,11 +309,7 @@ impl WorkspaceDocuments {
                 "failed to create document directory: {error}"
             ))
         })?;
-        tokio::fs::write(path, bytes).await.map_err(|error| {
-            tinyagents::TinyAgentsError::Tool(format!(
-                "failed to write workspace document `{relative}`: {error}"
-            ))
-        })
+        replace_atomically(&path, bytes, &format!("workspace document `{relative}`")).await
     }
 
     /// Writes a document on an agent's behalf.
@@ -429,11 +425,12 @@ impl WorkspaceDocuments {
                 "document path resolves outside /workspace".into(),
             ));
         }
-        tokio::fs::write(path, content).await.map_err(|error| {
-            tinyagents::TinyAgentsError::Tool(format!(
-                "failed to write workspace document `{relative}`: {error}"
-            ))
-        })
+        replace_atomically(
+            &path,
+            content.as_bytes(),
+            &format!("workspace document `{relative}`"),
+        )
+        .await
     }
 
     /// Renders a bounded directory tree under `relative`.
@@ -513,26 +510,12 @@ impl WorkspaceDocuments {
     /// writer leaves the previous index intact rather than a truncated one.
     async fn write_index(&self, content: &str) -> Result<()> {
         let final_path = self.workspace.join(INDEX_PATH);
-        let temporary = self.workspace.join(format!("{INDEX_PATH}.tmp"));
         // The index lives under `config/`, which a fresh workspace does not
         // have until something writes there first.
         if let Some(parent) = final_path.parent() {
             let _ = tokio::fs::create_dir_all(parent).await;
         }
-        tokio::fs::write(&temporary, content)
-            .await
-            .map_err(|error| {
-                tinyagents::TinyAgentsError::Tool(format!(
-                    "failed to stage document index: {error}"
-                ))
-            })?;
-        tokio::fs::rename(&temporary, &final_path)
-            .await
-            .map_err(|error| {
-                tinyagents::TinyAgentsError::Tool(format!(
-                    "failed to replace document index: {error}"
-                ))
-            })
+        replace_atomically(&final_path, content.as_bytes(), "document index").await
     }
 
     async fn search(&self, query: &str) -> Result<Vec<Value>> {
