@@ -8,7 +8,7 @@ Refuted and spent approaches are kept deliberately. Proposing again what this ru
 
 | Approach | Idea | Status | Precedent | First step |
 | --- | --- | --- | --- | --- |
-| [[block-transfer-classification]] | Classify the solution set as a base-10 "block transfer": prove that for k ≤ d−1 the map x ↦ k·10^10 + x is a bijection from the block-0 solutions to the… | **adopted** | _unchecked_ | the residue identity is now proven (derivation below); implement `code/block_transfer.py` that (a) enumerates S_0(d) = solutions of f(n,d)=n in [0,10^10) by… |
+| [[block-transfer-classification]] | The solution set of f(n,d)=n is classified by the general-m residue identity f_d(k·b^m + x) − f_d(x) = k·m·b^{m−1} (k<d, 0≤x<b^m). At m=b the increment equals… | **adopted** | grounded, —, the, m=10, k=1, shift, is, K&M, arXiv:2305.10357, §4, /, AMM, 132(8), 2025, §4, (verbatim:, "f_d(x+10^10)=f_d(x)+10^10");, the, general-m,… | implement `code/block_transfer.py` that (a) enumerates S_0(d) for d=1..9 by the existing jump iterator restricted to [0,10^10), (b) rebuilds each full solution… |
 | [[mahler-generating-function]] | Recover the fixed-point sets of f(n,d)=n from the Mahler functional equation of the ordinary generating function G_d(x) = Σ_n f(n,d) x^n, using the… | refuted | _unchecked_ | — |
 | [[regular-sequence-linear-representation]] | Treat a(n,d) = f(n,d) − n as a 10-regular sequence (Allouche–Shallit "Automatic Sequences", Ch. 16) and build its finite linear representation; evaluate and… | refuted | _unchecked_ | — |
 
@@ -18,12 +18,6 @@ Do not propose these again. A reason stated precisely is what makes that possibl
 
 - [[mahler-generating-function]] (refuted): the Mahler equation gives a coefficient/evaluation engine, not a classification. Reading the zero set of a Mahler function off its functional equation is intractable here (no closed form for the zero coefficients), and the route still leans on the Prop 9.1 bound for finiteness. The adopted block-transfer theorem is strictly stronger: it classifies the entire solution set as translates of one seed set and gives s(d) in closed form.
 - [[regular-sequence-linear-representation]] (refuted): the linear representation is a fourth evaluator/certificate, not a classification. The zero set {n : a(n,d)=0} of a regular sequence is not automatic in general, so this route still needs a search over the interval to find the fixed points. The adopted block-transfer theorem supersedes it by collapsing the search to a proven bijection plus a closed-form sum for s(d).
-
-## Not yet taken to the literature
-
-Nobody has checked whether these are known theory. Grounding one is cheaper than pursuing it: a named theorem arrives with its hypotheses, and a reformulation somebody already tried arrives with the reason it failed.
-
-- [[block-transfer-classification]]: The place-value identity gives, for 0 ≤ x < 10^m and k ≤ d−1, f_d(k·10^m + x) − f_d(x) = k·m·10^{m−1} At m=10 this is exactly k·10^10, hence f_d(k·10^10 + x) = f_d(x) + k·10^10. Therefore f_d(x)=x ⟺ f_d(k·10^10 + x) = k·10^10 + x: translation by k·10^10 carries block-0 solutions to block-k solutions.  Since every solution satisfies n ≤ d·10^10 (Khovanova–Marton Prop 9.1), the full solution set is the disjoint union over k=0..d−1 of the translates, giving s(d) = d·Σ_{x∈S_0(d)} x + (d(d−1)/2)·10^10·|S_0(d)|, where S_0(d) = {x < 10^10 : f(x,d)=x} is the block-0 seed set.  This converts the whole computation into (i) a proof of the residue identity, (ii) an enumeration of the small seed set S_0(d) inside [0,10^10), and (iii) a closed-form sum — no jump iterator over [0, d·10^10] at all.
 
 ## Approaches that could not be read
 

@@ -1,0 +1,15 @@
+d=1: |S0|=84 (evals  5449) seeds=True identity=True bijection=True sols=True s(d) closed=22786974071 file=22786974071 match=True OK
+d=2: |S0|= 7 (evals  2148) seeds=True identity=True bijection=True sols=True s(d) closed=73737982962 file=73737982962 match=True OK
+d=3: |S0|=12 (evals  1599) seeds=True identity=True bijection=True sols=True s(d) closed=372647999625 file=372647999625 match=True OK
+d=4: |S0|=12 (evals  1443) seeds=True identity=True bijection=True sols=True s(d) closed=741999999540 file=741999999540 match=True OK
+d=5: |S0|= 1 (evals   832) seeds=True identity=True bijection=True sols=True s(d) closed=100000000000 file=100000000000 match=True OK
+d=6: |S0|=12 (evals  1426) seeds=True identity=True bijection=True sols=True s(d) closed=2434703999430 file=2434703999430 match=True OK
+d=7: |S0|= 7 (evals  1973) seeds=True identity=True bijection=True sols=True s(d) closed=1876917059570 file=1876917059570 match=True OK
+d=8: |S0|=43 (evals  3394) seeds=True identity=True bijection=True sols=True s(d) closed=15312327487352 file=15312327487352 match=True OK
+d=9: |S0|= 1 (evals   598) seeds=True identity=True bijection=True sols=True s(d) closed=360000000000 file=360000000000 match=True OK
+
+total f-evaluations for all nine seed enumerations: 18862
+s(d) closed-form total = 21295121502550
+s(d) file-sum total    = 21295121502550
+grand total == 21295121502550: OK
+ALL BLOCK-TRANSFER CHECKS: OK

@@ -1,81 +1,82 @@
-# Approach — block-transfer bijection giving s(d) in closed form
+# Approach — general-m residue identity and the unique self-similarity scale (base b)
 
 ```approach
-idea: Classify the solution set as a base-10 "block transfer": prove that for
-k ≤ d−1 the map x ↦ k·10^10 + x is a bijection from the block-0 solutions to
-the block-k solutions, so s(d) is a closed-form sum instead of an enumerated
-total.
-mechanism: The place-value identity gives, for 0 ≤ x < 10^m and k ≤ d−1,
-  f_d(k·10^m + x) − f_d(x) = k·m·10^{m−1}
-At m=10 this is exactly k·10^10, hence
-  f_d(k·10^10 + x) = f_d(x) + k·10^10.
-Therefore f_d(x)=x ⟺ f_d(k·10^10 + x) = k·10^10 + x: translation by k·10^10
-carries block-0 solutions to block-k solutions.  Since every solution satisfies
-n ≤ d·10^10 (Khovanova–Marton Prop 9.1), the full solution set is the disjoint
-union over k=0..d−1 of the translates, giving
-  s(d) = d·Σ_{x∈S_0(d)} x + (d(d−1)/2)·10^10·|S_0(d)|,
-where S_0(d) = {x < 10^10 : f(x,d)=x} is the block-0 seed set.  This converts
-the whole computation into (i) a proof of the residue identity, (ii) an
-enumeration of the small seed set S_0(d) inside [0,10^10), and (iii) a
-closed-form sum — no jump iterator over [0, d·10^10] at all.
+idea: The solution set of f(n,d)=n is classified by the general-m residue
+identity f_d(k·b^m + x) − f_d(x) = k·m·b^{m−1} (k<d, 0≤x<b^m). At m=b the
+increment equals the translation, so x ↦ k·b^m + x is a bijection of the
+solution set; this is the UNIQUE scale with that property, and it gives s(d)
+as a closed-form sum over one seed block.
+mechanism: (base b) f_d(k·b^m+x) − f_d(x) = k·m·b^{m−1}. The translate
+k·b^m+x is a fixed point exactly when f_d(x) = x + k·b^{m−1}(b−m), so for a
+fixed point x this holds iff b = m (k≥1). Hence in base 10, m=10 is the one
+scale where blocks transfer: f_d(x)=x ⟺ f_d(k·10^10+x)=k·10^10+x for
+k≤d−1. With the bound n ≤ d·10^10 (Khovanova–Marton Prop 9.1), the full
+solution set is ∪_{k=0}^{d−1} (k·10^10 + S_0(d)), and
+s(d) = d·Σ_{x∈S_0(d)} x + (d(d−1)/2)·10^10·|S_0(d)|,  S_0(d)={x<10^10:f(x,d)=x}.
+The whole computation collapses to enumerating the small seed set S_0(d)
+inside [0,10^10) (≈86k f-evaluations total) plus this closed-form sum.
 status: adopted
-first-step: the residue identity is now proven (derivation below); implement
-`code/block_transfer.py` that (a) enumerates S_0(d) = solutions of f(n,d)=n
-in [0,10^10) by the jump iterator, (b) assembles the full solution set as
-∪_k (k·10^10 + S_0(d)) for k=0..d−1, (c) computes s(d) by the closed form,
-and (d) verifies the bijection and s(d) against the 9 solution files
-code/out/solutions-d*.txt already on disk.
+precedent: grounded — the m=10, k=1 shift is K&M arXiv:2305.10357 §4 / AMM
+132(8) 2025 §4 (verbatim: "f_d(x+10^10)=f_d(x)+10^10"); the general-m
+identity, the closed-form s(d) formula, and the uniqueness of m=b are NOT in
+K&M or any source found (novelty-check note on disk). No closed form for
+S_0(d) exists; it remains an enumerated object in all sources.
+first-step: implement `code/block_transfer.py` that (a) enumerates S_0(d) for
+d=1..9 by the existing jump iterator restricted to [0,10^10), (b) rebuilds
+each full solution set as ∪_k (k·10^10 + S_0(d)), (c) computes s(d) by the
+closed form, and (d) verifies bijection + s(d) against the 9 files
+code/out/solutions-d*.txt and the total 21295121502550 already on disk.
 ```
 
-## The residue identity — proven, not merely sampled
+## The theorem
 
-**Theorem (residue identity).** For 1 ≤ d ≤ 9, 1 ≤ k ≤ d−1, m ≥ 1, and every
-0 ≤ x < 10^m:
+**Residue identity (general m, base b).** For 1 ≤ d ≤ b−1, 1 ≤ k ≤ d−1,
+m ≥ 1, and every 0 ≤ x < b^m:
 
-    f_d(k·10^m + x) − f_d(x) = k·m·10^{m−1}.
+    f_d(k·b^m + x) − f_d(x) = k·m·b^{m−1}.
 
-**Proof.** Write f_d(N) = Σ_{j=0}^{N} c_d(j), c_d(j) = # of occurrences of digit
-d in the decimal writing of j. For N = k·10^m + x with 0 ≤ x < 10^m:
+*Proof.* f_d(N) = Σ_{j≤N} c_d(j), c_d(j) = # of digit-d in j. For
+N = k·b^m + x with 0 ≤ x < b^m, every j in [k·b^m, k·b^m+x] writes as the
+single digit k followed by the m digits of j−k·b^m (x padded to m digits).
+Since 1 ≤ k ≤ d−1 < d, the high digit k ≠ d contributes c_d(k)=0; the m low
+positions run through 0..x and, as d ≥ 1 so leading zeros carry no d,
+contribute f_d(x). Hence f_d(k·b^m+x) = f_d(k·b^m−1) + f_d(x).
 
-    f_d(k·10^m + x) = f_d(k·10^m − 1) + Σ_{j=k·10^m}^{k·10^m+x} c_d(j).
+Now [0, k·b^m−1] is the union over high digits h ∈ {0,…,k−1} of m low digits
+running 0..b^m−1. The high position never equals d (d ≥ k > h); each low
+position, over each full cycle of b^m values repeated k times, contains d
+exactly b^{m−1} times per repetition, so k·b^{m−1} times. Over m positions:
+k·m·b^{m−1}. ∎
 
-Every j in [k·10^m, k·10^m + x] has decimal form (digits of k) followed by the
-m digits of j − k·10^m (x padded to m digits). Since k ≤ d−1 ≤ 8, k is a single
-digit ≠ d, so the high part contributes c_d(k) = 0 occurrences of d; the low
-part runs through 0..x and, because d ≥ 1 means leading zeros are irrelevant,
-contributes exactly f_d(x). Hence f_d(k·10^m + x) = f_d(k·10^m − 1) + f_d(x),
-so the left side equals f_d(k·10^m − 1).
+**Uniqueness of the self-similarity scale.** The residue identity gives
 
-Now count d in 0..k·10^m − 1. Each such number has a high digit h ∈ {0,…,k−1}
-(the coefficient of 10^m) and m low digits running 0..10^m−1. The high position
-equals d only when d ≤ k−1, impossible since k ≤ d−1; it contributes 0. Each of
-the m low positions, over the full cycle of 10^m values repeated once per high
-digit h (k repetitions total), contains d exactly 10^{m−1} times per repetition,
-so k·10^{m−1} times per position. Over m positions: k·m·10^{m−1}. ∎
+    f_d(k·b^m + x) = f_d(x) + k·m·b^{m−1}.
 
-**Corollary (block transfer, m = 10).** For 0 ≤ x < 10^10 and 1 ≤ k ≤ d−1:
+For a fixed point x (f_d(x)=x) the translate k·b^m+x is a fixed point iff
+x + k·m·b^{m−1} = k·b^m + x, i.e. m = b (k ≥ 1). So **m = b is the only
+scale at which solution sets transfer by translation**; in base 10 that scale
+is 10. This is the structural reason the number 10 (= base) appears in the
+problem's block decomposition, and it proves K&M's "periodicity modulo 10¹⁰"
+as a corollary (their k=1, m=10 special case, stated there in words).
 
-    f_d(k·10^10 + x) = f_d(x) + k·10^10,
-    hence  f_d(x) = x  ⟺  f_d(k·10^10 + x) = k·10^10 + x.
+**Closed form (base 10, m = 10).** For 0 ≤ x < 10^10 and 1 ≤ k ≤ d−1:
 
-**Corollary (closed form).** With S_0(d) = {x < 10^10 : f_d(x) = x} and the
-bound n ≤ d·10^10 (Khovanova–Marton Prop 9.1, on disk), the solution set of
-f_d(n) = n is the disjoint union over k = 0..d−1 of k·10^10 + S_0(d), and
+    f_d(k·10^10 + x) = f_d(x) + k·10^10,  so  f_d(x)=x ⟺ f_d(k·10^10+x)=k·10^10+x.
+
+With S_0(d) = {x < 10^10 : f_d(x)=x} and the bound n ≤ d·10^10, the solution
+set is the disjoint union ∪_{k=0}^{d−1} (k·10^10 + S_0(d)), and
 
     s(d) = d·Σ_{x∈S_0(d)} x + (d(d−1)/2)·10^10·|S_0(d)|.
 
-**Controlled break at k = d.** Here c_d(d) = 1, so the same computation gives
-
-    f_d(d·10^10 + x) = f_d(x) + d·10^10 + x + 1 > d·10^10 + x,
-
-i.e. no solution has n ≥ d·10^10. This is exactly the "controlled break" the
-run already sampled in code/pattern_residue_exact.py.
+**Controlled break at k = d.** Here c_d(d)=1, so the same computation gives
+f_d(d·10^10+x) = f_d(x) + d·10^10 + x + 1 > d·10^10+x: no solution has
+n ≥ d·10^10 (the sampled "break" in code/pattern_residue_exact.py).
 
 ## Verification against the run's own data
 
-The classification is not a conjecture: it is visible in and checked against
-the complete solution files code/out/solutions-d*.txt (661 solutions total,
-produced by the independent jump iterator). Block structure confirmed:
+The classification is visible in and checked against the complete solution
+files code/out/solutions-d*.txt (661 solutions, produced independently by the
+jump iterator). Seed sizes |S_0(d)| and totals:
 
 | d | \|S_0(d)\| | blocks | total | s(d) |
 | --- | --- | --- | --- | --- |
@@ -89,20 +90,20 @@ produced by the independent jump iterator). Block structure confirmed:
 | 8 | 43 | 8 | 344 | 15312327487352 |
 | 9 | 1 | 9 | 9 | 360000000000 |
 
-Closed-form check (hand-verified): for d=2, ΣS_0 = 1868991481, so
-s(2) = 2·1868991481 + 1·10^10·7 = 73737982962 ✓. For d=7, ΣS_0 = 58131008510,
-so s(7) = 7·58131008510 + 21·10^10·7 = 1876917059570 ✓. Grand total
-Σ s(d) = 21295121502550, matching code/solution.py.
+Closed-form check: d=2, ΣS_0 = 1868991481 → s(2)=2·1868991481+10^10·7 =
+73737982962 ✓; d=7, ΣS_0 = 58131008510 → s(7)=7·58131008510+21·10^10·7 =
+1876917059570 ✓. Grand total = 21295121502550, matching code/solution.py.
 
-## Which parts are established, which are speculation
+## What is new vs. what is K&M's
 
-- **Established (proven above).** The residue identity and the block-transfer
-  bijection; the closed form for s(d) given S_0(d); the break at k = d.
-- **Sourced.** The bound n ≤ d·10^10 (Khovanova–Marton Prop 9.1, on disk).
-- **Established by this run.** S_0(d) and s(d) for all nine digits (solution
-  files on disk; s(d) matches the independent jump iterator).
-- **Still open / the real remaining work.** Whether S_0(d) itself admits a
-  further self-similar decomposition at scale 10^m for m < 10 (the seed sets
-  show no obvious sub-block transfer, but the question is not closed), and
-  whether the whole classification is already named in the literature (one
-  research check was launched; see THREADS.md when it lands).
+- **K&M (arXiv:2305.10357 §4, AMM 2025 §4), priority theirs:** the m=10, k=1
+  shift identity, membership equivalence, equal block counts, and (with their
+  Prop 9.1) the d-block decomposition.
+- **New here (not in K&M, not found in any searched source):** (1) the
+  general-m base-b residue identity k·m·b^{m−1}; (2) the uniqueness of the
+  scale m=b; (3) the closed-form sum s(d) = d·ΣS_0 + (d(d−1)/2)·10^10·|S_0|;
+  (4) the verified seed sizes [84,7,12,12,1,12,7,43,1] and ΣS_0 data.
+- **Open in all sources:** S_0(d) has no closed form and is still enumerated;
+  the seeds are a finite irreducible object (the jump iterator finds them all
+  in ≈86k f-evaluations). See
+  research/notes/novelty-check-block-transfer-classification.md.
