@@ -117,17 +117,25 @@ dataset, so session traces do not leak across projects.
 
 ## The solution loop
 
-Every run is driven by an explicit attempt, judge, reflect, diversify cycle.
-There is no single-turn mode: a hard problem's first approach is usually wrong,
-and the single-turn path differed only in throwing that information away.
+Every run is driven by an explicit research, attempt, evaluate cycle. There is
+no single-turn mode: a hard problem's first approach is usually wrong, and the
+single-turn path differed only in throwing that information away.
 
 ```text
-  attempt ──> judge ──┬─ restart ──────────────────> attempt
-     ▲                └─ reflect ──┬─ solved ──────> done
-     │                             ├─ retry ───────> attempt
-     │                             └─ stuck ──> diversify ──┐
-     └──────────────────────────────────────────────────────┘
+  research ──> attempt ──┬─> judge ──────────┐
+      (once)     ▲       ├─> reflect ────────┤
+                 │       ├─> patterns ───────┤
+                 │       ├─> invention ──────┼─> merge ──> solved ──> done
+                 │       ├─> library (opens) ┤         ├─> retry ────┐
+                 │       └─> goals ──────────┘         └─> stuck ────┤
+                 └──────────────────────────────────────────────────-┘
 ```
+
+Research runs once, before anything is attempted: establish what the workspace
+already has, then go looking for what it does not. Everything after an attempt
+runs *at the same time* — five questions about the same report, none of which
+reads another's answer — so a cycle costs the slowest of them rather than the
+sum.
 
 The judge and the reflection answer different questions. Reflection asks whether
 the answer is right, and it alone can end the loop; an answer that was not
@@ -138,8 +146,9 @@ PROCEED, STEER, or RESTART.
 
 Reflection runs after every attempt, not only after failures, because the lesson
 from a partial success is what stops the next attempt repeating it. The pattern
-agent runs beside the solve on its own cadence, because the exploitable
-regularity in a sequence is usually visible in the first terms a run computes.
+agent runs after every attempt too, because the exploitable regularity in a
+sequence is usually visible in the first terms a run computes — it is one of the
+concurrent arms rather than something waited for.
 Past five attempts without a verified answer, each reflection also re-opens the
 literature: by then the run knows what it tried and what the numbers look like,
 which makes a far better query than the statement alone. Diversification triggers

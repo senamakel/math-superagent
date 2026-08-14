@@ -340,11 +340,22 @@ detached sub-agent's own single-node graph. The state-graph solution loop is
 gone; the workflow engine is the only path, and it has not yet run an hour of
 live mathematics.
 
-The loop calls one child workflow, `orchestrator::workflow_goals`, which decides
-on a cadence whether to decompose the goal. It is a child rather than three more
-nodes because the cadence and the gate are its own policy, and calling it costs
-the loop nothing: it decides in milliseconds, and the decomposition itself is a
-detached agent run whose report reaches the next attempt through a mailbox.
+The loop calls two child workflows. `orchestrator::workflow_research` runs once
+before the first attempt — establish what the workspace has, then go looking for
+what it does not — and `orchestrator::workflow_goals` decides, on a cadence,
+whether to decompose the goal. Each is a child rather than more nodes in the
+loop because its policy is its own: a run-once stage put inside a graph whose
+whole subject is repetition is how it ends up repeated, and "how often is the
+goal decomposed" is a decision an operator should change without a rebuild.
+
+Everything after an attempt is a **fan-out**, not a chain. Judge, reflect,
+patterns, invention and the goal decomposition read the same attempt and none
+reads another, so they run concurrently and converge on one merge. Three of them
+used to be `tokio::spawn`s hidden inside `reflect_step`'s body, which meant the
+graph could not draw them, graph policy could not bound them, and no checkpoint
+could land between them. The merge folds counters by delta rather than by
+picking a winner, because a reset and an increment on the same counter both
+happen and both have to survive.
 
 Five rules hold across both:
 
