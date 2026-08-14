@@ -1,0 +1,116 @@
+#!/bin/sh
+# One screenful of the signals a calibration run is watched for.
+#
+# `./diagnose` answers "is it alive and what is it spending on". This answers
+# the four questions a *calibration* run exists to ask, and which nothing else
+# reports:
+#
+#   1. Are the schools diverging, or is one of them idle? Two schools that
+#      spend identically are one school paying twice.
+#   2. Is the board being used? A shared board that no school posts to is a
+#      grant nobody exercised, which is how it stayed at zero posts for a whole
+#      live hour before anyone noticed.
+#   3. Is the screen holding, and is the adjudicator discriminating? An
+#      adjudicator that allows everything is not a control.
+#   4. Is the run extracting, or only collecting? Sources climbing while claims
+#      stay at zero is the phase-1 trap, and it is invisible to every threshold
+#      the routing ladder reads.
+#
+# Usage: scripts/calibrate-watch <slug>
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+cd "$repository_root"
+
+if [ "$#" -lt 1 ]; then
+    echo "usage: scripts/calibrate-watch <slug>" >&2
+    exit 2
+fi
+slug=$1
+case "$slug" in ""|*/*|.*) echo "slug must be a plain folder name" >&2; exit 2 ;; esac
+
+workspace=workspace/conjectures/$slug
+if [ ! -d "$workspace" ]; then
+    echo "no workspace at $workspace" >&2
+    exit 2
+fi
+
+log=$workspace/config/console.log
+[ -f "$log" ] || log=$workspace/config/start.log
+
+echo "=============================================================="
+echo "  calibrate-watch  $slug"
+echo "=============================================================="
+
+echo ""
+echo "  SCHOOLS   role turns per school (a school at zero is not running)"
+if [ -f "$log" ]; then
+    grep -o '@[a-z][a-z-]*' "$log" 2>/dev/null | sort | uniq -c | sort -rn |
+        while read -r count school; do
+            printf '    %-16s %5s\n' "$school" "$count"
+        done
+fi
+
+echo ""
+echo "  BOARD     posts by school (zero across the board is the failure)"
+board=$workspace/teams/BOARD.md
+if [ -f "$board" ]; then
+    grep -c '^## ' "$board" 2>/dev/null | sed 's/^/    entries  /'
+    grep -o 'post_board' "$log" 2>/dev/null | wc -l | sed 's/^/    calls    /'
+    tail -20 "$board"
+else
+    echo "    no teams/BOARD.md yet — nothing has posted"
+fi
+
+echo ""
+echo "  SCREEN    decisions by verdict, then by tool"
+ledger=$workspace/config/screen.jsonl
+if [ -f "$ledger" ]; then
+    python3 - "$ledger" <<'PY'
+import json, sys
+from collections import Counter
+verdicts, tools = Counter(), Counter()
+for line in open(sys.argv[1]):
+    line = line.strip()
+    if not line:
+        continue
+    try:
+        row = json.loads(line)
+    except ValueError:
+        continue
+    verdicts[row.get("decision", "?")] += 1
+    tools[row.get("tool", "?")] += 1
+print(f"    total    {sum(verdicts.values())}")
+for name, count in verdicts.most_common():
+    print(f"      {name:<22} {count}")
+for name, count in tools.most_common():
+    print(f"    {name:<24} {count}")
+PY
+else
+    echo "    no decisions yet"
+fi
+
+echo ""
+echo "  EXTRACTION  sources against claims (the phase-1 trap)"
+count_entries() {
+    [ -f "$1" ] || { echo 0; return; }
+    # `grep -c` prints 0 and *exits 1* on no match, so a `|| echo 0` fallback
+    # emits a second count and printf then repeats its whole format string.
+    grep -c '^## ' "$1" 2>/dev/null | head -1
+}
+sources=$(count_entries "$workspace/research/SOURCES.md")
+claims=$(count_entries "$workspace/research/CLAIMS.md")
+printf '    sources %s   claims %s\n' "$sources" "$claims"
+if [ "$sources" -gt 8 ] && [ "$claims" -eq 0 ]; then
+    echo "    ** collecting without extracting: steer or fix the routing **"
+fi
+
+echo ""
+echo "  TOOLS     calls by name"
+if [ -f "$log" ]; then
+    grep -o 'tool  done    [a-z_]*' "$log" 2>/dev/null | awk '{print $3}' |
+        sort | uniq -c | sort -rn | head -20 |
+        while read -r count tool; do
+            printf '    %-24s %5s\n' "$tool" "$count"
+        done
+fi
