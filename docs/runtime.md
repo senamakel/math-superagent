@@ -433,6 +433,32 @@ forty-four minutes. The pipes are therefore drained by their own tasks, and
 killing the child is what closes them. A timeout is evidence about the method,
 and evidence belongs in the result rather than in an error string.
 
+## One start command
+
+`./euler-tui` cannot start, stop, or restart anything, and that is a design
+decision with a date on it.
+
+When starting was part of the same command as watching, opening a second view
+started a second run on the same workspace. Both wrote the same files and both
+made checkpoint commits over each other. That happened three times in one
+evening, twice unnoticed for minutes, and the damage is not visible while it is
+happening — it shows up later as a checkpoint history that interleaves two
+investigations, which is very hard to unpick and impossible to score.
+
+A viewer that cannot launch cannot do it. One start command also means the
+question *"is something already running for this problem"* has a single answer
+rather than one per terminal.
+
+The narrow exception is direction. `./steer` reaches a run that already exists,
+which does not touch what the rule prevents: a directive appends a line to a
+file and creates no container.
+
+Check for a collision by **mount**, never by name. The Compose project name is
+derived from the checkout directory, so a run started from a worktree is called
+`<worktree>-agent-run-<id>` and a `grep riemann-agent-run` sees nothing at all
+while a container is live. `scripts/calibrate-run` resolves it by mount for this
+reason.
+
 ## The memory cap
 
 The container's memory limit is 8 GiB, and the number is a judgement rather than

@@ -116,12 +116,9 @@ and the leads into the literature are the workspace's, not the script's: a
 launcher that carried the mathematics would need editing for every problem.
 
 `./euler-tui` **cannot start, stop, or restart anything**. That is the design,
-not a gap: when starting was part of the same command, opening a second view
-started a second run on the same workspace — both writing the same files and
-both making checkpoint commits over each other. That happened three times in one
-evening, twice unnoticed for minutes. A viewer that cannot launch cannot do it,
-and one start command means "is something already running for this problem" has
-a single answer rather than one per terminal.
+not a gap, and [`docs/runtime.md`](docs/runtime.md#one-start-command) has the
+evening that settled it: a viewer that cannot launch cannot start a second run
+on a workspace that already has one.
 
 It *can* direct a run that already exists, which narrows that rule without
 touching what the rule prevents — a directive appends a line to a file and
@@ -166,7 +163,9 @@ Two containers on one workspace is the failure to look for, and it is silent:
 both runs work, both write, and the damage shows up later as a checkpoint
 history that interleaves two investigations. Stop a run with
 `docker rm -f <name>`; the workspace survives and the next `./euler` on it
-continues from what is on disk.
+continues from what is on disk. Match by **mount**, not by name — the project
+name comes from the checkout directory, so a worktree's container is not called
+`riemann-agent-run` at all.
 
 The runtime's console arrives on the container's **stderr**, not its stdout —
 a live container had 643 lines there and none on stdout — so `docker logs`
@@ -393,65 +392,32 @@ turn runs next. A new graph is built with `agent::flow`, never with
 `tinyagents::graph`, and the two error types are converted only by
 `agent::flow::into_graph` / `from_graph`.
 
-TinyFlows has two layers and this crate now uses both, for different things.
+TinyFlows has two layers and this crate uses both. The solution loop runs on the
+declarative **workflow engine**: the engine owns the routing — a `loop` head
+with the run's state as its accumulator, the ladders as `switch` nodes carrying
+jq — and each step is a `tool_call` into Rust written against live runs, so the
+control flow stays a document an outside agent can read and patch. `agent::flow`
+is the lower-level state-graph runtime and now drives only each detached
+sub-agent's own single-node graph. Everything after an attempt is a **fan-out**,
+not a chain, converging on one merge that folds counters by delta.
+[`docs/solution-loop.md`](docs/solution-loop.md) has the graph and the two child
+workflows; these five rules hold across both layers and must not be broken:
 
-The solution loop **runs on the declarative workflow engine**. The engine owns
-the routing — the `loop` head with the run's state as its accumulator, and the
-ladders as `switch` nodes carrying jq — and each step is a `tool_call` into the
-Rust that was written against live runs. That split is the point: the control
-flow is a document an outside agent can read and patch, and the steps that
-drain a directive, salvage a timed-out attempt, and open the arms beside the
-loop are not reimplemented in JSON.
-
-`agent::flow` is the lower-level state-graph runtime. It still drives each
-detached sub-agent's own single-node graph. The state-graph solution loop is
-gone; the workflow engine is the only path, and it has not yet run an hour of
-live mathematics.
-
-The loop calls two child workflows. `orchestrator::workflow_research` runs once
-before the first attempt — establish what the workspace has, then go looking for
-what it does not — and `orchestrator::workflow_goals` decides, on a cadence,
-whether to decompose the goal. Each is a child rather than more nodes in the
-loop because its policy is its own: a run-once stage put inside a graph whose
-whole subject is repetition is how it ends up repeated, and "how often is the
-goal decomposed" is a decision an operator should change without a rebuild.
-
-Everything after an attempt is a **fan-out**, not a chain. Judge, reflect,
-patterns, invention and the goal decomposition read the same attempt and none
-reads another, so they run concurrently and converge on one merge. Three of them
-used to be `tokio::spawn`s hidden inside `reflect_step`'s body, which meant the
-graph could not draw them, graph policy could not bound them, and no checkpoint
-could land between them. The merge folds counters by delta rather than by
-picking a winner, because a reset and an increment on the same counter both
-happen and both have to survive.
-
-Five rules hold across both:
-
-- Derive, never restate. The workflow role registry is read off `AgentRegistry`,
-  the routing ladder's thresholds are generated from the Rust constants, and
-  `parse_reflection` calls `record_verdict` rather than reimplementing it. A
-  second list is a second answer to a question about authority, about a
-  threshold that cost a live run to learn, or about what ends a run.
-- Execution and outbound HTTP are refused from a workflow. See
-  `orchestrator::caps::execution` and `::network` — running a command means
-  declaring a complexity class first, and reaching the network means going
-  through a tool that bounds the response and that research gating can withhold.
-- The parity harness is not optional. `route` and `judged_route` are no longer
-  what a run executes; they are the executable specification of the routing
-  policy, and `orchestrator::parity` proves the jq the engine runs agrees with
-  them. It is exhaustive rather than sampled so an off-by-one cannot slip
-  through. Any change to either side must keep it green.
-- The body has one exit. Every path back to the loop head goes through `pass`,
-  because the engine's `nodes` map is cumulative and a fold with more than one
-  node to read will eventually read a stale one. A restart goes through it too:
-  re-entering `attempt` directly would undo the judge's own `restarts`
-  increment, so the cap that bounds restarts would never trip.
-- Every step reads the step before it, never the accumulator. The head folds at
-  the *top* of a pass, so for the whole of a pass `nodes.solve.state` is what the
-  *previous* one ended with. Only `attempt` reads it, because only `attempt` runs
-  there. This class of bug is invisible to a constant mock — pass N−1 and pass N
-  look identical — so a test that varies its answers per call is the only kind
-  that catches it.
+- **Derive, never restate.** The workflow role registry is read off
+  `AgentRegistry`, the ladder's thresholds are generated from the Rust
+  constants, and `parse_reflection` calls `record_verdict`. A second list is a
+  second answer to a question about authority or about what ends a run.
+- **Execution and outbound HTTP are refused from a workflow** — see
+  `orchestrator::caps::execution` and `::network`.
+- **The parity harness is not optional.** `route` and `judged_route` are the
+  executable specification of the routing policy; `orchestrator::parity` proves
+  exhaustively that the jq the engine runs agrees with them, for every school.
+- **The body has one exit.** Every path back to the loop head goes through
+  `pass`, including a restart — re-entering `attempt` directly would undo the
+  judge's own `restarts` increment, so the cap would never trip.
+- **Every step reads the step before it, never the accumulator.** The head folds
+  at the *top* of a pass. This bug class is invisible to a constant mock, so
+  only a test that varies its answers per call catches it.
 
 Do not edit vendored code through the parent repository. Make TinyAgents or
 TinyFlows changes upstream, push them there, then update this repository's
