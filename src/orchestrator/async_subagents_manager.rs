@@ -51,6 +51,17 @@ impl AsyncSubagentManager {
         }
     }
 
+    /// The school this handle registers into, when more than one is running.
+    ///
+    /// The one thing outside this module that needs it is the board: a post's
+    /// sender is baked into the tool at registration rather than being a field
+    /// the model fills in, so whoever builds a harness has to know which school
+    /// it is building for. Reading it off the handle keeps that from becoming a
+    /// parameter on every registration signature in the crate.
+    pub(in crate::orchestrator) fn school(&self) -> Option<&str> {
+        self.school.as_deref()
+    }
+
     /// The name `name` is registered under from this handle.
     ///
     /// Idempotent: a name that already carries a school is left alone, so

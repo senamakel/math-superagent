@@ -73,6 +73,22 @@ impl std::fmt::Debug for SearchTools {
 ///
 /// All four reach the open web, so all four are withheld with `exa_search`
 /// when research is off — by not being granted, not by being told to abstain.
+/// The one way a school speaks to its siblings.
+///
+/// Granted to three roles and no others: the reflection that has just learned
+/// why an attempt failed, the inventor that has just closed a line of attack,
+/// and the goals agent that is about to spend a run on something a sibling may
+/// already have tried. Every one of them is deciding or reporting what to do
+/// next, which is what a post is for.
+///
+/// It is withheld from everything that weighs evidence — the judge, the
+/// scholar, the librarian — for the reason the board is withheld from them as
+/// context: a post is asserted, never established, and a role that files
+/// sources or scores an attempt must not be able to mint unevidenced text into
+/// the run's record. The sender is fixed at registration rather than being an
+/// argument; see [`board_tool`].
+const BOARD_TOOLS: [&str; 1] = ["post_board"];
+
 const DISCOVERY_TOOLS: [&str; 4] = [
     "citation_graph",
     "find_similar_sources",
@@ -290,7 +306,17 @@ fn support_agents(
             "Judges one attempt, extracts the lesson, and decides whether it is really done.",
         )
         .with_model("openrouter")
-        .with_tools(memory_tools.into_iter().chain(document_tools)),
+        // One of the three roles that may post to the board. A lesson drawn
+        // from an attempt that failed is what the other schools would
+        // otherwise pay to discover, and it is asserted rather than
+        // established, which is exactly what the board carries and the claim
+        // ledger must not.
+        .with_tools(
+            BOARD_TOOLS
+                .into_iter()
+                .chain(memory_tools)
+                .chain(document_tools),
+        ),
         AgentDefinition::new(
             "pattern_finder",
             "Pattern Recognition Agent",
@@ -379,6 +405,9 @@ fn support_agents(
                 // The singular pair, as with the pattern agent: this role asks
                 // one focused question, where the planners fan out.
                 .chain(["spawn_agent", "await_agent"])
+                // A line of attack this role has closed is a dead end the
+                // other schools should be told about rather than walk into.
+                .chain(BOARD_TOOLS)
                 .chain(memory_tools)
                 .chain(document_tools),
         ),

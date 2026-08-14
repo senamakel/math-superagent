@@ -72,6 +72,8 @@ crossterm = { version = "0.28", optional = true }
 
 [dev-dependencies]
 tinyflows = { path = "vendor/tinyflows", default-features = false, features = ["store", "testkit"] }
+# TEMPORARY, for a local verification run only. Reverted immediately after.
+tempfile = "3"
 
 [features]
 default = []
