@@ -71,6 +71,40 @@ fn entities_are_decoded_including_numeric_and_hex() {
     assert_eq!(decode_entities("Tom & Jerry"), "Tom & Jerry");
 }
 
+/// A bare ampersand followed by a multi-byte character must not panic.
+///
+/// The scan for the closing `;` is bounded, because an entity is short and
+/// nothing else should be searched to the end of the document. That bound was
+/// a byte index taken without asking whether it landed on a character
+/// boundary, so any `&` with a multi-byte character straddling the twelfth
+/// byte after it aborted the conversion.
+///
+/// It is not a theoretical input. A live download hit it on ordinary prose —
+/// `end byte index 12 is not a char boundary; it is inside '–'` — and the
+/// panic killed the download inside a tokio worker, so the run recorded a
+/// failed tool call and no reason a reader could act on. Mathematical writing
+/// is full of en-dashes in ranges and of ampersands in author lists, which is
+/// exactly the combination.
+#[test]
+fn a_bare_ampersand_before_a_multibyte_character_does_not_panic() {
+    // The en-dash straddles bytes 11..14, so the old bound split it.
+    assert_eq!(decode_entities("&Kelvin-Voi–t"), "&Kelvin-Voi–t");
+    // The same shape at every offset the window could cut, so a fix that moves
+    // the boundary by one is caught too.
+    for pad in 0..16 {
+        let text = format!("&{}–x", "a".repeat(pad));
+        assert_eq!(decode_entities(&text), text, "pad {pad}");
+    }
+    // A real entity is still decoded when a multi-byte character follows it.
+    assert_eq!(decode_entities("&amp;–"), "&–");
+    // And one that only closes beyond the window is left alone rather than
+    // being decoded from a truncated name.
+    assert_eq!(
+        decode_entities("&notarealentityname;"),
+        "&notarealentityname;"
+    );
+}
+
 #[test]
 fn repeated_links_are_numbered_once_not_repeated_inline() {
     let long = "https://example.org/a/very/long/path/that/costs/many/tokens";

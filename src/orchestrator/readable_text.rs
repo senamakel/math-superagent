@@ -114,6 +114,39 @@ fn collapse_blank_lines(text: &str) -> String {
     out.trim().to_string()
 }
 
+/// Bytes searched for an entity's closing `;`.
+///
+/// An entity is short — the longest this decodes is `&hellip;` at eight bytes,
+/// and a numeric one like `&#x2264;` is the same — so a bare ampersand must not
+/// send the scan to the end of the document looking for a semicolon that
+/// belongs to something else.
+const MAX_ENTITY_BYTES: usize = 12;
+
+/// The longest prefix of `text` within `limit` bytes that ends on a character
+/// boundary.
+///
+/// Slicing to a byte index is what a bounded scan wants and what Rust will not
+/// give you: `&text[..12]` panics when the twelfth byte is in the middle of a
+/// character. That is not a rare input here. A live download aborted on
+/// ordinary prose with `end byte index 12 is not a char boundary; it is inside
+/// '–'`, and because the conversion runs on a tokio worker the panic surfaced
+/// as a failed tool call with no reason attached to it.
+///
+/// Backing up to the boundary loses nothing the caller wanted. Every entity
+/// this decodes is ASCII, so a multi-byte character inside the window is proof
+/// that the window holds no entity — the shortened prefix cannot hide a `;`
+/// that a correct scan would have found.
+fn bounded_prefix(text: &str, limit: usize) -> &str {
+    if text.len() <= limit {
+        return text;
+    }
+    let mut end = limit;
+    while end > 0 && !text.is_char_boundary(end) {
+        end -= 1;
+    }
+    &text[..end]
+}
+
 /// Decodes the HTML entities that appear in mathematical prose.
 fn decode_entities(text: &str) -> String {
     if !text.contains('&') {
@@ -124,7 +157,7 @@ fn decode_entities(text: &str) -> String {
     while let Some(start) = rest.find('&') {
         out.push_str(&rest[..start]);
         let tail = &rest[start..];
-        let Some(end) = tail[..tail.len().min(12)].find(';') else {
+        let Some(end) = bounded_prefix(tail, MAX_ENTITY_BYTES).find(';') else {
             out.push('&');
             rest = &tail[1..];
             continue;
