@@ -45,3 +45,34 @@ first line" discipline in `GOAL.md`.
 
 - Statement = sourced (original papers, retrieved). Standard, accepted.
 - Not verified computationally here; it is a cited theorem, not a computed one.
+
+## Claim block
+
+```claim
+id: maehara-algebraic-rigid-distances
+statement: A number d > 0 appears as the Euclidean distance between two vertices
+  of some rigid unit-distance graph in the plane if and only if d is an
+  algebraic number; equivalently, every coordinate of a rigid unit-distance
+  graph is algebraic.
+hypotheses: unit-distance graph in the Euclidean plane R^2, rigid (its vertices
+  are isolated solutions of the polynomial system given by the unit-length edge
+  constraints).
+holds-here: YES — the run's construction targets are rigid unit-distance graphs
+  built from algebraic point sets, so exact algebraic coordinates (Maehara's
+  rational-coefficient polynomial system with each edge a quadratic) are
+  sufficient and necessary; there is never a legitimate float.
+status: asserted-by-source (Maehara 1991, and Homma–Maehara 1990 companion).
+bearing: the sourced justification for the GOAL.md discipline that coordinates
+  live in an exact algebraic number field and edge checks are symbolic
+  |x-y|^2 = 1 — floating point is not merely discouraged, it is impossible to
+  justify here because legitimate coordinates are algebraic.
+anchor: research/sources/maehara-1991-algebraic-rigid-distances.md
+contradicts: nothing on disk; it supports rather than contradicts the exact-arithmetic
+  framing in GOAL.md.
+answers: REQUESTS row on the algebraic-coordinate machinery / exact-arithmetic
+  backbone.
+falsifies: a rigid unit-distance graph exhibiting a transcendental coordinate —
+  would directly contradict the forward direction; none known (theorem is
+  standard and accepted).
+```
+

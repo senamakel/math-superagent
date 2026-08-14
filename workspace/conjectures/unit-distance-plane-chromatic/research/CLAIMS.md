@@ -10,6 +10,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | --- | --- | --- | --- | --- |
 | `debruijn-erdos-1951` | For any graph G, chi(G) = sup { chi(H) : H finite subgraph of G }. | yes | asserted | `research/sources/debruijn-erdos-1951-chromatic-reduction.md` |
 | `einstein-lattice-unit-distance` | The Eisenstein integers Z[omega], omega = e^{2 pi i /3}, form the triangular lattice; its unit vectors are the six powers of a primitive 6th root of unity, all of modulus 1, so adjacent lattice points differ by a unit… | yes | asserted | `research/sources/eisenstein-integers-triangular-lattice.md` |
+| `maehara-algebraic-rigid-distances` | A number d > 0 appears as the Euclidean distance between two vertices of some rigid unit-distance graph in the plane if and only if d is an algebraic number; equivalently, every coordinate of a rigid unit-distance graph… | yes | asserted | `research/sources/maehara-1991-algebraic-rigid-distances.md` |
 | `minkowski-sum-dense-graphs` | Minkowski sums of small unit-distance graphs produce larger unit-distance graphs with more unit distances per vertex than their size suggests; many densest-known small UDGs are such sums. | yes | asserted | `research/sources/minkowski-sums-rotations-construction.md` |
 | `minkowski-sum-unit-distance-condition` | For finite point sets A, B in the plane, a pair of points a1+b1 and a2+b2 of A+B is at Euclidean distance 1 iff \|(a1-a2) + (b1-b2)\| = 1. | yes | asserted | `research/sources/minkowski-sums-rotations-construction.md` |
 | `sat-k-colourability-encoding` | G = (V,E) is C-colourable iff the CNF consisting of (i) at-least-one  OR_i x_{v,i} for every v, and (ii) properness  (not x_{u,i} OR not x_{v,i}) for every edge {u,v} and every i, is satisfiable; a satisfying assignment… | yes | asserted | `research/sources/sat-colourability-encoding.md` |
@@ -21,6 +22,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 - `debruijn-erdos-1951` (research/sources/debruijn-erdos-1951-chromatic-reduction.md) — asserted by the source, not proved there and not checked here
 - `einstein-lattice-unit-distance` (research/sources/eisenstein-integers-triangular-lattice.md) — asserted by the source, not proved there and not checked here
+- `maehara-algebraic-rigid-distances` (research/sources/maehara-1991-algebraic-rigid-distances.md) — asserted by the source, not proved there and not checked here
 - `minkowski-sum-dense-graphs` (research/sources/minkowski-sums-rotations-construction.md) — asserted by the source, not proved there and not checked here
 - `minkowski-sum-unit-distance-condition` (research/sources/minkowski-sums-rotations-construction.md) — asserted by the source, not proved there and not checked here
 - `sat-k-colourability-encoding` (research/sources/sat-colourability-encoding.md) — asserted by the source, not proved there and not checked here

@@ -1,5 +1,7 @@
 # Frontier — what this library's own sources cite
 
+> Library note (librarian): the three canonical-reference leads below have been acquired. Network boundary blocks all direct download and `read_sources` to publisher/preprint hosts (renyi.hu, arxiv.org, springer, sciencedirect, wikipedia) — only the search and data APIs return text, and the evidence policy screens sources that hand over the problem's published answer. All three were therefore established through the works' records and the surveys that state them (exact statement + hypotheses + attribution), which is enough to fix statement and notation. **What could not be obtained** (verbatim publisher texts): the 1951 de Bruijn–Erdős paper body, the 1984 Spencer–Szemerédi–Trotter chapter body, and the 1961 Moser–Moser note body. Those full texts remain a recorded gap in `research/REQUESTS.md`; nobody should re-attempt those hosts.
+
 Derived from the citations inside every document this run has downloaded, and rewritten on each download. Nothing here has been judged: a row is a lead, not a recommendation.
 
 Ranked by how many of the library's sources cite it, then by how closely the citing sentence matches the goal. A **cited by** count above one means independent sources agree it is the reference for the subject, which is worth more than any single search ranking. A ~~struck-through~~ row is already in the library — do not download it again.
