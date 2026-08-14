@@ -1,32 +1,9 @@
-# Nielsen & Goodrich, "Arbitrarily Large Regions of Invisible Integer Lattice Points" (UW–Eau Claire poster, 2014) — landing page only
+# Nielsen & Goodrich, "Arbitrarily Large Regions of Invisible Integer Lattice Points" (2014 CERCA poster) — landing page (superseded by poster full text)
 
-Source: http://digital.library.wisc.edu/1793/72058 — full text at
-`research/sources/nielsen-goodrich-invisible-regions.full.md`
-[[nielsen-goodrich-invisible-regions.full]]
+Source: http://digital.library.wisc.edu/1793/72058 (Minds at UW / digital.library.wisc.edu handle; same item as https://minds.wisconsin.edu/handle/1793/72058). Landing page on disk at `research/summaries/nielsen-goodrich-invisible-regions-landing.md`; poster full text (the PDF, NielsenSpr14.pdf) at `research/sources/nielsen-goodrich-invisible-regions-poster.full.md`.
 
-## What is actually on disk
-
-**Only the UW–Eau Claire digital-library landing page** for a CERCA poster
-(Nielsen, Jasmine; Goodrich, Austin; advisor Mbirika, aBa; April 2014). The
-poster PDF (NielsenSpr14.pdf) was never converted or downloaded.
-
-## What the abstract announces
-
-Question: can one find arbitrarily large squares or cubes of integer lattice
-points in which every point is invisible from the origin? Yes; these are
-"hidden (or invisible) forests". The authors conjecture that the Chinese
-Remainder Theorem can predict the closest forests by permuting the prime
-matrix entries.
-
-## Why it does not help
-
-This is the earliest poster version of the Goodrich–Mbirika–Nielsen line
-(full preprint at arXiv:1805.03186, published Involve 14 (2021) 283–310,
-both in this library). It states only a conjecture and an existence fact; the
-closest-forest computations live in the later papers. Nothing contradicts the
-run's beliefs. Not load-bearing; do not re-download — the poster's content is
-subsumed by `research/summaries/arxiv-1805.03186-goodrich-mbirika-nielsen-hidden-forests.md`.
+**Superseded.** The poster PDF is now on disk; read the summary at `research/summaries/nielsen-goodrich-invisible-regions-poster.md` instead of this file. This landing page is kept for the bibliographic record (CERCA, April 2014; advisor aBa Mbirika; the abstract announces that arbitrarily large squares/cubes of invisible points — "hidden (or invisible) forests" — exist, and conjectures the CRT predicts the closest forests by permuting prime-matrix entries).
 
 ## Claims
 
-None — the file on disk holds only a landing page with an abstract.
+None — see the poster summary for the two theorems the poster actually states.

@@ -5,6 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `README.md` | Convention: code/out holds program output (sequences, logs, verification artifacts) where it was produced, separate from what a person wrote. |
+| `check_a092249_identity.py` | _(undescribed)_ |
 | `check_library_values.py` | Library-value oracle: computes Phi(n) by a naive phi sieve and checks H(5)=30, H(10)=138, H(1000)=1177848 (statement oracles) plus Phi(10^k) k=0..8 against OEIS A064018, then prints the check anchor H(10^8) = 3·10^8·(10^8+1) − 6·Phi(10^8) = 11762187201804552 that solution.py must reproduce. Exact integer arithmetic; the final answer is anchored here. |
 | `check_mod4_law.py` | Exact verification over the full 200000-term prefix of the derived mod-4 residue law: A063985(n) odd iff n mod 4 in {1,2}, H(n) mod 12 == 6 iff n mod 4 in {1,2}, Phi(n) even for n>=2, cototient parity with the c(1), c(2) boundary anomalies. First version's L4 failed and was corrected — a caught error, recorded. |
 | `commands.log` | Verbatim log of the shell commands this run executed (free/nproc, python probes, etc.), for audit outside the run. |
@@ -25,6 +26,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `patterns.py` | Pattern extraction for PE 351: exact totient sieve (N up to 2e5) producing H, A063985, cototient, phi, Phi sequences; falsifies the spurious order-4 recurrence at n=9; verifies Chai Wah Wu A063985 recursion vs sieve at probes including 10^8; reports growth ratio. |
 | `pe351-pattern-findings.md` | The pattern-finder's findings document: which exact identities/laws hold over the full stored range, which are conjectures, the spurious order-4 recurrence killed at n=9, subsequence results, and the OEIS status of every sequence examined. |
 | `pe351_values.md` | Record of the exact computed values (Phi and H at 5, 10, 1000, 10^8), the verification routes, and the origin-not-hidden gotcha. Producer: solution.py and verify_mobius.py. |
+| `recheck_integrity.py` | Independent integrity re-pass: fresh naive phi sieve reproduces all five stored 200000-term files exactly; verifies H=6A=n(n+1)/2-Phi and H=3n^2+3n-6Phi over the full range, the mod-12 period-4 law (0 violations), c(k)=1 iff prime, and dA(p^a)=p^(a-1) at prime powers. |
 | `seq_A063985.txt` | A063985(n) for n=1..200000, exact (OEIS A063985); producer patterns.py. |
 | `seq_H.txt` | H(n) for n=1..200000, exact (OEIS A216453); producer patterns.py. |
 | `seq_Phi.txt` | Phi(n)=sum phi(k) for n=1..200000, exact (OEIS A002088); producer patterns.py. |
@@ -34,3 +36,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `target_scale_check.py` | Applies the exact mod-12/parity laws at the target scale: n=10^8 (n mod 4 == 0) forces H(10^8) mod 12 == 0, A even, Phi even; checks these on the recorded final values — all hold. |
 | `verify_check_anchor.py` | Exact-integer re-verification of the PE 351 check anchor H(10^8)=11762187201804552 from catalogued Phi and A063985, and of the recalled typo chain (11762189901804552). |
 | `verify_mod4_law_indep.py` | Independent verification of the mod-4 law from a different code path (naive gcd-based phi over n=2..5000), plus application at the target scale n=10^8 using the verified H and A values, plus bounded negative checks that the law does not lift to A mod 4 or H mod 24 (no exact period <= 1000 from n=2). |
+ period <= 1000 from n=2). |

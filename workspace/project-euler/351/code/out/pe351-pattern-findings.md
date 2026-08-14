@@ -99,6 +99,61 @@ the identities already derived (H = 6·A063985, the mod-12 period-4 law, the
 prime-power jump dH(p^a) = 6·p^(a-1)). Their ratios only reflect the known
 quadratic asymptotics. No new sequence, no new closed form.
 
+## Gap closure (this session): raw phi and cototient, A092249
+
+The prior passes had never run `find_linear_recurrence` on the raw sequences
+`phi` (A000010) and `cototient` (A051953); cototient had only the
+difference-level check. Both gaps are now closed, exactly over the stored
+terms:
+
+- `analyze_sequence` (40 terms): neither `phi` nor `cototient` is a
+  low-degree polynomial (differences never constant within 12 levels).
+- `find_linear_recurrence` (max order 12, 40 terms): no constant-coefficient
+  linear recurrence of order ≤ 12 fits either. Consistent with the known
+  multiplicative/divisor structure of φ — no exploitable linear structure.
+- The A092249 check script (`code/out/check_a092249_identity.py`) verifies
+  the catalogued identity A092249(n) = Φ(n+1) against all 56 catalogue
+  terms; corroborates the run's Φ(10^8) = 3039635516365908, no new
+  computation.
+
+Verdict unchanged: no new exploitable structure; the answer
+H(10^8) = 11762187201804552 stands.
+
+## Addendum (pattern-finder re-pass): integrity + new subsequences
+
+Re-pass confirmed the stored 200000-term files are intact: a fresh naive
+phi sieve reproduces H, A063985, Phi, cototient and phi files exactly over
+the whole range (`code/out/recheck_integrity.py`), the identities
+H = 6·A063985 = 3n²+3n−6·Phi hold over all 200000 terms, the mod-12
+period-4 law has zero violations, and c(k)=1 iff k prime (17984 hits =
+prime count) with dA(p^a) = p^(a-1) at prime powers all hold. Head terms
+re-run through the sequence tools give the same negatives (no recurrence of
+order ≤ 8, no polynomial fit) and the same OEIS match (H = A216453).
+
+Two previously untested subsequences were extracted from the stored prefix
+and probed:
+
+- **H(2^k − 1)**, k=1..17: 0, 12, 60, 288, 1128, 4728, 19020, 76920, ...
+  Not in OEIS (no match). No constant-coefficient recurrence of order ≤ 8
+  over the 17 terms. Ratios → 4 as k grows, i.e. just the quadratic
+  asymptotics. The mod-12 law holds at every term (n = 2^k−1 is 3 mod 4
+  for k ≥ 2 → H ≡ 0 mod 12, all 17 match). The Gauss floor recursion
+  Phi(n) = n(n+1)/2 − Σ_{d≥2} Φ(⌊n/d⌋) reproduces Φ(2^k−1) exactly at all
+  17 points — corroboration of the sourced identity on a new index family,
+  not new structure.
+- **H(p#)** at primorials 2, 6, 30, 210, 2310, 30030, 510510:
+  6, 54, 1122, 52446, 6281514, 1060784910, 306547888170 (fresh sieve).
+  `find_linear_recurrence` reported a spurious order-3 fit with enormous
+  rational coefficients on the first 6 terms; the very next term
+  H(510510) = 306547888170 **falsifies it** (the prediction is not even an
+  integer). Same failure mode as the earlier order-4 fit killed at n=9.
+  The mod-12 law holds at 510510 (n mod 4 = 2 → H ≡ 6 mod 12, confirmed).
+
+**Verdict unchanged.** No exact exploitable structure beyond the sourced
+identities (H = 6·A063985, mod-12 period-4 law, Gauss/Möbius recursions).
+Every tool-found "recurrence" on these subsequences has now been falsified
+at its first untested term.
+
 ## Which regularity is most likely to yield a derivation
 
 The mod-12 period-4 residue pattern (claim pe351-mod12-period4): it is the
