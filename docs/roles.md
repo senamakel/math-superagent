@@ -113,23 +113,22 @@ The runtime has twenty-one roles plus an explicit solution loop.
   something, and a proof that compiles with no `sorry` is the thing itself.
 
   It *was* held to reporting `#print axioms` and every remaining `sorry` by its
-  prompt, which is this repository's own recurring failure written into the one
-  place it costs the most. Lean and Mathlib were the largest thing in the image
-  and no line of Rust ran either, so `research/CLAIMS.md` could not tell a
-  kernel-checked lemma from a sentence claiming one — and did not try. Formal
-  verification was held to a weaker standard than path traversal.
+  prompt — this repository's own recurring failure, in the one place it costs
+  most. Lean and Mathlib were the largest thing in the image and no line of Rust
+  ran either, so `research/CLAIMS.md` could not tell a kernel-checked lemma from
+  a sentence claiming one, and did not try. Formal verification was held to a
+  weaker standard than path traversal.
 
-  `lean_check` is the control. It runs the kernel, parses what came back —
-  compiled or not, every `sorry` warning, every `#print axioms` line — and
-  files the verdict under `code/out/lean/`. A claim may be `status: formalised`
-  only with a `formalisation:` line naming a `.lean` file whose verdict passed;
+  `lean_check` is the control: it runs the kernel, parses what came back —
+  compiled or not, every `sorry` warning, every `#print axioms` line — and files
+  the verdict under `code/out/lean/`. A claim may be `status: formalised` only
+  with a `formalisation:` line naming a `.lean` file whose verdict passed;
   otherwise the ledger records it as `asserted` and says why, under *Called
-  formalised, not backed by the kernel*. Four conditions pass a verdict, and the
-  fourth reads as strict on purpose: the file must contain a `#print axioms`
-  line. A proof whose foundations are unstated has told the runtime nothing, and
-  the cost of the rule is one line in a Lean file. The tool is granted to this
-  role and to nothing else, because it decides what the ledger's strongest
-  evidence class may say.
+  formalised, not backed by the kernel*. The fourth passing condition reads as
+  strict on purpose — the file must contain a `#print axioms` line — because a
+  proof whose foundations are unstated has told the runtime nothing, and the
+  rule costs one line. The tool reaches this role and nothing else, since it
+  decides what the ledger's strongest evidence class may say.
 - The reflection agent judges one attempt and extracts one lesson. It has no
   research or execution tools on purpose: a judge that can start solving stops
   judging. Its hardest job is refusing to call an unverified answer solved.
@@ -199,37 +198,32 @@ The runtime has twenty-one roles plus an explicit solution loop.
   tractable. Its one dangerous failure is reporting a rung as the goal, so the
   ledger records which difficulties were off when each one landed.
 - The searcher does not reason toward an object; it writes programs that build
-  one, keeps what scores well, and proposes again from those. It is the
-  FunSearch loop, and the reason to have it is not the loop but what the loop
-  leaves behind: FunSearch's cap-set result was "not the set of 512
-  eight-dimensional vectors in itself, but a program that generates it", and a
-  construction with a readable program behind it is an explanation where a
-  number is only an answer. Three of the four ingredients — one evolved
-  function, best-shot prompting, an island population — are bookkeeping and
-  live in Rust, because a model asked to remember which of four hundred
-  programs scored best is spending its turn on arithmetic nothing can get wrong
-  in code.
+  one, keeps what scores well, and proposes again from those. What makes the
+  FunSearch loop worth having is not the loop but its output — "not the set of
+  512 eight-dimensional vectors in itself, but a program that generates it" —
+  since a construction with a readable program behind it is an explanation where
+  a number is only an answer. Three of the four ingredients (one evolved
+  function, best-shot prompting, an island population) are bookkeeping and live
+  in Rust: a model recalling which of four hundred programs scored best is
+  spending its turn on arithmetic nothing can get wrong in code.
 
-  **Its authority is a set of absences.** It holds no `write_tool_file`, no
-  `execute_command`, and no patch tool. `submit_candidate` is its only route to
-  disk, and that route writes into `candidates/` and runs the scorer over what
-  it wrote in the same call. Two things follow that no prompt could guarantee: a
-  candidate cannot be recorded without having been executed, and `score.py` is
-  unreachable. The second is the load-bearing one, and it is a measured risk
-  rather than a hypothetical — AlphaEvolve turned out to be "extremely good at
+  **Its authority is a set of absences.** No `write_tool_file`, no
+  `execute_command`, no patch tool. `submit_candidate` is its only route to
+  disk, and it writes into `candidates/` and scores what it wrote in the same
+  call — so a candidate cannot be recorded without having been executed, and
+  `score.py` is unreachable. The second is the load-bearing one and the risk is
+  measured rather than hypothetical: AlphaEvolve proved "extremely good at
   locating exploits in the verification code", satisfying a minimum-distance
-  constraint by placing points nearly on top of one another, and Tao's team
+  constraint by stacking points nearly on top of one another, and Tao's team
   rewrote every verifier in exact arithmetic in response. A searcher that could
-  edit its own verifier would be grading its own work. A test asserts the
-  absences, because this is the kind of boundary that erodes one convenient
-  grant at a time.
+  edit its verifier would be grading its own work. A test asserts the absences,
+  because this boundary is the kind that erodes one convenient grant at a time.
 
-  A rejected candidate costs no reflection and no lesson — one line, and on to
-  the next, because a search is wrong thousands of times cheaply and a paragraph
-  of guidance per rejection would be re-read on every one. It is still
-  *recorded*, so the ledger can say how many candidates bought the best score,
-  and a search that has run four hundred without improving is a finding no
-  leaderboard of winners can show.
+  A rejected candidate costs one line and no lesson — a search is wrong
+  thousands of times cheaply, and per-rejection guidance would be re-read on
+  every one — but it is still *recorded*, so the board can say how many
+  candidates bought the best score. Four hundred without improvement is a
+  finding no leaderboard of winners can show.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
