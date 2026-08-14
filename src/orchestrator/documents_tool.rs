@@ -136,13 +136,18 @@ impl DocumentTool {
         // two refreshes above returned, so the order they ran in cannot leave
         // it holding half of one derivation and half of another.
         super::blueprint::refresh(&self.documents).await;
+        // And the entailment closure, which is a note write's most direct
+        // consequence: one `follows-from:` line can establish a claim written
+        // three notes ago, and nothing else on this list would notice.
+        super::closure::refresh(&self.documents).await;
         format!(
-            " and re-derived {}, {}, {}, {} and {}",
+            " and re-derived {}, {}, {}, {}, {} and {}",
             super::claims::CLAIMS_PATH,
             super::threads::THREADS_PATH,
             super::backward::BACKWARD_PATH,
             super::weakened::WEAKENED_PATH,
-            super::blueprint::BLUEPRINT_PATH
+            super::blueprint::BLUEPRINT_PATH,
+            super::closure::CLOSURE_PATH
         )
     }
 

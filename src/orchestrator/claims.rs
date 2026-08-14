@@ -215,7 +215,7 @@ impl Status {
         }
     }
 
-    fn label(self) -> &'static str {
+    pub(super) fn label(self) -> &'static str {
         match self {
             Self::Proved => "proved",
             Self::Formalised => "formalised",
@@ -244,6 +244,18 @@ pub(super) struct Claim {
     pub(super) bearing: String,
     /// Claim ids this one contradicts.
     pub(super) contradicts: Vec<String>,
+    /// The claims this one is a consequence of.
+    ///
+    /// The entailment edge, and the only field in the block that lets one
+    /// claim carry another's standing. A claim written `follows-from: a, b`
+    /// asserts that `a` and `b` together give it — so if both are established,
+    /// this one is established too, and nobody has to prove it again.
+    ///
+    /// Deliberately not `implies`, which this block already spells and which
+    /// means something looser: `bearing`/`implies` is prose about what the
+    /// claim is *for*. This is a machine-readable edge between ids, and
+    /// [`super::closure`] is what reads it.
+    pub(super) follows_from: Vec<String>,
     /// Request ids this claim answers.
     ///
     /// How a stated gap closes. The note that fills it says so, so whether a
@@ -409,6 +421,8 @@ fn is_known(key: &str) -> bool {
             | "evidence"
             | "bearing"
             | "implies"
+            | "follows-from"
+            | "derives-from"
             | "contradicts"
             | "answers"
             | "closes"
@@ -483,6 +497,7 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
         "holds-here" | "holds" => claim.holds = Holds::parse(value),
         "status" | "evidence" => claim.status = Status::parse(value),
         "bearing" | "implies" => claim.bearing = value.to_string(),
+        "follows-from" | "derives-from" => claim.follows_from = identifiers(value),
         "contradicts" => claim.contradicts = identifiers(value),
         "answers" | "closes" => claim.answers = identifiers(value),
         "formalisation" | "formalization" | "lean" => {

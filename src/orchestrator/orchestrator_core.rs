@@ -7,6 +7,7 @@ mod blueprint;
 mod caps;
 mod checkpoint;
 mod claims;
+mod closure;
 // The renderer writes files and pulls in raster encoders, so it is compiled
 // only when somebody asks to draw the loop.
 #[cfg(feature = "graph-debug")]

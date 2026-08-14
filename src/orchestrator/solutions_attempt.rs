@@ -611,7 +611,23 @@ pub(in crate::orchestrator) async fn attempt_step(
         state.attempts,
         workspace.is_some_and(has_executable_artifact),
     );
-    let prompt = attempt_prompt(&state, &continuation, &observations, &direction, &gaps);
+    // Read from disk rather than from a mailbox, because this is not something
+    // an arm reports — it is a fact about the library that becomes true the
+    // moment a note is written, whether or not anything was running at the
+    // time. It is also the one briefing that can save the whole attempt: an
+    // attempt about to prove a lemma its own library already entails will
+    // otherwise spend itself and report progress for it.
+    let entailed = workspace
+        .map(|workspace| super::closure::collect(workspace).briefing())
+        .unwrap_or_default();
+    let prompt = attempt_prompt(
+        &state,
+        &continuation,
+        &observations,
+        &direction,
+        &gaps,
+        &entailed,
+    );
     if !direction.is_empty()
         && let Some(tracer) = tracer
     {
@@ -701,6 +717,7 @@ fn attempt_prompt(
     observations: &str,
     direction: &str,
     gaps: &str,
+    entailed: &str,
 ) -> String {
     let fresh = if state.fresh_context.is_empty() {
         String::new()
@@ -718,10 +735,15 @@ fn attempt_prompt(
             state.steer
         )
     };
+    let entailed = if entailed.trim().is_empty() {
+        String::new()
+    } else {
+        format!("What the library already gives you, computed from its own edges:\n{entailed}\n\n")
+    };
     format!(
         "Solve this problem and verify the result.\n\nProblem:\n{}\n\n{continuation}\n\n\
          {direction}{steer}{}\n\
-         {gaps}{observations}{fresh}\n\n\
+         {entailed}{gaps}{observations}{fresh}\n\n\
          Requirements for this attempt, all of them:\n\
          - You must end this attempt with at least one program written to the workspace and \
            executed. An attempt that produces only notes, plans, or restatements has failed, \

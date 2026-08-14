@@ -171,6 +171,18 @@ fn evidence_briefing(workspace: &Path) -> String {
     // in a way that twenty open gaps alone does not say. And a circular
     // decomposition scores as progress under every other measure on this list
     // — the gaps are written, the claims are filed — while proving nothing.
+    // What the library entails but nobody has recorded. A run whose next
+    // attempt would prove something it already holds is the most expensive
+    // failure available here, and it is invisible to every count above.
+    let (free, conflicts) = super::closure::collect(workspace).counts();
+    let entailed = if free == 0 && conflicts == 0 {
+        String::new()
+    } else {
+        format!(
+            "\n- entailment: {free} claim(s) the library already establishes without saying so, \
+             {conflicts} pair(s) of held claims that cannot both be true"
+        )
+    };
     let graph = super::blueprint::collect(workspace);
     let (verified, ready, blocked) = graph.counts();
     let circular = if graph.is_circular() {
@@ -194,7 +206,7 @@ fn evidence_briefing(workspace: &Path) -> String {
          - statements attacked for a counterexample: {attacked}, of which {refuted} were \
          refuted\n\
          - statement graph: {verified} node(s) the kernel checked, {ready} ready to be worked on \
-         now, {blocked} waiting on something else{circular}\n\
+         now, {blocked} waiting on something else{circular}{entailed}\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
          nothing and left work here is not — score what is here.{}{}{}",
         captured.len(),
