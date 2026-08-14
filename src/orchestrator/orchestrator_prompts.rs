@@ -388,6 +388,29 @@ fn school_role_overlay(slug: &str, role: &str) -> &'static str {
         .map_or("", |(_, _, overlay)| *overlay)
 }
 
+/// What the roles holding `post_board` are told the board is for.
+///
+/// This exists because registering a tool is not the same as asking for it. A
+/// live three-school hour on Project Euler 1006 called `post_board` **zero**
+/// times: all three schools reached a verdict, all three ran the reflection —
+/// the role that holds the tool — and none posted. Nothing was broken. The
+/// grant was right, `teams/BOARD.md` was routed to every reader, and no prompt
+/// in this crate mentioned the board at all, so the only trace of it a model
+/// saw was an unexplained entry in a tool list, inside a call whose
+/// instructions end "Answer exactly these four things". It answered the four
+/// things. A capability nobody is told to use is not a capability.
+const BOARD_BRIEF: &str = include_str!("../prompts/board.md");
+
+/// The roles that receive [`BOARD_BRIEF`].
+///
+/// Derived from nothing, and it has to be: the grant lives in
+/// `orchestrator_registry`'s bench lists, which are `&'static str` arrays built
+/// per role rather than a queryable map, so there is no honest way to read this
+/// off the authority. A test asserts the two agree instead, because the failure
+/// this guards is silent in both directions — a role told to post that cannot,
+/// and a role that can post and was never asked.
+const BOARD_ROLES: [&str; 3] = ["reflection", "inventor", "goals"];
+
 /// What a school adds to `role`'s brief, ready to prefix the built-in prompt.
 ///
 /// Returns the empty string when the school says nothing — which is the whole
@@ -401,9 +424,21 @@ fn school_role_overlay(slug: &str, role: &str) -> &'static str {
 /// is keyed on that prefix, and a school is per-run text: leading with it would
 /// give every school its own cache namespace and lose the one identical opening
 /// block every role in every run shares.
-fn school_layer(school: &schools::School, role: &str) -> String {
+///
+/// `siblings` is whether more than one school is running. It gates
+/// [`BOARD_BRIEF`] rather than the grant, because the board is the one part of
+/// a school's brief that is not about *its* method: a school running alone has
+/// nobody to tell, and telling it to post anyway would spend tokens on an
+/// audience of one and take the control school's prompts away from the ones
+/// this runtime sent before schools existed.
+fn school_layer(school: &schools::School, role: &str, siblings: bool) -> String {
     let mut layer = String::new();
-    for part in [school.policy, school_role_overlay(school.slug, role)] {
+    let board = if siblings && BOARD_ROLES.contains(&role) {
+        BOARD_BRIEF
+    } else {
+        ""
+    };
+    for part in [school.policy, school_role_overlay(school.slug, role), board] {
         let part = part.trim();
         if !part.is_empty() {
             layer.push_str(part);
@@ -426,16 +461,20 @@ impl RolePrompts {
     /// Returns an error when a workspace file is unreadable, oversized, or not
     /// UTF-8. A file that is simply absent is skipped.
     fn load(workspace: &Path) -> Result<Self> {
-        Self::for_school(workspace, &schools::ALL[0])
+        Self::for_school(workspace, &schools::ALL[0], false)
     }
 
     /// The same prompts, with `school`'s policy layered into every one.
+    ///
+    /// `siblings` says whether this run has more than one school, and reaches
+    /// only [`school_layer`]'s board brief — see there for why the board is
+    /// told to a school with an audience and withheld from one without.
     ///
     /// # Errors
     ///
     /// Returns an error when a workspace file is unreadable, oversized, or not
     /// UTF-8. A file that is simply absent is skipped.
-    fn for_school(workspace: &Path, school: &schools::School) -> Result<Self> {
+    fn for_school(workspace: &Path, school: &schools::School, siblings: bool) -> Result<Self> {
         let role = |name: &str, base: &str| -> Result<String> {
             let mut files: Vec<&str> = UNIVERSAL_CONTEXT.to_vec();
             files.extend_from_slice(role_context(name));
@@ -444,7 +483,7 @@ impl RolePrompts {
             // Concatenated rather than branched: an empty layer leaves `base`
             // exactly as it was, and `workspace_prompt` trims what it is given,
             // so the control school's output is unchanged to the byte.
-            let base = format!("{}{base}", school_layer(school, name));
+            let base = format!("{}{base}", school_layer(school, name, siblings));
             Ok(workspace_prompt(&base, &context, &guidance))
         };
         Ok(Self {

@@ -6,7 +6,7 @@ question: How to compute Psi(k) = sum over the k+1 length-k factors w of the Fib
   (Sturmian, slope 1/phi^2) of (decimal value of w)^2, in poly(log k), to get Psi(10^18) mod 101001001.
 status: partially unblocked at Fibonacci k; still open at k=10^18
 rests-on: PE1006-kplus1-FACT, PR-consecutive-factors-lex, PE1006-factors-dependent-slop-only, MH-kplus1-factors,
-  PE1006-conjugate-singular-iff-fibonacci, chuan-cyclic-shift-index
+  Chuan-cyclic-shift-indexed-enumeration, PE1006-extension-formula
 blocked-by: at Fibonacci k=F_n the conjugate class gives positional arithmetic-progression index rules
   (Chuan Thm 11/Cor 12) that reduce the rotation-sum Psi(F_n) to poly-log arithmetic; the gap that remains
   is (a) the singular factor and (b) stepping from F_n to the general k=10^18 (which is not a Fibonacci

@@ -72,6 +72,7 @@ impl OrchestratorAgent {
                     checkpoint: &checkpoint,
                     vector_store: &vector_store,
                     search: &search,
+                    siblings: schools.len() > 1,
                 },
             )?;
             // `run` gives one agent a single turn, so it belongs to one school:
@@ -394,6 +395,9 @@ struct Roster<'a> {
     checkpoint: &'a Arc<dyn tinyagents::harness::middleware::Middleware<()>>,
     vector_store: &'a VectorStore,
     search: &'a SearchTools,
+    /// Whether this run has more than one school, and so whether the roles
+    /// holding `post_board` are told there is anybody to post to.
+    siblings: bool,
 }
 
 /// Registers one school's copy of every role, and returns its orchestrator.
@@ -408,7 +412,7 @@ fn register_school(
     school: &schools::School,
     parts: &Roster<'_>,
 ) -> Result<(AgentHarness<()>, String)> {
-    let mut prompts = RolePrompts::for_school(parts.workspace, school)?;
+    let mut prompts = RolePrompts::for_school(parts.workspace, school, parts.siblings)?;
 
     let mut research_harness = build_research_harness(
         parts.model,

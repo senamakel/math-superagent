@@ -8,7 +8,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
-| `Chuan-cyclic-shift-indexed-enumeration` | The F_n cyclic shifts T^{js}(q_n), 0<=j<F_n, of Chuan's canonical Fibonacci word q_n (length F_n) are the conjugates of the standard length-F_n word; positions of the a/1 letters in T^{js}(q_n) are given explicitly: k… | **unchecked** | asserted | `research/summaries/chuan-fibonacci-words-fq.md` |
+| `Chuan-cyclic-shift-indexed-enumeration` | The F_n cyclic shifts T^{js}(q_n), 0<=j<F_n, of Chuan's canonical Fibonacci word q_n (length F_n) are the conjugates of the standard length-F_n word; positions of the a/1 letters in T^{js}(q_n) are given explicitly: k… | yes | asserted | `research/summaries/chuan-fibonacci-words-fq.md` |
 | `MH-kplus1-factors` | An aperiodic word has p(n) >= n+1 for all n; a balanced word has p(n) <= n+1; hence a balanced aperiodic word (a Sturmian word) has exactly n+1 distinct factors of length n. | yes | proved | `research/summaries/morse-hedlund-theorem-sturmian-characterization.md` |
 | `PE1006-M-is-prime` | 101001001 is prime (its only prime-power factorization is itself). | yes | checked | `code/out/PE1006_tasks_ABC_note.md` |
 | `PE1006-balanced-bijection-refuted-checked` | The k+1 length-k factors of the Fibonacci word are NOT in bijection with the balanced binary words of length k that have floor/ceil(k*alpha) ones (alpha=1/phi^2). Verified by direct computation: k=4 factors are exactly… | yes | checked | `research/approaches/balanced-factors-claim-attack.md` |
@@ -38,6 +38,7 @@ Resolve these before building on either side.
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `Chuan-cyclic-shift-indexed-enumeration` (research/summaries/chuan-fibonacci-words-fq.md) — asserted by the source, not proved there and not checked here
 - `PE1006-factors-dependent-slop-only` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
 - `PE1006-factors-one-count-necessary` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
 - `PE1006-kplus1-FACT` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here

@@ -6,14 +6,8 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[factor-parameterization-psi]] | Give an explicit, indexable description j -> w_j of the k+1 length-k factors of the Fibonacci word (Sturmian, slope 1/phi^2), with each factor's number of 1s,… | open | MH-kplus1-factors, PR-consecutive-factors-lex, PE1006-factors-one-count-necessary, christoffel-conjugate-and-forest, PE1006-factors-dependent-slop-only | use the lex-order consecutive-factor rule to write Psi(k) as a sum over r·ab·s / r·ba·s successors; reduce sum-of-squares to pairwise position-correlation… |
-| [[psi-sum-squares-recurrence]] | How to compute Psi(k) = sum over the k+1 length-k factors w of the Fibonacci word (Sturmian, slope 1/phi^2) of (decimal value of w)^2, in poly(log k), to get… | open | PE1006-kplus1-FACT, PR-consecutive-factors-lex, PE1006-factors-dependent-slop-only, MH-kplus1-factors, PE1006-conjugate-singular-iff-fibonacci, chuan-cyclic-shift-index | derive the closed rotation-sum Psi(F_n) from Chuan's arithmetic-progression positions plus the singular square, then reach k=10^18 from the nearest Fibonacci… |
-
-## Resting on nothing recorded
-
-Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
-
-- [[psi-sum-squares-recurrence]] rests on `PE1006-conjugate-singular-iff-fibonacci`, `chuan-cyclic-shift-index`, which no claim block on disk establishes
+| [[factor-parameterization-psi]] | Give an explicit, indexable description j -> w_j of the k+1 length-k factors of the Fibonacci word (Sturmian, slope 1/phi^2), with each factor's number of 1s,… | open | MH-kplus1-factors, PR-consecutive-factors-lex, PE1006-factors-one-count-necessary, christoffel-conjugate-and-forest, PE1006-factors-dependent-slop-only, Chuan-cyclic-shift-indexed-enumeration, PE1006-extension-formula | use the lex-order consecutive-factor rule to write Psi(k) as a sum over r·ab·s / r·ba·s successors; reduce sum-of-squares to pairwise position-correlation… |
+| [[psi-sum-squares-recurrence]] | How to compute Psi(k) = sum over the k+1 length-k factors w of the Fibonacci word (Sturmian, slope 1/phi^2) of (decimal value of w)^2, in poly(log k), to get… | open | PE1006-kplus1-FACT, PR-consecutive-factors-lex, PE1006-factors-dependent-slop-only, MH-kplus1-factors, Chuan-cyclic-shift-indexed-enumeration, PE1006-extension-formula | derive the closed rotation-sum Psi(F_n) from Chuan's arithmetic-progression positions plus the singular square, then reach k=10^18 from the nearest Fibonacci… |
 
 ## Threads that could not be read
 

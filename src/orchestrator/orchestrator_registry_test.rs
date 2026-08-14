@@ -753,9 +753,76 @@ fn the_control_school_changes_no_prompt_by_one_byte() {
     use super::{RolePrompts, schools};
 
     let loaded = RolePrompts::load(template_workspace()).expect("prompts assemble");
-    let chisel = RolePrompts::for_school(template_workspace(), &schools::ALL[0])
+    let chisel = RolePrompts::for_school(template_workspace(), &schools::ALL[0], false)
         .expect("the control school's prompts assemble");
     assert_eq!(loaded.by_role(), chisel.by_role());
+}
+
+/// Every role that may post to the board is told the board exists.
+///
+/// This is the test the live run needed and did not have. Three schools ran an
+/// hour on Project Euler 1006, all three reached a verdict, all three ran the
+/// reflection — and `post_board` was called zero times, because the grant was
+/// in the registry and the instruction was nowhere. Registering a tool and
+/// asking for it are two different things, and only one of them was done.
+#[test]
+fn every_role_holding_the_board_tool_is_told_what_it_is_for() {
+    use super::{BOARD_ROLES, BOARD_TOOLS, RolePrompts, schools};
+
+    // The tool's own name, which is what is being asserted and which no other
+    // prompt in this crate mentions. A prose phrase was tried first and is the
+    // wrong marker: `board.md` is hard-wrapped, so a sentence spanning two
+    // lines never matches, and the test failed for a reason that had nothing to
+    // do with the behaviour under test.
+    let distinctive = "post_board";
+
+    for school in schools::ALL {
+        let prompts = RolePrompts::for_school(template_workspace(), &school, true)
+            .expect("prompts assemble");
+        for (role, prompt) in prompts.by_role() {
+            let told = prompt.contains(distinctive);
+            let granted = BOARD_ROLES.contains(&role);
+            assert_eq!(
+                told, granted,
+                "`{role}` in `{}`: told about the board = {told}, holds it = {granted}",
+                school.slug
+            );
+        }
+    }
+
+    // And the list this brief is routed by agrees with the bench that grants
+    // the tool. Neither can be derived from the other — the grants live in
+    // per-role `&'static str` arrays — so the agreement is asserted here.
+    let registry = default_registry(true).expect("the registry builds");
+    for role in BOARD_ROLES {
+        let bench = registry
+            .get(role)
+            .unwrap_or_else(|| panic!("`{role}` is not a registered role"));
+        assert!(
+            bench.tools.iter().any(|tool| *tool == BOARD_TOOLS[0]),
+            "`{role}` is told to post to the board and was never granted `post_board`"
+        );
+    }
+}
+
+/// A school running alone is not told to talk to itself.
+///
+/// The board costs tokens in every one of those prompts and has no audience in
+/// a single-school run, and adding it unconditionally would also move the
+/// control off the prompts this runtime sent before schools existed — which
+/// [`the_control_school_changes_no_prompt_by_one_byte`] exists to prevent.
+#[test]
+fn a_lone_school_is_never_told_about_the_board() {
+    use super::{RolePrompts, schools};
+
+    let alone = RolePrompts::for_school(template_workspace(), &schools::ALL[0], false)
+        .expect("prompts assemble");
+    for (role, prompt) in alone.by_role() {
+        assert!(
+            !prompt.contains("post_board"),
+            "`{role}` is running alone and was told to post to a board nobody reads"
+        );
+    }
 }
 
 /// A school's policy reaches every role, and only that school's.
@@ -766,9 +833,9 @@ fn a_school_policy_reaches_every_role_and_no_other_school() {
     // A phrase from `src/prompts/schools/rising-sea.md`, distinctive enough
     // that it cannot arrive from anywhere else.
     let distinctive = "Change the ground under it";
-    let sea = RolePrompts::for_school(template_workspace(), &schools::ALL[1])
+    let sea = RolePrompts::for_school(template_workspace(), &schools::ALL[1], false)
         .expect("the rising-sea prompts assemble");
-    let chisel = RolePrompts::for_school(template_workspace(), &schools::ALL[0])
+    let chisel = RolePrompts::for_school(template_workspace(), &schools::ALL[0], false)
         .expect("the control school's prompts assemble");
     for (role, prompt) in sea.by_role() {
         assert!(
@@ -795,7 +862,7 @@ fn the_method_policy_still_leads_every_prompt_in_every_school() {
 
     for school in schools::ALL {
         let prompts =
-            RolePrompts::for_school(template_workspace(), &school).expect("prompts assemble");
+            RolePrompts::for_school(template_workspace(), &school, false).expect("prompts assemble");
         for (role, prompt) in prompts.by_role() {
             assert!(
                 prompt.starts_with(SHARED_METHOD_POLICY.trim()),
@@ -811,7 +878,7 @@ fn the_method_policy_still_leads_every_prompt_in_every_school() {
 fn a_school_policy_sits_after_the_shared_policy_and_before_the_role_prompt() {
     use super::{JUDGE_PROMPT, RolePrompts, SHARED_METHOD_POLICY, schools};
 
-    let sea = RolePrompts::for_school(template_workspace(), &schools::ALL[1])
+    let sea = RolePrompts::for_school(template_workspace(), &schools::ALL[1], false)
         .expect("the rising-sea prompts assemble");
     let judge = sea
         .by_role()
@@ -849,7 +916,7 @@ fn the_board_reaches_the_roles_that_decide_what_to_do_next() {
         "# Board\n\n- rising-sea, dead-end: the sheaf route needs f D-finite and it is not\n",
     );
     let prompts =
-        RolePrompts::for_school(&root, &schools::ALL[1]).expect("the rising-sea prompts assemble");
+        RolePrompts::for_school(&root, &schools::ALL[1], false).expect("the rising-sea prompts assemble");
     let prompt_for = |role: &str| {
         prompts
             .by_role()

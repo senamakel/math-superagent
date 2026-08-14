@@ -6,7 +6,8 @@ question: Give an explicit, indexable description j -> w_j of the k+1 length-k f
   an O(log k) (recurrence/matrix-power) evaluation of Psi(k) = sum of (decimal value)^2.
 status: open
 rests-on: MH-kplus1-factors, PR-consecutive-factors-lex, PE1006-factors-one-count-necessary,
-  christoffel-conjugate-and-forest, PE1006-factors-dependent-slop-only
+  christoffel-conjugate-and-forest, PE1006-factors-dependent-slop-only,
+  Chuan-cyclic-shift-indexed-enumeration, PE1006-extension-formula
 blocked-by: no closed form / low-order recurrence for Psi(k) yet identified; the Perrin–Restivo
   Next() enumeration is O(k^2) in length, infeasible at k=10^18.
 next: use the lex-order consecutive-factor rule to write Psi(k) as a sum over r·ab·s / r·ba·s
@@ -32,10 +33,12 @@ next: use the lex-order consecutive-factor rule to write Psi(k) as a sum over r�
 - Christoffel conjugate-class + singular-factor structure (`christoffel-conjugate-and-forest`,
   Perrin–Restivo Prop 3 / Example 10) is the natural frame for the fib-index dependence.
   At k = F_n the k+1 factors are exactly the n rotations of one Christoffel word plus one
-  singular factor (`PE1006-conjugate-singular-iff-fibonacci`, checked to k=60), and Chuan's
-  Thm 11/Cor 12 gives the 1-letter positions inside each rotation as arithmetic progressions
-  mod F_n (`chuan-cyclic-shift-index`) — the positional structure the rotation-sum Psi(F_n)
-  collapses by.
+  singular factor (verified to k=60), and Chuan's Thm 11/Cor 12 gives the 1-letter positions
+  inside each rotation as arithmetic progressions mod F_n
+  (`Chuan-cyclic-shift-indexed-enumeration`) — the positional structure the rotation-sum
+  Psi(F_n) collapses by. CAVEAT (verified here): Chuan's F_n shifts are exactly the conjugates,
+  a STRICT subset of the F_n+1-member factor set; the singular factor must be added separately
+  before a Fibonacci-length sum is complete.
 
 ## Gap
 
