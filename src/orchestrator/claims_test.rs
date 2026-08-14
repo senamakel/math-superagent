@@ -398,3 +398,119 @@ fn a_holds_field_may_carry_the_reason_beside_the_answer() {
     assert_eq!(Holds::parse("yesterday's run said so"), Holds::Unchecked);
     assert_eq!(Holds::parse("probably not"), Holds::Unchecked);
 }
+
+/// A formalised claim is the one row the ledger checks rather than believes.
+///
+/// The failure being closed is the whole reason `Status::Formalised` exists:
+/// with Lean installed and no Rust running it, `research/CLAIMS.md` could not
+/// tell a kernel-checked lemma from a sentence claiming one, so it recorded
+/// both the same way. Here the same note is derived twice — once with a passing
+/// verdict on disk beside it and once without — and the two must disagree.
+#[test]
+fn a_formalised_claim_stands_only_when_the_kernel_backs_it() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-formalised");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: pigeonhole-bound\nstatement: Every 3-colouring of K_17 has a monochromatic \
+             triangle.\nholds-here: yes\nstatus: formalised\nformalisation: code/ramsey.lean",
+        ),
+    )?;
+
+    // No verdict on disk: the claim said `formalised` and nothing supports it.
+    let bare = collect(&root);
+    assert_eq!(bare.established(), 0, "an unbacked claim is not established");
+    assert_eq!(bare.asserted(), 1, "it is downgraded, not dropped");
+    let rendered = bare.render();
+    assert!(rendered.contains("`pigeonhole-bound`"), "the claim survives the downgrade");
+    assert!(rendered.contains("Called formalised, not backed by the kernel"));
+    assert!(
+        rendered.contains("no `lean_check` verdict exists"),
+        "the reason names what to do next: {rendered}"
+    );
+
+    // The same note, with a passing verdict beside it.
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_ramsey.lean.json"),
+        r#"{"file":"code/ramsey.lean","compiled":true,"sorries":[],
+            "axioms":["'ramsey' depends on axioms: [propext, Classical.choice]"]}"#,
+    )?;
+    let backed = collect(&root);
+    assert_eq!(backed.established(), 1, "a kernel-backed claim is established");
+    assert_eq!(backed.asserted(), 0);
+    assert!(!backed.render().contains("Called formalised"));
+    Ok(())
+}
+
+/// A verdict that exists and does not pass is worse than none, so it is named.
+#[test]
+fn a_formalisation_with_a_sorry_in_it_is_downgraded_and_says_why() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-sorry");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: half-proved\nstatement: The bound holds for every n.\nholds-here: yes\n\
+             status: formalised\nformalisation: code/bound.lean",
+        ),
+    )?;
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_bound.lean.json"),
+        r#"{"file":"code/bound.lean","compiled":true,
+            "sorries":["bound.lean:9:2: warning: declaration uses 'sorry'"],"axioms":[]}"#,
+    )?;
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 0);
+    assert!(
+        ledger.render().contains("`sorry` still in it"),
+        "the objection must name the sorry rather than say the check failed"
+    );
+    Ok(())
+}
+
+/// A claim that names no file at all is the easiest way to fake the status.
+#[test]
+fn a_formalised_claim_naming_no_file_is_refused() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-nofile");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: bare-assertion\nstatement: It is formalised, honestly.\nholds-here: yes\n\
+             status: formalised",
+        ),
+    )?;
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 0);
+    assert!(ledger.render().contains("names no `formalisation:` file"));
+    Ok(())
+}
+
+/// `formally proved` must not be read as the weaker, unchecked status.
+#[test]
+fn the_status_parse_prefers_formalised_over_proved() {
+    for spelling in [
+        "formalised",
+        "formalized",
+        "formally proved",
+        "lean",
+        "kernel-checked",
+    ] {
+        assert_eq!(
+            Status::parse(spelling),
+            Status::Formalised,
+            "`{spelling}` names a kernel check"
+        );
+    }
+    // The source proving it is still a different, weaker thing.
+    assert_eq!(Status::parse("proved"), Status::Proved);
+    assert_eq!(Status::parse("proven in the paper"), Status::Proved);
+}

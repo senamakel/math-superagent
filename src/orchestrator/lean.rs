@@ -19,6 +19,7 @@
 //! records the axioms rather than only the exit code — but it makes the
 //! *claim* of one checkable by something other than the role that made it.
 
+use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
 use std::time::Duration;
 
@@ -155,9 +156,12 @@ impl Verdict {
         out.push_str(&list("sorry warnings", &self.sorries));
         out.push_str(&list("#print axioms", &self.axioms));
         match self.objection() {
-            Some(objection) => out.push_str(&format!(
-                "\nThis does not yet stand behind a `status: formalised` claim: {objection}.\n"
-            )),
+            Some(objection) => {
+                let _ = writeln!(
+                    out,
+                    "\nThis does not yet stand behind a `status: formalised` claim: {objection}."
+                );
+            }
             None => out.push_str(
                 "\nThis verdict stands behind a `status: formalised` claim. Cite it with a \
                  `formalisation:` line naming this file.\n",

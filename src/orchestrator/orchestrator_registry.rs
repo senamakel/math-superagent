@@ -85,10 +85,32 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 .chain(document_tools),
         ),
     )?;
-    // The four roles carrying shell and file-write authority. They differ in
-    // mandate rather than in tools, so listing them together is what makes the
-    // fact that they share an authority boundary visible rather than buried in
-    // four near-identical blocks.
+    register_code_writing_definitions(&mut registry, document_tools, memory_tools)?;
+    for definition in support_agents(research_enabled, document_tools, memory_tools) {
+        registry.register(definition)?;
+    }
+    Ok(registry)
+}
+
+/// Declares the roles carrying shell and file-write authority.
+///
+/// Split out of [`default_registry`] rather than inlined, because the list
+/// grew a per-role branch: `lean_check` is granted to one member of it and the
+/// rest share everything, so the block is no longer the flat table it reads as
+/// from outside.
+///
+/// They differ in mandate rather than in tools, so listing them together is
+/// what makes the fact that they share an authority boundary visible rather
+/// than buried in seven near-identical blocks.
+///
+/// # Errors
+///
+/// Returns an error when a name is already registered.
+fn register_code_writing_definitions(
+    registry: &mut AgentRegistry,
+    document_tools: [&'static str; 11],
+    memory_tools: [&'static str; 3],
+) -> Result<()> {
     for (name, title, description) in [
         (
             "tool_builder",
@@ -156,10 +178,7 @@ fn default_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 ),
         )?;
     }
-    for definition in support_agents(research_enabled, document_tools, memory_tools) {
-        registry.register(definition)?;
-    }
-    Ok(registry)
+    Ok(())
 }
 
 /// Returns the judge, reflection, pattern, curator, director, inventor, and

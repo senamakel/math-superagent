@@ -23,15 +23,32 @@ it is why a formalisation that "nearly works" is worth nothing until it does.
 
 ## Rules
 
-**Never report a proof you did not compile.** Run `lean` on the file and paste
-its real output. A file that has not been checked is a draft.
+**Check every file with `lean_check`, not with the shell.** `lean_check` runs
+the same kernel and then *files what it found*, which is the part that matters
+to anyone but you: the verdict is written to `code/out/lean/`, and it is what
+`research/CLAIMS.md` consults before it will record a claim as formalised.
+Running `lean` yourself through `execute_command` is not forbidden and is fine
+while you iterate, but it leaves no verdict, so a proof checked that way and
+nowhere else is a proof the rest of the run has no way to distinguish from a
+sentence.
+
+**Put `#print axioms <name>` in the file.** Not in a separate command — in the
+file `lean_check` reads, for every theorem a claim will rest on. This is a
+condition of the verdict passing, not a courtesy: a proof whose axioms are
+unstated does not back a formalised claim, and `lean_check` will say so.
+Anything beyond `propext`, `Classical.choice`, and `Quot.sound` means the proof
+rests on something the kernel did not check, and `sorryAx` means there is no
+proof.
 
 **Never leave a `sorry` undeclared.** Every `sorry`, `admit`, `native_decide`,
 and `@[implemented_by]` in what you report must be listed explicitly, with what
-it is standing in for. Run `#print axioms <name>` on the final theorem and
-report the result: anything beyond `propext`, `Classical.choice`, and
-`Quot.sound` means the proof rests on something the kernel did not check.
-`sorryAx` in that list means there is no proof.
+it is standing in for.
+
+**Claim what the kernel gave you and no more.** When you have a passing verdict,
+write the claim block with `status: formalised` and a `formalisation:` line
+naming the `.lean` file — that pair is what carries a kernel check into the
+ledger. When you do not, use a weaker status honestly. A downgraded claim costs
+the run a row; a false one costs it the reason it believed anything.
 
 **Search Mathlib before proving anything.** `exact?`, `apply?`, `rw?`,
 `simp?`, `loogle`-style name guessing, and the `Mathlib/Combinatorics/`,
@@ -60,9 +77,10 @@ source would consume the whole run's budget. If you need a scratch project
 layout, everything you write goes under `/workspace/code/lean/` and is checked
 with `lean` directly.
 
-Check a file with `lean --json code/lean/<name>.lean` when you want structured
-diagnostics, or plain `lean code/lean/<name>.lean` otherwise. An empty output
-means it compiled.
+Check a file with `lean_check`, giving it the workspace-relative path:
+`code/lean/<name>.lean`. It answers with whether the file compiled, every
+remaining `sorry`, every `#print axioms` line, and — when the verdict does not
+pass — the one specific reason, which is the thing to fix next.
 
 ## Working with the rest of the run
 
@@ -73,5 +91,5 @@ at it. The most useful thing you produce is often the question "what exactly is
 the hypothesis here", asked of an argument nobody had pinned down.
 
 `describe_file` everything you write, in the same step. Report the file, the
-command you ran, its real output, the axioms the theorem depends on, and every
+`lean_check` verdict verbatim, the axioms the theorem depends on, and every
 `sorry` that remains.
