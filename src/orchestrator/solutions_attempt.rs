@@ -149,6 +149,15 @@ pub(super) struct SolutionState {
     pub(in crate::orchestrator) fresh_context: String,
     /// Whether reflection judged the problem solved and verified.
     pub(in crate::orchestrator) solved: bool,
+    /// Whether the run has spent the wall clock in [`run_ceiling`].
+    ///
+    /// The only field here that is not about the mathematics, and the only one
+    /// no arm computes: `eval_merge` stamps it at the end of every pass because
+    /// it is the one step that both ends a pass and knows the clock. It is a
+    /// field of the state rather than something stamped onto the accumulator
+    /// beside it because the condition that ends the loop reads it, and every
+    /// other thing that condition reads is carried here.
+    pub(in crate::orchestrator) expired: bool,
     /// The judge's steer for the next attempt, if it gave one.
     pub(in crate::orchestrator) steer: String,
     /// Restarts the judge has already forced.
@@ -191,6 +200,7 @@ impl SolutionState {
             lessons: Vec::new(),
             fresh_context: String::new(),
             solved: false,
+            expired: false,
             steer: String::new(),
             restarts: 0,
             scores: Vec::new(),
@@ -263,6 +273,7 @@ impl SolutionState {
             "lessons": self.lessons,
             "fresh_context": self.fresh_context,
             "solved": self.solved,
+            "expired": self.expired,
             "steer": self.steer,
             "restarts": self.restarts,
             "scores": self.scores,
@@ -314,6 +325,10 @@ impl SolutionState {
         rebuilt.since_reduction = count("since_reduction");
         rebuilt.solved = state
             .get("solved")
+            .and_then(serde_json::Value::as_bool)
+            .unwrap_or_default();
+        rebuilt.expired = state
+            .get("expired")
             .and_then(serde_json::Value::as_bool)
             .unwrap_or_default();
         rebuilt.last_attempt = text("last_attempt");

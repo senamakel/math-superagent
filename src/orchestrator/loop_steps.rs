@@ -171,16 +171,14 @@ impl LoopSteps {
                 .unwrap_or_default();
             let merged = super::solutions::fold_evaluation(&state.to_accumulator(), &arms);
             let merged = SolutionState::from_accumulator("", &merged);
-            let mut merged = super::solutions::evaluation_merge(merged).to_accumulator();
-            // Stamped after the fold rather than carried through it. Every pass
-            // ends here, so this is the last thing the head reads before it
-            // tests `until` — and stamping it on an arm instead would put a
-            // clock reading through `fold_evaluation`, which folds numbers as
-            // deltas and would turn one into arithmetic on timestamps.
-            if let Some(object) = merged.as_object_mut() {
-                object.insert(super::workflow::EXPIRED_FIELD.to_string(), Value::Bool(self.expired()));
-            }
-            return Ok(merged);
+            let mut merged = super::solutions::evaluation_merge(merged);
+            // Stamped after the fold rather than on an arm. Every pass ends
+            // here, so this is the last thing written before the head tests
+            // `until` — and an arm that stamped it would send a clock reading
+            // through `fold_evaluation`, which folds numbers as deltas from the
+            // base and would turn one into arithmetic on timestamps.
+            merged.expired = self.expired();
+            return Ok(merged.to_accumulator());
         }
         // Stage one crossing back into the loop. Like `goal_apply` it reads a
         // child's whole run state rather than an accumulator, and like

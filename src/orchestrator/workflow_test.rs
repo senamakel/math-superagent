@@ -841,3 +841,46 @@ async fn a_run_that_never_converges_stops_at_the_ceiling() {
     let run = run_until(&stuck(0, 0), &Respond::value(spent.to_accumulator())).await;
     run.assert_node_ran("report");
 }
+
+/// A run that has spent its wall clock stops, even though nothing else about it
+/// is terminal.
+///
+/// The fifth arm of [`terminal_condition`], and the only one that does not
+/// count events. The state here is deliberately mid-run — one attempt, nothing
+/// solved, nothing blocked, no counter near its threshold — because that is the
+/// shape of the failure it exists for: a live run reached a correct answer,
+/// had its verdict rejected, and then sat for half an hour with every arm dying
+/// on its own budget before it could return, so `attempts` never advanced and
+/// no counting condition could ever come true. Without this arm the graph is
+/// what it was then: a loop with no reachable exit.
+#[tokio::test]
+async fn a_run_that_has_spent_its_wall_clock_stops() {
+    let mut out_of_time = SolutionState::new("find the largest x");
+    out_of_time.attempts = 1;
+    out_of_time.expired = true;
+    let run = run_until(&stuck(0, 0), &Respond::value(out_of_time.to_accumulator())).await;
+    run.assert_node_ran("report");
+}
+
+/// The expiry the merge stamps is the one the head reads.
+///
+/// The condition and the stamp are written in different languages — jq in the
+/// graph, Rust in the step — and nothing compiles one against the other, so a
+/// rename on either side leaves a condition that is not wrong but simply never
+/// true. That is the failure this repository keeps recording, and it is silent:
+/// the loop would go back to having no wall-clock exit at all and every test
+/// above would still pass.
+#[test]
+fn the_field_the_merge_stamps_is_the_field_the_condition_reads() {
+    let mut expired = SolutionState::new("a problem");
+    expired.expired = true;
+    assert_eq!(
+        expired.to_accumulator().get(EXPIRED_FIELD),
+        Some(&serde_json::Value::Bool(true)),
+        "the state does not carry the field the condition reads under that name"
+    );
+    assert!(
+        terminal_condition().contains(&format!(".state.{EXPIRED_FIELD}")),
+        "the condition that ends the loop does not read the stamped field"
+    );
+}
