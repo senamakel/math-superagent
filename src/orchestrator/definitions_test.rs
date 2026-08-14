@@ -149,3 +149,68 @@ fn the_reasoning_roles_are_published_as_a_different_tier() {
     assert!(derived.iter().any(|a| a.model.as_deref() == Some("reasoning")));
     assert!(derived.iter().any(|a| a.model.as_deref() == Some("default")));
 }
+
+/// A school qualifies a registration; it does not change what the role is.
+///
+/// The trap this closes: every table in this module is keyed on a role name,
+/// so a `judge@rising-sea` matched against `"judge"` would fall through to the
+/// default and be handed a full investigation's budget — the exact failure the
+/// narrowed judging budget was written to stop, reintroduced by a suffix.
+#[test]
+fn a_schooled_role_keeps_its_own_budget_and_tier() {
+    for role in ["judge", "reflection"] {
+        let schooled = format!("{role}@rising-sea");
+        assert_eq!(
+            budget_for(&schooled).max_model_calls,
+            budget_for(role).max_model_calls,
+            "`{schooled}` is not budgeted as a {role}"
+        );
+        assert_eq!(limits_for(&schooled), limits_for(role));
+        assert!(
+            is_reasoning_role(&schooled),
+            "`{schooled}` must stay on the reasoning tier"
+        );
+    }
+    assert!(
+        budget_for("judge@rising-sea").max_model_calls < budget_for("research@rising-sea").max_model_calls,
+        "a schooled judge must still be narrower than a schooled solve"
+    );
+}
+
+/// Two schools yield two full registries, each role qualified and intact.
+#[test]
+fn a_multi_school_registry_carries_one_copy_of_every_role_per_school() {
+    let schools = [crate::orchestrator::schools::ALL[0], crate::orchestrator::schools::ALL[1]];
+    let base = registry(true);
+    let schooled = crate::orchestrator::schooled_registry(true, &schools)
+        .expect("the schooled registry builds");
+    assert_eq!(schooled.definitions().len(), base.definitions().len() * 2);
+    for school in schools {
+        for definition in base.definitions() {
+            let id = school.role(&definition.id);
+            let copy = schooled
+                .get(&id)
+                .unwrap_or_else(|| panic!("`{id}` is registered"));
+            assert_eq!(
+                copy.tools, definition.tools,
+                "a school changes what a role is told, never what it may touch"
+            );
+        }
+    }
+    // The derived workflow registry agrees, suffix and all.
+    let derived = workflow_agents(&schooled);
+    let judge = derived
+        .iter()
+        .find(|agent| agent.id == "judge@rising-sea")
+        .expect("the rising-sea judge is derived");
+    assert_eq!(judge.limits, limits_for("judge"));
+    assert_eq!(judge.model.as_deref(), Some("reasoning"));
+}
+
+/// One school is registered unqualified, so a default run is today's run.
+#[test]
+fn one_school_leaves_every_name_unqualified() {
+    let schooled = crate::orchestrator::schooled_registry(true, &[crate::orchestrator::schools::ALL[0]])
+        .expect("the schooled registry builds");
+    assert_eq!(schooled.names(), registry(true).names());
+}

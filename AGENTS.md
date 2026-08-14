@@ -67,26 +67,24 @@ available, so the agent can still record and recall its own findings.
 ## Schools
 
 A *school* is one way of attacking a problem; two or three run concurrently on
-one workspace, sharing the ledgers and a board. Each school's bet:
+one workspace, sharing the ledgers and a board. Each one's bet is in
 [`docs/schools.md`](docs/schools.md).
 
-- **A school is four things and must stay four:** a method-policy overlay
-  layered *after* the shared policy, optional per-role overlays, a bench, and
-  its `Thresholds`. Not a second loop, graph, workspace, or set of roles.
+- **Four things, and it must stay four:** a method-policy overlay layered
+  *after* the shared policy, per-role overlays, a bench, and its `Thresholds`.
+  Not a second loop, graph, workspace, or set of roles.
 - **The control does not move.** `chisel` is the runtime as it has always been,
-  is what an unset `MATH_AGENT_SCHOOLS` selects, and has an empty overlay. The
-  tests assert its prompts are byte-identical rather than trusting it; every
-  other school is measured against that baseline.
+  is what an unset `MATH_AGENT_SCHOOLS` selects, and has an empty overlay; the
+  tests assert its prompts are byte-identical rather than trusting it.
 - **Thresholds are a struct, not a second set of constants.** `route` and the jq
-  the engine runs both read one `Thresholds`, and `orchestrator::parity` proves
-  they agree for *every* school, exhaustively. None may move `blocked`: a
-  provider failure is not a methodological question.
+  the engine runs both read one, and `orchestrator::parity` proves they agree
+  for *every* school. None may move `blocked` — a provider failure is not a
+  methodological question.
 - **A board post is asserted, never established.** `teams/BOARD.md` is derived
-  from an append-only queue and never feeds a derived ledger. The posting school
-  is baked into the tool at registration, so none can post as another.
-- **A lock is taken at a tool-call boundary and never below one.**
-  `src/orchestrator/worklock.rs` serialises the write cascade and the git
-  checkpoint, and `tokio::sync::Mutex` is not reentrant.
+  from an append-only queue and never feeds a ledger; the posting school is
+  baked into the tool, so none can post as another.
+- **A lock is taken at a tool-call boundary, never below one.** `worklock.rs`
+  serialises the write cascade and the checkpoint; the mutex is not reentrant.
 
 ## Running and watching a run
 

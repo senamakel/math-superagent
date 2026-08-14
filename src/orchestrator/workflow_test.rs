@@ -7,8 +7,22 @@ use tinyflows::validate::validate_all;
 
 use super::*;
 use crate::orchestrator::definitions::workflow_agents;
-use crate::orchestrator::solutions::SolutionState;
+use crate::orchestrator::schools::Thresholds;
+use crate::orchestrator::solutions::{
+    BLOCKED_THRESHOLD, COMPUTATIONAL_THRESHOLD, MAX_ATTEMPTS, STUCK_THRESHOLD, SolutionState,
+    UNVERIFIED_THRESHOLD,
+};
 use crate::orchestrator::default_registry;
+
+/// The control school's bounds, which are the constants above.
+///
+/// Every fixture in this file is written against them, and that is deliberate:
+/// what these tests are about is the graph, and the graph a run has always
+/// executed is this one. The per-school translation is `orchestrator::parity`'s
+/// subject, and it proves it for every school rather than for this one.
+fn chisel() -> Thresholds {
+    Thresholds::chisel()
+}
 
 fn graph() -> WorkflowGraph {
     let registry = default_registry(true).expect("the default registry builds");
@@ -101,7 +115,7 @@ fn the_graph_is_structurally_valid() {
 /// document, and it is the one the Rust uses rather than a second copy.
 #[test]
 fn the_ladder_carries_the_thresholds_the_rust_uses() {
-    let ladder = reflect_ladder();
+    let ladder = reflect_ladder(&chisel());
     assert!(
         ladder.contains(&format!(">= {MAX_ATTEMPTS}")),
         "the attempt ceiling is not the Rust constant: {ladder}"
@@ -458,7 +472,7 @@ fn the_ladders_read_fields_a_step_actually_emits() {
     let emitted = SolutionState::new("a problem").to_accumulator();
     let mut missing = Vec::new();
 
-    for ladder in [reflect_ladder(), terminal_condition()] {
+    for ladder in [reflect_ladder(&chisel()), terminal_condition(&chisel())] {
         for prefix in [".item.json.", ".state.", &format!(".nodes.{LOOP_NODE}.state.")] {
             let mut rest = ladder.as_str();
             while let Some(at) = rest.find(prefix) {
@@ -925,7 +939,7 @@ fn the_field_the_merge_stamps_is_the_field_the_condition_reads() {
         "the state does not carry the field the condition reads under that name"
     );
     assert!(
-        terminal_condition().contains(&format!(".state.{EXPIRED_FIELD}")),
+        terminal_condition(&chisel()).contains(&format!(".state.{EXPIRED_FIELD}")),
         "the condition that ends the loop does not read the stamped field"
     );
 }

@@ -733,3 +733,99 @@ fn only_the_lean_prover_can_mint_a_formalised_claim() -> agent::Result<()> {
     assert_eq!(holders, ["lean_prover"]);
     Ok(())
 }
+
+/// Where a school's prompts are assembled from, for the tests below.
+///
+/// The template workspace rather than a temporary directory: it carries the
+/// `AGENTS.md` and `prompts/` files a real run has, so these assert on the
+/// assembly a run actually sends rather than on a bare built-in prompt.
+fn template_workspace() -> &'static std::path::Path {
+    std::path::Path::new("workspace/template")
+}
+
+/// The control school's prompts are the prompts this runtime already sent.
+///
+/// Byte-identical, not merely similar. A school is only ever evidence if the
+/// control is running beside it unchanged, and an empty policy that added so
+/// much as a blank line would have moved the control.
+#[test]
+fn the_control_school_changes_no_prompt_by_one_byte() {
+    use super::{RolePrompts, schools};
+
+    let loaded = RolePrompts::load(template_workspace()).expect("prompts assemble");
+    let chisel = RolePrompts::for_school(template_workspace(), &schools::ALL[0])
+        .expect("the control school's prompts assemble");
+    assert_eq!(loaded.by_role(), chisel.by_role());
+}
+
+/// A school's policy reaches every role, and only that school's.
+#[test]
+fn a_school_policy_reaches_every_role_and_no_other_school() {
+    use super::{RolePrompts, schools};
+
+    // A phrase from `src/prompts/schools/rising-sea.md`, distinctive enough
+    // that it cannot arrive from anywhere else.
+    let distinctive = "Change the ground under it";
+    let sea = RolePrompts::for_school(template_workspace(), &schools::ALL[1])
+        .expect("the rising-sea prompts assemble");
+    let chisel = RolePrompts::for_school(template_workspace(), &schools::ALL[0])
+        .expect("the control school's prompts assemble");
+    for (role, prompt) in sea.by_role() {
+        assert!(
+            prompt.contains(distinctive),
+            "`{role}` was never told which school it is working in"
+        );
+    }
+    for (role, prompt) in chisel.by_role() {
+        assert!(
+            !prompt.contains(distinctive),
+            "`{role}` in the control school is carrying another school's policy"
+        );
+    }
+}
+
+/// The shared method policy still leads every prompt in every school.
+///
+/// The provider cache is keyed on the exact leading prefix, so a school layered
+/// in *front* of the shared policy would give each school its own cache
+/// namespace and lose the one identical opening block every role shares.
+#[test]
+fn the_method_policy_still_leads_every_prompt_in_every_school() {
+    use super::{RolePrompts, SHARED_METHOD_POLICY, schools};
+
+    for school in schools::ALL {
+        let prompts =
+            RolePrompts::for_school(template_workspace(), &school).expect("prompts assemble");
+        for (role, prompt) in prompts.by_role() {
+            assert!(
+                prompt.starts_with(SHARED_METHOD_POLICY.trim()),
+                "`{role}` in `{}` does not open with the shared method policy",
+                school.slug
+            );
+        }
+    }
+}
+
+/// The school's policy sits between the shared policy and the role's own brief.
+#[test]
+fn a_school_policy_sits_after_the_shared_policy_and_before_the_role_prompt() {
+    use super::{JUDGE_PROMPT, RolePrompts, SHARED_METHOD_POLICY, schools};
+
+    let sea = RolePrompts::for_school(template_workspace(), &schools::ALL[1])
+        .expect("the rising-sea prompts assemble");
+    let judge = sea
+        .by_role()
+        .into_iter()
+        .find(|(role, _)| *role == "judge")
+        .map(|(_, prompt)| prompt.to_string())
+        .expect("the judge has a prompt");
+    let shared = SHARED_METHOD_POLICY.trim().len();
+    let school = judge
+        .find(schools::ALL[1].policy.trim())
+        .expect("the school policy is in the prompt");
+    let role = judge
+        .find(JUDGE_PROMPT.trim())
+        .expect("the role prompt is in the prompt");
+    assert!(shared < school, "the school policy preceded the shared one");
+    assert!(school < role, "the role prompt preceded the school policy");
+}
