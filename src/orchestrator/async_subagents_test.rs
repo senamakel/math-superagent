@@ -413,3 +413,78 @@ fn a_wait_outlives_the_per_tool_ceiling_it_was_never_meant_to_obey() {
         "a spawn returns immediately and needs no exemption"
     );
 }
+
+/// Two schools register their own copy of a role on one manager.
+///
+/// One manager is the point: one semaphore, one run store, one trace. If a
+/// second school needed a second manager, the concurrency cap would bound each
+/// school rather than the run, which is the one thing it exists to do.
+#[test]
+fn two_schools_register_their_own_copy_of_a_role() -> Result<()> {
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    for slug in ["chisel", "rising-sea"] {
+        manager
+            .for_school(slug)
+            .register_executor("goals", Arc::new(EchoExecutor))?;
+    }
+    assert!(manager.knows_exactly("goals@chisel"));
+    assert!(manager.knows_exactly("goals@rising-sea"));
+    assert!(
+        !manager.knows_exactly("goals"),
+        "a scoped registration must not also claim the bare name"
+    );
+    Ok(())
+}
+
+/// A bare role name spawned from a school reaches that school's copy.
+///
+/// This is what lets every bench and every loop step keep naming roles bare: a
+/// `goals@rising-sea` that delegated to a plain `tool_builder` would have left
+/// its school without anything saying so.
+#[tokio::test]
+async fn a_school_resolves_a_bare_role_to_its_own_copy() -> Result<()> {
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    for slug in ["chisel", "rising-sea"] {
+        manager
+            .for_school(slug)
+            .register_executor("tool_builder", Arc::new(EchoExecutor))?;
+    }
+    let sea = manager.for_school("rising-sea");
+    let run_id = sea.spawn("tool_builder", "compute".into())?;
+    let record = sea.await_record(run_id.as_str(), 5).await?;
+    assert_eq!(record.agent, "tool_builder@rising-sea");
+    assert!(
+        manager.spawn("tool_builder", "compute".into()).is_err(),
+        "the unscoped manager has no unqualified copy to reach"
+    );
+    Ok(())
+}
+
+/// A role registered once for the whole run is still reachable from a school.
+///
+/// The fallback is what keeps a partially schooled registry usable rather than
+/// turning a missing overlay into an unknown-agent error mid-run.
+#[test]
+fn a_school_falls_back_to_an_unqualified_registration() -> Result<()> {
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    manager.register_executor("scholar", Arc::new(EchoExecutor))?;
+    assert!(manager.for_school("adversarial").knows("scholar"));
+    Ok(())
+}
+
+/// An unscoped manager registers and resolves exactly as it always did.
+#[test]
+fn one_school_is_the_run_that_existed_before_schools() -> Result<()> {
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    manager.register_executor("judge", Arc::new(EchoExecutor))?;
+    assert!(manager.knows_exactly("judge"));
+    assert_eq!(manager.resolve("judge"), "judge");
+    Ok(())
+}
+
+/// A qualified name is the role it qualifies, whoever asks.
+#[test]
+fn a_qualified_name_still_names_its_role() {
+    assert_eq!(super::base_role("judge@rising-sea"), "judge");
+    assert_eq!(super::base_role("judge"), "judge");
+}

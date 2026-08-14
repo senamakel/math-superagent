@@ -32,8 +32,8 @@ evidence for it stays available.
   research tree, the scratch, and checkpointing.
 - [`docs/ledgers.md`](docs/ledgers.md) — the nine derived ledgers: what each
   holds, and the failure each was written to stop.
-- [`docs/schools.md`](docs/schools.md) — why several mathematicians run on one
-  problem, what each school is a bet on, and the locking that made it safe.
+- [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
+  problem, each school's bet, and the locking that made it safe.
 
 Two pairs read a mathematician's method against this runtime and say what to
 build next. They are why several of the rules above exist, so a change to a
@@ -66,28 +66,27 @@ available, so the agent can still record and recall its own findings.
 
 ## Schools
 
-A *school* is one way of attacking a problem, and two or three run concurrently
-on one workspace, sharing the ledgers and a board. Why these three, and what
-each is a bet on: [`docs/schools.md`](docs/schools.md).
+A *school* is one way of attacking a problem; two or three run concurrently on
+one workspace, sharing the ledgers and a board. Each school's bet:
+[`docs/schools.md`](docs/schools.md).
 
 - **A school is four things and must stay four:** a method-policy overlay
   layered *after* the shared policy, optional per-role overlays, a bench, and
   its `Thresholds`. Not a second loop, graph, workspace, or set of roles.
-- **The control does not move.** `chisel` is the runtime as it has always been
-  and is what an unset `MATH_AGENT_SCHOOLS` selects. Its overlay is the empty
-  string, and the tests assert its prompts are byte-identical rather than
-  trusting it — every other school is measured against that baseline.
-- **Thresholds are a struct, not a second set of constants.** `route` and the
-  jq the engine runs both read one `Thresholds`, and `orchestrator::parity`
-  proves they agree for *every* school, exhaustively. No school may move
-  `blocked`: a provider failure is not a methodological question.
+- **The control does not move.** `chisel` is the runtime as it has always been,
+  is what an unset `MATH_AGENT_SCHOOLS` selects, and has an empty overlay. The
+  tests assert its prompts are byte-identical rather than trusting it; every
+  other school is measured against that baseline.
+- **Thresholds are a struct, not a second set of constants.** `route` and the jq
+  the engine runs both read one `Thresholds`, and `orchestrator::parity` proves
+  they agree for *every* school, exhaustively. None may move `blocked`: a
+  provider failure is not a methodological question.
 - **A board post is asserted, never established.** `teams/BOARD.md` is derived
   from an append-only queue and never feeds a derived ledger. The posting school
   is baked into the tool at registration, so none can post as another.
 - **A lock is taken at a tool-call boundary and never below one.**
   `src/orchestrator/worklock.rs` serialises the write cascade and the git
-  checkpoint; `tokio::sync::Mutex` is not reentrant, so a lock at the leaf would
-  stop the run.
+  checkpoint, and `tokio::sync::Mutex` is not reentrant.
 
 ## Running and watching a run
 
@@ -96,6 +95,7 @@ Starting a run and watching one are separate commands on purpose.
 ```sh
 ./euler 763                     # start or continue problem 763
 ./euler 763 --no-research       # the same, with web search withheld
+./euler 763 --schools chisel,rising-sea   # two schools, one workspace
 ./euler-tui 763                 # watch it, a tab per team
 ./euler-tui 763 --replay        # read the last run's log; touch nothing
 ./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting

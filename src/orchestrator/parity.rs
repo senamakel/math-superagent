@@ -20,13 +20,25 @@
 //! decision space is a few thousand states — cheap enough that sampling would
 //! buy nothing and could miss exactly the off-by-one this exists to catch.
 //!
+//! # And for every school, not for one
+//!
+//! There is no longer one set of thresholds. A school is a method policy and a
+//! [`Thresholds`], several run at once, and each builds its own graph — so
+//! there is one translation to prove per distinct set of numbers, and proving
+//! it for the control school would leave every other school's ladder untested.
+//! [`corpus`] therefore takes the thresholds it is sweeping and derives its
+//! ranges from them: a school with a higher `max_attempts` gets a sweep that
+//! reaches past it, rather than a fixed range that stops short and calls the
+//! untested room agreement.
+//!
 //! The one thing it cannot check is whether the *shared* answer is right. Both
-//! engines read the same constants, so a wrong threshold is wrong in both and
+//! engines read the same numbers, so a wrong threshold is wrong in both and
 //! agrees with itself. That is what `docs/solution-loop.md` and the routing
 //! tests in `solutions_test.rs` are for; this file only proves the translation.
 
 use serde_json::{Value, json};
 
+use super::schools::{self, Thresholds};
 use super::solutions::{Route, SolutionState};
 use super::workflow::LOOP_NODE;
 
@@ -47,12 +59,30 @@ fn scope_for(state: &Value) -> Value {
     })
 }
 
-/// The port the workflow's reflection ladder selects for `state`.
-pub(super) fn workflow_route(state: &Value) -> String {
-    tinyflows::expr::evaluate(&json!(super::workflow::reflect_ladder()), &scope_for(state))
-        .as_str()
-        .unwrap_or("<null>")
-        .to_string()
+/// The port the workflow's reflection ladder selects for `state`, under one
+/// school's bounds.
+pub(super) fn workflow_route(state: &Value, thresholds: &Thresholds) -> String {
+    tinyflows::expr::evaluate(
+        &json!(super::workflow::reflect_ladder(thresholds)),
+        &scope_for(state),
+    )
+    .as_str()
+    .unwrap_or("<null>")
+    .to_string()
+}
+
+/// Every school whose translation has to be proved, named.
+///
+/// Read off [`schools::ALL`] rather than listed, so a school added there is a
+/// school this gate covers. The slug travels with the numbers because a
+/// divergence should say *whose* ladder disagreed, and two schools sharing a
+/// set of numbers are both worth naming — the sweep is a few thousand pure
+/// comparisons, so deduplicating them would save nothing and lose that.
+pub(super) fn schools_under_test() -> Vec<(&'static str, Thresholds)> {
+    schools::ALL
+        .iter()
+        .map(|school| (school.slug, school.thresholds))
+        .collect()
 }
 
 /// The port name the state graph's [`Route`] corresponds to.
@@ -135,17 +165,24 @@ impl Case {
 
 /// Every combination of the counters the routing policy reads.
 ///
-/// The ranges reach past every threshold — the largest is `MAX_ATTEMPTS` at
-/// eight — so each arm is exercised from below, at, and above its boundary,
-/// which is where an off-by-one lives.
-pub(super) fn corpus() -> Vec<Case> {
+/// Each range reaches one past the threshold that reads it, so every arm is
+/// exercised from below, at, and above its boundary, which is where an
+/// off-by-one lives. Derived from the thresholds under test rather than fixed:
+/// a school that raises `stuck` to four and sweeps to three would never reach
+/// its own diversify arm, and the sweep would report agreement about a decision
+/// it never asked either engine to make.
+///
+/// For the control school this is the same corpus as before — every threshold
+/// is two and the attempt ceiling is eight, so the ranges are `0..=3` and
+/// `0..=9`, exactly the numbers that used to be written here.
+pub(super) fn corpus(thresholds: &Thresholds) -> Vec<Case> {
     let mut cases = Vec::new();
-    for attempts in 0..=9 {
+    for attempts in 0..=thresholds.max_attempts + 1 {
         for solved in [false, true] {
-            for blocked in 0..=3 {
-                for unproductive in 0..=3 {
-                    for computational in 0..=3 {
-                        for unverified in 0..=3 {
+            for blocked in 0..=thresholds.blocked + 1 {
+                for unproductive in 0..=thresholds.stuck + 1 {
+                    for computational in 0..=thresholds.computational + 1 {
+                        for unverified in 0..=thresholds.unverified + 1 {
                             cases.push(Case::new(
                                 attempts,
                                 solved,
