@@ -34,6 +34,11 @@ suffices (reverse-mathematics reading). All this retrieval captured.
 
 ## Authority
 
+**Duplicate note (librarian housekeeping):** the scholar wrote an overlapping
+`research/sources/debruijn-erdos-1951-chromatic-reduction.md`; `CLAIMS.md` keys on
+that file. This file is retained for its proof-detail notes; the two should be
+read as the same source.
+
 Primary source (the original paper), retrieved verbatim content. 275 citations
 per the citation graph. This is the single most load-bearing reduction in
 `problem.md`: it is what lets a finite unit-distance graph with `chi >= k` certify

@@ -75,6 +75,24 @@ Fetch the same material with `read_sources` or `deep_research`, which retrieve \
 server-side and return the text. If a source is genuinely unreachable by any \
 route, record the gap in `research/FRONTIER.md` and move on.";
 
+/// The tools whose URL argument is a destination this container dials itself.
+///
+/// The distinction decides whether the egress allowlist has anything to say
+/// about a call, and getting it wrong is not a harmless over-block. Every other
+/// URL-taking tool here hands the URL to a *remote* API — `read_sources`,
+/// `deep_research`, `find_similar_sources` and `citation_graph` all post it to
+/// `api.exa.ai` or `api.openalex.org`, which fetch server-side and return text.
+/// The proxy never sees `arxiv.org` on those calls and could not block them if
+/// it wanted to, so refusing one for reachability withholds a source the screen
+/// was perfectly placed to adjudicate on its actual contents instead.
+///
+/// A live run showed the shape: [`UNREACHABLE_HOST`] tells the caller to fetch
+/// the same material with `read_sources`, and `read_sources` then refused the
+/// same host — eleven times. An instruction the runtime immediately
+/// contradicts is worse than no instruction, and the run has no way to tell
+/// that the second refusal was a bug rather than the policy.
+const DIALS_ITS_OWN_URL: [&str; 1] = ["download_document"];
+
 /// What a screened call returns in place of a result it refused.
 const REFUSED_RESULT: &str = "\
 The source was reached but its contents were withheld by the run's evidence \
@@ -147,10 +165,14 @@ impl ScreenedTool {
 
     /// Screens the arguments of a call, before it runs.
     ///
-    /// Two checks. Any URL-shaped argument is tested against the host denylist,
-    /// so a denied source is refused here rather than surfacing later as an
-    /// opaque proxy error. Then the whole argument object is screened as text,
-    /// which is what catches a query that names the thing being looked up.
+    /// Three checks. Any URL-shaped argument is tested against the host
+    /// denylist, so a denied source is refused here rather than surfacing later
+    /// as an opaque proxy error. If this tool dials its own URL — see
+    /// [`DIALS_ITS_OWN_URL`], and only `download_document` does — the URL is
+    /// also tested for reachability, because that call really will fail at the
+    /// proxy and saying so beats a transport error. Then the whole argument
+    /// object is screened as text, which is what catches a query that names the
+    /// thing being looked up.
     async fn screen_arguments(&self, arguments: &Value) -> Option<String> {
         for url in url_arguments(arguments) {
             if self.policy.denies_host(&url) {
@@ -158,7 +180,8 @@ impl ScreenedTool {
                 self.record(Stage::Arguments, "denied-host", format!("host `{host}`"));
                 return Some(REFUSED_ARGUMENTS.to_string());
             }
-            if self.policy.host_unreachable(&url) {
+            if DIALS_ITS_OWN_URL.contains(&self.inner.name()) && self.policy.host_unreachable(&url)
+            {
                 let host = url.split('/').nth(2).unwrap_or("").to_string();
                 self.record(
                     Stage::Arguments,

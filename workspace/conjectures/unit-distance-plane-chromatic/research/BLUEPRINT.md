@@ -52,4 +52,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `lower-bound-via-spindle/G-spindling-closure` | lemma | **ready** | — | If H is a unit-distance graph with chi(H)=4 and vertices u,v, u≠v, d=\|u-v\|>=1/2, such that every proper 4-colouring of H has c(u)=c(v),… |
 | `minkowski-sum-dense-graphs` | claim | **ready** | — | Minkowski sums of small unit-distance graphs produce larger unit-distance graphs with more unit distances per vertex than their size… |
 | `minkowski-sum-unit-distance-condition` | claim | **ready** | — | For finite point sets A, B in the plane, a pair of points a1+b1 and a2+b2 of A+B is at Euclidean distance 1 iff \|(a1-a2) + (b1-b2)\| = 1. |
+| `sat-k-colourability-encoding` | claim | **ready** | — | G = (V,E) is C-colourable iff the CNF consisting of (i) at-least-one  OR_i x_{v,i} for every v, and (ii) properness  (not x_{u,i} OR not… |
 | `unit-distance-upper-bound` | claim | **ready** | — | u_2(n), the maximum number of unit distances among n plane points, is O(n^{4/3}). |

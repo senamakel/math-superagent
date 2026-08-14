@@ -319,6 +319,21 @@ impl ScreenPolicy {
             adjudicator_max_chars: 24_000,
         }
     }
+
+    /// The same fixture with an egress allowlist, so reachability has an
+    /// opinion. Separate from [`Self::for_test`] because an empty allowlist is
+    /// the ordinary path and every test that does not care should stay on it.
+    pub(crate) fn for_test_with_allowlist(
+        block: &[&str],
+        flag: &[&str],
+        deny_hosts: &[&str],
+        allow_hosts: &[&str],
+    ) -> Self {
+        Self {
+            allow_hosts: allow_hosts.iter().map(|host| (*host).to_string()).collect(),
+            ..Self::for_test(block, flag, deny_hosts)
+        }
+    }
 }
 
 #[cfg(test)]

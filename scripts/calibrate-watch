@@ -55,12 +55,20 @@ echo ""
 echo "  BOARD     posts by school (zero across the board is the failure)"
 board=$workspace/teams/BOARD.md
 if [ -f "$board" ]; then
-    grep -c '^## ' "$board" 2>/dev/null | sed 's/^/    entries  /'
-    grep -o 'post_board' "$log" 2>/dev/null | wc -l | sed 's/^/    calls    /'
+    grep -c '^## ' "$board" 2>/dev/null | head -1 | sed 's/^/    entries  /'
     tail -20 "$board"
 else
     echo "    no teams/BOARD.md yet — nothing has posted"
 fi
+# `post_board` is held by exactly three roles: reflection, inventor and goals.
+# Two of them run only after a verdict, so an empty board early in a run is a
+# fact about the loop's position, not about the grant — which is why the roles
+# are counted beside the posts rather than the posts being reported alone.
+printf '    calls    %s\n' "$(grep -c 'post_board' "$log" 2>/dev/null | head -1)"
+for holder in reflection inventor goals; do
+    printf '    %-10s %s turns\n' "$holder" \
+        "$(grep -c "^\[[0-9:]*\] $holder@" "$log" 2>/dev/null | head -1)"
+done
 
 echo ""
 echo "  SCREEN    decisions by verdict, then by tool"
@@ -98,7 +106,9 @@ count_entries() {
     # emits a second count and printf then repeats its whole format string.
     grep -c '^## ' "$1" 2>/dev/null | head -1
 }
-sources=$(count_entries "$workspace/research/SOURCES.md")
+# A source is a file under `research/sources/`, not a row in a ledger: the
+# librarian files one note per source and `README.md` is the tree's own.
+sources=$(find "$workspace/research/sources" -name '*.md' ! -name 'README.md' 2>/dev/null | wc -l)
 claims=$(count_entries "$workspace/research/CLAIMS.md")
 printf '    sources %s   claims %s\n' "$sources" "$claims"
 if [ "$sources" -gt 8 ] && [ "$claims" -eq 0 ]; then

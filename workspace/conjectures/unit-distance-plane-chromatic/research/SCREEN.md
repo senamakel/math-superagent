@@ -69,3 +69,8 @@ prevent.
 | 1786744523 | `read_sources` | arguments | denied-host | host `en.wikipedia.org` |
 | 1786744537 | `exa_search` | arguments | allowed-by-adjudicator | flagged, then allowed |
 | 1786744542 | `exa_search` | result | denied | term matched in 12082 characters |
+| 1786744701 | `deep_research` | result | denied | term matched in 24468 characters |
+| 1786744739 | `deep_research` | arguments | denied | term matched |
+| 1786744743 | `exa_search` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786744749 | `exa_search` | result | denied | term matched in 12108 characters |
+| 1786744758 | `exa_search` | arguments | denied | term matched |

@@ -11,6 +11,9 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 /// A tool that returns whatever text it was built with, and records whether it
 /// ran at all.
 struct Echo {
+    /// The wrapped tool's name, because the screen's reachability check keys
+    /// off it: only a tool that dials its own URL can be stopped by the proxy.
+    named: &'static str,
     reply: String,
     ran: Arc<std::sync::atomic::AtomicBool>,
 }
@@ -18,17 +21,17 @@ struct Echo {
 #[async_trait]
 impl Tool<()> for Echo {
     fn name(&self) -> &'static str {
-        "exa_search"
+        self.named
     }
     fn description(&self) -> &'static str {
         "test double"
     }
     fn schema(&self) -> ToolSchema {
-        ToolSchema::new("exa_search", "test double", json!({"type": "object"}))
+        ToolSchema::new(self.named, "test double", json!({"type": "object"}))
     }
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         self.ran.store(true, std::sync::atomic::Ordering::SeqCst);
-        Ok(ToolResult::text(call.id, "exa_search", self.reply.clone()))
+        Ok(ToolResult::text(call.id, self.named, self.reply.clone()))
     }
 }
 
@@ -53,6 +56,7 @@ fn screened(
     let root = workspace(name);
     let tool = ScreenedTool::new(
         Arc::new(Echo {
+            named: "exa_search",
             reply: reply.to_string(),
             ran: Arc::clone(&ran),
         }),
@@ -228,4 +232,85 @@ fn every_url_shaped_argument_is_found_wherever_it_sits() {
         "links": [{"href": "http://c.example/three"}]
     }));
     assert_eq!(found.len(), 3, "found {found:?}");
+}
+
+/// Builds a screened tool under a chosen name, with an egress allowlist.
+fn screened_named(
+    name: &str,
+    tool_name: &'static str,
+) -> (
+    ScreenedTool,
+    Arc<std::sync::atomic::AtomicBool>,
+    std::path::PathBuf,
+) {
+    let ran = Arc::new(std::sync::atomic::AtomicBool::new(false));
+    let root = workspace(name);
+    let tool = ScreenedTool::new(
+        Arc::new(Echo {
+            named: tool_name,
+            reply: "the text of the source".to_string(),
+            ran: Arc::clone(&ran),
+        }),
+        Arc::new(ScreenPolicy::for_test_with_allowlist(
+            &["de Grey"],
+            &["chromatic number"],
+            &[],
+            &["api.exa.ai"],
+        )),
+        root.clone(),
+        Arc::new("determine the chromatic number of the plane".to_string()),
+        None,
+    );
+    (tool, ran, root)
+}
+
+fn named_call(name: &str, arguments: serde_json::Value) -> ToolCall {
+    ToolCall {
+        id: "c1".to_string(),
+        name: name.to_string(),
+        arguments,
+        invalid: None,
+    }
+}
+
+/// A tool that dials its own URL is stopped by the allowlist.
+#[tokio::test]
+async fn a_download_of_an_unreachable_host_is_refused_before_the_request() {
+    let (tool, ran, root) = screened_named("unreachable-download", "download_document");
+    let result = tool
+        .call(
+            &(),
+            named_call("download_document", json!({"url": "https://arxiv.org/abs/1"})),
+        )
+        .await
+        .expect("a refusal is a result");
+    assert!(!ran.load(std::sync::atomic::Ordering::SeqCst));
+    assert!(result.content.contains("not reachable from this run"));
+    assert!(
+        std::fs::read_to_string(root.join("config/screen.jsonl"))
+            .expect("a refusal must be recorded")
+            .contains("unreachable-host")
+    );
+}
+
+/// A tool that hands the URL to a remote API is not.
+///
+/// `read_sources` posts the URL to `api.exa.ai`, which fetches it server-side.
+/// The proxy never sees `arxiv.org` on that call and could not block it, so
+/// refusing for reachability withholds a source the screen was placed to
+/// adjudicate on its contents — and does it while [`UNREACHABLE_HOST`] is
+/// telling the caller to use exactly this tool instead. A live run took that
+/// contradiction eleven times.
+#[tokio::test]
+async fn a_server_side_fetch_of_the_same_host_is_allowed_through() {
+    let (tool, ran, _root) = screened_named("unreachable-readthrough", "read_sources");
+    let result = tool
+        .call(
+            &(),
+            named_call("read_sources", json!({"urls": ["https://arxiv.org/abs/1"]})),
+        )
+        .await
+        .expect("a server-side fetch must not be refused for reachability");
+    assert!(ran.load(std::sync::atomic::Ordering::SeqCst));
+    assert_eq!(result.content, "the text of the source");
 }

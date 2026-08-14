@@ -53,3 +53,8 @@
 {"at":"1786744523","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"read_sources"}
 {"at":"1786744537","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
 {"at":"1786744542","decision":"denied","detail":"term matched in 12082 characters","stage":"result","tool":"exa_search"}
+{"at":"1786744701","decision":"denied","detail":"term matched in 24468 characters","stage":"result","tool":"deep_research"}
+{"at":"1786744739","decision":"denied","detail":"term matched","stage":"arguments","tool":"deep_research"}
+{"at":"1786744743","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786744749","decision":"denied","detail":"term matched in 12108 characters","stage":"result","tool":"exa_search"}
+{"at":"1786744758","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
