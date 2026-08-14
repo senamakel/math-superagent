@@ -8,12 +8,19 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `MH-kplus1-factors` | An aperiodic word has p(n) >= n+1 for all n; a balanced word has p(n) <= n+1; hence a balanced aperiodic word (a Sturmian word) has exactly n+1 distinct factors of length n. | yes | proved | `research/summaries/morse-hedlund-theorem-sturmian-characterization.md` |
 | `PE1006-factors-dependent-slop-only` | Two Sturmian words have the same set of factors iff they have the same slope; the length-k factor set depends only on slope, not on intercept or finite truncation. | yes | asserted | `research/notes/governing-theory-sturmian.md` |
+| `PE1006-factors-one-count-necessary` | Every length-k factor of the infinite Fibonacci word (Sturmian, slope a=1/phi^2=(3-sqrt5)/2) has either floor(k*a) or ceil(k*a) occurrences of the letter 1 (Morse-Hedlund balanced-blocks fact). | yes | asserted | `research/notes/governing-theory-sturmian.md` |
 | `PE1006-kplus1-FACT` | The infinite Fibonacci word F (fixed point of 0->01,1->0, slope (3-sqrt5)/2) is a Sturmian word, so it has exactly k+1 distinct factors of length k for every k>=1; and this equals the set of the problem's length-k… | yes | asserted | `research/notes/governing-theory-sturmian.md` |
+| `PR-consecutive-factors-lex` | In a Sturmian set F, two equal-length factors u,v are consecutive in lex order iff u=r·ab·s and v=r·ba·s, or u=r·a and v=r·b; the next factor after u is rbas (if u=rabs) or rb (if u=ra), r the longest right-special… | yes | proved | `research/summaries/sturmian-words-hal-note.md` |
+| `PerrinRestivo-len8-len10-lists` | The Fibonacci Sturmian set's length-8 factors are the 8 conjugates of abaababa plus the singular factor babaabab (9 total); its 11 length-10 factors are listed in the paper's Table 1. | yes | asserted | `research/summaries/sturmian-words-hal-note.md` |
+| `christoffel-conjugate-and-forest` | For coprime a,b the lower and upper Christoffel words of slope b/a are conjugates (Cohn, de Luca–Mignosi); every nontrivial Christoffel word has a unique standard factorization (u,v) into two Christoffel words… | yes | proved | `research/summaries/berstel-christoffel-words-repetitions.md` |
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
 - `PE1006-factors-dependent-slop-only` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
+- `PE1006-factors-one-count-necessary` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
 - `PE1006-kplus1-FACT` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
+- `PerrinRestivo-len8-len10-lists` (research/summaries/sturmian-words-hal-note.md) — asserted by the source, not proved there and not checked here

@@ -41,6 +41,45 @@ can build on (see `research/approaches/` for how the sum-of-squares recurrence i
 derived). It does not require enumerating `k = 10^18` words — the recurrence is over
 `k` with a closed form / fast exponentiation.
 
+## Answer to request `precise-sourced-statement-c1ec`: the indexed classification of length-n factors
+
+**Fact (Morse–Hedlund, quoted in Poirier–Steiner, hal-03869990):** in a Sturmian word of
+slope `α`, every length-`n` factor has either `⌊nα⌋` or `⌈nα⌉` occurrences of the letter
+of frequency `α`. For the Fibonacci word, `α = 1/φ² = (3−√5)/2`, so every length-`k`
+factor has `⌊k/φ²⌋` or `⌈k/φ²⌉` occurrences of `1`.
+
+This is a **necessary condition only**. It is NOT a bijection: the set of all balanced
+binary words of length `k` with `⌊kα⌋` or `⌈kα⌉` ones strictly contains the factor set and
+has more than `k+1` elements (refuted in `research/approaches/balanced-factors-claim-attack.md`:
+for `k=3`, `C(3,1)+C(3,2)=6` candidate words but only 4 factors; `k=4`: 10 candidates vs 5
+factors). The indexed enumeration of the true factor set comes from the Perrin–Restivo
+**consecutive-factor lex-order rule** (`PR-consecutive-factors-lex`), not from the
+balanced-count paraphrase.
+
+Verification of the *necessary* condition against the oracle: `k=3`, `α=(3−√5)/2 ≈ 0.381966`;
+`kα = 1.1459`, so `⌊kα⌋=1`, `⌈kα⌉=2`. The four length-3 factors `001, 010, 100, 101` have
+respectively `1,1,1,2` ones — all in `{1,2}`. ✓ (necessary condition holds; does not enumerate).
+
+```claim
+id: PE1006-factors-one-count-necessary
+statement: Every length-k factor of the infinite Fibonacci word (Sturmian, slope a=1/phi^2=(3-sqrt5)/2)
+  has either floor(k*a) or ceil(k*a) occurrences of the letter 1 (Morse-Hedlund balanced-blocks fact).
+hypotheses: Sturmian word of slope a; for Fibonacci a=1/phi^2.
+holds-here: true — verified on k=3: k*a=1.1459, all four factors 001,010,100,101 have 1 or 2 ones.
+status: sourced — Morse & Hedlund 1940, quoted in Poirier-Steiner (hal-03869990); necessary condition checked vs oracle.
+bearing: necessary restriction on the factor set; NOT an enumeration (the exact balanced-set bijection has
+  been refuted — see the Correction note below and research/approaches/balanced-factors-claim-attack.md).
+anchor: research/summaries/morse-hedlund-balanced-blocks-floor-alpha.md.
+```
+
+**Correction of a prior overstatement.** An earlier claim `PE1006-balanced-factors-floornalpha`
+asserted the length-k factors are *exactly* the balanced binary words with `⌊kα⌋`/`⌈kα⌉` ones
+and that there are exactly `k+1` such words. That bijection is **false** and has been removed:
+the balanced-count paraphrase over-enumerates (see `research/approaches/balanced-factors-claim-attack.md`).
+The enumeration that answers `precise-sourced-statement-c1ec` is the Perrin–Restivo
+consecutive-factor rule (`PR-consecutive-factors-lex`), which indexes the `k+1` factors in lex
+order without requiring the false balanced-set bijection.
+
 ## Sources
 
 - Perrin & Restivo, "A note on Sturmian words", https://hal.science/hal-00828351/file/noteSturmianWords.pdf
@@ -58,6 +97,7 @@ holds-here: true — this is precisely the problem's stated FACT.
 status: sourced — Morse-Hedlund theorem; verified against the k=3 example (4 factors: 001,010,100,101).
 bearing: turns "exactly k+1 subwords" from an unexplained statement into a named theorem, and fixes
   the governing object (Sturmian word) for deriving Psi(k) via the lex-order consecutive-factor rule.
+follows-from: MH-kplus1-factors
 anchor: this note; LO: hal-00828351, hal-01827511, cbo9781107326019.003, hal-01829144v1.
 ```
 

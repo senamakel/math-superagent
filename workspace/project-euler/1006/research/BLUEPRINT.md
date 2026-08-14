@@ -10,6 +10,12 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
+- `fib-subword-squares/G1-factor-parameterization` (lemma) — For every k >= 1, there exists an explicit description of each of the k+1 distinct length-k factors of the infinite Fibonacci word f = lim…
+  - open `research/backward/fib-subword-squares.md`
+- `fib-subword-squares/G2-sum-closed-form` (lemma) — Using the parameterization from G1, the sum Psi(k) = sum_{j=0}^k (decimal(w_j))^2 can be expressed as a closed form in k, or as a linear…
+  - open `research/backward/fib-subword-squares.md`
+- `fib-subword-squares/G3-fast-evaluation` (lemma) — The expression from G2 can be evaluated at k = 10^18 modulo 101001001 using O(log k) arithmetic operations, by reducing the recurrence to…
+  - open `research/backward/fib-subword-squares.md`
 - `fibonacci-subword-squares/G-closed-form-sum` (lemma) — With the G-factor-parameterization in hand, Psi(k) = sum_{j=0}^k val(w_j)^2 admits a closed form or a fixed-order linear recurrence in k…
   - open `research/backward/fibonacci-subword-squares.md`
 - `fibonacci-subword-squares/G-factor-parameterization` (lemma) — For every k >= 1 there is an explicit, indexable bijection j -> w_j (0 <= j <= k) between {0,...,k} and the length-k factors of the…
@@ -23,8 +29,17 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `MH-kplus1-factors` | claim | established | — | An aperiodic word has p(n) >= n+1 for all n; a balanced word has p(n) <= n+1; hence a balanced aperiodic word (a Sturmian word) has exactly… |
 | `PE1006-factors-dependent-slop-only` | claim | **ready** | — | Two Sturmian words have the same set of factors iff they have the same slope; the length-k factor set depends only on slope, not on… |
-| `PE1006-kplus1-FACT` | claim | **ready** | — | The infinite Fibonacci word F (fixed point of 0->01,1->0, slope (3-sqrt5)/2) is a Sturmian word, so it has exactly k+1 distinct factors of… |
+| `PE1006-factors-one-count-necessary` | claim | **ready** | — | Every length-k factor of the infinite Fibonacci word (Sturmian, slope a=1/phi^2=(3-sqrt5)/2) has either floor(k*a) or ceil(k*a) occurrences… |
+| `PE1006-kplus1-FACT` | claim | established | — | The infinite Fibonacci word F (fixed point of 0->01,1->0, slope (3-sqrt5)/2) is a Sturmian word, so it has exactly k+1 distinct factors of… |
+| `PR-consecutive-factors-lex` | claim | established | — | In a Sturmian set F, two equal-length factors u,v are consecutive in lex order iff u=r·ab·s and v=r·ba·s, or u=r·a and v=r·b; the next… |
+| `PerrinRestivo-len8-len10-lists` | claim | **ready** | — | The Fibonacci Sturmian set's length-8 factors are the 8 conjugates of abaababa plus the singular factor babaabab (9 total); its 11… |
+| `christoffel-conjugate-and-forest` | claim | established | — | For coprime a,b the lower and upper Christoffel words of slope b/a are conjugates (Cohn, de Luca–Mignosi); every nontrivial Christoffel… |
+| `fib-subword-squares` | goal | blocked | `PE1006-kplus1-FACT`, `fib-subword-squares/G1-factor-parameterization`, `fib-subword-squares/G2-sum-closed-form`, `fib-subword-squares/G3-fast-evaluation` | Compute Psi(10^18) mod 101001001, where Psi(k) = sum over the k+1 distinct length-k factors of the infinite Fibonacci word f of… |
+| `fib-subword-squares/G1-factor-parameterization` | lemma | **ready** | — | For every k >= 1, there exists an explicit description of each of the k+1 distinct length-k factors of the infinite Fibonacci word f = lim… |
+| `fib-subword-squares/G2-sum-closed-form` | lemma | **ready** | — | Using the parameterization from G1, the sum Psi(k) = sum_{j=0}^k (decimal(w_j))^2 can be expressed as a closed form in k, or as a linear… |
+| `fib-subword-squares/G3-fast-evaluation` | lemma | **ready** | — | The expression from G2 can be evaluated at k = 10^18 modulo 101001001 using O(log k) arithmetic operations, by reducing the recurrence to… |
 | `fibonacci-subword-squares` | goal | blocked | `fibonacci-subword-squares/G-closed-form-sum`, `fibonacci-subword-squares/G-factor-parameterization`, `fibonacci-subword-squares/G-log-k-engine`, `fibonacci-subword-squares/G-stabilization` | Psi(10^18) mod 101001001, where Psi(k) = sum over the k+1 distinct length-k Fibonacci subwords of (integer value of the subword)^2. |
 | `fibonacci-subword-squares/G-closed-form-sum` | lemma | **ready** | — | With the G-factor-parameterization in hand, Psi(k) = sum_{j=0}^k val(w_j)^2 admits a closed form or a fixed-order linear recurrence in k… |
 | `fibonacci-subword-squares/G-factor-parameterization` | lemma | **ready** | — | For every k >= 1 there is an explicit, indexable bijection j -> w_j (0 <= j <= k) between {0,...,k} and the length-k factors of the… |

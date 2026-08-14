@@ -1,53 +1,21 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/lothaire-sturmian-words-preview.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Lothaire, "Sturmian Words" (Algebraic Combinatorics on Words, Ch. 2) — paywalled TOC only
 
 <!-- source: https://doi.org/10.1017/cbo9781107326019.003 | converted from HTML -->
 
-## What is in it
+The Cambridge Core page for Berstel & Séébold, "Sturmian Words", the canonical Chapter 2 of
+Lothaire's *Algebraic Combinatorics on Words* (CUP 2002), pp. 45–110, doi:10.1017/CBO9781107326019.003.
 
-  - Book contents
-- Chapter 2 - Sturmian Words
-  - Summary
-  - Information
-  - Access options
-    - Book purchase
-    - Temporarily unavailable
-  - Accessibility standard: Unknown
-    - Why this information is here
-    - Accessibility Information
-- Cited by
-- Save book to Kindle
-- Save book to Dropbox
-- Save book to Google Drive
+**This download contains only the book's table of contents and access/paywall options — no
+mathematical content.** It does not establish any theorem. It is authoritative *as a reference
+pointer* (it confirms the chapter is the standard treatment of Sturmian words, factor
+complexity n+1, and the Fibonacci word), but provides no statement, definition, or proof to
+quote.
 
+For PE1006 the definitions and theorems it would contain are already held and sourced in:
 
-## What it claims
+- Morse–Hedlund / Sturmian definition and `p(n) = n+1`: `research/summaries/morse-hedlund-theorem-sturmian-characterization.md` (Wojcik) and `research/summaries/character-of-sturmian-words.md` (Prop 6).
+- Consecutive-factor lex-order theorem: `research/summaries/sturmian-words-hal-note.md` (Perrin–Restivo Thm 2).
+- Fibonacci word = standard/Christoffel structure: `research/summaries/berstel-christoffel-words-repetitions.md`.
 
-- [Frontmatter][6]
-- [Contents][7]
-- [Preface][8]
-- [Chapter 1 Finite and Infinite Words][9]
-- [Chapter 2 Sturmian Words][10]
-- [Chapter 3 Unavoidable Patterns][11]
-- [Chapter 4 Sesquipowers][12]
-- [Chapter 5 The Plactic Monoid][13]
-- [Chapter 6 Codes][14]
-- [Chapter 7 Numeration Systems][15]
-- [Chapter 8 Periodicity][16]
-- [Chapter 9 Centralizers of Noncommutative Series and Polynomials][17]
-- [Chapter 10 Transformations on Words and q-Calculus][18]
-- [Chapter 11 Statistics on Permutations and Words][19]
-- [Chapter 12 Makanin's Algorithm][20]
-- [Chapter 13 Independent Systems of Equations][21]
-- [References][22]
-- [Index of Notation][23]
-- [General Index][24]
-
-Get access
-
-Share
-
-Cite
-
----
-
-*[digest of a 8612 character source; every section, statement, and proof in full at `research/sources/lothaire-sturmian-words-preview.full.md`]*
+Do not re-open this file looking for a theorem; it is a paywall stub. Full text:
+[[lothaire-sturmian-words-preview.full]]

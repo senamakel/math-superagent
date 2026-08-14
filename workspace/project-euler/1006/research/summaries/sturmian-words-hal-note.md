@@ -1,68 +1,77 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/sturmian-words-hal-note.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Perrin & Restivo, "A note on Sturmian words" (TCS 429, 2012)
 
-<!-- source: https://hal.science/hal-00828351/file/noteSturmianWords.pdf | converted from PDF -->
+<!-- source: https://hal.science/hal-00828351/file/noteSturmianWords.pdf -->
 
-## What it claims
+Authoritative structural source for PE1006. Alphabet `A = {a,b}` (problem: `a=0, b=1`).
 
-We describe an algorithm which, given a factor of a Sturmian word, computes the next
-factor of the same length in the lexicographic order in linear time. It is based on a combinatorial
-property of Sturmian words which is related with the Burrows-Wheeler transformation.
+## Definitions used
+- A word is **Sturmian** if it has exactly `n+1` factors of length `n` for all `n >= 1`.
+  A finite word is Sturmian if it is a factor of an infinite Sturmian word.
+- The **Fibonacci word**: fixed point `s` of the morphism `a -> ab, b -> a`;
+  `s = abaababaabaab...`. The finite words `u_n = f^{n+1}(b)` (n >= -1) are the
+  Fibonacci words with `u_n = u_{n-1}u_{n-2}`. In the problem's alphabet this is the
+  sequence 0, 01, 010, 01001, ... The **slope** of the Fibonacci word is
+  `α = 2/(3+√5) = (3-√5)/2 = 1/φ²` (Eq. "Example 2": continued fraction `[0,2,1,1,...]`).
+- **Sturmian set** = set of all factors of a Sturmian word.
+- A Sturmian set is **balanced**: two equal-length factors differ in number of `b`s by <= 1.
+- **Right special** factor of length n: `wa, wb` both factors; exactly one per length.
 
-1 Introduction
+## Theorem 2 (the structural theorem that drives enumeration) — Section 3
+  Let `F` be a Sturmian set. Two words `u, v` of `F` of the same length are **consecutive
+  in lexicographic order** iff
+  `u = r·a·b·s, v = r·b·a·s`  or  `u = r·a, v = r·b`
+  (for some words `r, s`; `r` is then the right-special principal prefix).
+  Consequence (Corollary 3): the word following a non-maximal factor `u` is computed from
+  its longest right-special prefix `r`: if `u = ra` next is `rb`; if `u = rabs` next is `rbas`.
+  Proposition 5: generating all `n+1` length-n factors in lex order takes O(n²) time (linear
+  in the size `n(n+1)` of the output).
 
-Sturmian words are inﬁnite words over a binary alphabet that have exactly n + 1 factors of length
-n for each n ≥ 0. Their origin can be traced back to the astronomer J. Bernoulli III. Their ﬁrst
-in-depth study is by Morse and Hedlund [11]. Many combinatorial properties were described in
-the paper by Coven and Hedlund [5]. Sturmian words, also called mechanical words, are used in
-computer graphics as digital approximation of straight lines. See [8] for a general exposition on
-Sturmian words.
-In this note, we describe an algorithm which, given a factor of a Sturmian word, computes the
-next factor of the same length in the lexicographic order in linear time. It may be used to generate
-the set of factors of a Sturmian word of given length in lexicographic order.
-This algorithm is based on a…
+## Proposition 3 (right border) — Section 4
+  Ordered lexicographically, the last letters of the length-n factors, taken cyclically,
+  form `b^p a^q` up to conjugacy (two changes total). Equivalently each column of the
+  n×(n+1) factor matrix is `a* b*` up to cyclic shift. Related to Burrows–Wheeler transform
+  and standard words (Theorem 3: `T(w)=b^p a^q` with p,q coprime iff w is a conjugate of a
+  standard word). For the Fibonacci word length-8 example: conjugates of `abaababa` plus the
+  singular factor `babaabab`.
 
-1
+## Explicit material given for the Fibonacci word
+- `Characteristic(u,v,n)` integer algorithm generating the characteristic prefix (Example 11:
+  `Characteristic(13,5,11) = a b a a b a b a a b a`).
+- Table 1: all 11 length-10 factors of the Fibonacci word (primary concrete check target).
+- Table 3: all 9 length-8 factors.
 
-is…
+## What it lets this run do
+- Confirms the governing object is the Sturmian factor set of slope 1/φ².
+- Gives the lex-order consecutive-factor rule, which is the clean description of the
+  k+1-factor set and the structural ingredient behind any exact recurrence for Ψ(k).
+- Provides the full length-8 and length-10 factor lists to validate a brute oracle and any
+  parameterization.
 
-2…
+## What it does NOT settle (for the computation)
+- Enumeration via Next/Sturm is O(n²) in length — **infeasible at k = 10^18**. This source
+  gives the *structure* (lex order, consecutive pairs), not an O(log k) evaluation of the
+  sum of squares. The closed form for Ψ(k) is not in this paper; it uses Theorem 2 as input.
 
-W…
+## Full text
+[[sturmian-words-hal-note.full]]
 
-## Statements it makes
+```claim
+id: PR-consecutive-factors-lex
+statement: In a Sturmian set F, two equal-length factors u,v are consecutive in lex order iff u=r·ab·s and v=r·ba·s, or u=r·a and v=r·b; the next factor after u is rbas (if u=rabs) or rb (if u=ra), r the longest right-special prefix.
+hypotheses: F is a Sturmian set (factor set of a Sturmian word); u,v in F of equal length.
+holds-here: yes — F here is the Fibonacci Sturmian set (slope 1/phi^2).
+status: proved (in source)
+bearing: classifies/orders the k+1 length-k factors; structural basis for a recurrence on Psi(k).
+anchor: research/summaries/sturmian-words-hal-note.md
+answers: precise-sourced-statement-c1ec
+```
 
-Theorem 1 An inﬁnite word s is Sturmian if and only if it is mechanical of irrational slope.
-
-Proposition 1 Let s be a Sturmian word with slope α. Then w ∈ F (s) if and only if for any
-factor u of w one has |u|b − 1 < α|u| < |u|b + 1. (1)
-
-Corollary 1 Let F be a Sturmian set. If ra, rba ∈ F , then rab ∈ F .
-
-Corollary 2 Let F be a Sturmian set. If rabsa, rbasb, bsb ∈ F , then rabsb ∈ F .
-
-Theorem 2 Let F be a Sturmian set. Two words u, v of F of the same length are consecutive in
-the lexicographic order if and only if u = rabs and v = rbas or if u = ra and v = rb.
-
-Corollary 3 Let F be a Sturmian set and let n ≥ 1. For any word u in F ∩ A
-n which is not
-maximal for the lexicographic order in F ∩ A
-n, there is a preﬁx r of u such that
-
-Proposition 2 Let F be a Sturmian set and let n ≥ 1. The ﬁrst and the last elements of F ∩ A
-n
-
-Proposition 3 For n ≥ 1, the right border of the set F ∩ A
-n is conjugate to a word in a∗b∗.
-
-Proposition 3 is related with another result proved in [10] that we introduce now.
-
-Theorem 3 One has T (w) = bpaq with p, q relatively prime if and only if w is a conjugate of a
-standard word.
-
-Proposition 4 The function PrincipalPrefix(u) returns the principal preﬁx of u if u is not
-maximal in the set of elements of F of the same length and −1 otherwise.
-
-Proposition 5 The algorithm Sturm generates the elements of length n of a Sturmian set in
-lexicographic order in quadratic time O(n2).
-
-*[digest of a 26559 character source; every section, statement, and proof in full at `research/sources/sturmian-words-hal-note.full.md`]*
+```claim
+id: PerrinRestivo-len8-len10-lists
+statement: The Fibonacci Sturmian set's length-8 factors are the 8 conjugates of abaababa plus the singular factor babaabab (9 total); its 11 length-10 factors are listed in the paper's Table 1.
+hypotheses: Fibonacci word slope 2/(3+sqrt5).
+holds-here: yes — decimal-digit check targets for a brute oracle.
+status: asserted (in source, as worked examples)
+bearing: concrete oracle values to reproduce the brute program against.
+anchor: research/summaries/sturmian-words-hal-note.md
+```

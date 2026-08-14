@@ -8,12 +8,22 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
+| [[fib-subword-squares]] | Compute Psi(10^18) mod 101001001, where Psi(k) = sum over the k+1 distinct length-k factors of the infinite Fibonacci word f of (decimal(w))^2, reading each… | Given a parameterization of each length-k factor w_j (0 <= j <= k) as a binary string (G1), express the decimal value of w_j as a linear combination of basis… | sketched | 3 |
 | [[fibonacci-subword-squares]] | Psi(10^18) mod 101001001, where Psi(k) = sum over the k+1 distinct length-k Fibonacci subwords of (integer value of the subword)^2. | Fix k. By G-stabilization, the set of distinct length-k subwords of some S_n equals the set of length-k factors of the infinite Fibonacci word f = lim S_n once… | live | 4 |
 
 ## The open gaps — each one is a task
 
 Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
 
+- [[fib-subword-squares]] `G1-factor-parameterization` — For every k >= 1, there exists an explicit description of each of the k+1 distinct length-k factors of the infinite Fibonacci word f = lim S_n. Specifically, there is a bijection j -> w_j (0 <= j <= k) such that w_j is the unique length-k factor that begins at a position determined by j in the Ostrowski / Zeckendorf numeration system, and w_j can be generated as a binary string in O(k) time (or its decimal value computed directly).
+  - next: Use the known Sturmian structure: the k+1 factors of length k are the prefixes of length k of the k+1 distinct right-infinite suffixes determined by the slope. For the Fibonacci word (slope 1/phi^2), enumerate the factors explicitly for small k (k <= 40) and code the Ostrowski-indexed generation rule, verifying against R0-small-brute.
+  - _no thread — nothing is attacking this_
+- [[fib-subword-squares]] `G2-sum-closed-form` — Using the parameterization from G1, the sum Psi(k) = sum_{j=0}^k (decimal(w_j))^2 can be expressed as a closed form in k, or as a linear recurrence of fixed order (independent of k), possibly with terms involving powers of 2, Fibonacci numbers, and sums over Zeckendorf representations. The expression must be evaluable at k=10^18 without iterating over the k+1 factors.
+  - next: For moderate k (k up to, say, 200), compute Psi(k) by brute force (R0), then compute the parameterized w_j decimal values from G1, and attempt to fit or derive the sum-of-squares formula by pattern analysis on the decimal values grouped by their Ostrowski index. Candidate structure: the k+1 factors split into two families: those starting with '0' (which are prefixes of f shifted by one) and those starting with '1' (which are prefixes of the complement / swap). The decimal values may follow a Fibonacci-like recurrence in k.
+  - _no thread — nothing is attacking this_
+- [[fib-subword-squares]] `G3-fast-evaluation` — The expression from G2 can be evaluated at k = 10^18 modulo 101001001 using O(log k) arithmetic operations, by reducing the recurrence to matrix exponentiation or by evaluating a closed form with fast modular exponentiation of powers of 2 and Fibonacci numbers modulo 101001001.
+  - next: Once G2 is settled, implement the recurrence or closed form in Python using sympy or gmpy2 for exact modular arithmetic, with matrix exponentiation (binary exponentiation) to handle k=10^18. Validate against R0 for all reachable k (k <= 40).
+  - _no thread — nothing is attacking this_
 - [[fibonacci-subword-squares]] `G-stabilization` — For every k >= 1 there is a computable n0(k) such that the set of distinct length-k subwords of S_n is constant for all n >= n0(k), equals the set of length-k factors of the infinite Fibonacci word f = lim_{n->inf} S_n, and has cardinality exactly k+1. (This closes the `unbounded-n` difficulty: the definition quantifies over "some S_n", and this lemma pins that quantifier to the infinite word with an explicit threshold.)
   - next: Have brute.py scan S_n for each k <= 30 and record the smallest n whose length-k subword set has size k+1; compare that empirical threshold against the Fibonacci-index candidate n0(k) = smallest n with |S_{n-1}| >= k (or the sourced Sturmian recurrence threshold) and confirm the sets coincide with the factors of f. This is checkable today and falsifies the threshold guess if the empirical stabilizer jumps differently.
   - thread: research/threads/fibonacci-subword-squares.md

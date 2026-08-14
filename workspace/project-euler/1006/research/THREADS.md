@@ -4,7 +4,16 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[factor-parameterization-psi]] | Give an explicit, indexable description j -> w_j of the k+1 length-k factors of the Fibonacci word (Sturmian, slope 1/phi^2), with each factor's number of 1s,… | open | MH-kplus1-factors, PR-consecutive-factors-lex, PE1006-factors-one-count-necessary, christoffel-conjugate-and-forest, PE1006-factors-dependent-slop-only | use the lex-order consecutive-factor rule to write Psi(k) as a sum over r·ab·s / r·ba·s successors; reduce sum-of-squares to pairwise position-correlation… |
+| [[psi-sum-squares-recurrence]] | How to compute Psi(k) = sum over the k+1 length-k factors w of the Fibonacci word (Sturmian, slope 1/phi^2) of (decimal value of w)^2, in poly(log k), to get… | **blocked** | PE1006-kplus1-FACT, PR-consecutive-factors-lex, PE1006-factors-dependent-slop-only, MH-kplus1-factors | derive a recurrence from the b^p a^q column structure of the lex-ordered (k+1)xk factor matrix |
+
+## What is in the way
+
+Each blocked or dead thread and what would move it. A blocker stated precisely is the next research request; one left blank is a mood.
+
+- [[psi-sum-squares-recurrence]] (**blocked**): no known indexed enumeration of factors that relates grade-k values to grade-(k-1) in poly(log k); the PR Sturm() enumeration is O(k^2), infeasible at k=10^18.
 
 ## Threads that could not be read
 

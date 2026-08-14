@@ -1,148 +1,41 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/berstel-christoffel-words-repetitions.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Berstel–Lauve–Reutenauer–Saliola, "Combinatorics on Words: Christoffel Words and Repetitions in Words" (2008)
 
-<!-- source: https://webpages.math.luc.edu/~lauve/papers/wordsbook.pdf | converted from PDF -->
+<!-- source: https://webpages.math.luc.edu/~lauve/papers/wordsbook.pdf -->
 
-## What it claims
+Complete mathematical text (book chapters 1–9: Christoffel words, Sturmian/standard words,
+palindromization, primitive elements, Burrows–Wheeler, continued fractions, Stern–Brocot,
+Markoff numbers, repetitions).
 
-4 Palindromization 27
-4.1 Christoﬀel words and palindromes . . . . . . . . . . . . . . . 27
-4.2 Palindromic closures . . . . . . . . . . . . . . . . . . . . . . . 28
-4.3 Palindromic characterization . . . . . . . . . . . . . . . . . . 36
+## What it establishes that bears on PE1006
+- **Christoffel / standard / central words** and their characterizations (balanced words
+  over {a,b}; slope b/a; palindromic +1-letter middle; the standard factorization into two
+  Christoffel words, Thm 3.3 Borel–Laubie).
+- **Lemma 2.7 (Cohn, de Luca–Mignosi)**: lower and upper Christoffel words of slope b/a are
+  conjugates — the conjugate-class view of the length-k factors.
+- **Theorem 3.3**: every Christoffel word has a unique factorization (u,v) into two
+  Christoffel words — the substitution/reduction tree behind Fibonacci-index structure.
+- Burrows–Wheeler and continued-fraction/Stern–Brocot connections (Ch. 6–7).
+- Palindromization (Ch. 4): ψ(v) central words, central word = palindromic + possibly a
+  middle letter; a proper Christoffel word is aψ(v)b.
 
-5 Primitive Elements in the Free Group F2 41
-5.1 Positive primitive elements of the free group . . . . . . . . . . 41
-5.2 Positive primitive characterization . . . . . . . . . . . . . . . 43
+## What it implies for this problem
+This is a *surrounding-theory* reference. It does **not** give a closed form for Ψ(k) nor the
+consecutive-factor lex-order rule (that is Perrin–Restivo). But it is the authoritative
+statement of the Christoffel/standard-word apparatus behind the `factor-parameterization`
+rung: it supports viewing the k+1 length-k Fibonacci factors as a conjugate class of a
+Christoffel word plus a singular factor, and gives the standard-factorization recurrence that
+any Fibonacci-index ("fib-index") recurrence must thread. `status: asserted` where I rely on
+it rather than recompute.
 
-6 Characterizations 47
-6.1 The Burrows–Wheeler transform . . . . . . . . . . . . . . . . 47
-6.2 Balanced1 Lyndon words . . . . . . . . . . . . . . . . . . . . . 50
-6.3 Balanced2 Lyndon words . . . . . . . . . . . . . . . . . . . . . 50
-6.4 Circular words . . . . . . . . . . . . . . . . . . . . . . . . . . 51
-6.5 Periodic phenomena . . . . . . . . . . . . . . . . . . . . . . . 54
+## Full text
+[[berstel-christoffel-words-repetitions.full]]
 
-i
-
-7 Continued Fractions 57
-7.1 Continued fractions . . . . . . . . . . . . . . . . . . . . . . . . 57
-7.2 Continued fractions and Christoﬀel words . . . . . . . . . . . 58
-7.3 The Stern–Brocot tree . . . . . . . . . . . . . . . . . . . . . . 62
-
-8 The Theory of Markoﬀ Numbers 67
-8.1…
-
-## Statements it makes
-
-algorithm2e
-amsbsy
-amsfonts
-amsmath
-amsrefs
-amssymb
-amsthm
- array
-bbm
-calc
-caption
-color
-colordvi
-ednotes
- gastex
-graphicx
-ifthen
-mathtools
-multicol
-pstricks
-pst-node
- pst-poly
-pst-tree
-rotating
-stmaryrd
-subfigure
-xypic
-
-Lemma 1.3. Suppose w is a lower Christoﬀel word of slope b
-a and a ⊥ b.
-If s
-a and t
-a are two consecutive labels on the Christoﬀel path from (0, 0) to
-(a, b), then t ≡ s + b mod (a + b). Moreover, t takes as value each integer
-0, 1, 2, . . . , a + b − 1 exactly once as ( s
-a , t
-a ) ranges over all consecutive pairs
-of labels.
-
-Lemma 2.2. The morphism G maps the Christoﬀel word of slope b
-a to the
-Christoﬀel word of slope b
-a+b . The morphism ̃D maps the Christoﬀel word
-of slope b
-a to the Christoﬀel word of slope a+b
-a .
-
-Corollary 2.3. If u is a Christoﬀel word of slope at most one, then the
-unique word w such that G(w) = u is a Christoﬀel word. If u is a Christoﬀel
-word of slope at least one, then the unique word w such that ̃D(w) = u is a
-Christoﬀel word.
- G(w)
- x ←[ x
-xy ←[ y
-−−−−−→ w
-
-Lemma 2.4. For every word w ∈ {x, y}∗, there exists a word u ∈ {x, y}∗
-
-Corollary 2.5. The morphisms G, D, ̃G and ̃D are Christoﬀel morphisms.
-
-Lemma 2.6. The morphism E maps lower Christoﬀel words of slope r onto
-upper Christoﬀel words of slope 1
-r .
-
-Lemma 2.7 (Cohn [Coh1972], de Luca, Mignosi [dLM1994]). Suppose a ⊥
-b. The lower and upper Christoﬀel words of slope b
-a are conjugates.
-
-Theorem 2.8. The morphisms G, D, ̃G, ̃D, E are Christoﬀel morphisms.
-
-Theorem 2.9. The monoid of Christoﬀel morphisms is generated by G, D,
-̃G, ̃D and E.
-
-Lemma 2.10. If w is a Christoﬀel word or a conjugate of a Christoﬀel
-word, then xx and yy cannot both be factors of w.
-
-Corollary 2.11 (Berth´e, de Luca, Reutenauer [BdLR2008]). A morphism
-f on {x, y}∗ is a Christoﬀel morphism if and only if f (xy), f (xxy) and
-f (xyy) are conjugates of Christoﬀel words.
-
-Proposition 3.2. If (w1, w2) is the standard factorization of a nontrivial
-Christoﬀel word, then w1 and w2 are Christoﬀel words.
-
-Theorem 3.3 (Borel, Laubie [BL1993]). A nontrivial Christoﬀel word w
-has a unique factorization w = (w1, w2) with w1 and w2 Christoﬀel words.
-
-Lemma 3.4. Suppose (w1, w2) is the standard factorization of the Christof-
-fel word w of slope b
-a , where a ⊥ b. Then
-(|w1|x |w2|x
-|w1|y |w2|y
-) ∈ SL2(Z).
-
-Lemma 3.5. Let w denote the Christoﬀel word of slope b
-a and let (w1, w2)
-denote its standard factorization. Then |w1|b ≡ 1 mod (a+b) and |w2|a ≡ 1
-mod (a + b). Moreover, |w1| and |w2| are relatively prime.
-
-Theorem 3.6. The Christoﬀel tree contains exactly once the standard fac-
-torization of each (lower) Christoﬀel word.
-
-Lemma 4.1. Suppose a ⊥ b. Translation by the vector ⃗e2 − ⃗e1 and rotation
-about the point ( a
-2 , b
-2 ) each map the interior points of the lower Christoﬀel
-path from (0, 0) to (a, b) onto the interior points of the upper Christoﬀel path
-from (0, 0) to (a, b).
-
-Propo…
-
-
-*[further statements in the full text]*
-
-*[digest of a 321700 character source; every section, statement, and proof in full at `research/sources/berstel-christoffel-words-repetitions.full.md`]*
+```claim
+id: christoffel-conjugate-and-forest
+statement: For coprime a,b the lower and upper Christoffel words of slope b/a are conjugates (Cohn, de Luca–Mignosi); every nontrivial Christoffel word has a unique standard factorization (u,v) into two Christoffel words (Borel–Laubie).
+hypotheses: a,b coprime positive.
+holds-here: yes — applies to the Fibonacci Christoffel/standard words (slope 1/phi^2, directive all-ones).
+status: proved (in source)
+bearing: structural backbone for parameterizing the k+1 factors and threading Fibonacci-index recurrences.
+anchor: research/summaries/berstel-christoffel-words-repetitions.md
+```
