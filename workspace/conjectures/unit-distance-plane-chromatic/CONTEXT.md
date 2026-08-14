@@ -21,6 +21,14 @@ file that still holds any detail compressed away — source notes under
 reflections, threads. Durable findings belong in Cognee. A statement nobody can
 trace to a source is worth less than no statement.
 
+## Environment
+
+- `download_document` cannot reach publisher or preprint hosts on this run:
+  arxiv.org, doi.org, sciencedirect.com, and springer.com fail every time,
+  regardless of the URL. Fetch these via `read_sources` / `deep_research`
+  (server-side) instead. This is a property of the run environment, not a
+  finding about the mathematics, and not a property of the sources.
+
 ## Established
 
 What this run may treat as known, each marked proved, computed and checked,

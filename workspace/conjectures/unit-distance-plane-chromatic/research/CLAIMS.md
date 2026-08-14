@@ -4,4 +4,40 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `amp-totally-unfaithful` | A totally unfaithful unit-distance substructure is one in which two distinguished non-adjacent vertices are at unit distance in EVERY unit-distance embedding; any graph containing such a substructure, where adding the… | yes | asserted | `research/sources/alexeev-mixon-parshall-unit-distance-small.md` |
+| `amp-ud-bound-n21` | Alexeev–Mixon–Parshall compute upper bounds for u(n), the maximum number of unit distances among n points in the plane, for every n <= 21, by forbidden-subgraph enumeration and an exact embeddability solver for… | yes | asserted | `research/sources/alexeev-mixon-parshall-unit-distance-small.md` |
+| `chilakamarri-lattice-chi5` | The lattice graph (Z^2, r, √2), with edges at Euclidean distance in [r−√2, r+√2], satisfies chi >= 5 for every integer r >= 1. | **unchecked** | asserted | `research/sources/chilakamarri-unit-distance-lattice.md` |
+| `chilakamarri-lattice-criterion` | A finite simple graph G is a unit-distance graph in the plane iff G is faithfully √2-recurring in Z^2 (i.e. embeds in (Z^2,r,√2) at all large scales r with pairwise distances ≥ d·r). | yes | asserted | `research/sources/chilakamarri-unit-distance-lattice.md` |
+| `debruijn-erdos-compactness` | An infinite graph G is k-colourable iff every finite subgraph of G is k-colourable. Hence the chromatic number of the unit-distance graph of the plane equals the supremum of chromatic numbers of its finite subgraphs,… | yes | proved | `research/sources/debruijn-erdos-colour-problem-1951.md` |
+| `erdos-1946-unit-distance-grid-lower` | There exist n-point subsets of the plane determining Ω(n log n) unit distances (structured grid/lattice construction); and any n-point set determines at least c·n/log n distinct distances. | yes | asserted | `research/sources/erdos-sets-of-distances-1946.md` |
+| `product-chromatic-4chromatic` | The tensor product of two 4-chromatic graphs is 4-chromatic (El-Zahar–Sauer 1985). More generally, product chromatic numbers do not simply compound factors. | yes | asserted | `research/sources/duffus-sands-woodrow-product-chromatic.md` |
+| `prs-incidence-recasting` | A set P of n points determines u(P) unit-distance pairs iff those pairs are incidences between the points of P and the unit circles centred in P; the unit-distance problem is thereby a point–circle incidence problem. | yes | asserted | `research/sources/pach-raz-solymosi-unit-distance-rigidity.md` |
+| `prs-rigidity-conjecture` | (PRS Conjecture 7) If a graph G has sufficiently many unit-distance embeddings and the neighbourhoods of its vertices avoid collinear embeddings, then a substantial subgraph G' on at least 4 vertices admits a rigid… | **unchecked** | asserted | `research/sources/pach-raz-solymosi-unit-distance-rigidity.md` |
+| `rado-selection-tychonoff-basis` | Rado's selection principle (for a family of finite sets, coherent finite choice functions extend to a global choice function) is a corollary of Tychonoff's theorem; hence the de Bruijn-Erdős compactness reduction for… | yes | proved | `research/sources/gottschalk-choice-functions-1951.md` |
+| `raigorodskii-method-landscape` | The standard method landscape for chi(R^2,1): lower bounds via spindle-like rigid configurations; upper bounds via tiling partitions (hexagonal 7-colouring); colour-class density bounds feeding measurable variants. The… | yes | asserted | `research/sources/raigorodskii-chromatic-metric-spaces.md` |
+| `rigid-graph-algebraic-framework` | In R^2, Laman graphs (\|E\|=2\|V\|-3, all k-vertex induced subgraphs have <= 2k-3 edges) are exactly the rigid graphs. Embeddings at fixed edge lengths are solutions of a square system of quadratic equations; the number of… | yes | asserted | `research/sources/emiris-rigid-graph-embeddings.md` |
+| `ud-bound-spencer` | The maximum number u(n) of unit distances among n points in the Euclidean plane is O(n^{4/3}). This is the Spencer–Szemerédi–Trotter (1984) bound. | yes | asserted | `research/sources/pach-raz-solymosi-unit-distance-rigidity.md` |
+| `ud-erdos-grid-lower` | Erdős conjectured the true growth of u(n) to be close to n^{1+1/log log n} — far below n^{4/3} — and that order is approached by the sqrt(n) x sqrt(n) square grid. | **unchecked** | asserted | `research/sources/pach-raz-solymosi-unit-distance-rigidity.md` |
+| `ud-forbidden-subgraphs` | There is a set F of minimal forbidden subgraphs characterising unit-distance graphs on at most 9 vertices (Globus–Parshall), usable to enumerate and prune candidate dense unit-distance graphs. | yes | asserted | `research/sources/alexeev-mixon-parshall-unit-distance-small.md` |
+| `ud-minkowski-spindle-engines` | Dense unit-distance graphs for small n are realised by Minkowski sums, wheels, and spindles of simple shapes — the standard construction engines. | yes | asserted | `research/sources/alexeev-mixon-parshall-unit-distance-small.md` |
+| `ud-rigidity-structure` | If a planar point set P of size n has u(P) >= n^{4/3} h(n) with h(n) -> inf, then P decomposes into a large subset and bipartite subgraphs G_i with small parts and many edges, each admitting unit-distance embeddings.… | **unchecked** | asserted | `research/sources/pach-raz-solymosi-unit-distance-rigidity.md` |
+| `woodall-distance-realization` | Covering/decomposing the plane into parts forces which distances occur within parts; colour classes of unit-distance colourings are exactly unit-distance-free sets, so decomposition results constrain plane colorability. | yes | asserted | `research/sources/woodall-distances-covering-plane.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+
+- `amp-totally-unfaithful` (research/sources/alexeev-mixon-parshall-unit-distance-small.md) — asserted by the source, not proved there and not checked here
+- `amp-ud-bound-n21` (research/sources/alexeev-mixon-parshall-unit-distance-small.md) — asserted by the source, not proved there and not checked here
+- `chilakamarri-lattice-criterion` (research/sources/chilakamarri-unit-distance-lattice.md) — asserted by the source, not proved there and not checked here
+- `erdos-1946-unit-distance-grid-lower` (research/sources/erdos-sets-of-distances-1946.md) — asserted by the source, not proved there and not checked here
+- `product-chromatic-4chromatic` (research/sources/duffus-sands-woodrow-product-chromatic.md) — asserted by the source, not proved there and not checked here
+- `prs-incidence-recasting` (research/sources/pach-raz-solymosi-unit-distance-rigidity.md) — asserted by the source, not proved there and not checked here
+- `raigorodskii-method-landscape` (research/sources/raigorodskii-chromatic-metric-spaces.md) — asserted by the source, not proved there and not checked here
+- `rigid-graph-algebraic-framework` (research/sources/emiris-rigid-graph-embeddings.md) — asserted by the source, not proved there and not checked here
+- `ud-bound-spencer` (research/sources/pach-raz-solymosi-unit-distance-rigidity.md) — asserted by the source, not proved there and not checked here
+- `ud-forbidden-subgraphs` (research/sources/alexeev-mixon-parshall-unit-distance-small.md) — asserted by the source, not proved there and not checked here
+- `ud-minkowski-spindle-engines` (research/sources/alexeev-mixon-parshall-unit-distance-small.md) — asserted by the source, not proved there and not checked here
+- `woodall-distance-realization` (research/sources/woodall-distances-covering-plane.md) — asserted by the source, not proved there and not checked here

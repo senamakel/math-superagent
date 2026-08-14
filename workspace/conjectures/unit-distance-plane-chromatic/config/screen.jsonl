@@ -17,3 +17,21 @@
 {"at":"1786727128","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
 {"at":"1786727129","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"read_sources"}
 {"at":"1786727135","decision":"denied","detail":"term matched in 12160 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727191","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"read_sources"}
+{"at":"1786727334","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786727405","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786727414","decision":"denied","detail":"term matched in 12126 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727426","decision":"denied","detail":"term matched in 12144 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727443","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786727449","decision":"denied","detail":"term matched in 12195 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727501","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786727518","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12134 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786727621","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12164 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786727631","decision":"denied","detail":"term matched in 4358 characters","stage":"result","tool":"read_sources"}
+{"at":"1786727645","decision":"denied","detail":"term matched in 12109 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727679","decision":"denied","detail":"term matched in 24340 characters","stage":"result","tool":"find_similar_sources"}
+{"at":"1786727721","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786727776","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12153 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786727778","decision":"denied","detail":"term matched in 12182 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727779","decision":"denied","detail":"term matched in 12156 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727779","decision":"denied","detail":"term matched in 12106 characters","stage":"result","tool":"exa_search"}

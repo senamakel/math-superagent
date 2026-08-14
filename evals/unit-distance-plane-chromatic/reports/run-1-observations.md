@@ -85,3 +85,42 @@ that, and it is plaintext — API hostnames reveal nothing about the answer.
   allowlist the operator chose, working as intended: the container talks to
   APIs, and content arrives through Exa's server-side fetches, which the screen
   reads in plaintext.
+
+## At 12:00 — the strict allowlist starved the librarian
+
+`download_document`: **16 attempts, 16 failures.** Every one blocked at the
+network boundary — `arxiv.org` (6), `export.arxiv.org` (3), `doi.org` (3),
+`sciencedirect.com`, `link.springer.com`. The librarian was spending 54% of the
+run's model calls with a zero success rate on its main tool, and the transport
+error told it nothing that would let it stop.
+
+Handled two ways:
+
+1. **Immediately, by steering.** `./steer` reaches a live run at the next
+   boundary and creates no container, so the run did not have to be restarted.
+2. **Properly, in code**, for runs 2 and 3 — the policy is read at startup, so
+   a code change cannot reach a run already going.
+
+Both changes are committed as `668ac253`.
+
+### What the directive did, and why it is a good sign
+
+The `director` carried it into `TASKS.md`, `CONTEXT.md` and
+`prompts/librarian.md` — the three places that change what roles are told — and
+then said explicitly that it filed no claim, opened no thread and requested no
+research, because the directive names an environment fact rather than a
+mathematical one.
+
+That is precisely the behaviour the design intends: a directive is asserted, not
+established, and the `director` is denied `research/CLAIMS.md` for exactly this
+reason. The rule held under a live test.
+
+## At 12:00 — trajectory
+
+- 103 model calls across 7 roles; `tool_builder` active (9 calls).
+- Attempt 1 open, no judge verdict yet.
+- 6 sources, 2 summaries — all via `read_sources`, none via download.
+- `code/brute.py` written (8.8 kB). **0 claims filed**, which is the thing to
+  watch: `GOAL.md` requires the oracle to be calibrated against the 7-vertex
+  graph before anything measured with it is trusted, and a run with code but no
+  claims has not yet established anything.

@@ -33,3 +33,21 @@ prevent.
 | 1786727128 | `exa_search` | arguments | denied | term matched |
 | 1786727129 | `read_sources` | arguments | denied-host | host `en.wikipedia.org` |
 | 1786727135 | `exa_search` | result | denied | term matched in 12160 characters |
+| 1786727191 | `read_sources` | arguments | denied-host | host `en.wikipedia.org` |
+| 1786727334 | `exa_search` | arguments | denied | term matched |
+| 1786727405 | `exa_search` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786727414 | `exa_search` | result | denied | term matched in 12126 characters |
+| 1786727426 | `exa_search` | result | denied | term matched in 12144 characters |
+| 1786727443 | `exa_search` | arguments | denied | term matched |
+| 1786727449 | `exa_search` | result | denied | term matched in 12195 characters |
+| 1786727501 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786727518 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (12134 characters) |
+| 1786727621 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12164 characters) |
+| 1786727631 | `read_sources` | result | denied | term matched in 4358 characters |
+| 1786727645 | `exa_search` | result | denied | term matched in 12109 characters |
+| 1786727679 | `find_similar_sources` | result | denied | term matched in 24340 characters |
+| 1786727721 | `read_sources` | arguments | denied | term matched |
+| 1786727776 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12153 characters) |
+| 1786727778 | `exa_search` | result | denied | term matched in 12182 characters |
+| 1786727779 | `exa_search` | result | denied | term matched in 12156 characters |
+| 1786727779 | `exa_search` | result | denied | term matched in 12106 characters |

@@ -15,6 +15,13 @@ leads to a primary source, not as the source.
 Never download or store a published answer to a contest problem. Gathering the
 mathematics is the job; gathering the answer defeats the exercise.
 
-A failed download is not a dead end. Try another source or another format, and
-record in the index what you could not obtain and why, so nobody repeats the
-attempt.
+`download_document` cannot reach publisher or preprint hosts on this run:
+arxiv.org, doi.org, sciencedirect.com, and springer.com will fail every time,
+regardless of the URL. Do not retry them. Fetch these through `read_sources`
+and `deep_research` instead, which retrieve the text server-side. This is a
+property of the run environment, not of the sources, and is not a finding about
+the mathematics.
+
+A failed download on any other host is not a dead end. Try another source or
+another format, and record in the index what you could not obtain and why, so
+nobody repeats the attempt.
