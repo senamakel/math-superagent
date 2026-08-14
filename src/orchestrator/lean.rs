@@ -312,15 +312,27 @@ pub(super) fn verdict(workspace: &Path, file: &str) -> Option<Verdict> {
 /// installed, which matters more here than it usually does: the deterministic
 /// suite runs on a host that has no Mathlib, and a parser only exercised inside
 /// the container is one nothing checks.
+/// Both forms of each line are matched, and a live container is why. Lean 4
+/// prints ``declaration uses `sorry` `` with backticks rather than the straight
+/// quotes this parser first looked for, so every `sorry` warning was passing
+/// through unrecorded — caught downstream only because the same proof also
+/// prints `sorryAx`, which meant the verdict was right for the wrong reason and
+/// the `sorries` list on disk was empty. And a proof that needs no axiom at all
+/// prints `does not depend on any axioms`, with no `axioms:` in it: the
+/// strictest possible result was being read as *no `#print axioms` line*, so
+/// the one kind of proof this whole file exists to reward was the one kind it
+/// refused.
 fn parse(file: &str, exit_ok: bool, output: &str) -> Verdict {
     let mut sorries = Vec::new();
     let mut axioms = Vec::new();
     let mut errored = false;
     for line in output.lines() {
         let trimmed = line.trim();
-        if trimmed.contains("declaration uses 'sorry'") {
+        if trimmed.contains("declaration uses") && trimmed.contains("sorry") {
             sorries.push(trimmed.to_string());
-        } else if trimmed.contains("depends on axioms:") {
+        } else if trimmed.contains("depends on axioms:")
+            || trimmed.contains("does not depend on any axioms")
+        {
             axioms.push(trimmed.to_string());
         } else if trimmed.contains("error:") {
             errored = true;

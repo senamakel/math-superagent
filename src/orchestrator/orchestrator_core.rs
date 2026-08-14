@@ -93,6 +93,42 @@ pub use tinyagents::harness::host::AgentDefinition;
 #[cfg(feature = "graph-debug")]
 pub use diagram::{render_flows, render_solution_loop};
 
+/// Renders the two reasoned ledgers a workspace's own files imply.
+///
+/// [`prompt_report`] exists because the most consequential text in the runtime
+/// was visible only in a provider trace after a run had started. The statement
+/// graph and the entailment closure have the same problem in the other
+/// direction: they are derived from files on disk, so what they conclude about
+/// a workspace can be checked on the host, without a container, an API key, or
+/// spending anything — and checked against a workspace a live run produced
+/// rather than only against a fixture.
+///
+/// The briefings are included beside the rendered files because they, not the
+/// files, are what reaches an attempt and a judge.
+pub fn ledger_report(workspace: &Path) -> String {
+    let graph = blueprint::collect(workspace);
+    let entailment = closure::collect(workspace);
+    let (verified, ready, blocked) = graph.counts();
+    let (free, conflicts) = entailment.counts();
+    let mut out = format!(
+        "# Derived ledgers\n\nworkspace: {}\n\n\
+         statement graph: {verified} kernel-checked, {ready} ready, {blocked} blocked, \
+         circular: {}\n\
+         entailment: {free} free upgrade(s), {conflicts} conflicting pair(s)\n\n",
+        workspace.display(),
+        graph.is_circular(),
+    );
+    for (title, body) in [
+        ("research/BLUEPRINT.md", graph.render()),
+        ("research/ENTAILMENT.md", entailment.render()),
+        ("briefing: statement graph", graph.briefing()),
+        ("briefing: entailment", entailment.briefing()),
+    ] {
+        let _ = write!(out, "## {title}\n\n{}\n\n", body.trim_end());
+    }
+    out
+}
+
 /// Specialists the goals agent may delegate to.
 const SPECIALISTS: [&str; 16] = [
     "research",
