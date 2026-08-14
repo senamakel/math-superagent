@@ -554,7 +554,15 @@ pub(in crate::orchestrator) async fn reflect_step(
 /// Both halves of what the reducer itself writes: the folder of skeletons and
 /// the table derived from it. `fingerprint_excluding` matches on file *names*,
 /// so the folder entry skips the whole directory.
-const REDUCTION_BLIND_SPOTS: [&str; 2] = ["backward", "BACKWARD.md"];
+const REDUCTION_BLIND_SPOTS: [&str; 4] = [
+    "backward",
+    "BACKWARD.md",
+    // The ladder is written by the arm this gate paces, so counting it would
+    // have the arm waking forever on its own output — the pattern team's
+    // `SCRATCHPAD.md` lesson, one folder wider.
+    "weakened",
+    "WEAKENED.md",
+];
 
 /// Everything running beside the loop that a reflection has to reach.
 ///
@@ -728,7 +736,24 @@ pub(in crate::orchestrator) async fn reduce_arm(
     if let Some(tracer) = tracer {
         tracer.note("solution loop: decomposing the goal");
     }
-    let report = reduction_arm(subagents, workspace, state).await;
+    // Both directions at once. They share this arm rather than getting one
+    // each because they share everything that decides when to run: the same
+    // cadence, the same "has the workspace moved" test, and the same
+    // single-writer gate. A second node in the loop whose only difference from
+    // this one is which prompt it sends would be a second answer to the
+    // question of how often the run reconsiders what it is attacking.
+    //
+    // Concurrent rather than sequential, because the arm is awaited and neither
+    // child reads the other's output. A pass costs the slower of the two, which
+    // is the same argument the evaluation fan-out itself is built on.
+    let (skeleton, ladder) = tokio::join!(
+        reduction_arm(subagents, workspace, state),
+        weakening_arm(subagents, workspace, state),
+    );
+    let report = merge_context(&[
+        ("What would suffice", &skeleton),
+        ("What would be easier", &ladder),
+    ]);
     reduction.gate.release();
     // Posted rather than returned into the state, and the heading is the
     // reason: `gap_briefing` renders open gaps as targets with a first move

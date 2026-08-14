@@ -1,5 +1,6 @@
 #![allow(clippy::expect_used)]
 
+use std::fmt::Write as _;
 
 use super::{LadderStance, RungStance, collect, is_weakened};
 

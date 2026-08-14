@@ -357,6 +357,117 @@ async fn reduction_arm(
     ])
 }
 
+/// The ladder as it stands, so a turn that changed nothing can be told so.
+///
+/// A fingerprint of `(ladder, rung, stance)` triples rather than a set of
+/// filenames, and the discriminator is inverted from the approach ledger's for
+/// the reason `ensure_skeleton_written` records: proposing means new files, but
+/// *refining* a live ladder — settling a rung, marking one failed, adding the
+/// next one up — is exactly the correct work from the second cadence onward and
+/// adds no name.
+fn ladder_fingerprint(
+    workspace: Option<&Path>,
+) -> BTreeSet<(String, String, super::weakened::RungStance)> {
+    workspace
+        .map(|workspace| super::weakened::collect(workspace).fingerprint())
+        .unwrap_or_default()
+}
+
+/// Re-issues once when the weakener reported a ladder it did not write.
+///
+/// The same control `ensure_skeleton_written` is, against the same measured
+/// failure: a live inventor ignored both its system prompt and its arm prompt
+/// and left its candidates in a turn that hit the output cap, and across three
+/// concurrent runs the ledger directory had never been created. A prompt
+/// instruction is not a control.
+///
+/// Re-issued once rather than until compliance. A second refusal means this
+/// turn is not going to write, and the prose it did report is still worth
+/// carrying into the attempt — so the reply is appended to it rather than
+/// replacing it.
+async fn ensure_ladder_written(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    before: &BTreeSet<(String, String, super::weakened::RungStance)>,
+    reported: String,
+) -> String {
+    if ladder_fingerprint(workspace) != *before {
+        return reported;
+    }
+    let retry = delegate(
+        subagents,
+        "weakener",
+        format!(
+            "You reported a ladder without writing it. Nothing under `research/weakened/` \
+             changed, so nothing survives this turn: no rung reaches the next attempt and the \
+             difficulties you named are lost with your context. Write it now with \
+             `write_document` to `research/weakened/<slug>.md`, as a fenced `ladder` block with \
+             `goal`, `difficulties`, and `status` lines, followed by one fenced `rung` block per \
+             weakened target with `id`, `statement`, `off`, `stance`, and `merge` lines. Do not \
+             revise the mathematics and do not add rungs — write down what you already have, then \
+             report the slug and the rung ids you wrote.\n\n\
+             What you reported:\n{reported}"
+        ),
+    )
+    .await;
+    format!("{reported}\n\n{retry}")
+}
+
+/// Lowers the goal and reports the rung the run should attack next.
+///
+/// Shaped exactly as [`reduction_arm`] is, and running beside it, because the
+/// two answer the same *kind* of question — what should the run attack instead
+/// of the goal as stated — and differ only in the direction of the answer. The
+/// reducer breaks the goal into lemmas that would imply it; this breaks it into
+/// targets that deliberately would not.
+///
+/// It is deliberately *not* gated on the run being stuck, and that is a lesson
+/// this repository already paid for once. `open_invention`'s stuck-gate was
+/// reachable in principle and not in practice — a diversify needs two
+/// consecutive unproductive attempts, which needs two completed cycles, and a
+/// run whose attempts take the better part of an hour spends its whole clock
+/// inside the first one. Across a day of live runs the inventor was spawned
+/// once. A ladder is most useful before the run has burned its budget on the
+/// full-strength statement, not after.
+async fn weakening_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> String {
+    let before = ladder_fingerprint(workspace);
+    let reported = delegate(
+        subagents,
+        "weakener",
+        format!(
+            "Name the difficulties that make this problem hard, then build the ladder of weakened \
+             versions of it. Not another route to the goal and not the lemmas that would imply \
+             it — smaller problems, each one the goal with named difficulties switched off. Write \
+             the result to `research/weakened/<slug>.md` as a fenced `ladder` block with `goal`, \
+             `difficulties`, and `status` lines, followed by one fenced `rung` block per weakened \
+             target with `id`, `statement`, `off`, `stance`, and `merge` lines.\n\n\
+             The bottom rung should be one an attempt could settle today — small n, one case, \
+             every convenience assumed. Check `research/CLAIMS.md` and `search_claims` before you \
+             call a rung open: a rung the run has already established is `settled`, and noticing \
+             that is the cheapest result available to you. A rung that was attacked and failed \
+             stays on the ladder with the reason, because deleting it is how the same one gets \
+             proposed again three attempts later.\n\n\
+             Report the slug, the rung you would attack next, and which difficulty you expect to \
+             be the one that actually bites.\n\nProblem:\n{}\n\n{}",
+            state.problem(),
+            state.lesson_briefing()
+        ),
+    )
+    .await;
+    let reported = ensure_ladder_written(subagents, workspace, &before, reported).await;
+    let ladder = workspace
+        .map(|workspace| super::weakened::collect(workspace).briefing())
+        .unwrap_or_default();
+    merge_context(&[
+        ("What the run says would be easier", &reported),
+        ("The ladder, read from the ledger", &ladder),
+    ])
+}
+
 /// Renders the open gaps on disk for the next attempt.
 ///
 /// Empty when nothing is open, so [`Mailbox::post`] drops it rather than
