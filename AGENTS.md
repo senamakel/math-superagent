@@ -162,8 +162,7 @@ a conjecture already solved, stated as open, its answer withheld.
 scripts/eval-report unit-distance-plane-chromatic
 ```
 
-Watch it with `./diagnose` / `./euler-tui --workspace conjectures/<slug>`. The
-rules:
+Watch it with `./diagnose` / `./euler-tui --workspace conjectures/<slug>`. Rules:
 
 - **The answer key never enters the container.** `GROUND_TRUTH.md`, `RUBRIC.md`
   and the plaintext `screen.terms` live under `evals/<slug>/`, outside
