@@ -165,6 +165,20 @@ fn evidence_briefing(workspace: &Path) -> String {
     // A refutation is the result most likely to be invisible to a judge: it is
     // not the goal, so the attempt that produced one reports UNSOLVED.
     let (refuted, attacked) = super::refute::counts(workspace);
+    // The graph, which is where two things the counts above cannot show live.
+    // `ready` is the one number here that measures whether the run is *able to
+    // proceed*: an investigation with twenty open gaps and none ready is stuck
+    // in a way that twenty open gaps alone does not say. And a circular
+    // decomposition scores as progress under every other measure on this list
+    // — the gaps are written, the claims are filed — while proving nothing.
+    let graph = super::blueprint::collect(workspace);
+    let (verified, ready, blocked) = graph.counts();
+    let circular = if graph.is_circular() {
+        "\n- **the statement graph is circular**: some reduction proves its own hypothesis, so \
+         the skeletons on disk do not compose into a proof however many gaps are closed"
+    } else {
+        ""
+    };
 
     format!(
         "\nWhat the attempt left on disk, counted rather than reported — the report above is \
@@ -179,6 +193,8 @@ fn evidence_briefing(workspace: &Path) -> String {
          - rungs on the difficulty ladders: {rungs_open} open, {rungs_settled} settled\n\
          - statements attacked for a counterexample: {attacked}, of which {refuted} were \
          refuted\n\
+         - statement graph: {verified} node(s) the kernel checked, {ready} ready to be worked on \
+         now, {blocked} waiting on something else{circular}\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
          nothing and left work here is not — score what is here.{}{}{}",
         captured.len(),

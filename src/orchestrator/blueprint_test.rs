@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 //! What the statement graph has to get right.
 //!
 //! Every test here writes real skeleton and note files and reads the derived
@@ -5,6 +7,7 @@
 //! exists to catch live in the join between two files written by two roles at
 //! two different times, so a test that skipped the parse would not see them.
 
+use std::fmt::Write as _;
 use std::path::Path;
 
 use super::*;
@@ -15,7 +18,7 @@ fn skeleton(root: &Path, slug: &str, header: &str, gaps: &[&str]) {
     std::fs::create_dir_all(&directory).expect("the backward directory is creatable");
     let mut text = format!("# {slug}\n\n```skeleton\n{header}\n```\n");
     for gap in gaps {
-        text.push_str(&format!("\n```gap\n{gap}\n```\n"));
+        let _ = write!(text, "\n```gap\n{gap}\n```\n");
     }
     std::fs::write(directory.join(format!("{slug}.md")), text).expect("the skeleton is writable");
 }
@@ -63,7 +66,7 @@ fn a_lemma_resting_only_on_settled_work_is_ready() {
     );
 
     let blueprint = collect(&root);
-    let ready: Vec<&str> = blueprint.ready().iter().map(|node| node.id()).collect();
+    let ready: Vec<&str> = blueprint.ready().iter().map(|node| node.id.as_str()).collect();
 
     assert!(
         ready.contains(&"main/tail-bound"),
@@ -173,11 +176,10 @@ fn a_diamond_dependency_is_not_a_cycle() {
 #[test]
 fn a_kernel_verdict_propagates_to_the_lemma_it_discharges() {
     let root = workspace("kernel");
-    std::fs::create_dir_all(&root.join(super::super::lean::VERDICT_DIR))
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))
         .expect("the verdict directory is creatable");
     std::fs::write(
-        &root
-            .join(super::super::lean::VERDICT_DIR)
+        root.join(super::super::lean::VERDICT_DIR)
             .join("code_bound.lean.json"),
         r#"{"file":"code/bound.lean","compiled":true,"sorries":[],
             "axioms":["'main' depends on axioms: [propext]"],"verified":true}"#,
@@ -272,7 +274,7 @@ fn an_asserted_claim_does_not_settle_what_rests_on_it() {
     );
 
     let blueprint = collect(&root);
-    let ready: Vec<&str> = blueprint.ready().iter().map(|node| node.id()).collect();
+    let ready: Vec<&str> = blueprint.ready().iter().map(|node| node.id.as_str()).collect();
 
     assert!(
         !ready.contains(&"main"),

@@ -146,8 +146,9 @@ pub(super) struct Blueprint {
 ///
 /// Qualified by its skeleton rather than bare, because two decompositions may
 /// each call a lemma `main-bound` and mean different statements. The gap id
-/// alone is still resolvable — [`resolve`] falls back to it — so a skeleton may
-/// name a sibling's lemma without knowing which file it lives in.
+/// alone is still resolvable — [`Blueprint::resolve_edges`] falls back to it —
+/// so a skeleton may name a sibling's lemma without knowing which file it
+/// lives in.
 fn gap_key(skeleton: &str, gap: &str) -> String {
     format!("{skeleton}/{gap}")
 }
@@ -166,9 +167,38 @@ fn claim_standing(status: Status) -> Standing {
     }
 }
 
+/// Every id anything on disk could legitimately be named by.
+///
+/// Built before any node is, because the edges point in both directions
+/// through the file order: a skeleton's gap may be proved by a skeleton later
+/// in the directory, and a gap may be discharged by a claim in a note nobody
+/// has walked yet. Filtering edges against a set assembled as the nodes are
+/// built would make an edge's survival depend on alphabetical order.
+fn addressable(skeletons: &Skeletons, ledger: &Ledger) -> BTreeSet<String> {
+    let mut known: BTreeSet<String> = ledger.ids();
+    for skeleton in skeletons.all() {
+        known.insert(skeleton.slug.clone());
+        for gap in &skeleton.gaps {
+            known.insert(gap.id.clone());
+            known.insert(gap_key(&skeleton.slug, &gap.id));
+        }
+    }
+    known
+}
+
 /// Builds the graph from the skeletons and the claim library.
 pub(super) fn build(skeletons: &Skeletons, ledger: &Ledger) -> Blueprint {
     let mut blueprint = Blueprint::default();
+    let known = addressable(skeletons, ledger);
+    // A gap whose id is a skeleton's slug is a lemma that skeleton proves.
+    // That edge is what makes this a graph rather than a two-level tree, and
+    // it is the only kind that can close a cycle — so it is drawn from the
+    // slugs rather than from whatever a role happened to write.
+    let slugs: BTreeSet<String> = skeletons
+        .all()
+        .iter()
+        .map(|skeleton| skeleton.slug.clone())
+        .collect();
     for claim in ledger.all() {
         if claim.id.is_empty() {
             continue;
@@ -210,10 +240,19 @@ pub(super) fn build(skeletons: &Skeletons, ledger: &Ledger) -> Blueprint {
                 needs: Vec::new(),
                 standing,
             };
+            // A gap is closed by a claim, and it is also closed by another
+            // skeleton proving it outright — which is the edge that makes this
+            // a graph rather than a two-level tree, and the only one that can
+            // close a cycle. `discharged-by` may also name a note path, so
+            // both sources are filtered against what is addressable rather
+            // than reported as missing.
             for source in super::claims::identifiers(&gap.discharged_by) {
-                if blueprint.nodes.contains_key(&source) {
+                if source != key && known.contains(&source) {
                     node.needs.push(source);
                 }
+            }
+            if slugs.contains(&gap.id) && gap.id != skeleton.slug {
+                node.needs.push(gap.id.clone());
             }
             blueprint.nodes.insert(key, node);
         }
@@ -387,7 +426,7 @@ impl Blueprint {
     ///
     /// The reason this file exists. Ordered by kind so a lemma comes before the
     /// goal it feeds, which is the order somebody picking work up wants.
-    pub(super) fn ready(&self) -> Vec<&Node> {
+    fn ready(&self) -> Vec<&Node> {
         let mut ready: Vec<&Node> = self
             .nodes
             .values()
@@ -589,13 +628,6 @@ impl Blueprint {
         for (node, need) in self.dangling.iter().take(MAX_ROWS) {
             let _ = writeln!(out, "- `{node}` rests on `{need}`, which does not exist");
         }
-    }
-}
-
-impl Node {
-    /// The node's key, for a caller that only needs to name it.
-    pub(super) fn id(&self) -> &str {
-        &self.id
     }
 }
 

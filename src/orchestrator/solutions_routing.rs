@@ -432,9 +432,21 @@ async fn reduction_arm(
     .await;
     let reported = ensure_skeleton_written(subagents, workspace, &before, reported).await;
     let gaps = open_gap_briefing(workspace);
+    // The graph, beside the flat list, because the two answer different
+    // questions and the second one is the one that schedules work. The gap
+    // list says what is unproved; the blueprint says which of it rests on
+    // nothing still open, and is therefore the part somebody can start on
+    // without holding the rest of the argument in their head. It also carries
+    // the one fault a per-file ledger cannot show — a reduction that proves
+    // its own hypothesis — and that has to reach the attempt before the
+    // attempt spends itself inside the loop.
+    let graph = workspace
+        .map(|workspace| super::blueprint::collect(workspace).briefing())
+        .unwrap_or_default();
     merge_context(&[
         ("What the run says would suffice", &reported),
         ("Open gaps, read from the ledger", &gaps),
+        ("The statement graph: what is ready, and what is circular", &graph),
     ])
 }
 

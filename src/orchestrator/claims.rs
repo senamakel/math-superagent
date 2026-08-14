@@ -896,16 +896,6 @@ impl Ledger {
         self.claims.iter().map(|claim| claim.id.clone()).collect()
     }
 
-    /// Returns the claim with this exact id.
-    ///
-    /// Distinct from [`Ledger::search`], which ranks on term overlap and is
-    /// what a role reaches for. A dependency edge names an id, and resolving
-    /// one by best-effort similarity would let a blueprint node inherit the
-    /// standing of a claim that merely reads like it.
-    pub(super) fn find(&self, id: &str) -> Option<&Claim> {
-        self.claims.iter().find(|claim| claim.id == id)
-    }
-
     /// Every claim on disk, for a reader that needs the whole graph.
     pub(super) fn all(&self) -> &[Claim] {
         &self.claims
