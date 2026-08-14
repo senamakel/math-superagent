@@ -182,7 +182,7 @@ impl Tool<()> for SourceContentsTool {
         // Every page contributes its own links, so the frontier is told which
         // page they came from — the first URL stands for the batch only in the
         // ledger's "this source was consulted" sense.
-        self.exa.file_leads(urls[0], &leads).await;
+        self.exa.file_leads(&leads).await;
 
         Ok(ToolResult::text(
             call.id,

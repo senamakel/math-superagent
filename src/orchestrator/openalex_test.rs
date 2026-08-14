@@ -1,6 +1,6 @@
 use serde_json::json;
 
-use super::{Direction, abstract_text, doi, leads, note, openalex_id, row};
+use super::{Direction, abstract_text, doi, leads, note, openalex_id, row, unresolved};
 
 fn seed() -> serde_json::Value {
     json!({
@@ -149,6 +149,24 @@ fn a_work_found_twice_is_one_lead() {
         (Direction::Citations, vec![cited()]),
     ];
     assert_eq!(leads("seed", &sections).len(), 1);
+}
+
+/// An identifier that resolves to nothing says so in words a model can act on,
+/// and names the case a live run actually hit.
+///
+/// The failure this replaced was a raw 404 with the whole query string in it.
+/// `math/0211159` is the real example: OpenAlex indexes pre-2007 arXiv
+/// preprints without a DOI, so the identifier arXiv would mint resolves to
+/// nothing at all.
+#[test]
+fn an_identifier_that_resolves_to_nothing_says_what_to_try_instead() {
+    let message = unresolved("math/0211159", "the DOI `10.48550/arXiv.math/0211159`").to_string();
+    assert!(message.contains("math/0211159"), "{message}");
+    assert!(message.contains("Pre-2007 arXiv"), "{message}");
+    // It names the next move rather than only the failure.
+    assert!(message.contains("DOI, or the exact title"), "{message}");
+    // And warns about the one fallback this module refuses to make silently.
+    assert!(message.contains("can return a different one"), "{message}");
 }
 
 /// A record with no DOI still yields a usable lead rather than an empty URL

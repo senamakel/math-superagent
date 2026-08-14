@@ -129,12 +129,16 @@ impl CitationGraphTool {
     async fn resolve(&self, work: &str) -> Result<Value> {
         let work = work.trim();
         if let Some(id) = openalex_id(work) {
-            return self.get(&direct(&format!("{API}/{id}"), SEED_SELECT)?).await;
+            return self
+                .get(&direct(&format!("{API}/{id}"), SEED_SELECT)?)
+                .await
+                .map_err(|_| unresolved(work, "that OpenAlex id"));
         }
         if let Some(doi) = doi(work) {
             return self
                 .get(&direct(&format!("{API}/doi:{doi}"), SEED_SELECT)?)
-                .await;
+                .await
+                .map_err(|_| unresolved(work, &format!("the DOI `{doi}`")));
         }
         // A title is a search, and a search can be wrong — so unlike the three
         // identifier paths this one returns something the caller has to check,
@@ -235,6 +239,29 @@ fn direct(base: &str, select: &str) -> Result<reqwest::Url> {
             tinyagents::TinyAgentsError::Tool(format!("could not build the OpenAlex query: {error}"))
         },
     )
+}
+
+/// Says an identifier did not resolve, and refuses to guess past it.
+///
+/// The failure this replaces was a raw `404 Not Found` with a hundred-character
+/// query string in it, which tells a model nothing it can act on. A live smoke
+/// test hit it on `math/0211159`: `OpenAlex` holds pre-2007 arXiv preprints with
+/// no DOI at all, so the identifier arXiv itself would mint resolves to nothing.
+///
+/// It deliberately does **not** fall back to searching the identifier as a
+/// title. That was tried against the live index and returned a *different*
+/// paper — "Notes on Perelman's papers" for Perelman's paper — which is the one
+/// failure this whole module is written against: a lookup that quietly hands
+/// back the wrong work is worse than one that fails, because the run files it
+/// under the name it wanted.
+fn unresolved(work: &str, what: &str) -> tinyagents::TinyAgentsError {
+    tinyagents::TinyAgentsError::Tool(format!(
+        "OpenAlex has no work under {what}, so `{work}` could not be resolved. Pre-2007 arXiv \
+         identifiers are the common case: OpenAlex indexes those preprints without a DOI, so \
+         there is nothing to look up by. Try the published version's DOI, or the exact title — \
+         and check the title match names the paper you meant, because a title search can return \
+         a different one"
+    ))
 }
 
 /// Reads an `OpenAlex` work identifier out of what the caller named.

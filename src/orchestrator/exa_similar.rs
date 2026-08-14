@@ -136,7 +136,7 @@ impl Tool<()> for FindSimilarTool {
         let rendered = render_all(&results);
         let leads = result_leads(&results, &format!("resembles {url}"));
         let filed = leads.len();
-        self.exa.file_leads(url, &leads).await;
+        self.exa.file_leads(&leads).await;
 
         Ok(ToolResult::text(
             call.id,

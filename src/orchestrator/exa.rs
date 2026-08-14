@@ -144,18 +144,17 @@ impl Exa {
     /// Best effort and unreported, like every other frontier write: the answer
     /// is already in the caller's hands, and a lost lead must not turn a
     /// successful lookup into a failed tool call.
-    async fn file_leads(&self, source_url: &str, links: &[LinkRecord]) {
+    ///
+    /// No source is named, because none of these tools stores a document — and
+    /// naming one anyway is a bug a live run caught. Passing the endpoint the
+    /// request went to put `https://api.exa.ai/search` in the frontier as an
+    /// unlabelled row, which offers the run its own API as something to go and
+    /// read.
+    async fn file_leads(&self, links: &[LinkRecord]) {
         if links.is_empty() {
             return;
         }
-        super::frontier::record(
-            &self.documents,
-            source_url,
-            "",
-            links,
-            &self.documents.goal().await,
-        )
-        .await;
+        super::frontier::record_leads(&self.documents, links, &self.documents.goal().await).await;
     }
 }
 

@@ -137,7 +137,7 @@ impl Tool<()> for DeepResearchTool {
         let results = results_of(&reply);
         let leads = result_leads(&results, &format!("found researching: {}", clip(question, 160)));
         let filed = leads.len();
-        self.exa.file_leads(SEARCH_URL, &leads).await;
+        self.exa.file_leads(&leads).await;
 
         if synthesis.is_empty() && results.is_empty() {
             return Ok(ToolResult::text(
