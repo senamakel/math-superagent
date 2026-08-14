@@ -25,6 +25,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `oeis-not-answer-source` | OEIS A216398 (per-digit sums s(d)) and the per-digit b-files are the published answer data for PE156 and are excluded from the library by the contest-answer rule. | **unchecked** | asserted | `research/notes/oeis-catalogue-pe156.md` |
 | `oeis-per-digit-counts` | The number of fixed points of f(n,d)=n (counting n=0) for d=1..9 is 84, 14, 36, 48, 5, 72, 49, 344, 9 (OEIS A130432); positive-only counts are 83, 13, 35, 47, 4, 71, 48, 343, 8. | yes | asserted | `research/notes/oeis-catalogue-pe156.md` |
 | `place-value-closed-form` | For d>0, f_d(x) = Σ_k c_d(x_k) where c_d(x_k) = floor(x/10^k)·10^(k-1) if x_k<d; floor(x/10^k)·10^(k-1) + (x mod 10^(k-1)) + 1 if x_k=d; floor(x/10^k)·10^(k-1) + 10^(k-1) if x_k>d. | yes | asserted | `research/notes/khovanova-marton-archive-labeling.md` |
+| `ruskey-theorem5-digit-count-generating-function` | > For base k ≥ 2 and digit d with 0 < d < k, the generating function Σ_{n≥0} c_{k,d}(n) z^n of c_{k,d}(n) — the number of digits equal to d in the base-k expansion of n — is explicit and rational (Adams-Watters &… | yes | asserted | `research/summaries/ruskey-digital-sum-generating-functions.md` |
 
 ## Load-bearing but unverified
 
@@ -42,3 +43,4 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `mathworld-provenance` (research/summaries/mathworld-google-aptitude.md) — asserted by the source, not proved there and not checked here
 - `oeis-per-digit-counts` (research/notes/oeis-catalogue-pe156.md) — asserted by the source, not proved there and not checked here
 - `place-value-closed-form` (research/notes/khovanova-marton-archive-labeling.md) — asserted by the source, not proved there and not checked here
+- `ruskey-theorem5-digit-count-generating-function` (research/summaries/ruskey-digital-sum-generating-functions.md) — asserted by the source, not proved there and not checked here

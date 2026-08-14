@@ -21,6 +21,4 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `solutions-d9.txt` | _(undescribed)_ |
 | `verify-output-note.md` | Note beside the verify.py output with the claim block PE156-grand-total-verified: Sum_{d=1..9} s(d) = 21295121502550, with per-digit sums, the three-way evaluator agreement, the brute-force agreement bounds, the oracle points reproduced, and the sources (bound = Khovanova-Marton Prop 9.1; counts = OEIS A130432; d=1 last term 1111111110 sourced from the arXiv full text on disk). |
 | `verify-output.txt` | _(undescribed)_ |
-| `verify.captured.txt` | Captured output of code/verify.py, the independent second route (two most-significant-digit evaluators — closed-form prefix-block sums and memoized (pos,tight) digit-DP — sharing no code with the primary place-value counter). Confirms GRAND TOTAL sum(s(d)) for d=1..9 = 21295121502550, identical to the primary route. |
-described)_ |
 | `verify.captured.txt` | _(undescribed)_ |

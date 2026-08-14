@@ -1,6 +1,6 @@
 # OEIS A014778 (main entry) — fixed points of f(n,1)=n
 
-**Source:** https://oeis.org/search?q=A014778&fmt=text (OEIS catalogue entry). Full text: `research/sources/oeis-A014778-main.full.md`. The b-file (84 terms) is `research/sources/oeis-A014778-full.md`.
+**Source:** https://oeis.org/search?q=A014778&fmt=text (OEIS catalogue entry). Full text: `research/sources/oeis-A014778-main.full.md`. The b-file (84 terms) is `research/summaries/oeis-A014778-full.md` (there is no `research/sources/oeis-A014778-full.md`; the b-file content lives in that summary file).
 
 ## What it establishes
 

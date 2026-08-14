@@ -1,10 +1,10 @@
 # A364972 — bases where the zero-count never equals the index (d=0 companion)
 
-**Source:** https://oeis.org/A364972 (OEIS entry; full text on disk: `research/sources/oeis-A364972-zeros-bases.full.md`, downloaded this cycle). Authors Marton & Khovanova, Aug 14 2023; links to arXiv:2305.10357 and to the supporting code (colab / github gregory-marton/vhs).
+**Source:** https://oeis.org/A364972 (OEIS entry; b-file at https://oeis.org/A364972/b364972.txt, full text on disk: `research/sources/oeis-A364972-zeros-bases.full.md`). Authors Marton & Khovanova, Aug 14 2023; links to arXiv:2305.10357 and to the supporting code (colab / github gregory-marton/vhs).
 
 **Definition.** Bases b ≥ 2 in which the number of zeros needed to write out the numbers from 1 through k never equals k for any k. I.e. bases where **no fixed point exists for the digit 0**: there is no k with f_0(k, b) = k.
 
-**Terms (first 62).** 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 17, 18, 19, 20, 21, 22, 23, 25, 27, 30, 32, 35, 37, 38, 39, 40, 41, 43, 45, 48, 49, 53, 54, 57, 58, 59, 63, 65, 67, 68, 69, 71, 72, 73, 74, 75, 76, 77, 79, 80, 83, 85, 88, 89, 90, 93, 94, 95, 96, 98, 100. (So base 10 ∈ A364972: the d=0 equality f_0(k,10)=k has no solution — consistent with Khovanova–Marton Theorem 8.1, on disk: a=(0) is not well-defined in base 10.)
+**Terms (first 62, from the b-file).** 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 17, 18, 19, 20, 21, 22, 23, 25, 27, 30, 32, 35, 37, 38, 39, 40, 41, 43, 45, 48, 49, 53, 54, 57, 58, 59, 63, 65, 67, 68, 69, 71, 72, 73, 74, 75, 76, 77, 79, 80, 83, 85, 88, 89, 90, 93, 94, 95, 96, 98, 100. (So base 10 ∈ A364972: the d=0 equality f_0(k,10)=k has no solution — consistent with Khovanova–Marton Theorem 8.1, on disk: a=(0) is not well-defined in base 10.)
 
 **Example given.** 11 and 13 are *not* in the sequence: for k = 3152738985031, exactly that many zeros are needed to write 1..k in base 11 (and similarly 3950024143546664 for base 13).
 

@@ -25,7 +25,7 @@ hypotheses: >
   numbers below 10^k there are k·10^(k-1) occurrences of each nonzero digit,
   so fd(x) ≥ (1/10)·(#digits of 1..x), which exceeds x beyond some point.
 holds-here: yes
-status: proven in source (Proposition 9.1 with proof; the base-10 bound is also
+status: proved (source: Proposition 9.1, with proof; the base-10 bound is also
   stated in the published AMM paper, Section 4, "[the largest value in Ed] is
   not more than d·10^10", with Table 3 listing the actual maxima).
 bearing: >
