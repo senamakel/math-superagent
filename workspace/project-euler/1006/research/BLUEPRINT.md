@@ -39,11 +39,13 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `PE1006-factors-one-count-necessary` | claim | **ready** | — | Every length-k factor of the infinite Fibonacci word (Sturmian, slope a=1/phi^2=(3-sqrt5)/2) has either floor(k*a) or ceil(k*a) occurrences… |
 | `PE1006-kplus1-FACT` | claim | established | — | The infinite Fibonacci word F (fixed point of 0->01,1->0, slope (3-sqrt5)/2) is a Sturmian word, so it has exactly k+1 distinct factors of… |
 | `PE1006-modular-structure` | claim | established | — | M = 101001001 is prime; M-1 = 2^3·3·5^3·131·257; ord_10(M) = 50500500 (minimal); Pisano(M) = 101001000 (minimal). Legendre(5/M)=1. |
+| `PE1006-n0-length-guess-refuted-small` | claim | established | — | The candidate threshold n0(k) = smallest n with \|S_{n-1}\| >= k is FALSE: for k=3, \|S_2\|=3>=3 gives n0(3)=3, but S_3="01001" has length-3… |
 | `PE1006-no-loworder-linear-recurrence` | claim | established | — | No constant-coefficient rational linear recurrence of order <= 40 fits Psi(1..150) exactly (rank-inconsistent over every large prime); BM… |
 | `PE1006-no-small-eventual-period` | claim | established | — | r(k) = Psi(k) mod 101001001 for k = 1..150 has no genuine eventual period with period < 150 (a ≥40-aligned-comparison search finds none). |
 | `PE1006-oracle-agreement` | claim | established | — | brute.py reproduces Psi(3)=20302 and Psi(10) ≡ 10699667 (mod 101001001); data.py computes Psi(1..150), agrees with brute on k <= 30, and… |
 | `PE1006-ord10-and-pisano` | claim | established | — | ord_10(101001001)=50500500 and the Pisano period of the Fibonacci recurrence mod 101001001 is 101001000 (M-1). |
 | `PE1006-rightspecial-reverse-prefix` | claim | **ready** | — | The unique right-special length-n factor of the Fibonacci word f is R(n) = f[0..n-1]^R, the reverse of the length-n prefix of f (MSS Thm… |
+| `PE1006-stabilization-candidate-too-small-k3` | claim | established | — | The G-stabilization first-step candidate n0(k)=smallest n with \|S_{n-1}\|>=k is not a valid stabilization threshold. For k=3, n0(3)=3 but… |
 | `PR-consecutive-factors-lex` | claim | established | — | In a Sturmian set F, two equal-length factors u,v are consecutive in lex order iff u=r·ab·s and v=r·ba·s, or u=r·a and v=r·b; the next… |
 | `PerrinRestivo-len8-len10-lists` | claim | **ready** | — | The Fibonacci Sturmian set's length-8 factors are the 8 conjugates of abaababa plus the singular factor babaabab (9 total); its 11… |
 | `christoffel-conjugate-and-forest` | claim | established | — | For coprime a,b the lower and upper Christoffel words of slope b/a are conjugates (Cohn, de Luca–Mignosi); every nontrivial Christoffel… |

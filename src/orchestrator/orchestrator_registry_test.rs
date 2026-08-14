@@ -795,12 +795,12 @@ fn every_role_holding_the_board_tool_is_told_what_it_is_for() {
     // per-role `&'static str` arrays — so the agreement is asserted here.
     let registry = default_registry(true).expect("the registry builds");
     for role in BOARD_ROLES {
-        let bench = registry
-            .get(role)
-            .unwrap_or_else(|| panic!("`{role}` is not a registered role"));
         assert!(
-            bench.tools.iter().any(|tool| *tool == BOARD_TOOLS[0]),
-            "`{role}` is told to post to the board and was never granted `post_board`"
+            registry
+                .get(role)
+                .is_some_and(|bench| bench.tools.iter().any(|tool| *tool == BOARD_TOOLS[0])),
+            "`{role}` is told to post to the board but is not a role that was granted \
+             `post_board`"
         );
     }
 }

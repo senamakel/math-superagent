@@ -154,10 +154,15 @@ def solve_basic(rows, ncols):
     return sol
 
 
-def verify(A, coefs, affine=False):
-    """Exact mod-M check that the recurrence reproduces every term."""
-    L = len(coefs)
+def verify(A, coefs, order, affine=False):
+    """Exact mod-M check that the order-`order` recurrence (with constant
+    offset `d` last in coefs when affine) reproduces every term.
+
+    coefs has `order` coefficients (c_0..c_{order-1}); when affine it carries
+    one trailing entry d. `order` is the recurrence order = number of c's.
+    """
     d = coefs[-1] if affine else 0
+    L = order
     for j in range(L, len(A)):
         total = (d if affine else 0)
         for i in range(L):
@@ -229,11 +234,23 @@ def main():
         ok, sol = has_recurrence(A, L, affine=False)
         if ok:
             # reconfirm by direct verification
-            vok, bad = verify(A, sol)
-            status = "FITS (verified all points)" if vok else "fits system but FAILS verify?!"
+            vok, bad = verify(A, sol, L)
+            genuine = (len(A) - L) > L
+            status = "FITS (verified)"
+            if not vok:
+                status = "fits system but FAILS verify (solver bug)"
+            elif not genuine:
+                status = "FITS but VACUOUS (underdetermined: eqns<=unknowns; any sequence fits)"
+            else:
+                status = "NO genuine fit would report FITS here"
             print("   L=%d: %s   coefs=%s" % (L, status, [int(c) for c in sol]))
         else:
             print("   L=%d: no constant-coefficient order-%d recurrence (system inconsistent)" % (L, L))
+    print()
+
+    print("   NOTE: n=%d points. A homogeneous order-L recurrence is a GENUINE" % len(A))
+    print("   constraint only when the defining system is overdetermined:")
+    print("   (n-L) > L  <=>  L <= %d. Orders 6,7,8 are underdetermined -> vacuous" % ((len(A) - 1) // 2))
     print()
 
     # Berlekamp-Massey minimal order over F_M (uses our lib implementation)
@@ -264,12 +281,22 @@ def main():
             continue
         ok, sol = has_recurrence(A, L, affine=True)
         if ok:
-            vok, bad = verify(A, sol, affine=True)
+            vok, bad = verify(A, sol, L, affine=True)
             d = sol[-1]
-            status = "FITS (verified all points)" if vok else "system fits but FAILS verify?!"
+            genuine = (len(A) - L) > (L + 1)
+            if not vok:
+                status = "fits system but FAILS verify (solver bug)"
+            elif not genuine:
+                status = "FITS but VACUOUS (underdetermined: eqns<=unknowns)"
+            else:
+                status = "FITS (verified, genuine order-%d affine recurrence)" % L
             print("   L=%d: %s  coefs=%s  d=%d" % (L, status, [int(c) for c in sol[:-1]], int(d)))
         else:
             print("   L=%d: no affine order-%d recurrence (system inconsistent)" % (L, L))
+    print()
+
+    print("   NOTE: n=%d points. An affine order-L recurrence is GENUINE only when" % len(A))
+    print("   (n-L) > (L+1)  <=>  L <= %d. Orders >=%d are not genuine constraints." % ((len(A) - 2) // 2, (len(A) - 1) // 2 + 1))
     print()
 
     # A pure geometric check: is A_{m+1} a constant multiple of A_m for all m?

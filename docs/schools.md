@@ -171,6 +171,46 @@ Three controls keep it honest:
   [`src/directives`](../src/directives/mod.rs). Concurrent posters interleave
   whole lines and never halves of one, so no lock is needed and none is taken.
 
+#### The board was built, wired, and never used
+
+The first live three-school run — Project Euler 1006, `chisel`, `rising-sea` and
+`adversarial` for eighty minutes — called `post_board` **zero times**. Nothing
+was broken. All three schools reached a verdict, all three ran the reflection,
+which is one of the three roles holding the tool, and `teams/` was never created
+because nothing ever wrote to it.
+
+Everything structural was correct and the gap was one layer up. The grant was in
+the registry, `teams/BOARD.md` was routed into six roles' context, the tool
+validated and appended — and **no prompt in the crate mentioned the board**.
+`grep -c board` over `reflection.md`, `inventor.md` and `goals.md` returned
+`0, 0, 0`. So the only trace of the board a model ever saw was an unexplained
+entry in a tool list, inside a call whose instructions run thirty lines of
+output format and end *"Answer exactly these four things"*. It answered the four
+things. Three times, in three schools, correctly.
+
+The lesson is the one this repository keeps recording, pointed the other way. A
+prompt instruction is not a control — and a control nobody is instructed about
+is not a capability. Registering a tool and asking for it are two different
+acts, and only one of them had been done.
+
+`src/prompts/board.md` is the brief that was missing. It is layered into the
+three posting roles by `school_layer`, and **only when the run has siblings**:
+a school running alone has nobody to tell, so paying for the brief in every one
+of its prompts would buy an audience of one — and it would move the control off
+the prompts this runtime sent before schools existed, which
+`the_control_school_changes_no_prompt_by_one_byte` exists to prevent.
+
+Two tests now hold the seam that was empty. One asserts that a role is told
+about the board **exactly when** it holds `post_board` — both directions, since
+a role instructed to post that cannot and a role that can post and was never
+asked fail equally silently. The other asserts a lone school is never told.
+Neither list can be derived from the other: the grants live in per-role
+`&'static str` benches, so the agreement is asserted rather than read off an
+authority.
+
+What none of this proves is that a school now *does* post. That needs another
+live run.
+
 ## Concurrency: the part that had to come first
 
 Nothing in this runtime locked the workspace, and for a single loop that was

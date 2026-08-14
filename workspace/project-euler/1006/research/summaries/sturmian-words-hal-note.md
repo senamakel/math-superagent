@@ -71,7 +71,7 @@ id: PerrinRestivo-len8-len10-lists
 statement: The Fibonacci Sturmian set's length-8 factors are the 8 conjugates of abaababa plus the singular factor babaabab (9 total); its 11 length-10 factors are listed in the paper's Table 1.
 hypotheses: Fibonacci word slope 2/(3+sqrt5).
 holds-here: yes — decimal-digit check targets for a brute oracle.
-status: asserted (in source, as worked examples)
-bearing: concrete oracle values to reproduce the brute program against.
+status: asserted in source (worked examples); VERIFIED independently by scholar against the run's brute oracle via the Cassaigne-Fici-Sciortino-Zamboni Christoffel array A_{5,3} (hal-01829144): the 8 length-8 factors with Parikh (5,3) match the oracle exactly and the singular 10100101 is confirmed as "the other factor of length 8". Length-8 count 9 and structure verified; length-10 count 11 matches oracle.
+bearing: concrete oracle values to reproduce the brute program against (made a checked two-way verification).
 anchor: research/summaries/sturmian-words-hal-note.md
 ```

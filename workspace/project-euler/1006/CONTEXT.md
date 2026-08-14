@@ -34,6 +34,21 @@ These are the structural ingredients for a method whose cost does NOT grow with 
 `k=10^18` defeats any per-subword enumeration, so `Psi(k)` must come from a recurrence /
 closed form built on the balanced-word structure, evaluated with fast exponentiation.
 
+## Verified this run (scholar)
+
+All load-bearing structural claims re-verified directly against their source full texts
+and cross-checked against the brute oracle on disk:
+- MSS Thm 18: unique special length-n factor R(n) = f[0..n-1]^R (reverse of length-n prefix),
+  fixes R(k) in the compiler's extension formula. [verified]
+- PR Thm 2 consecutive-factor lex rule; Prop 1 membership; length-8/10 factor lists. [verified]
+- Poirier–Steiner (Morse–Hedlund): every length-k factor has floor/ceil(k/phi^2) ones. [verified]
+- Cassaigne Prop 7: factor set depends only on slope. [verified]
+- Cassaigne A_{5,3} length-8 factor list EXACTLY matches the on-disk oracle (two-way). [verified]
+- CORRECTION: Chuan's F_n shifts = the conjugates only (F_n of them), missing the unique
+  singular factor; the length-F_n factor set has F_n+1 members. Thread refs fixed. [verified]
+
+Details: research/notes/scholar-verification-pass.md
+
 ## Ruled out
 
 Nothing yet — no method has been implemented. Per-subword enumeration at `k=10^18` is

@@ -66,7 +66,7 @@ statement: Every length-k factor of the infinite Fibonacci word (Sturmian, slope
   has either floor(k*a) or ceil(k*a) occurrences of the letter 1 (Morse-Hedlund balanced-blocks fact).
 hypotheses: Sturmian word of slope a; for Fibonacci a=1/phi^2.
 holds-here: true — verified on k=3: k*a=1.1459, all four factors 001,010,100,101 have 1 or 2 ones.
-status: sourced — Morse & Hedlund 1940, quoted in Poirier-Steiner (hal-03869990); necessary condition checked vs oracle.
+status: sourced — Morse & Hedlund 1940, quoted in Poirier-Steiner (hal-03869990), necessary condition; VERIFIED directly in the Poirier-Steiner full text by the scholar ("each block of length n in a Sturmian sequence of slope alpha has floor(n*alpha) or ceil(n*alpha) occurrences of the letter of frequency alpha") and checked vs oracle k=3.
 bearing: necessary restriction on the factor set; NOT an enumeration (the exact balanced-set bijection has
   been refuted — see the Correction note below and research/approaches/balanced-factors-claim-attack.md).
 anchor: research/summaries/morse-hedlund-balanced-blocks-floor-alpha.md.
@@ -107,7 +107,7 @@ statement: Two Sturmian words have the same set of factors iff they have the sam
   the length-k factor set depends only on slope, not on intercept or finite truncation.
 hypotheses: Sturmian words over a binary alphabet.
 holds-here: true — justifies computing from the infinite Fibonacci word rather than a specific S_n.
-status: sourced — Prop 7 of the cyclic-complexity note (hal-01829144v1).
+status: sourced — Prop 7 of the cyclic-complexity note (hal-01829144v1), VERIFIED directly in the full text ("Fact(x)=Fact(y) iff x,y are Sturmian of the same slope").
 bearing: licenses treating Fibonacci subwords as the Sturmian factor set of fixed slope.
 anchor: research/summaries/character-of-sturmian-words.md.
 ```

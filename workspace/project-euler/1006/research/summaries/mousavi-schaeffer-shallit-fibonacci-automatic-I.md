@@ -48,7 +48,7 @@ id: PE1006-rightspecial-reverse-prefix
 statement: The unique right-special length-n factor of the Fibonacci word f is R(n) = f[0..n-1]^R, the reverse of the length-n prefix of f (MSS Thm 18). Also: every nonempty factor of f has least period a Fibonacci number (Thm 19), and the length-n prefix is a palindrome iff n = F_i - 2 (Thm 14).
 hypotheses: f = 01001010... fixed point of 0->01, 1->0 (the problem's Fibonacci word).
 holds-here: yes — the solver's state recurrence (PE1006-extension-formula) names the unique right-special factor R(k); this source fixes it explicitly as the reversed length-k prefix.
-status: sourced (proved mechanically in MSS 2016)
+status: sourced (proved mechanically in MSS 2016; STATEMENT VERIFIED directly in the full text by the scholar — Theorem 18: "The unique special factor of length n is f[0..n-1]^R")
 bearing: identifies R(k) in the Psi(k) state evolution, a load-bearing quantity for any closed recurrence on Psi(k); not itself the closed form for Psi(k).
 anchor: research/summaries/mousavi-schaeffer-shallit-fibonacci-automatic-I.md
 ```
