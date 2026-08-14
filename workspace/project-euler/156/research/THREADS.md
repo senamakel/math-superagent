@@ -4,7 +4,9 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[pe156-fixed-points]] | What is Σ_{d=1}^{9} s(d) for PE156, and what program/claims make that number exact? | open | G1-digit-count-closed-form, G1-checked, G2-solution-bound, km-prop91-bound, km-lemma71-skip, oeis-per-digit-counts | implement code/solution.py per the skeleton research/backward/fixed-point-enumeration.md; verify against oracle + naive counts on [0,10^5] + A130432 counts;… |
 
 ## Threads that could not be read
 

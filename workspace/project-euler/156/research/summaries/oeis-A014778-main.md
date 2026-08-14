@@ -1,23 +1,20 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/oeis-A014778-main.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# OEIS A014778 (main entry) — fixed points of f(n,1)=n
 
-<!-- source: https://oeis.org/search?q=A014778&fmt=text | converted from plain text -->
+**Source:** https://oeis.org/search?q=A014778&fmt=text (OEIS catalogue entry). Full text: `research/sources/oeis-A014778-main.full.md`. The b-file (84 terms) is `research/sources/oeis-A014778-full.md`.
 
-## What is in it
+## What it establishes
 
-- Greetings from The On-Line Encyclopedia of Integer Sequences! http://oeis.org/
-- Content is available under The OEIS End-User License Agreement: http://oeis.org/LICENSE
+- A014778: numbers k equal to the number of 1's in the decimal digits of all numbers ≤ k — i.e. the PE156 solution set for d=1, including 0.
+- **Finiteness (Joseph L. Pe's proof sketch, Nov 2002):** the count of 1's used in positive integers ≤ k is ≥ A(k) = (1/10)·(number of digits in positive integers 1..k) = (1/10)·Σ_{i=1..k}(1+⌊log₁₀ i⌋). By comparing the area below a logarithm with the integral, A(k)/k → ∞, so beyond some k the count always exceeds k and no further fixed points exist. This is the "f grows superlinearly ⇒ finitely many solutions" fact, stated for d=1 in the catalogue and generalized by Khovanova–Marton Prop 9.1.
+- Structure (David Wasserman, Jun 2007): six runs of ten consecutive numbers, ten pairs, four isolated numbers; 84 terms total, last = 1111111110.
+- Completeness history: no more terms ≤ 10^9 (Propper, Dec 2004); final term sent by Lambrecht Kok Jan 2005 ("H. van Haeringen and I showed this list of 84 terms is complete, Dec 15 2004"); independently shown complete by Ryan Propper and Vaughan Pratt, Jan 2005.
+- Cross-references: A094798 (the defining f(n,1)); A101639+A101640+A101641+A130427–A130431 (other digits' fixed-point sequences); A130432 (counts); A165617 (generalization to arbitrary base) — and cites Khovanova–Marton AMM 132(8) 2025 p. 783 Table 2, and the arXiv version.
 
+## Implications for PE156
 
-## What it claims
+- Confirms (catalogue status `asserted`) the term count 84 for d=1 and the maximum 1,111,111,110 < 10^10 — consistent with the bound n ≤ d·10^10.
+- Gives the run a complete term-count target for d=1: the solver must find exactly 84 values ending at 1,111,111,110.
 
-%I A014778 #55 Jun 11 2026 00:58:31
-%S A014778 0,1,199981,199982,199983,199984,199985,199986,199987,199988,199989,
-%T A014778 199990,200000,200001,1599981,1599982,1599983,1599984,1599985,1599986,
-%U A014778 1599987,1599988,1599989,1599990,2600000,2600001,13199998,35000000
-%N A014778 Numbers k equal to the number of 1's in the decimal digits of all numbers <= k.
-%C A014778 The full list of 84 terms is given in the b-file.
-%C A014778 It can be proved that this sequence is finite. (The main idea of the proof is that the number of 1's used in positive integers <= k is greater than or equal to A(k) = (1/10)*(number of digits in positive integers from 1 to k) = (1/10) Sum_{i=1..k} (1+floor(log_10 i)). By considering the area below a logarithmic function and the corresponding integral, it can be shown that A(k)/k goes to infinity.) - _Joseph L. Pe_, Nov 05 2002
-%C A014778 Fixed points of A094798. Sequence consists of six runs of ten consecutive numbers, ten pairs of consecutive numbers and four isolated numbers. - _David Wasserman_, Jun 29 2007
-%D A014778 Maurice Protat, "Des Olympiades à…
+## Does not settle
 
-*[digest of a 15889 character source; every section, statement, and proof in full at `research/sources/oeis-A014778-main.full.md`]*
+- The per-digit sums s(1)..s(9): those are A216398 (excluded; not in this entry). Not a proof of the bound (the arXiv Prop 9.1 is), merely a catalogue finiteness sketch for d=1.

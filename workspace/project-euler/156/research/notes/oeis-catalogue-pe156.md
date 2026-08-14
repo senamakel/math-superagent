@@ -25,6 +25,7 @@ The d=1 sequence A014778 is famous: starts 0, 1, 199981, ... and is finite with 
 ## IMPORTANT — answer-source boundary
 
 - A216398 is the sequence of per-digit sums s(d) — i.e. the published answer values for exactly this contest problem. **Do not download or use it.** Its first term equals the given s(1)=22786974071 only as a cross-check hint, not as data.
+- **CONTAMINATION WARNING:** the on-disk search-results page `research/sources/oeis-search-fixed-points.full.md` contains A216398's %S line verbatim — the actual s(1)..s(9) values are physically in this folder. Nobody may read those numbers into a claim, a verification, or a report. The run's answer must come from its own programs; agreement with anything in that file is *not* a certificate, it is contamination. The summary `research/summaries/oeis-search-fixed-points.md` carries the same warning.
 - The per-digit b-files (b014778.txt, b101639.txt, ... b130431.txt) are the complete solution lists. **Do not download them as a shortcut.** The b-file for A014778 is already on disk (it is the d=1 example the problem statement itself discusses and OEIS documents as a sequence); the run's own program must produce the rest.
 - What the library legitimately holds: definitions, term counts, finiteness proofs, and the search bound. What the run must compute: the actual terms and sums.
 

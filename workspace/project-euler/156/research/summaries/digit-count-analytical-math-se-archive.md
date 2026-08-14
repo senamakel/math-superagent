@@ -1,47 +1,21 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/digit-count-analytical-math-se-archive.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# math.SE 47477 — occurrences of digit 1 in 0..n (crasic's analytic form)
 
-<!-- source: https://web.archive.org/web/2023/https://math.stackexchange.com/questions/47477/number-of-occurrences-of-the-digit-1-in-the-numbers-from-0-to-n | converted from HTML -->
+**Source:** https://math.stackexchange.com/questions/47477/number-of-occurrences-of-the-digit-1-in-the-numbers-from-0-to-n (crasic's accepted answer, Jun 2011; witnessed via Wayback: web.archive.org/web/2023/https://math.stackexchange.com/questions/47477). Full text: `research/sources/digit-count-analytical-math-se-archive.full.md`.
 
-## What is in it
+## What it establishes
 
-    - [current community][1]
-    - your communities
-    - [more stack exchange communities][7]
-- [Number of occurrences of the digit 1 in the numbers from 0 to n][25]
-  - 3 Answers 3
-  - Not the answer you're looking for? Browse other questions tagged…
-      - Related
-      - [Hot Network Questions][79]
+- The thread IS Project Euler 156 material: the question asks for the next n with f(1,n)=n after n=1, and crasic's answer calls it "project euler problem #156".
+- **Analytic closed form (crasic, independently derived).** With n = [r_k, r_{k-1}, ..., r_0] (list representation, n = Σ r_j 10^j), E(j) = j·10^(j-1), and n[j:] the number formed by the last j digits:
+  f(d,n) = Σ_{j=0}^{k} ( Σ_{i=0}^{r_j} (10^j δ_{i-1,d}) + r_j·E(j) + δ_{r_j,d}(n[j:]+1) ).
+  This counts occurrences of digit d in the numbers 0..n. It generalizes to any base B by replacing 10^k with B^k.
+- Cross-checks: typing this into Mathematica gives the next solution 199981 for f(1,n)=n. The brute-force Mathematica scan in Listing's answer gives the full run 0,1,199981..199990,200000.
+- S4M's answer: f(10^n−1) = n·10^(n−1) (André Nicolas's correction f(10^{n+1})=(n+1)10^n), and u_9 > v_9, u_10 < v_10 so any solution lies below 10^10−1 — an early, independent finiteness heuristic matching the d·10^10 bound idea (for d=1, solution bound 10^10; paper's tight bound is actually 1,111,111,110 < 10^10).
 
+## Implications for PE156
 
-## What it claims
+- Confirms the closed form in `code/lib/digits.py::f_place_value` from an independent source (second route), and independently produces 199981, matching the statement's oracle.
+- crasic's own note is exactly the caution the run heed: even the closed form "is too slow to solve the big problem" if you evaluate it per-n; the run must combine it with the bound (G2) and skip-search (G3), which the Khovanova–Marton paper supplies.
 
-- [Tour Start here for a quick overview of the site][12]
-- [Help Center Detailed answers to any questions you might have][13]
-- [Meta Discuss the workings and policies of this site][14]
-- [About Us Learn more about Stack Overflow the company][15]
-- [Business Learn more about hiring developers or posting ads with us][16]
+## Does not settle
 
-[Mathematics][17]
-
-- [Questions][18]
-- [Tags][19]
-- [Users][20]
-- [Badges][21]
-- [Unanswered][22]
-
-- [Ask Question][23]
-
-_
-
-Mathematics Stack Exchange is a question and answer site for people studying math at any level and professionals in related fields. Join them; it only takes a minute:
-
-[Sign up][24]
-
-**Here's how it works:**
-
-1. Anybody can ask a question
-2. Anybody can answer
-3. The best answers are voted up and rise to the top
-
-*[digest of a 31807 character source; every section, statement, and proof in full at `research/sources/digit-count-analytical-math-se-archive.full.md`]*
+- Does not prove the search bound, does not give the per-digit solution counts, does not give s(1).

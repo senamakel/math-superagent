@@ -1,42 +1,17 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/archive-labeling-arxiv-v1.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Khovanova & Marton, "Archive Labeling Sequences" — arXiv v1 (superseded)
 
-<!-- source: https://arxiv.org/pdf/2305.10357v1 | converted from PDF -->
+**Source:** https://arxiv.org/pdf/2305.10357v1 (arXiv:2305.10357v1 [math.HO], 25 Apr 2023). Full text: `research/sources/archive-labeling-arxiv-v1.full.md`.
 
-## What it claims
+## What it establishes (and why the run does not use it)
 
-Suppose you are buying VHS tapes and want to label them using
-the stickers that came in the package. You want to number the
-tapes consecutively starting from 1, and the stickers that come
-with each package are exactly one of each digit [“0”, . . . , “9”].
-For your ﬁrst tape, you use only the digit “1” and save all the
-other digit stickers for later tapes. The next time you will need a
-digit “1” will be for tape number 10. By this time, you will have
-several unused “1” stickers. What is the next tape number such
-that after labeling the tape with that number, you will not have
-any “1” stickers remaining?
+- v1 contains the paper's core material up through its Section 8: the VHS-sticker/Google-Labs motivation, the definitions of f_d(x), a≥(d), a=(d), and (for the run, incidentally) early Lemma 5.1: for x > 10^10, z(x + 10^10) ≥ z(x) + 10^10 — the "translation by 10^10 adds at least 10^10 count" fact behind the periodicity; Theorem 5.2 (a=(0) not well-defined); Lemma 6.1 (the skip lemma in z-notation).
+- **It does NOT contain Section 9** ("All Your Base", the base-b bound with Prop 9.1 as numbered in v2). The summary's Section 9 numbering in v1 differs; the v1 document ends without the bound x ≤ d·b^b and without the base-b proof.
 
-2 Ones Counting Function
+## Why this matters here
 
-The puzzle appeared in Google Labs Aptitude Test [2] in the following for-
-mulation.
+- The finite search bound the run's G2 rests on (x ≤ d·10^10) is proven in **v2 / the published AMM version**, not in v1. Anyone opening v1 while looking for Prop 9.1 will not find it. Use `research/sources/archive-labeling-arxiv-latest.full.md` (v2) or the published `archive-labeling-amm-published.full.md`.
+- v1's Lemma 6.1 is propositionally the same skip fact as v2's Lemma 7.1 (that v2 restates in the run's notation); v1 is a faithful record of the paper's development but adds nothing v2 lacks.
 
-Consider a function f which, for a given whole number x, returns
-the number of ones required when writing out all numbers be-
-tween 0 and x inclusive. For example, f (13) = 6. Notice that
-f (1) = 1. What is the next largest x such that f (x) = x?
+## Does not settle
 
-1
-
-Thus f (x) is the number of “1” stickers needed to label all the tapes up to
-tape x. When f (x) = x, then we have used all of…
-
-## Statements it makes
-
-Lemma 5.1. For any integer x > 1010, we have z(x + 1010) ≥ z(x) + 1010.
-
-Theorem 5.2. The value a=(0) is not well-deﬁned.
-
-Lemma 6.1. Suppose we already know that a≥(0) > x. Suppose, in addition,
-we can show that z(y) < x for some y > x. Then a≥(0) > y.
-
-*[digest of a 15443 character source; every section, statement, and proof in full at `research/sources/archive-labeling-arxiv-v1.full.md`]*
+- Nothing that v2 does not already establish more completely; treat as historical preprint, not the citation for the bound.

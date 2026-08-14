@@ -24,9 +24,13 @@ hypotheses: >
   LearnYard per-position/Digit-DP treatments).
 holds-here: yes
 status: >
-  Sourced (three independent sources below); the run's tool_builder must still
-  implement it and check it against code/brute.py on the statement's oracle
-  points f(11,1)=4, f(12,1)=5, first solutions 0, 1, 199981, and s(1).
+  Sourced (three independent sources below) AND checked by the run: the
+  implementation code/lib/digits.py::f_place_value agrees with the brute-force
+  oracle on the full statement table f(n,1) for n=0..12, on f(22,2)=6, on the
+  running total f(n,1) for every n in 0..20000, and on all 14 solutions found
+  in 0..300000 (see code/out/closed-form-verified.md, claim G1-checked).
+  What remains unchecked is s(1)=22786974071 and the full per-digit sums,
+  which need the efficient per-interval solver.
 bearing: >
   Discharges gap G1 of research/backward/fixed-point-enumeration.md: the
   search can jump by evaluating f at chosen points instead of visiting

@@ -1,21 +1,19 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/mathworld-google-aptitude.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# MathWorld — Mathematica's Google Aptitude (Oct 2004)
 
-<!-- source: https://mathworld.wolfram.com/news/2004-10-13/google/ | converted from HTML -->
+**Source:** https://mathworld.wolfram.com/news/2004-10-13/google/ (MathWorld Headline News, Ed Pegg Jr. & Eric W. Weisstein, Oct 13 2004). Full text: `research/sources/mathworld-google-aptitude.full.md`.
 
-## What is in it
+## What it establishes
 
-- **[MathWorld Headline News][1]
-  - Mathematica's Google Aptitude
-    - By Ed Pegg Jr. and Eric W. Weisstein
-      - With additional contributions by Daniel Lichtblau, Adam Strzebonski, Oyvind Tafjord, and…
-    - The Billboard
-    - The Billboard, Level 2
-    - Son of Billboard: The Google Labs Aptitude Test
-    - Google Labs Aptitude Test Partially Answered
+- **Historical provenance** for PE156: problem 17 of the "Google Labs Aptitude Test" (Sept 30 2004) is exactly the digit-count fixed-point question — "a function which, for a given whole number n, returns the number of ones required when writing out all numbers between 0 and n. For example, f(13)=6. ... What is the next largest n such that f(n)=n?"
+- It reproduces the d=1 first solutions by brute-force Mathematica (cumulative DigitCount over 1..500000): positions where the cumulative count equals n are {1, 199981, ..., 199990, 200000, 200001}, and gives the "by hand" check that 1..199981 contains 199981 ones. This is an *independent*, 2004-era reproduction of the statement's fixed points 0 (origin-excluded), 1, 199981 — same oracle set the run's brute.py reproduces.
+- Points to OEIS A014778 for the full sequence, and to the same Google puzzle family the Khovanova–Marton paper credits.
+- The rest of the page is unrelated Google interview-puzzle content (WWWDOT-GOOGLE=DOTCOM, look-and-say, resistance on a lattice, etc.) — no bearing on PE156.
 
+## Implications for PE156
 
-## What it claims
+- Nothing new mathematically (no closed form, no bound, no proof) — the 2004 Mathematica scan is the same O(n·digits) brute force the run's oracle uses, extended only to 500,000.
+- Useful as: (a) confirmation that f(13)=6 and the first-solutions run are the problem's own canonical examples (they agree with the run's oracle output); (b) provenance: the puzzle predates Project Euler, being Google's own — but the *solving* theory remains Khovanova–Marton + the closed form, not this page.
 
-October 13--Many internet denizens have heard of [Sergey Brin][2], President of Technology at google.com. What they may not know is that before cofounding the precursor to Google in 1998 and subsequently becoming a multibillionaire, Brin was an intern at Wolfram Research (makers of [Mathematica][3], as well as sponsors of *MathWorld*).
+## Does not settle
 
-*[digest of a 22436 character source; every section, statement, and proof in full at `research/sources/mathworld-google-aptitude.full.md`]*
+- Any question of bound, finiteness for d>1, or the sums s(d). Not a primary mathematical source; treat as historical record only.

@@ -7,9 +7,9 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
 | 6 | https://doi.org/10.1080/00029890.2025.2525050 | Archive Labeling Sequences | p. 183. LINKS Graeme McRae, May 26 2007, [Table of n, a(n) for n = 1..84][14] (complete sequence) Tanya Khovanova and Gregory Marton, [Archive Labeling Sequences][15], Amer. Math. Monthly 132(8)… |
-| 3 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A014778 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A014778 - OEIS] [3] A014778 Numbers k equal to the number of 1's in the decimal digits… |
+| 4 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A014778 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A014778 - OEIS] [3] A014778 Numbers k equal to the number of 1's in the decimal digits… |
+| 4 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][53] [Format][54] [Style Sheet][55] [Transforms][56] [Superseeker][57] [Recents][58] [The OEIS Community][59] Maintained by [The OEIS Foundation Inc.][60] Last modified August 14 08:47… |
 | 3 | https://oeis.org | https://oeis.org | [5] OEIS Foundation Inc. (2023), The On-Line Encyclopedia of Integer Se- quences, Published electronically at https://oeis.org 19 [6] Ponder This, (2004), available at https://research.ibm.com/haifa/… |
-| 3 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][53] [Format][54] [Style Sheet][55] [Transforms][56] [Superseeker][57] [Recents][58] [The OEIS Community][59] Maintained by [The OEIS Foundation Inc.][60] Last modified August 14 08:47… |
 | 2 | https://www.geeksforgeeks.org/ | — | Occurrences of 2 as a Digit in 0 to n - GeeksforGeeks [image: geeksforgeeks] [1] [image: search icon] - Courses Sale ** - Tutorials ** - Interview Prep ** ** - [DSA][2] - [Practice Problems][3] -… |
 | 2 | https://www.geeksforgeeks.org/devops/devops-tutorial/ | DevOps | - [C++][5] - [Java][6] - [Python][7] - [JavaScript][8] - [Data Science][9] - [Machine Learning][10] - [Courses][11] - [Linux][12] - [DevOps][13] # Occurrences of 2 as a Digit in 0 to n Last Updated :… |
 | 2 | https://www.geeksforgeeks.org/linux-unix/linux-tutorial/ | Linux | - [C][4] - [C++][5] - [Java][6] - [Python][7] - [JavaScript][8] - [Data Science][9] - [Machine Learning][10] - [Courses][11] - [Linux][12] - [DevOps][13] # Occurrences of 2 as a Digit in 0 to n Last… |
@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://www.geeksforgeeks.org/dsa/searching-algorithms/ | Searching Algorithms 2 min read | - **[Stack 2 min read][21] - **[Queue 2 min read][22] - **[Tree 2 min read][23] - **[Graph 3 min read][24] Algorithms** - **[Searching Algorithms 2 min read][25] - **[Sorting Algorithms 3 min… |
 | 2 | https://www.geeksforgeeks.org/dsa/sorting-algorithms/ | Sorting Algorithms 3 min read | 2 min read][22] - **[Tree 2 min read][23] - **[Graph 3 min read][24] Algorithms** - **[Searching Algorithms 2 min read][25] - **[Sorting Algorithms 3 min read][26] - **[Introduction to Recursion 15… |
 
-_155 further candidates not shown; they are cited once each._
+_156 further candidates not shown; they are cited once each._

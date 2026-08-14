@@ -42,15 +42,13 @@ lemma: >
   in the higher digits, the lower digits, and 10^i. In particular the formula
   agrees with the problem's definition on 0..12 for d=1 (0,1,1,1,1,1,1,1,1,1,2,4,5)
   and gives f(22,2)=6.
-status: open
-discharged-by: none
+status: discharged
+discharged-by: G1-checked (code/out/closed-form-verified.md) — the closed form
+  code/lib/digits.py::f_place_value was verified to agree with the brute-force
+  oracle on the full n=0..12 table, f(22,2)=6, every n in 0..20000, and all 14
+  solutions in 0..300000.
 thread: none
-next: >
-  tool_builder: implement the formula in code/lib/digitcount.py (or fold it
-  into code/solution.py), then verify it equals the naive per-n count for all
-  d in 0..9 and all n ≤ 10^4, and against the oracle points f(11,1)=4,
-  f(12,1)=5, f(22,2)=6. Record the result as a `claim` block (id, statement,
-  status: checked) in code/out/ so it reaches research/CLAIMS.md.
+next: none — G1 is computed and checked; the solver uses f_place_value.
 ```
 
 ```gap
