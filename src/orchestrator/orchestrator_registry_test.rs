@@ -856,7 +856,7 @@ fn the_board_reaches_the_roles_that_decide_what_to_do_next() {
             .into_iter()
             .find(|(name, _)| *name == role)
             .map(|(_, prompt)| prompt.to_string())
-            .unwrap_or_else(|| panic!("`{role}` has a prompt"))
+            .expect("the role has a prompt")
     };
     let inventor = prompt_for("inventor");
     assert!(
@@ -902,7 +902,7 @@ fn only_the_roles_that_report_may_post_to_the_board() {
     let posts = |role: &str| {
         registry
             .get(role)
-            .unwrap_or_else(|| panic!("`{role}` is registered"))
+            .expect("the role is registered")
             .tools
             .iter()
             .any(|tool| tool == "post_board")

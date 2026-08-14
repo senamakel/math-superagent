@@ -128,8 +128,12 @@ impl OrchestratorAgent {
                 opening = Some((orchestrator_harness, prompts.orchestrator));
             }
         }
+        // `schools::selected` never returns an empty list — a malformed
+        // override keeps the control rather than removing it — so this is a
+        // guard against that guarantee being weakened later, not a case an
+        // operator can reach.
         let (orchestrator_harness, system_prompt) = opening.ok_or_else(|| {
-            tinyagents::TinyAgentsError::Config("no school was selected for this run".into())
+            tinyagents::TinyAgentsError::Validation("no school was selected for this run".into())
         })?;
 
         let registry = Arc::new(default_registry(research_enabled)?);
@@ -317,9 +321,14 @@ impl OrchestratorAgent {
         }
         let mut reached: Vec<(&'static str, String)> = Vec::new();
         let mut failure: Option<crate::agent::Error> = None;
+        // Tracked rather than inferred from the reports. Deciding "did anything
+        // work" by looking at the wording of the outcomes would make the run's
+        // exit depend on prose the model influences.
+        let mut any_finished = false;
         while let Some(finished) = running.join_next().await {
             match finished {
                 Ok((slug, Ok(state))) => {
+                    any_finished = true;
                     if state.solved {
                         solved.store(true, std::sync::atomic::Ordering::Relaxed);
                         self.tracer
@@ -330,25 +339,29 @@ impl OrchestratorAgent {
                 Ok((slug, Err(error))) => {
                     // One school failing is a lesson about that school, not
                     // about the run: the others are still working and one of
-                    // them may arrive. The error is kept only in case every
-                    // school fails, which is the case that has nothing to
-                    // report and must not read as a mathematical result.
+                    // them may yet arrive. The error is kept only for the case
+                    // where every school fails, which has nothing to report and
+                    // must not read as a mathematical result.
                     self.tracer
                         .note(&format!("school {slug}: the loop failed: {error}"));
                     reached.push((slug, format!("the {slug} loop failed: {error}")));
                     failure.get_or_insert(error);
                 }
                 Err(error) => {
+                    // The lane panicked or was cancelled. Nothing was returned,
+                    // so there is no outcome to report for it and it must not
+                    // count as a school that finished.
                     self.tracer
                         .note(&format!("a school ended abnormally: {error}"));
                 }
             }
         }
         match failure {
-            // Every school failed, so there is no answer and nothing to choose
-            // between. Reporting the first failure is honest; folding them into
-            // a summary would read as a run that concluded something.
-            Some(error) if reached.iter().all(|(_, text)| text.starts_with("the ")) => Err(error),
+            // Not one school completed its loop, so the run has no answer and
+            // nothing to choose between. Returning the first failure is honest;
+            // folding them into a summary would read as a run that concluded
+            // something.
+            Some(error) if !any_finished => Err(error),
             _ => Ok(combined_outcome(&reached)),
         }
     }
@@ -614,7 +627,11 @@ impl OrchestratorAgent {
                                 // reflection collects it rather than
                                 // interrupting the solve to deliver it.
                                 if name == "patterns" {
-                                    outbox.post(reply);
+                                    // Delivered to every school, not to the
+                                    // first one that asks.
+                                    for mailbox in &outbox {
+                                        mailbox.post(reply.clone());
+                                    }
                                 }
                                 teams::Cycle::Worked
                             }
