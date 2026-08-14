@@ -602,7 +602,7 @@ async fn concurrent_note_writes_all_reach_the_derived_ledger() -> Result<()> {
         .cloned()
         .expect("write_document is registered");
 
-    let notes = 12;
+    let notes = 40;
     let mut tasks = tokio::task::JoinSet::new();
     for n in 0..notes {
         let write = std::sync::Arc::clone(&write);
@@ -616,9 +616,15 @@ async fn concurrent_note_writes_all_reach_the_derived_ledger() -> Result<()> {
                         invalid: None,
                         arguments: serde_json::json!({
                             "path": format!("research/L1.0/finding{n}.md"),
+                            // Padded deliberately. The lost update is the
+                            // window between a re-derivation reading the notes
+                            // off disk and writing the ledger it rendered from
+                            // them, and that window is proportional to how much
+                            // there is to read.
                             "content": format!(
                                 "# Finding {n}\n\n```claim\nid: finding-{n}\nstatement: The {n}th \
-                                 bound is attained.\nholds-here: yes\nstatus: proved\n```\n"
+                                 bound is attained.\nholds-here: yes\nstatus: proved\n```\n\n{}",
+                                "Supporting prose, at the length a real note runs to. ".repeat(400)
                             ),
                         }),
                     },

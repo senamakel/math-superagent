@@ -387,6 +387,12 @@ Context is authority, and it is also noise. `role_context` in
 `src/orchestrator/mod.rs` decides which working files enter each agent's system
 prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 
+`teams/BOARD.md` goes to the roles that decide what to do next — the planners,
+`inventor`, `reducer`, `weakener`, `reflection`, `pattern_finder` — and is
+withheld from `judge`, `scholar`, `librarian`, `searcher` and `refuter`, because
+a post is asserted rather than established and a role weighing evidence should
+not read unevidenced text beside it. See [`schools.md`](schools.md).
+
 | Role | Additional files |
 | --- | --- |
 | orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `research/BLUEPRINT.md`, `research/ENTAILMENT.md`, `CONTEXT.md` — the graph says which open gap is *ready*, which the flat list cannot, and the entailment report says what the run already holds |

@@ -370,6 +370,40 @@ The queue is committed like everything else in the workspace. What an operator
 asked for, and when, is part of how an answer was reached — a run that changed
 direction three attempts in reads as inexplicable without it.
 
+## The teams tree
+
+Two or three [schools](schools.md) work one problem in one workspace. What each
+does privately is its own; what it establishes is everyone's.
+
+| Path | Written by | Holds |
+| --- | --- | --- |
+| `teams/<slug>/` | that school only | its own derivation, notes and working files |
+| `teams/board.jsonl` | any school, append-only | one JSON object per post: `at`, `from`, `kind`, `body`, `refers` |
+| `teams/BOARD.md` | the runtime only | the derived board every school reads |
+
+Everything under `research/` and `code/` stays shared, and sharing it is the
+point rather than an economy: a verified helper in `code/lib/` is worth most to
+the school that did not write it, and a claim is evidence whoever established
+it. That is safe without coordination because none of the nine ledgers is
+*edited* — each is derived by walking a one-file-per-item directory and
+re-rendered whole, so two schools writing distinct notes never conflict on
+content. They would conflict on the render, and `orchestrator::worklock`
+serialises that.
+
+The board is the directive queue's design applied to a second problem, for the
+same reason: one append-only file that many writers append whole lines to, and a
+derived file only the runtime writes. Concurrent posters interleave lines and
+never halves of one, so no lock is needed and none is taken. A post is
+**asserted, not established** — `BOARD.md` is never an input to a derived ledger,
+and the posting school is baked into the tool at registration rather than being
+an argument it could fill in, so no school can post as another.
+
+What the board carries that the ledgers cannot is the thing that is not a claim
+yet: a dead end with its reason attached, a hunch worth interrupting somebody
+for. `docs/methods-gap-analysis.md` records the absence of exactly that as
+deliberate, and it is right for a claim and wrong for a hunch — a route one
+school has already killed should be paid for once.
+
 ## Workspace checkpointing
 
 `checkpoint::WorkspaceCheckpoint` commits the workspace after every successful
