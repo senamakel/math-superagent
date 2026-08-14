@@ -263,7 +263,8 @@ impl OrchestratorAgent {
         // pass, so its score is in its own output and not in the accumulator.
         // Reading only the accumulator would spend a whole agent run scoring the
         // work and then report a state that had never heard of it.
-        let accumulator = output
+        let accumulator = finished
+            .output
             .pointer(&format!("/nodes/{}/item/json", workflow::FINAL_JUDGE))
             .cloned()
             .unwrap_or(accumulator);

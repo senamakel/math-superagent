@@ -30,45 +30,6 @@ fn review_team() -> (
     teams::TeamBudget,
     &'static str,
 ) {
-    (
-            "review",
-            "judge",
-            teams::Completion::Standing,
-            teams::TeamBudget::paced(review_interval()),
-            "Judge the work in flight, not a finished attempt. The solution loop scores an \
-             attempt when it returns, and on an open conjecture that is hours away — a live \
-             Erdős–Gyárfás run spent thirty-six minutes inside attempt 1 while its `goals` \
-             agent spawned and awaited children, so nothing had been judged at all. You are \
-             the periodic version of that verdict, and the point of you is that a wrong \
-             direction gets named while it can still be changed rather than after the hours \
-             are spent.\n\
-             Read what is on disk — CONTEXT.md, TASKS.md, research/CLAIMS.md, the newest \
-             files under code/out/ — and answer three questions in a few lines each. Is the \
-             method the run is executing capable of settling the question, or is it scaling \
-             something that has already failed at a smaller size? Is what the run believes \
-             supported by what it has actually computed or read, or has an assertion been \
-             promoted to a fact? What is the single most valuable next move.\n\
-             Say it plainly and briefly; your reply is handed to the next attempt as an \
-             observation from beside the loop, so a paragraph that names one wrong turn is \
-             worth more than a page that surveys everything. You do not compute, do not write \
-             programs, and do not answer the mathematics — the roles that execute are already \
-             doing that. When the work has not moved since you last looked, or has moved too \
-             little to judge, reply NOTHING FURTHER and spend nothing."
-        )
-}
-
-/// The teams that run beside the solve, each with the brief it wakes up to.
-///
-/// Lifted out of [`OrchestratorAgent::spawn_support_teams`] so the briefs — the
-/// longest text in this file and the part most often edited — are not wedged
-/// inside the spawning logic that reads them.
-fn standing_teams() -> [(
-    &'static str,
-    &'static str,
-    teams::Completion,
-    teams::TeamBudget,
-    &'static str,
-); 5] {
     [
         (
             "director",
@@ -141,24 +102,6 @@ fn standing_teams() -> [(
             teams::Completion::Standing,
             teams::TeamBudget::custodial(),
             "Look for exploitable structure in the results this run has already computed.                  Read what is on disk, extract the integer sequences in it, and run the                  sequence tools over them. Where a check needs terms the run has not                  computed, write and run the program yourself or commission it — a                  conjecture tested only on the data that suggested it is untested. Report                  only regularities that hold exactly over every term supplied, say plainly                  that they are conjectures, and give the first term that would falsify                  each. An invented pattern costs the run more than no pattern, so when the                  results have not changed since you last looked, or hold too few terms to                  say anything exact, reply NOTHING FURTHER rather than reaching. Record                  provisional work with note_scratch; after it survives an attempt to break                  it, store the verified finding with remember_memory.",
-        ),
-        (
-            "context",
-            "context_curator",
-            teams::Completion::Standing,
-            teams::TeamBudget::paced(shared_context::cycle_interval()),
-            "Keep CONTEXT.md current with what this run and durable memory now establish. \
-             It is sent to nearly every role on every model call, so it is the cheapest way \
-             for the run to know something and the most expensive place to be wrong or \
-             verbose. Carry what an agent would otherwise rebuild from disk: the established \
-             results with their basis, the approaches that failed and why, what the computed \
-             numbers look like, and what recall_memory and relate_memory hold about this \
-             problem from earlier runs. Cut what the run has since disproved, and link the \
-             file that still holds any detail you compress away. Your brief below states what \
-             the file currently costs against its budget; when it is over, this cycle is a \
-             compression and nothing else. When nothing has changed that would change what an \
-             agent should know, reply NOTHING FURTHER — a brief that says the same thing in \
-             more words has made every role in the run pay more for the same knowledge.",
         ),
     ]
 }
