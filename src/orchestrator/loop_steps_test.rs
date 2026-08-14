@@ -232,3 +232,48 @@ fn the_arm_tag_does_not_survive_the_merge() {
     let merged = fold_evaluation(&base, &[arm]);
     assert!(merged.get(ARM_FIELD).is_none(), "{merged}");
 }
+
+/// The measured failure this node exists for: a run that had its answer kept
+/// paying three standing teams for another hour, because the only cancellation
+/// was after the whole workflow — judge included — had returned.
+///
+/// A standing team never retires on its own (`Completion::Standing` maps
+/// "nothing further to do" to `Idle`, not `Finished`), so nothing but this call
+/// ends one.
+#[tokio::test]
+async fn the_end_of_the_run_stops_the_work_beside_it() {
+    use std::sync::atomic::{AtomicU64, Ordering};
+
+    let cycles = Arc::new(AtomicU64::new(0));
+    let counted = cycles.clone();
+    let team = crate::orchestrator::teams::spawn(
+        "research",
+        crate::orchestrator::teams::TeamBudget::acquiring(),
+        None,
+        None,
+        move |_inbox| {
+            let counted = counted.clone();
+            async move {
+                counted.fetch_add(1, Ordering::Relaxed);
+                // Standing work: there is always one more source to fetch, so
+                // the team never reports itself finished.
+                crate::orchestrator::teams::Cycle::Worked
+            }
+        },
+    );
+
+    assert!(!team.is_cancelled(), "it starts running");
+    stand_down(std::slice::from_ref(&team), None);
+    assert!(
+        team.is_cancelled(),
+        "the run has ended, so the work beside it is asked to stop"
+    );
+}
+
+/// Cancelling nothing is not an error. A run whose teams never started — every
+/// unit test, and any run with the teams disabled — must still leave the loop
+/// through this node.
+#[test]
+fn standing_down_with_no_teams_is_not_a_failure() {
+    stand_down(&[], None);
+}

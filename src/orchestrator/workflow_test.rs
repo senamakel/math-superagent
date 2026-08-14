@@ -240,13 +240,22 @@ fn the_novelty_check_runs_before_the_run_is_scored() {
         Some(super::FINAL_JUDGE),
         "the novelty check hands off to the judge"
     );
+    // The loop's exit reaches it, through the stand-down that stops the work
+    // beside the run. That node sits between them deliberately: the teams must
+    // be told to stop before anything downstream spends time, or they keep
+    // spawning for as long as the tail of the graph takes.
     assert!(
         graph
             .edges
             .iter()
             .any(|edge| edge.from_node == super::LOOP_NODE
-                && edge.to_node == super::NOVELTY_NODE),
-        "and the loop's exit reaches it first"
+                && edge.to_node == super::STAND_DOWN),
+        "the loop's exit reaches the stand-down first"
+    );
+    assert_eq!(
+        edge_from(super::STAND_DOWN).as_deref(),
+        Some(super::NOVELTY_NODE),
+        "and the stand-down hands off to the novelty check"
     );
 }
 

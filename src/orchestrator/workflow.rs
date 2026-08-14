@@ -58,6 +58,27 @@ pub(super) const EVAL_ARMS: [&str; 4] = [
     "eval_refutation",
 ];
 
+/// The node that stops the work beside the run, once the run is over.
+///
+/// The teams were always cancelled — at `orchestrator_runtime`, after the whole
+/// workflow returns. The judge is inside that workflow, so "after the workflow"
+/// is after the judge, and everything the standing teams do between the loop
+/// ending and the judge finishing is work on a question already answered.
+///
+/// A live `./euler 351` measured what that costs. The loop recorded `verdict
+/// solved` at 29 minutes, on an answer two independent programs had agreed on
+/// at 15. Thirty further sub-agents were then spawned across the next 62
+/// minutes — librarian, scholar, `pattern_finder`, on their own cadence, none of
+/// them able to change an outcome already reached — and the judge did not start
+/// until minute 92. That is 85% of a 96-minute run, and roughly $32 of $35,
+/// spent after the problem was solved.
+///
+/// A node of its own rather than a line inside the literature check, for the
+/// same reason [`LIBRARY_ARM`] is a node: ending the work beside a run is a
+/// visible act at a place a checkpoint can land, not a side effect of whichever
+/// step happened to be holding the handles.
+pub(super) const STAND_DOWN: &str = "stand_down";
+
 /// The literature check that runs after the loop, and only on a solve.
 ///
 /// A node of its own rather than a branch of the final judge, because it asks a
@@ -531,6 +552,15 @@ pub(super) fn solution_loop(
         // gathering in the background rather than attempting without it.
         step_with("diversify_library", BODY_STATE, &Value::Null),
         step_with(
+            STAND_DOWN,
+            &format!("=.nodes.{LOOP_NODE}.state"),
+            &Value::Null,
+        ),
+        // The loop's state rather than `stand_down`'s, even though
+        // `stand_down` runs first. The edge is what orders them; the state is
+        // the loop's, and routing it through a node whose whole job is a side
+        // effect would say it had transformed something it did not.
+        step_with(
             NOVELTY_NODE,
             &format!("=.nodes.{LOOP_NODE}.state"),
             &Value::Null,
@@ -558,7 +588,8 @@ pub(super) fn solution_loop(
         // order because the judge is scoring the whole run and "this was
         // already published in 1974" is the single most important thing it
         // could be told before it does.
-        edge(LOOP_NODE, "done", NOVELTY_NODE),
+        edge(LOOP_NODE, "done", STAND_DOWN),
+        edge(STAND_DOWN, "main", NOVELTY_NODE),
         edge(NOVELTY_NODE, "main", FINAL_JUDGE),
         edge(FINAL_JUDGE, "main", "report"),
         // The backward branch is two nodes, so it fans out from the attempt like
