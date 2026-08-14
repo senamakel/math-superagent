@@ -30,12 +30,12 @@ fn verdict(fields: Value) -> Respond {
 /// the fold that applies it.
 const STAGE_ONE_CALLS: usize = 5;
 
-/// One pass's calls: the attempt, its four evaluation arms, the goals child's
+/// One pass's calls: the attempt, its five evaluation arms, the goals child's
 /// gate, the fold that applies it, and the barrier.
 ///
 /// The judge is not among them. It scores the finished run on the way out
 /// instead, which is one call after the loop rather than one per pass.
-const PASS_CALLS: usize = 8;
+const PASS_CALLS: usize = 9;
 
 /// A state that routes somewhere non-terminal, so the loop keeps going.
 fn stuck(unproductive: usize, computational: usize) -> Respond {
@@ -212,6 +212,42 @@ async fn a_solved_reflection_leaves_the_loop() {
     // The goals child ran and declined: this fixture carries no
     // `since_reduction`, so the cadence reads zero and holds.
     run.assert_node_ran(GOALS_NODE);
+    // And the run does not stop at the answer. Tao's rule is that a proof which
+    // arrived quickly is more likely to be known or wrong than new, so the one
+    // moment the literature is most worth reading is the moment the run thinks
+    // it is finished — which is exactly when every other sweep here declines to
+    // run.
+    run.assert_node_ran(super::NOVELTY_NODE);
+}
+
+/// The literature check sits between the loop and the judge, not after it.
+///
+/// The order is the point: the judge is scoring the whole run, and "this was
+/// published in 1974" is the single most important thing it could be told
+/// before it does.
+#[test]
+fn the_novelty_check_runs_before_the_run_is_scored() {
+    let graph = graph();
+    let edge_from = |from: &str| {
+        graph
+            .edges
+            .iter()
+            .find(|edge| edge.from_node == from)
+            .map(|edge| edge.to_node.clone())
+    };
+    assert_eq!(
+        edge_from(super::NOVELTY_NODE).as_deref(),
+        Some(super::FINAL_JUDGE),
+        "the novelty check hands off to the judge"
+    );
+    assert!(
+        graph
+            .edges
+            .iter()
+            .any(|edge| edge.from_node == super::LOOP_NODE
+                && edge.to_node == super::NOVELTY_NODE),
+        "and the loop's exit reaches it first"
+    );
 }
 
 /// A run whose attempts stop landing escalates to the literature.

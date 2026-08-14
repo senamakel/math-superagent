@@ -373,7 +373,7 @@ fn an_attempt_is_told_what_arrived_beside_the_loop() {
 
     let observations = observations_briefing(&mailbox);
     let state = SolutionState::new("find the cycle lengths");
-    let prompt = attempt_prompt(&state, "", &observations, "", "");
+    let prompt = attempt_prompt(&state, "", &observations, "", "", "");
 
     assert!(prompt.contains("beside the loop"), "{prompt}");
     assert!(prompt.contains("has an 8-cycle"), "{prompt}");
@@ -391,7 +391,7 @@ fn an_attempt_with_an_empty_mailbox_says_nothing_about_it() {
     assert_eq!(observations, "");
 
     let state = SolutionState::new("find the cycle lengths");
-    let prompt = attempt_prompt(&state, "", &observations, "", "");
+    let prompt = attempt_prompt(&state, "", &observations, "", "", "");
     assert!(!prompt.contains("beside the loop"), "{prompt}");
 }
 
@@ -407,7 +407,7 @@ fn an_attempt_carries_operator_direction_above_the_judge() {
 
     let mut state = SolutionState::new("find the cycle lengths");
     state.steer = "tighten the enumeration".to_string();
-    let prompt = attempt_prompt(&state, "", "", &direction, "");
+    let prompt = attempt_prompt(&state, "", "", &direction, "", "");
 
     assert!(prompt.contains("check the n=14 bound"), "{prompt}");
     assert!(prompt.contains("Direction from the operator"), "{prompt}");
@@ -446,7 +446,7 @@ fn an_attempt_with_no_direction_says_nothing_about_it() {
     assert_eq!(direction, "");
 
     let state = SolutionState::new("find the cycle lengths");
-    let prompt = attempt_prompt(&state, "", "", &direction, "");
+    let prompt = attempt_prompt(&state, "", "", &direction, "", "");
     assert!(!prompt.contains("operator"), "{prompt}");
 }
 
@@ -711,8 +711,26 @@ fn the_attempt_is_told_which_lemmas_would_suffice() {
         "",
         "",
         "Lemmas that would suffice to prove the goal:\n- `G-density`: events are dense\n\n",
+        "",
     );
     assert!(prompt.contains("G-density"));
+}
+
+/// An attempt must be told what the library already entails, before it spends
+/// itself proving something the run holds.
+#[test]
+fn the_attempt_is_told_what_it_already_has() {
+    let current = state();
+    let prompt = super::attempt_prompt(
+        &current,
+        "",
+        "",
+        "",
+        "",
+        "- `c` (filed as heuristic) follows from `a`, `b`: the combined bound\n",
+    );
+    assert!(prompt.contains("What the library already gives you"));
+    assert!(prompt.contains("the combined bound"));
 }
 
 /// The discriminator behind `ensure_skeleton_written`, and the deliberate
@@ -1196,4 +1214,89 @@ fn the_merge_folds_the_slots_and_then_empties_them() {
             .iter()
             .all(|(_, body)| body.is_empty())
     );
+}
+
+/// BANKED is checked against the workspace, not against the reply.
+///
+/// The verdict exists because `solved` was binary: a run that proved a weakened
+/// case, established a conditional result, or ruled a method out with a reason
+/// had one word available to it, and that word was UNSOLVED. Greenfeld and Tao
+/// published two no-go results before the periodic tiling counterexample and
+/// the 2021 one is what told them their encoding could not work — scored here,
+/// both would have read as failures.
+///
+/// But it counts as progress, and progress resets `unproductive`, which is the
+/// only route into `diversify`. So a verdict a model could assert freely would
+/// let a stuck run keep itself out of diversification indefinitely by claiming
+/// a small win every time. It is honoured only when the claim ledger grew.
+#[test]
+fn banked_counts_as_progress_only_when_the_claim_ledger_grew() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-banked");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+
+    let mut current = state();
+    current.unproductive = 2;
+
+    // Claimed with nothing new in the ledger: not progress, and the run is told
+    // exactly what it failed to do rather than being left to guess.
+    record_verdict("VERDICT: BANKED\nPROGRESS: NO", None, Some(&root), &mut current);
+    assert_eq!(current.banked, 0, "an unbacked BANKED banks nothing");
+    assert_eq!(current.unproductive, 3, "and it does not reset the stuck count");
+    assert!(
+        current
+            .lessons
+            .iter()
+            .any(|lesson| lesson.contains("no new claim reached")),
+        "the lesson must say what was missing: {:?}",
+        current.lessons
+    );
+
+    // The same verdict, with the result actually written down as a claim.
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        "# Result\n\n```claim\nid: n-at-most-14\nstatement: The bound holds for n <= 14.\n\
+         holds-here: yes\nstatus: checked\n```\n",
+    )?;
+    record_verdict("VERDICT: BANKED\nPROGRESS: NO", None, Some(&root), &mut current);
+    assert_eq!(current.banked, 1);
+    assert_eq!(current.unproductive, 0, "banking a result is progress");
+    assert!(!current.solved, "and is never the goal");
+    Ok(())
+}
+
+/// Banking the same result twice is not progress twice.
+///
+/// The counter is a high-water mark of what the ledger holds, so a second
+/// BANKED over an unchanged ledger is the same claim being reported again —
+/// which is precisely the shape that would keep a stuck run out of diversify.
+#[test]
+fn banking_an_unchanged_ledger_a_second_time_is_not_progress() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-banked-twice");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        "# Result\n\n```claim\nid: one-case\nstatement: The case p=2 is settled.\n\
+         holds-here: yes\nstatus: checked\n```\n",
+    )?;
+
+    let mut current = state();
+    record_verdict("VERDICT: BANKED\nPROGRESS: NO", None, Some(&root), &mut current);
+    assert_eq!(current.banked, 1);
+
+    record_verdict("VERDICT: BANKED\nPROGRESS: NO", None, Some(&root), &mut current);
+    assert_eq!(current.banked, 1, "the same claim is not a second result");
+    assert_eq!(current.unproductive, 1, "so the attempt was unproductive");
+    Ok(())
+}
+
+/// A banked result must never end the run, whatever else the reply says.
+#[test]
+fn banked_is_not_a_close() {
+    let mut current = state();
+    record_verdict("VERDICT: BANKED\nPROGRESS: YES", None, None, &mut current);
+    assert!(!current.solved);
+    assert_eq!(current.unverified, 0, "it is not a qualified close either");
+    assert_ne!(route(&current), Route::Solved);
 }

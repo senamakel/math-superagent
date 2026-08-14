@@ -89,17 +89,7 @@ impl OrchestratorAgent {
                 workspace: workspace.clone(),
                 delegation: async_subagents.tools(PATTERN_DELEGATES),
             },
-            SupportPrompts {
-                reflection: prompts.reflection,
-                judge: prompts.judge,
-                pattern: prompts.pattern,
-                inventor: prompts.inventor,
-                reducer: prompts.reducer,
-                librarian: prompts.librarian,
-                scholar: prompts.scholar,
-                curator: prompts.curator,
-                director: prompts.director,
-            },
+            prompts.support(),
         )?;
 
         let orchestrator_harness = register_planners(

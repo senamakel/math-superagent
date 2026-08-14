@@ -154,6 +154,43 @@ fn evidence_briefing(workspace: &Path) -> String {
     let skeletons = super::backward::collect(workspace);
     let gaps_open = skeletons.open_gaps().len();
     let gaps_discharged = skeletons.discharged_ids().len();
+    // The ladder, counted the same way and for a reason the gap counts do not
+    // cover. A settled rung is the one kind of result this runtime used to have
+    // no word for: it is not the goal, so an attempt that produced one reports
+    // UNSOLVED, and a judge reading only that scores a run that proved
+    // something as a run that did nothing.
+    let ladders = super::weakened::collect(workspace);
+    let rungs_open = ladders.open_rungs().len();
+    let rungs_settled = ladders.settled().count();
+    // A refutation is the result most likely to be invisible to a judge: it is
+    // not the goal, so the attempt that produced one reports UNSOLVED.
+    let (refuted, attacked) = super::refute::counts(workspace);
+    // The graph, which is where two things the counts above cannot show live.
+    // `ready` is the one number here that measures whether the run is *able to
+    // proceed*: an investigation with twenty open gaps and none ready is stuck
+    // in a way that twenty open gaps alone does not say. And a circular
+    // decomposition scores as progress under every other measure on this list
+    // — the gaps are written, the claims are filed — while proving nothing.
+    // What the library entails but nobody has recorded. A run whose next
+    // attempt would prove something it already holds is the most expensive
+    // failure available here, and it is invisible to every count above.
+    let (free, conflicts) = super::closure::collect(workspace).counts();
+    let entailed = if free == 0 && conflicts == 0 {
+        String::new()
+    } else {
+        format!(
+            "\n- entailment: {free} claim(s) the library already establishes without saying so, \
+             {conflicts} pair(s) of held claims that cannot both be true"
+        )
+    };
+    let graph = super::blueprint::collect(workspace);
+    let (verified, ready, blocked) = graph.counts();
+    let circular = if graph.is_circular() {
+        "\n- **the statement graph is circular**: some reduction proves its own hypothesis, so \
+         the skeletons on disk do not compose into a proof however many gaps are closed"
+    } else {
+        ""
+    };
 
     format!(
         "\nWhat the attempt left on disk, counted rather than reported — the report above is \
@@ -165,6 +202,11 @@ fn evidence_briefing(workspace: &Path) -> String {
          - approaches proposed: {approaches}\n\
          - threads open: {threads}\n\
          - gaps in the proof skeletons: {gaps_open} open, {gaps_discharged} discharged\n\
+         - rungs on the difficulty ladders: {rungs_open} open, {rungs_settled} settled\n\
+         - statements attacked for a counterexample: {attacked}, of which {refuted} were \
+         refuted\n\
+         - statement graph: {verified} node(s) the kernel checked, {ready} ready to be worked on \
+         now, {blocked} waiting on something else{circular}{entailed}\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
          nothing and left work here is not — score what is here.{}{}{}",
         captured.len(),
@@ -512,7 +554,13 @@ pub(in crate::orchestrator) async fn reflect_step(
          the literature leaves this case open, or every independent construction the run built \
          fails to reproduce values that are already known. Name the answer and the missing \
          route in LESSON when you say UNVERIFIED; it ends the run, so do not use it while a \
-         second route is merely unbuilt. Otherwise UNSOLVED.\n\
+         second route is merely unbuilt. BANKED if the attempt did not reach the goal but settled \
+         something short of it that the run should keep — a weakened case proved, a conditional \
+         result, a method ruled out with the reason, a barrier showing why an approach cannot \
+         work. BANKED does not end the run and is not a consolation verdict: a no-go result is \
+         often what tells the next attempt where the difficulty actually is. It counts only if \
+         the result was written down as a `claim` block, so say in LESSON which claim id carries \
+         it. Otherwise UNSOLVED.\n\
          PROGRESS: YES if this attempt established something the previous ones had not; \
          otherwise NO.\n\
          KIND: MATHEMATICAL if what it established is a fact, bound, structure, or refutation \
@@ -548,7 +596,15 @@ pub(in crate::orchestrator) async fn reflect_step(
 /// Both halves of what the reducer itself writes: the folder of skeletons and
 /// the table derived from it. `fingerprint_excluding` matches on file *names*,
 /// so the folder entry skips the whole directory.
-const REDUCTION_BLIND_SPOTS: [&str; 2] = ["backward", "BACKWARD.md"];
+const REDUCTION_BLIND_SPOTS: [&str; 4] = [
+    "backward",
+    "BACKWARD.md",
+    // The ladder is written by the arm this gate paces, so counting it would
+    // have the arm waking forever on its own output — the pattern team's
+    // `SCRATCHPAD.md` lesson, one folder wider.
+    "weakened",
+    "WEAKENED.md",
+];
 
 /// Everything running beside the loop that a reflection has to reach.
 ///
@@ -722,7 +778,24 @@ pub(in crate::orchestrator) async fn reduce_arm(
     if let Some(tracer) = tracer {
         tracer.note("solution loop: decomposing the goal");
     }
-    let report = reduction_arm(subagents, workspace, state).await;
+    // Both directions at once. They share this arm rather than getting one
+    // each because they share everything that decides when to run: the same
+    // cadence, the same "has the workspace moved" test, and the same
+    // single-writer gate. A second node in the loop whose only difference from
+    // this one is which prompt it sends would be a second answer to the
+    // question of how often the run reconsiders what it is attacking.
+    //
+    // Concurrent rather than sequential, because the arm is awaited and neither
+    // child reads the other's output. A pass costs the slower of the two, which
+    // is the same argument the evaluation fan-out itself is built on.
+    let (skeleton, ladder) = tokio::join!(
+        reduction_arm(subagents, workspace, state),
+        weakening_arm(subagents, workspace, state),
+    );
+    let report = merge_context(&[
+        ("What would suffice", &skeleton),
+        ("What would be easier", &ladder),
+    ]);
     reduction.gate.release();
     // Posted rather than returned into the state, and the heading is the
     // reason: `gap_briefing` renders open gaps as targets with a first move
@@ -857,7 +930,44 @@ pub(in crate::orchestrator) fn record_verdict(
     // nothing new. The reflection knew — its own lesson for the next attempt
     // said the salvage "was reported as task completion when it advanced
     // nothing" — but the verdict had already routed the run to `done`.
-    let progressed = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
+    let stated_progress = upper.contains("PROGRESS: YES") || upper.contains("PROGRESS:YES");
+    // The fourth verdict, and the only one checked against the workspace rather
+    // than against itself.
+    //
+    // `solved` was binary, so a run that proved a weakened case, ruled a method
+    // out, or established a conditional result had exactly one word for it:
+    // unsolved. That is not how the problems this runtime is pointed at are
+    // actually made progress on — Greenfeld and Tao published two no-go results
+    // before the periodic tiling counterexample, and the 2021 one is what told
+    // them their encoding could not work and to change it. Scored here, both
+    // would have read as failures.
+    //
+    // BANKED says the attempt settled something short of the goal. It never
+    // ends the run, so the cost of a wrong one is bounded — but it counts as
+    // progress, and progress resets `unproductive`, which is the only route
+    // into `diversify`. A verdict a model can assert freely would therefore let
+    // a stuck run keep itself out of diversification forever by claiming a
+    // small win every time. So it is honoured only when the claim ledger
+    // actually grew: `established` counts proved, formalised, and checked
+    // claims, and it is derived from the notes on disk rather than from
+    // anything this reply says.
+    let banked = upper.contains("VERDICT: BANKED") || upper.contains("VERDICT:BANKED");
+    let grew = match workspace {
+        Some(workspace) => {
+            let now = super::claims::collect(workspace).established();
+            let grew = now > state.established;
+            state.established = now;
+            grew
+        }
+        // With no workspace to check against there is nothing to game and
+        // nothing to verify, which is the shape every unit test runs in.
+        None => banked,
+    };
+    let banked = banked && grew;
+    if banked {
+        state.banked += 1;
+    }
+    let progressed = stated_progress || banked;
     state.solved = claimed && evidenced && progressed;
     if unverified && evidenced {
         state.unverified += 1;
@@ -884,6 +994,19 @@ pub(in crate::orchestrator) fn record_verdict(
         );
         if let Some(tracer) = tracer {
             tracer.note("solution loop: SOLVED rejected, the reflection also reported no progress");
+        }
+    }
+    if (upper.contains("VERDICT: BANKED") || upper.contains("VERDICT:BANKED")) && !banked {
+        state.lessons.push(
+            "Reported BANKED, but no new claim reached research/CLAIMS.md. A result is banked by \
+             writing it down as a claim — a fenced `claim` block in a note under `research/` or \
+             beside the output in `code/out/`, with its hypotheses, its status, and what it lets \
+             the run conclude. A result that exists only in an attempt's report is lost when the \
+             attempt ends."
+                .to_string(),
+        );
+        if let Some(tracer) = tracer {
+            tracer.note("solution loop: BANKED rejected, the claim ledger did not grow");
         }
     }
     // A blocked attempt is counted before progress is judged, because

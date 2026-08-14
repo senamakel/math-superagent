@@ -132,6 +132,23 @@ impl Holds {
 pub(super) enum Status {
     /// The source proves it.
     Proved,
+    /// The Lean kernel checked it, in this run, in this workspace.
+    ///
+    /// A separate variant from [`Status::Proved`] rather than a stronger
+    /// reading of it, and the distinction is the same one `Checked` already
+    /// draws. `Proved` is a statement about a *source*: somebody else's paper
+    /// contains the argument, and the run is relying on their word that it is
+    /// sound. This is a statement about an artifact on disk in this workspace,
+    /// which is a different kind of thing to be wrong about and a different
+    /// kind of thing to check.
+    ///
+    /// It is the only status the ledger does not take on trust. Every other
+    /// one is a word a model typed into a note; this one is dropped to
+    /// `Asserted` unless [`super::lean::verdict`] finds a passing kernel
+    /// verdict for the file the claim names. That is the point of it — until
+    /// this existed, a formalisation and a sentence claiming a formalisation
+    /// were the same row.
+    Formalised,
     /// This run checked it numerically.
     Checked,
     /// The source states it without proof, or cites elsewhere.
@@ -161,7 +178,19 @@ pub(super) enum Status {
 impl Status {
     fn parse(value: &str) -> Self {
         let lowered = value.trim().to_ascii_lowercase();
-        if lowered.starts_with("proved") || lowered.starts_with("proven") {
+        if lowered.starts_with("formal")
+            || lowered.starts_with("lean")
+            || lowered.starts_with("kernel")
+        {
+            // Tested before `proved`, because "formally proved" is the phrase a
+            // role reaches for. Read in the other order it lands on the weaker,
+            // unchecked status — silently, and in the direction that loses the
+            // check. Spelled several ways for the reason `Catalogued` is: a
+            // role writing `lean` or `kernel` means exactly this, and falling
+            // through to `asserted` would make a kernel-checked lemma
+            // indistinguishable from a sentence.
+            Self::Formalised
+        } else if lowered.starts_with("proved") || lowered.starts_with("proven") {
             Self::Proved
         } else if lowered.starts_with("checked") || lowered.starts_with("numeric") {
             Self::Checked
@@ -186,9 +215,10 @@ impl Status {
         }
     }
 
-    fn label(self) -> &'static str {
+    pub(super) fn label(self) -> &'static str {
         match self {
             Self::Proved => "proved",
+            Self::Formalised => "formalised",
             Self::Checked => "checked",
             Self::Asserted => "asserted",
             Self::Heuristic => "heuristic",
@@ -214,12 +244,42 @@ pub(super) struct Claim {
     pub(super) bearing: String,
     /// Claim ids this one contradicts.
     pub(super) contradicts: Vec<String>,
+    /// The claims this one is a consequence of.
+    ///
+    /// The entailment edge, and the only field in the block that lets one
+    /// claim carry another's standing. A claim written `follows-from: a, b`
+    /// asserts that `a` and `b` together give it — so if both are established,
+    /// this one is established too, and nobody has to prove it again.
+    ///
+    /// Deliberately not `implies`, which this block already spells and which
+    /// means something looser: `bearing`/`implies` is prose about what the
+    /// claim is *for*. This is a machine-readable edge between ids, and
+    /// [`super::closure`] is what reads it.
+    pub(super) follows_from: Vec<String>,
     /// Request ids this claim answers.
     ///
     /// How a stated gap closes. The note that fills it says so, so whether a
     /// request was met is read off the library rather than asserted by
     /// whoever went looking.
     pub(super) answers: Vec<String>,
+    /// The TPTP problem whose refutation verdict backs a counterexample claim.
+    ///
+    /// Optional, unlike [`Claim::formalisation`], because most claims are not
+    /// about a counterexample. When it *is* present it is checked the same way:
+    /// a claim that names a refutation the engine did not produce is recorded
+    /// as asserted, with the reason. A counterexample is the most consequential
+    /// thing a run can get wrong in this direction — it does not merely fail to
+    /// establish the goal, it says the goal is false.
+    pub(super) refutation: String,
+    /// The `.lean` file whose kernel verdict backs a formalised claim.
+    ///
+    /// Empty for every other status. It is a separate field rather than a
+    /// convention on `anchor` because it is the only field in this struct that
+    /// is *checked* against the workspace rather than recorded from the note:
+    /// `anchor` says where in a paper to look, and nothing can tell whether it
+    /// is true, while this names a file that either has a passing verdict or
+    /// does not.
+    pub(super) formalisation: String,
     /// Where in the source text to check it.
     pub(super) anchor: String,
     /// The note the block was found in.
@@ -233,11 +293,25 @@ struct Malformed {
     reason: &'static str,
 }
 
+/// A claim that called itself formalised and was not, and why.
+///
+/// Kept separate from [`Malformed`], which is about a block that could not be
+/// *read*. This one read perfectly well and said something the workspace does
+/// not support, which is a different accusation and asks for different work:
+/// one wants the note fixed, the other wants the proof finished.
+#[derive(Clone, Debug)]
+struct Unbacked {
+    id: String,
+    source: String,
+    objection: String,
+}
+
 /// What one derivation found across the whole library.
 #[derive(Debug, Default)]
 pub(super) struct Ledger {
     claims: Vec<Claim>,
     malformed: Vec<Malformed>,
+    unbacked: Vec<Unbacked>,
 }
 
 /// The library's block format: a fenced block of `key: value` lines.
@@ -347,9 +421,16 @@ fn is_known(key: &str) -> bool {
             | "evidence"
             | "bearing"
             | "implies"
+            | "follows-from"
+            | "derives-from"
             | "contradicts"
             | "answers"
             | "closes"
+            | "formalisation"
+            | "formalization"
+            | "lean"
+            | "refutation"
+            | "counterexample"
             | "anchor"
             | "source"
             | "where"
@@ -357,12 +438,66 @@ fn is_known(key: &str) -> bool {
 }
 
 /// Splits a comma- or whitespace-separated list of identifiers.
+///
+/// Two rules beyond the split, and a live run wrote the sentence that needed
+/// both. Asked for what its skeleton rests on, `reducer` answered
+/// `rests-on: none (research/CLAIMS.md is empty; no claim in the ledger covers
+/// this)` — which is a true, useful answer to the question and not a list. The
+/// split turned it into eleven identifiers, and the statement graph dutifully
+/// reported that the goal rested on `is`, on `the`, and on `covers`, none of
+/// which exist. Eleven false faults are worse than none, because the report
+/// that finds a genuine misspelling is the same report.
+///
+/// So: a field that opens by saying there is nothing lists nothing, whatever
+/// follows; and a token that is not shaped like an identifier is dropped rather
+/// than reported as missing. Both are deliberately narrow. A misspelled id is
+/// still id-shaped and still reported, which is the case worth keeping.
 pub(super) fn identifiers(value: &str) -> Vec<String> {
+    // A parenthetical is a comment on the list, never a member of it, and the
+    // words inside one are as id-shaped as anything else.
+    let value = value.split('(').next().unwrap_or(value);
+    let mut parts = value
+        .split(|c: char| c == ',' || c.is_whitespace())
+        .map(|id| id.trim_matches(['`', '[', ']']))
+        .filter(|id| !id.is_empty());
+    let Some(first) = parts.next() else {
+        return Vec::new();
+    };
+    if matches!(
+        first.trim_end_matches([':', '.', ';']).to_lowercase().as_str(),
+        "none" | "no" | "nothing" | "n/a" | "na" | "tbd" | "-" | "—"
+    ) {
+        return Vec::new();
+    }
+    std::iter::once(first)
+        .chain(parts)
+        .filter(|id| is_identifier(id))
+        .map(str::to_string)
+        .collect()
+}
+
+/// Splits a list whose entries are not identifiers — URLs and citations.
+///
+/// The lenient split, kept for the fields that hold them. A URL is not
+/// id-shaped and must not be filtered out for failing to be.
+pub(super) fn references(value: &str) -> Vec<String> {
     value
         .split(|c: char| c == ',' || c.is_whitespace())
         .map(|id| id.trim_matches(['`', '[', ']']).to_string())
         .filter(|id| !id.is_empty())
         .collect()
+}
+
+/// Whether a token could be an identifier somebody wrote in a block.
+///
+/// Shape only. Whether it names anything is the derived ledger's question, and
+/// answering it here would silence the misspelling report that is the reason
+/// dangling edges are collected at all.
+fn is_identifier(token: &str) -> bool {
+    token.starts_with(|c: char| c.is_ascii_alphanumeric())
+        && token
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '-' | '_' | '/' | '.'))
 }
 
 /// Reads every claim block in `text`, attributing each to `source`.
@@ -416,8 +551,15 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
         "holds-here" | "holds" => claim.holds = Holds::parse(value),
         "status" | "evidence" => claim.status = Status::parse(value),
         "bearing" | "implies" => claim.bearing = value.to_string(),
+        "follows-from" | "derives-from" => claim.follows_from = identifiers(value),
         "contradicts" => claim.contradicts = identifiers(value),
         "answers" | "closes" => claim.answers = identifiers(value),
+        "formalisation" | "formalization" | "lean" => {
+            claim.formalisation = value.trim().replace(['`', ' '], "");
+        }
+        "refutation" | "counterexample" => {
+            claim.refutation = value.trim().replace(['`', ' '], "");
+        }
         "anchor" | "source" | "where" => claim.anchor = value.to_string(),
         _ => {}
     }
@@ -450,6 +592,7 @@ pub(super) fn collect(workspace: &Path) -> Ledger {
     ] {
         walk(workspace, &root, MAX_DEPTH, &mut budget, &mut ledger);
     }
+    ledger.check_formalisations(workspace);
     ledger.claims.sort_by(|left, right| left.id.cmp(&right.id));
     ledger
 }
@@ -499,9 +642,107 @@ fn walk(root: &Path, directory: &Path, depth: usize, budget: &mut usize, ledger:
 }
 
 impl Ledger {
+    /// Drops every formalised claim the kernel does not actually back.
+    ///
+    /// This is the one place the ledger disbelieves a note, and it is worth
+    /// being clear about why the check lives here rather than in the tool. The
+    /// tool records what Lean said about a *file*; the claim is written later,
+    /// in a different note, by a role that may name any file it likes. Nothing
+    /// joins the two until the ledger is derived, so this is the join — and it
+    /// runs on every derivation, so a claim whose Lean file is later edited
+    /// into a `sorry` loses its standing on the next write rather than keeping
+    /// a verdict it has outgrown.
+    ///
+    /// A failed check downgrades to [`Status::Asserted`] rather than dropping
+    /// the claim. The statement may well be true and the run may well need it;
+    /// what it has lost is the right to be called checked, and a claim that
+    /// vanished would take its `bearing` and its hypotheses with it.
+    fn check_formalisations(&mut self, workspace: &Path) {
+        self.check_refutations(workspace);
+        for claim in &mut self.claims {
+            if claim.status != Status::Formalised {
+                continue;
+            }
+            let objection = if claim.formalisation.is_empty() {
+                Some(
+                    "the claim names no `formalisation:` file, so there is nothing to check it \
+                     against"
+                        .to_string(),
+                )
+            } else {
+                match super::lean::verdict(workspace, &claim.formalisation) {
+                    None => Some(format!(
+                        "no `lean_check` verdict exists for `{}`; run the kernel over it",
+                        claim.formalisation
+                    )),
+                    Some(verdict) => verdict.objection(),
+                }
+            };
+            if let Some(objection) = objection {
+                claim.status = Status::Asserted;
+                self.unbacked.push(Unbacked {
+                    id: claim.id.clone(),
+                    source: claim.source.clone(),
+                    objection,
+                });
+            }
+        }
+    }
+
+    /// Drops the standing of a claim naming a refutation the engine did not make.
+    ///
+    /// The same join the formalisation check performs, one engine over: the
+    /// tool records what the model builder found about a *problem*, the claim
+    /// is written later by a role that may name any problem it likes, and
+    /// nothing connects the two until the ledger is derived.
+    ///
+    /// The asymmetry with formalisation is deliberate. A `formalisation:` line
+    /// is *required* by `Status::Formalised`, because that status means nothing
+    /// else; a `refutation:` line is optional, because a counterexample can
+    /// perfectly well be established by hand and checked by a program. What is
+    /// checked is only the claim that cites the engine — and citing it falsely
+    /// is the worst case available here, since a refutation does not merely
+    /// fail to establish the goal, it asserts the goal is false.
+    fn check_refutations(&mut self, workspace: &Path) {
+        for claim in &mut self.claims {
+            if claim.refutation.is_empty() {
+                continue;
+            }
+            let objection = match super::refute::verdict(workspace, &claim.refutation) {
+                None => Some(format!(
+                    "no `find_counterexample` verdict exists for `{}`",
+                    claim.refutation
+                )),
+                Some(found) if !found.refuted() => Some(format!(
+                    "`{}` was not refuted; the engine reported `{}`",
+                    claim.refutation, found.status
+                )),
+                Some(_) => None,
+            };
+            if let Some(objection) = objection {
+                claim.status = Status::Asserted;
+                self.unbacked.push(Unbacked {
+                    id: claim.id.clone(),
+                    source: claim.source.clone(),
+                    objection,
+                });
+            }
+        }
+    }
+
     /// How many claims this run established itself, by proof or by computation.
+    ///
+    /// A formalised claim counts, and by this point it has survived
+    /// [`Ledger::check_formalisations`] — so unlike every other status here,
+    /// the count is of something the runtime verified rather than of something
+    /// a note asserted.
     pub(super) fn established(&self) -> usize {
-        self.count(|status| matches!(status, Status::Proved | Status::Checked))
+        self.count(|status| {
+            matches!(
+                status,
+                Status::Proved | Status::Formalised | Status::Checked
+            )
+        })
     }
 
     /// How many claims rest on a source's word alone.
@@ -532,6 +773,11 @@ impl Ledger {
              `bearing`, and `anchor` lines. A result this run *computed* belongs here as much as \
              one it read: write the note beside the output in `code/out/` and mark it \
              `status: checked`.\n\n\
+             `status: formalised` is the one status this file does not take on trust. It means \
+             the Lean kernel checked it *here*, so it needs a `formalisation:` line naming the \
+             `.lean` file and a passing `lean_check` verdict for that file; without one the row \
+             is recorded as `asserted` and listed below with the reason. Everything else on this \
+             page is a word somebody typed.\n\n\
              `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose \
              hypotheses fail here is worse than no theorem, because it looks like progress.\n\n",
         );
@@ -562,6 +808,7 @@ impl Ledger {
             );
         }
         self.append_contradictions(&mut out);
+        self.append_unbacked(&mut out);
         self.append_unverified(&mut out);
         self.append_catalogued(&mut out);
         self.append_faults(&mut out);
@@ -599,6 +846,35 @@ impl Ledger {
         }
         out.push_str("\n## Contradictions\n\nResolve these before building on either side.\n\n");
         out.push_str(&rows);
+    }
+
+    /// Lists claims that called themselves formalised and were downgraded.
+    ///
+    /// Reported rather than silently corrected, and placed above *Load-bearing
+    /// but unverified* because it is the more specific accusation: those rows
+    /// are claims nobody said were checked, and these are claims somebody said
+    /// were checked and the kernel does not agree. A downgrade that showed up
+    /// only as a changed word in the table would be indistinguishable from the
+    /// role having written `asserted` in the first place, which is exactly the
+    /// confusion this status exists to end.
+    fn append_unbacked(&self, out: &mut String) {
+        if self.unbacked.is_empty() {
+            return;
+        }
+        out.push_str(
+            "\n## Called formalised, not backed by the kernel\n\nEach of these was written as a \
+             formalised claim and has been recorded as `asserted` instead, because no passing \
+             `lean_check` verdict on disk supports it. Nothing here says the statement is false; \
+             it says the workspace does not yet contain a proof of it. Run `lean_check` over the \
+             file, fix what it reports, and the status returns on the next derivation.\n\n",
+        );
+        for row in &self.unbacked {
+            let _ = writeln!(
+                out,
+                "- `{}` ({}) — {}",
+                row.id, row.source, row.objection
+            );
+        }
     }
 
     /// Lists claims the run is leaning on without having verified them.
@@ -687,6 +963,11 @@ impl Ledger {
     /// establishes, rather than on a belief nobody wrote down.
     pub(super) fn ids(&self) -> std::collections::BTreeSet<String> {
         self.claims.iter().map(|claim| claim.id.clone()).collect()
+    }
+
+    /// Every claim on disk, for a reader that needs the whole graph.
+    pub(super) fn all(&self) -> &[Claim] {
+        &self.claims
     }
 
     /// Returns the claims matching `query`, best first.

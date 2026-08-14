@@ -116,6 +116,14 @@ struct CodeWriters<'a> {
 /// visible: a tool granted here reaches all four, which is a decision worth
 /// seeing rather than one buried in four near-identical blocks.
 ///
+/// There is exactly one exception, and it is written as a branch rather than a
+/// second list so that it stays visible as an exception. `lean_check` reaches
+/// `lean_prover` alone, because it is the only tool here whose result decides
+/// what a *claim* may say: a `status: formalised` row is backed by a verdict
+/// this tool filed, so granting it more widely would let a role with no
+/// formalisation mandate mint the ledger's strongest evidence class. See
+/// [`super::lean`].
+///
 /// # Errors
 ///
 /// Returns an error when a name is already registered.
@@ -132,6 +140,15 @@ fn register_code_writing_agents(
             parts.workspace,
             parts.documents,
         );
+        if name == lean::LEAN_ROLE {
+            register_resilient(
+                &mut harness,
+                Arc::new(lean::LeanCheck::new(
+                    parts.workspace.to_path_buf(),
+                    parts.budget.tool_timeout,
+                )),
+            );
+        }
         harness.push_middleware(parts.checkpoint.clone());
         register_memory(&mut harness, parts.vector_store);
         register_scratch(&mut harness, parts.vector_store, true);
@@ -220,6 +237,9 @@ struct SupportPrompts {
     pattern: String,
     inventor: String,
     reducer: String,
+    weakener: String,
+    searcher: String,
+    refuter: String,
     librarian: String,
     scholar: String,
     curator: String,
@@ -377,6 +397,129 @@ fn register_reducer(
     )
 }
 
+/// Registers the weakener, which lowers the target rather than reaching it.
+///
+/// Assembled exactly as the reducer is, and that is the argument for it rather
+/// than a coincidence: both take the goal and produce a document about what to
+/// attack instead of attacking anything, so both need a widened turn for the
+/// mathematics and neither may compute. Where they differ is only in what the
+/// document says — lemmas that would imply the goal, against targets that
+/// deliberately would not.
+///
+/// It holds all three memory tools for the reducer's reason, and the reason is
+/// if anything stronger here. A ladder of weakened versions of a famous problem,
+/// with the difficulty that defeats each rung named beside it, is a durable fact
+/// about the *problem* rather than about this run's approach to it: it survives
+/// the method that produced it, and a later run rebuilding it pays the full cost
+/// of rediscovering where the difficulty lives.
+fn register_weakener(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let budget = parts.budget.for_invention();
+    let mut weakener = specialist_harness(
+        parts.model_for("weakener"),
+        budget,
+        "weakener",
+        parts.tracer,
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut weakener, tool);
+    }
+    register_memory(&mut weakener, &parts.vector_store);
+    subagents.register_with_turn_cap(
+        "weakener",
+        Arc::new(weakener),
+        prompt,
+        budget.max_turn_output_tokens,
+    )
+}
+
+/// Registers the searcher, whose authority is what it is not given.
+///
+/// Every other role that puts a program on disk holds `write_tool_file` and
+/// `execute_command`. This one holds neither, and that pair of absences is the
+/// whole safety argument for a scored search: the only path from this role to
+/// the filesystem is `submit_candidate`, which writes into `candidates/` and
+/// runs the scorer over what it wrote in the same call.
+///
+/// Two things follow that a prompt could not guarantee. A candidate cannot be
+/// recorded without having been executed, so the board never carries a program
+/// nobody ran. And `score.py` is unreachable, so a search that would rather
+/// move the goalposts than the construction has no way to — which matters
+/// because that is the documented behaviour of systems in this shape, not a
+/// hypothetical: `AlphaEvolve` satisfied a minimum-distance constraint by placing
+/// points nearly on top of one another, and Tao's team rewrote every verifier
+/// in exact arithmetic in response. See [`super::search`].
+fn register_searcher(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let mut searcher = specialist_harness(
+        parts.model_for("searcher"),
+        parts.budget,
+        "searcher",
+        parts.tracer,
+    );
+    register_resilient(
+        &mut searcher,
+        Arc::new(search::SearchBrief::new(parts.workspace.clone())),
+    );
+    register_resilient(
+        &mut searcher,
+        Arc::new(search::SubmitCandidate::new(parts.workspace.clone())),
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut searcher, tool);
+    }
+    // A construction that scored well is worth carrying to the next problem —
+    // the one durable thing a search produces besides the number.
+    register_memory(&mut searcher, &parts.vector_store);
+    subagents.register("searcher", Arc::new(searcher), prompt)
+}
+
+/// Registers the refuter, the one role scheduled against the run rather than
+/// for it.
+///
+/// It writes files, because the axiomatisation is the whole job and the whole
+/// risk — the same reason `theorem_prover` does. It has no `execute_command`,
+/// because a role hunting a counterexample with a shell writes its own search,
+/// and a hand-rolled search over small cases is the answer-space search the
+/// method policy prohibits. `find_counterexample` is the engine it is meant to
+/// use, and Vampire's finite model builder is the one in this image that can
+/// answer a *false* conjecture at all. See [`super::refute`].
+fn register_refuter(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: String,
+) -> Result<()> {
+    let mut refuter = specialist_harness(
+        parts.model_for("refuter"),
+        parts.budget,
+        "refuter",
+        parts.tracer,
+    );
+    register_resilient(
+        &mut refuter,
+        Arc::new(refute::FindCounterexample::new(parts.workspace.clone())),
+    );
+    register_resilient(
+        &mut refuter,
+        Arc::new(WriteToolFile::new(parts.workspace.clone())),
+    );
+    for tool in parts.documents.tools() {
+        register_resilient(&mut refuter, tool);
+    }
+    register_resilient(&mut refuter, patch::tool(parts.documents.clone()));
+    // A counterexample is the most transferable thing this runtime produces: it
+    // is a fact about the mathematics rather than about this run's approach to
+    // it, and a later run rediscovering one has paid twice for the same search.
+    register_memory(&mut refuter, &parts.vector_store);
+    subagents.register("refuter", Arc::new(refuter), prompt)
+}
+
 /// Registers the reflection, pattern, inventor, reducer, and librarian agents.
 ///
 /// Each gets only the tools its role needs: reflection has no research or
@@ -421,6 +564,9 @@ fn register_support_agents(
     register_inventor(subagents, parts, prompts.inventor)?;
 
     register_reducer(subagents, parts, prompts.reducer)?;
+    register_weakener(subagents, parts, prompts.weakener)?;
+    register_searcher(subagents, parts, prompts.searcher)?;
+    register_refuter(subagents, parts, prompts.refuter)?;
 
     let mut librarian = specialist_harness(
         parts.model_for("librarian"),

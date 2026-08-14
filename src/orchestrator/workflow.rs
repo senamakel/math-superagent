@@ -42,7 +42,7 @@ use super::solutions::{
 
 /// The evaluation arms, and the barrier they converge on.
 ///
-/// Five questions about one attempt, asked at once. They fan out from the
+/// Six questions about one attempt, asked at once. They fan out from the
 /// attempt because none of them reads another's output — each reads the same
 /// report — so a pass costs the slowest of them rather than the sum, which is
 /// what a serial chain of the same five cost.
@@ -51,7 +51,21 @@ use super::solutions::{
 /// than one: the goals child decides whether this cycle decomposes, and
 /// `goal_apply` folds what it decided back onto the loop's own path. It is the
 /// branch's last node that converges, so `goal_apply` joins the list below.
-pub(super) const EVAL_ARMS: [&str; 3] = ["reflect", "eval_patterns", "eval_invention"];
+pub(super) const EVAL_ARMS: [&str; 4] = [
+    "reflect",
+    "eval_patterns",
+    "eval_invention",
+    "eval_refutation",
+];
+
+/// The literature check that runs after the loop, and only on a solve.
+///
+/// A node of its own rather than a branch of the final judge, because it asks a
+/// question about the *world* rather than about the run: is this already known,
+/// and is the argument short enough to be suspicious? Every other sweep in this
+/// graph runs while the run is stuck and looks for a way forward. This one runs
+/// when the run thinks it is finished and looks for a reason to doubt it.
+pub(super) const NOVELTY_NODE: &str = "novelty";
 
 /// The node that scores the run, once, after the loop has finished.
 ///
@@ -403,26 +417,26 @@ fn research_call(id: &str, state: &Value) -> Node {
 /// (`research`, once); attempt (`solve`'s body); evaluate the attempt from five
 /// directions at once and route on what they found together. The first and the
 /// third are child workflows and a fan-out respectively, which is the whole
-/// difference from the chain this replaced — five questions asked in a line,
+/// difference from the chain this replaced — the same questions in a line,
 /// three of them hidden inside the reflection's own body.
 ///
 /// `agents` is the derived role registry — see `super::definitions` — so the
 /// graph carries the same roles, tool grants, and budgets the run does.
 #[must_use]
-pub(super) fn solution_loop(
-    problem: &str,
-    agents: Vec<tinyflows::model::AgentDefinition>,
-) -> WorkflowGraph {
-    let opening = initial_state(problem);
-    let seeded = format!("=.nodes.{SEED_APPLY_NODE}.item.json");
-    let nodes = vec![
+/// The nodes that run once, before any attempt exists.
+///
+/// Split out so [`solution_loop`] reads as the loop it is named after. They
+/// belong together for a reason beyond length: every one of them is a
+/// *precondition* — what the workspace already holds, what the literature adds,
+/// and what the goal decomposes into — and none of them ever runs again.
+fn stage_one(opening: &Value) -> Vec<Node> {
+    vec![
         node("start", NodeKind::Trigger, Value::Null),
-        // Stage one. Runs once, before any attempt exists.
-        research_call(RESEARCH_NODE, &opening),
+        research_call(RESEARCH_NODE, opening),
         step_as(
             SEED_CONTEXT_NODE,
             "seed_context",
-            &opening,
+            opening,
             &json!({
                 super::loop_steps::DECISION_ARG: format!("=.nodes.{RESEARCH_NODE}.item"),
             }),
@@ -440,6 +454,17 @@ pub(super) fn solution_loop(
             &json!(format!("=.nodes.{SEED_CONTEXT_NODE}.item.json")),
             &json!({ super::loop_steps::DECISION_ARG: format!("=.nodes.{SEED_GOALS_NODE}.item") }),
         ),
+    ]
+}
+
+pub(super) fn solution_loop(
+    problem: &str,
+    agents: Vec<tinyflows::model::AgentDefinition>,
+) -> WorkflowGraph {
+    let opening = initial_state(problem);
+    let seeded = format!("=.nodes.{SEED_APPLY_NODE}.item.json");
+    let mut nodes = stage_one(&opening);
+    nodes.extend([
         node(
             LOOP_NODE,
             NodeKind::Loop,
@@ -471,6 +496,12 @@ pub(super) fn solution_loop(
         step_with("reflect", ATTEMPT_OUTPUT, &Value::Null),
         step_with("eval_patterns", ATTEMPT_OUTPUT, &Value::Null),
         step_with("eval_invention", ATTEMPT_OUTPUT, &Value::Null),
+        // The one arm that is not an assessment of the attempt. The other four
+        // ask how it went; this one asks whether the thing it is trying to
+        // prove is true at all, which is a question nothing else in the loop
+        // ever puts. It belongs in the fan-out rather than beside it because it
+        // reads the same attempt, reads no other arm, and must not delay one.
+        step_with("eval_refutation", ATTEMPT_OUTPUT, &Value::Null),
         step_with(LIBRARY_ARM, ATTEMPT_OUTPUT, &Value::Null),
         goals_call(GOALS_NODE, &json!(ATTEMPT_OUTPUT)),
         step_as(
@@ -499,6 +530,11 @@ pub(super) fn solution_loop(
         // genuinely an escalation is blocking on the literature the run has been
         // gathering in the background rather than attempting without it.
         step_with("diversify_library", BODY_STATE, &Value::Null),
+        step_with(
+            NOVELTY_NODE,
+            &format!("=.nodes.{LOOP_NODE}.state"),
+            &Value::Null,
+        ),
         step_as(
             FINAL_JUDGE,
             "judge",
@@ -507,7 +543,7 @@ pub(super) fn solution_loop(
         ),
         node(PASS_NODE, NodeKind::Transform, Value::Null),
         node("report", NodeKind::Transform, Value::Null),
-    ];
+    ]);
 
     let mut edges = vec![
         edge("start", "main", RESEARCH_NODE),
@@ -518,7 +554,12 @@ pub(super) fn solution_loop(
         edge(LOOP_NODE, "body", "attempt"),
         // The run's last act, on the way out. It reads the accumulator because
         // by here that is the finished run: the head has folded every pass.
-        edge(LOOP_NODE, "done", FINAL_JUDGE),
+        // The literature check first, then the judge, then the report. In that
+        // order because the judge is scoring the whole run and "this was
+        // already published in 1974" is the single most important thing it
+        // could be told before it does.
+        edge(LOOP_NODE, "done", NOVELTY_NODE),
+        edge(NOVELTY_NODE, "main", FINAL_JUDGE),
         edge(FINAL_JUDGE, "main", "report"),
         // The backward branch is two nodes, so it fans out from the attempt like
         // the others and converges from its own last node.

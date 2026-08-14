@@ -3,9 +3,11 @@ mod approaches;
 mod authoring;
 pub(crate) mod async_subagents;
 mod backward;
+mod blueprint;
 mod caps;
 mod checkpoint;
 mod claims;
+mod closure;
 // The renderer writes files and pulls in raster encoders, so it is compiled
 // only when somebody asks to draw the loop.
 #[cfg(feature = "graph-debug")]
@@ -19,6 +21,7 @@ mod exec;
 mod folder_index;
 mod frontier;
 mod layout;
+mod lean;
 mod loop_steps;
 mod oeis;
 mod openalex;
@@ -30,17 +33,20 @@ mod parity;
 mod paths;
 mod patterns;
 mod readable;
+mod refute;
 mod reflection_tool;
 mod requests;
 mod runner;
 mod runs;
 mod screen;
+mod search;
 mod shared_context;
 mod solutions;
 mod teams;
 mod text;
 mod threads;
 mod vector;
+mod weakened;
 mod workflow;
 mod workflow_goals;
 mod workflow_research;
@@ -90,8 +96,45 @@ pub use tinyagents::harness::host::AgentDefinition;
 #[cfg(feature = "graph-debug")]
 pub use diagram::{render_flows, render_solution_loop};
 
+/// Renders the two reasoned ledgers a workspace's own files imply.
+///
+/// [`prompt_report`] exists because the most consequential text in the runtime
+/// was visible only in a provider trace after a run had started. The statement
+/// graph and the entailment closure have the same problem in the other
+/// direction: they are derived from files on disk, so what they conclude about
+/// a workspace can be checked on the host, without a container, an API key, or
+/// spending anything — and checked against a workspace a live run produced
+/// rather than only against a fixture.
+///
+/// The briefings are included beside the rendered files because they, not the
+/// files, are what reaches an attempt and a judge.
+#[must_use]
+pub fn ledger_report(workspace: &Path) -> String {
+    let graph = blueprint::collect(workspace);
+    let entailment = closure::collect(workspace);
+    let (verified, ready, blocked) = graph.counts();
+    let (free, conflicts) = entailment.counts();
+    let mut out = format!(
+        "# Derived ledgers\n\nworkspace: {}\n\n\
+         statement graph: {verified} kernel-checked, {ready} ready, {blocked} blocked, \
+         circular: {}\n\
+         entailment: {free} free upgrade(s), {conflicts} conflicting pair(s)\n\n",
+        workspace.display(),
+        graph.is_circular(),
+    );
+    for (title, body) in [
+        ("research/BLUEPRINT.md", graph.render()),
+        ("research/ENTAILMENT.md", entailment.render()),
+        ("briefing: statement graph", graph.briefing()),
+        ("briefing: entailment", entailment.briefing()),
+    ] {
+        let _ = write!(out, "## {title}\n\n{}\n\n", body.trim_end());
+    }
+    out
+}
+
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 13] = [
+const SPECIALISTS: [&str; 16] = [
     "research",
     "tool_builder",
     "coder",
@@ -103,6 +146,9 @@ const SPECIALISTS: [&str; 13] = [
     "pattern_finder",
     "inventor",
     "reducer",
+    "weakener",
+    "searcher",
+    "refuter",
     "librarian",
     "scholar",
 ];
@@ -148,6 +194,11 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 ///   definition of a judgement no tool can check: a decomposition into three
 ///   attractive statements that do not recombine reads exactly like one that
 ///   does. It writes one file and is opened at most a handful of times in a run.
+/// - `weakener` — which of a problem's difficulties can be switched off, and
+///   whether what is left is still worth solving. Nothing mechanical can check
+///   that: a statement weakened until it is vacuous reads exactly like one
+///   weakened until it is tractable, and only the second is worth an attempt.
+///   Like the reducer, it writes one file on a cadence.
 /// - `judge` — scores how an attempt was conducted and rarely stops the run.
 ///   Capped at twelve calls and five minutes, and answers in four lines.
 /// - `reflection` — solved, progressed, and now what *kind* of progress. That
@@ -164,10 +215,17 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 /// `scholar` and `research` read whole documents, so their turns are large.
 /// `pattern_finder` and the code writers execute rather than judge, and the
 /// planners drive every turn of the run.
-const REASONING_ROLES: [&str; 5] = ["inventor", "reducer", "judge", "reflection", "director"];
+const REASONING_ROLES: [&str; 6] = [
+    "inventor",
+    "reducer",
+    "weakener",
+    "judge",
+    "reflection",
+    "director",
+];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 15] = [
+const DELEGATES: [&str; 18] = [
     "research",
     "tool_builder",
     "coder",
@@ -181,6 +239,9 @@ const DELEGATES: [&str; 15] = [
     "pattern_finder",
     "inventor",
     "reducer",
+    "weakener",
+    "searcher",
+    "refuter",
     "librarian",
     "scholar",
 ];
@@ -222,6 +283,16 @@ const INVENTOR_PROMPT: &str = include_str!("../prompts/inventor.md");
 /// The role that works backward from the goal rather than forward from what the
 /// run holds.
 const REDUCER_PROMPT: &str = include_str!("../prompts/reducer.md");
+
+/// The role that lowers the target rather than looking for a way to the one it
+/// was given.
+const WEAKENER_PROMPT: &str = include_str!("../prompts/weakener.md");
+
+/// The role that searches over programs rather than reasoning toward one.
+const SEARCHER_PROMPT: &str = include_str!("../prompts/searcher.md");
+
+/// The role that attacks the statement the rest of the run is proving.
+const REFUTER_PROMPT: &str = include_str!("../prompts/refuter.md");
 
 const LIBRARIAN_PROMPT: &str = include_str!("../prompts/librarian.md");
 

@@ -193,3 +193,26 @@ fn knowledge_folders_refuse_index_calls() {
         assert!(super::index_allowed(folder).is_err(), "{folder}");
     }
 }
+
+/// A search catalogues itself, so nothing may file a second catalogue over it.
+///
+/// `SEARCH.md` is derived from the score ledger and carries what each program
+/// scored, which is the only fact anyone wants about a candidate. An `INDEX.md`
+/// beside it would answer the same question worse, and would cost hundreds of
+/// `describe_file` calls on a role already measured spending 60% of a run's
+/// model calls on filing.
+#[test]
+fn a_search_tree_is_catalogued_by_its_board_rather_than_an_index() {
+    for folder in [
+        "code/search",
+        "code/search/capset",
+        "code/search/capset/candidates",
+    ] {
+        let refused = super::index_allowed(folder);
+        assert!(refused.is_err(), "`{folder}` must not take an INDEX.md");
+    }
+    // The rest of `code/` is unaffected: the toolkit index is what tells the
+    // planners what has already been built and verified.
+    assert!(super::index_allowed("code").is_ok());
+    assert!(super::index_allowed("code/lib").is_ok());
+}

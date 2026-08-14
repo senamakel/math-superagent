@@ -100,7 +100,19 @@ impl DocumentTool {
         }
         if super::backward::is_backward(path) {
             super::backward::refresh(&self.documents).await;
-            return format!(" and re-derived {}", super::backward::BACKWARD_PATH);
+            // The graph is drawn from the skeletons' own edges, so a skeleton
+            // write is the one thing that can change its shape rather than
+            // only its statuses.
+            super::blueprint::refresh(&self.documents).await;
+            return format!(
+                " and re-derived {} and {}",
+                super::backward::BACKWARD_PATH,
+                super::blueprint::BLUEPRINT_PATH
+            );
+        }
+        if super::weakened::is_weakened(path) {
+            super::weakened::refresh(&self.documents).await;
+            return format!(" and re-derived {}", super::weakened::WEAKENED_PATH);
         }
         if !super::claims::is_note(path) {
             return String::new();
@@ -113,11 +125,29 @@ impl DocumentTool {
         // strand one — which is why the skeleton ledger follows a note write
         // and the approach ledger does not.
         super::backward::refresh(&self.documents).await;
+        // And the ladder, for the same reason one step weaker: a rung is
+        // settled by a claim, so a note can turn the current rung into a
+        // settled one. A ladder still pointing at a rung the run has already
+        // proved is how the next attempt spends itself re-proving it.
+        super::weakened::refresh(&self.documents).await;
+        // Last, and after the skeletons: the graph reads both ledgers, and a
+        // claim that discharges a gap changes a node's standing and every
+        // standing above it. Re-derived from disk rather than from what the
+        // two refreshes above returned, so the order they ran in cannot leave
+        // it holding half of one derivation and half of another.
+        super::blueprint::refresh(&self.documents).await;
+        // And the entailment closure, which is a note write's most direct
+        // consequence: one `follows-from:` line can establish a claim written
+        // three notes ago, and nothing else on this list would notice.
+        super::closure::refresh(&self.documents).await;
         format!(
-            " and re-derived {}, {} and {}",
+            " and re-derived {}, {}, {}, {}, {} and {}",
             super::claims::CLAIMS_PATH,
             super::threads::THREADS_PATH,
-            super::backward::BACKWARD_PATH
+            super::backward::BACKWARD_PATH,
+            super::weakened::WEAKENED_PATH,
+            super::blueprint::BLUEPRINT_PATH,
+            super::closure::CLOSURE_PATH
         )
     }
 

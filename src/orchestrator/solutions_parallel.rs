@@ -48,6 +48,8 @@ pub(super) enum Slot {
     Grounding,
     /// The line of attack the inventor settled on.
     Chosen,
+    /// What the refutation arm found trying to break the current statement.
+    Refutation,
 }
 
 /// One arm's contribution to a diversify.
@@ -80,6 +82,7 @@ pub(super) struct DiversifyFindings {
     patterns: String,
     grounding: String,
     chosen: String,
+    refutation: String,
 }
 
 impl DiversifyFindings {
@@ -88,13 +91,14 @@ impl DiversifyFindings {
     /// One list, read by both directions of the round trip, so a slot cannot be
     /// written under one name and read under another — which is precisely how
     /// an arm's findings go missing without an error anywhere.
-    fn slots(&mut self) -> [(&'static str, &mut String); 5] {
+    fn slots(&mut self) -> [(&'static str, &mut String); 6] {
         [
             ("library", &mut self.library),
             ("digest", &mut self.digest),
             ("patterns", &mut self.patterns),
             ("grounding", &mut self.grounding),
             ("chosen", &mut self.chosen),
+            ("refutation", &mut self.refutation),
         ]
     }
 
@@ -106,6 +110,7 @@ impl DiversifyFindings {
             Slot::Patterns => &mut self.patterns,
             Slot::Grounding => &mut self.grounding,
             Slot::Chosen => &mut self.chosen,
+            Slot::Refutation => &mut self.refutation,
         };
         *slot = finding.text;
     }
@@ -163,7 +168,7 @@ impl DiversifyFindings {
     /// The findings as the labelled sections `merge_context` expects, in the
     /// order a reader wants them: what was gathered, what it means, what the
     /// numbers show, and what to do next.
-    pub(super) fn sections(&self) -> [(&'static str, &str); 5] {
+    pub(super) fn sections(&self) -> [(&'static str, &str); 6] {
         [
             ("Reference material", self.library.as_str()),
             ("What the sources establish", self.digest.as_str()),
@@ -173,6 +178,16 @@ impl DiversifyFindings {
                 self.grounding.as_str(),
             ),
             ("Line of attack chosen", self.chosen.as_str()),
+            // Named for what it establishes rather than for the arm that ran,
+            // because the two readings are not the same and only one is useful
+            // to the next attempt. "The refutation arm reported" invites it to
+            // be skimmed as process; a counterexample is a fact about the
+            // statement, and a survived search is a bound on where one could
+            // still be.
+            (
+                "Attempts to break the current statement",
+                self.refutation.as_str(),
+            ),
         ]
     }
 }

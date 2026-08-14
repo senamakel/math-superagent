@@ -1,0 +1,49 @@
+# Deléglise & Rivat, "Computing the summation of the Möbius function" (1996)
+
+Source: https://projecteuclid.org/journals/experimental-mathematics/volume-5/issue-4/Computing-the-summation-of-the-Mobius-function/em/1047565447.pdf
+— full text at `research/sources/deleglise-rivat-summatory-mobius-correct.full.md`.
+
+Citation: Marc Deléglise, Joël Rivat, *Experimental Mathematics* 5(4),
+291–295 (1996). DOI: 10.1080/10586458.1996.10504594.
+
+## What this source establishes
+
+An elementary method for computing isolated values of the Mertens function
+M(x) = Σ_{n≤x} μ(n) in O(x^{2/3}·(log log x)^{1/3}) time and
+O(x^{1/3}·(log log x)^{2/3}) space — the algorithm Brown's totient paper calls
+"the Mertens function can also be computed with the Deléglise–Rivat algorithm
+[which] allows c = 2/3".
+
+**Lemma 2.1 (Lehman's identity).** For 1 ≤ u ≤ x,
+
+    M(x) = M(u) − Σ_{m≤u} μ(m) Σ_{u/m < n ≤ x/m} M(⌊x/(mn)⌋)
+
+which is split, for u ≤ √x, into
+
+    M(x) = M(u) − S1(x;u) − S2(x;u)
+
+with S1 over u/m < n ≤ √(x/m) and S2 over √(x/m) < n ≤ x/m, exploiting that
+⌊y/n⌋ takes O(√y) distinct values.
+
+**Results:** values of M(x) for x = 10^6, …, 10^16, e.g. M(10^16) = −3,195,437.
+
+## Why it matters here
+
+Brown's Mertens-first totient algorithm (Algorithm 1 of arXiv:2506.07386)
+uses exactly this Mertens-computation machinery; the DR paper is the primary
+reference for the Mertens recursion and its complexity, and it gives check
+values for M. For this run's n = 10^8, however, M(⌊n/y⌋) values are obtained
+by sieving μ up to √n ≈ 10^4 and applying the recursion — far cheaper than a
+full DR run — so DR is context and validation rather than the main method.
+
+## Claims
+
+```claim
+id: lehman-mertens-identity
+statement: For 1 ≤ u ≤ x, M(x) = M(u) − Σ_{m≤u} μ(m) Σ_{u/m<n≤x/m} M(⌊x/(mn)⌋), with M(t) = Σ_{k≤t} μ(k).
+hypotheses: x ≥ 1 real; u integer with 1 ≤ u ≤ x.
+holds-here: yes — the identity underlies the Mertens recursion used to evaluate M(⌊n/y⌋) for the totient sum.
+status: sourced
+bearing: gives the recursion that computes M at the O(n^{1/3}) needed points without sieving to n.
+anchor: research/summaries/deleglise-rivat-summatory-mobius-correct.md
+```

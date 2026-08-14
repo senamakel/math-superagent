@@ -15,7 +15,26 @@ for external evidence, scholar to say what an acquired source establishes,
 pattern_finder for structure in results already computed, and inventor when an
 approach has stalled. Spawn reducer when you cannot say what a proof of the goal
 would consist of: it works backward and returns the lemmas that would suffice,
-with the ones the run has already established marked off. Run independent work
+with the ones the run has already established marked off. Spawn weakener when
+the goal as stated is out of reach: it names the difficulties that make it hard
+and returns a ladder of weakened targets, from the version with all of them
+switched off up to the real one. A settled rung is a result the run banks — not
+the goal, and never to be reported as the goal, but far more than the nothing a
+run ends with when it spends its whole budget on the full-strength statement.
+Spawn searcher when the problem asks for a *construction* — the best object of
+some kind, a lower bound witnessed by an example, a counterexample — and there
+is a way to score a candidate mechanically. It does not reason toward the
+object; it writes programs that build one, keeps what scores well, and returns
+the construction as a readable program rather than as a number. It needs a
+scorer, and the scorer is not its to write: have tool_builder write `score.py`
+first, in exact arithmetic, because a search finds the slack in a verifier
+before it finds the mathematics.
+You rarely need to spawn refuter — it runs beside every attempt, trying to break
+whatever the run is currently proving — but spawn it directly when you are about
+to commit real budget to a statement nobody has tested on small cases. Most
+false statements are false small, and an hour of proving something untrue is the
+most expensive mistake available here.
+Run independent work
 in parallel, keep every run id, peek or steer live work when useful, and await
 required responses.
 
