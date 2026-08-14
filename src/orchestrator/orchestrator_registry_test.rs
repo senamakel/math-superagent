@@ -589,6 +589,34 @@ fn the_searcher_cannot_reach_the_scorer_it_is_judged_by() -> agent::Result<()> {
     Ok(())
 }
 
+/// The refuter may write its axiomatisation but may not write its own search.
+///
+/// It needs `write_tool_file`, because the axiomatisation is the whole job and
+/// the whole risk — the same reason `theorem_prover` has it. It must not have
+/// `execute_command`: a role hunting a counterexample with a shell writes its
+/// own search over small cases, which is the answer-space search the method
+/// policy prohibits, in the language most likely to hide its own bugs, by the
+/// role least able to notice. `find_counterexample` is the engine it is for.
+#[test]
+fn the_refuter_gets_an_engine_rather_than_a_shell() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let refuter = registry
+        .get("refuter")
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("refuter is registered".into()))?;
+
+    for granted in ["find_counterexample", "write_tool_file"] {
+        assert!(
+            refuter.tools.iter().any(|tool| tool == granted),
+            "the refuter needs `{granted}`"
+        );
+    }
+    assert!(
+        !refuter.tools.iter().any(|tool| tool == "execute_command"),
+        "a shell would let the refuter hand-roll the search the engine exists to run"
+    );
+    Ok(())
+}
+
 /// The kernel check belongs to the role whose mandate is formalisation.
 ///
 /// `lean_check` decides what `research/CLAIMS.md` may call formalised, which is
@@ -609,6 +637,7 @@ fn only_the_lean_prover_can_mint_a_formalised_claim() -> agent::Result<()> {
         "symbolic_math",
         "lean_prover",
         "searcher",
+        "refuter",
         "reducer",
         "weakener",
         "research",

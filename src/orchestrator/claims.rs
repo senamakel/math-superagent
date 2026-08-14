@@ -250,6 +250,15 @@ pub(super) struct Claim {
     /// request was met is read off the library rather than asserted by
     /// whoever went looking.
     pub(super) answers: Vec<String>,
+    /// The TPTP problem whose refutation verdict backs a counterexample claim.
+    ///
+    /// Optional, unlike [`Claim::formalisation`], because most claims are not
+    /// about a counterexample. When it *is* present it is checked the same way:
+    /// a claim that names a refutation the engine did not produce is recorded
+    /// as asserted, with the reason. A counterexample is the most consequential
+    /// thing a run can get wrong in this direction — it does not merely fail to
+    /// establish the goal, it says the goal is false.
+    pub(super) refutation: String,
     /// The `.lean` file whose kernel verdict backs a formalised claim.
     ///
     /// Empty for every other status. It is a separate field rather than a
@@ -406,6 +415,8 @@ fn is_known(key: &str) -> bool {
             | "formalisation"
             | "formalization"
             | "lean"
+            | "refutation"
+            | "counterexample"
             | "anchor"
             | "source"
             | "where"
@@ -476,6 +487,9 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
         "answers" | "closes" => claim.answers = identifiers(value),
         "formalisation" | "formalization" | "lean" => {
             claim.formalisation = value.trim().replace(['`', ' '], "");
+        }
+        "refutation" | "counterexample" => {
+            claim.refutation = value.trim().replace(['`', ' '], "");
         }
         "anchor" | "source" | "where" => claim.anchor = value.to_string(),
         _ => {}
@@ -575,6 +589,7 @@ impl Ledger {
     /// what it has lost is the right to be called checked, and a claim that
     /// vanished would take its `bearing` and its hypotheses with it.
     fn check_formalisations(&mut self, workspace: &Path) {
+        self.check_refutations(workspace);
         for claim in &mut self.claims {
             if claim.status != Status::Formalised {
                 continue;
@@ -593,6 +608,47 @@ impl Ledger {
                     )),
                     Some(verdict) => verdict.objection(),
                 }
+            };
+            if let Some(objection) = objection {
+                claim.status = Status::Asserted;
+                self.unbacked.push(Unbacked {
+                    id: claim.id.clone(),
+                    source: claim.source.clone(),
+                    objection,
+                });
+            }
+        }
+    }
+
+    /// Drops the standing of a claim naming a refutation the engine did not make.
+    ///
+    /// The same join the formalisation check performs, one engine over: the
+    /// tool records what the model builder found about a *problem*, the claim
+    /// is written later by a role that may name any problem it likes, and
+    /// nothing connects the two until the ledger is derived.
+    ///
+    /// The asymmetry with formalisation is deliberate. A `formalisation:` line
+    /// is *required* by `Status::Formalised`, because that status means nothing
+    /// else; a `refutation:` line is optional, because a counterexample can
+    /// perfectly well be established by hand and checked by a program. What is
+    /// checked is only the claim that cites the engine — and citing it falsely
+    /// is the worst case available here, since a refutation does not merely
+    /// fail to establish the goal, it asserts the goal is false.
+    fn check_refutations(&mut self, workspace: &Path) {
+        for claim in &mut self.claims {
+            if claim.refutation.is_empty() {
+                continue;
+            }
+            let objection = match super::refute::verdict(workspace, &claim.refutation) {
+                None => Some(format!(
+                    "no `find_counterexample` verdict exists for `{}`",
+                    claim.refutation
+                )),
+                Some(found) if !found.refuted() => Some(format!(
+                    "`{}` was not refuted; the engine reported `{}`",
+                    claim.refutation, found.status
+                )),
+                Some(_) => None,
             };
             if let Some(objection) = objection {
                 claim.status = Status::Asserted;

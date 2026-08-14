@@ -167,7 +167,16 @@ pub(in crate::orchestrator) async fn refutation_arm(
         ),
     )
     .await;
-    vec![Finding::new(Slot::Refutation, report)]
+    // Beside the report rather than instead of it. The verdicts say what the
+    // engine established; the report says which statement was attacked and
+    // whether the counterexample survived being checked against the original,
+    // which is a judgement no file records.
+    let filed = workspace.map(super::refute::briefing).unwrap_or_default();
+    let merged = merge_context(&[
+        ("What the refuter reports", report.as_str()),
+        ("Verdicts on disk", filed.as_str()),
+    ]);
+    vec![Finding::new(Slot::Refutation, merged)]
 }
 
 /// The statements worth attacking, read off the two ledgers that hold them.

@@ -30,12 +30,12 @@ fn verdict(fields: Value) -> Respond {
 /// the fold that applies it.
 const STAGE_ONE_CALLS: usize = 5;
 
-/// One pass's calls: the attempt, its four evaluation arms, the goals child's
+/// One pass's calls: the attempt, its five evaluation arms, the goals child's
 /// gate, the fold that applies it, and the barrier.
 ///
 /// The judge is not among them. It scores the finished run on the way out
 /// instead, which is one call after the loop rather than one per pass.
-const PASS_CALLS: usize = 8;
+const PASS_CALLS: usize = 9;
 
 /// A state that routes somewhere non-terminal, so the loop keeps going.
 fn stuck(unproductive: usize, computational: usize) -> Respond {

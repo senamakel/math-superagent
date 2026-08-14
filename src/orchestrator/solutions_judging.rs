@@ -162,6 +162,9 @@ fn evidence_briefing(workspace: &Path) -> String {
     let ladders = super::weakened::collect(workspace);
     let rungs_open = ladders.open_rungs().len();
     let rungs_settled = ladders.settled().count();
+    // A refutation is the result most likely to be invisible to a judge: it is
+    // not the goal, so the attempt that produced one reports UNSOLVED.
+    let (refuted, attacked) = super::refute::counts(workspace);
 
     format!(
         "\nWhat the attempt left on disk, counted rather than reported — the report above is \
@@ -174,6 +177,8 @@ fn evidence_briefing(workspace: &Path) -> String {
          - threads open: {threads}\n\
          - gaps in the proof skeletons: {gaps_open} open, {gaps_discharged} discharged\n\
          - rungs on the difficulty ladders: {rungs_open} open, {rungs_settled} settled\n\
+         - statements attacked for a counterexample: {attacked}, of which {refuted} were \
+         refuted\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
          nothing and left work here is not — score what is here.{}{}{}",
         captured.len(),

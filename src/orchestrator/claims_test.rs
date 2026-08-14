@@ -514,3 +514,75 @@ fn the_status_parse_prefers_formalised_over_proved() {
     assert_eq!(Status::parse("proved"), Status::Proved);
     assert_eq!(Status::parse("proven in the paper"), Status::Proved);
 }
+
+/// A claim citing the counterexample engine is checked against what it found.
+///
+/// The asymmetry with `formalised` is deliberate and worth pinning down: a
+/// `refutation:` line is optional, because a counterexample can be established
+/// by hand. What is checked is only the claim that *cites the engine* — and
+/// citing it falsely is the worst case available, since a refutation does not
+/// merely fail to establish the goal, it asserts the goal is false.
+#[test]
+fn a_claim_citing_a_refutation_needs_the_engine_to_have_made_one() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-refutation");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join(super::super::refute::VERDICT_DIR))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: girth-five-fails\nstatement: No such graph exists at order 7.\nholds-here: yes\n\
+             status: checked\nrefutation: code/refute/girth.p",
+        ),
+    )?;
+
+    // Nothing filed: the claim cites an engine run that never happened.
+    let bare = collect(&root);
+    assert_eq!(bare.established(), 0, "an uncited refutation is not established");
+    assert!(
+        bare.render().contains("no `find_counterexample` verdict exists"),
+        "the reason must name what is missing: {}",
+        bare.render()
+    );
+
+    // Filed, but the engine did not refute anything — it timed out.
+    std::fs::write(
+        root.join(super::super::refute::VERDICT_DIR)
+            .join("code_refute_girth.p.json"),
+        r#"{"problem":"code/refute/girth.p","finding":"undecided","status":"Timeout","model":""}"#,
+    )?;
+    let weak = collect(&root);
+    assert_eq!(weak.established(), 0);
+    assert!(
+        weak.render().contains("was not refuted"),
+        "a search that settled nothing is not a counterexample"
+    );
+
+    // Filed, and it really did find one.
+    std::fs::write(
+        root.join(super::super::refute::VERDICT_DIR)
+            .join("code_refute_girth.p.json"),
+        r#"{"problem":"code/refute/girth.p","finding":"refuted",
+            "status":"CounterSatisfiable","model":"tff(d,type,d: $tType)."}"#,
+    )?;
+    let backed = collect(&root);
+    assert_eq!(backed.established(), 1, "a real refutation stands");
+    assert!(!backed.render().contains("was not refuted"));
+    Ok(())
+}
+
+/// A claim with no `refutation:` line is untouched by the refutation check.
+#[test]
+fn an_ordinary_claim_is_not_asked_for_a_counterexample() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-no-refutation");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note("id: plain\nstatement: The sum is 12.\nholds-here: yes\nstatus: checked"),
+    )?;
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 1);
+    assert!(!ledger.render().contains("find_counterexample"));
+    Ok(())
+}

@@ -87,6 +87,31 @@ impl RolePrompts {
         ]
     }
 
+    /// The support roles' prompts, in one move.
+    ///
+    /// A method rather than a struct literal at the call site, for the reason
+    /// [`Self::code_writers`] is one: the list has grown past the point where
+    /// spelling it inline leaves `from_env` readable, and a set of prompts is
+    /// the kind of thing that should be assembled in one place so a role added
+    /// to the registry and forgotten here fails to compile rather than silently
+    /// running with an empty brief.
+    fn support(&mut self) -> SupportPrompts {
+        SupportPrompts {
+            reflection: std::mem::take(&mut self.reflection),
+            judge: std::mem::take(&mut self.judge),
+            pattern: std::mem::take(&mut self.pattern),
+            inventor: std::mem::take(&mut self.inventor),
+            reducer: std::mem::take(&mut self.reducer),
+            weakener: std::mem::take(&mut self.weakener),
+            searcher: std::mem::take(&mut self.searcher),
+            refuter: std::mem::take(&mut self.refuter),
+            librarian: std::mem::take(&mut self.librarian),
+            scholar: std::mem::take(&mut self.scholar),
+            curator: std::mem::take(&mut self.curator),
+            director: std::mem::take(&mut self.director),
+        }
+    }
+
     /// Returns each role's name paired with its assembled prompt.
     fn by_role(&self) -> Vec<(&'static str, &str)> {
         vec![

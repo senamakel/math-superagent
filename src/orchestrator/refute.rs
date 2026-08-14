@@ -164,6 +164,11 @@ pub(super) struct Verdict {
 }
 
 impl Verdict {
+    /// Whether this verdict actually establishes a counterexample.
+    pub(super) fn refuted(&self) -> bool {
+        self.finding == Finding::Refuted
+    }
+
     /// Renders the verdict as the record on disk.
     fn record(&self) -> serde_json::Value {
         json!({
@@ -256,6 +261,11 @@ pub(super) fn verdict(workspace: &Path, problem: &str) -> Option<Verdict> {
     let path = workspace
         .join(VERDICT_DIR)
         .join(format!("{}.json", slug(name)));
+    read_record(&path)
+}
+
+/// Reads one filed record back into a verdict.
+fn read_record(path: &Path) -> Option<Verdict> {
     let text = std::fs::read_to_string(path).ok()?;
     let value = serde_json::from_str::<serde_json::Value>(&text).ok()?;
     let read = |key: &str| {
@@ -277,6 +287,69 @@ pub(super) fn verdict(workspace: &Path, problem: &str) -> Option<Verdict> {
         status: read("status"),
         model: read("model"),
     })
+}
+
+/// Every verdict filed for this workspace, worst news first.
+///
+/// Read off disk rather than taken from the refuter's reply, which is the
+/// argument the reduction arm already makes about its ledger: a role's prose is
+/// a summary of its own work and the record is the work. It also means a turn
+/// that ran the engine and then produced a truncated report still delivers what
+/// the engine found.
+///
+/// Ordered by how much the run needs to hear it. A contradictory axiomatisation
+/// comes first because it invalidates anything built on the same encoding, then
+/// refutations, then everything else — a reader skimming one line should see
+/// the finding that changes what happens next.
+pub(super) fn collect(workspace: &Path) -> Vec<Verdict> {
+    let Ok(entries) = std::fs::read_dir(workspace.join(VERDICT_DIR)) else {
+        return Vec::new();
+    };
+    let mut paths: Vec<PathBuf> = entries.flatten().map(|entry| entry.path()).collect();
+    paths.sort();
+    let mut verdicts: Vec<Verdict> = paths.iter().filter_map(|path| read_record(path)).collect();
+    verdicts.sort_by_key(|verdict| match verdict.finding {
+        Finding::Contradictory => 0,
+        Finding::Refuted => 1,
+        Finding::Proved => 2,
+        Finding::Undecided => 3,
+    });
+    verdicts
+}
+
+/// One line per filed verdict, for a reader who is not the refuter.
+///
+/// The model is omitted: it is often long, it is already on disk beside the
+/// problem, and what a later reader needs from this is which statements are
+/// settled and which way. The refuter's own report carries the counterexample.
+pub(super) fn briefing(workspace: &Path) -> String {
+    let mut out = String::new();
+    for verdict in collect(workspace) {
+        let _ = writeln!(
+            out,
+            "- `{}` — {} ({})",
+            verdict.problem,
+            verdict.finding.label(),
+            verdict.status
+        );
+    }
+    out
+}
+
+/// How many statements have been settled each way.
+///
+/// Counted for the judge, which reads what is on disk rather than what an
+/// attempt reported — the ordinary way an attempt ends is the run cap killing
+/// it, which destroys the report and leaves every file. A refutation is exactly
+/// the kind of result that would otherwise be invisible: it is not the goal, so
+/// an attempt producing one reports UNSOLVED.
+pub(super) fn counts(workspace: &Path) -> (usize, usize) {
+    let verdicts = collect(workspace);
+    let refuted = verdicts
+        .iter()
+        .filter(|verdict| verdict.finding == Finding::Refuted)
+        .count();
+    (refuted, verdicts.len())
 }
 
 /// The file a problem's verdict is filed under.
