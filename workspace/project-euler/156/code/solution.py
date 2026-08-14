@@ -125,7 +125,8 @@ def verify_against_oracle():
     # jump enumeration agrees with naive scan on [0, 200000] for all d
     for d in range(1, 10):
         j_sols, _ = solutions_by_jump(d, bound=LIMIT)
-        n_sols = [n for n in range(LIMIT + 1) if f_iter(LIMIT, d)[n] == n]
+        naive_list = f_iter(LIMIT, d)   # hoisted: O(LIMIT) once, not per n
+        n_sols = [n for n in range(LIMIT + 1) if naive_list[n] == n]
         ok = ok and j_sols == n_sols
     print("oracle checks:", "ALL OK" if ok else "FAILED")
     return ok

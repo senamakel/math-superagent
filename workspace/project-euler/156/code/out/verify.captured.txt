@@ -1,0 +1,36 @@
+oracle f(11,1)=4, f(12,1)=5, f(22,2)=6 (both evaluators): OK
+table f(n,1) n=0..12 matches statement: True   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 4, 5]
+blocks & digit-DP equal brute force for all n<=20000, d=1..9: True   (mismatches: 0); f_naive spot checks: True
+jump iterator (blocks-evaluator) = naive oracle scan to 300000: True  (probes 458 vs 300001 scanned)
+jump iterator (dp-evaluator)     = naive oracle scan to 300000: True  (probes 458 vs 300001 scanned)
+first fixed points are 0, 1, 199981: True
+d=1: 84 solutions (incl 0), sum s(1) = 22786974071, probes 5932; matches given s(1) = 22786974071: True
+d=1:  84 solutions (incl 0), s(1) =    22786974071, probes 5932 (DP-run agrees: True)
+d=2:  14 solutions (incl 0), s(2) =    73737982962, probes 4715 (DP-run agrees: True)
+d=3:  36 solutions (incl 0), s(3) =   372647999625, probes 5251 (DP-run agrees: True)
+d=4:  48 solutions (incl 0), s(4) =   741999999540, probes 6341 (DP-run agrees: True)
+d=5:   5 solutions (incl 0), s(5) =   100000000000, probes 4526 (DP-run agrees: True)
+d=6:  72 solutions (incl 0), s(6) =  2434703999430, probes 9349 (DP-run agrees: True)
+d=7:  49 solutions (incl 0), s(7) =  1876917059570, probes 15149 (DP-run agrees: True)
+d=8: 344 solutions (incl 0), s(8) = 15312327487352, probes 29409 (DP-run agrees: True)
+d=9:   9 solutions (incl 0), s(9) =   360000000000, probes 5977 (DP-run agrees: True)
+per-digit solution counts equal the library's sourced counts [84,14,36,48,5,72,49,344,9] (OEIS A130432, completeness flag): True
+grand total identical when computed by the digit-DP evaluator: True
+
+======================================================================
+GRAND TOTAL  sum(s(d)) for d = 1..9  = 21295121502550
+======================================================================
+wall time 3.85 s
+
+Structure vs the primary route:
+  code/lib/digits.py peels n least-significant-digit first with
+  the place-value identity high*factor / high*factor+low+1 /
+  (high+1)*factor.  verify.py evaluates f(n,d) by two
+  most-significant digit-position enumerations (closed-form block
+  sums with prefix counts, and a memoized (pos,tight) digit-DP),
+  sharing no code with it.  code/solution.py does not exist in
+  this workspace, so the primary route is represented by
+  code/lib/digits.py (its counter) and brute.py's scan; the jump
+  rules are re-derived from monotonicity and implemented here,
+  with the bound n < d*10^10 taken from Khovanova-Marton Prop 9.1
+  (research/notes/claim-g2-solution-bound.md) and sanity-probed.

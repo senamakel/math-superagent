@@ -1,0 +1,20 @@
+oracle checks: ALL OK
+d=1: 84 solutions, sum s(1) = 22786974071, evals = 5932
+      last solution = 1111111110
+d=2: 14 solutions, sum s(2) = 73737982962, evals = 4715
+      last solution = 10535000000
+d=3: 36 solutions, sum s(3) = 372647999625, evals = 5251
+      last solution = 20500000000
+d=4: 48 solutions, sum s(4) = 741999999540, evals = 6341
+      last solution = 30500000000
+d=5: 5 solutions, sum s(5) = 100000000000, evals = 4526
+      last solution = 40000000000
+d=6: 72 solutions, sum s(6) = 2434703999430, evals = 9349
+      last solution = 59628399995
+d=7: 49 solutions, sum s(7) = 1876917059570, evals = 15149
+      last solution = 69971736170
+d=8: 344 solutions, sum s(8) = 15312327487352, evals = 29409
+      last solution = 79998399997
+d=9: 9 solutions, sum s(9) = 360000000000, evals = 5977
+      last solution = 80000000000
+ANSWER  sum s(d) for d=1..9 = 21295121502550
