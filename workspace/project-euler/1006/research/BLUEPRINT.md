@@ -29,6 +29,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `Chuan-bridge-fibonacci-lengths-handchecked` | claim | **ready** | — | At k = F_n - 1 the problem's k+1=F_n length-k factors equal the set obtained by truncating each of the F_n cyclic shifts T^{js}(q_n) of the… |
 | `Chuan-cyclic-shift-indexed-enumeration` | claim | **ready** | — | The F_n cyclic shifts T^{js}(q_n), 0<=j<F_n, of Chuan's canonical Fibonacci word q_n (length F_n) are the conjugates of the standard… |
 | `MH-kplus1-factors` | claim | established | — | An aperiodic word has p(n) >= n+1 for all n; a balanced word has p(n) <= n+1; hence a balanced aperiodic word (a Sturmian word) has exactly… |
 | `PE1006-M-is-prime` | claim | established | — | 101001001 is prime (its only prime-power factorization is itself). |
@@ -46,6 +47,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `PE1006-ord10-and-pisano` | claim | established | — | ord_10(101001001)=50500500 and the Pisano period of the Fibonacci recurrence mod 101001001 is 101001000 (M-1). |
 | `PE1006-rightspecial-reverse-prefix` | claim | **ready** | — | The unique right-special length-n factor of the Fibonacci word f is R(n) = f[0..n-1]^R, the reverse of the length-n prefix of f (MSS Thm… |
 | `PE1006-stabilization-candidate-too-small-k3` | claim | established | — | The G-stabilization first-step candidate n0(k)=smallest n with \|S_{n-1}\|>=k is not a valid stabilization threshold. For k=3, n0(3)=3 but… |
+| `PE1006-state-vector-no-linear-recurrence` | claim | established | — | No constant-coefficient linear (or affine) recurrence mod 101001001 of order 1..6 fits the state vector [P,S,N1,N0,P1,vR] (or the enriched… |
 | `PR-consecutive-factors-lex` | claim | established | — | In a Sturmian set F, two equal-length factors u,v are consecutive in lex order iff u=r·ab·s and v=r·ba·s, or u=r·a and v=r·b; the next… |
 | `PerrinRestivo-len8-len10-lists` | claim | **ready** | — | The Fibonacci Sturmian set's length-8 factors are the 8 conjugates of abaababa plus the singular factor babaabab (9 total); its 11… |
 | `christoffel-conjugate-and-forest` | claim | established | — | For coprime a,b the lower and upper Christoffel words of slope b/a are conjugates (Cohn, de Luca–Mignosi); every nontrivial Christoffel… |

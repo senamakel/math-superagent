@@ -59,11 +59,18 @@ def fib(n):
 
 
 def canonical_qn(n):
-    """Chuan's canonical coded Fibonacci word q_n of length F_n over 0/1."""
+    """Chuan's canonical coded Fibonacci word q_n of length F_n over 0/1.
+
+    The accumulating sequence seq[i] has length F_{i+2} (seq[0]='0' len 1,
+    seq[1]='01' len 2, seq[2]='010' len 3, seq[3]='01001' len 5, ...), so to
+    get Chuan's canonical word q_n of length F_n we need seq[n-2].
+    (The old code returned seq[n-1], length F_{n+1}, an off-by-one that
+    tripped `assert len(qn) == Fn` at the very first n=3.)
+    """
     seq = ['0', '01']
     for i in range(2, n):
         seq.append(seq[i - 1] + seq[i - 2])
-    return seq[n - 1]
+    return seq[n - 2]
 
 
 def verify(n):

@@ -9,3 +9,4 @@
       ones-total). code/out/mod_C*.txt.
 - [x] Write board note / report so solving school has the ground. research/notes/board-modular-structure.md, code/out/mod_report.md.
 - [ ] Open: collapse the factor-square sum mod M via ord_10/pi exponent reduction to reach Ψ(10^18) mod M without small-period (no small period exists). Not yet solved.
+- [ ] Scholar-dispatched: run `python code/verify_chuan_enumeration.py` (after the canonical_qn off-by-one fix) to promote the Chuan bridge from hand-checked (n=3..5) to `status: checked` over n=3..10. Note: research/notes/scholar-chuan-bridge-verified.md.

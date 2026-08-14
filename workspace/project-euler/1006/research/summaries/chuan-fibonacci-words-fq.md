@@ -13,6 +13,9 @@ words S_n, and also to the Sturmian factor set of the infinite Fibonacci word.
 - **Theorem 7:** for distinct letters a,b, a word is an n-th Fibonacci word iff it is a
   **cyclic shift** of the canonical word w_n^0 (Knuth's convention). So Ȝ_n has exactly
   F_n elements, and they are the F_n cyclic shifts of one canonical length-F_n word.
+  **Coding caveat (scholar):** the canonical coded word q_n has length F_n, so in the
+  accumulating sequence ('0','01','010','01001',...) q_n = seq[n-2], NOT seq[n-1] (length
+  F_{n+1}). `code/verify_chuan_enumeration.py` was fixed from seq[n-1] to seq[n-2].
 - **Theorem 11 / Corollary 12 (the indexed enumeration):** let q_n be the canonical word.
   With t = F_{n-1} if n odd, F_{n-2} if n even, and s = F_{n-2} if n odd, F_{n-1} if n
   even: the positions of the **a (letter-1) symbols** in the j-th cyclic shift

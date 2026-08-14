@@ -8,6 +8,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `Chuan-bridge-fibonacci-lengths-handchecked` | At k = F_n - 1 the problem's k+1=F_n length-k factors equal the set obtained by truncating each of the F_n cyclic shifts T^{js}(q_n) of the canonical standard word q_n (length F_n) to its first k letters; the… | yes | asserted | `research/notes/scholar-chuan-bridge-verified.md` |
 | `Chuan-cyclic-shift-indexed-enumeration` | The F_n cyclic shifts T^{js}(q_n), 0<=j<F_n, of Chuan's canonical Fibonacci word q_n (length F_n) are the conjugates of the standard length-F_n word; positions of the a/1 letters in T^{js}(q_n) are given explicitly: k… | yes | asserted | `research/summaries/chuan-fibonacci-words-fq.md` |
 | `MH-kplus1-factors` | An aperiodic word has p(n) >= n+1 for all n; a balanced word has p(n) <= n+1; hence a balanced aperiodic word (a Sturmian word) has exactly n+1 distinct factors of length n. | yes | proved | `research/summaries/morse-hedlund-theorem-sturmian-characterization.md` |
 | `PE1006-M-is-prime` | 101001001 is prime (its only prime-power factorization is itself). | yes | checked | `code/out/PE1006_tasks_ABC_note.md` |
@@ -26,6 +27,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `PE1006-ord10-and-pisano` | ord_10(101001001)=50500500 and the Pisano period of the Fibonacci recurrence mod 101001001 is 101001000 (M-1). | yes | checked | `code/out/PE1006_tasks_ABC_note.md` |
 | `PE1006-rightspecial-reverse-prefix` | The unique right-special length-n factor of the Fibonacci word f is R(n) = f[0..n-1]^R, the reverse of the length-n prefix of f (MSS Thm 18). Also: every nonempty factor of f has least period a Fibonacci number (Thm… | yes | asserted | `research/summaries/mousavi-schaeffer-shallit-fibonacci-automatic-I.md` |
 | `PE1006-stabilization-candidate-too-small-k3` | The G-stabilization first-step candidate n0(k)=smallest n with \|S_{n-1}\|>=k is not a valid stabilization threshold. For k=3, n0(3)=3 but S_3="01001" has only 3 distinct length-3 factors {001,010,100}, missing the true… | yes | checked | `code/out/refute-stabilization-threshold.md` |
+| `PE1006-state-vector-no-linear-recurrence` | No constant-coefficient linear (or affine) recurrence mod 101001001 of order 1..6 fits the state vector [P,S,N1,N0,P1,vR] (or the enriched [P,S,vR,vR^2,P1,N1,N0]) across k=1..200; individual components P, P1, vR, N1, S,… | yes | checked | `code/out/state_vector_linear_recurrence.md` |
 | `PR-consecutive-factors-lex` | In a Sturmian set F, two equal-length factors u,v are consecutive in lex order iff u=r·ab·s and v=r·ba·s, or u=r·a and v=r·b; the next factor after u is rbas (if u=rabs) or rb (if u=ra), r the longest right-special… | yes | proved | `research/summaries/sturmian-words-hal-note.md` |
 | `PerrinRestivo-len8-len10-lists` | The Fibonacci Sturmian set's length-8 factors are the 8 conjugates of abaababa plus the singular factor babaabab (9 total); its 11 length-10 factors are listed in the paper's Table 1. | yes | asserted | `research/summaries/sturmian-words-hal-note.md` |
 | `christoffel-conjugate-and-forest` | For coprime a,b the lower and upper Christoffel words of slope b/a are conjugates (Cohn, de Luca–Mignosi); every nontrivial Christoffel word has a unique standard factorization (u,v) into two Christoffel words… | yes | proved | `research/summaries/berstel-christoffel-words-repetitions.md` |
@@ -44,6 +46,7 @@ Resolve these before building on either side.
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `Chuan-bridge-fibonacci-lengths-handchecked` (research/notes/scholar-chuan-bridge-verified.md) — asserted by the source, not proved there and not checked here
 - `Chuan-cyclic-shift-indexed-enumeration` (research/summaries/chuan-fibonacci-words-fq.md) — asserted by the source, not proved there and not checked here
 - `PE1006-factors-dependent-slop-only` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
 - `PE1006-factors-one-count-necessary` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
