@@ -34,7 +34,6 @@
 //! compressing to do.
 
 use std::path::Path;
-use std::time::Duration;
 
 use tinyagents::harness::summarization::estimate_tokens;
 
@@ -47,25 +46,6 @@ pub(super) const CONTEXT_FILE: &str = "CONTEXT.md";
 /// thousand the template used to ask for.
 const DEFAULT_CONTEXT_TOKENS: u64 = 10_000;
 
-/// How long the curator waits between cycles when nothing says otherwise.
-///
-/// Enrichment is custodial work over a workspace that changes underneath it, so
-/// it is paced by rate rather than by having run out of things to say.
-///
-/// Five minutes was the first value and it was not a rounding error against the
-/// solve: on three live runs the curator was the largest consumer in the run,
-/// once at 28 model calls against `pattern_finder`'s 9 and `tool_builder`'s 7.
-/// Narrowing its per-run budget was necessary and not sufficient — that bounds
-/// what one cycle may spend, and at five minutes it simply bought more cycles.
-/// Fifteen is what a fourth run measured at, one cycle costing six calls, and
-/// the cost of the trade is staleness: an attempt now reads a brief that may
-/// not know about the last fifteen minutes rather than the last five.
-///
-/// It stays overridable because staleness is the one property here an operator
-/// may reasonably want to buy back, and it stays a *default* rather than a
-/// per-launch environment variable because a bound only one workspace's
-/// launcher sets is a bound the other workspaces do not have.
-const DEFAULT_CYCLE_MINUTES: u64 = 15;
 
 /// Characters per token used when clamping.
 ///
@@ -87,16 +67,6 @@ pub(super) fn budget_tokens() -> u64 {
     positive_env("MATH_AGENT_CONTEXT_TOKENS").unwrap_or(DEFAULT_CONTEXT_TOKENS)
 }
 
-/// Reads how often the curator may run.
-///
-/// `MATH_AGENT_CONTEXT_MINUTES` overrides it, under the same rule.
-pub(super) fn cycle_interval() -> Duration {
-    Duration::from_secs(
-        positive_env("MATH_AGENT_CONTEXT_MINUTES")
-            .unwrap_or(DEFAULT_CYCLE_MINUTES)
-            .saturating_mul(60),
-    )
-}
 
 /// What the brief currently costs, against what it is allowed to cost.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

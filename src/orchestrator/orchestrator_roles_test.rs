@@ -215,23 +215,32 @@ fn the_curator_maintains_the_brief_and_cannot_investigate() -> agent::Result<()>
     Ok(())
 }
 
+/// The curator runs at the beginning and nowhere else.
+///
+/// It used to run as a standing team as well, which meant the role that
+/// establishes what a run knows was answering that question repeatedly against
+/// a workspace it was itself changing. A live Project Euler 156 run started two
+/// curators in the same second — the team's and stage one's — reading the same
+/// empty workspace.
 #[test]
-fn the_brief_is_curated_by_a_standing_team_at_the_configured_rate() {
-    // A brief nobody maintains is the state this team exists to end: the file
-    // was written by whichever role happened to think of it, so it drifted
-    // behind the run that reads it on every model call.
-    let (name, agent, completion, budget, brief) = super::standing_teams()
-        .into_iter()
-        .find(|(name, ..)| *name == "context")
-        .expect("the curator runs as a standing team");
-    assert_eq!(agent, "context_curator");
-    // Its file keeps changing underneath it, so "nothing to add right now" is
-    // come back later rather than stop — the distinction that cost an earlier
-    // background team its whole allowance on cycle one.
-    assert_eq!(completion, super::teams::Completion::Standing);
-    assert_eq!(budget.min_interval, super::shared_context::cycle_interval());
-    assert!(brief.contains("NOTHING FURTHER"));
-    assert_eq!(name, "context");
+fn the_curator_is_not_a_standing_team() {
+    assert!(
+        !super::standing_teams()
+            .into_iter()
+            .any(|(name, agent, ..)| name == "context" || agent == "context_curator"),
+        "the curator runs beside the loop again"
+    );
+}
+
+/// And the judge scores the run once, on the way out.
+#[test]
+fn the_judge_is_not_a_standing_team() {
+    assert!(
+        !super::standing_teams()
+            .into_iter()
+            .any(|(name, agent, ..)| name == "review" || agent == "judge"),
+        "the judge runs beside the loop again"
+    );
 }
 
 #[tokio::test]
@@ -465,38 +474,6 @@ fn the_librarian_is_told_a_cited_source_must_be_in_the_library() {
     );
 }
 
-#[test]
-fn a_review_team_judges_the_work_before_the_attempt_returns() {
-    // The gap this closes. The loop's attempt is one `goals` run and the judge
-    // only scores it once it returns; on an open conjecture `goals` is told to
-    // pursue the goal until it is met, so it does not. Four live runs sat in
-    // attempt 1 for thirty-six minutes with zero judge verdicts, zero
-    // reflections and zero inventor spawns between them.
-    let (_, agent, completion, _, brief) = super::standing_teams()
-        .into_iter()
-        .find(|(name, ..)| *name == "review")
-        .expect("the review team is registered");
-
-    // The judge, not a second solver: it is the tool-poorest reasoning role and
-    // the one whose budget is already narrowed for scoring rather than solving.
-    assert_eq!(agent, "judge");
-    assert_eq!(completion, super::teams::Completion::Standing);
-    let brief = brief.to_ascii_lowercase();
-    assert!(
-        brief.contains("in flight"),
-        "it must judge work in progress, not wait for a finished attempt"
-    );
-    // The failure worth catching early is a method that cannot settle the
-    // question, which is what E-G's own CEGAR verdict turned out to be.
-    assert!(
-        brief.contains("already failed at a smaller size"),
-        "the method question is the one worth asking mid-attempt"
-    );
-    assert!(
-        brief.contains("nothing further"),
-        "an unchanged workspace must cost nothing"
-    );
-}
 
 #[test]
 fn a_planner_names_every_specialist_it_can_delegate_to() {

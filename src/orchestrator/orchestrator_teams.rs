@@ -1,35 +1,30 @@
-/// How often the review team judges the work in flight.
-///
-/// `MATH_AGENT_REVIEW_MINUTES` overrides it, under the rule every other limit
-/// in this runtime follows: a missing, empty, unparsable, or zero value keeps
-/// the default, so a malformed override never silently removes the bound.
-///
-/// Twenty minutes. The cost of a review is one judging run — twelve model
-/// calls and a five-minute ceiling, by `RunBudget::for_judging` — against an
-/// attempt that on a conjecture runs for hours, so six of them across a
-/// two-hour run is a rounding error next to what they are watching. Shorter
-/// would mostly re-read a workspace that had not moved, which the idleness
-/// check already refuses more cheaply than a model call can.
-fn review_interval() -> std::time::Duration {
-    std::time::Duration::from_secs(
-        shared_context::positive_env("MATH_AGENT_REVIEW_MINUTES")
-            .unwrap_or(20)
-            .saturating_mul(60),
-    )
-}
+// The `review` team is gone, and so is the `context` team. Each duplicated a
+// role the solution loop now runs itself, at a place the loop can say something
+// about: the judge scores the finished run on the way out, and the curator
+// establishes what the run has before the first attempt. Two of them running on
+// their own cadence as well meant the same role answering the same question
+// from two places, which a live Project Euler 156 run made visible — two context
+// curators reading the same empty workspace in the same second, one the team and
+// one stage one.
+//
+// What is lost with the review team is mid-flight judging, and it is worth
+// naming: on an open conjecture an attempt can run for hours, and the team was
+// what scored the work while it was still running. The loop's own answer to that
+// is a shorter run wall clock, so an attempt concludes and is judged several
+// times in the span it used to be judged once.
 
-/// The review team's entry, lifted out because its brief is the longest here.
+/// The teams that run beside the solve, each with the brief it wakes up to.
 ///
-/// Split from [`standing_teams`] for the reason the pattern agent's
-/// registration was split from its neighbours: the array is a table, and one
-/// entry three times the height of the others stops it reading as one.
-fn review_team() -> (
+/// Lifted out of [`OrchestratorAgent::spawn_support_teams`] so the briefs — the
+/// longest text in this file and the part most often edited — are not wedged
+/// inside the spawning logic that reads them.
+fn standing_teams() -> [(
     &'static str,
     &'static str,
     teams::Completion,
     teams::TeamBudget,
     &'static str,
-) {
+); 3] {
     [
         (
             "director",
@@ -95,7 +90,6 @@ fn review_team() -> (
                  describe it, and store the verified finding with `remember_memory` so later \
                  runs can recall it."
         ),
-        review_team(),
         (
             "patterns",
             "pattern_finder",

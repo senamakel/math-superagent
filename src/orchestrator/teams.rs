@@ -140,19 +140,6 @@ impl TeamBudget {
         }
     }
 
-    /// A custodial allowance whose rate the operator sets.
-    ///
-    /// The curator's cadence is the one pacing decision with a visible effect
-    /// on the solve — it decides how stale the brief every role reads may be —
-    /// so it is configuration rather than a constant. Everything else about
-    /// the allowance is the custodial one: the file it maintains keeps
-    /// changing underneath it, so it never finishes.
-    pub(super) fn paced(min_interval: Duration) -> Self {
-        Self {
-            min_interval,
-            ..Self::custodial()
-        }
-    }
 }
 
 /// Whether a team's goal can ever be complete.
