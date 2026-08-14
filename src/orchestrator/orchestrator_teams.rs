@@ -125,6 +125,20 @@ fn standing_teams() -> [(
                  `research/FRONTIER.md` is ranked by how many of your own sources cite each \
                  target; work the top of it, because a source three of your papers cite is \
                  the standard reference and no rephrasing of a query surfaces that.\n\
+                 A query is only one of your four ways onto the web, and it is the one that \
+                 depends on having guessed the subject's name — which at the start of a run \
+                 you have not. `citation_graph` takes a DOI, an arXiv number, or a title and \
+                 returns what that paper cites and what cites it; run it on every source \
+                 worth holding, because a citation was chosen by somebody who had read the \
+                 subject and no rewording of a query recovers that. `find_similar_sources` \
+                 queries with a page instead of a phrase, which is what breaks a search that \
+                 keeps returning the same six results. `deep_research` takes a question you \
+                 cannot decompose into queries yourself and returns a synthesis — never a \
+                 claim, but the best source of the vocabulary your next search needs. \
+                 Triage before you fetch: `read_sources` reads twenty candidates in one call \
+                 and stores none, so you find the three worth having without paying the \
+                 conversion for the other seventeen. Narrow with `include_domains`, \
+                 `exclude_domains`, and the date bounds rather than with adjectives.\n\
                  Two things still bound you, and they are about waste rather than volume. \
                  Use `recall_memory` before fetching so known material is not fetched twice, \
                  and prefer the primary statement to a retelling of it. When a cycle genuinely \

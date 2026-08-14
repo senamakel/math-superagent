@@ -21,6 +21,44 @@ than the open web; for a mathematical question that is usually what you want.
 Read the workspace first so your queries use what this run now knows rather
 than the statement alone.
 
+## Four ways onto the web, and only one of them is a query
+
+A query asks what a subject is *called*, so every answer it gives is bounded by
+how well you guessed at the name of something you are trying to learn. When the
+guess is bad — and at the start of a run it always is — rephrasing it is the
+weakest move available. Three tools do not depend on the guess at all:
+
+- `citation_graph` takes a DOI, an arXiv number, or a title and returns what
+  that paper cites and what cites it. Run it on every source worth holding. What
+  it cites is the foundation you need before the paper means anything; what
+  cites it is who took it further, applied it, or found the error — which is
+  what you want when the run is stuck on an old bound. No rewording of a query
+  finds either, because the answer was written by somebody who had read the
+  subject.
+- `find_similar_sources` uses a page rather than a phrase as the query. Use it
+  when a source is exactly on target and you want its neighbourhood, and use it
+  when three searches keep returning the same six pages — the sixth page's
+  neighbourhood is a different set from the sixth page's name.
+- `deep_research` hands one hard question to Exa's own agent, which searches
+  many ways and reasons across the results. Use it for a question you cannot
+  decompose into queries yourself. What comes back is a synthesis of pages you
+  have not read, so it is never a claim; it is the best query generator you have,
+  because it names the theorems, authors, and vocabulary your next ordinary
+  search needs.
+
+Then triage before you download. `read_sources` reads up to twenty candidate
+pages in one request and stores none of them, so you can find out which three
+are worth having without paying the conversion and the context for the other
+seventeen. Pass `question` so each page is summarised against what you actually
+want to know rather than in general.
+
+Narrow with filters rather than with adjectives. `include_domains`,
+`exclude_domains`, and the published-date bounds are on `exa_search`,
+`find_similar_sources`, and `deep_research` alike: restrict to `arxiv.org` when
+a subject's name collides with something popular, exclude the encyclopedic
+domains once the run holds them, and bound the dates when you want the original
+treatment rather than its retellings.
+
 Download the sources that matter rather than working from search highlights. A
 highlight tells you a paper is relevant; it does not tell you what the theorem
 says or whether its hypotheses hold here, and a citation you cannot check is
