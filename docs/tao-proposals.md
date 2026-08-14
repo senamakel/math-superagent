@@ -238,6 +238,66 @@ Both are described in the gap analysis and neither is folded into this work.
 
 ---
 
+## The toolchain surveyed, including what was declined
+
+Recorded so a later session does not re-litigate it. Every decline below has a
+reason from the research rather than from taste, and two of them are the
+projects' own calls.
+
+**Provers and model builders.** The Equational Theories Project's roster is the
+best-evidenced list available, since it is what took 22 million questions to
+about a thousand: Vampire, E, Z3, Prover9/Mace4, and SAT inside the greedy
+closure. We already had E, Z3, cvc5, MiniSat, CryptoMiniSat, CP-SAT, PySAT,
+PuLP, CBC and GLPK. **Vampire was added** — its `--saturation_algorithm fmb`
+does finite model building, which nothing else here could do and which is what
+answers a false conjecture instead of timing out on it.
+
+- **Prover9/Mace4 — declined.** The tool this job usually names, and the obvious
+  reach. Debian dropped it, and Vampire's `fmb` covers what Mace4 was wanted
+  for. Building it from a 2009 tarball to duplicate a capability we now have is
+  not worth the build surface.
+- **`egg` and `duper` — declined.** E-graph rewriting and a Lean superposition
+  tactic. EQT confined both to forks and kept them out of its base repo; their
+  judgement on this is better evidenced than ours and following it costs
+  nothing.
+
+**Formalisation.** Lean and Mathlib were already the largest thing in the image;
+what changed is that something now runs them. Three pieces of the PFR/EQT
+infrastructure are *not* built and are worth knowing about: **Blueprint**, the
+DAG of statements with a status per node that let strangers take independent
+pieces (`research/BACKWARD.md` is flat by comparison); **`lean4checker` /
+`lean4lean`** for kernel replay, a real concern at 22 million implications and
+not one that bites at this scale; and **`gapt`**, Hetzl's machine-proof → sequent
+calculus → Lean pipeline, which only pays off once ATP output is produced in
+bulk.
+
+**Search and discovery.** Here the transferable thing is almost never the code.
+
+- **FunSearch — architecture adopted, code unused.** It trains nothing, which is
+  the distinction that matters; see #4.
+- **AlphaEvolve — unavailable, finding adopted.** Its verifier-exploitation
+  result is what makes the searcher's write boundary a tool boundary.
+- **PatternBoost — declined.** It trains a transformer per problem. Its own
+  authors write "machine learning is hard!", and R36 from the same research says
+  off-the-shelf over bespoke ML, so wiring it would contradict the finding that
+  surfaced it.
+- **AlphaProof, AlphaGeometry — declined.** Not released usably.
+- **The Dalmatian heuristic (Graffiti/TxGraffiti) — not yet.** Test whether a
+  conjecture is *informative* before testing whether it is true; more than half
+  of Graffiti was the triviality filter rather than the generator. An algorithm
+  rather than a dependency, and it belongs on `pattern_finder`. This is the
+  cheapest unbuilt item in this document.
+- **Ramanujan Machine — declined.** Escalating numerical precision as the
+  verifier. Worth borrowing its vocabulary rule — its authors tested to 2,000
+  digits and still wrote that this "does not replace the need of a formal
+  proof" — but not the machine.
+
+**The pattern.** Of everything surveyed, exactly one binary was missing. Tao's
+own slide title for modern ML's contribution to EQT was *the dog that did not
+bark*: the work was done by automated theorem provers, which "were far cheaper
+to run and already handled the overwhelming majority". A runtime reaching for a
+new dependency should check first that it is not reaching past one it has.
+
 ## What the research says about all of this
 
 Two readings from `02`'s ladder statistics are worth keeping in front of anyone
