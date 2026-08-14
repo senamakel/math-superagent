@@ -132,6 +132,23 @@ impl Holds {
 pub(super) enum Status {
     /// The source proves it.
     Proved,
+    /// The Lean kernel checked it, in this run, in this workspace.
+    ///
+    /// A separate variant from [`Status::Proved`] rather than a stronger
+    /// reading of it, and the distinction is the same one `Checked` already
+    /// draws. `Proved` is a statement about a *source*: somebody else's paper
+    /// contains the argument, and the run is relying on their word that it is
+    /// sound. This is a statement about an artifact on disk in this workspace,
+    /// which is a different kind of thing to be wrong about and a different
+    /// kind of thing to check.
+    ///
+    /// It is the only status the ledger does not take on trust. Every other
+    /// one is a word a model typed into a note; this one is dropped to
+    /// `Asserted` unless [`super::lean::verdict`] finds a passing kernel
+    /// verdict for the file the claim names. That is the point of it — until
+    /// this existed, a formalisation and a sentence claiming a formalisation
+    /// were the same row.
+    Formalised,
     /// This run checked it numerically.
     Checked,
     /// The source states it without proof, or cites elsewhere.
@@ -161,7 +178,19 @@ pub(super) enum Status {
 impl Status {
     fn parse(value: &str) -> Self {
         let lowered = value.trim().to_ascii_lowercase();
-        if lowered.starts_with("proved") || lowered.starts_with("proven") {
+        if lowered.starts_with("formal")
+            || lowered.starts_with("lean")
+            || lowered.starts_with("kernel")
+        {
+            // Tested before `proved`, because "formally proved" is the phrase a
+            // role reaches for. Read in the other order it lands on the weaker,
+            // unchecked status — silently, and in the direction that loses the
+            // check. Spelled several ways for the reason `Catalogued` is: a
+            // role writing `lean` or `kernel` means exactly this, and falling
+            // through to `asserted` would make a kernel-checked lemma
+            // indistinguishable from a sentence.
+            Self::Formalised
+        } else if lowered.starts_with("proved") || lowered.starts_with("proven") {
             Self::Proved
         } else if lowered.starts_with("checked") || lowered.starts_with("numeric") {
             Self::Checked
@@ -189,6 +218,7 @@ impl Status {
     fn label(self) -> &'static str {
         match self {
             Self::Proved => "proved",
+            Self::Formalised => "formalised",
             Self::Checked => "checked",
             Self::Asserted => "asserted",
             Self::Heuristic => "heuristic",
@@ -220,6 +250,15 @@ pub(super) struct Claim {
     /// request was met is read off the library rather than asserted by
     /// whoever went looking.
     pub(super) answers: Vec<String>,
+    /// The `.lean` file whose kernel verdict backs a formalised claim.
+    ///
+    /// Empty for every other status. It is a separate field rather than a
+    /// convention on `anchor` because it is the only field in this struct that
+    /// is *checked* against the workspace rather than recorded from the note:
+    /// `anchor` says where in a paper to look, and nothing can tell whether it
+    /// is true, while this names a file that either has a passing verdict or
+    /// does not.
+    pub(super) formalisation: String,
     /// Where in the source text to check it.
     pub(super) anchor: String,
     /// The note the block was found in.
@@ -350,6 +389,9 @@ fn is_known(key: &str) -> bool {
             | "contradicts"
             | "answers"
             | "closes"
+            | "formalisation"
+            | "formalization"
+            | "lean"
             | "anchor"
             | "source"
             | "where"
@@ -418,6 +460,9 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
         "bearing" | "implies" => claim.bearing = value.to_string(),
         "contradicts" => claim.contradicts = identifiers(value),
         "answers" | "closes" => claim.answers = identifiers(value),
+        "formalisation" | "formalization" | "lean" => {
+            claim.formalisation = value.trim().replace(['`', ' '], "");
+        }
         "anchor" | "source" | "where" => claim.anchor = value.to_string(),
         _ => {}
     }
@@ -450,6 +495,7 @@ pub(super) fn collect(workspace: &Path) -> Ledger {
     ] {
         walk(workspace, &root, MAX_DEPTH, &mut budget, &mut ledger);
     }
+    ledger.check_formalisations(workspace);
     ledger.claims.sort_by(|left, right| left.id.cmp(&right.id));
     ledger
 }
@@ -499,9 +545,65 @@ fn walk(root: &Path, directory: &Path, depth: usize, budget: &mut usize, ledger:
 }
 
 impl Ledger {
+    /// Drops every formalised claim the kernel does not actually back.
+    ///
+    /// This is the one place the ledger disbelieves a note, and it is worth
+    /// being clear about why the check lives here rather than in the tool. The
+    /// tool records what Lean said about a *file*; the claim is written later,
+    /// in a different note, by a role that may name any file it likes. Nothing
+    /// joins the two until the ledger is derived, so this is the join — and it
+    /// runs on every derivation, so a claim whose Lean file is later edited
+    /// into a `sorry` loses its standing on the next write rather than keeping
+    /// a verdict it has outgrown.
+    ///
+    /// A failed check downgrades to [`Status::Asserted`] rather than dropping
+    /// the claim. The statement may well be true and the run may well need it;
+    /// what it has lost is the right to be called checked, and a claim that
+    /// vanished would take its `bearing` and its hypotheses with it.
+    fn check_formalisations(&mut self, workspace: &Path) {
+        for claim in &mut self.claims {
+            if claim.status != Status::Formalised {
+                continue;
+            }
+            let objection = if claim.formalisation.is_empty() {
+                Some(
+                    "the claim names no `formalisation:` file, so there is nothing to check it \
+                     against"
+                        .to_string(),
+                )
+            } else {
+                match super::lean::verdict(workspace, &claim.formalisation) {
+                    None => Some(format!(
+                        "no `lean_check` verdict exists for `{}`; run the kernel over it",
+                        claim.formalisation
+                    )),
+                    Some(verdict) => verdict.objection(),
+                }
+            };
+            if let Some(objection) = objection {
+                claim.status = Status::Asserted;
+                self.unbacked.push(Unbacked {
+                    id: claim.id.clone(),
+                    source: claim.source.clone(),
+                    objection,
+                });
+            }
+        }
+    }
+
     /// How many claims this run established itself, by proof or by computation.
+    ///
+    /// A formalised claim counts, and by this point it has survived
+    /// [`Ledger::check_formalisations`] — so unlike every other status here,
+    /// the count is of something the runtime verified rather than of something
+    /// a note asserted.
     pub(super) fn established(&self) -> usize {
-        self.count(|status| matches!(status, Status::Proved | Status::Checked))
+        self.count(|status| {
+            matches!(
+                status,
+                Status::Proved | Status::Formalised | Status::Checked
+            )
+        })
     }
 
     /// How many claims rest on a source's word alone.
