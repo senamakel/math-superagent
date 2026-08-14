@@ -42,7 +42,7 @@ use super::solutions::{
 
 /// The evaluation arms, and the barrier they converge on.
 ///
-/// Five questions about one attempt, asked at once. They fan out from the
+/// Six questions about one attempt, asked at once. They fan out from the
 /// attempt because none of them reads another's output — each reads the same
 /// report — so a pass costs the slowest of them rather than the sum, which is
 /// what a serial chain of the same five cost.
@@ -381,7 +381,7 @@ fn research_call(id: &str, state: &Value) -> Node {
 /// (`research`, once); attempt (`solve`'s body); evaluate the attempt from five
 /// directions at once and route on what they found together. The first and the
 /// third are child workflows and a fan-out respectively, which is the whole
-/// difference from the chain this replaced — five questions asked in a line,
+/// difference from the chain this replaced — the same questions in a line,
 /// three of them hidden inside the reflection's own body.
 ///
 /// `agents` is the derived role registry — see `super::definitions` — so the

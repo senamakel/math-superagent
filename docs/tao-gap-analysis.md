@@ -15,7 +15,7 @@ Every row is one of three things, and the distinction is the point of the file:
   code stopped guaranteeing.
 - **Unused** — the code produces it and nothing reads it.
 
-Four rows were closed on this branch. They are marked **[closed]** and the
+Five rows were closed on this branch. They are marked **[closed]** and the
 change is described at the end.
 
 ## The table
@@ -28,7 +28,7 @@ change is described at the end.
 | Reuse what is already proved; never re-derive | `01`§27, `04` R13 | Per-problem Cognee stack: `scripts/run-agent:110-126`. Every run starts from zero technique | Absent |
 | Evolve *programs* that build the object, scored by a verifier | `04b` FunSearch, AlphaEvolve | Nothing searched over programs. A construction was reasoned toward or not found | **[closed]** |
 | Cheap tools first, the expensive reasoner last | `04` R5, EQT's 22M → ~1,000 | An attempt is a model call that may delegate. No ladder, no cost-per-subgoal instrumentation | Absent |
-| Prove and disprove concurrently; look for the counterexample first | `01`§10, `04` R11 | No refutation arm. `sat_solver`/`smt_solver` exist but are delegated, not scheduled against proof | Absent |
+| Prove and disprove concurrently; look for the counterexample first | `01`§10, `04` R11, EQT's 13.6M | Four proving roles, all delegated *to*, none scheduled *against* the statement | **[closed]** |
 | Propagate every established fact through the entailment relation before scheduling new work | `04` R5b (~37× in EQT) | `search_claims` retrieves; nothing closes the claim set under implication | Absent |
 | Record which techniques are known not to apply to a subgoal | `01`§16, `04` R5c | `research/APPROACHES.md` closes a *route* with a reason; no per-subgoal immunity anything schedules on | Partly, unused |
 | Check the literature *after* a solve — a short proof raises the prior it is known | `01`§19, `04` R33 | No post-solve novelty check. Erdős #728 is the live example: an AI solution matching Pomerance 2014 | Absent |
@@ -39,16 +39,16 @@ change is described at the end.
 | Direction reaches a live run, queued, never a claim | `04` R20 | `./steer` → `config/directives.jsonl`, `director` denied `research/CLAIMS.md` | Present |
 | Declare the harness's knobs, and report the run even on failure | `04` §III.5 | Six of seven knobs map to files that exist. Attempts abandoned are not counted | Partly |
 | One monotone, legible statistic; watch for the Zeno regime | `01`§35, `02` F3 | The judge's 1–5 score is pushed to `state.scores` (`solutions_judging.rs:49`) and read by no code | **Unused** |
-| Modularise so no participant needs the whole argument | `01`§34, `02` F2 | Twenty-one tool-boundaried roles, enforced in code. The runtime's real strength | Present |
+| Modularise so no participant needs the whole argument | `01`§34, `02` F2 | Twenty-two tool-boundaried roles, enforced in code. The runtime's real strength | Present |
 
-## The four that were closed, and why those four
+## The five that were closed, and why those five
 
 Three of them are places the runtime already had the machinery and was one
 control short of using it — a different and much cheaper kind of gap than
-"build a cross-problem library". The fourth, scored program search, is a
-genuinely new capability, and it is here because its loop is a *program* rather
-than a prompt, which is this repository's own thesis about where control flow
-belongs.
+"build a cross-problem library". The other two, scored program search and
+refutation, are new capabilities; both are here because their loops are
+*programs* rather than prompts, which is this repository's own thesis about
+where control flow belongs.
 
 ### Verification was held to a weaker standard than path traversal
 
@@ -176,6 +176,54 @@ candidate costs no reflection, no lesson, and one line of output, but it is
 recorded, and the board reports discard reasons with counts. A search that ran
 four hundred candidates without improving is a finding; a leaderboard of winners
 cannot show it.
+
+### Nothing was ever scheduled against the statement
+
+The runtime has four ways to prove something — `sat_solver`, `smt_solver`,
+`theorem_prover`, `lean_prover` — and every one is *delegated to*, when a role
+decides to ask. None was ever scheduled *against* the statement the run was
+pursuing. So a false conjecture was attacked by proof for as long as the budget
+lasted, and nothing in the loop ever asked whether the thing being proved was
+true.
+
+The measurement that settles how much this costs is the Equational Theories
+Project's: 524 small finite structures refuted 13.6 million of its 22 million
+implications — 13.3 million at size 3 alone — for 165 CPU-hours, before any
+clever proof search ran. Refutation was not the consolation prize for a failed
+proof. It was the cheap majority of the work, because most false statements are
+false small.
+
+`refuter` runs as a sixth evaluation arm beside every attempt. It takes the open
+gaps and the current weakened rung — the statements somebody has committed to
+proving, which are exactly the ones worth breaking — tries small cases by hand,
+then encodes the smallest fragment that could still be false and hands it to
+`find_counterexample`.
+
+**Vampire is what makes this possible, and it is the one binary worth adding.**
+`eprover` saturates toward a refutation of the negated conjecture, so on a
+statement that is actually false it runs until its clock stops and reports
+nothing. Vampire's `--saturation_algorithm fmb` searches for a *finite model*
+instead, and such a model is exactly a counterexample: it answers
+`CounterSatisfiable` and prints the interpretation. Prover9/Mace4 is the tool
+this job usually names and Debian dropped it; cvc5's `--finite-model-find` works
+over theories rather than a TPTP axiomatisation. Nothing already in the image
+did this.
+
+**The verdict worth having built it for is neither of the obvious two.** One run
+distinguishes four outcomes, and the valuable one is `ContradictoryAxioms`: from
+contradictory hypotheses everything follows, so a broken axiomatisation *proves
+the goal*, which is how a bad encoding comes to look like a triumph. The SMT
+role was held to checking for that in its prompt; the engine now reports it as a
+status the runtime reads.
+
+The role writes files, because the axiomatisation is the whole job and the whole
+risk. It has no `execute_command`: a role hunting a counterexample with a shell
+writes its own search over small cases, which is the answer-space search the
+method policy prohibits, in the language most likely to hide its own bugs. And a
+claim citing a refutation is checked against the filed verdict, exactly as a
+formalised claim is checked against the kernel — a counterexample does not
+merely fail to establish the goal, it asserts the goal is false, so it is the
+worst thing to be able to claim without evidence.
 
 ## The largest gap was not closed
 

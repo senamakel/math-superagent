@@ -1,6 +1,6 @@
 # Roles, adapters, and what each one can reach
 
-The twenty-one roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
+The twenty-two roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
@@ -49,7 +49,7 @@ Algebras of Maximal Class II* as `pitman_ballot_theorem.md`.
 
 ## Expected problem-solving behavior
 
-The runtime has twenty-one roles plus an explicit solution loop.
+The runtime has twenty-two roles plus an explicit solution loop.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
@@ -110,23 +110,16 @@ The runtime has twenty-one roles plus an explicit solution loop.
   a numerical check, an argument that reads well — is a reason to believe
   something, and a proof that compiles with no `sorry` is the thing itself.
 
-  It *was* held to reporting `#print axioms` and every remaining `sorry` by its
-  prompt — this repository's own recurring failure, in the one place it costs
-  most. Lean and Mathlib were the largest thing in the image and no line of Rust
-  ran either, so `research/CLAIMS.md` could not tell a kernel-checked lemma from
-  a sentence claiming one, and did not try. Formal verification was held to a
-  weaker standard than path traversal.
-
-  `lean_check` is the control: it runs the kernel, parses what came back —
-  compiled or not, every `sorry` warning, every `#print axioms` line — and files
-  the verdict under `code/out/lean/`. A claim may be `status: formalised` only
-  with a `formalisation:` line naming a `.lean` file whose verdict passed;
-  otherwise the ledger records it as `asserted` and says why, under *Called
-  formalised, not backed by the kernel*. The fourth passing condition is strict
-  on purpose — the file must contain a `#print axioms` line — because a proof
-  whose foundations are unstated has told the runtime nothing, and the rule
-  costs one line. The tool reaches this role and nothing else, since it decides
-  what the ledger's strongest evidence class may say.
+  It *was* held to that by its prompt, which is this repository's own recurring
+  failure in the place it costs most: no line of Rust ran Lean, so
+  `research/CLAIMS.md` could not tell a kernel-checked lemma from a sentence
+  claiming one. `lean_check` is the control. It runs the kernel, parses the result — compiled
+  or not, every `sorry`, every `#print axioms` line — and files a verdict under
+  `code/out/lean/`. A claim may be `status: formalised` only with a
+  `formalisation:` line naming a file whose verdict passed; otherwise the ledger
+  records it as `asserted` and says why. Requiring the `#print axioms` line is
+  strict on purpose: a proof whose foundations are unstated has told the runtime
+  nothing. The tool reaches this role and nothing else.
 - The reflection agent judges one attempt and extracts one lesson. It has no
   research or execution tools on purpose: a judge that can start solving stops
   judging. Its hardest job is refusing to call an unverified answer solved.
@@ -179,45 +172,51 @@ The runtime has twenty-one roles plus an explicit solution loop.
   whether a set of lemmas actually implies the goal is the definition of a
   judgement no tool can check.
 - The weakener is the third direction, and the only role permitted to move the
-  target. The inventor asks what *else* reaches the goal and the reducer asks
-  what would be *enough*; both hold the goal fixed. This one asks what would be
-  *easier*, and answers with a problem that is deliberately smaller. It names
-  the difficulties that make the goal hard, then writes a ladder of weakened
-  versions to `research/weakened/<slug>.md` — each rung saying which
-  difficulties are switched off and what turning the next one back on would
-  take — and `research/WEAKENED.md` is derived from those files. A rung does not
-  imply the goal, which is not a defect in it. A failed rung stays on the ladder
-  with its reason, because deleting it is how the same one is proposed again
-  three attempts later. Its tool set is the reducer's exactly, for the reducer's
-  reasons, and it is on the stronger reasoning model because a statement
-  weakened until it is vacuous reads exactly like one weakened until it is
-  tractable. Its one dangerous failure is reporting a rung as the goal, so the
-  ledger records which difficulties were off when each one landed.
+  target. The inventor asks what *else* reaches the goal and the reducer what
+  would be *enough*; both hold it fixed. This one asks what would be *easier*. It
+  names the difficulties, then writes a ladder of weakened versions to
+  `research/weakened/<slug>.md` — each rung saying which are switched off and
+  what turning the next one back on would take — from which
+  `research/WEAKENED.md` is derived. A rung does not imply the goal, which is not
+  a defect in it. A failed rung stays on the ladder with its reason, because
+  deleting it is how the same one is proposed again three attempts later. Its
+  tool set is the reducer's exactly, and it is on the stronger reasoning model
+  because a statement weakened until vacuous reads exactly like one weakened
+  until tractable. Its one dangerous failure is reporting a rung as the goal, so
+  the ledger records which difficulties were off when each one landed.
 - The searcher does not reason toward an object; it writes programs that build
   one, keeps what scores well, and proposes again from those. What makes the
   FunSearch loop worth having is its output — "not the set of 512
-  eight-dimensional vectors in itself, but a program that generates it" — since
-  a construction with a readable program behind it is an explanation where a
-  number is only an answer. Three of the four ingredients (one evolved function,
-  best-shot prompting, an island population) are bookkeeping and live in Rust: a
-  model recalling which of four hundred programs scored best spends its turn on
-  arithmetic nothing can get wrong in code.
+  eight-dimensional vectors in itself, but a program that generates it" — an
+  explanation where a number is only an answer. Three of its four ingredients
+  are bookkeeping and live in Rust, because a model recalling which of four
+  hundred programs scored best spends its turn on arithmetic nothing can get
+  wrong in code.
+  **Its authority is a set of absences**, asserted by a test. No
+  `write_tool_file`, no `execute_command`, no patch tool: `submit_candidate` is
+  its only route to disk and it scores what it wrote in the same call, so a
+  candidate cannot be recorded unexecuted and `score.py` is unreachable. The
+  risk that justifies it is measured, not hypothetical — AlphaEvolve proved
+  "extremely good at locating exploits in the verification code". A rejected
+  candidate costs one line and no lesson, but is still recorded.
+- The refuter is the only role scheduled *against* the run rather than for it.
+  The four proving roles are delegated *to* when somebody asks, so a false
+  conjecture was attacked by proof for as long as the budget lasted. It runs as
+  an evaluation arm beside every attempt, takes the open gaps and the current
+  rung, and tries to break one — by hand first, then through
+  `find_counterexample`, Vampire's finite model builder. `eprover` saturates
+  toward a refutation and times out on a false statement; a finite model *is*
+  the counterexample. The Equational Theories Project measured the worth: 524
+  small structures refuted 13.6 million of 22 million implications in 165
+  CPU-hours, before any clever search ran.
 
-  **Its authority is a set of absences.** No `write_tool_file`, no
-  `execute_command`, no patch tool. `submit_candidate` is its only route to
-  disk, and it writes into `candidates/` and scores what it wrote in the same
-  call — so a candidate cannot be recorded without having been executed, and
-  `score.py` is unreachable. The second is load-bearing and the risk is
-  measured: AlphaEvolve proved "extremely good at locating exploits in the
-  verification code", satisfying a minimum-distance constraint by stacking
-  points nearly on top of one another, and Tao's team rewrote every verifier in
-  exact arithmetic in response. A test asserts the absences, because this is the
-  kind of boundary that erodes one convenient grant at a time.
-
-  A rejected candidate costs one line and no lesson — a search is wrong
-  thousands of times cheaply — but it is still *recorded*, so the board can say
-  how many candidates bought the best score. Four hundred without improvement is
-  a finding no leaderboard of winners can show.
+  Of its four verdicts the one worth building for is `ContradictoryAxioms`:
+  everything follows from contradictory hypotheses, so a broken encoding *proves
+  the goal*, and that is now a status the runtime reads rather than a discipline
+  it hopes for. It writes files — the axiomatisation is the whole job and the
+  whole risk — but has no `execute_command`, since a role hunting a
+  counterexample with a shell writes the answer-space search the method policy
+  prohibits. A claim citing a refutation is checked against the filed verdict.
 - The librarian builds a local reference library under `research/` so the rest
   of the run reads primary material instead of guessing.
 - The scholar reads that library. It judges each source against the run's goal,
@@ -343,6 +342,7 @@ prompt. Only `AGENTS.md`, the method policy, goes to everyone.
 | reducer | `GOAL.md`, `research/BACKWARD.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `research/APPROACHES.md` |
 | weakener | `GOAL.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` — and deliberately **not** `research/APPROACHES.md` or `research/BACKWARD.md` |
 | searcher | `GOAL.md`, `research/CLAIMS.md`, `CONTEXT.md` — everything about the search itself arrives through `search_brief`, because it changes with every candidate |
+| refuter | `GOAL.md`, `research/BACKWARD.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `CONTEXT.md` — the two ledgers holding statements somebody committed to proving, which are the ones worth attacking |
 | scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` |
 | context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
 | director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |

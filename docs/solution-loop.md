@@ -8,10 +8,10 @@ anywhere inside it is kept from ending a run. The working agreement is
 ```text
   research ──> seed goals ──> solve ─── done ──> report
                                 │
-                                └─ body ─> attempt ──┬─> judge ──────────┐
-                                   ▲                 ├─> reflect ────────┤
-                                   │                 ├─> patterns ───────┤
-                                   │                 ├─> invention ──────┼─> merge
+                                └─ body ─> attempt ──┬─> reflect ────────┐
+                                   ▲                 ├─> patterns ───────┤
+                                   │                 ├─> invention ──────┤
+                                   │                 ├─> refute ─────────┼─> merge
                                    │                 ├─> library (opens) ┤     │
                                    │                 └─> goals ─> cadence┘     │
                                    │                                        route
@@ -22,10 +22,11 @@ anywhere inside it is kept from ending a run. The working agreement is
 
 Three stages, and the middle one is one node. **Research** runs once: establish
 what the workspace already has, then go looking for what it does not.
-**Attempt** is one attempt. **Evaluation** asks five questions about that
-attempt at the same time and merges their answers before anything routes.
+**Attempt** is one attempt. **Evaluation** asks six questions at the same time
+and merges their answers before anything routes. Five are about the attempt;
+the sixth is not, and is described below.
 
-The fan-out is the change worth understanding. Those five used to run in a
+The fan-out is the change worth understanding. These arms used to run in a
 line, and three of them were not nodes at all — the pattern agent, the inventor,
 and the literature rescue were `tokio::spawn`s inside `reflect_step`'s body.
 That made the reflection the place every other role was smuggled in: the graph
@@ -42,6 +43,24 @@ arm's value minus the base, summed. That is what makes a reset and an increment
 compose, which they must, because the reflection zeroes `unproductive` on a
 productive attempt while the judge adds one for a restart, from the same base, at
 the same time.
+
+`refute` is the sixth, and the one that is not about the attempt. Every other
+arm asks how the attempt went; this one asks whether the thing being proved is
+true at all, which is a question nothing else in the loop ever puts. The runtime
+had four ways to prove something — `sat_solver`, `smt_solver`, `theorem_prover`,
+`lean_prover` — and each is *delegated to* when a role decides to ask. None was
+ever scheduled *against* the statement the run was pursuing, so a false
+conjecture was attacked by proof for as long as the budget lasted.
+
+The measurement that justifies the slot is the Equational Theories Project's:
+524 small finite structures refuted 13.6 million of its 22 million implications,
+13.3 million at size 3 alone, for 165 CPU-hours, before any clever proof search
+ran. Most false statements are false small. What the arm attacks is read off the
+two ledgers holding statements somebody committed to proving — the open gaps of
+`research/BACKWARD.md` and the current rung of `research/WEAKENED.md` — because
+those are exactly the propositions worth breaking. Its findings are read back
+off disk beside the refuter's report, on the same argument the reduction arm
+makes: a role's prose is a summary of its own work and the record is the work.
 
 One arm is deliberately not awaited. `library` starts a literature sweep and
 returns immediately, because a paper is no less relevant for being found a cycle
