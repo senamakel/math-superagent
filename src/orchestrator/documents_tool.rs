@@ -85,6 +85,11 @@ impl DocumentTool {
     /// is worse than no derived file, because the next reader trusts the row
     /// instead of opening the note. Returns the sentence to append to the tool
     /// result — a model not told the ledger moved has no reason to read it.
+    ///
+    /// Takes no lock of its own, deliberately. Every caller is a dispatch arm
+    /// that already holds [`super::worklock::writes`] across its write and this
+    /// re-derivation, and a second acquisition here would deadlock rather than
+    /// wait.
     async fn reledger(&self, path: &str) -> String {
         if super::threads::is_thread(path) {
             super::threads::refresh(&self.documents).await;
@@ -387,6 +392,14 @@ impl Tool<()> for DocumentTool {
                 // A run that writes its thirty-first program to the root has
                 // buried the two files carrying its derivation.
                 let path = super::layout::placed(&requested);
+                // Held across the write *and* the re-derivation it triggers.
+                // A note write re-derives up to six ledgers, each by walking
+                // the notes on disk and rewriting a whole file, so two writes
+                // that interleave leave a ledger rendered from one of them and
+                // missing the other. Taken here rather than in `reledger` or in
+                // the store, because those run below it and the mutex is not
+                // reentrant — see [`super::worklock`].
+                let _guard = super::worklock::writes().await;
                 self.documents.write(&path, &content).await?;
                 format!(
                     "wrote {} bytes to {path}{}{}",
@@ -399,6 +412,11 @@ impl Tool<()> for DocumentTool {
                 let path = required_string(&call.arguments, "path")?;
                 let old_text = required_string(&call.arguments, "old_text")?;
                 let new_text = string_value(&call.arguments, "new_text")?;
+                // An edit is a read-modify-write of the document as well as of
+                // everything derived from it, so the read belongs inside the
+                // lock too: two edits that both read before either wrote would
+                // each drop the other's replacement.
+                let _guard = super::worklock::writes().await;
                 let content = self.documents.read(&path).await?;
                 if !content.contains(&old_text) {
                     return Err(tinyagents::TinyAgentsError::Validation(

@@ -213,7 +213,28 @@ impl Candidate {
 /// Best effort throughout: the frontier is a convenience built on top of a
 /// download that has already succeeded, and losing a row must never turn a
 /// stored document into a failed tool call.
+/// For the adapters that store a source of their own — [`super::oeis`] and
+/// [`super::openalex`] — each of which reaches this from its own tool call and
+/// therefore holds no lock yet.
 pub(super) async fn record(
+    documents: &WorkspaceDocuments,
+    source_url: &str,
+    stored_path: &str,
+    links: &[LinkRecord],
+    goal: &str,
+) {
+    let _guard = super::worklock::writes().await;
+    record_from(documents, Some((source_url, stored_path)), links, goal).await;
+}
+
+/// The same, for a caller already holding [`super::worklock::writes`].
+///
+/// `download_document` takes the lock at its own boundary, across the archive,
+/// the digest and this, because those writes have to land together. Calling
+/// [`record`] from there would take a non-reentrant mutex twice and stop the
+/// run, so the two entry points are split rather than made to detect re-entry —
+/// which is guesswork a caller can get wrong silently.
+pub(super) async fn record_under_write_lock(
     documents: &WorkspaceDocuments,
     source_url: &str,
     stored_path: &str,
@@ -236,10 +257,16 @@ pub(super) async fn record_leads(
     links: &[LinkRecord],
     goal: &str,
 ) {
+    let _guard = super::worklock::writes().await;
     record_from(documents, None, links, goal).await;
 }
 
 /// Files leads, marking a source as fetched when there is one.
+///
+/// The read-modify-write the whole ledger turns on: load, merge, store, and
+/// re-render. Two of these interleaved lose one side's citations entirely, so
+/// every caller reaches it holding [`super::worklock::writes`]. It takes no
+/// lock itself, because one of those callers took it several writes earlier.
 async fn record_from(
     documents: &WorkspaceDocuments,
     source: Option<(&str, &str)>,

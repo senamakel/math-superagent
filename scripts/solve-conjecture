@@ -21,13 +21,24 @@ usage() {
     echo "" >&2
     echo "  <slug>  a folder under workspace/conjectures/ holding problem.md and GOAL.md" >&2
     echo "  --no-research  withhold web search; almost never right for an open problem" >&2
+    echo "  --schools a,b  run these schools concurrently (chisel, rising-sea," >&2
+    echo "                 adversarial); default is chisel alone" >&2
 }
 
 research=on
+schools=${MATH_AGENT_SCHOOLS:-}
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --no-research) research=off; shift ;;
         --research) research=on; shift ;;
+        --schools)
+            if [ "$#" -lt 2 ]; then
+                usage
+                exit 2
+            fi
+            schools=$2
+            shift 2
+            ;;
         -h|--help) usage; exit 0 ;;
         *) break ;;
     esac
@@ -127,4 +138,5 @@ if [ -n "$extra_instructions" ]; then
 Additional instructions: $extra_instructions"
 fi
 
-exec env MATH_AGENT_RESEARCH="$research" ./agent --workspace "$workspace_subdir" "$task"
+exec env MATH_AGENT_RESEARCH="$research" MATH_AGENT_SCHOOLS="$schools" \
+    ./agent --workspace "$workspace_subdir" "$task"
