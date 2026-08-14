@@ -353,7 +353,15 @@ can be read, patched through validated operations, and rendered, while the
 steps that carry a directive into an attempt or salvage a timed-out one are
 unchanged.
 
+The loop is not the only graph. It calls a child workflow that decides, on a
+cadence, whether to work backward from the goal and write down what would
+suffice to prove it — so a decomposition is opened beside the first attempt
+rather than after it, and the loop never waits for one.
+
+Give the renderer a directory for every flow, or a file for the loop alone:
+
 ```sh
+cargo run --features graph-debug --bin graph-render -- diagrams/
 cargo run --features graph-debug --bin graph-render -- loop.png
 ```
 
