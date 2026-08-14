@@ -433,6 +433,27 @@ forty-four minutes. The pipes are therefore drained by their own tasks, and
 killing the child is what closes them. A timeout is evidence about the method,
 and evidence belongs in the result rather than in an error string.
 
+## The memory cap
+
+The container's memory limit is 8 GiB, and the number is a judgement rather than
+a requirement — what the rule in `AGENTS.md` demands is that *some* limit stay.
+2 GiB was the wrong judgement, and a live run said so.
+
+An Erdős–Gyárfás container was OOM-killed mid-attempt: `oom` and then
+`die exit=137` in `docker events`. An OOM kill is the worst failure shape
+available here. The kernel stops the process, so nothing reaches the console,
+the run simply ceases to appear, and everything in flight is lost — which is why
+`docker events --filter event=oom` is the first thing to read when a container
+vanishes without an error.
+
+The cap has to cover the Rust runtime, every concurrent child run, and every
+Python subprocess they spawn between them, against work that is graph
+enumeration and BFS over millions of states. Problem 763 had already recorded
+the old cap in its own `MEMORY.md` as a mathematical ceiling — *"exact BFS stops
+at N=14"* — which is a sandbox limit written down as a result. That is the
+specific damage a too-small cap does: it does not merely stop a run, it teaches
+the run something false about the mathematics.
+
 ## Observability
 
 Every run in the tree carries a `RunTracer` (`src/agent/trace.rs`). It prints an

@@ -404,6 +404,34 @@ for. `docs/methods-gap-analysis.md` records the absence of exactly that as
 deliberate, and it is right for a claim and wrong for a hunch — a route one
 school has already killed should be paid for once.
 
+## What is committed, and how often
+
+Workspace contents are committed: the derivation, the program and the per-run
+notes are the record of how an answer was reached, which is the point of the
+product.
+
+They belong in history, not in every commit. A live run writes into `workspace/`
+continuously, so a host-side auto-commit hook firing on each tool call turns
+that into commit spam. One measured hour produced 97 commits on `main`, 87 of
+them touching nothing but `workspace/`, with model-written subjects that did not
+always match their diffs — one read *"remove outdated project euler problem 763
+files"* for a change that removed nothing and added five lines to a prompt.
+`.claude/settings.json` therefore sets `AUTO_COMMIT_EVERY=25` for this
+repository. Everything is still committed and nothing is excluded; it is
+batched, and the fine-grained record is not lost either, because the runtime
+keeps its own per-write checkpoint in `.workspace-history`.
+
+What is ignored is what a reader would never open. `.python-packages/` holds pip
+installs, which land in the workspace only because the container root filesystem
+is read-only. `raw/` and the bulky enumeration pools sit beside the counts that
+cite them. `trace.jsonl` and `console.log` run to several megabytes per run,
+while the derivation and the notes already carry the reasoning worth keeping —
+read the trace locally or in Langfuse instead. The hidden `config/.*.json` is
+the runtime's own cache of the frontier, the request ledger and the document
+index, rewritten on nearly every tool call, and each already has a committed
+human-readable counterpart beside it — `research/FRONTIER.md`,
+`research/REQUESTS.md` — which is what the derivation cites.
+
 ## Workspace checkpointing
 
 `checkpoint::WorkspaceCheckpoint` commits the workspace after every successful

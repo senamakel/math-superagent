@@ -174,39 +174,39 @@ needs `2>&1` and any follower must read both streams.
 
 ## Calibration runs
 
-An open conjecture gives a run no known destination, so nothing distinguishes a
+An open conjecture gives a run no known destination, so nothing separates a
 harness closing in on a proof from one producing plausible activity, and every
 architecture change is made blind. A **calibration run** supplies the reference:
-a conjecture already solved, stated as open, its answer withheld.
+a conjecture already solved, stated as open, its answer withheld in code.
 
 ```sh
 ./calibrate unit-distance-plane-chromatic     # start or continue
 scripts/eval-report unit-distance-plane-chromatic
 ```
 
-Watch it with `./diagnose` / `./euler-tui --workspace conjectures/<slug>`. Rules:
+Watch it with `./diagnose` / `./euler-tui --workspace conjectures/<slug>`.
+[`docs/calibration.md`](docs/calibration.md) holds why each rule below exists.
 
 - **The answer key never enters the container.** `GROUND_TRUTH.md`, `RUBRIC.md`
-  and the plaintext `screen.terms` live under `evals/<slug>/`, outside
-  `workspace/`, the only tree bind-mounted. `./calibrate` refuses to start if
-  one has been copied into the mount.
-- **The compiled blocklist is hashed.** `execute_command` can read any file the
-  runtime can, so a plaintext blocklist mounted for the screen would hand the
-  run the names it withholds. `scripts/compile-screen` emits salted digests;
-  the ledger records decisions and never terms.
-- **Two layers are controls, the third is not.** The proxy in
-  `compose.eval.yaml` decides which hosts are reachable, closing
-  `execute_command` — which otherwise reaches any paper on the web without
-  touching a screened tool. `orchestrator::screen` sees plaintext and decides
-  whether an allowed source reveals the answer. The leakage audit catches
-  recall, which no control can stop.
+  and the plaintext `screen.terms` live under `evals/<slug>/`, outside the only
+  bind-mounted tree. `./calibrate` refuses to start if one is inside the mount.
+- **The compiled blocklist is hashed.** `execute_command` reads any file the
+  runtime can, so plaintext terms would hand the run the names they withhold.
+  The ledger records decisions and never terms.
+- **Two layers are controls, the third is not.** The proxy decides which hosts
+  are reachable, closing `execute_command`; `orchestrator::screen` sees
+  plaintext and decides whether an allowed source reveals the answer. The
+  leakage audit catches recall, which no control can stop.
 - **`MATH_AGENT_SCREEN` absent means no screen**, so an ordinary run is
   untouched. Named but unreadable is a hard startup failure: an unscreened
   calibration run looks entirely normal and measures nothing.
-- **A seed is a time capsule, not a puzzle.** `evals/<slug>/seed/problem.md`
-  states the art as of the year before the solution, honestly, including the
-  obstruction and the leads genuinely available then. Where it hints
-  substantially, `GROUND_TRUTH.md` records how much, so a score can discount it.
+- **A seed is a time capsule, not a puzzle**, stating the art as of the year
+  before the solution — obstruction and leads included. Where it hints
+  substantially, `GROUND_TRUTH.md` records how much so a score can discount it.
+- **`chisel` is in every school set**, enforced by the launcher: an alternative
+  school is evidence only when today's runtime ran beside it. Which schools
+  attack a problem is `evals/<slug>/schools`, because that pairing is an
+  argument about method and belongs beside the statement it is about.
 - Do not add a problem without a `GROUND_TRUTH.md` recording its de-naming
   strength, and a `RUBRIC.md` whose milestones require an artifact, not a claim.
 
@@ -226,16 +226,9 @@ The Docker boundary is part of the security model:
   agent-written files.
 - Keep process, memory, command-time, and command-output limits. Keeping a
   limit is the requirement; the value is a judgement, and 2 GiB was the wrong
-  one. A live Erdős–Gyárfás container was OOM-killed mid-attempt — `oom` then
-  `die exit=137` in `docker events` — and an OOM kill is the worst failure shape
-  available here: the kernel stops the process, so nothing is written to the
-  console, the run simply ceases to appear, and everything in flight is lost.
-  Read `docker events --filter event=oom` when a container vanishes without an
-  error. The cap covers the Rust runtime, every concurrent child run, and every
-  Python subprocess they spawn between them, against work that is graph
-  enumeration and BFS over millions of states; problem 763 had already recorded
-  the old cap in its own `MEMORY.md` as a mathematical ceiling, "exact BFS stops
-  at N=14", which is a sandbox limit masquerading as a result.
+  one — [`docs/runtime.md`](docs/runtime.md#the-memory-cap) has the live run
+  that raised it and why an OOM kill is the worst failure shape available here.
+  Read `docker events --filter event=oom` when a container vanishes silently.
 - Keep network access because provider, search, and telemetry calls need it.
 
 Every agent working directory is `/workspace`. The helper accepts
@@ -252,29 +245,19 @@ product, so they belong in history rather than only on the machine that produced
 them.
 
 They belong in history, not in every commit. A live run writes into `workspace/`
-continuously, so a host-side auto-commit hook firing on each tool call turns
-that into commit spam: one measured hour produced 97 commits on `main`, 87 of
-them touching nothing but `workspace/`, with model-written subjects that did not
-always match their diffs — one read `remove outdated project euler problem 763
-files` for a change that removed nothing and added five lines to a prompt.
-`.claude/settings.json` therefore sets `AUTO_COMMIT_EVERY=25` for this
-repository. Everything is still committed and nothing is excluded; it is
-batched. The fine-grained record is not lost either, because the runtime keeps
-its own per-write checkpoint in each workspace's `.workspace-history`, which is
-what `WorkspaceCheckpoint` is for. Do not add a generated artifact to a source directory; leave it in its
-workspace.
+continuously, so `.claude/settings.json` sets `AUTO_COMMIT_EVERY=25` for this
+repository: everything is still committed and nothing excluded, it is batched.
+The fine-grained record survives in each workspace's `.workspace-history`, which
+is what `WorkspaceCheckpoint` is for. Do not add a generated artifact to a
+source directory; leave it in its workspace.
 
-What is ignored is what a reader would never open: `.python-packages/` (pip
-installs, which land in the workspace only because the container root filesystem
-is read-only), bytecode caches, `raw/`, the bulky enumeration pools beside the
-counts that cite them, `trace.jsonl` and `console.log`, and the hidden
-`config/.*.json` state. The trace is several megabytes per run and the
-derivation and notes already carry the reasoning worth keeping; read it locally
-or in Langfuse instead. The hidden JSON is the runtime's own cache of the
-frontier, the request ledger, and the document index, rewritten on nearly every
-tool call — each already has a committed human-readable counterpart beside it,
-`research/FRONTIER.md` and `research/REQUESTS.md`, which is what the derivation
-cites. Everything a reader would open stays committed.
+What is ignored is what a reader would never open: `.python-packages/`, bytecode
+caches, `raw/`, the bulky enumeration pools beside the counts that cite them,
+`trace.jsonl` and `console.log`, and the hidden `config/.*.json` state. Each
+hidden file already has a committed human-readable counterpart beside it —
+`research/FRONTIER.md`, `research/REQUESTS.md` — which is what the derivation
+cites. [`docs/workspace.md`](docs/workspace.md) has the measured hour of commit
+spam that set the batch size. Everything a reader would open stays committed.
 
 ## Secrets
 
