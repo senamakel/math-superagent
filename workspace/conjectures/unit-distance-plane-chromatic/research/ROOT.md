@@ -24,10 +24,20 @@ knowledge the library now holds.
    point sets decompose into a large subset plus bipartite rigidity subgraphs.
    Rigidity is the source of density; the growth conditions delimit how the
    rigidity must accumulate.
-4. **Lattice criterion (Chilakamarri).** A finite graph is a plane unit-distance
-   graph **iff** it is faithfully √2-recurring in Z². Algebraic lattices are thus
-   a complete search class: lattice-restricted constructions can already force
-   5 colours in a unit-distance analogue (χ(Z²,r,√2) ≥ 5).
+4. **Lattice criterion (Chilakamarri, asserted-only — verify before building on).**
+   A finite graph is a plane unit-distance graph **iff** it is faithfully
+   √2-recurring in Z² (edges at distance in [r−√2, r+√2] at all large scales r,
+   pairwise distances ≥ d·r). Algebraic lattices are thus a candidate complete
+   search class; lattice-restricted constructions can force 5 colours in a
+   unit-distance analogue (χ(Z²,r,√2) ≥ 5). **Status:** this claim is
+   asserted by the source and has not been verified by primary text (full
+   text network-blocked). **Falsified reading:** the alternative 1993-note
+   reading, "unit Euclidean edges preserved into Z^n", is false — a unit
+   Euclidean edge in Z^n is an axis-parallel grid step, so Z^n under that
+   reading is bipartite and cannot contain K3, yet K3 (unit triangle) is a
+   unit-distance graph in R². Never cite the criterion as a completeness
+   guarantee for lattice search without the primary statement or a second
+   route; state it in the √2-recurring form when used.
 5. **Construction engines (Alexeev–Mixon–Parshall; Raigorodskii survey).** The
    standard machinery for building rigid/dense unit-distance graphs is Minkowski
    sums, spindles (rotating a copy about a shared vertex), and algebraic point

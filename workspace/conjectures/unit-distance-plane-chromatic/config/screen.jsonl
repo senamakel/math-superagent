@@ -35,3 +35,84 @@
 {"at":"1786727778","decision":"denied","detail":"term matched in 12182 characters","stage":"result","tool":"exa_search"}
 {"at":"1786727779","decision":"denied","detail":"term matched in 12156 characters","stage":"result","tool":"exa_search"}
 {"at":"1786727779","decision":"denied","detail":"term matched in 12106 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727864","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786727873","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (1759 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786727983","decision":"denied","detail":"term matched in 12220 characters","stage":"result","tool":"exa_search"}
+{"at":"1786727993","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12062 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786728070","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786728070","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786728291","decision":"denied","detail":"term matched in 12109 characters","stage":"result","tool":"exa_search"}
+{"at":"1786728306","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12181 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786728333","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786728348","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12218 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786728539","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786728539","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786728544","decision":"denied","detail":"term matched in 12129 characters","stage":"result","tool":"exa_search"}
+{"at":"1786728565","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786728570","decision":"denied","detail":"term matched in 12062 characters","stage":"result","tool":"exa_search"}
+{"at":"1786728621","decision":"denied","detail":"term matched in 3861 characters","stage":"result","tool":"read_sources"}
+{"at":"1786728878","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786728882","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786728957","decision":"denied","detail":"term matched","stage":"arguments","tool":"citation_graph"}
+{"at":"1786728961","decision":"denied","detail":"term matched in 453 characters","stage":"result","tool":"citation_graph"}
+{"at":"1786728974","decision":"denied","detail":"term matched in 24347 characters","stage":"result","tool":"find_similar_sources"}
+{"at":"1786729014","decision":"denied","detail":"term matched in 12151 characters","stage":"result","tool":"exa_search"}
+{"at":"1786729098","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786729116","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12146 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786729157","decision":"denied","detail":"term matched in 4333 characters","stage":"result","tool":"read_sources"}
+{"at":"1786729210","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12160 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786729243","decision":"denied","detail":"term matched","stage":"arguments","tool":"citation_graph"}
+{"at":"1786729243","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786729255","decision":"denied","detail":"term matched in 446 characters","stage":"result","tool":"citation_graph"}
+{"at":"1786729317","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786729317","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786729317","decision":"denied","detail":"term matched","stage":"arguments","tool":"citation_graph"}
+{"at":"1786729406","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786729408","decision":"denied","detail":"term matched in 450 characters","stage":"result","tool":"citation_graph"}
+{"at":"1786729475","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786729475","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786729481","decision":"denied","detail":"term matched in 12142 characters","stage":"result","tool":"exa_search"}
+{"at":"1786729490","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786729496","decision":"denied","detail":"term matched in 12214 characters","stage":"result","tool":"exa_search"}
+{"at":"1786729522","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"download_document"}
+{"at":"1786729522","decision":"denied-host","detail":"host `mathworld.wolfram.com`","stage":"arguments","tool":"download_document"}
+{"at":"1786729636","decision":"denied","detail":"term matched in 12153 characters","stage":"result","tool":"exa_search"}
+{"at":"1786729765","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786729773","decision":"denied","detail":"term matched in 12058 characters","stage":"result","tool":"exa_search"}
+{"at":"1786730048","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"download_document"}
+{"at":"1786730048","decision":"denied-host","detail":"host `mathworld.wolfram.com`","stage":"arguments","tool":"download_document"}
+{"at":"1786730048","decision":"denied","detail":"term matched","stage":"arguments","tool":"deep_research"}
+{"at":"1786730048","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786730208","decision":"denied","detail":"term matched in 4406 characters","stage":"result","tool":"read_sources"}
+{"at":"1786730370","decision":"denied","detail":"term matched in 3621 characters","stage":"result","tool":"read_sources"}
+{"at":"1786730542","decision":"denied","detail":"term matched in 3690 characters","stage":"result","tool":"read_sources"}
+{"at":"1786730544","decision":"denied","detail":"term matched in 12093 characters","stage":"result","tool":"exa_search"}
+{"at":"1786730708","decision":"denied","detail":"term matched in 24321 characters","stage":"result","tool":"find_similar_sources"}
+{"at":"1786730757","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786730824","decision":"denied","detail":"term matched in 4392 characters","stage":"result","tool":"read_sources"}
+{"at":"1786730826","decision":"denied","detail":"term matched in 12040 characters","stage":"result","tool":"exa_search"}
+{"at":"1786730880","decision":"denied","detail":"term matched in 12079 characters","stage":"result","tool":"exa_search"}
+{"at":"1786730884","decision":"denied","detail":"term matched in 12170 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731072","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786731087","decision":"denied","detail":"term matched in 12055 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731201","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786731206","decision":"denied","detail":"term matched in 12220 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731207","decision":"denied","detail":"term matched in 12206 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731304","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786731304","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786731311","decision":"denied","detail":"term matched in 12103 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731313","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (423 characters)","stage":"result","tool":"citation_graph"}
+{"at":"1786731367","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12115 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786731381","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786731383","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786731387","decision":"denied","detail":"term matched in 12094 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731388","decision":"denied","detail":"term matched in 12173 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731434","decision":"denied","detail":"term matched in 24310 characters","stage":"result","tool":"find_similar_sources"}
+{"at":"1786731595","decision":"denied","detail":"term matched in 12150 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731596","decision":"denied","detail":"term matched in 12104 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731603","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12101 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786731669","decision":"denied","detail":"term matched in 12207 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731673","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12321 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786731715","decision":"denied","detail":"term matched in 12115 characters","stage":"result","tool":"exa_search"}
+{"at":"1786731723","decision":"denied-by-adjudicator","detail":"adjudicator reply was neither ALLOW nor DENY; failing closed","stage":"result","tool":"exa_search"}
+{"at":"1786731724","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12189 characters)","stage":"result","tool":"exa_search"}

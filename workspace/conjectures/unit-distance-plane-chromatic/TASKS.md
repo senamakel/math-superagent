@@ -1,42 +1,49 @@
 # Tasks
 
-Order of work, from the run directive; work the earliest incomplete item.
+Order of work; work the earliest incomplete item.
 
-## 1. Build the library — stop when it is enough
+Directive 2 closed phase 1. Gathering is over. Further sources are fetched only
+against a gap named in `research/REQUESTS.md`, and only via `read_sources` /
+`deep_research` (never `download_document` on arxiv.org, doi.org,
+sciencedirect.com, or springer.com — the network boundary drops those hosts).
 
-- [ ] Spawn librarian + research; scholar digests each source into claim blocks
-      as it lands (hypotheses, holds-here, status).
-- [ ] Fetch via `read_sources` / `deep_research` (server-side). Do **not** call
-      `download_document` for arxiv.org, doi.org, sciencedirect.com, or
-      springer.com — the run's network boundary drops those hosts every time,
-      regardless of the URL. This is the environment, not the sources; do not
-      file it as a finding about the mathematics.
-- [ ] Exit when research/ROOT.md states: the structure of a minimal
-      counterexample, the current verification bound, and at least three settled
-      restricted classes with their hypotheses. After that, gather only against
-      a gap named in research/REQUESTS.md.
+## 1. Extract the library already gathered (immediate)
 
-## 2. Extract as you go
+The fenced claim blocks already exist in `research/CLAIMS.md`. What is missing
+is CONTEXT.md's **Established** section, which is still the empty placeholder.
 
-- [ ] Every source that lands: a fenced claim block in its note (hypotheses,
-      holds-here, status) plus a line under Established in CONTEXT.md, each
-      with its evidence class and what would falsify it.
-- [ ] Record closed directions under Ruled out with the obstruction that closed
-      them.
+- [ ] scholar: write the beliefs from `research/CLAIMS.md` into CONTEXT.md's
+      **Established** section, one line each, each with its evidence class
+      (proved / computed-and-checked / sourced / conjectured) and what would
+      falsify it.
+- [ ] Record any closed direction under CONTEXT.md **Ruled out** with the
+      obstruction that closed it.
 
-## 3. Build the oracle
+## 2. Calibrate the oracle — run code/brute.py, capture the output
 
-- [ ] tool_builder: exact edge certifier (`|x - y|^2 = 1` symbolically) and a
-      complete k-colouring test that returns a witness colouring when one exists.
-- [ ] Calibrate both on the 7-vertex graph: certify every edge exactly, and
-      report 4-colourable and not 3-colourable. Record the actual output.
+- [ ] Execute:
+      `timeout 540 python3 code/brute.py 2>&1 | tee code/out/brute.captured.txt; echo EXIT_CODE=$?`
+      so the raw output lands in `code/out/brute.captured.txt`.
+- [ ] Confirm from that capture: 7 distinct points, all 11 edges certified unit
+      in exact arithmetic, 4-colourable with witness, 3-colourable UNSAT,
+      `CALIBRATION PASSED`, EXIT_CODE=0.
+- [ ] Do not accept the existing `G-oracle-calibrated` claim as calibration:
+      `code/out/commands.log` shows only a `timeout 120` run, and
+      `code/out/oracle_calibration.md`'s "verbatim" edge list does not match
+      `brute.py`'s print format. The calibration is accepted only from
+      `brute.captured.txt`.
+
+## 3. Only then measure anything new
+
+- [ ] No new measurement with the oracle until step 2's capture file exists and
+      is confirmed. Any new measurement gets its own captured output file in
+      `code/out/`.
 
 ## 4. Loop
 
 - [ ] Each attempt states one precise structural claim about a minimal
-      counterexample, attacks it before trusting it (hunt the counterexample as
-      seriously as the proof), and establishes, refutes, or leaves it open with
-      the gap named exactly.
-- [ ] Use sat_solver for finite SAT questions (UNSAT is a theorem), lean_prover
-      for the statement and stabilised lemmas, symbolic_math for closed forms.
+      counterexample, attacks it (hunt the counterexample as seriously as the
+      proof), and establishes, refutes, or leaves it open with the gap named.
+- [ ] sat_solver for finite SAT questions (UNSAT is a theorem), lean_prover for
+      the statement and stabilised lemmas, symbolic_math for closed forms.
 - [ ] Verify any result by a second, independent route.

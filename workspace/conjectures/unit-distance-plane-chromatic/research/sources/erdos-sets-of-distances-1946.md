@@ -40,6 +40,18 @@ bearing: Supplies the seed construction family (integer/triangular grids) for th
 anchor: research/sources/erdos-sets-of-distances-1946.md
 ```
 
+## Scholar flag — the distinct-distances attribution is anachronistic
+
+The claim block records "any n-point set determines at least c·n/log n
+distinct distances" as from 1946. That order of magnitude (n^{1−o(1)}) is the
+*modern* state of the art for the distinct-distances problem (Guth–Katz 2015:
+n/log n), not a 1946 result. The unit-distance grid construction (Ω(n log n)
+pairs at unit distance) is the historical, load-bearing 1946 content; the
+accompanying distinct-distances number in the claim block is very likely a
+summary garbling of "(n/log n) as a modern lower bound" and should not be
+cited to 1946 without the primary text. This does not affect the run's use of
+the grid seed family.
+
 ## Note on download
 
 Full text blocked at network layer. Content from read_sources summary plus the

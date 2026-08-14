@@ -1,0 +1,4 @@
+k=4  n=155  e=628  (edges 0.6 s)
+k=5  n=301  e=1375  (edges 1.9 s)
+k=6  n=532  e=2659  (edges 7.2 s)
+k=7  n=876  e=4694  (edges 18.0 s)

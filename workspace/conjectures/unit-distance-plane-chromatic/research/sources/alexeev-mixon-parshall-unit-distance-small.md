@@ -67,7 +67,7 @@ id: amp-ud-bound-n21
 statement: Alexeev–Mixon–Parshall compute upper bounds for u(n), the maximum number of unit distances among n points in the plane, for every n <= 21, by forbidden-subgraph enumeration and an exact embeddability solver for unit-distance graphs.
 hypotheses: n <= 21; distances measured exactly (squared distance 1 in R^2).
 holds-here: yes — a minimal 5-chromatic unit-distance graph on n vertices is 5-critical and hence has at least 2n edges (gap G-crit); wherever a computed bound lies below 2n, that n cannot host a minimal counterexample, which pins the starting point of the size-lower-bound sweep (request largest-which-currently-5018).
-status: asserted (the bound VALUES are not in the excerpt; nothing can be inferred from them until the primary text supplies the numbers)
+status: asserted (values now partly extracted: u(21) >= 57 with pre-paper state 57 <= u(21) <= 68; the full per-n bound table is not on disk and must be supplied by the primary text)
 evidence: research/sources/alexeev-mixon-parshall-unit-distance-small.md
 bearing: edge-count ceilings for n <= 21; note the ceiling bounds edges, not chromatic number — it supports the size-lower-bound route only through 5-criticality.
 anchor: research/sources/alexeev-mixon-parshall-unit-distance-small.md

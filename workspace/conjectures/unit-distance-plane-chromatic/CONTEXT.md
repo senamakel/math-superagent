@@ -29,6 +29,17 @@ trace to a source is worth less than no statement.
   (server-side) instead. This is a property of the run environment, not a
   finding about the mathematics, and not a property of the sources.
 
+## State
+
+Phase 1 (library gathering) is closed as of directive 2: no new sources except
+against a gap named in `research/REQUESTS.md`. Immediate work: (a) scholar fills
+**Established** below from the claim blocks already in `research/CLAIMS.md`;
+(b) produce the GOAL-conformant capture `code/out/brute.captured.txt` of the
+`code/brute.py` 7-vertex calibration. The existing `G-oracle-calibrated` claim
+(`status: checked`) is not accepted as calibration yet — `code/out/commands.log`
+shows only a `timeout 120` run and `code/out/oracle_calibration.md`'s "verbatim"
+edge list does not match `brute.py`'s print format.
+
 ## Established
 
 What this run may treat as known, each marked proved, computed and checked,

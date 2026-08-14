@@ -1,0 +1,20 @@
+=== n(k): fit degree 4 through k=1..5, test at k=6 ===
+quartic coefficients (lowest first): ['1', '5/2', '7/3', '1', '1/6']
+predicted n(6) = 532   measured n(6) = 532   match? True
+
+=== n(k): degree-5 interpolation through all six points ===
+k^5 coefficient = 0   (0 means the quartic model is exact on k=1..6)
+
+=== e(k): degree-5 fit, leading coefficients ===
+k^5 coeff = -1/60,  k^4 coeff = 11/6,  k^3 coeff = 1/12
+
+=== measured table (recap) ===
+ k     n      e      e/n
+ 1     7     11   1.5714
+ 2    26     69   2.6538
+ 3    70    240   3.4286
+ 4   155    628   4.0516
+ 5   301   1375   4.5681
+ 6   532   2659   4.9981
+
+GROWTH FIT DONE.
