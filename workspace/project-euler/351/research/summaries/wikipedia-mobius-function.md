@@ -1,64 +1,43 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wikipedia-mobius-function.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wikipedia — Möbius function
 
-<!-- source: https://en.wikipedia.org/wiki/M%C3%B6bius_function | converted from HTML -->
+Source: https://en.wikipedia.org/wiki/M%C3%B6bius_function — full text at
+`research/sources/wikipedia-mobius-function.full.md`
+[[wikipedia-mobius-function.full]]
 
-## What is in it
+## What this source establishes
 
-  - Definition
-  - Values
-  - Applications
-    - Mathematical series
-    - Algebraic number theory
-    - Physics
-  - Properties
-    - Proof of the formula for the sum of μ {\displaystyle \mu }[image: {\displaystyle \mu }]…
-      - Other proofs
-    - Average order
-    - μ ( n) {\displaystyle \mu (n)}[image: {\displaystyle \mu (n)}] sections
-  - Mertens function
-  - Generalizations
-    - Incidence algebras
-  - Implementations
-  - See also
-  - Notes
-    - Citations
-  - Sources
-  - External links
+**Definition.** μ(1) = 1; μ(n) = (−1)^k if n is the product of k distinct
+primes; μ(n) = 0 if n has a squared prime factor. μ is multiplicative; the
+Mertens function is its partial sums. First values 1, −1, −1, 0, −1, 1, −1, 0,
+0, 1, … (OEIS A008683).
 
+**Möbius inversion.** f(n) = Σ_{d|n} g(d) ⟺ g(n) = Σ_{d|n} μ(d) f(n/d); with
+f = id, g = φ this gives φ(n) = Σ_{d|n} μ(d)·(n/d), the identity behind the
+run's Möbius-inversion computation of Φ(10⁸).
 
-## What it claims
+## Hypotheses
 
-This article is about the number-theoretic Möbius function. For the combinatorial Möbius function, see [incidence algebra][1]. For the [rational functions][2] defined on the [complex numbers][3], see [Möbius transformation][4].
+n ≥ 1 integer. Holds here.
 
-|
+## What it lets this run do
 
-This article includes a list of [general references][5]**but lacks sufficient corresponding [inline citations][6]**. Please help [improve this article][7] by [introducing][8] more precise citations.*( October 2024)**( [Learn how and when to remove this message][9])*
+- Independent (non-OEIS) source for the definition and inversion formula used
+  by verify_mobius.py.
 
-|
+## What it does not settle
 
-Möbius function
+- No summatory values; no algorithm.
 
-Named after | [August Ferdinand Möbius][10] |
+## Claims
 
-Publication year | 1832 |
-
-Author of publication | [August Ferdinand Möbius][10] |
-
-Number</span>"}]]}'>No. of known terms | infinite |
-
-First terms | 1, −1, −1, 0, −1, 1, −1, 0, 0, 1 |
-
-[OEIS][11] index |
-
-- [A008683][12]
-- Möbius (or Moebius) function mu(n). mu(1) = 1; mu(n) = (-1)^k if n is the product of k different primes; otherwise mu(n) = 0.
-
-|
-
-The **Möbius function μ ( n) {\displaystyle \mu (n)}[image: {\displaystyle \mu (n)}]**is a [multiplicative function][13] in [number theory][14] introduced by the German…
-
-## Statements it makes
-
-## Definition
-
-*[digest of a 41536 character source; every section, statement, and proof in full at `research/sources/wikipedia-mobius-function.full.md`]*
+```claim
+id: mobius-inversion-formula
+statement: f(n) = Σ_{d|n} g(d) for all n ⟺ g(n) = Σ_{d|n} μ(d) f(n/d); hence
+φ(n) = Σ_{d|n} μ(d)·(n/d) and Φ(N) = (1/2)Σ_{d≤N} μ(d)⌊N/d⌋(1+⌊N/d⌋).
+hypotheses: n ≥ 1 integer.
+holds-here: yes — the summatory form reproduces Φ(10^8) exactly in
+verify_mobius.py.
+status: sourced (Wikipedia Möbius function).
+bearing: second-source backing for the independent verification route.
+anchor: research/summaries/wikipedia-mobius-function.md
+```

@@ -4,4 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `brute.py` | Naive oracle for PE 351. hidden_literal(n) is the mechanical definition scan (closer collinear point exists; O(N²), N=3n²+3n+1); hidden_gcd(n) is the equivalent gcd(|q|,|r|)>=2 count (O(n²) gcds). Established correct: reproduces the statement's H(5)=30, H(10)=138, H(1000)=1177848; both methods agree on n≤10; H(1..8) matches OEIS A216453. Self-capped at n≤1000; literal scan capped at n≤10. |
+| `AGENTS.md` | _(undescribed)_ |
+| `brute.py` | _(undescribed)_ |
+| `solution.py` | PE351 exact solution: prints parity table for n=5,10,1000 (identity H=3n^2+3n-6*Phi(n) vs embedded brute-force check), then computes Phi(10^8) via lib.totient.sum_phi (int32 sieve, ~400 MB) and prints Phi(10^8)=3039635516365908 and H(10^8)=11762187201804552. |
+| `verify_mobius.py` | Independent verification of Phi(1e8): Möbius inversion Phi(N)=sum mu(k)*T(floor(N/k)) with a separate int8 mu sieve (step p^2 for squarefree zeroing). Agrees exactly with lib.totient.sum_phi; shares only the prime list. |

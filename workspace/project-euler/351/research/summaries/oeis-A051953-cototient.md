@@ -1,35 +1,44 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/oeis-A051953-cototient.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# OEIS A051953 — cototient
 
-<!-- source: https://oeis.org/A051953 | converted from HTML -->
+Source: https://oeis.org/A051953 — full text at
+`research/sources/oeis-A051953-cototient.full.md`
+[[oeis-A051953-cototient.full]]
 
-## What it claims
+## What this source establishes
 
-0, 1, 1, 2, 1, 4, 1, 4, 3, 6, 1, 8, 1, 8, 7, 8, 1, 12, 1, 12, 9, 12, 1, 16, 5, 14, 9, 16, 1, 22, 1, 16, 13, 18, 11, 24, 1, 20, 15, 24, 1, 30, 1, 24, 21, 24, 1, 32, 7, 30, 19, 28, 1, 36, 15, 32, 21, 30, 1, 44, 1, 32, 27, 32, 17, 46, 1, 36, 25, 46, 1, 48, 1, 38, 35, 40, 17, 54, 1, 48, 27
+**Definition.** a(n) = n − φ(n), the cototient: the number of positive
+integers ≤ n sharing at least one prime factor with n.
 
-( [list][4]; [graph][5]; [refs][6]; [listen][7]; [history][8]; [text][9]; [internal format][10])
+**Values.** 0, 1, 1, 2, 1, 4, 1, 4, 3, 6, 1, 8, … (matches the run's
+`code/out/seq_cototient.txt`).
 
-OFFSET
+**Comment relevant here.** cototient(n) ≡ n (mod 2) — so cototient(n+1) =
+cototient(n) never holds (Labos Elemer) — which is why A063985(n) mod 2 has no
+small period (checked by the run over 200000 terms: no period ≤ 1000).
 
-1,4
+## Hypotheses
 
-COMMENTS
+n ≥ 1 integer. Holds here.
 
-Unlike totients, cototient(n+1) = cototient(n) never holds -- except 2-phi(2) = 3 - phi(3) = 1 -- because cototient(n) is congruent to n modulo 2. - [Labos Elemer][11], Aug 08 2001
+## What it lets this run do
 
-Theorem (L. Redei): b^a(n) == b^n (mod n) for every integer b. - [Thomas Ordowski][12] and [Robert Israel][13], Mar 11 2016
+- Names the per-sector hidden count: H(n) = 6·Σ_{k≤n}(k − φ(k)) =
+  6·A063985(n), where A063985 is the partial sums of this sequence. Confirms
+  the run's seq_cototient.txt used for pattern checks.
 
-Let S be the sum of the cototients of the divisors of n ( [A001065][14]). S < n iff n is deficient, S = n iff n is perfect, and S > n iff n is abundant. - [Ivan N. Ianakiev][15], Oct 06 2023
+## What it does not settle
 
-LINKS
+- No summatory values at 10⁸ (that is A063985).
 
-T. D. Noe, [Table of n, a(n) for n = 1..10000][16]
+## Claims
 
-J. Browkin and A. Schinzel, [On integers not of the form n-phi(n)][17], Colloq. Math., 68 (1995), 55-58.
-
-R. E. Jamison, [The Helly…
-
-## Statements it makes
-
-Theorem (L. Redei): b^a(n) == b^n (mod n) for every integer b. - [Thomas Ordowski][12] and [Robert Israel][13], Mar 11 2016
-
-*[digest of a 7206 character source; every section, statement, and proof in full at `research/sources/oeis-A051953-cototient.full.md`]*
+```claim
+id: cototient-definition
+statement: The cototient is n − φ(n); its partial sums are A063985(n), and
+H(n) = 6·A063985(n) for the hexagonal orchard.
+hypotheses: n ≥ 1 integer.
+holds-here: yes — H(n) = 6·A063985(n) verified at n ≤ 10^8 (patterns.py).
+status: sourced (OEIS A051953/A063985); checked here.
+bearing: ties the per-sector hidden count to the cototient partial sums.
+anchor: research/summaries/oeis-A051953-cototient.md
+```

@@ -1,45 +1,41 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/moree-carefree-couples.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Moree, "Counting carefree couples" (arXiv:math/0510003)
 
-<!-- source: https://arxiv.org/pdf/math/0510003 | converted from HTML -->
+Source: https://arxiv.org/pdf/math/0510003 — full text at
+`research/sources/moree-carefree-couples.full.md`.
 
-## What is in it
+## What this source establishes
 
-- Mathematics > Number Theory
-- Title: Counting carefree couples
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+A carefree couple is a pair of natural numbers (a,b) with a squarefree and
+gcd(a,b)=1. The paper proves Schroeder's conjectured density of carefree
+couples and a variant, plus a related conjecture on triples of pairwise
+coprime integers, using elementary analytic number theory. The density
+involves products over primes and the constants 6/π², 1/ζ(3), etc.
 
+## Hypotheses
 
-## What it claims
+Probabilistic/density setting on N². Not directly applicable to the finite
+orchard count.
 
-Abstract: A pair of natural numbers (a,b) such that a is both squarefree and coprime to b is called a carefree couple.
-A result conjectured by Manfred Schroeder (in his book `Number theory in science and communication') on carefree couples and a variant of it are established using standard arguments from elementary analytic number theory. Also a related conjecture of Schroeder on triples of integers that are pairwise coprime is proved.
+## What it lets this run do
 
-Comments: | Updated version of 2005 update of 2000 version. Improved and expanded presentation. In estimate (2) now only a weaker error term than before is obtained |
+- Nothing computational: the run's method is exact integer arithmetic, and
+  carefree couples (squarefree AND coprime) are a different condition from the
+  orchard's visibility (coprime only). Context on the density of coprime
+  pairs, not load-bearing.
 
-Subjects: | Number Theory (math.NT) |
+## What it does not settle
 
-MSC classes: | 11A25, 11N37 |
+- No exact finite-region formula; no hexagon; not load-bearing.
 
-Cite as: | [arXiv:math/0510003][6] [math.NT] |
+## Claims
 
-| (or [arXiv:math/0510003v2][7] [math.NT] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.math/0510003][8]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 5871 character source; every section, statement, and proof in full at `research/sources/moree-carefree-couples.full.md`]*
+```claim
+id: carefree-couples-density-context
+statement: Density results for pairs (a,b) with a squarefree and gcd(a,b)=1;
+related constants 6/π² and 1/ζ(3).
+hypotheses: density setting on N².
+holds-here: yes (context only; different condition from orchard visibility).
+status: sourced (Moree, arXiv:math/0510003).
+bearing: none for the exact answer — background on coprime-pair densities.
+anchor: research/summaries/moree-carefree-couples.md
+```

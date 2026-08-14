@@ -45,9 +45,12 @@ results matched. The reference implementation `totientsum.py` is stored at
 
 For n = 10^8, the space-Θ̃(n^{1/2}) Algorithm 1 is entirely feasible (arrays of
 size ~10^4 each), so we do not need Algorithm 13's space reduction; but the
-paper's formula (1) + (2) is exactly the efficient method the run should
-implement, and its Table 1 plus the ancillary code give independent checks at
-Φ(10^8) = 303963552391 (the run's target value appears in OEIS A064018 b-file).
+paper's formula (1) + (2) is exactly the efficient method the run could
+implement, and its Table 1 plus the ancillary code give independent checks.
+**[correction 2026-08-14: the target Φ(10^8) is 3039635516365908, NOT
+303963552391; the latter is Φ(10^6)=303963552392 misread as row 8. The
+correct value appears in the OEIS A064018 b-file row 8 and is independently
+computed by code/solution.py and code/verify_mobius.py.]**
 
 ## Claims
 

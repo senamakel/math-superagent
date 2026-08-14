@@ -33,7 +33,10 @@ The code was used to produce Table 1 of the paper, including the new
 It is the independent reference implementation for the run's
 `code/solution.py`: the run's solver should agree with `totientsum(n)` on
 every n it can reach, and in particular must reproduce Φ(10^8) =
-303963552391 (OEIS A064018 a(8)) and the statement's H(10^8) target.
+3039635516365908 (OEIS A064018 a(8)) and the statement's H(10^8) target.
+**[correction 2026-08-14: the previous text said Φ(10^8)=303963552391; that
+is wrong — it conflates Φ(10^6)=303963552392 with row 8. The correct value
+a(8) = Φ(10^8) is 3039635516365908.]**
 
 Note: the file was downloaded as `.py` and converted to Markdown; to execute
 it, strip the Markdown code fence (the body is the original Python source).

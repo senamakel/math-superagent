@@ -1,37 +1,51 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/proofwiki-euler-phi-mobius.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# ProofWiki — Euler Phi Function in terms of Möbius Function
 
-<!-- source: https://proofwiki.org/wiki/Euler_Phi_Function_in_terms_of_M%C3%B6bius_Function | converted from HTML -->
+Source: https://proofwiki.org/wiki/Euler_Phi_Function_in_terms_of_M%C3%B6bius_Function
+— full text at `research/sources/proofwiki-euler-phi-mobius.full.md`
+[[proofwiki-euler-phi-mobius.full]]
 
-## What is in it
+## What this source establishes
 
-- Euler Phi Function in terms of Möbius Function
-  - Theorem
-  - Proof
-  - Sources
-  - Navigation menu
-    - Search
+**Theorem (φ = μ ∗ id).** For every positive integer n,
 
+    φ(n) = Σ_{d|n} μ(d) · n/d,
 
-## What it claims
+equivalently φ = μ ∗ I_{Z>0} in Dirichlet-convolution notation. This is the
+per-n identity that, summed over n ≤ N and regrouped by d, yields the
+Möbius-inversion formula
 
-$\ds \sum_{d \mathop \divides n}$ denotes the [sum over all of the divisors][2] of $n$ $\map \phi n$ is the [Euler $\phi$ function][3], the number of [integers][4] less than $n$ that are [prime to][5] $n$ $\map \mu d$ is the [Möbius function][6].
+    Φ(N) = (1/2) Σ_{d=1..N} μ(d) ⌊N/d⌋ (1 + ⌊N/d⌋)
 
-Equivalently, this says that:
+used by `code/verify_mobius.py`. The page also carries the standard notation
+(μ(d) the Möbius function, φ the Euler phi).
 
-$\phi = \mu * I_{\Z_{>0} }$
+## Hypotheses
 
-where:
+n ∈ Z>0. Holds here.
 
-$*$ denotes [Dirichlet convolution][7] $I_{\Z_{>0} }$ denotes the [identity mapping][8] on $\Z_{>0}$, that is: $\forall n \in \Z_{>0}: I_{\Z_{>0} }: n \mapsto n$
+## What it lets this run do
 
-| ***Work In Progress***
-In particular: **Add a link to a page proving this equivalence.**
-*You can help $\mathsf{Pr} \infty \mathsf{fWiki}$ by [completing it][9].*
-*To discuss this page in more detail, feel free to use the [talk page][10].*
-*When this work has been completed, you may remove this instance of `{{ [WIP][11] }}`from the code.* |
+- A third, elementary derivation of the Möbius identity that independently
+  verifies Φ(10⁸) (the page's theorem is per-n; the summation step is a
+  one-line regrouping, checked in code by verify_mobius.py against the sieve).
 
-## Statements it makes
+## What it does not settle
 
-## Theorem
+- Nothing about summatory values or complexity; no numerical data.
 
-*[digest of a 5143 character source; every section, statement, and proof in full at `research/sources/proofwiki-euler-phi-mobius.full.md`]*
+## Claims
+
+```claim
+id: euler-phi-mobius-convolution
+statement: φ(n) = Σ_{d|n} μ(d)·(n/d) for every positive integer n
+(φ = μ ∗ id); summing over n ≤ N gives Φ(N) = (1/2)Σ_{d≤N} μ(d)⌊N/d⌋(1+⌊N/d⌋).
+hypotheses: n ≥ 1 integer.
+holds-here: yes — the derived summatory form is implemented in verify_mobius.py
+and agrees exactly with the totient sieve at N = 10^8.
+status: checked — the derived summatory form is implemented in verify_mobius.py
+and agrees exactly with the totient sieve at N = 10^8; per-n theorem sourced
+from ProofWiki.
+bearing: independent elementary derivation of the second verification route to
+Φ(10^8) = 3039635516365908.
+anchor: research/summaries/proofwiki-euler-phi-mobius.md
+```

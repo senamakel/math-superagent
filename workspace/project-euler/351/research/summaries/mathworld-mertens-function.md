@@ -1,36 +1,40 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/mathworld-mertens-function.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# MathWorld — Mertens function
 
-<!-- source: https://mathworld.wolfram.com/MertensFunction.html | converted from HTML -->
+Source: https://mathworld.wolfram.com/MertensFunction.html — full text at
+`research/sources/mathworld-mertens-function.full.md`
+[[mathworld-mertens-function.full]]
 
-## What is in it
+## What this source establishes
 
-- Mertens Function
-  - See also
-  - Explore with Wolfram|Alpha
-  - References
-  - Referenced on Wolfram|Alpha
-  - Cite this as:
-  - Subject classifications
+**Definition.** M(n) = Σ_{k=1..n} μ(k). Values 1, 0, −1, −1, −2, −1, −2, …
+(OEIS A002321). M(n) is the determinant of the n×n Redheffer matrix.
+M(10^n) = 1, −1, 1, 2, −23, −48, 212, 1037, 1928, −222, … (n = 0..9, via
+Deléglise–Rivat 1996).
 
+## Hypotheses
 
-## What it claims
+n ≥ 1 integer. Holds here.
 
-where [image: mu(n)] is the [M&ouml;bius function][2] (Mertens 1897; Havil 2003, p. 208). The first few values are 1, 0, [image: -1], [image: -1], [image: -2], [image: -1], [image: -2], [image: -2], [image: -2], [image: -1], [image: -2], [image: -2], ... (OEIS [A002321][3]). [image: M(n)] is also given by the [determinant][4] of the [image: n×n] [Redheffer matrix][5].
+## What it lets this run do
 
-Values of [image: M(10^n)] for [image: n=0], 1, 2, ... are given by 1, [image: -1], 1, 2, [image: -23], [image: -48], 212, 1037, 1928, [image: -222], ... (OEIS [A084237][6]; Del&eacute;glise and Rivat 1996).
+- Reference for the Mertens function used in the Mertens-first totient
+  formula (Brown Algorithm 1); check values for any Mertens-based route. The
+  run's chosen method (direct totient sieve + Möbius sum) does not need M, so
+  this is reference/context.
 
-The following table summarizes the first few values of [image: n] at which [image: M(n)=k] for various [image: k]
+## What it does not settle
 
-[image: k] | OEIS | [image: n] such that [image: M(n)=k] |
+- No totient values; no algorithm with complexity bound.
 
-[image: -3] | 13, 19, 20, 30, 33, 43, 44, 45, 47, 48, 49, 50, ... |
+## Claims
 
-[image: -2] | 5, 7, 8, 9, 11, 12, 14, 17, 18, 21, 23, 24, 25, 29, ... |
-
-[image: -1] | 3, 4, 6, 10, 15, 16, 22, 26, 27, 28, 35, 36, 38, ... |
-
-0 | [A028442][7] | 2, 39, 40, 58, 65, 93, 101, 145, 149, 150, ... |
-
-1 | [A118684][8] | 1, 94, 97, 98, 99, 100, 146, 147, 148, 161,…
-
-*[digest of a 6856 character source; every section, statement, and proof in full at `research/sources/mathworld-mertens-function.full.md`]*
+```claim
+id: mertens-function-reference
+statement: M(n) = Σ_{k≤n} μ(k); M(10^n) = 1, −1, 1, 2, −23, −48, 212, 1037,
+1928, −222, … for n = 0..9.
+hypotheses: none beyond the definition.
+holds-here: yes (reference values only; not used in the final computation).
+status: catalogued (MathWorld, after Deléglise–Rivat).
+bearing: check values for Mertens-based totient computations.
+anchor: research/summaries/mathworld-mertens-function.md
+```

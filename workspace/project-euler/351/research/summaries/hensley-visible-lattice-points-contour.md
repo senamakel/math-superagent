@@ -1,45 +1,46 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hensley-visible-lattice-points-contour.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hensley, "The number of relatively prime pairs within a contour" (1994)
 
-<!-- source: https://msp.org/pjm/1994/166-2/pjm-v166-n2-p04-s.pdf | converted from PDF -->
+Source: https://msp.org/pjm/1994/166-2/pjm-v166-n2-p04-s.pdf — full text at
+`research/sources/hensley-visible-lattice-points-contour.full.md`.
 
-## What it claims
+## What this source establishes
 
-A similar estimate, with the same sort of error, is ob-
-tained for the number of relatively prime pairs (α, b) of
-positive integers so that ab < r. The error term for a gen-
-eral contour depends on the maximal value of the radius
-of curvature of the bounding contour.
+Estimates P(r), the number of relatively prime pairs (a,b) of positive
+integers with a²+b² < r (or more generally within a convex contour), with
+error terms that improve on the trivial O(r^{1/2+ε}):
 
-1. Introduction . The number R(r) of integer pairs (α, b) for
-which a2 + b2 < r is known to satisfy
+    P(r) = (6/π)r + O_ε(r^{1/2} exp(−c√(log r)))
 
-R(r) = π r + 0 e(rΘ+€)
+and, assuming RH, a better exponent; also a comparable estimate for the
+divisor/lattice-point-under-hyperbola problem. The key parameter is the
+maximum radius of curvature of the bounding contour (Theorem 1: uniform over
+convex contours enclosing the origin with large enough perimeter).
 
-where 1/4 < θ < 7/22. The main result here is an estimate of the
-number P(r) of relatively prime integer pairs (α, 6) within a contour.
-When specialized to the contour x\ + x\ = r, it gives
+## Hypotheses
 
-P(r) = (6/π)r + 0e (r1'2 exp
+Convex contours in R²; pairs (a,b) with gcd(a,b)=1. The contour here is the
+hexagon, which is convex but the bound's applicability to the exact counting
+problem is not established by the paper.
 
-If the Riemann Hypothesis (RH) holds, this improves to
+## What it lets this run do
 
-If we assume further that the correct value of θ in the circle prob-
-lem is 1/4, then the exponent 51/110 becomes 9/10. We give a
+- Nothing computational: the run's method is exact integer arithmetic, not an
+  asymptotic estimate. This source confirms the general shape (visible-point
+  counts in regions ~ 6/π²·area) but does not bear on the exact H(10⁸).
 
-295
+## What it does not settle
 
-296 DOUG HENSLEY
+- No exact formula; no bound for the hexagonal contour; not load-bearing.
 
-comparable estimate for the divisor problem (lattice points under a
-hyperbola) in section 3.
-The first estimate, which does not depend on any unproven hy-
-potheses, holds uniformly over a wide range of convex contours en-
-closing the origin. The key parameter is the maximum…
+## Claims
 
-## Statements it makes
-
-THEOREM 1. There exists a constant C > 0 such that for all
-fixed e > 0; uniformly over A containing the origin and for which
-p(A) > C,
-
-*[digest of a 15128 character source; every section, statement, and proof in full at `research/sources/hensley-visible-lattice-points-contour.full.md`]*
+```claim
+id: primitive-pairs-contour-asymptotic
+statement: P(r) = (6/π)r + O_ε(r^{1/2} exp(−c√log r)) for relatively prime
+pairs in a circle of radius r; error depends on the contour's curvature.
+hypotheses: convex contours, RH not needed for the first bound.
+holds-here: yes (context only).
+status: sourced (Hensley, Pacific J. Math. 166:2, 1994).
+bearing: none for the exact answer — magnitude context only.
+anchor: research/summaries/hensley-visible-lattice-points-contour.md
+```

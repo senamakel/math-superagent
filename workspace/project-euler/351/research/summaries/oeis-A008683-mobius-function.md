@@ -1,44 +1,46 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/oeis-A008683-mobius-function.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# OEIS A008683 — Möbius function
 
-<!-- source: https://oeis.org/A008683 | converted from HTML -->
+Source: https://oeis.org/A008683 — full text at
+`research/sources/oeis-A008683-mobius-function.full.md`
+[[oeis-A008683-mobius-function.full]]
 
-## What is in it
+## What this source establishes
 
-- Note that older versions of Maple define mobius(0) to be -1.
-- This is unwise! Moebius(0) is better left undefined.
-- Changing the sign of the sum gives the number of ordered factorizations of n…
+**Definition.** μ(1)=1; μ(n) = (−1)^k if n is the product of k distinct
+primes; μ(n) = 0 otherwise (n has a squared prime factor).
 
+**Values.** 1, −1, −1, 0, −1, 1, −1, 0, 0, 1, −1, …
 
-## What it claims
+**Möbius inversion (the property the run uses).** f(n) = Σ_{d|n} g(d) for all n
+⟺ g(n) = Σ_{d|n} μ(d)·f(n/d) for all n. With f = id (n ↦ n), g = φ, this is
+the φ = μ ∗ id identity behind the summatory-totient Möbius formula.
 
-1, -1, -1, 0, -1, 1, -1, 0, 0, 1, -1, 0, -1, 1, 1, 0, -1, 0, -1, 0, 1, 1, -1, 0, 0, 1, 0, 0, -1, -1, -1, 0, 1, 1, 1, 0, -1, 1, 1, 0, -1, -1, -1, 0, 0, 1, -1, 0, 0, 0, 1, 0, -1, 0, 1, 0, 1, 1, -1, 0, -1, 1, 0, 0, 1, -1, -1, 0, 1, -1, -1, 0, -1, 1, 0, 0, 1, -1
+**Note.** μ(0) is best left undefined (older Maple defined μ(0) = −1; unwise).
 
-( [list][4]; [graph][5]; [refs][6]; [listen][7]; [history][8]; [text][9]; [internal format][10])
+## Hypotheses
 
-OFFSET
+n ≥ 1 integer. Holds here.
 
-1,1
+## What it lets this run do
 
-COMMENTS
+- Supplies the μ values (computed by the int8 sieve in verify_mobius.py) for
+  the independent Möbius-inversion computation of Φ(10⁸), which agrees
+  exactly with the direct totient sieve.
 
-Moebius inversion: f(n) = Sum_{d|n} g(d) for all n <=> g(n) = Sum_{d|n} mu(d)*f(n/d) for all n.
+## What it does not settle
 
-a(n) depends only on prime signature of n (cf. [A025487][11]). So a(24) = a(375) since 24 = 2^3 * 3 and 375 = 3 * 5^3 both have prime signature (3, 1).
+- No summatory values (that is A002321, the Mertens function).
 
-[A008683][12] = [A140579][13] ^(-1) * [A140664][14]. - [Gary W. Adamson][15], May 20 2008
+## Claims
 
-Coons & Borwein prove that Sum_{n>=1} mu(n) z^n is transcendental. - [Jonathan Vos Post][16], Jun 11 2008; edited by [Charles R Greathouse IV][17], Sep 06 2017
-
-Equals row sums of triangle [A144735][18] (the square of triangle [A054533][19]). - [Gary W. Adamson][15], Sep 20 2008
-
-Conjecture: a(n) is the determinant of Redheffer matrix [A143104][20] where T(n, n) = 0.…
-
-From…
-
-## Statements it makes
-
-Conjecture: a(n) is the determinant of Redheffer matrix [A143104][20] where T(n, n) = 0. Verified for the first 50 terms. - [Mats Granvik][21], Jul 25 2008
-
-Conjecture: Consider the table [A051731][22] and treat 1 as a divisor. Move the value in the lower right corner vertically to a divisor position in the transpose of the table and you will find that the determinant is the Moebius function. The number of permutation matrices that contribute to the Moebius function appears to be [A074206][23]. - [Mats Granvik][21], Dec 08 2008
-
-*[digest of a 19778 character source; every section, statement, and proof in full at `research/sources/oeis-A008683-mobius-function.full.md`]*
+```claim
+id: mobius-function-definition
+statement: μ(1)=1; μ(n) = (−1)^k for n a product of k distinct primes,
+μ(n) = 0 if n has a squared prime factor; φ(n) = Σ_{d|n} μ(d)·(n/d).
+hypotheses: n ≥ 1 integer.
+holds-here: yes — verify_mobius.py's int8 μ sieve and the Möbius-inversion
+sum reproduce Φ(10^8) exactly.
+status: sourced (OEIS A008683).
+bearing: the function behind the second verification route to Φ(10^8).
+anchor: research/summaries/oeis-A008683-mobius-function.md
+```

@@ -21,8 +21,8 @@ A tree is planted at each [lattice point][1] in a circular orchard which has [ce
 More things to try:
 
 - [Bravais lattice][9]
-- [binomial distribution n=40, p=0.32][10]
-- [eigenvalues {{4,1},{2,-1}}][11]
+- [125 + 375][10]
+- [continued fraction pi][11]
 
 ## References
 
@@ -50,8 +50,8 @@ Honsberger, R. "The Orchard Problem." Ch. 4 in *[Mathematical Gems I.][12]*Washi
 [7]: /Orchard-PlantingProblem.html
 [8]: /VisiblePoint.html
 [9]: https://www.wolframalpha.com/input/?i=Bravais+lattice
-[10]: https://www.wolframalpha.com/input/?i=binomial+distribution+n%3D40%2C+p%3D0.32
-[11]: https://www.wolframalpha.com/input/?i=eigenvalues+%7B%7B4%2C1%7D%2C%7B2%2C-1%7D%7D
+[10]: https://www.wolframalpha.com/input/?i=125+%2B+375
+[11]: https://www.wolframalpha.com/input/?i=continued+fraction+pi
 [12]: http://www.amazon.com/exec/obidos/ASIN/0883853019/ref=nosim/ericstreasuretro
 [13]: https://www.wolframalpha.com/input/?i=orchard+visibility+problem
 [14]: /about/author.html

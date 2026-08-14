@@ -6,7 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[pe351-phi-1e8]] | What is the summatory totient Phi(10^8) = sum_{k<=10^8} phi(k), and hence H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8)? | open | gauss-divisor-sum-of-totient, (research/notes/pe351-governing-theory.md);, summatory-totient-mobius-identity;, totient-sum-verification-values;, totient-sum-fast-recursion. | tool_builder implements one of the three routes: (a) linear/segmented sieve for phi up to 10^8 (O(n log log n), ~400 MB uint32; machine has 30 GiB/28 cores, so… |
+| [[pe351-phi-1e8]] | What is the summatory totient Phi(10^8) = sum_{k<=10^8} phi(k), and hence H(10^8) = 3*10^8*(10^8+1) - 6*Phi(10^8)? | open | gauss-divisor-sum-of-totient, (research/notes/pe351-governing-theory.md);, summatory-totient-mobius-identity;, totient-sum-verification-values;, totient-sum-fast-recursion. | none — the final answer is computed and cross-checked three ways. |
 
 ## Resting on nothing recorded
 

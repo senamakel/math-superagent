@@ -1,32 +1,45 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/baake-grimm-warrington-visible-points-lattice.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Baake, Grimm & Warrington, "Some remarks on the visible points of a lattice" (1994)
 
-<!-- source: https://iopscience.iop.org/article/10.1088/0305-4470/27/8/006 | converted from HTML -->
+Source: https://iopscience.iop.org/article/10.1088/0305-4470/27/8/006 — full
+text at `research/sources/baake-grimm-warrington-visible-points-lattice.full.md`.
 
-## What is in it
+## What this source establishes
 
-- Some remarks on the visible points of a lattice
-  - Authors
-  - Article metrics
-  - Permissions
-  - Share this article
-  - Article information
-  - Abstract
-  - Access this article
-    - Login
-    - Purchase from
-    - Rent from
-    - Make a recommendation
-  - You may also like
+Studies the set of visible points of a lattice and its Fourier transform,
+continuing Schroeder (1982) and Mosseri (1992); obtains a closed formula in
+terms of Dirichlet series for the Bragg part of the Fourier transform, and
+compares with the optical Fourier transform of the visible points of the 2D
+square lattice.
 
+**Relevant fact for this run:** the visible points of a lattice are exactly
+the primitive points (gcd = 1 in a suitable basis) — the same
+coprimality-iff-visible criterion MathWorld states. The rest is about
+diffraction spectra, which this run does not need.
 
-## What it claims
+## Hypotheses
 
-We comment on the set of visible points of a lattice and its Fourier transform, thus continuing and generalizing previous work by Schroeder (1982) and Mosseri (1992). A closed formula in terms of Dirichlet series is obtained for the Bragg part of the Fourier transform. We compare this calculation with the outcome of an optical Fourier transform of the visible points of the 2D square lattice.
+Lattice geometry; holds here for the rank-2 lattice of the orchard.
 
-Export citation and abstract [BibTeX][13] [RIS][14]
+## What it lets this run do
 
-****[Previous article in issue][15]
+- Corroborates the visibility criterion from a second, independent source
+  (physics literature).
 
-****[Next article in issue][16]
+## What it does not settle
 
-*[digest of a 4541 character source; every section, statement, and proof in full at `research/sources/baake-grimm-warrington-visible-points-lattice.full.md`]*
+- No counting formula, no finite-orchard enumeration. Not load-bearing for
+  the final answer.
+
+## Claims
+
+```claim
+id: visible-points-primitive-corroboration
+statement: The visible points of a lattice are its primitive points
+(gcd = 1 in a lattice basis); corroborates the coprimality-iff-visible
+criterion from the physics literature.
+hypotheses: rank-2 lattice; holds for the orchard's lattice.
+holds-here: yes.
+status: sourced (Baake–Grimm–Warrington 1994).
+bearing: second-source corroboration of the visibility criterion.
+anchor: research/summaries/baake-grimm-warrington-visible-points-lattice.md
+```

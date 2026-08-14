@@ -1,49 +1,42 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wikipedia-farey-sequence.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wikipedia — Farey sequence
 
-<!-- source: https://en.wikipedia.org/wiki/Farey_sequence | converted from HTML -->
+Source: https://en.wikipedia.org/wiki/Farey_sequence — full text at
+`research/sources/wikipedia-farey-sequence.full.md`
+[[wikipedia-farey-sequence.full]]
 
-## What is in it
+## What this source establishes
 
-  - Examples
-    - Farey sunburst
-  - History
-  - Properties
-    - Sequence length and index of a fraction
-    - Farey neighbours
-      - Equivalent-area interpretation
-    - Farey neighbours and continued fractions
-    - Farey fractions and the least common multiple
-    - Farey fractions and the greatest common divisor
-    - Applications
-    - Ford circles
-    - Riemann hypothesis
-    - Other sums involving Farey fractions
-  - Next term
-  - See also
-  - Footnotes
-  - References
-  - Further reading
-  - External links
+The Farey sequence F_n of order n is the ascending sequence of completely
+reduced fractions between 0 and 1 with denominators ≤ n. Its length
+|F_n| = 1 + Σ_{k=1..n} φ(k) = 1 + Φ(n) — the same summatory totient as the
+orchard's per-sector visible count (A002088 comment: a(n) is the number of
+rationals p/q in (0,1] with denominators q ≤ n). Properties: neighbouring
+terms satisfy bc − ad = 1; the Farey sequence relates to Ford circles, the
+Riemann hypothesis, and the totient sum.
 
+## Hypotheses
 
-## What it claims
+n ≥ 1 integer. Holds here.
 
-//upload.wikimedia.org/wikipedia/commons/9/91/Farey_diagram_horizontal_arc_9.svg?utm_source=en.wikipedia.org&amp;utm_campaign=job&amp;utm_content=original</span>","txt":"//upload.wikimedia.org/wikipedia/commons/9/91/Farey_diagram_horizontal_arc_9.svg?utm_source=en.wikipedia.org&utm_campaign=job&utm_content=original"}]]}'> [1] Farey diagram to *F*9 represented with circular arcs. In [the SVG image][2], hover over a curve to highlight it and its terms. 9</sub>."},"image2":{"wt":"Farey sequence denominators 9.svg"},"caption2":{"wt":"Symmetrical pattern made by the denominators of the Farey sequence, ''F''<sub>9</sub>."},"image3":{"wt":"Farey sequence denominators 25.svg"},"caption3":{"wt":"Symmetrical pattern made by the denominators of the Farey sequence, ''F''<sub>25</sub>."}},"i":0}}]}'>
+## What it lets this run do
 
-[3]
+- A different combinatorial face of Φ(n) (Farey length), corroborating the
+  structural role of Φ in counting reduced pairs/fractions; context, not
+  load-bearing for the computation.
 
-Farey diagram to *F*9.
+## What it does not settle
 
-[4]
+- No summatory values at 10⁸; no algorithm.
 
-Symmetrical pattern made by the denominators of the Farey sequence, *F*9.
+## Claims
 
-[5]
-
-Symmetrical pattern made by the denominators of the Farey sequence, *F*25.
-
-In [mathematics][6], the **Farey sequence**of order *n*is the [sequence][7] of completely reduced…
-
-With the…
-
-*[digest of a 55798 character source; every section, statement, and proof in full at `research/sources/wikipedia-farey-sequence.full.md`]*
+```claim
+id: farey-length-totient
+statement: |F_n| = 1 + Φ(n): the Farey sequence of order n has length
+1 + Σ_{k=1..n} φ(k).
+hypotheses: n ≥ 1 integer.
+holds-here: yes (context; consistent with A002088's reduced-fraction count).
+status: sourced (Wikipedia Farey sequence).
+bearing: corroborates the interpretation of Φ as counting reduced fractions.
+anchor: research/summaries/wikipedia-farey-sequence.md
+```

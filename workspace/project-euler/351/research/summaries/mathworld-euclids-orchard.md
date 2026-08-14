@@ -25,8 +25,8 @@ An array of "trees" of unit height located at integer-coordinate points in a [po
 More things to try:
 
 - [Bravais lattice][9]
-- [{25, 35, 10, 17, 29, 14, 21, 31}][10]
-- [Dini's surface][11]
+- [675 & 0x00ff][10]
+- [derivative of x^4 sin x][11]
 
 ## Cite this as:
 
@@ -46,8 +46,8 @@ More things to try:
 [7]: /OrchardVisibilityProblem.html
 [8]: /VisiblePoint.html
 [9]: https://www.wolframalpha.com/input/?i=Bravais+lattice
-[10]: https://www.wolframalpha.com/input/?i=%7B25%2C+35%2C+10%2C+17%2C+29%2C+14%2C+21%2C+31%7D
-[11]: https://www.wolframalpha.com/input/?i=Dini%27s+surface
+[10]: https://www.wolframalpha.com/input/?i=675+%26+0x00ff
+[11]: https://www.wolframalpha.com/input/?i=derivative+of+x%5E4+sin+x
 [12]: /about/author.html
 [13]: /
 [14]: https://mathworld.wolfram.com/EuclidsOrchard.html

@@ -1,55 +1,47 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/primitive-points-rational-polygons.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# G. Martin — primitive lattice points in rational polygons (UBC preprint)
 
-<!-- source: https://personal.math.ubc.ca/~gerg/papers/downloads/PPRP.pdf | converted from PDF -->
+Source: https://personal.math.ubc.ca/~gerg/papers/downloads/PPRP.pdf — full
+text at `research/sources/primitive-points-rational-polygons.full.md`.
 
-## What it claims
+## What this source establishes
 
-We show that the error term is both Ω±(t»log log t) and O(t(log t)…~q(log log t)~q). Both bounds
-extend (to the above class of polygons) known results for the isosceles right triangle, which appear in
-the literature as bounds for the error term in the summatory function for Euler’s ´(n).
+For a fixed rational polygon A, the count of primitive lattice points
+(gcd(m,n)=1, i.e. visible from the origin) in the dilate tA satisfies
 
-1 Introduction
+    #(tA ∩ P) = (6/π²)·t²·Area(A) + E_A(t)
 
-One of the fundamental problems in discrete geometry is to estimate the number of
-lattice points contained in a polygon. In this paper, we concern ourselves with the set
-of primitive lattice points
+with error E_A(t) = Ω±(t log log t) and E_A(t) = O(t(log t)^{2/3}(log log
+t)^{4/3})-type bounds (extending results known for the isosceles right
+triangle / summatory totient). Every rational polygon decomposes into a signed
+sum of fitting triangles (Lemma: any rational polygon is a signed sum of
+fitting triangles; origin-star-shaped ones, a sum).
 
-(Ë.Ë) P = {(m, n) ∈ Z…∶ gcd(m, n) = Ë},
+## Hypotheses
 
-also known as lattice points visible from the origin. It is a classical result that the
-number of primitive lattice points in a “reasonable” region in R… is approximately B
-π…
-times the area of the region. We are interested in the family {tA} of dilates of a ﬁxed
-polygon A, for which we deﬁne the error term
+A a rational polygon in R²; P the primitive points. The orchard's hexagon is
+rational, so the asymptotic applies in principle.
 
-(Ë.…) EA(t) = ¡(tA ∩ P) − B
-π… Area(tA) = ¡(tA ∩ P) − B
-π… t… Area(A).
+## What it lets this run do
 
-he fact that ¡(tA ∩ P) ∼ B
-π… t… Area(A), or equivalently, that EA(t) = o(t…), was
-likely used as far back as Minkowski (see [ËB, p. ™™Ç] or [þ, heorem þ™]). Stronger…
+- Nothing computational: the run's method is exact integer arithmetic. This
+  source confirms the asymptotic shape (visible points ~ 6/π²·area) and the
+  connection between polygon primitive-point counts and the totient error
+  term — context only.
 
-P…
+## What it does not settle
 
-## Statements it makes
+- No exact formula for the hexagon; error-term bounds are not usable for the
+  exact H(10⁸). Not load-bearing.
 
-Proposition ….… For any real numbers T ≥ t ≥ …,
+## Claims
 
-Proposition …. For any positive rational numbers rË and r… and any positive real
-number t,
-
-Corollary ….þ For any positive rational numbers rË and r…, there exist constants c =
-c(rË, r…) and f = f (rË, r…) such that
-
-Corollary ….8 For any ﬁtting triangle T, there exist positive rational numbers c = c(T)
-and f = f (T) such that
-
-Lemma ….Ç Any rational polygon can be written as a signed sum of ﬁtting triangles.
-If the rational polygon is origin-star-shaped, then it can be written as a sum of ﬁtting
-triangles.
-
-Proposition ….™ Let A be a rational polygon. here exist a positive integer k, rational
-numbers cË, . . . , ck, and positive rational numbers fË, . . . , fk (all depending on A) such
-
-*[digest of a 44906 character source; every section, statement, and proof in full at `research/sources/primitive-points-rational-polygons.full.md`]*
+```claim
+id: polygon-primitive-point-asymptotic
+statement: #(tA ∩ P) = (6/π²)t²Area(A) + E_A(t) for rational polygons A, with
+E_A(t) = Ω±(t log log t) and matching upper bounds.
+hypotheses: A rational polygon; P primitive points.
+holds-here: yes (context only; hexagon is rational).
+status: sourced (Martin, PPRP).
+bearing: none for the exact answer — asymptotic context only.
+anchor: research/summaries/primitive-points-rational-polygons.md
+```

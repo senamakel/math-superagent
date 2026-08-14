@@ -21,21 +21,37 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
-| `coprimality-iff-visible` | claim | **ready** | — | A lattice point (x,y) is visible from the origin iff gcd(x,y) = 1; a point is hidden iff its coordinates have gcd > 1, since then (x/g,y/g)… |
-| `gauss-divisor-sum-of-totient` | claim | **ready** | — | sum_{d\|n} phi(d) = n for every positive integer n (Gauss); hence sum_{d=1..n} Phi(floor(n/d)) = n(n+1)/2, which rearranges to the summatory… |
+| `carefree-couples-density-context` | claim | **ready** | — | Density results for pairs (a,b) with a squarefree and gcd(a,b)=1; related constants 6/π² and 1/ζ(3). |
+| `coprimality-iff-visible` | claim | established | — | A lattice point (x,y) is visible from the origin iff gcd(x,y) = 1; a point is hidden iff its coordinates have gcd > 1, since then (x/g,y/g)… |
+| `coprime-pairs-square-recursion` | claim | **ready** | — | a(n) = n² − Σ_{j=2..n} a(⌊n/j⌋) for a(n) = #{(x,y): 1≤x,y≤n, gcd(x,y)=1} (OEIS A018805); equivalently a(n) = 2Φ(n) − 1. |
+| `cototient-definition` | claim | **ready** | — | The cototient is n − φ(n); its partial sums are A063985(n), and H(n) = 6·A063985(n) for the hexagonal orchard. |
+| `euler-phi-mobius-convolution` | claim | established | — | φ(n) = Σ_{d\|n} μ(d)·(n/d) for every positive integer n (φ = μ ∗ id); summing over n ≤ N gives Φ(N) = (1/2)Σ_{d≤N} μ(d)⌊N/d⌋(1+⌊N/d⌋). |
+| `farey-length-totient` | claim | **ready** | — | \|F_n\| = 1 + Φ(n): the Farey sequence of order n has length 1 + Σ_{k=1..n} φ(k). |
+| `gauss-divisor-sum-of-totient` | claim | **ready** | — | Σ_{d\|n} φ(d) = n for every positive integer n (Gauss); hence Σ_{d=1..n} Φ(⌊n/d⌋) = n(n+1)/2, which rearranges to the summatory recursion… |
 | `heath-brown-mobius-identity` | claim | **ready** | — | For u ≥ √x, μ(n) = − Σ_{m1 m2 n1 = n, m1,m2 ≤ u} μ(m1)μ(m2) + 2μ(n)·[n ≤ u]; summing over n ≤ x gives M(x) = 2M(u) − Σ_{m1,m2 ≤ u}… |
-| `hexagonal-orchard-closed-form` | claim | **ready** | — | For every n ≥ 1, H(n) = 6·(C(n+1,2) − Σ_{k=1..n} φ(k)) = 6·Σ_{k=1..n}(k − φ(k)). |
 | `hexorchard-totient` | goal | blocked | `hexorchard-totient/G-answer-verification`, `hexorchard-totient/G-hexorchard-visibility`, `hexorchard-totient/G-summatory-totient-value` | Determine H(100000000) exactly, via the closed form H(n) = 3n^2 + 3n - 6*Phi(n),  Phi(n) = sum_{k=1..n} phi(k), evaluated at n = 10^8. |
 | `hexorchard-totient/G-answer-verification` | lemma | **ready** | — | The value H(10^8) = 3*10^8*(10^8 + 1) - 6V produced from G1 and G2 is the true H(10^8): both the closed form and the computed V are… |
 | `hexorchard-totient/G-hexorchard-visibility` | lemma | **ready** | — | For every n >= 1, the hexagonal orchard of order n contains 3n^2 + 3n + 1 lattice points, of which exactly 1 + 6*Phi(n), Phi(n) =… |
 | `hexorchard-totient/G-summatory-totient-value` | lemma | **ready** | — | Phi(10^8) = sum_{k=1}^{10^8} phi(k) has an exact integer value V, computable by an established algorithm: the Euler-totient sieve over k <=… |
 | `lehman-mertens-identity` | claim | **ready** | — | For 1 ≤ u ≤ x, M(x) = M(u) − Σ_{m≤u} μ(m) Σ_{u/m<n≤x/m} M(⌊x/(mn)⌋), with M(t) = Σ_{k≤t} μ(k). |
+| `mertens-computation-context` | claim | **ready** | — | M(x) can be computed for all x ≤ 10^16 and powers of two to 2^73; Mertens conjecture false; \|M(x)/√x\| bounds ±1.8376/1.8261. |
 | `mertens-first-totient-formula` | claim | **ready** | — | For ab = n, Φ(n) = Σ_{x≤a} μ(x)·⌊n/x⌋(⌊n/x⌋+1)/2 + Σ_{y≤b} y·M(⌊n/y⌋) − (b(b+1)/2)·M(a). |
+| `mertens-function-reference` | claim | **ready** | — | M(n) = Σ_{k≤n} μ(k); M(10^n) = 1, −1, 1, 2, −23, −48, 212, 1037, 1928, −222, … for n = 0..9. |
 | `mertens-recursion` | claim | **ready** | — | For αβ = n, M(n) = 1 + ⌊β⌋M(α) − Σ_{x≤α} μ(x)⌊n/x⌋ − Σ_{y=2..β} M(⌊n/y⌋). |
+| `mertens-values-catalogued` | claim | **ready** | — | M(n) = Σ_{k≤n} μ(k); M(10^n) = 1, −1, 1, 2, −23, −48, 212, 1037, 1928, −222, … for n = 0..9. |
+| `mobius-function-definition` | claim | **ready** | — | μ(1)=1; μ(n) = (−1)^k for n a product of k distinct primes, μ(n) = 0 if n has a squared prime factor; φ(n) = Σ_{d\|n} μ(d)·(n/d). |
+| `mobius-inversion-formula` | claim | **ready** | — | f(n) = Σ_{d\|n} g(d) for all n ⟺ g(n) = Σ_{d\|n} μ(d) f(n/d); hence φ(n) = Σ_{d\|n} μ(d)·(n/d) and Φ(N) = (1/2)Σ_{d≤N} μ(d)⌊N/d⌋(1+⌊N/d⌋). |
 | `pe351-hidden-formula` | claim | **ready** | — | H(n) = 6 * (C(n+1,2) - sum_{i=1..n} phi(i)) = 6 * sum_{i=1..n} (i - phi(i)), where phi is Euler's totient function. Equivalently H(n) = 6 *… |
-| `summatory-totient-mobius-identity` | claim | **ready** | — | sum_{i=1..n} phi(i) = (1/2) * (1 + sum_{d=1..n} mu(d) * floor(n/d)^2), where mu is the Moebius function. Equivalently Phi(n) = (1/2) *… |
-| `totient-sum-fast-recursion` | claim | **ready** | — | A063985(n) = (2*n + c - j) // 2 where j starts at 2 and the sum c = sum over distinct values k1 = n//j of (j2-j)*(k1*(k1+1) - 2*A063985(k1)… |
+| `polygon-primitive-point-asymptotic` | claim | **ready** | — | #(tA ∩ P) = (6/π²)t²Area(A) + E_A(t) for rational polygons A, with E_A(t) = Ω±(t log log t) and matching upper bounds. |
+| `primitive-pairs-contour-asymptotic` | claim | **ready** | — | P(r) = (6/π)r + O_ε(r^{1/2} exp(−c√log r)) for relatively prime pairs in a circle of radius r; error depends on the contour's curvature. |
+| `summatory-totient-counts-visible-pairs` | claim | **ready** | — | Φ(n) counts the ordered pairs (x,y) with 1 ≤ x ≤ y ≤ n and gcd(x,y) = 1; hence the number of visible points in one sector of the hexagonal… |
+| `summatory-totient-mobius-identity` | claim | established | — | Φ(n) = (1/2) Σ_{k=1..n} μ(k)⌊n/k⌋(1+⌊n/k⌋), μ the Möbius function. |
+| `totient-definition-and-growth` | claim | **ready** | — | φ(n) = #{1 ≤ k ≤ n : gcd(k,n)=1}; Σ_{k≤n} φ(k) ~ (3/π²)n². |
+| `totient-magnitude-anchor` | claim | **ready** | — | Φ(x) = 3x²/π² + O(x log x); hence Φ(10^8) ≈ 3.0396×10^15. |
+| `totient-sum-fast-recursion` | claim | established | — | A063985(n) = (2n + c − j)//2 with j starting at 2 and c = Σ over distinct values k1 = n//j of (j2−j)·(k1(k1+1) − 2·A063985(k1) − 1), j2 =… |
 | `totient-sum-verification-values` | claim | **ready** | — | Phi(10^k) for k = 0..8 is 1, 32, 3044, 304192, 30397486, 3039650754, 303963552392, 30396356427242, 3039635516365908  (OEIS A064018). |
+| `visible-point-density-zeta` | claim | **ready** | — | The visible points of a lattice Γ ⊂ R^n have density dens(Γ)/ζ(n) (6/π² in 2D). |
+| `visible-points-primitive-corroboration` | claim | **ready** | — | The visible points of a lattice are its primitive points (gcd = 1 in a lattice basis); corroborates the coprimality-iff-visible criterion… |
 
 ## Resting on nothing that exists
 

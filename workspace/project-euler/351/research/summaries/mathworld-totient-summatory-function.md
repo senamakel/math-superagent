@@ -1,72 +1,68 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/mathworld-totient-summatory-function.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# MathWorld — Totient summatory function
 
-<!-- source: https://mathworld.wolfram.com/TotientSummatoryFunction.html | converted from HTML -->
+Source: https://mathworld.wolfram.com/TotientSummatoryFunction.html — full text
+at `research/sources/mathworld-totient-summatory-function.full.md`
+[[mathworld-totient-summatory-function.full]]
 
-## What is in it
+## What this source establishes
 
-- Totient Summatory Function
-  - See also
-  - Explore with Wolfram|Alpha
-  - References
-  - Referenced on Wolfram|Alpha
-  - Cite this as:
-  - Subject classifications
+Definition. Φ(n) = Σ_{k=1..n} φ(k) (eq. 1).
 
+**Möbius-inversion identities (eqs. 2–4).**
 
-## What it claims
+    Φ(n) = Σ_{m=1..n} m Σ_{d|m} μ(d)/d
+         = Σ_{d=1..n} μ(d) Σ_{d'=1..⌊n/d⌋} d'
+         = (1/2) Σ_{d=1..n} μ(d) ⌊n/d⌋ (1 + ⌊n/d⌋)
 
-where [image: zeta(z)] is the [Riemann zeta function][5] (Perrot 1881; Nagell 1951, p. 131; Hardy and Wright 1979, p. 268; blue curve above). An improved asymptotic estimate due to Walfisz (1963) is given by
+(Hardy and Wright 1979, p. 268). The last form is exactly the formula
+`code/verify_mobius.py` implements to independently recompute Φ(10⁸).
 
-[image:  Phi(x)&sim;(3x^2)/(pi^2)+O[x(lnx)^(2/3)(lnlnx)^(4/3)]. ] |
+**Asymptotics.** Φ(x) ~ 3x²/π² + O(x log x) (Perrot 1881; Nagell 1951; Hardy
+and Wright 1979, p. 268); Walfisz (1963) gives
+Φ(x) = 3x²/π² + O(x (log x)^{2/3} (log log x)^{4/3}).
 
-(7)
+First values 1, 2, 4, 6, 10, 12, 18, 22, 28, … (OEIS A002088).
 
-|
+## Hypotheses
 
-[image: TotientInverseSummatory]
+n ≥ 1 integer for the exact identities; the asymptotic is for real x. All
+hold here.
 
-Consider the [summatory function][2] of [image: 1/phi(n)],
+## What it lets this run do
 
-[image:  S(N)=sum_(n=1)^N1/(phi(n)), ] |
+- Independent sourcing of the Möbius-inversion route to Φ(10⁸) (the exact
+  formula used by verify_mobius.py).
+- Magnitude anchor: Φ(10⁸) ≈ 3·10¹⁶/π² ≈ 3.0396×10¹⁵, confirming that the
+  run's Φ(10⁸)=3039635516365908 has the correct size (and that the erroneous
+  "303963552391" — Φ(10⁶) — does not).
 
-(8)
+## What it does not settle
 
-|
+- No algorithm with complexity bound; that is Brown's paper.
+- No specific value of Φ(10⁸).
 
-plotted as the red curve above. For [image: N=1], 2, ..., the first few terms are 1, 2, 5/2, 3, 13/4, 15/4, 47/12, 25/6, ... (OEIS [A028415][6] and [A048049][7]). The sum diverges as [image: N->infty], but Landau (1900) showed that the asymptotic behavior is given by
+## Claims
 
-[image:  S(N)&sim;A(gamma+lnN)+B+O((lnN)/N), ] |
+```claim
+id: summatory-totient-mobius-identity
+statement: Φ(n) = (1/2) Σ_{d=1..n} μ(d)⌊n/d⌋(1+⌊n/d⌋).
+hypotheses: n ≥ 1 integer.
+holds-here: yes — implemented in verify_mobius.py, exact agreement with the
+totient sieve at n = 10^8.
+status: checked — verify_mobius.py implements this identity with an int8 μ
+sieve and agrees exactly with the totient sieve at N = 10^8
+(Φ(10^8) = 3039635516365908); identity sourced from Wikipedia and MathWorld.
+bearing: the independent second computation of Φ(10^8)=3039635516365908.
+anchor: research/summaries/mathworld-totient-summatory-function.md
+```
 
-(9)
-
-|
-
-where [image: gamma] is the [Euler-Mascheroni constant][8],
-
-[image: A] | [image: =] | [image: sum_(k=1)^(infty)([mu(k)]^2)/(kphi(k))] |
-
-(10)
-
-|
-
-| [image: =] | [image: (zeta(2)zeta(3))/(zeta(6))] |
-
-(11)
-
-|
-
-| [image: =] | [image: (315)/(2pi^4)zeta(3)] |
-
-(12)
-
-|
-
-| [image: =] | [image: 1.9435964368...] |
-
-(13)
-
-|
-
-[image: B] | [image: =]…
-
-*[digest of a 7974 character source; every section, statement, and proof in full at `research/sources/mathworld-totient-summatory-function.full.md`]*
+```claim
+id: totient-magnitude-anchor
+statement: Φ(x) = 3x²/π² + O(x log x); hence Φ(10^8) ≈ 3.0396×10^15.
+hypotheses: none beyond the asymptotic.
+holds-here: yes — computed ratio Φ(10^8)/10^16 = 0.303964 vs 3/π² = 0.303964.
+status: sourced (MathWorld TotientSummatoryFunction eq. (6); Walfisz 1963)
+bearing: rules out any four-orders-of-magnitude error in Φ(10^8); the correct
+value must be ≈ 3.04×10^15, which 3039635516365908 is and 303963552391 is not.
+anchor: research/summaries/mathworld-totient-summatory-function.md
+```
