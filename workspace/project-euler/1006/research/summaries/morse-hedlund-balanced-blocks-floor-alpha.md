@@ -17,13 +17,18 @@ for:
 > "letter-1-balanced" / balanced property).
 
 Combined with the Sturmian factor-complexity fact (exactly `n+1` distinct length-`n`
-factors), this gives the requested indexing: the length-`n` factors of a Sturmian word of
-slope `α` are exactly the **balanced binary words of length `n`** — those with either
-`⌊nα⌋` or `⌈nα⌉` occurrences of the `α`-frequency letter — and there are exactly `n+1`
-of them.
+factors), the balanced-blocks condition is a **necessary** restriction on the factors.
+**It is NOT a bijection / enumeration:** the set of balanced binary words of length `n`
+with `⌊nα⌋` or `⌈nα⌉` ones strictly contains the factor set and has more than `n+1`
+elements (refuted by computation, `research/approaches/balanced-factors-claim-attack.md`:
+k=3 gives 6 candidate words vs 4 factors; k=4 gives 10 vs 5). The factor set is
+enumerated by the Perrin–Restivo consecutive-factor rule, not by the balanced-count
+paraphrase.
 
 For the Fibonacci word (slope `α = 1/φ² = (3−√5)/2`, the frequency of the letter `1`),
-every length-`k` factor has `⌊k/φ²⌋` or `⌈k/φ²⌉` occurrences of `1`.
+every length-`k` factor has `⌊k/φ²⌋` or `⌈k/φ²⌉` occurrences of `1` — necessary only.
+Claim `PE1006-factors-one-count-necessary` (governing-theory note) is the surviving
+correct statement.
 
 The paper's own content (balance of S-adic substitution languages, factor-balance) is
 beside the point for PE1006; the value is the faithfully quoted Morse–Hedlund balanced-

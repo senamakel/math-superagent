@@ -4,11 +4,16 @@
 id: psi-sum-squares-recurrence
 question: How to compute Psi(k) = sum over the k+1 length-k factors w of the Fibonacci word
   (Sturmian, slope 1/phi^2) of (decimal value of w)^2, in poly(log k), to get Psi(10^18) mod 101001001.
-status: blocked on closed-form/recurrence
-rests-on: PE1006-kplus1-FACT, PR-consecutive-factors-lex, PE1006-factors-dependent-slop-only, MH-kplus1-factors
-blocked-by: no known indexed enumeration of factors that relates grade-k values to grade-(k-1) in
-  poly(log k); the PR Sturm() enumeration is O(k^2), infeasible at k=10^18.
-next: derive a recurrence from the b^p a^q column structure of the lex-ordered (k+1)xk factor matrix
+status: partially unblocked at Fibonacci k; still open at k=10^18
+rests-on: PE1006-kplus1-FACT, PR-consecutive-factors-lex, PE1006-factors-dependent-slop-only, MH-kplus1-factors,
+  PE1006-conjugate-singular-iff-fibonacci, chuan-cyclic-shift-index
+blocked-by: at Fibonacci k=F_n the conjugate class gives positional arithmetic-progression index rules
+  (Chuan Thm 11/Cor 12) that reduce the rotation-sum Psi(F_n) to poly-log arithmetic; the gap that remains
+  is (a) the singular factor and (b) stepping from F_n to the general k=10^18 (which is not a Fibonacci
+  index) and (c) the decimal (a=0,b=1) re-reading of Chuan's a/b positions. General-k poly-log still open.
+next: derive the closed rotation-sum Psi(F_n) from Chuan's arithmetic-progression positions plus the
+  singular square, then reach k=10^18 from the nearest Fibonacci index via the verified extension
+  recurrence Psi(k+1)=100(Psi(k)+v_R^2)+20P1+N1 (PE1006-extension-formula, R(k)=f[0..k-1]^R by MSS Thm 18).
 ```
 
 ## What unblocks / kills

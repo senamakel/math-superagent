@@ -8,13 +8,31 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `Chuan-cyclic-shift-indexed-enumeration` | The F_n cyclic shifts T^{js}(q_n), 0<=j<F_n, of Chuan's canonical Fibonacci word q_n (length F_n) are the conjugates of the standard length-F_n word; positions of the a/1 letters in T^{js}(q_n) are given explicitly: k… | **unchecked** | asserted | `research/summaries/chuan-fibonacci-words-fq.md` |
 | `MH-kplus1-factors` | An aperiodic word has p(n) >= n+1 for all n; a balanced word has p(n) <= n+1; hence a balanced aperiodic word (a Sturmian word) has exactly n+1 distinct factors of length n. | yes | proved | `research/summaries/morse-hedlund-theorem-sturmian-characterization.md` |
+| `PE1006-M-is-prime` | 101001001 is prime (its only prime-power factorization is itself). | yes | checked | `code/out/PE1006_tasks_ABC_note.md` |
+| `PE1006-balanced-bijection-refuted-checked` | The k+1 length-k factors of the Fibonacci word are NOT in bijection with the balanced binary words of length k that have floor/ceil(k*alpha) ones (alpha=1/phi^2). Verified by direct computation: k=4 factors are exactly… | yes | checked | `research/approaches/balanced-factors-claim-attack.md` |
+| `PE1006-columns-circular-intervals` | In the (k+1)xk factor matrix of the Fibonacci word (rows=k+1 length-k factors in lex order, columns=positions), every column is a contiguous circular interval of 1s on the (k+1)-circle; its length N(i;k) is in… | yes | checked | `code/out/PE1006_tasks_ABC_note.md` |
+| `PE1006-extension-formula` | Psi(k+1) = 100(Psi(k) + v_R(k)^2) + 20 P1(k) + N1(k), where R(k) is the unique right-special length-k factor, P1(k) = sum of values of length-k factors w with w1 a factor, N1(k) = their count. | yes | checked | `code/out/computed-findings.md` |
 | `PE1006-factors-dependent-slop-only` | Two Sturmian words have the same set of factors iff they have the same slope; the length-k factor set depends only on slope, not on intercept or finite truncation. | yes | asserted | `research/notes/governing-theory-sturmian.md` |
 | `PE1006-factors-one-count-necessary` | Every length-k factor of the infinite Fibonacci word (Sturmian, slope a=1/phi^2=(3-sqrt5)/2) has either floor(k*a) or ceil(k*a) occurrences of the letter 1 (Morse-Hedlund balanced-blocks fact). | yes | asserted | `research/notes/governing-theory-sturmian.md` |
 | `PE1006-kplus1-FACT` | The infinite Fibonacci word F (fixed point of 0->01,1->0, slope (3-sqrt5)/2) is a Sturmian word, so it has exactly k+1 distinct factors of length k for every k>=1; and this equals the set of the problem's length-k… | yes | asserted | `research/notes/governing-theory-sturmian.md` |
+| `PE1006-modular-structure` | M = 101001001 is prime; M-1 = 2^3·3·5^3·131·257; ord_10(M) = 50500500 (minimal); Pisano(M) = 101001000 (minimal). Legendre(5/M)=1. | yes | checked | `code/out/computed-findings.md` |
+| `PE1006-no-loworder-linear-recurrence` | No constant-coefficient rational linear recurrence of order <= 40 fits Psi(1..150) exactly (rank-inconsistent over every large prime); BM order 75 = n/2 is the degenerate ceiling. | **unchecked** | checked | `code/out/computed-findings.md` |
+| `PE1006-no-small-eventual-period` | r(k)=Psi(k) mod 101001001 for k=1..150 has no genuine eventual period T<150 (a search requiring >=40 aligned equalities finds none). | yes | checked | `code/out/PE1006_tasks_ABC_note.md` |
+| `PE1006-no-small-eventual-period` | r(k) = Psi(k) mod 101001001 for k = 1..150 has no genuine eventual period with period < 150 (a ≥40-aligned-comparison search finds none). | **unchecked** | checked | `code/out/computed-findings.md` |
+| `PE1006-oracle-agreement` | brute.py reproduces Psi(3)=20302 and Psi(10) ≡ 10699667 (mod 101001001); data.py computes Psi(1..150), agrees with brute on k <= 30, and count == k+1 holds for every k in 1..150. | yes | checked | `code/out/computed-findings.md` |
+| `PE1006-ord10-and-pisano` | ord_10(101001001)=50500500 and the Pisano period of the Fibonacci recurrence mod 101001001 is 101001000 (M-1). | yes | checked | `code/out/PE1006_tasks_ABC_note.md` |
+| `PE1006-rightspecial-reverse-prefix` | The unique right-special length-n factor of the Fibonacci word f is R(n) = f[0..n-1]^R, the reverse of the length-n prefix of f (MSS Thm 18). Also: every nonempty factor of f has least period a Fibonacci number (Thm… | yes | asserted | `research/summaries/mousavi-schaeffer-shallit-fibonacci-automatic-I.md` |
 | `PR-consecutive-factors-lex` | In a Sturmian set F, two equal-length factors u,v are consecutive in lex order iff u=r·ab·s and v=r·ba·s, or u=r·a and v=r·b; the next factor after u is rbas (if u=rabs) or rb (if u=ra), r the longest right-special… | yes | proved | `research/summaries/sturmian-words-hal-note.md` |
 | `PerrinRestivo-len8-len10-lists` | The Fibonacci Sturmian set's length-8 factors are the 8 conjugates of abaababa plus the singular factor babaabab (9 total); its 11 length-10 factors are listed in the paper's Table 1. | yes | asserted | `research/summaries/sturmian-words-hal-note.md` |
 | `christoffel-conjugate-and-forest` | For coprime a,b the lower and upper Christoffel words of slope b/a are conjugates (Cohn, de Luca–Mignosi); every nontrivial Christoffel word has a unique standard factorization (u,v) into two Christoffel words… | yes | proved | `research/summaries/berstel-christoffel-words-repetitions.md` |
+
+## Contradictions
+
+Resolve these before building on either side.
+
+- `PE1006-balanced-bijection-refuted-checked` (research/approaches/balanced-factors-claim-attack.md) contradicts `PE1006-balanced-factors-floornalpha` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
@@ -23,4 +41,5 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `PE1006-factors-dependent-slop-only` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
 - `PE1006-factors-one-count-necessary` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
 - `PE1006-kplus1-FACT` (research/notes/governing-theory-sturmian.md) — asserted by the source, not proved there and not checked here
+- `PE1006-rightspecial-reverse-prefix` (research/summaries/mousavi-schaeffer-shallit-fibonacci-automatic-I.md) — asserted by the source, not proved there and not checked here
 - `PerrinRestivo-len8-len10-lists` (research/summaries/sturmian-words-hal-note.md) — asserted by the source, not proved there and not checked here

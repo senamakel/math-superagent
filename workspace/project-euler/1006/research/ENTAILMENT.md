@@ -11,3 +11,9 @@ Every claim these rest on is established, so these are too, whatever status thei
 - `PE1006-kplus1-FACT` — filed as asserted, follows from `MH-kplus1-factors`
   - The infinite Fibonacci word F (fixed point of 0->01,1->0, slope (3-sqrt5)/2) is a Sturmian word, so it has exactly k+1 distinct factors of length k for every…
 
+## Already entailed
+
+These add nothing the library did not have. That is not a criticism of them — a consequence worth naming is worth a block — but a *proposal* that lands in this list is not a result, and the cheapest time to find that out is before an attempt is spent on it.
+
+- `PE1006-extension-formula` is covered by `PR-consecutive-factors-lex`: Psi(k+1) = 100(Psi(k) + v_R(k)^2) + 20 P1(k) + N1(k), where R(k) is the unique right-special length-k factor, P1(k) = sum of values of length-k factors w with…
+

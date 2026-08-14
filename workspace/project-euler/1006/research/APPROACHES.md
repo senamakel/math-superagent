@@ -9,12 +9,23 @@ Refuted and spent approaches are kept deliberately. Proposing again what this ru
 | Approach | Idea | Status | Precedent | First step |
 | --- | --- | --- | --- | --- |
 | [[balanced-factors-claim-attack]] | Check whether enumerating the k+1 factors as "all balanced binary words of length k with floor/ceil(k*alpha) ones" (the Morse-Hedlund balanced-count… | refuted | Morse-Hedlund, balancedness, (necessary, condition, only);, Perrin-Restivo, Theorem, 2, gives, the, correct, enumeration. | k=3 and k=4 candidate counts vs factor-set size. |
+| [[christoffel-conjugacy-autocorrelation]] | The k+1 length-k factors of slope 1/φ² are (up to a small number of "singular" factors, counted by the Ostrowski position of k) the cyclic shifts of a single… | proposed | _unchecked_ | For k ≤ 40, verify (against code/out/factors_k40.json) that the factor set is exactly {cyclic shifts of a Christoffel word C_k} ∪ {singular factors}, identify… |
+| [[fibonacci-automatic-linear-representation]] | Show that the map k ↦ Ψ(k) is a Fibonacci-regular sequence (regular in the Zeckendorf/√5 numeration system), i.e. admits a finite linear representation: a… | proposed | _unchecked_ | From the morphism 0→01, 1→0, derive by hand (or check against code/out/factors_k12.txt) a candidate state automaton that, reading the Zeckendorf digits of k,… |
+| [[mechanical-word-beatty-floor]] | Represent the Fibonacci word as the mechanical word f[n] = ⌊(n+2)α⌋ − ⌊(n+1)α⌋ with α = 1/φ² = (3−√5)/2, so the decimal value of the factor at position p… | proposed | _unchecked_ | For k = 1..12 compute the k+1 distinguished start positions P_k (where the distinct factors occur), verify the telescoped val(w_p) formula reproduces… |
 
 ## What closed, and why
 
 Do not propose these again. A reason stated precisely is what makes that possible; one left blank makes this row worthless.
 
 - [[balanced-factors-claim-attack]] (refuted): count-candidates-exceed-kplus1
+
+## Not yet taken to the literature
+
+Nobody has checked whether these are known theory. Grounding one is cheaper than pursuing it: a named theorem arrives with its hypotheses, and a reformulation somebody already tried arrives with the reason it failed.
+
+- [[christoffel-conjugacy-autocorrelation]]: Perrin–Restivo (in library) already gives the prototype: the 9 length-8 factors are 8 conjugates of abaababa plus the singular babaabab. In general the factor set is a Christoffel conjugacy class (the k conjugates of the Christoffel word of the appropriate level) plus a bounded-to-log number of singular words. For a binary word w of length k, Σ_r val(shift_r w)² = Σ_{i,l} c(l−i)·10^{2k−2−i−l} where c(d) = Σ_j w_j w_{j+d} is the autocorrelation; this collapses the 2D double sum over column intersections to a 1D autocorrelation. A Christoffel word's 1-set is a Beatty sequence mod k, so c(d) has an explicit piecewise-closed form from the three-gap structure of its 1-positions, computable in poly-log(k) via the continued fraction of 1/φ².
+- [[fibonacci-automatic-linear-representation]]: The Fibonacci word f is Fibonacci-automatic (Mousavi–Schaeffer–Shallit 2015, "Decision algorithms for Fibonacci-automatic words", already in the library `sources/mousavi-schaeffer-shallit-fibonacci-automatic.full.md`). The substitution tree S_n = S_{n−1}S_{n−2} gives a recursive decomposition of the length-k factor set by the Zeckendorf representation of k, so the auxiliary data needed to evaluate Ψ(k) (the factor set, its values, their squares) evolves by a finite automaton reading the Zeckendorf digits of k. A "Fibonacci-regular" sequence in the sense of Allouche–Shallit then has a linear representation, giving Ψ(10^18) mod M by matrix products with exact arithmetic mod 101001001.
+- [[mechanical-word-beatty-floor]]: f[n] = ⌊(n+2)α⌋ − ⌊(n+1)α⌋ is checked by hand for the Fibonacci word (slope 1/φ², intercept 1/φ²). Summing f[p+j]·10^{k−1−j} over j telescopes (summation by parts) to val(w_p) = ⌊(p+k+1)α⌋ − ⌊(p+1)α⌋·10^{k−1} + 9·Σ_{m=2}^{k} ⌊(p+m)α⌋·10^{k−m}. Then val(w_p)² is a polynomial in the floors ⌊(p+m)α⌋ with power-of-10 coefficients, so Ψ(k) = Σ_{p∈P_k} val(w_p)² is a finite sum of Beatty floor-products Σ_p ⌊(p+m)α⌋⌊(p+n)α⌋ over the k+1 distinguished phases P_k (the three-gap / Ostrowski phase set). These sums are computable in O(log k) because α is quadratic: its continued fraction is [0; 2, 1, 1, 1, …], so ⌊(p+m)α⌋ follows a Fibonacci-indexed recurrence and the floor-sums obey the classical Ostrowski/floor_sum recursion.
 
 ## Approaches that could not be read
 

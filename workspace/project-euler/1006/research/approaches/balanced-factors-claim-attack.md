@@ -41,3 +41,16 @@ The one-count condition does not by itself enumerate the factors (too many candi
 balanced-count claim's bearing ("indexable enumeration") is misplaced. Any formula for Ψ(k)
 built on that enumeration is wrong. Use PR Theorem 2. The necessary condition survives, and
 the length-8/10 factor lists (PerrinRestivo-len8-len10-lists) remain valid check targets.
+
+```claim
+id: PE1006-balanced-bijection-refuted-checked
+statement: The k+1 length-k factors of the Fibonacci word are NOT in bijection with the balanced binary words of length k that have floor/ceil(k*alpha) ones (alpha=1/phi^2). Verified by direct computation: k=4 factors are exactly {0010,0100,0101,1001,1010} (sum of squares 10^2+100^2+101^2+1001^2+1010^2 = 2042402 = Psi(4), matching the brute oracle); 0110 has 2 ones (in {floor(4a),ceil(4a)}={1,2}) but is not a factor, and 0001/1000 have 1 one but are not factors. There are C(4,1)+C(4,2)=10 balanced words of the right count vs only 5 true factors.
+hypotheses: length-4 factors from the factor dump (code/out/factors_k4... via dump_factors.py / data.py), alpha=(3-sqrt5)/2.
+holds-here: yes (this is a disproof of the overreach, not a hypothesis check)
+status: checked — computed, verified against Psi(4)=2042402 brute value.
+bearing: closes request precise-sourced-statement-c1ec by refuting its balanced-word framing; the correct enumeration is Perrin-Restivo Theorem 2 (consecutive factors) with the conjugates-plus-singular factor structure, not the balanced-count paraphrase.
+anchor: research/approaches/balanced-factors-claim-attack.md
+answers: precise-sourced-statement-c1ec
+contradicts: PE1006-balanced-factors-floornalpha (the retracted overreach)
+```
+

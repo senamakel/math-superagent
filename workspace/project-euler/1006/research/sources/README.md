@@ -22,18 +22,30 @@ there are exactly `k+1` distinct Fibonacci subwords of length `k`.
 | `cassaigne-2008-extremal-properties-fibonacci-word.full.md` | Cassaigne, "On extremal properties of the Fibonacci word" (RAIRO ITA 2008) | Extremal/recurrence properties; slope 2-Phi; the Fibonacci word is a standard Sturmian word. |
 | `de-luca-2013-some-extremal-properties-fibonacci-word.full.md` | de Luca, "Some extremal properties of the Fibonacci word" (IJAC 2013) | Extremal palindromic-prefix characterizations of the Fibonacci word among characteristic Sturmian words. |
 | `note-on-sturmian-words-2011.full.md` | Perrin–Restivo, "A note on Sturmian words" (TCS 2012, doi:10.1016/j.tcs.2011.12.047) | Mechanical words, slope/intercept, characteristic word; Sturmian set; the lex-order consecutive-factor theorem. |
-| `morse-hedlund-balanced-blocks-floor-alpha.full.md` | https://hal.science/hal-03869990v2/document (Poirier–Steiner, "Factor-balanced S-adic languages", TCS 2024) | Quotes the Morse–Hedlund balanced-blocks fact: each length-n block of a Sturmian sequence of slope alpha has floor(n alpha) or ceil(n alpha) occurrences of the alpha-frequency letter. Supplies the "exactly the balanced binary words" classification of the k+1 length-k Fibonacci-word factors that request `precise-sourced-statement-c1ec` asked for. |
+| `morse-hedlund-balanced-blocks-floor-alpha.full.md` | https://hal.science/hal-03869990v2/document (Poirier–Steiner, "Factor-balanced S-adic languages", TCS 2024) | Quotes the Morse–Hedlund balanced-blocks fact: each length-n block of a Sturmian sequence of slope alpha has floor(n alpha) or ceil(n alpha) occurrences of the alpha-frequency letter. |
 | `morse-hedlund-1940-sturmian.md` | https://www.jstor.org/stable/2371487 (Morse & Hedlund, "Symbolic dynamics II: Sturmian trajectories", 1940) | The original 1940 paper. Only the paywalled cover was obtainable (307 bytes, unusable); cited for provenance only. |
+| `chuan-fibonacci-words-fq.full.md` | https://www.fq.math.ca/Scanned/30-1/chuan.pdf (Chuan, "Fibonacci words", Fibonacci Quarterly 30.1, 1992, 68–76) | **Indexed enumeration of the Fibonacci-length factor set.** The F_n length-F_n "n-th Fibonacci words" are exactly the F_n cyclic shifts of the canonical coded word q_n; Theorem 11/Corollary 12 give the exact index rule for positions of the 1s in each shift. The bridge to the problem's length-(F_n−1) factor set (prefix-truncating the shifts) is a library conjecture and UNVERIFIED — see code/verify_chuan_enumeration.py. Summary at research/summaries/chuan-fibonacci-words-fq.md. |
+| `de-luca-1981-property-fibonacci-words-slc-pdf.md` (full text, small) | https://www.mat.univie.ac.at/~slc/opapers/sc05deluca.pdf (de Luca, "A Property of Fibonacci words", Sém. Lotharingien Comb. 5 (1981); = the IPL 12 (1981) 193-195 paper) | **Previously blocked primary source now obtained.** Result: for n>=3 each Fibonacci word f_n has a palindrome left factor of length |f_n|-2; for n>=4, f_n is the unique product of two palindromes of lengths |f_{n-1}|-2 and |f_{n-2}|+2. The factorization that pins down the Fibonacci words. (Full text is short and lives entirely in the summaries copy.) |
+| `mousavi-schaeffer-shallit-fibonacci-automatic-I.full.md` | https://cs.uwaterloo.ca/~shallit/Papers/part1.pdf (Mousavi, Schaeffer, Shallit, "Decision algorithms for Fibonacci-automatic words, I: Basic results", RAIRO ITA 50 (2016) 39-66) | Decision procedure over Fibonacci representations; ~31 proven theorems about the Fibonacci word: factor periods are Fibonacci numbers, unique right-special factor is f[0..n-1]^R, palindromes, Lyndon factors, critical exponent etc. Confirms the factor structure the run's recurrence relies on. |
+| `chuan-fibonacci-words-fq.full.md` | https://www.fq.math.ca/Scanned/30-1/chuan.pdf (Chuan, "Fibonacci Words", Fibonacci Quarterly 30.1 (1992) 68-76) | Primary structure of Fibonacci words: the set of nth Fibonacci words = all cyclic shifts of a fixed word (Thm 7), F_n of them; positions of letters as arithmetic progressions mod F_n (Thm 11, Cor 12); Algorithm A constructs the nth Fibonacci word's letter positions directly. Gives the positional/cyclic-shift structure the two-point counts C_2(k,i,i') in the sum-of-squares collapse could exploit. |
 
 ## Notes on availability
 
-- de Luca 1981 "A combinatorial property of the Fibonacci words" (the n+1-distinct-factors
-  result), Cassaigne–Kaboré 2022, and several Elsevier PDFs were blocked by 403; their
-  content is re-covered by the Lothaire chapter and the Perrin–Restivo note.
-- Berstel–Séébold survey at univ-mlv.fr failed to download (connection refused); replaced
-  by the Lothaire chapter (same authors' canonical text).
+- The de Luca 1981 IPL paper (previously 403-blocked) was obtained from the open-access
+  Séminaire Lotharingien de Combinatoire scan (geodesic.mathdoc.fr + mat.univie.ac.at PDF).
+- The RAIRO DOI (10.1051/ita/2016010) for the Fibonacci-automatic paper is 403-blocked;
+  the author's own preprint PDF on Shallit's Waterloo page was obtained instead.
+- Cassaigne–Kaboré 2022 and several Elsevier PDFs remain blocked by 403; content is
+  covered by the Lothaire chapter and Perrin–Restivo note.
+
+## Deprecated / do-not-use files
+
+- `research/sources/mousavi-schaeffer-shallit-fibonacci-automatic.full.md` and
+  `research/sources/mousavi-schaeffer-shallit-fibonacci-automatic.md` were created by
+  mistaken arXiv-ID guesses and now carry only a correction notice. Use the
+  `-I` suffixed files above.
 
 ## Summary notes
 
-Every source above has a digest/summary under `research/summaries/` (same basename). Read
-the summary first; open the `.full.md` only when the summary does not answer the question.
+Every usable source above has a digest/summary under `research/summaries/` (same basename).
+Read the summary first; open the `.full.md` only when the summary does not answer the question.

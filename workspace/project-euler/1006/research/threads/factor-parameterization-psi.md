@@ -17,8 +17,12 @@ next: use the lex-order consecutive-factor rule to write Psi(k) as a sum over r�
 
 ## What the library already gives
 
-- The k+1 factors are the balanced binary words of length k: each has exactly floor(k·α) or
-  ceil(k·α) ones, α = 1/φ² (`PE1006-balanced-factors-floornalpha`, asserted).
+- **Necessary condition only:** every length-k factor of the Fibonacci word has floor(k·α)
+  or ceil(k·α) ones, α = 1/φ² (`PE1006-factors-one-count-necessary`). This is NOT a
+  bijection — the earlier claim `PE1006-balanced-factors-floornalpha` ("the factors are
+  exactly the balanced words with floor/ceil(kα) ones, and there are exactly k+1 of them")
+  was **retracted as false** (`PE1006-balanced-bijection-refuted-checked`): at k=4 there are
+  10 balanced words of the right count but only 5 factors. Do not build on it.
 - The factors ordered lexicographically follow the rule: consecutive pairs are r·ab·s / r·ba·s
   (or r·a / r·b); Next(u) = rbas / rb from the longest right-special prefix r
   (`PR-consecutive-factors-lex`, proved). This is an explicit indexable j -> w_j enumeration:
@@ -27,6 +31,11 @@ next: use the lex-order consecutive-factor rule to write Psi(k) as a sum over r�
   finite-S_n ambiguity.
 - Christoffel conjugate-class + singular-factor structure (`christoffel-conjugate-and-forest`,
   Perrin–Restivo Prop 3 / Example 10) is the natural frame for the fib-index dependence.
+  At k = F_n the k+1 factors are exactly the n rotations of one Christoffel word plus one
+  singular factor (`PE1006-conjugate-singular-iff-fibonacci`, checked to k=60), and Chuan's
+  Thm 11/Cor 12 gives the 1-letter positions inside each rotation as arithmetic progressions
+  mod F_n (`chuan-cyclic-shift-index`) — the positional structure the rotation-sum Psi(F_n)
+  collapses by.
 
 ## Gap
 

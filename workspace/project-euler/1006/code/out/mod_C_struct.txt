@@ -1,0 +1,75 @@
+STRUCTURAL ANALYSIS OF N(i;k)
+
+Fact 1) N(i;k) balanced in i (two consecutive values per k):
+  k= 1: values=[1] balanced=True
+  k= 2: values=[1] balanced=True
+  k= 3: values=[1, 2] balanced=True
+  k= 4: values=[2] balanced=True
+  k= 5: values=[2, 3] balanced=True
+  k= 6: values=[2, 3] balanced=True
+  k= 7: values=[3] balanced=True
+  k= 8: values=[3, 4] balanced=True
+  k= 9: values=[3, 4] balanced=True
+  k=10: values=[4, 5] balanced=True
+  k=11: values=[4, 5] balanced=True
+  k=12: values=[5] balanced=True
+  k=13: values=[5, 6] balanced=True
+  k=14: values=[5, 6] balanced=True
+  k=15: values=[6, 7] balanced=True
+  k=16: values=[6, 7] balanced=True
+  k=17: values=[6, 7] balanced=True
+  k=18: values=[8, 7] balanced=True
+  k=19: values=[8, 7] balanced=True
+  k=20: values=[8] balanced=True
+  k=21: values=[8, 9] balanced=True
+  k=22: values=[8, 9] balanced=True
+  k=23: values=[9, 10] balanced=True
+  k=24: values=[9, 10] balanced=True
+  k=25: values=[9, 10] balanced=True
+  k=26: values=[10, 11] balanced=True
+  k=27: values=[10, 11] balanced=True
+  k=28: values=[11, 12] balanced=True
+  k=29: values=[11, 12] balanced=True
+  k=30: values=[11, 12] balanced=True
+  k=31: values=[12, 13] balanced=True
+  k=32: values=[12, 13] balanced=True
+  k=33: values=[13] balanced=True
+  k=34: values=[13, 14] balanced=True
+  k=35: values=[13, 14] balanced=True
+  k=36: values=[14, 15] balanced=True
+  k=37: values=[14, 15] balanced=True
+  k=38: values=[14, 15] balanced=True
+  k=39: values=[16, 15] balanced=True
+  k=40: values=[16, 15] balanced=True
+  ALL k<=40 balanced: True
+
+Fact 2) N(i;k) constant across i when k=F_m-1:
+  k=F_5-1=4: N(i;k)=[2] (const=True), expected F_3=2, match=True
+  k=F_6-1=7: N(i;k)=[3] (const=True), expected F_4=3, match=True
+  k=F_7-1=12: N(i;k)=[5] (const=True), expected F_5=5, match=True
+  k=F_8-1=20: N(i;k)=[8] (const=True), expected F_6=8, match=True
+  k=F_9-1=33: N(i;k)=[13] (const=True), expected F_7=13, match=True
+  ALL match: True
+
+Fact 3) Test of candidate N(i;k)=floor((k-i)*a+const), a=1/phi^2:
+  best single const c=1.98 matches 111/820 (a perfect fit would be 820/820)
+  => the candidate form does NOT match for k<=40.
+
+  Consistency check at a single k (k=8): would need const 0.94 at i=0 
+  but const 0.33 at i=1 for (k-i)*a to give N=3; so no single const works even per-k.
+
+High-value positions H_k = {i : N(i;k)=max}:
+  k= 6: N=[3, 2, 3, 3, 2, 3]  H=[0, 2, 3, 5]
+  k= 8: N=[4, 3, 4, 3, 3, 4, 3, 4]  H=[0, 2, 5, 7]
+  k=11: N=[5, 4, 5, 5, 4, 5, 4, 5, 5, 4, 5]  H=[0, 2, 3, 5, 7, 8, 10]
+  k=13: N=[5, 5, 6, 5, 5, 6, 5, 6, 5, 5, 6, 5, 5]  H=[2, 5, 7, 10]
+  k=16: N=[7, 6, 7, 6, 6, 7, 6, 7, 7, 6, 7, 6, 6, 7, 6, 7]  H=[0, 2, 5, 7, 8, 10, 13, 15]
+
+Total ones T(k)=sum_i N(i;k)=sum_j #ones(w_j), and k+1, fraction:
+  k= 3: T=5, (k+1)=4, T/(k+1)=1.25
+  k= 4: T=8, (k+1)=5, T/(k+1)=1.6
+  k= 7: T=21, (k+1)=8, T/(k+1)=2.625
+  k=12: T=60, (k+1)=13, T/(k+1)=4.61538461538461538461538461538461538461538461538461538461538
+  k=20: T=160, (k+1)=21, T/(k+1)=7.61904761904761904761904761904761904761904761904761904761905
+  k=33: T=429, (k+1)=34, T/(k+1)=12.6176470588235294117647058823529411764705882352941176470588
+

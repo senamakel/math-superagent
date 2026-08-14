@@ -1,44 +1,36 @@
 # Goal
 
-## Objective
+PE1006: Ψ(10^18) mod 101001001, where Ψ(k) = sum of squares of the k+1
+distinct length-k Fibonacci subwords read as decimal integers (leading zeros
+ignored).
 
-Solve Project Euler problem 1006: compute `Psi(10^18) mod 101001001`, where `Psi` is
-defined as follows.
+Brute oracle verified (Ψ(k) exact k=1..150; Ψ(3)=20302, Ψ(10) mod 101001001
+= 10699667). No constant-coefficient C-finite recurrence for Ψ(k)
+(Berlekamp–Massey saturates at n/2). The risen-sea route: change the ground —
+map the two periodic structures Ψ is built from, and reduce 10^18 via
+exponent-orders rather than a Psi-period.
 
-## Restatement, every symbol defined
+## Status of the three structural tasks (this run)
 
-Let `S_0 = "0"`, `S_1 = "01"`, and for `n >= 2` let `S_n = S_{n-1} S_{n-2}`
-(concatenation). Thus `S_2 = "010"`, `S_3 = "01001"`, `S_4 = "01001010"`, ...
+- TASK A (DONE, verified two ways): M=101001001 is PRIME. ord_10(M)=50500500
+  (=(M-1)/2); Pisano period pi(M)=101001000 (=M-1). M-1=2^3·3·5^3·131·257.
+- TASK B (DONE, negative result explained): r(k)=Psi(k) mod M has NO constant
+  period <= 75 over k=1..150; the small-period reduction route is structurally
+  impossible (ord_10(M)=50500500 >> 150 points means no power of 10 repeats in
+  range). Reduction of 10^18 must be per-exponent mod ord_10(M), not a
+  Psi-period.
+- TASK C (DONE): factor table k=1..12 exact; N(i;k) balanced in i (two
+  consecutive values), constant F_{m-2} at k=F_m-1; candidate
+  N=floor((k-i)a+const) FALSIFIED; exact ones-total T(k)=(k+1)·floor(ka)+r_k.
 
-A **Fibonacci subword** is a contiguous substring (factor) of some `S_n`.
+## Open / remaining
 
-FACT (given in the statement, and the key structural input): for each positive
-integer `k`, there are exactly `k+1` distinct Fibonacci subwords of length `k`.
-
-Each such length-`k` subword is a binary string; interpret it as a decimal number,
-ignoring leading zeros (so a string beginning with `0` is read from its first `1`).
-Let `Psi(k)` be the sum of the squares of these `k+1` values.
-
-### Worked examples (test oracle)
-
-- Length 3. The four distinct Fibonacci subwords of length 3 are
-  `001, 010, 100, 101`.
-  - `001` -> 1
-  - `010` -> 10
-  - `100` -> 100
-  - `101` -> 101
-  - `Psi(3) = 1^2 + 10^2 + 100^2 + 101^2 = 1 + 100 + 10000 + 10201 = 20302`. ✓
-- `Psi(10) = 10699667 (mod 101001001)`. ✓ (given)
-
-### Target
-
-`Psi(10^18) mod 101001001`.
+Computing Ψ(10^18) mod M itself. Blocked on collapsing the double sum over the
+balanced two-value column structure (polysmall in log k) — the factor-sum
+expressed via ord_10/pi exponent reduction. Not a completion yet.
 
 ## Completion criteria
 
-1. `code/brute.py` reproduces `Psi(3) = 20302` and `Psi(10) = 10699667 (mod 101001001)`
-   by direct enumeration of distinct length-`k` substrings over finite `S_n`.
-2. `code/solution.py` computes `Psi(10^18) mod 101001001` with exact integer arithmetic
-   using a method whose cost does NOT grow with `k = 10^18` (poly(log) or closed form).
-3. `solution.py` agrees with `brute.py` on every reachable case, and the final answer
-   is verified by an independent route.
+Three printed + saved reports (done: code/out/mod_A.txt, mod_B.txt,
+mod_C.txt plus _struct/_ones and mod_report.md), all exact, structural
+conclusions stated. Full Ψ(10^18) value remains open (posted to board).
