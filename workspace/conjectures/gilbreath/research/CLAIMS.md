@@ -82,7 +82,7 @@ Resolve these before building on either side.
 
 ## Load-bearing but unverified
 
-Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it. Search the whole ledger with `search_claims`.
 
 - `abgs-2011-s9-mod4-switch-limit-open` (research/summaries/ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.md) — asserted by the source, not proved there and not checked here
 - `agama-trace-restatement` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
@@ -124,27 +124,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `odlyzko-block-lemma` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-mod4-linearization` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-verification-1993` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
-- `orthant-reachability-recharge-constraint-adopted` (research/approaches/orthant-reachability-recharge-constraint.md) — asserted by the source, not proved there and not checked here
-- `proth-1878-no-proof` (research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md) — asserted by the source, not proved there and not checked here
-- `proth-citation-correction` (research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md) — asserted by the source, not proved there and not checked here
-- `proth-myth-retracted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `regeneration-lemma-edge-2-intruder-4-established` (code/out/check_regenerate_lemma.notes.md) — asserted by the source, not proved there and not checked here
-- `ross-2026-decay-constants` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `rubinstein-sarnak-fluctuation-not-bias` (research/approaches/chebyshev-bias-granville-nu2-supply.md) — asserted by the source, not proved there and not checked here
-- `rule90-identification-real-absorption-refuted` (research/approaches/rule90-absorbing-boundary.md) — asserted by the source, not proved there and not checked here
-- `rule90-rowcount-popcount` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
-- `rule90-wikipedia-interior-confirmation` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
-- `runcount-lemma-refuted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `ruzsa-2001-abstract-via-bibliography` (research/notes/library-route-b-nu2-supply-grounding.md) — asserted by the source, not proved there and not checked here
-- `shiu-2000-strings-of-congruent-primes` (research/summaries/shiu-2000-strings-of-congruent-primes.md) — asserted by the source, not proved there and not checked here
-- `tao-cramer-blog-frame` (research/summaries/tao-blog-2026-gilbreath-cramer-model.md) — asserted by the source, not proved there and not checked here
-- `torelli-prime-gap-bound` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `two-separation-hypothesis` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `valid-extension-backward-nonlocal-refuted` (research/approaches/backward-extension-automaton.md) — asserted by the source, not proved there and not checked here
-- `verification-bounds` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `verification-record-2026` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `visser-large-gaps-survey` (research/summaries/warwick-visser-large-gaps-between-primes-survey.md) — asserted by the source, not proved there and not checked here
-- `zero-sum-flow-mincut-restatement-refuted` (research/approaches/zero-sum-flow-conservation-mincut.md) — asserted by the source, not proved there and not checked here
+
+_21 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 
