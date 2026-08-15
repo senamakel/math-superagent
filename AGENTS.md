@@ -31,8 +31,7 @@ evidence for it stays available.
 - [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the
   research tree, the scratch, and checkpointing.
 - [`docs/ledgers.md`](docs/ledgers.md) — the derived ledgers: what each holds,
-  the failure each was written to stop, what bounds their size, and how a run
-  declares one of its own.
+  the failure each stops, what bounds them, and how a run declares one.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
@@ -77,9 +76,9 @@ and the nine in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
 
 - **No agent writes one; the write path refuses a derived file.** Editing one is
   work queued for deletion on the next derivation, not a change.
-- **Every section caps rows, truncates prose, and says what it left out** — a
-  cut list reading as complete is worse than a long one. `ledger/ceiling_test.rs`
-  asserts that, and that past the bound more entries do not mean more file.
+- **Every section caps rows, truncates prose, and says what it left out** — a cut
+  list reading as complete is worse than a long one. `ledger/ceiling_test.rs`
+  asserts it, and that past the bound more entries do not mean more file.
 - **A prompt carries the *index*, not the ledger**: one line per entry, its
   identity and status, ending in the `read_ledger` call that fetches the rest. A
   role told less must be told where the rest is, or it is cheaper *and dumber*.
@@ -87,8 +86,8 @@ and the nine in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
 - **One write operation:** an event names an entry and merges fields; closing
   keeps the entry with its reason rather than deleting it.
 - **A declaration cannot raise a bound, shadow a built-in, or reach a prompt.**
-  The tool schema is fixed for a run, so `ledger` is a checked string, never an
-  enum — which lets a run define an axis and use it the same turn.
+  The tool schema is fixed for a run, so `ledger` is a checked string and never
+  an enum, which lets a run define an axis and use it the same turn.
 
 ## Schools
 
@@ -137,10 +136,10 @@ exist and reads `GOAL.md` beside it. The statement, what counts as a result,
 and the leads into the literature are the workspace's, not the script's: a
 launcher that carried the mathematics would need editing for every problem.
 
-`./euler-tui` **cannot start, stop, or restart anything**. That is the design,
-not a gap, and [`docs/runtime.md`](docs/runtime.md#one-start-command) has the
-evening that settled it: a viewer that cannot launch cannot start a second run
-on a workspace that already has one.
+`./euler-tui` **cannot start, stop, or restart anything** — the design, not a
+gap: [`docs/runtime.md`](docs/runtime.md#one-start-command) has the evening that
+settled it. A viewer that cannot launch cannot start a second run on a
+workspace that already has one.
 
 It *can* direct a run that already exists, which narrows that rule without
 touching what the rule prevents — a directive appends a line to a file and
@@ -152,12 +151,12 @@ creates no container.
 ```
 
 Direction never blocks the run. It is queued in the workspace and picked up at
-the next boundary, so a directive reaches the work in seconds to minutes rather
-than immediately, and the run keeps going whether or not anyone is watching.
-What became of one is written to that workspace's `config/DIRECTIVES.md`; the
-queue itself is `config/directives.jsonl`, appended to by the host and never by
-the run. See [`docs/solution-loop.md`](docs/solution-loop.md#direction-from-a-human)
-for what a directive reaches and what it deliberately cannot.
+the next boundary, so a directive reaches the work in seconds to minutes, and
+the run keeps going whether or not anyone is watching. What became of one goes
+to that workspace's `config/DIRECTIVES.md`; the queue is
+`config/directives.jsonl`, appended to by the host and never by the run.
+[`docs/solution-loop.md`](docs/solution-loop.md#direction-from-a-human) has what
+a directive reaches and what it deliberately cannot.
 
 A directive is asserted, not established. It is routed into the next attempt as
 an instruction and must never be filed as a claim — the `director` role that
@@ -256,25 +255,24 @@ absolute paths, and verify canonical parents before writing. Command tools run
 with `/workspace` as their current directory. A prompt instruction is not a
 security control; enforce boundaries in code and Docker configuration.
 
-Workspace contents are committed. The derivation, the program, and the per-run
+Workspace contents are committed: the derivation, the program and the per-run
 notes are the record of how an answer was reached, which is the point of the
-product, so they belong in history rather than only on the machine that produced
+product, so they belong in history rather than only on the machine that made
 them.
 
-They belong in history, not in every commit. A live run writes into `workspace/`
-continuously, so `.claude/settings.json` sets `AUTO_COMMIT_EVERY=25` for this
-repository: everything is still committed and nothing excluded, it is batched.
-The fine-grained record survives in each workspace's `.workspace-history`, which
-is what `WorkspaceCheckpoint` is for. Do not add a generated artifact to a
-source directory; leave it in its workspace.
+They belong in history, not in every commit. A live run writes continuously, so
+`.claude/settings.json` sets `AUTO_COMMIT_EVERY=25` here: everything is still
+committed and nothing excluded, it is batched, and the fine-grained record
+survives in each workspace's `.workspace-history` — what `WorkspaceCheckpoint`
+is for. Do not add a generated artifact to a source directory.
 
 What is ignored is what a reader would never open: `.python-packages/`, bytecode
 caches, `raw/`, the bulky enumeration pools beside the counts that cite them,
-`trace.jsonl` and `console.log`, and the hidden `config/.*.json` state. Each
-hidden file already has a committed human-readable counterpart beside it —
-`research/FRONTIER.md`, `research/REQUESTS.md` — which is what the derivation
-cites. [`docs/workspace.md`](docs/workspace.md) has the measured hour of commit
-spam that set the batch size. Everything a reader would open stays committed.
+`trace.jsonl` and `console.log`, and the hidden `config/.*.json` state — each of
+which already has a committed human-readable counterpart beside it, such as
+`research/FRONTIER.md`, which is what the derivation cites.
+[`docs/workspace.md`](docs/workspace.md) has the measured hour of commit spam
+that set the batch size. Everything a reader would open stays committed.
 
 ## Secrets
 
