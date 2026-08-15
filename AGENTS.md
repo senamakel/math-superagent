@@ -29,7 +29,7 @@ evidence for it stays available.
 - [`docs/runtime.md`](docs/runtime.md) — the crate layout, `RunBudget`, and the
   tracing that makes a run legible.
 - [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the
-  research tree, the scratch, and checkpointing.
+  research tree, the scratch, checkpointing, and reading what does not fit.
 - [`docs/ledgers.md`](docs/ledgers.md) — the derived ledgers: what each holds,
   the failure each stops, what bounds them, and how a run declares one.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
@@ -59,14 +59,14 @@ Keep them consistent with the code. A rule here that the code does not enforce
 is the failure this repository keeps recording: a prompt instruction is not a
 control, and neither is a document.
 
-## Research gating
+## Gating
 
-`MATH_AGENT_RESEARCH=off`, or the `--no-research` flag on `./agent` and
-`./euler`, withholds `exa_search` and `oeis_lookup`, so a self-contained
-problem tests the runtime's reasoning rather than its ability to look an answer
-up. It is enforced by not registering the tool, not by asking the model to
-abstain: a prompt instruction is not a control. The workspace note tools stay
-available, so the agent can still record and recall its own findings.
+A withheld tool is withheld by **not registering it**, never by asking the model
+to abstain. `MATH_AGENT_RESEARCH=off` / `--no-research` drops `exa_search` and
+`oeis_lookup`, so a problem tests reasoning, not lookup. `MATH_AGENT_RLM=off` /
+`--no-rlm` drops `map_document`, the chunked whole-document read, as a *spend* —
+one call per chunk. Its ceiling is not: above it `read_document` returns an
+outline, and `section`, `lines` and `grep_workspace` reach any part.
 
 ## Ledgers
 

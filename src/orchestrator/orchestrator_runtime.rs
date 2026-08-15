@@ -37,7 +37,15 @@ impl OrchestratorAgent {
         // rather than only by a path someone remembers.
         let documents = WorkspaceDocuments::new(workspace.clone())?
             .with_library(vector_store.clone())
-            .with_screen(screen.clone());
+            .with_screen(screen.clone())
+            // Wrapped in accounting here rather than inside the tool, so a
+            // chunk read appears in `model_accounting` under its own name and a
+            // run interrogating a 400 KB survey can see what that cost it.
+            .with_reader(Arc::new(AccountingModel::new(
+                model.clone(),
+                "chunk_reader",
+                tracer.clone(),
+            )));
         // Commits the workspace after every successful write, so a rewritten
         // solution or an edited belief is recoverable rather than lost.
         let checkpoint: Arc<dyn tinyagents::harness::middleware::Middleware<()>> = Arc::new(

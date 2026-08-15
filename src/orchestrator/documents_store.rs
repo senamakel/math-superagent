@@ -22,7 +22,21 @@ impl WorkspaceDocuments {
             index_lock: Arc::new(tokio::sync::Mutex::new(())),
             library: None,
             screen: None,
+            reader: None,
         })
+    }
+
+    /// Gives the run the recursive read: `map_document` answers a question
+    /// about a document by reading it in chunks with this model.
+    ///
+    /// `model` must already carry accounting; see the field's documentation.
+    #[must_use]
+    pub(super) fn with_reader(
+        mut self,
+        model: Arc<dyn tinyagents::harness::model::ChatModel<()>>,
+    ) -> Self {
+        self.reader = Some(model);
+        self
     }
 
     /// Screens what `download_document` brings back, on a calibration run.
@@ -95,7 +109,25 @@ impl WorkspaceDocuments {
             // stating one is available to every role rather than only to the
             // ones that go looking.
             .chain(super::requests::RequestTool::all(self))
+            // The three ways to read something too large to read. They travel
+            // with the document tools because they are not a specialism: every
+            // role that can open a file can open one that does not fit, and a
+            // role holding `read_document` without them has only the option
+            // this runtime is trying to remove.
+            .chain(super::outline::OutlineTool::all(self))
+            .chain(super::grep::GrepTool::all(self))
+            .chain(super::recursive::MapTool::all(self, self.reader.as_ref()))
             .collect()
+    }
+
+    /// The model the recursive read uses, when the run has one.
+    ///
+    /// Only [`super::recursive`]'s tests reach for this: they build the tool
+    /// directly so they stay green whether or not `MATH_AGENT_RLM` registered
+    /// it. Nothing in the run needs it, because `tools()` already holds it.
+    #[cfg(test)]
+    pub(super) fn reader(&self) -> Option<&Arc<dyn tinyagents::harness::model::ChatModel<()>>> {
+        self.reader.as_ref()
     }
 
     /// The workspace this tool set is rooted at.
@@ -292,6 +324,91 @@ impl WorkspaceDocuments {
     /// Reports whether a visible workspace document exists.
     pub(super) fn exists(&self, relative: &str) -> bool {
         self.readable_path(relative).is_ok()
+    }
+
+    /// Lists every visible file under `relative`, recursively.
+    ///
+    /// Unlike [`Self::file_names`] this descends, because the question
+    /// [`super::grep`] asks is "where in the workspace", and a search that
+    /// stopped at one directory would answer it wrongly rather than
+    /// incompletely — `research/sources/` is two levels below the root a caller
+    /// naturally names.
+    ///
+    /// Ordered, so a search returns the same result twice running, and bounded
+    /// by `limit` so a tree that has grown an enumeration pool cannot turn one
+    /// call into an unbounded walk.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the path is hidden or escapes the workspace.
+    pub(super) async fn walk_files(&self, relative: &str, limit: usize) -> Result<Vec<String>> {
+        ensure_visible(relative)?;
+        let root = self.folder_path(relative)?;
+        // A caller may name a single file; searching it is a reasonable thing
+        // to ask for and refusing would be pedantry.
+        if root.is_file() {
+            return Ok(vec![super::strip_workspace_prefix(relative).to_string()]);
+        }
+        let mut found = Vec::new();
+        let mut pending = vec![root];
+        while let Some(directory) = pending.pop() {
+            if found.len() >= limit {
+                break;
+            }
+            let Ok(mut entries) = tokio::fs::read_dir(&directory).await else {
+                continue;
+            };
+            while let Ok(Some(entry)) = entries.next_entry().await {
+                let name = entry.file_name().to_string_lossy().into_owned();
+                if HIDDEN_ENTRIES.contains(&name.as_str()) || name.starts_with('.') {
+                    continue;
+                }
+                let path = entry.path();
+                let Ok(kind) = entry.file_type().await else {
+                    continue;
+                };
+                if kind.is_dir() {
+                    pending.push(path);
+                } else if kind.is_file()
+                    && let Ok(relative) = path.strip_prefix(&self.workspace)
+                {
+                    found.push(relative.to_string_lossy().into_owned());
+                }
+            }
+        }
+        found.sort();
+        found.truncate(limit);
+        Ok(found)
+    }
+
+    /// Reads a document's bytes as text, refusing anything over `limit`.
+    ///
+    /// Separate from [`Self::read`] because the caller is scanning rather than
+    /// reading: it wants the file skipped, not the call failed, when the file
+    /// is enormous or is not text at all. Nothing is converted — a scan of a
+    /// PDF's raw bytes finds nothing and costs nothing, where converting every
+    /// PDF in a library to Markdown to grep it would cost minutes.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the path is hidden, escapes the workspace, is
+    /// missing, exceeds `limit`, or is not UTF-8.
+    pub(super) async fn read_bounded(&self, relative: &str, limit: u64) -> Result<String> {
+        let path = self.readable_path(relative)?;
+        let metadata = tokio::fs::metadata(&path).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("failed to stat `{relative}`: {error}"))
+        })?;
+        if metadata.len() > limit {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "`{relative}` is {} bytes, over the {limit} byte scan limit",
+                metadata.len()
+            )));
+        }
+        let bytes = tokio::fs::read(&path).await.map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("failed to read `{relative}`: {error}"))
+        })?;
+        String::from_utf8(bytes)
+            .map_err(|_| tinyagents::TinyAgentsError::Validation(format!("`{relative}` is not UTF-8")))
     }
 
     /// Reads a visible workspace document.
