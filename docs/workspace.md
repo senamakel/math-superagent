@@ -338,6 +338,117 @@ a live organizer refreshed it anyway, the usual lesson — a prompt instruction 
 not a control. Writing the log is best effort: the lesson is already in the loop
 state, and losing the archive copy must not cost the run the lesson.
 
+## Reading what does not fit
+
+`read_document` returned whole files, and for most of a workspace that is
+right: a belief, a thread, an approach note is a few kilobytes and reading it
+is one call. The library is the exception, and by the time it was measured it
+was not a small one. The Gilbreath workspace holds **404 Markdown files
+totalling 4.7 MB, of which 37 files hold 60% of the bytes.** The largest is
+`research/sources/martin-annotated-bibliography-comparative-prime-number-theory.full.md`
+at 427,889 bytes — about 107,000 tokens, more than a third of the 300,000-token
+compression trigger, from one call.
+
+A role facing that file had two options and both are bad: spend a third of its
+window on one source, or never open it. The rule that was supposed to prevent
+this is rule 13 of the shared method policy — *"open its `.full.md` companion
+only when the summary does not answer the question, because the full text is
+large enough to crowd out the work"* — which is a prompt instruction, and this
+repository's own maxim says what that is worth. The same shape had already cost
+a live run a 339,652-token model call from `trace.jsonl`, which is why
+`ensure_visible` refuses that file by name. A research source cannot be answered
+that way: it is exactly what the run is supposed to read.
+
+So reading is now two steps, and four tools serve them.
+
+| Tool | Answers |
+|---|---|
+| `outline_document` | what is in this file, and at which lines |
+| `read_document` with `section` or `lines` | that part of it, and nothing else |
+| `grep_workspace` | which file, and where in it, across the whole tree |
+| `map_document` | a question about the whole file, without the file |
+
+**The ceiling is the control.** An unselected `read_document` over 24 KiB does
+not return the document — it returns the outline and says how to select. Every
+byte stays reachable, one named range at a time, and a selected read is bounded
+in turn at 48 KiB, cut at a line, with the line to resume from printed at the
+end. The 24 KiB threshold is set at the size of a long note rather than a short
+paper, so everything the run writes about itself reads exactly as it did before
+and only the library is affected.
+
+The outline is **derived, never stored**. `folder_index` already carries the
+judgement half of cataloguing — what a file is *for*, which only the agent that
+wrote it knows — and that has to be maintained. What a file *contains* needs no
+judgement, so it is recomputed on each read from bytes already in memory, and
+cannot disagree with the file the way a stored table of contents would after
+the next edit. It also works in `research/`, where `INDEX.md` is refused
+because Cognee owns that catalogue.
+
+`map_document` is the recursive read, and it is the one that changes what is
+possible rather than what is cheap. The region is split into 24 KiB chunks;
+each chunk is read by its own model call that sees that chunk and nothing else;
+the short findings are merged by one more call. Only the merged answer reaches
+the caller — a 428 KB bibliography costs it a few hundred tokens of cited
+answer instead of 107,000 of source. Three properties are deliberate:
+
+- **The chunk precedes the question in the prompt.** Providers cache on a
+  prefix, so a run that interrogates one survey five ways re-sends a prefix it
+  has already paid for and is charged the cached rate for the expensive half.
+  Question-first would move the varying part to the front and lose every hit.
+- **A chunk with nothing to say must say `NOTHING`.** The output is an answer
+  with citations, not a summary of the source; contributing a weak match is
+  worse than contributing none, because the merge cannot tell them apart.
+- **A failed or unread chunk is named in the output.** Fifty-nine chunks that
+  answered beat one failure that discards them, but an answer with a hole in it
+  that does not say so will be read as complete.
+
+### Switching the recursion off
+
+The ceiling and the recursion are different kinds of thing, and only one of
+them switches off. The ceiling is a **control**: it costs nothing, stops one
+call spending a context window, and is in force on every run — an operator who
+wants more raises `MATH_AGENT_READ_CEILING` rather than removing it. The
+recursion is a **spend**: one `map_document` over a 428 KB source is eighteen
+provider calls the caller did not individually authorise, and there are runs
+where that is the wrong trade — a cheap model where eighteen chunk reads cost
+more than the answer is worth, or a calibration run being measured on what the
+harness does without them.
+
+So `MATH_AGENT_RLM=off`, or `--no-rlm` on `./agent`, withholds it — by **not
+registering the tool**, the same enforcement as `MATH_AGENT_RESEARCH` and for
+the same reason. The registry stops advertising the name in the same breath, so
+a delegating role is never told about a capability the harness does not have. A
+run without it keeps the outline, the selected read and the search, so a large
+document stays readable; what it loses is the ability to ask one question of a
+whole file.
+
+Every bound is an override on the same rule the rest of the runtime follows —
+missing, empty, unparsable or zero keeps the default, so a mistyped number
+gets the runtime's judgement rather than a silent zero that would turn a bound
+into a refusal of everything. They live together in `orchestrator::reading`
+rather than as constants in the two modules that use them, because an operator
+asking "how much of a file can a role see" should not have to read both.
+
+| Variable | Default | What it sets |
+|---|---|---|
+| `MATH_AGENT_RLM` | `on` | whether `map_document` exists at all |
+| `MATH_AGENT_READ_CEILING` | 24576 | unselected read before the outline answers instead |
+| `MATH_AGENT_READ_SLICE` | 49152 | one `section` or `lines` read; held at or above the ceiling |
+| `MATH_AGENT_RLM_CHUNK_BYTES` | 24576 | source one chunk read sees |
+| `MATH_AGENT_RLM_MAX_CHUNKS` | 60 | chunks one call reads before it stops and says so |
+| `MATH_AGENT_RLM_CONCURRENCY` | 6 | chunk reads in flight |
+
+The slice bound is held at or above the ceiling deliberately. An operator who
+raises one and forgets the other would otherwise get a runtime where naming a
+section returns *less* than not naming one, which reads as the selection having
+gone wrong rather than as a misconfiguration.
+
+Its reply is evidence, not a claim — the same standing as a search result, and
+the tool says so on every call: read the cited lines before relying on it. The
+reader model is wrapped in accounting at construction, so chunk reads appear in
+`model_accounting` under `chunk_reader` and a run can see what interrogating a
+survey cost it.
+
 ## The directive queue
 
 Three files under `config/` carry human direction into a live run, and which

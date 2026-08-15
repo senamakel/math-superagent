@@ -190,6 +190,11 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "index_document",
         "search_documents",
         "list_workspace",
+        // How a document too large to read is read anyway: its outline, and
+        // the lines matching a pattern. The third — the chunked recursive read
+        // — is appended below, because unlike these two it can be switched off.
+        "outline_document",
+        "grep_workspace",
         "describe_file",
         "refresh_index",
         // Derived from the library rather than written into it, and available
@@ -205,6 +210,15 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "list_ledgers",
         "read_ledger",
     ];
+    // Advertised only when it exists. `MATH_AGENT_RLM=off` withholds the tool
+    // itself in `recursive::MapTool::all`, and a registry that named it anyway
+    // would be telling a delegating role about a capability the harness does
+    // not have — the same disagreement `MATH_AGENT_RESEARCH` avoids by
+    // branching on the flag here rather than describing every run alike.
+    let document_tools: Vec<&'static str> = document_tools
+        .into_iter()
+        .chain(reading::recursion_enabled().then_some("map_document"))
+        .collect();
     // Every reasoning role's two ways back into what is already known: this
     // workspace's own record, and the note store that outlives it. They are
     // listed together because a caller deciding who to delegate to is asking
@@ -229,11 +243,11 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
                 .chain(research_enabled.then_some("oeis_lookup"))
                 .chain(research_enabled.then_some(DISCOVERY_TOOLS).into_iter().flatten())
                 .chain(memory_tools)
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
     )?;
-    register_code_writing_definitions(&mut registry, document_tools, memory_tools)?;
-    for definition in support_agents(research_enabled, document_tools, memory_tools) {
+    register_code_writing_definitions(&mut registry, &document_tools, memory_tools)?;
+    for definition in support_agents(research_enabled, &document_tools, memory_tools) {
         registry.register(definition)?;
     }
     Ok(registry)
@@ -255,7 +269,7 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
 /// Returns an error when a name is already registered.
 fn register_code_writing_definitions(
     registry: &mut AgentRegistry,
-    document_tools: [&'static str; 13],
+    document_tools: &[&'static str],
     memory_tools: [&'static str; 3],
 ) -> Result<()> {
     for (name, title, description) in [
@@ -321,7 +335,7 @@ fn register_code_writing_definitions(
                         .chain(kernel.iter().copied())
                         .chain(memory_tools)
                         .chain(SCRATCH_TOOLS)
-                        .chain(document_tools),
+                        .chain(document_tools.iter().copied()),
                 ),
         )?;
     }
@@ -335,7 +349,7 @@ fn register_code_writing_definitions(
 /// the agents the solution loop adds on top of the original three.
 fn support_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 13],
+    document_tools: &[&'static str],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -352,7 +366,7 @@ fn support_agents(
             "Scores how an attempt was conducted and decides whether the run must start over.",
         )
         .with_model("openrouter")
-        .with_tools([document_tools[1]]),
+        .with_tools(["read_document"]),
         AgentDefinition::new(
             "reflection",
             "Reflection Agent",
@@ -374,7 +388,7 @@ fn support_agents(
                 .into_iter()
                 .chain(LEDGER_WRITE_TOOLS)
                 .chain(memory_tools)
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
         AgentDefinition::new(
             "pattern_finder",
@@ -404,7 +418,7 @@ fn support_agents(
             .into_iter()
             .chain(memory_tools)
             .chain(SCRATCH_TOOLS)
-            .chain(document_tools),
+            .chain(document_tools.iter().copied()),
         ),
         // Reads widely and writes one file. It has no shell, no web search,
         // and no delegation on purpose: every one of those is a way for
@@ -422,7 +436,7 @@ fn support_agents(
             [SCRATCH_READ_TOOL]
                 .into_iter()
                 .chain(memory_tools)
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
         // Turns one sentence from a person into changes to the files that say
         // what the run is doing. It has the document tools and nothing that
@@ -449,7 +463,7 @@ fn support_agents(
                 .into_iter()
                 .chain(LEDGER_WRITE_TOOLS)
                 .chain(memory_tools)
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
         AgentDefinition::new(
             "inventor",
@@ -475,7 +489,7 @@ fn support_agents(
                 // other schools should be told about rather than walk into.
                 .chain(BOARD_TOOLS)
                 .chain(memory_tools)
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
     ]
     .into_iter()
@@ -510,7 +524,7 @@ fn support_agents(
 ///
 /// The searcher's denial is narrower and sharper, and is documented beside it.
 fn planning_agents(
-    document_tools: [&'static str; 13],
+    document_tools: &[&'static str],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -530,7 +544,7 @@ fn planning_agents(
             LEDGER_WRITE_TOOLS
                 .into_iter()
                 .chain(memory_tools)
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
         // The third direction, and the only role allowed to move the target.
         // The reducer asks what would be enough and the inventor asks what
@@ -544,7 +558,7 @@ fn planning_agents(
              targets from the version with all of them switched off up to the real one.",
         )
         .with_model("openrouter")
-        .with_tools(memory_tools.into_iter().chain(document_tools)),
+        .with_tools(memory_tools.into_iter().chain(document_tools.iter().copied())),
         // The searcher is the one role here whose tool list is defined by what
         // it is *denied*. It holds no `write_tool_file` and no
         // `execute_command`, so the only thing it can put on disk is a
@@ -567,7 +581,7 @@ fn planning_agents(
             ["search_brief", "submit_candidate"]
                 .into_iter()
                 .chain(memory_tools)
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
         // The refuter writes files, unlike the two above it, and it has to:
         // the axiomatisation is the whole job and the whole risk, exactly as it
@@ -587,7 +601,7 @@ fn planning_agents(
             ["find_counterexample", "write_tool_file", "apply_patch"]
                 .into_iter()
                 .chain(memory_tools)
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
     ]
 }
@@ -599,7 +613,7 @@ fn planning_agents(
 /// the solution loop drives.
 fn library_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 13],
+    document_tools: &[&'static str],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -621,7 +635,7 @@ fn library_agents(
                 // the failure its own brief opens with.
                 .chain(research_enabled.then_some(DISCOVERY_TOOLS).into_iter().flatten())
                 .chain(memory_tools)
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
         AgentDefinition::new(
             "scholar",
@@ -634,7 +648,7 @@ fn library_agents(
             memory_tools
                 .into_iter()
                 .chain([SCRATCH_READ_TOOL])
-                .chain(document_tools),
+                .chain(document_tools.iter().copied()),
         ),
         AgentDefinition::new(
             "goals",
@@ -668,7 +682,7 @@ fn library_agents(
             .chain(LEDGER_KEEPER_TOOLS)
             .chain(memory_tools)
             .chain(SCRATCH_TOOLS)
-            .chain(document_tools),
+            .chain(document_tools.iter().copied()),
         ),
     ]
 }

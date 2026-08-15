@@ -22,12 +22,14 @@ mod exa;
 mod exec;
 mod folder_index;
 mod frontier;
+mod grep;
 mod layout;
 mod lean;
 mod ledger;
 mod loop_steps;
 mod oeis;
 mod openalex;
+mod outline;
 mod patch;
 // Test-only, and deliberately so: this exists to compare the two engines'
 // decisions, and nothing a run does should ever call it.
@@ -36,6 +38,8 @@ mod parity;
 mod paths;
 mod patterns;
 mod readable;
+mod reading;
+mod recursive;
 mod refute;
 mod reflection_tool;
 mod requests;

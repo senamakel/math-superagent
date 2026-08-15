@@ -45,7 +45,7 @@ const DIGEST_DIR: &str = "research/summaries";
 
 const MAX_SEARCH_RESULTS: usize = 10;
 
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub(super) struct WorkspaceDocuments {
     workspace: PathBuf,
     client: reqwest::Client,
@@ -83,6 +83,35 @@ pub(super) struct WorkspaceDocuments {
     /// other document tools read and write files the run itself produced,
     /// where there is nothing to withhold.
     screen: Option<super::screen::Screen>,
+    /// The model `map_document` reads a chunk with, when the run has one.
+    ///
+    /// Optional for the same reason [`Self::library`] is: a document tool set
+    /// is useful without a provider, and the tests build one. The recursive
+    /// read is simply absent then, rather than present and failing — see
+    /// [`super::recursive::MapTool::all`].
+    ///
+    /// It is the caller's job to hand over a model that is already wrapped in
+    /// accounting. A sub-call is a real provider call costing real money, and a
+    /// tool that could spend without appearing in `model_accounting` would make
+    /// a run's own cost illegible to it.
+    reader: Option<Arc<dyn tinyagents::harness::model::ChatModel<()>>>,
+}
+
+impl std::fmt::Debug for WorkspaceDocuments {
+    /// Names the workspace and which optional halves are armed.
+    ///
+    /// Hand-written because a `ChatModel` is a trait object with no `Debug`,
+    /// and because the interesting content — the client, the library
+    /// connection — would render as noise if it had one.
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("WorkspaceDocuments")
+            .field("workspace", &self.workspace)
+            .field("library", &self.library.is_some())
+            .field("screen", &self.screen.is_some())
+            .field("reader", &self.reader.is_some())
+            .finish_non_exhaustive()
+    }
 }
 
 include!("documents_store.rs");
