@@ -4,7 +4,9 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[cassels-divisibility]] | Can the run turn the (now checked) valuation and cyclotomic coprimality facts into a full in-workspace proof that a solution of x^p - y^q = 1 with p, q… | open | cassels-valuation-lte-and-cyclotomic, valuation-identity-xp-1, faktor-pairwise-coprime-off-ramified, zeta-p-ring-and-ramification, lifting-the-exponent, fermat-little-theorem | > Write the ideal-power step: from y^q = prod_{i=0}^{p-1}(x - zeta_p^i) with the factors pairwise coprime off (1-zeta_p), each (x-zeta_p^i) is a q-th power of… |
 
 ## Threads that could not be read
 

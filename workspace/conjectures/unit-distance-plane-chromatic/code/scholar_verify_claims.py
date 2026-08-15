@@ -55,7 +55,7 @@ def verify_minkowski_identity(trials=2000):
     return trials
 
 def verify_eisenstein_units(radius=12):
-    six = {(-1,0),(1,0),(0,-1),(0,1),(1,-1),(-1,1)}
+    six = {(-1,0),(1,0),(0,-1),(0,1),(1,1),(-1,-1)}
     for x in range(-radius, radius+1):
         for y in range(-radius, radius+1):
             n = x*x - x*y + y*y

@@ -1,0 +1,157 @@
+==========================================================================
+A. LTE valuation identities  (exact integer arithmetic)
+   x-side: v_p(x^p-1) = v_p(x-1) + 1  iff p | (x-1)
+           v_p(x^p-1) = v_p(x-1)      iff p !| (x-1)
+   y-side: v_q(y^q+1) = v_q(y+1) + 1  iff q | (y+1)
+==========================================================================
+
+--- x-side (p | x-1 forces +1; p !| x-1 leaves it) ---
+  p= 3 x=    4  v_p(x^p-1)=2  v_p(x-1)+[True]=2   p|x-1 => +1
+  p= 3 x=    7  v_p(x^p-1)=2  v_p(x-1)+[True]=2   p|x-1 => +1
+  p= 3 x=   10  v_p(x^p-1)=3  v_p(x-1)+[True]=3   p|x-1 => +1
+  p= 3 x=   13  v_p(x^p-1)=2  v_p(x-1)+[True]=2   p|x-1 => +1
+  p= 3 x=   16  v_p(x^p-1)=2  v_p(x-1)+[True]=2   p|x-1 => +1
+  p= 3 x=   19  v_p(x^p-1)=3  v_p(x-1)+[True]=3   p|x-1 => +1
+  p= 3 x=   22  v_p(x^p-1)=2  v_p(x-1)+[True]=2   p|x-1 => +1
+  p= 3 x=   25  v_p(x^p-1)=2  v_p(x-1)+[True]=2   p|x-1 => +1
+  p= 3 x=   28  v_p(x^p-1)=4  v_p(x-1)+[True]=4   p|x-1 => +1
+  p= 3 x=   40  v_p(x^p-1)=2  v_p(x-1)+[True]=2   p|x-1 => +1
+  p= 3 x=   82  v_p(x^p-1)=5  v_p(x-1)+[True]=5   p|x-1 => +1
+  p= 3 x=  244  v_p(x^p-1)=6  v_p(x-1)+[True]=6   p|x-1 => +1
+  p= 3 x=  730  v_p(x^p-1)=7  v_p(x-1)+[True]=7   p|x-1 => +1
+  p= 5 x=    6  v_p(x^p-1)=2  v_p(x-1)+[True]=2   p|x-1 => +1
+  x-side: 106 cases, 0 failures -> PASS
+
+--- y-side (q | y+1 forces +1 on v_q(y^q+1)) ---
+  q= 3 y=    2  v_q(y^q+1)=2  v_q(y+1)+[True]=2   q|y+1 => +1
+  q= 3 y=    5  v_q(y^q+1)=2  v_q(y+1)+[True]=2   q|y+1 => +1
+  q= 3 y=    8  v_q(y^q+1)=3  v_q(y+1)+[True]=3   q|y+1 => +1
+  q= 3 y=   11  v_q(y^q+1)=2  v_q(y+1)+[True]=2   q|y+1 => +1
+  q= 3 y=   14  v_q(y^q+1)=2  v_q(y+1)+[True]=2   q|y+1 => +1
+  q= 3 y=   17  v_q(y^q+1)=3  v_q(y+1)+[True]=3   q|y+1 => +1
+  q= 3 y=   20  v_q(y^q+1)=2  v_q(y+1)+[True]=2   q|y+1 => +1
+  q= 3 y=   23  v_q(y^q+1)=2  v_q(y+1)+[True]=2   q|y+1 => +1
+  q= 3 y=   26  v_q(y^q+1)=4  v_q(y+1)+[True]=4   q|y+1 => +1
+  q= 3 y=   29  v_q(y^q+1)=2  v_q(y+1)+[True]=2   q|y+1 => +1
+  q= 3 y=   80  v_q(y^q+1)=5  v_q(y+1)+[True]=5   q|y+1 => +1
+  q= 3 y=  242  v_q(y^q+1)=6  v_q(y+1)+[True]=6   q|y+1 => +1
+  q= 3 y=  728  v_q(y^q+1)=7  v_q(y+1)+[True]=7   q|y+1 => +1
+  q= 5 y=    4  v_q(y^q+1)=2  v_q(y+1)+[True]=2   q|y+1 => +1
+  y-side: 128 cases, 0 failures -> PASS
+
+  STATUS (A): LTE identities  PASS  -- exact-proved by LTE (1+x+...+x^{p-1} == geometric sum); verified over the stated ranges.
+  Note: the overbroad hypothesis 'p !| x' is FALSE (p=3,x=2:
+        v_3(2^3-1)=0 but 1+v_3(2-1)=1).
+
+==========================================================================
+B. Cyclotomic (1-zeta_p)-adic valuation of x^p-1 = prod (x-zeta^i)
+   in Q(zeta_p), via PARI exact algebra.
+   P = (1-zeta_p) unique prime over p;  (p) = P^{p-1};  v_P(p)=p-1
+==========================================================================
+
+  p = 3
+    x=  2: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[1, 7, 7] OK 
+    x=  3: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[4, 13, 13] OK 
+    x=  4: v_P(x^p-1)=4  sum_i v_P(x-zeta^i)=4  (p-1)*v_p(x^p-1)=4  v_p(x^p-1)=2  norm_prod==(x^p-1)^(p-1):True norms=[9, 21, 21] OK 
+    x=  5: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[16, 31, 31] OK 
+    x=  8: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[49, 73, 73] OK 
+    x= 10: v_P(x^p-1)=6  sum_i v_P(x-zeta^i)=6  (p-1)*v_p(x^p-1)=6  v_p(x^p-1)=3  norm_prod==(x^p-1)^(p-1):True norms=[81, 111, 111] OK 
+    x= 12: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[121, 157, 157] OK 
+    x= 16: v_P(x^p-1)=4  sum_i v_P(x-zeta^i)=4  (p-1)*v_p(x^p-1)=4  v_p(x^p-1)=2  norm_prod==(x^p-1)^(p-1):True norms=[225, 273, 273] OK 
+    x= 22: v_P(x^p-1)=4  sum_i v_P(x-zeta^i)=4  (p-1)*v_p(x^p-1)=4  v_p(x^p-1)=2  norm_prod==(x^p-1)^(p-1):True norms=[441, 507, 507] OK 
+
+  p = 5
+    x=  2: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[1, 31, 31, 31, 31] OK 
+    x=  3: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[16, 121, 121, 121, 121] OK 
+    x=  4: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[81, 341, 341, 341, 341] OK 
+    x=  5: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[256, 781, 781, 781, 781] OK 
+    x=  8: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[2401, 4681, 4681, 4681, 4681] OK 
+    x= 10: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[6561, 11111, 11111, 11111, 11111] OK 
+    x= 12: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[14641, 22621, 22621, 22621, 22621] OK 
+    x= 16: v_P(x^p-1)=8  sum_i v_P(x-zeta^i)=8  (p-1)*v_p(x^p-1)=8  v_p(x^p-1)=2  norm_prod==(x^p-1)^(p-1):True norms=[50625, 69905, 69905, 69905, 69905] OK 
+    x= 22: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[194481, 245411, 245411, 245411, 245411] OK 
+
+  p = 7
+    x=  2: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[1, 127, 127, 127, 127, 127, 127] OK 
+    x=  3: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[64, 1093, 1093, 1093, 1093, 1093, 1093] OK 
+    x=  4: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[729, 5461, 5461, 5461, 5461, 5461, 5461] OK 
+    x=  5: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[4096, 19531, 19531, 19531, 19531, 19531, 19531] OK 
+    x=  8: v_P(x^p-1)=12  sum_i v_P(x-zeta^i)=12  (p-1)*v_p(x^p-1)=12  v_p(x^p-1)=2  norm_prod==(x^p-1)^(p-1):True norms=[117649, 299593, 299593, 299593, 299593, 299593, 299593] OK 
+    x= 10: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[531441, 1111111, 1111111, 1111111, 1111111, 1111111, 1111111] OK 
+    x= 12: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[1771561, 3257437, 3257437, 3257437, 3257437, 3257437, 3257437] OK 
+    x= 16: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[11390625, 17895697, 17895697, 17895697, 17895697, 17895697, 17895697] OK 
+    x= 22: v_P(x^p-1)=12  sum_i v_P(x-zeta^i)=12  (p-1)*v_p(x^p-1)=12  v_p(x^p-1)=2  norm_prod==(x^p-1)^(p-1):True norms=[85766121, 118778947, 118778947, 118778947, 118778947, 118778947, 118778947] OK 
+
+  p = 11
+    x=  2: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[1, 2047, 2047, 2047, 2047, 2047, 2047, 2047, 2047, 2047, 2047] OK 
+    x=  3: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[1024, 88573, 88573, 88573, 88573, 88573, 88573, 88573, 88573, 88573, 88573] OK 
+    x=  4: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[59049, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101] OK 
+    x=  5: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[1048576, 12207031, 12207031, 12207031, 12207031, 12207031, 12207031, 12207031, 12207031, 12207031, 12207031] OK 
+    x=  8: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[282475249, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513] OK 
+    x= 10: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[3486784401, 11111111111, 11111111111, 11111111111, 11111111111, 11111111111, 11111111111, 11111111111, 11111111111, 11111111111, 11111111111] OK 
+    x= 12: v_P(x^p-1)=20  sum_i v_P(x-zeta^i)=20  (p-1)*v_p(x^p-1)=20  v_p(x^p-1)=2  norm_prod==(x^p-1)^(p-1):True norms=[25937424601, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517] OK 
+    x= 16: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[576650390625, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961] OK 
+    x= 22: v_P(x^p-1)=0  sum_i v_P(x-zeta^i)=0  (p-1)*v_p(x^p-1)=0  v_p(x^p-1)=0  norm_prod==(x^p-1)^(p-1):True norms=[16679880978201, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587] OK 
+
+  STATUS (B): factorisation + ramification-vLTE-on-the-ideal  PASS
+  (B) is numeric-PARI-exact over the listed (p, x); the rational
+  v_p(x^p-1) values are exact integer valuations.
+
+==========================================================================
+C. Cyclotomic coprimality off the unique ramified prime P=(1-zeta_p)
+   For i != j, ideals (x-zeta^i),(x-zeta^j) share no prime ideal
+   outside {P}. Verified by factoring each and intersecting primes.
+==========================================================================
+    p= 3 x=  2: norms of (x-zeta^i) = [1, 7, 7]
+    p= 3 x=  3: norms of (x-zeta^i) = [4, 13, 13]
+    p= 3 x=  4: norms of (x-zeta^i) = [9, 21, 21]
+    p= 3 x=  8: norms of (x-zeta^i) = [49, 73, 73]
+    p= 3 x= 12: norms of (x-zeta^i) = [121, 157, 157]
+    p= 3 x= 16: norms of (x-zeta^i) = [225, 273, 273]
+    p= 3 x= 22: norms of (x-zeta^i) = [441, 507, 507]
+    p= 5 x=  2: norms of (x-zeta^i) = [1, 31, 31, 31, 31]
+    p= 5 x=  3: norms of (x-zeta^i) = [16, 121, 121, 121, 121]
+    p= 5 x=  4: norms of (x-zeta^i) = [81, 341, 341, 341, 341]
+    p= 5 x=  8: norms of (x-zeta^i) = [2401, 4681, 4681, 4681, 4681]
+    p= 5 x= 12: norms of (x-zeta^i) = [14641, 22621, 22621, 22621, 22621]
+    p= 5 x= 16: norms of (x-zeta^i) = [50625, 69905, 69905, 69905, 69905]
+    p= 5 x= 22: norms of (x-zeta^i) = [194481, 245411, 245411, 245411, 245411]
+    p= 7 x=  2: norms of (x-zeta^i) = [1, 127, 127, 127, 127, 127, 127]
+    p= 7 x=  3: norms of (x-zeta^i) = [64, 1093, 1093, 1093, 1093, 1093, 1093]
+    p= 7 x=  4: norms of (x-zeta^i) = [729, 5461, 5461, 5461, 5461, 5461, 5461]
+    p= 7 x=  8: norms of (x-zeta^i) = [117649, 299593, 299593, 299593, 299593, 299593, 299593]
+    p= 7 x= 12: norms of (x-zeta^i) = [1771561, 3257437, 3257437, 3257437, 3257437, 3257437, 3257437]
+    p= 7 x= 16: norms of (x-zeta^i) = [11390625, 17895697, 17895697, 17895697, 17895697, 17895697, 17895697]
+    p= 7 x= 22: norms of (x-zeta^i) = [85766121, 118778947, 118778947, 118778947, 118778947, 118778947, 118778947]
+    p=11 x=  2: norms of (x-zeta^i) = [1, 2047, 2047, 2047, 2047, 2047, 2047, 2047, 2047, 2047, 2047]
+    p=11 x=  3: norms of (x-zeta^i) = [1024, 88573, 88573, 88573, 88573, 88573, 88573, 88573, 88573, 88573, 88573]
+    p=11 x=  4: norms of (x-zeta^i) = [59049, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101, 1398101]
+    p=11 x=  8: norms of (x-zeta^i) = [282475249, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513, 1227133513]
+    p=11 x= 12: norms of (x-zeta^i) = [25937424601, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517, 67546215517]
+    p=11 x= 16: norms of (x-zeta^i) = [576650390625, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961, 1172812402961]
+    p=11 x= 22: norms of (x-zeta^i) = [16679880978201, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587, 27824681019587]
+
+  (C) checked 623 pairs (i<j) across p in [3, 5, 7, 11], x in (2, 3, 4, 8, 12, 16, 22).
+  STATUS (C): coprimality off P  PASS  (numerically verified, exact factoring)
+
+==========================================================================
+D. Oracle cross-check (exact integers): known solution not excluded
+==========================================================================
+  solutions(10^8) = [(3, 2, 2, 3)]  -> PASS  (0.004s)
+  3^2 - 2^3 = 1  is the unique consecutive perfect power <= 10^8.
+
+==========================================================================
+SUMMARY of valuation computation
+==========================================================================
+  A  LTE rational valuation identities   : PASS
+  B  cyclotomic factor v_P identity      : PASS
+  C  coprimality off ramified prime      : PASS
+  D  oracle solutions(1e8)=={(3,2,2,3)}: PASS
+
+EXACT-PROVED:  A (LTE, closed-form geometric sum).
+NUMERICALLY-VERIFIED (exact arithmetic over listed ranges): B, C.
+NOT CLAIMED:   Cassels' full theorem q|x, p|y in general -- that
+               needs the ideal/unit argument in Q(zeta_p) that
+               turns these valuation facts into the divisibility,
+               which this valuation computation does not complete.
+  total wall time: 0.12s

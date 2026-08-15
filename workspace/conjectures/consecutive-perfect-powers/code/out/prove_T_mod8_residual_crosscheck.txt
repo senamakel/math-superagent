@@ -1,0 +1,25 @@
+Independent second check of the residual-class claim of the Case-B mod-8
+classification (claim exp2-caseB-t-mod8-classification).
+
+Claim restated: for T(c,p) = sum_{k=0}^{p-1}(c^2+1)^k, p an odd prime >= 3,
+c >= 1, the mod-8 residue of T is in the square set {0,1,4} if and only if
+(c even AND p == 1 (mod 8)).  All other (c,p) have T a non-square mod 8,
+hence T(c,p) is not a perfect square.
+
+This program re-derives the classification from scratch, not from my
+earlier program, and tests the exact equivalence
+    (T(c,p) mod 8 in {0,1,4})  <=>  (c even and p == 1 mod 8)
+over c in [1,20000] and every odd prime p < 200, exact integer arithmetic
+(T computed as (x^p-1)//(x-1), x = c^2+1).
+
+Results:
+  disagreements (square-viable but claimed closed, or vice versa): 0
+  every square-viable (c,p) over c <= 2000, odd prime p < 101 is
+  c even & p == 1 mod 8 : True  (5000 such pairs)
+
+Conclusion: the residual class is exactly {c even, p == 1 mod 8}; every
+other class is a provable non-square by the mod-8 obstruction alone.  This
+matches and independently re-derives the classification from
+prove_T_mod8_classification.py, and is consistent with the parallel school's
+mod-4 result (their surviving class c even & p==1 mod 4 strictly contains
+c even & p==1 mod 8, so no contradiction).

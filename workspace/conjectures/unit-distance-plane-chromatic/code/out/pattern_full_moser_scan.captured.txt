@@ -1,0 +1,4 @@
+n=11 four-chrom kernel members: 198
+  with minimal 4-critical core 7v/11e (Moser-isomorphic): 67
+  fraction: 0.338
+(broad subgraph count 118/198 recorded in durable memory from check_moser_containment;

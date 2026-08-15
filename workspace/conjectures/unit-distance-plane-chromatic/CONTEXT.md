@@ -95,6 +95,42 @@ notes). The Eisenstein note's exposition was corrected: omega is a primitive
 3rd root, the six unit vectors are +-1,+-omega,+-(1+omega) (sixth root
 1+omega=e^{i pi/3}).
 
+**Additional sourced inputs digested this pass (all asserted-by-source by
+four agreeing primary treatments unless noted):**
+- **Fractional chromatic number** `chi_f` = optimum of the independent-set
+  covering LP; its dual (fractional clique `omega_f`) has the same rational
+  optimum by strong LP duality; `chi_f = max_w w(V)/alpha_w(G)`;
+  `max{omega,|V|/alpha} <= rho <= chi_f <= chi`; perfect graphs have
+  `chi_f=chi`; `chi_f(C5)=5/2`, `chi_f(diamond)=3` (diamond chordal/perfect).
+  Because `chi_f` has NO ceil-identity (unlike `chi=ceil(chi_c)`), `chi_f > 4`
+  is a one-sided LP-dual-certifiable route to `chi >= 5`, strictly easier than
+  4-colouring SAT. Exact `chi_f` is NP-hard in general but cheap here (n<=26).
+  ids `fractional-chromatic-lp-duality`, `fractional-chromatic-chain`
+  (`fractional-chromatic-number-lp-definition.md`, canonical textbook recorded
+  in `scheinerman-ullman-fractional-chromatic-number.md`).
+- **Laman–Henneberg**: generically rigid plane graphs are exactly
+  Laman/(2,3)-tight, built from K2 by H1 (exact quadratic, two-unit-circle
+  intersection) and H2 (circumradius-1 coincidence). Caveat: completeness is
+  *generic*, not all-unit; generic Laman realizations generally not solvable
+  by radicals (Owen–Power), so H2 pushes the coordinate field past tame
+  quadratics. id `laman-henneberg-generic-rigidity`.
+- **Regular-polytope projections**: 24-cell = 24 permutations of
+  (+-1,+-1,0,0) (order 1152, dodecagonal Petrie projection); 600-cell = 120
+  unit icosians in Q(sqrt5) (order 14400, triacontagonal projection). Rank-2
+  Coxeter-plane projection is NOT a homothety, so projected sets are genuinely
+  new dense UDGs for the forced-pair harness; chi uncomputed. id
+  `regular-4-polytope-projections`.
+- **Eggleton–Erdős–Skilton 1985**: origin of G(R,D)/G(Z,D) distance graphs;
+  `chi(G(Z,D)) <= |D|+1` for finite integer D. Lattice analogue only — does
+  not settle the open plane problem. id `eggleton-erdos-skilton-1985-real-line`.
+
+The three last ids were orphaned claim blocks previously missing from the
+auto-derived ledger; the delimiter-sync this pass registered them in
+`research/CLAIMS.md`. The exact `chi_f` of the Moser spindle / Moser+Moser is
+still the OPEN REQUESTS computation — scaffolding ready
+(`code/scholar_frac_chro_calib.py` exact rational dual scan and
+`code/lib/frac_chro_verify.py`), no captured output, no value claimed here.
+
 ## Ruled out — closed directions and the obstruction
 
 - **Spindle has no monochromatic-forced pair under 4 colours.** Complete SAT

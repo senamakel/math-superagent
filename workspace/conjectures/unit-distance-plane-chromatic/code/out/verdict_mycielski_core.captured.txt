@@ -1,0 +1,10 @@
+Mycielski^2(C5): n=23 e=71 chi=5 triangle-free=True min-degree=4
+is 5-critical (every G-v 4-colourable): True
+not 4-colourable: True
+5-colourable: True
+explicit K2,3 subgraph: (0, 2, [1, 6, 12])  => K2,3-free = False
+   min-deg>=4       = True
+   K4-free          = True
+   K2,3-free        = False
+   nbhd-maxdeg<=2   = True
+=> all four kernel conditions: False

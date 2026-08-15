@@ -1,0 +1,11 @@
+{
+  "axioms": [
+    "'CatalanRungs.no_x_eq_one' depends on axioms: [propext, Quot.sound]",
+    "'CatalanRungs.no_y_eq_one' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'CatalanRungs.r_p_eq_q' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "compiled": false,
+  "file": "code/lean_reduction/TrivialRungs.lean",
+  "sorries": [],
+  "verified": false
+}

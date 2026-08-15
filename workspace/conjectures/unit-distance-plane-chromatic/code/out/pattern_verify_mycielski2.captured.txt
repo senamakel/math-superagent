@@ -1,0 +1,8 @@
+V_k closed form from recurrence: 3*2**k - 1
+V_1..V_8 = [5, 11, 23, 47, 95, 191, 383, 767]
+E_k closed form from recurrence: -3*2**k + 7*3**k/2 + 1/2
+E_1..E_7 = [5, 20, 71, 236, 755, 2360, 7271]
+expected       = [5, 20, 71, 236, 755, 2360, 7271]
+difference from OEIS form (1-6*2^k+7*3^k)/2: 0
+order-3 recurrence E_k=6E_{k-1}-11E_{k-2}+6E_{k-3} verified symbolically for k=4..9
+ALL CLOSED-FORM AND RECURRENCE CHECKS PASS (independent sympy derivation)

@@ -1,0 +1,13 @@
+=== LEMMA A: c odd  ==>  T(c,p) == 7 mod 8 ===
+  1 + x + x^2 mod 8 as function of c:  Mod(c**2 + (c**2 + 1)**2 + 2, 8)
+  evaluating at c mod 8 = 1,3,5,7: [(1, 7), (3, 7), (5, 7), (7, 7)] -> always 7
+  symbolic: True   numpy (odd c<2000, primes<101): True
+  Since 7 is a non-square mod 8,  c odd  ==>  T not a square.
+
+=== LEMMA B: c even, p == 3 mod 4  ==>  T == 3 mod 4 ===
+  numpy (even c<2000, primes<101 with p==3 mod4): True
+  Since 3 is a non-square mod 4,  T not a square.
+
+=== surviving class ===
+  Only (c even, p == 1 mod 4) remains.  x = c^2+1 = 5, 10, 17, 26, 37, ... (x >= 5).
+  This is the class governed by Ljunggren's theorem (see note).

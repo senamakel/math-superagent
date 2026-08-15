@@ -1,0 +1,10 @@
+C5: n=5 e=5 chi=3 triangle-free=True
+Mycielski(C5): n=11 e=20 chi=4 triangle-free=True
+Mycielski^2(C5): n=23 e=71 chi=5 triangle-free=True
+
+5-critical core: n=23 e=71 min-degree=4 chi=5
+   deg>=4           = True
+   K4-free          = True
+   K23-free         = False
+   nbhd-maxdeg<=2   = True
+=> all four kernel conditions: False

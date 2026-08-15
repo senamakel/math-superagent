@@ -1,0 +1,8 @@
+C5                   n=5 |E|= 5  chi_f = 2.500000  (#indep=11)
+Diamond              n=4 |E|= 5  chi_f = 3.000000  (#indep=6)
+Moser spindle        n=7 |E|=11  chi_f = 3.500000  (#indep=18)
+
+Independence numbers for contrast:
+  C5: alpha = 2
+  Diamond: alpha = 2
+  Moser: alpha = 2

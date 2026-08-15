@@ -1,0 +1,3 @@
+brute-vs-SAT chrom mismatches over n<= 5: 0
+brute: 5-chromatic graphs n<= 5: 1, failures: 0
+RESULT: PASSED

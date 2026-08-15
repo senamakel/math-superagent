@@ -1,0 +1,24 @@
+import Mathlib
+
+#check Nat.coprime.mul_eq_pow
+#check Nat.exists_eq_pow_of_mul_eq_pow
+#check Nat.Coprime.pow_mul_eq_pow
+#check exists_eq_pow_of_mul_eq_pow
+#check Nat.coprime_pow_left
+#check Nat.coprime_pow_right
+#check Nat.Coprime.pow
+#check coprime_mul_eq_pow
+#check Nat.coprime_dvd_mul
+#check Nat.Coprime.mul_dvd_mul_iff
+#check Nat.gcd_eq_left
+#check Nat.gcd_eq_right
+#check two_dvd_iff
+#check Nat.even_iff_two_dvd
+#check Nat.even_iff
+#check Nat.Prime.two_le
+#check Nat.Prime.pos
+#check Nat.Prime.one_lt
+#check pow_le_pow_right₀
+#check Nat.succ_le_of_lt
+#check Nat.pow_eq_pow_iff
+#check sq

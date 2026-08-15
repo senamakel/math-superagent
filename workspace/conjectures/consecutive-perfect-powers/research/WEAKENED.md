@@ -19,11 +19,11 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
 | `R-known-instance` | [[catalan-ladder]] | the instance (x,p,y,q) = (3,2,2,3) satisfies 3^2 - 2^3 = 1 | negative-claim, unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness | **settled** |
-| `R-trivial-bases` | [[catalan-ladder]] | there is no solution with x = 1 or y = 1; equivalently every solution has x >= 2 and y >= 2 | unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness | open |
-| `R-fixed-23` | [[catalan-ladder]] | x^2 - y^3 = 1 has (x,y) = (3,2) as its only solution in integers x,y > 0; the known solution (3,2,2,3) is exactly the claimed one | unbounded-exponents, both-odd, class-group, p-neq-q | open |
+| `R-trivial-bases` | [[catalan-ladder]] | there is no solution with x = 1 or y = 1; equivalently every solution has x >= 2 and y >= 2 | unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness | **settled** |
+| `R-fixed-23` | [[catalan-ladder]] | x^2 - y^3 = 1 has (x,y) = (3,2) as its only solution in integers x,y > 0; the known solution (3,2,2,3) is exactly the claimed one | unbounded-exponents, both-odd, class-group, p-neq-q | **settled** |
 | `R-exp2` | [[catalan-ladder]] | for every odd prime q, x^2 - y^q = 1 has (x,y,q) = (3,2,3) as its only solution in x,y > 0; the known solution sits at q = 3 | both-odd, class-group, p-neq-q | open |
 | `R-exp2-mirror` | [[catalan-ladder]] | for every odd prime p, x^p - y^2 = 1 has no solution in x,y > 0; the known solution has q = 3, so it sits outside this rung's case | both-odd, class-group, p-neq-q | open |
-| `R-p-eq-q` | [[catalan-ladder]] | for every odd prime p, x^p - y^p = 1 has no solution in x,y > 0; the known solution has p = 2 != 3 = q, so it sits outside | p-neq-q, class-group, uniqueness | open |
+| `R-p-eq-q` | [[catalan-ladder]] | for every odd prime p, x^p - y^p = 1 has no solution in x,y > 0; the known solution has p = 2 != 3 = q, so it sits outside | p-neq-q, class-group, uniqueness | **settled** |
 | `R-35` | [[catalan-ladder]] | x^3 - y^5 = 1 has no solution in integers x,y > 0; the known solution has p = 2, so it sits outside this rung's case | class-group, unbounded-exponents, uniqueness | open |
 | `R-fixed-pq` | [[catalan-ladder]] | for every fixed pair (p,q) of distinct odd primes, x^p - y^q = 1 has at most finitely many solutions in x,y > 0, and the solutions are effectively computable;… | unbounded-exponents, uniqueness, negative-claim | open |
 | `R-uniform-finite` | [[catalan-ladder]] | the full equation x^p - y^q = 1 has finitely many solutions over all x,y > 0, p,q > 1; the known solution (3,2,2,3) is one of the finitely many | uniqueness, negative-claim | open |
@@ -35,15 +35,18 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
-- [[catalan-ladder]] → `R-trivial-bases`: there is no solution with x = 1 or y = 1; equivalently every solution has x >= 2 and y >= 2
-  - switched off: unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness
-  - to merge the next difficulty back: one-line proof for the forward loop: x=1 forces y^q = 0 (excluded by y>0), and y=1 forces x^p = 2 (impossible for integer x>=1, p>=2). negative-claim stays on — the claim is still an exclusion — but the known solution (3,2,2,3) has both bases >= 2, so it is not eliminated. This is the rung to settle today. Turning unbounded-bases back on at the single smallest nontrivial exponent pair is R-fixed-23; first move: factor y^3 = (x-1)(x+1) with gcd(x-1,x+1) in {1,2}.
+- [[catalan-ladder]] → `R-exp2`: for every odd prime q, x^2 - y^q = 1 has (x,y,q) = (3,2,3) as its only solution in x,y > 0; the known solution sits at q = 3
+  - switched off: both-odd, class-group, p-neq-q
+  - to merge the next difficulty back: classical (Lebesgue 1850); gcd(x-1,x+1) is 1 or 2, so each factor is a q-th power up to a factor of 2. Mirror it in R-exp2-mirror; first move: write x^p = (y+i)(y-i) in Z[i].
 
 ## Settled — what this run owns
 
 Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
 
 - [[catalan-ladder]] `R-known-instance`: the instance (x,p,y,q) = (3,2,2,3) satisfies 3^2 - 2^3 = 1 (off: negative-claim, unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[catalan-ladder]] `R-trivial-bases`: there is no solution with x = 1 or y = 1; equivalently every solution has x >= 2 and y >= 2 (off: unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[catalan-ladder]] `R-fixed-23`: x^2 - y^3 = 1 has (x,y) = (3,2) as its only solution in integers x,y > 0; the known solution (3,2,2,3) is exactly the claimed one (off: unbounded-exponents, both-odd, class-group, p-neq-q; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[catalan-ladder]] `R-p-eq-q`: for every odd prime p, x^p - y^p = 1 has no solution in x,y > 0; the known solution has p = 2 != 3 = q, so it sits outside (off: p-neq-q, class-group, uniqueness; _nothing named — say which claim established it, or a reader cannot check it_)
 
 ## Ladders that could not be read
 

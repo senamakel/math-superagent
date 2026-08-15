@@ -1,0 +1,9 @@
+=== Mycielski iterates of C5 ===
+M^1: V=5 E=5  chi/known recorded; triangle-free=True
+M^2: V=11 E=20  chi/known recorded; triangle-free=True
+  Mycielski^2(C5) K2,3-free=True
+M^3: V=23 E=71  chi/known recorded; triangle-free=True
+
+=== closed forms ===
+V_k = 3*2^k - 1 : [5, 11, 23]
+recurrence edges : [5, 20, 71]

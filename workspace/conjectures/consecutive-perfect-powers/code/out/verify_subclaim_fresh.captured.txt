@@ -1,0 +1,27 @@
+odd primes considered: [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+
+========================================================================
+ROUTE 1 — direct descent-equation sweep
+========================================================================
+calibration q=3,m=1,r,s<=10 -> expect (1,1):
+   []
+route1: q in [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37], m<= 8, r,s<= 500
+  total descent solutions found: 0
+  the known (3,1,1,1): 0
+  OTHER solutions (counterexamples to the sub-claim): []
+
+========================================================================
+ROUTE 2 — via Lebesgue equivalence (x^2 - y^q = 1)
+========================================================================
+route2: odd x<= 200000, q in [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+  solutions of x^2-y^q=1: [(3, 3, 2)]
+  known solution (q=3,x=3,y=2) present: True
+
+========================================================================
+CROSS-CHECK: route1 hits mapped to x^2-y^q=1 must equal route2 hits
+========================================================================
+route1 solutions (m<=8,r,s<=500) with x<=200000:
+   [(3, 3, 2)]
+route2 solutions (x<=200000):
+   [(3, 3, 2)]
+  restricted route1 image == route2 full image: True

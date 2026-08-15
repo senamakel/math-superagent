@@ -5,10 +5,10 @@ N=9          result=[(3, 2, 2, 3)]  OK  0.000s
 N=100        result=[(3, 2, 2, 3)]  OK  0.000s
 N=1000       result=[(3, 2, 2, 3)]  OK  0.000s
 N=10000      result=[(3, 2, 2, 3)]  OK  0.000s
-N=100000     result=[(3, 2, 2, 3)]  OK  0.000s
-N=1000000    result=[(3, 2, 2, 3)]  OK  0.000s
-N=10000000   result=[(3, 2, 2, 3)]  OK  0.001s
-N=100000000  result=[(3, 2, 2, 3)]  OK  0.002s
+N=100000     result=[(3, 2, 2, 3)]  OK  0.001s
+N=1000000    result=[(3, 2, 2, 3)]  OK  0.001s
+N=10000000   result=[(3, 2, 2, 3)]  OK  0.003s
+N=100000000  result=[(3, 2, 2, 3)]  OK  0.006s
 Largest N reached: 100000000
 ORACLE exact-match (=={(3,2,2,3)}) for every N>=9 reached: PASS
 
@@ -21,8 +21,8 @@ N=1000       result=[(3, 2, 2, 3)]  OK  0.000s
 N=10000      result=[(3, 2, 2, 3)]  OK  0.000s
 N=100000     result=[(3, 2, 2, 3)]  OK  0.000s
 N=1000000    result=[(3, 2, 2, 3)]  OK  0.000s
-N=10000000   result=[(3, 2, 2, 3)]  OK  0.001s
-N=100000000  result=[(3, 2, 2, 3)]  OK  0.002s
+N=10000000   result=[(3, 2, 2, 3)]  OK  0.002s
+N=100000000  result=[(3, 2, 2, 3)]  OK  0.009s
 
 ======================================================================
 3. EXP2-yp: x^p - y^2 = 1, p prime, x^p,y^2 <= N
@@ -32,9 +32,9 @@ N=100        result=[]  OK(none)  0.000s
 N=1000       result=[]  OK(none)  0.000s
 N=10000      result=[]  OK(none)  0.000s
 N=100000     result=[]  OK(none)  0.000s
-N=1000000    result=[]  OK(none)  0.000s
-N=10000000   result=[]  OK(none)  0.001s
-N=100000000  result=[]  OK(none)  0.002s
+N=1000000    result=[]  OK(none)  0.001s
+N=10000000   result=[]  OK(none)  0.002s
+N=100000000  result=[]  OK(none)  0.006s
 
 ======================================================================
 4. PRIME-REDUCTION: composite p=a*P, q=b*Q (P,Q prime)

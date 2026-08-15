@@ -1,0 +1,35 @@
+========================================================================
+TASK A — MIRROR PRIMITIVE DIVISOR (q-side, condition on x)
+========================================================================
+  q= 3: Ymax=120, successes=118, failures= 1, largest primitive s=14281
+         no-primitive y values: [2]
+  q= 5: Ymax= 80, successes= 79, failures= 0, largest primitive s=40454321
+  q= 7: Ymax= 60, successes= 59, failures= 0, largest primitive s=24344094727
+  q=11: Ymax= 40, successes= 39, failures= 0, largest primitive s=2681921038140191
+  q=13: Ymax= 30, successes= 29, failures= 0, largest primitive s=21001515080686141
+  q=17: Ymax= 20, successes= 19, failures= 0, largest primitive s=274019342889240109297
+  TOTAL (q,y) with NO primitive s: 1 -> [(3, 2)]
+  failures with y >= 3: 0 -> (none): confirmed no failures for y >= 3
+
+========================================================================
+TASK B — CLEAN STATEMENT of the necessary condition (logic check)
+========================================================================
+  (p,q,x,y) checked: 24336
+  failures of unconditional r | x^p-1, r not|x-1: 0
+  failures of unconditional s | y^q+1, s not|y+1: 156
+  s-premise failures attributed to (q,y): {(3, 2): 156}  (each is the known small mirror exception (3,2) with NO primitive divisor, appearing once per (p,x) setting: 4 p * 39 x = 156)
+  (p,q,x,y) with x^p - y^q == 1 in range: 0 (none, as expected: no odd-prime solutions here)
+  => the deductive steps are verified sound on this data; the implication IF x^p-y^q=1 THEN r|y is NOT vacuous in logic, it is simply verifiable only through its unconditional premises here, since the antecedent never fires. Explicitly NOT a proof of existence of any solution.
+
+========================================================================
+TASK C — NON-EXCLUSION / SCOPE DEMONSTRATION
+========================================================================
+  search space: |p|*|q|*|x|*|y| = 9^2*199^2 = 3207681 4-tuples
+  actual solutions in space (x^p-y^q==1): 0 (expected 0 for odd primes)
+  4-tuples with ALL elementary conditions (p|x-1, q|y+1, y has div==1 mod p, x has div==1 mod q) AND x^p-y^q != 1: 1967
+     ... of which p | y holds: 143
+     ... of which q | x holds: 157
+     ... of which BOTH p|y AND q|x (full Cassels congruences) hold: 17
+  (p,q,x,y) with BOTH p|y AND q|x AND x^p-y^q != 1 (Cassels-congruence non-solutions, no elementary condition): 40804
+
+wrote code/out/primitive_div_mirror.md

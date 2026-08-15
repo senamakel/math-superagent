@@ -37,13 +37,13 @@ theorem reduction_iff (x a P y b Q : ℕ) :
 -- Note that the primality hypotheses are unused: the power identity holds
 -- for every natural exponent, so the reduction does not need `Nat.Prime`.
 theorem prime_exponent_reduction (x a P y b Q : ℕ)
-    (hP : Nat.Prime P) (hQ : Nat.Prime Q) :
+    (_hP : Nat.Prime P) (_hQ : Nat.Prime Q) :
     (x ^ a) ^ P - (y ^ b) ^ Q = 1 → x ^ (a * P) - y ^ (b * Q) = 1 := by
   intro h
   exact (reduction_iff x a P y b Q).mp h
 
 -- The same identity over the integers (where there is no truncated subtraction).
-theorem reduction_iff_int (x a y b : ℤ) (P Q : ℕ) :
+theorem reduction_iff_int (x y : ℤ) (a b P Q : ℕ) :
     (x ^ a) ^ P - (y ^ b) ^ Q = 1 ↔ x ^ (a * P) - y ^ (b * Q) = 1 := by
   constructor
   · intro h
@@ -98,3 +98,11 @@ lemma three_not_perfect_power : ¬ ∃ (a e : ℕ), 2 ≤ e ∧ a ^ e = 3 := by
     omega
 
 end Catalin
+
+/-! #print axioms scan (self-contained) -/
+#print axioms Catalin.reduction_iff
+#print axioms Catalin.prime_exponent_reduction
+#print axioms Catalin.reduction_iff_int
+#print axioms Catalin.known_solution
+#print axioms Catalin.two_not_perfect_power
+#print axioms Catalin.three_not_perfect_power

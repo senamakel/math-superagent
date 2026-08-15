@@ -1,0 +1,9 @@
+p=  3  h^- = 1  (real=         1.0 imag=-2.56354e-61)  expected 1  OK
+p=  5  h^- = 1  (real=         1.0 imag=-7.68153e-61)  expected 1  OK
+p=  7  h^- = 1  (real=         1.0 imag=-1.59111e-60)  expected 1  OK
+p= 11  h^- = 1  (real=         1.0 imag=-3.41043e-60)  expected 1  OK
+p= 13  h^- = 1  (real=         1.0 imag=-7.14806e-60)  expected 1  OK
+p= 23  h^- = 3  (real=         3.0 imag=-9.12234e-59)  expected 3  OK
+p= 31  h^- = 9  (real=         9.0 imag=-1.02929e-58)  expected 9  OK
+p= 37  h^- = 37  (real=        37.0 imag=-9.16492e-58)  expected 37  OK
+ALL MATCH: True

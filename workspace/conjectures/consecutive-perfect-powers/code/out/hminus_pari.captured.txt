@@ -1,0 +1,18 @@
+[0;31m  ***   Warning: new maximum stack size = 4000002048 (3814.699 Mbytes).[0m
+p=  3 h(K)=1 h(K+)=1 h-= 1
+p=  5 h(K)=1 h(K+)=1 h-= 1
+p=  7 h(K)=1 h(K+)=1 h-= 1
+p= 11 h(K)=1 h(K+)=1 h-= 1
+p= 13 h(K)=1 h(K+)=1 h-= 1
+p= 17 h(K)=1 h(K+)=1 h-= 1
+p= 19 h(K)=1 h(K+)=1 h-= 1
+p= 23 h(K)=3 h(K+)=1 h-= 3
+[0;31m  *** bnfinit: Warning: increasing stack size to 16000000.[0m
+p= 29 h(K)=8 h(K+)=1 h-= 8
+p= 31 h(K)=9 h(K+)=1 h-= 9
+[0;31m  *** bnfinit: Warning: increasing stack size to 32000000.[0m
+p= 37 h(K)=37 h(K+)=1 h-= 37
+[0;31m  *** bnfinit: Warning: increasing stack size to 64000000.[0m
+p= 41 h(K)=121 h(K+)=1 h-= 121
+[0;31m  *** bnfinit: Warning: increasing stack size to 128000000.[0m
+p= 43 h(K)=211 h(K+)=1 h-= 211

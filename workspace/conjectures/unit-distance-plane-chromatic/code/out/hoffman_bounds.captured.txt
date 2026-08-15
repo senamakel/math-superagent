@@ -1,0 +1,32 @@
+========================================================================
+Hoffman spectral lower bound on chi, exact-coordinate graphs
+========================================================================
+
+-- Calibration: C5 graph (expect 1 - 2/(-(sqrt5+1)/2) = sqrt5) --
+  C5 Hoffman = 2.23606798, sqrt5 = 2.23606798, match=True
+
+-- Calibration 2: Moser spindle, Hoffman from float eig vs exact char-poly eigenvalues --
+  Moser n=7 edges=11  (calibration: chi=4)
+  float Hoffman  = 2.712176 [3.177410, -1.855773]
+  exact eigvals  = [-1.855773, -1.732051, -1.0, -1.0, 0.678363, 1.732051, 3.17741]
+  chi=4 SAT confirmed (witness proper).
+
+-- Constructible family --
+Moser spindle (7v/11e): n=7, edges=11, Hoffman = 2.712176  (lmax=3.177410, lmin=-1.855773)
+Moser+Moser  (26 vertices): n=26, edges=69, Hoffman = 2.864308  (lmax=5.794387, lmin=-3.108063)
+diamond (4v/5e): n=4, edges=5, Hoffman = 2.640388  (lmax=2.561553, lmin=-1.561553)
+triangular disk radius=3 (37 pts): n=37, edges=90, Hoffman = 2.994973  (lmax=5.349183, lmin=-2.681331)
+
+========================================================================
+Summary of Hoffman chi-lower-bound on constructible family:
+  Moser spindle (7v/11e)                   n=7   e=11   Hoffman=2.712176
+  Moser+Moser  (26 vertices)               n=26  e=69   Hoffman=2.864308
+  diamond (4v/5e)                          n=4   e=5    Hoffman=2.640388
+  triangular disk radius=3 (37 pts)        n=37  e=90   Hoffman=2.994973
+
+Max Hoffman bound reached: 2.994973 on triangular disk radius=3 (37 pts).
+None of the constructible family clears 4: the Hoffman/spectral
+relaxation cannot certify chi>=5 on these graphs (a precise, if
+negative, datum for the adopted theta/vector-chromatic route).
+
+done in 0.5s

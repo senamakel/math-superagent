@@ -1,0 +1,26 @@
+p | (1-z)^{p-1} = p*u with u in Z[z] ? | Phi_p(1)=p (N(1-z)=p)
+  3 | True  | True   PASS
+  5 | True  | True   PASS
+  7 | True  | True   PASS
+ 11 | True  | True   PASS
+ 13 | True  | True   PASS
+ 17 | True  | True   PASS
+ 19 | True  | True   PASS
+ 23 | True  | True   PASS
+ 29 | True  | True   PASS
+ 31 | True  | True   PASS
+ 37 | True  | True   PASS
+ 41 | True  | True   PASS
+ 43 | True  | True   PASS
+ 47 | True  | True   PASS
+ 53 | True  | True   PASS
+ 59 | True  | True   PASS
+ 61 | True  | True   PASS
+ 67 | True  | True   PASS
+ 71 | True  | True   PASS
+ 73 | True  | True   PASS
+ 79 | True  | True   PASS
+ 83 | True  | True   PASS
+ 89 | True  | True   PASS
+ 97 | True  | True   PASS
+ALL PASS

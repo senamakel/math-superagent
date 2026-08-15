@@ -1,0 +1,2 @@
+pairs tested: 11629 fails: 0
+CORRECT LEMMA verified: Im((c+i)^p) even  <=>  c odd, for p odd prime.

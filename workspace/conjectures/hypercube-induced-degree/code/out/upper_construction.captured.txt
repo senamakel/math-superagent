@@ -1,0 +1,24 @@
+ceil(sqrt n): {6: 3}
+
+===== n=6  ceil(sqrt)=3  target |S|=33 =====
+  parity                     |S|=32    target=33 size_ok=False  D=0 (<= 3: YES)  dist={0: 32}
+  parity+one(known bad)      |S|=33    target=33 size_ok=True  D=6 (<= 3: no)  dist={0: 26, 1: 6, 6: 1}
+  bpp_prefix(b=2)            |S|=8     target=33 size_ok=False  D=0 (<= 3: YES)  dist={0: 8}
+  bpp_prefix(b=3)            |S|=16    target=33 size_ok=False  D=0 (<= 3: YES)  dist={0: 16}
+  grid_bpp(k^2)              n/a
+  flat[0,1] nb=2             |S|=16    target=33 size_ok=False  D=6 (<= 3: no)  dist={2: 9, 4: 6, 6: 1}
+  flat[1,2] nb=2             |S|=36    target=33 size_ok=False  D=4 (<= 3: no)  dist={4: 36}
+  flat[0,2] nb=2             |S|=49    target=33 size_ok=False  D=6 (<= 3: no)  dist={4: 9, 5: 24, 6: 16}
+  flat[1,3] nb=2             |S|=49    target=33 size_ok=False  D=6 (<= 3: no)  dist={4: 9, 5: 24, 6: 16}
+  flat[0,1] nb=3             |S|=27    target=33 size_ok=False  D=6 (<= 3: no)  dist={3: 8, 4: 12, 5: 6, 6: 1}
+  flat[1,2] nb=3             |S|=27    target=33 size_ok=False  D=6 (<= 3: no)  dist={3: 8, 4: 12, 5: 6, 6: 1}
+  flat[0,2] nb=3             |S|=64    target=33 size_ok=False  D=6 (<= 3: no)  dist={6: 64}
+  flat[1,3] nb=3             |S|=27    target=33 size_ok=False  D=6 (<= 3: no)  dist={3: 8, 4: 12, 5: 6, 6: 1}
+  single_heavy2 nb=2         |S|=48    target=33 size_ok=False  D=6 (<= 3: no)  dist={4: 24, 6: 24}
+  single_heavy3 nb=2         |S|=63    target=33 size_ok=False  D=6 (<= 3: no)  dist={5: 6, 6: 57}
+  single_heavy2 nb=3         |S|=54    target=33 size_ok=False  D=6 (<= 3: no)  dist={4: 12, 5: 12, 6: 30}
+  single_heavy3 nb=3         |S|=64    target=33 size_ok=False  D=6 (<= 3: no)  dist={6: 64}
+
+======= SUMMARY: which families hit |S| and D targets =======
+  n=6: HIT -> []
+DONE

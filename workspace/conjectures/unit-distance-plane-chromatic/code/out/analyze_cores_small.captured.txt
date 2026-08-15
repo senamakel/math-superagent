@@ -1,0 +1,20 @@
+=== Moser spindle containment + cores ===
+n=8: 4chrom=1  containMoser=0
+    core vertex-count dist: {7: 1}
+    core edge-count dist:   {11: 1}
+n=9: 4chrom=1  containMoser=0
+    core vertex-count dist: {6: 1}
+    core edge-count dist:   {10: 1}
+n=10: 4chrom=16  containMoser=0
+    core vertex-count dist: {8: 1, 7: 7, 9: 3, 10: 4, 6: 1}
+    core edge-count dist:   {14: 1, 11: 5, 12: 2, 16: 5, 19: 1, 15: 1, 10: 1}
+n=11: 4chrom=198  containMoser=0
+    core vertex-count dist: {7: 77, 8: 9, 11: 9, 9: 34, 10: 55, 6: 14}
+    core edge-count dist:   {12: 10, 14: 9, 11: 67, 19: 8, 15: 21, 16: 51, 17: 12, 10: 14, 18: 5, 20: 1}
+
+=== most common small core forms (n<=8) ===
+  ('small', 7, 11, (0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0) x73
+  ('small', 6, 10, (0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1)) x16
+  ('small', 7, 12, (0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0) x12
+  ('small', 8, 14, (0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, x7
+  ('small', 8, 14, (0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, x3

@@ -4,4 +4,16 @@ Derived from the `follows-from:` lines in every `claim` block, closed transitive
 
 A claim written `follows-from: a, b` says `a` and `b` together give it. That single edge is enough to answer three questions the claim ledger cannot: which claims the run has already established without noticing, which proposals would add nothing, and which pair of held beliefs cannot both be true.
 
-_Nothing to derive yet. Add a `follows-from:` line to a `claim` block naming the claim ids it is a consequence of, and this file fills in._
+## Established for free
+
+Every claim these rest on is established, so these are too, whatever status their block carries. Proving one again spends an attempt on something the run already has — update the status instead.
+
+- `minus-class-number-formula-statement` — filed as asserted, follows from `minus-class-number-formula`
+  - > For K = Q(zeta_p), p odd prime, the relative (minus) class number is h^-(K) = 2p * prod_{chi odd mod p} (-1/2 B_{1,chi}), with B_{1,chi} = (1/p)…
+
+## Already entailed
+
+These add nothing the library did not have. That is not a criticism of them — a consequence worth naming is worth a block — but a *proposal* that lands in this list is not a result, and the cheapest time to find that out is before an attempt is spent on it.
+
+- `scholar-digest-valuation-corrected` is covered by `fermat-little-theorem`, `lifting-the-exponent`: The valuation/LTE identity v_p(x^p-1)=1+v_p(x-1) holds iff p \| (x-1) (mirror v_q(y^q+1)=1+v_q(y+1) iff q \| (y+1)); the form with hypothesis p ∤ x is false…
+

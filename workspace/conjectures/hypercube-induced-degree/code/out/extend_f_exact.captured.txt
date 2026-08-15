@@ -1,0 +1,8 @@
+n=6 |S|=33 d=1 feasible=False  [0.08s]
+n=6 |S|=33 d=2 feasible=False  [10.53s]
+n=6 |S|=33 d=3 feasible=True  [0.00s]
+n=6 |S|=33 d=4 feasible=True  [0.00s]
+n=6 |S|=33 d=5 feasible=True  [0.00s]
+  -> n=6: f(n)=3  conj=ceil(sqrt(n))=3  match=True
+  n=6 total 10.62s
+n=7 |S|=65 d=1 feasible=False  [0.59s]

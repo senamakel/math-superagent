@@ -1,0 +1,5 @@
+No integer m in [-5,5] solves m(1+2w) = -w; only need m=0 & 2m=-1: impossible (parity).
+  m(1+2w) = (m,2m).  Equal to -w=(0,-1) needs m=0 AND 2m=-1 -> m=0 and m=-1/2.  Contradiction.
+w^2 - w = (-1, -2)
+P * (-w) = (-1, -2)  should equal (-1,-2)
+match: True

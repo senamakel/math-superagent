@@ -1,0 +1,20 @@
+import Mathlib
+
+#check Nat.sub_eq_iff_eq_add
+#check Nat.sub_eq_zero_of_le
+#check Int.ofNat_sub
+#check Int.coe_nat_sub
+#check Nat.cast_sub
+#check Int.natCast_sub
+#check sub_eq_iff_eq_add
+#check Nat.sub_eq_iff_le_add
+#check Nat.lt_of_sub_eq_succ
+#check geom_sum₂_mul_add
+#check Commute.mul_geom_sum₂
+#check mul_geom_sum₂
+#check sub_dvd_pow_sub_pow
+#check Nat.pow_eq_pow_iff
+#check pow_eq_pow
+#check mul_lt_mul
+#check one_le_mul
+#check Finset.card_range

@@ -1,0 +1,21 @@
+import Mathlib
+
+#check geom_sum₂
+#check Nat.geom_sum₂
+#check geom_sum₂_mul_comm
+#check pow_sub_pow_of_pos
+#check squeeze_zero
+#check Nat.gcd_eq_right
+#check Nat.coprime_self_sub
+#check Nat.Coprime
+#check Nat.Coprime.of_dvd_right
+#check Nat.Coprime.of_dvd_left
+#check Nat.eq_of_mul_eq_mul_left
+#check Nat.mul_right_cancel
+#check Nat.pow_succ
+#check pow_succ
+#check Nat.pow_add
+#check one_le_pow
+#check one_le_pow₀
+#check one_le_pow₀
+#check Nat.one_le_pow

@@ -1,0 +1,6 @@
+{
+  "finding": "refuted",
+  "model": "",
+  "problem": "code/refute/threshold_shadow_core.p",
+  "status": "CounterSatisfiable"
+}

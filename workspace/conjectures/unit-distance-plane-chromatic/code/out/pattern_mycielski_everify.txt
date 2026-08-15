@@ -1,0 +1,2 @@
+order-2 affine check E_{k+2}=5E_{k+1}-6E_k+1: True
+order-3 homogeneous a(n)=6a(n-1)-11a(n-2)+6a(n-3): True

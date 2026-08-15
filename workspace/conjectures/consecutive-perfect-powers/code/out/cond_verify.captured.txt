@@ -1,0 +1,6 @@
+q^(p-1) mod p^2 = 1 (should be 1)
+p^(q-1) mod q^2 = 1 (should be 1)
+detected in list up to 5000: True
+first few double-Wieferich pairs up to 5000: [(83, 4871)]
+{'is_odd_prime_pair': True, 'vp_y': True, 'vq_x': True, 'wieferich_1': True, 'wieferich_2': True}
+calibration OK: genuine double-Wieferich odd-prime pair gives both flags True

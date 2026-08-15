@@ -1,0 +1,10 @@
+chromatic polynomial (degree 7):
+k**7 - 11*k**6 + 51*k**5 - 129*k**4 + 188*k**3 - 148*k**2 + 48*k
+
+factorised:
+k*(k - 3)*(k - 2)**2*(k - 1)*(k**2 - 3*k + 4)
+
+predicted values at k=8,9,10 vs exact fresh:
+P(8)  pred 443520 (exact 443520)
+P(9)  pred 1227744 (exact 1227744)
+P(10) pred 2983680 (exact 2983680)

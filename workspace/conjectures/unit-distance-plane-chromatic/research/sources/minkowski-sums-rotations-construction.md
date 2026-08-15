@@ -63,7 +63,14 @@ statement: For finite point sets A, B in the plane, a pair of points
 hypotheses: A, B finite point sets in R^2.
 holds-here: YES — this is exactly the engine the run will use; the identity is
   a restatement of the definition of distance and holds for any A, B.
-status: derived (immediate from |(a1+b1)-(a2+b2)| = |(a1-a2)+(b1-b2)|).
+status: checked (the exact distance-1 identity is machine-verified on 2000
+  exact random pairs over Q(sqrt3), and the Minkowski sum T+T = 6 vertices /
+  9 unit edges / chi=3 is verified by an independent cross-check — see
+  `code/out/scholar_verify_claims.captured.txt`,
+  `code/out/verify_sources.captured.txt`, and
+  `code/out/crosscheck_triangle_sum.captured.txt`, all EXIT_CODE=0). The
+  identity itself is immediate from the definition of Euclidean distance on
+  sums; the densest-known-UDG claim remains asserted by the named sources.
 bearing: the exact condition to compute when building A+B; which pairs fall at
   unit distance is governed by sum-of-differences length 1.
 anchor: research/sources/minkowski-sums-rotations-construction.md

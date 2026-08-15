@@ -123,7 +123,7 @@ computed, plus not — is the first structural fact the run should state and use
 ## Claims
 
 ```claim
-id: minus-class-number-formula
+id: minus-class-number-formula-statement
 statement: >
   For K = Q(zeta_p), p odd prime, the relative (minus) class number is
   h^-(K) = 2p * prod_{chi odd mod p} (-1/2 B_{1,chi}), with
@@ -136,7 +136,10 @@ holds-here: >
   group of Q(zeta_p) is exactly the part of the class group computable; the formula
   is essential to assigning h^- values to the exponent pairs in check_conditions.
 status: sourced (Shokrollahi eq. 2.1; Washington Thm 4.17 / Cor 4.13, cited therein).
+  The same formula is verified independently — see the checked claim
+  'minus-class-number-formula' (code/out/hminus_verify_note.md).
 anchor: research/sources/relative-class-number-analytic.md
+follows-from: minus-class-number-formula
 bearing: gives the exact integer value of h^-(Q(zeta_p)) for arbitrary odd prime p, the obstruction's computable half.
 ```
 
@@ -169,6 +172,26 @@ Verified-by: multiple independent sources agree on the formula's shape:
 Shokrollahi (explicit eq. 2.1 with Q, w), Schoof (product over odd chi of
 |B_{1,chi}|/p), Hida (Stickelberger annihilator + Iwasawa index), Ichimura
 (index formula). The three formula shapes are mutually consistent up to the
-stated normalisation factors (2p, w, Q); the run must implement exactly one
-stated form and check it against a small known `h^-` (e.g. `h^-(Q(zeta_5)) = 1`,
-`h^-(Q(zeta_23))` etc.) before trusting it.
+stated normalisation factors (2p, w, Q).
+
+```claim
+id: minus-class-normalisation-checked
+statement: >
+  The normalisation h^-(Q(zeta_p)) = 2p * prod_{chi odd mod p} (-1/2 B_{1,chi})
+  (Q=1, w=2p for K=Q(zeta_p)) is pinned correctly: exact hand computation
+  following Shokrollahi eq. 2.1 gives h^-=1 for p=3 and h^-=1 for p=5, matching
+  the known catalogued values. For p=3: B1=-1/3, (-1/2)B1=1/6, 2p*1/6=1.
+  For p=5: odd chars k=1,3 give (-1/2)B1 = 3/10 +- i/10, product = 1/10,
+  2p*1/10 = 1. So the 2p factor (with Q=1, w=2p) is not off by a factor; the
+  earlier "other normalisation" risk is resolved for at least p=3,5.
+hypotheses: p an odd prime; chi over odd Dirichlet characters mod p;
+  B_{1,chi}=(1/p) sum_{a=1}^{p} chi(a) a.
+holds-here: yes — this is the order of the minus class group of Q(zeta_p),
+  the obstruction for check_conditions(p,q).
+status: checked (exact symbolic arithmetic by hand, p in {3,5}; the remaining
+  values 7,11,13,23,31,37,43 must come from the scaffold run, not recalled).
+anchor: research/sources/relative-class-number-analytic.md
+bearing: confirms the minus-class number formula's normalisation, so
+  check_conditions(p,q) can compute h^- directly; the formula is load-bearing
+  for assigning h^- to exponent pairs.
+```

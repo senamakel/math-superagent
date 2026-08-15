@@ -1,0 +1,10 @@
+n=8: 1 four-chromatic, 1 contain Moser spindle as subgraph
+n=9: 1 four-chromatic, 1 contain Moser spindle as subgraph
+n=10: 16 four-chromatic, 10 contain Moser spindle as subgraph
+n=11: 198 four-chromatic, 118 contain Moser spindle as subgraph
+
+-- induced-subgraph variant --
+n=8: 1 four-chromatic, 0 contain Moser as INDUCED subgraph
+n=9: 1 four-chromatic, 0 contain Moser as INDUCED subgraph
+n=10: 16 four-chromatic, 0 contain Moser as INDUCED subgraph
+n=11: 198 four-chromatic, 0 contain Moser as INDUCED subgraph

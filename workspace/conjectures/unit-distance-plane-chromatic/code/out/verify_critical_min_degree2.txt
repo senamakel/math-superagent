@@ -1,0 +1,5 @@
+=== oracle cross-check (critoracle vs lib.satcolor) ===
+cross-check mismatches: 0
+=== lemma verification (complete over all graphs n<=6) ===
+[1&2] graphs n<= 6: total=33867 vertex-critical=90 violations_part2=0 violations_part1=0 max_chi=6
+RESULT: PASSED

@@ -102,3 +102,134 @@ prevent.
 | 1786746751 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |
 | 1786746751 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |
 | 1786746751 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |
+| 1786746947 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786746956 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (4437 characters) |
+| 1786747993 | `exa_search` | arguments | denied | term matched |
+| 1786747993 | `download_document` | arguments | unreachable-host | host `www.jmilne.org` is not on the egress allowlist |
+| 1786747999 | `exa_search` | result | denied | term matched in 12244 characters |
+| 1786748014 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786748023 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (8595 characters) |
+| 1786748078 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (10756 characters) |
+| 1786748087 | `download_document` | arguments | unreachable-host | host `www.mat.uniroma2.it` is not on the egress allowlist |
+| 1786748087 | `download_document` | arguments | unreachable-host | host `www.math.ucla.edu` is not on the egress allowlist |
+| 1786748127 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786748128 | `exa_search` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786748137 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12081 characters) |
+| 1786748158 | `exa_search` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786748165 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (2609 characters) |
+| 1786748193 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786748202 | `exa_search` | arguments | denied | term matched |
+| 1786748207 | `exa_search` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786748214 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (7559 characters) |
+| 1786748330 | `exa_search` | result | denied | term matched in 12179 characters |
+| 1786748454 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (9476 characters) |
+| 1786748616 | `deep_research` | arguments | denied | term matched |
+| 1786748647 | `deep_research` | result | allowed-by-adjudicator | flagged, then allowed (24615 characters) |
+| 1786748688 | `exa_search` | arguments | denied | term matched |
+| 1786748701 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (10691 characters) |
+| 1786749095 | `download_document` | arguments | unreachable-host | host `inria.hal.science` is not on the egress allowlist |
+| 1786749095 | `download_document` | arguments | unreachable-host | host `arxiv.org` is not on the egress allowlist |
+| 1786749253 | `read_sources` | arguments | denied-host | host `en.wikipedia.org` |
+| 1786749274 | `exa_search` | arguments | denied | term matched |
+| 1786749279 | `exa_search` | result | denied | term matched in 12103 characters |
+| 1786749279 | `exa_search` | result | denied | term matched in 12145 characters |
+| 1786749294 | `exa_search` | result | denied | term matched in 12114 characters |
+| 1786749299 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12120 characters) |
+| 1786749299 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12101 characters) |
+| 1786749322 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12103 characters) |
+| 1786749442 | `exa_search` | arguments | denied | term matched |
+| 1786749448 | `exa_search` | result | denied | term matched in 12116 characters |
+| 1786749501 | `exa_search` | result | denied | term matched in 12152 characters |
+| 1786749518 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12103 characters) |
+| 1786750068 | `exa_search` | arguments | denied | term matched |
+| 1786750068 | `exa_search` | arguments | denied | term matched |
+| 1786750116 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (3614 characters) |
+| 1786750135 | `exa_search` | arguments | denied | term matched |
+| 1786750140 | `exa_search` | result | denied | term matched in 12206 characters |
+| 1786750186 | `download_document` | arguments | unreachable-host | host `www.cambridge.org` is not on the egress allowlist |
+| 1786750203 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12160 characters) |
+| 1786750236 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12157 characters) |
+| 1786750241 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12106 characters) |
+| 1786750282 | `download_document` | arguments | unreachable-host | host `arxiv.org` is not on the egress allowlist |
+| 1786750284 | `deep_research` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786750320 | `deep_research` | result | allowed-by-adjudicator | flagged, then allowed (24591 characters) |
+| 1786750343 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (8569 characters) |
+| 1786750868 | `exa_search` | arguments | denied | term matched |
+| 1786750868 | `exa_search` | arguments | denied | term matched |
+| 1786750888 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12104 characters) |
+| 1786750909 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12097 characters) |
+| 1786751034 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12102 characters) |
+| 1786751791 | `exa_search` | arguments | denied | term matched |
+| 1786754472 | `exa_search` | arguments | denied | term matched |
+| 1786754472 | `exa_search` | arguments | denied | term matched |
+| 1786754472 | `exa_search` | arguments | denied | term matched |
+| 1786764109 | `download_document` | arguments | unreachable-host | host `arxiv.org` is not on the egress allowlist |
+| 1786764109 | `download_document` | arguments | unreachable-host | host `www.bourbaki.fr` is not on the egress allowlist |
+| 1786764109 | `download_document` | arguments | unreachable-host | host `www.math.u-bordeaux.fr` is not on the egress allowlist |
+| 1786764109 | `download_document` | arguments | unreachable-host | host `www.mat.uniroma2.it` is not on the egress allowlist |
+| 1786764109 | `download_document` | arguments | denied-host | host `en.wikipedia.org` |
+| 1786764109 | `download_document` | arguments | unreachable-host | host `www.emis.de` is not on the egress allowlist |
+| 1786764217 | `download_document` | arguments | unreachable-host | host `kconrad.math.uconn.edu` is not on the egress allowlist |
+| 1786764217 | `download_document` | arguments | unreachable-host | host `math.stanford.edu` is not on the egress allowlist |
+| 1786764218 | `exa_search` | arguments | denied | term matched |
+| 1786764218 | `exa_search` | arguments | denied | term matched |
+| 1786764219 | `download_document` | arguments | unreachable-host | host `www.mat.uniroma2.it` is not on the egress allowlist |
+| 1786764219 | `download_document` | arguments | unreachable-host | host `inria.hal.science` is not on the egress allowlist |
+| 1786764227 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786764230 | `exa_search` | result | denied | term matched in 12134 characters |
+| 1786764230 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12258 characters) |
+| 1786764237 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (8226 characters) |
+| 1786764247 | `exa_search` | arguments | denied | term matched |
+| 1786764253 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786764260 | `download_document` | arguments | unreachable-host | host `www.jmilne.org` is not on the egress allowlist |
+| 1786764261 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (8840 characters) |
+| 1786764267 | `exa_search` | result | denied | term matched in 12170 characters |
+| 1786764267 | `exa_search` | result | denied | term matched in 12227 characters |
+| 1786764271 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12164 characters) |
+| 1786764288 | `download_document` | arguments | unreachable-host | host `www.rnta.eu` is not on the egress allowlist |
+| 1786764288 | `download_document` | arguments | unreachable-host | host `math.mit.edu` is not on the egress allowlist |
+| 1786764295 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786764296 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786764304 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (8657 characters) |
+| 1786764304 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (2787 characters) |
+| 1786764313 | `download_document` | arguments | unreachable-host | host `www.math.columbia.edu` is not on the egress allowlist |
+| 1786764313 | `download_document` | arguments | unreachable-host | host `kam.mff.cuni.cz` is not on the egress allowlist |
+| 1786764322 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (6773 characters) |
+| 1786764367 | `exa_search` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786764382 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12255 characters) |
+| 1786764402 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (8771 characters) |
+| 1786764420 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (10175 characters) |
+| 1786764447 | `download_document` | arguments | unreachable-host | host `arxiv.org` is not on the egress allowlist |
+| 1786764447 | `download_document` | arguments | unreachable-host | host `arxiv.org` is not on the egress allowlist |
+| 1786764459 | `read_sources` | result | denied | term matched in 8335 characters |
+| 1786764696 | `deep_research` | arguments | denied | term matched |
+| 1786764748 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (4347 characters) |
+| 1786764839 | `exa_search` | arguments | denied | term matched |
+| 1786764839 | `exa_search` | arguments | denied | term matched |
+| 1786764870 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12084 characters) |
+| 1786765157 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12137 characters) |
+| 1786766082 | `exa_search` | arguments | denied | term matched |
+| 1786766095 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12254 characters) |
+| 1786766140 | `exa_search` | arguments | denied | term matched |
+| 1786766140 | `exa_search` | arguments | denied | term matched |
+| 1786766140 | `download_document` | arguments | unreachable-host | host `doi.org` is not on the egress allowlist |
+| 1786766218 | `exa_search` | arguments | denied | term matched |
+| 1786766218 | `exa_search` | arguments | denied | term matched |
+| 1786766232 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12147 characters) |
+| 1786766252 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12210 characters) |
+| 1786766253 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12158 characters) |
+| 1786766254 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786766260 | `exa_search` | result | allowed-by-adjudicator | flagged, then allowed (12126 characters) |
+| 1786766262 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (6228 characters) |
+| 1786766265 | `download_document` | arguments | unreachable-host | host `web.math.princeton.edu` is not on the egress allowlist |
+| 1786766266 | `exa_search` | arguments | denied | term matched |
+| 1786766267 | `exa_search` | arguments | denied | term matched |
+| 1786766267 | `read_sources` | arguments | allowed-by-adjudicator | flagged, then allowed |
+| 1786766276 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (6813 characters) |
+| 1786766277 | `read_sources` | result | allowed-by-adjudicator | flagged, then allowed (4328 characters) |
+| 1786766317 | `read_sources` | arguments | denied | term matched |
+| 1786766317 | `exa_search` | arguments | denied | term matched |
+| 1786766348 | `exa_search` | arguments | denied | term matched |
+| 1786766348 | `exa_search` | arguments | denied | term matched |
+| 1786766397 | `find_similar_sources` | result | allowed-by-adjudicator | flagged, then allowed (22665 characters) |
+| 1786766397 | `find_similar_sources` | result | allowed-by-adjudicator | flagged, then allowed (24477 characters) |

@@ -1,0 +1,5 @@
+p=83: indices=[]  regular=True  (0.0s)
+p=911: indices=[]  regular=True  (0.1s)
+p=2903: indices=[]  regular=True  (1.6s)
+p=4871: indices=[]  regular=True  (4.0s)
+p=18787: indices=[]  regular=True  (58.4s)

@@ -73,15 +73,31 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `a000927-catalogue-reproduced` | claim | established | — | > h^-(Q(zeta_p)) equals OEIS A000927 for every odd prime p <= 97: an exact rational computation reproduces all 24 successive terms,… |
+| `a055513-full-class-agrees-minus-then-plus` | claim | **ready** | — | > OEIS A055513 (full class number h(Q(zeta_p))) equals A000927 (h^-) through term 37 (p = 163) on the published term lists, and first… |
+| `analytic-class-number-formula` | claim | **ready** | — | > For a number field K of degree n with r real and s complex places, the Dedekind zeta function has a simple pole at s = 1 with residue… |
+| `attempt2-dw-pairs-1e4` | claim | established | — | > Among ordered pairs (p, q) of odd primes with p < q < 10^4, the two congruences q^(p-1) == 1 (mod p^2) and p^(q-1) == 1 (mod q^2) —… |
+| `attempt2-oracle-1e10` | claim | established | — | > The exact-integer oracle solutions(N) — enumerate all perfect-power values u = x^p <= N (x >= 2, p >= 2) by exact repeated… |
+| `baker-effective-lower-bound` | claim | **ready** | — | > If Lambda = gamma + sum beta_i log alpha_i != 0 is a linear form in logarithms of algebraic numbers (alpha_i != 0,1; gamma, beta_i… |
+| `baker-wustholz-explicit-constant` | claim | **ready** | — | > If Lambda = sum b_i log alpha_i != 0 (b_i integers, alpha_i algebraic != 0,1, principal logs) and d = [Q(alpha_1,...,alpha_n):Q], A_i =… |
+| `base-a-wieferich-definition-cdp` | claim | **ready** | — | > For an integer a with gcd(a,p)=1, an odd prime p is Wieferich to base a iff a^{p-1} ≡ 1 (mod p^2), equivalently the Fermat quotient… |
+| `bennett-at-most-two-solutions-2001` | claim | **ready** | — | > For nonzero integers a, b >= 2 and c, the equation a^x - b^y = c has at most two solutions in positive integers x, y. (Bennett, Canad. J.… |
+| `bennett-inequality-at-most-one-2008` | claim | **ready** | — | > Let a, b be positive integers. There is at most one pair of positive integers (x, y) for which 0 < \|a^x - b^y\| < (1/4) max{a^{x/2},… |
 | `both-odd-primes` | goal | blocked | `both-odd-primes/G-Cassels`, `both-odd-primes/G-double-wieferich`, `both-odd-primes/G-exclude` | x^p - y^q = 1 has no solution with p,q odd primes. |
 | `both-odd-primes/G-Cassels` | lemma | **ready** | — | If x^p - y^q = 1 with x,y>0 and p,q odd primes, then p \| y and q \| x. |
 | `both-odd-primes/G-double-wieferich` | lemma | **ready** | — | If x^p - y^q = 1 with x,y>0 and p,q odd primes, then p^{q-1} ≡ 1 (mod q^2) and q^{p-1} ≡ 1 (mod p^2). |
 | `both-odd-primes/G-exclude` | lemma | **ready** | — | There are no integers x,y>0 and odd primes p,q with x^p - y^q = 1 satisfying both p^{q-1} ≡ 1 (mod q^2) and q^{p-1} ≡ 1 (mod p^2). |
+| `caseB-complete-closure-nagell-ljunggren` | claim | **ready** | — | For Case B of Catalan (x^p - y^2 = 1, p an odd prime >= 3), the reduction gives x = c^2+1, y = c*m, m^2 = T(c,p) =… |
+| `caseB-no-fixed-modulus-closes-residual` | claim | established | — | Over the Case-B residual class (c even >= 2, p an odd prime, p == 1 mod 8), T(c,p) = sum_{k=0}^{p-1}(c^2+1)^k is a square mod M for every… |
+| `caseb-codd-mod8-proved-but-vacuous` | claim | established | — | For c odd and odd prime p >= 3, T(c,p)=sum_{k=0}^{p-1}(c^2+1)^k is never a square (T ≡ 7 mod 8).  Machine-verified proof, exit 0.  BUT in… |
+| `caseb-lebesgue-reduction-certified` | claim | **ready** | — | x^p - y^2 = 1 (p odd prime >= 3, x,y > 0) reduces to x = c^2+1 and m^2 = T(c,p) = (x^p-1)/(x-1) = sum_{k=0}^{p-1}(c^2+1)^k for integers c,… |
+| `cassels-reduced-system-sweep` | claim | established | — | > Let p != q be odd primes with p in {3,5,7,11,13} and q in {3,5,7}. For every integer a in [1, 20000] with p {bar} a, Phi_p(a^q + 1) =… |
 | `cassels-selfcontained` | goal | blocked | `cassels-selfcontained/cv-cyclo-coprime`, `cassels-selfcontained/cv-lte`, `cassels-selfcontained/cv-vp-transfer`, `cassels-selfcontained/cv-vq-transfer` | If x^p - y^q = 1 with x, y > 0 and p, q distinct odd primes, then p \| y and q \| x. |
 | `cassels-selfcontained/cv-cyclo-coprime` | lemma | **ready** | — | > In Z[zeta_p] (p an odd prime), for distinct i, j in {1,...,p-1} the ideals (x - zeta_p^i) and (x - zeta_p^j) have gcd supported only on… |
 | `cassels-selfcontained/cv-lte` | lemma | **ready** | — | > Lifting-the-exponent (both signs). For an odd prime r and integers a, b with r \| (a - b) and r ∤ ab: v_r(a^r - b^r) = v_r(a - b) + 1.… |
 | `cassels-selfcontained/cv-vp-transfer` | lemma | **ready** | — | > The valuation-transfer descent, p \| y half. Let x^p - 1 = y^q with p, q distinct odd primes, x, y > 0. From G-cv-cyclo-coprime, each… |
 | `cassels-selfcontained/cv-vq-transfer` | lemma | **ready** | — | > The mirror valuation-transfer descent, q \| x half. Let y^q + 1 = x^p with p, q distinct odd primes, x, y > 0. Factoring y^q + 1 = (y + 1)… |
+| `cassels-valuation-lte-and-cyclotomic` | claim | established | — | > For an odd prime p and integer x, v_p(x^p-1) = v_p(x-1) + 1 iff p \| (x-1) (else equal); for an odd prime q and integer y, v_q(y^q+1) =… |
 | `catalan-mihailescu-full` | goal | blocked | `catalan-mihailescu-full/cassels-divisibility`, `catalan-mihailescu-full/double-wieferich`, `catalan-mihailescu-full/exp2-case-x-squared`, `catalan-mihailescu-full/exp2-case-y-squared`, `catalan-mihailescu-full/odd-prime-contradiction`, `catalan-mihailescu-full/red-prime-exponents` | The only solution of x^p - y^q = 1 in integers x, y > 0, p, q > 1 is (x, p, y, q) = (3, 2, 2, 3). |
 | `catalan-mihailescu-full/cassels-divisibility` | lemma | **ready** | — | > If x^p - y^q = 1 with x, y > 0 and p, q distinct odd primes, then q \| x and p \| y. |
 | `catalan-mihailescu-full/double-wieferich` | lemma | **ready** | — | > If x^p - y^q = 1 with x, y > 0 and p, q distinct odd primes, then q^{p-1} = 1 (mod p^2) and p^{q-1} = 1 (mod q^2). |
@@ -90,28 +106,12 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `catalan-mihailescu-full/odd-prime-contradiction` | lemma | **ready** | — | > There do not exist distinct odd primes p, q and positive integers x, y with x^p - y^q = 1, q \| x, p \| y, q^{p-1} = 1 (mod p^2) and… |
 | `catalan-mihailescu-full/red-prime-exponents` | lemma | **ready** | — | > Every solution x^p - y^q = 1 with p, q > 1 yields a solution x'^{p'} - y'^{q'} = 1 with p', q' prime: if p = a b then (x', p') = (x^a, b)… |
 | `circular-units-index-plus-part` | claim | **ready** | — | > For an imaginary cyclotomic field, the index [E+ : C+] of the circular units in the full unit group of the real subfield is h^+ up to a… |
+| `columbia-h-equals-hplus-tim-hminus` | claim | **ready** | — | > For K = Q(zeta_p) the class number splits as h(K) = h^+(K) * h^-(K), the plus part attached to the maximal real subfield Q(zeta_p +… |
+| `columbia-zetap-ring-of-integers-and-stickelberger` | claim | **ready** | — | > Z[zeta_p] is the ring of integers of Q(zeta_p); the cyclotomic units form a subgroup of the units whose index (in the real subfield)… |
+| `cond-evaluator-odd-prime-wieferich` | claim | established | — | > check_conditions(2,3) at the known solution 3^2-2^3=1 reports is_odd_prime_pair=False (p=2 even), so the Cassels and double-Wieferich… |
 | `conditional-non-wieferich` | goal | blocked | `conditional-non-wieferich/cond-cassels`, `conditional-non-wieferich/cond-wieferich` | > For all odd primes p, q with p^(q-1) != 1 (mod q^2) or q^(p-1) != 1 (mod p^2) (i.e. (p,q) is NOT a double-Wieferich pair), the equation… |
 | `conditional-non-wieferich/cond-cassels` | lemma | **ready** | — | > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q \| x and p \| y. (Cassels, 1960.) |
 | `conditional-non-wieferich/cond-wieferich` | lemma | **ready** | — | > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q^(p-1) = 1 (mod p^2) and p^(q-1) = 1 (mod q^2). |
-| `exp2-independent-searches` | claim | established | — | Over x^2,y^q<=N for N in {1e6,1e7}, the equation x^2-y^q=1 (q prime) has exactly one solution (x,y,q)=(3,2,3); over x^p,y^2<=N the equation… |
-| `exponent-2-in-full` | goal | blocked | `exponent-2-in-full/exp2-a-even`, `exponent-2-in-full/exp2-a-odd-descent`, `exponent-2-in-full/exp2-b-nosolution` | > (A) x^2 - y^q = 1 with x, y > 0 and q prime has exactly the solution (x, y, q) = (3, 2, 3); and (B) x^p - y^2 = 1 with x, y > 0 and p… |
-| `exponent-2-in-full/exp2-a-even` | lemma | **ready** | — | > x^2 - y^q = 1 with x, y > 0, x even, and q an odd prime, has no solution. |
-| `exponent-2-in-full/exp2-a-odd-descent` | lemma | **ready** | — | > x^2 - y^q = 1 with x >= 3 odd, y > 0, and q an odd prime, has exactly the solution (x, y, q) = (3, 2, 3). |
-| `exponent-2-in-full/exp2-b-nosolution` | lemma | **ready** | — | > x^p - y^2 = 1 with x, y > 0 and p an odd prime has no solution. |
-| `faktor-pairwise-coprime-off-ramified` | claim | **ready** | — | > For x in Z[zeta_p] and i != j, the ideals (x - zeta_p^i) and (x - zeta_p^j) have gcd contained in (1 - zeta_p); they are pairwise coprime… |
-| `full-conjecture` | goal | blocked | `full-conjecture/G-full-case-p2`, `full-conjecture/G-full-case-q2`, `full-conjecture/G-full-odd-odd`, `full-conjecture/G-full-prime-reduction` | The only solution of x^p - y^q = 1 in integers x,y > 0, p,q > 1 is (x,p,y,q) = (3,2,2,3). |
-| `full-conjecture/G-full-case-p2` | lemma | **ready** | — | The only solution of x^2 - y^q = 1 in integers x,y >= 1, q >= 2 prime, is (x,y,q) = (3,2,3). |
-| `full-conjecture/G-full-case-q2` | lemma | **ready** | — | x^p - y^2 = 1 has no solution in integers x,y >= 1, p >= 2 prime. |
-| `full-conjecture/G-full-odd-odd` | lemma | **ready** | — | x^p - y^q = 1 has no solution in integers x,y >= 2 with p,q odd primes. |
-| `full-conjecture/G-full-prime-reduction` | lemma | **ready** | — | If x^p - y^q = 1 with x,y >= 2 and p,q >= 2 integers, then there exist X,Y >= 2 and primes P,Q with X^P - Y^Q = 1; concretely, writing p =… |
-| `iwasawa-index-of-stickelberger` | claim | **ready** | — | > [Z[G]^- : s^-] = h^-(Q(zeta_p)), the relative class number. |
-| `minus-class-computable-plus-not` | claim | **ready** | — | > h^- of Q(zeta_p) is given by an explicit Bernoulli-number product and is easy to compute for very large odd primes p; h^+ of Q(zeta_p) is… |
-| `minus-class-number-formula` | claim | **ready** | — | > For K = Q(zeta_p), p odd prime, the relative (minus) class number is h^-(K) = 2p * prod_{chi odd mod p} (-1/2 B_{1,chi}), with B_{1,chi}… |
-| `odd-prime-case` | goal | blocked | `odd-prime-case/G-odd-cassels`, `odd-prime-case/G-odd-descent`, `odd-prime-case/G-odd-wieferich` | x^p - y^q = 1 has no solution in integers x,y >= 2 with p,q odd primes. |
-| `odd-prime-case/G-odd-cassels` | lemma | **ready** | — | For p,q odd primes and x,y >= 2, x^p - y^q = 1 implies p \| y and q \| x. (Cassels, 1960.) |
-| `odd-prime-case/G-odd-descent` | lemma | **ready** | — | There is no solution x^p - y^q = 1 with p,q odd primes, x,y >= 2 satisfying p \| y, q \| x, p^(q-1) = 1 (mod q^2), q^(p-1) = 1 (mod p^2).… |
-| `odd-prime-case/G-odd-wieferich` | lemma | **ready** | — | For p,q odd primes and x,y >= 2, x^p - y^q = 1 implies p^(q-1) = 1 (mod q^2) and q^(p-1) = 1 (mod p^2). (Inkeri / Hyyrö refinement of… |
-| `reduce-to-prime-exponents` | goal | blocked | `reduce-to-prime-exponents/G-exp2-a`, `reduce-to-prime-exponents/G-exp2-b`, `reduce-to-prime-exponents/G-odd-prime`, `reduce-to-prime-exponents/G-prime-reduction` | x^p - y^q = 1 with x,y>0, p,q>1 has (x,p,y,q)=(3,2,2,3) as its only solution. |
-| `reduce-to-prime-exponents/G-exp2-a` | lemma | **ready** | — | x^2 - y^q = 1 with x,y>0 and q prime has the unique solution (x,y,q)=(3,2,3). |
+| `crossprime-hminus-divisibility-sweep` | claim | established | — | > For every distinct odd-prime pair p < q <= 200, the exact-integer evaluation of q \| h^-(Q(zeta_p)) AND p \| h^-(Q(zeta_q)) has exactly one… |
 
-_7 further nodes not shown._
+_90 further nodes not shown._

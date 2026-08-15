@@ -1,0 +1,4 @@
+OPENBLAS_NUM_THREADS after import scope check: numpy imported
+5 2 ilp= False witness= False |S|= None D(S)= None
+5 3 ilp= True witness= True |S|= 17 D(S)= 3
+6 3 ilp= True witness= True |S|= 33 D(S)= 3

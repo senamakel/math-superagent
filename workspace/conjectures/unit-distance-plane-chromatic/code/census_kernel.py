@@ -43,29 +43,53 @@ import argparse
 from lib.satcolor import is_k_colorable, verify_witness
 
 
-def nauty_geng_connected(n, min_deg=0, max_n=9):
+def nauty_geng_connected(n, min_deg=0, max_n=9, k4free=True, connected=True):
     """Yield canonical graph6 strings of graphs on n vertices with minimum
     degree >= min_deg, from nauty-geng (all graphs, connected and not — the
     kernel is defined over ALL graphs on <= N vertices, including disconnected
-    ones)."""
+    ones).
+
+    If k4free, pass -k so geng only emits K4-free graphs (a required kernel
+    condition, so this is sound and prunes the enumeration enormously: at
+    n=11 with -d4 it is 6.2M graphs instead of 187M).
+    If connected, pass -c (critical subgraphs are connected, so the kernel
+    members relevant to the 5-critical argument are connected).
+
+    STREAMING version: reads geng's stdout line by line via Popen so that the
+    (potentially hundreds of millions of) graph6 lines are never materialised
+    in memory at once. Only the yielded, filtered graphs are retained by the
+    caller. This is what lets the census climb past n=11 without an 8 GiB OOM
+    (the previous capture-then-split approach materialised the whole output
+    and was OOM-killed on n=11's 187M graphs).
+    """
     cmd = ["nauty-geng", str(n)]
+    if connected:
+        cmd.append("-c")
     if min_deg:
         cmd.append("-d%d" % min_deg)
+    if k4free:
+        cmd.append("-k")
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            text=True, bufsize=1)
+    # stderr is drained lazily; read stdout line by line, decode, filter.
     try:
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=540)
-    except subprocess.TimeoutExpired:
-        raise
-    lines = proc.stdout.splitlines()
-    # geng writes results to stdout vernt the last line(s) to stderr; only keep
-    # graph6 lines (alphabet braces), drop the >A ... summary trailers.
-    out = []
-    for ln in lines:
-        if ln.startswith(">") or ln.startswith("#"):
-            continue
-        # graph6 body: characters in range 63..126
-        if ln and all(63 <= ord(c) <= 126 for c in ln):
-            out.append(ln)
-    return out
+        for ln in proc.stdout:
+            if not ln:
+                continue
+            ln = ln.rstrip("\n")
+            if ln.startswith(">") or ln.startswith("#"):
+                continue
+            # graph6 body: characters in range 63..126
+            if ln and all(63 <= ord(c) <= 126 for c in ln):
+                yield ln
+    finally:
+        proc.stdout.close()
+        try:
+            proc.wait(timeout=540)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait()
+            raise
 
 
 def graph6_to_edges(s):
@@ -170,18 +194,18 @@ def main():
     NMEMBERS = {}   # n -> list of (edges, witness)
     for n in range(1, args.maxn + 1):
         # enumerate connected graphs on n vertices with min degree >= 4
+        kernel_edges = []
         try:
             g6 = nauty_geng_connected(n, min_deg=4)
+            for s in g6:
+                m, edges = graph6_to_edges(s)
+                assert m == n, (m, n)
+                ok, reason = check_kernel(n, edges)
+                if ok:
+                    kernel_edges.append(edges)
         except subprocess.TimeoutExpired:
             log("n=%d: geng timed out; stopping" % n)
             break
-        kernel_edges = []
-        for s in g6:
-            m, edges = graph6_to_edges(s)
-            assert m == n, (m, n)
-            ok, reason = check_kernel(n, edges)
-            if ok:
-                kernel_edges.append(edges)
         # test each at k=4
         total = len(kernel_edges)
         failures = []

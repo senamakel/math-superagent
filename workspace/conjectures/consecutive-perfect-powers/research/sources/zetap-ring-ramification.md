@@ -26,13 +26,17 @@ For `p` an odd prime and `zeta_p` a primitive `p`-th root of unity:
 - The ideals `(x - zeta_p^i)` for `i = 0, ..., p-1` (with `x in Z[zeta_p]`) are
   **pairwise coprime away from `(1 - zeta_p)`**: for `i != j`,
   `gcd(x - zeta_p^i, x - zeta_p^j)` is contained in `(1 - zeta_p)`.
-- **Valuation identity** (the engine of Cassels-type divisibility arguments):
-  for an integer `x` with `p ∤ x`,
-  `v_p(x^p - 1) = 1 + v_p(x - 1)`, and the mirror form
-  `v_q(y^q + 1) = 1 + v_q(y + 1)` for the `q`-side. This single extra unit of
-  valuation is what forces `p | y` and `q | x` in the run's `G-odd-cassels`
-  argument; the run's own note `research/backward/both-odd-primes.md` already
-  names these two identities as the carry.
+- **Valuation identity** (the engine of Cassels-type divisibility arguments) —
+  **CORRECTED HYPOTHESIS (LTE)**: for an integer `x` with `p | (x-1)`,
+  `v_p(x^p - 1) = v_p(x - 1) + 1` (lifting-the-exponent, minus form), and the
+  mirror `v_q(y^q + 1) = v_q(y + 1) + 1` when `q | (y + 1)`. **The earlier
+  statement of this note used hypothesis `p ∤ x`, which is FALSE and makes the
+  identity false**: if `p ∤ (x-1)` then `x ≢ 1 (mod p)`, and Fermat's little
+  theorem gives `x^p - 1 ≡ x - 1 ≢ 0 (mod p)`, so `v_p(x^p-1) = 0` while
+  `1 + v_p(x-1) = 1`. The identity therefore needs the divisibility `p | (x-1)`
+  as its hypothesis. This corrected form is the engine that forces `p | y` and
+  `q | x` in the run's `G-odd-cassels` argument. See the corrected `claim` block
+  below and CLAIMS.md row `valuation-identity-xp-1`.
 
 ## Why the run's argument lives here
 
@@ -82,9 +86,13 @@ bearing: the coprimality that turns the element equation into an ideal q-th powe
 ```claim
 id: valuation-identity-xp-1
 statement: >
-  For an integer x with p ∤ x, v_p(x^p - 1) = 1 + v_p(x - 1); mirror:
-  for an integer y with q ∤ y, v_q(y^q + 1) = 1 + v_q(y + 1).
-hypotheses: p, q odd primes; p ∤ x, q ∤ y.
+  CORRECTED FORM. For an odd prime p and integer x with x ≡ 1 (mod p)
+  (i.e. p | x - 1), v_p(x^p - 1) = 1 + v_p(x - 1); mirror:
+  for an odd prime q and integer y with y ≡ -1 (mod q), v_q(y^q + 1) = 1 + v_q(y + 1).
+  The overbroad form "for p ∤ x" is FALSE (counterexample p=3, x=2: v_3(7)=0
+  but 1+v_3(1)=1); the correct hypothesis is the LTE congruence x ≡ 1 (mod p),
+  which implies p ∤ x but is strictly stronger.
+hypotheses: p, q odd primes; x ≡ 1 mod p / y ≡ -1 mod q.
 holds-here: yes — this is the engine of the Cassels p|y, q|x step the run must re-derive; it produces a single extra unit of valuation per exponent, forcing the divisibility.
 status: sourced (stated in the run's own note both-odd-primes.md; standard cyclotomic fact, cf. Thaine 1988 and Washington).
 anchor: research/sources/zetap-ring-ramification.md
@@ -92,6 +100,9 @@ bearing: the load-bearing identity for the whole divisibility/Wieferich chain in
 ```
 
 The three claims are mutually consistent and standard. The `v_p(x^p-1)=1+v_p(x-1)`
-identity holds because `(x^p-1)/(x-1) = 1+x+...+x^{p-1} ≡ p mod (x-1)` and `p ∤ x`;
-the run should verify this and the coprimality by exact computation in `code/`
-before relying on the two heavier lemmas that build on them.
+identity holds because `(x^p-1)/(x-1) = 1+x+...+x^{p-1} ≡ p (mod x-1)` when
+`x ≡ 1 (mod p)` and `p ∤ (x-1)`, i.e. the LTE congruence `p | (x-1)` is the
+correct hypothesis (see the corrected `valuation-identity-xp-1` claim; the
+overbroad `p ∤ x` fails at p=3, x=2). The run should verify this and the
+coprimality by exact computation in `code/` before relying on the two heavier
+lemmas that build on them.

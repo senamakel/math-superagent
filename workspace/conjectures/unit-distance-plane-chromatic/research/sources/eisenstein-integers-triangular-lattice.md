@@ -50,8 +50,13 @@ hypotheses: the standard embedding of Z[omega] in C with norm |z|.
 holds-here: YES — gives exact coordinates in Q(sqrt(-3)) whose pairwise
   distances are exactly 1 whenever the difference is a unit vector, and
   graph edges are then provable symbolically (x^2 - xy + y^2 = 1 arithmetic).
-status: asserted-by-source (standard, classical fact about the Eisenstein
-  lattice; the Aebi–Cairns paper states the ring/norm/factorization facts).
+status: checked (machine-verified by independent runs: the six unit vectors
+  all have squared modulus exactly 1, and N==1 iff a unit, over the range
+  [-12,12]^2 — `code/out/scholar_verify_claims.captured.txt`,
+  `code/out/scholar_verify_library.captured.txt`,
+  `code/out/verify_sources.captured.txt`, all EXIT_CODE=0). The classical
+  structural facts (PID, six units, 60-degree symmetry) remain asserted by
+  the Aebi–Cairns source.
 bearing: the first coordinate field for exact-arithmetic construction; the
   60-degree rotations of the construction machinery are this lattice's
   symmetries.

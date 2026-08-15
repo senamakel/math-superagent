@@ -1,0 +1,30 @@
+=== Complete mod-8 classification of T(c,p), c>=1 odd prime p >= 3 ===
+
+A) c odd  =>  T == 7 mod 8   (odd c<=5000, p in [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]): True
+B) c==0 mod4  =>  T == p mod 8  (c in [4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48], odd prime p<200): True
+C) c==2 mod4  =>  T == (3p-2) mod 8  (c in [2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46], odd prime p<200): True
+
+=== (c mod 8, p mod 8) classes of T(c,p): square-viable? ===
+      (each row = one c mod 8; columns p mod 8 = 1..7; 'x'=eliminated,
+       'O'=open, i.e. mod-8 alone cannot rule it out)
+c\p      1    3    5    7
+c==0 mod8   O    x    x    x 
+c==1 mod8   x    x    x    x 
+c==2 mod8   O    x    x    x 
+c==3 mod8   x    x    x    x 
+c==4 mod8   O    x    x    x 
+c==5 mod8   x    x    x    x 
+c==6 mod8   O    x    x    x 
+c==7 mod8   x    x    x    x 
+
+Open (square-viable) (c mod 8, p mod 8) classes: [(0, 1), (2, 1), (4, 1), (6, 1)]
+
+Direct isqrt over c in [1,4000], p in first 13 odd primes:
+  eliminated classes: 48000 checked, 0 that WERE squares (must be 0)
+  open classes:       4000 checked, 0 actual squares found
+
+RESULT: ALL FORMULAS HOLD
+=> The mod-8 obstruction alone proves T(c,p) is a non-square for
+   EVERY (c,p) except possibly c even AND p == 1 (mod 8).  In
+   particular the entire c-odd branch (which is x even in Case B)
+   is settled, and only c even, p==1 mod 8 remains for Ljunggren.

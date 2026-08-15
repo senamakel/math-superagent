@@ -1,0 +1,2473 @@
+delta^5 = ( a**5 - 10*a**3*b**2 + 10*a**2*b**3 - b**5 ) + ( 5*a**4*b - 10*a**3*b**2 + 5*a*b**4 - b**5 )*w
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 479, in getit
+    return self._assumptions[fact]
+           ~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'zero'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/code/r35/derive_eisenstein.py", line 68, in <module>
+    Rb, Sb = eisenstein_pow(a - b, -b, 5)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/r35/derive_eisenstein.py", line 28, in eisenstein_pow
+    poly = sp.Poly((a + b*w)**n, w)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/polys/polytools.py", line 182, in __new__
+    return cls._from_expr(rep, opt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/polys/polytools.py", line 311, in _from_expr
+    rep, opt = _dict_from_expr(rep, opt)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/polys/polyutils.py", line 357, in _dict_from_expr
+    expr = expr.expand()
+           ^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 3651, in expand
+    expr, hit = Expr._expand_hint(expr, hint, deep=deep, **hints)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 3592, in _expand_hint
+    newexpr = getattr(expr, hint)(**hints)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 1257, in _eval_expand_multinomial
+    return basic_from_dict(expansion_dict, *p)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/polys/polyutils.py", line 383, in expr_from_dict
+    term.append(Pow(g, m))
+                ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1560, in _eval_is_odd
+    is_integer = self._eval_is_integer()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 98, in __new__
+    c_part, nc_part, order_symbols = cls.flatten(args)
+                                     ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 285, in flatten
+    if not a.is_zero and a.is_Rational:
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 483, in getit
+    return _ask(fact, self)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/assumptions.py", line 539, in _ask
+    fact_i_value = handler_i(obj)
+                   ^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 1342, in _eval_is_integer
+    if abs(a) is not S.One:
+       ^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 193, in __abs__
+    return Abs(self)
+           ^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 469, in __new__
+    result = super().__new__(cls, *args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/function.py", line 309, in __new__
+    evaluated = cls.eval(*args)
+                ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/functions/elementary/complexes.py", line 572, in eval
+    return Abs(base)**exponent
+           ~~~~~~~~~^^~~~~~~~~
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 232, in __pow__
+    return self._pow(other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 228, in _pow
+    return Pow(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/power.py", line 371, in __new__
+    obj = b._eval_power(e)
+          ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/mul.py", line 724, in _eval_power
+    return Mul(*[Pow(b, e, evaluate=False) for b in cargs]) * \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 236, in _func
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/decorators.py", line 106, in binary_op_wrapper
+    return func(self, other)
+           ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 218, in __mul__
+    return Mul(self, other)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/cache.py", line 70, in wrapper
+    retval = cfunc(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/operations.py", line 57, in __new__
+    args = list(map(_sympify_, args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/sympify.py", line 529, in _sympify
+    return sympify(a, strict=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/sympify.py", line 362, in sympify
+    is_sympy = getattr(a, '__sympy__', None)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RecursionError: maximum recursion depth exceeded

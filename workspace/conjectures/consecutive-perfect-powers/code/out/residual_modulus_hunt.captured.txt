@@ -1,0 +1,49 @@
+=== Candidate moduli ===
+M = [3, 5, 7, 9, 11, 13, 15, 16, 17, 19, 21, 23, 25, 29, 31, 32, 33, 37, 41, 43, 47, 49, 121, 169, 289, 361, 529, 841, 961, 1369, 1681, 1849, 2209]
+
+=== Sanity oracle: true integer squares of T(c,p), c even in [2,400],
+    p prime == 1 mod 8 in [17,300]  (expect 0, consistent with Ljunggren) ===
+  true squares found: 0  (oracle_primes=[17, 41, 73, 89, 97, 113, 137, 193, 233, 241, 257, 281])
+
+=== Per-modulus verdict (obstruction FAILS if ANY square residue exists) ===
+    M  witness p  T mod M is sq | enum any-sq | verdict
+    3         73        1  True |        True | FAILS (class open)
+    5         41        1  True |        True | FAILS (class open)
+    7        113        1  True |        True | FAILS (class open)
+    9         73        1  True |        True | FAILS (class open)
+   11         89        1  True |        True | FAILS (class open)
+   13        313        1  True |        True | FAILS (class open)
+   15        241        1  True |        True | FAILS (class open)
+   16         17        1  True |        True | FAILS (class open)
+   17        137        1  True |        True | FAILS (class open)
+   19        457        1  True |        True | FAILS (class open)
+   21        337        1  True |        True | FAILS (class open)
+   23       1289        1  True |        True | FAILS (class open)
+   25        401        1  True |        True | FAILS (class open)
+   29        233        1  True |        True | FAILS (class open)
+   31       1489        1  True |        True | FAILS (class open)
+   32         97        1  True |        True | FAILS (class open)
+   33       1321        1  True |        True | FAILS (class open)
+   37        593        1  True |        True | FAILS (class open)
+   41       2297        1  True |        True | FAILS (class open)
+   43       1033        1  True |        True | FAILS (class open)
+   47       1129        1  True |        True | FAILS (class open)
+   49       3137        1  True |        True | FAILS (class open)
+  121       8713        1  True |        True | FAILS (class open)
+  169       4057        1  True |        True | FAILS (class open)
+  289      13873        1  True |        True | FAILS (class open)
+  361      31769        1  True |        True | FAILS (class open)
+  529      12697        1  True |        True | FAILS (class open)
+  841      13457        1  True |        True | FAILS (class open)
+  961      15377        1  True |        True | FAILS (class open)
+ 1369      65713        1  True |        True | FAILS (class open)
+ 1681     161377        1  True |        True | FAILS (class open)
+ 1849      73961        1  True |        True | FAILS (class open)
+ 2209      53017        1  True |        True | FAILS (class open)
+
+=== Overall ===
+NO fixed modulus M in the candidate set closes the residual class.
+For EVERY M there is a pair (c even, p==1 mod 8 prime) with T a square mod M.
+Uniform construction: c = 2M and p = least prime == 1 mod lcm(8,M);
+then T(c,p) == p == 1 (mod M), the square 1^2.
+EXIT_OK

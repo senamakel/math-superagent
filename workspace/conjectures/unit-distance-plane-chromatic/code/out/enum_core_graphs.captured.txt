@@ -1,0 +1,6 @@
+canon(moser) = (0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0)
+canon(moser2)= (0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0)
+isomorphic: True
+total distinct 7v/11e 4-critical graphs: 0
+canonical forms:
+(moser_is_a_4critical_7v11e existed in: always, it IS one; count of listing hits: 0 )

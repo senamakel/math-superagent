@@ -1,0 +1,10 @@
+p=4871: rec1 indices=[]  (2.7s)
+p=4871: rec2 indices=[]
+p=4871: AGREE=True  REGULAR=True
+  exact num(B_m)%%p spot-check: {2: 1, 4: 4870, 6: 1, 8: 4870, 10: 5, 32: 1035, 60: 1518, 100: 4029}
+p=18787: rec1 indices=[]  (30.7s)
+p=18787: rec2 indices=[]
+p=18787: AGREE=True  REGULAR=True
+p=83: rec1=[] rec2=[] agree=True
+p=911: rec1=[] rec2=[] agree=True
+p=2903: rec1=[] rec2=[] agree=True

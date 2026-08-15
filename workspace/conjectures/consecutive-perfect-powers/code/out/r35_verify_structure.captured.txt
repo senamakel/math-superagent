@@ -1,0 +1,2 @@
+v3/gcd structure checked to 5000 bad: none
+ (w^2-w)/(1-w) = -w verified symbolically: (1-w)(-w) = w^2 - w.

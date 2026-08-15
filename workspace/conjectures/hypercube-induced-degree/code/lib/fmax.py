@@ -106,6 +106,45 @@ def decision_ilp(n, d):
     return bool(res.success)
 
 
+def decision_ilp_witness(n, d):
+    """ILP decision with witness: is there S of size 2^{n-1}+1, D(S) <= d?
+
+    Returns (bool, S_or_None) where S, when feasible, is the sorted list of
+    vertex bitlabels in a witness set.  Same integer-arithmetic linearisation
+    as decision_ilp (the big-M + n*x_v <= d+n device, M=n valid since every
+    vertex of Q_n has exactly n neighbours); this variant only additionally
+    reads back the optimal binary solution from res.x.
+    """
+    N = 1 << n
+    m = (1 << (n - 1)) + 1
+    M = n
+    nb = _nbhd(n)
+
+    A_eq = np.ones((1, N))
+    eq = LinearConstraint(A_eq, m, m)
+
+    rows = []
+    for v in range(N):
+        row = np.zeros(N)
+        for u in nb[v]:
+            row[u] = 1.0
+        row[v] = M
+        rows.append(row)
+    A_ub = np.array(rows)
+    ub = LinearConstraint(A_ub, -np.inf, d + M)
+
+    integrality = np.ones(N, dtype=np.uint8)
+    bounds = Bounds(0, 1)
+    c = np.zeros(N)
+
+    res = milp(c, integrality=integrality, bounds=bounds,
+               constraints=[eq, ub])
+    if not res.success:
+        return False, None
+    S = [int(v) for v in range(N) if res.x[v] > 0.5]
+    return True, S
+
+
 def f_milp(n, d_min=0, d_max=None):
     """Smallest d in [d_min, d_max] with decision_ilp(n, d) feasible."""
     if d_max is None:

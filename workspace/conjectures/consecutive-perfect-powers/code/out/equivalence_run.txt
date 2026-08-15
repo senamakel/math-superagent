@@ -1,0 +1,26 @@
+==============================================================================
+FORWARD, -1 branch:  r^q - 2^{mq-2}s^q = -1
+   map x=2r^q+1, y=2^m rs  ->  x^2 - y^q == 1 ?
+==============================================================================
+  q=3 m=1 r=1 s=1: r^q-2^..s^q=-1 -> x=3 y=2 solves: True
+all -1-branch forward checks pass: True
+
+==============================================================================
+FORWARD, +1 branch with the ALLEGED SINGLE MAP x=2r^q+1:
+   expectation from hand-algebra: x^2 - y^q = 1 + 8 r^q  (NOT 1)
+==============================================================================
+(+1 branch solutions with these small (m,r,s): none decoded w/ gcd=1 reset below)
+  no +1-branch solutions found in the tiny sample (expected: none here)
+
+==============================================================================
+Search actual +1-branch descent solutions (does the +1 branch ever occur?)
+==============================================================================
+  -1 branch hits (q,m,r,s): [(3, 1, 1, 1)]
+  +1 branch hits (q,m,r,s): []
+  => known solution (3,1,1,1) present in minus: True
+
+==============================================================================
+FORWARD +1 branch with CORRECTED map x=2r^q-1: verify it closes
+==============================================================================
+  (no real +1 hits in range; checking the identity symbolically for r=3,s=2,m=2,q=3)
+  a real +1-branch solution found: None

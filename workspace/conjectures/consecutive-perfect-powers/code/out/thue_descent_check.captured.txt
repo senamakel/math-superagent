@@ -1,0 +1,36 @@
+Known-solution calibration: q=3,m=1 -> r^3 - 2 s^3 = +-1, expect (1,1,-1)
+   [(1, 1, -1)]
+
+Sweep over odd primes q<=13, m in 1..6, r,s<=200:
+  q=3 m=1: only the known (r,s)=(1,1) within r,s<=200
+  q=3 m=2: no solutions with r,s<=200
+  q=3 m=3: no solutions with r,s<=200
+  q=3 m=4: no solutions with r,s<=200
+  q=3 m=5: no solutions with r,s<=200
+  q=3 m=6: no solutions with r,s<=200
+  q=5 m=1: no solutions with r,s<=200
+  q=5 m=2: no solutions with r,s<=200
+  q=5 m=3: no solutions with r,s<=200
+  q=5 m=4: no solutions with r,s<=200
+  q=5 m=5: no solutions with r,s<=200
+  q=5 m=6: no solutions with r,s<=200
+  q=7 m=1: no solutions with r,s<=200
+  q=7 m=2: no solutions with r,s<=200
+  q=7 m=3: no solutions with r,s<=200
+  q=7 m=4: no solutions with r,s<=200
+  q=7 m=5: no solutions with r,s<=200
+  q=7 m=6: no solutions with r,s<=200
+  q=11 m=1: no solutions with r,s<=200
+  q=11 m=2: no solutions with r,s<=200
+  q=11 m=3: no solutions with r,s<=200
+  q=11 m=4: no solutions with r,s<=200
+  q=11 m=5: no solutions with r,s<=200
+  q=11 m=6: no solutions with r,s<=200
+  q=13 m=1: no solutions with r,s<=200
+  q=13 m=2: no solutions with r,s<=200
+  q=13 m=3: no solutions with r,s<=200
+  q=13 m=4: no solutions with r,s<=200
+  q=13 m=5: no solutions with r,s<=200
+  q=13 m=6: no solutions with r,s<=200
+
+Candidates other than the known (q=3,m=1,r=s=1): 0

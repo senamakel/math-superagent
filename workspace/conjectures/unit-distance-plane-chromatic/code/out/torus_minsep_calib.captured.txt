@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/workspace/code/torus_minsep_calib.py", line 171, in <module>
+    main()
+  File "/workspace/code/torus_minsep_calib.py", line 126, in main
+    emit(f"{D:>2} {('('+str(p)+','+str(q)+')'):>7} {N_min:>5} "
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/expr.py", line 394, in __format__
+    return super().__format__(format_spec)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported format string passed to Rational.__format__

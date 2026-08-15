@@ -1,0 +1,15 @@
+Groetzsch graph fact:  Mycielski(C5) is the well-known Groetzsch graph.
+Catalogue value: 11 vertices, 20 edges, triangle-free, chi=4.
+
+=== variant A no-mirror (run's kernel) ===
+  M^0  |V|=5   |E|=5     K2,3-free=True  None
+  M^1  |V|=11  |E|=20    K2,3-free=True  None
+  M^2  |V|=23  |E|=71    K2,3-free=False  (0, 2, [1, 6, 12, 17])
+  M^3  |V|=47  |E|=236   K2,3-free=False  (0, 2, [1, 6, 12, 17])
+
+=== variant B mirror variant ===
+  M^0  |V|=5   |E|=5     K2,3-free=True  None
+  M^1  |V|=11  |E|=25    K2,3-free=False  (0, 5, [1, 4, 6, 9])
+  M^2  |V|=23  |E|=111   K2,3-free=False  (0, 2, [1, 6, 12, 17])
+  M^3  |V|=47  |E|=467   K2,3-free=False  (0, 2, [1, 6, 12, 17])
+

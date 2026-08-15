@@ -71,7 +71,8 @@ def check_square_and_support(n):
         for v in range(N):
             if u == v:
                 continue
-            differs_one_bit = ((u ^ v) & (u ^ v - 1)) == 0  # popcount(u^v)==1
+            d = u ^ v
+            differs_one_bit = (d & (d - 1)) == 0  # popcount(u^v)==1
             is_edge = bool(A[u, v] != 0)
             if is_edge != differs_one_bit:
                 support_ok = False

@@ -1,0 +1,13 @@
+== Encoding sanity: CP-SAT vs known f(n) ==
+  n=4 known f=2: d=1 -> False (want False), d=2 -> False (want True): MISMATCH
+  n=5 known f=3: d=2 -> False (want False), d=3 -> False (want True): MISMATCH
+  n=6 known f=3: d=2 -> False (want False), d=3 -> False (want True): MISMATCH
+  n=7 known f=3: d=2 -> False (want False), d=3 -> False (want True): MISMATCH
+== Bracket f(10), f(11) ==
+  n=10 d=4 -> feasible=False status=CpSolverStatus.INFEASIBLE
+  n=10 d=5 -> feasible=False status=CpSolverStatus.INFEASIBLE
+  n=10 d=6 -> feasible=True status=CpSolverStatus.OPTIMAL
+  n=11 d=4 -> feasible=False status=CpSolverStatus.INFEASIBLE
+  n=11 d=5 -> feasible=False status=CpSolverStatus.INFEASIBLE
+  n=11 d=6 -> feasible=False status=CpSolverStatus.UNKNOWN
+DONE

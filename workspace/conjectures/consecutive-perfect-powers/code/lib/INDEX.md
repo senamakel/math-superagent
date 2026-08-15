@@ -1,39 +1,10 @@
 # Index — code/lib
 
-What other programs import. One subject per module, so reading the part you
-need costs almost nothing.
-
-`/workspace/code` is on `PYTHONPATH`, so a module here is importable by name
-from any working directory and any invocation:
-
-```python
-from lib.perms import lex_ranks
-```
-
-Never write `sys.path.insert`. If an import fails, the file is in the wrong
-place and moving it is the fix.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
-
-_No library modules yet._
-
-## Adding one
-
-A routine earns a place here when a second program would otherwise repeat it,
-or when getting it right took real work — exact arithmetic, an off-by-one in a
-recurrence, a verified base case. A single-use expression does not. The third
-time you type a routine out, it belonged here the first time.
-
-Write `code/lib/<subject>.py` holding the functions for one subject, each with
-a docstring, each callable without reading its source: explicit arguments, one
-job, no reliance on globals or on a file written earlier in the run. Check it
-against a case whose answer is already known, then `describe_file` it. The
-description carries each function's signature, what it returns, and what
-established that it is correct — an unverified helper must say `unverified`, so
-a later agent knows what it is standing on.
-
-Keep a module small enough to read whole. A second subject is a second module.
-
-Every helper uses exact integer or rational arithmetic unless its row says
-otherwise. Say so explicitly when a function returns a float.
+| `cond.py` | Exact-integer evaluator of necessary divisibility (Cassels q|x, p|y) and double-Wieferich congruences for a hypothetical odd-prime solution of x^p-y^q=1. check_conditions(p,q,x,y)->dict with is_odd_prime_pair, vp_y, vq_x, wieferich_1 (q^(p-1)==1 mod p^2), wieferich_2 (p^(q-1)==1 mod q^2); double_wieferich_pairs(B); odd_primes_upto(B); crossprime_condition. Exact pow only. (2,3)=excluded-by-hypothesis. |
+| `cyclo.py` | _(undescribed)_ |
+| `lucas_prim.py` | Lucas-sequence / primitive-prime-divisor machinery: lucas_U(n,P,Q), phi_p(p,x)=(x^p-1)/(x-1), phi_q_neg(q,y)=(y^q+1)/(y+1), gcd_lemma_value(p,x), primitive_prime_divisor(p,x) -> (r, factors) asserting r∤x-1, order(x mod r)=p, r≡1 mod p, and primitive_prime_divisor_mirror(q,y). Exact ints/sympy. Correctness established by code/primitive_div/verify_primitive_div.py and independent direct-order cross-check code/primitive_div/crosscheck_order.py (102 (p,x) all order=p). |
+| `valuation.py` | Exact-integer valuation (LTE) helpers for x^p-y^q=1: v_p, lte_xside (v_p(x^p-1)=v_p(x-1)+[p |

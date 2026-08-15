@@ -47,17 +47,16 @@ lemma: >
   subgraph, and every k-critical graph has minimum degree at least k-1. In
   particular a 5-chromatic graph contains a 5-critical subgraph H' with
   delta(H') >= 4. (Identical in content to
-  `5chromatic-size-lower-bound/S-critical-degree`; CLAIMS.md has no row for it,
-  so it is open.)
-status: open
-next: >
-  theorem_prover: record as a claim with the three-line proof — (a) delete
-  vertices (and then edges) until every proper subgraph is (k-1)-colourable;
-  (b) if a vertex v had degree <= k-2, take a (k-1)-colouring of G - v and give
-  v one of the k-1 colours unused on its neighbours, a contradiction. Hand
-  lean_prover the statement "k-critical graph has minimum degree >= k-1"
-  against mathlib's graph-colouring API. Pure graph theory: no geometry, no
-  oracle run, no enumeration.
+  `5chromatic-size-lower-bound/S-critical-degree`.)
+status: checked
+checked-by: >
+  research/backward/5chromatic-udg-min-size.md — record the claim with the
+  three-line proof, then verify by complete exact enumeration over all graphs
+  on <= 6 vertices with a fresh SAT oracle (lib.critoracle) cross-checked
+  against lib.satcolor (0 mismatches). Both parts and the 5-critical
+  conclusion PASS. Full note (proof, verification numbers, the discovered
+  lib.coloring bug that made the first check fail) in the "Checked claim"
+  section below.
 ```
 
 ```gap
@@ -107,3 +106,157 @@ next: >
   dead end: it is a candidate UDG whose realizability (sharp-nbhd-local plus the
   edge certifier) is the next question.
 ```
+
+---
+
+# Checked claim — sharp-critical-degree: 5-chromatic ⇒ 5-critical subgraph with min degree ≥ 4
+
+This section discharges the gap `sharp-critical-degree` above (and the
+identical `S-critical-degree` of `research/backward/5chromatic-size-lower-bound.md`)
+as a **checked** claim. It is the structural backbone step that connects
+"5-chromatic unit-distance graph" to "member of the kernel `C_N`": the degree
+constraint `delta >= 4` is exactly condition (a) of the sharp kernel.
+
+## Statement
+
+**(1) Every finite simple graph `G` with `chi(G) = k` contains a
+vertex-critical subgraph `H` with `chi(H) = k`.** "Vertex-critical" means every
+proper vertex-deleted subgraph has strictly smaller chromatic number:
+`chi(H - v) <= k-1` for every vertex `v`.
+
+**(2) Every vertex-critical graph `H` with `chi(H) = k` has minimum degree
+`delta(H) >= k - 1`.**
+
+**Conclusion.** Every `5`-chromatic graph contains a `5`-critical subgraph with
+`delta >= 4`.
+
+The classical "k-critical" notion requires every proper *subgraph* (edges too)
+to be `(k-1)`-colourable, which is strictly stronger than vertex-critical. The
+degree argument uses only the vertex-deleted property, so the weaker hypothesis
+is the robust one to check; it implies the classical consequence needed here.
+
+## Proof
+
+**(1)** If `chi(G) = k`, repeatedly delete any vertex `v` with
+`chi(G - v) = k`, until no such vertex remains. Finiteness terminates the
+process. The survivor `H` satisfies `chi(H) = k` (chromatic number never
+dropped below `k` and started at `k`) and, by construction, `chi(H - v) <= k-1`
+for every vertex `v` — exactly vertex-critical.
+
+**(2)** Suppose `H` is vertex-critical with `chi(H) = k` and some vertex `v`
+has degree `d(v) <= k - 2`. By criticality `chi(H - v) <= k - 1`, so fix a
+`(k-1)`-colouring of `H - v`. The `d(v) <= k-2` neighbours of `v` use at most
+`k-2` of the `k-1` colours, so at least one colour is unused on the whole
+neighbourhood; colour `v` with it to extend the colouring to `H`, giving
+`chi(H) <= k-1`, contradicting `chi(H) = k`. Therefore every vertex has degree
+`>= k-1`.
+
+**Conclusion for k=5.** By (1) a 5-chromatic graph contains a 5-critical
+(vertex-critical) subgraph `H'`, and by (2) `delta(H') >= 4`. Also `H'` has
+`chi(H')=5`, so it is not 4-colourable.
+
+## Verification method and result: CHECKED
+
+The verifier is complete enumeration of **all simple graphs on up to 6
+vertices** (33,866 graphs), computing the chromatic number exactly and checking
+both parts directly. This is the permitted brute-force-at-small-size oracle,
+**not** the method.
+
+- **Oracle.** A fresh, independent SAT oracle `code/lib/critoracle.py`
+  (general-colouring CNF, at-least-one + properness, Cadical153). It was
+  cross-checked against the calibrated library oracle `lib.satcolor` (0
+  disagreements over all 33,866 graphs) **and** against a naive independent
+  colouring of the earlier counterexample — see the calibration trap below.
+- **Part (2), every vertex-critical graph has delta >= k-1:** 90 vertex-critical
+  graphs up to 6 vertices, **zero** with min degree < chi - 1.
+- **Part (1), every graph contains a vertex-critical same-chi subgraph by
+  greedy deletion:** **zero** failures over all 33,866 graphs.
+- **Load-bearing conclusion:** 173 graphs with `chi >= 5` up to 6 vertices; all
+  reduced by greedy vertex deletion to a `k`-critical subgraph with
+  `delta >= k-1`, and for `k=5` the 5-critical subgraph always has
+  `delta >= 4`. Zero failures.
+
+**SZS-style verdict: this lemma is verified** as a complete check over all
+finite simple graphs on at most 6 vertices for both parts, and the direct
+conclusion holds on all 5-chromatic graphs up to 6 vertices.
+
+```claim
+id: sharp-critical-degree
+statement: >
+  (1) Every finite simple graph G with chi(G)=k contains a vertex-critical
+  subgraph H with chi(H)=k (repeatedly delete a vertex while chi stays k).
+  (2) Every vertex-critical graph H with chi(H)=k has minimum degree >= k-1.
+  Conclusion: every 5-chromatic graph contains a 5-critical subgraph H' with
+  delta(H') >= 4 and chi(H')=5 (not 4-colourable).
+hypotheses: G, H finite simple graphs; chromatic number and vertex-criticality
+  in the standard sense; enum up to 6 vertices for the finite check.
+holds-here: YES — a minimal 5-chromatic unit-distance graph, if one exists, is
+  5-critical, so delta >= 4: every vertex lies on >= 4 unit circles centred at
+  the other graph vertices. This is exactly condition (a) of the kernel C_N.
+status: checked (complete exact enumeration over all graphs on <= 6 vertices,
+  via a fresh SAT oracle cross-validated against lib.satcolor, 0 mismatches)
+bearing: the load-bearing degree step of the size-bound skeleton: it is what
+  forces a 5-chromatic unit-distance graph to have min degree >= 4, so its
+  vertex-critical subgraph lies in the finite kernel C_N (with the
+  sharp-nbhd-local and sharp-kernel-4color steps). delta >= 4 is condition (a)
+  of C_N.
+anchor: research/backward/5chromatic-udg-min-size.md (gap sharp-critical-degree)
+verification: code/verify_critical_min_degree2.py,
+  code/verify_5critical_conclusion.py, code/out/verify_critical_min_degree2.txt,
+  code/out/verify_5critical_conclusion.txt (both PASSED).
+falsifies: a 5-critical graph with a degree-3 vertex; or a graph whose greedy
+  vertex deletion cannot reach a vertex-critical same-chi subgraph. Neither
+  occurs up to 6 vertices; the proof of (2) rules the first out universally.
+```
+
+## Why the check had to be redone — a discovered oracle bug
+
+The first verification (using the existing `lib.coloring` backtracking oracle)
+"failed". Investigation showed the failure was **not** a counterexample to the
+lemma but a genuine soundness bug in `lib.coloring.chromatic_colorable`: it
+pins `order[0]` (the highest-DSATUR vertex) to colour 0 with
+`colors[order[0]] = 0`, yet the symmetry breaks inside the search loop test the
+vertex index `0` explicitly (`v != 0 and 0 in adj[v]`). When `order[0] != 0`
+this is inconsistent, so the search is incomplete and can return **False for a
+graph that is k-colourable**. Repro: the 5-vertex graph
+`[(0,1),(0,4),(1,2),(1,3)]` is genuinely 2-colourable (independent check
+confirms), but `lib.coloring` reports it not-2-colourable.
+
+Consequences for the workspace:
+
+- The **False/UNSAT direction** of `lib.coloring` is **not reliable** (it can
+  report a colourable graph as not colourable).
+- The **True/SAT direction** (with a proper witness that `verify_coloring`
+  re-checks) is still valid.
+- This does **not** invalidate the calibration or the census-kernel result:
+  those used `lib.satcolor` (Cadical CNF) as the primary engine, and
+  `lib.satcolor` agrees with the fresh `critoracle` (0 mismatches). The census
+  affirmations (every kernel member is 4-colourable) came with verified proper
+  witnesses, so they stand. The `lib.coloring` "crosscheck" in the census was
+  a second route whose positive answers were independently re-verified as
+  proper; its negative answers should no longer be trusted, but the census
+  made no negative claim on those.
+
+The fresh verification for this lemma therefore used an independent, correct
+SAT oracle and is the trustworthy record.
+
+## What is proved vs verified
+
+- The universal theorem (parts 1 and 2, all finite simple graphs) is proved by
+  the two-line argument above (a proof, in the mathematical sense).
+- Its truth for all graphs up to 6 vertices is verified exhaustively.
+- The conclusion for 5-critical graphs is verified on all 173 graphs with
+  chi >= 5 up to 6 vertices.
+- The proposition is **not** machine-formalised in Lean here (a dependency on
+  a graph-colouring library with the right statements was not set up this run);
+  the row is `checked`, not `formalised`.
+
+## Equivalence with the older `critical-minimum-degree` / `k-critical-minimum-degree` claims
+
+`research/CLAIMS.md` already holds closely related rows:
+`critical-minimum-degree` (asserted) and `k-critical-minimum-degree` (asserted).
+This note upgrades the *sharp-critical-degree* gap (the version the skeleton
+names) to `checked`, using the weaker vertex-critical hypothesis, and should be
+treated as the verified instance of those asserted-by-source rows for finite
+graphs up to 6 vertices. The classical (edge-critical) theorem itself is still
+asserted-by-source for the fully general statement.

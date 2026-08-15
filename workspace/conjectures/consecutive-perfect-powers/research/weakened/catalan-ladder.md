@@ -66,16 +66,28 @@ merge: anchor, nothing to turn on. Settled as given: problem.md states (3,2,2,3)
 id: R-trivial-bases
 statement: there is no solution with x = 1 or y = 1; equivalently every solution has x >= 2 and y >= 2
 off: unbounded-exponents, unbounded-bases, both-odd, class-group, p-neq-q, uniqueness
-stance: open
-merge: one-line proof for the forward loop: x=1 forces y^q = 0 (excluded by y>0), and y=1 forces x^p = 2 (impossible for integer x>=1, p>=2). negative-claim stays on — the claim is still an exclusion — but the known solution (3,2,2,3) has both bases >= 2, so it is not eliminated. This is the rung to settle today. Turning unbounded-bases back on at the single smallest nontrivial exponent pair is R-fixed-23; first move: factor y^3 = (x-1)(x+1) with gcd(x-1,x+1) in {1,2}.
+stance: settled
+merge: one-line proof for the forward loop: x=1 forces y^q = 0 (excluded by y>0), and y=1 forces x^p = 2 (impossible for integer x>=1, p>=2). negative-claim stays on — the claim is still an exclusion — but the known solution (3,2,2,3) has both bases >= 2, so it is not eliminated. SETTLED by code/elementary/elementary_rungs.py (code/out/elementary_rungs.captured.txt): proved, consistency-checked against exact oracle solutions(10^8) = [(3,2,2,3)]. Turning unbounded-bases back on at the single smallest nontrivial exponent pair is R-fixed-23; first move: factor y^3 = (x-1)(x+1) with gcd(x-1,x+1) in {1,2}.
 ```
 
 ```rung
 id: R-fixed-23
 statement: x^2 - y^3 = 1 has (x,y) = (3,2) as its only solution in integers x,y > 0; the known solution (3,2,2,3) is exactly the claimed one
 off: unbounded-exponents, both-odd, class-group, p-neq-q
-stance: open
-merge: classical (Euler / Mordell), re-derive via (x-1)(x+1) = y^3 and the gcd argument, handling the 2-torsion (gcd(x-1,x+1) in {1,2}). Turning unbounded-exponents partially on while keeping p = 2 is R-exp2; first move: the same factorisation with q-th-power extraction, gcd(x-1,x+1) | 2.
+stance: proved (descent + PARI thue complete; claim exp2-fixed23-proved-thue)
+merge: proved in full in-workspace by an explicit descent + complete Thue resolution:
+  y^3 = (x-1)(x+1), gcd(x-1,x+1) | 2; x even impossible (min cube gap 7 > 2);
+  x odd forces {k,k+1} = {c^3, 2d^3} for x = 2k+1, giving the two Thue equations
+  c^3 - 2d^3 = +-1, resolved completely by PARI's proven thue() (code/refute/
+  thue_descent_full.py, thue_nf.gp; output code/out/thue_descent_full.captured.txt,
+  thue_gp.captured.txt). Final filtering x,y > 0 selects exactly (x,y) = (3,2).
+  This is the claim exp2-fixed23-proved-thue (status: proved) and closes the
+  rank-4 GOAL item "exponent-2 cases proved in full". The known solution is
+  precisely this case, so the proof does not over-eliminate it. Numeric
+  cross-check against code/elementary/elementary_rungs.py to x = 10^7 still
+  holds (only (3,2)). Turning unbounded-exponents partially on while keeping
+  p = 2 is R-exp2; first move: the same factorisation with q-th-power
+  extraction, gcd(x-1,x+1) | 2.
 ```
 
 ```rung
@@ -98,8 +110,8 @@ merge: classical (Lebesgue); x^p = y^2 + 1 = (y+i)(y-i) with the two Z[i]-factor
 id: R-p-eq-q
 statement: for every odd prime p, x^p - y^p = 1 has no solution in x,y > 0; the known solution has p = 2 != 3 = q, so it sits outside
 off: p-neq-q, class-group, uniqueness
-stance: open
-merge: immediate for the forward loop in Z: x^p - y^p = (x-y)(x^{p-1}+...+y^{p-1}) is a product of two positive integers, so it equals 1 only if both are 1, but the second factor is >= p >= 3. p=q restores the Z-factorisation, so class-group and p-neq-q are off and uniqueness is not at stake (the claim is pure nonexistence); both-odd stays on but does not bite because the symmetric factorisation exists. Turning p-neq-q back on at the smallest distinct odd pair, with the cyclotomic rings still UFDs, is R-35.
+stance: settled
+merge: immediate for the forward loop in Z: x^p - y^p = (x-y)(x^{p-1}+...+y^{p-1}) is a product of two positive integers, so it equals 1 only if both are 1, but the second factor is >= p >= 3. SETTLED by code/elementary/elementary_rungs.py (code/out/elementary_rungs.captured.txt): proved, brute-force-confirmed over primes<=19, x<3000 (0 hits). p=q restores the Z-factorisation, so class-group and p-neq-q are off and uniqueness is not at stake (the claim is pure nonexistence); both-odd stays on but does not bite because the symmetric factorisation exists. Turning p-neq-q back on at the smallest distinct odd pair, with the cyclotomic rings still UFDs, is R-35.
 ```
 
 ```rung

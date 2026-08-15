@@ -1,0 +1,24 @@
+HAND-VERIFIED (research role: no shell executor, so the .py in code/ is written
+but NOT run by this role — run it via code/run_check_ns_edge_poly.sh):
+
+Claim: S(a,b) = a^3 + a^2 b + a b^2 + b^3 vanishes iff a != b among the 4th
+roots of unity {1, i, -1, -i}.
+
+Proof (exact, by hand):
+  S(a,b) = (a^4 - b^4)/(a - b)   [geometric series factorisation, valid a != b]
+  For 4th roots of unity, a^4 = b^4 = 1, so a^4 - b^4 = 0.
+  - If a != b: denominator a-b != 0, so S = 0/(a-b) = 0.  CORRECT (edge).
+  - If a == b: S = 4 a^3, and a^3 is a 4th root of unity so |4a^3| = 4 != 0.
+    CORRECT (no edge).
+
+Hence I = <x_v^4 - 1> + <S_e> has variety exactly the proper 4-colourings, and
+by the Weak Nullstellensatz over the algebraic closure, V(I) = emptyset iff
+1 in I. This is the load-bearing correctness of the nullstellensatz-colouring-
+certificate approach and it HOLDS.
+
+The monomial-linear search for a degree-d certificate is exactly NulLA
+(De Loera-Lee-Malkin-Margulies ISSAC 2008) — see the approach file.
+Precision caveat (also in the approach file): the Weak Nullstellensatz is over
+an algebraically closed field; F_p is not, so the standard resolution (as DLMO
+do over GF(2)) carries the certificate coefficients in the algebraic closure of
+F_p, not literally in F_p.

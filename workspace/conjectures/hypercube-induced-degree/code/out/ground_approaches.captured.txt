@@ -1,0 +1,21 @@
+n  M=2^(n-1)+1  f(n)  sqrt(n)  LP min a_1
+1        2    1    1.000       0.0
+2        3    2    1.414       0.0
+3        5    2    1.732       0.0
+4        9    2    2.000       0.0
+5       17    3    2.236       0.0
+6       33    ?    2.449       0.0
+
+--- n=1..5 LP a vector (a_0..a_n) ---
+n=1 LPa1=0.0000  a=[np.float64(1.0), np.float64(0.0)]
+n=2 LPa1=0.0000  a=[np.float64(1.0), np.float64(0.0), np.float64(0.0)]
+n=3 LPa1=0.0000  a=[np.float64(1.0), np.float64(0.0), np.float64(0.0), np.float64(0.0)]
+n=4 LPa1=0.0000  a=[np.float64(1.0), np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.0)]
+n=5 LPa1=0.0000  a=[np.float64(1.0), np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.0)]
+
+--- Clifford extremal-set claim: n=4 exact witness ---
+n=4 witness: [0, 1, 2, 5, 6, 11, 12, 13, 14]
+popcounts: [0, 1, 1, 2, 2, 3, 2, 3, 3]
+even parity class (size 8): [0, 3, 5, 6, 9, 10, 12, 15]
+odd parity class (size 8): [1, 2, 4, 7, 8, 11, 13, 14]
+witness is parity-plus-one? False

@@ -1,0 +1,22 @@
+per-n members loaded: {8: 1, 9: 4, 10: 16, 11: 228}
+n=8: 4-chromatic=1  3-colourable=0
+n=9: 4-chromatic=1  3-colourable=3
+n=10: 4-chromatic=16  3-colourable=0
+n=11: 4-chromatic=198  3-colourable=30
+
+=== 4-critical cores of 4-chromatic members ===
+n=8: 1 four-chromatic, 1 distinct 4-critical cores
+    core-form (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, occurs 1
+Traceback (most recent call last):
+  File "/workspace/code/analyze_4critical_cores.py", line 130, in <module>
+    main()
+  File "/workspace/code/analyze_4critical_cores.py", line 106, in main
+    cf = canonical_form(n, core)
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/analyze_4critical_cores.py", line 63, in canonical_form
+    return ("toolarge", tuple(sorted(len([b for a,b in e if a==i or b==i]) for i in range(n))))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/analyze_4critical_cores.py", line 63, in <genexpr>
+    return ("toolarge", tuple(sorted(len([b for a,b in e if a==i or b==i]) for i in range(n))))
+                                                       ^
+NameError: name 'e' is not defined

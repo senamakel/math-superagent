@@ -1,0 +1,13 @@
+    idx, dim = minus_index(p)
+               ^^^^^^^^^^^^^^
+    Cint = matrix(ZZ, [[(Fraction(c) * int(D)).numerator() for c in row] for row in coords])
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Cint = matrix(ZZ, [[(Fraction(c) * int(D)).numerator() for c in row] for row in coords])
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    Cint = matrix(ZZ, [[(Fraction(c) * int(D)).numerator() for c in row] for row in coords])
+                         ~~~~~~~~~~~~^~~~~~~~
+    return monomorphic_operator(a, b)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    g1 = math.gcd(na, db)
+         ^^^^^^^^^^^^^^^^
+TypeError: 'builtin_function_or_method' object cannot be interpreted as an integer

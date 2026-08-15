@@ -1,0 +1,8 @@
+Known small double-Wieferich pairs and their irregularity structure:
+==========================================================================================
+  (83, 4871): both-congs=True  irregular(p)=False idx=-   irregular(q)=?(>700) idx=-
+  (2903, 18787): both-congs=True  irregular(p)=?(>700) idx=-   irregular(q)=?(>700) idx=-
+  (911, 318917): both-congs=True  irregular(p)=?(>700) idx=-   irregular(q)=?(>700) idx=-
+==========================================================================================
+B=20000: 2 double-Wieferich pair(s) [(83, 4871), (2903, 18787)]  (0.6s)
+B=40000: 2 double-Wieferich pair(s) [(83, 4871), (2903, 18787)]  (2.2s)

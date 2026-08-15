@@ -1,0 +1,14 @@
+Moser+Moser: n= 26  edges= 69
+  iter 0: |constraints|=27, violating MWIS weight=10.0000
+  iter 30: |constraints|=57, violating MWIS weight=1.2333
+converged at iteration 39: chi_f(Moser+Moser) = 3.500000
+  sum w = 3.5
+
+final w support (nonzero):
+  vertex 0: w=1/2
+  vertex 1: w=1/2
+  vertex 2: w=1/2
+  vertex 3: w=1/2
+  vertex 4: w=1/2
+  vertex 5: w=1/2
+  vertex 6: w=1/2

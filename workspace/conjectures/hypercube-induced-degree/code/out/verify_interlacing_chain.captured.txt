@@ -1,0 +1,34 @@
+========================================================================
+(a) A_n symmetry, {0,±1} entries, zero diagonal, A_n^2 = n*I, support=edges
+========================================================================
+  n=1: symmetric=True entries{0,±1}=True zerodiag=True A^2=nI=True support=Q_n_edges=True  -> PASS
+  n=2: symmetric=True entries{0,±1}=True zerodiag=True A^2=nI=True support=Q_n_edges=True  -> PASS
+  n=3: symmetric=True entries{0,±1}=True zerodiag=True A^2=nI=True support=Q_n_edges=True  -> PASS
+  n=4: symmetric=True entries{0,±1}=True zerodiag=True A^2=nI=True support=Q_n_edges=True  -> PASS
+  n=5: symmetric=True entries{0,±1}=True zerodiag=True A^2=nI=True support=Q_n_edges=True  -> PASS
+  n=6: symmetric=True entries{0,±1}=True zerodiag=True A^2=nI=True support=Q_n_edges=True  -> PASS
+  n=7: symmetric=True entries{0,±1}=True zerodiag=True A^2=nI=True support=Q_n_edges=True  -> PASS
+  n=8: symmetric=True entries{0,±1}=True zerodiag=True A^2=nI=True support=Q_n_edges=True  -> PASS
+
+========================================================================
+(b) Interlacing: S = even-weight vertices + one odd vertex (|S|=2^{n-1}+1)
+    B = A_n[S,S], check lambda_max(B) >= sqrt(n)
+========================================================================
+  n=2: |S|=3  lambda_max(B)=1.4142135624  sqrt(n)=1.4142135624  lam-sqrt=+2.220e-16  PASS
+  n=3: |S|=5  lambda_max(B)=1.7320508076  sqrt(n)=1.7320508076  lam-sqrt=+0.000e+00  PASS
+  n=4: |S|=9  lambda_max(B)=2.0000000000  sqrt(n)=2.0000000000  lam-sqrt=-2.220e-16  PASS
+  n=5: |S|=17  lambda_max(B)=2.2360679775  sqrt(n)=2.2360679775  lam-sqrt=+0.000e+00  PASS
+  n=6: |S|=33  lambda_max(B)=2.4494897428  sqrt(n)=2.4494897428  lam-sqrt=+4.441e-16  PASS
+  n=7: |S|=65  lambda_max(B)=2.6457513111  sqrt(n)=2.6457513111  lam-sqrt=-8.882e-16  PASS
+  n=8: |S|=129  lambda_max(B)=2.8284271247  sqrt(n)=2.8284271247  lam-sqrt=+4.441e-16  PASS
+
+========================================================================
+(c) Pure even-weight independent set (|S|=2^{n-1}): lambda_max(B) < sqrt(n)
+========================================================================
+  n=2: |S|=2  lambda_max(B)=0.0000000000  sqrt(n)=1.4142135624  PASS(<)   (expect sqrt(n-1)=1.000000)
+  n=3: |S|=4  lambda_max(B)=0.0000000000  sqrt(n)=1.7320508076  PASS(<)   (expect sqrt(n-1)=1.414214)
+  n=4: |S|=8  lambda_max(B)=0.0000000000  sqrt(n)=2.0000000000  PASS(<)   (expect sqrt(n-1)=1.732051)
+  n=5: |S|=16  lambda_max(B)=0.0000000000  sqrt(n)=2.2360679775  PASS(<)   (expect sqrt(n-1)=2.000000)
+  n=6: |S|=32  lambda_max(B)=0.0000000000  sqrt(n)=2.4494897428  PASS(<)   (expect sqrt(n-1)=2.236068)
+  n=7: |S|=64  lambda_max(B)=0.0000000000  sqrt(n)=2.6457513111  PASS(<)   (expect sqrt(n-1)=2.449490)
+  n=8: |S|=128  lambda_max(B)=0.0000000000  sqrt(n)=2.8284271247  PASS(<)   (expect sqrt(n-1)=2.645751)

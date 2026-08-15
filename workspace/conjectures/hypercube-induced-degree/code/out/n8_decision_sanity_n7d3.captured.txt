@@ -1,0 +1,16 @@
+=== n=7 d=3 |S| target=65 (vertices 128) ===
+thread caps: OPENBLAS=1 OMP=1
+
+[HiGHS milp] time_limit=120.0s
+  feasible=True status=0 [1.7s] peak_rss=163MB
+  witness: |S|=65 need=65 D(S)=3 dist={1: 6, 2: 13, 3: 46} verified=True
+
+[CP-SAT] time_limit=150.0s workers=8 
+  feasible=True status=CpSolverStatus.OPTIMAL [0.1s] peak_rss=177MB
+  witness: |S|=65 need=65 D(S)=3 dist={0: 1, 1: 5, 2: 18, 3: 41} verified=True
+
+-> both solvers FEASIBLE: AGREE
+
+wrote /workspace/code/out/witness_n7.txt (|S|=65, D(S)=3, dist={0: 1, 1: 5, 2: 18, 3: 41})
+
+DONE

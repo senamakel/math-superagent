@@ -1,0 +1,12 @@
+k= 4 exact=      384 poly=      384 match=True
+k= 5 exact=     5040 poly=     5040 match=True
+k= 6 exact=    31680 poly=    31680 match=True
+k= 7 exact=   134400 poly=   134400 match=True
+k= 8 exact=   443520 poly=   443520 match=True
+k= 9 exact=  1227744 poly=  1227744 match=True
+k=10 exact=  2983680 poly=  2983680 match=True
+k=11 exact=  6557760 poly=  6557760 match=True
+k=12 exact= 13305600 poly= 13305600 match=True
+k=13 exact= 25293840 poly= 25293840 match=True
+k=14 exact= 45549504 poly= 45549504 match=True
+ALL MATCH: True

@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/workspace/code/out/hminus_check.py", line 67, in <module>
+    h = rel_class_number(p)
+        ^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/out/hminus_check.py", line 36, in rel_class_number
+    from sympy import exp_pi_rat
+ImportError: cannot import name 'exp_pi_rat' from 'sympy' (/usr/lib/python3/dist-packages/sympy/__init__.py)

@@ -1,0 +1,14 @@
+{
+  "axioms": [
+    "'Catalin.reduction_iff' depends on axioms: [propext]",
+    "'Catalin.prime_exponent_reduction' depends on axioms: [propext]",
+    "'Catalin.reduction_iff_int' depends on axioms: [propext]",
+    "'Catalin.known_solution' depends on axioms: [propext]",
+    "'Catalin.two_not_perfect_power' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'Catalin.three_not_perfect_power' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean_reduction/CatalanReduction.lean",
+  "sorries": [],
+  "verified": true
+}

@@ -41,11 +41,12 @@ lemma: Every vertex-critical graph with chromatic number k has minimum degree at
 least k-1; in particular every 5-critical graph has no vertex of degree <= 3.
 (If v had degree <= 3: by criticality colour G - v with 4 colours, then v has at
 most 3 neighbours and one of the 4 colours is free, a contradiction.)
-status: open
-next: theorem_prover: record this as a checked claim with the four-line proof
-(delete v, extend a 4-colouring) and hand lean_prover the formal statement
-"k-critical graph has min degree >= k-1" against mathlib's graph-colouring API.
-Pure graph theory, no geometry, no tool run beyond recording the proof.
+status: checked
+checked-by: >
+  research/backward/5chromatic-udg-min-size.md — gap sharp-critical-degree,
+  verified this run by complete exact enumeration over all graphs on <= 6
+  vertices with a fresh SAT oracle (PASSED); same content as claim
+  sharp-critical-degree. The three-line proof is recorded there.
 ```
 
 ```gap

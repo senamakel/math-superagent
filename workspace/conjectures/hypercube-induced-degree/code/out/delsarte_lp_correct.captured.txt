@@ -1,0 +1,12 @@
+Averaging/Delsarte lower bound on f(n): min feasible a_1 (= avg internal degree)
+n  M=2^(n-1)+1  f(n)  ceil(sqrt(n))  LP min a_1
+1         2     1              1  1.000000
+2         3     2              2  1.000000
+3         5     2              2  0.750000
+4         9     2              2  0.500000
+5        17     3              3  0.312500
+6        33     ?              3  0.187500
+7        65     ?              3  0.109375
+8       129     ?              3  0.062500
+
+Conclusion: the best average-degree (Delsarte LP) bound vs sqrt(n).

@@ -1,0 +1,5 @@
+Moser: 11 edges, 3col=False, 4col=True
+n=11 four-chromatic members: 198
+members with 7-vertex/11-edge min-4-critical core: 67
+  of which isomorphic to Moser: 67
+  of which NOT Moser: 0

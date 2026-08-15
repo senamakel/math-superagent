@@ -4,7 +4,14 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `coloring.py` | Complete k-colourability test via exhaustive backtracking with symmetry breaking (DSATUR order, vertex 0 pinned to colour 0). `chromatic_colorable(n,edges,k)` returns (True,witness) or (False,None). `verify_coloring` independently checks a witness. Calibrated on the 7-vertex Moser spindle: k=4 SAT, k=3 UNSAT. |
-| `satcolor.py` | Complete k-colourability via CNF + Cadical153. encode_kcol, is_k_colorable(edges,k,n)->(sat,witness), verify_witness. Calibrated: Moser k=3 UNSAT, k=4 SAT with proper-checked witness. |
-| `unitfield.py` | Exact arithmetic in Q(sqrt3,sqrt11): add/sub/mul, sq_dist, unit_graph, all_sqdist, moser_spindle_points (7-vertex, 11 edges chi=4), diamond_points (4-vertex, tips at sqdist 3), minkowski_sum. Calibrated against code/brute.py. |
-| `unitgraph.py` | Exact unit-distance graph construction. `unit_graph(points)` returns (n, edges) with every edge certified |
+| `coloring.py` | k-colourability oracle **unsound in the False direction** (documented) |
+| `critoracle.py` | critical-graph oracle |
+| `frac_chro_check.py` | flag: exact-LP check of chi_f (fractional chromatic number) for C5/diamond/Moser |
+| `frac_chro_verify.py` | Independent check of chi_f (fractional chromatic number) via the LP over the independent-set polytope (primal + dual, scipy highs) on the calibration graphs C5/diamond/Moser with edge lists exactly matching code/frac_chro_calib.py. Verifies primal==dual (strong LP duality) and the expected values chi_f(C5)=5/2, chi_f(diamond)=3. NOT yet executed this session — scholar should run it as the independent route. |
+| `gpu_determinism.py` | GPU determinism |
+| `pdf_numbers.py` | PDF number extraction |
+| `satcolor.py` | SAT k-colourability encoding |
+| `torus_margin.py` | hexagon-tiling upper-bound margin |
+| `torus_minsep.py` | torus minimum-separation |
+| `unitfield.py` | Algebraic number field helpers (Q(sqrt3,sqrt11)); `minkowski_sum` |
+| `unitgraph.py` | Exact unit-distance graph construction/verification |

@@ -61,6 +61,11 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `5chromatic-udg-min-size/sharp-critical-degree` | lemma | **ready** | — | > Every graph G with chi(G) = k contains a k-critical (vertex-critical) subgraph, and every k-critical graph has minimum degree at least… |
 | `5chromatic-udg-min-size/sharp-kernel-4color` | lemma | **ready** | — | > For the largest N the finite check reaches (start at N = 7), every graph on <= N vertices with minimum degree >= 4, K4-free,… |
 | `5chromatic-udg-min-size/sharp-nbhd-local` | lemma | **ready** | — | > In any unit-distance graph in R^2: (i) no four vertices are pairwise at unit distance — three pairwise-unit points form a unit… |
+| `adding-edges-raise-chromatic-number` | claim | **ready** | — | For every k >= 3 there is a k-chromatic graph G_k such that adding any C(k,2)-1 edges leaves its chromatic number at k, while some… |
+| `barajas-serra-periodic-attainment` | claim | **ready** | — | For a finite D of positive integers, the integral distance graph G(D) satisfies chi(G(D)) = min { chi(D,n) : n in N, n > max D }, attained… |
+| `braun-vega-hajos-neighborhood-S1` | claim | **ready** | — | For a large class of Hajos merges and for any vertex identification of a pair at distance >= 5, the resulting graph has an S^1-wedge… |
+| `chi-f-moser-exact-argument` | claim | established | — | chi_f(Moser spindle) = 7/2 exactly, because the ratio identity gives chi_f >= \|V\|/alpha = 7/2 (alpha = 2) and the dual fractional-clique… |
+| `chi-f-moser-values` | claim | established | — | chi_f(C5) = 5/2, chi_f(diamond) = 3, chi_f(Moser spindle) = 7/2, chi_f(Moser+Moser) = 7/2; all four strict <= 4, so the… |
 | `chi-plane-lower-bound-5` | goal | blocked | `chi-plane-lower-bound-5/G5-construction`, `chi-plane-lower-bound-5/G5-debruijn-erdos`, `chi-plane-lower-bound-5/G5-edge-cert`, `chi-plane-lower-bound-5/G5-non4col` | chi(G) >= 5, where G is the unit-distance graph on R^2 (every pair at distance exactly 1 is an edge). |
 | `chi-plane-lower-bound-5/G5-construction` | lemma | **ready** | — | > There is a finite point set S in R^2, with coordinates in an exact algebraic number field, whose unit-distance graph G[S] has chromatic… |
 | `chi-plane-lower-bound-5/G5-debruijn-erdos` | lemma | **ready** | — | > For the unit-distance graph G on R^2, chi(G) >= 5 if and only if some finite unit-distance subgraph of G has chromatic number >= 5, under… |
@@ -70,28 +75,23 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `chi-plane-upper-bound-6/U6-covering` | lemma | **ready** | — | > The region family of U6-region-design covers the plane, and the boundary tie-break is consistent (each point assigned exactly one colour… |
 | `chi-plane-upper-bound-6/U6-margin` | lemma | **ready** | — | > For the colour classes of U6-region-design + U6-covering, the exact minimum distance between two points in the same class is > 1. |
 | `chi-plane-upper-bound-6/U6-region-design` | lemma | **ready** | — | > There is a family of plane regions and a 6-colour assignment of them such that any two points in regions of the same colour are at… |
+| `cranston-rabern-2016-list-critical-discharging` | claim | **ready** | — | Discharging yields improved edge-count lower bounds on k-list- critical graphs (and k-AT-critical / online list-critical variants), e.g.… |
 | `critical-minimum-degree` | claim | **ready** | — | Every k-critical graph has minimum degree at least k-1; in particular every 5-critical (minimal non-4-colourable) graph has delta >= 4. |
 | `debruijn-erdos-1951` | claim | **ready** | — | For any graph G, chi(G) = sup { chi(H) : H finite subgraph of G }. |
-| `einstein-lattice-unit-distance` | claim | **ready** | — | The Eisenstein integers Z[omega], omega = e^{2 pi i /3}, form the triangular lattice; its unit vectors are the six powers of a primitive… |
+| `dirac-1957-critical-edge-bound` | claim | **ready** | — | Every k-colour-critical graph (k >= 4) on n >= k+2 vertices has at least (1/2)((k-1)n + k - 3) edges; for k=5 this is \|E\| >= 2n+1 (average… |
+| `duffus-sands-woodrow-product-chromatic` | claim | **ready** | — | For Cartesian product, max{chi(G),chi(H)} <= chi(G □ H) <= chi(G)chi(H); for tensor product, chi(G × H) <= min{chi(G),chi(H)}. Exact… |
+| `eggleton-erdos-skilton-1985-real-line` | claim | **ready** | — | The distance graph G(R, D) on the real line (and its integral version G(Z, D)) has as vertices R (resp. Z), with x,y adjacent iff \|x-y\| in… |
+| `einstein-lattice-unit-distance` | claim | established | — | The Eisenstein integers Z[omega], omega = e^{2 pi i /3}, form the triangular lattice; its unit vectors are the six powers of a primitive… |
+| `el-zahar-sauer-product-4chromatic` | claim | **ready** | — | For any two finite graphs G, H with chi(G) = chi(H) = 4, the categorical (tensor/direct) product G × H has chi(G × H) = 4. |
 | `exact-coordinate-certification` | claim | **ready** | — | A faithful unit-distance graph realisation has algebraic coordinates (solutions of a rational-coefficient polynomial system with each edge… |
+| `fractional-chromatic-chain` | claim | **ready** | — | For every finite simple graph G, max{omega(G), \|V(G)\|/alpha(G)} <= rho(G) <= chi_f(G) <= chi(G), where rho is the Hall ratio max_{H⊆G}… |
+| `fractional-chromatic-lp-duality` | claim | **ready** | — | For a finite simple graph G, the fractional chromatic number chi_f(G) is the optimum of the independent-set covering LP (P); its dual (D)… |
+| `hoffman-eigenvalue-bound` | claim | **ready** | — | For any finite simple graph G with at least one edge and adjacency eigenvalues lambda_max >= ... >= lambda_min, chi(G) >= 1 -… |
+| `homma-maehara-1990-algebraic-distance-graphs` | claim | **ready** | — | (i) For finite X in E^n the algebraic-distance graph is complete iff X is rigid. (ii) A convex polygon with algebraic sides has algebraic… |
 | `k-critical-minimum-degree` | claim | **ready** | — | Every k-critical graph has minimum degree at least k-1, hence at least ((k-1)/2)n edges on n vertices; if a graph has chromatic number at… |
 | `kempe-universality` | claim | **ready** | — | Every plane algebraic curve (zero set of a real polynomial) can be traced by a finite pinned planar linkage; Maehara's converse — every… |
-| `lower-bound-via-spindle` | goal | blocked | `lower-bound-via-spindle/G-de-bruijn-erdos-reduction`, `lower-bound-via-spindle/G-forced-pair-exists`, `lower-bound-via-spindle/G-spindling-closure` | chi(G) >= 5 for G the unit-distance graph on R^2 (vertices all points, x ~ y iff \|x-y\| = 1) — equivalently a finite unit-distance graph… |
-| `lower-bound-via-spindle/G-de-bruijn-erdos-reduction` | lemma | **ready** | — | chi(G) equals the supremum of chi(H) over finite subgraphs H of the unit-distance graph on R^2; in particular chi(G) >= 5 iff some finite… |
-| `lower-bound-via-spindle/G-forced-pair-exists` | lemma | **ready** | — | There exists a 4-chromatic unit-distance graph H and two vertices u,v with \|u-v\|>=1/2 that receive the same colour in every proper… |
-| `lower-bound-via-spindle/G-spindling-closure` | lemma | **ready** | — | If H is a unit-distance graph with chi(H)=4 and vertices u,v, u≠v, d=\|u-v\|>=1/2, such that every proper 4-colouring of H has c(u)=c(v),… |
-| `maehara-algebraic-rigid-distances` | claim | **ready** | — | A number d > 0 appears as the Euclidean distance between two vertices of some rigid unit-distance graph in the plane if and only if d is an… |
-| `minkowski-sum-dense-graphs` | claim | **ready** | — | Minkowski sums of small unit-distance graphs produce larger unit-distance graphs with more unit distances per vertex than their size… |
-| `minkowski-sum-unit-distance-condition` | claim | **ready** | — | For finite point sets A, B in the plane, a pair of points a1+b1 and a2+b2 of A+B is at Euclidean distance 1 iff \|(a1-a2) + (b1-b2)\| = 1. |
-| `number-field-extremal-constructions` | claim | **ready** | — | Sharp Szemerédi-Trotter-type incidence constructions exist over any number field K/Q using a nice basis Lambda (an integral basis always… |
-| `sat-k-colourability-encoding` | claim | **ready** | — | G = (V,E) is C-colourable iff the CNF consisting of (i) at-least-one  OR_i x_{v,i} for every v, and (ii) properness  (not x_{u,i} OR not… |
-| `sat-shrinking-core-extraction` | claim | **ready** | — | Whether a graph M has a 4-colouring under which a given subgraph H has a monochromatic triple can be decided by SAT; when UNSAT, the DRAT… |
-| `size-lower-bound-neighborhood` | goal | blocked | `debruijn-erdos-1951`, `sat-k-colourability-encoding`, `size-lower-bound-neighborhood/N-critical-degree`, `size-lower-bound-neighborhood/N-nbhd-circle`, `size-lower-bound-neighborhood/N-universe-4color` | For a concrete integer N (target >= 7, the calibrated baseline), every unit-distance graph in R^2 on at most N vertices is 4-colourable;… |
-| `size-lower-bound-neighborhood/N-critical-degree` | lemma | **ready** | — | Every vertex-critical graph with chromatic number k has minimum degree at least k-1; in particular every 5-critical graph has minimum… |
-| `size-lower-bound-neighborhood/N-nbhd-circle` | lemma | **ready** | — | In any unit-distance graph in R^2, for every vertex v the subgraph induced by the neighbourhood N(v) is a disjoint union of paths and… |
-| `size-lower-bound-neighborhood/N-universe-4color` | lemma | **ready** | — | For the largest N the finite check reaches (target >= 7), every graph on <= N vertices with minimum degree >= 4 and every neighbourhood a… |
-| `szemeredi-trotter-algebraic-extremal` | claim | **ready** | — | For m plane points P and n lines L, the number of point-line incidences I(P,L) = O(m^{2/3} n^{2/3} + m + n), tight up to constants; and the… |
-| `szemeredi-trotter-incidence` | claim | **ready** | — | For m points and n lines in the plane, I(P,L) = O(m^{2/3} n^{2/3} + m + n); equivalently the number of r-rich lines through n points is… |
-| `unit-distance-dense-upper-bound-tight` | claim | **ready** | — | u(n), the max unit-distance pairs among n plane points, satisfies Omega(n^{1+c/log log n}) <= u(n) <= O(n^{4/3}); the upper bound is the… |
+| `kernel-4color-tptp-refutation-is-false-positive` | claim | established | — | > find_counterexample on code/refute/kernel_4color.p reports "refuted" (CounterSatisfiable) with an 8-vertex model, but the decoded graph… |
+| `kostochka-yancey-2014-critical-edge-bound` | claim | **ready** | — | For k >= 4 and an n-vertex k-critical graph G with n >= k, n != k+1, \|E(G)\| >= F(k,n) = ((k+1)(k-2)n - k(k-3))/(2(k-1)); exact for k=4 all… |
+| `kostochka-yancey-critical-edge-bound` | claim | **ready** | — | > For every k >= 4 and every k-critical graph G on n vertices, \|E(G)\| >= [(k+1)(k-2)n - k(k-3)] / [2(k-1)]. For k = 5: \|E(G)\| >= (9n-5)/4.… |
 
-_1 further nodes not shown._
+_39 further nodes not shown._

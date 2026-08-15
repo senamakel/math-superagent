@@ -65,7 +65,13 @@ statement: G = (V,E) is C-colourable iff the CNF consisting of
 hypotheses: G finite simple graph; C a positive integer; booleans x_{v,i}.
 holds-here: YES — the target graphs are finite unit-distance graphs; this gives
   the complete colouring oracle required by GOAL.md.
-status: asserted-by-source (standard, textbook SAT encoding; references above).
+status: checked (the encoding is machine-verified on the calibrated 7-vertex
+  Moser spindle: 4-colourable SAT with witness [0,1,2,0,1,2,3], 3-colourable
+  UNSAT, via Cadical153 and Minisat22 — see
+  `code/out/scholar_verify_claims.captured.txt` and
+  `code/out/sat_calibration.captured.txt`, both EXIT_CODE=0). The textbook
+  encoding is also standard in the literature (Faber–Jabrayilov–Mutzel SAT
+  2024).
 bearing: the oracle for "is this graph k-colourable", to be calibrated on the
   7-vertex graph (4-colourable / not 3-colourable) before trusting any bound.
 anchor: research/sources/sat-colourability-encoding.md

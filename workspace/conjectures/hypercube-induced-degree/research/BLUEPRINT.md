@@ -27,22 +27,45 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `averaging-lp-decays-to-zero` | claim | **ready** | — | The best lower bound on f(n) obtainable from the average internal degree — i.e. min feasible a_1 over the Delsarte polytope of H(2,n) with… |
+| `balanced-independent-set-max-smaller-than-parity` | claim | **ready** | — | The largest balanced independent set of Q_n has size 2^{n-1} − 2^{n-3}(n−2) (even n) / 2^{n-1} − 2^{n-2}(n−1)/2 (odd n), < 2^{n-1} for n >… |
+| `barber-balanced-formula-odd-half` | claim | established | — | The largest balanced independent set of Q_n (half even, half odd parity, independent) has size 2^{n-1} - 2^{n-2}(n-1)/2 for odd n, <… |
+| `barber-balanced-formula-transcription-broken` | claim | established | — | Neither transcription of Barber's balanced-independent-set constant in the library is correct. True max balanced independent set of Q_n:… |
+| `barber-balanced-formula-transcription-broken-confirmed` | claim | established | — | Neither library transcription of Barber's balanced-independent-set constant for Q_n is correct. At n=5 a balanced independent set of size 2… |
+| `beckner-hypercontractivity-1975` | claim | **ready** | — | Sharp hypercontractive inequalities hold for the Boolean/Gaussian semigroups: e.g. \|\|T_ρ f\|\|_q <= \|\|f\|\|_p for ρ^2 <= (p-1)/(q-1). These… |
 | `beltran-ivanisvili-madrid-sharp-avg-boundary` | claim | **ready** | — | For all A ⊆ {0,1}^n, E[h_A^β] has a sharp lower bound in terms of µ(A) for β ≥ 1/2 (e.g. β=0.53 case), minimised by subcubes; the bound is… |
 | `bipartite-threshold-shadow` | goal | blocked | `bipartite-threshold-shadow/G-bip-reduce`, `bipartite-threshold-shadow/G-threshold-analysis`, `bipartite-threshold-shadow/G-threshold-shadow` | f(n) = ω(log n) — for every constant C there is N with f(n) ≥ C·log₂ n for all n ≥ N, where f(n) = min { D(S) : S ⊆ V(Q_n), \|S\| = 2^{n-1}+1… |
 | `bipartite-threshold-shadow/G-bip-reduce` | lemma | **ready** | — | \| For S ⊆ V(Q_n) with A = S∩E, B = S∩O: D(S) = max( max_{b∈B} \|N(b)∩A\|, max_{a∈A} \|N(a)∩B\| ). Consequently, for d = d₀(n), if \|{x ∈ O :… |
 | `bipartite-threshold-shadow/G-threshold-analysis` | lemma | **ready** | — | \| Let U_d(a) be the extremal upper bound from G2 (the ball value suffices if G2 holds). There is d₀(n) = ω(log n) such that U_{d₀(n)}(a) ≤… |
 | `bipartite-threshold-shadow/G-threshold-shadow` | lemma | **ready** | — | \| For each n and 0 ≤ d ≤ n, the function A ↦ \|O_{≤d}(A)\| = \|{x ∈ O : \|N(x)∩A\| ≤ d}\|, over A ⊆ E with \|A\| = a, is maximised by a Hamming… |
 | `durcik-ivanisvili-roos-critical-exponent` | claim | **ready** | — | For β ≥ 0.50057 and \|A\| ≤ 1/2, E[h_A^β] ≥ \|A\|(log2(1/\|A\|))^β, with equality for subcubes (and an analogous bound for \|A\| ≥ 1/2). |
+| `ellis-edge-isoperimetric-stability` | claim | **ready** | — | If A ⊆ {0,1}^n has edge boundary \|∂A\| <= ε\|A\| (ε small), then A can be made into a subcube by at most (2ε/log2(1/ε))\|A\| additions and… |
+| `ellis-keller-lifshitz-edge-stability` | claim | **ready** | — | For any F ⊆ {0,1}^n with \|F\| = m and edge boundary at most g_n(m) + l (g_n(m) = min edge boundary for size m), there is an extremal G… |
 | `f-exact-1..4` | claim | established | — | f(1)=1, f(2)=2, f(3)=2, f(4)=2, where f(n)=min D(S) over S⊆{0,1}^n, \|S\|=2^{n-1}+1. |
-| `falik-samorodnitsky-edge-isoperimetric` | claim | **ready** | — | For A ⊆ {0,1}^n with µ = \|A\|/2^n ≤ 1/2, the total influence Σ_i I_i(A) ≥ 2 log2(1/µ)·µ (edge-isoperimetric inequality, with the KKL bound… |
+| `f-exact-1..5` | claim | established | — | f(1)=1, f(2)=2, f(3)=2, f(4)=2, f(5)=3, where f(n) = min { D(S) : S ⊆ {0,1}^n, \|S\| = 2^{n-1}+1 }. |
+| `f-exact-1..7` | claim | **ready** | — | f(n) = min{ D(S) : S ⊆ {0,1}^n, \|S\| = 2^{n-1}+1 } takes values f(1..7) = 1,2,2,2,3,3,3 = ceil(sqrt(n)). |
+| `f-lower-bound-ceil-sqrt-n` | claim | established | — | f(n) = min{ D(S) : S ⊆ Q_n, \|S\| = 2^{n-1}+1 } >= ceil(sqrt(n)) for every n >= 1, because f(n) is an integer and the spectral bound f(n) >=… |
+| `f-lower-bound-sqrt-n` | claim | **ready** | — | f(n) = min{ D(S) : S ⊆ Q_n, \|S\|=2^{n-1}+1 } >= sqrt(n) for all n. |
+| `f-n-sqrt-n-proved` | claim | established | — | f(n) = min{ D(S) : S ⊆ {0,1}^n, \|S\| = 2^{n-1}+1 } satisfies f(n) >= sqrt(n) for every n >= 1. With the construction upper bound, f(n) =… |
+| `falik-samorodnitsky-edge-isoperimetric` | claim | **ready** | — | For A ⊆ {0,1}^n with µ = \|A\|/2^n <= 1/2, total influence Σ_i I_i(A) >= 2 log2(1/µ)·µ (edge-isoperimetric); KKL follows: some variable has… |
+| `friedgut-low-average-sensitivity` | claim | **ready** | — | If a Boolean function f: {−1,1}^n → {−1,1} has small average sensitivity (total influence), then f is close to a function depending on few… |
+| `harper-optimal-assignments-1964` | claim | **ready** | — | Among subsets S of Q_N = {0,1}^N with \|S\| = m, the edge boundary \|∂_e(S)\| is minimised by the initial segment I_m of the binary… |
 | `harper-vertex-isoperimetric-hamming-ball` | claim | **ready** | — | Among subsets A of Q_n of a fixed size k, the vertex boundary is minimised by a Hamming ball B_r with k = sum_{i<=r} C(n,i) (Harper 1999);… |
-| `harper-vertex-isoperimetric-min-boundary` | claim | **ready** | — | Among subsets A ⊆ {0,1}^n of a given size m, the vertex boundary \|∂v(A)\| is minimised by an initial segment I_m in the simplicial order… |
+| `harper-vertex-isoperimetric-min-boundary` | claim | **ready** | — | Among subsets A of {0,1}^n of size m, \|∂_v(A)\| is minimised by an initial segment I_m in the simplicial order (Harper), and near-minimisers… |
+| `huang-combinatorial-lemma` | claim | **ready** | — | For every n >= 1, every induced subgraph of Q_n = {0,1}^n on more than 2^{n-1} vertices has a vertex of internal degree at least sqrt(n) (=… |
+| `huang-degree-bounds-lambda` | claim | **ready** | — | Let H be a finite graph on vertex set S with max degree Δ(H), and B a real symmetric matrix with entries in {0,±1}, zero diagonal, nonzero… |
+| `huang-f-n-sqrt-n` | claim | **ready** | — | f(n) = min{ D(S) : S ⊆ V(Q_n), \|S\| = 2^{n-1}+1 } satisfies f(n) >= sqrt(n) for every n >= 1; hence f(n) = Θ(sqrt(n)) against the known… |
+| `huang-interlacing-sqrt` | claim | **ready** | — | For every S ⊆ V(Q_n) with \|S\| = 2^{n-1}+1, the principal submatrix B = A_n[S,S] has λ_max(B) >= sqrt(n). (Instance of Cauchy interlacing… |
+| `huang-signature-matrix-square` | claim | **ready** | — | The signed adjacency matrix A_n defined by A_1 = [[0,1],[1,0]] and A_n = [[A_{n-1}, I_{2^{n-1}}], [I_{2^{n-1}}, -A_{n-1}]] satisfies A_n^2… |
+| `huang-signed-adjacency` | claim | **ready** | — | For each n >= 1 there is a symmetric 2^n x 2^n matrix A_n over {0,±1} whose support is exactly the edges of Q_n and which satisfies A_n^2 =… |
+| `hypercube-adjacency-spectrum-cayley` | claim | **ready** | — | The adjacency matrix of Q_d has eigenvalues d − 2i (i = 0..d), each of multiplicity C(d,i); equivalently lambda(a) = d − 2w(a) over a in… |
 | `induced-subgraphs-hypercube-full-vertices-kk` | claim | **ready** | — | The maximum number of full (internal-degree-k) vertices in an n-vertex induced subgraph of Q_k is exactly φ_k(n), given by a recursive… |
-| `kkl-balance-influence` | claim | **ready** | — | Every balanced Boolean function on {0,1}^n (µ = 1/2) has a variable with influence ≥ c·(log n)/n for an absolute constant c > 0… |
+| `interlacing-sqrt` | claim | **ready** | — | Let B be a principal submatrix of A_n on k = 2^{n-1}+1 rows. Then lambda_max(B) >= sqrt(n). |
+| `keevash-long-edge-isoperimetric-stability` | claim | **ready** | — | If A ⊆ {0,1}^n has edge boundary within ε of the minimum for its size, then A is within a quantitative distance (→ 0 as ε → 0) of a subcube… |
+| `kkl-balance-influence` | claim | **ready** | — | Every balanced Boolean f on {0,1}^n has a variable with influence >= c·log(n)/n (KKL 1988; combinatorial proof in Falik–Samorodnitsky 2007). |
 | `kkl-influence-balanced` | claim | **ready** | — | Every Boolean f: {0,1}^n -> {0,1} with E f = a has a coordinate of influence >= c·a(1-a)·log(n)/n (KKL 1988, harmonic analysis +… |
 | `kruskal-katona-shadow-formula` | claim | **ready** | — | For a family U of m k-sets, \|lower shadow\| >= C(a_k,k-1)+C(a_{k-1},k-2)+... where the a's come from the k-binomial decomposition of m;… |
-| `spectral-interlacing-sqrt-lower-bound` | goal | blocked | `spectral-interlacing-sqrt-lower-bound/G-eigenvalue-bounds-degree`, `spectral-interlacing-sqrt-lower-bound/G-interlacing-sqrt`, `spectral-interlacing-sqrt-lower-bound/G-signed-adjacency-matrix` | For every n >= 1, f(n) >= sqrt(n), where f(n) = min{ D(S) : S ⊆ V(Q_n), \|S\| = 2^{n-1}+1 } and D(S) is the maximum internal degree of the… |
-| `spectral-interlacing-sqrt-lower-bound/G-eigenvalue-bounds-degree` | lemma | **ready** | — | Let H be a finite simple graph on vertex set S with maximum degree Δ(H), and let B be a real symmetric matrix with B[u,v] ∈ {0,±1} and… |
-| `spectral-interlacing-sqrt-lower-bound/G-interlacing-sqrt` | lemma | **ready** | — | Let B be any principal submatrix of A_n on 2^{n-1}+1 rows. Then λ_max(B) >= sqrt(n). This is the instance of Cauchy's interlacing theorem… |
-| `spectral-interlacing-sqrt-lower-bound/G-signed-adjacency-matrix` | lemma | **ready** | — | For each n >= 1 there is a symmetric 2^n × 2^n matrix A_n over {0,±1} whose support is the edge set of Q_n (A_n[u,v] = 0 unless u and v… |
-| `survey-cube-isoperimetric-profile` | claim | **ready** | — | On the hypercube, min edge boundary for fixed size is given by subcubes and min vertex boundary by Hamming balls (Harper/Lindsey/Bernstein/… |
+| `lambda-max-bounded-by-degree` | claim | **ready** | — | Let H be a finite graph, B a real symmetric matrix with zero diagonal, entries in {0,±1} supported on edges of H. Then lambda_max(B) <=… |
+| `max-independent-kernel-of-cube-are-parity-classes` | claim | **ready** | — | The maximum independent sets of Q_n are precisely the two parity classes X_0, X_1, each of size 2^{n-1}; any independent set of size… |
+
+_15 further nodes not shown._

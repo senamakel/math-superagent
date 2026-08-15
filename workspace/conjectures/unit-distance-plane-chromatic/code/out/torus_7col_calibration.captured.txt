@@ -1,0 +1,52 @@
+========================================================================
+L = 2/5 = 0.4
+in window 1/(sqrt21-2) < L < 1/2: True
+  1/(sqrt21-2) ~ 0.3872103349974024   1/2 = 0.5
+same-colour centre dist = sqrt(3*7)*L = sqrt21*L = 4.582576 L
+separation threshold (1+2L)^2 = 3.24 ;  same-colour dist^2 = 3.36
+proper (dist^2 > (1+2L)^2): True
+min same-colour separation (sqrt21-2)L = 1.033030 > 1 ⇒ True
+
+  N=7: 49 vertices, 441 edges (build 0.001s)
+  7-colouring proper on F: True
+  min same-colour Eisenstein norm on F: 7 (theory 7)
+  k=6 SAT: False
+  k=7 SAT: True
+    7-colour witness verified proper
+  chi(F) = 7
+  (7-colour witness same as theoretical pattern)
+
+  N=14: 196 vertices, 1764 edges (build 0.004s)
+  7-colouring proper on F: True
+  min same-colour Eisenstein norm on F: 7 (theory 7)
+  k=6 SAT: False
+  k=7 SAT: True
+    7-colour witness verified proper
+  chi(F) = 7
+  (7-colour witness same as theoretical pattern)
+========================================================================
+L = 47/120 = 0.39166666666666666
+in window 1/(sqrt21-2) < L < 1/2: True
+  1/(sqrt21-2) ~ 0.3872103349974024   1/2 = 0.5
+same-colour centre dist = sqrt(3*7)*L = sqrt21*L = 4.582576 L
+separation threshold (1+2L)^2 = 3.180277777777778 ;  same-colour dist^2 = 3.2214583333333335
+proper (dist^2 > (1+2L)^2): True
+min same-colour separation (sqrt21-2)L = 1.011509 > 1 ⇒ True
+
+  N=7: 49 vertices, 441 edges (build 0.001s)
+  7-colouring proper on F: True
+  min same-colour Eisenstein norm on F: 7 (theory 7)
+  k=6 SAT: False
+  k=7 SAT: True
+    7-colour witness verified proper
+  chi(F) = 7
+  (7-colour witness same as theoretical pattern)
+
+  N=14: 196 vertices, 1764 edges (build 0.007s)
+  7-colouring proper on F: True
+  min same-colour Eisenstein norm on F: 7 (theory 7)
+  k=6 SAT: False
+  k=7 SAT: True
+    7-colour witness verified proper
+  chi(F) = 7
+  (7-colour witness same as theoretical pattern)
