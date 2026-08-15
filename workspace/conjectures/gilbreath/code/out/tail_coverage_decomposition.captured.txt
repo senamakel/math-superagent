@@ -1,0 +1,45 @@
+Q1: prime diagonal tail coverage K(n) for n <= 3000 (minimal gaps):
+  K values seen: [2]
+  n with K != 2 (first 10): [] (total 0)
+
+Q2: weight(Pascal(h)) >= w/2 universally?  Exhaustive m<=18:
+  m= 2: worst weight(out)/w = 0.5000 
+  m= 3: worst weight(out)/w = 0.3333 VIOLATES w/2
+  m= 4: worst weight(out)/w = 0.2500 VIOLATES w/2
+  m= 5: worst weight(out)/w = 0.2000 VIOLATES w/2
+  m= 6: worst weight(out)/w = 0.1667 VIOLATES w/2
+  m= 7: worst weight(out)/w = 0.1429 VIOLATES w/2
+  m= 8: worst weight(out)/w = 0.1250 VIOLATES w/2
+  m= 9: worst weight(out)/w = 0.1111 VIOLATES w/2
+  m=10: worst weight(out)/w = 0.1000 VIOLATES w/2
+  m=11: worst weight(out)/w = 0.0909 VIOLATES w/2
+  m=12: worst weight(out)/w = 0.0833 VIOLATES w/2
+  m=13: worst weight(out)/w = 0.0769 VIOLATES w/2
+  m=14: worst weight(out)/w = 0.0714 VIOLATES w/2
+  m=15: worst weight(out)/w = 0.0667 VIOLATES w/2
+  m=16: worst weight(out)/w = 0.0625 VIOLATES w/2
+  m=17: worst weight(out)/w = 0.0588 VIOLATES w/2
+  m=18: worst weight(out)/w = 0.0556 VIOLATES w/2
+  overall worst: m=18 pattern=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ratio=0.0556
+  random m=200: 20 trials worst ratio:
+  worst = 0.6860
+
+Q3: random Bernoulli(0.6) patterns (minimal gaps), N=300:
+  (trial, n, K, nu2, w, full-conv ratio)
+  trial  0: min nu2/w=0.316 at (28, 2, 6, 19) ; full-conv ratio=0.810
+  trial  1: min nu2/w=0.471 at (26, 2, 8, 17) ; full-conv ratio=0.832
+  trial  2: min nu2/w=0.545 at (38, 2, 12, 22) ; full-conv ratio=0.926
+  trial  3: min nu2/w=0.693 at (149, 2, 61, 88) ; full-conv ratio=0.788
+  trial  4: min nu2/w=0.545 at (21, 2, 6, 11) ; full-conv ratio=0.769
+  trial  5: min nu2/w=0.647 at (120, 2, 44, 68) ; full-conv ratio=0.881
+  trial  6: min nu2/w=0.615 at (28, 2, 8, 13) ; full-conv ratio=0.842
+  trial  7: min nu2/w=0.483 at (48, 2, 14, 29) ; full-conv ratio=0.792
+  trials with K>2 at their worst point: 0/40
+  worst full-convolution ratio over 40 trials: 0.6685
+
+Q4: primes: nu2(n) vs full Pascal-convolution weight of the h-window:
+  n=  50: K=2 L=48 nu2=24 full-conv-weight=23 w=31 nu2/full=1.043
+  n= 100: K=2 L=98 nu2=44 full-conv-weight=45 w=61 nu2/full=0.978
+  n= 200: K=2 L=198 nu2=113 full-conv-weight=99 w=126 nu2/full=1.141
+  n= 400: K=2 L=398 nu2=201 full-conv-weight=185 w=245 nu2/full=1.086
+  n= 800: K=2 L=798 nu2=415 full-conv-weight=378 w=493 nu2/full=1.098

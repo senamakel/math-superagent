@@ -1,0 +1,45 @@
+sieve to 100000000 : 5761455 primes (2.5s)
+identity h_j = (1 - u_j u_{j+1})/2 over j=2..999999: OK (bad=0)
+E(n) = -sum_{j=2}^{n-1} u_j u_{j+1} for all n in [2,1000000]: OK
+
+== pointwise switch majority E(n) >= 0 for n in [2,1000000]: YES (violations=0, first=[])
+   E(n)=0 exactly at n: [2] (count=1)
+   min E over n in [    17, 1000000] = 5 at n=17
+   min E over n in [   100, 1000000] = 24 at n=100
+   min E over n in [  1000, 1000000] = 236 at n=1004
+   min E over n in [ 10000, 1000000] = 1723 at n=10027
+   min E over n in [100000, 1000000] = 14719 at n=100013
+
+== dyadic table ==
+   n         W(n)      E(n)    W/n     E/(n/log(n*log n))
+       100        61        24  0.6100  1.472
+      1000       618       238  0.6180  2.104
+     10000      5861      1724  0.5861  1.971
+    100000     57361     14724  0.5736  2.055
+   1000000    562576    125154  0.5626  2.058
+
+== equal-residue run structure, residues of p_2..p_1000001 ==
+   number of runs: 562577 (over 1000000 primes)
+   longest run: 16   top-10 lengths: [16, 15, 15, 14, 14, 13, 13, 13, 12, 12]
+   run-length histogram (top 8 by length): {16: 1, 15: 2, 14: 2, 13: 3, 12: 7, 11: 27, 10: 91, 9: 246}
+   runs of length 1: 307035 (54.6%)
+
+== E-walk steps (j=2..999999): +1 = switch (h=1), -1 = non-switch (h=0) ==
+   up steps: 562576   down steps: 437422
+   longest up-run (consecutive switches): 24
+   longest down-run (consecutive non-switches): 15
+   count of down-runs: 255541, mean down-run: 1.712
+
+== context ==
+   # {p_j = 1 mod 4, j in [2,1000000]} = 499798   # {3 mod 4} = 500202   sum u_j = -403
+
+== transfer composition (nu2 from code/out/nu2_dense.txt, W computed here) ==
+   leg (a) nu2(n) >= W(n)/2 for n in [17,30000]: violations=1 first=[44]
+   leg (b) W(n) >= (n-2)/2 for n in [2,30000]: violations=0 first=[]
+   composed nu2(n) >= (n-2)/4 for n in [17,30000]: violations=0 first=[]
+   first n with (n-2)/4 > n^0.525: 23
+   min 4*nu2/(n-2) over n in [23,30000] = 1.3333 at n=32 (margin over 1)
+   min nu2/n^0.525 over n in [23,30000] = 1.542 at n=23
+
+wrote E_ballot_first512.txt, W_switch_prefix_first512.txt, hbits_j2_first512.txt (512 terms each)
+total time 4.4s

@@ -24,6 +24,7 @@ mod folder_index;
 mod frontier;
 mod layout;
 mod lean;
+mod ledger;
 mod loop_steps;
 mod oeis;
 mod openalex;
@@ -134,6 +135,7 @@ pub fn ledger_report(workspace: &Path) -> String {
     ] {
         let _ = write!(out, "## {title}\n\n{}\n\n", body.trim_end());
     }
+    let _ = write!(out, "{}", ledger::costs(workspace));
     out
 }
 

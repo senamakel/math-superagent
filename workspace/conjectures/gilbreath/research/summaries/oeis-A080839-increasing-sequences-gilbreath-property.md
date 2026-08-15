@@ -1,6 +1,6 @@
 # OEIS A080839 — increasing sequences with all-1s Gilbreath transform
 
-Source held in full: `research/sources/oeis-A080839-increasing-sequences-gilbreath-property.full.md` (from https://oeis.org/A080839, surfaced this cycle by the MathOverflow "what is known" thread, Directive 47 — commenter tdnoe: "The question of how many increasing sequences of integers have the Gilbreath property is answered in OEIS A080839. It doesn't make the primes seem that special.").
+Source held in full: `research/sources/oeis-A080839-increasing-sequences-gilbreath-property.full.md` (from https://oeis.org/A080839; this summary note and the source full text were corrected this cycle — the download was initially routed under this summary name; the clean full text is now filed under sources/). Surfaced by the MathOverflow "what is known" thread (Directive 47) — commenter tdnoe: "The question of how many increasing sequences of integers have the Gilbreath property is answered in OEIS A080839. It doesn't make the primes seem that special."
 
 ## What the catalogue says (catalogue-read, not derived here)
 

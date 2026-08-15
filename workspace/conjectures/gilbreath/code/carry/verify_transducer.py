@@ -48,13 +48,14 @@ def transducer_batch(a_arr, b_arr, m):
         gt |= (x > y) & ~(gt | lt)
         lt |= (y > x) & ~(gt | lt)
     # magnitude: larger minus smaller via two's-complement X + ~Y + 1 borrow
-    # chain (a subtraction borrow = an addition carry).
+    # chain (a subtraction borrow = an addition carry). The '+1' of the
+    # two's complement is the carry-in, so c starts at 1 (not 0).
     X = np.where(lt == 1, b, a)          # larger operand
     Y = np.where(lt == 1, a, b)          # smaller operand
     Xb = bits_lsb_matrix(X, m)
     Yb = bits_lsb_matrix(Y, m)
     out = np.zeros(n, dtype=np.uint64)
-    c = np.zeros(n, dtype=np.uint8)
+    c = np.ones(n, dtype=np.uint8)       # carry-in 1: the '+1' of two's comp
     for i in range(m):
         s = Xb[i] + (1 - Yb[i]) + c
         out |= (s.astype(np.uint64) & 1) << i
