@@ -45,27 +45,6 @@ use tinyagents::harness::model::{ChatModel, ModelRequest};
 use super::documents::WorkspaceDocuments;
 use crate::agent::{Message, Result, Tool, ToolCall, ToolResult, ToolSchema};
 
-/// Bytes of source one sub-call reads.
-///
-/// Roughly six thousand tokens: small enough that a model attends to all of it
-/// rather than to its ends, and large enough that a section of a paper usually
-/// survives inside one chunk instead of being cut across two.
-const CHUNK_BYTES: usize = 24 * 1024;
-
-/// Chunks one call will read.
-///
-/// At [`CHUNK_BYTES`] this covers a 1.5 MB region — every document in a live
-/// workspace, with room over. A region larger than this is answered over the
-/// first sixty chunks and *says* so, because a partial answer presented as a
-/// complete one is the failure this tool exists to avoid.
-const MAX_CHUNKS: usize = 60;
-
-/// Sub-calls in flight at once.
-///
-/// The container shares one provider connection pool with the run that is
-/// waiting on this tool, and sixty concurrent requests would starve it.
-const CONCURRENCY: usize = 6;
-
 /// How long one sub-call is given.
 const CALL_TIMEOUT: Duration = Duration::from_mins(3);
 
@@ -138,7 +117,7 @@ fn chunk(text: &str, first_line: usize) -> Vec<Chunk> {
     let mut start = first_line;
     let mut line = first_line;
     for content in text.lines() {
-        if !body.is_empty() && body.len() + content.len() + 1 > CHUNK_BYTES {
+        if !body.is_empty() && body.len() + content.len() + 1 > super::reading::chunk_bytes() {
             chunks.push(Chunk {
                 first_line: start,
                 last_line: line - 1,
@@ -207,7 +186,7 @@ async fn read_all(
     question: &str,
 ) -> Vec<(Chunk, Finding)> {
     let mut out = Vec::with_capacity(chunks.len());
-    for batch in chunks.chunks(CONCURRENCY) {
+    for batch in chunks.chunks(super::reading::concurrency()) {
         let mut set = tokio::task::JoinSet::new();
         for (offset, chunk) in batch.iter().enumerate() {
             let model = model.clone();
@@ -302,17 +281,21 @@ impl std::fmt::Debug for MapTool {
 }
 
 impl MapTool {
-    /// Builds the tool, or nothing when the run has no reader model.
+    /// Builds the tool, or nothing when the run has no reader model or has
+    /// switched the recursive read off.
     ///
     /// Absent rather than present-and-failing, on the same argument the
     /// research gate is built on: a tool that is not registered cannot be
     /// called, and a tool that is registered but always errors spends a turn
-    /// teaching that.
+    /// teaching that. `MATH_AGENT_RLM=off` is therefore enforced here, at the
+    /// one place the tool comes into existence, rather than by a check inside
+    /// `call` that a model would have to spend a turn discovering.
     pub(super) fn all(
         documents: &WorkspaceDocuments,
         model: Option<&Arc<dyn ChatModel<()>>>,
     ) -> Vec<Arc<dyn Tool<()>>> {
         model
+            .filter(|_| super::reading::recursion_enabled())
             .map(|model| {
                 Arc::new(Self {
                     documents: documents.clone(),
@@ -380,8 +363,9 @@ impl Tool<()> for MapTool {
         let region = super::outline::region(&path, &content, section, lines)?;
         let chunks = chunk(&region.text, region.first_line);
         let total = chunks.len();
-        let capped = total > MAX_CHUNKS;
-        let chunks = &chunks[..total.min(MAX_CHUNKS)];
+        let max_chunks = super::reading::max_chunks();
+        let capped = total > max_chunks;
+        let chunks = &chunks[..total.min(max_chunks)];
         if chunks.is_empty() {
             return Ok(ToolResult::text(
                 call.id,
@@ -442,7 +426,7 @@ impl Tool<()> for MapTool {
         if capped {
             let _ = write!(
                 out,
-                "\n[the range needed {total} chunks and was read to {MAX_CHUNKS}; lines after {} \
+                "\n[the range needed {total} chunks and was read to {max_chunks}; lines after {} \
                  were not read. Narrow with `section` or `lines` to cover them.]\n",
                 chunks.last().map_or(0, |chunk| chunk.last_line)
             );

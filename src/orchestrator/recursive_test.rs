@@ -8,7 +8,8 @@ use async_trait::async_trait;
 use serde_json::json;
 use tinyagents::harness::model::{ChatModel, ModelRequest, ModelResponse, ModelStream};
 
-use super::{CHUNK_BYTES, chunk};
+use super::{MapTool, chunk};
+use crate::orchestrator::reading::chunk_bytes;
 use crate::agent::{Result, Tool, ToolCall};
 use crate::orchestrator::documents::WorkspaceDocuments;
 
@@ -82,12 +83,23 @@ impl ChatModel<()> for ScriptedModel {
     }
 }
 
+/// Runs the tool built directly, rather than the one `documents.tools()` may
+/// or may not have registered.
+///
+/// Deliberate: these tests are about what the recursive read *does*, and
+/// whether it is registered at all is `MATH_AGENT_RLM`'s business — asserted
+/// once, in the gate test below. Going through the registry would make every
+/// test here fail under an operator's `--no-rlm`, reporting a broken tool
+/// where the tool is only absent.
 async fn run(documents: &WorkspaceDocuments, arguments: serde_json::Value) -> Result<String> {
-    let tool: Arc<dyn Tool<()>> = documents
-        .tools()
-        .into_iter()
-        .find(|tool| tool.name() == "map_document")
-        .ok_or_else(|| tinyagents::TinyAgentsError::Tool("map_document is not registered".into()))?;
+    let model = documents
+        .reader()
+        .ok_or_else(|| tinyagents::TinyAgentsError::Tool("no reader model".into()))?
+        .clone();
+    let tool: Arc<dyn Tool<()>> = Arc::new(MapTool {
+        documents: documents.clone(),
+        model,
+    });
     let result = tool
         .call(
             &(),
@@ -115,7 +127,7 @@ fn chunks_cut_at_lines_and_number_them_continuously() {
     for pair in chunks.windows(2) {
         assert_eq!(pair[0].last_line + 1, pair[1].first_line);
         assert!(pair[0].text.ends_with('\n'));
-        assert!(pair[0].text.len() <= CHUNK_BYTES);
+        assert!(pair[0].text.len() <= chunk_bytes());
     }
     assert_eq!(
         chunks.last().map(|c| c.last_line),
@@ -143,6 +155,29 @@ async fn the_tool_is_absent_when_the_run_has_no_reader_model() -> Result<()> {
             .iter()
             .any(|tool| tool.name() == "map_document")
     );
+    Ok(())
+}
+
+#[tokio::test]
+async fn switching_the_recursion_off_withholds_the_tool_and_leaves_the_rest() -> Result<()> {
+    // Enforced by not registering the tool, never by asking the model to
+    // abstain — the same enforcement as `MATH_AGENT_RESEARCH`. The two cheap
+    // halves of the reading layer must survive it, or turning off a spend
+    // would also turn off a control.
+    let (model, _) = ScriptedModel::new("noted");
+    let documents = WorkspaceDocuments::new(workspace("gate")?)?.with_reader(model);
+    let tools = documents.tools();
+    let names: Vec<&str> = tools.iter().map(|tool| tool.name()).collect();
+
+    // Registration follows the flag exactly, in both directions.
+    assert_eq!(
+        names.contains(&"map_document"),
+        crate::orchestrator::reading::recursion_enabled()
+    );
+    // And the two cheap halves survive it either way: turning off a spend must
+    // not turn off a control.
+    assert!(names.contains(&"outline_document"));
+    assert!(names.contains(&"grep_workspace"));
     Ok(())
 }
 

@@ -120,6 +120,16 @@ impl WorkspaceDocuments {
             .collect()
     }
 
+    /// The model the recursive read uses, when the run has one.
+    ///
+    /// Only [`super::recursive`]'s tests reach for this: they build the tool
+    /// directly so they stay green whether or not `MATH_AGENT_RLM` registered
+    /// it. Nothing in the run needs it, because `tools()` already holds it.
+    #[cfg(test)]
+    pub(super) fn reader(&self) -> Option<&Arc<dyn tinyagents::harness::model::ChatModel<()>>> {
+        self.reader.as_ref()
+    }
+
     /// The workspace this tool set is rooted at.
     pub(super) fn root(&self) -> &std::path::Path {
         &self.workspace

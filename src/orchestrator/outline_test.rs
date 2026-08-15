@@ -1,7 +1,8 @@
 //! Unit tests for the document outline and the selected read.
 #![allow(clippy::expect_used)]
 
-use super::{MAX_SLICE_BYTES, MAX_UNSELECTED_BYTES, region, render, sections, select, too_large};
+use super::{region, render, sections, select, too_large};
+use crate::orchestrator::reading::{slice_ceiling, unselected_ceiling};
 
 const PAPER: &str = "\
 preamble line
@@ -200,7 +201,7 @@ fn an_oversized_selection_is_cut_at_a_line_and_says_where_to_resume() {
     let slice = select("big.md", &doc, None, Some("1-")).expect("a valid range");
 
     assert!(slice.truncated);
-    assert!(slice.text.len() <= MAX_SLICE_BYTES);
+    assert!(slice.text.len() <= slice_ceiling());
     // Cut at a line, so the last line is whole and the next range is exact.
     assert!(slice.text.ends_with('\n'));
     let rendered = super::render_slice("big.md", doc.lines().count(), &slice);
@@ -219,12 +220,12 @@ fn a_region_is_not_cut_where_a_slice_would_be() {
     let region = region("big.md", &doc, None, None).expect("the whole document");
 
     assert_eq!(region.text.len(), doc.len());
-    assert!(region.text.len() > MAX_SLICE_BYTES);
+    assert!(region.text.len() > slice_ceiling());
 }
 
 #[test]
 fn an_oversized_unselected_read_is_answered_with_navigation() {
-    let doc = "# One\n".to_string() + &"filler\n".repeat(MAX_UNSELECTED_BYTES / 7 + 10);
+    let doc = "# One\n".to_string() + &"filler\n".repeat(unselected_ceiling() / 7 + 10);
 
     let answer = too_large("big.md", &doc);
 

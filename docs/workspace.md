@@ -402,6 +402,47 @@ answer instead of 107,000 of source. Three properties are deliberate:
   answered beat one failure that discards them, but an answer with a hole in it
   that does not say so will be read as complete.
 
+### Switching the recursion off
+
+The ceiling and the recursion are different kinds of thing, and only one of
+them switches off. The ceiling is a **control**: it costs nothing, stops one
+call spending a context window, and is in force on every run — an operator who
+wants more raises `MATH_AGENT_READ_CEILING` rather than removing it. The
+recursion is a **spend**: one `map_document` over a 428 KB source is eighteen
+provider calls the caller did not individually authorise, and there are runs
+where that is the wrong trade — a cheap model where eighteen chunk reads cost
+more than the answer is worth, or a calibration run being measured on what the
+harness does without them.
+
+So `MATH_AGENT_RLM=off`, or `--no-rlm` on `./agent`, withholds it — by **not
+registering the tool**, the same enforcement as `MATH_AGENT_RESEARCH` and for
+the same reason. The registry stops advertising the name in the same breath, so
+a delegating role is never told about a capability the harness does not have. A
+run without it keeps the outline, the selected read and the search, so a large
+document stays readable; what it loses is the ability to ask one question of a
+whole file.
+
+Every bound is an override on the same rule the rest of the runtime follows —
+missing, empty, unparsable or zero keeps the default, so a mistyped number
+gets the runtime's judgement rather than a silent zero that would turn a bound
+into a refusal of everything. They live together in `orchestrator::reading`
+rather than as constants in the two modules that use them, because an operator
+asking "how much of a file can a role see" should not have to read both.
+
+| Variable | Default | What it sets |
+|---|---|---|
+| `MATH_AGENT_RLM` | `on` | whether `map_document` exists at all |
+| `MATH_AGENT_READ_CEILING` | 24576 | unselected read before the outline answers instead |
+| `MATH_AGENT_READ_SLICE` | 49152 | one `section` or `lines` read; held at or above the ceiling |
+| `MATH_AGENT_RLM_CHUNK_BYTES` | 24576 | source one chunk read sees |
+| `MATH_AGENT_RLM_MAX_CHUNKS` | 60 | chunks one call reads before it stops and says so |
+| `MATH_AGENT_RLM_CONCURRENCY` | 6 | chunk reads in flight |
+
+The slice bound is held at or above the ceiling deliberately. An operator who
+raises one and forgets the other would otherwise get a runtime where naming a
+section returns *less* than not naming one, which reads as the selection having
+gone wrong rather than as a misconfiguration.
+
 Its reply is evidence, not a claim — the same standing as a search result, and
 the tool says so on every call: read the cited lines before relying on it. The
 reader model is wrapped in accounting at construction, so chunk reads appear in

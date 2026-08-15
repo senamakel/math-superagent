@@ -19,7 +19,7 @@
 //!
 //! # The ceiling is a control, not advice
 //!
-//! An unselected read over [`MAX_UNSELECTED_BYTES`] does not return the
+//! An unselected read over [`super::reading::unselected_ceiling`] does not return the
 //! document. It returns this outline and says how to select. That is deliberate
 //! and it is the whole point of the module: `CLAUDE.md` is explicit that a
 //! prompt instruction is not a control, and "please read large files in
@@ -44,24 +44,6 @@ use serde_json::json;
 
 use super::documents::WorkspaceDocuments;
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
-
-/// How much of a document one unselected `read_document` may return.
-///
-/// Above this the read is answered with the outline instead. Set at the size
-/// of a long note rather than of a short paper: everything the run writes about
-/// itself — a claim ledger entry, an approach, a thread — is comfortably below
-/// it and reads exactly as it did before, and everything above it is a source
-/// or a derived ledger that has structure worth navigating.
-pub(super) const MAX_UNSELECTED_BYTES: usize = 24 * 1024;
-
-/// How much text one *selected* read may return.
-///
-/// Larger than [`MAX_UNSELECTED_BYTES`], because a caller naming a range has
-/// said what it wants and a section that happens to be long is not an accident.
-/// It is still bounded: the bound is what makes "read it in ranges" terminate
-/// rather than being one `lines: "1-"` away from the behaviour this module
-/// exists to remove.
-pub(super) const MAX_SLICE_BYTES: usize = 48 * 1024;
 
 /// Lines one block of a structureless document covers.
 ///
@@ -97,7 +79,7 @@ pub(super) struct Section {
 ///
 /// Carries however much text the selection named. It is *not* bounded, because
 /// its two callers want opposite things from it: [`select`] is on its way to a
-/// context window and applies [`MAX_SLICE_BYTES`], while
+/// context window and applies [`super::reading::slice_ceiling`], while
 /// [`super::recursive`] is on its way to a chunker and wants every byte. A
 /// bound here would silently truncate the recursive read, which is the one
 /// path in this module whose whole purpose is to cover a document completely.
@@ -122,7 +104,7 @@ pub(super) struct Slice {
     pub(super) first_line: usize,
     /// Last line of the returned text, 1-based, after any truncation.
     pub(super) last_line: usize,
-    /// Whether the region was cut short at [`MAX_SLICE_BYTES`].
+    /// Whether the region was cut short at [`super::reading::slice_ceiling`].
     pub(super) truncated: bool,
     /// The text itself.
     pub(super) text: String,
@@ -280,7 +262,7 @@ pub(super) fn render(relative: &str, content: &str) -> String {
         // "read this section" is not always a thing one call can do. Saying
         // which sections those are is the difference between a map and a map
         // with the impassable parts left unmarked.
-        let note = if section.bytes > MAX_SLICE_BYTES {
+        let note = if section.bytes > super::reading::slice_ceiling() {
             oversized = true;
             "  [over one read]"
         } else {
@@ -438,7 +420,7 @@ pub(super) fn region(
     })
 }
 
-/// Resolves a selection and cuts it to [`MAX_SLICE_BYTES`] at a line boundary.
+/// Resolves a selection and cuts it to [`super::reading::slice_ceiling`] at a line boundary.
 ///
 /// # Errors
 ///
@@ -454,7 +436,7 @@ pub(super) fn select(
     let mut end = region.first_line;
     let mut truncated = false;
     for (offset, line) in region.text.lines().enumerate() {
-        if text.len() + line.len() + 1 > MAX_SLICE_BYTES && !text.is_empty() {
+        if text.len() + line.len() + 1 > super::reading::slice_ceiling() && !text.is_empty() {
             truncated = true;
             break;
         }
@@ -487,7 +469,7 @@ pub(super) fn render_slice(relative: &str, total_lines: usize, slice: &Slice) ->
             "\n[stopped at line {}{}; continue with lines \"{}-\"]\n",
             slice.last_line,
             if slice.truncated {
-                format!(" — the {MAX_SLICE_BYTES} byte slice limit")
+                format!(" — the {} byte slice limit", super::reading::slice_ceiling())
             } else {
                 String::new()
             },

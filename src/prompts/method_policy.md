@@ -74,10 +74,11 @@ Method policy, which applies to every step:
     alone; `grep_workspace` finds the lines matching a pattern across every
     file at once, which is usually the fastest way to the right page of the
     right document. When the question is about the whole file rather than a
-    part of it, `map_document` reads it in chunks with separate model calls and
-    returns a short cited answer without the source ever entering your context.
-    Its answer is what a reader reported, not an established fact: read the
-    lines it cites before relying on it.
+    part of it, and `map_document` is among your tools, it reads the file in
+    chunks with separate model calls and returns a short cited answer without
+    the source ever entering your context — it is withheld on some runs, so use
+    it when it is there. Its answer is what a reader reported, not an
+    established fact: read the lines it cites before relying on it.
     Before re-deriving or re-fetching anything, call `search_claims`: it
     answers what the library already establishes, with the hypotheses and
     whether they hold here. When it does not have what you need, say so with

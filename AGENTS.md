@@ -29,7 +29,7 @@ evidence for it stays available.
 - [`docs/runtime.md`](docs/runtime.md) — the crate layout, `RunBudget`, and the
   tracing that makes a run legible.
 - [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the
-  research tree, the scratch, and checkpointing.
+  research tree, the scratch, checkpointing, and reading what does not fit.
 - [`docs/ledgers.md`](docs/ledgers.md) — the derived ledgers: what each holds,
   the failure each stops, what bounds them, and how a run declares one.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
@@ -59,14 +59,14 @@ Keep them consistent with the code. A rule here that the code does not enforce
 is the failure this repository keeps recording: a prompt instruction is not a
 control, and neither is a document.
 
-## Research gating
+## Gating
 
-`MATH_AGENT_RESEARCH=off`, or the `--no-research` flag on `./agent` and
-`./euler`, withholds `exa_search` and `oeis_lookup`, so a self-contained
-problem tests the runtime's reasoning rather than its ability to look an answer
-up. It is enforced by not registering the tool, not by asking the model to
-abstain: a prompt instruction is not a control. The workspace note tools stay
-available, so the agent can still record and recall its own findings.
+A withheld tool is withheld by **not registering it**, never by asking the model
+to abstain. `MATH_AGENT_RESEARCH=off` / `--no-research` drops `exa_search` and
+`oeis_lookup`, so a problem tests reasoning, not lookup. `MATH_AGENT_RLM=off` /
+`--no-rlm` drops `map_document`, the chunked whole-document read, as a *spend* —
+one call per chunk. Its ceiling is not: above it `read_document` returns an
+outline, and `section`, `lines` and `grep_workspace` reach any part.
 
 ## Ledgers
 
@@ -364,15 +364,6 @@ rather than narrowly, and the argument for it is the same one: reading what the
 run already established is how a role avoids re-establishing it. See
 [*Recall: the two ways back into what is known*](docs/roles.md#recall-the-two-ways-back-into-what-is-known)
 for who is excluded and why.
-
-A large document is read in parts, enforced rather than asked for. An unselected
-`read_document` over 24 KiB returns the file's outline instead of the file;
-`section` and `lines` read one part; `grep_workspace` finds which part to read;
-`map_document` answers a question about a whole file by reading it in chunks
-with separate model calls, so the source never reaches the caller. Its answer is
-asserted, never established — checked against the lines it cites before it is
-filed. [`docs/workspace.md`](docs/workspace.md#reading-what-does-not-fit) has the
-4.7 MB library and the 107,000-token file that set the ceiling.
 
 For a new tool:
 

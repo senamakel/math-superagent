@@ -415,7 +415,7 @@ impl Tool<()> for DocumentTool {
                     // of what a run reads is a note it wrote itself, and
                     // wrapping those in coordinates would be noise on every
                     // read to serve the handful that are large.
-                    (None, None) if content.len() <= super::outline::MAX_UNSELECTED_BYTES => {
+                    (None, None) if content.len() <= super::reading::unselected_ceiling() => {
                         content
                     }
                     (None, None) => super::outline::too_large(&path, &content),
