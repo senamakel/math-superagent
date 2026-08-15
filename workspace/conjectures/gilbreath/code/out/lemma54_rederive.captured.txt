@@ -1,0 +1,16 @@
+== Pass 1: hand-built sequences ==
+seq [2, 3, 5, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43] bottom=1 success=True
+   iff-violations over its columns: 1
+   col n=5: {'tau': 3, 'nu2': 0, 'v_n': 0, 'success': False, 'budget': 2, 'gstar': 6}
+seq [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 49, 53, 55, 65] bottom=1 success=True
+   iff-violations over its columns: 0
+seq [2, 3, 5, 9, 11, 13, 15, 17, 25, 27, 29] bottom=3 success=False
+   iff-violations over its columns: 0
+
+== Pass 2: random valid 2-then-odds, many failing ==
+g{2,4,6}: 114000 cols tested (108437 succ, 5563 FAIL), iff_viol=3496, suff_viol=140
+g{2,4,6,8}: 114000 cols tested (106738 succ, 7262 FAIL), iff_viol=4960, suff_viol=114
+g{2,4}: 114000 cols tested (110905 succ, 3095 FAIL), iff_viol=1574, suff_viol=0
+
+== Pass 3: delta=0 bounce-rate inside the gray block ==
+cells where antecedent value in gray block = 0: 626965 of 70000

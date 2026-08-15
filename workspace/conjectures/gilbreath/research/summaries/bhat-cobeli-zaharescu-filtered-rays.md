@@ -1,22 +1,23 @@
-# Bhat, Cobeli, Zaharescu 2024 — Filtered rays over iterated absolute differences
+# Bhat–Cobeli–Zaharescu 2024 — Filtered rays over iterated absolute differences (status update)
 
-**Full text (as downloaded):** `research/sources/bhat-cobeli-zaharescu-filtered-rays.full.md` [[bhat-cobeli-zaharescu-filtered-rays.full]]
-**Source:** arXiv:2309.03922v2 [math.NT]; Chaos, Solitons & Fractals 178 (2024) 114315, doi 10.1016/j.chaos.2023.114315.
+**Full text (the real paper):** `research/sources/bhat-cobeli-zaharescu-filtered-rays-FULLPDF.full.md` [[bhat-cobeli-zaharescu-filtered-rays-FULLPDF.full]] — arXiv:2309.03922v2, read and confirmed in full.
+**Canonical digest:** `summaries/bhat-cobeli-zaharescu-2023-filtered-rays-iterated-abs-diffs.md` (claim `bcz-2023-left-edge-stabilization`). Read THAT for the content.
 
-## Status of the file — analysis needed
+## This file is superseded
 
-The downloaded file is the **arXiv abstract landing page only** (metadata + partial abstract; the abstract even cuts off at the "%"-comment markers, so it is incomplete), NOT the article with theorem statements. The digest points at `research/sources/bhat-cobeli-zaharescu-filtered-rays.full.md` but that file is the abstract page. The theorem content (helicoidal-surface construction, the class of sequences whose helicoids coincide with base levels, the 0/nonzero uniformity on filtered rays) is **not in the captured text** and would have to be re-fetched from the HTML/PDF to be summarised properly.
+The earlier version of this note flagged the paper `incomplete-source` ("the
+theorems are not in the file, would have to be re-fetched"). That flag referred
+to the arXiv **abstract page** (`...-filtered-rays.full.md`), which was the only
+copy on disk then. The FULLPDF has since been downloaded and read: Theorems 1–6,
+Lemma 3.1/3.2, Proposition 3.1, and Table 1 are all present and verified. The
+`incomplete-source` flag is **resolved — the paper is fully digestible from
+`...-filtered-rays-FULLPDF.full.md`**, and the canonical digest carries its claim
+block.
 
-## What the (partial) abstract asserts
+## What the full text establishes (one line each, verified)
 
-- The iterated absolute-difference system is a dynamical system "only incidentally characterized at the boundary by the Proth–Gilbreath conjecture".
-- Extends the triangle to a **hexagonal covering of the plane**, base level of an infinite discrete **helicoidal surface**; usually the levels have no regularity.
-- Proves: a large class of sequences have all helicoid levels coinciding with their base levels, including many **ultimately binary sequences with a special header**; and for almost all such, straight rays crossing the base pattern encounter **0 and non-zero numbers in almost equal proportions** (uniformity of the binary pattern).
-
-## Bearing on this run
-
-The base-level binary pattern correlates with the mod-2 (halved) triangle this run studies; the 0-2 ray uniformity in the companion quasi-periodicity paper (Table 1) is the countable side of this. But this capture is **not sufficient to extract usable statements** — the theorems are not in the file. **Do not treat the filtered-rays paper as establishing anything here** beyond its abstract. If a claim from it is needed (e.g. the helicoidal reconstruction of rows, or the binary uniformity), the real paper must be fetched.
-
-## Hypotheses / status
-
-Not verifiable from this capture. Flag as `incomplete-source`: no reproducible theorem statement available on disk.
+- **Theorem 2:** for binary u, the left-edge map is `T(f)(X) = f(X/(1+X))·(1/(1+X))` over F₂[[X]], and **T² = id** (Υ²(u)=u for binary u). Finite analogue Thm 3.
+- **Theorem 4:** Υ⁶(u) = u for all binary u (helicoid one layer); conversely Υ⁶(u)=u ⟹ u has ≤ 1 champion.
+- **Theorem 5:** almost all binary u of length N have every ray w₀..w_{⌊δN⌋} (and mirror rays) with 0/1 proportion within [1/2−ε, 1/2+ε], δ=δε>0 — the only PROVED 0/2-balance theorem, for generic binary sequences.
+- **Theorem 6:** any prescribed even-indexed western edge is realized by some square-prime sequence (anti-universality witness).
+- **Conjecture 2 (unproved):** prime rays balanced ν_d(n) = n/2 ± c√n. **Table 1:** |#0−#2| ≤ 431 of 78,496 per ray (primes < 10⁶) — strong numerical support for ν₂~n/2.

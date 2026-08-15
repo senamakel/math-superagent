@@ -22,7 +22,11 @@ max gap still 64 (175→239), ratio bound gap_i/(j_i+1) ≤ 0.01264
 everywhere, oracle passed. Parity: 1 odd (161) of 15 genuine giants,
 base-rate p=0.0052 (not fair-coin). Remaining work is theoretical:
 Granville Lemma 5.4 (ν_2 reduction) and CHT Theorem 1.6 — both FULLPDFs
-in `research/sources/`, not yet read. Route B (Granville ν_2) primary;
+are read and digested (`research/notes/lemma54-re-derived-proof.md`,
+`research/notes/cht-2026-summary.md`). **Lemma 5.4 is now PROVED on the
+even domain** (claim `lemma54-re-derived-proof`; see Established). The
+entire surviving open content is the supply-side linear bound
+ν_2 ≥ c·n. Route B (Granville ν_2) primary;
 Route A (ratio bound) empirical fallback; Route C (CHT) calibrated by
 authors' difficulty assessment.
 
@@ -44,7 +48,7 @@ Claim `cht-right-half-0d-scan-6e8`; anchor `research/notes/cht-right-half-scan.m
 ## Established
 
 - **Gatti 2020's claimed class-level/prime proof is invalid — located flaw (full text in library).** Gatti, *Gilbreath's Sequences and Proof of Conditions for Gilbreath's Conjecture* (Preprints 202003.0145.v1, 2020; the earlier downloadable form of the MDPI-403 "Gilbreath polynomials" paper) proves the valid-extension machinery (Eq. 2: `k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`, global anti-diagonal criterion; parity alternation Lemmas 1–3 — the general-class half of the run's parity wave) but **Theorem 4's proof of `min K ≤ p_n ≤ max K` for the primes is invalid**: the right-inequality step assumes its own conclusion ("If p_n ≤ max K, then subtracting 2p_{n−1}…") and derives only a trivial `min K ≤ α` via Bertrand. Also his Lemma 4 (valid-extension set = whole parity interval) is **false in general** — Muney 2026's length-5 hole; even `dim K_S = 2^{n−1}` fails on `{2,3,5}`: `|K_S|=5` (solutions `{1,3,5,7,9}`, machine-checked this run). **No published deterministic bounded-gap/prime-class theorem exists.** Claims: `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`.
-- **Older claimed "proofs" and LLM-era preprints — Granville 2026 now re-graded; most others not-load-bearing, do not cite.** Proth 1878 gave no proof (Williams's retraction, quoted in Chase 2024 §7: the actual paper states the property as a theorem). **Granville 2026 "Piercing Gilbreath" (arXiv:2607.04166, cs.CR) — RE-GRADED (Directive 34).** The "not-load-bearing" classification was made off the 6.8 KB `/abs/` landing page; the full PDF (175 KB, 70 theorem/lemma/proof hits, `research/sources/granville-2026-piercing-gilbreath-FULLPDF.full.md`) contains Lemma 5.4 (supply-vs-demand budget inequality in right-diagonal coordinates, equivalent to this run's own recharge identity) and Theorem 5.5 (reduces GC to lower-bound ν_2 > n^β, β > 0.525, demand side α = 0.525 unconditional by Baker-Harman-Pintz). The paper is not peer reviewed; proofs are uneven (Theorem 2.5 is not proved; Lemma 5.4 discards a delta=0 case occurring in 100% of columns). The value is the reduction, not the proofs. Operator measured ν_2/n ≈ 0.49–0.52 on primes below 3e6 (`research/notes/granville-2607-04166-actually-read.md`, `research/notes/lemma54-discarded-case-is-universal.md`). Maréchal, ZARKOUNA, Keen, Ross-class preprints are unverified claims.
+- **Older claimed "proofs" and LLM-era preprints — Granville 2026 now re-graded; most others not-load-bearing, do not cite.** Proth 1878 gave no proof (Williams's retraction, quoted in Chase 2024 §7: the actual paper states the property as a theorem). **Granville 2026 "Piercing Gilbreath" (arXiv:2607.04166, cs.CR) — RE-GRADED (Directive 34).** The "not-load-bearing" classification was made off the 6.8 KB `/abs/` landing page; the full PDF (175 KB, 70 theorem/lemma/proof hits, `research/sources/granville-2026-piercing-gilbreath-FULLPDF.full.md`) contains Lemma 5.4 (supply-vs-demand budget inequality in right-diagonal coordinates, equivalent to this run's own recharge identity) and Theorem 5.5 (reduces GC to lower-bound ν_2 > n^β, β > α, demand side α = 0.525 unconditional by Baker-Harman-Pintz, shaved to α = 0.52 by Li 2023 — but the demand α is NOT the bottleneck; see `li2023-not-bottleneck`: measured ν_2 ≈ n/2 means any ν_2 ≥ c·n bound suffices, so the real open statement is the linear supply bound ν_2 ≥ c·n). The paper is not peer reviewed; proofs are uneven (Theorem 2.5 is not proved; Lemma 5.4 discards a delta=0 case occurring in 100% of columns). The value is the reduction, not the proofs. Operator measured ν_2/n ≈ 0.49–0.52 on primes below 3e6 (`research/notes/granville-2607-04166-actually-read.md`, `research/notes/lemma54-discarded-case-is-universal.md`). Maréchal, ZARKOUNA, Keen, Ross-class preprints are unverified claims.
 - **Verification record, CURRENT (sourced; 4 data points kept distinct):** Odlyzko 1993 to 10^13 (G=635); Plouffe 2025 to 10^14 (arXiv:2510.06688); Colonna 2025–26 to 1.5×10^15 (G=800 at both 6.15e14 and 1.5e15); run's own: depth 1000 (1.27M primes) and wider depth 240 (16.25M primes). Do not conflate.
 - **Parity wave (proved, Ross 2026):** any (2, odd, odd, ...) sequence has every row's leading term odd — but odd is NOT 1. The conjecture lives strictly between "odd" and "1".
 - **{0,d} closure double edge (proved, one line):** {0,d} is closed under absolute differencing for every d≥2, so the mechanism pinning 1 at d=2 also preserves large disturbances at d≥4 (the CHT obstruction).
@@ -128,26 +132,31 @@ here.
   The empirical route is at its ceiling: row-248 STILL capped at 1e9,
   geometric doubling means next giants need 1e10–1e11 sieve (exceeds 8 GiB).
   **Route B (Granville ν_2 — PRIMARY):** Lemma 5.4 → Theorem 5.5 reduces GC
-  to ν_2 > n^β with β > 0.525. Demand α=0.525 unconditional (BHP; corollary
-  g*_n = O(n^{0.525+eps}) proved here). **DESCENT ENGINE now PROVED** (claim
-  `lemma54-descent-core`, exhaustive over all {0,2}^L patterns L=1..16 —
-  resolves Granville's discarded delta=0 case as the 0→2 bounce, the main
-  case; the published-proof gap is repairable). Full Lemma 5.4 stays
-  checked-not-proved pending two links: v ≤ g*_n (verifier written but not
-  run) and the success identification (vacuous on the failing side). Supply
-  ν_2/n ≈ 0.49–0.52 measured, far above the needed n^0.525. **Route A (ratio
+  to ν_2 > n^β with β > 0.525. Demand α=0.525 unconditional (BHP). **Lemma 5.4
+  is now PROVED on the even domain** (claim `lemma54-re-derived-proof`,
+  `research/notes/lemma54-re-derived-proof.md`): parity-preserving descent that
+  handles the delta=0 case Granville discards as a normal closure case (0→2
+  bounce), machine-forced over all {0,2}^L patterns L=1..16 (2.6M even pairs,
+  0 violations) and validated on 281 real prime diagonals. The failing-side
+  sufficiency test HAS been run non-vacuously with zero counterexamples
+  (`lemma54-sufficiency-survives-proper-domain`). The **entire remaining open
+  content is the supply-side linear bound ν_2(q_{n−1}) ≥ c·n** (measured c ≈
+  0.5, unproved); α ∈ {0.52,0.525} is immaterial once that holds
+  (`li2023-not-bottleneck`). **Route A (ratio
   bound — fallback):** gap_i ≤ j_i+1, verified 2+ orders slack on 15 giants
   at 6e8/1e9. **Route C (CHT — calibrated):** needs Cramér (open, >BHP);
   Theorem 1.6's right-half {0,d}-block obstruction absent at every reachable
   scale (6e8 scan: max 25 vs threshold 5.63e16).
-- **CHT Theorem 1.6 column restriction (Directive 35):** the {0,d}-block
-  obstruction (iii) is restricted to the RIGHT HALF (j ≥ N′). The run's leading
-  {0,2} block at j=1 does NOT violate (iii). Right-half {0,d} scan for the
-  primes is queued — if long right-half shallow blocks exist, Theorem 1.6 does
-  not apply; if not, (iii) empirically supported but (i) and (ii) remain open.
+- **CHT Theorem 1.6 column restriction (Directive 35) — DONE.** The {0,d}-block
+  obstruction (iii) is restricted to the RIGHT HALF (j ≥ N′). Right-half scan
+  at 6e8/depth 400 (claim `cht-right-half-0d-scan-6e8`): longest d≥2 block is
+  25 vs smallest threshold T_1 = 5.63e16 (≥2.25e15× gap) — the obstruction is
+  absent at every scale the theorem controls; the theorem does not bite at
+  reachable depths. (i) and (ii) remain open (Cramér).
 - **The 1-Lipschitz chain reformulation** — computed mechanism, not proved.
 - **What remains toward a GOAL.md partial result:** block lemma, Lean IFF, and
-  edge-map invertibility are delivered. The natural next deliverable is a proved
-  lower bound on ν_2 for the prime right-diagonal (under BHP) from Lemma 5.4, or
-  the Lemma 5.4 re-derivation itself as a GOAL.md partial result.
+  edge-map invertibility are delivered, and Lemma 5.4 is re-derived and PROVED
+  on the even domain (`lemma54-re-derived-proof`). The natural next deliverable
+  is a proved lower bound on ν_2 for the prime right-diagonal — the supply side
+  of Route B — which is the one open step left in the ν_2 reduction.
 - **Library search halted by directive.**

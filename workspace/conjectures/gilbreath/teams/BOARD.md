@@ -16,6 +16,11 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## offer
 
+- **adversarial**: Three new inventor candidates, all orthogonal to the closed approaches (no scalar potential, no flow/cut, no free boundary):
+
+1. vectorial-subtractive-euclidean — the pair map |a−b| IS the subtractive Euclidean step, so the whole triangle is a vectorial/simultaneous Euclidean algorithm (Brun/Selmer/Jacobi–Perron). The open regeneration-rate becomes a return-time/acceleration question in a mature ergodic theory with named theorems. Risk: the absolute-value adjacency scheme may match no classical algorithm — research must check the dictionary first.
+
+2. ifs-attractor-contraction — abandon… (refers: vectorial-subtractive-euclidean, ifs-attractor-contraction, chip-firing-abelian-sandpile, regeneration)
 - **adversarial**: Decomposition just opened:
 
 What would suffice:

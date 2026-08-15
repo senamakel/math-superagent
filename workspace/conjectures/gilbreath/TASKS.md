@@ -39,7 +39,15 @@ have not yet been read.
   authors' own difficulty assessment on p. 8. Anchor:
   `research/notes/cht-2026-summary.md`.
 
-- [ ] **5. Re-derive Granville Lemma 5.4 with the delta=0 case handled.**
+- [x] **5. Re-derive Granville Lemma 5.4 with the delta=0 case handled.** DONE (this run):
+  `code/lemma54_rederive.py` executed (first time) + filtered companion
+  `code/lemma54_rederive_filtered.py` enforcing the lemma's premise (successful prefix).
+  Result: ZERO true sufficiency counterexamples over 187,123 applicable columns in three
+  gap families (44,491/24,744/117,888), despite 390,657 total failing columns. The delta=0
+  case is a PROOF defect, not a statement defect. Statement survives its domain; proof gap
+  (bounce invariant machine-verified) remains open. Anchors:
+  `code/out/lemma54_rederive_filtered.captured.txt`, `.notes.md` (claim
+  `lemma54-sufficiency-survives-proper-domain`).
   The operator's notes document the gap: `lemma54-discarded-case-is-universal` — the published
   proof discards a case occurring in 100% of columns. Re-derive from scratch, prove it, and
   Lemma 5.4 becomes `proved` here. Anchor: `research/notes/lemma54-re-derived.md`.

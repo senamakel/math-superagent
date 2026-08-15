@@ -1,43 +1,42 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/li-2023-primes-in-short-intervals-harman-sieve.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Li, "The number of primes in short intervals and numerical calculations for Harman's sieve" (arXiv:2308.04458)
 
-<!-- source: https://arxiv.org/pdf/2308.04458 | converted from HTML -->
+<!-- source: https://arxiv.org/abs/2308.04458 | full text: research/sources/li-2023-primes-in-short-intervals-harman-sieve.full.md -->
 
-## What is in it
+Runbo Li, arXiv:2308.04458 [math.NT] (Aug 2023; v8). 44 pages.
 
-- Mathematics > Number Theory
-- Title: The number of primes in short intervals and numerical calculations for Harman's…
-  - Submission history
-  - Access Paper:
-  - Ancillary files ( [details][19]):
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+## What it establishes
 
+The key short-interval prime theorem, sharpened below the Baker–Harman–Pintz
+exponent:
 
-## What it claims
+> **Theorem 1:** For all sufficiently large x, the interval [x − x^θ, x] contains
+> at least one prime for every θ ≥ 0.52. Equivalently the maximal prime gap
+> satisfies G(x) ≤ x^0.52 ultimately with a short interval [x, x + x^0.52].
 
-Abstract: The author gives nontrivial upper and lower bounds for the number of primes in the interval $[x - x^{\theta}, x]$ for some $0.52 \leqslant \theta \leqslant 0.525$, showing that the interval $[x - x^{0.52}, x]$ contains prime numbers for all sufficiently large $x$. This refines a result of Baker, Harman and Pintz (2001) and gives an affirmative answer to Harman and Pintz's argument. New arithmetic information, a delicate sieve decomposition, various techniques in Harman's sieve and accurate estimates for integrals are used to good effect.
+This answers Harman–Pintz's argument and **improves Baker–Harman–Pintz 2001
+(α = 0.525) to α = 0.52**. Theorem 2 gives nontrivial upper and lower bounds for
+the number of primes in [x − x^θ, x] for 0.52 ≤ θ ≤ 0.525.
 
-Comments: | 44 pages |
+## Why it matters for this run (Route B, Granville ν_2 reduction)
 
-Subjects: | Number Theory (math.NT) |
+Granville's Theorem 5.5 reduces Gilbreath's conjecture to a lower bound
+ν_2 > n^β with β > α, where α is the exponent of an unconditional
+"interval [x, x + x^α] contains a prime" theorem (the demand side). The run's
+recorded α = 0.525 comes from BHP 2001. **This paper reduces α to 0.52, i.e. the
+demand side is strictly weaker than recorded — β > 0.52 would suffice, and the
+measured ν_2/n ∈ [0.42, 0.52] is even closer to n/2 than to n^0.525.**
 
-Cite as: | [arXiv:2308.04458][6] [math.NT] |
+The techniques (Harman's sieve, explicit integral estimates, the long-omitted
+calculation steps for how the 0.525 barrier is pushed toward 0.52) are the
+referee route for re-deriving the demand side with a tighter exponent.
 
-| (or [arXiv:2308.04458v8][7] [math.NT] for this version)  |
+## Status
 
-| [https://doi.org/10.48550/arXiv.2308.04458][8]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 8233 character source; every section, statement, and proof in full at `research/sources/li-2023-primes-in-short-intervals-harman-sieve.full.md`]*
+- Claim-worthy: `li2023-short-interval-052` — the interval [x, x + x^0.52]
+  contains a prime for all large x, unconditional.
+- **Falsifier:** a source or computation showing the exponent 0.52 cannot be
+  reached or is wrong.
+- Not peer-reviewed at arXiv v8 as downloaded; chains use it as the sharpened
+  demand side, and BHP 2001 (whose primary text failed to download on 4
+  routes: malformed Maryland PDF, Wiley paywall, malformed Wayback, CiteSeerX
+  connection error) remains the canonical citation.

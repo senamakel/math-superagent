@@ -22,6 +22,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `chase-2024-arxiv-id` | Chase, "A random analogue of Gilbreath's conjecture", Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w. | yes | asserted | `research/notes/library-state.md` |
 | `chase-2024-block-consumption03` | If a_1..a_i are nonneg with d=max and L = length of longest {0,d}-block containing a d, then after L iterations the max is ≤ d−1 (Lemma 3.2). | yes | proved | `research/summaries/chase-2024-random-analogue-gilbreath.md` |
 | `chase-2024-theorem1` | For f increasing, 2≤f(n), f(M)≤(1/100)loglogM/logloglogM, the random sequence a_1=2,a_2=3,a_{n+1}=a_n+2u_n (u_n uniform independent on {0,..,f(n)−1}) is almost surely eventually Gilbreath (first term of every late row… | **unchecked** | proved | `research/summaries/chase-2024-random-analogue-gilbreath.md` |
+| `chip-firing-path-collapse-refuted` | The abelian-sandpile / chip-firing formulation of the Gilbreath recharge identity collapses on a path graph: (a) the critical (sandpile) group of any tree, hence any path, is trivial (order = number of spanning trees =… | yes | checked | `research/approaches/chip-firing-abelian-sandpile.md` |
 | `cht-decay-lower-bound-logn` | In the stationary continuous Gilbreath model (i.i.d. standard exponential top row), Σ_{i≤n} c_i ≥ log(n+e) with c_i = E[a(i,j)]; hence c_i cannot decay faster than 1/i, and neither convergence to 0 nor boundedness of… | yes | asserted | `research/notes/library-state.md` |
 | `cht-inverse-theorem` | If a_n≤2^M, no length-L 0-block, and no {0,d}-block (2^{M−m}<d≤2^{M−m+1}) of length ≥ R_m−3R_{m−1} at depth ≤2R_{m−1} (R_m≥4R_{m−1}, R_0≥100L·8^M), then a(N−1,1)∈{0,1}; long zero-blocks and long shallow {0,d}-blocks are… | no | proved | `research/summaries/chase-hunter-tao-2026-full-html.md` |
 | `cht-inverse-theorem-hyp-check` | For the prime-difference triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the normalized gaps a_n=(p_{n+2}-p_{n+1})/2-1 over the 1,270,605-gap window give max a_n=89, M=ceil(log2 89)=7, longest 0-run L=2, hence the… | no | checked | `code/out/cht_hyp_check.notes.md` |
@@ -52,6 +53,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `fenchel-duality-sign-assignment-refuted` | The Fenchel–Rockafellar / minimax sign-history route to Gilbreath fails: (i) the representation A_k(1) = max over a static sign set of a linear functional is false because reachable sign histories depend on the gap… | yes | asserted | `research/approaches/fenchel-duality-minimax-sign-assignment.md` |
 | `first-gap-2-startup-sufficiency-supported` | For the 2-then-odds class with gap support {2,4} (consecutive and rand24), forcing gap[0] = 2 gives 0 sequences reaching b_k = 0 among 62 measured (48 sweep + 10 deep + 4 long) to depth up to 4000, versus 62% deaths at… | yes | asserted | `code/out/event_rate_sweep.notes.md` |
 | `fwd-diff-identity-refuted` | The identity A_k(i) = \|Δ_k(i)\| (iterated absolute difference equals the absolute value of the signed forward difference Δ_k(i) = Σ_{j=0}^k (−1)^j C(k,j) A_0(i+j)) is FALSE on the prime triangle: first violation at… | yes | checked | `code/out/check_fwd_diff_identity.notes.md` |
+| `g-balance-per-event-refuted` | The per-event bound j >= d, where j is the jump at a (2,4)-event and d is the number of erosion rows since the previous event, is FALSE on the prime rows to depth 1000. Explicit: transition 23 (739->873, j=134), then… | yes | checked | `research/approaches/g-balance-weakened-per-event-refuted.md` |
 | `gallagher-1976-poisson-short-interval-model` | Under the (unproved) Hardy–Littlewood prime r-tuple conjecture, the number of primes in (n, n+h] for h ~ λ log N is Poisson(λ)-distributed in n < N (Theorem 1); unconditionally the count has an exponential upper bound… | **unchecked** | proved | `research/summaries/gallagher-1976-primes-in-short-intervals.md` |
 | `gantmacher-krein-sign-regularity-refuted` | The Gantmacher–Krein / Schoenberg variation-diminishing route to Gilbreath fails at its load-bearing premise: the alternating Pascal matrix M_{k,j} = (−1)^{k−j} binom(k,j) is NOT sign-regular of order 2 (2×2 minors of… | yes | asserted | `research/approaches/gantmacher-krein-oscillatory-matrix-sign-regularity.md` |
 | `gap-bounds-cannot-force-block-growth` | No held prime-gap result bounds the leading {0,2} block length b_k or the (2,4)-event jump sum from below for a 2-then-odds exactly-even-gap sequence: Baker–Harman–Pintz (p_{n+1}−p_n ≪ p_n^{0.525}), Torelli (p_{n+1} ≤… | yes | checked | `research/notes/block-growth-literature.md` |
@@ -66,10 +68,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `giant-landing-geometric-fit-15` | Over the 15 genuine giant landings of the 6e8 run, exact LS fit: geometric log b = a + m·x with R² = 0.968, factor 1.765/event; linear R² = 0.432. Geometric description holds on 15 points; it is a fit, not a law; not… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
 | `giant-parity-even-pre-jump-rows` | Among the 15 genuine giant events of the 6e8 run, 14 fire at even pre-jump rows (13/14 excluding row 161 which is the sole odd). One-sided p = 16/2^15 = 4.9×10⁻⁴ (exact, plain 1/2 null). At 3e8 the event base even… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
 | `gilbreath-2011-expository` | Gilbreath's only substantive journal paper "Processing process: the Gilbreath conjecture" (J. Number Theory 131 (2011) 2436–2441) is autobiographical and expository, not a proof attempt. Its introduction (quoted… | yes | asserted | `research/notes/library-state.md` |
-| `gilbreath-expectation-sierpinski` | In the continuous (i.i.d. exponential) Gilbreath array, row-i entries have common expectation c_i (c_0=1,c_1=1,c_2=7/9,c_3=227/288); a single-spike array gives a Sierpinski gasket whose k-th row has 2^{s_2(k)} ones… | **unchecked** | asserted | `research/summaries/tao-blog-2026-visualizing-gilbreath-expectation.md` |
-| `gilbreath-polynomials-imply-gc` | (Riccardo Gatti, Mathematics 2023, 11(18), 4006, doi 10.3390/math11184006 — author CONFIRMED, affiliation INBB/Eldor Lab Bologna, 7 pages, RePEc record held) In the "Gilbreath equation / Gilbreath polynomials"… | **unchecked** | asserted | `research/notes/library-state.md` |
 
-_77 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_89 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -103,11 +103,15 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `granville-lucas-kummer-sierpinski` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-block-protection` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-verification-1959` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
+- `li2023-not-bottleneck` (research/notes/li-2023-bearing-correction.md) — asserted by the source, not proved there and not checked here
+- `li2023-short-interval-052` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `malyshev-max-ones-boolean-pascal-bound` (research/summaries/malyshev-maximal-ones-Boolean-pascal-triangle.md) — asserted by the source, not proved there and not checked here
 - `mathworld-rule90-additive-sierpinski` (research/summaries/mathworld-rule-90.md) — asserted by the source, not proved there and not checked here
 - `mod4-linearization` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `modulo-k-gilbreath-family` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `morgan-frontier-basin-and-corridor-obstruction` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `morgan-local-condition-sufficiency` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `northshield-pascal-mod2-line-sums-gf` (research/summaries/northshield-sums-across-pascals-triangle-mod2.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-1993-citation-confirmed` (research/summaries/odlyzko-publications-page.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-block-lemma` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-mod4-linearization` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
@@ -128,6 +132,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `valid-extension-backward-nonlocal-refuted` (research/approaches/backward-extension-automaton.md) — asserted by the source, not proved there and not checked here
 - `verification-bounds` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `verification-record-2026` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `visser-large-gaps-survey` (research/summaries/warwick-visser-large-gaps-between-primes-survey.md) — asserted by the source, not proved there and not checked here
 - `zero-sum-flow-mincut-restatement-refuted` (research/approaches/zero-sum-flow-conservation-mincut.md) — asserted by the source, not proved there and not checked here
 
 ## Taken from a catalogue

@@ -307,6 +307,18 @@ bearing: anchors the Sierpinski kernel / binom(2^j,m)≡1 mod 2 fact used by the
 anchor: research/sources/granville-binomial-cellular-automata.full.md; research/summaries/granville-binomial-lucas-elementary.md (the elementary chapter is carried in full by its summary — no separate .full.md exists for it)
 ```
 
+## New holdings this cycle (librarian, this build) — short-interval prime theorem sharpened
+
+```claim
+id: li2023-short-interval-052
+statement: (Runbo Li, arXiv:2308.04458 v8, Oct 2025) The interval [x − x^θ, x] contains at least one prime for every θ ≥ 0.52 and all sufficiently large x; equivalently the maximal prime gap satisfies G(x) ≤ x^0.52 ultimately. This sharpens Baker–Harman–Pintz 2001 (θ = 0.525) toward 0.52 and answers Harman–Pintz's argument. Theorem 2 gives nontrivial upper and lower bounds on the prime count in [x − x^θ, x] for 0.52 ≤ θ ≤ 0.525.
+hypotheses: primes; unconditional short-interval analytic number theory (Harman's sieve, Watt's mean-value, explicit integral estimates).
+holds-here: yes — the primes satisfy it; it is the demand side of Granville's ν_2 reduction (Route B).
+status: asserted-by-source (arXiv v8, not peer-reviewed as downloaded; the α = 0.525 form is independently confirmed by the held Warwick Visser survey and BFT 2023); the 0.20-improvement claim verified against the paper's abstract and theorem statement.
+bearing: WEAKENS GRANVILLE'S DEMAND SIDE. Theorem 5.5 reduces GC to ν_2 > n^β with β > α, where α is the short-interval exponent; the run's recorded α = 0.525 (BHP) can now be lowered to 0.52, so β > 0.52 (not β > 0.525) suffices. Since the measured ν_2/n ∈ [0.42, 0.52] is already far above n^0.52, the ν_2 route is a little more plausible than the BHP-based threshold suggested. Do not overstate: the 0.52→0.525 gap is small, and n^0.52 is still ≪ n/2.
+anchor: research/sources/li-2023-primes-in-short-intervals-harman-sieve.full.md; research/summaries/li-2023-primes-in-short-intervals-harman-sieve.md
+```
+
 ## Angled coverage summary
 
 ```claim

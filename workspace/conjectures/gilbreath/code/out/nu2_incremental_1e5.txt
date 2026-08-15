@@ -1,0 +1,28 @@
+== nu2(n) incremental to n=100000  (sieve 2e7, 1270607 primes) ==
+sieve 0.32s, incremental diagonal 496.52s
+n        nu2      nu2/n   nu2-n/2     g*      2nu2+2    term   hyp
+50       20       0.4000  -5.000      14      44        1      OK
+100      46       0.4600  -4.000      18      92        1      OK
+200      106      0.5300  6.000       22      196       1      OK
+400      216      0.5400  16.000      34      402       1      OK
+800      397      0.4963  -3.000      34      796       1      OK
+1600     740      0.4625  -60.000     36      1612      1      OK
+3200     1573     0.4916  -27.000     52      3158      1      OK
+3999     2045     0.5114  45.500      72      3972      1      OK
+5000     2444     0.4888  -56.000     72      4978      1      OK
+10000    4992     0.4992  -8.000      72      9944      1      OK
+20000    9962     0.4981  -38.000     86      19988     1      OK
+50000    25173    0.5035  173.000     114     50012     1      OK
+100000   50109    0.5011  109.000     114     100124    1      OK
+
+nu2/n range over samples: 0.4000 .. 0.5400
+min nu2/n for all n>=1000 (tracked): 0.4587
+max |nu2-n/2| = 624.000 at n=78536
+nu2 stays within 3*sqrt(n log n) of n/2 for all n in 1000..100000: YES
+n^0.525 at n=100000 = 421.70
+nu2 > n^0.55 at every sample: True
+weakest implied exponent min(log nu2/log n) = 0.7658 (>0.525 = enough for Lemma5.4 route)
+
+== Deliverable 2: Lemma 5.4 hypothesis g*_n <= 2*nu2(n-1)+2 ==
+checked over n=2..100000: 1 violations of 99999 (0.00100%)
+successes (terminal==1) at all n: 99999 of 99999

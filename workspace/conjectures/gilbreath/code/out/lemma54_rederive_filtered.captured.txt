@@ -1,0 +1,5 @@
+g{2,4,6}: cols=228000 applicable(pre_succ)=44491 fail_cols=11104 TRUE_LEMMA_COUNTEREXAMPLES=0
+g{2,4,6,8}: cols=228000 applicable(pre_succ)=24744 fail_cols=14304 TRUE_LEMMA_COUNTEREXAMPLES=0
+g{2,4}: cols=228000 applicable(pre_succ)=117888 fail_cols=5736 TRUE_LEMMA_COUNTEREXAMPLES=0
+
+A positive suff_counter refutes Lemma 5.4's sufficiency on the general valid 2-then-odds class (its own domain).

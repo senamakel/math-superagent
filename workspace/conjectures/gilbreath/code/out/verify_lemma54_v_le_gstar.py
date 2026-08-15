@@ -21,8 +21,6 @@ Link B (the lemma): g*_n <= 2*nu2+2  ==>  v <= 2*nu2+2  ==>  x_L in {0,2}
 This program checks Link A and the composed implication on real primes below 2e6,
 columns n = 20..1200 (diagonal fully within the computed rows).
 """
-import sys
-sys.path.insert(0, "/workspace/code")
 from lib.gilbreath import primes_up_to
 
 NC = 1200          # highest column checked
@@ -38,15 +36,9 @@ def main():
     for g in gaps:
         m = max(m, g)
         rec.append(m)                     # rec[n-1] = g*_{n+1}, n from 1
-    # We need, for each column n, the diagonal delta_k(q_n) = A_k[n-k], k=0..n.
-    # Generate rows one at a time; when at row k, capture A_k[n-k] for all columns
-    # n whose diagonal passes through index (n-k) of row k, i.e. n = j+k for j=0..len-1.
-    # We want full diagonals for columns n in NU2N up to the gray-block start.
-    # Collect diag[n] = list of delta_k(q_n) in order k=0,1,2,...
     diag = {n: [] for n in NU2N}
     row = primes
     for k in range(0, NC + 1):
-        # row k available: it has entries A_k[j], j=0..len-1
         for j, val in enumerate(row):
             n = j + k
             if n in diag and len(diag[n]) <= n:
@@ -63,7 +55,6 @@ def main():
         d = diag[n]
         if len(d) < 3:
             continue
-        # The gray block of delta(q_{n-1}) = maximal {0,2} suffix of diagonal n-1.
         dn1 = diag[n - 1] if (n - 1) in diag else None
         if dn1 is None or len(dn1) < 3:
             continue
@@ -77,12 +68,10 @@ def main():
             continue
         block = dn1[start:]
         nu2 = block.count(2)
-        # v = the new diagonal's value entering the block = delta_{start}(q_n) at
-        # the block's first position. (Same convention as lemma54_iff_check.)
         if start >= len(d):
             continue
         v = d[start]
-        gstar = rec[n-1]  # g*_{n+1} = max(g_2..g_{n+1})
+        gstar = rec[n-1]
         if v > gstar:
             viol_v_le_g += 1
         if gstar > 2 * nu2 + 2:

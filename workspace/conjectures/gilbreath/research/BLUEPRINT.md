@@ -45,6 +45,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `chase-2024-arxiv-id` | claim | **ready** | — | Chase, "A random analogue of Gilbreath's conjecture", Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w. |
 | `chase-2024-block-consumption03` | claim | established | — | If a_1..a_i are nonneg with d=max and L = length of longest {0,d}-block containing a d, then after L iterations the max is ≤ d−1 (Lemma… |
 | `chase-2024-theorem1` | claim | established | — | For f increasing, 2≤f(n), f(M)≤(1/100)loglogM/logloglogM, the random sequence a_1=2,a_2=3,a_{n+1}=a_n+2u_n (u_n uniform independent on… |
+| `chip-firing-path-collapse-refuted` | claim | established | — | The abelian-sandpile / chip-firing formulation of the Gilbreath recharge identity collapses on a path graph: (a) the critical (sandpile)… |
 | `cht-decay-lower-bound-logn` | claim | **ready** | — | In the stationary continuous Gilbreath model (i.i.d. standard exponential top row), Σ_{i≤n} c_i ≥ log(n+e) with c_i = E[a(i,j)]; hence c_i… |
 | `cht-inverse-theorem` | claim | established | — | If a_n≤2^M, no length-L 0-block, and no {0,d}-block (2^{M−m}<d≤2^{M−m+1}) of length ≥ R_m−3R_{m−1} at depth ≤2R_{m−1} (R_m≥4R_{m−1},… |
 | `cht-inverse-theorem-hyp-check` | claim | established | — | For the prime-difference triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the normalized gaps a_n=(p_{n+2}-p_{n+1})/2-1 over the… |
@@ -70,6 +71,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `directive25-gap-trend-and-reconciliation` | claim | established | — | In the prime Gilbreath triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the 13 giants (j > 1000) at rows 34..161 have inter-giant gaps… |
 | `ducci-avart-nilpotent-concatenation` | claim | **ready** | — | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector… |
 | `ducci-classical-nilpotence-iff-power-of-2` | claim | **ready** | — | (Ciamberlini–Marengoni 1937, quoted and reproved in Chamberland 2003 Thm 1.1, Calkin–Stevens–Thomas 2005, Glaser–Schöffl 1995) For the… |
-| `ducci-max-factoring-potential-template` | claim | **ready** | — | (Chamberland 2003, Thm 3.2 proof) The standard Ducci convergence engine is the pair: (i) the maximum of a string at most doubles in two… |
 
-_107 further nodes not shown._
+_119 further nodes not shown._

@@ -1,0 +1,6 @@
+{
+  "finding": "refuted",
+  "model": "tff('declare_$i1',type,'fmb_$i_1':$i).\ntff('finite_domain_$i',axiom,\n      ! [X:$i] : (\n         X = 'fmb_$i_1'\n      ) ).\n\ntff(declare_b0,type,b0:$i).\ntff(b0_definition,axiom,b0 = 'fmb_$i_1').\ntff(declare_b1,type,b1:$i).\ntff(b1_definition,axiom,b1 = 'fmb_$i_1').\ntff(declare_b2,type,b2:$i).\ntff(b2_definition,axiom,b2 = 'fmb_$i_1').\ntff(declare_one,type,one:$i).\ntff(one_definition,axiom,one = 'fmb_$i_1').\ntff(declare_b3,type,b3:$i).\ntff(b3_definition,axiom,b3 = 'fmb_$i_1').\ntff(declare_b4,type,b4:$i).\ntff(b4_definition,axiom,b4 = 'fmb_$i_1').\ntff(declare_two,type,two:$i).\ntff(two_definition,axiom,two = 'fmb_$i_1').\ntff(declare_minus,type,minus: ($i * $i) > $i).\ntff(function_minus,axiom,\n           minus('fmb_$i_1','fmb_$i_1') = 'fmb_$i_1'\n\n).\n\ntff(declare_leq,type,leq: ($i * $i) > $o).\ntff(predicate_leq,axiom,\n           leq('fmb_$i_1','fmb_$i_1')\n\n).\n\ntff(declare_geq,type,geq: ($i * $i) > $o).\ntff(predicate_geq,axiom,\n           ~geq('fmb_$i_1','fmb_$i_1')\n\n).\n\n",
+  "problem": "code/refute/g_balance.p",
+  "status": "CounterSatisfiable"
+}
