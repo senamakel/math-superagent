@@ -1,0 +1,9 @@
+sieve to 300000000 (2.1s)
+e_min global = 1 at n=3
+global min e/n = 0.110298 at n=9999947
+min e/n over n>=[17] = 0.110298 at n=9999947
+min e/n over n>=[100] = 0.110298 at n=9999947
+min e/n over n>=[1000] = 0.110298 at n=9999947
+min e/n over n>=[10000] = 0.110298 at n=9999947
+min e/n over n>=[100000] = 0.110298 at n=9999947
+time 13.1s

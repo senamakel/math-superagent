@@ -1,0 +1,31 @@
+=== Random-analogue fold anchor ===
+
+== Part 1: verify the Rule-90/Pascal fold on the real primes ==
+primary sieve bound 2000 (303 primes), n=10..290:
+  per-cell fold parity == halved value mod 2 : 0 mismatches (want 0)
+  suffix-restricted fold weight == nu2       : 0 mismatches (want 0)
+  raw fold over ALL tail cells == nu2        : 186 mismatches (expect >0; parity can't see 4,6,...)
+  tail cells not in {0,2} : 854 / 41307 (2.0674%)
+
+deep sieve 1e6 (78498 primes), n=10..3999:
+  per-cell fold parity == halved value mod 2 : 0 mismatches (want 0)
+  suffix-restricted fold weight == nu2       : 0 mismatches (want 0)
+  raw fold over ALL tail cells == nu2        : 3493 mismatches
+  tail cells not in {0,2} : 20121 / 7985985 (0.2520%)
+  => the fold (parity) is exact cell-by-cell and exact on the {0,2} suffix; the raw all-tail fold overcounts nu2 by the non-{0,2} cells, so 'weight of fold' == nu2 must be read over the {0,2} suffix.
+
+== Part 2: i.i.d. Bernoulli(1/2) h, weight of the fold ==
+is W = m/2 + O(sqrt(m log m))?  (m = fold input length = n-2)
+  sanity (m=8): explicit fold weight 6 vs bitset 6 -> OK
+  m=  1000  mean W=499.1 (m/2=500.0)  mean|W-m/2|/sqrt(m)=0.326  max=0.759  vs sqrt(2 log m)=3.717
+  0.13 0.57 0.03 0.38 0.25 0.60 0.22 0.09 0.22 0.76
+  m= 10000  mean W=5011.6 (m/2=5000.0)  mean|W-m/2|/sqrt(m)=0.356  max=0.850  vs sqrt(2 log m)=4.292
+  0.04 0.75 0.09 0.33 0.08 0.00 0.45 0.45 0.85 0.52
+  m=100000  mean W=50048.6 (m/2=50000.0)  mean|W-m/2|/sqrt(m)=0.450  max=1.015  vs sqrt(2 log m)=4.799
+  0.21 1.02 0.90 0.13 0.41 0.31 0.32 0.32 0.41 0.47
+
+Real-prime reference (nu2_incremental_1e5.txt):
+  max |nu2 - n/2| = 624 at n = 78536
+  -> |nu2 - n/2|/sqrt(n) = 2.227  (compare to random mean/max above)
+
+Conclusion: the i.i.d. fold weight concentrates at m/2 with fluctuations ~ O(sqrt(m log m)) (max |W-m/2|/sqrt(m) of a few, consistent with sqrt(2 log m)); the real-prime nu2 fluctuation is a like-sized few*sqrt(n).  This is the rate any deterministic HL/LOS two-point mod-4 argument must reproduce for the primes to underpin SC-supply-nu2-linear.

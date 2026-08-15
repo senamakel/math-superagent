@@ -1,0 +1,10 @@
+D(n) == n (mod 2) exactly for all 30000 n: True
+pure alternation: rho1(I_A)=-1.000
+real: rho1(I)=-0.503
+real: acf(D) lags1..6: 0.002 0.008 0.010 0.003 -0.001 0.001
+acf(Deven)  lags1..8: -0.004 0.009 0.004 0.013 -0.001 -0.010 -0.007 0.005
+acf(Dodd)   lags1..8: 0.019 -0.002 -0.002 0.013 -0.004 0.004 -0.002 -0.004
+Var(Deven)=15021.4 Var(Dodd)=15072.7
+std(D) per 3000-window: ['39.3', '67.4', '89.0', '102.6', '118.4', '126.8', '138.3', '148.2', '161.3', '169.3']
+mean(D) per window: ['-10.8', '-13.7', '-13.6', '-12.4', '-14.3', '-16.2', '-12.8', '-14.0', '-17.7', '-15.3']
+=> if means≈0 and std grows: |D| amplitude ~ c*sqrt(n) * white sign, i.e. sublinear.

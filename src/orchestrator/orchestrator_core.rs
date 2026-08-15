@@ -25,6 +25,7 @@ mod frontier;
 mod grep;
 mod layout;
 mod lean;
+mod ledger;
 mod loop_steps;
 mod oeis;
 mod openalex;
@@ -103,6 +104,35 @@ pub use tinyagents::harness::host::AgentDefinition;
 #[cfg(feature = "graph-debug")]
 pub use diagram::{render_flows, render_solution_loop};
 
+/// Renders one declared ledger from its source, without writing it.
+///
+/// The runtime re-derives a ledger beside every write to it, so this exists for
+/// the one case that is not a write: a workspace whose ledger has a source on
+/// disk and no rendered file yet — the state `examples/import_tasks` leaves a
+/// workspace in, and one where the prompts would route a file that does not
+/// exist for a whole cycle.
+///
+/// Returns the derived path and the text, for the caller to write.
+///
+/// # Errors
+///
+/// Returns an error when no ledger of that slug exists, or when it is one the
+/// runtime renders in Rust rather than from a declaration.
+pub fn render_ledger(workspace: &Path, slug: &str) -> crate::Result<(String, String)> {
+    let spec = ledger::registry::find(workspace, slug).ok_or_else(|| crate::Error::Workflow {
+        action: format!("rendering the `{slug}` ledger"),
+        reason: format!("there is no ledger called `{slug}`"),
+    })?;
+    if matches!(spec.source, ledger::spec::Source::Derived) {
+        return Err(crate::Error::Workflow {
+            action: format!("rendering the `{slug}` ledger"),
+            reason: format!("`{slug}` is rendered by its own module, from files a run writes"),
+        });
+    }
+    let entries = ledger::engine::collect(workspace, &spec);
+    Ok((spec.derived.clone(), ledger::engine::render(&spec, &entries)))
+}
+
 /// Renders the two reasoned ledgers a workspace's own files imply.
 ///
 /// [`prompt_report`] exists because the most consequential text in the runtime
@@ -137,6 +167,7 @@ pub fn ledger_report(workspace: &Path) -> String {
     ] {
         let _ = write!(out, "## {title}\n\n{}\n\n", body.trim_end());
     }
+    let _ = write!(out, "{}", ledger::costs(workspace));
     out
 }
 

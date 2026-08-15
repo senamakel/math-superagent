@@ -1,0 +1,8 @@
+randomwalk   rho1(I)=+0.005  window Var(D): [6273053 .. 3704399] ratio=0.59
+whitenoise   rho1(I)=-0.505  window Var(D): [14332 .. 14445] ratio=1.01
+hybrid       rho1(I)=+0.039  window Var(D): [6738 .. 316] ratio=0.05
+REAL      rho1(I)=-0.503  window Var(D): [1545 .. 28674] ratio=18.56
+
+Verdict: real has rho1(I)~-0.5 (white-noise type) AND growing Var(D) (random-walk type).
+Neither pure A nor pure B matches. It is a hybrid: fast white-noise increments
+(MA(1) at the theta=-1 boundary) PLUS a slow drift, so D wanders sublinearly.

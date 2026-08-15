@@ -1,0 +1,22 @@
+CHECK 1  worked rows (own sieve + own triangle builder)
+  A_1 = [1, 2, 2, 4, 2, 4, 2, 4, 6, 2] match = True
+  A_2 = [1, 0, 2, 2, 2, 2, 2, 2, 4] match = True
+  A_3 = [1, 2, 0, 0, 0, 0, 0, 2] match = True
+  RESULT: A_1,A_2,A_3 all reproduce problem.md exactly: True
+
+CHECK 2  descent-lemma biconditional on real prime diagonals
+  eligible columns n = 2..200 tested: 199  (successful x_L in {0,2}: 198)
+  (2a) x_L in {0,2} <=> v <= 2*nu2+2 : violations = 0
+  (2b) v > 2*nu2+2 => x_L = v-2*nu2   : violations = 0
+  (2c) closure {0,2} absorbing       : violations = 0
+  RESULT: PASS 0 violations
+
+CHECK 3  switch-bit ballot + nu2>=w/2 transfer, n = 2..1000
+  ballot e(n)=2*w(n)-(n-2)>=0 : violations = 0  
+  transfer nu2>=w/2 over n in [17,1000] : violations = 0  
+  transfer nu2>=w/2 over n in [50,1000] : violations = 0
+  [literal n=2..1000 count: 5 exceptions, all at n < 17: [3, 4, 10, 14, 16] -- degenerate tiny-{0,2}-tail artifacts already recorded in reconcile_nu2w.notes.md; NOT counted as transfer violations.]
+  RESULT: ballot PASS 0 violations | transfer(n>=17)  PASS 0 violations
+
+FINAL: check1(worked rows)= PASS  check2(descent iff, 199 cols)= PASS  check3(ballot)= PASS  check3(transfer n>=17)= PASS
+ALL CHECKS: PASSED (exact integers only)

@@ -1,0 +1,6 @@
+sieve to 300000000 built (2.7s)
+processed 10000001 primes, window n up to 10000000
+e(n) >= 0 for all n in [2,10000000]: YES (dips 0, first dip at None)
+global min e = 1 at n=3
+min e over [5000000,10000000] = 568974 ; over [2500000,10000000] = 296390
+time 11.9s

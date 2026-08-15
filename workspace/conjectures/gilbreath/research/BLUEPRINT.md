@@ -16,37 +16,38 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/counterexample-backward.md`
 - `counterexample-backward/CB-prime-exclusion` (lemma) — \| The constrained initial pattern derived in CB-backward-propagation — a stretch of consecutive halved prime gaps whose XOR over binom(t,·)…
   - open `research/backward/counterexample-backward.md`
-- `event-rate-sufficiency/G-balance` (lemma) — \| At every (2,4)-regeneration event, the jump j (amount by which b_{k+1} exceeds b_k) satisfies j ≥ d, where d is the number of erosion…
-  - open `research/backward/event-rate-sufficiency.md`
-- `event-rate-sufficiency/G-edges` (lemma) — \| For the prime Gilbreath triangle, during any erosion run (rows where b_{k+1} = b_k − 1) with intruder y = 4, the edge x_k cannot remain 0…
-  - open `research/backward/event-rate-sufficiency.md`
-- `event-rate-sufficiency/G-intruder` (lemma) — \| After a (2,4)-regeneration event with jump j (so b grows by j), the new intruder y_{k+1} = A_{k+1}(b_{k+1}+1) satisfies y_{k+1} ≤ C · g…
-  - open `research/backward/event-rate-sufficiency.md`
-- `granville-nu2-reduction/GN-lemma54-runway` (lemma) — (Granville Lemma 5.4, re-derived) Let q_1..q_{n-1} be valid (strictly increasing odd terms after q_2 = 3) and successful, with 0-2 cycle…
-  - open `research/backward/granville-nu2-reduction.md`
+- `direct-invariant-potential/DI-initial-minimum-clean` (lemma) — For the Φ from DI-monotone-potential: Φ(H_1) equals the global minimum of Φ, and every row H with Φ(H) = Φ(H_1) has H(0) ∈ {0,1}.…
+  - open `research/backward/direct-invariant-potential.md`
+- `direct-invariant-potential/DI-monotone-potential` (lemma) — There exists a function Φ from finite-support rows of nonnegative integers to a well-founded (or real, bounded-below) ordered set such that…
+  - open `research/backward/direct-invariant-potential.md`
+- `excess-height-renormalization/EH-edge2-supply` (lemma) — \| For the prime Gilbreath triangle, every erosion run that starts from a nonzero block of length n = b_start with intruder excess r₀ = y₀/2…
+  - open `research/backward/excess-height-renormalization.md`
+- `excess-height-renormalization/EH-max-principle` (lemma) — \| With M_k = max_j t_k(j) = max(0, (max_{j≥1} A_k(j))/2 − 1): M_{k+1} ≤ M_k, and for every j with t_k(j) ≥ 1 and t_k(j+1) ≥ 1 one has…
+  - open `research/backward/excess-height-renormalization.md`
+- `excess-height-renormalization/EH-renorm-identity` (lemma) — \| Let H be a halved Gilbreath row (entries ≥ 0), t(j) = max(0, H(j) − 1), H'(j) = \|H(j) − H(j+1)\|, t'(j) = max(0, H'(j) − 1). Then: (a) if…
+  - open `research/backward/excess-height-renormalization.md`
 - `granville-nu2-reduction/GN-supply-nu2-density` (lemma) — For the prime sequence, the count ν₂(q_n) of 2s in the 0-2 cycle of the right diagonal satisfies ν₂(q_n) > n^β for some fixed β > 0.525…
   - open `research/backward/granville-nu2-reduction.md`
-- `nu2-supply-mod4-transfer/S1-nu2-transfer-weight` (lemma) — \| For the prime right diagonal, ν₂(q_n) ≥ w_n/2, where w_n = #{m in [2, n−1] : gap_m ≡ 2 mod 4} is the Hamming weight of the halved-gap bit…
-  - open `research/backward/nu2-supply-mod4-transfer.md`
-- `nu2-supply-mod4-transfer/S2-mod4-gap-density` (lemma) — \| #{m ≤ n : p_{m+1} − p_m ≡ 2 mod 4} ≥ c'·n for a fixed c' > 0 and all sufficiently large n. Equivalently: the set of consecutive prime…
-  - open `research/backward/nu2-supply-mod4-transfer.md`
 - `nu2-supply-split/G-supply-mod4-frequency` (lemma) — For the primes, w(n) = #{ j ∈ [2, n−1] : p_{j+1} − p_j ≡ 2 (mod 4) } (equivalently: the number of consecutive-prime pairs p_j ≢ p_{j+1}…
   - open `research/backward/nu2-supply-split.md`
-- `nu2-supply-split/G-supply-transfer` (lemma) — For every successful 2-then-odds prefix q_1..q_n (q_1 = 2, q_2 = 3, q_j strictly increasing odd for j ≥ 3, all gaps even), let w(n) = #{ j…
-  - open `research/backward/nu2-supply-split.md`
-- `supply-nu2-factorization/G-supply-linearization` (lemma) — ν₂(q_n) = wt(Φ_n h), where h[j] = ((p_{j+2} − p_{j+1})/2) mod 2 is the halved-gap parity bit string and Φ_n is the explicit F2 matrix with…
-  - open `research/backward/supply-nu2-factorization.md`
-- `supply-nu2-factorization/G-supply-nonconcentration` (lemma) — The prime halved-gap parity string h[j] = ((p_{j+2} − p_{j+1})/2) mod 2 has no constant run of length ≥ L for some absolute L. Since h[j] =…
-  - open `research/backward/supply-nu2-factorization.md`
-- `supply-nu2-factorization/G-supply-weight-transfer` (lemma) — For the explicit F2 family Φ_n (as in G-supply-linearization), there is an absolute L such that every h ∈ {0,1}^{n-2} with no constant run…
-  - open `research/backward/supply-nu2-factorization.md`
+- `regeneration-intruder-drain/REG-edge-flip-density` (lemma) — \| For every erosion run of the prime Gilbreath triangle with block length n and initial intruder y₀, the number of edge-2 reads over the…
+  - open `research/backward/regeneration-intruder-drain.md`
+- `regeneration-intruder-drain/REG-intruder-sharp-bound` (lemma) — \| In the prime Gilbreath triangle there is an absolute constant M such that every erosion run (maximal stretch of rows with b_{k+1} = b_k −…
+  - open `research/backward/regeneration-intruder-drain.md`
+- `regeneration-sufficiency/REG-intruder-drains` (lemma) — \| In the prime Gilbreath triangle, every erosion run (maximal stretch of rows with b_{k+1} = b_k − 1) reaches a row with intruder y = 4…
+  - open `research/backward/regeneration-sufficiency.md`
+- `route-b-supply-consolidated/SC-supply-nu2-linear` (lemma) — For the prime sequence, the count ν₂(q_n) of 2s in the maximal {0,2} suffix of the right diagonal δ(q_n) satisfies ν₂(q_n) ≥ c·n for a…
+  - open `research/backward/route-b-supply-consolidated.md`
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `abgs-2011-s9-mod4-switch-limit-open` | claim | **ready** | — | Ash–Beltis–Gross–Sinnott 2011 §9 (Experimental Math. 20(4):400–411): whether N(a,d,m,x)/π(x) — the frequency of consecutive prime pairs p,q… |
+| `abgs-s9-verbatim-verified` | claim | established | — | The quote "we cannot tell whether they are tending toward a limiting ratio of 1" (ABGS 2011 §9) is verbatim in the full text; the paper… |
 | `agama-trace-restatement` | claim | **ready** | — | (Agama 2021) In the trace/circuit language of the iterate-difference triangle of a finite originator, Gilbreath's conjecture is equivalent… |
 | `anti-gilbreath-construction` | claim | **ready** | — | For any unbounded monotone f(n)≥2 there is a sequence X with n-th gap ≤ f(n) whose triangle's right edge is 1 infinitely often and other… |
+| `anticlustering-markov-insufficient-for-gsupply` | claim | established | — | Generic Markov anti-clustering of the mod-4 switch bit does NOT deliver the supply bound ν₂ ≥ c·w (hence not ν₂ ≥ c·n). On the worst-min… |
 | `arias-block-and-evolution` | claim | **ready** | — | (survey) if a row has leading 1 and n subsequent entries in {0,2}, the next n−1 rows start with 1; G(π(10^13))=635; a random pseudo-prime… |
 | `bcz-2023-left-edge-stabilization` | claim | established | — | For binary top rows the left-edge operator of the Proth–Gilbreath triangle is an F2 involution: T(f)(X) = f(X/(1+X))·(1/(1+X)) over F2[[X]]… |
 | `bft2023-cramer-model-canonical` | claim | established | — | (Banks–Ford–Tao 2023, Invent. math. 233:1471–1518) Cramér's model (each n≥3 in with prob 1/log n, jointly independent) gives largest gap ~… |
@@ -56,6 +57,9 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `block-profile-equals-a000232-minus-1` | claim | **ready** | — | The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of… |
 | `c2-alternating-sum-identity` | claim | established | — | For every row A_k with W = len(A_k) - 1, sigma(A_{k+1}) = A_k(0) - (-1)^W A_k(W) - 2 * sum_{i<W} (-1)^i min(A_k(i), A_k(i+1)), where… |
 | `caldwell-proth-myth-repeats` | claim | **ready** | — | Caldwell's Prime Glossary (t5k.org) restates the block lemma correctly (a row of 1 then n entries in {0,2} protects the next n rows'… |
+| `carry-bridge-exhaustive` | claim | established | — | The composed two's-complement transducer (3-state MSB comparator x 2-state LSB borrow-subtractor with the two's-complement identity a-b =… |
+| `carry-bridge-nu2-reproduction` | claim | established | — | On the prime right diagonal, nu2(n) from maximal {0,2} suffix and w(n)=Hamming weight of halved gap bits over j in [2,n-1], recomputed from… |
+| `carry-markov-stationary-1-2` | claim | established | — | The two-operand addition carry chain c'=majority(a,b,c) with a,b iid Bernoulli(1/2) has transition matrix [[3/4,1/4],[1/4,3/4]] and exact… |
 | `chase-2024-arxiv-id` | claim | **ready** | — | Chase, "A random analogue of Gilbreath's conjecture", Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w. |
 | `chase-2024-block-consumption03` | claim | established | — | If a_1..a_i are nonneg with d=max and L = length of longest {0,d}-block containing a d, then after L iterations the max is ≤ d−1 (Lemma… |
 | `chase-2024-theorem1` | claim | established | — | For f increasing, 2≤f(n), f(M)≤(1/100)loglogM/logloglogM, the random sequence a_1=2,a_2=3,a_{n+1}=a_n+2u_n (u_n uniform independent on… |
@@ -70,7 +74,8 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `cht-right-half-0d-scan-6e8` | claim | established | — | On the real prime array at sieve 6e8 (W = 31,324,703 primes, N = 31,324,701 normalized gaps, max a_n = 140 -> M = 8, L = 2, R_0 = 100*L*8^M… |
 | `cht-theorem16-verbatim-fullpdf` | claim | established | — | CHT 2026 Theorem 1.6 (deterministic inverse theorem), verified verbatim in the FULL PDF: if a_n ≤ 2^M, no length-L zero-block, and no… |
 | `closure-0d-double-edge` | claim | established | — | {0,d} is closed under absolute differencing for every d ≥ 2 (\|0−d\|=d, \|d−d\|=0, \|0−0\|=0), so a leading 1 against {0,2} stays 1 — but the… |
-| `colonna-deletion-left-edge-failure` | claim | **ready** | — | (Colonna 2025-26, record-page footnote) Removing one prime (7, 5, or 11) from the prime list gives a 2-then-odds sequence with gaps ≤ 6 (≤… |
+| `colonna-deletion-left-edge-failure` | claim | established | — | Removing one prime (5, 7, or 11) from the prime list gives a 2-then-odds sequence whose left edge fails: (2,3,5,11,13,17,19) (delete-11)… |
+| `colonna-deletion-left-edge-failure-archive` | claim | **ready** | — | (SUPERSEDED — see the verified claim `colonna-deletion-left-edge-failure` (status: checked) in… |
 | `conditional-rate-experiment-family-independent` | claim | established | — | On the 2-then-odds Gilbreath class, conditioning on survival past row 10 removes the entire family-dependence of the (2,4) regeneration… |
 | `conditional-rate-experiment-prime-reference` | claim | established | — | The same machinery on the actual primes (sieve 2e7, D=161) gives exactly 60 (2,4)-events over 161 live rows = 0.3727 overall, reproducing… |
 | `conditional-rate-experiment-sweep-deaths-startup-only` | claim | established | — | In the fresh D=400 run, 102/220 seeds (46%) die (first_b0 <= 10) and 0 of the 118 survivors die by k=400; startup deaths are g_0-driven… |
@@ -78,12 +83,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `counterexample-backward/CB-backward-propagation` | lemma | **ready** | — | \| Trace the failure configuration backward through the full erosion run that reduced the block from its last regeneration to b = 1. At the… |
 | `counterexample-backward/CB-dying-pair` | lemma | **ready** | — | \| At the first failure row K, the dying row K−1 satisfies b_{K-1} = 1, A_{K-1}(0) = 1, and A_{K-1}(1) ∈ {4,6,8,…}. Let e = A_{K-2}(1) be… |
 | `counterexample-backward/CB-prime-exclusion` | lemma | **ready** | — | \| The constrained initial pattern derived in CB-backward-propagation — a stretch of consecutive halved prime gaps whose XOR over binom(t,·)… |
-| `czz2011-ducci-2-lipschitz` | claim | established | — | The difference map D on d-tuples with a′_k=\|a_k−a_{k+1}\| (and a′_d=\|a_d−a_1\|) is 2-Lipschitz in the Euclidean norm and is not a… |
-| `czz2011-infinite-periodic-ducci-is-gilbreath-operator` | claim | established | — | On an infinite periodic sequence, the map a′_k=\|a_k−a_{k+1}\| is exactly the operator of Gilbreath's conjecture; in the periodic setting… |
-| `czz2014-gpf-ducci-collapses-to-2357` | claim | established | — | The GPF-Ducci iteration G(p1..pd)=(gpf(p1+p2),...,gpf(pd+p1)) on prime d-tuples is ultimately periodic, and every limit cycle of length > 1… |
-| `deepmind-formal-conjectures-gilbreath-lean` | claim | **ready** | — | Google DeepMind's formal-conjectures repo (commit ed75a6dd) contains FormalConjectures/Wikipedia/Gilbreath.lean: it defines the difference… |
-| `directive25-gap-trend-and-reconciliation` | claim | established | — | In the prime Gilbreath triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the 13 giants (j > 1000) at rows 34..161 have inter-giant gaps… |
-| `ducci-avart-nilpotent-concatenation` | claim | **ready** | — | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector… |
-| `ducci-classical-nilpotence-iff-power-of-2` | claim | **ready** | — | (Ciamberlini–Marengoni 1937, quoted and reproved in Chamberland 2003 Thm 1.1, Calkin–Stevens–Thomas 2005, Glaser–Schöffl 1995) For the… |
 
-_140 further nodes not shown._
+_194 further nodes not shown._

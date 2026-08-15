@@ -1,0 +1,6 @@
+V0 real primes               min nu2/w = 0.5000 at (43, 14, 28)  first-violation=None
+V1 real bits, gaps 2+2b      min nu2/w = 1.0000 at (0, 0)  first-violation=None
+V2 shuffled bits, real mags  min nu2/w = 1.0000 at (0, 0)  first-violation=None
+V3 real bits, shuffled mags  min nu2/w = 1.0000 at (0, 0)  first-violation=None
+V5 bits shifted +1, real mags min nu2/w = 1.0000 at (0, 0)  first-violation=None
+V6 alternating bits, gaps 2+2b min nu2/w = 0.0010 at (1999, 1, 999)  first-violation=17

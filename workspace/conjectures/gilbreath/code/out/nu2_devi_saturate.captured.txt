@@ -1,0 +1,22 @@
+acf(D) lags 1..20 (D=2nu2-n):
+1:0.002  2:0.008  3:0.010  4:0.003  5:-0.001  6:0.001  7:-0.004  8:0.013  9:0.004  10:-0.003  11:-0.000  12:-0.003  13:-0.000  14:-0.005  15:-0.014  16:0.001  17:-0.006  18:-0.007  19:-0.003  20:0.002
+
+max|D| by window of 5000 terms:
+  n=    1..5000  max|D|=234   (sqrt(n)=70.7)
+  n= 5001..10000 max|D|=330   (sqrt(n)=100.0)
+  n=10001..15000 max|D|=417   (sqrt(n)=122.5)
+  n=15001..20000 max|D|=471   (sqrt(n)=141.4)
+  n=20001..25000 max|D|=533   (sqrt(n)=158.1)
+  n=25001..30000 max|D|=639   (sqrt(n)=173.2)
+
+cumulative max|D| at n = 1e3,2e3,5e3,1e4,2e4,3e4:
+  n=  1000 max|D|=106  max|D|/sqrt(n)=3.352
+  n=  2000 max|D|=124  max|D|/sqrt(n)=2.773
+  n=  5000 max|D|=234  max|D|/sqrt(n)=3.309
+  n= 10000 max|D|=330  max|D|/sqrt(n)=3.300
+  n= 20000 max|D|=471  max|D|/sqrt(n)=3.330
+  n= 30000 max|D|=639  max|D|/sqrt(n)=3.689
+
+fraction |D|<=100: 0.635 ; <=300: 0.974 ; <=640: 1.000
+/workspace/code/out/nu2_incremental_1e5.txt exists: True
+/workspace/code/out/nu2_fluct_30000.txt exists: True

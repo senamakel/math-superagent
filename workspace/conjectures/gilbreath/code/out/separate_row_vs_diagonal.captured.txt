@@ -1,0 +1,8 @@
+[claim 1] row block lengths over rows 0..200:
+   b[0..20] = [0, 2, 7, 13, 13, 24, 23, 22, 21, 24, 58, 97, 96, 97, 96, 173, 175, 175, 175, 175, 180]
+   row-direction erosion violations b_k < b_{k-1}-1: 0
+   (block lemma PROVED in this run; expected 0)
+
+[claim 2] diagonal 0-2 suffix c_n (exclude_last=True):
+   violations c_n < c_{n-1}-1: 1133 over 9999 extensions
+[claim 2 sensitive] violations with exclude_last=False: 0

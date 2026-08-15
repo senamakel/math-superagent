@@ -1,0 +1,33 @@
+oracle: reproduce blocks_depth1000 b: True  intruder: True
+== depth-1000 record (sieve 2e7), A_1..A_247 ==
+  runs: 26
+  drain-law violations (flips != (y0-yf)/2): 0
+  REG-intruder-drains violations (yf!=4 or b_final<1 or zero block): 0
+  max intruder y0 over runs: 14
+  max final intruder yf over runs: 4
+  max edge-2 flip count over runs: 5
+  runs reaching yf=4: 26 / 26
+  all y0 <= 14: True
+  (=> every run needs at most 5 edge-2 flips)
+
+== 6e8 giants record, A_1..A_247 ==
+  runs: 32
+  drain-law violations (flips != (y0-yf)/2): 0
+  REG-intruder-drains violations (yf!=4 or b_final<1 or zero block): 0
+  max intruder y0 over runs: 54
+  max final intruder yf over runs: 4
+  max edge-2 flip count over runs: 25
+  runs reaching yf=4: 32 / 32
+  all y0 <= 14: False
+
+== 1e9 giants record, A_1..A_247 ==
+  runs: 32
+  drain-law violations (flips != (y0-yf)/2): 0
+  REG-intruder-drains violations (yf!=4 or b_final<1 or zero block): 0
+  max intruder y0 over runs: 54
+  max final intruder yf over runs: 4
+  max edge-2 flip count over runs: 25
+  runs reaching yf=4: 32 / 32
+  all y0 <= 14: False
+
+total wall 440.3 s

@@ -1,0 +1,16 @@
+Prefix-determinism identity check (Directive 48 item 1)
+==========================================================================
+sieve to 2000: 303 primes; prefix lengths n = 1..200
+
+Part 1:  delta_k(q_n) = |delta_{k-1}(q_n) - delta_{k-1}(q_{n-1})|
+  positions checked (k=1..n-1 over n=2..200): 19900
+  identity mismatches: 0   (expect 0)
+
+Part 2: the descent eps = delta_{k-1}(q_{n-1}) is prefix-determined
+  prefix lengths n=3..200, 3 distinct continuations each
+  eps positions checked: 59697, mismatches: 0
+  {0,2}-cycle checks of prefix diagonal: 594, violations: 0
+
+==========================================================================
+RESULT: Part1 19900 identity positions, 0 mismatches; Part2 59697 eps positions, 0 mismatches.
+PREFIX-DETERMINISM IDENTITY: CONFIRMED over the stated range (0 violations)

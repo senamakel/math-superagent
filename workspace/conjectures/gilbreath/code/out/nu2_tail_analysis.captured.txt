@@ -1,0 +1,6 @@
+[n>=1000] min nu2/n = 0.4587 at n=1212 | min log(nu2)/log(n) = 0.8879 at n=1005 | D in [-639,558]
+[n>=5000] min nu2/n = 0.4761 at n=5656 | min log(nu2)/log(n) = 0.9138 at n=5078 | D in [-639,558]
+[n>=10000] min nu2/n = 0.4844 at n=11491 | min log(nu2)/log(n) = 0.9218 at n=10045 | D in [-639,558]
+n>=1000: tightest margin for nu2>=0.4n is 61 at n=1005
+n>=1000: tightest margin for nu2>=0.45n is 11 at n=1212
+n>=1000: tightest margin for nu2>=0.49n is -78 at n=5656

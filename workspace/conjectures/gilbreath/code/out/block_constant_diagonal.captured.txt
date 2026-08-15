@@ -1,0 +1,6 @@
+prefixes n=2..10001 that are NOT successful: 0
+row leading (0, 2) block b_k for k=1..12: [2, 7, 13, 13, 24, 23, 22, 21, 24, 58, 97, 96]
+block-lemma constant-1: rows protected by leading block (leading 1 persists), violations: 0 over k=1..39
+min cycle length c_n over n=2..10001: 0  at n=0
+max cycle length c_n: 9991
+CONSTANT-1 / PROTECTION CHECKS PASSED

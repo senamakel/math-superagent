@@ -8,8 +8,11 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `abgs-2011-s9-mod4-switch-limit-open` | Ash–Beltis–Gross–Sinnott 2011 §9 (Experimental Math. 20(4):400–411): whether N(a,d,m,x)/π(x) — the frequency of consecutive prime pairs p,q with p≡a, q≡a+d (mod m) — tends to ANY limit as x→∞ is OPEN; the authors state… | yes | asserted | `research/summaries/ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.md` |
+| `abgs-s9-verbatim-verified` | The quote "we cannot tell whether they are tending toward a limiting ratio of 1" (ABGS 2011 §9) is verbatim in the full text; the paper states in the Introduction that Problem 1.1 (asymptotics of N(a,d,m,x)) "is wide… | yes | checked | `research/notes/abgs-s9-verbatim-verified.md` |
 | `agama-trace-restatement` | (Agama 2021) In the trace/circuit language of the iterate-difference triangle of a finite originator, Gilbreath's conjecture is equivalent to: every leading entry A_k(0) > 0 and the partial sums of the leading entries… | yes | asserted | `research/notes/library-state.md` |
 | `anti-gilbreath-construction` | For any unbounded monotone f(n)≥2 there is a sequence X with n-th gap ≤ f(n) whose triangle's right edge is 1 infinitely often and other values infinitely often; constructed backwards so a large surviving gap escapes to… | yes | asserted | `research/summaries/eppstein-anti-gilbreath-sequences.md` |
+| `anticlustering-markov-insufficient-for-gsupply` | Generic Markov anti-clustering of the mod-4 switch bit does NOT deliver the supply bound ν₂ ≥ c·w (hence not ν₂ ≥ c·n). On the worst-min ν₂/w statistic, prime-like (0.55,0.60) gives 0.0714 with 11/30 trials violating;… | yes | checked | `research/notes/anticlustering-inadequacy.md` |
 | `arias-block-and-evolution` | (survey) if a row has leading 1 and n subsequent entries in {0,2}, the next n−1 rows start with 1; G(π(10^13))=635; a random pseudo-prime model attained GC in ~49.9% of runs but eventual-1 (n>10) in 99.16% with no… | yes | asserted | `research/summaries/arias-de-reyna-gilbreath-blog.md` |
 | `bcz-2023-left-edge-stabilization` | For binary top rows the left-edge operator of the Proth–Gilbreath triangle is an F2 involution: T(f)(X) = f(X/(1+X))·(1/(1+X)) over F2[[X]] and T^2 = id (Thm 2); hence Υ^6(u) = u for all binary u, and Υ^6(u) = u implies… | yes | proved | `research/summaries/bhat-cobeli-zaharescu-2023-filtered-rays-iterated-abs-diffs.md` |
 | `bft2023-cramer-model-canonical` | (Banks–Ford–Tao 2023, Invent. math. 233:1471–1518) Cramér's model (each n≥3 in with prob 1/log n, jointly independent) gives largest gap ~ log^2 x a.s.; Granville's corrected model gives ~ xi log^2 x… | yes | proved | `research/summaries/banks-ford-tao-2023-large-prime-gaps-probabilistic-models.md` |
@@ -19,6 +22,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `block-profile-equals-a000232-minus-1` | The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of terms before the first term > 2 in the (k)-th difference, minus 1). | yes | catalogued | `research/ROOT.md` |
 | `c2-alternating-sum-identity` | For every row A_k with W = len(A_k) - 1, sigma(A_{k+1}) = A_k(0) - (-1)^W A_k(W) - 2 * sum_{i<W} (-1)^i min(A_k(i), A_k(i+1)), where sigma(v) = sum_i (-1)^i v_i. Verified with zero violations on all 159 consecutive row… | yes | checked | `research/notes/operator-c1-refuted-c2-holds.md` |
 | `caldwell-proth-myth-repeats` | Caldwell's Prime Glossary (t5k.org) restates the block lemma correctly (a row of 1 then n entries in {0,2} protects the next n rows' leading 1) and reproduces Odlyzko's G(π(10^x)) table… | yes | catalogued | `research/summaries/caldwell-gilbreaths-conjecture-glossary.md` |
+| `carry-bridge-exhaustive` | The composed two's-complement transducer (3-state MSB comparator x 2-state LSB borrow-subtractor with the two's-complement identity a-b = a+~b+1, carry-in 1) equals \|a-b\| for ALL 0<=a,b<2^14 — all 268,435,456 pairs —… | yes | checked | `code/out/carry_bridge_verify.notes.md` |
+| `carry-bridge-nu2-reproduction` | On the prime right diagonal, nu2(n) from maximal {0,2} suffix and w(n)=Hamming weight of halved gap bits over j in [2,n-1], recomputed from scratch (oracle generator, sieve 1e6, n=2..4999) exactly reproduce the sampled… | yes | checked | `code/out/carry_bridge_verify.notes.md` |
+| `carry-markov-stationary-1-2` | The two-operand addition carry chain c'=majority(a,b,c) with a,b iid Bernoulli(1/2) has transition matrix [[3/4,1/4],[1/4,3/4]] and exact stationary vector [1/2,1/2] (carry density exactly 1/2); empirical single- chain… | no | checked | `code/out/carry_bridge_verify.notes.md` |
 | `chase-2024-arxiv-id` | Chase, "A random analogue of Gilbreath's conjecture", Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w. | yes | asserted | `research/notes/library-state.md` |
 | `chase-2024-block-consumption03` | If a_1..a_i are nonneg with d=max and L = length of longest {0,d}-block containing a d, then after L iterations the max is ≤ d−1 (Lemma 3.2). | yes | proved | `research/summaries/chase-2024-random-analogue-gilbreath.md` |
 | `chase-2024-theorem1` | For f increasing, 2≤f(n), f(M)≤(1/100)loglogM/logloglogM, the random sequence a_1=2,a_2=3,a_{n+1}=a_n+2u_n (u_n uniform independent on {0,..,f(n)−1}) is almost surely eventually Gilbreath (first term of every late row… | **unchecked** | proved | `research/summaries/chase-2024-random-analogue-gilbreath.md` |
@@ -33,14 +39,18 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `cht-right-half-0d-scan-6e8` | On the real prime array at sieve 6e8 (W = 31,324,703 primes, N = 31,324,701 normalized gaps, max a_n = 140 -> M = 8, L = 2, R_0 = 100*L*8^M = 3,355,443,200), scanning all 401 rows (depth i = 0..400) of the CHT array… | no | checked | `research/notes/cht-right-half-scan.md` |
 | `cht-theorem16-verbatim-fullpdf` | CHT 2026 Theorem 1.6 (deterministic inverse theorem), verified verbatim in the FULL PDF: if a_n ≤ 2^M, no length-L zero-block, and no right-half block (N' ≤ j) with 2^{M-m} < d ≤ 2^{M-m+1}, depth ≤ 2R_{m-1}, length ≥… | no | proved | `research/notes/cht-2026-summary.md` |
 | `closure-0d-double-edge` | {0,d} is closed under absolute differencing for every d ≥ 2 (\|0−d\|=d, \|d−d\|=0, \|0−0\|=0), so a leading 1 against {0,2} stays 1 — but the same closure preserves a large disturbance against {0,d} for d ≥ 4. | yes | proved | `research/notes/library-state.md` |
-| `colonna-deletion-left-edge-failure` | (Colonna 2025-26, record-page footnote) Removing one prime (7, 5, or 11) from the prime list gives a 2-then-odds sequence with gaps ≤ 6 (≤ 4 for delete-5) whose left edge fails: for (2,3,5,11,13,17,19) (gaps… | yes | asserted | `research/notes/library-state.md` |
+| `colonna-deletion-left-edge-failure` | Removing one prime (5, 7, or 11) from the prime list gives a 2-then-odds sequence whose left edge fails: (2,3,5,11,13,17,19) (delete-11) has A_2(1)=4 and A_3(0)=3; (2,3,7,11,13,17,19) (delete-5, max gap 4) has A_1(1)=4;… | yes | checked | `research/notes/colonna-deletion-verified.md` |
+| `colonna-deletion-left-edge-failure-archive` | (SUPERSEDED — see the verified claim `colonna-deletion-left-edge-failure` (status: checked) in research/notes/colonna-deletion-verified.md.) (Colonna 2025-26, record-page footnote) Removing one prime (7, 5, or 11) from… | yes | asserted | `research/notes/library-state.md` |
 | `conditional-rate-experiment-family-independent` | On the 2-then-odds Gilbreath class, conditioning on survival past row 10 removes the entire family-dependence of the (2,4) regeneration rate: pooled over 8 gap families with 20 fresh seeds each (D=400, W=200000, 118… | yes | checked | `code/out/conditional_rate_experiment.notes.md` |
 | `conditional-rate-experiment-prime-reference` | The same machinery on the actual primes (sieve 2e7, D=161) gives exactly 60 (2,4)-events over 161 live rows = 0.3727 overall, reproducing the recorded reference from the depth-1000 block data event-for-event; rho_post10… | yes | checked | `code/out/conditional_rate_experiment.notes.md` |
 | `conditional-rate-experiment-sweep-deaths-startup-only` | In the fresh D=400 run, 102/220 seeds (46%) die (first_b0 <= 10) and 0 of the 118 survivors die by k=400; startup deaths are g_0-driven exactly as the sweep showed (364/852 by k=1, 852/852 by k=10). | yes | checked | `code/out/conditional_rate_experiment.notes.md` |
+| `cz2014-exponent-analogue-of-gilbreath` | (Cobeli & Zaharescu 2014, arXiv:1411.1334, J. Diff. Eq. Appl. 20(11):1489–1501) The Z-rule game Z(a,b)=ab/gcd(a,b)^2 on the primes is COMPLETELY SOLVED: per prime it is an absolute difference of exponents, every entry… | yes | asserted | `research/notes/library-state.md` |
+| `czp2016-west-edge-squarefree-analogue` | (Cobeli, Prunescu & Zaharescu 2016, arXiv:1511.04315, Chaos Solitons Fractals 91:136–147) The west edge of the Z-rule triangle from ℕ* / ℙ is the multiplicative counterpart of Gilbreath's conjecture; the analogue is… | yes | asserted | `research/notes/library-state.md` |
 | `czz2011-ducci-2-lipschitz` | The difference map D on d-tuples with a′_k=\|a_k−a_{k+1}\| (and a′_d=\|a_d−a_1\|) is 2-Lipschitz in the Euclidean norm and is not a contraction; iterates have non-increasing maximum M and every limit-cycle element has… | yes | proved | `research/summaries/caragiu-zaharescu-zaki-2011-ducci-algebraic-numbers.md` |
 | `czz2011-infinite-periodic-ducci-is-gilbreath-operator` | On an infinite periodic sequence, the map a′_k=\|a_k−a_{k+1}\| is exactly the operator of Gilbreath's conjecture; in the periodic setting (Brown–Merzel) iterates converge to a single finite cycle, and for algebraic… | **unchecked** | proved | `research/summaries/caragiu-zaharescu-zaki-2011-ducci-algebraic-numbers.md` |
 | `czz2014-gpf-ducci-collapses-to-2357` | The GPF-Ducci iteration G(p1..pd)=(gpf(p1+p2),...,gpf(pd+p1)) on prime d-tuples is ultimately periodic, and every limit cycle of length > 1 has all components in {2,3,5,7}, with each of 2,3,5,7 occurring in the cycle. | no | proved | `research/summaries/caragiu-zaharescu-zaki-2014-ducci-sequences-with-primes.md` |
 | `deepmind-formal-conjectures-gilbreath-lean` | Google DeepMind's formal-conjectures repo (commit ed75a6dd) contains FormalConjectures/Wikipedia/Gilbreath.lean: it defines the difference operator d 0 = p_n (via n.nth Nat.Prime), d^{k+1}(n) = Int.natAbs (d k (n+1) − d… | yes | asserted | `research/notes/library-state.md` |
+| `descent-lemma-halved-formalised` | For a {0,1} pattern el (every entry 0 or 1) and start w : Nat, with trajectory d_0 = w, d_{k+1} = \|d_k - e_k\| (runAbs) and ν₁ = countOnes el: (1) w ≤ ν₁ + 1 ⟹ runAbs w el ∈ {0,1}; (2) w > ν₁ + 1 ⟹ runAbs w el = w - ν₁… | yes | formalised | `code/out/descent_lemma_formalised.notes.md` |
 | `directive25-gap-trend-and-reconciliation` | In the prime Gilbreath triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the 13 giants (j > 1000) at rows 34..161 have inter-giant gaps (genuine 12) = 22,8,4,26,2,14,2,14,4,4,12 rows: mean 10.18, median 8, max 26,… | yes | checked | `code/out/directive25_gap_trend.md` |
 | `ducci-avart-nilpotent-concatenation` | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector of length a power of 2. Proof: T^{2^ℓ}(x) = x + shift^{2^ℓ}(x), so nilpotence… | no | asserted | `research/notes/library-state.md` |
 | `ducci-classical-nilpotence-iff-power-of-2` | (Ciamberlini–Marengoni 1937, quoted and reproved in Chamberland 2003 Thm 1.1, Calkin–Stevens–Thomas 2005, Glaser–Schöffl 1995) For the CYCLIC Ducci map D(x1,..,xn) = (\|x1−x2\|, ..., \|xn−x1\|) on integer n-tuples, every… | no | asserted | `research/notes/library-state.md` |
@@ -50,26 +60,16 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `eppstein-practical-rule90` | (heuristic/conjectural) the {0,2} interior of a Gilbreath triangle evolves as a Rule-90 cellular automaton (per-column, time left→right), which behaves as if random and wears down larger values; the practical-number… | yes | asserted | `research/summaries/eppstein-gilbreath-practical-numbers.md` |
 | `event-rate-sweep-regeneration-not-generic` | In the random 2-then-odds class, 852/1154 (73.8%) sequences reach b_k = 0 within their batch depth, all deaths within the first 10 rows and 89.7% within the first 3; sequences surviving row 10 survived the full batch… | no | asserted | `code/out/event_rate_sweep.notes.md` |
 | `event-rate-sweep-step-law-universal` | Over 1154 random 2-then-odds sequences (D up to 4000, W up to 2e6; gap families consecutive/{2,4}/skew{2,4,6}/skew{2,4,6,8,10}/uniform{2..2g}/geometric, with and without first gap forced to 2), the step law (b_{k+1} >=… | yes | asserted | `code/out/event_rate_sweep.notes.md` |
+| `excess-renorm-identity-proved` | \| Let h be any halved Gilbreath row (entries >= 0), with excess t(j) = max(0, h(j)-1), h'(j) = \|h(j) - h(j+1)\|, and t'(j) = max(0, h'(j)-1). The renormalization is pointwise (per-pair), with three disjoint cases: (a)… | yes | asserted | `research/notes/excess-renorm-identity-proved.md` |
 | `fenchel-duality-sign-assignment-refuted` | The Fenchel–Rockafellar / minimax sign-history route to Gilbreath fails: (i) the representation A_k(1) = max over a static sign set of a linear functional is false because reachable sign histories depend on the gap… | yes | asserted | `research/approaches/fenchel-duality-minimax-sign-assignment.md` |
 | `first-gap-2-startup-sufficiency-supported` | For the 2-then-odds class with gap support {2,4} (consecutive and rand24), forcing gap[0] = 2 gives 0 sequences reaching b_k = 0 among 62 measured (48 sweep + 10 deep + 4 long) to depth up to 4000, versus 62% deaths at… | yes | asserted | `code/out/event_rate_sweep.notes.md` |
 | `fwd-diff-identity-refuted` | The identity A_k(i) = \|Δ_k(i)\| (iterated absolute difference equals the absolute value of the signed forward difference Δ_k(i) = Σ_{j=0}^k (−1)^j C(k,j) A_0(i+j)) is FALSE on the prime triangle: first violation at… | yes | checked | `code/out/check_fwd_diff_identity.notes.md` |
 | `g-balance-per-event-refuted` | The per-event bound j >= d, where j is the jump at a (2,4)-event and d is the number of erosion rows since the previous event, is FALSE on the prime rows to depth 1000. Explicit: transition 23 (739->873, j=134), then… | yes | checked | `research/approaches/g-balance-weakened-per-event-refuted.md` |
 | `g-supply-transfer-measured` | For the prime right diagonal through q_n, let w(n) = #{2 <= j <= n-1 : gap_{j+1} == 2 (mod 4)} (the Hamming weight of the halved gap bits h[j]=(gap_{j+1}//2) mod 2, the row-1 ancestors of the {0,2}-tail cells whose… | yes | checked | `research/notes/nu2-supply-side-consolidated.md` |
+| `g-supply-transfer-universal-refuted` | The universal combinatorial transfer nu2(q_n) >= (2/3)·w(n) for every successful 2-then-odds prefix is FALSE. Counterexample family: consecutive odds (all gaps = 2), successful for every n, gives w(n) = n-2 (maximal)… | yes | checked | `research/notes/g-supply-transfer-universal-refuted.md` |
 | `gallagher-1976-poisson-short-interval-model` | Under the (unproved) Hardy–Littlewood prime r-tuple conjecture, the number of primes in (n, n+h] for h ~ λ log N is Poisson(λ)-distributed in n < N (Theorem 1); unconditionally the count has an exponential upper bound… | **unchecked** | proved | `research/summaries/gallagher-1976-primes-in-short-intervals.md` |
-| `gantmacher-krein-sign-regularity-refuted` | The Gantmacher–Krein / Schoenberg variation-diminishing route to Gilbreath fails at its load-bearing premise: the alternating Pascal matrix M_{k,j} = (−1)^{k−j} binom(k,j) is NOT sign-regular of order 2 (2×2 minors of… | yes | asserted | `research/approaches/gantmacher-krein-oscillatory-matrix-sign-regularity.md` |
-| `gap-bounds-cannot-force-block-growth` | No held prime-gap result bounds the leading {0,2} block length b_k or the (2,4)-event jump sum from below for a 2-then-odds exactly-even-gap sequence: Baker–Harman–Pintz (p_{n+1}−p_n ≪ p_n^{0.525}), Torelli (p_{n+1} ≤… | yes | checked | `research/notes/block-growth-literature.md` |
-| `gatti-2020-lemma4-interval-completeness-refuted` | Gatti Lemma 4 / Theorem 3 assert K_S fills the whole parity class in ]min K, max K[. This interval-completeness is FALSE in general: Muney 2026 exhibits the first hole at length 5 for (2,3,5,9,15), and even the count… | yes | asserted | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
-| `gatti-2020-not-load-bearing` | gatti-2020-preprints-gilbreath-conditions (doi 10.20944/preprints202003.0145.v1, 8 Mar 2020, 10pp, NOT PEER-REVIEWED, 0 views 0 downloads 0 comments) is a claimed "proof of conditions" for GC via a global… | **unchecked** | asserted | `research/notes/library-state.md` |
-| `gatti-2020-parity-alternation-independent` | In any Gilbreath sequence, s_1 even ⟹ s_2..s_n all odd, s_1 odd ⟹ s_2..s_n all even (Gatti Lemmas 1–3, proved by induction on the extension equation) — an independent general-class statement of the parity alternation… | yes | checked | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
-| `gatti-2020-theorem4-proof-invalid` | Gatti's Theorem 4 (min K ≤ p_n ≤ max K for every prime, claimed to prove a core Gilbreath bound) has an invalid proof: the right-inequality step assumes p_n ≤ max K (subtracts 2p_{n−1} from both sides), then derives… | yes | asserted | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
-| `gatti-2020-valid-extension-global-formula` | For S ∈ G_n, appending k preserves Gilbreath-ness iff the nested-absolute Gilbreath equation holds, with solutions k = ±s^{n−1}_1 ± s^{n−2}_2 ± … ± s^1_{n−1} + s_n ± 1 — a signed sum over the WHOLE right anti-diagonal;… | yes | checked | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
-| `gc-block-lemma-odlyzko` | If d_K(1)=1 and d_K(n) ∈ {0,2} for 1 ≤ n ≤ N, then d_k(1)=1 for all K ≤ k ≤ N+K−1. So a leading {0,2} block of length N protects N subsequent rows, not n/2. | yes | asserted | `research/notes/library-state.md` |
-| `giacomelli-2021-padic-ducci-mod2-reduction` | The p-adic-norm Ducci operator D_p(a_i)=\|a_i−a_{i+1}\|_p on Q_p^n outputs powers of p, is linear (D_p(a·α)=a·D_p(α)), maps integer seeds to the null sequence (Lemma 1), is ultimately periodic (Lemma 2), and reduces mod 2… | no | asserted | `research/summaries/giacomelli-2021-p-adic-ducci-sequences-short-note.md` |
-| `giacomelli-2025-padic-ducci-matrix-spectral` | For the p-adic-norm Ducci operator δ_p(x)=\|D_p x\|_p on Q_p^n, termination is governed spectrally: all \|λ_i\|_p<1 ⟹ terminates; all \|λ_i\|_p=1 ⟹ does not converge to 0, and roots of unity give eventual periodicity;… | no | asserted | `research/summaries/giacomelli-2025-ducci-matrices-p-adic-context.md` |
-| `giant-landing-geometric-fit-15` | Over the 15 genuine giant landings of the 6e8 run, exact LS fit: geometric log b = a + m·x with R² = 0.968, factor 1.765/event; linear R² = 0.432. Geometric description holds on 15 points; it is a fit, not a law; not… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
-| `giant-parity-even-pre-jump-rows` | Among the 15 genuine giant events of the 6e8 run, 14 fire at even pre-jump rows (13/14 excluding row 161 which is the sole odd). One-sided p = 16/2^15 = 4.9×10⁻⁴ (exact, plain 1/2 null). At 3e8 the event base even… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
 
-_100 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_136 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -77,22 +77,28 @@ Resolve these before building on either side.
 
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-myth-retracted`
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-citation-correction`
+- `g-supply-transfer-universal-refuted` (research/notes/g-supply-transfer-universal-refuted.md) contradicts `g-supply-transfer` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `lemma54-lean-and-linkA-current-verified` (research/notes/scholar-reconciliation-lean-and-linkA-current.md) contradicts `regeneration-thread-blocked-by` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `odlyzko-block-lemma-asserted`
 
 ## Load-bearing but unverified
 
-Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it. Search the whole ledger with `search_claims`.
 
+- `abgs-2011-s9-mod4-switch-limit-open` (research/summaries/ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.md) — asserted by the source, not proved there and not checked here
 - `agama-trace-restatement` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `anti-gilbreath-construction` (research/summaries/eppstein-anti-gilbreath-sequences.md) — asserted by the source, not proved there and not checked here
 - `arias-block-and-evolution` (research/summaries/arias-de-reyna-gilbreath-blog.md) — asserted by the source, not proved there and not checked here
 - `chase-2024-arxiv-id` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `cht-decay-lower-bound-logn` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `colonna-deletion-left-edge-failure` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `colonna-deletion-left-edge-failure-archive` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `cz2014-exponent-analogue-of-gilbreath` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `czp2016-west-edge-squarefree-analogue` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `deepmind-formal-conjectures-gilbreath-lean` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `ducci-pascal-mod2-rule90` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `eppstein-practical-rule90` (research/summaries/eppstein-gilbreath-practical-numbers.md) — asserted by the source, not proved there and not checked here
 - `event-rate-sweep-step-law-universal` (code/out/event_rate_sweep.notes.md) — asserted by the source, not proved there and not checked here
+- `excess-renorm-identity-proved` (research/notes/excess-renorm-identity-proved.md) — asserted by the source, not proved there and not checked here
 - `fenchel-duality-sign-assignment-refuted` (research/approaches/fenchel-duality-minimax-sign-assignment.md) — asserted by the source, not proved there and not checked here
 - `first-gap-2-startup-sufficiency-supported` (code/out/event_rate_sweep.notes.md) — asserted by the source, not proved there and not checked here
 - `gantmacher-krein-sign-regularity-refuted` (research/approaches/gantmacher-krein-oscillatory-matrix-sign-regularity.md) — asserted by the source, not proved there and not checked here
@@ -101,6 +107,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `gc-block-lemma-odlyzko` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `gilbreath-2011-expository` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `granville-lucas-kummer-sierpinski` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `granville-lumley-routeA-demand-support` (research/notes/scholar-cycle-granville-lumley-mo-thread.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-block-protection` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-verification-1959` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `li2023-not-bottleneck` (research/notes/li-2023-bearing-correction.md) — asserted by the source, not proved there and not checked here
@@ -108,35 +115,18 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `los-2016-consecutive-pair-mod4-bias` (research/summaries/lemke-oliver-soundararajan-2016-unexpected-biases-consecutive-primes.md) — asserted by the source, not proved there and not checked here
 - `malyshev-max-ones-boolean-pascal-bound` (research/summaries/malyshev-maximal-ones-Boolean-pascal-triangle.md) — asserted by the source, not proved there and not checked here
 - `mathworld-rule90-additive-sierpinski` (research/summaries/mathworld-rule-90.md) — asserted by the source, not proved there and not checked here
+- `mo-thread-no-new-dead-route` (research/summaries/mathoverflow-gilbreath-what-is-known-thread.md) — asserted by the source, not proved there and not checked here
+- `mo-thread-practitioner-confirms-fwd-diff-dead-route` (research/summaries/mathoverflow-gilbreath-what-is-known-thread.md) — asserted by the source, not proved there and not checked here
+- `mo-thread-proth-misreading-retraction-confirmed` (research/summaries/mathoverflow-gilbreath-what-is-known-thread.md) — asserted by the source, not proved there and not checked here
+- `mo-thread-tao-chase-cannot-be-general-class-proof` (research/summaries/mathoverflow-gilbreath-what-is-known-thread.md) — asserted by the source, not proved there and not checked here
 - `mod4-linearization` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `modulo-k-gilbreath-family` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `morgan-frontier-basin-and-corridor-obstruction` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `morgan-local-condition-sufficiency` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `northshield-pascal-mod2-line-sums-gf` (research/summaries/northshield-sums-across-pascals-triangle-mod2.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-1993-citation-confirmed` (research/summaries/odlyzko-publications-page.md) — asserted by the source, not proved there and not checked here
-- `odlyzko-block-lemma` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
-- `odlyzko-mod4-linearization` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
-- `odlyzko-verification-1993` (research/summaries/odlyzko-1993-iterated-absolute-differences.md) — asserted by the source, not proved there and not checked here
-- `orthant-reachability-recharge-constraint-adopted` (research/approaches/orthant-reachability-recharge-constraint.md) — asserted by the source, not proved there and not checked here
-- `proth-1878-no-proof` (research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md) — asserted by the source, not proved there and not checked here
-- `proth-citation-correction` (research/summaries/proth-1878-sur-la-serie-des-nombres-premiers.md) — asserted by the source, not proved there and not checked here
-- `proth-myth-retracted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `regeneration-lemma-edge-2-intruder-4-established` (code/out/check_regenerate_lemma.notes.md) — asserted by the source, not proved there and not checked here
-- `ross-2026-decay-constants` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `rubinstein-sarnak-fluctuation-not-bias` (research/approaches/chebyshev-bias-granville-nu2-supply.md) — asserted by the source, not proved there and not checked here
-- `rule90-identification-real-absorption-refuted` (research/approaches/rule90-absorbing-boundary.md) — asserted by the source, not proved there and not checked here
-- `rule90-rowcount-popcount` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
-- `rule90-wikipedia-interior-confirmation` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
-- `runcount-lemma-refuted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `shiu-2000-strings-of-congruent-primes` (research/summaries/shiu-2000-strings-of-congruent-primes.md) — asserted by the source, not proved there and not checked here
-- `tao-cramer-blog-frame` (research/summaries/tao-blog-2026-gilbreath-cramer-model.md) — asserted by the source, not proved there and not checked here
-- `torelli-prime-gap-bound` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `two-separation-hypothesis` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `valid-extension-backward-nonlocal-refuted` (research/approaches/backward-extension-automaton.md) — asserted by the source, not proved there and not checked here
-- `verification-bounds` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `verification-record-2026` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
-- `visser-large-gaps-survey` (research/summaries/warwick-visser-large-gaps-between-primes-survey.md) — asserted by the source, not proved there and not checked here
-- `zero-sum-flow-mincut-restatement-refuted` (research/approaches/zero-sum-flow-conservation-mincut.md) — asserted by the source, not proved there and not checked here
+
+_24 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 
@@ -144,8 +134,8 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 
 - `block-profile-equals-a000232-minus-1` (research/ROOT.md) — read from a catalogue; no derivation here reproduces it
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) — read from a catalogue; no derivation here reproduces it
-- `guy-A10-canonical-statement` (research/summaries/crc-mirror-guy-A10-gilbreath.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A036277-first-term-position` (research/summaries/oeis-A036277-first-term-greater-than-one.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-A080839-increasing-sequences-all-1-transform` (research/summaries/oeis-A080839-increasing-sequences-gilbreath-property.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A089582-second-entry-catalogue` (research/summaries/oeis-A089582-second-entry-sequence.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A213014-zero-run-of-block` (research/summaries/oeis-A213014-zeros-before-first-term.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A393110-verification-depth` (research/summaries/oeis-A393110-verification-depth-second-entry.md) — read from a catalogue; no derivation here reproduces it

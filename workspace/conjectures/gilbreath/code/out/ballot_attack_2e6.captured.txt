@@ -1,0 +1,9 @@
+NMAX(gaps)=283145  sieve_limit=4000000
+density w/n = 0.56818  (#switches 160878)
+ballot e(n)>=0 over all prefixes n=2..283145: min e = 2 at n=[2, 4, 6, 8]
+#prefixes with e==0 (ties): 0  first few: []
+final e = 38613
+lag-1 autocorr r1 = -0.04243   (E[h]=0.56818)
+joint (h_i,h_{i+1}): {(0, 1): 72418, (1, 1): 88460, (1, 0): 72417, (0, 0): 49849}   P(1,1)=0.31242 vs E^2=0.32283
+control (iid fair switch bits): 200/200 trials dip below 0
+control (iid biased p=0.56): 133/200 trials dip below 0 at some prefix

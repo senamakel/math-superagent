@@ -1,0 +1,15 @@
+sieve 500000: 41538 primes, need > 30000
+  row 5000
+  row 10000
+  row 15000
+  row 20000
+  row 25000
+  VIOL n=3 nu2=0 w=1 ratio=0.0000
+  VIOL n=7 nu2=1 w=3 ratio=0.3333
+  VIOL n=8 nu2=1 w=3 ratio=0.3333
+  VIOL n=9 nu2=1 w=4 ratio=0.2500
+  VIOL n=13 nu2=3 w=7 ratio=0.4286
+  VIOL n=15 nu2=3 w=8 ratio=0.3750
+leg(a) nu2>=w/2 over n in [17,30000]: viol=6 first=3
+min nu2/w = 0.0000 at n=3
+equality contacts nu2==w/2: 6 (first [2, 5, 6, 11, 17])

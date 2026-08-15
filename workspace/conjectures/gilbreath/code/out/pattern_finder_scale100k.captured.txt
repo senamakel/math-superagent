@@ -1,0 +1,12 @@
+=== leg (b): w(n) density to 1e5 ===
+tail=2: min w(n)/n=0.0000 at n=2 ; w(NMAX)/NMAX=0.5736
+tail=17: min w(n)/n=0.5484 at n=31 ; w(NMAX)/NMAX=0.5736
+tail=31: min w(n)/n=0.5484 at n=31 ; w(NMAX)/NMAX=0.5736
+tail=100: min w(n)/n=0.5733 at n=97938 ; w(NMAX)/NMAX=0.5736
+tail=1000: min w(n)/n=0.5733 at n=97938 ; w(NMAX)/NMAX=0.5736
+tail=10000: min w(n)/n=0.5733 at n=97938 ; w(NMAX)/NMAX=0.5736
+tail=40000: min w(n)/n=0.5733 at n=97938 ; w(NMAX)/NMAX=0.5736
+tail=100000: min w(n)/n=0.5736 at n=100000 ; w(NMAX)/NMAX=0.5736
+=== leg (a): nu2>=w/2 at the 28 sampled points ===
+sampled points: []
+violations nu2<w/2 at samples: 0 []

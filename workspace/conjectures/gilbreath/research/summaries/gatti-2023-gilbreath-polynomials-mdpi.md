@@ -7,12 +7,18 @@
 
 ## Status of the claim
 
-UNCHANGED in strength: `gilbreath-polynomials-imply-gc` is **sourced-by-search
-digest only**. Downloads of the MDPI page and PDF endpoint (`https://www.mdpi.com/2227-7390/11/18/4006`
-and `/pdf`) both return HTTP 403; Preprints.org `202003.0145.v4` also 403s.
-No arXiv mirror is known. The paper's claim — GC follows from the polynomial
-bound `p_n − 2^{n−1} ≤ P_{n−1}(1)` — is taken verbatim from the search digest's
-quotation of the abstract.
+**UPDATED (librarian 2026): direct page text now captured.** The PDF endpoint
+still 403s, but the article page text was obtained via the library `read_sources`
+route (`gatti-2023-gilbreath-polynomials-mdpi.captured.md`), so the claim is no
+longer "sourced-by-search-digest only": the full definitional chain (G_n
+criterion, max K / min K, Gilbreath polynomials, Equation (6)) and the author's
+own concession are on record. **The claim itself is unchanged in strength**:
+the implication `p_n − 2^{n−1} ≤ P_{n−1}(1) ⟹ GC_n` reduces to
+`p_n ≤ max K(p_1..p_{n−1})`, which is exactly Gatti's Theorem 4 from the 2020
+preprint — already refuted here as an invalid proof (`gatti-2020-theorem4-proof-invalid`),
+and the MDPI paper itself concedes "bounds for p_n are not good enough to
+prove (7)". The 403 endpoints (MDPI page+PDF, Preprints v4) are still recorded
+as stubborn; no arXiv mirror is known.
 
 What the digest (two independent searches) does establish, reliably:
 

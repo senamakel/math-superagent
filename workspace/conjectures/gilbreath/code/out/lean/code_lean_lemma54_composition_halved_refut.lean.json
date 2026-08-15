@@ -1,0 +1,13 @@
+{
+  "axioms": [
+    "'budget_holds' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'runAbs_value' depends on axioms: [propext]",
+    "'one_not_in' depends on axioms: [propext, Quot.sound]",
+    "'halved_composition_refuted' depends on axioms: [propext, Quot.sound]",
+    "'halved_composition_not_a_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean/lemma54_composition_halved_refut.lean",
+  "sorries": [],
+  "verified": true
+}

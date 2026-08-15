@@ -1023,3 +1023,100 @@ fn a_multi_school_registry_still_declares_every_standing_team() -> agent::Result
     }
     Ok(())
 }
+
+/// Every role that may write a ledger is told how, and no role is told to use
+/// a tool it does not hold.
+///
+/// The `post_board` failure, guarded against at five times the surface. That
+/// tool was granted to three roles, mentioned in no prompt, and called **zero**
+/// times in a live three-school hour — the grant was right and the instruction
+/// was nowhere, so the only trace a model saw was an unexplained entry in a
+/// tool list. Five ledger tools arriving the same way would be a bigger version
+/// of exactly that.
+///
+/// The assertion runs in both directions on purpose. A role told to record and
+/// unable to is an error it discovers mid-turn; a role able to record and never
+/// asked is silent, costs nothing visible, and is what actually happened.
+#[test]
+fn every_role_that_may_write_a_ledger_is_told_how() {
+    use super::{LEDGER_WRITER_ROLES, LEDGER_WRITE_TOOLS, RolePrompts, schools};
+
+    // The tool's own name, which nothing else in this crate's prompts mentions.
+    // A prose phrase is the wrong marker here for the reason the board test
+    // records: the briefs are hard-wrapped, so a sentence spanning two lines
+    // never matches and the test fails for a reason unrelated to the behaviour.
+    let distinctive = "record_entry";
+
+    for school in schools::ALL {
+        let prompts = RolePrompts::for_school(template_workspace(), &school, true)
+            .expect("prompts assemble");
+        for (role, prompt) in prompts.by_role() {
+            let told = prompt.contains(distinctive);
+            let granted = LEDGER_WRITER_ROLES.contains(&role);
+            assert_eq!(
+                told, granted,
+                "`{role}` in `{}`: told how to record = {told}, may record = {granted}",
+                school.slug
+            );
+        }
+    }
+
+    // And the brief's list agrees with the bench that grants the tools. Neither
+    // can be derived from the other, so the agreement is asserted rather than
+    // arranged.
+    // The orchestrator is the top level rather than a specialist: its harness
+    // is returned by `register_planners` and never registered, so it has no
+    // registry entry to assert against and its authority is the harness alone.
+    let registry = default_registry(true).expect("the registry builds");
+    for role in LEDGER_WRITER_ROLES.into_iter().filter(|role| *role != "orchestrator") {
+        for wanted in LEDGER_WRITE_TOOLS {
+            assert!(
+                registry
+                    .get(role)
+                    .is_some_and(|bench| bench.tools.iter().any(|tool| *tool == wanted)),
+                "`{role}` is told how to record into a ledger but was never granted `{wanted}`"
+            );
+        }
+    }
+}
+
+/// Everything that can read a ledger is told the rendered copy is shortened.
+///
+/// This is the half of the split that decides whether the whole design works.
+/// The files in a prompt are bounded now, so a role that does not know
+/// `read_ledger` exists is strictly worse off than before the bound: it reads a
+/// truncated list, concludes the run holds nothing more, and re-proposes what
+/// was cut. Cheaper and dumber is not the trade.
+#[test]
+fn every_role_that_can_read_a_ledger_is_told_the_copy_is_shortened() {
+    use super::{LEDGER_BRIEF_WITHHELD, RolePrompts, schools};
+
+    let prompts = RolePrompts::for_school(template_workspace(), &schools::ALL[0], false)
+        .expect("prompts assemble");
+    for (role, prompt) in prompts.by_role() {
+        let told = prompt.contains("read_ledger");
+        let withheld = LEDGER_BRIEF_WITHHELD.contains(&role);
+        assert_eq!(
+            told, !withheld,
+            "`{role}`: told the rendered ledgers are shortened = {told}, withheld = {withheld}"
+        );
+    }
+
+    // And the read tools really are universal, since the brief above tells
+    // every role to use them.
+    let registry = default_registry(true).expect("the registry builds");
+    for (role, _) in prompts.by_role() {
+        if role == "judge" || role == "orchestrator" {
+            // The judge is deliberately tool-poor and the orchestrator is the
+            // top level rather than a registered specialist; for both, the
+            // harness rather than the registry is what decides.
+            continue;
+        }
+        assert!(
+            registry
+                .get(role)
+                .is_some_and(|bench| bench.tools.iter().any(|tool| *tool == "read_ledger")),
+            "`{role}` is told to pull from a ledger but was never granted `read_ledger`"
+        );
+    }
+}

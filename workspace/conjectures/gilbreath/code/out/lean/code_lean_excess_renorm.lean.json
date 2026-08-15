@@ -1,0 +1,18 @@
+{
+  "axioms": [
+    "'bulk_case' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'wall_case' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'low_case' does not depend on any axioms",
+    "'wall_right' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'wall_left' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'bulk_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'pointwise_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'bulk_strict' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'max_principle' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'bulk_strict_ltM' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean/excess_renorm.lean",
+  "sorries": [],
+  "verified": true
+}

@@ -1,6 +1,19 @@
 # Blair Morgan — The Return of the Lemma: Launchpads, corridor obstructions, and the shape of a counterexample (2026)
 
-**Source:** https://zenodo.org/records/19144967 (DOI 10.5281/zenodo.19144967), working paper v2.0, March 2026, author Blair Morgan (ORCID 0009-0003-1942-8103). Full text: `research/sources/blair-morgan-2026-return-of-the-lemma.full.md`. Companion to `blair-morgan-2026-local-condition-frontier.md` (v1.0 of the same programme, "Reducing Gilbreath's Conjecture to a Local Condition").
+## Status of the corridor claim in this run
+
+Item (iii) (the pure minimal corridor 8→7→6→5→4 is impossible from Row 2) has since been
+**independently confirmed by a forward re-derivation** in this run
+(`code/out/verify_morgan_corridor.notes.md`, claim `morgan-corridor-obstruction-forward-verified`,
+status: proved). Forward chain: frontier(y)=7 ⇒ x_7=0; frontier(z)=6 ⇒ x_6=0;
+frontier(u)=5 ⇒ x_5=0; breach value v_4=|u_4−4|=4 with u_4∈{0,2} ⇒ x_4=0. Row 2 has
+x_4..x_7=(2,2,2,2), so the corridor cannot originate at Row 2. It rules out only the
+**minimal** first-erosion path: non-minimal breaches (value ≥6), later frontier-8 rows,
+and stalled erosion remain — the frontier hypothesis and regeneration stay open.
+
+## Abstract / metadata
+
+**Source:** https://zenodo.org/records/19144967 (DOI 10.5281/zenodo.19144967), working paper v2.0, March 2026, author Blair Morgan (ORCID 0009-0003-1942-8103). Full text: `research/sources/blair-morgan-2026-return-of-the-lemma.full.md`. Companion: `blair-morgan-2026-local-condition-frontier.md` (v1.0, same programme).
 
 ## The {0,2} basin / frontier formulation
 

@@ -1,0 +1,55 @@
+P3: prefix imbalance |#1 - #0| of prime bits (first 3000):
+  final balance=556, max |balance|=557
+  (random-walk reference: ~sqrt(3000) = 55)
+
+P5: autocorrelation of prime bits (first 3000):
+  corr(k= 1): 0.4672  (0.5 = uncorrelated)
+  corr(k= 2): 0.5233  (0.5 = uncorrelated)
+  corr(k= 3): 0.5158  (0.5 = uncorrelated)
+  corr(k= 4): 0.5330  (0.5 = uncorrelated)
+  corr(k= 5): 0.5182  (0.5 = uncorrelated)
+  corr(k= 8): 0.5281  (0.5 = uncorrelated)
+  corr(k=16): 0.5141  (0.5 = uncorrelated)
+  corr(k=32): 0.5125  (0.5 = uncorrelated)
+
+P6: prime-bit run-length distribution (first 3000):
+  0-runs: n=799 mean=1.53 max=8
+  1-runs: n=800 mean=2.22 max=14
+  density of 1s: 0.5927 ; Bernoulli run mean would be 0-run 1.69, 1-run 2.45
+
+P2: majority margin (2w-(n-2)) at the end of each 0-run (prime bits):
+  (position n, 0-run length, margin 2w-(n-2)) for 0-runs >= 4:
+    (95, 6, 21)
+    (156, 4, 36)
+    (242, 4, 62)
+    (249, 4, 59)
+    (381, 4, 85)
+    (483, 4, 91)
+    (888, 4, 212)
+    (1082, 4, 248)
+    (1097, 4, 247)
+    (1383, 4, 277)
+    (1402, 8, 272)
+    (1470, 4, 284)
+
+Q4b: does appending alternating bits after (0^R,1^S) rescue the transfer?
+  (R= 8,S= 8)+alt01: min nu2/w=0.0288 viol=185 first=17
+  (R= 8,S= 8)+alt10: min nu2/w=0.0370 viol=186 first=17
+  (R= 8,S= 8)+zeros: min nu2/w=0.1250 viol=65 first=17
+  (R= 8,S= 8)+ones: min nu2/w=0.0048 viol=200 first=17
+  (R= 8,S=10)+alt01: min nu2/w=0.0381 viol=184 first=17
+  (R= 8,S=10)+alt10: min nu2/w=0.0476 viol=187 first=17
+  (R= 8,S=10)+zeros: min nu2/w=0.1250 viol=45 first=17
+  (R= 8,S=10)+ones: min nu2/w=0.0048 viol=202 first=17
+  (R=10,S=10)+alt01: min nu2/w=0.0476 viol=184 first=19
+  (R=10,S=10)+alt10: min nu2/w=0.0561 viol=185 first=19
+  (R=10,S=10)+zeros: min nu2/w=0.2500 viol=32 first=19
+  (R=10,S=10)+ones: min nu2/w=0.0048 viol=201 first=19
+  (R=12,S=12)+alt01: min nu2/w=0.0370 viol=183 first=21
+  (R=12,S=12)+alt10: min nu2/w=0.0463 viol=185 first=21
+  (R=12,S=12)+zeros: min nu2/w=0.1667 viol=66 first=21
+  (R=12,S=12)+ones: min nu2/w=0.0048 viol=203 first=21
+  (R=16,S=16)+alt01: min nu2/w=0.0268 viol=189 first=25
+  (R=16,S=16)+alt10: min nu2/w=0.0357 viol=191 first=25
+  (R=16,S=16)+zeros: min nu2/w=0.0625 viol=108 first=25
+  (R=16,S=16)+ones: min nu2/w=0.0048 viol=207 first=25

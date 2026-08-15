@@ -1,0 +1,49 @@
+======================================================================
+excess-height-renormalization — first-step verification
+======================================================================
+oracle A_1 first-12 match=True  [1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4]
+oracle A_2 first-12 match=True  [1, 0, 2, 2, 2, 2, 2, 2, 4, 4, 2, 2]
+oracle A_3 first-12 match=True  [1, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0]
+ORACLE ALL MATCH: True
+
+sieve=20000000, num_primes=1270607, depth=600
+
+======================================================================
+RESULTS
+======================================================================
+(1) interior self-similarity violations : 0   (expect 0)
+(2) subadditive domination violations   : 0   (expect 0)
+(3) wall drain rows (edge x=1,intr>=1)  : 94
+      drain matched t'=t-1              : 94
+      drain mismatched                  : 0
+      regeneration rows (x=1,intr_t=1)  : 61
+      regen produced t'=0               : 61
+      regen mismatched                  : 0
+    literal-spec zero-parent wall cells : 187657375
+      literal cells satisfying h'=t(i+1) : 187657375
+    wall tabulation (edge,intr_t)->t'   :
+      (x=0, intr_t=1) -> {1: 36}  (n=36)
+      (x=0, intr_t=2) -> {2: 13}  (n=13)
+      (x=0, intr_t=3) -> {3: 8}  (n=8)
+      (x=0, intr_t=4) -> {4: 2}  (n=2)
+      (x=0, intr_t=5) -> {5: 5}  (n=5)
+      (x=0, intr_t=6) -> {6: 4}  (n=4)
+      (x=1, intr_t=1) -> {0: 61}  (n=61)
+      (x=1, intr_t=2) -> {1: 16}  (n=16)
+      (x=1, intr_t=3) -> {2: 8}  (n=8)
+      (x=1, intr_t=4) -> {3: 4}  (n=4)
+      (x=1, intr_t=5) -> {4: 3}  (n=3)
+      (x=1, intr_t=6) -> {5: 2}  (n=2)
+(4) max principle: non-regen rows       : 556
+      max-principle violations          : 0   (expect 0)
+    layer grind: erosion runs tracked   : 26
+      erosion-run lengths                : [4, 2, 2, 3, 3, 8, 4, 9, 5, 5, 4, 4, 3, 3, 6, 5, 3, 2, 14, 13, 2, 2, 2, 3, 3, 13]
+      sample erosion-run trajectories   : [[3, 3, 2, 1], [1, 1], [1, 1], [2, 2, 1], [2, 2, 1], [2, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1], [4, 3, 3, 3, 3, 2, 2, 1, 1], [1, 1, 1, 1, 1], [2, 1, 1, 1, 1], [2, 1, 1, 1], [2, 2, 1, 1]]
+      steps within runs: held=68 rose=0 dropped-1=33 dropped->1=0
+    grind verdict: a height layer grinds EXACTLY 1 unit per erosion row with edge x=1 (drain law, 94 rows) and
+    holds on x=0 rows; depth-per-layer is 1 -> drain is LINEAR, constant-time per layer, NOT the dyadic/Ross digit-sum decay.
+
+======================================================================
+DONE depth=600, width(A_0)=1270607, workers=1 (serial, one row live), time=184.8s
+complexity: O(depth x width) time, O(width) space
+======================================================================

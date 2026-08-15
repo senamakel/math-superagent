@@ -1,7 +1,6 @@
 # OEIS A396593 — Run length transform of A089582
 
-**Full text:** `research/sources/oeis-A396593-run-length-of-second-entry.full.md`
-**Source URL:** https://oeis.org/A396593 (C. Owen Prestwood, May 29 2026, approved)
+**Source URL:** https://oeis.org/A396593 (C. Owen Prestwood, May 29 2026, approved). OEIS record is short; **this summary IS the complete captured page — there is no separate `sources/oeis-A396593-*.full.md`; do not search for one.**
 
 ## What this is and why the run needs it
 
@@ -47,5 +46,5 @@ hypotheses: A_0 = primes, absolute-difference operator.
 holds-here: yes — consistent with the proved reduction and rule90-interior-xor.
 status: catalogued (read from OEIS, not derived here).
 bearing: independent catalogue confirmation of the {0,2}-second-entry reduction and the Rule-90 interior structure; independently cites Miller 1970 and Odlyzko 1993.
-anchor: research/sources/oeis-A396593-run-length-of-second-entry.full.md
+anchor: research/summaries/oeis-A396593-run-length-of-second-entry.md (small catalogue record; the summary file is the complete captured page — no .full.md companion exists)
 ```

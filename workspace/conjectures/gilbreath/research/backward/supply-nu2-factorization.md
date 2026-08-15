@@ -35,40 +35,17 @@ Theorem 1.6 and the run's 2-separation hypothesis both point at.
 
 ```skeleton
 goal: For the prime sequence, ν₂(q_n) ≥ c·n for an absolute constant c > 0 and all sufficiently large n, where ν₂(q_n) is the number of 2s in the maximal {0,2} suffix (0-2 cycle) of the right diagonal δ(q_n). This is strictly stronger than the demand n^{0.526} in granville-nu2-reduction, so it discharges GN-supply-nu2-density.
-implies: |
-  Let h ∈ {0,1}^{n-2} be the halved-gap parity bits, h[j] = ((p_{j+2} − p_{j+1})/2) mod 2,
-  so h[j] = 1 ⟺ gap ≡ 2 (mod 4).
-
-  (1) LINEARIZATION [G-supply-linearization, OPEN]  ν₂(q_n) = wt(Φ_n h), where Φ_n is the
-      explicit F2 matrix whose (row, column) entry is [C(k,j) mod 2] over the fixed ancestor
-      window columns [2, n-1] and tail rows k = K..n-2. This is rule90-interior-xor (each
-      halved tail cell is the XOR of a Pascal-mod-2 window of the halved row-1 bits) composed
-      with the proved ancestor-window interval fact: the row-1 ancestors of the tail cells
-      (k, n-k), k = K..n-2, are exactly the fixed interval [2, n-1] of A_1.
-
-  (2) WEIGHT TRANSFER [G-supply-weight-transfer, OPEN]  For the explicit family Φ_n, there is
-      an absolute L such that any h ∈ {0,1}^{n-2} with no constant run (all-0 or all-1) of
-      length ≥ L satisfies wt(Φ_n h) ≥ c·n for an absolute c = c(L) > 0.
-
-  (3) NON-CONCENTRATION OF PRIMES [G-supply-nonconcentration, OPEN]  The prime h has no
-      constant run of length ≥ L (with the same absolute L as in (2)).
-
-  COMBINE: (1)+(2)+(3) give ν₂(q_n) = wt(Φ_n h) ≥ c·n. Since c·n > n^{0.526} for all large n,
-  this discharges GN-supply-nu2-density; that lemma, with the proved GN-lemma54-runway
-  (lemma54-re-derived-proof) and the discharged GN-demand-record-gap-bhp (BHP), proves GC by
-  strong induction over n exactly as in granville-nu2-reduction.md.
-
-  The two trivial killers — all-ones h and all-zeros h — are excluded by (3), and the fact that
-  they are the ONLY asymptotic obstruction to wt(Φ_n h) = o(n) is the content of (2), which is
-  the F2 nilpotence/involution classification, not a fresh dynamical claim.
-status: sketched
+implies: | Let h ∈ {0,1}^{n-2} be the halved-gap parity bits, h[j] = ((p_{j+2} − p_{j+1})/2) mod 2, so h[j] = 1 ⟺ gap ≡ 2 (mod 4). (1) LINEARIZATION [G-supply-linearization, OPEN]  ν₂(q_n) = wt(Φ_n h), where Φ_n is the explicit F2 matrix whose (row, column) entry is [C(k,j) mod 2] over the fixed ancestor window columns [2, n-1] and tail rows k = K..n-2. This is rule90-interior-xor (each halved tail cell is the XOR of a Pascal-mod-2 window of the halved row-1 bits) composed with the proved ancestor-window interval fact: the row-1 ancestors of the tail cells (k, n-k), k = K..n-2, are exactly the fixed interval [2, n-1] of A_1. (2) WEIGHT TRANSFER [G-supply-weight-transfer, OPEN]  For the explicit family Φ_n, there is an absolute L such that any h ∈ {0,1}^{n-2} with no constant run (all-0 or all-1) of length ≥ L satisfies wt(Φ_n h) ≥ c·n for an absolute c = c(L) > 0. (3) NON-CONCENTRATION OF PRIMES [G-supply-nonconcentration, OPEN]  The prime h has no constant run of length ≥ L (with the same absolute L as in (2)). COMBINE: (1)+(2)+(3) give ν₂(q_n) = wt(Φ_n h) ≥ c·n. Since c·n > n^{0.526} for all large n, this discharges GN-supply-nu2-density; that lemma, with the proved GN-lemma54-runway (lemma54-re-derived-proof) and the discharged GN-demand-record-gap-bhp (BHP), proves GC by strong induction over n exactly as in granville-nu2-reduction.md. The two trivial killers — all-ones h and all-zeros h — are excluded by (3), and the fact that they are the ONLY asymptotic obstruction to wt(Φ_n h) = o(n) is the content of (2), which is the F2 nilpotence/involution classification, not a fresh dynamical claim.
+killed-by: G-supply-nonconcentration (no constant run of length >= L in the halved-gap bit string h) is refuted unconditionally by Shiu 2000 (claim shiu-2000-strings-of-congruent-primes): arbitrarily long strings of consecutive primes all ≡ a (mod 4) give arbitrarily long all-0 runs of h. The only surviving weakening is sublinear total measure of long runs, which is exactly the mod-4 switch density — the single open gap, no combinatorial shortcut.
 rests-on: rule90-interior-xor, gilbreath-reduces-to-second-in-02, lemma54-re-derived-proof, granville-nu2-density-measured, los-2016-consecutive-pair-mod4-bias, bcz-2023-left-edge-stabilization, ducci-avart-nilpotent-concatenation
+status: broken
 ```
 
 ```gap
 id: G-supply-linearization
 lemma: ν₂(q_n) = wt(Φ_n h), where h[j] = ((p_{j+2} − p_{j+1})/2) mod 2 is the halved-gap parity bit string and Φ_n is the explicit F2 matrix with entries [C(k,j) mod 2] over tail rows k = K..n-2 and ancestor columns j = 2..n-1 (the fixed ancestor window). Every halved tail cell equals the XOR of a Pascal-mod-2 window of h, and the union of ancestor windows over the tail rows is exactly [2, n-1].
 status: open
+verified: nu2 == wt(Phi_n h) CONFIRMED exactly over the stated range — code/gap_analysis/linearization_verify.py (code/out/linearization_verify.captured.txt), 3 independent routes (direct {0,2}-suffix count under the d[2:-1] convention; per-cell XOR/Pascal fold valid on ALL column>=1 cells; explicit Phi_n h via comb parity C(n,m) odd iff m&~n==0), 0 violations at all 8 sparse samples {50,100,200,400,800,1600,3200,3999} and all 2951 dense n in [50,3000]; global per-cell fold == true halved mod-2 bit over 8,001,999 cells, 0 violations. Convention lock: all-ones and all-zeros h both give wt=0. Caveat: code/out/nu2_dense.txt uses a DIFFERENT terminal-inclusive convention and disagrees (20 vs 26 at n=50 etc.) — pre-existing artifact, the identity is verified under the d[2:-1] convention reconcile_nu2w uses. What it still lacks is a FORMAL PROOF (write-down is routine: bit-parity identity + ancestor-window interval), and the genuinely open legs remain weight-transfer (2) and prime non-concentration (3).
 next: |
   This is a write-down, not a conjecture: it is the composition of two already-established facts.
   (a) rule90-interior-xor (proved): a halved {0,2} cell at depth k equals XOR_j [C(k,j) mod 2]·h[base+j].

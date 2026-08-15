@@ -1,0 +1,58 @@
+descent/absorption lemma (Granville Lemma 5.4 core) - exhaustive exact-integer check
+CORRECTED case-split proof: branch 1 absorption (min x_s <= 2), branch 2 descent (all x_s >= 4)
+================================================================================================
+domain: L = 1..18, ALL 2^L patterns of {0,2}^L per L
+        even v in [0, 2L+8] for each L  (L+5 even values per pattern)
+        nu2 = # of 2s in the pattern;  x_0 = v, x_s = |x_{s-1} - c_s|
+
+  L  patterns       pairs   branch1   branch2  vSuff   vNec    vB  vPar  vClo   vB1   vB2d   vB2v  vPart   tIn2   tOut
+------------------------------------------------------------------------------------------------
+  1         2          12         5         7      0      0     0     0     0     0      0      0      0      0      0
+  2         4          28        12        16      0      0     0     0     0     0      0      0      0      0      0
+  3         8          64        28        36      0      0     0     0     0     0      0      0      0      0      0
+  4        16         144        64        80      0      0     0     0     0     0      0      0      0      0      0
+  5        32         320       144       176      0      0     0     0     0     0      0      0      0      0      0
+  6        64         704       320       384      0      0     0     0     0     0      0      0      0      0      0
+  7       128        1536       704       832      0      0     0     0     0     0      0      0      0      0      0
+  8       256        3328      1536      1792      0      0     0     0     0     0      0      0      0      0      0
+  9       512        7168      3328      3840      0      0     0     0     0     0      0      0      0      0      0
+ 10      1024       15360      7168      8192      0      0     0     0     0     0      0      0      0      0      0
+ 11      2048       32768     15360     17408      0      0     0     0     0     0      0      0      0      0      0
+ 12      4096       69632     32768     36864      0      0     0     0     0     0      0      0      0      0      0
+ 13      8192      147456     69632     77824      0      0     0     0     0     0      0      0      0      0      0
+ 14     16384      311296    147456    163840      0      0     0     0     0     0      0      0      0      0      0
+ 15     32768      655360    311296    344064      0      0     0     0     0     0      0      0      0      0      0
+ 16     65536     1376256    655360    720896      0      0     0     0     0     0      0      0      0      0      0
+ 17    131072     2883584   1376256   1507328      0      0     0     0     0     0      0      0      0      0      0
+ 18    262144     6029312   2883584   3145728      0      0     0     0     0     0      0      0      0      0      0
+------------------------------------------------------------------------------------------------
+total patterns: 524286    total (pattern, v) pairs: 11534328
+branch 1 (absorption: min x_s <= 2) pairs: 5505021   branch 2 (descent: all x_s >= 4) pairs: 6029307
+LARGEST L REACHED: 18
+
+VIOLATION REPORT (each expected 0, exact integers, exhaustive):
+  (a)  x_L in {0,2} <=> v <= 2*nu2+2
+       suff direction (v<=budget but not landed):        0
+       nec direction (v>budget  but landed):             0
+  (b)  v > 2*nu2+2 => x_L == v-2*nu2 AND x_L >= 4:       0
+  (0)  every x_s even:                                   0
+       {0,2} closed under the step (once in, never out): 0
+  (c)  branch 1: min x_s <= 2 => x_L in {0,2}:           0
+       branch 2: all x_s >= 4 => every step exact (-2 on 2, 0 on 0): 0
+       branch 2: x_L == v - 2*nu2:                       0
+       partition (branch1 <=> v<=budget, branch2 <=> v>budget): 0
+  (d)  tight boundary per pattern:
+       v = 2*nu2+2 -> x_L in {0,2} violations:          0
+       v = 2*nu2+2 -> x_L == 2 exactly (not 0):          0 (all patterns give exactly 2: True)
+       v = 2*nu2+4 -> x_L == 4 exactly:                  0
+
+closure table (structural claim): |0-0|=0 |0-2|=2 |2-0|=2 |2-2|=0  all in {0,2}
+case-split proof instantiated per pair:
+  if some x_t <= 2: x_t in {0,2} (even, nonneg), {0,2} absorbing -> x_L in {0,2}
+  else all x_s >= 4: each 2 subtracts exactly 2, each 0 passes through,
+        x_L = v - 2*nu2;  v <= 2*nu2+2 would force x_L <= 2 < 4, contradiction,
+        so this branch is exactly v > 2*nu2+2 and x_L = v - 2*nu2 >= 4.
+
+independent re-derivation (halved units d_s=|d_{s-1}-e_s|, x_s==2*d_s, claims (a),(b)) on L in [1, 2, 3, 4, 5, 6, 10, 18]: 6045944 (pattern,v) pairs, 0 mismatches
+
+RESULT: ALL CHECKS PASSED  (total pairs 11534328, largest L 18)

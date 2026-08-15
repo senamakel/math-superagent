@@ -1,0 +1,26 @@
+[1] nu2 cross-check vs rightdiag.cycle_and_nu2, primes
+    n  mine_nu2c  rightdiag_nu2     match
+   50        27        27      True
+  100        43        43      True
+  200        98        98      True
+  400       204       204      True
+  800       389       389      True
+ 1000       496       496      True
+  all match: True
+
+[2] Hand-verified alternating-2/4, n=10
+    A_0 = [2, 3, 5, 9, 11, 15, 17, 21, 23, 27]
+    A_1 = [1, 2, 4, 2, 4, 2, 4, 2, 4]
+    A_2 = [1, 2, 2, 2, 2, 2, 2, 2]
+    A_3 = [1, 0, 0, 0, 0, 0, 0]
+Traceback (most recent call last):
+  File "/workspace/code/directive55/verify_findings.py", line 64, in <module>
+    b = hand_verify_alt()
+        ^^^^^^^^^^^^^^^^^
+  File "/workspace/code/directive55/verify_findings.py", line 50, in hand_verify_alt
+    dd = [rows[k][n - k] for k in range(n + 1) if n - k < len(rows[k])]
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/directive55/verify_findings.py", line 50, in <listcomp>
+    dd = [rows[k][n - k] for k in range(n + 1) if n - k < len(rows[k])]
+                                                              ~~~~^^^
+IndexError: list index out of range

@@ -25,7 +25,7 @@ BHP demand side, and `research/notes/lemma54-discarded-case-is-universal.md`
 3. **ν₂ density measurement (executed).** `code/out/nu2_granville_check.captured.txt`
    (and two independent re-verifiers agree): ν₂/n in [0.42,0.52], n=50..3999.
 
-## What exists only as a program with NO captured output (unrun)
+## Link A is now FORMALISED (kernel-checked) — this section is superseded
 
 `code/out/verify_lemma54_v_le_gstar.py` — the **Link A** bound entry
 (`v <= g*_n` by induction: |a-b| <= max(a,b), so no diagonal step exceeds the
@@ -33,12 +33,14 @@ record gap) and its composition (`g*_n <= 2*nu2+2 => v <= g*_n <= 2*nu2+2 =>
 x_L in {0,2} => success`). **Directive 45:** `code/out/verify_lemma54_v_le_gstar.captured.txt` and
 `.captured2.txt` DO exist but are **vacuous** — the column loop ran over 0
 columns (`checked: 0`, `max margin 0.000`), because the {0,2}-suffix scan
-breaks on the terminal left-column entry 1 before finding any start. Link A
-remains **unverified** until fixed and re-run. The Link-A proof itself is elementary (a one-line induction,
-already argued in the script's comments and consistent with the non-increasing
-row max), but **it has not been machine-verified in-container**. Do not report
-the full composition as `checked`; it is `asserted` (elementary proof) plus the
-exhaustively-checked core.
+breaks on the terminal left-column entry 1 before finding any start.
+**SUPERSEDED 2026:** the combinatorial core of Link A (`|a−b| ≤ max(a,b)` and
+the generic orbit invariant `runAbs w el ≤ M` under `w ≤ M`, `∀e∈el, e≤M`) is
+now kernel-checked sorry-free in Lean (`code/lean/link_a.lean`, see
+`research/notes/lemma54-link-A-lean.md`). The non-vacuous real-column
+verification is also on record (`code/out/verify_lemma54_v_le_gstar.captured.txt`,
+1181 columns, 0 violations, margin 35.882 — claim
+`lemma54-lean-and-linkA-current-verified`).
 
 ## Genuinely open (a real test-shape gap, not just an unrun script)
 

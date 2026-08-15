@@ -1,0 +1,16 @@
+Q2: order of prime bits — same multiset, random permutation (minimal gaps, N=2000):
+  real prime bits in order: min nu2/w=0.5000, viol=0 first=None
+  worst over 8 random permutations: min nu2/w=0.3846
+
+Q3: real prime bits, minimal gaps, N=5000 (minimal gaps from prime bits):
+  N=5000 real bits: min nu2/w=0.5000, viol=0 first=None
+  equality points nu2==w/2 (first 10): [43] ... total 1
+
+Q4: canonical (0^R, 1^S) violation map (min ratio / first violation n):
+     R\S  |  4      6      8      10     12     16     20
+   4      | 1.00/-  1.00/-  1.00/-  1.00/-  0.08/17  0.06/17  0.05/17
+   6      | 1.00/-  1.00/-  1.00/-  0.30/17  0.17/17  0.06/17  0.06/17
+   8      | 1.00/-  1.00/-  0.12/17  0.12/17  0.12/17  0.06/17  0.06/17
+  10      | 1.00/-  0.50/-  0.25/19  0.25/19  0.17/19  0.06/19  0.06/19
+  12      | 0.75/-  0.67/-  0.25/21  0.25/21  0.17/21  0.06/21  0.06/21
+  16      | 1.00/-  0.67/-  0.25/25  0.25/25  0.17/25  0.06/25  0.06/25

@@ -1,5 +1,17 @@
 # Librarian cycle — Route B (Granville ν₂) precedent grounding
 
+```claim
+id: ruzsa-2001-abstract-via-bibliography
+statement: The abstract-level content of Ruzsa 2001 "Consecutive primes modulo 4" (Indag. Math. 12(4) 489-503, doi 10.1016/S0019-3577(01)80038-0, paywalled) is now held via the Martin et al. 2024 annotated bibliography for comparative prime number theory (arXiv:2309.08729, entry [231]): the number of pairs of consecutive primes <= x both congruent to 1 mod 4 is >> x loglog x / log^2 x, improving Shiu; the generalization replaces the single class 1 mod 4 by any set of phi(q)/2 reduced residue classes mod q; the proof uses Maier's method. Knapowski-Turan 1977 ([134]) unconditionally show the number of consecutive-prime pairs p_v,p_{v+1} both ≡1 mod 4 exceeds (log T)^B, and leave open the infinitude of consecutive TRIPLES ≡1 mod 4 and note the four pair-classes mod 4 are not equally likely (predating LOS 2016).
+hypotheses: consecutive primes, modulus 4 pair-residue statistic; (any) set of phi(q)/2 reduced classes mod q
+holds-here: yes (this is exactly the consecutive-pair mod-4 landscape that feeds nu_2; the equal-residue and switch pair-classes are the same 4 classes)
+status: sourced (abstract via the standard field survey, not the paywalled full text)
+bearing: The Ruzsa/Shiu/Knapowski-Turan results are all on the NON-SWITCH (equal-residue, gap ≡ 0 mod 4) direction, with only weak sub-density (>>x loglog x/log^2 x) or (log T)^B lower bounds. They give NO density lower bound on the SWITCH count (gap ≡ 2 mod 4) that nu_2(q_n) > n^beta needs. Re-confirms G-supply is genuinely open; the honest ceiling stays the conditional result at Hardy-Littlewood / Lemke Oliver-Soundararajan level.
+anchor: research/sources/martin-annotated-bibliography-comparative-prime-number-theory.full.md
+answers: the open G-supply request row (the Ruzsa abstract that was unobtainable is now held via this survey)
+```
+
+
 State of the reference library where it bears on the run's adopted approach
 (`research/approaches/chebyshev-bias-granville-nu2-supply.md`), as of this
 librarian cycle.

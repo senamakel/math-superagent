@@ -4,10 +4,15 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `descent_lemma.lean` | Even-unit formalisation of the descent/absorption lemma (Granville Lemma 5.4 core): orbit x_0=v, x_{s+1}= |
+| `excess_renorm.lean` | Lean 4 kernel-checked sorry-free proof of the excess-height renormalization identity (bulk/wall/low cases) and the max-principle over Nat.dist; consumption-side invariant of the absolute-difference operator. |
 | `gilbreath_reduction.lean` | Machine-checked Lean 4 reduction of Gilbreath's conjecture to the {0,2} second-entry claim: defines Step (absolute-difference operator), proves (odd, even, even, ...) shape preservation, |
 | `gilbreath_reduction.lean.bak` | Backup of gilbreath_reduction.lean made 2026-08-13 before the Directive 31 re-emission compile (sha256 e6e1a7228be4494aa25ef611b0e5a08db3b5a38419b3ecdbf1880f8317ef0767, byte-identical to the current file). Audit trail for the re-emission; the current gilbreath_reduction.lean is the authoritative copy. |
-| `probe2.lean` | _(undescribed)_ |
-| `probe3.lean` | _(undescribed)_ |
+| `lemma54_composition.lean` | Self-contained sorry-free Lean 4 formalisation of leg 2 of Granville Lemma 5.4 (the composition): re-derives Link A's |
+| `lemma54_composition_halved_refut.lean` | Located-error artifact: kernel-checked Lean refutation of the literal "clean composition lemma" in the HALVED domain (runAbs w el ∈ {0,2} given w ≤ 2·ν₁+2 over a {0,1} pattern). Counterexample el=[0], w=1: ν₁=0, budget 2, runAbs 1 [0]=1 ∉ {0,2}. Records that a {0,2}-valued orbit needs the EVEN {0,2} pattern (lemma54_even_forward), not the halved core, and that the composition leg itself is already kernel-checked in link_a.lean / lemma54_composition.lean. |
+| `lemma54_even_domain.lean` | Even-domain theorem of Granville Lemma 5.4, kernel-checked sorry-free in Lean 4 via the halving identity: reduces the {0,2}^L trajectory to the halved {0,1}^L core (descent_claim1/descent_claim2), proving v≤2ν₂+2 ⟹ d_L∈{0,2} (lemma54_even_forward), 2ν₂+2<v ⟹ d_L=v−2ν₂ (lemma54_even_high), their bundling (lemma54_even), and the biconditional (lemma54_even_iff). |
+| `link_a.lean` | Consolidated kernel-checked formalisation of Link A + the composition of Granville Lemma 5.4. Defines runAbs/countTwo ONCE (verbatim-identical to descent_lemma.lean's, enforced by link_a_drift_guard.py), carries the descent core (descent_backward) plus Link A (orbit_le_max <= max v (maxAll el)) and the composition (link_a_composition / _via_max / _full: g*_n <= 2*nu2+2 & v even => orbit lands in {0,2}). Directives 53 & the composition prerequisite: because cross-file import cannot pass lean_check in this container (fixed read-only module search path, verified), the fix is to keep the shared orbit machinery in one checkable unit and machine-guard its parity. |
+| `link_a_drift_guard.py` | Machine guard enforcing that link_a.lean's shared descent-core region (runAbs, countTwo, dist_even_even, absorbing, run_absorb, dist_even_two, run_high_even, run_inv_even, even_le_two, descent_backward) is byte-identical to descent_lemma.lean's, so the two files cannot silently diverge "by convention". Exit 0 iff all pass. This is the construction-level fix for Directive 53 where a true cross-file import is physically impossible under lean_check. |
 | `probe4.lean` | _(undescribed)_ |
 | `probe5.lean` | _(undescribed)_ |
 | `probe_even_sub.lean` | _(undescribed)_ |

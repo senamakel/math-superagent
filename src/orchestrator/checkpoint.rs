@@ -40,12 +40,20 @@ const COMMIT_NAME: &str = "math-agent";
 const COMMIT_EMAIL: &str = "math-agent@localhost";
 
 /// Tools whose success means the workspace changed on disk.
-const WRITING_TOOLS: [&str; 5] = [
+const WRITING_TOOLS: [&str; 9] = [
     "write_tool_file",
     "write_document",
     "edit_document",
     "download_document",
     "apply_patch",
+    // The ledger tools write a queue or an entry file *and* the derived
+    // Markdown beside it. A writing tool missing from this list is not an
+    // error anywhere — its writes are simply never committed, and the loss
+    // shows up as a workspace history with a gap in it.
+    "record_entry",
+    "close_entry",
+    "define_ledger",
+    "retire_ledger",
 ];
 
 /// Commits the workspace after each successful write.

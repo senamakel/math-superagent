@@ -105,6 +105,23 @@ impl std::fmt::Debug for SearchTools {
 /// argument; see [`board_tool`].
 const BOARD_TOOLS: [&str; 1] = ["post_board"];
 
+/// Recording into a ledger, for the roles that decide what the run does.
+///
+/// Granting these is not granting write access to every ledger: each spec names
+/// the roles that may write it and the tool checks the acting role against that
+/// list, which is what keeps a role holding `record_entry` out of a ledger it
+/// has no business in. See [`ledger::tool`].
+const LEDGER_WRITE_TOOLS: [&str; 2] = ["record_entry", "close_entry"];
+
+/// Changing the registry of ledgers itself.
+///
+/// Narrower than [`LEDGER_WRITE_TOOLS`], and deliberately. Recording into an
+/// axis is ordinary work; deciding the investigation needs a new axis is a
+/// planning judgement, and a runtime where every role can declare one grows an
+/// axis per attempt — the sprawl `code_layout::plan` measures in the agent's
+/// own programs, applied to its bookkeeping.
+const LEDGER_KEEPER_TOOLS: [&str; 2] = ["define_ledger", "retire_ledger"];
+
 const DISCOVERY_TOOLS: [&str; 4] = [
     "citation_graph",
     "find_similar_sources",
@@ -187,6 +204,12 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
         // working.
         "search_claims",
         "request_research",
+        // The pull side of every ledger, granted on the same argument: a role
+        // that cannot read what the run already recorded records it again. The
+        // rendered files in a prompt are shortened, so this is where the whole
+        // reason an approach was refuted actually lives.
+        "list_ledgers",
+        "read_ledger",
     ];
     // Every reasoning role's two ways back into what is already known: this
     // workspace's own record, and the note store that outlives it. They are
@@ -238,7 +261,7 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
 /// Returns an error when a name is already registered.
 fn register_code_writing_definitions(
     registry: &mut AgentRegistry,
-    document_tools: [&'static str; 14],
+    document_tools: [&'static str; 16],
     memory_tools: [&'static str; 3],
 ) -> Result<()> {
     for (name, title, description) in [
@@ -318,7 +341,7 @@ fn register_code_writing_definitions(
 /// the agents the solution loop adds on top of the original three.
 fn support_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 14],
+    document_tools: [&'static str; 16],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -347,9 +370,15 @@ fn support_agents(
         // otherwise pay to discover, and it is asserted rather than
         // established, which is exactly what the board carries and the claim
         // ledger must not.
+        // It closes tasks rather than opening them, and that split is the
+        // point: this role is the one that has just seen what an attempt
+        // actually produced, so it is the only one that can say what came of a
+        // task truthfully. What to do *next* is the planner's judgement, not
+        // the judgement of whoever finished the last thing.
         .with_tools(
             BOARD_TOOLS
                 .into_iter()
+                .chain(LEDGER_WRITE_TOOLS)
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
@@ -415,9 +444,16 @@ fn support_agents(
              which directions are open, and what the shared brief says.",
         )
         .with_model("openrouter")
+        // Reordering the work is most of what acting on a directive amounts
+        // to, and it was the one thing this role could previously only do by
+        // rewriting `TASKS.md` whole — which is how the record of what the run
+        // had already finished kept being deleted. It is not given the keeper
+        // tools: a directive redirects an investigation, it does not
+        // re-architect the runtime's bookkeeping.
         .with_tools(
             [SCRATCH_READ_TOOL]
                 .into_iter()
+                .chain(LEDGER_WRITE_TOOLS)
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
@@ -480,7 +516,7 @@ fn support_agents(
 ///
 /// The searcher's denial is narrower and sharper, and is documented beside it.
 fn planning_agents(
-    document_tools: [&'static str; 14],
+    document_tools: [&'static str; 16],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -491,7 +527,17 @@ fn planning_agents(
              names the gaps between them and what the run has established.",
         )
         .with_model("openrouter")
-        .with_tools(memory_tools.into_iter().chain(document_tools)),
+        // The `goals` ledger *is* this role's output — the skeletons under
+        // `research/backward/`. Recording a gap through the tool merges one
+        // field instead of re-emitting the file, so closing a gap three
+        // cycles in costs a line rather than a rewrite that can drop a
+        // sibling gap without anybody noticing.
+        .with_tools(
+            LEDGER_WRITE_TOOLS
+                .into_iter()
+                .chain(memory_tools)
+                .chain(document_tools),
+        ),
         // The third direction, and the only role allowed to move the target.
         // The reducer asks what would be enough and the inventor asks what
         // other route reaches the goal; both keep the goal fixed. This one
@@ -559,7 +605,7 @@ fn planning_agents(
 /// the solution loop drives.
 fn library_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 14],
+    document_tools: [&'static str; 16],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -620,6 +666,12 @@ fn library_agents(
             // one placed to say what it is about to spend it on before a
             // sibling spends the same run twice.
             .chain(BOARD_TOOLS)
+            // The role that decides what the run does next is the one that
+            // keeps the list of it, and the only one besides the orchestrator
+            // placed to judge that the investigation has grown an axis the
+            // runtime does not carry.
+            .chain(LEDGER_WRITE_TOOLS)
+            .chain(LEDGER_KEEPER_TOOLS)
             .chain(memory_tools)
             .chain(SCRATCH_TOOLS)
             .chain(document_tools),

@@ -1,10 +1,14 @@
-primes below 2e6: W=148932 gaps, columns n=20..1200 checked: 0
-Link A  v <= g*_n                : violations = 0  (expect 0)
-Lemma 5.4 hypothesis g*_n<=2nu2+2: violations = 0  (expect 0)
-max margin (2nu2+2)/g*_n         : 0.000
+primes below 2e6: W=148932 gaps, columns n=20..1200 checked: 1181
+Link A  v <= g*_n                 : violations = 0  (expect 0)
+Lemma 5.4 hypothesis g*_n<=2nu2+2 : violations = 0  (expect 0)
+max margin (2nu2+2)/g*_n          : 35.882
+sample eligible columns (n, tau, |cycle|, nu2, v, g*_n):
+    (20, 2, 17, 14, 2, 6)
+    (21, 2, 18, 10, 4, 6)
+    (22, 3, 18, 9, 2, 6)
+    (23, 2, 20, 8, 2, 6)
+    (24, 2, 21, 12, 2, 8)
 
 Composition: g*_n <= 2nu2+2  ==>  v <= g*_n <= 2nu2+2  ==>  x_L in {0,2}
-(descent lemma), so success transfers row to row. Lemma 5.4 re-derived
-with the delta=0 case handled as the null step and v <= g*_n closing
-the bound. This makes lemma54 re-derived a PROVED claim here.
-RESULT: VIOLATIONS
+(descent lemma), so success transfers row to row.
+RESULT: ALL CHECKS PASSED

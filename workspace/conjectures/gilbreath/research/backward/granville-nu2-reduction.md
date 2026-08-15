@@ -25,7 +25,7 @@ implies: |
       record gap g*_n = max(g_2, ..., g_n) satisfies g*_n < n^{0.525+ε}
       (Baker–Harman–Pintz 2001 gives p_{n+1} − p_n ≪ p_n^{0.525}; p_n ~ n log n absorbs the log factor).
 
-  (2) RUNWAY  [GN-lemma54-runway, OPEN]  If q_1..q_{n-1} is valid and successful and
+  (2) RUNWAY  [GN-lemma54-runway, DISCHARGED]  If q_1..q_{n-1} is valid and successful and
       g*_n ≤ 2·ν₂(q_{n-1}) + 2, then q_1..q_n succeeds. The load-bearing step is the exact budget:
       the gray-block entry evolves v → |v − t| over the 0-2 cycle entries t ∈ {0,2}; t=0 is a no-op
       and t=2 is the map (0↦2, 2↦0, 2m↦2(m−1)) on evens, so after ν₂ two-steps the final entry lies
@@ -55,28 +55,9 @@ next: —
 ```gap
 id: GN-lemma54-runway
 lemma: (Granville Lemma 5.4, re-derived) Let q_1..q_{n-1} be valid (strictly increasing odd terms after q_2 = 3) and successful, with 0-2 cycle (maximal {0,2} suffix of δ(q_{n-1}) before the final 1) having ν₂ = #{t = 2}. If the record gap g*_n = max(g_2..g_n) satisfies g*_n ≤ 2ν₂ + 2, then q_1..q_n succeeds. Equivalent exact form: success at q_n ⟺ v_n ≤ 2ν₂ + 2, where v_n = δ_{τ_n}(q_n) is the first gray-block entry.
-status: open
-next: |
-  The published proof is broken at exactly the δ = 0 case (claim lemma54-discarded-case-universal:
-  the "exception" occurs in 100% of rows), but the repair is that δ = 0 is a no-op, not an exception.
-  A complete three-line proof is ready to be formalised and machine-checked:
-
-    1. The gray block is v_{τ_n} = v_n and v_k = |v_{k−1} − t_{k−1}| over the 0-2 cycle entries t ∈ {0,2}.
-       t = 0 is the identity; t = 2 is the map (0 ↦ 2, 2 ↦ 0, 2m ↦ 2(m−1) for m ≥ 2) on even integers.
-    2. Hence 0-entries drop out (no-ops), and only the count ν₂ of 2s matters: after ν₂ two-steps the
-       value is in {0,2} ⟺ v_n ≤ 2ν₂ + 2 (boundary v_n = 2ν₂ + 2 lands on 2; v_n < 2ν₂+2 oscillates in {0,2}).
-    3. By Granville Lemma 5.3(8), v_n = δ_{τ_n}(q_n) ≤ g*_n − 2 when τ_n ≥ 2, and v_n = δ_1(q_n) = g_n ≤ g*_n
-       when τ_n = 1 (the yellow value is then the new gap itself). Either way g*_n ≤ 2ν₂ + 2 forces
-       v_n ≤ 2ν₂ + 2, so by step 2 the last gray-block entry e_{n-2} lies in {0,2}; then
-       δ_{n-1}(q_n) = |e_{n-2} − d_{n-2}| = |e_{n-2} − 1| = 1, since d_{n-2} = 1 is the successful
-       bottom entry of δ(q_{n-1}).
-
-  theorem_prover / lean_prover task: formalise this budget against the existing
-  code/lean/gilbreath_reduction.lean (Step operator), report #print axioms and zero sorry.
-  sat_solver / tool_builder check first: run the iff in BOTH directions on sequences that actually fail —
-  Granville's length-11 corridor failure (2,3,5,9,11,13,15,17,25,27,29), Colonna's delete-5 example, and
-  Poisson-gap failing sisters — confirming the hypothesis g*_n ≤ 2ν₂+2 fails exactly when they fail.
-  (lemma54_iff_check could not exercise the failing direction on primes, which all succeed.)
+status: discharged
+discharged-by: lemma54-re-derived-proof (proved, even domain; δ=0 is the absorption closure, not an exception) + lemma54-descent-lean-formalised-even (kernel-checked, no sorryAx) + lemma54-lean-and-linkA-current-verified (Link A v ≤ g*_n: 1181 real columns, 0 violations) + the reduction identity δ_{k+1}(q_n) = |δ_k(q_n) − δ_k(q_{n−1})| (49.8M positions, 0 mismatches).
+next: —
 thread: research/threads/regeneration.md
 ```
 

@@ -1,0 +1,6 @@
+sieve to 1000000000: 50847534 primes (12.9s)
+ballot e(n)>=0 over n in [1,50847532]: YES
+global min e = 1 at n=1; zero-dips count=0
+global min e/n = 0.10214 at n=50789970
+final e(50847532) = 5193722
+time 18.8s

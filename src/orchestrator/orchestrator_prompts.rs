@@ -411,6 +411,73 @@ const BOARD_BRIEF: &str = include_str!("../prompts/board.md");
 /// and a role that can post and was never asked.
 const BOARD_ROLES: [&str; 3] = ["reflection", "inventor", "goals"];
 
+/// What every role is told about the ledgers it can read.
+///
+/// Universal, because `list_ledgers` and `read_ledger` are granted with the
+/// document tools and for the same reason: a role that cannot read what the run
+/// already recorded records it again.
+///
+/// It is short on purpose. This one goes into all twenty-two prompts, so a
+/// paragraph here costs twenty-two paragraphs — the arithmetic that made
+/// `research/APPROACHES.md` worth 86 KB of prompt in the first place.
+const LEDGER_BRIEF: &str = include_str!("../prompts/ledgers.md");
+
+/// What the roles holding `record_entry` are additionally told.
+///
+/// Separate from [`LEDGER_BRIEF`] because most roles cannot write and would be
+/// paying for instructions they cannot act on.
+const LEDGER_WRITING_BRIEF: &str = include_str!("../prompts/ledger_writing.md");
+
+/// The roles that receive [`LEDGER_WRITING_BRIEF`].
+///
+/// Derived from nothing, for the reason [`BOARD_ROLES`] is not: the grants live
+/// in `orchestrator_registry`'s per-role `&'static str` arrays and in the
+/// harness registrations, neither of which is a queryable map. A test asserts
+/// the three agree.
+///
+/// The list exists at all because of what happened to `post_board` — granted to
+/// three roles, mentioned in no prompt, and called **zero** times in a live
+/// three-school hour. Five tools would be five times that failure.
+/// The two roles the reader brief is withheld from.
+///
+/// Both are told, in their own prompts, not to read around the investigation,
+/// and for the same reason: they are called many times against a small budget,
+/// and reading is the thing that would consume it. A judge that starts pulling
+/// ledgers stops judging, and a searcher scoring hundreds of candidates must
+/// not spend its budget on the argument surrounding them.
+///
+/// They still *hold* the read tools, which is deliberate. The brief is an
+/// instruction to go and read; withholding it is not the same as taking the
+/// capability away, and a judge checking one claim in a report against the
+/// ledger is exactly the use that should stay available.
+const LEDGER_BRIEF_WITHHELD: [&str; 2] = ["judge", "searcher"];
+
+const LEDGER_WRITER_ROLES: [&str; 5] = [
+    "goals",
+    "orchestrator",
+    "director",
+    "reflection",
+    "reducer",
+];
+
+/// What `role` is told about the ledgers, appended to its own guidance.
+///
+/// Returns the empty string only for a role the reader brief is withheld from
+/// and that cannot write — which is the judge and the searcher, and nothing
+/// else. See [`LEDGER_BRIEF_WITHHELD`].
+fn ledger_layer(role: &str) -> String {
+    let mut layer = String::new();
+    if !LEDGER_BRIEF_WITHHELD.contains(&role) {
+        layer.push_str("\n\n");
+        layer.push_str(LEDGER_BRIEF.trim());
+    }
+    if LEDGER_WRITER_ROLES.contains(&role) {
+        layer.push_str("\n\n");
+        layer.push_str(LEDGER_WRITING_BRIEF.trim());
+    }
+    layer
+}
+
 /// What a school adds to `role`'s brief, ready to prefix the built-in prompt.
 ///
 /// Returns the empty string when the school says nothing — which is the whole
@@ -480,6 +547,12 @@ impl RolePrompts {
             files.extend_from_slice(role_context(name));
             let context = load_workspace_files(workspace, &files)?;
             let guidance = load_workspace_files(workspace, &[&format!("prompts/{name}.md")])?;
+            // Appended to the role's own guidance rather than prepended to the
+            // shared prefix: this text is per-role, and `workspace_prompt`
+            // orders most-shared-to-least so the provider cache keys on a block
+            // every agent has in common. A per-role brief at the front would
+            // give each role its own cache namespace.
+            let guidance = format!("{guidance}{}", ledger_layer(name));
             // Concatenated rather than branched: an empty layer leaves `base`
             // exactly as it was, and `workspace_prompt` trims what it is given,
             // so the control school's output is unchanged to the byte.

@@ -1,6 +1,6 @@
 # OEIS A358691 — Kimberling's "Gilbreath transform", odd-indexed primes
 
-<!-- source: https://oeis.org/A358691 | full text: sources/oeis-A358691-gilbreath-transform.full.md (summary holds essentially all of it) -->
+<!-- source: https://oeis.org/A358691 | NO separate .full.md companion (OEIS record is short; this summary IS the complete captured page). Do not search for sources/oeis-A358691-*.full.md — it does not exist. -->
 
 ## What it establishes
 
@@ -53,5 +53,5 @@ hypotheses: none beyond the definition; the examples are conjectured in the entr
 holds-here: yes — the k·n+2 example independently matches the held modulo-k claim; the transform gives the leading-column map a name.
 status: catalogued (Kimberling, OEIS 2022); the kn+2 statement corroborates Li 2026 (asserted there, verified odd k<100,000).
 bearing: named object for the leading column; cross-source corroboration of the modulo-k family; a worked example of an eventually-1 transform.
-anchor: research/sources/oeis-A358691-gilbreath-transform.full.md
+anchor: research/summaries/oeis-A358691-gilbreath-transform.md (small catalogue record; the summary file is the complete captured page — no .full.md companion exists)
 ```

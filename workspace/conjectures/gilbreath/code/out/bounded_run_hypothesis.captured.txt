@@ -1,0 +1,32 @@
+Q1: real prime gap-bits (first 3000): max 0-run=8, max 1-run=14
+    first 100000: max 0-run=12, max 1-run=16
+
+Q4: prime pattern prefixes truncated when a run exceeds R:
+  R=1 : cut at n=2 (too short)
+  R=2 : cut at n=10 (too short)
+  R=3 : cut at n=17, min nu2/w=1.0000, viol=0 first=None
+  R=4 : cut at n=35, min nu2/w=0.5455, viol=0 first=None
+  R=5 : cut at n=36, min nu2/w=0.5455, viol=0 first=None
+  R=6 : cut at n=56, min nu2/w=0.5000, viol=0 first=None
+  R=8 : cut at n=105, min nu2/w=0.5000, viol=0 first=None
+
+Q2: random patterns with bounded runs, N=500, min nu2/w over 40 trials:
+  (R0,R1)=( 2, 2): worst min nu2/w=0.2143 over 40 trials, 5 trials violated
+  (R0,R1)=( 3, 3): worst min nu2/w=0.2500 over 40 trials, 4 trials violated
+  (R0,R1)=( 4, 4): worst min nu2/w=0.2500 over 40 trials, 10 trials violated
+  (R0,R1)=( 5, 5): worst min nu2/w=0.1250 over 40 trials, 13 trials violated
+  (R0,R1)=( 8, 8): worst min nu2/w=0.1538 over 40 trials, 29 trials violated
+  (R0,R1)=(16,16): worst min nu2/w=0.0000 over 40 trials, 40 trials violated
+
+Q3: canonical patterns (0^R, 1^R), n=2R+2:
+  R= 4 : min nu2/w=1.0000 viol=0 first=None
+  R= 5 : min nu2/w=1.0000 viol=0 first=None
+  R= 6 : min nu2/w=1.0000 viol=0 first=None
+  R= 7 : min nu2/w=1.0000 viol=0 first=None
+  R= 8 : min nu2/w=0.1250 viol=1 first=17
+  R= 9 : min nu2/w=0.2500 viol=2 first=17
+  R=10 : min nu2/w=0.2500 viol=2 first=19
+  R=12 : min nu2/w=0.1667 viol=4 first=21
+  R=16 : min nu2/w=0.0625 viol=8 first=25
+  R=24 : min nu2/w=0.0833 viol=12 first=33
+  R=32 : min nu2/w=0.0312 viol=19 first=45

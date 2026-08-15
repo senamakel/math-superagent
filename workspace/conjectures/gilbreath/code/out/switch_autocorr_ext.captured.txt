@@ -1,0 +1,55 @@
+base primes up to sqrt(4400000000)=66332 : 6613  (0.0s)
+primes consumed (gaps emitted incl 1,2): 200000000
+switch-bit length n = 199999996  (target 199999998)
+weight w = 109636133  (density 0.548181)
+per-step drift 2*E[h]-1 = 0.0964
+ballot e(n)=2w(n)-(n-2) >= 0 over all prefixes: YES (global min e = 0)
+final e(n) = 2*w - (n-2) = 19272272
+
+== centered autocorrelation of switch bit, lags 1..40 ==
+lag  1 : r=-0.0261
+lag  2 : r=0.0031
+lag  3 : r=0.0004
+lag  4 : r=0.0002
+lag  5 : r=-0.0001
+lag  6 : r=-0.0000
+lag  7 : r=-0.0000
+lag  8 : r=0.0001
+lag  9 : r=-0.0001
+lag 10 : r=0.0001
+lag 11 : r=0.0000
+lag 12 : r=0.0001
+lag 13 : r=-0.0001
+lag 14 : r=-0.0001
+lag 15 : r=-0.0000
+lag 16 : r=-0.0001
+lag 17 : r=-0.0002
+lag 18 : r=-0.0000
+lag 19 : r=-0.0000
+lag 20 : r=-0.0000
+lag 21 : r=-0.0000
+lag 22 : r=-0.0001
+lag 23 : r=-0.0000
+lag 24 : r=-0.0001
+lag 25 : r=-0.0002
+lag 26 : r=-0.0001
+lag 27 : r=-0.0000
+lag 28 : r=-0.0001
+lag 29 : r=0.0000
+lag 30 : r=-0.0000
+lag 31 : r=-0.0001
+lag 32 : r=-0.0001
+lag 33 : r=-0.0000
+lag 34 : r=-0.0001
+lag 35 : r=0.0000
+lag 36 : r=0.0000
+lag 37 : r=0.0001
+lag 38 : r=0.0001
+lag 39 : r=-0.0000
+lag 40 : r=-0.0001
+
+-- falsifier verdict --
+lag-1 negative (anti-clustering)? YES (r=-0.0261)
+drift positive? YES (2E[h]-1=0.0964)
+any lag>=2 |r| > 0.005? NO (max 0.0031 at lag 2)
+total time 144.4s

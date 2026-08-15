@@ -1,0 +1,17 @@
+sieve to 300000000: 16252325 primes
+window N=16252323 (primes to index 16252324 = 299999957)
+final w=9000722  final 2w-(N-2)=1749123
+e(n)>=0 for n in [2,16252323]: YES
+min e = 0 at n=4
+e==0 positions (first 12): [4, 6, 8] count 3
+  min e over [100,N] = 24 at n=100
+  min e over [1000,N] = 235 at n=1003
+  min e over [10000,N] = 1722 at n=10026
+  min e over [100000,N] = 14718 at n=100012
+  min e over [1000000,N] = 125145 at n=1000061
+identity e(n)=2R(n)-n over k in [2,200000]: OK
+
+composed nu2 >= (n-2)/4 check (uses measured nu2>=w/2 and w>=(n-2)/2 from e>=0):
+  (n-2)/4 > n^0.525 first at n=23
+  (n-2)/4 > n^0.550 first at n=27
+  (n-2)/4 > n^0.600 first at n=37

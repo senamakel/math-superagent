@@ -1,0 +1,71 @@
+==============================================================================
+Directive-55: nu2 >= c*w transfer characterization (exact ints)
+==============================================================================
+
+[1] Constant-gap refutation: q = (2,3,5,7,9,...) all gaps 2
+    (consecutive odds). delta(q_n)=(2n-1,2,0,...,0), nu2=O(1), w=n-2 -> inf.
+n      nu2_c   nu2_l   w        nu2_l/w 
+100    0       1       98       0.010204
+200    0       1       198      0.005051
+500    0       1       498      0.002008
+1000   0       1       998      0.001002
+1500   0       1       1498     0.000668
+2000   0       1       1998     0.000501
+    -> nu2 = 0 (canon) / 1 (literal) at n=2000, w=1998, nu2/w -> 0.  REFUTED universal transfer.
+
+[2] min nu2/w and min nu2/n over families (window n=100..2000)
+family             min nu2c/w min nu2l/w min nu2c/n min nu2l/n w-range   
+consecutive-odds   0.0000     0.0005     0.0000     0.0005     98..1998
+all-gaps-4         inf        inf        0.0000     0.0000     0..0
+alternating-2/4    0.0010     0.0020     0.0005     0.0010     49..999
+2-then-all-4       1.0000     1.0000     0.0005     0.0005     1..1
+2,2,4,2,4,...      0.0020     0.0030     0.0010     0.0015     50..1000
+
+[3] The primes (sieve to n=5000).
+primes             0.7049     0.7049     0.4300     0.4300    
+  prime rows (n,nu2c,nu2l,w,nu2c/w):
+    n=100   nu2c=43 nu2l=43 w=61 nu2c/w=0.705
+    n=200   nu2c=98 nu2l=98 w=126 nu2c/w=0.778
+    n=300   nu2c=152 nu2l=152 w=186 nu2c/w=0.817
+    n=400   nu2c=204 nu2l=204 w=245 nu2c/w=0.833
+    n=500   nu2c=249 nu2l=249 w=298 nu2c/w=0.836
+    n=600   nu2c=302 nu2l=302 w=369 nu2c/w=0.818
+    n=700   nu2c=357 nu2l=357 w=430 nu2c/w=0.830
+    n=800   nu2c=389 nu2l=389 w=493 nu2c/w=0.789
+    n=900   nu2c=445 nu2l=445 w=559 nu2c/w=0.796
+    n=1000  nu2c=496 nu2l=496 w=618 nu2c/w=0.803
+    n=1100  nu2c=561 nu2l=561 w=674 nu2c/w=0.832
+    n=1200  nu2c=583 nu2l=583 w=733 nu2c/w=0.795
+    n=1300  nu2c=645 nu2l=645 w=785 nu2c/w=0.822
+    n=1400  nu2c=718 nu2l=718 w=837 nu2c/w=0.858
+    n=1500  nu2c=772 nu2l=772 w=893 nu2c/w=0.865
+    n=1600  nu2c=786 nu2l=786 w=948 nu2c/w=0.829
+    n=1700  nu2c=852 nu2l=852 w=1016 nu2c/w=0.839
+    n=1800  nu2c=869 nu2l=869 w=1077 nu2c/w=0.807
+    n=1900  nu2c=925 nu2l=925 w=1135 nu2c/w=0.815
+    n=2000  nu2c=993 nu2l=993 w=1195 nu2c/w=0.831
+
+[4] Hypothesis assessment (which non-degeneracy restores nu2>=c*w?)
+    h[j] = (gap_j/2) mod 2 over j in [2,n-1]; w = wt(h).
+    Constant-gap/consecutive-odds case: h == all-ones, w = n-2.
+  H    statement                          verdict on consecutive-odds / primes
+  H_a  not all bits 1                     excludes all-ones (consec-odds); primes: h=(1,1,0,...) both values -> holds
+  H_b  at least one 0 and one 1           excludes all-ones and all-zeros; primes -> holds
+  H_c  w(n) -> infinity                   consec-odds w=n-2->inf: does NOT exclude degenerate case
+  H_d  both values with positive lower density excludes all-ones; primes -> holds (0 density 0.4, 1 density 0.6)
+  H_e  w(n) >= c*n for some c>0           consec-odds w=n-2 ~ n: does NOT exclude degenerate case
+
+  Measured facts from [2] and [3]:
+    consecutive-odds min nu2l/w = 0.001 (nu2=O(1), w~n -> transfer FAILS)
+    all-gaps-4  min nu2w = inf (h all-zeros, w=0)
+    primes      min nu2c/w = 0.705, min nu2l/w = 0.705 (transfer HOLDS)
+
+  WEAKEST H that (i) excludes the constant-gap degenerate case and (ii) the primes satisfy: H_a
+    (H_a 'not all bits 1' is implied by every stronger non-degeneracy that excludes all-ones, and is the minimal such; consecutive-odds violates it, all other families and primes satisfy it.)
+    Under H_a, the primes give measured nu2 >= c*w with c = min nu2c/w = 0.7049 > 0.
+    H_c and H_e are NOT sufficient: consecutive-odds satisfies both yet gives nu2/w -> 0.
+
+[Distinction]
+  The constant-gap example IS a successful 2-then-odds sequence (it collapses to all-1 rows: A_k(0)=1 for all k).
+  So it refutes the UNIVERSAL transfer lemma nu2>=c*w, never the general-class theorem (which the example satisfies).
+  A refuted transfer ROUTE is not a refuted theorem.

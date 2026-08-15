@@ -1,0 +1,19 @@
+sieve to 2233416590: 109092389 primes (33.1s)
+have primes p_1..p_109092389; need p_100000000; ok=True
+e(n)>=0 for all n in [2,100000000]: YES  viol=0 first=None
+global min e = 1 at n=2
+min e over n>=17: 6 at n=17
+min e over n>=100: 25 at n=100
+min e over n>=1000: 237 at n=1004
+min e over n>=10000: 1724 at n=10027
+min e over n>=100000: 14720 at n=100013
+min e over n>=1000000: 125147 at n=1000062
+final e(100000000) = 9922915
+  e(17) = 6
+  e(44) = 17
+  e(100) = 25
+  e(1000) = 239
+  e(1003) = 238
+  e(10000) = 1725
+  e(100000) = 14725
+  e(1000000) = 125155

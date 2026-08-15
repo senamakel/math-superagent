@@ -1,6 +1,6 @@
 # OEIS A213014 — number of zeros following the initial 1 (counts of the leading {0,2} block's 0-run)
 
-<!-- source: https://oeis.org/A213014 | full text: sources/oeis-A213014-zeros-before-first-term.full.md (small; summary holds the whole document) -->
+<!-- source: https://oeis.org/A213014 | NO separate .full.md companion (OEIS record is short; this summary IS the complete captured page). Do not search for sources/oeis-A213014-*.full.md — it does not exist. -->
 
 ## What it establishes
 
@@ -43,5 +43,5 @@ hypotheses: primes triangle; the standard Gilbreath array (row 0 = primes).
 holds-here: yes — the zero-run of the leading {0,2} block, counted at catalogue level; the descending runs are erosion in action.
 status: catalogued (Hasler 2012, OEIS); consistent with the run's proved step law and depth-1000 data.
 bearing: an independent catalogue statement of the {0,2}+then-2 mechanism, and the zero-count side of the A036277/A213014 reformulation of GC.
-anchor: research/sources/oeis-A213014-zeros-before-first-term.full.md
+anchor: research/summaries/oeis-A213014-zeros-before-first-term.md (small catalogue record; the summary file is the complete captured page — no .full.md companion exists)
 ```

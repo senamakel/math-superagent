@@ -29,10 +29,20 @@ use std::collections::BTreeSet;
 use std::fmt::Write as _;
 use std::path::Path;
 
+use super::ledger::budget;
 use super::text::truncate;
 
 /// The derived table, filed with the library it describes.
 pub(super) const CLAIMS_PATH: &str = "research/CLAIMS.md";
+
+/// Where the claim blocks themselves live.
+///
+/// Unlike every other ledger this one has no directory of its own: a claim is a
+/// fenced block inside whatever note established it, so a section that has been
+/// cut points at the library rather than at one folder. `search_claims` is the
+/// better route and the section blurbs say so; this is the answer to *where do
+/// I look* for a reader who is not an agent.
+const NOTES_ROOT: &str = "research/";
 
 /// Rows the rendered table carries.
 ///
@@ -824,28 +834,30 @@ impl Ledger {
     /// by leaving it unmentioned.
     fn append_contradictions(&self, out: &mut String) {
         let known: BTreeSet<&str> = self.claims.iter().map(|claim| claim.id.as_str()).collect();
-        let mut rows = String::new();
-        for claim in &self.claims {
-            for target in &claim.contradicts {
-                let note = if known.contains(target.as_str()) {
-                    String::new()
-                } else {
-                    " — _no claim of that id is on disk; either it was never written down or the \
-                     id is misspelled_"
-                        .to_string()
-                };
-                let _ = writeln!(
-                    rows,
-                    "- `{}` ({}) contradicts `{target}`{note}",
-                    claim.id, claim.source
-                );
-            }
-        }
+        let pairs = self
+            .claims
+            .iter()
+            .flat_map(|claim| claim.contradicts.iter().map(move |target| (claim, target)));
+        let (rows, dropped) = budget::listed(pairs, budget::MAX_LISTED, |rows, (claim, target)| {
+            let note = if known.contains(target.as_str()) {
+                String::new()
+            } else {
+                " — _no claim of that id is on disk; either it was never written down or the \
+                 id is misspelled_"
+                    .to_string()
+            };
+            let _ = writeln!(
+                rows,
+                "- `{}` ({}) contradicts `{target}`{note}",
+                claim.id, claim.source
+            );
+        });
         if rows.is_empty() {
             return;
         }
         out.push_str("\n## Contradictions\n\nResolve these before building on either side.\n\n");
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, NOTES_ROOT));
     }
 
     /// Lists claims that called themselves formalised and were downgraded.
@@ -868,37 +880,42 @@ impl Ledger {
              it says the workspace does not yet contain a proof of it. Run `lean_check` over the \
              file, fix what it reports, and the status returns on the next derivation.\n\n",
         );
-        for row in &self.unbacked {
+        let (rows, dropped) = budget::listed(&self.unbacked, budget::MAX_LISTED, |rows, row| {
             let _ = writeln!(
-                out,
+                rows,
                 "- `{}` ({}) — {}",
-                row.id, row.source, row.objection
+                row.id,
+                row.source,
+                truncate(&row.objection, budget::REASON_CHARS)
             );
-        }
+        });
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, NOTES_ROOT));
     }
 
     /// Lists claims the run is leaning on without having verified them.
     fn append_unverified(&self, out: &mut String) {
-        let mut rows = String::new();
-        for claim in self
+        let unverified = self
             .claims
             .iter()
-            .filter(|claim| claim.holds == Holds::Yes && claim.status == Status::Asserted)
-        {
+            .filter(|claim| claim.holds == Holds::Yes && claim.status == Status::Asserted);
+        let (rows, dropped) = budget::listed(unverified, budget::MAX_LISTED, |rows, claim| {
             let _ = writeln!(
                 rows,
                 "- `{}` ({}) — asserted by the source, not proved there and not checked here",
                 claim.id, claim.source
             );
-        }
+        });
         if rows.is_empty() {
             return;
         }
         out.push_str(
             "\n## Load-bearing but unverified\n\nTaken to hold here on a source's word alone. \
-             Verify by a second route, or say the result is unverified when reporting it.\n\n",
+             Verify by a second route, or say the result is unverified when reporting it. Search \
+             the whole ledger with `search_claims`.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, NOTES_ROOT));
     }
 
     /// Lists what the run read out of a catalogue rather than derived.
@@ -909,18 +926,17 @@ impl Ledger {
     /// the catalogue. Collapsing them loses that, and the distinction is the
     /// whole lesson of a run that reported a correct sum it had not computed.
     fn append_catalogued(&self, out: &mut String) {
-        let mut rows = String::new();
-        for claim in self
+        let catalogued = self
             .claims
             .iter()
-            .filter(|claim| claim.status == Status::Catalogued)
-        {
+            .filter(|claim| claim.status == Status::Catalogued);
+        let (rows, dropped) = budget::listed(catalogued, budget::MAX_LISTED, |rows, claim| {
             let _ = writeln!(
                 rows,
                 "- `{}` ({}) — read from a catalogue; no derivation here reproduces it",
                 claim.id, claim.source
             );
-        }
+        });
         if rows.is_empty() {
             return;
         }
@@ -932,6 +948,7 @@ impl Ledger {
              report the result as looked up.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, NOTES_ROOT));
     }
 
     /// Reports blocks that could not be read, rather than dropping them.
@@ -944,9 +961,16 @@ impl Ledger {
             return;
         }
         out.push_str("\n## Blocks that could not be read\n\n");
-        for fault in &self.malformed {
-            let _ = writeln!(out, "- `{}`: {}", fault.source, fault.reason);
-        }
+        let (rows, dropped) = budget::listed(&self.malformed, budget::MAX_LISTED, |rows, fault| {
+            let _ = writeln!(
+                rows,
+                "- `{}`: {}",
+                fault.source,
+                truncate(fault.reason, budget::REASON_CHARS)
+            );
+        });
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, NOTES_ROOT));
     }
 
     /// The request ids the library's claims say they answer.
@@ -1037,6 +1061,45 @@ pub(super) fn is_markdown(relative: &str) -> bool {
     std::path::Path::new(relative)
         .extension()
         .is_some_and(|extension| extension.eq_ignore_ascii_case("md"))
+}
+
+/// Characters of statement one indexed claim keeps.
+///
+/// Wider than every other ledger's headline, and that asymmetry is the finding
+/// rather than an inconsistency. An approach's index line exists to stop it
+/// being re-proposed, and the id does most of that work — the refutation behind
+/// it is elaboration. A claim's *statement* is not elaboration: it is the thing
+/// a role has to read to know it does not need to prove it again. Indexing it
+/// at a hundred and ten characters would leave a list of ids nobody can use.
+const INDEXED_STATEMENT: usize = 240;
+
+/// One line per claim: its id, its standing, and its statement.
+pub(super) fn index(workspace: &Path) -> String {
+    let ledger = collect(workspace);
+    let rows: Vec<(String, String, String)> = ledger
+        .claims
+        .iter()
+        .map(|claim| {
+            (
+                claim.id.clone(),
+                format!("{}, {}", claim.status.label(), claim.holds.label()),
+                claim.statement.clone(),
+            )
+        })
+        .collect();
+    super::ledger::index::render(
+        "claims",
+        "Claims",
+        "What the library establishes, with how well and whether the hypotheses hold here. A \
+         statement on this list does not need proving again — read it before you set out to \
+         establish something.",
+        rows.iter().map(|(id, status, headline)| super::ledger::index::Row {
+            id,
+            status,
+            headline,
+        }),
+        INDEXED_STATEMENT,
+    )
 }
 
 /// Re-derives the ledger from disk and rewrites [`CLAIMS_PATH`].

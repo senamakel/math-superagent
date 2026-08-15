@@ -1,0 +1,4 @@
+sbit (second entry): no GF(2) linear recurrence of order <= 12
+ebit (intruder==4): no GF(2) linear recurrence of order <= 12
+rbit (regen indicator): no GF(2) linear recurrence of order <= 12
+smallest eventual period of full 1000-term second-entry binary: None

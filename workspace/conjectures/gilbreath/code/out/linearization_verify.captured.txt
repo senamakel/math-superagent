@@ -1,0 +1,45 @@
+sieve to 1000000 : 78498 primes (need > 4001)
+
+=== GLOBAL identity b_k(i) = Pascal-fold of h, all cells i>=1 ===
+cells checked (k>=1,i>=1): 8001999  violations: 0
+
+=== (1) SPARSE sample set {50,..,3999}: per-cell + matrix weight ===
+n      nu2     wt(Phi h) sufCells cellViol sufK
+  
+50     26      26      41       0        OK
+100    42      42      95       0        OK
+200    98      98      194      0        OK
+400    203     203     394      0        OK
+800    389     389     794      0        OK
+1600   785     785     1597     0        OK
+3200   1604    1604    3196     0        OK
+3999   2048    2048    3983     0        OK
+per-cell suffix identity checked over 10294 cells, 0 violations
+
+=== (2) DENSE n in [50,3000]: nu2 == wt(Phi_n h) ===
+dense n in [50,3000]: 2951 n-values, nu2==wt violations: 0, per-cell identity violations: 0
+
+=== (3) CONVENTION LOCK: all-ones / all-zeros h through Phi_n ===
+n=50    suffix-cells=41  wt(all-ones h)=0  wt(all-zeros h)=0
+n=100   suffix-cells=95  wt(all-ones h)=0  wt(all-zeros h)=0
+n=200   suffix-cells=194  wt(all-ones h)=0  wt(all-zeros h)=0
+n=400   suffix-cells=394  wt(all-ones h)=0  wt(all-zeros h)=0
+n=800   suffix-cells=794  wt(all-ones h)=0  wt(all-zeros h)=0
+n=1600  suffix-cells=1597  wt(all-ones h)=0  wt(all-zeros h)=0
+n=3200  suffix-cells=3196  wt(all-ones h)=0  wt(all-zeros h)=0
+n=3999  suffix-cells=3983  wt(all-ones h)=0  wt(all-zeros h)=0
+
+=== CROSS-CHECK against recorded nu2 values (reconcile_nu2w) ===
+n=50    nu2=26   (recorded: 26,42,98,203,389,785,1604,2048)
+n=100   nu2=42   (recorded: 26,42,98,203,389,785,1604,2048)
+n=200   nu2=98   (recorded: 26,42,98,203,389,785,1604,2048)
+n=400   nu2=203   (recorded: 26,42,98,203,389,785,1604,2048)
+n=800   nu2=389   (recorded: 26,42,98,203,389,785,1604,2048)
+n=1600  nu2=785   (recorded: 26,42,98,203,389,785,1604,2048)
+n=3200  nu2=1604   (recorded: 26,42,98,203,389,785,1604,2048)
+n=3999  nu2=2048   (recorded: 26,42,98,203,389,785,1604,2048)
+
+RESULT: F2 linearization identity nu2(q_n) == wt(Phi_n h) CONFIRMED
+  over sparse samples [50, 100, 200, 400, 800, 1600, 3200, 3999] and dense n in [50,3000]
+  per-cell fold identity: 0 violations everywhere in column>=1 (8001999 cells dense-checked)
+  convention lock: all-ones/all-zeros h both give nu2=0 at all 8 samples

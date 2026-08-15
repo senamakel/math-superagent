@@ -10,6 +10,113 @@ derived file sits in `research/INDEX.md` as `_(undescribed)_` for a whole run.
 Where they live in the tree, and what an agent writes to produce them, is in
 [`workspace.md`](workspace.md).
 
+## What a ledger may cost a prompt
+
+Every one of these is routed into at least one role's system prompt, so its size
+is a bill paid on every model call in that role. On one live workspace the nine
+came to **393,995 of the 770,134 tokens** across all twenty-two assembled
+prompts — 51% — and nothing measured it.
+
+`research/APPROACHES.md` was 86 KB of that, and the shape of the failure is the
+part worth keeping. Every module had a `MAX_ROWS` and a `FIELD_CHARS`, and both
+governed the *table*. The list sections underneath — *What closed, and why*,
+*Not yet taken to the literature* — were written afterwards and bounded by
+nothing, so the table was about 2 KB and the sections were 84 KB, one refutation
+of them 5 KB on its own. Nothing was broken and no test failed. The file grew,
+and it was a third of the orchestrator's 63,833-token prompt before anybody
+counted.
+
+Three things now stand between a renderer and that, and the order matters
+because each catches what the one before it cannot.
+
+**Every list section goes through `ledger::budget::listed`.** It renders at most
+`MAX_LISTED` rows, truncates each prose field to `REASON_CHARS`, and returns how
+many rows it left out — which the caller must render, with the directory the
+rest is in. Both halves are load-bearing. Bounding the rows alone still admits
+forty five-kilobyte reasons, which is the same file by another route; and a
+section cut to its bound while reading as complete is worse than a long one,
+because the reader concludes the run holds nothing more.
+
+**The bounds are asserted, not intended** (`ledger/ceiling_test.rs`). Each
+ledger is rendered from a deliberately absurd fixture — sixty entries, six
+kilobytes of prose per field — and held under a stated ceiling. One test does
+not check a size at all: it renders sixty entries and then a hundred and eighty,
+and asserts the file grew by under two hundred characters. A ceiling alone
+cannot catch a section that grows slowly, and *past the bound, more entries must
+not mean more file* is the property that actually matters. Reintroducing the
+original defect makes the approach fixture render 209,312 characters and fails
+both.
+
+**A per-file budget is enforced where the tokens are spent** (`ledger::fit`, in
+`load_workspace_files`). Ten thousand tokens, the same `CONTEXT.md` gets, on the
+argument that no derived table has a case for costing more than the shared
+brief. This is a backstop and should never fire: a cut here lands wherever the
+character count falls, where a renderer can drop the fortieth closed approach
+and say so. It exists because the first two controls live in the modules that
+failed, and this one does not — and because the brief can be handed to a curator
+to compress, while a ledger is written by code and nothing in the run can make
+it smaller.
+
+## The index: what a prompt carries instead of the ledger
+
+Bounding the sections took the nine from 404,873 tokens across the twenty-two
+assembled prompts to 259,175. Most of what was left was still being re-sent on
+every model call to answer a question nobody was asking yet.
+
+The obvious next move is to replace each file with a sentence saying it exists
+and how to read it. That fails, and the reason is worth stating precisely: the
+obligation these files discharge is **specific**. It is not *be aware there are
+approaches*, it is *do not re-propose this one*. It is not *claims exist*, it is
+*do not re-prove this statement*. A description discharges neither, because
+neither is about the ledger — both are about the entries.
+
+So `ledger::index` keeps every entry's *identity* and drops the *reasoning*: one
+line per entry with its id, its status, and a headline, ending in the exact
+`read_ledger` call that fetches the rest. It is computed on the way into a
+prompt rather than written to disk — a second file would be a second thing to
+re-derive, keep in step, and describe — and `ledger::fit` still runs behind it.
+
+| | routed whole | bounded | indexed |
+| --- | ---: | ---: | ---: |
+| `APPROACHES` | 25,763 | 8,822 | ~1,900 |
+| `WEAKENED` | 7,808 | 7,630 | ~1,300 |
+| `CLAIMS` | 8,248 | 7,488 | ~3,700 |
+| `BACKWARD` | 7,801 | 5,186 | ~800 |
+| **all 22 prompts** | **770,134** | — | **491,924** |
+
+Three things that table settles, each of which is now a rule:
+
+**The win is per-ledger, not uniform.** `APPROACHES` collapses furthest because
+its payload is refutation prose nobody needs until they are considering that
+approach. `CLAIMS` only halves, because a claim's *statement* is the payload and
+cannot be indexed away — so it indexes at 240 characters of statement where the
+approach ledger keeps 110 of reason. The headline width is the caller's, not a
+constant.
+
+**Indexing a small ledger costs more than it saves.** `research/ENTAILMENT.md`
+is 266 tokens and an index of it, carrying a header explaining how to read the
+rest, comes to about 440. `index::worth_indexing` is that made mechanical; a
+uniform rule would have made two files larger.
+
+**The saving is only real if the pull happens.** A role that never calls
+`read_ledger` is cheaper *and dumber* — strictly worse than before the bound,
+because it reads a shortened list, concludes the run holds nothing more, and
+re-proposes what was cut. Every index therefore ends with the call that fetches
+the rest, and a test asserts every role reading one is told the copy is
+shortened. The judge and the searcher are the two exceptions, both told in their
+own prompts not to read around the investigation; they keep the tools and lose
+only the instruction.
+
+`ledger_report` prints what each ledger costs on disk beside what the current
+build would render, because those disagree until something writes to that ledger
+— so a run started before a bound changed keeps paying the old price, and
+reading only the on-disk column reports a fix as landed while every prompt still
+carries the old file.
+
+```sh
+cargo run --example derive_ledgers -- workspace/conjectures/gilbreath
+```
+
 `research/CLAIMS.md` (`claims.rs`) is the retrieval change. The unit of the
 library was a file, and a file is the wrong thing to retrieve: an agent about
 to compute something needs one statement with its hypotheses, not the note that
@@ -215,6 +322,82 @@ derivation is checked against a workspace a live run produced rather than only
 against a fixture, and it is how the stale dependency in `singmaster`'s
 `boundary-finite-collisions` skeleton was found — the header still says
 `sketched` while a lemma under it is `refuted`.
+
+## A ledger a run can declare
+
+Nine of these are Rust modules, and eight of the nine should stay that way:
+`closure` computes a transitive closure to a fixed point, `blueprint` detects
+cycles across files, `claims` reconciles a `formalised` status against kernel
+verdicts on disk. None of that is expressible as configuration and none of it
+should be.
+
+But a *module* is something only a release can add, and the run is the thing
+that discovers it needs an axis. The `research/folds/` folder above is the
+evidence: a live workspace built the topic axis by hand, badly, out of files
+nobody designed, and `threads` was written months later in response. That will
+happen again.
+
+So a ledger is also a **declaration** — `ledger/spec.rs` — and the engine
+renders a declared one and a built-in one the same way. A spec names its source
+(`queue`, an append-only jsonl; or `items`, one file per entry with a fenced
+block), its fields and what each is for, its statuses and which of them close an
+entry, and the sections its file renders. The static set a run starts with is
+`tasks`, `goals` — the sub-goal decomposition under `research/backward/` — and
+the board, plus the nine registered so `list_ledgers` and `read_ledger` reach
+every ledger rather than eight of twelve.
+
+Six tools serve all of them, and the count does not grow when a ledger is added.
+That is forced rather than chosen: the tool schema vec is built **once per run**
+(`agent_loop::run_loop`, with a regression test keeping it that way), so a
+ledger declared mid-run can get no tool of its own and can appear in no `enum`
+in anybody's schema. `ledger` is therefore a plain string checked against the
+registry at call time, and an unknown slug returns the list of real ones — which
+is the discovery path a model actually follows, in one turn, without having
+thought to call `list_ledgers` first.
+
+Four rules keep a declaration from undoing what the rest of this file argues
+for, and all four are code:
+
+- **It cannot raise a bound.** A section's `cap` is clamped against
+  `ledger::budget` when the spec is read. A ledger that could declare its own
+  bound would be a second route back to the 86 KB file.
+- **It cannot reach a system prompt.** Prompts are assembled once at container
+  start, so a mid-run ledger could not reach one even if the engine tried.
+  Nothing tries; the way in is `list_ledgers` then `read_ledger`.
+- **It cannot shadow a built-in or claim a built-in's derived path.** Every
+  prompt naming `tasks` is written against what `tasks` holds, and two writers
+  on one derived file is how each one's work disappears.
+- **It cannot reason.** The checks are a closed set — a required field, a known
+  status, a close with no reason — not an expression language.
+
+A declaration also carries **how that ledger is actually written**, and that is
+load-bearing rather than documentation. The write guard refuses an edit to a
+derived file and has to say what to do instead — and the answer is not the same
+for every ledger. A `queue` or `items` ledger takes `record_entry`; a
+runtime-rendered one does not.
+
+A live run found this the expensive way. The librarian tried to write
+`teams/BOARD.md`; the guard correctly refused and told it to use `record_entry`
+with `ledger: "board"` — which the board also refuses, because it is rendered by
+its own module and written with `post_board`, a tool the librarian does not even
+hold. One wasted call that time, because the role did not retry; a role that
+believed the message would have spent two and learned nothing. A refusal naming
+the wrong remedy is barely better than one naming none.
+
+The guard now reads the route off the spec, and a test asserts the two agree:
+an engine-written ledger must name `record_entry`, and a runtime-rendered one
+must not. Reintroducing the board's old message fails it by name. That gap was
+invisible to the original tests, which checked that the guard *refuses* and
+never that what it *recommends* can be followed — the kind of thing only a live
+run surfaces.
+
+Write authority is the *spec's*, not the grant's, and it has to be: the set of
+ledgers is not fixed when the tools are registered. Holding `record_entry` is
+not permission to write every ledger. The acting role is baked into the tool at
+construction, never an argument, on `post_board`'s reasoning — which is also why
+five new tools arrived with a brief and a test asserting every role that may
+write one is told how. `post_board` was granted to three roles, mentioned in no
+prompt, and called **zero** times in a live three-school hour.
 
 `search_claims` and `request_research` travel with the document tools, for the
 same reason the index tools do: whichever role is working is the one that needs

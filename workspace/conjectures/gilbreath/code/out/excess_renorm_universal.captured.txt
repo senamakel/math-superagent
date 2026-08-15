@@ -1,0 +1,36 @@
+========================================================================
+excess-height renormalization — UNIVERSAL verification
+M<=6, L<=9, all halved rows h in {0,1,...,M}^L, h(0)=0
+========================================================================
+  oracle A_1 first-12 match=True  [1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4]
+  oracle A_2 first-12 match=True  [1, 0, 2, 2, 2, 2, 2, 2, 4, 4, 2, 2]
+  oracle A_3 first-12 match=True  [1, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0]
+  ORACLE ALL MATCH (A_1..A_3): True
+
+(I) per-pair table: 49 ordered pairs, case-a=25 case-b=10 case-c=4, violations=0
+(II) full-row walk: 5764801 rows, 8 positions each, total positions=46118408
+     case-a positions=20588575, case-b=12353145, case-c=4941258
+     violations a/b/c/max = 0/0/0/0  (total=0, expect 0)
+
+(III) worked hand-check h=(0,1,2,4):
+      t  = [0, 0, 1, 3]
+      h' = [1, 1, 2]
+      t' = [0, 0, 1]
+      M  = max t = 3;  M' = max t' = 1
+      M'<=M : True   (M'=1, M=3)
+
+========================================================================
+SUMMARY
+========================================================================
+  total classes (M_L combos): 6 x 6=36 (M=6) across L<=9
+  total full rows walked     : 5764801
+  total (row,j) positions    : 46118408
+  pair-table positions       : 49
+  violations (pair table)    : 0
+  violations (row walk)      : 0
+  max-principle violations   : 0
+  hand-check M'<=M           : True (True)
+  VERDICT: ALL CHECKS PASS -- identity is UNIVERSAL over the finite class
+  runtime=22.86s
+  complexity: pair table O(M^2); full-row walk O(M^(L-1)*L) time, O(L) space (M^(L-1)<=6^8~1.7e6 rows)
+========================================================================

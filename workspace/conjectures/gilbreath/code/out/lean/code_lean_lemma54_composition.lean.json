@@ -1,0 +1,23 @@
+{
+  "axioms": [
+    "'dist_le_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'maxAll_ge' depends on axioms: [propext]",
+    "'run_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'orbit_le_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'dist_even_even' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'absorbing' does not depend on any axioms",
+    "'run_absorb' depends on axioms: [propext]",
+    "'dist_even_two' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'run_high_even' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'run_inv_even' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'even_le_two' depends on axioms: [propext, Quot.sound]",
+    "'descent_backward' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'lemma54_composition' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'lemma54_composition_via_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'lemma54_full' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean/lemma54_composition.lean",
+  "sorries": [],
+  "verified": true
+}

@@ -1,0 +1,71 @@
+==============================================================================
+(A) Universal claim  wt(Phi_n h) >= wt(h)/2  for all h in {0,1}^{n-2}
+==============================================================================
+n= 4 :      4 strings checked;     1 VIOLATE (nu2<w/2); first h=[1, 1] nu2=0 w=2
+n= 5 :      8 strings checked;     1 VIOLATE (nu2<w/2); first h=[1, 1, 1] nu2=0 w=3
+n= 6 :     16 strings checked;     2 VIOLATE (nu2<w/2); first h=[0, 1, 1, 1] nu2=1 w=3
+n= 7 :     32 strings checked;     5 VIOLATE (nu2<w/2); first h=[1, 0, 1, 0, 1] nu2=1 w=3
+n= 8 :     64 strings checked;     9 VIOLATE (nu2<w/2); first h=[1, 0, 1, 0, 1, 0] nu2=1 w=3
+n= 9 :    128 strings checked;    19 VIOLATE (nu2<w/2); first h=[1, 1, 1, 0, 0, 0, 0] nu2=1 w=3
+n=10 :    256 strings checked;    26 VIOLATE (nu2<w/2); first h=[1, 1, 1, 1, 0, 0, 0, 0] nu2=1 w=4
+n=11 :    512 strings checked;    46 VIOLATE (nu2<w/2); first h=[0, 1, 1, 1, 1, 0, 0, 0, 0] nu2=1 w=4
+n=12 :   1024 strings checked;    91 VIOLATE (nu2<w/2); first h=[0, 0, 1, 1, 1, 1, 0, 0, 0, 0] nu2=1 w=4
+n=13 :   2048 strings checked;   155 VIOLATE (nu2<w/2); first h=[1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0] nu2=1 w=3
+n=14 :   4096 strings checked;   272 VIOLATE (nu2<w/2); first h=[1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0] nu2=1 w=4
+n=15 :   8192 strings checked;   481 VIOLATE (nu2<w/2); first h=[1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0] nu2=1 w=5
+n=16 :  16384 strings checked;   870 VIOLATE (nu2<w/2); first h=[1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0] nu2=1 w=3
+n=17 :  32768 strings checked;  1500 VIOLATE (nu2<w/2); first h=[1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] nu2=1 w=3
+n=18 :  65536 strings checked;  2435 VIOLATE (nu2<w/2); first h=[1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] nu2=1 w=4
+n=19 : 131072 strings checked;  5013 VIOLATE (nu2<w/2); first h=[0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] nu2=1 w=4
+n=20 : 262144 strings checked;  9021 VIOLATE (nu2<w/2); first h=[0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] nu2=1 w=4
+First counterexample (smallest n): n=4 h=[1, 1] nu2=0 w=2  => wt(Phi_n h)=0 < w/2=1
+TOTAL violating h over all n=4..20: 19947
+
+==============================================================================
+(B) Worst-case ratio  min_{h!=0} wt(Phi_n h)/wt(h)  per n
+==============================================================================
+n= 4 : min ratio = 0.000000  (nu2=0 / w=2)  achieved by h=[1, 1] ; all-ones h=[1, 1] gives nu2=0 (ratio 0/2)
+n= 5 : min ratio = 0.000000  (nu2=0 / w=3)  achieved by h=[1, 1, 1] ; all-ones h=[1, 1, 1] gives nu2=0 (ratio 0/3)
+n= 6 : min ratio = 0.000000  (nu2=0 / w=4)  achieved by h=[1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1] gives nu2=0 (ratio 0/4)
+n= 7 : min ratio = 0.000000  (nu2=0 / w=5)  achieved by h=[1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1] gives nu2=0 (ratio 0/5)
+n= 8 : min ratio = 0.000000  (nu2=0 / w=6)  achieved by h=[1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/6)
+n= 9 : min ratio = 0.000000  (nu2=0 / w=7)  achieved by h=[1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/7)
+n=10 : min ratio = 0.000000  (nu2=0 / w=8)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/8)
+n=11 : min ratio = 0.000000  (nu2=0 / w=9)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/9)
+n=12 : min ratio = 0.000000  (nu2=0 / w=10)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/10)
+n=13 : min ratio = 0.000000  (nu2=0 / w=11)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/11)
+n=14 : min ratio = 0.000000  (nu2=0 / w=12)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/12)
+n=15 : min ratio = 0.000000  (nu2=0 / w=13)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/13)
+n=16 : min ratio = 0.000000  (nu2=0 / w=14)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/14)
+n=17 : min ratio = 0.000000  (nu2=0 / w=15)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/15)
+n=18 : min ratio = 0.000000  (nu2=0 / w=16)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/16)
+n=19 : min ratio = 0.000000  (nu2=0 / w=17)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/17)
+n=20 : min ratio = 0.000000  (nu2=0 / w=18)  achieved by h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] ; all-ones h=[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] gives nu2=0 (ratio 0/18)
+
+==============================================================================
+(C) Consecutive-odds q=(2,3,5,7,9,11,...): all gaps 2 mod 4
+    successful?  nu2 (run's tail convention)  w = n-2
+==============================================================================
+n= 0 len= 1 : bottom=2 SUCCESS | right diagonal=[2] | nu2=0  w=0  (2/3)w=0.0000
+n= 1 len= 2 : bottom=1 SUCCESS | right diagonal=[3, 1] | nu2=0  w=0  (2/3)w=0.0000
+n= 2 len= 3 : bottom=1 SUCCESS | right diagonal=[5, 2, 1] | nu2=0  w=0  (2/3)w=0.0000
+n= 3 len= 4 : bottom=1 SUCCESS | right diagonal=[7, 2, 0, 1] | nu2=0  w=1  (2/3)w=0.6667
+n= 4 len= 5 : bottom=1 SUCCESS | right diagonal=[9, 2, 0, 0, 1] | nu2=0  w=2  (2/3)w=1.3333
+n= 5 len= 6 : bottom=1 SUCCESS | right diagonal=[11, 2, 0, 0, 0, 1] | nu2=0  w=3  (2/3)w=2.0000
+n= 6 len= 7 : bottom=1 SUCCESS | right diagonal=[13, 2, 0, 0, 0, 0, 1] | nu2=0  w=4  (2/3)w=2.6667
+n= 7 len= 8 : bottom=1 SUCCESS | right diagonal=[15, 2, 0, 0, 0, 0, 0, 1] | nu2=0  w=5  (2/3)w=3.3333
+n= 8 len= 9 : bottom=1 SUCCESS | right diagonal=[17, 2, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=6  (2/3)w=4.0000
+n= 9 len=10 : bottom=1 SUCCESS | right diagonal=[19, 2, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=7  (2/3)w=4.6667
+n=10 len=11 : bottom=1 SUCCESS | right diagonal=[21, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=8  (2/3)w=5.3333
+n=11 len=12 : bottom=1 SUCCESS | right diagonal=[23, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=9  (2/3)w=6.0000
+n=12 len=13 : bottom=1 SUCCESS | right diagonal=[25, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=10  (2/3)w=6.6667
+n=13 len=14 : bottom=1 SUCCESS | right diagonal=[27, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=11  (2/3)w=7.3333
+n=14 len=15 : bottom=1 SUCCESS | right diagonal=[29, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=12  (2/3)w=8.0000
+n=15 len=16 : bottom=1 SUCCESS | right diagonal=[31, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=13  (2/3)w=8.6667
+n=16 len=17 : bottom=1 SUCCESS | right diagonal=[33, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=14  (2/3)w=9.3333
+n=17 len=18 : bottom=1 SUCCESS | right diagonal=[35, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=15  (2/3)w=10.0000
+n=18 len=19 : bottom=1 SUCCESS | right diagonal=[37, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] | nu2=0  w=16  (2/3)w=10.6667
+Consecutive-odds successful at every n in 0..18: True
+(n=0 is the single-entry triangle whose terminal is the entry q_1=2 itself, so success is only meaningful for n>=1; over n=1..18 success holds at every n.)
+=> refutes the universal transfer claim and g-supply-transfer:
+   nu2=0 (tail convention) while w grows linearly = n-2.
