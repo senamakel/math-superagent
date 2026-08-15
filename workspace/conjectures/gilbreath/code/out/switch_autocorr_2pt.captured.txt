@@ -1,0 +1,52 @@
+sieve 100000000 : 5761455 primes (2.5s)
+switch-bit length 999998
+weight density w/n (over window 3..N): 0.5626  (#1=562575)
+
+== centered autocorrelation of switch bit, lags 1..40 ==
+lag  1 : r=-0.0384
+lag  2 : r=0.0059
+lag  3 : r=0.0001
+lag  4 : r=0.0005
+lag  5 : r=-0.0006
+lag  6 : r=0.0008
+lag  7 : r=-0.0013
+lag  8 : r=-0.0005
+lag  9 : r=-0.0014
+lag 10 : r=0.0014
+lag 11 : r=0.0002
+lag 12 : r=0.0007
+lag 13 : r=-0.0017
+lag 14 : r=-0.0004
+lag 15 : r=0.0006
+lag 16 : r=0.0000
+lag 17 : r=0.0003
+lag 18 : r=0.0005
+lag 19 : r=-0.0011
+lag 20 : r=-0.0019
+lag 21 : r=0.0013
+lag 22 : r=-0.0003
+lag 23 : r=-0.0021
+lag 24 : r=-0.0013
+lag 25 : r=0.0000
+lag 26 : r=-0.0003
+lag 27 : r=-0.0010
+lag 28 : r=-0.0021
+lag 29 : r=0.0010
+lag 30 : r=0.0009
+lag 31 : r=0.0007
+lag 32 : r=0.0007
+lag 33 : r=-0.0005
+lag 34 : r=0.0000
+lag 35 : r=-0.0011
+lag 36 : r=0.0009
+lag 37 : r=0.0004
+lag 38 : r=0.0001
+lag 39 : r=-0.0003
+lag 40 : r=0.0001
+
+per-step drift 2*w/n - 1 = 0.1252
+
+joint consecutive h:  {(1, 0): 255542, (0, 1): 255541, (1, 1): 307033, (0, 0): 181881}
+P(1,1)=0.3070 P(1,0)=0.2555 P(0,1)=0.2555 P(0,0)=0.1819
+(P(1,1) vs mean^2=0.3165)
+total time 3.7s

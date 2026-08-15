@@ -29,27 +29,20 @@ formalise Link A and the composition too. The defective "each 2 contributed −2
 passage in `research/notes/lemma54-re-derived-proof.md` is DELETED, superseded
 by the kernel-checked case split.
 
-**Directive 48 remains in flight (below the Directive 50 items in TASKS.md).**
-The reduction audit (`code/gap_analysis/reduction_audit.py`,
-`code/out/reduction_audit.captured.txt`) has two reporting defects to fix:
-
-- **Prefix-determinism is the load-bearing fact and it is PROVABLE in three
-  lines, not ten samples.** The 0-2 cycle pattern of δ(q_n) is read from
-  δ(q_{n−1}) — by the right-diagonal identity `δ_k(q_n) = |δ_{k−1}(q_n) −
-  δ_{k−1}(q_{n−1})|`, the eps at position k is `δ_{k−1}(q_{n−1})`, an entry
-  of the stored prefix diagonal; q_n enters only at the diagonal bottom, so
-  no cycle-position eps depends on the trajectory. Hence ν₂ is fixed in
-  advance — this kills Directive 38's circularity worry. Next attempt writes
-  this as a one-paragraph proof and files it as a `proved` claim (not yet
-  filed); machine evidence is the capture's (B) line (49,873,204 checks,
-  0 mismatches) plus (C) (5 prefixes × 2 odd extensions identical).
-- **The capture's verdict line is self-contradictory and must be fixed.**
-  `reduction_audit.captured.txt` prints "ALL AUDIT CHECKS PASSED" after (D)
-  reports the diagonal-coordinate constant-1 erosion law REFUTED (1133
-  violations). A refutation is a finding, not a pass. Fix the exit logic so
-  (D)-refuted cannot print PASSED, then re-capture to `.captured2.txt`; keep
-  the distinction that (D) does NOT touch the proved row-direction block
-  lemma (`b_{k+1} ≥ b_k − 1`, 0 violations).
+**Directive 48 (audit) — CLOSED, both parts.** The verdict line was
+self-contradictory ("ALL AUDIT CHECKS PASSED" after the diagonal-coordinate
+erosion-law test refuted) and is fixed: `reduction_audit_corrected.captured.txt`
+(and `.captured2.txt`) now print a factual verdict — 45150 cells / 281
+columns, 0 violations, no "theorem"/"proved"/"proves" wording (Directive 51
+standing rule fully enforced in code). The (D) 1133 constant-1 "violations"
+were a transversal-quantity artifact, not a counterexample to the row block
+lemma (`b_{k+1} ≥ b_k − 1`, 0 violations). The prefix-determinism identity is
+PROVED and filed: `reduction-passage-exact` upgraded to `proved`
+(`research/notes/prefix-determinism-proof.md`), the three-line argument
+`δ_k(q_n) = |δ_{k−1}(q_n) − δ_{k−1}(q_{n−1})|` making every eps a
+stored-prefix entry so the {0,2} cycle and ν₂ are fixed before q_n is seen —
+kills Directive 38's circularity worry; machine-verified 0 mismatches (19,900
+identity + 59,697 eps-prefix positions). Nothing here is in flight.
 
 ## Run state (Directive 36 pivot)
 
@@ -172,7 +165,9 @@ Claim `cht-right-half-0d-scan-6e8`; anchor `research/notes/cht-right-half-scan.m
   transfer (`code/out/nu2_vs_gap_parity.captured.txt`): the {0,2}-tail cells'
   row-1 ancestor union is the fixed interval [2,n−1] of A_1; halved bits are 1
   iff `gap ≡ 2 (mod 4)`; `ν₂ ≥ w/2` holds at every sample (min ratio ν₂/w =
-  0.689). So G-supply reduces to a prime-gap-mod-4 frequency bound, not to the
+  0.689 on the sparse {50..3999} set; the dense n∈[50,3000] scan hits a lower
+  min 0.5152 at n=53 — same statistic, denser samples, reconciled in
+  `code/out/reconcile_nu2w.notes.md`, claim `nu2w-minima-reconciled`). So G-supply reduces to a prime-gap-mod-4 frequency bound, not to the
   absolute-difference dynamics. **Numerical only; not a proof.**
 - **Block profile rows 1..40:** `2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,289,288,739,873,872,871,872,871,870,869,868,867,866,865,2179,2178,2177,2176,2770,2769` (growth by roughly-doubling bursts at k≈15,20,23,35,39).
 
@@ -225,7 +220,10 @@ here.
   ν₂'s ancestor window in row-1 is the FIXED interval [2,n−1] of A_1 (the
   k=n−2 cell alone reaches column 2), halved bit h[j]=1 iff gap ≡ 2 (mod 4),
   w(n)=Hamming weight of that window. Measured w/n ≈ 0.60, ν₂/w ∈
-  [0.689, 0.867] (min 0.689), so ν₂ ≥ w/2 holds on every sample and a clean
+  [0.689, 0.867] on the sparse {50..3999} set (min 0.689 at n=100); the dense
+  n∈[50,3000] scan (reconciled, claim `nu2w-minima-reconciled`,
+  `code/out/reconcile_nu2w.notes.md`) reaches a lower min 0.5152 at n=53. Both
+  give ν₂ ≥ w/2 at every sample, so ν₂ ≥ w/2 holds on every sample and a clean
   transfer ν₂ ≥ w/c (small c) is plausible at these scales. So G-supply
   reduces to a prime-gap-mod-4 frequency bound — how often p_{n+1}−p_n ≡ 2
   (mod 4) — NOT to the absolute-difference dynamics. Numerical at 8 samples,

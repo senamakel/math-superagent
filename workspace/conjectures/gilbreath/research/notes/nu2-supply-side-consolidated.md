@@ -114,10 +114,10 @@ offers a third route but is not yet run (scholar has no exec tool in this run).
 
 ```claim
 id: g-supply-transfer-measured
-statement: For the prime right diagonal through q_n, let w(n) = #{2 <= j <= n-1 : gap_{j+1} == 2 (mod 4)} (the Hamming weight of the halved gap bits h[j]=(gap_{j+1}//2) mod 2, the row-1 ancestors of the {0,2}-tail cells whose union is the fixed interval [2,n-1]). Measured: w/n ~ 0.60; nu2/w in [0.689, 0.867] at sampled n in {50..3999} (min 0.689, so nu2 >= w/2 on every sample), and nu2/w in [0.827, 0.864] densely to N=30000. Hence nu2 >= c*n with c<1/2 is the honest Route B supply demand, and the transfer nu2 >= w/c for small c tracks the mod-4 gap-switch density.
+statement: For the prime right diagonal through q_n, let w(n) = #{2 <= j <= n-1 : gap_{j+1} == 2 (mod 4)} (the Hamming weight of the halved gap bits h[j]=(gap_{j+1}//2) mod 2, the row-1 ancestors of the {0,2}-tail cells whose union is the fixed interval [2,n-1]). Measured: w/n ~ 0.60; nu2/w in [0.689, 0.867] at sampled n in {50..3999} (min 0.689 at n=100), and nu2/w in [0.827, 0.864] densely to N=30000. A denser scan n in [50,3000] reaches a lower min 0.5152 at n=53 — the SAME statistic under identical conventions, only denser samples (see claim nu2w-minima-reconciled, code/out/reconcile_nu2w.notes.md), and nu2 >= w/2 holds at every measured n in both scans. Hence nu2 >= c*n with c<1/2 is the honest Route B supply demand, and the transfer nu2 >= w/c for small c tracks the mod-4 gap-switch density.
 hypotheses: primes below 5e4 (sampled to n=3999) and below 1e6 (dense to N=30000); {0,2} suffix of the right diagonal = maximal {0,2} suffix of delta_2..delta_{n-2}; exact integer arithmetic.
 holds-here: yes
 status: checked (two independent captured programs agree)
 bearing: quantifies the G-supply (nu2 >= c*n) deficit of Route B: the bound is far from tight (factor 26 over n^0.525 at n=3999) and reduces to a frequency statement on consecutive-prime mod-4 switches; the leading term n/2 is the LOS-2016 two-point framework (conjectural bias), the unconditional honest statement is an oscillating fluctuation (RS-1994, LOS-2017). No held source proves the bound.
-anchor: code/out/nu2_vs_gap_parity.captured.txt, code/out/nu2_dense_transfer.captured.txt, research/notes/nu2-supply-side-consolidated.md
+anchor: code/out/nu2_vs_gap_parity.captured.txt, code/out/nu2_dense_transfer.captured.txt, code/out/reconcile_nu2w.captured.txt, research/notes/nu2-supply-side-consolidated.md
 ```

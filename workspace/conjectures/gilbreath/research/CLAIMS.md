@@ -62,14 +62,14 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `fwd-diff-identity-refuted` | The identity A_k(i) = \|Δ_k(i)\| (iterated absolute difference equals the absolute value of the signed forward difference Δ_k(i) = Σ_{j=0}^k (−1)^j C(k,j) A_0(i+j)) is FALSE on the prime triangle: first violation at… | yes | checked | `code/out/check_fwd_diff_identity.notes.md` |
 | `g-balance-per-event-refuted` | The per-event bound j >= d, where j is the jump at a (2,4)-event and d is the number of erosion rows since the previous event, is FALSE on the prime rows to depth 1000. Explicit: transition 23 (739->873, j=134), then… | yes | checked | `research/approaches/g-balance-weakened-per-event-refuted.md` |
 | `g-supply-transfer-measured` | For the prime right diagonal through q_n, let w(n) = #{2 <= j <= n-1 : gap_{j+1} == 2 (mod 4)} (the Hamming weight of the halved gap bits h[j]=(gap_{j+1}//2) mod 2, the row-1 ancestors of the {0,2}-tail cells whose… | yes | checked | `research/notes/nu2-supply-side-consolidated.md` |
+| `g-supply-transfer-universal-refuted` | The universal combinatorial transfer nu2(q_n) >= (2/3)·w(n) for every successful 2-then-odds prefix is FALSE. Counterexample family: consecutive odds (all gaps = 2), successful for every n, gives w(n) = n-2 (maximal)… | yes | checked | `research/notes/g-supply-transfer-universal-refuted.md` |
 | `gallagher-1976-poisson-short-interval-model` | Under the (unproved) Hardy–Littlewood prime r-tuple conjecture, the number of primes in (n, n+h] for h ~ λ log N is Poisson(λ)-distributed in n < N (Theorem 1); unconditionally the count has an exponential upper bound… | **unchecked** | proved | `research/summaries/gallagher-1976-primes-in-short-intervals.md` |
 | `gantmacher-krein-sign-regularity-refuted` | The Gantmacher–Krein / Schoenberg variation-diminishing route to Gilbreath fails at its load-bearing premise: the alternating Pascal matrix M_{k,j} = (−1)^{k−j} binom(k,j) is NOT sign-regular of order 2 (2×2 minors of… | yes | asserted | `research/approaches/gantmacher-krein-oscillatory-matrix-sign-regularity.md` |
 | `gap-bounds-cannot-force-block-growth` | No held prime-gap result bounds the leading {0,2} block length b_k or the (2,4)-event jump sum from below for a 2-then-odds exactly-even-gap sequence: Baker–Harman–Pintz (p_{n+1}−p_n ≪ p_n^{0.525}), Torelli (p_{n+1} ≤… | yes | checked | `research/notes/block-growth-literature.md` |
 | `gatti-2020-lemma4-interval-completeness-refuted` | Gatti Lemma 4 / Theorem 3 assert K_S fills the whole parity class in ]min K, max K[. This interval-completeness is FALSE in general: Muney 2026 exhibits the first hole at length 5 for (2,3,5,9,15), and even the count… | yes | asserted | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
 | `gatti-2020-not-load-bearing` | gatti-2020-preprints-gilbreath-conditions (doi 10.20944/preprints202003.0145.v1, 8 Mar 2020, 10pp, NOT PEER-REVIEWED, 0 views 0 downloads 0 comments) is a claimed "proof of conditions" for GC via a global… | **unchecked** | asserted | `research/notes/library-state.md` |
-| `gatti-2020-parity-alternation-independent` | In any Gilbreath sequence, s_1 even ⟹ s_2..s_n all odd, s_1 odd ⟹ s_2..s_n all even (Gatti Lemmas 1–3, proved by induction on the extension equation) — an independent general-class statement of the parity alternation… | yes | checked | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
 
-_124 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_129 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -77,6 +77,7 @@ Resolve these before building on either side.
 
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-myth-retracted`
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-citation-correction`
+- `g-supply-transfer-universal-refuted` (research/notes/g-supply-transfer-universal-refuted.md) contradicts `g-supply-transfer` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `lemma54-lean-and-linkA-current-verified` (research/notes/scholar-reconciliation-lean-and-linkA-current.md) contradicts `regeneration-thread-blocked-by` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `odlyzko-block-lemma-asserted`
 

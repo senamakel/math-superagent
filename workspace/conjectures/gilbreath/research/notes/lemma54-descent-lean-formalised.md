@@ -39,7 +39,7 @@ No `sorryAx` anywhere.
 
 ## What it does NOT cover (do not let it grow in the retelling)
 
-- **Link A** (`v ≤ g*_n`) — still unverified after the Directive 45 vacuity.
+- **Link A** (`v ≤ g*_n`) — **VERIFIED non-vacuously** (supersedes the older "still unverified after Directive 45 vacuity": `code/out/verify_lemma54_v_le_gstar.captured.txt` checks 1181 real prime columns, 0 violations, margin 35.882; only the `captured2.txt` invocation was vacuous — see `scholar-reconciliation-lean-and-linkA-current.md` and claim `lemma54-lean-and-linkA-current-verified`).
 - **The composition** `g*_n ≤ 2ν₂+2 ⟹ success`.
 - **The reduction** from real column dynamics to the `(pattern, v)` model —
   the Directive 48 item 1 proof, still to be written.

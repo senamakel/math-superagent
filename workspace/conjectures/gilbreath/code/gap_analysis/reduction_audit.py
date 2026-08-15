@@ -265,21 +265,34 @@ def main():
         # nu2 = number of 2s in the cycle; report cycle length only as proxy.
     # (E) sanity: nu2 of 0-2 cycle density
     # ---- final aggregate ----------------------------------------------
-    # PASSED only when every check passes.  Checks (A) and (B) are asserted
-    # to zero; (D) is REPORTED, NOT ASSERTED: its diagonal-coordinate
-    # constant-1 erosion law is REFUTED here (erosion_viol violations over
-    # N-2 extensions).  (D) measures the {0,2}-suffix of an anti-diagonal,
-    # a quantity transversal to a row's leading {0,2} block, so it does NOT
-    # touch the row-direction block lemma b_{k+1} >= b_k - 1, which is
-    # CONFIRMED separately with 0 violations
-    # (code/gap_analysis/separate_row_vs_diagonal.py).
-    if erosion_viol == 0:
-        print("ALL AUDIT CHECKS PASSED")
-    else:
-        print(f"AUDIT RESULT: (D) diagonal-coordinate constant-1 erosion law "
-              f"REFUTED here ({erosion_viol} violations over {N - 2} extensions); "
-              f"all other checks (A,B,C) PASSED over cross-check and model-match "
-              f"with 0 violations.")
+    # Checks (A) and (B) are asserted to zero (they throw if violated).
+    # (C) is prefix-determinism and is consistent by construction.  (D) is
+    # REPORTED, NOT ASSERTED: its diagonal-coordinate constant-1 erosion law
+    # is REFUTED here (erosion_viol violations), but it measures the {0,2}-
+    # suffix of an anti-diagonal, a quantity transversal to a row's leading
+    # {0,2} block, so it does NOT touch the row-direction block lemma
+    # b_{k+1} >= b_k - 1, CONFIRMED separately with 0 violations
+    # (code/gap_analysis/separate_row_vs_diagonal.py).  The verdict below
+    # states the range of each check and reads CONFIRMED/REFUTED over the
+    # stated range only — a machine check over N real columns is not a proof.
+    print(f"AUDIT TOTALS: cross-check (A) 0 mismatches over n=1..50; "
+          f"model match (B) 0 mismatches over {checked_positions} real "
+          f"0-2-cycle positions; fixedness (C) {fixed_trials} prefixes, "
+          f"pattern prefix-determined; diagonal constant-1 law (D) "
+          f"{erosion_viol} violations over {N - 2} extensions.")
+    print(f"VERDICT: the passage from real right-diagonal column dynamics to "
+          f"the (pattern,v) descent model is CONFIRMED over the cross-check "
+          f"and {N} real columns with 0 violations; the pattern eps is read "
+          f"off the previous diagonal delta(q_{{n-1}}), so it is "
+          f"prefix-determined (check C) and does not depend on the "
+          f"trajectory's own value.")
+    print(f"  (D) distinction: the diagonal-coordinate constant-1 erosion "
+          f"law is REFUTED here ({erosion_viol} violations over {N - 2} "
+          f"extensions) but measures the anti-diagonal {{0,2}}-suffix, which "
+          f"is transversal to a row's leading {{0,2}} block; it does NOT "
+          f"touch the row-direction block lemma b_{{k+1}} >= b_k - 1, "
+          f"CONFIRMED separately with 0 violations "
+          f"(code/gap_analysis/separate_row_vs_diagonal.py).")
 
 if __name__ == "__main__":
     main()

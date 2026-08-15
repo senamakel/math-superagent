@@ -1,0 +1,133 @@
+LEAN VERIFY — THIS RUN (task 1)
+Lean (version 4.34.0-rc1, x86_64-unknown-linux-gnu, commit 3447a668783dbce1a8fdb97101dd067687b2b418, Release)
+Command per file: `lean <file>`, in /workspace/code/lean.  Exit 0 = compiled and kernel-checked.
+All five files are self-contained (no cross-file `import`; each carries its shared orbit machinery verbatim,
+machine-guarded by link_a_drift_guard.py).  #print axioms is at the bottom of each source.
+
+================================================================
+RESULT SUMMARY
+================================================================
+file                    compiled    # axiom-print lines    source 'sorry' decls    sorryAx in footprint
+descent_lemma.lean      true            8                         0                        none
+gilbreath_reduction.lean true           9                         0                        none
+link_a.lean             true           15                         0                        none
+lemma54_even_domain.lean true          27                         0                        none
+lemma54_composition.lean true          15                         0                        none
+
+All compiled with LEAN_EXIT=0.  `grep -c sorry` on each compiled output = 0.
+No bare `sorry` declarations in any source (only the words "sorry-free"/"sorry count" inside comments).
+No `sorryAx` anywhere in any axiom footprint below.
+
+================================================================
+descent_lemma.lean  — LEAN_EXIT=0
+================================================================
+'absorbing' does not depend on any axioms
+'run_absorb' depends on axioms: [propext]
+'run_high_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'run_inv_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'even_le_two' depends on axioms: [propext, Quot.sound]
+'descent_backward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'descent_high_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'descent_biconditional' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+Top theorem: descent_biconditional — axioms [propext, Classical.choice, Quot.sound].
+
+================================================================
+gilbreath_reduction.lean  — LEAN_EXIT=0
+================================================================
+(one linter warning, non-fatal: unused variable `shape` at line 103)
+'dist_odd_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'dist_dist_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'dist_one_eq_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'shape_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'gilbreath_reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'reduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'reduction_lemma' depends on axioms: [propext, Classical.choice, Quot.sound]
+'shape_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
+'shape_rows' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+Top theorem: gilbreath_reduction — axioms [propext, Classical.choice, Quot.sound].
+
+================================================================
+link_a.lean  — LEAN_EXIT=0
+================================================================
+'dist_even_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'absorbing' does not depend on any axioms
+'run_absorb' depends on axioms: [propext]
+'dist_even_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+'run_high_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'run_inv_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'even_le_two' depends on axioms: [propext, Quot.sound]
+'descent_backward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'dist_le_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+'maxAll_ge' depends on axioms: [propext]
+'run_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'orbit_le_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+'link_a_composition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'link_a_composition_via_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+'link_a_full' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+Top theorem: link_a_full — axioms [propext, Classical.choice, Quot.sound].
+
+================================================================
+lemma54_even_domain.lean  — LEAN_EXIT=0
+================================================================
+'absorbing01' does not depend on any axioms
+'run_absorb01' depends on axioms: [propext]
+'dist_one_nat' depends on axioms: [propext, Classical.choice, Quot.sound]
+'run_high01' depends on axioms: [propext, Classical.choice, Quot.sound]
+'run_inv01' depends on axioms: [propext, Classical.choice, Quot.sound]
+'descent_claim1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'descent_claim2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'absorbing02' does not depend on any axioms
+'run_absorb02' depends on axioms: [propext]
+'dist_even_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'even_of_two' depends on axioms: [propext, Quot.sound]
+'half_add_self' depends on axioms: [propext, Quot.sound]
+'halve_double' depends on axioms: [propext]
+'dist_even_double' depends on axioms: [propext, Classical.choice, Quot.sound]
+'dist_double_div2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'dist_even_halves' depends on axioms: [propext, Classical.choice, Quot.sound]
+'even_of_halve' depends on axioms: [propext, Quot.sound]
+'even_eq_double_halve' depends on axioms: [propext, Quot.sound]
+'two_mul_sub' depends on axioms: [propext]
+'runAbs_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'runAbs_halve' depends on axioms: [propext, Classical.choice, Quot.sound]
+'map_halve_zero_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'countTwo_eq_countOnes_half_of' depends on axioms: [propext, Classical.choice, Quot.sound]
+'lemma54_even_forward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'lemma54_even_high' depends on axioms: [propext, Classical.choice, Quot.sound]
+'lemma54_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'lemma54_even_iff' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+Top theorem: lemma54_even_iff — axioms [propext, Classical.choice, Quot.sound].
+
+================================================================
+lemma54_composition.lean  — LEAN_EXIT=0
+================================================================
+'dist_le_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+'maxAll_ge' depends on axioms: [propext]
+'run_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'orbit_le_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+'dist_even_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'absorbing' does not depend on any axioms
+'run_absorb' depends on axioms: [propext]
+'dist_even_two' depends on axioms: [propext, Classical.choice, Quot.sound]
+'run_high_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'run_inv_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'even_le_two' depends on axioms: [propext, Quot.sound]
+'descent_backward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'lemma54_composition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'lemma54_composition_via_max' depends on axioms: [propext, Classical.choice, Quot.sound]
+'lemma54_full' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+Top theorem: lemma54_full — axioms [propext, Classical.choice, Quot.sound].
+
+================================================================
+CONCLUSION
+================================================================
+Every file compiles (exit 0), every top theorem is sorry-free, and the axiom
+footprint of every theorem is within {propext, Classical.choice, Quot.sound} —
+the standard classical-choice / quotient / ext axioms of Mathlib, with the
+smallest (absorbing, halve_double, two_mul_sub, maxAll_ge) depending on no
+axioms or only propext.  There is no sorryAx anywhere.

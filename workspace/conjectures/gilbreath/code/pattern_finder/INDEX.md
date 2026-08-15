@@ -13,10 +13,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `combined_supply_tightness.py` | _(undescribed)_ |
 | `corrected_giant_analysis.py` | _(undescribed)_ |
 | `cycle_floor_analysis.py` | Extracts exact structural sequences (b-series-derived quantities) from the genuine regime k=1..161 of blocks_depth1000.json. |
+| `e_ballot_tightness.py` | _(undescribed)_ |
 | `edge_sliding_independent.py` | _(undescribed)_ |
 | `edge_sliding_timing.py` | _(undescribed)_ |
 | `equality_structure.py` | _(undescribed)_ |
 | `event_gap_analysis.py` | Event-gap analysis for the edge-sliding (rightmost-2 depth) prediction; consumes blocks_depth1000.json and conditional_rate_records.jsonl. |
+| `extract_e_walk.py` | _(undescribed)_ |
 | `extract_sequences.py` | Extracts the sequences of record (b, s, intruder, diffs, minima, regen rows, jumps, s-runs) from code/out/blocks_depth1000.json into the plain-text files now canonicalized in code/out/pattern_finder_outputs/. |
 | `giant_parity_falsify.py` | _(undescribed)_ |
 | `giant_parity_falsify2.py` | _(undescribed)_ |
@@ -42,11 +44,16 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `nu2_walk_increments.py` | Probes the increment structure of the nu2(q_n) supply series: per-step |
 | `nu2_worst_case.py` | _(undescribed)_ |
 | `order_balance_test.py` | _(undescribed)_ |
+| `pf_ballot_recheck_mine.py` | Independent re-verification of the Route B crux: pointwise mod-4 switch-majority e(n)=2R(n)-n>=0, confirmed for all n to 16.2M (sieve 3e8), with identity check and composed supply bound. |
+| `pointwise_switch_majority_crux.md` | Consolidated finding: the whole open supply side of Route B compresses to one clean pointwise ballot statement e(n)=2R(n)-n>=0, independently re-verified to n=16.2M, with the exact chain (leg b, leg a, composed > n^0.525) and the falsifier (first n with e(n)<0). |
 | `prefix_closure_bigram.py` | _(undescribed)_ |
+| `recheck_e_ballot.py` | _(undescribed)_ |
 | `step6_ratio_table.py` | Directive 30: step-6 ratio-bound table for Gilbreath giants from the existing 6e8 extraction (code/out/pattern_finder_outputs/giants_6e8.json). No new sieve, 1 worker. Excludes the k*=248 floating==0 width artifact, asserts the 15 survivor rows and 14 gaps match the operator's examples, prints the per-giant table (b_land, j_i, gap, ratio gap/(j+1), margin b_land-1, flooring), fits the gap trend two ways (numpy polyfit vs exact-arithmetic closed-form slope 594/455, R^2=0.1163), computes fair and p=0.6 parity p-values (14/15 even: p_fair=1/2048, p_0.6=0.005172), fits geometric growth of log(b_land) (factor e^0.5769 = 1.7805, next b ~ 41.24M at row 302, requiring W ~ 41,244,539 = pi ~ N/ln N with N = 847,917,348), and checks the ratio/cumulative-margin sufficiency over all 14 gaps (0 failures, min margin 2156). Writes code/out/step6_ratio_table.captured.txt and .json. Correctness: flooring formula W-(row+1)-1-b_land recomputed independently in the script and asserted equal to the stored JSON column; survivor/gap lists PASS the operator's worked examples; OLS slopes PASS independent closed-form exact-arithmetic checks; EXIT_CODE=0. |
+| `switch_autocorr_2pt.py` | Measures the two-point autocorrelation structure of the prime mod-4 switch bit h[k]=[gap_k≡2 mod 4] (centered autocorrelations lags 1..40, joint consecutive counts, per-step drift of the switch ballot). New finding: near-whiteness (lags>=2 |r|<0.0023, lag-1 −0.038); relevant to the open Route-B supply claim that the ballot e(n)>=0. |
 | `switch_majority_stream.py` | _(undescribed)_ |
 | `switch_walk_ballot.md` | Records the load-bearing prime-gap mod-4 ballot e(n)=2w(n)-(n-2)>=0 in every prefix, verified to 5e7 primes on three routes, and its exact role (with the transfer leg) in closing Route B's supply side. Conjectural; no unconditional proof exists. |
 | `switch_walk_extend.py` | _(undescribed)_ |
+| `switch_walk_linear.py` | _(undescribed)_ |
 | `tail_coverage_decomposition.py` | _(undescribed)_ |
 | `threshold_gap_table.py` | _(undescribed)_ |
 | `transfer_feature_corrected.py` | _(undescribed)_ |
@@ -54,9 +61,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `transfer_minimal_counterexample.py` | _(undescribed)_ |
 | `transfer_universality_test.py` | _(undescribed)_ |
 | `verify_1e9_independent.py` | Independent verification of giants_1e9.json by a second route: re-derives the giant table (rows/jumps/landings/floors/gaps) from the saved raw b array in pure Python, re-checks rows 1..247 vs the 6e8 record, recomputes the parity tail (C(n,1)+C(n,0))/2^n in exact Fractions, refits log2 b_land vs row0 with numpy independently of the program's inline fit, compares geometric vs linear r2, and states the block-lemma protection bound (n+1 rows) implied by the full-width {0,2} row 248. Correctness: asserts every re-derived quantity against the JSON and prints the settlement numbers; any mismatch aborts nonzero. |
+| `verify_ballot_supply_composition.py` | _(undescribed)_ |
 | `verify_dense_transfer_1e5.py` | _(undescribed)_ |
 | `verify_giants_6e8.py` | Independent pure-Python (exact int/Fraction, no numpy) verification of giants_6e8.json: 15 genuine giants after excluding the flooring==0 artifact, 14 gaps, exact OLS of gaps and of log(landing blocks), exact p-values, recharge-identity consistency 14/14. Output: code/out/verify_giants_6e8.captured.txt. |
+| `verify_legA_exact.py` | _(undescribed)_ |
 | `verify_step_law_transition.py` | Recomputes rows 235..240 at sieve 300M one row at a time, verifying the step law at the 238->239 transition (where a wide jump follows intrusion c=4); the OOM-fixed trustworthy version. |
+| `verify_supply_chain.py` | _(undescribed)_ |
+| `verify_supply_chain_runwindow.py` | _(undescribed)_ |
 | `wider_facts_verify.py` | _(undescribed)_ |
 | `wider_giant_sequences.py` | _(undescribed)_ |
 | `wider_giants_update.py` | _(undescribed)_ |

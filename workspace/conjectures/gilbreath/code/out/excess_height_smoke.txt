@@ -1,0 +1,43 @@
+======================================================================
+excess-height-renormalization — first-step verification
+======================================================================
+oracle A_1 first-12 match=True  [1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4]
+oracle A_2 first-12 match=True  [1, 0, 2, 2, 2, 2, 2, 2, 4, 4, 2, 2]
+oracle A_3 first-12 match=True  [1, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0]
+ORACLE ALL MATCH: True
+
+sieve=400000, num_primes=33860, depth=600
+
+======================================================================
+RESULTS
+======================================================================
+(1) interior self-similarity violations : 0   (expect 0)
+(2) subadditive domination violations   : 0   (expect 0)
+(3) wall drain rows (edge x=1,intr>=1)  : 56
+      drain matched t'=t-1              : 56
+      drain mismatched                  : 0
+      regeneration rows (x=1,intr_t=1)  : 39
+      regen produced t'=0               : 39
+      regen mismatched                  : 0
+    literal-spec zero-parent wall cells : 4971669
+      literal cells satisfying h'=t(i+1) : 4971669
+    wall tabulation (edge,intr_t)->t'   :
+      (x=0, intr_t=1) -> {1: 28}  (n=28)
+      (x=0, intr_t=2) -> {2: 5}  (n=5)
+      (x=0, intr_t=3) -> {3: 6}  (n=6)
+      (x=1, intr_t=1) -> {0: 39}  (n=39)
+      (x=1, intr_t=2) -> {1: 12}  (n=12)
+      (x=1, intr_t=3) -> {2: 4}  (n=4)
+      (x=1, intr_t=4) -> {3: 1}  (n=1)
+(4) max principle: non-regen rows       : 572
+      max-principle violations          : 0   (expect 0)
+      leftmost-tail rows tracked        : 11
+      rows where a 1-unit drop occurred  : 0
+      rows where height held/rose        : 11
+      pattern runs (D=dropped, -=held)  : [('-', 11)]
+      total rows                          : 11
+
+======================================================================
+DONE depth=600, width(A_0)=33860, workers=1 (serial, one row live), time=4.9s
+complexity: O(depth x width) time, O(width) space
+======================================================================

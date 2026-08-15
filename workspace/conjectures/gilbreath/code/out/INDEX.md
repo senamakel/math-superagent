@@ -15,6 +15,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `_run_oracle.py` | Thin launcher for scholar_oracle_run.py (student helper; imports code/, times it). |
 | `_run_scholar_check.py` | _(undescribed)_ |
 | `anticlustering_hypothesis.captured.txt` | _(undescribed)_ |
+| `b512.txt` | _(undescribed)_ |
 | `bernoulli_threshold.captured.txt` | _(undescribed)_ |
 | `bigjump_characterization.captured.txt` | _(undescribed)_ |
 | `bigjump_characterization.notes.md` | _(undescribed)_ |
@@ -25,6 +26,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `blocks_deep.captured.txt` | Output of `pattern/blocks_deep.py` that produced blocks_depth1000.json: min/max b, 60 regen rows, longest erosion 838, s/intruder stats. |
 | `blocks_deep_regen.captured.txt` | Earlier regen experiment output (superseded by the regeneration_* set). |
 | `blocks_depth1000.json` | The depth-1000 record analyzed here: `b` (block lengths, 1000), `s` (second entries), `intruder` (first value past block, `None` from k=162 = width exhaustion), D=1000, sieve 20M, 1270607 primes. |
+| `bm_block3.captured.txt` | _(undescribed)_ |
+| `bm_block3.py` | _(undescribed)_ |
+| `bm_blockprofile.captured.txt` | _(undescribed)_ |
+| `bm_blockprofile.py` | _(undescribed)_ |
+| `bm_blockprofile2.captured.txt` | _(undescribed)_ |
+| `bm_blockprofile2.py` | _(undescribed)_ |
 | `boundary_check.captured.txt` | Boundary lemma check output. |
 | `boundary_check.json` | Stored boundary-check facts. |
 | `boundary_edge_analysis.captured.txt` | _(undescribed)_ |
@@ -87,12 +94,15 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `descent_halved_verify.captured.txt` | _(undescribed)_ |
 | `descent_lemma_formalised.notes.md` | _(undescribed)_ |
 | `diagnose_d_violations.captured.txt` | _(undescribed)_ |
+| `diagnose_nu2_dense_discrepancy.captured.txt` | _(undescribed)_ |
 | `directive24_compute.captured.txt` | Output of `directive24/compute_width_degradation_and_growth.py`: (a) flooring(r)=(W−r−1)−b[r−1], k*=162 = first row with flooring<1000 (flooring drops 176,182→0 exactly, all rows 162..1000 have flooring=0); flooring at the 13 giant event rows (all genuine gaps, i=161 capped); (b) geometric-vs-linear fit of the 12 genuine (and all-13) post-jump blocks: GEOMETRIC wins, slope +0.519764, R²=0.943852 vs linear 0.783043, doubling factor 1.6816/event; per-step ratios; exact Fraction fits. |
 | `directive24_geometric_growth.md` | Markdown finding (b): geometric growth test. Geometric fit (log b vs event index) beats linear fit on both the 12 genuine giants (R² 0.9439 vs 0.7830; slope +0.519764; ×1.6816/event, doubling every ≈1.33 events) and all 13 (R² 0.9421 vs 0.8072); per-step ratios, residuals, caveats (12-point sample, description not proof). |
 | `directive24_verify.captured.txt` | Independent numpy verification of the directive24 compute: k*=162, flooring(r)=0 on all 839 rows 162..1000, 13/13 giant landing floors match the characterization table, 43 b-increasing steps with exactly the 13 giants having jump>1000, both fits reproduced to 6 decimals. |
 | `directive24_width_degradation.md` | Markdown finding (a): width-degradation caveat. k*=162; all measurements at rows ≥162 are LOWER BOUNDS (block glued to finite right edge from row 162); the 12 genuine giants all have event-row flooring ≥ 536,885 — none width-limited; first row past each giant with flooring<1000 is row 162 for all 13; table of 13 event rows with exact b_i, b_{i+1}, floors. |
 | `directive25_gap_trend.captured.txt` | Executed output of code/directive25/gap_trend_reconciliation.py: Part A inter-giant gaps (genuine 12) = 22,8,4,26,2,14,2,14,4,4,12 rows, mean 10.18, median 8, max 26, no trend (OLS R2 <= 0.11 both fits, Spearman rho = -0.141 exact); Part B observed ratios across the 11 genuine consecutive pairs (2.73..1.49, mean 1.91), sublinear rho_sub = 1 + C*b^(alpha-1) with alpha=0.388, C_pool=802.6, MSE 0.140 vs geometric 1.6816 MSE 0.154 - no decisive law on 12 points; ratios decline toward 1 with b (sublinear direction). Independent re-derivation reproduces gaps and all 11 ratios to 4 decimals. |
 | `directive25_gap_trend.md` | Finding note for Directive 25 items 3–4 (computed this cycle): inter-giant gap trend (flat, no growth with b or index — genuine-12 gaps 22,8,4,26,2,14,2,14,4,4,12) and the geometric-vs-sublinear reconciliation (observed rho declines toward 1 with b, tracking the sublinear law rho=1+C·b^(α−1), so ×1.68/event is a finite-sample description, not an asymptotic law). States the operative target: conjecture follows if the inter-giant gap G_k grows strictly slower than b^0.388. Carries claim directive25-gap-trend-and-reconciliation (checked, depth 1000, numerical evidence only). Anchors the captured output and the program. |
+| `dump_b512.py` | _(undescribed)_ |
+| `dump_seqs.py` | _(undescribed)_ |
 | `edge_map_invertibility.captured.txt` | _(undescribed)_ |
 | `edge_map_invertibility.notes.md` | _(undescribed)_ |
 | `edge_map_invertibility.py` | Proof-check of the sharpened edge-zero-run lemma: the halved-edge map h -> e of a {0,2} block under pure erosion is F2-linear and unitriangular (hence invertible), so every NONZERO block shows edge 2 within its n erosion reads (worst zero-run <= n-1, sharp, achieved by [1,0,..,0]-type patterns). Checks: unitriangular structure n=3..1024, three independent routes (Pascal convolution, literal |
@@ -111,6 +121,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `event_rate_sweep.captured.txt` | _(undescribed)_ |
 | `event_rate_sweep.notes.md` | _(undescribed)_ |
 | `event_rate_sweep_analysis.captured.txt` | _(undescribed)_ |
+| `excess_height_smoke.txt` | _(undescribed)_ |
+| `excess_height_verify.captured.txt` | _(undescribed)_ |
 | `exec.sh` | _(undescribed)_ |
 | `extract_witness.captured.txt` | Output of `pattern/extract_witness.py` (b, s, diffs for k=1..40). |
 | `final_run.py` | _(undescribed)_ |
@@ -138,10 +150,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `jump_closure_law.captured.txt` | _(undescribed)_ |
 | `jump_smooth_run_law.captured.txt` | _(undescribed)_ |
 | `jump_smooth_run_wider.captured.txt` | _(undescribed)_ |
+| `kernel_characterize.captured.txt` | _(undescribed)_ |
+| `kernel_characterize.notes.md` | Short notes accompanying kernel_characterize.py: states what Phi_n is, Part A's structural kernel result (all-ones in ker Phi_n for every n because row-k XORs a full Pascal row sum 2^(k-1) even, hence no positive universal covering constant c exists, ratio 0), and Part B's numerical finding that the real prime halved-gap bits avoid the kernel (nu2/w min 0.5152 at n=53 over n<=3000, never approaching 0). Marks Part A structural/proved and Part B numerical on the real primes. |
 | `lean_gilbreath_reduction.captured.txt` | `lean` compile of the machine-checked reduction of Gilbreath's conjecture to the {0,2} second-entry claim (EXIT=0), with `#print axioms` for every declaration = [propext, Classical.choice, Quot.sound], grep-verified zero sorryAx. |
 | `lean_gilbreath_reduction.notes.md` | Note for the above: what was run, the exact axiom ledgers, and the boundary (prime instantiation is computation-checked, not Lean-proved); carries claim block `lean-reduction-machine-checked`. |
 | `lean_reduction.captured.txt` | Directive 31 audit re-emission: `timeout 540 lean code/lean/gilbreath_reduction.lean` EXIT_CODE=0 (Lean 4.34.0-rc1, sha256 e6e1a7228be4494aa25ef611b0e5a08db3b5a38419b3ecdbf1880f8317ef0767 echoed into the capture); #print axioms for dist_odd_even, dist_dist_even, dist_one_eq_one, shape_theorem, gilbreath_reduction, reduction, reduction_lemma, shape_rows all exactly [propext, Classical.choice, Quot.sound], zero sorryAx, file now 1360 B. Backup at code/lean/gilbreath_reduction.lean.bak. |
 | `lean_shape.captured.txt` | `lean` compile of the repaired self-contained shape-preservation file (EXIT=0), axioms = standard base set. |
+| `lean_verify_THISRUN.captured.txt` | THIS-RUN capture of `lean` compilation of the five Lean formalisation files (code/lean/descent_lemma.lean, gilbreath_reduction.lean, link_a.lean, lemma54_even_domain.lean, lemma54_composition.lean). All compiled with LEAN_EXIT=0; zero sorry declarations (only the words inside comments), zero sorryAx; per-theorem #print axioms output (all within {propext, Classical.choice, Quot.sound}, the smallest depending on no axioms). Top theorems: descent_biconditional, gilbreath_reduction, link_a_full, lemma54_even_iff, lemma54_full. Established by running `lean` on each file in-container this run. |
 | `lemma54_composition.captured.txt` | _(undescribed)_ |
 | `lemma54_composition_formalised.notes.md` | Claim note recording the kernel-checked formalisation of the two remaining legs of Granville Lemma 5.4: Link A (orbit_le_max, the |
 | `lemma54_descent_check.captured.txt` | _(undescribed)_ |
@@ -151,6 +166,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `lemma54_rederive_filtered.captured.txt` | _(undescribed)_ |
 | `lemma54_rederive_filtered.notes.md` | _(undescribed)_ |
 | `lemma54_verify.captured.txt` | _(undescribed)_ |
+| `linearization_verify.captured.txt` | _(undescribed)_ |
 | `lipschitz_excess_probe.captured.txt` | _(undescribed)_ |
 | `mod4_ballot_autocorr.captured.txt` | _(undescribed)_ |
 | `mod4_switch_majority_1e7.captured.txt` | _(undescribed)_ |
@@ -207,6 +223,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_sampled_legA.py` | _(undescribed)_ |
 | `pattern_finder_scale100k.captured.txt` | _(undescribed)_ |
 | `pattern_finder_scale100k.py` | _(undescribed)_ |
+| `pattern_finder_sequence_recheck.md` | Pattern-finder recheck of the run's key integer sequences (nu2, fluctuation, ballot, block profile, second-entry run lengths). Confirms every stored regularity and adds the heavy-tailed increment-process observation for nu2. |
 | `pattern_finder_structural_scan.md` | Pattern-recognition scan: exact no-low-order results on the second-entry, block-profile, regen-gap, jump, giant-row sequences; confirms the monotone recharge surplus S_k (the one exploitable structure) and the giant-intruder-return and ratio-bound regularities over the real rows. |
 | `pattern_finder_switch_ballot.md` | Consolidates the one clean structural regularity of the whole run: the consecutive-prime mod-4 switch-majority ballot e(n)=#switches−#nonswitches ≥ 0 for all n, verified to 10^8 primes (min e=0 only at n=4,6,8; e(1e8)=9,922,915). States it is exactly the named-open ABGS-2011 supply statement, composed with the two transfer legs (nu2≥w/2 on n≥17, w≥n/2 from the ballot) to give nu2≥(n−2)/4>n^0.525 from n=23, 0 violations on dense [17,30000]. Records the sequence-tool negatives (no low-order recurrence/polynomial for e or nu2). Annex to the already-documented structural_scan and nu2_report. |
 | `pattern_finder_threshold_gaps.captured.txt` | _(undescribed)_ |
@@ -215,14 +232,21 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_w_density.captured.txt` | _(undescribed)_ |
 | `pattern_finder_w_density.py` | _(undescribed)_ |
 | `pattern_finder_wider_giants.captured.txt` | _(undescribed)_ |
+| `peek2.py` | _(undescribed)_ |
+| `pf_ballot_attack.captured.txt` | _(undescribed)_ |
+| `pf_ballot_recheck_mine.captured.txt` | _(undescribed)_ |
 | `prefix_closure_bigram.captured.txt` | _(undescribed)_ |
 | `prefix_determinism.captured.txt` | _(undescribed)_ |
 | `prefix_determinism_proof_check.py` | Machine check for the prefix-determinism identity (Directive 48 item 1): Part 1 verifies delta_k(q_n) = |
 | `probe_transfer_points.py` | _(undescribed)_ |
 | `reconcile_lemma54_NOTE.md` | _(undescribed)_ |
+| `reconcile_nu2w.captured.txt` | Capture of code/out/reconcile_nu2w.py: reproduces both recorded nu2/w minima with one code path — sparse-set {50,100,200,400,800,1600,3200,3999} min 0.6885 at n=100 (records claim A's 0.689), dense n in [50,3000] min 0.5152 at n=53 (records claim B's 0.5152); global min over [3,3000] is degenerate 0.0000 at n=3. Conventions identical (see notes). |
+| `reconcile_nu2w.notes.md` | Reconciliation note: the two recorded nu2/w minima (0.689 vs 0.5152) are the SAME statistic over different sample densities, not contradictory. Both use the identical d[2:-1] maximal-{0,2}-suffix nu2 and [2,n-1] halved-gap-weight w; 0.689 is the min over 8 sparse points (actual min at n=100), 0.5152 is the dense-scan min that happens to pass through n=53. nu2 >= w/2 (ratio >= 0.5) still holds at every measured n. |
+| `reconcile_nu2w.py` | Reconciles the two recorded nu2/w minima on the real primes (claims g-supply-transfer-measured 0.689 at sparse {50..3999} vs transfer-matrix-kernel-allones 0.5152 at n=53 over n<=3000). Sieves to 1e6, computes nu2(q_n)=count of 2s in maximal {0,2} suffix of diag(n)[2:-1] and w(n)=Hamming weight of halved gap bits h[j]=(gap_{j+1}//2) mod 2 over [2,n-1]; reports nu2/w at every n in [3,3000] plus the sparse set. Exact integers; O(N loglog N) sieve + O(4001^2) triangle. Verified: reproduces both recorded minima exactly. |
 | `reduction_audit.captured.txt` | _(undescribed)_ |
 | `reduction_audit.captured2.txt` | _(undescribed)_ |
-| `reduction_audit.recapture.txt` | Fresh capture of code/gap_analysis/reduction_audit.py audit of the Granville right-diagonal reduction identity. EXIT_CODE=0. Oracle rows A1/A2/A3 reproduced exactly; (A) diagonal-bottom vs full-triangle cross-check 0 mismatches (n=1..20 and 21..50); (B) model match of delta_k(q_n)=|delta_{k-1}(q_n)-eps_{k-1}| over 49,873,204 0-2-cycle positions, 0 mismatches; (C) prefix-determinism fixedness confirmed; (D) diagonal-coordinate constant-1 erosion law REFUTED (1133 violations over 9999 extensions), correctly NOT printed as PASSED, and scoped as not touching the row-direction block lemma. This is the Directive 51 verdict-line fix re-captured: a refutation prints REFUTED, never PASSED. |
+| `reduction_audit.recapture.txt` | Fresh capture of code/gap_analysis/reduction_audit.py audit of the Granville right-diagonal reduction identity. EXIT_CODE=0. Oracle rows A1/A2/A3 reproduced exactly; (A) diagonal-bottom vs full-triangle cross-check 0 mismatches (n=1..20 and 21..50); (B) model match of delta_k(q_n)= |
+| `reduction_audit.recapture2.txt` | Directive 51 final re-capture of code/gap_analysis/reduction_audit.py (EXIT_CODE=0, 10001 primes): the program now ends with a factual VERDICT reading "the passage from real right-diagonal column dynamics to the (pattern,v) descent model is CONFIRMED over the cross-check and 10001 real columns with 0 violations; ... prefix-determined (check C)...". Captured output uses only CONFIRMED/REFUTED over the stated range — grep finds none of theorem/proved/proves. Recapture2 is deliberately a NEW file; the defective reduction_audit.captured.txt and the prior-corrected captured2.txt are both untouched. |
 | `reduction_audit_corrected.captured.txt` | Fresh re-capture of code/reduction_audit.py (sieve 2e6, M=300) after fixing the audit VERDICT wording. The source already carried the corrected factual line ("CONFIRMED over the cross-check and 281 real columns with 0 violations"); the "MACHINE-CONFIRMED as a theorem" defect survived only in the stale reduction_audit.captured.txt. This new file (not overwriting the defective capture, per directive) shows identity CONFIRMED over 45150 cells and biconditional CONFIRMED over 281 columns, 0 violations, verdict line factual with no 'theorem'. Solves TASKS.md 'rewrite-the-audit-verdict-line' item. |
 | `reduction_audit_d_investigate.captured.txt` | _(undescribed)_ |
 | `reduction_audit_d_notes.md` | _(undescribed)_ |
@@ -250,6 +274,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `run_reproduce_A080839.sh` | _(undescribed)_ |
 | `run_scholar_descent.sh` | _(undescribed)_ |
 | `run_verify.sh` | _(undescribed)_ |
+| `run_verify_morgan.sh` | _(undescribed)_ |
 | `runall.sh` | _(undescribed)_ |
 | `runner1.captured.txt` | _(undescribed)_ |
 | `runner1.py` | _(undescribed)_ |
@@ -275,6 +300,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `surplus_structure.captured.txt` | _(undescribed)_ |
 | `surplus_structure_independent.captured.txt` | _(undescribed)_ |
 | `survivor_analysis.captured.txt` | _(undescribed)_ |
+| `switch-bit-two-point-structure.notes.md` | _(undescribed)_ |
+| `switch_autocorr_2pt.captured.txt` | _(undescribed)_ |
 | `switch_majority_stream_1e7.captured.txt` | _(undescribed)_ |
 | `switch_majority_stream_2e8.captured.txt` | _(undescribed)_ |
 | `switch_majority_stream_5e7.captured.txt` | _(undescribed)_ |
@@ -283,13 +310,18 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `switch_walk_extend_1e8.captured.txt` | _(undescribed)_ |
 | `switch_walk_linear_1e7.captured.txt` | _(undescribed)_ |
 | `switchbit_process.py` | _(undescribed)_ |
+| `sympy_blockprofile.captured.txt` | _(undescribed)_ |
+| `sympy_blockprofile.py` | _(undescribed)_ |
 | `tail_coverage_decomposition.captured.txt` | _(undescribed)_ |
 | `transfer_feature_corrected.captured.txt` | _(undescribed)_ |
 | `transfer_feature_test.captured.txt` | _(undescribed)_ |
 | `transfer_minimal_counterexample.captured.txt` | _(undescribed)_ |
 | `transfer_universality_test.captured.txt` | _(undescribed)_ |
+| `universal_transfer_matrix_RUN.captured.txt` | _(undescribed)_ |
+| `universal_transfer_matrix_RUN.notes.md` | _(undescribed)_ |
 | `verify_c1.captured.txt` | _(undescribed)_ |
 | `verify_c1.py` | _(undescribed)_ |
+| `verify_candidate_refutations.py` | _(undescribed)_ |
 | `verify_candidates.py` | _(undescribed)_ |
 | `verify_dense_transfer_1e5.captured.txt` | _(undescribed)_ |
 | `verify_giants_6e8.captured.txt` | _(undescribed)_ |
@@ -299,6 +331,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_lemma54_v_le_gstar.captured.txt` | _(undescribed)_ |
 | `verify_lemma54_v_le_gstar.captured2.txt` | _(undescribed)_ |
 | `verify_lemma54_v_le_gstar.py` | FIXED (was vacuous, checked=0): verifies Link A (v <= g*_n) and the Lemma 5.4 hypothesis (g*_n <= 2*nu2+2) for Granville's descent lemma on real primes below 2e6, columns n=20..1200. Root-cause fix: the original built the right diagonal including the terminal left-edge entry A_n(0)=1, so the maximal {0,2} suffix was always empty and the eligibility filter (start>=2) dropped every column. Now uses Granville's convention (maximal {0,2} suffix of the body d[:-1], scanned to index 2, tau = start, v = dcur[tau]) from the accepted independent verifier. Non-vacuous result: 1181 eligible columns, 0 Link-A violations, 0 hypothesis violations, max margin 35.882. Cross-validated on an independent rows_generator path (same 1181/0/0). Exact integers; O(M^2) triangle, one row live. Trailing 'PROVED claim' sentence removed per Directive 45. |
+| `verify_morgan_corridor.notes.md` | _(undescribed)_ |
+| `verify_morgan_corridor.py` | Exhaustive 128-launchpad sweep of the Blair-Morgan pure-minimal-erosion-corridor forcing (forward route). Ready to run: timeout 120 python3 code/out/verify_morgan_corridor.py. Counts corridor-feeding launchpads (all must have x_4..x_7=0) and checks real Row 2 is not one, confirming the forward proof in verify_morgan_corridor.notes.md. |
 | `verify_nu2_claim.captured.txt` | Independent operator-written re-verification executed in-container (timeout 540, EXIT_CODE=0): reproduces nu2_granville_check.py exactly (nu2=2048 at n=3999, 0 hypothesis failures). |
 | `verify_rule90_against_sources.captured.txt` | _(undescribed)_ |
 | `verify_rule90_against_sources.py` | Independently re-derives the Rule-90 interior XOR identification ( |
@@ -307,6 +341,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_supply_chain_runwindow.captured.txt` | _(undescribed)_ |
 | `verify_three.py` | _(undescribed)_ |
 | `verify_three_b.py` | _(undescribed)_ |
+| `verify_three_candidates_research.py` | _(undescribed)_ |
 | `verify_transfer_exact.py` | _(undescribed)_ |
 | `wider_facts_verify.captured.txt` | _(undescribed)_ |
 | `wider_giants_update.captured.txt` | _(undescribed)_ |

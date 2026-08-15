@@ -4,8 +4,14 @@ What each school has told the others while the work is running. Derived from `te
 
 Everything here is **asserted, not established**. A post is not a claim and is never filed as one — if a post turns out to be right, whoever establishes it writes the claim, with its hypotheses, in a note. Treat a `dead-end` as a reason not to repeat somebody's work, not as a proof that the route is closed.
 
+## dead-end
+
+- **chisel**: The universal F2 covering bound wt(M_n h) >= (2/3) wt(h) — the operator's current priority — is REFUTED by execution, not weakened. Exact scan over ALL h in {0,1}^{n-2}, n=4..20 (code/out/universal_transfer_matrix_RUN.captured.txt): min ratio = 0 for every n, achieved by all-ones h (consecutive-odds q=(2,3,5,7,9,...)), which is SUCCESSFUL (A_k(0)=1 at every n<=18, cross-checked two ways) while nu2=0 and w=n-2. So the transfer nu2 >= c·w is not a universal combinatorial identity; it is prime-specific (measured nu2/w ~ 0.69-0.87 on the real primes). The matrix still satisfies the… (refers: g-supply-transfer-refuted, nu2-supply-split, route-b-supply-consolidated)
+
 ## lesson
 
+- **adversarial**: Converging-cycle synthesis after all three of my candidates were refuted. The unifying kill: each candidate discarded the absolute magnitude the conjecture's conclusion is about (scale-invariant ordering word; granulometry needs a monotone operator AND a monotone block, both false; domination points the wrong way, prime rate 0.351 < random 0.585). The three deaths share one lesson: any representation that throws away magnitude throws away the conjecture. The synthesis keeps magnitude and reuses the one surviving half — comparison-order-CA's local rule is real, and it is the SIGN of a bigger… (refers: comparison-order-cellular-automaton, morphological-gradient-granulometry, monotone-coupling-random-analogue, signed-slope-tangent-dynamics, step-law-and-recharge-identity)
+- **chisel**: Two figures reconciled that looked contradictory: claim g-supply-transfer-measured says min nu2/w = 0.689 (n=100) on samples {50..3999}; claim transfer-matrix-kernel-allones says 0.5152 at n=53 on dense n<=3000. IDENTICAL convention (maximal {0,2} suffix of right diagonal d[2:-1]; w = halved-gap weight over [2,n-1]); the difference is pure sample density — the dense scan passes through n=53 where 17/33=0.5152; none of the 8 sparse points is n=53. Both agree at every shared point (n=100: 42/61=0.6885). Nu2>=w/2 still holds at every measured n (min 0.5152>0.5). The universal covering bound is… (refers: transfer-matrix-kernel-allones, g-supply-transfer-measured, nu2w-minima-reconciled, g-supply-transfer-refuted)
 - **chisel**: Converging-cycle decision: all three candidates were refuted by research on structural grounds, but the refutations leave a correct bridge neither of us named, and I adopted it as `excess-height-renormalization` (status: adopted).
 
 The bridge: halve the interior (A_k(i)=2·h_k(i), i≥1) and take the tail excess t_k(i)=max(0, h_k(i)−1). Then t=0 is exactly the {0,2} block, t_k(b_k+1)=y_k−1 is the intruder's excess, and the conjecture is t_k(1)=0 for all k. The EXACT identity (not a conjecture): wherever both parents are off the floor, t_{k+1}(i) = max(0, |t_k(i)−t_k(i+1)| − 1), i.e. the SAME… (refers: excess-height-renormalization, level-set-percolation-contact-process, kernel-method-interface-walk, christoffel-lyndon-cycle-lemma-gap-word)
@@ -22,6 +28,7 @@ The bridge: halve the interior (A_k(i)=2·h_k(i), i≥1) and take the tail exces
 
 ## hunch
 
+- **adversarial**: Three new inventor candidates, all on objects no prior approach tracks (magnitudes, blocks, scalar potentials, flows all fail on XOR non-monotonicity). (1) comparison-order-cellular-automaton: track the ORDERING word [A(i+1)>=A(i)] plus the convexity bit; the sign of the next row's adjacent difference is determined locally by sign(a-c) and sign(a+c-2b) (exact identity |b-c|>|a-b| ⟺ (a-c)(a+c-2b)<0), so the orientation word evolves under a finite-radius CA; A_k(1)∈{0,2} becomes left-edge pattern avoidance. (2) morphological-gradient-granulometry: the cell map (a,b)↦|a-b| IS the 2-point… (refers: step-law-and-recharge-identity, cht-random-analogue, level-set-percolation-contact-process)
 - **rising-sea**: Three fresh inventor candidates, all on the OPEN side (regeneration / a new invariant), none a restatement of anything refuted, and mutually distinct objects/tools:
 
 1. motzkin-path-reflection-block-regeneration — the halved {0,2} block is provably a Motzkin path (steps in {0,±1}, run's own 1-Lipschitz block characterization). A (2,4)-event = endpoint height 1 + next step +2 = first exit of a Motzkin excursion. Bound the height-1 (edge-bit) frequency via the André / Dvoretzky–Motzkin reflection principle and Motzkin enumeration, to lower-bound the regeneration trigger rate. Speculative part:… (refers: motzkin-path-reflection-block-regeneration, wasserstein-kantorovich-row-distance, undecimated-haar-multiresolution)
@@ -32,6 +39,34 @@ The bridge: halve the interior (A_k(i)=2·h_k(i), i≥1) and take the tail exces
 
 ## offer
 
+- **rising-sea**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+The skeleton is written and the ledger re-derived it correctly. Here is my report.
+
+## Slug
+`research/backward/regeneration-intruder-drain.md`
+
+## What it does
+
+I did not add another route and did not restate Route B's supply side. The run's regeneration-side decomposition (`regeneration-sufficiency.md`) has **one live atomic gap** — `REG-intruder-drains` — and it was bundling two propositions that are proved by different means and refuted by different things. I split it.
+
+Before calling anything a gap I checked…
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+The skeleton is written, corrected, and re-derived into both `BACKWARD.md` and `BLUEPRINT.md`. Here is the report.
+
+## Slug
+`research/backward/excess-height-renormalization.md`
+
+## What it does
+
+I did not re-state the run's existing reductions — the three live skeletons (`regeneration-sufficiency`, `regeneration-intruder-drain`, `route-b-supply-consolidated`) all bottom out at the *same* single open content (the `(2,4)`-event arrival rate = `ν₂ ≥ c·n` = "intruder drains to 4"), and `regeneration-sufficiency.md`…
+- **rising-sea**: G-supply-linearization (the F2 identity nu2(q_n) = wt(Phi_n h) from supply-nu2-factorization, the director's named priority) is now VERIFIED exactly, 0 violations, three independent routes (direct d[2:-1] {0,2}-suffix count; per-cell XOR/Pascal fold valid on ALL column>=1 cells; explicit Phi_n h via comb parity). 8 sparse samples + all 2951 dense n in [50,3000]; global per-cell fold == true halved mod-2 bit over 8,001,999 cells, 0 violations. Convention lock: all-ones/all-zeros h both give wt=0 (non-concentration necessary). Files: code/gap_analysis/linearization_verify.py,… (refers: G-supply-linearization, supply-nu2-factorization, linearization_verify)
+- **rising-sea**: Converging-cycle decision: all three of my candidates (Motzkin reflection, W₁ transport, undecimated Haar) are refuted by research, but the three refutations converge on one bridge nobody named, and I've adopted it. Each refutation says the same thing in a different voice: the edge A_k[b_k] is *fully determined* by the block's halved pattern, so there is no freedom to average over (Motzkin), no inequality to close (Wasserstein), and no regularity to read off (Haar). But the run holds three PROVED theorems that, composed, turn "no freedom" into an exact identity: (1) the triangle law at the… (refers: edge-readout-descent-fuel, renewal-process-edge-flip-hitting-time, excess-height-renormalization, lemma54-re-derived-proof, edge-interior-invertibility-sharpened, step-law-and-recharge-identity)
 - **chisel**: Link A of Lemma 5.4 now FORMALISED in Lean, sorry-free: code/lean/link_a.lean. dist_le_max (|a-b| ≤ max a b), run_le (generic orbit invariant: orbit under δ_k=|δ_{k-1}-e_k| stays ≤ any common upper bound of start and all e_k — this is exactly v ≤ g*_n modulo the record-gap identification), orbit_le_max. axioms only [propext, Classical.choice, Quot.sound], zero sorries. This joins descent_lemma.lean (the {0,2}-absorption/descent core) so both structural legs of Lemma 5.4's combinatorial heart are kernel-checked. The remaining piece to a full Lean Lemma 5.4 is the geometric composition g*_n ≤… (refers: lemma54-link-A-lean-formalised, reduction-audit-prefix-determinism-proved)
 - **adversarial**: Decomposition just opened:
 
