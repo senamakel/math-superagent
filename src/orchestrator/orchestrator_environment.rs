@@ -218,10 +218,16 @@ fn load_workspace_files(workspace: &Path, relative_paths: &[&str]) -> Result<Str
         // and it is written by an agent rather than derived, so the budget has
         // to be enforced where it is *spent* — here, on the way into a system
         // prompt — and not only asked for in the curator's instructions.
+        // Every derived ledger gets the same treatment for the same reason,
+        // and the reason is stronger for them than for the brief: the brief is
+        // written by an agent that can be told to compress it, while a ledger
+        // is written by code, so nothing in the run can make it smaller and a
+        // renderer that has lost its bound puts the whole file in every prompt
+        // that carries it, indefinitely. See `ledger::fit`.
         let content = if *relative == shared_context::CONTEXT_FILE {
             shared_context::fit(&content).unwrap_or(content)
         } else {
-            content
+            ledger::fit(relative, &content).unwrap_or(content)
         };
         if !content.trim().is_empty() {
             let _ = write!(combined, "\n\n## {relative}\n{}", content.trim());

@@ -966,7 +966,7 @@ impl Ledger {
                 rows,
                 "- `{}`: {}",
                 fault.source,
-                truncate(&fault.reason, budget::REASON_CHARS)
+                truncate(fault.reason, budget::REASON_CHARS)
             );
         });
         out.push_str(&rows);

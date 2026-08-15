@@ -30,10 +30,85 @@
 
 pub(super) mod budget;
 
+#[cfg(test)]
+#[path = "ledger/ceiling_test.rs"]
+mod ceiling_test;
+
+#[cfg(test)]
+#[path = "ledger/fit_test.rs"]
+mod fit_test;
+
 use std::fmt::Write as _;
 use std::path::Path;
 
-use super::shared_context::CHARS_PER_TOKEN;
+use tinyagents::harness::summarization::estimate_tokens;
+
+use super::shared_context::{CHARS_PER_TOKEN, positive_env};
+
+/// What one derived ledger may cost a system prompt when nothing says
+/// otherwise.
+///
+/// The same ten thousand tokens `CONTEXT.md` gets, and deliberately so: the
+/// shared brief is the most valuable file a role is sent, so no derived table
+/// has an argument for costing more than it. Six of the nine are an order of
+/// magnitude under this and always will be — the cap is for the seventh.
+const DEFAULT_LEDGER_TOKENS: u64 = 10_000;
+
+/// Reads the per-ledger prompt budget from the environment.
+///
+/// `MATH_AGENT_LEDGER_TOKENS` overrides it. A missing, empty, unparsable, or
+/// zero value keeps [`DEFAULT_LEDGER_TOKENS`], so a malformed override never
+/// silently removes the bound — the rule every other limit here follows.
+fn budget_tokens() -> u64 {
+    positive_env("MATH_AGENT_LEDGER_TOKENS").unwrap_or(DEFAULT_LEDGER_TOKENS)
+}
+
+/// Whether `relative` is a derived ledger routed into system prompts.
+pub(super) fn is_routed(relative: &str) -> bool {
+    ROUTED.contains(&relative)
+}
+
+/// Clamps a derived ledger to its budget on the way into a system prompt.
+///
+/// Returns `None` when it already fits, so the caller keeps its own string in
+/// the ordinary case — which is every case, until it is not.
+///
+/// This is a backstop, not the mechanism. What keeps these files small is each
+/// renderer bounding its own sections, which is where a cut can be made
+/// intelligently: drop the fortieth closed approach and say so, rather than
+/// stop mid-sentence. This fires only when a renderer has failed to, and its
+/// job is to make that failure cost one truncated file instead of a prompt
+/// nobody budgeted. `research/APPROACHES.md` reached 86 KB — a third of a
+/// 63,833-token prompt — with no bound of any kind between it and the model,
+/// which is the situation this removes for good.
+///
+/// The cut keeps the *leading* portion, on the same reasoning as
+/// [`super::shared_context::fit`]: every one of these files puts its table
+/// first and its diagnostics last, so the leading portion is the part a reader
+/// came for.
+pub(super) fn fit(relative: &str, content: &str) -> Option<String> {
+    if !is_routed(relative) {
+        return None;
+    }
+    let budget = budget_tokens();
+    if estimate_tokens(content) <= budget {
+        return None;
+    }
+    let limit = usize::try_from(budget)
+        .unwrap_or(usize::MAX)
+        .saturating_mul(CHARS_PER_TOKEN);
+    let mut cut = limit.min(content.len());
+    while cut > 0 && !content.is_char_boundary(cut) {
+        cut -= 1;
+    }
+    Some(format!(
+        "{}\n\n_[`{relative}` exceeds the {budget}-token per-ledger budget and was cut here for \
+         this prompt. The whole file is on disk. A derived ledger reaching this bound means a \
+         section of it is rendering unbounded — that is a defect in the module that renders it, \
+         not something to work around.]_",
+        &content[..cut]
+    ))
+}
 
 /// Every derived ledger that is routed into at least one role's system prompt.
 ///
