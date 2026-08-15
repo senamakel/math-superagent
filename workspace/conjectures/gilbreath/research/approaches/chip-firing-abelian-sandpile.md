@@ -32,6 +32,7 @@ mechanism: |
   "the network is a single chain". The first step is explicitly to test whether
   the odometer collapses to the single-chain flow already refuted.
 status: refuted
+disposition: (b) parked — refuted, not a route to G-supply; path critical group trivial + row map conserves no mass (Directive 44 item 2).
 killed-by: |
   Research (this cycle) established the collapse risk the candidate itself
   flagged: on a path (half-line) graph there is no chip-firing structure for

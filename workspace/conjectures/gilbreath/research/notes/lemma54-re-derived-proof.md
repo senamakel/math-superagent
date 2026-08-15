@@ -33,9 +33,11 @@ Since `eps_k in {0,2}` is even and `v` is even, induction gives every
 `delta_k` even: `|even - even| = even`. Hence `delta_k` never equals 1; it is
 always an even integer. While `delta_{k-1} >= 2`, the value either stays (ε=0)
 or drops by exactly 2 (ε=2); it can never go below 0 to-be-bounced because
-bounce happens when δ=0 (δ=0, ε=2 ⟹ 2, back in {0,2}). After consuming the
+bounce happens when δ=0 (δ=0, ε=2 ⟹ 2, back in {0,2}). **[PROOF DEFECT —
+Directive 43/44: the next line is false on bounce trajectories.]** After consuming the
 `nu_2` twos, `delta = v - 2*nu_2` (each 2 contributed −2), which is even and
 `<= 2` because `v <= 2*nu_2+2`. An even integer `<= 2` is in `{0,2}`.
+**[The subtraction "v − 2ν₂" assumes δ never reaches 0, but on a bounce (δ=0, ε=2 ⟹ δ=2) a 2 contributes +2, not −2; counterexample v=0, ε=(2,2,2) gives orbit 0→2→0→2 while v−2ν₂ = −6. The theorem survives via the case split, which must replace this algebra: if some δ_t ≤ 2 for t ≤ L then δ_t ∈ {0,2} and absorption carries it; else every δ_k ≥ 4, every 2 subtracts 2, and δ_L = v − 2ν₂ ≤ 2 contradicts δ_L ≥ 4. Status "proved" is held at the theorem level pending this written repair + Lean — see TASKS.md Directive 44 item 1.]**
 Finally `{0,2}` is absorbing under `|x - eps|`, `eps in {0,2}`:
 `|0-0|=0, |0-2|=2, |2-0|=2, |2-2|=0`. ∎
 A short counting form: `nu_2 >= (v - 2)/2` 2s suffice to bring an even `v`

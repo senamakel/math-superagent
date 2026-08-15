@@ -6,7 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[regeneration]] | Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones. | open | IFF, reduction | \| 1. DONE — Lemma 5.4 teardown is complete: the abstract lemma is proved on the even domain (`lemma54-re-derived-proof`,… |
+| [[regeneration]] | Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones. | open | IFF, reduction | \| 1. **NOW (Directive 44 item 1) — write the case-split proof, then Lean it.** Prove both directions of the sharpened descent lemma for all L: `x_L ∈ {0,2} ⟺ v… |
 | [[rule90-regeneration]] | Does the Rule 90 (Sierpinski / Pascal mod 2) structure of the {0,2} interior force block-length regeneration at specific relative depths, and does the null… | open | Block, lemma | \| 1. ~~**Split the claim.**~~ DONE — `rule90-interior-xor` is its own proved claim in `research/notes/rule90-interior.md` (Directive 4). The absorption wrapper… |
 
 ## Resting on nothing recorded

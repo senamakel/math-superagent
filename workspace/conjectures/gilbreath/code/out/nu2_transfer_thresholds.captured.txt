@@ -1,0 +1,11 @@
+c      last n with nu2<c*w     (nu2/w there)
+0.50   16        0.3333
+0.55   54        0.5294
+0.60   106        0.5970
+0.65   275        0.6491
+0.70   764        0.6985
+0.75   1005        0.7480
+0.80   3859        0.7959
+0.85   29960        0.8487
+
+Interpretation: 'nu2 >= c*w for all n > last_n' holds densely to 30000.

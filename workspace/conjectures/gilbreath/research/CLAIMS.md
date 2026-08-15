@@ -69,7 +69,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `giant-parity-even-pre-jump-rows` | Among the 15 genuine giant events of the 6e8 run, 14 fire at even pre-jump rows (13/14 excluding row 161 which is the sole odd). One-sided p = 16/2^15 = 4.9×10⁻⁴ (exact, plain 1/2 null). At 3e8 the event base even… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
 | `gilbreath-2011-expository` | Gilbreath's only substantive journal paper "Processing process: the Gilbreath conjecture" (J. Number Theory 131 (2011) 2436–2441) is autobiographical and expository, not a proof attempt. Its introduction (quoted… | yes | asserted | `research/notes/library-state.md` |
 
-_89 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_99 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -105,6 +105,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `killgrove-ralston-verification-1959` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `li2023-not-bottleneck` (research/notes/li-2023-bearing-correction.md) — asserted by the source, not proved there and not checked here
 - `li2023-short-interval-052` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `los-2016-consecutive-pair-mod4-bias` (research/summaries/lemke-oliver-soundararajan-2016-unexpected-biases-consecutive-primes.md) — asserted by the source, not proved there and not checked here
 - `malyshev-max-ones-boolean-pascal-bound` (research/summaries/malyshev-maximal-ones-Boolean-pascal-triangle.md) — asserted by the source, not proved there and not checked here
 - `mathworld-rule90-additive-sierpinski` (research/summaries/mathworld-rule-90.md) — asserted by the source, not proved there and not checked here
 - `mod4-linearization` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
@@ -122,10 +123,12 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `proth-myth-retracted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `regeneration-lemma-edge-2-intruder-4-established` (code/out/check_regenerate_lemma.notes.md) — asserted by the source, not proved there and not checked here
 - `ross-2026-decay-constants` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `rubinstein-sarnak-fluctuation-not-bias` (research/approaches/chebyshev-bias-granville-nu2-supply.md) — asserted by the source, not proved there and not checked here
 - `rule90-identification-real-absorption-refuted` (research/approaches/rule90-absorbing-boundary.md) — asserted by the source, not proved there and not checked here
 - `rule90-rowcount-popcount` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
 - `rule90-wikipedia-interior-confirmation` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
 - `runcount-lemma-refuted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `shiu-2000-strings-of-congruent-primes` (research/summaries/shiu-2000-strings-of-congruent-primes.md) — asserted by the source, not proved there and not checked here
 - `tao-cramer-blog-frame` (research/summaries/tao-blog-2026-gilbreath-cramer-model.md) — asserted by the source, not proved there and not checked here
 - `torelli-prime-gap-bound` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `two-separation-hypothesis` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here

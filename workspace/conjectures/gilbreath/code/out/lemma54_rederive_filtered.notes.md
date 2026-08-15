@@ -56,9 +56,14 @@ them occur with the Lemma 5.4 hypothesis satisfied on a successful prefix.
 - What this does **not** establish: the lemma has no proof here. The delta=0
   case is handled by the constructive descent invariant (each 2 consumes ≤ 2
   height, each 0 consumes ≤ 0, a 0 at a 2-aligned position bounces to 2 and
-  stays in {0,2}) — that invariant is asserted, and a machine-verified proof of
-  it remains the open piece. This run shows the budget formula holds
-  empirically, not that it is proved.
+  stays in {0,2}) — and that invariant is proved by argument, not by machine
+  verification (Directive 43's case split: if δ_t ≤ 2 for some t ≤ L,
+  absorption carries it; otherwise all δ_k ≥ 4, every 2 subtracts 2, and
+  δ_L = v − 2ν₂ ≤ 2 contradicts δ_L ≥ 4). The remaining work is to write that
+  argument out and Lean-formalise it — the Lean file certifies the argument,
+  it does not substitute for one. Do not run another sampling sweep to raise
+  confidence in a statement provable outright in ten lines. This run shows the
+  budget formula holds empirically, not that it is proved.
 - Not a proof of anything about the primes specifically beyond what the primes
   themselves show; it validates the lemma's *hypothesis/sufficiency relation*
   on the general class under the delta=0 repair being included.
@@ -77,7 +82,7 @@ statement: On random valid 2-then-odds sequences (q0=2,q1=3, odd gaps from {2,4,
 hypotheses: random valid 2-then-odds sequences, columns n=3..40, exact integer iterated absolute differences, LHS clamp at the last index; delta=0 case handled by the bounce invariant (included, not discarded)
 holds-here: yes
 status: checked
-bearing: The statement of Granville Lemma 5.4's sufficiency is not refuted by honest testing on its own domain, with delta=0 handled. The published proof's delta=0 "exception" is a proof defect, not a statement defect, at every length tested. A machine-verified proof of the bounce invariant remains open.
+bearing: The statement of Granville Lemma 5.4's sufficiency is not refuted by honest testing on its own domain, with delta=0 handled. The published proof's delta=0 "exception" is a proof defect, not a statement defect, at every length tested. The bounce invariant is proved by argument (Directive 43's case split), not by machine verification; the remaining work is to write the proof out and Lean-formalise it. Do not run another sampling sweep.
 anchor: code/out/lemma54_rederive_filtered.captured.txt, code/out/lemma54_rederive.captured.txt
 source: operator-computation (this run, in-container)
 ```

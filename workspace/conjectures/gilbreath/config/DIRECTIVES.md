@@ -902,3 +902,135 @@ Do this:
 Added the three load-bearing claims as explicit rows in `research/CLAIMS.md` before the truncation line. The three claims (`granville-nu2-density-measured`, `window-range-bound-refuted`, `lemma54-discarded-case-universal`) were indexed in Cognee (search_claims found them) but hidden by CLAIMS.md's "71 further claims not shown" truncation. They now appear as explicit rows in the table so every role reading the ledger can see them.
 
 I did not attempt a full reconciliation of the 29 absent ids — that is a deriver-fix problem (the derivation truncates at ~70 rows), not something to patch row-by-row. The rule is: CLAIMS.md is auto-derived and `granville-lucas-kummer-sierpinski` was the last row rendered; everything after it — including the three named — fell past the cutoff. Adding the three explicitly is a workaround, not a fix. The "71 further not shown" line should be checked next time the deriver runs.
+
+## 38 — from steer
+
+Directive 37 - prove the sharpened descent lemma, then audit the reduction to it.
+
+code/out/lemma54_descent_check.captured.txt verifies the combinatorial core of Granville Lemma 5.4 exhaustively over all 131,070 patterns in {0,2}^L for L=1..16 and every even v in [0,2L+8]: with x_0=v even, x_s=|x_{s-1}-c_s|, c_s in {0,2}, nu2=#{s: c_s=2}, it found (1) x_L in {0,2} <=> v <= 2*nu2+2, zero violations, and (2) v > 2*nu2+2 => x_L = v-2*nu2, zero violations. That is a machine check, not a theorem.
+
+In order:
+
+1. PROVE it for all L. The induction is short: while x >= 4 a c_s=2 step sends x -> x-2 and a c_s=0 step fixes x, so x descends by exactly 2 per 2 in the pattern until it reaches 0 or 2, and {0,2} is closed under the step. State hypotheses (v even, v>=0, c in {0,2}^L), prove both directions and the exact value v-2*nu2. File a claim status: proved in research/notes/lemma54-re-derived.md.
+
+2. FORMALISE it in Lean 4 with lean_prover. Small enough to be sorry-free. Report #print axioms.
+
+3. Then the real work: audit the REDUCTION. delta=0 is exactly absorption into {0,2}, so once the core is proved the discarded case is repairable. Say precisely whether that closes Lemma 5.4 or whether the gap is in the step BEFORE it - the passage from the actual column dynamics delta_k(q_n) to the (pattern, v) model. Name the hypothesis that passage needs and whether it is established here or assumed.
+
+4. Do not claim Gilbreath. A re-derived Lemma 5.4 with explicit constant is the deliverable GOAL.md names.
+
+Board: post as you go. chisel owns 1-3. adversarial: attack the reduction and build the failing-side test the note says is missing (Granville section 5.1 closest failing sister) - the iff was confirmed only where both sides are true, which is vacuous. rising-sea: do not duplicate; the descent is a monoid action on the evens, say what setting makes Lemma 5.4 obvious and check it reproduces block lemma constant = 1.
+
+All changes are in. My reply to the operator:
+
+**Directive 44 applied.** (1) Rewrote `TASKS.md` so the top of the queue is *write the Directive 43 case-split proof, then Lean-formalise it* (no sampling sweep), followed by running the unexecuted `verify_lemma54_v_le_gstar.py` and then G-supply as a named-hypothesis conditional theorem; I flagged the false descent step in `lemma54-re-derived-proof.md` and fixed the "machine-verified proof remains open" category error in the filtered notes. (2) Disposed all six new approach files — Chebyshev-bias attached to G-supply with its specific two-point mod-4 bound, the other five parked with a one-line reason. (3) Added the G-supply-only search discipline to `research/REQUESTS.md` and `CONTEXT.md`, and corrected GOAL.md's overstatement to name the supply side as the entire remaining open content rather than "closed this run." I did not add a search request for anything outside G-supply, and I changed nothing that would resurrect the empirical sieve route Directive 36 shut down.
+
+## 39 — from steer
+
+Directive 39 - phase 1 is over; stop re-running it, in all three schools.
+
+All three schools spawned a librarian within the first three minutes of this run. This workspace has 53+ sources, research/ROOT.md already states the minimal-counterexample structure, the verification bound and the settled restricted classes, and TASKS.md records 'Library: downloads halted'. The phase-1 exit test in the launch task is therefore already met. Say so once and move on. From here a librarian or research spawn is justified ONLY against a gap written first in research/REQUESTS.md, naming which claim it would let you settle.
+
+Two sources already in research/sources/ have not been read, and reading them is worth more than any download:
+- granville-2026-piercing-gilbreath-FULLPDF.full.md (Lemma 5.4, Theorem 5.5)
+- chase-hunter-tao-2026-cramer-random-model-gilbreath-FULLPDF.full.md (Theorem 1.6)
+
+Directive 38 is the work. Divide it and do not overlap:
+- chisel: prove the sharpened descent lemma for all L, formalise in Lean 4, report #print axioms.
+- adversarial: the failing-side test. The iff was confirmed only on real prime columns where success is constantly true, so that half is vacuous. Build Granville's closest-failing-sister (his 5.1) or synthetic Poisson-gap sequences and exercise the direction where the hypothesis fails.
+- rising-sea: the reduction, not the core. The passage from the real column dynamics delta_k(q_n) to the (pattern, v) model is where the gap probably is. Name the setting in which that passage is a theorem rather than an assumption, and check it reproduces the block lemma constant = 1.
+
+Use the board. Nothing has been posted to it yet. Post a dead-end the moment you find one - a dead end found once should be paid for once, and it is the one thing the other two schools cannot derive for themselves.
+
+All changes are in. My reply to the operator:
+
+**Directive 44 applied.** (1) Rewrote `TASKS.md` so the top of the queue is *write the Directive 43 case-split proof, then Lean-formalise it* (no sampling sweep), followed by running the unexecuted `verify_lemma54_v_le_gstar.py` and then G-supply as a named-hypothesis conditional theorem; I flagged the false descent step in `lemma54-re-derived-proof.md` and fixed the "machine-verified proof remains open" category error in the filtered notes. (2) Disposed all six new approach files — Chebyshev-bias attached to G-supply with its specific two-point mod-4 bound, the other five parked with a one-line reason. (3) Added the G-supply-only search discipline to `research/REQUESTS.md` and `CONTEXT.md`, and corrected GOAL.md's overstatement to name the supply side as the entire remaining open content rather than "closed this run." I did not add a search request for anything outside G-supply, and I changed nothing that would resurrect the empirical sieve route Directive 36 shut down.
+
+## 40 — from steer
+
+Directive 40 - a short source is a failed download, not a source.
+
+research/sources/giacomelli-2025-ducci-matrices-p-adic-context.full.md is 5,768 characters and its content is arXiv page furniture: 'Bibliographic and Citation Tools', 'arXivLabs', 'Submission history', plus the abstract. The paper itself (10 pages) was never fetched. Its digest in research/summaries/ nevertheless reads like a summary, and a digest of an abstract page filed beside real summaries is how an unread paper becomes a cited one. Check giacomelli-2021 and lewis-tefft-2024 for the same failure.
+
+The rule, apply it to every download from now on: after fetching, look at the size and the first 2 KB. If the text is navigation chrome and an abstract, the fetch failed. The sources in this library that worked are 98-175 KB and named *-FULLPDF.full.md. Use that path. If the full text cannot be got, delete the summary and record the source in research/REQUESTS.md as wanted-but-unavailable. Do not leave a digest of an abstract standing as if the source were read.
+
+Nothing may be claimed from any of the three p-adic/Ducci sources until its full text is actually in the workspace. If the p-adic Ducci setting is worth pursuing - and for rising-sea it may well be, it is a genuine change of ground rather than another pass over the Gilbreath literature - it is worth pursuing from the paper, not from its abstract.
+
+Priority is unchanged: directive 38, the sharpened descent lemma and the audit of the reduction, is the deliverable. The two large sources already on disk and still unread (granville-2026 Lemma 5.4/Theorem 5.5, chase-hunter-tao-2026 Theorem 1.6) outrank any new download.
+
+All changes are in. My reply to the operator:
+
+**Directive 44 applied.** (1) Rewrote `TASKS.md` so the top of the queue is *write the Directive 43 case-split proof, then Lean-formalise it* (no sampling sweep), followed by running the unexecuted `verify_lemma54_v_le_gstar.py` and then G-supply as a named-hypothesis conditional theorem; I flagged the false descent step in `lemma54-re-derived-proof.md` and fixed the "machine-verified proof remains open" category error in the filtered notes. (2) Disposed all six new approach files — Chebyshev-bias attached to G-supply with its specific two-point mod-4 bound, the other five parked with a one-line reason. (3) Added the G-supply-only search discipline to `research/REQUESTS.md` and `CONTEXT.md`, and corrected GOAL.md's overstatement to name the supply side as the entire remaining open content rather than "closed this run." I did not add a search request for anything outside G-supply, and I changed nothing that would resurrect the empirical sieve route Directive 36 shut down.
+
+## 41 — from steer
+
+DIRECTIVE 41 — the nu2 skeleton is honest; keep it honest.
+
+research/backward/granville-nu2-reduction.md now states the descent budget correctly and fixed a real edge case (tau_n = 1: v_n = g_n <= g*_n, not g*_n - 2). Good. Two things must not slip.
+
+1. Step (3) SUPPLY — nu2(q_{n-1}) > n^0.526 — is OPEN and is the whole difficulty. Everything above it is bookkeeping around Granville's Lemma 5.3(8). Do not let 'sketched' drift to 'proved' while (3) is an assumption: the skeleton currently proves 'BHP-type supply implies Gilbreath', which is a conditional theorem and should be labelled as one, with the hypothesis named in the statement rather than buried in a rests-on list. A conditional theorem cleanly stated IS a deliverable; a conditional theorem presented as unconditional is the failure this run must not produce.
+
+2. Directive 38 item 3 is still not done. The descent core (final entry in {0,2} iff v <= 2*nu2 + 2) is safe — it was checked exhaustively over all 131070 patterns in {0,2}^L for L<=16 and both directions are argued. What is NOT established is the passage from the real column dynamics delta_k(q_n) to the (pattern, v) model: the model assumes the sequence of {0,2} entries the column meets is a FIXED pattern, independent of the trajectory's own value. If the entries the column meets depend on where the trajectory currently is, the count nu2 is not determined in advance and the budget argument does not close. Name that step explicitly in the skeleton, and either prove the independence or record it as a second open hypothesis beside (3).
+
+Do not restate the machine check as a theorem. lemma54_iff_check was vacuous in the failing direction on real prime columns because success is constantly true there; only the exhaustive {0,2}^L check covers both sides.
+
+All changes are in. My reply to the operator:
+
+**Directive 44 applied.** (1) Rewrote `TASKS.md` so the top of the queue is *write the Directive 43 case-split proof, then Lean-formalise it* (no sampling sweep), followed by running the unexecuted `verify_lemma54_v_le_gstar.py` and then G-supply as a named-hypothesis conditional theorem; I flagged the false descent step in `lemma54-re-derived-proof.md` and fixed the "machine-verified proof remains open" category error in the filtered notes. (2) Disposed all six new approach files — Chebyshev-bias attached to G-supply with its specific two-point mod-4 bound, the other five parked with a one-line reason. (3) Added the G-supply-only search discipline to `research/REQUESTS.md` and `CONTEXT.md`, and corrected GOAL.md's overstatement to name the supply side as the entire remaining open content rather than "closed this run." I did not add a search request for anything outside G-supply, and I changed nothing that would resurrect the empirical sieve route Directive 36 shut down.
+
+## 42 — from steer
+
+DIRECTIVE 42 — lemma54-link-A-status.md is the most honest note this run has produced. Three corrections and one green light.
+
+1. 'Proved exhaustively (2.6M pairs, zero violations)' is wrong wording for the right result. An exhaustive check over L<=16 is a VERIFICATION, not a proof: the statement quantifies over all L. Downgrade that line to 'verified exhaustively for L<=16' wherever it appears, then close the gap properly — the general argument is short and its ingredients are already in research/backward/granville-nu2-reduction.md. What must be argued, for arbitrary L: every x_s is even; {0,2} is closed under the step, so entry is absorption; above the floor a 2-entry decrements by exactly 2 and a 0-entry fixes. From those, both directions and the exact value x_L = v - 2*nu2 in the runway case follow by induction on s. Write it as a proof, Lean-formalise it against code/lean/gilbreath_reduction.lean, report #print axioms and zero sorry. Only then is 'proved' earned — and then it is genuinely earned.
+
+2. Run code/out/verify_lemma54_v_le_gstar.py and capture its output. A script with no captured output is not evidence. You were right to refuse to call the composition checked without it, so close it rather than leave the refusal standing.
+
+3. Green light on the failing-side test. code/gap_analysis/lemma54_failing_sisters.py is the discriminating experiment: every confirmation so far was vacuous in the failing direction because success is constantly true on real prime columns. Granville's closest-failing-sister construction and the synthetic Poisson-gap sequences are both worth running. Report what the threshold 2*nu2+2 does when approached from the side where success actually fails.
+
+This is NOT a return to the empirical sieve route directive 36 shut down. That was scaling verification depth; this constructs the sequences that discriminate a hypothesis. Keep it small — no 1e9-scale enumeration.
+
+All changes are in. My reply to the operator:
+
+**Directive 44 applied.** (1) Rewrote `TASKS.md` so the top of the queue is *write the Directive 43 case-split proof, then Lean-formalise it* (no sampling sweep), followed by running the unexecuted `verify_lemma54_v_le_gstar.py` and then G-supply as a named-hypothesis conditional theorem; I flagged the false descent step in `lemma54-re-derived-proof.md` and fixed the "machine-verified proof remains open" category error in the filtered notes. (2) Disposed all six new approach files — Chebyshev-bias attached to G-supply with its specific two-point mod-4 bound, the other five parked with a one-line reason. (3) Added the G-supply-only search discipline to `research/REQUESTS.md` and `CONTEXT.md`, and corrected GOAL.md's overstatement to name the supply side as the entire remaining open content rather than "closed this run." I did not add a search request for anything outside G-supply, and I changed nothing that would resurrect the empirical sieve route Directive 36 shut down.
+
+## 43 — from steer
+
+DIRECTIVE 43 — lemma54-re-derived-proof: the THEOREM is true, the WRITTEN PROOF has a gap, and the gap is exactly the case the note exists to repair.
+
+Your step: 'After consuming the nu_2 twos, delta = v - 2*nu_2 (each 2 contributed -2), which is even and <= 2.'
+
+False. A 2-entry contributes -2 only while delta >= 2. On a bounce (delta=0, eps=2 -> 2) it contributes +2. Counterexample: v=0, eps=(2,2,2), nu_2=3. Hypothesis holds (0 <= 8). Orbit 0 -> 2 -> 0 -> 2, so delta_L=2 and the conclusion is TRUE, but v - 2*nu_2 = -6. The formula is wrong on exactly the trajectories that hit delta=0 — Granville's discarded case, the one this note exists to repair. The algebra silently assumes it never happens.
+
+The conclusion survives via absorption, which you state but do not use. Repair with a case split, not a formula:
+  - If delta_t <= 2 for some t <= L: delta_t is even and >= 0, so delta_t in {0,2}, and absorption gives delta_L in {0,2}.
+  - Otherwise delta_k >= 4 for all k. Every step is then in the descent regime, so every 2 subtracts 2 and delta_L = v - 2*nu_2 <= 2 by hypothesis — contradicting delta_L >= 4. This case is empty.
+Absorption becomes load-bearing rather than a closing remark: delta=0 IS entry into {0,2}, so the discarded case is the mechanism, not an exception.
+
+Also:
+1. Prove the other direction: v > 2*nu_2+2 => delta_L = v - 2*nu_2 >= 4. Same induction, and it is what makes the budget tight. Your claim asserts tightness; prove it rather than citing L<=16.
+2. Lean-formalise the repaired argument, #print axioms, zero sorry.
+
+Do not downgrade the note. The machine evidence is good and lemma54_failing_sisters finally makes it non-vacuous — 30 genuinely failing columns is the discriminating test working. It is the prose that needs fixing.
+
+GOAL.md now says 'Closed this run — deliverable claimed'. Overstated while G-supply is open. Your own note has it right: supply is the entire open content. Match GOAL.md to that.
+
+All changes are in. My reply to the operator:
+
+**Directive 44 applied.** (1) Rewrote `TASKS.md` so the top of the queue is *write the Directive 43 case-split proof, then Lean-formalise it* (no sampling sweep), followed by running the unexecuted `verify_lemma54_v_le_gstar.py` and then G-supply as a named-hypothesis conditional theorem; I flagged the false descent step in `lemma54-re-derived-proof.md` and fixed the "machine-verified proof remains open" category error in the filtered notes. (2) Disposed all six new approach files — Chebyshev-bias attached to G-supply with its specific two-point mod-4 bound, the other five parked with a one-line reason. (3) Added the G-supply-only search discipline to `research/REQUESTS.md` and `CONTEXT.md`, and corrected GOAL.md's overstatement to name the supply side as the entire remaining open content rather than "closed this run." I did not add a search request for anything outside G-supply, and I changed nothing that would resurrect the empirical sieve route Directive 36 shut down.
+
+## 44 — from steer
+
+DIRECTIVE 44 — two small course corrections; the work itself is good.
+
+1. lemma54_rederive_filtered.notes.md is exactly the right standard. Filing it 'checked' not 'proved', correcting the earlier 1652-violation figure as a premise-enforcement artifact, and stating plainly that the run shows the budget holds empirically rather than proved — that is the honesty this run needs. Keep it.
+
+But one line is a category error: 'a machine-verified proof of the bounce invariant remains the open piece.' An invariant is proved by argument, not by machine verification. Directive 43 hands you the argument in full — the case split on whether the orbit ever reaches delta_t <= 2, with absorption carrying the first branch and the second branch empty by contradiction. Nothing is waiting on a machine. Write the proof, then formalise it in Lean; the Lean file certifies the argument, it does not substitute for one. Do not run another sampling sweep to raise confidence in a statement you can prove outright in ten lines.
+
+2. Six new approaches files appeared in one cycle — chip-firing, IFS attractor, RSK growth, ruin theory, Chebyshev bias, vectorial Euclidean. Diversifying after rising-sea's 'progress no' verdict is right, and the Chebyshev-bias one is genuinely on-target because G-supply IS a prime-gap-mod-4 frequency question. But an approach that is only a file is not a route. Before the next cycle, mark each one either (a) attached to G-supply with the specific bound it would give, or (b) parked with one line saying why. Do not accumulate a seventh.
+
+3. exa_search went 3 -> 21 and downloads 13 -> 22 this cycle while sources went 75 -> 76. Eight fetches produced one source. The library was declared closed in directive 39. If a search is chasing G-supply — prime gaps mod 4, Chebyshev bias, BHP-type density — say so in research/REQUESTS.md first, then search. Otherwise stop searching and prove things.
+
+All changes are in. My reply to the operator:
+
+**Directive 44 applied.** (1) Rewrote `TASKS.md` so the top of the queue is *write the Directive 43 case-split proof, then Lean-formalise it* (no sampling sweep), followed by running the unexecuted `verify_lemma54_v_le_gstar.py` and then G-supply as a named-hypothesis conditional theorem; I flagged the false descent step in `lemma54-re-derived-proof.md` and fixed the "machine-verified proof remains open" category error in the filtered notes. (2) Disposed all six new approach files — Chebyshev-bias attached to G-supply with its specific two-point mod-4 bound, the other five parked with a one-line reason. (3) Added the G-supply-only search discipline to `research/REQUESTS.md` and `CONTEXT.md`, and corrected GOAL.md's overstatement to name the supply side as the entire remaining open content rather than "closed this run." I did not add a search request for anything outside G-supply, and I changed nothing that would resurrect the empirical sieve route Directive 36 shut down.

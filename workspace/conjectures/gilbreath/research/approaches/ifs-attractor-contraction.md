@@ -28,6 +28,7 @@ mechanism: |
   in which case the approach is refuted by a single pair x, x' in the cone with
   d(Dx,Dx') >= d(x,x').
 status: refuted
+disposition: (b) parked — refuted, not a route to G-supply; no strict l1/linf contraction on the cone ((4,0,0),(4,2,0) → ratio ≥ 1) (Directive 44 item 2).
 killed-by: |
   Research (this cycle) refuted the approach at its own single-pair falsifier,
   before any theory needed to be invoked.

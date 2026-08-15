@@ -1,10 +1,36 @@
 # Chebyshev-bias / prime-gap-mod-4 fluctuation bound for Granville's ν₂ supply
 
+```claim
+id: rubinstein-sarnak-fluctuation-not-bias
+statement: Rubinstein–Sarnak 1994 (Experimental Math 3(3):173–197): under GRH+GSH the mod-4 prime race π(x;4,3) vs π(x;4,1) has explicit Fourier transform exp(iΣc(q,a_j)ξ_j)·Π_{χ,γ}J0(...) with the exponential bias-shift factor the source of the Chebyshev bias; δ(P_{4;3,1}) = 0.9959 (bias toward primes ≡3 mod 4), but the sign oscillates (Littlewood; first 1-leads point 26861) so NO one-sided unconditional bias holds. LOS-2017 (arXiv:1709.06168) Theorems 1.1–1.3: the secondary fluctuation term in consecutive-prime (mod q) pattern biases has a continuous symmetric-about-0 limiting distribution as q→∞ (e.g. (1/q)#{k: C(k)≤(e^γ/2)x}=Φ_C(x)+o(1), Φ_C(−x)+Φ_C(x)=1), connected to Dedekind-sum Fourier transforms.
+hypotheses: GRH and (for the explicit value / symmetry) GSH/LI for the zeros of Dirichlet L-functions; primes, not a general 2-then-odds class.
+holds-here: yes (supplies the fluctuation lens, not a one-sided bias, for the two-point mod-4 switch statistic bit_n=[p_{n+1}≢p_n mod 4] feeding Granville's ν₂)
+status: sourced (clean primary Rubinstein–Sarnak Project Euclid text + LOS-2017 arXiv full text both held and read)
+bearing: Route B supply side. The honest deliverable is a FLUCTUATION bound at GRH/LI + Hardy–Littlewood/Dedekind-sum level, never an unconditional one-sided density. These sources confirm ν₂ is two-point (consecutive-pair mod-4 switch), NOT a one-point PNT-in-AP statistic; neither proves the open lower bound ν₂ ≥ n^{0.525+δ}.
+anchor: research/sources/rubinstein-sarnak-1994-chebyshev-bias-full.full.md, research/sources/lemke-oliver-soundararajan-2017-prime-biases-sawtooth.full.md, research/summaries/maynard-2015-small-gaps-between-primes.md, research/summaries/lau-2024-residue-class-patterns-consecutive-primes.md
+answers: what-named-machinery-supplies-nu2
+```
+
 ```approach
 idea: Supply the missing density input to the already-proved Granville Lemma 5.4 reduction by bounding, via analytic number theory (Dirichlet/PNT-in-AP, Chebyshev's bias, Bombieri–Vinogradov / GRH, Hardy–Littlewood correlations), the frequency of the prime-gap residue class that feeds the descent coefficient ν₂ = #{c_s = 2}, turning "ν₂ > n^β" from an open measurement into a conditional theorem.
 mechanism: GOAL.md records the current state: Route B has Lemma 5.4 proved (this run), and "the whole of Route B now rests on the single open density statement G-supply (ν₂(q_n) > n^β, β > 0.525), which reduces cleanly to a prime-gap-mod-4 frequency bound." The missing object is therefore not a new reformulation of the operator but a named theorem that delivers that frequency bound. The key step is to pin down WHICH mod-4 statistic feeds ν₂ — a one-point statistic (primes in a residue class, handled by Dirichlet/PNT-in-AP) or a two-point correlation (consecutive primes p_n, p_{n+1} in prescribed residue classes mod 4, handled by the Hardy–Littlewood r-tuple / Bateman–Horn conjecture, or in short intervals by Gallagher's Poisson model, already in the library). If it is one-point, then ν₂(n) = n/2 − O(n^{θ}) follows from PNT-in-AP with θ = 1/2+ε (Bombieri–Vinogradov) or θ = 1/2 (GRH), and n/2 − O(n^{1/2+ε}) > n^{0.525} for large n gives GC as a corollary of Lemma 5.4 — a clean conditional partial result. If it is two-point, the honest statement is conditional on a correlation bound at Hardy–Littlewood level, still a real contribution because it isolates exactly which conjecture about prime gaps suffices. The Chebyshev-bias literature (Rubinstein–Sarnak 1994) is the right lens for the SECOND-order term: it tells us the sign of the bias and, crucially, that the bias oscillates (Littlewood-type), so no single-sided bias can be asserted unconditionally — the honest deliverable is a fluctuation bound, not a bias assertion.
 status: adopted
+disposition: (a) attached to G-supply — the bound it would give: ν₂ = n/2 + O(n^{1/2+ε}) from a two-point consecutive-prime mod-4 correlation (bit_n = [p_{n+1} ≢ p_n (mod 4)]), which yields ν₂ > n^β and hence GC via the re-derived Lemma 5.4; honest status is conditional at Hardy–Littlewood / Lemke Oliver–Soundararajan level, not unconditional (Directive 44 item 2).
 precedent: >
+  [Librarian 2026 addition:] A decisive negative confirmed — the supply bound
+  ν₂ > n^β is NOT unconditional and NOT provable from PNT-in-AP or Shiu-level
+  methods. The strongest unconditional result in the consecutive-prime mod-4
+  landscape, Shiu 2000 "Strings of Congruent Primes" (J. LMS (2) 61, 359–373),
+  proves the OPPOSITE direction the supply needs — infinitely many and
+  arbitrarily long equal-residue (non-switch, gap ≡ 0 mod 4) runs — so it gives
+  no quantitative or density lower bound on the switch count (gap ≡ 2 mod 4).
+  The switch count is provable only at the Hardy–Littlewood / Lemke Oliver–
+  Soundararajan conjecture level. Ruzsa "Consecutive primes modulo 4" (Indag.
+  Math. 2003) is paywalled; its abstract-level π_11(x) bound is an infinitude
+  bound, not positive density. Net: a conditional result ("IF the mod-4 switch
+  count has positive density, THEN GC via Lemma 5.4") is the honest ceiling;
+  the hypothesis cannot be upgraded to unconditional with held or found
+  methods. See research/summaries/shiu-2000-strings-of-congruent-primes.md.
   The named analytic-number-theory machinery is real and this candidate's
   framing is CORRECT and checkable — resolved as TWO-POINT, not one-point.
   - https://doi.org/10.1080/10586458.1994.10504289 (Rubinstein–Sarnak,

@@ -26,6 +26,20 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/granville-nu2-reduction.md`
 - `granville-nu2-reduction/GN-supply-nu2-density` (lemma) — For the prime sequence, the count ν₂(q_n) of 2s in the 0-2 cycle of the right diagonal satisfies ν₂(q_n) > n^β for some fixed β > 0.525…
   - open `research/backward/granville-nu2-reduction.md`
+- `nu2-supply-mod4-transfer/S1-nu2-transfer-weight` (lemma) — \| For the prime right diagonal, ν₂(q_n) ≥ w_n/2, where w_n = #{m in [2, n−1] : gap_m ≡ 2 mod 4} is the Hamming weight of the halved-gap bit…
+  - open `research/backward/nu2-supply-mod4-transfer.md`
+- `nu2-supply-mod4-transfer/S2-mod4-gap-density` (lemma) — \| #{m ≤ n : p_{m+1} − p_m ≡ 2 mod 4} ≥ c'·n for a fixed c' > 0 and all sufficiently large n. Equivalently: the set of consecutive prime…
+  - open `research/backward/nu2-supply-mod4-transfer.md`
+- `nu2-supply-split/G-supply-mod4-frequency` (lemma) — For the primes, w(n) = #{ j ∈ [2, n−1] : p_{j+1} − p_j ≡ 2 (mod 4) } (equivalently: the number of consecutive-prime pairs p_j ≢ p_{j+1}…
+  - open `research/backward/nu2-supply-split.md`
+- `nu2-supply-split/G-supply-transfer` (lemma) — For every successful 2-then-odds prefix q_1..q_n (q_1 = 2, q_2 = 3, q_j strictly increasing odd for j ≥ 3, all gaps even), let w(n) = #{ j…
+  - open `research/backward/nu2-supply-split.md`
+- `supply-nu2-factorization/G-supply-linearization` (lemma) — ν₂(q_n) = wt(Φ_n h), where h[j] = ((p_{j+2} − p_{j+1})/2) mod 2 is the halved-gap parity bit string and Φ_n is the explicit F2 matrix with…
+  - open `research/backward/supply-nu2-factorization.md`
+- `supply-nu2-factorization/G-supply-nonconcentration` (lemma) — The prime halved-gap parity string h[j] = ((p_{j+2} − p_{j+1})/2) mod 2 has no constant run of length ≥ L for some absolute L. Since h[j] =…
+  - open `research/backward/supply-nu2-factorization.md`
+- `supply-nu2-factorization/G-supply-weight-transfer` (lemma) — For the explicit F2 family Φ_n (as in G-supply-linearization), there is an absolute L such that every h ∈ {0,1}^{n-2} with no constant run…
+  - open `research/backward/supply-nu2-factorization.md`
 
 ## Every node
 
@@ -72,4 +86,4 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `ducci-avart-nilpotent-concatenation` | claim | **ready** | — | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector… |
 | `ducci-classical-nilpotence-iff-power-of-2` | claim | **ready** | — | (Ciamberlini–Marengoni 1937, quoted and reproved in Chamberland 2003 Thm 1.1, Calkin–Stevens–Thomas 2005, Glaser–Schöffl 1995) For the… |
 
-_119 further nodes not shown._
+_139 further nodes not shown._

@@ -17,6 +17,19 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## offer
 
+- **rising-sea**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+Done. Here's the report.
+
+## Slug
+`research/backward/nu2-supply-mod4-transfer.md`
+
+## What it does
+The run's three existing skeletons all bottom out at the same single open statement — the **supply side** `ν₂(q_n) ≥ c·n` — and the newest (`granville-nu2-reduction.md`) states it as one atomic gap. This file is the decomposition **of that atomic gap itself**, the only remaining content of Route B.
+
+It splits the supply bound into two rungs and — more importantly — states the **fork that decides whether the split is…
 - **adversarial**: Three new inventor candidates, all orthogonal to the closed approaches (no scalar potential, no flow/cut, no free boundary):
 
 1. vectorial-subtractive-euclidean — the pair map |a−b| IS the subtractive Euclidean step, so the whole triangle is a vectorial/simultaneous Euclidean algorithm (Brun/Selmer/Jacobi–Perron). The open regeneration-rate becomes a return-time/acceleration question in a mature ergodic theory with named theorems. Risk: the absolute-value adjacency scheme may match no classical algorithm — research must check the dictionary first.

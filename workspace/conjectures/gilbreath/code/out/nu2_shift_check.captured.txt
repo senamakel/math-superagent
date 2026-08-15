@@ -1,0 +1,11 @@
+n    gap_parity  inc(n)  inc(n+1)   match shift?
+50    26          20      27        False        flat=False
+100   42          46      43        False        flat=False
+200   98          106     98        True         flat=False
+400   203         216     204       False        flat=False
+800   389         397     389       True         flat=False
+1600  785         740     786       False        flat=False
+3200  1604        1573    1604      True         flat=False
+3999  2048        2045    2048      True         flat=False
+
+Shift hypothesis gap_parity(n)==inc(n+1) holds for all samples: False

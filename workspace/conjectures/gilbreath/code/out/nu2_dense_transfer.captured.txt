@@ -1,0 +1,24 @@
+n=  2500 nu2=  1262 w=  1483 nu2/w=0.851 nu2/n=0.5048
+n=  5000 nu2=  2444 w=  2955 nu2/w=0.827 nu2/n=0.4888
+n=  7500 nu2=  3726 w=  4410 nu2/w=0.845 nu2/n=0.4968
+n= 10000 nu2=  4992 w=  5861 nu2/w=0.852 nu2/n=0.4992
+n= 12500 nu2=  6239 w=  7323 nu2/w=0.852 nu2/n=0.4991
+n= 15000 nu2=  7490 w=  8795 nu2/w=0.852 nu2/n=0.4993
+n= 17500 nu2=  8768 w= 10260 nu2/w=0.855 nu2/n=0.5010
+n= 20000 nu2=  9962 w= 11709 nu2/w=0.851 nu2/n=0.4981
+n= 22500 nu2= 11339 w= 13130 nu2/w=0.864 nu2/n=0.5040
+n= 25000 nu2= 12588 w= 14586 nu2/w=0.863 nu2/n=0.5035
+n= 27500 nu2= 13795 w= 15984 nu2/w=0.863 nu2/n=0.5016
+n= 30000 nu2= 15029 w= 17394 nu2/w=0.864 nu2/n=0.5010
+
+== dense transfer to N=30000 (sieve 1000000, 78498 primes) ==
+sieve 0.0s, diagonal 31.3s
+min nu2/w over ALL n in [2,30000]: 0.0000 at n=3
+  -> smallest c with nu2>=c*w on every n = 0.0000
+min nu2/n over n>=1000: 0.4587 at n=1212
+weakest implied beta (min log nu2/log n, n>=1000): 0.8879
+max |nu2-n/2| = 319.5 at n=27625
+n with nu2 < 0.6*w : 21  first: [3, 4, 9, 10, 12]
+n with nu2 < 0.5*w : 5  first: [3, 4, 10, 14, 16]
+n in [4000,30000] with nu2 <= n^0.525 : 0 first: []
+wrote code/out/nu2_dense.txt (30000 terms)

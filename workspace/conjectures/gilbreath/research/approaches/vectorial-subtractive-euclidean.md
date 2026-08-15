@@ -34,6 +34,7 @@ mechanism: |
   have a known invariant measure. Establishing the dictionary is the whole
   first step.
 status: refuted
+disposition: (b) parked — refuted, not a route to G-supply; no classical subtractive scheme matches (no renormalisation/simplex, overlapping windows) (Directive 44 item 2).
 killed-by: |
   Research (this cycle) established that NO classical simultaneous-Diophantine
   scheme matches the Gilbreath map, and that the match is structurally

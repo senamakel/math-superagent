@@ -1,0 +1,7 @@
+min nu2/n over n>=  100 : 0.3774 at n=106
+min nu2/n over n>= 1000 : 0.4587 at n=1212
+min nu2/n over n>= 5000 : 0.4761 at n=5656
+
+last n>=100 with nu2 < 0.45*n : 822
+  -> 'nu2 >= 0.45*n for all n>=100' holds to 30000: False
+n>=100 with nu2 < 0.4*n : [106, 146, 154] count 4
