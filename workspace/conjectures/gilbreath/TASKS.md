@@ -1,5 +1,26 @@
 # Tasks
 
+## Directive 43 — descent/absorption lemma, corrected case-split proof: exhaustive check (DONE)
+
+- [x] **Exhaustive exact-integer check, L=1..18, ALL 524,286 patterns of
+  {0,2}^L, ALL 11,534,328 even (pattern,v) pairs v in [0,2L+8]** — ZERO
+  violations of (a) x_L ∈ {0,2} ⟺ v ≤ 2ν₂+2 (both directions), (b)
+  v > 2ν₂+2 ⟹ x_L = v−2ν₂ ≥ 4, (0) every x_s even + {0,2} closed under the
+  step, (c) the corrected case-split partition (branch 1 absorption
+  min x_s ≤ 2 ⟺ v ≤ budget; branch 2 descent all x_s ≥ 4 ⟺ v > budget with
+  exact steps and x_L = v−2ν₂), (d) tight boundary v = 2ν₂+2 ⟹ x_L = 2
+  exactly and v = 2ν₂+4 ⟹ x_L = 4 exactly per pattern. Independent halved-unit
+  re-derivation (x_s == 2·d_s) 6,045,944 pairs, 0 mismatches. EXIT 0.
+  This is the machine leg of the Directive 43/44 proof repair: the old
+  algebra "x_L = v−2ν₂" is FALSE on bounce trajectories (v=0, c=(2,2,2):
+  orbit 0→2→0→2 but v−2ν₂ = −6); the corrected split never applies the
+  subtraction outside branch 2. The written proof is on disk
+  (`research/notes/lemma54-descent-proof-repaired.md`, TASKS.md item 10);
+  Lean formalisation remains the open item (Directive 49 item 0).
+  Anchor: `code/gap_analysis/descent_absorption_case_split.py`,
+  `code/out/descent_absorption_case_split.captured.txt`, `.notes.md` (claim
+  `lemma54-descent-absorption-case-split-L18`).
+
 ## Directive 49 — first, fix the descent_lemma.lean false "proved" record
 
 - [ ] **0. `code/lean/descent_lemma.lean` does NOT compile — sorryAx in all six theorems. Do not file it as proved.** `lean_check` ends: `absorbing [propext, sorryAx]`, `run_absorb [sorryAx]`, `run_high [propext, sorryAx]`, `run_inv [propext, sorryAx]`, `descent_claim1 [propext, sorryAx, Quot.sound]`, `descent_claim2 [propext, sorryAx]` — sorryAx in all six. The file header says "fully formalised in Lean 4 with no sorry", which the axiom list contradicts; there is no literal `sorry` token (Lean's error recovery inserted sorryAx), so grepping for the token proves nothing — only the axiom list counts, and it FAILS. The unsolved goal is `run_inv`, case `cons.inr`, hypothesis `he1 : e = 1` — the eps=1 branch, exactly the eps=2 descent/bounce case Granville discarded. Do: (a) fix the header; (b) close the cons.inr branch — `w = 0` ⟹ `Nat.dist 0 1 = 1` (lands in {0,1}, then absorbed by `run_absorb`); `w ≥ 1` ⟹ `Nat.dist w 1 = w − 1` and `countOnes (1 :: rest) = countOnes rest + 1`, so the induction hypothesis applies at `w − 1`; (c) re-run `lean_check` and paste the full axiom list into `research/notes/lemma54-descent-proof-repaired.md`. A formalisation is evidence only when that list is clean (empty, or only propext / Classical.choice / Quot.sound). The statements and shape are right; the file is not finished.
@@ -109,12 +130,7 @@ reports itself; fix both before resuming Directive 47 work.
 
 ## Continuing: Route B theoretical target (the entire open content)
 
-- [ ] **10. Write the case-split proof of Lemma 5.4 descent, then Lean it**
-  (Directive 44 item 1). The published "after the ν₂ twos, δ = v − 2ν₂" step
-  is FALSE on bounce trajectories (0→2→0); the repair is the case split: if
-  some δ_t ≤ 2 then absorption carries it, else every δ_k ≥ 4 forces
-  δ_L = v − 2ν₂ ≤ 2, a contradiction. Lean-formalise against
-  `code/lean/gilbreath_reduction.lean`; report `#print axioms`, zero `sorry`.
+- [ ] **10. Lemma 5.4 descent proof — WRITTEN (`research/notes/lemma54-descent-proof-repaired.md`); Lean is the open item (Directive 49, item 0 above), not the prose.** Do not re-write the case-split from scratch: the published "after the ν₂ twos, δ = v − 2ν₂" step is FALSE on bounce trajectories (0→2→0) and the repair is the case split already on disk (if some δ_t ≤ 2 then absorption carries it, else every δ_k ≥ 4 forces δ_L = v − 2ν₂ ≤ 2, a contradiction). The remaining work is `code/lean/descent_lemma.lean`, which does NOT compile (sorryAx in all six theorems) — fix and re-`lean_check` per item 0.
 - [ ] **11. State G-supply as a conditional theorem** with the hypothesis
   named — the two-point consecutive-prime mod-4 correlation lower bound, now
   recorded as claim `abgs-2011-s9-mod4-switch-limit-open` (Directive 47) —
@@ -145,9 +161,11 @@ reports itself; fix both before resuming Directive 47 work.
 - **Block lemma:** protection constant = 1 (n+1 rows per length-n block). Proved.
 - **Step law + recharge identity:** proved, universal.
 - **Lemma 5.4:** abstract lemma PROVED on the even domain (descent check,
-  2.6M pairs) — but the written proof's descent step is defective (Directive
-  43/44); case-split proof + Lean pending. **Link A (`v ≤ g*_n`) is
-  UNVERIFIED** (vacuous capture, Directive 45).
+  2.6M pairs); the case-split proof is WRITTEN
+  (`research/notes/lemma54-descent-proof-repaired.md`). **Its Lean file
+  `code/lean/descent_lemma.lean` does NOT compile — sorryAx in all six
+  theorems (Directive 49); fix before any "formally proved" claim.** Link A
+  (`v ≤ g*_n`) is UNVERIFIED (vacuous capture, Directive 45).
 - **G-supply is the entire open content — now NAMED OPEN, not a gap in this
   run's argument (Directive 47).** ABGS 2011 §9: whether `N(a,d,m,x)/π(x)`
   tends to any limit is open, so no unconditional linear lower bound on the

@@ -83,7 +83,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `czz2011-infinite-periodic-ducci-is-gilbreath-operator` | claim | established | — | On an infinite periodic sequence, the map a′_k=\|a_k−a_{k+1}\| is exactly the operator of Gilbreath's conjecture; in the periodic setting… |
 | `czz2014-gpf-ducci-collapses-to-2357` | claim | established | — | The GPF-Ducci iteration G(p1..pd)=(gpf(p1+p2),...,gpf(pd+p1)) on prime d-tuples is ultimately periodic, and every limit cycle of length > 1… |
 | `deepmind-formal-conjectures-gilbreath-lean` | claim | **ready** | — | Google DeepMind's formal-conjectures repo (commit ed75a6dd) contains FormalConjectures/Wikipedia/Gilbreath.lean: it defines the difference… |
+| `descent-lemma-halved-formalised` | claim | **verified** | — | For a {0,1} pattern el (every entry 0 or 1) and start w : Nat, with trajectory d_0 = w, d_{k+1} = \|d_k - e_k\| (runAbs) and ν₁ = countOnes… |
 | `directive25-gap-trend-and-reconciliation` | claim | established | — | In the prime Gilbreath triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the 13 giants (j > 1000) at rows 34..161 have inter-giant gaps… |
-| `ducci-avart-nilpotent-concatenation` | claim | **ready** | — | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector… |
 
-_149 further nodes not shown._
+_151 further nodes not shown._

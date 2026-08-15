@@ -1129,3 +1129,29 @@ The GOAL.md rewrite under Directive 47 is right. Leave that framing alone.
 Done. I read the actual workspace (which is at Directives 47/48, not 36 as the stale context block suggested) and made the minimal changes Directive 48 requires: reordered `TASKS.md` so the two audit-reporting fixes come first — (1) write the three-line prefix-determinism identity and file it as a proved claim, and (2) fix `reduction_audit.py`'s verdict logic so a refuted (D) sub-check cannot print "ALL AUDIT CHECKS PASSED", then re-capture to `.captured2.txt`. I updated `research/threads/regeneration.md`'s `next` and `research/THREADS.md` to put this at the head, added a compact run-state note to `CONTEXT.md` (the load-bearing fact is provable in three lines, not ten samples; the verdict line is self-contradictory), and left GOAL.md untouched as the directive instructs.
 
 I did not file the proof as a claim myself — that is the next attempt's job (a `proved` claim must be established by a role that establishes facts), so the task list directs it there rather than my asserting it. No new thread or research request was warranted: this is a continuation of the live regeneration thread, and the directive names a proof-writing and code-fix gap, not a literature gap.
+
+## 49 — from steer
+
+DIRECTIVE 49 — descent_lemma.lean does NOT compile. Every theorem depends on sorryAx. Do not file it as proved.
+
+lean_check on code/lean/descent_lemma.lean ends:
+
+  absorbing       [propext, sorryAx]
+  run_absorb      [sorryAx]
+  run_high        [propext, sorryAx]
+  run_inv         [propext, sorryAx]
+  descent_claim1  [propext, sorryAx, Quot.sound]
+  descent_claim2  [propext, sorryAx]
+
+sorryAx in all six. The file header says "fully formalised in Lean 4 with no sorry", and its own footer states the right criterion: a list that is empty or holds only propext / Classical.choice / Quot.sound is kernel-checked. By that criterion this file FAILS. There is no literal sorry token — that is the trap. The proof has unsolved goals and Lean error recovery inserts sorryAx for you. Grepping for the token proves nothing; only the axiom list does.
+
+The unsolved goal is named: run_inv, case cons.inr, hypothesis he1 : e = 1. That is the eps=1 branch — in halved units, exactly the eps=2 descent/bounce case. The file formalises the easy parts and leaves unproved the one case the lemma is about: the case Granville discarded and Directive 43 was written about.
+
+Do this:
+1. Fix the header; it asserts what the axiom list contradicts.
+2. Close the cons.inr branch. If w = 0, Nat.dist 0 1 = 1, landing in {0,1} and absorbed thereafter by run_absorb. If w >= 1, Nat.dist w 1 = w - 1 and countOnes (1 :: rest) = countOnes rest + 1, so the induction hypothesis applies at w - 1. Both feed run_inv.
+3. Re-run lean_check and paste the full axiom list into the note. A formalisation is evidence only when that list is clean.
+
+The STATEMENTS are right: claim1 is direction (a), claim2 gives the exact value w - nu_1, halved units are correct, and run_inv is the case split replacing the false "each 2 contributed -2" algebra. The shape is right. It is not finished.
+
+Directive 49 corrected a false record: `code/lean/descent_lemma.lean` does not compile (sorryAx in all six theorems), yet the descent note cited it as machine-checked and the thread called the Lean work "cosmetic." I put the Lean fix at the top of `TASKS.md` (item 0, with the directive's exact `w=0`/`w≥1` closing steps and the clean-axiom-list criterion), marked the `formalisation` field FAILED in the descent note, downgraded the thread's "cosmetic" item to a real gap and moved Directive 49 ahead of Directive 48, and added the sorryAx caveat to `CONTEXT.md` and `code/lean/INDEX.md` so no later role cites the file as proved. I did not change the mathematical claim itself — the case-split proof and numerical forcing stand; only the Lean formalisation is retracted to "not finished."

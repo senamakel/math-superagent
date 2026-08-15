@@ -222,7 +222,9 @@ here.
 - **The 1-Lipschitz chain reformulation** — computed mechanism, not proved.
 - **What remains toward a GOAL.md partial result:** block lemma, Lean IFF, and
   edge-map invertibility are delivered, and Lemma 5.4 is re-derived and PROVED
-  on the even domain (`lemma54-re-derived-proof`). **Directive 47:** the
+  on the even domain (`lemma54-re-derived-proof`). **Its Lean formalisation is
+  NOT proved — Directive 49: `code/lean/descent_lemma.lean` has sorryAx in all
+  six theorems; fixing it is the immediate next work.** **Directive 47:** the
   supply side is a NAMED OPEN problem, not a gap in the run's own argument —
   ABGS 2011 §9 (claim `abgs-2011-s9-mod4-switch-limit-open`): whether
   `N(a,d,m,x)/π(x)` tends to any limit is open, so no unconditional linear

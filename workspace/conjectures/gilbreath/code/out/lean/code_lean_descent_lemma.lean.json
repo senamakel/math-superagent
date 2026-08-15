@@ -2,13 +2,13 @@
   "axioms": [
     "'absorbing' does not depend on any axioms",
     "'run_absorb' depends on axioms: [propext]",
-    "'run_high' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'run_high' depends on axioms: [propext, Classical.choice, Quot.sound]",
     "'run_inv' depends on axioms: [propext, Classical.choice, Quot.sound]",
     "'descent_claim1' depends on axioms: [propext, Classical.choice, Quot.sound]",
-    "'descent_claim2' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+    "'descent_claim2' depends on axioms: [propext, Classical.choice, Quot.sound]"
   ],
-  "compiled": false,
+  "compiled": true,
   "file": "code/lean/descent_lemma.lean",
   "sorries": [],
-  "verified": false
+  "verified": true
 }

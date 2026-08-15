@@ -95,7 +95,6 @@ lemma run_high (hall : ∀ e ∈ el, e = 0 ∨ e = 1) :
         rw [hrun]
         rw [show (w - 1) - countOnes rest = w - (1 + countOnes rest) by omega]
         rw [show countOnes (1 :: rest) = 1 + countOnes rest by exact h1]
-        rfl
 
 -- ---------------------------------------------------------------------------
 -- The engine invariant.  Unconditional.
