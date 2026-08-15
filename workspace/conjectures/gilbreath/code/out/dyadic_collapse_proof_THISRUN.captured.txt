@@ -1,0 +1,18 @@
+(a) pascal [1]: True
+(a) pascal [0, 1]: True
+(a) pascal [0, 0, 0, 1]: True
+(a) pascal [1, 0, 1, 0]: True
+(a) pascal [0, 1, 0, 1, 0, 0, 1, 1]: True
+(b) collapse P=1: bad=[]
+(b) collapse P=2: bad=[]
+(b) collapse P=4: bad=[]
+(b) collapse P=8: bad=[]
+(b) collapse P=16: bad=[]
+(b') P=3 collapse bad (non-empty expected): not-power-2
+(c) exact-period bound nu2 <= 2^k - 1
+   (c) all held: True
+(c') eventual-periodic bound nu2<=N0+2^k held: True
+(d) suffix fold weight == nu2 (real indexing)
+   (d) all held
+
+ALL OK: True

@@ -1,0 +1,6 @@
+P= 7 Mersenne: block-stable across periods=True
+     w_r weights (nu2 increments) = [2, 6, 4, 4, 2, 4, 2]
+P=15 Mersenne: block-stable across periods=True
+     w_r weights (nu2 increments) = [2, 14, 8, 8, 4, 8, 4, 4, 2, 8, 4, 4, 2, 4, 2]
+P= 9 nonMers: block-stable across periods=False
+P=25 nonMers: block-stable across periods=False

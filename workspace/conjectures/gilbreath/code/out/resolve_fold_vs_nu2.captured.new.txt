@@ -1,0 +1,13 @@
+Prefix-vs-suffix fold resolution, Thue-Morse (C1, exact ints)
+============================================================
+n=100:
+   TRUE nu2 (canonical cycle_and_nu2) = 27   (tau=2)
+   (A) SUFFIX fold (lib.fold_weight_h, windows ending col n-1) = 27   suffix==true nu2? True
+   (B) PREFIX fold (whole-word subset-zeta, # pw2<=m) = 7   prefix==true nu2? False
+
+n=4000:
+   TRUE nu2 (canonical cycle_and_nu2) = 45   (tau=2)
+   (A) SUFFIX fold (lib.fold_weight_h, windows ending col n-1) = 45   suffix==true nu2? True
+   (B) PREFIX fold (whole-word subset-zeta, # pw2<=m) = 12   prefix==true nu2? False
+
+DISCRIMINATING ASSERTION (suffix==true nu2 AND prefix!=true nu2 at n=100,4000): PASSES

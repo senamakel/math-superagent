@@ -1,0 +1,55 @@
+==============================================================================
+Anti-dyadic half-step fold-weight refutation (STREAMING, per-depth)
+h = '1'*(m//2) + '0'*(m//2);  fold Phi_n rows k=2..n-2 cols j=2..n-1;
+nu2 = wt(Phi_n h) via lib.rule90fold.fold_weight_h (canonical O(m^2))
+==============================================================================
+
+(a) INDEPENDENT: explicit numpy Phi matrix vs fold_weight_h
+    m=8    wt(Phi h)=1   fold_weight_h=1    OK
+    m=16   wt(Phi h)=1   fold_weight_h=1    OK
+    m=24   wt(Phi h)=2   fold_weight_h=2    OK
+    m=32   wt(Phi h)=1   fold_weight_h=1    OK
+    (asserted: matrix == fold_weight_h for m=8,16,24,32)
+
+(b) INDEPENDENT: balanced + anti-dyadic check of h
+    m=8    wt(h)=4    balanced[True] anti-dyadic dist=4   (>=1.6) [True]
+    m=16   wt(h)=8    balanced[True] anti-dyadic dist=8   (>=3.2) [True]
+    m=24   wt(h)=12   balanced[True] anti-dyadic dist=8   (>=4.8) [True]
+    m=32   wt(h)=16   balanced[True] anti-dyadic dist=16  (>=6.4) [True]
+    m=64   wt(h)=32   balanced[True] anti-dyadic dist=32  (>=12.8) [True]
+    m=128  wt(h)=64   balanced[True] anti-dyadic dist=64  (>=25.6) [True]
+    (asserted: balanced AND anti-dyadic for every m)
+
+STREAMING FOLD WEIGHT (depth bound D = m per run)
+m      D          wt(fold)   ratio      nu2_mk  
+DEPTH_BOUND D = 8
+  m=8      D=8      wt(fold)=1    ratio=0.12500
+  (c) real 2-then-odds diag N=n: cycle_and_nu2=2 (max {0,2} suffix incl. k=n-1); fold-window count(k=2..n-2)=1 ; fold_weight_h=1
+      fold-window == fold_weight_h : True
+      (cycle_and_nu2 extends one cell further -> reads the trailing k=n-1 2; fold rows stop at n-2)
+DEPTH_BOUND D = 16
+  m=16     D=16     wt(fold)=1    ratio=0.06250
+  (c) real 2-then-odds diag N=n: cycle_and_nu2=2 (max {0,2} suffix incl. k=n-1); fold-window count(k=2..n-2)=1 ; fold_weight_h=1
+      fold-window == fold_weight_h : True
+      (cycle_and_nu2 extends one cell further -> reads the trailing k=n-1 2; fold rows stop at n-2)
+DEPTH_BOUND D = 24
+  m=24     D=24     wt(fold)=2    ratio=0.08333
+DEPTH_BOUND D = 32
+  m=32     D=32     wt(fold)=1    ratio=0.03125
+DEPTH_BOUND D = 64
+  m=64     D=64     wt(fold)=1    ratio=0.01562
+DEPTH_BOUND D = 128
+  m=128    D=128    wt(fold)=1    ratio=0.00781
+
+RATIO TABLE (m -> wt(fold)/m):
+  m=   8  wt(fold)=1  ratio=0.12500
+  m=  16  wt(fold)=1  ratio=0.06250
+  m=  24  wt(fold)=2  ratio=0.08333
+  m=  32  wt(fold)=1  ratio=0.03125
+  m=  64  wt(fold)=1  ratio=0.01562
+  m= 128  wt(fold)=1  ratio=0.00781
+------------------------------------------------------------------------------
+max wt over m = 2 ; wt at largest m=128 is 1
+DECISIVE VERDICT: wt STAYS BOUNDED (O(1), max=2) while m grows to 128, so wt/m -> 0
+  -> SPAD-nondegenerate-linear is REFUTED: the balanced, anti-dyadic half-step string has sublinear fold weight.
+PROGRAM DONE (EXIT_CODE set by the shell)

@@ -1,0 +1,18 @@
+sieve to 16000000 : 1031130 primes (0.3s)
+switch-bit prefix available: 1031129 bits (0.3s)
+   sanity k=0 (p=1, 2^p=2 blocks): majority=42639 brute=42639 match=True
+   sanity k=1 (p=2, 2^p=4 blocks): majority=42639 brute=42639 match=True
+   sanity k=2 (p=4, 2^p=16 blocks): majority=42639 brute=42639 match=True
+brute-force cross-check (k=0..2) all match: True
+
+Hamming distance of switch-bit prefix to nearest 2^k-periodic string
+ (1031129 bits)
+n-values: [100000, 200000, 500000, 1000000] ; exact via coordinate-wise majority for all k
+n         k=0          k=1          k=2          k=3          k=4          k=5          k=6          
+(columns A = nearest periodic, exact; bias-corrected B = nearest
+ NON-constant periodic, also exact — the all-zero collapse removed)
+100000     100000    A:0.4264   (B n/a)  A:0.4264/B:0.4987   A:0.4264/B:0.4619   A:0.4264/B:0.4433   A:0.4264/B:0.4341   A:0.4264/B:0.4299   A:0.4264/B:0.4278   
+200000     200000    A:0.4308   (B n/a)  A:0.4308/B:0.4994   A:0.4308/B:0.4650   A:0.4308/B:0.4473   A:0.4308/B:0.4387   A:0.4308/B:0.4346   A:0.4308/B:0.4325   
+500000     500000    A:0.4342   (B n/a)  A:0.4342/B:0.4997   A:0.4342/B:0.4665   A:0.4342/B:0.4502   A:0.4342/B:0.4419   A:0.4342/B:0.4377   A:0.4342/B:0.4358   
+1000000    1000000   A:0.4374   (B n/a)  A:0.4374/B:0.4996   A:0.4374/B:0.4682   A:0.4374/B:0.4526   A:0.4374/B:0.4447   A:0.4374/B:0.4410   A:0.4374/B:0.4391   
+elapsed 1.2s total

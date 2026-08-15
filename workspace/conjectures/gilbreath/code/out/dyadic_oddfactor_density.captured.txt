@@ -1,0 +1,10 @@
+odd-factor periods: 30 random words each, nu2(400) and nu2(2000) (growing=>nu2~density*m):
+  period 3: nu2(2000) min=0 med=1333 max=1333 ; density med d400=0.665 d2000=0.666 ; #bounded(<20 at 2000)=3
+  period 5: nu2(2000) min=0 med=1066 max=1068 ; density med d400=0.532 d2000=0.533 ; #bounded(<20 at 2000)=2
+  period 6: nu2(2000) min=666 med=1332 max=1333 ; density med d400=0.662 d2000=0.666 ; #bounded(<20 at 2000)=0
+  period 7: nu2(2000) min=570 med=1142 max=1714 ; density med d400=0.570 d2000=0.571 ; #bounded(<20 at 2000)=0
+  period 9: nu2(2000) min=820 med=1018 max=1081 ; density med d400=0.510 d2000=0.509 ; #bounded(<20 at 2000)=0
+  period 10: nu2(2000) min=533 med=1066 max=1070 ; density med d400=0.532 d2000=0.533 ; #bounded(<20 at 2000)=0
+  period 12: nu2(2000) min=333 med=1000 max=1334 ; density med d400=0.500 d2000=0.500 ; #bounded(<20 at 2000)=0
+  period 15: nu2(2000) min=266 med=1065 max=1599 ; density med d400=0.530 d2000=0.532 ; #bounded(<20 at 2000)=0
+EXIT_CODE=0 (script ran to completion; exit verified in tool result)

@@ -1,0 +1,4 @@
+m 8 half-step wt(Phi h)= 1 ratio 0.125
+m 16 half-step wt(Phi h)= 1 ratio 0.0625
+m 24 half-step wt(Phi h)= 2 ratio 0.08333333333333333
+m 32 half-step wt(Phi h)= 1 ratio 0.03125

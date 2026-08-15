@@ -1,10 +1,41 @@
-prediction: nu2 = O(1) iff period is a power of 2
-  P power2? nu2 all max nu2 tail max nu2 min
-  1    True           0            0       0
-  2    True           0            0       0
-  3   False           0            0       0
-  4    True           0            0       0
-  5   False           0            0       0
-  6   False           0            0       0
-  7   False           0            0       0
-  8    True           0            0       0
+VACUOUS — DO NOT READ AS EVIDENCE
+=================================
+
+This capture is VACUOUS (Directive 60 item 3; task fix-vacuous-dyadic-artifacts).
+
+WHY IT IS BROKEN
+----------------
+The oracle code/out/dyadic_periodic_check.py constructs its input triangle
+incorrectly:
+  * make_input_gaps() prepends a leading gap of 1 for the 2->3 difference
+    (gaps = [1] + even gaps), AND
+  * build_triangle() prepends [1] again, so row A_1 = (1, 1, g_2, g_3, ...),
+i.e. A_1 has an ODD SECOND ENTRY (A_1[1] = 1).
+
+A valid Gilbreath 2-then-odds array has A_1 = (1, 2, even, even, ...) — the
+second entry must be the even gap 2->3. With the double-prepended 1 the
+{0,2}-regime never forms, the maximal {0,2} suffix is empty, and nu2 = 0 for
+every period (P=1..8). The original all-zeros table here is an ARTIFACT of
+this broken construction, NOT evidence. A table of zeros must not be cited as
+showing "odd-factor periods do not grow."
+
+DO NOT RE-RUN THIS BROKEN SCRIPT
+--------------------------------
+Its output is meaningless by construction. It is retained on disk only for
+provenance. The corrected computation lives in:
+
+  code/out/dyadic_periodicity_correct.py
+  code/out/dyadic_periodicity_correct.captured.txt
+
+There the triangle is built correctly (proper 2-then-odds A_1 = (1,2,...)
+via the canonical lib.rightdiag incremental_diagonals + cycle_and_nu2), and
+the dyadic dichotomy is confirmed NON-VACUOUSLY:
+  * power-of-2 periods COLLAPSE: nu2 = O_P(1) (period 1: 0, period 2: 1,
+    period 4: 1, period 8: 1-2),
+  * odd-factor periods GROW: period 3 nu2 = 132 -> 2666 as n: 200 -> 4000,
+    period 5 = 104 -> 2132, period 7 = 56 -> 2284, period 9 = 83 -> 1648.
+See that capture for the full period-1..16 table and its stage-1 reproduction
+report.
+
+This file intentionally carries no numeric table, so it cannot be misread as
+measurement.

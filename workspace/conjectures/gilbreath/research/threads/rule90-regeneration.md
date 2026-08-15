@@ -14,14 +14,10 @@ status: CLOSED (Directive 9) — the null test is done. At tol=1, 21/27 regime
         actual record, not its depth-corollary. No further tolerances,
         depths, or null variants.
 rests-on: |
-  - Block lemma (proved): the {0,2} interior evolves under the halved operator
+  - rule90-interior-xor (proved): the {0,2} interior evolves under the halved operator
     as XOR = Rule 90 = Pascal mod 2. The apex A_{k+n-1}(1) = 2 · XOR_j
     binom(n-1, j) mod 2 · (b_{j+1}/2). Anchor: research/notes/block_lemma.md.
-  - Sierpinski fact (classical): Rule 90 from a single 1 at position 0
-    produces all-1 rows (mod 2) exactly at depths d = 2^j - 1 (j ≥ 0), i.e.
-    rows 0, 1, 3, 7, 15, 31, ... Within the Gilbreath block, a depth-d
-    descent reaches row k+d; the halved entries at that depth are the d-step
-    XOR evolution of the initial bit pattern.
+  - odlyzko-block-lemma-exact (proved): a leading {0,2} block of length n protects n+1 rows.
   - The initial bit pattern is (A_1(2)/2, A_1(3)/2, ...), i.e. the halved
     gaps between consecutive primes: not a single 1, but an arbitrary
     binary string. At depths d = 2^j - 1 where the Sierpinski kernel is all-1,

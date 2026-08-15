@@ -1,0 +1,25 @@
+Exact linear density of true {0,2}-suffix nu2 on odd-factor words
+(companion to dyadic_oddfactor_infratio.py; exact integers)
+
+P=3 word 001: candidate exact ratio c = 0.666667
+  n=  1000 nu2=   666 ratio=0.6660 residual(666-0.666667*n)=-0.67
+  n=  2000 nu2=  1332 ratio=0.6660 residual(1332-0.666667*n)=-1.33
+  n=  4000 nu2=  2666 ratio=0.6665 residual(2666-0.666667*n)=-0.67
+  n=  8000 nu2=  5332 ratio=0.6665 residual(5332-0.666667*n)=-1.33
+  n= 12000 nu2=  7998 ratio=0.6665 residual(7998-0.666667*n)=-2.00
+  n= 16000 nu2= 10666 ratio=0.6666 residual(10666-0.666667*n)=-0.67
+  n= 24000 nu2= 15998 ratio=0.6666 residual(15998-0.666667*n)=-2.00
+
+P=5 word 00001: candidate exact ratio c = 0.533333
+  n=  1000 nu2=   532 ratio=0.5320 residual(532-0.533333*n)=-1.33
+  n=  2000 nu2=  1064 ratio=0.5320 residual(1064-0.533333*n)=-2.67
+  n=  4000 nu2=  2132 ratio=0.5330 residual(2132-0.533333*n)=-1.33
+  n=  8000 nu2=  4264 ratio=0.5330 residual(4264-0.533333*n)=-2.67
+  n= 12000 nu2=  6399 ratio=0.5333 residual(6399-0.533333*n)=-1.00
+  n= 16000 nu2=  8532 ratio=0.5333 residual(8532-0.533333*n)=-1.33
+  n= 24000 nu2= 12799 ratio=0.5333 residual(12799-0.533333*n)=-1.00
+
+Reading: residual stays O(1) (bounded), so the density is exactly c,
+the asymptotic infimum ratio is bounded away from 0, and the odd-factor
+converse is NOT refuted by a plateau here.  Numerical evidence only —
+the converse (nu2 >= c(P)*n for all n) remains CONJECTURED.

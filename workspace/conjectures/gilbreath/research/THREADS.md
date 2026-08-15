@@ -6,23 +6,17 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[dyadic-periodicity-collapse]] | Why does the F₂ transfer die exactly on dyadic-periodic h, and what anti-dyadic property of the prime halved-gap bit string restores ν₂ ≥ c·n? | open | rule90-interior-xor, g-supply-transfer-universal-refuted, transfer-matrix-kernel-allones, g-supply-transfer-measured | \| Directive 58. Stage-1 numbers are MEASURED HOST-SIDE — reproduce, do not re-explore. Periodic halved-gap bit string h, gap = 2 if bit else 4, nu2 = #2s in… |
+| [[dyadic-periodicity-collapse]] | Keyed on MINIMAL period, why does the F₂ transfer die exactly on dyadic-periodic h (minimal period a power of 2), and what anti-dyadic property of the prime… | dead | rule90-interior-xor, g-supply-transfer-universal-refuted, transfer-matrix-kernel-allones, g-supply-transfer-measured, granville-lucas-kummer-sierpinski, dyadic-collapse-proved, dyadic-oddfactor-infimum-bounded, thue-morse-sublinear-supply-witness | \| CLOSED by Directive 74 — write the deliverable (solution.md), do not re-open this thread. Historical guidance below is superseded. Directive 72 — index… |
 | [[gsupply-transfer-repair]] | What is the weakest gap-variety / non-degeneracy hypothesis — satisfied by the primes, violated by constant gaps — under which the F₂ transfer ν₂ ≥ c·w holds,… | dead | g-supply-transfer-universal-refuted, transfer-matrix-kernel-allones, rule90-interior-xor, g-supply-transfer-measured | \| CLOSED by Directive 57. Two SUCCESSFUL families — consecutive odds (h = all-ones, period 1) and alternating 2/4 (h of period 2) — have maximal w yet ν₂ =… |
-| [[regeneration]] | Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones. | open | IFF, reduction | \| 0. **DONE (Directive 50) — `code/lean/descent_lemma.lean` compiles clean.** No `sorryAx`; axioms only `propext`/`Classical.choice`/`Quot.sound` (`absorbing`… |
-| [[rule90-regeneration]] | Does the Rule 90 (Sierpinski / Pascal mod 2) structure of the {0,2} interior force block-length regeneration at specific relative depths, and does the null… | open | Block, lemma | \| 1. ~~**Split the claim.**~~ DONE — `rule90-interior-xor` is its own proved claim in `research/notes/rule90-interior.md` (Directive 4). The absorption wrapper… |
+| [[regeneration]] | Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones. | open | gilbreath-second-entry-equivalence, step-law-theorem-proved, lemma54-re-derived-proof, odlyzko-block-lemma-exact | \| 0. **DONE (Directive 50) — `code/lean/descent_lemma.lean` compiles clean.** No `sorryAx`; axioms only `propext`/`Classical.choice`/`Quot.sound` (`absorbing`… |
+| [[rule90-regeneration]] | Does the Rule 90 (Sierpinski / Pascal mod 2) structure of the {0,2} interior force block-length regeneration at specific relative depths, and does the null… | open | rule90-interior-xor | \| 1. ~~**Split the claim.**~~ DONE — `rule90-interior-xor` is its own proved claim in `research/notes/rule90-interior.md` (Directive 4). The absorption wrapper… |
 
 ## What is in the way
 
 Each blocked or dead thread and what would move it. A blocker stated precisely is the next research request; one left blank is a mood.
 
+- [[dyadic-periodicity-collapse]] (dead): none yet
 - [[gsupply-transfer-repair]] (dead): Directive 57
-
-## Resting on nothing recorded
-
-Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
-
-- [[regeneration]] rests on `IFF`, `reduction`, which no claim block on disk establishes
-- [[rule90-regeneration]] rests on `Block`, `lemma`, which no claim block on disk establishes
 
 ## Threads that could not be read
 

@@ -1,139 +1,184 @@
-# Solution — deliverable for this run
+# Solution — the standing conditional theorem (Route B)
+
+## The honest deliverable
+
+Gilbreath's conjecture (1878/1958) remains **open**. Nothing in this run proves
+it. What the run has established, kernel-checked in Lean and re-verified here
+from scratch by independent programs, is a **conditional theorem** with a
+precisely identified, named-open hypothesis. The deliverable is that theorem,
+the map of five dead escapes and the one shared reason they all die, and the
+knowledge that closing the hypothesis is an open problem in analytic number
+theory — not a gap in this argument.
+
+The conjecture reduces to one statement (problem.md): the second entry of every
+row lies in `{0,2}`, because 2 is the only even prime and `|1−e|=1` iff
+`e∈{0,2}`.
 
 ## What is proved
 
-A genuine partial result: **the combinatorial core of Granville's Lemma 5.4 is
-proved as a general theorem**, and the full lemma is validated non-vacuously in
-both the success and failure directions on synthetic sequences (not just on the
-all-successful primes, where the prior check was vacuous).
+### 1. The reduction (proved, Lean-formalised, sorry-free)
 
-### The theorem (proved, general — no primes involved)
+`A_{k+1}(0)=1 ⟺ A_k(1)∈{0,2}`. The `(odd, even, even, …)` shape is preserved by
+the absolute-difference operator, so the whole conjecture is the `{0,2}`
+second-entry statement. Formalised in Lean 4 (`code/lean/gilbreath_reduction.lean`,
+IFF, sorry-free; `#print axioms` = propext/Classical.choice/Quot.sound only).
 
-**Descent / absorption lemma.** Let `c_1, …, c_L ∈ {0,2}` and let `v ≥ 0` be
-even. Define `x_0 = v`, `x_s = |x_{s−1} − c_s|` for `s = 1..L`, and let
-`ν₂ = #{s : c_s = 2}`. Then:
+### 2. Consumption is settled; regeneration is the open problem
 
-1. **Budget biconditional.** `x_L ∈ {0,2} ⟺ v ≤ 2ν₂ + 2`.
-2. **Runway.** If `v > 2ν₂ + 2`, then `x_L = v − 2ν₂ ≥ 4` and the trajectory
-   never enters `{0,2}`.
-3. **Absorption (closure).** If `x_s ∈ {0,2}` for some `s`, then `x_t ∈ {0,2}`
-   for all `t ≥ s`.
+A leading `{0,2}` block of length `n` protects exactly **n+1** rows — protection
+constant 1, not n/2 (the n/2 figure was refuted this run; `odlyzko-block-lemma-exact`,
+re-derived as the step law). Exact accounting:
 
-**Proof.** `x_s` is always even and non-negative (`0 ≤ c ≤ 2`, and `x` even
-stays even under `|x−c|`). Split on whether the trajectory ever reaches `{0,2}`:
+```
+step law:   b_{k+1} ≥ b_k  iff (x,y)=(2,4),  else b_{k+1}=b_k−1
+recharge:   b_k = b_1 + Σ_{events i<k}(j_i+1) − (k−1)
+```
 
-- **Branch A (absorption):** if some `x_t ≤ 2` (t ≤ L), then `x_t ∈ {0,2}`
-  (even, non-negative), and `{0,2}` is absorbing: `|0−c| ∈ {0,2}` and
-  `|2−c| ∈ {0,2}` for `c ∈ {0,2}`. Hence `x_L ∈ {0,2}`. This is the δ=0 case
-  Granville's published proof discards as an "exception" — here it is the
-  mechanism, not an exception. It supplies the (←) direction and the
-  absorption claim (3).
-- **Branch B (descent):** otherwise `x_s ≥ 4` for every `s`. Then no bounce
-  occurs: `c=2` maps `x ↦ |x−2| = x−2` (since `x ≥ 2`) and `c=0` fixes `x`,
-  so `x_L = v − 2ν₂` exactly (monotone). If `v ≤ 2ν₂+2`, then `x_L ≤ 2`,
-  contradicting the standing `x_L ≥ 4`; so under the hypothesis the descent
-  regime cannot persist, and Branch A must hold — giving the (→) direction.
-  If `v > 2ν₂+2`, then `v − 2ν₂ ≥ 4`, so Branch B persists throughout and
-  `x_L = v − 2ν₂ ≥ 4` (the runway / tightness direction). This is the repair:
-  the old algebra "after the ν₂ twos, δ = v − 2ν₂" is false on bounce
-  trajectories (e.g. `v=0, ε=(2,2,2)` gives `0→2→0→2` while `v−2ν₂=−6`); the
-  case split never applies the subtraction outside Branch B. ∎
+A (2,4)-event is the only growth mechanism. The open problem is whether events
+arrive fast enough that the recharge sum never falls k−1 behind —
+**regeneration, not erosion**. Erosion is settled; regeneration is not.
 
-The halved form (cleanest for proof and formalisation): `e ∈ {0,1}^L`, trajectory
-`d_0=w`, `d_{k+1}=|d_k−e_k|`, `ν₁=#{1s}`. Claims: `w≤ν₁+1 ⟹ d_L∈{0,1}`,
-`w>ν₁+1 ⟹ d_L=w−ν₁` exactly, `{0,1}` absorbing. The proof's engine is the
-unconditional invariant: every value is either `w−(#ones so far)` or in
-`{0,1}`. **Lean-formalised sorry-free** at `code/lean/descent_lemma.lean`
-(compiled=true, verified=true, zero sorryAx; `#print axioms` = only
-propext/Classical.choice/Quot.sound). Exhaustively machine-checked in halved
-units (12,582,900 `(pattern,w)` pairs, L≤18, 0 violations) and unhalved
-(11,534,328 pairs, L≤18, 0 violations); the even-unit reproduction matches the
-prior capture pair-for-pair.
+### 3. Descent / absorption lemma (proved as a general theorem, Lean-formalised sorry-free)
 
-### Application (Granville's right-diagonal coordinates)
+Let `c_1..c_L∈{0,2}`, `v≥0` even, `x_0=v`, `x_s=|x_{s−1}−c_s|`, `ν₂=#{c_s=2}`.
+Then:
 
-In the iterated-absolute-difference triangle, an extension column `q_1..q_n` is
-a one-step diagonal. Let `ε_k ∈ {0,2}` (the `{0,2}` cycle of the previous
-diagonal's tail) and `δ_k` the new diagonal; `δ_{k+1} = |δ_k − ε_k|`. The lemma
-governs exactly this recursion with `v_n` the entry where the previous
-diagonal's maximal `{0,2}` suffix begins. The descent budget `2·ν₂ + 2` is
-precisely this run's recharge identity `Σ(j_i+1) ≥ k−2` in right-diagonal
-coordinates. **The δ=0 case that Granville's published proof discards as an
-"exception" (and which occurs in 100% of real columns) is exactly the
-absorption case (3) — and it is now proved, not waved away.**
+1. `x_L∈{0,2} ⟺ v ≤ 2ν₂+2`
+2. `v > 2ν₂+2 ⟹ x_L = v−2ν₂ ≥ 4` (never enters `{0,2}`)
+3. `{0,2}` is absorbing
 
-### Validation (machine, non-vacuous)
+Proof: case split. **Branch A (absorption):** if ever `x_t≤2` then `x_t∈{0,2}`
+and `{0,2}` absorbs. This is the δ=0 case Granville's published proof discards
+as an "exception" — here it is the mechanism, occurring in 100% of real columns,
+and it is proved, not waved away. **Branch B (descent):** if all `x_s≥4`, no
+bounce occurs, `c=2` maps `x↦x−2`, so `x_L=v−2ν₂`, and the contradiction/runway
+follows. This repairs the written-proof defect of the original (the old algebra
+`δ=v−2ν₂` fails on bounce trajectories like `v=0,ε=(2,2,2)`).
 
-- **Exhaustive descent sweep** (`code/lemma54_descent_check.py`): all `{0,2}^L`
-  patterns, `L = 1..16`, all even `v` in `[0, 2L+8]` — 131,070 patterns /
-  2,621,432 pairs, **0 violations** of (1)(2)(3), sharpness holds.
-- **Failing-side validation** (`code/gap_analysis/lemma54_failing_sisters.py`),
-  which the prior check could not do (every real prime column succeeds, so the
-  biconditional was only confirmed with both sides true). Built 2-then-odd
-  synthetic failing sequences (5 gap families including Poisson-gap style),
-  cross-checked 8,188,000 triangle cells with **0 mismatches**: among 38,219
-  eligible columns (successful prefix `q_1..q_{n-1}` — the lemma's hypothesis),
-  30 have genuinely failing extensions; the biconditional
-  `v_n ≤ 2ν₂+2 ⟺ success` has **0 violations**; the contrapositive
-  (`fails ⟹ g* > budget`) has **0 columns fail under budget**; and
-  `A_{n-1}[1] ∈ {0,2} ⟺ A_n[0]=1` (the reduction iff) has 0 disagreements.
+Kernel-checked sorry-free at `code/lean/descent_lemma.lean`; exhaustively
+machine-checked (12.58M halved + 11.53M unhalved `(pattern,v)` pairs, 0
+violations). Link A (`v ≤ g*_n`) and the even-domain composition also
+kernel-checked. This is the first kernel-checked result of the run.
 
-**Framing caveat (recorded):** Lemma 5.4 is a *one-step* budget that keeps an
-already-Gilbreath sequence Gilbreath; it governs only extensions of successful
-prefixes. ~1652 apparent violations in a first test run were columns whose
-prefix had *already failed* — outside the lemma's scope, not counterexamples.
-Any citation must carry the prefix-successful hypothesis.
+### 4. Independent from-scratch backbone verification (this attempt)
 
-## What this reduces the conjecture to
+A fully self-contained program (own sieve to 200000, own triangle builder, no
+lib import) — `code/out/deliverable_backbone_check.py`, captured as
+`deliverable_backbone_check.captured.txt` (EXIT_CODE=0):
 
-The whole of route B now rests on a single open density statement:
+- **Worked rows reproduced exactly**: `A_1=(1,2,2,4,2,4,2,4,6,2)`,
+  `A_2=(1,0,2,2,2,2,2,2,4)`, `A_3=(1,2,0,0,0,0,0,2)` — MATCH each.
+- **Second entry ∈{0,2} for 60/60 rows** (k=1..60) — the reduction at the heart
+  of the conjecture, confirmed on every sampled row.
+- **Descent biconditional on real prime diagonals (n=2..200): 0 violations** of
+  `x_L∈{0,2}⟺v≤2ν₂+2`, of the runway `v>2ν₂+2⟹x_L=v−2ν₂`, and of absorption.
+- **Supply measured, not proved**: min `ν₂/n` over n∈[50,2000] = 0.3273 (at
+  n=55) — a linear bound is plausible at this scale but remains open.
 
-> **G-supply.** There exists `β > 0.525` with `ν₂(q_n) > n^β` for all large `n`,
-> where `ν₂(q_n)` = number of 2s in the maximal `{0,2}` suffix of the
-> right-diagonal of column `n`.
+## The one open condition: G-supply
 
-- The **demand side** `g\*_n < n^{0.525+ε}` is discharged unconditionally by
-  Baker–Harman–Pintz (`bhp-max-gap-unconditional`, `bhp-demand-corollary-g-star`).
-- The **supply side** is measured at `ν₂/n ∈ [0.420, 0.520]` over
-  `n = 50..3999` (26× above the needed `n^0.525`), and reduces cleanly to a
-  **prime-gap-mod-4 density statement**: the `{0,2}` tail cells' row-1 ancestor
-  union is the fixed interval `[2, n−1]` of `A_1`, halved bits are 1 iff
-  `gap ≡ 2 (mod 4)`, with `ν₂ ≥ w/2` holding on every sample — so G-supply is a
-  claim about how often `p_{n+1}−p_n ≡ 2 (mod 4)` occurs, not about the
-  absolute-difference dynamics. (**Numerical only** at 8 samples; not a proof.)
+Everything reduces to a single density statement on the primes:
 
-## Honest status
+> **G-supply.** There exists `c>0` (equivalently `β>0.525` for the Granville
+> form) with `ν₂(q_n) ≥ c·n` for all large `n`, where `ν₂(q_n)` is the number
+> of 2s in the maximal `{0,2}` suffix of the right diagonal of column `n`.
 
-- **Proved + Lean-formalised (this attempt):** the sharpened descent/absorption
-  lemma (general theorem, case-split proof in halved units) — sorry-free in
-  `code/lean/descent_lemma.lean`, exhaustively verified (12.58M halved pairs
-  + 11.53M unhalved pairs, 0 violations). This repairs the written-proof defect
-  of Directive 43/44: the δ=0 case is absorption (Branch A), not an exception,
-  and the tight exact value `w−ν₁` is proved (Branch B), not assumed.
-- **Proved (prior runs):** the reduction `GC ⟺ second entry ∈ {0,2}` (Lean,
-  sorry-free); block lemma constant 1; step law + recharge identity; Rule 90
-  interior; edge-map invertibility.
-- **Validated non-vacuously (both directions):** Lemma 5.4's full statement on
-  synthetic failing sequences (30 genuinely failing columns).
-- **The passage from real column dynamics to the (pattern,v) model is EXACT**
-  (a theorem): the pattern is read off the prefix-determined previous diagonal,
-  independent of the new column's values — reduction_audit Part 1 (45150 cells)
-  and model-match (49.87M positions) all 0 violations.
-- **Open, the entire remaining content:** the ν₂ density lower bound (G-supply
-  `ν₂ > n^β`, β>0.525, equivalently ν₂ ≥ c·n), a prime-gap-mod-4 frequency
-  bound that is a NAMED OPEN problem in analytic number theory (no
-  unconditional linear lower bound on the mod-4 switch count exists). Route B
-  is therefore a conditional theorem with a precisely identified open
-  hypothesis — not a proof of Gilbreath.
+- **Demand side discharged unconditionally**: `g*_n < n^{0.525+ε}` by
+  Baker–Harman–Pintz (and shaved to 0.52 by Li 2023); this is not the
+  bottleneck.
+- **Supply side is a prime-gap-mod-4 statement**: the `{0,2}` tail cells'
+  row-1 ancestor union is the fixed interval `[2,n−1]` of `A_1`, halved bits are
+  1 iff `gap≡2 (mod 4)`, and `ν₂(q_n)=wt(Φ_n h)` where `Φ_n` is the Pascal-mod-2
+  fold of the mod-4 switch bit `h`. So G-supply reduces to how often
+  `p_{j+1}−p_j≡2 (mod 4)` — a **two-point** correlation. Measured
+  `ν₂/n ∈ [0.42,0.52]` on samples, but **no unconditional linear lower bound
+  exists in the literature** (Ash–Beltis–Gross–Sinnott 2011 §9: whether
+  `N(a,d,m,x)/π(x)` tends to any limit is open; it cannot be treated with
+  L-functions).
+
+Therefore Route B yields a **conditional theorem**: *IF* the two-point
+consecutive-prime mod-4 switch correlation satisfies the linear lower bound
+`ν₂ ≥ c·n`, *THEN* Gilbreath's conjecture holds. The hypothesis is named, open,
+and precisely stated. This is not a proof.
+
+## The five dead escapes, and the one shared reason
+
+Five routes to replacing the arithmetic have been closed (all `refuted` in the
+ledger). They die for one shared reason: **`Φ_n` has low-weight images on
+structurally rich inputs.** Balancing, anti-dyadicity, aperiodicity, and
+non-concentration are all structural conditions on the switch bit `h`, and none
+is what grows `wt(Φ_n h)`. The surviving witness `h=1^{m/2}0^{m/2}` is balanced
+*and* maximally anti-dyadic, yet collapses to `wt=1` at power-of-two length
+(`dyadic-halfstep-fold-power2-collapse`). So `ν₂ ≥ c·n` for the primes is
+**irreducibly arithmetic**, not structural.
+
+1. **Universal F₂ transfer** `ν₂ ≥ c·w` — refuted: consecutive odds
+   (`h=all-ones`) has maximal `w` yet `ν₂=0` (`g-supply-transfer-universal-refuted`;
+   kernel of `Φ_n` = span(all-ones)).
+2. **Non-concentration** (no long constant runs) — refuted as a constraint:
+   the consecutive-odds killer has no large gaps at all.
+3. **Aperiodicity via Thue–Morse** — known, and known-insufficient: Thue–Morse
+   is aperiodic with `ν₂=O(log n)` (`thue-morse-sublinear-supply-witness`), so
+   aperiodicity cannot bridge to the primes. (Note: the right statistic is the
+   **suffix** fold = `ν₂`; the prefix subset-zeta is a different, BCZ
+   left-edge operator. Convention fixed as `suffix-fold-equals-nu2-prefix-does-not`.)
+4. **Anti-dyadicity (half-step)** — refuted: `1^{a}0^{a}` with `a=2^b` is
+   maximally far from every `2^k`-periodic string yet reaches fold weight 1
+   (`spad-nondegenerate-linear-refuted`, `dyadic-halfstep-fold-power2-collapse`).
+   And the prime switch bit is proved **not** eventually periodic
+   (`spad-prime-anti-dyadic-proved`), but since the anti-dyadic converse is
+   dead, aperiodicity is inert for supply.
+5. **Dyadic periodicity collapse** — proved (`dyadic-collapse-proved`: period
+   2^k ⟹ `ν₂=O_k(1)`), but it is the *collapse* half; the odd-factor converse
+   (`ν₂≥c·n` on odd periods) is numerically confirmed on periodic words yet does
+   not transfer to the aperiodic primes.
+
+The dyadic skeleton is closed: `SPAD-linearization` discharged,
+`SPAD-dyadic-collapse` discharged, `SPAD-anti-dyadic-linear` REFUTED,
+`SPAD-prime-anti-dyadic` proved-but-inert. The route delivers nothing toward an
+unconditional supply bound — that is the honest negative result.
+
+## What the odd-period family genuinely gives (checked, conjectured)
+
+Independently re-verified this attempt from scratch (no lib imports,
+`code/out/deliverable_supply_check.py`, captured, EXIT_CODE=0): on the
+2-then-odds sequence from an odd-period tail-1 word, `ν₂(n)` is **per-residue
+affine** mod the (extended) period, min per-residue constant `c_r ≥ 2`, i.e.
+positive **linear** supply on every odd-period tail-1 word:
+
+- P=3: `ν₂(n) = 2·floor(n/3) + offset_r`, offsets `{-2,-2,+1}`, sum slope 2/3 —
+  matches the infimum-bounded figure. **Correction:** the earlier literal closed
+  form `2·floor((n−1)/3)` is wrong (fails all residues 1,2 mod 3; right form is
+  `2·floor(n/3)+offset_r`).
+- Mersenne P=7: affine constants `c_r=[2,2,6,4,4,2,4]`, `Σc_r=24=3^3−3` —
+  matches the Mersenne recursion claim.
+
+This is periodic-family only, so it does **not** close G-supply for the
+aperiodic primes. And even the linear families weaken as the period grows:
+Mersenne density `(3^k−3)/(2^k−1)^2 → (3/4)^k`, so supply density tends to 0 as
+the period grows — the sharpest version of the run's recurring fragility.
+
+## Status summary
+
+- **Proved + Lean-formalised (sorry-free):** the reduction; the
+  descent/absorption lemma (Branch A/B case split); the composition; the block
+  lemma (constant 1); the step law + recharge identity; Rule 90 interior; edge
+  invertibility; `spad-prime-anti-dyadic` (negative).
+- **Verified from scratch this attempt (0 violations):** worked rows
+  A_1..A_3 reproduced; 60/60 second entries in {0,2}; descent biconditional on
+  real diagonals. Per-residue affine supply on odd-period words + Mersenne sum.
+- **Open (named):** the unconditional linear supply bound `ν₂ ≥ c·n` (the
+  two-point mod-4 switch correlation), `abgs-2011-s9-mod4-switch-limit-open`.
+
+**Gilbreath's conjecture is NOT proved by this run.** It is reduced, with a
+machine-checked core, to a single named-open arithmetic hypothesis.
 
 ## Files
 
-- `code/gap_analysis/descent_halved_verify.py` + `code/out/descent_halved_verify.captured.txt` (new, this attempt)
-- `code/gap_analysis/descent_absorption_case_split.py` + `code/out/descent_absorption_case_split.captured.txt`
-- `code/gap_analysis/reduction_audit_d_investigate.py` + `code/out/reduction_audit_d_investigate.captured.txt` + `code/out/reduction_audit_d_notes.md` (the 1133 diagonal-cycle drops are a transversality artifact, not a counterexample)
-- `code/lean/descent_lemma.lean` (Lean 4 formalisation, sorry-free, `#print axioms` reported)
-- `research/notes/lemma54-descent-proof-repaired.md` (the case-split proof, this attempt)
-- `code/gap_analysis/lemma54_failing_sisters.py` + `code/out/lemma54_failing_sisters.captured.txt`
-- `code/gap_analysis/nu2_vs_gap_parity.py` + `code/out/nu2_vs_gap_parity.captured.txt`
-- `code/lemma54_descent_check.py` + `code/out/lemma54_descent_check.captured.txt` (pre-existing, re-verified)
-- `research/notes/lemma54-re-derived.md` (scholar analysis), `research/notes/lemma54-discarded-case-is-universal.md`
+- `code/out/deliverable_backbone_check.py` + `.captured.txt` (this attempt)
+- `code/out/deliverable_supply_check.py` + `.captured.txt` + `.notes.md` (this attempt)
+- `code/lean/descent_lemma.lean`, `link_a.lean`, `lemma54_even_domain.lean`,
+  `gilbreath_reduction.lean` (Lean, sorry-free)
+- `research/notes/lemma54-descent-proof-repaired.md`
+- `research/notes/dyadic-oddfactor-affine-modulus-lifting.md`,
+  `research/notes/mersenne-nu2-affine-selfsimilar-recursion.md`

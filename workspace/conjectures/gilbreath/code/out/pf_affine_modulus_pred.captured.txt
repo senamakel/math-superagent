@@ -1,0 +1,37 @@
+conjecture: affine modulus L(P) = smallest Mersenne 2^k-1 divisible by P
+P in non-Mersenne odd periods
+============================================================================
+P=   5 ord2=  4 L_pred=2^4  -1=  15  affine@L_pred=True  sum_c_r=120  minimal=True
+P=   9 ord2=  6 L_pred=2^6  -1=  63  affine@L_pred=True  sum_c_r=1638  minimal=True
+P=  11 ord2= 10 L_pred=2^10 -1=1023  affine@L_pred=True  sum_c_r=491040  minimal=False
+P=  13 ord2= 12 L_pred=2^12 -1=4095  affine@L_pred=True  sum_c_r=7862400  minimal=False
+P=  17 ord2=  8 L_pred=2^8  -1= 255  affine@L_pred=True  sum_c_r=20400  minimal=True
+P=  19 ord2= 18 L_pred=262143 (skip, window too big)
+P=  21 ord2=  6 L_pred=2^6  -1=  63  affine@L_pred=True  sum_c_r=1518  minimal=True
+P=  23 ord2= 11 L_pred=2^11 -1=2047  affine@L_pred=True  sum_c_r=2004992  minimal=True
+P=  25 ord2= 20 L_pred=1048575 (skip, window too big)
+P=  27 ord2= 18 L_pred=262143 (skip, window too big)
+P=  29 ord2= 28 L_pred=268435455 (skip, window too big)
+P=  33 ord2= 10 L_pred=2^10 -1=1023  affine@L_pred=True  sum_c_r=247566  minimal=True
+P=  35 ord2= 12 L_pred=2^12 -1=4095  affine@L_pred=True  sum_c_r=7751952  minimal=True
+P=  37 ord2= 36 L_pred=68719476735 (skip, window too big)
+P=  39 ord2= 12 L_pred=2^12 -1=4095  affine@L_pred=True  sum_c_r=7792470  minimal=True
+P=  41 ord2= 20 L_pred=1048575 (skip, window too big)
+P=  43 ord2= 14 L_pred=16383 (skip, window too big)
+P=  45 ord2= 12 L_pred=2^12 -1=4095  affine@L_pred=True  sum_c_r=7655102  minimal=True
+P=  47 ord2= 23 L_pred=8388607 (skip, window too big)
+P=  49 ord2= 21 L_pred=2097151 (skip, window too big)
+P=  51 ord2=  8 L_pred=2^8  -1= 255  affine@L_pred=True  sum_c_r=21510  minimal=True
+P=  53 ord2= 52 L_pred=4503599627370495 (skip, window too big)
+P=  55 ord2= 20 L_pred=1048575 (skip, window too big)
+P=  57 ord2= 18 L_pred=262143 (skip, window too big)
+P=  59 ord2= 58 L_pred=288230376151711743 (skip, window too big)
+P=  61 ord2= 60 L_pred=1152921504606846975 (skip, window too big)
+P=  65 ord2= 12 L_pred=2^12 -1=4095  affine@L_pred=True  sum_c_r=2981160  minimal=True
+P=  67 ord2= 66 L_pred=73786976294838206463 (skip, window too big)
+P=  69 ord2= 22 L_pred=4194303 (skip, window too big)
+P=  71 ord2= 35 L_pred=34359738367 (skip, window too big)
+P=  73 ord2=  9 L_pred=2^9  -1= 511  affine@L_pred=True  sum_c_r=75096  minimal=True
+P=  75 ord2= 20 L_pred=1048575 (skip, window too big)
+P=  77 ord2= 30 L_pred=1073741823 (skip, window too big)
+P=  81 ord2= 54 L_pred=18014398509481983 (skip, window too big)

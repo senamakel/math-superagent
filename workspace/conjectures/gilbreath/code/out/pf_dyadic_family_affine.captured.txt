@@ -1,0 +1,15 @@
+Odd periods P, tail-1 word: exact afine-per-residue structure of nu2(n)
+nu2(n) = #2s in maximal {0,2} suffix of right diagonal delta(q_n)
+window n in [200, 700], searching L <= 60, S integer
+--------------------------------------------------------------------------
+P= 3: L= 3 S= 2 slope=0.666667 (nu2(n+3) == nu2(n)+2 exact over n in [200,697])
+      per-residue drift (max-min of nu2 - slope*n within residue, should be ~0): 0.000
+P= 5: L=15 S= 8 slope=0.533333 (nu2(n+15) == nu2(n)+8 exact over n in [200,685])
+      per-residue drift (max-min of nu2 - slope*n within residue, should be ~0): 0.000
+P= 7 word 0000001: NO affine period L<=60 found
+P= 9 word 000000001: NO affine period L<=60 found
+P=11 word 00000000001: NO affine period L<=60 found
+P=13 word 0000000000001: NO affine period L<=60 found
+P=15 word 000000000000001: NO affine period L<=60 found
+
+Reading: L is the exact period of the residual; S/L the asymptotic slope.

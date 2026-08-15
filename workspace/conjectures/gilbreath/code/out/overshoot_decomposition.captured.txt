@@ -1,0 +1,70 @@
+========================================================================================
+OVERSHOOT DECOMPOSITION — one diagonal per n, one convention (C1)
+n = 50..2000 step 50;  identity nu2 == F_diag - O;  check F_fold == F_diag
+========================================================================================
+
+### consecutive-odds   identity_nu2==Fdiag-O all-pass=True   F_fold==F_diag all-pass=True
+     n     nu2  F_fold  F_diag       O   O/F_d     O/n
+    50       0       0       0       0   0.000  0.0000
+   100       0       0       0       0   0.000  0.0000
+   200       0       0       0       0   0.000  0.0000
+   500       0       0       0       0   0.000  0.0000
+  1000       0       0       0       0   0.000  0.0000
+  2000       0       0       0       0   0.000  0.0000
+  O/F_diag over 40 samples: min=0.000 max=0.000 mean=0.000
+  #samples O/F_diag>=0.30 (real density): 0 ;  #<0.05 (parity~exact): 40
+  VERDICT: O is parity approx exact (O=o(F_diag))
+
+### period3-001   identity_nu2==Fdiag-O all-pass=True   F_fold==F_diag all-pass=True
+     n     nu2  F_fold  F_diag       O   O/F_d     O/n
+    50      32      32      32       0   0.000  0.0000
+   100      66      66      66       0   0.000  0.0000
+   200     132     132     132       0   0.000  0.0000
+   500     332     332     332       0   0.000  0.0000
+  1000     666     666     666       0   0.000  0.0000
+  2000    1332    1332    1332       0   0.000  0.0000
+  O/F_diag over 40 samples: min=0.000 max=0.000 mean=0.000
+  #samples O/F_diag>=0.30 (real density): 0 ;  #<0.05 (parity~exact): 40
+  VERDICT: O is parity approx exact (O=o(F_diag))
+
+### thue-morse   identity_nu2==Fdiag-O all-pass=True   F_fold==F_diag all-pass=True
+     n     nu2  F_fold  F_diag       O   O/F_d     O/n
+    50      27      27      27       0   0.000  0.0000
+   100      27      27      27       0   0.000  0.0000
+   200      29      29      29       0   0.000  0.0000
+   500      39      39      39       0   0.000  0.0000
+  1000      41      41      41       0   0.000  0.0000
+  2000      43      43      43       0   0.000  0.0000
+  O/F_diag over 40 samples: min=0.000 max=0.000 mean=0.000
+  #samples O/F_diag>=0.30 (real density): 0 ;  #<0.05 (parity~exact): 40
+  VERDICT: O is parity approx exact (O=o(F_diag))
+
+### real-primes   identity_nu2==Fdiag-O all-pass=True   F_fold==F_diag all-pass=True
+     n     nu2  F_fold  F_diag       O   O/F_d     O/n
+    50      27      29      29       2   0.069  0.0400
+   100      43      43      43       0   0.000  0.0000
+   200      98      99      99       1   0.010  0.0050
+   500     249     251     251       2   0.008  0.0040
+  1000     496     499     499       3   0.006  0.0030
+  2000     993     995     995       2   0.002  0.0010
+  O/F_diag over 40 samples: min=0.000 max=0.069 mean=0.009
+  #samples O/F_diag>=0.30 (real density): 0 ;  #<0.05 (parity~exact): 39
+  VERDICT: O is parity approx exact (O=o(F_diag))
+
+========================================================================================
+CONTRADICTION RESOLUTION: Thue-Morse, n=100, one diagonal
+========================================================================================
+  canonical nu2(100)         = 27
+  F_fold(100) (= F_diag)     = 27
+  F_diag(100)                = 27
+  O(100)                     = 0
+  tau(100)                   = 2
+  identity nu2==F_diag-O     : True
+  #powers of 2 in [2,99]     = 6   <- the refuted 'fold-count 7'
+  F_fold == F_diag ?         : True
+  nu2 <= F_diag ? (suffix 2s subset of ==2-mod-4 cells): True
+  VERDICT: '27' is the correct nu2 AND the correct F_fold/F_diag
+           (= 27) under the single convention.  The '7' was NOT the
+           diagonal fold: it was the (already-refuted) fast subset-zeta
+           power-of-two count #{powers of 2 in [2,99]} = 6.
+DONE

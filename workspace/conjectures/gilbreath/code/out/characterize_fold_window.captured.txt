@@ -1,0 +1,10 @@
+n=100: TRUE nu2 = 27
+   lib.fold_weight(hcol,n)   = 27  ==nu2? True
+   lib.fold_weight_h(h,m)    = 27  ==nu2? True
+   geometric suffix-fold (k=2..n-2) = 27  ==nu2? True
+
+n=4000: TRUE nu2 = 45
+   lib.fold_weight(hcol,n)   = 45  ==nu2? True
+   lib.fold_weight_h(h,m)    = 45  ==nu2? True
+   geometric suffix-fold (k=2..n-2) = 45  ==nu2? True
+

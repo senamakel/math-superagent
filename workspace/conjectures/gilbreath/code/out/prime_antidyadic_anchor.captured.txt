@@ -1,0 +1,24 @@
+==========================================================================
+SPAD-prime-anti-dyadic : switch bit is not 2^k-periodic (empirical)
+==========================================================================
+sieve limit       : 10000000
+#primes <= limit  : 664579
+#switch bits N    : 664577
+density of h=1    : 0.564865  (375396/664577)
+
+(a) longest run of primes all ==1 (mod4): length 12, starting at prime index 240747 (prime 3358169) ending at index 240758 (prime 3358373)
+(b) a prime ==3 (mod4) occurs beyond the longest ==1-run: True (last ==3 prime at index 664578, prime 9999991); count of ==3 primes = 332398
+    187698/187698 maximal ==1-runs are immediately followed by a ==3 prime
+
+late window j in [332288, N-1-p]  (N=664577)
+period p  window size  violations  first j   residues
+       1       332288      169509   332290   h[332290]=0 h[332291]=1   VIOLATION (aperiodic witness)
+       2       332287      162178   332289   h[332289]=0 h[332291]=1   VIOLATION (aperiodic witness)
+       4       332285      163368   332288   h[332288]=0 h[332292]=1   VIOLATION (aperiodic witness)
+       8       332281      163209   332290   h[332290]=0 h[332298]=1   VIOLATION (aperiodic witness)
+      16       332273      163552   332288   h[332288]=0 h[332304]=1   VIOLATION (aperiodic witness)
+      32       332257      163130   332288   h[332288]=0 h[332320]=1   VIOLATION (aperiodic witness)
+
+verdict per period: a violation in the late window is an eventua-periodicity witness;
+all six periods show at least one violation, so the switch bit is
+not 2^k-periodic (not even eventually) over the measured window.

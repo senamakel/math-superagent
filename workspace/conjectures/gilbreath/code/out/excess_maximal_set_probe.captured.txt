@@ -1,0 +1,58 @@
+
+########## M = 3 ##########
+  K= 2 |S|raw=      5 |excess|=      2 attainable-excess-vecs=[[0], [0, 1]]
+          isFullProductBox(over attainable sets)=True  frontier=[(0, 1)]
+  K= 3 |S|raw=     16 |excess|=      6 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2]]
+          isFullProductBox(over attainable sets)=True  frontier=[(0, 1, 2)]
+  K= 4 |S|raw=     58 |excess|=     18 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2], [0, 1, 2]]
+          isFullProductBox(over attainable sets)=True  frontier=[(0, 1, 2, 2)]
+  K= 5 |S|raw=    222 |excess|=     54 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2], [0, 1, 2], [0, 1, 2]]
+          isFullProductBox(over attainable sets)=True  frontier=[(0, 1, 2, 2, 2)]
+  K= 6 |S|raw=    869 |excess|=    162 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]]
+          isFullProductBox(over attainable sets)=True  frontier=[(0, 1, 2, 2, 2, 2)]
+  K= 7 |S|raw=   3438 |excess|=    486 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2], [0, 1, 2]]
+          isFullProductBox(over attainable sets)=True  frontier=[(0, 1, 2, 2, 2, 2, 2)]
+
+########## M = 4 ##########
+  K= 2 |S|raw=      5 |excess|=      2 attainable-excess-vecs=[[0], [0, 1]]
+          isFullProductBox(over attainable sets)=True  frontier=[(0, 1)]
+  K= 3 |S|raw=     17 |excess|=      7 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3)]
+  K= 4 |S|raw=     71 |excess|=     28 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 3)]
+  K= 5 |S|raw=    328 |excess|=    111 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 3, 3)]
+  K= 6 |S|raw=   1577 |excess|=    440 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 3, 3, 3)]
+  K= 7 |S|raw=   7713 |excess|=   1757 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3], [0, 1, 2, 3]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 3, 3, 3, 3)]
+
+########## M = 5 ##########
+  K= 2 |S|raw=      5 |excess|=      2 attainable-excess-vecs=[[0], [0, 1]]
+          isFullProductBox(over attainable sets)=True  frontier=[(0, 1)]
+  K= 3 |S|raw=     17 |excess|=      7 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3)]
+  K= 4 |S|raw=     76 |excess|=     32 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 4)]
+  K= 5 |S|raw=    395 |excess|=    155 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 4, 4)]
+  K= 6 |S|raw=   2208 |excess|=    761 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 4, 4, 4)]
+  K= 7 |S|raw=  12745 |excess|=   3769 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4], [0, 1, 2, 3, 4]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 4, 4, 4, 4)]
+
+########## M = 6 ##########
+  K= 2 |S|raw=      5 |excess|=      2 attainable-excess-vecs=[[0], [0, 1]]
+          isFullProductBox(over attainable sets)=True  frontier=[(0, 1)]
+  K= 3 |S|raw=     17 |excess|=      7 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3)]
+  K= 4 |S|raw=     79 |excess|=     35 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4, 5]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 5)]
+  K= 5 |S|raw=    449 |excess|=    196 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 5, 5)]
+  K= 6 |S|raw=   2834 |excess|=   1138 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 5, 5, 5)]
+  K= 7 |S|raw=  18718 |excess|=   6699 attainable-excess-vecs=[[0], [0, 1], [0, 1, 2, 3], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5]]
+          isFullProductBox(over attainable sets)=False  frontier=[(0, 1, 3, 5, 5, 5, 5)]
+
+DONE

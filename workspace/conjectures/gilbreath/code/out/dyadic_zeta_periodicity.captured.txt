@@ -1,0 +1,28 @@
+Is Y eventually periodic for odd-period words?
+  P=3 word=[0, 0, 1]: Y eventually periodic? period=3  density(1s) in [3000,6000]=0.6667
+  P=5 word=[0, 0, 0, 0, 1]: Y eventually periodic? period=15  density(1s) in [3000,6000]=0.5333
+  P=7 word=[0, 0, 0, 0, 0, 0, 1]: Y eventually periodic? period=7  density(1s) in [3000,6000]=0.2860
+  P=15 word=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]: Y eventually periodic? period=15  density(1s) in [3000,6000]=0.1333
+
+Parity N_p(c)=|{j<=c: j==p mod P}| mod 2: eventually periodic in c?
+  P=3 p=0: mismatches vs period-P on [1200,4000]=0
+  P=3 p=1: mismatches vs period-P on [1200,4000]=0
+  P=3 p=2: mismatches vs period-P on [1200,4000]=0
+  P=5 p=0: mismatches vs period-P on [1200,4000]=1489
+  P=5 p=1: mismatches vs period-P on [1200,4000]=1490
+  P=5 p=2: mismatches vs period-P on [1200,4000]=1492
+  P=5 p=3: mismatches vs period-P on [1200,4000]=1491
+  P=5 p=4: mismatches vs period-P on [1200,4000]=1490
+  P=6 p=0: mismatches vs period-P on [1200,4000]=0
+  P=6 p=1: mismatches vs period-P on [1200,4000]=0
+  P=6 p=2: mismatches vs period-P on [1200,4000]=0
+  P=6 p=3: mismatches vs period-P on [1200,4000]=0
+  P=6 p=4: mismatches vs period-P on [1200,4000]=0
+  P=6 p=5: mismatches vs period-P on [1200,4000]=0
+  P=7 p=0: mismatches vs period-P on [1200,4000]=0
+  P=7 p=1: mismatches vs period-P on [1200,4000]=0
+  P=7 p=2: mismatches vs period-P on [1200,4000]=0
+  P=7 p=3: mismatches vs period-P on [1200,4000]=0
+  P=7 p=4: mismatches vs period-P on [1200,4000]=0
+  P=7 p=5: mismatches vs period-P on [1200,4000]=0
+  P=7 p=6: mismatches vs period-P on [1200,4000]=0

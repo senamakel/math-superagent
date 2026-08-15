@@ -55,3 +55,14 @@ death is not explained by any gap-size statistic the primes beat them on.
 
 gap-size hypotheses: closed (no separation, wrong direction).
 Order/autocorrelation hypothesis: under test.
+
+```claim
+id: gap-size-hypotheses-do-not-separate
+statement: None of the three candidate gap-size hypotheses separates the prime column from the sweep's dying {2..20} families. For (a) bounded mean gap per window, (b) bounded frequency of gaps > G, and (c) Cramér g_n = O(log² p_n): the primes satisfy each AND the iid {2..20} families also satisfy each (the {2..20} support caps at 20, so its tail is strictly lighter than the primes', and its window means are all smaller). Where the columns genuinely differ — max gap 86 vs 20, freq gap>20 = 0.1231 vs 0.0000, freq gap>50 = 0.0034 vs 0.0000 — the difference goes the WRONG way for separation (the primes have the heavier tail). So the 852/1154 sweep deaths (all at k ≤ 10, 89.7% at k ≤ 3) are NOT explained by any gap-size statistic the primes beat; the discriminator is ORDER/autocorrelation (the pairing of consecutive gaps), not the gap marginal.
+hypotheses: primes < 200000 (n = 17983 gaps per column); controls iid {2..20} and iid {2..20} with first gap forced to 2; exact integer triangle; the generator reproduces problem.md A_1, A_2, A_3 before the comparison (self-check PASS).
+holds-here: yes
+status: checked (EXIT_CODE=0; capture code/out/gap_hypothesis_separation.captured.txt)
+bearing: closes gap-size hypotheses as the death mechanism; redirects the sweep investigation to order/autocorrelation, tested by the torelli-conditioned ({2..20} with g_n ≤ n) and gap-multiset-shuffled (destroys order, keeps the exact marginal) controls.
+anchor: code/out/gap_hypothesis_separation.captured.txt
+contradicts: none
+```

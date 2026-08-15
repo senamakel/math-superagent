@@ -1,0 +1,7 @@
+N = 512
+h[0..31] = [0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1]
+z nonzero positions (actual): [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+expected nonzero (powers of 2 <= N): [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
+Z[d]==1 iff power of 2 : PASS
+count of d with z[d]=1 = 10 | floor(log2(N))+1 = 10 -> PASS
+integer identity sum_{j subseteq d} popcount(j) = pc(d)*2^(pc(d)-1): PASS

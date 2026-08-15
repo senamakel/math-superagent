@@ -1,0 +1,4 @@
+  File "<string>", line 21
+    print('not evidence of new structure: any smooth walk's first-difference AC tends')
+                                                                                     ^
+SyntaxError: unterminated string literal (detected at line 21)

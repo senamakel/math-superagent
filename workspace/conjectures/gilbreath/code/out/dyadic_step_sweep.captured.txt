@@ -1,0 +1,8 @@
+m 8 1^a0 wt==1 for a in [1, 2, 4] all weights [np.int64(1), np.int64(3), np.int64(7)]
+m 8 0^a1 wt==1 for a in [1, 2, 4] all weights [np.int64(1), np.int64(3), np.int64(7)]
+m 12 1^a0 wt==1 for a in [1, 2, 4] all weights [np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5), np.int64(11)]
+m 12 0^a1 wt==1 for a in [1, 2, 4] all weights [np.int64(1), np.int64(2), np.int64(3), np.int64(4), np.int64(5), np.int64(11)]
+m 16 1^a0 wt==1 for a in [1, 2, 4, 8] all weights [np.int64(1), np.int64(3), np.int64(7), np.int64(15)]
+m 16 0^a1 wt==1 for a in [1, 2, 4, 8] all weights [np.int64(1), np.int64(3), np.int64(7), np.int64(15)]
+m 18 1^a0 wt==1 for a in [1, 2] all weights [np.int64(1), np.int64(2), np.int64(4), np.int64(8), np.int64(17)]
+m 18 0^a1 wt==1 for a in [1, 2] all weights [np.int64(1), np.int64(2), np.int64(4), np.int64(8), np.int64(17)]

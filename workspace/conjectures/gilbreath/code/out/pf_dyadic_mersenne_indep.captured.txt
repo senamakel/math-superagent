@@ -1,0 +1,3 @@
+P=7 (2^3-1): literal-triangle affine=True  sum c_r=24  target 3^k-3=24  match=True
+P=15 (2^4-1): literal-triangle affine=True  sum c_r=78  target 3^k-3=78  match=True
+LITERAL-TRIANGLE VERIFICATION PASSED for P=7,15

@@ -1,0 +1,40 @@
+========================================================================
+Independent backbone verification (own sieve + own row generator)
+========================================================================
+
+[1] problem.md five worked rows A_1..A_5
+  A_1[:10] = [1, 2, 2, 4, 2, 4, 2, 4, 6, 2]  match=yes
+  A_2[:10] = [1, 0, 2, 2, 2, 2, 2, 2, 4, 4]  match=yes
+  A_3[:10] = [1, 2, 0, 0, 0, 0, 0, 2, 0, 2]  match=yes
+  A_4[:10] = [1, 2, 0, 0, 0, 0, 2, 2, 2, 2]  match=yes
+  A_5[:10] = [1, 2, 0, 0, 0, 2, 0, 0, 0, 2]  match=yes
+  RESULT: five worked rows reproduced exactly
+  (bound: primes <= 60)
+
+[2] Reduction check on real prime rows
+  reduction check: A_{k+1}(0)=1 <=> A_k(1) in {0,2}, and A_k(1) in {0,2}, k=1..300 (sieve <= 2000000, 148933 primes)
+  RESULT: 0 violations over k=1..300  (CONFIRMED over stated range only)
+
+[3] nu2 supply measurement
+  supply check nu2(n) >= w(n)/2, n in [100, 200, 400, 800, 1600] (sieve <= 1000000)
+  n      nu2    w      nu2/w    nu2>=w/2 nu2/w*2
+  100    43     61     0.705    OK       1.410   
+  200    98     126    0.778    OK       1.556   
+  400    204    244    0.836    OK       1.672   
+  800    389    493    0.789    OK       1.578   
+  1600   786    948    0.829    OK       1.658   
+  RESULT: nu2(n) >= w(n)/2 holds at every sample over the stated n-values (CONFIRMED over stated range only)
+
+[4] Anti-dyadic witness
+  anti-dyadic: N=200000 switch bits (sieve <= 3000000, 216816 primes), nearest 2^k-periodic Hamming distance/N
+  k    period min dist/N
+  0    1      0.4308    
+  1    2      0.4308    
+  2    4      0.4308    
+  3    8      0.4308    
+  4    16     0.4308    
+  RESULT: min distance/N per k lies in [0.43, 0.43] (expect ~0.4-0.6)  (CONFIRMED over stated range only)
+
+========================================================================
+DONE  (verdicts are CONFIRMED over stated ranges only, not proved)
+========================================================================

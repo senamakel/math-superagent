@@ -1,15 +1,7 @@
 ```thread
 question: Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones.
 status: live — PIVOTED (Directive 36). Empirical route at ceiling. Route B (Granville ν_2) primary; Route A (ratio bound) empirical fallback; Route C (CHT) calibrated by authors' assessment.
-rests-on: |
-  - IFF reduction (Lean, sorry-free): GC ⇔ A_k(1) ∈ {0,2}.
-  - Recharge identity (PROVED, universal): b_k = b_1 + Σ_{i<k}(j_i+1) − (k−1).
-  - 1e9 run: 15 genuine giants, max gap 64, ratio bound holds everywhere (max 1.26e-02), row-248 STILL capped.
-  - Geometric growth: b ~ 1.765× per giant event (R²=0.968 over 15); j ~ b^0.388.
-  - Granville Lemma 5.4/Theorem 5.5: GC reduces to ν_2 > n^β, β > 0.525; α=0.525 unconditional (BHP).
-  - BCZ 2023: left-edge map is an F2 involution (T²=id); Table 1 (|#0−#2| ≤ 431 of 78,496 per ray) independently corroborates ν_2 ~ n/2.
-  - CHT Theorem 1.6: {0,d}-block obstruction in right half (j ≥ N′); needs Cramér (open, >BHP).
-  - Empirical route ceiling: each giant costs 1.5×–8× the width of the last; next two giants need 1e10–1e11 sieve → >8 GiB.
+rests-on: gilbreath-second-entry-equivalence, step-law-theorem-proved, lemma54-re-derived-proof, odlyzko-block-lemma-exact
 blocked-by: **RESOLVED (Directive 50) — the abstract core is kernel-checked in Lean.** `code/lean/descent_lemma.lean` now compiles clean: no `sorryAx`, axioms only `propext`/`Classical.choice`/`Quot.sound` (`absorbing` — none; `run_absorb` — `[propext]`; `run_high`, `run_inv`, `descent_claim1`, `descent_claim2` — `[propext, Classical.choice, Quot.sound]`). Statements NOT weakened: `runAbs` is the genuine iterated `Nat.dist` fold, `countOnes` is ν₁, claim1 `w ≤ ν₁+1 ⟹ runAbs w el ∈ {0,1}`, claim2 `ν₁+1 < w ⟹ runAbs w el = w − ν₁` exactly — both directions, exact value, unchanged. This is the first kernel-checked result of the run. **Scope:** it formalises the ABSTRACT COMBINATORIAL CORE in halved units ({0,1}^L pattern, arbitrary w) only; it does NOT cover Link A (`v ≤ g*_n`), the composition `g*_n ≤ 2ν₂+2 ⟹ success`, the reduction from real column dynamics to the (pattern,v) model (Directive 48 item 1), or the supply side. Claim `lemma54-descent-lean-formalised`, `status: formalised`, `research/notes/lemma54-descent-lean-formalised.md`. **`lemma54-re-derived-proof` is NOT upgraded to proved on the strength of it** (full even-domain lemma is strictly more); the honest path to a Lean-proved Lemma 5.4 is Link A + the composition formalised too. The defective "each 2 contributed −2" passage in `lemma54-re-derived-proof.md` is deleted, superseded by the kernel-checked case split. The earlier written-descent algebra ("after ν₂ twos, δ = v−2ν₂") is false on bounce trajectories, but the repair is the case split — Branch A (some δ_t ≤ 2 → absorption carries it) / Branch B (all δ_k ≥ 4 → δ_L = v−2ν₂ ≤ 2 contradicts δ_L ≥ 4) — machine-forced on disk: `code/out/lemma54_descent_check.captured.txt` (2,621,432 (pattern, even-v) pairs, 0 violations) and validated on 281/281 real prime diagonals. The failing-side sufficiency test ran non-vacuously with zero counterexamples (`lemma54-sufficiency-survives-proper-domain`). Two items remain, neither a validity gap of the core: **Link A (`v ≤ g*_n`) is now VERIFIED non-vacuously** (`code/out/verify_lemma54_v_le_gstar.captured.txt`: 1181 real prime columns n=20..1200, 0 violations of v≤g*_n and of the Lemma 5.4 hypothesis, max margin (2ν₂+2)/g*_n = 35.882, ALL CHECKS PASSED; only the broken captured2.txt is vacuous — see research/notes/scholar-reconciliation-lean-and-linkA-current.md). The g*-composed form is closed on the prime domain; (b) the reduction from real column dynamics to the (pattern,v) model (Directive 48 item 1) is still to be written as a claim. **The entire remaining open content of Route B is the supply-side linear lower bound ν_2(q_{n−1}) ≥ c·n for some c > 0** (measured c ≈ 0.5, unproved). `li2023-not-bottleneck`: the demand exponent α ∈ {0.52,0.525} is immaterial once a positive-linear supply bound holds; do not spend effort shaving α. **Directive 47: this is a NAMED OPEN problem, not a gap in the run's own argument.** ABGS 2011 §9 (claim `abgs-2011-s9-mod4-switch-limit-open`): whether `N(a,d,m,x)/π(x)` tends to any limit is open, so no unconditional linear lower bound on the mod-4 switch count exists in the literature. Route B is a CONDITIONAL theorem whose hypothesis is that two-point mod-4 correlation lower bound; a conditional theorem with a precisely identified open hypothesis is a genuine deliverable.
 
 **Grounded precedent for the supply bound (this run, scholar):** the atomic bit feeding ν_2 is bit_n = [p_{n+1} ≢ p_n mod 4] = [gap ≡ 2 mod 4] — a **two-point** consecutive-pair statistic, NOT a one-point PNT-in-AP cancellation. Three held sources now delimit it:
@@ -32,6 +24,22 @@ next: |
 ```
 
 # Regeneration thread — the ratio bound is the whole conjecture
+
+## Process defect — a falsifier named but not cross-checked (Directive 61)
+
+G-supply-nonconcentration named its own falsifier ("a theorem or construction
+giving arbitrarily long runs of primes staying in a single class mod 4 would
+kill (3)") while the refuting claim — `shiu-2000-strings-of-congruent-primes` —
+was already in the claim library at the same time, and nothing connected them:
+the gap was filed open and the whole `supply-nu2-factorization` skeleton was
+built on it. **Rule adopted: when a gap names a falsifier, `search_claims` must
+be run against that falsifier BEFORE the gap is filed open.** This
+cross-reference failure is worth more than the lemma it silently refuted.
+Salvage per Directive 61: `G-supply-weight-transfer` (the matrix half, "no long
+constant run ⟹ wt ≥ c·n") stays a real combinatorial target (now
+`DPC-kernel-classification` in `dyadic-periodicity-collapse.md`) but its
+prime-side hypothesis is dead; fold survivors into the dyadic skeleton, do not
+maintain two.
 
 ## The complete chain (Directive 30)
 

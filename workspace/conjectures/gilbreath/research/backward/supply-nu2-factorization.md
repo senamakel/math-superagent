@@ -90,7 +90,8 @@ thread: research/threads/regeneration.md
 ```gap
 id: G-supply-nonconcentration
 lemma: The prime halved-gap parity string h[j] = ((p_{j+2} − p_{j+1})/2) mod 2 has no constant run of length ≥ L for some absolute L. Since h[j] = 1 ⟺ consecutive primes lie in different residue classes mod 4, an all-0 run is a stretch of consecutive prime gaps all ≡ 0 mod 4 (primes staying in one class mod 4), and an all-1 run is a stretch all ≡ 2 mod 4 (primes alternating class at every step).
-status: open
+status: refuted
+closed-by: shiu-2000-strings-of-congruent-primes (Directive 61) — arbitrarily long all-0 runs of h exist unconditionally, so no absolute L exists
 next: |
   This is the prime-specific half and it is a clean analytic target, distinct from the combinatorics.
 

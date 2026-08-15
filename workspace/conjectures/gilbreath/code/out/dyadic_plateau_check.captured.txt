@@ -1,0 +1,25 @@
+nu2(q_T) plateau for eventually-2^k-periodic h (preperiod+tail):
+  k=1 pre=          []: nu2 at T=5k,20k,100k,400k,800k = [1, 1, 1, 1, 1]  plateau=True
+  k=1 pre=         [1]: nu2 at T=5k,20k,100k,400k,800k = [1, 1, 1, 1, 1]  plateau=True
+  k=1 pre=         [0]: nu2 at T=5k,20k,100k,400k,800k = [2, 2, 2, 2, 2]  plateau=True
+  k=1 pre=   [0, 1, 0]: nu2 at T=5k,20k,100k,400k,800k = [3, 3, 3, 3, 2]  plateau=False
+  k=1 pre=[1, 1, 0, 0]: nu2 at T=5k,20k,100k,400k,800k = [4, 4, 4, 4, 3]  plateau=False
+  k=1 pre=[0, 0, 0, 1, 0]: nu2 at T=5k,20k,100k,400k,800k = [4, 4, 4, 4, 5]  plateau=False
+  k=2 pre=          []: nu2 at T=5k,20k,100k,400k,800k = [2, 2, 2, 2, 1]  plateau=False
+  k=2 pre=         [1]: nu2 at T=5k,20k,100k,400k,800k = [3, 3, 3, 3, 2]  plateau=False
+  k=2 pre=         [0]: nu2 at T=5k,20k,100k,400k,800k = [4, 4, 4, 4, 3]  plateau=False
+  k=2 pre=   [0, 1, 0]: nu2 at T=5k,20k,100k,400k,800k = [3, 3, 3, 3, 5]  plateau=False
+  k=2 pre=[1, 1, 0, 0]: nu2 at T=5k,20k,100k,400k,800k = [4, 4, 4, 4, 4]  plateau=True
+  k=2 pre=[0, 0, 0, 1, 0]: nu2 at T=5k,20k,100k,400k,800k = [6, 6, 6, 6, 3]  plateau=False
+  k=3 pre=          []: nu2 at T=5k,20k,100k,400k,800k = [4, 4, 4, 4, 1]  plateau=False
+  k=3 pre=         [1]: nu2 at T=5k,20k,100k,400k,800k = [7, 7, 7, 7, 2]  plateau=False
+  k=3 pre=         [0]: nu2 at T=5k,20k,100k,400k,800k = [8, 8, 8, 8, 3]  plateau=False
+  k=3 pre=   [0, 1, 0]: nu2 at T=5k,20k,100k,400k,800k = [3, 3, 3, 3, 6]  plateau=False
+  k=3 pre=[1, 1, 0, 0]: nu2 at T=5k,20k,100k,400k,800k = [4, 4, 4, 4, 5]  plateau=False
+  k=3 pre=[0, 0, 0, 1, 0]: nu2 at T=5k,20k,100k,400k,800k = [6, 6, 6, 6, 6]  plateau=True
+  k=4 pre=          []: nu2 at T=5k,20k,100k,400k,800k = [4, 8, 8, 8, 1]  plateau=False
+  k=4 pre=         [1]: nu2 at T=5k,20k,100k,400k,800k = [8, 15, 15, 15, 2]  plateau=False
+  k=4 pre=         [0]: nu2 at T=5k,20k,100k,400k,800k = [9, 16, 16, 16, 3]  plateau=False
+  k=4 pre=   [0, 1, 0]: nu2 at T=5k,20k,100k,400k,800k = [5, 3, 3, 3, 6]  plateau=False
+  k=4 pre=[1, 1, 0, 0]: nu2 at T=5k,20k,100k,400k,800k = [6, 4, 4, 4, 5]  plateau=False
+  k=4 pre=[0, 0, 0, 1, 0]: nu2 at T=5k,20k,100k,400k,800k = [10, 6, 6, 6, 6]  plateau=True

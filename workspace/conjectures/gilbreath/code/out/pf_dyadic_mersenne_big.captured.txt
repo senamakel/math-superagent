@@ -1,0 +1,3 @@
+P= 255 (Mersenne) AFFINE  min c=2  mean slope=0.1009  n in [1000,6000]
+P= 511 (Mersenne) AFFINE  min c=2  mean slope=0.0754  n in [2000,10000]
+P=1023 (Mersenne) AFFINE  min c=2  mean slope=0.0564  n in [3000,12000]

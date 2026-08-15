@@ -1,0 +1,2 @@
+m 8 h=1^4 0^4 wt(Phi h)= 1 ratio 0.125 dist-per-k [4, 4, 4] min-dist/m=0.50 balanced True anti(>=0.2m)? True
+m 16 h=1^8 0^8 wt(Phi h)= 1 ratio 0.0625 dist-per-k [8, 8, 8, 8] min-dist/m=0.50 balanced True anti(>=0.2m)? True

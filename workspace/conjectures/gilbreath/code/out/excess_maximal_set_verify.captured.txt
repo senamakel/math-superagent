@@ -1,0 +1,27 @@
+Independent forward-oracle cross-check of the stabilized-description hypothesis
+M=3, K=1..10, exhaustive over all (M+1)^K windows each K
+  K= 1: |S_K|=     2 |forwardSafe|=     2 backward==forward: True  forward==stabilizedBox: True
+  K= 2: |S_K|=     5 |forwardSafe|=     5 backward==forward: True  forward==stabilizedBox: False
+  K= 3: |S_K|=    16 |forwardSafe|=    16 backward==forward: True  forward==stabilizedBox: False
+  K= 4: |S_K|=    58 |forwardSafe|=    58 backward==forward: True  forward==stabilizedBox: False
+  K= 5: |S_K|=   222 |forwardSafe|=   222 backward==forward: True  forward==stabilizedBox: False
+  K= 6: |S_K|=   869 |forwardSafe|=   869 backward==forward: True  forward==stabilizedBox: False
+  K= 7: |S_K|=  3438 |forwardSafe|=  3438 backward==forward: True  forward==stabilizedBox: False
+  K= 8: |S_K|= 13672 |forwardSafe|= 13672 backward==forward: True  forward==stabilizedBox: False
+  K= 9: |S_K|= 54518 |forwardSafe|= 54518 backward==forward: True  forward==stabilizedBox: False
+  K=10: |S_K|=217706 |forwardSafe|=217706 backward==forward: True  forward==stabilizedBox: False
+
+Stabilized description {w_1<=1, w_2<=2} matches forward-safe set for ALL K: False
+
+Checkbox on the invariant reading:
+  w_1<=1 : a window with w_1=2 is never safe (leading 2 at row 1)
+  w_2<=2 : a window with w_1<=1 but w_2=3 is unsafe at row 2 (|w_1-3|>=2>1)
+  all 8 width-3 windows with w_2=3 (w_1<=1) are forward-unsafe: True
+  all 128 width-5 windows with w_2=2 (w_1<=1) are forward-safe: False
+
+Wording of the invariant family (excess coords t_i=max(0,w_i-1)):
+  t_1 = 0   (  w_1 <= 1 :  A_k(1)/2 - 1 <= 0, i.e. A_k(1) in {0,2} )
+  t_2 in {0,1}   (  w_2 <= 2 )
+  t_i in {0,1,2} free for i >= 3  ( w_i <= 3, the box bound M=3 )
+
+So the exact maximal safe set for all K>=2 is:  S_K = { w_1<=1 , w_2<=2 }.

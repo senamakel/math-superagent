@@ -78,8 +78,9 @@ merge: Turn unbounded-gap-alphabet back on. The key bridge is that for ANY fixed
 id: R-depth-k-finite
 statement: For every fixed k ≥ 1, the set S_k of gap words (2, g_2, ..., g_k) with all g_i even positive satisfying A_k(1) ∈ {0,2} is FINITE: each gap is bounded by an explicit function of the others and k (a nested absolute value is bounded above by the maximum gap, and the condition A_k(1) ≤ 2 forces each gap below a computable bound). So the depth-k survival problem is a finite (though doubly-exponential in k) search even without a bounded alphabet.
 off: infinite-horizon, leftward-drift, deterministic-arrangement
-stance: open
-merge: Turn infinite-horizon back on — this is where the ladder is expected to bite. Finiteness of every S_k is NOT the ∀k statement: the sets S_k form a sequence with no telescoping monotonicity, and the cleanest witness is that even the restricted infinite case (gaps in {2,4}, i.e. R-carved-gap24-infinite below) is already open with only empirical support. The obstruction is leftward-drift: survival at depth k does not certify survival at depth k+1 without the full row.
+stance: failed
+killed-by: (claim depth-k-finite-refuted) — S_3 is infinite. For fixed k=3, g_1=2, g_3=2, every even g_2=2M satisfies A_3(1) = ||2−2M| − |2M−2|| = |X−X| = 0 ∈ {0,2} by |a−b|=|b−a|, so (2,2M,2) ∈ S_3 for all M: g_2 is unbounded while g_1, g_3, k are all fixed. The claim "each gap bounded by a function of the others and k" fails; the rung's stated route (finite search over S_k) is defeated as written. Full detail: research/weakened/depth-k-finite-refuted.md.
+merge: The depth-k survival sets are NOT all finite even over unbounded even gaps; the ladder's invariant "S_k is a finite set for each fixed k" is wrong. The real climb (infinite-horizon via leftward-drift) is untouched, but finiteness of S_k cannot be used as a route. Note S_k is finite when the gaps are confined to a bounded alphabet (e.g. {2,4,...,2m}) for fixed k — but that is a different claim from unbounded-gap finiteness and does not survive turning unbounded-gap-alphabet back on.
 ```
 
 ```rung

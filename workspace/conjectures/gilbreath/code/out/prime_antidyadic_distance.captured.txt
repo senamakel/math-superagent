@@ -1,0 +1,35 @@
+SANITY (problem.md rows from prime list):
+  A_1 = [1, 2, 2, 4, 2, 4, 2, 4, 6, 2]  -> PASS
+  A_2 = [1, 0, 2, 2, 2, 2, 2, 2, 4]  -> PASS
+  A_3 = [1, 2, 0, 0, 0, 0, 0, 2]  -> PASS
+  overall: PASS
+
+SIEVING to 16000000 ...
+sieve to 16000000 : 1031130 primes (0.3s)
+
+CONVENTION:
+  bits[i] = ((primes[i+1]-primes[i])//2) % 2 ;  primes[0]=p_1=2.
+  h[j] = bits[j] for the 1-indexed gap index j (cell ancestor
+  window is j in [2, n-1] <=> bits[2:n], same as nu2_vs_gap_parity).
+  h[j]=1  <=>  gap p_{j+2}-p_{j+1} == 2 (mod 4).
+  first ~20 window bits h[2]..h[21] = [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0]
+
+brute-force oracle check on n=10000 window, k=0..2:
+  k=0 p=1: per-class=4137 brute=4137 OK
+  k=1 p=2: per-class=4137 brute=4137 OK
+  k=2 p=4: per-class=4137 brute=4137 OK
+brute-force cross-check: ALL MATCH
+
+main results — Hamming distance to nearest 2^k-periodic string,
+over window bits[2:n] (length n-2), reported as dist/n:
+n        k=0      k=1      k=2      k=3      k=4      k=5      k=6      
+10000    0.4137    0.4137    0.4137    0.4137    0.4137    0.4137    0.4118       w/(n-2)=0.5862
+100000   0.4264    0.4264    0.4264    0.4264    0.4264    0.4264    0.4264       w/(n-2)=0.5736
+1000000  0.4374    0.4374    0.4374    0.4374    0.4374    0.4374    0.4374       w/(n-2)=0.5626
+
+w(n)/(n-2) is the swap-bit / mod-4-gap density in the ancestor
+window; dist/n is the DPC-prime-antidyadic gap (quantitative
+non-2^k-periodicity of the prime switch bit).  PRIME measurement,
+does NOT close G-supply.
+
+elapsed 0.6s total

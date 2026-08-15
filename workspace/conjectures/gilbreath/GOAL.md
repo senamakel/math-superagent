@@ -4,6 +4,51 @@
 
 **Deliverable claimed — with the supply side explicitly open.** Granville's Lemma 5.4 (arXiv:2607.04166) has been (a) **proved as a general theorem** at its combinatorial core — the descent/absorption lemma: with `x_0=v`, `x_s=|x_{s-1}-c_s|`, `c_s∈{0,2}`, `ν₂=#{c_s=2}`, one has `x_L∈{0,2} ⟺ v ≤ 2ν₂+2`, `v>2ν₂+2 ⟹ x_L=v-2ν₂≥4`, and `{0,2}` is absorbing — and (b) **validated non-vacuously in both the success AND failure directions** on synthetic 2-then-odd failing sequences. **Standing correction (Directives 43/44) — RESOLVED this attempt.** The *written* proof of the descent step WAS defective on bounce trajectories (`0→2→0`; the "after the ν₂ twos, δ = v − 2ν₂" algebra assumes δ never hits 0, which fails on 100% of real columns). This attempt wrote the case-split proof (Branch A = absorption, the δ=0 case that is the mechanism not an exception; Branch B = exact-count regime, empty under the hypothesis) in `research/notes/lemma54-descent-proof-repaired.md`, verified it exhaustively in halved units (12.58M pairs, L≤18, 0 violations) and unhalved (11.53M pairs, L≤18, 0 violations), and **Lean-formalised it sorry-free** (`code/lean/descent_lemma.lean`, compiled=true, verified=true, zero sorryAx, #print axioms = propext/Classical.choice/Quot.sound only). "Proved" at the proof level is now earned for the descent core. **The whole of Route B now rests on a NAMED OPEN problem, not a gap in this run's argument (Directive 47).** The supply statement G-supply (ν₂(q_n) > n^β, β>0.525 — equivalently any positive-linear ν₂ ≥ c·n) reduces cleanly to the frequency of the mod-4 switch bit `[gap ≡ 2 mod 4]`. Ash–Beltis–Gross–Sinnott 2011 §9 (claim `abgs-2011-s9-mod4-switch-limit-open`) establishes that it is OPEN whether `N(a,d,m,x)/π(x)` tends to any limit, so NO unconditional linear lower bound on the mod-4 switch count exists in the literature. Route B therefore yields a **CONDITIONAL theorem** (Lemma 5.4 + Theorem 5.5) whose hypothesis is that two-point mod-4 correlation lower bound. A conditional theorem with a precisely identified open hypothesis is a genuine deliverable; pretending the hypothesis is nearly closed is not. This is NOT a proof of Gilbreath and NOT a closed run: the supply side is the entire remaining open content.
 
+## This attempt (tool_builder, executed)
+
+Answered the LIVE open step of thread `dyadic-periodicity-collapse` (Directive
+60): measure `inf_n nu2/n` for odd-factor periods P=3,5,7,9 and test whether a
+plateau there kills the supply usefulness of the odd-factor converse.
+
+**No plateau fires.** For every P in {3,5,7,9}, `inf_{n>=1000} nu2(n)/n` stays
+positive (0.664, 0.530, 0.284, 0.406) with no late-dip below the early-set
+value. Independent confirmation on the TRUE `{0,2}`-suffix nu2 (not the fold
+upper bound) shows **exact rational densities**: P=3 word `001` → nu2/n = 2/3,
+P=5 word `00001` → 8/15, with residuals bounded by O(1) all the way to
+n=24000. So the odd-factor converse (`nu2 >= c(P)*n`) is NOT refuted by an
+asymptotic plateau on these words.
+
+Bound and status: N up to 3000 (fold scan), ladder to 24000 (true suffix);
+exact integer arithmetic; program and capture in
+`code/out/dyadic_oddfactor_infratio.py` (+ `.captured.txt`) and
+`code/out/dyadic_oddfactor_density_exact.py` (+ `.captured.txt`). **Numerical
+evidence only** — the converse remains CONJECTURED, not proved (this is
+measurement, not a proof; it does not close G-supply).
+
+**This attempt (tool_builder, executed) — overshoot decomposition.** Wrote
+and ran `code/out/overshoot_decomposition.py` (exact integers, one diagonal
+per n, single C1 convention, canonical `lib.rightdiag.cycle_and_nu2`, n=50..
+2000) on the real primes, Thue–Morse, period-3 word `001`, and consecutive
+odds, measuring `nu2` (exact-2s in maximal {0,2} suffix), `F_fold` (F2 fold of
+halved-gap bits over ancestor window [2,n−1]), `F_diag` (#k∈[2,n−1] with
+δ_k≡2 mod 4) and `O` (#k∈[2,τ−1] with δ_k≡2 mod 4). **The decomposition
+identity `nu2 == F_diag − O` holds on all 160 samples.** The structural
+identity `F_fold == F_diag` holds exactly (independent oracle
+`overshoot_fold_oracle.py`: `fold_cell_bit(h,k,n)==(δ_k//2)%2` for all
+k=2..n−1, n≤400, 0 mismatches) — the rule-90 fold of halved-gap bits IS the
+set of diagonal cells ≡2 mod 4, so `nu2 ≤ F_diag == F_fold` always.
+**Contradiction resolved: Thue–Morse nu2(100)=27 is right, and the real
+F_fold = F_diag = 27, not 7** — the '7' was the already-refuted fast
+subset-zeta power-of-two count (actually 6 over [2,99]); the fold bit marks
+cell parity (δ_k/2 mod 2), a superset of the exact-2 count, not ~log n.
+**Overshoot reality: O=0 on every sample for Thue–Morse, period-3, and
+consecutive odds (τ=2: the suffix captures every ≡2-mod-4 cell); on the real
+primes O/F_diag ∈ [0.000,0.069], mean 0.009 — O = o(F_diag), the parity
+decomposition is approximately exact.** This is measurement, not a proof: the
+supply bound still reduces to the named-open mod-4 switch correlation; the
+attackable half is the overshoot bound O ≤ (c′−c)n, which here holds with O
+having negligible density on every family and n≤2000.
+
 ## The deliverable
 
 A **proof, or a genuine partial result stated exactly**. The conjecture has

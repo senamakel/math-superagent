@@ -1,0 +1,24 @@
+M = 3
+  |S_1| = 2
+  |S_2| = 5
+  |S_3| = 16
+  |S_4| = 58
+  |S_5| = 222
+  |S_6| = 869
+  |S_7| = 3438
+  |S_8| = 13672
+  |S_9| = 54518
+  |S_10| = 217706
+
+Prefix-determinism analysis (is S_K decided by a fixed prefix?):
+  J=1: |safe prefixes|=2  decides-all-K=False  prefix-set-constant-over-K=True
+  J=2: |safe prefixes|=5  decides-all-K=False  prefix-set-constant-over-K=True
+  J=3: |safe prefixes|=16  decides-all-K=False  prefix-set-constant-over-K=True
+  J=4: |safe prefixes|=58  decides-all-K=False  prefix-set-constant-over-K=True
+  J=5: |safe prefixes|=222  decides-all-K=False  prefix-set-constant-over-K=True
+  J=6: |safe prefixes|=869  decides-all-K=False  prefix-set-constant-over-K=True
+  J=7: |safe prefixes|=3438  decides-all-K=False  prefix-set-constant-over-K=True
+  J=8: |safe prefixes|=13672  decides-all-K=False  prefix-set-constant-over-K=True
+  J=9: |safe prefixes|=54518  decides-all-K=False  prefix-set-constant-over-K=True
+
+NO fixed prefix decides S_K over K=1..10: the constraint family does not stabilise to a prefix property within this range.

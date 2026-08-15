@@ -1,0 +1,9 @@
+k=3 P=7 len=7 sum(c_r/2)=12 expect=12 match=True
+k=4 P=15 len=15 sum(c_r/2)=39 expect=39 match=True
+k=5 P=31 len=31 sum(c_r/2)=120 expect=120 match=True
+k=6 P=63 len=63 sum(c_r/2)=363 expect=363 match=True
+k=7 P=127 len=127 sum(c_r/2)=1092 expect=1092 match=True
+k=8 P=255 len=255 sum(c_r/2)=3279 expect=3279 match=True
+k=9 P=511 len=511 sum(c_r/2)=9840 expect=9840 match=True
+k=10 P=1023 len=1023 sum(c_r/2)=29523 expect=29523 match=True
+ALL MATCH: True

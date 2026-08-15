@@ -1,0 +1,9 @@
+P= 3: inf nu2/n over [100,20000] = 0.64706 at n=102;  inf over [200,20000] = 0.65672 at n=201
+P= 5: inf nu2/n over [100,20000] = 0.50877 at n=114;  inf over [200,20000] = 0.51961 at n=204
+P= 7: inf nu2/n over [100,20000] = 0.26667 at n=105;  inf over [200,20000] = 0.27586 at n=203
+P= 9: inf nu2/n over [100,20000] = 0.35922 at n=103;  inf over [200,20000] = 0.38739 at n=222
+P=15: inf nu2/n over [100,20000] = 0.11429 at n=105;  inf over [200,20000] = 0.12381 at n=210
+P= 6: inf nu2/n over [100,20000] = 0.31373 at n=102;  inf over [200,20000] = 0.32353 at n=204
+P=10: inf nu2/n over [100,20000] = 0.24000 at n=100;  inf over [200,20000] = 0.25439 at n=228
+P=12: inf nu2/n over [100,20000] = 0.14815 at n=108;  inf over [200,20000] = 0.15686 at n=204
+P=14: inf nu2/n over [100,20000] = 0.12500 at n=112;  inf over [200,20000] = 0.13333 at n=210

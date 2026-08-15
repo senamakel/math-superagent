@@ -1,0 +1,63 @@
+CLAIMS-LEDGER COUNT AUDIT — Directive 65 item 3 / task audit-claims-ledger-count-drop-62-60
+============================================================================================
+
+VERDICT: NO ROW WAS DROPPED. The 62 -> 60 "drop" is a rendered-index display cap,
+not a ledger loss.
+
+SOURCE OF TRUTH (per research/CLAIMS.md header, lines 1-5):
+  The ledger = fenced `claim` blocks in notes under research/ and code/out/.
+  research/CLAIMS.md is a runtime-RENDERED SUMMARY, truncated at 60 table rows.
+
+ON-DISK COUNT (fenced claim blocks, dedup by id):
+  Unique claim ids ......... 200
+  Total blocks ............. 238
+  Ids with duplicate blocks. 34  (a claim restated in a note + its code/out/ companion;
+                                  renderer dedups by id)
+  Status distribution: checked 56, proved 39, sourced 37, asserted 15,
+    asserted-by-source 14, catalogued 9, refuted 9, computed 6, formalised 5,
+    misc syntax-variant 10.
+
+RENDERED research/CLAIMS.md:
+  Table rows ............... 60
+  Self-stated truncation ... line 72: "_120 further claims not shown_"
+                            line 132: "_24 more not shown here_"
+  60 + 120 = 180 accounted; the "further" rows exist on disk, just not printed.
+  Also names 102 distinct ids across table + Contradictions + Load-bearing + Catalogue.
+
+MECHANISM OF THE 62 -> 60 MOVEMENT:
+  Directive 14 (line 296) recorded "claims stayed at 62" while approach files grew.
+  Directive 65 records that "claims went 62 -> 60 over two derivations and has not
+  recovered, while three new results landed."
+  62 and 60 are BOTH counts of the rendered table-row window (capped near 60). The
+  renderer shows the first ~60 ids in its ordering; adding/removing any claim shifts
+  which rows fit in that window by one or two while the underlying ledger only grows.
+  It is not the ledger losing 2; it is the display reshuffling a fixed-size window.
+
+THE THREE IDS THE AUDIT FEARED WERE MISSING — ALL ON DISK WITH THEIR REFUTATION:
+  g-supply-transfer ............ status: refuted, closed-by: g-supply-transfer-universal-refuted
+                               research/notes/g-supply-transfer-universal-refuted.md
+                               (also referenced in rendered Contradictions section)
+  regeneration-thread-blocked-by status: refuted, closed-by: lemma54-lean-and-linkA-current-verified
+                               research/notes/scholar-reconciliation-lean-and-linkA-current.md
+                               (rendered Contradictions section)
+  rule90-periodic-window-collapse status: refuted (over-general form FALSE)
+                               research/notes/scholar-dyadic-periodicity-collapse.md
+                               closed-by sibling rule90-periodic-window-collapse-refuted IS a row
+                               (rendered Contradictions section)
+
+THE THREE NEW RESULTS — ALL PRESENT:
+  dyadic-collapse-proved ......... status: proved, rendered table row
+  g-supply-switch-count-not-one-point status: proved, rendered table row
+  g-supply-transfer-universal-refuted status: checked, rendered table row
+  (+ nu2w-minima-reconciled etc present on disk; below the 60-row display cap)
+
+CONCLUSION:
+  No claim id that existed in an earlier snapshot is absent now without a status
+  (refuted / superseded / closed-by) recording why. Every row carries its reason.
+  The 62->60 movement is a display-capacity artifact, NOT a derivation bug and NOT
+  a drop. The real issue is the one the renderer itself flags at line 72: a 200-row
+  table capped at 60 visible rows is index-hygiene debt, not data loss. Nothing
+  needs resurrecting.
+
+CAPTURE TOOLS: code/out/claims_count_audit.py, claims_count_audit2.py
+NOTES:         research/notes/claims-count-drop-62-60-audit.md

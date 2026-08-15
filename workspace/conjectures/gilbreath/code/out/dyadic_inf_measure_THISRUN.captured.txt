@@ -1,0 +1,15 @@
+dyadic periodic halved-gap bit string — inf nu2(n)/n over n in [100,20000]
+word: h=[0,...,0,1] (tail-1), period P.  q_1=2,q_2=3, gap=2 if h=1 else 4.
+==============================================================================
+P=  1 (power of 2)  inf nu2/n = 0.000000  at n=100 (nu2=0)  last nu2=0  [22s]
+P=  2 (power of 2)  inf nu2/n = 0.000050  at n=20000 (nu2=1)  last nu2=1  [20s]
+P=  4 (power of 2)  inf nu2/n = 0.000050  at n=20000 (nu2=1)  last nu2=1  [21s]
+------------------------------------------------------------------------------
+P=  3 (odd factor)  inf nu2/n = 0.647059  at n=102 (nu2=66)  last nu2=13332  [22s]
+P=  5 (odd factor)  inf nu2/n = 0.508772  at n=114 (nu2=58)  last nu2=10664  [23s]
+P=  7 (odd factor)  inf nu2/n = 0.266667  at n=105 (nu2=28)  last nu2=17142  [23s]
+P=  9 (odd factor)  inf nu2/n = 0.359223  at n=103 (nu2=37)  last nu2=8255  [23s]
+P= 15 (odd factor)  inf nu2/n = 0.114286  at n=105 (nu2=12)  last nu2=10664  [23s]
+==============================================================================
+Reading: inf_n nu2(n)/n bounded below by positive c => nu2 >= c*n would hold uniformly on THAT period bit string (non-primal). If inf ~ 1/n -> 0, the odd-factor dichotomy is real but DEAD for a uniform supply bound on that word.
+NOTE: these are PERIODIC words, explicitly NOT the primes; the prime bit string is aperiodic. This measures only whether the dyadic dichotomy is supply-useful on the periodic families, per Directive 60 item 1b.

@@ -1,0 +1,7 @@
+60 random (m,h): mismatches = 0
+all-ones m=4: wt_phi=0 direct=0
+all-ones m=6: wt_phi=0 direct=0
+all-ones m=8: wt_phi=0 direct=0
+all-ones m=10: wt_phi=0 direct=0
+all-ones m=12: wt_phi=0 direct=0
+CROSSCHECK-PRE DONE

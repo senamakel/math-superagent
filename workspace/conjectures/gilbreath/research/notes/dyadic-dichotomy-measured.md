@@ -2,6 +2,12 @@
 
 Status: `measured`, exact integers, runs captured below.
 
+> **Directive 60 correction:** the stage-1 "NOT reproduced" verdict below is an
+> OFFSET (suffix-scan floor convention), not a refutation; the claim is about
+> MINIMAL period, and the alt-word extension CONFIRMS it (P=10,12,14,16 alt are
+> `01`-repeated, minimal period 2). See
+> `research/threads/dyadic-periodicity-collapse.md`.
+
 ## The two pre-existing oracle scripts were BUGGY and unrun (Directive 59 confirmed)
 
 - `code/out/reproduce_dyadic_periodicity.py` crashes immediately

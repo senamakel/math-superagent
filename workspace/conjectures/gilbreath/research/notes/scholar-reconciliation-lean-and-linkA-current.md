@@ -103,3 +103,14 @@ contradicts: regeneration-thread-blocked-by (stale), lemma54-chain-settlement (s
 - Link A non-vacuous capture CONTRADICTS `lemma54-chain-settlement.md`'s claim
   that "both captures are vacuous". Only `captured2` is vacuous; `captured.txt`
   verifies 1181 columns.
+
+```claim
+id: regeneration-thread-blocked-by
+statement: [REFUTED — stale] The regeneration thread's blocked-by text asserted "Directive 49: code/lean/descent_lemma.lean does NOT compile — sorryAx in all six theorems; the eps=1 branch run_inv case cons.inr is unsolved; not kernel-checked." This is FALSE on disk: descent_lemma.lean is a complete proof with no sorry/sorryAx, the cons.inr branch is resolved, and the lean_check JSON reports compiled=true, verified=true, sorries=[] with every declaration's axioms only propext/Classical.choice/Quot.sound.
+hypotheses: the thread blocked-by text as previously carried; the on-disk Lean file and its lean_check verdict (code/out/lean/code_lean_descent_lemma.lean.json).
+holds-here: no (the stated defect does not exist; the stale text is superseded by the verified file)
+status: refuted
+closed-by: lemma54-lean-and-linkA-current-verified
+bearing: prevents re-opening Directive 49 or treating the verified Lean descent core as unverified; the JSON verdict and Lean file are authoritative over the stale thread text.
+anchor: code/lean/descent_lemma.lean, code/out/lean/code_lean_descent_lemma.lean.json, research/notes/scholar-reconciliation-lean-and-linkA-current.md
+```

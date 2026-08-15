@@ -1,0 +1,16 @@
+Mersenne P=2^k-1: verify per-residue affine nu2, sum c_r = 3^k-3, density
+==============================================================================
+P=   3 (2^2-1)  affine=True  sum_c_r=6  target 3^k-3=6  match=True
+     min c_r=2  direct ratio d(nu2)/dn over big window=0.750000  claimed slope (sum c_r)/P^2=2/3 (0.666667)
+P=   7 (2^3-1)  affine=True  sum_c_r=24  target 3^k-3=24  match=True
+     min c_r=2  direct ratio d(nu2)/dn over big window=0.500000  claimed slope (sum c_r)/P^2=24/49 (0.489796)
+P=  15 (2^4-1)  affine=True  sum_c_r=78  target 3^k-3=78  match=True
+     min c_r=2  direct ratio d(nu2)/dn over big window=2.600000  claimed slope (sum c_r)/P^2=26/75 (0.346667)
+P=  31 (2^5-1)  affine=True  sum_c_r=240  target 3^k-3=240  match=True
+     min c_r=2  direct ratio d(nu2)/dn over big window=0.230769  claimed slope (sum c_r)/P^2=240/961 (0.249740)
+P=  63 (2^6-1)  affine=True  sum_c_r=726  target 3^k-3=726  match=True
+     min c_r=2  direct ratio d(nu2)/dn over big window=1.586207  claimed slope (sum c_r)/P^2=242/1323 (0.182918)
+P= 127 (2^7-1)  affine=True  sum_c_r=2184  target 3^k-3=2184  match=True
+     min c_r=2  direct ratio d(nu2)/dn over big window=-0.081967  claimed slope (sum c_r)/P^2=2184/16129 (0.135408)
+P= 255 (2^8-1)  affine=True  sum_c_r=6558  target 3^k-3=6558  match=True
+     min c_r=2  direct ratio d(nu2)/dn over big window=-0.080000  claimed slope (sum c_r)/P^2=2186/21675 (0.100854)

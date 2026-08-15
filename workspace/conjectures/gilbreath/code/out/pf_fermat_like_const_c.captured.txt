@@ -1,0 +1,6 @@
+P=2^m+1 family: c_r constant and == 3^m-1?  modulus L=2^(2m)-1
+========================================================================
+P= 5 (2^2+1) L=   15 c_r const=True min=8 max=8 target 3^2-1=8 slope=8/15
+P= 9 (2^3+1) L=   63 c_r const=True min=26 max=26 target 3^3-1=26 slope=26/63
+P=17 (2^4+1) L=  255 c_r const=True min=80 max=80 target 3^4-1=80 slope=16/51
+P=33 (2^5+1) L= 1023 c_r const=True min=242 max=242 target 3^5-1=242 slope=22/93

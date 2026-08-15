@@ -1,0 +1,20 @@
+Odd prime periods P (tail-1 word w=[0..0,1]): min per-residue density
+  P= 3: min=0.6667 mean=0.6667  all positive: True
+  P= 5: min=0.5333 mean=0.5333  all positive: True
+  P= 7: min=0.2857 mean=0.4898  all positive: True
+  P=11: min=0.4690 mean=0.4692  all positive: True
+  P=13: min=0.4683 mean=0.4689  all positive: True
+  P=17: min=0.3137 mean=0.3137  all positive: True
+  P=19: min=0.4727 mean=0.4745  all positive: True
+  P=23: min=0.4561 mean=0.4782  all positive: True
+  P=29: min=0.4763 mean=0.4830  all positive: True
+  P=31: min=0.0645 mean=0.2497  all positive: True
+
+Even periods with odd factor (tail-1 word): min per-residue density
+  P= 6: min=0.3333 mean=0.5000  all positive: True
+  P=10: min=0.2666 mean=0.4000  all positive: True
+  P=12: min=0.1666 mean=0.3750  all positive: True
+  P=14: min=0.1429 mean=0.3673  all positive: True
+  P=18: min=0.2062 mean=0.3095  all positive: True
+  P=20: min=0.1333 mean=0.3000  all positive: True
+  P=22: min=0.2345 mean=0.3519  all positive: True

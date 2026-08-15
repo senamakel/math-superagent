@@ -1,47 +1,53 @@
 ```thread
-question: Why does the F₂ transfer die exactly on dyadic-periodic h, and what anti-dyadic property of the prime halved-gap bit string restores ν₂ ≥ c·n?
-status: open — Directive 58 (stage-1 numbers measured host-side; prove the dichotomy, do not survey it)
-rests-on: rule90-interior-xor, g-supply-transfer-universal-refuted, transfer-matrix-kernel-allones, g-supply-transfer-measured
+question: Keyed on MINIMAL period, why does the F₂ transfer die exactly on dyadic-periodic h (minimal period a power of 2), and what anti-dyadic property of the prime halved-gap bit string restores ν₂ ≥ c·n?
+status: dead — Directive 74: the dyadic skeleton is CLOSED. SPAD-linearization discharged; SPAD-dyadic-collapse discharged (dyadic-collapse-proved); SPAD-anti-dyadic-linear REFUTED (spad-nondegenerate-linear-refuted); SPAD-prime-anti-dyadic proved-but-inert, CONDITIONAL on Shiu 2000 (asserted, paywalled). Every gap resolved and the route delivers nothing toward the supply bound; ν₂ ≥ c·n for the primes stays the named-open abgs-2011-s9-mod4-switch-limit-open.
+rests-on: rule90-interior-xor, g-supply-transfer-universal-refuted, transfer-matrix-kernel-allones, g-supply-transfer-measured, granville-lucas-kummer-sierpinski, dyadic-collapse-proved, dyadic-oddfactor-infimum-bounded, thue-morse-sublinear-supply-witness
 blocked-by: none yet
 next: |
-  Directive 58. Stage-1 numbers are MEASURED HOST-SIDE — reproduce, do not
-  re-explore. Periodic halved-gap bit string h, gap = 2 if bit else 4,
-  nu2 = #2s in the maximal {0,2} suffix of the right diagonal, exact integers:
-    period 1 (h=1)         nu2 = 1   at n = 200,400,800,1200
-    period 2 (h=01)        nu2 = 2   at all four n
-    period 4 (h=0001)      nu2 = 2   at all four n
-    period 8 (h=00000001)  nu2 = 2   at all four n
-    period 3 (h=001)       nu2 = 133, 264, 533, 798
-    period 5 (h=00001)     nu2 = 104, 210, 424, 638
-    period 6 (h=000001)    nu2 = 134, 264, 534, 796
-    period 7 (h=0000001)   nu2 = 112, 112, 685, 684
-  Dichotomy: nu2 = O(1) exactly on power-of-2 periods, nu2 ~ c*n otherwise
-  (c in [0.53, 0.67]); period 6 = 2*3 grows, so the ODD FACTOR matters, not
-  merely being non-dyadic.
-  0. STEP 0 (Directive 59 — the falsifier is drafted and UNRUN, so this is one
-     command, not another note): `timeout 600 python3 code/out/dyadic_periodic_check.py
-     2>&1 | tee code/out/dyadic_periodic_check.captured.txt`. Report periods 1..8,
-     nu2 over n=50..500, and say plainly whether the odd-factor periods grow.
-     If they do NOT grow, close this thread — the dyadic story is dead, which is
-     a good outcome, not a failure.
-  1. tool_builder — confirm the eight rows above and extend to periods 9..16
-     and to non-constant patterns of the SAME period (the claim is about the
-     period, not the specific word).
-     **Scholar note (library closed): reproduce with code/out/reproduce_dyadic_periodicity.py,
-     and reconcile the period-2 value against the held alternating-2/4(=h=10)
-     measurement nu2=1 (nu2-transfer-not-restored-by-nondegeneracy). By
-     transfer-matrix-kernel-allones (complement-immaterial), h=01 and h=10 give
-     the same tail, so stage-1 nu2=2 and directive-55 nu2=1 cannot both be right
-     as stated — find the convention/off-by-one.**
-  2. theorem_prover — prove from Lucas: h eventually periodic with period 2^k
-     forces nu2 = O_k(1); and (harder) an odd factor in the period forces
-     nu2 >> n.
-     **Scholar note: the collapse leg is ALREADY the proved rule90-interior-xor
-     (any period p bounds the folds by the period word, O_p(1)) — it needs no
-     new source; BCZ Thm 5 is NOT the mechanism. The odd-factor growth leg is
-     genuinely new and is the real open content — nothing held explains it.**
-  3. State the dichotomy theorem, then say precisely what it does and does NOT
-     give for the primes: aperiodicity alone is weaker than the quantitative
-     anti-dyadic input the supply bound needs; the gap between them is the
-     honest remaining statement. Do NOT claim it closes G-supply.
+  CLOSED by Directive 74 — write the deliverable (solution.md), do not re-open
+  this thread. Historical guidance below is superseded.
+  Directive 72 — index forensics STOOD DOWN (root cause is the Rust deriver's
+  MAX_FILES=400, operator fixing outside the mount). Return to the mathematics:
+  the one rung of this skeleton neither proved nor refuted is
+  SPAD-prime-anti-dyadic ('the prime switch bit h is not eventually 2^k-periodic'),
+  which is open-but-VACUOUS for supply after the refutation below — discharging it
+  closes the dyadic skeleton as a negative result only; ν₂ ≥ c·n stays
+  abgs-2011-s9-mod4-switch-limit-open. Mersenne per-period supply density decays
+  like (3/4)^k (see dyadic-mersenne-elementwise-constants.md) — even the linear
+  families weaken.
+
+  Directive 68 — the CONVERSE is REFUTED and written up (claim
+  spad-nondegenerate-linear-refuted, research/notes/spad-nondegenerate-linear-refuted.md).
+  Half-step strings h=1^{a}0^{a} are balanced AND anti-dyadic yet collapse on
+  the power-of-two subsequence: wt(Φh)=1 exactly at a=2^k, ratio→0 there
+  (0.125@8, 0.0625@16, 0.0313@32); at non-power-of-two a it is a LARGER power
+  of two (m=18: wt 8, 0.444; m=34: wt 16, 0.471; m=66: wt 32, 0.485), so wt/m
+  has NO limit (liminf 0, limsup 1/2) — the refutation stands via the 2^k
+  subsequence only (see dyadic-halfstep-fold-classification-checked). Thus
+  anti-dyadic does NOT imply linear supply; the fold matrix Φ has low-weight
+  images on structurally rich inputs. The dyadic COLLAPSE theorem survives
+  (dyadic-collapse-proved, period 2^k ⟹ ν₂ = O_k(1)); only its converse is dead.
+  The original question of this thread ("which anti-dyadic property of the prime
+  h restores ν₂ ≥ c·n") is ANSWERED in the negative: no structural property of h
+  restores it. ν₂ ≥ c·n for the primes reverts to the named-open arithmetic
+  hypothesis abgs-2011-s9-mod4-switch-limit-open.
+
+  Housekeeping left open: dyadic_halfstep_large.captured.txt prints no depth
+  bound (Directive 67 rule 3) — re-capture to a NEW file with depth/width/m
+  printed. Task file-antidyadic-converse-refutation tracks it.
+
+  (Historical, superseded by the refutation above.) Directive 67: stream the
+  triangle, never materialise it. Directive 66: density gate CLOSED — inf_n
+  nu2/n positive for P=3,5,7,9 to n=20000; the odd-factor converse is
+  numerically supported but stays CONJECTURED, and by the refutation it does
+  not bridge to the primes. Thue–Morse is aperiodic with nu2 = O(log n)
+  (thue-morse-sublinear-supply-witness): aperiodicity was already insufficient.
+
+  Directive 60. The collapse side is PROVED for power-of-2 periods (claim
+  `dyadic-collapse-theorem`, status proved); the over-general "any period"
+  claim is REFUTED (rule90-periodic-window-collapse-refuted): odd-factor
+  periods grow (period 3 -> nu2=2666 at n=4000). G-supply (nu2 >= c*n for the
+  aperiodic primes) stays the named-open two-point mod-4 hypothesis
+  (abgs-2011-s9-mod4-switch-limit-open). Do not claim the dichotomy closes
+  G-supply.
 ```

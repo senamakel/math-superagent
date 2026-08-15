@@ -1,0 +1,6 @@
+built 100000 switch bits (0.3s)
+k=1 p=2 : brute B distance/n = 0.498710  block=[1, 0]
+k=2 p=4 : brute B distance/n = 0.461910  block=[1, 1, 1, 0]
+k=3 p=8 : brute B distance/n = 0.443270  block=[1, 1, 1, 0, 1, 1, 1, 1]
+k=4 p=16 : brute B distance/n = 0.434150  block=[1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1]
+time 197.6s

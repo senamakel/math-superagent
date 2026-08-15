@@ -4,9 +4,17 @@ Derived from the `follows-from:` lines in every `claim` block, closed transitive
 
 A claim written `follows-from: a, b` says `a` and `b` together give it. That single edge is enough to answer three questions the claim ledger cannot: which claims the run has already established without noticing, which proposals would add nothing, and which pair of held beliefs cannot both be true.
 
+## Cannot all be true — read this first
+
+No single block states these. Each is a claim the run holds whose support entails something that contradicts another claim the run holds. One of the two is wrong, and everything resting on either is suspect.
+
+- `dyadic-oddfactor-infimum-bounded` rests on ``rule90-periodic-window-collapse-refuted``, which is recorded as contradicting `rule90-periodic-window-collapse`
+
 ## Already entailed
 
 These add nothing the library did not have. That is not a criticism of them — a consequence worth naming is worth a block — but a *proposal* that lands in this list is not a result, and the cheapest time to find that out is before an attempt is spent on it.
 
+- `dyadic-oddfactor-infimum-bounded` is covered by `dyadic-collapse-proved`, `rule90-periodic-window-collapse-refuted`: For each fixed odd-factor period P in {3,5,7,9,15}, the asymptotic infimum of nu2(n)/n over the right-diagonal {0,2}-suffix count of a periodic 2-then-odds…
 - `lemma54-rederivation-safe` is covered by `granville-nu2-density-measured`, `lemma54-discarded-case-universal`: Granville Lemma 5.4 (q_1..q_n succeeds if g*_n ≤ 2*nu2(q_{n-1})+2) is sound: the correct descent is delta_k(q_n) in {delta_{k-1}(q_n)-2, delta_{k-1}(q_n)} when…
+- `rule90-periodic-window-collapse-refuted` is covered by `dyadic-collapse-proved`: The claim "h periodic of period p ⟹ nu2 = O_p(1)" (id rule90-periodic-window-collapse) is FALSE as stated for periods with an odd factor. The correct and…
 

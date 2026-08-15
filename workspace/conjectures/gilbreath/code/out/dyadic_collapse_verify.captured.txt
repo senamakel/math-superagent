@@ -1,0 +1,34 @@
+pascal identity [1]: True None
+pascal identity [0, 1]: True None
+pascal identity [0, 0, 0, 1]: True None
+pascal identity [1, 0, 1, 0]: True None
+pascal identity [0, 1, 0, 1, 0, 0, 1, 1]: True None
+collapse P=1: bad cells (should be []): []
+collapse P=2: bad cells (should be []): []
+collapse P=4: bad cells (should be []): []
+collapse P=8: bad cells (should be []): []
+collapse P=16: bad cells (should be []): []
+collapse P=3 (expect NON-empty, collapse should fail): None
+
+P= 1 n=  100 nu2=0 <= 0? True  suffix-fold-w==nu2 True
+P= 1 n=  500 nu2=0 <= 0? True  suffix-fold-w==nu2 True
+P= 1 n= 1000 nu2=0 <= 0? True  suffix-fold-w==nu2 True
+P= 1 n= 2000 nu2=0 <= 0? True  suffix-fold-w==nu2 True
+P= 2 n=  100 nu2=1 <= 1? True  suffix-fold-w==nu2 True
+P= 2 n=  500 nu2=1 <= 1? True  suffix-fold-w==nu2 True
+P= 2 n= 1000 nu2=1 <= 1? True  suffix-fold-w==nu2 True
+P= 2 n= 2000 nu2=1 <= 1? True  suffix-fold-w==nu2 True
+P= 4 n=  100 nu2=1 <= 3? True  suffix-fold-w==nu2 False
+P= 4 n=  500 nu2=1 <= 3? True  suffix-fold-w==nu2 False
+P= 4 n= 1000 nu2=1 <= 3? True  suffix-fold-w==nu2 False
+P= 4 n= 2000 nu2=1 <= 3? True  suffix-fold-w==nu2 False
+P= 8 n=  100 nu2=2 <= 7? True  suffix-fold-w==nu2 False
+P= 8 n=  500 nu2=2 <= 7? True  suffix-fold-w==nu2 False
+P= 8 n= 1000 nu2=1 <= 7? True  suffix-fold-w==nu2 False
+P= 8 n= 2000 nu2=1 <= 7? True  suffix-fold-w==nu2 False
+P=16 n=  100 nu2=4 <= 15? True  suffix-fold-w==nu2 False
+P=16 n=  500 nu2=4 <= 15? True  suffix-fold-w==nu2 False
+P=16 n= 1000 nu2=2 <= 15? True  suffix-fold-w==nu2 False
+P=16 n= 2000 nu2=1 <= 15? True  suffix-fold-w==nu2 False
+
+ALL OK: False

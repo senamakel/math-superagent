@@ -1,0 +1,22 @@
+Odd periods P up to 45 (tail-1 word): per-residue-affine nu2?
+window n in [300,1200]; affine iff nu2(n+P)-nu2(n) = c_r exactly per residue
+==============================================================================
+P= 3: AFFINE  c_r=[2, 2, 2]  min 2  slope 2/3 = 0.6667
+P= 5: not affine
+P= 7: AFFINE  c_r=[2, 6, 4, 4, 2, 4, 2]  min 2  slope 2/7 = 0.2857
+P= 9: not affine
+P=11: not affine
+P=13: not affine
+P=15: AFFINE  c_r=[2, 14, 8, 8, 4, 8, 4, 4, 2, 8, 4, 4, 2, 4, 2]  min 2  slope 2/15 = 0.1333
+P=17: not affine
+P=21: not affine
+P=23: not affine
+P=25: not affine
+P=27: not affine
+P=31: AFFINE  c_r=[2, 30, 16, 16, 8, 16, 8, 8, 4, 16, 8, 8, 4, 8, 4, 4, 2, 16, 8, 8, 4, 8, 4, 4, 2, 8, 4, 4, 2, 4, 2]  min 2  slope 2/31 = 0.0645
+P=33: not affine
+P=35: not affine
+P=39: not affine
+P=45: not affine
+
+Look for: which P are affine?  Divisor/Mersenne pattern?

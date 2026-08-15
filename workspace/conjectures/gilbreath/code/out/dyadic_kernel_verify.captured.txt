@@ -1,0 +1,12 @@
+route A = wt(Phi h) matrix dot ; B = direct triangle nu2 ; C = triangle halved-XOR-on-suffix count
+m    h                            A      B      C      agree
+6    110000                       1      1      1      OK
+8    11000000                     1      1      1      OK
+10   1100000000                   1      1      1      OK
+12   111100000000                 1      1      1      OK
+14   10101000000000               1      1      1      OK
+16   1111000000000000             1      1      1      OK
+18   001111000000000000           1      1      1      OK
+ALL THREE ROUTES AGREE: True
+=> the block/step minimizers genuinely give wt(Phi h)=1 (nu2=1)
+   and the probe's DECAY verdict is a real refutation attempt.

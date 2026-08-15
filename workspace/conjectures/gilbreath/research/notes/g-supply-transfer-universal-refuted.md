@@ -125,3 +125,15 @@ contradicts: g-supply-transfer (the universal form as stated in the gap) - which
   prime-specific measurement, which stands)
 answers: none (closes the open gap in the backward ledger)
 ```
+
+```claim
+id: g-supply-transfer
+statement: [REFUTED] For every successful 2-then-odds prefix q_1..q_n (q_1=2, q_2=3, q_j odd increasing, all gaps even), the universal combinatorial transfer nu2(q_n) >= (2/3)*w(n) — the G-supply-transfer gap of research/backward/nu2-supply-split.md — is FALSE. Consecutive odds (all gaps = 2) are successful for every n yet give w(n) = n-2 (maximal) while the triangle collapses to (1,0,0,...) from row 2 on, so the maximal {0,2} suffix of the right diagonal is all zeros and nu2 = 0 for every n >= 4. Hence nu2 < (2/3)w for all n >= 4. Even the weaker nu2 >= w/2 is not a universal F2 identity (all-2 length-12 string: w=12, nu2=1). The S1 fork resolves to case (b): the nu2 >= c*w supply decomposition is prime-specific, not a universal F2 linear-algebra identity.
+hypotheses: successful 2-then-odds prefixes; nu2 = #2s in the maximal {0,2} suffix of the right diagonal; w = Hamming weight of the halved-gap mod-4-switch bits over [2,n-1].
+holds-here: no (the universal form is false; the prime-specific form g-supply-transfer-measured survives on the real primes)
+status: refuted
+closed-by: g-supply-transfer-universal-refuted
+bearing: the central refuted lemma of this run; it must STAY in the ledger with its refutation so the dead universal bound is not re-derived (the failure the run already paid for on G-supply-nonconcentration and the two-point crux). Lemma 5.4 and the recharge identity are unaffected; Route B still rests on the named-open two-point mod-4 supply bound (abgs-2011-s9-mod4-switch-limit-open).
+anchor: research/notes/g-supply-transfer-universal-refuted.md, research/backward/nu2-supply-split.md
+answers: G-supply-transfer (the gap in research/backward/nu2-supply-split.md)
+```

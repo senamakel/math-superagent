@@ -1,0 +1,22 @@
+# VACUOUS marker — names code/out/dyadic_periodic_check.captured.txt as VACUOUS.
+#
+# That captured.txt (overwritten this run, task fix-vacuous-dyadic-artifacts)
+# no longer carries the misleading all-zeros table: it is a prose-only marker
+# explaining WHY the broken oracle's output is vacuous.
+#
+# The broken oracle code/out/dyadic_periodic_check.py was NOT re-run. Reason
+# it is invalid (Directive 60 item 3): make_input_gaps() prepends gaps=[1] for
+# the 2->3 difference AND build_triangle() does row=[1]+list(gaps), so
+# A_1 = (1, 1, 2, 4, ...) — an ODD second entry. A real 2-then-odds triangle
+# has A_1 = (1, 2, 4, ...) with an even second entry. Because of the odd
+# second entry the {0,2} regime never forms and nu2 = 0 for every period
+# P=1..8. The all-zeros table is an artifact, not evidence, and must not be
+# cited as showing "odd-factor periods do not grow."
+#
+# The CORRECTED oracle, with its real capture, is:
+#   code/out/dyadic_periodicity_correct.py
+#   code/out/dyadic_periodicity_correct.captured.txt
+# It builds a proper 2-then-odds triangle (canonical lib.rightdiag
+# incremental_diagonals + cycle_and_nu2) and confirms the dyadic dichotomy:
+# power-of-2 periods collapse (nu2 = O_P(1)); odd-factor periods grow
+# (period 3: 132 -> 2666 over n = 200..4000, etc.).

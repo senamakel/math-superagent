@@ -1,0 +1,58 @@
+Per-residue-affine structure of true nu2(n) on odd-period tail-1 words
+window n in [300, 1400]; checks nu2(n+P)-nu2(n) per residue mod P
+============================================================================
+P= 3: c_r = [2, 2, 2]
+     min c_r = 2  ->  nu2(n) >= (2/3) n - O(1) = 0.6667 n - O(1); mean slope 0.6667
+     positive lower density: YES
+P= 5 tail-1 word: NOT per-residue affine — nonconstant residues:
+    r=0: diffs in [1, 3, 4]
+    r=1: diffs in [1, 3, 4]
+    r=2: diffs in [2, 3]
+    r=3: diffs in [2, 3]
+    r=4: diffs in [2, 4]
+P= 7: c_r = [2, 6, 4, 4, 2, 4, 2]
+     min c_r = 2  ->  nu2(n) >= (2/7) n - O(1) = 0.2857 n - O(1); mean slope 0.4898
+     positive lower density: YES
+P= 9 tail-1 word: NOT per-residue affine — nonconstant residues:
+    r=0: diffs in [1, 2, 3, 5, 8]
+    r=1: diffs in [1, 2, 3, 5, 8]
+    r=2: diffs in [1, 2, 3, 4, 5, 7]
+    r=3: diffs in [1, 2, 3, 4, 5, 6]
+    r=4: diffs in [1, 3, 4, 5, 6]
+    r=5: diffs in [1, 2, 3, 4, 5, 6]
+    r=6: diffs in [2, 3, 4, 5, 7]
+    r=7: diffs in [2, 3, 4, 5, 7]
+    r=8: diffs in [2, 4, 8]
+P=11 tail-1 word: NOT per-residue affine — nonconstant residues:
+    r=0: diffs in [1, 2, 3, 4, 5, 6]
+    r=1: diffs in [1, 2, 3, 4, 5, 6]
+    r=2: diffs in [1, 3, 4, 5, 6, 7]
+    r=3: diffs in [1, 3, 4, 5, 6, 7]
+    r=4: diffs in [2, 3, 4, 5, 6, 8]
+    r=5: diffs in [2, 3, 4, 5, 6, 7]
+    r=6: diffs in [2, 3, 4, 5, 6, 7]
+    r=7: diffs in [2, 3, 4, 5, 6, 7]
+    r=8: diffs in [2, 3, 4, 5, 6, 7]
+    r=9: diffs in [2, 3, 4, 5, 6, 7]
+    r=10: diffs in [2, 4, 6, 8, 10]
+P=13 tail-1 word: NOT per-residue affine — nonconstant residues:
+    r=0: diffs in [1, 2, 3, 4, 5, 6]
+    r=1: diffs in [1, 2, 3, 4, 5, 6]
+    r=2: diffs in [2, 4, 5, 6, 7, 9]
+    r=3: diffs in [2, 3, 4, 5, 6, 7]
+    r=4: diffs in [2, 3, 4, 5, 6, 7]
+    r=5: diffs in [2, 3, 4, 5, 6, 7]
+    r=6: diffs in [2, 3, 4, 5, 6, 7]
+    r=7: diffs in [2, 4, 5, 6, 7, 8]
+    r=8: diffs in [1, 2, 3, 4, 5, 6]
+    r=9: diffs in [1, 2, 3, 4, 5, 6]
+    r=10: diffs in [2, 3, 4, 5, 6, 7]
+    r=11: diffs in [2, 3, 4, 5, 6, 7]
+    r=12: diffs in [2, 4, 6, 8, 10, 12]
+P=15: c_r = [2, 14, 8, 8, 4, 8, 4, 4, 2, 8, 4, 4, 2, 4, 2]
+     min c_r = 2  ->  nu2(n) >= (2/15) n - O(1) = 0.1333 n - O(1); mean slope 0.3467
+     positive lower density: YES
+
+Reading: per-residue affine with all c_r >= 1 proves a uniform positive
+linear lower bound for nu2 on that word -> the odd-factor converse holds
+on the measured words with the above constants (computed, not yet proved).

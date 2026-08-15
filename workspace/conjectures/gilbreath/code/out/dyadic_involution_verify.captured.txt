@@ -1,0 +1,15 @@
+(a) subset-zeta involution Z^2 = id over F2
+  Z^2 = identity on levels 0..T: True
+
+(b) Y eventually zero (c>=C) forces g periodic with period power of 2
+  C=5 (2^R=8): all 400 trials g is period-dividing-8: True
+  C=9 (2^R=16): all 400 trials g is period-dividing-16: True
+  C=17 (2^R=32): all 400 trials g is period-dividing-32: True
+  C=33 (2^R=64): all 400 trials g is period-dividing-64: True
+
+(c) minimal-period odd-factor words give non-eventually-zero Y
+  word len=3: nonzero levels >=100 present: True, longest zero-run in [100,240]=1
+  word len=5: nonzero levels >=100 present: True, longest zero-run in [100,240]=3
+  word len=6: nonzero levels >=100 present: True, longest zero-run in [100,240]=3
+  word len=7: nonzero levels >=100 present: True, longest zero-run in [100,240]=5
+  word len=15: nonzero levels >=100 present: True, longest zero-run in [100,240]=13

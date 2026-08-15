@@ -1,0 +1,59 @@
+========================================================================
+(A) backward-recursion == forward-oracle (exact, M=3)
+  K= 1: |S_K|=      2 (== forward oracle), density in [0..3]^K = 0.50000
+  K= 2: |S_K|=      5 (== forward oracle), density in [0..3]^K = 0.31250
+  K= 3: |S_K|=     16 (== forward oracle), density in [0..3]^K = 0.25000
+  K= 4: |S_K|=     58 (== forward oracle), density in [0..3]^K = 0.22656
+  K= 5: |S_K|=    222 (== forward oracle), density in [0..3]^K = 0.21680
+  K= 6: |S_K|=    869 (== forward oracle), density in [0..3]^K = 0.21216
+  K= 7: |S_K|=   3438 (== forward oracle), density in [0..3]^K = 0.20984
+  K= 8: |S_K|=  13672 (== forward oracle), density in [0..3]^K = 0.20862
+  K= 9: |S_K|=  54518 (== forward oracle), density in [0..3]^K = 0.20797
+  K=10: |S_K|= 217706 (== forward oracle), density in [0..3]^K = 0.20762
+  backward==forward: EXACT at every K
+
+========================================================================
+(B) real prime halved window membership (maximal-set certificate)
+  K= 1: window (1,) in S_1: True (forward oracle True, agree True)
+  K= 2: window (1, 1) in S_2: True (forward oracle True, agree True)
+  K= 3: window (1, 1, 2) in S_3: True (forward oracle True, agree True)
+  K= 4: window (1, 1, 2, 1) in S_4: True (forward oracle True, agree True)
+  K= 5: window (1, 1, 2, 1, 2) in S_5: True (forward oracle True, agree True)
+  K= 6: window (1, 1, 2, 1, 2, 1) in S_6: True (forward oracle True, agree True)
+  K= 7: window (1, 1, 2, 1, 2, 1, 2) in S_7: True (forward oracle True, agree True)
+  K= 8: window (1, 1, 2, 1, 2, 1, 2, 3) in S_8: True (forward oracle True, agree True)
+  K= 9: window (1, 1, 2, 1, 2, 1, 2, 3, 1) in S_9: True (forward oracle True, agree True)
+  K=10: window (1, 1, 2, 1, 2, 1, 2, 3, 1, 3) in S_10: True (forward oracle True, agree True)
+
+========================================================================
+(C) NEGATIVE bound: no fixed finite prefix decides S_K.
+     For each prefix length J, a concrete unsafe extension is shown:
+    J=1: prefix (0,) (safe) extends to UNSAFE window (0, 2) of width 2 (not in S_2); forward-safe=False
+    J=2: prefix (0, 0) (safe) extends to UNSAFE window (0, 0, 2) of width 3 (not in S_3); forward-safe=False
+    J=3: prefix (0, 0, 0) (safe) extends to UNSAFE window (0, 0, 0, 2) of width 4 (not in S_4); forward-safe=False
+    J=4: prefix (0, 0, 0, 0) (safe) extends to UNSAFE window (0, 0, 0, 0, 2) of width 5 (not in S_5); forward-safe=False
+    J=5: prefix (0, 0, 0, 0, 0) (safe) extends to UNSAFE window (0, 0, 0, 0, 0, 2) of width 6 (not in S_6); forward-safe=False
+    J=6: prefix (0, 0, 0, 0, 0, 0) (safe) extends to UNSAFE window (0, 0, 0, 0, 0, 0, 2) of width 7 (not in S_7); forward-safe=False
+    J=7: prefix (0, 0, 0, 0, 0, 0, 0) (safe) extends to UNSAFE window (0, 0, 0, 0, 0, 0, 0, 2) of width 8 (not in S_8); forward-safe=False
+    J=8: prefix (0, 0, 0, 0, 0, 0, 0, 0) (safe) extends to UNSAFE window (0, 0, 0, 0, 0, 0, 0, 0, 2) of width 9 (not in S_9); forward-safe=False
+    J=9: prefix (0, 0, 0, 0, 0, 0, 0, 0, 0) (safe) extends to UNSAFE window (0, 0, 0, 0, 0, 0, 0, 0, 0, 2) of width 10 (not in S_10); forward-safe=False
+
+  => safety cannot be certified by any bounded prefix of the window;
+     no width-uniform finite-prefix invariant of S_K exists at K<=10.
+     The maximal-set certificate (B) is the strongest safe statement
+
+========================================================================
+(D) density trends: |S_K|/4^K -> 0 confirms safety constrains the
+     whole (growing) window, defeating finite-shape invariants
+    K= 1 |S_K|=      2 |S_K|/|S_{K-1}|=nan density=0.500000
+    K= 2 |S_K|=      5 |S_K|/|S_{K-1}|=2.5000 density=0.312500
+    K= 3 |S_K|=     16 |S_K|/|S_{K-1}|=3.2000 density=0.250000
+    K= 4 |S_K|=     58 |S_K|/|S_{K-1}|=3.6250 density=0.226562
+    K= 5 |S_K|=    222 |S_K|/|S_{K-1}|=3.8276 density=0.216797
+    K= 6 |S_K|=    869 |S_K|/|S_{K-1}|=3.9144 density=0.212158
+    K= 7 |S_K|=   3438 |S_K|/|S_{K-1}|=3.9563 density=0.209839
+    K= 8 |S_K|=  13672 |S_K|/|S_{K-1}|=3.9767 density=0.208618
+    K= 9 |S_K|=  54518 |S_K|/|S_{K-1}|=3.9876 density=0.207970
+    K=10 |S_K|= 217706 |S_K|/|S_{K-1}|=3.9933 density=0.207621
+
+DONE

@@ -10,6 +10,10 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
+- `cht-obstruction-route/CHT-0d-block-absence` (lemma) — \| For the M and L fixed by CHT-size-bound, the prime normalized-gap array has no right-half {0,d}-block (d ≥ 2) with 2^{M−m} < d ≤…
+  - open `research/backward/cht-obstruction-route.md`
+- `cht-obstruction-route/CHT-size-bound` (lemma) — \| The normalized prime gaps a_n = (p_{n+2} − p_{n+1})/2 − 1 satisfy a_n ≤ 2^M for M = O(log log n) — equivalently the record prime gap…
+  - open `research/backward/cht-obstruction-route.md`
 - `counterexample-backward/CB-backward-propagation` (lemma) — \| Trace the failure configuration backward through the full erosion run that reduced the block from its last regeneration to b = 1. At the…
   - open `research/backward/counterexample-backward.md`
 - `counterexample-backward/CB-dying-pair` (lemma) — \| At the first failure row K, the dying row K−1 satisfies b_{K-1} = 1, A_{K-1}(0) = 1, and A_{K-1}(1) ∈ {4,6,8,…}. Let e = A_{K-2}(1) be…
@@ -20,12 +24,6 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/direct-invariant-potential.md`
 - `direct-invariant-potential/DI-monotone-potential` (lemma) — There exists a function Φ from finite-support rows of nonnegative integers to a well-founded (or real, bounded-below) ordered set such that…
   - open `research/backward/direct-invariant-potential.md`
-- `dyadic-periodicity-collapse/DPC-dyadic-collapse` (lemma) — If h is eventually periodic with period 2^k (k ≥ 0), then ν₂(q_n) = wt(Φ_n h) = O_k(1): the fold weight is bounded by a constant depending…
-  - open `research/backward/dyadic-periodicity-collapse.md`
-- `dyadic-periodicity-collapse/DPC-kernel-classification` (lemma) — (Quantitative converse of the collapse.) The only way wt(Φ_n h) is sublinear is asymptotic dyadic periodicity: there is ε₀ > 0 and k₀ such…
-  - open `research/backward/dyadic-periodicity-collapse.md`
-- `dyadic-periodicity-collapse/DPC-prime-antidyadic` (lemma) — The prime mod-4 switch bit h[j] = ((p_{j+2} − p_{j+1})/2) mod 2 is not asymptotically periodic with period a power of 2, in the…
-  - open `research/backward/dyadic-periodicity-collapse.md`
 - `excess-height-renormalization/EH-edge2-supply` (lemma) — \| For the prime Gilbreath triangle, every erosion run that starts from a nonzero block of length n = b_start with intruder excess r₀ = y₀/2…
   - open `research/backward/excess-height-renormalization.md`
 - `granville-nu2-reduction/GN-supply-nu2-density` (lemma) — For the prime sequence, the count ν₂(q_n) of 2s in the 0-2 cycle of the right diagonal satisfies ν₂(q_n) > n^β for some fixed β > 0.525…
@@ -44,10 +42,6 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/regeneration-sufficiency.md`
 - `route-b-supply-consolidated/SC-supply-nu2-linear` (lemma) — For the prime sequence, the count ν₂(q_n) of 2s in the maximal {0,2} suffix of the right diagonal δ(q_n) satisfies ν₂(q_n) ≥ c·n for a…
   - open `research/backward/route-b-supply-consolidated.md`
-- `supply-periodic-aperiodic-dichotomy/SPAD-nondegenerate-linear` (lemma) — \| There are absolute constants δ > 0 and c > 0 such that: for every bit string h ∈ {0,1}^m that is (i) not eventually periodic and (ii)…
-  - open `research/backward/supply-periodic-aperiodic-dichotomy.md`
-- `supply-periodic-aperiodic-dichotomy/SPAD-prime-nondegenerate` (lemma) — \| The prime halved-gap bit string h[j] = ((p_{j+2} − p_{j+1})/2) mod 2 satisfies the hypothesis of SPAD-nondegenerate-linear: (a) h is NOT…
-  - open `research/backward/supply-periodic-aperiodic-dichotomy.md`
 
 ## Every node
 
@@ -60,44 +54,52 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `anticlustering-markov-insufficient-for-gsupply` | claim | established | — | Generic Markov anti-clustering of the mod-4 switch bit does NOT deliver the supply bound ν₂ ≥ c·w (hence not ν₂ ≥ c·n). On the worst-min… |
 | `arias-block-and-evolution` | claim | **ready** | — | (survey) if a row has leading 1 and n subsequent entries in {0,2}, the next n−1 rows start with 1; G(π(10^13))=635; a random pseudo-prime… |
 | `bcz-2023-left-edge-stabilization` | claim | established | — | For binary top rows the left-edge operator of the Proth–Gilbreath triangle is an F2 involution: T(f)(X) = f(X/(1+X))·(1/(1+X)) over F2[[X]]… |
+| `bcz2000-thwaites-cyclic-diff-collapse-power-of-2` | claim | established | — | (Cobeli–Crasmaru–Zaharescu 2000, Portugaliae Math. 57(3):311–323) On a cyclic d-torus, iterating \|a_k - a_{k+1}\| mod d reaches the all-zero… |
 | `bft2023-cramer-model-canonical` | claim | established | — | (Banks–Ford–Tao 2023, Invent. math. 233:1471–1518) Cramér's model (each n≥3 in with prob 1/log n, jointly independent) gives largest gap ~… |
-| `bigjump-cap-characterization-1000` | claim | established | — | Of the 13 (2,4)-events with jump j > 1000 in the prime Gilbreath triangle to depth 1000 (sieve 2e7, W = 1270607 primes), 12 are genuine… |
 | `block-growth-literature-not-covered` | claim | established | — | No held source — Odlyzko 1993, Killgrove–Ralston 1959, Chase 2024, CHT 2026, Eppstein 2011, Arias de Reyna blog, Blair Morgan 2026, Agama… |
-| `block-lemma-verification-bound-1e9` | claim | established | — | In the 1e9-sieve prime Gilbreath triangle (W = 50,847,534 primes), row 248 has leading 1 followed by an all-{0,2} block of length b_248 =… |
 | `block-profile-equals-a000232-minus-1` | claim | **ready** | — | The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of… |
 | `c2-alternating-sum-identity` | claim | established | — | For every row A_k with W = len(A_k) - 1, sigma(A_{k+1}) = A_k(0) - (-1)^W A_k(W) - 2 * sum_{i<W} (-1)^i min(A_k(i), A_k(i+1)), where… |
 | `caldwell-proth-myth-repeats` | claim | **ready** | — | Caldwell's Prime Glossary (t5k.org) restates the block lemma correctly (a row of 1 then n entries in {0,2} protects the next n rows'… |
-| `carry-bridge-exhaustive` | claim | established | — | The composed two's-complement transducer (3-state MSB comparator x 2-state LSB borrow-subtractor with the two's-complement identity a-b =… |
-| `carry-bridge-nu2-reproduction` | claim | established | — | On the prime right diagonal, nu2(n) from maximal {0,2} suffix and w(n)=Hamming weight of halved gap bits over j in [2,n-1], recomputed from… |
-| `carry-markov-stationary-1-2` | claim | established | — | The two-operand addition carry chain c'=majority(a,b,c) with a,b iid Bernoulli(1/2) has transition matrix [[3/4,1/4],[1/4,3/4]] and exact… |
+| `carved-gap24-is-r-lipschitz-corner` | claim | established | — | The weakened rung R-carved-gap24 (2-then-odds with first gap 2 and all later gaps in {2,4}) is already settled: A_1 = (1, 2, g_2, g_3, ...)… |
 | `chase-2024-arxiv-id` | claim | **ready** | — | Chase, "A random analogue of Gilbreath's conjecture", Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w. |
 | `chase-2024-block-consumption03` | claim | established | — | If a_1..a_i are nonneg with d=max and L = length of longest {0,d}-block containing a d, then after L iterations the max is ≤ d−1 (Lemma… |
 | `chase-2024-theorem1` | claim | established | — | For f increasing, 2≤f(n), f(M)≤(1/100)loglogM/logloglogM, the random sequence a_1=2,a_2=3,a_{n+1}=a_n+2u_n (u_n uniform independent on… |
 | `chip-firing-path-collapse-refuted` | claim | established | — | The abelian-sandpile / chip-firing formulation of the Gilbreath recharge identity collapses on a path graph: (a) the critical (sandpile)… |
 | `cht-decay-lower-bound-logn` | claim | **ready** | — | In the stationary continuous Gilbreath model (i.i.d. standard exponential top row), Σ_{i≤n} c_i ≥ log(n+e) with c_i = E[a(i,j)]; hence c_i… |
 | `cht-inverse-theorem` | claim | established | — | If a_n≤2^M, no length-L 0-block, and no {0,d}-block (2^{M−m}<d≤2^{M−m+1}) of length ≥ R_m−3R_{m−1} at depth ≤2R_{m−1} (R_m≥4R_{m−1},… |
-| `cht-inverse-theorem-hyp-check` | claim | established | — | For the prime-difference triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the normalized gaps a_n=(p_{n+2}-p_{n+1})/2-1 over the… |
-| `cht-inverse-theorem-hyp-check-v2` | claim | established | — | The CHT Theorem 1.6 hypothesis check on the real prime rows: for the prime-difference triangle to depth 1000 (sieve 2e7, 1,270,607 primes,… |
 | `cht-inverse-theorem-library` | claim | **ready** | — | If a_n ≤ 2^M, no 0-block of length L, and no {0,d}-block with 2^{M−m}<d≤2^{M−m+1} of length ≥ R_m−3R_{m−1} at depth ≤ 2R_{m−1} (R_m ≥… |
 | `cht-normalized-gap-definition` | claim | established | — | GC ⟺ the left diagonal of the array generated by a_n=(p_{n+2}−p_{n+1})/2−1 is eventually {0,1}-valued; first nine a_n are 0,0,1,0,1,0,1,2,0… |
+| `cht-obstruction-route` | goal | blocked | `cht-inverse-theorem`, `cht-normalized-gap-definition`, `cht-obstruction-route/CHT-0d-block-absence`, `cht-obstruction-route/CHT-size-bound`, `cht-right-half-0d-scan-6e8`, `cht-theorem16-verbatim-fullpdf`, `gap-bounds-cannot-force-block-growth`, `gilbreath-reduces-to-second-in-02`, `gilbreath-second-entry-equivalence` | Gilbreath's conjecture for the primes — A_k(0) = 1 for every k ≥ 1, equivalently every finite prime prefix is successful. |
+| `cht-obstruction-route/CHT-0d-block-absence` | lemma | **ready** | — | \| For the M and L fixed by CHT-size-bound, the prime normalized-gap array has no right-half {0,d}-block (d ≥ 2) with 2^{M−m} < d ≤… |
+| `cht-obstruction-route/CHT-size-bound` | lemma | **ready** | — | \| The normalized prime gaps a_n = (p_{n+2} − p_{n+1})/2 − 1 satisfy a_n ≤ 2^M for M = O(log log n) — equivalently the record prime gap… |
 | `cht-random-analogue` | claim | **ready** | — | (Theorem 1.3) If a_1,a_2,... are independent non-negative integer random variables with (i) a_n ≤ δn eventually (a.s.) and (ii) P(a_n∈A) ≤… |
 | `cht-right-half-0d-scan-6e8` | claim | established | — | On the real prime array at sieve 6e8 (W = 31,324,703 primes, N = 31,324,701 normalized gaps, max a_n = 140 -> M = 8, L = 2, R_0 = 100*L*8^M… |
 | `cht-theorem16-verbatim-fullpdf` | claim | established | — | CHT 2026 Theorem 1.6 (deterministic inverse theorem), verified verbatim in the FULL PDF: if a_n ≤ 2^M, no length-L zero-block, and no… |
 | `closure-0d-double-edge` | claim | established | — | {0,d} is closed under absolute differencing for every d ≥ 2 (\|0−d\|=d, \|d−d\|=0, \|0−0\|=0), so a leading 1 against {0,2} stays 1 — but the… |
+| `cobham-theorem-grounded` | claim | **ready** | — | If a sequence (f_x) over a finite set is both a-automatic and b-automatic for multiplicatively independent bases a,b >= 2 (a^m != b^n for… |
 | `colonna-deletion-left-edge-failure` | claim | established | — | Removing one prime (5, 7, or 11) from the prime list gives a 2-then-odds sequence whose left edge fails: (2,3,5,11,13,17,19) (delete-11)… |
 | `colonna-deletion-left-edge-failure-archive` | claim | **ready** | — | (SUPERSEDED — see the verified claim `colonna-deletion-left-edge-failure` (status: checked) in… |
-| `conditional-rate-experiment-family-independent` | claim | established | — | On the 2-then-odds Gilbreath class, conditioning on survival past row 10 removes the entire family-dependence of the (2,4) regeneration… |
-| `conditional-rate-experiment-prime-reference` | claim | established | — | The same machinery on the actual primes (sieve 2e7, D=161) gives exactly 60 (2,4)-events over 161 live rows = 0.3727 overall, reproducing… |
-| `conditional-rate-experiment-sweep-deaths-startup-only` | claim | established | — | In the fresh D=400 run, 102/220 seeds (46%) die (first_b0 <= 10) and 0 of the 118 survivors die by k=400; startup deaths are g_0-driven… |
 | `counterexample-backward` | goal | blocked | `closure-0d-double-edge`, `counterexample-backward/CB-backward-propagation`, `counterexample-backward/CB-dying-pair`, `counterexample-backward/CB-prime-exclusion`, `gilbreath-reduces-to-second-in-02`, `odlyzko-block-lemma-exact`, `rule90-interior-xor`, `second-entry-4-kills`, `step-law-theorem-proved` | Gilbreath's conjecture — for the iterated absolute-difference triangle of the primes, A_k(0) = 1 for all k ≥ 1. |
 | `counterexample-backward/CB-backward-propagation` | lemma | **ready** | — | \| Trace the failure configuration backward through the full erosion run that reduced the block from its last regeneration to b = 1. At the… |
 | `counterexample-backward/CB-dying-pair` | lemma | **ready** | — | \| At the first failure row K, the dying row K−1 satisfies b_{K-1} = 1, A_{K-1}(0) = 1, and A_{K-1}(1) ∈ {4,6,8,…}. Let e = A_{K-2}(1) be… |
 | `counterexample-backward/CB-prime-exclusion` | lemma | **ready** | — | \| The constrained initial pattern derived in CB-backward-propagation — a stretch of consecutive halved prime gaps whose XOR over binom(t,·)… |
+| `cz2014-exponent-analogue-of-gilbreath` | claim | **ready** | — | (Cobeli & Zaharescu 2014, arXiv:1411.1334, J. Diff. Eq. Appl. 20(11):1489–1501) The Z-rule game Z(a,b)=ab/gcd(a,b)^2 on the primes is… |
+| `czp2016-west-edge-squarefree-analogue` | claim | **ready** | — | (Cobeli, Prunescu & Zaharescu 2016, arXiv:1511.04315, Chaos Solitons Fractals 91:136–147) The west edge of the Z-rule triangle from ℕ* / ℙ… |
+| `czz2011-ducci-2-lipschitz` | claim | established | — | The difference map D on d-tuples with a′_k=\|a_k−a_{k+1}\| (and a′_d=\|a_d−a_1\|) is 2-Lipschitz in the Euclidean norm and is not a… |
+| `czz2011-infinite-periodic-ducci-is-gilbreath-operator` | claim | established | — | On an infinite periodic sequence, the map a′_k=\|a_k−a_{k+1}\| is exactly the operator of Gilbreath's conjecture; in the periodic setting… |
 
-_199 further nodes not shown._
+_196 further nodes not shown._
 
 ## Resting on nothing that exists
 
 Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
 
+- `excess-height-renormalization` rests on `edge-interior-invertibility-sharpened`, which does not exist
+- `nu2-supply-concentration-split` rests on `lemma54-composition-lean-formalised`, which does not exist
 - `nu2-supply-concentration-split` rests on `switch-bit-two-point-autocorrelation-near-white`, which does not exist
+- `nu2-supply-mod4-transfer` rests on `lemma54-sufficiency-survives-proper-domain`, which does not exist
+- `nu2-supply-mod4-transfer` rests on `edge-interior-invertibility-sharpened`, which does not exist
+- `regeneration-intruder-drain` rests on `edge-interior-invertibility-sharpened`, which does not exist
+- `regeneration-sufficiency` rests on `edge-interior-invertibility-sharpened`, which does not exist
+- `supply-periodic-aperiodic-dichotomy` rests on `carry-bridge-nu2-reproduction`, which does not exist
+- `supply-periodic-aperiodic-dichotomy` rests on `shiu-2000-strings-of-congruent-primes`, which does not exist

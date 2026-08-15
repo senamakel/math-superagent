@@ -1,0 +1,10 @@
+P=3: global inf 0.6471, LAST time inf changed = n=102
+P=5: global inf 0.5088, LAST time inf changed = n=114
+P=7: global inf 0.2667, LAST time inf changed = n=105
+P=9: global inf 0.3592, LAST time inf changed = n=103
+P=15: global inf 0.1143, LAST time inf changed = n=105
+   ratios at n=1000,5000,10000,20000: [0.666, 0.6664, 0.6666, 0.6666]
+   ratios at n=1000,5000,10000,20000: [0.532, 0.5328, 0.5332, 0.5332]
+   ratios at n=1000,5000,10000,20000: [0.284, 0.5712, 0.2856, 0.8571]
+   ratios at n=1000,5000,10000,20000: [0.415, 0.4124, 0.4131, 0.4128]
+   ratios at n=1000,5000,10000,20000: [0.264, 0.5328, 0.2664, 0.5332]

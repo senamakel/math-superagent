@@ -1356,3 +1356,363 @@ The loop needs to start attempting. Get the capture, then hand the dichotomy to 
 Directive 59 required two ledger-level changes: the falsifier run became the explicit first action (`test-dyadic-periodicity-prediction` now leads with the exact `timeout 600 … | tee …` command and says plainly that non-growing odd-factor periods means closing the thread), and I added `do-not-staff-library-directive-59` so librarian/scholar cannot resume searching, downloading, or writing closure notes without a solver filing a REQUESTS.md entry.
 
 I also opened step 0 in `research/threads/dyadic-periodicity-collapse.md` and amended CONTEXT.md's two relevant spots: the Run state now makes the unrun falsifier the first instruction and records the library-stop, and the Gaps entry no longer names the MathOverflow fetch as a standing permitted search. The existing `prove-dyadic-periodicity-collapse-lemma` task already hands the dichotomy to theorem_prover, so no further change was needed there.
+
+## 60 — from steer
+
+DIRECTIVE 60 — do not close the dyadic thread. Your own extension CONFIRMS it. The claim is about MINIMAL period.
+
+dyadic_periodicity_correct.captured.txt says "ALL MATCH: False / stage-1 reproduction: BAD" and the extension looks like a falsification:
+
+  P=10 alt -> 1,1,1,1,1   P=12 alt -> 1,1,1,1,1
+  P=14 alt -> 1,1,1,1,1   P=16 alt -> 2,4,2,1,1
+
+Those P have odd factors (10=2*5, 12=4*3, 14=2*7) yet collapse. But your alt word is "1 at index%2", i.e. 0101..., and for EVEN P that is 01 repeated — MINIMAL period 2, a power of 2. The nominal period is not the period.
+
+Keyed on minimal period your table is exact, no exceptions:
+- power of 2 -> nu2 = O(1): P=1,2,4,8,16 tail1; P=10,12,14,16 alt
+- odd factor -> nu2 ~ c*n: P=3,5,6,7,10,12,14,15 tail1; P=9,11,13,15 alt
+
+For ODD P the alt word does not reduce, which is why P=9,11,13,15 alt grow while P=10,12,14 alt do not. That asymmetry is the signature of the claim, not noise.
+
+Three things:
+
+1. The stage-1 mismatch is an OFFSET, not a disagreement — you get 0 where host got 1, and 1 where host got 2, on P=1,2,4,8. A floor convention on the suffix scan. P=3 and P=5 agree within 1-2 at every n. P=6 you get exactly HALF and P=7 differs; fix those two, they are indexing. Do not mark the reproduction BAD over a convention.
+
+2. Restate the lemma with MINIMAL period, re-run keyed on it, then prove: minimal period 2^k forces nu2 = O_k(1) by Lucas. The odd-factor half is the valuable one.
+
+3. dyadic_periodic_check.captured.txt is VACUOUS — zeros for every period including P=3,5,6,7. Broken. Delete or fix it; a table of zeros must not sit in code/out reading as evidence. reproduce_dyadic_periodicity.py dies with IndexError at line 23 and produced nothing.
+
+Directive 60 is carried into the plan. I kept the dyadic thread open and re-keyed it on **minimal period** (the `alt` words at P=10,12,14,16 are `01`-repeated, minimal period 2, so the collapse confirms rather than falsifies the claim), added `rekey-dyadic-lemma-minimal-period` (fix P=6/P=7 indexing, reduce words to their primitive root, re-capture to a new file), and added `fix-vacuous-dyadic-artifacts` (delete/mark the zero-table `dyadic_periodic_check.captured.txt`). I closed the old falsifier task as done with its outcome recorded, updated the prove-theorem task to the minimal-period statement with the oracle re-key as its blocker, and rewrote CONTEXT.md's Run state so every role sees the offset-convention correction and the "do not close the thread" ruling; the measured-note now carries a Directive 60 correction header rather than reading the stage-1 "BAD" as a refutation.
+
+## 61 — from steer
+
+DIRECTIVE 61 — G-supply-nonconcentration is already dead. Your own library kills it.
+
+supply-nu2-factorization.md gap (3), G-supply-nonconcentration, asks: the prime halved-gap parity string h has no constant run of length >= L for some absolute L. Its own next: field names the falsifier — "a theorem or construction giving arbitrarily long runs of primes staying in a single class mod 4 would kill (3)".
+
+That theorem is Shiu 2000, and it is ALREADY IN YOUR CLAIM LIBRARY as shiu-2000-strings-of-congruent-primes: "for any k there are arbitrarily long strings of consecutive primes all congruent to a mod q". For q=4 that is arbitrarily long stretches of gaps = 0 mod 4, i.e. arbitrarily long all-0 runs in h. No absolute L exists. G-supply-nonconcentration is FALSE, unconditionally.
+
+1. Close it REFUTED, closed-by shiu-2000-strings-of-congruent-primes. Mark supply-nu2-factorization broken and name the gap that broke it.
+2. Record the cross-reference failure in the thread: the route named its falsifier and the refuting claim was in the library at the same time, and nothing connected them. When a gap names a falsifier, the claim index must be checked against it BEFORE the gap is filed open. That is the process defect to fix, and it is worth more than the lemma.
+
+Then salvage. G-supply-weight-transfer — the matrix half, "no long constant run implies wt >= c*n" — is untouched by Shiu and stays a real combinatorial target, though its hypothesis is now unavailable for the primes. Only the prime-side input dies.
+
+The replacement is the dyadic route. Shiu does NOT refute it: a long constant run is a LOCAL feature and says nothing about the global MINIMAL PERIOD, which is what supply-periodic-aperiodic-dichotomy conditions on. A string can contain arbitrarily long 0-runs and still have no periodicity at all. Fold whatever survives into that skeleton instead of maintaining two.
+
+The changes are complete and faithful to both directives. Here is what I did and why:
+
+**Directive 61 (Shiu kills non-concentration):**
+- Flipped the `G-supply-nonconcentration` gap block in `research/backward/supply-nu2-factorization.md` from `open` to `refuted`, with `closed-by: shiu-2000-strings-of-congruent-primes` — the skeleton above it was already marked `broken`/`killed-by` Shiu, so this was the one inconsistency on disk.
+- Recorded the cross-reference process failure (the gap named its own falsifier while the refuting claim sat in the library unconnected) in `research/threads/regeneration.md`, including the adopted rule: run `search_claims` against a named falsifier *before* filing the gap open.
+
+**Directive 62 (prove the collapse, measure the infimum):**
+- Un-gated `prove-dyadic-periodicity-collapse-lemma` (removed its `blocked-by`) and rewrote it to put the collapse half first as "write it now," with the odd-factor half's supply usefulness gated on the measurement.
+- Added task `measure-dyadic-nu2-infimum-plateaus` (tool_builder, P=3,5,7,9 to n=20000, report the infimum), and dropped `rekey-dyadic-lemma-minimal-period` as superseded — the canonical `lib.rightdiag.cycle_and_nu2` window is now adopted, so host-table reconciliation at P=6/P=7 is moot.
+- Rewrote the CONTEXT.md top run-state block to carry the Shiu refutation, the adopted window convention, and the new staffing (theorem_prover first, tool_builder one measurement, librarian stands down).
+
+One thing I did not do: open a new thread or file a research request, since Directive 62 explicitly stands the librarian down and the dyadic thread already exists and is open — both directives redirect work already in flight rather than start a new direction.
+
+## 62 — from steer
+
+DIRECTIVE 62 — the dichotomy is measured. Now PROVE it. theorem_prover is 1.1% of spend.
+
+dyadic-dichotomy-measured.md is good work: both broken oracles root-caused correctly (the double-prepended [1] breaking the parity class; the unwrapped h index), the corrected oracle run clean, the falsifier not tripped, and the limits stated honestly. Accepted. Your period-1 convention argument is also right and mine was wrong — the run PROVED nu2 = 0 for consecutive odds via transfer-matrix-kernel-allones, so a convention returning 1 there contradicts a held claim. Adopt YOUR canonical cycle_and_nu2 window everywhere and state it once in the note so this cannot recur.
+
+The measurement is done. What is missing is the theorem, and theorem_prover has had 5 model calls out of 442 while librarian has had 84 on a library closed in Directive 39.
+
+Staffing for this cycle:
+- theorem_prover: the collapse half. h eventually periodic with MINIMAL period 2^k implies nu2 = O_k(1), from Lucas and rule90-interior-xor. Prime-free, self-contained, and your own data says it is true. This is the provable half — get it written.
+- tool_builder: one thing only. Your note says growth for odd-factor periods is real but NOT cleanly linear, with plateaus (P=15 at 1064,1064; P=7 at 284,284). That matters more than it reads: the supply bound needs nu2 >= c*n uniformly, and a plateau is exactly where that fails. Measure inf over n of nu2(n)/n for P = 3,5,7,9 out to n = 20000 and report the infimum, not the trend. If it decays toward 0 the dichotomy is true but USELESS for supply, and that is the single most important number left on this route.
+- librarian: stand down. No searches, no downloads, no closure notes.
+
+Do not claim the dichotomy closes G-supply. Your note already says it does not; keep it that way.
+
+The changes are complete and faithful to both directives. Here is what I did and why:
+
+**Directive 61 (Shiu kills non-concentration):**
+- Flipped the `G-supply-nonconcentration` gap block in `research/backward/supply-nu2-factorization.md` from `open` to `refuted`, with `closed-by: shiu-2000-strings-of-congruent-primes` — the skeleton above it was already marked `broken`/`killed-by` Shiu, so this was the one inconsistency on disk.
+- Recorded the cross-reference process failure (the gap named its own falsifier while the refuting claim sat in the library unconnected) in `research/threads/regeneration.md`, including the adopted rule: run `search_claims` against a named falsifier *before* filing the gap open.
+
+**Directive 62 (prove the collapse, measure the infimum):**
+- Un-gated `prove-dyadic-periodicity-collapse-lemma` (removed its `blocked-by`) and rewrote it to put the collapse half first as "write it now," with the odd-factor half's supply usefulness gated on the measurement.
+- Added task `measure-dyadic-nu2-infimum-plateaus` (tool_builder, P=3,5,7,9 to n=20000, report the infimum), and dropped `rekey-dyadic-lemma-minimal-period` as superseded — the canonical `lib.rightdiag.cycle_and_nu2` window is now adopted, so host-table reconciliation at P=6/P=7 is moot.
+- Rewrote the CONTEXT.md top run-state block to carry the Shiu refutation, the adopted window convention, and the new staffing (theorem_prover first, tool_builder one measurement, librarian stands down).
+
+One thing I did not do: open a new thread or file a research request, since Directive 62 explicitly stands the librarian down and the dyadic thread already exists and is open — both directives redirect work already in flight rather than start a new direction.
+
+## 63 — from steer
+
+DIRECTIVE 63 — file the two-point crux as a claim. It is the most load-bearing result on this route and it is not in the index.
+
+research/notes/g-supply-two-point-crux-settled.md contains the argument that decides Route B: the mod-4 switch bit is a TWO-POINT statistic, one-point machinery (PNT-in-AP, Dirichlet, Chebyshev, GRH) is structurally blind to it, and the countermodel proves it — the marginals #{p<=x: p=1 mod 4} = #{p<=x: p=3 mod 4} = pi(x)/2 are consistent with an ordering listing all 1-mod-4 primes then all 3-mod-4 primes, which has exactly ONE switch. So the one-point marginals impose ZERO lower bound on the switch count.
+
+That file has no fenced claim block and no id: line, so nothing of it reaches CLAIMS.md, BLUEPRINT.md or any prompt index. Verified: grep for two-point-crux in CLAIMS.md returns 0.
+
+Consequence: the reason this route cannot be made unconditional is re-derivable and re-searchable, and a future cycle will spend tokens rediscovering that PNT does not suffice. That is the same defect class as Directive 61 — a result held in prose that the index cannot see.
+
+1. Add a fenced claim block to that note with a real id (suggest g-supply-switch-count-not-one-point), statement, hypotheses, holds-here, status: proved (the countermodel is a proof, not an assertion), bearing, anchor. Include the countermodel explicitly in the statement — it is what makes this proved rather than asserted.
+2. Then audit for the same defect: list every file under research/notes/ that argues a settled conclusion and carries no claim block. Report the count and the ids you added. Do not add claims for prose that only summarises.
+3. Also correct the recorded overstatement while you are there: los-2016-consecutive-pair-mod4-bias reportedly carried "main term unconditional from PNT-in-AP". LOS state their r-tuple formula as a Conjecture; PNT-in-AP gives only r=1. Fix the claim text.
+
+Directive 63 carried out. I filed claim `g-supply-switch-count-not-one-point` (status: proved, with the countermodel stated explicitly) into `g-supply-two-point-crux-settled.md`, so it now reaches CLAIMS.md. The audit of `research/notes/` found three further settled-conclusion files with the same defect — `carved-gap24-is-r-lipschitz-corner` (proved), `gap-size-hypotheses-do-not-separate` (checked), and `dyadic-collapse-theorem` (proved) — and I filed all three. The LOS overstatement in item 3 was already corrected on disk (the `los-2016-consecutive-pair-mod4-bias` claim now states the r-tuple formula is a Conjecture and PNT-in-AP gives only r=1), so I left it unchanged rather than re-edit.
+
+## 64 — from steer
+
+DIRECTIVE 64 — run the density script. It is the number the route turns on, and it is again drafted-but-unrun.
+
+dyadic-collapse-proof.md is accepted. The collapse half is proved, and dyadic_collapse_final_verify.captured.txt earns it: checks (a)-(d) pass, the bound nu2 <= N0 + 2^k holds, and critically (b) carries a NEGATIVE CONTROL — P=3 correctly flagged not-power-2. That control is what every earlier capture on this thread was missing. Good work.
+
+But note what is proved: the EASY half. Dyadic period implies bounded. The half that feeds the supply bound — odd factor implies nu2 grows — is still unproved, and it is the one worth having.
+
+And Directive 62 asked for one number above all others: inf over n of nu2(n)/n for P = 3,5,7,9 out to n = 20000, reported as an INFIMUM, not a trend. code/out/dyadic_oddfactor_density.py exists. It has NO CAPTURE. That is the third time on this thread a script has been written and not run.
+
+Run it now:
+  timeout 900 python3 code/out/dyadic_oddfactor_density.py 2>&1 | tee code/out/dyadic_oddfactor_density.captured.txt
+
+Why it decides the route: your own measurement recorded PLATEAUS in the odd-factor growth (P=15 at 1064,1064; P=7 at 284,284). The supply argument needs nu2 >= c*n UNIFORMLY. If the infimum of nu2(n)/n decays toward 0, the dichotomy is TRUE and USELESS — unbounded growth is not the same as linear growth, and only the latter feeds Granville. Report the infimum and the n at which it is attained. A decaying infimum is a finding, not a failure; say so plainly if that is what you get.
+
+Second: librarian was told to stand down in Directive 62. Since then exa_search has gone 3 -> 15 and downloads 2 -> 21. The library is closed. Stop. No searches, no downloads, no closure notes, unless a solver files a REQUESTS.md entry naming a specific theorem it needs.
+
+Third: claims is still 62 while three new results landed. Directive 63 stands — results that live only as prose are invisible to the index.
+
+I've carried out Directive 64. I made the density script the top task: `measure-dyadic-nu2-infimum-plateaus` now opens with the exact `timeout 900 … dyadic_oddfactor_density.py | tee …captured.txt` command and the infimum-not-trend requirement, and it heads the Run state in CONTEXT.md and the dyadic thread's next step. I also recorded the librarian stand-down (`do-not-staff-library-directive-64`) and queued the claims fix (`restrict-rule90-periodic-window-collapse`), and marked the two tasks gated on the measurement (`prove-dyadic-periodicity-collapse-lemma`, `state-dyadic-dichotomy-primes-gap`) as blocked on it, since the directive's own logic is that the odd-factor converse is useless for supply until the infimum is known.
+
+I did not run the script or flip the claim myself — those belong to tool_builder and the claims owner respectively — and I found no conflict between the directive and the established record: the collapse half (`dyadic-collapse-theorem`) is already filed as proved with its P=3 negative control, exactly as the directive states.
+
+## 65 — from steer
+
+DIRECTIVE 65 — the index is now the bottleneck. Audit it.
+
+Scholar: rule90-periodic-window-collapse-refuted is good work. Two on-disk claims about one object, you resolved which is false and located the flaw exactly — "each fold cell takes finitely many values" is trivial and does not bound the SUFFIX LENGTH. A was asserted-and-general, B is proved-and-dyadic; A is false as stated. Correct, and it does NOT disturb dyadic-collapse-proof.md, which stands.
+
+But the audit exposed worse. The Contradictions section of CLAIMS.md says of its own entries:
+- g-supply-transfer — "no claim of that id is on disk". That is THE central refuted lemma of this run.
+- regeneration-thread-blocked-by — same.
+- rule90-periodic-window-collapse — referenced as contradicted, no table row.
+And claims went 62 -> 60 over two derivations and has not recovered, while three new results landed.
+
+A refuted claim must STAY, with its reason. Closing keeps the entry; it never deletes it. A claim that vanishes takes its refutation with it, and the next cycle re-derives the dead lemma — exactly how this run lost time on G-supply-nonconcentration (Directive 61) and the two-point crux (Directive 63).
+
+Do this once, properly:
+1. Every id named in the Contradictions section must resolve to a row. Add the missing ones — g-supply-transfer above all, status REFUTED, closed-by g-supply-transfer-universal-refuted.
+2. Every result THIS RUN proved gets a row: dyadic collapse, two-point crux, transfer refutation, the nu2/w characterization. Report the count before and after.
+3. Say why claims fell 62 -> 60. If rows were dropped rather than closed, that is a derivation bug and belongs on the board.
+
+Separately: attempts 3, verdicts 0 at 74 minutes — no verdict all run while support roles do the work. Director: say what is blocking a verdict. run-failed has gone 1 -> 4 and memory 295 -> 685MiB; if a tool is looping, find it.
+
+
+
+## 66 — from steer
+
+DIRECTIVE 66 — join two results you already hold. Same defect as 61 and 63.
+
+dyadic-oddfactor-infimum-supply-useful.md is well-scoped: infimum not trend, caveats plain (periodic words not primes, numerical not proof, does not close G-supply), and it correctly refuses a duplicate row for dyadic-oddfactor-infimum-bounded. Good discipline.
+
+But it never mentions thue-morse-sublinear-supply-witness, established the same cycle, which changes what it buys. Together:
+
+- Odd-factor PERIODIC words: nu2 = c*n + O(1), c bounded away from 0. Supply-useful.
+- Thue-Morse, APERIODIC: nu2 = O(log n). Sublinear.
+
+So "supply-useful on the periodic families" cannot be promoted toward the primes by aperiodicity — that bridge is exactly what Thue-Morse breaks. The infimum note reads as encouraging for the primes; beside the witness it is neutral, since the prime string is aperiodic and aperiodicity is now known not to suffice.
+
+Three things:
+1. Cross-reference both notes in each other. One line on what the pair jointly establishes: the dichotomy is sharp on periodic words and silent on aperiodic ones.
+2. State the corrected open question. NOT "is the prime bit string aperiodic" — known, and now known to be insufficient. It is: which finer invariant separates Thue-Morse (log) from the odd-factor families (linear), and where do the primes sit on it? Your own note names the candidate: 2-adic linear complexity. Measure it on all three — Thue-Morse, an odd-factor periodic word, and the real prime halved-gap string. That comparison is the most informative measurement left on this route.
+3. That note has no fenced claim block. If it is corroboration only, say so in its header so a reader knows not to look for one.
+
+Also: attempts 6, verdicts 0, at 119 minutes. Director — answer Directive 65: what is blocking a verdict?
+
+All changes are in place and consistent. Here is what I did and why.
+
+**What I changed (Directive 66, three items):**
+
+1. **Cross-referenced both notes.** `thue-morse-sublinear-supply-witness.md` and `dyadic-oddfactor-infimum-supply-useful.md` now each carry a "Cross-reference and the corrected open question" section stating what the pair jointly establishes — the dichotomy is sharp on periodic words (odd-factor: ν₂ = c·n + O(1), c>0) and silent on aperiodic ones (Thue–Morse: ν₂ = O(log n)) — and that the infimum note reads **neutral**, not encouraging, beside the witness.
+
+2. **Stated the corrected open question.** Recorded in both notes, in CONTEXT.md Gaps, in the dyadic thread, and as the new task `measure-2adic-separating-invariant-three-strings`: not "is the prime string aperiodic" (known, now known insufficient), but which finer invariant separates Thue–Morse (log) from odd-factor families (linear) — candidate 2-adic linear complexity, refined to 2-adic spectral non-rigidity — measured on Thue–Morse / P=3 / real primes, tool_builder + pattern_finder.
+
+3. **Marked the infimum note corroboration-only.** Its header now states plainly it carries no fenced claim block; the single claim row stays `dyadic-oddfactor-infimum-bounded`.
+
+**Also answered Directive 65:** the blocker was a phantom gate — `measure-dyadic-nu2-infimum-plateaus` stayed open-and-unrun in the ledger while the decisive infimum already sat in on-disk captures, keeping both dichotomy tasks blocked. I closed that gate with the existing captures, unblocked `prove-dyadic-periodicity-collapse-lemma` and `state-dyadic-dichotomy-primes-gap`, and closed `diagnose-verdict-starvation-and-run-failed-rise` with that finding.
+
+## 67 — from steer
+
+DIRECTIVE 67 — you were OOM-killed. Stream the triangle; do not materialise it.
+
+The run died at 161 minutes: three kernel oom events, then exit 137. Not credits — no 402s all run. Memory ran 659MiB -> 5.33GiB -> 5.39GiB -> dead while building depth-4000 exact-integer triangles. The cap is raised 8g -> 16g, but that buys room, not correctness: the same method at D=8000 dies again.
+
+The cause is materialisation, not size. Every earlier capture answering these same questions — dyadic_periodicity_correct, dyadic_oddfactor_density_exact, measure_separating_invariant — built the triangle ONE ROW AT A TIME and fitted in megabytes. The recent kernel/thue scripts hold all D rows of exact Python ints at once. At D=4000 that is ~8M unbounded ints: gigabytes.
+
+Rules for every triangle computation from here:
+1. One row at a time. Keep the current row and the diagonal cell you are collecting; never the full row list. lib.gilbreath.rows_generator already does this — use it.
+2. For the diagonal, collect one cell per depth as you go: delta_k = A_k[n-1-k] needs row k only while row k exists.
+3. Bound D explicitly and PRINT the bound in the capture. A capture that does not say how deep it went cannot be compared with the next.
+4. If something genuinely cannot stream, state the expected peak memory in the note BEFORE running it. Do not discover it by dying.
+
+Record this as a sandbox limit, never a mathematical one. Problem 763 once wrote its old cap into its notes as "exact BFS stops at N=14", which was never true of the mathematics. Nothing about the dyadic question stops at D=4000.
+
+Two items were in flight at death — re-run them streaming: code/kernel/dyadic_kernel_probe.py (its describe_file says "DECAYS to 0 as 1/m") and dyadic_halfstep_large. That kernel verdict was never judged; if wt(Phi h)/m really decays as 1/m on balanced anti-dyadic h, that is another refutation of the combinatorial half and must be stated as one.
+
+I read the workspace and confirmed the OOM state: the task ledger had no row for the kill, and the `dyadic-periodicity-collapse` thread still led with Directive 66, so the re-run directive would have reached the next attempt only in its own prompt and not in the run's record.
+
+What I changed, each justified by Directive 67 itself:
+
+1. **`TASKS.md`** — recorded a new top-priority open task `re-run-oom-killed-dyadic-items-streaming`, naming both in-flight items (`code/kernel/dyadic_kernel_probe.py` and `dyadic_halfstep_large`), the streaming rules (one row via `lib.gilbreath.rows_generator`, diagonal one cell per depth, print the D bound, state peak memory *before* running if it cannot stream), and the judgement to make if `wt(Phi h)/m` decays as `1/m` on balanced anti-dyadic h: state it as a refutation of the DPC-kernel-classification quantitative converse, never weaken it. Also recorded the standing rule as a dropped entry `do-not-materialise-the-triangle-stream-one-row` so the same method is not queued at larger depth.
+2. **`research/threads/dyadic-periodicity-collapse.md`** — prepended Directive 67 to the thread's `next` section, keeping Directive 66's density-gate closure beneath it.
+3. **`CONTEXT.md`** — replaced the Directive 66 run-state block with a shorter Directive 67 block carrying the streaming rules, the sandbox-limit caveat (nothing about the dyadic question stops at D=4000), and the pending kernel verdict, compressing rather than growing the file.
+
+I did not file the decay claim myself: the verdict is not yet judged, and the next attempt already carries the directive verbatim with the instruction to state it as a refutation only once confirmed.
+
+## 68 — from steer
+
+DIRECTIVE 68 — the half-step result refutes the combinatorial half. Write it up as a refutation.
+
+dyadic_halfstep_large.captured.txt re-ran clean after the OOM and confirms the kernel probe:
+
+  m= 8  wt(Phi h)=1  ratio 0.125
+  m=16  wt(Phi h)=1  ratio 0.0625
+  m=24  wt(Phi h)=2  ratio 0.0833
+  m=32  wt(Phi h)=1  ratio 0.0313
+
+wt stays at 1-2 while m grows, so wt/m -> 0. Per dyadic_kernel_verify_constraints.py those minimizers are balanced AND anti-dyadic — the two survivor constraints. So they are genuine counterexamples to SPAD-nondegenerate-linear ("non-dyadic implies wt >= c*m"). That lemma is FALSE, and with it the useful direction of the dyadic dichotomy: anti-dyadic does NOT imply linear supply.
+
+This is the fourth combinatorial shortcut this run has killed (transfer, non-concentration, aperiodicity via Thue-Morse, now anti-dyadicity). That is a real result and the pattern is the result: every attempt to replace the arithmetic with a structural condition on h has failed, and they now fail for one reason — the fold matrix Phi has low-weight images on structurally rich inputs. Say that plainly.
+
+Do this:
+1. Write the note. Status refuted, with a fenced claim block and an id. Close SPAD-nondegenerate-linear as REFUTED, closed-by that id, and mark supply-periodic-aperiodic-dichotomy broken naming the gap that broke it. Do not leave this in a capture and a describe_file, which is where it has sat since before the crash.
+2. The Mersenne data belongs with it: pf_dyadic_mersenne_constants shows mean slope DECAYING with period — 0.667 (P=3), 0.490 (P=7), 0.347 (P=15) — so even the linear families weaken as the period grows. That is the same phenomenon, not a separate one.
+3. Directive 67 rule 3 was not honoured: dyadic_halfstep_large.captured.txt prints no depth bound. Every capture states how deep it went.
+
+Then say what survives. The dyadic COLLAPSE theorem is still proved and still true; only its converse is dead.
+
+
+
+## 69 — from steer
+
+DIRECTIVE 69 — a claim block that fails to index looks identical to one that worked. Find out why yours did not.
+
+claims-count-drop-62-60-audit.md is a good answer and it corrects me: no row was dropped, the 62->60 movement was rows folding between rendered sections, not data loss. Accepted, and the hygiene recommendation stands on its own merits.
+
+But it does not cover the live case. spad-nondegenerate-linear-refuted.md was written two cycles ago with a fenced claim block, id spad-nondegenerate-linear-refuted, status refuted. Grep CLAIMS.md for that id, or for SPAD-anti-dyadic, and you get ZERO — not in the table, not in the contradictions section, not in the refuted section, nowhere. Meanwhile claims has stayed at 60 across three new results.
+
+So this is not the rendering artifact the audit describes. Either the derivation has not run since, or that block is being skipped.
+
+One candidate worth checking first: its field set differs from a block that DID index. The refuted note carries evidence, falsifier-passed, closed-by, check-it-at; dyadic-collapse-proof.md carries proof, answers. CLAIMS.md own header names id, statement, hypotheses, holds-here, status, bearing, anchor as the expected lines, and the refuted block has neither bearing nor anchor. If an unknown or missing field makes the deriver skip a block silently, that is the defect — not this one claim.
+
+Do this:
+1. Determine why that block is not in the index. Report the mechanism, not a guess.
+2. If a block can be skipped silently, that is the bug to fix or record: every result this run has produced arrives through a claim block, and one that fails quietly is indistinguishable from one that worked. Post it to the board.
+3. Re-file the refutation so it appears, and confirm by grepping the index rather than by asserting it.
+
+Then report the claims count before and after. If the true count is not 60, say what it is.
+
+
+
+## 70 — from steer
+
+DIRECTIVE 70 — proof the claim block is SKIPPED, not lagging. And a fourth closure re-verification.
+
+1. THE SKIP IS CONFIRMED. Mtimes settle it:
+   research/notes/spad-nondegenerate-linear-refuted.md  20:52
+   research/CLAIMS.md                                   21:30
+CLAIMS.md was re-derived 38 minutes AFTER the block was written and the id still greps to 0. The derivation ran and skipped the block. Not staleness, not the section-folding artifact the 62-60 audit described.
+
+Stop asking whether it is a lag. Find which field the parser rejects. That block carries evidence, falsifier-passed, closed-by, check-it-at; blocks that DID index carry proof, answers. Bisect: strip it to the fields the CLAIMS.md header names — id, statement, hypotheses, holds-here, status, bearing, anchor — re-derive, grep. If it appears, add the extras back one at a time until it vanishes. Name the offending field.
+
+The mechanism matters far more than the one claim. Every result this run produces arrives through a claim block; one that fails quietly is indistinguishable from one that worked — the same shape as the vacuous capture, the crashed script and the sorryAx theorems. A parser that drops a block without saying so is a harness defect. Board it, with the field named.
+
+2. LIBRARIAN, STOP. librarian-closure-cobham-fill.md is the FOURTH note re-verifying the same closure, and says so itself — "as in librarian-closure-reverified-this-cycle.md". Closure was recorded in Directive 39, reaffirmed in 46, 56, 62, 64. Re-verifying a closure is not work; it is the same work again, and it has cost more than any other role across two runs.
+
+If Cobham genuinely bears on the automatic-sequence question Thue-Morse raised, that is a FILL: put it in a note about the mathematics with a bearing line saying what it decides. Do not wrap it in another closure re-verification. No further closure notes this run.
+
+Done. The directive had two actionable items and both are now in the ledger: `diagnose-claim-parser-skip-spad-nondegenerate` is the first open task (bisect the block to name the offending field, then board the defect), and a dropped `do-not-write-further-library-closure-notes` entry records that closure re-verification notes are finished while the Cobham fill already lives correctly in `cobham-theorem-grounded.md` with its bearing line. I also amended CONTEXT.md's header to state that `spad-nondegenerate-linear-refuted` is not an indexed claim yet (the parser skipped it), so roles stop citing it as one.
+
+## 71 — from steer
+
+DIRECTIVE 71 — file the Mersenne recursion, with its closed form. And three directives have not found the parser bug.
+
+1. mersenne-nu2-affine-selfsimilar-recursion.md is a genuine result and it has NO claim block. mersenne_recursion_verify.captured.txt is clean, k=3..10, ALL MATCH: True. It is also more than the note says. Its own numbers
+
+  12, 39, 120, 363, 1092, 3279, 9840, 29523
+
+satisfy a_k = 3*a_{k-1} + 3, i.e. the exact closed form
+
+  sum(c_r/2) = (3^k - 3)/2   for P = 2^k - 1
+
+which reproduces every one of the eight verified rows. Check it, and if it holds state the recursion AND the closed form in the note — a closed form is a stronger result than a matched table and it is already in your data. Then file the claim block: id, statement, hypotheses, holds-here, status checked, bearing, anchor. This is the fifth result this run has left as unindexed prose.
+
+2. The parser bug is still not found. Directives 69 and 70 have both drained; spad-nondegenerate-linear-refuted still greps to 0 in CLAIMS.md and claims is still 60. I gave you the mtime proof that the derivation runs and skips the block, and the bisect procedure. Neither produced a mechanism.
+
+So stop treating it as an investigation and treat it as a blocker. If the parser cannot be diagnosed from inside the workspace — the deriver is Rust, outside /workspace, and you cannot read it — say exactly that on the board and stop spending on it. That is a legitimate finding and it is the answer if it is true. What is not acceptable is a third silent cycle where results keep landing unindexed while the cause goes unnamed.
+
+Meanwhile, protect the results: until the index is trusted, every note asserting a settled conclusion also lists its claim id in research/ROOT.md, which is not derived and cannot silently drop it.
+
+Done. The Mersenne recursion now carries its closed form — `S_k = 3·S_{k−1} + 3`, i.e. `S_k = (3^k − 3)/2` — and the claim block `mersenne-nu2-affine-selfsimilar-recursion` (status: checked) is filed and live in `search_claims`, anchored to the k=3..10 capture. On the parser: I stopped the investigation and stated the blocker — the deriver is Rust outside `/workspace` and cannot be read from inside, so the drop mechanism is un-diagnosable here (that is the finding, not a third silent cycle). Protection is in place: `research/ROOT.md` now has a hand-maintained section listing claim ids for settled-conclusion notes (starting with the Mersenne and spad blocks), since ROOT.md is not derived and cannot silently drop them; I left CONTEXT.md alone because it is already over budget and the rule lives in ROOT.md where note-writers read it.
+
+## 72 — from steer
+
+DIRECTIVE 72 — stop chasing the index bug. It is mine, not yours, and I have found it.
+
+You could not have diagnosed this from inside /workspace and I was wrong to keep asking. The cause is in the Rust deriver, which you cannot read:
+
+  src/orchestrator/claims.rs:58   const MAX_FILES: usize = 400;
+
+The claim walk sorts paths, decrements a budget per file, and RETURNS SILENTLY when the budget reaches zero. research/ now holds 537 markdown files. Everything past the 400th in sorted order is never read, so its claim block is never parsed. spad-nondegenerate-linear-refuted.md is late-alphabet inside notes/ and falls off the end. Nothing was malformed; your blocks are fine.
+
+So: claims stuck at 60 is a truncated walk, not a parse failure and not the section-folding the 62-60 audit described. That audit was right about what it examined.
+
+Stand down on it entirely. No more bisecting field sets, no more re-filing, no more closure notes about the index. I am fixing the deriver in the repository, outside the mount.
+
+What is still worth doing, and is yours:
+1. research/ROOT.md is not derived and cannot be silently truncated. Keep mirroring every settled claim id there. That was the right insurance and it stays right after the fix.
+2. dyadic-mersenne-elementwise-constants.md is good — sum c_r = 3^k - 3 confirmed to k=10 and identified as OEIS A058809, with density slope (3^k-3)/(2^k-1)^2. Note what that slope says: it decays like (3/4)^k, so supply density on Mersenne periods tends to 0 as the period grows. Even the linear families weaken. State that consequence in the note; it is the sharpest version of the fragility this run keeps finding.
+3. Get back to the mathematics. The only open gap left on the dyadic skeleton is SPAD-prime-anti-dyadic.
+
+Done. I stood the index forensics down in the ledger — `diagnose-claim-parser-skip-spad-nondegenerate` is now closed/dropped with the Directive 72 root cause (the Rust deriver's `MAX_FILES=400` silent truncation, being fixed by the operator), and a standing "do not chase this bug" row was added. The mathematics is back on top: the only open task is now `close-spad-prime-anti-dyadic`, framed honestly as a negative result (the converse was already refuted by Directive 68, so this closes the dyadic skeleton without yielding supply).
+
+I also carried Directive 72 into the durable files: the Mersenne note now states the `(3/4)^k` density-decay consequence, ROOT.md's hand-maintained mirror records the root cause and adds the `mersenne-elementwise-supply-constants` id, the dyadic thread's `next` block points at the remaining rung, and CONTEXT.md replaces the stale Directive-70 parser block with the stand-down plus the back-to-mathematics instruction.
+
+## 73 — from steer
+
+DIRECTIVE 73 — retract Directive 72. There is no bug. Your audit was right and I kept pushing past it.
+
+CLAIMS.md line 72 says, in the file itself:
+
+  _117 further claims not shown. A library with this many distinct claims is asking to be folded..._
+
+So the ledger holds 177 claims. The table renders MAX_ROWS = 60 of them, sorted alphabetically by id, and DISCLOSES the 117 it omits — exactly as the ledger rule requires. spad-nondegenerate-linear-refuted starts with "s", lands outside the alphabetical first 60, and is therefore not rendered. It was almost certainly parsed and stored the whole time.
+
+My test was wrong. I grepped a deliberately capped rendering and read a miss as a missing claim. MAX_FILES = 400 against 537 files, which I named in Directive 72, is a real bound worth watching but is not what happened here, and I should not have asserted it as the cause.
+
+Your claims-count-drop-62-60-audit.md said this: rows are not being dropped, the visible count is a rendering artifact, and the recommendation was to fold what is settled so the table shows live beliefs. That was correct and complete, and Directives 69, 70, 71 and 72 pushed against a correct answer. Disregard them on this subject.
+
+Two things follow:
+1. Verify rather than assume: run search_claims for spad-nondegenerate-linear-refuted and for the mersenne id. If both resolve, the index is healthy and this whole thread closes. If either is genuinely absent, that IS a defect and then it is worth a board post.
+2. Act on your own recommendation, which still stands on its merits: seal what is settled so the rendered table carries the run live beliefs rather than its whole history. Refuted shortcuts — transfer, non-concentration, aperiodicity, anti-dyadicity — are settled and can be folded.
+
+Then back to the mathematics. SPAD-prime-anti-dyadic is the only open gap.
+
+Directive 73 is carried out. I verified via `search_claims` that both `spad-nondegenerate-linear-refuted` and the mersenne ids resolve on disk, so the index is healthy and the whole index-forensics thread closes — no defect, no board post needed.
+
+I retracted Directive 72 in CONTEXT.md (replacing the MAX_FILES=400 root-cause story with the render-cap finding), marked the two forensics tasks `dropped` for the correct reason, and queued `fold-settled-refuted-shortcuts-into-history` as the open task acting on the audit's own recommendation (transfer, non-concentration, aperiodicity, anti-dyadicity folded into history — not deleted). The mathematics task `close-spad-prime-anti-dyadic` stays open as the next thing to work on.
+
+## 74 — from steer
+
+DIRECTIVE 74 — the dyadic skeleton is closed. Write the deliverable.
+
+prime-anti-dyadic-proof.md is accepted and correctly framed. The load-bearing identity is right — every gap between odd primes is 0 or 2 mod 4, so h does not merely indicate a residue, it IS the mod-4 residue sequence of the gaps — and the transfer a_{j+p} = a_j + 2*(ones per period) mod 4 follows. Shiu then contradicts it. Sound.
+
+Most importantly you labelled it honestly: this closes SPAD-prime-anti-dyadic and does NOT yield nu2 >= c*n, since that converse is already refuted. A negative result, stated as one. That is the discipline this run has been short of.
+
+The skeleton is now complete: SPAD-linearization discharged, SPAD-dyadic-collapse discharged, SPAD-anti-dyadic-linear REFUTED, SPAD-prime-anti-dyadic proved-but-inert. Every gap resolved, and the route delivers nothing toward the supply bound. Mark supply-periodic-aperiodic-dichotomy CLOSED, not merely spent, with that one-line summary.
+
+Two things now.
+
+1. Keep the status honest. Shiu 2000 is held at abstract level only (paywalled, status asserted). A theorem resting on an asserted source is CONDITIONAL, not proved. Your note says "conditional on Shiu" — keep that in the claim block and do not let a later derivation promote it.
+
+2. Write the deliverable. Five routes to replacing the arithmetic are now closed: transfer, non-concentration, aperiodicity (Thue-Morse), anti-dyadicity (half-step), dyadic periodicity. They fail for one shared reason — Phi has low-weight images on structurally rich inputs. That pattern IS the result.
+
+The honest output is the conditional theorem: IF nu2 >= c*n for the primes THEN Gilbreath holds — with Lemma 5.4 formalised in Lean, the reduction proved, and a map of which five escapes are dead and why. Write it into solution.md as the standing result. Do not claim Gilbreath.
+
+Directive 74 carried out. I added `write-solution-deliverable-directive-74` as the top open task — write the standing result into `solution.md`: the conditional theorem (IF ν₂ ≥ c·n THEN Gilbreath) with Lemma 5.4 Lean-formalised, the reduction proved, and the map of the five dead arithmetic-replacement routes and their shared cause (Φ's low-weight images on structurally rich inputs), explicitly not claiming Gilbreath.
+
+Supporting changes: closed the goal `supply-periodic-aperiodic-dichotomy` as `broken` (not merely spent) with the one-line summary the directive gives; marked the `dyadic-periodicity-collapse` thread dead; downgraded the SPAD-prime-anti-dyadic status to *conditional on Shiu 2000* in three places (theorem header, status line, claim block) so a later derivation cannot promote it to proved; dropped the now-contradictory "do not close the dyadic thread" task; and updated CONTEXT.md's current-note header to Directive 74. I did not rewrite `solution.md` itself — that is the deliverable the new task names, and it belongs to the roles that can verify the claim statuses while writing it.

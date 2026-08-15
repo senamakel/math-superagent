@@ -1,0 +1,92 @@
+============================================================================
+INFIMUM OF TRUE nu2(n)/n, RANGED, over n in [100,20000]
+canonical cycle_and_nu2 (suffix starts at index>=2); exact ints
+============================================================================
+
+--- P=3 word=001 ---
+    inf over [   100,20000] = 0.647059  @ n=102 (nu2=66)
+    inf over [  1000,20000] = 0.664671  @ n=1002 (nu2=666)
+    inf over [  5000,20000] = 0.666267  @ n=5001 (nu2=3332)
+    inf over [ 10000,20000] = 0.666467  @ n=10002 (nu2=6666)
+    inf over [ 15000,20000] = 0.666533  @ n=15000 (nu2=9998)
+    running-infimum updates (new lows / plateaus):
+      n=100    ratio=0.660000 nu2=66
+      n=101    ratio=0.653465 nu2=66
+      n=102    ratio=0.647059 nu2=66
+    new low set after n>6666 (late-plateau/decay signal): NO
+
+--- P=5 word=00001 ---
+    inf over [   100,20000] = 0.508772  @ n=114 (nu2=58)
+    inf over [  1000,20000] = 0.530572  @ n=1014 (nu2=538)
+    inf over [  5000,20000] = 0.532774  @ n=5004 (nu2=2666)
+    inf over [ 10000,20000] = 0.533054  @ n=10014 (nu2=5338)
+    inf over [ 15000,20000] = 0.533147  @ n=15009 (nu2=8002)
+    running-infimum updates (new lows / plateaus):
+      n=100    ratio=0.520000 nu2=52
+      n=102    ratio=0.519608 nu2=53
+      n=103    ratio=0.514563 nu2=53
+      n=109    ratio=0.513761 nu2=56
+      n=110    ratio=0.509091 nu2=56
+      n=114    ratio=0.508772 nu2=58
+    new low set after n>6666 (late-plateau/decay signal): NO
+
+--- P=7 word=0000001 ---
+    inf over [   100,20000] = 0.266667  @ n=105 (nu2=28)
+    inf over [  1000,20000] = 0.283716  @ n=1001 (nu2=284)
+    inf over [  5000,20000] = 0.285315  @ n=5005 (nu2=1428)
+    inf over [ 10000,20000] = 0.285514  @ n=10003 (nu2=2856)
+    inf over [ 15000,20000] = 0.285581  @ n=15001 (nu2=4284)
+    running-infimum updates (new lows / plateaus):
+      n=100    ratio=0.560000 nu2=56
+      n=101    ratio=0.554455 nu2=56
+      n=102    ratio=0.274510 nu2=28
+      n=104    ratio=0.269231 nu2=28
+      n=105    ratio=0.266667 nu2=28
+    new low set after n>6666 (late-plateau/decay signal): NO
+
+--- P=9 word=000000001 ---
+    inf over [   100,20000] = 0.359223  @ n=103 (nu2=37)
+    inf over [  1000,20000] = 0.407301  @ n=1041 (nu2=424)
+    inf over [  5000,20000] = 0.411577  @ n=5010 (nu2=2062)
+    inf over [ 10000,20000] = 0.412139  @ n=10050 (nu2=4142)
+    inf over [ 15000,20000] = 0.412324  @ n=15027 (nu2=6196)
+    running-infimum updates (new lows / plateaus):
+      n=100    ratio=0.470000 nu2=47
+      n=101    ratio=0.415842 nu2=42
+      n=102    ratio=0.392157 nu2=40
+      n=103    ratio=0.359223 nu2=37
+    new low set after n>6666 (late-plateau/decay signal): NO
+
+============================================================================
+INDEPENDENT ROUTE B (full-triangle brute force) vs ROUTE A (incremental)
+============================================================================
+  P=3 n=300    brute=198 incremental=198  OK
+  P=3 n=511    brute=340 incremental=340  OK
+  P=3 n=1000   brute=666 incremental=666  OK
+  P=3 n=2047   brute=1364 incremental=1364  OK
+  P=3 n=4093   brute=2728 incremental=2728  OK
+  P=5 n=300    brute=159 incremental=159  OK
+  P=5 n=511    brute=272 incremental=272  OK
+  P=5 n=1000   brute=532 incremental=532  OK
+  P=5 n=2047   brute=1091 incremental=1091  OK
+  P=5 n=4093   brute=2181 incremental=2181  OK
+  P=7 n=300    brute=84 incremental=84  OK
+  P=7 n=511    brute=144 incremental=144  OK
+  P=7 n=1000   brute=284 incremental=284  OK
+  P=7 n=2047   brute=1168 incremental=1168  OK
+  P=7 n=4093   brute=2336 incremental=2336  OK
+  P=9 n=300    brute=119 incremental=119  OK
+  P=9 n=511    brute=208 incremental=208  OK
+  P=9 n=1000   brute=415 incremental=415  OK
+  P=9 n=2047   brute=842 incremental=842  OK
+  P=9 n=4093   brute=1688 incremental=1688  OK
+ROUTE COMPARISON: ALL AGREE
+
+============================================================================
+DECISIVE READ (CONFIRMED/REFUTED over n in [100,20000] only):
+  P=3: inf over [10000,20000] = 0.666467 (bounded away from 0; no late-plateau decay in range -> positive c plausible for THIS word)
+  P=5: inf over [10000,20000] = 0.533054 (bounded away from 0; no late-plateau decay in range -> positive c plausible for THIS word)
+  P=7: inf over [10000,20000] = 0.285514 (bounded away from 0; no late-plateau decay in range -> positive c plausible for THIS word)
+  P=9: inf over [10000,20000] = 0.412139 (bounded away from 0; no late-plateau decay in range -> positive c plausible for THIS word)
+
+NOTE: periodic test words only; the primes are aperiodic. This measures whether the odd-factor converse is supply-useful on the periodic family, not Gilbreath itself.

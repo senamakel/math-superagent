@@ -1,0 +1,44 @@
+Independent brute-force nu2 oracle (full triangle, exact ints)
+======================================================================
+period 1 (consecutive odds) literal nu2 at n=50,100,199: [1, 1, 1]  hand expectation: 1,1,1
+  -> oracle convention BOUND: literal suffix reaches index 1.
+
+P=3 word=001
+   literal (i>=0): [132, 267, 532, 798]
+   since-i>2  (cyc): [131, 265, 531, 798]
+P=5 word=00001
+   literal (i>=0): [104, 212, 424, 639]
+   since-i>2  (cyc): [104, 212, 424, 639]
+P=6 word=000001
+   literal (i>=0): [67, 132, 267, 398]
+   since-i>2  (cyc): [66, 132, 266, 398]
+P=7 word=0000001
+   literal (i>=0): [56, 343, 456, 684]
+   since-i>2  (cyc): [56, 341, 455, 684]
+P=2 word=01
+   literal (i>=0): [1, 1, 1, 1]
+   since-i>2  (cyc): [0, 0, 0, 0]
+P=4 word=0001
+   literal (i>=0): [1, 1, 1, 1]
+   since-i>2  (cyc): [1, 1, 1, 1]
+P=8 word=00000001
+   literal (i>=0): [1, 1, 1, 1]
+   since-i>2  (cyc): [1, 1, 1, 1]
+P=1 word=1
+   literal (i>=0): [1, 1, 1, 1]
+   since-i>2  (cyc): [0, 0, 0, 0]
+
+Host stage-1 (Directive 58):
+   P=1: [1, 1, 1, 1]
+   P=2: [2, 2, 2, 2]
+   P=4: [2, 2, 2, 2]
+   P=8: [2, 2, 2, 2]
+   P=3: [133, 264, 533, 798]
+   P=5: [104, 210, 424, 638]
+   P=6: [134, 264, 534, 796]
+   P=7: [112, 112, 685, 684]
+
+KEY: literal [i>=0] is the true 'maximal {0,2} suffix of the
+     right diagonal body'.  If a convention matches the host on
+     all P, that is the table's convention; else the host table
+     is internally inconsistent and must be re-derived.

@@ -1,0 +1,28 @@
+1) direct vs zeta form agree: True
+
+Leg(1): minimal period 2^k => Y_c=0 for all c >= 2^k
+  k=1 period 2: all Y_c=0 for c>=2^1 across words&m: True
+  k=2 period 4: all Y_c=0 for c>=2^2 across words&m: True
+  k=3 period 8: all Y_c=0 for c>=2^3 across words&m: True
+  k=4 period 16: all Y_c=0 for c>=2^4 across words&m: True
+
+Leg(1) bounded nu2: max weight over m in a range, per period-2^k word
+  k=1: max nu2(m) over m<1000 = 1  (bound claimed: <= 1)
+  k=2: max nu2(m) over m<1000 = 3  (bound claimed: <= 3)
+  k=3: max nu2(m) over m<1000 = 7  (bound claimed: <= 7)
+  k=4: max nu2(m) over m<1000 = 15  (bound claimed: <= 15)
+
+Leg(2): odd factor => nu2(m) ~ c*m, estimate slope c
+  P= 1 minperiod= 1 oddpart= 1 nu2=[0, 0, 0, 0, 0]  last-slope=+0.0000
+  P= 2 minperiod= 2 oddpart= 1 nu2=[1, 1, 1, 1, 1]  last-slope=+0.0000
+  P= 3 minperiod= 3 oddpart= 3 nu2=[132, 332, 666, 1332, 2666]  last-slope=+0.6670
+  P= 4 minperiod= 4 oddpart= 1 nu2=[3, 3, 3, 3, 3]  last-slope=+0.0000
+  P= 5 minperiod= 5 oddpart= 5 nu2=[108, 268, 535, 1068, 2135]  last-slope=+0.5335
+  P= 6 minperiod= 6 oddpart= 3 nu2=[132, 332, 664, 1332, 2664]  last-slope=+0.6660
+  P= 7 minperiod= 7 oddpart= 7 nu2=[112, 142, 284, 570, 1142]  last-slope=+0.2860
+  P= 8 minperiod= 8 oddpart= 1 nu2=[7, 4, 7, 7, 7]  last-slope=+0.0000
+  P= 9 minperiod= 9 oddpart= 9 nu2=[83, 204, 409, 821, 1647]  last-slope=+0.4130
+  P=10 minperiod=10 oddpart= 5 nu2=[111, 271, 537, 1071, 2137]  last-slope=+0.5330
+  P=12 minperiod=12 oddpart= 3 nu2=[128, 328, 664, 1328, 2664]  last-slope=+0.6680
+  P=14 minperiod=14 oddpart= 7 nu2=[112, 140, 284, 568, 1140]  last-slope=+0.2860
+  P=15 minperiod=15 oddpart=15 nu2=[52, 132, 264, 532, 1064]  last-slope=+0.2660

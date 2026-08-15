@@ -151,3 +151,29 @@ The random-analogue side of the run (Chase 2024, CHT 2026, Tao Cramér-model blo
 - **Banks, Ford & Tao, "Large prime gaps and probabilistic models", Invent. math. 233 (2023) 1471–1518** (open access CC BY, doi 10.1007/s00222-023-01199-0). Full text at `research/sources/maier-pomerance-2023-large-prime-gaps-probabilistic-models.full.md` — NB the filename is a misnomer; the authors are Banks, Ford & Tao, and the header comment in the file records this. Summary with claim block `bft2023-cramer-model-canonical` in `research/summaries/banks-ford-tao-2023-large-prime-gaps-probabilistic-models.md`.
 - It states precisely Cramér's 1936 model (→ largest gap ~ log²x a.s.), Granville's corrected model (~ ξ log²x, ξ=2e^{-γ}=1.1229...), and a new random-sieve model satisfying uniform Hardy–Littlewood and RH. It documents the two failures of the plain Cramér model that make a random-model → primes transfer heuristic rather than rigorous: prime-k-tuple residue bias, and Maier's short-interval phenomenon.
 - Cramér's original 1936 paper remains unobtainable as text (scanned PDF over the conversion cap on all routes) but its content is fully grounded through this paper, Chase 2024, and CHT 2026. Repository records held in `research/summaries/cramer-1936-order-of-magnitude-prime-gaps.md` and `research/summaries/cramer-1937-prace-matematyczno-fizyczne-prime-gaps.md`.
+
+## Parser-protection: settled-conclusion notes list their claim ids here (Directive 72)
+
+The CLAIMS.md "missing rows" are a **rendering cap, not a drop** (Directives
+72/73, closed). The table renders MAX_ROWS = 60 claims, sorted alphabetically by
+id, and issues the `_N further claims not shown_` disclosure; late-alphabet ids
+like `spad-nondegenerate-linear-refuted` sit past the first 60 and are simply
+not rendered — they are parsed and stored the whole time (`search_claims`
+resolves every one of them). A `MAX_FILES = 400` walk bound exists
+(src/orchestrator/claims.rs:58) against 537 files and is worth watching, but it
+is **not** what happened here. Correct, durable reading: today every one of the
+run's settled claim ids resolves via `search_claims`. ROOT.md is
+hand-maintained and cannot be truncated, so this insurance stays in force: every
+note asserting a settled conclusion lists its claim id here.
+
+- `mersenne-nu2-affine-selfsimilar-recursion` — `research/notes/mersenne-nu2-affine-selfsimilar-recursion.md`
+  (Mersenne tail-1 affine self-similar recursion + sum closed form (3^k−3)/2; checked k=3..10).
+- `mersenne-elementwise-supply-constants` — `research/notes/dyadic-mersenne-elementwise-constants.md`
+  (elementwise Mersenne per-residue constants; sum c_r = 3^k−3, density (3^k−3)/(2^k−1)^2 decaying like (3/4)^k; checked k=2..10, affine law conjectural).
+- `dyadic-oddfactor-affine-modulus-lifting` — `research/notes/dyadic-oddfactor-affine-modulus-lifting.md`
+  (every odd period P per-residue affine mod L = 2^ord2(P)−1; Mersenne density (3^k−3)/(2^k−1)^2 = A058809; Fermat-like P=2^m+1 density (3^m−1)/(2^(2m)−1) = A024023; density confirmed exactly k=3..10 this run, code/out/mersenne_density_decay.captured.txt).
+- `spad-nondegenerate-linear-refuted` — `research/notes/spad-nondegenerate-linear-refuted.md`
+  (anti-dyadic converse refuted; the block the derivation was dropping).
+- `spad-prime-anti-dyadic-proved` — `research/notes/prime-anti-dyadic-proof.md`
+  (prime mod-4 switch bit not eventually periodic; proved conditional on Shiu 2000 + elementary residue infinitude;
+  anchor `code/out/prime_antidyadic_anchor.captured.txt`).

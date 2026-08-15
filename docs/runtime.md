@@ -461,9 +461,9 @@ reason.
 
 ## The memory cap
 
-The container's memory limit is 8 GiB, and the number is a judgement rather than
-a requirement — what the rule in `AGENTS.md` demands is that *some* limit stay.
-2 GiB was the wrong judgement, and a live run said so.
+The container's memory limit is 16 GiB, and the number is a judgement rather
+than a requirement — what the rule in `AGENTS.md` demands is that *some* limit
+stay. 2 GiB was the wrong judgement, and a live run said so; so were 4 and 8.
 
 An Erdős–Gyárfás container was OOM-killed mid-attempt: `oom` and then
 `die exit=137` in `docker events`. An OOM kill is the worst failure shape
@@ -479,6 +479,23 @@ the old cap in its own `MEMORY.md` as a mathematical ceiling — *"exact BFS sto
 at N=14"* — which is a sandbox limit written down as a result. That is the
 specific damage a too-small cap does: it does not merely stop a run, it teaches
 the run something false about the mathematics.
+
+8 GiB then failed the same way, and the failure is worth recording because it
+argues the *other* side. The gilbreath run died at 161 minutes — three `oom`
+events, then `die exit=137` — while materialising a depth-4000 exact-integer
+difference triangle. Every earlier capture answering the same question had
+built that triangle a row at a time and fitted comfortably; the OOM came from
+holding all of it at once, not from the mathematics getting bigger. So the cap
+was raised to 16 GiB on request, and the raise bought a wrong method more room
+rather than making a right one possible.
+
+That is the shape to watch for. A cap this size is met by materialising
+something that could have been streamed far more often than by a computation
+that genuinely needs the space, and each raise makes the next one easier to
+ask for. The compose comment used to promise 8 GiB would never move; it moved,
+so the note there now records the history instead of making a firmer promise.
+16 GiB is also close to this box's practical limit — 30 GiB total, with
+`cognee` holding its own 8 GiB — so the next raise starts with `free -g`.
 
 ## Observability
 

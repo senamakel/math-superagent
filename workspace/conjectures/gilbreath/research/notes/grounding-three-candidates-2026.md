@@ -1,148 +1,208 @@
-# Grounding report — three candidate approaches (2026 grounding cycle)
+# Grounding three candidate approaches (2026): coarea, affine-Weyl/crystal, ReLU synthesis
 
-Question asked of the literature, per candidate: what is the reformulation
-actually called; the precise theorem it relies on and whether its hypotheses
-hold here; whether anyone has applied it to Gilbreath; what it would buy.
-All three are registered in `research/approaches/`; all three are now
-**refuted**, each on evidence (hand-checkable computations plus held claims),
-not on absence. Two of the three refutations use the run's own established
-record; the literature search confirmed the named theory is real but does not
-reach the nonlinear absolute-difference operator.
+For the inventor's three proposed approaches. Each assessed: what the reformulation
+is actually called, the precise statement of any theorem it relies on and whether
+its hypotheses hold here, whether anyone has applied it to this problem, and what
+it would buy.
 
-## Candidate 1: `gantmacher-krein-oscillatory-matrix-sign-regularity`
+---
 
-- **What it is called**: the Gantmacher–Krein oscillation theorem /
-  variation-diminishing property of totally positive (sign-regular) matrices.
-  Precise modern form: *A has the variation-diminishing property
-  S⁺(Ax) ≤ S⁻(x) for all x ≠ 0 iff A is strictly sign-regular* (Choudhury–
-  Yadav, Proc. AMS, arXiv:2307.11822 / doi 10.1090/proc/17026). Classical
-  antecedents: Fekete–Pólya 1912, Schoenberg 1930, Motzkin, Gantmacher–Krein
-  1950; Karlin 1965 (eigenvector oscillation of STP matrices,
-  doi 10.1007/BF02806392); modern TP/TN control theory (Schwarz 1970 TPDS,
-  Margaliot et al. 2019).
-- **Hypotheses hold here? NO — three independent failures.**
-  (1) The load-bearing matrix M_{k,j} = (−1)^{k−j} binom(k,j) is NOT
-  sign-regular of order 2: the 2×2 minor on rows {1,2}, cols {0,1} is
-  (+1), while rows {1,2}, cols {0,2} is (−1). (Hand check; script
-  `code/out/check_three_candidates.py` written but not executed this cycle.)
-  So the VD theorem's hypothesis fails at the first nontrivial order.
-  (2) The claimed bound S⁻(Δ_k) ≤ S⁻(A_0) is false at k=2 on the primes:
-  A_0 strictly increasing gives S⁻(A_0)=0, but the signed second difference
-  D_2 = (1,0,2,−2,2,−2,2,2) has 4 sign changes after deleting zeros.
-  (3) The mechanism needs A_k(i) = |Δ_k(i)|, which is **already refuted** at
-  (k=3,i=2) inside the leading {0,2} block and at position 1 from k=4 on —
-  claim `fwd-diff-identity-refuted`, evidence checked. This is the same
-  mechanism as the already-refuted `sign-coherence-forward-differences`
-  approach: oscillation theory is a new name for the same dead linearization.
-- **Applied to Gilbreath before?** No. The actual Gilbreath literature
-  (Odlyzko 1993, CHT 2026) uses the mod-4 linearization and the
-  {0,d}-block obstruction language, never VD theory. The run's earlier
-  `runcount-lemma-refuted` bearing already recorded that the
-  Schoenberg/Pólya-frequency/total-positivity machinery is LINEAR sign-variation
-  theory and does not transfer to the nonlinear |a−b| map.
-- **What it would buy**: nothing — the linearization cannot start (identity
-  false inside the block) and the matrix is not sign-regular.
+## 1. coarea-layer-cake-level-decomposition
 
-## Candidate 2: `zero-sum-flow-conservation-mincut`
+**What it is called.** The identity is the discrete form of the **layer-cake
+(Cavalieri) representation** / the **coarea formula's one-dimensional level-set
+version**: for nonnegative integers a,b,
 
-- **What it is called**: max-flow/min-cut (Ford–Fulkerson 1957,
-  doi 10.4153/cjm-1957-024-0), Menger, Hall, Dilworth — classical network
-  flow theory.
-- **Hypotheses hold here? The network formulation is a restatement, not a
-  theorem.** The recharge identity b_k = b_1 + Σ(j_i+1) − (k−1) is already
-  PROVED (claim `step-law-and-recharge-identity`, evidence checked, zero
-  failures to depth 800). On the forward chain S→row1→…→rowk the min-cut
-  value is exactly b_k: there is no branch structure for a cut to exploit.
-  "No cut of capacity < consumption" ⟺ "b_k ≥ 1 ∀k" is the conjecture
-  itself in flow language. The required lemma (pumps inject at least some
-  minimum mass on average) is exactly the open regeneration-rate question;
-  the run's own data says a mean-rate bound is the wrong target
-  (`bigjump-cap-characterization-1000`: 12 genuine giants carry 86.1% of the
-  surplus; `conditional-rate-experiment-family-independent`: λ̂=0.585 measured,
-  not bounded below for all k). The class-level version is false by Eppstein
-  2011 (`anti-gilbreath-construction`): his 2-then-odds sequences run the
-  "flow" dry infinitely often.
-- **Applied to Gilbreath before?** No source in the flow literature touches
-  iterated absolute differences of primes (searches confirmed; the Gilbreath
-  literature itself has no network formulation).
-- **What it would buy**: a clean vocabulary for the proved recharge identity
-  (endowment + pump injections − consumption), but no new mathematics. The
-  flow theorem is correct and inert: single-chain network ⇒ min-cut = b_k.
+    |a − b| = Σ_{t≥1} ( [a≥t] XOR [b≥t] ).
 
-## Candidate 3: `fenchel-duality-minimax-sign-assignment`
+This is exactly the layer-cake identity ∫ f = ∫ μ({f>t}) dt written for the
+function |a−b| over a counting measure; it recovers a,b's magnitude as the count
+of levels where the two threshold indicators differ. The analysis literature
+establishes it fully (e.g. Tzanavaris, "An Elementary Proof of the Layer Cake
+Representation Theorem", Amer. Math. Monthly, 2025, doi:10.1080/00029890.2025.2583888;
+Federer's coarea formula, Malý–Swanson–Ziemer, Trans. AMS 2002).
 
-- **What it is called**: Fenchel–Rockafellar duality / LP duality over a
-  sign-history polytope; the relevant literature is the **absolute value
-  equation (AVE)** body: Mangasarian 2007 (AVEs NP-hard; orthant/sign-pattern
-  solution structure, citeseerx 10.1.1.416.1189), Hladík et al. 2024
-  (arXiv:2404.06319: AVE solution sets are unions of ≤ 2ⁿ convex polyhedra,
-  one per orthant), Hladík–Hartman 2023 (arXiv:2307.03510: absolute-value LP
-  duality).
-- **Hypotheses hold here? NO — two decisive failures.**
-  (1) The representation A_k(1) = max over a static sign set of a linear
-  functional is false: reachable sign histories depend on the gap values
-  through the min branch. The identity A_k = |Δ_k| this needs fails at
-  (k=3,i=2) (`fwd-diff-identity-refuted`).
-  (2) The universal claim — the polytope's structure forces the dual minimum
-  ≤ 2 for ANY even-gap input — is FALSE as a class statement: the Colonna
-  delete-5 sequence (2,3,7,11,13,17,19,23,…), a 2-then-odds input with all
-  gaps after the first even, has A_1(1) = 4 (claim
-  `colonna-deletion-left-edge-failure`, held). Hand-check: gaps
-  1,4,4,2,4,2,4,6,2,6,4 give A_1 = (1,4,4,2,4,2,4,6,2,6,4). The polytope
-  theorem would have to exclude this input — and why the primes lie in the
-  surviving subclass is precisely the conjecture.
-  (3) The AVE literature gives the orthant geometry but no bound for nested
-  absolute iterates on even-gap inputs, and AVE solvability is NP-hard —
-  evidence against a cheap universal certificate.
-- **Applied to Gilbreath before?** No. The AVE/absolute-value-LP literature
-  studies Ax ± |x| = b (one level of absolute value), not k-fold nested
-  absolute values; no source applies Fenchel duality to the iterated
-  difference operator.
-- **What it would buy**: genuine expressive power (nested absolute values as
-  a minimax) and a real literature, but no theorem in it bounds nested
-  iterates; the universal class claim is false; the needed subclass
-  restriction is the conjecture. The orthant-decomposition picture survives
-  only as vocabulary.
+**The theorem's hypotheses and whether they hold here.** The layer-cake identity
+itself is an identity — it holds for every integer row, no hypothesis needed. It
+is exact, not an approximation. So the *identity* is grounded.
 
-## Search record (what was tried, what was found)
+**What it would buy — the decisive point.** Nothing new, and the approach's own
+proposed target is the already-refuted potential class. Three linked facts:
 
-- VD/TP theory: found the real theorems (Choudhury–Yadav 2024; Karlin 1965;
-  Carnicer–Goodman–Peña 1995 generalization; TPDS/CVDDS control theory) —
-  all for LINEAR sign-regular operators; none applies to |a−b|.
-- Pascal matrix: found total nonnegativity of the *un*alternated Pascal
-  matrix (bidiagonal factorization literature, Call–Velleman 1993,
-  Koev/Higham survey 2024); the *alternated* Pascal matrix the candidate
-  needs is not sign-regular (hand check).
-- Gilbreath + flow: no source; the Gilbreath literature itself has no
-  network formulation.
-- Gilbreath + duality/AVE: found the AVE body (Mangasarian 2007, Hladík
-  2024/2023, Rohn 2012); none touches nested absolute differences.
-- Crank sweep: Okolo 2025 "Resolution of Gilbreath's Conjecture and the
-  Principle of Invariant Dissipation" (Zenodo 10.5281/zenodo.16658833)
-  surfaced — already classified not-load-bearing in the library
-  (`library-state.md`); do not cite.
-- One check could not be run: `code/out/check_three_candidates.py` was
-  written but this cycle has no execution tool; the two decisive facts (2×2
-  minors of both signs; D_2 sign changes = 4; A_1(1) = 4 for delete-5) are
-  elementary hand computations and the third (A_k=|Δ_k| false) is the stored
-  machine-checked claim `fwd-diff-identity-refuted`.
+1. The natural aggregate of the transform is exactly the refuted quantity.
+   Σ_t #{i : B^t_k(i) ≠ B^t_k(i+1)} (the per-level boundary count, summed over
+   levels) = Σ_i |A_k(i) − A_k(i+1)| = TV(row k) = the sum of the entries of
+   row k+1. The coarea decomposition's total "level-boundary mass" collapses to
+   the total variation of the parent row. And the run has **machine-refuted**
+   the total-variation/run-count potential class: `r(T(x)) ≤ r(x)` fails
+   everywhere, including inside on the {0,2} regime at the halved string
+   (0,0,1,1) → (0,1,0) (2 runs → 3), the minimal counterexample over all
+   6,725,600 strings of length ≤ 8 (approach `total-variation-oscillation-potential`,
+   refuted; claim refutation in `code/out/check_runcount_lemma.captured.txt`).
 
-## Verdicts
+2. Per-level monotonicity fails for the same reason it failed for TV. Inside the
+   {0,2} block the per-level bits evolve by XOR / Rule 90 (proved,
+   `rule90-interior-xor`), whose bit-level run count *grows* (Sierpinski) — so a
+   per-layer boundary-count invariant does not exist inside the very regime the
+   conjecture targets. This is the identical obstruction that killed
+   `level-set-percolation` (one threshold, needs monotone predicate — fails) and
+   `persistent-homology` (superlevel death values — fails on saddle bookkeeping).
 
-All three candidates are **refuted on evidence**, and each refutation names
-the exact obstruction:
+3. The statement "A_k(1) ∈ {0,2} ⟺ the two parent entries agree at all but at
+   most two levels" is a **faithful restatement of the definition** A_k(1) =
+   |A_k−1(1) − A_k−1(2)|, not a reduction. Two entries differ by ≤ 2 is exactly
+   what the conjecture asserts; the coarea coordinates do not make the membership
+   question easier.
 
-- gantmacher-krein: matrix not sign-regular; S⁻(Δ_k) ≤ S⁻(A_0) false at k=2;
-  the linearization identity is false inside the block (same mechanism as the
-  already-refuted sign-coherence approach).
-- zero-sum-flow: the min-cut certificate is a restatement of the already
-  proved recharge identity; the missing lemma (jump-mass lower bound) is the
-  conjecture; class-level false by Eppstein.
-- fenchel-duality: the static-sign-set representation is false (min branch
-  makes reachable histories input-dependent); the universal even-gap claim is
-  false (Colonna delete-5, A_1(1)=4); the AVE literature gives geometry but
-  no bound and NP-hardness cuts the other way.
+The transform is exact and is bookkeeping. No source applies the layer-cake /
+coarea decomposition to the iterated absolute-difference / Ducci / Gilbreath
+problem (searched); the layer-cake literature is about integrals and measure, and
+yields no discrete invariant of this operator.
 
-Each file in `research/approaches/` now has `status: refuted`, a `killed-by`
-line, `precedent` with source URLs and claim ids, and a fenced claim block.
-`research/APPROACHES.md` re-derived accordingly.
+**Verdict.** Refuted. The identity is grounded (layer-cake theorem) but the
+proposed program — a per-layer monotone invariant — is the same class as the
+machine-refuted total-variation/run-count potential, and the transform's aggregate
+collapses exactly onto that refuted quantity, while per-level structure is
+Rule-90-governed (run-count grows). The conjecture's second-entry claim is
+faithfully but unhelpfully restated. `killed-by`: `total-variation-oscillation-potential`
+(machine-refuted), `rule90-interior-xor` (per-level runs grow), the TV-equals-
+level-boundary-mass identity.
+
+---
+
+## 2. affine-weyl-alcove-walk-crystal
+
+**What it is called.** W̃(A₁) is the affine Weyl group of type A₁, the infinite
+dihedral group ⟨s_0, s_1⟩ with s_0: x→−x and s_1: x→2−x (affine reflection about
+1). The map x ↦ |x−2| is s_1 on [0,2] and a translation by −2 for x ≥ 2 — exactly
+an affine extension of the simple reflections. **Alcove walks, Hecke algebras,
+spherical functions and crystals** are the named framework (Ram, Pure Appl. Math.
+Q. 2(4):963–1013 (2006); Parkinson–Ram, J. Comb. Theory 2008; and the J-folded
+alcove walk / MV-intersection literature). The block interior evidencing Pascal
+mod 2 = **Lucas theorem = sl₂ branching coefficients** is also real.
+
+**The theorem and its hypotheses here.** The descent lemma x_s = |x_{s−1} − c_s|,
+c_s ∈ {0,2}, is genuinely an alcove walk in W̃(A₁): the fold against 2 is the
+affine reflection s_1, and c_s = 0 is a no-op. The run has **already proved the
+exact endpoint statement** — `lemma54-descent-lean-formalised` (kernel-checked in
+Lean, zero sorryAx): into the fundamental alcove {0,2} iff v ≤ 2ν₂+2, where ν₂ =
+#{c_s = 2} is the number of 2-steps = number of wall-hits.
+
+**What it would buy — the decisive point.** The candidate sets its own falsifier:
+"Step (b)'s statistic match is the decisive probe; if ν₂ has no named
+alcove-walk/crystal counterpart, the bijection is bookkeeping." That probe fires
+decisively:
+
+- In **rank 1**, the alcove-walk algebra collapses: the only substatistics an alcove
+  walk carries are the weights of the chambers visited and the number of wall hits
+  per reflection type. There is one reflection type that matters here (s_1, the
+  fold against 2, applied ν₂ times), so the walk's only nontrivial statistic is
+  ν₂ itself combined with the starting value v — literally the already-proved
+  biconditional. Ram's alcove-walk statistics that carry real content (Hall-
+  Littlewood/weight-space data, spherical function support) are higher-rank / higher-
+  weight objects; A₁ has a single simple root and none of that structure. There is
+  no rank-1 alcove-walk theorem that bounds the *rate* at which 2-steps arrive.
+- The *rate at which c_s = 2 steps arrive* (when a regeneration's edge pattern drives
+  the intruder down) is precisely the open regeneration / G-supply question — the
+  same content that refuted `vectorial-subtractive-euclidean` (return-rate question
+  = open regeneration rate in new variables). Alcove-walk and crystal theory
+  contribute no handle on it.
+- The crystal half (block interior = Pascal mod 2 = sl₂ branching) describes the
+  static Sierpinski interior; it does not couple to the *drain* of the intruder in
+  any source. No paper applies alcove walks, affine crystals, or Hecke combinatorics
+  to the iterated absolute-difference / Ducci / Gilbreath problem (searched several
+  angles; the Ducci literature is periodicity/cyclotomic — e.g. Breuer 2010,
+  Lewis–Tefft 2024 — and never representation-theoretic).
+
+So the dictionary (steps a–b of the proposal) is exactly true — a 1-D affine
+reflection — and reproduces a *proved* lemma in representation-theoretic costume;
+the open direction is untouched, and by the candidate's own criterion the successful
+dictionary is bookkeeping. This is the same re-description pattern as
+`vectorial-subtractive-euclidean` (refuted): exact dictionary, no new bound, open
+rate restated.
+
+**Verdict.** Refuted — by the candidate's own falsifier. The affine-Weyl reading of
+the descent lemma is exact (and consistent with the proved `lemma54-descent-lean-formalised`),
+but in rank 1 the alcove-walk statistics reduce to ν₂ and v, no named alcove-walk /
+crystal statistic bounds the drain or regeneration rate, and no source applies the
+framework to this problem. `killed-by`: rank-1 collapse of alcove-walk statistics to
+ν₂ = wall-hits (no new content beyond the proved biconditional `lemma54-descent-lean-formalised`);
+the rate side is the open G-supply/regeneration question in new variables
+(`vectorial-subtractive-euclidean`).
+
+---
+
+## 3. relu-network-inductive-invariant-synthesis
+
+**What it is called.** The one-step halved map H(h)_i = |h_i − h_{i+1}| =
+(h_i−h_{i+1})₊ + (h_{i+1}−h_i)₊ is a fixed **piecewise-affine (PWA) / ReLU** map;
+depth-k entries are a fixed ReLU circuit on the initial halved gaps. The proposed
+move — search for a **forward-invariant (inductive) set** by template synthesis, or
+certify safety by **complete ReLU/PWA reachability** — is a real, mature, named
+program:
+
+- **Inductive invariant synthesis / barrier functions for PWA and ReLU systems**:
+  Samanipour–Poonawala, "Invariant Set Estimation for Piecewise Affine Dynamical
+  Systems Using Piecewise Affine Barrier Function" (arXiv:2402.04243) and "Replacing
+  K-infinity … Leaky ReLU … Union of Invariant Sets" (arXiv:2502.03765); Dai–Landry–
+  Pavone–Tedrake (CDC 2020), "Counter-example guided synthesis of neural network
+  Lyapunov functions for piecewise linear systems"; Teichrib–Darup (arXiv:2411.03834),
+  polyhedral positively-invariant sets for PWA with NN controllers.
+- **Complete ReLU reachability / verification**: Reluplex lineage, Marabou, star-set /
+  abstract-interpretation domains (Bak–Tran–Hobbs–Johnson 2020 = arXiv:2001.07103;
+  Yang–Johnson–Tran et al. 2021, facet-vertex incidence; Isac–Zohar–Barrett–Katz,
+  CONCUR 2023 — verifiability of ReLU reachability is NP-complete and the reachability
+  of a ReLU net with QF-LIA spec reduces to a reachability instance).
+
+**The theorem and its hypotheses here.** The encoding is exact (|u−v| = (u−v)₊ +
+(v−u)₊ is an identity), so the one-step map is precisely a ReLU layer and depth fits
+this machinery with no hypothesis violated. The forward-invariant-set search and the
+bounded complete reachability check are both legitimate on this object. Two honest
+caveats the machinery itself imposes, neither fatal:
+
+1. **Bounded-set caution.** The reachable set contains unbounded tail gaps, so any
+   true invariant set must be unbounded in the tail directions (only the h_1 ≤ 1
+   direction is bounded by safety). The linear-template S = {h : Σ c_i h_i ≤ d,
+   h_i ≥ 0} can still be unbounded (zero or negative c on tail indices) and exclude
+   h_1 ≥ 2 — the synthesis search must allow that, not assume a bounded set.
+2. **Exact reachability is NP-complete** (Isac et al. 2023). For a bounded-depth
+   complete check that means the solver's reachable depth K will be modest — a
+   recorded bound, not a proof. That is fine and honest; the deliverable is the
+   template-invariant SAT/UNSAT verdict or the bounded K with verdict.
+
+**Has anyone applied it to this problem?** No — the ReLU-verification literature
+targets ACAS Xu / control / perception benchmarks, never the Ducci/Gilbreath
+difference operator (searched). This is unresolved-point a method-transfer. That is
+acceptable for a grounded method: unlike coarea and affine-Weyl, this is not a
+re-description — it genuinely converts "hand-hunt a scalar potential (all died on
+XOR non-monotonicity)" into "let a solver search a template family and record a
+warranted SAT/UNSAT verdict." Both outcomes are deliverables in the run's own terms:
+a template invariant forcing A_k(1) ∈ {0,2} would be a GOAL.md invariant; UNSAT over
+a stated template family would be a recorded negative bound on the whole polyhedral
+invariant class (itself a result — it says no single linear/polyhedral template can
+prove the conjecture).
+
+**Verdict.** Grounded (as a method-transfer). The named machinery is real, mature,
+and exactly fits the piecewise-linear shape of the operator; the encoding is exact
+with no hypothesis violated. No one has applied it to this problem, so it carries
+no precedent on the conjecture itself — but it is not a re-description and its
+scoped verdict is a genuine deliverable. `precedent`: the PWA/ReLU invariant-synthesis
+and complete-reachability papers above; run claims `gilbreath-reduces-to-second-in-02`
+(the exact target the invariant must force), `fwd-diff-identity-refuted` (a reminder
+that the linear part alone cannot certify the value). First step (encoder + oracle
+check, then linear-template synthesis with SMT) remains for the tool_builder; the
+bounded-set caveat above must be built into the template.
+
+---
+
+## Bottom line
+
+- **coarea-layer-cake** — refuted: faithful restatement; aggregate = refuted TV; no
+  per-layer invariant exists (Rule-90 run growth). Dead end.
+- **affine-weyl-alcove-walk-crystal** — refuted by its own falsifier: rank-1 alcove
+  statistics collapse to the already-proved ν₂; no application exists; open rate
+  restated. Dead end / bookkeeping.
+- **relu-network-inductive-invariant-synthesis** — grounded as a method. Real PWA/ReLU
+  invariant-synthesis and complete-reachability machinery fits the operator exactly.
+  Deliverable: a warranted template SAT/UNSAT verdict or a bounded-depth K with outcome.
+  This is the one of the three worth an execution budget.

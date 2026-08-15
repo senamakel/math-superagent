@@ -60,11 +60,25 @@ source: operator-computation
 ```claim
 id: c2-alternating-sum-identity
 statement: For every row A_k with W = len(A_k) - 1, sigma(A_{k+1}) = A_k(0) - (-1)^W A_k(W) - 2 * sum_{i<W} (-1)^i min(A_k(i), A_k(i+1)), where sigma(v) = sum_i (-1)^i v_i. Verified with zero violations on all 159 consecutive row pairs.
-hypotheses: primes below 200000; rows A_1..A_159; exact integer arithmetic
+hypotheses: any nonneg-integer sequence (primes below 200000 used for the
+  numerical check); rows A_1..A_159; exact integer arithmetic. The identity
+  needs nothing about primes — it is an invariant of the absolute-difference
+  operator alone.
 holds-here: yes
-status: checked
-bearing: An exact conserved relation between consecutive rows. It is a candidate invariant for the erosion/regeneration balance and should be proved symbolically from |a-b| = a+b-2min(a,b), after which it becomes proved rather than checked.
-anchor: code/out/runner1.captured.txt
+status: proved
+bearing: An exact conserved relation between consecutive rows — an invariant
+  of the absolute-difference operator. PROOF (general, two lines): with
+  sigma(A_{k+1}) = sum_{i=0}^{W-1} (-1)^i |A_k(i)-A_k(i+1)| and
+  |a-b| = a+b-2min(a,b), the a+b part telescopes: part A is
+  sum_{i=0}^{W-1}(-1)^i A_k(i), part B is -sum_{j=1}^{W}(-1)^j A_k(j), whose
+  interior terms i=j=1..W-1 cancel, leaving A_k(0) - (-1)^W A_k(W). The
+  min-correction -2 sum (-1)^i min(A_k(i),A_k(i+1)) remains. Holds for ANY
+  nonneg-integer starting sequence, so it is a general invariant, not a
+  prime fact. Machine-checked here with 0 violations: 158 real prime row
+  pairs (sieve 200000, depth 158) + 1193 arbitrary nonneg row pairs
+  (300 random starting rows), plus the algebraic split |a-b|=a+b-2min(a,b)
+  on all 8x8 small pairs and 200000 random pairs in [0,1e9].
+anchor: code/out/runner1.captured.txt, code/out/prove_alternating_sum_identity.captured.txt
 source: operator-computation
 ```
 

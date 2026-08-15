@@ -1,0 +1,17 @@
+P=11 tail-1 word, candidate affine moduli (multiples of 11 dividing 1023):
+P=11 ord2=10
+  L=    33 affine=False sum_c_r=None
+  L=   341 affine=True sum_c_r=54560
+  L=  1023 affine=True sum_c_r=491040
+
+P=13 tail-1 word, candidate moduli (multiples of 13 dividing 4095):
+P=13 ord2=12
+  L=    39 affine=False sum_c_r=None
+  L=    65 affine=False sum_c_r=None
+  L=    91 affine=False sum_c_r=None
+  L=   195 affine=False sum_c_r=None
+  L=   273 affine=False sum_c_r=None
+  L=   455 affine=False sum_c_r=None
+  L=   585 affine=False sum_c_r=None
+  L=  1365 affine=False sum_c_r=None
+  L=  4095 affine=True sum_c_r=7862400

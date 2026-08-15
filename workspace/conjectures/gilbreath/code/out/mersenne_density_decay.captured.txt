@@ -1,0 +1,92 @@
+Mersenne-period supply-density decay (literal |a-b| triangle, exact integers)
+Word: tail-1 [0]*(P-1)+[1], P=2^k-1, q=(2,3,5,7,...), gap 2 then P-1 fours
+nu2(n) = #2s in maximal {0,2} suffix of right diagonal delta(q_n)
+==============================================================================
+ k     P      N  indep  sum c_r   =3^k-3   closed D_k   (3/4)^k   ratio | per-res O(1) max|res|
+------------------------------------------------------------------------------
+ 3     7   2000   True       24     True        24/49     27/64   1.161 |            2.9
+   P=7: distinct per-residue densities c_r/P = 0.2857, 0.5714, 0.8571; mean D_k=0.489796; |nu2(n)-n*D_k| at n=N is 160.4 (NOT O(1))
+   P=7: nu2(n)/n over spread (settled n >= 2P):
+     n=    14 nu2=     2 nu2/n=0.142857  vs D_k=0.489796  resid(n*D_k)=-4.86
+     n=    35 nu2=     8 nu2/n=0.228571  vs D_k=0.489796  resid(n*D_k)=-9.14
+     n=   994 nu2=   282 nu2/n=0.283702  vs D_k=0.489796  resid(n*D_k)=-204.86
+     n=  1988 nu2=   566 nu2/n=0.284708  vs D_k=0.489796  resid(n*D_k)=-407.71
+     n=  1995 nu2=   568 nu2/n=0.284712  vs D_k=0.489796  resid(n*D_k)=-409.14
+     n=  2000 nu2=  1140 nu2/n=0.570000  vs D_k=0.489796  resid(n*D_k)=+160.41
+ 4    15   2000   True       78     True        26/75    81/256   1.096 |            4.8
+   P=15: distinct per-residue densities c_r/P = 0.1333, 0.2667, 0.5333...; mean D_k=0.346667; |nu2(n)-n*D_k| at n=N is 370.7 (NOT O(1))
+   P=15: nu2(n)/n over spread (settled n >= 2P):
+     n=    30 nu2=     2 nu2/n=0.066667  vs D_k=0.346667  resid(n*D_k)=-8.40
+     n=    75 nu2=     8 nu2/n=0.106667  vs D_k=0.346667  resid(n*D_k)=-18.00
+     n=   990 nu2=   130 nu2/n=0.131313  vs D_k=0.346667  resid(n*D_k)=-213.20
+     n=  1980 nu2=   262 nu2/n=0.132323  vs D_k=0.346667  resid(n*D_k)=-424.40
+     n=  1995 nu2=   264 nu2/n=0.132331  vs D_k=0.346667  resid(n*D_k)=-427.60
+     n=  2000 nu2=  1064 nu2/n=0.532000  vs D_k=0.346667  resid(n*D_k)=+370.67
+ 5    31   2000   True      240     True      240/961  243/1024   1.052 |            8.8
+   P=31: distinct per-residue densities c_r/P = 0.0645, 0.1290, 0.2581...; mean D_k=0.249740; |nu2(n)-n*D_k| at n=N is 371.5 (NOT O(1))
+   P=31: nu2(n)/n over spread (settled n >= 2P):
+     n=    62 nu2=     2 nu2/n=0.032258  vs D_k=0.249740  resid(n*D_k)=-13.48
+     n=   155 nu2=     8 nu2/n=0.051613  vs D_k=0.249740  resid(n*D_k)=-30.71
+     n=   992 nu2=    62 nu2/n=0.062500  vs D_k=0.249740  resid(n*D_k)=-185.74
+     n=  1953 nu2=   124 nu2/n=0.063492  vs D_k=0.249740  resid(n*D_k)=-363.74
+     n=  1984 nu2=   126 nu2/n=0.063508  vs D_k=0.249740  resid(n*D_k)=-369.48
+     n=  2000 nu2=   128 nu2/n=0.064000  vs D_k=0.249740  resid(n*D_k)=-371.48
+ 6    63   2000   True      726     True     242/1323  729/4096   1.028 |           16.8
+   P=63: distinct per-residue densities c_r/P = 0.0317, 0.0635, 0.1270...; mean D_k=0.182918; |nu2(n)-n*D_k| at n=N is 241.8 (NOT O(1))
+   P=63: nu2(n)/n over spread (settled n >= 2P):
+     n=   126 nu2=     2 nu2/n=0.015873  vs D_k=0.182918  resid(n*D_k)=-21.05
+     n=   315 nu2=     8 nu2/n=0.025397  vs D_k=0.182918  resid(n*D_k)=-49.62
+     n=   945 nu2=    28 nu2/n=0.029630  vs D_k=0.182918  resid(n*D_k)=-144.86
+     n=  1890 nu2=    58 nu2/n=0.030688  vs D_k=0.182918  resid(n*D_k)=-287.71
+     n=  1953 nu2=    60 nu2/n=0.030722  vs D_k=0.182918  resid(n*D_k)=-297.24
+     n=  2000 nu2=   124 nu2/n=0.062000  vs D_k=0.182918  resid(n*D_k)=-241.84
+ 7   127   2000   True     2184     True   2184/16129 2187/16384   1.014 |           32.8
+   P=127: distinct per-residue densities c_r/P = 0.0157, 0.0315, 0.0630...; mean D_k=0.135408; |nu2(n)-n*D_k| at n=N is 210.8 (NOT O(1))
+   P=127: nu2(n)/n over spread (settled n >= 2P):
+     n=   254 nu2=     2 nu2/n=0.007874  vs D_k=0.135408  resid(n*D_k)=-32.39
+     n=   635 nu2=     8 nu2/n=0.012598  vs D_k=0.135408  resid(n*D_k)=-77.98
+     n=   889 nu2=    12 nu2/n=0.013498  vs D_k=0.135408  resid(n*D_k)=-108.38
+     n=  1778 nu2=    26 nu2/n=0.014623  vs D_k=0.135408  resid(n*D_k)=-214.76
+     n=  1905 nu2=    28 nu2/n=0.014698  vs D_k=0.135408  resid(n*D_k)=-229.95
+     n=  2000 nu2=    60 nu2/n=0.030000  vs D_k=0.135408  resid(n*D_k)=-210.82
+ 8   255   2530   True     6558     True   2186/21675 6561/65536   1.007 |           64.8
+   P=255: distinct per-residue densities c_r/P = 0.0078, 0.0157, 0.0314...; mean D_k=0.100854; |nu2(n)-n*D_k| at n=N is 183.2 (NOT O(1))
+   P=255: nu2(n)/n over spread (settled n >= 2P):
+     n=   510 nu2=     2 nu2/n=0.003922  vs D_k=0.100854  resid(n*D_k)=-49.44
+     n=  1020 nu2=     6 nu2/n=0.005882  vs D_k=0.100854  resid(n*D_k)=-96.87
+     n=  1275 nu2=     8 nu2/n=0.006275  vs D_k=0.100854  resid(n*D_k)=-120.59
+     n=  2040 nu2=    14 nu2/n=0.006863  vs D_k=0.100854  resid(n*D_k)=-191.74
+     n=  2295 nu2=    16 nu2/n=0.006972  vs D_k=0.100854  resid(n*D_k)=-215.46
+     n=  2530 nu2=    72 nu2/n=0.028458  vs D_k=0.100854  resid(n*D_k)=-183.16
+ 9   511   4066   True    19680     True 19680/261121 19683/262144   1.004 |          128.8
+   P=511: distinct per-residue densities c_r/P = 0.0039, 0.0078, 0.0157...; mean D_k=0.075367; |nu2(n)-n*D_k| at n=N is 194.4 (NOT O(1))
+   P=511: nu2(n)/n over spread (settled n >= 2P):
+     n=  1022 nu2=     2 nu2/n=0.001957  vs D_k=0.075367  resid(n*D_k)=-75.03
+     n=  1533 nu2=     4 nu2/n=0.002609  vs D_k=0.075367  resid(n*D_k)=-111.54
+     n=  2555 nu2=     8 nu2/n=0.003131  vs D_k=0.075367  resid(n*D_k)=-184.56
+     n=  3066 nu2=    10 nu2/n=0.003262  vs D_k=0.075367  resid(n*D_k)=-221.08
+     n=  3577 nu2=    12 nu2/n=0.003355  vs D_k=0.075367  resid(n*D_k)=-257.59
+     n=  4066 nu2=   112 nu2/n=0.027545  vs D_k=0.075367  resid(n*D_k)=-194.44
+10  1023   7138   True    59046     True 19682/348843 59049/1048576   1.002 |          256.8
+   P=1023: distinct per-residue densities c_r/P = 0.0020, 0.0039, 0.0078...; mean D_k=0.056421; |nu2(n)-n*D_k| at n=N is 378.7 (NOT O(1))
+   P=1023: nu2(n)/n over spread (settled n >= 2P):
+     n=  2046 nu2=     2 nu2/n=0.000978  vs D_k=0.056421  resid(n*D_k)=-113.44
+     n=  3069 nu2=     4 nu2/n=0.001303  vs D_k=0.056421  resid(n*D_k)=-169.16
+     n=  5115 nu2=     8 nu2/n=0.001564  vs D_k=0.056421  resid(n*D_k)=-280.59
+     n=  6138 nu2=    10 nu2/n=0.001629  vs D_k=0.056421  resid(n*D_k)=-336.31
+     n=  7138 nu2=    24 nu2/n=0.003362  vs D_k=0.056421  resid(n*D_k)=-378.73
+==============================================================================
+Closed-form density table (fragility): D_k = (3^k-3)/(2^k-1)^2 decays like (3/4)^k
+ k     P            D_k (exact)      float   (3/4)^k
+ 3     7                  24/49   0.489796  0.421875
+ 4    15                  26/75   0.346667  0.316406
+ 5    31                240/961   0.249740  0.237305
+ 6    63               242/1323   0.182918  0.177979
+ 7   127             2184/16129   0.135408  0.133484
+ 8   255             2186/21675   0.100854  0.100113
+ 9   511           19680/261121   0.075367  0.075085
+10  1023           19682/348843   0.056421  0.056314
+Recursion closed-form check: sum(c_r)/2 = (3^k-3)/2 is verified foreach k where sum(c_r)=3^k-3 (all of the above).
+VERDICT (CONFIRMED): density nu2(n)/n -> (3^k-3)/(2^k-1)^2 (mean limiting density) for every Mersenne P=2^k-1, k=3..10; sum(c_r)=3^k-3 exactly; per-residue affine nu2(n)=c_r*n/P+O(1); closed-form density decays like (3/4)^k. NOTE: pointwise |nu2(n)-n*D_k| is NOT O(1) (per-residue slopes c_r/P differ); the exact O(1) statement is per-residue.
+COVERAGE: k=3..10, P=7..1023; depth N per P: P=7,15,31,63,127 -> 2000; P=255 -> 2530; P=511 -> 4066; P=1023 -> 7138 (>= 2000 points and up to ~4 periods past the 2P transient in every case).  O(N^2) incremental right-diagonal diffs per P, independent literal full-triangle check at 2 sample n per P (all match).  Exact integers only.
+capture: code/out/mersenne_density_decay.captured.txt

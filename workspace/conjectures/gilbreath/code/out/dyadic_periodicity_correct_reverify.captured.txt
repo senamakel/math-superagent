@@ -1,0 +1,48 @@
+period 1 h=1: got [0, 0, 0, 0]  expected [1, 1, 1, 1]  match=False
+period 2 h=01: got [1, 1, 1, 1]  expected [2, 2, 2, 2]  match=False
+period 4 h=0001: got [1, 1, 1, 1]  expected [2, 2, 2, 2]  match=False
+period 8 h=00000001: got [1, 1, 1, 1]  expected [2, 2, 2, 2]  match=False
+period 3 h=001: got [132, 266, 532, 798]  expected [133, 264, 533, 798]  match=False
+period 5 h=00001: got [104, 212, 424, 639]  expected [104, 210, 424, 638]  match=False
+period 6 h=000001: got [67, 132, 267, 398]  expected [134, 264, 534, 796]  match=False
+period 7 h=0000001: got [56, 342, 456, 684]  expected [112, 112, 685, 684]  match=False
+ALL MATCH: False
+
+stage-1 reproduction: BAD
+
+=== Extension: periods 9..16, two words each ===
+  P       word n=200     n=500     n=1000    n=2000    n=4000    
+  9      tail1 83      206     415     824     1648    
+  9        alt 86      205     414     829     1651    
+ 10      tail1 52      132     264     532     1064    
+ 10        alt 1       1       1       1       1       
+ 11      tail1 87      230     464     941     1877    
+ 11        alt 101     225     471     936     1877    
+ 12      tail1 32      82      167     332     667     
+ 12        alt 1       1       1       1       1       
+ 13      tail1 93      204     464     935     1871    
+ 13        alt 95      220     445     930     1873    
+ 14      tail1 56      140     284     284     1140    
+ 14        alt 1       1       1       1       1       
+ 15      tail1 104     264     264     1064    1064    
+ 15        alt 53      133     529     533     2129    
+ 16      tail1 2       4       2       1       1       
+ 16        alt 1       1       1       1       1       
+
+=== Reference: periods 1..8 (both words), for contrast ===
+  1      tail1 0       0       0       0       0       
+  1        alt 0       0       0       0       0       
+  2      tail1 1       1       1       1       1       
+  2        alt 1       1       1       1       1       
+  3      tail1 132     332     666     1332    2666    
+  3        alt 132     332     665     1332    2665    
+  4      tail1 1       1       1       1       1       
+  4        alt 1       1       1       1       1       
+  5      tail1 104     264     532     1064    2132    
+  5        alt 105     265     531     1065    2131    
+  6      tail1 67      167     332     667     1332    
+  6        alt 1       1       1       1       1       
+  7      tail1 56      284     284     1140    2284    
+  7        alt 113     285     569     571     2285    
+  8      tail1 1       2       1       1       1       
+  8        alt 1       1       1       1       1       

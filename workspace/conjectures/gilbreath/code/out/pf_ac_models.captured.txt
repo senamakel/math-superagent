@@ -1,0 +1,3 @@
+Model A (D=random walk): AC(I,lag1)= -0.003 expect ~0
+Model B (I=white): AC(I,lag1)= 0.001 expect ~0
+Model C (I=first-diff of white noise): AC(I,lag1)= -0.5003 expect -0.5

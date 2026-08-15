@@ -1,11 +1,13 @@
 # Index — code/scholar
 
-What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+Scholar's verification scripts. These are prior-cycle artifacts whose captures
+live under `code/out/*.captured.txt`; the advisory-cycle handoff is called out.
 
 | File | Purpose |
 | --- | --- |
-| `digest_audit.py` | Scholar digest-completeness audit: pairs every full-text source under research/sources/ with its summary under research/summaries/ by slug and flags stub digests, so an undigested source is never silently carried. |
-| `run_digest_audit.sh` | _(undescribed)_ |
-| `verify_malyshev_bound.py` | Exhaustive verification (s=1..14, all 2^s top rows) of Malyshev's sharp bound on #ones in a Boolean Pascal (rule-90) triangle: max_ones = ceil(s(s+1)/3), Fibonacci-mod-2 extremal. Written to upgrade the sourced claim malyshev-max-ones-boolean-pascal-bound to checked; NOT yet executed (no shell tool in scholar role) — operator must run `timeout 540 python3 code/scholar/verify_malyshev_bound.py` and capture to code/out/verify_malyshev_bound.captured.txt. |
-| `verify_supply_transfer_independent.py` | Third-route re-derivation of the G-supply transfer bridge (nu2/w ratio and w/n mod-4 density that Route B's remaining open content rests on). Two-route verification already on disk (nu2_vs_gap_parity.captured.txt, nu2_dense_transfer.captured.txt); this is offered for a coder to run if those are ever in doubt. NOT executed (scholar has no exec tool). |
-| `verify_two_point.py` | Confirms the atomic-bit identity bit_n=[p_{n+1}≢p_n mod4]=[gap_n≡2 mod4] behind Granville's nu2 supply, and measures nu2/n ~ 1/2 on primes below 2e6. |
+| `verify_countermodel_only.py` | **THIS CYCLE.** Numeric restatement (handoff for tool_builder) of the linchpin claim `g-supply-switch-count-not-one-point`: balanced one-point mod-4 marginals do not pin the consecutive-pair switch count, since the ordering [1,…,1,3,…,3] is consistent with them and achieves exactly one switch. Logical proof-by-inspection; run is for the record. Capture: `code/out/verify_two_point_countermodel.captured.txt` (run by tool_builder). |
+| `run_verify_countermodel.py` | Thin runner for the above (no executable logic). |
+| `exec_verify.sh`, `exec_oracle.sh`, `exec_verify` (overwritten) | Prior-cycle shell runners. |
+| `verify_two_point_countermodel.py` | Dated draft of the countermodel check (superseded by `verify_countermodel_only.py`). |
+| `verify_two_point.py`, `verify_supply_transfer_independent.py`, `verify_malyshev_bound.py`, `direct_confirm*.py`, `confirm_contradiction.py`, `digest_audit.py`, `run_confirm*.py`, `run_inline*.py`, `scholar_dyadic_collapse_check.py`, `run_scholar_dyadic.py`, `final_exec.sh` | Prior-cycle scholar verification runners / audits; captures under `code/out/`. |
+| `_placeholder.py` | Cruft created this cycle; cleared (no logic). |

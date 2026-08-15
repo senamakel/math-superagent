@@ -1,0 +1,24 @@
+leg(1) eventual-periodic (pre-period + 2^k tail): nu2 over n, bounded?
+  k=1 prelen=0 pre=[] max nu2 over n<5000 = 1
+  k=1 prelen=1 pre=[1] max nu2 over n<5000 = 1
+  k=1 prelen=1 pre=[0] max nu2 over n<5000 = 2
+  k=1 prelen=3 pre=[0, 0, 1] max nu2 over n<5000 = 2
+  k=1 prelen=4 pre=[1, 1, 0, 0] max nu2 over n<5000 = 3
+  k=2 prelen=0 pre=[] max nu2 over n<5000 = 1
+  k=2 prelen=1 pre=[1] max nu2 over n<5000 = 2
+  k=2 prelen=1 pre=[0] max nu2 over n<5000 = 3
+  k=2 prelen=3 pre=[0, 0, 1] max nu2 over n<5000 = 3
+  k=2 prelen=4 pre=[1, 1, 0, 0] max nu2 over n<5000 = 4
+  k=3 prelen=0 pre=[] max nu2 over n<5000 = 2
+  k=3 prelen=1 pre=[1] max nu2 over n<5000 = 4
+  k=3 prelen=1 pre=[0] max nu2 over n<5000 = 5
+  k=3 prelen=3 pre=[0, 0, 1] max nu2 over n<5000 = 7
+  k=3 prelen=4 pre=[1, 1, 0, 0] max nu2 over n<5000 = 5
+
+(all should be O_k(1), independent of n — bounded as n grows)
+
+leg(1) sharpness: is max nu2 == 2^k - 1 for some word?
+  k=1: max nu2 over all 2^1-periodic words = 1  (2^k-1=1)
+  k=2: max nu2 over all 2^2-periodic words = 3  (2^k-1=3)
+  k=3: max nu2 over all 2^3-periodic words = 7  (2^k-1=7)
+  k=4: max nu2 over all 2^4-periodic words = 15  (2^k-1=15)

@@ -1,5 +1,83 @@
 # Library build report — librarian verification cycle (2026)
 
+## Cycle 15 audit (librarian, current): independent re-verification from scratch — NOTHING FURTHER
+
+Independent pass, not trusting cycles 1–14. Confirmed from `list_workspace` + `search_documents` that every load-bearing claim family resolves to a real on-disk `.full.md` with its source URL embedded:
+
+- **Canonical tier:** Odlyzko 1993 (full PDF + author's LaTeX, block lemma constant **1**, mod-4 linearization, 10^13/G=635), Killgrove–Ralston 1959 (first machine verification, 63,419 primes), Proth 1878 (scan record + retraction settled), Wikipedia / MathWorld / Encyclopedia-of-Math / Caldwell glossary. All held and indexed.
+- **Verification record, current and kept distinct from the run's own depth 600/1000:** Colonna/Delahaye 2025–26 to 1.5×10^15 (G=811 at 1.2125e15, 03/18/2026, `colonna-proth-gilbreath-record-2026-08`), Plouffe 2025 (10^14, G=693), Odlyzko 1993 (10^13, G=635) — all three on disk with URLs.
+- **Route-bearing FULLPDFs:** Granville 2026 Piercing-Gilbreath (Lemma 5.4 / Theorem 5.5, ν₂ supply), CHT 2026 inverse theorem (Theorem 1.6), Chase 2024 random analogue, Banks–Ford–Tao 2023 canonical gap models (filename mislabeled "maier-pomerance", header records correct authorship). All held.
+- **G-supply / mod-4 side:** ABGS 2011 §9 (named-open two-point mod-4 switch), Lemke Oliver–Soundararajan 2016/2017, Rubinstein–Sarnak 1994, Lau 2024, Martin et al. 2024 bibliography (Ruzsa/Shiu equal-residue bound at abstract level). All held.
+- **Lean formalisation corpus** (`code/lean/INDEX.md`): descent_lemma.lean (kernel-checked, sorry-free core of Lemma 5.4), gilbreath_reduction.lean (IFF reduction), shape.lean, link_a.lean, lemma54_even_domain.lean, lemma54_composition.lean, with the axiom report (propext/Classical.choice/Quot.sound only) and outstanding scope (full even-domain lemma's Link A + composition + supply still open) documented.
+- **OEIS catalogue:** A000232 / A036262 / A089582 / A080839 / A347924 / A393110 / A396593 all held (summaries and/or full sources).
+
+`search_documents` resolves every load-bearing claim family (Odlyzko block lemma, Granville Lemma 5.4, step-law/recharge, parity reduction, verification records, Proth retraction, G-supply) straight to an on-disk source — nothing stranded as recall. REQUESTS.md: fully closed (G-supply negative on the two-point mod-4 switch; MathOverflow fetch done; all unobtainable items recorded so nobody re-attempts). The phase-1 exit test in ROOT.md still holds: minimal counterexample stated, verification bounds kept distinct, ≥3 restricted classes proved.
+
+Verdict: nothing to add. Library closed and independently re-verified a fifteenth cycle.
+
+## Cycle 14 audit (librarian, current): canonical-tier presence, URLs, indexing re-verified — NOTHING FURTHER
+
+Re-verified the canonical reference tier from scratch, this cycle confirming that
+each primary text carries its **source URL embedded in the file** (so the run can
+cite real addresses, never recall):
+
+- **Odlyzko 1993** — `sources/odlyzko-1993-iterated-absolute-differences.full.md`,
+  source URL `https://www.ams.org/journals/mcom/1993-61-203/S0025-5718-1993-1182247-7/S0025-5718-1993-1182247-7.pdf`.
+  Verbatim confirmed: block lemma "if d_K(1)=1 while d_K(n)∈{0,2} for 1≤n≤N, then
+  d_k(1)=1 for K≤k≤N+K−1"; mod-4 linearization eq (2.2) `d_{k+1}(n)=d_k(n)+d_k(n+1) (mod 4)`;
+  10^13 / G=635; Proth-1878-faulty attribution; Cramér/Maier gap discussion.
+- **Killgrove–Ralston 1959** — `sources/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md`,
+  URL `https://www.ams.org/journals/mcom/1959-13-066/S0025-5718-59-99262-2/S0025-5718-59-99262-2.pdf`.
+  Verbatim confirmed: the `P(i)` table (P(i)+i > 63419 = first 63,419 primes verified), the
+  "sequence {b_00=1; b_0j=0 or 2}" family with the 1 property, and the SWAC computation.
+- **Granville 2026 Piercing-Gilbreath** — `sources/granville-2026-piercing-gilbreath-FULLPDF.full.md`,
+  URL `https://arxiv.org/pdf/2607.04166` (v3, cs.CR, 14 Jul 2026). Lemma 5.4 (`g*_n ≤ 2ν₂(q_{n-1})+2`),
+  Theorem 5.5 (β>α, α=0.525 Baker/Harman/Pintz), Conjecture 5.1 in full.
+- **Chase 2024** random analogue (Math. Ann. 388, doi 10.1007/s00208-023-02579-w); **CHT 2026**
+  Cramér model + inverse theorem (arXiv:2607.08712); **BFT 2023** gap models (Invent. math. 233) —
+  all held with URLs.
+- Encyclopedic tier held: Wikipedia, MathWorld, Encyclopedia-of-Math, Caldwell glossary, Proth 1878
+  (NCM vol 4 googlebooks scan + retraction), Plouffe 2025 (10^14), Colonna 2025–26 (1.5e15).
+  OEIS catalogue: A000232 / A036262 / A089582 / A080839 / A347924 all on disk.
+
+`search_documents` resolves every load-bearing claim family (Odlyzko block lemma constant 1,
+parity reduction, mod-4 supply, step-law/recharge) straight to on-disk `.full.md` files with
+embedded URLs. REQUESTS.md remains closed beyond the single named-open G-supply negative (a
+research gap, not a library gap). No re-fetch made; the library is complete, indexed, and
+reachable. Phase-1 exit test in ROOT.md still holds: minimal counterexample stated, verification
+bound kept distinct (run depth 600/1000 vs Odlyzko 10^13 / Plouffe 10^14 / Colonna 1.5e15),
+≥3 restricted classes proved.
+
+## Verdict: nothing to add. Library closed, verified fourteen cycles running.
+
+## Cycle 13 audit (librarian, current): independent recall-failure spot-check, from scratch — NOTHING FURTHER
+
+Re-verified the two failure modes this role exists to catch, without trusting cycles 1–12:
+
+1. **every problem.md URL-matched lead resolves to an on-disk source, not recall.** Ran
+   `search_documents` on each load-bearing claim family and every one lands on a real
+   `research/sources/*.full.md` file present in `list_workspace research/sources` (97 files):
+   - Odlyzko block lemma (constant **1**, mod-4 linearization, 10^13/G=635) →
+     `odlyzko-1993-iterated-absolute-differences.full.md` + `-latex-source.full.md`.
+   - Killgrove–Ralston 1959 first machine verification → `killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.full.md`.
+   - Proth 1878 / retraction → `proth-1878-ncm-vol4-googlebooks.full.md` + `summaries/proth-1878-sur-la-serie-des-nombres-premiers.md`.
+   - Granville Lemma 5.4 / Thm 5.5, ν₂ supply → `granville-2026-piercing-gilbreath-FULLPDF.full.md` (FULL PDF, v3 cs.CR).
+   - CHT 2026 inverse theorem → `chase-hunter-tao-2026-full-html.full.md` + `-FULLPDF.full.md`.
+   - Chase 2024 random analogue → `chase-2024-random-analogue-gilbreath.full.md` (Math. Ann. 388).
+   - BFT 2023 canonical gap models → `maier-pomerance-2023-large-prime-gaps-probabilistic-models.full.md` (filename notes corrected authorship: Banks–Ford–Tao).
+   - Colonna 2026 verification record → `colonna-proth-gilbreath-record-2026-08.full.md`.
+   - G-supply/mod-4 side → `ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.full.md`, `lemke-oliver-soundararajan-2016/2017`, `rubinstein-sarnak-1994-*`, `martin-annotated-bibliography-...` (2309.08729).
+   - OEIS A000232 / A036262 / A089582 / A080839 → real `.full.md` companions on disk.
+2. **No hard citation is stranded.** Every primary/route-bearing claim block's `anchor:` in the
+   ledger resolves to an indexed source; the small-OEIS summaries (whose pages ARE the full
+   capture) point at their own summary files, consistent with cycle-12's fix.
+
+Verdict: canonical tier, route-bearing FULLPDFs, dead-route corpus, verification record, and
+G-supply accounting are all genuinely on disk, indexed, reachable. REQUESTS.md remains closed
+apart from the single named-open G-supply negative (a research gap, not a library gap). The
+earlier "NOTHING FURTHER" verdicts are independently corroborated. No new primary material is
+warranted; the phase-1 exit test in ROOT.md still holds.
+
 ## Cycle 12 audit (librarian, current): phantom-anchor completion — one residual defect found and fixed, otherwise NOTHING FURTHER
 
 Independently verified the library rather than trusting cycle-11's "cleanup".

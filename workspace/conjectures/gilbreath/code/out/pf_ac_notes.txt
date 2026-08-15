@@ -1,0 +1,3 @@
+ok: the I-AC=-0.503 is an oscillation (mean-reverting) signature of
+D(n)=2*nu2(n)-n, consistent with the documented Littlewood-style
+oscillation of the sign of D; NOT white-noise increments.

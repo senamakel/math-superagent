@@ -105,6 +105,20 @@ papers); every unconditional result touches the non-switch side or gap sizes.
 The same-class lower bounds (Ruzsa/Shiu/Martin, sub-density `x loglog x/log² x`)
 are the classical obstruction and are held in the library.
 
+## The durable finding
+
+```claim
+id: g-supply-switch-count-not-one-point
+statement: The mod-4 switch bit h[j] = [gap_{j+1} ≡ 2 (mod 4)] = [p_{j+1} ≢ p_j (mod 4)] is a TWO-POINT statistic, and the one-point marginals impose ZERO lower bound on its count N_switch(x) = #{p_n ≤ x : p_{n+1} ≢ p_n (mod 4)} = ν₂. Proof by countermodel: the one-point data #{p ≤ x : p ≡ 1 mod 4} ≈ #{p ≤ x : p ≡ 3 mod 4} ≈ π(x)/2 is CONSISTENT with the ordering that lists all 1-mod-4 primes first and then all 3-mod-4 primes, which has exactly ONE switch (N_switch = 1). Since one consistent ordering achieves a single switch, PNT-in-AP / Dirichlet / Chebyshev / GRH (all one-point) cannot rule N_switch(x) = 1 out, so no positive lower bound on the switch count is derivable from one-point machinery; any lower bound on ν₂ is a statement about the JOINT distribution of two consecutive primes (the Hardy–Littlewood / prime k-tuple two-point correlation).
+hypotheses: only the one-point equidistribution of primes among the two reduced classes mod 4 (#{p ≡ 1 mod 4} ≈ #{p ≡ 3 mod 4} ≈ π(x)/2); N_switch(x) = #{p_n ≤ x : p_{n+1} ≢ p_n (mod 4)} = the consecutive-pair switch count.
+holds-here: yes — the switch bit is exactly the ν₂ supply input of Route B (Granville Lemma 5.4 / Theorem 5.5), so this negative result decides that Route B cannot be made unconditional from one-point analytic number theory.
+status: proved (the countermodel is an explicit construction, not an assertion: a single ordering consistent with the marginals achieves N_switch = 1, so the marginals force no positive lower bound)
+bearing: the reason Route B cannot be made unconditional from PNT-in-AP/Dirichlet/Chebyshev/GRH; the sole remaining open content is the two-point consecutive-prime mod-4 correlation (named-open claim abgs-2011-s9-mod4-switch-limit-open), and the honest deliverable is the CONDITIONAL theorem at Hardy–Littlewood / LOS two-point level.
+anchor: research/notes/g-supply-two-point-crux-settled.md, research/notes/abgs-s9-verbatim-verified.md, research/summaries/ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.md
+contradicts: (none — a structural negative about what one-point machinery can deliver; it does NOT contradict the possibility of a conditional or arithmetic supply bound)
+answers: g-supply-unconditional-closed-negative
+```
+
 ## Filing
 
 - This note: `research/notes/g-supply-two-point-crux-settled.md`.

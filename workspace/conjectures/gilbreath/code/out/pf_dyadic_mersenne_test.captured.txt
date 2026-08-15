@@ -1,0 +1,44 @@
+Mersenne classification attack (tail-1 word), n in [500,4000]
+================================================================================
+P= 63 Mersenne=True AFFINE  min c=2 
+P=127 Mersenne=True AFFINE  min c=2 
+P=255 Mersenne=True AFFINE  min c=2 
+P= 19 Mersenne=False not affine 
+P= 29 Mersenne=False not affine 
+P= 37 Mersenne=False not affine 
+P= 41 Mersenne=False not affine 
+P= 43 Mersenne=False not affine 
+P= 47 Mersenne=False not affine 
+P= 49 Mersenne=False not affine 
+P= 51 Mersenne=False not affine 
+P= 53 Mersenne=False not affine 
+P= 57 Mersenne=False not affine 
+P= 59 Mersenne=False not affine 
+P= 61 Mersenne=False not affine 
+P= 65 Mersenne=False not affine 
+P= 69 Mersenne=False not affine 
+P= 71 Mersenne=False not affine 
+P= 73 Mersenne=False not affine 
+P= 75 Mersenne=False not affine 
+P= 81 Mersenne=False not affine 
+P= 85 Mersenne=False not affine 
+P= 87 Mersenne=False not affine 
+P= 89 Mersenne=False not affine 
+P= 91 Mersenne=False not affine 
+P= 95 Mersenne=False not affine 
+P= 97 Mersenne=False not affine 
+P= 99 Mersenne=False not affine 
+P=111 Mersenne=False not affine 
+P=119 Mersenne=False not affine 
+P=123 Mersenne=False not affine 
+P=125 Mersenne=False not affine 
+P=129 Mersenne=False not affine 
+P=131 Mersenne=False not affine 
+P=133 Mersenne=False not affine 
+P=135 Mersenne=False not affine 
+P=137 Mersenne=False not affine 
+P=139 Mersenne=False not affine 
+P=141 Mersenne=False not affine 
+P=143 Mersenne=False not affine 
+================================================================================
+contradictions to Mersenne-only: 0

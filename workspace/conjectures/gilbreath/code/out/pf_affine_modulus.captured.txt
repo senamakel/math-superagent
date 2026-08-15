@@ -1,0 +1,32 @@
+Smallest affine modulus L=m*P for odd-period tail-1 words.
+P=2^k-1 (Mersenne) known to be affine at L=P.  Is L always m*P?
+========================================================================
+P=   3  mersenne=True  affine-modulus m=1  L=3
+P=   5  mersenne=False  affine-modulus m=3  L=15
+P=   7  mersenne=True  affine-modulus m=1  L=7
+P=   9  mersenne=False  affine-modulus m=7  L=63
+P=  11  mersenne=False  affine-modulus m=None  L=None
+P=  13  mersenne=False  affine-modulus m=None  L=None
+P=  15  mersenne=True  affine-modulus m=1  L=15
+P=  17  mersenne=False  affine-modulus m=None  L=None
+P=  19  mersenne=False  affine-modulus m=None  L=None
+P=  21  mersenne=False  affine-modulus m=3  L=63
+P=  23  mersenne=False  affine-modulus m=None  L=None
+P=  25  mersenne=False  affine-modulus m=None  L=None
+P=  27  mersenne=False  affine-modulus m=None  L=None
+P=  29  mersenne=False  affine-modulus m=None  L=None
+P=  31  mersenne=True  affine-modulus m=1  L=31
+P=  33  mersenne=False  affine-modulus m=None  L=None
+P=  35  mersenne=False  affine-modulus m=None  L=None
+P=  37  mersenne=False  affine-modulus m=None  L=None
+P=  39  mersenne=False  affine-modulus m=None  L=None
+P=  41  mersenne=False  affine-modulus m=None  L=None
+P=  43  mersenne=False  affine-modulus m=None  L=None
+P=  45  mersenne=False  affine-modulus m=None  L=None
+P=  47  mersenne=False  affine-modulus m=None  L=None
+P=  49  mersenne=False  affine-modulus m=None  L=None
+P=  51  mersenne=False  affine-modulus m=5  L=255
+P=  53  mersenne=False  affine-modulus m=None  L=None
+P=  57  mersenne=False  affine-modulus m=None  L=None
+P=  59  mersenne=False  affine-modulus m=None  L=None
+P=  63  mersenne=True  affine-modulus m=1  L=63

@@ -58,6 +58,13 @@ corner argument, a genuinely weaker theorem than Lipschitz). The run
 should mark it settled and move to the next difficulty (one ≥6 gap in the
 {2,4} stream), not spend budget re-deriving it.
 
-Claim recorded as `carved-gap24-is-r-lipschitz-corner`, status: checked
-(two-line argument + hand example + cross-reference to the run's own
-settled rung and proved sweep-corner-mechanism claim).
+```claim
+id: carved-gap24-is-r-lipschitz-corner
+statement: The weakened rung R-carved-gap24 (2-then-odds with first gap 2 and all later gaps in {2,4}) is already settled: A_1 = (1, 2, g_2, g_3, ...) with g_j ∈ {2,4}; A_2 = (1, |2−g_2|, |g_2−g_3|, |g_3−g_4|, ...) = (1, {0,2}, {0,2}, ...), because |2−g_2| ∈ {0,2} and every |g_j − g_{j+1}| ∈ {0,2}. So A_2 is the all-{0,2} corner, which is closed under absolute differencing (|1−c|=1 for c ∈ {0,2}; a difference of two {0,2} entries is again in {0,2}), hence A_k(1) ∈ {0,2} for all k and there is no first failure. The class is subsumed by the settled rung R-lipschitz-corner (a {2,4}-support gap sequence with first gap 2 is 1-Lipschitz in its gaps) and by claim sweep-corner-mechanism.
+hypotheses: A_0 = (2,3,x_1,x_2,...) with every x_i odd, x_1−3 = 2, and x_{i+1}−x_i ∈ {2,4} for all i ≥ 1.
+holds-here: yes
+status: proved (two-line corner argument: the {2,4}-support and first-gap-2 conditions force A_2 to be the {0,2} corner for every continuation; hand-checked example gaps (2,4,2,4) → A_1=(1,2,4,2,4), A_2=(1,2,2,2))
+bearing: the index must not mark R-carved-gap24-no-first-failure open — it is settled by R-lipschitz-corner / sweep-corner-mechanism; the next difficulty is a gap ≥ 6 entering the {2,4} stream.
+anchor: research/notes/carved-gap24-reconciliation.md; claims sweep-corner-mechanism, R-lipschitz-corner (gap-lipschitz-ladder)
+contradicts: none
+```

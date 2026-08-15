@@ -65,14 +65,19 @@ statement: If the halved-gap bit string h is periodic with period p, then every
   shifts). Hence the {0,2}-suffix length and nu2 are O_p(1).
 hypotheses: rule90-interior-xor (proved): tail cells are Pascal/Lucas XOR-folds
   of the row-1 halved-gap bits; h periodic of period p.
-holds-here: yes — the halved {0,1} part of the prime triangle is exactly this
-  binary system; each fold covers a window spanning ceil(window/p) periods.
-status: inference from the proved rule90-interior-xor (status: proved); the
-  explicit O_p(1) bound is asserted, not yet computed for a specific p.
-bearing: the collapse side of the Directive 58 dichotomy is already the proved
-  rule90-interior-xor + finite-state-of-periodic-windows; theorem_prover needs
-  only to make the O_p(1) constant explicit. BCZ Thm 5 is NOT the mechanism —
-  do not cite it for collapse.
+holds-here: no — FALSE as stated for any period with an odd factor (period 3
+  gives nu2 = 2666 at n = 4000, measured), so the "any period p" form does not
+  hold for the binary system it claims to describe.
+status: refuted — the over-general form (ANY period p ⟹ nu2 = O_p(1)) is FALSE.
+  The fold window [c, c+d] grows with depth d, so it is bounded only when the
+  submask factorization d = D·2^k + s makes the inner XOR vanish, which fails
+  for odd-factor periods. The correct restriction (period a POWER OF TWO) is
+  the proved theorem `dyadic-collapse-proved` (research/notes/dyadic-collapse-proof.md).
+closed-by: rule90-periodic-window-collapse-refuted
+bearing: kept here as a refuted claim with its flaw recorded, so the dead
+  over-generalisation is not re-derived (Directive 65: a refuted claim must
+  stay, never be deleted). BCZ Thm 5 is NOT the mechanism — do not cite it for
+  collapse; the power-of-2 collapse is rule90-interior-xor + Frobenius.
 anchor: research/notes/rule90-interior.md, research/notes/scholar-dyadic-periodicity-collapse.md
 answers: dyadic-periodicity-collapse
 ```

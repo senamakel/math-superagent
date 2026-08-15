@@ -6,51 +6,47 @@ why, computed numbers, durable memory, disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
 Budget 10,000 tokens. Length is a bill the whole run pays on every model call;
-link the file holding any detail compressed away. (Current: Directive 59 — run
-the falsifier first, then stop staffing the library, see Run state.)
+link the file holding any detail compressed away. (Current: Directive 74 — the dyadic skeleton is CLOSED. SPAD-linearization and
+SPAD-dyadic-collapse discharged; SPAD-anti-dyadic-linear REFUTED
+(spad-nondegenerate-linear-refuted); SPAD-prime-anti-dyadic proved-but-inert,
+CONDITIONAL on Shiu 2000 (asserted, paywalled). Five arithmetic-replacement
+routes are dead for one shared reason: the fold matrix Φ has low-weight images
+on structurally rich inputs. Next work: write the deliverable into solution.md —
+the conditional theorem (IF ν₂ ≥ c·n for the primes THEN Gilbreath), Lemma 5.4
+Lean-formalised, the reduction proved, and a map of the five dead escapes. Do
+not claim Gilbreath.)
 
-## Run state (Directive 59 — run the falsifier, then stop staffing the library)
+**Directive 73 — Directive 72 retracted; the audit was right, no bug.** The
+62->60 claim-count drop is a render cap, not data loss: CLAIMS.md renders
+MAX_ROWS=60 of 177 claims, alphabetically, and discloses the 117 it omits
+("s"-initial ids like `spad-nondegenerate-linear-refuted` fall outside the
+first 60 but were parsed and stored all along). Verified via search_claims: both
+`spad-nondegenerate-linear-refuted` and the mersenne ids resolve, so the index is
+healthy and this thread closes — no defect, no board post. The audit's
+recommendation stands on its merits: fold settled rows so the rendered table
+carries live beliefs (task `fold-settled-refuted-shortcuts-into-history`). Next
+work is mathematics: SPAD-prime-anti-dyadic, the one open dyadic-skeleton rung
+(vacuous for supply after Directive 68).
 
-**STEP 0 is one command, not another note (Directive 59).** The falsifier is
-drafted and UNRUN: `code/out/dyadic_periodic_check.py` and
-`code/out/reproduce_dyadic_periodicity.py` have no captured output, and the
-host-supplied numbers in Directive 58 are not workspace evidence. Run
-`timeout 600 python3 code/out/dyadic_periodic_check.py 2>&1 | tee code/out/dyadic_periodic_check.captured.txt`;
-report periods 1..8, ν₂ over n=50..500, and say plainly whether the
-odd-factor periods (3,5,6,7) grow. If they do NOT grow, close the thread —
-the dyadic story is dead, which is a good outcome, not a failure. THEN hand
-the dichotomy to theorem_prover. **Library is STOPPED (Directive 59):**
-librarian/scholar are 43% of spend and the loop has run zero attempts; the
-library was closed in Directive 39 and reaffirmed in 46 and 56, so no further
-searches, downloads, or closure notes this run unless a solver files a
-REQUESTS.md entry naming a specific theorem it needs.
+## Run state (Directive 68 — anti-dyadic converse REFUTED)
 
-**Directive 57's dyadic question is now a measured dichotomy — reproduce it,
-then prove it.** Host-side stage-1 numbers (exact integers, periodic halved-gap
-bit string `h`, gap = 2 if bit else 4, `ν₂` = #2s in the maximal {0,2} suffix
-of the right diagonal): period 1 (`h=1`) `ν₂=1` at n=200,400,800,1200;
-period 2 (`01`) `ν₂=2`; period 4 (`0001`) `ν₂=2`; period 8 (`00000001`)
-`ν₂=2` — all four n; period 3 (`001`) `ν₂=133,264,533,798`; period 5
-(`00001`) `104,210,424,638`; period 6 (`000001`) `134,264,534,796`; period 7
-(`0000001`) `112,112,685,684`. **Dichotomy is sharp:** `ν₂ = O(1)` exactly on
-power-of-2 periods, `ν₂ ~ c·n` otherwise (c ∈ [0.53, 0.67]); period 6 = 2·3
-grows, so it is the ODD FACTOR that matters, not merely being non-dyadic.
-**Skip straight to the theorem.** tool_builder: confirm the eight rows and
-extend to periods 9..16 and to non-constant patterns of the SAME period (the
-claim is about the period, not the specific word). theorem_prover: prove from
-Lucas, prime-free, that `h` eventually periodic with period `2^k` forces
-`ν₂ = O_k(1)` — and, the harder half, that an odd factor in the period forces
-`ν₂ ≫ n`. Mechanism for the dyadic half is `rule90-interior-xor`: weights
-`C(d,j) mod 2` are supported on the binary submasks of `d`, so period-`2^k` `h`
-collapses the sums for all large `d` (consecutive odds = period 1; alternating
-2/4 = period 2). **State the conclusion as the dichotomy theorem, then say
-precisely what it does and does NOT give for the primes: aperiodicity alone is
-weaker than the quantitative anti-dyadic input the supply bound needs — the gap
-between them is the honest remaining statement. Do NOT claim it closes
-G-supply.** Live tasks `test-dyadic-periodicity-prediction`,
-`prove-dyadic-periodicity-collapse-lemma`, `state-dyadic-dichotomy-primes-gap`;
-thread `research/threads/dyadic-periodicity-collapse.md`. The repair thread
-`gsupply-transfer-repair` is DEAD (Directive 57).
+The OOM-killed dyadic items re-ran streaming and the verdict is now settled:
+`dyadic_halfstep_large.captured.txt` confirms the kernel probe — `wt(Φ h)` stays
+1–2 while `m` grows (0.125@8, 0.0625@16, 0.0833@24, 0.0313@32), so `wt/m → 0`,
+and `dyadic_kernel_verify_constraints.py` shows these minimizers are balanced
+AND anti-dyadic. So `SPAD-nondegenerate-linear` ("non-dyadic ⟹ wt ≥ c·m") is
+**REFUTED**, and with it the useful direction of the dyadic dichotomy. This is
+the 4th combinatorial shortcut killed (transfer, non-concentration,
+aperiodicity/Thue–Morse, anti-dyadicity) — all failing for one reason: the fold
+matrix Φ has low-weight images on structurally rich inputs. The supply bound is
+irreducibly arithmetic. **Survives:** the dyadic COLLAPSE theorem
+(`dyadic-collapse-proved`, period 2^k ⟹ ν₂ = O_k(1)). **Dead:** its converse.
+Full write-up `research/notes/spad-nondegenerate-linear-refuted.md` (claim
+`spad-nondegenerate-linear-refuted`, status refuted); task
+`file-antidyadic-converse-refutation`. The depth-bound omission (Directive 67
+rule 3) on `dyadic_halfstep_large.captured.txt` is tracked there and must be
+re-captured to a new file.
+
 
 ## Run state (Directive 50 — first kernel-checked result)
 
@@ -198,6 +194,8 @@ halved-gap bit string restores ν₂ ≥ c·n (tasks
 provable half" of this reduction keeps turning out to need a prime hypothesis**
 — first Markov anti-clustering (Directive 52), now the F₂ covering bound.
 - **Gross/net: "regeneration iff (edge,intruder)=(2,4)" earlier refutations — WITHDRAWN (off-by-one); the criterion is ESTABLISHED** (see Established). The stale note records the failure of the literal wrong-index reading, not of the criterion.
+- **"Any periodic halved-gap bit string collapses (nu2=O_p(1))" — REFUTED as stated (scholar, this cycle).** The collapse side of the dyadic dichotomy is the PROVED power-of-2 theorem only: h eventually periodic of period 2^k ⟹ nu2 ≤ N0+2^k (exact nu2 ≤ 2^k−1; `dyadic-collapse-proved`, submask-factorization proof). The over-general asserted claim `rule90-periodic-window-collapse` ("period p ⟹ O_p(1)" for any p) is FALSE: odd-factor periods grow linearly (period 3: nu2=132@n=200, 2666@n=4000, exact on-disk). Located flaw: each {0,2}-tail cell is finitely valued {0,2} regardless of periodicity, so per-cell finiteness does not bound the suffix length; the deep fold bits vanish only under the power-of-2 submask argument. Superseded by `rule90-periodic-window-collapse-refuted`. Does NOT close G-supply; odd-factor converse (nu2≫n) still conjectured, primes' nu2≥c·n stays named-open.
+- **Anti-dyadic converse "non-dyadic ⟹ linear supply" — REFUTED (Directive 68, the 4th combinatorial shortcut).** The half-step string `h=1^{m/2}0^{m/2}` is balanced AND anti-dyadic (distance m/2 from every 2^k-periodic string) yet `wt(Φ h)=1`, ratio → 0 (0.125@8, 0.0625@16, 0.0833@24, 0.0313@32; `dyadic_halfstep_large.captured.txt`, minimizers verified by `dyadic_kernel_verify_constraints.py`). So `SPAD-nondegenerate-linear` = `SPAD-anti-dyadic-linear` (goal `supply-periodic-aperiodic-dichotomy`, rung `R-anti-dyadic-certificate-implies-supply`) and the quantitative `DPC-kernel-classification` converse are FALSE. Mersenne data confirms the same phenomenon (mean slope decays 0.667→0.490→0.347 for P=3,7,15). **Survives:** the collapse leg `dyadic-collapse-proved` (period 2^k ⟹ ν₂=O_k(1)). **Dead:** its converse. All four killed shortcuts (transfer, non-concentration, aperiodicity, anti-dyadicity) fail for one reason: the fold matrix Φ has low-weight images on structurally rich inputs. ν₂ ≥ c·n reverts to the named-open arithmetic hypothesis `abgs-2011-s9-mod4-switch-limit-open`. Claim `spad-nondegenerate-linear-refuted`; note `research/notes/spad-nondegenerate-linear-refuted.md`.
 
 ## Numbers
 
@@ -312,6 +310,7 @@ here.
   CONDITIONAL theorem with that two-point mod-4 correlation bound as its
   hypothesis; a conditional theorem with a precisely identified open
   hypothesis is a genuine deliverable.
+- **Dyadic dichotomy: sharp on periodic, SILENT on aperiodic (Directive 66); anti-dyadic converse REFUTED (Directive 68).** Odd-factor periodic words: ν₂ = c·n + O(1), c>0 (`dyadic-oddfactor-infimum-bounded`, P=3: 0.647, P=5: 0.509, P=7: 0.267, P=9: 0.359); Thue–Morse is aperiodic with ν₂ = O(log n) (`thue-morse-sublinear-supply-witness`). The measured 2-adic separating invariant puts the primes on the non-rigid side (`dyadic-separating-invariant-three-strings`), but the *bridge* from that invariant to ν₂ ≥ c·n is now REFUTED: balanced anti-dyadic inputs collapse (claim `spad-nondegenerate-linear-refuted`). So the structural half of G-supply is exhausted; ν₂ ≥ c·n for the primes is the named-open arithmetic hypothesis `abgs-2011-s9-mod4-switch-limit-open`, nothing structural replaces it.
 - **Library CLOSED, and staffing STOPPED (Directive 59 supersedes 46/47).**
   No further searches, downloads, or closure notes this run unless a solver
   files a REQUESTS.md entry naming a specific theorem it needs. The only

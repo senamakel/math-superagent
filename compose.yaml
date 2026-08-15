@@ -59,15 +59,25 @@ services:
     # simply stopped appearing, which is why the first check after it read as a
     # hung specialist rather than a dead container.
     #
-    # Eight gigabytes is the ceiling and it does not move again. The cap was
-    # raised twice — 2g to 4g, then 4g to 8g — each time because a run met it,
-    # and that is a rule with no fixed point: enumeration will always expand to
-    # whatever it is given. Eight gigabytes is enough to hold a real
-    # computation, and a method that needs more than that on a 30 GiB box is
-    # the wrong method rather than an under-resourced one. So an OOM from here
-    # is a finding about the approach, not a request for more memory: stream
-    # instead of materialising, count with `geng -u` instead of collecting,
-    # bound the degree, or reduce the question to one a solver can answer.
+    # The cap has been raised three times — 2g to 4g, 4g to 8g, and 8g to 16g
+    # on 2026-08-15 — each time because a run met it. That is a rule with no
+    # fixed point, and the previous note here said eight gigabytes "does not
+    # move again". It moved, so the honest version is the one below rather than
+    # a firmer promise that the next run also breaks.
+    #
+    # What has not changed is what an OOM means. The gilbreath run died at 161
+    # minutes (exit 137, three `oom` events) materialising a depth-4000
+    # exact-integer difference triangle a row at a time was enough for every
+    # earlier capture on the same question. That is a finding about the
+    # approach, not a shortage: stream instead of materialising, count with
+    # `geng -u` instead of collecting, bound the degree, or reduce the question
+    # to one a solver can answer. Sixteen gigabytes buys a bigger wrong method
+    # a little more room, and nothing else.
+    #
+    # Sixteen is also near the practical limit of this box: 30 GiB total, and
+    # the `cognee` service below holds its own 8g cap, so the two together can
+    # already exceed what is free. Raising this again means checking `free -g`
+    # first, not just editing the number.
     #
     # Read `docker events --filter event=oom` whenever a container vanishes
     # without an error — the kernel writes nothing to the console, so the run
@@ -75,7 +85,7 @@ services:
     # a sandbox limit, never as a mathematical ceiling: problem 763 wrote the
     # old cap into its own notes as "exact BFS stops at N=14", which was never
     # true of the mathematics.
-    mem_limit: 8g
+    mem_limit: 16g
     volumes:
       - type: bind
         source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}
