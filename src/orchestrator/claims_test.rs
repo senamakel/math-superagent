@@ -515,6 +515,30 @@ fn the_status_parse_prefers_formalised_over_proved() {
     assert_eq!(Status::parse("proven in the paper"), Status::Proved);
 }
 
+/// A measurement this run computed is `checked`, not `asserted`.
+///
+/// A run told "a measurement is not a proof — label it" writes exactly
+/// `measured, not proved`. That phrase used to match no arm and fall through
+/// to `asserted`, whose rendered line reads "asserted by the source, not
+/// proved there and not checked here" — the opposite of what happened, and in
+/// the direction that loses the check. A live run's counts fell as its
+/// evidence improved.
+#[test]
+fn a_measured_status_is_checked_not_asserted() {
+    for spelling in [
+        "measured",
+        "measured, not proved",
+        "measured-not-proved",
+        "Measured (streamed to N=40000)",
+    ] {
+        assert_eq!(
+            Status::parse(spelling),
+            Status::Checked,
+            "`{spelling}` names a computation this run performed"
+        );
+    }
+}
+
 /// A claim citing the counterexample engine is checked against what it found.
 ///
 /// The asymmetry with `formalised` is deliberate and worth pinning down: a

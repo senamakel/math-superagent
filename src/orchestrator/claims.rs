@@ -202,7 +202,15 @@ impl Status {
             Self::Formalised
         } else if lowered.starts_with("proved") || lowered.starts_with("proven") {
             Self::Proved
-        } else if lowered.starts_with("checked") || lowered.starts_with("numeric") {
+        } else if lowered.starts_with("checked")
+            || lowered.starts_with("numeric")
+            || lowered.starts_with("measured")
+        {
+            // `measured` for the same reason `formal` is spelled several ways.
+            // A run told to label a computation "measured, not proved" writes
+            // exactly that, and the phrase used to fall through to `asserted` —
+            // filing a result verified by three agreeing oracles under "not
+            // checked here". `Checked` is what it means: this run computed it.
             Self::Checked
         } else if lowered.starts_with("heuristic") || lowered.starts_with("conject") {
             Self::Heuristic
