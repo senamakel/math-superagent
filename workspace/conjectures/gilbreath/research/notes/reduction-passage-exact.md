@@ -95,7 +95,7 @@ id: reduction-passage-exact
 statement: In right-diagonal coordinates, the (pattern, v) model of Granville Lemma 5.4 is an EXACT representation of the real column dynamics: delta_k(q_n) = |delta_{k-1}(q_n) - eps_k| with eps_k = delta_{k-1}(q_{n-1}) read from the stored prefix diagonal, so the pattern is prefix-determined and independent of the new column's value. nu2 is computed in advance from q_1..q_{n-1}. This makes the Lemma 5.4 budget argument a theorem of the triangular geometry, not an assumption.
 hypotheses: 2-then-odds input (all gaps after the first even); exact integer arithmetic
 holds-here: yes (real prime triangle, N=10001, oracle reproduces problem.md rows)
-status: checked (0 model mismatches over 49,873,204 positions)
+status: proved (three-line identity: the fixed-pattern independence IS the triangle recurrence restated in right-diagonal coordinates, expanded in research/notes/prefix-determinism-proof.md; machine-checked 0 model mismatches over 49,873,204 positions, eps prefix-locality over 59,697 positions)
 bearing: Route B reduction — closes the fixedness gap in granville-nu2-reduction.md; the only open content of Route B remains the supply side nu2 > n^beta.
 anchor: code/gap_analysis/reduction_audit.py, code/out/reduction_audit.captured.txt, code/gap_analysis/block_constant_diagonal.py, code/out/block_constant_diagonal.captured.txt, research/notes/prefix-determinism-proof.md, code/out/prefix_determinism_proof_check.py, code/out/prefix_determinism.captured.txt
 answers: verifies the fixedness clause Directive 41 asked to name

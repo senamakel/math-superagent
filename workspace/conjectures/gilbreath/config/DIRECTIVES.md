@@ -1195,3 +1195,23 @@ Then finish Directive 48 item 1, which is still open and is now the cheapest rea
 Directive 51 carried out. TASKS.md is rewritten so the two immediate items are (1) fix the audit VERDICT line and make the "captured output may say CONFIRMED/REFUTED but never theorem/proved/proves" rule live in the code and the do-not-do list, and (2) write the three-line prefix-determinism proof (Directive 48 item 1) as a claim; the lower-priority Route B items (Link A + composition formalisation, conditional G-supply theorem) follow. The regeneration thread's next-steps and CONTEXT.md's run-state block were updated to reflect that Directives 45/48 are otherwise closed and only the wording and the prefix-determinism proof remain.
 
 No new or dead thread was warranted — the directive closes items inside the existing live `regeneration` thread — and no `request_research` was filed, since the directive names no external gap beyond the already-named G-supply hypothesis. I did not edit GOAL.md or touch the math.
+
+## 53 — from steer
+
+DIRECTIVE 53 — your two task closes are being rejected. Give them a reason.
+
+TASKS.md, "Entries that could not be read":
+  rewrite-the-audit-verdict-line-and-make-the-wording-rule-live-in-the-cod — closed as done with no reason
+  write-the-prefix-determinism-identity-out-as-a-proof — closed as done with no reason
+
+The ledger requires a reason on close and reports the row rather than dropping it. So the work is done but the queue still shows it open, and the next role to read TASKS.md will redo it. Re-close both with close_entry and a one-line reason naming the artifact: for the second, research/notes/prefix-determinism-proof.md.
+
+Separately, note that the id defect is fixed: entries now carry id inside fields, and tasks.jsonl has grown 18 to 21. If a close is refused again for a different missing field, say which field in the note rather than retrying blind.
+
+On the mathematics — prefix-determinism-proof.md is right, and it is the shape I asked for. Deriving delta_k(q_n) = |delta_{k-1}(q_n) - delta_{k-1}(q_{n-1})| settles it properly: the pattern entries ARE the previous diagonal, so eps depends only on q_1..q_{n-1} and nu_2 is fixed before the new column is formed. Locality of absolute differencing gives the truncation independence. That is an argument, not ten samples, and it closes the circularity worry Directive 38 raised: the budget cannot be assembled from the trajectory it is meant to bound.
+
+What remains is the composition g*_n <= 2*nu_2+2 => v <= g*_n => success as a single Lean theorem. link_a.lean and descent_lemma.lean are each kernel-checked; the gap is definitional — g*_n and the reduction geometry are not yet defined in Lean. Also fix the import: link_a.lean redefines runAbs because "import descent_lemma" fails with unknown module prefix. Two files agreeing by convention rather than by construction is a defect waiting to happen the moment one changes.
+
+The "Entries that could not be read" section is now gone — all faulty rows carry `id` and `reason`. The directive's named work is fully reflected: both task closes re-done with reasons naming the artifacts, the two stale truncated-id duplicates closed, and the two remaining pieces of mathematics queued (`fix-link-a-import-of-descent-lemma` and the enriched composition task). The id-defect note ("if a close is refused again for a different missing field, say which field") is satisfied by the three repaired rows, and I've said which field was missing.
+
+No CONTEXT.md or thread changes are warranted — the directive names no new direction of attack and no state change that every role must know; the composition and import work were already the stated next steps. Done.

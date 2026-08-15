@@ -1,0 +1,5 @@
+[run window] leg(a) nu2>=w/2 n in [17,30000]: viol=0 first=None min nu2/w=0.5000@44
+[run window] leg(b) w>=(n-2)/2 n in [2,30000]: viol=0 first=None min excess=0
+[run window] composed nu2>=(n-2)/4 n in [23,30000]: viol=0 first=None min nu2/n^0.525=1.542@23
+  nu2(23)=8 vs n^0.525=5.2 ratio 1.542
+  first n with (n-2)/4 > n^0.525: 23

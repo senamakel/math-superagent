@@ -23,18 +23,20 @@ EXPECTED = {1:[1,2,2,4,2,4,2,4,6,2,6,4],2:[1,0,2,2,2,2,2,2,4,4,2,2],
 
 
 def excess_info(row):
-    """Return (E, leading_nonzero_pos)."""
+    """Return (E, leading_nonzero_pos).
+    leading_nonzero_pos is the e-index j (0-based count of leading zero
+    excesses): the first positive excess is at row-index i=j+1, so the number
+    of leading zero excesses is j.  None if all excesses are 0."""
     E = 0
-    lnz = len(row) - 1
-    for i in range(1, len(row) - 1):
+    lnz = len(row) - 2
+    for j, i in enumerate(range(1, len(row) - 1)):
         d = row[i] - row[i + 1]
         if d < 0:
             d = -d
         e = d - 2
         if e > 0:
             E += e
-            if lnz == len(row) - 1:
-                lnz = i
+            return E, j
     return E, lnz
 
 
@@ -133,7 +135,7 @@ def analyze_events(primes, depth, label, Es, bprof, nrows):
     total_E = sum(Es)
     print(f"(e) total E over all rows = {total_E}, total events = {ev['total']}")
     print(f"    (excess 'budget' reading: E(row k) is the store that a regeneration")
-    print(f"     must draw on; total E across rows vs total events)"
+    print("     must draw on; total E across rows vs total events)")
     print(f"    time {time.time()-t0:.1f}s")
 
 
@@ -150,8 +152,10 @@ if __name__ == "__main__":
         bl = block_profile(got[k + 1])
         print(f"  row{k}: E={E} lnz_ex={l} block_profile(row{k+1})={bl} match={l==bl}")
 
-    Es, bprof, lnz, nrows, _ = analyze(primes_up_to(20_000_000), 1000, "SIEVE 2e7 depth 1000")
-    analyze_events(primes_up_to(20_000_000), 1000, "SIEVE 2e7 depth 1000", Es, bprof, nrows)
+    p20 = primes_up_to(20_000_000)
+    Es, bprof, lnz, nrows, _ = analyze(p20, 1000, "SIEVE 2e7 depth 1000")
+    analyze_events(p20, 1000, "SIEVE 2e7 depth 1000", Es, bprof, nrows)
     sys.stdout.flush()
-    Es2, bprof2, lnz2, nrows2, _ = analyze(primes_up_to(300_000_000), 240, "SIEVE 3e8 depth 240")
-    analyze_events(primes_up_to(300_000_000), 240, "SIEVE 3e8 depth 240", Es2, bprof2, nrows2)
+    p3 = primes_up_to(300_000_000)
+    Es2, bprof2, lnz2, nrows2, _ = analyze(p3, 240, "SIEVE 3e8 depth 240")
+    analyze_events(p3, 240, "SIEVE 3e8 depth 240", Es2, bprof2, nrows2)

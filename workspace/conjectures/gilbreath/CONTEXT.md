@@ -53,7 +53,7 @@ The reduction audit (`code/gap_analysis/reduction_audit.py`,
 
 ## Run state (Directive 36 pivot)
 
-**Directive 51 (audit wording, third recurrence).** Directives 45/48 are otherwise closed (Link A non-vacuous: 1181 columns, margin 35.882, 0 violations; audit clean: 45150 cells, 281 columns, 0 violations). One line remains: the audit VERDICT calls a 281-column check "a theorem" — the same category error as Directives 42/44. Standing rule: captured output reports counts/ranges/violation totals and may say CONFIRMED or REFUTED over the stated range; it may NOT say theorem/proved/proves. Immediate work: rewrite that VERDICT line in the program and re-capture, then write the three-line prefix-determinism proof (Directive 48 item 1).
+**Directive 51 (audit wording, third recurrence) — CLOSED this attempt (items a and b).** Code/out/reduction_audit_corrected.captured.txt re-captures the fixed audit (sieve 2e6, M=300): identity CONFIRMED 45150 cells 0 violations; biconditional 281 columns 0 violations; verdict line factual with no "theorem". The defective "MACHINE-CONFIRMED as a theorem" line survived only in the stale reduction_audit.captured.txt, not in the source. `reduction-passage-exact` upgraded to status: proved (three-line identity — the fixed-pattern independence IS the triangle recurrence in right-diagonal coordinates; research/notes/prefix-determinism-proof.md; 0 mismatches over 49,873,204 model positions, 59,697 eps-prefix-locality positions).
 
 **Empirical route at ceiling.** 1e9 run (W=50,847,534, 185s, 1.37 GiB):
 row-248 STILL capped (b_land = W−248−1, floor=0, genuine=False;
