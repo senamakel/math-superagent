@@ -3,7 +3,7 @@
 ```approach
 idea: Supply the missing density input to the already-proved Granville Lemma 5.4 reduction by bounding, via analytic number theory (Dirichlet/PNT-in-AP, Chebyshev's bias, Bombieri–Vinogradov / GRH, Hardy–Littlewood correlations), the frequency of the prime-gap residue class that feeds the descent coefficient ν₂ = #{c_s = 2}, turning "ν₂ > n^β" from an open measurement into a conditional theorem.
 mechanism: GOAL.md records the current state: Route B has Lemma 5.4 proved (this run), and "the whole of Route B now rests on the single open density statement G-supply (ν₂(q_n) > n^β, β > 0.525), which reduces cleanly to a prime-gap-mod-4 frequency bound." The missing object is therefore not a new reformulation of the operator but a named theorem that delivers that frequency bound. The key step is to pin down WHICH mod-4 statistic feeds ν₂ — a one-point statistic (primes in a residue class, handled by Dirichlet/PNT-in-AP) or a two-point correlation (consecutive primes p_n, p_{n+1} in prescribed residue classes mod 4, handled by the Hardy–Littlewood r-tuple / Bateman–Horn conjecture, or in short intervals by Gallagher's Poisson model, already in the library). If it is one-point, then ν₂(n) = n/2 − O(n^{θ}) follows from PNT-in-AP with θ = 1/2+ε (Bombieri–Vinogradov) or θ = 1/2 (GRH), and n/2 − O(n^{1/2+ε}) > n^{0.525} for large n gives GC as a corollary of Lemma 5.4 — a clean conditional partial result. If it is two-point, the honest statement is conditional on a correlation bound at Hardy–Littlewood level, still a real contribution because it isolates exactly which conjecture about prime gaps suffices. The Chebyshev-bias literature (Rubinstein–Sarnak 1994) is the right lens for the SECOND-order term: it tells us the sign of the bias and, crucially, that the bias oscillates (Littlewood-type), so no single-sided bias can be asserted unconditionally — the honest deliverable is a fluctuation bound, not a bias assertion.
-status: grounded
+status: adopted
 precedent: >
   The named analytic-number-theory machinery is real and this candidate's
   framing is CORRECT and checkable — resolved as TWO-POINT, not one-point.
@@ -54,7 +54,25 @@ buy: >
   lower-bound form). The value is isolating EXACTLY which conjecture about
   consecutive-prime residues suffices — the single most informative fact the
   reduction can yield.
-first-step (superseded): The one-point-vs-two-point question is RESOLVED: two-point. State the precise hypothesis now: there is a δ > 0 such that ν₂(q_n) ≥ n^{0.525+δ} for all large n, which by the diagonal/minsum structure is a lower bound on the density of consecutive-prime mod-4 switches along the right diagonal. Verify this bound direction against the run's measured ν₂/n ∈ [0.42,0.52] — the constant 1/2 is far above 0.525, so the needed lower bound is comfortable; the open part is turning the empirical 1/2 into a proved two-point fluctuation bound, which is a Hardy–Littlewood-level (or Rubinstein–Sarnak-GRH-level) statement, not PNT-in-AP.
+first-step: >
+  Write the exact conditional bound as a checkable predicate and verify its
+  two numerical ingredients against the oracle. (a) Recompute ν₂(q_n) for
+  n = 1..3999 from the right diagonal of the prime-difference triangle
+  (sieve the primes, form the halved gap diagonal, XOR/Rule-90 descent) and
+  confirm ν₂/n ∈ [0.42, 0.52] with the factor-26 margin over n^0.525 at
+  n = 3999, reproducing `granville-nu2-density-measured` independently.
+  (b) State the target hypothesis precisely — there exists δ > 0 such that
+  ν₂(q_n) ≥ n^{0.525+δ} for all large n — and check the needed direction:
+  the measured constant 1/2 exceeds 0.525, so the demand is the WEAK lower
+  bound ν₂ ≥ n^{0.525+δ}, not the full Gaussian ν₂ = n/2 + O(n^{1/2+ε}).
+  Deliverable of this step: a machine-checked statement "IF ν₂(q_n) ≥
+  n^{0.525+δ} for all large n (a two-point consecutive-prime mod-4 switch
+  bound) THEN GC holds via Lemma 5.4", with the conditional theorem's
+  hypothesis written as a single named prime-gap assumption (Hardy–Littlewood
+  level) and the implication's logic traced step-by-step through the proved
+  reduction. The proof of the IF itself is the next step; this step produces
+  the exact statement, the verified margin, and the oracle-checked atomic bit
+  identity bit_n = [p_{n+1} ≢ p_n (mod 4)].
 side: regeneration (supplies the density the proved Lemma 5.4 consumes; erosion is already settled)
 named-mathematics: Dirichlet's theorem / prime number theorem in arithmetic progressions, Chebyshev's bias, Rubinstein–Sarnak logarithmic densities, Bombieri–Vinogradov theorem, GRH zero-density / error terms, Hardy–Littlewood prime r-tuple conjecture, Gallagher's Poisson short-interval model.
 speculative: Whether ν₂ is one-point or two-point in mod-4 determines whether this is a GRH-level or a Hardy–Littlewood-level conditional result; that distinction is exactly what the first step resolves, and it is the single most informative fact the run can extract from Granville's reduction.

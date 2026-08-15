@@ -102,6 +102,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `giant_stretches_snapshot.json` | _(undescribed)_ |
 | `giant_stretches_verify.captured.txt` | _(undescribed)_ |
 | `intruder_runs.captured.txt` | Output of `pattern/intruder_runs.py`: the 17 maximal y=4 runs, drain table, after-regen intruders. |
+| `inventor_verify.py` | _(undescribed)_ |
 | `jump_closure_law.captured.txt` | _(undescribed)_ |
 | `jump_smooth_run_law.captured.txt` | _(undescribed)_ |
 | `jump_smooth_run_wider.captured.txt` | _(undescribed)_ |

@@ -173,3 +173,23 @@ fn the_ledger_records_what_became_of_a_directive() -> std::io::Result<()> {
     assert!(ledger.contains("Rewrote TASKS.md"));
     Ok(())
 }
+
+/// A cursor left behind by an earlier run still exposes what arrived since.
+///
+/// A live run sat with a cursor of 37 against a 44-line queue for an hour and
+/// drained nothing, so the operator's seven directives never reached it. This
+/// pins the arithmetic that was suspected first, so the next investigation
+/// starts past it rather than at it.
+#[test]
+fn a_stale_cursor_leaves_later_directives_pending() -> std::io::Result<()> {
+    let root = workspace("stale-cursor")?;
+    for index in 1..=44 {
+        enqueue(&root, "steer", &format!("directive {index}")).expect("the queue accepts");
+    }
+    std::fs::write(root.join(CURSOR), "37\n")?;
+    let waiting = pending(&root).expect("a readable queue");
+    assert_eq!(waiting.len(), 7, "ids 38..=44 are still waiting");
+    assert_eq!(waiting[0].id, 38);
+    assert_eq!(waiting[6].id, 44);
+    Ok(())
+}
