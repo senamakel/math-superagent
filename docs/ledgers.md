@@ -273,6 +273,61 @@ against a fixture, and it is how the stale dependency in `singmaster`'s
 `boundary-finite-collisions` skeleton was found — the header still says
 `sketched` while a lemma under it is `refuted`.
 
+## A ledger a run can declare
+
+Nine of these are Rust modules, and eight of the nine should stay that way:
+`closure` computes a transitive closure to a fixed point, `blueprint` detects
+cycles across files, `claims` reconciles a `formalised` status against kernel
+verdicts on disk. None of that is expressible as configuration and none of it
+should be.
+
+But a *module* is something only a release can add, and the run is the thing
+that discovers it needs an axis. The `research/folds/` folder above is the
+evidence: a live workspace built the topic axis by hand, badly, out of files
+nobody designed, and `threads` was written months later in response. That will
+happen again.
+
+So a ledger is also a **declaration** — `ledger/spec.rs` — and the engine
+renders a declared one and a built-in one the same way. A spec names its source
+(`queue`, an append-only jsonl; or `items`, one file per entry with a fenced
+block), its fields and what each is for, its statuses and which of them close an
+entry, and the sections its file renders. The static set a run starts with is
+`tasks`, `goals` — the sub-goal decomposition under `research/backward/` — and
+the board, plus the nine registered so `list_ledgers` and `read_ledger` reach
+every ledger rather than eight of twelve.
+
+Six tools serve all of them, and the count does not grow when a ledger is added.
+That is forced rather than chosen: the tool schema vec is built **once per run**
+(`agent_loop::run_loop`, with a regression test keeping it that way), so a
+ledger declared mid-run can get no tool of its own and can appear in no `enum`
+in anybody's schema. `ledger` is therefore a plain string checked against the
+registry at call time, and an unknown slug returns the list of real ones — which
+is the discovery path a model actually follows, in one turn, without having
+thought to call `list_ledgers` first.
+
+Four rules keep a declaration from undoing what the rest of this file argues
+for, and all four are code:
+
+- **It cannot raise a bound.** A section's `cap` is clamped against
+  `ledger::budget` when the spec is read. A ledger that could declare its own
+  bound would be a second route back to the 86 KB file.
+- **It cannot reach a system prompt.** Prompts are assembled once at container
+  start, so a mid-run ledger could not reach one even if the engine tried.
+  Nothing tries; the way in is `list_ledgers` then `read_ledger`.
+- **It cannot shadow a built-in or claim a built-in's derived path.** Every
+  prompt naming `tasks` is written against what `tasks` holds, and two writers
+  on one derived file is how each one's work disappears.
+- **It cannot reason.** The checks are a closed set — a required field, a known
+  status, a close with no reason — not an expression language.
+
+Write authority is the *spec's*, not the grant's, and it has to be: the set of
+ledgers is not fixed when the tools are registered. Holding `record_entry` is
+not permission to write every ledger. The acting role is baked into the tool at
+construction, never an argument, on `post_board`'s reasoning — which is also why
+five new tools arrived with a brief and a test asserting every role that may
+write one is told how. `post_board` was granted to three roles, mentioned in no
+prompt, and called **zero** times in a live three-school hour.
+
 `search_claims` and `request_research` travel with the document tools, for the
 same reason the index tools do: whichever role is working is the one that needs
 to know what the run establishes, or that walks into a gap.
