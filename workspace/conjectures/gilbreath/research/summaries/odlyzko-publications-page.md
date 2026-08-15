@@ -18,11 +18,14 @@ journal row already cited by encyclopedia-of-math and OEIS A036262. It contains
 
 ## What it does not settle
 
-The Odlyzko 1993 block lemma (a `{0,2}` block of length `n` protecting `≈ n/2`
-rows) is **not** given here — only that the paper exists. The exact statement
-and its constant remain a pending dependency (`odlyzko-block-lemma-asserted`,
-`holds-here: unchecked`). Do not cite this page for anything beyond the
-existence/citation of the paper.
+This bibliography page gives only the citation — no content. The block lemma's
+exact statement and constant are **NOT read from here**. They are read from the
+held primary sources: `research/sources/odlyzko-1993-iterated-differences-latex-source.full.md`
+(the author's TeX) and `research/sources/odlyzko-1993-iterated-absolute-differences.full.md`
+(PDF), forming the sourced claim `odlyzko-block-lemma`: a leading `{0,2}` block
+of length N−1 after a leading 1 protects **N rows** — coefficient exactly 1,
+**one row per block entry**, NOT `≈ n/2`. The `≈ n/2` figure is refuted and
+appears nowhere in the primary source; do not reintroduce it.
 
 ```claim
 id: odlyzko-1993-citation-confirmed
@@ -38,5 +41,7 @@ answers: does-the-odlyzko-1993-paper-exist
 ## Verdict
 
 **No help for content.** It is one bibliography page; the only value is pinning
-the Odlyzko 1993 citation so a later fetch can target the exact paper. The
-block-lemma gap stands open.
+the Odlyzko 1993 citation. The block lemma itself — exact constant 1, one row
+per `{0,2}` block entry — is established, NOT a gap: it is sourced from the
+held Odlyzko 1993 primary text (`odlyzko-block-lemma`) and independently
+re-derived by this run. Do not re-open it.

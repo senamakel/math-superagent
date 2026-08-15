@@ -19,7 +19,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | http://oeis.org/A000232 | A000232 | linked from Gilbreath's Conjecture -- from Wolfram MathWorld |
 | 2 | http://oeis.org/A036262 | A036262 | linked from Gilbreath's Conjecture -- from Wolfram MathWorld |
 | 2 | https://www.wolframalpha.com/input/?i=gilbreaths+conjecture | Gilbreath's Conjecture | linked from Gilbreath's Conjecture -- from Wolfram MathWorld |
-| 2 | https://doi.org/10.1088/1751-8121/ab0588 | Hidden multiscale order in the primes | cites Chebyshev's Bias (2019, cited 34 times) |
 | 2 | https://pubmed.ncbi.nlm.nih.gov/27418603/ | 27418603 | and K.S. wrote the paper. ### Series information PNAS Plus Issue date 2016 Aug 2. [PMC Copyright notice][7] PMCID: PMC4978288 PMID: [27418603][10] See " [PNAS Plus Significance Statements][11] " on… |
 | 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Giacomelli,+P | Piero Giacomelli | Mathematics > Number Theory **arXiv:2503.04182**(math) [Submitted on 6 Mar 2025] # Title: Ducci Matrices in $p$-adic Context Authors: [Piero Giacomelli][2] View a PDF of the paper titled Ducci… |
 | 2 | https://atlas.wolfram.com/01/01/90/ | Rule 90 in Wolfram's atlas of cellular automata | [S2CID][86] [41344677][136]. ## External links [[edit][137]] - [Weisstein, Eric W.][138], ["Rule 90"][139], *[MathWorld][140]* - [Rule 90 in Wolfram's atlas of cellular automata][141] - [v][142] -… |
@@ -46,5 +45,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | http://oeis.org/classic/A080839 | oeis.org/classic/A080839 | 2010 at 23:12 - 2 $\begingroup$ The question of how many increasing sequences of integers have the Gilbreath property is answered in [oeis.org/classic/A080839][37]. It doesn't make the primes seem… |
 | 1 | http://doaj.org/search/articles?source=%7B%22query%22%3A%7B%22query_string%22%3A%7B%22query%22%3A%22%5C%22Riccardo%20Gatti%5C%22%22%2C%22default_operator%22%3A%22AND%22%2C%22default_field%22%3A%22bibjson.author.name%22%7D%7D%7D | — | linked from Gilbreath Equation, Gilbreath Polynomials, and Upper and Lower Bounds for Gilbreath Conjecture |
 | 1 | http://en.wikipedia.org/wiki/Prime_gap | en.wikipedia.org/wiki/Prime_gap | - [15] As for me, everything was entirely homemade. - [16] Starting here, the prime numbers (left hand-side column) were obtained from : [en.wikipedia.org/wiki/Prime_gap][78] and… |
+| 1 | http://www.pubmed.gov/?cmd=Search&amp;term=Riccardo%20Gatti | — | linked from Gilbreath Equation, Gilbreath Polynomials, and Upper and Lower Bounds for Gilbreath Conjecture |
 
-_382 further candidates not shown; they are cited once each._
+_402 further candidates not shown; they are cited once each._

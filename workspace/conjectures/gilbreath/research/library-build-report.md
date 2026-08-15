@@ -35,6 +35,18 @@ This run inherited a near-complete Gilbreath reference library. This cycle
 the one live open row in the requests that a primary source could settle, and
 closed the frontier's top-cited-but-absent reference.
 
+## Verification cycle (2026): library confirmed complete; frontier sweep judged
+
+The only top-of-FRONTIER lead not already on disk was Torquato–Zhang–de Courcy-Ireland
+2019, "Hidden multiscale order in the primes" (J. Phys. A 52:124002, doi
+10.1088/1751-8121/ab0588; companion arXiv:1802.10498), cited by two of the run's
+sources. It is a Hardy–Littlewood-conditional study of prime pair-correlation /
+hyperuniformity — the same two-point mod-4 backbone the ν₂ reduction already
+rests on, already covered by LOS-2016 and ABGS-2011, and it delivers no new
+lower bound on the switch count. Per the closure directive it was **not fetched**;
+the physics object (prime quantized diffraction) does not bear on the settled
+G-supply gap. Recorded so nobody re-attempts.
+
 ## What was added this cycle
 
 - **Granville & Lumley, "Primes in short intervals: heuristics and
@@ -88,6 +100,37 @@ closed the frontier's top-cited-but-absent reference.
   `lemma54-re-derived-proof`; remaining open content = ν₂ supply bound ≥ c·n.
 - Short-interval heuristic landscape (this cycle): `granville-lumley-short-intervals-heuristics`
   (demand-side, mod-4-silent); mod-4 supply framing in `los-2016-consecutive-pair-mod4-bias`.
+
+## Indexing verification cycle (librarian, this build): reachability confirmed
+
+Confirmed, by live `search_documents` queries, that the canonical tier is not
+merely present on disk but genuinely **within the search index** — a source
+that cannot be found is not in the library. Each of the route-bearing and
+canonical items below returned ranked hits from their files (full text,
+summary, or both), with the source URL recorded in the file header:
+
+- **Odlyzko 1993** — block lemma (constant 1), the mod-4 linearization,
+  10^13/G=635. Reached via `research/summaries/odlyzko-1993-iterated-absolute-differences.md`
+  (URL https://www.ams.org/journals/mcom/1993-61-203/S0025-5718-1993-1182247-7/...) and
+  both full texts.
+- **Killgrove–Ralston 1959** — reachable in `research/sources/killgrove-ralston-1959-*.full.md`.
+- **ABGS 2011** (mod-4 prime-residue-pair frequency, the ν₂/G-supply crux) —
+  `ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.full.md`.
+- **Granville 2026 Lemma 5.4 FULLPDF, CHT 2026 FULLPDF, Chase 2024, Chase–Hunter–Tao
+  2026, Banks–Ford–Tao 2023, Granville & Lumley 2021, Lemke Oliver–Soundararajan
+  2016/2017, Colonna 2025–26 record, Plouffe 2025, Eppstein, Muney 2026,
+  Gatti 2020, Proth 1878** — all reached by query.
+- **Summary layer** confirmed indexed (e.g. `proth-1878-sur-la-serie-des-nombres-premiers.md`,
+  `odlyzko-1993-iterated-absolute-differences.md`, `mathoverflow-gilbreath-what-is-known-thread.md`
+  all returned by search).
+
+**Conclusion:** no further gathering is warranted. The library is closed
+(REQUESTS.md), the phase-1 exit test is met (ROOT.md), and every source a claim
+in this run cites is on disk and reachable through the index. Nothing in the
+frontier's multi-cited tier is absent that a faithful source could supply for
+the settled G-supply gap. Any genuinely new fetch would require a source
+delivering `ν₂ ≥ c·n` (or the two-point mod-4 switch bound) — none is known to
+the literature.
 
 ## Phase-1 exit test
 

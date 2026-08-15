@@ -48,6 +48,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `abgs-2011-s9-mod4-switch-limit-open` | claim | **ready** | — | Ash–Beltis–Gross–Sinnott 2011 §9 (Experimental Math. 20(4):400–411): whether N(a,d,m,x)/π(x) — the frequency of consecutive prime pairs p,q… |
 | `agama-trace-restatement` | claim | **ready** | — | (Agama 2021) In the trace/circuit language of the iterate-difference triangle of a finite originator, Gilbreath's conjecture is equivalent… |
 | `anti-gilbreath-construction` | claim | **ready** | — | For any unbounded monotone f(n)≥2 there is a sequence X with n-th gap ≤ f(n) whose triangle's right edge is 1 infinitely often and other… |
+| `anticlustering-markov-insufficient-for-gsupply` | claim | established | — | Generic Markov anti-clustering of the mod-4 switch bit does NOT deliver the supply bound ν₂ ≥ c·w (hence not ν₂ ≥ c·n). On the worst-min… |
 | `arias-block-and-evolution` | claim | **ready** | — | (survey) if a row has leading 1 and n subsequent entries in {0,2}, the next n−1 rows start with 1; G(π(10^13))=635; a random pseudo-prime… |
 | `bcz-2023-left-edge-stabilization` | claim | established | — | For binary top rows the left-edge operator of the Proth–Gilbreath triangle is an F2 involution: T(f)(X) = f(X/(1+X))·(1/(1+X)) over F2[[X]]… |
 | `bft2023-cramer-model-canonical` | claim | established | — | (Banks–Ford–Tao 2023, Invent. math. 233:1471–1518) Cramér's model (each n≥3 in with prob 1/log n, jointly independent) gives largest gap ~… |
@@ -84,6 +85,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `counterexample-backward/CB-prime-exclusion` | lemma | **ready** | — | \| The constrained initial pattern derived in CB-backward-propagation — a stretch of consecutive halved prime gaps whose XOR over binom(t,·)… |
 | `czz2011-ducci-2-lipschitz` | claim | established | — | The difference map D on d-tuples with a′_k=\|a_k−a_{k+1}\| (and a′_d=\|a_d−a_1\|) is 2-Lipschitz in the Euclidean norm and is not a… |
 | `czz2011-infinite-periodic-ducci-is-gilbreath-operator` | claim | established | — | On an infinite periodic sequence, the map a′_k=\|a_k−a_{k+1}\| is exactly the operator of Gilbreath's conjecture; in the periodic setting… |
-| `czz2014-gpf-ducci-collapses-to-2357` | claim | established | — | The GPF-Ducci iteration G(p1..pd)=(gpf(p1+p2),...,gpf(pd+p1)) on prime d-tuples is ultimately periodic, and every limit cycle of length > 1… |
 
-_158 further nodes not shown._
+_162 further nodes not shown._
