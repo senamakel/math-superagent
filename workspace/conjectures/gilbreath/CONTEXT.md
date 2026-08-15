@@ -6,10 +6,33 @@ why, computed numbers, durable memory, disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
 Budget 10,000 tokens. Length is a bill the whole run pays on every model call;
-link the file holding any detail compressed away. (Last cycle was a check-edit:
-verified the Directives 24–27 record against the outputs, no rewrite; this
-cycle's changes are the two Contradictions entries and the gap-convention
-correction in the chain.)
+link the file holding any detail compressed away. (Last cycle: Directive 48 —
+reduction-audit reporting defects, see Run state.)
+
+## Run state (Directive 48 — reduction-audit reporting)
+
+**Directive 48 is in flight, ahead of Directive 47's remaining items.** The
+reduction audit (`code/gap_analysis/reduction_audit.py`,
+`code/out/reduction_audit.captured.txt`) has two reporting defects to fix
+before resuming:
+
+- **Prefix-determinism is the load-bearing fact and it is PROVABLE in three
+  lines, not ten samples.** The 0-2 cycle pattern of δ(q_n) is read from
+  δ(q_{n−1}) — by the right-diagonal identity `δ_k(q_n) = |δ_{k−1}(q_n) −
+  δ_{k−1}(q_{n−1})|`, the eps at position k is `δ_{k−1}(q_{n−1})`, an entry
+  of the stored prefix diagonal; q_n enters only at the diagonal bottom, so
+  no cycle-position eps depends on the trajectory. Hence ν₂ is fixed in
+  advance — this kills Directive 38's circularity worry. Next attempt writes
+  this as a one-paragraph proof and files it as a `proved` claim (not yet
+  filed); machine evidence is the capture's (B) line (49,873,204 checks,
+  0 mismatches) plus (C) (5 prefixes × 2 odd extensions identical).
+- **The capture's verdict line is self-contradictory and must be fixed.**
+  `reduction_audit.captured.txt` prints "ALL AUDIT CHECKS PASSED" after (D)
+  reports the diagonal-coordinate constant-1 erosion law REFUTED (1133
+  violations). A refutation is a finding, not a pass. Fix the exit logic so
+  (D)-refuted cannot print PASSED, then re-capture to `.captured2.txt`; keep
+  the distinction that (D) does NOT touch the proved row-direction block
+  lemma (`b_{k+1} ≥ b_k − 1`, 0 violations).
 
 ## Run state (Directive 36 pivot)
 

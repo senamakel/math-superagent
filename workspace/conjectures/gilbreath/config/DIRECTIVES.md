@@ -1113,3 +1113,19 @@ What I changed and why:
 - **`GOAL.md`, `CONTEXT.md`, `research/threads/regeneration.md`** — reframed Route B as a **conditional theorem** whose hypothesis is the two-point consecutive-prime mod-4 correlation bound, now a named open problem rather than an unstated gap in the run's own argument.
 
 The run's record already supported every part of the directive: the vacuous Link A captures with `checked: 0`, the ABGS §9 "cannot tell whether they are tending toward a limiting ratio of 1" open question, and the Directive 46 library closure. Nothing was filed as a claim that isn't established — the ABGS fact is recorded as `asserted`/source-named-open, not as a proved result.
+
+## 48 — from steer
+
+DIRECTIVE 48 — the reduction audit is the result Directive 38 item 3 asked for. Two defects in how it reports itself.
+
+What you established: (B) 49,873,204 model-match checks against the |x-eps| law, 0 mismatches; and (C) the pattern eps on the 0-2 cycle is read from delta(q_{n-1}) and is therefore PREFIX-DETERMINED, identical across different odd extensions. (C) is load-bearing. Directive 38's worry was exactly that the {0,2} entries a column meets might depend on where the trajectory currently sits — if they did, nu_2 would not be fixed in advance and the budget argument would be circular. Prefix-determinism kills that worry. This is the audit passing, not a formality.
+
+1. But (C) rests on 5 prefixes with 2 extensions each — 10 data points supporting a structural fact. You say 'by the recurrence identity', so WRITE THE IDENTITY OUT as a one-paragraph proof: delta(q_n) restricted to the 0-2 cycle positions depends only on q_1..q_{n-1}, because those entries are inherited from delta(q_{n-1}) and the new element enters only at the diagonal bottom. Ten samples for a fact provable in three lines is the weak half of a strong result. File it as a claim with the proof, anchored to this capture.
+
+2. The capture says '(D) constant-1 erosion law REFUTED here: 1133 violations' and then ends 'ALL AUDIT CHECKS PASSED'. Same defect as the Link A capture in Directive 45: a summary line contradicting its own findings. A refutation is not a pass. Fix the exit logic so a refuted sub-check cannot print PASSED, and re-capture. You were right that the diagonal-coordinate erosion law does not touch the proved row-direction block lemma (b_{k+1} >= b_k - 1, 0 violations) — keep that distinction, but the verdict line must reflect it.
+
+The GOAL.md rewrite under Directive 47 is right. Leave that framing alone.
+
+Done. I read the actual workspace (which is at Directives 47/48, not 36 as the stale context block suggested) and made the minimal changes Directive 48 requires: reordered `TASKS.md` so the two audit-reporting fixes come first — (1) write the three-line prefix-determinism identity and file it as a proved claim, and (2) fix `reduction_audit.py`'s verdict logic so a refuted (D) sub-check cannot print "ALL AUDIT CHECKS PASSED", then re-capture to `.captured2.txt`. I updated `research/threads/regeneration.md`'s `next` and `research/THREADS.md` to put this at the head, added a compact run-state note to `CONTEXT.md` (the load-bearing fact is provable in three lines, not ten samples; the verdict line is self-contradictory), and left GOAL.md untouched as the directive instructs.
+
+I did not file the proof as a claim myself — that is the next attempt's job (a `proved` claim must be established by a role that establishes facts), so the task list directs it there rather than my asserting it. No new thread or research request was warranted: this is a continuation of the live regeneration thread, and the directive names a proof-writing and code-fix gap, not a literature gap.

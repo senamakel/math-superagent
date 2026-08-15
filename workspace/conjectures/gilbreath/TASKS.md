@@ -1,6 +1,49 @@
 # Tasks
 
-## Directive 47 — do these first, in this order
+## Directive 48 — do these first, in this order
+
+The reduction audit (Directive 38 item 3) is the result. Two defects in how it
+reports itself; fix both before resuming Directive 47 work.
+
+### 1. File the prefix-determinism proof as a claim (the load-bearing fact)
+
+- [ ] **1. Write the one-paragraph proof, then file it as a claim.** The
+  fact: δ(q_n) restricted to the 0-2 cycle positions depends only on
+  q_1..q_{n-1}. Proof (three lines): in right-diagonal coordinates the
+  triangle identity is `δ_k(q_n) = |δ_{k−1}(q_n) − δ_{k−1}(q_{n−1})|`, so the
+  eps feeding position k is `eps_k = δ_{k−1}(q_{n−1})` — an entry of the
+  stored prefix diagonal δ(q_{n−1}), a function of q_1..q_{n−1} alone. The
+  0-2 cycle positions of δ(q_{n−1}) are indices (n−2)−L .. (n−2)−1, strictly
+  above the bottom entry (A_{n−1}(0)=1); the new element q_n enters only at
+  the diagonal bottom and never feeds back into any eps_k on the cycle.
+  Therefore the pattern is prefix-determined and ν₂ is fixed in advance, not
+  trajectory-dependent — this is the fact that kills Directive 38's
+  circularity worry.
+- [ ] **2. File it** as a claim block (id e.g.
+  `reduction-audit-prefix-determinism-proved`, `status: proved`) in a note
+  under `research/notes/`, anchored to `code/out/reduction_audit.captured.txt`.
+  The machine evidence is the (B) line (49,873,204 model-match checks,
+  0 mismatches) and the (C) line (5 prefixes × 2 odd extensions identical);
+  the proof is the identity above, which upgrades (C)'s ten data points to a
+  structural theorem.
+
+### 2. Fix the audit's verdict logic, then re-capture
+
+- [ ] **3. Fix `code/gap_analysis/reduction_audit.py`** so a refuted sub-check
+  cannot print `ALL AUDIT CHECKS PASSED`. (D) reports the diagonal-coordinate
+  constant-1 erosion law REFUTED (1133 violations) — a refutation is a
+  finding, not a pass. The final verdict line must print PASSED only for the
+  checks that actually pass (A exactness, B model match, C fixedness) and
+  state separately that (D) is refuted-as-reported, while keeping the
+  distinction that (D) does NOT touch the proved row-direction block lemma
+  (`b_{k+1} ≥ b_k − 1`, 0 violations) — the anti-diagonal 0-2 suffix is
+  transversal to a row's leading {0,2} block.
+- [ ] **4. Re-capture** as
+  `timeout 540 python3 code/gap_analysis/reduction_audit.py 2>&1 | tee code/out/reduction_audit.captured2.txt; echo EXIT_CODE=$?`
+  (new filename so the defective capture is not overwritten) and confirm the
+  verdict line reflects (D) = refuted, (A)/(B)/(C) = passed.
+
+## Directive 47 — continuing (items 1–11 unchanged)
 
 ### A. Fetch and file the MathOverflow "what is known" thread (single named target)
 
@@ -76,6 +119,11 @@
 
 ## Do not do
 
+- **Do not touch GOAL.md's framing.** The Directive 47 rewrite is correct;
+  Directive 48 leaves it alone.
+- **Do not treat the audit's (D) line as an error to be hidden.** It is a
+  reported refutation of the *diagonal-coordinate* erosion law, and it stays
+  distinct from the proved row-direction block lemma.
 - **Do not trust or re-run the two vacuous Link A captures.** `.captured.txt`
   and `.captured2.txt` checked 0 columns; `violations = 0` there is vacuous.
 - **Do not launch any library search except G-supply** (prime gaps mod 4 /
