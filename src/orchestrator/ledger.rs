@@ -32,6 +32,9 @@ pub(super) mod budget;
 pub(super) mod engine;
 pub(super) mod registry;
 pub(super) mod spec;
+pub(super) mod tool;
+
+pub(super) use tool::LedgerTool;
 
 #[cfg(test)]
 #[path = "ledger/ceiling_test.rs"]

@@ -105,6 +105,23 @@ impl std::fmt::Debug for SearchTools {
 /// argument; see [`board_tool`].
 const BOARD_TOOLS: [&str; 1] = ["post_board"];
 
+/// Recording into a ledger, for the roles that decide what the run does.
+///
+/// Granting these is not granting write access to every ledger: each spec names
+/// the roles that may write it and the tool checks the acting role against that
+/// list, which is what keeps a role holding `record_entry` out of a ledger it
+/// has no business in. See [`ledger::tool`].
+const LEDGER_WRITE_TOOLS: [&str; 2] = ["record_entry", "close_entry"];
+
+/// Changing the registry of ledgers itself.
+///
+/// Narrower than [`LEDGER_WRITE_TOOLS`], and deliberately. Recording into an
+/// axis is ordinary work; deciding the investigation needs a new axis is a
+/// planning judgement, and a runtime where every role can declare one grows an
+/// axis per attempt — the sprawl `code_layout::plan` measures in the agent's
+/// own programs, applied to its bookkeeping.
+const LEDGER_KEEPER_TOOLS: [&str; 2] = ["define_ledger", "retire_ledger"];
+
 const DISCOVERY_TOOLS: [&str; 4] = [
     "citation_graph",
     "find_similar_sources",
@@ -181,6 +198,12 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
         // working.
         "search_claims",
         "request_research",
+        // The pull side of every ledger, granted on the same argument: a role
+        // that cannot read what the run already recorded records it again. The
+        // rendered files in a prompt are shortened, so this is where the whole
+        // reason an approach was refuted actually lives.
+        "list_ledgers",
+        "read_ledger",
     ];
     // Every reasoning role's two ways back into what is already known: this
     // workspace's own record, and the note store that outlives it. They are
@@ -232,7 +255,7 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
 /// Returns an error when a name is already registered.
 fn register_code_writing_definitions(
     registry: &mut AgentRegistry,
-    document_tools: [&'static str; 11],
+    document_tools: [&'static str; 13],
     memory_tools: [&'static str; 3],
 ) -> Result<()> {
     for (name, title, description) in [
@@ -312,7 +335,7 @@ fn register_code_writing_definitions(
 /// the agents the solution loop adds on top of the original three.
 fn support_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 11],
+    document_tools: [&'static str; 13],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -474,7 +497,7 @@ fn support_agents(
 ///
 /// The searcher's denial is narrower and sharper, and is documented beside it.
 fn planning_agents(
-    document_tools: [&'static str; 11],
+    document_tools: [&'static str; 13],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -553,7 +576,7 @@ fn planning_agents(
 /// the solution loop drives.
 fn library_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 11],
+    document_tools: [&'static str; 13],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![

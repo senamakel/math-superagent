@@ -48,6 +48,23 @@ impl WorkspaceDocuments {
         self
     }
 
+    /// The tool set every role receives, acting as `role`.
+    ///
+    /// The role reaches this far down because the ledger tools bake it in at
+    /// construction rather than accepting it as an argument — `post_board`'s
+    /// rule, for `post_board`'s reason: a caller able to name its own sender
+    /// can attribute work to somebody else.
+    pub(super) fn tools_as(&self, role: &str) -> Vec<Arc<dyn Tool<()>>> {
+        self.tools()
+            .into_iter()
+            // Reading what the run already recorded is how a role avoids
+            // recording it again, so both halves of the pull side go to
+            // everybody — the argument `docs/roles.md` makes for granting
+            // recall broadly rather than narrowly.
+            .chain(super::ledger::LedgerTool::readers(self, role))
+            .collect()
+    }
+
     pub(super) fn tools(&self) -> Vec<Arc<dyn Tool<()>>> {
         DocumentToolKind::ALL
             .into_iter()
@@ -338,6 +355,21 @@ impl WorkspaceDocuments {
     /// own index is not an agent reaching for it.
     async fn write(&self, relative: &str, content: &str) -> Result<()> {
         ensure_visible(relative)?;
+        // A derived ledger is rewritten from its source on the next write to
+        // it, so an agent editing one has not changed anything — it has queued
+        // its own work for deletion, and believes otherwise until it reads the
+        // file back and cannot find its edit. `docs/workspace.md` records the
+        // same contention between `ROOT.md` and `INDEX.md` costing three rounds
+        // of lost descriptions before the two were separated. Refusing and
+        // naming the tool is the only honest answer.
+        if let Some(slug) = super::ledger::registry::owns_derived(&self.workspace, relative) {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "`{relative}` is derived from the `{slug}` ledger and is rewritten on every write \
+                 to it, so an edit here would be erased without warning. Change what it is \
+                 derived from: `record_entry` with `ledger: \"{slug}\"` to add or amend a row, \
+                 `close_entry` to close one."
+            )));
+        }
         self.write_internal(relative, content).await
     }
 
