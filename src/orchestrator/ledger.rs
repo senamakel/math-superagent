@@ -29,6 +29,7 @@
 //!   `MAX_ROWS` failed to help.
 
 pub(super) mod budget;
+pub(super) mod spec;
 
 #[cfg(test)]
 #[path = "ledger/ceiling_test.rs"]
