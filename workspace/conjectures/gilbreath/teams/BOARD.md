@@ -26,6 +26,17 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 What would suffice:
 What the run says would suffice:
+## Report
+
+**Slug:** `research/backward/direct-invariant-potential.md`
+
+### What it does
+
+The five existing skeletons all decompose the goal through either the block/regeneration accounting (`event-rate-sufficiency`, `counterexample-backward`) or the right-diagonal ν₂ budget (`granville-nu2-reduction`, `nu2-supply-*`, `supply-nu2-factorization`). The route the problem statement names *first* — "find an invariant of the absolute-difference operator forcing `A_k(1) ∈ {0,2}` directly, without tracking blocks" — had…
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
 The skeleton is written and the ledger re-derived. Here is the report.
 
 ## Slug

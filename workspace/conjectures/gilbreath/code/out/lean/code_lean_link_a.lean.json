@@ -1,0 +1,12 @@
+{
+  "axioms": [
+    "'dist_le_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'maxAll_ge' depends on axioms: [propext, sorryAx]",
+    "'run_le' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'orbit_le_max' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "compiled": false,
+  "file": "code/lean/link_a.lean",
+  "sorries": [],
+  "verified": false
+}

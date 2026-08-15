@@ -12,40 +12,10 @@ side — is discharged, so this file carries exactly two open gaps.
 
 ```skeleton
 goal: Gilbreath's conjecture for the primes — A_k(0) = 1 for every k ≥ 1, equivalently every finite prime prefix q_1..q_n is successful (bottom single entry of its difference triangle is 1).
-implies: |
-  Work in right-diagonal coordinates δ(q_n) = (δ_0,...,δ_{n-1}), δ_k = A_k(n-k), so
-  δ_{n-1}(q_n) = A_{n-1}(0) and "q_1..q_n succeeds" ⟺ δ_{n-1}(q_n) = 1.
-
-  Everything below the supply line is DISCHARGED:
-    (a) {0,2} form: A_k(0)=1 ∀k ⟺ A_k(1)∈{0,2} ∀k
-        (gilbreath-reduces-to-second-in-02, proved; Lean IFF gilbreath-second-entry-equivalence).
-    (b) runway: q_1..q_{n-1} valid & successful ∧ g*_n ≤ 2ν₂(q_{n-1})+2 ⟹ q_1..q_n succeeds
-        (lemma54-re-derived-proof, proved on the even domain — the δ=0 case is the absorption
-        closure, not an exception; lemma54-sufficiency-survives-proper-domain, checked non-vacuously
-        on synthetic failing sisters in both directions).
-    (c) demand: g*_n = max(g_2..g_n) < n^{0.525+ε} for every ε>0 and all large n
-        (Baker–Harman–Pintz 2001, p_{n+1}−p_n ≪ p_n^{0.525}; p_n ~ n log n absorbs the log —
-        gap-bounds-cannot-force-block-growth, visser-large-gaps-survey).
-
-  SUPPLY, the only open leg, splits into two gaps:
-    S1 (transfer)  ν₂(q_n) ≥ w_n/2, where w_n is the Hamming weight of the halved-gap bit
-                   string h[m] = (gap_m / 2) mod 2 over the fixed ancestor interval [2, n−1]
-                   of A_1 (so h[m] = 1 ⟺ gap_m ≡ 2 mod 4). This says the halved {0,2}-tail
-                   bit vector of δ(q_n) — an F2-linear (Rule-90/XOR) image of h — has weight
-                   at least half the input weight. Empirically ν₂/w ∈ [0.689, 0.867], so the
-                   constant 2 is safe (board, code/gap_analysis/nu2_vs_gap_parity.py).
-    S2 (density)   w_n ≥ c'·n for a fixed c' > 0 and all large n: the set of consecutive
-                   prime pairs with opposite residues mod 4 has positive lower density.
-
-  COMBINE: ν₂(q_n) ≥ w_n/2 ≥ (c'/2)·n = c·n with c = c'/2 > 0. Any positive-linear bound
-  dominates every sub-1 power (li2023-not-bottleneck), so for large n
-  ν₂(q_{n-1}) ≥ (c'/2)(n−1) > n^{0.526} > n^{0.5255} > g*_n. The runway (b) then turns
-  "q_1..q_{n-1} successful" into "q_1..q_n successful", and strong induction on n from any
-  verified base past the (implicit) BHP/supply thresholds — the run's own depth-1000 record,
-  or the literature's 10^13–10^15 (verification-record-2026) — gives every finite prefix
-  successful, i.e. GC. The {0,2} form (a) is the equivalent left-edge statement.
-status: sketched
+implies: | Work in right-diagonal coordinates δ(q_n) = (δ_0,...,δ_{n-1}), δ_k = A_k(n-k), so δ_{n-1}(q_n) = A_{n-1}(0) and "q_1..q_n succeeds" ⟺ δ_{n-1}(q_n) = 1. Everything below the supply line is DISCHARGED: (a) {0,2} form: A_k(0)=1 ∀k ⟺ A_k(1)∈{0,2} ∀k (gilbreath-reduces-to-second-in-02, proved; Lean IFF gilbreath-second-entry-equivalence). (b) runway: q_1..q_{n-1} valid & successful ∧ g*_n ≤ 2ν₂(q_{n-1})+2 ⟹ q_1..q_n succeeds (lemma54-re-derived-proof, proved on the even domain — the δ=0 case is the absorption closure, not an exception; lemma54-sufficiency-survives-proper-domain, checked non-vacuously on synthetic failing sisters in both directions). (c) demand: g*_n = max(g_2..g_n) < n^{0.525+ε} for every ε>0 and all large n (Baker–Harman–Pintz 2001, p_{n+1}−p_n ≪ p_n^{0.525}; p_n ~ n log n absorbs the log — gap-bounds-cannot-force-block-growth, visser-large-gaps-survey). SUPPLY, the only open leg, splits into two gaps: S1 (transfer)  ν₂(q_n) ≥ w_n/2, where w_n is the Hamming weight of the halved-gap bit string h[m] = (gap_m / 2) mod 2 over the fixed ancestor interval [2, n−1] of A_1 (so h[m] = 1 ⟺ gap_m ≡ 2 mod 4). This says the halved {0,2}-tail bit vector of δ(q_n) — an F2-linear (Rule-90/XOR) image of h — has weight at least half the input weight. Empirically ν₂/w ∈ [0.689, 0.867], so the constant 2 is safe (board, code/gap_analysis/nu2_vs_gap_parity.py). S2 (density)   w_n ≥ c'·n for a fixed c' > 0 and all large n: the set of consecutive prime pairs with opposite residues mod 4 has positive lower density. COMBINE: ν₂(q_n) ≥ w_n/2 ≥ (c'/2)·n = c·n with c = c'/2 > 0. Any positive-linear bound dominates every sub-1 power (li2023-not-bottleneck), so for large n ν₂(q_{n-1}) ≥ (c'/2)(n−1) > n^{0.526} > n^{0.5255} > g*_n. The runway (b) then turns "q_1..q_{n-1} successful" into "q_1..q_n successful", and strong induction on n from any verified base past the (implicit) BHP/supply thresholds — the run's own depth-1000 record, or the literature's 10^13–10^15 (verification-record-2026) — gives every finite prefix successful, i.e. GC. The {0,2} form (a) is the equivalent left-edge statement.
+killed-by: S1-nu2-transfer-weight (ν₂ ≥ w/2) is false universally: a 2-then-odds sequence with every gap ≡ 2 mod 4 (h = 1111…, weight w = n maximal) fails at row 3 with ν₂ = 0. The S1 fork lands on (b) prime-specific, which is its own stated 'not a reduction' case; the prime-specific ν₂ ≥ w/2 is measured (min 0.689) not proved, so S1+S2 adds a second unproved prime statement instead of removing one.
 rests-on: gilbreath-reduces-to-second-in-02, gilbreath-second-entry-equivalence, lemma54-re-derived-proof, lemma54-sufficiency-survives-proper-domain, gap-bounds-cannot-force-block-growth, li2023-not-bottleneck, verification-record-2026, rule90-interior-xor, edge-interior-invertibility-sharpened
+status: broken
 ```
 
 ```gap

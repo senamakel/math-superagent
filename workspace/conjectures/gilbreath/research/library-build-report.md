@@ -1,5 +1,42 @@
 # Library build report — librarian verification cycle (2026)
 
+## Cycle 2 audit (librarian): closure re-verified through the citation graph
+
+Ran `citation_graph` both directions on the two load-bearing sources and an
+exa currency check on the verification record. Verdict: **library still
+closed; nothing to add; NOTHING FURTHER.**
+
+1. **Odlyzko 1993 (Math. Comp., DOI 10.1090/S0025-5718-1993-1182247-7) — 21 citing works examined.**
+   Held-and-digested: Chase 2023, Bhat–Cobeli–Zaharescu 2023 filtered-rays, Caragiu–Zaharescu–Zaki
+   2011, Gatti 2020 + 2023 (both entries), Agama 2021, Torelli 2006.
+   Books/background (Ribenboim, Sloane, Guy *Prime Numbers*, Riesel ×2) add no claim source.
+   Unrelated (Helly numbers, Kaprekar orbits) are citation coincidences.
+   Genuinely adjacent but not load-bearing, now filed as frontier leads: Cobeli–Zaharescu 2013
+   *Promenade around Pascal triangle* (Pascal-tripod corroboration; run's rule90-interior-xor
+   already confirmed by CHT 2026 §1), Cobeli–Prunescu–Zaharescu 2016 *arithmetic Z-game*,
+   Szpiro 2007 *spectral analysis of prime-gap intervals*, Mak 2012 *Ducci over function fields*
+   (cyclic-Ducci variant; the run's cyclic-vs-half-infinite boundary doctrine already covers why
+   variants do not transfer).
+2. **Chase 2005.00530 arXiv record: 0 citing works per OpenAlex** — an indexing artifact; the
+   library holds the canonical *Math. Ann.* 388 (2024) version and the run cites that. No action.
+3. **Verification record currency: confirmed current.** exa on "verification record 2026/2027":
+   Plouffe 2025 (10^14, arXiv:2510.06688) and Colonna 2025–26 (1.5×10^15) are the newest; both
+   already held. Keen 2026 (redacted Zenodo "proof") already recorded as unverified. Muney, Gatti
+   2023 already held and assessed. No post-2026 record surfaced.
+4. **Frontier top rows** (Odlyzko DOI ×3, Caldwell glossary ×3, Killgrove–Ralston ×2, Wikipedia ×2,
+   MathWorld→A000232/A036262 ×2, Morgan ORCID ×2) all struck through — full texts held. Remaining
+   once-cited rows are leads inside held documents, none naming a missing load-bearing source.
+5. **Requests ledger: fully closed.** G-supply settled negative (two-point switch is not a
+   one-point statistic; no unconditional positive-linear bound from current methods — see
+   `research/notes/g-supply-two-point-crux-settled.md`); MathOverflow fetch done. No open row,
+   so per phase-1 discipline no further gathering.
+
+Known imperfection, recorded not fetched: OEIS A396593 and several small OEIS records
+(A100820, A213014, A358691, A393110) exist in `research/summaries/` with no
+`sources/*.full.md` companion — the summaries ARE the complete captured pages (OEIS records are
+short, like the Debono note). A future cycle may point the summary header to confirm this; not
+worth a re-fetch.
+
 ## Verdict: library is complete, indexed, and reachable. No new primary material needed.
 
 This cycle re-verified the reference library from scratch against the run's
