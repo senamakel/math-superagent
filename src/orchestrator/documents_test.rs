@@ -740,3 +740,83 @@ async fn concurrent_note_writes_all_reach_the_derived_ledger() -> Result<()> {
     let _ = std::fs::remove_dir_all(root);
     Ok(())
 }
+
+/// Calls `read_document` and returns what the model would see.
+async fn read_through_tool(
+    documents: &WorkspaceDocuments,
+    arguments: serde_json::Value,
+) -> Result<String> {
+    let tools = documents.tools();
+    let read = tools
+        .iter()
+        .find(|tool| tool.name() == "read_document")
+        .expect("the read tool must be registered");
+    let result = read
+        .call(
+            &(),
+            crate::agent::ToolCall {
+                id: "r1".to_string(),
+                name: "read_document".to_string(),
+                arguments,
+                invalid: None,
+            },
+        )
+        .await?;
+    Ok(result.content)
+}
+
+#[tokio::test]
+async fn a_small_document_is_returned_byte_for_byte() -> Result<()> {
+    // Most of what a run reads is a note it wrote itself. Wrapping those in
+    // coordinates would be noise on every read to serve the handful that are
+    // large, so the unselected small read is unchanged.
+    let documents = WorkspaceDocuments::new(workspace("read-small")?)?;
+    let body = "# Note\n\nA short belief.\n";
+    documents.write_document("notes/small.md", body).await?;
+
+    let out = read_through_tool(&documents, serde_json::json!({"path": "notes/small.md"})).await?;
+
+    assert_eq!(out, body);
+    Ok(())
+}
+
+#[tokio::test]
+async fn an_unselected_read_of_a_large_document_answers_with_its_outline() -> Result<()> {
+    // The control: no single call may put a hundred thousand tokens into a
+    // context window by accident. Nothing is hidden — every byte is still
+    // reachable one named range at a time.
+    let documents = WorkspaceDocuments::new(workspace("read-large")?)?;
+    let body: String = (1..=400)
+        .map(|n| format!("## Section {n}\n{}\n", "prose ".repeat(20)))
+        .collect();
+    documents.write_document("research/sources/big.md", &body).await?;
+
+    let out =
+        read_through_tool(&documents, serde_json::json!({"path": "research/sources/big.md"})).await?;
+
+    assert!(out.contains("too large to read whole"), "{out}");
+    assert!(out.contains("outline of research/sources/big.md"), "{out}");
+    assert!(out.len() < body.len() / 4, "{} bytes", out.len());
+    Ok(())
+}
+
+#[tokio::test]
+async fn a_selected_read_of_a_large_document_returns_that_part_with_coordinates() -> Result<()> {
+    let documents = WorkspaceDocuments::new(workspace("read-selected")?)?;
+    let body: String = (1..=400)
+        .map(|n| format!("## Section {n}\nbody of {n}\n"))
+        .collect();
+    documents.write_document("research/sources/big.md", &body).await?;
+
+    let out = read_through_tool(
+        &documents,
+        serde_json::json!({"path": "research/sources/big.md", "section": "Section 7"}),
+    )
+    .await?;
+
+    assert!(out.contains("body of 7"), "{out}");
+    assert!(!out.contains("body of 8"), "{out}");
+    // Coordinates, so the caller can cite it and ask for what comes next.
+    assert!(out.contains("lines 13-14"), "{out}");
+    Ok(())
+}

@@ -67,6 +67,17 @@ Method policy, which applies to every step:
     downloaded source is stored twice: read the short summary first, and open
     its `.full.md` companion only when the summary does not answer the
     question, because the full text is large enough to crowd out the work.
+    When you do open one, do not read it whole — you will not be allowed to,
+    and you should not want to. Three tools read what does not fit:
+    `outline_document` maps a file's sections with their line ranges;
+    `read_document` takes a `section` or a `lines` range and returns that part
+    alone; `grep_workspace` finds the lines matching a pattern across every
+    file at once, which is usually the fastest way to the right page of the
+    right document. When the question is about the whole file rather than a
+    part of it, `map_document` reads it in chunks with separate model calls and
+    returns a short cited answer without the source ever entering your context.
+    Its answer is what a reader reported, not an established fact: read the
+    lines it cites before relying on it.
     Before re-deriving or re-fetching anything, call `search_claims`: it
     answers what the library already establishes, with the hypotheses and
     whether they hold here. When it does not have what you need, say so with
