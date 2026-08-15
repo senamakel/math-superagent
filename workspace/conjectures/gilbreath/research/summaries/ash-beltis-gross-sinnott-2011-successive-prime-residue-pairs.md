@@ -23,3 +23,13 @@ The single dedicated peer-reviewed **heuristic** study of exactly the statistic 
 - The measured `ν₂/n ≈ 0.49–0.52` (this run) sits comfortably with the heuristic's slight switch-excess at finite x — the second-order bias LOS/Ash describe pushes switch count *above* n/2, which is exactly the direction G-supply needs (and is not needed to be *proved*, only to be a lower bound).
 
 Status: sourced, peer-reviewed, heuristic-level. Claims held at assertion level (the heuristic is heuristic; Props 4.1–4.4 are proved *of the heuristic*, and only numerically verified for the true primes).
+
+```claim
+id: abgs-2011-s9-mod4-switch-limit-open
+statement: Ash–Beltis–Gross–Sinnott 2011 §9 (Experimental Math. 20(4):400–411): whether N(a,d,m,x)/π(x) — the frequency of consecutive prime pairs p,q with p≡a, q≡a+d (mod m) — tends to ANY limit as x→∞ is OPEN; the authors state "we cannot tell whether they are tending toward a limiting ratio of 1". Therefore no unconditional positive-density (linear) lower bound on the mod-4 switch count #{n : p_{n+1} ≢ p_n (mod 4)} = #{gap ≡ 2 mod 4} exists in the literature.
+hypotheses: primes; N(a,d,m,x) = #{p<q<x : p≡a, q≡a+d (mod m)}; m=4 for the switch statistic feeding Granville's ν₂ (N(1,2,4,x)+N(3,2,4,x)).
+holds-here: yes
+status: asserted (open problem named by the source; §9 is an explicit open question, not a theorem)
+bearing: Route B (Granville ν₂). The entire remaining open content of the reduction — G-supply, ν₂(q_n) > n^β or any ν₂ ≥ c·n — is this named open problem, NOT a gap in the run's own argument. Route B yields a CONDITIONAL theorem whose hypothesis is the two-point consecutive-prime mod-4 correlation lower bound. Props 4.1/4.2 give the only rigorizable structural facts (power-of-2 residue-independence; antidiagonal symmetry), which delimit the shape of any future supply bound but do not supply one.
+anchor: research/summaries/ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.md
+```

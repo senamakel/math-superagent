@@ -1086,3 +1086,30 @@ Both directives are now carried into the run's files.
 - **Directive 46 (close the library):** `research/REQUESTS.md` rewritten to name exactly one gap (G-supply, `ν₂ ≥ c·n`, reduced to the prime-gap-mod-4 switch bit), `research/FRONTIER.md` gained a pruning rule marking the Gilbreath/Proth/Ducci corpus not-worth-fetching, and `CONTEXT.md` now states the library is closed except the single G-supply request.
 
 I left the two vacuous capture files untouched so the defect stays inspectable, and I did not demote `lemma54-re-derived-proof` itself — its `proved` status rests on the descent check, not on Link A, and its Directive 43/44 proof-defect caveat already stands.
+
+## 47 — from steer
+
+DIRECTIVE 47 — one named source to fetch, and a claim to record.
+
+FETCH THIS, then stop: https://mathoverflow.net/questions/34669/is-there-any-progress-toward-solving-gilbreaths-conjecture
+
+The canonical 'what is known' thread for the conjecture. It surfaced once in an exa_search result (research agent-run-39) and was dropped: it is in no source file, no summary, and not on FRONTIER. Fetch, digest, file it.
+
+Its substance is largely already held — Chase's random analogue, the Proth retraction, Odlyzko's computation — so expect no new mathematics. Fetch it for what a discussion page carries that a paper does not: which routes practitioners consider dead, and why. That is what stops a run re-attempting a closed approach, and this run has spent real budget re-confirming closed things. If it names an approach nobody wrote a paper about, that is the payload. Single named target under Directive 44 discipline: add the REQUESTS row, fetch, digest, close it. Do not sweep outward.
+
+SEPARATELY — the G-supply row in REQUESTS.md is the best research work of this run. Establishing from Ash-Beltis-Gross-Sinnott 2011 §9 that it is OPEN whether N(a,d,m,x)/pi(x) tends to any limit — so NO unconditional linear lower bound on the mod-4 switch count exists in the literature — is a real result.
+
+Record it as a claim in its own right, anchored to ABGS 2011. It changes what this run can honestly claim: Route B yields a CONDITIONAL theorem whose condition is a named open problem in analytic number theory, not a gap in your own argument. Say exactly that in GOAL.md. A conditional theorem with a precisely identified open hypothesis is a genuine deliverable; pretending the hypothesis is nearly closed is not.
+
+Good catch on Directive 45 — the {0,2}-suffix scan breaking on the terminal left-column 1 is the right root cause. Fix and re-run it.
+
+Done. Directive 47 is carried into the plan files with no mathematics computed and no disagreement to raise — every assertion in it is consistent with what the run already holds on disk.
+
+What I changed and why:
+
+- **`TASKS.md`** — rewritten so the order of work is the directive's three parts: fetch the MathOverflow thread as a single named target under Directive 44 discipline, record the ABGS §9 G-supply-open result as a claim and reframe GOAL.md to a conditional theorem, and (root cause confirmed) fix the Directive 45 suffix-scan loop (`start` at `len(dn1)-2`, not `len(dn1)-1`) then re-run to `.captured3.txt`. Marked the ABGS claim recording and GOAL.md reframe as done.
+- **`research/REQUESTS.md`** — added a "Named fetch" section for the MathOverflow thread alongside the existing single G-supply gap, with "do not sweep outward" stated explicitly.
+- **`research/summaries/ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.md`** — added claim block `abgs-2011-s9-mod4-switch-limit-open` (re-derived into `CLAIMS.md`, verified present via `search_claims`).
+- **`GOAL.md`, `CONTEXT.md`, `research/threads/regeneration.md`** — reframed Route B as a **conditional theorem** whose hypothesis is the two-point consecutive-prime mod-4 correlation bound, now a named open problem rather than an unstated gap in the run's own argument.
+
+The run's record already supported every part of the directive: the vacuous Link A captures with `checked: 0`, the ABGS §9 "cannot tell whether they are tending toward a limiting ratio of 1" open question, and the Directive 46 library closure. Nothing was filed as a claim that isn't established — the ABGS fact is recorded as `asserted`/source-named-open, not as a proved result.

@@ -1,66 +1,78 @@
 # Tasks
 
-## Directive 45 + Directive 46 — do these first, in this order
+## Directive 47 — do these first, in this order
 
-### Directive 45: fix the vacuous Link A capture, then re-run
+### A. Fetch and file the MathOverflow "what is known" thread (single named target)
 
-Both captures (`code/out/verify_lemma54_v_le_gstar.captured.txt`,
-`.captured2.txt`) report `checked: 0`, `max margin 0.000`, and a
-`RESULT: VIOLATIONS` line that contradicts the zero counters. A real run over
-n=20..1200 cannot have a zero max margin — the column loop is empty, and
-`violations = 0` on an empty set is the zero of a script that did nothing.
+- [ ] **1. Add the REQUESTS row and fetch**
+  `https://mathoverflow.net/questions/34669/is-there-any-progress-toward-solving-gilbreaths-conjecture` —
+  the canonical "what is known" thread. Surfaced once in exa_search
+  (research agent-run-39) and dropped: it is in no source file, no summary,
+  not on FRONTIER. Single named target under Directive 44 discipline: add the
+  row (done below), fetch, digest, close. Do not sweep outward.
+- [ ] **2. Digest for what a discussion page carries that a paper does not:**
+  which routes practitioners consider dead, and why. Expect no new
+  mathematics (Chase's random analogue, the Proth retraction, Odlyzko's
+  computation are already held). If it names an approach nobody wrote a paper
+  about, that is the payload. File as
+  `research/sources/mathoverflow-34669-gilbreath-progress.full.md` plus a
+  summary; record any newly-named dead route in CONTEXT.md's Ruled out and in
+  the relevant approach file, not in a parallel note.
 
-- [ ] **1. Fix the empty column loop.** Root cause (located by reading the
-  script): the maximal-{0,2}-suffix scan starts at the terminal entry of the
-  previous right diagonal `dn1 = diag[n-1]`, whose last entry is
+### B. Record the ABGS 2011 §9 G-supply-open result as a claim; reframe GOAL.md
+
+- [x] **3. Record the claim** `abgs-2011-s9-mod4-switch-limit-open`, anchored
+  to Ash–Beltis–Gross–Sinnott 2011 §9: whether `N(a,d,m,x)/π(x)` tends to any
+  limit as `x→∞` is OPEN ("we cannot tell whether they are tending toward a
+  limiting ratio of 1"), so NO unconditional linear lower bound on the mod-4
+  switch count exists in the literature. (Added as a claim block in the ABGS
+  summary; reaches CLAIMS.md on the next re-derivation.)
+- [x] **4. State in GOAL.md** that Route B yields a **CONDITIONAL theorem**
+  whose condition is that named open problem (the two-point consecutive-prime
+  mod-4 correlation lower bound), not a gap in the run's own argument. A
+  conditional theorem with a precisely identified open hypothesis is a genuine
+  deliverable; pretending the hypothesis is nearly closed is not.
+
+### C. Directive 45 — fix the vacuous Link A capture, then re-run (root cause confirmed)
+
+- [ ] **5. Fix the empty column loop.** Root cause confirmed correct by
+  Directive 47: the maximal-{0,2}-suffix scan starts at the terminal entry of
+  the previous right diagonal `dn1 = diag[n-1]`, whose last entry is
   `A_{n-1}(0) = 1` (always 1 for primes). `dn1[i] in (0,2)` is False on that
   1, the `break` fires before any `start` is found, `start=None` skips every
   column, and `checked=0`. The 0-2 cycle is the maximal {0,2} suffix **before**
   the terminal left-column entry (per `lemma54-discarded-case-universal`), so
   the backward scan must start at index `len(dn1)-2`, not `len(dn1)-1`.
-- [ ] **2. Remove the conclusion sentence** "This makes lemma54 re-derived a
+- [ ] **6. Remove the conclusion sentence** "This makes lemma54 re-derived a
   PROVED claim here." from the script's output — a program must not print a
-  claim-status conclusion; that is the ledger's job (Directive 45 item 3).
-- [ ] **3. Re-run** as
+  claim-status conclusion; that is the ledger's job.
+- [ ] **7. Re-run** as
   `timeout 540 python3 code/out/verify_lemma54_v_le_gstar.py 2>&1 | tee code/out/verify_lemma54_v_le_gstar.captured3.txt; echo EXIT_CODE=$?`.
   Capture to `.captured3.txt` so the two vacuous captures are not overwritten.
-- [ ] **4. Report Link A only from a non-empty run:** `checked > 0`, zero
-  `v <= g*_n` violations, and a positive max-margin figure. If after the fix
-  the loop is STILL empty, say so plainly and mark Link A unverified — do not
-  capture another vacuous zero.
-- [ ] **5. Annotate the chain notes.** `research/notes/lemma54-link-A-status.md`
+- [ ] **8. Report Link A only from a non-empty run:** `checked > 0`, zero
+  `v <= g*_n` violations, positive max-margin. If after the fix the loop is
+  STILL empty, say so plainly and mark Link A unverified — do not capture
+  another vacuous zero.
+- [ ] **9. Annotate the chain notes.** `research/notes/lemma54-link-A-status.md`
   and `research/notes/lemma54-chain-settlement.md` still say "no captured
   output on disk"; update them: captures exist but are vacuous, Link A
   unverified. `lemma54-re-derived-proof`'s `proved` status does NOT rest on
   this capture (it rests on the descent check), and its Directive 43/44
   proof-defect caveat stands until the case-split proof is written + Lean'd.
 
-### Directive 46: close the library except the one open gap
-
-- [x] **6. Rewrite `research/REQUESTS.md`** to name exactly one gap (G-supply:
-  `ν_2(q_{n-1}) > n^β`, β > 0.525, or any positive-linear `ν_2 ≥ c·n`) and say
-  the library is otherwise closed. rising-sea's reduction: `h[j] = (gap_j//2)
-  mod 2 = 1 iff gap_j ≡ 2 mod 4`; measured `w/n ≈ 0.60`, `ν_2/w ∈ [0.689,
-  0.867]`. Settling literature = prime gaps mod 4 / Chebyshev bias, NOT
-  Gilbreath.
-- [x] **7. Prune `research/FRONTIER.md`** — mark as not-worth-fetching every
-  candidate that is another Gilbreath/Proth/Ducci corpus pass (digested; dead
-  ends recorded). Keep the prime-gap-mod-4 / consecutive-prime residue-bias
-  rows as the sanctioned G-supply targets.
-- [x] **8. State in `CONTEXT.md`** that the library is closed except the
-  G-supply request, so every role reads the same rule.
-
 ## Continuing: Route B theoretical target (the entire open content)
 
-- [ ] **9. Write the case-split proof of Lemma 5.4 descent, then Lean it**
+- [ ] **10. Write the case-split proof of Lemma 5.4 descent, then Lean it**
   (Directive 44 item 1). The published "after the ν₂ twos, δ = v − 2ν₂" step
   is FALSE on bounce trajectories (0→2→0); the repair is the case split: if
   some δ_t ≤ 2 then absorption carries it, else every δ_k ≥ 4 forces
   δ_L = v − 2ν₂ ≤ 2, a contradiction. Lean-formalise against
   `code/lean/gilbreath_reduction.lean`; report `#print axioms`, zero `sorry`.
-- [ ] **10. State G-supply as a conditional theorem** with the hypothesis named
-  (the two-point consecutive-prime mod-4 correlation bound), then — and only
-  then — search against the single row in `research/REQUESTS.md`.
+- [ ] **11. State G-supply as a conditional theorem** with the hypothesis
+  named — the two-point consecutive-prime mod-4 correlation lower bound, now
+  recorded as claim `abgs-2011-s9-mod4-switch-limit-open` (Directive 47) —
+  then, and only then, search against the G-supply row in
+  `research/REQUESTS.md`.
 
 ## Do not do
 
@@ -68,6 +80,8 @@ n=20..1200 cannot have a zero max margin — the column loop is empty, and
   and `.captured2.txt` checked 0 columns; `violations = 0` there is vacuous.
 - **Do not launch any library search except G-supply** (prime gaps mod 4 /
   Chebyshev bias in gap residues). The Gilbreath/Proth/Ducci corpus is closed.
+- **Do not sweep outward from the MathOverflow thread** (Directive 47 is a
+  single named target under Directive 44 discipline).
 - **Do not queue a 2e9 or 4e9 sieve run** (Directive 36 stands — empirical
   route at ceiling).
 - **Do not re-run the CHT hypothesis check** (`holds-here: no` is final,
@@ -82,8 +96,12 @@ n=20..1200 cannot have a zero max margin — the column loop is empty, and
   2.6M pairs) — but the written proof's descent step is defective (Directive
   43/44); case-split proof + Lean pending. **Link A (`v ≤ g*_n`) is
   UNVERIFIED** (vacuous capture, Directive 45).
-- **G-supply is the entire open content:** ν_2 ≥ c·n (measured c ≈ 0.5,
-  unproved). Demand α ∈ {0.52, 0.525} immaterial once supply holds.
+- **G-supply is the entire open content — now NAMED OPEN, not a gap in this
+  run's argument (Directive 47).** ABGS 2011 §9: whether `N(a,d,m,x)/π(x)`
+  tends to any limit is open, so no unconditional linear lower bound on the
+  mod-4 switch count exists. Route B is a CONDITIONAL theorem with that
+  hypothesis named (claim `abgs-2011-s9-mod4-switch-limit-open`). Demand
+  α ∈ {0.52, 0.525} immaterial once supply holds.
 - **1e9 record:** 15 genuine giants, max gap 64, ratio bound holds everywhere;
   row-248 STILL capped — empirical route at ceiling.
 - **CHT Theorem 1.6:** `holds-here: no`; right-half {0,d} obstruction absent at
@@ -94,6 +112,6 @@ n=20..1200 cannot have a zero max margin — the column loop is empty, and
 ### Threads
 
 - `research/threads/regeneration.md` — LIVE. Route B (Granville ν_2) primary;
-  G-supply is the open step; Lemma 5.4 case-split + Lean next, then the
-  conditional supply theorem.
+  G-supply is the open step, now named-open (ABGS 2011 §9); Lemma 5.4
+  case-split + Lean next, then the conditional supply theorem.
 - `research/threads/rule90-regeneration.md` — CLOSED (null computed).

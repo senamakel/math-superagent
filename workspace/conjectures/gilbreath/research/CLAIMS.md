@@ -8,6 +8,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `abgs-2011-s9-mod4-switch-limit-open` | Ash–Beltis–Gross–Sinnott 2011 §9 (Experimental Math. 20(4):400–411): whether N(a,d,m,x)/π(x) — the frequency of consecutive prime pairs p,q with p≡a, q≡a+d (mod m) — tends to ANY limit as x→∞ is OPEN; the authors state… | yes | asserted | `research/summaries/ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.md` |
 | `agama-trace-restatement` | (Agama 2021) In the trace/circuit language of the iterate-difference triangle of a finite originator, Gilbreath's conjecture is equivalent to: every leading entry A_k(0) > 0 and the partial sums of the leading entries… | yes | asserted | `research/notes/library-state.md` |
 | `anti-gilbreath-construction` | For any unbounded monotone f(n)≥2 there is a sequence X with n-th gap ≤ f(n) whose triangle's right edge is 1 infinitely often and other values infinitely often; constructed backwards so a large surviving gap escapes to… | yes | asserted | `research/summaries/eppstein-anti-gilbreath-sequences.md` |
 | `arias-block-and-evolution` | (survey) if a row has leading 1 and n subsequent entries in {0,2}, the next n−1 rows start with 1; G(π(10^13))=635; a random pseudo-prime model attained GC in ~49.9% of runs but eventual-1 (n>10) in 99.16% with no… | yes | asserted | `research/summaries/arias-de-reyna-gilbreath-blog.md` |
@@ -67,9 +68,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `giacomelli-2021-padic-ducci-mod2-reduction` | The p-adic-norm Ducci operator D_p(a_i)=\|a_i−a_{i+1}\|_p on Q_p^n outputs powers of p, is linear (D_p(a·α)=a·D_p(α)), maps integer seeds to the null sequence (Lemma 1), is ultimately periodic (Lemma 2), and reduces mod 2… | no | asserted | `research/summaries/giacomelli-2021-p-adic-ducci-sequences-short-note.md` |
 | `giacomelli-2025-padic-ducci-matrix-spectral` | For the p-adic-norm Ducci operator δ_p(x)=\|D_p x\|_p on Q_p^n, termination is governed spectrally: all \|λ_i\|_p<1 ⟹ terminates; all \|λ_i\|_p=1 ⟹ does not converge to 0, and roots of unity give eventual periodicity;… | no | asserted | `research/summaries/giacomelli-2025-ducci-matrices-p-adic-context.md` |
 | `giant-landing-geometric-fit-15` | Over the 15 genuine giant landings of the 6e8 run, exact LS fit: geometric log b = a + m·x with R² = 0.968, factor 1.765/event; linear R² = 0.432. Geometric description holds on 15 points; it is a fit, not a law; not… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
-| `giant-parity-even-pre-jump-rows` | Among the 15 genuine giant events of the 6e8 run, 14 fire at even pre-jump rows (13/14 excluding row 161 which is the sole odd). One-sided p = 16/2^15 = 4.9×10⁻⁴ (exact, plain 1/2 null). At 3e8 the event base even… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
 
-_100 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_107 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -83,6 +83,7 @@ Resolve these before building on either side.
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it.
 
+- `abgs-2011-s9-mod4-switch-limit-open` (research/summaries/ash-beltis-gross-sinnott-2011-successive-prime-residue-pairs.md) — asserted by the source, not proved there and not checked here
 - `agama-trace-restatement` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `anti-gilbreath-construction` (research/summaries/eppstein-anti-gilbreath-sequences.md) — asserted by the source, not proved there and not checked here
 - `arias-block-and-evolution` (research/summaries/arias-de-reyna-gilbreath-blog.md) — asserted by the source, not proved there and not checked here
@@ -108,6 +109,10 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `los-2016-consecutive-pair-mod4-bias` (research/summaries/lemke-oliver-soundararajan-2016-unexpected-biases-consecutive-primes.md) — asserted by the source, not proved there and not checked here
 - `malyshev-max-ones-boolean-pascal-bound` (research/summaries/malyshev-maximal-ones-Boolean-pascal-triangle.md) — asserted by the source, not proved there and not checked here
 - `mathworld-rule90-additive-sierpinski` (research/summaries/mathworld-rule-90.md) — asserted by the source, not proved there and not checked here
+- `mo-thread-no-new-dead-route` (research/summaries/mathoverflow-gilbreath-what-is-known-thread.md) — asserted by the source, not proved there and not checked here
+- `mo-thread-practitioner-confirms-fwd-diff-dead-route` (research/summaries/mathoverflow-gilbreath-what-is-known-thread.md) — asserted by the source, not proved there and not checked here
+- `mo-thread-proth-misreading-retraction-confirmed` (research/summaries/mathoverflow-gilbreath-what-is-known-thread.md) — asserted by the source, not proved there and not checked here
+- `mo-thread-tao-chase-cannot-be-general-class-proof` (research/summaries/mathoverflow-gilbreath-what-is-known-thread.md) — asserted by the source, not proved there and not checked here
 - `mod4-linearization` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `modulo-k-gilbreath-family` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `morgan-frontier-basin-and-corridor-obstruction` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
@@ -128,6 +133,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `rule90-rowcount-popcount` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
 - `rule90-wikipedia-interior-confirmation` (research/summaries/wikipedia-rule-90.md) — asserted by the source, not proved there and not checked here
 - `runcount-lemma-refuted` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `ruzsa-2001-abstract-via-bibliography` (research/notes/library-route-b-nu2-supply-grounding.md) — asserted by the source, not proved there and not checked here
 - `shiu-2000-strings-of-congruent-primes` (research/summaries/shiu-2000-strings-of-congruent-primes.md) — asserted by the source, not proved there and not checked here
 - `tao-cramer-blog-frame` (research/summaries/tao-blog-2026-gilbreath-cramer-model.md) — asserted by the source, not proved there and not checked here
 - `torelli-prime-gap-bound` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here

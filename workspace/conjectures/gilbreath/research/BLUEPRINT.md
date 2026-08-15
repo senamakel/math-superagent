@@ -45,6 +45,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `abgs-2011-s9-mod4-switch-limit-open` | claim | **ready** | — | Ash–Beltis–Gross–Sinnott 2011 §9 (Experimental Math. 20(4):400–411): whether N(a,d,m,x)/π(x) — the frequency of consecutive prime pairs p,q… |
 | `agama-trace-restatement` | claim | **ready** | — | (Agama 2021) In the trace/circuit language of the iterate-difference triangle of a finite originator, Gilbreath's conjecture is equivalent… |
 | `anti-gilbreath-construction` | claim | **ready** | — | For any unbounded monotone f(n)≥2 there is a sequence X with n-th gap ≤ f(n) whose triangle's right edge is 1 infinitely often and other… |
 | `arias-block-and-evolution` | claim | **ready** | — | (survey) if a row has leading 1 and n subsequent entries in {0,2}, the next n−1 rows start with 1; G(π(10^13))=635; a random pseudo-prime… |
@@ -84,6 +85,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `deepmind-formal-conjectures-gilbreath-lean` | claim | **ready** | — | Google DeepMind's formal-conjectures repo (commit ed75a6dd) contains FormalConjectures/Wikipedia/Gilbreath.lean: it defines the difference… |
 | `directive25-gap-trend-and-reconciliation` | claim | established | — | In the prime Gilbreath triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the 13 giants (j > 1000) at rows 34..161 have inter-giant gaps… |
 | `ducci-avart-nilpotent-concatenation` | claim | **ready** | — | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector… |
-| `ducci-classical-nilpotence-iff-power-of-2` | claim | **ready** | — | (Ciamberlini–Marengoni 1937, quoted and reproved in Chamberland 2003 Thm 1.1, Calkin–Stevens–Thomas 2005, Glaser–Schöffl 1995) For the… |
 
-_140 further nodes not shown._
+_147 further nodes not shown._

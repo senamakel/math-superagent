@@ -1,0 +1,87 @@
+sharpened descent lemma (Granville Lemma 5.4) in HALVED units - exhaustive check
+domain: L = 1..18, ALL 2^L patterns of {0,1}^L per L
+        w in [0, L+6] for each L  (L+7 values per pattern)
+trajectory: d_0 = w, d_k = |d_{k-1} - e_k|, e in {0,1}, nu1 = #ones
+==============================================================================
+  L   patterns      pairs  viol1  viol2  viol3
+------------------------------------------------------------------------------
+    1  patterns        2  pairs         16  viol1     0  viol2     0  viol3     0
+    2  patterns        4  pairs         36  viol1     0  viol2     0  viol3     0
+    3  patterns        8  pairs         80  viol1     0  viol2     0  viol3     0
+    4  patterns       16  pairs        176  viol1     0  viol2     0  viol3     0
+    5  patterns       32  pairs        384  viol1     0  viol2     0  viol3     0
+    6  patterns       64  pairs        832  viol1     0  viol2     0  viol3     0
+    7  patterns      128  pairs       1792  viol1     0  viol2     0  viol3     0
+    8  patterns      256  pairs       3840  viol1     0  viol2     0  viol3     0
+    9  patterns      512  pairs       8192  viol1     0  viol2     0  viol3     0
+   10  patterns     1024  pairs      17408  viol1     0  viol2     0  viol3     0
+   11  patterns     2048  pairs      36864  viol1     0  viol2     0  viol3     0
+   12  patterns     4096  pairs      77824  viol1     0  viol2     0  viol3     0
+   13  patterns     8192  pairs     163840  viol1     0  viol2     0  viol3     0
+   14  patterns    16384  pairs     344064  viol1     0  viol2     0  viol3     0
+   15  patterns    32768  pairs     720896  viol1     0  viol2     0  viol3     0
+   16  patterns    65536  pairs    1507328  viol1     0  viol2     0  viol3     0
+   17  patterns   131072  pairs    3145728  viol1     0  viol2     0  viol3     0
+   18  patterns   262144  pairs    6553600  viol1     0  viol2     0  viol3     0
+------------------------------------------------------------------------------
+total patterns: 524286
+total (pattern, w) pairs: 12582900
+pairs whose trajectory enters {0,1} at some point: 5505021 (closure vacuous on the remaining 7077879)
+(1) w <= nu1+1 => d_L in {0,1}  : violations = 0  (expect 0)
+(2) w >  nu1+1 => d_L = w - nu1   : violations = 0  (expect 0)
+(3) {0,1} absorbing              : violations = 0  (expect 0)
+
+Sharpness on the all-1s pattern (maximises nu1 = L):
+   L=1: w=2->d_L=1 (want 1); w=3->d_L=2 (want 2)
+   L=2: w=3->d_L=1 (want 1); w=4->d_L=2 (want 2)
+   L=3: w=4->d_L=1 (want 1); w=5->d_L=2 (want 2)
+   L=4: w=5->d_L=1 (want 1); w=6->d_L=2 (want 2)
+   L=5: w=6->d_L=1 (want 1); w=7->d_L=2 (want 2)
+   L=6: w=7->d_L=1 (want 1); w=8->d_L=2 (want 2)
+   L=7: w=8->d_L=1 (want 1); w=9->d_L=2 (want 2)
+   L=8: w=9->d_L=1 (want 1); w=10->d_L=2 (want 2)
+   L=9: w=10->d_L=1 (want 1); w=11->d_L=2 (want 2)
+   L=10: w=11->d_L=1 (want 1); w=12->d_L=2 (want 2)
+   L=11: w=12->d_L=1 (want 1); w=13->d_L=2 (want 2)
+   L=12: w=13->d_L=1 (want 1); w=14->d_L=2 (want 2)
+   L=13: w=14->d_L=1 (want 1); w=15->d_L=2 (want 2)
+   L=14: w=15->d_L=1 (want 1); w=16->d_L=2 (want 2)
+   L=15: w=16->d_L=1 (want 1); w=17->d_L=2 (want 2)
+   L=16: w=17->d_L=1 (want 1); w=18->d_L=2 (want 2)
+   L=17: w=18->d_L=1 (want 1); w=19->d_L=2 (want 2)
+   L=18: w=19->d_L=1 (want 1); w=20->d_L=2 (want 2)
+   sharpness holds for every L = 1..18: True
+
+==============================================================================
+CROSS-CHECK: reproduce ORIGINAL even-unit form (delta = 2d, c = 2e, v = 2w)
+domain: L = 1..16, ALL 65536 patterns of {0,2}^L per L
+        even v in [0, 2L+8] (L+5 even values per pattern)
+  L   patterns  (pattern,v) pairs  viol1  viol2  viol3  viol0 sanity
+------------------------------------------------------------------------------
+    1  patterns        2  pairs         12  viol1     0  viol2     0  viol3     0  viol0     0
+    2  patterns        4  pairs         28  viol1     0  viol2     0  viol3     0  viol0     0
+    3  patterns        8  pairs         64  viol1     0  viol2     0  viol3     0  viol0     0
+    4  patterns       16  pairs        144  viol1     0  viol2     0  viol3     0  viol0     0
+    5  patterns       32  pairs        320  viol1     0  viol2     0  viol3     0  viol0     0
+    6  patterns       64  pairs        704  viol1     0  viol2     0  viol3     0  viol0     0
+    7  patterns      128  pairs       1536  viol1     0  viol2     0  viol3     0  viol0     0
+    8  patterns      256  pairs       3328  viol1     0  viol2     0  viol3     0  viol0     0
+    9  patterns      512  pairs       7168  viol1     0  viol2     0  viol3     0  viol0     0
+   10  patterns     1024  pairs      15360  viol1     0  viol2     0  viol3     0  viol0     0
+   11  patterns     2048  pairs      32768  viol1     0  viol2     0  viol3     0  viol0     0
+   12  patterns     4096  pairs      69632  viol1     0  viol2     0  viol3     0  viol0     0
+   13  patterns     8192  pairs     147456  viol1     0  viol2     0  viol3     0  viol0     0
+   14  patterns    16384  pairs     311296  viol1     0  viol2     0  viol3     0  viol0     0
+   15  patterns    32768  pairs     655360  viol1     0  viol2     0  viol3     0  viol0     0
+   16  patterns    65536  pairs    1376256  viol1     0  viol2     0  viol3     0  viol0     0
+------------------------------------------------------------------------------
+total patterns: 131070
+total (pattern, v) pairs: 2621432   (captured file reports 2621432)
+
+(1) x_L in {0,2} <=> v <= 2*nu2+2  : violations = 0  (expect 0)
+(2) v > 2*nu2+2 => x_L = v - 2*nu2   : violations = 0  (expect 0)
+(3) closure {0,2} absorbing          : violations = 0  (expect 0)
+(0) trajectory even + nonnegative     : violations = 0  (internal sanity)
+
+elapsed 15.59s
+RESULT: ALL CHECKS PASSED (halved + even cross-check reproduced)

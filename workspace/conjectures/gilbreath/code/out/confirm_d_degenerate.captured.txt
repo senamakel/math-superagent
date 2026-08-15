@@ -1,0 +1,4 @@
+diagonals n=2..10001 whose bottom entry != 1: 0 (first 10: [])
+exclude_last=False: c_n nonzero at 0 positions -> DEGENERATE (identically 0)
+exclude_last=True (0-2-cycle length): violations of c_n >= c_nm1-1: 1133
+  max c value: 9991

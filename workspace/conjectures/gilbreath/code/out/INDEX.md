@@ -14,6 +14,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `bigjump_characterization.notes.md` | _(undescribed)_ |
 | `block_constancy.captured.txt` | _(undescribed)_ |
 | `block_constancy.json` | _(undescribed)_ |
+| `block_constant_diagonal.captured.txt` | _(undescribed)_ |
+| `block_constant_diagonal.notes.md` | _(undescribed)_ |
 | `blocks_deep.captured.txt` | Output of `pattern/blocks_deep.py` that produced blocks_depth1000.json: min/max b, 60 regen rows, longest erosion 838, s/intruder stats. |
 | `blocks_deep_regen.captured.txt` | Earlier regen experiment output (superseded by the regeneration_* set). |
 | `blocks_depth1000.json` | The depth-1000 record analyzed here: `b` (block lengths, 1000), `s` (second entries), `intruder` (first value past block, `None` from k=162 = width exhaustion), D=1000, sieve 20M, 1270607 primes. |
@@ -35,6 +37,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check_fwd_diff_identity.notes.md` | _(undescribed)_ |
 | `check_fwd_diff_identity.py` | Checks the identity A_k(i) = |
 | `check_fwd_diff_identity_sampled.captured.txt` | Independent second route for fwd-diff-identity-refuted: a fresh sampler (uniform even gaps in [2,500]) over 60 random 2-then-odds sequences, 1839 (seq,k,i) triples — all 60 trials fail A_k(i)= |
+| `check_nu2_bit_identity.py` | _(undescribed)_ |
 | `check_nu2_one_vs_two_point.notes.md` | Structural determination that Granville's ν₂ supply statistic is TWO-POINT (consecutive-prime residue switch mod 4), not one-point — decides the chebyshev-bias approach's dichotomy. |
 | `check_reduction.captured.txt` | Output of `check_reduction.py`: reduction facts hold for k=1..599. |
 | `check_reduction.py` | Per-row check of the reduction facts. |
@@ -62,6 +65,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `conditional_rate_experiment.notes.md` | _(undescribed)_ |
 | `conditional_rate_records.jsonl` | _(undescribed)_ |
 | `conditional_rate_smoke.txt` | Smoke run at D=40/W=20000 that exposed the oracle prefix-width mismatch (task short lists vs problem.md 12-entry rows); superseded by the corrected full run (conditional_rate_experiment.captured.txt). Kept for the fix record. |
+| `confirm_d_degenerate.captured.txt` | _(undescribed)_ |
+| `descent_halved_verify.captured.txt` | _(undescribed)_ |
+| `diagnose_d_violations.captured.txt` | _(undescribed)_ |
 | `directive24_compute.captured.txt` | Output of `directive24/compute_width_degradation_and_growth.py`: (a) flooring(r)=(W−r−1)−b[r−1], k*=162 = first row with flooring<1000 (flooring drops 176,182→0 exactly, all rows 162..1000 have flooring=0); flooring at the 13 giant event rows (all genuine gaps, i=161 capped); (b) geometric-vs-linear fit of the 12 genuine (and all-13) post-jump blocks: GEOMETRIC wins, slope +0.519764, R²=0.943852 vs linear 0.783043, doubling factor 1.6816/event; per-step ratios; exact Fraction fits. |
 | `directive24_geometric_growth.md` | Markdown finding (b): geometric growth test. Geometric fit (log b vs event index) beats linear fit on both the 12 genuine giants (R² 0.9439 vs 0.7830; slope +0.519764; ×1.6816/event, doubling every ≈1.33 events) and all 13 (R² 0.9421 vs 0.8072); per-step ratios, residuals, caveats (12-point sample, description not proof). |
 | `directive24_verify.captured.txt` | Independent numpy verification of the directive24 compute: k*=162, flooring(r)=0 on all 839 rows 162..1000, 13/13 giant landing floors match the characterization table, 43 b-increasing steps with exactly the 13 giants having jump>1000, both fits reproduced to 6 decimals. |
@@ -117,8 +123,17 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `lemma54_rederive_filtered.captured.txt` | _(undescribed)_ |
 | `lemma54_rederive_filtered.notes.md` | _(undescribed)_ |
 | `lemma54_verify.captured.txt` | _(undescribed)_ |
+| `nu2_convention_resolve.captured.txt` | _(undescribed)_ |
+| `nu2_dense.txt` | _(undescribed)_ |
+| `nu2_dense_transfer.captured.txt` | _(undescribed)_ |
+| `nu2_fluct_30000.txt` | _(undescribed)_ |
+| `nu2_fluct_first100.txt` | _(undescribed)_ |
 | `nu2_granville_check.captured.txt` | Reproduced in-container this session (timeout 540, EXIT_CODE=0): nu2=2048 at n=3999, n^0.525=77.8, nu2/n in 0.420..0.520, Lemma 5.4 hypothesis holds at all sampled n — identical to the operator's host capture. Anchor for claim `granville-nu2-density-measured` (research/notes/granville-2607-04166-actually-read.md). |
 | `nu2_incremental_1e5.txt` | _(undescribed)_ |
+| `nu2_linear_bound.captured.txt` | _(undescribed)_ |
+| `nu2_postprocess.captured.txt` | _(undescribed)_ |
+| `nu2_shift_check.captured.txt` | _(undescribed)_ |
+| `nu2_transfer_thresholds.captured.txt` | _(undescribed)_ |
 | `nu2_vs_gap_parity.captured.txt` | _(undescribed)_ |
 | `null_rule90_depth.captured.txt` | _(undescribed)_ |
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
@@ -137,6 +152,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_threshold_gaps.captured.txt` | _(undescribed)_ |
 | `pattern_finder_wider_giants.captured.txt` | _(undescribed)_ |
 | `reconcile_lemma54_NOTE.md` | _(undescribed)_ |
+| `reduction_audit.captured.txt` | _(undescribed)_ |
 | `regen_c4_check.captured.txt` | Earlier regeneration-trigger check (superseded by erosion_dynamics and regeneration_* outputs). |
 | `regen_mechanism.captured.txt` | Earlier regeneration-mechanism probe (superseded). |
 | `regeneration_analysis.captured.txt` | Output of `pattern/regeneration_analysis.py`: the 60-event table, rate buckets, histograms, runs test, minima. |
@@ -159,6 +175,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `runner2.py` | _(undescribed)_ |
 | `runner3.py` | _(undescribed)_ |
 | `scholar_digest_verify.py` | _(undescribed)_ |
+| `separate_row_vs_diagonal.captured.txt` | _(undescribed)_ |
 | `sequence_dump.txt` | _(undescribed)_ |
 | `sequence_extract.captured.txt` | _(undescribed)_ |
 | `step6_ratio_table.captured.txt` | Captured stdout of Directive 30 step-6 ratio table run: the full giant table, worked-example PASS lines, row-238 confirmation, OLS gap trend both ways, parity p-values, geometric growth/extrapolated next width, and the 14-gap sufficiency check (0 failures). |
@@ -177,7 +194,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_candidates.py` | _(undescribed)_ |
 | `verify_giants_6e8.captured.txt` | _(undescribed)_ |
 | `verify_granville_nu2_independent.captured.txt` | Independent in-container verifier output (code/verify_granville_nu2_independent.py, timeout 540, EXIT_CODE=0): reproduces both notes' numbers via lib.gilbreath + prefix-max g*; adds entry-level stat — 1,546,291 of 3,095,143 gray-block entries are 0 (50.0%, avg 623.5 zeros/block), so the discarded delta=0 case dominates entrywise, not just per-row. |
-| `verify_lemma54_v_le_gstar.py` | Verifies the two links that complete the re-derivation of Granville's Lemma 5.4: Link A (entry value v <= record gap g*_n), and Link B (hypothesis g*_n <= 2 nu_2 + 2 holds with no violations on real primes). |
+| `verify_lemma54_v_le_gstar.captured.txt` | _(undescribed)_ |
+| `verify_lemma54_v_le_gstar.captured2.txt` | _(undescribed)_ |
+| `verify_lemma54_v_le_gstar.py` | FIXED (was vacuous, checked=0): verifies Link A (v <= g*_n) and the Lemma 5.4 hypothesis (g*_n <= 2*nu2+2) for Granville's descent lemma on real primes below 2e6, columns n=20..1200. Root-cause fix: the original built the right diagonal including the terminal left-edge entry A_n(0)=1, so the maximal {0,2} suffix was always empty and the eligibility filter (start>=2) dropped every column. Now uses Granville's convention (maximal {0,2} suffix of the body d[:-1], scanned to index 2, tau = start, v = dcur[tau]) from the accepted independent verifier. Non-vacuous result: 1181 eligible columns, 0 Link-A violations, 0 hypothesis violations, max margin 35.882. Cross-validated on an independent rows_generator path (same 1181/0/0). Exact integers; O(M^2) triangle, one row live. Trailing 'PROVED claim' sentence removed per Directive 45. |
 | `verify_nu2_claim.captured.txt` | Independent operator-written re-verification executed in-container (timeout 540, EXIT_CODE=0): reproduces nu2_granville_check.py exactly (nu2=2048 at n=3999, 0 hypothesis failures). |
 | `verify_rule90_against_sources.captured.txt` | _(undescribed)_ |
 | `verify_rule90_against_sources.py` | Independently re-derives the Rule-90 interior XOR identification ( |

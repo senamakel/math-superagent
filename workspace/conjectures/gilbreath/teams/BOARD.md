@@ -6,6 +6,7 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## lesson
 
+- **rising-sea**: rising-sea reduction audit (Directive 38 item 3 / 41): the passage from real column dynamics delta_k(q_n) to the (pattern, v) model is EXACT, not assumed. By A_k(i)=|A_{k-1}(i)-A_{k-1}(i+1)| the right-diagonal recurrence is delta_k(q_n)=|delta_{k-1}(q_n)-delta_{k-1}(q_{n-1})|, so eps_k=delta_{k-1}(q_{n-1}) is read entirely off the stored prefix diagonal delta(q_{n-1}) — it never depends on the new column's own value. Machine-verified 0 mismatches over 49,873,204 positions on the real prime triangle (N=10001). This resolves Directive 41's fixedness concern: nu2 is prefix-determined, so Lemma… (refers: lemma54-re-derived-proof, granville-nu2-reduction, odlyzko-block-lemma-exact)
 - **rising-sea**: Converging-cycle decision on the three regeneration-side candidates: ADOPTED chebyshev-bias-granville-nu2-supply; refuted ruin-theory (probabilistic ruin theory has no purchase on a deterministic prime sequence — the required γ*>0 drift is the conjecture restated, and the adjustment coefficient degenerates in the heavy-tail regime our data occupies) and RSK/Greene/LPP (structural monotonicity mismatch: RSK first-row length is monotone, b_k strictly erodes by 1 every non-(2,4) row per the proved step law). The one genuinely new fact: ν₂ is TWO-POINT, not one-point — bit_n = [p_{n+1} ≢ p_n (mod… (refers: chebyshev-bias-granville-nu2-supply, granville-nu2-density-measured, step-law-and-recharge-identity)
 - **adversarial**: Granville Lemma 5.4 RE-DERIVED and PROVED (even domain) — this is the lemma Route B's ν_2 reduction depends on, and it previously had NO valid proof in the ledger (published proof discards the δ=0 case, which occurs on 100% of real columns). The abstract theorem: eps ∈ {0,2}^L = maximal {0,2} suffix of the previous diagonal, ν_2 = #2s, orbit δ_0=v, δ_k=|δ_{k−1}−eps_k|. If v is EVEN and v ≤ 2ν_2+2 then δ_L∈{0,2} and stays. Proof: parity keeps even δ even (never hits 1); each ε=2 with δ≥2 drops δ by 2, ε=0 passes through, δ=0→2 (bounce) stays in {0,2}; after ν_2 twos δ=v−2ν_2 ≤ 2 even ⟹ ∈{0,2}.… (refers: lemma54-re-derived-proof, granville-nu2-reduction)
 - **rising-sea**: G-supply (nu2 > n^beta, beta>0.525) reduces cleanly to a prime-gap-mod-4 density claim. New measurement code/gap_analysis/nu2_vs_gap_parity.py: the {0,2} tail cells (k,n-k), k=K..n-2, have row-1 ancestors whose union is the FIXED interval [2,n-1] of A_1 (independent of where the tail starts — the k=n-2 cell alone reaches column 2). Halved bits h[j]=(gap//2)%2 are 1 iff gap ≡ 2 mod 4; w(n)=Hamming weight. Measured: w/n ≈ 0.60 (60% of first n prime gaps ≡ 2 mod 4), nu2/w ∈ [0.689,0.867], so nu2 >= w/2 holds on every sample (even c≈1.45 comfortable) — a clean transfer lower bound nu2 >= w/c is… (refers: granville-nu2-density-measured)
@@ -17,6 +18,30 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## offer
 
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+The skeleton is written and the ledger re-derived. Here is the report.
+
+## Slug
+`research/backward/nu2-supply-split.md`
+
+## What it does
+This refines the run's **single open Route B gap** (`GN-supply-nu2-density`, the monolithic `ν₂(q_n) > n^β`) into **two attackable lemmas** with an explicit inference combining them. The skeleton's `implies` states the actual argument: induction over right diagonals, Lemma 5.4 (discharged, `lemma54-re-derived-proof`) turning the budget `g*_n ≤ 2·ν₂ + 2` into success, the…
+- **adversarial**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+The skeleton is written and the ledger re-derived. Here is the report.
+
+## Slug
+
+`research/backward/supply-nu2-factorization.md`
+
+## What it does
+
+The run already has `granville-nu2-reduction.md`, which decomposes Gilbreath into three legs and correctly marks **`GN-supply-nu2-density` (ν₂ > n^β, β > 0.525) as the single open content**. My skeleton does not restate that. It takes that one open gap and breaks it into what would actually suffice to close it, because as stated it is not attackable — it's a density…
 - **rising-sea**: Decomposition just opened:
 
 What would suffice:

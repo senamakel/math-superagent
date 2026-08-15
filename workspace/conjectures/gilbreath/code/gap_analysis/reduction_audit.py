@@ -34,11 +34,16 @@ Program verifies on the real prime triangle:
                    the SAME pattern eps on the 0-2 cycle (prefix-determined),
                    and the cycle / nu2 of delta(q_{n-1}) is a function of the
                    prefix only.
-  (D) CONSTANT-1:  the diagonal erosion law  c_n >= c_{n-1} - 1  holds (one
-                   {0,2}-cycle position lost per extension at most) --
-                   reproduces the block-lemma protection constant = 1 in
-                   right-diagonal coordinates -- and regeneration events are
-                   counted (c_n > c_{n-1} - 1).
+  (D) CONSTANT-1:  measures the diagonal erosion law  c_n >= c_{n-1} - 1
+                   on the {0,2}-cycle length c_n of the anti-diagonal
+                   delta(q_n).  REPORTED, NOT ASSERTED: this was expected to
+                   reproduce the block-lemma protection constant = 1 in
+                   right-diagonal coordinates, but it is REFUTED here (1133
+                   violations over 9999 extensions) -- the {0,2}-cycle length
+                   of an anti-diagonal is transversal to a row's leading
+                   {0,2} block, which is the object the (proved) constant-1
+                   block lemma actually governs.  See
+                   code/gap_analysis/separate_row_vs_diagonal.py.
 
 Cost: incremental diagonals are O(N) memory (keep only prev + cur), O(N^2)
 total abs-diffs.  N ~ 20000 => 4e8 hard? No: N^2/2 = 2e8 abs-diffs, fine in
@@ -112,7 +117,7 @@ def main():
     # bottom entry A_{n-1}(0) = delta_{n-1}(q_n) for small n, and the
     # worked rows A_1, A_2 of problem.md.
     # ---------------------------------------------------------------
-    rows = build_full_triangle(ps, 20)
+    rows = build_full_triangle(ps, 60)
     # problem.md: A_1 = 1,2,2,4,2,4,2,4,6,2 ; A_2 = 1,0,2,2,2,2,2,2,4;
     # A_3 = 1,2,0,0,0,0,0,2
     A1 = rows[1][:10]
@@ -234,7 +239,18 @@ def main():
             grow += 1
     print(f"(D) constant-1 erosion law c_n >= c_{'{n-1}'} - 1: violations {erosion_viol} "
           f"over {N-2} extensions")
-    assert erosion_viol == 0, "constant-1 erosion law VIOLATED in diagonal coordinates"
+    # REPORTED, NOT ASSERTED: this DIAGONAL-COORDINATE form is REFUTED here
+    # (1133 violations over 9999 extensions at primes < 1.05e5), while the
+    # proved ROW-DIRECTION block lemma b_{k+1} >= b_k - 1 holds (verified 0
+    # violations separately, code/gap_analysis/separate_row_vs_diagonal.py).
+    # c_n (0-2 suffix of an anti-diagonal) is transversal to a row's leading
+    # {0,2} block, so the constant-1 erosion proven for rows does NOT govern it.
+    if erosion_viol == 0:
+        print("(D) diagonal-coordinate constant-1 erosion law HOLDS here (0 violations).")
+    else:
+        print("(D) NOTE: diagonal-coordinate constant-1 erosion law REFUTED here: "
+              f"{erosion_viol} violations.  Does NOT touch the proved row-"
+              "direction block lemma (b_{k+1} >= b_k - 1, 0 violations).")
     print(f"(D) distribution over extensions n=3..{N}: "
           f"erode-by-1={dec}, stay={same}, regenerate(grow)={grow}")
     # the n+1 protection: a 0-2 cycle of length L protects the next L+1...?
