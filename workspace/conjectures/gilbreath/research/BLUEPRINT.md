@@ -86,4 +86,4 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `directive25-gap-trend-and-reconciliation` | claim | established | — | In the prime Gilbreath triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the 13 giants (j > 1000) at rows 34..161 have inter-giant gaps… |
 | `ducci-avart-nilpotent-concatenation` | claim | **ready** | — | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector… |
 
-_147 further nodes not shown._
+_149 further nodes not shown._

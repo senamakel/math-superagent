@@ -69,7 +69,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `giacomelli-2025-padic-ducci-matrix-spectral` | For the p-adic-norm Ducci operator δ_p(x)=\|D_p x\|_p on Q_p^n, termination is governed spectrally: all \|λ_i\|_p<1 ⟹ terminates; all \|λ_i\|_p=1 ⟹ does not converge to 0, and roots of unity give eventual periodicity;… | no | asserted | `research/summaries/giacomelli-2025-ducci-matrices-p-adic-context.md` |
 | `giant-landing-geometric-fit-15` | Over the 15 genuine giant landings of the 6e8 run, exact LS fit: geometric log b = a + m·x with R² = 0.968, factor 1.765/event; linear R² = 0.432. Geometric description holds on 15 points; it is a fit, not a law; not… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
 
-_107 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_109 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 

@@ -34,7 +34,18 @@ the Gilbreath/Proth/Ducci corpus: it is digested and its dead ends are recorded
 - Beardon 2011 "Cyclic Absolute Differences of Integers", Am. Math. Monthly 118(7) 650–652 — paywalled; an elementary cyclic-Ducci convergence proof, covered by held sources.
 - Brown–Merzel 2003 "Limiting behavior in Ducci sequences", Period. Math. Hungar. 47 45–50 — paywalled; its theorem (unique finite limit cycle, {0, M₀} components) is quoted in full in CZ 2011 §1 (held).
 - Caragiu–Baxter 2007 "A note on p-adic Ducci games", JP J. Algebra Number Theory Appl. 8.1 115–120 — paywalled; its key result (p^−t convergence probability for random polynomial multipliers) is quoted in CZ 2011 §1 (held).
-- MDPI Mathematics 11(18) 4006 (Gilbreath polynomials) — publisher 403 for the downloader; RePEc record held instead; the claim "GC follows from p_n − 2^{n−1} ≤ P_{n−1}(1)" is asserted-by-source, unverified. Gatti's 2020 preprint (the same author's earlier, downloadable version of the machinery) is now ALSO held in full via Wayback; it does **not** contain the polynomial inequality, so the 2023 claim remains unverified.
+- MDPI Mathematics 11(18) 4006 (Gilbreath polynomials) — publisher 403 for the
+  *downloader*, but the **page text was captured via the `read_sources` route on
+  2026** (`research/sources/gatti-2023-gilbreath-polynomials-mdpi.captured.md`),
+  so the claim is no longer unverified as a restatement: Equation (6)
+  `p_n − 2^{n−1} ≤ P_{n−1}(1) ⟹ GC_n` reduces to `p_n ≤ max K(p_1..p_{n−1})`,
+  which is exactly Gatti's Theorem 4 whose proof is invalid
+  (`gatti-2020-theorem4-proof-invalid`), and the author concedes current prime
+  bounds are insufficient to prove it. **Do not re-attempt the MDPI/Preprints
+  endpoints** (still 403). The 2020 preprint (same author, downloadable via
+  Wayback, held in full) does not contain the polynomial inequality, so the
+  bound's *proof* remains unverified — but the claim itself is now captured,
+  assessed against the run's held evidence, and confirmed to add no new route.
 - Preprints.org live site (manuscript 202003.0145) — 403 for the downloader on all three endpoint patterns (landing page DOI redirect, /v1, /v1/download). Obtained 2020-12-02 capture via Wayback; do not retry the live site.
 - Gardner, M. "Patterns in primes are a clue to the strong law of small numbers", Sci. Amer. 243(6) 18–28, Dec 1980 (the *Mathematical Games* column where Hallard Croft's bounded-gap generalisation of Gilbreath was first published) — no free full text: Scientific American page is subscription-gated (no article body), the peterrowlett.net/gardner-index page confirms the column↔book-chapter match but reproduces no text, ERIC has only the abstract record (EJ235152), MathWorld/Martin-Gardner index cite it without text. **Do not re-attempt.** The Croft generalisation and its Eppstein refutation are already fully held from the primary/derived sources (eppstein-anti-gilbreath-sequences, wikipedia-gilbreaths-conjecture, mathworld-gilbreaths-conjecture, arias-de-reyna-gilbreath-blog, muney-2026, chase-2024); Gardner's column is a popularisation node, not a claim source this run lacks.
 - Subhraneel & Srihan Dutta, "A Relation between Prime Numbers: Extension of Gilbreath's Conjecture" (Zenodo 10.5281/zenodo.20612698, 2026-06-09) — **record deleted; unobtainable.** Both the DOI redirect and the record page endpoint return HTTP 410 GONE (the Zenodo record was removed); only search-blurb metadata survives (a shifted-difference operator on primes, parameterised by m ≥ 1, conjecturing the first element eventually becomes 1; explicitly "completely experimental", finite-prime computations, no proof). No mirror found in 2 searches. **Do not re-attempt the record or DOI.** Note: marginal experimental preprint, h-index 0, 0 citations — not load-bearing for this run; the held Li-2026 modulo-k generalisation covers this direction more substantively. Recorded so nobody re-fetches a gone record.

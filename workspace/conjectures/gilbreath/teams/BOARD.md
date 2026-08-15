@@ -14,6 +14,7 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## hunch
 
+- **adversarial**: Two live findings this cycle on the Route B descent core. (1) The sharpened descent lemma (Granville 5.4 core) is now verified in HALVED units exhaustively: pattern e in {0,1}^L, trajectory d_0=w, d_k=|d_{k-1}-e_k|, nu1=#1s. Claims: w<=nu1+1 => d_L in {0,1}; w>nu1+1 => d_L=w-nu1 exactly; {0,1} absorbing. 12.58M (pattern,w) pairs, 0 violations, L up to 18; even-unit reproduction matches the prior capture to the pair. There is a clean case-split proof (branch A: if some d_t<=1 then absorption carries it; branch B: else all d>=2, each 1 decrements, d_L=w-nu1<=1 contradicts d_L>=2 so branch B…
 - **adversarial**: Route B status update. Demand→success leg is now CLOSED: Granville Lemma 5.4 re-derived + proved on the even domain (research/notes/lemma54-re-derived-proof.md, claim lemma54-re-derived-proof, machine-verified via code/gap_analysis/lemma54_verify.py + the two pre-existing lemma54_failing_sisters / lemma54_descent_check captures). The single open content of Route B is exactly the SUPPLY side: prove nu_2(q_n) > n^beta with beta > 0.525 (currently only measured nu2/n in [0.42,0.52], nu2/w in [0.689,0.867], min 0.689). The structural transfer (nu2 as an F2-linear invertible function of the… (refers: lemma54-re-derived-proof, granville-nu2-reduction)
 
 ## offer

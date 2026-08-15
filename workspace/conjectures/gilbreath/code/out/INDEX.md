@@ -147,12 +147,15 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_giant_parity.captured.txt` | _(undescribed)_ |
 | `pattern_finder_giant_parity2.captured.txt` | _(undescribed)_ |
 | `pattern_finder_giant_significance.captured.txt` | _(undescribed)_ |
+| `pattern_finder_nu2_report.md` | Pattern-finder report on ν₂(q_n), the Route B supply quantity: exact transfer bounds ν₂≥0.5w (all n≥17), ν₂≥0.75w (n≥1000, sole failure n=1005), ν₂≥0.8w (n≥4000), fluctuation concentration |
 | `pattern_finder_report.md` | Pattern-recognition report: exact regularities in the Gilbreath row data (recharge identity re-verified, block-not-below-null, inter-event gap structure, the gap/(j+1) ratio bound as the strongest empirical regularity, event parity, OEIS misses). |
 | `pattern_finder_structural_scan.md` | Pattern-recognition scan: exact no-low-order results on the second-entry, block-profile, regen-gap, jump, giant-row sequences; confirms the monotone recharge surplus S_k (the one exploitable structure) and the giant-intruder-return and ratio-bound regularities over the real rows. |
 | `pattern_finder_threshold_gaps.captured.txt` | _(undescribed)_ |
 | `pattern_finder_wider_giants.captured.txt` | _(undescribed)_ |
 | `reconcile_lemma54_NOTE.md` | _(undescribed)_ |
 | `reduction_audit.captured.txt` | _(undescribed)_ |
+| `reduction_audit_d_investigate.captured.txt` | _(undescribed)_ |
+| `reduction_audit_d_notes.md` | _(undescribed)_ |
 | `regen_c4_check.captured.txt` | Earlier regeneration-trigger check (superseded by erosion_dynamics and regeneration_* outputs). |
 | `regen_mechanism.captured.txt` | Earlier regeneration-mechanism probe (superseded). |
 | `regeneration_analysis.captured.txt` | Output of `pattern/regeneration_analysis.py`: the 60-event table, rate buckets, histograms, runs test, minima. |
@@ -174,6 +177,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `runner1.py` | _(undescribed)_ |
 | `runner2.py` | _(undescribed)_ |
 | `runner3.py` | _(undescribed)_ |
+| `s1_fork_resolution.md` | Exact negative that closes the S1 transfer fork: the universal ν₂≥w/2 claim is false — no positive constant works (string [2,4,4,…] gives ν₂=0,w=1), so the Route B supply bound must carry the two-point mod-4 gap density (S2) content and cannot be split into a number-theory-free transfer. |
 | `scholar_digest_verify.py` | _(undescribed)_ |
 | `separate_row_vs_diagonal.captured.txt` | _(undescribed)_ |
 | `sequence_dump.txt` | _(undescribed)_ |
@@ -194,6 +198,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_candidates.py` | _(undescribed)_ |
 | `verify_giants_6e8.captured.txt` | _(undescribed)_ |
 | `verify_granville_nu2_independent.captured.txt` | Independent in-container verifier output (code/verify_granville_nu2_independent.py, timeout 540, EXIT_CODE=0): reproduces both notes' numbers via lib.gilbreath + prefix-max g*; adds entry-level stat — 1,546,291 of 3,095,143 gray-block entries are 0 (50.0%, avg 623.5 zeros/block), so the discarded delta=0 case dominates entrywise, not just per-row. |
+| `verify_lemma54_theorem.py` | _(undescribed)_ |
 | `verify_lemma54_v_le_gstar.captured.txt` | _(undescribed)_ |
 | `verify_lemma54_v_le_gstar.captured2.txt` | _(undescribed)_ |
 | `verify_lemma54_v_le_gstar.py` | FIXED (was vacuous, checked=0): verifies Link A (v <= g*_n) and the Lemma 5.4 hypothesis (g*_n <= 2*nu2+2) for Granville's descent lemma on real primes below 2e6, columns n=20..1200. Root-cause fix: the original built the right diagonal including the terminal left-edge entry A_n(0)=1, so the maximal {0,2} suffix was always empty and the eligibility filter (start>=2) dropped every column. Now uses Granville's convention (maximal {0,2} suffix of the body d[:-1], scanned to index 2, tau = start, v = dcur[tau]) from the accepted independent verifier. Non-vacuous result: 1181 eligible columns, 0 Link-A violations, 0 hypothesis violations, max margin 35.882. Cross-validated on an independent rows_generator path (same 1181/0/0). Exact integers; O(M^2) triangle, one row live. Trailing 'PROVED claim' sentence removed per Directive 45. |
