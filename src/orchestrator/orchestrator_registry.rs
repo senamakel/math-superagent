@@ -364,9 +364,15 @@ fn support_agents(
         // otherwise pay to discover, and it is asserted rather than
         // established, which is exactly what the board carries and the claim
         // ledger must not.
+        // It closes tasks rather than opening them, and that split is the
+        // point: this role is the one that has just seen what an attempt
+        // actually produced, so it is the only one that can say what came of a
+        // task truthfully. What to do *next* is the planner's judgement, not
+        // the judgement of whoever finished the last thing.
         .with_tools(
             BOARD_TOOLS
                 .into_iter()
+                .chain(LEDGER_WRITE_TOOLS)
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
@@ -432,9 +438,16 @@ fn support_agents(
              which directions are open, and what the shared brief says.",
         )
         .with_model("openrouter")
+        // Reordering the work is most of what acting on a directive amounts
+        // to, and it was the one thing this role could previously only do by
+        // rewriting `TASKS.md` whole — which is how the record of what the run
+        // had already finished kept being deleted. It is not given the keeper
+        // tools: a directive redirects an investigation, it does not
+        // re-architect the runtime's bookkeeping.
         .with_tools(
             [SCRATCH_READ_TOOL]
                 .into_iter()
+                .chain(LEDGER_WRITE_TOOLS)
                 .chain(memory_tools)
                 .chain(document_tools),
         ),
@@ -508,7 +521,17 @@ fn planning_agents(
              names the gaps between them and what the run has established.",
         )
         .with_model("openrouter")
-        .with_tools(memory_tools.into_iter().chain(document_tools)),
+        // The `goals` ledger *is* this role's output — the skeletons under
+        // `research/backward/`. Recording a gap through the tool merges one
+        // field instead of re-emitting the file, so closing a gap three
+        // cycles in costs a line rather than a rewrite that can drop a
+        // sibling gap without anybody noticing.
+        .with_tools(
+            LEDGER_WRITE_TOOLS
+                .into_iter()
+                .chain(memory_tools)
+                .chain(document_tools),
+        ),
         // The third direction, and the only role allowed to move the target.
         // The reducer asks what would be enough and the inventor asks what
         // other route reaches the goal; both keep the goal fixed. This one
@@ -637,6 +660,12 @@ fn library_agents(
             // one placed to say what it is about to spend it on before a
             // sibling spends the same run twice.
             .chain(BOARD_TOOLS)
+            // The role that decides what the run does next is the one that
+            // keeps the list of it, and the only one besides the orchestrator
+            // placed to judge that the investigation has grown an axis the
+            // runtime does not carry.
+            .chain(LEDGER_WRITE_TOOLS)
+            .chain(LEDGER_KEEPER_TOOLS)
             .chain(memory_tools)
             .chain(SCRATCH_TOOLS)
             .chain(document_tools),
