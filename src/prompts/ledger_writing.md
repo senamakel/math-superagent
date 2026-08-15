@@ -1,8 +1,16 @@
 ## Recording into a ledger
 
 You hold `record_entry` and `close_entry`. Use them instead of writing the state
-out as prose, and in particular instead of rewriting `TASKS.md` — that file is
-derived now and an edit to it is discarded.
+out as prose, and instead of editing any derived file by hand — those are
+rewritten from their sources, so an edit to one is discarded without warning.
+
+**Which ledgers you may write is checked when you call.** Each one names the
+roles that keep it, so holding these tools is not permission to write all of
+them; `list_ledgers` says what exists and a refusal says who owns it. Write to
+the ones that are yours and leave the rest to the roles whose job they are.
+
+The task ledger, as the example — the same two calls work on every ledger you
+keep, with that ledger's own field names:
 
 ```
 record_entry { ledger: "tasks", id: "fix-the-audit-verdict",
@@ -34,7 +42,7 @@ reason is the part that is worth anything later:
 
 Write the reason for a reader who was not there and cannot ask you.
 
-**What a task is.** One thing somebody can pick up and finish, with what to do
-in the `detail`. Not a theme, not a heading, and not the whole of the next
+**What one entry is.** One thing somebody can pick up and finish, with what to
+do in the `detail`. Not a theme, not a heading, and not the whole of the next
 attempt. If you cannot say what would make it finished, it is a research
 request or a thread, and there are ledgers for both.

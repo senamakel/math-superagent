@@ -23,6 +23,7 @@
 //! reasoning — and each spec names the roles that may write it. That is what
 //! keeps the judge out of the task list without needing a tool per ledger.
 
+use std::fmt::Write as _;
 use std::sync::Arc;
 
 use async_trait::async_trait;
@@ -222,6 +223,10 @@ impl Tool<()> for LedgerTool {
         }
     }
 
+    // One `match` over six tools, and each arm is a JSON literal describing one
+    // tool's arguments. Splitting it per kind would move the shape of a tool
+    // away from the tool, which is the one thing a reader comes here for.
+    #[allow(clippy::too_many_lines)]
     fn schema(&self) -> ToolSchema {
         // `ledger` is a string rather than an enum of slugs, and must stay one:
         // the schema is built once per run, so an enum could not name a ledger
@@ -462,7 +467,8 @@ impl LedgerTool {
             };
             let fields: Vec<&str> = spec.fields.iter().map(|field| field.name.as_str()).collect();
             let statuses: Vec<&str> = spec.statuses.iter().map(|status| status.name.as_str()).collect();
-            out.push_str(&format!(
+            let _ = write!(
+                out,
                 "\n## `{}`{}\n\n{}\n\n- renders: `{}`\n- {count}\n- fields: {}\n- statuses: {}\n",
                 spec.slug,
                 if spec.builtin { "" } else { " (defined by this run)" },
@@ -470,10 +476,10 @@ impl LedgerTool {
                 spec.derived,
                 fields.join(", "),
                 statuses.join(", "),
-            ));
+            );
         }
         for fault in faults {
-            out.push_str(&format!("\n_{fault}_\n"));
+            let _ = write!(out, "\n_{fault}_\n");
         }
         out
     }
@@ -543,10 +549,11 @@ impl LedgerTool {
             out.push_str(&entry.full());
         }
         if matching.len() > shown {
-            out.push_str(&format!(
+            let _ = write!(
+                out,
                 "\n_{} more match. Narrow with `status`, `id` or `query`, or raise `limit`._\n",
                 matching.len() - shown
-            ));
+            );
         }
         Ok(out)
     }

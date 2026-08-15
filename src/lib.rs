@@ -55,7 +55,7 @@ pub use greeting::greet;
 pub use hello_agent::HelloAgent;
 pub use orchestrator::{
     AgentDefinition, AgentRegistry, OrchestratorAgent, SubagentAgentRunner, SubagentTaskRunner,
-    WorkflowCatalog, ledger_report, prompt_report,
+    WorkflowCatalog, ledger_report, prompt_report, render_ledger,
 };
 #[cfg(feature = "graph-debug")]
 pub use orchestrator::{render_flows, render_solution_loop};

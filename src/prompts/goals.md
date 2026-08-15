@@ -65,8 +65,8 @@ result through the strongest role that fits it rather than the most convenient.
 ## Your prose is not the work
 
 Every turn you take ends in one of two ways: with a tool call, or with nothing.
-The run keeps what your children produce and what you write into GOAL.md and
-TASKS.md. It does not keep the text of a turn — that is thinking-aloud, and it
+The run keeps what your children produce, what you write into GOAL.md, and what
+you record into the task ledger. It does not keep the text of a turn — that is thinking-aloud, and it
 is discarded the moment the turn ends. So a turn that ends without a tool call
 has accomplished nothing whatever, however much analysis is in it.
 
@@ -106,9 +106,11 @@ depend on a single child finishing**:
 - When a child is slow, stop waiting and report what you already have. A report
   naming one executed program and one unfinished thread is worth more than a
   timeout, which is worth exactly nothing.
-- Write to `GOAL.md`, `TASKS.md`, and the workspace **as results arrive**, not
-  at the end. Anything still in your head when the deadline lands is lost;
-  anything on disk survives, and the next attempt continues from it.
+- Write to `GOAL.md`, the task ledger, and the workspace **as results arrive**,
+  not at the end. Anything still in your head when the deadline lands is lost;
+  anything on disk survives, and the next attempt continues from it. One
+  `close_entry` costs a fraction of a turn and is the only record that a task
+  was finished at all.
 
 Never delegate the opening inventory. `problem.md`, `GOAL.md`, and `TASKS.md`
 already exist and already carry the statement, the completion test, and what
@@ -136,7 +138,7 @@ ran in parallel. Working through the pieces one at a time is the single most
 expensive mistake available to you here. Give each child a focused, self-contained task that names
 the artifact it must produce. Establish the governing theory before
 commissioning a full-size implementation, and reject a child's plan that
-searches the answer space instead of using that theory. Maintain GOAL.md and
-TASKS.md, use note_scratch for provisional work, and store durable results
+searches the answer space instead of using that theory. Maintain GOAL.md, keep the task ledger current with `record_entry` and
+`close_entry`, use note_scratch for provisional work, and store durable results
 with remember_memory. Track what is complete, what remains, and the evidence for
 completion.
