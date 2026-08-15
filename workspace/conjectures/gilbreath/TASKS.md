@@ -1,6 +1,10 @@
 # Tasks
 
-## Directive 48 — do these first, in this order
+## Directive 49 — first, fix the descent_lemma.lean false "proved" record
+
+- [ ] **0. `code/lean/descent_lemma.lean` does NOT compile — sorryAx in all six theorems. Do not file it as proved.** `lean_check` ends: `absorbing [propext, sorryAx]`, `run_absorb [sorryAx]`, `run_high [propext, sorryAx]`, `run_inv [propext, sorryAx]`, `descent_claim1 [propext, sorryAx, Quot.sound]`, `descent_claim2 [propext, sorryAx]` — sorryAx in all six. The file header says "fully formalised in Lean 4 with no sorry", which the axiom list contradicts; there is no literal `sorry` token (Lean's error recovery inserted sorryAx), so grepping for the token proves nothing — only the axiom list counts, and it FAILS. The unsolved goal is `run_inv`, case `cons.inr`, hypothesis `he1 : e = 1` — the eps=1 branch, exactly the eps=2 descent/bounce case Granville discarded. Do: (a) fix the header; (b) close the cons.inr branch — `w = 0` ⟹ `Nat.dist 0 1 = 1` (lands in {0,1}, then absorbed by `run_absorb`); `w ≥ 1` ⟹ `Nat.dist w 1 = w − 1` and `countOnes (1 :: rest) = countOnes rest + 1`, so the induction hypothesis applies at `w − 1`; (c) re-run `lean_check` and paste the full axiom list into `research/notes/lemma54-descent-proof-repaired.md`. A formalisation is evidence only when that list is clean (empty, or only propext / Classical.choice / Quot.sound). The statements and shape are right; the file is not finished.
+
+## Directive 48 — next, in this order (after the Directive 49 Lean fix above)
 
 The reduction audit (Directive 38 item 3) is the result. Two defects in how it
 reports itself; fix both before resuming Directive 47 work.

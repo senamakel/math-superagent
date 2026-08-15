@@ -91,5 +91,4 @@ never bounces.
   lemma54_descent_check.captured.txt exactly, 0 violations.
 - Sharpness: all-1s pattern, w=nu1+1 → d_L=1; w=nu1+2 → d_L=2; every L=1..18.
 
-These are verifications, not the proof; the proof is the case-split above, and
-the Lean formalisation (code/lean/descent_lemma.lean) machine-checks it.
+These are verifications, not the proof; the proof is the case-split above. The Lean formalisation (code/lean/descent_lemma.lean) does **NOT** yet machine-check it — Directive 49: every theorem in that file depends on sorryAx (no literal `sorry` token; error recovery inserted sorryAx), so it must not be cited as proved. The mathematical case-split stands and is machine-verified numerically; the Lean formalisation is the open item.

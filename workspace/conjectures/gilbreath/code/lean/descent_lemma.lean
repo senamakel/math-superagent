@@ -86,18 +86,16 @@ lemma run_high (hall : ∀ e ∈ el, e = 0 ∨ e = 1) :
         exact ih hrest w hw'
       · -- e = 1 : one exact decrement.
         change runAbs (Nat.dist w 1) rest = w - countOnes (1 :: rest)
-        have hwbig : 2 ≤ w := by
-          have hw'' : countOnes (1 :: rest) + 1 < w := by simpa [countOnes] using hw
-          omega
+        have h1 : countOnes (1 :: rest) = 1 + countOnes rest := by simp [countOnes]
+        have hwbig : 2 ≤ w := by omega
         have hd : Nat.dist w 1 = w - 1 := abs_dist_one w (by omega)
         rw [hd]
-        have hw' : countOnes rest + 1 < w - 1 := by
-          have hw'' : countOnes (1 :: rest) + 1 < w := by simpa [countOnes] using hw
-          omega
+        have hw' : countOnes rest + 1 < w - 1 := by omega
         have hrun := ih hrest (w - 1) hw'
         rw [hrun]
-        simp [countOnes]
-        omega
+        rw [show (w - 1) - countOnes rest = w - (1 + countOnes rest) by omega]
+        rw [show countOnes (1 :: rest) = 1 + countOnes rest by exact h1]
+        rfl
 
 -- ---------------------------------------------------------------------------
 -- The engine invariant.  Unconditional.
