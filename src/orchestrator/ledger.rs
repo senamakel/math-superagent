@@ -29,6 +29,8 @@
 //!   `MAX_ROWS` failed to help.
 
 pub(super) mod budget;
+pub(super) mod engine;
+pub(super) mod registry;
 pub(super) mod spec;
 
 #[cfg(test)]
