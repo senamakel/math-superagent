@@ -78,7 +78,7 @@ fn build_planner_harness<const N: usize>(
     for tool in subagents.tools(bench) {
         register_resilient(&mut harness, tool);
     }
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as(role) {
         register_resilient(&mut harness, tool);
     }
     register_memory(&mut harness, parts.vector_store);
@@ -94,6 +94,22 @@ fn build_planner_harness<const N: usize>(
         for tool in board_tool::BoardTool::all(parts.documents, &posting_as(subagents)) {
             register_resilient(&mut harness, tool);
         }
+    }
+    // Both planners keep the task list, unlike the scratch and the board above.
+    // What to do next is the question both of them are answering — the
+    // orchestrator by choosing who to delegate to, the goals agent by driving
+    // the attempt — and a planner that could decide the order of work but not
+    // record it would go back to rewriting `TASKS.md`, which is what put the
+    // record of finished work at risk in the first place.
+    //
+    // They are also the only two placed to judge that the investigation has
+    // grown an axis the runtime does not carry, which is what the keeper tools
+    // are for.
+    for tool in ledger::LedgerTool::writers(parts.documents, role)
+        .into_iter()
+        .chain(ledger::LedgerTool::keepers(parts.documents, role))
+    {
+        register_resilient(&mut harness, tool);
     }
     harness
 }
@@ -116,7 +132,7 @@ fn build_research_harness(
         register_resilient(&mut harness, tool);
     }
     register_memory(&mut harness, vector_store);
-    for tool in documents.tools() {
+    for tool in documents.tools_as("research") {
         register_resilient(&mut harness, tool);
     }
     harness
@@ -167,12 +183,18 @@ fn register_code_writing_agents(
     roles: [(&str, String); 7],
 ) -> Result<()> {
     for (name, prompt) in roles {
+        // All seven share this harness, and the trace label stays
+        // `tool_builder` for all of them because that is the authority they
+        // share. The ledger tools are told the concrete role instead: write
+        // permission is per-ledger and per-role, so `sat_solver` must be
+        // `sat_solver` there even where the trace calls it something else.
         let mut harness = build_tool_builder_harness(
             parts.model,
             parts.budget,
             parts.tracer,
             parts.workspace,
             parts.documents,
+            name,
         );
         if name == lean::LEAN_ROLE {
             register_resilient(
@@ -199,6 +221,7 @@ fn build_tool_builder_harness(
     tracer: &Arc<RunTracer>,
     workspace: &Path,
     documents: &WorkspaceDocuments,
+    role: &str,
 ) -> AgentHarness<()> {
     let mut harness = specialist_harness(model.clone(), budget, "tool_builder", tracer);
     register_resilient(
@@ -212,7 +235,7 @@ fn build_tool_builder_harness(
             budget.tool_timeout,
         )),
     );
-    for tool in documents.tools() {
+    for tool in documents.tools_as(role) {
         register_resilient(&mut harness, tool);
     }
     // Diff-shaped editing, for the role that actually writes code. A patch
@@ -308,7 +331,7 @@ fn register_pattern_agent(
     for tool in PatternTool::all() {
         register_resilient(&mut pattern, tool);
     }
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("pattern_finder") {
         register_resilient(&mut pattern, tool);
     }
     // The pattern agent computes as well as observes. Its own tools answer
@@ -378,7 +401,7 @@ fn register_inventor(
     for tool in parts.search.oeis.iter().cloned() {
         register_resilient(&mut inventor, tool);
     }
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("inventor") {
         register_resilient(&mut inventor, tool);
     }
     // The one delegation bench outside the two planners. See [`INVENTION_BENCH`]
@@ -429,7 +452,12 @@ fn register_reducer(
     let budget = parts.budget.for_invention();
     let mut reducer =
         specialist_harness(parts.model_for("reducer"), budget, "reducer", parts.tracer);
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("reducer") {
+        register_resilient(&mut reducer, tool);
+    }
+    // The `goals` ledger is this role's own output — the skeletons under
+    // `research/backward/`. Merging one field beats re-emitting the file.
+    for tool in ledger::LedgerTool::writers(parts.documents, "reducer") {
         register_resilient(&mut reducer, tool);
     }
     // All three memory tools. A discharged reduction — this conjecture reduces
@@ -472,7 +500,7 @@ fn register_weakener(
         "weakener",
         parts.tracer,
     );
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("weakener") {
         register_resilient(&mut weakener, tool);
     }
     register_memory(&mut weakener, &parts.vector_store);
@@ -519,7 +547,7 @@ fn register_searcher(
         &mut searcher,
         Arc::new(search::SubmitCandidate::new(parts.workspace.clone())),
     );
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("searcher") {
         register_resilient(&mut searcher, tool);
     }
     // A construction that scored well is worth carrying to the next problem —
@@ -557,7 +585,7 @@ fn register_refuter(
         &mut refuter,
         Arc::new(WriteToolFile::new(parts.workspace.clone())),
     );
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("refuter") {
         register_resilient(&mut refuter, tool);
     }
     register_resilient(&mut refuter, patch::tool(parts.documents.clone()));
@@ -584,7 +612,7 @@ fn register_support_agents(
         "reflection",
         parts.tracer,
     );
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("reflection") {
         register_resilient(&mut reflection, tool);
     }
     register_memory(&mut reflection, &parts.vector_store);
@@ -593,6 +621,12 @@ fn register_support_agents(
     // claim, and this tool cannot file one: reflection writes lessons, and a
     // lesson is exactly the half-formed thing the board is for.
     for tool in board_tool::BoardTool::all(parts.documents, parts.school) {
+        register_resilient(&mut reflection, tool);
+    }
+    // It closes tasks and does not open them. This is the role that has just
+    // seen what an attempt produced, so it is the only one that can say what
+    // came of a task truthfully; what to do next is the planner's judgement.
+    for tool in ledger::LedgerTool::writers(parts.documents, "reflection") {
         register_resilient(&mut reflection, tool);
     }
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
@@ -606,7 +640,7 @@ fn register_support_agents(
         "judge",
         parts.tracer,
     );
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("judge") {
         register_resilient(&mut judge, tool);
     }
     // No `register_memory` here, and that is the boundary rather than an
@@ -641,7 +675,7 @@ fn register_support_agents(
     for tool in parts.search.discovery.iter().cloned() {
         register_resilient(&mut librarian, tool);
     }
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("librarian") {
         register_resilient(&mut librarian, tool);
     }
     register_memory(&mut librarian, &parts.vector_store);
@@ -656,7 +690,7 @@ fn register_support_agents(
         "scholar",
         parts.tracer,
     );
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("scholar") {
         register_resilient(&mut scholar, tool);
     }
     register_memory(&mut scholar, &parts.vector_store);
@@ -694,7 +728,7 @@ fn register_support_agents(
         "context_curator",
         parts.tracer,
     );
-    for tool in parts.documents.tools() {
+    for tool in parts.documents.tools_as("context_curator") {
         register_resilient(&mut curator, tool);
     }
     register_memory(&mut curator, &parts.vector_store);
@@ -714,7 +748,13 @@ fn register_support_agents(
         "director",
         parts.tracer,
     );
-    for tool in parts.documents.tools() {
+    // Reordering the work is most of what acting on a directive amounts to,
+    // and it was previously only possible by rewriting `TASKS.md` whole —
+    // which is how the record of what the run had finished kept being deleted.
+    for tool in ledger::LedgerTool::writers(parts.documents, "director") {
+        register_resilient(&mut director, tool);
+    }
+    for tool in parts.documents.tools_as("director") {
         register_resilient(&mut director, tool);
     }
     register_memory(&mut director, &parts.vector_store);

@@ -1,0 +1,5 @@
+N=200 trials=300  (kind: #violations of nu2>=w/2, worst ratio)
+  fair         fails=1205  worst nu2/w=0.0714 at (trial=245 n=17 nu2=1 w=14)
+  zeros        fails=1210  worst nu2/w=0.0500 at (trial=157 n=23 nu2=1 w=20)
+  alternating  fails=1322  worst nu2/w=0.0000 at (trial=228 n=17 nu2=0 w=15)
+  ones         fails=1273  worst nu2/w=0.0667 at (trial=113 n=17 nu2=1 w=15)

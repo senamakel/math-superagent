@@ -1,0 +1,13 @@
+== exact worst-case statistics, n <= 30000 ==
+w(n) >= (n-2)/2 for ALL n in [2,30000]: YES (violations: 0, first [])
+w(n)/n over n>=1000: min=0.5795 max=0.6182
+nu2 >= (n-2)/4 for ALL n in [17,30000]: YES (violations: 0, first [])
+min log(nu2)/log(n) over n in [17,30000]: 0.6085 at n=19 (nu2=6)
+
+min nu2/n over n in [4000,30000]: 0.4745 at n=4278 (nu2=2030)
+min nu2/n^0.525 over n in [4000,30000]: 24.954 at n=4020
+max |2nu2-n|/sqrt(n log n) over n in [1000,30000]: 1.341 at n=2535
+min nu2/w over n in [17,30000]: 0.5000 at n=44
+min nu2/w over n in [1000,30000]: 0.7480 at n=1005
+min nu2/w over ALL n in [2,30000] with w>0: 0.0000 at n=3
+last n in [4000,30000] with nu2 < 0.8*w : None

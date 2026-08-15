@@ -1,0 +1,8 @@
+transfer (T): min (2*nu2 - w) = 0 at n=44 ; min (nu2 - w/2) = 0.0000 at n=44
+  worst ratio nu2/w = 0.5000 at n=44 (nu2=14 w=28)
+switch-majority (S): min (2w - (n-2)) over [17,30000] = 5 at n=17
+combined (C): min (4*nu2 - (n-2)) over [17,30000] = 7 at n=19 (nu2=6)
+  -> implied nu2 >= (n-2)/4 there: (n-2)/4 = 4.2 vs nu2 = 6
+min log(nu2)/log(n) over [4000,30000] = 0.9108 at n=4278 (nu2=2030)
+first n with (n-2)/4 > n^0.525 : 23
+exponent implied by (n-2)/4 : 1 - log(4)/log(n) -> 1 as n -> inf

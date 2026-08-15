@@ -1,0 +1,15 @@
+samples: n : nu2 : w : nu2/w : nu2>=w/2?
+  n=    50 nu2=    20 w=    30 nu2/w=0.667 True
+  n=   100 nu2=    46 w=    61 nu2/w=0.754 True
+  n=   200 nu2=   106 w=   126 nu2/w=0.841 True
+  n=   400 nu2=   216 w=   244 nu2/w=0.885 True
+  n=   800 nu2=   397 w=   493 nu2/w=0.805 True
+  n=  1600 nu2=   740 w=   948 nu2/w=0.781 True
+  n=  3200 nu2=  1573 w=  1894 nu2/w=0.831 True
+  n=  3999 nu2=  2045 w=  2384 nu2/w=0.858 True
+  n=  5000 nu2=  2444 w=  2955 nu2/w=0.827 True
+  n= 10000 nu2=  4992 w=  5861 nu2/w=0.852 True
+  n= 20000 nu2=  9962 w= 11709 nu2/w=0.851 True
+  n= 50000 nu2= 25173 w= 28912 nu2/w=0.871 True
+  n=100000 nu2= 50109 w= 57360 nu2/w=0.874 True
+ALL sampled nu2>=w/2 : True

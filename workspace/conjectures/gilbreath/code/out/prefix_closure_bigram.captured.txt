@@ -1,0 +1,28 @@
+Q3: earliest violation n in random p=0.6 patterns (N=600, 150 trials):
+  n in [  0, 25):  54  (72.0%)
+  n in [ 25, 50):  18  (24.0%)
+  n in [ 50, 75):   3  (4.0%)
+  total violating trials: 75/150
+  canonical (0^8,1^8): first violation at n=17 (pattern length 16)
+  canonical (0^12,1^12): first violation at n=21 (pattern length 24)
+  canonical (0^16,1^16): first violation at n=25 (pattern length 32)
+
+Q4: bigram structure, prime bits vs Bernoulli(0.59):
+  prime:  P(1|1)=0.5523 P(0|1)=0.4477 P(1|0)=0.6024 P(0|0)=0.3976  (n=100000)
+  Bernoulli(0.59): P(1|1)=0.5916 P(0|1)=0.4084 P(1|0)=0.5910 P(0|0)=0.4090
+
+  (0-run, following 1-run) pairs with 0-run>=6:
+  prime:       [(6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1)]
+  Bernoulli:   [(6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1), (6, 1)]
+  max (0run,1run) prime: (12, 4) Bernoulli: (13, 2)
+
+Q5: interpolate a FAILING random pattern toward the prime prefix:
+  random base: first violation at n=20, min ratio=0.3750
+  flip 0.0 toward prime: first violation=20 min ratio=0.3750
+  flip 0.1 toward prime: first violation=82 min ratio=0.4615
+  flip 0.2 toward prime: first violation=20 min ratio=0.3333
+  flip 0.3 toward prime: first violation=None min ratio=0.5000
+  flip 0.5 toward prime: first violation=24 min ratio=0.3438
+  flip 0.7 toward prime: first violation=17 min ratio=0.3077
+  flip 0.9 toward prime: first violation=None min ratio=0.5000
+  flip 1.0 toward prime: first violation=None min ratio=0.5000

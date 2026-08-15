@@ -1,5 +1,35 @@
 # Library build report — what is now available locally
 
+## Cycle 2026 (librarian): canonical tier verified held + indexed; library confirmed closed
+
+Verified directly this cycle that the canonical reference tier is genuinely on
+disk and reachable through `search_documents`, not merely named:
+
+- **Odlyzko 1993** (full PDF + author's LaTeX) — block lemma with exact
+  constant 1 (one row per `{0,2}` entry, protecting N succeeding rows), the
+  `d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4)` linearization, and the 10^13 / G=635
+  verification. Summary + three claim blocks at
+  `research/summaries/odlyzko-1993-iterated-absolute-differences.md` (the
+  `≈ n/2` figure appears nowhere in the source — confirmed corrected).
+- **Proth 1878** — primary scan unobtainable as text (GDZ/Google Books/Gallica
+  all bot-blocked; vol. 4 absent from archive.org) but the myth/retraction is
+  settled through two independent reader accounts (Arias de Reyna 2020, Chase
+  2024 §7 + Williams's 2020 email retraction). Recorded so nobody re-fetches.
+- **Killgrove–Ralston 1959**, **Wikipedia / MathWorld / Encyclopedia of Math /
+  OEIS A036262 / A000232 / A089582** encyclopedic tier — all present with
+  summaries.
+- **Granville 2026 Lemma 5.4 FULLPDF, CHT 2026 FULLPDF, Chase 2024, Granville &
+  Lumley 2021, BFT 2023** — the route-bearing sources, all digested.
+
+The library passes the phase-1 exit test (ROOT.md states minimal counterexample,
+verification bound, and ≥3 settled restricted classes). REQUESTS.md confirms it
+is CLOSED apart from the G-supply gap, which is itself closed **negative**: the
+mod-4 switch bit is intrinsically a two-point statistic, so no one-point
+(GRH/Dirichlet) route suffices and no unconditional positive-linear bound on ν₂
+is provable by current methods. No further gathering is warranted. The only
+legitimate next fetch would be a source delivering `ν₂ ≥ c·n` for prime gaps —
+none is known to the literature.
+
 This run inherited a near-complete Gilbreath reference library. This cycle
 (librarian) verified the canonical tier was genuinely held and indexed, worked
 the one live open row in the requests that a primary source could settle, and

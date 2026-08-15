@@ -30,8 +30,8 @@ evidence for it stays available.
   tracing that makes a run legible.
 - [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the
   research tree, the scratch, and checkpointing.
-- [`docs/ledgers.md`](docs/ledgers.md) — the nine derived ledgers: what each
-  holds, and the failure each was written to stop.
+- [`docs/ledgers.md`](docs/ledgers.md) — the derived ledgers: what each holds,
+  the failure each stops, what bounds them, and how a run declares one.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
@@ -68,6 +68,27 @@ up. It is enforced by not registering the tool, not by asking the model to
 abstain: a prompt instruction is not a control. The workspace note tools stay
 available, so the agent can still record and recall its own findings.
 
+## Ledgers
+
+A *ledger* is derived state — an append-only queue, or one file per entry —
+walked by code and rendered into Markdown. `TASKS.md`, the board, the sub-goals
+and the nine in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
+
+- **No agent writes one; the write path refuses a derived file.** Editing one is
+  work queued for deletion on the next derivation, not a change.
+- **Every section caps rows, truncates prose, and says what it left out** — a cut
+  list reading as complete is worse than a long one. `ledger/ceiling_test.rs`
+  asserts it, and that past the bound more entries do not mean more file.
+- **A prompt carries the *index*, not the ledger**: one line per entry, its
+  identity and status, ending in the `read_ledger` call that fetches the rest. A
+  role told less must be told where the rest is, or it is cheaper *and dumber*.
+  `ledger::fit` clamps what is left, and is only a backstop.
+- **One write operation:** an event names an entry and merges fields; closing
+  keeps the entry with its reason rather than deleting it.
+- **A declaration cannot raise a bound, shadow a built-in, or reach a prompt.**
+  The tool schema is fixed for a run, so `ledger` is a checked string and never
+  an enum, which lets a run define an axis and use it the same turn.
+
 ## Schools
 
 A *school* is one way of attacking a problem; two or three run concurrently on
@@ -79,11 +100,10 @@ one workspace, sharing the ledgers and a board. Each one's bet:
 - **The control does not move.** `chisel` is today's runtime, is what an unset
   `MATH_AGENT_SCHOOLS` selects, and has an empty overlay — asserted, not assumed.
 - **Thresholds are a struct, not a second set of constants.** `route` and the jq
-  both read one, and `orchestrator::parity` proves they agree for *every*
-  school. None may move `blocked`.
-- **A board post is asserted, never established.** `teams/BOARD.md` is derived
-  from an append-only queue and never feeds a ledger; the posting school is
-  baked into the tool, so none can post as another.
+  both read one; `orchestrator::parity` proves they agree for every school, and
+  none may move `blocked`.
+- **A board post is asserted, never established.** `teams/BOARD.md` never feeds
+  a ledger, and the posting school is baked into the tool.
 - **A lock is taken at a tool-call boundary, never below one.** `worklock.rs`
   serialises the write cascade and the checkpoint; the mutex is not reentrant.
 
@@ -116,10 +136,10 @@ exist and reads `GOAL.md` beside it. The statement, what counts as a result,
 and the leads into the literature are the workspace's, not the script's: a
 launcher that carried the mathematics would need editing for every problem.
 
-`./euler-tui` **cannot start, stop, or restart anything**. That is the design,
-not a gap, and [`docs/runtime.md`](docs/runtime.md#one-start-command) has the
-evening that settled it: a viewer that cannot launch cannot start a second run
-on a workspace that already has one.
+`./euler-tui` **cannot start, stop, or restart anything** — the design, not a
+gap: [`docs/runtime.md`](docs/runtime.md#one-start-command) has the evening that
+settled it. A viewer that cannot launch cannot start a second run on a
+workspace that already has one.
 
 It *can* direct a run that already exists, which narrows that rule without
 touching what the rule prevents — a directive appends a line to a file and
@@ -131,12 +151,12 @@ creates no container.
 ```
 
 Direction never blocks the run. It is queued in the workspace and picked up at
-the next boundary, so a directive reaches the work in seconds to minutes rather
-than immediately, and the run keeps going whether or not anyone is watching.
-What became of one is written to that workspace's `config/DIRECTIVES.md`; the
-queue itself is `config/directives.jsonl`, appended to by the host and never by
-the run. See [`docs/solution-loop.md`](docs/solution-loop.md#direction-from-a-human)
-for what a directive reaches and what it deliberately cannot.
+the next boundary, so a directive reaches the work in seconds to minutes, and
+the run keeps going whether or not anyone is watching. What became of one goes
+to that workspace's `config/DIRECTIVES.md`; the queue is
+`config/directives.jsonl`, appended to by the host and never by the run.
+[`docs/solution-loop.md`](docs/solution-loop.md#direction-from-a-human) has what
+a directive reaches and what it deliberately cannot.
 
 A directive is asserted, not established. It is routed into the next attempt as
 an instruction and must never be filed as a claim — the `director` role that
@@ -217,18 +237,14 @@ through Docker Compose. Do not add a host-side fallback for tool execution.
 
 The Docker boundary is part of the security model:
 
-- Run as an unprivileged user.
-- Drop all Linux capabilities and keep `no-new-privileges` enabled.
-- Keep the root filesystem read-only.
-- Do not mount the repository, home directory, Docker socket, or broad host
-  paths into the runtime.
-- Mount only the selected directory below `workspace/` at `/workspace` for
-  agent-written files.
+- Run as an unprivileged user, with the root filesystem read-only, all Linux
+  capabilities dropped, and `no-new-privileges` enabled.
+- Mount only the selected directory below `workspace/` at `/workspace`; never
+  the repository, home directory, Docker socket, or broad host paths.
 - Keep process, memory, command-time, and command-output limits. Keeping a
   limit is the requirement; the value is a judgement, and 2 GiB was the wrong
-  one — [`docs/runtime.md`](docs/runtime.md#the-memory-cap) has the live run
-  that raised it and why an OOM kill is the worst failure shape available here.
-  Read `docker events --filter event=oom` when a container vanishes silently.
+  one — [`docs/runtime.md`](docs/runtime.md#the-memory-cap) has the live run that
+  raised it. Read `docker events --filter event=oom` when a container vanishes.
 - Keep network access because provider, search, and telemetry calls need it.
 
 Every agent working directory is `/workspace`. The helper accepts
@@ -239,25 +255,24 @@ absolute paths, and verify canonical parents before writing. Command tools run
 with `/workspace` as their current directory. A prompt instruction is not a
 security control; enforce boundaries in code and Docker configuration.
 
-Workspace contents are committed. The derivation, the program, and the per-run
+Workspace contents are committed: the derivation, the program and the per-run
 notes are the record of how an answer was reached, which is the point of the
-product, so they belong in history rather than only on the machine that produced
+product, so they belong in history rather than only on the machine that made
 them.
 
-They belong in history, not in every commit. A live run writes into `workspace/`
-continuously, so `.claude/settings.json` sets `AUTO_COMMIT_EVERY=25` for this
-repository: everything is still committed and nothing excluded, it is batched.
-The fine-grained record survives in each workspace's `.workspace-history`, which
-is what `WorkspaceCheckpoint` is for. Do not add a generated artifact to a
-source directory; leave it in its workspace.
+They belong in history, not in every commit. A live run writes continuously, so
+`.claude/settings.json` sets `AUTO_COMMIT_EVERY=25` here: everything is still
+committed and nothing excluded, it is batched, and the fine-grained record
+survives in each workspace's `.workspace-history` — what `WorkspaceCheckpoint`
+is for. Do not add a generated artifact to a source directory.
 
 What is ignored is what a reader would never open: `.python-packages/`, bytecode
 caches, `raw/`, the bulky enumeration pools beside the counts that cite them,
-`trace.jsonl` and `console.log`, and the hidden `config/.*.json` state. Each
-hidden file already has a committed human-readable counterpart beside it —
-`research/FRONTIER.md`, `research/REQUESTS.md` — which is what the derivation
-cites. [`docs/workspace.md`](docs/workspace.md) has the measured hour of commit
-spam that set the batch size. Everything a reader would open stays committed.
+`trace.jsonl` and `console.log`, and the hidden `config/.*.json` state — each of
+which already has a committed human-readable counterpart beside it, such as
+`research/FRONTIER.md`, which is what the derivation cites.
+[`docs/workspace.md`](docs/workspace.md) has the measured hour of commit spam
+that set the batch size. Everything a reader would open stays committed.
 
 ## Secrets
 
@@ -447,36 +462,30 @@ Write for a reader who has not seen the code. Prefer a concrete command or
 example over broad claims.
 
 Keep this file at 500 lines or fewer. It was 1,734 lines for long enough that
-the rule read as advice: `CLAUDE.md` symlinks here, so every session and every
-review paid for a hundred kilobytes to find one rule, and nothing measured what
-that cost. That is what makes length a cost here rather than a preference — this
-file is loaded in full, every time, by a reader looking for one thing.
+the rule read as advice, and `CLAUDE.md` symlinks here: this file is loaded in
+full, every time, by a reader looking for one thing, which is what makes length
+a cost rather than a preference. Adding a section means finding the lines for it.
 
 `README.md` is read start to finish by someone new, so it is held to the same
-intent without the number: it is 641 lines today, which is too long, and the fix
-is to move what a user does not need on their first pass rather than to trim
-paragraphs down to a threshold.
+intent without the number — the fix for its length is moving what a user does
+not need on their first pass, not trimming paragraphs to a threshold.
 
 **`docs/` is not held to that cap.** Nothing loads those files into a prompt and
 nobody reads one end to end; a reader arrives at `docs/ledgers.md` because a rule
-above it sent them there, reads the section that explains that rule, and leaves.
-For a file read by section, splitting on a line count is not a saving — it moves
-the cost from scrolling to deciding which of two files a subject ended up in, and
-it splits an argument at the point a number happened to fall rather than at a
-seam. The cap was applied there once and produced exactly that: `docs/roles.md`
-held at 499 lines by trimming an argument rather than by having finished it.
+above it sent them there, reads that section, and leaves. Splitting such a file
+on a line count moves the cost from scrolling to deciding which of two files a
+subject ended up in, and splits an argument where a number fell rather than at a
+seam. Applied there once, it held `docs/roles.md` at 499 lines by trimming an
+argument rather than by having finished it.
 
 The split is by *kind*, not by size. A rule to follow and a check to run stay
-here. The evidence behind a rule — the live run that met a ceiling, the number
-that turned out to be wrong, the failure a control was written to stop — goes to
-the file in `docs/` that owns that subject, listed under *Where the rest of this
-lives*. User-facing instructions stay in `README.md`. Do not grow a third tree
-beside those two: `docs/` holds the rationale for what is in this file, and a
-document with no rule above it is a document nobody has a reason to open.
-
-A `docs/` file still earns its length. Split one when it has stopped being about
-one subject — which is a judgement about what a reader came for, not a line
-count.
+here; the evidence behind a rule — the live run that met a ceiling, the number
+that turned out wrong, the failure a control was written to stop — goes to the
+`docs/` file that owns that subject, listed under *Where the rest of this
+lives*. User-facing instructions stay in `README.md`. Do not grow a third tree:
+a document with no rule above it is one nobody has a reason to open. A `docs/`
+file still earns its length, and is split when it has stopped being about one
+subject — a judgement about what a reader came for, not a line count.
 
 ## Working agreement for coding agents
 

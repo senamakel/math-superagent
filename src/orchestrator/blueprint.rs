@@ -38,6 +38,7 @@ use std::path::Path;
 
 use super::backward::{GapStance, Skeletons, Stance};
 use super::claims::{Ledger, Status};
+use super::ledger::budget;
 use super::text::truncate;
 
 /// The derived graph, filed with the ledgers it is computed from.
@@ -562,9 +563,11 @@ impl Blueprint {
              is stating a lemma it should be assuming, or is unsound. Nothing else in this file \
              can be trusted while a cycle stands.\n\n",
         );
-        for cycle in self.cycles.iter().take(MAX_ROWS) {
-            let _ = writeln!(out, "- {}", cycle.join(" → "));
-        }
+        let (rows, dropped) = budget::listed(&self.cycles, MAX_ROWS, |rows, cycle| {
+            let _ = writeln!(rows, "- {}", cycle.join(" → "));
+        });
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, super::backward::BACKWARD_DIR));
         out.push('\n');
     }
 
@@ -610,16 +613,18 @@ impl Blueprint {
              on its own, by a role that has not read the rest of the argument. This is the list \
              to schedule from.\n\n",
         );
-        for node in ready.iter().take(MAX_ROWS) {
+        let (rows, dropped) = budget::listed(&ready, MAX_ROWS, |rows, node| {
             let _ = writeln!(
-                out,
+                rows,
                 "- `{}` ({}) — {}\n  - open `{}`",
                 node.id,
                 node.kind.label(),
                 cell(&truncate(&node.statement, FIELD_CHARS)),
                 node.home
             );
-        }
+        });
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, super::backward::BACKWARD_DIR));
         out.push('\n');
     }
 
@@ -668,9 +673,11 @@ impl Blueprint {
              file on disk carries. Either the id is misspelled, or the run is taking something as \
              given that nobody wrote down.\n\n",
         );
-        for (node, need) in self.dangling.iter().take(MAX_ROWS) {
-            let _ = writeln!(out, "- `{node}` rests on `{need}`, which does not exist");
-        }
+        let (rows, dropped) = budget::listed(&self.dangling, MAX_ROWS, |rows, (node, need)| {
+            let _ = writeln!(rows, "- `{node}` rests on `{need}`, which does not exist");
+        });
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, super::backward::BACKWARD_DIR));
     }
 }
 

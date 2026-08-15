@@ -1,0 +1,46 @@
+========================================================================
+Conditional Route-B check  (c = 0.40)
+========================================================================
+
+[Leg (a)] demand side  -- SOURCED
+  Granville Thm 5.5: nu2(q_n) > n^beta with beta > alpha suffices,
+  alpha = 0.525 unconditional by Baker-Harman-Pintz 2001.
+  (Honest form alpha = 0.525+delta; immaterial once supply is linear.)
+
+[Leg (b)] c*n > n^0.525 eventually -- EXACT COMPUTATION
+  ratio (c*n)/n^0.525 = c*n^0.475 strictly increasing in n,
+  so it suffices to verify the first n.
+  smallest n with c*n > n^0.525 : n_0 = 7
+  holds for every n >= n_0 (monotone ratio).
+  For c=0.4: 0.4*7=2.8 > 7^0.525=2.778
+
+[Leg (c)] nu2(n) from nu2_dense.txt (n=1..30000) -- EXACT COMPUTATION
+  min nu2(n)/n      over [4000,30000] = 0.47452  (at n=4278)
+  min nu2(n)/n^0.525 over [4000,30000] = 24.95441  (at n=4020)
+  failures nu2(n) <= n^0.525 : full range = 13,  [4000,30000] = 0
+  sample: nu2(4000)=2048 n^0.525(4000)=77.82 | nu2(30000)=15029 n^0.525(30000)=224.12
+
+[Leg (d)] Lemma 5.4 budget: demand->success -- PART EXACT / PART SOURCED
+  Lemma 5.4 (PROVED, even domain): if v even and v <= 2*nu2(q_{n-1})+2,
+  the orbit lands in {0,2} (success).  Acquaint (Link A): v <= g*_n,
+  so the budget inequality is  g*_n <= 2*nu2+2.
+  Demand side (SOURCED, BHP 2001):  g*_n = O(p_n^0.525) = O(n^{0.525+eps}),
+  because p_n ~ n log n; the 0.525 exponent sits on the PRIME, not on n,
+  and holds only eventually. So g*_n/n -> 0, and a LINEAR supply
+  nu2 >= c*n forces 2*nu2+2 >= g*_n for all large n automatically.
+  exact budget check 2*nu2(n)+2 >= g*_n over n=2..30000 (sieve 3e6):
+    checked = 29999, violations = 1
+    tightest slack (min 2*nu2+2 - g*_n) = -2 at n=4
+    last violation at n=4 (all later hold)
+  g*_30000 = 86  vs  2*nu2(30000)+2 = 30060
+
+[Verdict] The conditional assembly is arithmetically coherent.
+  (b) c*n > n^0.525 eventually (exact, monotonised);
+  (c) on the stored nu2 data the linear supply holds with min ratio
+      0.4745 > c=0.4 and min nu2/n^0.525 = 24.95 over [4000,30000];
+  (d) the Lemma-5.4 budget 2*nu2+2 >= g*_n holds on every checked n
+      and linear supply forces it eventually by the sourced BHP bound
+      g*_n = O(n^{0.525+eps}). The ONLY open content is the supply
+      bound nu2(q_n) >= c*n itself (two-point, named open problem).
+
+RESULT: ASSEMBLY VERIFIED

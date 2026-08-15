@@ -1,0 +1,11 @@
+(a) nu2 >= w/2 for n in [17,30000]: 0 violations
+(b) tail=17: min w(n)/n = 0.5484 at n=31
+(b) tail=31: min w(n)/n = 0.5484 at n=31
+(b) tail=100: min w(n)/n = 0.5795 at n=29517
+(b) tail=1000: min w(n)/n = 0.5795 at n=29517
+composed: nu2/n over n>=31: min = 0.3125 at n=32
+composed: nu2/n over n>=100: min = 0.3774 at n=106
+composed: nu2/n over n>=1000: min = 0.4587 at n=1212
+via (a)&(b): nu2 >= 0.2742 * n for n>=31
+direct check nu2 >= 0.5*minw31*n on n>=31: 0 violations
+nu2<0.75w on n>=1005: 1 violations (n=1005 alone per report)

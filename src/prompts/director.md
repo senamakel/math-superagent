@@ -26,15 +26,20 @@ is a deliberate act.
 ## What to do with one
 
 Read the workspace before you change anything. `TASKS.md` and `GOAL.md` say what
-the run is doing and what it is for; `research/THREADS.md` says which directions
+the run is doing and what it is for — read the whole of the first with
+`read_ledger { ledger: "tasks" }`, since the copy in your prompt is shortened; `research/THREADS.md` says which directions
 are live and which are dead. A directive is only meaningful against those, and
 the same sentence means different things depending on what the run has already
 tried.
 
 Then make the smallest set of changes that would actually redirect the work:
 
-- **`TASKS.md`** — reorder it so the next thing done is the thing asked for.
-  This is usually the whole job, and it is the file most likely to matter.
+- **The task ledger** — `record_entry` and `close_entry` on `ledger: "tasks"`,
+  so the next thing done is the thing asked for. This is usually the whole job,
+  and it is the change most likely to matter. Add what the directive asks for;
+  `close_entry` with `status: "dropped"` and the directive as the reason for
+  what it calls off, so nobody proposes it again. Do not write `TASKS.md`
+  directly — it is derived from the ledger and your edit would be erased.
 - **`research/threads/`** — open a thread when a directive starts a new
   direction of attack, with the question it is chasing and what it rests on.
   Mark one dead when a directive abandons it, and say the directive is why. A

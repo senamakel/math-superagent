@@ -31,6 +31,7 @@ use std::fmt::Write as _;
 use std::path::Path;
 
 use super::claims::{fenced, fields, references};
+use super::ledger::budget;
 use super::text::truncate;
 
 /// Folder holding one file per candidate line of attack.
@@ -265,13 +266,13 @@ impl Approaches {
     /// being picked; the sentence saying *what* refuted it is what stops the
     /// same idea arriving next time under a different name.
     fn append_closed(&self, out: &mut String) {
-        let mut rows = String::new();
-        for approach in self.closed() {
+        let (rows, dropped) = budget::listed(self.closed(), budget::MAX_LISTED, |rows, approach| {
             let reason = if approach.killed_by.is_empty() {
                 "_no reason recorded — say what closed it, or the next inventor will propose it \
                  again_"
+                    .to_string()
             } else {
-                approach.killed_by.as_str()
+                truncate(&approach.killed_by, budget::REASON_CHARS)
             };
             let _ = writeln!(
                 rows,
@@ -279,15 +280,18 @@ impl Approaches {
                 approach.slug,
                 approach.stance.label()
             );
-        }
+        });
         if rows.is_empty() {
             return;
         }
         out.push_str(
             "\n## What closed, and why\n\nDo not propose these again. A reason stated precisely is \
-             what makes that possible; one left blank makes this row worthless.\n\n",
+             what makes that possible; one left blank makes this row worthless. Each reason is \
+             shortened here; the whole of it is in that approach's own file under \
+             `research/approaches/`.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, APPROACHES_DIR));
     }
 
     /// Lists approaches nobody has taken to the literature.
@@ -296,19 +300,18 @@ impl Approaches {
     /// a table full of them says the run is inventing without grounding, which
     /// is the failure mode opposite to the one it usually has.
     fn append_unchecked(&self, out: &mut String) {
-        let mut rows = String::new();
-        for approach in self
+        let unchecked = self
             .approaches
             .iter()
-            .filter(|approach| approach.precedent.is_empty() && !approach.stance.is_closed())
-        {
+            .filter(|approach| approach.precedent.is_empty() && !approach.stance.is_closed());
+        let (rows, dropped) = budget::listed(unchecked, budget::MAX_LISTED, |rows, approach| {
             let mechanism = if approach.mechanism.is_empty() {
-                "_no mechanism stated — say why this problem's structure suits it_"
+                "_no mechanism stated — say why this problem's structure suits it_".to_string()
             } else {
-                approach.mechanism.as_str()
+                truncate(&approach.mechanism, budget::REASON_CHARS)
             };
             let _ = writeln!(rows, "- [[{}]]: {mechanism}", approach.slug);
-        }
+        });
         if rows.is_empty() {
             return;
         }
@@ -319,6 +322,7 @@ impl Approaches {
              failed.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, APPROACHES_DIR));
     }
 
     fn append_faults(&self, out: &mut String) {
@@ -326,9 +330,11 @@ impl Approaches {
             return;
         }
         out.push_str("\n## Approaches that could not be read\n\n");
-        for fault in &self.faults {
-            let _ = writeln!(out, "- {fault}");
-        }
+        let (rows, dropped) = budget::listed(&self.faults, budget::MAX_LISTED, |rows, fault| {
+            let _ = writeln!(rows, "- {}", truncate(fault, budget::REASON_CHARS));
+        });
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, APPROACHES_DIR));
     }
 }
 
@@ -357,6 +363,45 @@ impl Approach {
         }
         out
     }
+}
+
+/// One line per approach: its slug, where it stands, and why if it is closed.
+///
+/// What a prompt carries instead of the file. The inventor's one hard
+/// obligation is not to re-propose something this run already closed, and the
+/// slug with the reason's opening discharges exactly that — where the five
+/// kilobytes of refutation behind it discharge nothing until the inventor is
+/// actually considering that approach, which is when `read_ledger` fetches it.
+pub(super) fn index(workspace: &Path) -> String {
+    let approaches = collect(workspace);
+    let rows: Vec<(String, String, String)> = approaches
+        .approaches
+        .iter()
+        .map(|approach| {
+            let headline = if approach.stance.is_closed() {
+                approach.killed_by.clone()
+            } else {
+                approach.idea.clone()
+            };
+            (
+                approach.slug.clone(),
+                approach.stance.label().replace('*', ""),
+                headline,
+            )
+        })
+        .collect();
+    super::ledger::index::render(
+        "approaches",
+        "Approaches",
+        "Every line of attack this run has considered. A closed one is followed by what closed \
+         it. Do not propose a closed one again.",
+        rows.iter().map(|(id, status, headline)| super::ledger::index::Row {
+            id,
+            status,
+            headline,
+        }),
+        super::ledger::index::HEADLINE,
+    )
 }
 
 /// Re-derives the approach table and rewrites [`APPROACHES_PATH`].

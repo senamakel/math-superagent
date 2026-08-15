@@ -1,0 +1,13 @@
+Q1: Bernoulli(p) minimal-gap patterns, N=800, worst min nu2/w over 25 trials:
+  p=0.50 : worst min nu2/w = 0.2500, 9/25 trials violated
+  p=0.55 : worst min nu2/w = 0.3636, 8/25 trials violated
+  p=0.59 : worst min nu2/w = 0.3077, 11/25 trials violated
+  p=0.60 : worst min nu2/w = 0.1765, 8/25 trials violated
+  p=0.65 : worst min nu2/w = 0.2647, 21/25 trials violated
+  p=0.70 : worst min nu2/w = 0.1429, 23/25 trials violated
+  p=0.80 : worst min nu2/w = 0.0000, 25/25 trials violated
+
+Q2/Q4: real prime bits, minimal gaps, N=10000 (large-n transfer):
+  minimal-gap prime pattern: min nu2/w=0.5000, viol=0 first=None (8.2s)
+  real prime gaps:            min nu2/w=0.5185, viol=0 first=None (8.5s)
+  -> DIFFERENT: magnitudes matter

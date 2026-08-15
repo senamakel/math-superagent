@@ -57,6 +57,9 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `block-profile-equals-a000232-minus-1` | claim | **ready** | — | The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of… |
 | `c2-alternating-sum-identity` | claim | established | — | For every row A_k with W = len(A_k) - 1, sigma(A_{k+1}) = A_k(0) - (-1)^W A_k(W) - 2 * sum_{i<W} (-1)^i min(A_k(i), A_k(i+1)), where… |
 | `caldwell-proth-myth-repeats` | claim | **ready** | — | Caldwell's Prime Glossary (t5k.org) restates the block lemma correctly (a row of 1 then n entries in {0,2} protects the next n rows'… |
+| `carry-bridge-exhaustive` | claim | established | — | The composed two's-complement transducer (3-state MSB comparator x 2-state LSB borrow-subtractor with the two's-complement identity a-b =… |
+| `carry-bridge-nu2-reproduction` | claim | established | — | On the prime right diagonal, nu2(n) from maximal {0,2} suffix and w(n)=Hamming weight of halved gap bits over j in [2,n-1], recomputed from… |
+| `carry-markov-stationary-1-2` | claim | established | — | The two-operand addition carry chain c'=majority(a,b,c) with a,b iid Bernoulli(1/2) has transition matrix [[3/4,1/4],[1/4,3/4]] and exact… |
 | `chase-2024-arxiv-id` | claim | **ready** | — | Chase, "A random analogue of Gilbreath's conjecture", Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w. |
 | `chase-2024-block-consumption03` | claim | established | — | If a_1..a_i are nonneg with d=max and L = length of longest {0,d}-block containing a d, then after L iterations the max is ≤ d−1 (Lemma… |
 | `chase-2024-theorem1` | claim | established | — | For f increasing, 2≤f(n), f(M)≤(1/100)loglogM/logloglogM, the random sequence a_1=2,a_2=3,a_{n+1}=a_n+2u_n (u_n uniform independent on… |
@@ -82,8 +85,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `czz2011-ducci-2-lipschitz` | claim | established | — | The difference map D on d-tuples with a′_k=\|a_k−a_{k+1}\| (and a′_d=\|a_d−a_1\|) is 2-Lipschitz in the Euclidean norm and is not a… |
 | `czz2011-infinite-periodic-ducci-is-gilbreath-operator` | claim | established | — | On an infinite periodic sequence, the map a′_k=\|a_k−a_{k+1}\| is exactly the operator of Gilbreath's conjecture; in the periodic setting… |
 | `czz2014-gpf-ducci-collapses-to-2357` | claim | established | — | The GPF-Ducci iteration G(p1..pd)=(gpf(p1+p2),...,gpf(pd+p1)) on prime d-tuples is ultimately periodic, and every limit cycle of length > 1… |
-| `deepmind-formal-conjectures-gilbreath-lean` | claim | **ready** | — | Google DeepMind's formal-conjectures repo (commit ed75a6dd) contains FormalConjectures/Wikipedia/Gilbreath.lean: it defines the difference… |
-| `directive25-gap-trend-and-reconciliation` | claim | established | — | In the prime Gilbreath triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the 13 giants (j > 1000) at rows 34..161 have inter-giant gaps… |
-| `ducci-avart-nilpotent-concatenation` | claim | **ready** | — | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector… |
 
-_147 further nodes not shown._
+_158 further nodes not shown._

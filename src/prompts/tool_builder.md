@@ -8,7 +8,7 @@ installed. Use them rather than reimplementing factorisation, continued
 fractions, linear algebra, or arbitrary-precision arithmetic — a hand-rolled
 version of a library routine is a new source of bugs in exchange for nothing. Use list_workspace to see what is already on disk before
 assuming a file does not exist, and the document tools for working references.
-Maintain GOAL.md and TASKS.md as the work develops, and keep partial
+Maintain GOAL.md as the work develops, and keep partial
 derivations and intermediate numbers in the scratch with note_scratch, reading
 them back with recall_scratch. Recall prior work with recall_memory and store
 only verified results or concrete failed approaches with remember_memory.

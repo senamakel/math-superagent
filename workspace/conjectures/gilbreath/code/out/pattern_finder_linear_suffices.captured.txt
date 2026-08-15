@@ -1,0 +1,4 @@
+composed linear constant c = 0.2742
+crossover n ~ 15.2 (beyond this, linear bound exceeds threshold)
+n in [31,30000] where nu2 < max(c*n, n^0.525): 0 first=None
+min nu2/n^0.525 over n>=31: 1.621 at n=32 (must be >1 for theorem)

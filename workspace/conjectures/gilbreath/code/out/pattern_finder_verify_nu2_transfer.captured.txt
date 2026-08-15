@@ -1,0 +1,12 @@
+loaded 30000 terms of nu2, w window = hbits[2..n-1]
+min nu2/w over ALL n: (0.0, 3)
+min nu2/w over n>=17: (0.5, 44)
+nu2<0.5w for n>=17: count=0 first=[]
+nu2<0.75w for n>=2: count=197 first=[3, 4, 7, 8, 9]
+nu2<0.75w for n>=1005: count=1 first=[1005]
+max_abs_dev(2nu2-n) n>=1000: 639.0 at n=27625
+max |2nu2-n|/sqrt(n) n>=1000: 3.845 at n=27625
+max |2nu2-n|/sqrt(n log n) n>=1000: 1.341 at n=2535
+min of (nu2 - (n/2 - sqrt(n log n))): 42.76 at n=1212 (positive => nu2+sqrt(nlogn) > n/2 always)
+n in [4000,30000] with nu2 <= n^0.525: 0 first=[]
+min nu2/n^0.525 over n>=4000: 24.954 at n=4020

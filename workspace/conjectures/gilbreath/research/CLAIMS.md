@@ -20,6 +20,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `block-profile-equals-a000232-minus-1` | The length of the leading {0,2} block in row A_k of the prime Gilbreath triangle satisfies block_profile(k) = A000232(k) - 1 (number of terms before the first term > 2 in the (k)-th difference, minus 1). | yes | catalogued | `research/ROOT.md` |
 | `c2-alternating-sum-identity` | For every row A_k with W = len(A_k) - 1, sigma(A_{k+1}) = A_k(0) - (-1)^W A_k(W) - 2 * sum_{i<W} (-1)^i min(A_k(i), A_k(i+1)), where sigma(v) = sum_i (-1)^i v_i. Verified with zero violations on all 159 consecutive row… | yes | checked | `research/notes/operator-c1-refuted-c2-holds.md` |
 | `caldwell-proth-myth-repeats` | Caldwell's Prime Glossary (t5k.org) restates the block lemma correctly (a row of 1 then n entries in {0,2} protects the next n rows' leading 1) and reproduces Odlyzko's G(π(10^x)) table… | yes | catalogued | `research/summaries/caldwell-gilbreaths-conjecture-glossary.md` |
+| `carry-bridge-exhaustive` | The composed two's-complement transducer (3-state MSB comparator x 2-state LSB borrow-subtractor with the two's-complement identity a-b = a+~b+1, carry-in 1) equals \|a-b\| for ALL 0<=a,b<2^14 — all 268,435,456 pairs —… | yes | checked | `code/out/carry_bridge_verify.notes.md` |
+| `carry-bridge-nu2-reproduction` | On the prime right diagonal, nu2(n) from maximal {0,2} suffix and w(n)=Hamming weight of halved gap bits over j in [2,n-1], recomputed from scratch (oracle generator, sieve 1e6, n=2..4999) exactly reproduce the sampled… | yes | checked | `code/out/carry_bridge_verify.notes.md` |
+| `carry-markov-stationary-1-2` | The two-operand addition carry chain c'=majority(a,b,c) with a,b iid Bernoulli(1/2) has transition matrix [[3/4,1/4],[1/4,3/4]] and exact stationary vector [1/2,1/2] (carry density exactly 1/2); empirical single- chain… | no | checked | `code/out/carry_bridge_verify.notes.md` |
 | `chase-2024-arxiv-id` | Chase, "A random analogue of Gilbreath's conjecture", Math. Ann. 388 (2024) 2611–2625 = arXiv:2005.00530, doi 10.1007/s00208-023-02579-w. | yes | asserted | `research/notes/library-state.md` |
 | `chase-2024-block-consumption03` | If a_1..a_i are nonneg with d=max and L = length of longest {0,d}-block containing a d, then after L iterations the max is ≤ d−1 (Lemma 3.2). | yes | proved | `research/summaries/chase-2024-random-analogue-gilbreath.md` |
 | `chase-2024-theorem1` | For f increasing, 2≤f(n), f(M)≤(1/100)loglogM/logloglogM, the random sequence a_1=2,a_2=3,a_{n+1}=a_n+2u_n (u_n uniform independent on {0,..,f(n)−1}) is almost surely eventually Gilbreath (first term of every late row… | **unchecked** | proved | `research/summaries/chase-2024-random-analogue-gilbreath.md` |
@@ -42,6 +45,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `czz2011-infinite-periodic-ducci-is-gilbreath-operator` | On an infinite periodic sequence, the map a′_k=\|a_k−a_{k+1}\| is exactly the operator of Gilbreath's conjecture; in the periodic setting (Brown–Merzel) iterates converge to a single finite cycle, and for algebraic… | **unchecked** | proved | `research/summaries/caragiu-zaharescu-zaki-2011-ducci-algebraic-numbers.md` |
 | `czz2014-gpf-ducci-collapses-to-2357` | The GPF-Ducci iteration G(p1..pd)=(gpf(p1+p2),...,gpf(pd+p1)) on prime d-tuples is ultimately periodic, and every limit cycle of length > 1 has all components in {2,3,5,7}, with each of 2,3,5,7 occurring in the cycle. | no | proved | `research/summaries/caragiu-zaharescu-zaki-2014-ducci-sequences-with-primes.md` |
 | `deepmind-formal-conjectures-gilbreath-lean` | Google DeepMind's formal-conjectures repo (commit ed75a6dd) contains FormalConjectures/Wikipedia/Gilbreath.lean: it defines the difference operator d 0 = p_n (via n.nth Nat.Prime), d^{k+1}(n) = Int.natAbs (d k (n+1) − d… | yes | asserted | `research/notes/library-state.md` |
+| `descent-lemma-halved-formalised` | For a {0,1} pattern el (every entry 0 or 1) and start w : Nat, with trajectory d_0 = w, d_{k+1} = \|d_k - e_k\| (runAbs) and ν₁ = countOnes el: (1) w ≤ ν₁ + 1 ⟹ runAbs w el ∈ {0,1}; (2) w > ν₁ + 1 ⟹ runAbs w el = w - ν₁… | yes | formalised | `code/out/descent_lemma_formalised.notes.md` |
 | `directive25-gap-trend-and-reconciliation` | In the prime Gilbreath triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the 13 giants (j > 1000) at rows 34..161 have inter-giant gaps (genuine 12) = 22,8,4,26,2,14,2,14,4,4,12 rows: mean 10.18, median 8, max 26,… | yes | checked | `code/out/directive25_gap_trend.md` |
 | `ducci-avart-nilpotent-concatenation` | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector of length a power of 2. Proof: T^{2^ℓ}(x) = x + shift^{2^ℓ}(x), so nilpotence… | no | asserted | `research/notes/library-state.md` |
 | `ducci-classical-nilpotence-iff-power-of-2` | (Ciamberlini–Marengoni 1937, quoted and reproved in Chamberland 2003 Thm 1.1, Calkin–Stevens–Thomas 2005, Glaser–Schöffl 1995) For the CYCLIC Ducci map D(x1,..,xn) = (\|x1−x2\|, ..., \|xn−x1\|) on integer n-tuples, every… | no | asserted | `research/notes/library-state.md` |
@@ -64,12 +68,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `gatti-2020-parity-alternation-independent` | In any Gilbreath sequence, s_1 even ⟹ s_2..s_n all odd, s_1 odd ⟹ s_2..s_n all even (Gatti Lemmas 1–3, proved by induction on the extension equation) — an independent general-class statement of the parity alternation… | yes | checked | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
 | `gatti-2020-theorem4-proof-invalid` | Gatti's Theorem 4 (min K ≤ p_n ≤ max K for every prime, claimed to prove a core Gilbreath bound) has an invalid proof: the right-inequality step assumes p_n ≤ max K (subtracts 2p_{n−1} from both sides), then derives… | yes | asserted | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
 | `gatti-2020-valid-extension-global-formula` | For S ∈ G_n, appending k preserves Gilbreath-ness iff the nested-absolute Gilbreath equation holds, with solutions k = ±s^{n−1}_1 ± s^{n−2}_2 ± … ± s^1_{n−1} + s_n ± 1 — a signed sum over the WHOLE right anti-diagonal;… | yes | checked | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
-| `gc-block-lemma-odlyzko` | If d_K(1)=1 and d_K(n) ∈ {0,2} for 1 ≤ n ≤ N, then d_k(1)=1 for all K ≤ k ≤ N+K−1. So a leading {0,2} block of length N protects N subsequent rows, not n/2. | yes | asserted | `research/notes/library-state.md` |
-| `giacomelli-2021-padic-ducci-mod2-reduction` | The p-adic-norm Ducci operator D_p(a_i)=\|a_i−a_{i+1}\|_p on Q_p^n outputs powers of p, is linear (D_p(a·α)=a·D_p(α)), maps integer seeds to the null sequence (Lemma 1), is ultimately periodic (Lemma 2), and reduces mod 2… | no | asserted | `research/summaries/giacomelli-2021-p-adic-ducci-sequences-short-note.md` |
-| `giacomelli-2025-padic-ducci-matrix-spectral` | For the p-adic-norm Ducci operator δ_p(x)=\|D_p x\|_p on Q_p^n, termination is governed spectrally: all \|λ_i\|_p<1 ⟹ terminates; all \|λ_i\|_p=1 ⟹ does not converge to 0, and roots of unity give eventual periodicity;… | no | asserted | `research/summaries/giacomelli-2025-ducci-matrices-p-adic-context.md` |
-| `giant-landing-geometric-fit-15` | Over the 15 genuine giant landings of the 6e8 run, exact LS fit: geometric log b = a + m·x with R² = 0.968, factor 1.765/event; linear R² = 0.432. Geometric description holds on 15 points; it is a fit, not a law; not… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
 
-_107 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_118 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -77,6 +77,7 @@ Resolve these before building on either side.
 
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-myth-retracted`
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-citation-correction`
+- `lemma54-lean-and-linkA-current-verified` (research/notes/scholar-reconciliation-lean-and-linkA-current.md) contradicts `regeneration-thread-blocked-by` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `odlyzko-block-lemma-asserted`
 
 ## Load-bearing but unverified
@@ -102,6 +103,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `gc-block-lemma-odlyzko` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `gilbreath-2011-expository` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `granville-lucas-kummer-sierpinski` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `granville-lumley-routeA-demand-support` (research/notes/scholar-cycle-granville-lumley-mo-thread.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-block-protection` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-verification-1959` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `li2023-not-bottleneck` (research/notes/li-2023-bearing-correction.md) — asserted by the source, not proved there and not checked here
@@ -150,8 +152,8 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 
 - `block-profile-equals-a000232-minus-1` (research/ROOT.md) — read from a catalogue; no derivation here reproduces it
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) — read from a catalogue; no derivation here reproduces it
-- `guy-A10-canonical-statement` (research/summaries/crc-mirror-guy-A10-gilbreath.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A036277-first-term-position` (research/summaries/oeis-A036277-first-term-greater-than-one.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-A080839-increasing-sequences-all-1-transform` (research/summaries/oeis-A080839-increasing-sequences-gilbreath-property.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A089582-second-entry-catalogue` (research/summaries/oeis-A089582-second-entry-sequence.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A213014-zero-run-of-block` (research/summaries/oeis-A213014-zeros-before-first-term.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A393110-verification-depth` (research/summaries/oeis-A393110-verification-depth-second-entry.md) — read from a catalogue; no derivation here reproduces it

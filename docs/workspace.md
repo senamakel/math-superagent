@@ -370,6 +370,64 @@ The queue is committed like everything else in the workspace. What an operator
 asked for, and when, is part of how an answer was reached — a run that changed
 direction three attempts in reads as inexplicable without it.
 
+## The task ledger, and ledgers a run declares
+
+`TASKS.md` was free-form Markdown that the goals agent and the director rewrote
+whole. On one workspace that was forty-eight rewrites, 1,647 lines written to
+reach a net 165 — and every rewrite silently dropped the finished rows, so
+nothing on disk said what the run had done or why anything had been ruled out.
+The agents noticed before the runtime did: that file grew a hand-maintained
+`## Do not do` section, which is the loss being worked around by the roles
+suffering from it.
+
+It is derived now, from the directive queue's design applied to a third problem.
+
+| File | Written by | Holds |
+| --- | --- | --- |
+| `config/tasks.jsonl` | any role that keeps tasks, append-only | one JSON event per change: `at`, `from`, `id`, `fields` |
+| `TASKS.md` | the runtime only | the derived list every planner reads |
+| `config/ledgers/<slug>.json` | `define_ledger` only | a ledger this run declared for itself |
+
+There is **one write operation** and adding, closing, dropping and blocking are
+all it: an event names an entry and carries some fields, the fold applies them
+in order, and absent keys are left alone. Closing a task is
+`{status: done, reason: …}`. A vocabulary of operations would mean a vocabulary
+of inverses to get wrong — what `unblock` does to a task that was never blocked
+— and a merge has none. Nothing is lost by not naming them, because the event
+log keeps the whole history either way.
+
+A derived path is refused to `write_document` and `edit_document`, naming the
+tool to use instead. That is not tidiness: the file is rewritten from its source
+on the next write to it, so an edit is not a change but work queued for
+deletion, and the agent believes otherwise until it reads the file back. It is
+the `ROOT.md` versus `INDEX.md` contention above, caught before it costs three
+rounds instead of after.
+
+**A run may declare its own.** This section of `docs/ledgers.md` records a live
+workspace that grew an undesigned `research/folds/` folder — `game-core.md`,
+`passes.md`, `counting-arithmetic.md`, `deadends.md` — because it needed a topic
+axis the runtime did not have; `threads` was written in response, later, by a
+human. `define_ledger` is that answer without a release. What keeps it safe is
+in `ledgers.md`; the two rules that show up in the tree are that a declared
+ledger may not shadow a built-in slug and may not write a derived path another
+ledger owns.
+
+Migrating a workspace that still has a hand-written `TASKS.md`:
+
+```sh
+cargo run --example import_tasks -- workspace/conjectures/gilbreath
+cargo run --example import_tasks -- workspace/conjectures/gilbreath --write
+```
+
+Without `--write` it prints what it would record and touches nothing, which is
+the only safe default for something that reads prose and guesses. It imports
+checklist items and the `Do not do` bullets, and deliberately imports neither
+`## Background` nor the thread summaries — those are not tasks, they belong in
+`CONTEXT.md` and the ledgers that already carry them, and deciding where is a
+judgement about the mathematics that a parser has no business making. The old
+file is renamed rather than deleted, with everything it did not import still in
+it.
+
 ## The teams tree
 
 Two or three [schools](schools.md) work one problem in one workspace. What each

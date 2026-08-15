@@ -6,7 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[regeneration]] | Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones. | open | IFF, reduction | \| 0. **NOW (Directive 48) — close the reduction-audit reporting defects.** (a) File the prefix-determinism proof as a claim: `δ_k(q_n) = \|δ_{k−1}(q_n) −… |
+| [[regeneration]] | Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones. | open | IFF, reduction | \| 0. **DONE (Directive 50) — `code/lean/descent_lemma.lean` compiles clean.** No `sorryAx`; axioms only `propext`/`Classical.choice`/`Quot.sound` (`absorbing`… |
 | [[rule90-regeneration]] | Does the Rule 90 (Sierpinski / Pascal mod 2) structure of the {0,2} interior force block-length regeneration at specific relative depths, and does the null… | open | Block, lemma | \| 1. ~~**Split the claim.**~~ DONE — `rule90-interior-xor` is its own proved claim in `research/notes/rule90-interior.md` (Directive 4). The absorption wrapper… |
 
 ## Resting on nothing recorded
