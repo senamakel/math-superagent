@@ -28,10 +28,6 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/dyadic-periodicity-collapse.md`
 - `excess-height-renormalization/EH-edge2-supply` (lemma) — \| For the prime Gilbreath triangle, every erosion run that starts from a nonzero block of length n = b_start with intruder excess r₀ = y₀/2…
   - open `research/backward/excess-height-renormalization.md`
-- `excess-height-renormalization/EH-max-principle` (lemma) — \| With M_k = max_j t_k(j) = max(0, (max_{j≥1} A_k(j))/2 − 1): M_{k+1} ≤ M_k, and for every j with t_k(j) ≥ 1 and t_k(j+1) ≥ 1 one has…
-  - open `research/backward/excess-height-renormalization.md`
-- `excess-height-renormalization/EH-renorm-identity` (lemma) — \| Let H be a halved Gilbreath row (entries ≥ 0), t(j) = max(0, H(j) − 1), H'(j) = \|H(j) − H(j+1)\|, t'(j) = max(0, H'(j) − 1). Then: (a) if…
-  - open `research/backward/excess-height-renormalization.md`
 - `granville-nu2-reduction/GN-supply-nu2-density` (lemma) — For the prime sequence, the count ν₂(q_n) of 2s in the 0-2 cycle of the right diagonal satisfies ν₂(q_n) > n^β for some fixed β > 0.525…
   - open `research/backward/granville-nu2-reduction.md`
 - `nu2-supply-concentration-split/CT-concentration` (lemma) — \| Under the Hardy–Littlewood / Lemke Oliver–Soundararajan two-point mod-4 correlation hypothesis, the halved-gap parity bit string h[j] =…
@@ -48,6 +44,10 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/regeneration-sufficiency.md`
 - `route-b-supply-consolidated/SC-supply-nu2-linear` (lemma) — For the prime sequence, the count ν₂(q_n) of 2s in the maximal {0,2} suffix of the right diagonal δ(q_n) satisfies ν₂(q_n) ≥ c·n for a…
   - open `research/backward/route-b-supply-consolidated.md`
+- `supply-periodic-aperiodic-dichotomy/SPAD-nondegenerate-linear` (lemma) — \| There are absolute constants δ > 0 and c > 0 such that: for every bit string h ∈ {0,1}^m that is (i) not eventually periodic and (ii)…
+  - open `research/backward/supply-periodic-aperiodic-dichotomy.md`
+- `supply-periodic-aperiodic-dichotomy/SPAD-prime-nondegenerate` (lemma) — \| The prime halved-gap bit string h[j] = ((p_{j+2} − p_{j+1})/2) mod 2 satisfies the hypothesis of SPAD-nondegenerate-linear: (a) h is NOT…
+  - open `research/backward/supply-periodic-aperiodic-dichotomy.md`
 
 ## Every node
 
@@ -94,7 +94,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `counterexample-backward/CB-dying-pair` | lemma | **ready** | — | \| At the first failure row K, the dying row K−1 satisfies b_{K-1} = 1, A_{K-1}(0) = 1, and A_{K-1}(1) ∈ {4,6,8,…}. Let e = A_{K-2}(1) be… |
 | `counterexample-backward/CB-prime-exclusion` | lemma | **ready** | — | \| The constrained initial pattern derived in CB-backward-propagation — a stretch of consecutive halved prime gaps whose XOR over binom(t,·)… |
 
-_198 further nodes not shown._
+_199 further nodes not shown._
 
 ## Resting on nothing that exists
 

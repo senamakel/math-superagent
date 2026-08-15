@@ -24,48 +24,56 @@ theorem_prover to prove. **It needs no new source** — it is rule90-interior-xo
 explicit (the transfer matrix is an explicit linear map; see
 `transfer-matrix-kernel-allones` for its structure).
 
-## 2. The broader "eventually periodic ⇒ collapse" half is the BCZ fixed-point theorem
+## 2. What BCZ 2023.11776 actually establishes (and does not)
 
-Bhat–Cobeli–Zaharescu 2023.11776 (held, proved in source) is the right anchor
-for periodicity — and it is strictly more general than the power-of-2 case:
+Bhat–Cobeli–Zaharescu 2023.11776 (held, proved in source) studies the
+halved-{0,1} operator (|a−b| = a+b mod 2, the Pascal/rule-90 addition, their
+Eq. (6)) and classifies *rows that repeat*:
 
-- **Theorem 5**: a binary row α is *ultimately identical* with its Proth–
-  Gilbreath image Ψ(α) (= the halved-{0,1} operator, since |a−b|=a+b mod 2)
-  **iff** its F2 generating function is φ(α)=G(X)/(1−X^{2^d−1}) — i.e. **iff α
-  is periodic** (period `2^d−1` appears; the closure is over the ≍
-  ultimately-equal quotient).
-- **Theorem 2**: the fixed points (rows replicated in the next line) have
-  φ(α)=P/(1+X+X^r) or P/(X^r(1+X)+1).
-- Eq. (6): on F2 the operator acts as φ(Ψ(α)) = ((1+X)φ(α)−α0)/X — the
-  Pascal/rule-90 addition, agreeing with this run's rule90-interior-xor.
+- **Theorem 2**: a binary row is ultimately replicated identically in the next
+  PG line iff its F2 generating function is φ(α)=P/(1+X+X^r) or
+  P/(X^r(1+X)+1).
+- **Theorem 5**: α is ultimately identical with Ψ(α) (a *fixed class under the
+  quotient* Ψ̂) iff φ(α)=G(X)/(1−X^{2^d−1}).
+- **Eq. (6)**: on F2 the operator acts as φ(Ψ(α))=((1+X)φ(α)−α0)/X,
+  agreeing with this run's rule90-interior-xor.
 
-**Bearing on the dichotomy:** if the halved-gap bit string h is *eventually
-periodic*, then by Theorem 5 the halved row is ultimately a fixed class under
-the PG operator, so the entire halved triangle is eventually self-similar /
-periodic in rows. A self-repeating triangle cannot build an unbounded {0,2}
-suffix from bounded tails: the values recur, the {0,2}-suffix length and ν2 are
-bounded. **This is the structural reason period collapses the transfer.** It
-covers power-of-2 periods and every other period — a stronger statement than
-the thread's power-of-2 leg.
+**Do NOT over-read:** Theorem 5 classifies rows that are fixed under the
+operator (repeat in the next line), which is a property of a *row within the
+triangle*, not a statement that "an eventually periodic *input* collapses." A
+periodic input row need not itself be a PG fixed class (BCZ's own example T =
+(0,1,1,1,0,...) is periodic but NOT a fixed class — its triangle dies to zeros).
+So BCZ Thm 5 is NOT the collapse mechanism for the dichotomy.
+
+**The honest collapse mechanism is rule90-interior-xor.** Every {0,2}-tail
+cell of the right diagonal is an XOR-fold of a finite window of the initial
+halved-gap bits h over the Pascal/Lucas kernel. If h is periodic of period p,
+the windowed XOR-folds take only finitely many values (the XOR-sums of the
+period word and its shifts), so the tail values are bounded by the period word
+— the {0,2}-suffix length and ν2 are O_p(1). This is proved (rule90-interior-xor
+is status: proved) and it is the correct anchor for the collapse half. It is
+**stronger and cleaner** than trying to use BCZ: periodic of ANY period p
+(bounds folds by period, not only power-of-2), and it needs no fixed-point
+machinery.
 
 **Claim block**
 ```claim
-id: pg-theorem5-periodic-iff-fixed-class
-statement: A binary row is ultimately identical with its Proth–Gilbreath image
-  iff it is periodic (phi(alpha)=G(X)/(1-X^{2^d-1})). Hence an eventually
-  periodic halved-gap bit string makes the halved triangle eventually
-  row-repetitive, bounding the {0,2}-suffix length and nu2 by a constant of
-  the period.
-hypotheses: binary (halved) rows; PG operator = |a-b| = a+b mod 2; equivalence
-  class = coinciding after finite prefix removal.
+id: rule90-periodic-window-collapse
+statement: If the halved-gap bit string h is periodic with period p, then every
+  {0,2}-tail cell of the right diagonal is an XOR-fold of a bounded window of h,
+  taking only finitely many values (the XOR-sums of the period word and its
+  shifts). Hence the {0,2}-suffix length and nu2 are O_p(1).
+hypotheses: rule90-interior-xor (proved): tail cells are Pascal/Lucas XOR-folds
+  of the row-1 halved-gap bits; h periodic of period p.
 holds-here: yes — the halved {0,1} part of the prime triangle is exactly this
-  binary system; not a GC statement by itself.
-status: proved in source (BCZ Thm 5 + Thm 2 + Eq. (6)); the nu2-bounded
-  consequence is this run's inference, asserted not yet checked.
-bearing: halves of the Directive 58 dichotomy — "period ⇒ collapse" — are
-  already in the library under BCZ Thm 5 + rule90-interior-xor; the
-  anti-dyadic growth half is NOT (see §3).
-anchor: research/sources/bhat-cobeli-zaharescu-quasi-periodicity-html.full.md
+  binary system; each fold covers a window spanning ceil(window/p) periods.
+status: inference from the proved rule90-interior-xor (status: proved); the
+  explicit O_p(1) bound is asserted, not yet computed for a specific p.
+bearing: the collapse side of the Directive 58 dichotomy is already the proved
+  rule90-interior-xor + finite-state-of-periodic-windows; theorem_prover needs
+  only to make the O_p(1) constant explicit. BCZ Thm 5 is NOT the mechanism —
+  do not cite it for collapse.
+anchor: research/notes/rule90-interior.md, research/notes/scholar-dyadic-periodicity-collapse.md
 answers: dyadic-periodicity-collapse
 ```
 
@@ -104,9 +112,11 @@ as a discrepancy and recommend the resolution, not as a verdict.
 
 ## 5. What this does and does NOT give the primes
 
-- **Gives:** a *structural* reason the collapse side is robust (BCZ Thm 5 +
-  rule-90). It explains why a *periodic* h collapses — a satisfying negative
-  result.
+- **Gives:** a *structural* reason the collapse side is robust
+  (rule90-interior-xor: a periodic halved-gap window gives an O_p(1) bounded
+  tail). It explains why a *periodic* h collapses — a satisfying negative
+  result. (BCZ Thm 5 is the fixed-point classification of repeating rows; it
+  is NOT the collapse mechanism and must not be cited as such.)
 - **Does NOT give:** any quantitative anti-dyadic input to G-supply. The primes
   are aperiodic (ν2/w ∈ [0.689,0.867], `g-supply-transfer-measured`), but the
   dichotomy "aperiodic ⇒ grow" is a *contrapositive of the collapse theorem*

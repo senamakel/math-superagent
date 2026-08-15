@@ -39,7 +39,10 @@ lemma: |
   r' = t'(w) = r − [H(w) = 1], i.e. the intruder excess decreases by 1 exactly
   when the halved edge is 1 (edge A = 2) and is constant when the halved edge
   is 0.
-status: open
+status: discharged
+discharged-by: excess-renorm-identity-proved (research/notes/excess-renorm-identity-proved.md;
+  Lean code/lean/excess_renorm.lean bulk_case/wall_case/low_case, sorry-free, axioms
+  ⊆ {propext, Classical.choice, Quot.sound})
 next: |
   Prove the three cases from |a−b| and the definition of t (three lines each:
   for (a) write H(j) = t(j)+1, H(j+1) = t(j+1)+1 so H'(j) = |t(j) − t(j+1)|;
@@ -68,7 +71,9 @@ lemma: |
   1000, i.e. y ≤ 14, and one wider-run instance r₀ = 26) is
   `REG-intruder-sharp-bound` in regeneration-intruder-drain.md and remains
   OPEN; this lemma is the proved half that would combine with it.
-status: open
+status: discharged
+discharged-by: excess-renorm-identity-proved (research/notes/excess-renorm-identity-proved.md;
+  Lean code/lean/excess_renorm.lean max_principle/bulk_strict/bulk_strict_ltM, sorry-free)
 next: |
   Immediate from EH-renorm-identity cases (a)–(c) plus |a−b| ≤ max(a,b).
   theorem_prover/lean_prover: formalise as a corollary in the same Lean file

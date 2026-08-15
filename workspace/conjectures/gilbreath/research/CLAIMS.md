@@ -69,7 +69,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `g-supply-transfer-universal-refuted` | The universal combinatorial transfer nu2(q_n) >= (2/3)·w(n) for every successful 2-then-odds prefix is FALSE. Counterexample family: consecutive odds (all gaps = 2), successful for every n, gives w(n) = n-2 (maximal)… | yes | checked | `research/notes/g-supply-transfer-universal-refuted.md` |
 | `gallagher-1976-poisson-short-interval-model` | Under the (unproved) Hardy–Littlewood prime r-tuple conjecture, the number of primes in (n, n+h] for h ~ λ log N is Poisson(λ)-distributed in n < N (Theorem 1); unconditionally the count has an exponential upper bound… | **unchecked** | proved | `research/summaries/gallagher-1976-primes-in-short-intervals.md` |
 
-_131 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_127 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -126,7 +126,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `northshield-pascal-mod2-line-sums-gf` (research/summaries/northshield-sums-across-pascals-triangle-mod2.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-1993-citation-confirmed` (research/summaries/odlyzko-publications-page.md) — asserted by the source, not proved there and not checked here
 
-_24 more not shown here; they are in `research/`._
+_25 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 

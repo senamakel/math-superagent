@@ -1336,3 +1336,23 @@ So skip straight to the theorem. tool_builder: confirm the eight rows above and 
 State the conclusion as the dichotomy theorem it is. Then say precisely what it does and does NOT give for the primes: aperiodicity alone is weaker than the quantitative anti-dyadic input the supply bound needs, and the gap between them is the honest remaining statement. Do not claim it closes G-supply.
 
 I carried Directive 58 into the ledger and the shared context. The two open tasks from Directive 57 were rewritten to match the new instruction — `test-dyadic-periodicity-prediction` now says *reproduce* the eight host-measured rows and extend to periods 9–16 (not re-explore n=200..5000), `prove-dyadic-periodicity-collapse-lemma` now demands the full dichotomy (period 2^k ⇒ ν₂=O_k(1) **and** odd factor ⇒ ν₂≫n), and I added a third task `state-dyadic-dichotomy-primes-gap` to write the theorem and the explicit "aperiodicity is weaker than the quantitative anti-dyadic input; does not close G-supply" caveat. The `dyadic-periodicity-collapse` thread and CONTEXT.md's Run-state section were updated to the Directive 58 framing, keeping the repair thread `gsupply-transfer-repair` dead as Directive 57 established.
+
+## 59 — from steer
+
+DIRECTIVE 59 — execute the falsifier, then stop staffing the library.
+
+Two problems at 15 minutes elapsed, both the same failure this run has had before.
+
+1. THE ORACLE IS DRAFTED AND UNRUN. code/out/dyadic_periodic_check.py and code/out/reproduce_dyadic_periodicity.py both exist. Neither has a captured output. The scholar note dyadic-periodicity-falsifier-unexercised.md is RIGHT that the odd-period half is unevidenced, and right that host-supplied numbers in Directive 58 are not workspace evidence. The answer to that is one command, not another note:
+
+   timeout 600 python3 code/out/dyadic_periodic_check.py 2>&1 | tee code/out/dyadic_periodic_check.captured.txt
+
+Any role with execute_command runs it. Report periods 1..8, nu2 over n = 50..500, and say plainly whether the odd-factor periods grow. If they do not, close the thread and say the dyadic story is dead — that is a good outcome, not a failure. Directive 58 predicts nu2 constant at 1-2 for P in {1,2,4,8} and nu2 ~ 0.53n..0.67n for P in {3,5,6,7}; treat that as a prediction to falsify, not as evidence.
+
+2. LIBRARIAN AND SCHOLAR ARE 43% OF SPEND AND THE LOOP HAS RUN ZERO ATTEMPTS. 286 model calls, attempts 0, verdicts 0. librarian-closure-reverified-this-cycle.md is the THIRD note re-establishing that the library is closed — closed in 39, reaffirmed in 46 and 56. Re-verifying a closure is not work. Librarian: no further searches, downloads, or closure notes this run unless a solver files a REQUESTS.md entry naming a specific theorem it needs. Scholar: your scepticism is correct and wanted — keep it, but spend it on captured outputs that exist, not on threads awaiting a run.
+
+The loop needs to start attempting. Get the capture, then hand the dichotomy to theorem_prover.
+
+Directive 59 required two ledger-level changes: the falsifier run became the explicit first action (`test-dyadic-periodicity-prediction` now leads with the exact `timeout 600 … | tee …` command and says plainly that non-growing odd-factor periods means closing the thread), and I added `do-not-staff-library-directive-59` so librarian/scholar cannot resume searching, downloading, or writing closure notes without a solver filing a REQUESTS.md entry.
+
+I also opened step 0 in `research/threads/dyadic-periodicity-collapse.md` and amended CONTEXT.md's two relevant spots: the Run state now makes the unrun falsifier the first instruction and records the library-stop, and the Gaps entry no longer names the MathOverflow fetch as a standing permitted search. The existing `prove-dyadic-periodicity-collapse-lemma` task already hands the dichotomy to theorem_prover, so no further change was needed there.

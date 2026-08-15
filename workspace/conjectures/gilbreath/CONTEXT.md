@@ -6,10 +6,24 @@ why, computed numbers, durable memory, disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
 Budget 10,000 tokens. Length is a bill the whole run pays on every model call;
-link the file holding any detail compressed away. (Current: Directive 58 — prove
-the dyadic dichotomy, do not survey it, see Run state.)
+link the file holding any detail compressed away. (Current: Directive 59 — run
+the falsifier first, then stop staffing the library, see Run state.)
 
-## Run state (Directive 58 — prove the dyadic dichotomy, do not survey it)
+## Run state (Directive 59 — run the falsifier, then stop staffing the library)
+
+**STEP 0 is one command, not another note (Directive 59).** The falsifier is
+drafted and UNRUN: `code/out/dyadic_periodic_check.py` and
+`code/out/reproduce_dyadic_periodicity.py` have no captured output, and the
+host-supplied numbers in Directive 58 are not workspace evidence. Run
+`timeout 600 python3 code/out/dyadic_periodic_check.py 2>&1 | tee code/out/dyadic_periodic_check.captured.txt`;
+report periods 1..8, ν₂ over n=50..500, and say plainly whether the
+odd-factor periods (3,5,6,7) grow. If they do NOT grow, close the thread —
+the dyadic story is dead, which is a good outcome, not a failure. THEN hand
+the dichotomy to theorem_prover. **Library is STOPPED (Directive 59):**
+librarian/scholar are 43% of spend and the loop has run zero attempts; the
+library was closed in Directive 39 and reaffirmed in 46 and 56, so no further
+searches, downloads, or closure notes this run unless a solver files a
+REQUESTS.md entry naming a specific theorem it needs.
 
 **Directive 57's dyadic question is now a measured dichotomy — reproduce it,
 then prove it.** Host-side stage-1 numbers (exact integers, periodic halved-gap
@@ -298,11 +312,13 @@ here.
   CONDITIONAL theorem with that two-point mod-4 correlation bound as its
   hypothesis; a conditional theorem with a precisely identified open
   hypothesis is a genuine deliverable.
-- **Library CLOSED except the single G-supply request (Directive 46) + one
-  named fetch (Directive 47).** The only searchable gap is a lower bound
-  ν_2 ≥ c·n, reduced by rising-sea to a prime-gap-mod-4 frequency claim
-  (gap ≡ 2 mod 4 switch bit) — now named-open via ABGS 2011 §9; settling
-  literature = prime gaps mod 4 / Chebyshev bias, not Gilbreath. The single
-  fetch-and-close target is the MathOverflow "what is known" thread
-  (questions/34669): expect no new mathematics, the payload is which routes
-  practitioners consider dead. Do not sweep outward from it.
+- **Library CLOSED, and staffing STOPPED (Directive 59 supersedes 46/47).**
+  No further searches, downloads, or closure notes this run unless a solver
+  files a REQUESTS.md entry naming a specific theorem it needs. The only
+  searchable gap is a lower bound ν_2 ≥ c·n, reduced by rising-sea to a
+  prime-gap-mod-4 frequency claim (gap ≡ 2 mod 4 switch bit) — now named-open
+  via ABGS 2011 §9; settling literature = prime gaps mod 4 / Chebyshev bias,
+  not Gilbreath. The single fetch-and-close target named earlier was the
+  MathOverflow "what is known" thread (questions/34669): expect no new
+  mathematics, the payload is which routes practitioners consider dead. Do not
+  sweep outward from it.

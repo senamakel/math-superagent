@@ -20,7 +20,10 @@ def build_seq(h_pattern, n_terms):
     q = [2, 3]
     period = len(h_pattern)
     while len(q) < n_terms:
-        bit = h_pattern[len(q) - 2]  # h[1] is the first gap bit (q_2->q_3)
+        # h[0] is the first gap bit (q_2->q_3); index modulo the period so the
+        # bit string cycles for arbitrary n (original had no modulo -> IndexError
+        # for any period shorter than the sequence).
+        bit = h_pattern[(len(q) - 2) % period]
         gap = 2 if bit else 4
         q.append(q[-1] + gap)
     return q[:n_terms]

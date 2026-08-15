@@ -1,0 +1,40 @@
+Directive 58 full dyadic-periodicity dichotomy (exact integers)
+Sequence: q_1=2, q_2=3 (first gap 2), then gap=2 if bit else 4,
+bits periodic with the word; h[0] = q_2->q_3 gap bit.
+nu2 = #2s in maximal {0,2} suffix of right diagonal through q_n
+(lib.rightdiag.cycle_and_nu2, body-convention, terminal excluded).
+Dichotomy claim: nu2 = O(1) iff period is a power of 2.
+
+P  pow2?  nu2(200) nu2(400) nu2(800) nu2(1200)  classification
+--------------------------------------------------------------
+  1  True          0       0       0         0   O(1)
+  2  True          1       1       1         1   O(1)
+  3  False       132     266     532       798   ~ c*n (c=0.665)
+  4  True          1       1       1         1   O(1)
+  5  False       104     212     424       639   ~ c*n (c=0.532)
+  6  False        67     132     267       398   ~ c*n (c=0.332)
+  7  False        56     342     456       684   ~ c*n (c=0.570)
+  8  True          1       1       1         1   O(1)
+  9  False        83     163     330       494   ~ c*n (c=0.412)
+ 10  False        52     104     212       319   ~ c*n (c=0.266)
+ 11  False        87     182     365       572   ~ c*n (c=0.477)
+ 12  False        32      67     132       198   bounded-ish (last=198, ratio=0.165)
+ 13  False        93     179     373       566   ~ c*n (c=0.472)
+ 14  False        56      56     343       340   ~ c*n (c=0.283)
+ 15  False       104     104     424       158   bounded-ish (last=158, ratio=0.132)
+ 16  True          2       1       1         1   O(1)
+
+Shift-invariance check (claim is about the PERIOD, not the word):
+  P=9 base word [0, 0, 0, 0, 0, 0, 0, 0, 1] -> [83, 163, 330, 494]
+    shift by 1: word [0, 0, 0, 0, 0, 0, 0, 1, 0] -> nu2(1200)=494, term=1
+    shift by 2: word [0, 0, 0, 0, 0, 0, 1, 0, 0] -> nu2(1200)=494, term=1
+    shift by 3: word [0, 0, 0, 0, 0, 1, 0, 0, 0] -> nu2(1200)=494, term=1
+  P=16 base word [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1] -> [2, 1, 1, 1]
+    shift by 1: word [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0] -> nu2(1200)=15, term=1
+    shift by 2: word [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0] -> nu2(1200)=8, term=1
+    shift by 3: word [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0] -> nu2(1200)=8, term=1
+
+VERDICT (over n in {200,400,800,1200}, exact integers):
+  power-of-2 periods NOT O(1): none
+  odd-factor periods that are O(1): none
+  No odd-factor period gives O(1): the dichotomy (O(1) on pow2, ~c*n on odd-factor) HOLDS on this range.

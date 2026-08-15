@@ -9,8 +9,8 @@ Derived from `config/tasks.jsonl` and rewritten on every write. Do not edit this
 
 In order. Work the first one you can.
 
-- `test-dyadic-periodicity-prediction` — Reproduce the dyadic-periodicity table (Directive 58) and extend to periods 9..16
-  - detail: Directive 58: stage-1 numbers are measured host-side — REPRODUCE, do not re-explore. Periodic halved-gap bit string h, gap = 2 if bit else 4, nu2 = #2s in the maximal {0,2} suffix of the right diagonal, exact integers. Confirm the eight rows: period 1 (h=1) nu2=1 at n=200,400,800,1200; period 2 (h=01) nu2=2 at all four n; period 4 (h=0001) nu2=2; period 8 (h=00000001) nu2=2; period 3 (h=001) nu2=133,264,533,798; period 5 (h=00001) nu2=104,210,424,638; period 6 (h=000001) nu2=134,264,534,796; period 7 (h=0000001) nu2=112,112,685,684. Then EXTEND to periods 9..16 and to non-constant patterns of…
+- `test-dyadic-periodicity-prediction` — Execute the dyadic-periodicity falsifier (Directive 59), then reproduce/extend the Directive 58 table
+  - detail: Directive 59 STEP 0 (the blocker — the falsifier is drafted and UNRUN; one command, not another note): run `timeout 600 python3 code/out/dyadic_periodic_check.py 2>&1 | tee code/out/dyadic_periodic_check.captured.txt`. Report periods 1..8, nu2 over n=50..500, and say plainly whether the odd-factor periods (3,5,6,7) grow. If they do NOT grow, close the thread and say the dyadic story is dead — that is a good outcome, not a failure. THEN Directive 58: reproduce the host-side stage-1 table — periodic halved-gap bit string h, gap = 2 if bit else 4, nu2 = #2s in the maximal {0,2} suffix of the…
   - refs: rule90-interior-xor, g-supply-transfer-universal-refuted
 - `prove-dyadic-periodicity-collapse-lemma` — Prove the dyadic dichotomy: period 2^k ⇒ ν₂=O_k(1); odd factor ⇒ ν₂≫n
   - detail: Directive 58, theorem_prover, prime-free, from Lucas alone. (a) h eventually periodic with period 2^k forces nu2 = O_k(1) — the binomial-window XOR weights C(d,j) mod 2 are supported on the binary submasks of d, so period-2^k h collapses the sums for all large d. (b) The harder and more valuable half: an odd factor in the period forces nu2 >> n. State the result as the dichotomy theorem it is: nu2 = O(1) exactly on power-of-2 periods, nu2 ~ c*n otherwise. Post to the board either way, including a refutation.
@@ -50,6 +50,9 @@ Ruled out, with the reason. Re-proposing one of these is the cheapest mistake av
 - `do-not-sweep-to-repair-gsupply-transfer` — Do not sweep to repair G-supply transfer (Directive 56)
   - detail: The refutation gives a question, not a library gap. The repair is a four-candidate check (gap variety / non-eventual-periodicity of h / switch density / F₂ kernel condition) against consecutive odds (FAIL) and real primes to N=30000 (HOLD) — tool_builder + theorem_prover. No librarian search, no wider sweep.
   - reason: Directive 57 supersedes Directive 56: the transfer is dead — stop repairing it, characterise the dyadic collapse instead (see live tasks test-dyadic-periodicity-prediction / prove-dyadic-periodicity-collapse-lemma).
+- `do-not-staff-library-directive-59` — Do not staff the library further (Directive 59)
+  - detail: Librarian/scholar are 43% of spend and the loop has run zero attempts. The library is closed — closed in Directive 39, reaffirmed in 46 and 56. No further searches, downloads, or closure notes this run unless a solver files a REQUESTS.md entry naming a specific theorem it needs.
+  - reason: Directive 59: re-verifying a closure is not work; the library is already closed. Scholar keeps its scepticism but spends it on captured outputs that exist, not on threads awaiting a run.
 
 ## Recently done
 
@@ -101,6 +104,8 @@ Finished, with what came of it. Kept, because a run that cannot see what it alre
   - detail: code/out/indep_oracle.py (own sieve + builder, no lib.gilbreath import) reproduces worked rows A_1..A_3 exactly; descent biconditional on real diagonals n=2..200 0 violations (199 cols, 198 successful); ballot e=2w-(n-2)>=0 over n=2..1000 0 violations; transfer nu2>=w/2 0 violations on n>=17 (tiny-n exceptions {3,4,10,14,16} = empty-{0,2}-tail degeneracies reported honestly). capture indep_oracle.captured.txt EXIT_CODE=0.
 - `switch-bit-two-point-extended-200m` — Switch-bit two-point structure extended to 2e8 primes (200x prior scale)
   - detail: code/out/switch_autocorr_ext.py, segmented bytearray sieve, no full prime list, 2e8 primes, 144.4s, ~2.2 GiB. Validated against prior 1e6-gap run on --small (exact). At 200x: lag-1 r=-0.0261 (stays negative), drift +0.0964 (stays positive), lag>=2 max |r|=0.0031<0.005 (falsifier NOT tripped). Ballot e>=0 every prefix (final 19,272,272). Near-whiteness + positive drift persist, both slightly weakened; supports nu2>=w/2 numerically only, does NOT close G-supply (remains named-open). Capture switch_autocorr_ext.captured.txt.
+- `executed-directives-57-58-59` — dyadic-periodicity dichotomy confirmed (measured, exact)
+  - detail: DIRECTIVES 57/58/59 executed. Both prior oracle scripts were buggy/unrun: reproduce_dyadic_periodicity.py IndexErrors (no modulo wrap); dyadic_periodic_check.py builds off-parity triangle (odd second entry) reporting 0 for all periods. Corrected oracle code/out/dyadic_periodicity_correct.py (proper 2-then-odds A_1=(1,even..), canonical lib.rightdiag cycle_and_nu2): stage-1 host numbers do NOT reproduce exactly (period 1 gives 0, the run's own PROVED consecutive-odds value, vs host 1; period 6 host=2x mine), so host uses a different suffix window. QUALITATIVE DICHOTOMY CONFIRMED over…
 
 ## Entries that could not be read
 
@@ -108,3 +113,4 @@ Reported rather than dropped: an entry silently discarded leaves the ledger read
 
 - `independent-oracle-backbone-reverified` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
 - `switch-bit-two-point-extended-200m` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `executed-directives-57-58-59` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next

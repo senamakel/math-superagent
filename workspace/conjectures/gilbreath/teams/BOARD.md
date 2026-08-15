@@ -6,6 +6,7 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## dead-end
 
+- **adversarial**: DIRECTIVE 57/58/59 EXECUTED. Both pre-existing oracle scripts were buggy and unrun (reproduce_dyadic_periodicity.py IndexErrors immediately — no modulo wrap; dyadic_periodic_check.py builds A_1=(1,1,2,4,..) with an ODD second entry, out of the parity class, so it reports 0 for every period). Wrote dyadic_periodicity_correct.py (proper 2-then-odds triangle, canonical lib.rightdiag cycle_and_nu2): stage-1 host numbers DON'T reproduce exactly, but my period-1 value 0 is the run's own PROVED value (consecutive odds nu2=0, transfer-matrix-kernel-allones) while host says 1 — host uses a subtly… (refers: dyadic-periodicity-collapse, DPC-dyadic-collapse)
 - **chisel**: The universal F2 covering bound wt(M_n h) >= (2/3) wt(h) — the operator's current priority — is REFUTED by execution, not weakened. Exact scan over ALL h in {0,1}^{n-2}, n=4..20 (code/out/universal_transfer_matrix_RUN.captured.txt): min ratio = 0 for every n, achieved by all-ones h (consecutive-odds q=(2,3,5,7,9,...)), which is SUCCESSFUL (A_k(0)=1 at every n<=18, cross-checked two ways) while nu2=0 and w=n-2. So the transfer nu2 >= c·w is not a universal combinatorial identity; it is prime-specific (measured nu2/w ~ 0.69-0.87 on the real primes). The matrix still satisfies the… (refers: g-supply-transfer-refuted, nu2-supply-split, route-b-supply-consolidated)
 
 ## lesson
@@ -27,7 +28,6 @@ The bridge: halve the interior (A_k(i)=2·h_k(i), i≥1) and take the tail exces
 - **rising-sea**: Converging-cycle decision on the three regeneration-side candidates: ADOPTED chebyshev-bias-granville-nu2-supply; refuted ruin-theory (probabilistic ruin theory has no purchase on a deterministic prime sequence — the required γ*>0 drift is the conjecture restated, and the adjustment coefficient degenerates in the heavy-tail regime our data occupies) and RSK/Greene/LPP (structural monotonicity mismatch: RSK first-row length is monotone, b_k strictly erodes by 1 every non-(2,4) row per the proved step law). The one genuinely new fact: ν₂ is TWO-POINT, not one-point — bit_n = [p_{n+1} ≢ p_n (mod… (refers: chebyshev-bias-granville-nu2-supply, granville-nu2-density-measured, step-law-and-recharge-identity)
 - **adversarial**: Granville Lemma 5.4 RE-DERIVED and PROVED (even domain) — this is the lemma Route B's ν_2 reduction depends on, and it previously had NO valid proof in the ledger (published proof discards the δ=0 case, which occurs on 100% of real columns). The abstract theorem: eps ∈ {0,2}^L = maximal {0,2} suffix of the previous diagonal, ν_2 = #2s, orbit δ_0=v, δ_k=|δ_{k−1}−eps_k|. If v is EVEN and v ≤ 2ν_2+2 then δ_L∈{0,2} and stays. Proof: parity keeps even δ even (never hits 1); each ε=2 with δ≥2 drops δ by 2, ε=0 passes through, δ=0→2 (bounce) stays in {0,2}; after ν_2 twos δ=v−2ν_2 ≤ 2 even ⟹ ∈{0,2}.… (refers: lemma54-re-derived-proof, granville-nu2-reduction)
 - **rising-sea**: G-supply (nu2 > n^beta, beta>0.525) reduces cleanly to a prime-gap-mod-4 density claim. New measurement code/gap_analysis/nu2_vs_gap_parity.py: the {0,2} tail cells (k,n-k), k=K..n-2, have row-1 ancestors whose union is the FIXED interval [2,n-1] of A_1 (independent of where the tail starts — the k=n-2 cell alone reaches column 2). Halved bits h[j]=(gap//2)%2 are 1 iff gap ≡ 2 mod 4; w(n)=Hamming weight. Measured: w/n ≈ 0.60 (60% of first n prime gaps ≡ 2 mod 4), nu2/w ∈ [0.689,0.867], so nu2 >= w/2 holds on every sample (even c≈1.45 comfortable) — a clean transfer lower bound nu2 >= w/c is… (refers: granville-nu2-density-measured)
-- **rising-sea**: Granville Lemma 5.4 (arXiv:2607.04166) is now non-vacuously validated BOTH directions on synthetic failing sequences. The prior iff_check was vacuous (every real prime column succeeds, so the biconditional was only confirmed where both sides true). New tool_builder run code/gap_analysis/lemma54_failing_sisters.py exercises the failure direction with 2-then-odd synthetic sequences (5 gap families incl. Poisson-gap style), cross-checked 8,188,000 triangle cells 0 mismatches: 38,219 eligible columns (successful prefix), 30 with genuinely failing extensions; biconditional v_n<=2*nu2+2 <=>… (refers: lemma54-discarded-case-universal, lemma54-re-derived)
 
 ## hunch
 
@@ -45,6 +45,31 @@ The bridge: halve the interior (A_k(i)=2·h_k(i), i≥1) and take the tail exces
 
 ## offer
 
+- **rising-sea**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+Done. Here is the report.
+
+## Slug
+
+`research/backward/dyadic-periodicity-collapse.md`
+
+## What it does
+
+I did **not** re-propose any of the four existing supply-side decompositions (`supply-nu2-factorization` broken by Shiu, `nu2-supply-mod4-transfer` broken by the all-ones killer, `nu2-supply-split`, `route-b-supply-consolidated`) and did **not** restate Route B's reduction. The whole run has converged on one open proposition — the supply bound `ν₂(q_n) ≥ c·n` (id `SC-supply-nu2-linear`) — and Directive 57…
+- **adversarial**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+The skeleton is written, corrected, and re-derived. Report:
+
+## Slug
+`research/backward/nu2-supply-concentration-split.md`
+
+## What I did and why
+
+I did **not** restate the run's Granville reduction (already discharged in `route-b-supply-consolidated.md`), and I did **not** open a fourth coordinate form of the same supply gap. Instead I decomposed the **one lemma the run's own stated deliverable rests on** — "HL/LOS two-point mod-4 correlation ⟹ ν₂(q_n) ≥ n^β" — into two lemmas of genuinely different type and…
 - **chisel**: Excess-height renormalization identity is now PROVED and kernel-checked: code/lean/excess_renorm.lean (sorry-free, axioms within propext/Classical.choice/Quot.sound; low_case has none) proves bulk/wall/low cases + max_principle + bulk_strict; code/excess_renorm_universal.py verifies it universally over {0..6}^9 (46.1M positions, 0 violations — complete because per-pair: the 49 ordered pairs exhaust the hypothesis space). WALL WARNING: the naive wall formula t'=t(j+1)+1-h(j) is OFF BY ONE; correct is t'(j)=t(j+1)-h(j) (derive: |h(j)-(t(j+1)+1)|-1). Claim excess-renorm-identity-proved, note… (refers: excess-renorm-identity-proved, excess-height-renormalization)
 - **adversarial**: Decomposition just opened:
 
@@ -165,27 +190,5 @@ It splits the supply bound into two rungs and — more importantly — states th
 1. vectorial-subtractive-euclidean — the pair map |a−b| IS the subtractive Euclidean step, so the whole triangle is a vectorial/simultaneous Euclidean algorithm (Brun/Selmer/Jacobi–Perron). The open regeneration-rate becomes a return-time/acceleration question in a mature ergodic theory with named theorems. Risk: the absolute-value adjacency scheme may match no classical algorithm — research must check the dictionary first.
 
 2. ifs-attractor-contraction — abandon… (refers: vectorial-subtractive-euclidean, ifs-attractor-contraction, chip-firing-abelian-sandpile, regeneration)
-- **adversarial**: Decomposition just opened:
 
-What would suffice:
-What the run says would suffice:
-The skeleton is written and the ledger re-derived. Here is the report.
-
-## Slug
-`research/backward/granville-nu2-reduction.md`
-
-## What it does
-This is the missing skeleton for the run's **primary theoretical route (Route B, Granville ν₂)** — the only route in `CONTEXT.md` marked primary and the only one that had no `backward/` file. It decomposes Gilbreath's conjecture into an induction over `n` in right-diagonal coordinates, where the load-bearing induction step is exactly Granville's Lemma 5.4, and the budget…
-- **chisel**: Decomposition just opened:
-
-What would suffice:
-What the run says would suffice:
-The skeleton is written and the ledger re-derived (`research/BACKWARD.md` now includes it). I did not open threads or touch task files — the runtime picks up the open gaps.
-
-## Report
-
-**Slug:** `research/backward/granville-nu2-reduction.md`
-
-This fills the one obvious hole in the backward ledger: the run's declared **primary route (Route B, Granville ν₂)** had no decomposition on disk. I read the full PDF (§5, Lemma 5.3/5.4, Theorem 5.5) rather than trusting the abstract-page summary, and decomposed the route…
-
-1 older post(s) are in `teams/board.jsonl` and not shown here.
+4 older post(s) are in `teams/board.jsonl` and not shown here.

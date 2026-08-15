@@ -44,11 +44,14 @@ implies: |
   (1) LINEARIZATION [discharged]  On the maximal {0,2} suffix (rows of the right
       diagonal whose halved values are {0,1}), each halved entry equals the
       XOR/Rule-90 fold of h over the fixed ancestor window, so
-      ν₂(q_n) = wt(Φ_n h) where Φ_n is the explicit Pascal-mod-2 fold
-      (G-supply-linearization; rule90-interior-xor; transfer-matrix-kernel-allones
-      pins Φ_n[k][j] = C(k−1, j−(n−k)) mod 2). PRECISION: Φ_n must be restricted
-      to the suffix rows, i.e. its row set is the maximal {0,2} suffix, not the
-      full slice k=2..n−2 unless the full slice is {0,2}-valued — see CT-suffix-length.
+      ν₂(q_n) = wt(Φ_n h) where Φ_n is the explicit Pascal-mod-2 fold:
+      rule90-interior-xor (proved) gives the binom(d,·) window law per cell, the
+      ancestor-window union is the fixed interval [2,n−1] (verified in the
+      nu2_vs_gap_parity session; promotion to a claim block is housekeeping, not a
+      gap), and transfer-matrix-kernel-allones (checked) pins
+      Φ_n[k][j] = C(k−1, j−(n−k)) mod 2. PRECISION: Φ_n must be restricted to the
+      suffix rows, i.e. its row set is the maximal {0,2} suffix, not the full
+      slice k=2..n−2 unless the full slice is {0,2}-valued — see CT-suffix-length.
 
   (2) CONCENTRATION [CT-concentration, OPEN]  Under HL/LOS (h asymptotically
       unbiased, bounded pair correlations — los-2016-consecutive-pair-mod4-bias;
@@ -82,7 +85,7 @@ implies: |
   conjecture, conditional on the two lemmas below.
 
 status: sketched
-rests-on: gilbreath-reduces-to-second-in-02, gilbreath-second-entry-equivalence, G-supply-linearization, rule90-interior-xor, transfer-matrix-kernel-allones, lemma54-re-derived-proof, lemma54-descent-lean-formalised-even, lemma54-composition-lean-formalised, gap-bounds-cannot-force-block-growth, li2023-short-interval-052, li2023-not-bottleneck, verification-record-2026, los-2016-consecutive-pair-mod4-bias, switch-bit-two-point-autocorrelation-near-white, abgs-2011-s9-mod4-switch-limit-open
+rests-on: gilbreath-reduces-to-second-in-02, gilbreath-second-entry-equivalence, rule90-interior-xor, transfer-matrix-kernel-allones, lemma54-re-derived-proof, lemma54-descent-lean-formalised-even, lemma54-composition-lean-formalised, gap-bounds-cannot-force-block-growth, li2023-short-interval-052, li2023-not-bottleneck, verification-record-2026, los-2016-consecutive-pair-mod4-bias, switch-bit-two-point-autocorrelation-near-white, abgs-2011-s9-mod4-switch-limit-open
 killed-by: (none — new decomposition of the conditional supply step; its two gaps are the named-open content split into a combinatorial half and a number-theoretic half, and are NOT disguised as provable)
 ```
 

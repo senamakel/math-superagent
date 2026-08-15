@@ -1,0 +1,9 @@
+period 1 h=1: got [0, 0, 0, 0]  expected [1, 1, 1, 1]  match=False
+period 2 h=01: got [1, 1, 1, 1]  expected [2, 2, 2, 2]  match=False
+period 4 h=0001: got [1, 1, 1, 1]  expected [2, 2, 2, 2]  match=False
+period 8 h=00000001: got [1, 1, 1, 1]  expected [2, 2, 2, 2]  match=False
+period 3 h=001: got [132, 266, 532, 798]  expected [133, 264, 533, 798]  match=False
+period 5 h=00001: got [104, 212, 424, 639]  expected [104, 210, 424, 638]  match=False
+period 6 h=000001: got [67, 132, 267, 398]  expected [134, 264, 534, 796]  match=False
+period 7 h=0000001: got [56, 342, 456, 684]  expected [112, 112, 685, 684]  match=False
+ALL MATCH: False

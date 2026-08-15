@@ -1,0 +1,10 @@
+prediction: nu2 = O(1) iff period is a power of 2
+  P power2? nu2 all max nu2 tail max nu2 min
+  1    True           0            0       0
+  2    True           0            0       0
+  3   False           0            0       0
+  4    True           0            0       0
+  5   False           0            0       0
+  6   False           0            0       0
+  7   False           0            0       0
+  8    True           0            0       0

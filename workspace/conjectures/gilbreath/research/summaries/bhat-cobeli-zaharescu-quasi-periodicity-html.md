@@ -1,50 +1,61 @@
-# Bhat, Cobeli, Zaharescu 2023 — On quasi-periodicity in Proth–Gilbreath triangles
+# Bhat–Cobeli–Zaharescu 2023, quasi-periodicity in Proth–Gilbreath triangles
 
-**Full text:** `research/sources/bhat-cobeli-zaharescu-quasi-periodicity-html.full.md` [[bhat-cobeli-zaharescu-quasi-periodicity-html.full]]
-**Source:** arXiv:2307.11776v1 [math.NT], 19 Jul 2023; Bull. Math. Soc. Sci. Math. Roumanie 67(115) (2024) 3–21.
+**Full text:** `[[bhat-cobeli-zaharescu-quasi-periodicity-html.full]]` (arXiv:2307.11776v1, 19 Jul 2023; Bull. Math. Soc. Sci. Math. Roumaine 67(115)(2024) 3–21). Read in full this cycle because the Directive-58 dyadic-periodicity thread touches exactly this territory.
 
-## What it establishes
+## What the source establishes (fixed-point classification of the halved operator)
 
-Operates PG: sequence → absolute differences of neighbours. Studies rows over F_2 (binary), which is the mod-2 (halved-even) part of the triangle this run studies.
+Works on the **halved/binary** Proth–Gilbreath operator, where |a−b| = a+b
+over F2 (their Eq. (6), φ(Ψ(α)) = ((1+X)φ(α)−α0)/X — the Pascal/rule-90
+addition, the same system as this run's rule90-interior-xor). Defines a
+quotient ≍ where rows are equivalent if they coincide after removing finite
+prefixes, and studies the fixed points of the induced operator Ψ̂.
 
-- **Theorem 2 (main: fixed points of the halved operator).** A binary row α=(a_0,a_1,…) is *ultimately replicated identically* in the next PG row (α≍Ψ(α) in the ultimately-equal quotient) iff its generating function ϕ(α)=Σ a_k X^k ∈ F_2[[X]] is a rational function of either form
-  `P(X)/(1+X+X^r)` or `P(X)/(X^r(1+X)+1)` for some r≥0, P∈F_2[X].
-- **Eq. (6) (action of the operator).** On binary rows, ϕ(Ψ(α)) = ((1+X)ϕ(α) − α_0)/X. (In F_2, |a−b|=a+b mod 2 — the absolute value disappears and PG acts as the Pascal/rule-90 addition.)
-- **Theorem 5.** α ultimately identical with Ψ(α) iff ϕ(α)=G(X)/(1−X^{2^d−1}) — i.e. exactly the **periodic** binary sequences.
-- **Theorem 6 (leap fixed points).** α is ultimately replicated in the l-th following row iff ϕ(α)=P_l(X)/((1+X)^l+X^r) or P_l(X)/(X^r(1+X)^l+1).
-- **Theorems 3–4.** Consequences for representing F_2 power series as rational functions (several ways), gcd combination.
-- **Proposition 1.** Fibonacci sequences (mod 2) give left edge `1,1,0,1,1,0,…`; powers of two (1,2,4,8,…) give **all-ones** left edge.
-- Empirical (Table 1): on the prime triangle, along rays parallel to the left edge, #0s ≈ #2s (mod 4), each within √50000, differing by <1% — consistent with the run's `{0,2}`/mod-4 concentration.
+- **Theorem 2**: a binary row α is ultimately replicated identically in the
+  next PG line iff its F2 generating function is
+  φ(α) = P(X)/(1+X+X^r)  or  P(X)/(X^r(1+X)+1),  r≥0, P∈F2[X].
+- **Theorem 5**: α is ultimately identical with Ψ(α) (a fixed class of Ψ̂) iff
+  φ(α) = G(X)/(1−X^{2^d−1}). The denominator 2^d−1 is Fermat/Mersenne-shaped
+  because the recurrence's roots satisfy η^{2^d−1}=1 (Lemma 2: f_r(X)=X^r+X+1
+  has distinct roots; the smallest extension containing them has |K^×|=2^d−1).
+- **Lemma 3 / Theorem 6** (leap fixed points): α repeats in the l-th following
+  row iff φ(α)=P_l(X)/((1+X)^l+X^r) or P_l(X)/(X^r(1+X)^l+1). Theorem 4: if a
+  series repeats with periods l_1..l_m then it repeats with period gcd(l_i).
+- **Proposition 1**: Fibonacci rows (mod 2) give left edge 1,1,0,1,1,0,…;
+  the powers-of-two row (1,2,4,8,…) gives an all-ones left edge.
+- **Theorem 1** (Bhat): an infinite subsequence of square-primes generates a
+  triangle whose left edge is 1 at every other position.
+- **Table 1** (empirical): on the first 50,000 primes, along the first five
+  rays parallel to the left edge, #0 ≈ #2 (mod 4), |z−t| < √N in all five
+  cases — corroborates this run's mod-4/ν2 ≈ n/2 concentration, but is
+  empirical, not a theorem.
 
-## Hypotheses held here
+## What it does NOT establish (important — don't over-read)
 
-The theorems are about **binary** rows under the mod-2 operator. The prime Gilbreath triangle's even entries divided by 2 form a {0,1} (halved) triangle whose parity is governed by this same Pascal/rule-90 structure — that is the natural correspondence. The theorems characterize *when rows repeat* (periodic self-similarity), which is the run's rule-90-identification territory, NOT the regeneration of {0,2} blocks in the integer triangle. So: relevant as structure theory of the binary/halved regime; does not settle GC.
+- It classifies **rows that repeat under PG** (fixed classes). It is NOT a
+  statement that "an eventually periodic *input* collapses." A periodic input
+  need not be a PG fixed class — BCZ's own example T=(0,1,1,1,0,...) has
+  φ=X(1+X+X²)/(1+X⁴), is periodic, is NOT fixed (its triangle dies to zeros).
+  So do NOT cite BCZ Thm 5 as the collapse mechanism for the dyadic dichotomy.
+
+## Hypotheses and holds-here
+
+Binary rows, F2 coefficients, the operator = |a−b| = a+b mod 2. This is exactly
+the halved {0,1} part of the prime triangle's entries (all even / 2), so the
+correspondence holds here for that subsystem. It is structure theory of the
+binary regime; it does NOT settle GC (the boundary/intruder regeneration is
+integer, not binary).
 
 ## Bearing on this run
 
-- Confirms the {0,1}-halved triangle is a linear rule-90 (Pascal mod 2) system whose fixed points are exactly periodic F_2-rational rows — reinforcing `rule90-identification-real-absorption-refuted` that the {0,2} interior evolves as XOR, but that this alone does not absorb the boundary/intruder.
-- Theorem 2's rational-function form is a clean characterization a future invariant of the halved triangle could target: periodic rows are exactly those with rational generating functions of the given shape.
-- The 0≈2 ray statistic corroborates (motivationally) the run's mod-4 concentration but is empirical, not a theorem about the conjecture.
+- **Collapse side of Directive 58** is rule90-interior-xor (proved), not BCZ
+  Thm 5. BCZ's value here is the *fixed-point classification* if a future
+  invariant targets row-repetition in the halved triangle.
+- The empirical 0≈2 ray statistic corroborates the mod-4 / ν2≈n/2 concentration
+  but is not a theorem about the conjecture.
+- Does not help the growth side (odd-factor periods) of the dichotomy at all.
 
-## Claims
-
-```claim
-id: pg-fixed-points-rational-form
-statement: A binary row is ultimately replicated identically under the Proth–Gilbreath (mod-2) operator iff its F_2 generating function is P(X)/(1+X+X^r) or P(X)/(X^r(1+X)+1); periodic rows are exactly ϕ(α)=G(X)/(1−X^{2^d−1}).
-hypotheses: α∈{0,1}^∞; PG action via |a−b|=a+b mod 2.
-holds-here: yes for the binary/halved part of the triangle; not a GC statement.
-status: proved in source (finite+periodic analysis)
-bearing: characterizes row-repetition/periodicity in the halved {0,1} triangle; structure theory for a future invariant.
-anchor: research/sources/bhat-cobeli-zaharescu-quasi-periodicity-html.full.md
-answers: what-are-the-fixed-points-of-the-halved-gilbreath-operator
-```
-
-```claim
-id: pg-fibonacci-powers-of-two
-statement: Fibonacci rows (mod 2) give a left edge 1,1,0,1,1,0,…; the powers-of-two row (1,2,4,8,…) gives an all-ones left edge under PG.
-hypotheses: rows in ℤ; PG operator.
-holds-here: yes (elementary).
-status: proved in source
-bearing: irrelevant to the prime case directly; shows fixed/self-similar rows exist.
-anchor: research/sources/bhat-cobeli-zaharescu-quasi-periodicity-html.full.md
-```
+## Stored
+- `pg-theorem5-periodic-iff-fixed-class` claim replaced by the corrected
+  `rule90-periodic-window-collapse` in `research/notes/scholar-dyadic-periodicity-collapse.md`.
+- `pg-fixed-points-rational-form`, `pg-fibonacci-powers-of-two` claims
+  (already held) are the accurate record of what this source proves.
