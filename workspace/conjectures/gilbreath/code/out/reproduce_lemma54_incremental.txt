@@ -1,0 +1,19 @@
+== Part A: nu2 sample (incremental path, sieve 3e6) ==
+n      nu2      n^0.525    nu2/n    g*         2nu2+2   hyp
+50     27       7.80       0.5400   14         56       True
+100    43       11.22      0.4300   18         88       True
+200    98       16.15      0.4900   22         198      True
+400    204      23.23      0.5100   34         410      True
+800    389      33.43      0.4863   34         780      True
+1600   786      48.10      0.4913   36         1574     True
+3200   1604     69.22      0.5012   52         3210     True
+3999   2048     77.81      0.5121   72         4098     True
+hyp failed at 0 of sampled n
+NOTES said nu2/n in 0.420..0.520, nu2=2048 at n=3999, g*=72, 2nu2+2=4098, all hold
+
+== Part B: Lemma 5.4 iff/suff/discarded (incremental path, sieve 2e6) ==
+tested n: 2480 all successful: True ( 2480 )
+iff  v<=2nu2+2 <=> success : violations = 0
+suff g*<=2nu2+2 => success : violations = 0
+rows where discarded delta=0 occurs: 2480 (100.0%)
+NOTES said: 2480 tested, all successful True, iff 0, suff 0, zero cases 2480 (100%)

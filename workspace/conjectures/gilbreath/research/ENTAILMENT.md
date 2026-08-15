@@ -8,5 +8,5 @@ A claim written `follows-from: a, b` says `a` and `b` together give it. That sin
 
 These add nothing the library did not have. That is not a criticism of them — a consequence worth naming is worth a block — but a *proposal* that lands in this list is not a result, and the cheapest time to find that out is before an attempt is spent on it.
 
-- `bhp-demand-corollary-g-star` is covered by `bhp-max-gap-unconditional`: The demand-side corollary: for the prime right-diagonal, g*_n = max_{m<=n}(p_{m+1}-p_m) = O(n^{0.525 + eps}) for every eps > 0, since p_n ~ n log n and each…
+- `lemma54-rederivation-safe` is covered by `granville-nu2-density-measured`, `lemma54-discarded-case-universal`: Granville Lemma 5.4 (q_1..q_n succeeds if g*_n ≤ 2*nu2(q_{n-1})+2) is sound: the correct descent is delta_k(q_n) in {delta_{k-1}(q_n)-2, delta_{k-1}(q_n)} when…
 

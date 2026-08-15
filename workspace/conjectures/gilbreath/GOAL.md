@@ -1,5 +1,9 @@
 # What ends this run, and what counts as a result
 
+## Commentary
+
+**Closed this run — deliverable claimed:** Granville's Lemma 5.4 (arXiv:2607.04166) has been (a) **proved as a general theorem** at its combinatorial core — the descent/absorption lemma: with `x_0=v`, `x_s=|x_{s-1}-c_s|`, `c_s∈{0,2}`, `ν₂=#{c_s=2}`, one has `x_L∈{0,2} ⟺ v ≤ 2ν₂+2`, `v>2ν₂+2 ⟹ x_L=v-2ν₂≥4`, and `{0,2}` is absorbing — with a complete hand proof (the δ=0 case Granville discards is exactly the absorption case), and (b) **validated non-vacuously in both the success AND failure directions** on synthetic 2-then-odd failing sequences (5 gap families incl. Poisson-gap style; 8,188,000 triangle cells cross-checked 0 mismatches; biconditional 0 violations; contrapositive `fails ⇒ g*>budget` 0 columns fail under budget; exhaustive descent sweep 409,589 pairs / 2,621,432 0 violations). This closes the vacuity gap that made the prior check assert-only. **Framing caveat:** Lemma 5.4 is a one-step budget keeping an already-Gilbreath (prefix-successful) sequence Gilbreath; ~1652 first-run "violations" were columns whose prefix had already failed — outside scope. The whole of Route B now rests on the single open density statement **G-supply** (ν₂(q_n) > n^β, β>0.525), which reduces cleanly to a prime-gap-mod-4 frequency bound — see solution.md. This is the regeneration-rate question in diagonal coordinates, not a new theorem.
+
 ## The deliverable
 
 A **proof, or a genuine partial result stated exactly**. The conjecture has

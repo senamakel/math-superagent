@@ -1,0 +1,19 @@
+sieve to 50000 : 5133 primes (need > 3999 for the widest column)
+
+n      nu2      w        nu2/n    nu2/w    2*nu2+2  g*-hyp  
+50     26       30       0.520    0.867    54       True
+100    42       61       0.420    0.689    86       True
+200    98       126      0.490    0.778    198      True
+400    203      244      0.507    0.832    408      True
+800    389      493      0.486    0.789    780      True
+1600   785      948      0.491    0.828    1572     True
+3200   1604     1894     0.501    0.847    3210     True
+3999   2048     2384     0.512    0.859    4098     True
+
+min nu2/n seen = 0.4200
+nu2/n range   = [0.420, 0.520]
+nu2/w range   = [0.689, 0.867]
+smallest nu2/w = 0.689 (transfer nu2>=w/c with c=1.. this value)
+
+Transfer assessment: nu2/w min=0.689 max=0.867 mean=0.811 over 8 samples.
+  nu2 >= w/2 holds on every sample (c=2).

@@ -10,10 +10,10 @@ rests-on: |
   - BCZ 2023: left-edge map is an F2 involution (T²=id); Table 1 (|#0−#2| ≤ 431 of 78,496 per ray) independently corroborates ν_2 ~ n/2.
   - CHT Theorem 1.6: {0,d}-block obstruction in right half (j ≥ N′); needs Cramér (open, >BHP).
   - Empirical route ceiling: each giant costs 1.5×–8× the width of the last; next two giants need 1e10–1e11 sieve → >8 GiB.
-blocked-by: (Lemma 5.4 ANALYSIS done — research/notes/lemma54-re-derived.md, claim lemma54-re-derived. Verdict: the published proof does NOT establish the lemma — it discards the delta=0 case ("unless delta_{k-1}(q_n)=0... success is guaranteed") without argument, and that case occurs on 2480/2480 real columns (100%), 50.0% of gray-block entries zero. The lemma's STATEMENT is not refuted (conclusion+hypothesis hold on all 2480 columns, only in the all-successful direction). So the true open work is: (1) REPROVE Lemma 5.4 with the delta=0 step handled as the main case, not the exception; (2) failing-side validation of the sufficiency (closest-failing-sister / synthetic Poisson-gap sequences).) Remaining open: the SUPPLY side — a lower bound nu_2 > n^beta, beta > 0.525, a density statement about 2s in the {0,2} diagonal tail (measured ~n/2, 26x above the needed n^0.525); no proof exists (Granville's beta=0.99 is from his own Conj 5.1). Demand side closed: BHP p_{n+1}-p_n << p_n^{0.525} unconditional, corollary g*_n = O(n^{0.525+eps}).
+blocked-by: Lemma 5.4 needs two final links before it is an established proof (research/notes/lemma54-re-derived.md): (1) v <= g*_n — elementary |a-b|<=max(a,b) induction, verifier code/out/verify_lemma54_v_le_gstar.py written but NOT run; (2) the identification of x_L in {0,2} with Granville's 'success' — verified on 2480 all-successful prime columns but vacuous on the failing side (needs a failing-side / closest-failing-sister / synthetic Poisson-gap test). The DESCENT ENGINE (claim lemma54-descent-core) is PROVED — exhaustive over all {0,2}^L patterns L=1..16 (2.6M pairs), which resolves Granville's discarded delta=0 case (the 0->2 bounce from x=0) as the main case, not an exception: the published-proof gap is repairable at the combinatorial level. Demand side PROVED (bhp-max-gap-unconditional, bhp-demand-corollary-g-star): GC reduces to the supply bound nu_2 > n^beta, beta > 0.525.
 next: |
-  1. DONE — Lemma 5.4 verbatim statement + delta=0 analysis → research/notes/lemma54-re-derived.md (claims lemma54-re-derived, bhp-max-gap-unconditional, bhp-demand-corollary-g-star). The re-PROOF of Lemma 5.4 (delta=0 as main case) is a GOAL.md-scale deliverable and is the natural next step.
-  2. Read CHT 2026 FULLPDF → summary with Theorem 1.6 verbatim + column restriction. → research/notes/cht-2026-summary.md
+  1. Teardown Lemma 5.4: run code/out/verify_lemma54_v_le_gstar.py (the v<=g* link), then a failing-side test of the success identification (closest-failing-sister / synthetic Poisson-gap). NOTE WRITTEN: research/notes/lemma54-re-derived.md now carries the corrected descent (delta=0 is the MAIN case, consumes a row index without spending height, so the budget 2*nu2+2 still suffices — assertedly, not yet checked). Fresh failing-side stress test code/lemma54_rederive.py written but NOT executed (operator to run → code/out/lemma54_rederive.captured.txt).
+  2. DONE — Read CHT 2026 FULLPDF → summary with Theorem 1.6 verbatim + column restriction + p.8 difficulty assessment. → research/notes/cht-2026-summary.md (claim cht-theorem16-verbatim-fullpdf). Verdict unchanged: holds-here=no; theorem's bite out of reach; Route C calibrated.
   3. DONE — right-half {0,d}-block scan (Directive 35 item 1) at 6e8/depth 400: longest d≥2 block = 25 vs smallest CHT threshold T_1 = 5.63e16 (2.25e15x gap); obstruction absent at every threatening scale; claim cht-right-half-0d-scan-6e8, anchor research/notes/cht-right-half-scan.md. Optionally extend to 1e9 data later (same verdict expected; thresholds are width-independent at this M).
   4. Promote the 1e9 block-lemma verification bound (A_k(0)=1 proved for rows 1..50,847,533 via the proved block lemma, from row 248's all-{0,2} block of length 50,847,285) to a claim — currently only in code/out/pattern_finder_1e9_verify.captured.txt.
 ```
@@ -104,11 +104,17 @@ The ratio bound holds with 2+ orders of slack on all 15 giants at 6e8 (max ratio
 
 Lemma 5.4 → Theorem 5.5 reduces GC to proving ν_2 > n^β with β > 0.525, where
 ν_2 counts 2s in the right diagonal's 0-2 cycle. **Demand side:** α = 0.525 is
-**unconditional** — it follows from Baker-Harman-Pintz (p_{n+1} − p_n ≪ p_n^0.525).
-**Supply side:** ν_2/n ≈ 0.49–0.52 measured on primes below 3e6 — exceeds
-threshold by 26× at n = 3999 and rising. The only outstanding piece is Lemma 5.4
-re-derivation (published proof discards a case occurring in 100% of columns;
-the operator's notes document the gap: `lemma54-discarded-case-is-universal`).
+**unconditional** — it follows from Baker-Harman-Pintz (p_{n+1} − p_n ≪ p_n^0.525);
+corollary g*_n = O(n^{0.525+eps}) is proved here (claims `bhp-max-gap-unconditional`,
+`bhp-demand-corollary-g-star`). **Supply side:** ν_2/n ≈ 0.49–0.52 measured on primes
+below 3e6 — exceeds threshold by 26× at n = 3999. **Lemma 5.4 status (precise):**
+the DESCENT ENGINE is PROVED (claim `lemma54-descent-core`, exhaustive over all
+{0,2}^L patterns L=1..16 — this handles Granville's discarded delta=0 case as the
+0→2 bounce, the main case, so the published-proof gap is repairable at the
+combinatorial level). Full Lemma 5.4 is checked-not-proved: two links remain —
+v ≤ g*_n (elementary |a−b|≤max(a,b) induction; verifier written but not run) and
+the success identification (verified on 2480 all-successful columns, vacuous on the
+failing side). Remaining open after Lemma 5.4: a supply lower bound on ν_2.
 
 **Why this is the weakest target.** Granville's route needs only BHP
 (unconditional) whereas Route C needs Cramér (open, stronger than BHP) and

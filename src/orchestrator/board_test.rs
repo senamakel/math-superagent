@@ -25,6 +25,35 @@ fn a_post_round_trips() {
     assert!(posts[0].body.contains("D-finite"));
 }
 
+/// Posting renders the board, so no caller has to remember to.
+///
+/// A live run posted twice through the automatic decomposition offer, which
+/// calls `post` directly rather than through the `post_board` tool, and
+/// `teams/BOARD.md` was never written — the board every school reads did not
+/// exist while its queue held two posts.
+#[test]
+fn posting_renders_the_board() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    post(
+        workspace.path(),
+        "rising-sea",
+        Kind::Offer,
+        "the descent lemma holds for every pattern in {0,2}^L",
+        &[],
+    )
+    .expect("the post must be written");
+    let rendered = std::fs::read_to_string(workspace.path().join(PATH))
+        .expect("posting must render the board");
+    assert!(
+        rendered.contains("descent lemma"),
+        "the rendered board must carry the post: {rendered}"
+    );
+    assert!(
+        rendered.contains("rising-sea"),
+        "the rendered board must name the posting school: {rendered}"
+    );
+}
+
 /// An empty body is refused rather than filed as a blank row.
 #[test]
 fn an_empty_post_is_refused() {

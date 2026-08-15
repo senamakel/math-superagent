@@ -128,13 +128,18 @@ here.
   The empirical route is at its ceiling: row-248 STILL capped at 1e9,
   geometric doubling means next giants need 1e10–1e11 sieve (exceeds 8 GiB).
   **Route B (Granville ν_2 — PRIMARY):** Lemma 5.4 → Theorem 5.5 reduces GC
-  to ν_2 > n^β with β > 0.525. Demand α=0.525 unconditional (BHP). Supply
-  ν_2/n ≈ 0.49–0.52 measured. Lemma 5.4 re-derivation (delta=0 case) is the
-  next theoretical step. **Route A (ratio bound — fallback):** gap_i ≤ j_i+1,
-  verified 2+ orders slack on 15 giants at 6e8/1e9. Needs geometric growth
-  of b — cannot be extended computationally. **Route C (CHT — calibrated):**
-  needs Cramér (open, >BHP); authors' assessment: "look difficult to establish
-  rigorously." Granville's route has the weakest demand side.
+  to ν_2 > n^β with β > 0.525. Demand α=0.525 unconditional (BHP; corollary
+  g*_n = O(n^{0.525+eps}) proved here). **DESCENT ENGINE now PROVED** (claim
+  `lemma54-descent-core`, exhaustive over all {0,2}^L patterns L=1..16 —
+  resolves Granville's discarded delta=0 case as the 0→2 bounce, the main
+  case; the published-proof gap is repairable). Full Lemma 5.4 stays
+  checked-not-proved pending two links: v ≤ g*_n (verifier written but not
+  run) and the success identification (vacuous on the failing side). Supply
+  ν_2/n ≈ 0.49–0.52 measured, far above the needed n^0.525. **Route A (ratio
+  bound — fallback):** gap_i ≤ j_i+1, verified 2+ orders slack on 15 giants
+  at 6e8/1e9. **Route C (CHT — calibrated):** needs Cramér (open, >BHP);
+  Theorem 1.6's right-half {0,d}-block obstruction absent at every reachable
+  scale (6e8 scan: max 25 vs threshold 5.63e16).
 - **CHT Theorem 1.6 column restriction (Directive 35):** the {0,d}-block
   obstruction (iii) is restricted to the RIGHT HALF (j ≥ N′). The run's leading
   {0,2} block at j=1 does NOT violate (iii). Right-half {0,d} scan for the

@@ -103,8 +103,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `lean_gilbreath_reduction.notes.md` | Note for the above: what was run, the exact axiom ledgers, and the boundary (prime instantiation is computation-checked, not Lean-proved); carries claim block `lean-reduction-machine-checked`. |
 | `lean_reduction.captured.txt` | Directive 31 audit re-emission: `timeout 540 lean code/lean/gilbreath_reduction.lean` EXIT_CODE=0 (Lean 4.34.0-rc1, sha256 e6e1a7228be4494aa25ef611b0e5a08db3b5a38419b3ecdbf1880f8317ef0767 echoed into the capture); #print axioms for dist_odd_even, dist_dist_even, dist_one_eq_one, shape_theorem, gilbreath_reduction, reduction, reduction_lemma, shape_rows all exactly [propext, Classical.choice, Quot.sound], zero sorryAx, file now 1360 B. Backup at code/lean/gilbreath_reduction.lean.bak. |
 | `lean_shape.captured.txt` | `lean` compile of the repaired self-contained shape-preservation file (EXIT=0), axioms = standard base set. |
+| `lemma54_descent_check.captured.txt` | _(undescribed)_ |
+| `lemma54_failing_sisters.captured.txt` | _(undescribed)_ |
 | `lemma54_iff_check.captured.txt` | Reproduced in-container this session (timeout 540, EXIT_CODE=0): tested n=2480, all successful (2480), iff violations=0, suff violations=0, discarded delta=0 rows=2480 (100.0%) — identical to the operator's host capture. Anchor for claim `lemma54-discarded-case-universal` (research/notes/lemma54-discarded-case-is-universal.md). |
+| `lemma54_verify.captured.txt` | _(undescribed)_ |
 | `nu2_granville_check.captured.txt` | Reproduced in-container this session (timeout 540, EXIT_CODE=0): nu2=2048 at n=3999, n^0.525=77.8, nu2/n in 0.420..0.520, Lemma 5.4 hypothesis holds at all sampled n — identical to the operator's host capture. Anchor for claim `granville-nu2-density-measured` (research/notes/granville-2607-04166-actually-read.md). |
+| `nu2_vs_gap_parity.captured.txt` | _(undescribed)_ |
 | `null_rule90_depth.captured.txt` | _(undescribed)_ |
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
 | `pattern_finder_1e9_giants.captured.txt` | _(undescribed)_ |
@@ -124,6 +128,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `regeneration_detail.captured.txt` | Output of `pattern/regeneration_detail.py`: s at events, gap histogram, big-jump ratios, long-run intruder traces. |
 | `regeneration_lastfacts.captured.txt` | Output of `pattern/regeneration_lastfacts.py`: run-start intruders, tall-intruder rows, min-b by window. |
 | `regeneration_successors.captured.txt` | Output of `pattern/regeneration_successors.py`: stall→regen verification, successors, drain staircases, histograms. |
+| `reproduce_lemma54_incremental.txt` | _(undescribed)_ |
+| `reproduce_lemma54_indexed.txt` | _(undescribed)_ |
 | `rule90_depth_null.json` | _(undescribed)_ |
 | `rule90_depth_results.json` | _(undescribed)_ |
 | `rule90_depth_test.captured.txt` | _(undescribed)_ |

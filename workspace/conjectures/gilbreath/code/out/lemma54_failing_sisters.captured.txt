@@ -1,0 +1,53 @@
+Lemma 5.4 failing-side validation (synthetic failing sequences)
+  vs. the vacuous all-successful primes of code/lemma54_iff_check.
+==============================================================================
+
+[0] ORACLE: Granville Table 14, cycle=[0, 2, 2, 0, 2, 0, 2, 0, 0, 0, 2, 2]
+    nu_2 = 6, budget 2*nu_2+2 = 14
+    v=14 -> x_L=2, green=|x_L-1|=1  SUCCESS
+    v=16 -> x_L=4, green=|x_L-1|=3  FAIL(fails)
+    oracle reproduced: True
+
+[1] Local transition claims (delta'=abs(delta-eps), eps in {0,2}):
+    (i)  eps=2, delta>=2 -> delta'=delta-2   : 38 cases
+    (ii) delta=0         -> delta'=eps       : 2 cases
+    (iii)eps=2, delta=1  -> delta'=1         : 1 cases
+    (noop)eps=0          -> delta'=delta     : 39 cases
+    closed-form/recursion disagreements: 0 (expect 0)
+
+[2] Exhaustive descent sweep (the contrapose's two branches):
+    patterns {0,2}^L, L=1..14: 32766
+    (v,pattern) pairs: 409589
+    branch A  budget holds  (v<=2*nu2+2)  : 278525 pairs -> ABSORBED into {0,2}
+    branch B  budget fails  (v> 2*nu2+2)  : 131064 pairs -> ESCAPE (x_L>=4, column fails)
+    v<=budget but x_L not in {0,2}  : 0 (expect 0)
+    entered {0,2} then escaped       : 0 (expect 0, closure)
+    transition closed-form mismatch  : 0 (expect 0)
+
+[3] Non-vacuous full-triangle check on SYNTHETIC sequences that
+    actually FAIL (unlike the all-successful primes):
+    (columns filtered to prefixes q_1..q_{n-1} already successful,
+     per Lemma 5.4's hypothesis)
+    recursion-vs-triangle cell check: 8188000 cells, 0 mismatches (expect 0)
+    columns tested: 38219   successful: 38189   FAILING: 30
+    -> the failure direction is EXERCISED (non-vacuous).
+
+    biconditional v_n<=2*nu2+2 <=> success  : violations = 0 (expect 0)
+    suff  g*<=2*nu2+2 => success             : violations = 0 (expect 0)
+    contrapositive of suff (fails => g*>budget): failing columns with g*<=budget = 0 (expect 0)
+    cross-check green=A_{n-1}[1] in {0,2} <=> success=A_n[0]==1 : disagreements = 0 (expect 0)
+
+    per-family biconditional violations:
+      consec {2,4}           tested=13370  violations=0
+      geometric heavy        tested=1253   violations=0
+      poisson ~ Exp gap      tested=2246   violations=0
+      rand {2,4,6,8,10}      tested=1400   violations=0
+      skew {2,4} more 2s     tested=19950  violations=0
+
+    concrete failing column: n=25, family=poisson ~ Exp gap, nu_2=1, v_n=6, budget=2*nu_2+2=4, g*=16, success=False, pred=False
+
+==============================================================================
+VERDICT: CONTRAPOSITIVE HOLDS on failing side
+The two branches of the contrapositive were confirmed non-vacuously:
+  (A) v<=2*nu2+2  -> absorption into {0,2}, closure, success
+  (B) v> 2*nu2+2  -> escape to >=4, column fails

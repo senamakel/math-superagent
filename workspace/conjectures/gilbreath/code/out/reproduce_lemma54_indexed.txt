@@ -1,0 +1,19 @@
+== Part A: nu2 sample, sieve 3e6 (recorded/ours) ==
+n      nu2      n^0.525    nu2/n    g*       hyp
+50     20       7.80       0.4000   14       True
+100    46       11.22      0.4600   18       True
+200    106      16.15      0.5300   22       True
+400    216      23.23      0.5400   34       True
+800    397      33.43      0.4963   34       True
+1600   740      48.10      0.4625   36       True
+3200   1573     69.22      0.4916   52       True
+3999   2045     77.81      0.5114   72       True
+hyp failed at 0 sampled n (recorded: 0)
+nu2 series (recorded): 26 42 98 203 389 785 1604 2048
+
+== Part B: Lemma 5.4 iff/suff/discarded, sieve 2e6 ==
+tested n: 2480 all successful: True ( 2480 )
+iff  v<=2nu2+2 <=> success : violations = 0
+suff g*<=2nu2+2 => success : violations = 0
+discarded delta=0 rows: 2480 (100.0%)
+recorded: 2480, all successful True, iff 0, suff 0, zero 2480 (100%)

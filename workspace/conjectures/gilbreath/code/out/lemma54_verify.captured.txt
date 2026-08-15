@@ -1,0 +1,72 @@
+==============================================================================
+(1) CASE RULES
+==============================================================================
+(i)   eps=2, delta>=2 => delta_new=delta-2 : PASS  (checked delta=2..200004, 0 fails)
+(ii)  delta=0 => delta_new=eps in {0,2} : PASS  (eps in {0,2}: |0-0|=0, |0-2|=2)
+(iii) eps=2, delta=1 => delta_new=1 : PASS  (|1-2|=1)
+=> all case rules: PASS
+
+==============================================================================
+(2) POTENTIAL THEOREM (the proof), then brute-force verification
+==============================================================================
+Invariant: while delta >= 2 the 'descending' value delta goes down
+  by exactly 2 on each eps_k=2 and is unchanged on each eps_k=0,
+  so after consuming all nu2 twos:  delta <= v - 2*nu2 <= 2.
+  Closure: {0,2} is absorbing under |x-eps| with eps in {0,2}:
+    |0-0|=0, |0-2|=2, |2-0|=2, |2-2|=0   all in {0,2}.
+
+[odd boundary, faithful to statement] over ALL integer v in 0..2L+4, L=1..10:
+  (eps,v) pairs checked : 47098
+  closure violations    : 0  (expect 0: closure is parity-free)
+  hypothesis violations : 11263  (v<=2nu2+2 but delta_L not in {0,2})
+  example counterexamples (all odd v, all-deltas stay odd):
+    L=1 eps=[0] v=1 -> delta_L=1 (odd start, never enters {0,2})
+    L=1 eps=[2] v=1 -> delta_L=1 (odd start, never enters {0,2})
+    L=1 eps=[2] v=3 -> delta_L=1 (odd start, never enters {0,2})
+    L=2 eps=[0, 0] v=1 -> delta_L=1 (odd start, never enters {0,2})
+    L=2 eps=[2, 0] v=1 -> delta_L=1 (odd start, never enters {0,2})
+  reason: |odd - even| = odd, so an odd v stays odd forever and
+  can never land in {0,2}; block lemma holds iff all values are EVEN.
+
+[true domain] over EVEN v in 0..2L+4, L=1..10:
+  (eps,v) pairs checked      : 24572
+  pairs entering {0,2} somewhere : 13309
+  closure violations         : 0  (expect 0)
+  hypothesis violations      : 0  (expect 0)
+=> potential theorem on even domain: PASSED ALL BRUTE-FORCE CASES
+=> potential theorem as stated over ALL integers v: FAILED (odd-v, parity boundary)
+
+==============================================================================
+(3) BUDGET EXACTNESS
+==============================================================================
+all-2s pattern of length L=5 (nu2 = L = 5):
+  v = 2*nu2+2 = 12  (even) -> delta_L = 2  (expect 2, inside {0,2})
+  v = 2*nu2+4 = 14  (even) -> delta_L = 4  (expect 4, outside {0,2})
+  threshold exact for every L=1..10 (v=2nu2+2 -> 2 ; v=2nu2+4 -> 4): tight
+=> budget bound 2*nu2+2 is exactly tight: True
+
+==============================================================================
+(4) REAL-PRIME VALIDATION
+==============================================================================
+sieve primes < 500000: 41538 primes; rows A_0..A_300; oracle reproduces A_1..A_5 (5 worked rows)
+diagonals tested (n=20..300): 281
+  Lemma-5.4 hypothesis v_n <= 2*nu2(q_{n-1})+2  HOLDING: 281/281
+  hypothesis violations (v too large): 0
+  landing-value mismatch / not-in-{0,2} (A_{n-1}(1) vs orbit): 0  (expect 0)
+  delta-dynamics mismatch vs real diagonal: 0  (expect 0)
+  terminal A_n[0] != 1: 0  (GC claim; expect 0)
+  sample (n, v_n, nu2, hyp_ok, tau, cylen, A_{n-1}(1), orbit_last):
+    n=50 v=2 nu2=20 hyp=True tau=10 cylen=39 Andec1=2 orbit=2
+    n=150 v=6 nu2=78 hyp=True tau=8 cylen=141 Andec1=2 orbit=2
+    n=300 v=4 nu2=148 hyp=True tau=8 cylen=291 Andec1=0 orbit=0
+=> real-prime validation: ALL DIAGONALS SATISFY HYPOTHESIS, ZERO VIOLATIONS
+
+==============================================================================
+SUMMARY
+==============================================================================
+(1) case rules                : PASS
+(2) potential theorem (even)  : PASS
+    potential theorem (all v) : FAIL on odd v (parity boundary, documented above)
+(3) budget exactly tight      : True
+(4) real-prime validation     : PASS
+EXIT_STATUS=0

@@ -6,7 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[regeneration]] | Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones. | open | IFF, reduction | \| 1. DONE — Lemma 5.4 verbatim statement + delta=0 analysis → research/notes/lemma54-re-derived.md (claims lemma54-re-derived, bhp-max-gap-unconditional,… |
+| [[regeneration]] | Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones. | open | IFF, reduction | \| 1. Teardown Lemma 5.4: run code/out/verify_lemma54_v_le_gstar.py (the v<=g* link), then a failing-side test of the success identification… |
 | [[rule90-regeneration]] | Does the Rule 90 (Sierpinski / Pascal mod 2) structure of the {0,2} interior force block-length regeneration at specific relative depths, and does the null… | open | Block, lemma | \| 1. ~~**Split the claim.**~~ DONE — `rule90-interior-xor` is its own proved claim in `research/notes/rule90-interior.md` (Directive 4). The absorption wrapper… |
 
 ## Resting on nothing recorded
