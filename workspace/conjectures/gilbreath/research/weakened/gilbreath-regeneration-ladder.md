@@ -97,6 +97,7 @@ statement: For every 2-then-odds sequence with all gaps (after the first) <= 4, 
 off: unbounded-gaps
 stance: failed
 killed-by: Colonna's delete-5 example (2,3,7,11,13,17,...): gaps ≤ 4 yet the second entry of row 2 is 4, so the leading 1 dies at row 3.
+reason: Colonna's delete-5 example (2,3,7,11,13,17,...) has gaps ≤ 4 but row 2's second entry is 4, so the leading 1 dies at row 3; Eppstein kills every fixed g.
 merge: Colonna's delete-5 example (2,3,7,11,13,17,...) has gaps <= 4 and second entry
   4 at row 2, killing it. So the deterministic bounded-gap class dies at g = 4, and
   Eppstein's construction kills every fixed g. The difficulty `unbounded-gaps` bites

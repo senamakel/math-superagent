@@ -83,6 +83,7 @@ statement: For every 2-then-odds sequence with all gaps (after the first) ≤ 4,
 off: unbounded-gap-arrangement
 stance: failed
 killed-by: Colonna's delete-5 example (2,3,7,11,13,17,...): all gaps after the first are ≤ 4, yet the second entry of row 2 is 4, so the leading 1 dies at row 3. So the bounded-gap class dies at g = 4; Eppstein's construction kills every fixed g.
+reason: Colonna's delete-5 example (2,3,7,11,13,17,...) has all gaps ≤ 4 but the second entry of row 2 is 4, killing the leading 1 at row 3; Eppstein kills every fixed g.
 merge: Killed by Colonna's delete-5 example (2,3,7,11,13,17,...): gaps ≤ 4 yet the second entry of row 2 is 4, so the leading 1 dies at row 3. Eppstein's anti-Gilbreath construction kills every fixed g, so `unbounded-gap-arrangement` bites exactly at g = 4. The surviving route is NOT a wider bounded-gap class but a *frequency/concentration* restriction tolerating rare large gaps (R-carved-gap24 is the narrow-support version, R-random-analogue the independence version).
 ```
 
