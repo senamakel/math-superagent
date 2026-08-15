@@ -6,25 +6,37 @@ why, computed numbers, durable memory, disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
 Budget 10,000 tokens. Length is a bill the whole run pays on every model call;
-link the file holding any detail compressed away. (Current: Directive 56 — stop
-sweeping; the G-supply transfer repair is a four-candidate code+proof check,
-see Run state.)
+link the file holding any detail compressed away. (Current: Directive 58 — prove
+the dyadic dichotomy, do not survey it, see Run state.)
 
-## Run state (Directive 56 — stop sweeping)
+## Run state (Directive 58 — prove the dyadic dichotomy, do not survey it)
 
-**The refutation gave a question, not a library gap — librarian is over half
-the run and the library is CLOSED (39/46).** Consecutive odds (all gaps = 2,
-w = n−2 maximal) dies at row 2 with ν₂ = 0: the switches are real but never
-reach the {0,2} tail. The repair is the WEAKEST hypothesis the primes satisfy
-and constant gaps violate, restoring ν₂ ≥ c·w. Four candidates, cheapest
-first, all prime-free: (a) gap variety — ≥2 gap values infinitely often;
-(b) h non-eventually-periodic; (c) positive density of h_j ≠ h_{j+1};
-(d) the F₂ kernel condition stated directly. For each: FAILS on consecutive
-odds, HOLDS on real primes to N=30000; keep the weakest survivor.
-**tool_builder + theorem_prover, NOT librarian.** Do not sweep; do not
-re-assert the dead universal bound. Live task
-`find-weakest-gap-variety-hypothesis`; thread
-`research/threads/gsupply-transfer-repair.md`.
+**Directive 57's dyadic question is now a measured dichotomy — reproduce it,
+then prove it.** Host-side stage-1 numbers (exact integers, periodic halved-gap
+bit string `h`, gap = 2 if bit else 4, `ν₂` = #2s in the maximal {0,2} suffix
+of the right diagonal): period 1 (`h=1`) `ν₂=1` at n=200,400,800,1200;
+period 2 (`01`) `ν₂=2`; period 4 (`0001`) `ν₂=2`; period 8 (`00000001`)
+`ν₂=2` — all four n; period 3 (`001`) `ν₂=133,264,533,798`; period 5
+(`00001`) `104,210,424,638`; period 6 (`000001`) `134,264,534,796`; period 7
+(`0000001`) `112,112,685,684`. **Dichotomy is sharp:** `ν₂ = O(1)` exactly on
+power-of-2 periods, `ν₂ ~ c·n` otherwise (c ∈ [0.53, 0.67]); period 6 = 2·3
+grows, so it is the ODD FACTOR that matters, not merely being non-dyadic.
+**Skip straight to the theorem.** tool_builder: confirm the eight rows and
+extend to periods 9..16 and to non-constant patterns of the SAME period (the
+claim is about the period, not the specific word). theorem_prover: prove from
+Lucas, prime-free, that `h` eventually periodic with period `2^k` forces
+`ν₂ = O_k(1)` — and, the harder half, that an odd factor in the period forces
+`ν₂ ≫ n`. Mechanism for the dyadic half is `rule90-interior-xor`: weights
+`C(d,j) mod 2` are supported on the binary submasks of `d`, so period-`2^k` `h`
+collapses the sums for all large `d` (consecutive odds = period 1; alternating
+2/4 = period 2). **State the conclusion as the dichotomy theorem, then say
+precisely what it does and does NOT give for the primes: aperiodicity alone is
+weaker than the quantitative anti-dyadic input the supply bound needs — the gap
+between them is the honest remaining statement. Do NOT claim it closes
+G-supply.** Live tasks `test-dyadic-periodicity-prediction`,
+`prove-dyadic-periodicity-collapse-lemma`, `state-dyadic-dichotomy-primes-gap`;
+thread `research/threads/dyadic-periodicity-collapse.md`. The repair thread
+`gsupply-transfer-repair` is DEAD (Directive 57).
 
 ## Run state (Directive 50 — first kernel-checked result)
 
@@ -161,7 +173,16 @@ Claim `cht-right-half-0d-scan-6e8`; anchor `research/notes/cht-right-half-scan.m
 - **Backward-extension automaton / minimal-counterexample geometry — REFUTED.** Valid-extension criteria (Alkan et al. 2023 factorial K-criterion; Muney 2026 subset-sum analogue with interior holes, smallest at length 5 for (2,3,5,9,15)) are GLOBAL over the whole prefix — no bounded window, no finite state; Muney's valid-extension set re-describes the regeneration obstruction. Eppstein's class defeat stands.
 - **Martingale edge-stall — REFUTED (self-corrected).** The edge is a two-tap coupled XOR recurrence, not a running XOR of fresh bits — no Doob/Azuma bound at the one-bit-per-step filtration.
 - **G-supply via generic Markov mixing/anti-clustering of the switch bit — REFUTED as a PROOF STRATEGY (Directive 52).** `code/out/anticlustering_hypothesis.captured.txt`: prime-like (0.55,0.60) worst-min ν₂/w = 0.0714, 11/30 trials violate; Bernoulli/clustered 12–13/30; stationary-0.59 family 11–17/30. Real prime gaps are not a Markov chain and 30 trials of a worst-min statistic is noisy, so this refutes the *strategy*, not G-supply for the primes. **Bet: G-supply stays a named open hypothesis; the deliverable is the conditional theorem at Hardy–Littlewood / Lemke Oliver–Soundararajan two-point level.**
-- **"Prime-free provable half" of G-supply — refuted for the SECOND time (Directive 55).** The F₂ covering bound wt(M_n h) ≥ (2/3)wt(h) is dead as a universal statement: consecutive odds (all gaps = 2) has w = n−2 maximal yet ν₂ = 0 (transfer-matrix kernel = span(all-ones); `g-supply-transfer-universal-refuted`, `transfer-matrix-kernel-allones`). This kills G-supply-transfer AS A UNIVERSAL LEMMA ONLY — not the primes (ν₂/w ∈ [0.689,0.867] to N=30000), not the general-class theorem "successful 2-then-odds with w(n) ≥ 2n^0.526", not Route B (Lemma 5.4 budget unaffected). **Repair (live task):** find the WEAKEST gap-variety/non-degeneracy hypothesis the primes satisfy and constant gaps violate. **Board lesson: a "prime-free provable half" of this reduction keeps turning out to need a prime hypothesis** — first Markov anti-clustering (Directive 52), now the F₂ covering bound.
+- **"Prime-free provable half" of G-supply — refuted for the SECOND time (Directive 55).** The F₂ covering bound wt(M_n h) ≥ (2/3)wt(h) is dead as a universal statement: consecutive odds (all gaps = 2) has w = n−2 maximal yet ν₂ = 0 (transfer-matrix kernel = span(all-ones); `g-supply-transfer-universal-refuted`, `transfer-matrix-kernel-allones`). This kills G-supply-transfer AS A UNIVERSAL LEMMA ONLY — not the primes (ν₂/w ∈ [0.689,0.867] to N=30000), not the general-class theorem "successful 2-then-odds with w(n) ≥ 2n^0.526", not Route B (Lemma 5.4 budget unaffected). **Repair CLOSED by Directive 57 — the transfer is dead, characterise the
+dyadic collapse instead.** The two counterexamples (consecutive odds, period-1;
+alternating 2/4, period-2) are both eventually periodic with period a power of
+2, so by Lucas their binomial-window XOR sums collapse for large d and
+ν₂ = O(1); the live question is which anti-dyadic property of the prime
+halved-gap bit string restores ν₂ ≥ c·n (tasks
+`test-dyadic-periodicity-prediction`,
+`prove-dyadic-periodicity-collapse-lemma`). **Board lesson: a "prime-free
+provable half" of this reduction keeps turning out to need a prime hypothesis**
+— first Markov anti-clustering (Directive 52), now the F₂ covering bound.
 - **Gross/net: "regeneration iff (edge,intruder)=(2,4)" earlier refutations — WITHDRAWN (off-by-one); the criterion is ESTABLISHED** (see Established). The stale note records the failure of the literal wrong-index reading, not of the criterion.
 
 ## Numbers
@@ -264,8 +285,12 @@ here.
   `lemma54-descent-lean-formalised`, `status: formalised`) — the first
   kernel-checked result of the run; but that file covers only the halved
   {0,1}^L core with arbitrary starting w, so the full even-domain lemma's
-  Lean proof still needs Link A + the composition + the reduction from real
-  column dynamics.** **Directive 47:** the
+  abstract core IS kernel-checked in Lean (descent_lemma.lean + link_a.lean +
+  lemma54_even_domain.lean + lemma54_composition.lean, all sorry-free; claims
+  lemma54-link-A-lean-formalised, lemma54-composition-lean-formalised,
+  lemma54-even-domain-lean-formalised); what is NOT yet in Lean is only the
+  definitional geometry (g*_n and the right-diagonal reduction from real column
+  dynamics), not a gap in the abstract core.** **Directive 47:** the
   supply side is a NAMED OPEN problem, not a gap in the run's own argument —
   ABGS 2011 §9 (claim `abgs-2011-s9-mod4-switch-limit-open`): whether
   `N(a,d,m,x)/π(x)` tends to any limit is open, so no unconditional linear

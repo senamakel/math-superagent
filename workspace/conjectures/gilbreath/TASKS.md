@@ -9,8 +9,14 @@ Derived from `config/tasks.jsonl` and rewritten on every write. Do not edit this
 
 In order. Work the first one you can.
 
-- `find-weakest-gap-variety-hypothesis` — Find the weakest gap-variety/non-degeneracy hypothesis that restores the F₂ transfer
-  - detail: Directives 55+56. The universal F₂ covering bound wt(M_n h) ≥ c·wt(h) is refuted (consecutive odds: w = n−2 maximal, ν₂ = 0 — the transfer-matrix kernel is span(all-ones)). Directive 56: STOP SWEEPING — the refutation gives a question, not a library gap; the library is CLOSED (39/46) and nothing in it answers this. This is tool_builder + theorem_prover, NOT librarian. Check four candidate hypotheses cheapest-first, each stated prime-free: (a) gap variety — the gap sequence takes ≥2 values infinitely often; (b) non-eventual-periodicity of the halved-gap bit vector h; (c) positive density of j…
+- `test-dyadic-periodicity-prediction` — Reproduce the dyadic-periodicity table (Directive 58) and extend to periods 9..16
+  - detail: Directive 58: stage-1 numbers are measured host-side — REPRODUCE, do not re-explore. Periodic halved-gap bit string h, gap = 2 if bit else 4, nu2 = #2s in the maximal {0,2} suffix of the right diagonal, exact integers. Confirm the eight rows: period 1 (h=1) nu2=1 at n=200,400,800,1200; period 2 (h=01) nu2=2 at all four n; period 4 (h=0001) nu2=2; period 8 (h=00000001) nu2=2; period 3 (h=001) nu2=133,264,533,798; period 5 (h=00001) nu2=104,210,424,638; period 6 (h=000001) nu2=134,264,534,796; period 7 (h=0000001) nu2=112,112,685,684. Then EXTEND to periods 9..16 and to non-constant patterns of…
+  - refs: rule90-interior-xor, g-supply-transfer-universal-refuted
+- `prove-dyadic-periodicity-collapse-lemma` — Prove the dyadic dichotomy: period 2^k ⇒ ν₂=O_k(1); odd factor ⇒ ν₂≫n
+  - detail: Directive 58, theorem_prover, prime-free, from Lucas alone. (a) h eventually periodic with period 2^k forces nu2 = O_k(1) — the binomial-window XOR weights C(d,j) mod 2 are supported on the binary submasks of d, so period-2^k h collapses the sums for all large d. (b) The harder and more valuable half: an odd factor in the period forces nu2 >> n. State the result as the dichotomy theorem it is: nu2 = O(1) exactly on power-of-2 periods, nu2 ~ c*n otherwise. Post to the board either way, including a refutation.
+  - refs: rule90-interior-xor
+- `state-dyadic-dichotomy-primes-gap` — State the dichotomy theorem and what it does/doesn't give for the primes
+  - detail: Directive 58. After the dichotomy is proved, write the conclusion as a theorem statement, then say precisely what it does and does NOT give for the primes: aperiodicity alone is weaker than the quantitative anti-dyadic input the supply bound needs, and the gap between them is the honest remaining statement. Do NOT claim it closes G-supply; record the primes caveat in CONTEXT.md Gaps and the regeneration thread.
 
 ## Do not do
 
@@ -35,12 +41,15 @@ Ruled out, with the reason. Re-proposing one of these is the cheapest mistake av
 - `f2-matrix-covering-bound-m-n` — F₂ matrix covering bound: wt(M_n h) ≥ (2/3) wt(h) — prime-free, provable half of G-supply
   - detail: Priority from Directive 54. Write down the explicit F₂ matrix M_n with wt(M_n h) = ν₂(q_n), where h is the halved-gap bit vector h_j = (g_j/2) mod 2 over the fixed ancestor interval [2, n−1]. This is pure F₂ linear algebra (Rule-90/XOR, rule90-interior-xor, proved). Then prove wt(M_n h) ≥ (2/3) wt(h) from the structure of M_n — the union-of-windows fact says every input bit lands in ≥ 1 tail coordinate, and the target 2/3 is a covering / double-counting statement. First move: exhaustively compute the exact worst-case ratio min_{h≠0} wt(M_n h)/wt(h) for n ≤ 20 (2^{n−2} ≤ 2^{18} vectors,…
   - reason: REFUTED not provable. Executed exhaustive scan and kernel characterization (code/out/universal_transfer_matrix_RUN.captured.txt, code/out/kernel_characterize.captured.txt): Phi_n (rows k=2..n-2 tail cells, cols j=2..n-1, entry C(k-1,j-(n-k)) mod 2) has rank n-3, nullity 1, kernel = span(all-ones) for every n=2..20, because row k's dot with all-ones is the Pascal row sum 2^{k-1} = 0 (mod 2). So wt(Phi_n h)=0 for h=11..1 = the consecutive-odds input (a SUCCESSFUL triangle with nu2=0, w=n-2), giving min ratio 0 at every n. No positive covering constant c exists; wt(M_n h)>=c*wt(h) is false for…
+- `find-weakest-gap-variety-hypothesis` — Find the weakest gap-variety/non-degeneracy hypothesis that restores the F₂ transfer
+  - detail: Directives 55+56. The universal F₂ covering bound wt(M_n h) ≥ c·wt(h) is refuted (consecutive odds: w = n−2 maximal, ν₂ = 0 — the transfer-matrix kernel is span(all-ones)). Directive 56: STOP SWEEPING — the refutation gives a question, not a library gap; the library is CLOSED (39/46) and nothing in it answers this. This is tool_builder + theorem_prover, NOT librarian. Check four candidate hypotheses cheapest-first, each stated prime-free: (a) gap variety — the gap sequence takes ≥2 values infinitely often; (b) non-eventual-periodicity of the halved-gap bit vector h; (c) positive density of j…
+  - reason: Directive 57 kills the repair. Directive 55 already produced two SUCCESSFUL families (consecutive odds, alternating 2/4) with maximal w yet nu2=O(1), so none of H_a..H_e restores nu2>=c*w; stop hunting H_f in that list and characterise the dyadic collapse instead.
 - `do-not-overwrite-transfer-refutation-captures` — Do not overwrite the transfer-refutation captures
   - detail: Keep code/out/universal_transfer_matrix_RUN.captured.txt and code/out/kernel_characterize.captured.txt — they record the refutation of the F₂ covering bound (Directive 55). Re-capture any further work to new files.
   - reason: Directive 55: keep the refutation capture, do not overwrite it.
 - `do-not-sweep-to-repair-gsupply-transfer` — Do not sweep to repair G-supply transfer (Directive 56)
   - detail: The refutation gives a question, not a library gap. The repair is a four-candidate check (gap variety / non-eventual-periodicity of h / switch density / F₂ kernel condition) against consecutive odds (FAIL) and real primes to N=30000 (HOLD) — tool_builder + theorem_prover. No librarian search, no wider sweep.
-  - reason: Directive 56: the refutation gives a question, not a library gap; repair is a four-candidate code+proof check by tool_builder + theorem_prover, not a sweep or a search.
+  - reason: Directive 57 supersedes Directive 56: the transfer is dead — stop repairing it, characterise the dyadic collapse instead (see live tasks test-dyadic-periodicity-prediction / prove-dyadic-periodicity-collapse-lemma).
 
 ## Recently done
 

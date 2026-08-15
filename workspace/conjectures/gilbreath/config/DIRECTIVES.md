@@ -1289,3 +1289,50 @@ I read the ledger, threads, REQUESTS, and CONTEXT before touching anything, then
 - **`research/threads/gsupply-transfer-repair.md`** — rewrote the thread's `next` plan to the directive's four-candidate procedure with "stop sweeping" and the tool assignment up front.
 
 I changed nothing else: no new requests (the library is closed and nothing here needs an outside source), no new thread, and no claim filing — a directive is not evidence. The only pre-existing state worth flagging is that the old `f2-matrix-covering-bound-m-n` task was still on the "do not do" list as the *predecessor* of this work, which is consistent, so I left it as the record of what was refuted.
+
+## 57 — from steer
+
+DIRECTIVE 57 — the transfer is dead. Stop repairing it; characterise WHY it dies.
+
+Directive 55 is the best result of this run: two SUCCESSFUL families (consecutive-odds, alternating 2/4) with maximal w and nu2 = O(1), so none of H_a..H_e restores nu2 >= c*w. Do not hunt for H_f in that same list. Do not reopen the library.
+
+The shape both counterexamples share is DYADIC, and that is the lead. By rule90-interior-xor the diagonal cell at depth d is an XOR of h over a binomial window, weights C(d,j) mod 2. By Lucas, C(d,j) mod 2 is supported on the binary submasks of d. So if h is periodic with period a power of 2, those sums collapse for all large d and nu2 = O(1). Both counterexamples are exactly that: consecutive-odds is h = all-ones (period 1); alternating 2/4 is h of period 2.
+
+Two things, in this order.
+
+1. tool_builder: test the prediction. For periodic h measure nu2(n) over n = 200..5000 for period P = 1,2,4,8 and for P = 3,5,6,7. Predicted: nu2 = O(1) exactly when P is a power of 2, and nu2 growing when P has an odd factor. If a period-3 or period-5 family ALSO gives nu2 = O(1), the dyadic story is wrong — say so plainly and stop.
+
+2. theorem_prover: if it holds, state and prove the combinatorial lemma — for h eventually periodic with period 2^k, nu2(q_n) = O_k(1) — from Lucas alone, prime-free. That is a real theorem, it explains every counterexample this run has found, and it sharpens the open supply bound into a precise question: which anti-dyadic property of the prime halved-gap bit string delivers nu2 >= c*n?
+
+Post the outcome to the board either way, including a refutation.
+
+The workspace is now consistent with Directive 57. Summary of changes:
+
+- **Task ledger**: dropped `find-weakest-gap-variety-hypothesis` (repair is dead) and added the two ordered tasks — `test-dyadic-periodicity-prediction` (tool_builder) and `prove-dyadic-periodicity-collapse-lemma` (theorem_prover, gated on the test holding). Also updated the stale `do-not-sweep` rule to point at Directive 57 as the superseding reason.
+- **Threads**: marked `research/threads/gsupply-transfer-repair.md` dead and opened `research/threads/dyadic-periodicity-collapse.md`, so the run's topic axis now names the dyadic-collapse characterisation as the live direction.
+- **CONTEXT.md**: rewrote the run-state header from "stop sweeping / four-candidate repair" to "transfer is dead; characterise the dyadic collapse," and updated the Ruled-out "prime-free provable half" entry so the repair no longer reads as live.
+
+No library request was filed — the directive explicitly says not to reopen the library — and nothing mathematical was computed or asserted as a claim.
+
+## 58 — from steer
+
+DIRECTIVE 58 — addendum to 57, with the stage-1 numbers already measured host-side. Reproduce them, do not re-explore them.
+
+Periodic halved-gap bit string h, gap = 2 if bit else 4, nu2 = #2s in maximal {0,2} suffix of the right diagonal, exact integers:
+
+period 1 (h=1)        nu2 = 1 at n = 200,400,800,1200
+period 2 (h=01)       nu2 = 2 at all four n
+period 4 (h=0001)     nu2 = 2 at all four n
+period 8 (h=00000001) nu2 = 2 at all four n
+period 3 (h=001)      nu2 = 133, 264, 533, 798
+period 5 (h=00001)    nu2 = 104, 210, 424, 638
+period 6 (h=000001)   nu2 = 134, 264, 534, 796
+period 7 (h=0000001)  nu2 = 112, 112, 685, 684
+
+The dichotomy is sharp: nu2 = O(1) exactly on power-of-2 periods, nu2 ~ c*n otherwise, c in [0.53, 0.67]. Period 6 = 2*3 grows, so it is the ODD FACTOR that matters, not merely being non-dyadic.
+
+So skip straight to the theorem. tool_builder: confirm the eight rows above and extend to periods 9..16 and to non-constant patterns of the same period (the claim must be about the period, not the specific word). theorem_prover: prove from Lucas that h eventually periodic with period 2^k forces nu2 = O_k(1), and — the harder and more valuable half — that an odd factor in the period forces nu2 >> n.
+
+State the conclusion as the dichotomy theorem it is. Then say precisely what it does and does NOT give for the primes: aperiodicity alone is weaker than the quantitative anti-dyadic input the supply bound needs, and the gap between them is the honest remaining statement. Do not claim it closes G-supply.
+
+I carried Directive 58 into the ledger and the shared context. The two open tasks from Directive 57 were rewritten to match the new instruction — `test-dyadic-periodicity-prediction` now says *reproduce* the eight host-measured rows and extend to periods 9–16 (not re-explore n=200..5000), `prove-dyadic-periodicity-collapse-lemma` now demands the full dichotomy (period 2^k ⇒ ν₂=O_k(1) **and** odd factor ⇒ ν₂≫n), and I added a third task `state-dyadic-dichotomy-primes-gap` to write the theorem and the explicit "aperiodicity is weaker than the quantitative anti-dyadic input; does not close G-supply" caveat. The `dyadic-periodicity-collapse` thread and CONTEXT.md's Run-state section were updated to the Directive 58 framing, keeping the repair thread `gsupply-transfer-repair` dead as Directive 57 established.
