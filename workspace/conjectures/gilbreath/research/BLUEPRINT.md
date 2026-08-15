@@ -74,7 +74,8 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `cht-right-half-0d-scan-6e8` | claim | established | — | On the real prime array at sieve 6e8 (W = 31,324,703 primes, N = 31,324,701 normalized gaps, max a_n = 140 -> M = 8, L = 2, R_0 = 100*L*8^M… |
 | `cht-theorem16-verbatim-fullpdf` | claim | established | — | CHT 2026 Theorem 1.6 (deterministic inverse theorem), verified verbatim in the FULL PDF: if a_n ≤ 2^M, no length-L zero-block, and no… |
 | `closure-0d-double-edge` | claim | established | — | {0,d} is closed under absolute differencing for every d ≥ 2 (\|0−d\|=d, \|d−d\|=0, \|0−0\|=0), so a leading 1 against {0,2} stays 1 — but the… |
-| `colonna-deletion-left-edge-failure` | claim | **ready** | — | (Colonna 2025-26, record-page footnote) Removing one prime (7, 5, or 11) from the prime list gives a 2-then-odds sequence with gaps ≤ 6 (≤… |
+| `colonna-deletion-left-edge-failure` | claim | established | — | Removing one prime (5, 7, or 11) from the prime list gives a 2-then-odds sequence whose left edge fails: (2,3,5,11,13,17,19) (delete-11)… |
+| `colonna-deletion-left-edge-failure-archive` | claim | **ready** | — | (SUPERSEDED — see the verified claim `colonna-deletion-left-edge-failure` (status: checked) in… |
 | `conditional-rate-experiment-family-independent` | claim | established | — | On the 2-then-odds Gilbreath class, conditioning on survival past row 10 removes the entire family-dependence of the (2,4) regeneration… |
 | `conditional-rate-experiment-prime-reference` | claim | established | — | The same machinery on the actual primes (sieve 2e7, D=161) gives exactly 60 (2,4)-events over 161 live rows = 0.3727 overall, reproducing… |
 | `conditional-rate-experiment-sweep-deaths-startup-only` | claim | established | — | In the fresh D=400 run, 102/220 seeds (46%) die (first_b0 <= 10) and 0 of the 118 survivors die by k=400; startup deaths are g_0-driven… |
@@ -82,6 +83,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `counterexample-backward/CB-backward-propagation` | lemma | **ready** | — | \| Trace the failure configuration backward through the full erosion run that reduced the block from its last regeneration to b = 1. At the… |
 | `counterexample-backward/CB-dying-pair` | lemma | **ready** | — | \| At the first failure row K, the dying row K−1 satisfies b_{K-1} = 1, A_{K-1}(0) = 1, and A_{K-1}(1) ∈ {4,6,8,…}. Let e = A_{K-2}(1) be… |
 | `counterexample-backward/CB-prime-exclusion` | lemma | **ready** | — | \| The constrained initial pattern derived in CB-backward-propagation — a stretch of consecutive halved prime gaps whose XOR over binom(t,·)… |
-| `czz2011-ducci-2-lipschitz` | claim | established | — | The difference map D on d-tuples with a′_k=\|a_k−a_{k+1}\| (and a′_d=\|a_d−a_1\|) is 2-Lipschitz in the Euclidean norm and is not a… |
 
-_187 further nodes not shown._
+_194 further nodes not shown._

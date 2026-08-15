@@ -14,8 +14,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `_run_edge.py` | _(undescribed)_ |
 | `_run_oracle.py` | Thin launcher for scholar_oracle_run.py (student helper; imports code/, times it). |
 | `_run_scholar_check.py` | _(undescribed)_ |
+| `alt_indep_route.captured.txt` | _(undescribed)_ |
+| `alt_trend_check.captured.txt` | _(undescribed)_ |
 | `anticlustering_hypothesis.captured.txt` | _(undescribed)_ |
 | `b512.txt` | _(undescribed)_ |
+| `ballot_attack_2e6.captured.txt` | _(undescribed)_ |
+| `ballot_markov_control_2e7.captured.txt` | _(undescribed)_ |
+| `ballot_significance.captured.txt` | _(undescribed)_ |
 | `bernoulli_threshold.captured.txt` | _(undescribed)_ |
 | `bigjump_characterization.captured.txt` | _(undescribed)_ |
 | `bigjump_characterization.notes.md` | _(undescribed)_ |
@@ -123,12 +128,14 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `event_rate_sweep_analysis.captured.txt` | _(undescribed)_ |
 | `excess_height_smoke.txt` | _(undescribed)_ |
 | `excess_height_verify.captured.txt` | _(undescribed)_ |
+| `excess_renorm_universal.captured.txt` | _(undescribed)_ |
 | `exec.sh` | _(undescribed)_ |
 | `extract_witness.captured.txt` | Output of `pattern/extract_witness.py` (b, s, diffs for k=1..40). |
 | `final_run.py` | _(undescribed)_ |
 | `final_run2.py` | _(undescribed)_ |
 | `finalexec.sh` | _(undescribed)_ |
 | `flip_law_theorem_check.py` | _(undescribed)_ |
+| `fresh_surplus_check.captured.txt` | _(undescribed)_ |
 | `fresh_window.captured.txt` | Earlier fresh-window probe (superseded). |
 | `fresh_window.json` | _(undescribed)_ |
 | `g_balance_run.sh` | _(undescribed)_ |
@@ -144,6 +151,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `giant_stretches.md` | _(undescribed)_ |
 | `giant_stretches_snapshot.json` | _(undescribed)_ |
 | `giant_stretches_verify.captured.txt` | _(undescribed)_ |
+| `indep_oracle.captured.txt` | _(undescribed)_ |
+| `indep_oracle.py` | Independent from-scratch oracle for the Gilbreath conditional-theorem backbone. Own sieve and triangle builder (no lib.gilbreath import). Check 1: reproduces problem.md worked rows A_1,A_2,A_3 exactly. Check 2: descent-lemma biconditional (x_L in {0,2} iff v<=2*nu2+2), plus runway and closure, on real prime right diagonals n=2..200 — 0 violations over 199 eligible columns. Check 3: switch-bit ballot e(n)=2w(n)-(n-2)>=0 over n=2..1000 (0 violations) and transfer nu2>=w/2 — 0 violations over meaningful domain n>=17 and n>=50, with the literal n=2..16 degenerate tiny-{0,2}-tail exceptions (n=3,4,10,14,16) reported separately as documented artifacts, not counted. Exact integer arithmetic only; exit 0 if all pass. Capture: code/out/indep_oracle.captured.txt, EXIT_CODE=0. |
 | `intruder_runs.captured.txt` | Output of `pattern/intruder_runs.py`: the 17 maximal y=4 runs, drain table, after-regen intruders. |
 | `invariant_candidates.captured.txt` | _(undescribed)_ |
 | `inventor_verify.py` | _(undescribed)_ |
@@ -152,6 +161,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `jump_smooth_run_wider.captured.txt` | _(undescribed)_ |
 | `kernel_characterize.captured.txt` | _(undescribed)_ |
 | `kernel_characterize.notes.md` | Short notes accompanying kernel_characterize.py: states what Phi_n is, Part A's structural kernel result (all-ones in ker Phi_n for every n because row-k XORs a full Pascal row sum 2^(k-1) even, hence no positive universal covering constant c exists, ratio 0), and Part B's numerical finding that the real prime halved-gap bits avoid the kernel (nu2/w min 0.5152 at n=53 over n<=3000, never approaching 0). Marks Part A structural/proved and Part B numerical on the real primes. |
+| `lean_excess_renorm.captured.txt` | _(undescribed)_ |
 | `lean_gilbreath_reduction.captured.txt` | `lean` compile of the machine-checked reduction of Gilbreath's conjecture to the {0,2} second-entry claim (EXIT=0), with `#print axioms` for every declaration = [propext, Classical.choice, Quot.sound], grep-verified zero sorryAx. |
 | `lean_gilbreath_reduction.notes.md` | Note for the above: what was run, the exact axiom ledgers, and the boundary (prime instantiation is computation-checked, not Lean-proved); carries claim block `lean-reduction-machine-checked`. |
 | `lean_reduction.captured.txt` | Directive 31 audit re-emission: `timeout 540 lean code/lean/gilbreath_reduction.lean` EXIT_CODE=0 (Lean 4.34.0-rc1, sha256 e6e1a7228be4494aa25ef611b0e5a08db3b5a38419b3ecdbf1880f8317ef0767 echoed into the capture); #print axioms for dist_odd_even, dist_dist_even, dist_one_eq_one, shape_theorem, gilbreath_reduction, reduction, reduction_lemma, shape_rows all exactly [propext, Classical.choice, Quot.sound], zero sorryAx, file now 1360 B. Backup at code/lean/gilbreath_reduction.lean.bak. |
@@ -174,17 +184,33 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `nu2_convention_resolve.captured.txt` | _(undescribed)_ |
 | `nu2_dense.txt` | _(undescribed)_ |
 | `nu2_dense_transfer.captured.txt` | _(undescribed)_ |
+| `nu2_dev_analysis.captured.txt` | _(undescribed)_ |
+| `nu2_devi_saturate.captured.txt` | _(undescribed)_ |
+| `nu2_devi_saturate.py` | Tests whether D(n)=2nu2-n is bounded: shows windowed Var(D) grows 1545->28674 and max |
 | `nu2_fluct_30000.txt` | _(undescribed)_ |
+| `nu2_fluct_autocorr.captured.txt` | _(undescribed)_ |
+| `nu2_fluct_autocorr.py` | Measures the increment autocorrelation of the nu2 supply fluctuation D(n)=2nu2-n from nu2_dense.txt; first evidence of the MA(1)-at-theta=-1 signature (rho1=-0.503, higher lags ~0). |
+| `nu2_fluct_confirm.captured.txt` | _(undescribed)_ |
+| `nu2_fluct_confirm.py` | Confirms the short-memory signature: sample-split-stable rho1=-0.503 (the MA(1) boundary = first difference of white noise), long-run-variance factor ~0.016. |
 | `nu2_fluct_first100.txt` | _(undescribed)_ |
+| `nu2_fluct_shortmemory.notes.md` | Pattern-finder verdict on the nu2 supply fluctuation D(n)=2nu2-n: (1) exact parity theorem D(n)≡n mod 2; (2) short-memory/no-drift signature (increment autocorr rho1=-0.503, higher≈0, sample-split stable, Var(I)/Var(D)=1.997); (3) NOT bounded — Var(D) grows, max |
 | `nu2_granville_check.captured.txt` | Reproduced in-container this session (timeout 540, EXIT_CODE=0): nu2=2048 at n=3999, n^0.525=77.8, nu2/n in 0.420..0.520, Lemma 5.4 hypothesis holds at all sampled n — identical to the operator's host capture. Anchor for claim `granville-nu2-density-measured` (research/notes/granville-2607-04166-actually-read.md). |
 | `nu2_incremental_1e5.txt` | _(undescribed)_ |
 | `nu2_linear_bound.captured.txt` | _(undescribed)_ |
+| `nu2_parity_attack.captured.txt` | _(undescribed)_ |
+| `nu2_parity_attack.py` | Attacks the rho1=-0.5 finding as a parity artifact: proves D(n)≡n (mod 2) exactly and shows pure alternation would give rho1=-1.0 (not -0.503), so the autocorrelation is real, not parity-induced. |
 | `nu2_postprocess.captured.txt` | _(undescribed)_ |
 | `nu2_shift_check.captured.txt` | _(undescribed)_ |
 | `nu2_structure_check.captured.txt` | _(undescribed)_ |
+| `nu2_surrogate_test.captured.txt` | _(undescribed)_ |
+| `nu2_surrogate_test.py` | Controlled surrogate comparison (random walk vs white noise vs hybrid) to interpret rho1(I)=-0.503; shows the real data is neither pure white noise nor pure random walk but short-memory with growing amplitude. |
+| `nu2_tail_analysis.captured.txt` | _(undescribed)_ |
+| `nu2_transfer_characterize.captured.txt` | _(undescribed)_ |
 | `nu2_transfer_thresholds.captured.txt` | _(undescribed)_ |
 | `nu2_vs_gap_parity.captured.txt` | _(undescribed)_ |
 | `nu2_walk_increments.captured.txt` | _(undescribed)_ |
+| `nu2_whitenoise_test.captured.txt` | _(undescribed)_ |
+| `nu2_whitenoise_test.py` | _(undescribed)_ |
 | `nu2_worst_case.captured.txt` | _(undescribed)_ |
 | `null_rule90_depth.captured.txt` | _(undescribed)_ |
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
@@ -225,6 +251,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_scale100k.py` | _(undescribed)_ |
 | `pattern_finder_sequence_recheck.md` | Pattern-finder recheck of the run's key integer sequences (nu2, fluctuation, ballot, block profile, second-entry run lengths). Confirms every stored regularity and adds the heavy-tailed increment-process observation for nu2. |
 | `pattern_finder_structural_scan.md` | Pattern-recognition scan: exact no-low-order results on the second-entry, block-profile, regen-gap, jump, giant-row sequences; confirms the monotone recharge surplus S_k (the one exploitable structure) and the giant-intruder-return and ratio-bound regularities over the real rows. |
+| `pattern_finder_supply_tail_refinement.md` | _(undescribed)_ |
 | `pattern_finder_switch_ballot.md` | Consolidates the one clean structural regularity of the whole run: the consecutive-prime mod-4 switch-majority ballot e(n)=#switches−#nonswitches ≥ 0 for all n, verified to 10^8 primes (min e=0 only at n=4,6,8; e(1e8)=9,922,915). States it is exactly the named-open ABGS-2011 supply statement, composed with the two transfer legs (nu2≥w/2 on n≥17, w≥n/2 from the ballot) to give nu2≥(n−2)/4>n^0.525 from n=23, 0 violations on dense [17,30000]. Records the sequence-tool negatives (no low-order recurrence/polynomial for e or nu2). Annex to the already-documented structural_scan and nu2_report. |
 | `pattern_finder_threshold_gaps.captured.txt` | _(undescribed)_ |
 | `pattern_finder_verify_nu2_transfer.captured.txt` | _(undescribed)_ |
@@ -239,6 +266,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `prefix_determinism.captured.txt` | _(undescribed)_ |
 | `prefix_determinism_proof_check.py` | Machine check for the prefix-determinism identity (Directive 48 item 1): Part 1 verifies delta_k(q_n) = |
 | `probe_transfer_points.py` | _(undescribed)_ |
+| `quantify_second_entry_runs.captured.txt` | _(undescribed)_ |
+| `random_analogue_fold_anchor.captured.txt` | _(undescribed)_ |
+| `random_analogue_fold_anchor.raw.txt` | _(undescribed)_ |
 | `reconcile_lemma54_NOTE.md` | _(undescribed)_ |
 | `reconcile_nu2w.captured.txt` | Capture of code/out/reconcile_nu2w.py: reproduces both recorded nu2/w minima with one code path — sparse-set {50,100,200,400,800,1600,3200,3999} min 0.6885 at n=100 (records claim A's 0.689), dense n in [50,3000] min 0.5152 at n=53 (records claim B's 0.5152); global min over [3,3000] is degenerate 0.0000 at n=3. Conventions identical (see notes). |
 | `reconcile_nu2w.notes.md` | Reconciliation note: the two recorded nu2/w minima (0.689 vs 0.5152) are the SAME statistic over different sample densities, not contradictory. Both use the identical d[2:-1] maximal-{0,2}-suffix nu2 and [2,n-1] halved-gap-weight w; 0.689 is the min over 8 sparse points (actual min at n=100), 0.5152 is the dense-scan min that happens to pass through n=53. nu2 >= w/2 (ratio >= 0.5) still holds at every measured n. |
@@ -302,6 +332,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `survivor_analysis.captured.txt` | _(undescribed)_ |
 | `switch-bit-two-point-structure.notes.md` | _(undescribed)_ |
 | `switch_autocorr_2pt.captured.txt` | _(undescribed)_ |
+| `switch_autocorr_ext.captured.txt` | Captured output of the 2e8-prime extended switch-bit measurement (code/out/switch_autocorr_ext.py). Records: density 0.548181, drift +0.0964, centered autocorrelation r_lag for lags 1..40 (lag-1 r=-0.0261, lag-2 +0.0031, all others |
+| `switch_autocorr_ext.py` | Memory-efficient extended two-point measurement of the prime mod-4 switch bit h[k]=[p_{k+1}-p_k==2 mod 4]. Segmented odd-only bytearray sieve streams consecutive prime gaps (no full prime list, peak ~2.2 GiB) to the 2e8-th prime (sieve limit 4.4e9). Computes centered autocorrelations r_lag (lags 1..40) via exact-integer count11 dot product with floats only at the final division; per-step drift 2E[h]-1; checks the ballot e(n)=2w(n)-(n-2)>=0 over ALL prefixes (exact int64 cumsum); reports the falsifier verdict (lag-1 negativity, drift positivity, |
 | `switch_majority_stream_1e7.captured.txt` | _(undescribed)_ |
 | `switch_majority_stream_2e8.captured.txt` | _(undescribed)_ |
 | `switch_majority_stream_5e7.captured.txt` | _(undescribed)_ |
@@ -313,6 +345,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `sympy_blockprofile.captured.txt` | _(undescribed)_ |
 | `sympy_blockprofile.py` | _(undescribed)_ |
 | `tail_coverage_decomposition.captured.txt` | _(undescribed)_ |
+| `test_second_entry_runs.captured.txt` | _(undescribed)_ |
+| `tmp_e.txt` | _(undescribed)_ |
 | `transfer_feature_corrected.captured.txt` | _(undescribed)_ |
 | `transfer_feature_test.captured.txt` | _(undescribed)_ |
 | `transfer_minimal_counterexample.captured.txt` | _(undescribed)_ |
@@ -323,7 +357,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_c1.py` | _(undescribed)_ |
 | `verify_candidate_refutations.py` | _(undescribed)_ |
 | `verify_candidates.py` | _(undescribed)_ |
+| `verify_colonna_deletion.py` | _(undescribed)_ |
+| `verify_colonna_deletion.py.readme.md` | _(undescribed)_ |
 | `verify_dense_transfer_1e5.captured.txt` | _(undescribed)_ |
+| `verify_findings.captured.txt` | _(undescribed)_ |
 | `verify_giants_6e8.captured.txt` | _(undescribed)_ |
 | `verify_granville_nu2_independent.captured.txt` | Independent in-container verifier output (code/verify_granville_nu2_independent.py, timeout 540, EXIT_CODE=0): reproduces both notes' numbers via lib.gilbreath + prefix-max g*; adds entry-level stat — 1,546,291 of 3,095,143 gray-block entries are 0 (50.0%, avg 623.5 zeros/block), so the discarded delta=0 case dominates entrywise, not just per-row. |
 | `verify_legA_exact.captured.txt` | _(undescribed)_ |
@@ -337,6 +374,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_rule90_against_sources.captured.txt` | _(undescribed)_ |
 | `verify_rule90_against_sources.py` | Independently re-derives the Rule-90 interior XOR identification ( |
 | `verify_step_law_transition.captured.txt` | _(undescribed)_ |
+| `verify_success.captured.txt` | _(undescribed)_ |
 | `verify_supply_chain.captured.txt` | _(undescribed)_ |
 | `verify_supply_chain_runwindow.captured.txt` | _(undescribed)_ |
 | `verify_three.py` | _(undescribed)_ |

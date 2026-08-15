@@ -1,0 +1,27 @@
+terms: n=1..30000
+max |D| = 639 at n=[27625] (only first few shown)
+max D = 558, min D = -639
+max |D|/sqrt(n) = 3.845 at n=27625
+max |D|/sqrt(n ln n) = 1.699 at n=2
+min log(nu2)/log(n) = 0.3010 at n=10
+min nu2(n)/n (n>=5) = 0.1875 at n=16
+sign: +13266 0:139 -16595  (total 30000)
+longest run of D(n)<=0: 15 terms, ending at n=(312, 326)
+longest run of D(n)<0: 15 terms, ending at n=(3410, 3424)
+min (D(n)+0.2n) [margin for nu2>=0.4n] = -7.199999999999999 at n=44
+top D values near 0 (>=15 count):
+  D=-4: 154
+  D=-6: 152
+  D=-1: 146
+  D=-7: 145
+  D=-13: 142
+  D=0: 139
+  D=-15: 138
+  D=-5: 137
+  D=-10: 137
+  D=3: 137
+  D=-8: 136
+  D=-14: 134
+  D=-19: 134
+  D=-28: 133
+  D=-18: 132

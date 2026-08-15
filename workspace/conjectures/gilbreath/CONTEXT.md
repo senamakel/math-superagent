@@ -6,8 +6,25 @@ why, computed numbers, durable memory, disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
 Budget 10,000 tokens. Length is a bill the whole run pays on every model call;
-link the file holding any detail compressed away. (Last cycle: Directive 50 —
-descent_lemma.lean compiles clean, see Run state.)
+link the file holding any detail compressed away. (Current: Directive 56 — stop
+sweeping; the G-supply transfer repair is a four-candidate code+proof check,
+see Run state.)
+
+## Run state (Directive 56 — stop sweeping)
+
+**The refutation gave a question, not a library gap — librarian is over half
+the run and the library is CLOSED (39/46).** Consecutive odds (all gaps = 2,
+w = n−2 maximal) dies at row 2 with ν₂ = 0: the switches are real but never
+reach the {0,2} tail. The repair is the WEAKEST hypothesis the primes satisfy
+and constant gaps violate, restoring ν₂ ≥ c·w. Four candidates, cheapest
+first, all prime-free: (a) gap variety — ≥2 gap values infinitely often;
+(b) h non-eventually-periodic; (c) positive density of h_j ≠ h_{j+1};
+(d) the F₂ kernel condition stated directly. For each: FAILS on consecutive
+odds, HOLDS on real primes to N=30000; keep the weakest survivor.
+**tool_builder + theorem_prover, NOT librarian.** Do not sweep; do not
+re-assert the dead universal bound. Live task
+`find-weakest-gap-variety-hypothesis`; thread
+`research/threads/gsupply-transfer-repair.md`.
 
 ## Run state (Directive 50 — first kernel-checked result)
 
@@ -144,6 +161,7 @@ Claim `cht-right-half-0d-scan-6e8`; anchor `research/notes/cht-right-half-scan.m
 - **Backward-extension automaton / minimal-counterexample geometry — REFUTED.** Valid-extension criteria (Alkan et al. 2023 factorial K-criterion; Muney 2026 subset-sum analogue with interior holes, smallest at length 5 for (2,3,5,9,15)) are GLOBAL over the whole prefix — no bounded window, no finite state; Muney's valid-extension set re-describes the regeneration obstruction. Eppstein's class defeat stands.
 - **Martingale edge-stall — REFUTED (self-corrected).** The edge is a two-tap coupled XOR recurrence, not a running XOR of fresh bits — no Doob/Azuma bound at the one-bit-per-step filtration.
 - **G-supply via generic Markov mixing/anti-clustering of the switch bit — REFUTED as a PROOF STRATEGY (Directive 52).** `code/out/anticlustering_hypothesis.captured.txt`: prime-like (0.55,0.60) worst-min ν₂/w = 0.0714, 11/30 trials violate; Bernoulli/clustered 12–13/30; stationary-0.59 family 11–17/30. Real prime gaps are not a Markov chain and 30 trials of a worst-min statistic is noisy, so this refutes the *strategy*, not G-supply for the primes. **Bet: G-supply stays a named open hypothesis; the deliverable is the conditional theorem at Hardy–Littlewood / Lemke Oliver–Soundararajan two-point level.**
+- **"Prime-free provable half" of G-supply — refuted for the SECOND time (Directive 55).** The F₂ covering bound wt(M_n h) ≥ (2/3)wt(h) is dead as a universal statement: consecutive odds (all gaps = 2) has w = n−2 maximal yet ν₂ = 0 (transfer-matrix kernel = span(all-ones); `g-supply-transfer-universal-refuted`, `transfer-matrix-kernel-allones`). This kills G-supply-transfer AS A UNIVERSAL LEMMA ONLY — not the primes (ν₂/w ∈ [0.689,0.867] to N=30000), not the general-class theorem "successful 2-then-odds with w(n) ≥ 2n^0.526", not Route B (Lemma 5.4 budget unaffected). **Repair (live task):** find the WEAKEST gap-variety/non-degeneracy hypothesis the primes satisfy and constant gaps violate. **Board lesson: a "prime-free provable half" of this reduction keeps turning out to need a prime hypothesis** — first Markov anti-clustering (Directive 52), now the F₂ covering bound.
 - **Gross/net: "regeneration iff (edge,intruder)=(2,4)" earlier refutations — WITHDRAWN (off-by-one); the criterion is ESTABLISHED** (see Established). The stale note records the failure of the literal wrong-index reading, not of the criterion.
 
 ## Numbers

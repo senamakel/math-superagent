@@ -1,5 +1,94 @@
 # Library build report — librarian verification cycle (2026)
 
+## Cycle 12 audit (librarian, current): phantom-anchor completion — one residual defect found and fixed, otherwise NOTHING FURTHER
+
+Independently verified the library rather than trusting cycle-11's "cleanup".
+
+1. **Load-bearing claims resolve to on-disk sources.** `search_documents` on
+   Odlyzko block-lemma and Granville Lemma 5.4/Thm 5.5 both resolve straight to
+   `.full.md` files in `research/sources/`. ROOT.md's exit test re-checked: minimal
+   counterexample stated (first row with `A_k(1) ≥ 4`), verification bounds kept
+   distinct (run depth 600/1000/1e9-block vs Colonna 1.5e15/Plouffe 10^14/Odlyzko
+   10^13), ≥3 restricted classes proved. Phase-1 exit satisfied.
+2. **Residual defect found and fixed.** Cycle-11 reported cleaning the phantom
+   anchors on A213014, A358691, A396593, A036277, but only corrected the *header*
+   lines; the **claim-block `anchor:` lines** in `oeis-A213014` and `oeis-A358691`
+   still pointed at `research/sources/oeis-*.full.md` files that their own headers
+   declare do not exist. That is the "cited-but-absent-from-library = recall"
+   failure mode, exactly what the small-OEIS summaries are the risk for. Fixed both
+   anchors to point at the summary file (the complete captured page), matching the
+   already-correct A396593/A036277/A100820/A393110 pattern. Ledgers re-derived.
+   The full small-OEIS set {A213014, A358691, A396593, A036277, A100820, A393110}
+   now has consistent summary-file anchors; A089582 / A000232 / A036262 / A347924 /
+   A080839 correctly point at their real `.full.md` companions (verified present).
+3. **Gaps ledger still closed-negative.** The single open item (unconditional
+   ν₂ ≥ c·n) is a two-point mod-4 switch frequency claim REQUESTS.md records as
+   unprovable by current methods — a research gap, not a library gap.
+4. **No new primary material warranted.** Canonical tier, route-bearing FULLPDFs,
+   dead-route corpus, verification record, G-supply accounting all present, indexed,
+   reachable, and now internally consistent. (Cognee `remember_memory` failed twice
+   with an infra timeout this cycle; the fix is recorded here instead — the two
+   anchor edits land on disk and re-derive the ledgers regardless.)
+
+## Verdict: library complete, indexed, reachable, internally consistent. NOTHING FURTHER.
+
+## Cycle 11 audit (librarian): verification + phantom-companion cleanup — NOTHING FURTHER
+
+Re-verified the library from scratch without trusting cycles 1–10:
+
+1. **Canonical and route-bearing sources all indexed and reachable on disk.** `search_documents`
+   on every load-bearing claim family (Odlyzko block lemma constant **1**, mod-4 linearization,
+   Granville Lemma 5.4/Theorem 5.5 + ν₂ supply, CHT Theorem 1.6 inverse, step-law/recharge
+   identity, {0,2}-second-entry reduction) resolves straight to `.full.md` files in
+   `research/sources/` — nothing stranded as recall. 102 `.full.md` primary/derived sources on disk.
+2. **Independent currency sweep (not trusting prior cycles).** Two exa searches (research-paper
+   category): (a) verification record — newest remains **Colonna 2025–26 (1.5×10^15, G=811)**
+   then **Plouffe 2025 (10^14)** and **Odlyzko 1993 (10^13)**; a Ross 2026 Zenodo (decay
+   constants, empirical corroboration of held `cht-decay-lower-bound-logn`) is not new math —
+   no post-2026 verification record. (b) G-supply / mod-4 switch — surfaced only already-held
+   sources (ABGS 2011, Lemke Oliver–Soundararajan 2016/2017, Lau 2024) plus the non-load-bearing
+   Cîmpeanu mod-6 *equal-residue* preprint; **no unconditional positive-linear ν₂ ≥ c·n bound
+   exists — the named-open two-point negative stands.**
+3. **Networkx is installed** (confirmed available for future graph needs; not needed this cycle).
+4. **Cleanup — wrong anchors on four small OEIS summaries fixed.** A213014, A358691, A396593,
+   A036277 each asserted a `sources/<id>.full.md` companion that does **not** exist (the summary
+   IS the complete captured page — OEIS records are short). Corrected the anchor lines to point
+   at the summary file itself and remove the phantom path, so no later reader searches for a
+   file that is not there. Confirmed `oeis-A089582-second-entry-sequence.full.md` and
+   `oeis-A080839-increasing-sequences-gilbreath-property.full.md` DO exist on disk.
+
+## Verdict: nothing to add. Library complete, indexed, reachable, verified eleven cycles running.
+
+
+Re-verified without trusting cycles 1–9: `search_documents` on the load-bearing claim
+families + one `exa_search` (research-paper category, post-2026) on the verification record.
+
+1. **Canonical reference tier present and indexed** — verified by `search_documents`, every
+   `problem.md` lead resolves to a `.full.md` source on disk, not to recall:
+   - Odlyzko 1993 (block lemma constant **1**, mod-4 linearization, 10^13/G=635) —
+     `research/sources/odlyzko-1993-iterated-absolute-differences.full.md` (PDF) +
+     `...-latex-source.full.md` (author's LaTeX); **do not re-download**.
+   - Killgrove–Ralston 1959 (first machine verification) — `.full.md` held.
+   - Proth 1878 Sur la série des nombres premiers — metadata record + retraction settled
+     (`summaries/proth-1878-...`); no full scan obtained (image-based/bot-protected), recorded.
+   - Wikipedia / MathWorld / Encyclopedia-of-Math / OEIS A000232 / A036262 / A089582 / A080839 —
+     all `.full.md` on disk and indexed.
+2. **Route-bearing FULLPDFs present:** Granville 2026 Piercing-Gilbreath (Lemma 5.4/Thm 5.5),
+   CHT 2026 Theorem 1.6 inverse, Chase 2024 random analogue, BFT 2023 canonical gap models,
+   Tao 2026 Cramér-model blogs, Blair-Morgan 2026 frontier/corridor.
+3. **G-supply / mod-4 side complete:** ABGS 2011 §9 (named-open two-point mod-4 switch),
+   Lemke Oliver–Soundararajan 2016/2017, Rubinstein–Sarnak 1994, Lau 2024, Martin et al. 2024
+   bibliography (Ruzsa/Shiu equal-residue bound at abstract level). The two-point negative in
+   `research/notes/g-supply-two-point-crux-settled.md` stands — no unconditional linear
+   `ν₂ ≥ c·n` bound from current methods.
+4. **Verification record current** — exa post-2026 sweep returns only already-held items:
+   Li 2026 modulo-k generalization (held), Ross 2026 decay constants (held), Keen 2026
+   (recorded unverified, abstract redacted), Muney 2026 (held+assessed). Newest record
+   remains **Colonna 2025–26 (1.5×10^15, G=800)**, then Plouffe 2025 (10^14), Odlyzko 1993
+   (10^13). No post-2026 record.
+
+## Verdict: nothing to add. Library closed, verified ten cycles running.
+
 ## Cycle 9 audit (librarian, current): independent exa currency sweep — NOTHING FURTHER
 
 Independent re-check, from scratch (no trust of cycles 1–8), on the two things that

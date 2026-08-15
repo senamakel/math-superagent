@@ -1,0 +1,19 @@
+== signature 2: stationarity of D (constant variance across windows, 3000-wide) ==
+Var(D) per window: ['1544.5', '4542.1', '7925.8', '10534.5', '14027.9', '16080.4', '19135.4', '21974.8', '26005.2', '28673.9']
+(if Var is ~constant, D is stationary/bounded; if it grows like n, D is a random walk)
+mean of window variances = 15044.5, ratio last/first = 18.56
+
+== signature 3: Var(I) vs Var(D) consistency ==
+Var(D)=15047.9  Var(I)=30047.0  ratio Var(I)/Var(D)=1.997  (iid-D predicts 1.0)
+sd(D)=122.7  sd(I)=173.3
+
+== signature 4: I uncorrelated at all lags (already rho1~-0.5, rho_k~0) ==
+acf of J=I diff, lags1..6: -0.668 0.168 0.002 -0.001 -0.003 0.007  (want only lag1=-0.5)
+
+== decisive: running max of |D| vs time ==
+  n=  1000 runmax|D|= 106   sqrt(n)=31.6  ratio=3.352
+  n=  5000 runmax|D|= 234   sqrt(n)=70.7  ratio=3.309
+  n= 10000 runmax|D|= 330   sqrt(n)=100.0  ratio=3.300
+  n= 20000 runmax|D|= 471   sqrt(n)=141.4  ratio=3.330
+  n= 30000 runmax|D|= 639   sqrt(n)=173.2  ratio=3.689
+slope runmax|D| on sqrt(n): first4000=3.6481 last4000=11.7122  (if ~0 in last, |D| is saturating/bounded)

@@ -5,6 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `descent_lemma.lean` | Even-unit formalisation of the descent/absorption lemma (Granville Lemma 5.4 core): orbit x_0=v, x_{s+1}= |
+| `excess_renorm.lean` | Lean 4 kernel-checked sorry-free proof of the excess-height renormalization identity (bulk/wall/low cases) and the max-principle over Nat.dist; consumption-side invariant of the absolute-difference operator. |
 | `gilbreath_reduction.lean` | Machine-checked Lean 4 reduction of Gilbreath's conjecture to the {0,2} second-entry claim: defines Step (absolute-difference operator), proves (odd, even, even, ...) shape preservation, |
 | `gilbreath_reduction.lean.bak` | Backup of gilbreath_reduction.lean made 2026-08-13 before the Directive 31 re-emission compile (sha256 e6e1a7228be4494aa25ef611b0e5a08db3b5a38419b3ecdbf1880f8317ef0767, byte-identical to the current file). Audit trail for the re-emission; the current gilbreath_reduction.lean is the authoritative copy. |
 | `lemma54_composition.lean` | Self-contained sorry-free Lean 4 formalisation of leg 2 of Granville Lemma 5.4 (the composition): re-derives Link A's |

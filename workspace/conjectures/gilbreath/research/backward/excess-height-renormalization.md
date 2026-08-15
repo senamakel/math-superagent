@@ -20,50 +20,10 @@ wave), `t_k(j) = max(0, H_k(j) − 1)`, wall `w_k = b_k − 1`, intruder excess
 
 ```skeleton
 goal: Gilbreath's conjecture for the primes — A_k(0) = 1 for every k ≥ 1.
-implies: |
-  Step 1 (reduction, DISCHARGED gilbreath-reduces-to-second-in-02):
-  A_k(0)=1 ∀k ⟺ A_k(1) ∈ {0,2} ∀k ⟺ b_k ≥ 1 ∀k, with b_k the length of the
-  leading {0,2} block. So the target is "b_k ≥ 1 for every k".
-
-  Step 2 (halving + excess coordinates). By the parity wave every entry
-  A_k(j), j ≥ 1, k ≥ 1, is even, so H_k(j) = A_k(j+1)/2 is integral, and
-  t_k(j) = max(0, H_k(j) − 1) is integral. t_k(j) = 0 ⟺ A_k(j+1) ∈ {0,2};
-  the block is the leading zero-run of t; the intruder excess is
-  r_k = t_k(b_k) ≥ 1 and the edge (halved) is H_k(b_k − 1) ∈ {0,1}.
-
-  Step 3 (dynamics in excess coordinates). EH-renorm-identity gives:
-  (i) off the floor (both parents t ≥ 1) the excess evolves by the SAME
-      operator one level down, R(t)_i = max(0, |t_i − t_{i+1}| − 1): the tail
-      of a Gilbreath row is a self-similar copy of the absolute-difference
-      operator under unit decrement and floor-clamp;
-  (ii) at the wall the drain law holds in excess form (a corollary of the
-      DISCHARGED step-law-theorem-proved): r_{k+1} = r_k − [halved edge = 1]
-      = r_k − [edge A_k(b_k) = 2]; hence r is non-increasing during erosion
-      and reaches 1 (y = 4) after exactly r₀ − 1 edge-2 flips;
-  (iii) EH-max-principle: M_k = max_j t_k(j) is non-increasing and the bulk
-      maximum decays by ≥ 1 per row wherever it is interior; hence
-      M_k ≤ M_1, giving the proved bound r_k ≤ G₁ := max_m ((p_{m+1} − p_m)/2 − 1)
-      on every intruder excess.
-
-  Step 4 (regeneration is pinned once r = 1). By
-  edge-interior-invertibility-sharpened (DISCHARGED) a nonzero block shows
-  edge 2 at least once within its remaining erosion life; at the first edge-2
-  read with r = 1 the pair is (2,4) and step-law-theorem-proved fires
-  regeneration. So no erosion run can die (b → 0) with r = 1 against a
-  nonzero block.
-
-  Step 5 (the only thing left). An erosion run starting from a nonzero block
-  of length n and intruder excess r₀ reaches r = 1 before b = 0 exactly when
-  the Rule-90 edge sequence e_0..e_{n−1} of the starting halved block contains
-  at least r₀ − 1 ones (each 1 is one edge-2 flip, each flip drops r by 1, and
-  the run dies iff it makes < r₀ − 1 flips in its n reads). EH-edge2-supply
-  (OPEN) excludes that for the primes. Then every erosion run reaches r = 1
-  with b ≥ 1, Step 4 regenerates, b_k ≥ 1 for all k, and by Step 1 A_k(0) = 1
-  for all k.
-
-status: sketched
-rests-on: gilbreath-reduces-to-second-in-02, step-law-theorem-proved, edge-interior-invertibility-sharpened, rule90-interior-xor, closure-0d-double-edge
+implies: Step 3(i) EH-renorm-identity and Step 3(iii) EH-max-principle are now PROVED: Lean code/lean/excess_renorm.lean (sorry-free, axioms within propext/Classical.choice/Quot.sound, low_case has none) and universal finite-class verification code/excess_renorm_universal.py over {0..6}^9 (46,118,408 positions, 0 violations; complete because the identity is per-pair and the 49 ordered pairs exhaust the hypothesis space). Wall case corrected to t'(j)=t(j+1)-h(j). Claim excess-renorm-identity-proved. The SINGLE remaining open content is Step 5 EH-edge2-supply = the (2,4)-event-arrival = supply side, named-open abgs-2011-s9-mod4-switch-limit-open.
 killed-by: (none — new decomposition; its single open gap is the same open content as the run's other live gaps, restated in excess coordinates, and is NOT disguised as provable)
+rests-on: gilbreath-reduces-to-second-in-02, step-law-theorem-proved, edge-interior-invertibility-sharpened, rule90-interior-xor, closure-0d-double-edge
+status: live
 ```
 
 ```gap

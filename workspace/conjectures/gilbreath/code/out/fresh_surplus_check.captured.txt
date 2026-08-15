@@ -1,0 +1,6 @@
+fresh depth-600, sieve 2e7, b_1=2
+S monotone (S_k>=0) violations: 0
+conjecture form (S_k>=k-2) violations: 0
+b_k < b_1-1 violations: 0
+min b over rows: 2, min S: 0, final S: 1270603
+b_1=2, b_2=7, ... b_40=2769

@@ -100,6 +100,7 @@ def predicted_outcome(u, y, n, run_rows):
       Otherwise (fewer than N+1 ones, or the (N+1)-th one beyond n-1):
         predicted death (the block dies before regeneration is possible).
     """
+    N = (y - 4) // 2
     ones = [d for d in range(n) if pascal_flip_sequence(u)[d] == 1]
     if len(ones) >= N + 1 and ones[N] <= run_rows:
         return 'survival', ones[N]
@@ -157,7 +158,7 @@ def main():
             for N in range(n + 1):            # <=> y = 4 + 2N, y in 4..4+2n
                 y = 4 + 2 * N
                 run_rows = n + RUNS
-                actual = exact_outcome(u, y, n, run_rows)
+                actual = exact_outcome(u, y, run_rows)
                 pred, dstar = predicted_outcome(u, y, n, run_rows)
                 total_cases += 1
                 death_survive[(pred, actual)] = death_survive.get((pred, actual), 0) + 1
@@ -216,7 +217,7 @@ def main():
         for mask in range(1 << n):
             u = [(mask >> i) & 1 for i in range(n)]
             run_rows = n + RUNS
-            actual = exact_outcome(u, 4, n, run_rows)
+            actual = exact_outcome(u, 4, run_rows)
             y4_total += 1
             if actual == 'death':
                 if all(b == 0 for b in u):

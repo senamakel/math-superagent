@@ -188,11 +188,11 @@ anchor: research/sources/wikipedia-gilbreaths-conjecture.full.md; research/sourc
 ```
 
 ```claim
-id: colonna-deletion-left-edge-failure
-statement: (Colonna 2025-26, record-page footnote) Removing one prime (7, 5, or 11) from the prime list gives a 2-then-odds sequence with gaps ≤ 6 (≤ 4 for delete-5) whose left edge fails: for (2,3,5,11,13,17,19) (gaps 1,2,6,2,4,2), A1=(1,2,6,2,4,2), A2=(1,4,4,2,2) — second entry 4 — A3=(3,0,2,0) — leading 3 at row 3 — A4=(3,2,2), A5=(1,0); for (2,3,7,11,...) (gaps ≤ 4) A2=(3,0,2,2,...), leading 3 already at row 2. So the deterministic class "2 followed by odds with gaps ≤ g" has a counterexample for every g ≥ 4 (g = 4 suffices); only g = 2 (consecutive odds) is proved.
+id: colonna-deletion-left-edge-failure-archive
+statement: (SUPERSEDED — see the verified claim `colonna-deletion-left-edge-failure` (status: checked) in research/notes/colonna-deletion-verified.md.) (Colonna 2025-26, record-page footnote) Removing one prime (7, 5, or 11) from the prime list gives a 2-then-odds sequence with gaps ≤ 6 (≤ 4 for delete-5) whose left edge fails: for (2,3,5,11,13,17,19) (gaps 1,2,6,2,4,2), A1=(1,2,6,2,4,2), A2=(1,4,4,2,2) — second entry 4 — A3=(3,0,2,0) — leading 3 at row 3 — A4=(3,2,2), A5=(1,0); for (2,3,7,11,...) (gaps ≤ 4) A2=(3,0,2,2,...), leading 3 already at row 2. So the deterministic class "2 followed by odds with gaps ≤ g" has a counterexample for every g ≥ 4 (g = 4 suffices); only g = 2 (consecutive odds) is proved.
 hypotheses: 2-then-odds start; finite initial segments with those gap bounds.
 holds-here: yes — this is exactly the class GOAL.md's general-class theorem would need to beat Eppstein AND the open left-side second-entry question; it shows the "gaps ≤ g" carve-down fails already at g = 4 (second entry 4 → leading 3).
-status: sourced (Colonna record page footnote [04]; triangle arithmetic hand-checked against the source's own display, verified independently)
+status: superseded-by-verified (SUPERSEDED by the independently hand-checked note research/notes/colonna-deletion-verified.md, which carries this same id as status: checked — exact hand arithmetic on the nested absolute-difference triangle for delete-11/5/7, matching the source's A1 for delete-11 and confirming the {2,6}->|2-6|=4 escape mechanism. See that note for the authoritative verified block.)
 bearing: sharpens the REQUESTS open row "deterministic bounded-gap class": gaps ≤ 3 is the only possibly-open window below the counterexample; any general-class theorem needs a further restriction (CHT's 2-separated non-concentration) — no bounded-gap statement can hold at g ≥ 4.
 anchor: research/sources/colonna-proth-gilbreath-record-2026-08.full.md
 ```
@@ -317,6 +317,28 @@ holds-here: yes — the primes satisfy it; it is the demand side of Granville's 
 status: asserted-by-source (arXiv v8, not peer-reviewed as downloaded; the α = 0.525 form is independently confirmed by the held Warwick Visser survey and BFT 2023); the 0.20-improvement claim verified against the paper's abstract and theorem statement.
 bearing: WEAKENS GRANVILLE'S DEMAND SIDE. Theorem 5.5 reduces GC to ν_2 > n^β with β > α, where α is the short-interval exponent; the run's recorded α = 0.525 (BHP) can now be lowered to 0.52, so β > 0.52 (not β > 0.525) suffices. Since the measured ν_2/n ∈ [0.42, 0.52] is already far above n^0.52, the ν_2 route is a little more plausible than the BHP-based threshold suggested. Do not overstate: the 0.52→0.525 gap is small, and n^0.52 is still ≪ n/2.
 anchor: research/sources/li-2023-primes-in-short-intervals-harman-sieve.full.md; research/summaries/li-2023-primes-in-short-intervals-harman-sieve.md
+```
+
+## New holdings this cycle (librarian) — two Cobeli–Zaharescu adjacent games
+
+```claim
+id: cz2014-exponent-analogue-of-gilbreath
+statement: (Cobeli & Zaharescu 2014, arXiv:1411.1334, J. Diff. Eq. Appl. 20(11):1489–1501) The Z-rule game Z(a,b)=ab/gcd(a,b)^2 on the primes is COMPLETELY SOLVED: per prime it is an absolute difference of exponents, every entry is squarefree, each p-tomography evolves independently by the exact mod-2 (Rule-90/Pascal) difference law, and the whole triangle has the closed form a_{m,n} = ∏_{r: binom(m,r) odd} p_{n+r}. Hence the number of prime factors of the left-edge element is a power of 2 (Glaisher), and it is constant across each row (Theorems 1–2). The single-monomial mod-2 difference game has cycle length L_k = smallest power of 2 > k (Cor 2). [Verification: closed form reproduces the paper's Table 1 exactly, m=0..7.]
+hypotheses: starts from the primes (squarefree inputs), so every later entry is squarefree and the mod-2 law is exact, not a congruence.
+holds-here: yes — the per-prime exponent-level reduction is precisely the reason this sibling is solvable while Gilbreath's integer values are not (only mod-4 congruence, the run's proven ceiling).
+status: sourced (full text held); closed form machine-verified against the paper's Table 1 this run.
+bearing: the cleanest available statement of WHY the mod-2/rule-90 machinery solves the sibling but not GC — because GC's entries are integers, not exponents of a squarefree base, so |a−b| is only a mod-4 congruence there. Reinforces rule90-interior-xor and mod4-linearization in a primary source.
+anchor: research/sources/cobeli-zaharescu-2014-game-divisors-exponents-ar5iv.full.md
+```
+
+```claim
+id: czp2016-west-edge-squarefree-analogue
+statement: (Cobeli, Prunescu & Zaharescu 2016, arXiv:1511.04315, Chaos Solitons Fractals 91:136–147) The west edge of the Z-rule triangle from ℕ* / ℙ is the multiplicative counterpart of Gilbreath's conjecture; the analogue is Conjecture 2 (west edge squarefree: W_ℕ* = 1,2,3,6,5,15,105,70,1,5,33,55,65,273,1001,…). Proved: no 4 on the west edge (Cor 2, solves Sloane A222313); v2 of the west edge is exactly 1 at m=2^k, 0 else (Thm 1+Cor 1); odd p-tomographies are eventually periodic with period dividing 2^{ind_p(2)}−1 (Thm 2); explicit west-edge values near powers of 2 (Thm 3). The engine is the (1+X)/X mod-2 formal-power-series operator (Rule-90).
+hypotheses: the Z-rule iteration; west edge of T_ℕ* and T_ℙ.
+holds-here: yes — corroborates the run's rule90-interior-xor and mod4-linearization in a primary peer-reviewed source; gives a second open left-edge-stabilisation conjecture (squarefree vs GC's {1}) whose v2=0 case is proved.
+status: sourced (full text held).
+bearing: a stress-test target for any invariant of the run: the same machinery that forces the prime-triangle left edge to {1} should force this west edge to {squarefree}, and part of it is proved. Does NOT contain a block-length regeneration theorem, so block-growth-literature-not-covered stands.
+anchor: research/sources/cobeli-prunescu-zaharescu-2016-arithmetic-z-game-ar5iv.full.md
 ```
 
 ## Angled coverage summary

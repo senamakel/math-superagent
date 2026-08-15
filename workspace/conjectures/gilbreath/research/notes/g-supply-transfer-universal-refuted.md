@@ -63,14 +63,36 @@ the supply *statement* is not dead — but it is a claim about the particular
 prime bit string, not a general identity. This matches the independently
 refuted `nu2-supply-mod4-transfer` (S1 both-legs) already marked broken.
 
-## What it does NOT touch
+## What it does NOT touch (Directive 55 — three precise boundaries)
 
-The core conjecture, the step law, the recharge identity, and **Lemma 5.4**
-(a sufficiency **budget** `g*_n ≤ 2ν₂+2`, unaffected: a lower bound on the
-transfer is not needed to run the budget on the primes). The whole of Route B
-still rests on the single named-open two-point mod-4 supply bound
-(`abgs-2011-s9-mod4-switch-limit-open`); this refutation only removes the
-*triangulated shortcut* to it.
+The operator checked this refutation independently and confirms it is genuine.
+Three things it does NOT do, stated so nobody over-reads it:
+
+1. **It does not touch the primes.** Measured ν₂/w on real prime rows is
+   [0.689, 0.867], confirmed to N=30000. The primes have varied gaps; the
+   counterexample has constant ones (all gaps = 2). The refutation is about the
+   *universal* transfer, not the supply statement on the prime bit string.
+
+2. **It does not refute the general-class theorem** "any successful 2-then-odds
+   sequence with w(n) ≥ 2·n^0.526 is Gilbreath." Consecutive odds *satisfies*
+   that hypothesis and *is* successful, so it is not a counterexample to that
+   statement — it only breaks the particular PROOF ROUTE through ν₂. A refuted
+   route is not a refuted theorem.
+
+3. **It does not kill Route B.** It kills G-supply-transfer AS A UNIVERSAL
+   LEMMA only. Lemma 5.4 (the sufficiency budget `g*_n ≤ 2ν₂+2`) is unaffected:
+   a lower bound on the transfer is not needed to run the budget on the primes.
+   The whole of Route B still rests on the single named-open two-point mod-4
+   supply bound (`abgs-2011-s9-mod4-switch-limit-open`); this refutation only
+   removes the *triangulated shortcut* to it.
+
+**The repair (Directive 55):** find the hypothesis the counterexample violates.
+Constant gaps are degenerate — the triangle dies at row 2 and never
+regenerates, so w counts switches that never reach the tail. The needed
+hypothesis is some gap-variety / non-degeneracy condition that the primes
+satisfy and constant-gap sequences do not. Find the **WEAKEST** such condition,
+not the first one that works: the value of the transfer lemma was that it was
+prime-free, and every added hypothesis spends some of that.
 
 ```claim
 id: g-supply-transfer-universal-refuted

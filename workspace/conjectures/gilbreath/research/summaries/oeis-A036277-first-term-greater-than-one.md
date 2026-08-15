@@ -1,6 +1,6 @@
 # OEIS A036277 — position of first term > 2 in the n-th Gilbreath row
 
-<!-- source: https://oeis.org/A036277 | full text: sources/oeis-A036277-first-term-greater-than-one.full.md (small; summary holds the whole document) -->
+<!-- source: https://oeis.org/A036277 | NO separate .full.md companion (OEIS record is short; this summary IS the complete captured page). Do not search for sources/oeis-A036277-*.full.md — it does not exist. -->
 
 ## What it establishes
 
@@ -41,5 +41,5 @@ hypotheses: primes triangle; Gilbreath array A036262.
 holds-here: yes — the position-of-first->2 quantity is the leading {0,2} block length plus 2 in catalogue terms.
 status: catalogued (Sloane/Wilson/Mathar/Hasler); consistent with this run's block_profile = A000232 − 1 and the depth-1000 block record.
 bearing: the other half of Hasler's GC ⟺ reformulation; independent catalogue corroboration of erosion/regen alternation.
-anchor: research/sources/oeis-A036277-first-term-greater-than-one.full.md
+anchor: research/summaries/oeis-A036277-first-term-greater-than-one.md (small catalogue record; the summary file is the complete captured page — no .full.md companion exists)
 ```

@@ -1,0 +1,5 @@
+stationary P(1)= 0.56179  drift 2pi1-1= 0.12358
+Markov control N=2e6: survived 1249/3000 (0.4163)
+  of the dips: before n=100: 1701  before n=1000: 1751  after n=100k: 0
+  first dip index: min=3 median=7
+  P(dip before n=100 | dip) = 0.9714

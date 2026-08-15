@@ -6,11 +6,11 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 6 | https://openalex.org/W2187498417 | Promenade around Pascal triangle number motives | cites Iterated absolute values of differences of consecutive primes (2013, cited 10 times) |
+| 7 | https://doi.org/10.1016/j.chaos.2016.05.016 | A growth model based on the arithmetic Z-game | cites Iterated absolute values of differences of consecutive primes (2016, cited 8 times) |
+| 7 | https://doi.org/10.1080/10236198.2014.940337 | A game with divisors and absolute differences of exponents | cites Iterated absolute values of differences of consecutive primes (2014, cited 6 times) |
 | 6 | http://browsehappy.com/ | upgrade your browser | Local Condition: How much of the triangle do we really need to watch? \| Zenodo Skip to main You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience.… |
 | 5 | https://doi.org/10.1080/00150517.2011.12428072 | On Ducci Sequences with Algebraic Numbers | cites Iterated absolute values of differences of consecutive primes (2011, cited 6 times) |
-| 5 | https://doi.org/10.1016/j.chaos.2016.05.016 | A growth model based on the arithmetic Z-game | cites Iterated absolute values of differences of consecutive primes (2016, cited 8 times) |
-| 5 | https://doi.org/10.1080/10236198.2014.940337 | A game with divisors and absolute differences of exponents | cites Iterated absolute values of differences of consecutive primes (2014, cited 6 times) |
+| 4 | https://doi.org/10.3917/pls.580.0068 | Nouveaux records pour la conjecture de Proth-Gilbreath | cites A random analogue of Gilbreath’s conjecture (2026, cited 0 times) |
 | 3 | https://doi.org/10.20944/preprints202003.0145.v4 | Gilbreath Equation, Gilbreath Polynomials, Upper and Lower Bound for Gilbreath Conjecture | cites Iterated absolute values of differences of consecutive primes (2023, cited 0 times) |
 | 3 | https://doi.org/10.1051/ita:2006017 | Increasing integer sequences and Goldbach's conjecture | cites Iterated absolute values of differences of consecutive primes (2006, cited 3 times) |
 | 3 | https://doi.org/10.1007/978-0-8176-8298-9_1 | The Number of Primes Below a Given Limit | cites Iterated absolute values of differences of consecutive primes (2011, cited 0 times) |
@@ -21,9 +21,10 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 3 | https://doi.org/10.1016/j.physa.2007.05.038 | Peaks and gaps: Spectral analysis of the intervals between prime numbers | cites Iterated absolute values of differences of consecutive primes (2007, cited 5 times) |
 | 3 | https://doi.org/10.1007/b97621 | The Little Book of Bigger Primes | cites Iterated absolute values of differences of consecutive primes (2004, cited 128 times) |
 | 3 | https://openalex.org/W2588898489 | Orbits of the Kaprekar’s transformations – some introductory facts | cites Iterated absolute values of differences of consecutive primes (2015, cited 0 times) |
-| 3 | https://doi.org/10.3917/pls.580.0068 | Nouveaux records pour la conjecture de Proth-Gilbreath | cites A random analogue of Gilbreath’s conjecture (2026, cited 0 times) |
 | 3 | https://doi.org/10.1090/cbms/084 | Ten Lectures on the Interface between Analytic Number Theory and Harmonic Analysis | cited by A random analogue of Gilbreath’s conjecture (1994, cited 673 times) |
 | 3 | https://t5k.org/glossary/page.php?sort=GilbreathsConjecture | https://t5k.org/glossary/page.php?sort=GilbreathsConjecture | sequence). %H A000232 T. D. Noe, <a href="/A000232/b000232.txt">Table of n, a(n) for n=1..274</a> %H A000232 Chris Caldwell, <a… |
+| 3 | https://arxiv.org/search/math?searchtype=author&amp;query=Cobeli,+C | Cristian Cobeli | (this version, v2)] # Title: Filtered rays over iterated absolute differences on layers of integers Authors: [Raghavendra N. Bhat][3], [Cristian Cobeli][4], [Alexandru Zaharescu][5] View a PDF of the… |
+| 3 | https://arxiv.org/search/math?searchtype=author&amp;query=Zaharescu,+A | Alexandru Zaharescu | Title: Filtered rays over iterated absolute differences on layers of integers Authors: [Raghavendra N. Bhat][3], [Cristian Cobeli][4], [Alexandru Zaharescu][5] View a PDF of the paper titled Filtered… |
 | 3 | https://openalex.org/W2735549761 | A cellular automaton on a torus | linked from Filtered rays over iterated absolute differences on layers of integers |
 | 3 | http://oeisf.org/#DONATE | the many generous donors to the OEIS Foundation | A396593 - OEIS [login][1] The OEIS is supported by [the many generous donors to the OEIS Foundation][2]. [image: A396593 - OEIS] [3] A396593 Run length transform of [A089582][4]. 0 1, 1, 6, 6, 2, 1,… |
 | 3 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][38] [Format][39] [Style Sheet][40] [Transforms][41] [Superseeker][42] [Recents][43] [The OEIS Community][44] Maintained by [The OEIS Foundation Inc.][45] Last modified August 13 13:08… |
@@ -31,7 +32,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://en.wikipedia.org/wiki/Gilbreath%27s_conjecture | Gilbreath's conjecture | limitations under the License. -/ import FormalConjectures.Util.ProblemImports /-! # Gilbreath's conjecture *Reference:* [Wikipedia](https://en.wikipedia.org/wiki/Gilbreath%27s_conjecture) -/… |
 | 2 | https://doi.org/10.2307/2001963 | On a Conjecture Concerning the Primes | cited by Filtered rays over iterated absolute differences on layers of integers (1959, cited 11 times) |
 | 2 | https://doi.org/10.3390/math11184006 | Gilbreath Equation, Gilbreath Polynomials, and Upper and Lower Bounds for Gilbreath… | linked from Gilbreath Equation, Gilbreath Polynomials, and Upper and Lower Bounds for Gilbreath Conjecture |
-| 2 | https://doi.org/10.1016/j.jnt.2011.06.008 | Processing process: The Gilbreath conjecture | cited by Filtered rays over iterated absolute differences on layers of integers (2011, cited 4 times) |
 | 2 | https://doi.org/10.1090/S0025-5718-59-99262-2 | — | on primes</a>, Numbers and Computers (11). %H A000232 R. B. Killgrove and K. E. Ralston, <a href="https://doi.org/10.1090/S0025-5718-59-99262-2">On a conjecture concerning the primes</a>, Math.… |
 | 2 | https://doi.org/10.48550/arxiv.2210.04622 | Sequences, Series and Uniform distribution of SP Numbers | cited by Filtered rays over iterated absolute differences on layers of integers (2022, cited 1 times) |
 | 2 | http://www.amazon.com/exec/obidos/ASIN/0387208607/ref=nosim/ericstreasuretro | Unsolved Problems in Number Theory, 2nd ed. | linked from Gilbreath's Conjecture -- from Wolfram MathWorld |
@@ -47,4 +47,4 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://doi.org/10.1007/s00010-025-01214-0 | Super-regular polytopes in cyclotomic hypercubes | cites Filtered rays over iterated absolute differences on layers of integers (2025, cited 0 times) |
 | 2 | https://doi.org/10.2307/2308012 | A Remark on Stirling's Formula | cited by Filtered rays over iterated absolute differences on layers of integers (1955, cited 535 times) |
 
-_455 further candidates not shown; they are cited once each._
+_505 further candidates not shown; they are cited once each._

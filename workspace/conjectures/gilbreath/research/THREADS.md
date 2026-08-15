@@ -6,6 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
+| [[gsupply-transfer-repair]] | What is the weakest gap-variety / non-degeneracy hypothesis — satisfied by the primes, violated by constant gaps — under which the F₂ transfer ν₂ ≥ c·w holds,… | open | g-supply-transfer-universal-refuted, transfer-matrix-kernel-allones, rule90-interior-xor, g-supply-transfer-measured | \| 1. STOP SWEEPING (Directive 56). The refutation gave a question, not a library gap: what do the primes have that constant-gap sequences lack, so switches… |
 | [[regeneration]] | Can Granville's Lemma 5.4 / Theorem 5.5 reduce GC to ν_2 > n^β with β > 0.525? Empirical route at ceiling; theoretical routes are the only live ones. | open | IFF, reduction | \| 0. **DONE (Directive 50) — `code/lean/descent_lemma.lean` compiles clean.** No `sorryAx`; axioms only `propext`/`Classical.choice`/`Quot.sound` (`absorbing`… |
 | [[rule90-regeneration]] | Does the Rule 90 (Sierpinski / Pascal mod 2) structure of the {0,2} interior force block-length regeneration at specific relative depths, and does the null… | open | Block, lemma | \| 1. ~~**Split the claim.**~~ DONE — `rule90-interior-xor` is its own proved claim in `research/notes/rule90-interior.md` (Directive 4). The absorption wrapper… |
 

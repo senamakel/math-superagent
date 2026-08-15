@@ -1,0 +1,18 @@
+alternating-2/4, nu2 via rightdiag.incremental_diagonals (independent construction)
+n       nu2(rd)  nu2_literal
+200     1        2       
+500     1        2       
+1000    1        2       
+2000    1        2       
+3000    1        2       
+5000    1        2       
+
+  w(n) for comparison (should ~ n/2):
+    n=200   w=99 nu2/w=1/99=0.0101
+    n=500   w=249 nu2/w=1/249=0.0040
+    n=1000  w=499 nu2/w=1/499=0.0020
+    n=2000  w=999 nu2/w=1/999=0.0010
+    n=3000  w=1499 nu2/w=1/1499=0.0007
+    n=5000  w=2499 nu2/w=1/2499=0.0004
+
+  nu2 stays O(1) -> nu2/w -> 0: CONFIRMED by independent construction.

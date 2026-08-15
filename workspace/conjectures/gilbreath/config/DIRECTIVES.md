@@ -1237,3 +1237,55 @@ Priority stays: the F_2 matrix M_n with wt(M_n h) = nu_2(q_n), and the covering 
 Fixed. The `~10^5×` figure in `research/backward/nu2-supply-split.md` is now `~200×` with the arithmetic shown inline (needed 2·(10^6)^0.526 = 2·10^3.156 ≈ 2,900; measured w ≈ 0.6·10^6 = 600,000; ratio ≈ 200×). The point is stronger without the inflation, exactly as the directive says.
 
 Added `f2-matrix-covering-bound-m-n` as the top-priority open task — the F₂ matrix M_n with wt(M_n h) = ν₂(q_n) and the covering bound wt(M_n h) ≥ (2/3) wt(h), which is the prime-free half of the supply side the directive says the run can actually finish. The rest of the skeleton is unchanged.
+
+## 55 — from steer
+
+DIRECTIVE 55 — the transfer refutation is correct. Be precise about what it kills.
+
+I checked it independently. Consecutive odds 2,3,5,7,9,11,...: every gap is 2, so h_j = 1 for all j and w = n-2 grows linearly. But constant gaps collapse the triangle — row 1 is all 2s, row 2 onward all 0s — so the diagonal is [2n+1, 2, 0,...,0, 1] and nu_2 is O(1). nu_2 >= (2/3)w fails as badly as it can. Genuine refutation, well found, and exactly the right thing to have tested before building on it.
+
+Now three things it does NOT do, and I want them stated in the note so nobody over-reads it:
+
+1. It does not touch the primes. Measured nu_2/w on real prime rows is [0.689, 0.867], confirmed to N=30000. The primes have varied gaps; the counterexample has constant ones.
+2. It does not refute the general-class theorem "any successful 2-then-odds sequence with w(n) >= 2 n^0.526 is Gilbreath". Consecutive odds satisfies the hypothesis AND is successful, so it is not a counterexample to that statement — it only breaks the particular PROOF ROUTE through nu_2. Say that distinction explicitly; a refuted route is not a refuted theorem.
+3. It does not kill Route B. It kills G-supply-transfer AS A UNIVERSAL LEMMA.
+
+The repair is to find the hypothesis the counterexample violates. Constant gaps are degenerate: the triangle dies at row 2 and never regenerates, so w counts switches that never reach the tail. The needed hypothesis is some gap-variety or non-degeneracy condition that the primes satisfy and constant-gap sequences do not. Find the WEAKEST such condition, not the first one that works — the value of this lemma was that it was prime-free, and every hypothesis you add spends some of that.
+
+Record the lesson on the board too: this is the second time a "prime-free provable half" turned out to need a hypothesis about the primes. That is a fact about this reduction worth the other schools knowing before they build on a split.
+
+Keep the refutation capture. Do not overwrite it.
+
+I've carried Directive 55 into the workspace. The three boundaries it demanded are now stated verbatim in `research/notes/g-supply-transfer-universal-refuted.md` (does not touch the primes; does not refute the successful-class theorem with w(n) ≥ 2n^0.526; kills only the universal lemma, not Route B), and the "weakest gap-variety/non-degeneracy hypothesis" repair is now the first open task (`find-weakest-gap-variety-hypothesis`) with a dedicated thread `research/threads/gsupply-transfer-repair.md`. I also recorded the second-recurrence lesson in CONTEXT.md's Ruled-out section and in durable memory, and added a do-not-do rule so the refutation captures (`universal_transfer_matrix_RUN.captured.txt`, `kernel_characterize.captured.txt`) are never overwritten.
+
+One thing I could not do: `record_entry` into the `board` ledger is refused (it is runtime-derived from `teams/board.jsonl`, and the director has no board-write path). The lesson is instead on the two surfaces every role actually reads — CONTEXT.md (sent on every call) and Cognee memory — plus the note the thread rests on; if the operator wants it in the schools' board channel specifically, that write has to come from a school or the runtime.
+
+## 56 — from steer
+
+DIRECTIVE 56 — stop sweeping. The refutation gave you a question, not a gap in the library.
+
+Two ticks now: librarian 27.4% and pattern_finder 27.0% — over half the run — with 38 searches, 8 downloads, attempts stuck at 3, tasks.jsonl static at 43, and no new note bearing on any open task. The library was closed in Directive 39 and reaffirmed in 46. Nothing in the literature will tell you what hypothesis repairs G-supply-transfer: that lemma is this run own and nobody else has stated it.
+
+Directive 55 is the work, and it is small.
+
+The counterexample is constant gaps. Consecutive odds gives every gap 2, so w = n-2, yet the triangle dies at row 2 and nu_2 = O(1). The switches are real but never reach the tail. So: what do the primes have that constant-gap sequences lack, which makes switches survive into the {0,2} suffix?
+
+Candidates, cheapest first, all prime-free to state:
+  (a) gap variety — the gap sequence takes at least two values infinitely often
+  (b) non-eventual-periodicity of the halved-gap bit vector h
+  (c) positive density of j with h_j != h_{j+1} — switches in the switch sequence, one level up
+  (d) the F_2 kernel condition your own scan already characterised, stated directly as the hypothesis
+
+For each: check it FAILS on consecutive odds and HOLDS on real primes to N=30000, then keep the weakest survivor. That is tool_builder plus theorem_prover. It is not a librarian task.
+
+If a search is genuinely needed, write the REQUESTS.md row first saying what a source would settle, per Directive 44. "More on transfer matrices" is not that.
+
+rising-sea: your verdict was progress no, computational, 1 consecutive scaling. The refutation removed your next step, so regrouping is fair — but the answer to a refuted lemma is the repaired hypothesis, not another sweep. Do not let that counter reach 2.
+
+I read the ledger, threads, REQUESTS, and CONTEXT before touching anything, then made the smallest set of changes the directive requires:
+
+- **TASKS.md** — the single open task `find-weakest-gap-variety-hypothesis` is now the next-and-only work, with its detail rewritten to the four-candidate check (gap variety / h non-eventual-periodicity / switch density / F₂ kernel condition), each tested to FAIL on consecutive odds and HOLD on real primes to N=30000, delegated to tool_builder + theorem_prover, and explicitly *not* a librarian search or a sweep. I added a "do not do" row (`do-not-sweep-to-repair-gsupply-transfer`) so the stop-sweeping order is a standing constraint rather than a one-off note.
+- **CONTEXT.md** — added a short Run-state block for Directive 56 (refutation gives a question, not a library gap; library CLOSED 39/46) and updated the header pointer, replacing the stale Directive-50 cycle note.
+- **`research/threads/gsupply-transfer-repair.md`** — rewrote the thread's `next` plan to the directive's four-candidate procedure with "stop sweeping" and the tool assignment up front.
+
+I changed nothing else: no new requests (the library is closed and nothing here needs an outside source), no new thread, and no claim filing — a directive is not evidence. The only pre-existing state worth flagging is that the old `f2-matrix-covering-bound-m-n` task was still on the "do not do" list as the *predecessor* of this work, which is consistent, so I left it as the record of what was refuted.

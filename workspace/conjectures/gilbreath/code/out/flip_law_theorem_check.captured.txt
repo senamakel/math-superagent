@@ -1,0 +1,45 @@
+Flip-law death-criterion oracle check (patterns n <= 10, y in {4,...,4+2n})
+==============================================================================
+  A_1 = [1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4]  match=True
+  A_2 = [1, 0, 2, 2, 2, 2, 2, 2, 4, 4, 2, 2]  match=True
+  A_3 = [1, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0]  match=True
+  A_4 = [1, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0]  match=True
+  A_5 = [1, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2]  match=True
+  SANITY: all five worked rows match: True
+
+TOTAL cases (n=1..10, y in {4,6,...,4+2n}): 20480
+Agreements: 20420   Mismatches: 60
+Confusion matrix (predicted, actual): {('death', 'death'): 11263, ('survival', 'survival'): 9157, ('survival', 'death'): 60}
+
+Predicted survivals: 9217
+  actual row at flip depth has (edge, intruder) = (2,4): 0/9217
+  FAILED live checks: 9217
+    n=1 u=[1] y=4 d*=0 pair=(1, 2)
+    n=2 u=[1, 0] y=4 d*=0 pair=(1, 0)
+    n=2 u=[1, 0] y=6 d*=1 pair=(1, 2)
+    n=2 u=[0, 1] y=4 d*=1 pair=(1, 2)
+    n=2 u=[1, 1] y=4 d*=0 pair=(1, 2)
+    n=3 u=[1, 0, 0] y=4 d*=0 pair=(1, 0)
+    n=3 u=[1, 0, 0] y=6 d*=1 pair=(1, 0)
+    n=3 u=[1, 0, 0] y=8 d*=2 pair=(1, 2)
+    n=3 u=[0, 1, 0] y=4 d*=1 pair=(1, 2)
+    n=3 u=[1, 1, 0] y=4 d*=0 pair=(1, 0)
+FIRST 10 MISMATCHES (n, u, y, actual, predicted, predicted d*):
+  n=5 u=[1, 0, 0, 0, 0] y=12 actual=death predicted=survival d*=4
+  n=5 u=[0, 1, 1, 1, 1] y=10 actual=death predicted=survival d*=4
+  n=6 u=[1, 0, 0, 0, 0, 0] y=12 actual=death predicted=survival d*=4
+  n=6 u=[1, 0, 0, 0, 0, 0] y=14 actual=death predicted=survival d*=5
+  n=6 u=[0, 1, 1, 1, 1, 1] y=10 actual=death predicted=survival d*=4
+  n=6 u=[0, 1, 1, 1, 1, 1] y=12 actual=death predicted=survival d*=5
+  n=7 u=[1, 0, 0, 0, 0, 0, 0] y=12 actual=death predicted=survival d*=4
+  n=7 u=[1, 0, 0, 0, 0, 0, 0] y=14 actual=death predicted=survival d*=5
+  n=7 u=[1, 0, 0, 0, 0, 0, 0] y=16 actual=death predicted=survival d*=6
+  n=7 u=[0, 1, 1, 1, 0, 0, 0] y=12 actual=death predicted=survival d*=6
+all 60 mismatch configs written to code/out/flip_law_mismatches.txt
+
+y=4 SUB-CHECK over 2046 (u, y=4) cases:
+  deaths with all-zero halved block: 10
+  deaths with NONZERO halved block (criterion violations): 0
+  expected: death iff u = all-zero  ->  False (nonzero-deaths 0, all-zero cases 1023)
+
+n=10 subtotal (2^10 * 11): 11264
