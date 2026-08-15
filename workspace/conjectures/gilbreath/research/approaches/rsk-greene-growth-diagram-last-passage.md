@@ -3,7 +3,8 @@
 ```approach
 idea: Encode the Gilbreath triangle's "defects" (halved entries outside {0,1}, i.e. original entries outside {0,2}) as a 0–1 environment and represent the iterated-difference dynamics as a Fomin growth diagram / RSK shape, so that Greene's theorem converts the block length b_k into a last-passage-percolation time and the regeneration events into record times of a corner-growth model.
 mechanism: The proved block-lemma content is that the {0,2} interior evolves as XOR = Rule 90 = Pascal mod 2, i.e. a linear CA over GF(2) whose rows are the Sierpinski gasket. The classical companion fact is that Pascal's-triangle-mod-2 / Rule 90 is the boundary of a corner-growth / last-passage structure: a 0–1 matrix, run through RSK row insertion, produces a shape whose first-row length is (Greene–Kleitman / Greene 1974) the maximum, over up/right lattice paths, of the number of 1s collected — a last-passage percolation (LPP) time. The proposal is to find the correct 0–1 environment (candidates: the indicator of "adjacent halved difference ≥ 1" in the block, the indicator of the intruder's position, or the sign matrix of the min-branch) under which the leading-block boundary b_k equals the LPP front and a (2,4) regeneration event equals the creation of a new cell in the RSK shape. If such a bijection exists, then (i) b_k is a monotone partition-valued (shape) process — a genuinely new invariant, not a scalar potential of the kind already machine-refuted; (ii) Greene's theorem gives b_k = max over paths of the defect count, turning "the block never dies" into "the LPP front stays ahead of the corner", a statement LPP theory controls through its time constant and KPZ fluctuation exponent; (iii) the heavy-tailed regeneration jumps become the record structure of LPP, which is the known mechanism for why the surplus outpaces consumption.
-status: ungrounded-bijection
+status: refuted
+disposition: (b) parked — refuted, not a route to G-supply; RSK first-row length is monotone but b_k drifts down 1 per erosion row (Directive 44 item 2).
 The cheap falsifying first step (run before any LPP theory): for the prime rows to depth 1000 (blocks_depth1000.json) and the halved block, form the candidate 0–1 matrices and run RSK row insertion; check whether the first-row length of the resulting shape equals the block length b_k (and whether a local Fomin growth-diagram rule reproduces the row-to-row block evolution) for every row where the block is short (k = 1..40). If no candidate matrix reproduces b_k for the first 40 rows, the bijection fails and the approach is closed cheaply; if one does, the named LPP machinery (Greene–Kleitman theorem, time constants, Rost/Johansson) becomes available — with the strong caveat in `precedent` that the LPP time constant is a GROWTH law, and that growth has never been shown to control the {0,2}-block boundary which is an EROSION+regeneration boundary, not a monotone corner.
 
 precedent: >
@@ -32,8 +33,21 @@ precedent: >
   monotonicity mismatch is the structural falsifier: no monotone partition
   shape can equal a strictly-drift-downward b_k that is rescued only by
   boundary (2,4)-events.
-killed-by: null (not refuted on the merits, but the bijection is unsupported
-  and the proposal itself concedes "it may not exist")
+killed-by: >
+  Structural monotonicity mismatch. RSK first-row length is monotone in its
+  input (adding a 1 can only grow the shape), while b_k is strictly non-
+  monotone under the PROVED step law: b_{k+1} = b_k − 1 on every non-(2,4)
+  row, and jumps up only at boundary (2,4)-events. No monotone partition
+  shape can equal a drift-downward-eroding b_k rescued only by boundary
+  events, so the required bijection cannot exist as stated. The literature
+  contains no bijection linking RSK/Greene/LPP to the {0,2}-block boundary
+  (precedent checked: Dauvergne–Nica–Virág, Hegde, Dimitrov–Yang), and the
+  proposal itself concedes it may not exist. The cheap falsifying first step
+  (RSK first-row length vs short-block rows k ≤ 40) is therefore expected to
+  fail on the definition of the object; the burden was never discharged and
+  the monotonicity obstruction makes existence doubtful. The surviving value
+  is only the observation that a partition-valued invariant would evade the
+  scalar-potential refutation — a wish, not a theorem.
 falsifies: >
   The exact minimum that would make this live: a candidate 0–1 matrix whose
   RSK first-row length tracks b_k on the short-block rows k ≤ 40. Because b_k

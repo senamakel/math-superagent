@@ -23,8 +23,16 @@ everywhere, oracle passed. Parity: 1 odd (161) of 15 genuine giants,
 base-rate p=0.0052 (not fair-coin). Remaining work is theoretical:
 Granville Lemma 5.4 (ν_2 reduction) and CHT Theorem 1.6 — both FULLPDFs
 are read and digested (`research/notes/lemma54-re-derived-proof.md`,
-`research/notes/cht-2026-summary.md`). **Lemma 5.4 is now PROVED on the
-even domain** (claim `lemma54-re-derived-proof`; see Established). The
+`research/notes/cht-2026-summary.md`). **Lemma 5.4 is now PROVED on the even
+domain** (claim `lemma54-re-derived-proof`; see Established). **Directive 44
+correction:** the theorem is true but the written proof's descent step
+("after the ν₂ twos, δ = v − 2ν₂") is FALSE on bounce trajectories
+(0→2→0→2, e.g. v=0, ε=(2,2,2)), exactly the δ=0 case Granville discards.
+The repair is a case split, not a machine check: if some δ_t ≤ 2 for t ≤ L
+then δ_t ∈ {0,2} and absorption carries it; else every δ_k ≥ 4, every 2
+subtracts 2, and δ_L = v − 2ν₂ ≤ 2 contradicts δ_L ≥ 4. Write the proof and
+Lean-formalise it; **do not run another sampling sweep** — an invariant is
+proved by argument, the Lean file only certifies it. The
 entire surviving open content is the supply-side linear bound
 ν_2 ≥ c·n. Route B (Granville ν_2) primary;
 Route A (ratio bound) empirical fallback; Route C (CHT) calibrated by
@@ -46,6 +54,19 @@ Claim `cht-right-half-0d-scan-6e8`; anchor `research/notes/cht-right-half-scan.m
 `code/out/cht_right_half_0d_scan.captured.txt`, `_6e8.json`.
 
 ## Established
+
+- **Directive 44 dispositions — six new approach files settled.** Attached to G-supply (a):
+  `chebyshev-bias-granville-nu2-supply` — the bound it would give is
+  ν₂ = n/2 + O(n^{1/2+ε}) from the two-point consecutive-prime mod-4 correlation
+  (bit_n = [p_{n+1} ≢ p_n (mod 4)]), conditional at Hardy–Littlewood / Lemke Oliver–Soundararajan
+  level. Parked (b): `chip-firing-abelian-sandpile` (path critical group trivial, no conserved mass),
+  `ifs-attractor-contraction` (no strict l1/linf contraction on the cone),
+  `rsk-greene-growth-diagram-last-passage` (RSK first-row length monotone vs b_k drifts down),
+  `ruin-theory-foster-lyapunov-surplus` (probabilistic-ruin machinery needs a measure the primes lack),
+  `vectorial-subtractive-euclidean` (no classical subtractive scheme matches).
+  **Search discipline (Directive 44 item 3):** the library is closed (Directive 39); the only search
+  that may be launched is one chasing G-supply (prime gaps mod 4, Chebyshev bias, BHP-type density),
+  and only after the gap is written in `research/REQUESTS.md`. Otherwise stop searching and prove things.
 
 - **Gatti 2020's claimed class-level/prime proof is invalid — located flaw (full text in library).** Gatti, *Gilbreath's Sequences and Proof of Conditions for Gilbreath's Conjecture* (Preprints 202003.0145.v1, 2020; the earlier downloadable form of the MDPI-403 "Gilbreath polynomials" paper) proves the valid-extension machinery (Eq. 2: `k = ±s^{n−1}_1 ± … ± s^1_{n−1} + s_n ± 1`, global anti-diagonal criterion; parity alternation Lemmas 1–3 — the general-class half of the run's parity wave) but **Theorem 4's proof of `min K ≤ p_n ≤ max K` for the primes is invalid**: the right-inequality step assumes its own conclusion ("If p_n ≤ max K, then subtracting 2p_{n−1}…") and derives only a trivial `min K ≤ α` via Bertrand. Also his Lemma 4 (valid-extension set = whole parity interval) is **false in general** — Muney 2026's length-5 hole; even `dim K_S = 2^{n−1}` fails on `{2,3,5}`: `|K_S|=5` (solutions `{1,3,5,7,9}`, machine-checked this run). **No published deterministic bounded-gap/prime-class theorem exists.** Claims: `gatti-2020-theorem4-proof-invalid`, `gatti-2020-lemma4-interval-completeness-refuted`, `gatti-2020-valid-extension-global-formula`. Anchor: `research/sources/gatti-2020-preprints-gilbreath-conditions.full.md`.
 - **Older claimed "proofs" and LLM-era preprints — Granville 2026 now re-graded; most others not-load-bearing, do not cite.** Proth 1878 gave no proof (Williams's retraction, quoted in Chase 2024 §7: the actual paper states the property as a theorem). **Granville 2026 "Piercing Gilbreath" (arXiv:2607.04166, cs.CR) — RE-GRADED (Directive 34).** The "not-load-bearing" classification was made off the 6.8 KB `/abs/` landing page; the full PDF (175 KB, 70 theorem/lemma/proof hits, `research/sources/granville-2026-piercing-gilbreath-FULLPDF.full.md`) contains Lemma 5.4 (supply-vs-demand budget inequality in right-diagonal coordinates, equivalent to this run's own recharge identity) and Theorem 5.5 (reduces GC to lower-bound ν_2 > n^β, β > α, demand side α = 0.525 unconditional by Baker-Harman-Pintz, shaved to α = 0.52 by Li 2023 — but the demand α is NOT the bottleneck; see `li2023-not-bottleneck`: measured ν_2 ≈ n/2 means any ν_2 ≥ c·n bound suffices, so the real open statement is the linear supply bound ν_2 ≥ c·n). The paper is not peer reviewed; proofs are uneven (Theorem 2.5 is not proved; Lemma 5.4 discards a delta=0 case occurring in 100% of columns). The value is the reduction, not the proofs. Operator measured ν_2/n ≈ 0.49–0.52 on primes below 3e6 (`research/notes/granville-2607-04166-actually-read.md`, `research/notes/lemma54-discarded-case-is-universal.md`). Maréchal, ZARKOUNA, Keen, Ross-class preprints are unverified claims.
@@ -96,6 +117,19 @@ Claim `cht-right-half-0d-scan-6e8`; anchor `research/notes/cht-right-half-scan.m
 - **Block minima record (depth 1000):** `[13,24,96,97,175,2762,5939,31525,31533,31534,733574,1094263]` — the block grows across the computed range; dwell at each minimum 1–4 rows. Block length is not merely bounded away from 0, it increases.
 - **Recharge surplus heavy-tailed (depth 1000):** S_1000 = 1,270,603 vs required 998; giants (j>1000) supply 99.76%; the largest are NOT erosion-recovery events (mean gap before big jumps 3.54 vs 2.48 before small; they arrive 1–13 rows after the previous event — "energy stored during erosion" is dead) and do NOT sit on Rule-90/power-of-2 offsets (no separation). Jumps grow sublinearly with b (log-log slope 0.388 over all events) yet each giant ≈ current block length. `code/out/surplus_renewal_structure.md`.
 - **Edge-zero-run sharpening — PROVED and machine-checked this run (non-vacuous).** The halved-edge map h ↦ e of a {0,2} block under pure erosion (e_d = XOR_{j≤d} [C(d,j) mod 2]·h[(n-1-d)+j], the Rule-90 convolution) is an F2-linear map, unitriangular in reversed column order, hence invertible: **e = 0 ⟺ h = 0**. So every nonzero block shows edge 2 at least once in its n erosion reads — worst zero-run ≤ n−1 (the original checker's ≤ 2n was vacuous: the sequence has only n entries and the all-zero block achieves n), sharp, achieved only by [1,0,...,0] and mirror. Interior half of regeneration timing: the block's own pattern cannot suppress the edge-2 needed for a (2,4)-event for the whole block life; intruder-4 timing untouched. Three routes (Pascal convolution, literal |a-b| erosion, matrix product) agree over all 262,143 nonzero patterns n≤18; unitriangularity n≤1024. Claim `edge-interior-invertibility-sharpened`; anchors `code/out/edge_map_invertibility.captured.txt`, `.notes.md`. Also executed the run's two other orphaned programs: A089582 crosscheck (run's oracle reproduces the OEIS catalogue's 105 second-entry terms 105/105 — `oeis-A089582-second-entry-catalogue` upgraded from catalogue-read to run-reproduced) and verify_rule90_against_sources (|a−b|/2 = (a/2) XOR (b/2) over 2^8 patterns).
+- **ν₂ supply, extended to n=1e5 (incremental run, exact, sieve 2e7):**
+  `code/out/nu2_incremental_1e5.txt`. ν₂ stays within `3√(n log n)` of n/2 for
+  every n in 1000..100000 (max |ν₂−n/2| = 624 at n=78536); min ν₂/n over all
+  n≥1000 = 0.4587; weakest implied exponent min(log ν₂/log n) over samples =
+  **0.7658** (» 0.525). Lemma 5.4 hypothesis `g*_n ≤ 2·ν₂(n−1)+2` fails 1 time
+  in 99,999. **This sets the honest proof target:** ν₂ = n/2 + O(√(n log n))
+  holds numerically to 1e5, so the realistic theorem is a variance / LIL bound
+  on the halved-gap XOR-folds, not a super-linear growth statement. Mod-4
+  transfer (`code/out/nu2_vs_gap_parity.captured.txt`): the {0,2}-tail cells'
+  row-1 ancestor union is the fixed interval [2,n−1] of A_1; halved bits are 1
+  iff `gap ≡ 2 (mod 4)`; `ν₂ ≥ w/2` holds at every sample (min ratio ν₂/w =
+  0.689). So G-supply reduces to a prime-gap-mod-4 frequency bound, not to the
+  absolute-difference dynamics. **Numerical only; not a proof.**
 - **Block profile rows 1..40:** `2,7,13,13,24,23,22,21,24,58,97,96,97,96,173,175,175,175,175,290,289,288,739,873,872,871,872,871,870,869,868,867,866,865,2179,2178,2177,2176,2770,2769` (growth by roughly-doubling bursts at k≈15,20,23,35,39).
 
 ## Recalled
@@ -142,7 +176,16 @@ here.
   (`lemma54-sufficiency-survives-proper-domain`). The **entire remaining open
   content is the supply-side linear bound ν_2(q_{n−1}) ≥ c·n** (measured c ≈
   0.5, unproved); α ∈ {0.52,0.525} is immaterial once that holds
-  (`li2023-not-bottleneck`). **Route A (ratio
+  (`li2023-not-bottleneck`). **Concrete form of the open bound (measured,
+  `code/gap_analysis/nu2_vs_gap_parity.py`, 8 samples n=50..3999)**:
+  ν₂'s ancestor window in row-1 is the FIXED interval [2,n−1] of A_1 (the
+  k=n−2 cell alone reaches column 2), halved bit h[j]=1 iff gap ≡ 2 (mod 4),
+  w(n)=Hamming weight of that window. Measured w/n ≈ 0.60, ν₂/w ∈
+  [0.689, 0.867] (min 0.689), so ν₂ ≥ w/2 holds on every sample and a clean
+  transfer ν₂ ≥ w/c (small c) is plausible at these scales. So G-supply
+  reduces to a prime-gap-mod-4 frequency bound — how often p_{n+1}−p_n ≡ 2
+  (mod 4) — NOT to the absolute-difference dynamics. Numerical at 8 samples,
+  not proved; this is the one open step of Route B. **Route A (ratio
   bound — fallback):** gap_i ≤ j_i+1, verified 2+ orders slack on 15 giants
   at 6e8/1e9. **Route C (CHT — calibrated):** needs Cramér (open, >BHP);
   Theorem 1.6's right-half {0,d}-block obstruction absent at every reachable
@@ -156,7 +199,19 @@ here.
 - **The 1-Lipschitz chain reformulation** — computed mechanism, not proved.
 - **What remains toward a GOAL.md partial result:** block lemma, Lean IFF, and
   edge-map invertibility are delivered, and Lemma 5.4 is re-derived and PROVED
-  on the even domain (`lemma54-re-derived-proof`). The natural next deliverable
-  is a proved lower bound on ν_2 for the prime right-diagonal — the supply side
-  of Route B — which is the one open step left in the ν_2 reduction.
-- **Library search halted by directive.**
+  on the even domain (`lemma54-re-derived-proof`). **Directive 47:** the
+  supply side is a NAMED OPEN problem, not a gap in the run's own argument —
+  ABGS 2011 §9 (claim `abgs-2011-s9-mod4-switch-limit-open`): whether
+  `N(a,d,m,x)/π(x)` tends to any limit is open, so no unconditional linear
+  lower bound on the mod-4 switch count exists. Route B is therefore a
+  CONDITIONAL theorem with that two-point mod-4 correlation bound as its
+  hypothesis; a conditional theorem with a precisely identified open
+  hypothesis is a genuine deliverable.
+- **Library CLOSED except the single G-supply request (Directive 46) + one
+  named fetch (Directive 47).** The only searchable gap is a lower bound
+  ν_2 ≥ c·n, reduced by rising-sea to a prime-gap-mod-4 frequency claim
+  (gap ≡ 2 mod 4 switch bit) — now named-open via ABGS 2011 §9; settling
+  literature = prime gaps mod 4 / Chebyshev bias, not Gilbreath. The single
+  fetch-and-close target is the MathOverflow "what is known" thread
+  (questions/34669): expect no new mathematics, the payload is which routes
+  practitioners consider dead. Do not sweep outward from it.
