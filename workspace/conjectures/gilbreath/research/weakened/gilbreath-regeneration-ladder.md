@@ -1,5 +1,11 @@
 # Ladder: the regeneration difficulty in Gilbreath's conjecture
 
+> Superseded by `research/weakened/recharge-ladder.md` (canonical ladder for this
+> run; difficulty names `infinite-horizon`, `regeneration-rate`,
+> `unbounded-gap-arrangement`, `non-concentration-hypothesis`,
+> `intruder-coincidence`). Kept for the failed rung R-bounded-gap-4, which the
+> canonical ladder also carries.
+
 ```ladder
 goal: For every k >= 1 the first entry of A_k is 1, where A_0 = primes and A_{k+1}(i) = |A_k(i) - A_k(i+1)|.
 difficulties: unbounded-n, regeneration-rate, intruder-ge-6, non-concentration, unbounded-gaps
@@ -90,6 +96,7 @@ statement: For every 2-then-odds sequence with all gaps (after the first) <= 4, 
   leading 1 persists forever.
 off: unbounded-gaps
 stance: failed
+killed-by: Colonna's delete-5 example (2,3,7,11,13,17,...): gaps ≤ 4 yet the second entry of row 2 is 4, so the leading 1 dies at row 3.
 merge: Colonna's delete-5 example (2,3,7,11,13,17,...) has gaps <= 4 and second entry
   4 at row 2, killing it. So the deterministic bounded-gap class dies at g = 4, and
   Eppstein's construction kills every fixed g. The difficulty `unbounded-gaps` bites

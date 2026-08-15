@@ -154,6 +154,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_candidates.py` | _(undescribed)_ |
 | `verify_giants_6e8.captured.txt` | _(undescribed)_ |
 | `verify_granville_nu2_independent.captured.txt` | Independent in-container verifier output (code/verify_granville_nu2_independent.py, timeout 540, EXIT_CODE=0): reproduces both notes' numbers via lib.gilbreath + prefix-max g*; adds entry-level stat — 1,546,291 of 3,095,143 gray-block entries are 0 (50.0%, avg 623.5 zeros/block), so the discarded delta=0 case dominates entrywise, not just per-row. |
+| `verify_lemma54_v_le_gstar.py` | Verifies the two links that complete the re-derivation of Granville's Lemma 5.4: Link A (entry value v <= record gap g*_n), and Link B (hypothesis g*_n <= 2 nu_2 + 2 holds with no violations on real primes). |
 | `verify_nu2_claim.captured.txt` | Independent operator-written re-verification executed in-container (timeout 540, EXIT_CODE=0): reproduces nu2_granville_check.py exactly (nu2=2048 at n=3999, 0 hypothesis failures). |
 | `verify_rule90_against_sources.captured.txt` | _(undescribed)_ |
 | `verify_rule90_against_sources.py` | Independently re-derives the Rule-90 interior XOR identification ( |

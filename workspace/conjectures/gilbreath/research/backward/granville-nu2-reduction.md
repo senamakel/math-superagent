@@ -1,163 +1,107 @@
-# Proof skeleton: Granville's ν₂ reduction of Gilbreath to a density of 2s
+# Granville ν₂ reduction — what would prove Gilbreath via Route B
+
+This is the backward decomposition of the run's declared primary route
+(`research/threads/regeneration.md`, Route B). It complements the two existing
+skeletons: `counterexample-backward.md` (minimal-counterexample geometry) and
+`event-rate-sufficiency.md` (the run's own recharge/event accounting). All three
+are decompositions of the same goal; this one is the sourced reduction of
+Granville 2026 (arXiv:2607.04166, §5), read in full at
+`research/sources/granville-2026-piercing-gilbreath-FULLPDF.full.md`.
+
+The reduction is genuine: **two** of the four load-bearing statements are
+already established (the `{0,2}` reduction and the prime-gap demand side), one
+(Granville's Lemma 5.4) has a complete proof sketch whose only missing piece is
+machine-checking a three-line budget, and one (the ν₂ density lower bound) is
+the entire open content.
 
 ```skeleton
-goal: Gilbreath's conjecture — for the iterated absolute-difference triangle of the primes, A_k(0) = 1 for all k ≥ 1.
+goal: Gilbreath's conjecture for the primes — A_k(0) = 1 for every k ≥ 1, equivalently every finite prime prefix q_1..q_n (n ≥ 2) is "successful" (the bottom single entry of its difference triangle is 1).
 implies: |
-  Work in right-diagonal coordinates (Granville's notation, re-derived here).
-  Let p_n be the n-th prime, g_n = p_n − p_{n−1} (n ≥ 2) the gap, and
-  g*_n = max(g_2,…,g_n) the record gap. Define the diagonal through p_n by
-  δ_0(q_n) = p_n, δ_1(q_n) = g_n, δ_{k+1}(q_n) = |δ_k(q_n) − δ_k(q_{n−1})|.
-  Then δ_k(q_n) = A_k(n−k), the usual triangle read along the diagonal, and
-  the left edge is A_k(0) = δ_k(q_k). By the reduction (DISCHARGED,
-  gilbreath-reduces-to-second-in-02) the conjecture is equivalent to
-  "q_1..q_n succeeds for all n", where success means δ_k(q_k) = 1 for all
-  1 ≤ k ≤ n.
+  Work on the right diagonal δ(q_n) = (δ_0, ..., δ_{n-1}), δ_k(q_n) = A_k(n-k) (1-based),
+  so δ_{n-1}(q_n) = A_{n-1}(0) is the bottom single entry of the finite triangle of q_1..q_n,
+  and "q_1..q_n succeeds" ⟺ δ_{n-1}(q_n) = 1.
 
-  INDUCT on n. Base: q_1..q_{N_0} succeed — finitely many rows, computed
-  exactly in the run's verification record (depth 1000 suffices; see
-  granville-nu2-density-measured).
+  (1) DEMAND  [GN-demand-record-gap-bhp, DISCHARGED]  For every ε > 0 and all large n the
+      record gap g*_n = max(g_2, ..., g_n) satisfies g*_n < n^{0.525+ε}
+      (Baker–Harman–Pintz 2001 gives p_{n+1} − p_n ≪ p_n^{0.525}; p_n ~ n log n absorbs the log factor).
 
-  Step: assume q_1..q_{n−1} succeed. The new diagonal δ(q_n) must be shown to
-  reach the {0,2} regime and stay there (so δ_n(q_n) = 1). G-L54 (Lemma 5.4,
-  re-derived with the δ=0 case as the main case) is the load-bearing
-  induction step: it gives
-        q_1..q_n succeed  provided  g*_n ≤ 2·ν_2(q_{n−1}) + 2,
-  where ν_2(q_{n−1}) counts the 2s in the maximal {0,2} suffix of δ(q_{n−1}).
+  (2) RUNWAY  [GN-lemma54-runway, OPEN]  If q_1..q_{n-1} is valid and successful and
+      g*_n ≤ 2·ν₂(q_{n-1}) + 2, then q_1..q_n succeeds. The load-bearing step is the exact budget:
+      the gray-block entry evolves v → |v − t| over the 0-2 cycle entries t ∈ {0,2}; t=0 is a no-op
+      and t=2 is the map (0↦2, 2↦0, 2m↦2(m−1)) on evens, so after ν₂ two-steps the final entry lies
+      in {0,2} ⟺ v_n ≤ 2ν₂ + 2; and v_n ≤ g*_n − 2 (Granville Lemma 5.3(8)).
 
-  Now close the budget:
-    G-demand  (Baker–Harman–Pintz): for every ε > 0, g*_n < n^{0.525+ε} for
-               all n ≥ N_0(ε). Fix any β > 0.525 and choose ε = (β−0.525)/2.
-    G-supply: ν_2(q_{n−1}) > n^β for all n ≥ N_0.
-  Then for n large, 2·ν_2(q_{n−1}) + 2 > 2 n^β + 2 ≥ n^{0.525+ε} > g*_n
-  (the middle inequality because 2 n^β / n^{0.525+ε} = 2 n^{(β−0.525)/2} → ∞).
-  So G-L54 applies and q_1..q_n succeeds. The induction closes for all n, and
-  by the diagonal restatement of the reduction, A_k(0) = 1 for all k ≥ 1.
+  (3) SUPPLY  [GN-supply-nu2-density, OPEN]  ν₂(q_{n-1}) > n^{0.526} for all large n
+      (any fixed β > 0.525 works).
 
-  The three gaps are exactly the three hypotheses consumed above. G-L54 is a
-  finite, elementary statement about one diagonal (attackable today); G-demand
-  is standard unconditional mathematics needing only a record-gap corollary;
-  G-supply is the entire open content of the conjecture in this route — a
-  lower bound on the density of 2s in the diagonal, empirically ν_2 ~ n/2
-  (DISCHARGED as a measurement, granville-nu2-density-measured), far above the
-  n^β threshold required.
-
+  COMBINE:  choose ε = 0.0005. For n large, g*_n < n^{0.5255} < n^{0.526} < ν₂(q_{n-1}) ≤ 2ν₂(q_{n-1}) + 2,
+  so Lemma 5.4 turns "q_1..q_{n-1} successful" into "q_1..q_n successful". Strong induction on n
+  from the verified base (the run's own depth 1000, or the literature's 10^13–10^15, which lies past
+  any BHP threshold) gives every finite prefix successful, i.e. A_k(0) = 1 for all k ≥ 1. The
+  discharged reduction gilbreath-reduces-to-second-in-02 supplies the equivalent {0,2} second-entry
+  form; the Lean IFF gilbreath-second-entry-equivalence certifies the equivalence.
 status: sketched
-rests-on: gilbreath-reduces-to-second-in-02, granville-nu2-density-measured, lemma54-discarded-case-universal, rule90-interior-xor, edge-interior-invertibility-sharpened, cht-normalized-gap-definition
+rests-on: gilbreath-reduces-to-second-in-02, gilbreath-second-entry-equivalence, step-law-theorem-proved, verification-record-2026
 ```
 
 ```gap
-id: G-L54
-lemma: |
-  Granville's Lemma 5.4, RE-DERIVED (the published proof discards the δ=0 case,
-  which occurs in 100% of columns — lemma54-discarded-case-universal — so the
-  lemma currently has no proof in this run's ledger). Statement: if q_1..q_{n−1}
-  is valid and successful, and g*_n ≤ 2·ν_2(q_{n−1}) + 2, then q_1..q_n succeeds.
-  Equivalently: along the new diagonal δ(q_n), starting from v_n = δ_{τ_n}(q_n)
-  (the entry where the previous diagonal's maximal {0,2} suffix begins), the
-  entry descends by 2 at each 2 of that suffix while it is ≥ 2, and once it hits
-  0 it is ABSORBED — from then on |0 − {0,2}| ∈ {0,2} keeps the new diagonal in
-  {0,2} forever, which is success. The descent budget 2·ν_2 therefore suffices to
-  force v_n down to ≤ 2 provided v_n ≤ 2·ν_2 + 2, and v_n < g*_n ≤ 2·ν_2 + 2.
-  The δ=0 "exception" is the absorption case and must be proved, not waved away.
-
-  The exact claims to formalise, with δ_k = δ_k(q_n), ε_k = δ_k(q_{n−1}) in the
-  suffix region (ε_k ∈ {0,2}):
-    (i)  ε_k = 2 and δ_{k−1} ≥ 2  ⟹  δ_k = δ_{k−1} − 2        (descent, −2 per 2);
-    (ii) δ_{k−1} = 0             ⟹  δ_k = ε_k ∈ {0,2}         (absorption: the
-         discarded case; thereafter δ stays in {0,2} because ε stays in {0,2});
-    (iii) ε_k = 2 and δ_{k−1} = 1 ⟹  δ_k = 1                  (bounce to ≤ 2);
-  hence the potential δ_k + 2·(# of remaining 2s in the suffix after position k)
-  never increases, and drops by 2 at each genuine descent.
-status: open
-next: |
-  Two moves, both runnable today.
-  (1) theorem_prover / lean_prover: formalise the three bullet cases (i)–(iii)
-      plus the absorption invariant, and prove the resulting potential argument
-      gives: if v_n ≤ 2·ν_2 + 2 then δ_k ∈ {0,2} eventually and stays. State the
-      lemma for an abstract pair of diagonals (δ, ε) with ε ∈ {0,2} on a suffix
-      and δ_{k+1} = |δ_k − ε_k|, so no prime-specific input is used.
-  (2) tool_builder: VALIDATE THE FAILURE DIRECTION. The real primes never fail,
-      so the biconditional cannot be tested on them (lemma54-discarded-case-universal
-      flags this vacuity). Build synthetic failing sequences — Granville's own
-      "closest failing sister" (his §5.1) and Poisson-gap sequences (his §4) — and
-      check the contrapositive: whenever the budget g*_n > 2·ν_2 + 2, some such
-      sequence does fail at q_n, and whenever the budget holds the repaired argument
-      predicts success. A tool_builder task: code/gap_analysis/lemma54_failing_sisters.py.
+id: GN-demand-record-gap-bhp
+lemma: For the primes, the record gap g*_n = max_{2≤k≤n}(p_k − p_{k−1}) satisfies g*_n < n^{0.525+ε} for every ε > 0 and all n ≥ n₀(ε).
+status: discharged
+discharged-by: sourced — Baker–Harman–Pintz 2001 (p_{n+1} − p_n ≪ p_n^{0.525}), referenced in claim gap-bounds-cannot-force-block-growth (research/notes/block-growth-literature.md). Not re-derived here; the only non-trivial step (absorbing p_n ~ n log n into the exponent) is elementary.
+next: —
 ```
 
 ```gap
-id: G-demand
-lemma: |
-  The demand side is unconditional: for every ε > 0 there is N_0(ε) such that the
-  record gap satisfies g*_n = max(g_2,…,g_n) < n^{0.525+ε} for all n ≥ N_0(ε).
-  Source: Baker–Harman–Pintz (2001), p_{n+1} − p_n ≪ p_n^{0.525}. The corollary
-  to the record gap is immediate from p_n ≍ n log n: each gap is O(p_n^{0.525}) =
-  O((n log n)^{0.525}) = O(n^{0.525+ε}), and g*_n is a max over n gaps, so
-  g*_n = O(n^{0.525+ε}). The finitely many n < N_0(ε) are absorbed into the
-  induction base.
-
-  This is a sourced standard theorem plus a one-line corollary; the gap in the
-  ledger is that no claim block states the record-gap consequence, so the
-  skeleton cannot yet cite it as discharged.
+id: GN-lemma54-runway
+lemma: (Granville Lemma 5.4, re-derived) Let q_1..q_{n-1} be valid (strictly increasing odd terms after q_2 = 3) and successful, with 0-2 cycle (maximal {0,2} suffix of δ(q_{n-1}) before the final 1) having ν₂ = #{t = 2}. If the record gap g*_n = max(g_2..g_n) satisfies g*_n ≤ 2ν₂ + 2, then q_1..q_n succeeds. Equivalent exact form: success at q_n ⟺ v_n ≤ 2ν₂ + 2, where v_n = δ_{τ_n}(q_n) is the first gray-block entry.
 status: open
 next: |
-  librarian: fetch the exact Baker–Harman–Pintz statement (p_{n+1} − p_n ≪ p_n^{0.525})
-  with a citable anchor. theorem_prover / symbolic_math: write the two-line
-  derivation g*_n ≤ C p_n^{0.525} ≤ C′ (n log n)^{0.525} = O(n^{0.525+ε}) for every
-  ε > 0, and record it as a claim `record-gap-bhp-0525` with `holds-here: yes`.
-  This closes G-demand without new mathematics.
+  The published proof is broken at exactly the δ = 0 case (claim lemma54-discarded-case-universal:
+  the "exception" occurs in 100% of rows), but the repair is that δ = 0 is a no-op, not an exception.
+  A complete three-line proof is ready to be formalised and machine-checked:
+
+    1. The gray block is v_{τ_n} = v_n and v_k = |v_{k−1} − t_{k−1}| over the 0-2 cycle entries t ∈ {0,2}.
+       t = 0 is the identity; t = 2 is the map (0 ↦ 2, 2 ↦ 0, 2m ↦ 2(m−1) for m ≥ 2) on even integers.
+    2. Hence 0-entries drop out (no-ops), and only the count ν₂ of 2s matters: after ν₂ two-steps the
+       value is in {0,2} ⟺ v_n ≤ 2ν₂ + 2 (boundary v_n = 2ν₂ + 2 lands on 2; v_n < 2ν₂+2 oscillates in {0,2}).
+    3. By Granville Lemma 5.3(8), v_n = δ_{τ_n}(q_n) ≤ g*_n − 2 for τ_n ≥ 2, so g*_n ≤ 2ν₂ + 2 forces
+       v_n ≤ 2ν₂; then δ_{n-1}(q_n) = |δ_{n-2}(q_n) − 1| = 1. (Edge case τ_n = 1 means g_n ∈ {0,2},
+       trivially v_n ≤ 2ν₂ + 2.)
+
+  theorem_prover / lean_prover task: formalise this budget against the existing
+  code/lean/gilbreath_reduction.lean (Step operator), report #print axioms and zero sorry.
+  sat_solver / tool_builder check first: run the iff in BOTH directions on sequences that actually fail —
+  Granville's length-11 corridor failure (2,3,5,9,11,13,15,17,25,27,29), Colonna's delete-5 example, and
+  Poisson-gap failing sisters — confirming the hypothesis g*_n ≤ 2ν₂+2 fails exactly when they fail.
+  (lemma54_iff_check could not exercise the failing direction on primes, which all succeed.)
+thread: research/threads/regeneration.md
 ```
 
 ```gap
-id: G-supply
-lemma: |
-  The supply side: there exists β > 0.525 and N_0 such that ν_2(q_n) > n^β for all
-  n ≥ N_0, where ν_2(q_n) is the number of 2s in the maximal {0,2} suffix of the
-  diagonal δ(q_n). This is the ENTIRE remaining content of the conjecture in this
-  route. Empirically ν_2/n ∈ [0.42, 0.52] for n = 50..3999, i.e. ν_2 ~ n/2
-  (DISCHARGED as a measurement, granville-nu2-density-measured) — 26× the threshold
-  at n = 3999 — so the bound is far from tight, but no lower bound at all is proved.
-
-  The structural handle: inside the {0,2} suffix, halving gives a {0,1} string and
-  the diagonal entries are XOR (Rule 90 / Pascal mod 2) folds of the halved gap
-  bits (DISCHARGED, rule90-interior-xor). The halved gap bit is (g/2) mod 2, i.e.
-  whether the prime gap is ≡ 2 mod 4. The halved-edge map from an initial {0,2}
-  block to the diagonal sequence is an F2-linear, unitriangular (hence invertible)
-  map (DISCHARGED, edge-interior-invertibility-sharpened). Therefore ν_2 is a
-  linear function of the gap-parity string, and a lower bound on ν_2 is a statement
-  about the arrangement of prime gaps mod 4 — NOT about gap magnitude (consistent
-  with gap-bounds-cannot-force-block-growth: upper bounds on gap size cannot force
-  block growth, but the mod-4 arrangement is a different, non-concentration axis).
-
-  This gap is the mirror of `CB-prime-exclusion` in counterexample-backward, which
-  asserts XOR-non-degeneracy of the halved gaps; proving either is a partial result.
+id: GN-supply-nu2-density
+lemma: For the prime sequence, the count ν₂(q_n) of 2s in the 0-2 cycle of the right diagonal satisfies ν₂(q_n) > n^β for some fixed β > 0.525 (e.g. β = 0.526), for all sufficiently large n.
 status: open
 next: |
-  (1) tool_builder — identify the exact transfer relation empirically. For each
-      sampled column n in {50,100,200,400,800,1600,3200,3999} (reuse the machinery
-      behind granville-nu2-density-measured), record ν_2(q_n), the ancestor window
-      of halved gap bits, and that window's weight w(n). Report the empirical ratio
-      ν_2/w and the smallest ν_2/n seen. This decides whether a clean transfer
-      ν_2 ≥ w/c (small constant c) is plausible. A tool_builder task:
-      code/gap_analysis/nu2_vs_gap_parity.py.
-  (2) theorem_prover — prove the transfer. Using the unitriangularity in
-      edge-interior-invertibility-sharpened, derive a lower bound on the number of
-      1s in the diagonal suffix in terms of the number of 1s in the ancestor halved
-      gap window (e.g. ν_2 ≥ w/2, or ν_2 ≥ w − c·(number of runs)). This reduces
-      G-supply to a prime-gap-mod-4 density claim: every window of length Θ(n) of
-      the gap-parity string contains ≥ n^β ones (gaps ≡ 2 mod 4 are not too sparse).
-  (3) request_research — the density of prime gaps ≡ 2 mod 4 (or the maximal gap
-      between such primes). What is known unconditionally about how often
-      p_{n+1} − p_n ≡ 2 (mod 4)? This is the statement whose proof would close the
-      gap via step (2). Falsifier for the transfer hypothesis: a window of halved
-      gaps with many 1s whose diagonal suffix has few 1s (would refute ν_2 ≥ w/c).
+  This is the entire open content of Route B; everything else in the skeleton is discharged or has a
+  complete proof sketch. Two first moves, one computational and one theoretical:
+
+  tool_builder: compute ν₂ incrementally — each new diagonal δ(q_n) is one length-n vector operation from
+  δ(q_{n-1}), total O(N²) abs-diffs and O(N) memory (a 1D computation, far below the 8 GiB / empirical
+  ceiling, unlike the full triangle). Run to n = 10^5 or 10^6; record ν₂, ν₂/n, and the signed fluctuation
+  ν₂ − n/2 with its running max |ν₂ − n/2|. This decides the honest proof target: if ν₂ = n/2 + O(√(n log n)),
+  the target is a variance bound on XOR-folds; if the fluctuation grows faster, only ν₂ > n^{0.526} is realistic.
+
+  theorem_prover: inside the 0-2 cycle the halved entries evolve by the proved Rule-90/XOR law
+  (claim rule90-interior-xor), so ν₂ counts the 1s of a Rule-90 descendant of the halved-gap bit string
+  (prime gap ≡ 0 mod 4 ↔ halved bit 1). Reduce ν₂ ≳ n^{1/2+ε} to a non-concentration condition on that bit
+  string — the same 2-separation / no-long-{0,d}-block dichotomy as CHT Theorem 1.6, whose obstruction family
+  the run already scanned as absent (claim cht-right-half-0d-scan-6e8). First concrete theorem: the random
+  analogue — for i.i.d. unbiased halved bits, ν₂ = n/2 + O(√(n log n)) with high probability (an Azuma/variance
+  bound over XOR-folds) — then state the deterministic non-concentration hypothesis on halved prime gaps that
+  lifts it.
+
+  Empirical anchor: ν₂/n ≈ 0.42–0.52 measured to n = 3999 (claim granville-nu2-density-measured), already a
+  factor ~26 above the n^{0.525} threshold — the needed bound is far from tight.
+thread: research/threads/regeneration.md
 ```
-
-# Ledger note
-
-This is the third skeleton and the only one that matches the run's primary
-theoretical route (Route B, Granville ν₂, per GOAL.md / CONTEXT.md). It leaves
-three gaps: G-L54 (a proof of Lemma 5.4 — elementary, attackable now), G-demand
-(a sourced corollary — near-discharged), and G-supply (the whole conjecture in
-this route). G-L54 is the first to attack: it is finite, elementary, and the
-skeleton is dead without it regardless of the other two.

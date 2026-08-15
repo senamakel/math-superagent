@@ -35,8 +35,9 @@ evidence for it stays available.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
-  harness is measured against, the two-layer evidence screen, and why blocking
-  retrieval is not the same as blocking recall.
+  harness is measured against, the two-layer evidence screen, and what round 1
+  measured: that de-naming failed on all three problems, and that the shared
+  board carries the answer between schools unscreened.
 
 Two pairs read a mathematician's method against this runtime and say what to
 build next. They are why several of the rules above exist, so a change to a

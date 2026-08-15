@@ -1,5 +1,9 @@
 # Weakened ladder: from a computed record to Gilbreath's conjecture
 
+> Superseded by `research/weakened/recharge-ladder.md` (canonical ladder for this
+> run). Kept for its alternative rung sequence (R7-primes-events-infinitely-often,
+> which is strictly weaker than the full rate and worth attacking).
+
 The full goal is one statement — the second entry of every row of the
 prime iterated-absolute-difference triangle lies in `{0,2}`. This ladder
 switches off the named difficulties one at a time and climbs back up.
