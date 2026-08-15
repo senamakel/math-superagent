@@ -350,6 +350,15 @@ run already established is how a role avoids re-establishing it. See
 [*Recall: the two ways back into what is known*](docs/roles.md#recall-the-two-ways-back-into-what-is-known)
 for who is excluded and why.
 
+A large document is read in parts, enforced rather than asked for. An unselected
+`read_document` over 24 KiB returns the file's outline instead of the file;
+`section` and `lines` read one part; `grep_workspace` finds which part to read;
+`map_document` answers a question about a whole file by reading it in chunks
+with separate model calls, so the source never reaches the caller. Its answer is
+asserted, never established — checked against the lines it cites before it is
+filed. [`docs/workspace.md`](docs/workspace.md#reading-what-does-not-fit) has the
+4.7 MB library and the 107,000-token file that set the ceiling.
+
 For a new tool:
 
 - define a narrow JSON schema with required fields and no extra properties;

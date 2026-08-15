@@ -67,7 +67,7 @@ const MAX_CHUNKS: usize = 60;
 const CONCURRENCY: usize = 6;
 
 /// How long one sub-call is given.
-const CALL_TIMEOUT: Duration = Duration::from_secs(180);
+const CALL_TIMEOUT: Duration = Duration::from_mins(3);
 
 /// Tokens one chunk's finding may run to.
 const CHUNK_TOKENS: u32 = 700;

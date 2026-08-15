@@ -238,12 +238,34 @@ fn an_oversized_unselected_read_is_answered_with_navigation() {
 
 #[test]
 fn an_outline_of_a_very_long_document_is_itself_bounded() {
-    let doc = (1..=400)
-        .map(|n| format!("## Section {n}\nbody\n"))
-        .collect::<String>();
+    let doc = (1..=400).fold(String::new(), |mut doc, n| {
+        use std::fmt::Write as _;
+        let _ = writeln!(doc, "## Section {n}\nbody");
+        doc
+    });
 
     let rendered = render("many.md", &doc);
 
     assert!(rendered.contains("further sections"), "{rendered}");
     assert!(rendered.len() < 20_000, "{} bytes", rendered.len());
+}
+
+#[test]
+fn a_section_no_single_read_can_cover_is_marked_as_such() {
+    // A derived ledger is one heading over a thousand-line table, so "read this
+    // section" is not always something one call can do. An unmarked map would
+    // send the reader into a truncation it did not expect.
+    let doc = "## Table\n".to_string() + &("| a long row |".repeat(40) + "\n").repeat(200);
+
+    let rendered = render("ledger.md", &doc);
+
+    assert!(rendered.contains("[over one read]"), "{rendered}");
+    assert!(rendered.contains("map_document"), "{rendered}");
+}
+
+#[test]
+fn a_document_of_ordinary_sections_carries_no_such_warning() {
+    let rendered = render("paper.md", PAPER);
+
+    assert!(!rendered.contains("over one read"), "{rendered}");
 }

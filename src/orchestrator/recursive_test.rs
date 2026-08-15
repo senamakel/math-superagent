@@ -8,7 +8,7 @@ use async_trait::async_trait;
 use serde_json::json;
 use tinyagents::harness::model::{ChatModel, ModelRequest, ModelResponse, ModelStream};
 
-use super::{CHUNK_BYTES, MapTool, chunk};
+use super::{CHUNK_BYTES, chunk};
 use crate::agent::{Result, Tool, ToolCall};
 use crate::orchestrator::documents::WorkspaceDocuments;
 
@@ -61,7 +61,7 @@ impl ChatModel<()> for ScriptedModel {
         let rendered = request
             .messages
             .iter()
-            .map(|message| message.text())
+            .map(crate::agent::Message::text)
             .collect::<Vec<_>>()
             .join("\n");
         let first = {

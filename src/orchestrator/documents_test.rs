@@ -786,9 +786,11 @@ async fn an_unselected_read_of_a_large_document_answers_with_its_outline() -> Re
     // context window by accident. Nothing is hidden — every byte is still
     // reachable one named range at a time.
     let documents = WorkspaceDocuments::new(workspace("read-large")?)?;
-    let body: String = (1..=400)
-        .map(|n| format!("## Section {n}\n{}\n", "prose ".repeat(20)))
-        .collect();
+    let body = (1..=400).fold(String::new(), |mut body, n| {
+        use std::fmt::Write as _;
+        let _ = writeln!(body, "## Section {n}\n{}", "prose ".repeat(20));
+        body
+    });
     documents.write_document("research/sources/big.md", &body).await?;
 
     let out =
@@ -803,9 +805,11 @@ async fn an_unselected_read_of_a_large_document_answers_with_its_outline() -> Re
 #[tokio::test]
 async fn a_selected_read_of_a_large_document_returns_that_part_with_coordinates() -> Result<()> {
     let documents = WorkspaceDocuments::new(workspace("read-selected")?)?;
-    let body: String = (1..=400)
-        .map(|n| format!("## Section {n}\nbody of {n}\n"))
-        .collect();
+    let body = (1..=400).fold(String::new(), |mut body, n| {
+        use std::fmt::Write as _;
+        let _ = writeln!(body, "## Section {n}\nbody of {n}");
+        body
+    });
     documents.write_document("research/sources/big.md", &body).await?;
 
     let out = read_through_tool(

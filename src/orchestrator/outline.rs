@@ -273,11 +273,22 @@ pub(super) fn render(relative: &str, content: &str) -> String {
         sections.len()
     );
     let shown = sections.len().min(MAX_ROWS);
+    let mut oversized = false;
     for section in sections.iter().take(shown) {
         let indent = "  ".repeat(section.level.saturating_sub(1).min(4));
+        // A derived ledger is one heading over a thousand-line table, so
+        // "read this section" is not always a thing one call can do. Saying
+        // which sections those are is the difference between a map and a map
+        // with the impassable parts left unmarked.
+        let note = if section.bytes > MAX_SLICE_BYTES {
+            oversized = true;
+            "  [over one read]"
+        } else {
+            ""
+        };
         let _ = writeln!(
             out,
-            "  {:>11}  {:>8}  {indent}{}",
+            "  {:>11}  {:>8}  {indent}{}{note}",
             format!("{}-{}", section.first_line, section.last_line),
             section.bytes,
             section.title
@@ -294,6 +305,13 @@ pub(super) fn render(relative: &str, content: &str) -> String {
         "\nRead one region: read_document with `section` (a heading, matched by substring) \
          or `lines` (\"120-260\").\n",
     );
+    if oversized {
+        out.push_str(
+            "A section marked [over one read] does not fit in one call — reach it by line range, \
+             find the rows you want with grep_workspace, or ask map_document a question about it \
+             instead.\n",
+        );
+    }
     out
 }
 
