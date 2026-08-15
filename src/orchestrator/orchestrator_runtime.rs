@@ -566,11 +566,25 @@ impl OrchestratorAgent {
         directives: &[solutions::Mailbox],
     ) -> Vec<teams::TeamHandle> {
         let mut handles = Vec::new();
+        // Scoped exactly as a lane's is, and for a reason that cost a live run
+        // its whole steering channel. With two or more schools every role is
+        // registered *only* school-qualified, so a bare `director` is unknown,
+        // the gate below skipped all three standing teams, and it did so
+        // silently: the run looked healthy, the librarian and pattern spend in
+        // the trace came from the loop's own arms, and seven operator
+        // directives sat unread behind a cursor that never moved for an hour.
+        // One school's registration is the right handle because these teams
+        // serve the whole run — the directive queue keeps its single consumer,
+        // so the team must run as some one school rather than each.
+        let subagents = match self.schools.split_first() {
+            Some((first, rest)) if !rest.is_empty() => self.subagents.for_school(first.slug),
+            _ => self.subagents.clone(),
+        };
         for (name, agent, completion, budget, brief) in standing_teams() {
-            if !self.subagents.knows(agent) {
+            if !subagents.knows(agent) {
                 continue;
             }
-            let subagents = self.subagents.clone();
+            let subagents = subagents.clone();
             let workspace = self.workspace.clone();
             let outbox = patterns.to_vec();
             let direction = directives.to_vec();

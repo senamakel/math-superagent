@@ -992,3 +992,34 @@ fn only_the_roles_that_report_may_post_to_the_board() {
         );
     }
 }
+
+/// Every standing team's agent is registered when several schools run.
+///
+/// The gate in `spawn_support_teams` is a bare-name lookup, and a multi-school
+/// registry holds only school-qualified ids. A live three-school run therefore
+/// started none of its standing teams — no director, so seven operator
+/// directives sat unread for an hour behind a cursor that never moved, and the
+/// run looked entirely healthy while it happened. The failure is silent by
+/// construction (`continue`), so it needs a test rather than an assertion in
+/// the path.
+#[test]
+fn a_multi_school_registry_still_declares_every_standing_team() -> agent::Result<()> {
+    use super::{schooled_registry, schools, standing_teams};
+
+    let selected = schools::ALL;
+    let registry = schooled_registry(true, &selected)?;
+    let declared: Vec<String> = registry
+        .definitions()
+        .iter()
+        .map(|definition| definition.id.clone())
+        .collect();
+    for (name, agent, ..) in standing_teams() {
+        let qualified = selected[0].role(agent);
+        assert!(
+            declared.contains(&qualified),
+            "the {name} team's agent `{agent}` must be registered as `{qualified}`; \
+             a bare-name lookup finds nothing in a multi-school registry"
+        );
+    }
+    Ok(())
+}
