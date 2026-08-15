@@ -4,6 +4,23 @@ Derived from the citations inside every document this run has downloaded, and re
 
 Ranked by how many of the library's sources cite it, then by how closely the citing sentence matches the goal. A **cited by** count above one means independent sources agree it is the reference for the subject, which is worth more than any single search ranking. A ~~struck-through~~ row is already in the library — do not download it again.
 
+## Pruning rule (Directive 46, in force)
+
+The library is CLOSED except for the single G-supply request in
+`research/REQUESTS.md` (prime gaps mod 4 / Chebyshev bias in gap residues).
+Mark as **not-worth-fetching** every candidate that is another pass over the
+Gilbreath / Proth / Ducci corpus: that corpus is already digested and its dead
+ends are recorded (p-adic Ducci uses the p-adic norm, not the integer |a−b| map;
+the Zenodo "resolutions" are cranks; Proth 1878 is a retracted myth).
+Re-fetching them cannot change any of that — including rows already held under a
+different URL (Odlyzko 1993, Killgrove–Ralston 1959, Proth 1878, Wikipedia /
+MathWorld Gilbreath pages).
+
+The only rows worth fetching now are the **prime-gap-mod-4 / consecutive-prime
+residue-bias** rows (the rows whose "found researching" cite the mod-4 switch
+bound: Shiu 2000, Lau 2024, Lemke Oliver–Soundararajan, Ruzsa, and their
+neighbours). A paper on prime gaps mod 4 is worth ten more Gilbreath surveys.
+
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
 | 6 | http://browsehappy.com/ | upgrade your browser | Local Condition: How much of the triangle do we really need to watch? \| Zenodo Skip to main You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience.… |

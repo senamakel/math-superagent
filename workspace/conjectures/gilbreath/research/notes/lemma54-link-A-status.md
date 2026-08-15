@@ -30,8 +30,11 @@ BHP demand side, and `research/notes/lemma54-discarded-case-is-universal.md`
 `code/out/verify_lemma54_v_le_gstar.py` — the **Link A** bound entry
 (`v <= g*_n` by induction: |a-b| <= max(a,b), so no diagonal step exceeds the
 record gap) and its composition (`g*_n <= 2*nu2+2 => v <= g*_n <= 2*nu2+2 =>
-x_L in {0,2} => success`). There is **no `verify_lemma54_v_le_gstar.captured.txt`**
-in `code/out/`. The Link-A proof itself is elementary (a one-line induction,
+x_L in {0,2} => success`). **Directive 45:** `code/out/verify_lemma54_v_le_gstar.captured.txt` and
+`.captured2.txt` DO exist but are **vacuous** — the column loop ran over 0
+columns (`checked: 0`, `max margin 0.000`), because the {0,2}-suffix scan
+breaks on the terminal left-column entry 1 before finding any start. Link A
+remains **unverified** until fixed and re-run. The Link-A proof itself is elementary (a one-line induction,
 already argued in the script's comments and consistent with the non-increasing
 row max), but **it has not been machine-verified in-container**. Do not report
 the full composition as `checked`; it is `asserted` (elementary proof) plus the

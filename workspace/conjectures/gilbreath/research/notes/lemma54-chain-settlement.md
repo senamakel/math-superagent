@@ -63,8 +63,10 @@ is immaterial once a positive-linear supply bound holds (any β < 1 suffices).
 ## The one still-truly-open cosmetic item
 
 `code/out/verify_lemma54_v_le_gstar.py` (Link A: `v ≤ g*_n` by the elementary
-`|a−b| ≤ max(a,b)` induction) still has **no captured output** on disk, so the
-*g*-composed* form of Lemma 5.4's sufficiency is `asserted`, not `checked`, even
-though the abstract lemma and the served-v form are proved/checked. This does not
+`|a−b| ≤ max(a,b)` induction) has **two captures on disk but they are vacuous** (Directive 45: `checked: 0`,
+`max margin 0.000` — the suffix scan breaks on the terminal left-column 1), so
+the *g*-composed* form of Lemma 5.4's sufficiency is **unverified**, not
+`checked`, even though the abstract lemma and the served-v form are
+proved/checked. This does not
 block Route B: the real-prime application measures `v_n` directly rather than via
 g*. Worth running if a coder touches it, but not a live gap.

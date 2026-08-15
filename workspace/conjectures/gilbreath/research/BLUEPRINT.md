@@ -86,4 +86,4 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `ducci-avart-nilpotent-concatenation` | claim | **ready** | — | (Avart 2011, Thm 4.1) Over Z2, a vector is nilpotent under the cyclic Ducci map iff it is the concatenation of several copies of a vector… |
 | `ducci-classical-nilpotence-iff-power-of-2` | claim | **ready** | — | (Ciamberlini–Marengoni 1937, quoted and reproved in Chamberland 2003 Thm 1.1, Calkin–Stevens–Thomas 2005, Glaser–Schöffl 1995) For the… |
 
-_139 further nodes not shown._
+_140 further nodes not shown._

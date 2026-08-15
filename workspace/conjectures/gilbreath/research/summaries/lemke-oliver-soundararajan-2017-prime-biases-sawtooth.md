@@ -77,7 +77,7 @@ statement: Lemke Oliver & Soundararajan 2017 (arXiv:1709.06168): for the consecu
 hypotheses: q prime (for the theorem scope; the paper confines to prime q); the c2 coefficient recovers the pattern bias off-diagonal term; these are q→∞ large-modulus distributional statements.
 holds-here: partially — the one-sided-bias-is-impossible lesson transfers to the fixed q=4 gap≡2(mod4) switch count feeding ν₂, but the theorems themselves are large-q and do not give the fixed-q=4 switch count.
 status: proved (theorems proved in the paper, full text read)
-bearing: Rule B supply side: supports the conclusion that the honest ν₂ deliverable is a fluctuation bound at GRH/LI + Hardy–Littlewood/Dedekind-sum level, never a one-sided unconditional density; does NOT prove ν₂ ≥ n^{0.525+δ}, which remains open.
+bearing: Route B supply side: supports the conclusion that the honest ν₂ deliverable is a fluctuation bound at GRH/LI + Hardy–Littlewood/Dedekind-sum level, never a one-sided unconditional density; does NOT prove ν₂ ≥ n^{0.525+δ}, which remains open.
 anchor: research/sources/lemke-oliver-soundararajan-2017-prime-biases-sawtooth.full.md
 answers: what-named-machinery-supplies-nu2
 ```
