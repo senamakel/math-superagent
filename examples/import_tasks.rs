@@ -79,6 +79,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut queue = String::new();
     for task in &tasks {
         let mut fields = serde_json::Map::new();
+        // The id lives inside `fields`, not beside it. The tasks ledger declares
+        // a field named `id` with role `id` and requires it, so an entry that
+        // carries the id only at the top level parses as an entry with no id at
+        // all — and the engine reports every such row under "Entries that could
+        // not be read" rather than dropping it. A live migrated workspace put
+        // all eight of its open tasks there, so the run could not see its own
+        // queue while the file looked perfectly well-formed.
+        fields.insert("id".into(), task.id.clone().into());
         fields.insert("title".into(), task.title.clone().into());
         if !task.detail.is_empty() {
             fields.insert("detail".into(), task.detail.clone().into());
