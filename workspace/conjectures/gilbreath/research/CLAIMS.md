@@ -69,7 +69,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `gilbreath-polynomials-imply-gc` | (Riccardo Gatti, Mathematics 2023, 11(18), 4006, doi 10.3390/math11184006 — author CONFIRMED, affiliation INBB/Eldor Lab Bologna, 7 pages, RePEc record held) In the "Gilbreath equation / Gilbreath polynomials"… | **unchecked** | asserted | `research/notes/library-state.md` |
 | `gilbreath-reduces-to-second-in-02` | The shape (odd, even, even, ...) is preserved by the absolute-difference operator on the prime rows, and A_k(0)=1 for all k>=1 iff A_k(1) in {0,2} for all k>=1. Hence Gilbreath's conjecture is equivalent to "the second… | yes | proved | `research/notes/reduction.md` |
 
-_74 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_75 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -77,6 +77,7 @@ Resolve these before building on either side.
 
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-myth-retracted`
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-citation-correction`
+- `lemma54-rederived` (research/notes/lemma54-re-derived.md) contradicts `lemma54-discarded-case-universal`
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `odlyzko-block-lemma-asserted`
 
 ## Load-bearing but unverified

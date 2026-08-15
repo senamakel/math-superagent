@@ -29,17 +29,17 @@ implies: |
       g*_n ≤ 2·ν₂(q_{n-1}) + 2, then q_1..q_n succeeds. The load-bearing step is the exact budget:
       the gray-block entry evolves v → |v − t| over the 0-2 cycle entries t ∈ {0,2}; t=0 is a no-op
       and t=2 is the map (0↦2, 2↦0, 2m↦2(m−1)) on evens, so after ν₂ two-steps the final entry lies
-      in {0,2} ⟺ v_n ≤ 2ν₂ + 2; and v_n ≤ g*_n − 2 (Granville Lemma 5.3(8)).
+      in {0,2} ⟺ v_n ≤ 2ν₂ + 2; and v_n ≤ g*_n (Granville Lemma 5.3(8) for τ_n ≥ 2; v_n = g_n ≤ g*_n for τ_n = 1).
 
   (3) SUPPLY  [GN-supply-nu2-density, OPEN]  ν₂(q_{n-1}) > n^{0.526} for all large n
       (any fixed β > 0.525 works).
 
   COMBINE:  choose ε = 0.0005. For n large, g*_n < n^{0.5255} < n^{0.526} < ν₂(q_{n-1}) ≤ 2ν₂(q_{n-1}) + 2,
   so Lemma 5.4 turns "q_1..q_{n-1} successful" into "q_1..q_n successful". Strong induction on n
-  from the verified base (the run's own depth 1000, or the literature's 10^13–10^15, which lies past
-  any BHP threshold) gives every finite prefix successful, i.e. A_k(0) = 1 for all k ≥ 1. The
-  discharged reduction gilbreath-reduces-to-second-in-02 supplies the equivalent {0,2} second-entry
-  form; the Lean IFF gilbreath-second-entry-equivalence certifies the equivalence.
+  from a verified base past the (implicit, so to-be-checked) BHP/supply thresholds — the run's own
+  depth 1000, or the literature's 10^13–10^15 — gives every finite prefix successful, i.e. A_k(0) = 1
+  for all k ≥ 1. The discharged reduction gilbreath-reduces-to-second-in-02 supplies the equivalent
+  {0,2} second-entry form; the Lean IFF gilbreath-second-entry-equivalence certifies the equivalence.
 status: sketched
 rests-on: gilbreath-reduces-to-second-in-02, gilbreath-second-entry-equivalence, step-law-theorem-proved, verification-record-2026
 ```
@@ -65,9 +65,11 @@ next: |
        t = 0 is the identity; t = 2 is the map (0 ↦ 2, 2 ↦ 0, 2m ↦ 2(m−1) for m ≥ 2) on even integers.
     2. Hence 0-entries drop out (no-ops), and only the count ν₂ of 2s matters: after ν₂ two-steps the
        value is in {0,2} ⟺ v_n ≤ 2ν₂ + 2 (boundary v_n = 2ν₂ + 2 lands on 2; v_n < 2ν₂+2 oscillates in {0,2}).
-    3. By Granville Lemma 5.3(8), v_n = δ_{τ_n}(q_n) ≤ g*_n − 2 for τ_n ≥ 2, so g*_n ≤ 2ν₂ + 2 forces
-       v_n ≤ 2ν₂; then δ_{n-1}(q_n) = |δ_{n-2}(q_n) − 1| = 1. (Edge case τ_n = 1 means g_n ∈ {0,2},
-       trivially v_n ≤ 2ν₂ + 2.)
+    3. By Granville Lemma 5.3(8), v_n = δ_{τ_n}(q_n) ≤ g*_n − 2 when τ_n ≥ 2, and v_n = δ_1(q_n) = g_n ≤ g*_n
+       when τ_n = 1 (the yellow value is then the new gap itself). Either way g*_n ≤ 2ν₂ + 2 forces
+       v_n ≤ 2ν₂ + 2, so by step 2 the last gray-block entry e_{n-2} lies in {0,2}; then
+       δ_{n-1}(q_n) = |e_{n-2} − d_{n-2}| = |e_{n-2} − 1| = 1, since d_{n-2} = 1 is the successful
+       bottom entry of δ(q_{n-1}).
 
   theorem_prover / lean_prover task: formalise this budget against the existing
   code/lean/gilbreath_reduction.lean (Step operator), report #print axioms and zero sorry.

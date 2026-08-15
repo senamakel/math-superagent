@@ -72,4 +72,4 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `ducci-max-factoring-potential-template` | claim | **ready** | — | (Chamberland 2003, Thm 3.2 proof) The standard Ducci convergence engine is the pair: (i) the maximum of a string at most doubles in two… |
 | `ducci-pascal-mod2-rule90` | claim | **ready** | — | (Glaser–Schöffl 1995, Thm 1; Avart 2011; Calkin–Stevens–Thomas 2005 §2) The cyclic Ducci map over Z2 is linear, D = (I + shift), D^n(x) =… |
 
-_104 further nodes not shown._
+_105 further nodes not shown._
