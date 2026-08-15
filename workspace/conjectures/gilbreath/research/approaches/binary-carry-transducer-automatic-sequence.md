@@ -19,7 +19,37 @@ mechanism: |
   "the left edge is bounded" from a per-cell dynamical question into an
   algebraicity / finite-kernel question, which is a direct-invariant route —
   it aims to force A_k(1) ∈ {0,2} without tracking blocks at all.
-status: proposed
+status: refuted
+killed-by: |
+  The load-bearing hypothesis — that the iterated triangle (or its second
+  column) is a finite-state function of bounded-many base-2 digits, i.e. a
+  2-automatic or k-regular sequence — FAILS for the prime input, which is the
+  canonical non-automatic sequence. Hartmanis–Shank 1968 (JACM 15(3),
+  doi:10.1145/321466.321470) proved neither the primes nor any infinite subset
+  of primes is recognised by a finite (or pushdown) automaton; Dubbe 2024
+  (arXiv:2409.04314) caps the automaticity at ≥ x·exp(−c(log log x)^2
+  log log log x), near-maximal, i.e. primes are far from automatic. Since every
+  Gilbreath cell A_k(i) is a finite-state function of the binary digits of its
+  feeding gap ancestors, and those gaps are functions of the primes, the second
+  column inherits non-automaticity from the primes unless the absolute-difference
+  iteration *cancels* it — which is exactly the unproved conjecture. Hence
+  Christol's theorem (automatic over F_q ⟺ algebraic over F_q(t)) and Cobham's
+  theorem (multiplicatively-independent multi-base automatic ⟹ eventually
+  periodic) cannot be invoked: their input hypothesis (automaticity) fails here.
+  The transducer part (|a−b| is finite-state) is elementary and survives, but it
+  is the wrong object: a transducer over *automatic* inputs is a k-regular map,
+  and the automaticity of the *input* is the entire content that fails. The
+  refinement in the file's own first-step (compute the 2-kernel of the second
+  column's coarse symbol sequence) would still be a legitimate MEASUREMENT — if
+  the 2-kernel shown is finite for depth 1000, that is a depth-1000 fact about
+  the triangle, not a theorem, and the finite kernel would not survive the
+  (non-automatic) primes past the computed depth. Precedent: Hartmanis–Shank
+  1968 (doi 10.1145/321466.321470); Rigo "Recognizable sets of integers"
+  (Schützenberger 1968: no infinite subset of primes is automatic; primes not
+  k-recognizable); Dubbe 2024 arXiv:2409.04314; Allouche–Shallit
+  automatic/k-regular Ch. 4–5; Christol's theorem (Bridy; Adamczewski–Bostan–
+  Caruso 2023 arXiv:2306.02640 multivariate; half-notes). Claim ids: none held —
+  this is new grounding, recorded in memory.
 first-step: |
   (a) Write the explicit base-2 transducer for (a,b) ↦ |a−b| (comparator ×
   borrow-subtractor) and machine-verify it equals |a−b| for all a,b < 2^12.

@@ -20,16 +20,35 @@ even. Define `x_0 = v`, `x_s = |x_{s−1} − c_s|` for `s = 1..L`, and let
    for all `t ≥ s`.
 
 **Proof.** `x_s` is always even and non-negative (`0 ≤ c ≤ 2`, and `x` even
-stays even under `|x−c|`). While `x ≥ 2`, a `c = 2` step maps `x ↦ |x−2| = x−2`
-(no bounce, since `x ≥ 2`), and a `c = 0` step maps `x ↦ x`. So the value
-descends by **exactly 2** per `c=2` step until it reaches `{0,2}`, and is
-unchanged by `c=0` steps. To reach `≤ 2` from even `v` requires `⌈(v−2)/2⌉`
-descents, i.e. `(v−2)/2` of them since `v` is even. There are exactly `ν₂`
-such steps available. Hence enough descents exist (⟺ `ν₂ ≥ (v−2)/2` ⟺
-`v ≤ 2ν₂+2`) iff the trajectory reaches `{0,2}`. If `v > 2ν₂+2`, then even
-after all `ν₂` descents `v − 2ν₂ ≥ 4`, so the value never falls to `{0,2}` and
-the final value is exactly `v − 2ν₂` (monotone non-increasing, all steps
-`≥ 4`). For absorption: `|0−c| ∈ {0,2}` and `|2−c| ∈ {0,2}` for `c ∈ {0,2}`. ∎
+stays even under `|x−c|`). Split on whether the trajectory ever reaches `{0,2}`:
+
+- **Branch A (absorption):** if some `x_t ≤ 2` (t ≤ L), then `x_t ∈ {0,2}`
+  (even, non-negative), and `{0,2}` is absorbing: `|0−c| ∈ {0,2}` and
+  `|2−c| ∈ {0,2}` for `c ∈ {0,2}`. Hence `x_L ∈ {0,2}`. This is the δ=0 case
+  Granville's published proof discards as an "exception" — here it is the
+  mechanism, not an exception. It supplies the (←) direction and the
+  absorption claim (3).
+- **Branch B (descent):** otherwise `x_s ≥ 4` for every `s`. Then no bounce
+  occurs: `c=2` maps `x ↦ |x−2| = x−2` (since `x ≥ 2`) and `c=0` fixes `x`,
+  so `x_L = v − 2ν₂` exactly (monotone). If `v ≤ 2ν₂+2`, then `x_L ≤ 2`,
+  contradicting the standing `x_L ≥ 4`; so under the hypothesis the descent
+  regime cannot persist, and Branch A must hold — giving the (→) direction.
+  If `v > 2ν₂+2`, then `v − 2ν₂ ≥ 4`, so Branch B persists throughout and
+  `x_L = v − 2ν₂ ≥ 4` (the runway / tightness direction). This is the repair:
+  the old algebra "after the ν₂ twos, δ = v − 2ν₂" is false on bounce
+  trajectories (e.g. `v=0, ε=(2,2,2)` gives `0→2→0→2` while `v−2ν₂=−6`); the
+  case split never applies the subtraction outside Branch B. ∎
+
+The halved form (cleanest for proof and formalisation): `e ∈ {0,1}^L`, trajectory
+`d_0=w`, `d_{k+1}=|d_k−e_k|`, `ν₁=#{1s}`. Claims: `w≤ν₁+1 ⟹ d_L∈{0,1}`,
+`w>ν₁+1 ⟹ d_L=w−ν₁` exactly, `{0,1}` absorbing. The proof's engine is the
+unconditional invariant: every value is either `w−(#ones so far)` or in
+`{0,1}`. **Lean-formalised sorry-free** at `code/lean/descent_lemma.lean`
+(compiled=true, verified=true, zero sorryAx; `#print axioms` = only
+propext/Classical.choice/Quot.sound). Exhaustively machine-checked in halved
+units (12,582,900 `(pattern,w)` pairs, L≤18, 0 violations) and unhalved
+(11,534,328 pairs, L≤18, 0 violations); the even-unit reproduction matches the
+prior capture pair-for-pair.
 
 ### Application (Granville's right-diagonal coordinates)
 
@@ -85,19 +104,35 @@ The whole of route B now rests on a single open density statement:
 
 ## Honest status
 
-- **Proved:** the descent/absorption lemma (general theorem, hand proof); the
-  reduction `GC ⟺ second entry ∈ {0,2}` (Lean, sorry-free, prior run);
-  block lemma constant 1; step law + recharge identity; Rule 90 interior;
-  edge-map invertibility.
+- **Proved + Lean-formalised (this attempt):** the sharpened descent/absorption
+  lemma (general theorem, case-split proof in halved units) — sorry-free in
+  `code/lean/descent_lemma.lean`, exhaustively verified (12.58M halved pairs
+  + 11.53M unhalved pairs, 0 violations). This repairs the written-proof defect
+  of Directive 43/44: the δ=0 case is absorption (Branch A), not an exception,
+  and the tight exact value `w−ν₁` is proved (Branch B), not assumed.
+- **Proved (prior runs):** the reduction `GC ⟺ second entry ∈ {0,2}` (Lean,
+  sorry-free); block lemma constant 1; step law + recharge identity; Rule 90
+  interior; edge-map invertibility.
 - **Validated non-vacuously (both directions):** Lemma 5.4's full statement on
-  synthetic failing sequences.
-- **Open, the entire remaining content:** the ν₂ density lower bound (G-supply),
-  equivalently a prime-gap-mod-4 frequency bound. This is exactly the
-  regeneration-rate question, reformulated in diagonal coordinates — not a new
-  theorem to build but the same open quantity.
+  synthetic failing sequences (30 genuinely failing columns).
+- **The passage from real column dynamics to the (pattern,v) model is EXACT**
+  (a theorem): the pattern is read off the prefix-determined previous diagonal,
+  independent of the new column's values — reduction_audit Part 1 (45150 cells)
+  and model-match (49.87M positions) all 0 violations.
+- **Open, the entire remaining content:** the ν₂ density lower bound (G-supply
+  `ν₂ > n^β`, β>0.525, equivalently ν₂ ≥ c·n), a prime-gap-mod-4 frequency
+  bound that is a NAMED OPEN problem in analytic number theory (no
+  unconditional linear lower bound on the mod-4 switch count exists). Route B
+  is therefore a conditional theorem with a precisely identified open
+  hypothesis — not a proof of Gilbreath.
 
 ## Files
 
+- `code/gap_analysis/descent_halved_verify.py` + `code/out/descent_halved_verify.captured.txt` (new, this attempt)
+- `code/gap_analysis/descent_absorption_case_split.py` + `code/out/descent_absorption_case_split.captured.txt`
+- `code/gap_analysis/reduction_audit_d_investigate.py` + `code/out/reduction_audit_d_investigate.captured.txt` + `code/out/reduction_audit_d_notes.md` (the 1133 diagonal-cycle drops are a transversality artifact, not a counterexample)
+- `code/lean/descent_lemma.lean` (Lean 4 formalisation, sorry-free, `#print axioms` reported)
+- `research/notes/lemma54-descent-proof-repaired.md` (the case-split proof, this attempt)
 - `code/gap_analysis/lemma54_failing_sisters.py` + `code/out/lemma54_failing_sisters.captured.txt`
 - `code/gap_analysis/nu2_vs_gap_parity.py` + `code/out/nu2_vs_gap_parity.captured.txt`
 - `code/lemma54_descent_check.py` + `code/out/lemma54_descent_check.captured.txt` (pre-existing, re-verified)

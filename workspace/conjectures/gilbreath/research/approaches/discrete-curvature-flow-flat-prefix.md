@@ -20,7 +20,42 @@ mechanism: |
   the flow h ↦ |∂h| regenerates a flat prefix — a discrete Grayson-type
   "convexity preservation" statement, of which Gilbreath's conjecture is the
   left-edge corollary.
-status: proposed
+status: refuted
+killed-by: |
+  The named mathematics is real and well-documented, but its hypotheses fail
+  here on three independent grounds. (1) The curvature-flow machinery that
+  exists is for LINEAR second-order flows: Chow–Glickenstein's semi-discrete
+  curve-shortening flow (2007) and its boundary/polyharmonic extensions are
+  first-order systems of linear ODEs with explicit Fourier solutions; Domokos
+  2014 (J. Nonlinear Sci, doi:10.1007/s00332-014-9228-3) proves monotone
+  decrease of the number of spatial critical points under curvature-driven
+  flows, generalising Grayson's Lemma 1.9. But the Gilbreath map h ↦ |∂h| is
+  NOT linear — the absolute value sits inside the difference, so there is no
+  Laplacian, no Fourier diagonalisation, and no explicit-solution machinery to
+  import. (2) Grayson's theorem itself is a genuinely 2D statement (embedded
+  planar curves convexify then round under mean curvature); no 1D discrete
+  analogue equal to |∂h| exists in the literature, and no source connects
+  iterated absolute differences to any curvature flow. (3) Even granting a
+  curvature reading, the mechanism "flat prefix always persists/regenerates" is
+  exactly the bounded-absorption claim that Eppstein 2011 (held claim
+  anti-gilbreath-construction) refutes for the 2-then-odds class: flat prefixes
+  die and re-merge infinitely often with gaps ≤ f(n). The file's own
+  falsification step — measuring whether *any* curvature functional actually
+  decreases across the 60 real regenerations before invoking theory — is the
+  correct discipline and was not run here; but the literature already shows the
+  only available named flow is linear and the regeneration claim is defeated in
+  the general class, so the analogy is decorative rather than structural.
+  Precedent: Chow–Glickenstein semi-discrete curvature flow (2007) and its
+  extensions (Geom. Dedicata 2026 boundary flows; J. Geom. Anal. 2025
+  polyharmonic); Nakayama–Segur–Wadati 1997 discrete curve-shortening equation
+  (with Lyapunov); Domokos 2014 doi:10.1007/s00332-014-9228-3 (critical-point
+  monotonicity, generalising Grayson 1987 Lemma 1.9); Eppstein 2011
+  (anti-gilbreath-construction, held claim). No source applies any curvature
+  flow to the iterated absolute-difference operator. Verdict: refuted — the name
+  is grounded, the specific flow is linear and the regeneration claim fails in
+  the general class. This is a reformulation that changes the setting, and must
+  satisfy Scholze's gate: it cannot reproduce any settled result, so it is not
+  worth adopting.
 first-step: |
   (a) Verify the exact bijection "block of row k+1 = longest 1-Lipschitz
   prefix of h_k" on the oracle rows (blocks_depth1000.json, depth 1000);

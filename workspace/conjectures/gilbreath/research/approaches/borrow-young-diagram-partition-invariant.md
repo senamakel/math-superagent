@@ -20,7 +20,51 @@ mechanism: |
   shape is monotone and its first row bounds the left-edge value, the
   conjecture is the statement that this first row stays below a fixed length —
   a direct-invariant route with no block tracking.
-status: proposed
+status: refuted
+killed-by: |
+  Could-not-find plus a decisive structural mismatch, so marked refuted rather
+  than grounded. The named mathematics is real: Diaconis–Fulman's treatment of
+  carries in base-b *addition* (2008 arXiv:0806.3583, 2009 arXiv:0902.0179)
+  shows the carry sequence is a Markov chain whose stationary measure is
+  Eulerian and which reconciles with riffle-shuffle descents, symmetric
+  functions and (via RSK) Young-diagram structure; Borodin–Diaconis–Fulman 2010
+  (Bull AMS) make carries a one-dependent determinantal process; Diaconis–Fulman
+  2013 (Adv. Appl. Math., balanced carries) reach a Hopf-algebra / Young
+  framework. But these carries are the carries of base-b *ADDITION of many
+  random numbers* — a column-wise, probabilistic, measure-carrying process. The
+  min(a,b) branch of |a−b| = a + b − 2·min(a,b) is a single-step *subtraction
+  borrow* (or absorption correction), not an addition carry: different object,
+  no Markov/measure/Eulerian structure, no reconciliation with descents or
+  shuffles. No literature connects subtraction borrows (nor the min-branch sites
+  across an iterated-absolute-difference triangle) to Young diagrams, dominance
+  order, or a monotone partition. The proposal's two hypotheses — downward-
+  closedness of the min-branch site set, and dominance monotonicity of its
+  boundary shape — are asserted by the file itself as unverified, and the
+  searches returned no precedent for either. So this is not a known theory the
+  approach could invoke: it is an original conjecture that the literature does
+  not support and whose only named relative (Diaconis–Fulman addition carries)
+  is the wrong structure. The dominance/Young machinery found (Young's lattice,
+  dominance poset chain lengths, symmetric chain decompositions, Schur-operator
+  up/down algebras, plactic/RSK insertion) is about partitions under containment
+  and insertion, none of which is the borrow-shape of subtraction. Note this is
+  refuted on absence-plus-mismatch, not on a single-variable counterexample: the
+  file's first-step oracle check (compute min-branch site subset on the real
+  depth-1000 rows; test downward-closedness and dominance monotonicity) remains
+  a legitimate cheap falsification test and should be run before any residual
+  value is claimed — but the burden is on the inventor to show the borrow-shape
+  is a Young diagram, and nothing in the literature does.
+  Precedent: Diaconis–Fulman arXiv:0806.3583, arXiv:0902.0179; Borodin–Diaconis–
+  Fulman 2010 (Bull. AMS 47, doi:10.1090/S0273-0979-2010-01306-9);
+  Diaconis–Fulman 2013 balanced carries (Adv. Appl. Math. 59:8–25); dominance
+  poset (Discrete Math. chain-lengths S0012365X13002537); Young's-lattice
+  up/down and Schur operators (Liu–Smith, Electron. J. Comb. 2021); plactic /
+  RSK insertion. None is a theory of subtraction-borrow shapes.
+precedent: Diaconis–Fulman arXiv:0806.3583 and arXiv:0902.0179 (carries = Eulerian
+  / shuffles / symmetric functions); Borodin–Diaconis–Fulman Bull. AMS 2010
+  (determinantal carries); Diaconis–Fulman 2013 balanced carries (Adv. Appl.
+  Math. 59:8–25); dominance-poset literature (Discrete Math. 2013/2014 chain
+  lengths); Young's-lattice operators (Liu–Smith, Electron. J. Combin. 2021).
+  Claims: none held (new grounding); recorded in memory.
 first-step: |
   Compute the min-branch site subset S = {(k,i) : the min(a,b) branch was taken
   at cell (k,i)} for the depth-1000 prime triangle (blocks_depth1000.json,
