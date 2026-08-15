@@ -27,8 +27,9 @@ implies: |
   while y=4 (triggering regeneration) before the block dies, and G-balance
   ensures the surplus never falls to zero.
 
-status: sketched
+status: broken
 rests-on: gilbreath-reduces-to-second-in-02, step-law-theorem-proved, odlyzko-block-lemma-exact, closure-0d-double-edge, rule90-interior-xor
+killed-by: its closing rung G-balance (per-event j ≥ d) is REFUTED at depth 1000 — claim g-balance-per-event-refuted (transition 26: j=1 < d=2; j=0 stalls after d=2; j=1 after d=4). The surviving weak form Σj_i ≥ total erosion is the conjecture restated, so the three lemmas do not recombine into the goal. Superseded by regeneration-sufficiency.md, which drops G-balance and composes the edge factor out of a proved claim (edge-interior-invertibility-sharpened).
 ```
 
 ```gap
@@ -101,14 +102,12 @@ lemma: |
   i.e., total jump mass exceeds total erosion between first and last event.
   This is equivalent to b_{k_n+1} ≥ b_{k_1}, i.e., the block does not
   shrink over the long term. Verified to depth 1000 (b_1000 ≈ 1.27e6 ≫ b_1 = 2).
-status: open
+status: refuted
 next: |
-  Compute j_i and the preceding erosion-run length d_i for each of the
-  60 events in the depth-1000 data. Report the pairs (d_i, j_i), the
-  cumulative Σ(j_i − d_i), and whether j_i ≥ d_i holds for every event.
-  If it holds, G-balance is numerically supported and the theoretical
-  step is: prove that a (2,4)-event at the boundary of a {0,2} block
-  draws its jump size from the structure of the next several columns,
-  which have been "pre-processed" by the same number of erosion rows.
-  A tool_builder task: code/gap_analysis/jump_vs_erosion.py.
+  REFUTED by g-balance-per-event-refuted: on the prime rows to depth 1000,
+  transition 26 (871->872) has jump j=1 against d=2 erosion rows since the
+  previous event; j=0 stalls occur after d=2 and j=1 after d=4. The per-event
+  bound does not hold. Its weak aggregate form (Σj_i ≥ total erosion) is the
+  recharge identity restated — not a reduction. See regeneration-sufficiency.md
+  for the corrected decomposition that does not need this rung.
 ```

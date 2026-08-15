@@ -1,0 +1,53 @@
+Granville right-diagonal reduction identity audit (real primes)
+==============================================================================
+sieve to 2000000: 148933 primes (need >= 302)
+
+Part 1: v_{k+1}=|v_k - eps_k| identity, eps fixed
+  cells checked (spanning k=0..n-1 over n=1..300): 45150
+  identity violations: 0   (expect 0)
+  => identity is CONFIRMED over 45150 cells, 0 violations (expect 0)
+
+Part 2: descent-model biconditional on real columns
+  columns checked (n=20..300): 281
+  columns whose terminal x_L lands in {0,2}: 281
+  biconditional violations (x_L in {0,2} <=> v <= 2*nu2+2): 0   (expect 0)
+  runway contradictions (v > 2*nu2+2 yet x_L in {0,2}): 0   (expect 0)
+
+  sample (n, nu2, v, 2*nu2+2, xL) over checked columns:
+    n= 20  nu2=  14  v=   2  budget=   30  x_L=   2  [land]  pred=True
+    n= 29  nu2=  12  v=   2  budget=   26  x_L=   2  [land]  pred=True
+    n= 38  nu2=  15  v=   2  budget=   32  x_L=   0  [land]  pred=True
+    n= 47  nu2=  18  v=   6  budget=   38  x_L=   2  [land]  pred=True
+    n= 56  nu2=  25  v=   4  budget=   52  x_L=   2  [land]  pred=True
+    n= 65  nu2=  26  v=   2  budget=   54  x_L=   2  [land]  pred=True
+    n= 74  nu2=  32  v=   4  budget=   66  x_L=   0  [land]  pred=True
+    n= 83  nu2=  38  v=   6  budget=   78  x_L=   2  [land]  pred=True
+    n= 92  nu2=  44  v=   0  budget=   90  x_L=   0  [land]  pred=True
+    n=101  nu2=  43  v=   4  budget=   88  x_L=   2  [land]  pred=True
+    n=110  nu2=  54  v=   0  budget=  110  x_L=   0  [land]  pred=True
+    n=119  nu2=  59  v=   2  budget=  120  x_L=   0  [land]  pred=True
+    n=128  nu2=  56  v=   2  budget=  114  x_L=   2  [land]  pred=True
+    n=137  nu2=  69  v=   6  budget=  140  x_L=   0  [land]  pred=True
+    n=146  nu2=  56  v=   0  budget=  114  x_L=   0  [land]  pred=True
+    n=155  nu2=  75  v=   0  budget=  152  x_L=   2  [land]  pred=True
+    n=164  nu2=  83  v=   2  budget=  168  x_L=   0  [land]  pred=True
+    n=173  nu2=  73  v=   4  budget=  148  x_L=   2  [land]  pred=True
+    n=182  nu2=  88  v=   4  budget=  178  x_L=   0  [land]  pred=True
+    n=191  nu2=  89  v=   4  budget=  180  x_L=   2  [land]  pred=True
+    n=200  nu2= 106  v=   4  budget=  214  x_L=   0  [land]  pred=True
+    n=209  nu2= 103  v=   4  budget=  208  x_L=   2  [land]  pred=True
+    n=218  nu2=  95  v=   2  budget=  192  x_L=   0  [land]  pred=True
+    n=227  nu2= 119  v=   0  budget=  240  x_L=   2  [land]  pred=True
+    n=236  nu2= 124  v=   6  budget=  250  x_L=   2  [land]  pred=True
+    n=245  nu2= 117  v=   4  budget=  236  x_L=   2  [land]  pred=True
+    n=254  nu2= 129  v=   6  budget=  260  x_L=   0  [land]  pred=True
+    n=263  nu2= 135  v=   4  budget=  272  x_L=   2  [land]  pred=True
+    n=272  nu2= 133  v=   4  budget=  268  x_L=   2  [land]  pred=True
+    n=281  nu2= 137  v=   4  budget=  276  x_L=   2  [land]  pred=True
+    n=290  nu2= 136  v=   2  budget=  274  x_L=   2  [land]  pred=True
+    n=299  nu2= 132  v=   0  budget=  266  x_L=   0  [land]  pred=True
+
+==============================================================================
+IDENTITY VERIFICATION: 45150 cells, 0 violations (expect 0)
+BICONDITIONAL: 281 columns, 0 violations (expect 0)
+VERDICT: The passage from real column dynamics to the (pattern, v) descent model is CONFIRMED over the cross-check and 281 real columns with 0 violations.

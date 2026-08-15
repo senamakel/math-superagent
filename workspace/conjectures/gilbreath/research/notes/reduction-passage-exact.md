@@ -47,6 +47,35 @@ O(N^2) exact abs-diffs, O(N) memory):
   2,7,13,13,24,23,22,21,24,58,97,96` matches the established record — and all
   10001 prime prefixes are successful (bottom = 1).
 
+## Three-line proof (Directive 48 item 1) — now a proved claim
+
+The fixedness clause is not merely machine-checked; it is a *definitional
+fact*.  With the right diagonal indexed as `delta_k(q_n) = A_k[n-k-1]`
+(k = 0..n-1), the triangle recurrence `A_k[i] = |A_{k-1}[i] - A_{k-1}[i+1]|`
+at `i = n-k-1` gives, for each k >= 1,
+
+    delta_k(q_n) = |A_{k-1}[n-k] - A_{k-1}[n-k-1]|
+                 = | delta_{k-1}(q_n) - delta_{k-1}(q_{n-1}) |.
+
+By locality of absolute differencing the first `n-k-1` entries of row `k` are
+unchanged if the top row is extended past the prefix, so the eps cell
+`delta_{k-1}(q_{n-1})` is a function of `q_1..q_{n-1}` only; `q_n` appears in
+`delta(q_n)` solely at the bottom cell `delta_{n-1}(q_n) = A_{n-1}[0]`.  Hence
+the `{0,2}` cycle and `nu2` are fixed in advance — no cycle-position eps
+depends on the trajectory.  This kills the Directive 38 circularity worry in
+three lines.  Full write-up: `research/notes/prefix-determinism-proof.md`;
+machine check `code/out/prefix_determinism_proof_check.py` +
+`code/out/prefix_determinism.captured.txt`:
+
+- Part 1 (identity cell by cell, n=2..200, real primes): **19,900 positions,
+  0 mismatches**.
+- Part 2 (eps prefix-locality, 3 distinct continuations per fixed prefix,
+  n=3..200): **59,697 positions, 0 mismatches**.
+
+**`reduction-passage-exact` is PROVED** (the identity *is* the recurrence),
+machine-checked over the stated ranges only — no "theorem/proved" wording in
+captured output (Directive 51).
+
 ## What this closes and what stays open
 
 - **CLOSED (Directive 41 fixedness concern):** `nu2` is prefix-determined, so
@@ -68,6 +97,6 @@ hypotheses: 2-then-odds input (all gaps after the first even); exact integer ari
 holds-here: yes (real prime triangle, N=10001, oracle reproduces problem.md rows)
 status: checked (0 model mismatches over 49,873,204 positions)
 bearing: Route B reduction — closes the fixedness gap in granville-nu2-reduction.md; the only open content of Route B remains the supply side nu2 > n^beta.
-anchor: code/gap_analysis/reduction_audit.py, code/out/reduction_audit.captured.txt, code/gap_analysis/block_constant_diagonal.py, code/out/block_constant_diagonal.captured.txt
+anchor: code/gap_analysis/reduction_audit.py, code/out/reduction_audit.captured.txt, code/gap_analysis/block_constant_diagonal.py, code/out/block_constant_diagonal.captured.txt, research/notes/prefix-determinism-proof.md, code/out/prefix_determinism_proof_check.py, code/out/prefix_determinism.captured.txt
 answers: verifies the fixedness clause Directive 41 asked to name
 ```

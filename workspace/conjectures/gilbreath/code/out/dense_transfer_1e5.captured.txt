@@ -14,3 +14,21 @@ n= 65000 nu2= 32382  w= 37376  nu2/w=0.866  fluc/denom=0.278
 n= 70000 nu2= 34970  w= 40250  nu2/w=0.869  fluc/denom=0.068
 n= 75000 nu2= 37724  w= 43128  nu2/w=0.875  fluc/denom=0.488
 n= 80000 nu2= 39760  w= 46004  nu2/w=0.864  fluc/denom=0.505
+n= 85000 nu2= 42528  w= 48824  nu2/w=0.871  fluc/denom=0.057
+n= 90000 nu2= 44906  w= 51675  nu2/w=0.869  fluc/denom=0.186
+n= 95000 nu2= 47587  w= 54500  nu2/w=0.873  fluc/denom=0.167
+n=100000 nu2= 50109  w= 57360  nu2/w=0.874  fluc/denom=0.203
+
+== dense nu2<->w transfer to N=100000 (sieve 1500000, 114155 primes) ==
+sieve 0.1s, incremental diagonal 343.7s
+
+(1) nu2 >= 0.5*w for n in [17, 100000]: YES  first falsifier: None
+    count nu2<0.5*w over [1,100000] = 5 ; over [17,100000] = 0
+
+(2) nu2 >= 0.75*w for n in [4000, 100000]: YES  first falsifier: None
+    count nu2<0.75*w over [4000,100000] = 0
+
+(3) min nu2/w over n>=17       = 0.500000 at n=44
+    min nu2/w over n>=4000     = 0.800473 at n=4278
+
+(4) worst |2*nu2 - n|/sqrt(n log n) = 1.698644 at n=4  (|2*nu2-n| = 4)

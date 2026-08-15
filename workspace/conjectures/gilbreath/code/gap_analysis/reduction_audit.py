@@ -249,7 +249,7 @@ def main():
         print("(D) diagonal-coordinate constant-1 erosion law HOLDS here (0 violations).")
     else:
         print("(D) NOTE: diagonal-coordinate constant-1 erosion law REFUTED here: "
-              f"{erosion_viol} violations.  Does NOT touch the proved row-"
+              f"{erosion_viol} violations.  Does NOT touch the CONFIRMED row-"
               "direction block lemma (b_{k+1} >= b_k - 1, 0 violations).")
     print(f"(D) distribution over extensions n=3..{N}: "
           f"erode-by-1={dec}, stay={same}, regenerate(grow)={grow}")
@@ -263,7 +263,23 @@ def main():
     if N >= 300:
         n2 = c[N]
         # nu2 = number of 2s in the cycle; report cycle length only as proxy.
-    print("ALL AUDIT CHECKS PASSED")
+    # (E) sanity: nu2 of 0-2 cycle density
+    # ---- final aggregate ----------------------------------------------
+    # PASSED only when every check passes.  Checks (A) and (B) are asserted
+    # to zero; (D) is REPORTED, NOT ASSERTED: its diagonal-coordinate
+    # constant-1 erosion law is REFUTED here (erosion_viol violations over
+    # N-2 extensions).  (D) measures the {0,2}-suffix of an anti-diagonal,
+    # a quantity transversal to a row's leading {0,2} block, so it does NOT
+    # touch the row-direction block lemma b_{k+1} >= b_k - 1, which is
+    # CONFIRMED separately with 0 violations
+    # (code/gap_analysis/separate_row_vs_diagonal.py).
+    if erosion_viol == 0:
+        print("ALL AUDIT CHECKS PASSED")
+    else:
+        print(f"AUDIT RESULT: (D) diagonal-coordinate constant-1 erosion law "
+              f"REFUTED here ({erosion_viol} violations over {N - 2} extensions); "
+              f"all other checks (A,B,C) PASSED over cross-check and model-match "
+              f"with 0 violations.")
 
 if __name__ == "__main__":
     main()

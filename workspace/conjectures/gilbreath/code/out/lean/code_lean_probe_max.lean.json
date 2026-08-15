@@ -1,0 +1,9 @@
+{
+  "axioms": [
+    "'maxAll_ge' depends on axioms: [propext]"
+  ],
+  "compiled": true,
+  "file": "code/lean/probe_max.lean",
+  "sorries": [],
+  "verified": true
+}

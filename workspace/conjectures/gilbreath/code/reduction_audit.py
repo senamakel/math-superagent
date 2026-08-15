@@ -87,7 +87,7 @@ def main():
         print(f"    FIRST VIOLATION  n={n} k={k}: delta_{k+1}={lhs} "
               f"!= |delta_k(q_n)={a} - delta_k(q_{n-1})={b}|")
     print("  => identity is " +
-          ("MACHINE-CONFIRMED (a theorem by construction, 0 violations)"
+          (f"CONFIRMED over {total_cells} cells, {identity_viol} violations (expect 0)"
            if identity_viol == 0 else "VIOLATED"))
 
     # ---- Part 2: descent-model biconditional over all columns -------------
@@ -151,8 +151,9 @@ def main():
     print(f"IDENTITY VERIFICATION: {total_cells} cells, "
           f"{identity_viol} violations (expect 0)")
     print(f"BICONDITIONAL: {n_checked} columns, {bicond_viol} violations (expect 0)")
-    print("VERDICT: " + ("The passage from real column dynamics to the (pattern, v) "
-                         "descent model is MACHINE-CONFIRMED as a theorem on real rows."
+    print("VERDICT: " + (f"The passage from real column dynamics to the (pattern, v) "
+                         f"descent model is CONFIRMED over the cross-check and "
+                         f"{n_checked} real columns with 0 violations."
                          if ok else "discrepancy found — see above"))
     return 0 if ok else 1
 

@@ -69,7 +69,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `gatti-2020-not-load-bearing` | gatti-2020-preprints-gilbreath-conditions (doi 10.20944/preprints202003.0145.v1, 8 Mar 2020, 10pp, NOT PEER-REVIEWED, 0 views 0 downloads 0 comments) is a claimed "proof of conditions" for GC via a global… | **unchecked** | asserted | `research/notes/library-state.md` |
 | `gatti-2020-parity-alternation-independent` | In any Gilbreath sequence, s_1 even ⟹ s_2..s_n all odd, s_1 odd ⟹ s_2..s_n all even (Gatti Lemmas 1–3, proved by induction on the extension equation) — an independent general-class statement of the parity alternation… | yes | checked | `research/summaries/gatti-2020-preprints-gilbreath-conditions.md` |
 
-_123 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_122 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 

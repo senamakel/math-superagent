@@ -53,13 +53,18 @@ def maxAll : List Nat → Nat
   | e :: rest => max e (maxAll rest)
 
 -- Every element of a list is at most its maxAll.
-lemma maxAll_ge : ∀ el : List Nat, ∀ e : Nat, e ∈ el → e ≤ maxAll el
-  | [], e, he => by simp at he
-  | a :: rest, e, he => by
-      cases he with
-      | head => exact le_max_left a (maxAll rest)
-      | tail hrest =>
-          exact le_trans (maxAll_ge rest e hrest) (le_max_right a (maxAll rest))
+lemma maxAll_ge : ∀ el : List Nat, ∀ e : Nat, e ∈ el → e ≤ maxAll el := by
+  intro el
+  induction el with
+  | nil =>
+      intro e he
+      simp at he
+  | cons a rest ih =>
+      intro e he
+      rcases List.mem_cons.mp he with heq | hrest
+      · subst e
+        simp [maxAll]
+      · exact le_trans (ih e hrest) (le_max_right a (maxAll rest))
 
 -- ===========================================================================
 -- The generic orbit invariant (Link A, combinatorial core):

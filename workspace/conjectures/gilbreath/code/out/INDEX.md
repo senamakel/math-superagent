@@ -198,6 +198,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_w_density.py` | _(undescribed)_ |
 | `pattern_finder_wider_giants.captured.txt` | _(undescribed)_ |
 | `prefix_closure_bigram.captured.txt` | _(undescribed)_ |
+| `prefix_determinism_proof_check.py` | Machine check for the prefix-determinism identity (Directive 48 item 1): Part 1 verifies delta_k(q_n) = |delta_{k-1}(q_n) - delta_{k-1}(q_{n-1})| cell by cell on real primes n=2..200 (19,900 cells, 0 violations); Part 2 verifies the descent eps delta_{k-1}(q_{n-1}) is prefix-local by appending 3 distinct continuations q_n per fixed prefix over n=3..200 (59,697 positions, 0 violations). Exact integers via lib.gilbreath.rows_generator; capture code/out/prefix_determinism.captured.txt. |
 | `reconcile_lemma54_NOTE.md` | _(undescribed)_ |
 | `reduction_audit.captured.txt` | _(undescribed)_ |
 | `reduction_audit_d_investigate.captured.txt` | _(undescribed)_ |

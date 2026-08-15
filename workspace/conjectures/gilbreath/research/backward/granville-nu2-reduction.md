@@ -25,7 +25,7 @@ implies: |
       record gap g*_n = max(g_2, ..., g_n) satisfies g*_n < n^{0.525+ε}
       (Baker–Harman–Pintz 2001 gives p_{n+1} − p_n ≪ p_n^{0.525}; p_n ~ n log n absorbs the log factor).
 
-  (2) RUNWAY  [GN-lemma54-runway, OPEN]  If q_1..q_{n-1} is valid and successful and
+  (2) RUNWAY  [GN-lemma54-runway, DISCHARGED]  If q_1..q_{n-1} is valid and successful and
       g*_n ≤ 2·ν₂(q_{n-1}) + 2, then q_1..q_n succeeds. The load-bearing step is the exact budget:
       the gray-block entry evolves v → |v − t| over the 0-2 cycle entries t ∈ {0,2}; t=0 is a no-op
       and t=2 is the map (0↦2, 2↦0, 2m↦2(m−1)) on evens, so after ν₂ two-steps the final entry lies

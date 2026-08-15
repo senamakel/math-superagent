@@ -22,7 +22,7 @@ operator, not about primality.
 goal: For the prime Gilbreath triangle, the count ν₂(q_n) of 2s in the maximal {0,2} suffix (0-2 cycle) of the right diagonal through q_n satisfies ν₂(q_n) > n^β with β = 0.526 for all sufficiently large n. This is the supply side of Granville's Theorem 5.5 reduction; its demand side is already unconditional, so this bound proves Gilbreath's conjecture.
 implies: Induct on n over the right diagonals (the `implies` of granville-nu2-reduction). At the step extending the successful prefix q_1..q_{n-1} to q_n, Lemma 5.4 (DISCHARGED, lemma54-re-derived-proof) turns the budget g*_n ≤ 2·ν₂(q_{n-1}) + 2 into success of q_n. That budget holds because g*_n ≤ n^{0.525+ε} (DISCHARGED, GN-demand-record-gap-bhp, BHP) while ν₂(q_{n-1}) ≥ (2/3)·w(n−1) [G-supply-transfer] ≥ (2/3)·2(n−1)^{0.526} = (4/3)(n−1)^{0.526} > (n−1)^{0.526} [G-supply-mod4-frequency], so 2·ν₂(q_{n-1}) + 2 > 2(n−1)^{0.526} > n^{0.525+ε} for ε < 0.001 and n large (the exponent gap 0.526 > 0.525 is the whole point). Base case n = 2, 3 is direct. Hence every finite prime prefix is successful, and by gilbreath-reduces-to-second-in-02 this is Gilbreath's conjecture.
 status: sketched
-rests-on: gilbreath-reduces-to-second-in-02, lemma54-re-derived-proof, GN-demand-record-gap-bhp, rule90-interior-xor
+rests-on: gilbreath-reduces-to-second-in-02, lemma54-re-derived-proof, gap-bounds-cannot-force-block-growth, rule90-interior-xor
 ```
 
 ```gap

@@ -1,0 +1,14 @@
+primes used: 10001 (largest prime 104743)
+oracle rows: A1=[1, 2, 2, 4, 2, 4, 2, 4, 6, 2] match=True
+oracle rows: A2=[1, 0, 2, 2, 2, 2, 2, 2, 4] match=True
+oracle rows: A3=[1, 2, 0, 0, 0, 0, 0, 2] match=True
+(A) diagonal-bottom vs full-triangle cross-check mismatch count over n=1..20: 0
+(A) extended cross-check n=21..50 mismatch count: 0
+(B) MODEL MATCH over 0-2 cycle positions: checked 49873204, mismatches (against the |x-eps| law) 0
+(C) FIXEDNESS: 5 prefixes tested with 2 different odd extensions; pattern eps on the 0-2 cycle is read from delta(q_{n-1}) so identical for both (prefix-determined) -- by the recurrence identity.
+(D) constant-1 erosion law c_n >= c_{n-1} - 1: violations 1133 over 9999 extensions
+(D) NOTE: diagonal-coordinate constant-1 erosion law REFUTED here: 1133 violations.  Does NOT touch the CONFIRMED row-direction block lemma (b_{k+1} >= b_k - 1, 0 violations).
+(D) distribution over extensions n=3..10001: erode-by-1=765, stay=1951, regenerate(grow)=6150
+(D) c_n (0-2 cycle length of delta(q_n), n=2..12): [0, 1, 2, 2, 4, 4, 6, 6, 7, 7, 8]
+(D) c_1000=991 c_5000=4986 c_10000=9990
+AUDIT RESULT: (D) diagonal-coordinate constant-1 erosion law REFUTED here (1133 violations over 9999 extensions); all other checks (A,B,C) PASSED over cross-check and model-match with 0 violations.
