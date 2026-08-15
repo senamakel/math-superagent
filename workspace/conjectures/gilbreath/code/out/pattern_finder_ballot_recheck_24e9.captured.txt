@@ -1,0 +1,6 @@
+sieve to 2400000000: 116818447 primes (59.0s)
+ballot e(n)>=0 over n in [1,116818445]: YES
+global min e = 1 at n=1; zero-dips count=0
+global min e/n = 0.09858 at n=116817571
+final e(116818445) = 11515823
+time 86.9s

@@ -1,0 +1,9 @@
+len b = 1000
+Traceback (most recent call last):
+  File "/workspace/code/out/bm_blockprofile.py", line 68, in <module>
+    C, L = bm_exact(b)
+           ^^^^^^^^^^^
+  File "/workspace/code/out/bm_blockprofile.py", line 53, in bm_exact
+    C[i+m+j] -= coef * B[j]
+    ~^^^^^^^
+IndexError: list index out of range

@@ -238,7 +238,23 @@ fn check(entries: &mut Entries, spec: &LedgerSpec) {
             match declared {
                 Check::RequiredField => {
                     for field in spec.fields.iter().filter(|field| field.required) {
-                        if entry.get(&field.name).trim().is_empty() {
+                        // The id is the entry's identity and lives *beside* the
+                        // fields, not inside them: every queue event names it at
+                        // the top level and an event without one is dropped
+                        // before it reaches here. So looking for it in `fields`
+                        // fails for every well-formed entry, and a spec that
+                        // declares its id field required — as `tasks` does —
+                        // reports each of its own rows unreadable. A live
+                        // workspace had all eight of its open tasks under
+                        // "Entries that could not be read" while the queue was
+                        // perfectly valid, and the run could not see its own
+                        // work.
+                        let present = if field.role == super::spec::Role::Id {
+                            !entry.id.trim().is_empty()
+                        } else {
+                            !entry.get(&field.name).trim().is_empty()
+                        };
+                        if !present {
                             faults.push(format!(
                                 "`{}` has no `{}`, which this ledger requires",
                                 entry.id, field.name

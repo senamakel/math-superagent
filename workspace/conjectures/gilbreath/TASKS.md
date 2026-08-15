@@ -17,6 +17,8 @@ In order. Work the first one you can.
   - detail: 5. State G-supply as a conditional theorem with the named-open hypothesis (the two-point consecutive-prime mod-4 correlation bound; claim abgs-2011-s9-mod4-switch-limit-open), then — and only then — search the single named target (MathOverflow 34669) against the G-supply row in research/REQUESTS.md.
 - `fix-link-a-import-of-descent-lemma` — Fix link_a.lean import: import descent_lemma instead of redefining runAbs
   - detail: Directive 53. link_a.lean currently redefines runAbs because 'import descent_lemma' fails with unknown module prefix. Two Lean files agreeing by convention rather than by construction is a defect: the moment one changes, the composition theorem silently breaks. Fix the module prefix so link_a.lean imports descent_lemma.lean's runAbs (and countOnes if needed) directly, and confirm both still kernel-check sorry-free after the change. Prerequisite to formalise-the-composition-g-n-2-2-v-g-n-success.
+- `f2-matrix-covering-bound-m-n` — F₂ matrix covering bound: wt(M_n h) ≥ (2/3) wt(h) — prime-free, provable half of G-supply
+  - detail: Priority from Directive 54. Write down the explicit F₂ matrix M_n with wt(M_n h) = ν₂(q_n), where h is the halved-gap bit vector h_j = (g_j/2) mod 2 over the fixed ancestor interval [2, n−1]. This is pure F₂ linear algebra (Rule-90/XOR, rule90-interior-xor, proved). Then prove wt(M_n h) ≥ (2/3) wt(h) from the structure of M_n — the union-of-windows fact says every input bit lands in ≥ 1 tail coordinate, and the target 2/3 is a covering / double-counting statement. First move: exhaustively compute the exact worst-case ratio min_{h≠0} wt(M_n h)/wt(h) for n ≤ 20 (2^{n−2} ≤ 2^{18} vectors,…
 
 ## Do not do
 
@@ -73,3 +75,9 @@ Finished, with what came of it. Kept, because a run that cannot see what it alre
 - `rewrite-audit-verdict` — Rewrite audit verdict line (Directive 51)
   - detail: Directive 51 third recurrence closed. The defective wording lived in TWO files: code/reduction_audit.py (root) printing 'MACHINE-CONFIRMED as a theorem', and code/gap_analysis/reduction_audit.py printing unconditional 'ALL AUDIT CHECKS PASSED' even when (D) REFUTED (1133 violations). Both sources already corrected on disk; fresh re-runs confirm. New verdict 'CONFIRMED over the cross-check and 281 real columns with 0 violations' (no banned words); (D)-refuted now prints 'AUDIT RESULT... REFUTED here', not PASSED. Re-captured to reduction_audit.captured2.txt and…
   - reason: Both code/reduction_audit.py and code/gap_analysis/reduction_audit.py corrected (verdict line and (D)-refuted exit logic); re-captured to reduction_audit.captured2.txt with no theorem/proved/proves wording.
+
+## Entries that could not be read
+
+Reported rather than dropped: an entry silently discarded leaves the ledger reading as though it recorded something.
+
+- `f2-matrix-covering-bound-m-n` has no `id`, which this ledger requires

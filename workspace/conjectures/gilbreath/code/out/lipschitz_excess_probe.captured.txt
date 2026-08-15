@@ -25,3 +25,25 @@ depth reached = 999, width(row0) = 1270607, time 119.9s
     (excess 'budget' reading: E(row k) is the store that a regeneration
      must draw on; total E across rows vs total events)
     time 42.6s
+
+=== SIEVE 3e8 depth 240 ===
+depth reached = 239, width(row0) = 16252325, time 201.2s
+(a) E non-increasing: first increase at row k=3  (of 239 transitions)
+    increase triples (k, dE, E_prev, E_k): [(3, 4, 2, 6), (18, 2, 2, 4), (22, 2, 2, 4), (25, 2, 2, 4), (37, 6, 2, 8), (56, 2, 2, 4), (63, 2, 2, 4), (67, 2, 2, 4)]
+    max dE over all transitions = 50
+    all dE<=0 count = 219 of 239
+(b) identity lnz(k)==bprof(k+1) violations = [] (total 0)
+(c) min E over live rows (b>=1) = 0
+    live rows with E<1: total 3 of 240, first [237, 238, 239]
+    min E over ALL rows = 0
+    min b over all rows = 2 at rows [0]
+
+=== SIEVE 3e8 depth 240 (events) ===
+(d) EROSION steps: up=18 down=60 flat=133
+    (2,4)-EVENT steps: up=2 down=5 flat=21  total events=28
+    dE at events: min=-2 max=2
+    sum dE at events = -6
+(e) total E over all rows = 1944, total events = 28
+    (excess 'budget' reading: E(row k) is the store that a regeneration
+     must draw on; total E across rows vs total events)
+    time 134.2s

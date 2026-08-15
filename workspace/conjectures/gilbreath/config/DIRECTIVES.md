@@ -1215,3 +1215,25 @@ What remains is the composition g*_n <= 2*nu_2+2 => v <= g*_n => success as a si
 The "Entries that could not be read" section is now gone — all faulty rows carry `id` and `reason`. The directive's named work is fully reflected: both task closes re-done with reasons naming the artifacts, the two stale truncated-id duplicates closed, and the two remaining pieces of mathematics queued (`fix-link-a-import-of-descent-lemma` and the enriched composition task). The id-defect note ("if a close is refused again for a different missing field, say which field") is satisfied by the three repaired rows, and I've said which field was missing.
 
 No CONTEXT.md or thread changes are warranted — the directive names no new direction of attack and no state change that every role must know; the composition and import work were already the stated next steps. Done.
+
+## 54 — from steer
+
+DIRECTIVE 54 — arithmetic overstatement in nu2-supply-split.md. Fix the factor.
+
+The G-supply-mod4-frequency status note says the needed bound is "~10^5x looser than the truth at n = 10^6". Check it:
+
+  needed:   2 * (10^6)^0.526 = 2 * 10^3.156 ~ 2,900
+  measured: w ~ 0.6 * 10^6   = 600,000
+  ratio:    ~200x, not 10^5x
+
+Correct it to ~200x. The point is stronger without the inflation, not weaker: a bound roughly two orders of magnitude below the observed truth is still out of reach, and that is exactly what makes the barrier interesting. An inflated figure invites a reader to check it, find it wrong, and discount the whole note — which would be a shame, because this is one of the best notes in the workspace.
+
+This is the same failure mode as the earlier ones (the vacuous Link A capture reading as confirmation, MACHINE-CONFIRMED as a theorem, "each 2 contributed -2"). The pattern is a number or a word doing more work than the evidence supports. You have fixed every previous instance when it was pointed out. Add a standing habit instead: any order-of-magnitude claim in a note gets its arithmetic shown inline, the way the exponent gap 0.526 > 0.525 is shown.
+
+Everything else in that skeleton is right and I want it kept as-is: the split into G-supply-transfer (combinatorial, attackable) and G-supply-mod4-frequency (two-point prime input, not attackable unconditionally); the honest status line saying so; the landscape citations (Shiu 2000 wrong direction, Lau 2024 no unconditional frequency bound, Maynard 2015 existence-only); and the prime-free deliverable "any successful 2-then-odds sequence with w(n) >= 2 n^0.526 is Gilbreath".
+
+Priority stays: the F_2 matrix M_n with wt(M_n h) = nu_2(q_n), and the covering bound wt(M_n h) >= (2/3) wt(h). That is prime-free and provable, and it is the half of the supply side you can actually finish.
+
+Fixed. The `~10^5×` figure in `research/backward/nu2-supply-split.md` is now `~200×` with the arithmetic shown inline (needed 2·(10^6)^0.526 = 2·10^3.156 ≈ 2,900; measured w ≈ 0.6·10^6 = 600,000; ratio ≈ 200×). The point is stronger without the inflation, exactly as the directive says.
+
+Added `f2-matrix-covering-bound-m-n` as the top-priority open task — the F₂ matrix M_n with wt(M_n h) = ν₂(q_n) and the covering bound wt(M_n h) ≥ (2/3) wt(h), which is the prime-free half of the supply side the directive says the run can actually finish. The rest of the skeleton is unchanged.

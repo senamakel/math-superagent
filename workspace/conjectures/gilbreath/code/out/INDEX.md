@@ -180,6 +180,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_6e8_giants.captured.txt` | _(undescribed)_ |
 | `pattern_finder_attack_transfer.captured.txt` | _(undescribed)_ |
 | `pattern_finder_attack_transfer.py` | _(undescribed)_ |
+| `pattern_finder_ballot_recheck.captured.txt` | _(undescribed)_ |
+| `pattern_finder_ballot_recheck.py` | Independent fresh-sieve recheck of the mod-4 switch-majority ballot e(n)>=0 for consecutive prime pairs, plus worst-case slack min e/n; the condensation of Route B's supply-side open content. Fresh results in pattern_finder_ballot_recheck.captured.txt. |
+| `pattern_finder_ballot_recheck_1e9.captured.txt` | Captured output of the 1e9 fresh-sieve ballot recheck: e(n)>=0 over all n in [1,50847532], min e/n=0.10214, final e=5,193,722. |
+| `pattern_finder_ballot_recheck_24e9.captured.txt` | Captured 2.4e9 fresh-sieve ballot check: e(n)>=0 over all n in [1,116818445], 0 dips, final e=11,515,823, worst-case slack min e/n=0.09858 — the deepest pointwise-prefix verification of the mod-4 switch-majority ballot (Route B supply side). |
 | `pattern_finder_boundary.captured.txt` | _(undescribed)_ |
 | `pattern_finder_compose_linear.captured.txt` | _(undescribed)_ |
 | `pattern_finder_compose_linear.py` | _(undescribed)_ |
@@ -218,6 +222,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `reconcile_lemma54_NOTE.md` | _(undescribed)_ |
 | `reduction_audit.captured.txt` | _(undescribed)_ |
 | `reduction_audit.captured2.txt` | _(undescribed)_ |
+| `reduction_audit.recapture.txt` | Fresh capture of code/gap_analysis/reduction_audit.py audit of the Granville right-diagonal reduction identity. EXIT_CODE=0. Oracle rows A1/A2/A3 reproduced exactly; (A) diagonal-bottom vs full-triangle cross-check 0 mismatches (n=1..20 and 21..50); (B) model match of delta_k(q_n)=|delta_{k-1}(q_n)-eps_{k-1}| over 49,873,204 0-2-cycle positions, 0 mismatches; (C) prefix-determinism fixedness confirmed; (D) diagonal-coordinate constant-1 erosion law REFUTED (1133 violations over 9999 extensions), correctly NOT printed as PASSED, and scoped as not touching the row-direction block lemma. This is the Directive 51 verdict-line fix re-captured: a refutation prints REFUTED, never PASSED. |
 | `reduction_audit_corrected.captured.txt` | Fresh re-capture of code/reduction_audit.py (sieve 2e6, M=300) after fixing the audit VERDICT wording. The source already carried the corrected factual line ("CONFIRMED over the cross-check and 281 real columns with 0 violations"); the "MACHINE-CONFIRMED as a theorem" defect survived only in the stale reduction_audit.captured.txt. This new file (not overwriting the defective capture, per directive) shows identity CONFIRMED over 45150 cells and biconditional CONFIRMED over 281 columns, 0 violations, verdict line factual with no 'theorem'. Solves TASKS.md 'rewrite-the-audit-verdict-line' item. |
 | `reduction_audit_d_investigate.captured.txt` | _(undescribed)_ |
 | `reduction_audit_d_notes.md` | _(undescribed)_ |
@@ -243,6 +248,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `run_candidate_premises.sh` | _(undescribed)_ |
 | `run_lemma54_linkA.sh` | _(undescribed)_ |
 | `run_reproduce_A080839.sh` | _(undescribed)_ |
+| `run_scholar_descent.sh` | _(undescribed)_ |
 | `run_verify.sh` | _(undescribed)_ |
 | `runall.sh` | _(undescribed)_ |
 | `runner1.captured.txt` | _(undescribed)_ |
@@ -251,8 +257,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `runner3.py` | _(undescribed)_ |
 | `s1_fork_resolution.md` | Exact negative that closes the S1 transfer fork: the universal ν₂≥w/2 claim is false — no positive constant works (string [2,4,4,…] gives ν₂=0,w=1), so the Route B supply bound must carry the two-point mod-4 gap density (S2) content and cannot be split into a number-theory-free transfer. |
 | `scholar_digest_verify.py` | _(undescribed)_ |
+| `scholar_independent_descent_check.py` | _(undescribed)_ |
 | `scholar_oracle_check.py` | Scholar trust-anchor check: asserts the oracle generator (lib/gilbreath.py) reproduces the five worked rows A_1..A_5 of problem.md exactly. The on-disk capture oracle_depth600.captured.txt confirms match=True for all five and the (odd, even,...) shape + second-entry in {0,2} to depth 600. |
 | `scholar_oracle_run.py` | Extended scholar trust-anchor runner: reproduces A_1..A_5 from the oracle and additionally re-verifies the leading-1 / second-entry-in-{0,2} / (odd,even,...) shape to depth 100, an independent live re-execution of what oracle_depth600.captured.txt recorded. |
+| `scholar_run_malyshev.sh` | _(undescribed)_ |
 | `separate_row_vs_diagonal.captured.txt` | _(undescribed)_ |
 | `sequence_dump.txt` | _(undescribed)_ |
 | `sequence_extract.captured.txt` | _(undescribed)_ |

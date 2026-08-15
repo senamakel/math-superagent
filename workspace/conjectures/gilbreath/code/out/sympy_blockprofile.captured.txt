@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/workspace/code/out/sympy_blockprofile.py", line 2, in <module>
+    from sympy import find_linear_recurrence, symbols
+ImportError: cannot import name 'find_linear_recurrence' from 'sympy' (/usr/lib/python3/dist-packages/sympy/__init__.py)

@@ -1,5 +1,17 @@
 # Library build report — librarian verification cycle (2026)
 
+## Cycle 3 audit (librarian): closure re-verified through search_documents and the canonical tier
+
+Ran `search_documents` and read the canonical-tier summaries (Odlyzko 1993, Killgrove–Ralston 1959, Proth 1878, Plouffe 2025, Colonna 2026, MathOverflow thread) plus the route-bearing full-text digests (Granville 2026 FULLPDF, CHT 2026). Verdict: **library still complete, indexed, and reachable; NOTHING FURTHER.**
+
+1. **Canonical reference tier present and indexed:** every problem.md lead is on disk with a summary and a `.full.md` companion. Block lemma sourced with exact constant **1** (Odlyzko intro, verbatim; independent Killgrove–Ralston 1959). Mod-4 linearization sourced (Odlyzko eq 2.2; CHT Lemma 3.10).
+2. **Verification record current and kept distinct** (4 data points): Odlyzko 10^13/G=635 (1993), Plouffe 10^14/G=693 (2025), Colonna 1.5×10^15/G=800 (2026), run's own depth 600/1000.
+3. **search_documents resolves the run's load-bearing queries** (Odlyzko block lemma, parity shape, step-law/recharge, block growth) straight to the correct `.full.md` sources — nothing is stranded as recall.
+4. **Requests ledger fully closed:** G-supply settled negative (two-point switch), MathOverflow fetch done, no new dead routes named by the MO thread beyond what APPROACHES.md records.
+5. **No actionable gap:** the single named-open item — an unconditional linear ν₂ ≥ c·n lower bound — is a two-point prime-gap-mod-4 frequency claim that REQUESTS.md records as unprovable by current methods; no re-fetch warranted.
+
+## Verdict: nothing to add. Library closed, verified three cycles running.
+
 ## Cycle 2 audit (librarian): closure re-verified through the citation graph
 
 Ran `citation_graph` both directions on the two load-bearing sources and an
