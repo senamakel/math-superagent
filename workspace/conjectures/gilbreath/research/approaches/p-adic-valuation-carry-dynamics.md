@@ -108,6 +108,19 @@ precedent: |
   stands as proposed (not grounded, not refuted), with the negative search
   recorded so nobody re-searches the same three angles.
 
+  RE-CHECKED (librarian cycle 2026): three further primary p-adic-Ducci /
+  Z_{2^l} papers found and now held — Giacomelli 2021 (arXiv:2104.06491,
+  p-adic norm Ducci, reduces mod 2 to the same 𝔽_2 level, null/periodic),
+  Giacomelli 2025 (arXiv:2503.04182, p-adic Ducci matrices, spectral
+  termination for |D_p x|_p), and Lewis–Tefft 2024 (arXiv:2401.17502, the
+  SUMMING Ducci map D=(x1+x2,...,xn+x1) on Z_{2^l}^{2^k}, linear D=I+H, exact
+  vanish length (l+1)·2^{k−1}). All three use different operators: the p-adic
+  NORM (output powers of p), or the SUM map (linear). NONE is the integer
+  absolute-difference map |a−b| with 2-adic carry; none closes the valuation
+  law for THIS map. The p-adic-valuation-carry-dynamics direction remains the
+  run's own, unproved, with the closest external treatments now held and
+  recorded as not applicable.
+
   What would falsify the approach: a single row k ≤ 1000 with v2(A_k(1)) ≥ 2
   (i.e. A_k(1) a multiple of 4) — the oracle says none exists (depth 1000,
   A_k(1) ∈ {0,2}); or a counterexample valuation cascade in a 2-then-odds
