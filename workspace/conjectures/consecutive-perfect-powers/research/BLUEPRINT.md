@@ -74,6 +74,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
 | `a000927-catalogue-reproduced` | claim | established | — | > h^-(Q(zeta_p)) equals OEIS A000927 for every odd prime p <= 97: an exact rational computation reproduces all 24 successive terms,… |
+| `a001597-perfect-powers-catalogue` | claim | established | — | > The perfect powers {m^k : m >= 1, k >= 2} form OEIS A001597, beginning 1,4,8,9,16,25,27,32,36,49,64,81,100,121,125,128,144,... . The… |
 | `a055513-full-class-agrees-minus-then-plus` | claim | **ready** | — | > OEIS A055513 (full class number h(Q(zeta_p))) equals A000927 (h^-) through term 37 (p = 163) on the published term lists, and first… |
 | `analytic-class-number-formula` | claim | **ready** | — | > For a number field K of degree n with r real and s complex places, the Dedekind zeta function has a simple pole at s = 1 with residue… |
 | `attempt2-dw-pairs-1e4` | claim | established | — | > Among ordered pairs (p, q) of odd primes with p < q < 10^4, the two congruences q^(p-1) == 1 (mod p^2) and p^(q-1) == 1 (mod q^2) —… |
@@ -112,6 +113,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `conditional-non-wieferich` | goal | blocked | `conditional-non-wieferich/cond-cassels`, `conditional-non-wieferich/cond-wieferich` | > For all odd primes p, q with p^(q-1) != 1 (mod q^2) or q^(p-1) != 1 (mod p^2) (i.e. (p,q) is NOT a double-Wieferich pair), the equation… |
 | `conditional-non-wieferich/cond-cassels` | lemma | **ready** | — | > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q \| x and p \| y. (Cassels, 1960.) |
 | `conditional-non-wieferich/cond-wieferich` | lemma | **ready** | — | > If x^p - y^q = 1 with x,y > 0 and p,q distinct odd primes, then q^(p-1) = 1 (mod p^2) and p^(q-1) = 1 (mod q^2). |
-| `crossprime-hminus-divisibility-sweep` | claim | established | — | > For every distinct odd-prime pair p < q <= 200, the exact-integer evaluation of q \| h^-(Q(zeta_p)) AND p \| h^-(Q(zeta_q)) has exactly one… |
 
-_90 further nodes not shown._
+_92 further nodes not shown._

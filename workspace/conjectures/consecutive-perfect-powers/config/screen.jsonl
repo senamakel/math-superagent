@@ -217,3 +217,4 @@
 {"at":"1786766348","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
 {"at":"1786766397","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (22665 characters)","stage":"result","tool":"find_similar_sources"}
 {"at":"1786766397","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (24477 characters)","stage":"result","tool":"find_similar_sources"}
+{"at":"1786766443","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}

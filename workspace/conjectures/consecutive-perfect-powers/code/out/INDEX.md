@@ -75,8 +75,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `lean_reduction.captured.txt` | _(undescribed)_ |
 | `lebesgueA_v2.captured.txt` | _(undescribed)_ |
 | `lebesgueA_v2.note.md` | _(undescribed)_ |
-| `lebesgueB_z[i].captured.txt` | _(undescribed)_ |
-| `lebesgueB_z[i].note.md` | _(undescribed)_ |
+| `lebesgueB_zi.captured.txt` | _(undescribed)_ |
+| `lebesgueB_zi.note.md` | _(undescribed)_ |
 | `local_solvability_check.py` | _(undescribed)_ |
 | `maillet_verify.py` | Exact-integer check that the Maillet determinant det(M_q) = ±q^((q-3)/2)·h_1(q) reproduces the catalogued relative class numbers h^-(Q(zeta_q)) for q=3..43 (OEIS A000927). Independent second route for the minus-class-number formula. NOT YET RUN. |
 | `oeis_digest_check.py` | _(undescribed)_ |
@@ -91,14 +91,14 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_note.md` | _(undescribed)_ |
 | `pattern_findings.note.md` | Pattern-recognition findings on the computed sequences: Kummer criterion verified exactly (p |
 | `pattern_irregular83.captured.txt` | _(undescribed)_ |
-| `pattern_irregular_conflict.captured.txt` | _(undescribed)_ |
+| `pattern_irregular_conflict.captured.txt` | Conflict-resolution captured output: exact Bernoulli-numerator divisibility showing num(B_60)%911=859 and num(B_2386)%2903=1170 (both nonzero), i.e. 911 and 2903 are regular; cross-checks 83, 37, 59, 67. This refutes the earlier false irregularity labels for 2903 and 911 that came from a buggy modular recurrence (see pattern_irregular_correction.note.md). |
 | `pattern_irregular_correction.note.md` | Records the verified correction that the double-Wieferich primes 2903 and 911 are REGULAR (not irregular): exact arithmetic num(B_2386)%2903=1170 and num(B_60)%911=859 refute the earlier buggy modular-recurrence labels. Carries claim dw-pairs-all-regular-corrected. The 2903/911 irregularity was falsely asserted by pattern_dw_structure.py's OLD_bernoulli_even_modp recurrence and by the earlier copy of the dw-pairs-regular-minor-torsion-free claim. |
 | `pattern_irregular_cross.captured.txt` | _(undescribed)_ |
 | `pattern_irregular_decide.captured.txt` | _(undescribed)_ |
 | `pattern_irregular_decide_v2.captured.txt` | _(undescribed)_ |
 | `pattern_irregular_dw.captured.txt` | _(undescribed)_ |
 | `pattern_irregular_dw2.captured.txt` | _(undescribed)_ |
-| `pattern_irregular_locbug.captured.txt` | _(undescribed)_ |
+| `pattern_irregular_locbug.captured.txt` | Captured output locating the bug in the old modular Bernoulli recurrence (pattern_dw_structure.py's OLD_bernoulli_even_modp) that falsely reported 911 irregular (index 60) and 2903 irregular (index 2386): exact numerators give remainder 859 and 1170 respectively, proving both are regular. Compare with the validated NEW_recurrence and exact list. |
 | `pattern_irregular_pari.captured.txt` | _(undescribed)_ |
 | `pattern_irregular_via3.captured.txt` | _(undescribed)_ |
 | `pattern_irregularity.captured.txt` | _(undescribed)_ |

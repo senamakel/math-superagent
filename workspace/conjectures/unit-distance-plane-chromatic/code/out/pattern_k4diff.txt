@@ -1,0 +1,4 @@
+moser_edges K4: [] edges= 11
+labeled    K4: [] edges= 11
+degseq moser_edges: [3, 3, 3, 3, 3, 3, 4]
+degseq labeled:     [3, 3, 3, 3, 3, 3, 4]

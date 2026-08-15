@@ -233,3 +233,4 @@ prevent.
 | 1786766348 | `exa_search` | arguments | denied | term matched |
 | 1786766397 | `find_similar_sources` | result | allowed-by-adjudicator | flagged, then allowed (22665 characters) |
 | 1786766397 | `find_similar_sources` | result | allowed-by-adjudicator | flagged, then allowed (24477 characters) |
+| 1786766443 | `download_document` | arguments | unreachable-host | host `arxiv.org` is not on the egress allowlist |

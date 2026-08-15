@@ -9,6 +9,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `a000927-catalogue-reproduced` | > h^-(Q(zeta_p)) equals OEIS A000927 for every odd prime p <= 97: an exact rational computation reproduces all 24 successive terms, h^-(3)=1 ... h^-(97)=411322824001. h^- = 1 for all odd p <= 19; the first value > 1 is… | yes | checked | `research/summaries/oeis_a000927.md` |
+| `a001597-perfect-powers-catalogue` | > The perfect powers {m^k : m >= 1, k >= 2} form OEIS A001597, beginning 1,4,8,9,16,25,27,32,36,49,64,81,100,121,125,128,144,... . The run's exact-integer oracle reproduces the catalogue's structure up to 10^10:… | yes | checked | `research/summaries/oeis_a001597.md` |
 | `a055513-full-class-agrees-minus-then-plus` | > OEIS A055513 (full class number h(Q(zeta_p))) equals A000927 (h^-) through term 37 (p = 163) on the published term lists, and first differs at p = 167 where h(Q(zeta_167)) = 4 * h^-(Q(zeta_167)) (i.e. h^+(167) = 4),… | yes | catalogued | `research/summaries/oeis_a055513.md` |
 | `analytic-class-number-formula` | > For a number field K of degree n with r real and s complex places, the Dedekind zeta function has a simple pole at s = 1 with residue rho_K = 2^r (2 pi)^s R_K h_K / (w_K \|D_K\|^1/2), where h_K, R_K, w_K, D_K are the… | yes | asserted | `research/sources/mit-18.785-analytic-class-number-formula.primary.md` |
 | `attempt2-dw-pairs-1e4` | > Among ordered pairs (p, q) of odd primes with p < q < 10^4, the two congruences q^(p-1) == 1 (mod p^2) and p^(q-1) == 1 (mod q^2) — evaluated by exact pow(a,b,m) — hold simultaneously for exactly one pair: (p, q) =… | yes | checked | `code/out/attempt2_verification.note.md` |
@@ -67,9 +68,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `mirror-prim-div-scope` | > For q in {3,5,7,11,13,17} and y in [2,Ymax_q], Phi_q(-y) has a primitive divisor s (s \| Phi_q(-y), s not \| y+1, order of (-y) mod s = q, s == 1 mod q) for all but the small exceptions (3,2) [plus excluded (q,1) with… | yes | checked | `code/out/primitive_div_mirror.md` |
 | `mit-zeta-factors-over-L-series` | > For K = Q(zeta_m), the Dedekind zeta function factors as zeta_K(s) = prod over primitive Dirichlet characters chi of conductor dividing m of L(s, chi). (MIT 18.785 Lecture 18, Theorem 18.2.) | yes | asserted | `research/sources/mit-18.785-analytic-class-number-formula.primary.md` |
 | `no-double-wieferich-below-200` | Among distinct odd primes p,q <= 200 there are no ordered pairs with both p^(q-1)≡1 (mod q^2) and q^(p-1)≡1 (mod p^2). | yes | checked | `code/out/verify_foundations.notes.md` |
-| `no-simple-recurrence-for-hminus` | > Neither analyze_sequence (polynomial: differences not constant in 12 levels) nor find_linear_recurrence (max order 8: no exact constant-coefficient linear recurrence) finds any low-degree or low-order recursive… | yes | checked | `code/out/pattern_findings.note.md` |
 
-_33 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_35 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -101,6 +101,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `maillet-determinant-handchecked-3511` (research/sources/kummer-ratio-maillet-handcheck.md) — asserted by the source, not proved there and not checked here
 - `minus-class-computable-plus-not` (research/sources/relative-class-number-analytic.md) — asserted by the source, not proved there and not checked here
 - `mit-zeta-factors-over-L-series` (research/sources/mit-18.785-analytic-class-number-formula.primary.md) — asserted by the source, not proved there and not checked here
+- `oeis-spurious-matches-ruled-out` (research/summaries/oeis_spurious-matches.md) — asserted by the source, not proved there and not checked here
 - `plus-class-proxy-bounds-true` (research/sources/schoof-real-cyclotomic-class-numbers.primary.md) — asserted by the source, not proved there and not checked here
 - `prim-div-lucas` (research/gf_approach_grounding.md) — asserted by the source, not proved there and not checked here
 - `ramification-of-p-cyclotomic` (research/sources/conrad-factorization-cyclotomic.primary.md) — asserted by the source, not proved there and not checked here
