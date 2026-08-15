@@ -362,12 +362,19 @@ impl WorkspaceDocuments {
         // same contention between `ROOT.md` and `INDEX.md` costing three rounds
         // of lost descriptions before the two were separated. Refusing and
         // naming the tool is the only honest answer.
-        if let Some(slug) = super::ledger::registry::owns_derived(&self.workspace, relative) {
+        // The *route* comes from the ledger's own declaration and is never
+        // assumed here. A live run refused the librarian's write to
+        // `teams/BOARD.md` and then told it to use `record_entry`, which the
+        // board also refuses — so the message cost a call and led nowhere. A
+        // refusal that names the wrong remedy is barely better than one that
+        // names none.
+        if let Some((slug, written_by)) =
+            super::ledger::registry::owns_derived(&self.workspace, relative)
+        {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
                 "`{relative}` is derived from the `{slug}` ledger and is rewritten on every write \
                  to it, so an edit here would be erased without warning. Change what it is \
-                 derived from: `record_entry` with `ledger: \"{slug}\"` to add or amend a row, \
-                 `close_entry` to close one."
+                 derived from: {written_by}."
             )));
         }
         self.write_internal(relative, content).await

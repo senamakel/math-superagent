@@ -150,6 +150,24 @@ pub(in crate::orchestrator) struct LedgerSpec {
     pub(in crate::orchestrator) checks: Vec<Check>,
     /// Roles that may write. Empty means every role holding the tool.
     pub(in crate::orchestrator) writers: Vec<String>,
+    /// How this ledger is actually written, in a sentence.
+    ///
+    /// The write guard refuses an edit to a derived file and has to say what to
+    /// do instead, and *what to do instead is not the same for every ledger*.
+    /// A `queue` or `items` ledger takes `record_entry`; a [`Source::Derived`]
+    /// one does not, and telling its caller otherwise sends them to a tool that
+    /// refuses them a second time.
+    ///
+    /// That is not hypothetical. A live run had the librarian try to write
+    /// `teams/BOARD.md`; the guard correctly refused and told it to use
+    /// `record_entry` with `ledger: "board"` — which would also have been
+    /// refused, because the board is rendered by its own module and is written
+    /// with `post_board`. One wasted call that time, because the role did not
+    /// retry. A role that believed the message would have spent two.
+    ///
+    /// So the answer travels with the declaration rather than being assumed at
+    /// the point of refusal.
+    pub(in crate::orchestrator) written_by: String,
     /// Whether the runtime ships this one.
     ///
     /// A built-in may not be retired and its slug may not be shadowed, so that
@@ -239,6 +257,13 @@ pub(in crate::orchestrator) fn parse(document: &Value, builtin: bool) -> Result<
         sections,
         checks: parse_checks(document),
         writers: strings(document, "writers"),
+        // A declared ledger is always `queue` or `items` — `parse_source`
+        // accepts `derived` but `registry::rejected` refuses it from a run — so
+        // the default is the one that is right for everything a run can
+        // declare, and only the built-ins ever need to override it.
+        written_by: string(document, "written_by").unwrap_or_else(|| {
+            "`record_entry` to add or amend a row, `close_entry` to close one".to_string()
+        }),
         builtin,
     })
 }

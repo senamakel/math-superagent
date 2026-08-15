@@ -370,6 +370,27 @@ for, and all four are code:
 - **It cannot reason.** The checks are a closed set — a required field, a known
   status, a close with no reason — not an expression language.
 
+A declaration also carries **how that ledger is actually written**, and that is
+load-bearing rather than documentation. The write guard refuses an edit to a
+derived file and has to say what to do instead — and the answer is not the same
+for every ledger. A `queue` or `items` ledger takes `record_entry`; a
+runtime-rendered one does not.
+
+A live run found this the expensive way. The librarian tried to write
+`teams/BOARD.md`; the guard correctly refused and told it to use `record_entry`
+with `ledger: "board"` — which the board also refuses, because it is rendered by
+its own module and written with `post_board`, a tool the librarian does not even
+hold. One wasted call that time, because the role did not retry; a role that
+believed the message would have spent two and learned nothing. A refusal naming
+the wrong remedy is barely better than one naming none.
+
+The guard now reads the route off the spec, and a test asserts the two agree:
+an engine-written ledger must name `record_entry`, and a runtime-rendered one
+must not. Reintroducing the board's old message fails it by name. That gap was
+invisible to the original tests, which checked that the guard *refuses* and
+never that what it *recommends* can be followed — the kind of thing only a live
+run surfaces.
+
 Write authority is the *spec's*, not the grant's, and it has to be: the set of
 ledgers is not fixed when the tools are registered. Holding `record_entry` is
 not permission to write every ledger. The acting role is baked into the tool at

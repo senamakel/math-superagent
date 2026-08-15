@@ -116,13 +116,19 @@ fn tasks() -> Value {
 }
 
 /// The nine that keep their own modules, registered so every tool reaches them.
-fn derived(slug: &str, title: &str, purpose: &str, path: &str) -> Value {
+///
+/// `written_by` is not decoration. None of these takes `record_entry`, so the
+/// write guard has to name each one's real path or it sends a refused caller to
+/// a tool that refuses them again — which is exactly what happened to a live
+/// librarian on `teams/BOARD.md`.
+fn derived(slug: &str, title: &str, purpose: &str, path: &str, written_by: &str) -> Value {
     json!({
         "slug": slug,
         "title": title,
         "purpose": purpose,
         "source": "derived",
         "derived": path,
+        "written_by": written_by,
         "fields": [{ "name": "id", "role": "id" }],
         "statuses": [{ "name": "recorded" }]
     })
@@ -161,12 +167,23 @@ fn builtins() -> Vec<Value> {
                 { "name": "spent", "closed": true, "needs_reason": true }
             ]
         }),
+    ]
+    .into_iter()
+    .chain(runtime_rendered())
+    .collect()
+}
+
+/// The nine rendered in Rust, each naming the route that actually writes it.
+fn runtime_rendered() -> Vec<Value> {
+    vec![
         derived(
             "board",
             "Board",
             "What each school has told the others while the work is running. Asserted, never \
              established: a post is not a claim and is never filed as one.",
             super::super::board::PATH,
+            "`post_board`, which is the only way onto the board and is held by the roles that \
+             decide what to do next",
         ),
         derived(
             "claims",
@@ -174,24 +191,32 @@ fn builtins() -> Vec<Value> {
             "What the library establishes, statement by statement, with hypotheses and status. \
              Search it with `search_claims`.",
             super::super::claims::CLAIMS_PATH,
+            "a fenced `claim` block in the note that establishes it, written with \
+             `write_document` — a claim is filed with its hypotheses or not at all",
         ),
         derived(
             "threads",
             "Threads",
             "The directions of attack the run is pursuing, and the ones it has closed.",
             super::super::threads::THREADS_PATH,
+            "a fenced `thread` block in `research/threads/<slug>.md`, written with \
+             `write_document`",
         ),
         derived(
             "approaches",
             "Approaches",
             "Candidate reformulations, and for each closed one the reason it closed.",
             super::super::approaches::APPROACHES_PATH,
+            "a fenced `approach` block in `research/approaches/<slug>.md`, written with \
+             `write_document`",
         ),
         derived(
             "weakened",
             "Weakened",
             "The goal with its difficulties switched off, rung by rung, weakest first.",
             super::super::weakened::WEAKENED_PATH,
+            "fenced `ladder` and `rung` blocks in `research/weakened/<slug>.md`, written with \
+             `write_document`",
         ),
         derived(
             "blueprint",
@@ -199,24 +224,31 @@ fn builtins() -> Vec<Value> {
             "The statement graph: what rests on what, which lemmas are ready now, and whether \
              the argument is circular.",
             super::super::blueprint::BLUEPRINT_PATH,
+            "nothing directly — it is computed from the skeletons and the claims, so change one \
+             of those and this re-derives",
         ),
         derived(
             "entailment",
             "Entailment",
             "What the library already gives without new work, closed transitively.",
             super::super::closure::CLOSURE_PATH,
+            "nothing directly — it is the transitive closure of the claims' `follows-from` \
+             edges, so add the edge to a claim block",
         ),
         derived(
             "frontier",
             "Frontier",
             "The citation graph: sources the library's own sources point at, ranked.",
             super::super::frontier::FRONTIER_PATH,
+            "nothing directly — it is derived from the citations in downloaded sources, so \
+             `download_document` a source and this re-derives",
         ),
         derived(
             "requests",
             "Requests",
             "What the run knows it is missing, and what would settle each gap.",
             super::super::requests::REQUESTS_PATH,
+            "`request_research`, which states what is missing and what would settle it",
         ),
     ]
 }
@@ -322,12 +354,15 @@ pub(in crate::orchestrator) fn find(workspace: &Path, slug: &str) -> Option<Ledg
 /// The write guard: an agent editing one of these would have its edit erased by
 /// the next derivation, having believed it landed. Refusing the write and
 /// naming the tool is the only honest answer.
-pub(in crate::orchestrator) fn owns_derived(workspace: &Path, relative: &str) -> Option<String> {
+pub(in crate::orchestrator) fn owns_derived(
+    workspace: &Path,
+    relative: &str,
+) -> Option<(String, String)> {
     all(workspace)
         .0
         .into_iter()
         .find(|spec| spec.derived == relative.trim())
-        .map(|spec| spec.slug)
+        .map(|spec| (spec.slug, spec.written_by))
 }
 
 /// Writes a run's declaration to `config/ledgers/<slug>.json`.

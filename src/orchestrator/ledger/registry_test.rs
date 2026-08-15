@@ -191,16 +191,82 @@ fn a_malformed_declaration_does_not_cost_the_registry() {
 fn derived_paths_are_owned_and_reported() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     assert_eq!(
-        owns_derived(workspace.path(), "TASKS.md").as_deref(),
-        Some("tasks")
+        owns_derived(workspace.path(), "TASKS.md").map(|(slug, _)| slug),
+        Some("tasks".to_string())
     );
     assert_eq!(
-        owns_derived(workspace.path(), "research/CLAIMS.md").as_deref(),
-        Some("claims")
+        owns_derived(workspace.path(), "research/CLAIMS.md").map(|(slug, _)| slug),
+        Some("claims".to_string())
     );
     assert!(
         owns_derived(workspace.path(), "GOAL.md").is_none(),
         "a file an agent writes is not owned by any ledger"
     );
     assert!(owns_derived(workspace.path(), "research/notes/a-note.md").is_none());
+}
+
+/// Every ledger's refusal names a route that actually works for that ledger.
+///
+/// This is the test the live run needed and did not have. The write guard
+/// correctly refused the librarian's write to `teams/BOARD.md` and then told it
+/// to use `record_entry` with `ledger: "board"` — which the board *also*
+/// refuses, because it is rendered by its own module and is written with
+/// `post_board`. The guard was tested for refusing; nothing tested that what it
+/// recommended could be followed. A role that believed the message would have
+/// spent two calls to arrive nowhere.
+///
+/// So: a queue or items ledger may say `record_entry`, and a runtime-rendered
+/// one may not.
+#[test]
+fn a_refusal_never_points_at_a_tool_that_would_also_refuse() {
+    use crate::orchestrator::ledger::spec::Source;
+
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    define(workspace.path(), &folds()).expect("a run-defined ledger too");
+
+    for spec in all(workspace.path()).0 {
+        assert!(
+            !spec.written_by.trim().is_empty(),
+            "`{}` refuses a write without saying what to do instead",
+            spec.slug
+        );
+        let names_record_entry = spec.written_by.contains("record_entry");
+        match spec.source {
+            // The engine writes these, so `record_entry` is the honest answer
+            // and the message has to give it rather than leaving the caller to
+            // guess which of six tools applies.
+            Source::Queue { .. } | Source::Items { .. } => assert!(
+                names_record_entry,
+                "`{}` is engine-written but its refusal does not name `record_entry`: {}",
+                spec.slug, spec.written_by
+            ),
+            // These are rendered in Rust from something else, and `record_entry`
+            // on one is refused a second time. This is the assertion that would
+            // have caught the board.
+            Source::Derived => assert!(
+                !names_record_entry,
+                "`{}` is rendered by its own module, so `record_entry` on it is refused — its \
+                 message must not send anybody there: {}",
+                spec.slug, spec.written_by
+            ),
+        }
+    }
+}
+
+/// The board in particular sends the caller to `post_board`.
+///
+/// Named rather than left to the loop above, because this is the exact path a
+/// live run walked into and the one a regression would be cheapest to
+/// reintroduce.
+#[test]
+fn the_board_refusal_names_post_board() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let (slug, written_by) = owns_derived(workspace.path(), "teams/BOARD.md")
+        .expect("the board owns its rendered file");
+    assert_eq!(slug, "board");
+    assert!(
+        written_by.contains("post_board"),
+        "the board's refusal names the tool that actually writes it: {written_by}"
+    );
+    assert!(!written_by.contains("record_entry"), "{written_by}");
 }
