@@ -1,0 +1,17 @@
+=== n=4: hand-written exhaustive over C(16,9) subsets ===
+  min max internal degree = 2 (expect 2)
+  |S|=9  profile={0: 1, 2: 8}
+  [0.12s]
+
+=== n=5: CP-SAT decisions (expect d=2 infeasible, d=3 feasible) ===
+  d=2: feasible=False  [0.21s]
+  d=3: feasible=True  |S|=17  D(S)=3  profile={1: 2, 2: 3, 3: 12}  [0.01s]
+
+=== n=5 witness for d=3: extract, write, re-verify with own counter ===
+  |S|=17 (need 17) -> OK
+  D(S)=3 (expect 3) -> OK
+  profile={1: 2, 2: 3, 3: 12}
+  witness written to code/out/witness_n5_alt.txt
+
+All independent-route values agree with the published ILP/exhaustive oracle: f(4)=2 (min over 11440 sets), f(5)=3 (d=2 infeasible, d=3 feasible, witness verified).
+  total [0.35s]

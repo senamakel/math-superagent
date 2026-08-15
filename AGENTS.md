@@ -34,6 +34,9 @@ evidence for it stays available.
   holds, and the failure each was written to stop.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
+- [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
+  harness is measured against, the two-layer evidence screen, and why blocking
+  retrieval is not the same as blocking recall.
 
 Two pairs read a mathematician's method against this runtime and say what to
 build next. They are why several of the rules above exist, so a change to a
@@ -113,12 +116,9 @@ and the leads into the literature are the workspace's, not the script's: a
 launcher that carried the mathematics would need editing for every problem.
 
 `./euler-tui` **cannot start, stop, or restart anything**. That is the design,
-not a gap: when starting was part of the same command, opening a second view
-started a second run on the same workspace — both writing the same files and
-both making checkpoint commits over each other. That happened three times in one
-evening, twice unnoticed for minutes. A viewer that cannot launch cannot do it,
-and one start command means "is something already running for this problem" has
-a single answer rather than one per terminal.
+not a gap, and [`docs/runtime.md`](docs/runtime.md#one-start-command) has the
+evening that settled it: a viewer that cannot launch cannot start a second run
+on a workspace that already has one.
 
 It *can* direct a run that already exists, which narrows that rule without
 touching what the rule prevents — a directive appends a line to a file and
@@ -163,11 +163,51 @@ Two containers on one workspace is the failure to look for, and it is silent:
 both runs work, both write, and the damage shows up later as a checkpoint
 history that interleaves two investigations. Stop a run with
 `docker rm -f <name>`; the workspace survives and the next `./euler` on it
-continues from what is on disk.
+continues from what is on disk. Match by **mount**, not by name — the project
+name comes from the checkout directory, so a worktree's container is not called
+`riemann-agent-run` at all.
 
 The runtime's console arrives on the container's **stderr**, not its stdout —
 a live container had 643 lines there and none on stdout — so `docker logs`
 needs `2>&1` and any follower must read both streams.
+
+## Calibration runs
+
+An open conjecture gives a run no known destination, so nothing separates a
+harness closing in on a proof from one producing plausible activity, and every
+architecture change is made blind. A **calibration run** supplies the reference:
+a conjecture already solved, stated as open, its answer withheld in code.
+
+```sh
+./calibrate unit-distance-plane-chromatic     # start or continue
+scripts/eval-report unit-distance-plane-chromatic
+```
+
+Watch it with `./diagnose` / `./euler-tui --workspace conjectures/<slug>`.
+[`docs/calibration.md`](docs/calibration.md) holds why each rule below exists.
+
+- **The answer key never enters the container.** `GROUND_TRUTH.md`, `RUBRIC.md`
+  and the plaintext `screen.terms` live under `evals/<slug>/`, outside the only
+  bind-mounted tree. `./calibrate` refuses to start if one is inside the mount.
+- **The compiled blocklist is hashed.** `execute_command` reads any file the
+  runtime can, so plaintext terms would hand the run the names they withhold.
+  The ledger records decisions and never terms.
+- **Two layers are controls, the third is not.** The proxy decides which hosts
+  are reachable, closing `execute_command`; `orchestrator::screen` sees
+  plaintext and decides whether an allowed source reveals the answer. The
+  leakage audit catches recall, which no control can stop.
+- **`MATH_AGENT_SCREEN` absent means no screen**, so an ordinary run is
+  untouched. Named but unreadable is a hard startup failure: an unscreened
+  calibration run looks entirely normal and measures nothing.
+- **A seed is a time capsule, not a puzzle**, stating the art as of the year
+  before the solution — obstruction and leads included. Where it hints
+  substantially, `GROUND_TRUTH.md` records how much so a score can discount it.
+- **`chisel` is in every school set**, enforced by the launcher: an alternative
+  school is evidence only when today's runtime ran beside it. Which schools
+  attack a problem is `evals/<slug>/schools`, because that pairing is an
+  argument about method and belongs beside the statement it is about.
+- Do not add a problem without a `GROUND_TRUTH.md` recording its de-naming
+  strength, and a `RUBRIC.md` whose milestones require an artifact, not a claim.
 
 ## Docker and workspace rules
 
@@ -185,16 +225,9 @@ The Docker boundary is part of the security model:
   agent-written files.
 - Keep process, memory, command-time, and command-output limits. Keeping a
   limit is the requirement; the value is a judgement, and 2 GiB was the wrong
-  one. A live Erdős–Gyárfás container was OOM-killed mid-attempt — `oom` then
-  `die exit=137` in `docker events` — and an OOM kill is the worst failure shape
-  available here: the kernel stops the process, so nothing is written to the
-  console, the run simply ceases to appear, and everything in flight is lost.
-  Read `docker events --filter event=oom` when a container vanishes without an
-  error. The cap covers the Rust runtime, every concurrent child run, and every
-  Python subprocess they spawn between them, against work that is graph
-  enumeration and BFS over millions of states; problem 763 had already recorded
-  the old cap in its own `MEMORY.md` as a mathematical ceiling, "exact BFS stops
-  at N=14", which is a sandbox limit masquerading as a result.
+  one — [`docs/runtime.md`](docs/runtime.md#the-memory-cap) has the live run
+  that raised it and why an OOM kill is the worst failure shape available here.
+  Read `docker events --filter event=oom` when a container vanishes silently.
 - Keep network access because provider, search, and telemetry calls need it.
 
 Every agent working directory is `/workspace`. The helper accepts
@@ -211,29 +244,19 @@ product, so they belong in history rather than only on the machine that produced
 them.
 
 They belong in history, not in every commit. A live run writes into `workspace/`
-continuously, so a host-side auto-commit hook firing on each tool call turns
-that into commit spam: one measured hour produced 97 commits on `main`, 87 of
-them touching nothing but `workspace/`, with model-written subjects that did not
-always match their diffs — one read `remove outdated project euler problem 763
-files` for a change that removed nothing and added five lines to a prompt.
-`.claude/settings.json` therefore sets `AUTO_COMMIT_EVERY=25` for this
-repository. Everything is still committed and nothing is excluded; it is
-batched. The fine-grained record is not lost either, because the runtime keeps
-its own per-write checkpoint in each workspace's `.workspace-history`, which is
-what `WorkspaceCheckpoint` is for. Do not add a generated artifact to a source directory; leave it in its
-workspace.
+continuously, so `.claude/settings.json` sets `AUTO_COMMIT_EVERY=25` for this
+repository: everything is still committed and nothing excluded, it is batched.
+The fine-grained record survives in each workspace's `.workspace-history`, which
+is what `WorkspaceCheckpoint` is for. Do not add a generated artifact to a
+source directory; leave it in its workspace.
 
-What is ignored is what a reader would never open: `.python-packages/` (pip
-installs, which land in the workspace only because the container root filesystem
-is read-only), bytecode caches, `raw/`, the bulky enumeration pools beside the
-counts that cite them, `trace.jsonl` and `console.log`, and the hidden
-`config/.*.json` state. The trace is several megabytes per run and the
-derivation and notes already carry the reasoning worth keeping; read it locally
-or in Langfuse instead. The hidden JSON is the runtime's own cache of the
-frontier, the request ledger, and the document index, rewritten on nearly every
-tool call — each already has a committed human-readable counterpart beside it,
-`research/FRONTIER.md` and `research/REQUESTS.md`, which is what the derivation
-cites. Everything a reader would open stays committed.
+What is ignored is what a reader would never open: `.python-packages/`, bytecode
+caches, `raw/`, the bulky enumeration pools beside the counts that cite them,
+`trace.jsonl` and `console.log`, and the hidden `config/.*.json` state. Each
+hidden file already has a committed human-readable counterpart beside it —
+`research/FRONTIER.md`, `research/REQUESTS.md` — which is what the derivation
+cites. [`docs/workspace.md`](docs/workspace.md) has the measured hour of commit
+spam that set the batch size. Everything a reader would open stays committed.
 
 ## Secrets
 
@@ -369,65 +392,32 @@ turn runs next. A new graph is built with `agent::flow`, never with
 `tinyagents::graph`, and the two error types are converted only by
 `agent::flow::into_graph` / `from_graph`.
 
-TinyFlows has two layers and this crate now uses both, for different things.
+TinyFlows has two layers and this crate uses both. The solution loop runs on the
+declarative **workflow engine**: the engine owns the routing — a `loop` head
+with the run's state as its accumulator, the ladders as `switch` nodes carrying
+jq — and each step is a `tool_call` into Rust written against live runs, so the
+control flow stays a document an outside agent can read and patch. `agent::flow`
+is the lower-level state-graph runtime and now drives only each detached
+sub-agent's own single-node graph. Everything after an attempt is a **fan-out**,
+not a chain, converging on one merge that folds counters by delta.
+[`docs/solution-loop.md`](docs/solution-loop.md) has the graph and the two child
+workflows; these five rules hold across both layers and must not be broken:
 
-The solution loop **runs on the declarative workflow engine**. The engine owns
-the routing — the `loop` head with the run's state as its accumulator, and the
-ladders as `switch` nodes carrying jq — and each step is a `tool_call` into the
-Rust that was written against live runs. That split is the point: the control
-flow is a document an outside agent can read and patch, and the steps that
-drain a directive, salvage a timed-out attempt, and open the arms beside the
-loop are not reimplemented in JSON.
-
-`agent::flow` is the lower-level state-graph runtime. It still drives each
-detached sub-agent's own single-node graph. The state-graph solution loop is
-gone; the workflow engine is the only path, and it has not yet run an hour of
-live mathematics.
-
-The loop calls two child workflows. `orchestrator::workflow_research` runs once
-before the first attempt — establish what the workspace has, then go looking for
-what it does not — and `orchestrator::workflow_goals` decides, on a cadence,
-whether to decompose the goal. Each is a child rather than more nodes in the
-loop because its policy is its own: a run-once stage put inside a graph whose
-whole subject is repetition is how it ends up repeated, and "how often is the
-goal decomposed" is a decision an operator should change without a rebuild.
-
-Everything after an attempt is a **fan-out**, not a chain. Judge, reflect,
-patterns, invention and the goal decomposition read the same attempt and none
-reads another, so they run concurrently and converge on one merge. Three of them
-used to be `tokio::spawn`s hidden inside `reflect_step`'s body, which meant the
-graph could not draw them, graph policy could not bound them, and no checkpoint
-could land between them. The merge folds counters by delta rather than by
-picking a winner, because a reset and an increment on the same counter both
-happen and both have to survive.
-
-Five rules hold across both:
-
-- Derive, never restate. The workflow role registry is read off `AgentRegistry`,
-  the routing ladder's thresholds are generated from the Rust constants, and
-  `parse_reflection` calls `record_verdict` rather than reimplementing it. A
-  second list is a second answer to a question about authority, about a
-  threshold that cost a live run to learn, or about what ends a run.
-- Execution and outbound HTTP are refused from a workflow. See
-  `orchestrator::caps::execution` and `::network` — running a command means
-  declaring a complexity class first, and reaching the network means going
-  through a tool that bounds the response and that research gating can withhold.
-- The parity harness is not optional. `route` and `judged_route` are no longer
-  what a run executes; they are the executable specification of the routing
-  policy, and `orchestrator::parity` proves the jq the engine runs agrees with
-  them. It is exhaustive rather than sampled so an off-by-one cannot slip
-  through. Any change to either side must keep it green.
-- The body has one exit. Every path back to the loop head goes through `pass`,
-  because the engine's `nodes` map is cumulative and a fold with more than one
-  node to read will eventually read a stale one. A restart goes through it too:
-  re-entering `attempt` directly would undo the judge's own `restarts`
-  increment, so the cap that bounds restarts would never trip.
-- Every step reads the step before it, never the accumulator. The head folds at
-  the *top* of a pass, so for the whole of a pass `nodes.solve.state` is what the
-  *previous* one ended with. Only `attempt` reads it, because only `attempt` runs
-  there. This class of bug is invisible to a constant mock — pass N−1 and pass N
-  look identical — so a test that varies its answers per call is the only kind
-  that catches it.
+- **Derive, never restate.** The workflow role registry is read off
+  `AgentRegistry`, the ladder's thresholds are generated from the Rust
+  constants, and `parse_reflection` calls `record_verdict`. A second list is a
+  second answer to a question about authority or about what ends a run.
+- **Execution and outbound HTTP are refused from a workflow** — see
+  `orchestrator::caps::execution` and `::network`.
+- **The parity harness is not optional.** `route` and `judged_route` are the
+  executable specification of the routing policy; `orchestrator::parity` proves
+  exhaustively that the jq the engine runs agrees with them, for every school.
+- **The body has one exit.** Every path back to the loop head goes through
+  `pass`, including a restart — re-entering `attempt` directly would undo the
+  judge's own `restarts` increment, so the cap would never trip.
+- **Every step reads the step before it, never the accumulator.** The head folds
+  at the *top* of a pass. This bug class is invisible to a constant mock, so
+  only a test that varies its answers per call catches it.
 
 Do not edit vendored code through the parent repository. Make TinyAgents or
 TinyFlows changes upstream, push them there, then update this repository's

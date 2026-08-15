@@ -1,0 +1,6 @@
+p=911: OLD indices=[60]
+p=911: exact indices=[]
+   OLD claims B_60==0 mod p; exact num(B_60)%p=859
+p=2903: OLD indices=[2386]
+p=2903: exact indices=[]
+   OLD claims B_2386==0 mod p; exact num(B_2386)%p=1170

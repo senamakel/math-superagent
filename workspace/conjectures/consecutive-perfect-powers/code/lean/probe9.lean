@@ -1,0 +1,22 @@
+import Mathlib
+
+#check Nat.lt_of_sub_pos
+#check Nat.sub_pos_iff_lt
+#check natCast_pow
+#check Int.natCast_pow
+#check Int.natAbs
+#check Nat.pow_lt_pow_iff
+#check pow_lt_pow_iff
+#check pow_lt_pow_iff_right
+#check Nat.pow_le_pow_iff_right
+#check Nat.strictMono_pow
+#check strictMono_pow
+#check Nat.pow_lt_pow_iff_left
+#check lt_of_pow_lt_pow_left
+#check lt_of_pow_lt_pow_left₀
+#check Nat.pow_pos
+#check Nat.succ_le_iff
+#check Int.natCast_sub
+#check Nat.cast_sub
+#check sub_dvd_pow_sub_pow
+#check Int.ofNat_sub

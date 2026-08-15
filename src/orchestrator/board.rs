@@ -68,7 +68,7 @@ const MAX_POSTS: usize = 40;
 const BODY_CHARS: usize = 600;
 
 /// Characters a post may be submitted with.
-const MAX_BODY: usize = 2000;
+pub(super) const MAX_BODY: usize = 2000;
 
 /// Characters a sender or reference label may hold.
 const MAX_LABEL: usize = 64;

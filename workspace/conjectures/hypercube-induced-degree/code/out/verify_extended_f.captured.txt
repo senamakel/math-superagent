@@ -1,0 +1,49 @@
+
+=== n=1 d=0  (|S| target = 2) ===
+  HiGHS ILP : feasible=False  [0.0s]
+  CP-SAT    : feasible=False  [0.0s]
+  -> AGREE
+
+=== n=1 d=1  (|S| target = 2) ===
+  HiGHS ILP : feasible=True  [0.0s]
+  CP-SAT    : feasible=True  [0.0s]
+  -> AGREE
+  witness: |S|=2 (ok=True) max_deg=1 (<=d ok=True) dist={1: 2}
+
+=== n=2 d=0  (|S| target = 3) ===
+  HiGHS ILP : feasible=False  [0.0s]
+  CP-SAT    : feasible=False  [0.0s]
+  -> AGREE
+
+=== n=2 d=1  (|S| target = 3) ===
+  HiGHS ILP : feasible=False  [0.0s]
+  CP-SAT    : feasible=False  [0.0s]
+  -> AGREE
+
+=== n=2 d=2  (|S| target = 3) ===
+  HiGHS ILP : feasible=True  [0.0s]
+  CP-SAT    : feasible=True  [0.0s]
+  -> AGREE
+  witness: |S|=3 (ok=True) max_deg=2 (<=d ok=True) dist={1: 2, 2: 1}
+
+=== n=3 d=1  (|S| target = 5) ===
+  HiGHS ILP : feasible=False  [0.0s]
+  CP-SAT    : feasible=False  [0.0s]
+  -> AGREE
+
+=== n=3 d=2  (|S| target = 5) ===
+  HiGHS ILP : feasible=True  [0.0s]
+  CP-SAT    : feasible=False  [0.0s]
+  -> *** DISAGREE ***
+
+=== n=4 d=1  (|S| target = 9) ===
+  HiGHS ILP : feasible=False  [0.0s]
+  CP-SAT    : feasible=False  [0.0s]
+  -> AGREE
+
+=== n=4 d=2  (|S| target = 9) ===
+  HiGHS ILP : feasible=True  [0.0s]
+  CP-SAT    : feasible=False  [0.0s]
+  -> *** DISAGREE ***
+
+DONE

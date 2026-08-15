@@ -1,0 +1,12 @@
+=== Independent CP-SAT decision (n=5) ===
+  d=1: feasible=False  [0.07s]
+  d=2: feasible=False  [0.12s]
+  d=3: feasible=True  |S|=17  D(S)=3  profile={1: 2, 2: 3, 3: 12}  [0.01s]
+
+=== Cross-check the scipy/HiGHS f(5)=3 claim ===
+  CP-SAT agrees with scipy/HiGHS on f(5)=3: True
+  explicit witness S=[2, 3, 4, 5, 6, 8, 9, 11, 13, 14, 15, 16, 17, 18, 19, 20, 30]
+  |S|=17  D(S)=3  profile={1: 2, 2: 3, 3: 12}
+  degree-3 vertices in the flat extremal set: 12
+
+  total wall time: 0.3s

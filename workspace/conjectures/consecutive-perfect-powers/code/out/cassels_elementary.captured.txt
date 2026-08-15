@@ -1,0 +1,87 @@
+==============================================================================
+Elementary structure behind Cassels p|y, q|x for x^p - y^q = 1
+exact integer arithmetic only (integer Newton roots, b**q == value)
+==============================================================================
+
+[0] Machinery self-test (known answers)
+    OK   iroot(8,3) == 2
+    OK   iroot(9,2) == 3
+    OK   iroot(10,3) == 2
+    OK   iroot(1,5) == 1
+    OK   iroot(2**100,10) == 2**10
+    OK   7 not a perfect cube
+    OK   8 is a perfect cube
+    OK   2**100+1 not a 10th power
+    OK   phi_p(3,2) == 7
+    OK   phi_p(3,4) == 21
+    OK   phi_q_neg(3,2) == 3
+    OK   phi_q_neg(3,0) == 1
+    OK   gcd lemma p=3,x=2: gcd(1,7)==gcd(1,3)
+    OK   gcd lemma p=3,x=4: gcd(3,21)==gcd(3,3)
+    VERDICT: PASS
+
+[1] gcd lemma:  gcd(x-1, Phi_p(x)) == gcd(x-1, p), Phi_p(x) = (x^p-1)/(x-1)
+    p in (3, 5, 7, 11, 13, 17), x in [2, 200,000]
+    cases: 1,199,994
+    failures: 0
+    VERDICT: PASS
+
+[2] Fermat equivalence:  p | x-1  <=>  p | x^p - 1
+    same range
+    cases: 1,199,994
+    failures: 0
+    VERDICT: PASS
+    (shared loop with [1], wall 0.34s)
+
+[3] REDUCED SYSTEM — Phi_p(a^q + 1) a perfect q-th power?
+    p != q odd primes: p in (3, 5, 7, 11, 13) x q in (3, 5, 7)
+    a in [1, 20,000] with p not dividing a
+    (p,q) pairs: 12
+    total (p,q,a) cases: 202,886
+    per-pair counts: (3,5)=13,334, (3,7)=13,334, (5,3)=16,000, (5,7)=16,000, (7,3)=17,143, (7,5)=17,143, (11,3)=18,182, (11,5)=18,182, (11,7)=18,182, (13,3)=18,462, (13,5)=18,462, (13,7)=18,462
+    perfect q-th powers found: 0
+    max x = a^q + 1 tested: 1280000000000000000000000000001  (101 bits, at (3, 7, 20000))
+    max Phi_p(x) tested: 19342813113834066795298816000196450445687377240889753600000920861464159580816670720000002637884402540465881088000000005152117973711847424000000000007245165900532285440000000000007547047813054464000000000000005896131103948800000000000000003454764318720000000000000000001499463680000000000000000000000468582400000000000000000000000099840000000000000000000000000013  (1201 bits, at (13, 7, 20000))
+    VERDICT: PASS (zero reduced-system solutions — this is exactly p|y)
+    wall 0.66s
+
+[4] MIRROR REDUCED SYSTEM — Phi_q(-(c^p-1)) a perfect p-th power?
+    same (p,q) pairs; c in [1, 5,000] with q not dividing c
+    (p,q) pairs: 12
+    total (p,q,c) cases: 46,480
+    per-pair counts: (3,5)=4,000, (3,7)=4,286, (5,3)=3,334, (5,7)=4,286, (7,3)=3,334, (7,5)=4,000, (11,3)=3,334, (11,5)=4,000, (11,7)=4,286, (13,3)=3,334, (13,5)=4,000, (13,7)=4,286
+    non-degenerate (c >= 2, i.e. y >= 1): 46,468 cases
+    perfect p-th powers, c >= 2: 0
+    degenerate c = 1 (y = 0): 12 case(s) — Phi_q(0) = 1 = 1^p, the trivial solution (x,y) = (1,0), excluded by y > 0
+    max y = c^p - 1 tested: 1220703124999999999999999999999999999999999999999  (160 bits, at (13, 3, 5000))
+    max Phi_q(-y) tested: 3308722450212110699485634768279851414263248443584542086981503672404869575984776020050048828125046629367034256574697792530059814453124999999999936335370875895023345947265625000000000000000000052154064178466796874999999999999999999999999999974365234375000000000000000000000000000000000000007  (959 bits, at (13, 7, 5000))
+    VERDICT: PASS (zero non-degenerate — spine of q|x confirmed)
+    wall 0.15s
+
+[5] Calibration at the known solution (3,2,2,3): 3^2 - 2^3 = 1
+    equation holds: True
+    p = 2 is EVEN -> odd-prime Cassels hypothesis excludes the known solution
+    gcd(x-1, Phi_p(x)) = gcd(2, 4) = 2 == gcd(x-1, p) = gcd(2, 2) = 2
+    p | x-1:   2 | 3-1 = 2    -> True
+    p | x^p-1: 2 | 3^2-1 = 8  -> True
+    q | y+1:   3 | 2+1 = 3    -> True
+    q | y^q+1: 3 | 2^3+1 = 9  -> True
+    Cassels conclusions hold anyway: p|y = 2|2 -> True, q|x = 3|3 -> True
+    VERDICT: PASS
+
+[6] gmpy2 independent root cross-check (sampled every 1000th case)
+    samples: 258
+    mismatches / spurious exact flags: 0
+    VERDICT: PASS
+
+------------------------------------------------------------------------------
+    [PASS]  0  machinery self-test (known answers)
+    [PASS]  1  gcd lemma
+    [PASS]  2  Fermat equivalence
+    [PASS]  3  reduced system (spine of p|y)
+    [PASS]  4  mirror reduced system (spine of q|x)
+    [PASS]  5  calibration at (3,2,2,3)
+    [PASS]  6  gmpy2 independent root cross-check
+------------------------------------------------------------------------------
+OVERALL: ALL CHECKS PASS
+total wall time: 1.15s

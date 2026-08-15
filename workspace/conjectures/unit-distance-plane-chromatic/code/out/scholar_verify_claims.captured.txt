@@ -1,0 +1,4 @@
+minkowski-sum distance-1 identity: verified on 2000 exact random pairs over Q(sqrt3)
+eisenstein lattice: N(x+y w)=x^2-xy+y^2; N==1 iff a unit: verified over [-12,12]^2
+sat encoding: 4-colourable=True witness=(0, 1, 2, 0, 1, 2, 3); 3-colourable=False
+ALL SCHOLAR CLAIM CHECKS PASSED

@@ -1,0 +1,128 @@
+verify_bundle.py — four-section exact-integer verification for
+Catalan's consecutive perfect powers  x^p - y^q = 1.
+Known/expected solution (3,2,2,3) = 3^2 - 2^3 = 1.  Falsifier rule:
+every lemma that eliminates the known solution is refuted; each of
+the four sections below either returns the known solution or states
+where the known solution sits (excluded-by-hypothesis for S2-S4).
+
+==========================================================================
+SECTION 1  ORACLE BOUND EXTENSION
+==========================================================================
+Settles: no second solution of x^p - y^q = 1 with both x^p, y^q <= N,
+         for N = 10^10 and N = 10^12.  Prior verified bound was 10^8.
+Prior N=10^8 -> [(3,2,2,3)]. This run pushes two more orders.
+
+  solutions(10000000000) = [(3, 2, 2, 3)]
+  exact match to [(3,2,2,3)]? True   runtime 0.04s
+
+  solutions(1000000000000) = [(3, 2, 2, 3)]
+  exact match to [(3,2,2,3)]? True   runtime 0.70s
+
+==========================================================================
+SECTION 2  CASE-A DESCENT SUBCLAIM EXTENSION
+==========================================================================
+  Subclaim:  r^q - 2^(m*q-2) s^q = +/-1,  q odd prime, m>=1,
+             r,s>=1, gcd(r,s)=1  has only (q,m,r,s)=(3,1,1,1).
+  Prior range q<=37, m<=8, r,s<=500.  Extended here to:
+      q odd prime <= 101, m in [1,10], r,s in [1,2000].
+  Method: exact integer — for each (q,m,s) check whether
+      2^(mq-2) s^q +/- 1  is an exact q-th power r^q.  gcd(r,s)=1
+  is forced by construction (r = a q-th root smaller than the base).
+
+  odd primes q <= 101 used: [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
+  candidate (q,m,r,s,sgn) hits: [(3, 1, 1, 1, -1)]
+  expected sole solution (3, 1, 1, 1) (q=3,m=1,r=1,s=1, r^q-2^{mq-2}s^q = 1-2 = -1): found True
+  counterexamples (other than known): []
+  runtime 0.78s   q-count 25  m-count 10  r,s in [1,2000]
+
+==========================================================================
+SECTION 3  CASE-B LJUNGGREN STEP EXTENSION
+==========================================================================
+  T(c,p) = sum_{i=0}^{p-1} (c^2+1)^i = ((c^2+1)^p - 1)/(c^2)
+  is never a perfect square for odd prime p>=3, c>=1.
+  Prior box: c in [1,2000], odd prime p in [3,101]  -> 0 squares.
+  Extended box: c in [1, 10^5], odd primes p in [3, 251].
+  Exact integer square test (isqrt), no floats.
+
+  box: c in [1,100000], 53 odd primes p in [3,251]
+  (c,p) pairs checked: 5300000
+  squares found: 0   (expect 0)
+  closest near-miss: (c,p)=(1, 3), gap T-isqrt(T)^2 = 3
+  runtime 33.35s
+
+==========================================================================
+SECTION 4  CROSS-PRIME SURVIVOR RE-CHECK
+==========================================================================
+  Condition: q | h^-(Q(zeta_p))  AND  p | h^-(Q(zeta_q)),
+  p < q both odd primes < 200.
+  Prior sweep found exactly one survivor: (47, 139).
+  Re-check by recomputing h^- and exact integer division.
+    h^-(3) = 1  (0.2s)
+    h^-(5) = 1  (0.0s)
+    h^-(7) = 1  (0.0s)
+    h^-(11) = 1  (0.0s)
+    h^-(13) = 1  (0.0s)
+    h^-(17) = 1  (0.0s)
+    h^-(19) = 1  (0.0s)
+    h^-(23) = 3  (0.1s)
+    h^-(29) = 8  (0.1s)
+    h^-(31) = 9  (0.4s)
+    h^-(37) = 37  (0.1s)
+    h^-(41) = 121  (0.3s)
+    h^-(43) = 211  (1.1s)
+    h^-(47) = 695  (0.9s)
+    h^-(53) = 4889  (0.8s)
+    h^-(59) = 41241  (1.5s)
+    h^-(61) = 76301  (1.5s)
+    h^-(67) = 853513  (3.2s)
+    h^-(71) = 3882809  (4.6s)
+    h^-(73) = 11957417  (0.7s)
+    h^-(79) = 100146415  (5.4s)
+    h^-(83) = 838216959  (4.5s)
+    h^-(89) = 13379363737  (2.0s)
+    h^-(97) = 411322824001  (1.1s)
+    h^-(101) = 3547404378125  (1.5s)
+    h^-(103) = 9069094643165  (11.9s)
+    h^-(107) = 63434933542623  (10.9s)
+    h^-(109) = 161784800122409  (1.4s)
+    h^-(113) = 1612072001362952  (2.4s)
+    h^-(127) = 2604529186263992195  (9.1s)
+    h^-(131) = 28496379729272136525  (26.8s)
+    h^-(137) = 646901570175200968153  (6.2s)
+    h^-(139) = 1753848916484925681747  (28.0s)
+    h^-(149) = 687887859687174720123201  (13.7s)
+    h^-(151) = 2333546653547742584439257  (11.0s)
+    h^-(157) = 56234327700401832767069245  (24.0s)
+    h^-(163) = 2708534744692077051875131636  (3.3s)
+    h^-(167) = 28121189830322933178315382891  (33.8s)
+    h^-(173) = 1702546266654155847516780034265  (20.3s)
+    h^-(179) = 77281577212030298592756974721745  (41.2s)
+    h^-(181) = 211421757749987541697225501539625  (16.1s)
+    h^-(191) = 165008365487223656458987611326929859  (56.3s)
+    h^-(193) = 546617105913568165545650752630767041  (6.0s)
+    h^-(197) = 5532802218713600706095993713290631720  (8.7s)
+    h^-(199) = 18844055286602530802019847012721555487  (35.7s)
+
+  recomputed h^- for 45 odd primes < 200 (h^- runtime 396.9s)
+  survivors (both divisibilities, p<q<200): [(47, 139)]
+  count survivors = 1   (expect exactly 1, (47,139))
+
+  double-Wieferich check on (47,139):
+    pow(139,46,47^2)  = 1035  (mod 2209)  ==1? False
+    pow(47,138,139^2) = 7507  (mod 19321) ==1? False
+    both fail (i.e. (47,139) is NOT double-Wieferich)? True
+  survivors-exact-match (47, 139): True
+  runtime: h^- 396.9s + matrix 0.00s
+
+==========================================================================
+BUNDLE SUMMARY
+==========================================================================
+  total runtime: 431.7s
+  Section 1: oracle exact to N=1e12; no second solution with both
+             perfect powers <= 1e12.
+  Section 2: Case-A descent subclaim holds over q<=101, m<=10,
+             r,s<=2000; only (3,1,1,1).
+  Section 3: T(c,p) no square over c<=1e5, p<=251; 0 squares.
+  Section 4: cross-prime h^- survivor below 200 is exactly (47,139);
+             it fails both double-Wieferich congruences.
+  All exact integer arithmetic; none of these is a proof.

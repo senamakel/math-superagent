@@ -1,0 +1,32 @@
+# Overlay that takes the memory stack's network off the internet.
+#
+#   scripts/memory-up --eval <workspace-label>
+#
+# `compose.memory.yaml` gives each problem its own Cognee and Neo4j on an
+# implicit `default` bridge, and the agent joins that bridge to reach
+# `cognee:8000`. A bridge has a gateway, so joining it is also how the agent
+# gets to the rest of the internet — which is fine for an ordinary run and
+# fatal for a calibration one, where `execute_command` could then fetch the
+# paper that carries the answer.
+#
+# This overlay marks that network `internal: true`, so it has no gateway, and
+# gives Cognee a second network that does. The agent, which is only ever on the
+# first, keeps its memory server and loses its route out. Everything else it
+# needs arrives through `screen-proxy` in `compose.eval.yaml`.
+
+networks:
+  default:
+    internal: true
+  # Cognee's own way out, for its LLM and embedding calls. Neo4j is deliberately
+  # not on it: it talks to nothing outside the stack.
+  cognee-egress:
+    driver: bridge
+
+services:
+  cognee:
+    networks:
+      - default
+      - cognee-egress
+  neo4j:
+    networks:
+      - default

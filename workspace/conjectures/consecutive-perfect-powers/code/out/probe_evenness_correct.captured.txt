@@ -1,0 +1,4 @@
+tested 1616 (c,p) pairs over c in [-50,50]
+counterexamples to correct statement (Im even iff c odd): 0
+first few: []
+demonstration p=3: Im((c+i)^3)=3c^2-1; c even -> 3c^2 even -> minus 1 odd; c odd -> 3c^2 odd -> minus1 even

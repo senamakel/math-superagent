@@ -1,0 +1,17 @@
+=== n=8 d=3 |S| target=129 (vertices 256) ===
+thread caps: OPENBLAS=1 OMP=1
+
+[HiGHS milp] time_limit=380.0s
+/workspace/code/fmax_oracle/n8_decision.py:152: RuntimeWarning: Unrecognized options detected: {'threads'}. These will be passed to HiGHS verbatim.
+  res = milp(c, integrality=integrality, bounds=bounds,
+  feasible=False status=1 [380.0s] peak_rss=398MB
+  message: Time limit reached. (HiGHS Status 13: model_status is Time limit reached; primal_status is None)
+
+[CP-SAT] time_limit=600.0s workers=8 
+  feasible=False status=CpSolverStatus.UNKNOWN [600.0s] peak_rss=673MB
+
+-> solvers AGREE (HiGHS=False, CP-SAT=False)
+
+no witness: n=8 d=3 undecided or infeasible (statuses above: HiGHS=1 CP-SAT=CpSolverStatus.UNKNOWN)
+
+DONE

@@ -1,0 +1,5 @@
+unique kernel members: 228
+all 228 members 4-colourable: True
+failures: 0
+independent backtracking cross-check (lib.coloring):
+backtracking all-4col universal: True (0 fails)

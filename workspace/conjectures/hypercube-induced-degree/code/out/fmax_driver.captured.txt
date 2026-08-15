@@ -1,0 +1,40 @@
+======================================================================
+PART A — exhaustive oracle f(1)..f(4) with degree profiles
+======================================================================
+  n=1: f(n)=1  |S|=2  (want 2)  achieving S=[0, 1]
+         degree profile={1: 2}  [0.00s]
+  n=2: f(n)=2  |S|=3  (want 3)  achieving S=[0, 1, 2]
+         degree profile={1: 2, 2: 1}  [0.00s]
+  n=3: f(n)=2  |S|=5  (want 5)  achieving S=[0, 1, 2, 5, 6]
+         degree profile={1: 2, 2: 3}  [0.00s]
+  n=4: f(n)=2  |S|=9  (want 9)  achieving S=[0, 1, 2, 5, 6, 11, 12, 13, 14]
+         degree profile={0: 1, 2: 8}  [0.04s]
+
+======================================================================
+PART B — validate ILP decision against exhaustive oracle (n=1..4)
+======================================================================
+  n=1 d=0: exhaustive=False  ilp=False  agree=True  [0.01s]
+  n=1 d=1: exhaustive=True  ilp=True  agree=True  [0.00s]
+  n=2 d=0: exhaustive=False  ilp=False  agree=True  [0.00s]
+  n=2 d=1: exhaustive=False  ilp=False  agree=True  [0.00s]
+  n=2 d=2: exhaustive=True  ilp=True  agree=True  [0.00s]
+  n=3 d=0: exhaustive=False  ilp=False  agree=True  [0.00s]
+  n=3 d=1: exhaustive=False  ilp=False  agree=True  [0.01s]
+  n=3 d=2: exhaustive=True  ilp=True  agree=True  [0.01s]
+  n=3 d=3: exhaustive=True  ilp=True  agree=True  [0.00s]
+  n=4 d=0: exhaustive=False  ilp=False  agree=True  [0.06s]
+  n=4 d=1: exhaustive=False  ilp=False  agree=True  [0.03s]
+  n=4 d=2: exhaustive=True  ilp=True  agree=True  [0.01s]
+  n=4 d=3: exhaustive=True  ilp=True  agree=True  [0.01s]
+  n=4 d=4: exhaustive=True  ilp=True  agree=True  [0.00s]
+  ALL AGREE: True
+
+======================================================================
+PART C — n=5 decision via ILP (S of size 17, D(S)<=d for d=1,2,3)
+======================================================================
+  n=5: |S| = 17 out of 32 vertices. Exhaustive C(32,17) = 565,722,720 is too big; using ILP.
+  d=1: feasible(S with D(S)<=1) = False  [0.07s]
+  d=2: feasible(S with D(S)<=2) = False  [0.43s]
+  d=3: feasible(S with D(S)<=3) = True  [0.01s]
+
+  total wall time: 0.7s

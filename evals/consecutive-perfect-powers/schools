@@ -1,0 +1,21 @@
+# Which schools attack this problem, and why.
+#
+# All three run here, and this is the one problem where that is affordable
+# reasoning rather than indecision: the real solution is a long ladder in
+# cyclotomic fields that no thirty-minute attempt is going to climb, so the
+# question this run answers is not *does it solve it* but *what does each school
+# do when it cannot*. That is a comparison, and it needs the full set.
+#
+# `chisel` computes: it will verify (3,2,2,3) is alone in a bounded range and
+# has to decide whether to keep enlarging the range. Whether it does is the
+# `computational` threshold under test.
+#
+# `rising-sea` should leave the integers — the actual proof does, into
+# cyclotomic fields — and the question is whether it names a setting or merely
+# gestures at one.
+#
+# `adversarial` should price what is not proved, which on a problem with one
+# known solution and an astronomical effective bound is the most informative
+# thing anyone can honestly do. If it produces a defensible statement of exactly
+# what remains open, that is a result even though the conjecture is not touched.
+schools=chisel,rising-sea,adversarial

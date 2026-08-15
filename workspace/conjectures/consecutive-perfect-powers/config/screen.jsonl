@@ -1,0 +1,220 @@
+{"at":"1786745499","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745499","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"download_document"}
+{"at":"1786745534","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"download_document"}
+{"at":"1786745534","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"download_document"}
+{"at":"1786745823","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786745823","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786745879","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745879","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786745885","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786745890","decision":"denied","detail":"term matched in 12119 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745932","decision":"denied","detail":"term matched in 12138 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745948","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786745953","decision":"denied","detail":"term matched in 12152 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745959","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786745959","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786745965","decision":"denied","detail":"term matched in 12158 characters","stage":"result","tool":"exa_search"}
+{"at":"1786746002","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746006","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786746007","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786746014","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12132 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746016","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12057 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746025","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746025","decision":"unreachable-host","detail":"host `link.springer.com` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746032","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786746033","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786746039","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12094 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746039","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12175 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746039","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12119 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746044","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746046","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786746049","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786746054","decision":"denied","detail":"term matched in 12085 characters","stage":"result","tool":"exa_search"}
+{"at":"1786746054","decision":"unreachable-host","detail":"host `unina2.on-line.it` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746054","decision":"unreachable-host","detail":"host `www.math.ucla.edu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746055","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12056 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746072","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786746088","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746091","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786746094","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786746095","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (13126 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746099","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12137 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746101","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (20916 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746104","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12089 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746104","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786746113","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (10627 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746127","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746132","decision":"denied","detail":"term matched in 12182 characters","stage":"result","tool":"exa_search"}
+{"at":"1786746136","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12143 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746145","decision":"unreachable-host","detail":"host `unina2.on-line.it` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746146","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12128 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746147","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786746154","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (3889 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746170","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12959 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746172","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786746179","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786746179","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746185","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (10620 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746191","decision":"unreachable-host","detail":"host `www.jmilne.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746191","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746191","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746192","decision":"denied","detail":"term matched in 12171 characters","stage":"result","tool":"exa_search"}
+{"at":"1786746202","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12176 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746217","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"deep_research"}
+{"at":"1786746235","decision":"denied","detail":"term matched in 24572 characters","stage":"result","tool":"deep_research"}
+{"at":"1786746239","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786746239","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786746242","decision":"denied","detail":"term matched in 24910 characters","stage":"result","tool":"deep_research"}
+{"at":"1786746246","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (5477 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746247","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (6266 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746337","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786746344","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12125 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746391","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786746391","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786746397","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786746399","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (6747 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746407","decision":"denied-by-adjudicator","detail":"adjudicator reply was neither ALLOW nor DENY; failing closed","stage":"result","tool":"read_sources"}
+{"at":"1786746410","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12121 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746412","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12202 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746443","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746447","decision":"denied","detail":"term matched in 8502 characters","stage":"result","tool":"exa_search"}
+{"at":"1786746489","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12265 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746530","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (9316 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746645","decision":"denied","detail":"term matched in 12144 characters","stage":"result","tool":"exa_search"}
+{"at":"1786746657","decision":"denied-by-adjudicator","detail":"adjudicator reply was neither ALLOW nor DENY; failing closed","stage":"result","tool":"exa_search"}
+{"at":"1786746751","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746751","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746751","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746751","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786746947","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786746956","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (4437 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786747993","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786747993","decision":"unreachable-host","detail":"host `www.jmilne.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786747999","decision":"denied","detail":"term matched in 12244 characters","stage":"result","tool":"exa_search"}
+{"at":"1786748014","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786748023","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (8595 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786748078","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (10756 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786748087","decision":"unreachable-host","detail":"host `www.mat.uniroma2.it` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786748087","decision":"unreachable-host","detail":"host `www.math.ucla.edu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786748127","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786748128","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786748137","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12081 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786748158","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786748165","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (2609 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786748193","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786748202","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786748207","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786748214","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (7559 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786748330","decision":"denied","detail":"term matched in 12179 characters","stage":"result","tool":"exa_search"}
+{"at":"1786748454","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (9476 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786748616","decision":"denied","detail":"term matched","stage":"arguments","tool":"deep_research"}
+{"at":"1786748647","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (24615 characters)","stage":"result","tool":"deep_research"}
+{"at":"1786748688","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786748701","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (10691 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786749095","decision":"unreachable-host","detail":"host `inria.hal.science` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786749095","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786749253","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"read_sources"}
+{"at":"1786749274","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749279","decision":"denied","detail":"term matched in 12103 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749279","decision":"denied","detail":"term matched in 12145 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749294","decision":"denied","detail":"term matched in 12114 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749299","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12120 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786749299","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12101 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786749322","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12103 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786749442","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749448","decision":"denied","detail":"term matched in 12116 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749501","decision":"denied","detail":"term matched in 12152 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749518","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12103 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786750068","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750068","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750116","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (3614 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786750135","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750140","decision":"denied","detail":"term matched in 12206 characters","stage":"result","tool":"exa_search"}
+{"at":"1786750186","decision":"unreachable-host","detail":"host `www.cambridge.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786750203","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12160 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786750236","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12157 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786750241","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12106 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786750282","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786750284","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"deep_research"}
+{"at":"1786750320","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (24591 characters)","stage":"result","tool":"deep_research"}
+{"at":"1786750343","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (8569 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786750868","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750868","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750888","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12104 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786750909","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12097 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786751034","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12102 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786751791","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786754472","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786754472","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786754472","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786764109","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764109","decision":"unreachable-host","detail":"host `www.bourbaki.fr` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764109","decision":"unreachable-host","detail":"host `www.math.u-bordeaux.fr` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764109","decision":"unreachable-host","detail":"host `www.mat.uniroma2.it` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764109","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"download_document"}
+{"at":"1786764109","decision":"unreachable-host","detail":"host `www.emis.de` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764217","decision":"unreachable-host","detail":"host `kconrad.math.uconn.edu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764217","decision":"unreachable-host","detail":"host `math.stanford.edu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764218","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786764218","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786764219","decision":"unreachable-host","detail":"host `www.mat.uniroma2.it` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764219","decision":"unreachable-host","detail":"host `inria.hal.science` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764227","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786764230","decision":"denied","detail":"term matched in 12134 characters","stage":"result","tool":"exa_search"}
+{"at":"1786764230","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12258 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786764237","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (8226 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786764247","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786764253","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786764260","decision":"unreachable-host","detail":"host `www.jmilne.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764261","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (8840 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786764267","decision":"denied","detail":"term matched in 12170 characters","stage":"result","tool":"exa_search"}
+{"at":"1786764267","decision":"denied","detail":"term matched in 12227 characters","stage":"result","tool":"exa_search"}
+{"at":"1786764271","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12164 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786764288","decision":"unreachable-host","detail":"host `www.rnta.eu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764288","decision":"unreachable-host","detail":"host `math.mit.edu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764295","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786764296","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786764304","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (8657 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786764304","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (2787 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786764313","decision":"unreachable-host","detail":"host `www.math.columbia.edu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764313","decision":"unreachable-host","detail":"host `kam.mff.cuni.cz` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764322","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (6773 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786764367","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786764382","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12255 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786764402","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (8771 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786764420","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (10175 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786764447","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764447","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786764459","decision":"denied","detail":"term matched in 8335 characters","stage":"result","tool":"read_sources"}
+{"at":"1786764696","decision":"denied","detail":"term matched","stage":"arguments","tool":"deep_research"}
+{"at":"1786764748","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (4347 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786764839","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786764839","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786764870","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12084 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786765157","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12137 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786766082","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766095","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12254 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786766140","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766140","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766140","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786766218","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766218","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766232","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12147 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786766252","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12210 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786766253","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12158 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786766254","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786766260","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12126 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786766262","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (6228 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786766265","decision":"unreachable-host","detail":"host `web.math.princeton.edu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786766266","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766267","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766267","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786766276","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (6813 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786766277","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (4328 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786766317","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786766317","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766348","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766348","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766397","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (22665 characters)","stage":"result","tool":"find_similar_sources"}
+{"at":"1786766397","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (24477 characters)","stage":"result","tool":"find_similar_sources"}
+{"at":"1786766443","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}

@@ -1,0 +1,20 @@
+======================================================================
+Refutation: sharp-kernel-4color at N=23 via Mycielski^2(C5)
+======================================================================
+
+C5: n=5, chi=3, triangle-free=True
+Mycielski(C5)=Groetzsch: n=11, edges=15, chi=4, triangle-free=False
+Mycielski^2(C5): n=23, edges=41, chi=5, triangle-free=False
+
+5-critical core: n=18, edges=17, min-degree=1, chi=5
+   deg>=4           = False
+   K4-free          = False
+   K23-free         = False
+   nbhd-maxdeg<=2   = False
+   4-colourable (SAT oracle) = False
+   4-colourable (critoracle) = False
+
+No counterexample: some kernel condition failed, or it is
+4-colourable.  Which conditions failed: {'deg>=4': False, 'K4-free': False, 'K23-free': False, 'nbhd-maxdeg<=2': False}
+
+EXIT= 0

@@ -1,0 +1,10 @@
+p=  5  [Z[G]^-:s^-] =     -5   h^- known =      1   MISMATCH   (0.12s)
+p=  7  [Z[G]^-:s^-] =     -7   h^- known =      1   MISMATCH   (0.00s)
+p= 11  [Z[G]^-:s^-] =    -11   h^- known =      1   MISMATCH   (0.00s)
+p= 13  [Z[G]^-:s^-] =    -13   h^- known =      1   MISMATCH   (0.00s)
+p= 17  [Z[G]^-:s^-] =    -17   h^- known =      1   MISMATCH   (0.00s)
+p= 23  [Z[G]^-:s^-] =    -23   h^- known =      3   MISMATCH   (0.00s)
+p= 29  [Z[G]^-:s^-] =    -29   h^- known =      8   MISMATCH   (0.00s)
+p= 31  [Z[G]^-:s^-] =    -31   h^- known =      9   MISMATCH   (0.00s)
+
+ALL MATCH known h^-: False

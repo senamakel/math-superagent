@@ -1,0 +1,30 @@
+======================================================================
+TASK 1: x^2 - y^q = 1, q prime, x^2,y^q <= N  (independent search)
+======================================================================
+N=1000000    result=[(3, 2, 2, 3)]  AGREE (unique (3,2,3))  0.005s
+           cross-check vs oracle (p==2): {(3, 2, 2, 3)}  AGREE
+N=10000000   result=[(3, 2, 2, 3)]  AGREE (unique (3,2,3))  0.019s
+           cross-check vs oracle (p==2): {(3, 2, 2, 3)}  AGREE
+
+======================================================================
+TASK 2: x^p - y^2 = 1, p ODD prime, x^p,y^2 <= N  (independent search)
+======================================================================
+N=1000000    result=[]  AGREE (none found)  0.003s
+           cross-check vs oracle (q==2, p odd): set()  AGREE
+           sanity: (3,2,2,3) has y-exponent 3 -> excluded here: True
+N=10000000   result=[]  AGREE (none found)  0.014s
+           cross-check vs oracle (q==2, p odd): set()  AGREE
+           sanity: (3,2,2,3) has y-exponent 3 -> excluded here: True
+
+======================================================================
+TASK 3: prime-exponent reduction  (x^a)^b - y^q = x^p - y^q
+======================================================================
+N=1000000    solutions=[(3, 2, 2, 3)]
+   (x,p,y,q)=(3, 2, 2, 3): x-exponents prime -> nothing descends, y-exponents prime -> nothing descends
+   Every returned solution already has prime exponents: TRUE  0.000s
+   Verdict: AGREE (only solution (3,2,2,3), p,q prime; reduction vacuous — no composite-exponent solution found)
+N=10000000   solutions=[(3, 2, 2, 3)]
+   (x,p,y,q)=(3, 2, 2, 3): x-exponents prime -> nothing descends, y-exponents prime -> nothing descends
+   Every returned solution already has prime exponents: TRUE  0.000s
+   Verdict: AGREE (only solution (3,2,2,3), p,q prime; reduction vacuous — no composite-exponent solution found)
+   Tautology (x^a)^b == x^(a*b), and similarly y: checked on 5000 random composite-exponent cases; all held.

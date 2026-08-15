@@ -1,0 +1,18 @@
+=== 4-critical core isomorphism classes (via labelg) ===
+Traceback (most recent call last):
+  File "/workspace/code/analyze_cores_nauty.py", line 120, in <module>
+    main()
+  File "/workspace/code/analyze_cores_nauty.py", line 110, in main
+    cf = canon_labelg(g6)
+         ^^^^^^^^^^^^^^^^
+  File "/workspace/code/analyze_cores_nauty.py", line 53, in canon_labelg
+    p = subprocess.run(["labelg","-q"], input=graph6+"\n",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 1024, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.11/subprocess.py", line 1901, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'labelg'

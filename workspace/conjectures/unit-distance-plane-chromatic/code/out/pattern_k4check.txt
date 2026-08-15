@@ -1,0 +1,4 @@
+edges: 11
+degrees: [4, 3, 3, 3, 3, 3, 3]
+K4 subgraphs: []
+confirmed: Moser spindle contains NO K4 (matches certified sharp-nbhd-local)

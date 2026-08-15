@@ -1,0 +1,4 @@
+sympy check of the Nullstellensatz colouring-ideal edge polynomial for k=4.
+Claim to verify: with x_v^4 = 1 forcing each vertex to a 4th root of unity,
+S_e = x_u^3 + x_u^2 x_v + x_u x_v^2 + x_v^3 = (x_u^4 - x_v^4)/(x_u - x_v)
+vanishes exactly when x_u != x_v among the 4th roots of unity.

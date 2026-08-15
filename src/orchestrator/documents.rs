@@ -74,6 +74,15 @@ pub(super) struct WorkspaceDocuments {
     /// disk, and a memory that refused the document must not turn a stored
     /// source into a failed tool call.
     library: Option<super::vector::VectorStore>,
+    /// The evidence screen, on a calibration run.
+    ///
+    /// Only `download_document` is wrapped with it. That tool fetches an
+    /// arbitrary URL, it is granted to almost every role, and — unlike the
+    /// search tools — it is **not** withheld by `MATH_AGENT_RESEARCH`, so it is
+    /// the second way onto the web and the one most easily overlooked. The
+    /// other document tools read and write files the run itself produced,
+    /// where there is nothing to withhold.
+    screen: Option<super::screen::Screen>,
 }
 
 include!("documents_store.rs");

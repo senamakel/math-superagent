@@ -1,0 +1,86 @@
+==============================================================================
+FLAT-TORUS PERIODIC COLOURING — exact-arithmetic calibration
+approach: research/approaches/flat-torus-periodic-6col.md
+==============================================================================
+
+[1] A2 hexagonal 7-colouring margin (exact, Q(sqrt3))
+  same-colour centre distance factor (xL) = sqrt(21)
+    numeric ~ 4.58257569496
+  same-colour margin factor (centre-2L, xL) = -2 + sqrt(21)
+  valid side-length window: 0.387210334997 < L < 1/2
+  window lower bound 1/(sqrt21-2) = 1/(1/(-2 + sqrt(21)))
+  margin at L=1/2 = (sqrt21-2)/2 = -1 + sqrt(21)/2 ~ 1.29128784748 > 1  [rich margin for 7 colours]
+
+[2] chi(F(A2, L)) = 7 on the index-7 quotient (complete SAT oracle)
+  L = 0.40000000 (2/5); in_window=True; F has 21 edges on 7 vertices (=K7=True)
+      6-colourable? False  (0.004s)   7-colourable? True (witness=[0, 1, 2, 3, 4, 5, 6], 0.000s)
+  L = 0.45000000 (9/20); in_window=True; F has 21 edges on 7 vertices (=K7=True)
+      6-colourable? False  (0.005s)   7-colourable? True (witness=[0, 1, 2, 3, 4, 5, 6], 0.000s)
+  L = 0.49000000 (49/100); in_window=True; F has 21 edges on 7 vertices (=K7=True)
+      6-colourable? False  (0.005s)   7-colourable? True (witness=[0, 1, 2, 3, 4, 5, 6], 0.001s)
+
+[3] 6-colour sweep over rational-slope sublattices of A2
+  (search for a Lambda-periodic 6-colouring / periodic-impossibility census)
+  D=7 row=(1,-2) : 17 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(1,-1) : 11 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(1,0) : 11 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(1,1) : 18 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(1,2) : 20 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(2,-2) : 11 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(2,-1) : 17 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(2,0) : 11 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(2,1) : 20 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(2,2) : 18 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(3,-2) : 20 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(3,-1) canonical-index7: 20 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(3,0) : 11 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(3,1) : 17 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=7 row=(3,2) : 17 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(1,-2) : 37 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(1,-1) : 23 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(1,0) : 23 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(1,1) : 42 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(1,2) : 52 edges, 6-colourable=False (0.01s)
+  D=13 row=(2,-2) : 23 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(2,-1) : 37 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(2,0) : 23 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(2,1) : 52 edges, 6-colourable=False (0.01s)
+  D=13 row=(2,2) : 42 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(3,-2) : 50 edges, 6-colourable=False (0.00s)
+  D=13 row=(3,-1) canonical-index7: 51 edges, 6-colourable=False (0.00s)
+  D=13 row=(3,0) : 23 edges, 6-colourable=True (0.00s)
+    ** FOUND a 6-colouring — a periodic 6-colouring! **
+  D=13 row=(3,1) : 51 edges, 6-colourable=False (0.01s)
+  D=13 row=(3,2) : 50 edges, 6-colourable=False (0.00s)
+
+  census: 30 sublattices tested, 24 with a 6-colouring, 6 needing 7; total SAT time 0.04s
+
+INDEPENDENT CROSS-CHECK:
+  same_colour_centre_factor = sqrt(21) ~ 4.582575695
+  expected sqrt(21) ~ 4.582575695
+  factor == sqrt21 : True
+
+FINAL VERDICT at L=2/5 (in window): chi(F) == 7 (6-col? False, 7-col? True); edges on 7 vertices = 21

@@ -1,0 +1,12 @@
+===== min =====
+exit=0
+===== consistency =====
+exit=0
+===== backward =====
+exit=0
+===== forward_plus =====
+exit=0
+===== forward_minus =====
+# Proof found!
+# SZS status Theorem
+exit=0

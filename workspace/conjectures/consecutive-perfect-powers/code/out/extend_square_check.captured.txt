@@ -1,0 +1,15 @@
+Extended verification: T(c,p) not a square
+  c in [1,100000], odd prime p in [3,500] (94 primes)
+  total (c,p) pairs: 9,400,000
+  surviving class (c even, p==1 mod4): 2,200,000
+  parallel over 28 CPUs; exact integer arithmetic
+  ... 16,000/100,000 c el, 13.8s, squares 0
+  ... 32,000/100,000 c el, 15.6s, squares 0
+  ... 48,000/100,000 c el, 17.8s, squares 0
+  ... 64,000/100,000 c el, 28.7s, squares 0
+  ... 80,000/100,000 c el, 30.9s, squares 0
+  ... 96,000/100,000 c el, 32.1s, squares 0
+
+FINAL: pairs checked 9,400,000  runtime 32.5s
+  squares found: 0
+  RESULT: 0 squares over 9,400,000 pairs

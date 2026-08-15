@@ -1,0 +1,19 @@
+========================================================================
+TASK B: double-Wieferich ordered pairs (p,q), p<q<10000
+  condition: q^(p-1) == 1 (mod p^2) AND p^(q-1) == 1 (mod q^2)
+  exact modular exponentiation via pow(); no floats
+========================================================================
+odd primes < 10000: 1228
+double-Wieferich pairs (both congruences) with p<q<10000:
+  count = 1
+  (83, 4871)
+========================================================================
+task-stated expected pairs (full, for the record):
+  (83, 4871): q < 10000 -> True; in-box hit -> True
+  (2903, 18787): q < 10000 -> False; in-box hit -> False
+congruence check of both expected pairs (any q, exact pow):
+  (83, 4871): q^(p-1)==1 mod p^2 -> True; p^(q-1)==1 mod q^2 -> True; BOTH -> True
+  (2903, 18787): q^(p-1)==1 mod p^2 -> True; p^(q-1)==1 mod q^2 -> True; BOTH -> True
+========================================================================
+runtime 0.235s; exact integer arithmetic only: True
+RESULT: in-box pairs == {(83, 4871)}

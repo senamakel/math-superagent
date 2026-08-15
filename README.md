@@ -345,6 +345,31 @@ to see what an agent is actually told without starting a run, and the token
 counts matter because every prompt is re-sent on every model call in that role's
 run.
 
+## Measure the harness against a solved conjecture
+
+An open conjecture gives a run no known destination, so there is no way to tell
+a harness closing in on a proof from one producing plausible mathematical
+activity. A **calibration run** supplies one: a problem that has already been
+solved, stated as open, with the literature carrying its answer withheld in
+code — at the container's network boundary and again at the tool layer.
+
+```sh
+./calibrate unit-distance-plane-chromatic     # start or continue
+scripts/eval-report unit-distance-plane-chromatic
+```
+
+Watch it exactly as any other conjecture run, with `./diagnose --workspace
+conjectures/<slug>` and `./euler-tui --workspace conjectures/<slug>`.
+
+Three problems ship, spanning three ways of attacking one:
+`unit-distance-plane-chromatic` (construction and machine verification),
+`hypercube-induced-degree` (one idea, no scale), and
+`consecutive-perfect-powers` (deep machinery, and whether the run knows it is
+out of its depth). See [`evals/README.md`](evals/README.md) for the set and
+[`docs/calibration.md`](docs/calibration.md) for what the controls do and,
+just as importantly, what they cannot: blocking retrieval does not block
+recall, and the report says so.
+
 ## Solve a Project Euler problem
 
 Pass a positive problem number to the Project Euler wrapper:

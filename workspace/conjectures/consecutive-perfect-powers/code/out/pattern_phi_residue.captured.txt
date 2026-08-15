@@ -1,0 +1,6 @@
+
+q > p-1 cases checked: 1064, root-failures: 0, residue-failures: 0
+q < p-1 cases checked: 798
+perfect q-th powers found (all a>=2): 0
+
+large a (2..1999), q>p-1: cases=19980, failures=0, perfect-powers=0

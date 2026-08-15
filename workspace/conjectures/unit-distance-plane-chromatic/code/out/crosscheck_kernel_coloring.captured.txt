@@ -1,0 +1,31 @@
+Independent cross-check of sharp-kernel census 4-colourability,
+via exhaustive DSATUR backtracking (lib.coloring.chromatic_colorable),
+against the recorded SAT witnesses from lib.satcolor.
+======================================================================
+n=8 idx=0 members=8 edges=16 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=9 idx=0 members=9 edges=18 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=9 idx=1 members=9 edges=19 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=9 idx=2 members=9 edges=18 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=9 idx=3 members=9 edges=18 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=0 members=10 edges=21 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=1 members=10 edges=21 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=2 members=10 edges=21 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=3 members=10 edges=20 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=4 members=10 edges=20 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=5 members=10 edges=20 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=6 members=10 edges=21 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=7 members=10 edges=21 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=8 members=10 edges=21 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=9 members=10 edges=20 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=10 members=10 edges=22 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=11 members=10 edges=20 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=12 members=10 edges=20 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=13 members=10 edges=21 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=14 members=10 edges=21 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+n=10 idx=15 members=10 edges=22 bt4col=True satWitnessChecks=True -> AGREE(4-colourable)
+======================================================================
+TOTAL kernel members re-verified: 21
+Members both oracles agree 4-colourable: 21
+No mismatches: SAT (Cadical153) and exhaustive backtracking
+(lib.coloring) independently agree every kernel member is 4-colourable.
+(captured to code/out/crosscheck_kernel_coloring.captured.txt)

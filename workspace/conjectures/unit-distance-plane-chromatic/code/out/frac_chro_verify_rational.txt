@@ -1,0 +1,13 @@
+primal optimum: 3.5
+dual optimum: 3.5
+weights: [np.float64(0.5), np.float64(0.5), np.float64(0.5), np.float64(0.5), np.float64(0.5), np.float64(0.5), np.float64(0.5)] sum= 3.5
+
+Primal support (indep set idx, fractional weight):
+  set [0, 3] = 1/2
+  set [2, 4] = 1
+  set [1, 5] = 1/2
+  set [3, 5] = 1/2
+  set [0, 6] = 1/2
+  set [1, 6] = 1/2
+coverage per vertex: [Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1), Fraction(1, 1)]
+total primal weight: 7/2

@@ -319,3 +319,42 @@ fn a_run_with_no_school_stops_only_on_its_clock() {
         "a run that has spent its ceiling still stops on the clock alone"
     );
 }
+
+/// A short decomposition report is offered whole.
+#[test]
+fn a_short_decomposition_is_offered_whole() {
+    let body = super::decomposition_body("What would suffice: bound the spindle count.")
+        .expect("a report with content must produce a body");
+    assert!(body.starts_with("Decomposition just opened:"));
+    assert!(body.contains("bound the spindle count"));
+    assert!(!body.contains("truncated"));
+}
+
+/// A long one is truncated to fit rather than refused.
+///
+/// This is the case that would silently restore the zero-post failure: two
+/// sub-agents routinely write more than the board's cap between them, and
+/// `board::post` refuses an over-long body rather than trimming it. A report
+/// that produced no post would look exactly like the run choosing not to post.
+#[test]
+fn a_long_decomposition_is_truncated_rather_than_lost() {
+    let report = "sufficient lemma ".repeat(400);
+    let body = super::decomposition_body(&report).expect("a long report must still post");
+    assert!(body.chars().count() <= crate::orchestrator::board::MAX_BODY);
+    assert!(body.contains("truncated"));
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    crate::orchestrator::board::post(
+        workspace.path(),
+        "rising-sea",
+        crate::orchestrator::board::Kind::Offer,
+        &body,
+        &[],
+    )
+    .expect("a truncated body must be within what the board accepts");
+}
+
+/// A decomposition that reported nothing posts nothing.
+#[test]
+fn an_empty_decomposition_posts_nothing() {
+    assert!(super::decomposition_body("   \n  ").is_none());
+}

@@ -1,0 +1,25 @@
+n=1: 0 kernel members (no graph on 1 vertices satisfies min-deg>=4 + K4-free + K2,3-free + nbhd-maxdeg<=2)
+n=2: 0 kernel members (no graph on 2 vertices satisfies min-deg>=4 + K4-free + K2,3-free + nbhd-maxdeg<=2)
+n=3: 0 kernel members (no graph on 3 vertices satisfies min-deg>=4 + K4-free + K2,3-free + nbhd-maxdeg<=2)
+n=4: 0 kernel members (no graph on 4 vertices satisfies min-deg>=4 + K4-free + K2,3-free + nbhd-maxdeg<=2)
+n=5: 0 kernel members (no graph on 5 vertices satisfies min-deg>=4 + K4-free + K2,3-free + nbhd-maxdeg<=2)
+n=6: 0 kernel members (no graph on 6 vertices satisfies min-deg>=4 + K4-free + K2,3-free + nbhd-maxdeg<=2)
+n=7: 0 kernel members (no graph on 7 vertices satisfies min-deg>=4 + K4-free + K2,3-free + nbhd-maxdeg<=2)
+n=8: 1 kernel members tested, all 4-colourable=True
+n=9: 4 kernel members tested, all 4-colourable=True
+n=10: 16 kernel members tested, all 4-colourable=True
+============================================================
+RESULT: every member of C_N is 4-colourable for every N up to the reached
+        ceiling N=10 (largest N enumerated with all C_N members 4-colorable).
+total kernel members enumerated and tested (all N): 21
+Per-N kernel counts:
+  n=1  kernel=0  all4color=True  failures=0
+  n=2  kernel=0  all4color=True  failures=0
+  n=3  kernel=0  all4color=True  failures=0
+  n=4  kernel=0  all4color=True  failures=0
+  n=5  kernel=0  all4color=True  failures=0
+  n=6  kernel=0  all4color=True  failures=0
+  n=7  kernel=0  all4color=True  failures=0
+  n=8  kernel=1  all4color=True  failures=0
+  n=9  kernel=4  all4color=True  failures=0
+  n=10  kernel=16  all4color=True  failures=0

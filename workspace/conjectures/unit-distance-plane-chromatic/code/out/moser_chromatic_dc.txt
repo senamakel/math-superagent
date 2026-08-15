@@ -1,0 +1,4 @@
+deletion-contraction result:
+k**7 - 11*k**6 + 61*k**5 - 203*k**4 + 383*k**3 - 185*k**2
+factorised: k**2*(k**5 - 11*k**4 + 61*k**3 - 203*k**2 + 383*k - 185)
+matches interpolation (k-3)(k-2)^2(k-1)k(k^2-3k+4)?  False

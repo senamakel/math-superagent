@@ -1,0 +1,55 @@
+Mirror verification:  x^p - y^2 = 1 (Lebesgue Case B), p odd prime >= 3
+Unit u kept EXPLICIT:  y+i = u*(a+bi)^p, u in {±1,±i}.
+Exact integer arithmetic throughout; no floats.
+
+
+=== STEP 1: x even impossible (mod 4); enumerate x<=1000000, p in [3, 5, 7, 11, 13] ===
+  [PASS] step 1: x even & p>=2  ==>  x^p=0 (mod 4), so y^2 = -1 = 3 (mod 4): impossible since squares mod 4 are 0,1
+  enumerated 4999995 pairs (x<=10^6, p in [3, 5, 7, 11, 13]) in 1.35s; perfect squares found: 0
+  [PASS] step 1: no solution (x^p - y^2 = 1, y>=1) for x in [2,1000000], p in [3, 5, 7, 11, 13]   [4999995 pairs exact]
+
+=== STEP 2: x odd forces y even; gcd(y+i, y-i) a unit, y<=10^4 ===
+  [PASS] step 2: x odd  ==>  x^p - 1 even  ==>  y even
+  [PASS] step 2: N(y+i)=y^2+1 is odd for even y (y in [2,10000] even)
+  [PASS] step 2: 1+i divides neither y+i nor y-i for even y (parity differs)   [all good]
+  [PASS] step 2: gcd(y+i,y-i) is a unit for every even y in [2,10000]   [0 non-unit]
+
+=== STEP 3: y+i = u*(a+bi)^p, u in {±1,±i} (representation) ===
+  [PASS] step 3: unit absorption: for each u in {±1,±i} and each odd prime p, a unit w with w^p=u and (w(a+bi))^p == u*(a+bi)^p   [0 bad]
+  [PASS] step 3: N(u*(a+bi)^p) = (a^2+b^2)^p  (so x = a^2+b^2 if y+i = u(a+bi)^p)
+  random constructions yielding a genuine y+i = u(a+bi)^p (with Im=1 and x^p-y^2=1): 0 (expected 0 -- none; task: 'none expected')
+  [PASS] step 3: no random (a,b) construction yields a genuine solution   [0 found]
+
+=== STEP 4: binomial lemmas (exact integer arithmetic) ===
+  [PASS] step 4: b | Im((a+bi)^p) for a in [1,200], b in [1,200], odd prime p<=97  ==> Im=±1 forces b=±1
+  [PASS] step 4: a | Re((a+bi)^p) for the same range (p odd: real terms carry a)  ==> Re=±1 forces a=1
+  [PASS] step 4: Im((a±i)^p) ∉ {±1} for a in [1,500], odd prime p<=97 (u=±1 endgame: no solution)   [0 violations, 12000 checks]
+  [PASS] step 4: Re((1+bi)^p) ∉ {±1} for b in [1,500], odd prime p<=97 (u=±i endgame: a=1 forced, no solution)   [0 violations, 12000 checks]
+
+=== Falsifier: known solution 3^2 - 2^3 = 1 ===
+  known solution (x,p,y,q) = (3,2,2,3): y-side exponent q=3, x-side exponent p=2
+  inside case-B hypothesis (x^p - y^2 = 1, q=2, p odd prime)? False  (q=3, p=2: NOT inside)
+  -> nothing asserted eliminates the known solution; case B only
+     claims no solution with y-exponent 2 and x-exponent odd prime.
+
+=== SUMMARY ===
+  step 1: PASS
+  step 1: PASS
+  step 2: PASS
+  step 2: PASS
+  step 2: PASS
+  step 2: PASS
+  step 3: PASS
+  step 3: PASS
+  step 3: PASS
+  step 4: PASS
+  step 4: PASS
+  step 4: PASS
+  step 4: PASS
+
+All steps passed (over their stated ranges): YES
+* Step 1 parity is PROVED (mod 4); the x<=10^6 enumeration is a bounded exact falsifier (0 solutions).
+* Steps 2-3 are PROVED (Z[i] UFD factorisation, norm/unit identities, checked on ranges).
+* Step 4 divisibility (b | Im, a | Re) is PROVED by the binomial structure; the endgames
+  'Im((a±i)^p) not ±1' and 'Re((1+bi)^p) not ±1' are VERIFIED-NUMERICALLY over 1<=a,b<=500, odd prime p<=97 -- NOT proved.
+Total runtime: 5.14s

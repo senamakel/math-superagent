@@ -1,0 +1,107 @@
+==============================================================================
+(0) SYMBOLIC IDENTITY  Phi_p(a^q+1) = sum C(p,j+1) a^{qj}
+   p=3 identity holds: True
+   p=5 identity holds: True
+   p=7 identity holds: True
+   RESULT: PASS
+
+==============================================================================
+(1) DESCENT LEMMA: Phi_p(a^q+1) is never a q-th power, with p not|a
+    p != q odd primes, a in [1, Amax], checking ALL a and only p|a excluded rows.
+   rows checked: 4000
+   counterexamples to 'Phi_p(a^q+1) is a q-th power' (all a): 0
+   of which with p not| a (the descent hypothesis): 0
+   RESULT: PASS (no counterexample, descent lemma holds over the probed range)
+
+==============================================================================
+(1a) same WITHOUT p|a constraint, smaller range to find any pattern
+   (counterexamples_all covers this: 0 found for p,q in [3, 5, 7, 11, 13], a<=200)
+
+==============================================================================
+(2) RESIDUE PATTERN when Phi_p(a^q+1) actually IS a q-th power
+    (if any).  Check b^q == p (mod a^q) and b^q == 1 (mod p).
+   No real q-th power instances in range, so residue check is vacuous.  Instead inspect the 'forced b' for data:
+
+==============================================================================
+(3) Where does b live if we FREEZE the descent hypotheses?
+    Look at near-misses: values of Phi_p(a^q+1) that are 'closest'
+    to a q-th power, to see whether a descent b=g(a) is suggested.
+   --- p=3, q=5, a in [1,60]: largest term a^{{(p-1)q}} dominates; show Phi - floor^q gap  ---
+      sample a and (Phi - floor^q) mod a^q :
+         a=  1  floor_b=     1  gap=     6  gap mod a^q=0
+         a=  6  floor_b=    36  gap= 23331  gap mod a^q=3
+         a= 11  floor_b=   121  gap=483156  gap mod a^q=3
+         a= 16  floor_b=   256  gap=3145731  gap mod a^q=3
+         a= 21  floor_b=   441  gap=12252306  gap mod a^q=3
+         a= 26  floor_b=   676  gap=35644131  gap mod a^q=3
+         a= 31  floor_b=   961  gap=85887456  gap mod a^q=3
+         a= 36  floor_b=  1296  gap=181398531  gap mod a^q=3
+         a= 41  floor_b=  1681  gap=347568606  gap mod a^q=3
+         a= 46  floor_b=  2116  gap=617888931  gap mod a^q=3
+         a= 51  floor_b=  2601  gap=1035075756  gap mod a^q=3
+         a= 56  floor_b=  3136  gap=1652195331  gap mod a^q=3
+   --- p=5, q=3, a in [1,60]: largest term a^{{(p-1)q}} dominates; show Phi - floor^q gap  ---
+      sample a and (Phi - floor^q) mod a^q :
+         a=  1  floor_b=     3  gap=     4  gap mod a^q=0
+         a=  6  floor_b=  1306  gap= 78925  gap mod a^q=85
+         a= 11  floor_b= 14659  gap=217850922  gap mod a^q=828
+         a= 16  floor_b= 65562  gap=8624823133  gap mod a^q=2909
+         a= 21  floor_b=194516  gap=142993275  gap mod a^q=3435
+         a= 26  floor_b=457019  gap=209381472722  gap mod a^q=8378
+         a= 31  floor_b=923572  gap=1707451042593  gap mod a^q=16309
+         a= 36  floor_b=1679676  gap=3628221125  gap mod a^q=17285
+         a= 41  floor_b=2825829  gap=7993227689722  gap mod a^q=30178
+         a= 46  floor_b=4477532  gap=40112382609653  gap mod a^q=47709
+         a= 51  floor_b=6765286  gap=29327858725  gap mod a^q=49135
+         a= 56  floor_b=9834589  gap=96770546652672  gap mod a^q=73728
+   --- p=5, q=7, a in [1,60]: largest term a^{{(p-1)q}} dominates; show Phi - floor^q gap  ---
+      sample a and (Phi - floor^q) mod a^q :
+         a=  1  floor_b=     1  gap=    30  gap mod a^q=0
+         a=  6  floor_b=  1296  gap=109685536846329605  gap mod a^q=5
+         a= 11  floor_b= 14641  gap=37001253518789331210180  gap mod a^q=5
+         a= 16  floor_b= 65536  gap=96714066289746277040128005  gap mod a^q=5
+         a= 21  floor_b=194481  gap=29212935124369111950131594330  gap mod a^q=5
+         a= 26  floor_b=456976  gap=2590659357022322936917515270405  gap mod a^q=5
+         a= 31  floor_b=923521  gap=104127531974527193068085192592480  gap mod a^q=5
+         a= 36  floor_b=1679616  gap=2406149017053281554356424072396805  gap mod a^q=5
+         a= 41  floor_b=2825761  gap=36934395506445582820072221574044630  gap mod a^q=5
+         a= 46  floor_b=4477456  gap=413889557911323268400503043830547205  gap mod a^q=5
+         a= 51  floor_b=6765201  gap=3613630161050079571031880870304190780  gap mod a^q=5
+         a= 56  floor_b=9834496  gap=25758381520463078453626332647627161605  gap mod a^q=5
+   --- p=7, q=5, a in [1,60]: largest term a^{{(p-1)q}} dominates; show Phi - floor^q gap  ---
+      sample a and (Phi - floor^q) mod a^q :
+         a=  1  floor_b=     2  gap=    95  gap mod a^q=0
+         a=  6  floor_b= 46664  gap=9488548944126601703  gap mod a^q=6119
+         a= 11  floor_b=1771576  gap=19701083327835636030104301  gap mod a^q=45887
+         a= 16  floor_b=16777238  gap=158458856227344309290117717159  gap mod a^q=89255
+         a= 21  floor_b=85766150  gap=108216933634689766525080418806227  gap mod a^q=3993464
+         a= 26  floor_b=308915812  gap=18213407975763217876109819589344295  gap mod a^q=10822087
+         a= 31  floor_b=887503724  gap=1240826504030921831895484872770261153  gap mod a^q=24766470
+         a= 36  floor_b=2176782386  gap=44904538271476282545778457309390443751  gap mod a^q=50297063
+         a= 41  floor_b=4750104298  gap=1018222490349425516515319896628865136359  gap mod a^q=93445156
+         a= 46  floor_b=9474296960  gap=16114544559579748035766598961195630490727  gap mod a^q=162036039
+         a= 51  floor_b=17596287872  gap=191740684739859881381861137972116575016245  gap mod a^q=265922162
+         a= 56  floor_b=30840979534  gap=1809433718780779296461464305367271178680103  gap mod a^q=417216295
+   --- p=11, q=3, a in [1,60]: largest term a^{{(p-1)q}} dominates; show Phi - floor^q gap  ---
+      sample a and (Phi - floor^q) mod a^q :
+         a=  1  floor_b=    12  gap=   319  gap mod a^q=0
+         a=  6  floor_b=61498960  gap=3504514966024627  gap mod a^q=19
+         a= 11  floor_b=26008949169  gap=884491464875648258548  gap mod a^q=1118
+         a= 16  floor_b=1100496211556  gap=1262371644011075117223371  gap mod a^q=3531
+         a= 21  floor_b=16686485920371  gap=31795069991978139375065456  gap mod a^q=38
+         a= 26  floor_b=141196547858196  gap=50250407073738222060948325411  gap mod a^q=15235
+         a= 31  floor_b=819729171080950  gap=847116270082535299221702600777  gap mod a^q=1607
+         a= 36  floor_b=3656445783542881  gap=31209732883966344337996146730666  gap mod a^q=20458
+         a= 41  floor_b=13423373422971574  gap=133617384798236863327186800861663  gap mod a^q=22761
+         a= 46  floor_b=42422345502742944  gap=2667311142656142364461754965459283  gap mod a^q=89363
+         a= 51  floor_b=119045714366506242  gap=22052549315377677954857969044405109  gap mod a^q=24959
+         a= 56  floor_b=303311821825309051  gap=180628626071186475690247442463328776  gap mod a^q=34312
+
+==============================================================================
+(4) FALSIFIER: known solution 3^2 - 2^3 = 1
+   x^p - y^q = 9 - 8 = 1
+   p | x-1 : 2 | 2 -> True
+   q | y+1 : 3 | 3 -> True
+   (p,q) both odd prime: False  -> p=2 even, so the odd-prime
+      descent hypothesis EXCLUDES the known solution (not refuted).
+   RESULT: PASS (no over-elimination)

@@ -24,10 +24,23 @@ cd "$repository_root"
 
 compose_file=compose.memory.yaml
 prefix=cognee-
+# Extra compose files, in order. `--eval` appends the overlay that takes this
+# stack's network off the internet; see `compose.memory.eval.yaml`.
+overlay=
 
 usage() {
-    echo "usage: scripts/memory-up [--down] <workspace-label>" >&2
+    echo "usage: scripts/memory-up [--eval] [--down] <workspace-label>" >&2
     echo "       scripts/memory-up --list" >&2
+    echo "" >&2
+    echo "  --eval  put the stack on an internal network, for a calibration" >&2
+    echo "          run: the agent keeps cognee:8000 and loses its route out" >&2
+}
+
+# Every compose invocation below has to carry the same file list, or `down`
+# would address a different project than `up` created.
+compose() {
+    # shellcheck disable=SC2086
+    docker compose -p "$project" -f "$compose_file" $overlay "$@"
 }
 
 # Compose project names accept lowercase letters, digits, dashes and
@@ -40,6 +53,11 @@ slug_of() {
 }
 
 action=up
+while [ "${1:-}" = --eval ]; do
+    overlay="-f compose.memory.eval.yaml"
+    shift
+done
+
 case "${1:-}" in
     --list)
         docker compose ls --all --format json 2>/dev/null \
@@ -72,7 +90,7 @@ project=$prefix$slug
 if [ "$action" = down ]; then
     # Volumes go with it. A memory server kept for a problem nobody is running
     # is the shared server's storage problem back again, one directory lower.
-    docker compose -p "$project" -f "$compose_file" down -v >&2
+    compose down -v >&2
     exit 0
 fi
 
@@ -84,15 +102,18 @@ fi
 echo "memory: bringing up $project for $label" >&2
 # `up -d` on a stack that is already up is a no-op that returns immediately, so
 # a second run against the same problem costs nothing and starts nothing twice.
-docker compose -p "$project" -f "$compose_file" up -d >&2
+compose up -d >&2
 
 # Wait for the API rather than assuming it. `depends_on: service_healthy` binds
 # cognee to neo4j inside the stack, but nothing binds *this script* to cognee,
 # and an agent that starts against an unhealthy server spends its first minutes
 # failing recall calls it will never retry.
 waited=0
-while [ "$waited" -lt 180 ]; do
-    state=$(docker compose -p "$project" -f "$compose_file" ps \
+# 420s rather than 180s. A single stack comes up well inside three minutes; three
+# starting together do not, and the first symptom is a launcher giving up on a
+# server that is still initialising.
+while [ "$waited" -lt 420 ]; do
+    state=$(compose ps \
         --format '{{.Service}} {{.Health}}' 2>/dev/null | grep '^cognee ' || true)
     case "$state" in
         *healthy*)
@@ -106,5 +127,5 @@ while [ "$waited" -lt 180 ]; do
 done
 
 echo "memory: $project did not become healthy within ${waited}s" >&2
-docker compose -p "$project" -f "$compose_file" ps >&2
+compose ps >&2
 exit 1

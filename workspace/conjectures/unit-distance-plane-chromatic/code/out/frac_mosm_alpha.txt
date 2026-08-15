@@ -1,0 +1,4 @@
+Moser+Moser points= 26 edges= 69
+alpha = 10
+n/alpha = 2.6 (lower bound on chi_f; must be <=4)
+=> needed alpha >= ceil(n/4) = 7

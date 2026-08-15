@@ -1,0 +1,87 @@
+# Blocklist — hypercube-induced-degree
+#
+# PLAINTEXT. Host-side only. Never mounted into the container; see
+# evals/README.md and the header of
+# evals/unit-distance-plane-chromatic/screen.terms for the format and for why
+# the compiled form is hashed.
+#
+# This is the problem where de-naming is strong, so the blocklist carries less
+# weight than it does for the other two. Its main job is to stop the run
+# *recognising* the combinatorial statement as a famous conjecture, because
+# recognition is what turns the problem from invention into recall.
+
+salt = 3e9b5d7c04a1f8623dc5019e4b7a2f6d
+
+[block]
+
+# The prover and the paper
+Hao Huang sensitivity
+Huang sensitivity conjecture
+induced subgraphs of hypercubes and a proof
+1907.00847
+
+# The name of the conjecture, and the equivalence that reveals the framing
+sensitivity conjecture
+block sensitivity
+Gotsman Linial
+Nisan Szegedy
+sensitivity versus block sensitivity
+sensitivity of boolean functions polynomial
+
+# The mechanism
+signed adjacency matrix hypercube
+signed adjacency matrix cube
+signing of the hypercube
+pseudo adjacency matrix hypercube
+A_n squared equals nI
+eigenvalues plus minus sqrt n hypercube
+Cauchy interlacing sensitivity
+interlacing signed hypercube
+
+# The answer
+maximum degree at least sqrt n induced subgraph
+induced subgraph hypercube degree sqrt n
+ceil sqrt n maximum degree
+
+[flag]
+
+# Legitimate in this problem but adjacent to the answer. Escalated to the
+# adjudicator rather than denied.
+Chung Furedi Graham Seymour
+sensitivity
+# The surname alone. Not blocked — it is a common name and denying it would
+# refuse unrelated literature — but flagged, so the adjudicator sees it and, more
+# to the point, so the leakage audit does. A live run recalled the whole result
+# from weights and wrote `code/lib/huang.py` and "the recalled Huang lower
+# bound"; every blocked phrase here pairs the name with another word, so none of
+# them matched and the audit reported the workspace clean.
+Huang
+decision tree complexity
+degree of a boolean function
+Cauchy interlacing
+interlacing theorem
+signed adjacency
+Annals of Mathematics 2019
+
+[host.deny]
+
+# The encyclopedia and Q&A tier, plus the blogs that carried this specific
+# result. Two pages of linear algebra is exactly the kind of proof that gets
+# reproduced in full in a blog post, so this tier matters more here than
+# elsewhere.
+en.wikipedia.org
+en.m.wikipedia.org
+simple.wikipedia.org
+mathworld.wolfram.com
+math.stackexchange.com
+mathoverflow.net
+cstheory.stackexchange.com
+stackoverflow.com
+www.quantamagazine.org
+quantamagazine.org
+blog.computationalcomplexity.org
+rjlipton.wordpress.com
+terrytao.wordpress.com
+gilkalai.wordpress.com
+scottaaronson.blog
+www.scottaaronson.com

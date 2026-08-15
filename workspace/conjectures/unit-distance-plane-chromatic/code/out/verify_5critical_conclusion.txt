@@ -1,0 +1,4 @@
+5-chromatic graphs n<= 6: 173
+failures (no k-critical same-chi subgraph, or min_deg<k-1): 0
+5-critical subgraph sizes found (m: count): {5: 172}
+RESULT: PASSED

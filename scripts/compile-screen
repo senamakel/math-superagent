@@ -1,0 +1,270 @@
+#!/usr/bin/env python3
+"""Compile a calibration blocklist into the two artifacts a run needs.
+
+The plaintext blocklist lives at `evals/<slug>/screen.terms`, merged with
+`evals/screen.baseline.terms`. Neither is ever mounted into a container. This
+script turns them into:
+
+  evals/.build/<slug>/screen.json   hashed terms plus plaintext policy, mounted
+                                    read-only into the agent container
+  evals/.build/<slug>/proxy.deny    plaintext hosts, mounted into the proxy
+                                    container only
+
+Why the terms are hashed. `screen.json` has to be readable by the Rust screen
+inside the agent container, and `execute_command` can read any file the runtime
+can. A plaintext blocklist there would hand the run exactly the names it is
+meant to withhold. Hosts stay plaintext in `proxy.deny` because the proxy is a
+separate container the agent cannot read.
+
+Matching is over normalised token n-grams: a term is lowercased, its diacritics
+folded, its non-alphanumerics collapsed to single spaces, and then hashed as a
+whole n-gram. The screen hashes every 1..N-gram of candidate text the same way
+and intersects. That matches `de Grey` inside `Aubrey D. N. J. de Grey` and
+`Mihailescu` inside `Mihăilescu`, without either appearing in the compiled file.
+
+Usage:  scripts/compile-screen <slug> [--out-dir DIR] [--print-policy]
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import sys
+import unicodedata
+from pathlib import Path
+
+# The longest term, in tokens, that the screen will look for. Ten because paper
+# titles are the most useful thing to block verbatim and they run long; the
+# matcher hashes every 1..N-gram of candidate text, so the cost is linear in N
+# and negligible against the 24k-character bound on a screened result.
+#
+# The compiler refuses a longer term rather than silently truncating it, because
+# a term that is never matched is a hole nobody would notice.
+MAX_NGRAM = 10
+
+SECTIONS = ("block", "flag", "host.deny", "host.allow")
+
+# The egress allowlist, when a problem does not state its own.
+#
+# Must stay equal to `ALLOWED_HOSTS` for `screen-proxy` in `compose.eval.yaml`.
+# The proxy is what enforces it; this copy exists only so the tool screen can
+# refuse an unreachable host *immediately*, with a message saying what to use
+# instead, rather than letting the request die at the network boundary after a
+# ten-second timeout and reporting `error sending request` to the model. A live
+# run failed 16 of 16 downloads that way and learned nothing from any of them.
+#
+# Drift here is safe in the direction that matters: this list only ever changes
+# how fast a refusal arrives and how well it explains itself. The proxy decides
+# what is actually reachable.
+DEFAULT_ALLOW_HOSTS = (
+    "openrouter.ai",
+    "api.exa.ai",
+    "oeis.org",
+    "api.openalex.org",
+    "pypi.org",
+    "files.pythonhosted.org",
+)
+
+
+# Latin letters that NFKD does NOT decompose. Without these, `ø` would survive
+# here and fold to `o` on the Rust side, and the term would silently stop
+# matching. Must stay equal to `EXPLICIT_FOLD` in
+# src/orchestrator/screen/terms.rs.
+EXPLICIT_FOLD = {
+    "ø": "o", "œ": "o", "ł": "l", "đ": "d", "ð": "d", "ħ": "h",
+    "ı": "i", "ŧ": "t", "æ": "a", "ß": "s", "þ": "t",
+}
+
+
+
+def normalise(text: str) -> list[str]:
+    """Lowercase, fold diacritics, and split into alphanumeric tokens.
+
+    `Mihăilescu` and `MIHAILESCU` both become `["mihailescu"]`, which is what
+    lets the compiled hash match text the screen has never seen.
+
+    Every non-alphanumeric character separates. That rule is chosen over a list
+    of separators because the alternatives lose matches in two directions at
+    once: mathematics writes `Hadwiger–Nelson` with an en dash, so splitting
+    only on the ASCII hyphen welds the pair into one token; and an identifier
+    arrives as `arXiv:1804.02385`, so dropping punctuation *inside* a token
+    welds it into `arxiv180402385`. Splitting on everything makes both work.
+
+    This must stay in exact agreement with `tokenise` in
+    `src/orchestrator/screen/terms.rs`. A divergence does not fail loudly — the
+    screen simply stops matching — so both sides keep the rules small and
+    identical, and the Rust tests pin digests produced by this function.
+
+    Regenerate those pins with:
+
+        python3 - <<'EOF'
+        from importlib.machinery import SourceFileLoader
+        cs = SourceFileLoader("cs", "scripts/compile-screen").load_module()
+        SALT = "pinned-fixture-salt-0123456789abcdef"
+        for s in ["de Grey", "Mihăilescu"]:
+            t = cs.normalise(s); print(s, t, cs.digest(SALT, t))
+        EOF
+    """
+    lowered = "".join(EXPLICIT_FOLD.get(c, c) for c in text.lower())
+    decomposed = unicodedata.normalize("NFKD", lowered)
+    # Combining marks are DROPPED, not treated as separators. NFKD turns `ă`
+    # into `a` plus a combining breve, and the breve is not alphanumeric, so
+    # splitting on it would cut `mihailescu` into `miha` and `ilescu`.
+    stripped = "".join(c for c in decomposed if not unicodedata.combining(c))
+    return ["".join(run) for run in _runs(stripped)]
+
+
+def _runs(text: str) -> list[list[str]]:
+    """Maximal runs of alphanumeric characters, in order."""
+    runs: list[list[str]] = []
+    current: list[str] = []
+    for character in text:
+        if character.isalnum():
+            current.append(character)
+        elif current:
+            runs.append(current)
+            current = []
+    if current:
+        runs.append(current)
+    return runs
+
+
+def digest(salt: str, tokens: list[str]) -> str:
+    """The salted hash of one normalised n-gram."""
+    payload = f"{salt}\x00{' '.join(tokens)}".encode()
+    return hashlib.sha256(payload).hexdigest()[:32]
+
+
+def parse_terms(path: Path) -> tuple[str | None, dict[str, list[str]]]:
+    """Read one `.terms` file into its salt and its sections."""
+    salt: str | None = None
+    sections: dict[str, list[str]] = {name: [] for name in SECTIONS}
+    current: str | None = None
+
+    for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            current = line[1:-1].strip()
+            if current not in sections:
+                sys.exit(f"{path}:{lineno}: unknown section [{current}]; "
+                         f"expected one of {', '.join(SECTIONS)}")
+            continue
+        if current is None:
+            key, _, value = line.partition("=")
+            if key.strip() == "salt":
+                salt = value.strip()
+                continue
+            sys.exit(f"{path}:{lineno}: expected `salt = <hex>` or a [section], got {line!r}")
+        sections[current].append(line)
+
+    return salt, sections
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("slug")
+    parser.add_argument("--out-dir", default=None)
+    parser.add_argument("--print-policy", action="store_true",
+                        help="write the compiled policy to stdout as well")
+    args = parser.parse_args()
+
+    root = Path(__file__).resolve().parent.parent
+    problem_dir = root / "evals" / args.slug
+    if not problem_dir.is_dir():
+        sys.exit(f"no calibration problem at evals/{args.slug}")
+
+    per_problem = problem_dir / "screen.terms"
+    if not per_problem.is_file():
+        sys.exit(f"no blocklist at evals/{args.slug}/screen.terms")
+
+    salt, sections = parse_terms(per_problem)
+    if not salt:
+        sys.exit(f"evals/{args.slug}/screen.terms declares no `salt = <hex>`; "
+                 "an unsalted blocklist is trivially reversible by dictionary")
+    if len(salt) < 16:
+        sys.exit(f"evals/{args.slug}/screen.terms: salt must be at least 16 hex characters")
+
+    # The baseline is merged in and cannot be removed from by a problem file.
+    baseline = root / "evals" / "screen.baseline.terms"
+    if baseline.is_file():
+        baseline_salt, baseline_sections = parse_terms(baseline)
+        if baseline_salt:
+            sys.exit("evals/screen.baseline.terms must not declare a salt; "
+                     "it is compiled under each problem's own salt")
+        for name in SECTIONS:
+            sections[name] = baseline_sections[name] + sections[name]
+
+    compiled: dict[str, list[str]] = {}
+    for name in ("block", "flag"):
+        digests = []
+        for term in sections[name]:
+            tokens = normalise(term)
+            if not tokens:
+                sys.exit(f"evals/{args.slug}/screen.terms: term {term!r} normalises to nothing")
+            if len(tokens) > MAX_NGRAM:
+                sys.exit(f"evals/{args.slug}/screen.terms: term {term!r} is "
+                         f"{len(tokens)} tokens, over the {MAX_NGRAM}-token limit; "
+                         "a longer term would never be matched")
+            digests.append(digest(salt, tokens))
+        # Sorted and deduplicated so the compiled file is reproducible and so
+        # its ordering leaks nothing about the source ordering.
+        compiled[name] = sorted(set(digests))
+
+    hosts = sorted(set(h.lower() for h in sections["host.deny"]))
+    allow_hosts = sorted(
+        set(h.lower() for h in sections["host.allow"]) or DEFAULT_ALLOW_HOSTS
+    )
+
+    policy = {
+        "slug": args.slug,
+        "salt": salt,
+        "max_ngram": MAX_NGRAM,
+        "block": compiled["block"],
+        "flag": compiled["flag"],
+        # Hosts are hashed here too. The proxy is what actually enforces them
+        # and it gets the plaintext; this copy lets the tool screen refuse a URL
+        # argument before the request is even made, which produces a much better
+        # ledger entry than a proxy 403 arriving as a network error.
+        "deny_hosts": sorted(set(digest(salt, normalise(h)) for h in hosts)),
+        # Plaintext, unlike everything above. These are the APIs the runtime
+        # itself calls; knowing them tells a run nothing about the conjecture,
+        # and only the withheld terms have a reason to be hashed.
+        "allow_hosts": allow_hosts,
+        "adjudicator": {
+            # Fail-closed: an error, a timeout or an unparsable reply denies.
+            "enabled": True,
+            "timeout_seconds": 45,
+            "max_chars": 24000,
+        },
+    }
+
+    out_dir = Path(args.out_dir) if args.out_dir else root / "evals" / ".build" / args.slug
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    screen_json = out_dir / "screen.json"
+    screen_json.write_text(json.dumps(policy, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    proxy_deny = out_dir / "proxy.deny"
+    proxy_deny.write_text(
+        "# Generated by scripts/compile-screen. Mounted into the proxy container\n"
+        "# only, which the agent cannot read, so these stay plaintext.\n"
+        + "".join(f"{host}\n" for host in hosts),
+        encoding="utf-8",
+    )
+
+    print(f"compiled evals/{args.slug}: "
+          f"{len(compiled['block'])} block, {len(compiled['flag'])} flag, "
+          f"{len(hosts)} denied hosts")
+    print(f"  {screen_json.relative_to(root)}")
+    print(f"  {proxy_deny.relative_to(root)}")
+
+    if args.print_policy:
+        json.dump(policy, sys.stdout, indent=2, sort_keys=True)
+        sys.stdout.write("\n")
+
+
+if __name__ == "__main__":
+    main()

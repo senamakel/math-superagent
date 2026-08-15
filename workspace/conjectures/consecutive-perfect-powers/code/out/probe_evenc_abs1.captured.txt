@@ -1,0 +1,9 @@
+primes: 24
+|Im|==1 hits for EVEN c in [2,4000): 0 []
+|Im|==1 hits for ODD c in [1,4000): 0 []
+p=3 Im((i)^p)= None
+p=5 Im((i)^p)= None
+p=7 Im((i)^p)= None
+p=11 Im((i)^p)= None
+p=13 Im((i)^p)= None
+Im((0+i)^p) for p in {3,5}: -1 1

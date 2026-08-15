@@ -1,0 +1,12 @@
+=== T(c,p) mod 8 (exact), by c mod 4, p mod 4 ===
+  c=0 mod4, p=1 mod4: residues [1, 5]  -> could-be-square [1]
+  c=0 mod4, p=3 mod4: residues [3, 7]  -> ALL NON-SQUARE
+  c=1 mod4, p=1 mod4: residues [7]  -> ALL NON-SQUARE
+  c=1 mod4, p=3 mod4: residues [7]  -> ALL NON-SQUARE
+  c=2 mod4, p=1 mod4: residues [1, 5]  -> could-be-square [1]
+  c=2 mod4, p=3 mod4: residues [3, 7]  -> ALL NON-SQUARE
+  c=3 mod4, p=1 mod4: residues [7]  -> ALL NON-SQUARE
+  c=3 mod4, p=3 mod4: residues [7]  -> ALL NON-SQUARE
+
+=== c odd: is T(c,p) = 7 mod 8 always? ===
+  all odd c in [1,500), sampled primes: T(c,p) mod 8 == 7? True

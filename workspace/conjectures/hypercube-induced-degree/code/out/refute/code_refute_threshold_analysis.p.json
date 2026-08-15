@@ -1,0 +1,6 @@
+{
+  "finding": "refuted",
+  "model": "tff('declare_$i1',type,'fmb_$i_1':$i).\ntff('declare_$i2',type,'fmb_$i_2':$i).\ntff('declare_$i3',type,'fmb_$i_3':$i).\ntff('declare_$i4',type,'fmb_$i_4':$i).\ntff('finite_domain_$i',axiom,\n      ! [X:$i] : (\n         X = 'fmb_$i_1' | X = 'fmb_$i_2' | X = 'fmb_$i_3' | X = 'fmb_$i_4'\n      ) ).\n\ntff('distinct_domain_$i',axiom,\n         'fmb_$i_1' != 'fmb_$i_2' & 'fmb_$i_1' != 'fmb_$i_3' & 'fmb_$i_1' != 'fmb_$i_4' & 'fmb_$i_2' != 'fmb_$i_3' & 'fmb_$i_2' != 'fmb_$i_4' & \n         'fmb_$i_3' != 'fmb_$i_4'\n).\n\ntff(declare_v01,type,v01:$i).\ntff(v01_definition,axiom,v01 = 'fmb_$i_1').\ntff(declare_v00,type,v00:$i).\ntff(v00_definition,axiom,v00 = 'fmb_$i_2').\ntff(declare_v10,type,v10:$i).\ntff(v10_definition,axiom,v10 = 'fmb_$i_3').\ntff(declare_v11,type,v11:$i).\ntff(v11_definition,axiom,v11 = 'fmb_$i_4').\ntff(declare_a,type,a: ($i) > $o).\ntff(predicate_a,axiom,\n           ~a('fmb_$i_1')\n         & a('fmb_$i_2')\n         & ~a('fmb_$i_3')\n         & ~a('fmb_$i_4')\n\n).\n\ntff(declare_inO1,type,inO1: ($i) > $o).\ntff(predicate_inO1,axiom,\n           inO1('fmb_$i_1')\n         & inO1('fmb_$i_2')\n         & inO1('fmb_$i_3')\n         & inO1('fmb_$i_4')\n\n).\n\n",
+  "problem": "code/refute/threshold_analysis.p",
+  "status": "CounterSatisfiable"
+}

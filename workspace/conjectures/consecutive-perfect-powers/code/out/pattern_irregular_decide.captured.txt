@@ -1,0 +1,6 @@
+p=911: recurrence_indices=[]
+p=911: exact_indices   =[]
+p=911: AGREE? True   REGULAR? True
+p=2903: recurrence_indices=[]
+p=2903: exact_indices   =[]
+p=2903: AGREE? True   REGULAR? True

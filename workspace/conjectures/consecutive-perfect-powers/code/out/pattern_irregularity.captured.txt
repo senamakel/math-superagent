@@ -1,0 +1,8 @@
+p=   83  irregular False  index_of_irregularity(v_p(h^-))=0  bad_k=[] among 2..80
+p= 2903  irregular False  index_of_irregularity(v_p(h^-))=0  bad_k=[] among 2..2900
+p= 4871  irregular False  index_of_irregularity(v_p(h^-))=0  bad_k=[] among 2..4868
+p=18787  irregular False  index_of_irregularity(v_p(h^-))=0  bad_k=[] among 2..18784
+sanity p=37 bad_k=[32]
+sanity p=59 bad_k=[44]
+sanity p=67 bad_k=[58]
+sanity p=101 bad_k=[68]

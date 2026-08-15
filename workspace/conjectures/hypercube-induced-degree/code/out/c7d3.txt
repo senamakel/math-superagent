@@ -1,0 +1,1 @@
+n=7 d=3 feasible=True |S|=65 [1.69s]

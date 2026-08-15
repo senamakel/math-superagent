@@ -1,0 +1,4 @@
+primes<=500: 94, p==1 mod4: 44
+sample 20 ops in 0.00s  => 4.0 us/op (serial)
+surviving-class pairs ~ 2,200,000; serial est 0.1 min
+with 28 cores ~ 0.0 min

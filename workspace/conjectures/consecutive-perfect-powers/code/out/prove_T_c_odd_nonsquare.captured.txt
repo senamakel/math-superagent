@@ -1,0 +1,13 @@
+=== Proof certificate: c odd => T(c,p) == 7 (mod 8), never a square ===
+
+(b) c^2 == 1 (mod 8) for all odd c in [1,1e6):  True
+(a) x = c^2+1 == 2 (mod 8) for all odd c in [1,1e6):  True
+(c) u^k == 0 (mod 8) for k in [3,60], u==2 (mod 8), u<=82:  True
+(d) T(c,p) == 7 (mod 8) directly for odd c<=3000, odd prime p<=101:
+     37500 pairs checked, 0 mismatches
+(e) square residues mod 8 = [0, 1, 4]; 7 in set? False
+(f) [independent] direct isqrt square-test, odd c<=4000, p in [3, 5, 7, 11, 13, 17, 19, 23, 29]: 18000 checked, 0 squares
+
+RESULT: PROOF-INGREDIENTS ALL HOLD
+Conclusion: for c odd and any odd prime p>=3, T(c,p) == 7 (mod 8),
+and 7 is a non-square mod 8, so T(c,p) is never a perfect square.

@@ -1,0 +1,69 @@
+======================================================================
+1. LUCAS IDENTITIES (symbolic, sympy, exact)
+======================================================================
+  p= 3: Phi_p(x)=(x^p-1)/(x-1) == U_p(x+1,x): True
+  p= 5: Phi_p(x)=(x^p-1)/(x-1) == U_p(x+1,x): True
+  p= 7: Phi_p(x)=(x^p-1)/(x-1) == U_p(x+1,x): True
+  p=11: Phi_p(x)=(x^p-1)/(x-1) == U_p(x+1,x): True
+  p=13: Phi_p(x)=(x^p-1)/(x-1) == U_p(x+1,x): True
+  q= 3: Phi_q(-y)=(y^q+1)/(y+1) == U_q(y-1,-y): True
+  q= 5: Phi_q(-y)=(y^q+1)/(y+1) == U_q(y-1,-y): True
+  q= 7: Phi_q(-y)=(y^q+1)/(y+1) == U_q(y-1,-y): True
+  q=11: Phi_q(-y)=(y^q+1)/(y+1) == U_q(y-1,-y): True
+  q=13: Phi_q(-y)=(y^q+1)/(y+1) == U_q(y-1,-y): True
+  RESULT: PASS (0 failures)
+======================================================================
+2. GCD LEMMA  gcd(x-1, Phi_p(x)) == gcd(x-1, p)
+======================================================================
+  checked 2994 (p,x) pairs; failures: 0
+  RESULT: PASS
+  --- known solution (3,2,2,3) calibration ---
+  known solution (x,p,y,q)=(3,2,2,3): x^p-y^q = 9-8 = 1
+  Cassels direction q | x  :  3 | 3 ? yes
+  Cassels direction p | y  :  2 | 2 ? yes
+  elementary Cassels p | x-1 :  2 | 2 ? yes
+  elementary Cassels q | y+1 :  3 | 3 ? yes
+  NOTE: p=2 here is EVEN, so the odd-prime Cassels theorem's hypothesis (both exponents odd) does NOT apply; the known solution is excluded by hypothesis, not recognized by the odd-prime machinery.
+======================================================================
+3. PRIMITIVE DIVISOR EXISTENCE (Zsigmondy/BHV) for odd prime p
+======================================================================
+  p= 3: x in [2,200], primitive divisor found for 199/199 values; largest primitive r = 37831
+      sample (x, r, Phi_p(x) factors): [(2, 7, {7: 1}), (3, 13, {13: 1}), (4, 7, {3: 1, 7: 1}), (5, 31, {31: 1}), (6, 43, {43: 1}), (7, 19, {3: 1, 19: 1}), (8, 73, {73: 1}), (9, 7, {7: 1, 13: 1})]
+  p= 5: x in [2,100], primitive divisor found for 99/99 values; largest primitive r = 97039801
+      sample (x, r, Phi_p(x) factors): [(2, 31, {31: 1}), (3, 11, {11: 2}), (4, 11, {11: 1, 31: 1}), (5, 11, {11: 1, 71: 1}), (6, 311, {5: 1, 311: 1}), (7, 2801, {2801: 1}), (8, 31, {31: 1, 151: 1}), (9, 11, {11: 2, 61: 1})]
+  p= 7: x in [2,60], primitive divisor found for 59/59 values; largest primitive r = 47446779661
+      sample (x, r, Phi_p(x) factors): [(2, 127, {127: 1}), (3, 1093, {1093: 1}), (4, 43, {43: 1, 127: 1}), (5, 19531, {19531: 1}), (6, 55987, {55987: 1}), (7, 29, {29: 1, 4733: 1}), (8, 127, {7: 1, 127: 1, 337: 1}), (9, 547, {547: 1, 1093: 1})]
+  p=11: x in [2,40], primitive divisor found for 39/39 values; largest primitive r = 610851724137931
+      sample (x, r, Phi_p(x) factors): [(2, 23, {23: 1, 89: 1}), (3, 23, {23: 1, 3851: 1}), (4, 23, {23: 1, 89: 1, 683: 1}), (5, 12207031, {12207031: 1}), (6, 23, {23: 1, 3154757: 1}), (7, 1123, {1123: 1, 293459: 1}), (8, 23, {23: 1, 89: 1, 599479: 1}), (9, 23, {23: 1, 67: 1, 661: 1, 3851: 1})]
+  p=13: x in [2,30], primitive divisor found for 29/29 values; largest primitive r = 16148168401
+      sample (x, r, Phi_p(x) factors): [(2, 8191, {8191: 1}), (3, 797161, {797161: 1}), (4, 2731, {2731: 1, 8191: 1}), (5, 305175781, {305175781: 1}), (6, 3433, {3433: 1, 760891: 1}), (7, 16148168401, {16148168401: 1}), (8, 79, {79: 1, 8191: 1, 121369: 1}), (9, 398581, {398581: 1, 797161: 1})]
+  p=17: x in [2,20], primitive divisor found for 19/19 values; largest primitive r = 689852631578947368421
+      sample (x, r, Phi_p(x) factors): [(2, 131071, {131071: 1}), (3, 1871, {1871: 1, 34511: 1}), (4, 43691, {131071: 1, 43691: 1}), (5, 409, {409: 1, 466344409: 1}), (6, 239, {239: 1, 409: 1, 1123: 1, 30839: 1}), (7, 14009, {14009: 1, 2767631689: 1}), (8, 103, {103: 1, 2143: 1, 11119: 1, 131071: 1}), (9, 103, {103: 1, 307: 1, 1021: 1, 1871: 1, 34511: 1})]
+  p=19: x in [2,15], primitive divisor found for 14/14 values; largest primitive r = 459715689149916492091
+      sample (x, r, Phi_p(x) factors): [(2, 524287, {524287: 1}), (3, 1597, {1597: 1, 363889: 1}), (4, 174763, {174763: 1, 524287: 1}), (5, 191, {191: 1, 6271: 1, 3981071: 1}), (6, 191, {191: 1, 638073026189: 1}), (7, 419, {419: 1, 4534166740403: 1}), (8, 32377, {32377: 1, 524287: 1, 1212847: 1}), (9, 1597, {1597: 1, 2851: 1, 101917: 1, 363889: 1})]
+  p=23: x in [2,12], primitive divisor found for 11/11 values; largest primitive r = 11111111111111111111111
+      sample (x, r, Phi_p(x) factors): [(2, 47, {47: 1, 178481: 1}), (3, 47, {47: 1, 1001523179: 1}), (4, 47, {47: 1, 178481: 1, 2796203: 1}), (5, 8971, {8971: 1, 332207361361: 1}), (6, 47, {47: 1, 139: 1, 3221: 1, 7505944891: 1}), (7, 47, {47: 1, 3083: 1, 31479823396757: 1}), (8, 47, {47: 1, 178481: 1, 10052678938039: 1}), (9, 47, {47: 1, 1001523179: 1, 23535794707: 1})]
+  (p,x) with NO primitive divisor: 0  (none)
+  largest primitive r found across all (p,x): (11111111111111111111111, 23, 10)
+  RESULT: PASS (Zsigmondy confirmed: no (p,x) lacks a primitive divisor at these sizes)
+======================================================================
+4. ZSIGMONDY EXCEPTION AT p=2 (the known solution 's index)
+======================================================================
+  Phi_2(3) = 3+1 = 4; factorint = {2: 2}
+  only prime divisor 2; 2 mod 2 = 0, so 2 ≢ 1 (mod 2)
+  any prime r | Phi_2(3) with r ≡ 1 (mod 2)? no
+  => at p=2 no primitive divisor r ≡ 1 (mod p) exists; the known solution sits in the Zsigmondy exception. Oddness of p is essential for the primitive-divisor claim.
+======================================================================
+5. CONDITION CHECK: primitive divisor vs Cassels p|y / Wieferich
+======================================================================
+  Facts (computed, exact):
+  (a) r | Phi_p(x) with r primitive => r | y (since y^q = (x-1) Phi_p(x) and r ∤ x-1).
+  (b) r ≡ 1 (mod p) is automatic for such r (order of x mod r is p).
+  (c) r | y and the exponent q: since r | y, r^q | y^q = x^p - 1, and r ≡ 1 (mod p) gives p | r-1, so v_r(y) >= 1; but p | r-1 does NOT by itself force p | y (Cassels' sharper condition) — it only forces the order constraint. The primitive-divisor information sets p | r-1, which is a congruence r ≡ 1 (mod p) on a divisor of y, not the divisibility p | y itself.
+  (d) double-Wieferich congruences for a hypothetical odd-prime solution: p^(q-1) ≡ 1 (mod q^2) and q^(p-1) ≡ 1 (mod p^2). At the known solution p=2, q=3 these are OUTSIDE the odd-prime hypothesis (evaluated, not asserted):
+      3^(2-1) mod 2^2 = 3 (≡1? False)    [q^(p-1) mod p^2, but p=2 even]
+      2^(3-1) mod 3^2 = 4 (≡1? False)    [p^(q-1) mod q^2]
+  Conclusion (scope): the primitive-divisor engine yields r ≡ 1 (mod p) with r | y — the elementary side of the Wieferich machinery. Whether it constrains BEYOND the double-Wieferich conditions is NOT settled by these finite checks; it requires controlling r^q against x^p-1 across all of x, which the finite verification here cannot claim. No over-claim.
+wrote code/out/primitive_div.md
+
+ALL SECTIONS: PASS

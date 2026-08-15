@@ -1,0 +1,10 @@
+Eisenstein: six unit vectors all have norm (squared modulus) == 1: True [(1, 0, 1), (1, 1, 1), (0, 1, 1), (-1, 0, 1), (-1, -1, 1), (0, -1, 1)]
+Eisenstein elements with N==1 in range [-3,3]^2: [(-1, -1), (-1, 0), (0, -1), (0, 1), (1, 0), (1, 1)]
+Minkowski sum identity holds on all pairs: True
+K_2: chi=2, min_degree=1, equals k-1: True
+K_3: chi=3, min_degree=2, equals k-1: True
+K_4: chi=4, min_degree=3, equals k-1: True
+K_5: chi=5, min_degree=4, equals k-1: True
+K_6: chi=6, min_degree=5, equals k-1: True
+K_7: chi=7, min_degree=6, equals k-1: True
+ALL LIBRARY CHECKS DONE

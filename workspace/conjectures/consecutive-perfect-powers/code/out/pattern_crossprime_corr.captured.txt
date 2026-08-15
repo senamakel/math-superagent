@@ -1,0 +1,67 @@
+odd-prime pairs p<q<=199 : 990  (primes: 45)
+
+Base rates over all pairs:
+  q | h^-(p)                  : 4  (0.40%)
+  p | h^-(q)                  : 41  (4.14%)
+  q Wieferich base p          : 8  (0.81%)
+  p Wieferich base q          : 45  (4.55%)
+  double-Wieferich (both)     : 0
+
+Contingency  q|h^-(p)  vs  q Wieferich base p :
+  A&B (divis & wieferich) : 0
+  A only (divis, not wief): 4
+  B only (wieferich, not : 8
+  neither                 : 978
+  P(A | B) = 0/8 = 0.000   (base P(A)=0.004)
+  P(B | A) = 0/4 = 0.000   (base P(B)=0.008)
+
+All pairs with q | h^-(p) (p, q, qWiebP, pWiebQ, doubleW, irr_p, irr_q):
+  p= 47 q= 139  q-wieferich-base-p=False  p-wieferich-base-q=False  doubleW=False  irr_p=False  irr_q=False  (h^-(p)=695, q*5=695)
+  p= 73 q=  89  q-wieferich-base-p=False  p-wieferich-base-q=False  doubleW=False  irr_p=False  irr_q=False  (h^-(p)=11957417, q*134353=11957417)
+  p= 89 q= 113  q-wieferich-base-p=False  p-wieferich-base-q=False  doubleW=False  irr_p=False  irr_q=False  (h^-(p)=13379363737, q*118401449=13379363737)
+  p=163 q= 181  q-wieferich-base-p=False  p-wieferich-base-q=False  doubleW=False  irr_p=False  irr_q=False  (h^-(p)=2708534744692077051875131636, q*14964280357414790341851556=2708534744692077051875131636)
+
+All pairs with p | h^-(q):
+  p=  3 q=  23  qWiebP=False pWiebQ=False doubleW=False
+  p=  3 q=  31  qWiebP=False pWiebQ=False doubleW=False
+  p=  3 q=  59  qWiebP=False pWiebQ=False doubleW=False
+  p=  3 q=  83  qWiebP=False pWiebQ=False doubleW=False
+  p=  3 q= 107  qWiebP=False pWiebQ=True doubleW=False
+  p=  3 q= 131  qWiebP=False pWiebQ=False doubleW=False
+  p=  3 q= 139  qWiebP=False pWiebQ=False doubleW=False
+  p=  3 q= 149  qWiebP=False pWiebQ=False doubleW=False
+  p=  3 q= 199  qWiebP=False pWiebQ=True doubleW=False
+  p=  5 q=  47  qWiebP=False pWiebQ=False doubleW=False
+  p=  5 q=  79  qWiebP=False pWiebQ=False doubleW=False
+  p=  5 q= 101  qWiebP=False pWiebQ=True doubleW=False
+  p=  5 q= 103  qWiebP=False pWiebQ=False doubleW=False
+  p=  5 q= 127  qWiebP=False pWiebQ=False doubleW=False
+  p=  5 q= 131  qWiebP=False pWiebQ=False doubleW=False
+  p=  5 q= 157  qWiebP=False pWiebQ=True doubleW=False
+  p=  5 q= 173  qWiebP=False pWiebQ=False doubleW=False
+  p=  5 q= 179  qWiebP=False pWiebQ=False doubleW=False
+  p=  5 q= 181  qWiebP=False pWiebQ=False doubleW=False
+  p=  5 q= 197  qWiebP=False pWiebQ=False doubleW=False
+  p=  7 q=  71  qWiebP=False pWiebQ=False doubleW=False
+  p=  7 q= 151  qWiebP=False pWiebQ=False doubleW=False
+  p= 11 q=  41  qWiebP=False pWiebQ=False doubleW=False
+  p= 11 q= 151  qWiebP=False pWiebQ=False doubleW=False
+  p= 11 q= 167  qWiebP=False pWiebQ=False doubleW=False
+  p= 11 q= 191  qWiebP=False pWiebQ=False doubleW=False
+  p= 13 q= 127  qWiebP=False pWiebQ=False doubleW=False
+  p= 13 q= 157  qWiebP=False pWiebQ=False doubleW=False
+  p= 13 q= 191  qWiebP=False pWiebQ=True doubleW=False
+  p= 17 q= 109  qWiebP=False pWiebQ=False doubleW=False
+  p= 17 q= 113  qWiebP=False pWiebQ=False doubleW=False
+  p= 17 q= 137  qWiebP=False pWiebQ=False doubleW=False
+  p= 19 q= 199  qWiebP=False pWiebQ=False doubleW=False
+  p= 37 q= 181  qWiebP=False pWiebQ=False doubleW=False
+  p= 41 q=  61  qWiebP=False pWiebQ=False doubleW=False
+  p= 41 q= 181  qWiebP=False pWiebQ=False doubleW=False
+  p= 43 q= 127  qWiebP=False pWiebQ=False doubleW=False
+  p= 47 q= 139  qWiebP=False pWiebQ=False doubleW=False
+  p= 53 q=  79  qWiebP=False pWiebQ=False doubleW=False
+  p= 53 q= 131  qWiebP=False pWiebQ=False doubleW=False
+  p= 61 q= 181  qWiebP=False pWiebQ=False doubleW=False
+
+Double-Wieferich pairs within bound and q|h^-(p), p|h^-(q):

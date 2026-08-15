@@ -1,0 +1,11 @@
+members with 7v/11e Moser-isomorphic core: 67
+contains Moser as induced subgraph: False
+contains Moser as induced subgraph: False
+contains Moser as induced subgraph: False
+contains Moser as induced subgraph: False
+contains Moser as induced subgraph: False
+non-moser-core member contains Moser: False
+non-moser-core member contains Moser: False
+non-moser-core member contains Moser: False
+non-moser-core member contains Moser: False
+non-moser-core member contains Moser: False

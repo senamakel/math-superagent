@@ -1,0 +1,13 @@
+Q(zeta_83): h^-(83) = 838216959 (exact, from earlier run)
+  83 | h^-(83)?  False
+  4871 | h^-(83)?  False
+  83 regular (83 ∤ any B_{2k}, 2k<=80)?  True
+==============================================================================
+Irregularity test for smaller members of known double-Wieferich pairs
+  p=83: irregular? False  indices=[]
+  p=2903: irregular? True  indices=[2386]  (1.3s)
+  p=911: irregular? True  indices=[60]  (0.1s)
+==============================================================================
+B= 60000: 2 pair(s) [(83, 4871), (2903, 18787)]  (8.6s)
+B=120000: 2 pair(s) [(83, 4871), (2903, 18787)]  (39.6s)
+B=200000: 2 pair(s) [(83, 4871), (2903, 18787)]  (134.3s)

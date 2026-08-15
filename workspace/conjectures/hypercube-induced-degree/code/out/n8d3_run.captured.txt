@@ -1,0 +1,2 @@
+=== n=8 d=3 |S| target=129 (vertices 256) ===
+thread caps: OPENBLAS=1 OMP=1

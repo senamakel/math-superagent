@@ -1,0 +1,14 @@
+odd primes: [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+  q=3: descent->1 (x,y) | x^2-y^q=1->1 (x,y) | equal: True
+  q=5: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+  q=7: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+  q=11: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+  q=13: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+  q=17: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+  q=19: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+  q=23: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+  q=29: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+  q=31: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+  q=37: descent->0 (x,y) | x^2-y^q=1->0 (x,y) | equal: True
+ROUND-TRIP BIJECTION HOLDS on x<=300000, m<=8, r,s<=300 for all tested q: True
+calibration q=3: (3,2) solves x^2-y^3=1 -> True

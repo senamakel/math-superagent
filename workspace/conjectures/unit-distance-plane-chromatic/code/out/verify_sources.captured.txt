@@ -1,0 +1,17 @@
+=== A. Eisenstein lattice unit vectors ===
+Eisenstein integers with |z|^2 = 1 in [-3,3]^2: 6
+  the vectors: [(-1, -1), (-1, 0), (0, -1), (0, 1), (1, 0), (1, 1)]
+  [should be the 6 units; |z|^2=1 iff z is a unit vector]
+  all six satisfy a^2-ab+b^2=1: True
+
+=== B. Minkowski sum of two unit equilateral triangles ===
+|A+B| = 6 (expected 9: no colliding sums)
+unit edges in triangle-sum: 9
+vertices: 6
+avg degree = 3.0
+
+=== C. Chromatic number of the triangle-sum ===
+  triangle-sum 1-colourable: False
+  triangle-sum 2-colourable: False
+  triangle-sum 3-colourable: True
+  triangle-sum 4-colourable: True

@@ -1,0 +1,384 @@
+#!/usr/bin/env python3
+"""Score a calibration run against its rubric, host-side.
+
+Runs on the host, never in the container, because it reads the answer key —
+`evals/<slug>/GROUND_TRUTH.md` and the plaintext blocklist — which is the whole
+reason those files live outside `workspace/`.
+
+It reports four things:
+
+1. **What the run built.** Files, executed commands, claims by evidence class,
+   and which roles spent the model calls. Evidence for the milestone ladder.
+2. **What the screen withheld.** The count and shape of denials. A run that
+   never tripped the screen was working from its own reasoning; a run that
+   tripped it forty times was trying to look the answer up, and its result means
+   something different. This cannot be reconstructed from the trace, because a
+   denied result is exactly what never reached the model.
+3. **The leakage audit.** Whether the withheld terms appear in the run's own
+   output, and — more importantly — *when*. Blocking retrieval cannot block
+   recall, so ordering is the only available discriminator: computing
+   `f(1..5)` and then conjecturing the closed form is derivation; asserting the
+   closed form before computing anything is recall.
+4. **The negative markers** the rubric names.
+
+The milestone ladder itself is not scored automatically. Milestones are claims
+about mathematical content and a regex cannot judge them; what this produces is
+the evidence, assembled, so a human or a supervising agent can.
+
+Usage:  scripts/eval-report <slug> [--out PATH]
+"""
+
+from __future__ import annotations
+
+import argparse
+import collections
+import json
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def read_terms(path: Path) -> dict[str, list[str]]:
+    """Plaintext terms, by section. Host-side only."""
+    sections: dict[str, list[str]] = collections.defaultdict(list)
+    current = None
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if not line:
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            current = line[1:-1].strip()
+        elif current:
+            sections[current].append(line)
+    return sections
+
+
+def trace_events(workspace: Path) -> list[dict]:
+    path = workspace / "config" / "trace.jsonl"
+    if not path.is_file():
+        return []
+    events = []
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            events.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    return events
+
+
+def screen_decisions(workspace: Path) -> list[dict]:
+    path = workspace / "config" / "screen.jsonl"
+    if not path.is_file():
+        return []
+    out = []
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        if line.strip():
+            try:
+                out.append(json.loads(line))
+            except json.JSONDecodeError:
+                continue
+    return out
+
+
+def workspace_text(workspace: Path, seed: Path) -> list[tuple[Path, str]]:
+    """Every file **the run wrote** that a reader would open.
+
+    Excludes `raw/` — untouched downloads are the *source* material, and a
+    withheld term appearing there says the screen let something through, which
+    is a different finding from the run having written it. Excludes the trace
+    and the screen ledger, which are handled separately.
+
+    Also excludes any file still byte-identical to its seed. `problem.md` and
+    `GOAL.md` legitimately use phrases that are on the blocklist — `GOAL.md`
+    names "a `5`-chromatic unit-distance graph" as a target, because that is
+    what the run is being asked for — and counting the seed's own words as
+    leakage would report a hit on every run before it had done anything.
+    """
+    skip_dirs = {"raw", ".workspace-history", ".python-packages", "__pycache__", ".sage"}
+    skip_names = {"trace.jsonl", "screen.jsonl", "console.log", "start.log"}
+    found = []
+    for path in sorted(workspace.rglob("*")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(workspace)
+        if any(part in skip_dirs for part in relative.parts):
+            continue
+        if path.name in skip_names:
+            continue
+        if path.suffix in {".png", ".jpg", ".pdf", ".pyc", ".gz", ".zip"}:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        original = seed / relative
+        if original.is_file():
+            try:
+                if original.read_text(encoding="utf-8", errors="replace") == text:
+                    continue
+            except OSError:
+                pass
+        found.append((path, text))
+    return found
+
+
+def find_terms(text: str, terms: list[str]) -> set[str]:
+    """Which of `terms` occur in `text`, matched loosely on word boundaries."""
+    lowered = text.lower()
+    hits = set()
+    for term in terms:
+        pattern = r"\W+".join(re.escape(token) for token in term.lower().split())
+        if re.search(rf"(?<!\w){pattern}", lowered):
+            hits.add(term)
+    return hits
+
+
+def first_occurrence(events: list[dict], terms: list[str]) -> dict[str, int]:
+    """The index of the first trace event mentioning each term.
+
+    Ordering is the recall discriminator, and it is the only one available:
+    a term the run derived appears *after* the work that derived it, and a term
+    the model recalled appears before any such work.
+    """
+    seen: dict[str, int] = {}
+    for index, event in enumerate(events):
+        blob = json.dumps(event, ensure_ascii=False).lower()
+        for term in terms:
+            if term in seen:
+                continue
+            pattern = r"\W+".join(re.escape(token) for token in term.lower().split())
+            if re.search(rf"(?<!\w){pattern}", blob):
+                seen[term] = index
+    return seen
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("slug")
+    parser.add_argument("--out", default=None)
+    args = parser.parse_args()
+
+    problem_dir = ROOT / "evals" / args.slug
+    if not problem_dir.is_dir():
+        sys.exit(f"no calibration problem at evals/{args.slug}")
+    workspace = ROOT / "workspace" / "conjectures" / args.slug
+    if not workspace.is_dir():
+        sys.exit(f"no workspace at workspace/conjectures/{args.slug}; has it run?")
+
+    terms = read_terms(problem_dir / "screen.terms")
+    baseline = read_terms(ROOT / "evals" / "screen.baseline.terms")
+    withheld = terms.get("block", []) + baseline.get("block", [])
+    flagged = terms.get("flag", [])
+
+    events = trace_events(workspace)
+    decisions = screen_decisions(workspace)
+    files = workspace_text(workspace, problem_dir / "seed")
+
+    lines: list[str] = []
+    add = lines.append
+
+    add(f"# Calibration report — {args.slug}")
+    add("")
+    add("Generated by `scripts/eval-report`, on the host, against")
+    add(f"`evals/{args.slug}/GROUND_TRUTH.md` and `RUBRIC.md`.")
+    add("")
+    add("The milestone ladder is **not** scored here. Milestones are claims about")
+    add("mathematical content and a regex cannot judge them. What follows is the")
+    add("evidence, assembled, so that a reader can.")
+    add("")
+
+    # --- 1. what the run built -------------------------------------------
+    add("## What the run built")
+    add("")
+    code_files = [p for p, _ in files if p.suffix in {".py", ".rs", ".lean", ".c", ".cpp"}]
+    captured = [p for p, _ in files if "out" in p.parts and p.suffix in {".txt", ".md", ".json"}]
+    add(f"- files written: {len(files)}")
+    add(f"- program files: {len(code_files)}")
+    add(f"- captured output files: {len(captured)}")
+
+    claims = ""
+    claims_path = workspace / "research" / "CLAIMS.md"
+    if claims_path.is_file():
+        claims = claims_path.read_text(encoding="utf-8", errors="replace")
+    classes = collections.Counter(
+        re.findall(r"(?:evidence|status)\s*[:=]\s*([a-z-]+)", claims, re.IGNORECASE)
+    )
+    add(f"- claims recorded: {claims.count('```claim')}")
+    if classes:
+        add(f"- evidence classes: {dict(classes)}")
+
+    roles = collections.Counter(
+        event.get("agent", "?")
+        for event in events
+        if event.get("kind") == "model_accounting" or "model" in str(event.get("kind", ""))
+    )
+    if roles:
+        add("- model calls by role: " + ", ".join(f"{k} {v}" for k, v in roles.most_common(10)))
+    add(f"- trace events: {len(events)}")
+    add("")
+
+    # --- 2. what the screen withheld -------------------------------------
+    add("## What the screen withheld")
+    add("")
+    if not decisions:
+        add("No screen decisions recorded. The run never reached for a withheld")
+        add("source — it was working from its own reasoning, which is a finding")
+        add("about the run and not an absence of data.")
+    else:
+        by_decision = collections.Counter(d.get("decision", "?") for d in decisions)
+        by_tool = collections.Counter(d.get("tool", "?") for d in decisions)
+        by_stage = collections.Counter(d.get("stage", "?") for d in decisions)
+        add(f"- decisions: {len(decisions)}")
+        add(f"- by outcome: {dict(by_decision)}")
+        add(f"- by tool: {dict(by_tool)}")
+        add(f"- by stage: {dict(by_stage)}")
+        add("")
+        add("A denial at the `arguments` stage means the run *asked* for something")
+        add("withheld; at the `result` stage it means a source it reached carried")
+        add("the answer. The first is about intent, the second about the web.")
+    add("")
+
+    # --- 3. the leakage audit --------------------------------------------
+    add("## Leakage audit")
+    add("")
+    add("Blocking retrieval cannot block recall: the model weights already hold")
+    add("these results. So the question is not only whether a withheld term")
+    add("appears, but **when** — before the work that would derive it, or after.")
+    add("")
+    written_hits: dict[str, list[str]] = collections.defaultdict(list)
+    for path, text in files:
+        for term in find_terms(text, withheld):
+            written_hits[term].append(str(path.relative_to(workspace)))
+    if not written_hits:
+        add("No **blocked** term appears in anything the run wrote.")
+    else:
+        add("| blocked term | files |")
+        add("| --- | --- |")
+        for term, where in sorted(written_hits.items()):
+            add(f"| {term} | {', '.join(where[:4])}{' …' if len(where) > 4 else ''} |")
+    add("")
+
+    # Flagged terms in what the run *wrote*, which the audit used to ignore.
+    #
+    # It audited `[block]` only, and that made it silent on the class of term
+    # most diagnostic of recall. A flagged term is one that is legitimate *when
+    # derived* and damning when it arrives first — which is precisely the
+    # question this audit exists to answer, so excluding it removed the audit's
+    # whole subject. A live run wrote `code/lib/huang.py` and a note reading
+    # "the recalled Huang lower bound", and the audit reported "no withheld term
+    # appears in anything the run wrote".
+    flag_hits: dict[str, list[str]] = collections.defaultdict(list)
+    for path, text in files:
+        for term in find_terms(text, flagged):
+            flag_hits[term].append(str(path.relative_to(workspace)))
+    if flag_hits:
+        add("### Flagged terms the run wrote")
+        add("")
+        add("Legitimate once derived, and evidence of recall when they arrive")
+        add("before the derivation. Check each against the trace ordering below.")
+        add("")
+        add("| flagged term | files |")
+        add("| --- | --- |")
+        for term, where in sorted(flag_hits.items()):
+            add(f"| {term} | {', '.join(where[:4])}{' …' if len(where) > 4 else ''} |")
+        add("")
+
+    # The run naming its own recall, which no term list anticipates.
+    #
+    # A blocklist is written before the run and can only name what its author
+    # thought of. What it cannot name is the run *saying* it is recalling —
+    # "the recalled Huang bound", "as is well known", "the standard result" —
+    # and that phrasing is a stronger signal than any single term, because the
+    # run is reporting its own epistemic state rather than being caught with a
+    # word.
+    # `recall_memory` / `recall_scratch` are tool names and appear in every
+    # scaffold prompt, so a bare "recall" matches the seed on every run and the
+    # detector becomes noise nobody reads. What is wanted is the run using the
+    # word about *a result*.
+    admissions = [
+        r"recall(?:ed|ing)\s+(?:the\s+)?"
+        r"(?:\w+\s+)?(?:bound|theorem|result|proof|argument|prediction|construction|lemma)",
+        r"as is well[- ]known",
+        r"the (?:standard|classical|known|published) (?:result|theorem|proof|argument)",
+        r"from memory",
+        r"I (?:recall|remember|know) that",
+    ]
+    # The run's own prose only. `prompts/` and the scaffold `AGENTS.md` are
+    # instructions *to* the run about how to use its memory tools, not the run
+    # reporting where a result came from.
+    admitted: list[tuple[str, str]] = []
+    for path, text in files:
+        if path.name == "AGENTS.md" or "prompts" in path.parts:
+            continue
+        for pattern in admissions:
+            for match in re.finditer(pattern, text, re.IGNORECASE):
+                start = max(0, match.start() - 60)
+                snippet = " ".join(text[start : match.end() + 60].split())
+                admitted.append((str(path.relative_to(workspace)), snippet))
+    if admitted:
+        add("### The run describing its own recall")
+        add("")
+        add("Phrasing, not terms. A run that writes *recalled* is telling you")
+        add("where the result came from, and no blocklist has to have guessed")
+        add("the word.")
+        add("")
+        for where, snippet in admitted[:12]:
+            add(f"- `{where}` — …{snippet}…")
+        if len(admitted) > 12:
+            add(f"- …and {len(admitted) - 12} more")
+        add("")
+
+    order = first_occurrence(events, withheld + flagged)
+    if order:
+        add("### First mention in the trace, in order")
+        add("")
+        add("Read this against `GROUND_TRUTH.md`, which names the terms whose")
+        add("early appearance is recall rather than derivation.")
+        add("")
+        add("| position | of | term |")
+        add("| --- | --- | --- |")
+        for term, index in sorted(order.items(), key=lambda item: item[1]):
+            add(f"| {index} | {len(events)} | {term} |")
+    else:
+        add("No withheld or flagged term appears anywhere in the trace.")
+    add("")
+
+    # --- 4. negative markers ---------------------------------------------
+    add("## Negative markers to check by hand")
+    add("")
+    add("Named in `RUBRIC.md`. These are the ones a script can point at; the")
+    add("rest need reading.")
+    add("")
+    float_hits = [
+        str(p.relative_to(workspace))
+        for p, text in files
+        if p.suffix == ".py" and re.search(r"abs\s*\([^)]*\)\s*<\s*1e-|math\.isclose|1e-9", text)
+    ]
+    add(f"- tolerance-based comparison in Python: {float_hits or 'none found'}")
+    unrun = [
+        str(p.relative_to(workspace))
+        for p, _ in files
+        if p.suffix == ".py" and not any("out" in q.parts and p.stem in q.name for q, _ in files)
+    ]
+    add(f"- program files with no captured output beside them: {len(unrun)}")
+    add("")
+    add("Still to read by hand: whether claims are proved or verified, whether")
+    add("the oracle was calibrated before it was trusted, and whether the run")
+    add("said what it could not establish.")
+    add("")
+
+    report = "\n".join(lines) + "\n"
+    out = Path(args.out) if args.out else problem_dir / "reports" / "latest.md"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(report, encoding="utf-8")
+    print(report)
+    print(f"written to {out.relative_to(ROOT)}", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

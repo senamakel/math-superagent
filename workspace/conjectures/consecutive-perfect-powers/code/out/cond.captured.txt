@@ -1,0 +1,46 @@
+========================================================================
+(a) check_conditions at the known solution 3^2 - 2^3 = 1, (p,q)=(2,3)
+========================================================================
+  is_odd_prime_pair      = False
+  vp_y                   = False
+  vq_x                   = False
+  wieferich_1            = False
+  wieferich_2            = False
+
+  Interpretation: is_odd_prime_pair=False because p=2 is even, so the
+  Cassels/Wieferich conditions are EXCLUDED BY HYPOTHESIS for (2,3),
+  NOT a rejection of the known solution. The conditions only speak
+  about pairs (p,q) of odd primes.
+
+  Cross-check on concrete values x=3, y=2 (the known solution):
+  is_odd_prime_pair      = False
+  vp_y                   = True
+  vq_x                   = True
+  wieferich_1            = False
+  wieferich_2            = False
+  -> with concrete x=3,y=2: vq_x = (3 % 3 == 0) = True (q=3 divides x=3),
+     vp_y = (2 % 2 == 0) = True (p=2 divides y=2): the Cassels relations
+     do hold at the known solution, but is_odd_prime_pair=False keeps
+     the hypothesis gate closed.
+
+========================================================================
+(b) double-Wieferich odd-prime pairs (p<q) for p,q <= B
+========================================================================
+
+B=200: 0 double-Wieferich pair(s), 0.000s
+
+B=500: 0 double-Wieferich pair(s), 0.001s
+
+========================================================================
+(c) oracle sanity: solutions(10**8) must be exactly [(3,2,2,3)]
+========================================================================
+  solutions(10**8) = [(3, 2, 2, 3)]
+  exact match [(3,2,2,3)]? True   (0.003s)
+
+========================================================================
+SUMMARY
+========================================================================
+  check_conditions(2,3) at known solution: is_odd_prime_pair=False (excluded-by-hypothesis; conditions silent, not violated)
+  double-Wieferich pairs <= 200 : 0
+  double-Wieferich pairs <= 500 : 0
+  oracle solutions(10**8) == [(3,2,2,3)]: True

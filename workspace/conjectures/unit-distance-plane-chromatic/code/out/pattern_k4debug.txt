@@ -1,0 +1,5 @@
+analyzer-style K4 check result: False
+  pair (1,2) common nbrs {0, 3}, common-nbr adjacency check:
+     0-3 adjacent? False
+  pair (4,5) common nbrs {0, 6}, common-nbr adjacency check:
+     0-6 adjacent? False

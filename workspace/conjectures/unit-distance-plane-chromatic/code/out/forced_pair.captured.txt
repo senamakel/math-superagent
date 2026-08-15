@@ -1,0 +1,28 @@
+======================================================================
+Forced-pair attack  (threshold |u-v|^2 >= 1/4)
+======================================================================
+== calibration: Moser spindle: n=7, edges=11
+   chi: 4-colourable=True, 3-colourable=False  (0.0s)
+
+--- Stage 1: Moser spindle, pairs with sqdist>=1/4, forced equal under 4 colours ---
+forced-pair scan [moser-4] under k=4: tested=10 non-edge pairs, 0.0s
+Moser spindle forced-monochromatic pairs (4 colours):
+   NONE (every qualifying pair can be 4-coloured with the two vertices distinct)
+
+--- Stage 2: diamond k=3 base case ---
+diamond: n=4, edges=5, |tips|^2=3.0000000000000000000 (>=1/4: True)
+diamond 3-colourable (no extra edge): True
+diamond with tips-edge under 3 colours: UNSAT (tips forced equal)
+   CONFIRMED: tips forced equal in every 3-colouring; |tips|^2=3.0000000000000000000>=1/4.
+
+--- Stage 3: Minkowski sum   Moser + Moser ---
+H+H point set size: 26
+   H+H unit edges: 69  (built in 0.0s)
+   H+H 4-colourable: True
+   scanning H+H pairs with sqdist>=1/4 for forced equality under 4 colours...
+forced-pair scan [hh-4] under k=4: tested=256 non-edge pairs, 0.1s
+H+H forced-monochromatic pairs (4 colours):
+   NONE found.
+
+Largest graph the 4-colour SAT test completed on: n=26 (H+H Moser+Moser)
+DONE

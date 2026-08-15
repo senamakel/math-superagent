@@ -1,0 +1,87 @@
+# Blocklist — consecutive-perfect-powers
+#
+# PLAINTEXT. Host-side only. Never mounted into the container; see
+# evals/README.md and the header of
+# evals/unit-distance-plane-chromatic/screen.terms for the format and for why
+# the compiled form is hashed.
+#
+# De-naming is weak here — `x^p - y^q = 1` is self-identifying — so this list
+# does more work than the other two, and the leakage audit does more still.
+
+salt = b48d0c73f5921ae6d70c3b18594fe2a7
+
+[block]
+
+# The prover and the paper
+Mihailescu
+Mihăilescu
+Preda Mihailescu
+primary cyclotomic units and a proof
+Catalan conjecture proof
+proof of Catalan conjecture
+Catalan conjecture is proved
+Mihailescu theorem
+
+# The name
+Catalan conjecture
+Catalan's conjecture
+Catalan equation
+conjecture de Catalan
+
+# The mechanism of the 2002 proof
+primary cyclotomic units
+Stickelberger Catalan
+Thaine theorem Catalan
+minus part of the class group Catalan
+Z G module class group Catalan
+Bilu Metsankyla
+
+# The prior structural results, by name
+Cassels relation
+Cassels theorem Catalan
+Tijdeman bound
+Tijdeman theorem Catalan
+double Wieferich
+Wieferich pair Catalan
+Ko Chao
+Lebesgue 1850 exponential equation
+
+[flag]
+
+# Legitimate machinery for this problem, and also the machinery of the proof.
+# Escalated to the adjudicator rather than denied, because denying them would
+# withhold the subject itself.
+cyclotomic field class number
+cyclotomic units
+Stickelberger
+Thaine
+Wieferich prime
+linear forms in logarithms
+Baker theorem effective bound
+class group minus part
+Crelle 572
+8 and 9 are the only consecutive powers
+only consecutive perfect powers
+
+[host.deny]
+
+# The encyclopedia and Q&A tier, where "solved by Mihăilescu in 2002" is the
+# first sentence.
+en.wikipedia.org
+en.m.wikipedia.org
+simple.wikipedia.org
+fr.wikipedia.org
+de.wikipedia.org
+mathworld.wolfram.com
+math.stackexchange.com
+mathoverflow.net
+stackoverflow.com
+www.quantamagazine.org
+quantamagazine.org
+terrytao.wordpress.com
+
+# Deliberately NOT denied: oeis.org. The OEIS entry for perfect powers does
+# carry the answer in a comment, but denying the host would disable
+# `oeis_lookup` entirely, and the sequence data itself is legitimate and useful
+# here. The content screen is the right layer — the comment naming the result
+# trips the [block] terms above, while the terms of the sequence come through.

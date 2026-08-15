@@ -1,0 +1,95 @@
+{"at":"1786745792","decision":"denied","detail":"term matched in 12208 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745796","decision":"denied","detail":"term matched in 12172 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745849","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745849","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745852","decision":"denied","detail":"term matched in 12163 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745874","decision":"denied","detail":"term matched in 12101 characters","stage":"result","tool":"exa_search"}
+{"at":"1786745892","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745896","decision":"unreachable-host","detail":"host `citeseerx.ist.psu.edu` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745896","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745896","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745896","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786745995","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12086 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786746029","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786746036","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786746040","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746095","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (3984 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786746123","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746299","decision":"denied-by-adjudicator","detail":"adjudicator reply was neither ALLOW nor DENY; failing closed","stage":"result","tool":"read_sources"}
+{"at":"1786746577","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786746577","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786747037","decision":"denied","detail":"term matched","stage":"arguments","tool":"citation_graph"}
+{"at":"1786747037","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786747044","decision":"unreachable-host","detail":"host `www.cs.tau.ac.il` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786747044","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786747060","decision":"denied-host","detail":"host `en.wikipedia.org`","stage":"arguments","tool":"read_sources"}
+{"at":"1786747079","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786747089","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12118 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786747305","decision":"unreachable-host","detail":"host `arxiv.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786747414","decision":"denied","detail":"term matched in 12152 characters","stage":"result","tool":"exa_search"}
+{"at":"1786747591","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786747598","decision":"denied","detail":"term matched in 12216 characters","stage":"result","tool":"exa_search"}
+{"at":"1786747599","decision":"denied","detail":"term matched in 12149 characters","stage":"result","tool":"exa_search"}
+{"at":"1786747877","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786747882","decision":"denied","detail":"term matched in 12183 characters","stage":"result","tool":"exa_search"}
+{"at":"1786747884","decision":"denied","detail":"term matched in 12086 characters","stage":"result","tool":"exa_search"}
+{"at":"1786747885","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12159 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786747991","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786748000","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12151 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786748905","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786748905","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749002","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786749048","decision":"denied","detail":"term matched","stage":"arguments","tool":"read_sources"}
+{"at":"1786749056","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749059","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786749062","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786749062","decision":"unreachable-host","detail":"host `doi.org` is not on the egress allowlist","stage":"arguments","tool":"download_document"}
+{"at":"1786749065","decision":"denied","detail":"term matched in 12130 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749120","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749120","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749121","decision":"denied","detail":"term matched in 12124 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749121","decision":"denied","detail":"term matched in 12168 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749121","decision":"denied","detail":"term matched in 12135 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749129","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (3634 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786749136","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"read_sources"}
+{"at":"1786749145","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (2523 characters)","stage":"result","tool":"read_sources"}
+{"at":"1786749157","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749167","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12164 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786749200","decision":"denied","detail":"term matched","stage":"arguments","tool":"citation_graph"}
+{"at":"1786749386","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786749386","decision":"denied","detail":"term matched in 12106 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749442","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749442","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749442","decision":"denied","detail":"term matched","stage":"arguments","tool":"citation_graph"}
+{"at":"1786749512","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12171 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786749636","decision":"denied-by-adjudicator","detail":"adjudicated","stage":"result","tool":"exa_search"}
+{"at":"1786749732","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749739","decision":"denied","detail":"term matched in 12195 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749748","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749748","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749761","decision":"denied","detail":"term matched in 12201 characters","stage":"result","tool":"exa_search"}
+{"at":"1786749763","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12115 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786749806","decision":"denied","detail":"term matched","stage":"arguments","tool":"citation_graph"}
+{"at":"1786749839","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749970","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749970","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749996","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786749996","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750296","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750298","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786750304","decision":"denied","detail":"term matched in 12136 characters","stage":"result","tool":"exa_search"}
+{"at":"1786750314","decision":"denied","detail":"term matched","stage":"arguments","tool":"citation_graph"}
+{"at":"1786750323","decision":"allowed-by-adjudicator","detail":"flagged, then allowed (12217 characters)","stage":"result","tool":"exa_search"}
+{"at":"1786750664","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750736","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750736","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750740","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786750748","decision":"denied","detail":"term matched in 12128 characters","stage":"result","tool":"exa_search"}
+{"at":"1786750848","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786750848","decision":"denied","detail":"term matched","stage":"arguments","tool":"citation_graph"}
+{"at":"1786755208","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786755216","decision":"denied","detail":"term matched in 12247 characters","stage":"result","tool":"exa_search"}
+{"at":"1786766312","decision":"denied","detail":"term matched","stage":"arguments","tool":"exa_search"}
+{"at":"1786766316","decision":"allowed-by-adjudicator","detail":"flagged, then allowed","stage":"arguments","tool":"exa_search"}
+{"at":"1786766318","decision":"denied","detail":"term matched in 12132 characters","stage":"result","tool":"exa_search"}
+{"at":"1786766323","decision":"denied","detail":"term matched in 12148 characters","stage":"result","tool":"exa_search"}

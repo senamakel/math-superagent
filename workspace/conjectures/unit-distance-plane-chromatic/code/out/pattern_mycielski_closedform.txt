@@ -1,0 +1,2 @@
+closed form coefficients (2^k,3^k,const): {A: -3, B: 7/2, C: 1/2}
+verified closed form against all 10 terms: True

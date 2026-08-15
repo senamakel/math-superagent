@@ -1,0 +1,7 @@
+T+T distinct vertices n = 6
+unit edges m = 9
+  1-colourable: False
+  2-colourable: False
+  3-colourable: True (chi <= 3)
+RESULT chi(T+T) = 3
+CROSS-CHECK: PASSED (agrees with verify_sources: n=6, m=9, chi=3)

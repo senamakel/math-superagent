@@ -1,0 +1,32 @@
+==============================================================================
+check_conditions_all  N = 10000000000
+Scan GENUINE odd-prime-exponent solutions x^p - y^q = 1 (p,q odd),
+evaluate Cassels (q|x, p|y) + double-Wieferich conditions.
+Survivor = candidate satisfying ALL conditions.
+==============================================================================
+
+[1] Genuine solutions (x,p,y,q) of x^p - y^q = 1, x^p,y^q <= N:
+    x=3 p=2 y=2 q=3   x^p=9   (non-odd)
+    -> 1 solution(s).
+
+[2] Calibration of check_conditions at known solution (3,2,2,3):
+    check_conditions(2,3,x=3,y=2) = {'is_odd_prime_pair': False, 'vp_y': True, 'vq_x': True, 'wieferich_1': False, 'wieferich_2': False}
+    known solution satisfies Cassels content (q|x True, p|y True)
+    but is_odd_prime_pair = False (p=2 even) -> EXCLUDED BY HYPOTHESIS, never a survivor.
+
+[3] Survivor scan over odd-prime solutions: 0 odd-pair solution(s) evaluated
+    Survivor = satisfies q|x AND p|y AND q^(p-1)==1 mod p^2 AND p^(q-1)==1 mod q^2.
+    SURVIVOR COUNT = 0
+
+==============================================================================
+RESULT
+  N reached          : 10000000000
+  genuine solutions  : 1  (must be exactly (3,2,2,3))
+  odd-pair solutions : 0
+  survivor count     : 0
+  runtime            : 0.040s
+  NOTE: any odd-prime (p,q) survivor of ALL conditions below the
+        bound is a candidate the descent would have to exclude;
+        zero here is consistent with classifier being only the known
+        solution (3,2,2,3), excluded by the odd-prime hypothesis.
+==============================================================================

@@ -1,0 +1,11 @@
+Independent adjacency-build K2,3 hunt over M^k(C5):
+  M^0    |V|=5   |E|=5     K2,3-free=True  None
+  M^1    |V|=11  |E|=20    K2,3-free=True  None
+  M^2    |V|=23  |E|=71    K2,3-free=False  (0, 2, [1, 6, 12, 17])
+  M^3    |V|=47  |E|=236   K2,3-free=False  (0, 2, [1, 6, 12, 17, 24, 29, 35, 40])
+  M^4    |V|=95  |E|=755   K2,3-free=False  (0, 2, [1, 6, 12, 17, 24, 29, 35, 40, 48, 53, 59, 64, 71, 76, 82, 87])
+
+Summary: M^k(C5) is K2,3-free iff k<=1; the K2,3 introduced at
+M^2 persists in M^3, M^4 by containment of the M^2 original-vertex
+subset.  Hence every M^k(C5), k>=2, violates the NECESSARY K2,3-free
+condition for unit-distance realizability (sharp_nbhd_cert).

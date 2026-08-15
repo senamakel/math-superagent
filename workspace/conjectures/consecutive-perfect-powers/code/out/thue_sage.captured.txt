@@ -1,0 +1,17 @@
+class number h(K) = 1
+unit rank = via unit_group
+unit group r1+r2-1 (r1=1,r2=1):  1
+Traceback (most recent call last):
+  File "sage/structure/category_object.pyx", line 839, in sage.structure.category_object.CategoryObject.getattr_from_category (build/cythonized/sage/structure/category_object.c:7223)
+KeyError: 'unit_group'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/code/refute/thue_sage.sage.py", line 22, in <module>
+    units = Ok.unit_group()
+            ^^^^^^^^^^^^^
+  File "sage/structure/category_object.pyx", line 833, in sage.structure.category_object.CategoryObject.__getattr__ (build/cythonized/sage/structure/category_object.c:7142)
+  File "sage/structure/category_object.pyx", line 848, in sage.structure.category_object.CategoryObject.getattr_from_category (build/cythonized/sage/structure/category_object.c:7308)
+  File "sage/cpython/getattr.pyx", line 356, in sage.cpython.getattr.getattr_from_other_class (build/cythonized/sage/cpython/getattr.c:2701)
+AttributeError: 'AbsoluteOrder_with_category' object has no attribute 'unit_group'

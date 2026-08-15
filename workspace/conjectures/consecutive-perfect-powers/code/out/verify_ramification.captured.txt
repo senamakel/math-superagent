@@ -1,0 +1,13 @@
+Verifying ramification claims for odd primes: [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+  p=3: N(1-z)=p? True (N=3); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=5: N(1-z)=p? True (N=5); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=7: N(1-z)=p? True (N=7); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=11: N(1-z)=p? True (N=11); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=13: N(1-z)=p? True (N=13); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=17: N(1-z)=p? True (N=17); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=19: N(1-z)=p? True (N=19); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=23: N(1-z)=p? True (N=23); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=29: N(1-z)=p? True (N=29); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=31: N(1-z)=p? True (N=31); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+  p=37: N(1-z)=p? True (N=37); (1-z)^(p-1)=p*u unit? True; p/(1-z) integral? True; u integral unit? True  => PASS
+ALL PASS

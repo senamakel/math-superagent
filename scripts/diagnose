@@ -35,12 +35,30 @@ usage() {
 # By mount rather than by name: the container name carries a compose slug
 # nobody can predict, and mapping a name back to a workspace by hand is what
 # produced a report of a cross-project memory leak that did not exist.
+#
+# Which is why there is no `--filter name=` here any more. There was one, on
+# `riemann-agent-run`, and it quietly undid the rule the comment above states:
+# Compose takes the project name from the *directory*, so the filter matched
+# only a checkout literally called `riemann`. In a worktree — where the folder
+# is the branch name — every container was filtered out before the mount was
+# ever compared, and `./diagnose` reported "container not running" for a run
+# that was visible in `docker ps` at that moment. A name filter is exactly the
+# name-based resolution this function exists to avoid.
+# Each mount on its own line, and every line tested. The format used to be
+# `{{range .Mounts}}{{.Source}}{{end}}`, which concatenates the sources with no
+# separator — fine while a run had exactly one mount, and wrong the moment a
+# calibration run added a second (the compiled blocklist at
+# `/etc/riemann/screen.json`). The workspace path was then no longer at the end
+# of the string, the `*/name` glob stopped matching, and the run again read as
+# "not running".
 container_for() {
-    for id in $(docker ps -q --filter name=riemann-agent-run); do
-        mount=$(docker inspect "$id" --format '{{range .Mounts}}{{.Source}}{{end}}' 2>/dev/null || true)
-        case "$mount" in
-            */"$1") echo "$id"; return 0 ;;
-        esac
+    for id in $(docker ps -q); do
+        mounts=$(docker inspect "$id" --format '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' 2>/dev/null || true)
+        for mount in $mounts; do
+            case "$mount" in
+                */"$1") echo "$id"; return 0 ;;
+            esac
+        done
     done
     return 1
 }
@@ -248,14 +266,20 @@ case "${1-}" in
         ;;
     --all)
         found=0
-        for id in $(docker ps -q --filter name=riemann-agent-run); do
-            mount=$(docker inspect "$id" --format '{{range .Mounts}}{{.Source}}{{end}}' 2>/dev/null || true)
-            case "$mount" in
-                */workspace/*)
-                    report "${mount##*/workspace/}"
-                    found=1
-                    ;;
-            esac
+        # No name filter, for the reason given above `container_for`: the
+        # compose project name is the checkout's directory, so filtering on
+        # `riemann-agent-run` hid every run in a worktree. The `*/workspace/*`
+        # mount test below is what identifies a run, and it is sufficient.
+        for id in $(docker ps -q); do
+            mounts=$(docker inspect "$id" --format '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' 2>/dev/null || true)
+            for mount in $mounts; do
+                case "$mount" in
+                    */workspace/*)
+                        report "${mount##*/workspace/}"
+                        found=1
+                        ;;
+                esac
+            done
         done
         [ "$found" -eq 1 ] || echo "no runs are going" >&2
         exit 0

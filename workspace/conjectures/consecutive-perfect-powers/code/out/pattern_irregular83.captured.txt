@@ -1,0 +1,10 @@
+h^-(83) = 838216959
+83 | h^-(83)? False
+factorization of h^-(83): {3: 1, 279405653: 1}
+v_83(h^-) = 0 (5.5s)
+4871 | h^-(83)? False
+
+Irregular primes (p | h^-(p)) and v_p(h^-):
+  p= 37  v=1
+  p= 59  v=1
+  p= 67  v=1

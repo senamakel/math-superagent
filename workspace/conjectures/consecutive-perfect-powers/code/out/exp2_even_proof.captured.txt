@@ -1,0 +1,49 @@
+exp2_even_proof.py — machine verification of lemma exp2-a-even
+x^2 - y^q = 1, x even >= 2, y > 0, q odd prime  =>  NO SOLUTION
+
+========================================================================
+PART (a): minimiser of b^q - a^q on 1 <= a < b, and 2^q - 1 >= 7
+========================================================================
+  q=3    min(b^q-a^q) over 1<=a<b<=200 = 7 at (a,b)=(1, 2) (expect (1,2), 7) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 7 >= 7 and > 2: True
+  q=5    min(b^q-a^q) over 1<=a<b<=200 = 31 at (a,b)=(1, 2) (expect (1,2), 31) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 31 >= 7 and > 2: True
+  q=7    min(b^q-a^q) over 1<=a<b<=200 = 127 at (a,b)=(1, 2) (expect (1,2), 127) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 127 >= 7 and > 2: True
+  q=11   min(b^q-a^q) over 1<=a<b<=200 = 2047 at (a,b)=(1, 2) (expect (1,2), 2047) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 2047 >= 7 and > 2: True
+  q=13   min(b^q-a^q) over 1<=a<b<=200 = 8191 at (a,b)=(1, 2) (expect (1,2), 8191) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 8191 >= 7 and > 2: True
+  q=17   min(b^q-a^q) over 1<=a<b<=200 = 131071 at (a,b)=(1, 2) (expect (1,2), 131071) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 131071 >= 7 and > 2: True
+  q=19   min(b^q-a^q) over 1<=a<b<=200 = 524287 at (a,b)=(1, 2) (expect (1,2), 524287) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 524287 >= 7 and > 2: True
+  q=23   min(b^q-a^q) over 1<=a<b<=200 = 8388607 at (a,b)=(1, 2) (expect (1,2), 8388607) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 8388607 >= 7 and > 2: True
+  q=29   min(b^q-a^q) over 1<=a<b<=200 = 536870911 at (a,b)=(1, 2) (expect (1,2), 536870911) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 536870911 >= 7 and > 2: True
+  q=31   min(b^q-a^q) over 1<=a<b<=200 = 2147483647 at (a,b)=(1, 2) (expect (1,2), 2147483647) OK
+        (a+1)^q-a^q increasing in a: True (and neighbouring-window increasing: True)   2^q-1 = 2147483647 >= 7 and > 2: True
+  PART (a) overall: ALL OK
+
+========================================================================
+PART (b): gcd(x-1,x+1)=1 for even x, and q-th-power factorisation
+========================================================================
+  (i) gcd(x-1,x+1)=1 for all even x <= 2,000,000 (exact): OK
+  (ii) gcd(x-1,x+1) == gcd(2, x-1) for all even x <= 2,000,000: OK  (both sides = 1 since x-1 is odd)
+  (iii) for even x <= 200,000, odd prime q <= 37: 0 case(s) where x^2-1 is a q-th power; the forced structure x-1=a^q, x+1=b^q (a<b, gcd 1) holds in every case: OK
+  PART (b) overall: ALL OK
+
+========================================================================
+PART (c): brute-force oracle, even x, x^2 - y^q = 1
+========================================================================
+  even x in [2,10,000,000], odd prime q <= 30: solutions found = []
+  exact integer arithmetic only: True
+  runtime: 53.694s
+  N reached (x bound): 10,000,000 (even x); q bound: 30
+  known solution (3,2,3): x odd (excluded by hypothesis): True; identity 3^2-1 == 2^3: True
+  PART (c) verdict: ZERO SOLUTIONS (lemma holds on box) OK
+
+========================================================================
+OVERALL: ALL PARTS OK — lemma exp2-a-even verified by elementary calculation
+========================================================================

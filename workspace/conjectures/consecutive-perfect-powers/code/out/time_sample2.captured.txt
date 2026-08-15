@@ -1,0 +1,8 @@
+c=100000 p=457: first 0.0001s, second(with bits) 0.0001s  bits~15148
+c=100000 p=499: first 0.0001s, second(with bits) 0.0001s  bits~16544
+c=50000 p=499: first 0.0001s, second(with bits) 0.0001s  bits~15548
+c=10000 p=499: first 0.0001s, second(with bits) 0.0001s  bits~13235
+c=100000 p=5: first 0.0000s, second(with bits) 0.0000s  bits~133
+c=10000 p=457: 0.062 ms/op
+c=100000 p=457: 0.095 ms/op
+c=100000 p=13: 0.001 ms/op

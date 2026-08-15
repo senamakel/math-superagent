@@ -1,0 +1,19 @@
+========================================================================
+TASK 1: x^p - y^2 = 1, p ODD prime, iterate y in [2, M1]
+        m = y^2+1 tested as an exact p-th power (gmpy2.iroot)
+        Expected: NO solution.  M1 = 10000000
+========================================================================
+solutions (x, p, y): []
+count: 0
+verdict: AGREE (none found)
+runtime: 20.938s
+
+========================================================================
+TASK 2: x^2 - y^q = 1, q ODD prime, iterate x in [2, M2]
+        m = x^2-1 tested as an exact q-th power (gmpy2.iroot)
+        Expected: single solution (x,y,q)=(3,2,3).  M2 = 100000000
+========================================================================
+solutions (x, y, q): [(3, 2, 3)]
+count: 1
+verdict: AGREE (exactly (3,2,3))
+runtime: 179.712s

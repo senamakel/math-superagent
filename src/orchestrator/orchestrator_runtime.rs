@@ -29,19 +29,21 @@ impl OrchestratorAgent {
         let tracer = start_tracer(&workspace, budget, research_enabled);
         convert_problem_statement(&workspace);
         let vector_store = VectorStore::from_env()?;
+        let screen = start_screen(&workspace, &model, &tracer)?;
         let async_subagents = AsyncSubagentManager::new(budget, Some(tracer.clone()))
             .with_session_memory(vector_store.clone());
         // Every download is filed in this project's library dataset as well as
         // under `research/`, so what the run gathered is reachable by wording
         // rather than only by a path someone remembers.
-        let documents =
-            WorkspaceDocuments::new(workspace.clone())?.with_library(vector_store.clone());
+        let documents = WorkspaceDocuments::new(workspace.clone())?
+            .with_library(vector_store.clone())
+            .with_screen(screen.clone());
         // Commits the workspace after every successful write, so a rewritten
         // solution or an edited belief is recoverable rather than lost.
         let checkpoint: Arc<dyn tinyagents::harness::middleware::Middleware<()>> = Arc::new(
             checkpoint::WorkspaceCheckpoint::new(workspace.clone(), Some(tracer.clone())),
         );
-        let search = search_tools(research_enabled, &documents)?;
+        let search = search_tools(research_enabled, &documents, screen.as_ref())?;
 
         // Every school gets its own copy of every role, because a role's prompt
         // is where the school actually lives. They share one manager, and so

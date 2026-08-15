@@ -1,0 +1,10 @@
+p=  3  h^- (exact claim) =     1   computed real=1.0  imag=-2.28398739884974e-61  diff<1e-40=True  match=True
+p=  5  h^- (exact claim) =     1   computed real=1.0  imag=-7.37038371971679e-61  diff<1e-40=True  match=True
+p=  7  h^- (exact claim) =     1   computed real=1.0  imag=-1.38156464586871e-60  diff<1e-40=True  match=True
+p= 11  h^- (exact claim) =     1   computed real=1.0  imag=-3.23039519016238e-60  diff<1e-40=True  match=True
+p= 13  h^- (exact claim) =     1   computed real=1.0  imag=-6.54246287083418e-60  diff<1e-40=True  match=True
+p= 23  h^- (exact claim) =     3   computed real=3.0  imag=-8.5024000548518e-59  diff<1e-40=True  match=True
+p= 31  h^- (exact claim) =     9   computed real=9.0  imag=-7.89787541726638e-59  diff<1e-40=True  match=True
+p= 37  h^- (exact claim) =    37   computed real=37.0  imag=-7.53000513554858e-58  diff<1e-40=True  match=True
+p= 43  h^- (exact claim) =   211   computed real=211.0  imag=-2.76563736895787e-57  diff<1e-40=True  match=True
+ALL MATCH: True

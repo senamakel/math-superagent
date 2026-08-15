@@ -1,0 +1,75 @@
+# Baseline blocklist — applied to every calibration problem
+#
+# PLAINTEXT. Host-side only. `scripts/compile-screen` merges this file with the
+# per-problem `evals/<slug>/screen.terms` before compiling. A per-problem file
+# can add to these sections but cannot remove from them.
+#
+# This file carries what is true of *every* solved-conjecture run: the venues
+# whose whole purpose is to state a settled result in one line, and the query
+# shapes that mean the run has stopped solving and started looking up.
+#
+# The per-problem salt is used for hashing; this file declares no salt.
+
+[block]
+
+# Query shapes that are retrieval rather than research. These are matched
+# against tool *arguments*, which is where they appear.
+what is the answer to
+has this conjecture been proved
+has this been solved
+is this conjecture true
+known solution to this problem
+published proof of
+the proof of this conjecture
+who proved
+when was it proved
+solution to the open problem
+answer key
+final answer for
+
+[flag]
+
+# Words that mark a source as a summary of a settled result rather than a
+# primary source. Escalated to the adjudicator, never denied on their own,
+# because each has ordinary uses in live mathematics.
+was proved in
+was resolved by
+settled the conjecture
+resolved a long standing
+breakthrough proof
+now a theorem
+no longer open
+famously proved
+celebrated proof
+recently proved
+finally proved
+open problem solved
+
+[host.deny]
+
+# The encyclopedia, Q&A and popular-summary tier. A solved problem's answer is
+# the first sentence on all of these, and none of them is a primary source —
+# CLAUDE.md already says to prefer primary sources for mathematical results, so
+# withholding them costs the run nothing it should have been using.
+en.wikipedia.org
+en.m.wikipedia.org
+simple.wikipedia.org
+www.wikipedia.org
+mathworld.wolfram.com
+www.britannica.com
+math.stackexchange.com
+mathoverflow.net
+cstheory.stackexchange.com
+stackoverflow.com
+www.reddit.com
+old.reddit.com
+reddit.com
+quora.com
+www.quora.com
+medium.com
+www.quantamagazine.org
+quantamagazine.org
+www.scientificamerican.com
+www.newscientist.com
+en.wikiversity.org
+proofwiki.org

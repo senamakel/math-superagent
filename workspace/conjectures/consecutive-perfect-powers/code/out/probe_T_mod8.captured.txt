@@ -1,0 +1,15 @@
+T(c,p) mod 8, by c mod 4 and p mod 4 (x = c^2+1):
+  c=0 mod 4, p=1 mod 4: residues [1, 5]  (square residues 0,1,4)
+  c=0 mod 4, p=3 mod 4: residues [3, 7]  (square residues 0,1,4)
+  c=1 mod 4, p=1 mod 4: residues [7]  (square residues 0,1,4)
+  c=1 mod 4, p=3 mod 4: residues [7]  (square residues 0,1,4)
+Traceback (most recent call last):
+  File "/workspace/code/caseB/probe_T_mod8.py", line 43, in <module>
+    r = T_mod(cov, pov, 8)
+        ^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/caseB/probe_T_mod8.py", line 19, in T_mod
+    return ((pow(r, p, mod) - 1) * mod_inverse(r - 1, mod)) % mod
+                                   ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/sympy/core/numbers.py", line 552, in mod_inverse
+    raise ValueError('inverse of %s (mod %s) does not exist' % (a, m))
+ValueError: inverse of 4 (mod 8) does not exist

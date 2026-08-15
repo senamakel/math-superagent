@@ -1,0 +1,26 @@
+computed h^- for 16 odd primes <= 60 in 3.2s
+h^- sequence (p -> h^-):
+  p=  3  h^-=1
+  p=  5  h^-=1
+  p=  7  h^-=1
+  p= 11  h^-=1
+  p= 13  h^-=1
+  p= 17  h^-=1
+  p= 19  h^-=1
+  p= 23  h^-=3
+  p= 29  h^-=8
+  p= 31  h^-=9
+  p= 37  h^-=37
+  p= 41  h^-=121
+  p= 43  h^-=211
+  p= 47  h^-=695
+  p= 53  h^-=4889
+  p= 59  h^-=41241
+matrix built in 0.00s (exact integer division)
+SURVIVING pairs (both q | h^-(p) and p | h^-(q)), p < q <= 60:
+count surviving = 0
+known double-Wieferich pairs: [(83, 4871), (2903, 18787)]
+  within bound (both <= 60): []
+intersection of survivors with known double-Wieferich pairs: []
+(p,q)=(2,3) known solution excluded-by-hypothesis (p even):  True
+TOTAL runtime 3.17s

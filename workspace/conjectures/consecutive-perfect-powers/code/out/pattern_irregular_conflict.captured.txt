@@ -1,0 +1,8 @@
+B_60 numerator magnit log10 ~ 42.1
+  p=911: p | num(B_60)?  False
+B_2386 numerator magnit log10 ~ 5121.7
+  p=2903: p | num(B_2386)?  False
+[cross] p=83, B_32: p | num?  False
+[cross] p=37, B_32: p | num?  True
+[cross] p=59, B_44: p | num?  True
+[cross] p=67, B_58: p | num?  True

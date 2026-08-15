@@ -1,0 +1,6 @@
+box: c in [1,2000], odd primes p in [3,401]  (78 primes, 156000 pairs)
+c=1 structural: |Im((1+i)^p)| = 2^((p-1)/2) for all p?  True
+minimum |Im((c+i)^p)| over the box: 2
+violations (|Im|<2):  0
+hits |Im|==1:         0
+VERDICT: PASS

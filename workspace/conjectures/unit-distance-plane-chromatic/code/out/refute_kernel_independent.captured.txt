@@ -1,0 +1,18 @@
+======================================================================
+Independent brute-force check of the Mycielski refutation facts
+======================================================================
+C5: n=5 brute chi=3 (expect 3)
+Groetzsch: n=11 brute chi=4 (expect 4), triangle-free=False
+Mycielski^2(C5): n=23 (expect 23), edges=41 (expect 92*?), triangle-free=False
+outer apex = 22, its degree = 11 (expect 11, the size of Mycielski(C5)=Groetzsch)
+
+Now the 5-critical core (uses the SAT-based chrom oracle, not brute):
+core: n=18 edges=17 min-degree=1 chi=5
+   deg>=4           = False
+   K4-free          = False
+   K23-free         = False
+   nbhd-maxdeg<=2   = False
+=> all four kernel conditions hold: False
+=> core is NOT 4-colourable (chi=5): True
+
+EXIT= 0

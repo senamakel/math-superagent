@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "<string>", line 7, in <module>
+  File "/workspace/code/classgroup.py", line 50, in h_minus
+    e = logtab[a]
+        ~~~~~~^^^
+KeyError: 3
+p= 23  h^- = 3  integer= True time=0.2s
+p= 31  h^- = 9  integer= True time=0.3s
+p= 37  h^- = 37  integer= True time=0.1s

@@ -1,0 +1,43 @@
+======================================================================
+CALIBRATION: Moser spindle — unit-distance graph oracle pair
+======================================================================
+
+[1] Exact coordinates (field Q(sqrt3, sqrt11, sqrt33)):
+    O    = (0, 0)
+    P1   = (1, 0)
+    P2   = (Rational(1, 2), Mul(Rational(1, 2), Pow(Integer(3), Rational(1, 2))))
+    Q    = (Rational(3, 2), Mul(Rational(1, 2), Pow(Integer(3), Rational(1, 2))))
+    P1'  = (Rational(5, 6), Mul(Rational(1, 6), Pow(Integer(11), Rational(1, 2))))
+    P2'  = (Add(Rational(5, 12), Mul(Integer(-1), Rational(1, 12), Pow(Integer(33), Rational(1, 2)))), Add(Mul(Rational(1, 12), Pow(Integer(11), Rational(1, 2))), Mul(Rational(5, 12), Pow(Integer(3), Rational(1, 2)))))
+    Q'   = (Add(Rational(5, 4), Mul(Integer(-1), Rational(1, 12), Pow(Integer(33), Rational(1, 2)))), Add(Mul(Rational(5, 12), Pow(Integer(3), Rational(1, 2))), Mul(Rational(1, 4), Pow(Integer(11), Rational(1, 2)))))
+
+[2] Edge certification (exact |p_i - p_j|^2 == 1):
+    vertices = 7
+    certified unit edges = 11 (expected 11)
+      O    -- P1     |.|^2 = 1  (shown 1)
+      O    -- P2     |.|^2 = 1  (shown 1)
+      O    -- P1'    |.|^2 = 1  (shown 1)
+      O    -- P2'    |.|^2 = 1  (shown 1)
+      P1   -- P2     |.|^2 = 1  (shown 1)
+      P1   -- Q      |.|^2 = 1  (shown 1)
+      P2   -- Q      |.|^2 = 1  (shown 1)
+      Q    -- Q'     |.|^2 = 1  (shown 1)
+      P1'  -- P2'    |.|^2 = 1  (shown 1)
+      P1'  -- Q'     |.|^2 = 1  (shown 1)
+      P2'  -- Q'     |.|^2 = 1  (shown 1)
+    -> all 11 edges certified EXACTLY, no tolerance.
+
+[3] Complete colouring test:
+    k=4: SAT (4-colourable)
+      4-colouring witness -> colour[v]: [0, 1, 2, 0, 1, 2, 3]
+      colour 0: ['O', 'Q']
+      colour 1: ['P1', "P1'"]
+      colour 2: ['P2', "P2'"]
+      colour 3: ["Q'"]
+    k=3: UNSAT (not 3-colourable)
+
+[4] Verdict:
+    chi = 4  ->  calibration PASSED  (matches problem.md expectation)
+
+[5] Audit — confirm exactly the 11 claimed edges, no spurious ones:
+    full scan of all 21 pairs found exactly the same 11 edges as certified.

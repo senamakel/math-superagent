@@ -1,0 +1,15 @@
+Exact feasibility check of reported optimal LP solutions
+(reconstructed a-vector, all Delsarte constraints >= 0 exactly, sum=M, a0=1)
+n  LP a1 (exact)   feasible?  attained-by-real-set?
+
+Route B — explicit real sets, exact average internal degree a_1(S)=2e(S)/M
+construction: even-weight set + a carefully chosen set of 'low-harm' vertices
+n  |E|+1=M  e(S)  a1=2e/M   LP a1   (LP <= a1, both ->0)
+1       2     1  1.000000  1.000000   lp<=a1: True
+2       3     2  1.333333  1.000000   lp<=a1: True
+3       5     3  1.200000  0.750000   lp<=a1: True
+4       9     4  0.888889  0.500000   lp<=a1: True
+5      17     5  0.588235  0.312500   lp<=a1: True
+6      33     6  0.363636  0.187500   lp<=a1: True
+7      65     7  0.215385  0.109375   lp<=a1: True
+8     129     8  0.124031  0.062500   lp<=a1: True

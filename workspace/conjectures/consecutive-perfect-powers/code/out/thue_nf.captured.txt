@@ -1,0 +1,9 @@
+class number: 1
+regulator: 1.3473773483293841009181878914456530463
+fundamental units / unit group basis:
+[2, -1]
+[Mod(x - 1, x^3 - 2)]
+unit rank r1+r2-1:
+1
+thue c^3-2d^3=1 : [[-1, -1], [1, 0]]
+thue c^3-2d^3=-1: [[-1, 0], [1, 1]]

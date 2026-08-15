@@ -1,0 +1,4 @@
+residual-class consistency check over c<=20000, odd prime p<200:
+  disagreements (square-viable but claimed closed, or vice versa): 0
+  sample: []
+  every square-viable (c,p) has c even & p==1 mod 8 over c<=2000, p<101: True  count= 5000

@@ -1,0 +1,49 @@
+========================================================================
+(A) Symbolic confirmation of the descent
+========================================================================
+
+Step 1: x^2-1 = (x-1)(x+1); y^3 = x^2-1
+  y^3 == (x-1)(x+1) identically: True
+  gcd(x-1,x+1) divides 2 (by hand, 2-line case split on x mod 2)
+
+Step 2: x even impossible.
+  b^3 - a^3 for 1 <= a < b: minimum at (a,b)=(1,2) is 7 >= 7, cannot equal 2.
+  => x odd.
+
+Step 3: x odd, y=2y', x=2k+1
+  (2k+1)^2 - 1 - (2y')^3 = 4*k**2 + 4*k - 8*yp**3
+  (2k+1)^2 - 1 = 4k(k+1): True
+  divide 4k(k+1) = 8y'^3 by 4: k(k+1) = 2 y'^3
+  gcd(k,k+1)=1 => {k,k+1} = {c^3, 2 d^3}  (single factor 2 goes whole
+     into the even factor because gcd = 1)
+  Case A (k=c^3, k+1=2d^3):  2 d^3 - c^3 = 1
+  Case B (k=2d^3, k+1=c^3):  c^3 - 2 d^3 = 1
+
+Check: which descent arrow is being relied on?
+  The structural fact: coprime factors of 2 y'^3 force the shape
+  {c^3, 2d^3}.  No enumeration anywhere; the split is forced.
+
+========================================================================
+(B) Unit enumeration in Z[omega], omega^3 = 2
+========================================================================
+
+Scanning n in [-60, 60] for (1-w)^n with zero w^2 coeff:
+  n=  0: (1-w)^n = 1  wp2=0 -> (c,d)=(1,0)  c^3-2d^3=1
+  n=  1: (1-w)^n = 1 - w  wp2=0 -> (c,d)=(1,1)  c^3-2d^3=-1
+
+Collected (c,d) with c^3-2d^3 = +-1 from zero-w^2 units:
+  (c,d)=(1,0)  c^3-2d^3=1
+  (c,d)=(1,1)  c^3-2d^3=-1
+
+========================================================================
+(C) Map back to (x,y) and select y > 0
+========================================================================
+
+Mapping (c,d) -> (x,y): x=2k+1, y=2 c d
+  Thue c^3-2d^3=1 at (c,d)=(1,0): x=1, y=0  [check x^2-y^3=1, k=0]  y=0 EXCLUDED
+  Thue c^3-2d^3=-1 at (c,d)=(1,1): x=3, y=2  [check x^2-y^3=1, k=1]  y>0 OK
+
+Final filtered by y>0:
+  (x,y) with y>0: [(3, 2)]
+  All with x^2-y^3=1, x,y>0: [(3, 2)]
+  Known solution (3,2) returned: True

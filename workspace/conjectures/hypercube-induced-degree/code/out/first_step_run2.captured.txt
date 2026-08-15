@@ -1,0 +1,2 @@
+n=6  |S|=33  d=ceil(sqrt(n))=3  feasible=True  (0.0s)
+n=7  |S|=65  d=ceil(sqrt(n))=3  feasible=True  (1.9s)

@@ -41,6 +41,7 @@ mod requests;
 mod runner;
 mod runs;
 mod schools;
+mod screen;
 mod search;
 mod shared_context;
 mod solutions;

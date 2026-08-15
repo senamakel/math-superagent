@@ -490,6 +490,85 @@ async fn a_non_http_scheme_is_refused() -> Result<()> {
     Ok(())
 }
 
+/// The screen has to reach `download_document`, and nothing else here.
+///
+/// `download_document` fetches an arbitrary URL, it is granted to almost every
+/// role, and — unlike the search tools — it is **not** withheld by
+/// `MATH_AGENT_RESEARCH`. So on a calibration run it is the second way onto the
+/// web and the one most easily left unscreened.
+///
+/// Asserted behaviourally rather than by inspecting the wrapper, because what
+/// matters is that a denied host is actually refused, not that a particular
+/// type is present. The refusal happens before any request, so this test makes
+/// no network call.
+#[tokio::test]
+async fn the_screen_reaches_the_download_tool() -> Result<()> {
+    let path = workspace("screened-download")?;
+    std::fs::write(path.join("screen.json"), SCREEN_POLICY)
+        .expect("the fixture policy must be writable");
+    let screen = crate::orchestrator::screen::Screen::load(&path.join("screen.json"), &path, None)?;
+
+    let documents = WorkspaceDocuments::new(path.clone())?.with_screen(Some(screen));
+    let tools = documents.tools();
+    let download = tools
+        .iter()
+        .find(|tool| tool.name() == "download_document")
+        .expect("the download tool must be registered");
+
+    let refused = download
+        .call(
+            &(),
+            crate::agent::ToolCall {
+                id: "c1".to_string(),
+                name: "download_document".to_string(),
+                arguments: serde_json::json!({"url": "https://blocked.example/paper.pdf"}),
+                invalid: None,
+            },
+        )
+        .await?;
+    assert!(
+        refused.content.contains("withheld by the run's evidence policy"),
+        "a denied host must be refused before the request, got: {}",
+        refused.content
+    );
+
+    // The file tools read and write what the run itself produced, so screening
+    // them would put the screen in front of the run reading its own notes.
+    let write = tools
+        .iter()
+        .find(|tool| tool.name() == "write_document")
+        .expect("the write tool must be registered");
+    let stored = write
+        .call(
+            &(),
+            crate::agent::ToolCall {
+                id: "c2".to_string(),
+                name: "write_document".to_string(),
+                arguments: serde_json::json!({
+                    "path": "notes.md",
+                    "content": "https://blocked.example/paper.pdf"
+                }),
+                invalid: None,
+            },
+        )
+        .await?;
+    assert!(
+        stored.error.is_none(),
+        "writing a note is not screened, got: {stored:?}"
+    );
+    Ok(())
+}
+
+/// A compiled policy denying one host, in the shape `scripts/compile-screen`
+/// emits. `9be49db4…` is that script's digest of the normalised host
+/// `blocked example` under the salt below; `block` carries one unreachable
+/// digest because a policy withholding nothing is rejected as a compilation
+/// mistake.
+const SCREEN_POLICY: &str = concat!(
+    r#"{"slug":"fixture","salt":"0123456789abcdef0","max_ngram":4,"#,
+    r#""block":["0000000000000000000000000000dead"],"#,
+    r#""deny_hosts":["9be49db4c8786f44f484383e88a15b23"]}"#
+);
 /// Concurrent writes to different paths all survive.
 ///
 /// The shape several schools on one workspace make ordinary: a dozen roles
