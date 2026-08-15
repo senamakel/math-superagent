@@ -36,9 +36,13 @@ corrected this cycle to record the resolution.
 
 ## What the reconciliation leaves cosmetically unclosed (neither is a validity gap)
 
-1. **The case-split written as a standalone cover paragraph + Lean-formalised.**
-   The repair's *idea* is on disk; the standalone write-up and Lean file are
-   presentation, not a gap in the statement (Directive 44 item 1 modelling work).
+1. **The case-split standalone write-up exists; the Lean formalisation is NOT done (Directive 49).**
+   The repair's *idea* is on disk (`research/notes/lemma54-descent-proof-repaired.md`),
+   and the mathematical proof + machine-forcing stand. But `code/lean/descent_lemma.lean`
+   does **not** compile — sorryAx in all six theorems (no literal `sorry` token;
+   error recovery inserted sorryAx), unsolved goal `run_inv` case `cons.inr`,
+   `he1 : e = 1`. The earlier "presentation only" framing was wrong: a Lean file
+   whose every theorem depends on sorryAx is not kernel-checked.
 2. **`verify_lemma54_v_le_gstar.py`'s g\*-composed form** has two vacuous
    captures (Link A asserted-`unexecuted`). The real-prime application measures
    `v_n` directly, so Route B does **not** depend on the g\*-composed form.
@@ -67,8 +71,11 @@ statement: The [PROOF DEFECT - Directive 43/44] marker inside
   the runway algebra, and closure (lemma54_descent_check.captured.txt), plus
   281/281 real prime diagonals satisfy the hypothesis (lemma54_verify.captured.txt).
   The claim ledger row lemma54-re-derived-proof (status: proved) is authoritative;
-  only two cosmetic items remain: the standalone written cover paragraph + Lean
-  formalisation, and the g*-composed Link A form (vacuous captures, not needed by
+  the standalone written cover paragraph exists, but the Lean formalisation is NOT
+  a cosmetic item — Directive 49: code/lean/descent_lemma.lean does not compile
+  (sorryAx in all six theorems; no literal `sorry` token, error recovery inserted
+  sorryAx), so it is not kernel-checked and must not be filed as proved. The g*-composed
+  Link A form remains cosmetic (vacuous captures, not needed by
   the real-prime application which measures v_n directly).
 hypotheses: even v, eps in {0,2}^L, exact integer arithmetic.
 holds-here: yes (real prime right-diagonals are even).

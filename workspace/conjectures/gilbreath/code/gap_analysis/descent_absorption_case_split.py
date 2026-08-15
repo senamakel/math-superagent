@@ -4,82 +4,62 @@ descent/absorption lemma (Granville Lemma 5.4 combinatorial core) under the
 CORRECTED case-split proof.
 
 OBJECT
-  c = (c_1..c_L) in {0,2}^L (the 0-2 cycle / maximal {0,2} suffix), nu2 = #{s : c_s = 2}.
-  v even in [0, 2L+8].  Orbit:  x_0 = v,  x_s = |x_{s-1} - c_s|,  s = 1..L.
+  c = (c_1..c_L) in {0,2}^L (the 0-2 cycle / maximal {0,2} suffix),
+  nu2 = #{s : c_s = 2}, v even in [0, 2L+8].
+  Orbit: x_0 = v, x_s = |x_{s-1} - c_s|, s = 1..L.
 
-CLAIMS (each checked over ALL pairs, exact integers, no floats):
-  (a) biconditional, BOTH directions:
-        x_L in {0,2}  <=>  v <= 2*nu2 + 2
-  (b) tight value in the failure regime:
-        v > 2*nu2 + 2  ==>  x_L == v - 2*nu2  AND  x_L >= 4
-  (0) structural claims used by the repair:
-        every x_s (s=0..L) is even;  {0,2} is closed under the step
-        (|0-0|=0, |0-2|=2, |2-0|=2, |2-2|=0; once in {0,2}, always in {0,2}).
+CLAIMS (each over ALL pairs, exact integers, no floats):
+  (a) biconditional BOTH directions:  x_L in {0,2} <=> v <= 2*nu2 + 2
+  (b) tight value in the failure regime: v > 2*nu2+2 ==> x_L == v - 2*nu2, x_L >= 4
+  (0) structural: every x_s even; {0,2} closed under the step
   (c) the corrected case-split partition (the proof, not the old algebra):
-        regime "min_{1<=s<=L} x_s <= 2"  <=>  v <= 2*nu2+2   (branch 1 = absorption)
-        regime "all x_s >= 4"            <=>  v >  2*nu2+2   (branch 2 = descent)
-        in branch 2 every step is exact: c_s=2 -> x_s = x_{s-1}-2, c_s=0 -> x_s = x_{s-1},
-        and x_L == v - 2*nu2 (the subtraction is ONLY ever applied in branch 2,
-        where it is valid — never on a bounce trajectory).
-  (d) tightness at the budget boundary, per pattern:
-        v = 2*nu2+2  ->  x_L in {0,2}   (expect exactly 2: a 0-terminal would need a
-                                       2 after all nu2 twos are consumed, a counting
-                                       contradiction; verified, count reported)
-        v = 2*nu2+4  ->  x_L == 4       (exact)
+        branch 1 = "some x_t <= 2"  <=> v <= 2*nu2+2   (absorption)
+        branch 2 = "all x_s >= 4"   <=> v >  2*nu2+2   (descent)
+        in branch 2 every step is exact: c_s=2 -> x_s=x_{s-1}-2, c_s=0 -> x_s=x_{s-1}
+  (d) tightness at the budget boundary per pattern:
+        v = 2*nu2+2 -> x_L in {0,2} (expect exactly 2)
+        v = 2*nu2+4 -> x_L == 4
 
-VERIFICATION, NOT A PROOF: the proof is the case-split argument,
-  IF some x_t <= 2 (t in 1..L) THEN x_t in {0,2} (even, nonneg) and {0,2} is
-     absorbing, so x_L in {0,2};  and v <= 2*nu2+2 (branch 2's contradiction).
-  ELSE every x_s >= 4: each c_s=2 subtracts exactly 2 and each c_s=0 passes
-     through, so x_L = v - 2*nu2;  x_L >= 4 means v - 2*nu2 >= 4, i.e.
-     v > 2*nu2+2.  Contrapositively, v > 2*nu2+2 forces the ALL->=4 branch and
-     the exact value; v <= 2*nu2+2 forces some x_t <= 2 (else x_L = v-2*nu2
-     <= 2 contradicts x_L >= 4) and absorption.  Nothing is discarded; the
-     delta=0 "exception" Granville's published proof drops is branch 1's
-     bounce, handled here as the main closure case.
-This program machine-checks every premise and conclusion of that argument over
-the full finite domain: L=1..18, all 524,286 patterns, all 11,534,328
-(pattern, v) pairs expected 0 violations.
+VERIFICATION, NOT A PROOF: the proof is the case-split argument —
+  if some x_t <= 2 then x_t in {0,2} (even, nonneg) and {0,2} is absorbing,
+  so x_L in {0,2};  v <= 2*nu2+2 (branch 2's contradiction).
+  else every x_s >= 4: each c_s=2 subtracts exactly 2, c_s=0 passes through,
+  so x_L = v - 2*nu2; x_L >= 4 means v - 2*nu2 >= 4 i.e. v > 2*nu2+2.
+  Contrapositively v > 2*nu2+2 forces the all->=4 branch and the exact value;
+  v <= 2*nu2+2 forces some x_t <= 2 (else x_L = v-2*nu2 <= 2 contradicts
+  x_L >= 4) and absorption. Nothing discarded; the delta=0 "exception" that
+  Granville's published proof drops is branch 1's bounce, the main case here.
 
-COMPLEXITY: time = sum_L 2^L * (L+5) * L = 197,132,292 elementary |a-b| steps,
-space O(L) (one trajectory streamed at a time).  Exact integers throughout.
+COMPLEXITY: time = sum_L 2^L*(L+5)*L = 197,132,292 elementary |a-b| steps,
+space O(L) (one trajectory streamed).  The finite domain is the lemma's own
+(L=1..18, all 524,286 patterns, all 11,534,328 (pattern,v) pairs) — this IS
+the object under test, declared as the verification oracle.
 """
 import sys
 
 LMAX = 18
 
 
-def simulate(v, cs):
-    """Exact trajectory x_0..x_L (list form; used for the tight boundary checks
-    and the independent re-derivation cross-check)."""
-    x = v
-    traj = [x]
-    for c in cs:
-        x = abs(x - c)
-        traj.append(x)
-    return traj
-
-
 def tight_check(v, cs):
     """Return x_L for the reported budget-boundary values (exact)."""
-    traj = simulate(v, cs)
-    return traj[-1]
+    x = v
+    for c in cs:
+        x = abs(x - c)
+    return x
 
 
 def independent_cross_check():
     """Second, structurally different route on a deterministic subsample:
-    re-derive each checked trajectory in HALVED units (d_s = |d_{s-1} - e_s|,
-    e = c/2 in {0,1}, d_0 = v/2) and verify the identity x_s == 2*d_s for
-    every s together with the claims (a),(b).  Different code path from the
-    streaming main loop (list-based, halved), same exact integers."""
+    re-derive each trajectory in HALVED units (d_s = |d_{s-1} - e_s|,
+    e = c/2 in {0,1}, d_0 = v/2) and verify x_s == 2*d_s for every s,
+    plus claims (a),(b).  Different code path (list-based, halved)."""
     Ls = list(range(1, 7)) + [10, 18]
     cnt = 0
     for L in Ls:
         for pat in range(1 << L):
             es = [1 if (pat >> s) & 1 else 0 for s in range(L)]
             cs = [2 * e for e in es]
-            nu2 = sum(es)
-            nu1 = nu2
+            nu1 = sum(es)
             for v in range(0, 2 * L + 9, 2):
                 w = v // 2
                 d = w
@@ -89,8 +69,6 @@ def independent_cross_check():
                     d = abs(d - es[s])
                     x = abs(x - cs[s])
                     ok &= (x == 2 * d)
-                # claims in halved units: d_L in {0,1} <=> w <= nu1+1;
-                # w > nu1+1 => d_L = w - nu1
                 c1 = (d in (0, 1)) == (w <= nu1 + 1)
                 c2 = (w > nu1 + 1) and (d == w - nu1)
                 ok &= c1 and (c2 or w <= nu1 + 1)
@@ -252,7 +230,6 @@ def main():
     print("        x_L = v - 2*nu2;  v <= 2*nu2+2 would force x_L <= 2 < 4, contradiction,")
     print("        so this branch is exactly v > 2*nu2+2 and x_L = v - 2*nu2 >= 4.")
 
-    # independent cross-check (halved units, list-based code path)
     n_cc = independent_cross_check()
     print()
     print(f"independent re-derivation (halved units d_s=|d_{{s-1}}-e_s|, x_s==2*d_s,"

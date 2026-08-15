@@ -10,7 +10,7 @@ leg of Route B. Repairs the written proof defect identified by Directive 43/44
 (the "each 2 contributed −2" algebra, false on bounce trajectories where
 δ=0,ε=2 ⟹ δ=2 contributes +2).
 `answers:` lemma54-re-derived-proof (its prose defect), lemma54-discarded-case-universal
-`formalisation:` code/lean/descent_lemma.lean (see #print axioms report)
+`formalisation:` **FAILED — code/lean/descent_lemma.lean does NOT compile (Directive 49).** `lean_check` ends: `absorbing [propext, sorryAx]`; `run_absorb [sorryAx]`; `run_high [propext, sorryAx]`; `run_inv [propext, sorryAx]`; `descent_claim1 [propext, sorryAx, Quot.sound]`; `descent_claim2 [propext, sorryAx]` — sorryAx in all six. There is no literal `sorry` token (error recovery inserted sorryAx), so only the axiom list counts, and by that criterion the file FAILS. The unsolved goal is `run_inv`, case `cons.inr`, hypothesis `he1 : e = 1` (the eps=1 descent/bounce branch).
 `machine:` code/out/descent_halved_verify.captured.txt (12,582,900 pairs, 0
 violations), code/out/lemma54_descent_check.captured.txt (2,621,432 pairs, 0
 violations).

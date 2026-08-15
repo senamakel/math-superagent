@@ -56,7 +56,7 @@ then δ_t ∈ {0,2} and absorption carries it; else every δ_k ≥ 4, every 2
 subtracts 2, and δ_L = v − 2ν₂ ≤ 2 contradicts δ_L ≥ 4. Write the proof and
 Lean-formalise it; **do not run another sampling sweep** — an invariant is
 proved by argument, the Lean file only certifies it. The
-entire surviving open content is the supply-side linear bound
+entire surviving open *mathematical* content is the supply-side linear bound (see below — the Lean formalisation is NOT proved: Directive 49, `code/lean/descent_lemma.lean` has sorryAx in all six theorems; fixing it is the immediate next work)
 ν_2 ≥ c·n. Route B (Granville ν_2) primary;
 Route A (ratio bound) empirical fallback; Route C (CHT) calibrated by
 authors' difficulty assessment.
