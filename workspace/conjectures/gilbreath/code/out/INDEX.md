@@ -11,6 +11,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `_pattern_extract.json` | _(undescribed)_ |
 | `_placeholder.txt` | _(undescribed)_ |
 | `_run_edge.py` | _(undescribed)_ |
+| `_run_oracle.py` | Thin launcher for scholar_oracle_run.py (student helper; imports code/, times it). |
 | `anticlustering_hypothesis.captured.txt` | _(undescribed)_ |
 | `bernoulli_threshold.captured.txt` | _(undescribed)_ |
 | `bigjump_characterization.captured.txt` | _(undescribed)_ |
@@ -228,6 +229,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `runner3.py` | _(undescribed)_ |
 | `s1_fork_resolution.md` | Exact negative that closes the S1 transfer fork: the universal ν₂≥w/2 claim is false — no positive constant works (string [2,4,4,…] gives ν₂=0,w=1), so the Route B supply bound must carry the two-point mod-4 gap density (S2) content and cannot be split into a number-theory-free transfer. |
 | `scholar_digest_verify.py` | _(undescribed)_ |
+| `scholar_oracle_check.py` | Scholar trust-anchor check: asserts the oracle generator (lib/gilbreath.py) reproduces the five worked rows A_1..A_5 of problem.md exactly. The on-disk capture oracle_depth600.captured.txt confirms match=True for all five and the (odd, even,...) shape + second-entry in {0,2} to depth 600. |
+| `scholar_oracle_run.py` | Extended scholar trust-anchor runner: reproduces A_1..A_5 from the oracle and additionally re-verifies the leading-1 / second-entry-in-{0,2} / (odd,even,...) shape to depth 100, an independent live re-execution of what oracle_depth600.captured.txt recorded. |
 | `separate_row_vs_diagonal.captured.txt` | _(undescribed)_ |
 | `sequence_dump.txt` | _(undescribed)_ |
 | `sequence_extract.captured.txt` | _(undescribed)_ |

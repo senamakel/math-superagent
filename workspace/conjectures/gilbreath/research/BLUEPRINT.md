@@ -16,6 +16,10 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/counterexample-backward.md`
 - `counterexample-backward/CB-prime-exclusion` (lemma) — \| The constrained initial pattern derived in CB-backward-propagation — a stretch of consecutive halved prime gaps whose XOR over binom(t,·)…
   - open `research/backward/counterexample-backward.md`
+- `direct-invariant-potential/DI-initial-minimum-clean` (lemma) — For the Φ from DI-monotone-potential: Φ(H_1) equals the global minimum of Φ, and every row H with Φ(H) = Φ(H_1) has H(0) ∈ {0,1}.…
+  - open `research/backward/direct-invariant-potential.md`
+- `direct-invariant-potential/DI-monotone-potential` (lemma) — There exists a function Φ from finite-support rows of nonnegative integers to a well-founded (or real, bounded-below) ordered set such that…
+  - open `research/backward/direct-invariant-potential.md`
 - `event-rate-sufficiency/G-balance` (lemma) — \| At every (2,4)-regeneration event, the jump j (amount by which b_{k+1} exceeds b_k) satisfies j ≥ d, where d is the number of erosion…
   - open `research/backward/event-rate-sufficiency.md`
 - `event-rate-sufficiency/G-edges` (lemma) — \| For the prime Gilbreath triangle, during any erosion run (rows where b_{k+1} = b_k − 1) with intruder y = 4, the edge x_k cannot remain 0…
@@ -46,6 +50,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
 | `abgs-2011-s9-mod4-switch-limit-open` | claim | **ready** | — | Ash–Beltis–Gross–Sinnott 2011 §9 (Experimental Math. 20(4):400–411): whether N(a,d,m,x)/π(x) — the frequency of consecutive prime pairs p,q… |
+| `abgs-s9-verbatim-verified` | claim | established | — | The quote "we cannot tell whether they are tending toward a limiting ratio of 1" (ABGS 2011 §9) is verbatim in the full text; the paper… |
 | `agama-trace-restatement` | claim | **ready** | — | (Agama 2021) In the trace/circuit language of the iterate-difference triangle of a finite originator, Gilbreath's conjecture is equivalent… |
 | `anti-gilbreath-construction` | claim | **ready** | — | For any unbounded monotone f(n)≥2 there is a sequence X with n-th gap ≤ f(n) whose triangle's right edge is 1 infinitely often and other… |
 | `anticlustering-markov-insufficient-for-gsupply` | claim | established | — | Generic Markov anti-clustering of the mod-4 switch bit does NOT deliver the supply bound ν₂ ≥ c·w (hence not ν₂ ≥ c·n). On the worst-min… |
@@ -84,6 +89,5 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `counterexample-backward/CB-dying-pair` | lemma | **ready** | — | \| At the first failure row K, the dying row K−1 satisfies b_{K-1} = 1, A_{K-1}(0) = 1, and A_{K-1}(1) ∈ {4,6,8,…}. Let e = A_{K-2}(1) be… |
 | `counterexample-backward/CB-prime-exclusion` | lemma | **ready** | — | \| The constrained initial pattern derived in CB-backward-propagation — a stretch of consecutive halved prime gaps whose XOR over binom(t,·)… |
 | `czz2011-ducci-2-lipschitz` | claim | established | — | The difference map D on d-tuples with a′_k=\|a_k−a_{k+1}\| (and a′_d=\|a_d−a_1\|) is 2-Lipschitz in the Euclidean norm and is not a… |
-| `czz2011-infinite-periodic-ducci-is-gilbreath-operator` | claim | established | — | On an infinite periodic sequence, the map a′_k=\|a_k−a_{k+1}\| is exactly the operator of Gilbreath's conjecture; in the periodic setting… |
 
-_162 further nodes not shown._
+_166 further nodes not shown._
