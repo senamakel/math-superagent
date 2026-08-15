@@ -20,7 +20,7 @@
 //! which is the failure that actually happened.
 
 use std::fmt::Write as _;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use super::super::{approaches, backward, claims, threads, weakened};
 

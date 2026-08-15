@@ -10,6 +10,63 @@ derived file sits in `research/INDEX.md` as `_(undescribed)_` for a whole run.
 Where they live in the tree, and what an agent writes to produce them, is in
 [`workspace.md`](workspace.md).
 
+## What a ledger may cost a prompt
+
+Every one of these is routed into at least one role's system prompt, so its size
+is a bill paid on every model call in that role. On one live workspace the nine
+came to **393,995 of the 770,134 tokens** across all twenty-two assembled
+prompts — 51% — and nothing measured it.
+
+`research/APPROACHES.md` was 86 KB of that, and the shape of the failure is the
+part worth keeping. Every module had a `MAX_ROWS` and a `FIELD_CHARS`, and both
+governed the *table*. The list sections underneath — *What closed, and why*,
+*Not yet taken to the literature* — were written afterwards and bounded by
+nothing, so the table was about 2 KB and the sections were 84 KB, one refutation
+of them 5 KB on its own. Nothing was broken and no test failed. The file grew,
+and it was a third of the orchestrator's 63,833-token prompt before anybody
+counted.
+
+Three things now stand between a renderer and that, and the order matters
+because each catches what the one before it cannot.
+
+**Every list section goes through `ledger::budget::listed`.** It renders at most
+`MAX_LISTED` rows, truncates each prose field to `REASON_CHARS`, and returns how
+many rows it left out — which the caller must render, with the directory the
+rest is in. Both halves are load-bearing. Bounding the rows alone still admits
+forty five-kilobyte reasons, which is the same file by another route; and a
+section cut to its bound while reading as complete is worse than a long one,
+because the reader concludes the run holds nothing more.
+
+**The bounds are asserted, not intended** (`ledger/ceiling_test.rs`). Each
+ledger is rendered from a deliberately absurd fixture — sixty entries, six
+kilobytes of prose per field — and held under a stated ceiling. One test does
+not check a size at all: it renders sixty entries and then a hundred and eighty,
+and asserts the file grew by under two hundred characters. A ceiling alone
+cannot catch a section that grows slowly, and *past the bound, more entries must
+not mean more file* is the property that actually matters. Reintroducing the
+original defect makes the approach fixture render 209,312 characters and fails
+both.
+
+**A per-file budget is enforced where the tokens are spent** (`ledger::fit`, in
+`load_workspace_files`). Ten thousand tokens, the same `CONTEXT.md` gets, on the
+argument that no derived table has a case for costing more than the shared
+brief. This is a backstop and should never fire: a cut here lands wherever the
+character count falls, where a renderer can drop the fortieth closed approach
+and say so. It exists because the first two controls live in the modules that
+failed, and this one does not — and because the brief can be handed to a curator
+to compress, while a ledger is written by code and nothing in the run can make
+it smaller.
+
+`ledger_report` prints what each ledger costs on disk beside what the current
+build would render, because those disagree until something writes to that ledger
+— so a run started before a bound changed keeps paying the old price, and
+reading only the on-disk column reports a fix as landed while every prompt still
+carries the old file.
+
+```sh
+cargo run --example derive_ledgers -- workspace/conjectures/gilbreath
+```
+
 `research/CLAIMS.md` (`claims.rs`) is the retrieval change. The unit of the
 library was a file, and a file is the wrong thing to retrieve: an agent about
 to compute something needs one statement with its hypotheses, not the note that

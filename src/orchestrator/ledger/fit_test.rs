@@ -5,10 +5,16 @@
 //! `ceiling_test.rs` are what keep those honest. An untested guard that never
 //! fires is indistinguishable from one that does not work, so it is exercised
 //! here directly.
+#![allow(clippy::expect_used)]
 
 use super::{DEFAULT_LEDGER_TOKENS, fit, is_routed};
 use crate::orchestrator::approaches::APPROACHES_PATH;
 use crate::orchestrator::shared_context::CHARS_PER_TOKEN;
+
+/// Characters the default budget allows, as a `usize` the fixtures can repeat.
+fn budget_chars() -> usize {
+    usize::try_from(DEFAULT_LEDGER_TOKENS).unwrap_or(usize::MAX) * CHARS_PER_TOKEN
+}
 
 /// A ledger inside its budget is passed through untouched.
 ///
@@ -27,7 +33,7 @@ fn a_ledger_within_budget_is_left_alone() {
 /// wrote.
 #[test]
 fn a_file_that_is_not_a_routed_ledger_is_left_alone() {
-    let huge = "x".repeat(DEFAULT_LEDGER_TOKENS as usize * CHARS_PER_TOKEN * 4);
+    let huge = "x".repeat(budget_chars() * 4);
     assert!(fit("research/notes/some-note.md", &huge).is_none());
     assert!(fit("GOAL.md", &huge).is_none());
     assert!(!is_routed("GOAL.md"));
@@ -37,7 +43,7 @@ fn a_file_that_is_not_a_routed_ledger_is_left_alone() {
 /// An oversized ledger is cut, and says so in a way that reaches the model.
 #[test]
 fn an_oversized_ledger_is_cut_and_says_so() {
-    let huge = "the reason it died. ".repeat(DEFAULT_LEDGER_TOKENS as usize);
+    let huge = "the reason it died. ".repeat(budget_chars());
     let cut = fit(APPROACHES_PATH, &huge).expect("a ledger four times its budget is cut");
 
     assert!(
@@ -68,7 +74,7 @@ fn an_oversized_ledger_is_cut_and_says_so() {
 /// fail before doing any work.
 #[test]
 fn a_multibyte_ledger_is_cut_on_a_boundary() {
-    let huge = "δ_k(q_n) ≤ ν₂ → ".repeat(DEFAULT_LEDGER_TOKENS as usize);
+    let huge = "δ_k(q_n) ≤ ν₂ → ".repeat(budget_chars());
     let cut = fit(APPROACHES_PATH, &huge).expect("an oversized ledger is cut");
     assert!(cut.contains('δ'), "the mathematics survives the cut");
 }
