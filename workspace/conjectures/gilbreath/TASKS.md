@@ -9,18 +9,12 @@ Derived from `config/tasks.jsonl` and rewritten on every write. Do not edit this
 
 In order. Work the first one you can.
 
-- `file-the-negative-claim` — File the negative claim
-  - detail: 1. File the negative claim. Claim block with a negative statement, anchored to the capture, in code/out/anticlustering_hypothesis.notes.md, id anticlustering-markov-insufficient-for-gsupply. Wording must make it a fact about the problem ("generic Markov anti-clustering is insufficient for G-supply"), not a setback.
-- `state-the-over-read-distinction-explicitly-in-th` — State the over-read distinction explicitly in the note
-  - detail: 2. State the over-read distinction explicitly in the note. 30 trials of a worst-min statistic is noisy; real prime gaps are not a Markov chain. The Markov-model failure refutes the mixing PROOF STRATEGY, not G-supply for the primes.
 - `record-what-it-leaves-director-pre-set-in-resear` — Record what it leaves (director pre-set in research/threads/regeneration.md and CONTEXT.md; confirm wording)
   - detail: 3. Record what it leaves (director pre-set in research/threads/regeneration.md and CONTEXT.md; confirm wording). A positive-linear bound cannot come from mixing alone; remaining candidates are arithmetic — Hardy–Littlewood two-point mod-4 correlations, or the Lemke Oliver–Soundararajan two-point bias with its oscillating second-order term. Bet: neither is unconditional; G-supply stays a named open hypothesis and the deliverable is the CONDITIONAL theorem with the HL/LOS two-point switch-correlation lower bound as the named hypothesis.
 - `rewrite-the-audit-verdict-line-and-make-the-word` — Rewrite the audit verdict line — and make the wording rule live in the code. c
   - detail: 1. Rewrite the audit verdict line — and make the wording rule live in the code. code/gap_analysis/reduction_audit.py still prints "VERDICT: The passage from real column dynamics to the (pattern, v) descent model is MACHINE-CONFIRMED as a theorem on real rows." A check over 281 columns is not a theorem; calling it one is the same category error Directive 44 flagged and Directive 42 flagged before that — the third time. Replace the line with the factual statement the directive gives: the passage is confirmed over the cross-check and 281 real columns, 0 violations, with the pattern…
 - `write-the-prefix-determinism-identity-out-as-a-p` — Write the prefix-determinism identity out as a proof (Directive 48 item 1 — three lines, the cheapest real gain available). δ
   - detail: 2. Write the prefix-determinism identity out as a proof (Directive 48 item 1 — three lines, the cheapest real gain available). δ(q_n) restricted to the 0-2 cycle positions depends only on q_1..q_{n-1}, because those entries are inherited from δ(q_{n-1}) and the new element enters only at the diagonal bottom. File it as a claim (upgrade reduction-passage-exact to status: proved, or file reduction-audit-prefix-determinism-proved), anchored in research/notes/reduction-passage-exact.md, which already states the recurrence δ_k(q_n) = |δ_{k-1}(q_n) − δ_{k-1}(q_{n-1})| that makes eps_k =…
-- `formalise-link-a-v-g-n-the-a-b-max-a-b-induction` — Formalise Link A (v ≤ g*_n, the |a−b| ≤ max(a,b) induction). Now v
-  - detail: 3. Formalise Link A (v ≤ g*_n, the |a−b| ≤ max(a,b) induction). Now verified non-vacuously (1181 columns, margin 35.882) but still needs a Lean proof to join the abstract core into a full Lemma 5.4.
 - `formalise-the-composition-g-n-2-2-v-g-n-success` — Formalise the composition g*_n ≤ 2ν₂+2 ⟹ v ≤ g*_n ⟹ success (closes the loop from abstract core to full Lemma 5.4).
   - detail: 4. Formalise the composition g*_n ≤ 2ν₂+2 ⟹ v ≤ g*_n ⟹ success (closes the loop from abstract core to full Lemma 5.4).
 - `state-g-supply-as-a-conditional-theorem-with-the` — State G-supply as a conditional theorem with the named-open hypothesis (the two-point consecutive-prime mod-4 correlation bound; claim abgs-2011-s9-mod4-switch-
@@ -47,23 +41,27 @@ Ruled out, with the reason. Re-proposing one of these is the cheapest mistake av
 - `do-not-re-write-the-lemma-5-4-case-split-prose-i` — Do not re-write the Lemma 5.4 case-split prose — it is written and now kernel-checked at the abstract core.
   - reason: Do not re-write the Lemma 5.4 case-split prose — it is written and now kernel-checked at the abstract core.
 
+## Recently done
+
+Finished, with what came of it. Kept, because a run that cannot see what it already did repeats it.
+
+- `file-the-negative-claim` — File the negative claim
+  - detail: 1. File the negative claim. Claim block with a negative statement, anchored to the capture, in code/out/anticlustering_hypothesis.notes.md, id anticlustering-markov-insufficient-for-gsupply. Wording must make it a fact about the problem ("generic Markov anti-clustering is insufficient for G-supply"), not a setback.
+  - reason: Already filed. research/notes/anticlustering-inadequacy.md carries the fenced claim block anticlustering-markov-insufficient-for-gsupply (status: checked) with statement worded as a fact about the problem: "Generic Markov anti-clustering of the mod-4 switch bit does NOT deliver the supply bound ν₂ ≥ c·w (hence not ν₂ ≥ c·n)", with the trial table, holds-here: yes (as a statement about the strategy's failure), and the explicit 'refutes the PROOF STRATEGY, not the statement' caveat.
+- `state-the-over-read-distinction-explicitly-in-th` — State the over-read distinction explicitly in the note
+  - detail: 2. State the over-read distinction explicitly in the note. 30 trials of a worst-min statistic is noisy; real prime gaps are not a Markov chain. The Markov-model failure refutes the mixing PROOF STRATEGY, not G-supply for the primes.
+  - reason: Already stated. The 'What this refutes, and what it does not' section of research/notes/anticlustering-inadequacy.md makes the asymmetric reading explicit (Refuted: the MIXING PROOF STRATEGY; NOT refuted: G-supply for the primes, with both caveats — real prime gaps are not a Markov chain, and 30 trials of a worst-min statistic is noisy), and records the bet that G-supply stays a named open hypothesis with the deliverable being the conditional HL/LOS two-point switch-correlation theorem.
+- `formalise-link-a-v-g-n-the-a-b-max-a-b-induction` — Formalise Link A (v ≤ g*_n, the |a−b| ≤ max(a,b) induction). Now v
+  - detail: 3. Formalise Link A (v ≤ g*_n, the |a−b| ≤ max(a,b) induction). Now verified non-vacuously (1181 columns, margin 35.882) but still needs a Lean proof to join the abstract core into a full Lemma 5.4.
+  - reason: Done. code/lean/link_a.lean kernel-checked (compiled:true, verified:true, sorries:[], axioms only propext/Classical.choice/Quot.sound). Proves dist_le_max |a-b| ≤ max a b, run_le (the generic orbit invariant: w≤M ∧ every e≤M ⟹ runAbs w el ≤ M — this is Link A modulo identifying the record gap g*_n as the common upper bound), and orbit_le_max. Claim lemma54-link-A-lean-formalised, status formalised. The geometric composition g*_n ≤ 2nu2+2 ⟹ success still needs the reduction-passage/record-gap geometry in Lean (definitional, not a gap in the core). JSON at…
+- `rewrite-the-audit-verdict-line-and-make-the-wording-rule-live-in-the-cod` — Rewrite the audit verdict line — and make the wording rule live in the code
+  - detail: Fixed. code/reduction_audit.py Part1+VERDICT now 'CONFIRMED over the cross-check and 281 real columns with 0 violations' (no 'theorem'). code/gap_analysis/reduction_audit.py exit logic fixed: prints REFUTED for (D) (1133 violations) and never 'ALL AUDIT CHECKS PASSED' when (D) refuted; also removed 'proved' wording on line 252. Re-captured to code/out/reduction_audit.captured2.txt and code/out/gap_analysis_reduction_audit.captured2.txt; grep confirms no theorem/proved/proves in new captures. Old captured.txt preserved.
+- `write-the-prefix-determinism-identity-out-as-a-proof` — Write the prefix-determinism identity out as a proof (Directive 48 item 1)
+  - detail: Done. Three-line proof in research/notes/prefix-determinism-proof.md: delta_k(q_n) = |delta_{k-1}(q_n) - delta_{k-1}(q_{n-1})| by the triangle recurrence; delta_{k-1}(q_{n-1}) is a function of q_1..q_{n-1} only; q_n enters only at the bottom cell. Hence the {0,2} cycle and nu2 are fixed in advance. Machine-verified exact: code/out/prefix_determinism_proof_check.py, 19,900 positions (identity, primes prefixes n=2..200) + 59,697 positions (eps prefix-locality with 3 continuations each), 0 mismatches; captured code/out/prefix_determinism.captured.txt. Claim reduction-passage-exact upgraded to…
+
 ## Entries that could not be read
 
 Reported rather than dropped: an entry silently discarded leaves the ledger reading as though it recorded something.
 
-- `file-the-negative-claim` has no `id`, which this ledger requires
-- `state-the-over-read-distinction-explicitly-in-th` has no `id`, which this ledger requires
-- `record-what-it-leaves-director-pre-set-in-resear` has no `id`, which this ledger requires
-- `rewrite-the-audit-verdict-line-and-make-the-word` has no `id`, which this ledger requires
-- `write-the-prefix-determinism-identity-out-as-a-p` has no `id`, which this ledger requires
-- `formalise-link-a-v-g-n-the-a-b-max-a-b-induction` has no `id`, which this ledger requires
-- `formalise-the-composition-g-n-2-2-v-g-n-success` has no `id`, which this ledger requires
-- `state-g-supply-as-a-conditional-theorem-with-the` has no `id`, which this ledger requires
-- `do-not-use-theorem-proved-proves-in-captured-out` has no `id`, which this ledger requires
-- `do-not-overwrite-code-out-reduction-audit-captur` has no `id`, which this ledger requires
-- `do-not-upgrade-lemma54-re-derived-proof-to-prove` has no `id`, which this ledger requires
-- `do-not-touch-goal-md-s-framing-directive-47-rewr` has no `id`, which this ledger requires
-- `do-not-queue-a-2e9-or-4e9-sieve-run-directive-36` has no `id`, which this ledger requires
-- `do-not-re-run-the-cht-hypothesis-check-holds-her` has no `id`, which this ledger requires
-- `do-not-launch-any-library-search-except-g-supply` has no `id`, which this ledger requires
-- `do-not-re-write-the-lemma-5-4-case-split-prose-i` has no `id`, which this ledger requires
+- `rewrite-the-audit-verdict-line-and-make-the-wording-rule-live-in-the-cod` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `write-the-prefix-determinism-identity-out-as-a-proof` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next

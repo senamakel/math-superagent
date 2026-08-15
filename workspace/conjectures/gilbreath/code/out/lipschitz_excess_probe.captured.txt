@@ -1,0 +1,25 @@
+A_1 = [1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4]  match=True
+A_2 = [1, 0, 2, 2, 2, 2, 2, 2, 4, 4, 2, 2]  match=True
+A_3 = [1, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0]  match=True
+A_4 = [1, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0]  match=True
+A_5 = [1, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2]  match=True
+ORACLE: all five worked rows match = True
+  lnz_ex(row 1)=7  block_profile(row 2)=7  match=True
+  lnz_ex(row 2)=13  block_profile(row 3)=13  match=True
+  lnz_ex(row 3)=12  block_profile(row 4)=12  match=True
+  lnz_ex(row 4)=11  block_profile(row 5)=11  match=True
+
+=== SIEVE 2e7, depth 1000 ===
+depth reached = 999, width(row0) = 1270607, time 148.1s
+(a) E non-increasing: first row where E increases = 2  (of 999 transitions)
+    min E over live rows = 0
+    min E over ALL rows   = 0
+(b) identity lnz_k==b_{k+1}: violations = []  (total 0)
+(c) live rows with E<1 = [160, 161, 162, 163, 164, 165, 166, 167, 168, 169] (total 840)
+Traceback (most recent call last):
+  File "/workspace/code/gap_analysis/lipschitz_excess_probe.py", line 191, in <module>
+    analyze(p20, 1000, "SIEVE 2e7, depth 1000")
+  File "/workspace/code/gap_analysis/lipschitz_excess_probe.py", line 137, in analyze
+    bnext = b_store[k + 1]
+            ~~~~~~~^^^^^^^
+IndexError: list index out of range

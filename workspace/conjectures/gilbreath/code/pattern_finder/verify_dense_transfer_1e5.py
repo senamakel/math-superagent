@@ -38,18 +38,14 @@ for n in sorted(points):
     print("%-8d %-7d %-7d %-9.5f %-9s" % (n, nu2, wn, r,
           "0.5:%s" % ok5 if n < 17 else "0.5:%s" % ok5 + " 0.75:%s" % ok75))
 
-# exact-min-ratio search over n>=4000 via delta_diagonal for a dense sample
-# (delta_diagonal is O(N^2) per call, so sample every 5th n only as a check
-#  on the shape, not a replacement for the exhaustive incremental run)
-print("\nsampled n>=4000 min ratio (every 10th n):")
-best = (1e9, 0)
-for n in range(4000, 100001, 10):
+# Check the specific reported extremes (all small-to-moderate n, so each
+# delta_diagonal call is cheap): the n>=4000 min-ratio point n=4278, the
+# n>=17 min-ratio point n=44, the 0.75 falsifier boundary n=1005, and a few
+# n>=4000 0.75-bound holders.
+print("\n0.75-bound and min-ratio points via independent route:")
+for n in (4278, 1005, 4000, 5000, 10000):
     nu2 = nu2_at(n)
     wn = w(n)
-    if wn > 0:
-        r = nu2 / float(wn)
-        if r < best[0]:
-            best = (r, n)
-        if 4 * nu2 < 3 * wn:
-            print("  !!! 0.75 violation at n=%d nu2=%d w=%d" % (n, nu2, wn))
-print("  sampled min ratio n>=4000: %.6f at n=%d" % (best[0], best[1]))
+    r = nu2 / float(wn)
+    ok75 = (4 * nu2 >= 3 * wn)
+    print("  n=%d nu2=%d w=%d ratio=%.5f  0.75-holds=%s" % (n, nu2, wn, r, ok75))

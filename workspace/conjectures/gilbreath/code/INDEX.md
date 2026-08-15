@@ -7,6 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `AGENTS.md` | _(undescribed)_ |
 | `brute.py` | Naive Gilbreath oracle: exact-integer generator of iterated absolute-difference rows A_0..A_D of the primes (literal A_{k+1}(i)= |
 | `exec_reconcile.sh` | _(undescribed)_ |
+| `lemma54_composition_oracle.py` | Exact-integer oracle verifying the Lean statements in code/lean/lemma54_composition.lean are faithful and non-vacuously true: over all {0,2}^L patterns (L=0..8) and even v, checks (1) composition_via_max (record-gap max(v,maxAll el) ≤ 2ν₂+2 ⟹ final ∈ {0,2}), (2) the transitivity composition, (3) the Link-A orbit bound runAbs ≤ max(v,maxAll el). 0 violations over 5,630 even-v pairs. Independent route (Python) against the Lean proof. |
 | `lemma54_descent_check.py` | _(undescribed)_ |
 | `lemma54_iff_check.py` | Operator-computed check of Granville Lemma 5.4 on real primes (sieve 2e6, columns n=20..2499): iff v<=2*nu2+2 <=> success, suff g*<=2*nu2+2 => success, and the discarded delta=0 case (row-level any-zero-in-block). REPRODUCED in-container this session (EXIT_CODE=0, capture overwritten with identical numbers: tested 2480, all successful, 0/0 violations, 100% delta=0 rows). |
 | `lemma54_rederive.py` | Original (pre-existing, never-run) Lemma 5.4 re-derivation: constructive descent automaton + stress test on failing 2-then-odds sequences. First executed this run -> code/out/lemma54_rederive.captured.txt; unfiltered suff_viol>0 later shown vacuous by the filtered companion. Kept for provenance. |
@@ -14,7 +15,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `nu2_granville_check.py` | Operator-computed nu_2 measurement of the prime right diagonal (sieve 3e6, columns to n=3999): nu2/n in 0.420..0.520, nu2=2048 at n=3999, n^0.525=77.8, Lemma 5.4 hypothesis holds at all sampled n. REPRODUCED in-container this session (EXIT_CODE=0, capture overwritten with identical numbers). |
 | `nu2_incremental_to_1e5.py` | _(undescribed)_ |
 | `reconcile_lemma54_violations.py` | _(undescribed)_ |
-| `reduction_audit.py` | Audits the Granville right-diagonal reduction identity on real prime rows. Part 1 verifies cell-by-cell that delta_{k+1}(q_n)= |
+| `reduction_audit.py` | Audits the Granville right-diagonal reduction identity on real prime rows (the 281-column Part1/Part2 program). Part 1 verifies cell-by-cell that delta_{k+1}(q_n)= |
 | `reproduce_lemma54_incremental.py` | _(undescribed)_ |
 | `reproduce_lemma54_indexed.py` | _(undescribed)_ |
 | `run_verify_nu2.py` | Placeholder wrapper ("catches nothing - placeholder removed"); does nothing. Retained for provenance. |

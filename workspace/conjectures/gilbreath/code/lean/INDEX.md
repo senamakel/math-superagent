@@ -7,6 +7,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `descent_lemma.lean` | Even-unit formalisation of the descent/absorption lemma (Granville Lemma 5.4 core): orbit x_0=v, x_{s+1}= |
 | `gilbreath_reduction.lean` | Machine-checked Lean 4 reduction of Gilbreath's conjecture to the {0,2} second-entry claim: defines Step (absolute-difference operator), proves (odd, even, even, ...) shape preservation, |
 | `gilbreath_reduction.lean.bak` | Backup of gilbreath_reduction.lean made 2026-08-13 before the Directive 31 re-emission compile (sha256 e6e1a7228be4494aa25ef611b0e5a08db3b5a38419b3ecdbf1880f8317ef0767, byte-identical to the current file). Audit trail for the re-emission; the current gilbreath_reduction.lean is the authoritative copy. |
+| `lemma54_composition.lean` | Self-contained sorry-free Lean 4 formalisation of leg 2 of Granville Lemma 5.4 (the composition): re-derives Link A's |
+| `lemma54_even_domain.lean` | Even-domain theorem of Granville Lemma 5.4, kernel-checked sorry-free in Lean 4 via the halving identity: reduces the {0,2}^L trajectory to the halved {0,1}^L core (descent_claim1/descent_claim2), proving v≤2ν₂+2 ⟹ d_L∈{0,2} (lemma54_even_forward), 2ν₂+2<v ⟹ d_L=v−2ν₂ (lemma54_even_high), their bundling (lemma54_even), and the biconditional (lemma54_even_iff). |
 | `link_a.lean` | Lean 4 formalisation of Link A of Granville Lemma 5.4 (the v <= g*_n bound, combinatorial core): proves dist_le_max ( |
 | `probe4.lean` | _(undescribed)_ |
 | `probe5.lean` | _(undescribed)_ |

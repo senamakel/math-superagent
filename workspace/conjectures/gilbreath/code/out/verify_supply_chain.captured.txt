@@ -1,0 +1,6 @@
+loaded nu2 for 30000 n, n range 1..30000
+sieve to 409258: 34549 primes (0.0s), have >= NMAX: True
+leg(a) nu2>=w/2 over n in [17,30000]: viol=2 first=19 min nu2/w=0.4615 at n=19
+leg(b) w>=(n-2)/2 over [2,30000]: viol=0 first=None min excess 2w-(n-2)=2
+composed nu2>=(n-2)/4 over [23,30000]: viol=0 first=None
+min nu2/n^0.525 over [23,30000] = 1.542 at n=23

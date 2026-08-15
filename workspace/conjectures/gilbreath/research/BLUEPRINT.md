@@ -76,4 +76,4 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `counterexample-backward/CB-prime-exclusion` | lemma | **ready** | — | \| The constrained initial pattern derived in CB-backward-propagation — a stretch of consecutive halved prime gaps whose XOR over binom(t,·)… |
 | `czz2011-ducci-2-lipschitz` | claim | established | — | The difference map D on d-tuples with a′_k=\|a_k−a_{k+1}\| (and a′_d=\|a_d−a_1\|) is 2-Lipschitz in the Euclidean norm and is not a… |
 
-_172 further nodes not shown._
+_174 further nodes not shown._

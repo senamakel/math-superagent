@@ -134,6 +134,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `lean_gilbreath_reduction.notes.md` | Note for the above: what was run, the exact axiom ledgers, and the boundary (prime instantiation is computation-checked, not Lean-proved); carries claim block `lean-reduction-machine-checked`. |
 | `lean_reduction.captured.txt` | Directive 31 audit re-emission: `timeout 540 lean code/lean/gilbreath_reduction.lean` EXIT_CODE=0 (Lean 4.34.0-rc1, sha256 e6e1a7228be4494aa25ef611b0e5a08db3b5a38419b3ecdbf1880f8317ef0767 echoed into the capture); #print axioms for dist_odd_even, dist_dist_even, dist_one_eq_one, shape_theorem, gilbreath_reduction, reduction, reduction_lemma, shape_rows all exactly [propext, Classical.choice, Quot.sound], zero sorryAx, file now 1360 B. Backup at code/lean/gilbreath_reduction.lean.bak. |
 | `lean_shape.captured.txt` | `lean` compile of the repaired self-contained shape-preservation file (EXIT=0), axioms = standard base set. |
+| `lemma54_composition_formalised.notes.md` | Claim note recording the kernel-checked formalisation of the two remaining legs of Granville Lemma 5.4: Link A (orbit_le_max, the |a-b|≤max(a,b) induction) and the composition (lemma54_composition / _via_max / _full, the budget g≤2ν₂+2 & v≤g ⟹ success). Status: formalised, anchored to code/lean/lemma54_composition.lean (compiled=true, verified=true, zero sorryAx, axioms in propext/Classical.choice/Quot.sound). Verifies the claim dually with the exact-integer oracle code/lemma54_composition_oracle.py (0 violations). |
 | `lemma54_descent_check.captured.txt` | _(undescribed)_ |
 | `lemma54_failing_sisters.captured.txt` | _(undescribed)_ |
 | `lemma54_iff_check.captured.txt` | Reproduced in-container this session (timeout 540, EXIT_CODE=0): tested n=2480, all successful (2480), iff violations=0, suff violations=0, discarded delta=0 rows=2480 (100.0%) — identical to the operator's host capture. Anchor for claim `lemma54-discarded-case-universal` (research/notes/lemma54-discarded-case-is-universal.md). |
@@ -198,7 +199,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_w_density.py` | _(undescribed)_ |
 | `pattern_finder_wider_giants.captured.txt` | _(undescribed)_ |
 | `prefix_closure_bigram.captured.txt` | _(undescribed)_ |
-| `prefix_determinism_proof_check.py` | Machine check for the prefix-determinism identity (Directive 48 item 1): Part 1 verifies delta_k(q_n) = |delta_{k-1}(q_n) - delta_{k-1}(q_{n-1})| cell by cell on real primes n=2..200 (19,900 cells, 0 violations); Part 2 verifies the descent eps delta_{k-1}(q_{n-1}) is prefix-local by appending 3 distinct continuations q_n per fixed prefix over n=3..200 (59,697 positions, 0 violations). Exact integers via lib.gilbreath.rows_generator; capture code/out/prefix_determinism.captured.txt. |
+| `prefix_determinism_proof_check.py` | Machine check for the prefix-determinism identity (Directive 48 item 1): Part 1 verifies delta_k(q_n) = |
 | `reconcile_lemma54_NOTE.md` | _(undescribed)_ |
 | `reduction_audit.captured.txt` | _(undescribed)_ |
 | `reduction_audit_d_investigate.captured.txt` | _(undescribed)_ |
