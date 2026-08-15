@@ -40,7 +40,7 @@ use std::fmt::Write as _;
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use serde_json::{Value, json};
+use serde_json::json;
 
 use super::documents::WorkspaceDocuments;
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
@@ -93,7 +93,27 @@ pub(super) struct Section {
     pub(super) bytes: usize,
 }
 
-/// A resolved region of a document, ready to be returned to a model.
+/// A resolved region of a document.
+///
+/// Carries however much text the selection named. It is *not* bounded, because
+/// its two callers want opposite things from it: [`select`] is on its way to a
+/// context window and applies [`MAX_SLICE_BYTES`], while
+/// [`super::recursive`] is on its way to a chunker and wants every byte. A
+/// bound here would silently truncate the recursive read, which is the one
+/// path in this module whose whole purpose is to cover a document completely.
+#[derive(Clone, Debug)]
+pub(super) struct Region {
+    /// How the selection is described back to the caller.
+    pub(super) label: String,
+    /// First line of the region, 1-based.
+    pub(super) first_line: usize,
+    /// Last line of the region, 1-based.
+    pub(super) last_line: usize,
+    /// The text itself.
+    pub(super) text: String,
+}
+
+/// A region cut to what one tool result may carry.
 #[derive(Clone, Debug)]
 pub(super) struct Slice {
     /// How the selection is described back to the caller.
@@ -349,22 +369,22 @@ fn find(sections: &[Section], wanted: &str) -> Result<Section> {
     }
 }
 
-/// Resolves a selection into the text it names.
+/// Resolves a selection into the region it names, unbounded.
 ///
 /// `section` wins when both are given: it is the more specific statement of
 /// intent, and a caller that has an exact range has no reason to send a
-/// heading too.
+/// heading too. No selection at all is the whole document.
 ///
 /// # Errors
 ///
 /// Returns a validation error when the specification is malformed, names a
 /// heading that does not exist or is ambiguous, or starts past the last line.
-pub(super) fn select(
+pub(super) fn region(
     relative: &str,
     content: &str,
     section: Option<&str>,
     lines: Option<&str>,
-) -> Result<Slice> {
+) -> Result<Region> {
     let all: Vec<&str> = content.lines().collect();
     let (label, first, last) = if let Some(section) = section {
         let found = find(&sections(relative, content), section)?;
@@ -379,28 +399,54 @@ pub(super) fn select(
     } else {
         ("the whole document".to_string(), 1, None)
     };
-    if first > all.len() {
+    if first > all.len().max(1) {
         return Err(tinyagents::TinyAgentsError::Validation(format!(
             "{relative} has {} lines; `{first}` is past its end",
             all.len()
         )));
     }
     let last = last.unwrap_or(all.len()).min(all.len());
+    let body = all.get(first - 1..last).unwrap_or_default();
+    let mut text = String::with_capacity(body.iter().map(|line| line.len() + 1).sum());
+    for line in body {
+        text.push_str(line);
+        text.push('\n');
+    }
+    Ok(Region {
+        label,
+        first_line: first,
+        last_line: last.max(first),
+        text,
+    })
+}
+
+/// Resolves a selection and cuts it to [`MAX_SLICE_BYTES`] at a line boundary.
+///
+/// # Errors
+///
+/// Returns whatever [`region`] returns.
+pub(super) fn select(
+    relative: &str,
+    content: &str,
+    section: Option<&str>,
+    lines: Option<&str>,
+) -> Result<Slice> {
+    let region = region(relative, content, section, lines)?;
     let mut text = String::new();
-    let mut end = first;
+    let mut end = region.first_line;
     let mut truncated = false;
-    for (offset, line) in all[first - 1..last].iter().enumerate() {
+    for (offset, line) in region.text.lines().enumerate() {
         if text.len() + line.len() + 1 > MAX_SLICE_BYTES && !text.is_empty() {
             truncated = true;
             break;
         }
         text.push_str(line);
         text.push('\n');
-        end = first + offset;
+        end = region.first_line + offset;
     }
     Ok(Slice {
-        label,
-        first_line: first,
+        label: region.label,
+        first_line: region.first_line,
         last_line: end,
         truncated,
         text,

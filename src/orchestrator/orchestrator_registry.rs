@@ -173,6 +173,12 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
         "index_document",
         "search_documents",
         "list_workspace",
+        // How a document too large to read is read anyway: its outline, the
+        // lines matching a pattern, and a chunked recursive read that answers
+        // a question without the source reaching the caller at all.
+        "outline_document",
+        "grep_workspace",
+        "map_document",
         "describe_file",
         "refresh_index",
         // Derived from the library rather than written into it, and available
@@ -232,7 +238,7 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
 /// Returns an error when a name is already registered.
 fn register_code_writing_definitions(
     registry: &mut AgentRegistry,
-    document_tools: [&'static str; 11],
+    document_tools: [&'static str; 14],
     memory_tools: [&'static str; 3],
 ) -> Result<()> {
     for (name, title, description) in [
@@ -312,7 +318,7 @@ fn register_code_writing_definitions(
 /// the agents the solution loop adds on top of the original three.
 fn support_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 11],
+    document_tools: [&'static str; 14],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -474,7 +480,7 @@ fn support_agents(
 ///
 /// The searcher's denial is narrower and sharper, and is documented beside it.
 fn planning_agents(
-    document_tools: [&'static str; 11],
+    document_tools: [&'static str; 14],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![
@@ -553,7 +559,7 @@ fn planning_agents(
 /// the solution loop drives.
 fn library_agents(
     research_enabled: bool,
-    document_tools: [&'static str; 11],
+    document_tools: [&'static str; 14],
     memory_tools: [&'static str; 3],
 ) -> Vec<AgentDefinition> {
     vec![

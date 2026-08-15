@@ -68,6 +68,13 @@ pdf-extract = { version = "0.12", default-features = false }
 # as the plaintext names they exist to withhold. Already in the graph
 # transitively; named here because this code uses it directly.
 sha2 = { version = "0.10", default-features = false }
+# Line matching for `orchestrator::grep`, which is how a role finds the four
+# lines worth reading in a 4.7 MB library without opening any of it. Substring
+# search was tried first and is not enough: the patterns that matter here are
+# structural — `^## `, `Lemma \d+\.\d+`, `Theorem|Proposition` — and a tool that
+# cannot express them sends the reader back to opening files. Already in the
+# graph transitively; named here because this code uses it directly.
+regex = { version = "1", default-features = false, features = ["std", "perf", "unicode-case"] }
 # Terminal UI for `euler-tui`, which watches one run with a tab per team.
 # Optional so the runtime image — built with default features — does not carry
 # a terminal library it can never use; the Docker container has no terminal.

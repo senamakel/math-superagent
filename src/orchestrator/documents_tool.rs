@@ -311,7 +311,9 @@ impl Tool<()> for DocumentTool {
                 "Downloads an HTTP or HTTPS document into /workspace, converting HTML and PDF to                  Markdown."
             }
             DocumentToolKind::Read => {
-                "Reads a document from /workspace, rendering HTML and PDF to Markdown."
+                "Reads a document from /workspace, rendering HTML and PDF to Markdown. Give \
+                 `section` or `lines` to read one part of a large file; without one, a large file \
+                 answers with its outline instead of its text."
             }
             DocumentToolKind::Write => "Stores a UTF-8 document in /workspace.",
             DocumentToolKind::Edit => "Replaces one exact text occurrence in a workspace document.",
@@ -334,8 +336,25 @@ impl Tool<()> for DocumentTool {
                 "properties": { "url": { "type": "string" }, "path": path },
                 "required": ["url", "path"], "additionalProperties": false
             }),
-            DocumentToolKind::Read | DocumentToolKind::Index => json!({
+            DocumentToolKind::Index => json!({
                 "type": "object", "properties": { "path": path },
+                "required": ["path"], "additionalProperties": false
+            }),
+            DocumentToolKind::Read => json!({
+                "type": "object",
+                "properties": {
+                    "path": path,
+                    "section": {
+                        "type": "string",
+                        "description": "One section to read, named by its heading and matched by \
+                                        substring. See outline_document."
+                    },
+                    "lines": {
+                        "type": "string",
+                        "description": "One line range to read, as \"120-260\", \"120-\" or \
+                                        \"120\". Ignored when `section` is given."
+                    }
+                },
                 "required": ["path"], "additionalProperties": false
             }),
             DocumentToolKind::Write => json!({
@@ -381,9 +400,31 @@ impl Tool<()> for DocumentTool {
         let output = match self.kind {
             DocumentToolKind::Download => self.download(&call).await?,
             DocumentToolKind::Read => {
-                self.documents
-                    .read(&required_string(&call.arguments, "path")?)
-                    .await?
+                let path = required_string(&call.arguments, "path")?;
+                let content = self.documents.read(&path).await?;
+                let section = call.arguments.get("section").and_then(Value::as_str);
+                let lines = call.arguments.get("lines").and_then(Value::as_str);
+                // The ceiling applies only when nothing was selected. A caller
+                // that named a range has said what it wants; a caller that
+                // named nothing is about to spend its window on a file it has
+                // not seen the shape of, and gets the shape instead. See
+                // `super::outline`.
+                match (section, lines) {
+                    // Nothing selected and small enough: the document, byte for
+                    // byte, exactly as this tool has always returned it. Most
+                    // of what a run reads is a note it wrote itself, and
+                    // wrapping those in coordinates would be noise on every
+                    // read to serve the handful that are large.
+                    (None, None) if content.len() <= super::outline::MAX_UNSELECTED_BYTES => {
+                        content
+                    }
+                    (None, None) => super::outline::too_large(&path, &content),
+                    _ => {
+                        let total = content.lines().count();
+                        let slice = super::outline::select(&path, &content, section, lines)?;
+                        super::outline::render_slice(&path, total, &slice)
+                    }
+                }
             }
             DocumentToolKind::Write => {
                 let requested = required_string(&call.arguments, "path")?;
