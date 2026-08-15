@@ -13,6 +13,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `arias-block-and-evolution` | (survey) if a row has leading 1 and n subsequent entries in {0,2}, the next n−1 rows start with 1; G(π(10^13))=635; a random pseudo-prime model attained GC in ~49.9% of runs but eventual-1 (n>10) in 99.16% with no… | yes | asserted | `research/summaries/arias-de-reyna-gilbreath-blog.md` |
 | `bcz-2023-left-edge-stabilization` | For binary top rows the left-edge operator of the Proth–Gilbreath triangle is an F2 involution: T(f)(X) = f(X/(1+X))·(1/(1+X)) over F2[[X]] and T^2 = id (Thm 2); hence Υ^6(u) = u for all binary u, and Υ^6(u) = u implies… | yes | proved | `research/summaries/bhat-cobeli-zaharescu-2023-filtered-rays-iterated-abs-diffs.md` |
 | `bft2023-cramer-model-canonical` | (Banks–Ford–Tao 2023, Invent. math. 233:1471–1518) Cramér's model (each n≥3 in with prob 1/log n, jointly independent) gives largest gap ~ log^2 x a.s.; Granville's corrected model gives ~ xi log^2 x… | yes | proved | `research/summaries/banks-ford-tao-2023-large-prime-gaps-probabilistic-models.md` |
+| `bhp-demand-corollary-g-star` | The demand-side corollary: for the prime right-diagonal, g*_n = max_{m<=n}(p_{m+1}-p_m) = O(n^{0.525 + eps}) for every eps > 0, since p_n ~ n log n and each gap is << p_m^{0.525}. Hence Granville Theorem 5.5's… | yes | proved | `research/notes/lemma54-re-derived.md` |
+| `bhp-max-gap-unconditional` | Baker-Harman-Pintz 2001 (Proc. LMS 83:532-562), unconditionally: p_{n+1} - p_n << p_n^{0.525} for all large n. This is the demand side of Granville Theorem 5.5: alpha = 0.525 requires no unproved hypothesis. | yes | proved | `research/notes/lemma54-re-derived.md` |
 | `bigjump-cap-characterization-1000` | Of the 13 (2,4)-events with jump j > 1000 in the prime Gilbreath triangle to depth 1000 (sieve 2e7, W = 1270607 primes), 12 are genuine dynamics and 1 is a finite-width artifact. Genuine means the landing block b_{i+1}… | yes | checked | `code/out/bigjump_characterization.notes.md` |
 | `block-growth-literature-not-covered` | No held source — Odlyzko 1993, Killgrove–Ralston 1959, Chase 2024, CHT 2026, Eppstein 2011, Arias de Reyna blog, Blair Morgan 2026, Agama 2021, Debono, Tao blog, Houston 2012, Caldwell, Colonna 2026, or OEIS… | yes | checked | `research/notes/block-growth-literature.md` |
 | `block-lemma-verification-bound-1e9` | In the 1e9-sieve prime Gilbreath triangle (W = 50,847,534 primes), row 248 has leading 1 followed by an all-{0,2} block of length b_248 = 50,847,285 = W − 248 − 1 (the capped 16th giant's landing row). By the run's… | yes | checked | `code/out/1e9_settlement.md` |
@@ -66,10 +68,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `giant-parity-even-pre-jump-rows` | Among the 15 genuine giant events of the 6e8 run, 14 fire at even pre-jump rows (13/14 excluding row 161 which is the sole odd). One-sided p = 16/2^15 = 4.9×10⁻⁴ (exact, plain 1/2 null). At 3e8 the event base even… | yes | checked | `research/notes/pattern_finder_wider_giants.md` |
 | `gilbreath-2011-expository` | Gilbreath's only substantive journal paper "Processing process: the Gilbreath conjecture" (J. Number Theory 131 (2011) 2436–2441) is autobiographical and expository, not a proof attempt. Its introduction (quoted… | yes | asserted | `research/notes/library-state.md` |
 | `gilbreath-expectation-sierpinski` | In the continuous (i.i.d. exponential) Gilbreath array, row-i entries have common expectation c_i (c_0=1,c_1=1,c_2=7/9,c_3=227/288); a single-spike array gives a Sierpinski gasket whose k-th row has 2^{s_2(k)} ones… | **unchecked** | asserted | `research/summaries/tao-blog-2026-visualizing-gilbreath-expectation.md` |
-| `gilbreath-polynomials-imply-gc` | (Riccardo Gatti, Mathematics 2023, 11(18), 4006, doi 10.3390/math11184006 — author CONFIRMED, affiliation INBB/Eldor Lab Bologna, 7 pages, RePEc record held) In the "Gilbreath equation / Gilbreath polynomials"… | **unchecked** | asserted | `research/notes/library-state.md` |
-| `gilbreath-reduces-to-second-in-02` | The shape (odd, even, even, ...) is preserved by the absolute-difference operator on the prime rows, and A_k(0)=1 for all k>=1 iff A_k(1) in {0,2} for all k>=1. Hence Gilbreath's conjecture is equivalent to "the second… | yes | proved | `research/notes/reduction.md` |
 
-_75 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_77 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -77,7 +77,6 @@ Resolve these before building on either side.
 
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-myth-retracted`
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-citation-correction`
-- `lemma54-rederived` (research/notes/lemma54-re-derived.md) contradicts `lemma54-discarded-case-universal`
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `odlyzko-block-lemma-asserted`
 
 ## Load-bearing but unverified

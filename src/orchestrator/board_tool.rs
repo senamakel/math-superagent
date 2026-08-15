@@ -122,7 +122,6 @@ impl Tool<()> for BoardTool {
             })
             .unwrap_or_default();
         board::post(self.documents.root(), &self.from, kind, &body, &refers)?;
-        board::refresh(&self.documents).await;
         Ok(ToolResult::text(
             call.id,
             self.name(),

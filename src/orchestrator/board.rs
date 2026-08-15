@@ -205,7 +205,26 @@ pub(super) fn post(
         })?;
     file.write_all(line.as_bytes()).map_err(|error| {
         tinyagents::TinyAgentsError::Tool(format!("failed to write to the board: {error}"))
-    })
+    })?;
+    render_to_disk(workspace);
+    Ok(())
+}
+
+/// Re-derives [`PATH`] from the queue, beside the append that changed it.
+///
+/// The render belongs *here*, not at a call site. It used to sit in the
+/// `post_board` tool, and a live run showed what that costs: the automatic
+/// decomposition offer in [`super::loop_steps`] calls [`post`] directly, so two
+/// schools posted, `teams/board.jsonl` held both, and `teams/BOARD.md` was never
+/// written at all — the board every school is told to read did not exist. A
+/// second posting path is ordinary; a second place that has to remember to
+/// render is the bug.
+///
+/// Best effort, like every ledger refresh: a board that will not render must not
+/// fail the post that succeeded.
+fn render_to_disk(workspace: &Path) {
+    let posts = collect(workspace);
+    let _ = std::fs::write(workspace.join(PATH), render(&posts));
 }
 
 /// Reads every readable post from the queue, oldest first.
@@ -292,15 +311,6 @@ pub(super) fn render(posts: &[Post]) -> String {
         );
     }
     out
-}
-
-/// Re-derives the board and rewrites [`PATH`].
-///
-/// Best effort, like every ledger refresh: a failed render must not fail the
-/// post that succeeded.
-pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) {
-    let posts = collect(documents.root());
-    let _ = documents.write_runtime(PATH, &render(&posts)).await;
 }
 
 /// Trims a label to something that cannot dominate a rendered row.
