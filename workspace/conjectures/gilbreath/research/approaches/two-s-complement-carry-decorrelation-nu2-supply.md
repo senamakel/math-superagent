@@ -63,7 +63,32 @@ mechanism: |
   - NOT mod4-pascal (refuted): no congruence lift; the borrow bit is the exact
     computation at full binary precision, and the content is a mixing statement, not a
     modulus invariant.
-status: adopted
+status: refuted
+closure: >
+  Directive 52 (steer): `anticlustering_hypothesis` is a negative result that closes
+  the PROOF STRATEGY this approach rested on. `code/out/anticlustering_hypothesis.captured.txt`:
+  under Markov models of the mod-4 switch bit, generic anti-clustering does NOT deliver
+  a uniform positive-linear bound nu2 >= c*w — prime-like (0.55,0.60) worst-min nu2/w
+  = 0.0714 (11/30 trials violate); Bernoulli control and clustered variants 12–13/30;
+  stationary-density-0.59 family 11–17/30; prime's own empirical transitions (a=0.5565,
+  b=0.6584) 8/20. This is exactly the falsifier this file pre-registered: "if the carry
+  chain fed by the actual prime-gap bits does not mix ... the carry machinery adds no
+  new lower bound over the already-measured transfer, and the approach collapses back to
+  chebyshev-bias's 'conditional at Hardy–Littlewood level'." The falsifier fired. Scope
+  of the negative: it refutes the mixing/anti-clustering PROOF STRATEGY, not G-supply for
+  the primes (real prime gaps are not a Markov chain; 30 trials of a worst-min statistic
+  is noisy). What it leaves: a positive-linear bound cannot come from mixing alone; the
+  remaining candidates are arithmetic — Hardy–Littlewood two-point mod-4 correlations, or
+  the Lemke Oliver–Soundararajan two-point bias with its oscillating second-order term.
+  **Run's recorded bet: neither is unconditional; G-supply stays a named open hypothesis
+  and the deliverable is the CONDITIONAL theorem with the HL/LOS two-point switch-
+  correlation lower bound as the named hypothesis.** The exact two's-complement
+  transducer bridge (`carry-bridge-exhaustive`, `carry-bridge-nu2-reproduction`) survives
+  as a verified computation; what died is the hope that a mixing theorem turns it into a
+  lower bound.
+side: regeneration / supply (attacks the single open G-supply statement ν₂ > n^β by
+  making the F2-linear descent map explicit and handing its density to a named
+  carry-mixing theorem); erosion is settled and untouched.
 precedent: |
   - Diaconis–Fulman (arXiv:0806.3583, arXiv:0902.0179; Borodin–Diaconis–Fulman Bull. AMS
     2010, doi:10.1090/S0273-0979-2010-01306-9): carries of base-b addition form a Markov

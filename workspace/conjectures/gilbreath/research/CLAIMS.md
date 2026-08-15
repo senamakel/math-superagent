@@ -103,6 +103,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `gc-block-lemma-odlyzko` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `gilbreath-2011-expository` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
 - `granville-lucas-kummer-sierpinski` (research/notes/library-state.md) — asserted by the source, not proved there and not checked here
+- `granville-lumley-routeA-demand-support` (research/notes/scholar-cycle-granville-lumley-mo-thread.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-block-protection` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `killgrove-ralston-verification-1959` (research/summaries/killgrove-ralston-1959-on-a-conjecture-concerning-the-primes.md) — asserted by the source, not proved there and not checked here
 - `li2023-not-bottleneck` (research/notes/li-2023-bearing-correction.md) — asserted by the source, not proved there and not checked here

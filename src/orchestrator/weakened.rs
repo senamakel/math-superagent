@@ -40,6 +40,7 @@ use std::fmt::Write as _;
 use std::path::Path;
 
 use super::claims::{fenced, fields};
+use super::ledger::budget;
 use super::text::truncate;
 
 /// Folder holding one file per difficulty ladder.
@@ -597,11 +598,11 @@ impl Ladders {
     /// attacking something too hard — which is the failure the whole ledger
     /// exists to prevent.
     fn append_current(&self, out: &mut String) {
-        let mut rows = String::new();
-        for ladder in &self.ladders {
-            if ladder.stance.is_closed() {
-                continue;
-            }
+        let live = self
+            .ladders
+            .iter()
+            .filter(|ladder| !ladder.stance.is_closed());
+        let (rows, dropped) = budget::listed(live, budget::MAX_LISTED, |rows, ladder| {
             match ladder.current() {
                 Some(rung) => {
                     let _ = writeln!(
@@ -609,7 +610,7 @@ impl Ladders {
                         "- [[{}]] → `{}`: {}",
                         ladder.slug,
                         rung.id,
-                        rung.statement.trim()
+                        truncate(&rung.statement, budget::REASON_CHARS)
                     );
                     let off = if rung.off.is_empty() {
                         "_nothing — this is the full-strength goal_".to_string()
@@ -620,8 +621,9 @@ impl Ladders {
                     let merge = if rung.merge.trim().is_empty() {
                         "_not stated — a rung that does not say how to climb off it teaches the \
                          run nothing about the goal_"
+                            .to_string()
                     } else {
-                        rung.merge.trim()
+                        truncate(&rung.merge, budget::REASON_CHARS)
                     };
                     let _ = writeln!(rows, "  - to merge the next difficulty back: {merge}");
                 }
@@ -635,7 +637,7 @@ impl Ladders {
                     );
                 }
             }
-        }
+        });
         if rows.is_empty() {
             return;
         }
@@ -644,6 +646,7 @@ impl Ladders {
              yet. Aiming higher is how a run spends a budget proving nothing.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, WEAKENED_DIR));
     }
 
     /// Lists what the run has actually banked, and under which hypotheses.
@@ -652,8 +655,7 @@ impl Ladders {
     /// quoted without them reads as a proof of the goal, which it is not, and
     /// that is the misreading most likely to end up in a final write-up.
     fn append_settled(&self, out: &mut String) {
-        let mut rows = String::new();
-        for rung in self.settled() {
+        let (rows, dropped) = budget::listed(self.settled(), budget::MAX_LISTED, |rows, rung| {
             let off = if rung.off.is_empty() {
                 "nothing switched off".to_string()
             } else {
@@ -670,9 +672,9 @@ impl Ladders {
                 "- [[{}]] `{}`: {} ({off}; {by})",
                 rung.ladder,
                 rung.id,
-                rung.statement.trim()
+                truncate(&rung.statement, budget::REASON_CHARS)
             );
-        }
+        });
         if rows.is_empty() {
             return;
         }
@@ -682,26 +684,27 @@ impl Ladders {
              a proof of something it did not prove.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, WEAKENED_DIR));
     }
 
     /// Lists the rungs that failed, so none of them is proposed again.
     fn append_failed(&self, out: &mut String) {
-        let mut rows = String::new();
-        for rung in self.failed() {
+        let (rows, dropped) = budget::listed(self.failed(), budget::MAX_LISTED, |rows, rung| {
             let reason = if rung.failed_by.trim().is_empty() {
                 "_no reason recorded — say what went wrong, or the next weakener will propose it \
                  again_"
+                    .to_string()
             } else {
-                rung.failed_by.trim()
+                truncate(&rung.failed_by, budget::REASON_CHARS)
             };
             let _ = writeln!(
                 rows,
                 "- [[{}]] `{}`: {} — {reason}",
                 rung.ladder,
                 rung.id,
-                rung.statement.trim()
+                truncate(&rung.statement, budget::REASON_CHARS)
             );
-        }
+        });
         if rows.is_empty() {
             return;
         }
@@ -711,6 +714,7 @@ impl Ladders {
              the useful half; one left blank makes the row worthless.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, WEAKENED_DIR));
     }
 
     /// Lists ladders calling themselves finished while a rung is still open.
@@ -719,25 +723,25 @@ impl Ladders {
     /// worked, so one marked exhausted by mistake silently retires every rung
     /// under it — including the ones nobody proved.
     fn append_contradictions(&self, out: &mut String) {
-        let mut rows = String::new();
-        for ladder in &self.ladders {
+        let contradictory = self.ladders.iter().filter_map(|ladder| {
             if ladder.stance != LadderStance::Exhausted {
-                continue;
+                return None;
             }
             let open = ladder
                 .rungs
                 .iter()
                 .filter(|rung| rung.stance == RungStance::Open)
                 .count();
-            if open == 0 {
-                continue;
-            }
-            let _ = writeln!(
-                rows,
-                "- [[{}]] is marked exhausted while {open} of its rungs are still open",
-                ladder.slug
-            );
-        }
+            (open > 0).then_some((ladder, open))
+        });
+        let (rows, dropped) =
+            budget::listed(contradictory, budget::MAX_LISTED, |rows, (ladder, open)| {
+                let _ = writeln!(
+                    rows,
+                    "- [[{}]] is marked exhausted while {open} of its rungs are still open",
+                    ladder.slug
+                );
+            });
         if rows.is_empty() {
             return;
         }
@@ -747,6 +751,7 @@ impl Ladders {
              nobody did.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, WEAKENED_DIR));
     }
 
     fn append_faults(&self, out: &mut String) {
@@ -754,9 +759,11 @@ impl Ladders {
             return;
         }
         out.push_str("\n## Ladders that could not be read\n\n");
-        for fault in &self.faults {
-            let _ = writeln!(out, "- {fault}");
-        }
+        let (rows, dropped) = budget::listed(&self.faults, budget::MAX_LISTED, |rows, fault| {
+            let _ = writeln!(rows, "- {}", truncate(fault, budget::REASON_CHARS));
+        });
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, WEAKENED_DIR));
     }
 }
 

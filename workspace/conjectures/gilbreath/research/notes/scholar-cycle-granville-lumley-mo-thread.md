@@ -5,7 +5,7 @@ with claim blocks. I verified each against its full text and against the live
 Route B target. Verdict: both confirm the existing ledger; neither closes nor
 contradicts the one open gap (G-supply).
 
-## 1. Granville–Lumley 2021, "Primes in short intervals: heuristics and calculations" (arXiv:2009.05000; verified against full PDF)
+## 1. Granville–Lumley 2021, "Primes in short intervals: heuristics and calculations" (arXiv:2009.05000; verified against full PDF) [[granville-lumley-primes-short-intervals-heuristics.FULL]]
 
 **What it actually establishes** (full text read this cycle, matches the digest):
 an explicitly *heuristic* (conjectural, data-supported, not proved) analysis of the
@@ -39,22 +39,27 @@ family, not unconditional); the unconditional demand bound remains BHP `0.525`
 (and Li `0.52`). Flag as heuristic support only.
 
 ```claim
-id: granville-lumley-no-nu2-bearing (confirmed)
-statement: Granville–Lumley 2021 is a short-interval extremal-count heuristic
-  (range of pi(X+y)-pi(X)); it contains NO statement about the mod-4 distribution
-  of consecutive primes, hence says nothing about the nu2 supply bound Route B
-  needs. Its conjectural max-gap law ~ c_-^{-1} (log x)^2 is demand-side support
-  for Route A only, and is heuristic (not unconditional; BHP 0.525 remains the
-  unconditional demand bound).
+id: granville-lumley-routeA-demand-support
+statement: Granville–Lumley 2021's conjectural largest-prime-gap law
+  max_{x<pn<=2x}(p_{n+1}-p_n) ~ c_-^{-1} (log x)^2 >= 2 e^{-gamma} (log x)^2
+  (larger than Cramer's (log x)^2) is demand-side support for Route A (the run's
+  empirical ratio-bound fallback gap_i <= j_i+1): if true, gaps grow only like
+  (log x)^2, far slower than any power, so gaps stay far below the giant jump j.
+  It is HEURISTIC (Granville's modified-Cramer family, not unconditional); the
+  unconditional demand bound for Route A and Route B remains BHP 0.525 (Li 0.52).
+  The paper says nothing about the mod-4 distribution of consecutive primes and
+  hence nothing about the nu2 supply bound Route B needs (already recorded in
+  claim granville-lumley-short-intervals-heuristics).
 hypotheses: primes; short intervals; heuristic (modified Cramer) reasoning.
-holds-here: n/a (no nu2 claim; the source does not touch the two-point mod-4 switch)
+holds-here: yes (as conjectural demand-side support; the paper is heuristic)
 status: sourced (full PDF verified this cycle against the digest)
-bearing: confirms the digest; do not cite for nu2; may cite as demand-side Cramer/
-  Granville short-interval heuristic, flagged conjectural
+bearing: Route A may cite this as conjectural demand-side support, always flagged
+  heuristic; do not cite for nu2
 anchor: research/sources/granville-lumley-primes-short-intervals-heuristics.FULL.full.md
+follows-from: granville-lumley-short-intervals-heuristics
 ```
 
-## 2. MathOverflow thread (Directive 47 fetch-and-close) — confirms, no new mathematics
+## 2. MathOverflow thread (Directive 47 fetch-and-close) [[mathoverflow-gilbreath-what-is-known-thread]] — confirms, no new mathematics
 
 Verified against the digest: the thread (Zaimi 2010, Tao 2024) adds **no dead
 route** beyond what `research/APPROACHES.md` already records. It independently

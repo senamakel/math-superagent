@@ -69,12 +69,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `cht_right_half_0d_scan_6e8.json` | _(undescribed)_ |
 | `combined_supply_tightness.captured.txt` | _(undescribed)_ |
 | `commands.log` | Full command log of the run. |
-| `conditional-theorem-check.md` | _(undescribed)_ |
+| `conditional-theorem-check.md` | Report of the Route-B conditional-theorem assembly check (Directive 37): IF nu2>=c*n THEN Gilbreath. Legs (a) demand nu2>n^0.525 sourced (BHP/Granville 5.5); (b) exact crossover c*n>n^0.525 at n_0=7; (c) exact over nu2_dense.txt min nu2/n=0.47452, min nu2/n^0.525=24.954 on [4000,30000], 0 failures there, 13 start-up (n<=16); (d) Lemma 5.4 budget 2*nu2+2>=g*_n, 1 violation at n=4 only + sourced BHP g*=O(n^{0.525+eps}). Verdict: assembly coherent; supply bound nu2>=c*n is the sole open (two-point) content. |
 | `conditional_rate_experiment.captured.txt` | _(undescribed)_ |
 | `conditional_rate_experiment.notes.md` | _(undescribed)_ |
 | `conditional_rate_records.jsonl` | _(undescribed)_ |
 | `conditional_rate_smoke.txt` | Smoke run at D=40/W=20000 that exposed the oracle prefix-width mismatch (task short lists vs problem.md 12-entry rows); superseded by the corrected full run (conditional_rate_experiment.captured.txt). Kept for the fix record. |
-| `conditional_routeB_check.captured.txt` | _(undescribed)_ |
+| `conditional_routeB_check.captured.txt` | EXECUTED (EXIT_CODE=0): capture of code/gap_analysis/conditional_routeB_check.py — the numeric verification of every leg of the Route-B conditional theorem (see conditional-theorem-check.md). Exact arithmetic; cross-checked nu2_dense.txt against the full-triangle path (9 samples, 0 mismatches). |
 | `confirm_d_degenerate.captured.txt` | _(undescribed)_ |
 | `descent_absorption_case_split.captured.txt` | Captured stdout of code/gap_analysis/descent_absorption_case_split.py (Directive 43): exhaustive exact-integer check of the descent/absorption lemma under the corrected case-split proof, L=1..18, 524,286 patterns, 11,534,328 (pattern,v) pairs, ALL CHECKS PASSED, largest L 18, EXIT 0. |
 | `descent_absorption_case_split.notes.md` | Notes + claim block (lemma54-descent-absorption-case-split-L18, status: checked) for the Directive 43 exhaustive check: the corrected case-split proof statement (branch 1 absorption / branch 2 descent / partition), the old-algebra defect being repaired (v-2*nu2 invalid on bounce: v=0,c=(2,2,2) gives orbit 0->2->0->2 while v-2nu2=-6), full zero-violation table over 11,534,328 pairs, hand-verified boundary cases, and reproduction instructions. |
@@ -140,6 +140,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `lemma54_rederive_filtered.captured.txt` | _(undescribed)_ |
 | `lemma54_rederive_filtered.notes.md` | _(undescribed)_ |
 | `lemma54_verify.captured.txt` | _(undescribed)_ |
+| `mod4_ballot_autocorr.captured.txt` | _(undescribed)_ |
 | `mod4_switch_majority_1e7.captured.txt` | _(undescribed)_ |
 | `mod4_switch_majority_1e8.captured.txt` | _(undescribed)_ |
 | `nu2_convention_resolve.captured.txt` | _(undescribed)_ |

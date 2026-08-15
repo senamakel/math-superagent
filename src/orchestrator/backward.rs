@@ -42,6 +42,7 @@ use std::fmt::Write as _;
 use std::path::Path;
 
 use super::claims::{Ledger, fenced, fields, identifiers};
+use super::ledger::budget;
 use super::text::truncate;
 
 /// Folder holding one file per proof skeleton.
@@ -463,17 +464,19 @@ impl Skeletons {
     /// and a lemma nobody has touched is the whole value of writing them down
     /// separately.
     fn append_open(&self, out: &mut String) {
-        let mut rows = String::new();
-        for gap in self.open_gaps() {
+        let (rows, dropped) = budget::listed(self.open_gaps(), budget::MAX_LISTED, |rows, gap| {
             let _ = writeln!(
                 rows,
                 "- [[{}]] `{}` — {}",
-                gap.skeleton, gap.id, gap.lemma
+                gap.skeleton,
+                gap.id,
+                truncate(&gap.lemma, budget::REASON_CHARS)
             );
             let next = if gap.next.trim().is_empty() {
                 "_no first step — a gap nobody can begin is a research request, not a task_"
+                    .to_string()
             } else {
-                gap.next.trim()
+                truncate(&gap.next, budget::REASON_CHARS)
             };
             let _ = writeln!(rows, "  - next: {next}");
             if gap.thread.trim().is_empty() {
@@ -481,7 +484,7 @@ impl Skeletons {
             } else {
                 let _ = writeln!(rows, "  - thread: {}", gap.thread.trim());
             }
-        }
+        });
         if rows.is_empty() {
             return;
         }
@@ -490,6 +493,7 @@ impl Skeletons {
              belongs to moves. Pick the one with a first step.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, BACKWARD_DIR));
     }
 
     /// Lists the gaps already closed, and what closed each.
@@ -499,13 +503,12 @@ impl Skeletons {
     /// the run already has, and the id with the claim beside it is what
     /// prevents it.
     fn append_discharged(&self, out: &mut String) {
-        let mut rows = String::new();
-        for gap in self
+        let discharged = self
             .skeletons
             .iter()
             .flat_map(|skeleton| skeleton.gaps.iter())
-            .filter(|gap| gap.stance == GapStance::Discharged)
-        {
+            .filter(|gap| gap.stance == GapStance::Discharged);
+        let (rows, dropped) = budget::listed(discharged, budget::MAX_LISTED, |rows, gap| {
             let by = if gap.discharged_by.trim().is_empty() {
                 "_nothing named — say which claim closed it, or the next reducer will restate it_"
             } else {
@@ -514,9 +517,11 @@ impl Skeletons {
             let _ = writeln!(
                 rows,
                 "- [[{}]] `{}` — {} (closed by {by})",
-                gap.skeleton, gap.id, gap.lemma
+                gap.skeleton,
+                gap.id,
+                truncate(&gap.lemma, budget::REASON_CHARS)
             );
-        }
+        });
         if rows.is_empty() {
             return;
         }
@@ -525,16 +530,17 @@ impl Skeletons {
              run has, and the claim beside it is where to read it.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, BACKWARD_DIR));
     }
 
     /// Spells out why each broken or spent reduction closed.
     fn append_broken(&self, out: &mut String) {
-        let mut rows = String::new();
-        for skeleton in self.closed() {
+        let (rows, dropped) = budget::listed(self.closed(), budget::MAX_LISTED, |rows, skeleton| {
             let reason = if skeleton.killed_by.trim().is_empty() {
                 "_no reason recorded — say what broke it, or the next reducer will sketch it again_"
+                    .to_string()
             } else {
-                skeleton.killed_by.trim()
+                truncate(&skeleton.killed_by, budget::REASON_CHARS)
             };
             let _ = writeln!(
                 rows,
@@ -542,7 +548,7 @@ impl Skeletons {
                 skeleton.slug,
                 skeleton.stance.label()
             );
-        }
+        });
         if rows.is_empty() {
             return;
         }
@@ -552,6 +558,7 @@ impl Skeletons {
              half; one left blank makes the row worthless.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, BACKWARD_DIR));
     }
 
     /// Lists open gaps whose id something else already discharged.
@@ -562,17 +569,17 @@ impl Skeletons {
     /// long as the file exists.
     fn append_reopened(&self, out: &mut String) {
         let discharged = self.discharged_ids();
-        let mut rows = String::new();
-        for gap in self.open_gaps() {
-            if !discharged.contains(&gap.id) {
-                continue;
-            }
+        let reopened = self
+            .open_gaps()
+            .into_iter()
+            .filter(|gap| discharged.contains(&gap.id));
+        let (rows, dropped) = budget::listed(reopened, budget::MAX_LISTED, |rows, gap| {
             let _ = writeln!(
                 rows,
                 "- [[{}]] states `{}` as open, and it is discharged elsewhere in this ledger",
                 gap.skeleton, gap.id
             );
-        }
+        });
         if rows.is_empty() {
             return;
         }
@@ -582,31 +589,32 @@ impl Skeletons {
              statements.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, BACKWARD_DIR));
     }
 
     /// Lists reductions resting on claims that are not in the ledger.
     fn append_unsupported(&self, out: &mut String, known: &BTreeSet<String>) {
-        let mut rows = String::new();
-        for skeleton in &self.skeletons {
+        let unsupported = self.skeletons.iter().filter_map(|skeleton| {
             let missing: Vec<&String> = skeleton
                 .rests_on
                 .iter()
                 .filter(|id| !known.contains(*id))
                 .collect();
-            if missing.is_empty() {
-                continue;
-            }
-            let _ = writeln!(
-                rows,
-                "- [[{}]] rests on {}, which no claim block on disk establishes",
-                skeleton.slug,
-                missing
-                    .iter()
-                    .map(|id| format!("`{id}`"))
-                    .collect::<Vec<_>>()
-                    .join(", ")
-            );
-        }
+            (!missing.is_empty()).then_some((skeleton, missing))
+        });
+        let (rows, dropped) =
+            budget::listed(unsupported, budget::MAX_LISTED, |rows, (skeleton, missing)| {
+                let _ = writeln!(
+                    rows,
+                    "- [[{}]] rests on {}, which no claim block on disk establishes",
+                    skeleton.slug,
+                    missing
+                        .iter()
+                        .map(|id| format!("`{id}`"))
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                );
+            });
         if rows.is_empty() {
             return;
         }
@@ -616,6 +624,7 @@ impl Skeletons {
              or the id is misspelled.\n\n",
         );
         out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, BACKWARD_DIR));
     }
 
     fn append_faults(&self, out: &mut String) {
@@ -623,9 +632,11 @@ impl Skeletons {
             return;
         }
         out.push_str("\n## Skeletons that could not be read\n\n");
-        for fault in &self.faults {
-            let _ = writeln!(out, "- {fault}");
-        }
+        let (rows, dropped) = budget::listed(&self.faults, budget::MAX_LISTED, |rows, fault| {
+            let _ = writeln!(rows, "- {}", truncate(fault, budget::REASON_CHARS));
+        });
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, BACKWARD_DIR));
     }
 }
 

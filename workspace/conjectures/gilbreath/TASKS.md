@@ -1,5 +1,33 @@
 # Tasks
 
+## Directive 52 (steer): anticlustering_hypothesis is a negative result — file it as one
+
+`code/out/anticlustering_hypothesis.captured.txt` is a genuine negative result about
+G-supply, and it must be filed so a later role reads it as a fact about the problem, not
+a run setback. Generic Markov anti-clustering of the mod-4 switch bit does NOT deliver a
+uniform positive-linear bound ν₂ ≥ c·w: prime-like (0.55,0.60) worst-min ν₂/w = 0.0714
+(11/30 trials violate); Bernoulli control and clustered variants 12–13/30; the
+stationary-density-0.59 family 11–17/30; the prime's own empirical transitions (a=0.5565,
+b=0.6584) 8/20. This closes a PROOF STRATEGY (G-supply from mixing/anti-clustering of the
+switch sequence), NOT the G-supply statement for the primes.
+
+### Immediate (in order)
+
+- [ ] **1. File the negative claim.** Claim block with a negative statement, anchored to
+  the capture, in `code/out/anticlustering_hypothesis.notes.md`, id
+  `anticlustering-markov-insufficient-for-gsupply`. Wording must make it a fact about the
+  problem ("generic Markov anti-clustering is insufficient for G-supply"), not a setback.
+- [ ] **2. State the over-read distinction explicitly in the note.** 30 trials of a
+  worst-min statistic is noisy; real prime gaps are not a Markov chain. The Markov-model
+  failure refutes the mixing PROOF STRATEGY, not G-supply for the primes.
+- [ ] **3. Record what it leaves (director pre-set in `research/threads/regeneration.md`
+  and `CONTEXT.md`; confirm wording).** A positive-linear bound cannot come from mixing
+  alone; remaining candidates are arithmetic — Hardy–Littlewood two-point mod-4
+  correlations, or the Lemke Oliver–Soundararajan two-point bias with its oscillating
+  second-order term. **Bet: neither is unconditional; G-supply stays a named open
+  hypothesis and the deliverable is the CONDITIONAL theorem with the HL/LOS two-point
+  switch-correlation lower bound as the named hypothesis.**
+
 ## Directive 51 — the audit verdict wording (third recurrence) and the prefix-determinism proof
 
 Directives 45 and 48 are otherwise CLOSED. Link A is non-vacuous (1181 columns,

@@ -1,45 +1,47 @@
-sieve to 100000000 : 5761455 primes (2.5s)
-identity h_j = (1 - u_j u_{j+1})/2 over j=2..999999: OK (bad=0)
-E(n) = -sum_{j=2}^{n-1} u_j u_{j+1} for all n in [2,1000000]: OK
+sieve to 100000000 : 5761455 primes (2.1s)
+identity h_k = (1 - u_k u_{k+1})/2 over k=2..1000000: OK (bad=0)
+e(n) = -sum_{k=3}^{n} u_k u_{k+1} for n in [2,1000000]: OK (bad=[])
+e(n) = 2*R(n) - n (R = residue runs among p_3..p_{n+1}) for n in [3,1000000]: OK (bad=[])
+cross-check vs excess_e_first512.txt (512 terms): IDENTICAL
 
-== pointwise switch majority E(n) >= 0 for n in [2,1000000]: YES (violations=0, first=[])
-   E(n)=0 exactly at n: [2] (count=1)
-   min E over n in [    17, 1000000] = 5 at n=17
-   min E over n in [   100, 1000000] = 24 at n=100
-   min E over n in [  1000, 1000000] = 236 at n=1004
-   min E over n in [ 10000, 1000000] = 1723 at n=10027
-   min E over n in [100000, 1000000] = 14719 at n=100013
+== pointwise switch majority e(n) >= 0 for n in [2,1000000]: YES (violations=0, first=[])
+   e(n)=0 at: [2, 4, 6, 8] (count=4)
+   min e over n in [    17, 1000000] = 5 at n=17
+   min e over n in [   100, 1000000] = 24 at n=100
+   min e over n in [  1000, 1000000] = 235 at n=1003
+   min e over n in [ 10000, 1000000] = 1722 at n=10026
+   min e over n in [100000, 1000000] = 14718 at n=100012
 
-== dyadic table ==
-   n         W(n)      E(n)    W/n     E/(n/log(n*log n))
+== dyadic table (w(n), e(n)) ==
+   n         w(n)      e(n)    w/n    e/(n/log(n*log n))
        100        61        24  0.6100  1.472
-      1000       618       238  0.6180  2.104
+      1000       617       236  0.6170  2.086
      10000      5861      1724  0.5861  1.971
-    100000     57361     14724  0.5736  2.055
-   1000000    562576    125154  0.5626  2.058
+    100000     57360     14722  0.5736  2.055
+   1000000    562575    125152  0.5626  2.058
 
-== equal-residue run structure, residues of p_2..p_1000001 ==
-   number of runs: 562577 (over 1000000 primes)
-   longest run: 16   top-10 lengths: [16, 15, 15, 14, 14, 13, 13, 13, 12, 12]
-   run-length histogram (top 8 by length): {16: 1, 15: 2, 14: 2, 13: 3, 12: 7, 11: 27, 10: 91, 9: 246}
-   runs of length 1: 307035 (54.6%)
+== equal-residue run structure, residues of p_3..p_1000001 (n=1000000) ==
+   number of runs R(1000000) = 562576,  e(1000000)=2R-n = 125152 (check vs above: e=125152)
+   longest run: 16   top-10: [16, 15, 15, 14, 14, 13, 13, 13, 12, 12]
+   run-length histogram top 8: {16: 1, 15: 2, 14: 2, 13: 3, 12: 7, 11: 27, 10: 91, 9: 246}
+   runs of length 1: 307034 (54.6%)
+   mean run length: 1.7775
 
-== E-walk steps (j=2..999999): +1 = switch (h=1), -1 = non-switch (h=0) ==
-   up steps: 562576   down steps: 437422
-   longest up-run (consecutive switches): 24
-   longest down-run (consecutive non-switches): 15
-   count of down-runs: 255541, mean down-run: 1.712
+== e-walk steps (gaps k=3..1000000): +1 switch / -1 non-switch ==
+   up steps 562575, down steps 437423, longest up-run 24, longest down-run 15
+   down-run count 255542, mean down-run 1.712
 
 == context ==
-   # {p_j = 1 mod 4, j in [2,1000000]} = 499798   # {3 mod 4} = 500202   sum u_j = -403
+   p_k = 1 mod 4 among k in [2,1000001]: 499798 ;  3 mod 4: 1000000 ;  sum u = -500202
 
-== transfer composition (nu2 from code/out/nu2_dense.txt, W computed here) ==
-   leg (a) nu2(n) >= W(n)/2 for n in [17,30000]: violations=1 first=[44]
-   leg (b) W(n) >= (n-2)/2 for n in [2,30000]: violations=0 first=[]
+== transfer composition (nu2 from code/out/nu2_dense.txt, w here = correct window) ==
+   leg (a) nu2(n) >= w(n)/2 for n in [17,30000]: violations=0 first=[]
+   min nu2/w over [17,30000] = 0.5000 at n=44
+   leg (b) w(n) >= (n-2)/2 for n in [2,30000]: violations=0 first=[]
    composed nu2(n) >= (n-2)/4 for n in [17,30000]: violations=0 first=[]
    first n with (n-2)/4 > n^0.525: 23
-   min 4*nu2/(n-2) over n in [23,30000] = 1.3333 at n=32 (margin over 1)
    min nu2/n^0.525 over n in [23,30000] = 1.542 at n=23
+   min 4*nu2/(n-2) over n in [23,30000] = 1.3333 at n=32
 
-wrote E_ballot_first512.txt, W_switch_prefix_first512.txt, hbits_j2_first512.txt (512 terms each)
-total time 4.4s
+wrote e_ballot_corrected_first512.txt, w_switch_corrected_first512.txt, runs_residue_first512.txt
+total time 3.3s
