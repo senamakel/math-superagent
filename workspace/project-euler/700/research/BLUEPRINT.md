@@ -8,11 +8,31 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 ## Ready to work on
 
-_Nothing is ready, and no lemma is blocked either: every proposition the decomposition names is settled, and what remains open is the goal itself. Check what it rests on — a goal still blocked when its lemmas are all discharged is resting on something nobody verified, or on an inference the skeleton never wrote down._
+Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
+
+- `eu700-eulercoin-sum/G-independent-check` (lemma) — The value V from G-run-full equals the sum obtained by an independent derivation — the Eulercoin values expressed as continued-fraction…
+  - open `research/backward/eu700-eulercoin-sum.md`
+- `eu700-eulercoin-sum/G-run-full` (lemma) — Iterating the recurrence to termination on the actual (A,M) yields a finite list of Eulercoin values whose sum V is the answer, computed in…
+  - open `research/backward/eu700-eulercoin-sum.md`
+- `eu700-eulercoin-sum/G-verify-recurrence` (lemma) — gcd(A,M)=1, and on the actual (A,M) and on several small test moduli the recurrence iterated from its base produces exactly the…
+  - open `research/backward/eu700-eulercoin-sum.md`
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
-| `eu700-floor-sum-tool` | claim | **ready** | — | The sum of a range of terms c_i = a*i - m*floor(a*i/m) reduces to floor_sum(n,m,a,b) = sum floor((a i + b)/m), which is computable in O(log… |
-| `eu700-record-low-recurrence` | claim | **ready** | — | For the sequence c_n = A*n mod M (gcd(A,M)=1), letting n_1 = 1 and n_{k+1} = min{n > n_k : c_n < c_{n_k}}, the record-low indices satisfy… |
+| `eu700-2-sided-best-2nd-kind-are-convergents` | claim | **ready** | — | A fraction p/q is a best approximation of the second kind to real alpha (minimises \|q alpha - p\| over denominators q' <= q) if and only if… |
+| `eu700-best-approx-legendre` | claim | **ready** | — | p/q (lowest terms) is a best approximation of the second kind of x iff it is a regular convergent of x (minimises q\|qx−p\| among… |
+| `eu700-discrepancy-context` | claim | **ready** | — | For irrational α with convergents (p_m/q_m), the quantity q_m\|q_m α − p_m\| is the minimum of q\|qα−p\| over 0 ≤ q < q_{m+1}; convergents are… |
+| `eu700-eulercoin-sum` | goal | established | `eu700-eulercoin-sum/G-independent-check`, `eu700-eulercoin-sum/G-record-low-enumeration`, `eu700-eulercoin-sum/G-run-full`, `eu700-eulercoin-sum/G-verify-recurrence`, `eu700-floor-sum-tool`, `eu700-record-low-recurrence` | Compute sum of all Eulercoins for A=1504170715041707, M=4503599627370517 |
+| `eu700-eulercoin-sum/G-independent-check` | lemma | **ready** | — | The value V from G-run-full equals the sum obtained by an independent derivation — the Eulercoin values expressed as continued-fraction… |
+| `eu700-eulercoin-sum/G-record-low-enumeration` | lemma | established | `eu700-record-low-recurrence` | The record-low indices of c_n = A·n mod M are exactly n_1=1, n_2=3 and n_{k+2} = ceil(c_{n_k}/c_{n_{k+1}})·n_{k+1} − n_k for k ≥ 1 while… |
+| `eu700-eulercoin-sum/G-run-full` | lemma | **ready** | — | Iterating the recurrence to termination on the actual (A,M) yields a finite list of Eulercoin values whose sum V is the answer, computed in… |
+| `eu700-eulercoin-sum/G-verify-recurrence` | lemma | **ready** | — | gcd(A,M)=1, and on the actual (A,M) and on several small test moduli the recurrence iterated from its base produces exactly the… |
+| `eu700-final-answer` | claim | established | — | The sum of all Eulercoins of the sequence a_n = A·n mod M, A = 1504170715041707, M = 4503599627370517, is 1517926517777556, comprising 102… |
+| `eu700-floor-sum-recursion-proof` | claim | established | — | f(n,m,a,b) = sum_{i=0}^{n-1} floor((a i + b)/m) satisfies, after reducing a,b mod m (a = d_a m + r_a, b = d_b m + r_b, 0 <= r_a,r_b < m),… |
+| `eu700-floor-sum-tool` | claim | established | — | The sum of a range of terms c_i = a*i - m*floor(a*i/m) reduces to floor_sum(n,m,a,b) = sum floor((a i + b)/m), which is computable in O(log… |
+| `eu700-record-low-recurrence` | claim | established | — | For the sequence c_n = A*n mod M (gcd(A,M)=1), letting n_1 = 1 and n_{k+1} = min{n > n_k : c_n < c_{n_k}}, the record-low indices satisfy… |
+| `eu700-record-lows-are-best-lower-approximations` | claim | **ready** | — | The record lows (Eulercoins) of c_n = A n mod M, gcd(A,M)=1, are exactly the best lower Diophantine approximations of the second kind to α… |
+| `eu700-record-lows-are-best-lower-approximations-kimberling` | claim | **ready** | — | The best lower approximations to α (fractions p/q < α minimising the vertical gap qα−p among denominators ≤ q) are exactly the even-indexed… |
+| `eu700-three-gap-record-lows` | claim | **ready** | — | first(N) (the index minimising {mα} over 0<m<N) is the running-minimum / record-low index of the orbit {nα}; last(N) the running-maximum… |

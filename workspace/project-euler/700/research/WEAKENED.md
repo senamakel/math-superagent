@@ -6,4 +6,27 @@ This is neither the approach ledger nor the backward ledger. An approach is a *r
 
 Rungs are listed weakest first, which is the order to climb them. Attack the current rung, not the one three above it.
 
-_No ladders yet. Write one as soon as the goal has more than one source of difficulty: `research/weakened/<name>.md`, with a fenced `ladder` block carrying `goal`, `difficulties` (comma separated), and `status` lines, then one fenced `rung` block per weakened version carrying `id`, `statement`, `off`, `status`, `merge`, and — once it is closed — `settled-by` or `failed-by`._
+## The ladders
+
+| Ladder | Full-strength goal | Difficulties | Status |
+| --- | --- | --- | --- |
+| [[eulercoin]] | Find the sum of all Eulercoins for the sequence a_n = 1504170715041707 * n mod 4503599627370517 (n = 1,2,3,...), where an Eulercoin is a term strictly smaller… | unbounded-n, large-coefficients, modular-wrap, index-bookkeeping, termination, no-oracle-at-size | open |
+
+## The rungs, weakest first
+
+Each row is a statement weaker than the goal. The more difficulties are off, the easier it is, so the top of this table is where a stuck run should be working.
+
+| Rung | Ladder | Weakened target | Off | Status |
+| --- | --- | --- | --- | --- |
+| `R-tiny-scan` | [[eulercoin]] | M = 17, A = 7 (gcd = 1). For n = 1..17 define a_n = 7n mod 17 (one full period; a_17 = 0). An Eulercoin is a term strictly smaller than every previous… | unbounded-n, large-coefficients, index-bookkeeping, termination, no-oracle-at-size | open |
+| `R-small-descent` | [[eulercoin]] | Same pair M = 17, A = 7, but produce the coin list (value with index) by the quotient/remainder descent instead of a scan: the coins are the successive… | unbounded-n, large-coefficients, no-oracle-at-size | open |
+| `R-full-first-coins` | [[eulercoin]] | The real pair A = 1504170715041707, M = 4503599627370517 (verify gcd = 1). Run the Euclidean descent and recover the first coins with indices; must reproduce… | termination | open |
+| `R-full` | [[eulercoin]] | Project Euler 700 verbatim: A = 1504170715041707, M = 4503599627370517, a_n = A * n mod M for n = 1,2,3,...; an Eulercoin is a term strictly smaller than every… | — | open |
+
+## The current rung — attack this one
+
+The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
+
+- [[eulercoin]] → `R-tiny-scan`: M = 17, A = 7 (gcd = 1). For n = 1..17 define a_n = 7n mod 17 (one full period; a_17 = 0). An Eulercoin is a term strictly smaller than every previous Eulercoin; a_1 = 7 is the first. Sum all Eulercoins over n = 1..17. Hand-anticipated coins 7@1, 4@3, 1@5, 0@17, sum 12 — code/brute.py is the oracle that confirms or corrects this.
+  - switched off: unbounded-n, large-coefficients, index-bookkeeping, termination, no-oracle-at-size
+  - to merge the next difficulty back: Turn `index-bookkeeping` back on (to R-small-descent): replace the n=1..17 scan by the Euclidean descent and reproduce the same four coins with their indices. First move: state "next coin = current remainder mod current coin, next index = current index + quotient" and check it yields coin 4 at n=3 from coin 7 at n=1.

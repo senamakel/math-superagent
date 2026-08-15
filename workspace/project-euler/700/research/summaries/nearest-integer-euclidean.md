@@ -1,4 +1,4 @@
-<!-- source: http://www.numbertheory.org/php/neuclid.html | converted from HTML -->
+<!-- source: http://www.numbertheory.org/php/neuclid.html | full text at research/sources/nearest-integer-euclidean.full.md -->
 
 A nearest integer Euclidean algorithm
 

@@ -1,0 +1,33 @@
+Eulercoin brute-force oracle
+  A = 1504170715041707
+  M = 4503599627370517
+  gcd(A, M) = 1
+  scan limit (terms) = 300000
+
+Worked-example terms (bare modular arithmetic):
+  a_1 = 1504170715041707
+  a_2 = 3008341430083414
+  a_3 = 8912517754604
+
+Total Eulercoins found within scan limit: 11
+Sum of all Eulercoins found within scan limit: 1517920872798979
+Last term (within scan) at which a new Eulercoin appeared: n = 202630
+From n = 202631 to n = 300000 no further Eulercoin appeared.
+
+First several Eulercoins (n, value):
+   n = 1  value = 1504170715041707
+   n = 3  value = 8912517754604
+   n = 506  value = 2044785486369
+   n = 2527  value = 1311409677241
+   n = 4548  value = 578033868113
+   n = 11117  value = 422691927098
+   n = 17686  value = 267349986083
+   n = 24255  value = 112008045068
+   n = 55079  value = 68674149121
+   n = 85903  value = 25340253174
+   ... (1 more)
+
+Sum of first 2 Eulercoins = 1513083232796311
+Worked example sum MATCHES 1513083232796311
+
+All worked-example assertions passed.

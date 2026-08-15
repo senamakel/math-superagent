@@ -1,0 +1,46 @@
+==============================================================================
+Independent verification of Project Euler 700 (no index recurrence)
+A = 1504170715041707, M = 4503599627370517, gcd(A,M) = 1
+==============================================================================
+
+PASS: 0 < A < M and gcd(A,M) = 1
+
+---- Route B: floor_sum on the real pair ----
+floor_sum(M,M,A,0)       = 3387091335881734873849027370148
+closed form (A-1)(M-1)/2 = 3387091335881734873849027370148
+PASS: floor_sum matches closed form
+sum of residues over full period (via floor_sum) = 10141204801825927535765986738386
+expected M*(M-1)/2                              = 10141204801825927535765986738386
+PASS: residue-sum identity holds
+floor_sum vs direct summation on 4 small cases: PASS
+
+---- Route A - certify against brute force on small pairs ----
+  A=7, M=17: descent [7, 4, 1, 0] == brute [7, 4, 1, 0] : PASS
+  A=3, M=23: descent [3, 1, 0] == brute [3, 1, 0] : PASS
+  A=5, M=13: descent [5, 2, 1, 0] == brute [5, 2, 1, 0] : PASS
+  A=11, M=29: descent [11, 4, 1, 0] == brute [11, 4, 1, 0] : PASS
+  A=6, M=35: descent [6, 1, 0] == brute [6, 1, 0] : PASS
+  A=9, M=41: descent [9, 4, 3, 2, 1, 0] == brute [9, 4, 3, 2, 1, 0] : PASS
+  A=13, M=47: descent [13, 5, 2, 1, 0] == brute [13, 5, 2, 1, 0] : PASS
+value descent matches brute-force oracle on 7 small pairs: PASS
+
+---- Route A: Euclidean quotient descent on VALUES ONLY (real pair) ----
+Eulercoin value count (incl. final 0): 102
+non-zero Eulercoin count:              101
+values strictly decreasing to 0:       PASS
+sum of all Eulercoin values V =        1517926517777556
+
+---- Comparison against /workspace/code/out/solution.txt ----
+gold coin values read from solution.txt: 102
+gold sum V (solution.txt)              = 1517926517777556
+descent sum V                          = 1517926517777556
+descent value set == gold value set    : PASS
+descent value count == gold count      : PASS
+descent sum == gold sum                : PASS
+first 10 descent values: 1504170715041707, 8912517754604, 2044785486369, 1311409677241, 578033868113, 422691927098, 267349986083, 112008045068, 68674149121, 25340253174
+matches statement first 10: PASS
+
+==============================================================================
+OVERALL: PASS
+Final Eulercoin sum V (independent value descent): 1517926517777556
+==============================================================================

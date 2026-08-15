@@ -1,117 +1,198 @@
-"""Verify the record-low recurrence for Project Euler 700.
+"""Verify the record-low index recurrence for Project Euler 700.
 
-Sequence: c_n = a*n mod m, with
-    a = 1504170715041707
-    m = 4503599627370517
-Eulercoin = term strictly smaller than all previous terms (prefix minimum / record low).
+Sequence: c_n = A*n mod M, with
+    A = 1504170715041707
+    M = 4503599627370517
+An Eulercoin is a term strictly smaller than every earlier term: the record low
+(prefix minimum) of the sequence.
 
-The recurrence (from research/summaries/record-low-recurrence.md):
+The recurrence (sourced -- research/summaries/record-low-recurrence.md, method
+of brob26 from the PE700 thread):
+
     n_{k+2} = ceil(c_{n_k} / c_{n_{k+1}}) * n_{k+1} - n_k
-gives the indices of successive record lows, starting n_1 = 1.
 
-This script has two independent checks:
-  1. Brute force the prefix minima for the first N terms and confirm the
-     recurrence-generated indices/values match for the first several Eulercoins.
-  2. Reproduce the stated worked example: sum of first two Eulercoins
-     = 1513083232796311.
+gives successive record-low indices, starting from n_1 = 1 and n_2 = first
+index after 1 whose value is below A (on the real pair, n_2 = 3). Because
+gcd(A,M)=1 the sequence is a permutation of the residues, the values strictly
+decrease at each step of the recurrence, and the iteration terminates at value 0.
+
+Checks performed here:
+ 1. On several small (A,M) pairs, the recurrence iterated to termination exactly
+    reproduces the forward brute-force running-minimum scan (incl. the given
+    coin lists, e.g. A=7,M=17 -> 7@1, 4@3, 1@5, 0@17, sum 12).
+ 2. On the actual (A,M), the first len(brute) recurrence coins match the coins
+    a forward scan up to n ~ 10^6 actually finds.
+ 3. The recurrence reproduces the statement's a_1 = 1504170715041707,
+    a_3 = 8912517754604, and the first-two sum 1513083232796311.
+ 4. Prints math.gcd(A, M).
+
+Output should be captured to code/out/verify_recurrence.txt.
 """
-from math import ceil
+from math import gcd, ceil
 
 A = 1504170715041707
 M = 4503599627370517
 
-from math import gcd as _gcd
 
-def _check_hypotheses():
-    """The recurrence and the 'sequence is a permutation' fact need gcd(A,M)=1
-    and 0 < A < M. Confirm them so the claim's hypotheses truly hold here."""
-    assert 0 < A < M, "need A < M"
-    g = _gcd(A, M)
-    print("gcd(A, M) =", g)
-    assert g == 1, "recurrence/permutation needs gcd(A,M)=1"
-    return g
+def record_lows_brute(A, M, limit_n):
+    """Forward scan of c_n = A*n mod M for n = 1..limit_n.
 
-
-def recurrence_eulercoins(limit_terms=None):
-    """Generate Eulercoin values via the index recurrence.
-
-    n_1 = 1, c_1 = A.
-    n_2 = first n>1 with c_n < c_1 = A.
-    Then n_{k+2} = ceil(c_{n_k}/c_{n_{k+1}})*n_{k+1} - n_k.
+    Returns the record lows (prefix minima) as [(n, c_n), ...] in order of
+    occurrence. This is the naive oracle: one modular multiply per step, keep a
+    coin whenever the value drops below the running minimum.
     """
-    c1 = A
-    # first record low after index 1: smallest n with a*n mod m < A.
-    # This is not generally easy to find by scanning; but for the worked
-    # check we know the second Eulercoin value from the statement.
-    # Here we verify the recurrence given known successive coins.
-    return None  # placeholder; real verification below
-
-
-def brute_first_record_lows(num_coins):
-    """Brute force: scan c_n = a*n mod m, record new prefix minima."""
     coins = []
     running_min = None
-    n = 1
-    c = A % M
-    coins.append((n, c))
-    running_min = c
-    n = 2
-    while len(coins) < num_coins:
+    for n in range(1, limit_n + 1):
         c = (A * n) % M
-        if c < running_min:
+        if running_min is None or c < running_min:
             coins.append((n, c))
             running_min = c
-        n += 1
     return coins
 
 
-def recurrence_from_seed(coins):
-    """Given the first two (n,val) record lows, extend via recurrence."""
-    out = list(coins)
+def first_record_low_after_one(A, M):
+    """Smallest n > 1 with A*n mod M < A mod M (= A, since A < M)."""
+    low = A % M
+    n = 2
     while True:
-        nk, ck = out[-2]
-        nk1, ck1 = out[-1]
+        if (A * n) % M < low:
+            return n
+        n += 1
+
+
+def record_lows_recurrence(A, M, n2=None, max_steps=None):
+    """Generate record lows via the index recurrence.
+
+    n_1 = 1 with value A%M. n_2 defaults to first_record_low_after_one(A, M)
+    (pass it when already known). Then iterates
+        n_{k+2} = ceil(c_{n_k}/c_{n_{k+1}}) * n_{k+1} - n_k
+    until a value hits 0 (the final Eulercoin), or max_steps steps.
+    Returns [(n, c_n), ...].
+    """
+    c1 = A % M
+    if n2 is None:
+        n2 = first_record_low_after_one(A, M)
+    c2 = (A * n2) % M
+    res = [(1, c1), (n2, c2)]
+    steps = 0
+    while True:
+        nk, ck = res[-2]
+        nk1, ck1 = res[-1]
         if ck1 == 0:
             break
         alpha = ceil(ck / ck1)
         nk2 = alpha * nk1 - nk
-        if nk2 <= nk1:
-            break
-        # value at index nk2 should equal the new record low
         ck2 = (A * nk2) % M
-        out.append((nk2, ck2))
-    return out
+        res.append((nk2, ck2))
+        steps += 1
+        if max_steps is not None and steps >= max_steps:
+            break
+    return res
+
+
+def check_small_pair(A, M, expected_coins=None, expected_sum=None):
+    """Compare recurrence vs brute on a small (A,M) where a full scan to M is
+    cheap. Returns (ok, message)."""
+    msgs = []
+    brute = record_lows_brute(A, M, M)          # scan all the way to 0/index M
+    rec = record_lows_recurrence(A, M)          # iterate to value 0
+    ok_scan = rec == brute
+    msgs.append(f"recurrence==brute(full scan to n=M): {ok_scan}")
+    # strip the trailing value-0 entry when comparing sums, as in the statement
+    nonzero = [c for _, c in brute if c != 0]
+    sumvals = sum(nonzero)
+    msgs.append(f"coins (n,val): {brute}")
+    msgs.append(f"sum of nonzero coins: {sumvals}")
+    ok_all = ok_scan
+    if expected_coins is not None:
+        ok_coins = brute == expected_coins
+        msgs.append(f"matches given coin list {expected_coins}: {ok_coins}")
+        ok_all = ok_all and ok_coins
+    if expected_sum is not None:
+        ok_sum = sumvals == expected_sum
+        msgs.append(f"matches given sum {expected_sum}: {ok_sum}")
+        ok_all = ok_all and ok_sum
+    # also require the recurrence's first term to be A and second to be the
+    # small-pair record low
+    if len(rec) >= 2:
+        ok_first = rec[0] == (1, A % M) and rec[1][1] == brute[1][1]
+        msgs.append(f"first two recurrence coins consistent with brute: {ok_first}")
+        ok_all = ok_all and ok_first
+    return ok_all, "; ".join(msgs)
+
+
+def main():
+    print("=" * 72)
+    print("Verify record-low recurrence for Project Euler 700")
+    print("=" * 72)
+
+    # ---- print gcd(A,M) ------------------------------------------------
+    g = gcd(A, M)
+    print("\ngcd(A, M) =", g)
+    assert g == 1, "recurrence needs gcd(A,M)=1"
+    assert 0 < A < M, "need 0 < A < M"
+    print("PASS: gcd(A,M)=1 and 0 < A < M (hypotheses of the theorem hold)")
+
+    # ---- worked-example / statement checks on the real pair -------------
+    rec_full = record_lows_recurrence(A, M, n2=3)
+    a1 = rec_full[0][1]
+    a3 = rec_full[1][1]
+    sum_two = a1 + a3
+    print("\n-- Statement values from recurrence --")
+    print("a_1 (recurrence) =", a1)
+    print("a_3 (recurrence) =", a3)
+    print("sum a_1 + a_3   =", sum_two)
+    assert a1 == 1504170715041707, f"a_1 mismatch: {a1}"
+    assert a3 == 8912517754604, f"a_3 mismatch: {a3}"
+    assert sum_two == 1513083232796311, f"sum mismatch: {sum_two}"
+    print("PASS: recurrence gives a_1=1504170715041707, "
+          "a_3=8912517754604, first-two sum=1513083232796311")
+
+    # ---- small test pairs ----------------------------------------------
+    print("\n-- Small test moduli --")
+    results = []
+    small = [
+        (7, 17, [(1, 7), (3, 4), (5, 1), (17, 0)], 12),
+        (3, 23, None, None),
+        (5, 13, None, None),
+    ]
+    for A_s, M_s, coins, ssum in small:
+        ok, msg = check_small_pair(A_s, M_s, coins, ssum)
+        results.append((f"A={A_s}, M={M_s}", ok))
+        print(f"A={A_s}, M={M_s}: {'PASS' if ok else 'FAIL'}  ({msg})")
+        assert ok, f"small pair A={A_s}, M={M_s} FAILED"
+
+    # ---- real pair: forward scan up to n ~ 1e6 --------------------------
+    LIMIT = 10**6
+    print(f"\n-- Real pair: forward scan to n = {LIMIT} vs recurrence --")
+    brute_real = record_lows_brute(A, M, LIMIT)
+    # take only as many recurrence coins as the forward scan reached
+    rec_prefix = rec_full[:len(brute_real)]
+    print(f"coins found by forward scan up to n={LIMIT}: {len(brute_real)}")
+    match = rec_prefix == brute_real
+    print(f"recurrence[:{len(brute_real)}] == brute scan: {match}")
+    if not match:
+        for i, (r, b) in enumerate(zip(rec_prefix, brute_real)):
+            if r != b:
+                print(f"  first mismatch at index {i}: rec={r} brute={b}")
+    assert match, "recurrence disagrees with forward scan on the real pair!"
+    print("PASS: recurrence matches forward scan on the real pair "
+          f"(first {len(brute_real)} coins, indices <= {LIMIT})")
+
+    # ---- first ~10 Eulercoins from the recurrence ------------------------
+    print("\n-- First 10 Eulercoins (index, value) from recurrence --")
+    for nk, ck in rec_full[:10]:
+        print(f"   n = {nk:>4}   c_n = {ck}")
+
+    # ---- summary ---------------------------------------------------------
+    print("\n" + "=" * 72)
+    all_ok = all(ok for _, ok in results) and True  # everything asserted above
+    print("ALL CHECKS:", "PASS" if all_ok else "FAIL")
+    print("=" * 72)
+    return 0 if all_ok else 1
 
 
 if __name__ == "__main__":
-    # 1. Reproduce the worked example.
-    first_coins = brute_first_record_lows(2)
-    print("First two Eulercoins (brute):", first_coins)
-    s = sum(c for _, c in first_coins)
-    print("Sum of first two:", s)
-    assert s == 1513083232796311, f"Worked example FAILED: {s}"
-    print("Worked example sum MATCHES 1513083232796311\n")
-
-    # 2. Cross-check: first two coins brute == recurrence seed.
-    assert first_coins[0] == (1, A), first_coins[0]
-    assert first_coins[1][1] == 8912517754604, first_coins[1]
-    print("Second Eulercoin (brute) =", first_coins[1][1])
-    print("Statement says 8912517754604")
-    assert first_coins[1][1] == 8912517754604
-    print("Second Eulercoin value MATCHES.\n")
-
-    # 3. Verify recurrence: extend from the two known coins and compare
-    #    against brute force for the next several Eulercoins.
-    seed = first_coins[:2]
-    rec = recurrence_from_seed(seed)
-    brute = brute_first_record_lows(len(rec))
-    print("Recurrence sequence (n, value):")
-    for r in rec:
-        print("   ", r)
-    print("\nBrute sequence:")
-    for b in brute:
-        print("   ", b)
-    match = rec == brute
-    print("\nRecurrence == brute for", len(rec), "Eulercoins:", match)
-    assert match, "Recurrence disagrees with brute force!"
-    print("Recurrence verified against brute force.")
+    import sys
+    sys.exit(main())

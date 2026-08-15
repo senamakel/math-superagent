@@ -1,4 +1,4 @@
-<!-- source: https://smsxgz.github.io/post/math/an_elegant_result/ | converted from HTML; based on method of brob26 (Project Euler 700 thread) -->
+<!-- source: https://smsxgz.github.io/post/math/an_elegant_result/ | full text at research/sources/smsxgz-elegant-result-eulercoin-recurrence.full.md; based on method of brob26 (Project Euler 700 thread) -->
 
 # Record-low index recurrence for modular linear sequences
 
@@ -42,7 +42,7 @@ id: eu700-record-low-recurrence
 statement: For the sequence c_n = A*n mod M (gcd(A,M)=1), letting n_1 = 1 and n_{k+1} = min{n > n_k : c_n < c_{n_k}}, the record-low indices satisfy n_{k+2} = ceil(c_{n_k}/c_{n_{k+1}})*n_{k+1} - n_k whenever c_{n_{k+1}} > 0. Hence the Eulercoins of Project Euler 700 can be generated in O(log M) steps rather than scanning to M ~ 4.5e15.
 hypotheses: A, M positive integers with A < M and gcd(A,M)=1; residues taken in [0, M); c_{n_{k+1}} > 0 at each applied step.
 holds-here: true. A = 1504170715041707 and M = 4503599627370517, gcd = 1, A < M.
-status: sourced (smsxgz blog, method of brob26); worked example reproduced arithmetically; recurrence cross-check pending tool_builder run of code/verify_recurrence.py.
+status: checked — sourced (smsxgz blog, method of brob26); verified by this run's code/verify_recurrence.py: gcd(A,M)=1, recurrence matches full brute-force scan on small moduli (A=7/M=17, A=3/M=23, A=5/M=13) and on the real pair through n=10^6, reproduces a_1=1504170715041707, a_3=8912517754604, first-two sum 1513083232796311; code/solution.py runs it to termination, giving 102 Eulercoins and sum V=1517926517777556 (see code/out/verify_recurrence.txt, code/out/solution.txt).
 bearing: This is the structural fact that makes the problem solveable in O(log M): enumerate record-low indices/values, sum the values.
 anchor: research/summaries/record-low-recurrence.md
 ```
