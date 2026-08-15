@@ -6,15 +6,32 @@ why, computed numbers, durable memory, disagreements. Not a file catalogue
 (`research/INDEX.md` is that) and not a narration of activity.
 
 Budget 10,000 tokens. Length is a bill the whole run pays on every model call;
-link the file holding any detail compressed away. (Last cycle: Directive 48 —
-reduction-audit reporting defects, see Run state.)
+link the file holding any detail compressed away. (Last cycle: Directive 50 —
+descent_lemma.lean compiles clean, see Run state.)
 
-## Run state (Directive 48 — reduction-audit reporting)
+## Run state (Directive 50 — first kernel-checked result)
 
-**Directive 48 is in flight, ahead of Directive 47's remaining items.** The
-reduction audit (`code/gap_analysis/reduction_audit.py`,
-`code/out/reduction_audit.captured.txt`) has two reporting defects to fix
-before resuming:
+**`code/lean/descent_lemma.lean` compiles clean — the first kernel-checked
+result of the run.** `lean_check`: compiled true, verified true, no `sorryAx`;
+axioms `absorbing` — none; `run_absorb` — `[propext]`; `run_high`, `run_inv`,
+`descent_claim1`, `descent_claim2` — `[propext, Classical.choice, Quot.sound]`.
+Statements NOT weakened: `runAbs` = genuine iterated `Nat.dist` fold,
+`countOnes` = ν₁, `descent_claim1` (`w ≤ ν₁+1 ⟹ runAbs w el ∈ {0,1}`),
+`descent_claim2` (`ν₁+1 < w ⟹ runAbs w el = w − ν₁` exactly). Filed as claim
+`lemma54-descent-lean-formalised`, `status: formalised`
+(`research/notes/lemma54-descent-lean-formalised.md`). **Scope — abstract core
+only:** an arbitrary `{0,1}^L` pattern and arbitrary starting `w`; it does NOT
+cover Link A (`v ≤ g*_n`), the composition `g*_n ≤ 2ν₂+2 ⟹ success`, the
+reduction from real column dynamics to the `(pattern,v)` model, or the supply
+side. **`lemma54-re-derived-proof` is NOT upgraded to proved on the strength of
+it** — the full even-domain lemma is strictly more; the honest path is to
+formalise Link A and the composition too. The defective "each 2 contributed −2"
+passage in `research/notes/lemma54-re-derived-proof.md` is DELETED, superseded
+by the kernel-checked case split.
+
+**Directive 48 remains in flight (below the Directive 50 items in TASKS.md).**
+The reduction audit (`code/gap_analysis/reduction_audit.py`,
+`code/out/reduction_audit.captured.txt`) has two reporting defects to fix:
 
 - **Prefix-determinism is the load-bearing fact and it is PROVABLE in three
   lines, not ten samples.** The 0-2 cycle pattern of δ(q_n) is read from
@@ -36,6 +53,8 @@ before resuming:
 
 ## Run state (Directive 36 pivot)
 
+**Directive 51 (audit wording, third recurrence).** Directives 45/48 are otherwise closed (Link A non-vacuous: 1181 columns, margin 35.882, 0 violations; audit clean: 45150 cells, 281 columns, 0 violations). One line remains: the audit VERDICT calls a 281-column check "a theorem" — the same category error as Directives 42/44. Standing rule: captured output reports counts/ranges/violation totals and may say CONFIRMED or REFUTED over the stated range; it may NOT say theorem/proved/proves. Immediate work: rewrite that VERDICT line in the program and re-capture, then write the three-line prefix-determinism proof (Directive 48 item 1).
+
 **Empirical route at ceiling.** 1e9 run (W=50,847,534, 185s, 1.37 GiB):
 row-248 STILL capped (b_land = W−248−1, floor=0, genuine=False;
 jump ≥ 27,684,003). Geometric doubling (1.765× per giant, R²=0.968) means
@@ -43,7 +62,8 @@ each giant costs 1.5×–8× the width of the last; two more → 1e10–1e11
 sieve → exceeds 8 GiB cap. **Do NOT queue larger sieve runs.** Settled:
 max gap still 64 (175→239), ratio bound gap_i/(j_i+1) ≤ 0.01264
 everywhere, oracle passed. Parity: 1 odd (161) of 15 genuine giants,
-base-rate p=0.0052 (not fair-coin). Remaining work is theoretical:
+exact base-rate hypergeometric p = 1.82e-3 (binomial 0.0052; fair-coin 4.88e-4 —
+corrected this run, `giant-parity-genuine-15-1e9`). Remaining work is theoretical:
 Granville Lemma 5.4 (ν_2 reduction) and CHT Theorem 1.6 — both FULLPDFs
 are read and digested (`research/notes/lemma54-re-derived-proof.md`,
 `research/notes/cht-2026-summary.md`). **Lemma 5.4 is now PROVED on the even
@@ -56,7 +76,7 @@ then δ_t ∈ {0,2} and absorption carries it; else every δ_k ≥ 4, every 2
 subtracts 2, and δ_L = v − 2ν₂ ≤ 2 contradicts δ_L ≥ 4. Write the proof and
 Lean-formalise it; **do not run another sampling sweep** — an invariant is
 proved by argument, the Lean file only certifies it. The
-entire surviving open *mathematical* content is the supply-side linear bound (see below — the Lean formalisation is NOT proved: Directive 49, `code/lean/descent_lemma.lean` has sorryAx in all six theorems; fixing it is the immediate next work)
+entire surviving open *mathematical* content is the supply-side linear bound (see below — the abstract core is now kernel-checked in Lean, Directive 50, claim `lemma54-descent-lean-formalised`; the full even-domain lemma still needs Link A + composition + reduction)
 ν_2 ≥ c·n. Route B (Granville ν_2) primary;
 Route A (ratio bound) empirical fallback; Route C (CHT) calibrated by
 authors' difficulty assessment.
@@ -105,7 +125,7 @@ Claim `cht-right-half-0d-scan-6e8`; anchor `research/notes/cht-right-half-scan.m
 - **Regeneration = single-row local fact (edge 2, intruder 4), established depth 1000.** Earlier "non-local" refutations were an off-by-one (correct edge index is `A_k[b_k]`, not `A_k[b_k−1]`); the corrected criterion has zero failures over all 998 transitions, exactly 60 events. `c_k ≥ 6` forces erosion (`b_{k+1}=b_k−1`). Do not let stale off-by-one notes block this.
 - **Giant-jump mechanism, characterised (computed, depth 147, exact; `code/out/giant_stretches.md`).** At a (2,4)-event, the landing block of row k+1 is the maximal prefix where the halved row k is 1-Lipschitz: `A_{k+1}(i)∈{0,2} ⟺ |h_k(i)−h_k(i+1)| ≤ 1`. The generating stretch over `[b_k, b_{k+1}+1]` (length j+2) is a {0,1,2}-valued chain with step statistics ~ 50% flat, 25% up, 25% down (a random-walk-like 3-state chain; dominant value 0 or 1 at ≈50%), ending at the first adjacent pair differing by 2 (a 0–2/2–0 adjacency, i.e. the first 2 NOT isolated inside 1s); landing bits balanced #0≈#1. The container `[1, b_{k+1}+1]` is the longest 1-Lipschitz stretch of its row in 10/12 giants (k=56 rank 4, k=110 rank 2). Total fresh {0,2} entries generated by the 12 giants: 1,091,362. Giant jumps ≈ current block length (each refills ~1×); jumps grow sublinearly with b overall (log-log slope 0.388, all 43 positive-jump events). **This frames regeneration as a hitting-time problem on a 1-Lipschitz chain — the giants are long ±1-excursions before a 2-step.** Computed, not proved.
 - **Edge-sliding mechanism test (computed, refutation budget 0).** Over 1509 random-family runs + 60 prime runs: edge is 0 before depth D (rightmost-2 depth) and 2 at K+D; no early events; 1462/1509 random runs hit the event exactly at E==K+D (primes 44/60, 16 late-unpinned with y≠4, 0 late-2, 0 profile-bad). D: random median 0 max 13; prime median 0 max 4. Prime event gaps mean 2.68 rows, sd/mean 1.13 vs geometric null 0.79 (overdispersed, sim p=0.0024). Confirms the edge-timing mechanism; does not bound it. Anchor: `code/out/event_gap_analysis.captured.txt`.
-- **Wider-width record (Directives 27/30/36, computed).** Sieve 3e8 (16,252,325 primes, depth 240, 32.4s): k*=239, 14 live giants. **Sieve 6e8 (31,324,703 primes, depth 400, 96.2s):** resolves row-238 cap — landing 23,163,290, GENUINE. **Sieve 1e9 (50,847,534 primes, depth 400, 185s):** row-248 STILL capped (b_land = W−248−1, floor=0, jump ≥ 27,684,003). 15 genuine giants (0-based [34,56,64,68,94,96,110,112,126,130,134,146,161,174,238]), gaps [22,8,4,26,2,14,2,14,4,4,12,15,13,64], max=64. Ratio bound ≤ 0.01264 everywhere. Parity: 1/15 odd (161), base-rate p=0.0052. Geometric fit R²=0.968, factor 1.765/event — empirical route now at ceiling. Anchors: `code/out/pattern_finder_6e8_giants.captured.txt`, `code/out/pattern_finder_1e9_giants.captured.txt`, `code/out/1e9_settlement.md`.
+- **Wider-width record (Directives 27/30/36, computed).** Sieve 3e8 (16,252,325 primes, depth 240, 32.4s): k*=239, 14 live giants. **Sieve 6e8 (31,324,703 primes, depth 400, 96.2s):** resolves row-238 cap — landing 23,163,290, GENUINE. **Sieve 1e9 (50,847,534 primes, depth 400, 185s):** row-248 STILL capped (b_land = W−248−1, floor=0, jump ≥ 27,684,003). 15 genuine giants (0-based [34,56,64,68,94,96,110,112,126,130,134,146,161,174,238]), gaps [22,8,4,26,2,14,2,14,4,4,12,15,13,64], max=64. Ratio bound ≤ 0.01264 everywhere. Parity: 1/15 odd (161), base-rate p=0.0052. **Parity CORRECTED this run (exact without-replacement p = 1.82e-3; see `giant-parity-genuine-15-1e9`).** Geometric fit R²=0.968, factor 1.765/event — empirical route now at ceiling. Anchors: `code/out/pattern_finder_6e8_giants.captured.txt`, `code/out/pattern_finder_1e9_giants.captured.txt`, `code/out/1e9_settlement.md`, `code/out/giant_parity_genuine.captured.txt`.
 - **Ducci literature (sourced, four primary papers) — cyclic boundary drawn.** Classical Ducci theorems are CYCLIC (wraparound) and do NOT transfer to the half-infinite Gilbreath operator; Eppstein's escape is the standing witness the half-infinite object differs. What transfers: the mod-2/Pascal law (= this run's proved rule90-interior-xor, now in four peer-reviewed sources) and Chamberland's factored-max + rigidity-equality-case template — the shape any surviving potential must take. Anchor: `research/notes/library-state.md` Ducci section.
 - **Mod-4 linearization (invariant candidate).** For k≥1, n≥2 (entries even), `d_{k+1}(n) ≡ d_k(n)+d_k(n+1) (mod 4)` (Odlyzko §2 eq.201; CHT Lemma 3.10 parity formula). Cleanest algebraic handle; parity-only, never fixes the exact {0,2} value (see Ruled out: lift ceiling).
 - **CHT 2026 inverse theorem (sourced):** the only ways an array with small non-negative initial data fails to decay to `{0,1}` are long zero-blocks or long shallow {0,d}-blocks (d≥2); random analogue a.s. holds under 2-separated non-concentration. Hypothesis check on the real primes: M=7, L=2, R_0≈4.2e8 ≫ 1000 — **holds-here: no**, the inverse theorem does not bite at any reachable depth. Do NOT re-run the check (`cht-inverse-theorem-hyp-check`).
@@ -222,9 +242,13 @@ here.
 - **The 1-Lipschitz chain reformulation** — computed mechanism, not proved.
 - **What remains toward a GOAL.md partial result:** block lemma, Lean IFF, and
   edge-map invertibility are delivered, and Lemma 5.4 is re-derived and PROVED
-  on the even domain (`lemma54-re-derived-proof`). **Its Lean formalisation is
-  NOT proved — Directive 49: `code/lean/descent_lemma.lean` has sorryAx in all
-  six theorems; fixing it is the immediate next work.** **Directive 47:** the
+  on the even domain (`lemma54-re-derived-proof`). **Its abstract core is
+  kernel-checked in Lean (Directive 50, claim
+  `lemma54-descent-lean-formalised`, `status: formalised`) — the first
+  kernel-checked result of the run; but that file covers only the halved
+  {0,1}^L core with arbitrary starting w, so the full even-domain lemma's
+  Lean proof still needs Link A + the composition + the reduction from real
+  column dynamics.** **Directive 47:** the
   supply side is a NAMED OPEN problem, not a gap in the run's own argument —
   ABGS 2011 §9 (claim `abgs-2011-s9-mod4-switch-limit-open`): whether
   `N(a,d,m,x)/π(x)` tends to any limit is open, so no unconditional linear

@@ -1,0 +1,6 @@
+two's-complement carry bridge |a-b| exhaustive check
+m=14 bits, grid 0<=a,b<16384 = 268435456 (a,b) pairs
+vectorized transducer == numpy |a-b|: MISMATCHES=268435456
+  first mismatch a=0 b=0 transducer=16383 true=0
+per-pair lib.carry.absdiff_transducer vs int-abs on 4000 random pairs: 4000 mismatches
+RESULT: FAIL

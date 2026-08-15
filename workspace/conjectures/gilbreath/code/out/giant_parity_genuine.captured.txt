@@ -1,0 +1,12 @@
+[1] (2,4)-event population at 2e7 (rows 1..161): 60 events, 36 even landing indices, frac 36/60 = 0.6000
+[2] genuine giants (1e9, genuine=True): n=15, landing rows(0-based)=[34, 56, 64, 68, 94, 96, 110, 112, 126, 130, 134, 146, 161, 174, 238]
+    even landing rows: 14, odd: [161]
+[3] membership: all 12 giants with landing <= 160 in 2e7 event set; giants 174, 238 verified by jump in 1e9 profile
+
+[4a] fair-coin one-sided: P(>=14 even of 15 | p=1/2) = (15+1)/2^15 = 16/32768 = 4.882812e-04
+[4b] binomial base-rate (with replacement, p=0.6000): P(>=14 even of 15) = 5.172035e-03
+[4c] EXACT hypergeometric (without replacement):
+     P(>=14 even of 15 | population 60 events, 36 even) = 96679035360/53194089192720 = 1.817477e-03
+     two-sided (>=14 even or <=1 even): = 96750948080/53194089192720 = 1.818829e-03
+
+[5] conclusion: the giants land on even 0-based rows 14/15 against a 36/60 (0.600) even base — same convention, direction confirmed. The settlement's binomial 0.0052 reproduces; the exact without-replacement p is the one to quote, along with the fair-coin figure for reference.

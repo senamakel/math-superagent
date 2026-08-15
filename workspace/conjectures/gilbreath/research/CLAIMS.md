@@ -69,7 +69,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `giacomelli-2021-padic-ducci-mod2-reduction` | The p-adic-norm Ducci operator D_p(a_i)=\|a_i−a_{i+1}\|_p on Q_p^n outputs powers of p, is linear (D_p(a·α)=a·D_p(α)), maps integer seeds to the null sequence (Lemma 1), is ultimately periodic (Lemma 2), and reduces mod 2… | no | asserted | `research/summaries/giacomelli-2021-p-adic-ducci-sequences-short-note.md` |
 | `giacomelli-2025-padic-ducci-matrix-spectral` | For the p-adic-norm Ducci operator δ_p(x)=\|D_p x\|_p on Q_p^n, termination is governed spectrally: all \|λ_i\|_p<1 ⟹ terminates; all \|λ_i\|_p=1 ⟹ does not converge to 0, and roots of unity give eventual periodicity;… | no | asserted | `research/summaries/giacomelli-2025-ducci-matrices-p-adic-context.md` |
 
-_111 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_114 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -77,6 +77,7 @@ Resolve these before building on either side.
 
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-myth-retracted`
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) contradicts `proth-citation-correction`
+- `lemma54-lean-and-linkA-current-verified` (research/notes/scholar-reconciliation-lean-and-linkA-current.md) contradicts `regeneration-thread-blocked-by` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `odlyzko-block-lemma-exact` (research/notes/block_lemma.md) contradicts `odlyzko-block-lemma-asserted`
 
 ## Load-bearing but unverified
@@ -152,6 +153,7 @@ These are lookups, not derivations. A catalogue is good evidence that a result i
 - `caldwell-proth-myth-repeats` (research/summaries/caldwell-gilbreaths-conjecture-glossary.md) — read from a catalogue; no derivation here reproduces it
 - `guy-A10-canonical-statement` (research/summaries/crc-mirror-guy-A10-gilbreath.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A036277-first-term-position` (research/summaries/oeis-A036277-first-term-greater-than-one.md) — read from a catalogue; no derivation here reproduces it
+- `oeis-A080839-increasing-sequences-all-1-transform` (research/summaries/oeis-A080839-increasing-sequences-gilbreath-property.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A089582-second-entry-catalogue` (research/summaries/oeis-A089582-second-entry-sequence.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A213014-zero-run-of-block` (research/summaries/oeis-A213014-zeros-before-first-term.md) — read from a catalogue; no derivation here reproduces it
 - `oeis-A393110-verification-depth` (research/summaries/oeis-A393110-verification-depth-second-entry.md) — read from a catalogue; no derivation here reproduces it

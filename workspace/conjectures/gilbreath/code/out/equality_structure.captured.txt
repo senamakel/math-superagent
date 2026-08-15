@@ -1,0 +1,24 @@
+Q1: n with nu2 == w/2 exactly (N=2000, prime bits, minimal gaps):
+  equality points: [] total 0
+  n with nu2 < w (strict): 1 first few: [3]
+  first n with nu2 < w/2: 3
+
+  n=43: tau=2, suffix length=41, nu2=14, w=28, nu2==w/2? True
+  D43 = [113, 2, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1]
+  body D[2:-1] = [0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0]
+  suffix (max {0,2}) = [0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0]
+
+Q2: suffix length L(n) vs w(n) at samples:
+  n=   50: L=  48 nu2=  29 w=  31 nu2/w=0.935
+  n=  100: L=  98 nu2=  43 w=  61 nu2/w=0.705
+  n=  200: L= 198 nu2=  99 w= 126 nu2/w=0.786
+  n=  400: L= 398 nu2= 207 w= 245 nu2/w=0.845
+  n=  800: L= 798 nu2= 390 w= 493 nu2/w=0.791
+  n= 1600: L=1598 nu2= 786 w= 948 nu2/w=0.829
+
+Q3: prefix-closure — earliest violation position in violating patterns:
+Traceback (most recent call last):
+  File "/workspace/code/pattern_finder/equality_structure.py", line 128, in <module>
+    rng = random.Random(1234)
+          ^^^^^^
+NameError: name 'random' is not defined

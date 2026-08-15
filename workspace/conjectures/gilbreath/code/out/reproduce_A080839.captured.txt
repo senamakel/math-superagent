@@ -1,0 +1,5 @@
+NOT EXECUTED in the librarian role (no execution tool present). This file exists as a placeholder so the {predict} — do not read it as a program's output.
+
+The brute-force oracle code/out/reproduce_A080839.py is written and READY for the coder to run:
+    timeout 540 python3 code/out/reproduce_A080839.py | tee code/out/reproduce_A080839.captured.txt
+It enumerates strictly increasing sequences (1, rest) with last <= 2^(n-1) and tests the all-ones Gilbreath transform directly. Expected (from the catalogue, NOT run-reproduced): 1,1,1,2,6,27,180,1786 for n=1..8.

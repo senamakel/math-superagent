@@ -1,0 +1,10 @@
+n=1005: nu2=463 w=619 0.75w=464.2 ratio=0.7480
+neighbors n=1003..1007 ratios (=nu2/w):
+  n=1003 ratio=0.8204
+  n=1004 ratio=0.8433
+  n=1005 ratio=0.7480
+  n=1006 ratio=0.8210
+  n=1007 ratio=0.7984
+0.75w violations in n in [1000,2000]: [1005]
+min of (nu2 - w/2) over n>=17: 0.000 at n=44 (0 = bare contact; positive = slack)
+min w/n on n>=31 incl n=31: 0.5484 at n=31 ; excluding n=31: 0.5625

@@ -1,0 +1,18 @@
+Q1: Markov (a=P(1|1), b=P(1|0)), N=800, 30 trials each, worst min nu2/w:
+  prime-like (0.55, 0.60)     : worst min nu2/w=0.0714, 11/30 trials violated
+  anti-cluster (0.50, 0.60)   : worst min nu2/w=0.3793, 3/30 trials violated
+  anti-cluster (0.45, 0.60)   : worst min nu2/w=0.2941, 4/30 trials violated
+  anti-cluster (0.40, 0.60)   : worst min nu2/w=0.3333, 4/30 trials violated
+  Bernoulli control (0.59, 0.59): worst min nu2/w=0.2500, 12/30 trials violated
+  cluster (0.60, 0.50)        : worst min nu2/w=0.2500, 12/30 trials violated
+  strong cluster (0.75, 0.25) : worst min nu2/w=0.1111, 13/30 trials violated
+
+Q2: Markov with stationary density ~0.59 (prime density):
+  (0.55, 0.648)  (stat=0.590): worst min nu2/w=0.3000, 11/30 violated
+  (0.50, 0.742)  (stat=0.597): worst min nu2/w=0.2667, 11/30 violated
+  (0.45, 0.863)  (stat=0.611): worst min nu2/w=0.1333, 17/30 violated
+  (0.60, 0.561)  (stat=0.584): worst min nu2/w=0.2632, 14/30 violated
+
+Q3: prime's empirical transition matrix, N=2000, 20 trials:
+  empirical a=0.5565 b=0.6584
+  Markov with prime transitions: worst min nu2/w=0.2857, 8/20 violated

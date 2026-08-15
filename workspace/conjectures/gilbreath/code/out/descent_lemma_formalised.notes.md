@@ -26,3 +26,15 @@ zero `sorry` warnings. `#print axioms` for every lemma (`absorbing`,
 only the accepted kernel builtins `propext`, `Classical.choice`, `Quot.sound`;
 no `sorryAx` anywhere. `descent_claim1` and `descent_claim2` are `theorem`s in
 the file with `#print axioms` in-file.
+
+## Scope (Directive 50 — do not let it grow in the retelling)
+
+This claim is **strictly the abstract combinatorial core in halved units**:
+an arbitrary `{0,1}^L` pattern and arbitrary starting `w`. It does **NOT**
+cover: Link A (`v ≤ g*_n`, still unverified after the Directive 45 vacuity);
+the composition `g*_n ≤ 2ν₂+2 ⟹ success`; the reduction from real column
+dynamics to the `(pattern, v)` model (the Directive 48 item 1 proof, still to
+be written); or the supply side. **It does not upgrade `lemma54-re-derived-proof`
+to proved** — that claim asserts the full lemma on the even domain, strictly
+more. The honest path to a Lean-proved full Lemma 5.4 is to formalise Link A
+and the composition too.

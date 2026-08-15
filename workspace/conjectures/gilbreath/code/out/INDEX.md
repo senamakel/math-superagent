@@ -106,6 +106,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `gatti_kset_check.notes.md` | Note recording what the two machine checks settle: the S={2,3,5} half of claim `gatti-2020-lemma4-interval-completeness-refuted` upgraded from hand-verified to machine-checked (three routes), with the dim-vs-completeness distinction and bounds. |
 | `gatti_kset_independent.captured.txt` | Output of `research_mod_check/verify_gatti_kset_independent.py`: independent second route — direct nested-absolute evaluation over k in [-200,200], full-triangle left-edge semantics, and Eq.2 formula all agree on {1,3,5,7,9}. Cross-check of gatti_kset_check.captured.txt. |
 | `genuine_sequences.json` | Stored genuine (non-artifact) sequence data. |
+| `giant_parity_genuine.captured.txt` | Executed output of `pattern_finder/giant_parity_genuine.py` (Directive 36 item 1, EXIT_CODE=0): corrected giant-parity p-values on the 15 genuine giants of the 1e9 run. Event population re-derived from raw e_bits/c.txt: 60 (2,4)-events at 2e7 rows 1..161, 36 even landing indices (base 0.600, asserted). Giants: 14 even of 15 (odd = 161). Fair-coin p = 16/2^15 = 4.88e-4; binomial base-rate p = 5.17e-3; exact hypergeometric (without replacement) = 1.82e-3. |
+| `giant_parity_genuine.notes.md` | Settlement note for the corrected giant parity: conventions pinned by asserts, three p-values, what to quote (exact hypergeometric 1.82e-3), and the claim `giant-parity-genuine-15-1e9` (checked). |
 | `giant_stretches.captured.txt` | _(undescribed)_ |
 | `giant_stretches.md` | _(undescribed)_ |
 | `giant_stretches_snapshot.json` | _(undescribed)_ |
@@ -126,6 +128,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `lemma54_rederive_filtered.captured.txt` | _(undescribed)_ |
 | `lemma54_rederive_filtered.notes.md` | _(undescribed)_ |
 | `lemma54_verify.captured.txt` | _(undescribed)_ |
+| `mod4_switch_majority_1e7.captured.txt` | _(undescribed)_ |
 | `nu2_convention_resolve.captured.txt` | _(undescribed)_ |
 | `nu2_dense.txt` | _(undescribed)_ |
 | `nu2_dense_transfer.captured.txt` | _(undescribed)_ |
@@ -136,24 +139,47 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `nu2_linear_bound.captured.txt` | _(undescribed)_ |
 | `nu2_postprocess.captured.txt` | _(undescribed)_ |
 | `nu2_shift_check.captured.txt` | _(undescribed)_ |
+| `nu2_structure_check.captured.txt` | _(undescribed)_ |
 | `nu2_transfer_thresholds.captured.txt` | _(undescribed)_ |
 | `nu2_vs_gap_parity.captured.txt` | _(undescribed)_ |
+| `nu2_worst_case.captured.txt` | _(undescribed)_ |
 | `null_rule90_depth.captured.txt` | _(undescribed)_ |
 | `oracle_depth600.captured.txt` | Trial of the depth-600 oracle. |
+| `pat_out.captured.txt` | _(undescribed)_ |
+| `pat_out.py` | _(undescribed)_ |
 | `pattern_finder_1e9_giants.captured.txt` | _(undescribed)_ |
 | `pattern_finder_1e9_verify.captured.txt` | _(undescribed)_ |
 | `pattern_finder_6e8_giants.captured.txt` | _(undescribed)_ |
+| `pattern_finder_attack_transfer.captured.txt` | _(undescribed)_ |
+| `pattern_finder_attack_transfer.py` | _(undescribed)_ |
 | `pattern_finder_boundary.captured.txt` | _(undescribed)_ |
+| `pattern_finder_compose_linear.captured.txt` | _(undescribed)_ |
+| `pattern_finder_compose_linear.py` | _(undescribed)_ |
 | `pattern_finder_cycle_floor.captured.txt` | _(undescribed)_ |
+| `pattern_finder_danger_points.captured.txt` | _(undescribed)_ |
+| `pattern_finder_danger_points.py` | _(undescribed)_ |
+| `pattern_finder_extract_seqs.captured.txt` | _(undescribed)_ |
+| `pattern_finder_extract_seqs.py` | _(undescribed)_ |
 | `pattern_finder_gf2_recurrence.py` | _(undescribed)_ |
 | `pattern_finder_giant_corrected.captured.txt` | _(undescribed)_ |
 | `pattern_finder_giant_parity.captured.txt` | _(undescribed)_ |
 | `pattern_finder_giant_parity2.captured.txt` | _(undescribed)_ |
 | `pattern_finder_giant_significance.captured.txt` | _(undescribed)_ |
+| `pattern_finder_linear_suffices.captured.txt` | _(undescribed)_ |
+| `pattern_finder_linear_suffices.py` | _(undescribed)_ |
+| `pattern_finder_linear_supply_bound.md` | Pattern-finder report: two-leg decomposition of the Route B supply bound (transfer ν₂≥w/2 + density w≥c·n) composing to a linear lower bound ν₂≥0.2742·n, verified to 1e5. The density leg (b) is flagged as the open prime-distribution target. |
 | `pattern_finder_nu2_report.md` | Pattern-finder report on ν₂(q_n), the Route B supply quantity: exact transfer bounds ν₂≥0.5w (all n≥17), ν₂≥0.75w (n≥1000, sole failure n=1005), ν₂≥0.8w (n≥4000), fluctuation concentration |
 | `pattern_finder_report.md` | Pattern-recognition report: exact regularities in the Gilbreath row data (recharge identity re-verified, block-not-below-null, inter-event gap structure, the gap/(j+1) ratio bound as the strongest empirical regularity, event parity, OEIS misses). |
+| `pattern_finder_sampled_legA.captured.txt` | _(undescribed)_ |
+| `pattern_finder_sampled_legA.py` | _(undescribed)_ |
+| `pattern_finder_scale100k.captured.txt` | _(undescribed)_ |
+| `pattern_finder_scale100k.py` | _(undescribed)_ |
 | `pattern_finder_structural_scan.md` | Pattern-recognition scan: exact no-low-order results on the second-entry, block-profile, regen-gap, jump, giant-row sequences; confirms the monotone recharge surplus S_k (the one exploitable structure) and the giant-intruder-return and ratio-bound regularities over the real rows. |
 | `pattern_finder_threshold_gaps.captured.txt` | _(undescribed)_ |
+| `pattern_finder_verify_nu2_transfer.captured.txt` | _(undescribed)_ |
+| `pattern_finder_verify_nu2_transfer.py` | Independent exact verifier of the ν₂ transfer/fluctuation claims from nu2_dense.txt. |
+| `pattern_finder_w_density.captured.txt` | _(undescribed)_ |
+| `pattern_finder_w_density.py` | _(undescribed)_ |
 | `pattern_finder_wider_giants.captured.txt` | _(undescribed)_ |
 | `reconcile_lemma54_NOTE.md` | _(undescribed)_ |
 | `reduction_audit.captured.txt` | _(undescribed)_ |

@@ -86,4 +86,4 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `descent-lemma-halved-formalised` | claim | **verified** | — | For a {0,1} pattern el (every entry 0 or 1) and start w : Nat, with trajectory d_0 = w, d_{k+1} = \|d_k - e_k\| (runAbs) and ν₁ = countOnes… |
 | `directive25-gap-trend-and-reconciliation` | claim | established | — | In the prime Gilbreath triangle to depth 1000 (sieve 2e7, 1,270,607 primes), the 13 giants (j > 1000) at rows 34..161 have inter-giant gaps… |
 
-_151 further nodes not shown._
+_154 further nodes not shown._

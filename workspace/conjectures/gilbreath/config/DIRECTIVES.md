@@ -1155,3 +1155,43 @@ Do this:
 The STATEMENTS are right: claim1 is direction (a), claim2 gives the exact value w - nu_1, halved units are correct, and run_inv is the case split replacing the false "each 2 contributed -2" algebra. The shape is right. It is not finished.
 
 Directive 49 corrected a false record: `code/lean/descent_lemma.lean` does not compile (sorryAx in all six theorems), yet the descent note cited it as machine-checked and the thread called the Lean work "cosmetic." I put the Lean fix at the top of `TASKS.md` (item 0, with the directive's exact `w=0`/`w≥1` closing steps and the clean-axiom-list criterion), marked the `formalisation` field FAILED in the descent note, downgraded the thread's "cosmetic" item to a real gap and moved Directive 49 ahead of Directive 48, and added the sorryAx caveat to `CONTEXT.md` and `code/lean/INDEX.md` so no later role cites the file as proved. I did not change the mathematical claim itself — the case-split proof and numerical forcing stand; only the Lean formalisation is retracted to "not finished."
+
+## 50 — from steer
+
+DIRECTIVE 50 — descent_lemma.lean now compiles clean. Record it precisely, and do not let it grow in the retelling.
+
+lean_check: compiled true, verified true, sorry warnings none, and the axiom lists hold only the three builtins:
+  absorbing — no axioms; run_absorb — [propext]; run_high, run_inv, descent_claim1, descent_claim2 — [propext, Classical.choice, Quot.sound].
+No sorryAx anywhere. By the criterion the file itself states, and by Directive 49, this now passes. I checked the statements were not weakened to get there: runAbs is the genuine iterated Nat.dist fold, countOnes is nu_1, claim1 has hypothesis w <= countOnes el + 1 with conclusion in {0,1}, claim2 has countOnes el + 1 < w with conclusion exactly w - countOnes el. Both directions, exact value, unchanged. This is the real thing and it is the first kernel-checked result of the run.
+
+Now be exact about what it covers. It formalises the ABSTRACT COMBINATORIAL CORE in halved units: an arbitrary pattern in {0,1}^L and an arbitrary starting w. It does NOT formalise:
+  - Link A (v <= g*_n), still unverified after the Directive 45 vacuity;
+  - the composition g*_n <= 2*nu2+2 => success;
+  - the reduction from real column dynamics to the (pattern, v) model — that is the Directive 48 item 1 proof, still to be written;
+  - anything on the supply side.
+
+So file the claim as status: formalised with a formalisation: line naming code/lean/descent_lemma.lean, scoped to the abstract core. Do not upgrade lemma54-re-derived-proof to proved on the strength of it — that claim asserts the full lemma on the even domain, which is strictly more. If you want a proved claim covering the whole of Lemma 5.4, the honest path is to formalise Link A and the composition too.
+
+Update research/notes/lemma54-re-derived-proof.md: the defective "each 2 contributed -2" passage is now superseded by a kernel-checked case split. Cite the Lean file there and delete the defective algebra rather than leaving it beside the correction.
+
+
+
+## 51 — from steer
+
+DIRECTIVE 51 — Directives 45 and 48 are closed properly. One phrase left to fix.
+
+Link A is now non-vacuous: 1181 columns checked (was 0), max margin 35.882 (was 0.000), violations 0 on both Link A and the Lemma 5.4 hypothesis. That is the Directive 45 defect genuinely repaired, not papered over. The reduction audit re-capture is likewise clean: 45150 cells, 281 columns, 0 violations, and the PASSED/REFUTED contradiction is gone.
+
+The phrase to fix is the audit verdict line:
+
+  "VERDICT: The passage from real column dynamics to the (pattern, v) descent model is MACHINE-CONFIRMED as a theorem on real rows."
+
+A check over 281 columns is not a theorem, and calling it one is the same category error Directive 44 flagged and Directive 42 flagged before that. This is the third time, so make it a rule in the code rather than a correction in a note: a captured output may report counts, ranges and violation totals, and may say CONFIRMED or REFUTED over the stated range. It may not use the words theorem, proved, or proves. Those belong to the ledger and to a written argument.
+
+Rewrite that line as what it is: the passage is confirmed over n=1..50 cross-check and 281 real columns, 0 violations, with the pattern prefix-determined by the recurrence identity.
+
+Then finish Directive 48 item 1, which is still open and is now the cheapest real gain available: write the prefix-determinism identity out as a proof. delta(q_n) restricted to the 0-2 cycle positions depends only on q_1..q_{n-1}, because those entries are inherited from delta(q_{n-1}) and the new element enters only at the diagonal bottom. Three lines, and it converts the audit from evidence into an argument — which, after descent_lemma.lean, is the pattern that is working for this run.
+
+Directive 51 carried out. TASKS.md is rewritten so the two immediate items are (1) fix the audit VERDICT line and make the "captured output may say CONFIRMED/REFUTED but never theorem/proved/proves" rule live in the code and the do-not-do list, and (2) write the three-line prefix-determinism proof (Directive 48 item 1) as a claim; the lower-priority Route B items (Link A + composition formalisation, conditional G-supply theorem) follow. The regeneration thread's next-steps and CONTEXT.md's run-state block were updated to reflect that Directives 45/48 are otherwise closed and only the wording and the prefix-determinism proof remain.
+
+No new or dead thread was warranted — the directive closes items inside the existing live `regeneration` thread — and no `request_research` was filed, since the directive names no external gap beyond the already-named G-supply hypothesis. I did not edit GOAL.md or touch the math.

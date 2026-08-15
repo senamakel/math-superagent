@@ -10,7 +10,7 @@ leg of Route B. Repairs the written proof defect identified by Directive 43/44
 (the "each 2 contributed −2" algebra, false on bounce trajectories where
 δ=0,ε=2 ⟹ δ=2 contributes +2).
 `answers:` lemma54-re-derived-proof (its prose defect), lemma54-discarded-case-universal
-`formalisation:` **FAILED — code/lean/descent_lemma.lean does NOT compile (Directive 49).** `lean_check` ends: `absorbing [propext, sorryAx]`; `run_absorb [sorryAx]`; `run_high [propext, sorryAx]`; `run_inv [propext, sorryAx]`; `descent_claim1 [propext, sorryAx, Quot.sound]`; `descent_claim2 [propext, sorryAx]` — sorryAx in all six. There is no literal `sorry` token (error recovery inserted sorryAx), so only the axiom list counts, and by that criterion the file FAILS. The unsolved goal is `run_inv`, case `cons.inr`, hypothesis `he1 : e = 1` (the eps=1 descent/bounce branch).
+`formalisation:` **DONE (Directive 50) — `code/lean/descent_lemma.lean` now compiles clean.** No `sorryAx`; axioms only `propext` / `Classical.choice` / `Quot.sound` (`absorbing` — none; `run_absorb` — `[propext]`; `run_high`, `run_inv`, `descent_claim1`, `descent_claim2` — `[propext, Classical.choice, Quot.sound]`). Statements NOT weakened: `runAbs` is the genuine iterated `Nat.dist` fold, `countOnes` = ν₁, claim1 `w ≤ ν₁+1 ⟹ runAbs w el ∈ {0,1}`, claim2 `ν₁+1 < w ⟹ runAbs w el = w − ν₁` exactly — both directions, exact value, unchanged. This supersedes the earlier Directive 49 record below, which said the file did NOT compile (sorryAx in all six, unsolved `run_inv` case `cons.inr`, `he1 : e = 1`). Filed as claim `lemma54-descent-lean-formalised`, `status: formalised` (see `research/notes/lemma54-descent-lean-formalised.md`) — **abstract core only**, not the full even-domain lemma.
 `machine:` code/out/descent_halved_verify.captured.txt (12,582,900 pairs, 0
 violations), code/out/lemma54_descent_check.captured.txt (2,621,432 pairs, 0
 violations).
@@ -91,4 +91,13 @@ never bounces.
   lemma54_descent_check.captured.txt exactly, 0 violations.
 - Sharpness: all-1s pattern, w=nu1+1 → d_L=1; w=nu1+2 → d_L=2; every L=1..18.
 
-These are verifications, not the proof; the proof is the case-split above. The Lean formalisation (code/lean/descent_lemma.lean) does **NOT** yet machine-check it — Directive 49: every theorem in that file depends on sorryAx (no literal `sorry` token; error recovery inserted sorryAx), so it must not be cited as proved. The mathematical case-split stands and is machine-verified numerically; the Lean formalisation is the open item.
+These are verifications, not the proof; the proof is the case-split above. The
+abstract core of that case-split is now kernel-checked in Lean
+(`code/lean/descent_lemma.lean`, Directive 50): no `sorryAx`, axioms only
+`propext`/`Classical.choice`/`Quot.sound`, claim
+`lemma54-descent-lean-formalised` (`status: formalised`). That file covers the
+halved {0,1}^L pattern with arbitrary starting `w` — the abstract core — and
+does NOT by itself establish the full even-domain lemma `lemma54-re-derived-proof`
+(Link A, the composition, and the reduction from real column dynamics are
+outside it). The earlier Directive 49 record (sorryAx in all six theorems) is
+superseded.

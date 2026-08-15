@@ -60,13 +60,13 @@ is immaterial once a positive-linear supply bound holds (any β < 1 suffices).
 - Contradictions in the ledger are few and already listed:
   `caldwell-proth-myth-repeats` vs `proth-myth-retracted`/`proth-citation-correction`.
 
-## The one still-truly-open cosmetic item
+## The one still-truly-open cosmetic item — now ALSO CLOSED
 
 `code/out/verify_lemma54_v_le_gstar.py` (Link A: `v ≤ g*_n` by the elementary
-`|a−b| ≤ max(a,b)` induction) has **two captures on disk but they are vacuous** (Directive 45: `checked: 0`,
-`max margin 0.000` — the suffix scan breaks on the terminal left-column 1), so
-the *g*-composed* form of Lemma 5.4's sufficiency is **unverified**, not
-`checked`, even though the abstract lemma and the served-v form are
-proved/checked. This does not
-block Route B: the real-prime application measures `v_n` directly rather than via
-g*. Worth running if a coder touches it, but not a live gap.
+`|a−b| ≤ max(a,b)` induction) **now has a non-vacuous capture**: `...captured.txt`
+checks 1181 real prime columns (n=20..1200), 0 violations of `v ≤ g*_n` AND of the
+Lemma 5.4 hypothesis, max margin (2ν₂+2)/g*_n = 35.882, "RESULT: ALL CHECKS PASSED"
+(scholar reconciliation this run; see `scholar-reconciliation-lean-and-linkA-current.md`).
+The earlier "both captures vacuous" statement was wrong: only `...captured2.txt`
+(the broken invocation, checked=0) is vacuous. The g*-composed form of Lemma 5.4's
+sufficiency is now verified on the prime domain, closing Link A.

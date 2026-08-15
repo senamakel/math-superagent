@@ -1,0 +1,14 @@
+Q1 exhaustive over {2,4}-gap patterns (gap = 2*(2-b)):
+  all 32768 patterns of length 17: min nu2/w = 1.0000 (pattern None)
+  first pattern violating nu2>=w/2: NONE at n=-
+random long {2,4} patterns (N=400):
+  min nu2/w over 50 random patterns: 0.1538
+
+Q2 feature test over real prime bits (N=2000):
+  V0 real primes           : min nu2/w=0.5000 viol(>=w/2)=0 first=None viol(>=w)=1980 first=17
+  V1 real bits, min gaps   : min nu2/w=0.5000 viol(>=w/2)=0 first=None viol(>=w)=1980 first=17
+  V2 real bits, gaps +4m   : min nu2/w=0.2308 viol(>=w/2)=13 first=17 viol(>=w)=1982 first=17
+  V3 real bits shift+1     : min nu2/w=0.5185 viol(>=w/2)=0 first=None viol(>=w)=1979 first=17
+  V4 random bits, min gaps : worst min nu2/w over 30 = 0.2381
+  V5 all gaps=2            : min nu2/w=0.0000 viol(>=w/2)=1983 first=17
+  V6 alternating bits      : min nu2/w=0.0010 viol(>=w/2)=1983 first=17

@@ -1,0 +1,20 @@
+sieve to 100000000 : 5761455 primes (1.9s)
+(A) e(n) >= 0 for all n in [2,1000000]: YES (violations 0, first None)
+    global min e = 0 at n=2
+(B) min e(n) over tails:
+    T=     17 : min e = 5 at n=17
+    T=    100 : min e = 24 at n=100
+    T=   1000 : min e = 235 at n=1003
+    T=  10000 : min e = 1722 at n=10026
+    T= 100000 : min e = 14718 at n=100012
+(C) count of n with small e:
+    e <= 0     : 4
+    e <= 1     : 8
+    e <= 2     : 11
+    e <= 5     : 21
+    e <= 10    : 36
+    e <= 100   : 501
+    e <= 1000  : 5612
+(D) min e over [k, N] for k = N//2, N//4 : 65830 34308
+(E) wrote excess_e_first512.txt (n=2..513)
+time 2.8s total
