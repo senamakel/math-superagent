@@ -57,6 +57,56 @@ failed, and this one does not — and because the brief can be handed to a curat
 to compress, while a ledger is written by code and nothing in the run can make
 it smaller.
 
+## The index: what a prompt carries instead of the ledger
+
+Bounding the sections took the nine from 404,873 tokens across the twenty-two
+assembled prompts to 259,175. Most of what was left was still being re-sent on
+every model call to answer a question nobody was asking yet.
+
+The obvious next move is to replace each file with a sentence saying it exists
+and how to read it. That fails, and the reason is worth stating precisely: the
+obligation these files discharge is **specific**. It is not *be aware there are
+approaches*, it is *do not re-propose this one*. It is not *claims exist*, it is
+*do not re-prove this statement*. A description discharges neither, because
+neither is about the ledger — both are about the entries.
+
+So `ledger::index` keeps every entry's *identity* and drops the *reasoning*: one
+line per entry with its id, its status, and a headline, ending in the exact
+`read_ledger` call that fetches the rest. It is computed on the way into a
+prompt rather than written to disk — a second file would be a second thing to
+re-derive, keep in step, and describe — and `ledger::fit` still runs behind it.
+
+| | routed whole | bounded | indexed |
+| --- | ---: | ---: | ---: |
+| `APPROACHES` | 25,763 | 8,822 | ~1,900 |
+| `WEAKENED` | 7,808 | 7,630 | ~1,300 |
+| `CLAIMS` | 8,248 | 7,488 | ~3,700 |
+| `BACKWARD` | 7,801 | 5,186 | ~800 |
+| **all 22 prompts** | **770,134** | — | **491,924** |
+
+Three things that table settles, each of which is now a rule:
+
+**The win is per-ledger, not uniform.** `APPROACHES` collapses furthest because
+its payload is refutation prose nobody needs until they are considering that
+approach. `CLAIMS` only halves, because a claim's *statement* is the payload and
+cannot be indexed away — so it indexes at 240 characters of statement where the
+approach ledger keeps 110 of reason. The headline width is the caller's, not a
+constant.
+
+**Indexing a small ledger costs more than it saves.** `research/ENTAILMENT.md`
+is 266 tokens and an index of it, carrying a header explaining how to read the
+rest, comes to about 440. `index::worth_indexing` is that made mechanical; a
+uniform rule would have made two files larger.
+
+**The saving is only real if the pull happens.** A role that never calls
+`read_ledger` is cheaper *and dumber* — strictly worse than before the bound,
+because it reads a shortened list, concludes the run holds nothing more, and
+re-proposes what was cut. Every index therefore ends with the call that fetches
+the rest, and a test asserts every role reading one is told the copy is
+shortened. The judge and the searcher are the two exceptions, both told in their
+own prompts not to read around the investigation; they keep the tools and lose
+only the instruction.
+
 `ledger_report` prints what each ledger costs on disk beside what the current
 build would render, because those disagree until something writes to that ledger
 — so a run started before a bound changed keeps paying the old price, and

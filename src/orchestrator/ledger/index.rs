@@ -72,6 +72,32 @@ pub(in crate::orchestrator) fn worth_indexing(rendered: &str) -> bool {
     rendered.chars().count() / super::CHARS_PER_TOKEN > WORTH_INDEXING
 }
 
+/// Cleans a headline, or returns nothing when it says nothing.
+///
+/// Two things, both from reading what the real ledgers actually produce.
+///
+/// A field written into a Markdown table cell arrives with the cell's own
+/// punctuation on the front — `| The exact telescoping identity…` or
+/// `> Refuted on three grounds` — and an index line spends its first two
+/// characters on a pipe. The headline is the scarcest space in the whole
+/// prompt, and that is the least useful thing that could be in it.
+///
+/// And a field the writer left empty falls back, in several of these ledgers,
+/// to the entry's own slug. Rendering that gives `` `ducci-potential-max-decrease`
+/// (proposed) — ducci-potential-max-decrease``, which is not a summary of
+/// anything: it reads as though the run recorded something and says less than
+/// the bare id would. Better to render the id alone and let the emptiness show.
+fn headline_of(headline: &str, id: &str) -> String {
+    let cleaned = headline
+        .trim()
+        .trim_start_matches(['|', '>', '-', '*', '#', ' '])
+        .trim();
+    if cleaned.eq_ignore_ascii_case(id) {
+        return String::new();
+    }
+    cleaned.to_string()
+}
+
 /// One entry, reduced to what a prompt has to carry.
 pub(in crate::orchestrator) struct Row<'a> {
     /// How the entry is named in `read_ledger` and in every other ledger.
@@ -100,8 +126,9 @@ pub(in crate::orchestrator) fn render<'a>(
         if !row.status.trim().is_empty() {
             let _ = write!(body, " ({})", row.status.trim());
         }
-        if !row.headline.trim().is_empty() {
-            let _ = write!(body, " — {}", truncate(row.headline, headline));
+        let summary = headline_of(row.headline, row.id);
+        if !summary.is_empty() {
+            let _ = write!(body, " — {}", truncate(&summary, headline));
         }
         body.push('\n');
     });

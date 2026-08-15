@@ -30,6 +30,7 @@
 
 pub(super) mod budget;
 pub(super) mod engine;
+pub(super) mod index;
 pub(super) mod registry;
 pub(super) mod spec;
 pub(super) mod tool;
@@ -72,6 +73,35 @@ fn budget_tokens() -> u64 {
 /// Whether `relative` is a derived ledger routed into system prompts.
 pub(super) fn is_routed(relative: &str) -> bool {
     ROUTED.contains(&relative)
+}
+
+/// The index a prompt carries in place of `relative`'s whole file.
+///
+/// Computed here rather than written to disk, and that is the whole reason it
+/// is cheap enough to do. A second file would be a second thing to re-derive on
+/// every write, a second thing to keep in step with the render beside it, and a
+/// second thing for `refresh_index` to describe. This runs once per role when
+/// the container assembles its prompts, off the same sources the render walks.
+///
+/// `None` leaves the caller's own string alone, which is the answer for a file
+/// no module indexes and for one too small to be worth indexing — see
+/// [`index::worth_indexing`], and `research/ENTAILMENT.md`, which an index would
+/// make *larger*.
+pub(super) fn indexed(workspace: &Path, relative: &str, content: &str) -> Option<String> {
+    if !index::worth_indexing(content) {
+        return None;
+    }
+    let index = match relative {
+        super::approaches::APPROACHES_PATH => super::approaches::index(workspace),
+        super::backward::BACKWARD_PATH => super::backward::index(workspace),
+        super::weakened::WEAKENED_PATH => super::weakened::index(workspace),
+        super::claims::CLAIMS_PATH => super::claims::index(workspace),
+        _ => return None,
+    };
+    // A ledger whose index is no smaller than the file is one whose entries are
+    // already one line each. Sending the index would cost the same and lose the
+    // sections around it.
+    (index.chars().count() < content.chars().count()).then_some(index)
 }
 
 /// Clamps a derived ledger to its budget on the way into a system prompt.

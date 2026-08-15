@@ -365,6 +365,45 @@ impl Approach {
     }
 }
 
+/// One line per approach: its slug, where it stands, and why if it is closed.
+///
+/// What a prompt carries instead of the file. The inventor's one hard
+/// obligation is not to re-propose something this run already closed, and the
+/// slug with the reason's opening discharges exactly that — where the five
+/// kilobytes of refutation behind it discharge nothing until the inventor is
+/// actually considering that approach, which is when `read_ledger` fetches it.
+pub(super) fn index(workspace: &Path) -> String {
+    let approaches = collect(workspace);
+    let rows: Vec<(String, String, String)> = approaches
+        .approaches
+        .iter()
+        .map(|approach| {
+            let headline = if approach.stance.is_closed() {
+                approach.killed_by.clone()
+            } else {
+                approach.idea.clone()
+            };
+            (
+                approach.slug.clone(),
+                approach.stance.label().replace('*', ""),
+                headline,
+            )
+        })
+        .collect();
+    super::ledger::index::render(
+        "approaches",
+        "Approaches",
+        "Every line of attack this run has considered. A closed one is followed by what closed \
+         it. Do not propose a closed one again.",
+        rows.iter().map(|(id, status, headline)| super::ledger::index::Row {
+            id,
+            status,
+            headline,
+        }),
+        super::ledger::index::HEADLINE,
+    )
+}
+
 /// Re-derives the approach table and rewrites [`APPROACHES_PATH`].
 ///
 /// Best effort, like the claim ledger and the thread table: a failed refresh

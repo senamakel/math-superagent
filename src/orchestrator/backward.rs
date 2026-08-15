@@ -690,6 +690,42 @@ impl Gap {
     }
 }
 
+/// One line per gap: its id, where it stands, and the lemma.
+///
+/// The gaps rather than the skeletons, because a gap is what somebody picks up
+/// — `docs/ledgers.md` calls the open list the run's stock of ready-made tasks.
+/// A skeleton is the container, and its own line would say nothing a reader can
+/// act on.
+pub(super) fn index(workspace: &Path) -> String {
+    let skeletons = collect(workspace);
+    let rows: Vec<(String, String, String)> = skeletons
+        .skeletons
+        .iter()
+        .flat_map(|skeleton| {
+            skeleton.gaps.iter().map(move |gap| {
+                (
+                    format!("{}/{}", skeleton.slug, gap.id),
+                    gap.stance.label().to_string(),
+                    gap.lemma.clone(),
+                )
+            })
+        })
+        .collect();
+    super::ledger::index::render(
+        "goals",
+        "Sub-goals",
+        "Every lemma the run has committed to, by the decomposition it belongs to. An open one \
+         with a first step is a task somebody can pick up now; a discharged one must not be \
+         stated as open again.",
+        rows.iter().map(|(id, status, headline)| super::ledger::index::Row {
+            id,
+            status,
+            headline,
+        }),
+        super::ledger::index::HEADLINE,
+    )
+}
+
 /// Re-derives the skeleton table and rewrites [`BACKWARD_PATH`].
 ///
 /// Best effort, like the claim ledger and the thread table: a failed refresh

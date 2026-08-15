@@ -227,6 +227,12 @@ fn load_workspace_files(workspace: &Path, relative_paths: &[&str]) -> Result<Str
         let content = if *relative == shared_context::CONTEXT_FILE {
             shared_context::fit(&content).unwrap_or(content)
         } else {
+            // A ledger goes in as its index — every entry's identity and
+            // status, and none of the reasoning — with the reasoning one
+            // `read_ledger` away. `ledger::fit` still runs behind it as the
+            // backstop, on a file no index covers or one an index did not
+            // shrink.
+            let content = ledger::indexed(workspace, relative, &content).unwrap_or(content);
             ledger::fit(relative, &content).unwrap_or(content)
         };
         if !content.trim().is_empty() {

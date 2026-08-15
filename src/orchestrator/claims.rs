@@ -1063,6 +1063,45 @@ pub(super) fn is_markdown(relative: &str) -> bool {
         .is_some_and(|extension| extension.eq_ignore_ascii_case("md"))
 }
 
+/// Characters of statement one indexed claim keeps.
+///
+/// Wider than every other ledger's headline, and that asymmetry is the finding
+/// rather than an inconsistency. An approach's index line exists to stop it
+/// being re-proposed, and the id does most of that work — the refutation behind
+/// it is elaboration. A claim's *statement* is not elaboration: it is the thing
+/// a role has to read to know it does not need to prove it again. Indexing it
+/// at a hundred and ten characters would leave a list of ids nobody can use.
+const INDEXED_STATEMENT: usize = 240;
+
+/// One line per claim: its id, its standing, and its statement.
+pub(super) fn index(workspace: &Path) -> String {
+    let ledger = collect(workspace);
+    let rows: Vec<(String, String, String)> = ledger
+        .claims
+        .iter()
+        .map(|claim| {
+            (
+                claim.id.clone(),
+                format!("{}, {}", claim.status.label(), claim.holds.label()),
+                claim.statement.clone(),
+            )
+        })
+        .collect();
+    super::ledger::index::render(
+        "claims",
+        "Claims",
+        "What the library establishes, with how well and whether the hypotheses hold here. A \
+         statement on this list does not need proving again — read it before you set out to \
+         establish something.",
+        rows.iter().map(|(id, status, headline)| super::ledger::index::Row {
+            id,
+            status,
+            headline,
+        }),
+        INDEXED_STATEMENT,
+    )
+}
+
 /// Re-derives the ledger from disk and rewrites [`CLAIMS_PATH`].
 ///
 /// Called from the write path rather than left to a tool, for the same reason

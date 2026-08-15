@@ -73,14 +73,17 @@ available, so the agent can still record and recall its own findings.
 
 A *ledger* is derived state — an append-only queue, or one file per entry —
 walked by code and rendered into Markdown. `TASKS.md`, the board, the sub-goals
-and the nine in [`docs/ledgers.md`](docs/ledgers.md) are all this shape.
+and the nine in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
 
 - **No agent writes one; the write path refuses a derived file.** Editing one is
-  not a change, it is work queued for deletion on the next derivation.
+  work queued for deletion on the next derivation, not a change.
 - **Every section caps rows, truncates prose, and says what it left out** — a
   cut list reading as complete is worse than a long one. `ledger/ceiling_test.rs`
   asserts that, and that past the bound more entries do not mean more file.
-  `ledger::fit` clamps a routed ledger entering a prompt and is only a backstop.
+- **A prompt carries the *index*, not the ledger**: one line per entry, its
+  identity and status, ending in the `read_ledger` call that fetches the rest. A
+  role told less must be told where the rest is, or it is cheaper *and dumber*.
+  `ledger::fit` clamps what is left, and is only a backstop.
 - **One write operation:** an event names an entry and merges fields; closing
   keeps the entry with its reason rather than deleting it.
 - **A declaration cannot raise a bound, shadow a built-in, or reach a prompt.**
@@ -241,9 +244,8 @@ The Docker boundary is part of the security model:
   the repository, home directory, Docker socket, or broad host paths.
 - Keep process, memory, command-time, and command-output limits. Keeping a
   limit is the requirement; the value is a judgement, and 2 GiB was the wrong
-  one — [`docs/runtime.md`](docs/runtime.md#the-memory-cap) has the live run
-  that raised it and why an OOM kill is the worst failure shape available here.
-  Read `docker events --filter event=oom` when a container vanishes silently.
+  one — [`docs/runtime.md`](docs/runtime.md#the-memory-cap) has the live run that
+  raised it. Read `docker events --filter event=oom` when a container vanishes.
 - Keep network access because provider, search, and telemetry calls need it.
 
 Every agent working directory is `/workspace`. The helper accepts

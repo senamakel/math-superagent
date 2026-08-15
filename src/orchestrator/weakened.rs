@@ -790,6 +790,40 @@ impl Rung {
     }
 }
 
+/// One line per rung: its id, where it stands, and the weakened statement.
+///
+/// The rungs rather than the ladders, for the reason the backward ledger
+/// indexes gaps: a rung is the thing somebody attacks, and the ladder is what
+/// it hangs off. Weakest first, which is the order they are meant to be climbed
+/// and therefore the order a reader wants them.
+pub(super) fn index(workspace: &Path) -> String {
+    let ladders = collect(workspace);
+    let rows: Vec<(String, String, String)> = ladders
+        .ordered()
+        .iter()
+        .map(|rung| {
+            (
+                format!("{}/{}", rung.ladder, rung.id),
+                rung.stance.label().to_string(),
+                rung.statement.clone(),
+            )
+        })
+        .collect();
+    super::ledger::index::render(
+        "weakened",
+        "Weakened targets",
+        "The goal with its difficulties switched off, weakest first. The first open rung is the \
+         one to attack; a settled one is a theorem this run owns, under the difficulties it \
+         switched off.",
+        rows.iter().map(|(id, status, headline)| super::ledger::index::Row {
+            id,
+            status,
+            headline,
+        }),
+        super::ledger::index::HEADLINE,
+    )
+}
+
 /// Re-derives the ladder table and rewrites [`WEAKENED_PATH`].
 ///
 /// Best effort, like the claim ledger and the backward table: a failed refresh
