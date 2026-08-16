@@ -5,20 +5,19 @@ repository. `CLAUDE.md` points here so every agent follows the same rules.
 
 ## What this repository is
 
-This repository contains a Dockerized mathematical problem-solving agent. Its specialty is
-deep research: it combines mathematical reasoning with source discovery,
-small programs, numerical experiments, and explicit verification.
+This repository contains a Dockerized mathematical problem-solving agent. Its
+specialty is deep research: it combines mathematical reasoning with source
+discovery, small programs, numerical experiments, and explicit verification.
 
 The product should help a reader understand why an answer is true, not merely
-produce a plausible final expression. Preserve that standard in prompts,
-tools, examples, tests, and documentation.
+produce a plausible final expression. Preserve that standard in prompts, tools,
+examples, tests, and documentation.
 
 ## Where the rest of this lives
 
 This file is the working agreement: the rules to follow and the checks to run.
-The design rationale behind them — every threshold that a live run has already
-met, and what it cost — is one level down, so that a rule stays readable and the
-evidence for it stays available.
+The rationale behind them — every threshold a live run has met, and what it cost
+— is one level down, so a rule stays readable and its evidence stays available.
 
 - [`docs/roles.md`](docs/roles.md) — the twenty-two roles, the source adapters,
   the two recall paths, and which workspace files reach which role's prompt.
@@ -32,6 +31,8 @@ evidence for it stays available.
   research tree, the scratch, checkpointing, and reading what does not fit.
 - [`docs/ledgers.md`](docs/ledgers.md) — the derived ledgers: what each holds,
   the failure each stops, what bounds them, and how a run declares one.
+- [`docs/lean-library.md`](docs/lean-library.md) — writing the mathematics as
+  Lean rather than prose, the `Cited` namespace, and the first replay's numbers.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
@@ -40,8 +41,7 @@ evidence for it stays available.
   board carries the answer between schools unscreened.
 
 Two pairs read a mathematician's method against this runtime and say what to
-build next. They are why several of the rules above exist, so a change to a
-control should start from the argument that produced it:
+build next. A change to a control should start from the argument that made it:
 
 - [`docs/tao-gap-analysis.md`](docs/tao-gap-analysis.md) and
   [`docs/tao-proposals.md`](docs/tao-proposals.md) — Terence Tao's method set
@@ -55,9 +55,9 @@ control should start from the argument that produced it:
   `11-harness-inventory.md` is the current capability map and supersedes
   `research/tao/03-harness-inventory.md`.
 
-Keep them consistent with the code. A rule here that the code does not enforce
-is the failure this repository keeps recording: a prompt instruction is not a
-control, and neither is a document.
+Keep them consistent with the code. A rule the code does not enforce is the
+failure this repository keeps recording: a prompt instruction is not a control,
+and neither is a document.
 
 ## Gating
 
@@ -72,7 +72,7 @@ outline, and `section`, `lines` and `grep_workspace` reach any part.
 
 A *ledger* is derived state — an append-only queue, or one file per entry —
 walked by code and rendered into Markdown. `TASKS.md`, the board, the sub-goals
-and the nine in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
+and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
 
 - **No agent writes one; the write path refuses a derived file.** Editing one is
   work queued for deletion on the next derivation, not a change.
@@ -82,17 +82,30 @@ and the nine in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
 - **A prompt carries the *index*, not the ledger**: one line per entry, its
   identity and status, ending in the `read_ledger` call that fetches the rest. A
   role told less must be told where the rest is, or it is cheaper *and dumber*.
-  `ledger::fit` clamps what is left, and is only a backstop.
-- **One write operation:** an event names an entry and merges fields; closing
-  keeps the entry with its reason rather than deleting it.
+- **One write operation:** an event names an entry and merges fields, and
+  closing keeps the entry with its reason rather than deleting it.
 - **A declaration cannot raise a bound, shadow a built-in, or reach a prompt.**
   The tool schema is fixed for a run, so `ledger` is a checked string and never
   an enum, which lets a run define an axis and use it the same turn.
 
+Lean carries the mathematics, not only the check: statements go under
+`code/lean/Lib/`, `research/LEMMAS.md` derives from it, and what does not move
+there is in [`docs/lean-library.md`](docs/lean-library.md).
+
+- **A result from the literature is an `axiom` under `namespace Cited`, sourced
+  in its docstring.** It earns `conditional`, never `formalised`: the kernel
+  checked the implication and nothing checked the hypothesis.
+- **A formalised status is read off the verdict, never typed.** A note claiming
+  `formalised` over cited axioms is filed `conditional`, with the axiom named.
+- **The kernel is reachable without a run**: `./lean-check <workspace> <file>`,
+  `scripts/lean-replay --all`; exit 0/1/2 is the verdict. Nothing but the
+  `lean_check` tool may write `code/out/lean/`, which is why `lean-verdict` — in
+  the image, so reachable from `execute_command` — cannot file one at all.
+
 ## Schools
 
-A *school* is one way of attacking a problem; two or three run concurrently on
-one workspace, sharing the ledgers and a board. Each one's bet:
+A *school* is one way of attacking a problem; two or three run concurrently on one
+workspace, sharing the ledgers and a board. Each one's bet is in
 [`docs/schools.md`](docs/schools.md). Not a second loop, graph, or set of roles.
 
 - **Four things, and it must stay four:** a method-policy overlay layered *after*
@@ -102,8 +115,8 @@ one workspace, sharing the ledgers and a board. Each one's bet:
 - **Thresholds are a struct, not a second set of constants.** `route` and the jq
   both read one; `orchestrator::parity` proves they agree for every school, and
   none may move `blocked`.
-- **A board post is asserted, never established.** `teams/BOARD.md` never feeds
-  a ledger, and the posting school is baked into the tool.
+- **A board post is asserted, never established.** `teams/BOARD.md` never feeds a
+  ledger, and the posting school is baked into the tool.
 - **A lock is taken at a tool-call boundary, never below one.** `worklock.rs`
   serialises the write cascade and the checkpoint; the mutex is not reentrant.
 
@@ -170,34 +183,29 @@ nohup ./euler 763 > workspace/project-euler/763/config/start.log 2>&1 &
 
 `start.log` holds the image build and the statement fetch, which happen before
 any container exists and are therefore the only place a failed start says why.
-Everything after that is the container's, readable with `docker logs` or
-`./euler-tui`.
+Everything after is the container's — and the runtime's console arrives on its
+**stderr**, not stdout, so `docker logs` needs `2>&1` and any follower must read
+both streams.
 
-Before starting anything, check nothing is already running for that workspace:
+Before starting anything, check nothing is already running for that workspace,
+matching by **mount** and never by name: the project name comes from the
+checkout directory, so a worktree's container is not `riemann-agent-run` at all.
 
 ```sh
-docker ps --format '{{.Names}}' | grep riemann-agent-run
-docker inspect <name> --format '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' | grep project-euler
+docker inspect $(docker ps -q) --format '{{.Name}} {{range .Mounts}}{{.Source}} {{end}}' | grep project-euler
 ```
 
-Two containers on one workspace is the failure to look for, and it is silent:
-both runs work, both write, and the damage shows up later as a checkpoint
-history that interleaves two investigations. Stop a run with
-`docker rm -f <name>`; the workspace survives and the next `./euler` on it
-continues from what is on disk. Match by **mount**, not by name — the project
-name comes from the checkout directory, so a worktree's container is not called
-`riemann-agent-run` at all.
-
-The runtime's console arrives on the container's **stderr**, not its stdout —
-a live container had 643 lines there and none on stdout — so `docker logs`
-needs `2>&1` and any follower must read both streams.
+Two containers on one workspace is silent: both write, and the damage shows up
+later as a checkpoint history interleaving two investigations. Stop one with
+`docker rm -f <name>`; the next `./euler` continues from disk. Every checkout
+shares the `math-agent:local` tag, so a build in one replaces the image another
+is about to run — rebuild before trusting it.
 
 ## Calibration runs
 
 An open conjecture gives a run no known destination, so nothing separates a
-harness closing in on a proof from one producing plausible activity, and every
-architecture change is made blind. A **calibration run** supplies the reference:
-a conjecture already solved, stated as open, its answer withheld in code.
+harness closing in on a proof from one producing plausible activity. A
+**calibration run** is the reference: a solved conjecture, stated as open.
 
 ```sh
 ./calibrate unit-distance-plane-chromatic     # start or continue
@@ -256,9 +264,8 @@ with `/workspace` as their current directory. A prompt instruction is not a
 security control; enforce boundaries in code and Docker configuration.
 
 Workspace contents are committed: the derivation, the program and the per-run
-notes are the record of how an answer was reached, which is the point of the
-product, so they belong in history rather than only on the machine that made
-them.
+notes record how an answer was reached, so they belong in history rather than
+only on the machine that made them.
 
 They belong in history, not in every commit. A live run writes continuously, so
 `.claude/settings.json` sets `AUTO_COMMIT_EVERY=25` here: everything is still
@@ -268,11 +275,11 @@ is for. Do not add a generated artifact to a source directory.
 
 What is ignored is what a reader would never open: `.python-packages/`, bytecode
 caches, `raw/`, the bulky enumeration pools beside the counts that cite them,
-`trace.jsonl` and `console.log`, and the hidden `config/.*.json` state — each of
-which already has a committed human-readable counterpart beside it, such as
-`research/FRONTIER.md`, which is what the derivation cites.
-[`docs/workspace.md`](docs/workspace.md) has the measured hour of commit spam
-that set the batch size. Everything a reader would open stays committed.
+`trace.jsonl` and `console.log`, and the hidden `config/.*.json` state — each
+already has a committed human-readable counterpart beside it, such as
+`research/FRONTIER.md`. Everything a reader would open stays committed, and
+[`docs/workspace.md`](docs/workspace.md) has the hour of commit spam behind the
+batch size.
 
 ## Secrets
 
@@ -409,15 +416,12 @@ turn runs next. A new graph is built with `agent::flow`, never with
 `agent::flow::into_graph` / `from_graph`.
 
 TinyFlows has two layers and this crate uses both. The solution loop runs on the
-declarative **workflow engine**: the engine owns the routing — a `loop` head
-with the run's state as its accumulator, the ladders as `switch` nodes carrying
-jq — and each step is a `tool_call` into Rust written against live runs, so the
-control flow stays a document an outside agent can read and patch. `agent::flow`
-is the lower-level state-graph runtime and now drives only each detached
-sub-agent's own single-node graph. Everything after an attempt is a **fan-out**,
-not a chain, converging on one merge that folds counters by delta.
-[`docs/solution-loop.md`](docs/solution-loop.md) has the graph and the two child
-workflows; these five rules hold across both layers and must not be broken:
+declarative **workflow engine**, which owns the routing and keeps the control
+flow a document an outside agent can read and patch; `agent::flow` is the
+lower-level state-graph runtime and now drives only each detached sub-agent's
+own single-node graph. [`docs/solution-loop.md`](docs/solution-loop.md) has the
+graph, the fan-out every attempt converges through, and the two child workflows.
+These five rules hold across both layers and must not be broken:
 
 - **Derive, never restate.** The workflow role registry is read off
   `AgentRegistry`, the ladder's thresholds are generated from the Rust
@@ -467,16 +471,15 @@ full, every time, by a reader looking for one thing, which is what makes length
 a cost rather than a preference. Adding a section means finding the lines for it.
 
 `README.md` is read start to finish by someone new, so it is held to the same
-intent without the number — the fix for its length is moving what a user does
-not need on their first pass, not trimming paragraphs to a threshold.
+intent without the number: the fix for its length is moving what a user does not
+need on a first pass, not trimming paragraphs to a threshold.
 
 **`docs/` is not held to that cap.** Nothing loads those files into a prompt and
 nobody reads one end to end; a reader arrives at `docs/ledgers.md` because a rule
 above it sent them there, reads that section, and leaves. Splitting such a file
-on a line count moves the cost from scrolling to deciding which of two files a
-subject ended up in, and splits an argument where a number fell rather than at a
-seam. Applied there once, it held `docs/roles.md` at 499 lines by trimming an
-argument rather than by having finished it.
+on a line count splits an argument where a number fell rather than at a seam —
+applied there once, it held `docs/roles.md` at 499 lines by trimming an argument
+rather than by having finished it.
 
 The split is by *kind*, not by size. A rule to follow and a check to run stay
 here; the evidence behind a rule — the live run that met a ceiling, the number
@@ -484,16 +487,13 @@ that turned out wrong, the failure a control was written to stop — goes to the
 `docs/` file that owns that subject, listed under *Where the rest of this
 lives*. User-facing instructions stay in `README.md`. Do not grow a third tree:
 a document with no rule above it is one nobody has a reason to open. A `docs/`
-file still earns its length, and is split when it has stopped being about one
-subject — a judgement about what a reader came for, not a line count.
+file is split when it has stopped being about one subject, not at a line count.
 
 ## Working agreement for coding agents
 
 1. Inspect the surrounding code before editing and match its conventions.
-2. Execute a clear task directly. Do not stop for a plan when the next step is
-   obvious.
-3. Stay within scope. Raise unrelated problems instead of folding them into the
-   change.
+2. Execute a clear task directly; do not stop for a plan when the step is obvious.
+3. Stay within scope. Raise unrelated problems instead of folding them in.
 4. Deliver finished code without placeholders or commented-out alternatives.
 5. Preserve security checks, tests, lints, and Docker restrictions.
 6. Report commands actually run and their real outcomes.

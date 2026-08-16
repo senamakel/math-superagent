@@ -118,8 +118,33 @@ else
     research_clause="Use research for mathematical definitions, named theorems, and standard algorithms, and cite the returned URLs. Never search for a published Project Euler answer, solution, or forum thread; searching for the answer invalidates the run."
 fi
 
+# The domain-specific half, read from the workspace rather than written here.
+#
+# `scripts/solve-conjecture` already works this way, and the argument it records
+# applies unchanged: a launcher that carries the mathematics needs editing for
+# every problem. It applies to a Euler problem for a reason of its own as well.
+# The task below is deliberately generic — restate, brute-force, find the
+# governing theory, implement, verify — because that sequence is right for most
+# of the six hundred problems. What it cannot express is a demand about *how a
+# result must be established*: that the answer is not accepted until the Lean
+# kernel carries it, say, which changes what the run spends its budget on and
+# is a property of this problem's run rather than of Project Euler.
+#
+# Passing that as free text after the number worked, and is what a `METHOD.md`
+# replaces: an instruction retyped at the shell is one nobody can read off the
+# workspace afterwards, so a run's own record does not say what it was asked to
+# do. A workspace with no `METHOD.md` is unaffected.
+method_path=$workspace_path/METHOD.md
+if [ -f "$method_path" ]; then
+    method="
+
+$(cat "$method_path")"
+else
+    method=""
+fi
+
 extra_instructions=$remaining
-task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.md.
+task="Solve Project Euler problem $problem_number. The official problem statement was downloaded from https://projecteuler.net/minimal=$problem_number and is saved at /workspace/problem.md.$method
 
 Work in this order. Steps 1 and 2 together should take a small part of the run; most of it belongs in 3 and 4.
 
