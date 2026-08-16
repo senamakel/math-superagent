@@ -586,7 +586,7 @@ It is derived now, from the directive queue's design applied to a third problem.
 | File | Written by | Holds |
 | --- | --- | --- |
 | `config/tasks.jsonl` | any role that keeps tasks, append-only | one JSON event per change: `at`, `from`, `id`, `fields` |
-| `TASKS.md` | the runtime only | the derived list every planner reads |
+| `derived/TASKS.md` | the runtime only | the derived list every planner reads |
 | `config/ledgers/<slug>.json` | `define_ledger` only | a ledger this run declared for itself |
 
 There is **one write operation** and adding, closing, dropping and blocking are
@@ -596,6 +596,13 @@ in order, and absent keys are left alone. Closing a task is
 of inverses to get wrong — what `unblock` does to a task that was never blocked
 — and a merge has none. Nothing is lost by not naming them, because the event
 log keeps the whole history either way.
+
+It renders to `derived/TASKS.md` rather than to the workspace root, where it sat
+until every other ledger had moved. A runtime-written file in the folder a role
+lists first is the one place the `derived/` rule did not reach, and the rule is
+the folder name: nothing in it is hand-written, and nothing outside it is
+runtime-written. `ledger::migrate_derived` moves an existing one on startup,
+once, without overwriting.
 
 A derived path is refused to `write_document` and `edit_document`, naming the
 tool to use instead. That is not tidiness: the file is rewritten from its source

@@ -507,7 +507,7 @@ thing this channel exists to carry.
 
 **Interpreted, to the workspace.** The same drain then runs the `director`
 agent, which reads the workspace and changes the files that decide what happens
-next — `TASKS.md`, a thread under `research/threads/`, `CONTEXT.md`, a
+next — `derived/TASKS.md`, a thread under `research/threads/`, `CONTEXT.md`, a
 `request_research`. Those edits reach the other standing teams for free, because
 they already gate on workspace fingerprints. The ordering matters: the mailbox
 is posted *before* the agent runs, so the next attempt gets what was typed even
@@ -539,7 +539,7 @@ The argument was right about the outside and wrong about the cost, and two live
 investigations paid it.
 
 A detached specialist holds the instruction it was spawned with. It does not
-re-read the mailbox, and it does not read `TASKS.md` mid-run. So a directive
+re-read the mailbox, and it does not read `derived/TASKS.md` mid-run. So a directive
 aimed at a role already working never arrived: the loop wrote it to
 `config/DIRECTIVES.md`, the director rewrote the task ledger, the operator saw a
 receipt — and the role carried on. In the `gilbreath-supply` second pass a

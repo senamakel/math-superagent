@@ -255,7 +255,7 @@ per candidate slot when several solutions are explored at once.
   rather than removed.
 - The director is the only role a person talks to directly. It receives one
   operator directive from `config/directives.jsonl` and carries it into the
-  files that decide what happens next — reordering `TASKS.md`, opening or
+  files that decide what happens next — reordering `derived/TASKS.md`, opening or
   killing a thread, amending `CONTEXT.md`, filing a research request. It exists
   because the next attempt already gets the directive verbatim, and a directive
   that does not change the plan on disk changes nothing once that attempt is
@@ -432,10 +432,10 @@ not read unevidenced text beside it. See [`schools.md`](schools.md).
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/BACKWARD.md`, `derived/BLUEPRINT.md`, `derived/ENTAILMENT.md`, `CONTEXT.md` — the graph says which open gap is *ready*, which the flat list cannot, and the entailment report says what the run already holds |
+| orchestrator, goals | `GOAL.md`, `derived/TASKS.md`, `code/lib/INDEX.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/BACKWARD.md`, `derived/BLUEPRINT.md`, `derived/ENTAILMENT.md`, `CONTEXT.md` — the graph says which open gap is *ready*, which the flat list cannot, and the entailment report says what the run already holds |
 | tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files, minus the threads, plus `code/AGENTS.md` and `code/INDEX.md` |
 | judge | `GOAL.md`, `INDEX.md` |
-| reflection | the judge's files plus `TASKS.md` |
+| reflection | the judge's files plus `derived/TASKS.md` |
 | pattern_finder | `GOAL.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
 | librarian, research | `GOAL.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/FRONTIER.md`, `CONTEXT.md` |
 | inventor | `GOAL.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/CLAIMS.md`, `CONTEXT.md`, plus a dossier built at delegation time |
@@ -445,9 +445,9 @@ not read unevidenced text beside it. See [`schools.md`](schools.md).
 | archivist | `GOAL.md`, `derived/CLAIMS.md`, `CONTEXT.md` — what a candidate is judged *against*, and nothing about how the run arrived here |
 | candidate*NN* | the same as the code-writing roles, but resolved against its own checkout under `attempts/NN/` |
 | refuter | `GOAL.md`, `derived/BACKWARD.md`, `derived/WEAKENED.md`, `derived/CLAIMS.md`, `CONTEXT.md` — the two ledgers holding statements somebody committed to proving, which are the ones worth attacking |
-| scholar | `GOAL.md`, `TASKS.md`, `derived/CLAIMS.md`, `derived/ENTAILMENT.md`, `derived/THREADS.md`, `CONTEXT.md` — it draws the `follows-from:` edges, so it sees what they already establish |
-| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/BACKWARD.md`, `CONTEXT.md` |
-| director | `GOAL.md`, `TASKS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `CONTEXT.md` |
+| scholar | `GOAL.md`, `derived/TASKS.md`, `derived/CLAIMS.md`, `derived/ENTAILMENT.md`, `derived/THREADS.md`, `CONTEXT.md` — it draws the `follows-from:` edges, so it sees what they already establish |
+| context_curator | `GOAL.md`, `derived/TASKS.md`, `INDEX.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/BACKWARD.md`, `CONTEXT.md` |
+| director | `GOAL.md`, `derived/TASKS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `CONTEXT.md` |
 | organizer | none — it falls through to the empty default |
 
 That table is what `role_context` returns today, and it is narrower than what
