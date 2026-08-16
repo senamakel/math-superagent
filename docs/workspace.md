@@ -338,19 +338,27 @@ It is enforced for the **file tools**. `write_tool_file`, `write_document`,
 `apply_patch` and the readers all resolve against the checkout and reject
 absolute paths outright, so a candidate cannot name its way out of its own tree.
 
-It is **convention for the shell**. `execute_command` starts in the checkout, so
-relative paths do the right thing — but a shell cannot be confined by its working
-directory, and `cat /workspace/CONTEXT.md` reads the trunk. A live candidate did
-exactly that within a minute of starting, because the workspace policy tells
-every role its working directory is `/workspace` and the model believed it. The
-candidate brief now names the checkout's absolute path and says to use relative
-paths, which is an instruction rather than a control, and is the honest limit of
-what one container can enforce: real confinement needs a mount namespace, and
-the runtime deliberately runs with every capability dropped.
+For the **shell** it is a guard, not a jail. `execute_command` starts in the
+checkout, so relative paths do the right thing, and a candidate's shell now
+refuses a command naming an absolute path outside its checkout — `exec::escapes`
+— with a message giving the relative form that works.
 
-The consequence worth knowing: a candidate can clobber the trunk through the
-shell. Nothing observed has, and the trunk is committed before branching, so
-`git` has the previous state — but do not describe the isolation as absolute.
+That guard exists because of the accident, not the adversary. Every role in this
+runtime is told, here and in `AGENTS.md`, that its working directory is
+`/workspace`. A candidate is the one role for which that is false, and a live one
+believed the policy within a minute of starting: it ran `cat
+/workspace/CONTEXT.md`, then `cd /workspace && python3 code/brute.py`, reading
+the trunk's program while its own sat beside it. Nothing failed and nothing was
+reported, so its judgement of "its" oracle was quietly about somebody else's
+file. One string scan turns that into a refusal.
+
+**It is still not confinement, and must not be described as such.** A shell
+cannot be confined by its working directory: a variable, a relative `../..`, a
+here-doc or a Python `open()` all still reach the trunk. Real confinement needs
+a mount namespace, and the container deliberately drops every capability. What
+the guard buys is that the common accident fails loudly instead of silently;
+what it does not buy is a boundary. The trunk is committed before branching, so
+`git` holds the previous state either way.
 
 The slots are fixed (`candidates::SLOTS`) because a subagent's harness is
 registered once at container start with its tools already rooted, so the
