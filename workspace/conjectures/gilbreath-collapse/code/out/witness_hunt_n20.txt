@@ -1,0 +1,22 @@
+n= 2 K*(primary)=1 witness@K=1:False K=2:None K=3:None K=n-1:False | interval-K*=1
+n= 3 K*(primary)=1 witness@K=1:False K=2:False K=3:None K=n-1:False | interval-K*=1
+n= 4 K*(primary)=2 witness@K=1:True K=2:False K=3:False K=n-1:False | interval-K*=1
+n= 5 K*(primary)=2 witness@K=1:True K=2:False K=3:False K=n-1:False | interval-K*=1
+n= 6 K*(primary)=3 witness@K=1:True K=2:True K=3:False K=n-1:False | interval-K*=1
+n= 7 K*(primary)=4 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n= 8 K*(primary)=4 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n= 9 K*(primary)=5 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=10 K*(primary)=5 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=11 K*(primary)=6 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=12 K*(primary)=6 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=13 K*(primary)=7 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=14 K*(primary)=7 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=15 K*(primary)=8 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=16 K*(primary)=8 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=17 K*(primary)=9 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=18 K*(primary)=9 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=19 K*(primary)=10 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+n=20 K*(primary)=10 witness@K=1:True K=2:True K=3:True K=n-1:False | interval-K*=1
+
+K*(primary) vs n: n=2:1 n=3:1 n=4:2 n=5:2 n=6:3 n=7:4 n=8:4 n=9:5 n=10:5 n=11:6 n=12:6 n=13:7 n=14:7 n=15:8 n=16:8 n=17:9 n=18:9 n=19:10 n=20:10
+successive ratios: 1.000 2.000 1.000 1.500 1.333 1.000 1.250 1.000 1.200 1.000 1.167 1.000 1.143 1.000 1.125 1.000 1.111 1.000

@@ -1,0 +1,9 @@
+n= 2 E_direct=   0.0000 E_walsh=  0 n-2= 0 distinct=True neg_ctrl=0 -> OK
+n= 3 E_direct=   1.0000 E_walsh=  1 n-2= 1 distinct=True neg_ctrl=1 -> OK
+n= 4 E_direct=   2.0000 E_walsh=  2 n-2= 2 distinct=True neg_ctrl=2 -> OK
+n= 5 E_direct=   3.0000 E_walsh=  3 n-2= 3 distinct=True neg_ctrl=3 -> OK
+n= 6 E_direct=   4.0000 E_walsh=  4 n-2= 4 distinct=True neg_ctrl=4 -> OK
+n= 7 E_direct=   5.0000 E_walsh=  5 n-2= 5 distinct=True neg_ctrl=5 -> OK
+n= 8 E_direct=   6.0000 E_walsh=  6 n-2= 6 distinct=True neg_ctrl=6 -> OK
+n= 9 E_direct=   7.0000 E_walsh=  7 n-2= 7 distinct=True neg_ctrl=7 -> OK
+n=10 E_direct=   8.0000 E_walsh=  8 n-2= 8 distinct=True neg_ctrl=8 -> OK

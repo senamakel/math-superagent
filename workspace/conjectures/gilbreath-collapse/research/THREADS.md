@@ -4,7 +4,9 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[diameter-run-structure]] | Does S² factor through the short-range pair correlations of h? Decided by the joint distribution of (\|A\|, diam A, #runs A) over the index multiset {M_d △… | open | pf-s2multiset-rigid | tool_builder: joint (\|A\|, diam, #runs) distribution at every n reachable; report max-runs(n) and max-diam(n); decide the uniform bound R. sat_solver: witness… |
 
 ## Threads that could not be read
 

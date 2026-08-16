@@ -67,3 +67,18 @@ anchor: research/sources/non-cancelling-intersections-amarilli.full.md
 Neither the NCI/NCPD conjecture nor the exact listing of `{M_d △ M_{d'}}` with
 multiplicities. `holds-here: unchecked` on Prop 4.7 because the tightness/fullness of
 the specific down-set semilattice used here is not yet verified.
+
+## Reconciliation with the computed multiset (added by scholar)
+
+The computed structure (claim `pf-s2multiset-rigid`, `code/out/`, verified to n=256)
+gives the actual multiplicities: empty with multiplicity `n−2`, every other distinct set
+with multiplicity exactly 2. Under the Amarilli/Moebius reading (multiplicity =
+`−µ_L(U,1-hat)`), this says the Moebius values here take only the two values
+`{−(n−2), −2}` on the relevant lattice elements — a highly rigid sign structure. The
+multiplicity-2 rigidity means the *pair-injectivity* of `{d,d'} ↦ M_d△M_{d'}` (a
+computed, checked property) is the operative mechanism, and it is consistent with, but
+does not require, the full NCI machinery. The general NCI conjecture's open status is
+therefore *not* a blocker for the collapse question: the specific multiplicities are
+computed directly. `holds-here` on the general Moebius claim stays `unchecked` because
+the tightness/fullness hypothesis has not been verified; the direct census does not
+depend on it.

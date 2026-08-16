@@ -34,6 +34,12 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `bacher-chapman-sym-pascal` | claim | established | — | det(C(i+j,i) mod 2)_{0<=i,j<n} = prod_{k=0}^{n-1} (-1)^{s_k}, s_k = parity of binary digit sum of k (Thue-Morse); and char poly of the… |
 | `callan-downset-inverse` | claim | established | — | The down-set incidence matrix S (row d = indicator of the principal down-set M_d of the Boolean lattice) satisfies S^{-1} = S(-1), a… |
 | `callan-selfsimilar` | claim | established | — | S(x) S(y) = S(x+y) and S(x)^q = S(qx), where S(x)_{ij} = x^{popcount(i-j)} when i-j is free of j (binary subtraction, no borrows) and 0… |
+| `census-dyadic-families` | claim | established | — | > The three hand-derived dyadic families are confirmed for all k with 2^k ≤ n−2 (checked n = 64 and n = 128, all such k): (i)  M_{2^k−1} △… |
+| `census-even-sizes` | claim | established | — | > Every \|M_d △ M_{d'}\| is even for all n = 3..128 (cross-checked against the closed form 2^pc(d)+2^pc(d')−2^{pc(d∧d')+1}, which is even… |
+| `census-full-span-support` | claim | established | — | > The weighted span histogram H_n(k) = Σ_{A : span(A)=k} m(A) has support exactly {0} ∪ [3, n−1] for every n = 3..128: max span = n−1… |
+| `census-multiplicity-injective-pairs` | claim | established | — | > For every n = 3..128: the distinct index sets are C(n−2,2)+1 in number; the empty set M_d △ M_d occurs with multiplicity n−2; and every… |
+| `census-negative-control` | claim | established | — | > A deliberately wrong run_count (every set's count shifted by +1) changes the weighted run-count histogram at every n = 3..128, shown… |
+| `census-run-count-powers-of-two` | claim | established | — | > The weighted run-count histogram R_n(r) = Σ_{A : runs(A)=r} m(A) at n = 64 concentrates on even run counts, dominated by powers of two (r… |
 | `collapse-by-evenness` | goal | established | `collapse-by-evenness/G-even-set-is-product-of-pairs`, `collapse-by-evenness/G-evenness-of-symmetric-difference`, `collapse-by-evenness/G-local-verification-and-formalisation`, `collapse-by-evenness/G-pair-telescopes-to-adjacent` | > Prove COLLAPSE — every second-moment functional of w(h) is a function of the short-range (pair) correlations of h — and name the exact… |
 | `collapse-by-evenness/G-even-set-is-product-of-pairs` | lemma | established | — | > For any even-size A ⊆ {0,…,n−1}, A admits a perfect matching, and chi_A(h) = ∏_{{i,j} in the matching} chi_{i,j}(h) for every h. |
 | `collapse-by-evenness/G-evenness-of-symmetric-difference` | lemma | established | — | > For every n and every 2 ≤ d,d' ≤ n−1, the symmetric difference M_d △ M_{d'} has even cardinality. This follows from \|M_d\| = 2^{pc(d)}… |
@@ -48,9 +54,14 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `collapse-via-index-multiset/G-order` | lemma | **ready** | — | The threshold K*(n) = min{ K : S² is constant on C_K-fibers } satisfies sup_n K*(n) < ∞ (collapse at the named order K*) or K*(n) = Ω(n)… |
 | `collapse-via-index-multiset/G-witness` | lemma | **ready** | — | For each n ≤ 20 and each K ≤ n−1, determine whether h,h' ∈ F₂ⁿ exist with C_K(h) = C_K(h') but S²(h) ≠ S²(h'). In particular report whether… |
 | `fine-glaisher-2pc` | claim | established | — | The number a_2(n) of odd entries on row n of Pascal's triangle mod 2 is 2^{pc(n)}; equivalently the down-set {o : o submask of n} has size… |
+| `g-evenness-collapse` | claim | established | — | The map h -> (T(n,d))_{d in [2,n-1]} has kernel {0, all-ones}; every C_K-fiber (and in particular the fiber of supplementary strings) is… |
+| `g-witness-intermediate` | claim | established | — | For K < K*(n) a witness h,h' always exists (C_K equal, S^2 different): the first WITNESS is at n=4 K=1 (h=2,h'=4); at each n there are… |
+| `g-witness-order` | claim | established | — | For every n <= 16 and K = n-1 (all lags), S(n,h)^2 is constant on every C_K-fiber (full pair-correlation joint counts determine S^2);… |
 | `harborth-density` | claim | established | — | F(n) ~ n^{log_2 3} up to lim-sup 1 and lim-inf 0.812556; odd entries of the first n Pascal rows are sparse. |
 | `lucas-submask` | claim | established | — | C(n,m) mod 2 = 1 iff m is a binary submask of n (every binary digit of m is ≤ the corresponding digit of n); equivalently m ∧ (¬n) = 0. |
 | `odonnell-walsh-character-basis` | claim | established | — | The functions χ_S(x) = (−1)^{Σ_{i∈S} x_i} for S ⊆ [n] form an orthonormal basis of {−1,1}^n → R, with χ_S χ_T = χ_{S△T} and Parseval Σ_S… |
+| `oeis-distinct-count` | claim | **ready** | — | The number of distinct index sets D(n) = \|{ M_d △ M_{d'} }\| equals 1 + C(n-2,2) = A000124(n-3) = A152947(n-1), for the fold down-sets M_d. |
+| `pf-s2multiset-rigid` | claim | established | — | The ordered-pair multiset { M_d △ M_{d'} : d,d' in [2,n-1] } consists of the empty set with multiplicity n-2 (exactly the d=d' pairs) and… |
 | `shevelev-fermat-factor-v4` | claim | established | — | The row-n binary value d(n) of Pascal's triangle mod 2 equals the product over the 1-bit positions k_i of n of F(k_i), F(k)=2^{2^k}+1, with… |
 | `shevelev-fermat-factorization` | claim | established | — | The binary integer whose digits are row n of Pascal's triangle mod 2 (sequence A001317) factors as ∏ F(k_i) over the set bits 2^{k_i} of n,… |
 | `wolfram-unusable` | claim | **ready** | — | The captured wolfram file is a landing/index page, not the 1984 Monthly article; establishes no usable mathematical statement for this… |

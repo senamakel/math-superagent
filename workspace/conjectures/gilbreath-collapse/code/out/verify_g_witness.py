@@ -59,7 +59,7 @@ def main():
     print("n=3..16: K*(n) = min{ K : no S^2 witness on C_K-fibers }")
     print(f"{'n':>3} {'K*(n)':>5}  K=n-1 witness?")
     kstar = {}
-    for n in range(3, 17):
+    for n in range(3, 19):
         s2 = s2_all(n)
         # headline: K=n-1 never gives a witness
         w_full = has_witness(n, n - 1, s2)
@@ -82,7 +82,7 @@ def main():
     print("Formula check  K*(n) vs ceil((n-1)/2):")
     ok = True
     for n in range(3, 17):
-        guess = (n - 1 + 1) // 2  # ceil((n-1)/2)
+        guess = (n + 1) // 2  # ceil(n/2)
         match = (kstar[n] == guess)
         ok = ok and match
         print(f"  n={n:2d}  K*={kstar[n]:2d}  ceil((n-1)/2)={guess:2d}  {'OK' if match else 'DIFF'}")

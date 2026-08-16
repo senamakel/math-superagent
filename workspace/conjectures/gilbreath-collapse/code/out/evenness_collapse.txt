@@ -1,0 +1,22 @@
+========================================================================
+Evenness-collapse verification using canonical oracle code/lib/collapse.py
+========================================================================
+n= 3 | 2^n=    8 | fibers=    4 (expect     4) | fiber sizes={2: 4} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+n= 4 | 2^n=   16 | fibers=    8 (expect     8) | fiber sizes={2: 8} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+n= 5 | 2^n=   32 | fibers=   16 (expect    16) | fiber sizes={2: 16} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+n= 6 | 2^n=   64 | fibers=   32 (expect    32) | fiber sizes={2: 32} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+n= 7 | 2^n=  128 | fibers=   64 (expect    64) | fiber sizes={2: 64} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+n= 8 | 2^n=  256 | fibers=  128 (expect   128) | fiber sizes={2: 128} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+n= 9 | 2^n=  512 | fibers=  256 (expect   256) | fiber sizes={2: 256} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+n=10 | 2^n= 1024 | fibers=  512 (expect   512) | fiber sizes={2: 512} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+n=11 | 2^n= 2048 | fibers= 1024 (expect  1024) | fiber sizes={2: 1024} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+n=12 | 2^n= 4096 | fibers= 2048 (expect  2048) | fiber sizes={2: 2048} | S const=True | S2 const=True | size2_ok=True | BROKEN const=False (must be False)
+------------------------------------------------------------------------
+Direct fiber structure: v(h) == v(not-h) and every fiber is {h, not-h}.
+  n=4: v(h)==v(not-h) for all 2^4=16 strings: True
+  n=8: v(h)==v(not-h) for all 2^8=256 strings: True
+  n=12: v(h)==v(not-h) for all 2^12=4096 strings: True
+------------------------------------------------------------------------
+Why (a,b) hold: ker(h->v(h))={0,all-ones} so fibers are {h,not-h}; T is invariant under h->not-h because |M_d|=2^{pc(d)} is even for d>=2. The negative control XORs over an odd-sized set (|M_d|-1), so T flips under complement and S' is anti-symmetric on each fiber — it MUST vary.
+ALL CONSTANCY CHECKS PASSED: True
+(Note: a 'False' under BROKEN const is the desired negative-control outcome)

@@ -4,10 +4,42 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
-| `README.md` | _(undescribed)_ |
-| `analyze_multiset.py` | _(undescribed)_ |
-| `commands.log` | _(undescribed)_ |
-| `g_witness_fiber.py` | _(undescribed)_ |
-| `run_verify.sh` | _(undescribed)_ |
+| `PF_S2_MULTISET--computed.md` | Computed claim blocks: the S² index multiset is empty×n-2 + every other set ×2 (#distinct=1+C(n-2,2)) verified to n=256; and the G-witness fiber results (no witness at full pair order n<=16, minimal order K*≈ceil((n-1)/2)). Answers the open request on which sets occur. |
+| `README.md` | Run instructions: capture program output here (not code/); write a Markdown note with a fenced claim block (status: checked) beside any output that settles something, so it reaches research/CLAIMS.md. |
+| `analyze_multiset.py` | Extracts structural sequences of the S2_char multiset n=2..40: #distinct sets vs 1+C(n-2,2), max run count and set size, multiplicity histogram, and bulk concentration (share of pair-weight by run_count) for n=8,12,16,20,24,32,40. Output in commands.log. |
+| `census.out` | Captured raw census output (per-n distinct set rows with |
+| `census_multiset.py` | MULTISET CENSUS for COLLAPSE: iterates S2_char(n) (multiset A=M_d△M_d') for n=2..20; per distinct A writes ( |
+| `classify_sets.py` | Classifies the distinct sets in S2_char(n) for n=5,6,8,12 as bitmasks grouped by run_count with multiplicity, and lists the (d,d') pairs realizing the empty set (confirmed = only d=d'). Output in commands.log. |
+| `commands.log` | Runtime's verbatim replay of every command run and its exit code/stdout/stderr. Do not read within the run (context cost); operators read it outside. The captured oracle verifications, multiset census, and G-witness fiber output live here. |
+| `evenness_collapse.txt` | Captured output of the evenness verification: S and S² constant on every {h,not-h} fiber (n=3..12), fibers are exactly {h,not-h} (ker={0,all-ones}), negative control (odd-size XOR) correctly non-constant. Grounds claim g-evenness-collapse. |
+| `fine_structure.py` | Fine structure of the census for n=32,64,128: span-(n-1) sets with run decompositions/concrete (d,d') pairs, multiplicity spectrum (m=2 for all nonempty, m=n-2 for empty), weighted mean span, weight on span>=n/2, and long-span examples. Output in fine_structure.txt. |
+| `fine_structure.txt` | Captured output of fine_structure.py: confirms multiplicity spectrum m=2 (n-2 on empty) at n=32,64,128; span-(n-1) classes (runs [odd,odd],[1,1,..] etc, concrete d,d' pairs); ~70% of pair weight on span>=n/2. |
+| `g_witness_fiber.py` | Canonical G-witness fiber test (priority 3): for n=3..16, K=1..n-1, groups all h by C_K (joint lag counts) and tests whether S² is constant on each fiber; reports first witness per (n,K) and the absence bound (no witness n<=3). Negative control (broken lag-1-drop C_K) produces a witness. Output captured in commands.log. |
+| `kstar_scan_fast.py` | Fast G-witness scanner: computes K*(n)=min{K: S² constant on C_K-fibers} for n<=20 by packed bit-count pair-counts, with boundary-witness demonstration and a third (definitional Walsh identity) route into lib.collapse. Output captured in commands.log. |
+| `multiset_census.py` | Goal priority-1 census: for n=3..128 the index multiset {M_d△M_{d'}} with multiplicity, size (cross-checked vs closed form), span, run decomposition, example (d,d') pair; weighted span histogram; three dyadic far families confirmed; negative control (broken run_count) must change the run histogram. Output capture file was lost when the control fired at n=3; histogram data survives in analyze_multiset output. |
+| `multiset_census_n128.txt` | Captured per-n census of the index multiset for n up to 128 (distinct sets with |
+| `multiset_census_n20.txt` | Captured per-n census n=2..20 of the index multiset (run decomposition, d,d' pairs, weighted span histogram). Confirms the empty/nonempty multiplicity split at small n. |
+| `negative_control.py` | Broken-run_count negative control for the multiset census: shows a deliberately shifted run_count changes the weighted run histogram at n=32,64,128. Output in negative_control.txt. |
+| `negative_control.txt` | Captured output of negative_control.py: true vs broken run histograms at n=32,64,128, differ=True at each (negative control fires, so the run-count statistic measures something). |
+| `pf_kstar_extend.py` | Extends the K*(n) verification to n=16 and fits the linear slope of K* vs n. |
+| `pf_kstar_n17_18.py` | Tests the K*(n)=ceil(n/2) conjecture at its next two unknown terms n=17,18 (falsifier check). |
+| `pf_s2multiset.md` | Pattern-finder deliverable: exact description of the {M_d △ M_{d'}} multiset — empty mult n-2, every nonempty mult exactly 2, #distinct = 1+C(n-2,2) = OEIS A152947, verified to n=256. Conjecture with falsifier stated. |
+| `pf_verify_witness.py` | Pattern-finder's independent re-derivation of K*(n)=min K with S^2 constant on C_K pair-correlation fibers, and the witness pairs, n=3..13. |
+| `pf_witness_handcheck.py` | Explicit hand-check of the minimal refutation witness: n=4 h=0010 vs h'=0100, equal C_1 but S^2=0 vs 4. |
+| `realizing_pairs.py` | For n=8, lists every distinct set in S2_char with its lexicographically-smallest realizing (d,d') pair and both down-set masks, to see the structural characterization of which sets occur. |
+| `rerun_checks.sh` | Placeholder stub — no shell executor in this session; the checks it would re-run are already captured in commands.log with exit 0. Ignore. |
+| `run_verify.sh` | Runs the canonical multiset oracle verification (verify_multiset.py) via PYTHONPATH=/workspace/code and captures output to verify_multiset.out with exit code echo. |
+| `scholar_attack_pf.py` | Independent, second-route attack on pf-s2multiset: does NOT import lib.collapse, re-derives M_d by submask enumeration, checks empty-mult n-2 / nonempty-mult-2 / distinct=1+C(n-2,2) n=2..25 plus big-n spot checks n=64,128,256, with a broken-prediction negative control. Status: script; output not captured. |
+| `size_dist.py` | Size distribution of the distinct sets in S2_char(n) for n=8,10,12,14,16,20,24, by count and by weighted multiplicity. Confirms all occurring sizes are even (consistent with the closed form). |
 | `verify_E_S2.py` | Verifies E[S²]=n−2 for uniform h by direct 2^n enumeration AND by Walsh-orthogonality counting, with a negative control (wrong orthogonality changes the count). Grounds the O'Donnell-derived claim. Not yet executed. |
+| `verify_census_bitset.py` | Independent integer-bitset second route for the multiset census (no lib.collapse import): agrees set-for-set/multiplicity/span with the frozenset route for n=3..128, re-derives the closed-form size and the three dyadic families, and matches multiset_census_n128.txt's span histograms. Output in verify_census_bitset.txt (ALL CHECKS PASSED). |
+| `verify_census_bitset.txt` | Captured output of the independent integer-bitset census (second route vs frozenset census): agrees on #distinct sets, (n-2)^2 entries, max span n-1, weight, span histogram for n=32,64,128; ALL CHECKS PASSED. Independent confirmation of pf-s2multiset-rigid. |
+| `verify_g_witness.py` | Independent verification of the G-witness fiber output: re-derives K*(n) for n=3..16 with a vectorised pair-count routine, confirms K=n-1 is witness-free for every n, negative control (every K<K* has a witness) fires, and checks K* vs ceil((n-1)/2). Output not captured. |
+| `verify_multiple2.py` | Verifies the structural claim empty-mult n-2 / nonempty-mult 2 / distinct=1+C(n-2,2) / total=(n-2)^2 for n=2..60. Output captured in commands.log: ALL OK for n>=4 (n=2,3 are trivial edge cases). |
+| `verify_multiple2_big.py` | Verifies the same structural claim at landmark n=64,80,96,128,160,192,256. Output captured in commands.log (ALL OK per the pf_s2multiset.md report). |
+| `verify_multiset.out` | Captured output of the canonical oracle verification (run_verify.sh / verify_multiset.py): all checks pass (fold_row==brute, S==direct XOR, (n-2)^2 entries, closed-form sizes, negative control fires). |
 | `verify_multiset.py` | Checks the canonical oracle (fold_row==brute, S==direct XOR, (n-2)^2 cardinality, closed-form sizes) and computes the crux run-count/size distribution of {M_d△M_d'} for n=2..20, with a broken run_count negative control. Not yet executed. |
+| `witness_anatomy.py` | Anatomy of the boundary witnesses (odd n, h=2^m, h'=2^(2m)+1 sharing C_m yet differing in S²), recomputing C_K equality by a slow path. Contains an undefined-variable bug (`for k in X`) so may not run; the same witness family is captured in g_witness_fiber.py output. |
+| `witness_hunt.py` | WITNESS HUNT: for n=2..20 finds K*(n)=min K so S² is constant on every primary C_K fiber (pair-correlation counts N_ab(k)), using vectorized numpy lexsort grouping. Reports witnesses at K=1,2,3,n-1 and interval-fiber K*. Validated against brute-force witness_oracle at n=2..10 (exact match). Output code/out/witness_hunt_n20.txt. |
+| `witness_hunt_n20.txt` | EMPTY (0 bytes) — a failed capture per GOAL rule 23 ("an empty capture is a failed run"). The witness_hunt.py to n=20 did not write output. Do not cite; the n<=16 g_witness_fiber.py capture is the authoritative witness data. |
+| `witness_oracle.py` | Brute-force oracle for the primary C_K fiber: groups strings by exact pair-correlation-count tuple and checks S² constancy, n<=10. Establishes witness_hunt.py's correctness. |

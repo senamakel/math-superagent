@@ -9,5 +9,22 @@ Derived from `config/tasks.jsonl` and rewritten on every write. Do not edit this
 
 In order. Work the first one you can.
 
+- `witness-hunt-kstar` — Witness hunt / collapse order K*(n)
+  - detail: Two tool_builder results computed under the pinned C_K fiber (pair-correlation counts N_ab(k)). Claimed: K*(n)=ceil(n/2) for n>=4 (n=2..10 brute-verified), witnesses exist at K=1,2,3 for n>=7, none at K=n-1. Being cross-checked by coder run-47 from scratch.
+- `census-to-max-n` — Push the which-sets census to the largest exactly-enumerable n; state n
+  - detail: Keep the multiset_census_n20.txt shape — per distinct A = M_d △ M_{d'}: |A|, diam A, #runs, run_lengths, multiplicity, example (d,d'). Push to the largest n enumerable exactly within the memory ceiling (n=128 already done: 15876 pairs, trivial). State the achieved n in the output and the claim block. Cross-check |A| against the closed form (item 3) and #entries against (n−2)², with a negative control shown failing. Fenced claim block with id and n range; where a measurement disagrees with problem.md, print the stated claim beside the measurement (steer-1: problem.md is not authoritative).
+  - refs: code/out/multiset_census_n20.txt, code/out/multiset_census_n128.txt, code/out/verify_census_bitset.txt
+- `joint-diam-runs-distribution` — Tabulate the joint distribution of (|A|, diam A, #runs A) at every n
+  - detail: Over all ordered pairs (d,d') at every n reached, tabulate the joint distribution of (|A|, diam A, #runs A). This is the object that decides collapse (steer-1): size is the wrong statistic — at n=20, |A| ∈ 6..12 but diam ∈ 10..18, up to 8 runs, run_lengths mostly all-1s. Capture to code/out with n stated per row.
+- `max-runs-diam-growth` — Report max-runs(n) and max-diam(n); test the uniform bound R
+  - detail: Sharp form: is there a bound R uniform in n with every occurring A a union of ≤ R runs of bounded length? Data already suggests NO — max span = n−1 carrying weight n−2 at every n=3..128, and M_{2^k−1}△M_{2^k−2} is 2^{k−1} singleton runs. Report max-runs(n) and max-diam(n) as functions of n. If max-runs grows, say plainly the collapse as framed via short-range support is false — while recording the caveat that long-span support alone does not refute collapse (the decision is C_K-fiber constancy, not support).
+- `witness-hunt-singletons` — Prioritize the witness hunt around isolated-singleton A
+  - detail: Isolated singletons at large separation are exactly what separates two strings with identical pair correlations (steer-1). Take an explicit A of that shape (e.g. the dyadic family M_{2^k−1}△M_{2^k−2} = 2^{k−1} singleton runs at large separation) and build h,h' with identical pair correlations but different S². SAT-encode the finite question: ⟨h,I⟩=⟨h',I⟩ for all intervals |I|≤K, and Σ_{i∈A*}(h_i⊕h'_i)≡1 (mod 2) with K below span(A*). SAT = witness (refutation, run ends); UNSAT = no such pair at that K. Runs in parallel with the census/joint tabulation.
+
+## Recently done
+
+Finished, with what came of it. Kept, because a run that cannot see what it already did repeats it.
+
 - `collapse-decision` — Decide COLLAPSE: theorem or artifact
   - detail: Run the G-witness fiber test (n up to ~16, all K) to look for two strings with equal order-K pair correlations but different S^2. Run the G-collapse-multiset census (n up to 128) with weighted span histogram. Then either post a witness (refutation) or bound K* (theorem branch).
+  - reason: Both steps in its detail are carried out: G-witness fiber test n≤16 (no witness at K=n−1, K*(n)=ceil((n−1)/2) for n≥6, claim g-witness-order) and census n≤128 with span histogram (claim pf-s2multiset-rigid, two-route verified by verify_census_bitset.txt). Steer-1 reorients the decision from size to diameter/run-structure; the decision itself continues under the new tasks below.

@@ -1,0 +1,24 @@
+check 1 ok: fold_row == brute binomial, n=2..9 all d
+check 2 ok: S(n,h) == (n-2)-2*w via direct downset XOR, n=2..9 all h
+check 3a ok: multiset has (n-2)^2 entries, n=2..12
+check 3b ok: |M_d △ M_{d'}| == 2^pc+2^pc'-2^{pc(d&d')+1}, n=2..11 all pairs
+n= 2 num_distinct_sets=    0 max_run_count=0 max_set_size=0
+n= 3 num_distinct_sets=    1 max_run_count=0 max_set_size=0
+n= 4 num_distinct_sets=    2 max_run_count=2 max_set_size=2
+n= 5 num_distinct_sets=    4 max_run_count=2 max_set_size=4
+n= 6 num_distinct_sets=    7 max_run_count=2 max_set_size=4
+n= 7 num_distinct_sets=   11 max_run_count=3 max_set_size=4
+n= 8 num_distinct_sets=   16 max_run_count=4 max_set_size=6
+n= 9 num_distinct_sets=   22 max_run_count=4 max_set_size=8
+n=10 num_distinct_sets=   29 max_run_count=4 max_set_size=8
+n=11 num_distinct_sets=   37 max_run_count=4 max_set_size=8
+n=12 num_distinct_sets=   46 max_run_count=4 max_set_size=8
+n=13 num_distinct_sets=   56 max_run_count=4 max_set_size=8
+n=14 num_distinct_sets=   67 max_run_count=4 max_set_size=8
+n=15 num_distinct_sets=   79 max_run_count=7 max_set_size=8
+n=16 num_distinct_sets=   92 max_run_count=8 max_set_size=14
+n=17 num_distinct_sets=  106 max_run_count=8 max_set_size=16
+n=18 num_distinct_sets=  121 max_run_count=8 max_set_size=16
+n=19 num_distinct_sets=  137 max_run_count=8 max_set_size=16
+n=20 num_distinct_sets=  154 max_run_count=8 max_set_size=16
+negative control ok: broken run_count produces a different distribution

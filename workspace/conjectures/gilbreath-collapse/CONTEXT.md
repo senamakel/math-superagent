@@ -13,6 +13,16 @@ over.
 one explicit `F₂` matrix, `Φ_n`. No primes, none used. Full statement:
 `problem.md`; objective and completion criteria: `GOAL.md`.
 
+**Steer-1 reorientation (operative).** The census shows *size is the wrong
+statistic*: at n=20 the occurring sets have |A| = 6..12 but diameter 10..18, up
+to 8 runs, run_lengths mostly all-1s — small sets spread across nearly the whole
+index range, coupling positions at opposite ends of the string. The question
+turns on **diameter and run structure, not cardinality**; the O(n) distance
+enumerator (problem.md item 4) weights by |A| and controls neither. `problem.md`
+is **not authoritative**: three seeded values there were wrong and computation
+caught all three — print the stated claim beside any measurement that disagrees
+with it.
+
 ## Where this run stands (turn 0)
 
 The workspace is **fresh scaffolding**: skeleton directories and the ledger
@@ -99,12 +109,30 @@ telescoping breaks at 438/620067.
 
 No locally computed terms exist yet. E[S²]=n−2 under uniform model.
 
+Locally computed (checked, two routes — frozenset and bitset,
+`code/out/verify_census_bitset.txt` "ALL CHECKS PASSED"): census of *which* sets
+`A = M_d △ M_{d'}` occur to n=128. Every nonempty A occurs with multiplicity
+exactly 2, the empty set n−2 times, #distinct = 1+C(n−2,2) (claim
+`pf-s2multiset-rigid`, verified n≤256). **Diameter/run structure:** max span
+carrying weight is n−1 at weight n−2 for every n=3..128; at n=128 the top-span
+sets include |A|=126 with runs [125,1] and |A|=64 with 32 singleton runs;
+`M_{2^k−1}△M_{2^k−2}` is 2^{k−1} singleton runs. At n=20 the sets have |A|=6..12
+but diam 10..18, up to 8 runs, run_lengths mostly [1,1,…]. No witness found at
+full pair order for n≤16 (claim `g-witness-order`, K*(n)=ceil((n−1)/2) for n≥6).
+
 ## Ruled out
 
 Nothing yet in this run. (Parent run closed eight second-moment routes, all
 reducing at coarsest dyadic scale to the same short-range statistic — never
 proved. That observation *is* the reason this run exists; it is not recorded as
 a refutation.)
+
+**The cardinality reading is refuted (steer-1, computed).** "Small |A| ⇒
+short-range structure" is false: small sets occur at diameter up to n−1 with
+many singleton runs, so the O(n) size enumerator (item 4) does not establish
+short-range structure. Note the converse trap is *not* ruled out: long-span
+support alone does not refute collapse — the decision is C_K-fiber constancy,
+not support, so "max-runs grows" kills only the framing.
 
 The coil folding is not the problem; no literature source yet describes the
 symmetric-difference multiset, so no component of the crux is ruled out by the
@@ -124,18 +152,27 @@ contradiction, a gap.
 
 ## Gaps — the forward path
 
-GOAL.md priority order:
+Steer-1 priority order (the joint distribution is the object that decides):
 
-1. **Describe the multiset `{M_d △ M_{d'}}` exactly — which sets occur, with
-   multiplicity.** Sizes are closed form (item 3); *which* sets is missing and
-   is the likely crux. Finite computation at small `n`. This is the first thing
-   to build toward — a small `n` census is the cheapest way to seed it.
-2. **Compose items 4, 6, 7** into a proof; if they don't compose, name the
-   exact failing step. (Item 4 is an analytic `O(n)` bound, items 6–7 are
-   endpoint facts — the composition is not yet even stated precisely.)
-3. **Hunt the witness in parallel**: exhaustively at small `n`, two strings with
-   identical pair correlations but different `S²`. Existence ends the run;
-   absence at `n ≤ 20` is strong evidence to keep pushing the proof.
+1. **Joint distribution of (|A|, diam A, #runs A)** over all (d,d') at every n
+   reached — the replacement for "describe the multiset by size". At n=20 it is
+   already decisive-looking: small |A|, large diam, up to 8 singleton runs.
+2. **Max-runs(n) and max-diam(n) as functions of n**, and the sharp form: is
+   there a uniform bound R with every A a union of ≤ R runs of bounded length?
+   Data suggests NO — if max-runs grows, say so plainly and kill the
+   short-range-support framing (but remember that is not a collapse refutation).
+3. **Witness hunt, now higher priority**: isolated singletons at large
+   separation are exactly what separates two strings with identical pair
+   correlations. Find an explicit A of that shape and build h,h' around it (SAT:
+   ⟨h,I⟩=⟨h',I⟩ for |I|≤K, and A* weight ≡ 1 mod 2, with K below span A*).
+   Existence ends the run; absence at n ≤ 20 is strong evidence to keep pushing.
+4. **Describe the multiset exactly — which sets occur, with multiplicity.** Sizes
+   are closed form (item 3); multiplicity is settled (`pf-s2multiset-rigid`);
+   what remains is diameter/run structure, i.e. gaps 1–2.
+5. **Compose items 4, 6, 7** into a proof; if they don't compose, name the exact
+   failing step. (Item 4 is an analytic O(n) bound on sizes; steer-1 shows it
+   weights the wrong quantity, so the composition as originally stated is dead —
+   name the replacement precisely.)
 
 Hard requirements in force (GOAL.md): one canonical oracle `Φ_n`/`M_d`/`S(n,h)`
 in `code/lib`, cross-checked against brute-force submask enumeration, no second

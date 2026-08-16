@@ -1,0 +1,23 @@
+==============================================================================
+Independent second route: integer-bitset census vs frozenset census,
+for every n = 3..128.
+==============================================================================
+  n=   4: distinct sets=    2 entries=     4 max_span=3 weight(max_span)=2
+  n=  29: distinct sets=  352 entries=   729 max_span=28 weight(max_span)=26
+  n=  54: distinct sets= 1327 entries=  2704 max_span=53 weight(max_span)=52
+  n=  79: distinct sets= 2927 entries=  5929 max_span=78 weight(max_span)=76
+  n= 104: distinct sets= 5152 entries= 10404 max_span=103 weight(max_span)=102
+  n= 128: distinct sets= 7876 entries= 15876 max_span=127 weight(max_span)=126
+
+dyadic families n=64 (bitset route):
+  all k checked
+dyadic families n=128 (bitset route):
+  all k checked
+n=32: span histogram re-derived, max span 31 weight 30; count of span values = 30
+n=64: span histogram re-derived, max span 63 weight 62; count of span values = 62
+n=128: span histogram re-derived, max span 127 weight 126; count of span values = 126
+n=32: matches multiset_census_n128.txt: max span 31, weight 30
+n=64: matches multiset_census_n128.txt: max span 63, weight 62
+n=128: matches multiset_census_n128.txt: max span 127, weight 126
+
+INDEPENDENT ROUTE: ALL CHECKS PASSED
