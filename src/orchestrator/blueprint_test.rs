@@ -359,3 +359,130 @@ fn a_goal_left_blocked_by_its_claims_is_not_a_decomposition_problem() {
         "the reader should be sent to what the goal rests on: {rendered}"
     );
 }
+
+/// The ranking is Scholze's criterion, and the criterion is about *load*.
+///
+/// He states it as a rule about what to formalise — "as it will be used as a
+/// black box, a mistake in this proof could remain uncaught" — and prices its
+/// absence against himself: an argument that "passed judgment of top
+/// mathematicians, but then it turned out to contain a fatal mistake". What
+/// makes a node dangerous is how many other nodes cite it, not how interesting
+/// it is.
+#[test]
+fn the_verification_queue_is_ordered_by_what_rests_on_each_node() {
+    let root = workspace("targets");
+    claim(&root, "wide", "id: wide\nstatement: the estimate\nstatus: proved\n");
+    claim(&root, "narrow", "id: narrow\nstatement: a side fact\nstatus: proved\n");
+    skeleton(
+        &root,
+        "main",
+        "goal: the theorem\nimplies: the lemmas combine\nrests-on: wide\n",
+        &[
+            "id: one\nlemma: the first step\nstatus: open\ndischarged-by: wide\nnext: expand\n",
+            "id: two\nlemma: the second step\nstatus: open\ndischarged-by: wide\nnext: expand\n",
+            "id: three\nlemma: the third step\nstatus: open\ndischarged-by: narrow\nnext: expand\n",
+        ],
+    );
+
+    let targets = collect(&root).targets();
+    let ids: Vec<&str> = targets.iter().map(|target| target.id.as_str()).collect();
+
+    assert_eq!(
+        ids.first(),
+        Some(&"wide"),
+        "three nodes rest on `wide` and one on `narrow`: {ids:?}"
+    );
+    let wide = targets.first().expect("the queue is not empty");
+    assert_eq!(wide.load, 3);
+    assert!(wide.established, "the run is already building on it");
+}
+
+/// The two kinds of candidate are not interchangeable, and the order between
+/// them is the argument rather than a tie-break.
+///
+/// A node the run treats as settled is being used as a black box right now, so
+/// a mistake in it compounds silently. An open node has to be *proved* before
+/// the kernel can check it, and the kernel is an expensive way to discover that
+/// nobody has proved it yet.
+#[test]
+fn an_established_node_outranks_an_open_one_that_more_rests_on() {
+    let root = workspace("established-first");
+    claim(&root, "held", "id: held\nstatement: the estimate\nstatus: proved\n");
+    skeleton(
+        &root,
+        "main",
+        "goal: the theorem\nimplies: the lemmas combine\n",
+        &[
+            "id: open-hub\nlemma: the hub\nstatus: open\nnext: expand\n",
+            "id: a\nlemma: first user\nstatus: open\ndischarged-by: open-hub\nnext: expand\n",
+            "id: b\nlemma: second user\nstatus: open\ndischarged-by: open-hub\nnext: expand\n",
+            "id: c\nlemma: third user\nstatus: open\ndischarged-by: held\nnext: expand\n",
+        ],
+    );
+
+    let targets = collect(&root).targets();
+    let first = targets.first().expect("the queue is not empty");
+
+    assert_eq!(
+        first.id, "held",
+        "an established node comes first even though more rests on the open hub"
+    );
+}
+
+/// A node the kernel has already checked is not a candidate, and neither is one
+/// nothing could establish.
+#[test]
+fn the_queue_holds_only_nodes_a_check_could_settle() {
+    let root = workspace("queue-membership");
+    // A real passing verdict, not a claim that says `formalised`. The ledger
+    // downgrades the second to `asserted`, so a test that wrote only the word
+    // would be asserting that an unchecked claim is excluded — the opposite of
+    // what this is about.
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))
+        .expect("the verdict directory is creatable");
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_done.lean.json"),
+        r#"{"file":"code/done.lean","compiled":true,"sorries":[],
+            "axioms":["'done' depends on axioms: [propext]"],"verified":true}"#,
+    )
+    .expect("the verdict is writable");
+    claim(
+        &root,
+        "done",
+        "id: done\nstatement: checked already\nstatus: formalised\nformalisation: code/done.lean\n",
+    );
+    skeleton(
+        &root,
+        "main",
+        "goal: the theorem\nimplies: the lemmas combine\n",
+        &[
+            "id: blocked\nlemma: rests on an open lemma\nstatus: open\ndischarged-by: leaf\nnext: expand\n",
+            "id: leaf\nlemma: the open leaf\nstatus: open\nnext: expand\n",
+            "id: gone\nlemma: broken\nstatus: refuted\nnext: expand\n",
+        ],
+    );
+
+    let ids: Vec<String> = collect(&root)
+        .targets()
+        .into_iter()
+        .map(|target| target.id)
+        .collect();
+
+    assert!(
+        !ids.iter().any(|id| id == "done"),
+        "the kernel has already spoken: {ids:?}"
+    );
+    assert!(
+        !ids.iter().any(|id| id.ends_with("/blocked")),
+        "a blocked node cannot be proved before the thing under it is: {ids:?}"
+    );
+    assert!(
+        !ids.iter().any(|id| id.ends_with("/gone")),
+        "a refuted node is false: {ids:?}"
+    );
+    assert!(
+        ids.iter().any(|id| id.ends_with("/leaf")),
+        "the ready leaf is a candidate: {ids:?}"
+    );
+}

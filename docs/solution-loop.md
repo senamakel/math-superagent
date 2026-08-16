@@ -13,7 +13,8 @@ next, and why each threshold is the number it is, is in
                                 └─ body ─> attempt ──┬─> reflect ────────┐
                                    ▲                 ├─> patterns ───────┤
                                    │                 ├─> invention ──────┤
-                                   │                 ├─> refute ─────────┼─> merge
+                                   │                 ├─> refute ─────────┤
+                                   │                 ├─> verify ─────────┼─> merge
                                    │                 ├─> library (opens) ┤     │
                                    │                 └─> goals ─> cadence┘     │
                                    │                                        route
@@ -24,9 +25,11 @@ next, and why each threshold is the number it is, is in
 
 Three stages, and the middle one is one node. **Research** runs once: establish
 what the workspace already has, then go looking for what it does not.
-**Attempt** is one attempt. **Evaluation** asks six questions at the same time
-and merges their answers before anything routes. Five are about the attempt;
-the sixth is not, and is described below.
+**Attempt** is one attempt. **Evaluation** asks seven questions at the same time
+and merges their answers before anything routes. Five are about the attempt. The
+other two are about the mathematics — is the statement true, and what does the
+kernel make of the proposition the most rests on — and are the only scheduled
+uses of the engines this image carries. Both are described below.
 
 Three nodes sit on the way *out*, after the loop and before the report, and the
 order between them is deliberate.
@@ -112,6 +115,71 @@ two ledgers holding statements somebody committed to proving — the open gaps o
 those are exactly the propositions worth breaking. Its findings are read back
 off disk beside the refuter's report, on the same argument the reduction arm
 makes: a role's prose is a summary of its own work and the record is the work.
+
+`verify` is the seventh, and it is the same argument one engine over. `lean.rs`
+made a kernel check something the runtime *reads* rather than something a role
+reports; it left `lean_check` granted to `lean_prover` and `lean_prover`
+delegated to when somebody remembered. So what got formalised was whatever a
+model found interesting, and across three live calibration runs the answer was
+nothing at all — the strongest artifact this runtime can produce, never once
+produced. This arm schedules it.
+
+Three decisions make it affordable on a box with an eight-gigabyte container
+cap, and they are the same decision seen from three sides.
+
+**It picks rather than sweeps.** `Blueprint::targets` ranks the statement graph
+by Scholze's criterion — *"as it will be used as a black box, a mistake in this
+proof could remain uncaught"* — which is direct in-degree, with what the run is
+already building on ahead of what it has yet to prove. Direct rather than
+transitive, because a node is used as a black box by the nodes that cite it by
+name; a transitive count would rank a leaf under a long chain above a lemma six
+arguments depend on. He is his own evidence: a weight-monodromy proof that
+"passed judgment of top mathematicians, but then it turned out to contain a
+fatal mistake". Perelman prices the absence at five years and three teams.
+
+Gauss is the other answer to the same question and the reason this one is
+stated as a choice rather than a limit — thousands of concurrent agents, each
+with its own Lean runtime, multiple terabytes of cluster RAM, and 25k lines of
+Lean for the strong Prime Number Theorem in three weeks. Ranking is what fits
+in one container instead. What it gives up is the tail, so the queue is rendered
+into `research/BLUEPRINT.md` under *Verify these first*: a bound that drops work
+silently is the failure this repository keeps writing down.
+
+**It asks for something different the second time.** A node that survived a
+proof attempt is asked to be *decomposed* — name the sub-lemmas, state each in
+Lean, prove what you can, leave `sorry` in what you cannot, and check the
+combining step so the shape of the argument is verified while its leaves are
+open. The unproved leaves are written as `gap` blocks, so they become blueprint
+nodes, and a leaf whose dependencies are settled returns through this same
+ranking as `ready` on a later pass. That is Seed-Prover's recursive sketch —
+decompose what is too hard, prove the pieces separately — running at the speed
+of the loop instead of inside one turn, which is what makes each step of it
+checkpointable and each sub-lemma visible to every other role.
+
+**It stops.** `verify::MAX_ATTEMPTS` is two, because there are two things to ask
+and no third: a node that survived a proof attempt and a decomposition is one
+this run does not know how to break down, and the honest move is to record that
+and spend the next check further down the ranking. The attempt is recorded
+*before* the prover is delegated to — the ordinary way a turn ends here is the
+run cap killing it, which leaves no report, so a record written afterwards would
+not exist and the same node would rank first every pass for the rest of the run.
+A record that cannot be written means no delegation at all: an attempt the
+runtime cannot count is one it cannot stop repeating.
+
+Choosing and recording are one critical section under `worklock::writes`, taken
+at the arm's boundary and released before the delegation. Schools share a
+workspace and run this arm concurrently, so without the lock two of them read
+the same ranking, see the same zero attempts against the same top-ranked node,
+and both spend the scarcest budget in the run proving it. The lock is released
+before the prover runs, because the rule that keeps it from deadlocking is that
+nothing below a tool-call boundary may take it again.
+
+What the kernel said is read back off disk, beside the prover's report and not
+instead of it. The verdicts say what was established; the report says what the
+prover believes the Lean statement *means*, which is the judgement no file
+records and the one place this arm can still be wrong. A Lean proof of a
+neighbouring statement is worth less than no proof, because it reads as a check
+that passed.
 
 One arm is deliberately not awaited. `library` starts a literature sweep and
 returns immediately, because a paper is no less relevant for being found a cycle

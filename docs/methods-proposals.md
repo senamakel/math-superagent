@@ -55,7 +55,7 @@ moves in the Tao sample and concludes "unclear, and that is the finding".
 Scholze supplies the answer: simplification is a *by-product of being forced to
 name the hypotheses actually used*, not an act of taste.
 
-## 2. Formalisation targeting off the blueprint's in-degree
+## 2. Formalisation targeting off the blueprint's in-degree — **built**
 
 **Evidence:** Scholze's stated criterion for what to formalise — "As it will be
 used as a black box, a mistake in this proof could remain uncaught" — and his
@@ -74,6 +74,18 @@ standing below `Formalised`.
 
 **Cost:** very small — a sort over a graph already built, and a section in a
 file already written.
+
+**Built as `Blueprint::targets`, `orchestrator::verify`, and the `eval_verification`
+arm.** The sort and the section came in as described. What the estimate missed
+is that a priority order buys nothing while the tool it prioritises is only ever
+*delegated to* — the gap above says "there is no priority order", and the larger
+half of the gap was that there was no scheduled caller either. So the arm is the
+build: one target per pass, ranked; a second pass on a node that failed asks for
+a decomposition rather than another proof; two attempts and it moves on.
+[`solution-loop.md`](solution-loop.md) has the three decisions and what each
+costs. One pre-existing fault fell out of writing the tests: an entailed
+`formalised` claim had its `Verified` standing overwritten with `Established`,
+so the kernel would be sent back to re-check what it had already accepted.
 
 ## 3. Repair the refuted statement instead of filing it
 

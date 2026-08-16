@@ -47,6 +47,14 @@ pub(super) const BLUEPRINT_PATH: &str = "research/BLUEPRINT.md";
 /// Nodes one section lists before it is summarised.
 const MAX_ROWS: usize = 40;
 
+/// Verification targets one briefing names.
+///
+/// Three rather than forty, and the difference in kind is the point. The ready
+/// list is a menu a planning role chooses from; this is a queue something acts
+/// on, one entry per pass. A queue nobody can get to the end of is a list, and
+/// the ranking below is what makes the first three the right three.
+const MAX_TARGETS: usize = 3;
+
 /// Characters one rendered statement is held to.
 const FIELD_CHARS: usize = 140;
 
@@ -131,6 +139,34 @@ struct Node {
     needs: Vec<String>,
     /// Where it stands, before propagation.
     standing: Standing,
+}
+
+/// One node worth handing to the kernel, and why it is worth it.
+///
+/// Ranked rather than listed, because a runtime that formalised everything
+/// would formalise nothing: Mathlib elaboration is the most expensive thing
+/// this image can run, and the budget buys a handful of checks per run. Which
+/// handful is therefore the whole decision, and [`Blueprint::targets`] makes it
+/// from the graph instead of from whichever statement a role found interesting.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(super) struct Target {
+    /// The node key, which is also how its Lean source is named.
+    pub(super) id: String,
+    /// The mathematics to state in Lean.
+    pub(super) statement: String,
+    /// The file the statement is written down in today.
+    pub(super) home: String,
+    /// How many nodes rest directly on this one.
+    pub(super) load: usize,
+    /// Whether the run is already building on it.
+    ///
+    /// The distinction Scholze's criterion turns on. A node the run treats as
+    /// settled is being used as a black box, so a mistake in it is invisible
+    /// until something above it fails — and nothing above it will fail, because
+    /// everything above it is being built on the same belief. An open node is a
+    /// different job: it has to be *proved* before it can be checked, and the
+    /// kernel is an expensive way to discover that nobody has proved it yet.
+    pub(super) established: bool,
 }
 
 /// The whole statement graph, with the faults found building it.
@@ -222,14 +258,24 @@ pub(super) fn build(
                 statement: claim.statement.clone(),
                 home: claim.source.clone(),
                 needs: Vec::new(),
-                // The entailed reading first: a claim the library derives is
-                // settled whatever word its own block carries, and taking the
-                // block's word here would discard the free upgrade before it
-                // ever reached a planning role.
-                standing: if closure.is_covered(&claim.id) {
-                    Standing::Established
-                } else {
-                    claim_standing(claim.status)
+                // The stronger of the two readings, never the entailed one
+                // outright. A claim the library derives is settled whatever
+                // word its own block carries, and dropping the block's word
+                // would discard the free upgrade before it reached a planning
+                // role — but entailment is an upgrade, and an upgrade that can
+                // *lower* a standing is a bug. A `formalised` claim that the
+                // library also entails was read as merely established, which
+                // sends the kernel back to re-check a lemma it has already
+                // accepted and costs the run its scarcest budget on a settled
+                // question. `Standing` is ordered strongest-first, so the
+                // minimum is the join.
+                standing: {
+                    let stated = claim_standing(claim.status);
+                    if closure.is_covered(&claim.id) {
+                        stated.min(Standing::Established)
+                    } else {
+                        stated
+                    }
                 },
             },
         );
@@ -455,6 +501,67 @@ impl Blueprint {
         ready
     }
 
+    /// How many nodes rest directly on `id`.
+    ///
+    /// Direct rather than transitive, and that is the reading of the criterion
+    /// rather than an approximation of it. What makes an unchecked lemma
+    /// dangerous is being *used as a black box* — cited by name, its proof not
+    /// re-read — and a node is used as a black box by its immediate dependants.
+    /// A transitive count would rank a leaf under a long chain above a lemma
+    /// six separate arguments cite, which inverts the thing being measured.
+    fn load(&self, id: &str) -> usize {
+        self.nodes
+            .values()
+            .filter(|node| node.needs.iter().any(|need| need == id))
+            .count()
+    }
+
+    /// The nodes a kernel check would buy the most, best first.
+    ///
+    /// Scholze states the criterion and is his own evidence for it: a proof
+    /// used as a black box is one whose mistake stays uncaught, and his
+    /// weight-monodromy argument "passed judgment of top mathematicians, but
+    /// then it turned out to contain a fatal mistake". Perelman prices the
+    /// absence of the check at five years and three independent teams.
+    ///
+    /// Three keys, in this order, and each earns its place:
+    ///
+    /// 1. **Established before ready.** A node the run is already building on
+    ///    is the one whose mistake is compounding right now. An open one is
+    ///    worth the kernel later, once somebody has a proof to check.
+    /// 2. **Load, descending.** How much of the argument a mistake would take
+    ///    with it.
+    /// 3. **Id.** So two equal targets order the same way on every derivation,
+    ///    which is what lets a caller treat the list as a queue.
+    ///
+    /// `Verified` is absent because the kernel has already spoken. `Blocked`,
+    /// `Refuted` and `Abandoned` are absent for the same reason in three
+    /// different keys: there is nothing here a check could establish. A blocked
+    /// node cannot be proved before the thing under it is, a refuted one is
+    /// false, and an abandoned one buys the run nothing when proved.
+    pub(super) fn targets(&self) -> Vec<Target> {
+        let mut targets: Vec<Target> = self
+            .nodes
+            .values()
+            .filter(|node| matches!(node.standing, Standing::Established | Standing::Ready))
+            .map(|node| Target {
+                id: node.id.clone(),
+                statement: node.statement.clone(),
+                home: node.home.clone(),
+                load: self.load(&node.id),
+                established: node.standing == Standing::Established,
+            })
+            .collect();
+        targets.sort_by(|left, right| {
+            right
+                .established
+                .cmp(&left.established)
+                .then(right.load.cmp(&left.load))
+                .then(left.id.cmp(&right.id))
+        });
+        targets
+    }
+
     /// How many nodes stand at each level, for the judge's evidence briefing.
     ///
     /// Returned as a tuple rather than a map because the caller wants exactly
@@ -543,6 +650,7 @@ impl Blueprint {
         }
         self.append_cycles(&mut out);
         self.append_ready(&mut out);
+        self.append_targets(&mut out);
         self.append_table(&mut out);
         self.append_dangling(&mut out);
         out
@@ -625,6 +733,53 @@ impl Blueprint {
         });
         out.push_str(&rows);
         out.push_str(&budget::elided(dropped, super::backward::BACKWARD_DIR));
+        out.push('\n');
+    }
+
+    /// Lists what the kernel should be handed next.
+    ///
+    /// Written into the derived file rather than into [`Self::briefing`], which
+    /// is what reaches the next attempt. The attempt's job is the mathematics;
+    /// the verification arm reads this queue and acts on it, and an attempt
+    /// told to formalise as well would spend a solving budget on a job already
+    /// scheduled. What the attempt is told is the *standing*, which is where a
+    /// passed check shows up.
+    fn append_targets(&self, out: &mut String) {
+        let targets = self.targets();
+        if targets.is_empty() {
+            return;
+        }
+        out.push_str(
+            "## Verify these first\n\nRanked by how much of the argument rests on each, with what \
+             the run is already building on ahead of what it has yet to prove. An unchecked lemma \
+             three other nodes cite is used as a black box, so a mistake in it stays uncaught and \
+             everything above it inherits it. This is the queue the verification arm works, one \
+             entry per pass.\n\n",
+        );
+        let listed: Vec<&Target> = targets.iter().take(MAX_TARGETS).collect();
+        let (rows, dropped) = budget::listed(&listed, MAX_TARGETS, |rows, target| {
+            let _ = writeln!(
+                rows,
+                "- `{}` — {} node(s) rest on it, {} — {}",
+                target.id,
+                target.load,
+                if target.established {
+                    "and the run is already building on it"
+                } else {
+                    "and it is open, so it has to be proved before it can be checked"
+                },
+                cell(&truncate(&target.statement, FIELD_CHARS))
+            );
+        });
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, BLUEPRINT_PATH));
+        if targets.len() > MAX_TARGETS {
+            let _ = writeln!(
+                out,
+                "\n_{} further candidate(s) below these, in the table._",
+                targets.len() - MAX_TARGETS
+            );
+        }
         out.push('\n');
     }
 

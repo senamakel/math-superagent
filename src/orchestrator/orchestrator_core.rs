@@ -54,6 +54,7 @@ mod teams;
 mod text;
 mod threads;
 mod vector;
+mod verify;
 mod weakened;
 mod worklock;
 mod workflow;

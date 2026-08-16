@@ -120,6 +120,14 @@ The runtime has twenty-two roles plus an explicit solution loop.
   records it as `asserted` and says why. Requiring the `#print axioms` line is
   strict on purpose: a proof whose foundations are unstated has told the runtime
   nothing. The tool reaches this role and nothing else.
+
+  Which statement it is handed is no longer left to whoever remembered to ask.
+  The `verify` evaluation arm schedules one target per pass off the statement
+  graph's ranking, records the attempt under `code/out/verify/` before
+  delegating, and asks a node that survived a proof attempt to be *decomposed*
+  instead — its unproved sub-lemmas written as `gap` blocks, so the graph
+  carries them and the run comes back to them on its own.
+  [`solution-loop.md`](solution-loop.md) has why it picks rather than sweeps.
 - The reflection agent judges one attempt and extracts one lesson. It has no
   research or execution tools on purpose: a judge that can start solving stops
   judging. Its hardest job is refusing to call an unverified answer solved.

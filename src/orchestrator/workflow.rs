@@ -48,20 +48,28 @@ pub(super) const THRESHOLDS_ARG: &str = "thresholds";
 
 /// The evaluation arms, and the barrier they converge on.
 ///
-/// Six questions about one attempt, asked at once. They fan out from the
+/// Seven questions about one attempt, asked at once. They fan out from the
 /// attempt because none of them reads another's output — each reads the same
 /// report — so a pass costs the slowest of them rather than the sum, which is
 /// what a serial chain of the same five cost.
+///
+/// Two of them are not questions about the attempt at all, and both are here
+/// for the same reason: they are the only scheduled uses of an engine every
+/// other role has to remember to ask for. `eval_refutation` attacks the
+/// statement the run is trying to prove; `eval_verification` hands the
+/// statement graph's first entry to the Lean kernel. Neither reads another arm,
+/// and neither may delay one.
 ///
 /// The backward arm is absent from this list because it is two nodes rather
 /// than one: the goals child decides whether this cycle decomposes, and
 /// `goal_apply` folds what it decided back onto the loop's own path. It is the
 /// branch's last node that converges, so `goal_apply` joins the list below.
-pub(super) const EVAL_ARMS: [&str; 4] = [
+pub(super) const EVAL_ARMS: [&str; 5] = [
     "reflect",
     "eval_patterns",
     "eval_invention",
     "eval_refutation",
+    "eval_verification",
 ];
 
 /// The node that stops the work beside the run, once the run is over.
@@ -636,6 +644,10 @@ pub(super) fn solution_loop_for(
         // ever puts. It belongs in the fan-out rather than beside it because it
         // reads the same attempt, reads no other arm, and must not delay one.
         step_with("eval_refutation", ATTEMPT_OUTPUT, &Value::Null),
+        // The other one that is not an assessment. It asks what the kernel
+        // makes of the statement the graph ranks first — the one thing in the
+        // fan-out whose answer is not a model's judgement of a model's work.
+        step_with("eval_verification", ATTEMPT_OUTPUT, &Value::Null),
         step_with(LIBRARY_ARM, ATTEMPT_OUTPUT, &Value::Null),
         goals_call(GOALS_NODE, &json!(ATTEMPT_OUTPUT), thresholds),
         step_as(
