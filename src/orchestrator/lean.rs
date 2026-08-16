@@ -161,6 +161,28 @@ pub struct Verdict {
     pub(super) sorries: Vec<String>,
     /// Every `#print axioms` line, verbatim.
     pub(super) axioms: Vec<String>,
+    /// Declarations whose statement is `X = X`.
+    ///
+    /// The one wrong statement a kernel check cannot object to on its own, and
+    /// the one a Lean-first mandate invites — see [`super::lemmas::tautologies`]
+    /// for the live instance that put this here.
+    pub(super) tautologies: Vec<String>,
+    /// Modules the file imported that this Mathlib does not have.
+    ///
+    /// Parsed rather than left inside the error text, because it is the one
+    /// compile failure whose fix is mechanical and whose message is opaque.
+    /// Lean reports it as a missing `.olean` *object file*, which reads like a
+    /// broken toolchain and is nothing of the kind: the import names a module
+    /// that does not exist. Two of the seven failures in the first bench run
+    /// were this, and both files were otherwise correct.
+    pub(super) missing_modules: Vec<String>,
+    /// Each theorem the file declares, as its signature.
+    ///
+    /// The companion to `tautologies` above, and the two were found
+    /// independently against the same failure: a file the kernel accepts
+    /// that does not state the claim. That one refuses the narrowest
+    /// mechanically-empty statement; this one shows a reader every
+    /// statement, including the ones no rule can judge.
     /// Each theorem the file declares, as its signature.
     ///
     /// The field the first version of this struct did not have, and a live run
@@ -219,6 +241,7 @@ impl Verdict {
     /// nothing at all about a hole in the proof.
     pub(super) fn outcome(&self) -> Outcome {
         let structurally_sound = self.compiled
+            && self.tautologies.is_empty()
             && self.sorries.is_empty()
             && !self.axioms.is_empty()
             && !self.axioms.iter().any(|line| line.contains("sorryAx"));
@@ -303,6 +326,16 @@ impl Verdict {
     /// knows what to write next, and one reading "not verified" does not.
     pub(super) fn objection(&self) -> Option<String> {
         if !self.compiled {
+            if !self.missing_modules.is_empty() {
+                return Some(format!(
+                    "`{}` imports {}, which this Mathlib does not have — the error names a \
+                     missing `.olean`, but the toolchain is fine and the import is wrong. Find \
+                     the real module with `ls /opt/mathlib4/Mathlib/<Area>` or \
+                     `grep -rl \"theorem <name>\" /opt/mathlib4/Mathlib` before guessing again",
+                    self.file,
+                    names(&self.missing_modules)
+                ));
+            }
             return Some(format!("`{}` does not compile", self.file));
         }
         if !self.sorries.is_empty() {
@@ -310,6 +343,15 @@ impl Verdict {
                 "`{}` compiles with {} `sorry` still in it",
                 self.file,
                 self.sorries.len()
+            ));
+        }
+        if !self.tautologies.is_empty() {
+            return Some(format!(
+                "`{}` states {}, whose two sides are identical — a theorem of the form `X = X` \
+                 compiles, needs no axiom and proves nothing, so it cannot carry a claim. State \
+                 what the value *is a consequence of*, not that it equals itself",
+                self.file,
+                names(&self.tautologies)
             ));
         }
         if self.axioms.is_empty() {
@@ -359,6 +401,8 @@ impl Verdict {
             "sorries": self.sorries,
             "axioms": self.axioms,
             "declarations": self.declarations,
+            "missing_modules": self.missing_modules,
+            "tautologies": self.tautologies,
             "cited": self.cited_axioms(),
             "verified": self.verified(),
             "outcome": self.outcome().as_str(),
@@ -379,6 +423,8 @@ impl Verdict {
             sorries: strings(value.get("sorries")),
             axioms: strings(value.get("axioms")),
             declarations: strings(value.get("declarations")),
+            missing_modules: strings(value.get("missing_modules")),
+            tautologies: strings(value.get("tautologies")),
         })
     }
 
@@ -614,6 +660,7 @@ fn declarations(source: &str) -> Vec<String> {
 fn parse(file: &str, source: &str, exit_ok: bool, output: &str) -> Verdict {
     let mut sorries = Vec::new();
     let mut axioms = Vec::new();
+    let mut missing_modules = Vec::new();
     let mut errored = false;
     for line in output.lines() {
         let trimmed = line.trim();
@@ -625,6 +672,15 @@ fn parse(file: &str, source: &str, exit_ok: bool, output: &str) -> Verdict {
             axioms.push(trimmed.to_string());
         } else if trimmed.contains("error:") {
             errored = true;
+            // `object file '…/Mathlib/Data/Nat/Parity.olean' of module
+            // Mathlib.Data.Nat.Parity does not exist`
+            if trimmed.contains("does not exist")
+                && let Some((_, after)) = trimmed.split_once("of module ")
+                && let Some(module) = after.split_whitespace().next()
+                && !missing_modules.iter().any(|seen| seen == module)
+            {
+                missing_modules.push(module.to_string());
+            }
         }
     }
     Verdict {
@@ -637,6 +693,8 @@ fn parse(file: &str, source: &str, exit_ok: bool, output: &str) -> Verdict {
         sorries,
         axioms,
         declarations: declarations(source),
+        tautologies: super::lemmas::tautologies(source),
+        missing_modules,
     }
 }
 

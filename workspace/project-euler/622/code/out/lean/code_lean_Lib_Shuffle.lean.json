@@ -1,0 +1,12 @@
+{
+  "axioms": [
+    "'OutShuffle.outShuffle' depends on axioms: [propext, Quot.sound]",
+    "'OutShuffle.s' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "file": "code/lean/Lib/Shuffle.lean",
+  "outcome": "verified",
+  "sorries": [],
+  "verified": true
+}

@@ -1,0 +1,38 @@
+========================================================================
+PART A: direct simulation — reproduce every stated worked example
+========================================================================
+s(52) [direct simulation] = 8
+s(86) [direct simulation] = 8
+even n with s(n)=8 [direct simulation] = [18, 52, 86, 256]
+sum of even n with s(n)=8 [direct simulation] = 412
+Worked examples reproduced by DIRECT SIMULATION: 8, 8, 412.
+
+========================================================================
+PART B: cross-check s(n) == ord_{n-1}(2) on even decks 2..80
+========================================================================
+  n=  2: s(n)=1  ord_1(2)=1  match=True
+  n=  4: s(n)=2  ord_3(2)=2  match=True
+  n=  6: s(n)=4  ord_5(2)=4  match=True
+  n=  8: s(n)=3  ord_7(2)=3  match=True
+  n= 10: s(n)=6  ord_9(2)=6  match=True
+  n= 12: s(n)=10  ord_11(2)=10  match=True
+  n= 14: s(n)=12  ord_13(2)=12  match=True
+  n= 16: s(n)=4  ord_15(2)=4  match=True
+  n= 18: s(n)=8  ord_17(2)=8  match=True
+  n= 20: s(n)=18  ord_19(2)=18  match=True
+All even n in 2..80 match: brute-force out-shuffle order == ord_{n-1}(2).
+
+========================================================================
+PART C: answer — enumerate divisors of 2^60 - 1 with ord_m(2)=60
+========================================================================
+N = 2^60 - 1 = 1152921504606846975
+factorisation of N: {3: 2, 5: 2, 7: 1, 11: 1, 13: 1, 31: 1, 41: 1, 61: 1, 151: 1, 331: 1, 1321: 1}
+prime divisors of 60: [2, 3, 5]
+total divisors of N: 4608
+count C of m with ord_m(2)=60: 4456
+sum S of those m: 3010983666182119516
+ANSWER = S + C = 3010983666182123972
+independent direct-ord route: C = 4456  S = 3010983666182119516
+Two independent routes agree exactly.
+
+FINAL ANSWER = 3010983666182123972
