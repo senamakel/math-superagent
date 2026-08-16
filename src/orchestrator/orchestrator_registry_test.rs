@@ -664,26 +664,29 @@ fn every_built_in_prompt_is_present_and_bounded() {
 fn the_method_policy_leads_every_assembled_prompt() {
     use super::{SHARED_METHOD_POLICY, workspace_prompt};
 
-    // The provider cache is keyed on the exact leading prefix, so the one part
-    // every role shares has to come first or none of them share a prefix.
-    let assembled = workspace_prompt("ROLE BODY", "\n\nshared ctx", "\n\nrole ctx");
+    // The provider cache is keyed on the exact leading prefix, so the parts are
+    // ordered by how often each *changes*, not by topic. The method policy is
+    // identical for every role and leads; a role's own guidance is fixed for the
+    // workspace, so it sits with the built-in prompt it continues; the workspace
+    // state moves on every write, so it goes last and takes the cache miss
+    // alone.
+    //
+    // These were once the other way round, and a single `record_entry` re-sent
+    // the guidance uncached for a change unrelated to it.
+    let assembled = workspace_prompt("ROLE BODY", "\n\nworkspace ctx", "\n\nrole guidance");
     assert!(
         assembled.starts_with(SHARED_METHOD_POLICY.trim()),
         "the shared policy must lead"
     );
     assert!(assembled.contains("ROLE BODY"));
-    // The gradient is volatility, not topic. A role's own guidance is fixed for
-    // the workspace, so it sits with the built-in prompt it continues; the
-    // workspace state moves on every write, so it goes last and takes the cache
-    // miss alone. These were once the other way round, and a single
-    // `record_entry` re-sent the guidance uncached for a change unrelated to it.
     assert!(
-        assembled.contains("ROLE BODY\n\nrole ctx"),
+        assembled.contains("ROLE BODY\n\nrole guidance"),
         "the role's guidance belongs with the prompt it continues: {assembled}"
     );
     assert!(
-        assembled.ends_with("shared ctx"),
-        "the most volatile block must be last: {assembled}"
+        assembled.ends_with("workspace ctx"),
+        "the most volatile block must be last, or every call behind it loses its \
+         cached prefix: {assembled}"
     );
     // Trimmed, so an editor adding a trailing newline to a prompt file cannot
     // silently invalidate every cached prefix.

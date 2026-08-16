@@ -7,6 +7,7 @@ use super::{
     COMMAND_LOG, COMMAND_LOG_ENTRY_BYTES, COMMAND_LOG_MARK, COMMAND_LOG_MAX_BYTES, Capture,
     ExecuteCommand, MAX_COMMAND_OUTPUT_BYTES, clipped, trimmed,
 };
+use crate::agent::{Tool, ToolCall};
 
 /// A workspace of this test's own, so one test's log is not another's.
 fn workspace_named(name: &str) -> std::path::PathBuf {
@@ -222,4 +223,96 @@ fn a_clipped_stream_keeps_the_conclusion() {
     assert!(short.len() <= COMMAND_LOG_ENTRY_BYTES + 64);
     assert!(short.contains("[final] rank <= 3"), "the conclusion survives");
     assert!(short.starts_with("[earlier output dropped]"), "and the cut is stated");
+}
+
+
+/// The two commands a live candidate actually ran, and what it may run instead.
+///
+/// Within a minute of starting, candidate 03 ran `cat /workspace/CONTEXT.md`
+/// and candidate 01 ran `cd /workspace && python3 code/brute.py` — reading the
+/// trunk's program while its own sat beside it. Nothing failed and nothing was
+/// reported, so its judgement of "its" oracle was quietly about another file.
+#[test]
+fn a_candidates_shell_refuses_the_paths_that_leave_its_checkout() {
+    use super::escapes;
+
+    let checkout = std::path::Path::new("/workspace/attempts/01");
+
+    for observed in [
+        "cat /workspace/CONTEXT.md",
+        "cd /workspace && python3 code/brute.py",
+        "cd /workspace/attempts/02 && cat code/solution.py",
+        "python3 /workspace/code/solution.py",
+        "cp out.txt /workspace/code/out/stolen.txt",
+    ] {
+        assert!(
+            escapes(observed, checkout).is_some(),
+            "`{observed}` leaves the checkout and must be refused"
+        );
+    }
+
+    for allowed in [
+        "python3 code/brute.py",
+        "cd /workspace/attempts/01 && python3 code/solution.py",
+        "cat /workspace/attempts/01/code/out/run.log",
+        "ls -la code/",
+        // Nothing to do with the mount at all.
+        "python3 -c \"print(2+2)\"",
+        "grep -r sieve .",
+    ] {
+        assert_eq!(
+            escapes(allowed, checkout),
+            None,
+            "`{allowed}` is inside the checkout and must be allowed"
+        );
+    }
+}
+
+/// The guard applies to a candidate and to nothing else.
+///
+/// Every ordinary role is told `/workspace` is its working directory, and for
+/// them that is true. Confining them would refuse the documented behaviour.
+#[test]
+fn an_ordinary_roles_shell_is_not_confined() {
+    use super::escapes;
+
+    // The trunk's own root: `/workspace` is not outside `/workspace`.
+    let trunk = std::path::Path::new("/workspace");
+    assert_eq!(escapes("cat /workspace/CONTEXT.md", trunk), None);
+    assert_eq!(escapes("cd /workspace && python3 code/brute.py", trunk), None);
+
+    // And a host path — every unit test — is never treated as the mount.
+    let host = std::path::Path::new("/tmp/exec-test-somewhere");
+    assert_eq!(escapes("cat /workspace/CONTEXT.md", host), None);
+}
+
+#[tokio::test]
+async fn a_confined_shell_names_the_relative_path_that_works() {
+    // A refusal that does not say what to do instead costs the turn twice.
+    let tool = ExecuteCommand::confined_to(
+        std::path::PathBuf::from("/workspace/attempts/01"),
+        Duration::from_secs(5),
+    );
+    let error = tool
+        .call(
+            &(),
+            ToolCall {
+                id: "1".into(),
+                name: "execute_command".into(),
+                invalid: None,
+                arguments: serde_json::json!({
+                    "command": "cat /workspace/code/solution.py",
+                    "complexity": "constant",
+                    "complexity_class": "constant"
+                }),
+            },
+        )
+        .await
+        .expect_err("a command leaving the checkout is refused");
+    let message = error.to_string();
+    assert!(message.contains("/workspace/code/solution.py"), "{message}");
+    assert!(
+        message.contains("code/solution.py") && message.contains("relative"),
+        "the refusal must name the path that works: {message}"
+    );
 }

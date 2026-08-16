@@ -204,6 +204,7 @@ fn register_code_writing_agents(
             parts.workspace,
             parts.documents,
             name,
+            false,
         );
         if name == lean::LEAN_ROLE {
             register_resilient(
@@ -255,7 +256,15 @@ fn register_candidate_agents(
         let documents = WorkspaceDocuments::new(checkout.clone())?;
         let role = candidates::role_for(&id);
         let mut harness =
-            build_tool_builder_harness(parts.model, parts.budget, parts.tracer, &checkout, &documents, &role);
+            build_tool_builder_harness(
+                parts.model,
+                parts.budget,
+                parts.tracer,
+                &checkout,
+                &documents,
+                &role,
+                true,
+            );
         // Its own checkpointer, committing its own work tree onto its own
         // branch. Sharing the trunk's would commit a candidate's files to
         // `work`, which is the one thing the branch exists to prevent.
@@ -280,19 +289,22 @@ fn build_tool_builder_harness(
     workspace: &Path,
     documents: &WorkspaceDocuments,
     role: &str,
+    // Whether the shell refuses a command naming a path outside `workspace`.
+    // True only for a candidate, whose root is its own checkout rather than the
+    // mount every other role is told it works in. See `exec::escapes`.
+    confine: bool,
 ) -> AgentHarness<()> {
     let mut harness = specialist_harness(model.clone(), budget, "tool_builder", tracer);
     register_resilient(
         &mut harness,
         Arc::new(WriteToolFile::new(workspace.to_path_buf()).deriving(documents.clone())),
     );
-    register_resilient(
-        &mut harness,
-        Arc::new(ExecuteCommand::new(
-            workspace.to_path_buf(),
-            budget.tool_timeout,
-        )),
-    );
+    let shell = if confine {
+        ExecuteCommand::confined_to(workspace.to_path_buf(), budget.tool_timeout)
+    } else {
+        ExecuteCommand::new(workspace.to_path_buf(), budget.tool_timeout)
+    };
+    register_resilient(&mut harness, Arc::new(shell));
     for tool in documents.tools_as(role) {
         register_resilient(&mut harness, tool);
     }
