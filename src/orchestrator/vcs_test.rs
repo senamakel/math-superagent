@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 use std::path::{Path, PathBuf};
 
 use super::{ATTEMPT_PREFIX, ATTEMPTS_DIR, Git, HISTORY_DIR, NEVER_COMMITTED, TRUNK, exclude_file};

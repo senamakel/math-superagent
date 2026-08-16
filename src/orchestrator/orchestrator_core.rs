@@ -55,6 +55,7 @@ mod teams;
 mod text;
 mod threads;
 mod vcs;
+mod vcs_tool;
 mod vector;
 mod weakened;
 mod worklock;
@@ -316,6 +317,9 @@ const LEAN_PROVER_PROMPT: &str = include_str!("../prompts/lean_prover.md");
 const REFLECTION_PROMPT: &str = include_str!("../prompts/reflection.md");
 
 const JUDGE_PROMPT: &str = include_str!("../prompts/judge.md");
+
+/// The role that decides which candidate solution the run keeps.
+const ARCHIVIST_PROMPT: &str = include_str!("../prompts/archivist.md");
 
 const PATTERN_PROMPT: &str = include_str!("../prompts/pattern_finder.md");
 

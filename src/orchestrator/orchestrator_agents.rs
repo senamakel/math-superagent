@@ -298,6 +298,7 @@ impl SupportAgents<'_> {
 /// Role prompts for the four agents the solution loop adds.
 struct SupportPrompts {
     reflection: String,
+    archivist: String,
     judge: String,
     pattern: String,
     inventor: String,
@@ -601,6 +602,50 @@ fn register_refuter(
 /// Each gets only the tools its role needs: reflection has no research or
 /// execution tools at all, so it cannot drift into solving the problem it is
 /// supposed to be judging.
+/// Assembles the archivist: the one role that may make a candidate's work the
+/// run's work.
+///
+/// What it is *not* given is the shape of the role. No `execute_command`, no
+/// `write_tool_file`, no `apply_patch` — everything it can do to the trunk goes
+/// through `adopt_attempt`, which copies named files out of a branch and
+/// commits them with the reason. A role that could also write files directly
+/// could produce the same trunk state with no branch behind it and no reason
+/// recorded, and the attempts ledger would describe a decision that did not
+/// happen that way.
+///
+/// It gets memory, unlike the judge, because deciding between five candidates
+/// is exactly the judgement that benefits from what earlier candidates on this
+/// problem turned out to be worth.
+fn register_archivist(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: &str,
+) -> Result<()> {
+    let mut archivist = specialist_harness(
+        parts.model_for("archivist"),
+        parts.budget,
+        "archivist",
+        parts.tracer,
+    );
+    for tool in parts.documents.tools_as("archivist") {
+        register_resilient(&mut archivist, tool);
+    }
+    for tool in vcs_tool::VcsTool::all(&parts.workspace) {
+        register_resilient(&mut archivist, tool);
+    }
+    // It records what it decided. A decision nobody wrote down is one the next
+    // attempt re-litigates, which is the whole cost the attempts ledger exists
+    // to stop.
+    for tool in ledger::LedgerTool::writers(parts.documents, "archivist") {
+        register_resilient(&mut archivist, tool);
+    }
+    for tool in board_tool::BoardTool::all(parts.documents, parts.school) {
+        register_resilient(&mut archivist, tool);
+    }
+    register_memory(&mut archivist, &parts.vector_store);
+    subagents.register("archivist", Arc::new(archivist), prompt)
+}
+
 fn register_support_agents(
     subagents: &AsyncSubagentManager,
     parts: &SupportAgents<'_>,
@@ -629,7 +674,16 @@ fn register_support_agents(
     for tool in ledger::LedgerTool::writers(parts.documents, "reflection") {
         register_resilient(&mut reflection, tool);
     }
+    // Reading the candidates, never keeping one. The role that has just seen
+    // what an attempt produced is placed to see what the candidates beside it
+    // produced too, and a lesson drawn from five diffs is worth more than one
+    // drawn from the attempt alone.
+    for tool in vcs_tool::VcsTool::reading(&parts.workspace) {
+        register_resilient(&mut reflection, tool);
+    }
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
+
+    register_archivist(subagents, parts, &prompts.archivist)?;
 
     // The judge is as tool-poor as reflection, and for the same reason: a
     // judge that can start solving stops judging. It reads the workspace only

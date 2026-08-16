@@ -45,6 +45,12 @@ pub(super) const HISTORY_DIR: &str = ".workspace-history";
 /// read at all.
 pub(super) const ATTEMPTS_DIR: &str = "attempts";
 
+/// Where the attempts ledger is rendered.
+///
+/// Beside the branches it is about rather than in the ledger module, because the
+/// ledger is a declaration and this is a fact about the workspace layout.
+pub(super) const ATTEMPTS_PATH: &str = "research/ATTEMPTS.md";
+
 /// The branch the trunk of an investigation lives on.
 pub(super) const TRUNK: &str = "work";
 
@@ -150,7 +156,7 @@ pub(super) struct Git {
     /// candidate's commit lands on `work` and the isolation the branch was for
     /// is silently gone. Letting git discover the checkout's `.git` file is how
     /// it finds the right one.
-    git_dir: Option<PathBuf>,
+    explicit: Option<PathBuf>,
     work_tree: PathBuf,
     /// Where the trunk's history lives, whichever way commands are addressed.
     history: PathBuf,
@@ -161,7 +167,7 @@ impl Git {
     pub(super) fn history(workspace: &Path) -> Self {
         let history = workspace.join(HISTORY_DIR);
         Self {
-            git_dir: Some(history.clone()),
+            explicit: Some(history.clone()),
             work_tree: workspace.to_path_buf(),
             history,
         }
@@ -174,7 +180,7 @@ impl Git {
     /// without anything being pushed anywhere.
     pub(super) fn worktree(workspace: &Path, checkout: &Path) -> Self {
         Self {
-            git_dir: None,
+            explicit: None,
             work_tree: checkout.to_path_buf(),
             history: workspace.join(HISTORY_DIR),
         }
@@ -198,7 +204,7 @@ impl Git {
     /// timeout message when it outlives [`GIT_TIMEOUT`].
     pub(super) async fn run(&self, arguments: &[&str]) -> Result<String> {
         let mut command = tokio::process::Command::new("git");
-        if let Some(git_dir) = self.git_dir.as_ref() {
+        if let Some(git_dir) = self.explicit.as_ref() {
             command
                 .arg("--git-dir")
                 .arg(git_dir)
@@ -416,6 +422,25 @@ impl Git {
     pub(super) async fn changed_files(&self, base: &str, branch: &str) -> Result<Vec<String>> {
         let range = format!("{base}...{branch}");
         let listed = self.run(&["diff", "--name-only", &range]).await?;
+        Ok(listed
+            .lines()
+            .map(str::trim)
+            .filter(|line| !line.is_empty())
+            .map(ToString::to_string)
+            .collect())
+    }
+
+    /// Every file a branch has, whether or not it changed there.
+    ///
+    /// Adoption needs this and the change list separately, because the two
+    /// answer different questions: a path the branch never had cannot be
+    /// adopted at all, and a path it has but did not change can be — it just
+    /// copies what the trunk already had, which is worth saying rather than
+    /// refusing.
+    pub(super) async fn files_on(&self, branch: &str) -> Result<Vec<String>> {
+        let listed = self
+            .run(&["ls-tree", "-r", "--name-only", branch])
+            .await?;
         Ok(listed
             .lines()
             .map(str::trim)

@@ -12,6 +12,7 @@ struct RolePrompts {
     lean_prover: String,
     goals: String,
     reflection: String,
+    archivist: String,
     judge: String,
     pattern: String,
     inventor: String,
@@ -98,6 +99,7 @@ impl RolePrompts {
     fn support(&mut self) -> SupportPrompts {
         SupportPrompts {
             reflection: std::mem::take(&mut self.reflection),
+            archivist: std::mem::take(&mut self.archivist),
             judge: std::mem::take(&mut self.judge),
             pattern: std::mem::take(&mut self.pattern),
             inventor: std::mem::take(&mut self.inventor),
@@ -126,6 +128,7 @@ impl RolePrompts {
             ("symbolic_math", self.symbolic_math.as_str()),
             ("lean_prover", self.lean_prover.as_str()),
             ("reflection", self.reflection.as_str()),
+            ("archivist", self.archivist.as_str()),
             ("judge", self.judge.as_str()),
             ("pattern_finder", self.pattern.as_str()),
             ("inventor", self.inventor.as_str()),
@@ -317,7 +320,15 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // out. It is denied the threads and the approach ledger for the reason
         // the judge is: a role scoring hundreds of candidates must not spend
         // its budget reading about the investigation around it.
-        "searcher" => &["GOAL.md", "research/CLAIMS.md", "CONTEXT.md"],
+        //
+        // The archivist shares the arm because it needs the same three things
+        // for the same reason: what a candidate is judged *against*, and
+        // nothing about how the run arrived here. Which direction the run is
+        // pursuing is not evidence about which of five diffs is correct, and a
+        // role given the method ledger grades method instead of reading the
+        // change in front of it.
+        "searcher" | "archivist" => &["GOAL.md", "research/CLAIMS.md", "CONTEXT.md"],
+
         // The refuter is sent the two ledgers holding statements somebody has
         // committed to proving, because those are the ones worth attacking, and
         // the claim ledger so it does not spend a cycle refuting something the
@@ -452,12 +463,17 @@ const LEDGER_WRITING_BRIEF: &str = include_str!("../prompts/ledger_writing.md");
 /// ledger is exactly the use that should stay available.
 const LEDGER_BRIEF_WITHHELD: [&str; 2] = ["judge", "searcher"];
 
-const LEDGER_WRITER_ROLES: [&str; 5] = [
+const LEDGER_WRITER_ROLES: [&str; 6] = [
     "goals",
     "orchestrator",
     "director",
     "reflection",
     "reducer",
+    // The archivist decides which candidate the run keeps, and the attempts
+    // ledger is where that decision and the reasons the others were not kept
+    // are written down. A decision nobody recorded is one the next round
+    // re-litigates.
+    "archivist",
 ];
 
 /// What `role` is told about the ledgers, appended to its own guidance.
@@ -571,6 +587,7 @@ impl RolePrompts {
             lean_prover: role("lean_prover", LEAN_PROVER_PROMPT)?,
             goals: role("goals", GOALS_PROMPT)?,
             reflection: role("reflection", REFLECTION_PROMPT)?,
+            archivist: role("archivist", ARCHIVIST_PROMPT)?,
             judge: role("judge", JUDGE_PROMPT)?,
             pattern: role("pattern_finder", PATTERN_PROMPT)?,
             inventor: role("inventor", INVENTOR_PROMPT)?,
