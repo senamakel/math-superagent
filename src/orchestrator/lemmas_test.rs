@@ -232,3 +232,39 @@ fn verified_declarations_are_rendered_before_unchecked_ones() {
         .expect("the unchecked row is rendered");
     assert!(verified_at < unchecked_at, "verified sorts first");
 }
+
+/// A file written and never checked must reach the index on the *write*.
+///
+/// The other refresh runs on `lean_check`, and that is the wrong event to rely
+/// on alone: a file nobody checks never fires it, so the unchecked files — the
+/// whole reason the index carries a standing — were the ones least likely to
+/// appear in it. A live PE 622 run reached seventeen `.lean` files against two
+/// verdicts while the index still described the tree as it had been two checks
+/// earlier.
+#[test]
+fn a_written_file_is_indexed_before_any_check() {
+    let root = workspace_with("write-first", "Lib/A.lean", "theorem a : True := trivial\n");
+    // A second file arriving after the first would have been invisible until
+    // something checked it.
+    std::fs::write(
+        root.join(super::LEAN_DIR).join("Lib/B.lean"),
+        "theorem b : True := trivial\n",
+    )
+    .expect("the second source is written");
+
+    let lemmas = collect(&root);
+    let names: Vec<&str> = lemmas
+        .declarations
+        .iter()
+        .map(|declaration| declaration.name.as_str())
+        .collect();
+    assert!(names.contains(&"a") && names.contains(&"b"), "{names:?}");
+    assert!(
+        lemmas
+            .declarations
+            .iter()
+            .all(|declaration| declaration.standing == Standing::Unchecked),
+        "a file with no verdict is unchecked, not absent"
+    );
+    assert_eq!(lemmas.unchecked_files.len(), 2);
+}

@@ -284,7 +284,7 @@ fn build_tool_builder_harness(
     let mut harness = specialist_harness(model.clone(), budget, "tool_builder", tracer);
     register_resilient(
         &mut harness,
-        Arc::new(WriteToolFile::new(workspace.to_path_buf())),
+        Arc::new(WriteToolFile::new(workspace.to_path_buf()).deriving(documents.clone())),
     );
     register_resilient(
         &mut harness,

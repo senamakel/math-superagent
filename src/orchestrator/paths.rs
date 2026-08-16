@@ -6,6 +6,7 @@
 //! them once already: `write_tool_file` wrote wherever it was asked while every
 //! other write path was guarded.
 
+use std::fmt::Write as _;
 use std::path::{Component, Path, PathBuf};
 
 use async_trait::async_trait;
@@ -73,11 +74,24 @@ pub(super) fn strip_workspace_prefix(requested: &str) -> &str {
 #[derive(Debug)]
 pub(super) struct WriteToolFile {
     workspace: PathBuf,
+    /// The write path, held so writing a `.lean` file re-derives the lemma
+    /// index. Optional because two of the three registration sites have no
+    /// documents handle and neither writes Lean.
+    documents: Option<super::documents::WorkspaceDocuments>,
 }
 
 impl WriteToolFile {
     pub(super) fn new(workspace: PathBuf) -> Self {
-        Self { workspace }
+        Self {
+            workspace,
+            documents: None,
+        }
+    }
+
+    /// Gives the writer the write path, so a `.lean` file reaches the index.
+    pub(super) fn deriving(mut self, documents: super::documents::WorkspaceDocuments) -> Self {
+        self.documents = Some(documents);
+        self
     }
 }
 
@@ -138,11 +152,38 @@ impl Tool<()> for WriteToolFile {
         tokio::fs::write(&path, &content).await.map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!("failed to write tool file: {error}"))
         })?;
+        // A written `.lean` file reaches the lemma index here, and this is the
+        // refresh that matters most. The other one runs on `lean_check` — but a
+        // file nobody checks never fires it, so the *unchecked* files, which are
+        // the whole reason the index carries a standing, were the ones least
+        // likely to appear in it. A replay of this repository's own history
+        // found 54 of 78 files in that state, and a live run reached 17 files
+        // against 2 verdicts while the index still described the tree as it had
+        // been two checks earlier.
+        let mut derived = String::new();
+        // By extension on the path Lean itself is given, matching how
+        // `lean_check` decides what it will read.
+        if std::path::Path::new(&relative)
+            .extension()
+            .is_some_and(|extension| extension == "lean")
+            && let Some(documents) = &self.documents
+        {
+            super::lemmas::refresh(documents).await;
+            let _ = write!(
+                derived,
+                "\n\nThis is a Lean source and no kernel verdict covers it, so \
+                 `{}` lists it under **Never checked** and nothing may rest on it. \
+                 Run `lean_check` on it: checking with the shell leaves no verdict, and a \
+                 proof the run cannot distinguish from a sentence is worth what a sentence \
+                 is worth.",
+                super::lemmas::LEMMAS_PATH
+            );
+        }
         Ok(ToolResult::text(
             call.id,
             self.name(),
             format!(
-                "wrote {} bytes to {relative}{}",
+                "wrote {} bytes to {relative}{}{derived}",
                 content.len(),
                 layout::note(&requested, &relative)
             ),
