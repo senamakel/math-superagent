@@ -247,6 +247,23 @@ fn load_workspace_files(workspace: &Path, relative_paths: &[&str]) -> Result<Str
             let content = ledger::indexed(workspace, relative, &content).unwrap_or(content);
             ledger::fit(relative, &content).unwrap_or(content)
         };
+        // And the ceiling every routed file is held to, whatever kind it is.
+        //
+        // The two bounds above cover two categories, and until this line
+        // everything else — `GOAL.md`, `AGENTS.md`, `TASKS.md`, the board, the
+        // folder indexes — had no token bound at all between it and the model.
+        // Not hypothetically: `gilbreath-supply/TASKS.md` is 18,532 tokens on
+        // disk and `gilbreath/CONTEXT.md` is 11,063, so the sizes that need
+        // catching are already here. What made it invisible is that the failure
+        // is silent and gradual — a file grows by a paragraph a cycle, and the
+        // bill is paid on every model call in every role carrying it.
+        //
+        // Deliberately last, so it never pre-empts a bound that can cut
+        // intelligently: an index drops the fortieth row and says so, where
+        // this stops mid-sentence. It should never fire. A file that reaches it
+        // is one nothing else is bounding, and the fix is a bound where that
+        // file is written — not a larger ceiling here.
+        let content = shared_context::ceiling(relative, &content).unwrap_or(content);
         if !content.trim().is_empty() {
             let _ = write!(combined, "\n\n## {relative}\n{}", content.trim());
         }

@@ -49,8 +49,6 @@ mod fit_test;
 use std::fmt::Write as _;
 use std::path::Path;
 
-use tinyagents::harness::summarization::estimate_tokens;
-
 use super::shared_context::{CHARS_PER_TOKEN, positive_env};
 
 /// What one derived ledger may cost a system prompt when nothing says
@@ -164,23 +162,16 @@ pub(super) fn fit(relative: &str, content: &str) -> Option<String> {
         return None;
     }
     let budget = budget_tokens();
-    if estimate_tokens(content) <= budget {
-        return None;
-    }
-    let limit = usize::try_from(budget)
-        .unwrap_or(usize::MAX)
-        .saturating_mul(CHARS_PER_TOKEN);
-    let mut cut = limit.min(content.len());
-    while cut > 0 && !content.is_char_boundary(cut) {
-        cut -= 1;
-    }
-    Some(format!(
-        "{}\n\n_[`{relative}` exceeds the {budget}-token per-ledger budget and was cut here for \
-         this prompt. The whole file is on disk. A derived ledger reaching this bound means a \
-         section of it is rendering unbounded — that is a defect in the module that renders it, \
-         not something to work around.]_",
-        &content[..cut]
-    ))
+    super::shared_context::clamp(
+        content,
+        budget,
+        &format!(
+            "`{relative}` exceeds the {budget}-token per-ledger budget and was cut here for this \
+             prompt. The whole file is on disk. A derived ledger reaching this bound means a \
+             section of it is rendering unbounded — that is a defect in the module that renders \
+             it, not something to work around."
+        ),
+    )
 }
 
 /// Every derived ledger that is routed into at least one role's system prompt.

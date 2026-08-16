@@ -67,6 +67,52 @@ pub(super) fn budget_tokens() -> u64 {
     positive_env("MATH_AGENT_CONTEXT_TOKENS").unwrap_or(DEFAULT_CONTEXT_TOKENS)
 }
 
+/// Reads the ceiling every routed file is held to.
+///
+/// `MATH_AGENT_PROMPT_FILE_TOKENS` overrides it, under the rule the other two
+/// budgets follow: a missing, empty, unparsable or zero value keeps the default
+/// rather than silently removing the bound.
+///
+/// The same ten thousand as the brief and the ledgers, and one number rather
+/// than a third: the question this answers is not *what may a brief cost* or
+/// *what may a ledger cost* but *what may *any* file cost a prompt*, and a
+/// separate value for it would be a second opinion about the same thing.
+fn ceiling_tokens() -> u64 {
+    positive_env("MATH_AGENT_PROMPT_FILE_TOKENS").unwrap_or(DEFAULT_CONTEXT_TOKENS)
+}
+
+/// The ceiling every file routed into a system prompt is held to.
+///
+/// [`fit`] bounds the brief and [`super::ledger::fit`] bounds the derived
+/// ledgers, which between them covered two categories and left every other
+/// routed file — `GOAL.md`, `AGENTS.md`, `TASKS.md`, `teams/BOARD.md`, the
+/// folder indexes — with no token bound at all. Each of those is written by an
+/// agent or by a run, grows by a paragraph a cycle, and is paid for on every
+/// model call in every role that carries it. Nothing was watching, and the
+/// sizes that need catching are already on disk: `gilbreath-supply/TASKS.md` is
+/// 18,532 tokens and `gilbreath/CONTEXT.md` is 11,063.
+///
+/// Applied *after* every specialised bound, so it never pre-empts one that can
+/// cut intelligently — an index drops its fortieth row and says so, where this
+/// stops mid-sentence. It is the guard that should never fire, and a file that
+/// reaches it is one nothing else is bounding: the fix is a bound where that
+/// file is written, not a larger ceiling.
+///
+/// Returns `None` when the file already fits, which is every file today.
+pub(super) fn ceiling(relative: &str, content: &str) -> Option<String> {
+    let budget = ceiling_tokens();
+    clamp(
+        content,
+        budget,
+        &format!(
+            "`{relative}` exceeds the {budget}-token ceiling every file routed into a prompt is \
+             held to, and was cut here for this prompt. The whole file is on disk — open it, or \
+             grep it, for the rest. A file reaching this ceiling is one nothing else is bounding, \
+             which is a defect in whatever writes it."
+        ),
+    )
+}
+
 
 /// What the brief currently costs, against what it is allowed to cost.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -114,6 +160,35 @@ pub(super) fn standing(workspace: &Path) -> Standing {
 /// the file, where one that is not silently believes it has the whole thing.
 pub(super) fn fit(content: &str) -> Option<String> {
     let budget = budget_tokens();
+    clamp(
+        content,
+        budget,
+        &format!(
+            "{CONTEXT_FILE} exceeds its {budget}-token budget and was cut here for this prompt. \
+             Read the file for the rest, and compress it."
+        ),
+    )
+}
+
+/// Cuts `content` to `budget` tokens and appends `notice`, or `None` if it fits.
+///
+/// The one place a prompt-bound file is actually shortened. Three callers wanted
+/// the same four lines — [`fit`], [`super::ledger::fit`], and the ceiling in
+/// [`super::orchestrator_environment`] — and the four lines are the kind that
+/// look trivial until one of them is wrong: a cut that lands mid-character
+/// panics inside prompt assembly, which happens at container start, so the run
+/// fails before doing any work. Every one of these files carries mathematics, so
+/// `δ`, `≤`, `→` and `ν₂` are the norm rather than an edge case.
+///
+/// The cut keeps the *leading* portion, which is a claim about how these files
+/// are written rather than an arbitrary choice: the brief is
+/// most-established-first, and every derived ledger puts its table first and its
+/// diagnostics last. The head is the part a reader came for.
+///
+/// `notice` is the caller's because what to do about it is: compress the brief,
+/// fix the renderer, or bound the writer. A cut that does not say what it was
+/// leaves the model reading a fragment as though it were the whole file.
+pub(super) fn clamp(content: &str, budget: u64, notice: &str) -> Option<String> {
     if estimate_tokens(content) <= budget {
         return None;
     }
@@ -124,11 +199,7 @@ pub(super) fn fit(content: &str) -> Option<String> {
     while cut > 0 && !content.is_char_boundary(cut) {
         cut -= 1;
     }
-    Some(format!(
-        "{}\n\n_[{CONTEXT_FILE} exceeds its {budget}-token budget and was cut here for this \
-         prompt. Read the file for the rest, and compress it.]_",
-        &content[..cut]
-    ))
+    Some(format!("{}\n\n_[{notice}]_", &content[..cut]))
 }
 
 /// The line the curator wakes up to, telling it what its file now costs.

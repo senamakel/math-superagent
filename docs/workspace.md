@@ -235,6 +235,33 @@ alternative and is worse: refusing a write costs the run whatever the agent was
 about to record, where cutting the prompt copy keeps the material and turns the
 overrun into the curator's next cycle.
 
+Underneath both sits a third bound, and it exists because two of them covered
+two categories. `shared_context::fit` bounds the brief and `ledger::fit` bounds
+the nine derived ledgers; between them that left every *other* routed file —
+`GOAL.md`, `AGENTS.md`, `TASKS.md`, `teams/BOARD.md`, the folder indexes — with
+no token bound at all. Each is written by an agent or by a run, each grows by a
+paragraph a cycle, and each is paid for on every model call in every role
+carrying it. The sizes that need catching were already on disk when this was
+written: `gilbreath-supply/TASKS.md` is 18,532 tokens and `gilbreath/CONTEXT.md`
+is 11,063.
+
+So `shared_context::ceiling` holds **every** file routed into a prompt to ten
+thousand tokens — `MATH_AGENT_PROMPT_FILE_TOKENS`, the same number as the other
+two rather than a third opinion about the same question. It is applied last, so
+it never pre-empts a bound that can cut intelligently: an index drops its
+fortieth row and says so, where this stops mid-sentence and says *that*. It is
+the guard that should never fire, and today it does not fire on any workspace on
+disk — the specialised bounds reach every oversized file first, which is the
+design working rather than the guard being unnecessary. A file that does reach
+it is one nothing else is bounding, and the fix is a bound where that file is
+written, not a larger ceiling.
+
+Above it is a different control with a different job. A routed file over
+`MAX_WORKSPACE_CONTEXT_BYTES` (256 KB, about 65,000 tokens) fails prompt
+assembly outright rather than being cut, so the run stops at container start
+and says which file. That is a resource guard, not a prompt budget: 25× the
+ceiling is not a file that grew, it is a file that broke.
+
 `ROOT.md` is deliberately not `INDEX.md`. The index says what each file *is* and
 is derived from the directory by the index tools; the root says what the library
 *means* and is written by an agent. Holding both in one file put a tool and an

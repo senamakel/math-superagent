@@ -11,7 +11,8 @@
 use std::path::PathBuf;
 
 use super::{
-    CONTEXT_FILE, DEFAULT_CONTEXT_TOKENS, Standing, briefing, budget_tokens, fit, standing,
+    CHARS_PER_TOKEN, CONTEXT_FILE, DEFAULT_CONTEXT_TOKENS, Standing, briefing, budget_tokens,
+    ceiling, ceiling_tokens, fit, standing,
 };
 
 /// Creates an empty workspace under the temporary directory.
@@ -97,4 +98,71 @@ fn a_brief_with_headroom_is_told_what_the_headroom_is_for() {
     assert!(brief.contains("remain"));
     // Headroom is not a target. A curator told only that it has room fills it.
     assert!(brief.contains("rather than filling it"));
+}
+
+/// Characters the ceiling allows, as a `usize` the fixtures can repeat.
+fn ceiling_chars() -> usize {
+    usize::try_from(ceiling_tokens()).unwrap_or(usize::MAX) * CHARS_PER_TOKEN
+}
+
+/// A routed file that is neither the brief nor a ledger is still bounded.
+///
+/// This is the gap the ceiling closes. `fit` covers `CONTEXT.md` and
+/// `ledger::fit` covers the nine derived ledgers; between them that left
+/// `GOAL.md`, `AGENTS.md`, `TASKS.md`, the board and the folder indexes with no
+/// token bound at all, each written by an agent or a run, each growing by a
+/// paragraph a cycle, and each paid for on every model call in every role that
+/// carries it.
+#[test]
+fn a_file_that_is_neither_brief_nor_ledger_is_still_bounded() {
+    let huge = "another paragraph the goal picked up. ".repeat(ceiling_chars());
+    let cut = ceiling("GOAL.md", &huge).expect("a file far over the ceiling is cut");
+
+    assert!(
+        cut.chars().count() < huge.chars().count(),
+        "the cut copy is shorter than the file"
+    );
+    assert!(
+        cut.contains("GOAL.md"),
+        "the notice names the file, so the model knows what to open: {cut}"
+    );
+    assert!(
+        cut.contains("cut here"),
+        "and says plainly it was cut, so a fragment is not read as the whole file: {cut}"
+    );
+    // The head is kept: every one of these files puts what matters first.
+    assert!(cut.starts_with("another paragraph"));
+}
+
+/// A file within the ceiling is passed through untouched.
+///
+/// `None` rather than a copy, so the caller keeps its own string on the common
+/// path — which is every file today, and should stay that way. This guard
+/// firing at all is a defect somewhere else.
+#[test]
+fn a_file_within_the_ceiling_is_left_alone() {
+    assert!(ceiling("GOAL.md", "the objective, in one line").is_none());
+}
+
+/// The ceiling cuts on a character boundary rather than panicking.
+///
+/// Prompt assembly happens at container start, so a slice through a multi-byte
+/// character fails the run before it does any work. These files carry
+/// mathematics, so `δ`, `≤` and `ν₂` are the norm and not an edge case.
+#[test]
+fn the_ceiling_cuts_a_multibyte_file_on_a_boundary() {
+    let huge = "δ_k(q_n) ≤ ν₂ → ".repeat(ceiling_chars());
+    let cut = ceiling("AGENTS.md", &huge).expect("an oversized file is cut");
+    assert!(cut.contains('δ'), "the mathematics survives the cut");
+}
+
+/// One ceiling, not a third opinion about the same question.
+///
+/// The brief's budget, the per-ledger budget and this are all ten thousand
+/// tokens, and deliberately: the question is *what may any file cost a prompt*,
+/// and a separate number for it would be a second answer.
+#[test]
+fn the_ceiling_is_the_same_ten_thousand_as_the_brief() {
+    assert_eq!(DEFAULT_CONTEXT_TOKENS, 10_000);
+    assert_eq!(ceiling_tokens(), budget_tokens());
 }

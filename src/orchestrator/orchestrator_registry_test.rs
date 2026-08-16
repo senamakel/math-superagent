@@ -1172,3 +1172,53 @@ fn the_archivist_is_on_a_bench_somebody_can_reach() {
     );
     assert!(DELEGATES.contains(&"archivist"));
 }
+
+/// The ceiling reaches a prompt, and not only the function that computes it.
+///
+/// A bound that is never applied is the failure this repository keeps
+/// recording. `shared_context::ceiling` is unit-tested on its own, but what
+/// decides whether a role's prompt is bounded is that `load_workspace_files`
+/// calls it on *every* routed file — including the ones no other bound covers.
+/// This asserts that end to end, on a real assembly, with an oversized
+/// `GOAL.md`: the one file every role receives, and until the ceiling existed
+/// the one with nothing between it and the model.
+#[test]
+fn an_oversized_workspace_file_reaches_a_prompt_already_cut() {
+    use super::{RolePrompts, schools, shared_context};
+
+    let root = std::env::temp_dir().join(format!(
+        "math-agent-ceiling-prompt-{}",
+        std::process::id()
+    ));
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root).expect("the workspace is creatable");
+    // Over the ten-thousand-token ceiling and well under the 256 KB byte guard,
+    // which is a separate control: past that a routed file fails the run at
+    // startup rather than being cut, and this is about the range in between —
+    // where a file grows by a paragraph a cycle and nothing was watching.
+    let huge = "a paragraph the goal picked up and nobody removed. ".repeat(1_200);
+    std::fs::write(root.join("GOAL.md"), &huge).expect("the goal is writable");
+
+    let prompts =
+        RolePrompts::for_school(&root, &schools::ALL[0], false).expect("prompts assemble");
+    let (role, prompt) = prompts
+        .by_role()
+        .into_iter()
+        .find(|(name, _)| *name == "judge")
+        .expect("the judge is a role");
+
+    assert!(
+        prompt.len() < huge.len(),
+        "`{role}` carries a cut copy, not the whole file"
+    );
+    assert!(
+        prompt.contains("was cut here for this prompt"),
+        "and is told it was cut, so it opens the file rather than trusting the fragment"
+    );
+    assert!(
+        shared_context::ceiling("GOAL.md", &huge).is_some(),
+        "the fixture is genuinely over the ceiling"
+    );
+
+    let _ = std::fs::remove_dir_all(&root);
+}
