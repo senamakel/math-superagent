@@ -240,6 +240,11 @@ const UNIVERSAL_CONTEXT: [&str; 1] = ["AGENTS.md"];
 fn role_context(role: &str) -> &'static [&'static str] {
     match role {
         "orchestrator" | "goals" => &[
+            // The runtime limits, for the two roles that commission execution:
+            // the command ceiling and whether exponential time is refused. A
+            // planner that cannot see them commissions work the shell will
+            // refuse.
+            "config/config.toml",
             "GOAL.md",
             "TASKS.md",
             "code/lib/INDEX.md",
@@ -268,6 +273,12 @@ fn role_context(role: &str) -> &'static [&'static str] {
         ],
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
         | "symbolic_math" | "lean_prover" => &[
+            // The runtime limits the roles that execute act on: the command
+            // ceiling and whether exponential time is refused. Dropped from
+            // this arm when the Lean library was added, which left the seven
+            // roles that actually run programs unable to see the bounds they
+            // are being held to.
+            "config/config.toml",
             "GOAL.md",
             "TASKS.md",
             "code/AGENTS.md",

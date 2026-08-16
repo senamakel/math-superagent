@@ -622,15 +622,31 @@ fn every_built_in_prompt_is_present_and_bounded() {
 fn the_method_policy_leads_every_assembled_prompt() {
     use super::{SHARED_METHOD_POLICY, workspace_prompt};
 
-    // The provider cache is keyed on the exact leading prefix, so the one part
-    // every role shares has to come first or none of them share a prefix.
-    let assembled = workspace_prompt("ROLE BODY", "\n\nshared ctx", "\n\nrole ctx");
+    // The provider cache is keyed on the exact leading prefix, so the parts are
+    // ordered by how often each *changes*. The method policy is identical for
+    // every role and leads; the role's own guidance changes only when somebody
+    // edits a prompt file; the workspace context is rewritten continuously by a
+    // live run — `CONTEXT.md` recurated, the ledgers re-derived on every
+    // write — so it goes last, where it invalidates nothing behind it.
+    let assembled = workspace_prompt("ROLE BODY", "\n\nworkspace ctx", "\n\nrole guidance");
     assert!(
         assembled.starts_with(SHARED_METHOD_POLICY.trim()),
         "the shared policy must lead"
     );
     assert!(assembled.contains("ROLE BODY"));
-    assert!(assembled.ends_with("role ctx"));
+    assert!(
+        assembled.ends_with("workspace ctx"),
+        "the volatile workspace context must come last, or every call behind it \
+         loses its cached prefix: {assembled}"
+    );
+    let stable = assembled
+        .split("workspace ctx")
+        .next()
+        .expect("the prefix exists");
+    assert!(
+        stable.contains("role guidance"),
+        "the role's own guidance is stable and belongs in the cached prefix"
+    );
     // Trimmed, so an editor adding a trailing newline to a prompt file cannot
     // silently invalidate every cached prefix.
     assert!(!assembled.contains("\n\n\n"), "{assembled}");
