@@ -1,0 +1,27 @@
+=== 1. worked examples (S-status) ===
+n=81 root=9 is-S(mitm)=True expected=True PASS
+n=100 root=10 is-S(mitm)=True expected=True PASS
+n=1296 root=36 is-S(mitm)=True expected=True PASS
+n=2025 root=45 is-S(mitm)=True expected=True PASS
+n=3025 root=55 is-S(mitm)=True expected=True PASS
+n=6724 root=82 is-S(mitm)=True expected=True PASS
+n=8281 root=91 is-S(mitm)=True expected=True PASS
+n=9801 root=99 is-S(mitm)=True expected=True PASS
+n=4 root=2 is-S(mitm)=False expected=False PASS
+n=9 root=3 is-S(mitm)=False expected=False PASS
+n=49 root=7 is-S(mitm)=False expected=False PASS
+
+=== 2. T(10^4) ===
+T(10^4) = 41333  (count 9)
+roots: 9 10 36 45 55 82 91 99 100
+CHECK: T(10^4) == 41333  PASS
+
+=== 3. larger reference values ===
+T(10^6) = 10804656  (count 28)
+CHECK: T(10^6) == 10804656  PASS
+T(10^9) = 6222187932  (count 84)
+CHECK: T(10^9) == 6222187932  PASS
+T(10^12) = 128088830547982  (count 406)
+CHECK: T(10^12) recorded answer is 128088830547982 (for comparison, not a search)
+
+OUTPUT written to code/out/candidates_mitm.log
