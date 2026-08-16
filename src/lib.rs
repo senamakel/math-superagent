@@ -57,8 +57,9 @@ pub use orchestrator::lean::{
     Outcome as LeanOutcome, Verdict as LeanVerdict, check_file as check_lean_file,
 };
 pub use orchestrator::{
-    AgentDefinition, AgentRegistry, OrchestratorAgent, SubagentAgentRunner, SubagentTaskRunner,
-    WorkflowCatalog, ledger_report, migrate_derived, prompt_report, render_ledger,
+    AgentDefinition, AgentRegistry, OrchestratorAgent, PromptReport, SubagentAgentRunner,
+    SubagentTaskRunner, WorkflowCatalog, ledger_report, migrate_derived, prompt_report,
+    prompt_reports, render_ledger, shared_policy_tokens,
 };
 #[cfg(feature = "graph-debug")]
 pub use orchestrator::{render_flows, render_solution_loop};

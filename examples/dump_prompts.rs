@@ -1,4 +1,4 @@
-//! Writes every agent's assembled system prompt to a file, for inspection.
+//! Writes each agent's assembled system prompt to its own file.
 //!
 //! The prompts are the most consequential text in the runtime and were the
 //! least reviewable part of it: assembled at startup from a built-in policy,
@@ -8,103 +8,111 @@
 //! spending anything.
 //!
 //! ```sh
-//! cargo run --example dump_prompts -- workspace/template
 //! cargo run --example dump_prompts -- workspace/conjectures/gilbreath
 //! cargo run --example dump_prompts -- workspace/template --stdout | less
 //! ```
 //!
-//! The report goes to `reports/prompts/<workspace>.md`, which is gitignored.
-//! It is a rendering of state that already exists — the same argument that
-//! keeps `derived/` out of a source directory — and it is large: a live
-//! workspace assembles to half a megabyte across twenty-four roles, so
-//! committing one would put a diff nobody can review into every batch.
+//! One file per agent, under that project's folder:
 //!
-//! Naming the file after the workspace rather than the clock is deliberate.
-//! The question this answers is *what does this workspace cost right now*, so
-//! a second run on the same workspace should replace the first rather than
-//! leave two files a reader has to date-check. Comparing two points in time is
-//! what `git stash` and a second path are for.
+//! ```text
+//! reports/conjectures/gilbreath/prompts/SUMMARY.md
+//! reports/conjectures/gilbreath/prompts/orchestrator.md
+//! reports/conjectures/gilbreath/prompts/goals.md
+//! …
+//! ```
 //!
-//! `--stdout` prints instead, for piping into a pager or a diff.
+//! A file per agent rather than one document, because the questions asked of
+//! this are per-agent — *what does the judge actually see*, *did the searcher's
+//! prompt grow* — and a third of a megabyte of concatenated prompts answers
+//! them by scrolling. It also makes the useful diff possible: the same role
+//! across two workspaces, or across two commits, is two paths.
+//!
+//! `SUMMARY.md` is what the single document was actually read for. It is
+//! written first and lists every role with what it costs, so the overview
+//! survives the split rather than being something a reader has to rebuild by
+//! opening twenty-four files.
+//!
+//! `/reports/` is gitignored. `--stdout` prints the whole thing instead, for
+//! piping.
 
-use std::path::{Path, PathBuf};
+mod common;
 
-/// Where a report goes when it is not being piped.
-const REPORTS_DIR: &str = "reports/prompts";
+use std::fmt::Write as _;
+
+/// What one role's prompt is of the whole sweep, as a percentage.
+///
+/// Integer arithmetic, in tenths of a percent, because the alternative is a
+/// float cast lint on a number that only ever gets one decimal place printed.
+fn share_of(tokens: u64, total: u64) -> String {
+    if total == 0 {
+        return "0.0".to_string();
+    }
+    let tenths = tokens.saturating_mul(1000) / total;
+    format!("{}.{}", tenths / 10, tenths % 10)
+}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut workspace: Option<String> = None;
-    let mut to_stdout = false;
-    for argument in std::env::args().skip(1) {
-        match argument.as_str() {
-            "--stdout" => to_stdout = true,
-            other if other.starts_with("--") => {
-                return Err(format!("unknown option `{other}`; the only one is `--stdout`").into());
-            }
-            other => workspace = Some(other.to_string()),
-        }
-    }
-    let workspace = workspace.unwrap_or_else(|| "workspace/template".to_string());
-    let path = Path::new(&workspace);
+    let options = common::options("workspace/template")?;
+    let path = std::path::Path::new(&options.workspace);
     if !path.is_dir() {
-        return Err(format!("workspace `{workspace}` is not a directory").into());
+        return Err(format!("workspace `{}` is not a directory", options.workspace).into());
     }
 
-    let report = math_agent::prompt_report(path)?;
-    if to_stdout {
-        println!("{report}");
+    if options.to_stdout {
+        println!("{}", math_agent::prompt_report(path)?);
         return Ok(());
     }
 
-    let destination = report_path(path);
-    if let Some(parent) = destination.parent() {
-        std::fs::create_dir_all(parent)?;
-    }
-    std::fs::write(&destination, &report)?;
-    println!("{}", destination.display());
-    // The closing line of the report carries the total and the count, which is
-    // the one number somebody runs this to see. Printing it here saves opening
-    // the file to answer *did that get better*.
-    if let Some(summary) = report.lines().rev().find(|line| line.starts_with("_~")) {
-        println!("{}", summary.trim_matches('_'));
-    }
-    Ok(())
-}
+    let reports = math_agent::prompt_reports(path)?;
+    let directory = common::project_dir(path)?.join("prompts");
+    let total: u64 = reports.iter().map(|report| report.tokens).sum();
 
-/// The report path for `workspace`, named after the workspace it describes.
-///
-/// `workspace/conjectures/gilbreath` becomes
-/// `reports/prompts/conjectures-gilbreath.md`. The leading `workspace/` is
-/// dropped because every one of these has it, and the separators are flattened
-/// so the reports sit in one directory a reader can list.
-///
-/// A path outside `workspace/` — a scratch copy, a fixture — keeps enough of
-/// its own shape to stay distinguishable, which matters because the alternative
-/// is two different trees writing the same file.
-fn report_path(workspace: &Path) -> PathBuf {
-    let slug: String = workspace
-        .components()
-        .map(|component| component.as_os_str().to_string_lossy().into_owned())
-        .filter(|part| !part.is_empty() && part != "." && part != "workspace")
-        .collect::<Vec<_>>()
-        .join("-");
-    let slug = slug
-        .chars()
-        .map(|character| {
-            if character.is_ascii_alphanumeric() || character == '-' || character == '_' {
-                character
-            } else {
-                '-'
-            }
-        })
-        .collect::<String>();
-    let slug = slug.trim_matches('-').to_string();
-    Path::new(REPORTS_DIR).join(format!(
-        "{}.md",
-        if slug.is_empty() {
-            "workspace".to_string()
-        } else {
-            slug
-        }
-    ))
+    let mut summary = format!(
+        "# Assembled agent prompts\n\nworkspace: {}\n\n\
+         Each prompt is the shared method policy, then the role's built-in prompt, then the \
+         workspace files that role receives. One file per agent, beside this one.\n\n\
+         | Role | Chars | ~Tokens | Share |\n| --- | ---: | ---: | ---: |\n",
+        path.display()
+    );
+    let mut ordered: Vec<&math_agent::PromptReport> = reports.iter().collect();
+    ordered.sort_by_key(|report| std::cmp::Reverse(report.tokens));
+    for report in &ordered {
+        let share = share_of(report.tokens, total);
+        let _ = writeln!(
+            summary,
+            "| [`{role}`]({role}.md) | {chars} | {tokens} | {share}% |",
+            role = report.role,
+            chars = report.prompt.len(),
+            tokens = report.tokens,
+        );
+    }
+    let _ = write!(
+        summary,
+        "\n~{total} tokens across {} roles. The shared method policy is ~{} of them, repeated in \
+         every one.\n",
+        reports.len(),
+        math_agent::shared_policy_tokens()
+    );
+    common::write(&directory.join("SUMMARY.md"), &summary)?;
+
+    for report in &reports {
+        let body = format!(
+            "# {}\n\nworkspace: {}\n\n_{} chars, ~{} tokens_\n\n```text\n{}\n```\n",
+            report.role,
+            path.display(),
+            report.prompt.len(),
+            report.tokens,
+            report.prompt
+        );
+        common::write(&directory.join(format!("{}.md", report.role)), &body)?;
+    }
+
+    println!("{}", directory.display());
+    println!(
+        "{} agent prompts, ~{total} tokens; largest {} at ~{}",
+        reports.len(),
+        ordered.first().map_or("none", |report| &report.role),
+        ordered.first().map_or(0, |report| report.tokens),
+    );
+    Ok(())
 }

@@ -47,31 +47,75 @@ struct RolePrompts {
 /// Returns an error when a workspace file is unreadable, oversized, or not
 /// UTF-8.
 pub fn prompt_report(workspace: &Path) -> Result<String> {
-    let prompts = RolePrompts::load(workspace)?;
+    let reports = prompt_reports(workspace)?;
     let mut out = format!(
         "# Assembled agent prompts\n\nworkspace: {}\n\n\
          Each prompt is the shared method policy, then the role's built-in prompt, then the \
          workspace files that role receives.\n",
         workspace.display()
     );
-    let mut total = 0_u64;
-    for (role, prompt) in prompts.by_role() {
-        let tokens = estimate_tokens(prompt);
-        total += tokens;
+    let total: u64 = reports.iter().map(|report| report.tokens).sum();
+    for report in &reports {
         let _ = write!(
             out,
-            "\n\n---\n\n## {role}\n\n_{} chars, ~{tokens} tokens_\n\n```text\n{prompt}\n```",
-            prompt.len()
+            "\n\n---\n\n## {}\n\n_{} chars, ~{} tokens_\n\n```text\n{}\n```",
+            report.role,
+            report.prompt.len(),
+            report.tokens,
+            report.prompt
         );
     }
     let _ = write!(
         out,
         "\n\n---\n\n_~{total} tokens across {} roles; the shared method policy is ~{} of them, \
          repeated in every one._\n",
-        prompts.by_role().len(),
-        estimate_tokens(SHARED_METHOD_POLICY)
+        reports.len(),
+        shared_policy_tokens()
     );
     Ok(out)
+}
+
+/// One role's assembled system prompt, with what it costs.
+#[derive(Clone, Debug)]
+pub struct PromptReport {
+    /// The role's name, as the registry knows it.
+    pub role: String,
+    /// The whole prompt, exactly as the runtime would send it.
+    pub prompt: String,
+    /// What it costs, by the runtime's own estimator.
+    pub tokens: u64,
+}
+
+/// Every role's assembled prompt, one entry each.
+///
+/// [`prompt_report`] renders these into one document and is written in terms of
+/// this rather than beside it, so there is one answer to *what does each role
+/// receive* and one place a role added to the registry shows up. A caller that
+/// wants the prompts separately — a file per agent, a table of what each costs,
+/// a diff of one role across two workspaces — gets them here rather than by
+/// parsing the report's headings back out, which is the drift this avoids.
+///
+/// # Errors
+///
+/// Returns an error when a workspace file is unreadable, oversized, or not
+/// UTF-8.
+pub fn prompt_reports(workspace: &Path) -> Result<Vec<PromptReport>> {
+    let prompts = RolePrompts::load(workspace)?;
+    Ok(prompts
+        .by_role()
+        .into_iter()
+        .map(|(role, prompt)| PromptReport {
+            role: role.to_string(),
+            prompt: prompt.to_string(),
+            tokens: estimate_tokens(prompt),
+        })
+        .collect())
+}
+
+/// What the shared method policy costs, which every role pays.
+#[must_use]
+pub fn shared_policy_tokens() -> u64 {
+    estimate_tokens(SHARED_METHOD_POLICY)
 }
 
 impl RolePrompts {
