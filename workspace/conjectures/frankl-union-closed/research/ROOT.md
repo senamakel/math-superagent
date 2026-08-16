@@ -43,15 +43,31 @@ Source: Bošnjak–Marković (arXiv:0711.3298, EJC 2008); Bruhn–Schaudt survey
 (arXiv:1309.3297); Lo Faro / Roberts–Simpson.
 
 - **Ground set `n ≤ 11`**: proved by Bošnjak–Marković (EJC 15 R88, 2008).
-- **Ground set `n ≤ 12`**: Vučković–Živković, computer-assisted (per survey,
-  unpublished / announced).
+- **Ground set `n ≤ 12`**: Vučković–Živković, "The 12-Element Case of Frankl's
+  Conjecture" (IPSI BgD Trans. Internet Research 13(1):65–71, 2017),
+  computer-assisted proof (Marković FC-families, weight criterion, 33 FC
+  families, backtracking). Primary source in this library. Any counterexample
+  has `|∪F| ≥ 13`.
 - **Families with `|F| ≤ 50`**: Lo Faro + the `|F| ≥ 4·n_ground − 1` bound
   (Roberts–Simpson 2010, AJC 47, and independently Lo Faro).
-- **Large families**: `|F| ≥ 2^((3/2)n)` → UC, Balla–Bollobás–Eccles (JCTA
-  2012); improved to `|F| ≥ 2^(n−1)` by Karpas (arXiv:1708.01434).
-- **Minimal-counterexample structure (Roberts–Simpson / Lo Faro)**: if `q` is
-  the minimal universe size over all counterexamples, any counterexample has
-  `|F| ≥ 4q − 1`. With `q ≥ 12`: **any counterexample has `|F| ≥ 47`.**
+- **Large families**: `|F| ≥ (2/3)·2^n` → UC, Balla–Bollobás–Eccles (JCTA
+  2012; note: the earlier `2^((3/2)n)` parameterisation of this bound was a
+  transcription error — the primary source and survey Thm 30 state `(2/3)2^n`);
+  improved by Eccles to `(2/3−1/104)2^n` and by Karpas (arXiv:1708.01434)
+  to the sharpest of the line: **`|F| ≥ 2^(n−1) = (1/2)·2^n` → UC** (Theorem 1.2,
+  Boolean-analysis proof). A minimal counterexample therefore has `|F| < 2^(n−1)`.
+- **Small/separating families**: UC holds for every *separating* family with
+  `|F| ≤ 2(m + m/(log₂m − log₂log₂m))` (Maßberg arXiv:1508.05718, Theorem 2.1),
+  improving Falgas-Ravry's `2m` (arXiv:1101.2589). Separating is WLOG. Hu's
+  reduction (quoted in Maßberg Thm 1.4): a `c>2` small-family theorem at ratio
+  `c` yields a constant fraction `(c−2)/(2(c−1))` for ALL families.
+- **Minimal-counterexample structure (Roberts–Simpson / Lo Faro / Hu)**: if `q`
+  is the minimal universe size over all counterexamples, any counterexample has
+  `|F| ≥ 4q − 1` (Roberts–Simpson AJC 47:265, 2010; Hu arXiv:1706.06167 gives a
+  full proof). With the improved `q ≥ 13` (Živković–Vučković, n≤12 case,
+  computer-assisted): **any counterexample has `|F| ≥ 4·13 − 1 = 51`.** (The
+  older `≥ 47` used only `q ≥ 12`; see `research/summaries/hu-union-closed-2017.md`
+  for the source's own statement of the 51 figure.)
 
 ## Restricted classes already settled (with hypotheses)
 
@@ -80,8 +96,9 @@ Source: Bošnjak–Marković (arXiv:0711.3298, EJC 2008); Bruhn–Schaudt survey
   relaxation. This shows the entropy method's barrier is real *for iid* but
   escapable by dependent couplings.
 - **Separating families** (elements pairwise separable): UC holds if
-  `|F| ≤ 2·n + n·log₂n − log₂log₂n` (Maßberg, arXiv:1508.05718, improving
-  Falgas-Ravry's `2n`, arXiv:1101.2589).
+  `|F| ≤ 2·(m + m/(log₂m − log₂log₂m))`, `m = |∪F|` (Maßberg, arXiv:1508.05718,
+  improving Falgas-Ravry's `2m`, arXiv:1101.2589). See the verified-ranges row
+  above for details and Hu's ratio-`c` reduction.
 
 ## The three negative controls (from `problem.md`)
 

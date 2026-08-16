@@ -63,12 +63,27 @@ If gsplit_exhaustive finds **no** line splitting the es_construct set into two
   might (in principle) be splittable, and the split reduction needs the split to
   hold for *every* extremal set, which empty-result-on-one-template does not touch.
 
-## Status
+## Status — SUPERSEDED (steer 10); steer 11 accepts Phase 1 done
 
-- `gsplit_exhaustive.py`: written, **needs to be run and captured** (~C(16,2)=120,
-  C(32,2)=496 pair-lines at n=6,7; has_convex_k_subset per candidate — fast).
-- The question is genuinely OPEN on this construction until that run is captured.
-  Recorded as a pending computation, not as a settled negative.
+- The captured `gsplit_exhaustive.captured.txt` was a **shell error, not a run**:
+  its command used `${PIPESTATUS[0]}` (a bash array) under `/bin/sh` (dash) and
+  died `exit: 2 ... Bad substitution`, so the script never re-ran.
+- The operator's recheck of the pair-line scheme on `es_construct` gives
+  50/222/946 distinct bipartitions at n=5,6,7 — not the 57/241/993 the old
+  capture reported — with 33-40 false positives per set. The pair-line
+  enumeration is wrong in both directions, so the 6,4,2,0 valid-split decay and
+  the n=7 zero are NOT established.
+- **Steer 11:** Phase 1 of the rotating-line enumerator is ACCEPTED DONE — it
+  matches the 2^N disjoint-hulls oracle exactly at N=8,10,12,14,16 (zero
+  missing/zero extra, count N(N-1)). The remaining work is one provenance
+  re-capture (task `gsplit-enumeration-recheck`): re-run n=5,6,7 into
+  `code/out/gsplit_phase2.captured.txt` with the command and exit code, then read
+  it back. If it reproduces 4 splits at n=5, 2 at n=6, 0 at n=7, promote
+  `gsplit-enum-completeness-and-n7-zero` to checked for the split counts and
+  retire `gsplit-exhaustive-esconstruct` pointing at the new anchor. If not,
+  report the new numbers plainly. Do not start another enumerator.
+
+The stale statements below are kept for history only; do not cite them.
 
 ```claim
 id: gsplit-even-odd-not-line-separable
@@ -80,12 +95,9 @@ bearing: the naive 'split by parity of block index' candidate for the f(n)<=2f(n
 anchor: code/out/gsplit_consistent.py, code/out/gsplit_line.py
 ```
 
-```claim
-id: gsplit-exhaustive-pending
-statement: The exhaustive all-lines split test for the es_construct construction at n=5,6,7 (does ANY line give two (n-1)-avoiding halves?) is implemented in gsplit_exhaustive.py but its result is NOT yet captured; the question is open on this construction.
-hypotheses: es_construct construction, all C(N,2) pair-lines + pair-point assignments
-holds-here: yes
-status: pending (no captured run)
-bearing: an empty result would be a checked negative on the split reduction for THIS construction at THESE n (not a general disproof).
-anchor: code/out/gsplit_exhaustive.py
-```
+`gsplit-exhaustive-pending` CLOSED (steer 8): it was a duplicate of
+`gsplit-exhaustive-esconstruct` whose "result not yet captured" text went stale once
+`code/out/gsplit_exhaustive.captured.txt` landed, and it contradicted
+`gsplit-exhaustive-esconstruct` beside it. The single live claim is
+`gsplit-exhaustive-esconstruct` in `code/out/gsplit_exhaustive_claim.md` (n=7 zero
+still provisional pending `gsplit-enumeration-recheck`).

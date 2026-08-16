@@ -1,0 +1,8 @@
+k=2: |F|=3, UC=True, profile=[2, 1], kth-freq=1, equality=True
+k=3: |F|=5, UC=True, profile=[3, 3, 1], kth-freq=1, equality=True
+k=4: |F|=9, UC=True, profile=[5, 5, 5, 1], kth-freq=1, equality=True
+k=5: |F|=17, UC=True, profile=[9, 9, 9, 9, 1], kth-freq=1, equality=True
+k=6: |F|=33, UC=True, profile=[17, 17, 17, 17, 17, 1], kth-freq=1, equality=True
+k=7: |F|=65, UC=True, profile=[33, 33, 33, 33, 33, 33, 1], kth-freq=1, equality=True
+k=8: |F|=129, UC=True, profile=[65, 65, 65, 65, 65, 65, 65, 1], kth-freq=1, equality=True
+INDEPENDENT ROUTE: ALL PASS

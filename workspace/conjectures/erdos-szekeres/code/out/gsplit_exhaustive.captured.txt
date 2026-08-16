@@ -36,3 +36,12 @@ n=7: N=32 (want 2^5=32) generalPosition=True has_convex_7_gon=False
 What an empty result rules out: for THIS es_construct ES construction at n=5,6,7, no line splits it into two (n-1)-avoiding halves, so the G-split-consistent claim fails exactly on this template. It does NOT rule out other extremal sets or the general G-split lemma.
 
 EXIT CODE: 0
+
+---
+CORRECTION (steer 7): the closing banner above ("no line splits it into two
+(n-1)-avoiding halves at n=5,6,7") is FALSE at n=5 and n=6. The per-n VALID
+counters printed above — 6 at n=4, 4 at n=5, 2 at n=6, 0 at n=7 — are the
+authoritative output: splits exist at n=5 and n=6, and vanish exactly at n=7.
+The n=7 zero is provisional pending the enumeration-completeness recheck
+(task `gsplit-enumeration-recheck`). The script's banner has been corrected;
+this capture is preserved verbatim as the record of the original run.

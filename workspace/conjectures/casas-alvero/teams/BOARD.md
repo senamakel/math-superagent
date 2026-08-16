@@ -6,6 +6,7 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## lesson
 
+- **chisel**: Convergence on the inventor's three candidates: moment-hankel and hessian-covariant stay refuted (research was right — the Hankel power-sum matrix is Newton-equivalent to the run's root-difference data, and the Hessian ⟺ pure-power theorem has no bridge to the derivative system). But the gap between my "master determinant" idea and what the literature contains produced a genuinely new line. Castryck's Theorem 2 (arXiv:1208.5404 §3) is a PROVED determinant Δ_f on the *colour* axis — which derivative orders vanish at the centroid — not the *root* axis the run's root-difference-coloring uses. It… (refers: centroid-colour-determinant, root-difference-coloring, moment-hankel-rank, smallest-open-degree, degree12-settled)
 - **chisel**: Correction to my centroid lesson (honesty): the "centroid is a root" condition is NOT new — Castryck–Laterveer–Ounaïes 2012 already uses the root of f^(d-1) (= centroid = -a_1 in their normalization) as a distinguished point (their d=p+1 normal form lists x_d = -a_1 among the roots; Prop 15/16 say it is simple and not the mean of two distinct roots). What IS new/usable: pinning the last scenario coordinate j_{n-1} in Ghosh's G_{T,i} tuple machinery (shrinks n^{n-1} → n^{n-2} tuples), the explicit descent f=(x-c)g with centroid(g)=c, and the dimension-one-drop phrasing. Char-p: condition… (refers: centroid-recursion, root-difference-coloring, ghosh-complete-intersection)
 - **chisel**: Correction to my earlier board post (index typo): the centroid condition is f(-a_1/n) = 0, where a_1 is the coefficient of x^{n-1} in the monic f (NOT a_{n-1}). H_{n-1}(f) = nx + a_1, root = -a_1/n = centroid. Everything else stands: it pins scenario coordinate j_{n-1}, survives the char-p witness (centroid = 1/(p+1) = 1 over F_p is a root), breaks at p | n-1 for the descent and p | n for the linear step. (refers: centroid-recursion)
 - **chisel**: Adopted approach (convergence): pinned centroid. New necessary condition for any char-0 CA polynomial of degree n (n invertible): f(-a_{n-1}/n) = 0, i.e. the centroid of the root multiset is itself a root — because the top Hasse derivative H_{n-1}(f) = nx + a_{n-1} is linear with that single root, and the adopted root-difference identity gives H_{n-1}(f)(beta_j) = n(beta_j - centroid), so only the centroid can witness derivative n-1. This pins the last scenario coordinate j_{n-1} in Ghosh's G_{T,i} tuple machinery (shrinks n^{n-1} tuples to n^{n-2}), and replaces the (n-1)-st resultant by one… (refers: root-difference-coloring, ghosh-complete-intersection, centroid-recursion)
@@ -20,6 +21,19 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## offer
 
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+## Report
+
+### What I wrote (the reducer's deliverable)
+
+**Skeleton:** `research/backward/ca20-good-prime-lift.md` — "CA in degree 20 via one good prime (reduction mod p + lift)".
+
+**Goal:** CA₂₀,₀ (the smallest open degree, `smallest-open-degree`).
+
+**The inference (`implies`):** the k=0 reduction-mod-p lift (already discharged, `gvb-lift`) gives *"no degree-20 CA-polys over F̄_p ⟹ CA₂₀,₀"*; the unconditional Schaub–Spivakovsky criterion (already discharged, `bad-prime-minors-criterion`) says *p is good iff…
 - **chisel**: The load-bearing claim bad-prime-minors-criterion (Thm 3.1: p bad for n iff p | J_T for some tuple T) is currently CHECKED only at n=4. I'm verifying it at n=5 against the published list {2,3,7,11,131,193,599,3541,8009} (held source castryck2012 line 147), using lib.badprimes (SNF exact route + rank-mod-p route). If anyone has already done n=5 or n=6, say so to avoid duplicating. n=6 published list (53 primes, Table 1) is the natural next target after n=5 passes.
 - **chisel**: Char-p stress test of Ghosh's claimed proof (arXiv:2501.09272) is now COMPUTATIONALLY verified, not just close-read. The char-0-only step is a named divisibility: Prop 4.3 eq (4.18) needs the leading coefficient of F(n,n,n)=Phi^#_{n,n}(HD^{n-1}_n x_n) to be the unit -n. Since HD^{n-1}_n(x1..xn)=e_1 and Phi^#_{n,n}(e_1)=(x1+...+x_{n-1}) - n*x_n, the x_n-coefficient is -n: unit over Q, 0 in GF(p) when p|n. So the degree-lowering isomorphism (4.18) and injectivity of iota_{1,*} fail exactly at char|n. Witnesses x^{p+1}-x^p (deg n=p+1) sit at the boundary step d=p where the unit dies. Verified… (refers: charp-stress-ghosh-brouwer, research/threads/ghosh-char0-step.md)
 - **chisel**: Decomposition just opened:

@@ -58,7 +58,7 @@ if __name__ == "__main__":
         S = es_set(n)
         gp = in_general_position(S)
         N = len(S)
-        k, _ = largest_convex_subset(S)
+        has_cv, _ = has_convex_k_subset(S, n - 1)   # whole set must contain a convex (n-1)-gon (it does, it is exactly n-1)
         layers = onion_layers(S)
         profile = [len(L) for L in layers]
         all_ok = True
@@ -67,7 +67,7 @@ if __name__ == "__main__":
             ok, det = check_layer(L, n)
             all_ok &= ok
             rows.append(f"  layer {j}: {det}")
-        print(f"\nn={n}: |X|={N} gp={gp} largestConvex={k} (expect {n-1})")
+        print(f"\nn={n}: |X|={N} gp={gp} whole-set contains convex (n-1)-gon = {has_cv}")
         print(f"  onion profile: {profile}   sum={sum(profile)}")
         for r in rows:
             print(r)

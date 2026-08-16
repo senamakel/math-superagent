@@ -1,0 +1,28 @@
+CAPTURE — STEP 1..4, rappoccin uc-coupling harness-inversion fix
+Ran:    python3 inner_inf_scorer.py 0.38234 0.035   (STEP 1, new scorer)
+        python3 score.py __selftest__               (STEP 2c self-test)
+        python3 score.py candidates/<id>.py         (STEP 3/4 re-score)
+        python3 explore_global_inf.py               (independent corroboration)
+
+STEP 1 verdict: NOT certifiable in 10s.
+  true inf_P g/Eh at t=0.38234, alpha=0.035 = 1.0000088929 (Yu minimizer a=0.3300622, b2=1).
+  margin above 1 = 8.89e-6; outward enclosure slope C~21 -> cell width must reach
+  ~4.2e-7 in 4 dims (minimizer on boundary b2=1). B&B stalled at ~1100 splits in
+  10s wall: "inconclusive (time)". Matches yugamma_global_sup part2 (0 boxes).
+
+STEP 2 guards: ceiling clamp T_HAT_MAX=0.3823455334 (+slack 1e-6); degenerate-atom
+  A_FLOOR=0.1, B_MINUS_A_FLOOR=0.1; INVALID self-test block. SELF-TEST PASS.
+
+STEP 3 calibration (c0009, Yu's witness, REAL harness call):
+  SCORE: 0.3823435642   (within ceiling; calibration preserved)
+
+STEP 4 re-scored every candidate:
+  c0009,C0000..c0023 (Yu block)  -> SCORE: 0.3823435642
+  c0024..c0032                   -> INVALID (certified score > t_hat_max)
+  c0033                          -> INVALID (degenerate-atom a=0.01 < floor)
+  legacy/non-scored: c0003,c0008 (in-module argv main, rejected), c0004
+  (SCORE:0.5 probe, INVALID no params), c0010 (IndentationError, not a candidate)
+
+VERDICT: rigorous inner-inf NOT feasible in 10s -> the blocker that stops the
+  scored search per directive. Only Yu's plateau (0.3823435642, the argmin
+  coupling) survives; nothing in the two-atom class certifies above t_hat_max.

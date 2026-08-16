@@ -11,6 +11,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `ca_deg5_char2.p` | TPTP encoding of CA in degree 5 over F_2 (Hasse formulation); the first n=5 refutation in the refute set, targeting p=2 a bad prime for n=5. Held witness f=x^5+x^4=x^4(x+1), two distinct roots, not a pure power. |
 | `ca_deg6_char2.p` | TPTP encoding of CA in degree 6 over F_2 (Hasse formulation); find_counterexample refutes via f=x^6+x^2=x^2(x+1)^4, confirming p=2 (first published degree-6 bad prime) is bad for n=6. |
 | `ca_deg6_char5.p` | TPTP encoding of CA in degree 6 over F_5; the adopted root-difference-coloring approach's collapse step is false in char 5 via per-color Hasse degeneracy (H_2,H_3,H_4 vanish, f=x^6-x^5 has two roots). |
+| `ca_deg7_char2.p` | TPTP encoding of CA in degree 7 over F_2 (Hasse formulation); find_counterexample returns refuted via f=x^7+x^3=x^3(x+1)^4, the first n=7 refutation in the refute set, an independent finite-model confirmation that p=2 is a bad prime for degree 7. |
 | `check_deg4_char7.py` | Hand-check of the F_7 witness arithmetic for ca_deg4_char7.p: recompute the value tables of f and its Hasse derivatives exactly mod 7 and confirm common roots and non-pure-power status. |
 | `check_reformulation_charp.py` | Exact check of whether the regular-sequence/J_T reformulation of CA tracks ordinary or Hasse formal derivatives over F_p, at n=3,4, to locate the char-p break in the G-reformulation-equivalence lemma. |
 | `check_reformulation_direct.py` | _(undescribed)_ |

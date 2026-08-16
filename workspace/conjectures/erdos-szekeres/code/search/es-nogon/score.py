@@ -191,8 +191,9 @@ def main(argv):
     # 3a. fast sufficient layer precheck
     bad, witness = _check_no_convex_k_fast(points, k)
     if bad is not None:
+        # witness here is already a list of point (x,y) tuples (layer[:k]).
         print("INVALID: %s in convex position, witness %r" %
-              (bad, [points[t] for t in witness]))
+              (bad, witness))
         return 1
     # 3b. authoritative exact parallel enumeration
     wit = _check_no_convex_k_exact(points, k)

@@ -9,7 +9,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | [[abundance-profile]] | What must the abundance profile (the exact integer vector of per-element membership counts) of a minimal counterexample to UC look like, and can the… | open | ahs-barrier, liu-conditionally-iid, yu-record-0-38234, eil-small-sets | compute exact abundance profiles with the canonical oracle code/lib/uc.py; state one structural claim about a minimal counterexample's profile, then attack it… |
 | [[contradiction-sawin-ahs]] | Do Sawin's dependent-coupling improvement and its evaluations (Yu, Liu) genuinely contradict the AHS/Gilmer constant (3−√5)/2, or is that value a barrier only… | open | ahs-barrier, ahs-gilmer-conj, pebody-optimization, chaSe-lovett | none — the iid/dependent coupling split is settled; do not re-flag these as contradictions |
 | [[coupling-half]] | Does the finite-dimensional conditionally-iid coupling optimization (Yu arXiv:2212.00658; Liu arXiv:2306.08824) certify H(A∨B) > H(A) at density 1/2 — i.e.… | dead | yu-record-0-38234, liu-0-38271, sawin-above-barrier | \| (1) Open research/sources/yu-dimension-free-bounds-2023.full.md, find Yu's finite-dimensional optimization as stated, and write it verbatim in a note — the… |
-| [[coupling-scored-search]] | What does a scored program search over Yu's finite-dimensional coupling optimization (the two-atom symmetric P_pq, params α,a1,a2,b1,b2) find — where do… | open | yu-record-0-38234, yu-gamma-hat-nonincreasing, yu-gamma-half-is-phi-over-2 | \| (1) tool_builder writes code/search/uc-coupling/PROBLEM.md + score.py; the searcher must NOT write the scorer (a scored search learns to exploit its verifier… |
+| [[coupling-scored-search]] | (CLOSED BY DIRECTIVE 10) Does the original scored program search over Yu's two-atom coupling — where a candidate supplies (α,a1,a2,b1,b2) and the scorer… | dead | yu-record-0-38234, yu-gamma-hat-nonincreasing, yu-gamma-half-is-phi-over-2 | \| (0) [directive 10] CLOSED. Γ̂(t) = sup_α inf_P g/Eh is a sup-INF. A candidate supplying the INF variable P made the scorer evaluate g/Eh at one P, an UPPER… |
 | [[three-set-refute-encoding]] | Does the bounded-fragment TPTP encoding code/refute/uc_with_three_set.p genuinely refute R-uc-with-three-set, or is the CounterSatisfiable verdict an artifact… | dead | bosnjak-markovic-11, verified-n12-comp | \| (1) Re-read code/refute/uc_with_three_set.p and confirm it asserts (a) union-closure for ALL pairs of member slots, (b) the abundant element ranges over the… |
 | [[yugamma-half-collapse]] | Does the Yu/Sawin two-atom conditionally-iid coupling certificate Gamma-hat(1/2) equal phi/2 = (1+sqrt5)/4 = cos(36 deg) exactly, and does that give the sharp… | open | yu-gamma-half-is-phi-over-2, yu-optimization-objective, iid-barrier-exact | \| DONE: the collapsed alpha=0 value Gamma-hat(1/2)=phi/2 is proved by exact algebra (claim yu-gamma-half-is-phi-over-2, code/out/yugamma_phi2_claim.md).… |
 
@@ -18,13 +18,15 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 Each blocked or dead thread and what would move it. A blocker stated precisely is the next research request; one left blank is a mood.
 
 - [[coupling-half]] (dead): none
+- [[coupling-scored-search]] (dead): none — closed by operator directive 10, not reopened; directives 10+11 in force
 - [[three-set-refute-encoding]] (dead): none
 
 ## Resting on nothing recorded
 
 Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
 
-- [[contradiction-sawin-ahs]] rests on `chaSe-lovett`, which no claim block on disk establishes
+- [[abundance-profile]] rests on `ahs-barrier`, `eil-small-sets`, which no claim block on disk establishes
+- [[contradiction-sawin-ahs]] rests on `ahs-barrier`, `ahs-gilmer-conj`, `chaSe-lovett`, which no claim block on disk establishes
 - [[coupling-half]] rests on `liu-0-38271`, `sawin-above-barrier`, which no claim block on disk establishes
 
 ## Threads that could not be read

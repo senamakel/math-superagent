@@ -29,13 +29,19 @@ anchor: Bruhn & Schaudt survey arXiv:1309.3297; Das–Wu arXiv:2412.03862 restat
 ```claim
 id: verified-m-small
 statement: Frankl's conjecture holds for union-closed families with |F| ≤ 50,
-  and (Roberts–Simpson) any counterexample with minimal ground-set size q has
-  |F| ≥ 4q−1, hence any counterexample has |F| ≥ 47.
+  and (Roberts–Simpson / Hu) any counterexample with minimal ground-set size q
+  has |F| ≥ 4q−1, hence any counterexample has
+  |F| ≥ 4·13−1 = 51 (using Živković–Vučković's improved m ≥ 13, per Hu's
+  Theorem 1 and its final paragraph). NOTE: earlier records said ≥ 47 from
+  m ≥ 12; the sourced value is 51. |F| ≤ 50 verified follows from 4·13−1 = 51
+  strictly exceeding 50.
 hypotheses: F union-closed, finite, F ≠ {∅}.
 holds-here: true
-status: sourced
-bearing: lower bound on |F| of a minimal counterexample.
-anchor: Lo Faro; Roberts & Simpson (AJC 2010); restated in Colbert 2025 and Das–Wu
+status: sourced (Hu arXiv:1706.06167 Theorem 1 + final para; Živković–Vučković
+  for m ≥ 13; Roberts–Simpson AJC 2010)
+bearing: lower bound on |F| of a minimal counterexample: |F| ≥ 51.
+anchor: Lo Faro; Roberts & Simpson (AJC 2010); Hu (arXiv:1706.06167);
+  Živković–Vučković (2017); restated in Colbert 2025 and Das–Wu
 ```
 
 ```claim

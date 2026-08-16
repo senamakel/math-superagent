@@ -42,20 +42,24 @@ that are each free of a convex 6-gon (0 valid splits).
 The script's hard-coded closing banner claiming "no line splits it into two
 (n-1)-avoiding halves at n=5,6,7" is inaccurate for n=5,6 — the actual per-n
 VALID counters above (4 and 2) show such splits exist there. The banner is a
-stale summary; the enumerated counters and the explicit split lists are the
-authoritative output.
+stale summary and has been corrected in the script (steer 7); the enumerated
+counters and the explicit split lists are the authoritative output. The n=7
+zero is provisional until the enumeration-completeness recheck (steer 7):
+the pair-line scheme must cover all four assignments of the two on-line points
+and the single-point-line rotation cases, or it may undercount.
 
-Scoping: this rules out the G-split-consistent pattern only for THIS `es_construct`
-template at n=7. It does not rule out other extremal sets, nor does it decide the
-general G-split lemma.
+Scoping: subject to the enumeration recheck, this would rule out the
+G-split-consistent pattern only for THIS `es_construct` template at n=7. It does
+not rule out other extremal sets, nor does it decide the general G-split lemma;
+at n=5 and n=6 the template IS line-splittable, so the pattern holds there.
 
 ```claim
 id: gsplit-exhaustive-esconstruct
-statement: For the verified es_construct ES construction, the exhaustive all-line bipartition test finds that at n=5 (N=8) exactly 4 straight-line splits and at n=6 (N=16) exactly 2 straight-line splits yield two halves of size exactly 2^{n-3} that are each free of a convex (n-1)-gon; at n=7 (N=32) exactly 0 straight-line splits do so over all 993 enumerated line-bipartitions. The even/odd block-index halves (each 2^{n-3}, (n-1)-avoiding) are separated by no single line in this radial placement, so the G-split-consistent pattern fails on this template at n=7.
-hypotheses: es_construct.es_set(n) realization of the Erdős–Szekeres construction (2^{n-2} points, general position, no convex n-gon, verified by the exact es_geom oracle); lines are the C(N,2) pair-lines with on-line points assigned both ways; exact integer determinants for convexity and collinearity.
+statement: RETIRED (steer 11) in favour of the validated rotating-line enumerator. The all-line bipartition test on the es_construct ES construction was re-derived by `gsplit_enum_definitive.py` (validated zero-missing/zero-extra against the 2^N oracle at N=8..16) and re-captured with provenance into code/out/gsplit_phase2.captured.txt: VALID splits (both halves size exactly 2^{n-3}, both (n-1)-avoiding) in counts 4 (n=5), 2 (n=6), 0 (n=7). The n=4 count (6) is not re-derived here; this claim's n=5,6,7 verdicts are superseded by gsplit-enum-completeness-and-n7-zero, anchored at the new capture. The old pair-line scheme (2·C(N,2)+1) and the gsplit_exhaustive.captured.txt shell-error run are dead; do not cite 57/241/993 or 6/4/2/0 from them.
+hypotheses: es_construct ES template at n in {5,6,7}; rotating-line enumerator validated against exact 2^N oracle.
 holds-here: true — this is exactly about the es_construct ES template at n in {5,6,7}.
-status: checked
+status: retired — superseded by gsplit-enum-completeness-and-n7-zero
 formalisation:
-bearing: Structural constraint on this extremal template: a single separating line cannot reduce the n=7 es_construct set into two 6-avoiding halves; the earlier even/odd block finding (each half 2^{n-3} and (n-1)-avoiding) is real but not line-realizable, so any G-split induction would need a different separation than a straight line on this construction.
-anchor: code/out/gsplit_exhaustive.captured.txt
+bearing: None independently; the n=5,6,7 verdicts live in gsplit-enum-completeness-and-n7-zero (checked).
+anchor: code/out/gsplit_phase2.captured.txt (new authoritative capture)
 ```

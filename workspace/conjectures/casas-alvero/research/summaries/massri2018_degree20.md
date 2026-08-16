@@ -1,8 +1,8 @@
 # Massri, *The CA conjecture for three recycled roots in degree 20* (arXiv:1806.09561, v6 2023)
 
-Full text: [[massri2018_degree20]]
+Full text: [[massri2018_degree20_html]] (arXiv HTML v6 2023, held in full since the 2026 librarian cycle; the older [[massri2018_degree20]] file is the landing page only and is superseded).
 
-Targeted at the smallest open degree, 20 = 2²·5. (NOTE: held `.full.md` is only the arXiv landing page with abstract; body not physically held. Statements from the abstract, which is specific and self-contained.)
+Targeted at the smallest open degree, 20 = 2²·5. The full text is now held: Theorem 7.10 (no CA-polynomial of degree 20 with three recycled roots, 3^17-case check), Theorem 7.9 (no degree-20 CA with root multiplicity ≥ 11; no degree-24 with ≥ 15), Remark 7.6 (a degree-20 CA polynomial has a common root of abs value > 19^−5), Proposition 7.7 (p-adic bound ruling out certain coincidences), Section 5-6 (finiteness and algebraic-coefficient results).
 
 ## Results claimed (from abstract)
 

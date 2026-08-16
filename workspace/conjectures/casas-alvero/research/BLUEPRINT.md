@@ -10,6 +10,8 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
+- `ca20-good-prime-lift/G-good-prime` (lemma) — There exists a good prime for n = 20 — that is, some prime p ≥ 23 with CA_20,p (equivalently rank_{F_p}(M_T) = C for all T ∈ {1,…,20}^{19},…
+  - open `research/backward/ca20-good-prime-lift.md`
 - `full-ca-regular-sequence/G-bad-prime-extension` (lemma) — The finite computation of J_T over ℤ for n ≤ 7 reproduces the published bad-prime lists (validating Thm 3.1 exactly), and for the first…
   - open `research/backward/full-ca-regular-sequence.md`
 - `full-ca-regular-sequence/G-reformulation-equivalence` (lemma) — For every n, CA_n,0 holds iff for every T ∈ {1,…,n}^{n−1} the sequence (G_{T,1},…,G_{T,n−1}), G_{T,i} = Φ_{j_i}(σ_i(x_1,…,x_{n−1})), is a…
@@ -27,6 +29,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `bad-prime-lists-hasse-formulation` | claim | established | — | The published small-degree bad-prime lists are for the HASSE formulation of the CA hypothesis (H_i(f) Hasse derivatives): n=3 bad primes… |
 | `bad-prime-minors-criterion` | claim | established | — | A prime p is bad for degree n iff p \| J_T for some T ∈ T, where J_T is the greatest common divisor of all C×C minors of the matrix M_T… |
 | `bad-prime-upper-bound` | claim | established | — | If CA_{n,0} holds and p is a bad prime for n, then p < C! · Π_{i=1}^{n−1} (i+n−2 choose n−2)(d−i+n−2 choose n−2), where d=(n²−3n+4)/2, C=(… |
+| `badprimes-lists-corroborated-by-defrutosmarin2015` | claim | **ready** | — | de Frutos Marín (JTN2015 contribution "Un problema sobre números combinatorios", Valladolid) independently lists the bad ("ineficaces")… |
 | `badprimes-n20-certified-frontier` | claim | **ready** | — | The degree-20 certified-bad primes by the sufficient binomial criterion p \| C(20,i)-1 (arXiv:2307.05997 Cor 8) are the 18 primes… |
 | `badprimes-n4-minor-criterion-verified` | claim | **ready** | — | For degree n=4, the prime divisors of lcm_{T in {1,2,3,4}^3} J_T are exactly {3, 5, 7}, matching the known bad primes of degree 4 (Castryck… |
 | `badprimes-n5-minor-criterion-verified` | claim | **ready** | — | For degree n=5, the rank-over-F_p form of the Schaub-Spivakovsky minor criterion certifies exactly the published bad-prime list… |
@@ -35,6 +38,12 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `binomial-criterion-calibration` | claim | **ready** | — | The sufficient binomial bad-prime criterion (Schaub-Spivakovsky 2023 Cor 8, arXiv:2307.05997: p bad for degree d if p \| C(d,i) - 1 for some… |
 | `ca-status-2025` | claim | **ready** | — | A complete proof of the Casas-Alvero conjecture has been CLAIMED (Soham Ghosh, arXiv:2501.09272, Jan 2025, v2 Mar 2026 "major revisions")… |
 | `ca-variety-results` | claim | established | — | CA for degree d is equivalent to V_k(d,t) = ∅ for ANY t∈{0,…,d−2}, where V_k(d,t) ⊂ weighted P is the projective variety cut out by the… |
+| `ca20-good-prime-lift` | goal | blocked | `ca20-good-prime-lift/G-good-prime`, `ca20-good-prime-lift/G-lift`, `ca20-good-prime-lift/G-minors-boundary`, `ca20-good-prime-lift/G-minors-test`, `ca20-good-prime-lift/G-upper-bound`, `gvb-lift` | CA_20,0 — over any field K of characteristic 0, every monic f ∈ K[x] of degree 20 that shares a non-constant factor with each of its first… |
+| `ca20-good-prime-lift/G-good-prime` | lemma | **ready** | — | There exists a good prime for n = 20 — that is, some prime p ≥ 23 with CA_20,p (equivalently rank_{F_p}(M_T) = C for all T ∈ {1,…,20}^{19},… |
+| `ca20-good-prime-lift/G-lift` | lemma | established | `gvb-lift` | For any prime p, CA_20,p (no degree-20 Casas–Alvero polynomial over F̄_p that is not a pure power) implies CA_20,0. This is the k=0 case of… |
+| `ca20-good-prime-lift/G-minors-boundary` | lemma | established | `minors-criterion-feasibility-boundary` | The direct minors/rank criterion is computationally infeasible at n = 20: it is SNF-feasible only to n ≤ 4, rank-over-F_p-feasible only to… |
+| `ca20-good-prime-lift/G-minors-test` | lemma | established | `bad-prime-minors-criterion` | For n = 20, a prime p is bad iff p \| J_T for some T ∈ {1,…,20}^{19}, where J_T is the gcd of all C×C minors of the integer matrix M_T (C =… |
+| `ca20-good-prime-lift/G-upper-bound` | lemma | established | `bad-prime-upper-bound` | Conditional on CA_20,0, every bad prime p for 20 satisfies p < C! · ∏_{i=1}^{19} binom(i+18,18) binom(d−i+18,18), d = 172, C =… |
 | `char2-eng-refuted-ca-charfree` | claim | established | — | The characteristic-free reading of CA — "f monic of degree n sharing a root with each of its first n-1 derivatives is a pure power" — is… |
 | `charp-false` | claim | **ready** | — | CA is false in positive characteristic p; x^{p+1} - x^p is a separable counterexample not a pure power. Any proof of CA must use… |
 | `charp-witness-xpp1-xp` | claim | **ready** | — | In characteristic p, f(x) = x^{p+1} − x^p (and relatives) is a CA-polynomial (shares a non-trivial factor with every derivative) that is… |
@@ -48,18 +57,11 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `deg5-char2-refuted` | claim | established | — | CA in degree 5 over F_2 is false in the Hasse-derivative formulation: f = x^5 + x^4 = x^4(x+1) over F_2 has two distinct roots {0, 1} (0… |
 | `deg6-char2-refuted` | claim | established | — | CA in degree 6 over F_2 is false in the Hasse-derivative formulation: f = x^6+x^2 = x^2(x+1)^4 has two distinct roots {0,1} (NOT a pure… |
 | `deg6-char5-refuted` | claim | established | — | CA in degree 6 over F_5 is false in the Hasse-derivative formulation: f = x^6 − x^5 = x^5(x−1) has two distinct roots {0,1} (NOT a pure… |
+| `deg7-char2-refuted` | claim | established | — | CA in degree 7 over F_2 is FALSE in the Hasse formulation: f = x^7 + x^3 = x^3(x+1)^4 over F_2 has two distinct roots {0,1} (0 mult 3, 1… |
 | `degree12-settled` | claim | **ready** | — | Conjecture 1 (CA) is true for d=12. Method: restrict to a small scenario list (five 5 scenarios of type 8), run the resultant/Gröbner… |
+| `dobrowolski-2017-withdrawn` | claim | **ready** | — | Dobrowolski, "Casas-Alvero Conjecture is true" (arXiv:1705.01704, 4 May 2017) is a claimed complete proof that was WITHDRAWN by the author… |
 | `full-ca-regular-sequence` | goal | blocked | `charp-false`, `full-ca-regular-sequence/G-bad-prime-extension`, `full-ca-regular-sequence/G-macaulay-rank`, `full-ca-regular-sequence/G-reformulation-equivalence`, `full-ca-regular-sequence/G-uniform-nonvanishing` | Casas–Alvero (CA). Over any field K of characteristic 0, every monic f ∈ K[x] with deg f = n ≥ 1 satisfying gcd(f, f^{(i)}) ≠ 1 for all i =… |
 | `full-ca-regular-sequence/G-bad-prime-extension` | lemma | **ready** | — | The finite computation of J_T over ℤ for n ≤ 7 reproduces the published bad-prime lists (validating Thm 3.1 exactly), and for the first… |
 | `full-ca-regular-sequence/G-macaulay-rank` | lemma | established | — | For homogeneous forms of degrees 1,…,n−1 in n−1 variables over a field, the following are equivalent: (i) they form a regular sequence… |
-| `full-ca-regular-sequence/G-reformulation-equivalence` | lemma | **ready** | — | For every n, CA_n,0 holds iff for every T ∈ {1,…,n}^{n−1} the sequence (G_{T,1},…,G_{T,n−1}), G_{T,i} = Φ_{j_i}(σ_i(x_1,…,x_{n−1})), is a… |
-| `full-ca-regular-sequence/G-uniform-nonvanishing` | lemma | **ready** | — | For every n ≥ 1 and every T ∈ {1,…,n}^{n−1}, the integer J_T — the gcd of all C×C minors of the matrix M_T built from the translated… |
-| `ghosh-2025-claim` | claim | **ready** | — | Theorem A: Let f be monic of degree d≥3 over a char-0 field K. Then gcd(f,f_i) non-trivial for all i=1,…,d−1 iff f = (X−α)^d. I.e. CA holds… |
-| `ghosh-char0-step` | claim | **ready** | — | The proof proceeds by downward induction on degree d (assume degree n+1, prove degree n). It has two ingredients: (1) an algebraic step… |
-| `ghosh-complete-intersection` | claim | **ready** | — | The intermediate arithmetic CA schemes X_n[j] (1≤j≤n−1, with X_n[n−1]=X_n) have K-points forming an almost complete intersection over any… |
-| `ghosh-dim-bound` | claim | **ready** | — | For n≥3 and any algebraically closed field K (any characteristic), dim ∩_{i=1}^{n−1} X_n^i(K) ≤ 2. Concretely the scheme of… |
-| `ghosh-finiteness` | claim | **ready** | — | X_n is a finite Z-scheme of dimension ≤1 for all n≥3, hence affine; the arithmetic CA scheme has finitely many K-rational points over any… |
-| `ghosh-v2-version-record` | claim | **ready** | — | arXiv:2501.09272 version history, verified from the arXiv abs page: v1 submitted 16 Jan 2025 (15 KB); v2 submitted 21 Mar 2026 (30 KB,… |
-| `gvb-lift` | claim | **ready** | — | (as quoted and reformulated by Castryck et al, Theorem 3) Let d>0 and p prime. If no CA-polynomials of degree d exist over F_p-bar, then CA… |
 
-_21 further nodes not shown._
+_41 further nodes not shown._

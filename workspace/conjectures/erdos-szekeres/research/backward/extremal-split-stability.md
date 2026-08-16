@@ -85,21 +85,29 @@ next: SAT/CP-SAT counterexample search, only after the encoder reproduces
 
 ```gap
 id: G-split-consistent
-lemma: (Consistency on the extremal template.) The splitting lemma is not
-      refuted by the known extremal construction: for n = 5, 6, 7 the
-      Erdős–Szekeres 1960 construction of 2^{n-2} points, realized in exact
-      rational coordinates, admits a line separating it into two (n−1)-avoiding
-      halves (2^{n-3} points each) — i.e. its recursive decomposition
-      X_n = X_{n-1} ∪ X_{n-1}* witnesses G-split.
-status: open
-next: `es_construct` is now the verified construction (largestConvex = n−1 at
-      n=4,5,6; no convex 7-gon at n=7). The even/odd block halves are each
-      (n−1)-avoiding and of size 2^{n-3}, but in this realization they are NOT
-      strictly line-separable (gsplit_line.py — a dead guess, not an
-      obstruction). The genuine question is whether ANY line (through a point
-      pair, perturbed off it) splits the set into two (n−1)-avoiding halves:
-      exhaustive test at n=5,6,7, task `gsplit-exhaustive-line-test`
-      (starter `code/out/gsplit_exhaustive.py`; verify its bipartition
-      enumeration before trusting it). An empty result is a checked negative
-      about THIS realization at these n, not about all extremal sets.
+lemma: (Consistency on the extremal template.) For n = 5, 6 the Erdős–Szekeres
+      1960 construction of 2^{n-2} points, realized in exact rational
+      coordinates as es_construct, admits a line separating it into two
+      (n−1)-avoiding halves (2^{n-3} points each) — 4 such splits at n=5,
+      2 at n=6. At n=7 the exhaustive pair-line search finds 0 such splits, so
+      the construction's recursive decomposition does NOT witness G-split there.
+      Valid split counts go 6,4,2,0 as n goes 4,5,6,7: the splitting-line
+      induction is consistent with the template at n=5,6 and fails on it at n=7.
+status: SUPERSEDED (steer 10) — the 6,4,2,0 and 57/241/993 counts came from the
+      pair-line enumerator, which steer 10 reports is wrong in both directions
+      (operator recheck: 50/222/946 with 33-40 false positives) and whose
+      captured run was a shell error; re-derive via the rotating-line run
+next: Task `gsplit-enumeration-recheck` (updated per steer 11): Phase 1 is
+      ACCEPTED DONE — the rotating-line enumerator matches the 2^N oracle
+      exactly at N=8,10,12,14,16 (zero missing/zero extra, count N(N-1)). The
+      remaining work is ONE command, not another design pass: re-capture the
+      n=5,6,7 split counts with provenance into
+      `code/out/gsplit_phase2.captured.txt` (exact command in task
+      `gsplit-enumeration-recheck`), then read the capture back. If it
+      reproduces 4 splits at n=5, 2 at n=6, 0 at n=7, promote
+      `gsplit-enum-completeness-and-n7-zero` to checked for the split counts and
+      retire `gsplit-exhaustive-esconstruct` pointing at the new anchor. If not,
+      report the new numbers plainly. Do not start another enumerator. A
+      confirmed empty result at n=7 is a checked negative about THIS
+      realization at these n, not about all extremal sets.
 ```

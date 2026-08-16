@@ -18,8 +18,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
 | `abe-nakano-modular` | claim | **ready** | — | Every finite modular lattice L with \|L\| ≥ 2 satisfies Frankl's conjecture: some join-irreducible x has \|{y: y ≥ x}\| ≤ \|L\|/2. |
-| `ahs-barrier` | claim | established | — | Every nonempty union-closed family has an element in at least (3−√5)/2 ≈ 0.38197 of its sets. |
-| `ahs-gilmer-conj` | claim | established | — | Verifies the explicit one-variable inequality conjectured by Gilmer that yields the constant. |
+| `ahs-barrier-3-minus-rt5-over-2` | claim | established | — | min_μ∈ℳ_φ E[H(xy)]−E[H(x)] over independent (μ×μ) copies is minimized at φ*=(√5−1)/2, giving constant 1−φ*=(3−√5)/2 for UC; a natural… |
 | `ahs-published-ejc` | claim | **ready** | — | The (3−√5)/2 barrier constant is a peer-reviewed result: Alweiss–Huang–Sellke, Electron. J. Combin. 31(3):P3.35 (2024), doi:10.37236/12232. |
 | `ahs-published-note` | claim | **ready** | — | As of the published EJC record (Sep 2024), the peer-reviewed record for the union-closed constant is NOT Liu/Cambie (still preprints); the… |
 | `awz-main-technical` | claim | established | — | (Technical theorem) For L a finite lattice, m left-modular in L\{1̂}, and x,y join-irreducibles with m ∨ x ∨ y = 1̂, then L satisfies… |
@@ -37,25 +36,26 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `bouchard-ucx-ladder` | claim | established | — | For any union-closed family A on [n], UCx holds for all x ∈ [⌈n/3⌉ + 1]; i.e. there is B with \|B\| = n−x+1 and \|A_B\| ≥ \|A_B\|. An affirmative… |
 | `bounded-iff-interval-doublings` | claim | established | — | A finite lattice is bounded (a bounded homomorphic image of a free lattice) iff it is obtainable from the one-element lattice by a finite… |
 | `brown-idempotent-expansion` | claim | **ready** | — | In the Möbius (semigroup) algebra of a (semi)lattice L, the elements e_X = Σ_{Y≥X} μ(X,Y)·Y (X ∈ L) form a basis of pairwise orthogonal… |
-| `cambie-record` | claim | established | — | Independent (with Sawin's dependent-coupling improvement) the best known constant is strictly above (3−√5)/2 ≈ 0.38197, evaluated around… |
+| `cambie-0-38234-published-route` | claim | **ready** | — | Using dependent samples (Sawin's suggestion) with the entropy approach, the union-closed conjecture holds with constant c ≈ 0.3823455 (>… |
+| `cambie-question2-exact-0-3823455` | claim | established | — | The maximum c of Sawin's Question 2 (linear combination of an iid and a negatively-correlated Sawin-style coupling, weight α) is exactly… |
+| `cambie-survey-two-abundant-capped` | claim | **ready** | — | Families whose smallest set has size ≥k (k arbitrary large) can have exactly 2 abundant elements (construction P_k^n), so UC cannot be… |
 | `carvalho-reduction-descendants` | claim | **ready** | — | There is a reduction process on normalized union-closed families (removing a minimal set and taking a dual/⊖-reduction) under which every… |
 | `chase-lovett-approximate` | claim | established | — | For (1−ε)-approximate union-closed families (ε < 1/2, nearly all pixel- unions in F), some element is in at least ψ = (3−√5)/2 fraction of… |
+| `chase-lovett-psi-optimal-approximate` | claim | established | — | For (1−ε)-approximate union-closed ℱ (ε<1/2), some element is in at least ψ−δ fraction of sets (δ=2ε(1+log(1/ε)/log\|ℱ\|), ψ=(3−√5)/2), and ψ… |
 | `cms-averaged-frankl-wrong` | claim | established | — | The averaged Frankl property (average over b of w(b) is nonnegative) does NOT hold for all union-closed families; the averaging method has… |
 | `cms-averaged-threshold` | claim | established | — | The first author verified the averaged Frankl property whenever n ≥ 2m − 2^(m/2) (m ≥ 3); one cannot replace 2^(m/2) with the upper integer… |
 | `colbert-dim-at-most-2` | claim | established | — | Every nontrivial union-closed family of dimension at most two (every chain of sets has length (number of elements minus one) ≤ 2) has an… |
 | `colbert-infinite-uc-false` | claim | **ready** | — | UC (every nontrivial union-closed family has an abundant element) is FALSE for arbitrary infinite families — the abstract states the… |
 | `colbert-topological-dcc` | claim | established | — | Let (X, τ) be a topological space satisfying the descending chain condition on its open sets, τ ≠ {∅}. Then X has an abundant element of τ… |
+| `coupling-interval-bb-infeasible-10s` | claim | established | — | The rigorous mpmath.iv interval branch-and-bound CANNOT certify t=0.38234 within a 10s budget: the margin of the true infimum above 1 is… |
+| `coupling-true-inf-crossing-0-3824` | claim | established | — | Over the full 4-parameter two-atom class, the true inf of g(P,alpha)/Eh (inf over P taken internally, alpha=0.035) crosses 1 between… |
+| `coupling-true-inf-crossing-4d` | claim | **ready** | — | Over the full 4-parameter two-atom coupling class, the true infimum of g/Eh — with the inf over the coupling P taken internally, i.e. the… |
 | `czedli-schmidt-large-semimodular` | claim | established | — | Every finite large semimodular lattice L (\|L\| > 5·2^(m−3), m=\|J(L)\|) satisfies Frankl's conjecture; if \|L\| > 6·2^(m−3) then J(L)=A(L). |
 | `czedli-schmidt-planar` | claim | established | — | Every finite semimodular planar lattice satisfies Frankl's conjecture; if \|L\| ≥ 4 and 1 is join-reducible then there are two distinct… |
 | `daswu-large-kth` | claim | established | — | For 0 ≤ α < (3−√5)/2 there is c_α≥0 such that if \|F\| ≥ 2^{c_α(k−1)} then at least k elements each appear in ≥ α\|F\| sets. |
 | `daswu-nagel` | claim | established | — | For k ≥ 2 and \|∪F\| ≥ k, the kth-most frequent element lies in at least \|F\|/(2^{k−1}+1) sets, with equality iff F is a near-k-cube (=… |
 | `daswu-record-0-3823455` | claim | established | — | The current best constant for Frankl's conjecture is ≈ 0.3823455 = 0.38234 (355), obtained by Sawin's dependent-coupling method as… |
 | `day-doubling-hypothesis-fails-general` | claim | **ready** | — | Not every finite lattice is a single interval-doubling of a quotient by a maximal congruence. The single-doubling correspondence holds only… |
-| `eccles-stability` | claim | **ready** | — | Stability result for the union-closed size problem: near-extremal union-closed families (max average size) cluster around an explicit… |
-| `eil-small-sets` | claim | established | — | For any ε>0 there is a union-closed family F whose (unique) smallest set S has no element in more than a fraction ε of F; explicitly, with… |
-| `ellis-gilmer-conjecture-refuted` | claim | **ready** | — | Gilmer's Conjecture 1 (iid A,B over subsets of [n], all marginals < 1/2, H(A)>0 ⟹ H(A∪B) + D(A∪B\|\|A) > H(A)) is FALSE. Counterexample on… |
-| `falgasravry-separating-weight` | claim | established | — | If a union-closed family S separates the points of Ω (i.e. for x≠y some A∈S contains exactly one), then its weight w(S)=Σ_{A∈S}\|A\| ≥… |
-| `faro-roberts-simpson-40` | claim | established | — | A counterexample on an m-element ground set has at least 4m−1 member sets (Lo Faro / Roberts–Simpson); hence UC holds for all union-closed… |
-| `gilmer-constant` | claim | established | — | Every nonempty union-closed family F ⊆ 2^[n] has an element in at least a 0.01 fraction of its sets. |
+| `eccles-stability` | claim | **ready** | — | Stability result for the union-closed size problem: near-extremal union-closed families (max total size) cluster around the explicit… |
 
-_99 further nodes not shown._
+_118 further nodes not shown._

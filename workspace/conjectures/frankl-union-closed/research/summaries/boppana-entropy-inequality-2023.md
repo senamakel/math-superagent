@@ -11,8 +11,8 @@ hypotheses: x ∈ [0,1]
 holds-here: yes
 status: proved
 bearing: The one-variable inequality is the engine of the entire entropy line; its equality case is exactly the extremal distribution behind (3−√5)/2. A run computing the barrier can check any candidate inequality against this.
-anchor: research/sources/boppana-entropy-inequality-2023.full.md
-follows-from: ahs-barrier
+anchor: research/sources/boppana-entropy-inequality-2023.html.full.md
+follows-from: ahs-barrier-3-minus-rt5-over-2
 ```
 
 **Bearing:** the inequality restates the iid barrier as a clean analytic fact; it is the natural object to verify numerically/symbolically if this run attempts any entropy-method computation.

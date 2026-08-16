@@ -14,7 +14,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/extremal-split-stability.md`
 - `extremal-split-stability/G-split` (lemma) — (Extremal splitting / stability.) For every n ≥ 4, every extremal n-avoiding set X (\|X\| = f(n), no convex n-gon, general position) admits a…
   - open `research/backward/extremal-split-stability.md`
-- `extremal-split-stability/G-split-consistent` (lemma) — (Consistency on the extremal template.) The splitting lemma is not refuted by the known extremal construction: for n = 5, 6, 7 the…
+- `extremal-split-stability/G-split-consistent` (lemma) — (Consistency on the extremal template.) For n = 5, 6 the Erdős–Szekeres 1960 construction of 2^{n-2} points, realized in exact rational…
   - open `research/backward/extremal-split-stability.md`
 
 ## Every node
@@ -35,10 +35,12 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `cg98-first-improvement` | claim | established | — | ES(n) -> g(n) <= C(2n-4, n-2) for n >= 4 (removes the +1 from the 1935 upper bound). |
 | `cups-caps-is-N3-monotone-path` | claim | established | — | ES(n) ≤ f(n,n) = C(2n-4,n-2)+1 is exactly N_3(2,n) = C(2n-4,n-2)+1, the ordered-3-uniform-hypergraph monotone-path Ramsey value; the… |
 | `damasdi-saturation` | claim | established | — | For each n >= 7 there is a planar set of (7/8)·2^{n-2} points that is saturated for convex n-gons (no n in convex position, adding any one… |
+| `dh-allowable-abstract-only` | claim | **ready** | — | The Dobbins–Holmsen–Hubard paper (arXiv:1305.2266; Mathematika 60 (2014) 463–484) is held only as its arXiv abstract page. The abstract… |
 | `dumitru-es7` | claim | **ready** | — | There is a triple-orientation + 4-set-criterion + convex-layer-anchoring SAT encoding for ES(7); it yields UNSAT certificates for anchored… |
 | `empty-hexagon-h6` | claim | **ready** | — | H(6)=30: every set of 30 points in general position contains an empty convex hexagon (SAT proof, Lean-verified). |
 | `es-5-lemma` | claim | established | — | A planar set Y of shape (3,3,2), (4,3,1), or (3,4,2) contains a convex pentagon. |
 | `es-construct-block-tightness` | claim | established | — | In the verified es_construct ES construction, every interior block T_i (1≤i≤n−3) of X_n satisfies longest_cup(T_i)=n−i−1 and… |
+| `es-construct-layer-extremality` | claim | established | — | In the verified es_construct realisation of the ES construction X_n (n=5,6,7), every convex (onion) layer is maximally convex: a layer of… |
 | `es-construction-broken-integer` | claim | established | — | The integer lower-bound construction `es_lower_set` (code/lib/es_construction.py) does NOT have the ES property. At n=4 it reports largest… |
 | `es-construction-broken-rational` | claim | established | — | The rational reconstruction `es_set` (code/lib/esz.py) is also broken. At n=4 it correctly gives largest convex subset 3 (PASS: 4 points,… |
 | `es-construction-defective-checker-correct` | claim | established | — | In this workspace the ES lower-bound set es_lower_set(n) does NOT have the defining property (no convex n-gon at 2^{n-2} points). Captured:… |
@@ -59,10 +61,8 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `etv-alpha-statistic-injective` | claim | **ready** | — | For any a-cap,b-cup-free configuration S with a slope labeling, the α-statistic p ↦ (α_1(p),…,α_{a-2}(p)) is injective into the grid… |
 | `etv-equivalent-to-es` | claim | **ready** | — | The Erdős–Tuza–Valtr conjecture is equivalent to the Erdős–Szekeres conjecture: for any triplet (n,a,b) with 2≤a,b≤n≤a+b−2,… |
 | `extremal-split-stability` | goal | blocked | `extremal-split-stability/G-cupcap`, `extremal-split-stability/G-split`, `extremal-split-stability/G-split-consistent` | For every n ≥ 3, ES(n) ≤ 2^{n-2}+1 — i.e. every set of 2^{n-2}+1 points in general position in the plane contains n points in convex… |
-| `extremal-split-stability/G-cupcap` | lemma | **ready** | — | (Cup–cap characterization, Erdős–Szekeres 1935.) After a rotation making all x-coordinates distinct: a set X in general position contains n… |
-| `extremal-split-stability/G-split` | lemma | **ready** | — | (Extremal splitting / stability.) For every n ≥ 4, every extremal n-avoiding set X (\|X\| = f(n), no convex n-gon, general position) admits a… |
 
-_45 further nodes not shown._
+_53 further nodes not shown._
 
 ## Resting on nothing that exists
 
