@@ -1,0 +1,43 @@
+=== rook(3) = srg(9,4,1,2) ===
+rook(3): n=9 blocks=6
+  rank_2(N) = 5   (rank deficiency vs n: 4)
+  rank_3(N) = 5   (rank deficiency vs n-1: 3)
+  rational rank = 5 (should equal rank over Q of 0/1 matrix)
+
+=== doily = srg(15,6,1,3) ===
+doily: n=15 blocks=15
+  rank_2(N) = 10   (rank deficiency vs n: 5)
+  rank_3(N) = 10   (rank deficiency vs n-1: 4)
+  rational rank = 10 (should equal rank over Q of 0/1 matrix)
+
+=== GQ(2,4) = srg(27,10,1,5) ===
+GQ(2,4): n=27 blocks=45
+  rank_2(N) = 21   (rank deficiency vs n: 6)
+  rank_3(N) = 21   (rank deficiency vs n-1: 5)
+  rational rank = 21 (should equal rank over Q of 0/1 matrix)
+
+=== BvLS = srg(243,22,1,2) ===
+BvLS: n=243 blocks=891
+  rank_2(N) = 243   (rank deficiency vs n: 0)
+  rank_3(N) = 231   (rank deficiency vs n-1: 11)
+  rational rank = 243 (should equal rank over Q of 0/1 matrix)
+rook(3) (9,4): n=9
+   rank_3(N)=5  rank_3(I+A)=9  (v-1=8)
+   rank_2(N)=5  rank_2(I+A)=5  (v-1=8)
+   rank_Q(N)=5
+
+doily (15,6,1,3): n=15
+   rank_3(N)=10  rank_3(I+A)=15  (v-1=14)
+   rank_2(N)=10  rank_2(I+A)=5  (v-1=14)
+   rank_Q(N)=10
+
+GQ(2,4) (27,10,1,5): n=27
+   rank_3(N)=21  rank_3(I+A)=27  (v-1=26)
+   rank_2(N)=21  rank_2(I+A)=7  (v-1=26)
+   rank_Q(N)=21
+
+BvLS (243,22): n=243
+   rank_3(N)=231  rank_3(I+A)=243  (v-1=242)
+   rank_2(N)=243  rank_2(I+A)=133  (v-1=242)
+   rank_Q(N)=243
+

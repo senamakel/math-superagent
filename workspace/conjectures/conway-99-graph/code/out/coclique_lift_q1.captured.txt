@@ -1,0 +1,9 @@
+what ran: code/out/coclique_lift.py  (scipy.optimize.milp, HiGHS)
+oracle function: exact 0/1 integer program; ring Z
+model: 2-(22,4,2) design, b=77, r=14 -- 7315 binary vars, 253 equality constraints (Q1 only)
+wall clock: 66.56s  status: Optimization terminated successfully. (HiGHS Status 7: Optimal)
+SOLUTION FOUND: 77 blocks
+  verify: every point in 1 distinct degrees (want exactly {14}): OK
+  verify: every pair covered exactly twice: OK
+  design written to code/out/coclique_lift_design.txt
+EXISTENCE SETTLED: YES (explicit design captured, verified exactly)

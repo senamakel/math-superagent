@@ -110,6 +110,31 @@ first-step: (concrete, tool_builder can start today)
 killed-by: (none — adopted)
 ```
 
+```claim
+id: 5vertex-pq-inert-6vertex-live
+statement: The point graph of EVERY partial quadrangle satisfies the 5-vertex
+  condition (Pech 2021 Thm 5.7, now PROVED in library: only two graph types need
+  checking, counts (s-1)(s-2) and (s-1)(s-2)(s-3), both constant). Hence the
+  5-vertex condition is INERT as a differentiator for srg(99,14,1,2): it holds
+  uniformly for rook(3)=PQ(2,1,2), BvLS=PQ(2,10,2), and any hypothetical
+  PQ(2,6,2) alike. The first hierarchy rung where a non-rank-3 proper PQ could
+  differ from the rank-3 controls is the 6-vertex condition, which for a PQ
+  point graph reduces to 8 graph types (Pech Prop 5.8), and to 5 types for a GQ
+  (Reichard). Since 99 is a PROPER PQ (mu=2 != t+1=7), the 6-vertex
+  differentiator must be tested against the 8 PQ types.
+hypotheses: Gamma is the point graph of a partial quadrangle PQ(s,t,mu) (i.e.
+  a strongly regular graph with mu>0 and no induced K4-e); holds for all
+  srg(v,k,1,2) family members.
+holds-here: yes — (99,14,1,2) is the point graph of PQ(2,6,2), a proper PQ.
+status: sourced (primary proof in library; proofs read directly).
+bearing: closes the adopted approach's first-step rung: the 5-vertex condition
+  cannot prove 99 nonexistence (it is necessary but uniform). Redirects the
+  attack to the 6-vertex condition on the 8 PQ types of Pech Prop 5.8.
+anchor: research/sources/pech-highly-regular-fulltext.full.md (Theorem 5.7,
+  proof lines 1791-1830),
+  research/sources/reichard-7vertex-condition-gq.full.md
+```
+
 ## Why this beat the other two candidates
 
 - `macwilliams-binary-code-arc` and `higman-module-restriction` are both

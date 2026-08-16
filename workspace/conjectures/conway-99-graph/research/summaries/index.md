@@ -22,6 +22,13 @@ answer the question.
 - `makhnev-1988-lambda1.md` / `makhnev-1988-lambda1-russian-fulltext.md` —
   Makhnev 1988 condition (*) theorems; Thm 2 = no srg(99,14,1,2) with (*).
 - `makhnev-2013-local-subgraphs-srg-99.md` — local-subgraph srg classification.
+- `pech-highly-regular-fulltext.md` — Pech 2021 (alco.183) full text: Thm 5.7
+  PROVES PQ point graphs satisfy the 5-vertex condition; Prop 5.8 reduces the
+  6-vertex condition to 8 types. Upgrades `bik-5vertex-holds-for-pq` from
+  asserted to proved; shows 5-vertex is INERT, 6-vertex is the live rung.
+- `reichard-7vertex-condition-gq.md` — Reichard 2014 (arXiv:1401.6816):
+  primary proof that GQ point graphs satisfy the 5-vertex condition; 6/7-vertex
+  machinery (8-type reduction). The GQ case behind the PQ extension.
 
 ## Automorphism / orbit-matrix
 - `behbahani-2009-phd-thesis.md` / `-pdf.md` — orbit-matrix method; primes {2,3};

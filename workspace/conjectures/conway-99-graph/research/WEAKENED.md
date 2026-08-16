@@ -11,6 +11,7 @@ Rungs are listed weakest first, which is the order to climb them. Attack the cur
 | Ladder | Full-strength goal | Difficulties | Status |
 | --- | --- | --- | --- |
 | [[conway-99-ladder]] | decide whether srg(99, 14, 1, 2) exists, equivalently whether there is a partial linear space on 99 points with 231 lines of size 3 and 7 lines through each… | enumeration-ceiling, sporadic-sandwich, spectral-route-dead, no-symmetry, sts-unclassified, nonlocal-mu, local-too-weak | open |
+| [[test-schema]] | probe — discover the renderer's rung field names (no mathematical target) | probe-difficulty | abandoned |
 
 ## The rungs, weakest first
 
@@ -18,10 +19,10 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
-| `R-control-9` | [[conway-99-ladder]] | Decide existence of srg(9,4,1,2) and exhibit the witness. Answer (classical): it exists — the 3×3 rook's graph K₃□K₃, equivalently Paley(9). Its 6 triangles… | enumeration-ceiling, sporadic-sandwich, spectral-route-dead, no-symmetry, sts-unclassified, nonlocal-mu, local-too-weak | **settled** |
-| `R-aut-99` | [[conway-99-ladder]] | Establish exactly which prime orders p are excluded as automorphisms of srg(99,14,1,2) (source: Behbahani–Lam, Makhnev et al.), then exclude one further prime… | enumeration-ceiling, spectral-route-dead, sts-unclassified, nonlocal-mu, local-too-weak | open |
-| `R-precedent-33` | [[conway-99-ladder]] | Decide existence of srg(33,8,1,2) and name the mechanism. Strong indication (hand arithmetic, to be re-derived by the oracle phase): it is infeasible by… | enumeration-ceiling, spectral-route-dead, no-symmetry, local-too-weak | open |
-| `R-local-config-99` | [[conway-99-ladder]] | Choose a finite forced sub-configuration C of the triangle geometry (e.g. a pair of intersecting triangles with a fixed partial extension) and prove by bounded… | enumeration-ceiling, spectral-route-dead, sts-unclassified, nonlocal-mu | open |
+| `R-control-9` | [[conway-99-ladder]] | Decide existence of srg(9,4,1,2) and exhibit the witness. Settled: it exists — the 3×3 rook's graph K₃□K₃, equivalently Paley(9). Its 6 triangles are the 3… | enumeration-ceiling, sporadic-sandwich, spectral-route-dead, no-symmetry, sts-unclassified, nonlocal-mu, local-too-weak | **settled** |
+| `R-aut-99` | [[conway-99-ladder]] | Given the sourced exclusion list (claim `automorphism-orders-consolidated`: \|G\| divides 2·3³·7·11; only primes 2,3; no Z6/S3/Z9/E9; 2\|\|G\| ⇒ \|G\|≤6; 7\|\|G\| ⇒… | enumeration-ceiling, spectral-route-dead, sts-unclassified, nonlocal-mu, local-too-weak | open |
+| `R-precedent-33` | [[conway-99-ladder]] | Decide existence of srg(33,8,1,2) and name the mechanism. Settled: it does NOT exist, by eigenvalue-multiplicity integrality — eigenvalues r=2, s=−3, and the… | enumeration-ceiling, spectral-route-dead, no-symmetry, local-too-weak | **settled** |
+| `R-local-config-99` | [[conway-99-ladder]] | Choose a finite forced sub-configuration C of the triangle geometry (e.g. the n3 seed — two disjoint triangles joined by exactly two edges) and prove by… | enumeration-ceiling, spectral-route-dead, sts-unclassified, nonlocal-mu | open |
 | `R-sts-restricted-99` | [[conway-99-ladder]] | Classify the partial STS(99) with 231 lines of size 3 and replication 7 satisfying μ=2, under an added hypothesis that makes the class finite — e.g. the line… | enumeration-ceiling, spectral-route-dead, sts-unclassified | open |
 | `R-spectral-99-failed` | [[conway-99-ladder]] | Prove nonexistence of srg(99,14,1,2) by a spectral or feasibility argument — eigenvalue integrality, Krein conditions, absolute bound, or interlacing on the… | spectral-route-dead | failed |
 
@@ -29,18 +30,19 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
-- [[conway-99-ladder]] → `R-aut-99`: Establish exactly which prime orders p are excluded as automorphisms of srg(99,14,1,2) (source: Behbahani–Lam, Makhnev et al.), then exclude one further prime order by exact orbit-matrix enumeration over the prime-order orbits, encoded for CP-SAT, with the orbit matrices stated and the exhaustiveness argued.
+- [[conway-99-ladder]] → `R-aut-99`: Given the sourced exclusion list (claim `automorphism-orders-consolidated`: |G| divides 2·3³·7·11; only primes 2,3; no Z6/S3/Z9/E9; 2||G| ⇒ |G|≤6; 7||G| ⇒ G=Z7, hence |G| ∈ {1,2,3}), settle the next residual case: prove srg(99,14,1,2) has no involution (no Z2), narrowing |G| ∈ {1,2,3} to {1,3}, by exact orbit-matrix enumeration over the fixed-vertex structure of an involution, with the orbit matrices stated and the exhaustiveness argued.
   - switched off: enumeration-ceiling, spectral-route-dead, sts-unclassified, nonlocal-mu, local-too-weak
-  - to merge the next difficulty back: Turn `local-too-weak` back on: exhausting all prime orders would prove the automorphism group is trivial, after which the no-symmetry reality must be faced head-on. First move: source the exact list of excluded orders, then write the orbit-matrix constraints for one not-yet-excluded prime p and run the CP-SAT encoding — the orbit space is finite, so this does not touch `enumeration-ceiling`.
+  - to merge the next difficulty back: Turn `local-too-weak` back on: exhausting the residual {1,3} would prove G trivial, after which the local 7K₂ geometry must carry the argument unaided — that is R-local-config-99. First move: write the orbit-matrix constraints for the involution case and run the CP-SAT encoding, but only after the same encoder is made to FIND the involutions of rook(3) and BvLS — both controls have them, so this is exactly the `sporadic-sandwich` discipline that stays switched on.
 
 ## Settled — what this run owns
 
 Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
 
-- [[conway-99-ladder]] `R-control-9`: Decide existence of srg(9,4,1,2) and exhibit the witness. Answer (classical): it exists — the 3×3 rook's graph K₃□K₃, equivalently Paley(9). Its 6 triangles are the 3 rows and 3 columns, giving a partial STS(9) with 6 lines of size 3, replication 2, and μ=2 exactly. (off: enumeration-ceiling, sporadic-sandwich, spectral-route-dead, no-symmetry, sts-unclassified, nonlocal-mu, local-too-weak; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[conway-99-ladder]] `R-control-9`: Decide existence of srg(9,4,1,2) and exhibit the witness. Settled: it exists — the 3×3 rook's graph K₃□K₃, equivalently Paley(9). Its 6 triangles are the 3 rows and 3 columns, a partial STS(9) with 6 lines of size 3, replication 2, and μ=2 exactly. (off: enumeration-ceiling, sporadic-sandwich, spectral-route-dead, no-symmetry, sts-unclassified, nonlocal-mu, local-too-weak; established by c4)
+- [[conway-99-ladder]] `R-precedent-33`: Decide existence of srg(33,8,1,2) and name the mechanism. Settled: it does NOT exist, by eigenvalue-multiplicity integrality — eigenvalues r=2, s=−3, and the multiplicity gap f−g = k(4−k)/(2√(4k−7)) = 8·(−4)/10 = −16/5 is non-integral. The same formula excludes k=32 (v=513) and k=44 (v=969). (off: enumeration-ceiling, spectral-route-dead, no-symmetry, local-too-weak; established by srg33-does-not-exist-integrality)
 
 ## Rungs that failed, and why
 
 Do not propose these again. A weakened version that did not work is information about the difficulty it left on, and the reason is the useful half; one left blank makes the row worthless.
 
-- [[conway-99-ladder]] `R-spectral-99-failed`: Prove nonexistence of srg(99,14,1,2) by a spectral or feasibility argument — eigenvalue integrality, Krein conditions, absolute bound, or interlacing on the whole graph. — _no reason recorded — say what went wrong, or the next weakener will propose it again_
+- [[conway-99-ladder]] `R-spectral-99-failed`: Prove nonexistence of srg(99,14,1,2) by a spectral or feasibility argument — eigenvalue integrality, Krein conditions, absolute bound, or interlacing on the whole graph. — every eigenvalue / Krein / absolute-bound / whole-graph-interlacing test passes verbatim for srg(9,4,1,2) and srg(243,22,1,2), so the failing step cannot be located on the controls and the argument would prove a false statement. At v=99 the multiplicities are integral (f=54, g=44), so even the 33 precedent's mechanism is unavailable here.

@@ -16,11 +16,15 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/derived-design-at-a-vertex.md`
 - `derived-design-at-a-vertex/G-unsat` (lemma) — The vertex-derived design at (99,14,1,2) does not exist: there is no partial Steiner triple system on 84 points with 140 blocks and…
   - open `research/backward/derived-design-at-a-vertex.md`
+- `n3-dichotomy/G-n3-positive` (lemma) — No srg(99,14,1,2) has n3 ≥ 1. Equivalently: the n3 seed — two disjoint triangles T1 = {a,b,c}, T2 = {d,e,f} joined by exactly 2 edges…
+  - open `research/backward/n3-dichotomy.md`
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `5vertex-pq-inert-6vertex-live` | claim | **ready** | — | The point graph of EVERY partial quadrangle satisfies the 5-vertex condition (Pech 2021 Thm 5.7, now PROVED in library: only two graph… |
+| `assmus-sts-2rank-grounded` | claim | **ready** | — | The incidence 2-rank of a Steiner triple system is NOT determined by its order/parameters alone: Assmus 1995 associates to every STS a… |
 | `aut-bounds-established` | claim | **ready** | — | Automorphism group G of a putative srg(99,14,1,2): \|G\| divides 2.3^3.7.11 (Makhnev-Minakova 2004); if 7\|\|G\| then G congruent Z_7; if 2\|\|G\|… |
 | `aut-cm-2020` | claim | **ready** | — | No srg(99,14,1,2) has an automorphism group isomorphic to Z6, S3, Z9, or E9 (orders 6 and 9). Consequently the order of the automorphism… |
 | `aut-cw-2025` | claim | **ready** | — | If 7 \| \|G\| then G ≅ Z_7 and if 2 \| \|G\| then \|G\| \| 6 (G in {Z2,Z6,S3}) for G=Aut of a putative srg(99,14,1,2), with computer-free proofs. |
@@ -47,22 +51,20 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `c6-resolved-no-bite` | claim | **ready** | — | Bagchi 2006 / Brouwer-Neumaier 1988 mu=2 dichotomy does NOT rule out srg(99,14,1,2). The grid conclusion requires both k <… |
 | `c7-4vertex-mu2-common-neighbour-nonadjacent` | claim | **ready** | — | In any srg(v,k,1,2) (in particular a hypothetical srg(99,14,1,2)), the two common neighbours of any nonadjacent pair are nonadjacent to… |
 | `c8-induced-hexagon-count-bvls` | claim | **ready** | — | The number of induced 6-cycles (induced hexagons) in the BvLS graph srg(243,22,1,2) is exactly 4,980,690, equal to the Reimbayev-style… |
+| `coclique-alpha22-forces-22242-design` | claim | established | — | If a hypothetical srg(99,14,1,2) contained a coclique C of the Hoffman-bound size alpha = v*(-s)/(k-s) = 22, then equality in the ratio… |
 | `coclique-bound-closed-form` | claim | established | — | For the family srg(v,k,1,2) with k = u^2 + u + 2 and v = 1 + k^2/2, the independence (coclique) bound alpha <= v*(-s)/(k-s), where s is the… |
 | `derived-design-at-a-vertex` | goal | blocked | `derived-design-at-a-vertex/G-encode`, `derived-design-at-a-vertex/G-reduce`, `derived-design-at-a-vertex/G-unsat` | no srg(99,14,1,2) exists |
 | `derived-design-at-a-vertex/G-encode` | lemma | **ready** | — | There is an exact CP-SAT/SAT encoding of the partial Steiner triple system on 99 points, 231 blocks of size 3, replication 7, with the mu=2… |
 | `derived-design-at-a-vertex/G-reduce` | lemma | **ready** | — | Fix a vertex v0 of any srg(v,k,1,2) with v = 1 + k + k(k-2)/2 (k even). Then (a) N(v0) induces (k/2)K2 and the k(k-2)/2 vertices at… |
 | `derived-design-at-a-vertex/G-unsat` | lemma | **ready** | — | The vertex-derived design at (99,14,1,2) does not exist: there is no partial Steiner triple system on 84 points with 140 blocks and… |
+| `diamond-free-srg-iff-pq-2602-grounding` | claim | **ready** | — | An SRG is the collinearity graph of a partial quadrangle PQ(s,t,mu) iff it is diamond-free; explicitly PQ(s,t,mu) exists iff the… |
 | `divisor63-multiplicity-integrality` | claim | established | — | Eigenvalue-multiplicity integrality of any srg(v,k,1,2) holds iff a = sqrt(4k-7) = 2u+1 is an odd divisor of 63, i.e. a in {3,7,9,21,63}… |
 | `existence-status-open` | claim | **ready** | — | Existence of srg(99,14,1,2) is open: no construction and no nonexistence proof is known; Brouwer's table marks (99,14,1,2) with '?'. No… |
 | `five-member-list-vanlint1975` | claim | **ready** | — | The parameters of the family converge to exactly the five members (9,4),(99,14),(243,22),(6273,112),(494019,994), equivalently k=u^2+u+2… |
+| `forced-structure-reduction-conway99` | claim | **ready** | — | An independent (preprint, AI-agent) treatment confirms and extends the forced-structure reduction to the outer graph. For any srg(v,k,1,2)… |
 | `g-encode` | goal | refuted | — | no srg(99,14,1,2) exists |
-| `g-reduce` | goal | refuted | — | no srg(99,14,1,2) exists |
-| `g-reduce-c-refuted-on-bvls` | claim | established | — | The vertex-derived design reduction does NOT recurse: the outer design's collinearity graph is not itself an srg(*,*,1,2). On bvls(243) the… |
-| `g-unsat` | goal | refuted | — | no srg(99,14,1,2) exists |
-| `integrality-five-members` | claim | established | — | Eigenvalue-multiplicity integrality (over Z) admits exactly the five parameter sets (9,4),(99,14),(243,22),(6273,112),(494019,994) in the… |
-| `makhnev-condstar-gate-passed` | claim | established | — | Makhnev 1988 condition (*) [no two triangles joined by >=2 edges are joined by != exactly 3 edges = n3=0] HOLDS on both control graphs:… |
 
-_25 further nodes not shown._
+_40 further nodes not shown._
 
 ## Resting on nothing that exists
 

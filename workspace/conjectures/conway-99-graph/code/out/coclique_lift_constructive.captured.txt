@@ -1,0 +1,22 @@
+  attempt 0, best max-triple-overlap so far: None
+  attempt 200, best max-triple-overlap so far: None
+  attempt 400, best max-triple-overlap so far: None
+  attempt 600, best max-triple-overlap so far: None
+  attempt 800, best max-triple-overlap so far: None
+  attempt 1000, best max-triple-overlap so far: None
+  attempt 1200, best max-triple-overlap so far: None
+  attempt 1400, best max-triple-overlap so far: None
+  attempt 1600, best max-triple-overlap so far: None
+  attempt 1800, best max-triple-overlap so far: None
+  attempt 2000, best max-triple-overlap so far: None
+  attempt 2200, best max-triple-overlap so far: None
+  attempt 2400, best max-triple-overlap so far: None
+  attempt 2600, best max-triple-overlap so far: None
+  attempt 2800, best max-triple-overlap so far: None
+  attempt 3000, best max-triple-overlap so far: None
+  attempt 3200, best max-triple-overlap so far: None
+  attempt 3400, best max-triple-overlap so far: None
+  attempt 3600, best max-triple-overlap so far: None
+  attempt 3800, best max-triple-overlap so far: None
+wall clock: 0.72s
+no clean design found in 4000 attempts.  Q2: inconclusive by construction (not a proof of nonexistence)

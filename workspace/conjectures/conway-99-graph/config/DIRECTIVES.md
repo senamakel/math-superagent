@@ -332,3 +332,78 @@ lower bound from the re-derived Makhnev chain, upper from this cap. Say which si
 Do not open another line of attack. Nothing new started now will finish, and an unrecorded result is worth nothing to the next pass.
 
 
+
+## 18 — from steer
+
+The library is being rebuilt against two requests you already answered last pass, and it is costing you 43% of the run.
+
+research/REQUESTS.md has exactly two open rows, and both are resumption artifacts:
+- published-mechanism-ruling-5cf8 (mechanism ruling out srg(33,8,1,2)). ANSWERED: eigenvalue-multiplicity integrality, claims c2 and srg33-mechanism-answers-request, status checked. Its own falsifier column concludes a spectral mechanism cannot transfer to v=99, so the 33 precedent is DEAD. That is on disk in solution.md.
+- exact-list-prime-051a (prime orders excluded as automorphisms). ANSWERED: claims c3 and automorphism-orders-consolidated — Makhnev-Minakova, Behbahani-Lam, Cesarz-Woldar, Crnkovic-Maksimovic, whose mechanism you read from the full PDF last pass.
+
+Close both against the notes that answer them. Then stop spawning librarians: 1711 of 3994 console lines are librarian, against 356 tool_builder, and research/sources already holds 48 sources. This workspace completed phase 1 last pass — solution.md, research/ROOT.md and CLAIMS.md are the record. Source acquisition resumes only against a NEW gap a live phase-4 argument is blocked on.
+
+The rest of the run is in good shape and I am not redirecting it. Ten new captures in seventy minutes, and the two lines you have opened are the right ones — both reach for invariants strictly finer than the spectrum, which is the only place left to look:
+- incidence p-rank / SNF of the triangle geometry (rank deficiency 4, 5, 6 across rook, doily, GQ(2,4) — say whether that sequence is parameter-determined before betting on it, since a parameter-determined invariant cannot separate 99 from 243);
+- the tight-Hoffman coclique lift (alpha = 22 forces f into the s=-4 eigenspace and a 2-(22,4,2) design condition).
+
+Keep running both against rook(3) and bvls_graph() through code/lib.srg before spending effort, exactly as you have been.
+
+
+
+## 19 — from steer
+
+The coclique lift is well-posed and you have half of it. Q1 SETTLED YES: an explicit 2-(22,4,2) design, 77 blocks, r=14, every pair covered twice, verified exactly (HiGHS, 66s). Q2 INCONCLUSIVE: adding the 1540 triple<=1 constraints timed out at 482s with no feasible point, and your own check shows the Q1 design has 6 block-pairs sharing exactly 3 vertices — 6 direct mu=2 violations. So the object you actually need is not just a 2-(22,4,2) design.
+
+NAME THE OBJECT. What Q2 asks for is a 2-(22,4,2) design in which no three points lie in two blocks, equivalently no two blocks meet in 3 points. That is a SUPER-SIMPLE 2-(22,4,2) design, and super-simple (v,4,2) designs are a studied family in design theory — Gronau, Mullin, and successors have existence spectra for them. Whether a super-simple 2-(22,4,2) design exists may already be settled in the literature, in either direction, and either answer is decisive for this line.
+
+This is exactly the new gap directive 18 reserved acquisition for, so post ONE request for it with that name and let the librarian serve that and nothing else. If it exists, the coclique obstruction is dead and say so. If it provably does not, you have a real constraint on any 22-coclique in a putative (99,14,1,2) — and then the next question is whether alpha=22 is forced at all or merely allowed.
+
+Two defects to fix.
+
+code/out/coclique_lift_q2b.captured.txt is EMPTY, zero bytes. GOAL.md: an empty capture is a failed run, not a missing one. Delete it or fill it.
+
+code/out/coclique_lift_constructive.captured.txt is 4000 random attempts finding nothing in 0.72s. You labelled it 'inconclusive by construction' which is honest, but AGENTS.md prohibits searching the answer space, and 4000 random draws over a space this size is not evidence of anything. Do not extend it. The MILP with a longer budget, or the literature, decides this — not sampling.
+
+All changes are in place and verified. The workspace state is now consistent with directive 19.
+
+I redirected the coclique-lift line around directive 19: opened `research/threads/coclique-lift.md` naming the object (super-simple 2-(22,4,2), the v=22 row of the Gronau–Mullin spectrum), dropped the stale `coclique-lift` task whose detail still pointed at the forbidden 4000-random-draw sampler, and added two ordered tasks — `serve-supersimple-22242-existence` (the one librarian acquisition) and `coclique-capture-defects` (delete/fill the 0-byte `coclique_lift_q2_long.captured.txt` and retire the sampling capture). CONTEXT.md now names the object, states the literature-first decision, and records the single reserved librarian exception. One caveat: the `request_research` tool declines the post as a false positive — the gap-naming claim `super-simple-22242-gap` itself trips its dedup filter even though no in-library claim states the existence verdict — so I carried the acquisition as a librarian task instead and left that fact in both the task and CONTEXT.md for the operator.
+
+## 20 — from steer
+
+Q2 IS SETTLED YES, CONSTRUCTIVELY. Record it and close the line.
+
+coclique_lift_cpsat.captured.txt: CP-SAT OPTIMAL in 167s, 7315 bools, 156131 branches, and an explicit 77-block certificate in code/out/coclique_lift_clean_design.txt, independently verified — degrees all 14, all 231 pairs covered exactly twice, max triple overlap 1. A super-simple 2-(22,4,2) design EXISTS.
+
+So the coclique lift is a SIXTH CLOSED ROUTE, not an obstruction: the design condition a 22-coclique would impose on a putative srg(99,14,1,2) is satisfiable, so it cannot rule anything out. Write it up with the obstruction named, exactly as the other five are in solution.md, and add it there. Also close the super-simple literature request I authorised last directive — you settled it by construction, which is strictly better than a citation, so it needs no source and the librarian should not chase it.
+
+Note for the write-up: this is the tool working as intended. CP-SAT decided in 167 seconds what MILP timed out on at 482s and what 4000 random draws could never have shown either way. Say that in the note, because the run's previous pass lost a specialist to exactly this question and the lesson is worth keeping.
+
+SECOND, OPERATIONAL, AND IT IS COSTING YOU AGENTS. Cognee recall is degraded: 45 errors in this run, mostly '409 Conflict: An error occurred during recall', and the calls HANG BEFORE FAILING — inventor/agent-run-47 spent 253 seconds on one relate_memory call that then errored. That is why you now have 4 agent failures, including tool_builder/agent-run-35 killed after a 145756 ms tool call.
+
+Stop using relate_memory and extended-reach recall for the rest of this run. Everything you need is on disk and is complete: research/CLAIMS.md, solution.md, research/ROOT.md, the threads and approaches ledgers, and grep_workspace. Use read_ledger and grep_workspace instead. Durable memory is a convenience here, not a dependency, and right now it is a wall-clock sink that kills the agent holding it.
+
+
+
+## 21 — from steer
+
+Directive 20 landed well — solution.md §2 route 6 states the coclique closure correctly, including that it bears on neither existence nor nonexistence, and the tool note is there. Cognee errors have dropped to 4 in the last 600 lines and agent failures have held at 4. Good.
+
+One correction of method, on the line research/agent-run-60 is now working. It has spent a 60s and a 99s model call plus exa_search and read_sources asking whether srg(99,14,1,2) is a descendant of a regular two-graph. That is arithmetic you can settle in one line, and you should have settled it before opening a literature thread:
+
+- the standard descendant condition is k = 2*mu. Here 2*mu = 4 and k = 14, so it FAILS.
+- the companion count also fails: a regular two-graph on n points has srg descendants with n = 2(2k - lambda - mu) = 2(28 - 1 - 2) = 50, not 100.
+
+So (99,14,1,2) is NOT a descendant of a regular two-graph, and the whole two-graph/switching-class line is closed before it starts. Verify both arithmetic facts through code rather than taking them from me — I am recalling them and this workspace does not import recalled facts — but verify them FIRST, in seconds, and only search if the check passes.
+
+This is the same lesson the coclique lift just taught, and it is worth making a standing rule in CONTEXT.md: when a proposed route has a numeric admissibility condition, evaluate the condition at (99,14,1,2) and at the two controls before spending a single search on it. Six routes have now closed here, and the cheapest closures were the ones that started with arithmetic.
+
+Also: no new capture in the last 22 minutes. If a line is being explored rather than computed, say so in the thread, so the absence of a capture is a recorded state and not a gap.
+
+I've made the changes the directive requires. Summary of what changed and why:
+
+- **CONTEXT.md — Ruled out:** added a standing method rule (evaluate any numeric admissibility condition in one line of exact arithmetic at (99,14,1,2) and both controls *before* searching) and the two-graph closure, with both arithmetic facts marked operator-recalled and gated behind code verification, not imported from recall.
+- **`research/approaches/seidel-twograph-descendant.md`:** the file already carried a full sourced refutation (written concurrently by the research agent — my `status: proposed` edit correctly failed because the file had moved past that); I appended the directive-21 method note so the exploration-not-computation state (agent-run-60's 60s/99s model calls + literature search with no capture) is recorded.
+- **Task ledger:** opened `verify-twograph-gate` — verify the two facts in code (k=2μ fails, companion count = 50 not 100), run the same gate against rook(3)/BvLS and reconcile the approach's control-test claim, search only if the gate passes.
+
+I did not file the arithmetic as a claim, did not open a new thread (the line is being *abandoned*, not started), and did not file a research request (the directive says search only if the gate passes, and it is not expected to). One note for the operator: the rendered `TASKS.md` "Do next" lists the older directive-18 incidence task above `verify-twograph-gate` despite re-recording it (the renderer appears to order by task id, not recency); I appended "— FIRST" to the gate task's title so its priority is unambiguous even in that ordering.

@@ -12,7 +12,7 @@ asserted-by-source) and an anchor (a capture file with a runnable program).
 this run or by the literature.** The problem is open. Nothing here claims the
 graph or its absence. What this run produced is a set of *bounded, exact,
 negative-checked structural results*: a short independent re-derivation of a
-forced `n₃ ≥ 1`, five closed attack routes with the obstruction that closed
+forced `n₃ ≥ 1`, six closed attack routes with the obstruction that closed
 each, a family classification, a documented and retracted false positive, and a
 clean negative answer to the "how far does the local seed extend" question.
 
@@ -99,7 +99,7 @@ nonexistence proof — the interior case `n₃ ≥ 1` is open.
 
 ---
 
-## 2. The five closed routes, each with the obstruction that closed it
+## 2. The six closed routes, each with the obstruction that closed it
 
 1. **Vertex-derived design reduction does not recurse (refuted on BvLS).**
    The reduction from a vertex to the outer partial Steiner triple system
@@ -143,6 +143,8 @@ nonexistence proof — the interior case `n₃ ≥ 1` is open.
    soundness bug in the run's own engine (see §5). The obstruction, if any, is
    not local.
 
+6. **The coclique-design route cannot rule anything out: the forced super-simple 2-(22,4,2) design EXISTS (settled constructively).** A tight 22-coclique `C` in a putative `srg(99,14,1,2)` forces the outside neighbourhoods `{N(b)∩C}` to be a 2-(22,4,2) design (b=77, r=14, k=4), and the lift additionally forbids any two blocks meeting in 3 points — a *super-simple* 2-(22,4,2) design (claim `super-simple-22242-gap`). Q2 — does such a design exist — is now settled **YES, constructively**: CP-SAT OPTIMAL in 167.35s (7315 booleans, 156131 branches), an explicit 77-block certificate in `code/out/coclique_lift_clean_design.txt`, independently verified — all point degrees 14, all 231 pairs covered exactly twice, max triple overlap 1 (`code/out/coclique_lift_cpsat.captured.txt`). **The design condition a 22-coclique would impose is satisfiable, so it cannot rule out the existence of such a coclique**: the route is closed as non-obstructive, not as a refutation of the graph — it bears on neither existence nor nonexistence. (Tool note: CP-SAT decided in 167s what MILP/HiGHS timed out on at 482s and what 4000 random draws could never have shown either way.)
+
 Each candidate was required to be run against the rook's graph `(9,4,1,2)` and
 the Berlekamp–van Lint–Seidel graph `(243,22,1,2)` through `code/lib/srg.py`,
 and to name the step that breaks on them. Routes 1–4 all survive on both
@@ -150,7 +152,8 @@ controls (a nonexistence argument using only parameters, counts, adjacency
 algebra, integrality, interlacing, Krein or absolute bound **cannot** conclude
 anything about 99 because it holds verbatim for 9 and 243). Route 5 is
 different: it is cleared *local* and is answered directly for every radius in
-§6.
+§6. Route 6 is different again: it is a design-condition check, and the
+construction settles it affirmatively, so it is non-obstructive.
 
 ---
 
@@ -303,12 +306,9 @@ existence of `srg(99,14,1,2)`.
    can be joined to satisfy μ=2 and degree-14 for every boundary pair. This is
    the only place the obstruction, if it exists, can live. This is a *finite*
    but hard combinatorial closure problem — the honest next attempt.
-2. A **coclique-design contradiction at 99**: the closed-form coclique bound
-   α = 22 (parameter-specific) plus the hypothesis that a 22-coclique forces a
-   `2-(22, K, 2)` design, as the direct analogue of the Wilbrink–Brouwer
-   `(57,14,1,4)` 15-coclique argument. This is flagged as **not refuted on
-   arrival** by the controls (bounds 3 and 45 differ from 22). It is the most
-   promising non-local structural number this run produced.
+2. ~~A **coclique-design contradiction at 99**~~ — **closed (directive 20)**: the
+   forced super-simple 2-(22,4,2) design **exists** (§2 route 6), so the design
+   condition cannot rule out a 22-coclique. Not a live attack line.
 3. **The a=7 specificity:** any nonexistence argument must be specific to
    `a = √(4k−7) = 7` (Rø0 the integrality that 9 and 243 both survive). A proof
    that works only at a=7 and breaks at a=3, 9 is the shape an admissible
@@ -333,7 +333,7 @@ existence of `srg(99,14,1,2)`.
 
 - **Not established:** existence or nonexistence of `srg(99,14,1,2)`. Stated
   first and plainly (§0).
-- **Established (verified-computationally / sourced):** `n₃ ≥ 1` (§1); five
+- **Established (verified-computationally / sourced):** `n₃ ≥ 1` (§1); six
   closed routes with obstructions (§2); five-member family, `2u+1 | 63`
   integrality, `α = 22` coclique bound (§3); the retracted false positive (§4);
   no local obstruction at any radius, stable fixpoint at radius 6 (§5–§6).
