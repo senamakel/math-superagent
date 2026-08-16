@@ -98,3 +98,4 @@ falsifies: >
   the first explicit one); (c) the weighted sum can be made Ω(1) only by
   supports of positive density (then the equivalence theorem is on its way to
   a proof).
+```

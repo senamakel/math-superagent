@@ -90,3 +90,4 @@ falsifies: >
   provably infinitely often are all equal-residue (the known direction), so
   the non-constant side is the open parity barrier and this route collapses
   into the dead reduction.
+```

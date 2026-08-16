@@ -97,3 +97,4 @@ falsifies: >
   LOS switch bias decays only at loglog x / log x scale, which is NOT summable,
   and the theorem would then need the weaker second-moment-only input, not
   full mixing).
+```

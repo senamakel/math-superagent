@@ -35,7 +35,41 @@ mechanism: >
   equation and the ALGEBRAIC growth classification, which is a strictly richer
   class than 2-regular and has a clean sublinear-growth dichotomy.
 status: refuted
-killed-by: The prime boundary series B(y)=Σ_i A_0(i) y^i is not rational (and not algebraic): the prime-gap-parity sequence is non-automatic, so Furstenberg's diagonal-of-a-rational-series theorem never engages and the "algebraic + sublinear on a density-1 set ⇒ eventually periodic" dichotomy is vacuous for this object. The route reduces to the same non-automaticity wall that closed diagonal-2regular-automaton, with no new transfer; the functional equation for F(x,y) is exact but its boundary is the prime sequence, which is exactly the obstruction.
+killed-by: >
+  Furstenberg's hypothesis fails: the diagonal-of-a-rational-series theorem
+  needs F(x,y) RATIONAL, which over F₂ forces the boundary coefficient sequence
+  to be eventually periodic; the boundary that actually produces ν₂(n)=wt(Φ_n h)
+  is the non-rational prime gap-parity string h (linearisation-fold-weight), and
+  h periodic would make the primes periodic (contradiction, Shiu 2000 / non-
+  automaticity of primes). The rational boundary the mechanism names is the
+  raw-primes-mod-2 string, which is essentially constant and gives the trivial
+  (incorrect) object, not the gap-parity fold. So Furstenberg never engages;
+  the route lands on the same non-automaticity wall that closed
+  diagonal-2regular-automaton. The secondary growth-dichotomy step
+  ("algebraic + sublinear on density-1 ⇒ eventually periodic") is not a stated
+  theorem, but the rational-boundary obstruction decides independently.
+precedent: >
+  (verdict: refuted) — The engine is real and precisely stated: Pólya (1922, the
+  first proof that the diagonal of a bivariate rational power series is
+  algebraic) and Furstenberg (1967, the general theorem + converse): a univariate
+  f ∈ K[[t]] is algebraic iff it is the diagonal of a bivariate rational power
+  series (confirmed in Bostan–Lairez–Salvy, "Multiple binomial sums",
+  J. Symbolic Comput. 2016, DOI 10.1016/j.jsc.2016.04.002, Thm 3.2; Bostan–Dumont–
+  Salvy, "Algebraic diagonals and walks", JSC 2016, DOI 10.1016/j.jsc.2016.11.006;
+  Y. Hu, "Coefficient extraction and Furstenberg's theorems", arXiv:1505.01379).
+  These are exactly-statable, and the "diagonal ⟹ algebraic" direction is
+  unconditional. But the hypothesis Furstenberg needs — RATIONALITY of F(x,y) —
+  fails here, because over F₂ a rational formal power series has eventually
+  periodic coefficients, and the boundary that actually produces ν₂(n)=wt(Φ_n h)
+  is the non-rational prime gap-parity string h (linearisation claim
+  linearisation-fold-weight). h not eventually periodic is established
+  conditional on Shiu 2000 (problem.md (5)); the non-automaticity of the prime
+  indicator is sourced: Hartmanis–Shank 1968, DOI 10.1145/321466.321470; Coons,
+  arXiv:0810.3709; Dubbe, arXiv:2409.04314. In-workspace: the already-refuted
+  diagonal-2regular-automaton approximates this route and closed on the same
+  non-automaticity wall; claims linearisation-fold-weight,
+  rw-not-the-submask-xor-fold; ROOT.md verification bound n=8000, pointwise
+  ceiling N=40000.
 first-step: >
   tool_builder, exact integer/F₂ arithmetic: (1) DERIVE the exact functional
   equation of F(x,y) from A_{k+1}(i) = A_k(i)+A_k(i+1) with boundary B(y), and

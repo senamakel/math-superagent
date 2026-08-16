@@ -74,7 +74,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `fold-genericity-all-nu2-regularities-incl-dip-sparsity` | claim | **ready** | — | > Every measurable regularity of nu2(n) for the prime gap-parity fold is fold-generic, not prime-specific. (1) White-noise law:… |
 | `fold-rank-is-n-2-nullity-2-alternating` | claim | established | — | The operative SUPPLY fold matrix Phi_n — whose image weight is nu2(n) = wt(Phi_n h) — is (n-2) x n with rows d = 2..n-1 and entry… |
 
-_108 further nodes not shown._
+_110 further nodes not shown._
 
 ## Resting on nothing that exists
 

@@ -241,6 +241,27 @@ gap-parity string** — concretely, prove `E[S(n)²] = O(n)` (equivalently
 the *specific* prime string `h`, from an arithmetic input strictly weaker than
 pointwise mod-4 switch density.
 
+**The index-versus-value obstruction** (added by the operator at shutdown from
+`research/grounding_three_current_proposals.md`, which the run produced but did
+not fold in before it was stopped). The reason the literature does not reach
+this statement is structural, not a matter of not having found the right paper:
+the object lives in the **prime index**, not the prime value. Value-domain tools
+— log-Chowla over integer arguments, value-shifted character sums,
+short-value-interval moments — are therefore inapplicable by construction, and
+this single fact accounts for eight dead candidate routes at once. Any future
+attack must either work in the index domain or supply a transfer between the
+two.
+
+**Equivalence is the indicated answer** (same source, same caveat). Every
+second-moment and correlation object built here collapses, at the coarsest
+dyadic scale `g=0`, to the mod-4 switch-pair correlation. Across eight
+candidates that collapse was universal. It is an *observed pattern*, not a
+theorem — the run was stopped before it could say which — but it indicates that
+SUPPLY is **equivalent** to the switch-density statement, which is result type 5
+in `problem.md` and would close this problem honestly. Proving or refuting the
+`g=0` collapse as a theorem is the highest-value remaining question, and is
+sharper than the open statement above.
+
 Why it survives, and why no measurement reaches it:
 
 - The geometry side is proved (`fold-distance-enumerator-On`): the second-moment

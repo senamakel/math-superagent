@@ -69,13 +69,14 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `kummer-2adic-valuation-lift-refuted` | The 2-adic valuation of A_k(i) = \|A_{k-1}(i) - A_{k-1}(i+1)\| is NOT a function of the two operands' valuations alone: under the ultrametric law the cancellation case v2(a)=v2(b) gives v2(a-b) its value from the 2-adic… | yes | asserted | `research/notes/scholar_pass_approaches_refutation.md` |
 | `lau-nonconstant-pattern-open` | Even a single non-constant residue-class pattern of consecutive primes of length m — in particular a 2-term pattern like (1,3) or (3,1) mod 4 — is not known to occur infinitely often. Constant patterns (a,…,a) are good… | yes | asserted | `research/summaries/lau_residue_patterns.md` |
 
-_74 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_76 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
 Resolve these before building on either side.
 
 - `delsarte-lp-holds-for-nonlinear-row-sets` (research/notes/scholar_krawtchouk_gate_resolution.md) contradicts `krawtchouk-delsarte-linear-code-holds-here`
+- `post-terminus-digest-state-unchanged` (research/notes/scholar_pass_post_terminus_digest.md) contradicts `research/notes/scholar_pass_terminus_reconciliation.md` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `r-finite-verified-contradicted` (code/out/r_finite_verified_contradiction.md) contradicts `R-finite-verified` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `rw-not-the-submask-xor-fold` (research/summaries/rampersad_wiebe_2regular_fulltext.md) contradicts `rw-described-as-the-fold-itself` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
