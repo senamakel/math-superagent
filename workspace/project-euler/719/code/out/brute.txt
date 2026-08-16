@@ -1,0 +1,23 @@
+=== 1. Worked examples ===
+n=81 root=9 is S-number? True  splits=[('8', '1')]
+n=6724 root=82 is S-number? True  splits=[('6', '72', '4')]
+n=8281 root=91 is S-number? True  splits=[('8', '2', '81'), ('82', '8', '1')]
+n=9801 root=99 is S-number? True  splits=[('98', '01'), ('98', '0', '1')]
+
+=== 2. T(10^4) ===
+T(10000) = 41333
+S-number set for N=10^4 (root, square, splits):
+  root=9  square=81  splits=[('8', '1')]
+  root=10  square=100  splits=[('10', '0')]
+  root=36  square=1296  splits=[('1', '29', '6')]
+  root=45  square=2025  splits=[('20', '25')]
+  root=55  square=3025  splits=[('30', '25')]
+  root=82  square=6724  splits=[('6', '72', '4')]
+  root=91  square=8281  splits=[('8', '2', '81'), ('82', '8', '1')]
+  root=99  square=9801  splits=[('98', '01'), ('98', '0', '1')]
+  root=100  square=10000  splits=[('100', '00'), ('100', '0', '0')]
+CHECK: T(10^4) == 41333  ->  PASS
+
+=== 3. Larger reference values ===
+T(1000000) = 10804656
+T(1000000000000) = 128088830547982

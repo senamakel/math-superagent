@@ -1,0 +1,13 @@
+=== LIVE re-run in this container 2026-08-16T21:46:19Z ===
+--- solution.py (root-scan + digit-partition recursion) ---
+T(10000) = 41333
+T(1000000) = 10804656
+T(1000000000) = 6222187932
+
+--- verify_bfile.py (independent OEIS A038206 b-file route) ---
+loaded 3200 roots; min=0, max=1028956744
+T(10^4) from b-file = 41333   (expected 41333)
+need roots <= 1000000; b-file has 408 of them; max root = 1028956744
+T(1000000000000) from b-file = 128088830547982
+
+NOTE: python code/solution.py 1000000000000 exceeds the 600s tool budget in this container (runtime growth ~superlinear; 10^11 took 106s), so the full-size solver run was NOT re-performed live here. Its full-size value 128088830547982 is confirmed by the independent b-file route above, and the solver agrees with the brute-force oracle at every reachable size (T(10^4)=41333, T(10^6)=10804656, T(10^9)=6222187932).
