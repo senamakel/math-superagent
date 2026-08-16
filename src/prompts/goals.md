@@ -29,6 +29,22 @@ the construction as a readable program rather than as a number. It needs a
 scorer, and the scorer is not its to write: have tool_builder write `score.py`
 first, in exact arithmetic, because a search finds the slack in a verifier
 before it finds the mathematics.
+Call `spawn_candidates` when the run has several plausible *programs* and no
+argument for preferring one. It starts each on its own git branch and its own
+checkout, so they write the same paths without colliding, and returns
+immediately — five candidates then learn in one round what five serial attempts
+learn in five. Give each a genuinely different method; five spellings of one
+idea cost five times as much and settle nothing. This is not the searcher: the
+searcher scores hundreds of programs mechanically against a scorer, and this is
+a handful of educated guesses you will read as diffs.
+
+When they finish, spawn archivist. It reads each branch with `attempt_diff`,
+takes the winner's files into the trunk with `adopt_attempt`, and closes the
+rest with the reason each was not kept. It is the only role that may do that, so
+a candidate nobody hands to the archivist is work the run paid for and threw
+away. Do not read the candidates' files yourself — that is what the diff is for,
+and it is a fraction of the size.
+
 You rarely need to spawn refuter — it runs beside every attempt, trying to break
 whatever the run is currently proving — but spawn it directly when you are about
 to commit real budget to a statement nobody has tested on small cases. Most

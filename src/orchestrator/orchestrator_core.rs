@@ -177,7 +177,7 @@ pub fn ledger_report(workspace: &Path) -> String {
 }
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 16] = [
+const SPECIALISTS: [&str; 17] = [
     "research",
     "tool_builder",
     "coder",
@@ -194,6 +194,9 @@ const SPECIALISTS: [&str; 16] = [
     "refuter",
     "librarian",
     "scholar",
+    // The role that reads the candidate branches back and keeps one. Without it
+    // on this bench, `spawn_candidates` starts work nobody can adopt.
+    "archivist",
 ];
 
 /// Agents the pattern agent may commission work from.
@@ -268,7 +271,7 @@ const REASONING_ROLES: [&str; 6] = [
 ];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 18] = [
+const DELEGATES: [&str; 19] = [
     "research",
     "tool_builder",
     "coder",
@@ -287,6 +290,7 @@ const DELEGATES: [&str; 18] = [
     "refuter",
     "librarian",
     "scholar",
+    "archivist",
 ];
 
 const COMPRESSION_TRIGGER_TOKENS: u64 = 300_000;
