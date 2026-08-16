@@ -359,10 +359,10 @@ fn source_label(source: &Source) -> String {
 /// The sort is stable and keyed on [`Entry::touched`], which makes the items
 /// case fall out rather than needing a branch: every one of its entries has the
 /// same key, so a stable sort leaves them exactly as they were read.
-pub(in crate::orchestrator) fn ordered<'a>(
-    entries: &'a [Entry],
+pub(in crate::orchestrator) fn ordered(
+    entries: &[Entry],
     order: super::spec::Order,
-) -> Vec<&'a Entry> {
+) -> Vec<&Entry> {
     let mut out: Vec<&Entry> = entries.iter().collect();
     if order == super::spec::Order::Recent {
         out.sort_by_key(|entry| std::cmp::Reverse(entry.touched.unwrap_or(0)));

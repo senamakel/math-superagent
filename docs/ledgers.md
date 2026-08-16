@@ -323,6 +323,68 @@ against a fixture, and it is how the stale dependency in `singmaster`'s
 `boundary-finite-collisions` skeleton was found — the header still says
 `sketched` while a lemma under it is `refuted`.
 
+## The order a work queue renders in
+
+`TASKS.md` rendered in first-seen order, and a section's blurb told the reader
+what to do with that: *"In order. Work the first one you can."* Which is correct
+only if the first row is still the most important one — and nothing kept it so.
+
+A human directive reached a live conjecture run. The `director` turned it into
+task rows correctly, and then reported what it could not do:
+
+> The task ledger renders by first-recorded order, so
+> `gsplit-exhaustive-line-test` still appears first in the literal `TASKS.md`
+> list; I could not reorder it with the sanctioned ledger tools, and I judged
+> hand-editing `config/tasks.jsonl` too risky.
+
+Every part of that is the runtime working as built. The queue is append-only and
+the file is derived, so hand-editing either is the thing the write guard exists
+to refuse — the director was right to refuse it too. The fold ordered by first
+event because that is the order a reader expects a list to keep. And the
+consequence was that the newest and most urgent row landed at the *bottom* of
+the section every role is told to work from the top of, with no tool anywhere
+able to move it.
+
+So a section now declares its `order`, and the two work queues — `Do next` and
+`Blocked` — declare `recent`.
+
+**Most-recently-touched, not most-recently-created.** The distinction is the
+whole design. `record_entry` merges into an existing id, so ordering by the line
+number of an entry's *last* event means a role raises an old task by recording
+against it, with a tool it already holds and no new authority. Newest-created
+would have fixed the arriving directive's task and permanently buried the
+year-old row that is still the most important thing on the ledger — the same
+failure in the other direction.
+
+The two archives stay in recorded order, and that is not an oversight. `Do not
+do` and `Recently done` are read *for what is on them* — "have I already ruled
+this out" — rather than worked from the top, and a list that reshuffles is a
+list nobody can scan twice.
+
+Three properties keep this from becoming another thing to get wrong:
+
+- **`recorded` is the default**, so every ledger that declares nothing renders
+  exactly as it did. The change is two sections of one built-in.
+- **`order` is a closed set of two, parsed on the way in.** An unrecognised one
+  is a spec fault, not a silent fallback — the opposite reading from an unknown
+  `check`, and deliberately: a dropped check costs one unreported fault, while a
+  dropped order renders a section in an order nobody asked for and nothing says
+  so. `read_ledger`'s `sort` takes the same two names and, like `ledger`, is a
+  checked string rather than an enum, because the tool schema vec is built once
+  per run; an unknown value comes back with the real ones.
+- **Ordering happens at the render, never in the fold.** `collect` still returns
+  first-seen order and every reader takes its own view, so nothing that reads
+  entries had its meaning changed underneath it. An `items` ledger has no queue
+  and therefore no touch order, and keeps recorded order under either name —
+  file modification time is *not* the stand-in, because the run rewrites those
+  files for reasons unrelated to priority (a one-field merge, a checkpoint
+  restore, a checkout), which would shuffle the section on events no reader can
+  see.
+
+The bounds are untouched. Ordering decides which rows a section shows first, not
+how many it shows or how much prose each carries, and `ledger/ceiling_test.rs`
+holds both of those where they were.
+
 ## A ledger a run can declare
 
 Nine of these are Rust modules, and eight of the nine should stay that way:

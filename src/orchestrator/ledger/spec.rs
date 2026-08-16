@@ -504,7 +504,7 @@ fn parse_sections(document: &Value, statuses: &[StatusSpec]) -> Result<Vec<Secti
                 // nobody declared is the failure this option exists to fix,
                 // arrived at from the other direction.
                 order: match item.get("order") {
-                    Some(value) => order(value.as_str().unwrap_or_default()).unwrap_or_default(),
+                    Some(value) => order(value.as_str().unwrap_or_default())?,
                     None => Order::default(),
                 },
             })
