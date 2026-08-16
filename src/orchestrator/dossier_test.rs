@@ -54,7 +54,7 @@ fn sections_arrive_in_priority_order() -> std::io::Result<()> {
         "derived/CLAIMS.md",
         "# Claims\n\nA table of claims.",
     )?;
-    write(&root, "TASKS.md", "Some tasks.")?;
+    write(&root, "derived/TASKS.md", "Some tasks.")?;
 
     let dossier = inventor(&root);
     let goal = dossier.find("GOAL.md").expect("the goal is included");
@@ -67,7 +67,7 @@ fn sections_arrive_in_priority_order() -> std::io::Result<()> {
     let claims = dossier
         .find("derived/CLAIMS.md")
         .expect("the claims are included");
-    let tasks = dossier.find("TASKS.md").expect("the tasks are included");
+    let tasks = dossier.find("derived/TASKS.md").expect("the tasks are included");
     assert!(goal < approaches, "the goal precedes the approaches");
     assert!(approaches < threads, "the approaches precede the threads");
     assert!(threads < claims, "the threads precede the claims");
@@ -166,7 +166,7 @@ fn the_total_stays_within_budget() -> std::io::Result<()> {
         "derived/CLAIMS.md",
         "CONTEXT.md",
         "reflections/INDEX.md",
-        "TASKS.md",
+        "derived/TASKS.md",
         "derived/FRONTIER.md",
         "derived/REQUESTS.md",
         "code/lib/INDEX.md",
@@ -197,7 +197,7 @@ fn missing_files_are_skipped_silently() -> std::io::Result<()> {
     let dossier = inventor(&root);
     assert!(dossier.contains("A goal."));
     assert!(!dossier.contains("derived/CLAIMS.md"));
-    assert!(!dossier.contains("TASKS.md"));
+    assert!(!dossier.contains("derived/TASKS.md"));
     Ok(())
 }
 
@@ -251,7 +251,7 @@ fn the_reduction_dossier_leads_with_the_goal_then_what_is_established()
         "# Backward\n\nA table of skeletons.",
     )?;
     write(&root, "derived/THREADS.md", "# Threads\n\nA table.")?;
-    write(&root, "TASKS.md", "Some tasks.")?;
+    write(&root, "derived/TASKS.md", "Some tasks.")?;
 
     let dossier = reducer(&root);
     let goal = dossier.find("GOAL.md").expect("the goal is included");
@@ -264,7 +264,7 @@ fn the_reduction_dossier_leads_with_the_goal_then_what_is_established()
     let threads = dossier
         .find("derived/THREADS.md")
         .expect("the threads are included");
-    let tasks = dossier.find("TASKS.md").expect("the tasks are included");
+    let tasks = dossier.find("derived/TASKS.md").expect("the tasks are included");
     assert!(goal < claims, "the goal precedes what the run established");
     assert!(claims < backward, "the claims precede the ledger they close");
     assert!(backward < threads);

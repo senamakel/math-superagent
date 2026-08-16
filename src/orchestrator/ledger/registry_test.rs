@@ -52,7 +52,7 @@ fn the_builtin_set_is_available_in_a_bare_workspace() {
     assert!(specs.iter().all(|spec| spec.builtin));
     // The one the prompts instruct roles to write to.
     let tasks = find(workspace.path(), "tasks").expect("the task ledger");
-    assert_eq!(tasks.derived, "TASKS.md");
+    assert_eq!(tasks.derived, "derived/TASKS.md");
     assert!(tasks.writable_by("goals"));
     assert!(
         !tasks.writable_by("judge"),
@@ -191,7 +191,7 @@ fn a_malformed_declaration_does_not_cost_the_registry() {
 fn derived_paths_are_owned_and_reported() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     assert_eq!(
-        owns_derived(workspace.path(), "TASKS.md").map(|(slug, _)| slug),
+        owns_derived(workspace.path(), "derived/TASKS.md").map(|(slug, _)| slug),
         Some("tasks".to_string())
     );
     assert_eq!(

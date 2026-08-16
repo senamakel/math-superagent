@@ -241,7 +241,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
     match role {
         "orchestrator" | "goals" => &[
             "GOAL.md",
-            "TASKS.md",
+            "derived/TASKS.md",
             "code/lib/INDEX.md",
             "derived/CLAIMS.md",
             "derived/THREADS.md",
@@ -269,7 +269,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
         | "symbolic_math" | "lean_prover" => &[
             "GOAL.md",
-            "TASKS.md",
+            "derived/TASKS.md",
             "code/AGENTS.md",
             "code/INDEX.md",
             "code/lib/INDEX.md",
@@ -303,14 +303,14 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // that keeps `research/CLAIMS.md` away from the director, which acts on
         // an assertion and must never file one.
         "judge" => &["GOAL.md", "INDEX.md"],
-        "reflection" => &["GOAL.md", "TASKS.md", "INDEX.md", board::PATH],
+        "reflection" => &["GOAL.md", "derived/TASKS.md", "INDEX.md", board::PATH],
         "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", board::PATH, "CONTEXT.md"],
         // The scholar writes the claim blocks, so it is the role that draws the
         // `follows-from:` edges — and the one that should see what those edges
         // already establish before recording a statement the library entails.
         "scholar" => &[
             "GOAL.md",
-            "TASKS.md",
+            "derived/TASKS.md",
             "derived/CLAIMS.md",
             "derived/ENTAILMENT.md",
             "derived/THREADS.md",
@@ -425,7 +425,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // tools too, because those are large and change constantly.
         "context_curator" => &[
             "GOAL.md",
-            "TASKS.md",
+            "derived/TASKS.md",
             "INDEX.md",
             "derived/CLAIMS.md",
             "derived/THREADS.md",
@@ -444,7 +444,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // finding.
         "director" => &[
             "GOAL.md",
-            "TASKS.md",
+            "derived/TASKS.md",
             "derived/THREADS.md",
             "derived/APPROACHES.md",
             "CONTEXT.md",
@@ -723,17 +723,15 @@ impl RolePrompts {
             // keys on. A stable sort, so nothing else moves.
             files.sort_by_key(|relative| *relative == shared_context::CONTEXT_FILE);
             let context = load_workspace_files(workspace, &files)?;
-            // A workspace may still override a role's guidance with
-            // `prompts/<role>.md`, and no workspace does. The template shipped
-            // nine of them and every run copied all nine, so nine roles carried
-            // a second, older statement of what the built-in prompt already
-            // said — *"a turn that ends with notes and no executed program has
-            // accomplished nothing"* in a workspace file, beside the same rule
-            // in the policy leading the prompt. Two wordings of one rule is two
-            // rules to reconcile. The files are gone from the template and from
-            // every workspace; the hook stays because it costs one skipped read
-            // and is the only way a workspace can say something to one role.
-            let guidance = load_workspace_files(workspace, &[&format!("prompts/{name}.md")])?;
+            // There is no `prompts/<role>.md` override, and the path that read
+            // one is gone rather than left waiting for a file. The template
+            // shipped nine, `scripts/run-agent` copied all nine into every
+            // workspace, and each was an older wording of the built-in prompt
+            // for that role — *"a turn that ends with notes and no executed
+            // program has accomplished nothing"* in a workspace file, beside
+            // the same rule in the policy leading the prompt. Two wordings of
+            // one rule is two rules to reconcile, and a role reads the second
+            // one last. A prompt is Rust now, with one statement per rule.
             // Appended to the role's own guidance rather than prepended to the
             // shared prefix: this text is per-role, and `workspace_prompt`
             // orders most-shared-to-least so the provider cache keys on a block
@@ -741,7 +739,7 @@ impl RolePrompts {
             // give each role its own cache namespace. It lands beside the
             // built-in role prompt and above the workspace state — see
             // `workspace_prompt` for why those two swapped.
-            let guidance = format!("{guidance}{}", ledger_layer(workspace, name));
+            let guidance = ledger_layer(workspace, name);
             // Concatenated rather than branched: an empty layer leaves `base`
             // exactly as it was, and `workspace_prompt` trims what it is given,
             // so the control school's output is unchanged to the byte.

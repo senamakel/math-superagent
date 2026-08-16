@@ -169,7 +169,7 @@ fn tasks() -> Value {
                     moves it back to the top.",
         "source": "queue",
         "path": "config/tasks.jsonl",
-        "derived": "TASKS.md",
+        "derived": "derived/TASKS.md",
         "fields": [
             { "name": "id", "role": "id", "required": true },
             { "name": "title", "role": "title", "required": true },

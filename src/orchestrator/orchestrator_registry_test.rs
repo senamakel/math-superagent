@@ -521,7 +521,7 @@ fn an_unknown_role_receives_no_working_files() {
 #[test]
 fn the_director_reads_the_plan_but_not_the_claim_ledger() {
     let context = role_context("director");
-    assert!(context.contains(&"TASKS.md"), "it rewrites the plan");
+    assert!(context.contains(&"derived/TASKS.md"), "it rewrites the plan");
     assert!(
         context.contains(&"GOAL.md"),
         "a directive is read against it"

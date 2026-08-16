@@ -55,7 +55,7 @@ fn budget_tokens() -> u64 {
 /// Ordered, and last on purpose: useful to have, and the first thing that
 /// should go when the run has written enough that everything cannot fit.
 const REMAINDER: [&str; 4] = [
-    "TASKS.md",
+    "derived/TASKS.md",
     "derived/FRONTIER.md",
     "derived/REQUESTS.md",
     "code/lib/INDEX.md",

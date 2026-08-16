@@ -53,9 +53,9 @@ async fn a_task_is_recorded_closed_and_still_readable() {
     )
     .await
     .expect("the task is recorded");
-    assert!(recorded.contains("TASKS.md"), "the render is reported: {recorded}");
+    assert!(recorded.contains("derived/TASKS.md"), "the render is reported: {recorded}");
 
-    let rendered = std::fs::read_to_string(root.join("TASKS.md")).expect("TASKS.md exists");
+    let rendered = std::fs::read_to_string(root.join("derived/TASKS.md")).expect("TASKS.md exists");
     assert!(rendered.contains("## Do next"));
     assert!(rendered.contains("Fix the audit's verdict logic"));
 
@@ -74,7 +74,7 @@ async fn a_task_is_recorded_closed_and_still_readable() {
     .expect("the task closes");
     assert!(closed.contains("stays on the ledger"), "{closed}");
 
-    let rendered = std::fs::read_to_string(root.join("TASKS.md")).expect("TASKS.md exists");
+    let rendered = std::fs::read_to_string(root.join("derived/TASKS.md")).expect("TASKS.md exists");
     assert!(rendered.contains("## Recently done"));
     assert!(
         rendered.contains("captured2"),
@@ -147,7 +147,7 @@ async fn a_role_outside_the_writer_list_is_refused() {
     .await
     .expect_err("the judge does not file tasks");
     assert!(error.contains("judge"), "{error}");
-    assert!(!workspace.path().join("TASKS.md").exists(), "and nothing was written");
+    assert!(!workspace.path().join("derived/TASKS.md").exists(), "and nothing was written");
 }
 
 /// An unknown slug comes back with the list of real ones.
@@ -326,7 +326,7 @@ async fn a_task_added_last_leads_do_next() {
         .expect("recorded");
     }
 
-    let rendered = std::fs::read_to_string(root.join("TASKS.md")).expect("TASKS.md exists");
+    let rendered = std::fs::read_to_string(root.join("derived/TASKS.md")).expect("TASKS.md exists");
     let new = rendered.find("the-directives-task").expect("it renders");
     let old = rendered
         .find("gsplit-exhaustive-line-test")
@@ -351,7 +351,7 @@ async fn a_task_added_last_leads_do_next() {
     )
     .await
     .expect("recorded");
-    let rendered = std::fs::read_to_string(root.join("TASKS.md")).expect("TASKS.md exists");
+    let rendered = std::fs::read_to_string(root.join("derived/TASKS.md")).expect("TASKS.md exists");
     assert!(
         rendered.find("gsplit-exhaustive-line-test") < rendered.find("the-directives-task"),
         "touching an existing task raises it, using a tool every writing role holds:\n{rendered}"
@@ -392,7 +392,7 @@ async fn recently_done_is_not_reordered() {
         .await
         .expect("closed");
     }
-    let rendered = std::fs::read_to_string(root.join("TASKS.md")).expect("TASKS.md exists");
+    let rendered = std::fs::read_to_string(root.join("derived/TASKS.md")).expect("TASKS.md exists");
     assert!(
         rendered.find("first-finished") < rendered.find("second-finished"),
         "`Recently done` is an archive and stays in recorded order:\n{rendered}"
@@ -486,7 +486,7 @@ async fn a_nested_field_is_refused_with_a_reason() {
     )
     .await
     .expect("a list of refs is accepted");
-    let rendered = std::fs::read_to_string(workspace.path().join("TASKS.md")).expect("rendered");
+    let rendered = std::fs::read_to_string(workspace.path().join("derived/TASKS.md")).expect("rendered");
     assert!(rendered.contains("claim-1, claim-2"), "{rendered}");
 }
 

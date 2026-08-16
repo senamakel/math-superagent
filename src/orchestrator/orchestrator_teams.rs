@@ -92,7 +92,9 @@ fn standing_teams() -> [(
              The next attempt is already given the directive verbatim, so do not simply restate \
              it. Your job is the part that reaches everything the prompt does not: read the \
              workspace, work out what the directive means for the work in flight, and change the \
-             files that carry it. Rewrite TASKS.md so the order of work reflects what was asked. \
+             files that carry it. Record against the task ledger so the order of work reflects what was asked — \
+             `record_entry` moves a task back to the top, and `close_entry` retires one the \
+             directive drops. \
              Amend CONTEXT.md when the directive changes what every role should know, staying \
              inside its budget. Open a thread under research/threads/ for a direction it starts, \
              mark one dead that it abandons, and file a request_research for a gap it names. \

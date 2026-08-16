@@ -171,7 +171,7 @@ fn a_declared_ledger_is_indexed_by_its_declaration() {
         rendered.len()
     );
 
-    let index = super::indexed(root, "TASKS.md", &rendered).expect("TASKS.md is indexed");
+    let index = super::indexed(root, "derived/TASKS.md", &rendered).expect("TASKS.md is indexed");
     assert!(
         index.chars().count() < rendered.chars().count(),
         "the index is smaller than the file"

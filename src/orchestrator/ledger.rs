@@ -246,6 +246,56 @@ pub(super) fn migrate_derived(workspace: &Path) -> Vec<String> {
             moved.push(format!("research/{} -> {derived}", name.to_string_lossy()));
         }
     }
+    moved.extend(migrate_declared(workspace, &target_dir));
+    moved
+}
+
+/// Moves a *declared* ledger's rendered file under `derived/`, once.
+///
+/// The nine above are Rust modules with a constant path, and moving them was a
+/// one-off. This is the same move for the ledgers a declaration names, and it is
+/// not one-off: `tasks` rendered to `TASKS.md` at the workspace root, which was
+/// the one derived file the `derived/` rule did not cover — a runtime-written
+/// file sitting where a hand-written one goes, in the folder a role lists first.
+/// A run that declares its own ledger and later moves it gets the same handling
+/// without another release.
+///
+/// It reads the *old* location off the file name rather than off a recorded
+/// history, so it moves `TASKS.md` and `research/TASKS.md` alike into whatever
+/// `derived` the declaration now names. The two rules above hold: an existing
+/// destination wins, and every move is reported.
+fn migrate_declared(workspace: &Path, target_dir: &Path) -> Vec<String> {
+    let mut moved = Vec::new();
+    for spec in registry::all(workspace).0 {
+        let Some(rest) = spec
+            .derived
+            .strip_prefix(super::documents::DERIVED_DIR)
+            .and_then(|rest| rest.strip_prefix('/'))
+        else {
+            continue;
+        };
+        let new = workspace.join(&spec.derived);
+        if new.exists() {
+            continue;
+        }
+        for old in [workspace.join(rest), workspace.join("research").join(rest)] {
+            if !old.is_file() {
+                continue;
+            }
+            if std::fs::create_dir_all(target_dir).is_err() {
+                return moved;
+            }
+            if std::fs::rename(&old, &new).is_ok() {
+                let from = old
+                    .strip_prefix(workspace)
+                    .unwrap_or(&old)
+                    .display()
+                    .to_string();
+                moved.push(format!("{from} -> {}", spec.derived));
+                break;
+            }
+        }
+    }
     moved
 }
 
