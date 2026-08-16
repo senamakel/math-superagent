@@ -6,7 +6,7 @@
 //! thing: everything that decides what a run is allowed to execute, and what it
 //! is told about how the execution went.
 
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::time::Duration;
 
 use async_trait::async_trait;
@@ -90,6 +90,47 @@ async fn drained(task: tokio::task::JoinHandle<Capture>) -> Capture {
         .unwrap_or_else(|| Capture::bounded(MAX_COMMAND_OUTPUT_BYTES))
 }
 
+/// The first absolute workspace path in `command` that lies outside `root`.
+///
+/// # What this is, and what it is not
+///
+/// It is **not** confinement. A shell cannot be confined by its working
+/// directory, and real confinement needs a mount namespace this runtime
+/// deliberately cannot enter: the container drops every capability. A candidate
+/// determined to leave its checkout can still do so — through a variable, a
+/// relative `../..`, a here-doc, a Python `open()`.
+///
+/// It is a guard against the *accident*, and the accident is the whole problem.
+/// Every role in this runtime is told, by `AGENTS.md` and by the workspace
+/// policy, that its working directory is `/workspace`. A candidate is the one
+/// role for which that is false, and a live one believed the policy within a
+/// minute of starting: it ran `cat /workspace/CONTEXT.md`, and then
+/// `cd /workspace && python3 code/brute.py`, reading the trunk's program while
+/// its own sat beside it. Nothing failed, nothing was reported, and its
+/// judgement of "its" oracle was quietly about somebody else's file.
+///
+/// Catching that costs one string scan and turns a silent wrong answer into a
+/// refusal naming the relative path that works. Candidates are not adversaries;
+/// they are agents following an instruction that does not apply to them.
+fn escapes(command: &str, root: &Path) -> Option<String> {
+    let root = root.to_string_lossy();
+    // Only meaningful when the root is itself inside the mount. On the host,
+    // in tests, it is a temporary directory and nothing here applies.
+    if !root.starts_with(WORKSPACE_ROOT) {
+        return None;
+    }
+    let under = |path: &str| path == root || path.starts_with(&format!("{root}/"));
+
+    command
+        .split(|character: char| character.is_whitespace() || "\"'`;|&()<>".contains(character))
+        .filter_map(|token| token.find(WORKSPACE_ROOT).map(|at| &token[at..]))
+        .map(|path| path.trim_end_matches(['/', ':', ',', '.']).to_string())
+        .find(|path| !under(path))
+}
+
+/// The mount every workspace is at inside the container.
+const WORKSPACE_ROOT: &str = "/workspace";
+
 /// Reads a pipe to its end, keeping a bounded window of what it carried.
 async fn drain<R: tokio::io::AsyncRead + Unpin>(pipe: &mut Option<R>) -> Capture {
     use tokio::io::AsyncReadExt;
@@ -115,6 +156,12 @@ async fn drain<R: tokio::io::AsyncRead + Unpin>(pipe: &mut Option<R>) -> Capture
 pub(super) struct ExecuteCommand {
     workspace: PathBuf,
     timeout: Duration,
+    /// Whether a command naming a path outside [`Self::workspace`] is refused.
+    ///
+    /// False for every ordinary role: `/workspace` *is* their root, and the
+    /// workspace policy tells them so. True for a candidate solution, whose
+    /// root is one directory below it.
+    confined: bool,
 }
 
 /// What a command printed, and how it ended.
@@ -131,7 +178,24 @@ struct CommandOutput {
 
 impl ExecuteCommand {
     pub(super) fn new(workspace: PathBuf, timeout: Duration) -> Self {
-        Self { workspace, timeout }
+        Self {
+            workspace,
+            timeout,
+            confined: false,
+        }
+    }
+
+    /// The same tool, refusing a command that names a path outside its root.
+    ///
+    /// For a candidate solution, whose root is its own checkout. See
+    /// [`escapes`] for what this catches and — more importantly — what it does
+    /// not.
+    pub(super) fn confined_to(workspace: PathBuf, timeout: Duration) -> Self {
+        Self {
+            workspace,
+            timeout,
+            confined: true,
+        }
     }
 
     /// Runs one command, keeping what it printed even if it has to be killed.
@@ -308,6 +372,20 @@ impl Tool<()> for ExecuteCommand {
         let complexity_class = string_argument(&call, "complexity_class")?;
         let oracle_bound = string_argument(&call, "oracle_bound").ok();
         validate_complexity(&complexity, &complexity_class, oracle_bound.as_deref())?;
+        if self.confined
+            && let Some(outside) = escapes(&command, &self.workspace)
+        {
+            let root = self.workspace.to_string_lossy();
+            let relative = outside.strip_prefix(root.as_ref()).unwrap_or(&outside);
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "`{outside}` is outside your checkout, which is `{root}`. You are one candidate \
+                 among several: `{outside}` is the shared copy everyone branched from, so reading \
+                 it judges somebody else's file and writing it overwrites work you were not \
+                 given. Your shell already starts in your checkout — drop the `/workspace` prefix \
+                 and use a relative path (`{}`).",
+                relative.trim_start_matches('/')
+            )));
+        }
         let output = self.run(&command).await?;
         let stdout = output.stdout.render();
         let stderr = output.stderr.render();

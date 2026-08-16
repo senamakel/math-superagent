@@ -113,8 +113,8 @@ one.
 - **Fork the files, share the memory.** A candidate's checkout is a linked
   worktree, so `code/`, `research/` and its ledgers are its own; memory is not
   re-rooted and must not be, being the only channel between them. Enforced for
-  the file tools only — a shell cannot be confined by its cwd.
-  [`docs/workspace.md`](docs/workspace.md).
+  the file tools; the shell refuses an absolute path outside the checkout, which
+  guards the accident and is not a jail. [`docs/workspace.md`](docs/workspace.md).
 - **One role may make a candidate authoritative.** `adopt_attempt` and
   `abandon_attempt` are the archivist's alone, and it holds no shell and no file
   write — so every trunk change carries a branch and a recorded reason.
