@@ -14,7 +14,8 @@
 
 use async_trait::async_trait;
 use serde_json::{Value, json};
-use std::time::Duration;
+use std::sync::Arc;
+use std::time::{Duration, Instant};
 
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
@@ -51,15 +52,26 @@ const LIBRARY_NODE_SET_PREFIX: &str = "library:";
 /// Cognee's search type for the passages nearest a phrase.
 const CHUNK_SEARCH: &str = "CHUNKS";
 
-/// Cognee's search type for the subject–predicate–object triples themselves.
+/// Cognee's search type for the subject–predicate–object triples themselves,
+/// which this deployment cannot answer and which must therefore not be asked
+/// for.
 ///
-/// The graph's own contents rather than a model's prose about them. It sits
-/// beside [`CHUNK_SEARCH`] in [`VectorStore::search_fused`] because the two
-/// fail in opposite directions: a passage says what one source stated in one
-/// place, and a triple says what the run connected across sources and never
-/// wrote down anywhere. Asking only for passages is what makes a graph store
-/// behave like a search box.
-const TRIPLET_SEARCH: &str = "TRIPLET_COMPLETION";
+/// It was the graph half of every fused recall, on the argument that a passage
+/// says what one source stated in one place and a triple says what the run
+/// connected across sources. The argument holds; the retriever does not. This
+/// server answers it `404 {"detail": "In order to use TRIPLET_COMPLETION first
+/// use the create_triplet_embeddings memify pipeline. [NoDataError]"}`, and
+/// nothing in this runtime runs that pipeline — `/api/v1/memify` is never
+/// called. So the graph half of a fused recall failed on **122 of 136** calls
+/// in one live `conjectures/casas-alvero` run, and on every one of the 54 in
+/// `conjectures/erdos-ternary-2n`: the recall came back passages-only with a
+/// parenthesis nobody acted on.
+///
+/// This is the second time the same shape of bug has shipped — `INSIGHTS` was
+/// the first, a name the server's enum does not carry — so the constant stays
+/// here rather than being deleted, kept out of [`SCOPE_SAFE_SEARCH_TYPES`] and
+/// asserted absent, and [`GRAPH_SEARCH`] answers the same question live.
+const UNSUPPORTED_TRIPLET_SEARCH: &str = "TRIPLET_COMPLETION";
 
 /// Cognee's search type for the graph around a subject, walked further out.
 ///
@@ -102,12 +114,12 @@ const GRAPH_SEARCH: &str = "GRAPH_COMPLETION";
 /// OEIS A-number — that a dense vector rounds off. That gap is covered on disk
 /// instead, by `search_documents`, which is a literal-term index over this
 /// workspace's own files and cannot see another project's by construction.
-const SCOPE_SAFE_SEARCH_TYPES: [&str; 4] = [
-    CHUNK_SEARCH,
-    TRIPLET_SEARCH,
-    GRAPH_SEARCH,
-    EXTENDED_GRAPH_SEARCH,
-];
+///
+/// Scopable is necessary and not sufficient: a retriever this server cannot run
+/// at all is off the list too, which is why [`UNSUPPORTED_TRIPLET_SEARCH`] is
+/// not on it.
+const SCOPE_SAFE_SEARCH_TYPES: [&str; 3] =
+    [CHUNK_SEARCH, GRAPH_SEARCH, EXTENDED_GRAPH_SEARCH];
 
 /// Results one recall may return.
 ///
@@ -139,6 +151,24 @@ const DEFAULT_LIMIT: u64 = 8;
 /// it carried — a falsified conjecture — was lost with it.
 const ENQUEUE_TIMEOUT: Duration = Duration::from_secs(30);
 
+/// How long the server's own health report may take before a write gives up on
+/// it and treats the silence as the answer.
+///
+/// A healthy server answers `/health/detailed` in tens of milliseconds for its
+/// stores and a second or two for the model check behind them. A broken one
+/// answers in **thirty seconds** — the report's `llm_provider.response_time_ms`
+/// was exactly `30000`, the timeout of the connection test Cognee runs before
+/// every ingest pipeline — so waiting for the answer is waiting for the failure.
+/// Eight seconds is past the healthy case and well short of the broken one.
+const HEALTH_TIMEOUT: Duration = Duration::from_secs(8);
+
+/// How long one health verdict stands before a write asks again.
+///
+/// A write path that probed the server every time would double the request
+/// count of the busiest tool in the run; one probe a minute bounds the cost and
+/// still catches an outage inside the window a single agent turn occupies.
+const HEALTH_TTL: Duration = Duration::from_mins(1);
+
 #[derive(Clone, Debug)]
 pub(super) struct VectorStore {
     client: reqwest::Client,
@@ -148,6 +178,37 @@ pub(super) struct VectorStore {
     session_dataset: String,
     scratch_dataset: String,
     library_dataset: String,
+    /// The last health verdict and when it was taken, shared by every clone.
+    ///
+    /// Shared deliberately: the store is cloned into each tool, and a per-tool
+    /// cache would probe once per tool per minute rather than once per minute.
+    indexing: Arc<tokio::sync::Mutex<Option<(Instant, IngestHealth)>>>,
+}
+
+/// What the memory server says about its ability to *index* a document, as
+/// opposed to accept one.
+///
+/// The distinction is the whole of this type. `POST /api/v1/remember` with
+/// `run_in_background=true` answers `200 {"status":"running"}` before anything
+/// has been read, and Cognee's pipeline then runs a connection test against its
+/// model endpoint *before* it persists the upload. When that test fails the
+/// pipeline raises in `setup_and_check_environment`, the document is never
+/// written, and the only trace is a stack trace in the server's log.
+///
+/// Measured, not inferred: with the model endpoint returning `403 Key limit
+/// exceeded`, a sentinel document posted to `math_agent_brain` came back `200`
+/// and never appeared — the dataset held 35 rows before the write and 35 after,
+/// and nothing landed in the server's own file storage. The same failure at
+/// scale is on disk in two workspaces: `conjectures/conway-99-graph` reported
+/// **193** successful `remember_memory` calls into a memory server whose four
+/// datasets hold **zero** documents between them, and `conjectures/casas-alvero`
+/// reported another **170** writes after the last one that actually persisted.
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum IngestHealth {
+    /// The server reports every component it needs to index working.
+    Ready,
+    /// The server cannot index right now, in its own words.
+    Refusing(String),
 }
 
 include!("vector_store.rs");

@@ -189,8 +189,9 @@ pub(super) fn fit(relative: &str, content: &str) -> Option<String> {
 /// — *what does the derived state cost the run* — is not any one ledger's, and
 /// on the workspace that prompted this module the answer was that nine files
 /// were 51% of all twenty-two assembled prompts. Nothing measured that.
-const ROUTED: [&str; 9] = [
+const ROUTED: [&str; 10] = [
     super::claims::CLAIMS_PATH,
+    super::lemmas::LEMMAS_PATH,
     super::threads::THREADS_PATH,
     super::approaches::APPROACHES_PATH,
     super::backward::BACKWARD_PATH,
@@ -273,10 +274,14 @@ pub(super) fn migrate_derived(workspace: &Path) -> Vec<String> {
 /// report their size on disk alone.
 pub(super) fn costs(workspace: &Path) -> String {
     let ledger = super::claims::collect(workspace);
-    let fresh: [(&str, Option<usize>); 9] = [
+    let fresh: [(&str, Option<usize>); 10] = [
         (
             super::claims::CLAIMS_PATH,
             Some(ledger.render().chars().count()),
+        ),
+        (
+            super::lemmas::LEMMAS_PATH,
+            Some(super::lemmas::collect(workspace).render().chars().count()),
         ),
         (
             super::threads::THREADS_PATH,

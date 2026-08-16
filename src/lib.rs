@@ -53,6 +53,9 @@ pub use directives::Directive;
 pub use error::{Error, Result};
 pub use greeting::greet;
 pub use hello_agent::HelloAgent;
+pub use orchestrator::lean::{
+    Outcome as LeanOutcome, Verdict as LeanVerdict, check_file as check_lean_file,
+};
 pub use orchestrator::{
     AgentDefinition, AgentRegistry, OrchestratorAgent, SubagentAgentRunner, SubagentTaskRunner,
     WorkflowCatalog, ledger_report, migrate_derived, prompt_report, render_ledger,

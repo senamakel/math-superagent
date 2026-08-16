@@ -1,0 +1,263 @@
+#!/usr/bin/env python3
+"""Score one model on a fixed set of Lean tasks, by running the kernel over what it writes.
+
+The runtime has run on DeepSeek since it was built, and had produced 78 `.lean`
+files without anyone ever measuring whether the model can write Lean. The
+replay in `evals/lean-baseline/` answers that retrospectively — it scores what
+past runs happened to produce, under whatever prompt and pressure they were
+under. This answers it prospectively: a fixed task set, one call per task, the
+same system prompt the `lean_prover` role gets, and a kernel verdict as the
+score.
+
+Three kinds of task, because they fail differently and the difference is what a
+run cares about:
+
+  statement  Write the Lean statement of an informal claim. Ends in `sorry`, so
+             it is scored on *compiling* — every name resolving and the types
+             being right. `lean_prover.md` calls this "frequently the whole
+             deliverable", and it is the thing this bench most wants a number
+             for, because a wrong formalisation is worse than none.
+  proof      Prove a small self-contained lemma. Scored on the verdict: a
+             `sorry` is a failure here.
+  repair     Fix a file that genuinely failed, given Lean's actual errors. These
+             are real files from `workspace/`, not constructed ones.
+
+Nothing here parses Lean. Candidates go through `scripts/lean-check`, which is
+the same `math_agent::check_lean_file` a run uses, and the exit code is the
+score: 0 verified, 1 failed, 2 conditional.
+
+This is a live-network script. It spends provider credits and stays out of the
+deterministic suite, per the build contract. It reads OPENROUTER_API_KEY from
+the environment and never prints, logs, or echoes it.
+
+    scripts/lean-bench --model deepseek/deepseek-v4-flash-0731 --provider deepinfra
+    scripts/lean-bench --model deepseek/deepseek-v4-pro --provider deepseek --only s1-statement-catalan
+"""
+
+import argparse
+import json
+import os
+import pathlib
+import re
+import subprocess
+import sys
+import urllib.error
+import urllib.request
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+TASKS = ROOT / "evals" / "lean-bench" / "tasks"
+REPORTS = ROOT / "evals" / "lean-bench" / "reports"
+SYSTEM_PROMPT = ROOT / "src" / "prompts" / "lean_prover.md"
+
+# A workspace of the bench's own, so a candidate is checked exactly as a run's
+# file is — `lean-check` mounts a workspace, and nothing outside `workspace/`
+# can be mounted, which is the boundary rather than an inconvenience.
+BENCH_WORKSPACE = "lean-bench"
+
+# What each kind has to reach to count as a pass. `statement` asks only that the
+# file compiled: it ends in `sorry` by construction, so demanding a verdict
+# would score every correct answer as a failure.
+PASSING = {
+    "statement": {"compiled"},
+    "proof": {"verified", "conditional"},
+    "repair": {"compiled"},
+}
+
+ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
+
+# Generous. A reasoning model on a formalisation task thinks for a while, and a
+# timeout scored as a failure would measure the network rather than the model.
+REQUEST_SECONDS = 600
+
+
+def load_tasks(only):
+    """Reads the task files, newest format only: a `---` header then the body."""
+    tasks = []
+    for path in sorted(TASKS.glob("*.md")):
+        text = path.read_text()
+        header, _, body = text.partition("---\n")[2].partition("---\n")
+        fields = dict(
+            line.split(":", 1) for line in header.strip().splitlines() if ":" in line
+        )
+        task = {
+            "id": fields.get("id", path.stem).strip(),
+            "kind": fields.get("kind", "proof").strip(),
+            "body": body.strip(),
+        }
+        if only and task["id"] not in only:
+            continue
+        tasks.append(task)
+    return tasks
+
+
+def ask(model, provider, system, user, key):
+    """One completion. Returns the assistant text, or raises."""
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+    }
+    if provider:
+        payload["provider"] = {"order": [provider], "allow_fallbacks": False}
+    request = urllib.request.Request(
+        ENDPOINT,
+        data=json.dumps(payload).encode(),
+        headers={
+            "Authorization": f"Bearer {key}",
+            "Content-Type": "application/json",
+        },
+    )
+    with urllib.request.urlopen(request, timeout=REQUEST_SECONDS) as response:
+        answer = json.loads(response.read())
+    choices = answer.get("choices") or []
+    if not choices:
+        raise RuntimeError("the response carried no choices")
+    return choices[0]["message"]["content"] or ""
+
+
+def extract_lean(text):
+    """The Lean out of a reply.
+
+    Fenced blocks first, and every one of them concatenated rather than only the
+    first: a model asked for a definition and a theorem often gives two blocks,
+    and taking the first would score a correct answer as an incomplete file. A
+    reply with no fence at all is taken whole, on the assumption it is bare Lean
+    — which is wrong often enough to fail loudly rather than silently, since a
+    prose reply will simply not compile.
+    """
+    blocks = re.findall(r"```(?:lean4?)?\n(.*?)```", text, re.DOTALL)
+    if blocks:
+        return "\n\n".join(block.strip() for block in blocks) + "\n"
+    return text.strip() + "\n"
+
+
+def check(relative):
+    """Runs `scripts/lean-check` and turns its exit code into an outcome.
+
+    A wrapper failure is reported as `check-error` and never as `failed`. The
+    two are indistinguishable from the exit code alone — `lean-check` exits 2
+    for a usage error and 1 for a Lean failure — and the first version of this
+    conflated them, which cost a whole bench run: rebuilding the image while the
+    bench was running made six `docker run` calls fail, and all six were scored
+    as the model getting Lean wrong. A harness that reports its own breakage as
+    the subject's failure is worse than one that crashes, so the discriminator
+    is whether Lean ran at all, and stderr is kept rather than dropped.
+    """
+    finished = subprocess.run(
+        [str(ROOT / "scripts" / "lean-check"), BENCH_WORKSPACE, relative],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    report = finished.stdout
+    if finished.stderr.strip():
+        report += "\n[stderr]\n" + finished.stderr
+    # `file:` is the first line of every verdict the binary prints, so its
+    # absence means the binary never produced one — the wrapper, the image, or
+    # docker failed before Lean was reached.
+    if "file: " not in finished.stdout:
+        return "check-error", False, report
+    outcome = {0: "verified", 2: "conditional"}.get(finished.returncode, "failed")
+    compiled = "compiled: true" in finished.stdout
+    return outcome, compiled, report
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--model", required=True, help="an OpenRouter model id")
+    parser.add_argument("--provider", default="", help="an OpenRouter provider slug")
+    parser.add_argument("--only", nargs="*", default=[], help="run these task ids only")
+    args = parser.parse_args()
+
+    key = os.environ.get("OPENROUTER_API_KEY", "")
+    if not key:
+        print(
+            "OPENROUTER_API_KEY is not set. Source it from .env without printing it:\n"
+            "  set -a; . ./.env; set +a",
+            file=sys.stderr,
+        )
+        return 2
+
+    system = SYSTEM_PROMPT.read_text()
+    tasks = load_tasks(args.only)
+    if not tasks:
+        print("no tasks matched", file=sys.stderr)
+        return 2
+
+    slug = re.sub(r"[^a-zA-Z0-9]+", "-", args.model).strip("-")
+    candidates = ROOT / "workspace" / BENCH_WORKSPACE / "code" / "lean" / slug
+    candidates.mkdir(parents=True, exist_ok=True)
+    REPORTS.mkdir(parents=True, exist_ok=True)
+
+    rows = []
+    for task in tasks:
+        print(f"{task['id']} ... ", end="", flush=True)
+        try:
+            reply = ask(args.model, args.provider, system, task["body"], key)
+        except (urllib.error.URLError, RuntimeError, KeyError, TimeoutError) as error:
+            # A provider failure is recorded rather than retried. A bench that
+            # silently retried would report a pass rate over a task set that
+            # quietly differed from the one on disk.
+            print(f"provider error: {error}")
+            rows.append((task, "provider-error", False, str(error)))
+            continue
+
+        source = candidates / f"{task['id']}.lean"
+        source.write_text(extract_lean(reply))
+        relative = f"code/lean/{slug}/{task['id']}.lean"
+        outcome, compiled, report = check(relative)
+        if outcome == "check-error":
+            print("CHECK ERROR — the harness failed, not the model; not scored")
+            rows.append((task, outcome, False, report))
+            continue
+        passed = outcome in PASSING[task["kind"]] or (
+            compiled and "compiled" in PASSING[task["kind"]]
+        )
+        print(f"{outcome}{'' if compiled else ' (did not compile)'} — {'PASS' if passed else 'FAIL'}")
+        rows.append((task, outcome, passed, report))
+
+    passes = sum(1 for _, _, passed, _ in rows if passed)
+    # Scored tasks exclude the ones where the harness broke. Reported separately
+    # rather than folded in, because a pass rate whose denominator quietly
+    # includes the harness's own failures is a number about the wrong thing.
+    unscored = [task for task, outcome, _, _ in rows if outcome == "check-error"]
+    scored = len(rows) - len(unscored)
+    report_path = REPORTS / f"{slug}.md"
+    with report_path.open("w") as out:
+        out.write(f"# Lean bench — `{args.model}`\n\n")
+        if args.provider:
+            out.write(f"Provider: `{args.provider}`.\n\n")
+        out.write(
+            "Each task is one call, with `src/prompts/lean_prover.md` as the system prompt, "
+            "and the reply's Lean checked by the kernel through `scripts/lean-check`. A "
+            "`statement` task ends in `sorry` by construction and is scored on compiling; a "
+            "`proof` task is scored on the verdict.\n\n"
+        )
+        out.write(f"**{passes} of {scored} passed.**\n\n")
+        if unscored:
+            out.write(
+                f"{len(unscored)} task(s) are **not scored**: `scripts/lean-check` failed "
+                "before Lean ran, so the harness broke rather than the model. They are "
+                "listed as `check-error` below with the stderr that says why.\n\n"
+            )
+        out.write("| Task | Kind | Outcome | Result |\n| --- | --- | --- | --- |\n")
+        for task, outcome, passed, _ in rows:
+            out.write(
+                f"| `{task['id']}` | {task['kind']} | {outcome} | "
+                f"{'pass' if passed else 'fail'} |\n"
+            )
+        out.write("\n## What the kernel said\n\n")
+        for task, _, _, report in rows:
+            out.write(f"### `{task['id']}`\n\n```\n{report.strip()}\n```\n\n")
+
+    print(f"\n{passes}/{scored} passed", end="")
+    if unscored:
+        print(f", {len(unscored)} unscored (harness error)", end="")
+    print(f" — wrote {report_path.relative_to(ROOT)}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

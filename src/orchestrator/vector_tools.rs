@@ -182,12 +182,31 @@ impl Tool<()> for RelateMemoryTool {
     async fn call(&self, _state: &(), call: ToolCall) -> Result<ToolResult> {
         let query = string_argument(&call, "query")?;
         let limit = limit_argument(&call);
-        let reach = if call.arguments.get("reach").and_then(Value::as_str) == Some("extended") {
-            EXTENDED_GRAPH_SEARCH
+        let extended = call.arguments.get("reach").and_then(Value::as_str) == Some("extended");
+        let rendered = if extended {
+            // The extended walk asks the server to reason over the retrieved
+            // context before answering, so it is the one reach that needs the
+            // model endpoint, and it fails whenever that endpoint does: 10 of
+            // 20 `relate_memory` calls in one live run and 75 of 96 in another
+            // came back `409 {"error":"An error occurred during recall."}`,
+            // with the server's log naming the provider underneath. The
+            // immediate neighbourhood needs no model and answered throughout,
+            // so a failed extension falls back to it and says so rather than
+            // returning nothing about a subject the graph does know.
+            match self.store.search(&query, EXTENDED_GRAPH_SEARCH, limit).await {
+                Ok(found) => found,
+                Err(error) => self.store.search(&query, GRAPH_SEARCH, limit).await?.map(
+                    |direct| {
+                        format!(
+                            "{direct}\n\n(The extended walk failed: {error}. This is the immediate \
+                             neighbourhood only.)"
+                        )
+                    },
+                ),
+            }
         } else {
-            GRAPH_SEARCH
+            self.store.search(&query, GRAPH_SEARCH, limit).await?
         };
-        let rendered = self.store.search(&query, reach, limit).await?;
         Ok(ToolResult::text(
             call.id,
             self.name(),
