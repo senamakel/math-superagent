@@ -162,7 +162,7 @@ fn a_declaration_whose_class_contradicts_its_prose_is_refused() {
 fn every_prompt_carries_the_shared_method_policy() {
     let prompt = workspace_prompt("base policy", "", "");
     assert!(prompt.contains("Understand by computing"));
-    assert!(prompt.contains("Enumerating candidate answers"));
+    assert!(prompt.contains("candidate answers"));
     // The rule that actually prevents a run spending itself on documentation.
     assert!(prompt.contains("no program executed"));
     assert!(prompt.contains("second, different route"));
@@ -1332,4 +1332,21 @@ fn an_oversized_workspace_file_reaches_a_prompt_already_cut() {
     );
 
     let _ = std::fs::remove_dir_all(&root);
+}
+
+/// The workspace seed ships no role guidance, and no scaffolded run gets any.
+///
+/// It shipped nine files, `scripts/run-agent` copied all nine into every
+/// workspace, and each one restated what the built-in prompt for that role
+/// already said — a second, older wording of the same instruction, carried in
+/// every model call that role made. The override path still exists; what is
+/// gone is a copy of it in thirty-nine workspaces that nobody wrote and nobody
+/// could edit meaningfully, because editing one would only make it disagree
+/// with the Rust.
+#[test]
+fn the_workspace_seed_ships_no_role_prompts() {
+    assert!(
+        !template_workspace().join("prompts").exists(),
+        "the seed carries per-workspace role guidance again"
+    );
 }

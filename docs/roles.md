@@ -404,7 +404,25 @@ identifiers a dense vector rounds off, and that gap is covered instead by
 
 Context is authority, and it is also noise. `role_context` in
 `src/orchestrator/mod.rs` decides which working files enter each agent's system
-prompt. Only `AGENTS.md`, the method policy, goes to everyone.
+prompt. Only `AGENTS.md` goes to everyone, and it is the workspace's *layout* —
+where files go, how `code/` imports, what is installed. It used to open with a
+method section restating the policy that leads every prompt, and a workspace
+file arriving second is the wording a role follows; the method now has one
+statement, in `src/prompts/method_policy.md`.
+
+`CONTEXT.md` is last in every role that gets it, enforced by a sort rather than
+by twelve lists agreeing. It is the file most likely to be acted on and the one
+that changes most often, so it sits where a model weights most and where it
+invalidates the least cache below it.
+
+`config/config.toml` is routed to nobody. Its policy keys restated the built-in
+prompts, its `[artifacts]` names were stale, and `maximum_tool_runtime_seconds`
+is enforced by the tool that owns it and named in the error a timeout returns.
+
+A workspace no longer carries `prompts/<role>.md` either. The template shipped
+nine, `scripts/run-agent` copied all nine into every run, and each was an older
+wording of the built-in prompt for that role. The override path still works; the
+copies are gone.
 
 `teams/BOARD.md` goes to the roles that decide what to do next — the planners,
 `inventor`, `reducer`, `weakener`, `reflection`, `pattern_finder` — and is
@@ -414,7 +432,7 @@ not read unevidenced text beside it. See [`schools.md`](schools.md).
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/BACKWARD.md`, `derived/BLUEPRINT.md`, `derived/ENTAILMENT.md`, `CONTEXT.md` — the graph says which open gap is *ready*, which the flat list cannot, and the entailment report says what the run already holds |
+| orchestrator, goals | `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/BACKWARD.md`, `derived/BLUEPRINT.md`, `derived/ENTAILMENT.md`, `CONTEXT.md` — the graph says which open gap is *ready*, which the flat list cannot, and the entailment report says what the run already holds |
 | tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files, minus the threads, plus `code/AGENTS.md` and `code/INDEX.md` |
 | judge | `GOAL.md`, `INDEX.md` |
 | reflection | the judge's files plus `TASKS.md` |

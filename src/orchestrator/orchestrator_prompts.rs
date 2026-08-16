@@ -723,6 +723,16 @@ impl RolePrompts {
             // keys on. A stable sort, so nothing else moves.
             files.sort_by_key(|relative| *relative == shared_context::CONTEXT_FILE);
             let context = load_workspace_files(workspace, &files)?;
+            // A workspace may still override a role's guidance with
+            // `prompts/<role>.md`, and no workspace does. The template shipped
+            // nine of them and every run copied all nine, so nine roles carried
+            // a second, older statement of what the built-in prompt already
+            // said — *"a turn that ends with notes and no executed program has
+            // accomplished nothing"* in a workspace file, beside the same rule
+            // in the policy leading the prompt. Two wordings of one rule is two
+            // rules to reconcile. The files are gone from the template and from
+            // every workspace; the hook stays because it costs one skipped read
+            // and is the only way a workspace can say something to one role.
             let guidance = load_workspace_files(workspace, &[&format!("prompts/{name}.md")])?;
             // Appended to the role's own guidance rather than prepended to the
             // shared prefix: this text is per-role, and `workspace_prompt`

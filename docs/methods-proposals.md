@@ -17,8 +17,8 @@ not built**.
 The surfaces a proposal may target, in order of leverage over effort:
 `src/prompts/method_policy.md`, which leads every prompt in every role and must
 stay first because the provider cache is keyed on the prefix; the per-workspace
-`prompts/<role>.md` overrides, live today in
-`workspace/conjectures/erdos-gyarfas/prompts/`; the role prompts themselves; and
+`prompts/<role>.md` overrides, which a workspace may still
+carry although none does since the scaffolded copies were removed; the role prompts themselves; and
 the ledger block schemas in `claims.rs`, `approaches.rs` and `backward.rs`,
 where adding a field is how a heuristic stops being requested and starts being
 mechanically checkable.

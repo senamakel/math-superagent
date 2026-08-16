@@ -777,7 +777,7 @@ fn a_ledger_that_closes_nothing_keeps_every_row_in_its_index() {
                 { "name": "id", "role": "id" },
                 { "name": "title", "role": "title" }
             ],
-            "statuses": []
+            "statuses": [{ "name": "recorded" }]
         }),
         false,
     )
@@ -789,7 +789,7 @@ fn a_ledger_that_closes_nothing_keeps_every_row_in_its_index() {
             &spec,
             "goals",
             &format!("note-{index}"),
-            &fields(&[("title", "a note")]),
+            &fields(&[("title", "a note"), ("status", "recorded")]),
         )
         .expect("the note is recorded");
     }

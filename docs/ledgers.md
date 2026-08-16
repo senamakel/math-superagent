@@ -122,6 +122,37 @@ whose `detail` and `reason` fields came to 8,539 tokens in each of thirteen
 prompts — 25% of everything assembled — to discharge an obligation (*do not
 re-propose this*) that an id beside the word `dropped` discharges on one line.
 
+### What an index cuts, and what it never cuts
+
+An index is read top-down for what to do next, so the open rows are the work and
+the closed ones are the archive. Every open and blocked row is carried; each
+*closed* status keeps its five most recent and the header says how many it left
+and in which status, so a reader who needs the rest calls
+`read_ledger { ledger: "tasks", status: "done" }` rather than concluding the run
+finished nothing else. Closedness is read off the declaration rather than off a
+status name, so a ledger a run defines mid-flight gets the same treatment and
+the ledgers that declare no closed status — most of them — are untouched.
+
+The cut is per status rather than one bound over the archive, because `done` and
+`dropped` answer different questions. Re-proposing something already ruled out
+is the cheapest mistake available, and a shared cap would let a busy `done` list
+push every `dropped` row out of the file that prevents it.
+
+### The catalogue
+
+The reader brief used to say *"`list_ledgers` names every one"* and stop, which
+puts the answer behind a call a model has to think to make — the `post_board`
+failure exactly. Every role that reads a ledger is now told which ledgers exist:
+one line each, the slug, a truncated purpose, and whether that role may write
+it. It is derived from the registry at assembly, so a ledger declared mid-run is
+named in the next prompt built, and `writable_by` is what prints "yours to
+write" — a role learns which ledgers are its own from the list rather than from
+a refusal.
+
+`define_ledger` and `retire_ledger` are told to the two planners that hold them,
+in a brief of their own, and to nobody else: a paragraph about declaring an axis
+reads to the other twenty roles as an invitation to ask somebody to.
+
 Two deliberate exclusions. `derived/ENTAILMENT.md` is under
 `index::worth_indexing`, for the reason below. `derived/FRONTIER.md` is not:
 its entries are keyed by URL, so an index would keep the longest part of every
