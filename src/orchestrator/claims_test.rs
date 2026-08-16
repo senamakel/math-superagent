@@ -645,3 +645,101 @@ fn prose_is_dropped_while_identifiers_survive() {
         "a misspelling is still id-shaped, so it is still reported as dangling"
     );
 }
+
+/// A claim over a Lean file resting on cited results lands on `conditional`,
+/// whichever status the note asked for.
+///
+/// The two directions are tested together because they are one decision. A note
+/// that overclaims is pulled down to what the kernel found and no further —
+/// pulling it to `asserted` would throw away an implication the kernel actually
+/// checked, which is the failure the middle status was added to stop. A note
+/// that asked for `conditional` and got it is left alone and, crucially, is not
+/// listed as unbacked: that list is for claims the ledger took something from.
+#[test]
+fn a_claim_over_cited_axioms_settles_on_conditional() -> std::io::Result<()> {
+    let verdict = r#"{"file":"code/lean/Lib/Catalan.lean","compiled":true,"sorries":[],
+        "axioms":["'catalan' depends on axioms: [propext, Cited.mihailescu2004]"]}"#;
+
+    for (claimed, downgraded) in [("formalised", true), ("conditional", false)] {
+        let root = std::env::temp_dir().join(format!("math-agent-claims-cited-{claimed}"));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(root.join("code/out"))?;
+        std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+        std::fs::write(
+            root.join("code/out/NOTES.md"),
+            note(&format!(
+                "id: catalan-step\nstatement: The descent closes given Mihailescu.\n\
+                 holds-here: yes\nstatus: {claimed}\n\
+                 formalisation: code/lean/Lib/Catalan.lean"
+            )),
+        )?;
+        std::fs::write(
+            root.join(super::super::lean::VERDICT_DIR)
+                .join("code_lean_Lib_Catalan.lean.json"),
+            verdict,
+        )?;
+
+        let ledger = collect(&root);
+        assert_eq!(
+            ledger.asserted(),
+            0,
+            "`{claimed}` must not fall all the way to asserted — the kernel checked the step"
+        );
+        assert_eq!(ledger.established(), 1);
+        let rendered = ledger.render();
+        assert!(
+            rendered.contains("conditional"),
+            "the row says what the kernel actually granted: {rendered}"
+        );
+        assert_eq!(
+            rendered.contains("Cited.mihailescu2004"),
+            downgraded,
+            "`{claimed}` is only reported against when the ledger took something away"
+        );
+    }
+    Ok(())
+}
+
+/// An axiom nobody attributed is still a hole, and a `conditional` claim may
+/// not launder one.
+#[test]
+fn a_conditional_claim_over_an_unproved_axiom_is_still_refused() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-conditional-hole");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: wishful\nstatement: The bound follows.\nholds-here: yes\n\
+             status: conditional\nformalisation: code/gap.lean",
+        ),
+    )?;
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_gap.lean.json"),
+        r#"{"file":"code/gap.lean","compiled":true,"sorries":[],
+            "axioms":["'main' depends on axioms: [key_estimate]"]}"#,
+    )?;
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 0, "an unattributed axiom is a hole");
+    assert_eq!(ledger.asserted(), 1);
+    assert!(
+        ledger.render().contains("key_estimate"),
+        "the objection names the axiom to prove"
+    );
+    Ok(())
+}
+
+/// `conditionally proved` must not be read as the stronger, unconditional
+/// status, for the same reason `formally proved` must not be read as weaker.
+#[test]
+fn the_status_parse_reads_conditional_before_proved() {
+    for spelling in ["conditional", "conditionally proved", "given the literature"] {
+        assert_eq!(
+            Status::parse(spelling),
+            Status::Conditional,
+            "`{spelling}` names a result that rests on something unchecked"
+        );
+    }
+}

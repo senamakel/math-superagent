@@ -46,20 +46,42 @@ a Lean result outranks everything else here is that the kernel checked it.
 
 **Declaring your own `axiom` does not make it true.** A file with
 `axiom key_estimate : …` compiles, warns nothing, prints its axioms honestly and
-proves the theorem *given* something nobody established. That is a conditional
-result and a perfectly good one — so write the assumption as its own claim and
-prove it, or file the theorem with a weaker status saying what it assumes. What
-you may not do is let it through as `formalised`; `lean_check` will not.
+proves the theorem *given* something nobody established. What you may not do is
+let it through as `formalised`; `lean_check` will not.
+
+**But a result from the literature is content, not a hole — say which.** Put it
+under `namespace Cited`, with a docstring naming the source:
+
+```lean
+namespace Cited
+/-- src: Mihăilescu 2004, Crelle 572, Thm 1 -/
+axiom catalan : ∀ x y p q : ℕ, 1 < p → 1 < q → x ^ p - y ^ q = 1 → (x, p, y, q) = (3, 2, 2, 3)
+end Cited
+```
+
+A proof resting only on `Cited.*` axioms is `conditional`: the kernel checked
+the implication and checked nothing about the hypothesis. That is a real result
+and it is the shape most of a library takes — this theorem follows from that
+one — so it gets a verdict, a status, and a row, and `lean_check` will tell you
+it has one. It is *not* `formalised`, and the namespace buys no trust
+whatsoever; what it buys is that the honest thing is now recordable. Give every
+cited axiom its own claim carrying the source, so a reader can see what the
+result is standing on. An axiom you could not attribute to a paper does not go
+in `Cited` — it is a hole, and it is your next lemma.
 
 **Never leave a `sorry` undeclared.** Every `sorry`, `admit`, `native_decide`,
 and `@[implemented_by]` in what you report must be listed explicitly, with what
 it is standing in for.
 
 **Claim what the kernel gave you and no more.** When you have a passing verdict,
-write the claim block with `status: formalised` and a `formalisation:` line
-naming the `.lean` file — that pair is what carries a kernel check into the
-ledger. When you do not, use a weaker status honestly. A downgraded claim costs
-the run a row; a false one costs it the reason it believed anything.
+write the claim block with `status: formalised` — or `status: conditional` when
+it rests on `Cited.*` axioms — and a `formalisation:` line naming the `.lean`
+file. That pair is what carries a kernel check into the ledger. When you have
+neither, use a weaker status honestly. A downgraded claim costs the run a row;
+a false one costs it the reason it believed anything. You cannot inflate the
+status by typing it: the ledger reads it off the verdict, and a note saying
+`formalised` over a file resting on cited axioms is recorded as `conditional`
+with the axiom named.
 
 **Search Mathlib before proving anything.** `exact?`, `apply?`, `rw?`,
 `simp?`, `loogle`-style name guessing, and the `Mathlib/Combinatorics/`,
@@ -77,6 +99,20 @@ argument. A formalisation that fails at a specific step has found something.
 under `code/lean/`, importing only what it needs. Mathlib is large and a broad
 `import Mathlib` costs a minute of elaboration on every check; import the
 specific modules. A file that takes ten minutes to check cannot be iterated on.
+
+**Work in progress goes in `code/lean/`; what the library knows goes in
+`code/lean/Lib/`.** The second is not a tidier version of the first, it is a
+different artifact: a Lean rendering of what this run has established and what
+it is standing on, one namespace per subject, meant to be read by the next role
+instead of a folder of prose. A definition, a statement and its dependencies are
+denser and less ambiguous in Lean than in a paragraph, and `research/LEMMAS.md`
+is derived from it — one line per declaration, so a role reads signatures where
+it used to read summaries. Put the provenance in the docstring, one line:
+`/-- src: arXiv:2307.05997 §4 Cor 8 -/`.
+
+What does *not* move there is the part that is genuinely prose: why an approach
+failed, what the obstruction is, what was tried and did not work. Lean has no
+way to say those and they are often the most valuable thing a run produces.
 
 ## The environment
 

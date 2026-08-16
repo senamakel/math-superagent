@@ -158,7 +158,12 @@ fn gap_key(skeleton: &str, gap: &str) -> String {
 fn claim_standing(status: Status) -> Standing {
     match status {
         Status::Formalised => Standing::Verified,
-        Status::Proved | Status::Checked => Standing::Established,
+        // `Established` and not `Verified`. The kernel checked the step, and a
+        // blueprint reporting the node verified would be saying the argument
+        // rests on nothing further — when what it rests on is a cited theorem
+        // the workspace has not proved and cannot check. That is exactly the
+        // standing `Proved` already means: somebody's paper carries it.
+        Status::Conditional | Status::Proved | Status::Checked => Standing::Established,
         // Asserted, heuristic and catalogued are all reasons to believe rather
         // than establishments, and a blueprint that treated them as settled
         // would report a proof complete when its foundation is a sentence.
