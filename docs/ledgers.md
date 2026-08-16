@@ -100,6 +100,40 @@ re-derive, keep in step, and describe — and `ledger::fit` still runs behind it
 
 Three things that table settles, each of which is now a rule:
 
+### The ledgers an index reaches
+
+The four above were the four `ledger::indexed` had an arm for, and for a while
+they were the four it indexed. That left the largest file in the runtime routed
+whole, because the match fell through to `None` for everything it did not name:
+
+| | routed whole | indexed | in _n_ prompts |
+| --- | ---: | ---: | ---: |
+| `TASKS.md` | 8,539 | 1,073 | 13 |
+| `derived/BLUEPRINT.md` | 2,604 | 1,617 | 3 |
+| `derived/THREADS.md` | 1,122 | 449 | 10 |
+| **all 24 prompts** | **445,575** | **338,815** | — |
+
+`TASKS.md` is the lesson. It is a *declared* ledger rather than a Rust-module
+one, so no arm named it and none ever would have — the fix is not another arm
+but a fallback keyed on each declaration's own `derived` path, which covers the
+built-in queues and any ledger a run declares mid-flight, on the pass that
+renders it. Most of what it dropped was history: closed and abandoned rows,
+whose `detail` and `reason` fields came to 8,539 tokens in each of thirteen
+prompts — 25% of everything assembled — to discharge an obligation (*do not
+re-propose this*) that an id beside the word `dropped` discharges on one line.
+
+Two deliberate exclusions. `derived/ENTAILMENT.md` is under
+`index::worth_indexing`, for the reason below. `derived/FRONTIER.md` is not:
+its entries are keyed by URL, so an index would keep the longest part of every
+row and drop the citation count that is the reason to open it — the same
+finding, reached by hand rather than by the threshold.
+
+`BLUEPRINT` is the one index that carries something besides rows. A cycle means
+some node's standing was computed from itself, so every line beneath it
+describes an argument that does not close; leaving that to `read_ledger` would
+be a warning that arrives only if somebody pulls the file, about the rows they
+are already reading. It goes in the purpose, above the list.
+
 **The win is per-ledger, not uniform.** `APPROACHES` collapses furthest because
 its payload is refutation prose nobody needs until they are considering that
 approach. `CLAIMS` only halves, because a claim's *statement* is the payload and
