@@ -1,0 +1,27 @@
+==========================================================================
+PART A: s_t witness covers all residues mod M', all M' coprime to 3
+(incl. composites), M' in [2,300].  m = ord_{M'}(3).
+   M           factor    m  type  coverage
+   2              2^1    1 prime  OK
+   8              2^3    2  comp  OK
+  16              2^4    4  comp  OK
+  25              5^2   20  comp  OK
+  80          2^4*5^1    4  comp  OK
+ 121             11^2    5  comp  OK
+ 128              2^7   32  comp  OK
+ 242         2^1*11^2    5  comp  OK
+
+  M' coprime to 3 in [2,300]: 199; failures: 0 []
+==========================================================================
+PART B: INDEPENDENT brute-force Dr(M') == F_{M'} (no witness used)
+  M'=  8: D= 5, |Dr|=  8, == F_{M'}: True
+  M'= 16: D= 6, |Dr|= 16, == F_{M'}: True
+  M'= 25: D= 8, |Dr|= 25, == F_{M'}: True
+  M'= 80: D= 8, |Dr|= 80, == F_{M'}: True
+==========================================================================
+CONCLUSION (as far as computed):
+  Part A (witness proof-verify, all M'<=300 coprime to 3): ALL PASS
+  Part B (independent exhaustive Dr(M')==F_{M'}): rows above.
+  => corrected mod-M' consistency (b') is VACUOUS for every M' coprime
+     to 3 (proved by witness; verified-numerically M'<=300), so no
+     mixed modulus reduces |A_k| below 2^(k-1) by this relaxed route.

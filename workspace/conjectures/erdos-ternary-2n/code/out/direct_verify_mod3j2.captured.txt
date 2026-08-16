@@ -1,0 +1,1 @@
+direct sieve, strict k>j, k<=8: |A_k mod 3^j|==2^j all PASS: True

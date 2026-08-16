@@ -1,69 +1,15 @@
-<!-- source: https://doi.org/10.1112/jlms/jdn080 | converted from HTML -->
+# Lagarias "Ternary expansions of powers of 2" (Wiley landing page) — NOT a held source
 
-Error - Cookies Turned Off
+**Do not use as a source.** This file was created from a download attempt at
+`https://doi.org/10.1112/jlms/jdn080` (the published JLMS page). The Wiley
+page returned only a "cookies disabled" authentication wall — no mathematics.
 
-- **Journal
+The paper's exact statements are held in the library via the **arXiv full text**:
+`research/sources/lagarias-2009-ternary-pdf.full.md`, digested in
+`research/summaries/lagarias-2009-ternary-pdf.md` (claims `LAGARIAS-NARKIEWICZ-BOUND`,
+`LAGARIAS-MIDDLE-DIGITS-OPEN`, `LAGARIAS-DIMENSION-SET-NOT-INTEGERS`,
+`LAGARIAS-CONJECTURE-E`). Use that source, not this failed Wiley fetch.
 
-More from this journal
+## Status
 
--->
-
-- **Articles
-
-- Actions**
-
-## Tools
-
-## Follow journal
-
-### Cookies disabled
-
-#
-
-Cookies are disabled for this browser. Wiley Online Library requires cookies for authentication and use of other site features; therefore, cookies must be enabled to browse the site. Detailed information on how Wiley uses cookies can be found in our [Privacy Policy][1].
-
-**
-
-## Log in to Wiley Online Library
-
-[NEW USER >][2] [INSTITUTIONAL LOGIN >][3]
-
-**
-
-## Change Password
-
-## Password Changed Successfully
-
-Your password has been changed
-
-**
-
-## Create a new account
-
-[Returning user][4]
-
-**
-
-## Forgot your password?
-
-Enter your email address below.
-
-Please check your email for instructions on resetting your password. If you do not receive an email within 10 minutes, your email address may not be registered, and you may need to create a new Wiley Online Library account.
-
-**
-
-## Request Username
-
-Can't sign in? Forgot your username?
-
-Enter your email address below and we will send you your username
-
-If the address matches an existing account you will receive an email with instructions to retrieve your username
-
-
-## Links
-
-[1]: https://www.wiley.com/privacy
-[2]: /action/registration?acdl-redirect=true
-[3]: /action/ssostart?redirectUri=%2Faction%2FcookieAbsent
-[4]: /action/showLogin
+Dead acquisition (paywall wall); superseded by the arXiv full text already held.

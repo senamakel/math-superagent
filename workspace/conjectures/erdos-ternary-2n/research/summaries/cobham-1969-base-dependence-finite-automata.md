@@ -12,6 +12,23 @@ The digit-avoidance hypothesis is recognized by a finite automaton in base 3 (th
 
 This is the honest negative answer to the run's question #4: **there is no applicable decidability machinery** (Cobham, Büchi arithmetic, Walnut) that decides Erdős's conjecture, because the inputs `2^n` are non-3-automatic. A Walnut query needs a 3-automatic input sequence; `2^n` is not one.
 
+## Claims
+
+```claim
+id: COBHAM-DECIDABILITY-NEGATIVE
+statement: The set {2^n : n >= 0} is recognizable by a finite automaton in base
+  b iff b is a power of 2, and is NOT recognizable in base 3. A set recognizable
+  in every base is ultimately periodic (Cobham 1969).
+hypotheses: b a positive integer base.
+holds-here: yes — {2^n} is not ultimately periodic, and 3 is not a power of 2,
+  so {2^n} is not 3-automatic.
+status: proved (Cobham 1969, peer-reviewed; statement from abstract + theorem)
+bearing: no Cobham/Büchi/Walnut decidability machinery applies to "some n>8 has
+  2^n digit-2-free", because the input sequence 2^n is not 3-automatic. This
+  closes the automatic-sequences lead: it is a dead end, now with a source.
+anchor: research/sources/cobham-1969-base-dependence-finite-automata.full.md
+```
+
 ## Status
 
-Sourced, peer-reviewed (Cobham 1969). The full text is paywalled at Springer; the abstract and statement above are captured. This suffices for the decidability-negative claim. If a precise statement is needed, Allouche–Shallut "Automatic Sequences" (Cambridge, 2003) is the standard book reference (not yet in library).
+Sourced, peer-reviewed (Cobham 1969). The full text is paywalled at Springer; the abstract and theorem statement are captured.

@@ -20,3 +20,13 @@ A doubling algorithm in ternary and a structural study of the ternary digits of 
 ## Status
 
 Sourced, peer-reviewed journal (NNTDM, open access). The lemmas are stated and proved in the paper; use as sourced statements of the LTE/order facts.
+
+```claim
+id: ALIYEV-LTE-ORDER-AND-BLOCK-OCCURRENCE
+statement: 3^k | 2^(3^(k-1))+1 and 3^(k+1) ∤ it; 3^k | 2^(2·3^(k-1))−1 and 3^(k+1) ∤ it (so ord_{3^{n+1}}(2) = 2·3^n = φ(3^{n+1}), 2 primitive root). Except sequences ending in 0, any finite ternary digit block occurs infinitely often at the end of (2^n)_3; except sequences starting in 0, infinitely often at the beginning. Triangular blocks of only-0s or only-2s occur with unbounded size.
+hypotheses: n,k positive integers; digit blocks not ending/starting in 0.
+holds-here: yes
+status: asserted
+bearing: independently restates the LTE/order mechanism behind |A_k|=2^(k-1) (SIEVE-EXACT-COUNT); the leading-digit occurrence lemma shows leading/trailing block arguments alone can never prove absence of digit 2 (infinitely many 2^n start with any given non-0-leading block).
+anchor: research/summaries/aliyev-2023-digits-of-powers-of-2-ternary.md
+```

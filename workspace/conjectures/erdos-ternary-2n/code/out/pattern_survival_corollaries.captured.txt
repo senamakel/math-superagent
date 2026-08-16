@@ -1,0 +1,23 @@
+=== Corollary A: g(m)>=k depends only on m mod 3^(k-1) ===
+k=2 second-window mismatches=0
+k=3 second-window mismatches=0
+k=4 second-window mismatches=0
+k=5 second-window mismatches=0
+k=6 second-window mismatches=0
+k=7 second-window mismatches=0
+k=8 second-window mismatches=0
+k=9 second-window mismatches=0
+k=10 second-window mismatches=0
+TOTAL second-window mismatches: 0
+
+=== Corollary B: |B_k| = 2^(k-1), B_k = halved A_k ===
+k=2: |A_k|=2 |B_k|=2 (expect 2^1=2)
+k=3: |A_k|=4 |B_k|=4 (expect 2^2=4)
+k=4: |A_k|=8 |B_k|=8 (expect 2^3=8)
+k=5: |A_k|=16 |B_k|=16 (expect 2^4=16)
+k=6: |A_k|=32 |B_k|=32 (expect 2^5=32)
+k=7: |A_k|=64 |B_k|=64 (expect 2^6=64)
+k=8: |A_k|=128 |B_k|=128 (expect 2^7=128)
+k=9: |A_k|=256 |B_k|=256 (expect 2^8=256)
+k=10: |A_k|=512 |B_k|=512 (expect 2^9=512)
+k=11: |A_k|=1024 |B_k|=1024 (expect 2^10=1024)

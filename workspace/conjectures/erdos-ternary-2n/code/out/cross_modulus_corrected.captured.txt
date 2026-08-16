@@ -1,0 +1,144 @@
+================================================================================
+CORRECTED MIXED-MODULUS SIEVE  -- verified-numerically, NOT a theorem.
+Corrected (b'): EXIST digit-2-free s with 2^r == L_r + 3^k s (mod q),
+i.e. (2^r - L_r)*inv(3^k) mod q in Dr(q) = {s mod q : s digit-free}.
+KEY CLAIM: Dr(q) = F_q for every q coprime to 3, so (b') is vacuous.
+================================================================================
+
+--- Oracle sanity: digit_free on known values ---
+  n=0: 2^0=1  digit-free=True  (expect True)
+  n=2: 2^2=4  digit-free=True  (expect True)
+  n=8: 2^8=256  digit-free=True  (expect True)
+  n=5: 2^5=32  digit-free=False  (expect False)
+
+--- Sanity: pure class count over [0, l=2*3^(k-1)) ---
+  k= 1  classes=    1  expected 2^(k-1)=    1  OK
+  k= 2  classes=    2  expected 2^(k-1)=    2  OK
+  k= 3  classes=    4  expected 2^(k-1)=    4  OK
+  k= 4  classes=    8  expected 2^(k-1)=    8  OK
+  k= 5  classes=   16  expected 2^(k-1)=   16  OK
+  k= 6  classes=   32  expected 2^(k-1)=   32  OK
+  k= 7  classes=   64  expected 2^(k-1)=   64  OK
+  k= 8  classes=  128  expected 2^(k-1)=  128  OK
+  k= 9  classes=  256  expected 2^(k-1)=  256  OK
+  (known exceptions n=0,2,8 are pure survivors in every k --
+   checked separately below against digit_free)
+
+--- Step 1: digit-free residue set Dr(q) and R(k,q)=3^k*Dr(q) ---
+   q  ord3  |Dr(q)|  |F_q|  coverage   T_needed
+   5     4        5      5    100.0%         17
+   7     6        7      7    100.0%         37
+  11     5       11     11    100.0%         51
+  13     3       13     13    100.0%         37
+  17    16       17     17    100.0%        257
+  19    18       19     19    100.0%        325
+  29    28       29     29    100.0%        785
+  41     8       41     41    100.0%        321
+ 193    16      193    193    100.0%       3073
+ 257   256      257    257    100.0%      65537
+
+   q   k         N   T    pure  2^(k-1) mixed_corr    ratio  flag
+   5   1         4   2       2        1          2   1.0000     ok
+   5   2        12   2       4        2          4   1.0000     ok
+   5   3        36   2       8        4          8   1.0000     ok
+   5   4       108   2      16        8         16   1.0000     ok
+   5   5       324   2      32       16         32   1.0000     ok
+   5   6       972   2      64       32         64   1.0000     ok
+   5   7      2916   2     128       64        128   1.0000     ok
+   5   8      8748   2     256      128        256   1.0000     ok
+   5   9     26244   2     512      256        512   1.0000     ok
+   7   1         6   3       3        1          3   1.0000     ok
+   7   2         6   1       2        2          2   1.0000     ok
+   7   3        18   1       4        4          4   1.0000     ok
+   7   4        54   1       8        8          8   1.0000     ok
+   7   5       162   1      16       16         16   1.0000     ok
+   7   6       486   1      32       32         32   1.0000     ok
+   7   7      1458   1      64       64         64   1.0000     ok
+   7   8      4374   1     128      128        128   1.0000     ok
+   7   9     13122   1     256      256        256   1.0000     ok
+  11   1        10   5       5        1          5   1.0000     ok
+  11   2        30   5      10        2         10   1.0000     ok
+  11   3        90   5      20        4         20   1.0000     ok
+  11   4       270   5      40        8         40   1.0000     ok
+  11   5       810   5      80       16         80   1.0000     ok
+  11   6      2430   5     160       32        160   1.0000     ok
+  11   7      7290   5     320       64        320   1.0000     ok
+  11   8     21870   5     640      128        640   1.0000     ok
+  11   9     65610   5    1280      256       1280   1.0000     ok
+  13   1        12   6       6        1          6   1.0000     ok
+  13   2        12   2       4        2          4   1.0000     ok
+  13   3        36   2       8        4          8   1.0000     ok
+  13   4       108   2      16        8         16   1.0000     ok
+  13   5       324   2      32       16         32   1.0000     ok
+  13   6       972   2      64       32         64   1.0000     ok
+  13   7      2916   2     128       64        128   1.0000     ok
+  13   8      8748   2     256      128        256   1.0000     ok
+  13   9     26244   2     512      256        512   1.0000     ok
+  17   1         8   4       4        1          4   1.0000     ok
+  17   2        24   4       8        2          8   1.0000     ok
+  17   3        72   4      16        4         16   1.0000     ok
+  17   4       216   4      32        8         32   1.0000     ok
+  17   5       648   4      64       16         64   1.0000     ok
+  17   6      1944   4     128       32        128   1.0000     ok
+  17   7      5832   4     256       64        256   1.0000     ok
+  17   8     17496   4     512      128        512   1.0000     ok
+  17   9     52488   4    1024      256       1024   1.0000     ok
+  19   1        18   9       9        1          9   1.0000     ok
+  19   2        18   3       6        2          6   1.0000     ok
+  19   3        18   1       4        4          4   1.0000     ok
+  19   4        54   1       8        8          8   1.0000     ok
+  19   5       162   1      16       16         16   1.0000     ok
+  19   6       486   1      32       32         32   1.0000     ok
+  19   7      1458   1      64       64         64   1.0000     ok
+  19   8      4374   1     128      128        128   1.0000     ok
+  19   9     13122   1     256      256        256   1.0000     ok
+  29   1        28  14      14        1         14   1.0000     ok
+  29   2        84  14      28        2         28   1.0000     ok
+  29   3       252  14      56        4         56   1.0000     ok
+  29   4       756  14     112        8        112   1.0000     ok
+  29   5      2268  14     224       16        224   1.0000     ok
+  29   6      6804  14     448       32        448   1.0000     ok
+  29   7     20412  14     896       64        896   1.0000     ok
+  29   8     61236  14    1792      128       1792   1.0000     ok
+  29   9    183708  14    3584      256       3584   1.0000     ok
+  41   1        20  10      10        1         10   1.0000     ok
+  41   2        60  10      20        2         20   1.0000     ok
+  41   3       180  10      40        4         40   1.0000     ok
+  41   4       540  10      80        8         80   1.0000     ok
+  41   5      1620  10     160       16        160   1.0000     ok
+  41   6      4860  10     320       32        320   1.0000     ok
+  41   7     14580  10     640       64        640   1.0000     ok
+  41   8     43740  10    1280      128       1280   1.0000     ok
+  41   9    131220  10    2560      256       2560   1.0000     ok
+ 193   1        96  48      48        1         48   1.0000     ok
+ 193   2        96  16      32        2         32   1.0000     ok
+ 193   3       288  16      64        4         64   1.0000     ok
+ 193   4       864  16     128        8        128   1.0000     ok
+ 193   5      2592  16     256       16        256   1.0000     ok
+ 193   6      7776  16     512       32        512   1.0000     ok
+ 193   7     23328  16    1024       64       1024   1.0000     ok
+ 193   8     69984  16    2048      128       2048   1.0000     ok
+ 193   9    209952  16    4096      256       4096   1.0000     ok
+ 257   1        16   8       8        1          8   1.0000     ok
+ 257   2        48   8      16        2         16   1.0000     ok
+ 257   3       144   8      32        4         32   1.0000     ok
+ 257   4       432   8      64        8         64   1.0000     ok
+ 257   5      1296   8     128       16        128   1.0000     ok
+ 257   6      3888   8     256       32        256   1.0000     ok
+ 257   7     11664   8     512       64        512   1.0000     ok
+ 257   8     34992   8    1024      128       1024   1.0000     ok
+ 257   9    104976   8    2048      256       2048   1.0000     ok
+
+--- Conclusion ---
+Corrected-condition KILLs found over all (q,k) in range: 0
+  NONE.  The corrected (b') is vacuous for every (q,k): mixed == pure.
+
+OLD proxy (cross_modulus_sieve.py) killed q=19 k=3,4 under the s=0
+restriction.  Under the corrected condition those classes survive, so
+the old kills were artifacts of the s=0 proxy, not real obstructions.
+
+--- q=19 k=3,4: do the OLD killed classes survive the correction? ---
+  q=19 k=3: corrected mixed=4 over [0,18); killed-under-old reps in corrected set: [6]
+     (all old classes survive: mixed == 4? True)
+  q=19 k=4: corrected mixed=8 over [0,54); killed-under-old reps in corrected set: [24, 42]
+     (all old classes survive: mixed == 8? True)

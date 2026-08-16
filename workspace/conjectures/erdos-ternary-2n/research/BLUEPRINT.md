@@ -6,4 +6,56 @@ Derived from `research/backward/` and the claim library, and rewritten whenever 
 
 A node is **ready** when everything it rests on is settled. A node is **blocked** when something it rests on is not. That distinction is the whole point: the open-gap list in `BACKWARD.md` makes every unproved lemma look equally attackable, and most of them are not.
 
-_Nothing to graph yet. Write a skeleton under `research/backward/` and this file fills in._
+## Ready to work on
+
+Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
+
+- `erdos-via-symbolic-invariant/G-invariant` (lemma) — There exists a statistic Phi defined on the orbit {2^n : n >= 0} (equivalently a function of n, computable by a finite transducer along the…
+  - open `research/backward/erdos-via-symbolic-invariant.md`
+
+## Every node
+
+| Node | Kind | Standing | Rests on | Statement |
+| --- | --- | --- | --- | --- |
+| `ABL-II-EXCEPTIONAL-SET-BOUND-PRIMARY` | claim | **ready** | — | (Corollary 2.7) The nesting constant Gamma* satisfies Gamma* <= log_3(phi) ~ 0.438018, phi the golden ratio. This is an upper bound toward… |
+| `ABL-PATH-SET-DIMENSION-METHOD` | claim | **ready** | — | (Prop 3.2, 3.4, 3.7) The sets C(1,M) = Sigma ∩ (1/M)Sigma are 3-adic path-set fractals whose points' 3-adic expansions are infinite… |
+| `ABRAM-LAGARIAS-EXCEPTIONAL-SET-BOUND` | claim | **ready** | — | (Search-result attribution) For the ×2 dynamical system on Z_3 and the digit-{0,1} Cantor set Sigma, the exceptional set E(Z_3) (x whose… |
+| `ABRAM-LAGARIAS-PADIC-PATHSET-CLOSURE` | claim | established | — | The class C(Z_p) of p-adic path set fractals is closed under p-adic addition and multiplication by p-integral rationals and under Minkowski… |
+| `ALBAYRAK-BELL-ERDOS-AS-SPARSE-ZERODENSITY-INTERSECTION` | claim | established | — | The Erdős ternary conjecture is exactly the special case (k=2, l=3) of Conjecture 5.3: a sparse k-automatic set (powers of 2) intersecting… |
+| `ALIYEV-LTE-ORDER-AND-BLOCK-OCCURRENCE` | claim | **ready** | — | 3^k \| 2^(3^(k-1))+1 and 3^(k+1) ∤ it; 3^k \| 2^(2·3^(k-1))−1 and 3^(k+1) ∤ it (so ord_{3^{n+1}}(2) = 2·3^n = φ(3^{n+1}), 2 primitive root).… |
+| `ANDERS-PRODUCT-SUPPORT-DISJOINTNESS` | claim | **ready** | — | (Lemma 2.1) For s(x), t(x) in P (0/1-coefficient polynomials, i.e. sums of distinct powers of 3, evaluated at x with constant term possibly… |
+| `ANDERS-QUOTIENT-INTERVAL-CONDITION` | claim | **ready** | — | (Theorem 1.2) If m is a quotient p(3)/q(3) of two sums of distinct powers of 3 (m in A/A), then m lies in I_r = (2/3 * 3^r, 3/2 * 3^r) for… |
+| `BONUCCELLI-DEFARIA-ERDOS-OPEN-STATUS` | claim | **ready** | — | The sequence 2^n is not known to be asymptotically equidistributed in base 3, and Erdős's conjecture that all but finitely many powers of 2… |
+| `BURRELL-YU-COR1.3` | claim | **ready** | — | For each ε>0 there is a constant C_ε with #{k ∈ [1,n] : k is digit-{0,1} in base 3, 4 AND 5} ≤ C_ε n^ε. (Theorem 1.2 is the base-(4,5)… |
+| `BURRELL-YU-DENSITY-VS-THIN-SEQUENCE` | claim | **ready** | — | Burrell–Yu count all integers with restricted digits; their theorems do not bound which integers lie in the orbit {2^n}. Hence Theorems… |
+| `BURRELL-YU-THM1.4-BASE34` | claim | **ready** | — | S(n) := #{k∈[4^n,4^{n+1}-1] : k is digit-{0,1} in bases 3 and 4} ≤ C_ε 4^{n(log2/log3 − 0.5 + ε)} for each ε>0, and infinitely many n have… |
+| `CAND1-NONDEGENERATE-PROVED` | claim | established | — | For every digit-2-free power 2^n = sum_{a in A}3^a, the S-unit equation 2^n - sum_{a in A}3^a = 0 (terms {2^n,-3^{a_1},...,-3^{a_k}} in the… |
+| `CAND1-UNIFORMITY-NO-PRECEDENT` | claim | **ready** | — | Evertse-Schlickewei-Schmidt (Ann. of Math 155, 2002) gives finiteness and a triply-exponential-in-k bound for the non-degenerate solutions… |
+| `CAND2-256-RUNS-MISCOMPUTED` | claim | established | — | 2^8 = 256 = 100111_3 has runs {(0,3),(5,1)} (one run '111' at positions 0,1,2 and a single 1 at position 5), NOT {(0,2),(2,1),(5,1)}. The… |
+| `CAND2-RUN-VALUATION-VACUOUS` | claim | established | — | For ANY integer m with ternary runs of 1s {(s_j,r_j)}, m = sum_j 3^{s_j}(3^{r_j}-1)/2 hence 2m = sum_j (3^{s_j+r_j}-3^{s_j}); setting m=2^n… |
+| `CAND3-CONVERGENT-DENOMINATOR-INSUFFICIENT` | claim | established | — | Convergent denominators of log_3 2 include q=2 and q=8 (the two nontrivial witnesses) but also q=1,3,19,...; none of the non-{2,8}… |
+| `COBHAM-DECIDABILITY-NEGATIVE` | claim | established | — | The set {2^n : n >= 0} is recognizable by a finite automaton in base b iff b is a power of 2, and is NOT recognizable in base 3. A set… |
+| `CROSS-MODULUS-BEATS-SIEVE-HYPOTHESES` | claim | **ready** | — | The claim that the mixed-modulus ladder beats the pure 3-adic sieve requires: (H1) a mixed modulus M=2^u 3^v M' with M' coprime to 6 whose… |
+| `CROSS-MODULUS-H1-REFUTED` | claim | established | — | Hypothesis H1 of CROSS-MODULUS-BEATS-SIEVE-HYPOTHESES (a mixed modulus M = 2^u 3^v M' whose cross-orders force the survivor count strictly… |
+| `CROSS-MODULUS-UNBOUNDED-OPEN` | claim | **ready** | — | No published work applies the Dimitrov-Howe mixed-modulus / cross-order ladder, or the Bertok-Hajdu / Skolem lifting conjecture, to the… |
+| `DEFARIA-TRESSER-DENSITY-1-DIGIT-ZERO` | claim | established | — | The set { n : 2^n has at least one 0 digit in its base-3 expansion } has asymptotic density 1 among n. |
+| `DH-DETERMINACY-CRITERION-CHECKED` | claim | established | — | For any modulus M and prime p, the power p^i is determinate mod M (DH Def 2.2: the only b >= 0 with p^b = p^i (mod M) is b = i) if and only… |
+| `DH-N3-EXAMPLES-VERIFIED` | claim | established | — | The two worked n=3 examples of Dimitrov-Howe (arXiv:2105.06440) are confirmed. M1=5440=2^6*5*17: exactly three residue-class solutions… |
+| `DH-STATEMENTS-EXACT` | claim | **ready** | — | Precise statements with line numbers (PDF-converted full text). Definition 2.2 (determinate power), lines 294-306: p^i is determinate mod M… |
+| `DIMITROV-HOWE-26-ONES` | claim | **ready** | — | The only powers of 2 writable as a sum of <= 25 distinct powers of 3 are 2^0, 2^2, 2^8. Equivalently: if x ∉ {0,2,8} then (2^x)_3 contains… |
+| `DR-SURJECTIVITY-ALL-Q` | claim | established | — | For every q >= 2 with gcd(3, q) = 1, Dr(q) := { s mod q : s is a digit-{0,1} ternary integer } equals all of F_q.  Proof (exhibited and… |
+| `DS-JOINT-DISTRIBUTION-S2-S3` | claim | **ready** | — | (Drmota & Spiegelhofer, arXiv:2501.00850, Theorem 1.2) For every delta > 0 there is K_0 such that for every (k1,k2) with k1,k2 >= K_0 and… |
+| `DUPUY-WEIRICH-IS-AVERAGE-NOT-PER-N` | claim | **ready** | — | Dupuy–Weirich Theorem 3 proves lim_{m→∞} f_{p,m}(b) = 1/q, where f_{p,m}(b) is the average over ALL n of the proportion of digit b in the… |
+| `DUPUY-WEIRICH-THEOREM3-PRIMARY` | claim | **ready** | — | (Dupuy–Weirich, JNT 158 (2016) Thm 3) For distinct primes p, q and any digit b in {0..q-1}, the Cesàro average over n of the proportion of… |
+| `DUPUY-WEIRICH-THEOREM3-UNCONDITIONAL` | claim | **ready** | — | (Theorem 3 of Dupuy & Weirich 2016, quoted verbatim in Li–Zhao Theorem-block at lines 106-108 of the held body) For distinct primes p,q and… |
+| `DW-THEOREM-UNCONDITIONAL` | claim | **ready** | — | (Dupuy-Weirich 2016, Theorem 3; quoted in Li-Zhao 2026 Sec 1.1) Let p, q be distinct primes and b in {0,...,q-1}. With f_{p,m}(b) the… |
+| `ERDOS-1979-PRIMARY-STATEMENT` | claim | **ready** | — | (Erdős, Math. Mag. 52(2) 1979) 'I conjecture that for k > 8, 2^k is not the sum of distinct powers of 3. (However, 2^8 = 256 =… |
+| `GMR-TRANSVERSALITY-LIMIT` | claim | **ready** | — | Restricted-digit Cantor sets A (base r) and B (base s), r,s multiplicatively independent, are geometrically transverse: \|A_N ∩ B_N\| ≤ N^ε ·… |
+| `HAN-YU-2020-B3-SUM-THIN` | claim | **ready** | — | For a,b,c ≥ 3 (non-degenerate), #((B_a + B_b) ∩ B_c ∩ [1,N]) = O(N^ε) for every ε > 0, where B_b is the digit-{0,1} set in base b. |
+| `HAN-YU-2021-SLICING-DIM-SUM-LT-1` | claim | **ready** | — | The Furstenberg slicing theorems (Theorems 1.5/1.6, Cor 1.7) give box-dimension-zero, sparse intersections A2 ∩ (uA3+v) for closed… |
+| `KANEKO-STOLL-BLOCK-ABUNDANCE` | claim | **ready** | — | For m=2, p=3, any fixed ternary word w of length l occurs in the base-3 expansion of 2^n at least gamma(w)/(l·log 3) · log n times along… |
+| `KUMMER-CARRY-REFORMULATION` | claim | established | — | Erdős's ternary conjecture ⟺ v_3(binomial(2^(n+1), 2^n)) = 0 never holds for n > 8, i.e. for no k > 8 is binomial(2^k, 2^(k-1)) free of the… |
+| `LAGARIAS-CONJECTURE-E` | claim | **ready** | — | (Conjecture E, generalising Furstenberg) for multiplicatively independent p, q, every finite pattern of q-ary digits occurs in (p^n)_q for… |
+| `LAGARIAS-DIMENSION-SET-NOT-INTEGERS` | claim | **ready** | — | dim_H(E^(1)(Z_3)) = log_3 2; (1/2)log_3 2 <= dim_H(E^(2)(Z_3)) <= 1/2; (1/6)log_3 2 <= dim_H(E^(3)(Z_3)) <= dim_H(E^(2)(Z_3)). Conjecture… |
+
+_26 further nodes not shown._

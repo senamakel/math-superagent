@@ -1,0 +1,7 @@
+=== (1) nesting A_k mod 2*3^(k-2) == A_{k-1}, set equality ===
+nesting holds k=2..26: True
+=== (2) all survivors even ===
+True
+=== (3)+(4) |A_{j+1} mod 3^j| = 2^j, and stability for all k in (j,26] ===
+count identity + stability hold: True
+class-count seq mod 3^j, j=1..12: [2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]

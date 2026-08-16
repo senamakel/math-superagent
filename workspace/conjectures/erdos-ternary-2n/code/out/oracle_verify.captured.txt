@@ -1,0 +1,51 @@
+=== 1. digit_free witness table ===
+digit_free(0) = True   (2^0 = 1 = 1_3)   OK
+digit_free(2) = True   (2^2 = 4 = 11_3)   OK
+digit_free(8) = True   (2^8 = 256 = 100111_3)   OK
+digit_free(1) = False   (2^1 = 2 = 2_3)   OK, contains 2
+digit_free(3) = False   (2^3 = 8 = 22_3)   OK, contains 2
+digit_free(5) = False   (2^5 = 32 = 1012_3)   OK, contains 2
+Witness check (0,2,8 free; 1,3,5 contain 2): PASSED
+
+=== 2. sieve_count(k) vs 2^(k-1) for k=1..26 (counting obstruction) ===
+  k    |A_k|  2^(k-1)  equal   direct     lift
+  1        1        1   True        1        1
+  2        2        2   True        2        2
+  3        4        4   True        4        4
+  4        8        8   True        8        8
+  5       16       16   True       16       16
+  6       32       32   True       32       32
+  7       64       64   True       64       64
+  8      128      128   True      128      128
+  9      256      256   True      256      256
+ 10      512      512   True      512      512
+ 11     1024     1024   True     1024     1024
+ 12     2048     2048   True       --       --
+ 13     4096     4096   True       --       --
+ 14     8192     8192   True       --       --
+ 15    16384    16384   True       --       --
+ 16    32768    32768   True       --       --
+ 17    65536    65536   True       --       --
+ 18   131072   131072   True       --       --
+ 19   262144   262144   True       --       --
+ 20   524288   524288   True       --       --
+ 21  1048576  1048576   True       --       --
+ 22  2097152  2097152   True       --       --
+ 23  4194304  4194304   True       --       --
+ 24  8388608  8388608   True       --       --
+ 25 16777216 16777216   True       --       --
+ 26 33554432 33554432   True       --       --
+|A_k| == 2^(k-1) for all k in [1,26]: YES
+(direct_count and lift_count agree with sieve_count for k in [1,11]: see rows above)
+
+=== 3. finite_check over [1, 1000] ===
+digit-free n in [1,1000]: [2, 8]
+contains witness 2: True
+contains witness 8: True
+Size of exempt set in [1,1000]: 2
+
+=== Summary ===
+witness OK: True
+sieve |A_k|==2^(k-1) (and direct/lift agreement) OK: True
+exempt set in [1,1000]: [2, 8]
+VERIFY: ALL PASS

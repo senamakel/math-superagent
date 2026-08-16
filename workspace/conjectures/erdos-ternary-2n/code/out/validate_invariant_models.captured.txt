@@ -1,0 +1,13 @@
+n=0: 2^0=1, low digits (low->high)=[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  digit-free (all in {0,1})? True
+  Polarity = sum (-1)^i a_i = 1
+  claim refuted (Polarity ≡ 0 mod 2)? -> True
+  claim refuted (Polarity ≡ 0 mod 3)? -> True
+
+n=8: 2^8=256, low digits (low->high)=[1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+  digit-free? True
+  reconstructed value = 256 (==2^8? True)
+  Polarity = 0
+n=0: 2^0 = 2**0 = 1 = 1_3
+n=2: 2^2 = 2**2 = 4 = 11_3
+n=8: 2^8 = 2**8 = 256 = 100111_3

@@ -1,0 +1,124 @@
+=== g(m)>=k <=> m mod 3^(k-1) in B_k  (B_k = halved A_k) ===
+  MISMATCH k=2 m=0: survived=False membership=True
+  MISMATCH k=2 m=1: survived=False membership=True
+  MISMATCH k=2 m=3: survived=False membership=True
+  MISMATCH k=2 m=4: survived=False membership=True
+k=  2 |B_k|=     2  m<    6 mismatches=4
+  MISMATCH k=3 m=0: survived=False membership=True
+  MISMATCH k=3 m=1: survived=False membership=True
+  MISMATCH k=3 m=4: survived=False membership=True
+  MISMATCH k=3 m=9: survived=False membership=True
+  MISMATCH k=3 m=10: survived=False membership=True
+  MISMATCH k=3 m=12: survived=False membership=True
+  MISMATCH k=3 m=13: survived=False membership=True
+k=  3 |B_k|=     4  m<   18 mismatches=7
+  MISMATCH k=4 m=0: survived=False membership=True
+  MISMATCH k=4 m=1: survived=False membership=True
+  MISMATCH k=4 m=4: survived=False membership=True
+  MISMATCH k=4 m=27: survived=False membership=True
+  MISMATCH k=4 m=28: survived=False membership=True
+  MISMATCH k=4 m=31: survived=False membership=True
+  MISMATCH k=4 m=36: survived=False membership=True
+  MISMATCH k=4 m=37: survived=False membership=True
+  MISMATCH k=4 m=39: survived=False membership=True
+k=  4 |B_k|=     8  m<   54 mismatches=11
+  MISMATCH k=5 m=0: survived=False membership=True
+  MISMATCH k=5 m=1: survived=False membership=True
+  MISMATCH k=5 m=4: survived=False membership=True
+  MISMATCH k=5 m=81: survived=False membership=True
+  MISMATCH k=5 m=82: survived=False membership=True
+  MISMATCH k=5 m=85: survived=False membership=True
+  MISMATCH k=5 m=91: survived=False membership=True
+  MISMATCH k=5 m=93: survived=False membership=True
+  MISMATCH k=5 m=94: survived=False membership=True
+k=  5 |B_k|=    16  m<  162 mismatches=19
+  MISMATCH k=6 m=0: survived=False membership=True
+  MISMATCH k=6 m=1: survived=False membership=True
+  MISMATCH k=6 m=4: survived=False membership=True
+  MISMATCH k=6 m=243: survived=False membership=True
+  MISMATCH k=6 m=244: survived=False membership=True
+  MISMATCH k=6 m=247: survived=False membership=True
+  MISMATCH k=6 m=253: survived=False membership=True
+  MISMATCH k=6 m=255: survived=False membership=True
+  MISMATCH k=6 m=256: survived=False membership=True
+k=  6 |B_k|=    32  m<  486 mismatches=35
+  MISMATCH k=7 m=0: survived=False membership=True
+  MISMATCH k=7 m=1: survived=False membership=True
+  MISMATCH k=7 m=4: survived=False membership=True
+  MISMATCH k=7 m=729: survived=False membership=True
+  MISMATCH k=7 m=730: survived=False membership=True
+  MISMATCH k=7 m=733: survived=False membership=True
+  MISMATCH k=7 m=739: survived=False membership=True
+  MISMATCH k=7 m=741: survived=False membership=True
+  MISMATCH k=7 m=742: survived=False membership=True
+k=  7 |B_k|=    64  m< 1458 mismatches=67
+  MISMATCH k=8 m=0: survived=False membership=True
+  MISMATCH k=8 m=1: survived=False membership=True
+  MISMATCH k=8 m=4: survived=False membership=True
+  MISMATCH k=8 m=2019: survived=False membership=True
+  MISMATCH k=8 m=2038: survived=False membership=True
+  MISMATCH k=8 m=2052: survived=False membership=True
+  MISMATCH k=8 m=2053: survived=False membership=True
+  MISMATCH k=8 m=2073: survived=False membership=True
+  MISMATCH k=8 m=2110: survived=False membership=True
+k=  8 |B_k|=   128  m< 4000 mismatches=121
+  MISMATCH k=9 m=0: survived=False membership=True
+  MISMATCH k=9 m=1: survived=False membership=True
+  MISMATCH k=9 m=4: survived=False membership=True
+  MISMATCH k=9 m=2019: survived=False membership=True
+  MISMATCH k=9 m=2038: survived=False membership=True
+  MISMATCH k=9 m=2052: survived=False membership=True
+  MISMATCH k=9 m=2053: survived=False membership=True
+  MISMATCH k=9 m=2116: survived=False membership=True
+  MISMATCH k=9 m=2154: survived=False membership=True
+k=  9 |B_k|=   256  m< 4000 mismatches=76
+  MISMATCH k=10 m=0: survived=False membership=True
+  MISMATCH k=10 m=1: survived=False membership=True
+  MISMATCH k=10 m=4: survived=False membership=True
+  MISMATCH k=10 m=2019: survived=False membership=True
+  MISMATCH k=10 m=2038: survived=False membership=True
+  MISMATCH k=10 m=2053: survived=False membership=True
+  MISMATCH k=10 m=2116: survived=False membership=True
+  MISMATCH k=10 m=2188: survived=False membership=True
+  MISMATCH k=10 m=2191: survived=False membership=True
+k= 10 |B_k|=   512  m< 4000 mismatches=53
+  MISMATCH k=11 m=0: survived=False membership=True
+  MISMATCH k=11 m=1: survived=False membership=True
+  MISMATCH k=11 m=4: survived=False membership=True
+  MISMATCH k=11 m=2038: survived=False membership=True
+  MISMATCH k=11 m=2053: survived=False membership=True
+  MISMATCH k=11 m=2116: survived=False membership=True
+  MISMATCH k=11 m=2188: survived=False membership=True
+  MISMATCH k=11 m=2376: survived=False membership=True
+  MISMATCH k=11 m=2551: survived=False membership=True
+k= 11 |B_k|=  1024  m< 4000 mismatches=32
+  MISMATCH k=12 m=0: survived=False membership=True
+  MISMATCH k=12 m=1: survived=False membership=True
+  MISMATCH k=12 m=4: survived=False membership=True
+  MISMATCH k=12 m=2116: survived=False membership=True
+  MISMATCH k=12 m=2376: survived=False membership=True
+  MISMATCH k=12 m=2623: survived=False membership=True
+  MISMATCH k=12 m=2782: survived=False membership=True
+  MISMATCH k=12 m=2802: survived=False membership=True
+  MISMATCH k=12 m=3009: survived=False membership=True
+k= 12 |B_k|=  2048  m< 4000 mismatches=18
+  MISMATCH k=13 m=0: survived=False membership=True
+  MISMATCH k=13 m=1: survived=False membership=True
+  MISMATCH k=13 m=4: survived=False membership=True
+  MISMATCH k=13 m=2376: survived=False membership=True
+  MISMATCH k=13 m=2623: survived=False membership=True
+  MISMATCH k=13 m=3280: survived=False membership=True
+  MISMATCH k=13 m=3415: survived=False membership=True
+  MISMATCH k=13 m=3438: survived=False membership=True
+  MISMATCH k=13 m=3681: survived=False membership=True
+k= 13 |B_k|=  4096  m< 4000 mismatches=10
+  MISMATCH k=14 m=0: survived=False membership=True
+  MISMATCH k=14 m=1: survived=False membership=True
+  MISMATCH k=14 m=4: survived=False membership=True
+  MISMATCH k=14 m=2623: survived=False membership=True
+  MISMATCH k=14 m=3415: survived=False membership=True
+  MISMATCH k=14 m=3438: survived=False membership=True
+  MISMATCH k=14 m=3843: survived=False membership=True
+k= 14 |B_k|=  8192  m< 4000 mismatches=7
+TOTAL mismatches: 460
+(0 mismatches => the exact membership restatement holds over these k,m)

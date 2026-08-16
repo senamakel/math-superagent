@@ -6,4 +6,41 @@ This is neither the approach ledger nor the backward ledger. An approach is a *r
 
 Rungs are listed weakest first, which is the order to climb them. Attack the current rung, not the one three above it.
 
-_No ladders yet. Write one as soon as the goal has more than one source of difficulty: `research/weakened/<name>.md`, with a fenced `ladder` block carrying `goal`, `difficulties` (comma separated), and `status` lines, then one fenced `rung` block per weakened version carrying `id`, `statement`, `off`, `status`, `merge`, and — once it is closed — `settled-by` or `failed-by`._
+## The ladders
+
+| Ladder | Full-strength goal | Difficulties | Status |
+| --- | --- | --- | --- |
+| [[erdos-ternary-powers-ladder]] | For every integer n > 8, the base-3 representation of 2^n contains at least one digit 2 (equivalently, 2^n is not a sum of distinct powers of 3 once n > 8). | unbounded-n, unbounded-ones, middle-digits, sieve-nonclosure, density-gap, exceptions, independence | open |
+
+## The rungs, weakest first
+
+Each row is a statement weaker than the goal. The more difficulties are off, the easier it is, so the top of this table is where a stuck run should be working.
+
+| Rung | Ladder | Weakened target | Off | Status |
+| --- | --- | --- | --- | --- |
+| `R-witness` | [[erdos-ternary-powers-ladder]] | Among n in {0,...,8}, the base-3 expansion of 2^n avoids the digit 2 exactly for n in {0, 2, 8}; i.e. 2^0 = 1 = (1)_3, 2^2 = 4 = (11)_3, 2^8 = 256 =… | unbounded-n, unbounded-ones, middle-digits, sieve-nonclosure, density-gap, independence | **settled** |
+| `R-finite` | [[erdos-ternary-powers-ladder]] | For every integer n with 9 <= n <= 1000, the base-3 expansion of 2^n contains at least one digit 2. | unbounded-n, unbounded-ones, middle-digits, sieve-nonclosure, density-gap, independence | open |
+| `R-low-k` | [[erdos-ternary-powers-ladder]] | For every fixed k >= 1, the claim "every n > 8 has a digit 2 among the low k ternary digits of 2^n" is FALSE: every n = 8 (mod 2*3^(k-1)) has 2^n = 256 (mod… | middle-digits, unbounded-ones, density-gap, independence | failed |
+| `R-bounded-ones` | [[erdos-ternary-powers-ladder]] | The only integers n for which 2^n is a sum of at most twenty-five distinct powers of 3 are n in {0, 2, 8}; equivalently, if n is not in {0, 2, 8} then the… | unbounded-ones, middle-digits, density-gap, independence | **settled** |
+| `R-leading-trailing` | [[erdos-ternary-powers-ladder]] | For a stated L, for every integer n > 8, the base-3 expansion of 2^n contains a digit 2 among its first L leading digits or its last L trailing digits. | middle-digits, density-gap, independence | open |
+
+## The current rung — attack this one
+
+The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
+
+- [[erdos-ternary-powers-ladder]] → `R-finite`: For every integer n with 9 <= n <= 1000, the base-3 expansion of 2^n contains at least one digit 2.
+  - switched off: unbounded-n, unbounded-ones, middle-digits, sieve-nonclosure, density-gap, independence
+  - to merge the next difficulty back: Removing the ceiling turns unbounded-n back on. The direct check is mechanical (n <= 1000 needs no big-integer cost beyond ~630 ternary digits), and the recursive trailing-digit construction (Saye, Lemma 1: u_k = 2*3^(k-1) is the order of 2 mod 3^k) is the tool that pushes a fixed finite ceiling toward the literature's n <= 2*3^45 bound without ever building 2^n whole. Reproduce a modest bound first, then extend only with the bound stated.
+
+## Settled — what this run owns
+
+Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
+
+- [[erdos-ternary-powers-ladder]] `R-witness`: Among n in {0,...,8}, the base-3 expansion of 2^n avoids the digit 2 exactly for n in {0, 2, 8}; i.e. 2^0 = 1 = (1)_3, 2^2 = 4 = (11)_3, 2^8 = 256 = (100111)_3, and every other n <= 8 has a digit 2. (off: unbounded-n, unbounded-ones, middle-digits, sieve-nonclosure, density-gap, independence; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[erdos-ternary-powers-ladder]] `R-bounded-ones`: The only integers n for which 2^n is a sum of at most twenty-five distinct powers of 3 are n in {0, 2, 8}; equivalently, if n is not in {0, 2, 8} then the base-3 expansion of 2^n contains at least one digit 2 or at least twenty-six digits 1. (off: unbounded-ones, middle-digits, density-gap, independence; _nothing named — say which claim established it, or a reader cannot check it_)
+
+## Rungs that failed, and why
+
+Do not propose these again. A weakened version that did not work is information about the difficulty it left on, and the reason is the useful half; one left blank makes the row worthless.
+
+- [[erdos-ternary-powers-ladder]] `R-low-k`: For every fixed k >= 1, the claim "every n > 8 has a digit 2 among the low k ternary digits of 2^n" is FALSE: every n = 8 (mod 2*3^(k-1)) has 2^n = 256 (mod 3^k), and 256 = (100111)_3 has all ternary digits in {0,1}, so its low-k tail is digit-2-free for every k. — _no reason recorded — say what went wrong, or the next weakener will propose it again_

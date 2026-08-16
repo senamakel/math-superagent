@@ -4,7 +4,9 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
+| Thread | Question | Status | Rests on | Next |
+| --- | --- | --- | --- | --- |
+| [[erdos-symbolic-invariant]] | Is there a finite-transducer statistic Phi on the orbit {2^n : n>=0}, evolved by one fixed step under x->2x, with Phi(0),Phi(2),Phi(8) in W, such that 2^n in S… | open | SIEVE-EXACT-COUNT | the concrete finite objects are the 3-adic path-set automata of ABL (C(1,2) is the relevant intersection for x->2x, with computable spectral-radius dimension);… |
 
 ## Threads that could not be read
 

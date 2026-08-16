@@ -1,0 +1,41 @@
+sat
+(
+(define-fun a0 () Int 1)
+(define-fun a1 () Int 1)
+(define-fun a2 () Int 1)
+(define-fun a3 () Int 0)
+(define-fun a4 () Int 0)
+(define-fun a5 () Int 1)
+(define-fun a6 () Int 0)
+(define-fun a7 () Int 0)
+(define-fun a8 () Int 0)
+(define-fun a9 () Int 0)
+)
+sat
+sat
+(
+(define-fun a0 () Int 1)
+(define-fun a1 () Int 0)
+(define-fun a2 () Int 0)
+(define-fun a3 () Int 0)
+(define-fun a4 () Int 0)
+(define-fun a5 () Int 0)
+(define-fun a6 () Int 0)
+(define-fun a7 () Int 0)
+(define-fun a8 () Int 0)
+(define-fun a9 () Int 0)
+)
+sat
+(
+(define-fun a0 () Int 1)
+(define-fun a1 () Int 0)
+(define-fun a2 () Int 0)
+(define-fun a3 () Int 0)
+(define-fun a4 () Int 0)
+(define-fun a5 () Int 0)
+(define-fun a6 () Int 0)
+(define-fun a7 () Int 0)
+(define-fun a8 () Int 0)
+(define-fun a9 () Int 0)
+)
+unsat

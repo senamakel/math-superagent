@@ -1,0 +1,72 @@
+=== (4) order of 3 mod 2^r for r=3..40 ===
+r=  3  order(3 mod 2^r)=        2  expected 2^(r-2)=2          OK
+r=  4  order(3 mod 2^r)=        4  expected 2^(r-2)=4          OK
+r=  5  order(3 mod 2^r)=        8  expected 2^(r-2)=8          OK
+r=  6  order(3 mod 2^r)=       16  expected 2^(r-2)=16         OK
+r=  7  order(3 mod 2^r)=       32  expected 2^(r-2)=32         OK
+r=  8  order(3 mod 2^r)=       64  expected 2^(r-2)=64         OK
+r=  9  order(3 mod 2^r)=      128  expected 2^(r-2)=128        OK
+r= 10  order(3 mod 2^r)=      256  expected 2^(r-2)=256        OK
+r= 11  order(3 mod 2^r)=      512  expected 2^(r-2)=512        OK
+r= 12  order(3 mod 2^r)=     1024  expected 2^(r-2)=1024       OK
+r= 13  order(3 mod 2^r)=     2048  expected 2^(r-2)=2048       OK
+r= 14  order(3 mod 2^r)=     4096  expected 2^(r-2)=4096       OK
+r= 15  order(3 mod 2^r)=     8192  expected 2^(r-2)=8192       OK
+r= 16  order(3 mod 2^r)=    16384  expected 2^(r-2)=16384      OK
+r= 17  order(3 mod 2^r)=    32768  expected 2^(r-2)=32768      OK
+r= 18  order(3 mod 2^r)=    65536  expected 2^(r-2)=65536      OK
+r= 19  order(3 mod 2^r)=   131072  expected 2^(r-2)=131072     OK
+r= 20  order(3 mod 2^r)=   262144  expected 2^(r-2)=262144     OK
+r= 21  order(3 mod 2^r)=   524288  expected 2^(r-2)=524288     OK
+r= 22  order(3 mod 2^r)=  1048576  expected 2^(r-2)=1048576    OK
+r= 23  order(3 mod 2^r)=  2097152  expected 2^(r-2)=2097152    OK
+r= 24  order(3 mod 2^r)=  4194304  expected 2^(r-2)=4194304    OK
+r= 25  order(3 mod 2^r)=  8388608  expected 2^(r-2)=8388608    OK
+r= 26  order(3 mod 2^r)= 16777216  expected 2^(r-2)=16777216   OK
+r= 27  order(3 mod 2^r)= 33554432  expected 2^(r-2)=33554432   OK
+r= 28  order(3 mod 2^r)= 67108864  expected 2^(r-2)=67108864   OK
+r= 29  order(3 mod 2^r)=134217728  expected 2^(r-2)=134217728  OK
+r= 30  order(3 mod 2^r)=268435456  expected 2^(r-2)=268435456  OK
+r= 31  order(3 mod 2^r)=536870912  expected 2^(r-2)=536870912  OK
+r= 32  order(3 mod 2^r)=1073741824  expected 2^(r-2)=1073741824  OK
+r= 33  order(3 mod 2^r)=2147483648  expected 2^(r-2)=2147483648  OK
+r= 34  order(3 mod 2^r)=4294967296  expected 2^(r-2)=4294967296  OK
+r= 35  order(3 mod 2^r)=8589934592  expected 2^(r-2)=8589934592  OK
+r= 36  order(3 mod 2^r)=17179869184  expected 2^(r-2)=17179869184  OK
+r= 37  order(3 mod 2^r)=34359738368  expected 2^(r-2)=34359738368  OK
+r= 38  order(3 mod 2^r)=68719476736  expected 2^(r-2)=68719476736  OK
+r= 39  order(3 mod 2^r)=137438953472  expected 2^(r-2)=137438953472  OK
+r= 40  order(3 mod 2^r)=274877906944  expected 2^(r-2)=274877906944  OK
+ORDER CLAIM ALL-PASS: True
+
+=== (3) grouped N_c form agrees with direct sum (small r only) ===
+grouped-vs-direct agreement on n in [0,60], r in [3,16]: PASS
+(mathematically the same reindexed sum; this confirms the code)
+
+=== (1) congruence (*) for n in [0,300], digit-free n (must PASS) ===
+digit-free congruence pairs checked: 19
+digit-free congruence failures: NONE (all pass)
+non-digit-free congruence pairs that FAIL (*): 45869 (expected > 0 — (*) is not an identity off the digit-free set)
+exact 2^n == sum_{a in A} 3^a on digit-free n in [0,300]: PASS
+
+=== (1b) NON-digit-free n: (*) is NOT an identity (correction to task) ===
+non-digit-free n in [0,300] where sum_{a in A}3^a != 2^n exactly: 298
+non-digit-free n where it coincidentally equals: 0
+first such n = 1: sum over A = 0, 2^n = 2, digits = 2
+
+=== (2) digit-free n in [0,400]: every (*) congruence holds ===
+digit-free n in [0,400]: [0, 2, 8]
+digit-free (2)/(4)-style congruence failures: NONE
+exact LHS(sum N_c 3^c) == 2^n on every digit-free n in [0,400]: True
+
+Note: for digit-free n, sum_c N_c 3^c = sum_{a in A} 3^a = 2^n EXACTLY, so (*) is the tautology 2^n ≡ 2^n (mod 2^r).  It is always satisfiable.
+=== finite-check window [0,1000] ===
+digit-free (exempt) n in [0,1000]: [0, 2, 8]
+count: 3
+
+=== bounded extension run (timeout 540) ===
+largest n CHECKED: 25889
+first n NOT reached (time-out): 25890
+additional digit-free n found in (1000,25889]: NONE
+extended exempt set total: [0, 2, 8]
+elapsed: 500.0s

@@ -1,40 +1,44 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/li-zhao-2026-non-wieferich-erdos.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Li & Zhao, "Non-Wieferich property of prime ideals and a conjecture of Erdős"
 
-<!-- source: https://doi.org/10.48550/arxiv.2601.12753 | converted from HTML -->
+Source: arXiv:2601.12753, 19 Jan 2026. Full text: `research/sources/li-zhao-2026-non-wieferich-erdos-body.full.md` (PDF capture, held in full, 931 lines). This note replaces an earlier self-contradictory draft that both reported the body as absent and as present; the body IS in the library and is digested in `research/summaries/li-zhao-2026-non-wieferich-erdos-body.md`.
 
-## What is in it
+## What the body establishes
 
-- Mathematics > Number Theory
-- Title: Non-Wieferich property of prime ideals and a conjecture of Erdös
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+**Theorem 1.2 (generalisation of Dupuy–Weirich, number-field case).** Let `(β) = p_1^{g_1}⋯p_h^{g_h}` with each `p_i` unramified and `N(p_i) = p_i` (residue degree 1), and `α` relatively prime to `β`, not a root of unity. Then `lim_{m→∞} f_{α,m}(b) = 1/#D` for all digit `b ∈ D`, where `f_{α,m}` is the Cesàro average over `n` of the frequency of digit `b` in the first `m` digits of the β-adic expansion of `α^n`.
 
+**The Erdős-relevant case is covered, and its hypotheses hold here.** Taking `K=ℚ, α=2, β=3`: the ideal `(3)` is unramified with `N((3)) = 3 = p` (residue degree 1), and 2 is coprime to 3. So Theorem 1.2 applies unconditionally: the ternary digits of `2^n` are asymptotically equidistributed **in the Cesàro average over n** — the same conclusion as Dupuy–Weirich Theorem 3, restated and generalised.
 
-## What it claims
+**Theorem 1.3:** if `(β)` has a ramified prime-ideal factor, still get a block-complexity result `C(α)` on β-adic expansions of `α^n`.
 
-Abstract: Let $K$ be a number field with ring of integers $\mathcal{O}$ and $\alpha\in\mathcal{O}$. For any prime ideal $\mathfrak{p}$ of $\mathcal{O}$, we obtain its higher $\alpha$-Wieferich property, which implies a nonexistence theorem for higher Wieferich unramified prime ideals. If $\beta\in\mathcal{O}$ is relatively prime to $\alpha$ and all prime ideal factors of $(\beta)$ are unramified and have residue degree $1$, we apply our higher $\alpha$-Wieferich property to establish the asymptotic equidistribution of digits in $\beta$-adic expansions of $\alpha^n$, which is a generalization of the Dupuy-Weirich theorem. When $(\beta)$ have ramified prime ideal factors, we also obtain a result on the block complexity of $\beta$-adic expansions of $\alpha^n$.
+**Notation.** `f_{α,m}(b)` is a Cesàro average over `n` (`1/N Σ_{n≤N}`), not a statement about any single `n`.
 
-Subjects: | Number Theory (math.NT); Dynamical Systems (math.DS) |
+## What it does NOT do
 
-Cite as: | [arXiv:2601.12753][6] [math.NT] |
+Like Dupuy–Weirich and the probabilistic heuristic, the equidistribution is an **average/density** statement. It does not pin down the digits of any particular `2^n`, does not rule out a counterexample `n > 8`, and says nothing about which integers lie in the digit-`{0,1}` set. It is background, not a proof route.
 
-| (or [arXiv:2601.12753v1][7] [math.NT] for this version)  |
+```claim
+id: LI-ZHAO-EQUIDISTRIBUTION-DW-GEN
+statement: (Theorem 1.2) For α, β relatively prime in a number field with
+  prime-ideal factors of (β) unramified and residue degree 1 (N(p_i)=p_i), α not
+  a root of unity, the digits of the β-adic expansions of α^n are asymptotically
+  equidistributed (Cesàro average over n) at frequency 1/#D, generalising
+  Dupuy–Weirich. The K=Q, α=2, β=3 case is covered: (3) unramified, N((3))=3,
+  residue degree 1, so ternary digits of 2^n equidistribute in the average.
+hypotheses: (β) unramified residue-degree-1 prime-ideal factors; α coprime to β,
+  not a root of unity.
+holds-here: yes -- the K=Q, α=2, β=3 case satisfies all hypotheses
+  unconditionally (verified against the held full body, Theorem 1.2).
+status: asserted-by-source (proved in the paper; statement verified against the
+  held body, proof not re-derived here).
+bearing: the strongest recent statement in the digit-uniformity line; a Cesàro
+  average over n, so it does not constrain any particular 2^n and cannot prove
+  the Erdős conjecture. Background on digit distribution, consistent with the
+  heuristic.
+anchor: research/sources/li-zhao-2026-non-wieferich-erdos-body.full.md
+```
 
-| [https://doi.org/10.48550/arXiv.2601.12753][8]
+## Status
 
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 6317 character source; every section, statement, and proof in full at `research/sources/li-zhao-2026-non-wieferich-erdos.full.md`]*
+Sourced, full body held. Resolves the earlier `holds-here: unchecked` on the
+Erdős-relevant ℤ case: the hypotheses DO hold, so the claim is now `holds-here:
+yes` (still asserted-by-source on the proof).

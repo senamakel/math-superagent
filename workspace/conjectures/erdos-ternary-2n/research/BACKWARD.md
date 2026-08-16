@@ -6,7 +6,23 @@ This is not the approach ledger. An approach is a *route* — a reformulation th
 
 Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_prover could start on today is worth more than three lemmas nobody can begin.
 
-_No skeletons yet. Write one as soon as the goal can be decomposed: `research/backward/<name>.md`, with a fenced `skeleton` block carrying `goal`, `implies`, `status`, `rests-on`, and `killed-by` lines, then one fenced `gap` block per missing lemma carrying `id`, `lemma`, `status`, `discharged-by`, `thread`, and `next`._
+| Skeleton | Goal | Reduces to | Status | Open gaps |
+| --- | --- | --- | --- | --- |
+| [[erdos-via-symbolic-invariant]] | Prove or obtain an exact partial result on the Erdős ternary conjecture (2^n has a base-3 digit 2 for all n>8), working as a dynamical/symbolic system. | Counterexample 2^n digit-2-free forces \|A\|=c1(n) even (proved) and 2-adic vanishing sum_N_c 3^c ≡ 0 mod 2^r (family); Dimitrov-Howe rules out \|A\|<=25; the… | live | 1 |
+
+## The open gaps — each one is a task
+
+Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
+
+- [[erdos-via-symbolic-invariant]] `G-invariant` — There exists a statistic Phi defined on the orbit {2^n : n >= 0} (equivalently a function of n, computable by a finite transducer along the base-2 -> base-3 carry), and a set W of values, such that (a) Phi(n+1) is obtained from Phi(n) by one fixed finite-transducer step (the x2 carry rule), so Phi is an invariant of the x -> 2x dynamics rather than a lookup table on n; (b) Phi(0), Phi(2), Phi(8) all lie in W  (the three witnesses survive); (c) 2^n in S  ==>  Phi(n) in W,  where S = {3-adic integers with digits in {0,1}}; (d) n > 8  ==>  Phi(n) not in W. Candidate Phi to test first: weighted…
+  - next: smt_solver encodes a parametric family of candidate invariants in Z3 over digit variables a_i in {0,1} together with the modular constraints 2^n = sum a_i 3^i (mod 3^k); the encoding must return SAT on n = 0, 2, 8 (falsification oracle, per GOAL.md) before any UNSAT on n > 8 is read as evidence; report the digit-length bound. In parallel, tool_builder implements the x2 base-3 carry transducer so that property (a) can be checked mechanically for each candidate — this transducer part is the only piece with a chance of being a theorem on its own, and theorem_prover should be handed it as a…
+  - thread: research/threads/erdos-symbolic-invariant.md (to be opened)
+
+## Gaps already discharged
+
+Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
+
+- [[erdos-via-symbolic-invariant]] `G-cong` — Every digit-2-free power 2^n with n >= 1, written 2^n = sum_{a in A} 3^a for A the set of 1-positions, satisfies (i) |A| = 0 (mod 2), and (ii) sum_{a in A} 3^a = 0 (mod 2^k) for every integer k with 1 <= k <= n. (closed by c1-even-parity (R1, claim recorded in code/out/regularity_findings.md; part (i) follows because c1(n)=|A| is even for all n>=1; part (ii) is 2^n ≡ 0 mod 2^k for k <= n, trivial). Holds for ALL n >= 1, not just digit-2-free ones.)
 
 ## Skeletons that could not be read
 

@@ -1,0 +1,6 @@
+j=1 mod3: |C|=2; cand2(value prec j,size 2) match=True
+j=2 mod9: |C|=4; cand2(value prec j,size 4) match=True
+j=3 mod27: |C|=8; cand2(value prec j,size 8) match=False
+j=4 mod81: |C|=16; cand2(value prec j,size 15) match=False
+j=5 mod243: |C|=32; cand2(value prec j,size 29) match=False
+j=6 mod729: |C|=64; cand2(value prec j,size 53) match=False

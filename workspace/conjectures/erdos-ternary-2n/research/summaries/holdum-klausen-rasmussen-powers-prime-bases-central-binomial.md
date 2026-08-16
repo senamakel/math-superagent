@@ -20,6 +20,24 @@ For `n = 2^k` and `p = 3`: adding `2^k` to itself in base 3 has **no carries** e
 2. Their `S^a_p(n)` counting function bounds how many base-p digits exceed p/2; they improve Narkiewicz-type bounds and Kennedy–Cooper results in special cases.
 3. Non-Wieferich base idea: if p is not a Wieferich prime base α, a digit-pattern system occurs on every digit — relevant to whether the middle digits are reachable.
 
+## Claims
+
+```claim
+id: KUMMER-CARRY-REFORMULATION
+statement: Erdős's ternary conjecture ⟺ v_3(binomial(2^(n+1), 2^n)) = 0 never
+  holds for n > 8, i.e. for no k > 8 is binomial(2^k, 2^(k-1)) free of the
+  factors 4 and 9. The invariant is the number of carries when 2^n is added to
+  itself in base 3: zero carries ⟺ (2^n)_3 has no digit 2.
+hypotheses: n a positive integer; via Kummer's theorem v_p(binomial(2m,m)) =
+  number of carries adding m to itself in base p (here p=3).
+holds-here: yes — exact reformulation, not an approximation.
+status: proved (Kummer's theorem is exact; the reformulation is immediate)
+bearing: reframes the goal as a carry-statistic on the base-3 self-sum of powers
+  of 2 — a symbolic-invariant shape. HKR also bound S^a_p(n), the count of base-p
+  digits exceeding p/2 (improving Narkiewicz-type bounds in special cases).
+anchor: research/summaries/holdum-klausen-rasmussen-powers-prime-bases-central-binomial.md
+```
+
 ## Status
 
-Sourced, peer-reviewed (INTEGERS). Theorem 1.2 is a verified computation with an explicit range; per GOAL.md it is evidence for a bounded instance and not a proof. The carry reformulation itself is exact (Kummer's theorem).
+Sourced, peer-reviewed (INTEGERS). Theorem 1.2 is a verified computation (n ≤ 2^10^13, a distinct, complementary bound) — evidence for a bounded instance, not a proof.

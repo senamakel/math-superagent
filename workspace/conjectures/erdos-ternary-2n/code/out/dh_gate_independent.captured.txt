@@ -1,0 +1,36 @@
+INDEPENDENT RE-DERIVATION of DH n=3 worked examples (naive enumeration)
+determinate power criterion (Def 2.2): p^i determinate iff i < v_p(M)
+
+======================================================================
+M1 = 2^6*5*17: M = 5440  = 2^6 · 3^0 · 85
+  distinct powers of 2 mod M: 14 (v2=6)
+  distinct powers of 3 mod M: 16 (v3=0)
+  residue-class solutions 3^y == 2^a1+2^a2+2^a3 (mod M):
+     3^1 == 2^0+2^0+2^0  [determinate]
+     3^2 == 2^0+2^2+2^2  [determinate]
+     3^4 == 2^0+2^4+2^6  [INDETERMINATE-2]
+  -> extraneous solution present (some indeterminate 2-power): True
+  3^4 == 1+16+64 == 81 in Z: True, 81 < M: True
+======================================================================
+M2 = 2^7*5*17*257: M = 2796160  = 2^7 · 3^0 · 21845
+  distinct powers of 2 mod M: 23 (v2=7)
+  distinct powers of 3 mod M: 256 (v3=0)
+  residue-class solutions 3^y == 2^a1+2^a2+2^a3 (mod M):
+     3^1 == 2^0+2^0+2^0  [determinate]
+     3^2 == 2^0+2^2+2^2  [determinate]
+     3^4 == 2^0+2^4+2^6  [determinate]
+  -> extraneous solution present (some indeterminate 2-power): False
+  3^4 == 1+16+64 == 81 in Z: True, 81 < M: True
+
+======================================================================
+VERDICTS (vs Dimitrov--Howe, eqns (4)(5)(6) and clean-M2 claim):
+  M1 has an extraneous solution: got True, paper expects True   -> PASS
+  M2 is clean (no extraneous):   got True, paper expects True -> PASS
+
+  determinacy criterion spot-check (p^i determinate iff i < v_p(M)):
+    M=5440: MISMATCH [(5440, 2, 6, False), (5440, 2, 7, False), (5440, 2, 8, False)]
+    M=2796160: MISMATCH [(2796160, 2, 7, False), (2796160, 2, 8, False), (2796160, 2, 9, False)]
+    M=81: MISMATCH [(81, 2, 0, False), (81, 2, 1, False), (81, 2, 2, False)]
+    M=512: MISMATCH [(512, 2, 9, False), (512, 3, 0, False), (512, 3, 1, False)]
+
+All machine checks done against exact integer arithmetic.

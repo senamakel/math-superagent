@@ -1,0 +1,32 @@
+========================================================================
+M = 5440
+  factorization: 2^6 * 5^1 * 17^1
+  powers of 2: tail=6  loop=8   (total distinct = 14)
+  powers of 3: tail=0  loop=16   (total distinct = 16)
+  residue-class solutions to 3^x = 2^a+2^b+2^c mod M: 3
+     3^? == 2^0+2^0+2^0 mod M  [all determinate]
+     3^? == 2^0+2^2+2^2 mod M  [all determinate]
+     3^? == 2^0+2^4+2^6 mod M  [indeterminate summand present -- extraneous-type]
+  -> M has an extraneous-type solution: True
+  exact check 3^4 = 81 ; 2^0+2^4+2^6 = 81 ; equal in Z: True; 3^4 mod M == sum mod M: True
+
+========================================================================
+M = 2796160
+  factorization: 2^7 * 5^1 * 17^1 * 257^1
+  powers of 2: tail=7  loop=16   (total distinct = 23)
+  powers of 3: tail=0  loop=256   (total distinct = 256)
+  residue-class solutions to 3^x = 2^a+2^b+2^c mod M: 3
+     3^? == 2^0+2^0+2^0 mod M  [all determinate]
+     3^? == 2^0+2^2+2^2 mod M  [all determinate]
+     3^? == 2^0+2^4+2^6 mod M  [all determinate]
+  -> M has an extraneous-type solution: False
+  exact check 3^4 = 81 ; 2^0+2^4+2^6 = 81 ; equal in Z: True; 3^4 mod M == sum mod M: True
+
+========================================================================
+Notation 2.3 cross-orders: O'2(M)=ord of 2 mod M', O'3(M)=ord of 3 mod M', M'=M/(2^u 3^v)
+  M=5440: M'=85  O'2=8 (div by 3^4=81? False)  O'3=16 (div by 2^5=32? False)
+  M=2796160: M'=21845  O'2=16 (div by 3^4=81? False)  O'3=256 (div by 2^5=32? True)
+
+Expectation: for M1 both cross-orders are modest (extraneous solutions present);
+for M2, O'3 = ord of 3 mod 5*17*257 is a multiple of 2^5 (via ord_257(3)=256),
+so the Lemma-3.1 extraneous-forcing condition fails -> M2 clean.

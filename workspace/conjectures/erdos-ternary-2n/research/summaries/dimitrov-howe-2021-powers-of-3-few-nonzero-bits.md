@@ -30,6 +30,24 @@ They also prove (Section 3) a necessary condition on any modulus `M` that resolv
 - Gives the constant: "at most 25 ones" is the boundary.
 - The nested-modulus method is exactly the shape of the run's sieve instrument, and their Wieferich-condition section is a specific obstruction to sieving — worth reading in full.
 
+## Claims
+
+```claim
+id: DIMITROV-HOWE-26-ONES
+statement: The only powers of 2 writable as a sum of <= 25 distinct powers of 3
+  are 2^0, 2^2, 2^8. Equivalently: if x ∉ {0,2,8} then (2^x)_3 contains either
+  at least one digit 2, or at least twenty-six 1s.
+hypotheses: x a nonnegative integer.
+holds-here: yes — any counterexample to Erdős (digit-2-free, x > 8) must have
+  >= 26 ones in ternary.
+status: asserted-by-source (proved in the peer-reviewed paper; statement verified
+  here against the full text, proof not re-derived here)
+bearing: the strongest structural restriction on the conjecture. The residual
+  open case is exactly ">= 26 ones and no 2s". Improving the 26, or proving
+  something about the 26-one residual, is this run's most concrete lever.
+anchor: research/sources/dimitrov-howe-2021-powers-of-3-few-nonzero-bits.pdf.full.md
+```
+
 ## Status
 
-Sourced, peer-reviewed (Rocky Mountain J. Math). Theorem statements quoted verbatim above. Method is elementary and reproducible; the lift-refinement is the part most transferable to the run's own sieve.
+Sourced, peer-reviewed (Rocky Mountain J. Math).

@@ -1,0 +1,4 @@
+N=3000
+digit-free n and their carry-count: [(0, 0), (2, 0), (8, 0)]
+mismatches (c==0) XOR digit_free: [] count 0
+digit-free n: [0, 2, 8]

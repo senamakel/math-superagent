@@ -1,0 +1,26 @@
+=== 2-adic digit-position family (verify-2adic, fast) ===
+
+[1] order of 3 mod 2^r == 2^(r-2), r=3..40:
+    ALL OK: True
+
+[2] identity on digit-free n in [0,1000] (r capped at 12):
+    digit-free n in [0,1000]: [0, 2, 8]
+    failures over 3 digit-free n x r=3..12: 0
+
+[3] survivors r in A_k cover all even 2-adic classes mod 2^m:
+    k=4 m=3: |A_k mod 2^m|=3  covers all 4 even classes: False
+    k=4 m=4: |A_k mod 2^m|=5  covers all 8 even classes: False
+    k=4 m=5: |A_k mod 2^m|=8  covers all 16 even classes: False
+    k=4 m=6: |A_k mod 2^m|=8  covers all 32 even classes: False
+    k=6 m=3: |A_k mod 2^m|=4  covers all 4 even classes: True
+    k=6 m=4: |A_k mod 2^m|=8  covers all 8 even classes: True
+    k=6 m=5: |A_k mod 2^m|=15  covers all 16 even classes: False
+    k=6 m=6: |A_k mod 2^m|=21  covers all 32 even classes: False
+    k=8 m=3: |A_k mod 2^m|=4  covers all 4 even classes: True
+    k=8 m=4: |A_k mod 2^m|=8  covers all 8 even classes: True
+    k=8 m=5: |A_k mod 2^m|=16  covers all 16 even classes: True
+    k=8 m=6: |A_k mod 2^m|=32  covers all 32 even classes: True
+
+VERDICT: order claim OK; identity is a tautology on digit-free n
+(imposes no exclusion); survivors fill every even 2-adic class.
+The 2-adic family cannot close -- confirms prior findings.

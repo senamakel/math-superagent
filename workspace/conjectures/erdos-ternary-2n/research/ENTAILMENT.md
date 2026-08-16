@@ -4,4 +4,16 @@ Derived from the `follows-from:` lines in every `claim` block, closed transitive
 
 A claim written `follows-from: a, b` says `a` and `b` together give it. That single edge is enough to answer three questions the claim ledger cannot: which claims the run has already established without noticing, which proposals would add nothing, and which pair of held beliefs cannot both be true.
 
-_Nothing to derive yet. Add a `follows-from:` line to a `claim` block naming the claim ids it is a consequence of, and this file fills in._
+## Established for free
+
+Every claim these rest on is established, so these are too, whatever status their block carries. Proving one again spends an attempt on something the run already has — update the status instead.
+
+- `SIEVE-EXACT-COUNT` — filed as asserted, follows from `SAYE-ORDER-AND-LIFT`
+  - \|A_k\| = 2^(k-1) for all k >= 1, where A_k = { r mod 2·3^(k-1) : low k ternary digits of 2^r mod 3^k avoid 2 }. The modular sieve can therefore never close by…
+
+## Already entailed
+
+These add nothing the library did not have. That is not a criticism of them — a consequence worth naming is worth a block — but a *proposal* that lands in this list is not a result, and the cheapest time to find that out is before an attempt is spent on it.
+
+- `SHMERKIN-FURSTENBERG-LQ` is covered by `WU-FURSTENBERG-INTERSECTION`: Furstenberg's intersection conjecture settled via L^q dimensions of dynamically driven self-similar measures: for ×p/×q-invariant closed A,B in [0,1] with log…
+

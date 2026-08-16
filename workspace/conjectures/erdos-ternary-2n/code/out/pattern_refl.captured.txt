@@ -1,0 +1,21 @@
+=== reflection invariance: r in A_k <=> P_k - r in A_k? (P_k=period) ===
+ k= 2 P=      6 |A|=    2 reflection==A: False  symmetric-r-hit: 1/2
+ k= 3 P=     18 |A|=    4 reflection==A: False  symmetric-r-hit: 1/4
+ k= 4 P=     54 |A|=    8 reflection==A: False  symmetric-r-hit: 1/8
+ k= 5 P=    162 |A|=   16 reflection==A: False  symmetric-r-hit: 1/16
+ k= 6 P=    486 |A|=   32 reflection==A: False  symmetric-r-hit: 1/32
+ k= 7 P=   1458 |A|=   64 reflection==A: False  symmetric-r-hit: 1/64
+ k= 8 P=   4374 |A|=  128 reflection==A: False  symmetric-r-hit: 1/128
+ k= 9 P=  13122 |A|=  256 reflection==A: False  symmetric-r-hit: 1/256
+ k=10 P=  39366 |A|=  512 reflection==A: False  symmetric-r-hit: 1/512
+ k=11 P= 118098 |A|= 1024 reflection==A: False  symmetric-r-hit: 1/1024
+ k=12 P= 354294 |A|= 2048 reflection==A: False  symmetric-r-hit: 1/2048
+ k=13 P=1062882 |A|= 4096 reflection==A: False  symmetric-r-hit: 1/4096
+ k=14 P=3188646 |A|= 8192 reflection==A: False  symmetric-r-hit: 1/8192
+ k=15 P=9565938 |A|=16384 reflection==A: False  symmetric-r-hit: 1/16384
+ k=16 P=28697814 |A|=32768 reflection==A: False  symmetric-r-hit: 1/32768
+ k=17 P=86093442 |A|=65536 reflection==A: False  symmetric-r-hit: 1/65536
+ k=18 P=258280326 |A|=131072 reflection==A: False  symmetric-r-hit: 1/131072
+ k=19 P=774840978 |A|=262144 reflection==A: False  symmetric-r-hit: 1/262144
+ k=20 P=2324522934 |A|=524288 reflection==A: False  symmetric-r-hit: 1/524288
+ k=21 P=6973568802 |A|=1048576 reflection==A: False  symmetric-r-hit: 1/1048576

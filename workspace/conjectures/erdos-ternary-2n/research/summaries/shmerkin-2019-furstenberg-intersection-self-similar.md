@@ -1,20 +1,33 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/shmerkin-2019-furstenberg-intersection-self-similar.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Shmerkin, "On Furstenberg's intersection conjecture, self-similar measures, and the L^q norms of convolutions"
 
-<!-- source: https://doi.org/10.4007/annals.2019.189.2.1 | converted from HTML -->
+Source: Annals of Mathematics 189 (2019) 319–391, DOI 10.4007/annals.2019.189.2.1. Full text (HTML abstract capture): `research/sources/shmerkin-2019-furstenberg-intersection-self-similar.full.md`.
 
-## What is in it
+## What it establishes
 
-- [On Furstenberg’s intersection conjecture, self-similar measures, and the $L^q$ norms of…
-    - Abstract
-  - Authors
+- Settles Furstenberg's intersection conjecture: for `×p`- and `×q`-invariant closed `A, B ⊂ [0,1]` with `log p / log q ∉ ℚ`, `dim_H((uA+v)∩B) ≤ max{0, dim_H A + dim_H B − 1}` — the same statement Wu proved, via an independent route through `L^q` dimensions of dynamically driven self-similar measures (extending Hochman's inverse theorem for entropy; uses Tao–Vu asymmetric Balog–Szemerédi–Gowers and Bourgain constructions).
+- Among other applications: Bernoulli convolutions have an `L^q` density for all finite `q` outside a zero-dimensional set of exceptions.
 
+## What it does NOT do for this problem
 
-## What it claims
+Same limitation as Wu and as Lagarias's dimension theorems (see `LAGARIAS-DIMENSION-SET-NOT-INTEGERS`): it bounds the **dimension** of the intersection of two ×p / ×q-invariant subsets of `[0,1]`. Erdős's conjecture needs a statement about which **integers** `n` have `2^n ∈ S` (the digit-{0,1} Cantor set in `Z_3`). The dimension result does not say `1 ∉ E(Z_3)` nor that `2^n ∉ S` for n > 8. It is the flagship ×2×3 result and confirms the dimension landscape, but it is not a route to the conjecture.
 
-We study a class of measures on the real line with a kind of self-similar structure, which we call *dynamically driven self-similar measures*, and contain proper self-similar measures such as Bernoulli convolutions as special cases. Our main result gives an expression for the $L^q$ dimensions of such dynamically driven self-similar measures, under certain conditions. As an application, we settle Furstenberg’s long-standing conjecture on the dimension of the intersections of $\times p$- and $\times q$-invariant sets. Among several other applications, we also show that Bernoulli convolutions have an $L^q$ density for all finite $q$, outside of a zero-dimensional set of exceptions.
+## Status
 
-The proof of the main result is inspired by M. Hochman’s approach to the dimensions of self-similar measures and his inverse theorem for entropy. Our method can be seen as an extension of Hochman’s theory from entropy to $L^q$ norms, and likewise relies on an inverse theorem for the decay of $L^q$ norms of discrete measures under convolution. This central piece of our approach may be of independent…
+Sourced, peer-reviewed (Annals). Full text is an abstract-level HTML capture; theorem statement reliable, method details not fully in library.
 
-Keyword…
-
-*[digest of a 11050 character source; every section, statement, and proof in full at `research/sources/shmerkin-2019-furstenberg-intersection-self-similar.full.md`]*
+```claim
+id: SHMERKIN-FURSTENBERG-LQ
+statement: Furstenberg's intersection conjecture settled via L^q dimensions of
+  dynamically driven self-similar measures: for ×p/×q-invariant closed A,B in
+  [0,1] with log p/log q ∉ ℚ, dim_H((uA+v)∩B) ≤ max{0, dim_H A + dim_H B − 1}.
+hypotheses: A,B closed, respectively ×p- and ×q-invariant, p,q multiplicatively
+  independent.
+holds-here: yes as a dimension theorem (p=2,q=3); same as Wu — bounds set
+  dimension, not which integers lie in S. Not a route to the conjecture.
+status: proved (Annals 2019)
+bearing: independent confirmation of the ×2×3 dimension bound; reinforces the
+  standing limitation that dimension statements about S or the exceptional set
+  cannot be the deliverable.
+anchor: research/sources/shmerkin-2019-furstenberg-intersection-self-similar.full.md
+follows-from: WU-FURSTENBERG-INTERSECTION
+```

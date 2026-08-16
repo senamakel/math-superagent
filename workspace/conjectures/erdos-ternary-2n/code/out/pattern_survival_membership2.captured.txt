@@ -1,0 +1,16 @@
+=== corrected check: g(m)>=k <=> m mod 3^(k-1) in B_k ===
+k=  2 |B_k|=    2  m<    6 mismatches=0
+k=  3 |B_k|=    4  m<   18 mismatches=0
+k=  4 |B_k|=    8  m<   54 mismatches=0
+k=  5 |B_k|=   16  m<  162 mismatches=0
+k=  6 |B_k|=   32  m<  486 mismatches=0
+k=  7 |B_k|=   64  m< 1458 mismatches=0
+k=  8 |B_k|=  128  m< 2500 mismatches=0
+k=  9 |B_k|=  256  m< 2500 mismatches=0
+k= 10 |B_k|=  512  m< 2500 mismatches=0
+k= 11 |B_k|= 1024  m< 2500 mismatches=0
+k= 12 |B_k|= 2048  m< 2500 mismatches=0
+k= 13 |B_k|= 4096  m< 2500 mismatches=0
+k= 14 |B_k|= 8192  m< 2500 mismatches=0
+TOTAL mismatches: 0
+=> restatement holds exactly over all k,m tested.

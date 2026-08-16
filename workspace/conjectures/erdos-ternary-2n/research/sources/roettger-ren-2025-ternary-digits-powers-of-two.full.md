@@ -1,4 +1,4 @@
-<!-- source: https://doi.org/10.48550/arxiv.2511.03861 | converted from HTML -->
+<!-- source: https://arxiv.org/pdf/2511.03861 | converted from HTML -->
 
 [2511.03861] Ternary Digits of Powers of Two
 

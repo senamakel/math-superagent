@@ -1,40 +1,37 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wu-2016-proof-furstenberg-conjecture-x2-x3.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wu, "A proof of Furstenberg's conjecture on the intersections of ×p and ×q-invariant sets"
 
-<!-- source: https://doi.org/10.48550/arxiv.1609.08053 | converted from HTML -->
+Source: arXiv:1609.08053v3, Annals of Mathematics (2019). Full text: `research/sources/wu-2016-proof-furstenberg-conjecture-x2-x3.full.md` (arXiv HTML page; only abstract captured — the PDF body is not in the library).
 
-## What is in it
+## What it establishes
 
-- Mathematics > Dynamical Systems
-- Title: A proof of Furstenberg's conjecture on the intersections of $\times p$ and $\times…
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+**Furstenberg's intersection conjecture (proved).** If `A, B ⊂ [0,1]` are closed, `A` invariant under `×p mod 1`, `B` invariant under `×q mod 1`, with `log p / log q ∉ ℚ` (multiplicatively independent), then for all real `u, v`,
 
+```
+dim_H ( (uA + v) ∩ B ) ≤ max{ 0, dim_H A + dim_H B − 1 }.
+```
 
-## What it claims
+Obtained as a consequence of a study of intersections of incommensurable self-similar sets on ℝ; the methods also give upper bounds for dimensions of arbitrary slices of planar self-similar sets satisfying the SSC and natural irreducible conditions.
 
-Abstract: We prove the following conjecture of Furstenberg (1969): if $A,B\subset [0,1]$ are closed and invariant under $\times p \mod 1$ and $\times q \mod 1$, respectively, and if $\log p/\log q\notin \mathbb{Q}$, then for all real numbers $u$ and $v$, $$\dim_{\rm H}(uA+v)\cap B\le \max\{0,\dim_{\rm H}A+\dim_{\rm H}B-1\}.$$ We obtain this result as a consequence of our study on the intersections of incommensurable self-similar sets on $\mathbb{R}$. Our methods also allow us to give upper bounds for dimensions of arbitrary slices of planar self-similar sets satisfying SSC and certain natural irreducible conditions.
+## What it does NOT do for this problem
 
-Comments: | 37 pages, v2: Typos fixed, Other small changes; v3: incorporates referee's suggestions, many small fixes, main results unchanged, To appear in Annals of Math |
+The conjecture Erdős needs is about the **discrete sequence** `2^n`, i.e. about whether a specific integer point lies in the digit-`{0,1}` set `S ⊂ Z_3`. Wu's theorem is a **dimension** bound on the intersection of two ×p / ×q-invariant subsets of the **unit interval**. It is the flagship result of the ×2 ×3 line, but — exactly like Lagarias's dimension theorems — it bounds the *size* of an intersection of sets, not *which integers* lie in it. Transferring it to a statement about the thin subsequence `2^n` embedded in `Z_3` is not done in the source.
 
-Subjects: | Dynamical Systems (math.DS); Classical Analysis and ODEs (math.CA); Metric Geometry (math.MG); Number Theory (math.NT) |
+## Status
 
-MSC classes: | 11K55, 28A50, 28A80, 28D05, 37C45 |
+Sourced, peer-reviewed (Annals). The theorem is proved; its relevance to the Erdős conjecture is indirect (dimension-set, not integer-point). The full PDF body is not in the library — this summary rests on the arXiv abstract alone.
 
-Cite as: | [arXiv:1609.08053][6] [math.DS] |
-
-| (or [arXiv:1609.08053v3][7] [math.DS] for this version)  |
-
-|…
-
-Focu…
-
-*[digest of a 6876 character source; every section, statement, and proof in full at `research/sources/wu-2016-proof-furstenberg-conjecture-x2-x3.full.md`]*
+```claim
+id: WU-FURSTENBERG-INTERSECTION
+statement: A closed under ×p mod 1, B closed under ×q mod 1, log p/log q ∉ ℚ ⟹
+  dim_H((uA+v) ∩ B) ≤ max{0, dim_H A + dim_H B − 1} for all real u,v.
+hypotheses: A,B closed subsets of [0,1]; p,q multiplicatively independent.
+holds-here: yes for the dimension statement (p=2,q=3); but it bounds dimension of
+  a set intersection, not which integers lie in S — does not reach the thin
+  sequence 2^n. Holds as a dimension theorem, not as a route to the conjecture.
+status: proved (Annals 2019; verdict on abstract)
+bearing: confirms the ×2 ×3 dimension landscape this run cites, and reinforces
+  that dimension/measure statements about S cannot be the deliverable (same
+  limitation as LAGARIAS-DIMENSION-SET-NOT-INTEGERS).
+anchor: research/sources/wu-2016-proof-furstenberg-conjecture-x2-x3.full.md
+follows-from: LAGARIAS-DIMENSION-SET-NOT-INTEGERS
+```

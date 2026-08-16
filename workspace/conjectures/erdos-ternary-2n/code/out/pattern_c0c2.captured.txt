@@ -1,0 +1,4 @@
+N=30000
+#{c0 odd}= 14824  #{c2 odd}= 15073  equal: False  first n where counts differ: 1
+max |#c0odd - #c2odd|: 264
+final ternary digits of 2^N count: 6324 6388 6216 len 18928

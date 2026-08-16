@@ -1,0 +1,56 @@
+built to k=26 in 146.9s
+=== reflection-avoidance: pairs {r, P-r} in A_k, and hit element ===
+ k= 2 |A|=      2 hits=[0]  (only r=0? True)
+ k= 3 |A|=      4 hits=[0]  (only r=0? True)
+ k= 4 |A|=      8 hits=[0]  (only r=0? True)
+ k= 5 |A|=     16 hits=[0]  (only r=0? True)
+ k= 6 |A|=     32 hits=[0]  (only r=0? True)
+ k= 7 |A|=     64 hits=[0]  (only r=0? True)
+ k= 8 |A|=    128 hits=[0]  (only r=0? True)
+ k= 9 |A|=    256 hits=[0]  (only r=0? True)
+ k=10 |A|=    512 hits=[0]  (only r=0? True)
+ k=11 |A|=   1024 hits=[0]  (only r=0? True)
+ k=12 |A|=   2048 hits=[0]  (only r=0? True)
+ k=13 |A|=   4096 hits=[0]  (only r=0? True)
+ k=14 |A|=   8192 hits=[0]  (only r=0? True)
+ k=15 |A|=  16384 hits=[0]  (only r=0? True)
+ k=16 |A|=  32768 hits=[0]  (only r=0? True)
+ k=17 |A|=  65536 hits=[0]  (only r=0? True)
+ k=18 |A|= 131072 hits=[0]  (only r=0? True)
+ k=19 |A|= 262144 hits=[0]  (only r=0? True)
+ k=20 |A|= 524288 hits=[0]  (only r=0? True)
+ k=21 |A|=1048576 hits=[0]  (only r=0? True)
+ k=22 |A|=2097152 hits=[0]  (only r=0? True)
+ k=23 |A|=4194304 hits=[0]  (only r=0? True)
+ k=24 |A|=8388608 hits=[0]  (only r=0? True)
+ k=25 |A|=16777216 hits=[0]  (only r=0? True)
+ k=26 |A|=33554432 hits=[0]  (only r=0? True)
+all reflection-free (only trivial r=0): True []
+
+=== independent: values 2^r and 2^-r both in digit-{0,1} set S, r in A_k ===
+ k= 2 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k= 3 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k= 4 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k= 5 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k= 6 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k= 7 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k= 8 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k= 9 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=10 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=11 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=12 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=13 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=14 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=15 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=16 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=17 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=18 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=19 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=20 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=21 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=22 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=23 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=24 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=25 exponents r with BOTH 2^r,2^-r digit-free: [0]
+ k=26 exponents r with BOTH 2^r,2^-r digit-free: [0]
+both-inverse-digifree == only {0} for all k: True []

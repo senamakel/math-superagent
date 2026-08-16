@@ -1,0 +1,26 @@
+|A_20| = 524288  (=2^19= 524288 )
+
+=== collapse structure: |A_20 mod 3^j|, |A_20|, 3^j ===
+  j= 1: mod=      3 classes=     2  3^j=3  2^j=2  2^(k-1)=524288
+  j= 2: mod=      9 classes=     4  3^j=9  2^j=4  2^(k-1)=524288
+  j= 3: mod=     27 classes=     8  3^j=27  2^j=8  2^(k-1)=524288
+  j= 4: mod=     81 classes=    16  3^j=81  2^j=16  2^(k-1)=524288
+  j= 5: mod=    243 classes=    32  3^j=243  2^j=32  2^(k-1)=524288
+  j= 6: mod=    729 classes=    64  3^j=729  2^j=64  2^(k-1)=524288
+  j= 7: mod=   2187 classes=   128  3^j=2187  2^j=128  2^(k-1)=524288
+  j= 8: mod=   6561 classes=   256  3^j=6561  2^j=256  2^(k-1)=524288
+  j= 9: mod=  19683 classes=   512  3^j=19683  2^j=512  2^(k-1)=524288
+  j=10: mod=  59049 classes=  1024  3^j=59049  2^j=1024  2^(k-1)=524288
+  j=11: mod= 177147 classes=  2048  3^j=177147  2^j=2048  2^(k-1)=524288
+  j=12: mod= 531441 classes=  4096  3^j=531441  2^j=4096  2^(k-1)=524288
+nested over j:  True
+
+=== |A_k mod 3^j| for k=j+1 (minimum) ===
+  k=2, j=1: classes=2 (2^j=2)
+  k=3, j=2: classes=4 (2^j=4)
+  k=4, j=3: classes=8 (2^j=8)
+  k=5, j=4: classes=16 (2^j=16)
+  k=6, j=5: classes=32 (2^j=32)
+  k=7, j=6: classes=64 (2^j=64)
+  k=8, j=7: classes=128 (2^j=128)
+  k=9, j=8: classes=256 (2^j=256)

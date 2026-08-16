@@ -1,0 +1,23 @@
+=== count doubling + witnesses ===
+  witness 2 MISSING at k=1
+  witness 8 MISSING at k=1
+  witness 8 MISSING at k=2
+all |A_k|==2^(k-1): True []
+all survivors even: True
+=== survivor residue distribution mod 3^j (k=24) ===
+ mod 3: 2 classes hit; distribution(0..): [4194304, 0, 4194304]
+ mod 9: 4 classes hit; distribution(0..): [2097152, 0, 2097152, 0, 0, 0, 2097152, 0, 2097152]
+ mod 27: 8 classes hit; distribution(0..): [1048576, 0, 1048576, 0, 0, 0, 0, 0, 1048576, 0, 0, 0, 0, 0, 0, 1048576, 0, 0, 1048576, 0, 1048576, 0, 0, 0, 1048576, 0, 1048576]
+ mod 81: 16 classes hit; distribution(0..): [524288, 0, 524288, 0, 0, 0, 0, 0, 524288, 0, 0, 0, 0, 0, 0, 524288, 0, 0, 0, 0, 524288, 0, 0, 0, 524288, 0, 524288]
+=== projection of A_k onto A_{k-1} (mod 2*3^(k-2)) ===
+projection equals lower set for all k: True []
+=== witness lifting path (j_1,j_2,...,j_{K-1}) ===
+ witness 0: path[1..23] all-zero: True; nonzero entries: []
+ witness 2: path[1..23] all-zero: False; nonzero entries: [(1, 1)]
+ witness 8: path[1..23] all-zero: False; nonzero entries: [(1, 1), (2, 1)]
+=== min survivor >0 at each k (excluding 0,2,8? no, raw min) ===
+min survivor k=1..12: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+=== max survivor k=1..12 ===
+max survivor k=1..12: [0, 2, 8, 42, 150, 474, 1446, 4362, 13110, 39354, 118086, 354152]
+=== count of survivors < period/2 (below halfway) ===
+count below period/2, k=2..12: [2, 4, 7, 13, 21, 37, 70, 139, 267, 525, 1041]

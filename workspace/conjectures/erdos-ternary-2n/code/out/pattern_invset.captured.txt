@@ -1,0 +1,11 @@
+k= 2 mod=     9 #units-in-S=    2 units-with-(0, 1)-inverse: {1 only}
+k= 3 mod=    27 #units-in-S=    4 units-with-(0, 1)-inverse: {1 only}
+k= 4 mod=    81 #units-in-S=    8 units-with-(0, 1)-inverse: {1 only}
+k= 5 mod=   243 #units-in-S=   16 units-with-(0, 1)-inverse: {1 only}
+k= 6 mod=   729 #units-in-S=   32 units-with-(0, 1)-inverse: {1 only}
+k= 7 mod=  2187 #units-in-S=   64 units-with-(0, 1)-inverse: {1 only}
+k= 8 mod=  6561 #units-in-S=  128 units-with-(0, 1)-inverse: {1 only}
+k= 9 mod= 19683 #units-in-S=  256 units-with-(0, 1)-inverse: {1 only}
+k=10 mod= 59049 #units-in-S=  512 units-with-(0, 1)-inverse: {1 only}
+k=11 mod=177147 #units-in-S= 1024 units-with-(0, 1)-inverse: {1 only}
+k=12 mod=531441 #units-in-S= 2048 units-with-(0, 1)-inverse: {1 only}

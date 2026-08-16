@@ -1,0 +1,26 @@
+log_3 2 ~ 0.6309297535714574
+partial quotients: [0, 1, 1, 1, 2, 2, 3, 1, 5, 2, 23, 2, 2, 1, 1, 55, 1, 4, 1, 1]
+convergent denominators q: [1, 1, 2, 3, 8, 19, 65, 84, 485, 1054, 24727, 50508, 125743, 176251, 301994, 16785921, 17087915, 85137581, 102225496, 187363077]
+n=0: is a convergent denominator? False
+n=2: is a convergent denominator? True
+n=8: is a convergent denominator? True
+n=   0 len=1 mid[0.3,0.5) free=True
+n=   1 len=1 mid[0.3,0.5) free=True
+n=   2 len=2 mid[0.3,0.5) free=True
+n=   3 len=2 mid[0.3,0.5) free=False
+n=   8 len=6 mid[0.3,0.5) free=True
+n=   9 len=6 mid[0.3,0.5) free=False
+n=  10 len=7 mid[0.3,0.5) free=False
+n=  20 len=13 mid[0.3,0.5) free=True
+n=  50 len=32 mid[0.3,0.5) free=False
+n= 100 len=64 mid[0.3,0.5) free=False
+
+2^8 digits (LSB first): [1, 1, 1, 0, 0, 1]
+runs (s,r): [(0, 3), (5, 1)]
+sum of run contributions = 256 expect 2^8 = 256
+2*(sum contribution)=2^(n+1)? 512 512
+LTE v_2(3^r-1) agrees with direct for r=1..14
+n=0: digit-free? yes  nondeg result: True
+n=2: digit-free? yes  nondeg result: True
+n=8: digit-free? yes  nondeg result: True
+n=12: digit-free? no  nondeg result: None

@@ -1,0 +1,1 @@
+violations of {c0+c1+c2==len} or {c0==c2 mod2}: [(1, 'parity'), (4, 'parity'), (7, 'parity'), (10, 'parity'), (11, 'parity'), (13, 'parity'), (14, 'parity'), (16, 'parity'), (17, 'parity'), (20, 'parity')] count 197

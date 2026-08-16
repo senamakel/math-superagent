@@ -1,0 +1,7 @@
+DIRECT check fail k=1 j=1: 1 != 2
+DIRECT check fail k=2 j=2: 2 != 4
+DIRECT check fail k=3 j=3: 4 != 8
+DIRECT check fail k=4 j=4: 8 != 16
+DIRECT check fail k=5 j=5: 16 != 32
+DIRECT check fail k=6 j=6: 32 != 64
+direct residue sieve: |A_k|=2^(k-1) and |A_k mod 3^j|=2^j for all k<=8,j<=k all PASS

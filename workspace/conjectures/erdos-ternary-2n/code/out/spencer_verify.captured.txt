@@ -1,0 +1,16 @@
+2101_3 = 64 (expect 64)
+64*4 = 256 = 100111 (expect 100111_3, digitfree) True
+100111_3 *4 = 1024 = 1101221 contains2: True
+101_3 *4 = 40 = 1111
+10101_3 *4 = 364 = 111111
+021_3 *4 = 28 = 1001
+210_3 *4 = 84 = 10010
+Lemma 6.1 list: ['000', '001', '010', '021', '100', '101', '210']
+expected: 000,001,010,021,100,101,210
+s in [2,40] with 1+3^s a power of 2: []
+core(101_3=10)= 5  (01-type 5-cofactor; Spencer: 101_3=10=2*5)
+core(21_3=7)= 7  (21-type 7-cofactor; Spencer: 21_3=7)
+101_3 = 10  core = 5  (expect 5)
+21_3 = 7  core = 7  (expect 7)
+scaling: core(3*101_3=30)= 5  core(9*21_3=63)= 7  core(3^4*21_3=567)= 7  (expect 5, 7, 7)
+witnesses digit_free: [True, True, True] known-2 values: [False, False, False]

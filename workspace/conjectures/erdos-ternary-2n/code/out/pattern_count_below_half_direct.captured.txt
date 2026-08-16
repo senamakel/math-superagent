@@ -1,0 +1,14 @@
+=== independent direct-sieve recompute of C_k (k=2..12) ===
+k= 2  |A_k|=2  C_k=2  2^(k-2)=1  equal=no  (0.0s)
+k= 3  |A_k|=4  C_k=4  2^(k-2)=2  equal=no  (0.0s)
+k= 4  |A_k|=8  C_k=7  2^(k-2)=4  equal=no  (0.0s)
+k= 5  |A_k|=16  C_k=13  2^(k-2)=8  equal=no  (0.0s)
+k= 6  |A_k|=32  C_k=21  2^(k-2)=16  equal=no  (0.0s)
+k= 7  |A_k|=64  C_k=37  2^(k-2)=32  equal=no  (0.0s)
+k= 8  |A_k|=128  C_k=70  2^(k-2)=64  equal=no  (0.0s)
+k= 9  |A_k|=256  C_k=139  2^(k-2)=128  equal=no  (0.0s)
+k=10  |A_k|=512  C_k=267  2^(k-2)=256  equal=no  (0.0s)
+k=11  |A_k|=1024  C_k=525  2^(k-2)=512  equal=no  (0.0s)
+k=12  |A_k|=2048  C_k=1041  2^(k-2)=1024  equal=no  (0.2s)
+C_k: [2, 4, 7, 13, 21, 37, 70, 139, 267, 525, 1041]
+k with C_k == 2^(k-2): NONE (no exact half split)

@@ -1,0 +1,81 @@
+CORRECTED determinacy spot-check (DH Def 2.2, cross-modulus classifier)
+Definition: p^i is DETERMINATE mod M iff the ONLY b >= 0 with
+            p^b == p^i (mod M) is b = i   (the residue never recurs).
+Criterion:  determinate iff i < v_p(M).
+The OLD spot-check test `canon_of_val == i` is wrong: it answers
+'i is the FIRST exponent hitting the residue', not 'i is the ONLY'.
+
+Explicit recurrence check  M = 5440, p = 2, i = 6:
+  v_2(M) = 6,  ord_85(2) = 8,  so 2^6 and 2^14 = 2^14 must agree mod 5440:
+    2^6   mod 5440 = 64
+    2^14 mod 5440 = 64
+  => True: 2^6 recurs at b = 14 > 6, so 2^6 is genuinely INDETERMINATE.
+  criterion (a): i < v_p(M)?  6 < 6 -> False  (False = indeterminate, as required)
+  OLD spot-check test `canon_of_val == i` returned True  -- WRONG: the residue 64 first occurs at exponent 6, but recurs at exponent 14, so 'first' is not 'only'.
+
+Determinacy table for M = 5440, p = 2  (v_2 = 6, period_rest = 8, B = 19):
+  i | criterion (a) i < v | direct (b) no recurrence | verdict
+   0 |         True         |          True           | determinate  OK
+   1 |         True         |          True           | determinate  OK
+   2 |         True         |          True           | determinate  OK
+   3 |         True         |          True           | determinate  OK
+   4 |         True         |          True           | determinate  OK
+   5 |         True         |          True           | determinate  OK
+   6 |         False        |          False          | indeterminate OK
+   7 |         False        |          False          | indeterminate OK
+   8 |         False        |          False          | indeterminate OK
+   9 |         False        |          False          | indeterminate OK
+
+Full (a) == (b) check over all (M, p, i):
+==========================================================================
+M = 5440  = 2^6 * 3^0 * 85
+  p = 2:  v_p(M) = 6,  period_rest = ord_{M/p^v}(p) = 8,  B = 19
+    PASS: (a) i < 6  ==  (b) no b != i in 0..19 with p^b == p^i (mod M), for all i in 0..10
+  p = 3:  v_p(M) = 0,  period_rest = ord_{M/p^v}(p) = 16,  B = 21
+    PASS: (a) i < 0  ==  (b) no b != i in 0..21 with p^b == p^i (mod M), for all i in 0..4
+==========================================================================
+M = 2796160  = 2^7 * 3^0 * 21845
+  p = 2:  v_p(M) = 7,  period_rest = ord_{M/p^v}(p) = 16,  B = 28
+    PASS: (a) i < 7  ==  (b) no b != i in 0..28 with p^b == p^i (mod M), for all i in 0..11
+  p = 3:  v_p(M) = 0,  period_rest = ord_{M/p^v}(p) = 256,  B = 261
+    PASS: (a) i < 0  ==  (b) no b != i in 0..261 with p^b == p^i (mod M), for all i in 0..4
+==========================================================================
+M = 81  = 2^0 * 3^4 * 1
+  p = 2:  v_p(M) = 0,  period_rest = ord_{M/p^v}(p) = 54,  B = 59
+    PASS: (a) i < 0  ==  (b) no b != i in 0..59 with p^b == p^i (mod M), for all i in 0..4
+  p = 3:  v_p(M) = 4,  period_rest = ord_{M/p^v}(p) = N/A (rest = 1),  B = 9
+    PASS: (a) i < 4  ==  (b) no b != i in 0..9 with p^b == p^i (mod M), for all i in 0..8
+==========================================================================
+M = 81  = 2^0 * 3^4 * 1
+  p = 2:  v_p(M) = 0,  period_rest = ord_{M/p^v}(p) = 54,  B = 59
+    PASS: (a) i < 0  ==  (b) no b != i in 0..59 with p^b == p^i (mod M), for all i in 0..4
+  p = 3:  v_p(M) = 4,  period_rest = ord_{M/p^v}(p) = N/A (rest = 1),  B = 9
+    PASS: (a) i < 4  ==  (b) no b != i in 0..9 with p^b == p^i (mod M), for all i in 0..8
+==========================================================================
+M = 46080  = 2^10 * 3^2 * 5
+  p = 2:  v_p(M) = 10,  period_rest = ord_{M/p^v}(p) = 12,  B = 27
+    PASS: (a) i < 10  ==  (b) no b != i in 0..27 with p^b == p^i (mod M), for all i in 0..14
+  p = 3:  v_p(M) = 2,  period_rest = ord_{M/p^v}(p) = 256,  B = 263
+    PASS: (a) i < 2  ==  (b) no b != i in 0..263 with p^b == p^i (mod M), for all i in 0..6
+==========================================================================
+M = 27  = 2^0 * 3^3 * 1
+  p = 2:  v_p(M) = 0,  period_rest = ord_{M/p^v}(p) = 18,  B = 23
+    PASS: (a) i < 0  ==  (b) no b != i in 0..23 with p^b == p^i (mod M), for all i in 0..4
+  p = 3:  v_p(M) = 3,  period_rest = ord_{M/p^v}(p) = N/A (rest = 1),  B = 8
+    PASS: (a) i < 3  ==  (b) no b != i in 0..8 with p^b == p^i (mod M), for all i in 0..7
+==========================================================================
+M = 2592  = 2^5 * 3^4 * 1
+  p = 2:  v_p(M) = 5,  period_rest = ord_{M/p^v}(p) = 54,  B = 64
+    PASS: (a) i < 5  ==  (b) no b != i in 0..64 with p^b == p^i (mod M), for all i in 0..9
+  p = 3:  v_p(M) = 4,  period_rest = ord_{M/p^v}(p) = 8,  B = 17
+    PASS: (a) i < 4  ==  (b) no b != i in 0..17 with p^b == p^i (mod M), for all i in 0..8
+==========================================================================
+M = 512  = 2^9 * 3^0 * 1
+  p = 2:  v_p(M) = 9,  period_rest = ord_{M/p^v}(p) = N/A (rest = 1),  B = 14
+    PASS: (a) i < 9  ==  (b) no b != i in 0..14 with p^b == p^i (mod M), for all i in 0..13
+  p = 3:  v_p(M) = 0,  period_rest = ord_{M/p^v}(p) = 128,  B = 133
+    PASS: (a) i < 0  ==  (b) no b != i in 0..133 with p^b == p^i (mod M), for all i in 0..4
+==========================================================================
+ALL 8 moduli, both p in {2,3}, all i tested: (a) i < v_p(M) AGREES with (b) the direct definitional test.
+The criterion  p^i determinate mod M  <=>  i < v_p(M)  is CONFIRMED CORRECT on every case; the old `canon == i` test was the bug.
+Moduli tested: [5440, 2796160, 81, 81, 46080, 27, 2592, 512]

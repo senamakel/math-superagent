@@ -1,0 +1,35 @@
+=== Z3 3.11.2 (main, May 12 2026, 05:17:27) [GCC 12.2.0] / bound L=40, nmax=63 (fits 2^n<3^40) ===
+
+GATE (falsification oracle, n unrestricted, must find 0,2,8):
+bare digit-free, n unrestricted:
+  [SAT] no invariant: n=2
+  [SAT] force n==0: n=0
+  [SAT] force n==2: n=2
+  [SAT] force n==8: n=8
+  [SAT] n in {0,2,8}: n=8
+
+Exact oracle: digit-free n in [0,63] = [0, 2, 8]
+
+bare digit-free n>8 (no invariant):
+  [UNSAT] n>8 digit-free
+  (UNSAT here is VACUOUS: there is no digit-free n>8 at all within the digit bound, independent of any invariant -> NOT a theorem.)
+
+C1: Polarity = sum (-1)^i a_i ≡ 0 (mod 3), n unrestricted:
+  [SAT] exists digit-free n in {0,2,8} with Polarity%3 != 0: n=0
+  [SAT] Polarity%3 != 0 at n==0: n=0
+    -> REFUTED: digit-free n=0 has Polarity 1 mod 3 (not 0).  The invariant does not hold on all digit-free powers.
+
+C2: Polarity = sum (-1)^i a_i ≡ 0 (mod 2), n unrestricted:
+  [SAT] exists digit-free n with Polarity%2 != 0: n=0
+    -> REFUTED: digit-free n=0 has Polarity 1 mod 2 (not 0).
+
+C4: c1(n)=#1s even. It HOLDS on n=2,8 (n=0 has c1=1 odd, excluded):
+    n=0 c1=1, n=2 c1=2, n=8 c1=4 -> consistent with witnesses; this is the proved G-cong(i) lemma, not a new obstruction.
+
+C5: total carries under x2 (digits of 2^n -> 2^(n+1)) on witnesses:
+    n=0: low12=000000000001 carry_total=0
+    n=2: low12=000000000011 carry_total=0
+    n=8: low12=000000100111 carry_total=0
+    (n=3 -> 8=22_3 shows the x2 transducer emits digit-2s; carry statistic is not a separating invariant on {0,2,8}.)
+
+=== z3 done ===

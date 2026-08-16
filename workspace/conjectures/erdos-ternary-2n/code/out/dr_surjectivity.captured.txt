@@ -1,0 +1,54 @@
+==============================================================================
+dr_surjectivity: does a mixed modulus kill survivor classes?
+==============================================================================
+
+[1] ORACLE REPRODUCTION (exact integer arithmetic)
+    digit_free(2^0) = True   (2^0 = 1_3)
+    digit_free(2^2) = True   (2^2 = 11_3)
+    digit_free(2^8) = True   (2^8 = 100111_3)
+    digit_free(2^5) = False  (2^5 = 1012_3)
+    WITNESS REPRODUCTION: PASS
+
+[2] STRUCTURAL FACT: Dr(q) = { s mod q : s digit-{0,1} } = F_q
+THEOREM (surjectivity of digit-{0,1} ternary integers mod q).
+Let q >= 2 with gcd(3, q) = 1, and let
+    Dr(q) = { s mod q : s is a digit-{0,1} ternary integer }.
+Then Dr(q) = F_q (all of Z/qZ).
+
+PROOF.  Since gcd(3,q) = 1, 3 is a unit mod q; let m = ord_q(3) be its
+multiplicative order.  Then 3^m == 1 (mod q), hence every power 3^(j*m)
+satisfies 3^(j*m) = (3^m)^j == 1 (mod q).  The integers 3^0, 3^m, 3^(2m), ...
+are pairwise DISTINCT powers of 3.  For t = 0..q-1 define
+    S_t = 3^0 + 3^m + 3^(2m) + ... + 3^((t-1)*m)      (S_0 = 0).
+Each S_t is a sum of DISTINCT powers of 3, so no two summands share a base-3
+digit position, no carry can occur, and the base-3 expansion of S_t is the
+digit-{0,1} word with a 1 in the positions 0, m, 2m, ..., (t-1)*m and 0s
+elsewhere.  Reducing S_t modulo q term by term,
+    S_t == 1 + 1 + ... + 1 == t  (mod q).
+As t runs over 0..q-1 the residues t cover every element of F_q, so
+Dr(q) contains F_q; trivially Dr(q) is contained in F_q.  Hence Dr(q) = F_q.
+                                                                       [QED]
+
+    verified for every residue t of every q in the list below:
+    moduli checked: 199  (q in [5,300] with 3|/q, plus 257, 641, 1021)
+    independent base-3 conversions of witnesses: 11308
+    SURJECTIVITY VERIFICATION: PASS for all 199 moduli, all residues
+      sample row q=19: ord_q(3)=18, Dr(q)=F_q verified
+      sample row q=257: ord_q(3)=256, Dr(q)=F_q verified
+      sample row q=641: ord_q(3)=640, Dr(q)=F_q verified
+      sample row q=1021: ord_q(3)=34, Dr(q)=F_q verified
+
+[3] CORRECTED MIXED-MODULUS SIEVE (mod 3^k only; 2^n never built)
+    (q,k) grid after dropping those with lcm(2*3^(k-1), ord_q(2)) > 300000: 90 pairs
+    pure_survivors(k) == 2^(k-1) and mixed == pure for every (q,k): PASS
+    brute-force oracle agrees with the lifting sieve for k = 1,2,3: PASS
+
+[4] CONCLUSION
+    Hypothesis H1 of CROSS-MODULUS-BEATS-SIEVE-HYPOTHESES is REFUTED.
+    Dr(q) = F_q for every q coprime to 3 (proved, verified by construction), so the mod-q
+    consistency (b') is vacuous: a digit-free high part s always exists, no mixed modulus
+    introduces a nontrivial constraint, and |A_k| = 2^(k-1) for every k.  A mixed modulus
+    cannot reduce the survivor count below 2^(k-1).
+
+    elapsed: 4.93 s
+==============================================================================
