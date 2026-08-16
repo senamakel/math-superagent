@@ -152,6 +152,69 @@ fn output_with_no_marker_at_all_is_invalid_rather_than_zero() {
     assert_eq!(score_of(&outcome), None);
 }
 
+/// An unparseable run must carry the scorer's own words back, or the searcher
+/// cannot tell a broken scorer from a broken candidate.
+///
+/// Taken verbatim from the first scored search that ever ran on this harness.
+/// The Frankl scorer wanted five floats while `submit_candidate` calls it with
+/// one module path, so every candidate exited on the `usage:` line. Seven were
+/// written against a contract the harness never speaks, each told only that
+/// "nothing was verified" — true, unactionable, and indistinguishable from a
+/// fault in the candidate itself.
+#[test]
+fn a_scorer_that_scored_nothing_says_what_it_printed() {
+    let outcome = parse_outcome("usage: python score.py alpha a1 a2 b1 b2 [N] [REF_T]\n");
+    let reason = reason_of(&outcome).expect("no marker is a rejection");
+    assert!(
+        reason.contains("usage: python score.py alpha a1 a2 b1 b2"),
+        "the searcher must be told what the scorer said, but got: {reason}"
+    );
+    assert_eq!(score_of(&outcome), None);
+}
+
+/// The tail, not the head: a traceback's last line names the exception, and a
+/// head would spend the whole budget on stack frames and cut off before it.
+#[test]
+fn a_long_traceback_is_carried_back_by_its_informative_end() {
+    let frames = (0..200)
+        .map(|at| format!("  File \"deep{at}.py\", line {at}, in nested_call_number_{at}"))
+        .collect::<Vec<_>>()
+        .join("\n");
+    let outcome = parse_outcome(&format!(
+        "Traceback (most recent call last):\n{frames}\nTypeError: points() takes 1 argument\n"
+    ));
+    let reason = reason_of(&outcome).expect("no marker is a rejection");
+    assert!(
+        reason.contains("TypeError: points() takes 1 argument"),
+        "the exception must survive, but got: {reason}"
+    );
+    assert!(
+        !reason.contains("Traceback (most recent call last)"),
+        "the head is what gets dropped, but got: {reason}"
+    );
+    assert!(
+        reason.chars().count() < 400,
+        "a rejection must stay cheap, but is {} characters",
+        reason.chars().count()
+    );
+}
+
+/// A scorer that printed nothing at all has no words to carry, and the reason
+/// must say *that* rather than trail off after a colon.
+#[test]
+fn a_silent_scorer_is_reported_as_silent() {
+    let outcome = parse_outcome("   \n\t\n");
+    let reason = reason_of(&outcome).expect("no marker is a rejection");
+    assert!(
+        reason.contains("no output at all"),
+        "silence must be named, but got: {reason}"
+    );
+    assert!(
+        !reason.ends_with(": "),
+        "the reason must not trail off: {reason}"
+    );
+}
+
 /// The verifier-exploit shape. A candidate that divides by the constraint it
 /// was meant to satisfy scores `inf`, and an `inf` accepted once tops the board
 /// for the rest of the run — no later candidate can beat it.

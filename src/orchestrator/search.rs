@@ -470,10 +470,53 @@ pub(super) fn parse_outcome(output: &str) -> Outcome {
                 _ => Outcome::Invalid(format!("scorer printed an unusable value: {shown}")),
             }
         }
-        None => Outcome::Invalid(format!(
-            "scorer printed no `{SCORE_MARK}` line, so nothing was verified"
-        )),
+        None => match tail(output) {
+            Some(said) => Outcome::Invalid(format!(
+                "scorer printed no `{SCORE_MARK}` line, so nothing was verified; it said: {said}"
+            )),
+            None => Outcome::Invalid(format!(
+                "scorer printed no `{SCORE_MARK}` line and produced no output at all, so nothing \
+                 was verified"
+            )),
+        },
     }
+}
+
+/// Characters of the scorer's own output carried back on an unparseable run.
+///
+/// Small on purpose. This is not the artifact channel: it is the one line that
+/// says *why* nothing was scored, and a rejection has to stay cheap.
+const TAIL_CHARS: usize = 240;
+
+/// The informative end of a scorer's output, whitespace collapsed to one line.
+///
+/// The *tail* rather than the head because the two things that land here are a
+/// Python traceback, whose last line names the exception, and a `usage:` exit,
+/// which is the whole output. A head would show the traceback's frames and cut
+/// off before the reason.
+///
+/// This exists because of a live run. A Frankl scorer declared
+/// `usage: python score.py alpha a1 a2 b1 b2` while the harness calls
+/// `python3 score.py candidates/c0000.py`, so every candidate exited on the
+/// usage line. The searcher was told only that nothing was verified — a verdict
+/// it cannot act on and cannot distinguish from a bug in its own program — and
+/// wrote seven candidates against a contract the harness never speaks. One line
+/// of the scorer's own output names the fault immediately.
+fn tail(output: &str) -> Option<String> {
+    let collapsed = output.split_whitespace().collect::<Vec<_>>().join(" ");
+    if collapsed.is_empty() {
+        return None;
+    }
+    let from = collapsed
+        .char_indices()
+        .rev()
+        .nth(TAIL_CHARS.saturating_sub(1))
+        .map_or(0, |(at, _)| at);
+    let mut shown = collapsed[from..].to_string();
+    if from > 0 {
+        shown.insert(0, '…');
+    }
+    Some(shown)
 }
 
 /// Candidates one search may record before it is refused.
