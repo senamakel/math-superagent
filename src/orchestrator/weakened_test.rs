@@ -460,7 +460,7 @@ fn a_pipe_in_a_field_does_not_break_the_table() -> std::io::Result<()> {
 #[test]
 fn only_ladder_files_drive_the_table() {
     assert!(is_weakened("research/weakened/cycle-length.md"));
-    assert!(!is_weakened("research/WEAKENED.md"));
+    assert!(!is_weakened("derived/WEAKENED.md"));
     assert!(!is_weakened("research/weakened/INDEX.md"));
     assert!(!is_weakened("research/weakened/notes.txt"));
     assert!(!is_weakened("research/weakening/cycle-length.md"));

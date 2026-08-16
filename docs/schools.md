@@ -83,7 +83,7 @@ Grothendieck describes the method and supplies no way to tell it from
 procrastination. Scholze does: a change of ambient setting earns its place only
 if it **covers the case where the old setting was working well**.
 
-That is checkable against `research/CLAIMS.md` — name a result the run already
+That is checkable against `derived/CLAIMS.md` — name a result the run already
 established and show the new setting reproduces it — and it is the whole reason
 this school is affordable. Without it, "restate the problem in a better world"
 has no failure condition and a school pursuing it cannot be told from one
@@ -159,7 +159,7 @@ Three controls keep it honest:
 - **A post is asserted, not established.** `BOARD.md` is never an input to any
   derived ledger, and `post_board` has no way to make one. This is the
   `director` rule applied to a second source of unevidenced text: the director
-  acts on what a human asserts and is deliberately denied `research/CLAIMS.md`,
+  acts on what a human asserts and is deliberately denied `derived/CLAIMS.md`,
   because a role holding the evidence ledger while reading an instruction is one
   prompt away from filing the instruction as a finding.
 - **The sender is not an argument.** The posting school is baked into the tool

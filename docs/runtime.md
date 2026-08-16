@@ -477,6 +477,41 @@ derived from the checkout directory, so a run started from a worktree is called
 while a container is live. `scripts/calibrate-run` resolves it by mount for this
 reason.
 
+## Watching a run
+
+`AGENTS.md` states the rules; these are the commands and the runs behind them.
+
+Start detached so the run outlives the terminal:
+
+```sh
+nohup ./euler 763 > workspace/project-euler/763/config/start.log 2>&1 &
+```
+
+`start.log` holds the image build and the statement fetch, which happen *before*
+any container exists and are therefore the only place a failed start says why.
+Everything after that belongs to the container.
+
+Before starting, check nothing is already running on that workspace:
+
+```sh
+docker ps --format '{{.Names}}' | grep riemann-agent-run
+docker inspect <name> --format '{{range .Mounts}}{{.Source}}{{"\n"}}{{end}}' | grep project-euler
+```
+
+Two containers on one workspace is the failure to look for, and it is silent:
+both runs work, both write, and the damage shows up later as a checkpoint
+history that interleaves two investigations. Stop one with `docker rm -f
+<name>`; the workspace survives and the next `./euler` on it continues from what
+is on disk.
+
+Match by **mount, not by name**. The Compose project name comes from the
+checkout directory, so a worktree's container is not called `riemann-agent-run`
+at all and a name filter silently finds nothing.
+
+The runtime's console arrives on the container's **stderr**, not its stdout — a
+live container had 643 lines there and none on stdout — so `docker logs` needs
+`2>&1`, and any follower must read both streams.
+
 ## The memory cap
 
 The container's memory limit is 16 GiB, and the number is a judgement rather

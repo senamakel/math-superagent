@@ -33,7 +33,7 @@ use super::ledger::budget;
 use super::text::truncate;
 
 /// The derived table, filed with the library it describes.
-pub(super) const CLAIMS_PATH: &str = "research/CLAIMS.md";
+pub(super) const CLAIMS_PATH: &str = "derived/CLAIMS.md";
 
 /// Where the claim blocks themselves live.
 ///

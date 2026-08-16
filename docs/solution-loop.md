@@ -13,7 +13,8 @@ next, and why each threshold is the number it is, is in
                                 └─ body ─> attempt ──┬─> reflect ────────┐
                                    ▲                 ├─> patterns ───────┤
                                    │                 ├─> invention ──────┤
-                                   │                 ├─> refute ─────────┼─> merge
+                                   │                 ├─> refute ─────────┤
+                                   │                 ├─> verify ─────────┼─> merge
                                    │                 ├─> library (opens) ┤     │
                                    │                 └─> goals ─> cadence┘     │
                                    │                                        route
@@ -24,9 +25,11 @@ next, and why each threshold is the number it is, is in
 
 Three stages, and the middle one is one node. **Research** runs once: establish
 what the workspace already has, then go looking for what it does not.
-**Attempt** is one attempt. **Evaluation** asks six questions at the same time
-and merges their answers before anything routes. Five are about the attempt;
-the sixth is not, and is described below.
+**Attempt** is one attempt. **Evaluation** asks seven questions at the same time
+and merges their answers before anything routes. Five are about the attempt. The
+other two are about the mathematics — is the statement true, and what does the
+kernel make of the proposition the most rests on — and are the only scheduled
+uses of the engines this image carries. Both are described below.
 
 Three nodes sit on the way *out*, after the loop and before the report, and the
 order between them is deliberate.
@@ -108,10 +111,75 @@ The measurement that justifies the slot is the Equational Theories Project's:
 13.3 million at size 3 alone, for 165 CPU-hours, before any clever proof search
 ran. Most false statements are false small. What the arm attacks is read off the
 two ledgers holding statements somebody committed to proving — the open gaps of
-`research/BACKWARD.md` and the current rung of `research/WEAKENED.md` — because
+`derived/BACKWARD.md` and the current rung of `derived/WEAKENED.md` — because
 those are exactly the propositions worth breaking. Its findings are read back
 off disk beside the refuter's report, on the same argument the reduction arm
 makes: a role's prose is a summary of its own work and the record is the work.
+
+`verify` is the seventh, and it is the same argument one engine over. `lean.rs`
+made a kernel check something the runtime *reads* rather than something a role
+reports; it left `lean_check` granted to `lean_prover` and `lean_prover`
+delegated to when somebody remembered. So what got formalised was whatever a
+model found interesting, and across three live calibration runs the answer was
+nothing at all — the strongest artifact this runtime can produce, never once
+produced. This arm schedules it.
+
+Three decisions make it affordable on a box with an eight-gigabyte container
+cap, and they are the same decision seen from three sides.
+
+**It picks rather than sweeps.** `Blueprint::targets` ranks the statement graph
+by Scholze's criterion — *"as it will be used as a black box, a mistake in this
+proof could remain uncaught"* — which is direct in-degree, with what the run is
+already building on ahead of what it has yet to prove. Direct rather than
+transitive, because a node is used as a black box by the nodes that cite it by
+name; a transitive count would rank a leaf under a long chain above a lemma six
+arguments depend on. He is his own evidence: a weight-monodromy proof that
+"passed judgment of top mathematicians, but then it turned out to contain a
+fatal mistake". Perelman prices the absence at five years and three teams.
+
+Gauss is the other answer to the same question and the reason this one is
+stated as a choice rather than a limit — thousands of concurrent agents, each
+with its own Lean runtime, multiple terabytes of cluster RAM, and 25k lines of
+Lean for the strong Prime Number Theorem in three weeks. Ranking is what fits
+in one container instead. What it gives up is the tail, so the queue is rendered
+into `research/BLUEPRINT.md` under *Verify these first*: a bound that drops work
+silently is the failure this repository keeps writing down.
+
+**It asks for something different the second time.** A node that survived a
+proof attempt is asked to be *decomposed* — name the sub-lemmas, state each in
+Lean, prove what you can, leave `sorry` in what you cannot, and check the
+combining step so the shape of the argument is verified while its leaves are
+open. The unproved leaves are written as `gap` blocks, so they become blueprint
+nodes, and a leaf whose dependencies are settled returns through this same
+ranking as `ready` on a later pass. That is Seed-Prover's recursive sketch —
+decompose what is too hard, prove the pieces separately — running at the speed
+of the loop instead of inside one turn, which is what makes each step of it
+checkpointable and each sub-lemma visible to every other role.
+
+**It stops.** `verify::MAX_ATTEMPTS` is two, because there are two things to ask
+and no third: a node that survived a proof attempt and a decomposition is one
+this run does not know how to break down, and the honest move is to record that
+and spend the next check further down the ranking. The attempt is recorded
+*before* the prover is delegated to — the ordinary way a turn ends here is the
+run cap killing it, which leaves no report, so a record written afterwards would
+not exist and the same node would rank first every pass for the rest of the run.
+A record that cannot be written means no delegation at all: an attempt the
+runtime cannot count is one it cannot stop repeating.
+
+Choosing and recording are one critical section under `worklock::writes`, taken
+at the arm's boundary and released before the delegation. Schools share a
+workspace and run this arm concurrently, so without the lock two of them read
+the same ranking, see the same zero attempts against the same top-ranked node,
+and both spend the scarcest budget in the run proving it. The lock is released
+before the prover runs, because the rule that keeps it from deadlocking is that
+nothing below a tool-call boundary may take it again.
+
+What the kernel said is read back off disk, beside the prover's report and not
+instead of it. The verdicts say what was established; the report says what the
+prover believes the Lean statement *means*, which is the judgement no file
+records and the one place this arm can still be wrong. A Lean proof of a
+neighbouring statement is worth less than no proof, because it reads as a check
+that passed.
 
 One arm is deliberately not awaited. `library` starts a literature sweep and
 returns immediately, because a paper is no less relevant for being found a cycle
@@ -157,7 +225,7 @@ open. The reducer asks what would be *enough* and answers with lemmas that imply
 the goal; the weakener asks what would be *easier* and answers with a target that
 deliberately does not. It writes `research/weakened/<slug>.md` — the
 difficulties that make the goal hard, then a ladder of rungs each naming which of
-them are switched off — and `research/WEAKENED.md` is derived from those files.
+them are switched off — and `derived/WEAKENED.md` is derived from those files.
 It is deliberately *not* gated on the run being stuck, and that is a lesson this
 repository has already paid for: `open_invention`'s stuck-gate was reachable in
 principle and not in practice, and across a day of live runs the inventor was
@@ -166,7 +234,7 @@ full-strength statement, not after.
 
 So the `reducer` is delegated a decomposition: the goal, the lemmas that would
 imply it, the inference combining them, and one `gap` per lemma nobody has
-proved. It writes `research/backward/<slug>.md`, `research/BACKWARD.md` is
+proved. It writes `research/backward/<slug>.md`, `derived/BACKWARD.md` is
 derived from those files, and the open gaps reach the next attempt under their
 own heading — as targets rather than as gathered material, which is why they
 travel in a third `Mailbox` rather than in `fresh_context`.
@@ -353,7 +421,7 @@ that cannot be regenerated.
   `SOLVED`-needs-a-program evidence gate is untouched. A human cannot force
   diversification, reject a verdict, or end the run through this channel.
 - **Become a claim.** A directive is asserted, never established. The `director`
-  is not given `research/CLAIMS.md`, so the role acting on an unevidenced
+  is not given `derived/CLAIMS.md`, so the role acting on an unevidenced
   instruction is not also holding the evidence ledger.
 - **Compute.** No shell, no `write_tool_file`, no delegation. A role that could
   both reinterpret the goal and run programs against it would be a second

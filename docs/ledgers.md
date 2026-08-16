@@ -1,7 +1,12 @@
 # The derived ledgers
 
-Nine files beside the library are written by code, never by an agent, and
-re-derived from disk on every relevant write. All nine follow the rule `INDEX.md`
+The files in `derived/` are written by code, never by an agent, and re-derived
+from disk on every relevant write. The folder name is the invariant — nothing in
+it is hand-written — and the file tools refuse it, so `read_ledger` is the way
+in: it bounds what it returns and selects by `id`, `status` or `query`, where
+`read_document` returned all 7,488 tokens of `CLAIMS.md` to answer about one
+row. A workspace written before the folder existed is migrated once, at startup,
+never overwriting. All nine follow the rule `INDEX.md`
 already established: what a source establishes is a judgement and stays with the
 agent that made it; whether the summary agrees with the files is not, so it is
 measured. Each is described through `record_description` when written, so no
@@ -17,7 +22,7 @@ is a bill paid on every model call in that role. On one live workspace the nine
 came to **393,995 of the 770,134 tokens** across all twenty-two assembled
 prompts — 51% — and nothing measured it.
 
-`research/APPROACHES.md` was 86 KB of that, and the shape of the failure is the
+`derived/APPROACHES.md` was 86 KB of that, and the shape of the failure is the
 part worth keeping. Every module had a `MAX_ROWS` and a `FIELD_CHARS`, and both
 governed the *table*. The list sections underneath — *What closed, and why*,
 *Not yet taken to the literature* — were written afterwards and bounded by
@@ -93,7 +98,7 @@ cannot be indexed away — so it indexes at 240 characters of statement where th
 approach ledger keeps 110 of reason. The headline width is the caller's, not a
 constant.
 
-**Indexing a small ledger costs more than it saves.** `research/ENTAILMENT.md`
+**Indexing a small ledger costs more than it saves.** `derived/ENTAILMENT.md`
 is 266 tokens and an index of it, carrying a header explaining how to read the
 rest, comes to about 440. `index::worth_indexing` is that made mechanical; a
 uniform rule would have made two files larger.
@@ -117,7 +122,7 @@ carries the old file.
 cargo run --example derive_ledgers -- workspace/conjectures/gilbreath
 ```
 
-`research/CLAIMS.md` (`claims.rs`) is the retrieval change. The unit of the
+`derived/CLAIMS.md` (`claims.rs`) is the retrieval change. The unit of the
 library was a file, and a file is the wrong thing to retrieve: an agent about
 to compute something needs one statement with its hypotheses, not the note that
 happens to contain it. A note may carry fenced `claim` blocks — `id`,
@@ -143,7 +148,7 @@ terms below 10^8, and both files sat in `code/` with equal standing. A lookup is
 good evidence that a result is right and none about why, so it may confirm a
 final answer and never be the reason for one.
 
-`research/THREADS.md` (`threads.rs`) is the topic axis. `L0`/`L1`/`L2` fold by
+`derived/THREADS.md` (`threads.rs`) is the topic axis. `L0`/`L1`/`L2` fold by
 *arrival* and are sealed once, which keeps provenance honest and scatters a
 subject across batches — a reader asking what the run knows about the pass rule
 gets a seal covering whichever ten things arrived together. One live workspace
@@ -157,7 +162,7 @@ for it again. A thread resting on a claim id not on disk is reported, and so is 
 blocked thread with no blocker stated — a blocker stated precisely is the next
 research request, and one left blank is a mood.
 
-`research/APPROACHES.md` (`approaches.rs`) is what the run has tried to
+`derived/APPROACHES.md` (`approaches.rs`) is what the run has tried to
 *think* of, beside what it has tried to compute. A thread is already anchored
 to the library, so nothing held the step before it: a candidate reformulation.
 That went into one prose field on the solution state and was gone by the next
@@ -170,7 +175,7 @@ stances are a life cycle rather than a flag: `proposed`, `grounded`, `refuted`,
 as nothing having been found; refuted and spent approaches are kept with their
 reasons, on the dead-thread argument.
 
-`research/BACKWARD.md` (`backward.rs`) is the other axis: not what the run has
+`derived/BACKWARD.md` (`backward.rs`) is the other axis: not what the run has
 tried, but what would be *enough*. An approach is a route to the goal; a
 skeleton is the goal decomposed into propositions that can each be attacked
 alone. Without one, an investigation can verify data for twelve hours having
@@ -190,7 +195,7 @@ a claim — so the same note that adds or removes one can close a gap or strand
 it. `discharged` is deliberately not a closed stance: it is the one terminal
 state that is a result.
 
-`research/WEAKENED.md` (`weakened.rs`) is the third axis and the only one that
+`derived/WEAKENED.md` (`weakened.rs`) is the third axis and the only one that
 moves the target. An approach is a route to the goal and a skeleton is the goal
 decomposed; a ladder is the goal made *smaller*. A ladder is
 `research/weakened/<slug>.md` carrying one fenced `ladder` block — `goal`,
@@ -223,7 +228,7 @@ rejections are all "did not finish in time" has a scorer too slow to search
 with, and one whose rejections are all the same constraint has found the
 constraint that actually binds. Neither is visible from a list of winners.
 
-`research/FRONTIER.md` (`frontier.rs`) is the citation graph the converter used
+`derived/FRONTIER.md` (`frontier.rs`) is the citation graph the converter used
 to throw away. `readable.rs` has always parsed every anchor into a reference
 table and kept nothing; a converted PDF yields nothing at all, though a
 mathematical paper's reference list is exactly where the primary literature on
@@ -238,7 +243,7 @@ doubles as the fetch ledger: a second download of a URL already in the library i
 refused with the path of the file holding it. One live workspace holds two notes
 derived from the same arXiv abstract for want of that check.
 
-`research/REQUESTS.md` (`requests.rs`) is the demand side. Gathering was
+`derived/REQUESTS.md` (`requests.rs`) is the demand side. Gathering was
 triggered by inference — a `STUCK` verdict, a gap named in `ROOT.md`, an
 attempt count — and none of those can be closed, so nothing could say whether a
 search answered the thing that prompted it. `request_research` states it
@@ -252,7 +257,7 @@ is derived from its text, so the same gap stated by two roles is one row. It
 closes when a note carries a claim with `answers: <id>`, so whether the gap was
 filled is read off the library rather than asserted by whoever went looking.
 
-`research/BLUEPRINT.md` (`blueprint.rs`) is the only one that adds no new file
+`derived/BLUEPRINT.md` (`blueprint.rs`) is the only one that adds no new file
 for an agent to write. It is the *graph* the other two already imply: a skeleton
 names the gaps it needs and the claims it rests on, and a gap is discharged by a
 claim or by another skeleton proving it outright. Read one file at a time those
@@ -278,7 +283,7 @@ is the minimum over what a node rests on, so a refuted lemma reaches the goal
 above it and a kernel-checked one does too — which is what makes `lean_check`
 worth anything to a planning role rather than only to the file it ran on.
 
-`research/ENTAILMENT.md` (`closure.rs`) reasons over the claims rather than
+`derived/ENTAILMENT.md` (`closure.rs`) reasons over the claims rather than
 listing them. A `claim` block may carry `follows-from: a, b`, meaning `a` and `b`
 together give it, and that one edge — closed transitively — answers three
 questions the claim ledger cannot.
@@ -384,6 +389,42 @@ Three properties keep this from becoming another thing to get wrong:
 The bounds are untouched. Ordering decides which rows a section shows first, not
 how many it shows or how much prose each carries, and `ledger/ceiling_test.rs`
 holds both of those where they were.
+
+## The attempts ledger
+
+`spawn_candidates` puts several candidate solutions on their own git branches at
+once (see [`workspace.md`](workspace.md#candidate-branches)). Git answers half
+the question that raises — the branches are on disk and `attempt_diff` reads
+them — and cannot answer the other half, because **the reason a candidate lost
+is not in its diff**. Without somewhere to put it the next round re-proposes a
+dead candidate, which is the failure `TASKS.md` had and the same fix.
+
+It is a declaration rather than a module: `source: queue`, backed by
+`config/attempts.jsonl`, rendered to `derived/ATTEMPTS.md`. A queue for the
+reason the board is one — several candidates finish at once and each records
+itself, so one `write_all` of one whole line needs no lock, and the events fold,
+so a candidate that is proposed, then scored, then adopted is three events and
+one row.
+
+Two decisions in it are worth keeping:
+
+- **`score` is a field, not a status.** The number is the scorer's and the ledger
+  has no opinion about it; the *decision* is the status. Keeping them apart is
+  what lets a candidate be the highest scoring one and still be rejected, with
+  the reason saying why — exactly the case a search over programs produces.
+- **Two prose fields, and no more.** The engine gives every prose field its own
+  bounded line on every rendered row, so a field costs `REASON_CHARS` times the
+  row cap whether or not anybody fills it in. A first draft carried `branch` and
+  `approach` as well and rendered 76 KB on the ceiling fixture; `branch` is
+  determined by the id and `approach` said again what the headline says.
+
+The sections are capped well below the engine's default of forty, because this
+ledger is read at the top of every round rather than opened once — its cost is
+paid over and over, and a round explores at most ten candidates.
+
+The `searcher` is deliberately not a writer. It holds no write tool at all (see
+[`roles.md`](roles.md)), and a role that could record its own candidate's verdict
+is one that can grade its own homework.
 
 ## A ledger a run can declare
 

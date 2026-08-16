@@ -5,6 +5,7 @@ struct RolePrompts {
     research: String,
     tool_builder: String,
     coder: String,
+    candidate: String,
     sat_solver: String,
     smt_solver: String,
     theorem_prover: String,
@@ -12,6 +13,7 @@ struct RolePrompts {
     lean_prover: String,
     goals: String,
     reflection: String,
+    archivist: String,
     judge: String,
     pattern: String,
     inventor: String,
@@ -98,6 +100,7 @@ impl RolePrompts {
     fn support(&mut self) -> SupportPrompts {
         SupportPrompts {
             reflection: std::mem::take(&mut self.reflection),
+            archivist: std::mem::take(&mut self.archivist),
             judge: std::mem::take(&mut self.judge),
             pattern: std::mem::take(&mut self.pattern),
             inventor: std::mem::take(&mut self.inventor),
@@ -120,12 +123,17 @@ impl RolePrompts {
             ("research", self.research.as_str()),
             ("tool_builder", self.tool_builder.as_str()),
             ("coder", self.coder.as_str()),
+            // Reported under the first slot's name because the six slots share
+            // this prompt byte for byte; they differ in where their tools point,
+            // which a prompt cannot show.
+            ("candidate01", self.candidate.as_str()),
             ("sat_solver", self.sat_solver.as_str()),
             ("smt_solver", self.smt_solver.as_str()),
             ("theorem_prover", self.theorem_prover.as_str()),
             ("symbolic_math", self.symbolic_math.as_str()),
             ("lean_prover", self.lean_prover.as_str()),
             ("reflection", self.reflection.as_str()),
+            ("archivist", self.archivist.as_str()),
             ("judge", self.judge.as_str()),
             ("pattern_finder", self.pattern.as_str()),
             ("inventor", self.inventor.as_str()),
@@ -176,23 +184,23 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "GOAL.md",
             "TASKS.md",
             "code/lib/INDEX.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
             // The open gaps are the run's stock of ready-made tasks: a lemma
             // with a first move somebody could make today. A planner that
             // cannot see them plans around them.
-            "research/BACKWARD.md",
+            "derived/BACKWARD.md",
             // And the graph over them, which answers the question the flat list
             // cannot: which of those tasks can be handed to a sub-agent *now*,
             // because everything it rests on is settled. A planner routing work
             // to concurrent children needs exactly that distinction, and
             // `BACKWARD.md` makes every open gap look equally attackable.
-            "research/BLUEPRINT.md",
+            "derived/BLUEPRINT.md",
             // What the library gives without new work. A planner that cannot
             // see this schedules an attempt at something the run already holds,
             // which is the most expensive mistake available to it.
-            "research/ENTAILMENT.md",
+            "derived/ENTAILMENT.md",
             // What the other schools have said. A planner deciding what to
             // spend the next run on is the reader a dead end found once and
             // paid for once was written for.
@@ -207,7 +215,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "code/AGENTS.md",
             "code/INDEX.md",
             "code/lib/INDEX.md",
-            "research/CLAIMS.md",
+            "derived/CLAIMS.md",
             "CONTEXT.md",
         ],
         // Not sent `research/APPROACHES.md`, though the judge now scores an
@@ -235,17 +243,17 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "scholar" => &[
             "GOAL.md",
             "TASKS.md",
-            "research/CLAIMS.md",
-            "research/ENTAILMENT.md",
-            "research/THREADS.md",
+            "derived/CLAIMS.md",
+            "derived/ENTAILMENT.md",
+            "derived/THREADS.md",
             "CONTEXT.md",
         ],
         "librarian" | "research" => &[
             "GOAL.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
-            "research/FRONTIER.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
+            "derived/FRONTIER.md",
             "CONTEXT.md",
         ],
         // The inventor is also handed a dossier assembled from disk at the
@@ -255,9 +263,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // inventor by a path that does not build one.
         "inventor" => &[
             "GOAL.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
-            "research/CLAIMS.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
+            "derived/CLAIMS.md",
             // The role asked for something genuinely different is the one that
             // most needs to know which different things a sibling has already
             // walked into.
@@ -281,10 +289,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // that could not see it.
         "reducer" => &[
             "GOAL.md",
-            "research/BACKWARD.md",
-            "research/BLUEPRINT.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
+            "derived/BACKWARD.md",
+            "derived/BLUEPRINT.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
             board::PATH,
             "CONTEXT.md",
         ],
@@ -301,9 +309,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // where they should.
         "weakener" => &[
             "GOAL.md",
-            "research/WEAKENED.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
+            "derived/WEAKENED.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
             board::PATH,
             "CONTEXT.md",
         ],
@@ -317,7 +325,15 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // out. It is denied the threads and the approach ledger for the reason
         // the judge is: a role scoring hundreds of candidates must not spend
         // its budget reading about the investigation around it.
-        "searcher" => &["GOAL.md", "research/CLAIMS.md", "CONTEXT.md"],
+        //
+        // The archivist shares the arm because it needs the same three things
+        // for the same reason: what a candidate is judged *against*, and
+        // nothing about how the run arrived here. Which direction the run is
+        // pursuing is not evidence about which of five diffs is correct, and a
+        // role given the method ledger grades method instead of reading the
+        // change in front of it.
+        "searcher" | "archivist" => &["GOAL.md", "derived/CLAIMS.md", "CONTEXT.md"],
+
         // The refuter is sent the two ledgers holding statements somebody has
         // committed to proving, because those are the ones worth attacking, and
         // the claim ledger so it does not spend a cycle refuting something the
@@ -327,9 +343,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // the method.
         "refuter" => &[
             "GOAL.md",
-            "research/BACKWARD.md",
-            "research/WEAKENED.md",
-            "research/CLAIMS.md",
+            "derived/BACKWARD.md",
+            "derived/WEAKENED.md",
+            "derived/CLAIMS.md",
             "CONTEXT.md",
         ],
         // The curator writes the shared brief, so it is the one role that
@@ -343,10 +359,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "GOAL.md",
             "TASKS.md",
             "INDEX.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
-            "research/BACKWARD.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
+            "derived/BACKWARD.md",
             "CONTEXT.md",
         ],
         // The director rewrites the files that say what the run is doing, so
@@ -361,8 +377,8 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "director" => &[
             "GOAL.md",
             "TASKS.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
             "CONTEXT.md",
         ],
         _ => &[],
@@ -452,12 +468,17 @@ const LEDGER_WRITING_BRIEF: &str = include_str!("../prompts/ledger_writing.md");
 /// ledger is exactly the use that should stay available.
 const LEDGER_BRIEF_WITHHELD: [&str; 2] = ["judge", "searcher"];
 
-const LEDGER_WRITER_ROLES: [&str; 5] = [
+const LEDGER_WRITER_ROLES: [&str; 6] = [
     "goals",
     "orchestrator",
     "director",
     "reflection",
     "reducer",
+    // The archivist decides which candidate the run keeps, and the attempts
+    // ledger is where that decision and the reasons the others were not kept
+    // are written down. A decision nobody recorded is one the next round
+    // re-litigates.
+    "archivist",
 ];
 
 /// What `role` is told about the ledgers, appended to its own guidance.
@@ -564,6 +585,7 @@ impl RolePrompts {
             research: role("research", RESEARCH_PROMPT)?,
             tool_builder: role("tool_builder", TOOL_BUILDER_PROMPT)?,
             coder: role("coder", CODER_PROMPT)?,
+            candidate: role("candidate", CANDIDATE_PROMPT)?,
             sat_solver: role("sat_solver", SAT_SOLVER_PROMPT)?,
             smt_solver: role("smt_solver", SMT_SOLVER_PROMPT)?,
             theorem_prover: role("theorem_prover", THEOREM_PROVER_PROMPT)?,
@@ -571,6 +593,7 @@ impl RolePrompts {
             lean_prover: role("lean_prover", LEAN_PROVER_PROMPT)?,
             goals: role("goals", GOALS_PROMPT)?,
             reflection: role("reflection", REFLECTION_PROMPT)?,
+            archivist: role("archivist", ARCHIVIST_PROMPT)?,
             judge: role("judge", JUDGE_PROMPT)?,
             pattern: role("pattern_finder", PATTERN_PROMPT)?,
             inventor: role("inventor", INVENTOR_PROMPT)?,

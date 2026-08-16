@@ -487,10 +487,10 @@ fn the_director_reads_the_plan_but_not_the_claim_ledger() {
         "a directive is read against it"
     );
     assert!(
-        context.contains(&"research/THREADS.md"),
+        context.contains(&"derived/THREADS.md"),
         "opening and closing directions is most of the job"
     );
-    assert!(!context.contains(&"research/CLAIMS.md"));
+    assert!(!context.contains(&"derived/CLAIMS.md"));
     assert!(
         !context.contains(&"config/config.toml"),
         "it never executes"
@@ -1119,4 +1119,56 @@ fn every_role_that_can_read_a_ledger_is_told_the_copy_is_shortened() {
             "`{role}` is told to pull from a ledger but was never granted `read_ledger`"
         );
     }
+}
+
+
+/// A role granted the candidate tools is told what they are for.
+///
+/// The `post_board` failure again, and this test exists because the same
+/// mistake was made once more while building these: `spawn_candidates` was
+/// granted to `goals`, wired into its harness, and mentioned in no prompt — so a
+/// live run held the tool for nine minutes and never called it, because the only
+/// trace the model saw was an unexplained entry in a tool list. A grant without
+/// an instruction is not a capability.
+#[test]
+fn the_roles_that_explore_candidates_are_told_how() {
+    use super::{RolePrompts, VCS_READING_TOOLS, VCS_WRITING_TOOLS, schools};
+
+    let prompts =
+        RolePrompts::for_school(template_workspace(), &schools::ALL[0], true).expect("prompts");
+    let by_role: std::collections::HashMap<&str, &str> = prompts.by_role().into_iter().collect();
+
+    let goals = by_role.get("goals").expect("the goals prompt");
+    assert!(
+        goals.contains("spawn_candidates"),
+        "the role holding `spawn_candidates` is never told what it is for"
+    );
+    assert!(
+        goals.contains("archivist"),
+        "the role that starts candidates must know who keeps one"
+    );
+
+    let archivist = by_role.get("archivist").expect("the archivist prompt");
+    for tool in VCS_READING_TOOLS.into_iter().chain(VCS_WRITING_TOOLS) {
+        assert!(
+            archivist.contains(tool),
+            "the archivist holds `{tool}` and its brief never mentions it"
+        );
+    }
+}
+
+/// The archivist is reachable by delegation.
+///
+/// It is the only role that may keep a candidate, so a bench that omits it
+/// leaves `spawn_candidates` starting work nobody can adopt — the branches sit
+/// there and the run ends having paid for them.
+#[test]
+fn the_archivist_is_on_a_bench_somebody_can_reach() {
+    use super::{DELEGATES, SPECIALISTS};
+
+    assert!(
+        SPECIALISTS.contains(&"archivist"),
+        "the goals agent starts the candidates and cannot reach the role that keeps one"
+    );
+    assert!(DELEGATES.contains(&"archivist"));
 }

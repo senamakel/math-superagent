@@ -53,6 +53,104 @@ pub(in crate::orchestrator) const SPEC_DIR: &str = "config/ledgers";
 /// so the cap is a runaway guard rather than a budget to spend.
 pub(in crate::orchestrator) const MAX_DEFINED: usize = 12;
 
+/// What each candidate solution tried, and what became of it.
+///
+/// A run that explores five programs at once has five branches, five diffs and
+/// one question — which one do we keep, and why not the others. Git answers the
+/// first half: the branches are on disk and `attempt_diff` reads them. It
+/// cannot answer the second, because the reason a candidate lost is not in its
+/// diff. Without somewhere to put it the run re-proposes a dead candidate,
+/// which is the same failure `TASKS.md` had and the same fix.
+///
+/// A queue rather than one file per entry, and for the reason the board is one:
+/// several candidates finish at once and each records itself, so the writers are
+/// concurrent. One `write_all` of one whole line needs no lock, and the events
+/// fold — a candidate that is proposed, then scored, then adopted is three
+/// events and one row.
+///
+/// `score` is a plain field rather than a status because it is a number the
+/// scorer produced and the ledger has no opinion about it; the *decision* is
+/// the status. Keeping them apart is what lets a candidate be the highest
+/// scoring one and still be rejected, with the reason saying why — which is
+/// exactly the case a search over programs produces and the case worth
+/// recording.
+fn attempts() -> Value {
+    json!({
+        "slug": "attempts",
+        "title": "Attempts",
+        "purpose": "Every candidate solution this run has branched: what it tried, what it \
+                    scored, and for each closed one the reason it was not kept. Read it before \
+                    proposing a candidate — re-proposing something already ruled out is the \
+                    cheapest mistake available, and the reason beside it is what prevents it.",
+        "source": "queue",
+        "path": "config/attempts.jsonl",
+        "derived": super::super::vcs::ATTEMPTS_PATH,
+        // Two prose fields, and the restraint is deliberate. The engine gives
+        // every prose field its own bounded line on every rendered row, so a
+        // field costs `REASON_CHARS` times the row cap whether or not anybody
+        // fills it in — which is how a ledger with nothing wrong in it still
+        // arrives at tens of kilobytes. `branch` is not a field because the id
+        // determines it (`attempt/<id>`), and an "approach" field would say
+        // again what the headline says.
+        "fields": [
+            { "name": "id", "role": "id", "required": true },
+            { "name": "headline", "role": "title", "required": true },
+            { "name": "score", "role": "prose" },
+            { "name": "reason", "role": "prose" },
+            { "name": "refs", "role": "refs" },
+            { "name": "status", "role": "status" }
+        ],
+        "statuses": [
+            { "name": "proposed" },
+            { "name": "running" },
+            { "name": "scored" },
+            { "name": "adopted", "closed": true, "needs_reason": true },
+            { "name": "rejected", "closed": true, "needs_reason": true },
+            { "name": "abandoned", "closed": true, "needs_reason": true }
+        ],
+        "sections": [
+            // Capped well below the engine's default of forty. This ledger is
+            // read at the top of every round, unlike the ones a role opens
+            // once — so its cost is paid over and over, and a round explores at
+            // most ten candidates. Forty rows here would be thirty rows of
+            // last hour's decisions on every prompt that carries it.
+            {
+                "heading": "In flight",
+                "blurb": "Candidates still being written or still being judged, most recently \
+                          touched first. Read one with `attempt_diff`.",
+                "statuses": ["proposed", "running", "scored"],
+                "cap": 12,
+                "order": "recent"
+            },
+            // The two archives stay in recorded order: they are read for what
+            // is on them rather than worked from the top, and a stable list is
+            // what makes "have I already tried this" cheap to answer.
+            {
+                "heading": "Kept",
+                "blurb": "Candidates whose work is now in the trunk, with what made each the one \
+                          to keep.",
+                "statuses": ["adopted"],
+                "cap": 12
+            },
+            {
+                "heading": "Ruled out — do not re-propose",
+                "blurb": "Candidates that were not kept, each with the reason. A reason naming \
+                          what killed it — 'disagreed with the oracle at n=12' — saves the next \
+                          candidate; 'did not work' saves nothing and costs the same to write.",
+                "statuses": ["rejected", "abandoned"],
+                "cap": 16
+            }
+        ],
+        "checks": ["required-field", "known-status", "closed-needs-reason"],
+        // The archivist decides and records; the two planners open a candidate
+        // when they start one; reflection closes one it has just judged. The
+        // searcher is deliberately absent — it holds no write tool at all, and
+        // a role that could record its own candidate's verdict is one that can
+        // grade its own homework. See `search.rs`.
+        "writers": ["archivist", "goals", "orchestrator", "reflection"]
+    })
+}
+
 /// The task list: what to do next, what is ruled out, and what was done.
 ///
 /// The one genuinely new ledger. `TASKS.md` was free-form Markdown that two
@@ -150,6 +248,7 @@ fn derived(slug: &str, title: &str, purpose: &str, path: &str, written_by: &str)
 fn builtins() -> Vec<Value> {
     vec![
         tasks(),
+        attempts(),
         // `goals` is the sub-goal decomposition under another name. A planner
         // asking this runtime for "the goals" means the propositions that would
         // suffice, which is what a skeleton's gaps are — and `GOAL.md` itself

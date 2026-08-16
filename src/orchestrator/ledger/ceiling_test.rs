@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 //! What every derived ledger may cost a system prompt, asserted rather than
 //! intended.
 //!
@@ -252,6 +254,59 @@ fn past_the_bound_more_entries_do_not_grow_the_file() -> std::io::Result<()> {
         "tripling the entries from 60 to 180 grew the render by {growth} characters \
          ({small} -> {large}). Past the row bound only the elided counts should move; a section \
          is still rendering every entry."
+    );
+    Ok(())
+}
+
+/// The attempts ledger is engine-rendered, so its bound is [`super::budget`]'s
+/// rather than its own — which is exactly why it is asserted here.
+///
+/// A run exploring candidates in parallel produces entries faster than any
+/// hand-written ledger: five a round, each carrying an approach description and
+/// a reason it lost. That is the growth profile `research/APPROACHES.md` had
+/// when it reached 86 KB, arriving through a different door.
+fn attempts_render(root: &std::path::Path, count: usize) -> String {
+    let spec = super::registry::find(root, "attempts").expect("the attempts ledger is built in");
+    for index in 0..count {
+        let mut fields = serde_json::Map::new();
+        for (name, value) in [
+            ("headline", prose("a candidate")),
+            ("score", prose("what it scored")),
+            ("reason", prose("why it was not kept")),
+            ("status", "rejected".to_string()),
+        ] {
+            fields.insert(name.to_string(), serde_json::Value::String(value));
+        }
+        super::engine::append(root, &spec, "archivist", &format!("cand-{index}"), &fields)
+            .expect("the event is appended");
+    }
+    let entries = super::engine::collect(root, &spec);
+    super::engine::render(&spec, &entries)
+}
+
+#[test]
+fn the_attempts_ledger_stays_under_its_ceiling() -> std::io::Result<()> {
+    let root = workspace("attempts-ceiling")?;
+    let rendered = attempts_render(&root, ENTRIES);
+    under("attempts", &rendered, 32_000);
+    assert!(
+        rendered.contains("Ruled out"),
+        "the archive section must render: {rendered:.400}"
+    );
+    Ok(())
+}
+
+#[test]
+fn past_the_bound_more_attempts_do_not_grow_the_file() -> std::io::Result<()> {
+    // A parallel search produces candidates in rounds, so this is the ledger
+    // most likely to meet its bound and keep going.
+    let small = attempts_render(&workspace("attempts-40")?, 40).chars().count();
+    let large = attempts_render(&workspace("attempts-160")?, 160).chars().count();
+    let growth = large.saturating_sub(small);
+    assert!(
+        growth < 200,
+        "quadrupling the candidates from 40 to 160 grew the render by {growth} characters \
+         ({small} -> {large}); a section is still rendering every entry"
     );
     Ok(())
 }

@@ -90,8 +90,8 @@ your search, and saying so plainly is the honest result; recording it as
 Before searching, call `search_claims` on what you are about to look for. The
 library may already establish it, and re-establishing something the run has
 written down costs a download, a digest, and everybody's attention for nothing.
-Then read `research/REQUESTS.md` for gaps other roles stated precisely, and
-`research/FRONTIER.md` for what this library's own sources cite — a URL several
+Then read `derived/REQUESTS.md` for gaps other roles stated precisely, and
+`derived/FRONTIER.md` for what this library's own sources cite — a URL several
 of them agree on is the standard reference, which no query rewording will find.
 
 When the run has computed terms of an integer sequence, run `oeis_lookup` on

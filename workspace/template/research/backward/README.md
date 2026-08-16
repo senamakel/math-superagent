@@ -1,7 +1,7 @@
 # Backward — what would suffice to prove the goal
 
 One file per decomposition, `<slug>.md`, each carrying a fenced `skeleton` block
-and one fenced `gap` block per missing lemma. `research/BACKWARD.md` beside this
+and one fenced `gap` block per missing lemma. `derived/BACKWARD.md` beside this
 folder is derived from them and is not yours to edit.
 
 This folder exists from the first second of a run for the reason

@@ -19,6 +19,8 @@ The workspace root is an allowlist, not a default. It holds the run's Markdown
 | reflections | `reflections/L0.<n>/` |
 | what other programs import | `code/lib/<subject>.py` |
 | programs attacking one question | `code/<question>/` |
+| the ledgers this runtime renders | `derived/` |
+| one candidate solution's own checkout | `attempts/<id>/` |
 | plumbing: `config.toml`, `problem.url`, `trace.jsonl`, the document index, the frontier and request ledgers | `config/` |
 | operator direction: the queue, its cursor, and the receipt | `config/` |
 | untouched download bytes | `raw/` |
@@ -278,6 +280,67 @@ one small file per helper.
 Nine files beside the library are written by code, never by an agent, and
 re-derived from disk on every relevant write. What each one holds, and the
 failure each was written to stop, is in [`ledgers.md`](ledgers.md).
+
+## Candidate branches
+
+A workspace has its own git repository in `.workspace-history` — a separate git
+directory with an explicit work tree, so the product repository sees ordinary
+files rather than an embedded repo. The trunk of an investigation is the branch
+`work`, and `WorkspaceCheckpoint` commits to it after every successful write.
+
+`spawn_candidates` puts several candidate solutions on that repository at once.
+Each gets a branch `attempt/<id>` and a **linked worktree** checked out at
+`attempts/<id>`, and a role whose file tools are rooted there. So five
+candidates all write `code/solution.py` and all write a different file, and each
+commits to its own branch: a candidate's work never reaches `work` by accident,
+and `attempts/` is in the trunk's exclude list so the trunk never commits their
+trees as ordinary files.
+
+What forks and what does not is the point of the design:
+
+- **Forked** — everything in the workspace tree. `code/`, `research/`, the
+  ledgers. A candidate recording a task records it in its own file.
+- **Shared** — memory. Cognee and Qdrant live outside the mount entirely, on a
+  network shared per problem, so `remember_memory` and `recall_memory` are not
+  re-rooted and must not be. Candidates must not overwrite each other's files
+  and *should* see what each other established; that is the whole trade.
+
+### What the isolation does and does not cover
+
+It is enforced for the **file tools**. `write_tool_file`, `write_document`,
+`apply_patch` and the readers all resolve against the checkout and reject
+absolute paths outright, so a candidate cannot name its way out of its own tree.
+
+It is **convention for the shell**. `execute_command` starts in the checkout, so
+relative paths do the right thing — but a shell cannot be confined by its working
+directory, and `cat /workspace/CONTEXT.md` reads the trunk. A live candidate did
+exactly that within a minute of starting, because the workspace policy tells
+every role its working directory is `/workspace` and the model believed it. The
+candidate brief now names the checkout's absolute path and says to use relative
+paths, which is an instruction rather than a control, and is the honest limit of
+what one container can enforce: real confinement needs a mount namespace, and
+the runtime deliberately runs with every capability dropped.
+
+The consequence worth knowing: a candidate can clobber the trunk through the
+shell. Nothing observed has, and the trunk is committed before branching, so
+`git` has the previous state — but do not describe the isolation as absolute.
+
+The slots are fixed (`candidates::SLOTS`) because a subagent's harness is
+registered once at container start with its tools already rooted, so the
+directories have to be chosen up front. A slot is reused once its candidate is
+decided, which is what `abandon_attempt` frees — it removes the checkout and
+keeps the branch, so the work stays readable through `attempt_diff` afterwards.
+
+Reading and keeping are separate authorities. `list_attempts`, `attempt_diff`
+and `attempt_log` go to any role that reviews; `adopt_attempt` and
+`abandon_attempt` are the archivist's alone. Adoption copies *named paths* out
+of a branch and commits them with the reason — deliberately not a merge, which
+would also bring the losing candidate's own notes and its account of why it was
+right into the trunk, where the next attempt reads them as the trunk's own.
+
+There is no general git tool and there must not be: every operation is a named
+verb with checked arguments, and one taking a command line would be
+`execute_command` reachable by roles that were deliberately denied a shell.
 
 ## The scratch
 
@@ -598,8 +661,8 @@ while the derivation and the notes already carry the reasoning worth keeping —
 read the trace locally or in Langfuse instead. The hidden `config/.*.json` is
 the runtime's own cache of the frontier, the request ledger and the document
 index, rewritten on nearly every tool call, and each already has a committed
-human-readable counterpart beside it — `research/FRONTIER.md`,
-`research/REQUESTS.md` — which is what the derivation cites.
+human-readable counterpart beside it — `derived/FRONTIER.md`,
+`derived/REQUESTS.md` — which is what the derivation cites.
 
 ## Workspace checkpointing
 

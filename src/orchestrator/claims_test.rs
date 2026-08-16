@@ -354,7 +354,7 @@ fn only_a_research_note_triggers_a_rederivation() {
     assert!(!is_note("research/INDEX.md"));
     // The originals carry no claims, and the ledger must not re-derive itself.
     assert!(!is_note("research/sources/siegel.full.md"));
-    assert!(!is_note("research/CLAIMS.md"));
+    assert!(!is_note("derived/CLAIMS.md"));
     // A note beside a program's output is a note: what the run computed is
     // evidence on the same terms as what it read, and the trigger has to match
     // what `collect` walks or a recorded claim never reaches the table.

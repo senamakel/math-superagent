@@ -49,7 +49,7 @@ use super::text::truncate;
 pub(super) const BACKWARD_DIR: &str = "research/backward";
 
 /// The derived table, filed with the library it describes.
-pub(super) const BACKWARD_PATH: &str = "research/BACKWARD.md";
+pub(super) const BACKWARD_PATH: &str = "derived/BACKWARD.md";
 
 /// Skeletons one table lists.
 const MAX_ROWS: usize = 24;

@@ -4,7 +4,7 @@ This folder exists from the first moment of a run rather than from the first
 download, because every planning role is *told* about it before anything has
 written here. On a workspace where it did not exist, a fresh run spent its
 opening calls discovering that: `list_workspace research` and
-`read_document research/FRONTIER.md` both failed inside the first ten seconds
+`read_document derived/FRONTIER.md` both failed inside the first ten seconds
 of PE620, on a librarian and a judge that had been handed those paths in their
 own system prompts. A directory the prompts promise should be a directory.
 
