@@ -1,0 +1,11 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": true,
+  "file": "code/lean/Lib/Reduction.lean",
+  "outcome": "failed",
+  "sorries": [
+    "/workspace/code/lean/Lib/Reduction.lean:30:8: warning: declaration uses `sorry`"
+  ],
+  "verified": false
+}

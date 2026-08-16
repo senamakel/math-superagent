@@ -1,0 +1,23 @@
+Lean verdicts for the PE622 statement-first formalisation (code/lean/Lib/).
+
+File: code/lean/Lib/Shuffle.lean
+  outcome: verified
+  compiled: true
+  axioms: [propext, Quot.sound] for outShuffle;
+          [propext, Classical.choice, Quot.sound] for s
+  cited: none
+  sorries: none
+  -> stands behind a `status: formalised` claim (Lean's own three axioms only).
+
+File: code/lean/Lib/Reduction.lean
+  outcome: failed (expected: statement-first, ends in `by sorry`)
+  compiled: true
+  sorries: 1 at Reduction.lean:30 (`declaration uses sorry`)
+  cited: none
+  -> elaborates cleanly; the statement is the deliverable of this step.
+     Proof to come; the verdict will flip to verified once the sorry is closed.
+
+Command used:
+  LEAN_PATH=/workspace/code/lean/build lean-verdict --file-verdict /workspace code/lean/Lib/Shuffle.lean
+  LEAN_PATH=/workspace/code/lean/build lean-verdict --file-verdict /workspace code/lean/Lib/Reduction.lean
+JSON verdicts written to code/out/lean/code_lean_Lib_{Shuffle,Reduction}.lean.json
