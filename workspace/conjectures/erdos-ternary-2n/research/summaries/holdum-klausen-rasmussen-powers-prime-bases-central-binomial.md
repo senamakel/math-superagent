@@ -1,0 +1,25 @@
+# Holdum, Klausen & Rasmussen, "Powers in prime bases and a problem on central binomial coefficients"
+
+Source: INTEGERS 15 (2015), Paper A43. Full text: `research/sources/holdum-klausen-rasmussen-powers-prime-bases-central-binomial.full.md`.
+
+## The carry reformulation of Erdős's conjecture
+
+**Kummer's theorem:** `v_p(binomial(2n,n))` = number of carries when `n` is added to itself in base `p`.
+
+For `n = 2^k` and `p = 3`: adding `2^k` to itself in base 3 has **no carries** exactly when the base-3 expansion of `2^k` has no digit `2` (each column digit is 0+0, 1+1; no 2+something from a carry-in). Therefore:
+
+> Erdős's ternary conjecture ⟺ `v_3(binomial(2^(k+1), 2^k)) = 0` for no `k > 8` (equivalently `binomial(2^(k+1),2^k)` not divisible by 4 or 9 for `k > 8`, up to the 2-part).
+
+**Conjecture 1.1:** `binomial(2n,n)` is divisible by 4 or 9 for every `n > 4` except `n = 64` and `n = 256`.
+
+**Theorem 1.2 (verified):** the above holds for every `n` with `4 < n ≤ 2^10^13` except `n = 64, 256`. This is a **distinct verified computational bound** (`n ≤ 2^(10^13)`, a different and in the n-exponent large bound) reaching further in the exponent than Saye's trailing-digit range in a complementary sense.
+
+## What it gives the run
+
+1. A **symbolic-invariant reformulation**: the invariant is "number of carries when `2^k` is added to itself in base 3". Preserved/controlled by the carry structure; zero carries ⟺ digit-2-free.
+2. Their `S^a_p(n)` counting function bounds how many base-p digits exceed p/2; they improve Narkiewicz-type bounds and Kennedy–Cooper results in special cases.
+3. Non-Wieferich base idea: if p is not a Wieferich prime base α, a digit-pattern system occurs on every digit — relevant to whether the middle digits are reachable.
+
+## Status
+
+Sourced, peer-reviewed (INTEGERS). Theorem 1.2 is a verified computation with an explicit range; per GOAL.md it is evidence for a bounded instance and not a proof. The carry reformulation itself is exact (Kummer's theorem).

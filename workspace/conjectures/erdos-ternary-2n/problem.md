@@ -13,8 +13,8 @@ representation of `2^n` contains at least one digit `2`.
 
 Equivalently: `2^n` is never a sum of *distinct* powers of 3 once `n > 8`.
 
-The conjecture is believed **true**. The objective here is a proof or a
-genuine partial result toward one — not a counterexample hunt. A search is
+The mathematical consensus is that the conjecture is **true**. The deliverable
+is a proof, a disproof, or a genuine partial result stated exactly. A search is
 only an instrument for testing a proposed obstruction, never the deliverable.
 
 ## The witness set — three exceptions, and they are the whole difficulty
@@ -58,30 +58,52 @@ This is a small instance of the interaction between base-2 and base-3
 structure — the same tension behind **Furstenberg's ×2 ×3 problem** — which is
 why no elementary argument is expected to settle it.
 
-## The structure the attack rests on
+## The directed route for this run: 3-adic dynamics and a symbolic invariant
 
-The multiplicative order of `2` modulo `3^k` is `2·3^(k-1)` for `k ≥ 1`. So:
+This run is asked to attack the problem as a **dynamical system on the 3-adic
+integers `Z_3`**, and to look for a *symbolic invariant* rather than a larger
+computation. Concretely, the three things the run is asked to try, in order:
 
-- `2^n mod 3^k` depends only on `n mod 2·3^(k-1)`;
-- the set `S_k` of residues mod `3^k` whose `k` low ternary digits all lie in
-  `{0,1}` has exactly `2^k` elements out of `3^k`;
-- the admissible `n` are those in `A_k = { n mod 2·3^(k-1) : 2^n mod 3^k ∈ S_k }`.
+1. **The modular sieve, as an instrument.** The multiplicative order of `2`
+   modulo `3^k` is `2·3^(k-1)` for `k ≥ 1`. So `2^n mod 3^k` depends only on
+   `n mod 2·3^(k-1)`; the set `S_k` of residues mod `3^k` whose `k` low ternary
+   digits all lie in `{0,1}` has exactly `2^k` elements; and the admissible `n`
+   are `A_k = { n mod 2·3^(k-1) : 2^n mod 3^k ∈ S_k }`. Compute `|A_k|` as a
+   function of `k`. This is a sieve on residue classes, not a search over `n` —
+   each discarded class removes an entire arithmetic progression at once.
 
-`A_k` shrinks as `k` grows, and `A_{k+1}` refines `A_k`. **Computing `|A_k|`
-as a function of `k` is the first experiment, and it is a sieve on residue
-classes, not a search over `n`.** Each surviving class rules out an entire
-arithmetic progression of `n` at once.
+2. **Read the sieve as a 3-adic orbit.** `n ↦ 2^n` extends to the closure of
+   the orbit of `1` under multiplication by `2` in `Z_3^×`; digit-avoidance is
+   membership in the Cantor-like closed set `S ⊂ Z_3` of 3-adic integers whose
+   digits lie in `{0,1}`, of Hausdorff dimension `log2/log3 < 1`. The question
+   is whether the orbit closure meets `S` in more than the three known points.
+   Say precisely what a dimension or measure statement about `S` does **and does
+   not** give about which integers lie in it.
 
-If `|A_k|` reaches zero for some finite `k` after removing the classes
-containing `n = 0, 2, 8`, the conjecture is **proved** for all `n` outside
-those classes — that is the shape of a complete proof, and establishing
-whether `|A_k| → 0` or stabilises is the central question.
+3. **The symbolic invariant.** Search for an invariant — a congruence, a
+   weight function, a carry/transducer statistic on the base-2 → base-3
+   conversion, an automaton-theoretic obstruction — that is preserved by
+   `x ↦ 2x` on `Z_3` and that `S` violates. Encode candidate invariants as
+   SMT constraints (Z3) over the digit variables `a_i ∈ {0,1}` together with
+   the modular constraints on `2^n`, and let the solver refute or exhibit
+   solutions for bounded digit length. **An SMT run is evidence for a bounded
+   instance and never a proof of the general statement**; report the bound.
 
-Note the asymmetry that makes this hard: `|S_k|/3^k = (2/3)^k → 0`, but `A_k`
-is indexed by `n mod 2·3^(k-1)`, which grows like `3^k` too. The naive count
-gives `|A_k| ≈ 2·3^(k-1)·(2/3)^k`, which does **not** tend to zero — it tends
-to a constant multiple of `2^k/3`. So the naive heuristic predicts `A_k`
-*grows*, and any proof must find structure the counting argument misses.
+## The obstruction this route must beat, stated up front
+
+`|S_k|/3^k = (2/3)^k → 0`, but `A_k` is indexed by `n mod 2·3^(k-1)`, which
+grows like `3^k` too. The naive count gives `|A_k| ≈ 2·3^(k-1)·(2/3)^k`, which
+does **not** tend to zero — it tends to a constant multiple of `2^k/3`. So the
+naive heuristic predicts `A_k` *grows*.
+
+A previous run of this workspace reported having proved `|A_k| = 2^(k-1)` for
+all `k` and having computed `A_k` to `k = 26`. **That work is not in this
+workspace any more and is recorded here as an unverified lead, not as a fact.**
+If it is right, no finite `k` closes the sieve, and step 1 above can never by
+itself produce a proof — it is an instrument for steps 2 and 3, and the run
+must say how those beat it. Re-establishing `|A_k| = 2^(k-1)` is worth doing
+once, cheaply, with its own proof; it is not the deliverable.
+
 State this obstruction in `research/ROOT.md` before proposing an approach, and
 say how the approach beats it.
 
@@ -93,13 +115,18 @@ own claim block with an explicit status.
 - **Narkiewicz (1980)** — the standard reference bounding the number of
   `n ≤ x` with `2^n` digit-`2`-free. Usually quoted as `O(x^c)` with explicit
   `c < 1`. Find the exact statement, the constant, and the method.
+- **Dimitrov–Howe** — reported to show any counterexample has no digit 2 and at
+  least some explicit number of digits `1`. Find the exact statement and what it
+  leaves open.
 - **Verified ranges** — reported numerical bounds vary between sources and
   must be treated as unverified until reproduced here or attributed to a
   primary source. Report the bound this run actually reproduces separately
   from the bound the literature claims.
-- **Digit-omission problems generally** — the family "the base-`b` expansion of
-  `a^n` omits a fixed digit"; `(a,b) = (2,3)` is the famous case.
+- **Hausdorff dimension of digit-restricted sets in `Z_3`**, and what is known
+  about intersections of such sets with orbit closures of `×2` — this is where
+  the ×2 ×3 literature (Furstenberg, and the Hausdorff-dimension results on
+  `×2`-invariant sets) touches the problem.
 - **Automatic sequences and finite automata** — the digit-avoidance condition
   is recognised by a finite automaton in base 3, and `2^n` is not
-  3-automatic; whether any decidability machinery (Cobham, Büchi arithmetic)
-  applies is worth one honest look and a recorded answer either way.
+  3-automatic; whether any decidability machinery (Cobham, Büchi arithmetic,
+  Walnut) applies is worth one honest look and a recorded answer either way.

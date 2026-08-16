@@ -1,0 +1,421 @@
+==============================================================================
+GOAL priority-1 index multiset census  { M_d △ M_{d'} }, d,d' in [2,n-1]
+==============================================================================
+
+--- n = 32 : weighted span histogram H_n(k) ---
+  span=  0  weight=     30
+  span=  3  weight=     10
+  span=  4  weight=     10
+  span=  5  weight=     12
+  span=  6  weight=     12
+  span=  7  weight=     16
+  span=  8  weight=     16
+  span=  9  weight=     18
+  span= 10  weight=     18
+  span= 11  weight=     24
+  span= 12  weight=     24
+  span= 13  weight=     26
+  span= 14  weight=     26
+  span= 15  weight=     30
+  span= 16  weight=     30
+  span= 17  weight=     30
+  span= 18  weight=     30
+  span= 19  weight=     38
+  span= 20  weight=     38
+  span= 21  weight=     40
+  span= 22  weight=     40
+  span= 23  weight=     44
+  span= 24  weight=     44
+  span= 25  weight=     42
+  span= 26  weight=     42
+  span= 27  weight=     48
+  span= 28  weight=     48
+  span= 29  weight=     42
+  span= 30  weight=     42
+  span= 31  weight=     30
+  max span carrying weight: 31  (weight 30)
+
+--- n = 64 : weighted span histogram H_n(k) ---
+  span=  0  weight=     62
+  span=  3  weight=     12
+  span=  4  weight=     12
+  span=  5  weight=     14
+  span=  6  weight=     14
+  span=  7  weight=     18
+  span=  8  weight=     18
+  span=  9  weight=     20
+  span= 10  weight=     20
+  span= 11  weight=     26
+  span= 12  weight=     26
+  span= 13  weight=     28
+  span= 14  weight=     28
+  span= 15  weight=     32
+  span= 16  weight=     32
+  span= 17  weight=     34
+  span= 18  weight=     34
+  span= 19  weight=     42
+  span= 20  weight=     42
+  span= 21  weight=     44
+  span= 22  weight=     44
+  span= 23  weight=     48
+  span= 24  weight=     48
+  span= 25  weight=     50
+  span= 26  weight=     50
+  span= 27  weight=     56
+  span= 28  weight=     56
+  span= 29  weight=     58
+  span= 30  weight=     58
+  span= 31  weight=     62
+  span= 32  weight=     62
+  span= 33  weight=     62
+  span= 34  weight=     62
+  span= 35  weight=     72
+  span= 36  weight=     72
+  span= 37  weight=     74
+  span= 38  weight=     74
+  span= 39  weight=     78
+  span= 40  weight=     78
+  span= 41  weight=     80
+  span= 42  weight=     80
+  span= 43  weight=     86
+  span= 44  weight=     86
+  span= 45  weight=     88
+  span= 46  weight=     88
+  span= 47  weight=     92
+  span= 48  weight=     92
+  span= 49  weight=     90
+  span= 50  weight=     90
+  span= 51  weight=     98
+  span= 52  weight=     98
+  span= 53  weight=    100
+  span= 54  weight=    100
+  span= 55  weight=    104
+  span= 56  weight=    104
+  span= 57  weight=     98
+  span= 58  weight=     98
+  span= 59  weight=    104
+  span= 60  weight=    104
+  span= 61  weight=     90
+  span= 62  weight=     90
+  span= 63  weight=     62
+  max span carrying weight: 63  (weight 62)
+
+--- n = 128 : weighted span histogram H_n(k) ---
+  span=  0  weight=    126
+  span=  3  weight=     14
+  span=  4  weight=     14
+  span=  5  weight=     16
+  span=  6  weight=     16
+  span=  7  weight=     20
+  span=  8  weight=     20
+  span=  9  weight=     22
+  span= 10  weight=     22
+  span= 11  weight=     28
+  span= 12  weight=     28
+  span= 13  weight=     30
+  span= 14  weight=     30
+  span= 15  weight=     34
+  span= 16  weight=     34
+  span= 17  weight=     36
+  span= 18  weight=     36
+  span= 19  weight=     44
+  span= 20  weight=     44
+  span= 21  weight=     46
+  span= 22  weight=     46
+  span= 23  weight=     50
+  span= 24  weight=     50
+  span= 25  weight=     52
+  span= 26  weight=     52
+  span= 27  weight=     58
+  span= 28  weight=     58
+  span= 29  weight=     60
+  span= 30  weight=     60
+  span= 31  weight=     64
+  span= 32  weight=     64
+  span= 33  weight=     66
+  span= 34  weight=     66
+  span= 35  weight=     76
+  span= 36  weight=     76
+  span= 37  weight=     78
+  span= 38  weight=     78
+  span= 39  weight=     82
+  span= 40  weight=     82
+  span= 41  weight=     84
+  span= 42  weight=     84
+  span= 43  weight=     90
+  span= 44  weight=     90
+  span= 45  weight=     92
+  span= 46  weight=     92
+  span= 47  weight=     96
+  span= 48  weight=     96
+  span= 49  weight=     98
+  span= 50  weight=     98
+  span= 51  weight=    106
+  span= 52  weight=    106
+  span= 53  weight=    108
+  span= 54  weight=    108
+  span= 55  weight=    112
+  span= 56  weight=    112
+  span= 57  weight=    114
+  span= 58  weight=    114
+  span= 59  weight=    120
+  span= 60  weight=    120
+  span= 61  weight=    122
+  span= 62  weight=    122
+  span= 63  weight=    126
+  span= 64  weight=    126
+  span= 65  weight=    126
+  span= 66  weight=    126
+  span= 67  weight=    138
+  span= 68  weight=    138
+  span= 69  weight=    140
+  span= 70  weight=    140
+  span= 71  weight=    144
+  span= 72  weight=    144
+  span= 73  weight=    146
+  span= 74  weight=    146
+  span= 75  weight=    152
+  span= 76  weight=    152
+  span= 77  weight=    154
+  span= 78  weight=    154
+  span= 79  weight=    158
+  span= 80  weight=    158
+  span= 81  weight=    160
+  span= 82  weight=    160
+  span= 83  weight=    168
+  span= 84  weight=    168
+  span= 85  weight=    170
+  span= 86  weight=    170
+  span= 87  weight=    174
+  span= 88  weight=    174
+  span= 89  weight=    176
+  span= 90  weight=    176
+  span= 91  weight=    182
+  span= 92  weight=    182
+  span= 93  weight=    184
+  span= 94  weight=    184
+  span= 95  weight=    188
+  span= 96  weight=    188
+  span= 97  weight=    186
+  span= 98  weight=    186
+  span= 99  weight=    196
+  span=100  weight=    196
+  span=101  weight=    198
+  span=102  weight=    198
+  span=103  weight=    202
+  span=104  weight=    202
+  span=105  weight=    204
+  span=106  weight=    204
+  span=107  weight=    210
+  span=108  weight=    210
+  span=109  weight=    212
+  span=110  weight=    212
+  span=111  weight=    216
+  span=112  weight=    216
+  span=113  weight=    210
+  span=114  weight=    210
+  span=115  weight=    218
+  span=116  weight=    218
+  span=117  weight=    220
+  span=118  weight=    220
+  span=119  weight=    224
+  span=120  weight=    224
+  span=121  weight=    210
+  span=122  weight=    210
+  span=123  weight=    216
+  span=124  weight=    216
+  span=125  weight=    186
+  span=126  weight=    186
+  span=127  weight=    126
+  max span carrying weight: 127  (weight 126)
+
+n   |distinct sets| entries=(n-2)^2  max_span(max_weight)  sum|A|==sum CF
+   3 |      1 |     1 | span<=? max_span=  0(w=    1) | OK
+   4 |      2 |     4 | span<=? max_span=  3(w=    2) | OK
+   5 |      4 |     9 | span<=? max_span=  4(w=    2) | OK
+   6 |      7 |    16 | span<=? max_span=  5(w=    4) | OK
+   7 |     11 |    25 | span<=? max_span=  6(w=    4) | OK
+   8 |     16 |    36 | span<=? max_span=  7(w=    6) | OK
+   9 |     22 |    49 | span<=? max_span=  8(w=    6) | OK
+  10 |     29 |    64 | span<=? max_span=  9(w=    8) | OK
+  11 |     37 |    81 | span<=? max_span= 10(w=    8) | OK
+  12 |     46 |   100 | span<=? max_span= 11(w=   10) | OK
+  13 |     56 |   121 | span<=? max_span= 12(w=   10) | OK
+  14 |     67 |   144 | span<=? max_span= 13(w=   12) | OK
+  15 |     79 |   169 | span<=? max_span= 14(w=   12) | OK
+  16 |     92 |   196 | span<=? max_span= 15(w=   14) | OK
+  17 |    106 |   225 | span<=? max_span= 16(w=   14) | OK
+  18 |    121 |   256 | span<=? max_span= 17(w=   16) | OK
+  19 |    137 |   289 | span<=? max_span= 18(w=   16) | OK
+  20 |    154 |   324 | span<=? max_span= 19(w=   18) | OK
+  21 |    172 |   361 | span<=? max_span= 20(w=   18) | OK
+  22 |    191 |   400 | span<=? max_span= 21(w=   20) | OK
+  23 |    211 |   441 | span<=? max_span= 22(w=   20) | OK
+  24 |    232 |   484 | span<=? max_span= 23(w=   22) | OK
+  25 |    254 |   529 | span<=? max_span= 24(w=   22) | OK
+  26 |    277 |   576 | span<=? max_span= 25(w=   24) | OK
+  27 |    301 |   625 | span<=? max_span= 26(w=   24) | OK
+  28 |    326 |   676 | span<=? max_span= 27(w=   26) | OK
+  29 |    352 |   729 | span<=? max_span= 28(w=   26) | OK
+  30 |    379 |   784 | span<=? max_span= 29(w=   28) | OK
+  31 |    407 |   841 | span<=? max_span= 30(w=   28) | OK
+  32 |    436 |   900 | span<=? max_span= 31(w=   30) | OK
+  33 |    466 |   961 | span<=? max_span= 32(w=   30) | OK
+  34 |    497 |  1024 | span<=? max_span= 33(w=   32) | OK
+  35 |    529 |  1089 | span<=? max_span= 34(w=   32) | OK
+  36 |    562 |  1156 | span<=? max_span= 35(w=   34) | OK
+  37 |    596 |  1225 | span<=? max_span= 36(w=   34) | OK
+  38 |    631 |  1296 | span<=? max_span= 37(w=   36) | OK
+  39 |    667 |  1369 | span<=? max_span= 38(w=   36) | OK
+  40 |    704 |  1444 | span<=? max_span= 39(w=   38) | OK
+  41 |    742 |  1521 | span<=? max_span= 40(w=   38) | OK
+  42 |    781 |  1600 | span<=? max_span= 41(w=   40) | OK
+  43 |    821 |  1681 | span<=? max_span= 42(w=   40) | OK
+  44 |    862 |  1764 | span<=? max_span= 43(w=   42) | OK
+  45 |    904 |  1849 | span<=? max_span= 44(w=   42) | OK
+  46 |    947 |  1936 | span<=? max_span= 45(w=   44) | OK
+  47 |    991 |  2025 | span<=? max_span= 46(w=   44) | OK
+  48 |   1036 |  2116 | span<=? max_span= 47(w=   46) | OK
+  49 |   1082 |  2209 | span<=? max_span= 48(w=   46) | OK
+  50 |   1129 |  2304 | span<=? max_span= 49(w=   48) | OK
+  51 |   1177 |  2401 | span<=? max_span= 50(w=   48) | OK
+  52 |   1226 |  2500 | span<=? max_span= 51(w=   50) | OK
+  53 |   1276 |  2601 | span<=? max_span= 52(w=   50) | OK
+  54 |   1327 |  2704 | span<=? max_span= 53(w=   52) | OK
+  55 |   1379 |  2809 | span<=? max_span= 54(w=   52) | OK
+  56 |   1432 |  2916 | span<=? max_span= 55(w=   54) | OK
+  57 |   1486 |  3025 | span<=? max_span= 56(w=   54) | OK
+  58 |   1541 |  3136 | span<=? max_span= 57(w=   56) | OK
+  59 |   1597 |  3249 | span<=? max_span= 58(w=   56) | OK
+  60 |   1654 |  3364 | span<=? max_span= 59(w=   58) | OK
+  61 |   1712 |  3481 | span<=? max_span= 60(w=   58) | OK
+  62 |   1771 |  3600 | span<=? max_span= 61(w=   60) | OK
+  63 |   1831 |  3721 | span<=? max_span= 62(w=   60) | OK
+  64 |   1892 |  3844 | span<=? max_span= 63(w=   62) | OK
+  65 |   1954 |  3969 | span<=? max_span= 64(w=   62) | OK
+  66 |   2017 |  4096 | span<=? max_span= 65(w=   64) | OK
+  67 |   2081 |  4225 | span<=? max_span= 66(w=   64) | OK
+  68 |   2146 |  4356 | span<=? max_span= 67(w=   66) | OK
+  69 |   2212 |  4489 | span<=? max_span= 68(w=   66) | OK
+  70 |   2279 |  4624 | span<=? max_span= 69(w=   68) | OK
+  71 |   2347 |  4761 | span<=? max_span= 70(w=   68) | OK
+  72 |   2416 |  4900 | span<=? max_span= 71(w=   70) | OK
+  73 |   2486 |  5041 | span<=? max_span= 72(w=   70) | OK
+  74 |   2557 |  5184 | span<=? max_span= 73(w=   72) | OK
+  75 |   2629 |  5329 | span<=? max_span= 74(w=   72) | OK
+  76 |   2702 |  5476 | span<=? max_span= 75(w=   74) | OK
+  77 |   2776 |  5625 | span<=? max_span= 76(w=   74) | OK
+  78 |   2851 |  5776 | span<=? max_span= 77(w=   76) | OK
+  79 |   2927 |  5929 | span<=? max_span= 78(w=   76) | OK
+  80 |   3004 |  6084 | span<=? max_span= 79(w=   78) | OK
+  81 |   3082 |  6241 | span<=? max_span= 80(w=   78) | OK
+  82 |   3161 |  6400 | span<=? max_span= 81(w=   80) | OK
+  83 |   3241 |  6561 | span<=? max_span= 82(w=   80) | OK
+  84 |   3322 |  6724 | span<=? max_span= 83(w=   82) | OK
+  85 |   3404 |  6889 | span<=? max_span= 84(w=   82) | OK
+  86 |   3487 |  7056 | span<=? max_span= 85(w=   84) | OK
+  87 |   3571 |  7225 | span<=? max_span= 86(w=   84) | OK
+  88 |   3656 |  7396 | span<=? max_span= 87(w=   86) | OK
+  89 |   3742 |  7569 | span<=? max_span= 88(w=   86) | OK
+  90 |   3829 |  7744 | span<=? max_span= 89(w=   88) | OK
+  91 |   3917 |  7921 | span<=? max_span= 90(w=   88) | OK
+  92 |   4006 |  8100 | span<=? max_span= 91(w=   90) | OK
+  93 |   4096 |  8281 | span<=? max_span= 92(w=   90) | OK
+  94 |   4187 |  8464 | span<=? max_span= 93(w=   92) | OK
+  95 |   4279 |  8649 | span<=? max_span= 94(w=   92) | OK
+  96 |   4372 |  8836 | span<=? max_span= 95(w=   94) | OK
+  97 |   4466 |  9025 | span<=? max_span= 96(w=   94) | OK
+  98 |   4561 |  9216 | span<=? max_span= 97(w=   96) | OK
+  99 |   4657 |  9409 | span<=? max_span= 98(w=   96) | OK
+ 100 |   4754 |  9604 | span<=? max_span= 99(w=   98) | OK
+ 101 |   4852 |  9801 | span<=? max_span=100(w=   98) | OK
+ 102 |   4951 | 10000 | span<=? max_span=101(w=  100) | OK
+ 103 |   5051 | 10201 | span<=? max_span=102(w=  100) | OK
+ 104 |   5152 | 10404 | span<=? max_span=103(w=  102) | OK
+ 105 |   5254 | 10609 | span<=? max_span=104(w=  102) | OK
+ 106 |   5357 | 10816 | span<=? max_span=105(w=  104) | OK
+ 107 |   5461 | 11025 | span<=? max_span=106(w=  104) | OK
+ 108 |   5566 | 11236 | span<=? max_span=107(w=  106) | OK
+ 109 |   5672 | 11449 | span<=? max_span=108(w=  106) | OK
+ 110 |   5779 | 11664 | span<=? max_span=109(w=  108) | OK
+ 111 |   5887 | 11881 | span<=? max_span=110(w=  108) | OK
+ 112 |   5996 | 12100 | span<=? max_span=111(w=  110) | OK
+ 113 |   6106 | 12321 | span<=? max_span=112(w=  110) | OK
+ 114 |   6217 | 12544 | span<=? max_span=113(w=  112) | OK
+ 115 |   6329 | 12769 | span<=? max_span=114(w=  112) | OK
+ 116 |   6442 | 12996 | span<=? max_span=115(w=  114) | OK
+ 117 |   6556 | 13225 | span<=? max_span=116(w=  114) | OK
+ 118 |   6671 | 13456 | span<=? max_span=117(w=  116) | OK
+ 119 |   6787 | 13689 | span<=? max_span=118(w=  116) | OK
+ 120 |   6904 | 13924 | span<=? max_span=119(w=  118) | OK
+ 121 |   7022 | 14161 | span<=? max_span=120(w=  118) | OK
+ 122 |   7141 | 14400 | span<=? max_span=121(w=  120) | OK
+ 123 |   7261 | 14641 | span<=? max_span=122(w=  120) | OK
+ 124 |   7382 | 14884 | span<=? max_span=123(w=  122) | OK
+ 125 |   7504 | 15129 | span<=? max_span=124(w=  122) | OK
+ 126 |   7627 | 15376 | span<=? max_span=125(w=  124) | OK
+ 127 |   7751 | 15625 | span<=? max_span=126(w=  124) | OK
+ 128 |   7876 | 15876 | span<=? max_span=127(w=  126) | OK
+
+==============================================================================
+(2) long-span sets: do sets with span comparable to n carry m(A) >= 1?
+==============================================================================
+
+n=32: top spans (span, mult, size, runs, example d,d'):
+  span= 31  mult=   2  |A|=  30 runs(len[])= [29, 1]  example(d,d')= (2, 31)
+  span= 30  mult=   2  |A|=  16 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1]  example(d,d')= (3, 30)
+  span= 29  mult=   2  |A|=  16 runs(len[])= [2, 2, 2, 2, 2, 2, 2, 2]  example(d,d')= (2, 29)
+  span= 28  mult=   2  |A|=  10 runs(len[])= [1, 1, 1, 1, 1, 1, 4]  example(d,d')= (3, 28)
+  span= 27  mult=   2  |A|=  14 runs(len[])= [4, 4, 4, 1, 1]  example(d,d')= (2, 27)
+  span= 26  mult=   2  |A|=   8 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 1]  example(d,d')= (3, 26)
+  span= 25  mult=   2  |A|=   8 runs(len[])= [2, 2, 2, 2]  example(d,d')= (2, 25)
+  span= 24  mult=   2  |A|=   6 runs(len[])= [1, 1, 1, 3]  example(d,d')= (3, 24)
+
+n=64: top spans (span, mult, size, runs, example d,d'):
+  span= 63  mult=   2  |A|=  62 runs(len[])= [61, 1]  example(d,d')= (2, 63)
+  span= 62  mult=   2  |A|=  32 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1]  example(d,d')= (3, 62)
+  span= 61  mult=   2  |A|=  32 runs(len[])= [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]  example(d,d')= (2, 61)
+  span= 60  mult=   2  |A|=  18 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4]  example(d,d')= (3, 60)
+  span= 59  mult=   2  |A|=  30 runs(len[])= [4, 4, 4, 4, 4, 4, 4, 1, 1]  example(d,d')= (2, 59)
+  span= 58  mult=   2  |A|=  16 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  example(d,d')= (3, 58)
+  span= 57  mult=   2  |A|=  16 runs(len[])= [2, 2, 2, 2, 2, 2, 2, 2]  example(d,d')= (2, 57)
+  span= 56  mult=   2  |A|=  10 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 3]  example(d,d')= (3, 56)
+
+n=128: top spans (span, mult, size, runs, example d,d'):
+  span=127  mult=   2  |A|= 126 runs(len[])= [125, 1]  example(d,d')= (2, 127)
+  span=126  mult=   2  |A|=  64 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1]  example(d,d')= (3, 126)
+  span=125  mult=   2  |A|=  64 runs(len[])= [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]  example(d,d')= (2, 125)
+  span=124  mult=   2  |A|=  34 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4]  example(d,d')= (3, 124)
+  span=123  mult=   2  |A|=  62 runs(len[])= [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1, 1]  example(d,d')= (2, 123)
+  span=122  mult=   2  |A|=  32 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  example(d,d')= (3, 122)
+  span=121  mult=   2  |A|=  32 runs(len[])= [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]  example(d,d')= (2, 121)
+  span=120  mult=   2  |A|=  18 runs(len[])= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3]  example(d,d')= (3, 120)
+
+==============================================================================
+(2) three dyadic families, confirmed (d,d'), for n = 64 (and 128):
+==============================================================================
+
+  n=64:
+    k= 1 fam1 one-run: span=  2 len=  2 (expect span=len=2^1=2) | fam2 runs(len)= [1] (expect 1 singletons) | fam3 = [60, 62] (expect {n-2^1-2,n-2} = {60,62})
+    k= 2 fam1 one-run: span=  4 len=  4 (expect span=len=2^2=4) | fam2 runs(len)= [1, 1] (expect 2 singletons) | fam3 = [58, 62] (expect {n-2^2-2,n-2} = {58,62})
+    k= 3 fam1 one-run: span=  8 len=  8 (expect span=len=2^3=8) | fam2 runs(len)= [1, 1, 1, 1] (expect 4 singletons) | fam3 = [54, 62] (expect {n-2^3-2,n-2} = {54,62})
+    k= 4 fam1 one-run: span= 16 len= 16 (expect span=len=2^4=16) | fam2 runs(len)= [1, 1, 1, 1, 1, 1, 1, 1] (expect 8 singletons) | fam3 = [46, 62] (expect {n-2^4-2,n-2} = {46,62})
+    k= 5 fam1 one-run: span= 32 len= 32 (expect span=len=2^5=32) | fam2 runs(len)= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] (expect 16 singletons) | fam3 = [30, 62] (expect {n-2^5-2,n-2} = {30,62})
+
+  n=128:
+    k= 1 fam1 one-run: span=  2 len=  2 (expect span=len=2^1=2) | fam2 runs(len)= [1] (expect 1 singletons) | fam3 = [124, 126] (expect {n-2^1-2,n-2} = {124,126})
+    k= 2 fam1 one-run: span=  4 len=  4 (expect span=len=2^2=4) | fam2 runs(len)= [1, 1] (expect 2 singletons) | fam3 = [122, 126] (expect {n-2^2-2,n-2} = {122,126})
+    k= 3 fam1 one-run: span=  8 len=  8 (expect span=len=2^3=8) | fam2 runs(len)= [1, 1, 1, 1] (expect 4 singletons) | fam3 = [118, 126] (expect {n-2^3-2,n-2} = {118,126})
+    k= 4 fam1 one-run: span= 16 len= 16 (expect span=len=2^4=16) | fam2 runs(len)= [1, 1, 1, 1, 1, 1, 1, 1] (expect 8 singletons) | fam3 = [110, 126] (expect {n-2^4-2,n-2} = {110,126})
+    k= 5 fam1 one-run: span= 32 len= 32 (expect span=len=2^5=32) | fam2 runs(len)= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] (expect 16 singletons) | fam3 = [94, 126] (expect {n-2^5-2,n-2} = {94,126})
+    k= 6 fam1 one-run: span= 64 len= 64 (expect span=len=2^6=64) | fam2 runs(len)= [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] (expect 32 singletons) | fam3 = [62, 126] (expect {n-2^6-2,n-2} = {62,126})
+
+==============================================================================
+(3) cross-check summary (asserted for every n in 3..128):
+  - #entries (with multiplicity) == (n-2)^2
+  - sum over distinct A of m(A)*|A| == sum over ALL pairs of the
+    closed form 2^pc+2^pc'-2^{pc(d&d')+1}
+  - every |M_d △ M_{d'}| equals the closed form (pairwise)
+  - negative control: broken run_count yielded a DIFFERENT weighted
+    run-count histogram than the true run_count at every n
+ALL ASSERTIONS PASSED.

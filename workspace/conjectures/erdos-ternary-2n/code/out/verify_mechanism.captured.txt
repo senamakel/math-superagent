@@ -1,4 +1,0 @@
-LTE check: v_3(2^(2*3^(k-1)) - 1) = k for k=1..14
-2^c mod 3 is never 0 (unit claim) for c<1000
-  k=2 c=0: digits [0, 0, 1] not a full cycle
-FAIL: 1 classes at level k=2 do not cycle through digits

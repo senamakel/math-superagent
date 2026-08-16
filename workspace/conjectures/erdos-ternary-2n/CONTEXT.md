@@ -1,119 +1,117 @@
 # Shared context
 
-What this run knows, in its own words. The context curator writes this file and
-is the only role that writes it; nearly every other role is sent it on every
-model call. It carries what an agent would otherwise rebuild from disk.
+**Problem in one line.** Erdős (1979): for `n > 8`, the base-3 expansion of `2^n`
+contains a digit `2`; the only digit-2-free powers are `2^0=1`, `2^2=4=11_3`,
+`2^8=256=100111_3`. Believed true, open since 1979. This workspace was cleared and
+restarted deliberately: nothing in it is inherited, every claim starts unverified.
+`GOAL.md` and `problem.md` are the authority; the deliverable is a partial result
+(symbolic invariant, middle-digit constraint, subclass proof, sourced bound), not
+the conjecture.
 
-It has a token budget (`MATH_AGENT_CONTEXT_TOKENS`, 10,000). Link the file that
-still holds detail compressed away. The problem, its objective and the
-criterion that ends the run are in `GOAL.md`; `research/ROOT.md` states the
-structure of the object, the naive-count obstruction, and what the sources
-establish.
+**Route this run is directed down.** 3-adic dynamics + a *symbolic invariant*
+preserved by `x↦2x` on `Z_3` that the digit-`{0,1}` set `S` violates — not a bigger
+sieve. The sieve is an instrument for the dynamics, never the deliverable.
 
 ## Established
 
-**The modular sieve is exactly `|A_k| = 2^(k-1)` and therefore can never close.**
-*(proved unconditionally — three-lemma argument, claim `ternary-lifting-theorem`;
-numerically checked k = 1..26 — this is the run's main negative result and one of
-the stated deliverable options.)*
-- The three-lemma proof is in `code/out/lifting_theorem.md`: (1)
-  `2^(2·3^(k-2))` has order 3 mod 3^k, so equals `1 + c·3^(k-1)` with `3 ∤ c`
-  (c=1 checked k=2..15); (2) the three lifts `r + j·2·3^(k-2)` agree mod
-  3^(k-1) so share their low k−1 digits; (3) the k-th digit is
-  `d + v·j·c mod 3`, an affine bijection of Z/3 since 3 divides neither v
-  (a power of 2) nor c — so the three top digits are 0,1,2 and exactly one
-  lift dies, two survive. Hence `|A_k| = 2|A_{k-1}|`, `|A_1| = 1`,
-  `|A_k| = 2^(k-1)` for **all** k. Supersedes `ternary-sieve-count-doubles`
-  (which asserted it only to k=22).
-- **Stop sieving**: `sieve_structure.py` enumerating `A_k` explicitly is data
-  no longer needed; the count is a theorem, not a table.
-- So density `|A_k|/(2·3^(k-1)) = (1/2)(2/3)^(k-1) → 0` while **the count
-  doubles each level**. Narkiewicz's `O(x^{log_3 2})` bound matches this up to
-  constant and gives no path information. **Conclusion: no obstruction modulo
-  any power of 3 can prove the Erdős conjecture at any finite 3-adic
-  precision.**
-- The three witnesses `n = 0, 2, 8` survive in `A_k` at every level checked; the
-  negation of "the sieve closes" is not a forbidden-witness overreach.
+**Caveat that governs this whole section.** The workspace ledger `CLAMS.md` is
+empty (`search_claims` reports "No claims recorded yet"); `code/` has no programs
+and `code/out/` has no captures. Everything below is **recalled from Cognee
+durable memory of prior sessions of this same project**
+(`conjectures_erdos_ternary_2n`) and corroborated here only by cheap hand
+arithmetic. It is prior-work, not this-run-verified. The run must re-derive the
+blocked items below (build the oracle, re-prove) before building on them.
 
-**Reformulation (proved-here, `research/threads/sieve-dynamics.md`):** the
-closure of `{2^n : n ∈ Z}` in `Z_3^×` is all of `Z_3^×` (4 topologically
-generates `1+3Z_3`, LTE `ord(4 mod 3^k) = 3^(k-1)`; 2 ≡ −1 mod 3). The conjecture
-is exactly: **the dense orbit `{2^n}` meets the 3-adic Cantor set `Σ_{0,1}`
-(digits all in {0,1}) in exactly {1, 4, 256}.** Dimension arguments on the
-closure cannot decide this; only the arithmetic of `n ↦ 2^n`. This is why every
-existing method stalls.
-
-**What the sources settle** (each with basis in `research/CLAIMS.md`):
-- **Saye verification bound** (asserted-by-source, arXiv:2202.13256): no new
-  solution for `n ≤ 2·3^45 ≈ 5.9×10^21`, covering both the digit-2 (Erdős) and
-  digit-0 (Sloane) conjectures. History: Gupta 1978 `n < 4374`, Vardi `≤ 2·3^20`.
-- **Dimitrov–Howe** (proved): any counterexample beyond {0,2,8} has **≥ 26 ones**
-  in its ternary expansion; sparse case fully settled.
-- **Narkiewicz / Lagarias** (LAG-2 proved, LAG-1 asserted): for every nonzero
-  λ ∈ Z_3, `#{n ≤ X : (λ2^n)_3 omits digit 2} ≤ 2 X^{log_3 2}`. Count bound only,
-  no existence content.
+- **SIEVE-EXACT — `|A_k| = 2^(k-1)` exactly for all k≥1** (proved by bijection in a
+  prior session). `A_k = { r mod 2·3^(k-1) : low k ternary digits of 2^r mod 3^k
+  avoid 2 }`. Proof: 2 is a primitive root mod `3^k` (order `φ(3^k)=2·3^(k-1)`),
+  so `Φ_k: r ↦ 2^r mod 3^k` bijects the period onto the units; a unit's digit
+  pattern avoids 2 iff low digit is 1 and the other k-1 digits are in {0,1} —
+  exactly `2^(k-1)` patterns. Each class lifts to exactly 2 of 3 children; no
+  class ever dies, none collide. **Hand check here: k=1 gives `A_1={0}`, |A_1|=1 =
+  2^0` ✓.**
+- **CONSEQUENCE — the modular sieve can NEVER close by counting** (proved). `|A_k|`
+  grows like `2^k` while density `(1/2)(2/3)^(k-1) → 0`. A proof must show only
+  finitely many *paths* survive, not that the count decays. Reframing: the orbit
+  of 1 under `×2` in `Z_3^×` (closure = all of `Z_3^×`) meets the Cantor set `S`
+  (digits in {0,1}) in exactly `{1,4,256}`.
+- **Oracle verified** (prior session): `digit_free(1)=True, (4)=True, (256)=True`;
+  `digit_free(2)=(8)=(32)=False` (`32=1012_3`, `64=2101_3` contain a 2). Witnesses
+  `n=0,2,8` digit-free at every k=1..40.
+- **Order facts** (verified k=1..40): order of 2 mod `3^k` = `2·3^(k-1)`;
+  `v_3(2^(2·3^(k-2))-1) = k-1`, so `2^(2·3^(k-2)) ≡ 1 + 3^(k-1) mod 3^k` (LTE,
+  c=1).
 
 ## Ruled out
 
-- **The modular / 3-adic sieve cannot close.** `|A_k| = 2^(k-1)` proves it:
-  the count grows forever, so "the sieve empties at finite k" is false by
-  bijection. This is the p-adic dead end for this problem, closed for good. Any
-  new approach must attack **which paths survive to infinity**, never the count.
-- **Density and digit-independence heuristics** are true and irrelevant: they
-  concern all integers avoiding digit 2 (density → 0) or give `(2/3)^k`, and
-  never reach the thin orbit `2^n`. Never cite as proof. (In `GOAL.md` as the
-  trap; recorded as heuristic only.)
-- *Operational note for later cycles:* the first phase-4 "solve" attempt
-  (launched the `goals` agent) died at spawn with an empty API response — an
-  infrastructure failure, not a mathematical one. Nothing mathematical followed
-  from it. `research/approaches/` holds closed directions if any agent opens one.
+- **Sieve-as-proof** — closed, with the reason: `|A_k|=2^(k-1)`, so counting
+  residue classes never kills the digit-2-free set at any finite 3-adic precision.
+  This is the starting obstruction in `problem.md`; the run must get past it, and
+  re-sieving to larger k after it is not progress.
+- **Density trap** — "density of digit-2-free integers → 0" is true and irrelevant;
+  it says nothing about the thin sequence `2^n`. Never recorded as a proof.
+- **Probabilistic heuristic** `(2/3)^k` — explains why the conjecture is believed;
+  proves nothing. Never recorded as a proof.
 
 ## Numbers
 
-- `|A_k| = 2^(k-1)` **exactly** for `k = 1..26` (lifting, checked against full
-  sieve for k ≤ 8; `code/out/sieve_lift.captured.txt`, `sieve_structure`). The
-  count is a theorem, not a trend.
-- Surviving classes at k=8 (and full lists k=1..8) in `code/out/sieve_structure.captured.txt`; the witnesses 0,2,8 stay in `A_k` at every level.
-- Verification bound `n ≤ 2·3^45 ≈ 5.9×10^21` (Saye, asserted).
-- **Compute cost fact:** sieving by materialising `A_k` as a set cost `k=26` → 333s and 2.1 GiB. **Do not re-sieve that way** — use the 2-to-1 lifting (or Saye's Θ(2^K) recursion) instead; the lifting/machine check up to k=26 is already done. (`research/threads/lifting-proof.md`)
+- `|A_k| = 2^(k-1)`: 1, 2, 4, 8, …, verified to k=26 in prior sessions (direct
+  sieve to k=12, lift-count to k=11, order/LTE/witnesses to k=40).
+- Literal count of `2`s in `2^n` base 3 (OEIS A260683, sourced): starts
+  `0,1,0,2,1,1,1,2,0,4,2,4,…` — value 0 exactly at n=0,2,8.
+- Verification bounds in the library (sourced, NOT reproduced here): Gupta 1978
+  `n<4374`; Vardi 1991 `n≤2·3^20≈7·10^9`; Saye 2022 `n≤2·3^45≈5.9·10^21`
+  (digit-2 AND digit-0 conjectures; Θ(2^K) recursive trailing-digit construction,
+  not Θ(3^K) naive).
 
-## Recalled (durable memory from earlier runs — corroborates, not this run's own)
+## Recalled
 
-- Order of 2 mod 3^k is `2·3^(k-1)` = `φ(3^k)`; the digit rule
-  `d_{k+1}(2^(i·u_k+j)) ≡ d_{k+1}(2^j) + i·d_1(2^j) (mod 3)` gives the recursive
-  sieve in Θ(2^K) not Θ(3^K) (Saye). (`recall_memory`)
-- Conjecture graph nodes: Erdős ternary-2n (open), Sloane ternary-0, the
-  interchangeable "dense-orbit vs Cantor set" framing threads through
-  Lagarias et al. (`relate_memory`)
+Marked recalled from Cognee; hypotheses are this exact problem so they hold, but
+each needs a primary source re-fetched in this workspace.
+
+- **Narkiewicz (1980):** `#{n≤X : (2^n)_3 omits 2} ≤ 1.62·X^(log_3 2)`, `log_3 2 ≈
+  0.63092`. Method: 2 primitive mod `3^k`, only `2^(k-1)` of `2·3^(k-1)` residues
+  omit 2. Source noted: Lagarias math/0512006.
+- **Dimitrov–Howe (2021, arXiv:2105.06440; Rocky Mountain J. Math):** outside
+  `{0,2,8}`, base-3 expansion of `2^x` contains a digit 2 **or ≥ 26 ones**. So any
+  counterexample must have `≥26` ones and zero 2s. Residual open case exactly
+  "≥26 ones and no 2s". Improving the 26 is the DH-frontier, needing their
+  nested-moduli/determinate-power-lifting method handled for larger sums of
+  distinct powers of 3.
+- **Kaneko–Stoll (2018):** patterns of 0/1 digits are abundant in the exponent
+  set — powers of 2 with prescribed ternary trailing patterns exist in a positive
+  proportion of n. Shows digit-0/1 patterns alone never run out; reinforces that
+  the kill must come from middle/high coupling.
+- **Middle digits (Lagarias 2009 §1.6):** combining real top-digit and 3-adic
+  bottom-digit control to reach the ~`log_3 2 · n` middle digits is **open**;
+  whether high and low digits are "uncorrelated" in a quantifiable way is
+  unresolved. The low digits are what the sieve reaches, the high digits what size
+  arguments reach; nobody touches the middle. This is the target.
 
 ## Contradictions
 
-- None active. Narkiewicz's `1.62 X^{log_3 2}` (EP-406, asserted) vs LAG-2's
-  `2 X^{log_3 2}` (proved) differ in constant; both have exponent `log_3 2 < 1`
-  and neither contradicts the exact `2^(k-1)` sieve count. The primary Narkiewicz
-  source (constant/method) is still missing from the library.
-- **Not a contradiction (script bug, now fixed):** `code/out/verify_mechanism.captured.txt`
-  logged `FAIL k=2 c=0: digits [0,0,1] not a full cycle`. That is an off-by-one
-  in the digit index — the script read `(r // 3**k) % 3` (position k, the *next*
-  digit) where it should read `(r // 3**(k-1)) % 3` (position k-1, the
-  *newly-split* digit). `verify_mechanism2.py` uses the correct index and passes
-  k=2..14. The lifting theorem is unaffected.
+- **`|A_k| = 2^k` vs `2^(k-1)` — memory disagrees with itself.** A passing earlier
+  memory reports the raw oracle giving `2^k` (1,2,4,…,128 at k=8) and calls that
+  "the counting obstruction `|A_k|` grows like `2^k`"; the later durable SIEVE-EXACT
+  record proves `2^(k-1)`. Hand check at k=1 (only r=0 works) forces `2^(k-1)`, so
+  `2^k` is the wrong earlier value. Worth one cheap re-verification in this run;
+  record the resolution rather than re-opening it.
+- Saye's "n≤2·3^45" and Dimitrov–Howe's "≥26 ones" are both from recalled memory;
+  treat as sourced-but-needs-primary until re-fetched. Neither is this-run-verified.
 
 ## Gaps
 
-- **Two live directions now** (per directive): (1) **Lean 4 formalisation** of
-  the three-lemma lifting theorem — a machine-checked artifact; report
-  `#print axioms` and every `sorry`. (2) **Go where the sieve cannot see:**
-  DH-1 says any exception has a digit 2 or ≥ 26 ones. State precisely what
-  DH-1 leaves open, what improving the 26 would take, and whether **Lagarias's
-  density bound and DH-1 can be combined** — the DH shape constraint plus the
-  `O(X^{log_3 2})` count constraint may force more than either alone.
-- **The real open question:** which of the `2^(k-1)` infinite survival paths
-  are actually realised as `2^n` for an integer n? The constructor
-  (order/digit-splitting) proves every path exists at every finite level
-  (mod 3^k); the missing piece is the **middle/high-digit coupling** that makes
-  only {0,2,8} extend to a genuine integer exponent. A transfer operator or
-  recursion on *paths*, not counts, is the suggested next line.
-- Narkiewicz (1980) primary source not in library (constant and original method
-  unverified). Dupuy–Weirich, Gupta 1978, Abram–Lagarias also absent. See
-  `research/REQUESTS.md`.
+- **Rebuild the oracle in THIS workspace** (per GOAL.md): `digit_free(m)` exact;
+  `sieve(k)` working mod `3^k` only, never materialising `2^n`; falsification
+  oracle = every claimed obstruction must pass `n=0,2,8`. Verify digit_free by hand
+  on the three witnesses + a known-`2` value before trusting it.
+- **Re-prove `|A_k|=2^(k-1)` here** (stated cheap-and-once in GOAL.md), then move
+  past it.
+- **The middle-digit coupling** is the live open piece: a symbolic invariant,
+  weight/carry/transducer statistic on the base-2→base-3 conversion, or an
+  automaton-invariance argument that the {0,1}-digit set `S` violates but `x↦2x`
+  preserves — checked against n=0,2,8. Improving DH's 26, or any middle-digit
+  constraint, also counts.
+- No primary source is yet downloaded in this workspace except Saye-2022 (full text
+  present) — fetch-and-digest Dimitrov–Howe, Narkiewicz, Kaneko–Stoll, Lagarias as
+  claims are built on them.

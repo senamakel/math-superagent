@@ -1,3 +1,0 @@
-order of 2 mod 3^k = 2*3^(k-1) confirmed for k=1..14
-every survivor class has exactly 2 surviving children, through k=14
-D(n) histogram for n < 354294: D=-1:2048, D=1:177147, D=2:59049, D=3:39366, D=4:26244, D=5:17496, D=6:11664, D=7:7776, D=8:5184, D=9:3456, D=10:2304, D=11:1536, D=12:1024

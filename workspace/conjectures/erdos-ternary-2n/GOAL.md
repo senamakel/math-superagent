@@ -2,44 +2,44 @@
 
 ## The deliverable
 
-A **proof, or a genuine partial result stated exactly**. This conjecture has
-been open since 1979 and is believed true, so the working assumption is that
-you will not prove it. Claiming it on an argument that has not survived attack
-is the one outright failure available here.
+A **proof, a disproof, or a genuine partial result stated exactly**. This
+conjecture has been open since 1979 and is believed true, so the working
+assumption is that you will not prove it. Claiming it on an argument that has
+not survived attack is the one outright failure available here.
 
-**Everything about the modular sieve is already done, and none of it counts
-again.** A previous run of this workspace proved `|A_k| = 2^(k-1)` for all `k`
-(`ternary-lifting-theorem`, status proved), determined `A_k` to `k = 26`,
-identified the classes of `n = 0, 2, 8`, and stated exactly why the sieve cannot
-close. It then exited, correctly, because the exit test below used to be
-satisfied by precisely that. It is not satisfied by it any more. Re-deriving the
-count, re-sieving to a larger `k`, or restating the obstruction is **not** a
-partial result and does not end this run.
+This workspace was cleared and restarted deliberately. Nothing in it is
+inherited: every claim starts at status *unverified* and must be established
+here, with its evidence class, before anything is built on it.
 
 A partial result that would count:
 
-- a statement of exactly what Dimitrov–Howe (`DH-1`) leaves open — any
-  counterexample has no digit 2 and at least 26 ones, so say over what range of
-  `x` that is consistent, and what a strengthening of 26 to a function of `x`
-  would require;
-- any argument that constrains the **middle** ternary digits of `2^n`, which
-  `LAG-4` records as untouched by every existing method, or a proof that a
-  stated approach cannot reach them;
+- a **symbolic invariant** — a congruence, weight function, carry statistic on
+  the base-2 → base-3 transducer, or automaton-theoretic obstruction — that is
+  preserved by `x ↦ 2x` on `Z_3` and violated by the digit-`{0,1}` set `S`,
+  together with an honest statement of the range in which it has been checked
+  and of what a proof of it would require;
+- a **refutation of a candidate invariant**, stated as such: the SMT encoding,
+  the model the solver returned, and why it kills the candidate. A killed
+  approach recorded precisely is a result here;
+- any argument that constrains the **middle** ternary digits of `2^n` — the low
+  digits are what the sieve reaches and the high digits are what size arguments
+  reach; the middle is where every existing method is silent — or a proof that
+  a stated approach cannot reach them;
 - a proof of the conjecture restricted to a stated subclass of `n` (a
-  congruence class, a range, a family), with the hypothesis named — note a
-  congruence class alone is now known to be unreachable this way;
-- a machine-checked Lean 4 formalisation of the lifting theorem, with
-  `#print axioms` output and every remaining `sorry` reported;
-- an established consequence, for the thin sequence `2^n`, of the
-  Hausdorff-dimension bounds in `LAG-3`, `AL-I-2`, `ABL-II-1` — including a
-  precise statement of what dimension 0 would *not* give, since a dimension
-  statement about a set is not a statement about which integers lie in it;
-- a located error in a source, or a reproduction of Narkiewicz's bound with its
-  constant made explicit — noting that the count itself is Narkiewicz's and is
-  recorded here as `STOLL-1`, so re-deriving it is not a discovery.
+  congruence class, a range, a family), with the hypothesis named;
+- an established consequence, for the thin sequence `2^n`, of Hausdorff
+  dimension bounds on digit-restricted subsets of `Z_3` — including a precise
+  statement of what dimension `log2/log3`, or even dimension 0, would *not*
+  give, since a dimension statement about a set is not a statement about which
+  integers lie in it;
+- a machine-checked Lean 4 formalisation of whatever lemma the run does
+  establish, with `#print axioms` output and every remaining `sorry` reported;
+- a located error in a source, or a reproduction of Narkiewicz's bound or the
+  Dimitrov–Howe digit count with the constant made explicit.
 
 A result stated without the bound it was established under is not a result.
-`|A_k|` computed for `k ≤ 12` is a fact about `k ≤ 12`.
+`|A_k|` computed for `k ≤ 12` is a fact about `k ≤ 12`. An SMT check over
+digit strings of length `≤ 40` is a fact about length `≤ 40`.
 
 ## The oracle here is a sieve and a falsifier, not a search
 
@@ -57,12 +57,15 @@ There is no value to recompute. The answer is a proof, so the oracle is:
 3. **The falsification oracle, which is the one that matters.**
 
 > **Every claimed obstruction must be run against `n = 0, 2, 8`.** If a lemma,
-> a sieve step, or a congruence argument forbids any of the three known
-> exceptions, the argument is false. Full stop. Record it as refuted, not as
-> "needs adjustment".
+> a sieve step, a congruence argument, or an SMT encoding forbids any of the
+> three known exceptions, the argument is false. Full stop. Record it as
+> refuted, not as "needs adjustment".
 
 Verify `digit_free` by hand on the three witnesses and on a value known to
-contain a `2` before trusting either of the others.
+contain a `2` before trusting either of the others. An SMT encoding is only
+trustworthy once it has been shown to *find* the `n = 8` solution when the
+`n > 8` restriction is lifted — an encoding that returns `unsat` everywhere is
+almost always over-constrained, and that is the failure mode of this route.
 
 ## Compute policy — light, parallel, bounded
 
@@ -83,6 +86,10 @@ not establish faster.
   `timeout 540 python3 <prog> 2>&1 | tee code/out/<name>.captured.txt; echo EXIT_CODE=$?`.
   A program whose output only reaches the model is destroyed when the attempt
   ends.
+- **Z3 is a bounded instrument.** An SMT query with no bound on digit length
+  will not return. State the bound in the query, capture the model or the
+  `unsat` with the bound beside it, and never promote a bounded `unsat` to a
+  general theorem — that promotion is the specific error this route invites.
 - **A search that cannot finish is a finding about the method.** Bound it,
   capture the partial result with the bound stated, and record what was not
   covered. Do not re-run the same unbounded computation hoping it lands.
@@ -90,9 +97,9 @@ not establish faster.
 If a `k` is out of reach, say which `k` and why, and what the cost curve looks
 like. That is more useful than a larger `k` computed without a stated bound.
 
-## The trap specific to this problem
+## The traps specific to this problem
 
-An argument that establishes
+**The density trap.** An argument that establishes
 
 > the density of integers whose ternary expansion avoids the digit 2 tends to 0
 
@@ -102,14 +109,21 @@ Likewise, the probabilistic heuristic — digits behaving like independent
 uniform draws, giving `(2/3)^k` — explains why the conjecture is believed and
 proves nothing.
 
-Every claim must state its evidence class: proved, verified-numerically,
-conjectured, or asserted-by-source. A heuristic recorded as a proof is the
-failure this file exists to prevent.
+**The counting obstruction.** `problem.md` states it: the naive estimate gives
+`|A_k| ≈ 2·3^(k-1)·(2/3)^k`, which **grows** like `2^k/3` rather than tending
+to zero, and a prior run reports the exact count `|A_k| = 2^(k-1)`. If that is
+right the sieve never closes at any finite `k`. Establish it or refute it once,
+early and cheaply, and then say how the 3-adic and symbolic-invariant routes
+beat it. Re-sieving to a larger `k` after that point is not progress.
 
-And note the counting obstruction stated in `problem.md`: the naive estimate
-gives `|A_k| ≈ 2·3^(k-1)·(2/3)^k`, which **grows** like `2^k/3` rather than
-tending to zero. Any approach must say how it beats that, or explain why the
-naive estimate is wrong.
+**The over-constrained solver.** A Z3 encoding that returns `unsat` for every
+`n` has almost certainly encoded something false, because `n = 0, 2, 8` are
+satisfiable. Run the witness check on every encoding before reporting from it.
+
+Every claim must state its evidence class: proved, verified-numerically,
+conjectured, or asserted-by-source. A heuristic recorded as a proof, or a
+bounded `unsat` recorded as a theorem, is the failure this file exists to
+prevent.
 
 ## Ending
 
@@ -119,7 +133,7 @@ why. Report the three witnesses reproduced, the evidence class of every claim,
 and — if you are stopping on a blocker — which of the listed partial results you
 attempted and what defeated each.
 
-"The modular sieve cannot close" no longer ends this run. It is already proved,
-it is already written down, and it was the exit condition the previous run met
-before stopping with the conjecture untouched. An obstruction only ends the run
-if it is an obstruction to something not yet closed.
+"The modular sieve cannot close" does not by itself end this run. It is the
+starting obstruction, stated in `problem.md`, and the run is asked to get past
+it. An obstruction only ends the run if it is an obstruction to something the
+run actually attempted after that point.
