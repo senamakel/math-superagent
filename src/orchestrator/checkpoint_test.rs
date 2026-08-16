@@ -1,7 +1,10 @@
 //! Unit tests for workspace checkpointing.
 #![allow(clippy::expect_used)]
 
-use super::{HISTORY_DIR, WRITING_TOOLS, WorkspaceCheckpoint, history_directory, summarise};
+use super::{
+    HISTORY_DIR, NEVER_COMMITTED, WRITING_TOOLS, WorkspaceCheckpoint, exclude_file,
+    history_directory, summarise,
+};
 
 #[test]
 fn only_writing_tools_trigger_a_checkpoint() {
@@ -32,6 +35,139 @@ fn history_lives_beside_the_workspace_not_inside_a_dot_git() {
     // A plain `.git` would make the outer repository treat this as an
     // embedded repository and refuse to track through it.
     assert_ne!(HISTORY_DIR, ".git");
+}
+
+/// The event log is the single largest thing a workspace produces and the one
+/// nothing reads out of history.
+///
+/// Thirteen live workspaces held 71.6 GB of `.workspace-history` against 47 MB
+/// of `research/`, and one of them committed `config/trace.jsonl` 137 times at
+/// roughly 600 MB a commit. `AGENTS.md` already said the file was ignored; only
+/// the outer `.gitignore` implemented it, and this exclude file is a separate
+/// git directory that never got the rule.
+#[test]
+fn the_event_log_never_enters_the_workspace_history() {
+    assert!(NEVER_COMMITTED.contains(&"config/trace.jsonl"));
+    assert!(NEVER_COMMITTED.contains(&"config/console.log"));
+    let rendered = exclude_file();
+    assert!(rendered.contains("config/trace.jsonl\n"));
+    // The history directory must still lead, or it enters its own history.
+    assert!(rendered.starts_with(&format!("{HISTORY_DIR}/\n")));
+}
+
+/// What the exclude file drops must be exactly what has a committed readable
+/// counterpart beside it — never a reasoning artifact.
+///
+/// This is the rule that keeps the list from growing into "whatever is large":
+/// `research/` is 0.05% of the tree and is what the product is for.
+#[test]
+fn nothing_a_reader_would_open_is_excluded() {
+    for kept in [
+        "research/",
+        "research/CLAIMS.md",
+        "code/out/",
+        "GOAL.md",
+        "config/config.toml",
+        "config/DIRECTIVES.md",
+    ] {
+        assert!(
+            !NEVER_COMMITTED.contains(&kept),
+            "`{kept}` is what the derivation cites and must stay in history"
+        );
+    }
+    // The hidden caches go, and each names a Markdown counterpart that stays.
+    assert!(NEVER_COMMITTED.contains(&"config/.*.json"));
+    assert!(!NEVER_COMMITTED.contains(&"research/FRONTIER.md"));
+}
+
+/// A file committed before it was excluded must stop being committed, and must
+/// stay on disk.
+///
+/// This is the half of the fix that is easy to miss: an ignore rule applies
+/// only to *untracked* paths, so adding `config/trace.jsonl` to the exclude
+/// file changes nothing on a workspace that already committed it — which is
+/// every workspace that exists. Without `untrack_excluded` the exclude file
+/// would read correctly while the history kept growing at 600 MB a commit.
+///
+/// The file must survive on disk because a live run is appending to it and
+/// `./euler-tui --replay` reads it, so `--cached` is load-bearing rather than
+/// incidental.
+#[tokio::test]
+async fn a_previously_committed_event_log_is_untracked_but_left_on_disk() {
+    let directory = std::env::temp_dir().join(format!("math-agent-untrack-{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&directory);
+    std::fs::create_dir_all(directory.join("config")).expect("temporary workspace is creatable");
+
+    let checkpoint = WorkspaceCheckpoint::new(directory.clone(), None);
+    let trace = directory.join("config").join("trace.jsonl");
+    std::fs::write(&trace, "{\"event\":1}\n").expect("write is possible");
+    std::fs::write(directory.join("GOAL.md"), "goal").expect("write is possible");
+
+    // Reproduce a workspace made by the build *before* `NEVER_COMMITTED`: the
+    // history exists and its exclude carries only the four original entries, so
+    // the event log is committed and therefore tracked. Seeding this by hand is
+    // the only way to reach the state — a fresh workspace never tracks the log,
+    // so a test that let the middleware create one would pass without
+    // exercising `untrack_excluded` at all.
+    if checkpoint
+        .git(&["init", "--quiet", "--initial-branch", "work"])
+        .await
+        .is_err()
+    {
+        // git is unavailable here; the middleware degrades to a no-op by design.
+        let _ = std::fs::remove_dir_all(&directory);
+        return;
+    }
+    let info = history_directory(&directory).join("info");
+    std::fs::create_dir_all(&info).expect("git info directory is creatable");
+    std::fs::write(
+        info.join("exclude"),
+        format!("{HISTORY_DIR}/\n.python-packages/\n__pycache__/\nraw/\n"),
+    )
+    .expect("write is possible");
+    checkpoint
+        .git(&["add", "--all"])
+        .await
+        .expect("staging succeeds");
+    checkpoint
+        .git(&["commit", "--quiet", "--message", "before the exclusion"])
+        .await
+        .expect("the seed commit succeeds");
+
+    let seeded = checkpoint
+        .git(&["ls-files"])
+        .await
+        .expect("listing tracked files succeeds");
+    assert!(
+        seeded
+            .lines()
+            .any(|line| line.trim() == "config/trace.jsonl"),
+        "the fixture must start with the log tracked, or it proves nothing"
+    );
+
+    checkpoint
+        .commit("after the exclusion")
+        .await
+        .expect("commit succeeds");
+
+    let tracked = checkpoint
+        .git(&["ls-files"])
+        .await
+        .expect("listing tracked files succeeds");
+    assert!(
+        !tracked.lines().any(|line| line.trim() == "config/trace.jsonl"),
+        "the event log must not be tracked, but git listed:\n{tracked}"
+    );
+    assert!(
+        tracked.lines().any(|line| line.trim() == "GOAL.md"),
+        "what a reader opens must still be tracked, but git listed:\n{tracked}"
+    );
+    assert!(
+        trace.is_file(),
+        "untracking must not delete the log a live run is still appending to"
+    );
+
+    let _ = std::fs::remove_dir_all(&directory);
 }
 
 #[tokio::test]

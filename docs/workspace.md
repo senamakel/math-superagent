@@ -614,6 +614,45 @@ an embedded repository and refuse to track through it. Only writing tools
 trigger a commit, an unchanged tree is a no-op rather than an error, and a
 failed checkpoint never fails the tool that succeeded.
 
+### What the history never records, and the 71.6 GB that proved it needed saying
+
+That history has its own `info/exclude`, and it is a **separate git directory
+from the product repository** — so the repository's `.gitignore`, which has
+carried a carefully argued list since the enumeration pools were purged, never
+applied to it. For a long time the two disagreed and nothing compared them.
+`AGENTS.md` said `trace.jsonl`, `console.log`, the bulky pools and the hidden
+`config/.*.json` state were ignored "because a reader would never open one"; the
+exclude file listed four paths and none of those, while its comment claimed it
+covered "the event log".
+
+An audit of thirteen live conjecture workspaces measured the cost. Of ~86 GB,
+**71.6 GB was `.workspace-history` and 47 MB was `research/`** — the reasoning
+artifacts, which are what the product is for, were 0.05% of the tree. One
+workspace had committed `config/trace.jsonl` **137 times at roughly 600 MB a
+commit**, and its five largest blobs were five copies of that one file. A live
+run appends to the trace continuously, so it is dirty at every checkpoint and
+lands in every batch — the same argument already recorded against the hidden
+JSON caches, which do have a rule.
+
+`checkpoint::NEVER_COMMITTED` is now that list in one place, and two details
+about how it is applied are load-bearing:
+
+- **The exclude is rewritten on every start, not only at init.** A workspace
+  outlives the build that made it, and every workspace on the box predates the
+  constant. A write guarded by "the history directory is missing" would have
+  left all of them excluding four paths forever.
+- **A file already committed must also be untracked.** An ignore rule applies
+  only to *untracked* paths, so adding the trace to the exclude changes nothing
+  where it was already committed — which is everywhere. `untrack_excluded` runs
+  `git rm --cached`, which stages the removal and **leaves the file on disk**:
+  a live run is still appending to it and `./euler-tui --replay` still reads it.
+  Without this the exclude file would read correctly while the history kept
+  growing, which is the failure mode this whole section is about.
+
+This stops the growth and does not reclaim what is already committed. Rewriting
+a workspace's published history is out of scope by the same rule that forbids it
+anywhere else: that history is the record of how an answer was reached.
+
 When a workspace is first used, the helper copies the template into it without
 replacing existing files. The runtime appends `AGENTS.md`, `config.toml`,
 `MEMORY.md`, and the relevant role prompt to each agent's built-in system

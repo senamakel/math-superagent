@@ -39,6 +39,67 @@ const COMMIT_NAME: &str = "math-agent";
 /// Address used for workspace commits. Non-routable by design.
 const COMMIT_EMAIL: &str = "math-agent@localhost";
 
+/// What the workspace's own history never records.
+///
+/// This list and the repository's `.gitignore` answer the same question about
+/// the same files, and until this constant existed they disagreed. `AGENTS.md`
+/// states that `trace.jsonl`, `console.log`, the bulky enumeration pools and the
+/// hidden `config/.*.json` state are ignored "because a reader would never open
+/// one"; the outer `.gitignore` implements that, and this exclude file — a
+/// *separate* git directory with its own `info/exclude` — carried four entries
+/// and none of those. The old comment even said "and the event log" while
+/// listing nothing that matched it.
+///
+/// The cost was measured rather than feared. Across thirteen live conjecture
+/// workspaces, `.workspace-history` held **71.6 GB against 47 MB of
+/// `research/`** — the reasoning artifacts were 0.05% of the tree. One
+/// workspace committed `config/trace.jsonl` 137 times at roughly 600 MB a
+/// commit, and its five largest blobs were five copies of that one file. A
+/// live run rewrites the trace continuously, so it is dirty at every checkpoint
+/// and lands in every batch, which is the same argument the hidden JSON caches
+/// already had recorded against them.
+///
+/// Each entry keeps a committed human-readable counterpart beside it, which is
+/// what the derivation cites and what a reader opens: `research/FRONTIER.md`
+/// beside `.frontier.json`, the counts and `INDEX.md` beside a level pool, and
+/// the notes beside the trace. Nothing a reader would open is dropped.
+const NEVER_COMMITTED: [&str; 10] = [
+    ".python-packages/",
+    "__pycache__/",
+    "*.py[cod]",
+    "raw/",
+    // Runtime event logs. Megabytes per run, rewritten continuously, and the
+    // same events are readable locally or in Langfuse. `config/` also holds
+    // `config.toml` and `problem.url`, which are small and worth keeping, so
+    // the bulky entries are named rather than the folder.
+    "config/trace.jsonl",
+    "config/console.log",
+    // The run's hidden derived state — `.document-index.json`, `.frontier.json`,
+    // `.requests.json`. A machine-readable cache rewritten faster than the
+    // checkpoint interval, each with a committed Markdown counterpart.
+    "config/.*.json",
+    // Enumeration output that regrows by rerunning the program beside it. One
+    // workspace's two pool files came to 527 MB, against 47 MB of reasoning
+    // artifacts across every workspace on the box.
+    "out/**/*_pool.txt",
+    "out/**/*_classes.txt",
+    "data/level_[0-9][0-9].txt",
+];
+
+/// Renders the exclude file, history directory first.
+///
+/// The history directory must never enter its own history, and it is written
+/// here rather than in [`NEVER_COMMITTED`] because it is the one entry that is
+/// about the mechanism rather than about what a reader would open.
+fn exclude_file() -> String {
+    let mut out = format!("{HISTORY_DIR}/\n");
+    for entry in NEVER_COMMITTED {
+        out.push_str(entry);
+        out.push('\n');
+    }
+    out
+}
+
 /// Tools whose success means the workspace changed on disk.
 const WRITING_TOOLS: [&str; 9] = [
     "write_tool_file",
@@ -110,23 +171,69 @@ impl WorkspaceCheckpoint {
     }
 
     async fn initialise(&self) -> Result<()> {
-        if self.history_path().is_dir() {
-            return Ok(());
+        if !self.history_path().is_dir() {
+            self.git(&["init", "--quiet", "--initial-branch", "work"])
+                .await?;
         }
-        self.git(&["init", "--quiet", "--initial-branch", "work"])
-            .await?;
-        // The history directory must never enter its own history, and neither
-        // should installed packages or the event log.
+        // Rewritten on every start rather than only at init, because a
+        // workspace outlives the build that made it. Every conjecture on this
+        // box was created before `NEVER_COMMITTED` existed, so a write guarded
+        // by "the directory is missing" would have left all of them excluding
+        // four paths forever — and the 71.6 GB this constant is about was
+        // already on disk. The file is small, has one writer, and is derived
+        // from a constant, so rewriting it is idempotent.
+        //
+        // This only stops the *growth*. Bytes already in a history stay until
+        // someone rewrites it, which is not this middleware's business: the
+        // repository forbids rewriting published history, and a workspace's
+        // history is the record of how an answer was reached.
         let excludes = self.history_path().join("info").join("exclude");
         if let Some(parent) = excludes.parent() {
             let _ = tokio::fs::create_dir_all(parent).await;
         }
-        let _ = tokio::fs::write(
-            &excludes,
-            format!("{HISTORY_DIR}/\n.python-packages/\n__pycache__/\nraw/\n"),
-        )
-        .await;
+        let _ = tokio::fs::write(&excludes, exclude_file()).await;
+        self.untrack_excluded().await;
         Ok(())
+    }
+
+    /// Stops tracking files that are now excluded but were committed before.
+    ///
+    /// Without this the exclude file changes nothing on any workspace that
+    /// already exists, and every workspace on this box already exists. An
+    /// ignore rule applies only to *untracked* paths: `config/trace.jsonl` was
+    /// committed 137 times before it was excluded, so git considers it tracked
+    /// and keeps committing it no matter what `info/exclude` says. That is the
+    /// failure this method exists to close, and it is invisible without it —
+    /// the exclude file would look correct while the history kept growing.
+    ///
+    /// `git rm --cached` stages a deletion and **leaves the file on disk**,
+    /// which is the required behaviour on both counts: a live run is appending
+    /// to `trace.jsonl` at that moment, and `./euler-tui --replay` reads it.
+    ///
+    /// Failure is swallowed like every other git call here. A workspace that
+    /// cannot be untracked still checkpoints correctly; it only keeps paying
+    /// for the bytes, which is where it started.
+    async fn untrack_excluded(&self) {
+        let Ok(listed) = self
+            .git(&["ls-files", "--cached", "--ignored", "--exclude-standard"])
+            .await
+        else {
+            return;
+        };
+        let paths: Vec<&str> = listed.lines().map(str::trim).filter(|p| !p.is_empty()).collect();
+        if paths.is_empty() {
+            return;
+        }
+        let mut arguments = vec!["rm", "--cached", "--quiet", "--ignore-unmatch", "--"];
+        arguments.extend(paths.iter().copied());
+        if self.git(&arguments).await.is_ok()
+            && let Some(tracer) = self.tracer.as_ref()
+        {
+            tracer.note(&format!(
+                "workspace history: untracked {} newly excluded path(s)",
+                paths.len()
+            ));
+        }
     }
 
     /// Stages everything and commits, returning the short commit id.
