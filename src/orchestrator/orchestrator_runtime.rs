@@ -27,6 +27,13 @@ impl OrchestratorAgent {
         let budget = RunBudget::from_env();
         let research_enabled = research_enabled_from_env();
         let tracer = start_tracer(&workspace, budget, research_enabled);
+        // Every workspace on disk predates `derived/`, so its nine rendered
+        // ledgers are still under `research/`. Moved once, never overwriting,
+        // and said out loud — a file that changed location silently is one a
+        // reader concludes was deleted.
+        for moved in ledger::migrate_derived(&workspace) {
+            tracer.note(&format!("workspace layout: moved {moved}"));
+        }
         convert_problem_statement(&workspace);
         let vector_store = VectorStore::from_env()?;
         let screen = start_screen(&workspace, &model, &tracer)?;

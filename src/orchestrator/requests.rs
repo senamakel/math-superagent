@@ -37,7 +37,7 @@ use super::text::truncate;
 const LEDGER_PATH: &str = "config/.requests.json";
 
 /// The rendered table, filed with the library it drives.
-pub(super) const REQUESTS_PATH: &str = "research/REQUESTS.md";
+pub(super) const REQUESTS_PATH: &str = "derived/REQUESTS.md";
 
 /// Requests the rendered table carries.
 const MAX_ROWS: usize = 30;

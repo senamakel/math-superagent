@@ -70,7 +70,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use tinyagents::harness::message::estimate_slice_tokens;
-use tinyagents::harness::middleware::ContextCompressionMiddleware;
+use tinyagents::harness::middleware::{ContextCompressionMiddleware, PromptCacheGuardMiddleware};
 use tinyagents::harness::model::{ChatModel, ModelRequest};
 use tinyagents::harness::summarization::{
     CompressionProvenance, SummarizationPolicy, Summarizer, SummaryRecord, estimate_tokens,
@@ -165,8 +165,8 @@ pub fn ledger_report(workspace: &Path) -> String {
         graph.is_circular(),
     );
     for (title, body) in [
-        ("research/BLUEPRINT.md", graph.render()),
-        ("research/ENTAILMENT.md", entailment.render()),
+        ("derived/BLUEPRINT.md", graph.render()),
+        ("derived/ENTAILMENT.md", entailment.render()),
         ("briefing: statement graph", graph.briefing()),
         ("briefing: entailment", entailment.briefing()),
     ] {

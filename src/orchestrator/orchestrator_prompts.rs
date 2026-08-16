@@ -184,23 +184,23 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "GOAL.md",
             "TASKS.md",
             "code/lib/INDEX.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
             // The open gaps are the run's stock of ready-made tasks: a lemma
             // with a first move somebody could make today. A planner that
             // cannot see them plans around them.
-            "research/BACKWARD.md",
+            "derived/BACKWARD.md",
             // And the graph over them, which answers the question the flat list
             // cannot: which of those tasks can be handed to a sub-agent *now*,
             // because everything it rests on is settled. A planner routing work
             // to concurrent children needs exactly that distinction, and
             // `BACKWARD.md` makes every open gap look equally attackable.
-            "research/BLUEPRINT.md",
+            "derived/BLUEPRINT.md",
             // What the library gives without new work. A planner that cannot
             // see this schedules an attempt at something the run already holds,
             // which is the most expensive mistake available to it.
-            "research/ENTAILMENT.md",
+            "derived/ENTAILMENT.md",
             // What the other schools have said. A planner deciding what to
             // spend the next run on is the reader a dead end found once and
             // paid for once was written for.
@@ -215,7 +215,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "code/AGENTS.md",
             "code/INDEX.md",
             "code/lib/INDEX.md",
-            "research/CLAIMS.md",
+            "derived/CLAIMS.md",
             "CONTEXT.md",
         ],
         // Not sent `research/APPROACHES.md`, though the judge now scores an
@@ -243,17 +243,17 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "scholar" => &[
             "GOAL.md",
             "TASKS.md",
-            "research/CLAIMS.md",
-            "research/ENTAILMENT.md",
-            "research/THREADS.md",
+            "derived/CLAIMS.md",
+            "derived/ENTAILMENT.md",
+            "derived/THREADS.md",
             "CONTEXT.md",
         ],
         "librarian" | "research" => &[
             "GOAL.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
-            "research/FRONTIER.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
+            "derived/FRONTIER.md",
             "CONTEXT.md",
         ],
         // The inventor is also handed a dossier assembled from disk at the
@@ -263,9 +263,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // inventor by a path that does not build one.
         "inventor" => &[
             "GOAL.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
-            "research/CLAIMS.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
+            "derived/CLAIMS.md",
             // The role asked for something genuinely different is the one that
             // most needs to know which different things a sibling has already
             // walked into.
@@ -289,10 +289,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // that could not see it.
         "reducer" => &[
             "GOAL.md",
-            "research/BACKWARD.md",
-            "research/BLUEPRINT.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
+            "derived/BACKWARD.md",
+            "derived/BLUEPRINT.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
             board::PATH,
             "CONTEXT.md",
         ],
@@ -309,9 +309,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // where they should.
         "weakener" => &[
             "GOAL.md",
-            "research/WEAKENED.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
+            "derived/WEAKENED.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
             board::PATH,
             "CONTEXT.md",
         ],
@@ -332,7 +332,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // pursuing is not evidence about which of five diffs is correct, and a
         // role given the method ledger grades method instead of reading the
         // change in front of it.
-        "searcher" | "archivist" => &["GOAL.md", "research/CLAIMS.md", "CONTEXT.md"],
+        "searcher" | "archivist" => &["GOAL.md", "derived/CLAIMS.md", "CONTEXT.md"],
 
         // The refuter is sent the two ledgers holding statements somebody has
         // committed to proving, because those are the ones worth attacking, and
@@ -343,9 +343,9 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // the method.
         "refuter" => &[
             "GOAL.md",
-            "research/BACKWARD.md",
-            "research/WEAKENED.md",
-            "research/CLAIMS.md",
+            "derived/BACKWARD.md",
+            "derived/WEAKENED.md",
+            "derived/CLAIMS.md",
             "CONTEXT.md",
         ],
         // The curator writes the shared brief, so it is the one role that
@@ -359,10 +359,10 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "GOAL.md",
             "TASKS.md",
             "INDEX.md",
-            "research/CLAIMS.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
-            "research/BACKWARD.md",
+            "derived/CLAIMS.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
+            "derived/BACKWARD.md",
             "CONTEXT.md",
         ],
         // The director rewrites the files that say what the run is doing, so
@@ -377,8 +377,8 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "director" => &[
             "GOAL.md",
             "TASKS.md",
-            "research/THREADS.md",
-            "research/APPROACHES.md",
+            "derived/THREADS.md",
+            "derived/APPROACHES.md",
             "CONTEXT.md",
         ],
         _ => &[],

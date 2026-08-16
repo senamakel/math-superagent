@@ -74,7 +74,7 @@ fn candidate_checkouts_never_enter_the_trunks_history() {
 fn nothing_a_reader_would_open_is_excluded() {
     for kept in [
         "research/",
-        "research/CLAIMS.md",
+        "derived/CLAIMS.md",
         "code/out/",
         "GOAL.md",
         "config/config.toml",
@@ -87,7 +87,7 @@ fn nothing_a_reader_would_open_is_excluded() {
     }
     // The hidden caches go, and each names a Markdown counterpart that stays.
     assert!(NEVER_COMMITTED.contains(&"config/.*.json"));
-    assert!(!NEVER_COMMITTED.contains(&"research/FRONTIER.md"));
+    assert!(!NEVER_COMMITTED.contains(&"derived/FRONTIER.md"));
 }
 
 #[tokio::test]

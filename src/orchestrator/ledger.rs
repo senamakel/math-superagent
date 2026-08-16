@@ -29,6 +29,7 @@
 //!   `MAX_ROWS` failed to help.
 
 pub(super) mod budget;
+pub(super) mod derived;
 pub(super) mod engine;
 pub(super) mod index;
 pub(super) mod registry;
@@ -66,7 +67,7 @@ const DEFAULT_LEDGER_TOKENS: u64 = 10_000;
 /// `MATH_AGENT_LEDGER_TOKENS` overrides it. A missing, empty, unparsable, or
 /// zero value keeps [`DEFAULT_LEDGER_TOKENS`], so a malformed override never
 /// silently removes the bound — the rule every other limit here follows.
-fn budget_tokens() -> u64 {
+pub(super) fn budget_tokens() -> u64 {
     positive_env("MATH_AGENT_LEDGER_TOKENS").unwrap_or(DEFAULT_LEDGER_TOKENS)
 }
 
@@ -163,6 +164,48 @@ const ROUTED: [&str; 9] = [
     super::frontier::FRONTIER_PATH,
     super::requests::REQUESTS_PATH,
 ];
+
+/// Moves a workspace's rendered ledgers into `derived/`, once.
+///
+/// Every workspace on this box predates the folder: nineteen Project Euler
+/// problems and thirteen conjectures hold their nine files under `research/`,
+/// where a run wrote them. Re-deriving would eventually write the new paths and
+/// leave the old files sitting beside them — readable, stale, and no longer
+/// updated, which is worse than either state alone.
+///
+/// So the files are moved rather than left, and the rules are the ones the
+/// workspace policy already states:
+///
+/// - **Never overwrite.** A destination that exists wins; the source is left
+///   alone rather than clobbered. `docs/workspace.md` forbids overwriting a
+///   file carrying a result, and one of these might be mid-write.
+/// - **Report every move.** A file that changed location silently is one a
+///   reader looks for where it used to be and concludes was deleted.
+///
+/// Returns what it moved, so the caller can say so. Failure is not fatal: a
+/// workspace that cannot be migrated still runs, writing to the new paths and
+/// leaving the old ones behind.
+pub(super) fn migrate_derived(workspace: &Path) -> Vec<String> {
+    let mut moved = Vec::new();
+    let target_dir = workspace.join(super::documents::DERIVED_DIR);
+    for derived in ROUTED {
+        let Some(name) = std::path::Path::new(derived).file_name() else {
+            continue;
+        };
+        let old = workspace.join("research").join(name);
+        let new = workspace.join(derived);
+        if !old.is_file() || new.exists() {
+            continue;
+        }
+        if std::fs::create_dir_all(&target_dir).is_err() {
+            break;
+        }
+        if std::fs::rename(&old, &new).is_ok() {
+            moved.push(format!("research/{} -> {derived}", name.to_string_lossy()));
+        }
+    }
+    moved
+}
 
 /// Reports what each derived ledger currently costs a prompt that carries it.
 ///

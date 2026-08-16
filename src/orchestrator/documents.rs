@@ -30,6 +30,21 @@ pub(super) const RESEARCH_DIR: &str = "research";
 /// from the index so it never competes for an agent's attention or context —
 /// it exists for a human debugging a conversion, not for the run.
 pub(super) const RAW_DIR: &str = "raw";
+
+/// Where the ledgers this runtime renders are written.
+///
+/// A folder of its own rather than nine files scattered through `research/`,
+/// because the name states the invariant: nothing in here is hand-written, and
+/// "is this file derived?" is answerable from the path. The write guard becomes
+/// a prefix check, and a ledger added later inherits the property instead of
+/// having to be remembered into a list.
+///
+/// It is committed, unlike [`RAW_DIR`]. These are the run's own reasoning and
+/// the record of how an answer was reached, which is what the product is for;
+/// they are hidden from the *file tools* so that `read_ledger` is the only way
+/// an agent reaches them, and that is a token decision rather than a secrecy
+/// one. See `documents_paths::HIDDEN_ENTRIES`.
+pub(super) const DERIVED_DIR: &str = "derived";
 const MAX_DOCUMENT_BYTES: usize = 5 * 1024 * 1024;
 
 /// Entries named when a requested path does not exist.

@@ -38,7 +38,7 @@ use super::text::truncate;
 pub(super) const APPROACHES_DIR: &str = "research/approaches";
 
 /// The derived table, filed with the library it describes.
-pub(super) const APPROACHES_PATH: &str = "research/APPROACHES.md";
+pub(super) const APPROACHES_PATH: &str = "derived/APPROACHES.md";
 
 /// Approaches one table lists.
 const MAX_ROWS: usize = 24;

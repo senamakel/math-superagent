@@ -241,9 +241,9 @@ async fn a_run_defines_a_ledger_and_uses_it_immediately() {
 async fn a_runtime_rendered_ledger_reads_its_file() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     let root = workspace.path();
-    std::fs::create_dir_all(root.join("research")).expect("the directory");
+    std::fs::create_dir_all(root.join("derived")).expect("the directory");
     std::fs::write(
-        root.join("research/CLAIMS.md"),
+        root.join("derived/CLAIMS.md"),
         "# Claims\n\n| Claim | Statement |\n| --- | --- |\n| `a-claim` | something true |\n",
     )
     .expect("the file");

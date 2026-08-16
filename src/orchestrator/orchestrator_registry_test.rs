@@ -487,10 +487,10 @@ fn the_director_reads_the_plan_but_not_the_claim_ledger() {
         "a directive is read against it"
     );
     assert!(
-        context.contains(&"research/THREADS.md"),
+        context.contains(&"derived/THREADS.md"),
         "opening and closing directions is most of the job"
     );
-    assert!(!context.contains(&"research/CLAIMS.md"));
+    assert!(!context.contains(&"derived/CLAIMS.md"));
     assert!(
         !context.contains(&"config/config.toml"),
         "it never executes"

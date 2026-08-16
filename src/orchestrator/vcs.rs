@@ -49,7 +49,7 @@ pub(super) const ATTEMPTS_DIR: &str = "attempts";
 ///
 /// Beside the branches it is about rather than in the ledger module, because the
 /// ledger is a declaration and this is a fact about the workspace layout.
-pub(super) const ATTEMPTS_PATH: &str = "research/ATTEMPTS.md";
+pub(super) const ATTEMPTS_PATH: &str = "derived/ATTEMPTS.md";
 
 /// The branch the trunk of an investigation lives on.
 pub(super) const TRUNK: &str = "work";

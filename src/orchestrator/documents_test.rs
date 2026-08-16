@@ -184,12 +184,28 @@ fn runtime_bookkeeping_cannot_be_read_into_an_agents_context() {
         "config/start.log",
         "start.log",
         "/workspace/config/start.log",
+        // The rendered ledgers. Not bookkeeping — they are the run's own
+        // reasoning, committed and read by people — but the file tools are the
+        // expensive door: `read_ledger` bounds and filters, `read_document`
+        // returns all 7,488 tokens of `CLAIMS.md` to answer about one row.
+        "derived/CLAIMS.md",
+        "/workspace/derived/APPROACHES.md",
+        "./derived/FRONTIER.md",
     ] {
         assert!(
             ensure_visible(hidden).is_err(),
             "{hidden} must not be readable"
         );
     }
+
+    // A refusal that does not name the way forward costs the turn twice.
+    let refusal = ensure_visible("derived/CLAIMS.md")
+        .expect_err("a derived ledger is refused")
+        .to_string();
+    assert!(
+        refusal.contains("read_ledger") && refusal.contains("list_ledgers"),
+        "the refusal must name the tool that works: {refusal}"
+    );
 
     // The run's own working files stay reachable.
     for visible in [
