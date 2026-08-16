@@ -272,7 +272,15 @@ was then both cheaper than DeepInfra's $1.30/$2.60 and unquantized against its
 fp4; DeepSeek's rise and DeepInfra's move to fp8 spent both halves of that
 argument, so one provider now serves both models. Neither is the cheapest route
 — StreamLake ($0.40/$0.79, fp8) and Baidu ($0.41/$0.81, fp8) undercut both — so
-read the endpoint list before settling. The caching argument barely applies to
+read the endpoint list before settling.
+
+Every price in this section was true the day it was written and is a guess after
+it, which is how a comment came to argue from $0.43/$0.87 for a route charging
+$0.66/$1.98. `scripts/model-prices` prints the live table from OpenRouter's
+public endpoint listing — input, output and cache-read rates per provider, with
+the pinned row marked and the cheapest one beside it — for whichever models this
+checkout actually pins, read from the constants rather than a list of its own.
+It needs no credentials, so it costs nothing to check before changing a route. The caching argument barely applies to
 the inventor anyway, whose prompt carries a dossier rebuilt from disk on every
 call. `MATH_AGENT_REASONING_MODEL` and `MATH_AGENT_REASONING_PROVIDER` override
 both; `OPENROUTER_MODEL` still overrides every role at once.
