@@ -697,3 +697,107 @@ fn the_index_names_the_call_that_fetches_what_it_dropped() {
         "the index names the call and the slug: {index}"
     );
 }
+
+/// The archive is capped and the work queue is not.
+///
+/// An index is read top-down for what to do next, and on a long-lived workspace
+/// the archive is most of the file: every open row still has to be there, and
+/// the twentieth finished one does not. What it leaves out it says, by status,
+/// so the reader knows to call rather than concluding the run did nothing else.
+#[test]
+fn the_index_keeps_every_open_row_and_the_last_few_closed_ones() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = recent_tasks_spec();
+
+    for index in 0..8 {
+        append(
+            workspace.path(),
+            &spec,
+            "goals",
+            &format!("open-{index}"),
+            &fields(&[("title", "still to do"), ("status", "open")]),
+        )
+        .expect("the open task is recorded");
+    }
+    for index in 0..9 {
+        append(
+            workspace.path(),
+            &spec,
+            "goals",
+            &format!("closed-{index}"),
+            &fields(&[
+                ("title", "already finished"),
+                ("status", "done"),
+                ("reason", "it was carried out"),
+            ]),
+        )
+        .expect("the finished task is recorded");
+    }
+
+    let entries = collect(workspace.path(), &spec);
+    let index = super::index(&spec, &entries);
+
+    for open in 0..8 {
+        assert!(
+            index.contains(&format!("`open-{open}`")),
+            "every open row is carried: {index}"
+        );
+    }
+    // The five most recent of the nine, and the four oldest reported as absent.
+    for kept in 4..9 {
+        assert!(
+            index.contains(&format!("`closed-{kept}`")),
+            "the recent archive is carried: {index}"
+        );
+    }
+    for cut in 0..4 {
+        assert!(
+            !index.contains(&format!("`closed-{cut}`")),
+            "the old archive is cut: {index}"
+        );
+    }
+    assert!(
+        index.contains("4 more `done`"),
+        "the index says what it left out, by status: {index}"
+    );
+}
+
+/// A ledger with no closed status is untouched by the archive cap.
+#[test]
+fn a_ledger_that_closes_nothing_keeps_every_row_in_its_index() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = parse(
+        &json!({
+            "slug": "notes",
+            "title": "Notes",
+            "source": "queue",
+            "path": "config/notes.jsonl",
+            "derived": "NOTES.md",
+            "fields": [
+                { "name": "id", "role": "id" },
+                { "name": "title", "role": "title" }
+            ],
+            "statuses": []
+        }),
+        false,
+    )
+    .expect("the note spec parses");
+
+    for index in 0..9 {
+        append(
+            workspace.path(),
+            &spec,
+            "goals",
+            &format!("note-{index}"),
+            &fields(&[("title", "a note")]),
+        )
+        .expect("the note is recorded");
+    }
+
+    let entries = collect(workspace.path(), &spec);
+    let index = super::index(&spec, &entries);
+    for note in 0..9 {
+        assert!(index.contains(&format!("`note-{note}`")), "{index}");
+    }
+    assert!(!index.contains("most recent of each kind"), "{index}");
+}

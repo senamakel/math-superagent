@@ -161,11 +161,17 @@ fn a_declaration_whose_class_contradicts_its_prose_is_refused() {
 #[test]
 fn every_prompt_carries_the_shared_method_policy() {
     let prompt = workspace_prompt("base policy", "", "");
-    assert!(prompt.contains("Do not search the answer space"));
     assert!(prompt.contains("Understand by computing"));
+    assert!(prompt.contains("Enumerating candidate answers"));
     // The rule that actually prevents a run spending itself on documentation.
     assert!(prompt.contains("no program executed"));
-    assert!(prompt.contains("Verify independently"));
+    assert!(prompt.contains("second, different route"));
+    // The obligations the workspace's own `AGENTS.md` used to restate. It now
+    // carries the workspace's layout and nothing about method, so the policy is
+    // the only place these are stated and has to keep stating them.
+    assert!(prompt.contains("oracle"));
+    assert!(prompt.contains("counterexample"));
+    assert!(prompt.contains("`.full.md`"));
 }
 
 #[test]
@@ -454,19 +460,53 @@ fn the_pattern_agent_sees_the_raw_data_it_analyses() {
     assert!(super::PATTERN_PROMPT.contains("note_scratch"));
 }
 
+/// `config/config.toml` reached the two executing arms and now reaches nobody.
+/// Its policy lines restated the built-in prompts, its `[artifacts]` names were
+/// stale, and its one hard number is enforced by the tool that owns it — see
+/// [`super::role_context`].
 #[test]
-fn only_executing_roles_receive_the_runtime_configuration() {
-    for role in ["tool_builder", "goals", "orchestrator"] {
-        assert!(
-            role_context(role).contains(&"config/config.toml"),
-            "`{role}` acts on the runtime limits"
-        );
-    }
-    for role in ["reflection", "inventor", "pattern_finder", "librarian"] {
+fn no_role_is_sent_the_runtime_configuration() {
+    for role in [
+        "tool_builder",
+        "goals",
+        "orchestrator",
+        "coder",
+        "lean_prover",
+        "reflection",
+        "inventor",
+        "pattern_finder",
+        "librarian",
+        "director",
+    ] {
         assert!(
             !role_context(role).contains(&"config/config.toml"),
-            "`{role}` does not execute anything"
+            "`{role}` is sent the runtime configuration"
         );
+    }
+}
+
+/// The shared brief is the last workspace file in every role that gets one,
+/// whatever order that role's list is written in. Asserted on the assembled
+/// prompt rather than on the list, because the sort is the thing under test.
+#[test]
+fn the_shared_brief_is_the_last_file_every_role_is_sent() {
+    let prompts = super::RolePrompts::load(template_workspace()).expect("the prompts assemble");
+    for (role, prompt) in prompts.by_role() {
+        let Some(brief) = prompt.find("\n## CONTEXT.md\n") else {
+            continue;
+        };
+        for relative in super::UNIVERSAL_CONTEXT
+            .iter()
+            .chain(role_context(role).iter())
+            .filter(|relative| **relative != super::shared_context::CONTEXT_FILE)
+        {
+            if let Some(other) = prompt.find(&format!("\n## {relative}\n")) {
+                assert!(
+                    other < brief,
+                    "`{role}` reads `{relative}` after the shared brief"
+                );
+            }
+        }
     }
 }
 
@@ -630,7 +670,12 @@ fn the_method_policy_leads_every_assembled_prompt() {
         "the shared policy must lead"
     );
     assert!(assembled.contains("ROLE BODY"));
-    assert!(assembled.ends_with("role ctx"));
+    // The role's own guidance sits with the role's own prompt and above the
+    // workspace state, which is the volatile part and now ends the string.
+    let role = assembled.find("role ctx").expect("the guidance is carried");
+    let state = assembled.find("shared ctx").expect("the state is carried");
+    assert!(role < state, "the guidance follows the workspace state");
+    assert!(assembled.ends_with("shared ctx"));
     // Trimmed, so an editor adding a trailing newline to a prompt file cannot
     // silently invalidate every cached prefix.
     assert!(!assembled.contains("\n\n\n"), "{assembled}");
@@ -1118,6 +1163,72 @@ fn every_role_that_can_read_a_ledger_is_told_the_copy_is_shortened() {
                 .is_some_and(|bench| bench.tools.iter().any(|tool| *tool == "read_ledger")),
             "`{role}` is told to pull from a ledger but was never granted `read_ledger`"
         );
+    }
+}
+
+/// A role is told which ledgers exist, not told to go and ask.
+///
+/// The brief used to say "`list_ledgers` names every one" and stop there, which
+/// is a capability behind a call a model has to think to make. The catalogue is
+/// derived from the registry, so a ledger this run defined is named in the next
+/// prompt assembled — and each line says whether this role may write it, which
+/// is the other question a role would otherwise learn from a refusal.
+#[test]
+fn every_role_that_reads_a_ledger_is_told_which_ledgers_exist() {
+    use super::{LEDGER_BRIEF_WITHHELD, RolePrompts, schools};
+
+    let prompts = RolePrompts::for_school(template_workspace(), &schools::ALL[0], false)
+        .expect("prompts assemble");
+    for (role, prompt) in prompts.by_role() {
+        if LEDGER_BRIEF_WITHHELD.contains(&role) {
+            continue;
+        }
+        assert!(
+            prompt.contains("The ledgers this workspace keeps right now"),
+            "`{role}` is told to read ledgers without being told which exist"
+        );
+        assert!(
+            prompt.contains("- `tasks` ("),
+            "`{role}`'s catalogue does not name the task ledger"
+        );
+    }
+
+    // Written where the role may write, read-only where it may not, and both
+    // read off `writable_by` rather than restated.
+    let by_role: std::collections::HashMap<&str, &str> = prompts.by_role().into_iter().collect();
+    assert!(
+        by_role["goals"].contains("- `tasks` (yours to write)"),
+        "the planner keeps the task list"
+    );
+    assert!(
+        by_role["librarian"].contains("- `tasks` (read-only for you)"),
+        "the librarian does not"
+    );
+}
+
+/// The two roles that may declare a ledger are told how, and no others are.
+///
+/// `define_ledger` was granted to both planners' harnesses and named in no
+/// prompt — the `post_board` failure exactly, and the reason a run that needed
+/// an axis wrote prose instead. The reverse direction matters as much: a role
+/// that cannot declare one must not be told about declaring one, or it spends a
+/// turn asking somebody to.
+#[test]
+fn only_the_planners_are_told_how_to_declare_a_ledger() {
+    use super::{LEDGER_KEEPER_ROLES, RolePrompts, schools};
+
+    for school in schools::ALL {
+        let prompts =
+            RolePrompts::for_school(template_workspace(), &school, true).expect("prompts assemble");
+        for (role, prompt) in prompts.by_role() {
+            let told = prompt.contains("define_ledger");
+            let keeps = LEDGER_KEEPER_ROLES.contains(&role);
+            assert_eq!(
+                told, keeps,
+                "`{role}` in `{}`: told how to declare = {told}, may declare = {keeps}",
+                school.slug
+            );
+        }
     }
 }
 
