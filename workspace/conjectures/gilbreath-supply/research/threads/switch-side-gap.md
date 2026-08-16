@@ -9,7 +9,8 @@ question: Is there a provable arithmetic input on the prime gap-parity string h 
   strictly weaker than positive mod-4 switch density and still forces wt(Φ_n h) ≥ c·n ?
 status: dead  (terminus — directive 33: hypothesis refuted by deliverable_3, run closes negative; see research/CONCLUSION.md)
 rests-on: abgs-p1-wide-open, lau-nonconstant-pattern-open, los-switch-preferred-mod4,
-  maynard-positive-density-congruent-strings, shiu-string-theorem, abgs-mod4-nonuniform-measured
+  maynard-positive-density-congruent-strings, shiu-string-theorem, abgs-mod4-nonuniform-measured,
+  lacasa-forbidden-blocks-invisible-to-parity-projection
 blocked-by: no single theorem closes it; every source confirms the switch (differing-pair)
   side is the one unknown.
 next: (1) the only candidates priced for a weaker input are in REQUESTS.md

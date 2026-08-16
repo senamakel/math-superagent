@@ -529,3 +529,122 @@ The caveat that must go in the same claim block: this is 23 sampled points at n 
 So: fenced claim block with the exact k range, the three sequences, the 0.50003 ratio and the 1.6e-4 margin, status measured, holds-here scoped to dyadic sample points only, bearing that it strengthens the sixth door at the one family where collapse was expected while leaving the density-1 ceiling at 40000. Add it to CONCLUSION.md's measured section with its ceiling stated separately from the N=40000 one. Mirror in ROOT.md and post to the board.
 
 
+
+## 38 — from steer
+
+input_strictness_capture.txt is the best-built capture either pass has produced -- sequence/oracle/range in the first three lines, guard passed on the canonical values, a negative control explicitly marked DISCRIMINATING, and an independent reproduction of the imported n=8 witness (h=e_6: S=0, nu2=3, S^2=0; h'=e_5: S=-2, nu2=4, S^2=4). That matches a hand derivation done outside this run. Keep exactly this shape.
+
+The finding is important and I want it stated precisely, because it is easy to inflate. What you exhibited: the single-1 string h = e_{n-2} has switch density 1/n -> 0, yet nu2(n) = ceil((n-2)/2) ~ n/2, i.e. LINEAR supply. The mechanism is clean and worth writing down: e_{n-2} is seen by depth d exactly when d-1 is a submask of d, which happens exactly when d is odd, so the count is the number of odd d in [2,n-1].
+
+What that settles: positive mod-4 switch density is NOT NECESSARY for linear supply. Supply is strictly weaker than switch density as a property of strings, so the equivalence the first pass called indicated is now refuted from the other side too.
+
+What it does NOT settle, and must not be written as if it does: it gives no arithmetic input controlling the PRIMES. A string with linear supply existing is not the primes having linear supply. Keep SUPPLY open in every claim block and say this bears on result type 4 in problem.md, not type 1.
+
+The productive next step, and this pass's target: characterise the class. Which h have linear supply? You now have one extreme point at weight 1. Compute, for small n exhaustively and for larger n by sampling, the distribution of nu2(h)/n over strings of each weight w = 1..n, and report the minimum weight at which linear supply becomes typical rather than exceptional. If linear supply is generic even at very low weight, the arithmetic input the primes need is correspondingly weak -- and naming how weak is the result this pass exists to produce.
+
+Done. I filed the directive's finding as a precise claim block (`enminus2-linear-supply-switch-density-not-necessary`, status *proved* — the odd-depth mechanism is a valid all-n derivation, with the per-window/fixed-string and type-4/type-1 scoping stated so it can't inflate), amended CONTEXT.md to name directive 38 as the head, and opened the new direction as thread `supply-class-characterisation`.
+
+The productive next step is the head task: `linear-supply-by-weight-class` was already in flight (agent-run-40), so rather than leave a duplicate head I folded the directive-38 scoping and capture-shape requirement into it and dropped my own duplicate. The task now is to compute the weight-w distribution of `nu2(h)/n` (exhaustive for small n, sampled for larger n) and report the minimum weight at which linear supply becomes typical — with SUPPLY-for-the-primes kept open and everything labelled measured-not-proved.
+
+## 39 — from steer
+
+linear_supply_by_weight.txt answers directive 38 properly and it is clean throughout. Header discipline present, oracle cross-checked s_sos vs s_direct, the n=8 witness reproduced exactly, and the all-ones negative control is correctly labelled as the kernel vector with nu2=0 across n=6..40 rather than left to read as a vacuous table. That labelling is what stopped me flagging it as the all-zeros defect. Keep it.
+
+The answer is a real sharpening: linear supply becomes TYPICAL at weight ratio w/n of about 0.375 at n=8, falling through 0.300, 0.250, 0.188, 0.156 to 0.125 at n=64 and n=128. The primes sit at switch density about 0.585, far above that threshold.
+
+Two things to do with it, in order.
+
+(1) Determine whether the threshold ratio tends to 0 or plateaus. Your own column is monotonically falling and has sat at 0.125 for two consecutive n. Those are different worlds. If it tends to 0, linear supply is typical at ANY positive density and the arithmetic input reduces to 'positive density plus non-adversariality'. If it plateaus at a constant near 1/8, that constant is a real threshold and belongs in the statement. Push n as far as the sampled method allows, report the ratio per n, and say which behaviour the data supports without declaring beyond it. Note in the capture that 'typical' is currently measured at 300 samples per weight -- that resolution bounds what the frac column can say.
+
+(2) State the gap that remains, in the claim block, in one sentence: typical is not this string. Being above the threshold does not prove the primes' particular h has linear supply, and that is the same genericity gap the first pass ended on. What has changed is the SIZE of the arithmetic input needed -- a density bound near 1/8 rather than the full switch-density statement -- and that is the result. File it against problem.md result type 4.
+
+Do not let this get written up as SUPPLY solved or as evidence about the primes specifically.
+
+I filed the two follow-ups as ordered tasks — `linear-supply-threshold-limit` (push n, decide tend-to-0 vs plateau near 1/8, with the 300-samples-per-weight resolution caveat) first, and `linear-supply-threshold-claim-block` blocked behind it (the one-sentence "typical is not this string" gap, filed as result type 4, never prime-specific). I updated the `supply-class-characterisation` thread's `next` field and the directive-38 paragraph in CONTEXT.md so the order of work and the type-4/not-SUPPLY-solved scoping now reflect the directive. I did not touch the capture itself — the directive accepts it as clean, so nothing about it needed changing.
+
+## 40 — from steer
+
+Two good things this tick, and one consequence to draw.
+
+linear_supply_independent.txt is the right kind of check -- a fresh literal fold oracle with no lib code, re-confirming all four items including the all-ones control, and it passes. That is how an imported result should be received.
+
+orderk_def_resolve.txt is better still, because it questioned the number rather than building on it. You found that the imported K* depends on which definition is used, and the three variants diverge: at n=12, imported=6, A(largest K with a witness)=9, B(min K constant on singleton fibres)=10, cumulative C=7. At n=8 all agree at 4, which is why the discrepancy was invisible until you went past it.
+
+Settle which is operative and say so explicitly, because it changes the size of this pass's territory. GOAL.md states the unexplored band as 1 < K <~ n/2, taken from the imported figure. If variant A is the right reading, witnesses persist to K=9 at n=12, i.e. about 0.75n, and the band is substantially larger than I wrote. If the imported convention is the right one, keep n/2. Either way, print all three columns against n as far as you can compute them, name the operative definition, and correct GOAL.md's budget to match rather than leaving my figure standing unchallenged -- problem.md and GOAL.md are not authoritative and three seeded values were already wrong.
+
+The definition that matters is the one tied to the arithmetic question: for a functional to be useful here it must separate strings that an arithmetic input cannot distinguish. So prefer the variant whose fibres correspond to statistics a number-theoretic hypothesis could plausibly control, and say which that is and why. A larger K is only better if the extra room is reachable.
+
+Claim block on the resolution with the n range, and post the corrected budget to the board.
+
+I opened `settle-kstar-definition-budget` as the new head task, carrying the directive's full sequence: print all three K* variant columns beside imported as far as computable, reconcile the off-by-one between the two scripts, name the operative definition on arithmetic grounds (cumulative pattern fibres a hypothesis can control, not a single isolated histogram), then correct GOAL.md's budget, file the checked claim block, mirror in ROOT.md, and post to the board.
+
+I also flagged the definition-dependence in GOAL.md priority 3 (and the two `⌈n/2⌉` mentions elsewhere in the file), opened thread `kstar-definition-resolution` so the reading is settled rather than assumed, and added a CONTEXT.md note that the budget is unpinned until the head task names the operative definition — with the three divergent n=12 readings (imported 6, witness 9, single-const 10, cumulative 7) stated.
+
+I did not file the claim block or post the corrected budget myself: those are deliverables the executing role produces only after it has run the three-column table and named the operative definition, and the directive's own ordering makes them depend on that resolution.
+
+## 41 — from steer
+
+The budget is settled and you should stop spending on it. K*(n) = floor(n/2) is now confirmed by three independent routes -- kstar_exact, the sat_solver oracle, and this tick's structural check -- and kstar_structural_capture.txt honestly refutes its own candidate characterization R(n)-1 rather than fitting it. Also good: fold_cell_degree_correction.md caught a wrong structural fact in a library source (degree is 2^popcount(d), not popcount(d)) and checked no other source repeats it. Both are the right kind of work.
+
+But priority 3 is done and priorities 1 and 2 have not started. Three of the last four captures are about characterizing K*, which is now a known number. Characterizing it further does not answer this pass's question.
+
+Go to priority 1 and stay there. Concretely, from the material you already have:
+
+The n=8 witness separates h=e_6 from h'=e_5. Both are single-1 strings, identical pair correlations, S^2 = 0 versus 4. The separation comes from WHICH positions the odd-d rows reach: e_{n-2} is hit exactly when d-1 is a submask of d, i.e. exactly at odd d, giving nu2 ~ n/2; e_{n-3} has a different hit set entirely. So the separating quantity is the arithmetic of the hit-set of a position under the submask relation, not any correlation of h.
+
+That is a functional. Name it, define it precisely for general h rather than for single-1 strings, verify it is constant on C_1 fibres but not on the whole cube, and establish the lowest K at which it becomes determined. Then price it: state exactly what a number-theoretic hypothesis would have to control for that functional to be bounded below on the prime string, and compare that demand to pointwise mod-4 switch density. If the demand is weaker, that is result type 4 and this pass has its answer. If it is not weaker, say so and try the next functional.
+
+Do not open more work on K* itself. Cite floor(n/2) and move on.
+
+Work complete. The directive is carried into the files that control the run:
+
+- **Task ledger:** closed `settle-kstar-definition-budget` as done (budget settled at `⌊n/2⌋` by three routes), opened `build-hit-set-functional` as the new head and `price-hit-set-functional` as its successor, and blocked the two directive-39 linear-supply tasks behind priority 1.
+- **Threads:** opened `hit-set-functional` (live) naming the per-position read-cone profile as the general-h functional, and marked `kstar-definition-resolution` dead with the directive's settlement as the reason.
+- **GOAL.md / CONTEXT.md:** replaced the unsettled `⌈n/2⌉` figure with the settled `⌊n/2⌋` (directive 41), marked priority 3 done, and rewrote the head paragraph to priority 1's concrete program — name the hit-set functional, verify it's constant on C₁ fibres but not on the cube, find its lowest K, then price it against switch density.
+
+No request_research was filed: the directive names in-house computation (define, verify, price), not a source gap. I did not compute or answer the mathematics — the executing roles pick up `build-hit-set-functional` first.
+
+## 42 — from steer
+
+K* is now confirmed by five captures (exact, settle, resolve, structural, cum_floor18) across n=2..18. It is settled. Every further K* capture is spend with no information gain, and directive 41 already said so. Stop.
+
+More important: deliverable_6 ends by naming the candidate functional as E[S^2]=O(n) and the open arithmetic input as a second-moment / submask-window autocorrelation bound on h. That is not an answer to this pass's question -- it is the surviving open statement the FIRST pass ended on, recorded in CONCLUSION.md section 5. Restating it is circling, not progress. The question is whether there is an input STRICTLY WEAKER than pointwise mod-4 switch density. E[S^2]=O(n) has never been shown to be weaker; it is the same wall under a different name.
+
+The thing I asked for in directive 41 is different and has not been attempted. Do that:
+
+The n=8 witness separates e_6 from e_5. Neither string differs from the other in any correlation of h. What differs is the HIT SET of the marked position under the submask relation -- e_{n-2} is reached by depth d exactly when d-1 is a submask of d, i.e. exactly at odd d, giving nu2 ~ n/2, while e_{n-3} has a different hit set. The separating quantity is arithmetic of the submask relation on positions, not any statistic of h.
+
+Define that for general h: for each position j, its hit set H_j = {d in [2,n-1] : j in M_d}, and consider functionals of the multiset {H_j : h_j = 1}. Verify one is constant on C_1 fibres and non-constant on the cube, find the least K at which it is determined, and then price it -- state precisely what a hypothesis about the primes would need to control, and say whether that is weaker than switch density, with the comparison made explicit rather than asserted.
+
+If after attempting it the answer is that it is not weaker, say so plainly and close the pass. A clean negative beats another K* table.
+
+Done. Directive 42 is now carried in the files that decide the work:
+
+- **Task ledger**: `build-hit-set-functional` and `price-hit-set-functional` are refreshed with directive 42's precise object — functionals of the multiset `{H_j : h_j=1}` where `H_j = {d∈[2,n−1] : j∈M_d}` — and the pricing task now says explicitly that a non-weaker answer closes the pass plainly rather than producing another K* table. Added a dropped entry `stop-kstar-captures` (K*=⌊n/2⌋ settled by five captures; no further K* capture).
+- **Wrong claim discarded**: `research/notes/kstar_budget_not_ceiling.md` (the irregular `B(n)` artifact from the single-histogram fiber) is rewritten as SUPERSEDED/DISCARDED, so it no longer reads in CLAIMS.md as a refutation.
+- **CONTEXT.md** now records the K*-capture freeze and drops "push K* past n=20" as a live priority; `deliverable_6`'s note now carries the correction that naming `E[S²]=O(n)` is circling and points to the hit-set functional instead.
+
+The `hit-set-functional` thread was already live and correct, so I left it unchanged.
+
+## 43 — from steer
+
+I computed the hit-set functional myself rather than ask a third time, and the answer prices MY suggestion out. Directives 41 and 42 pushed you toward it; that push was wrong and I am withdrawing it.
+
+H_j = {d in [2,n-1] : j in M_d}. Computed directly:
+
+  n     max|H_j|   median|H_j|   frac(|H_j| >= 0.4n)
+   16      14           4            0.312
+   32      30           8            0.188
+   64      62           8            0.109
+  128     126          16            0.062
+  256     254          16            0.035
+
+Two things follow. First, it confirms your mechanism exactly: |H_{n-2}| equals the number of odd d in [2,n-1] (7, 15, 31, 63, 127), so the e_{n-2} result and its odd-d explanation are independently correct.
+
+Second, and this is the finding: the fraction of positions with a LARGE hit set falls like 1/n -- 0.312, 0.188, 0.109, 0.062, 0.035, roughly halving per doubling -- while the median hit set stays tiny (4, 8, 8, 16, 16). So only a vanishing fraction of positions carry linear positional supply. An arithmetic input phrased as 'the prime switch bits land on high-hit positions often enough' would demand that h concentrate on a set of density -> 0. That is a STRONGER demand than positive switch density, not weaker, so this route fails priority 2's pricing test.
+
+Record it as a closed candidate with the table as its witness, and note the caveat honestly: nu2 is an XOR over M_d, not a sum of |H_j|, so this prices the positional resource rather than refuting every functional built from hit sets. If you can build one whose value is not controlled by the positional scarcity above, that is still open -- but it must be priced against this table.
+
+Stop producing K* captures. Six now agree. If no candidate survives pricing, write the pass's conclusion and say the answer is no.
+
+Directive 43 carried. I withdrew the directive-41/42 hit-set push: recorded the operator's table as the witness of a new closed candidate `hit-set-positional-supply` (status refuted, with the honest XOR-not-sum caveat), marked the `hit-set-functional` thread dead with `killed-by` naming the pricing failure, and dropped `build-hit-set-functional`, `price-hit-set-functional`, and the two `linear-supply-threshold` tasks that were parked behind that now-withdrawn head. I wrote `research/CONCLUSION-PASS2.md` stating the pass's answer is NO, updated the `stop-kstar-captures` reason to "six captures agree," and amended CONTEXT.md's head so every role sees directive 43 as current rather than the withdrawn push. I left the table labelled operator-asserted, not a run claim — it is not filed in the claims ledger until tool_builder independently re-derives it.

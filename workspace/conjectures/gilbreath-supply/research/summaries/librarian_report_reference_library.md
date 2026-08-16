@@ -1,85 +1,95 @@
-# Librarian report — reference library state (this run)
+# Librarian report — reference library state (this pass)
 
-Author: librarian. Date: this run. What is now available locally in
-`research/sources/` (full texts, never edited) with `research/summaries/`
-digests, all indexed and reachable via `search_documents`.
+Author: librarian. Date: this pass. What is now available locally in
+`research/sources/` (full texts, never edited) with digests in
+`research/summaries/`, all indexed and reachable via `search_documents`.
 
-## What this run added
+## Scope of this pass
 
-The library was already near-complete from the parent investigation. This run
-verified integrity and closed the one genuine, nameable gap standing between the
-library and the *open* (proposed, not refuted) approaches: the modern
-analytic-number-theory machinery of **averaged correlation decay for
-multiplicative functions**, which is the natural home of GOAL priority 1 (the
-averaged form of SUPPLY). Three primary sources added:
+The workspace was reopened because the first pass's closing argument — that
+every functional of the fold collapses at the coarsest scale to the mod-4
+switch-pair correlation — was refuted by an explicit witness at `n=8` and
+measured witnesses at correlation order `K*(n) ≈ ⌈n/2⌉`. The whole of this
+pass's territory is **correlation order `1 < K ≲ n/2`** (GOAL priorities 1–4),
+i.e. *beyond-pair* structure. The librarian's task is to verify and complete
+the library's coverage of that specific territory.
+
+## Coverage verdict
+
+The library was already **mature and fully digested** (43 full texts, ~50
+digests, all indexed) for the pair-correlation (K=1/switch-density) side, the
+fold's own geometry (Lucas, Rule-90, k-regular, Pascal-mod-2, coding theory),
+the equal-residue side (Shiu, Maynard, BFTB, Freiberg), the ergodic/CA side
+(Pivato–Yassawi, Takei), and the value-domain analytic-NT side (Matomäki–
+Radziwiłł, MRTF, Green–Tao).
+
+**Gap found and closed this pass.** The reopened `K>1` territory had its
+*prime-index* side (Lacasa forbidden gap-blocks congruent mod 6, unconditional;
+Wu length-k residue-pattern frequencies, conditional; LES sawtooth; Lau
+non-constant patterns) but lacked the *value-domain higher-moment machinery* —
+the Montgomery–Soundararajan beyond-pair-correlation framework that the LOS/Wu
+pair-bias work is arithmetically built on. This is the "pair correlation ↔
+Cramér second-moment discrimination + singular series" layer. Fetched and
+digested:
 
 | Source | File in `research/sources/` | Source URL | Summary | Claim |
 | --- | --- | --- | --- | --- |
-| Matomäki–Radziwiłł, *Multiplicative functions in short intervals* (Ann. Math. 183, 2016) | `matomaki_radziwill_multiplicative_short_intervals.full.md` | https://arxiv.org/html/1501.04585 | `summaries/matomaki_radziwill_multiplicative_short_intervals.md` | `mr-short-averages-of-multiplicative-functions-cancel` |
-| Matomäki–Radziwiłł–Tao, *Fourier uniformity ... in short intervals on average* (Invent. Math. 220, 2020) | `matomaki_radziwill_tao_fourier_uniformity_averaged.full.md` | https://arxiv.org/pdf/1812.01224 | `summaries/matomaki_radziwill_tao_fourier_uniformity_averaged.md` | `mrt-fourier-uniformity-averaged-correlations-vanish` |
-| Green–Tao, *The Möbius function is strongly orthogonal to nilsequences* (Ann. Math. 175, 2012) | `green_tao_mobius_nilsequences.full.md` | https://arxiv.org/pdf/0807.1736 | `summaries/green_tao_mobius_nilsequences.md` | `green-tao-mobius-orthogonal-to-nilsequences` |
+| Montgomery–Soundararajan, *Beyond pair correlation* (Bolyai Soc. 11, 2000) | `montgomery_soundararajan_beyond_pair_correlation.full.md` | https://arxiv.org/pdf/math/0003234 | `summaries/montgomery_soundararajan_beyond_pair_correlation.md` | `msbeyond-second-moment-discriminates-plus-singular-series` |
 
-These ground the engines of two open approaches:
-- `matomaki-radziwill-index-autocorrelation` (proposed; averaged form, GOAL priority 1);
-- `gowers-u2-nilsequence-uniformity` (proposed).
+## Honest bearing of the new source (what it does NOT do)
 
-The third `mrt-fourier-uniformity` source is the quantified L²/autocorrelation
-version the index-domain open step would invoke.
+The Montgomery–Soundararajan source is **value-domain** (primes in short
+intervals `(x,x+h]`, indexed by location `x`), while SUPPLY's fold reads
+**consecutive-prime residues at prime indices**. The index-versus-value
+obstruction that killed eight value-domain routes applies to it verbatim: it
+does **not** transfer to the fold's prime-index residue input, does **not**
+prove anything about consecutive-prime residue frequencies, and closes **no**
+open request. Its genuine use is the *template* — "a K=2 (beyond-pair) second
+moment separates the pair-correlation structure from the Cramér independent
+model" — and the singular-series arithmetic behind the LOS/Wu heuristic. It is
+a caution, not a key: even where the machinery works (short intervals), the
+beyond-pair part is heuristic (prime k-tuple) and the twin-prime error term
+blocks the remainder.
 
-## Honest bearing — what they do NOT do
+## The K>1 library, complete (verified)
 
-All three are **value-domain** statements for multiplicative functions (μ, λ)
-indexed by integers. SUPPLY's object is the character `s_j = χ(q_j)` at **prime
-indices**, and the fold weight `wt(Φ_n h)`. The gap each leaves is the
-**index-domain transfer** (the Λ-weighting passage `Σ_j s_j ↔ Σ_n Λ(n)χ(n)`, and
-the `g=0` adjacent-index case = the parity barrier). **No source here proves
-SUPPLY or gives the Walsh/subset-sum bound on `wt(Φ_n h)`**, so the open request
-`walsh-spectral-subset-b904` remains genuinely open. The finding note covering
-this is `summaries/librarian_analytic_number_theory_tier.md`.
+The reopened territory (`1 < K ≲ n/2`) is now covered on both sides:
 
-## Full canonical tier (verified present, all indexed)
+- **Prime-index, unconditional:** Lacasa et al. 2018 (forbidden gap-blocks mod 6,
+  exact counts; claim `lacasa-forbidden-gap-blocks-unconditional`) — but the
+  mod-6 structure **does not survive** the fold's mod-4 parity projection
+  (`research/notes/lacasa_parity_projection_transfer.md`).
+- **Prime-index, conditional/heuristic:** Wu 2019 (length-k pattern frequencies
+  open for all k≥2; `wu-length-k-pattern-frequencies-open`), LES 2018 sawtooth
+  (averaged-equidistribution; `los-sawtooth-averaged-bias-equidistributed`),
+  Lau 2024 (non-constant patterns open; `lau-nonconstant-pattern-open`), LOS 2016
+  (`los-switch-preferred-mod4`).
+- **Value-domain higher moments (this pass):** Montgomery–Soundararajan 2000
+  (`msbeyond-second-moment-discriminates-plus-singular-series`).
 
-- **Switch-density / prime-residue:** ABGS 2011 (`ash_beltis_gross_sinnott_prime_residues`),
-  Lau 2024 (`lau_residue_patterns`), Lemke Oliver–Soundararajan 2016
-  (`lemke_oliver_soundararajan_bias`), Granville–Martin (2 mirrors), Rubinstein–Sarnak.
-- **Equal-residue (refutes doors 1–3):** Shiu 2000, Maynard 2016, BFTB 2015,
-  Freiberg 2011.
-- **The fold itself / Lucas:** Meštrović (Lucas survey, 2 formats), Bacher 2008,
-  Hofer 2025, Allouche–Shallit (k-regular I & II), Rampersad–Wiebe 2023,
-  Rowland, Szechtman, Odlyzko 1993 (the {0,2} object), Chase 2022 (random Gilbreath).
-- **Coding theory engine (adopted `fold-second-moment-krawtchouk`):** MacWilliams
-  1963, Guruswami LP notes, Essential Coding Theory (Guruswami–Rudra–Sudan),
-  Ashikhmin–Barg–Litsyn, Friedlander 2024, Wikipedia Krawtchouk + MacWilliams.
-- **Ergodic / CA engine (adopted `lucas-mixing-finite-transfer`):** Pivato–Yassawi
-  (sofic randomization + affine-limit measures I & II), Takei, Pivato (entropy),
-  Matusiak–Özaydın–Przebinda (Donoho–Stark), Tao uncertainty.
-- **New analytic-NT tier (this run):** Matomäki–Radziwiłł, Matomäki–Radziwiłł–Tao,
-  Green–Tao nilsequences.
+## Verification bound / phase-1 (unchanged, established)
 
-## Integrity corrections made
-
-- **Wrong-download quarantine:** `matomaki_radziwill_tao_averaged_chowla.full.md`
-  was briefly a random-matrix-thesis (wrong arXiv 1503.09121). Now a pointer-only
-  file telling the reader to use the correctly-named 1812.01224 source — its
-  misleading digest is also replaced. **No wrong content entered the claims ledger.**
-- **Four arXiv ID collisions caught** (1307.4385→Banach, 1503.09121→RMT,
-  1704.07746 pdf+html→physics). Correct IDs confirmed via published DOIs:
-  `1501.04585`, `1812.01224`, `0807.1736`. Verified each fetched title against the
-  intended paper. Stored in Cognee and in `sources/DELETED_wrong_arxiv.md`.
-
-## Verification bound / phase-1 (already established, unchanged by this run)
-
-Per `research/ROOT.md`: oracle runs to n=8000 with convention pinned
-(ν₂(4000)=1975); pointwise ceiling N=40000; three settled restricted classes
-(uniform/rank, all-ones kernel, anti-dyadic balanced); the run-telescope identity
-machine-verified to 2^14. This run added no new computation and made none of those
-claims — it closed a library gap, which is the librarian's role.
+Per `research/ROOT.md`: oracle to n=8000 with convention pinned; pointwise and
+second-moment ceiling N=40000; dyadic sample ceiling n=2^25; three settled
+restricted classes (uniform/rank, all-ones kernel, anti-dyadic balanced). This
+pass added no new computation.
 
 ## Report of unavailability
 
 - The **finite-prefix / index-domain transfer** (from the ergodic CA and
-  analytic-NT theorems to the single deterministic finite-string fold) appears
-  in no source and is not in the library — it is the run's own open step.
-- No arXiv source states the Walsh/subset-sum lower bound on `wt(Φ_n h)` for the
-  fixed prime string (the `walsh-spectral-subset-b904` request) — a gap in
-  theorems, not a gap in the library, so no further download closes it.
+  value-domain analytic-NT theorems to the single deterministic finite-string
+  fold `wt(Φ_n h)`) appears in no source and is not in the library — it is the
+  run's own open step (thread `finite-prefix-transfer`).
+- No source states a Walsh/subset-sum lower bound on `wt(Φ_n h)` for the fixed
+  prime string (request `walsh-spectral-subset-b904`) — a gap in theorems, not a
+  gap in the library.
+- The `code/librarian/lacasa_projection_check.py` script verifying the
+  projection-transfer conjecture is written but was not run (no computation
+  tool in the librarian role); its hand-checked m=2 case confirms the claim.
+
+## Indexing integrity
+
+All 44 full-text sources and their digests are indexed (`index_document` run on
+the new source). `search_documents` reaches every source. The `wu_*` source was
+found indexed despite not appearing in earlier coverage reports — confirmed
+present with its digest.

@@ -1,0 +1,74 @@
+    2   1   0         1      1  no    (none)
+    3   1   0         1      2  no    (none)
+    4   2   1         2      2  no    0010 S2=4  |  0100 S2=0
+    5   2   1         2      3  no    00101 S2=9  |  01001 S2=1
+    6   4   3         3      3  YES   001001 S2=4  |  010010 S2=0
+    7   5   4         4      4  YES   0010010 S2=9  |  0100100 S2=1
+    8   5   4         4      4  YES   00010001 S2=16  |  00100010 S2=4
+    9   7   6         5      5  no    001001001 S2=9  |  010010010 S2=1
+   10   8   7         5      5  no    0010010010 S2=16  |  0100100100 S2=4
+   11   8   7         6      6  no    00010001000 S2=49  |  00100010001 S2=25
+   12  10   9         6      6  no    001001001001 S2=16  |  010010010010 S2=4
+   13  11  10         7      7  no    0010010010010 S2=25  |  0100100100100 S2=9
+   14   8   7         7      7  YES   00000010000001 S2=36  |  00001000000100 S2=4
+   15  13  12         8      8  no    001001001001001 S2=25  |  010010010010010 S2=9
+   16  14  13         8      8  no    0010010010010010 S2=36  |  0100100100100100 S2=16
+   17  12  11         9      9  no    00000100000100000 S2=49  |  00001000001000001 S2=9
+   18  16  15         9      9  no    001001001001001001 S2=36  |  010010010010010010 S2=16
+Decisive budget settlement with explicit witnesses (GOAL priority 3)
+sequence: generic binary strings h in F_2^n (combinatorics, no primes)
+oracle: lib.supply_fold.s_sos (canonical floored fold, d in [2,n-1])
+range: n = 2..18, exhaustive 2^n (declared brute oracle)
+
+C_K(h) = empirical (K+1)-gram histogram of the n-K windows of h.
+B(n) = min K with S^2 constant on every C_K-fiber.
+A(n) = B(n)-1 = largest K with a witness pair (= budget).
+
+  n   B   A   imported  ceil/2   A==ceil?  witness pair at K=A (C_A equal, S^2 different)
+    2   1   0         1      1  no    (none)
+    3   1   0         1      2  no    (none)
+    4   2   1         2      2  no    0010 S2=4  |  0100 S2=0
+    5   2   1         2      3  no    00101 S2=9  |  01001 S2=1
+    6   4   3         3      3  YES   001001 S2=4  |  010010 S2=0
+    7   5   4         4      4  YES   0010010 S2=9  |  0100100 S2=1
+    8   5   4         4      4  YES   00010001 S2=16  |  00100010 S2=4
+    9   7   6         5      5  no    001001001 S2=9  |  010010010 S2=1
+   10   8   7         5      5  no    0010010010 S2=16  |  0100100100 S2=4
+   11   8   7         6      6  no    00010001000 S2=49  |  00100010001 S2=25
+   12  10   9         6      6  no    001001001001 S2=16  |  010010010010 S2=4
+   13  11  10         7      7  no    0010010010010 S2=25  |  0100100100100 S2=9
+   14   8   7         7      7  YES   00000010000001 S2=36  |  00001000000100 S2=4
+   15  13  12         8      8  no    001001001001001 S2=25  |  010010010010010 S2=9
+   16  14  13         8      8  no    0010010010010010 S2=36  |  0100100100100100 S2=16
+   17  12  11         9      9  no    00000100000100000 S2=49  |  00001000001000001 S2=9
+   18  16  15         9      9  no    001001001001001001 S2=36  |  010010010010010010 S2=16
+
+  -> budget A(n) == ceil(n/2) for all n=2..18: NO
+
+  agreement of B(n) with imported min-K-const table:
+    n=  2: B=1 imported_minKconst=1 agree
+    n=  3: B=1 imported_minKconst=1 agree
+    n=  4: B=2 imported_minKconst=2 agree
+    n=  5: B=2 imported_minKconst=2 agree
+    n=  6: B=4 imported_minKconst=3 DISAGREE (imported under-sample)
+    n=  7: B=5 imported_minKconst=4 DISAGREE (imported under-sample)
+    n=  8: B=5 imported_minKconst=4 DISAGREE (imported under-sample)
+    n=  9: B=7 imported_minKconst=5 DISAGREE (imported under-sample)
+    n= 10: B=8 imported_minKconst=5 DISAGREE (imported under-sample)
+    n= 11: B=8 imported_minKconst=6 DISAGREE (imported under-sample)
+    n= 12: B=10 imported_minKconst=6 DISAGREE (imported under-sample)
+    n= 13: B=11 imported_minKconst=7 DISAGREE (imported under-sample)
+    n= 14: B=8 imported_minKconst=7 DISAGREE (imported under-sample)
+    n= 15: B=13 imported_minKconst=8 DISAGREE (imported under-sample)
+    n= 16: B=14 imported_minKconst=8 DISAGREE (imported under-sample)
+    n= 17: B=12 imported_minKconst=9 DISAGREE (imported under-sample)
+    n= 18: B=16 imported_minKconst=9 DISAGREE (imported under-sample)
+
+Note: the imported table asserted S^2 constant at K = B_imported;
+the explicit witness pairs printed at K=A above show S^2 is NOT
+constant there, so the imported crossing is one (or more) K too
+small from n>=6. The budget is strictly LARGER than the imported
+ceil(n/2) table, and is not ceil(n/2).
+
+elapsed 14.6s
+

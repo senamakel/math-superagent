@@ -1,7 +1,6 @@
 # Lemke Oliver–Soundararajan, "The distribution of consecutive prime biases and sums of sawtooth random variables"
 
-Source: https://doi.org/10.1017/s0305004118000592 (Math. Proc. Cambridge Phil. Soc. 168 (2020) 149–169; online 2018). Full text (partial: abstract + front matter; body paywalled) at
-[[research/sources/los_sawtooth_consecutive_prime_biases.full.md]].
+Source: https://doi.org/10.1017/s0305004118000592 (Math. Proc. Cambridge Phil. Soc. 168 (2020) 149–169; online 2018). **Full text now held** (complete, all equations) at [[research/sources/lemke_oliver_soundararajan_sawtooth.full.md]], obtained via arXiv:1709.06168 (ar5iv html). The older partial capture (abstract + front matter only) remains at [[research/sources/los_sawtooth_consecutive_prime_biases.full.md]] and is superseded for the body.
 
 ## What it establishes (from the sources obtainable)
 
@@ -43,7 +42,7 @@ id: los-sawtooth-averaged-bias-equidistributed
 statement: In the Lemke-Oliver-Soundararajan framework for consecutive-prime residue-pattern frequencies (mod q), the secondary bias term is controlled by Fourier transforms of Dedekind sums and the Euler-φ summatory error; averaging over moduli q yields equidistribution on average (grand-average asymptotic), while the pointwise fair-share conjecture rests on Hardy-Littlewood and is not proved.
 hypotheses: Hardy-Littlewood k-tuple heuristics for the fair-share conjecture; the average-across-q results are proved.
 holds-here: The pointwise consecutive-pair frequency (switch-density) statement remains open (parity barrier); the average-across-q/over-parameters statement suggests the averaged form is the porous route the GOAL prioritises. Transfer to wt(Φ_n h) for fixed h is not made.
-status: sourced (Lemke Oliver–Soundararajan 2018/2020; abstract and front matter; body paywalled so secondary-term proof details unverified here)
+status: sourced (Lemke Oliver–Soundararajan 2018/2020; full text held via arXiv:1709.06168 — all theorems and proof details verified; see the companion summary file lemke_oliver_soundararajan_sawtooth.md for the full development including c₂ = C(k) q + O(...) and Thms 1.1/1.2/4.1/4.2)
 bearing: Supports GOAL priority 1 — the density-1/averaged form of SUPPLY via averaged switch density — and provides the Dedekind-sum/φ-error vocabulary for the secondary terms. Does not settle SUPPLY; the fixed-string folded-weight transfer remains open.
 anchor: research/sources/los_sawtooth_consecutive_prime_biases.full.md (abstract/front matter)
 ```

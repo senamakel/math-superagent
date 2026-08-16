@@ -1,0 +1,36 @@
+# Independent capture: cumulative K*(n) = floor(n/2), n=2..18
+
+SEQUENCE : generic binary strings h in F_2^n (exhaustive 2^n oracle)
+ORACLE   : lib.supply_fold.s_sos (canonical floored fold, d in [2,n-1])
+           cross-checked on 200 random (n,h) against a direct submask-XOR oracle: ALL AGREE
+RANGE    : n = 2..18  (declared 2^n brute oracle; 2^18 = 262144 strings)
+
+DEFINITION: cumulative / nested reading (the faithful 'C_1..C_K'):
+  K*(n) = min{K>=1 : S^2 constant on every fiber of (C_1,...,C_K)}
+  CUM_{K+1} refines CUM_K, so no-witness is inherited upward and K* is a
+  genuine monotone threshold (unlike the single-histogram C_K reading).
+
+ORACLE CROSS-CHECK on 200 random (n,h): ALL AGREE
+
+n=  2 K*_cum=  1 floor(n/2)=  1 'MATCH'
+n=  3 K*_cum=  1 floor(n/2)=  1 'MATCH'
+n=  4 K*_cum=  2 floor(n/2)=  2 'MATCH'
+n=  5 K*_cum=  2 floor(n/2)=  2 'MATCH'
+n=  6 K*_cum=  3 floor(n/2)=  3 'MATCH'
+n=  7 K*_cum=  3 floor(n/2)=  3 'MATCH'
+n=  8 K*_cum=  4 floor(n/2)=  4 'MATCH'
+n=  9 K*_cum=  4 floor(n/2)=  4 'MATCH'
+n= 10 K*_cum=  5 floor(n/2)=  5 'MATCH'
+n= 11 K*_cum=  5 floor(n/2)=  5 'MATCH'
+n= 12 K*_cum=  6 floor(n/2)=  6 'MATCH'
+n= 13 K*_cum=  6 floor(n/2)=  6 'MATCH'
+n= 14 K*_cum=  7 floor(n/2)=  7 'MATCH'
+n= 15 K*_cum=  7 floor(n/2)=  7 'MATCH'
+n= 16 K*_cum=  8 floor(n/2)=  8 'MATCH'
+n= 17 K*_cum=  8 floor(n/2)=  8 'MATCH'   <-- new term, past catalogue (n=2..16)
+n= 18 K*_cum=  9 floor(n/2)=  9 'MATCH'   <-- new term, past catalogue
+
+VERDICT: K*(n) == floor(n/2) for all n in [2,18]: True (measured, exact)
+         K*(n) == ceil(n/2)  for all n in [2,18]: False
+This is exact over the terms supplied; a conjecture (not a proof) for all n.
+The next term that would falsify it is n=19 (predicts floor(19/2)=9).

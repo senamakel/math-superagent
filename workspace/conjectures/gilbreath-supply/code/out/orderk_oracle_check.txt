@@ -1,0 +1,47 @@
+SEQUENCE : all binary strings per n (brute, exhaustive); K* = min{K: S^2 const on every C_1..C_K fiber}
+ORACLE   : lib.supply_fold.s_sos (canonical floored)
+N-RANGE  : n = 2..14
+
+== (A) K*(n) from full C_1..C_K grouping ==
+  n= 2  K*=1
+  n= 3  K*=1
+  n= 4  K*=2
+  n= 5  K*=2
+  n= 6  K*=3
+  n= 7  K*=3
+  n= 8  K*=4
+  n= 9  K*=4
+  n=10  K*=5
+  n=11  K*=5
+  n=12  K*=6
+  n=13  K*=6
+  n=14  K*=7
+
+== (B) REDUCTION CHECK: equal C_1..C_K <=> equal C_K + prefix_K ==
+  MISMATCH n=3 K=1 #cells full=7 red=8
+  MISMATCH n=4 K=1 #cells full=12 red=14
+  MISMATCH n=5 K=1 #cells full=18 red=22
+  MISMATCH n=6 K=1 #cells full=26 red=32
+  MISMATCH n=7 K=1 #cells full=35 red=44
+  MISMATCH n=8 K=1 #cells full=46 red=58
+  MISMATCH n=9 K=1 #cells full=58 red=74
+  MISMATCH n=10 K=1 #cells full=72 red=92
+  MISMATCH n=11 K=1 #cells full=87 red=112
+  MISMATCH n=12 K=1 #cells full=104 red=134
+  MISMATCH n=13 K=1 #cells full=122 red=158
+  reduction HOLDS: False
+
+== (C) Compare to imported table & ceil(n/2) ==
+  n= 2 imported=1 oracle=1  ceil(n/2)=1  OK
+  n= 3 imported=1 oracle=1  ceil(n/2)=2  OK
+  n= 4 imported=2 oracle=2  ceil(n/2)=2  OK
+  n= 5 imported=2 oracle=2  ceil(n/2)=3  OK
+  n= 6 imported=3 oracle=3  ceil(n/2)=3  OK
+  n= 7 imported=4 oracle=3  ceil(n/2)=4  *** DISAGREE ***
+  n= 8 imported=4 oracle=4  ceil(n/2)=4  OK
+  n= 9 imported=5 oracle=4  ceil(n/2)=5  *** DISAGREE ***
+  n=10 imported=5 oracle=5  ceil(n/2)=5  OK
+  n=11 imported=6 oracle=5  ceil(n/2)=6  *** DISAGREE ***
+  n=12 imported=6 oracle=6  ceil(n/2)=6  OK
+  n=13 imported=7 oracle=6  ceil(n/2)=7  *** DISAGREE ***
+  n=14 imported=7 oracle=7  ceil(n/2)=7  OK

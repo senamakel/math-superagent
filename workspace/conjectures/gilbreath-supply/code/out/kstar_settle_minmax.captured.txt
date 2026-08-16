@@ -1,0 +1,13 @@
+kstar_settle_minmax: K*(n) via per-fiber (min,max) S2 -- floor-vs-ceil
+SEQUENCE: all binary strings per n (exhaustive oracle)
+ORACLE  : S=(n-2)-2*nu2 via lib.supply_fold.s_sos
+RANGE   : n = [17, 19] (2^n states, oracle_bound)
+  n=17  K*=8   witness-prefix=[True, True, True, True, True, True, True, False] (20.1s)
+  n=19  K*=9   witness-prefix=[True, True, True, True, True, True, True, True, False] (121.6s)
+
+  n=17  K*=8 floor(n/2)=8 ceil(n/2)=9 OK
+  n=19  K*=9 floor(n/2)=9 ceil(n/2)=10 OK
+
+  K*(n)==floor(n/2): True  (over [17, 19])
+  K*(n)==ceil(n/2):  False  (over [17, 19])
+  seq = [8, 9]

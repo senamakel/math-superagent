@@ -52,13 +52,17 @@ def primes_upto_index(n):
 
 
 def h_vec(n):
-    """h[0..n-1]; h[0]=0 (q_1=2,q_2=3 -> 1/2 not integer, floored to 0);
-    h[j] = ((q_{j+1}-q_j)/2) mod 2 for j=1..n-1 (odd-prime gaps, even)."""
+    """h[0..n-1] -- the canonical prime gap-parity string (residue-switch
+    form), h[j] = [q_{j+2} != q_{j+1} mod 4] for j=0..n-1, matching
+    lib.primes.h_string and lib.nu2_guard.prime_h (h[0]=1).
+
+    (Equivalently ((q_{j+1}-q_j)/2) mod 2 up to the h[0] bit, which the
+    canonical h_string fixes as the residue-switch form with h[0]=1. This
+    alignment removes the old h[0]=0 convention that differed by one cell at
+    depth n-1.)"""
     q = primes_upto_index(n + 1)  # q_1..q_{n+1}
-    h = [0] * n
-    for j in range(1, n):
-        h[j] = ((q[j + 1] - q[j]) // 2) % 2
-    return h
+    r = [p % 4 for p in q]
+    return [1 if r[j + 1] != r[j] else 0 for j in range(n)]
 
 
 def submask(a, b):
@@ -71,20 +75,33 @@ def nu2_matrix(n, h=None):
 
     Canonical depths (G-dict / BACKWARD.md): d in [2, n-1], i.e. the fold
     matrix has one row per depth d = 2..n-1, and nu2(n) = #{d : T(n,d)=1}.
-    Each depth-d row is [C(d-1, j-(n-d)) mod 2]_j (Lucas: 1 iff j-(n-d) is a
-    binary submask of d-1). This matches lib.supply_fold's s_sos route and the
-    literal matrix route B in verify_brute.py."""
+    The canonical cell is T(n,d) = XOR over bitwise submasks o of d of
+    h[n-1-d+o] (lib.supply_fold.s_direct / s_terms_sos), i.e. each depth-d row
+    is [C(d, j-(n-d)-1... )]_j -- equivalently, reading the diagonal cell
+    directly from the triangle, row d reads exactly the submasks of d.
+
+    Explicit naive form (no Lucas, no SOS): for each depth d in [2, n-1] AND
+    over its bitwise submasks o of d, XOR h[n-1-d+o]. This is the literal
+    definition of T(n,d), matching lib.supply_fold.s_direct and
+    lib.nu2.fold_nu2 (= s_sos) exactly.
+
+    (Earlier versions of this file used row d = C(d-1, j-(n-d)), i.e. summed
+    T(n, 1..n-2) instead of T(n, 2..n-1) -- an off-by-one depth window that
+    matched the guarded values only when T(n,1)=T(n,n-1). Fixed to the
+    operative range; see code/brute fix note.)"""
     if h is None:
         h = h_vec(n)
     wt = 0
     for d in range(2, n):
         s = 0
-        base = n - d
-        a = d - 1
-        for j in range(1, n):
-            c = j - base
-            if 0 <= c <= a and submask(a, c):
-                s ^= h[j]
+        o = d
+        while True:
+            idx = n - 1 - d + o          # read window coordinate
+            if 0 <= idx < n:
+                s ^= h[idx]
+            if o == 0:
+                break
+            o = (o - 1) & d              # next bitwise submask of d
         wt += s
     return wt
 

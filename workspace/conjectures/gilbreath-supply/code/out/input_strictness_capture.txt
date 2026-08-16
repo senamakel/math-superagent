@@ -1,0 +1,41 @@
+SEQUENCE : single-1 h=e_{n-2} (prime-h guard); negative control h=e_{n-1}
+ORACLE   : lib.supply_fold.s_sos (cross-checked vs s_direct)
+N-RANGE  : [8, 4000]
+PRIME-H ORACLE GUARD PASS : nu2(53)=18  nu2(64)=27  (canonical)
+
+== G-INPUT-STRICTNESS EXHIBITION (h = e_{n-2}) ==
+Read-cone of position n-2 = odd depths d in [2,n-1] (theory).
+Asserted against oracle output for every n in [8,4000]:
+  nu2(n) ==#{odd d in [2,n-1]}  ->  ALL PASS
+  S(n) == (n-2)-2*nu2(n) (identity)  -> checked above
+  S(n) in {0,1} for every n (=> |S(n)|<=1 = O(1) <= O(sqrt n)) -> HOLDS
+
+Spot values  (n, S(n), nu2(n)):
+  n=   8  S=  0  nu2=  3  (expected S=0, nu2=3)
+  n=   9  S=  1  nu2=  3  (expected S=1, nu2=3)
+  n=  53  S=  1  nu2= 25  (expected S=1, nu2=25)
+  n=  64  S=  0  nu2= 31  (expected S=0, nu2=31)
+  n=4000  S=  0  nu2=1999  (expected S=0, nu2=1999)
+
+Switch density (ones/n) for h=e_{n-2} = 1/n -> 0 as n->oo (o(n) ones): CONFIRMED (1/n decays)
+
+== NEGATIVE CONTROL (h = e_{n-1}, single 1 at last index) ==
+Read at EVERY depth -> nu2(n)=n-2, S(n)=-(n-2)=Theta(n); shows the construction is discriminating (position matters).
+  n=   8  S=    -6  nu2=   6   (expected S=-(n-2)=-6, nu2=n-2=6)  OK
+  n=  53  S=   -51  nu2=  51   (expected S=-(n-2)=-51, nu2=n-2=51)  OK
+  n=4000  S= -3998  nu2=3998   (expected S=-(n-2)=-3998, nu2=n-2=3998)  OK
+  NEGATIVE CONTROL: DISCRIMINATING
+
+== ALL SINGLE-1 POSITIONS (is n-2 special?) ==
+  n=   8 : max over all j of |S| = 6 at j=7   (n-2 gives 0/1)
+  n=  53 : max over all j of |S| = 51 at j=52   (n-2 gives 0/1)
+  n=  64 : max over all j of |S| = 62 at j=63   (n-2 gives 0/1)
+  n=4000 : max over all j of |S| = 3998 at j=3999   (n-2 gives 0/1)
+
+== REOPENED n=8 WITNESS ==
+h = e_6 (index n-2=6) vs h' = e_5 (index 5): both C1=(5,1,1,0), S^2=0 vs 4.
+  h=e_6  : S=0  nu2=3  S^2=0
+  h'=e_5 : S=-2  nu2=4  S^2=4
+  Witness matches (S^2 0 vs 4): True
+
+VERDICT : switch-density-0 string (ones=1, density=1/n->0) with S(n) in {0,1}=O(1)=O(sqrt n) for every n in [8,4000]; G-input-strictness SETTLED by exhibition. nu2(n)=ceil((n-2)/2) ~ n/2.

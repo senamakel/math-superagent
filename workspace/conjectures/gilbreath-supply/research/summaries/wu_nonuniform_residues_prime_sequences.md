@@ -1,49 +1,53 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/wu_nonuniform_residues_prime_sequences.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Summary — Nonuniform Distributions of Residues of Prime Sequences in Prime Moduli
 
-<!-- source: https://arxiv.org/pdf/1908.07095 | converted from PDF -->
+Source: David Wu, arXiv:1908.07095 (2019). Full text: `[[wu_nonuniform_residues_prime_sequences.full]]`. Open access arXiv.
 
-## What it claims
+## What this establishes
 
-For positive integers q, Dirichlet’s theorem states that there are inﬁnitely many
-primes in each reduced residue class modulo q. A stronger form of the theorem states
-that the primes are equidistributed among the ϕ(q) reduced residue classes modulo q.
-This paper considers patterns of sequences of consecutive primes (pn, pn+1, . . . , pn+k)
-modulo q. Numerical evidence suggests a preference for certain prime patterns. For
-example, computed frequencies of the pattern (a, a) modulo q up to x are much less
-than the expected frequency π(x)/ϕ(q)2. We begin to rigorously connect the Hardy-
-Littlewood prime k-tuple conjecture to a conjectured asymptotic formula for the fre-
-quencies of prime patterns modulo q.
+A rigorous connection between the Hardy–Littlewood prime k-tuple conjecture and the frequencies of **patterns of consecutive primes of length k ≥ 2 mod q** — the higher-order (K>1) analogue of the pair-bias framework of Lemke Oliver–Soundararajan.
 
-1 Introduction
+**Notation.** For a vector `a = (a1,…,ak)`, define
+`π(x; q, a) = #{p_n ≤ x : p_{n+i−1} ≡ a_i (mod q) for 1 ≤ i ≤ k}` — the count of consecutive-prime sequences following pattern `a` mod q. The PNT in APs gives `π(x;q,(a)) ∼ li(x)/ϕ(q)`, i.e. equidistribution for length-1 patterns.
 
-Analytic number theory uses real and complex analysis techniques to prove properties about
-the integers. It turns out that many properties of prime numbers are encoded in the proper-
-ties of special functions. For example, the behavior of the zeros of the Riemann zeta function
-strengthens a famous asymptotic formula known as the Prime Number Theorem (PNT) [1].
-The…
+**The load-bearing higher-order fact (conditional on HL).** For length-k patterns with k ≥ 2, the frequencies are conjecturally NOT uniform, with biases larger than any O(x^{1/2+ϵ}) error (so they cannot be Chebyshev-bias artifacts). Example tabulated (mod 10, from [4]): `π(10^8; 10, (1,1)) ≈ 4.62×10^6`, `π(10^8; 10, (9,1)) ≈ 7.99×10^6`, versus the naive `10^8/ϕ(10)^2 = 6.25×10^6`. The dominant bias is controlled by the number of i with `a_{i+1} ≡ a_i (mod q)` (LOS's c2 coefficient), with LOS's original heuristic omitting lower-order terms that Wu adds.
 
-1a…
+**The parity barrier, in k-tuple form.** It is **not even known** whether `π(x; q, a) → ∞` for an arbitrary pattern `a` of length ≥ 2 (i.e. whether a non-constant consecutive-prime residue pattern occurs infinitely often). Only the constant patterns `(a,a,…,a)` are known to go to infinity: Shiu proved `π(x; q, (a,…,a)) → ∞`; Maynard strengthened to `π(x;q,(a,…,a)) > Cπ(x)` for a constant C and large x. So for length ≥ 2 patterns, only the *constant* (equal-residue) side is unconditional.
 
-## Statements it makes
+**The main theorem.** Under a Montgomery–Soundararajan-type estimate (3.5) extended to `S_{q,0}` (that the average order of `S_{q,0}(T)` over ℓ-element subsets is `(µ_ℓ/ℓ!)(−h log h + Ah)^{ℓ/2} + O(...)`, heuristically justified), the terms `S_∅, S_{0}, S_{h}, S_{0,h}` in the LOS heuristic, and hence `D_n(a,b;y)` and `D_{≥n}(a,b;y)`, are `O_n((log_2 y)^n / (log y)^{n/2−1})`. This lets one truncate the pair-frequency asymptotic `D(a,b;y)` at a specified n and control the errors — the mechanism for writing down the lower-order terms that explain the observed pair biases.
 
-Conjecture 2.1 (Hardy-Littlewood prime k-tuple conjecture). Let H be a ﬁnite set of
-nonnegative integers and π(x, H) denote the number of integers n ≤ x such that n + h is a
-prime for all h in H. Furthermore, let νp(H) denote the number of residue classes occupied
-by the members of H modulo p. Then we have that
+## What it implies here
 
-Conjecture 2.2 (Lemke Oliver & Soundararajan [4]). Let
+This is the **direct K>1 companion** to the reopened pass's territory. The fold reads the mod-4 gap-parity string `h[j] = ((p_{j+1}−p_j)/2) mod 2`. The obstruction machine:
 
-Theorem 3.1. Assuming that (3.5) holds in a similar form for Sq,0, we have that S∅,
-S{0} log y, S{h} log y, and S{0,h}(log y)2 are all
+- **Higher-order residue patterns are the parity barrier's generalisation.** Just as the pair (length-2) frequency is open and L-function-inaccessible (ABGS/§9), the *length-k* pattern frequencies are open for every k ≥ 2, with only the constant patterns settled (Shiu/Maynard). So any K>1 functional of the fold that reads length-k structural constraints on the gap-parity string faces the same wall: the non-constant side at every order is conjectural.
+- **Reinforces the negative transfer found for Lacasa.** The unconditional K>1 structure that exists on the gap sequence (forbidden patterns mod 6) is a *mod-6* phenomenon; the fold sees *mod-4 parity*, and the projection destroys it (see `research/notes/lacasa_parity_projection_transfer.md`). Wu confirms the residue pattern structure that *would* be readable (mod 4, any length) is exactly the conjectural, parity-barred part.
+- **Sharpened statement of the open input.** The reopened pass's goal — a functional controllable by an arithmetic input strictly weaker than pointwise mod-4 switch density — would need a *length-k ≥ 3* pattern input on the gap-parity string. Wu shows no such input is known beyond the conjectural; the only unconditional statements are the constant-pattern ones (Shiu/Maynard), which are equal-residue and give *zero* runs — the wrong direction (SUPPLY needs *switches*).
 
-Lemma 4.1. Let a and b be nonnegative real numbers and n be a positive integer. Then
+## What it does NOT settle
 
-Lemma 4.2. For any real constants a and c, we have
+- Nothing unconditional about non-constant patterns of length ≥ 2 (that is the open parity-barried core).
+- Nothing about the fold matrix Φ or wt(Φ_n h) itself.
+- The whole frequency theory is conditional on Hardy–Littlewood / the Montgomery–Soundararajan average-order assumption (3.5) — heuristic.
 
-Lemma 4.3. Let N be a real number and P[gn > x] denote the probability that the gap gn
-between the nth and (n + 1)th prime is greater than x for 1 ≤ n ≤ N . Then
+```claim
+id: wu-length-k-pattern-frequencies-open
+statement: For q ≥ 3 and a pattern a=(a1,…,ak) of length k≥2, the count
+  π(x;q,a) of consecutive-prime sequences following a mod q is not known to tend to
+  infinity (i.e. a non-constant consecutive-prime residue pattern is not known to occur
+  infinitely often). Only the constant patterns (a,…,a) are unconditional: Shiu proved
+  π(x;q,(a,…,a))→∞, Maynard proved π(x;q,(a,…,a))>Cπ(x). Observed (mod 10, x=10^8):
+  π((1,1))≈4.62e6 vs π((9,1))≈7.99e6 vs naive 6.25e6 — length-2 frequencies are
+  non-uniform, conjecturally (HL/LOS) with biases from the count of equal-adjacent entries.
+hypotheses: consecutive primes; pattern length k≥2; mod q.
+holds-here: yes — the SUPPLY parity string h[j]=((p_{j+1}−p_j)/2) mod 2 is a function of a
+  length-2 residue pattern of consecutive primes, and the K>1 (length≥3) case is the reopened pass's
+  territory; this is the precise form the parity barrier takes at every order.
+status: asserted (the non-uniformity and the barrier; Shiu/Maynard parts proved).
+bearing: sharpens the parity barrier to length-k ≥ 2: only constant (equal-residue) patterns are
+  unconditional, which give the wrong (zero) direction for SUPPLY. The K>1 arithmetic input the
+  reopened pass seeks on the gap-parity string is not known beyond the fault line this paper marks.
+anchor: wu_nonuniform_residues_prime_sequences.full, §1 (eq. 1.1, the (1,1)/(9,1) data), §2 Conjecture 2.2, Theorem 3.1.
+```
 
-Lemma 4.4. The sums over subsets of [1, h − 1] of size ℓ, given by Ah,ℓ, Bh,ℓ, Ch,ℓ, and Dh,ℓ,
-satisfy the following relations:
-
-*[digest of a 32619 character source; every section, statement, and proof in full at `research/sources/wu_nonuniform_residues_prime_sequences.full.md`]*
+## Keyword map
+consecutive prime patterns mod q; length-k pattern frequencies; parity barrier; Hardy–Littlewood k-tuple; Lemke Oliver–Soundararajan; Shiu; Maynard; higher-order correlation.

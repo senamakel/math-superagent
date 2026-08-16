@@ -10,6 +10,20 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
+- `order-k-second-moment-supply/G-input-price` (lemma) — > There is an explicit arithmetic hypothesis C(h) on the prime gap-parity string h — a submask-window second-moment bound, or equivalently…
+  - open `research/backward/order-k-second-moment-supply.md`
+- `order-k-second-moment-supply/G-order-k-sensitivity` (lemma) — > S² is not determined by the order-1 (pair) correlation data of h: for a sequence of n → ∞ there exist binary strings h, h′ with identical…
+  - open `research/backward/order-k-second-moment-supply.md`
+- `order-k-second-moment-supply/G-orderk-input-strictness` (lemma) — > The input C(h) of G-input-price is strictly weaker than pointwise mod-4 switch density: there is a binary string h* with switch density 0…
+  - open `research/backward/order-k-second-moment-supply.md`
+- `order-k-second-moment-supply/G-prime-satisfies-input` (lemma) — > The real prime gap-parity string h[j] = [q_{j+1} ≢ q_j mod 4] satisfies the condition C(h) of G-input-price, unconditionally or…
+  - open `research/backward/order-k-second-moment-supply.md`
+- `order-k-second-moment/G-input-strictness` (lemma) — > The second-moment input is strictly weaker than pointwise mod-4 switch density: there is a binary string h* with switch density 0 (o(n)…
+  - open `research/backward/order-k-second-moment.md`
+- `order-k-second-moment/G-order-budget` (lemma) — > The correlation order at which S(n)² becomes determined is K*(n) = ⌈n/2⌉ for all n ≥ 6 (and K*(4) = K*(5) = 2, with n = 5 the sole…
+  - open `research/backward/order-k-second-moment.md`
+- `order-k-second-moment/G-prime-second-moment` (lemma) — > The real prime gap-parity string h (h[j] = ((q_{j+1}−q_j)/2) mod 2) satisfies S(n) = O(√n), equivalently S(n)² = O(n), from an…
+  - open `research/backward/order-k-second-moment.md`
 - `supply-averaged-second-moment/G-mean-linear` (lemma) — > There is an absolute c₀ > 0 with (1/N)·Σ_{n≤N} ν₂(n)/n ≥ c₀ for all large N. Equivalently, over the triangular array {(n,d) : 2 ≤ d ≤…
   - open `research/backward/supply-averaged-second-moment.md`
 - `supply-averaged-second-moment/G-var-vanishing` (lemma) — > (1/N)·Σ_{n≤N} (ν₂(n)/n − μ_N)² → 0 as N → ∞, where μ_N is the empirical mean of ν₂(n)/n over n ≤ N. In words: the normalised fold weight…
@@ -18,6 +32,14 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/supply-from-endpoint-parity.md`
 - `supply-from-endpoint-parity/G-run-telescope` (lemma) — > Every digital down-set ↓d = {o ∈ [0,d] : o ⊆ d} is a disjoint union of maximal runs of consecutive integers. With g = ν₂(d+1) (the number…
   - open `research/backward/supply-from-endpoint-parity.md`
+- `supply-k-functional/G-k-functional-price` (lemma) — There is an explicit condition I(h) on the prime gap-parity string, stated as a bound on the run-endpoint character products…
+  - open `research/backward/supply-k-functional.md`
+- `supply-k-functional/G-k-functional-primes` (lemma) — The real prime gap-parity string h[j] = ((q_{j+1}−q_j)/2) mod 2 satisfies I(h) — the input from G-k-functional-price — unconditionally, or…
+  - open `research/backward/supply-k-functional.md`
+- `supply-k-functional/G-k-functional-strictness` (lemma) — There is a binary string h* realisable by a {1,3}-valued boundary (so it is a legitimate gap-parity string) with switch density 0 — #{j :…
+  - open `research/backward/supply-k-functional.md`
+- `supply-k-functional/G-kstar-budget` (lemma) — For n ≥ 2 let C_K(h) be the order-K correlation vector of h ∈ F₂ⁿ (the counts of every binary word of length K+1 in h, overlapping…
+  - open `research/backward/supply-k-functional.md`
 - `supply-switch-equivalence/G-sup-implies-switch` (lemma) — > For h arising from the primes (h[j] = [q_{j+1} ≢ q_j mod 4]), if a window h[a..b] has w ones with w = o(b−a), then its diagonal…
   - open `research/backward/supply-switch-equivalence.md`
 - `weak-input-fold/G-weak-input-primes-satisfy-C` (lemma) — The real prime gap-parity string h[j] = ((q_{j+1}−q_j)/2) mod 2 satisfies the condition C(h) of G-weak-input-submask-density. Equivalently:…
@@ -26,6 +48,8 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/weak-input-fold.md`
 - `weak-input-fold/G-weak-input-submask-density` (lemma) — There exists a condition C(h), stated entirely in the submask-XOR coordinates T(d) = ⨁_{i⊆d} h(i) that Lucas makes Φ_n read, such that C(h)…
   - open `research/backward/weak-input-fold.md`
+- `g-input-strictness` (goal) — CORRECTION (adversarial, tool_builder agent-run-30 readcone_survey_capture.txt): the e_{n-2} exhibition settles S(n) in {0,1} for the…
+  - open `research/backward/g-input-strictness.md`
 - `verify-n40000-second-moment` (goal) — —
   - open `research/backward/verify-n40000-second-moment.md`
 
@@ -43,12 +67,17 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `as-kregular-II-definition` | claim | established | — | A sequence over a Noetherian ring R is R-k-regular iff the R-module generated by its k-kernel is finitely generated; k-automatic (finite… |
 | `as-kregular-ring-closure` | claim | established | — | For a Noetherian ring R, the R-valued k-regular sequences are closed under term-by-term addition and convolution (Cauchy product), forming… |
 | `avg-supply-empirical` | claim | established | — | For the prime h, the empirical mean of nu2(n)/n over n <= N is bounded below by ~0.49 for every N in [100, 8000] measured, and its… |
+| `b-g-k-s-chebotarev-short-interval` | claim | established | — | Short-interval Chebotarev over F_q(T): for geometric G-extensions tame at infinity, the count of degree-n irreducibles in a short interval… |
 | `bacher-pascal-det-mod2` | claim | **ready** | — | For the symmetric Pascal matrix P(n) with entries C(s+t,s) reduced mod 2, det(P(2n)) = (-1)^n, and the mod-2 Pascal-matrix family carries… |
+| `bbsr-function-field-short-interval-AP` | claim | established | — | Over F_q[t] as q → ∞, degree-k prime polynomials are equidistributed in short intervals I(f,ε) (π_q(I(f,ε)) ~ #I(f,ε)/k) and in arithmetic… |
 | `bftb-bounded-gap-equal-residue-strings` | claim | established | — | For coprime integers a and D >= 3, for every m >= 2 there are infinitely many r with p_{r+1} == ... == p_{r+m} == a (mod D) and p_{r+m} -… |
+| `bkm-automatic-structured-plus-gowers-uniform` | claim | **ready** | — | Any automatic sequence a : N0 → C decomposes as a = a_str + a_uni with a_uni highly Gowers uniform ((s+1)-th Gowers norm O(N^{−c(s)}) for… |
 | `bounded-raw-autocorr-not-discriminating` | claim | established | — | > The fold second-moment ratio E[S(n)^2]/(n-2) (S(n) the signed excess of the floored submask fold; density-1 SUPPLY holds iff this is… |
 | `chase-random-gilbreath` | claim | established | — | For a random increasing sequence a_1=2,a_2=3, a_{n+1}=a_n+2u_n with u_n iid uniform on {0,…,f(n)−1} and f(M) ≤ (1/100)loglog M/logloglog M,… |
 | `citation-pass-added-no-evidence` | claim | established | — | The research agent's citation-fetch pass added six files under research/summaries/citations_w*.md, all citation-graph lookup tables ("filed… |
 | `claims-md-derive-gap-newer-summary-blocks` | claim | established | — | The rendered research/CLAIMS.md does not contain several claim blocks that live in the summaries with holds-here/status already written:… |
+| `collapse-witness-n8-kstar-ge-2` | claim | established | — | There exist n and distinct binary strings h, h' with identical C₁ (identical 2-gram count vectors) but different fold weight. At n=8,… |
+| `debruijn-laplacian-source-does-not-help` | claim | established | — | "The source research/sources/debruijn_cyclespace_eigenvectors.full.md (arXiv:2410.07622, Philippakis-Mallinar-Pandit-Belkin) is an… |
 | `deep-cells-are-large-gap-driven` | claim | **ready** | — | In Odlyzko's data, every very large value of g(n) (slow {0,2}-reduction) examined was caused by a large prime gap; correlation between… |
 | `delsarte-lp-holds-for-nonlinear-row-sets` | claim | established | — | > The Delsarte LP bound does NOT require the code C to be linear: for any subset C ⊆ F₂ⁿ with distance distribution A_i^C = #{(x,y)∈C²:… |
 | `density-model-rising-mean-is-generic` | claim | established | — | The rising averaged fold mean M(N) -> ~0.4973 (N=4000) for the prime switch string is reproduced by Bernoulli random strings at the… |
@@ -61,25 +90,21 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `downset-row-intersection-meet-formula` | claim | established | — | > For d,d' in [2,n-1], the fold rows satisfy M_d ∩ M_d' = M_{d∧d'}, hence \|M_d ∩ M_d'\| = 2^{pc(d∧d')} and \|M_d △ M_d'\| = 2^{pc(d)} +… |
 | `dyadic-nu2-no-collapse-through-k25` | claim | established | — | > At the 23 dyadic sample indices k = 3..25, n = 2^k, 2^k+1, 2^k-1 (n up to 2^25 = 33554432), the prime fold does NOT collapse:… |
 | `endpoint-sign-corrected-identity` | claim | established | — | The character-product form of the endpoint parity is (-1)^{T(n,d)} = ∏_R χ(r_{a_R}) χ(r_{b_R}) with NO (-1)^{#runs(d)} prefactor. The… |
+| `enminus2-linear-supply-switch-density-not-necessary` | claim | established | — | The per-window family h^(n) = e_{n-2} (a single 1 at index n-2, zeros elsewhere in a length-n window) has switch density 1/n -> 0, yet… |
 | `entropy-neither-necessary-nor-sufficient-for-randomization` | claim | **ready** | — | For Φ = 1+σ over Z/2, nonzero entropy of the initial measure is neither necessary nor sufficient for asymptotic randomization by Φ. |
 | `essential-coding-theory-machinery` | claim | **ready** | — | The weight-distribution/MacWilliams/Krawtchouk/Delsarte-LP machinery on F_q^n is developed at textbook depth: weight enumerators transform… |
 | `exceptional-sets-finite-through-40000` | claim | established | — | For the prime fold, {n : ν₂(n)/n < c} is finite through n=40000 for every c ≤ 0.48: count=(17, 62, 329) with last member (105, 763, 5655)… |
 | `excess-is-negative-character-sum` | claim | established | — | > For the canonical fold form, ν₂(n) = #{d ∈ [2,n−1] : T(n,d)=1} with S(n) = Σ_{d=2}^{n-1} (−1)^{T(n,d)}, the identity 2·ν₂(n) − (n−2) =… |
 | `fair-mc-primes-ratio-constant-133-40000` | claim | established | — | The like-for-like ratio of the primes' prefix empirical variance of nu2(n)/n to the uniform-h fair-model Monte Carlo prefix variance is… |
 | `fair-model-exact-binomial` | claim | established | — | For h uniform on F2^n, wt(Phi_n h) is EXACTLY Binomial(n-2, 1/2): Pr[wt(Phi_n h) = k] = C(n-2, k) / 2^{n-2}. Equivalently the weight-k… |
-| `fair-variance-log-null-tail-clean-40000` | claim | established | — | (corrected per directive 19) At N=40000 the prefix empirical variance s2_N of nu2(n)/n tracks the log null log(N)/(4N), not the constant… |
-| `fixed-single-1-fold-weight-bounded-by-j` | claim | established | — | For a fixed single 1 at position j of an otherwise-zero string h (h = e_j, constant across n), the windowed fold weight is nu2(n) =… |
-| `fold-distance-enumerator-On` | claim | established | — | For the fold row code R_n={1_{M_d}:d∈[2,n-1]}, F_n(z)=Σ_{d,d'}z^{\|M_d△M_{d'}\|} = O(n) for every \|z\|<1, uniformly in n. |
-| `fold-excess-increments-white` | claim | established | — | > Let S(n) = (n−2) − 2·ν₂(n) be the signed excess of the floored submask fold. The operative discriminator between the density-1-SUPPLY… |
-| `fold-genericity-all-nu2-regularities-incl-dip-sparsity` | claim | established | — | > Every measurable regularity of nu2(n) for the prime gap-parity fold is fold-generic, not prime-specific. (1) White-noise law:… |
-| `fold-rank-is-n-2-nullity-2-alternating` | claim | established | — | The operative SUPPLY fold matrix Phi_n — whose image weight is nu2(n) = wt(Phi_n h) — is (n-2) x n with rows d = 2..n-1 and entry… |
 
-_111 further nodes not shown._
+_157 further nodes not shown._
 
 ## Resting on nothing that exists
 
 Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
 
+- `g-input-strictness` rests on `read-cone-column-equivalence`, which does not exist
 - `supply-from-endpoint-parity` rests on `problem.md`, which does not exist
 - `supply-from-endpoint-parity` rests on `facts`, which does not exist
 - `supply-from-endpoint-parity` rests on `1`, which does not exist

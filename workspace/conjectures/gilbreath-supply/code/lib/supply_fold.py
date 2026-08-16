@@ -126,6 +126,42 @@ def s_terms_sos(n, h):
     return [g[d] for d in range(2, n)]
 
 
+# ---------------------------------------------------------------------------
+# Read-cone of a single coordinate (for single-1 / sparse-string analysis)
+# ---------------------------------------------------------------------------
+def read_cone(j, n):
+    """Depths d in [2, n-1] that READ coordinate j of the window.
+
+    The depth-d cell T(n,d) = XOR_{o subseteq d} h[n-1-d+o] reads h[j] exactly
+    when o = d - (n-1-j), which needs o >= 0 and o a bitwise submask of d:
+        j read by d  <=>  d in [n-1-j, n-1]  and  (d-(n-1-j)) bitwise-submask of d.
+    For a single-1 string h = e_j the fold weight is nu2(n) = |read_cone(j,n)|
+    (each read contributes one +1 to the XOR, so T=1 exactly at those depths),
+    hence S(n) = (n-2) - 2*|read_cone(j,n)|.
+    Exact; O(n) per call. Returns the sorted list of qualifying depths d."""
+    r = n - 1 - j
+    if r < 0:
+        return []
+    out = []
+    for d in range(2, n):
+        if d >= r and ((d - r) & ~d) == 0:   # (d-r) bitwise-submask of d
+            out.append(d)
+    return out
+
+
+def read_cone_size(j, n):
+    """|read_cone(j,n)| — the number of depths d in [2,n-1] that read h[j].
+    Exact, O(n)."""
+    return len(read_cone(j, n))
+
+
+def s_single_one(j, n):
+    """S(n) = (n-2) - 2*nu2(n) for the single-1 string h = e_j at fixed
+    position j. Since niu2(n) = |read_cone(j,n)| for a single 1, this is
+    (n-2) - 2*|read_cone(j,n)|. Exact."""
+    return (n - 2) - 2 * read_cone_size(j, n)
+
+
 def report(n, h, label):
     Sd, ones_d = s_direct(n, h)
     Ss, ones_s = s_sos(n, h)

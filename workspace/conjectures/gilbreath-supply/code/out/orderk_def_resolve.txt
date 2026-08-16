@@ -1,0 +1,25 @@
+SEQUENCE : all binary strings per n (brute); K* definition resolution
+ORACLE   : lib.supply_fold.s_sos
+N-RANGE  : n=4..12
+
+n= 4 imported=2  A(largestK witness)=1  B(minK const on single)=2
+n= 5 imported=2  A(largestK witness)=1  B(minK const on single)=2
+n= 6 imported=3  A(largestK witness)=3  B(minK const on single)=4
+n= 7 imported=4  A(largestK witness)=4  B(minK const on single)=5
+n= 8 imported=4  A(largestK witness)=4  B(minK const on single)=5
+     n=8 witness_true_at: K=1:True,K=2:True,K=3:True,K=4:True,K=5:False
+n= 9 imported=5  A(largestK witness)=6  B(minK const on single)=7
+n=10 imported=5  A(largestK witness)=7  B(minK const on single)=8
+n=11 imported=6  A(largestK witness)=7  B(minK const on single)=8
+n=12 imported=6  A(largestK witness)=9  B(minK const on single)=10
+
+C (cumulative C_1..C_K, minK const):
+  n= 4 imported=2 cumulative-minK=None
+  n= 5 imported=2 cumulative-minK=3
+  n= 6 imported=3 cumulative-minK=4
+  n= 7 imported=4 cumulative-minK=4
+  n= 8 imported=4 cumulative-minK=5
+  n= 9 imported=5 cumulative-minK=5
+  n=10 imported=5 cumulative-minK=6
+  n=11 imported=6 cumulative-minK=6
+  n=12 imported=6 cumulative-minK=7

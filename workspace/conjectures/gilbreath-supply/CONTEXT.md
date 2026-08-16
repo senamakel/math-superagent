@@ -181,6 +181,10 @@ density?
 
 ## Established — the fold row-set geometry (this pass)
 
+**Parity-projection erasure (this pass — confirms the settled `lacasa-mod6-forbidden-blocks-parity-invisible` by a second, CRT route):** the fold's input is `h[j] = ((q_{j+1}−q_j)/2) mod 2`, the **parity** of the half-gap. Lacasa's unconditional K>1 prime structure — forbidden mod-6 gap-residue blocks, from divisibility, symbols indexed by half-gap mod 3 — does **not** survive this projection: `gcd(2,3)=1`, so by CRT the mod-2 parity is independent of the mod-3 symbol, and the forbidden-block rule imposes **no constraint on the parity string `h`**. Hence this K>1 structure cannot be an arithmetic input strictly weaker than pointwise mod-4 switch density; the reopened `1 < K ≲ n/2` territory has no input of this form. The reopened question must look at the fold's own submask correlation reading or a structure that survives parity (LOS's K≥2 sawtooth term), not at mod-6 gap-block forbiddance. Touches none of the five/six closed doors; GOAL priority 2/3 stays open. Anchor: `research/notes/lacasa_projection.md`.
+
+**LOS K≥2 orientation-merge erasure (new, this pass — `los-secondary-bias-orientation-invisible-to-fold`, proved):** the fold bit `h[j] = [q_{j+1} ≢ q_j mod 4]` is the **unoriented** mod-4 switch indicator, merging `(1,3)` and `(3,1)`. LOS's secondary (K≥2) consecutive-prime bias term `C(b−a)` is **odd** (`C(k)=−C(−k)`, only odd characters contribute, `L(0,χ)=0` for even χ), so the orientation it carries is invisible to `h`. Together with the Lacasa erasure above: the order-1 mod-4 switch density (sum over both orientations) is the *only* residue-pattern structure that survives to the fold's parity input; higher-order oriented/divisibility corrections the primes provably carry are erased. A K>1 functional of the fold, if one exists, must be driven by the fold's own submask-correlation reading, not by an additive residue-pattern input.
+
 **Downset-row intersection formula (`downset-row-intersection-meet-formula`, proved-by-derivation, all n, no primes):** the fold row `M_d = {n−1−d+o : o ⊆ d}` maps under the reflection `x ↦ n−1−x` bijectively onto the digital downset `↓d`; downsets meet as `↓d ∩ ↓d' = ↓(d∧d')`, so `M_d ∩ M_d' = M_{d∧d'}`, `|M_d ∩ M_d'| = 2^{pc(d∧d')}`, `|M_d △ M_d'| = 2^{pc(d)} + 2^{pc(d')} − 2^{pc(d∧d')+1}`. Independent hand-check on concrete instances (n=8,d=5,d'=3 → {6,7}; n=16,d=7,d'=10 → {13,15}) reproduces it; mechanical route `code/scholar/downset_verify.py` (n=4..199 + negative control) for coder/tool_builder. This is the geometry lemma behind the second-moment route.
 
 **Consequence (`fold-distance-enumerator-On`, proved conditional on the meet formula, no primes, no duality):** `F_n(z) = Σ_{d,d'} z^{|M_d △ M_d'|} = O(n)` for every fixed `|z|<1`, uniformly in n. Proof is sound under attack — distinct rows with popcounts p≥q have dist ≥ 2^{p−1}, and the popcount split at K=c·log₂log₂ n gives `n²|z|^{2^K}=o(1)` for c>1, low-popcount pairs `n^{o(1)}`, diagonal `n−2`.
@@ -305,20 +309,90 @@ correlations) with an explicit witness at `n=8`: `h=00000010` and
 and `S²=4`. The threshold was measured `n=4..20`: `K*(n) ≈ ⌈n/2⌉`
 (`n=8→4, n=12→6, n=16→8, n=20→10`) — Φ sees structure up to correlation
 order linear in `n`. The `⌈n/2⌉` guess **mismatches at `n=5`**, so the
-closed form is not yet right (GOAL priority 3).
+closed form is not yet right (GOAL priority 3). **Definition-dependence
+(directive 40):** this figure is not pinned until the operative reading of
+`K*` is named — three readings diverge past `n=8`
+(`code/out/orderk_def_resolve.txt`: at `n=12` imported 6, single-histogram
+witness 9, single-histogram const 10, cumulative 7; the cumulative reading
+corrected for its off-by-one gives `⌊n/2⌋`). Task
+`settle-kstar-definition-budget` names the operative definition and corrects
+the budget — **settled by directive 41: `K*(n) = ⌊n/2⌋` (three independent routes); cite it and move on.**
 
 **The operative second-pass question (GOAL.md), and that it is UNWORKED.**
 > Is there a functional of the fold, sensitive to correlation order `K` with
 > `1 < K ≲ n/2`, that is controllable by an arithmetic input strictly weaker
 > than pointwise mod-4 switch density?
 
-Every prior route lived at `K=1`; the range `1 < K ≲ n/2` is unexplored and
-has **no work product yet** — no approach, thread, or capture attacks it.
+Every prior route lived at `K=1`; the range `1 < K ≲ n/2` is unexplored.
+
+**Directive 43 is now the head — the hit-set push is priced out, the pass's
+answer is NO.** The hit-set functional (directives 41/42) is withdrawn: the
+operator computed the hit-set profile directly and priced the positional
+resource out. `H_j = {d ∈ [2,n-1] : j ∈ M_d}`; the fraction of positions with
+a large hit set falls like `1/n` (0.312, 0.188, 0.109, 0.062, 0.035 at
+n=16,32,64,128,256) while `median|H_j|` stays tiny (4,8,8,16,16), so an input
+of the form "switch bits land on high-hit positions often enough" demands `h`
+concentrate on a set of density → 0 — a STRONGER demand than positive switch
+density, not weaker. The route fails priority 2's pricing test. Caveat:
+`nu2` is an XOR over `M_d`, not a sum of `|H_j|`, so this prices the
+positional resource, not every hit-set functional — a functional not controlled
+by that scarcity is still open but unbuilt, and must be priced against the
+table first. Recorded as closed candidate `hit-set-positional-supply`;
+the second-pass conclusion `research/CONCLUSION-PASS2.md` says NO. **No
+further K* capture** — six agree on `K*(n)=⌊n/2⌋`, zero information gain.
+
+**Directive 41 (superseded as head; recorded for provenance) — priority 1, the hit-set functional.** The
+correlation-order budget is SETTLED: `K*(n) = ⌊n/2⌋`, confirmed by three
+independent routes (kstar_exact, the sat_solver oracle, the structural check);
+`kstar_structural_capture.txt` honestly refutes its own candidate
+characterisation `R(n)-1`, and `fold_cell_degree_correction.md` caught a wrong
+structural fact in a library source (degree is `2^popcount(d)`, not
+`popcount(d)`). Priority 3 is done — cite `⌊n/2⌋` and move on; no more K*
+characterisation, and no further K* capture (directive 42: five captures
+across n=2..18 already confirm floor(n/2); every further one has zero
+information gain). Priorities 1 and 2 have not started. The head is priority 1:
+from the n=8 witness (h=e_6 vs h'=e_5, equal pair correlations, S²=0 vs 4) the
+separation is the arithmetic of the read-cone/hit-set of a position under the
+submask relation (e_{n-2} hit exactly at odd d; e_{n-3} a different hit set) —
+NOT any correlation of h. Name that functional, define it for general h (claim
+`read-cone-closed-form-exact`: a 1 at position j is read by exactly
+`#{d∈[2,n-1] : (n-1-j) ⊆ d}` depths), verify it is constant on C₁ fibres but
+not on the whole cube, find the lowest K at which it becomes determined, then
+price it against pointwise mod-4 switch density (task `build-hit-set-functional`
+→ task `price-hit-set-functional`; thread `hit-set-functional`).
+
+**Directive 38 (superseded as head; its capture template still holds).** The best-built capture either pass has produced,
+`code/out/input_strictness_capture.txt`, is the template every new capture must
+follow (sequence/oracle/range in the first three lines, canonical guard on the
+produced array, a negative control marked DISCRIMINATING, and an independent
+reproduction of the n=8 witness). What it exhibits is now stated precisely as
+claim `enminus2-linear-supply-switch-density-not-necessary`: the per-window
+family `h = e_{n-2}` has switch density `1/n -> 0` yet `nu2(n) = ceil((n-2)/2) ~ n/2`
+(the fold reads position n-2 exactly at odd depths d, since `d-1 ⊆ d` iff d odd).
+That settles: positive mod-4 switch density is NOT necessary for linear supply,
+so supply is strictly weaker than switch density as a property of strings. It
+gives NO input controlling the primes — SUPPLY stays open; this is problem.md
+result type 4, not type 1. The productive next step was executed (task `linear-supply-by-weight-class`,
+capture `code/out/linear_supply_by_weight.txt`, cross-checked
+`linear_supply_independent.txt`): linear supply becomes TYPICAL (mean
+`nu2/n >= 0.40` AND fraction `>= 0.5`) at weight ratio `w/n = 0.375@8` falling
+`0.300, 0.250, 0.188, 0.156` to `0.125@64` and `0.125@128` — two consecutive n.
+Directive 39 orders two follow-ups in sequence: (1) task
+`linear-supply-threshold-limit` — push n as far as the sampled method allows
+(300 samples per weight bounds the frac column) and say whether `w/n` tends to
+0 (linear supply typical at ANY positive density) or plateaus near 1/8 (a real
+threshold); (2) task `linear-supply-threshold-claim-block` — file the claim
+block whose one-sentence gap is "typical is not this string": being above the
+threshold does not prove the primes' h has linear supply. The result is a
+density bound near 1/8 instead of full switch density — problem.md result type
+4, NOT type 1; never written as SUPPLY solved or prime-specific. Scoping: per-window family vs fixed string is load-bearing (a fixed single 1 gives `nu2 = O(1)`, claim
+`fixed-single-1-fold-weight-bounded-by-j`).
 GOAL priorities in order: (1) build a functional provably not `K=1`,
 generalising the `n=8` witness; (2) price each candidate against what it
 demands of `h` vs pointwise switch density (see more, demand *less*); (3)
 push the `K*` budget past `n=20` and settle whether `K* = ⌈n/2⌉` or merely
-close. All first-pass rules carry forward: one canonical oracle with the
+close — first naming the operative definition of `K*`, since it is
+definition-dependent (directive 40, task `settle-kstar-definition-budget`). All first-pass rules carry forward: one canonical oracle with the
 entry guard, temp-file-then-move captures, a negative control shown failing,
 measurement labelled as measurement, the six closed doors never reopened.
 The witness and the fold-genericity measurement are compatible: Φ *can* see

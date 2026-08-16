@@ -1,0 +1,315 @@
+READ-CONE SURVEY OF THE SUPPLY FOLD  (exact, oracle-checked)
+SEQUENCE : fixed sparse strings / single-1 positions of the prime fold
+ORACLE   : lib.supply_fold.s_sos / s_direct / read_cone (floored d in [2,n-1])
+N-RANGE  : single-1 survey n in [8,200]; fixed-string prefix in [8,4000]
+ENTRY-GUARD: nu2(53)==18, nu2(64)==27 (prime h) PASSED; closed-form 
+             cross-check on 245344 (n,j) pairs (n in [4,700]) PASSED.
+
+=== (1) SINGLE-1 READ-CONE SURVEY, n in [8,200] ===
+For h = e_j (single 1 at fixed j), nu2(n)=|C_j(n)| and S(n)=(n-2)-2|C_j(n)|.
+       n   max_j|S|       argmax_j      j=n-2 (S)
+       8          6            [7]              0
+       9          7            [8]              1
+      10          8            [9]              0
+      11          9           [10]              1
+      12         10           [11]              0
+      13         11           [12]              1
+      14         12           [13]              0
+      15         13           [14]              1
+      16         14           [15]              0
+      17         15           [16]              1
+      18         16           [17]              0
+      19         17           [18]              1
+      20         18           [19]              0
+      21         19           [20]              1
+      22         20           [21]              0
+      23         21           [22]              1
+      24         22           [23]              0
+      25         23           [24]              1
+      26         24           [25]              0
+      27         25           [26]              1
+      28         26           [27]              0
+      29         27           [28]              1
+      30         28           [29]              0
+      31         29           [30]              1
+      32         30           [31]              0
+      33         31           [32]              1
+      34         32           [33]              0
+      35         33           [34]              1
+      36         34           [35]              0
+      37         35           [36]              1
+      38         36           [37]              0
+      39         37           [38]              1
+      40         38           [39]              0
+      41         39           [40]              1
+      42         40           [41]              0
+      43         41           [42]              1
+      44         42           [43]              0
+      45         43           [44]              1
+      46         44           [45]              0
+      47         45           [46]              1
+      48         46           [47]              0
+      49         47           [48]              1
+      50         48           [49]              0
+      51         49           [50]              1
+      52         50           [51]              0
+      53         51           [52]              1
+      54         52           [53]              0
+      55         53           [54]              1
+      56         54           [55]              0
+      57         55           [56]              1
+      58         56           [57]              0
+      59         57           [58]              1
+      60         58           [59]              0
+      61         59           [60]              1
+      62         60           [61]              0
+      63         61           [62]              1
+      64         62           [63]              0
+      65         63           [64]              1
+      66         64           [65]              0
+      67         65           [66]              1
+      68         66           [67]              0
+      69         67           [68]              1
+      70         68           [69]              0
+      71         69           [70]              1
+      72         70           [71]              0
+      73         71           [72]              1
+      74         72           [73]              0
+      75         73           [74]              1
+      76         74           [75]              0
+      77         75           [76]              1
+      78         76           [77]              0
+      79         77           [78]              1
+      80         78           [79]              0
+      81         79           [80]              1
+      82         80           [81]              0
+      83         81           [82]              1
+      84         82           [83]              0
+      85         83           [84]              1
+      86         84           [85]              0
+      87         85           [86]              1
+      88         86           [87]              0
+      89         87           [88]              1
+      90         88           [89]              0
+      91         89           [90]              1
+      92         90           [91]              0
+      93         91           [92]              1
+      94         92           [93]              0
+      95         93           [94]              1
+      96         94           [95]              0
+      97         95           [96]              1
+      98         96           [97]              0
+      99         97           [98]              1
+     100         98           [99]              0
+     101         99          [100]              1
+     102        100          [101]              0
+     103        101          [102]              1
+     104        102          [103]              0
+     105        103          [104]              1
+     106        104          [105]              0
+     107        105          [106]              1
+     108        106          [107]              0
+     109        107          [108]              1
+     110        108          [109]              0
+     111        109          [110]              1
+     112        110          [111]              0
+     113        111          [112]              1
+     114        112          [113]              0
+     115        113          [114]              1
+     116        114          [115]              0
+     117        115          [116]              1
+     118        116          [117]              0
+     119        117          [118]              1
+     120        118          [119]              0
+     121        119          [120]              1
+     122        120          [121]              0
+     123        121          [122]              1
+     124        122          [123]              0
+     125        123          [124]              1
+     126        124          [125]              0
+     127        125          [126]              1
+     128        126          [127]              0
+     129        127          [128]              1
+     130        128          [129]              0
+     131        129          [130]              1
+     132        130          [131]              0
+     133        131          [132]              1
+     134        132          [133]              0
+     135        133          [134]              1
+     136        134          [135]              0
+     137        135          [136]              1
+     138        136          [137]              0
+     139        137          [138]              1
+     140        138          [139]              0
+     141        139          [140]              1
+     142        140          [141]              0
+     143        141          [142]              1
+     144        142          [143]              0
+     145        143          [144]              1
+     146        144          [145]              0
+     147        145          [146]              1
+     148        146          [147]              0
+     149        147          [148]              1
+     150        148          [149]              0
+     151        149          [150]              1
+     152        150          [151]              0
+     153        151          [152]              1
+     154        152          [153]              0
+     155        153          [154]              1
+     156        154          [155]              0
+     157        155          [156]              1
+     158        156          [157]              0
+     159        157          [158]              1
+     160        158          [159]              0
+     161        159          [160]              1
+     162        160          [161]              0
+     163        161          [162]              1
+     164        162          [163]              0
+     165        163          [164]              1
+     166        164          [165]              0
+     167        165          [166]              1
+     168        166          [167]              0
+     169        167          [168]              1
+     170        168          [169]              0
+     171        169          [170]              1
+     172        170          [171]              0
+     173        171          [172]              1
+     174        172          [173]              0
+     175        173          [174]              1
+     176        174          [175]              0
+     177        175          [176]              1
+     178        176          [177]              0
+     179        177          [178]              1
+     180        178          [179]              0
+     181        179          [180]              1
+     182        180          [181]              0
+     183        181          [182]              1
+     184        182          [183]              0
+     185        183          [184]              1
+     186        184          [185]              0
+     187        185          [186]              1
+     188        186          [187]              0
+     189        187          [188]              1
+     190        188          [189]              0
+     191        189          [190]              1
+     192        190          [191]              0
+     193        191          [192]              1
+     194        192          [193]              0
+     195        193          [194]              1
+     196        194          [195]              0
+     197        195          [196]              1
+     198        196          [197]              0
+     199        197          [198]              1
+     200        198          [199]              0
+NOTE: j=n-1 (read-boundary) reads EVERY depth => |C_n-1|=n-2, S=-(n-2).
+NOTE: j=n-2 tends to give small |S| (S=0 at the powers/even sizes measured),
+      i.e. a 1 just inside the boundary reads about half the depths.
+
+=== (1b) FIXED single 1 (j CONSTANT across n) — the strict 'fixed' reading ===
+Here h = e_j with j fixed (does NOT move with n). Cell reads h[j] when
+o = d-(n-1-j) in [0,d] submask-fits, i.e. d in [n-1-j, n-1]: only j+1
+depths are EVER eligible, so nu2(n) <= j+1 = O(1) and S(n)=(n-2)-2*nu2(n)
+is LINEAR (not O(sqrt n)).  This is the fixed-1 bound, re-read at the S level:
+     fixed j=0  : S=[46, 96, 196, 496, 996]  (nu2~O(1), so S/n->1)
+     fixed j=1  : S=[44, 94, 194, 494, 994]  (nu2~O(1), so S/n->1)
+     fixed j=2  : S=[46, 94, 194, 494, 994]  (nu2~O(1), so S/n->1)
+     fixed j=5  : S=[40, 94, 190, 494, 990]  (nu2~O(1), so S/n->1)
+     fixed j=50 : S=[48, 82, 182, 446, 990]  (nu2~O(1), so S/n->1)
+So the per-window e_{n-2} family (S in {0,1}) is doing all the work; a FIXED
+single 1 is linear in S.  This is the core contrast the survey exposes.
+
+=== (2) FIXED INFINITE SPARSE (density-0) STRINGS, prefix S(n) up to 4000 ===
+Nmax=4000.  h* fixed (the same support for every n).
+Measured max|S(n)|/sqrt(n) over progressive prefixes, and where the max sits.
+  -- A: 1s at 2^m - 2 (m=1..)  [/density-0 fixed]
+     prefix<=   64: max|S|=    50  at n=62     max|S|/sqrt(prefix)=6.250
+     prefix<=  128: max|S|=   112  at n=126    max|S|/sqrt(prefix)=9.899
+     prefix<=  256: max|S|=   238  at n=254    max|S|/sqrt(prefix)=14.875
+     prefix<=  512: max|S|=   492  at n=510    max|S|/sqrt(prefix)=21.744
+     prefix<= 1000: max|S|=   966  at n=990    max|S|/sqrt(prefix)=30.548
+     prefix<= 2000: max|S|=  1956  at n=1982   max|S|/sqrt(prefix)=43.737
+     prefix<= 3000: max|S|=  2958  at n=2998   max|S|/sqrt(prefix)=54.005
+     prefix<= 4000: max|S|=  3950  at n=3998   max|S|/sqrt(prefix)=62.455
+
+  -- B: 1s at 2^m (powers of 2) [/refuter found blows up]
+     prefix<=   64: max|S|=    50  at n=64     max|S|/sqrt(prefix)=6.250
+     prefix<=  128: max|S|=   110  at n=128    max|S|/sqrt(prefix)=9.723
+     prefix<=  256: max|S|=   238  at n=256    max|S|/sqrt(prefix)=14.875
+     prefix<=  512: max|S|=   490  at n=512    max|S|/sqrt(prefix)=21.655
+     prefix<= 1000: max|S|=   964  at n=992    max|S|/sqrt(prefix)=30.484
+     prefix<= 2000: max|S|=  1956  at n=1984   max|S|/sqrt(prefix)=43.737
+     prefix<= 3000: max|S|=  2956  at n=3000   max|S|/sqrt(prefix)=53.969
+     prefix<= 4000: max|S|=  3950  at n=4000   max|S|/sqrt(prefix)=62.455
+
+=== (3) READ-CONE SIZE |C_j(n)|: EXACT closed form (verified) ===
+C_j(n) = { d in [2,n-1] : (d-(n-1-j)) submask of d }, needs d>=n-1-j.
+Identity (proved): (d-r) subseteq d  <=>  r subseteq d  for d>=r, r=n-1-j.
+Hence EXACT: |C_j(n)| = #{ d in [2,n-1] : (n-1-j) bitwise-submask of d }.
+Formal tabulation (supermask count) against r and popcount(r):
+     n=  64  j=63    r=0    popcount(r)= 0  |C_j|=  62  (=62 supermasks in [2,n-1])
+     n=  64  j=62    r=1    popcount(r)= 1  |C_j|=  31  (=31 supermasks in [2,n-1])
+     n=  64  j=61    r=2    popcount(r)= 1  |C_j|=  32  (=32 supermasks in [2,n-1])
+     n=  64  j=60    r=3    popcount(r)= 2  |C_j|=  16  (=16 supermasks in [2,n-1])
+     n=  64  j=59    r=4    popcount(r)= 1  |C_j|=  32  (=32 supermasks in [2,n-1])
+     n=  64  j=58    r=5    popcount(r)= 2  |C_j|=  16  (=16 supermasks in [2,n-1])
+     n=  64  j=56    r=7    popcount(r)= 3  |C_j|=   8  (=8 supermasks in [2,n-1])
+     n=  64  j=55    r=8    popcount(r)= 1  |C_j|=  32  (=32 supermasks in [2,n-1])
+     n=  64  j=54    r=9    popcount(r)= 2  |C_j|=  16  (=16 supermasks in [2,n-1])
+     n=  64  j=48    r=15   popcount(r)= 4  |C_j|=   4  (=4 supermasks in [2,n-1])
+     n=  64  j=47    r=16   popcount(r)= 1  |C_j|=  32  (=32 supermasks in [2,n-1])
+     n=  64  j=32    r=31   popcount(r)= 5  |C_j|=   2  (=2 supermasks in [2,n-1])
+     n=  64  j=0     r=63   popcount(r)= 6  |C_j|=   1  (=1 supermasks in [2,n-1])
+     n= 256  j=255   r=0    popcount(r)= 0  |C_j|= 254  (=254 supermasks in [2,n-1])
+     n= 256  j=254   r=1    popcount(r)= 1  |C_j|= 127  (=127 supermasks in [2,n-1])
+     n= 256  j=253   r=2    popcount(r)= 1  |C_j|= 128  (=128 supermasks in [2,n-1])
+     n= 256  j=252   r=3    popcount(r)= 2  |C_j|=  64  (=64 supermasks in [2,n-1])
+     n= 256  j=251   r=4    popcount(r)= 1  |C_j|= 128  (=128 supermasks in [2,n-1])
+     n= 256  j=250   r=5    popcount(r)= 2  |C_j|=  64  (=64 supermasks in [2,n-1])
+     n= 256  j=248   r=7    popcount(r)= 3  |C_j|=  32  (=32 supermasks in [2,n-1])
+     n= 256  j=247   r=8    popcount(r)= 1  |C_j|= 128  (=128 supermasks in [2,n-1])
+     n= 256  j=246   r=9    popcount(r)= 2  |C_j|=  64  (=64 supermasks in [2,n-1])
+     n= 256  j=240   r=15   popcount(r)= 4  |C_j|=  16  (=16 supermasks in [2,n-1])
+     n= 256  j=239   r=16   popcount(r)= 1  |C_j|= 128  (=128 supermasks in [2,n-1])
+     n= 256  j=224   r=31   popcount(r)= 5  |C_j|=   8  (=8 supermasks in [2,n-1])
+     n= 256  j=192   r=63   popcount(r)= 6  |C_j|=   4  (=4 supermasks in [2,n-1])
+     n=1000  j=999   r=0    popcount(r)= 0  |C_j|= 998  (=998 supermasks in [2,n-1])
+     n=1000  j=998   r=1    popcount(r)= 1  |C_j|= 499  (=499 supermasks in [2,n-1])
+     n=1000  j=997   r=2    popcount(r)= 1  |C_j|= 500  (=500 supermasks in [2,n-1])
+     n=1000  j=996   r=3    popcount(r)= 2  |C_j|= 250  (=250 supermasks in [2,n-1])
+     n=1000  j=995   r=4    popcount(r)= 1  |C_j|= 500  (=500 supermasks in [2,n-1])
+     n=1000  j=994   r=5    popcount(r)= 2  |C_j|= 250  (=250 supermasks in [2,n-1])
+     n=1000  j=992   r=7    popcount(r)= 3  |C_j|= 125  (=125 supermasks in [2,n-1])
+     n=1000  j=991   r=8    popcount(r)= 1  |C_j|= 496  (=496 supermasks in [2,n-1])
+     n=1000  j=990   r=9    popcount(r)= 2  |C_j|= 248  (=248 supermasks in [2,n-1])
+     n=1000  j=984   r=15   popcount(r)= 4  |C_j|=  62  (=62 supermasks in [2,n-1])
+     n=1000  j=983   r=16   popcount(r)= 1  |C_j|= 496  (=496 supermasks in [2,n-1])
+     n=1000  j=968   r=31   popcount(r)= 5  |C_j|=  31  (=31 supermasks in [2,n-1])
+     n=1000  j=936   r=63   popcount(r)= 6  |C_j|=  15  (=15 supermasks in [2,n-1])
+
+Supermask-count interpretation: |C_j| counts d in [2,n-1] whose bits
+contain those of r=n-1-j.  For r = 2^a (popcount 1) that is ~ (n-1-r)/2;
+for r with popcount k it is roughly (n - r)/2^k (leading term).  This is
+exactly the read-cone-column-equivalence weight 2^{-popcount(n-1-j)} per 1.
+
+=== CONCLUSION: does a FIXED density-0 string keep S(n) = O(sqrt n)? ===
+Measured up to n=4000, both fixed sparse candidates FAIL: max|S| ~ n (linear),
+located at n = 2^m - 2 (candidate A) and n = 2^m (candidate B), i.e. exactly
+where a 1 lands at or just below the read-boundary.
+Regime-check -- candidate A: max|S| = 50@62, 112@126, 238@254, 492@510, 966@990,
+  1956@1982, 2958@2998, 3950@3998  -> max|S| ~ n-2, i.e. ~ (n) (linear), and the
+  ratio max|S|/sqrt(n) GROWS (6.25 -> 62.5), so S(n) is NOT O(sqrt n).
+Regime-check -- candidate B: identical asymptotics (max|S| ~ n), grows too.
+So NO fixed dense-0 string among these two structural families keeps S=O(sqrt n)
+through n=4000: the per-window linear amplification reappears infinitely often
+because a large support member lands at n-1 or n-2.  G-input-strictness for a
+FIXED infinite string is NOT witnessed by these; the read-cone closed form
+explains it: a 1 at position n-1-k (r=k) is read by ~ (n-k)/2^{pc(k)} depths,
+i.e. about a 1/2^{pc(k)} fraction of the window (all depths when pc(k)=0, i.e.
+position n-1; half when pc(k)=1, i.e. n-2 or n-1 minus a power of 2; a quarter
+when pc(k)=2).  So a fixed 1 near the boundary keeps |S| ~ n whenever n-1-j has
+low popcount for infinitely many n, and any fixed support containing arbitrarily
+many low-popcount boundary-near members is forced to S = Omega(n) infinitely
+often.  An S=O(sqrt n) witness must avoid all
+boundary-near positions at every n, a strictly finer (growing, carefully-placed)
+object than any fixed S -- consistent with the refuter's finding that the
+G-weak-input-strictness witness cannot be a fixed sparse string.

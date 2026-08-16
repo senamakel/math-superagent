@@ -75,8 +75,15 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `gen_n8.py` | _(undescribed)_ |
 | `grounding.py` | _(undescribed)_ |
 | `growing_sparse_search.py` | _(undescribed)_ |
+| `import_k3.py` | _(undescribed)_ |
+| `kstar_check.py` | _(undescribed)_ |
+| `kstar_check2.py` | _(undescribed)_ |
+| `kstar_check3.py` | _(undescribed)_ |
+| `kstar_n8_k4.p` | _(undescribed)_ |
+| `kstar_resolve.py` | _(undescribed)_ |
 | `l1_shift_n4_d2.p` | TPTP encoding of the derivative-ladder shift identity T_{Δh}(4,2)=T(5,3) over free h; engine returns proved. |
 | `n8_cells.py` | _(undescribed)_ |
+| `n8_pairs_verify.py` | Hand-style verifier (literal submask-XOR oracle t_direct, no SOS) that distinguishes the two n=8 witness pairs by the definition of the K* correlation-order budget: Pair A (REOPENED witness 00000010/00000100, equal C_1, S^2=0 vs 4) witnesses the cumulative C_1..C_K claim; Pair B (01110111/10111011, equal C_4 single 5-gram histogram but different C_1, S^2=16 vs 4) witnesses only the refuted single-C_K reduction. Banks the definitional split behind K*(n)=floor(n/2) not ceil. |
 | `n8_weight2_probe.p` | _(undescribed)_ |
 | `powers_two_check.py` | _(undescribed)_ |
 | `probe_fixed_sparse_structural.py` | _(undescribed)_ |
@@ -86,13 +93,18 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `refute_runtelescope.py` | _(undescribed)_ |
 | `refute_single_boundary_sweep.py` | _(undescribed)_ |
 | `run_amplify.py` | _(undescribed)_ |
+| `run_both.py` | _(undescribed)_ |
+| `run_both2.py` | _(undescribed)_ |
 | `run_checks.sh` | _(undescribed)_ |
 | `run_endpoint.sh` | _(undescribed)_ |
 | `run_endpoint_sign.sh` | _(undescribed)_ |
+| `run_kstar.sh` | _(undescribed)_ |
+| `run_kstar_shim.py` | _(undescribed)_ |
 | `run_refute_endpoint.sh` | _(undescribed)_ |
 | `run_refute_runtelescope.sh` | _(undescribed)_ |
 | `runtelescope_d13_n16.p` | _(undescribed)_ |
 | `runtelescope_threeval_negctrl_d3.p` | _(undescribed)_ |
+| `scratch_n7_cells.py` | _(undescribed)_ |
 | `second_moment_p0_witness.p` | TPTP encoding of the n=6 all-zero h witness showing the "uniformly in p" second-moment claim is false: every fold cell T=0, every eps=+1, S=4=n-2, E[S^2]=16=(n-2)^2. find_counterexample returns proved (the all-zero h forces all eps=+1), confirming the hand check that F_n(1-2p)->(n-2)^2 as p->0. |
 | `sign_convention_note.py` | _(undescribed)_ |
 | `sparse_fixed_probe.py` | _(undescribed)_ |
@@ -107,4 +119,6 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `verify_meet_runtelescope.py` | _(undescribed)_ |
 | `verify_refutations_exact.py` | Literal fold-cell oracle verifying the two refutations in refuter_live_structural_claims.md by exhaustive scan on small n. |
 | `verify_run_telescope.py` | _(undescribed)_ |
+| `verify_witness_n8.py` | _(undescribed)_ |
 | `weak_input_sat_vacuity_n8.p` | _(undescribed)_ |
+| `zz_run_dummy.py` | _(undescribed)_ |

@@ -1,0 +1,59 @@
+n=  2 B=1 A=0 imported=1 ceil=1 (0.0s)
+n=  3 B=1 A=0 imported=1 ceil=2 (0.0s)
+n=  4 B=2 A=1 imported=2 ceil=2 (0.0s)
+n=  5 B=2 A=1 imported=2 ceil=3 (0.0s)
+n=  6 B=4 A=3 imported=3 ceil=3 (0.0s)
+n=  7 B=5 A=4 imported=4 ceil=4 (0.0s)
+n=  8 B=5 A=4 imported=4 ceil=4 (0.0s)
+n=  9 B=7 A=6 imported=5 ceil=5 (0.0s)
+n= 10 B=8 A=7 imported=5 ceil=5 (0.0s)
+n= 11 B=8 A=7 imported=6 ceil=6 (0.0s)
+n= 12 B=10 A=9 imported=6 ceil=6 (0.1s)
+n= 13 B=11 A=10 imported=7 ceil=7 (0.2s)
+n= 14 B=8 A=7 imported=7 ceil=7 (0.3s)
+n= 15 B=13 A=12 imported=8 ceil=8 (0.7s)
+n= 16 B=14 A=13 imported=8 ceil=8 (1.6s)
+n= 17 B=12 A=11 imported=9 ceil=9 (3.9s)
+n= 18 B=16 A=15 imported=9 ceil=9 (6.9s)
+Authoritative K*(n) resolution -- budget question (GOAL priority 3)
+sequence: generic binary strings h in F_2^n (combinatorics, no primes)
+oracle: lib.supply_fold.s_sos (canonical floored fold, d in [2,n-1])
+range: n = 2..NMAX (declared 2^n brute oracle)
+
+definitions:
+  C_K(h) = (K+1)-gram histogram (n-K overlapping windows)
+  witness at K  = two strings, same C_K-fiber, different S^2
+  A(n) = largest K with a witness   (the budget of REOPENED)
+  B(n) = smallest K with NO witness (= min{K:S^2 constant on
+         every C_K-fiber});  monotone,  A = B - 1
+
+  n   B  A=budget  imported  ceil(n/2)  budget==imported?  budget==ceil?
+    2  1     0        1          1       no             no   
+    3  1     0        1          2       no             no   
+    4  2     1        2          2       no             no   
+    5  2     1        2          3       no             no   
+    6  4     3        3          3       YES            YES  
+    7  5     4        4          4       YES            YES  
+    8  5     4        4          4       YES            YES  
+    9  7     6        5          5       no             no   
+   10  8     7        5          5       no             no   
+   11  8     7        6          6       no             no   
+   12 10     9        6          6       no             no   
+   13 11    10        7          7       no             no   
+   14  8     7        7          7       YES            YES  
+   15 13    12        8          8       no             no   
+   16 14    13        8          8       no             no   
+   17 12    11        9          9       no             no   
+   18 16    15        9          9       no             no   
+
+  -> budget A(n)==imported ceil(n/2) table for ALL n: NO
+  -> budget A(n)==ceil(n/2) for all n: NO
+
+(verdict) The imported K*(n)=ceil(n/2) budget table does NOT reproduce from the
+definition on the same canonical oracle. The true budget A(n) = B(n)-1 is:
+  2,2,4,5,5,7,8,8,10,... for n=4..12 (measured n=2..18 above).
+  It is not ceil(n/2). The 'n=5 mismatch' noted in GOAL.md was not an isolated
+  exception -- the ceil(n/2) closed form fails from n=9 on.
+
+elapsed 6.9s
+

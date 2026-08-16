@@ -32,6 +32,21 @@ The substantive finding is the **threshold**, measured `n = 4..20`:
 K*(n) ≈ ⌈n/2⌉        n=8 → 4,  n=12 → 6,  n=16 → 8,  n=20 → 10
 ```
 
+**CORRECTION (tool_builder, `code/order_k/kstar_exact.py`, capture
+`code/out/kstar_exact.captured.txt`, n=2..15 exhaustive exact cumulative
+grouping, both gates green): the exact budget is `K*(n) = floor(n/2)`, not
+`ceil(n/2)`.** The two agree at every even n (K*(2m)=m), but at every odd n
+K* sits one below ceil: n=7→3 (not 4), n=9→4 (not 5), n=11→5 (not 6), n=13→6
+(not 7), n=15→7 (not 8). The `n=5` "mismatch" this file flagged is precisely
+this tell (K*(5)=2, ceil(5/2)=3, floor(5/2)=2). Confirmed by two independent
+exact-cumulative implementations (`code/sat_solver/orderk_oracle.py` and
+`code/order_k/kstar_exact.py`); the single-C_K-hash grouping in
+`order_budget.py` (which relies on the refuted 'C_1..C_K iff C_K' reduction)
+is wrong and must not be used. The substance of the refutation stands —
+`Φ` still sees structure to linear order ≈ n/2 in `n` — but the closed form is
+`floor`, and the linear-in-n budget that this pass's territory depends on is
+confirmed (witnesses exist up to K ≈ n/2, i.e. into the `1 < K ≲ n/2` range).
+
 Witnesses exist up to correlation order about `n/2`. **No uniform bound exists,
 and `Φ` sees structure to an order linear in `n`.**
 

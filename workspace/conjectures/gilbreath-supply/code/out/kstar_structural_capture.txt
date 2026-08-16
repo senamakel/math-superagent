@@ -1,0 +1,171 @@
+K*(n) structural characterization via maximal run length of M_d Δ M_{d'}
+sequence: generic binary strings h in F_2^n (combinatorics, no primes)
+oracle: lib.supply_fold.s_sos (canonical floored fold d in [2,n-1])
+        + s_direct cross-check; lib.supply_fold.runs_of_downset for runs
+range: R(n) geometry n=2..200; brute C_K fiber ground truth n=4..14
+
+(1) R(n) = max run length of M_d △ M_{d'}   [exact geometry]
+    n      R    R-1  ceil(n/2)   argmax(d,d')   closed-form R
+       2     0   -1        1   None               0
+       3     0   -1        2   None               0
+       4     1    0        2   (2, 3)             1
+       5     4    3        3   (3, 4)             4
+       6     4    3        3   (3, 4)             4
+       7     4    3        4   (3, 4)             4
+       8     5    4        4   (2, 7)             5
+       9     8    7        5   (7, 8)             8
+      10     8    7        5   (7, 8)             8
+      11     8    7        6   (7, 8)             8
+      12     8    7        6   (7, 8)             8
+      13     8    7        7   (7, 8)             8
+      14     8    7        7   (7, 8)             8
+      15     8    7        8   (7, 8)             8
+      16    13   12        8   (2, 15)           13
+      17    16   15        9   (15, 16)          16
+      18    16   15        9   (15, 16)          16
+      19    16   15       10   (15, 16)          16
+      20    16   15       10   (15, 16)          16
+      21    16   15       11   (15, 16)          16
+      22    16   15       11   (15, 16)          16
+      23    16   15       12   (15, 16)          16
+      24    16   15       12   (15, 16)          16
+      25    16   15       13   (15, 16)          16
+      26    16   15       13   (15, 16)          16
+      27    16   15       14   (15, 16)          16
+      28    16   15       14   (15, 16)          16
+      29    16   15       15   (15, 16)          16
+      30    16   15       15   (15, 16)          16
+      31    16   15       16   (15, 16)          16
+      32    29   28       16   (2, 31)           29
+      33    32   31       17   (31, 32)          32
+      34    32   31       17   (31, 32)          32
+      64    61   60       32   (2, 63)           61
+     100    64   63       50   (63, 64)          64
+     128   125  124       64   (2, 127)         125
+     200   128  127      100   (127, 128)       128
+    closed form R(n)=2^k on (2^k,2^{k+1}), 2^j-3 at n=2^j -> matches exact on n=2..200: True
+
+(2) R(n)-1 vs imported 'measured' K* vs ceil(n/2)   (n=2..20)
+    n   K*_imp  R-1  ceil   R-1==K*?  R-1==ceil?
+      2       1   -1    1   no        no      
+      3       1   -1    2   no        no      
+      4       2    0    2   no        no      
+      5       2    3    3   no        YES     
+      6       3    3    3   YES       YES     
+      7       4    3    4   no        no      
+      8       4    4    4   YES       YES     
+      9       5    7    5   no        no      
+     10       5    7    5   no        no      
+     11       6    7    6   no        no      
+     12       6    7    6   no        no      
+     13       7    7    7   YES       YES     
+     14       7    7    7   YES       YES     
+     15       8    7    8   no        no      
+     16       8   12    8   no        no      
+     17       9   15    9   no        no      
+     18       9   15    9   no        no      
+     19      10   15   10   no        no      
+     20      10   15   10   no        no      
+    -> R(n)-1 == K*_imported for all n=6..20? False
+
+(4) K*(n)=ceil(n/2) for n=6..20 (imported table): YES
+    R(n)=ceil(n/2)+1 for n=6..39 (geometry): NO
+    (R is a 2-power block function, NOT ceil(n/2)+1; the two
+     coincide only where ceil(n/2)+1 happens to be a power-of-2
+     block value.)
+
+(3) Exhaustive C_K fiber witness check, n=4..14 (declared 2^n oracle)
+    prediction: has_witness(K)  <=>  some monomial run > K+1  <=>  K < R(n)-1
+    n   K*_brute  R-1  K*_imp   pred==ground?  first K mismatch
+      4 2           0 2       FAIL          1
+        (n=4,K=1): predict has_witness=False, ground=True
+      5 2           3 2       FAIL          2
+        (n=5,K=2): predict has_witness=True, ground=False
+      6 4           3 3       FAIL          3
+        (n=6,K=3): predict has_witness=False, ground=True
+      7 5           3 4       FAIL          3
+        (n=7,K=3): predict has_witness=False, ground=True
+        (n=7,K=4): predict has_witness=False, ground=True
+      8 5           4 4       FAIL          4
+        (n=8,K=4): predict has_witness=False, ground=True
+      9 7           7 5       OK            
+     10 8           7 5       FAIL          7
+        (n=10,K=7): predict has_witness=False, ground=True
+     11 8           7 6       FAIL          7
+        (n=11,K=7): predict has_witness=False, ground=True
+     12 10          7 6       FAIL          7
+        (n=12,K=7): predict has_witness=False, ground=True
+        (n=12,K=8): predict has_witness=False, ground=True
+        (n=12,K=9): predict has_witness=False, ground=True
+     13 11          7 7       FAIL          7
+        (n=13,K=7): predict has_witness=False, ground=True
+        (n=13,K=8): predict has_witness=False, ground=True
+        (n=13,K=9): predict has_witness=False, ground=True
+        (n=13,K=10): predict has_witness=False, ground=True
+     14 8           7 7       FAIL          7
+        (n=14,K=7): predict has_witness=False, ground=True
+        (n=14,K=9): predict has_witness=False, ground=True
+        (n=14,K=10): predict has_witness=False, ground=True
+    -> characterization holds on n=4..14 by brute: False
+
+    Explicit sufficiency-direction counterexamples (all monomial runs
+    <= K+1, yet a C_K fiber splits S^2):
+      n=6,K=3: all runs<=K+1 (True); a=0 0 1 0 0 1 b=0 1 0 0 1 0 same C_3, S^2=4 vs 0
+      n=7,K=3: all runs<=K+1 (True); a=0 0 0 1 0 0 0 b=0 0 1 0 0 0 1 same C_3, S^2=9 vs 1
+      n=12,K=8: all runs<=K+1 (True); a=0 0 0 1 0 0 0 1 0 0 0 1 b=0 0 1 0 0 0 1 0 0 0 1 0 same C_8, S^2=36 vs 64
+
+    Root cause: C_K is a HISTOGRAM (word counts, no positions).
+    Example (n=6,K=3): a=001001, b=010010 have the SAME multiset of
+    4-grams {(0010),(0100),(1001)} yet the 4-gram at fixed positions
+    1..4 is 0100 (product -1) in a and 1001 (product +1) in b.  A
+    positioned monomial run is not determined by the histogram.
+    Also C_{K+1} does not determine C_K: the last boundary window is
+    lost on marginalisation, so the K* threshold is non-monotone
+    (n=14: no witness at K=8, a witness at K=9).
+
+(5) K* ground truth vs R(n)-1 and ceil(n/2)   (n=4..14)
+    n   K*_brute  R-1  ceil(n/2)  K*_imp  K*_brute==R-1?  ==ceil?
+      4        2    0         2 2       no             YES  
+      5        2    3         3 2       no             no   
+      6        4    3         3 3       no             no   
+      7        5    3         4 4       no             no   
+      8        5    4         4 4       no             no   
+      9        7    7         5 5       YES            no   
+     10        8    7         5 5       no             no   
+     11        8    7         6 6       no             no   
+     12       10    7         6 6       no             no   
+     13       11    7         7 7       no             no   
+     14        8    7         7 7       no             no   
+    -> ground-truth K* == R(n)-1 for all n=4..14: False
+    -> ground-truth K* == ceil(n/2) for all n=4..14: False
+
+(6) Same claim under CUMULATIVE fibers (equal on C_1..C_K), the
+    faithful reading of the task's 'C_1..C_K'.  CUM_{K+1} refines
+    CUM_K (nested), so flags are monotone and K* is a genuine threshold.
+    prediction still: has_cumwitness(K) <=> K < R(n)-1.
+    n   R-1  K*_cum  floor  ceil   pred==ground?
+      4    0 2          2    2  FAIL         
+      5    3 2          2    3  FAIL         
+      6    3 3          3    3  OK           
+      7    3 3          3    4  OK           
+      8    4 4          4    4  OK           
+      9    7 4          4    5  FAIL         
+     10    7 5          5    5  FAIL         
+     11    7 5          5    6  FAIL         
+     12    7 6          6    6  FAIL         
+     13    7 6          6    7  FAIL         
+     14    7 7          7    7  OK           
+    -> cumulative run-length characterization holds on n=4..14: False
+    -> cumulative K*(n)==floor(n/2) for all n=4..14: True
+    (The R-1 prediction overshoots: R is a 2-power block function
+     far above floor(n/2), so the run-length criterion is not the
+     operative threshold under either definition.)
+
+VERDICT: the run-length characterization K*(n)=R(n)-1 is REFUTED
+by ground truth, and K*(n)=ceil(n/2) is also refuted against the
+exhaustive oracle.  The structural claim that a histogram C_K
+pins positioned products over runs of length <=K+1 is false --
+whether C_K means the single histogram (non-nested, non-monotone
+K*, floor/ceil test fails) or the cumulative family C_1..C_K (nested,
+monotone, K*=floor(n/2), but again not R(n)-1).
+

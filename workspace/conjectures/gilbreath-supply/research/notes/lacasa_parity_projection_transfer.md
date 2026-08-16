@@ -35,10 +35,38 @@ For every `m`, every binary parity block `(b_1,…,b_m)` is realisable from *bot
 forbidden mod-6 block of size `m` (where forbidden blocks exist). Hence the parity string `h` carries
 **no forbidden-block constraint from the mod-6 enumeration at any order**.
 
-**Status of this note's claim:** the m=2 case is verified by hand here (argument above). The general m
-case follows by the same free-parity reasoning but is **recorded as a conjecture pending mechanical
-check** — `code/librarian/lacasa_projection_check.py` is written to confirm it for m=1..4 and should
-be run by the coder/refuter. Do not cite the general-m statement as verified until that check runs.
+**Status of this note's claim:** PROVED for all m by per-coordinate bijection (scholar,
+this pass). Per coordinate j, with c_j fixed, the map p_j ↦ (p_j ⊕ (c_j/2 mod 2)) is a
+bijection {0,1}→{0,1}, and coordinates are independent, so every target binary block
+b ∈ {0,1}^m is reached by exactly one parity vector p = (a_j mod 2)_j from EVERY fixed
+class vector c ∈ {0,2,4}^m — admissible or forbidden alike. This is an argument, not a
+conjecture; the mechanical check `code/scholar/lacasa_parity_projection_check.py` (m=1..6
+abstract + real-prime data, m=1..6) is a confirmation, not the evidence. The earlier
+"pending mechanical check, do not cite" diffidence is withdrawn; the general-m statement
+is cited as proved.
+
+```claim
+id: lacasa-mod6-forbidden-blocks-parity-invisible
+statement: For every m, the projection h_j = ((p_{j+1}−p_j)/2) mod 2 of the prime gap
+  sequence onto its parity string carries NO forbidden-block constraint from the mod-6
+  enumeration at any order, because per coordinate the free part (a mod 2) is a bijection
+  that swamps the fixed class term: every binary block b ∈ {0,1}^m is realisable from both
+  an admissible and a forbidden mod-6 class block of size m.
+hypotheses: gap g = 6a + c, c ∈ {0,2,4}, a free; h = (a mod 2) ⊕ (c/2 mod 2).
+holds-here: yes — this is exactly the fold's parity input h[j] = ((q_{j+1}−q_j)/2) mod 2.
+status: proved (per-coordinate bijection, all m; independent of whether the real prime
+  string realises every gap, since it is a statement about the projection of any/generic
+  residue data)
+bearing: kills the naive K>1 transfer. Lacasa's unconditional forbidden-block structure is
+  a property of the mod-6 residue sequence; the fold sees only mod-4 parity, and the
+  projection destroys it at every order. No unconditional K>1 arithmetic input on the
+  prime gap sequence reaches the fold's parity string from this source. It does NOT rule
+  out a K>1 functional of the fold (Φ provably sees order ~n/2); it rules out the naive
+  route of feeding Lacasa's enumeration to it.
+anchor: this note; code/scholar/lacasa_parity_projection_check.py
+answers: (reopened-pass question, negative for the Lacasa input)
+```
+
 
 ## Consequence
 

@@ -1,0 +1,162 @@
+sequence = independent literal fold oracle (no lib f2/SOS code)
+oracle   = T(n,d)=XOR_{o submask of d} h[n-1-d+o]; nu2=#{d in [2,n-1]:T=1}
+range    = n in 3..40 (item 1,4); n in {10,14,16} exhaustive (item 3); n=8 (item 2)
+
+================== ITEM 1: e_{n-2} mechanism ==================
+For h = e_{n-2} (single 1 at index n-2), expect nu2(n) = #{odd d in [2,n-1]}.
+True odd count = floor((n-2)/2); the task prompt's stated ceil((n-2)/2) is 
+wrong for odd n (n=5 -> odd d in [2,4] = {3}, count 1, not ceil(3/2)=2);
+the literal oracle reproduces the true odd-count exactly.
+   n   nu2  odd_count  match
+   3     0          0   True
+   4     1          1   True
+   5     1          1   True
+   6     2          2   True
+   7     2          2   True
+   8     3          3   True
+   9     3          3   True
+  10     4          4   True
+  11     4          4   True
+  12     5          5   True
+  13     5          5   True
+  14     6          6   True
+  15     6          6   True
+  16     7          7   True
+  17     7          7   True
+  18     8          8   True
+  19     8          8   True
+  20     9          9   True
+  21     9          9   True
+  22    10         10   True
+  23    10         10   True
+  24    11         11   True
+  25    11         11   True
+  26    12         12   True
+  27    12         12   True
+  28    13         13   True
+  29    13         13   True
+  30    14         14   True
+  31    14         14   True
+  32    15         15   True
+  33    15         15   True
+  34    16         16   True
+  35    16         16   True
+  36    17         17   True
+  37    17         17   True
+  38    18         18   True
+  39    18         18   True
+  40    19         19   True
+ITEM 1 PASS (all n in 3..40 agree: True)
+
+================== ITEM 2: n=8 witness ==================
+S(n) = (n-2) - 2*nu2(n); expected h=e_6:(nu2=3,S=0,S^2=0)  h=e_5:(nu2=4,S=-2,S^2=4)
+h=e_6: nu2=3 (exp 3)  S=0 (exp 0)  S^2=0 (exp 0)  OK
+h=e_5: nu2=4 (exp 4)  S=-2 (exp -2)  S^2=4 (exp 4)  OK
+ITEM 2 PASS
+
+================== ITEM 3: min-weight threshold ==================
+For each weight w: mean nu2/n and frac(nu2/n>=0.40) over all 2^n strings.
+First w with (mean>=0.40 AND frac>=0.5). Expected: n=10->3, n=14->4, n=16->3.
+
+--- n=10 (2^10 strings exhaustive) ---
+  w   count  mean nu2/n frac>=0.40  typical
+  0       1      0.0000     0.0000
+  1      10      0.3000     0.4000
+  2      45      0.3556     0.5111
+  3     120      0.4067     0.6500  <== FIRST TYPICAL
+  4     210      0.4114     0.6667
+  5     252      0.4016     0.6429
+  6     210      0.4114     0.6667
+  7     120      0.4067     0.6500
+  8      45      0.3556     0.5111
+  9      10      0.3000     0.4000
+ 10       1      0.0000     0.0000
+  first typical w = 3  (expected 3)  OK
+
+--- n=14 (2^14 strings exhaustive) ---
+  w   count  mean nu2/n frac>=0.40  typical
+  0       1      0.0000     0.0000
+  1      14      0.2755     0.3571
+  2      91      0.3579     0.3736
+  3     364      0.3980     0.5000
+  4    1001      0.4230     0.5934  <== FIRST TYPICAL
+  5    2002      0.4331     0.6119
+  6    3003      0.4327     0.6267
+  7    3432      0.4311     0.6399
+  8    3003      0.4327     0.6267
+  9    2002      0.4331     0.6119
+ 10    1001      0.4230     0.5934
+ 11     364      0.3980     0.5000
+ 12      91      0.3579     0.3736
+ 13      14      0.2755     0.3571
+ 14       1      0.0000     0.0000
+  first typical w = 4  (expected 4)  OK
+
+--- n=16 (2^16 strings exhaustive) ---
+  w   count  mean nu2/n frac>=0.40  typical
+  0       1      0.0000     0.0000
+  1      16      0.3047     0.3125
+  2     120      0.3271     0.3083
+  3     560      0.4279     0.5143  <== FIRST TYPICAL
+  4    1820      0.3893     0.4253
+  5    4368      0.4661     0.6841
+  6    8008      0.4092     0.4976
+  7   11440      0.4720     0.7293
+  8   12870      0.4089     0.5277
+  9   11440      0.4720     0.7293
+ 10    8008      0.4092     0.4976
+ 11    4368      0.4661     0.6841
+ 12    1820      0.3893     0.4253
+ 13     560      0.4279     0.5143
+ 14     120      0.3271     0.3083
+ 15      16      0.3047     0.3125
+ 16       1      0.0000     0.0000
+  first typical w = 3  (expected 3)  OK
+ITEM 3 PASS
+
+================== ITEM 4: all-ones negative control ==================
+h = all-ones of length n, expect nu2(n)=0 for every n in 6..40.
+   n   nu2
+   6     0
+   7     0
+   8     0
+   9     0
+  10     0
+  11     0
+  12     0
+  13     0
+  14     0
+  15     0
+  16     0
+  17     0
+  18     0
+  19     0
+  20     0
+  21     0
+  22     0
+  23     0
+  24     0
+  25     0
+  26     0
+  27     0
+  28     0
+  29     0
+  30     0
+  31     0
+  32     0
+  33     0
+  34     0
+  35     0
+  36     0
+  37     0
+  38     0
+  39     0
+  40     0
+ITEM 4 PASS (all-ones nu2=0 for all n in 6..40)
+
+================== SUMMARY ==================
+ITEM 1 (e_n-2 odd-count): PASS
+ITEM 2 (n=8 witness):     PASS
+ITEM 3 (min-weight thr):  PASS
+ITEM 4 (all-ones ctrl):   PASS
+OVERALL: PASS

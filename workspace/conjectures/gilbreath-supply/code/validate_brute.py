@@ -53,13 +53,15 @@ def main():
           f"the measurement cache as asserted in its docstring.")
 
     # (2) measured endpoint (a): nu2/n in [0.42,0.52] over 50..3999 (sampled)
-    print("\n=== (a) nu2/n in [0.420,0.520], n=50..3999 (sampled) ===")
+    print("\n=== (a) nu2/n sampled range, n=50..3999 (problem.md corrected"
+          " full-sweep range is 0.3396..0.6170) ===")
     lo, hi = 1.0, 0.0
     for n in range(50, 4000, 97):          # sample ~ n=50..3903
         v = nu2_matrix(n) / n
         lo, hi = min(lo, v), max(hi, v)
     print(f"sampled nu2/n over 50..3903 (every 97th): {lo:.4f} .. {hi:.4f}  "
-          f"-> within [0.42, 0.52]: {lo >= 0.42 and hi <= 0.52}")
+          f"(stale [0.42,0.52] test no longer asserted; see problem.md "
+          f"corrected full-sweep row)")
 
     # (3) measured endpoint (b): nu2(4000)/4000
     print("\n=== (b) nu2(4000)/4000 ===")

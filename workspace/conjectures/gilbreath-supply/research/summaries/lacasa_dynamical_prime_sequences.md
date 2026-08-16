@@ -22,8 +22,9 @@ The **topic of the whole arc**: the fold's input is a *collapse* of gap residues
 This is the strongest on-topic source for the reopened pass (GOAL priority 2: a functional of order `1 < K ≲ n/2`):
 
 - The prime gap sequence carries a **provable, unconditional, prime-specific K>1 structure**: forbidden patterns at every block order m>1, with exact counts attached to divisibility — *not* to the switch-density (pair, K=1) question. Every blocked partial-sum residue condition is a divisibility event.
-- Closed door 3 (no long constant runs) already used Shiu; this source is the *on the other side* of that: exactly which multi-gap patterns are impossible is now enumerated. In the gap-parity bit h, these map to forbidden binary blocks — a candidate *weaker arithmetic input* than pointwise mod-4 switch density, because it is K>1 and unconditional.
-- But note the projection caveat: mod-6 residue classes collapse many → few under parity, and it is not automatic that the forbidden 6-residue blocks survive the mod-4/parity projection used by the fold. Whether the surviving constraint on h is strong enough, and controllable by a K>1 functional, is precisely the open question — this source supplies the raw unconditional constraint, not the transfer.
+- **RESOLVED — the projection erases it (see [[research/notes/lacasa_projection.md]]):** the fold's input is `h[j]=((q_{j+1}−q_j)/2) mod 2`, the **parity** of the half-gap. Lacasa's symbols are the half-gap **mod 3**. By CRT (gcd(2,3)=1), the mod-2 parity is independent of the mod-3 symbol, so the forbidden-block rule imposes **no constraint on the parity string h**. This K>1 structure cannot be an arithmetic input strictly weaker than pointwise mod-4 switch density — it is invisible to the fold's reading. Claim `lacasa-forbidden-blocks-invisible-to-parity-projection`.
+- Closed door 3 (no long constant runs) already used Shiu; this source is the *on the other side*: exactly which multi-gap patterns are impossible is now enumerated.
+- The reopened question must look at a structure that survives parity (e.g. the fold's own submask correlation reading, or LOS's K≥2 sawtooth term), not at mod-6 gap-block forbiddance.
 
 ## What it does NOT settle
 

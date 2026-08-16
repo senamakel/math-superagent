@@ -1,0 +1,53 @@
+order-K correlation vector C_K -- REOPENED SUPPLY goal
+sequence: generic binary strings h in F_2^n (combinatorics, no primes)
+oracle: lib.supply_fold.s_sos (canonical floored fold, d in [2,n-1])
+range: n = 4..N (brute fiber enumeration, see N below)
+
+(a) DEFINITION pinned for C_K
+  C_K(h) = empirical (K+1)-gram histogram of h: for each binary word
+  w of length K+1, count windows h[0..K]..h[n-K-1..n-1] (n-K windows) equal to w.
+  C_K is a tuple of length 2^{K+1}. Same C_K-fiber == identical histogram.
+
+(b) n=8 WITNESS through the canonical oracle
+  n=8 h  = 00000010  C_1=(5, 1, 1, 0)  S^2=0
+  n=8 h' = 00000100  C_1=(5, 1, 1, 0)  S^2=4
+  n=8 h  s_sos -> S=0, ones=3, nu2=3 (expected S=0)
+  n=8 h'  s_sos -> S=-2, ones=4, nu2=4 (expected S=-2)
+
+(d) monomial reformulation check (OTTER claim)
+  n=4: S^2 == sum over d,d' of prod_{j in M_d△M_d'} x_j : OK
+  n=5: S^2 == sum over d,d' of prod_{j in M_d△M_d'} x_j : OK
+  n=6: S^2 == sum over d,d' of prod_{j in M_d△M_d'} x_j : OK
+  n=7: S^2 == sum over d,d' of prod_{j in M_d△M_d'} x_j : OK
+  n=8: S^2 == sum over d,d' of prod_{j in M_d△M_d'} x_j : OK
+  n=9: S^2 == sum over d,d' of prod_{j in M_d△M_d'} x_j : OK
+  -> monomial identity: confirmed numerically
+  Claim to test: 'S^2 is a function of C_K iff every symmetric-diff monomial has index-width <= K+1'
+  n=4: max sym-diff monomial index-width = 3 (would force K*=2); imported K*=2 -> reformulation consistent
+  n=5: max sym-diff monomial index-width = 4 (would force K*=3); imported K*=2 -> reformulation CONTRADICTED
+  n=6: max sym-diff monomial index-width = 5 (would force K*=4); imported K*=3 -> reformulation CONTRADICTED
+  n=7: max sym-diff monomial index-width = 6 (would force K*=5); imported K*=4 -> reformulation CONTRADICTED
+  n=8: max sym-diff monomial index-width = 7 (would force K*=6); imported K*=4 -> reformulation CONTRADICTED
+  n=9: max sym-diff monomial index-width = 8 (would force K*=7); imported K*=5 -> reformulation CONTRADICTED
+  n=10: max sym-diff monomial index-width = 9 (would force K*=8); imported K*=5 -> reformulation CONTRADICTED
+  n=11: max sym-diff monomial index-width = 10 (would force K*=9); imported K*=6 -> reformulation CONTRADICTED
+  n=12: max sym-diff monomial index-width = 11 (would force K*=10); imported K*=6 -> reformulation CONTRADICTED
+
+(c) K* table reproduced by brute force (oracle, small n)
+  n  K*_brute   K*_imported   witness flags (K=1..K*-1 all True expected)
+    4         2   2           T..  OK
+    5         2   2           T...  OK
+    6         4   3           TTT..  MISMATCH
+    7         5   4           TTTT..  MISMATCH
+    8         5   4           TTTT...  MISMATCH
+    9         7   5           TTTTTT..  MISMATCH
+   10         8   5           TTTTTTT..  MISMATCH
+   11         8   6           TTTTTTT...  MISMATCH
+   12        10   6           TTTTTTTTT..  MISMATCH
+  Covered n = [4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+(e) notes
+  - The n=5 exception (imported K*=2 vs ceil(5/2)=3) IS reproduced by brute force if the table shows K*=2 at n=5.
+  - The monomial-WIDTH characterization is REFUTED: the widest symmetric-diff monomial has width n-1 at every n, which would force K*=n-2, not ~n/2. S^2 is a function of C_K for a much smaller K than the width bound suggests, because the monomials cancel across the d,d' sum (the geometry fold-distance-enumerator-On).
+  - kstar_brute is the oracle (exponential 2^n); it is the ONLY exponential part and is bounded to n<=20.
+

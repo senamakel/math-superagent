@@ -28,10 +28,10 @@ status: open
 
 ```rung
 id: R-finite-verified
-statement: For the real prime string h (floor convention at index 2), ν₂(n)/n ≥ 0.42 for every n with 50 ≤ n ≤ 4000, c = 0.42 explicit. Numerical evidence, not a theorem.
+statement: For the real prime string h (floor convention at index 2), ν₂(n)/n ≥ 0.42 for every n with 275 ≤ n ≤ 4000, and the full exceptional set {n ≤ 4000 : ν₂(n)/n < 0.42} is {53, 56, 62, 71, 103, 105, 145, 153, 210, 274}, deepest ν₂(53)/53 = 0.3585. Numerical evidence, not a theorem. (The earlier reading "ν₂/n ≥ 0.42 for every 50 ≤ n ≤ 4000" is FALSE — those 10 dips violate it.)
 off: pointwise-all-n
 stance: settled
-merge: Turn `pointwise-all-n` back on: extend the range past 4000. First move is R-averaged-supply (density-1 set), the first primes-on statement beyond the finite prefix; a bare computation cannot reach a proof and this rung is the oracle anchor, not a stepping stone.
+merge: Turn `pointwise-all-n` back on: extend the range past 4000. First move is R-averaged-supply (density-1 set), the first primes-on statement beyond the finite prefix; a bare computation cannot reach a proof and this rung is the oracle anchor, not a stepping stone. Settled by dip-boundary-effect-small-n and dip-sparsity-to-20000; the contradiction claim r-finite-verified-contradicted records the correction to the range.
 ```
 
 ```rung

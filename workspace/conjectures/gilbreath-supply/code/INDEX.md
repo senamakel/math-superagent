@@ -5,11 +5,15 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `AGENTS.md` | _(undescribed)_ |
+| `_go_parseval_direct.py` | _(undescribed)_ |
+| `_zz.py` | _(undescribed)_ |
 | `abgs_m4_check.py` | Same ABGS m=4 check as code/out/abgs_m4_check.py, placed under code/ as the canonical reproduction source. Counts (1,1)=16574,(1,3)=22521,(3,1)=22520,(3,3)=16715; switch=57.5%, switch/equal=1.35. Supports abgs-mod4-nonuniform-measured. |
 | `analyze_nu2.py` | _(undescribed)_ |
 | `avg_nu2.py` | Deliverable: empirical status of averaged SUPPLY. Re-grounds the linearisation (fold wt vs literal suffix, n=3..60), streams nu2 one n at a time via the SOS fold, and reports exact prime mean/variance of nu2(n)/n at checkpoints, plus all-ones and Thue-Morse negative controls. Verified against direct mean/variance (n=2..120, exact equality) and reproduces problem.md's 0.4933 at n=4000 (1976/4000=0.4940). |
-| `brute.py` | Naive oracle for SUPPLY: nu2(n)=wt(Phi_n h) over F2 via explicit Pascal-mod-2 fold matrix (canonical depths d=2..n-1, Lucas submask test). Validated: matches literal matrix route B in verify_brute.py at all tested n; nu2(4000)=1975=0.4938 (measured 0.4933, ~2-cell convention slack); reproduces nu2/n ~in [0.42,0.52] for n=50..3999; negative control (all-ones h -> O(1)) holds. |
+| `brute.py` | Naive oracle for SUPPLY ν₂(n): literal submask fold over the canonical floored depths d∈[2,n−1]. nu2_matrix(n,h) = #{d∈[2,n−1]: T(n,d)=1} with T(n,d)=XOR over bitwise submasks o of d of h[n−1−d+o]; h_vec(n) is the canonical residue-switch prime gap-parity string (h[j]=[q_{j+2}≠q_{j+1} mod 4], h[0]=1). Correctness established: nu2(53)=18, nu2(64)=27, nu2(4000)=1975, mu_4000=0.49726 all match the guarded canonical family (lib.nu2.fold_nu2 = lib.supply_fold.s_direct) EXACTLY; h_vec==h_string for n=4..120; negative controls all-ones→0 and Thue–Morse→23 sublinear hold. Fixed from the earlier off-by-one-depth-window version (row d had been T(n,d−1)); now literal over d∈[2,n−1]. |
+| `check_parseval_identity.py` | _(undescribed)_ |
 | `compute_nu2.py` | _(undescribed)_ |
+| `confirm_sqrt_bound.py` | _(undescribed)_ |
 | `convention_check.py` | _(undescribed)_ |
 | `corr_probe.py` | _(undescribed)_ |
 | `dip_analysis.py` | _(undescribed)_ |
@@ -45,6 +49,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_var.py` | _(undescribed)_ |
 | `pattern_var_exponent.py` | Measures variance-decay exponent of nu2/n over [N/2,N) (~N^-1, ideal rate) and self-similarity corr(nu2(2n)/2n,nu2(n)/n) ~0.21 primes. |
 | `probe2.py` | _(undescribed)_ |
+| `probe_dyadic_selfsim.py` | _(undescribed)_ |
 | `probe_excess_struct.py` | _(undescribed)_ |
 | `probe_increments.py` | _(undescribed)_ |
 | `probe_nu2.py` | _(undescribed)_ |
@@ -57,7 +62,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `run_refute_scripts.py` | _(undescribed)_ |
 | `s_growth.py` | _(undescribed)_ |
 | `scholar_intersection_formula_verify.py` | Scholar's machine verification of the load-bearing down-set intersection formula (M_d ∩ M_{d'} = M_{d∧d'}, |
-| `validate_brute.py` | Measures brute.py against the three worked examples in problem.md. Establishes: (b) nu2(4000)=0.4938 matches stated 0.4933 within 3 cells; (c) min nu2/w=0.597@105 does NOT reproduce stated 0.7049; (a) samplied nu2/n range has outliers. Also confirms brute vs floored-canonical differ by <=1 (floor-at-2). |
+| `validate_brute.py` | Validates code/brute.py against the canonical guarded oracle: cross-checks nu2_matrix (fixed literal floored d∈[2,n−1]) equals s_direct exactly on n=4..120 and at guard spots 53/64/105/200/4000, h_vec==h_string, and prints the solved-vs-canonical convention note (worst diff 0). Also reports the measured endpoints (nu2(4000)/4000=0.4938; min nu2/w=0.597@105 vs the explicitly-UNVERIFIED 0.7049 quoted in problem.md) with the stale [0.42,0.52] sub-window test no longer asserted (problem.md's corrected full-sweep range is 0.3396..0.6170). |
 | `verify_brute.py` | _(undescribed)_ |
 | `verify_candidate2_refutex.py` | Negative-control oracle for refuted approach walsh-subset-sum-fold-structure: enumerates balanced (weight floor(n/2)) strings for n=8,16 (exhaustive) and subsamples n=24, computing wt(Phi_n x) via lib.supply_fold.s_sos, to show the fold kernel contains maximally-weighted strings (wt=0) and near-kernel balanced strings can have tiny fold weight. FIRST EXECUTED now: min wt = 0 at n=8,16 (kernel even-alt generators 1010..), 2 at n=24 (non-kernel witness 111111111111000000000000). Establishes no Phi-alone structural bound over balanced inputs exists; confirms closed-door obstruction. Capture: code/out/verify_candidate2_refutex.captured.txt. |
 | `verify_excess_identity_brute.py` | _(undescribed)_ |

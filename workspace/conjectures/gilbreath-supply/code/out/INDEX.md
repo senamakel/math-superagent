@@ -67,15 +67,27 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `goals_attempt2_status.md` | Attempt-2 (goals) status: records the two operator deliverables — the DIRECTIVES.md call-site answer (formatter label defect, not a data-path error) and the Ratio B extension to N=80000 — with the honest undetermined-limit statement, updated records, and verification notes. |
 | `goals_attempt_status.md` | _(undescribed)_ |
 | `guard_failure_report.md` | RESOLVED. Records the hard guard failure found while preparing the four SUPPLY jobs: assert_supply_guard asserted nu2(4000)==1976 but the canonical oracle returns 1975 (d in [2,n-1] convention); four independent routes agree. The guard has been fixed to assert exactly the operator's spec (nu2(53)==18, nu2(64)==27, primes mu_4000 within 0.01 of 0.4977) and the erroneous hard n=4000==1976 constant removed. All four jobs (chebyshev_second_moment_N40000.txt, density_model_control.txt, kernel_component.txt, dip_sparsity_monotonic_fixed.txt) now pass and have been re-run. |
+| `input_strictness_capture.txt` | _(undescribed)_ |
 | `inventor_identity_check.py` | _(undescribed)_ |
 | `kernel_component.txt` | Exact captured output of code/averaged/kernel_component.py (JOB 3, tool_builder). Verifies ker Phi_n = span(even-alt,odd-alt) (rank n-2, nullity 2) for n=8..128, wt(h)/n = 0.6250..0.6875, dmin/n = 0.125..0.376 (att. even-alt/all-ones). Mislabel fixed: 0.597 was an unrelated nu2/w figure; the sentence now cites the script's own wt(h)/n 0.6250..0.6875. |
 | `kernel_component_capture.txt` | _(undescribed)_ |
+| `kstar_budget_explicit.captured.txt` | _(undescribed)_ |
+| `kstar_cum_floor18.captured.txt` | Independent exhaustive 2^n capture confirming the cumulative (nested) correlation-order budget K*(n)=floor(n/2) for n=2..18, extending the catalogued range to n=17,18; contradicts the imported ceil(n/2) budget table. |
+| `kstar_exact.captured.txt` | _(undescribed)_ |
+| `kstar_resolve.captured.txt` | _(undescribed)_ |
+| `kstar_settle.captured.txt` | _(undescribed)_ |
+| `kstar_structural_capture.txt` | _(undescribed)_ |
+| `linear_supply_by_weight.txt` | _(undescribed)_ |
+| `linear_supply_independent.txt` | _(undescribed)_ |
 | `nu2_4000_reconcile.captured.txt` | _(undescribed)_ |
 | `nu2_extended.txt` | _(undescribed)_ |
 | `nu2_over_w_resolved.md` | Settles problem.md's UNVERIFIED ν₂/w row: min over n∈[100,2000] is 0.597 at n=105 (both gap conventions); the quoted 0.7049 is discredited. |
 | `nu2_primes_xor_40000.json` | _(undescribed)_ |
 | `nu2_terms.txt` | _(undescribed)_ |
 | `oracle_validation_report.md` | _(undescribed)_ |
+| `orderk_correlation_capture.txt` | _(undescribed)_ |
+| `orderk_def_resolve.txt` | _(undescribed)_ |
+| `orderk_oracle_check.txt` | _(undescribed)_ |
 | `pattern_D_terms.txt` | _(undescribed)_ |
 | `pattern_S_terms.txt` | _(undescribed)_ |
 | `pattern_finder_INDEX.md` | _(undescribed)_ |
@@ -83,6 +95,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_deliverable_2.md` | Pattern-finder deliverable 2: exact and measured structure of the ν₂/S sequence from canonical nu2_primes_xor_40000.json — the white-noise law S=√n·Z reconciles corr(S,S_{n+1})=0 with AC1(dS)=-1/2, confirms OEIS miss/no-recurrence, measures the second-moment plateau E[S²]≤C·n (C≈15, no drift) and finite exceptional sets, and independently corroborates the per-scale g=0 (switch-density) dominance that blocks weaker-input refinements. Recommendation: the plateau is the density-1 input; the open step is the unconditional second-moment bound (A) for the prime string, which the data shows is fold-generic and not prime-specific. |
 | `pattern_finder_deliverable_3_fold_genericity.md` | Pattern-finder consolidated deliverable: every measurable regularity of nu2 is fold-generic including the last 'prime-specific' signal (dip sparsity), which matched random strings reproduce. Records the exact facts (white-noise, second-moment plateau ~1, finite exceptional set), the OEIS miss on nu2(2^k), and the open barrier E[S^2]=O(n) for the specific prime string. |
 | `pattern_finder_deliverable_5_mod4_switch_bias.md` | _(undescribed)_ |
+| `pattern_finder_deliverable_6_kstar_budget.md` | _(undescribed)_ |
 | `pattern_finder_independent_audit.md` | Independent pattern-finder audit of the SUPPLY ν₂ data from the canonical JSON (with corrected index i==n, all guards verified): reproduces the white-noise law, second-moment plateau, finite exceptional sets, and per-scale g=0 (switch-density) dominance, confirms OEIS miss / no-recurrence / no self-similarity, and concludes every ν₂ regularity is fold-generic — no prime-specific signal, bounding the GOAL hypothesis that Φ does work the switch-density form cannot see. |
 | `pattern_fourth_moment_upgrade.md` | Pattern-finder deliverable 4: measured E[Z^4]≈2.95 / E[S^4]≈3n^2 plateau and pointwise max S^2/n≤14.55 — the exact quantitative input that upgrades density-1 SUPPLY to finite-every-exceptional-set (pointwise) SUPPLY. Fold-generic. |
 | `pattern_normalized_white_noise.md` | Pattern-finder deliverable: the prime fold weight's normalized fluctuation Z(n)=S(n)/√n is measured white noise with E[Z²]=1 and subgaussian tail over n=3..40000, explaining the reconciliation of E[S²]≈n with corr(S(n),S(n+1))≈0, and showing ν₂/n→1/2 with rate 1/2√n — the second-moment/subgaussian content that upgrades density-1 SUPPLY (Chebyshev) to finiteness of exceptional sets. Measured conjecture, not a proof. |
@@ -100,11 +113,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `ratio_b_directive21_final.md` | _(undescribed)_ |
 | `ratio_b_extension.txt` | Capture of the PRIMES-only Ratio B extension to N=80000 (exact s_sos oracle): Ratio B = 1.297@80000, per-doubling decrements 0.051/0.032/0.024/0.021/0.019. The discriminator is the decrement RATIO; exact r_3=0.899404441, r_4=0.877780046 — final falls → modest lean toward limit ABOVE 1 (thin evidence, directive 25; the operator's rounded 0.875/0.905 are not carried). The limit (1 vs constant >1) remains undetermined. Measured, not proved. |
 | `ratio_b_extension_d21.txt` | Re-captured Ratio B measurement to N=80000 with the directive-21 decrement-RATIO discriminator: per-doubling decrement ratios and both extrapolations (geometric-tail limit ~1.13 vs divergent-tail limit 1.00), neither declared. Data table matches the prior N=80000 capture; guards PASS. |
+| `readcone_survey_capture.txt` | _(undescribed)_ |
 | `refute_single_boundary_sweep.txt` | The consolidated refutation capture. Confirms the single established refutation (windowed G-sup-implies-switch / R-switch-equivalence false): h=e_{n-1} has nu2=n-2 (nu2/n=1.000) at zero switch density for every n=4..12, with negative control h=e_0 giving nu2=1 (sublinear). Produced by code/refute/refute_single_boundary_sweep.py. |
 | `refuter_derivative_ladder_check.md` | Refuter report: the adopted derivative-ladder backbone (L1),(L4),(L5) survives engine/hand verification — a strengthened verdict, not a kill. |
 | `refuter_dip_sparsity_findings.md` | Independent refutation findings on the tool_builder's dip-sparsity/M-monotonicity claim: c=0.40 dips finite {53,71,105} (n=145 exactly 0.4 is a float Fraction artifact), c=0.48 dips dense (0.112), M(N) non-monotone with 31.8% violation density, plus three fenced claims. |
 | `refuter_fixed_single_one_bound.md` | Refuter note: fixed single-1 fold weight is bounded by j+1 = O(1), so the G-weak-input-strictness witness cannot be a finite sparse spike — its support must grow with n. |
 | `refuter_live_structural_claims.md` | _(undescribed)_ |
+| `refuter_parseval_uniform_p.md` | _(undescribed)_ |
 | `refuter_powers_two_negative.md` | _(undescribed)_ |
 | `research_verify_relations.py` | Machine checker for the two hand-refuted fold relations (abel neighbour relation and the four substitution rules) against the brute submask-XOR oracle; written for tool_builder to confirm both counterexamples over the full small range. |
 | `rw_verify.py` | Executable oracle checker for Rampersad-Wiebe run-length theorems (n<20 sweep) and the full-cube submask-XOR zeta-transform round-trip (50 trials). FIXED this run: Theorem 9 used S(L)=L; the paper's positive integers are indexed from 0 (S(0)=1, S(1)=2, S(n)=2S(n-1)-S(n-2) => S(L)=L+1), now corrected, with the old wrong reading kept as a negative control that must fail. Verified: Thm 5 matches all n, Thm 9 matches all n, negative control fails all n, zeta round-trips 50/50. Capture: code/out/rw_verify_thm9_fixed.captured.txt. |
