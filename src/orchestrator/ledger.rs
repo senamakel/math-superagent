@@ -74,6 +74,33 @@ pub(super) fn is_routed(relative: &str) -> bool {
     ROUTED.contains(&relative)
 }
 
+/// The paragraph every rendered ledger ends with: how to work with this one.
+///
+/// A derived file said what it was and that editing it was pointless, and left
+/// the reader there. The two things it did not say are the two a reader needs:
+/// this copy is not all of it, and here is the call that returns the rest. A
+/// role reading a bounded section and no instruction concludes the run holds
+/// nothing more — the exact failure `index` exists to prevent, reproduced in
+/// the file rather than in the prompt.
+///
+/// `written_by` comes from the declaration, so a queue ledger says
+/// `record_entry` and one derived from a folder of notes says to write a note.
+/// Appended by [`super::documents::WorkspaceDocuments::write_runtime`], which
+/// every ledger render passes through, so this is one paragraph rather than ten
+/// that would disagree.
+pub(super) fn how_to_use(slug: &str, written_by: &str) -> String {
+    format!(
+        "\n---\n\n**Working with this ledger.** Sections here are bounded and rows are shortened, \
+         so what is above is not all of it. `read_ledger` returns entries in full:\n\n\
+         ```\nread_ledger {{ ledger: \"{slug}\" }}\nread_ledger {{ ledger: \"{slug}\", id: \
+         \"<one of the ids above>\" }}\nread_ledger {{ ledger: \"{slug}\", status: \"<a status \
+         above>\" }}\nread_ledger {{ ledger: \"{slug}\", query: \"<text to search for>\" }}\n\
+         ```\n\n`list_ledgers` says what fields and statuses this one has, and what else the \
+         workspace keeps. To change it: {written_by}. Editing this file changes nothing — it is \
+         re-derived on the next write and your edit goes without a warning.\n"
+    )
+}
+
 /// The index a prompt carries in place of `relative`'s whole file.
 ///
 /// Computed here rather than written to disk, and that is the whole reason it

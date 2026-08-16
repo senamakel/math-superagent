@@ -358,9 +358,17 @@ async fn a_task_added_last_leads_do_next() {
     );
 }
 
-/// The archives keep arrival order: they are read for what is on them.
+/// `Recently done` is capped at five, so it has to be the five most recent.
+///
+/// It kept arrival order while it was unbounded, on the argument that an
+/// archive is read for what is on it rather than worked from the top. A cap
+/// changes which half of that argument holds: recorded order under a cap keeps
+/// the *oldest* five and hides what the run just finished, which is the one
+/// question this section is actually asked. `Do not do` is still unbounded and
+/// still in arrival order, so "have I already ruled this out" stays answerable
+/// from the file.
 #[tokio::test]
-async fn recently_done_is_not_reordered() {
+async fn recently_done_keeps_the_most_recent_first() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     let root = workspace.path();
     for id in ["first-finished", "second-finished"] {
@@ -394,8 +402,8 @@ async fn recently_done_is_not_reordered() {
     }
     let rendered = std::fs::read_to_string(root.join("derived/TASKS.md")).expect("TASKS.md exists");
     assert!(
-        rendered.find("first-finished") < rendered.find("second-finished"),
-        "`Recently done` is an archive and stays in recorded order:\n{rendered}"
+        rendered.find("second-finished") < rendered.find("first-finished"),
+        "`Recently done` is capped at five, so it must be the five most recent:\n{rendered}"
     );
 }
 

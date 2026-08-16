@@ -213,11 +213,19 @@ fn tasks() -> Value {
                           mistake available, and the reason beside it is what prevents it.",
                 "statuses": ["dropped"]
             },
+            // Capped, and the only section here that is. "Recently" is what it
+            // says and what it was not: the section grew without bound, was the
+            // single largest thing in thirteen prompts, and answered a question
+            // — what did this run just finish — that the five most recent rows
+            // answer as well as ninety do. The rest are on `read_ledger`, and
+            // the section says so.
             {
                 "heading": "Recently done",
-                "blurb": "Finished, with what came of it. Kept, because a run that cannot see \
-                          what it already did repeats it.",
-                "statuses": ["done"]
+                "blurb": "The five most recently finished, with what came of it. Kept, because a \
+                          run that cannot see what it already did repeats it.",
+                "statuses": ["done"],
+                "order": "recent",
+                "cap": 5
             }
         ],
         "checks": ["required-field", "known-status", "closed-needs-reason"],

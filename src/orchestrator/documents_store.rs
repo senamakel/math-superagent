@@ -510,7 +510,20 @@ impl WorkspaceDocuments {
     /// check exists to stop an *agent* reaching for the runtime's bookkeeping,
     /// and the runtime keeping its own books is not that.
     pub(super) async fn write_runtime(&self, relative: &str, content: &str) -> Result<()> {
-        self.write_internal(relative, content).await
+        // Every derived ledger leaves here, whichever module rendered it, so
+        // the paragraph saying how to work with one is appended once rather
+        // than pasted into ten renderers that would drift. A run's own ledger
+        // gets it the day it is declared.
+        let Some((slug, written_by)) = super::ledger::registry::owns_derived(self.root(), relative)
+        else {
+            return self.write_internal(relative, content).await;
+        };
+        let content = format!(
+            "{}\n{}",
+            content.trim_end(),
+            super::ledger::how_to_use(&slug, &written_by)
+        );
+        self.write_internal(relative, &content).await
     }
 
     /// Fetches a URL and returns its body as text.
