@@ -80,8 +80,11 @@ pub fn prompt_report(workspace: &Path) -> Result<String> {
 pub struct PromptReport {
     /// The role's name, as the registry knows it.
     pub role: String,
-    /// What the role may call. Empty for a role whose tools are registered
-    /// straight onto a harness rather than declared — see [`role_tools`].
+    /// What the role may call, as the registry declares it.
+    ///
+    /// Empty for a role whose tools are registered straight onto a harness
+    /// rather than declared — the two planners, whose grant is
+    /// `build_planner_harness` and has no entry to read.
     pub tools: Vec<String>,
     /// The whole prompt, exactly as the runtime would send it.
     pub prompt: String,
