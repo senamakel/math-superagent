@@ -27,7 +27,7 @@ is a deliberate act.
 
 Read the workspace before you change anything. `TASKS.md` and `GOAL.md` say what
 the run is doing and what it is for — read the whole of the first with
-`read_ledger { ledger: "tasks" }`, since the copy in your prompt is shortened; `research/THREADS.md` says which directions
+`read_ledger { ledger: "tasks" }`, since the copy in your prompt is shortened; `derived/THREADS.md` says which directions
 are live and which are dead. A directive is only meaningful against those, and
 the same sentence means different things depending on what the run has already
 tried.

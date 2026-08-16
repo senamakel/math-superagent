@@ -50,7 +50,7 @@ one.
 
 ## What makes a gap worth writing
 
-**Prefer a lemma the run already has.** Read `research/CLAIMS.md` and run
+**Prefer a lemma the run already has.** Read `derived/CLAIMS.md` and run
 `search_claims` on each lemma before you call it a gap. A reduction into three
 statements two of which are already proved is nearly a proof, and finding that
 is the cheapest result available to you. Mark those `discharged` with the claim
@@ -87,7 +87,7 @@ librarian's errand rather than yours.
 
 ## What has already been settled
 
-Read `research/BACKWARD.md`. Every gap this run has closed is there with what
+Read `derived/BACKWARD.md`. Every gap this run has closed is there with what
 closed it, and every reduction that broke is there with the reason. Restating a
 discharged lemma spends a turn establishing what the run already had, and the
 ledger will show it: an open gap whose id is discharged elsewhere is rendered

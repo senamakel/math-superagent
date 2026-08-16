@@ -165,6 +165,20 @@ const ROUTED: [&str; 9] = [
     super::requests::REQUESTS_PATH,
 ];
 
+/// Whether `name` is the file name of a ledger this runtime renders.
+///
+/// Matched against the real list rather than against the *shape* of the name.
+/// A first attempt keyed on "upper-case under `research/`" and reported
+/// `research/DIGEST.md` as a moved ledger, which it is not — a wrong answer
+/// given confidently is worse than the absence it replaced.
+pub(super) fn is_derived_file(name: &str) -> bool {
+    ROUTED
+        .iter()
+        .copied()
+        .chain(std::iter::once(super::vcs::ATTEMPTS_PATH))
+        .any(|path| path.rsplit('/').next() == Some(name))
+}
+
 /// Moves a workspace's rendered ledgers into `derived/`, once.
 ///
 /// Every workspace on this box predates the folder: nineteen Project Euler

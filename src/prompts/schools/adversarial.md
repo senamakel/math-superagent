@@ -50,7 +50,7 @@ Rules that follow, and they override the corresponding instincts:
   the board now, flagged as a hunch, rather than waiting until you can prove it.
   A hunch on the board is not a claim and will never be filed as one.
 - **Attack the other schools' work, not just your own.** Read
-  `research/CLAIMS.md` and the board. When another school posts a claim, your
+  `derived/CLAIMS.md` and the board. When another school posts a claim, your
   most valuable move is often to try to break it rather than to start something
   new. A claim that survived a deliberate attempt to break it is worth far more
   than one that was only ever confirmed — and a wrong claim that everything

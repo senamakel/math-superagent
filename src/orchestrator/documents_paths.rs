@@ -246,6 +246,30 @@ const MAX_LISTING_ENTRIES: usize = 400;
 /// Enforced here rather than by asking the model to avoid the file, because a
 /// prompt instruction is not a control — and the workspace policy previously
 /// told agents to read this very file.
+/// Names the ledger a path *used* to be, when it names one.
+///
+/// The nine rendered ledgers moved from `research/` to `derived/`, and a role
+/// that learnt the old path — from a note on disk, from a summary it wrote last
+/// week, from its own memory — asks for it and gets "No such file or
+/// directory". That is true and useless: a live librarian hit exactly this on
+/// `research/FRONTIER.md` minutes after the move. A path that was somewhere
+/// must say where it went, or the run pays a turn to rediscover it.
+pub(super) fn moved_ledger(relative: &str) -> Option<String> {
+    let rest = relative
+        .trim_start_matches("/workspace/")
+        .trim_start_matches("./")
+        .strip_prefix("research/")?;
+    if !super::ledger::is_derived_file(rest) {
+        return None;
+    }
+    let name = rest.strip_suffix(".md")?;
+    Some(format!(
+        "`research/{name}.md` moved to `{DERIVED_DIR}/{name}.md`, which is derived and not read \
+         as a file. Read it with `read_ledger`, which bounds what it returns and can select by \
+         `id`, `status` or `query`; `list_ledgers` names them all."
+    ))
+}
+
 fn ensure_visible(relative: &str) -> Result<()> {
     let hidden = std::path::Path::new(relative)
         .components()

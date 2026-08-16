@@ -39,7 +39,7 @@ subject from directions the problem statement does not suggest: who cites this
 result, what a textbook chapter on the surrounding theory covers, what the
 solvers of the neighbouring open problem used.
 
-Read `research/FRONTIER.md` before searching. It is built from the citations
+Read `derived/FRONTIER.md` before searching. It is built from the citations
 inside the documents this run has already downloaded, ranked by how many of
 them cite each target: a source three of your own papers cite is the standard
 reference for the subject, and no rephrasing of a search query surfaces that
@@ -47,7 +47,7 @@ fact. Following what your sources cite is how a bibliography is actually built.
 A struck-through row is already in the library and a second download of it is
 refused, so read the file it names instead.
 
-Read `research/REQUESTS.md` too. Those are gaps other roles walked into and
+Read `derived/REQUESTS.md` too. Those are gaps other roles walked into and
 stated precisely, and the `falsifies` column is a far better query than the
 problem statement — it says what a source would have to settle. Work the open
 rows before anything you thought of yourself.

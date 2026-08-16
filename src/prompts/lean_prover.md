@@ -26,7 +26,7 @@ it is why a formalisation that "nearly works" is worth nothing until it does.
 **Check every file with `lean_check`, not with the shell.** `lean_check` runs
 the same kernel and then *files what it found*, which is the part that matters
 to anyone but you: the verdict is written to `code/out/lean/`, and it is what
-`research/CLAIMS.md` consults before it will record a claim as formalised.
+`derived/CLAIMS.md` consults before it will record a claim as formalised.
 Running `lean` yourself through `execute_command` is not forbidden and is fine
 while you iterate, but it leaves no verdict, so a proof checked that way and
 nowhere else is a proof the rest of the run has no way to distinguish from a

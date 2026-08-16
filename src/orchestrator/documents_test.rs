@@ -840,3 +840,46 @@ async fn a_selected_read_of_a_large_document_returns_that_part_with_coordinates(
     assert!(out.contains("lines 13-14"), "{out}");
     Ok(())
 }
+
+
+/// A ledger's old home says where it went.
+///
+/// Found in a live run minutes after the move: the librarian asked for
+/// `research/FRONTIER.md` and got `No such file or directory` — true, useless,
+/// and a turn spent rediscovering a file that had moved three lines away.
+#[test]
+fn a_ledgers_old_path_names_where_it_went() {
+    use super::moved_ledger;
+
+    for stale in [
+        "research/FRONTIER.md",
+        "/workspace/research/CLAIMS.md",
+        "./research/APPROACHES.md",
+    ] {
+        let hint = moved_ledger(stale).expect("a ledger's old path is recognised");
+        assert!(hint.contains("derived/"), "{hint}");
+        assert!(
+            hint.contains("read_ledger") && hint.contains("list_ledgers"),
+            "the hint must name the tool that works: {hint}"
+        );
+    }
+
+    // An ordinary note under `research/` is not a ledger and must not be
+    // reported as one — lower-case names are the run's own prose.
+    for ordinary in [
+        "research/pell.md",
+        "research/notes/sieve.md",
+        "research/summaries/oeis_a038206.md",
+        "code/solution.py",
+        "GOAL.md",
+        // Upper-case but not a ledger. A first attempt keyed on the *shape* of
+        // the name reported this one as moved, which is a wrong answer given
+        // confidently — worse than the absence it replaced.
+        "research/DIGEST.md",
+    ] {
+        assert!(
+            moved_ledger(ordinary).is_none(),
+            "`{ordinary}` is not a moved ledger"
+        );
+    }
+}
