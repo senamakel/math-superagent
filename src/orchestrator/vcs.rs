@@ -380,6 +380,21 @@ impl Git {
             .map(|_| ())
     }
 
+    /// How many commits `branch` has that `base` does not.
+    pub(super) async fn commits_ahead(&self, base: &str, branch: &str) -> usize {
+        let range = format!("{base}..{branch}");
+        self.run(&["rev-list", "--count", &range])
+            .await
+            .ok()
+            .and_then(|count| count.trim().parse().ok())
+            .unwrap_or(0)
+    }
+
+    /// Renames a branch, keeping everything on it.
+    pub(super) async fn rename_branch(&self, from: &str, to: &str) -> Result<()> {
+        self.run(&["branch", "-m", from, to]).await.map(|_| ())
+    }
+
     /// Deletes a branch, whether or not it was ever merged.
     ///
     /// `-D` rather than `-d`, because a candidate branch is almost never merged

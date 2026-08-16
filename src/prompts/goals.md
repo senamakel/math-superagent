@@ -38,12 +38,19 @@ idea cost five times as much and settle nothing. This is not the searcher: the
 searcher scores hundreds of programs mechanically against a scorer, and this is
 a handful of educated guesses you will read as diffs.
 
-When they finish, spawn archivist. It reads each branch with `attempt_diff`,
-takes the winner's files into the trunk with `adopt_attempt`, and closes the
-rest with the reason each was not kept. It is the only role that may do that, so
-a candidate nobody hands to the archivist is work the run paid for and threw
-away. Do not read the candidates' files yourself — that is what the diff is for,
-and it is a fraction of the size.
+Then spawn archivist. It reads each branch with `attempt_diff`, takes the
+winner's files into the trunk with `adopt_attempt`, and closes the rest with the
+reason each was not kept. It is the only role that may do that, so a candidate
+nobody hands to the archivist is work the run paid for and threw away. Do not
+read the candidates' files yourself — that is what the diff is for, and it is a
+fraction of the size.
+
+Do **not** wait in `await_agents` for candidates to finish first. They write and
+run programs, so they take as long as the work takes, and this is the exact
+shape of the failure above: one live run awaited four candidates, timed out, and
+never reached the archivist — three finished branches, all discarded. A
+candidate's work is on its branch as it commits, so the archivist can read it
+whether or not the candidate is still running.
 
 You rarely need to spawn refuter — it runs beside every attempt, trying to break
 whatever the run is currently proving — but spawn it directly when you are about

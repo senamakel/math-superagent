@@ -126,3 +126,86 @@ async fn a_candidates_notes_stay_in_its_own_checkout() {
         "a candidate's note appeared in the trunk's research tree"
     );
 }
+
+
+/// Reusing a slot must not destroy a candidate nobody recorded.
+///
+/// The first version of `prepare` deleted the branch outright, justified by the
+/// round's ledger entry making the work reviewable. Nothing enforces that entry:
+/// a live run reached three finished branches with the attempts ledger still
+/// unrendered, because the planner timed out before recording anything. A second
+/// round would have thrown all three away.
+#[tokio::test]
+async fn reusing_a_slot_keeps_a_branch_that_carries_work() {
+    let root = std::env::temp_dir().join("candidates-slot-reuse");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code")).expect("created");
+    std::fs::write(root.join("code").join("solution.py"), "print('trunk')\n").expect("written");
+
+    let git = Git::history(&root);
+    git.initialise().await.expect("history");
+    git.stage_all().await.expect("staged");
+    git.commit("seed").await.expect("committed");
+
+    let id = slots().first().cloned().expect("a slot");
+    let branch = format!("attempt/{id}");
+    let checkout = checkout_of(&root, &id);
+
+    // Round one: the candidate commits something and is never recorded.
+    git.worktree_add(&checkout, &branch, TRUNK)
+        .await
+        .expect("branched");
+    std::fs::write(checkout.join("code").join("solution.py"), "print('round one')\n")
+        .expect("written");
+    let candidate = Git::worktree(&root, &checkout);
+    candidate.stage_all().await.expect("staged");
+    candidate.commit("round one").await.expect("committed");
+    let kept = git.head_of(&branch).await.expect("a head");
+
+    // Round two reuses the slot.
+    git.worktree_remove(&checkout).await.expect("removed");
+    assert!(git.commits_ahead(TRUNK, &branch).await > 0);
+    git.rename_branch(&branch, &format!("{branch}-{kept}"))
+        .await
+        .expect("moved aside");
+    git.worktree_add(&checkout, &branch, TRUNK)
+        .await
+        .expect("rebranched");
+
+    // Round one's work is still reachable, under its own head.
+    let archived = format!("{branch}-{kept}");
+    assert_eq!(git.head_of(&archived).await.as_deref(), Some(kept.as_str()));
+    assert_eq!(
+        git.subject_of(&archived).await.as_deref(),
+        Some("round one"),
+        "a slot reused before its candidate was recorded lost the work"
+    );
+    // And the fresh slot starts from the trunk, not from round one.
+    assert_eq!(
+        std::fs::read_to_string(checkout.join("code/solution.py")).expect("read"),
+        "print('trunk')\n"
+    );
+}
+
+/// A branch with nothing on it is deleted rather than archived, so reusing a
+/// slot repeatedly does not accumulate empty refs.
+#[tokio::test]
+async fn reusing_an_untouched_slot_leaves_no_ref_behind() {
+    let root = std::env::temp_dir().join("candidates-slot-empty");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(&root).expect("created");
+    std::fs::write(root.join("GOAL.md"), "goal\n").expect("written");
+
+    let git = Git::history(&root);
+    git.initialise().await.expect("history");
+    git.stage_all().await.expect("staged");
+    git.commit("seed").await.expect("committed");
+
+    let id = slots().first().cloned().expect("a slot");
+    let branch = format!("attempt/{id}");
+    git.worktree_add(&checkout_of(&root, &id), &branch, TRUNK)
+        .await
+        .expect("branched");
+
+    assert_eq!(git.commits_ahead(TRUNK, &branch).await, 0);
+}

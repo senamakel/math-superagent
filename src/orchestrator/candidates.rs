@@ -126,11 +126,24 @@ impl SpawnCandidates {
             git.worktree_remove(&checkout).await?;
         }
         // A branch left behind by an earlier round would make `worktree add -b`
-        // fail. Its work is already reviewable through the earlier round's
-        // ledger entry, and the slot is being reused precisely because that
-        // candidate is finished.
-        if git.head_of(&branch).await.is_some() {
-            git.delete_branch(&branch).await?;
+        // fail, so the slot has to be cleared — but *deleting* it is only safe
+        // when there is nothing on it.
+        //
+        // An earlier version deleted it unconditionally, on the reasoning that
+        // the round's ledger entry made the work reviewable. Nothing enforces
+        // that entry: a live run reached three finished branches with the
+        // attempts ledger still unrendered, because the planner timed out
+        // before recording anything. So a second round would have destroyed
+        // three candidates' work and left no record that they had existed.
+        //
+        // A branch carrying commits the trunk does not have is therefore moved
+        // aside under its own head, not dropped. It costs one ref.
+        if let Some(head) = git.head_of(&branch).await {
+            if git.commits_ahead(TRUNK, &branch).await > 0 {
+                git.rename_branch(&branch, &format!("{branch}-{head}")).await?;
+            } else {
+                git.delete_branch(&branch).await?;
+            }
         }
         git.worktree_add(&checkout, &branch, TRUNK).await?;
         Ok(branch)
@@ -250,9 +263,14 @@ impl Tool<()> for SpawnCandidates {
             ));
         }
         let mut out = format!(
-            "started {} candidate(s):\n{}\n\nThey run concurrently and write nothing you can see \
-             yet. Record each on the `attempts` ledger now, while you know what you asked for. \
-             Collect them with `await_agents`, then read what they did with `attempt_diff`.",
+            "started {} candidate(s):\n{}\n\nRecord each on the `attempts` ledger now, while you \
+             know what you asked for.\n\nThen **do not sit in `await_agents` waiting for them**. \
+             A candidate writes and runs programs, so it takes as long as the work takes, and a \
+             live run lost its whole attempt this way: it awaited four candidates, timed out, and \
+             never reached the archivist — so three finished branches were thrown away. Their \
+             work is on their branches as they commit it, which is the point of the branches. \
+             Spawn the archivist and let it read what is committed with `attempt_diff`, or come \
+             back and check `list_attempts` between other work.",
             started.len(),
             serde_json::to_string_pretty(&Value::Array(started))
                 .unwrap_or_else(|_| "[]".to_string())
