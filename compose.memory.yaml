@@ -34,7 +34,15 @@ services:
     environment:
       LLM_PROVIDER: custom
       LLM_MODEL: openrouter/deepseek/deepseek-v4-flash-0731
-      LLM_API_KEY: ${OPENROUTER_API_KEY}
+      # The memory's own key, not the run's. Cognee calls a model before it will
+      # persist anything — an entity-extraction pass its ingest pipeline runs a
+      # connection test for first — so on one shared key the memory stops
+      # storing at exactly the moment the run has been working hardest. That is
+      # not hypothetical: a day's runs exhausted a $10 daily limit, every
+      # subsequent ingest was dropped with a 200 in reply, and two problems'
+      # servers ended the day holding nothing. `docs/memory.md` has the numbers.
+      # Unset falls back to the run's key, which is the old arrangement.
+      LLM_API_KEY: ${OPENROUTER_MEMORY_API_KEY:-${OPENROUTER_API_KEY}}
       LLM_ENDPOINT: https://openrouter.ai/api/v1
       EMBEDDING_PROVIDER: fastembed
       EMBEDDING_MODEL: BAAI/bge-small-en-v1.5

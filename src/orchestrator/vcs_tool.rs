@@ -403,7 +403,11 @@ impl VcsTool {
         // half-adopted tree under someone else's subject.
         let _guard = super::worklock::commits().await;
         git.adopt_paths(&branch, &paths).await?;
-        let staged = git.stage_all().await?;
+        // Staged and committed by *pathspec*, never `add --all`. The run writes
+        // the trunk continuously around this call — derived ledgers, research
+        // notes, its own queues — and a whole-tree commit files all of it under
+        // "adopt 01: <reason>". See `Git::commit_paths`.
+        let staged = git.staged_among(&paths).await?;
         if staged.trim().is_empty() {
             return Ok(format!(
                 "`{branch}` changed nothing in {}; the trunk already had those bytes.",
@@ -411,7 +415,9 @@ impl VcsTool {
             ));
         }
         let id = branch.strip_prefix(ATTEMPT_PREFIX).unwrap_or(&branch);
-        let commit = git.commit(&format!("adopt {id}: {reason}")).await?;
+        let commit = git
+            .commit_paths(&format!("adopt {id}: {reason}"), &paths)
+            .await?;
 
         let mut out = format!(
             "adopted {} from `{branch}` into `{TRUNK}` as {commit}: {}\n",

@@ -124,7 +124,9 @@ services:
     environment:
       LLM_PROVIDER: custom
       LLM_MODEL: openrouter/deepseek/deepseek-v4-flash-0731
-      LLM_API_KEY: ${OPENROUTER_API_KEY}
+      # The memory's own key; see `compose.memory.yaml`, where the same line
+      # carries the argument. Unset falls back to the run's.
+      LLM_API_KEY: ${OPENROUTER_MEMORY_API_KEY:-${OPENROUTER_API_KEY}}
       LLM_ENDPOINT: https://openrouter.ai/api/v1
       EMBEDDING_PROVIDER: fastembed
       EMBEDDING_MODEL: BAAI/bge-small-en-v1.5

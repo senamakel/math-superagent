@@ -1,0 +1,69 @@
+#!/bin/sh
+# Says what one problem's memory server actually holds.
+#
+# The failure this exists for is silent: `POST /api/v1/remember` answers
+# `200 {"status":"running"}` before it has read anything, and when the ingest
+# pipeline then refuses to run — a model endpoint that will not answer is the
+# way it happens — the document is dropped and never appears. A run whose memory
+# is empty reads exactly like a run whose memory is full, until a recall comes
+# back `404 No data found in the system`. See `docs/memory.md`.
+#
+# Usage: scripts/memory-inventory <workspace-label>   e.g. conjectures/gilbreath
+#
+# Brings the stack up if it is not already up (`scripts/memory-up` is a no-op on
+# one that is), then prints the server's ingest health followed by every dataset
+# and the documents in it. Nothing is published to the host, so every request
+# goes through a throwaway container joined to that stack's network.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+cd "$repository_root"
+
+label=${1:-}
+if [ -z "$label" ]; then
+    echo "usage: scripts/memory-inventory <workspace-label>" >&2
+    exit 2
+fi
+
+network=$(scripts/memory-up "$label")
+
+get() {
+    docker run --rm --network "$network" curlimages/curl:latest -s "http://cognee:8000$1"
+}
+
+echo "== ingest health"
+get /health/detailed | python3 -c '
+import json, sys
+
+try:
+    report = json.load(sys.stdin)
+except ValueError:
+    print("   unreadable health report"); raise SystemExit(0)
+print("  ", report.get("status", "unknown"))
+for name, component in sorted(report.get("components", {}).items()):
+    status = component.get("status", "unknown")
+    if status == "healthy":
+        continue
+    # Only what is broken, and in the server’s own words: a healthy component
+    # says nothing a reader has to skip past.
+    print(f"   {name}: {status} — {component.get('"'"'details'"'"', '"'"''"'"')[:160]}")
+'
+
+datasets=$(get /api/v1/datasets)
+printf '%s' "$datasets" | python3 -c '
+import json, subprocess, sys
+
+network = sys.argv[1]
+for dataset in json.load(sys.stdin):
+    listing = subprocess.run(
+        ["docker", "run", "--rm", "--network", network, "curlimages/curl:latest", "-s",
+         f"http://cognee:8000/api/v1/datasets/{dataset['"'"'id'"'"']}/data"],
+        capture_output=True, text=True).stdout
+    try:
+        rows = json.loads(listing)
+    except ValueError:
+        print(f"\n== {dataset['"'"'name'"'"']}  (unreadable)"); continue
+    print(f"\n== {dataset['"'"'name'"'"']}  ({len(rows)} documents)")
+    for row in sorted(rows, key=lambda row: row.get("createdAt") or ""):
+        print("   ", (row.get("createdAt") or "")[:19], (row.get("name") or "")[:72])
+' "$network"

@@ -9,7 +9,7 @@
 
 use std::time::Duration;
 
-use super::{LeanCheck, Outcome, VERDICT_DIR, Verdict, parse, verdict};
+use super::{LeanCheck, Outcome, VERDICT_DIR, Verdict, briefing_for, parse, verdict};
 use crate::agent::{Tool, ToolCall};
 
 /// A workspace of this test's own, so one test's verdicts are not another's.
@@ -34,7 +34,7 @@ fn call(file: &str) -> ToolCall {
 
 #[test]
 fn a_clean_proof_with_its_axioms_printed_is_verified() {
-    let checked = parse("code/lemma.lean", true, CLEAN);
+    let checked = parse("code/lemma.lean", "", true, CLEAN);
     assert!(checked.compiled);
     assert!(checked.verified());
     assert_eq!(checked.objection(), None);
@@ -46,7 +46,7 @@ fn a_sorry_is_caught_even_though_lean_exits_cleanly() {
     // The failure this whole file exists for. `lean` warns and returns zero, so
     // a check reading the exit status alone calls this a proof.
     let output = format!("lemma.lean:4:8: warning: declaration uses 'sorry'\n{CLEAN}");
-    let checked = parse("code/lemma.lean", true, &output);
+    let checked = parse("code/lemma.lean", "", true, &output);
     assert!(checked.compiled, "it did compile; that is the trap");
     assert!(!checked.verified());
     assert!(
@@ -63,7 +63,7 @@ fn sorry_ax_in_the_axioms_is_caught_when_no_warning_names_it() {
     // without this file emitting a `sorry` warning of its own, so the axioms
     // are parsed rather than inferred from the warning list.
     let checked = parse(
-        "code/lemma.lean",
+        "code/lemma.lean", "",
         true,
         "'my_lemma' depends on axioms: [propext, sorryAx]",
     );
@@ -86,7 +86,7 @@ fn sorry_ax_in_the_axioms_is_caught_when_no_warning_names_it() {
 #[test]
 fn a_proof_resting_on_an_assumed_axiom_does_not_pass() {
     let checked = parse(
-        "code/lemma.lean",
+        "code/lemma.lean", "",
         true,
         "'main' depends on axioms: [propext, key_estimate, Quot.sound]",
     );
@@ -106,7 +106,7 @@ fn a_proof_resting_on_an_assumed_axiom_does_not_pass() {
 #[test]
 fn a_proof_closed_by_native_decide_does_not_pass() {
     let checked = parse(
-        "code/lemma.lean",
+        "code/lemma.lean", "",
         true,
         "'main' depends on axioms: [propext, Lean.ofReduceBool]",
     );
@@ -129,7 +129,7 @@ fn lean_s_own_axioms_are_not_treated_as_assumptions() {
         "[propext, Classical.choice, Quot.sound]",
     ] {
         let checked = parse(
-            "code/lemma.lean",
+            "code/lemma.lean", "",
             true,
             &format!("'main' depends on axioms: {listed}"),
         );
@@ -143,7 +143,7 @@ fn lean_s_own_axioms_are_not_treated_as_assumptions() {
 
 #[test]
 fn a_proof_that_never_printed_its_axioms_does_not_pass() {
-    let checked = parse("code/lemma.lean", true, "");
+    let checked = parse("code/lemma.lean", "", true, "");
     assert!(checked.compiled);
     assert!(!checked.verified(), "silence about axioms is not a clean bill");
     assert!(
@@ -157,7 +157,7 @@ fn a_proof_that_never_printed_its_axioms_does_not_pass() {
 #[test]
 fn an_error_fails_the_check_even_when_the_exit_status_is_zero() {
     let checked = parse(
-        "code/lemma.lean",
+        "code/lemma.lean", "",
         true,
         "lemma.lean:2:0: error: unknown identifier 'foo'",
     );
@@ -172,7 +172,7 @@ fn an_error_fails_the_check_even_when_the_exit_status_is_zero() {
 
 #[test]
 fn a_nonzero_exit_fails_the_check_even_with_axioms_printed() {
-    let checked = parse("code/lemma.lean", false, CLEAN);
+    let checked = parse("code/lemma.lean", "", false, CLEAN);
     assert!(!checked.compiled);
     assert!(!checked.verified());
 }
@@ -213,7 +213,7 @@ fn a_verdict_round_trips_through_the_record_a_later_reader_finds() {
     // The ledger is re-derived long after the `lean_prover` run has ended, so
     // what matters is that the file on disk says the same thing the tool did.
     let workspace = workspace_named("roundtrip");
-    let checked = parse("code/lemma.lean", true, CLEAN);
+    let checked = parse("code/lemma.lean", "", true, CLEAN);
     let directory = workspace.join(VERDICT_DIR);
     std::fs::create_dir_all(&directory).expect("the verdict folder is created");
     std::fs::write(
@@ -257,7 +257,7 @@ mod what_lean_actually_prints {
     #[test]
     fn a_proof_that_needs_no_axiom_at_all_passes() {
         let checked = parse(
-            "code/good.lean",
+            "code/good.lean", "",
             true,
             "'two_le_four' does not depend on any axioms\n",
         );
@@ -275,7 +275,7 @@ mod what_lean_actually_prints {
     #[test]
     fn a_sorry_warning_is_recorded_in_the_form_lean_emits_it() {
         let checked = parse(
-            "code/sorry.lean",
+            "code/sorry.lean", "",
             true,
             "/workspace/Sorry.lean:1:8: warning: declaration uses `sorry`\n\
              'hard' depends on axioms: [sorryAx]\n",
@@ -296,7 +296,7 @@ mod what_lean_actually_prints {
     #[test]
     fn a_self_declared_axiom_is_caught_in_lean_s_own_wording() {
         let checked = parse(
-            "code/assumed.lean",
+            "code/assumed.lean", "",
             true,
             "'main' depends on axioms: [key_estimate]\n",
         );
@@ -312,7 +312,7 @@ mod what_lean_actually_prints {
     #[test]
     fn native_decide_is_refused_under_the_name_this_toolchain_gives_it() {
         let checked = parse(
-            "code/native.lean",
+            "code/native.lean", "",
             true,
             "'big' depends on axioms: [big._native.native_decide.ax_1_1]\n",
         );
@@ -325,6 +325,83 @@ mod what_lean_actually_prints {
             "the objection names the generated axiom, so the role can see where it came from"
         );
     }
+}
+
+/// The live case this field exists for, verbatim.
+///
+/// `f-lower-bound-ceil-sqrt-n` passed on Lean's three axioms with no `sorry`,
+/// and what the kernel had accepted was a fact about an arbitrary `f : ℕ → ℕ`
+/// with the hard half taken as a hypothesis. Nothing in the verdict said so.
+#[test]
+fn the_signature_of_a_checked_theorem_is_recorded() {
+    let source = r"import Mathlib.Analysis.Real.Sqrt
+
+/-- The rounding step. -/
+theorem f_lower_bound_ceil_sqrt_n
+    (f : ℕ → ℕ)
+    (hspectral : ∀ (n : ℕ), 1 ≤ n → Real.sqrt (n : ℝ) ≤ (f n : ℝ)) :
+    ∀ (n : ℕ), 1 ≤ n → Nat.ceil (Real.sqrt (n : ℝ)) ≤ f n := by
+  intro n hn
+  exact (Nat.ceil_le).mpr (hspectral n hn)
+
+#print axioms f_lower_bound_ceil_sqrt_n
+";
+    let checked = parse("code/lean/f.lean", source, true, CLEAN);
+
+    let signature = checked
+        .declarations
+        .first()
+        .expect("the theorem's signature is recorded");
+    assert!(
+        signature.contains("hspectral"),
+        "the assumed hypothesis is what a reader has to see: {signature}"
+    );
+    assert!(
+        signature.contains("f : ℕ → ℕ"),
+        "so is the fact that f is arbitrary: {signature}"
+    );
+    assert!(
+        !signature.contains("intro n hn"),
+        "the proof is not the statement: {signature}"
+    );
+}
+
+/// A `theorem` inside a docstring does not open a signature.
+///
+/// The parse is anchored at the line start for this reason: a comment that
+/// discusses a theorem would otherwise swallow the rest of the file into one
+/// unterminated signature.
+#[test]
+fn prose_about_a_theorem_is_not_read_as_one() {
+    let source = "/-! We restate the theorem of Huang here. -/\nlemma small : 1 = 1 := rfl\n";
+
+    let checked = parse("code/lean/f.lean", source, true, CLEAN);
+
+    assert_eq!(checked.declarations, vec!["lemma small : 1 = 1".to_string()]);
+}
+
+/// A probe file declares nothing, and says nothing.
+#[test]
+fn a_check_probe_records_no_signature() {
+    let source = "import Mathlib.Data.Real.Sqrt\n#check Nat.ceil_le\n#check Nat.ceil_of_int\n";
+
+    let checked = parse("code/lean/ceil_test.lean", source, false, "error: unknown identifier");
+
+    assert!(checked.declarations.is_empty());
+    assert!(!checked.verified());
+}
+
+/// A commissioned file nobody checked is a fact worth reporting.
+#[test]
+fn a_source_with_no_verdict_says_so() {
+    let workspace = workspace_named("no-verdict");
+
+    let briefed = briefing_for(&workspace, "code/lean/assigned.lean");
+
+    assert!(
+        briefed.contains("no `lean_check` verdict"),
+        "the caller has to learn the prover never checked what it was asked to: {briefed}"
+    );
 }
 
 /// The `Cited` namespace, and what it is worth.
@@ -344,7 +421,7 @@ mod cited {
 
     #[test]
     fn a_proof_resting_only_on_cited_results_is_conditional() {
-        let checked = parse("code/lean/Lib/Catalan.lean", true, CITED);
+        let checked = parse("code/lean/Lib/Catalan.lean", "", true, CITED);
         assert_eq!(checked.outcome(), Outcome::Conditional);
         assert!(
             !checked.verified(),
@@ -359,7 +436,7 @@ mod cited {
     /// the file *does* support rather than only which one it does not.
     #[test]
     fn the_objection_points_at_the_conditional_status() {
-        let checked = parse("code/lean/Lib/Catalan.lean", true, CITED);
+        let checked = parse("code/lean/Lib/Catalan.lean", "", true, CITED);
         let objection = checked
             .objection()
             .expect("a cited axiom still blocks `formalised`");
@@ -374,7 +451,7 @@ mod cited {
     #[test]
     fn an_unproved_axiom_beside_a_cited_one_still_fails() {
         let checked = parse(
-            "code/lean/Lib/Catalan.lean",
+            "code/lean/Lib/Catalan.lean", "",
             true,
             "'main' depends on axioms: [Cited.mihailescu2004, key_estimate]\n",
         );
@@ -394,7 +471,7 @@ mod cited {
     #[test]
     fn a_cited_axiom_does_not_excuse_a_sorry() {
         let checked = parse(
-            "code/lean/Lib/Catalan.lean",
+            "code/lean/Lib/Catalan.lean", "",
             true,
             "code/lean/Lib/Catalan.lean:4:0: warning: declaration uses `sorry`\n\
              'main' depends on axioms: [Cited.mihailescu2004, sorryAx]\n",
@@ -408,7 +485,7 @@ mod cited {
     #[test]
     fn a_clean_proof_is_still_verified() {
         let checked = parse(
-            "code/lean/Lib/Catalan.lean",
+            "code/lean/Lib/Catalan.lean", "",
             true,
             "'main' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
         );
@@ -422,7 +499,7 @@ mod cited {
     #[test]
     fn the_namespace_is_a_prefix_and_not_a_substring() {
         let checked = parse(
-            "code/lean/Lib/Catalan.lean",
+            "code/lean/Lib/Catalan.lean", "",
             true,
             "'main' depends on axioms: [NotCited.sneaky]\n",
         );
@@ -435,7 +512,7 @@ mod cited {
     /// that learned it should not start seeing nothing where it saw `false`.
     #[test]
     fn the_record_carries_both_the_outcome_and_the_boolean() {
-        let record = parse("code/lean/Lib/Catalan.lean", true, CITED).record();
+        let record = parse("code/lean/Lib/Catalan.lean", "", true, CITED).record();
         assert_eq!(record["outcome"], "conditional");
         assert_eq!(record["verified"], false);
         assert_eq!(record["cited"][0], "Cited.mihailescu2004");
@@ -457,7 +534,7 @@ mod missing_modules {
 
     #[test]
     fn the_module_is_named_rather_than_the_object_file() {
-        let checked = parse("code/a.lean", false, MISSING);
+        let checked = parse("code/a.lean", "", false, MISSING);
         assert!(!checked.compiled);
         assert_eq!(checked.missing_modules, vec!["Mathlib.Data.Nat.Parity"]);
         let objection = checked.objection().expect("it does not compile");
@@ -472,7 +549,7 @@ mod missing_modules {
     /// stays a signal.
     #[test]
     fn an_ordinary_compile_failure_is_unchanged() {
-        let checked = parse("code/a.lean", false, "code/a.lean:3:0: error: unsolved goals\n");
+        let checked = parse("code/a.lean", "", false, "code/a.lean:3:0: error: unsolved goals\n");
         assert!(checked.missing_modules.is_empty());
         assert_eq!(
             checked.objection(),
@@ -483,7 +560,7 @@ mod missing_modules {
     /// The same module named on two lines is one problem, not two.
     #[test]
     fn a_repeated_module_is_listed_once() {
-        let checked = parse("code/a.lean", false, &format!("{MISSING}{MISSING}"));
+        let checked = parse("code/a.lean", "", false, &format!("{MISSING}{MISSING}"));
         assert_eq!(checked.missing_modules.len(), 1);
     }
 
@@ -491,7 +568,7 @@ mod missing_modules {
     /// re-parsing Lean's prose.
     #[test]
     fn the_record_carries_the_missing_module() {
-        let record = parse("code/a.lean", false, MISSING).record();
+        let record = parse("code/a.lean", "", false, MISSING).record();
         assert_eq!(record["missing_modules"][0], "Mathlib.Data.Nat.Parity");
     }
 }
@@ -504,7 +581,7 @@ mod missing_modules {
 /// `verified`, the strongest status this runtime has.
 #[test]
 fn a_file_stating_a_tautology_cannot_back_a_claim() {
-    let mut checked = parse("code/lean/Lib/Answer.lean", true, CLEAN);
+    let mut checked = parse("code/lean/Lib/Answer.lean", "", true, CLEAN);
     assert!(checked.verified(), "clean before the tautology is added");
     checked.tautologies = vec!["pe622_answer_nat".to_string()];
     assert_eq!(checked.outcome(), Outcome::Failed);

@@ -26,7 +26,7 @@
 //! concession to it. A fleet of provers is one way to cover a blueprint;
 //! choosing the three nodes whose failure would cost the most is another, and
 //! it is the one that fits in eight gigabytes. What it gives up is coverage of
-//! the tail, and the queue is rendered into `research/BLUEPRINT.md` so the tail
+//! the tail, and the queue is rendered into `derived/BLUEPRINT.md` so the tail
 //! is visible rather than silently dropped.
 //!
 //! # What to ask for when it fails
@@ -200,6 +200,60 @@ pub(super) async fn note_attempt(workspace: &Path, id: &str, stage: Stage) -> st
     }))
     .map_err(std::io::Error::other)?;
     tokio::fs::write(record_path(workspace, id), body + "\n").await
+}
+
+/// How many ranked statements went to the kernel, and how many it accepted.
+///
+/// Counted from the attempt records rather than from the verdicts on disk, and
+/// a live run is the reason. `lean_check` is also the prover's *iteration*
+/// tool — a run hunting the right Mathlib import wrote
+///
+/// ```text
+/// import Mathlib.Data.Real.Sqrt
+/// #check Nat.ceil_le
+/// #check Nat.ceil_of_int
+/// ```
+///
+/// to `code/lean/ceil_test.lean` and checked it, twice, to find out which names
+/// exist. That is exactly right — it is what a prompt telling it to search
+/// Mathlib before proving anything asks for — and it files a verdict, because
+/// every check does. Counting verdicts therefore counted name-probes: a run
+/// that probed ten times and proved nothing would tell the judge *"10 file(s)
+/// handed to the Lean kernel, 0 of which it accepted"*, which reads as ten
+/// failed proofs.
+///
+/// The denominator has to be *statements the run was asked about*, and that is
+/// what this ledger holds. A failed attempt stays in it, deliberately: a run
+/// that tried four formalisations and closed one has done something the claim
+/// count cannot show, and hiding the three would make it look like a run that
+/// never tried.
+pub(super) fn counts(workspace: &Path) -> (usize, usize) {
+    let Ok(entries) = std::fs::read_dir(workspace.join(LEDGER_DIR)) else {
+        return (0, 0);
+    };
+    let mut paths: Vec<PathBuf> = entries.flatten().map(|entry| entry.path()).collect();
+    paths.sort();
+    let mut attempted = 0;
+    let mut accepted = 0;
+    for path in paths {
+        let Some(source) = std::fs::read_to_string(&path)
+            .ok()
+            .and_then(|text| serde_json::from_str::<serde_json::Value>(&text).ok())
+            .and_then(|value| {
+                value
+                    .get("source")
+                    .and_then(serde_json::Value::as_str)
+                    .map(str::to_string)
+            })
+        else {
+            continue;
+        };
+        attempted += 1;
+        if lean::verdict(workspace, &source).is_some_and(|verdict| verdict.verified()) {
+            accepted += 1;
+        }
+    }
+    (accepted, attempted)
 }
 
 /// The next node to hand to the kernel, or nothing when there is none.

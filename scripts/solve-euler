@@ -98,6 +98,28 @@ export MATH_AGENT_LOCAL_UID=$(id -u)
 export MATH_AGENT_LOCAL_GID=$(id -g)
 
 ./agent --workspace "$workspace_subdir" build >/dev/null
+# This fetch runs its own container rather than going through `./agent`, so it
+# needs the same credentials rule the launchers apply. See `scripts/dotenv`.
+. "$repository_root/scripts/dotenv"
+
+# ...and the same network rule, for the same reason. `compose.yaml` declares its
+# `memory` network as external and resolves it to
+# `${COGNEE_NETWORK:-cognee-local_default}`, so a `docker compose run` with the
+# variable unset demands a network nobody created. `run-agent` sets it — but
+# `exec`s only after this fetch, so on a problem whose memory stack has never
+# been up, the statement fetch died before the agent ever started:
+#
+#     network cognee-local_default declared as external, but could not be found
+#
+# and `set -eu` took the launcher down with it. It went unnoticed because every
+# workspace that has run once already has its own stack. Resolving the network
+# here rather than skipping it keeps one answer to "which memory does this
+# problem use"; the stack is started seconds earlier than it otherwise would be.
+if [ -z "${COGNEE_NETWORK:-}" ]; then
+    COGNEE_NETWORK=$("$repository_root/scripts/memory-up" "$workspace_subdir")
+    export COGNEE_NETWORK
+fi
+
 docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '
     set -eu
     mkdir -p /workspace/raw

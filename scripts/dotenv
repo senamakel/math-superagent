@@ -1,0 +1,66 @@
+# Makes the checkout's `.env` outrank the shell, and says when it had to.
+#
+# Sourced, not run: `. "$repository_root/scripts/dotenv"` from a launcher that
+# has already set `repository_root`. It exports every name `.env` defines, over
+# whatever the calling shell exported.
+#
+# Compose resolves `${VAR}` from the process environment *first* and the `.env`
+# file only after, so a variable exported in a login shell silently outranks the
+# checkout's own credentials — and nothing anywhere says so. That is not a
+# hypothetical: a `~/.zshenv` on the machine this was written on exported an
+# older `OPENROUTER_API_KEY` whose daily limit was spent, so every memory server
+# and every run started from an interactive shell used it while `.env` held a
+# working key. Cognee's ingest pipeline tests its model endpoint before it will
+# persist anything, that test failed, and every document was accepted with a
+# `200` and dropped: two problems ended the day with servers holding nothing,
+# their runs having recorded hundreds of stored findings. `docs/memory.md` has
+# the counts.
+#
+# So `.env` wins here. An override is still one command away — edit `.env`, the
+# one place this repository keeps credentials — and a disagreement is now
+# printed by name, never by value.
+if [ -f "$repository_root/.env" ]; then
+    dotenv_overridden=
+    while IFS= read -r dotenv_line || [ -n "$dotenv_line" ]; do
+        case $dotenv_line in
+            '' | '#'*) continue ;;
+        esac
+        dotenv_line=${dotenv_line#export }
+        case $dotenv_line in
+            *=*) ;;
+            *) continue ;;
+        esac
+        dotenv_name=${dotenv_line%%=*}
+        dotenv_value=${dotenv_line#*=}
+        # Anything that is not a variable assignment is skipped rather than
+        # guessed at: this file is read by a launcher, not interpreted.
+        case $dotenv_name in
+            '' | *[!A-Za-z0-9_]*) continue ;;
+        esac
+        # One layer of matching quotes comes off, and an inline comment goes
+        # only from an unquoted value — Compose's own rules, so that a value
+        # reaching the container is the value Compose would have passed.
+        case $dotenv_value in
+            \"*\")
+                dotenv_value=${dotenv_value#\"}
+                dotenv_value=${dotenv_value%\"}
+                ;;
+            \'*\')
+                dotenv_value=${dotenv_value#\'}
+                dotenv_value=${dotenv_value%\'}
+                ;;
+            *) dotenv_value=${dotenv_value%%[ 	]#*} ;;
+        esac
+        eval "dotenv_inherited=\${$dotenv_name-}"
+        if [ -n "$dotenv_inherited" ] && [ "$dotenv_inherited" != "$dotenv_value" ]; then
+            dotenv_overridden="$dotenv_overridden $dotenv_name"
+        fi
+        export "$dotenv_name=$dotenv_value"
+    done < "$repository_root/.env"
+    if [ -n "$dotenv_overridden" ]; then
+        # Names only. The whole point of this file is credentials, and a warning
+        # that printed them would be worse than the confusion it clears up.
+        echo "env: .env overrides the shell for$dotenv_overridden" >&2
+    fi
+    unset dotenv_line dotenv_name dotenv_value dotenv_inherited dotenv_overridden
+fi

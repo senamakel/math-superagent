@@ -1,0 +1,120 @@
+#!/bin/sh
+# What each provider charges today for the models this runtime pins.
+#
+# Every price in `docs/runtime.md` was true on the day it was written and is a
+# guess after that — DeepSeek's own endpoint went from $0.43/$0.87 per million
+# to $0.66/$1.98 while a comment argued from the old pair, and the argument
+# survived the number. This prints the live table instead, from OpenRouter's
+# public endpoint listing, so a routing decision is made against what a provider
+# charges now.
+#
+# Usage: scripts/model-prices [model...]
+#
+# With no arguments it reads the models this checkout actually uses — the two in
+# `src/agent/mod.rs` and the memory server's in `compose.memory.yaml` — rather
+# than a list kept here, which would be one more copy to fall out of date. The
+# pinned provider is marked `*` and the cheapest row `<`; when they differ, the
+# line under the table says by how much.
+#
+# No credentials: the endpoint listing is public, so this costs nothing and can
+# be run before deciding anything.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+cd "$repository_root"
+
+# Derived, never restated. A second list of the pinned models here would answer
+# the same question as the constants and eventually disagree with them.
+rust_constant() {
+    sed -n "s/^const $1: &str = \"\\(.*\\)\";\$/\\1/p" src/agent/mod.rs | head -1
+}
+
+if [ "$#" -gt 0 ]; then
+    models=$*
+    pins=
+else
+    default_model=$(rust_constant DEFAULT_OPENROUTER_MODEL)
+    default_provider=$(rust_constant PREFERRED_PROVIDER)
+    reasoning_model=$(rust_constant REASONING_MODEL)
+    reasoning_provider=$(rust_constant REASONING_PROVIDER)
+    # The memory server names its model the way litellm wants it, prefixed with
+    # the route: `openrouter/<author>/<slug>`. The prefix is not part of the
+    # model's name on OpenRouter, so it comes off here.
+    memory_model=$(sed -n 's/^ *LLM_MODEL: *openrouter\/\(.*\)$/\1/p' compose.memory.yaml | head -1)
+    models="$default_model $reasoning_model $memory_model"
+    # `model=provider` for each pin, read by the printer below. The memory
+    # server pins nothing — litellm gives Cognee no way to send OpenRouter a
+    # provider preference — so its route is whatever the account prefers.
+    pins="$default_model=$default_provider $reasoning_model=$reasoning_provider"
+fi
+
+python3 - "$pins" $models <<'PY'
+import json
+import sys
+import urllib.request
+
+pins = dict(
+    pair.split("=", 1) for pair in sys.argv[1].split() if "=" in pair
+)
+seen = set()
+
+
+def million(price):
+    """OpenRouter quotes per token; every price anyone quotes is per million."""
+    try:
+        return f"${float(price) * 1_000_000:,.3f}"
+    except (TypeError, ValueError):
+        return "—"
+
+
+for model in sys.argv[2:]:
+    if model in seen:
+        continue
+    seen.add(model)
+    url = f"https://openrouter.ai/api/v1/models/{model}/endpoints"
+    try:
+        with urllib.request.urlopen(url, timeout=30) as response:
+            endpoints = json.load(response)["data"]["endpoints"]
+    except Exception as error:                      # noqa: BLE001 - reported, not raised
+        print(f"\n{model}: could not be read ({error})")
+        continue
+
+    pinned = pins.get(model)
+    heading = model if not pinned else f"{model}  (pinned to {pinned})"
+    print(f"\n{heading}")
+    print(f"  {'provider':<16}{'in/M':>10}{'out/M':>10}{'cache/M':>10}  {'quant':<8}{'context':>10}")
+
+    rows = sorted(endpoints, key=lambda e: float(e.get("pricing", {}).get("prompt") or 0))
+    cheapest = rows[0] if rows else None
+    for endpoint in rows:
+        pricing = endpoint.get("pricing", {})
+        name = endpoint.get("provider_name") or "?"
+        # The pin is a slug — `deepinfra` — and the listing gives display names.
+        # Comparing them folded is what makes `*` land on the right row.
+        is_pinned = bool(pinned) and name.lower().replace(" ", "") == pinned.lower()
+        mark = ("*" if is_pinned else " ") + ("<" if endpoint is cheapest else " ")
+        context = endpoint.get("context_length") or 0
+        print(
+            f"{mark}{name:<16}{million(pricing.get('prompt')):>10}"
+            f"{million(pricing.get('completion')):>10}"
+            f"{million(pricing.get('input_cache_read')):>10}  "
+            f"{(endpoint.get('quantization') or '—'):<8}{context / 1000:>9.0f}k"
+        )
+
+    if pinned and cheapest:
+        here = next(
+            (e for e in rows
+             if (e.get("provider_name") or "").lower().replace(" ", "") == pinned.lower()),
+            None,
+        )
+        if here is None:
+            print(f"  {pinned} does not serve this model; the route falls back")
+        elif here is not cheapest:
+            paid = float(here["pricing"]["prompt"])
+            floor = float(cheapest["pricing"]["prompt"]) or paid
+            print(
+                f"  the pin costs {paid / floor:.1f}x the cheapest input rate "
+                f"({cheapest.get('provider_name')}); quantization is the other half "
+                f"of that choice"
+            )
+PY

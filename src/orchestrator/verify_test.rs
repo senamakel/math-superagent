@@ -241,3 +241,42 @@ fn a_failed_check_reaches_the_next_briefing_verbatim() {
         "the objection names the axiom nothing proved: {briefing}"
     );
 }
+
+/// The denominator is statements the run was asked about, not files the kernel
+/// saw.
+///
+/// A live run wrote `code/lean/ceil_test.lean` — five `#check` lines, no
+/// theorem — and checked it twice while hunting the right Mathlib import. That
+/// is what a prompt telling it to search Mathlib before proving anything asks
+/// for, and every check files a verdict. Counting verdicts told the judge the
+/// run had handed the kernel a file and had it refused, which reads as a failed
+/// proof.
+#[tokio::test]
+async fn a_mathlib_name_probe_is_not_a_formalisation_attempt() {
+    let root = two_kinds_of_target("probe");
+    // The prover's scratch file, checked and refused, exactly as on disk.
+    let directory = root.join(lean::VERDICT_DIR);
+    std::fs::create_dir_all(&directory).expect("the verdict directory is creatable");
+    std::fs::write(
+        directory.join("code_lean_ceil_test.lean.json"),
+        r#"{"file":"code/lean/ceil_test.lean","compiled":false,"sorries":[],
+            "axioms":[],"declarations":[],"verified":false}"#,
+    )
+    .expect("the probe verdict is writable");
+
+    assert_eq!(counts(&root), (0, 0), "no statement has been assigned yet");
+
+    let assignment = next(&root).expect("the graph offers a target");
+    note_attempt(&root, &assignment.target.id, assignment.stage)
+        .await
+        .expect("the attempt record is writable");
+
+    assert_eq!(
+        counts(&root),
+        (0, 1),
+        "one statement was asked about and is unproved; the probe is not in the denominator"
+    );
+
+    passing_verdict(&root, &assignment.target.id);
+    assert_eq!(counts(&root), (1, 1));
+}

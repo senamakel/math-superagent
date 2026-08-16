@@ -397,3 +397,60 @@ fn every_tool_refuses_arguments_it_does_not_declare() {
         );
     }
 }
+
+
+/// An adoption commits the files it named, and nothing else.
+///
+/// Found live: the archivist adopted with `paths: ["code/candidates_dfs.py"]`
+/// and produced a commit containing fourteen files — the candidate's program
+/// plus three derived ledgers, two research notes and the run's own queues,
+/// all filed under "adopt 01: <reason>". The cause was `add --all`: the trunk
+/// is written continuously by the run around the call, so a whole-tree commit
+/// sweeps up whatever is in flight at that moment.
+///
+/// Nothing was lost and the record was wrong, which is the worse failure for a
+/// tool whose reason to exist is that every trunk change carries a branch and a
+/// recorded reason.
+#[tokio::test]
+async fn adopting_commits_only_the_named_paths_even_while_the_trunk_is_being_written() {
+    let path = seeded("adopt-scope").await;
+
+    // The run is writing the trunk at the same moment, as it always is.
+    std::fs::create_dir_all(path.join("derived")).expect("created");
+    std::fs::write(path.join("derived").join("CLAIMS.md"), "a ledger\n").expect("written");
+    std::fs::write(path.join("NOTES.md"), "unrelated work in flight\n").expect("written");
+
+    let adopted = run(
+        &*pick(&VcsTool::all(&path), "adopt_attempt"),
+        json!({
+            "attempt": "01",
+            "paths": ["code/solution.py"],
+            "reason": "the only file that was judged"
+        }),
+    )
+    .await;
+    assert!(adopted.contains("adopted"), "{adopted}");
+
+    let git = Git::history(&path);
+    let head = git.head_of(TRUNK).await.expect("a head");
+    let files = git
+        .run(&["show", "--name-only", "--format=", &head])
+        .await
+        .expect("the commit lists its files");
+    let listed: Vec<&str> = files
+        .lines()
+        .map(str::trim)
+        .filter(|line| !line.is_empty())
+        .collect();
+
+    assert_eq!(
+        listed,
+        vec!["code/solution.py"],
+        "the adoption commit must contain exactly what it named, but held: {listed:?}"
+    );
+
+    // The trunk's own in-flight work is untouched on disk — not committed here,
+    // and not reverted either. It is simply not this commit's business.
+    assert!(path.join("NOTES.md").is_file());
+    assert!(path.join("derived").join("CLAIMS.md").is_file());
+}
