@@ -45,6 +45,13 @@ const WRITING_TOOLS: [&str; 9] = [
 #[derive(Debug)]
 pub(super) struct WorkspaceCheckpoint {
     workspace: PathBuf,
+    /// The candidate checkout this commits, when it is not the trunk.
+    ///
+    /// A linked worktree has its own `HEAD` and its own index, so committing it
+    /// puts the work on that candidate's branch and leaves `work` alone. See
+    /// [`super::vcs::Git::worktree`] for why this is discovery rather than a
+    /// second explicit git directory.
+    checkout: Option<PathBuf>,
     tracer: Option<Arc<RunTracer>>,
 }
 
@@ -55,7 +62,36 @@ impl WorkspaceCheckpoint {
     /// than here, so construction stays synchronous and a workspace that is
     /// never written to never grows a git directory.
     pub(super) fn new(workspace: PathBuf, tracer: Option<Arc<RunTracer>>) -> Self {
-        Self { workspace, tracer }
+        Self {
+            workspace,
+            checkout: None,
+            tracer,
+        }
+    }
+
+    /// A checkpointer for one candidate's checkout.
+    ///
+    /// `workspace` stays the trunk because that is where the repository is;
+    /// `checkout` is what gets committed, and its branch is whatever that
+    /// worktree has checked out.
+    pub(super) fn in_worktree(
+        workspace: PathBuf,
+        checkout: PathBuf,
+        tracer: Option<Arc<RunTracer>>,
+    ) -> Self {
+        Self {
+            workspace,
+            checkout: Some(checkout),
+            tracer,
+        }
+    }
+
+    /// The repository this instance commits through.
+    fn git(&self) -> Git {
+        match self.checkout.as_ref() {
+            Some(checkout) => Git::worktree(&self.workspace, checkout),
+            None => Git::history(&self.workspace),
+        }
     }
 
     /// Stages everything and commits, returning the short commit id.
@@ -73,8 +109,16 @@ impl WorkspaceCheckpoint {
     /// the run that waits commits everything the run before it did not.
     async fn commit(&self, message: &str) -> Result<Option<String>> {
         let _guard = super::worklock::commits().await;
-        let git = Git::history(&self.workspace);
-        git.initialise().await?;
+        let git = self.git();
+        // A candidate's checkout is created by `worktree add`, so the
+        // repository already exists and this is the trunk's job anyway.
+        if self.checkout.is_none() {
+            git.initialise().await?;
+        } else if !git.exists() {
+            // The slot has not been branched yet. Nothing to commit, and
+            // creating a repository here would make a second one.
+            return Ok(None);
+        }
         if let Ok(untracked) = git.untrack_excluded().await
             && untracked > 0
             && let Some(tracer) = self.tracer.as_ref()

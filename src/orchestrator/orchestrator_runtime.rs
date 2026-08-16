@@ -439,19 +439,19 @@ fn register_school(
         std::mem::take(&mut prompts.research),
     )?;
 
-    register_code_writing_agents(
-        subagents,
-        &CodeWriters {
-            model: parts.model,
-            budget: parts.budget,
-            tracer: parts.tracer,
-            workspace: parts.workspace,
-            documents: parts.documents,
-            checkpoint: parts.checkpoint,
-            vector_store: parts.vector_store,
-        },
-        prompts.code_writers(),
-    )?;
+    let code_writers = CodeWriters {
+        model: parts.model,
+        budget: parts.budget,
+        tracer: parts.tracer,
+        workspace: parts.workspace,
+        documents: parts.documents,
+        checkpoint: parts.checkpoint,
+        vector_store: parts.vector_store,
+    };
+    register_code_writing_agents(subagents, &code_writers, prompts.code_writers())?;
+    // One role per candidate slot, sharing the code-writing authority but
+    // rooted at its own checkout. See `register_candidate_agents`.
+    register_candidate_agents(subagents, &code_writers, &prompts.candidate)?;
 
     register_support_agents(
         subagents,

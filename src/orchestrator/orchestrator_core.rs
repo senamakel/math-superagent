@@ -6,6 +6,7 @@ mod backward;
 mod blueprint;
 mod board;
 mod board_tool;
+mod candidates;
 mod capture;
 mod caps;
 mod checkpoint;
@@ -308,6 +309,9 @@ const RESEARCH_PROMPT: &str = include_str!("../prompts/research.md");
 
 const TOOL_BUILDER_PROMPT: &str = include_str!("../prompts/tool_builder.md");
 const CODER_PROMPT: &str = include_str!("../prompts/coder.md");
+
+/// The role one candidate solution runs as, in its own checkout.
+const CANDIDATE_PROMPT: &str = include_str!("../prompts/candidate.md");
 const SAT_SOLVER_PROMPT: &str = include_str!("../prompts/sat_solver.md");
 const SMT_SOLVER_PROMPT: &str = include_str!("../prompts/smt_solver.md");
 const THEOREM_PROVER_PROMPT: &str = include_str!("../prompts/theorem_prover.md");

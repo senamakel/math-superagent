@@ -79,6 +79,10 @@ impl Capture {
     }
 
     /// How many bytes passed through, including the ones that were dropped.
+    ///
+    /// The render already reports what it dropped, so only tests read this —
+    /// they assert the bound holds on the *input* rather than on the output.
+    #[cfg(test)]
     pub(super) fn total(&self) -> usize {
         self.total
     }

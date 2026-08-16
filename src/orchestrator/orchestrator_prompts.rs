@@ -5,6 +5,7 @@ struct RolePrompts {
     research: String,
     tool_builder: String,
     coder: String,
+    candidate: String,
     sat_solver: String,
     smt_solver: String,
     theorem_prover: String,
@@ -122,6 +123,10 @@ impl RolePrompts {
             ("research", self.research.as_str()),
             ("tool_builder", self.tool_builder.as_str()),
             ("coder", self.coder.as_str()),
+            // Reported under the first slot's name because the six slots share
+            // this prompt byte for byte; they differ in where their tools point,
+            // which a prompt cannot show.
+            ("candidate01", self.candidate.as_str()),
             ("sat_solver", self.sat_solver.as_str()),
             ("smt_solver", self.smt_solver.as_str()),
             ("theorem_prover", self.theorem_prover.as_str()),
@@ -580,6 +585,7 @@ impl RolePrompts {
             research: role("research", RESEARCH_PROMPT)?,
             tool_builder: role("tool_builder", TOOL_BUILDER_PROMPT)?,
             coder: role("coder", CODER_PROMPT)?,
+            candidate: role("candidate", CANDIDATE_PROMPT)?,
             sat_solver: role("sat_solver", SAT_SOLVER_PROMPT)?,
             smt_solver: role("smt_solver", SMT_SOLVER_PROMPT)?,
             theorem_prover: role("theorem_prover", THEOREM_PROVER_PROMPT)?,

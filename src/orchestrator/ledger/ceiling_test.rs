@@ -1,3 +1,5 @@
+#![allow(clippy::expect_used)]
+
 //! What every derived ledger may cost a system prompt, asserted rather than
 //! intended.
 //!
@@ -263,7 +265,7 @@ fn past_the_bound_more_entries_do_not_grow_the_file() -> std::io::Result<()> {
 /// hand-written ledger: five a round, each carrying an approach description and
 /// a reason it lost. That is the growth profile `research/APPROACHES.md` had
 /// when it reached 86 KB, arriving through a different door.
-fn attempts_render(root: &std::path::Path, count: usize) -> std::io::Result<String> {
+fn attempts_render(root: &std::path::Path, count: usize) -> String {
     let spec = super::registry::find(root, "attempts").expect("the attempts ledger is built in");
     for index in 0..count {
         let mut fields = serde_json::Map::new();
@@ -279,13 +281,13 @@ fn attempts_render(root: &std::path::Path, count: usize) -> std::io::Result<Stri
             .expect("the event is appended");
     }
     let entries = super::engine::collect(root, &spec);
-    Ok(super::engine::render(&spec, &entries))
+    super::engine::render(&spec, &entries)
 }
 
 #[test]
 fn the_attempts_ledger_stays_under_its_ceiling() -> std::io::Result<()> {
     let root = workspace("attempts-ceiling")?;
-    let rendered = attempts_render(&root, ENTRIES)?;
+    let rendered = attempts_render(&root, ENTRIES);
     under("attempts", &rendered, 32_000);
     assert!(
         rendered.contains("Ruled out"),
@@ -298,10 +300,8 @@ fn the_attempts_ledger_stays_under_its_ceiling() -> std::io::Result<()> {
 fn past_the_bound_more_attempts_do_not_grow_the_file() -> std::io::Result<()> {
     // A parallel search produces candidates in rounds, so this is the ledger
     // most likely to meet its bound and keep going.
-    let small = attempts_render(&workspace("attempts-40")?, 40)?.chars().count();
-    let large = attempts_render(&workspace("attempts-160")?, 160)?
-        .chars()
-        .count();
+    let small = attempts_render(&workspace("attempts-40")?, 40).chars().count();
+    let large = attempts_render(&workspace("attempts-160")?, 160).chars().count();
     let growth = large.saturating_sub(small);
     assert!(
         growth < 200,

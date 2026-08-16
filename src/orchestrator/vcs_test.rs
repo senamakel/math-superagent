@@ -1,5 +1,6 @@
 #![allow(clippy::expect_used)]
 
+use std::fmt::Write as _;
 use std::path::{Path, PathBuf};
 
 use super::{ATTEMPT_PREFIX, ATTEMPTS_DIR, Git, HISTORY_DIR, NEVER_COMMITTED, TRUNK, exclude_file};
@@ -288,7 +289,10 @@ async fn a_diff_larger_than_the_budget_is_bounded_and_says_so() {
         .expect("the worktree is created");
 
     let candidate = Git::worktree(&path, &checkout);
-    let bulky: String = (0..40_000).map(|n| format!("line {n}\n")).collect();
+    let mut bulky = String::new();
+    for n in 0..40_000 {
+        let _ = writeln!(bulky, "line {n}");
+    }
     std::fs::write(checkout.join("pool.txt"), bulky).expect("written");
     candidate.stage_all().await.expect("staged");
     candidate.commit("a large candidate").await.expect("committed");

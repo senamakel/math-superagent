@@ -187,6 +187,10 @@ impl Git {
     }
 
     /// Where the history lives.
+    ///
+    /// Only tests ask: the operations below all address the repository
+    /// themselves, so nothing in the runtime needs the path.
+    #[cfg(test)]
     pub(super) fn git_dir(&self) -> &Path {
         &self.history
     }
@@ -374,6 +378,16 @@ impl Git {
         self.run(&["worktree", "remove", "--force", &checkout])
             .await
             .map(|_| ())
+    }
+
+    /// Deletes a branch, whether or not it was ever merged.
+    ///
+    /// `-D` rather than `-d`, because a candidate branch is almost never merged
+    /// — adoption copies files out of it rather than merging it — so `-d` would
+    /// refuse exactly the branches this is for. What it is deleting is a slot
+    /// being reused, whose work is already recorded on the attempts ledger.
+    pub(super) async fn delete_branch(&self, branch: &str) -> Result<()> {
+        self.run(&["branch", "-D", branch]).await.map(|_| ())
     }
 
     /// Drops worktree records whose directories are gone.
