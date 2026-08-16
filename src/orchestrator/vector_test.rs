@@ -1,10 +1,10 @@
     use serde_json::json;
 
     use super::{
-        CHUNK_SEARCH, DEFAULT_LIMIT, EXTENDED_GRAPH_SEARCH, GRAPH_SEARCH, MAX_LIMIT,
-        SCOPE_SAFE_SEARCH_TYPES, TRIPLET_SEARCH, durable_node_sets, library_node_set,
-        limit_argument, limit_property, point_id, render_result, scratch_node_set,
-        session_node_set, slug, source_file_name, source_mime, visible_datasets,
+        CHUNK_SEARCH, DEFAULT_LIMIT, EXTENDED_GRAPH_SEARCH, GRAPH_SEARCH, IngestHealth, MAX_LIMIT,
+        SCOPE_SAFE_SEARCH_TYPES, UNSUPPORTED_TRIPLET_SEARCH, durable_node_sets, indexing_health,
+        library_node_set, limit_argument, limit_property, point_id, render_result,
+        scratch_node_set, session_node_set, slug, source_file_name, source_mime, visible_datasets,
     };
 
     #[test]
@@ -57,9 +57,26 @@
     #[test]
     fn cognee_results_render_strings_and_structured_context() {
         assert_eq!(render_result(&json!("plain context")), "plain context");
-        let rendered = render_result(&json!({"text": "context", "score": 0.9}));
-        assert!(rendered.contains("context"));
-        assert!(rendered.contains("0.9"));
+        // A result object is rendered as its passage, not as the object: the
+        // server sends the text twice — `text` and `raw.value` — beside null
+        // scores, empty metadata and a dataset UUID, and a live recall spent
+        // more of its clip on that scaffolding than on the answer.
+        let rendered = render_result(&json!({
+            "kind": "chunk",
+            "text": "the smallest open degree is 20",
+            "score": null,
+            "metadata": {},
+            "dataset_name": "math_agent_brain",
+            "raw": {"value": "the smallest open degree is 20"}
+        }));
+        assert_eq!(
+            rendered,
+            "the smallest open degree is 20\n\n(from math_agent_brain)"
+        );
+        // A shape with nothing readable still arrives whole, because guessing
+        // would lose the answer where verbosity only costs tokens.
+        let opaque = render_result(&json!({"score": 0.9}));
+        assert!(opaque.contains("0.9"), "{opaque}");
     }
 
     /// This project's library, named the way `VectorStore::from_env` names it.
@@ -251,14 +268,73 @@
         }
         // And everything the tools do reach is on the list, so the guard in
         // `search_in` cannot refuse a call a tool is able to make.
-        for used in [
-            CHUNK_SEARCH,
-            TRIPLET_SEARCH,
-            GRAPH_SEARCH,
-            EXTENDED_GRAPH_SEARCH,
-        ] {
+        for used in [CHUNK_SEARCH, GRAPH_SEARCH, EXTENDED_GRAPH_SEARCH] {
             assert!(SCOPE_SAFE_SEARCH_TYPES.contains(&used), "{used} is unreachable");
         }
+    }
+
+    /// The retriever this server cannot run is one no call can name.
+    ///
+    /// It was the graph half of every fused recall and answered none of them:
+    /// the server needs a `create_triplet_embeddings` memify pass this runtime
+    /// never runs, so it replies `404 … [NoDataError]`. 122 of 136 recalls in
+    /// one live run came back passages-only for that reason. The guard in
+    /// `search_in` is what stops it being asked for again.
+    #[test]
+    fn the_triplet_retriever_this_server_cannot_run_is_unreachable() {
+        assert!(
+            !SCOPE_SAFE_SEARCH_TYPES.contains(&UNSUPPORTED_TRIPLET_SEARCH),
+            "a retriever the server refuses must not be reachable from a tool"
+        );
+        // And the graph half of a fused recall is one the server answers, which
+        // is the whole of the correction: a fused recall that silently loses
+        // half of itself is a search box wearing a graph store's description.
+        assert!(SCOPE_SAFE_SEARCH_TYPES.contains(&GRAPH_SEARCH));
+    }
+
+    /// A server that says it cannot index is refused a write, in its own words.
+    ///
+    /// The report below is verbatim from a live `conjectures/casas-alvero`
+    /// memory server whose model endpoint was answering `403 Key limit
+    /// exceeded`. A sentinel posted to it returned `200 {"status":"running"}`
+    /// and never appeared in the dataset or in the server's file storage.
+    #[test]
+    fn a_server_that_cannot_index_is_not_told_it_stored_anything() {
+        let degraded = json!({
+            "status": "degraded",
+            "components": {
+                "relational_db": {"status": "healthy", "details": "Connection successful"},
+                "llm_provider": {
+                    "status": "degraded",
+                    "details": "API check failed: LLM connection test timed out after 30s."
+                },
+                "embedding_service": {"status": "healthy", "details": "Embedding generation working"}
+            }
+        });
+        let detail = match indexing_health(&degraded) {
+            IngestHealth::Refusing(detail) => detail,
+            IngestHealth::Ready => String::new(),
+        };
+        assert!(
+            detail.contains("llm_provider"),
+            "a degraded ingest path must refuse the write that would be dropped, and say what is \
+             degraded; got `{detail}`"
+        );
+        assert!(detail.contains("connection test timed out"), "{detail}");
+
+        // Healthy is healthy, including when the server reports components this
+        // runtime has never seen: refusing on an unfamiliar shape would stop a
+        // memory that works.
+        let healthy = json!({
+            "status": "healthy",
+            "components": {
+                "graph_db": {"status": "healthy", "details": "Schema validated"},
+                "something_new": {"status": "healthy"}
+            }
+        });
+        assert_eq!(indexing_health(&healthy), IngestHealth::Ready);
+        // And a report with nothing this runtime recognises is not a refusal.
+        assert_eq!(indexing_health(&json!({"status": "ok"})), IngestHealth::Ready);
     }
 
     /// The advertised bounds and the enforced ones are the same numbers,

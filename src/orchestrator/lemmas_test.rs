@@ -1,0 +1,234 @@
+//! Unit tests for the lemma index: what is read out of a Lean file, and what
+//! the index refuses to claim about it.
+//!
+//! The parse is a header-level text parse and the tests are shaped by that. Its
+//! one unacceptable failure is inventing a declaration — a role that reads a
+//! signature here and cannot `exact?` against it has been sent somewhere that
+//! does not exist — so the cases below lean on the conservative direction, and
+//! several of them assert that something is *not* indexed.
+#![allow(clippy::expect_used)]
+
+use std::fmt::Write as _;
+use std::path::Path;
+
+use super::{Standing, collect, declarations};
+
+/// A workspace of this test's own, with one Lean file in it.
+fn workspace_with(name: &str, file: &str, body: &str) -> std::path::PathBuf {
+    let root = std::env::temp_dir().join(format!("lemmas-test-{name}"));
+    let _ = std::fs::remove_dir_all(&root);
+    let path = root.join(super::LEAN_DIR).join(file);
+    std::fs::create_dir_all(path.parent().expect("the lean folder has a parent"))
+        .expect("the test workspace is created");
+    std::fs::write(&path, body).expect("the lean source is written");
+    root
+}
+
+/// Files a verdict, as a `lean_check` would.
+fn file_verdict(root: &Path, file: &str, axioms: &str) {
+    let directory = root.join(super::super::lean::VERDICT_DIR);
+    std::fs::create_dir_all(&directory).expect("the verdict folder is created");
+    std::fs::write(
+        directory.join(format!("{}.json", file.replace('/', "_"))),
+        format!(
+            r#"{{"file":"{file}","compiled":true,"sorries":[],"axioms":[{axioms}]}}"#
+        ),
+    )
+    .expect("the verdict is written");
+}
+
+#[test]
+fn a_theorem_is_read_with_its_namespace_and_its_statement() {
+    let found = declarations(
+        "namespace Riffle\n\
+         theorem order_dvd (n s : ℕ) (h : 2 ≤ n) : shuffles n s = id ↔ (n - 1) ∣ 2 ^ s - 1 := by\n\
+         \x20 simp\n\
+         end Riffle\n",
+    );
+    assert_eq!(found.len(), 1);
+    assert_eq!(found[0].name, "Riffle.order_dvd", "the namespace qualifies it");
+    assert_eq!(found[0].kind, "theorem");
+    assert!(
+        found[0].signature.contains("(n - 1) ∣ 2 ^ s - 1"),
+        "the statement is the point of the row: {}",
+        found[0].signature
+    );
+    assert!(
+        !found[0].signature.contains("simp"),
+        "the proof is not: {}",
+        found[0].signature
+    );
+}
+
+/// The provenance line is the whole compression argument. A paragraph of prose
+/// summarising where a result came from becomes one docstring, and it has to
+/// survive into the index or the Lean library is only half a replacement.
+#[test]
+fn the_source_docstring_reaches_the_row() {
+    let found = declarations(
+        "/-- src: arXiv:2307.05997 §4 Cor 8 -/\n\
+         @[simp] theorem bad_prime (p d : ℕ) : True := trivial\n",
+    );
+    assert_eq!(found.len(), 1);
+    assert_eq!(found[0].source, "arXiv:2307.05997 §4 Cor 8");
+    assert_eq!(found[0].name, "bad_prime", "the attribute is not part of the name");
+}
+
+/// A docstring belongs to the declaration it precedes, and to nothing further
+/// down the file.
+#[test]
+fn a_source_line_does_not_leak_onto_the_next_declaration() {
+    let found = declarations(
+        "/-- src: Mordell 1967 -/\n\
+         theorem first : True := trivial\n\
+         \n\
+         theorem second : True := trivial\n",
+    );
+    assert_eq!(found.len(), 2);
+    assert_eq!(found[0].source, "Mordell 1967");
+    assert_eq!(found[1].source, "", "the second theorem cites nothing");
+}
+
+/// Only at the start of a line. `def` inside prose, inside a docstring, or
+/// indented under a `where` is not a declaration this index can send anyone to.
+#[test]
+fn a_keyword_that_is_not_a_declaration_is_not_indexed() {
+    let found = declarations(
+        "-- we def not want this\n\
+         /-- The def of a shuffle. -/\n\
+         theorem real : True := trivial\n\
+         \x20 where def_helper : Nat := 0\n",
+    );
+    assert_eq!(
+        found.iter().map(|d| d.name.as_str()).collect::<Vec<_>>(),
+        vec!["real"],
+        "only the declaration at column zero is indexed"
+    );
+}
+
+/// Modifiers are ordinary Lean and must not hide a declaration from the index.
+#[test]
+fn modifiers_do_not_hide_a_declaration() {
+    let found = declarations(
+        "private theorem a : True := trivial\n\
+         noncomputable def b : Nat := 0\n\
+         protected lemma c : True := trivial\n\
+         axiom d : True\n",
+    );
+    assert_eq!(
+        found.iter().map(|d| d.name.as_str()).collect::<Vec<_>>(),
+        vec!["a", "b", "c", "d"]
+    );
+    assert_eq!(found[3].kind, "axiom");
+}
+
+/// An `example` is anonymous, so a row for one would be a row nobody can act
+/// on.
+#[test]
+fn an_example_is_not_indexed() {
+    assert!(declarations("example : True := trivial\n").is_empty());
+}
+
+/// The standing comes off the verdict, and the three outcomes have to reach the
+/// index distinctly — a conditional file read as verified would be the index
+/// claiming a proof the kernel did not give.
+#[test]
+fn the_standing_is_read_off_the_filed_verdict() {
+    for (name, axioms, expected) in [
+        (
+            "verified",
+            r#""'t' depends on axioms: [propext]""#,
+            Standing::Verified,
+        ),
+        (
+            "conditional",
+            r#""'t' depends on axioms: [Cited.mordell1967]""#,
+            Standing::Conditional,
+        ),
+        ("failed", r#""'t' depends on axioms: [hole]""#, Standing::Failed),
+    ] {
+        let root = workspace_with(name, "Lib/T.lean", "theorem t : True := trivial\n");
+        file_verdict(&root, "code/lean/Lib/T.lean", axioms);
+        let lemmas = collect(&root);
+        assert_eq!(lemmas.declarations.len(), 1);
+        assert_eq!(lemmas.declarations[0].standing, expected, "for {name}");
+        assert!(
+            lemmas.unchecked_files.is_empty(),
+            "a file with a verdict is not unchecked"
+        );
+    }
+}
+
+/// The state worth making visible: a `.lean` file nobody ran the kernel over
+/// reads exactly like one that passed, and the replay of this repository's own
+/// history found 54 of 78 files in it.
+#[test]
+fn a_file_with_no_verdict_is_unchecked_and_is_listed_as_such() {
+    let root = workspace_with("never", "Lib/T.lean", "theorem t : True := trivial\n");
+    let lemmas = collect(&root);
+    assert_eq!(lemmas.declarations[0].standing, Standing::Unchecked);
+    assert_eq!(lemmas.unchecked_files, vec!["code/lean/Lib/T.lean"]);
+    assert_eq!(lemmas.checked(), 0, "unchecked is not checked");
+    let rendered = lemmas.render();
+    assert!(rendered.contains("## Never checked"), "{rendered}");
+    assert!(rendered.contains("code/lean/Lib/T.lean"));
+}
+
+/// The bound is the ledger contract: cap the rows, and say what was left out.
+/// A cut list reading as complete is worse than a long one.
+#[test]
+fn the_table_caps_its_rows_and_says_what_it_dropped() {
+    let mut body = String::new();
+    for index in 0..(super::MAX_ROWS + 25) {
+        let _ = writeln!(body, "theorem t{index} : True := trivial");
+    }
+    let root = workspace_with("ceiling", "Lib/Many.lean", &body);
+    let rendered = collect(&root).render();
+    let rows = rendered.matches("| theorem |").count();
+    assert_eq!(rows, super::MAX_ROWS, "the table is capped");
+    assert!(
+        rendered.contains("25 more"),
+        "and says how many it left out: {rendered}"
+    );
+}
+
+/// Past the bound, more declarations must not mean more file.
+#[test]
+fn past_the_bound_more_declarations_do_not_mean_more_file() {
+    let render_with = |count: usize, name: &str| {
+        let body = (0..count).fold(String::new(), |mut body, index| {
+            let _ = writeln!(body, "theorem t{index} : True := trivial");
+            body
+        });
+        collect(&workspace_with(name, "Lib/Many.lean", &body))
+            .render()
+            .len()
+    };
+    let smaller = render_with(super::MAX_ROWS + 10, "bound-a");
+    let larger = render_with(super::MAX_ROWS + 400, "bound-b");
+    // Not equal — the counts in the prose differ by a few characters — but the
+    // difference must be a rounding error rather than 390 more rows.
+    assert!(
+        larger < smaller + 200,
+        "{larger} against {smaller}: the table is not growing with the tree"
+    );
+}
+
+/// Verified rows sort first, so when the bound bites it drops the rows a reader
+/// can least act on.
+#[test]
+fn verified_declarations_are_rendered_before_unchecked_ones() {
+    let root = workspace_with("order", "Lib/A.lean", "theorem checked_one : True := trivial\n");
+    std::fs::write(
+        root.join(super::LEAN_DIR).join("Lib/B.lean"),
+        "theorem unchecked_one : True := trivial\n",
+    )
+    .expect("the second source is written");
+    file_verdict(&root, "code/lean/Lib/A.lean", r#""'t' depends on axioms: [propext]""#);
+    let rendered = collect(&root).render();
+    let verified_at = rendered.find("checked_one").expect("the verified row is rendered");
+    let unchecked_at = rendered
+        .find("unchecked_one")
+        .expect("the unchecked row is rendered");
+    assert!(verified_at < unchecked_at, "verified sorts first");
+}

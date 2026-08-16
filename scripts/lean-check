@@ -1,0 +1,140 @@
+#!/bin/sh
+# Run the Lean kernel over one workspace file, from the host.
+#
+# Lean 4 and a prebuilt Mathlib are in the runtime image and nowhere else. That
+# is deliberate — 7 GB of oleans is not something to install per checkout, and
+# `docs/runtime.md` has the argument — but it left the formalisations a run
+# produces unreachable to anybody not inside one. Seventy-eight `.lean` files
+# had accumulated across four workspaces with no way to check whether they still
+# compiled, and iterating on a proof cost a model call each time.
+#
+# So this reaches the image's kernel rather than installing a second one:
+# `docker run` against `math-agent:local`, entrypoint `lean-verdict`, workspace
+# bind-mounted exactly as a run mounts it. Nothing here parses Lean's output —
+# that is `math_agent::check_lean_file`, the same code path the `lean_check`
+# tool takes, because the one thing this repository must not have two answers to
+# is what counts as verified.
+#
+# The mount is READ-ONLY and no verdict is ever filed. `code/out/lean/` is what
+# `research/CLAIMS.md` consults before it will record a claim as formalised, so
+# the only thing that may write there is the `lean_check` tool inside a run — a
+# check somebody ran from a terminal must not be able to pass itself off as
+# evidence the run produced, and `lean-verdict` has no way to write one at all.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$repository_root"
+
+image=${MATH_AGENT_IMAGE:-math-agent:local}
+
+usage() {
+    echo "usage: ./lean-check <workspace-subfolder> <file.lean> [--json]" >&2
+    echo "" >&2
+    echo "  <workspace-subfolder>  a path under workspace/, such as" >&2
+    echo "                         conjectures/gilbreath or project-euler/622" >&2
+    echo "  <file.lean>            workspace-relative, such as code/lean/link_a.lean" >&2
+    echo "  --json                 print the JSON record instead of the prose report" >&2
+    echo "" >&2
+    echo "exit: 0 verified, 1 failed, 2 conditional (proved given cited axioms)" >&2
+}
+
+passthrough=""
+positional=""
+for argument in "$@"; do
+    case "$argument" in
+        --json) passthrough="$passthrough --json" ;;
+        -h|--help) usage; exit 0 ;;
+        -*) echo "unknown flag: $argument" >&2; usage; exit 2 ;;
+        *)
+            if [ -z "$positional" ]; then
+                positional=$argument
+            elif [ -z "${lean_file:-}" ]; then
+                lean_file=$argument
+            else
+                echo "too many arguments" >&2
+                usage
+                exit 2
+            fi
+            ;;
+    esac
+done
+
+workspace_subdir=$positional
+if [ -z "$workspace_subdir" ] || [ -z "${lean_file:-}" ]; then
+    usage
+    exit 2
+fi
+
+# The same refusals the file tools make, made here too. A wrapper that accepted
+# `../` would mount a host path the runtime is built to keep out of a container,
+# and doing it from a convenience script is not less of a hole for being one.
+case "$workspace_subdir" in
+    /*|*..*) echo "workspace subfolder must be relative and must not traverse" >&2; exit 2 ;;
+esac
+case "$lean_file" in
+    /*|*..*) echo "the .lean path must be relative and must not traverse" >&2; exit 2 ;;
+esac
+
+workspace_path=$repository_root/workspace/$workspace_subdir
+if [ ! -d "$workspace_path" ]; then
+    echo "no workspace at $workspace_path" >&2
+    exit 2
+fi
+if [ ! -f "$workspace_path/$lean_file" ]; then
+    echo "no such file: $workspace_subdir/$lean_file" >&2
+    exit 2
+fi
+
+stderr_file=$(mktemp)
+trap 'rm -f "$stderr_file"' EXIT INT TERM
+
+if ! docker image inspect "$image" >/dev/null 2>&1; then
+    echo "the runtime image $image is not built, and it carries Lean and Mathlib." >&2
+    echo "build it with:  ./agent build" >&2
+    exit 2
+fi
+
+# The same hardening compose.yaml applies to a run. A check is a smaller thing
+# than a run and gets no more privilege for it: `lean` is a compiler being
+# pointed at a file a model wrote, which is exactly the input the sandbox is
+# there for. `--read-only` is the container root; /tmp is a tmpfs because Lean
+# writes there.
+#
+# Run rather than exec'd, so the one failure that is not about Lean can be
+# translated. Every checkout shares the `math-agent:local` tag, so a build in
+# another one replaces this image — and when the replacement predates
+# `lean-verdict`, docker fails with an OCI `stat ... no such file` wall of text
+# that reads like a broken script. It cost a whole bench run scored as nine
+# model failures. The exit code is preserved either way.
+set +e
+docker run --rm \
+    --user "$(id -u):$(id -g)" \
+    --read-only \
+    --cap-drop ALL \
+    --security-opt no-new-privileges \
+    --network none \
+    --pids-limit 256 \
+    --memory 8g \
+    --tmpfs /tmp:rw,nosuid,nodev,size=256m \
+    --volume "$workspace_path:/workspace:ro" \
+    --workdir /workspace \
+    --entrypoint /usr/local/bin/lean-verdict \
+    "$image" \
+    /workspace "$lean_file" $passthrough 2>"$stderr_file"
+status=$?
+set -e
+
+if grep -q 'lean-verdict.*no such file' "$stderr_file" 2>/dev/null; then
+    echo "$image has no /usr/local/bin/lean-verdict." >&2
+    echo "" >&2
+    echo "Every checkout shares this image tag, so a build in another one has" >&2
+    echo "replaced it with a version predating that binary. Rebuild from here:" >&2
+    echo "" >&2
+    echo "  ./agent build" >&2
+    rm -f "$stderr_file"
+    exit 2
+fi
+
+cat "$stderr_file" >&2
+rm -f "$stderr_file"
+exit "$status"
