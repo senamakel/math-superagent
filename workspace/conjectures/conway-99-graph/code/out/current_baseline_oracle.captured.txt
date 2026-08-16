@@ -1,0 +1,28 @@
+CAPTURE: what ran  : code/out/oracle_controls.py (this file)
+CAPTURE: oracle    : lib.srg.is_srg -- exact integer common-neighbour counts
+CAPTURE: inputs    : rook(3)/(9,4,1,2); bvls_graph()/(243,22,1,2);
+                        C9(1,2)=circulant(9,{1,2})/(9,4,1,2);
+                        circulant(99,{1..7})/(99,14,1,2);
+                        petersen()/(9,4,1,2); edge_moved_rook()/(9,4,1,2);
+                        rook(4)/(9,4,1,2)
+==============================================================================
+[POSITIVE] rook(3)  -> srg(9,4,1,2)
+   result: PASS -- srg(v,k,lambda,mu) confirmed by exact common-neighbour counts
+[POSITIVE] bvls_graph() -> srg(243,22,1,2)
+   shape=(243, 243) edges=2673
+   result: PASS -- srg(v,k,lambda,mu) confirmed by exact common-neighbour counts
+[NEG, count-path] C9(1,2)=circulant(9,{1,2}) -> srg(9,4,1,2)
+   shape=(9, 9) degrees(all)={4}
+   result: FAIL -- common-neighbour mismatch: LAMBDA wrong on 18 adjacent pairs (need 1), MU wrong on 18 non-adjacent pairs (need 2)
+[NEG, count-path] circulant(99,{1..7}) -> srg(99,14,1,2)
+   shape=(99, 99) degrees(all)={14}
+   result: FAIL -- common-neighbour mismatch: LAMBDA wrong on 1386 adjacent pairs (need 1), MU wrong on 8118 non-adjacent pairs (need 2)
+[NEG, degree-guard] petersen() -> srg(9,4,1,2)
+   result: FAIL -- shape (10, 10) != (9,9)
+[NEG, count-path/edge-moved] edge_moved_rook() -> srg(9,4,1,2)
+   degrees(all)={4}
+   result: FAIL -- common-neighbour mismatch: LAMBDA wrong on 12 adjacent pairs (need 1), MU wrong on 12 non-adjacent pairs (need 2)
+[NEG, shape-guard] rook(4) -> srg(9,4,1,2)
+   result: FAIL -- shape (16, 16) != (9,9)
+==============================================================================
+ALL ORACLE CONTROLS PASSED (expected PASS/FAIL exactly as annotated).

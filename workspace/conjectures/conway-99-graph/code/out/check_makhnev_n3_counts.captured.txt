@@ -1,0 +1,58 @@
+# Ran: python3 code/out/check_makhnev_n3_counts.py
+# Oracle/method: exact integer count arithmetic from the (99,14,1,2)
+#   parameters and the primary-text claims (no graph, no floats).
+# Inputs: v=99, k=14, lambda=1, mu=2; Makhnev 1988 Lemmas 6-9 counts.
+# Purpose: verify the n3=0 interior count structure is self-consistent;
+#   assert NOTHING about srg(99,14,1,2) existence.
+
+(99,14,1,2) ground invariants (exact from v,k,lam,mu):
+  |E| = v*k/2 = 693
+  T   = |E|/3 = 231 triangles
+  triangles through each point = k/2 = 7
+  -> expect 693 edges, 231 triangles, 7 triangles/point: OK
+  count identity: sum over points of (triangles through point) = v * (k/2) = 693 = 3*T = 693: OK
+
+Closure Gamma(A) = [A] u [B] u [C]:
+  |Gamma(A)|     = 3*k - 3 = 39   (3*14 - 3)
+  |Gamma(A) - A| = 36  (Lemma 6: '36 points lie in 12
+                      triangles from [A]_Lambda' -> 12*3 = 36) OK
+  points OUTSIDE Gamma(A) = v - |Gamma(A)| = 99 - 39 = 60
+  outer triangles = 60/3 = 20 (Lemma 7: each outside
+                      point in exactly one disjoint triangle)
+
+Assembly Lambda_0:
+  triangle-vertices: 1 (A) + 12 (inner) + 20 (outer) = 33
+  points covered    : 3 + 36 + 60 = 99 (= v = 99) OK
+  => Lambda_0 is claimed to be srg(33,12,1,6) (33 triangle-vertices)
+
+srg(33,12,1,6) sub-parameter self-consistency (TRIANGLE-vertex side):
+  vertices of Lambda_0 = 33 Gamma-triangles = 1 + 12 + 20 (A + inner + outer): OK
+  These 33 triangles PARTITION all 99 points of Gamma (3+36+60 = 99): OK
+  degree k0 = 12 = Lemma 6 k_delta=12 (each triangle joined to exactly 12 others by 3 edges): OK
+  pairs of 3-joined triangles within Lambda_0 = v0*k0/2 = 198 (informational; no independent count to cross-check)
+  mu0 = 6: this is exactly what triggers Makhnev Thm 1's rejection
+     (mu<=3 or (27,10,1,5); 6>3 and not (27,10,1,5)).
+
+# FLAG (defect found): the run summary / task statement reads the
+#   closure as 'Gamma(A) is an srg(9,4,1,2) on 9 vertices (1 triangle
+#   A + 6 = 9 points)'.  That is INCONSISTENT on two counts:
+   1. If Gamma(A) had only 9 points, outside would be 99-9 = 90 != 60,
+      and 9+60=69 != v=99.
+   2. A 9-point closure cannot contain the 12 inner triangles (36 pts)
+      needed to assemble a 33-triangle-vertex Lambda_0.
+   Primary source (Lemma 6: '36 points of Gamma(A)-A lie in 12
+   triangles') forces |Gamma(A)| = 36 + 3 = 39, which DOES reconcile:
+   39 outside-60, 1+12+20 = 33, 3+36+60 = 99.
+
+# VERDICT
+  The CORRECTED primary-source count arithmetic (closure = 39, inner 12,
+  outer 20, Lambda_0 = 33 triangle-vertices partitioning 99 points) is
+  internally SELF-CONSISTENT with v=99,k=14: True.
+  The task statement's claim 'closure = 9 vertices' is a DEFECT: it is
+  arithmetically inconsistent (9+60 != 99; 9 pts cannot host 12 inner
+  triangles).  The primary text's 39 resolves it.
+  Independent check (code/out/check_srg33_12_1_6.py, same run):
+  srg(33,12,1,6) is parameter-INFEASIBLE by multiplicity integrality --
+  which is exactly Makhnev Thm 1's rejection of the Lambda_0 subobject.
+  (Counts here are arithmetic consistency only; no assertion about
+  srg(99,14,1,2) existence.)

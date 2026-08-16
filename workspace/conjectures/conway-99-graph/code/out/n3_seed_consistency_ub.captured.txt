@@ -1,0 +1,31 @@
+# n3_seed_consistency_ub.py -- SOUND upper-bound local-consistency
+#   oracle for the n3 seed (lambda=1 <=1 CN, mu=2 <=2 CN)
+# Ran: python3 code/out/n3_seed_consistency_ub.py
+# Criterion: an ADJACENT pair must have <=1 common neighbour in the
+#   patch; a NON-adjacent pair <=2; deficits are satisfiable by the
+#   ~91 outside vertices.  This is the ONLY criterion arc-consistency
+#   may soundly conclude.  Complete enumeration of 9 free bits (512
+#   assignments), exact, no floats.
+# Engine: self-contained sound oracle (NOT the shared over-forcing
+#   engine, whose saturation branch is known-soundness-broken).
+
+## Forced closure (8 vertices: a-f + witnesses 6,7)
+  fixed edges (12):  ['6a', '6d', '7b', '7e', 'ab', 'ac', 'ad', 'bc', 'be', 'de', 'df', 'ef']
+  fixed non-edges (7): ['ae', 'af', 'bd', 'bf', 'cd', 'ce', 'cf']
+  free interior pairs (9): ['67', '6b', '6c', '6e', '6f', '7a', '7c', '7d', '7f']
+
+## Result
+  satisfiable assignments under the upper-bound criterion:  2
+  => the n3 seed IS locally consistent (no forced 2nd/3rd common
+     neighbour, matching intact).
+  example assignment: 67=0, 6b=0, 6c=0, 6e=0, 6f=0, 7a=0, 7c=0, 7d=0, 7f=0
+  => the shared engine's VERDICT 'CONTRADICTION' for this seed is
+     an ARTIFACT of its over-forcing saturation branch, NOT a
+     sound local obstruction.  The seed extends locally.
+
+## What this settles (and does not)
+  Settles the local-closure question of task `kill-n3-ge1-case`: the
+  2-edge-joined disjoint triangle pair is locally consistent in a
+  lambda=1/mu=2/locally-7K2 graph (or not).  It does NOT settle
+  global existence of srg(99,14,1,2): an 8-vertex patch is not the
+  graph, and consistency here neither proves nor disproves it.

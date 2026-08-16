@@ -1,0 +1,35 @@
+Ran: python3 code/out/count_C6_bvls_par.py (induced-C6 on BvLS), python3 code/out/validate_hexagons.py (rook + bare C6), and an inline n3 computation (triangle-pair join-2 count).
+Oracle: lib.hexagons.count_induced_C6 (exact integer matrix, no floats) and lib.srg.rook/bvls_graph.
+Exact inputs: integer 0/1 adjacency matrices of rook(3)=srg(9,4,1,2) and bvls_graph()=srg(243,22,1,2).
+
+RESULT — Reimbayev identity n12 = (1/12)n k (k-2)(2k^2-21k+53) + n3 holds EXACTLY on both controls, with n3 = 0:
+
+  graph      triangles   n3(pairs joined by 2)   formula      induced-C6 (n12)   n12 - formula = n3
+  rook(3)      6                 0                    6               6                  0   (OK)
+  bvls(243)    891                0                4980690         4980690               0   (OK)
+
+Independently cross-checked three ways, all in exact integer arithmetic:
+  (1) count_induced_C6 fast method (lib.hexagons), validated against an independent
+      brute-force induced-C6 counter on rook(3) (both = 6) and a bare C6 (both = 1).
+  (2) triangle-pair join-edge enumeration: for every pair of triangles, count join
+      edges; pairs joined by exactly 2 edges = n3 = 0 for both graphs (rook: 6 pairs
+      all joined by exactly 3; bvls: 8910 pairs joined by exactly 3, 0 by exactly 2).
+  (3) the Makhnev condition (*) / Reimbayev n_3=0 check: no pair of triangles joined
+      by >=2 edges without the third. rook(3) and bvls both satisfy (*) (bad pairs = 0).
+
+CONSEQUENCE for (99,14,1,2):
+  The hexagon lower bound is a genuine identity (not merely a bound): n12 = formula + n3.
+  Both EXISTING members of the family have n3 = 0 (bound attained, condition (*) holds).
+  So n3=0 is realized inside the family; the hexagon count alone cannot distinguish 99.
+  Per Reimbayev/Makhnev (asserted-by-source, unverified here), n3=0 would ALSO rule out
+  (99,14,1,2) via Makhnev 1988 Thm 2 — but that conditional holds only under n3=0, and
+  the two controls show n3=0 is family-realizable, so the identity itself predicates
+  nothing contradictory. The load-bearing open question is whether any putative
+  (99,14,1,2) can have n3=0 (i.e. whether n3 is forced >= 1 by a counting argument),
+  OR whether Makhnev's conditional is even correctly stated.
+
+STATUS: the identity + n3=0 on both controls is CHECKED (computed here, exact).
+        The Makhnev-1988 conditional "n3=0 => no srg(99,14,1,2)" is ASSERTED-BY-SOURCE,
+        paywalled, not reproduced; do not quote as established.
+Complexity: triangle-pair + C6 counts are polynomial in |E|; full brute C6 only on the
+            9-vertex rook oracle (exponential oracle, bound n<=9).

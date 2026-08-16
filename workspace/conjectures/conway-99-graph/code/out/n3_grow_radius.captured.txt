@@ -1,0 +1,130 @@
+# n3_grow_radius.py -- at what radius does the n3 seed stop
+#   extending in a lambda=1, mu=2, locally-7K2 graph?
+# Ran: python3 code/out/n3_grow_radius.py
+# GROWTH RULE (SOUND; steering directive): the patch is an exact
+#   +1/0/-1 partial adjacency matrix over materialised vertices.
+#   Radius 0 = 6 seed vertices (0 free bits).  Radius 1 = apply
+#   rule (3) closure once to radius 0: a-d and b-e each have 0
+#   interior common neighbours -> one witness each (8 verts), then
+#   enumerate all assignments of undecided pairs, count survivors.
+#   Radius r+1 (r>=1): for each survivor, apply rule (3) to a
+#   FIXPOINT (materialise a fresh witness for every adjacent pair
+#   with 0 interior common neighbours), then enumerate all
+#   assignments of the still-undecided pairs and count survivors.
+#   Rule (3) is the ONLY thing that grows the patch.  Rules
+#   (1) lambda-excess ADJ<=1 (2) mu-excess NONADJ<=2 (4) 7K2
+#   (5) degree<=14 are CHECKS; only EXCESSES are contradictions.
+#   Deficits are satisfiable by the ~91 outside vertices; we do
+#   NOT materialise mu-witnesses and never force a-v=0 AND b-v=0
+#   (the unsound localprop saturation branch).
+# Oracle: self-contained sound upper-bound oracle (upper_ok) in
+#   this file -- NOT the shared localprop saturation engine.
+# Search space: radius r enumerates the complete product of all
+#   free interior bits over the materialised patch; a survivor
+#   count is exact (complete enumeration), no floats.
+# Stop: zero survivors (genuine local obstruction, give witness),
+#   or free bits > 2^20 (bit boundary), or wall clock, or a stable
+#   fixpoint from which no further radius grows.
+
+## Self-check (radius 1 MUST reproduce 8v, 2 survivors)
+
+### Radius 0
+  vertices: 6 (abcdef); interior pairs decided: all 15; free interior bits: 0
+  survivors under sound criterion: 1 (the seed itself)
+
+### Radius 1
+  from radius 0, rule (3) closure materialised: 2 witness(es)
+  vertices: 8; free interior bits: 9 (enumerated 512)
+  survivors under sound criterion: 2
+  ##### (MUST be 2 to trust larger radii) #####
+
+    survivor 0: {'W01a': 0, 'W00b': 0, 'W00c': 0, 'W01c': 0, 'W01d': 0, 'W00e': 0, 'W00f': 0, 'W01f': 0, 'W00W01': 0}
+    survivor 1: {'W01a': 0, 'W00b': 0, 'W00c': 0, 'W01c': 0, 'W01d': 0, 'W00e': 0, 'W00f': 0, 'W01f': 0, 'W00W01': 1}
+
+## Radii 2+ (rule (3) closure to fixpoint, then exact count)
+  From each survivor at radius r, apply rule (3) to a fixpoint;
+   then enumerate all undecided pairs among all materialised
+   vertices and count exact survivors (degrees are checks only).
+  A radius whose survivors add NO new vertices (and none die) is
+   a stable fixpoint: the seed extends locally to every radius.
+
+### Radius 2
+  survivor 0: +0 witness, verts=8, free bits=0, survivors=1
+  survivor 1: +1 witness, verts=9, free bits=6, survivors=4
+  ---- radius 2: 5 survivor(s), max vertices 9, max free bits 6
+### Radius 3
+  survivor 0: +0 witness, verts=8, free bits=0, survivors=1
+  survivor 1: +0 witness, verts=9, free bits=0, survivors=1
+  survivor 2: +1 witness, verts=10, free bits=7, survivors=4
+  survivor 3: +1 witness, verts=10, free bits=7, survivors=4
+  survivor 4: +2 witness, verts=11, free bits=15, survivors=1
+  ---- radius 3: 11 survivor(s), max vertices 11, max free bits 15
+### Radius 4
+  survivor 0: +0 witness, verts=8, free bits=0, survivors=1
+  survivor 1: +0 witness, verts=9, free bits=0, survivors=1
+  survivor 2: +0 witness, verts=10, free bits=0, survivors=1
+  survivor 3: +1 witness, verts=11, free bits=8, survivors=1
+  survivor 4: +1 witness, verts=11, free bits=8, survivors=1
+  survivor 5: +1 witness, verts=11, free bits=8, survivors=5
+  survivor 6: +0 witness, verts=10, free bits=0, survivors=1
+  survivor 7: +1 witness, verts=11, free bits=8, survivors=1
+  survivor 8: +1 witness, verts=11, free bits=8, survivors=1
+  survivor 9: +1 witness, verts=11, free bits=8, survivors=5
+  survivor 10: +0 witness, verts=11, free bits=0, survivors=1
+  ---- radius 4: 19 survivor(s), max vertices 11, max free bits 8
+### Radius 5
+  survivor 0: +0 witness, verts=8, free bits=0, survivors=1
+  survivor 1: +0 witness, verts=9, free bits=0, survivors=1
+  survivor 2: +0 witness, verts=10, free bits=0, survivors=1
+  survivor 3: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 4: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 5: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 6: +1 witness, verts=12, free bits=9, survivors=1
+  survivor 7: +1 witness, verts=12, free bits=9, survivors=1
+  survivor 8: +1 witness, verts=12, free bits=9, survivors=1
+  survivor 9: +1 witness, verts=12, free bits=9, survivors=1
+  survivor 10: +0 witness, verts=10, free bits=0, survivors=1
+  survivor 11: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 12: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 13: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 14: +1 witness, verts=12, free bits=9, survivors=1
+  survivor 15: +1 witness, verts=12, free bits=9, survivors=1
+  survivor 16: +1 witness, verts=12, free bits=9, survivors=1
+  survivor 17: +1 witness, verts=12, free bits=9, survivors=1
+  survivor 18: +0 witness, verts=11, free bits=0, survivors=1
+  ---- radius 5: 19 survivor(s), max vertices 12, max free bits 9
+### Radius 6
+  survivor 0: +0 witness, verts=8, free bits=0, survivors=1
+  survivor 1: +0 witness, verts=9, free bits=0, survivors=1
+  survivor 2: +0 witness, verts=10, free bits=0, survivors=1
+  survivor 3: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 4: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 5: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 6: +0 witness, verts=12, free bits=0, survivors=1
+  survivor 7: +0 witness, verts=12, free bits=0, survivors=1
+  survivor 8: +0 witness, verts=12, free bits=0, survivors=1
+  survivor 9: +0 witness, verts=12, free bits=0, survivors=1
+  survivor 10: +0 witness, verts=10, free bits=0, survivors=1
+  survivor 11: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 12: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 13: +0 witness, verts=11, free bits=0, survivors=1
+  survivor 14: +0 witness, verts=12, free bits=0, survivors=1
+  survivor 15: +0 witness, verts=12, free bits=0, survivors=1
+  survivor 16: +0 witness, verts=12, free bits=0, survivors=1
+  survivor 17: +0 witness, verts=12, free bits=0, survivors=1
+  survivor 18: +0 witness, verts=11, free bits=0, survivors=1
+  ---- radius 6: 19 survivor(s), max vertices 12, max free bits 0
+
+## STOP / boundary
+  radius 6 is a STABLE FIXPOINT: no survivor materialises a witness, none died; seed extends locally to every radius (free bits 0 <= 2^20, no excess)
+  (stop kind: fixpoint)
+
+## Interpretation
+  A nonzero survivor count at a radius PROVES the seed extends to
+  that radius under the sound criterion (complete enumeration).
+  A zero would be the first genuine local obstruction.  A stable
+  fixpoint that keeps adding no vertices means the seed extends
+  locally to every radius (no local obstruction, ever).
+  This is a LOCAL statement: it neither proves nor disproves the
+  global existence of srg(99,14,1,2).
+## wall clock: 1.1s

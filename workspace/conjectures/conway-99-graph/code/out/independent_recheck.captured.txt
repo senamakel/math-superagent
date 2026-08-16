@@ -1,0 +1,49 @@
+=== CLAIM A: five-member integrality of srg(v,k,1,2) ===
+
+Scan u in [1,200000]
+  Integral members found:  [1, 3, 4, 10, 31]
+  Expected integral members: [1, 3, 4, 10, 31]
+  Match: True
+  Integrality-iff-(a|63) mismatches over [1,200000]: 0
+
+  f (negative-eigenvalue multiplicity) values for the five members:
+    u   a     k        v        f  integral?
+    1   3     4        9        4  True
+    3   7    14       99       54  True
+    4   9    22      243      132  True
+   10  21   112     6273     3280  True
+   31  63   994   494019   250914  True
+
+  Both nontrivial multiplicities (m_r for r>0, m_s for s<0); 1+m_r+m_s must equal v:
+   u= 1: m_r=       4 m_s=       4 sum+1=9 (v=9) integral=True
+   u= 3: m_r=      54 m_s=      44 sum+1=99 (v=99) integral=True
+   u= 4: m_r=     132 m_s=     110 sum+1=243 (v=243) integral=True
+   u=10: m_r=    3280 m_s=    2992 sum+1=6273 (v=6273) integral=True
+   u=31: m_r=  250914 m_s=  243104 sum+1=494019 (v=494019) integral=True
+
+=== CLAIM B: multiplicity integrality of srg(33,12,1,6) ===
+
+  params: v=33, k=12, lam=1, mu=6
+  lam-mu = -5
+  characteristic: x^2 - (lam-mu)x - (k-mu) = 0
+      x^2 +5x -6 = 0
+  D = (lam-mu)^2 + 4(k-mu) = -5^2 + 4(6) = 49
+  sqrt(D) = 7  (exact integer)
+  r = (lam-mu + sqrtD)/2 = (-5+7)/2 = 1
+  s = (lam-mu - sqrtD)/2 = (-5-7)/2 = -6
+  check: r and s are roots of x^2 +5x -6 = 0: r^2-(-5)r-6=0, s^2-(-5)s-6=0
+  2k + (v-1)(lam-mu) = 24 + 32*(-5) = -136
+  m_r = (1/2)[(v-1) - T/(r-s)] = (1/2)[32 - (-136)/7] = 180/7
+  m_s = (1/2)[(v-1) + T/(r-s)] = (1/2)[32 + (-136)/7] = 44/7
+  m_r integral? False   m_s integral? False
+  check m_r+m_s+1 == v: 33 == 33 ? True
+  CONCLUSION: the nontrivial multiplicities are non-integral (180/7, 44/7), so srg(33,12,1,6) is parameter-infeasible by eigenvalue-multiplicity integrality.
+
+  --- note on the task's 'sqrt(4k-7)=sqrt(41)' phrasing ---
+  4k-7 = 41, sqrt = sqrt(41) which is NOT an integer.
+  sqrt(4k-7) is the discriminant expression for the srg(v,k,1,2) family
+  ONLY (where lam-mu=1, mu=2 gives D=1+4(k-2)=4k-7). It does NOT apply
+  to srg(33,12,1,6). The correct discriminant here is D=49 -> sqrt=7.
+  Either route yields non-integrality, but the correct/cleaner one is D=49.
+
+DONE

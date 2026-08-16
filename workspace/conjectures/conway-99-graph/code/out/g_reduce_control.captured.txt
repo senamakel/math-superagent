@@ -1,0 +1,75 @@
+Ran: python code/out/g_reduce_control.py (from /workspace)
+Oracle function: lib.srg.is_srg(A, v, k, lam, mu) — exact integer common-neighbour counts; control graphs lib.srg.rook / lib.srg.bvls_graph
+Inputs: rook(3) on (v,k)=(9,4) fixed vertex 0; bvls_graph() on (v,k)=(243,22) fixed vertex 0; formula evaluation at k=14
+========================================================================
+rook(3): v=9  k=4
+========================================================================
+[guard] is_srg(A,9,4,1,2) -> PASS (srg(v,k,lambda,mu) confirmed by exact common-neighbour counts)
+  |N(0)| = 4   distance-2 vertices = 4  (expect k(k-2)/2 = 4)
+
+--- (a) N(0) induces (k/2)K2; distance-2 <-> non-edges of N(0) ---
+  N(0) induced edges = 2 (expect k/2 = 2); all degrees = 1: True  => (k/2)K2: True
+  every distance-2 vertex has exactly 2 neighbours in N(0): True
+  #distinct pairs = 4  #non-edges of N(0) = 4  bijection: True
+  (a) HOLDS: True
+
+--- (b) triangle partition and outer partial Steiner triple system ---
+  through = 2 (expect k/2 = 2)
+  cross   = 4 (expect k(k-2)/2 = 4)
+  outer   = 0 (expect k(k-2)(k-4)/12 = 0)
+  outer replication unique = [0] (expect (k-4)/2 = 0)
+  outer blocks sharing >=2 points = 0 (expect 0)
+  (b) HOLDS: True
+
+--- (c) collinearity graph of the outer design (lambda=1, mu=2) ---
+  outer collinearity graph: edges = 0, degree unique = [0] (expect 2*(k-4)/2)
+  lambda distribution (common collinear neighbours of an edge): {}
+  mu distribution (common collinear neighbours of a non-edge):   {0: 6}
+  lambda == 1: False   mu == 2: False
+  (c) lambda==1 : False;  mu==2 : False;  => False
+  NOTE: (c) does NOT hold as stated -- outer-design collinearity graph
+  has non-constant mu on this control. lambda=1 holds; mu is not 2.
+========================================================================
+bvls_graph(): v=243  k=22
+========================================================================
+[guard] is_srg(A,243,22,1,2) -> PASS (srg(v,k,lambda,mu) confirmed by exact common-neighbour counts)
+  |N(0)| = 22   distance-2 vertices = 220  (expect k(k-2)/2 = 220)
+
+--- (a) N(0) induces (k/2)K2; distance-2 <-> non-edges of N(0) ---
+  N(0) induced edges = 11 (expect k/2 = 11); all degrees = 1: True  => (k/2)K2: True
+  every distance-2 vertex has exactly 2 neighbours in N(0): True
+  #distinct pairs = 220  #non-edges of N(0) = 220  bijection: True
+  (a) HOLDS: True
+
+--- (b) triangle partition and outer partial Steiner triple system ---
+  through = 11 (expect k/2 = 11)
+  cross   = 220 (expect k(k-2)/2 = 220)
+  outer   = 660 (expect k(k-2)(k-4)/12 = 660)
+  outer replication unique = [9] (expect (k-4)/2 = 9)
+  outer blocks sharing >=2 points = 0 (expect 0)
+  (b) HOLDS: True
+
+--- (c) collinearity graph of the outer design (lambda=1, mu=2) ---
+  outer collinearity graph: edges = 1980, degree unique = [18] (expect 2*(k-4)/2)
+  lambda distribution (common collinear neighbours of an edge): {1: 1980}
+  mu distribution (common collinear neighbours of a non-edge):   {0: 330, 1: 11880, 2: 9900}
+  lambda == 1: True   mu == 2: False
+  (c) lambda==1 : True;  mu==2 : False;  => False
+  NOTE: (c) does NOT hold as stated -- outer-design collinearity graph
+  has non-constant mu on this control. lambda=1 holds; mu is not 2.
+
+========================================================================
+G-reduce formula evaluation at k=14 (v=99, NO graph exists):
+========================================================================
+  distance-2 vertices = k(k-2)/2        = 84  (expect 84)
+  cross lines          = k(k-2)/2        = 84  (expect 84)
+  outer blocks         = k(k-2)(k-4)/12  = 140  (expect 140)
+  replication          = (k-4)/2          = 5  (expect 5)
+  k=14 formula values (84, 140, 5): ALL MATCH: True
+
+========================================================================
+SUMMARY
+========================================================================
+  rook(3): (a)=True  (b)=True  (c: lambda=1,mu=2)=False
+  bvls_graph(): (a)=True  (b)=True  (c: lambda=1,mu=2)=False
+  k=14 formula check: True

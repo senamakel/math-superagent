@@ -1,0 +1,19 @@
+=== c7_4vertex.captured.txt ===
+Ran: python code/out/check_c7_4vertex.py; oracle = lib.srg.is_srg (exact integer common-neighbour counts via A@A)
+Check: for every nonadjacent pair of rook(3) [srg(9,4,1,2)] and bvls_graph() [srg(243,22,1,2)], are the mu=2
+      common neighbours mutually nonadjacent? Range: all C(9,2) and C(243,2) nonadjacent pairs, exact.
+=== oracle self-check ===
+rook(3) is_srg(9,4,1,2): (True, 'srg(v,k,lambda,mu) confirmed by exact common-neighbour counts')
+rook(4) is_srg(9,4,1,2): (False, 'shape (16, 16) != (9,9)')
+bvls shape: (243, 243) edges: 2673
+bvls is_srg(243,22,1,2): (True, 'srg(v,k,lambda,mu) confirmed by exact common-neighbour counts')
+random 14-reg 99 is_srg(99,14,1,2): (False, 'off-diagonal common-neighbour mismatch on 9504 entries')
+
+=== claim c7 structural check (mu=2 common neighbours nonadjacent) ===
+rook(3) srg(9,4,1,2): all nonadjacent pairs OK? True, adjacent-common-neighbour pairs: 0
+bvls srg(243,22,1,2): all nonadjacent pairs OK? True, adjacent-common-neighbour pairs: 0
+
+=== interpretation ===
+BOTH positive controls have independent mu=2 common-neighbour sets.
+c7 SURVIVES the v=9/v=243 test as a structural lead: the lambda=1
+distributional identity is not contradicted by either existing graph.

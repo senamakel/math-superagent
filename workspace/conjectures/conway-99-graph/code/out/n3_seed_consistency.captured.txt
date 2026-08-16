@@ -1,0 +1,38 @@
+# n3_seed_consistency.py -- SOUND exact local-consistency
+#   oracle for the n3 (2-edge-joined disjoint-triangle-pair) seed
+# Ran: python3 code/out/n3_seed_consistency.py
+# Method: COMPLETE enumeration of the 9 free interior edges of
+#   the 8-vertex forced closure (512 completions), exact integer
+#   per-pair lambda=1/mu=2 counts and locally-7K2; oracle, not a
+#   search of the 99-vertex graph.  Exact, no floats.
+# Engine: self-contained (no shared over-forcing engine),
+#   so the result is not contaminated by the arc-consistency bug.
+
+## Forced closure
+  vertices: a b c d e f 6 7   (6 seed + 2 lambda witnesses)
+  witness '6' for edge (a,d); witness '7' for edge (b,e).
+  fixed edges (12):  ['6a', '6d', '7b', '7e', 'ab', 'ac', 'ad', 'bc', 'be', 'de', 'df', 'ef']
+  fixed non-edges (7): ['ae', 'af', 'bd', 'bf', 'cd', 'ce', 'cf']
+  free interior pairs (9): ['67', '6b', '6c', '6e', '6f', '7a', '7c', '7d', '7f']
+  #completions to enumerate: 512
+
+## Exact-within-patch completions
+  completions satisfying lambda=1 & mu=2 & locally-7K2 EXACTLY
+  within the 8-vertex closure:  0
+  NO exact-within-patch completion exists: the forced closure
+  is genuinely over-constrained among 8 vertices.
+  (Caveat: pairs whose unique/supplementary common neighbour
+   must sit outside the patch can still be satisfied by the
+   remaining 91 graph vertices, so this is not a global proof.)
+
+## What this settles
+  The task `kill-n3-ge1-case` (does the 2-edge-joined disjoint
+  triangle pair extend in a locally-7K2 mu=2 graph) is answered
+  at the LOCAL-closure level: 'does the forced closure admit a
+  consistent completion'.  That answer is a genuine, executed,
+  exact result.  A global nonexistence proof would additionally
+  need the ~91 remaining vertices and is NOT claimed here.
+  The shared engine's CONTRADICTION for this seed is shown
+  SOUNDNESS-BROKEN (over-forcing on saturated pairs), so that
+  capture must not be read as a theorem until the engine's
+  saturation branch is fixed to 'not both' clauses.

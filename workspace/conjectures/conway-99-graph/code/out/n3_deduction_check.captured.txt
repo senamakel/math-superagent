@@ -1,0 +1,16 @@
+# Ran: python3 code/out/n3_deduction_check.py
+# Oracle: exact integer join-edge counting over lib.srg adjacency matrices (no floats).
+# Inputs: rook(3) = srg(9,4,1,2) and bvls_graph() = srg(243,22,1,2).
+# Computed only: n3 on the two controls + complete pair bookkeeping. NO v=99 conclusion.
+#
+rook(3) srg(9,4,1,2):
+  triangles T = 6  (expect vk/6)
+  join-edge histogram {3: 6, 4: 9}
+  sum(hist) = 15   C(T,2) = 15   complete: True
+  n3 (pairs joined by exactly 2 edges) = 0
+
+bvls   srg(243,22,1,2):
+  triangles T = 891  (expect vk/6)
+  join-edge histogram {0: 133650, 1: 240570, 3: 8910, 4: 13365}
+  sum(hist) = 396495   C(T,2) = 396495   complete: True
+  n3 (pairs joined by exactly 2 edges) = 0

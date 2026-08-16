@@ -1,0 +1,16 @@
+Thm 4.2 criterion for C_3 strongly regular: s == -k/2  OR  k == 6
+(omega = clique size = 3 for lambda=1; omega-1 = 2)
+
+srg(9,4,1,2) rook/Paley 9 (in Thm 4.5 set)       s= -2.000 s==-k/2?True  k==6?False C3-srg?True
+srg(15,6,1,3) (in Thm 4.5 set)                    s= -3.000 s==-k/2?True  k==6?True  C3-srg?True
+srg(27,10,1,5) (in Thm 4.5 set)                    s= -5.000 s==-k/2?True  k==6?False C3-srg?True
+srg(99,14,1,2) Conway 99 (not in set)              s= -4.000 s==-k/2?False k==6?False C3-srg?False
+srg(243,22,1,2) BvLS control (not in set)           s= -5.000 s==-k/2?False k==6?False C3-srg?False
+
+Interpretation:
+ - rook(9,4,1,2) passes (s=-2 == -k/2)  -> in the three, C3 IS srg
+ - (15,6,1,3),(27,10,1,5) pass (k=6)    -> in the three
+ - (99,14,1,2) fails BOTH                -> C3 NOT srg  (Thm 4.5)
+ - (243,22,1,2) BvLS fails BOTH          -> C3 NOT srg too,
+   so the claim does NOT kill 243: it is a constraint shared by 99 and 243,
+   consistent with the negative-control rule (does not rule out 99).

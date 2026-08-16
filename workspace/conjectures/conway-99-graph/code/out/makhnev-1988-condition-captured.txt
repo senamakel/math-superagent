@@ -1,0 +1,36 @@
+# Ran: python3 code/out/check_makhnev_condition.py
+# Oracle: lib.srg.is_srg entry guard; condition (*) by exact integer
+#   disjoint-pair join-edge counting over the lib.srg adjacency matrices
+#   (no floats).
+# Inputs: rook(3) = srg(9,4,1,2), bvls_graph() = srg(243,22,1,2).
+# Purpose: Makhnev 1988 condition (*) admissibility check on the two
+#   positive control graphs (GOAL.md gate before citing Makhnev Thm 2).
+
+=== rook(3) :: srg(9,4,1,2) ===
+is_srg(9,4,1,2) guard: PASS  (srg(v,k,lambda,mu) confirmed by exact common-neighbour counts)
+  (entry guard asserted: PASS — proceeding to condition (*))
+triangles T = 6   (expect vk/6 = 6)   match: True
+disjoint-pair join histogram: {3: 6}
+shared-vertex-pair join histogram (non-load-bearing, excluded from (*)): {4: 9}
+  pairs: disjoint 6 + shared 9 = 15   C(T,2) = 15   complete: True
+n3 (DISJOINT pairs joined by exactly 2 edges) = 0
+disjoint pairs joined by >=2 edges but not exactly 3 (violate (*)): 0 
+condition (*) holds: True
+
+=== bvls_graph() :: srg(243,22,1,2) ===
+is_srg(243,22,1,2) guard: PASS  (srg(v,k,lambda,mu) confirmed by exact common-neighbour counts)
+  (entry guard asserted: PASS — proceeding to condition (*))
+triangles T = 891   (expect vk/6 = 891)   match: True
+disjoint-pair join histogram: {0: 133650, 1: 240570, 3: 8910}
+shared-vertex-pair join histogram (non-load-bearing, excluded from (*)): {4: 13365}
+  pairs: disjoint 383130 + shared 13365 = 396495   C(T,2) = 396495   complete: True
+n3 (DISJOINT pairs joined by exactly 2 edges) = 0
+disjoint pairs joined by >=2 edges but not exactly 3 (violate (*)): 0 
+condition (*) holds: True
+
+# Verdict
+rook(3): T=6, disjoint-join {3: 6}, n3=0, condition (*) holds: True
+bvls_graph(): T=891, disjoint-join {0: 133650, 1: 240570, 3: 8910}, n3=0, condition (*) holds: True
+condition (*) holds on BOTH controls: True
+Note: both controls have mu=2 <= 3, so Makhnev 1988 Thm 1's first branch (mu<=3) absorbs them — the theorem does not rule them out, consistent with their existence. The oracle confirms n3=0 exactly; it does not assume it.
+wall 0.59s

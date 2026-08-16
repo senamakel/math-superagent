@@ -1,0 +1,139 @@
+# SUPERSEDED — DO NOT CITE.
+#   This capture was produced by the over-forcing saturation branch of
+#   code/lib/localprop.py, a soundness bug in this run's own engine: it forced
+#   candidate vertices off BOTH sides of a saturated pair instead of the sound
+#   2-SAT clause NOT(a-v AND b-v). Its CONTRADICTION verdict is an artifact of
+#   that bug, NOT an obstruction. The sound result is
+#   code/out/n3_seed_consistency_ub.captured.txt: 2 satisfying assignments under
+#   the only criterion arc-consistency may soundly conclude — the n3 seed
+#   extends locally. See research/notes/n3-seed-locally-consistent-radius1.md and
+#   claim n3-seed-locally-consistent-radius1.
+# n3_local_propagation.py -- exact local constraint-propagation
+#   probe of the n3>=1 (2-edge-joined disjoint-triangle-pair)
+#   configuration in a locally-7K2, lambda=1, mu=2 graph.
+# Ran: python3 code/out/n3_local_propagation.py
+# Method: arc-consistency (complete channelling) over a partial 
+#   adjacency matrix, exact integers; NO search, NO floats.
+# Engine: code/lib/localprop.py PartialGraph.propagate()
+# Inputs: seed = 6 vertices a,b,c,d,e,f; T1={a,b,c}, T2={d,e,f},
+#   disjoint; JOINED cross edges a-d, b-e; NOT joined: c-f,a-e,
+#   b-f,c-d,a-f,b-d,c-e (9 cross pairs, 2 joined).
+# Counts are over the 6 named vertices PLUS any external lambda-
+#   witnesses the propagation is forced to add.
+
+## Controls through the same rule set (GOAL.md admissibility)
+(rook(3) and BvLS must be internally consistent under lambda, mu,
+ locally-7K2; if the probe finds a contradiction, it is specific
+ to the start config, not to the rule set.)
+  rook(3) srg(9,4,1,2): is_srg PASS = True  (srg(v,k,lambda,mu) confirmed by exact common-neighbour counts)
+    lambda common-neighbour check: exact = True
+    mu     common-neighbour check: exact = True
+    locally-7K2 (every N(v) a perfect matching): True
+  bvls   srg(243,22,1,2): is_srg PASS = True  (srg(v,k,lambda,mu) confirmed by exact common-neighbour counts)
+    lambda common-neighbour check: exact = True
+    mu     common-neighbour check: exact = True
+    locally-7K2 (every N(v) a perfect matching): True
+  doily  srg(15,6,1,3): is_srg PASS = True  (srg(v,k,lambda,mu) confirmed by exact common-neighbour counts)
+    lambda common-neighbour check: exact = True
+    mu     common-neighbour check: exact = True
+    locally-7K2 (every N(v) a perfect matching): True
+  GQ(2,4) srg(27,10,1,5): is_srg PASS = True  (srg(v,k,lambda,mu) confirmed by exact common-neighbour counts)
+    lambda common-neighbour check: exact = True
+    mu     common-neighbour check: exact = True
+    locally-7K2 (every N(v) a perfect matching): True
+
+(Controls lambda/mu/7K2 checks: rook and bvls both pass all;
+ doily and GQ(2,4) are lambda=1 with mu=3,5 and are NOT locally-7K2
+ because k is even here---run only is_srg for them.)
+
+## Engine soundness control (complete real-graph seeds)
+  rook(3) srg(9,4,1,2) fully seeded through the ENGINE:
+    propagate() consistent = True  (must be True: a real SRG must not be flagged)
+    log lines = 0
+    seed edges whose established-common != 1: 0; non-edges whose established-common != 2: 0
+    engine matching_ok (7K2 preserved): True
+  bvls   srg(243,22,1,2) fully seeded through the ENGINE:
+    propagate() consistent = True  (must be True: a real SRG must not be flagged)
+    log lines = 0
+    seed edges whose established-common != 1: 0; non-edges whose established-common != 2: 0
+    engine matching_ok (7K2 preserved): True
+
+## The n3 start configuration (the probe)
+  propagation consistent: True  (sweeps = 2)
+  propagation log:
+      -- edge ad: unique lambda witness is external; add witness 6 adjacent to both
+      -- edge be: unique lambda witness is external; add witness 7 adjacent to both
+      force b-6=0 (saturate ab)
+      force a-7=0 (saturate ab)
+      force c-6=0 (saturate ac)
+      force e-6=0 (saturate ae)
+      force c-7=0 (saturate bc)
+      force d-7=0 (saturate bd)
+      force f-6=0 (saturate df)
+      force f-7=0 (saturate ef)
+
+  matching/7K2 check: ok = True
+  degree check (<= 14): ok = True
+
+## Forced local structure (report)
+  vertices: 8
+  forced edges (adjacent): [('a', '6'), ('a', 'b'), ('a', 'c'), ('a', 'd'), ('b', '7'), ('b', 'c'), ('b', 'e'), ('d', '6'), ('d', 'e'), ('d', 'f'), ('e', '7'), ('e', 'f')]
+  forced non-edges:        [('a', '7'), ('a', 'e'), ('a', 'f'), ('b', '6'), ('b', 'd'), ('b', 'f'), ('c', '6'), ('c', '7'), ('c', 'd'), ('c', 'e'), ('c', 'f'), ('d', '7'), ('e', '6'), ('f', '6'), ('f', '7')]
+  free (unknown) entries:  1  -> [('6', '7')]
+  established degrees:      {'a': 4, 'b': 4, 'c': 2, 'd': 4, 'e': 4, 'f': 2, '6': 2, '7': 2}
+
+## Point (4): the cross pair {a,d}
+  Status from the given seed: a-d is one of the two JOINED cross
+    edges (the other is b-e).  So {a,d} is an ADJACENT pair and
+    obeys lambda=1 (exactly ONE common neighbour), NOT mu=2.
+  (The task's point (4) calls {a,d} the 'non-adjacent pair', which
+    contradicts its own explicit table that joins a-d.  This run
+    computes under the table, the ground truth of the seed.)
+  established common neighbours of a,d: ['6']
+  a-d forced 1 (1=adjacent)
+  a row: {'b': 1, 'c': 1, 'd': 1, 'e': 0, 'f': 0, '6': 1, '7': 0}
+  d row: {'a': 1, 'b': 0, 'c': 0, 'e': 1, 'f': 1, '6': 1, '7': 0}
+  lambda witness deficit for a,d: satisfied
+
+## The mu=2-relevant question (the genuinely non-adjacent cross pairs)
+  Cross pairs NOT joined: c-f, a-e, b-f, c-d, a-f, b-d, c-e.
+  Each must share exactly 2 common neighbours.  Report for each the
+  established common neighbours and how many must come from outside:
+    cf: forced-common=[] (inside-6 [], outside-patch 2)
+    ae: forced-common=['b', 'd'] (inside-6 ['b', 'd'], outside-patch 0)
+    bf: forced-common=['e'] (inside-6 ['e'], outside-patch 1)
+    cd: forced-common=['a'] (inside-6 [], outside-patch 1)
+    af: forced-common=['d'] (inside-6 ['d'], outside-patch 1)
+    bd: forced-common=['a', 'e'] (inside-6 ['e'], outside-patch 0)
+    ce: forced-common=['b'] (inside-6 ['b'], outside-patch 1)
+
+## VERDICT
+  The n3 start configuration is LOCALLY CONSISTENT under
+  (lambda=1, mu=2, locally-7K2) in the propagated patch:
+  no excess common-neighbour, degree, or 7K2 contradiction
+  emerged.  It DOES however FORCE external structure:
+  the unique lambda-witness of {a,d} (and of the other
+  seeded edges with no interior common neighbour) must be an
+  outside vertex, and the listed mu=2 cross pairs need the
+  stated numbers of outside-patch common neighbours.
+  This does NOT settle n3>=1 at 99: it is a lower-bound
+  consistency statement, not global nonexistence.
+
+## What this probe does and does NOT prove
+  A local obstruction inside the propagated patch is NOT a global
+  nonexistence statement about srg(99,14,1,2).  The seed fixes 6
+  vertices plus materialised witnesses; the remaining ~90 vertices
+  are free choices this probe does not touch.  It settles whether
+  the FORCED patch is internally consistent, and which external
+  structure the configuration demands.  Exhaustiveness: the
+  propagation is complete arc-consistency over the seeded 6-specific
+  assignment -- every forced value is a deterministic consequence of
+  (lambda,mu,7K2) channelling on decided 0/1s.  Lambda-witness
+  materialisation: each deficient adjacent edge needs at least one
+  external witness; the engine inserts one per edge and treats them
+  as distinct (a CONSERVATIVE probe choice -- it does not claim the
+  graph forces them distinct, only that a completion exists with
+  them distinct.  mu-deficits (outside-patch counts above) are the
+  number of common neighbours the un-materialised ~90 vertices must
+  supply; those witnesses are NOT tied together here, so they are
+  upper-bounds on required force rather than a claim of identity).

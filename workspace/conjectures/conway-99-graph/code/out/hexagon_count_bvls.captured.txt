@@ -1,0 +1,38 @@
+# Induced-C6 count on the BvLS srg(243,22,1,2) — independent run capture
+
+Ran: `python code/out/hexagon_count_bvls.py` then `python code/out/verify_hexagons_edge_anchor.py`
+Oracle: `lib.hexagons.count_induced_C6` (P4-anchored, O(n^4), boolean-matvec
+completion) and an independent directed-edge-anchored counter (O(n^5)).
+Exact inputs: integer 0/1 adjacency matrix of `lib.srg.bvls_graph()`
+(243x243, 2673 edges, confirmed srg(243,22,1,2) by `lib.srg.is_srg`).
+
+## Result
+
+  BvLS (243,22,1,2) induced C6 = 4,980,690
+  closed form (1/12)*243*22*20*559 = 4,980,690
+  equal: True
+
+## Two independent exact routes, both agreeing
+
+Route 1 (P4-anchored, lib/hexagons.count_induced_C6): 4,980,690 in 116.5s
+  (single worker; anchors each oriented induced hexagon at its first 4
+  vertices, completes via one boolean nsb@A matvec per anchor).
+Route 2 (directed-edge-anchored, code/out/verify_hexagons_edge_anchor.py):
+  directed total 59,768,280 = 12 * 4,980,690, /12 = 4,980,690 in 229.7s.
+
+Entry guards validated before full size: rook(3)=srg(9,4,1,2) gives 6 (equals
+its formula value 6); a bare C6 gives 1; two disjoint triangles give 0. Both
+routes reproduce the independent brute-force counter (code/out/validate_hexagons.py)
+on these small cases.
+
+## Consequence for (99,14,1,2)
+
+The 243 control ATTAINS the Reimbayev hexagon lower bound. The closed form at
+n=99,k=14 predicts 209,286. Because 243 already attains the bound, the bound's
+equality branch does NOT by itself predicate nonexistence — any hexagon-counting
+argument for 99 must confront that the existing 243 graph sits in the same
+branch. This is now a measured, independently-checked invariant the run holds
+(code claim `c8-induced-hexagon-count-bvls`).
+
+Complexity of the counter: O(n^4) time, O(n^2) space (polynomial), exact
+integer arithmetic, no floats.

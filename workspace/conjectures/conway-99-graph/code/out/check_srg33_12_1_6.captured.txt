@@ -1,0 +1,27 @@
+# Ran: python3 code/out/check_srg33_12_1_6.py
+# Oracle: exact integer/Fraction feasibility of srg(v,k,lam,mu) (no floats).
+# Purpose: independent re-derivation that Makhnev Thm 2's forced subobject
+#   (33,12,1,6) is parameter-INFEASIBLE, and that it stands in contrast to
+#   the feasible/existing comparison sets below. NO assertion about v=99.
+
+    v   k  lam  mu |    verdict |  eig r,s | mult f,g | mechanism / detail
+--------------------------------------------------------------------------
+   33  12    1   6 | INFEASIBLE |     1,-6 | non-integral | g numerator 2k+(v-1)(lam-mu) = -136 not divisible by sqrt(delta) = 7
+   27  10    1   5 |   FEASIBLE |     1,-5 |     6,20 | eigenvalues k=10, r=1, s=-5; multiplicities f=6, g=20
+    9   4    1   2 |   FEASIBLE |     1,-2 |      4,4 | eigenvalues k=4, r=1, s=-2; multiplicities f=4, g=4
+   99  14    1   2 |   FEASIBLE |     3,-4 |    44,54 | eigenvalues k=14, r=3, s=-4; multiplicities f=44, g=54
+  243  22    1   2 |   FEASIBLE |     4,-5 |  110,132 | eigenvalues k=22, r=4, s=-5; multiplicities f=110, g=132
+   33   8    1   2 | INFEASIBLE |     2,-3 | non-integral | g numerator 2k+(v-1)(lam-mu) = -16 not divisible by sqrt(delta) = 5
+
+# VERDICT for (33,12,1,6):
+  srg(33,12,1,6) is INFEASIBLE by multiplicity integrality.
+  Mechanism:  g numerator 2k+(v-1)(lam-mu) = -136 not divisible by sqrt(delta) = 7
+  This is the exact sub-parameter-set Makhnev Thm 2 forces under
+  condition (*) at (99,14,1,2); Thm 1 then rejects it because mu=6>3
+  and it is not (27,10,1,5). The contrast row (27,10,1,5) is FEASIBLE
+  and EXISTS, which is why Thm 1's exception escapes the mechanism.
+
+# Consistency: the known-inf feasible (33,8,1,2) must also report
+#   INFEASIBLE by multiplicity integrality (same 2k-(v-1) divisibility
+#   mechanism as (33,12,1,6)).
+  srg(33,8,1,2): INFEASIBLE by multiplicity integrality: g numerator 2k+(v-1)(lam-mu) = -16 not divisible by sqrt(delta) = 5

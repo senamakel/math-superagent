@@ -1,0 +1,45 @@
+# n3_cap_closed_form.py -- tightest nonnegative upper bound on n3 from the
+#   62 Reimbayev order-6 formulas
+# Ran: python3 code/out/n3_cap_closed_form.py
+# Oracle: exact sympy / Fraction arithmetic over the 62 Reimbayev order-6
+#   subgraph-count formulas in n3_order6_feasibility.py (no floats).
+# Search space: the 5 feasible family members (v,k) =
+#   (9,4),(99,14),(243,22),(6273,112),(494019,994).
+# Purpose: record the closed form of the n3 cap, the tightest nonnegative
+#   upper bound on n3 that the 62 order-6 count identities admit.
+
+## Result
+
+cap = min over 62 formulas with negative n3-coefficient c of base/(-c).
+For k>=6 the argmin is n1 = (1/12) n k (k-2) - n3/3, giving
+
+  cap = n*k*(k-2)/4 = k*(k-2)*(k^2+2)/8     (n = v = 1 + k^2/2)
+
+For k=4 the argmin is n5 = (1/8) n k (k-2)(k-4) - n3, whose base vanishes, cap=0.
+
+## Verification (symbolic AND brute force)
+
+cap(u) polynomial is degree 8 in u:
+  1/8*u^8 + 1/2*u^7 + 3/2*u^6 + 11/4*u^5 + 33/8*u^4 + 17/4*u^3 + 13/4*u^2 + 3/2*u
+
+Verify cap = n*k*(k-2)/4 against brute force over all 62 formulas, all k>=6 members:
+  k=  14: brute=        4158 ana=        4158 match=True
+  k=  22: brute=       26730 ana=       26730 match=True
+  k= 112: brute=    19320840 ana=    19320840 match=True
+  k= 994: brute=121781611728 ana=121781611728 match=True
+
+cap sequence over all five feasible members: [0, 4158, 26730, 19320840, 121781611728]
+residue: n3 == 0 (mod 3) at every member; at (99,14) the admissible set is the
+  1387 multiples of 3 in [0, 4158] (sharp: 4158 admissible, 4159 not).
+
+## Key consequence at (99,14,1,2)
+
+Combined with Makhnev 1988 Thm 2 (n3=0 => nonexistence, so n3>=1), the
+sharpened statement is:
+
+  1 <= n3 <= 4158
+
+Lower bound: re-derived Makhnev chain (checked/sourced). Upper bound: this cap
+(checked here, exact). Both hold for ANY putative srg(99,14,1,2).
+
+## wall clock: 0.1s (exact symbolic / Fraction, no enumeration)

@@ -1,0 +1,28 @@
+Ran: python code/out/verify_oracle.py (from /workspace); oracle imported from lib/srg.py
+Oracle function: is_srg(A, v, k, lam, mu) from code/lib/srg.py, exact integer common-neighbour counts via A@A
+Inputs: rook(3) on (9,4,1,2); bvls_graph() on (243,22,1,2); random_regular_14_99(seed=1) on (99,14,1,2); C9(1,2) circulant on (9,4,1,2); rook(4) on (9,4,1,2); Petersen on (9,4,1,2) and (10,3,0,1)
+==========================================================================
+ORACLE VERIFICATION — lib/srg.is_srg, exact integer common-neighbour counts
+==========================================================================
+
+[1] Positive controls
+  rook(3)        srg(9,4,1,2):     PASS  srg(v,k,lambda,mu) confirmed by exact common-neighbour counts
+  bvls shape (243, 243)  edges 2673 (expect 2673=243*22/2)
+  bvls_graph()   srg(243,22,1,2):  PASS  srg(v,k,lambda,mu) confirmed by exact common-neighbour counts
+
+[2] Negative controls that pass shape + regularity, fail only on counts
+  C9(1,2) 4-regular on 9v: True
+  C9(1,2)        srg(9,4,1,2):     FAIL  off-diagonal common-neighbour mismatch on 36 entries
+  rand14-99 14-regular on 99v: True
+  rand14-99      srg(99,14,1,2):   FAIL  off-diagonal common-neighbour mismatch on 9504 entries
+
+[3] Other negatives (may fail on shape/degree)
+  rook(4)        srg(9,4,1,2):     FAIL  shape (16, 16) != (9,9)
+  Petersen srg(10,3,0,1) sanity:  PASS
+  Petersen       srg(9,4,1,2):     FAIL  shape (10, 10) != (9,9)
+
+[4] Independent BvLS spectrum cross-check (suggestive, not decisive)
+    eigenvalue -5.0  multiplicity 110
+    eigenvalue 4.0  multiplicity 132
+    eigenvalue 22.0  multiplicity 1
+    expected 22^1, 4^132, -5^110

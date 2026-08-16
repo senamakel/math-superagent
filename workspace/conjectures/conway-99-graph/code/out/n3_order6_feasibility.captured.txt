@@ -1,0 +1,15 @@
+n3_order6_feasibility.py -- Reimbayev 62 order-6 subgraph-count formulas, exact Fraction arithmetic
+method: n_i = (n,k)-term +/- c*n3 ; require every n_i a nonnegative integer; N_cap = tightest nonneg upper bound on n3
+inputs: family {(9,4),(99,14),(243,22),(6273,112),(494019,994)}; all 62 formulas transcribed verbatim from source summary
+
+family            0-adm min-adm  bounds              residue-class
+------------------------------------------------------------
+(     9,  4)  True  0        L=0 U=0  n3≡0 (mod 3)  [brute cf 0]
+(    99, 14)  True  0        L=0 U=4.16e+03  n3≡0 (mod 3)  [brute cf 0]
+(   243, 22)  True  0        L=0 U=2.67e+04  n3≡0 (mod 3)  [brute cf 0]
+(  6273,112)  True  0        L=0 U=1.93e+07  n3≡0 (mod 3)
+(494019,994)  True  0        L=0 U=1.22e+11  n3≡0 (mod 3)
+
+VALIDATION (controllers): k=4 (n=9, rook exists) and k=22 (n=243, BvLS exists) MUST admit n3=0.
+Brute-force cross-check (all formulas nonneg-int) run for every (n,k) with cap<=30000, against analytic interval+residue.
+VERDICT k=14: k=14 (n=99): n3=0 IS arithmetically admissible -- order-6 integrality alone does NOT force n3>=1
