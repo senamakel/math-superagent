@@ -196,7 +196,7 @@ pub(in crate::orchestrator) async fn refutation_arm(
 /// building on, ordered by how much rests on it — so one check per pass goes to
 /// the node whose mistake would cost the most. A fleet of provers is the other
 /// way to cover a blueprint; this is the one that fits the container's memory
-/// ceiling, and the queue is written into `research/BLUEPRINT.md` so what was
+/// ceiling, and the queue is written into `derived/BLUEPRINT.md` so what was
 /// not reached is visible.
 ///
 /// **It asks for something different the second time.** A node that survived a
@@ -290,11 +290,16 @@ pub(in crate::orchestrator) async fn verification_arm(
     )
     .await;
     // Beside the report rather than instead of it, on the argument the
-    // refutation arm makes: the verdicts say what the kernel established, and
+    // refutation arm makes: the verdict says what the kernel established, and
     // the report says what the prover believes the Lean statement means — which
     // is the judgement no file records and the one place this arm can still be
     // wrong.
-    let filed = super::lean::briefing(workspace);
+    //
+    // The *assigned* source, not every verdict on disk. The prover checks
+    // scratch files while it hunts a Mathlib name — one live run left a
+    // five-line `#check` probe that did not compile — and a briefing listing
+    // those reports failures the pass was not about, next to the one it was.
+    let filed = super::lean::briefing_for(workspace, &assignment.source);
     let merged = merge_context(&[
         ("What the kernel recorded", filed.as_str()),
         ("What the prover reports", report.as_str()),

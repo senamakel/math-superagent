@@ -198,13 +198,17 @@ fn evidence_briefing(workspace: &Path) -> String {
     // done something no other count on this list can show, and scoring it as
     // though it had never tried is the failure this whole briefing exists to
     // stop.
-    let (passed, checked) = super::lean::counts(workspace);
+    // Statements the run was *asked* about, not files the kernel saw. The
+    // prover checks scratch files while it hunts a Mathlib name, and each of
+    // those files a verdict; counting verdicts reported name-probes as failed
+    // proofs. See `verify::counts`.
+    let (passed, checked) = super::verify::counts(workspace);
     let kernel = if checked == 0 {
         String::new()
     } else {
         format!(
-            "\n- formalisation: {checked} file(s) handed to the Lean kernel, {passed} of which it \
-             accepted on Lean's three axioms alone"
+            "\n- formalisation: {checked} ranked statement(s) handed to the Lean kernel, {passed} \
+             of which it accepted on Lean's three axioms alone"
         )
     };
     let circular = if graph.is_circular() {

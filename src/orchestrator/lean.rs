@@ -26,6 +26,7 @@ use std::time::Duration;
 use async_trait::async_trait;
 use serde_json::json;
 
+use super::text::truncate;
 use super::{paths, string_argument};
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
@@ -55,6 +56,14 @@ pub(super) const VERDICT_DIR: &str = "code/out/lean";
 /// produce is decided by the presence of an error rather than by its hundredth
 /// repetition.
 const MAX_LEAN_OUTPUT_BYTES: usize = 32 * 1024;
+
+/// How long one recorded signature may run.
+///
+/// A statement is what a reader compares against the claim, so it has to be
+/// readable in a ledger row rather than complete at any length — a
+/// three-hundred-character type printed into `CLAIMS.md` is a statement nobody
+/// checks. The file is beside it and holds the whole thing.
+const MAX_SIGNATURE_CHARS: usize = 400;
 
 /// The axioms a proof may rest on and still be a proof.
 ///
@@ -152,6 +161,38 @@ pub struct Verdict {
     pub(super) sorries: Vec<String>,
     /// Every `#print axioms` line, verbatim.
     pub(super) axioms: Vec<String>,
+    /// Each theorem the file declares, as its signature.
+    ///
+    /// The field the first version of this struct did not have, and a live run
+    /// is why. `f-lower-bound-ceil-sqrt-n` was checked, passed on Lean's three
+    /// axioms with no `sorry`, and the claim ledger could then carry it as
+    /// `formalised` — the strongest row it has. What the kernel had actually
+    /// accepted was
+    ///
+    /// ```text
+    /// theorem f_lower_bound_ceil_sqrt_n (f : ℕ → ℕ)
+    ///     (hspectral : ∀ n, 1 ≤ n → Real.sqrt n ≤ f n) :
+    ///     ∀ n, 1 ≤ n → Nat.ceil (Real.sqrt n) ≤ f n
+    /// ```
+    ///
+    /// — a fact about an *arbitrary* `f : ℕ → ℕ`, with the spectral bound that
+    /// makes the claim hard taken as a hypothesis and the hypercube nowhere in
+    /// it. That is a correct and useful theorem, and the run said so plainly in
+    /// the file's docstring. It is not the claim the ledger states.
+    ///
+    /// `#print axioms` cannot see this. An assumed `axiom` is caught by
+    /// [`Verdict::untrusted_axioms`]; the same assumption moved into a binder
+    /// proves the same conditional and reports `propext, Classical.choice,
+    /// Quot.sound`. The two files differ by where the hypothesis sits, and only
+    /// one of them is visible to the check that exists.
+    ///
+    /// So the signature is recorded. This *surfaces* rather than decides —
+    /// whether a hypothesis is discharged elsewhere is a question about the
+    /// statement graph, and whether a binder is data or an assumption is a
+    /// question only Lean's elaborator can answer. What it buys is that a row
+    /// reading `formalised` now says what was formalised, to the judge, to the
+    /// next role, and to a reader.
+    pub(super) declarations: Vec<String>,
 }
 
 impl Verdict {
@@ -317,6 +358,7 @@ impl Verdict {
             "compiled": self.compiled,
             "sorries": self.sorries,
             "axioms": self.axioms,
+            "declarations": self.declarations,
             "cited": self.cited_axioms(),
             "verified": self.verified(),
             "outcome": self.outcome().as_str(),
@@ -324,12 +366,19 @@ impl Verdict {
     }
 
     /// Reads a verdict back out of one written record.
+    ///
+    /// `declarations` is absent from every record written before it existed,
+    /// and [`strings`] reads a missing field as empty rather than failing. A
+    /// verdict that predates the field is still a verdict; refusing to read it
+    /// would silently empty `code/out/lean/` on the first derivation after an
+    /// upgrade, which is the one outcome worse than a missing signature.
     fn from_record(value: &serde_json::Value) -> Option<Self> {
         Some(Self {
             file: value.get("file")?.as_str()?.to_string(),
             compiled: value.get("compiled")?.as_bool()?,
             sorries: strings(value.get("sorries")),
             axioms: strings(value.get("axioms")),
+            declarations: strings(value.get("declarations")),
         })
     }
 
@@ -344,6 +393,7 @@ impl Verdict {
         out.push_str(&list("sorry warnings", &self.sorries));
         out.push_str(&list("#print axioms", &self.axioms));
         out.push_str(&list("cited axioms", &self.cited_axioms()));
+        out.push_str(&list("checked", &self.declarations));
         match (self.outcome(), self.objection()) {
             (Outcome::Conditional, _) => out.push_str(
                 "\nThis verdict stands behind a `status: conditional` claim, and not a \
@@ -361,6 +411,24 @@ impl Verdict {
                 "\nThis verdict stands behind a `status: formalised` claim. Cite it with a \
                  `formalisation:` line naming this file.\n",
             ),
+        }
+        // After the outcome, and only on the one that claims the most. A
+        // `conditional` verdict has already said its result is conditional and
+        // named on what; this is the case that has not, because the assumption
+        // is in a binder where no axiom list can see it.
+        if self.outcome() == Outcome::Verified
+            && self.declarations.iter().any(|line| line.contains('('))
+        {
+            out.push_str(
+                "\nAt least one theorem here takes arguments. If any of them is a *hypothesis* \
+                 rather than data, what the kernel accepted is a conditional result: true given \
+                 that hypothesis, and silent about whether the hypothesis holds. The `cited \
+                 axioms` list above cannot tell you — an assumption moved into a binder reports \
+                 the same three axioms as no assumption at all, which is the one way a \
+                 conditional result still reads as `formalised` here. Say which binder carries \
+                 which of the claim's hypotheses, and give any hypothesis the run has not \
+                 established its own claim.\n",
+            );
         }
         out
     }
@@ -426,72 +494,105 @@ pub(super) fn verdict(workspace: &Path, file: &str) -> Option<Verdict> {
     Verdict::from_record(&value)
 }
 
-/// Every verdict filed for this workspace, weakest news first.
+/// The same, for one source.
 ///
-/// Read off disk rather than taken from the prover's reply, which is the
-/// argument `refute.rs` already makes about its own verdicts: a role's prose is
-/// a summary of its own work and the record is the work. It matters more here,
-/// because the ordinary way a formalisation turn ends is the run cap killing it
-/// — which destroys the report and leaves every `.lean` file and every verdict
-/// beside it.
-///
-/// Ordered so a reader skimming one line sees the check that did *not* pass.
-/// A verified proof needs no action; a file that compiles with three `sorry`
-/// still in it is the one somebody has to go back to.
-pub(super) fn collect(workspace: &Path) -> Vec<Verdict> {
-    let Ok(entries) = std::fs::read_dir(workspace.join(VERDICT_DIR)) else {
-        return Vec::new();
-    };
-    let mut paths: Vec<PathBuf> = entries.flatten().map(|entry| entry.path()).collect();
-    paths.sort();
-    let mut verdicts: Vec<Verdict> = paths
-        .iter()
-        .filter_map(|path| {
-            let text = std::fs::read_to_string(path).ok()?;
-            let value = serde_json::from_str::<serde_json::Value>(&text).ok()?;
-            Verdict::from_record(&value)
-        })
-        .collect();
-    verdicts.sort_by_key(Verdict::verified);
-    verdicts
+/// What a caller wanting the verdict for the file it just commissioned needs,
+/// and the whole list is the wrong answer to that question: `lean_check` is also
+/// the prover's iteration tool, so `code/out/lean/` accumulates scratch probes —
+/// one live run left a five-line `#check` file that did not compile — and a
+/// briefing carrying those reports failures the caller did not ask about beside
+/// the one it did. A source with no verdict says so, because "the prover never
+/// checked the file it was asked to write" is a fact worth having.
+pub(super) fn briefing_for(workspace: &Path, file: &str) -> String {
+    match verdict(workspace, file) {
+        Some(verdict) => line(&verdict),
+        None => format!(
+            "- `{file}` has no `lean_check` verdict: nothing checked the file this pass \
+             commissioned\n"
+        ),
+    }
 }
 
-/// One line per filed verdict, for a reader who is not the prover.
+/// One verdict as a line, saying what it rests on when it passed.
 ///
-/// The objection is carried rather than a bare pass/fail, because the two say
-/// different things to whoever reads this next: "does not compile" is work for
-/// the same role again, and "rests on `key_estimate`, which nothing proved" is
-/// a new statement somebody has to go and prove.
-pub(super) fn briefing(workspace: &Path) -> String {
-    let mut out = String::new();
-    for verdict in collect(workspace) {
-        match verdict.objection() {
-            Some(objection) => {
-                let _ = writeln!(out, "- {objection}");
-            }
-            None => {
-                let _ = writeln!(
-                    out,
-                    "- `{}` — the kernel checked it, on Lean's three axioms alone",
-                    verdict.file
-                );
-            }
-        }
+/// The signature is carried on a passing verdict and not on a failing one,
+/// because they are read for different things. A failure is read for what to fix
+/// next, which the objection names; a pass is read as evidence, and evidence
+/// that does not say what was proved is what let a theorem about an arbitrary
+/// `f : \u{2115} \u{2192} \u{2115}` stand behind a claim about the hypercube.
+fn line(verdict: &Verdict) -> String {
+    if let Some(objection) = verdict.objection() {
+        return format!("- {objection}\n");
+    }
+    let mut out = format!(
+        "- `{}` \u{2014} the kernel checked it, on Lean's three axioms alone\n",
+        verdict.file
+    );
+    for declaration in &verdict.declarations {
+        let _ = writeln!(out, "  - checked: {declaration}");
     }
     out
 }
 
-/// How many formalisations passed, out of how many were attempted.
+/// Pulls each theorem's signature out of a Lean source.
 ///
-/// Counted for the judge, which reads what is on disk rather than what an
-/// attempt reported. A failed check is deliberately in the denominator: a run
-/// that tried to formalise four lemmas and closed one has done something the
-/// count of claims cannot show, and a statistic that hid the three would make
-/// the honest run and the run that never tried look identical.
-pub(super) fn counts(workspace: &Path) -> (usize, usize) {
-    let verdicts = collect(workspace);
-    let passed = verdicts.iter().filter(|verdict| verdict.verified()).count();
-    (passed, verdicts.len())
+/// Read from the *source* rather than from `lean`'s output, because `lean` is
+/// not asked for it: a file that elaborates prints its `#print axioms` lines and
+/// nothing else, and the alternative — a second elaboration with `#check @name`
+/// appended — costs another Mathlib import per check, which is the most
+/// expensive thing in the image.
+///
+/// The parse is deliberately shallow and deliberately literal. It takes the text
+/// from a `theorem` or `lemma` keyword at the start of a line up to the `:=`
+/// that opens the proof, collapses its whitespace, and keeps it. It does not
+/// try to separate binders from the conclusion, or data from hypotheses: both
+/// need Lean's elaborator, and a runtime that guessed would file a wrong
+/// signature beside a right verdict, which is worse than filing none.
+///
+/// What it is for is the reader. A row saying `formalised` should say *of
+/// what* — see [`Verdict::declarations`] for the live run where it did not.
+fn declarations(source: &str) -> Vec<String> {
+    let mut found = Vec::new();
+    let mut collecting: Option<String> = None;
+    for line in source.lines() {
+        let trimmed = line.trim_start();
+        if collecting.is_none() {
+            // Anchored at the line start so `theorem` inside a docstring or a
+            // comment does not open a signature that never closes.
+            if !(trimmed.starts_with("theorem ")
+                || trimmed.starts_with("lemma ")
+                || trimmed.starts_with("private theorem ")
+                || trimmed.starts_with("protected theorem "))
+            {
+                continue;
+            }
+            collecting = Some(String::new());
+        }
+        let Some(signature) = collecting.as_mut() else {
+            continue;
+        };
+        // `:=` ends the signature and everything after it is the proof, which
+        // is not what a reader of the ledger is checking.
+        let (text, done) = match line.split_once(":=") {
+            Some((before, _)) => (before, true),
+            None => (line, false),
+        };
+        if !signature.is_empty() {
+            signature.push(' ');
+        }
+        signature.push_str(text.trim());
+        if done || text.trim_end().ends_with("by") {
+            let finished = signature.split_whitespace().collect::<Vec<_>>().join(" ");
+            if !finished.is_empty() {
+                found.push(truncate(&finished, MAX_SIGNATURE_CHARS));
+            }
+            collecting = None;
+        }
+    }
+    // A signature left open by a file that never closed it is dropped rather
+    // than reported half-read: a truncated statement in a ledger row reads as
+    // the whole statement.
+    found
 }
 
 /// Parses one `lean` invocation's output into a verdict.
@@ -510,7 +611,7 @@ pub(super) fn counts(workspace: &Path) -> (usize, usize) {
 /// strictest possible result was being read as *no `#print axioms` line*, so
 /// the one kind of proof this whole file exists to reward was the one kind it
 /// refused.
-fn parse(file: &str, exit_ok: bool, output: &str) -> Verdict {
+fn parse(file: &str, source: &str, exit_ok: bool, output: &str) -> Verdict {
     let mut sorries = Vec::new();
     let mut axioms = Vec::new();
     let mut errored = false;
@@ -535,6 +636,7 @@ fn parse(file: &str, exit_ok: bool, output: &str) -> Verdict {
         compiled: exit_ok && !errored,
         sorries,
         axioms,
+        declarations: declarations(source),
     }
 }
 
@@ -696,8 +798,12 @@ impl Tool<()> for LeanCheck {
             )));
         }
         let relative = paths::strip_workspace_prefix(&requested).to_string();
+        // Read before the check rather than after it, so the signature recorded
+        // is the one the kernel was given. A file rewritten while `lean` runs
+        // would otherwise have its new statement filed under the old verdict.
+        let source = tokio::fs::read_to_string(&path).await.unwrap_or_default();
         let (exit_ok, output) = self.run(&path).await?;
-        let verdict = parse(&relative, exit_ok, &output);
+        let verdict = parse(&relative, &source, exit_ok, &output);
         self.file_verdict(&verdict).await?;
         // After the verdict is on disk and not before: half of every row in the
         // lemma index is the standing this check just decided, so a derivation
@@ -822,8 +928,9 @@ pub async fn check_file(
     }
     let checker = LeanCheck::new(workspace.to_path_buf(), timeout);
     let relative = paths::strip_workspace_prefix(file).to_string();
+    let source = tokio::fs::read_to_string(&path).await.unwrap_or_default();
     let (exit_ok, output) = checker.run(&path).await?;
-    let verdict = parse(&relative, exit_ok, &output);
+    let verdict = parse(&relative, &source, exit_ok, &output);
     if write_verdict {
         checker.file_verdict(&verdict).await?;
     }
