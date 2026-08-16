@@ -199,10 +199,14 @@ fn register_code_writing_agents(
         if name == lean::LEAN_ROLE {
             register_resilient(
                 &mut harness,
-                Arc::new(lean::LeanCheck::new(
-                    parts.workspace.to_path_buf(),
-                    parts.budget.tool_timeout,
-                )),
+                Arc::new(
+                    lean::LeanCheck::new(parts.workspace.to_path_buf(), parts.budget.tool_timeout)
+                        // The check re-derives `research/LEMMAS.md`, so it needs
+                        // the write path. Given here rather than looked up
+                        // inside the tool, so a derived ledger still goes
+                        // through the one writer that is allowed to produce one.
+                        .deriving(parts.documents.clone()),
+                ),
             );
         }
         harness.push_middleware(parts.checkpoint.clone());

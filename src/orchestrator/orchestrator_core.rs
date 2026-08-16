@@ -24,8 +24,13 @@ mod folder_index;
 mod frontier;
 mod grep;
 mod layout;
-mod lean;
+// Public to the crate, alone among the tool modules, because the kernel check
+// has a caller outside a run: the host-side wrapper and the replay that scores
+// past runs re-export `lean::check_file` from `lib.rs` rather than reimplement
+// the verdict. The tool itself stays private to the orchestrator.
+pub(crate) mod lean;
 mod ledger;
+mod lemmas;
 mod loop_steps;
 mod oeis;
 mod openalex;
