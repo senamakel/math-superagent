@@ -100,7 +100,13 @@ def ask(model, provider, system, user, key):
         ],
     }
     if provider:
-        payload["provider"] = {"order": [provider], "allow_fallbacks": False}
+        # `allow_fallbacks` stays true, matching `src/agent/sticky.rs`: the
+        # runtime treats a provider slug as a preference and not an exclusion,
+        # so a bench that excluded would be measuring the model under routing no
+        # run uses. It also simply fails — `deepseek/deepseek-v4-pro` pinned to
+        # the `deepseek` provider with fallbacks off returns 404 for every call,
+        # which is how this was found.
+        payload["provider"] = {"order": [provider], "allow_fallbacks": True}
     request = urllib.request.Request(
         ENDPOINT,
         data=json.dumps(payload).encode(),
@@ -215,7 +221,12 @@ def main():
         passed = outcome in PASSING[task["kind"]] or (
             compiled and "compiled" in PASSING[task["kind"]]
         )
-        print(f"{outcome}{'' if compiled else ' (did not compile)'} — {'PASS' if passed else 'FAIL'}")
+        # For a kind scored on compiling, report *that* rather than the verdict.
+        # "failed — PASS" is what the verdict word and the pass bar look like
+        # side by side when they are answering different questions, and a
+        # reader has no way to tell it from a scoring bug.
+        shown = "compiled" if PASSING[task["kind"]] == {"compiled"} and compiled else outcome
+        print(f"{shown} — {'PASS' if passed else 'FAIL'}")
         rows.append((task, outcome, passed, report))
 
     passes = sum(1 for _, _, passed, _ in rows if passed)
@@ -243,9 +254,15 @@ def main():
                 "listed as `check-error` below with the stderr that says why.\n\n"
             )
         out.write("| Task | Kind | Outcome | Result |\n| --- | --- | --- | --- |\n")
-        for task, outcome, passed, _ in rows:
+        for task, outcome, passed, report in rows:
+            # For a kind scored on compiling, the column reports *that* rather
+            # than the verdict: the two answer different questions, and a row
+            # reading `failed | pass` is indistinguishable from a scoring bug.
+            shown = outcome
+            if PASSING[task["kind"]] == {"compiled"} and "compiled: true" in report:
+                shown = "compiled"
             out.write(
-                f"| `{task['id']}` | {task['kind']} | {outcome} | "
+                f"| `{task['id']}` | {task['kind']} | {shown} | "
                 f"{'pass' if passed else 'fail'} |\n"
             )
         out.write("\n## What the kernel said\n\n")
