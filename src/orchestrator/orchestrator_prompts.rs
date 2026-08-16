@@ -80,6 +80,9 @@ pub fn prompt_report(workspace: &Path) -> Result<String> {
 pub struct PromptReport {
     /// The role's name, as the registry knows it.
     pub role: String,
+    /// What the role may call. Empty for a role whose tools are registered
+    /// straight onto a harness rather than declared — see [`role_tools`].
+    pub tools: Vec<String>,
     /// The whole prompt, exactly as the runtime would send it.
     pub prompt: String,
     /// What it costs, by the runtime's own estimator.
@@ -101,6 +104,7 @@ pub struct PromptReport {
 /// UTF-8.
 pub fn prompt_reports(workspace: &Path) -> Result<Vec<PromptReport>> {
     let prompts = RolePrompts::load(workspace)?;
+    let registry = default_registry(research_enabled_from_env())?;
     Ok(prompts
         .by_role()
         .into_iter()
@@ -108,8 +112,34 @@ pub fn prompt_reports(workspace: &Path) -> Result<Vec<PromptReport>> {
             role: role.to_string(),
             prompt: prompt.to_string(),
             tokens: estimate_tokens(prompt),
+            tools: role_tools(&registry, role),
         })
         .collect())
+}
+
+/// What `role` may call, as the registry grants it.
+///
+/// A prompt does not list a role's tools and should not: they are sent as
+/// function schemas on every request, so writing them into the text would pay
+/// for them twice and give a role two lists to disagree about. That makes them
+/// invisible to a *reviewer*, which is a different problem and is what this
+/// answers — the report shows what a role is told beside what it can do, off
+/// the same registry the run builds its harnesses from.
+///
+/// The two planners are the exception the list cannot cover. Their tools are
+/// registered directly onto a harness by `build_planner_harness` rather than
+/// declared, so there is no entry to read; the report says so rather than
+/// printing an empty list, which would read as a role that can do nothing.
+fn role_tools(registry: &AgentRegistry, role: &str) -> Vec<String> {
+    if let Some(definition) = registry.get(role) {
+        return definition.tools.clone();
+    }
+    for school in schools::selected() {
+        if let Some(definition) = registry.get(&school.role(role)) {
+            return definition.tools.clone();
+        }
+    }
+    Vec::new()
 }
 
 /// What the shared method policy costs, which every role pays.

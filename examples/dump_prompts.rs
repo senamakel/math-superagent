@@ -51,6 +51,27 @@ fn share_of(tokens: u64, total: u64) -> String {
     format!("{}.{}", tenths / 10, tenths % 10)
 }
 
+/// What a role may call, or why the report cannot say.
+///
+/// A prompt never lists a role's tools: they are sent as function schemas on
+/// every request, so writing them into the text would pay for them twice and
+/// leave two lists to disagree. That is right for the run and unhelpful for a
+/// review, which is what this section is for — what a role is told, beside what
+/// it can do.
+fn tools_of(report: &math_agent::PromptReport) -> String {
+    if report.tools.is_empty() {
+        return "_Registered directly onto this role's harness rather than declared, so the \
+                registry has no list to read. See `build_planner_harness`._"
+            .to_string();
+    }
+    report
+        .tools
+        .iter()
+        .map(|tool| format!("- `{tool}`"))
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let options = common::options("workspace/template")?;
     let path = std::path::Path::new(&options.workspace);
@@ -97,11 +118,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     for report in &reports {
         let body = format!(
-            "# {}\n\nworkspace: {}\n\n_{} chars, ~{} tokens_\n\n```text\n{}\n```\n",
+            "# {}\n\nworkspace: {}\n\n_{} chars, ~{} tokens_\n\n## Tools\n\n{}\n\n\
+             ## Prompt\n\n```text\n{}\n```\n",
             report.role,
             path.display(),
             report.prompt.len(),
             report.tokens,
+            tools_of(report),
             report.prompt
         );
         common::write(&directory.join(format!("{}.md", report.role)), &body)?;
