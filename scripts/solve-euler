@@ -98,6 +98,9 @@ export MATH_AGENT_LOCAL_UID=$(id -u)
 export MATH_AGENT_LOCAL_GID=$(id -g)
 
 ./agent --workspace "$workspace_subdir" build >/dev/null
+# This fetch runs its own container rather than going through `./agent`, so it
+# needs the same credentials rule the launchers apply. See `scripts/dotenv`.
+. "$repository_root/scripts/dotenv"
 docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '
     set -eu
     mkdir -p /workspace/raw

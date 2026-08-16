@@ -99,6 +99,11 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
+# The checkout's credentials, over anything the calling shell exported. A memory
+# server started with a key that is not this checkout's indexes nothing and says
+# nothing; see `scripts/dotenv`.
+. "$repository_root/scripts/dotenv"
+
 echo "memory: bringing up $project for $label" >&2
 # `up -d` on a stack that is already up is a no-op that returns immediately, so
 # a second run against the same problem costs nothing and starts nothing twice.
