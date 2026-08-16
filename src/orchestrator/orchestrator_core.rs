@@ -26,8 +26,13 @@ mod folder_index;
 mod frontier;
 mod grep;
 mod layout;
-mod lean;
+// Public to the crate, alone among the tool modules, because the kernel check
+// has a caller outside a run: the host-side wrapper and the replay that scores
+// past runs re-export `lean::check_file` from `lib.rs` rather than reimplement
+// the verdict. The tool itself stays private to the orchestrator.
+pub(crate) mod lean;
 mod ledger;
+mod lemmas;
 mod loop_steps;
 mod oeis;
 mod openalex;
@@ -168,6 +173,12 @@ pub fn ledger_report(workspace: &Path) -> String {
     for (title, body) in [
         ("derived/BLUEPRINT.md", graph.render()),
         ("derived/ENTAILMENT.md", entailment.render()),
+        // The lemma index belongs here for the same reason those two do, and
+        // for one more: it is the only ledger whose sources are `.lean` files
+        // rather than notes, so a run whose container predates this module
+        // leaves the file absent while the tree it derives from is on disk.
+        // Rendering it here is how that workspace can still be read.
+        (lemmas::LEMMAS_PATH, lemmas::collect(workspace).render()),
         ("briefing: statement graph", graph.briefing()),
         ("briefing: entailment", entailment.briefing()),
     ] {

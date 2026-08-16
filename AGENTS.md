@@ -32,6 +32,8 @@ evidence for it stays available.
   research tree, the scratch, checkpointing, and reading what does not fit.
 - [`docs/ledgers.md`](docs/ledgers.md) — the derived ledgers: what each holds,
   the failure each stops, what bounds them, and how a run declares one.
+- [`docs/lean-library.md`](docs/lean-library.md) — writing the mathematics as
+  Lean rather than prose, the `Cited` namespace, and the first replay's numbers.
 - [`docs/memory.md`](docs/memory.md) — the four memory stores, and their audit.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
@@ -71,7 +73,7 @@ outline, and `section`, `lines` and `grep_workspace` reach any part.
 
 A *ledger* is derived state — an append-only queue, or one file per entry —
 walked by code and rendered into Markdown. `TASKS.md`, the board, the sub-goals,
-the attempts and the nine in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
+the attempts and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
 
 - **No agent writes one; the write path refuses a derived file.** Editing one is
   work queued for deletion on the next derivation, not a change.
@@ -91,9 +93,16 @@ the attempts and the nine in [`docs/ledgers.md`](docs/ledgers.md) are this shape
   the invariant: nothing in it is hand-written. It stays committed — it is the
   record of what was established — but `read_document` and `grep_workspace`
   refuse it and name `read_ledger`, which bounds and selects by `id`, `status` or
-  `query`. Both doors open made the cheap one optional, and `CLAIMS.md` cost
-  7,488 tokens to answer about one row. Older workspaces migrate once at startup,
-  never overwriting.
+  `query`. Older workspaces migrate once at startup, never overwriting.
+
+- **Lean carries the mathematics, not only the check.** Statements go under
+  `code/lean/Lib/`; `derived/LEMMAS.md` derives from them. A result read from the
+  literature is an `axiom` under `namespace Cited` and earns `conditional`, never
+  `formalised` — and never by typing it, the status being read off the verdict.
+  Only `lean_check` writes `code/out/lean/`, which is why `lean-verdict` cannot,
+  being in the image and so reachable from `execute_command`. `./lean-check` and
+  `scripts/lean-replay --all` reach the kernel without a run.
+  [`docs/lean-library.md`](docs/lean-library.md).
 
 ## Candidates
 
@@ -104,8 +113,8 @@ one.
 - **Fork the files, share the memory.** A candidate's checkout is a linked
   worktree, so `code/`, `research/` and its ledgers are its own; memory is not
   re-rooted and must not be, being the only channel between them. Enforced for
-  the file tools — a shell cannot be confined by its cwd, so an absolute
-  `/workspace/…` path still reaches the trunk. [`docs/workspace.md`](docs/workspace.md).
+  the file tools only — a shell cannot be confined by its cwd.
+  [`docs/workspace.md`](docs/workspace.md).
 - **One role may make a candidate authoritative.** `adopt_attempt` and
   `abandon_attempt` are the archivist's alone, and it holds no shell and no file
   write — so every trunk change carries a branch and a recorded reason.
@@ -199,7 +208,8 @@ before starting, and **match by mount, not by name**. Stop one with
 `start.log` is the only place a failed *start* says why, and the runtime's
 console is on the container's **stderr**, so `docker logs` needs `2>&1`.
 [`docs/runtime.md`](docs/runtime.md#watching-a-run) has the commands and the
-runs behind each of these.
+runs behind each of these. Every checkout shares the `math-agent:local` tag, so
+a build in one replaces the image another is about to run.
 
 ## Calibration runs
 
@@ -250,9 +260,9 @@ Docker boundary is part of the security model:
 - Mount only the selected directory below `workspace/` at `/workspace`; never
   the repository, home directory, Docker socket, or broad host paths.
 - Keep process, memory, command-time, and command-output limits. Keeping a
-  limit is the requirement; the value is a judgement, and 2 GiB was the wrong
-  one — [`docs/runtime.md`](docs/runtime.md#the-memory-cap) has the live run that
-  raised it. Read `docker events --filter event=oom` when a container vanishes.
+  limit is the requirement, its value a judgement —
+  [`docs/runtime.md`](docs/runtime.md#the-memory-cap). Read
+  `docker events --filter event=oom` when a container vanishes.
 - Keep network access because provider, search, and telemetry calls need it.
 
 Every agent working directory is `/workspace`. The helper accepts
@@ -285,8 +295,7 @@ contents. Document variable names and placeholders in `.env.example`.
 The runtime currently expects:
 
 - `OPENROUTER_API_KEY`, and optional `OPENROUTER_MODEL`
-- `OPENROUTER_MEMORY_API_KEY`, what each problem's memory server indexes on —
-  unset falls back to the run's key, and shares its daily limit
+- `OPENROUTER_MEMORY_API_KEY`, the memory's own; unset shares the run's limit
 - `EXA_API_KEY`
 - `LANGFUSE_BASE_URL`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`
 - `QDRANT_URL`, normally supplied by Compose
@@ -390,18 +399,13 @@ new dependencies:
 - add a comment in `Cargo.toml` explaining the dependency;
 - keep `Cargo.lock` committed.
 
-Two crates are vendored as Git submodules. Initialize both with:
+Two crates are vendored as Git submodules — `vendor/tinyagents`, the harness
+that runs one agent turn, and `vendor/tinyflows`, the state-graph runtime every
+control-flow graph is built on, reached through `agent::flow`. Initialize both:
 
 ```sh
 git submodule update --init --recursive
 ```
-
-- `vendor/tinyagents` — the harness that runs one agent turn: the model
-  providers, the tool runtime, middleware, and steering.
-- `vendor/tinyflows` — the state-graph runtime every control-flow graph in this
-  crate is built on, reached through `agent::flow`. It is the same runtime that
-  used to be consumed from TinyAgents, extracted into TinyFlows and maintained
-  there.
 
 The split is the rule to keep: TinyAgents runs a turn, TinyFlows decides which
 turn runs next. A new graph is built with `agent::flow`, never with
@@ -463,29 +467,25 @@ Keep `README.md`, this file, rustdoc, examples, and runtime behavior consistent.
 Write for a reader who has not seen the code. Prefer a concrete command or
 example over broad claims.
 
-Keep this file at 500 lines or fewer. It was 1,734 lines for long enough that
-the rule read as advice, and `CLAUDE.md` symlinks here: it is loaded in full,
-every time, which is what makes length a cost. Adding a section means finding
-the lines for it.
+Keep this file at 500 lines or fewer. `CLAUDE.md` symlinks here, so it is loaded
+in full every time, which is what makes length a cost rather than a preference.
+Adding a section means finding the lines for it.
 
 `README.md` is read start to finish by someone new, so it is held to the same
 intent without the number: the fix for its length is moving what a user does not
 need on a first pass, not trimming to a threshold.
 
-**`docs/` is not held to that cap.** Nothing loads those files into a prompt and
-nobody reads one end to end; a reader arrives at `docs/ledgers.md` because a rule
-above it sent them there, reads that section, and leaves. Splitting such a file
-on a line count moves the cost from scrolling to deciding which of two files a
-subject ended up in. Applied there once, it held `docs/roles.md` at 499 lines by
-trimming an argument rather than by finishing it.
+**`docs/` is not held to that cap**, because nothing loads those files into a
+prompt and nobody reads one end to end. Splitting one on a line count splits an
+argument where a number fell rather than at a seam; split it when it has stopped
+being about one subject.
 
 The split is by *kind*, not by size. A rule to follow and a check to run stay
 here; the evidence behind a rule — the live run that met a ceiling, the number
 that turned out wrong, the failure a control was written to stop — goes to the
 `docs/` file that owns that subject, listed under *Where the rest of this
 lives*. User-facing instructions stay in `README.md`. Do not grow a third tree:
-a document with no rule above it is one nobody has a reason to open. A `docs/`
-file is split when it has stopped being about one subject, not at a line count.
+a document with no rule above it is one nobody has a reason to open.
 
 ## Working agreement for coding agents
 

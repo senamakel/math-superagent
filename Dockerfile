@@ -6,7 +6,7 @@ COPY src ./src
 COPY examples ./examples
 COPY vendor/tinyagents ./vendor/tinyagents
 COPY vendor/tinyflows ./vendor/tinyflows
-RUN cargo build --locked --release --example orchestrator
+RUN cargo build --locked --release --example orchestrator --bin lean-verdict
 
 FROM debian:bookworm-slim
 
@@ -212,6 +212,16 @@ RUN set -eu \
     && rm /tmp/prove.p /tmp/refute.p
 
 COPY --from=builder /build/target/release/examples/orchestrator /usr/local/bin/math-agent
+# The kernel check, reachable without starting a run. Lean and Mathlib are in
+# this image and nowhere else, so before this binary the only way to learn
+# whether a `.lean` file compiled was to spend a model call asking an agent —
+# which left the formalisations past runs produced unscoreable, and made
+# iterating on one expensive. `scripts/lean-check` on the host runs this.
+#
+# It is the same `math_agent::check_lean_file` the tool calls, not a second
+# implementation: the one thing that must not exist twice in this repository is
+# an answer to *what counts as verified*.
+COPY --from=builder /build/target/release/lean-verdict /usr/local/bin/lean-verdict
 
 USER agent
 WORKDIR /workspace

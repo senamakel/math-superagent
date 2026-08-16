@@ -159,6 +159,25 @@ pub(super) enum Status {
     /// this existed, a formalisation and a sentence claiming a formalisation
     /// were the same row.
     Formalised,
+    /// The Lean kernel checked it *given* results cited from the literature.
+    ///
+    /// The status a compressed paper lands on. A library written in Lean is
+    /// mostly implications — this theorem follows from that one — and the
+    /// theorem it follows from is usually somebody else's, stated under
+    /// `namespace Cited` and proved nowhere in the workspace. The kernel
+    /// checked the implication and checked nothing about the hypothesis.
+    ///
+    /// It sits below [`Status::Formalised`] and above [`Status::Proved`] on
+    /// purpose, and the comparison with `Proved` is the interesting one. Both
+    /// rest on a paper's word. The difference is that this one has had the step
+    /// *from* the paper *to* the claim machine-checked, where `Proved` has had
+    /// a model read a PDF and summarise it — so the failure mode `Proved`
+    /// carries, that the cited result does not actually give what the run
+    /// thinks it gives, is the one failure mode this status does not have.
+    ///
+    /// Like `Formalised` it is never taken on trust: it is dropped to
+    /// [`Status::Asserted`] unless the named file's verdict actually holds.
+    Conditional,
     /// This run checked it numerically.
     Checked,
     /// The source states it without proof, or cites elsewhere.
@@ -200,6 +219,12 @@ impl Status {
             // through to `asserted` would make a kernel-checked lemma
             // indistinguishable from a sentence.
             Self::Formalised
+        } else if lowered.starts_with("conditional") || lowered.starts_with("given") {
+            // Before `proved` for the same reason `formal` is: "conditionally
+            // proved" is the phrase a role writing one of these reaches for,
+            // and read in the other order it lands on the status that claims
+            // more than the file supports.
+            Self::Conditional
         } else if lowered.starts_with("proved") || lowered.starts_with("proven") {
             Self::Proved
         } else if lowered.starts_with("checked")
@@ -237,6 +262,7 @@ impl Status {
         match self {
             Self::Proved => "proved",
             Self::Formalised => "formalised",
+            Self::Conditional => "conditional",
             Self::Checked => "checked",
             Self::Asserted => "asserted",
             Self::Heuristic => "heuristic",
@@ -678,26 +704,56 @@ impl Ledger {
     fn check_formalisations(&mut self, workspace: &Path) {
         self.check_refutations(workspace);
         for claim in &mut self.claims {
-            if claim.status != Status::Formalised {
+            if !matches!(claim.status, Status::Formalised | Status::Conditional) {
                 continue;
             }
-            let objection = if claim.formalisation.is_empty() {
-                Some(
-                    "the claim names no `formalisation:` file, so there is nothing to check it \
-                     against"
-                        .to_string(),
+            let claimed = claim.status;
+            let (granted, objection) = if claim.formalisation.is_empty() {
+                (
+                    Status::Asserted,
+                    Some(
+                        "the claim names no `formalisation:` file, so there is nothing to check \
+                         it against"
+                            .to_string(),
+                    ),
                 )
             } else {
                 match super::lean::verdict(workspace, &claim.formalisation) {
-                    None => Some(format!(
-                        "no `lean_check` verdict exists for `{}`; run the kernel over it",
-                        claim.formalisation
-                    )),
-                    Some(verdict) => verdict.objection(),
+                    None => (
+                        Status::Asserted,
+                        Some(format!(
+                            "no `lean_check` verdict exists for `{}`; run the kernel over it",
+                            claim.formalisation
+                        )),
+                    ),
+                    // The status is read off the verdict rather than compared
+                    // against the claimed one, so the ledger always records
+                    // what the kernel found. The two directions matter
+                    // differently: a claim that said `formalised` over a file
+                    // resting on cited axioms is *downgraded to conditional*
+                    // rather than all the way to `asserted`, which is the whole
+                    // reason the middle status exists — the run keeps the
+                    // implication it actually proved. A claim that said
+                    // `conditional` over a fully clean file is left where it
+                    // is, because understating what you have is not a failure
+                    // the ledger should be correcting behind a role's back.
+                    Some(verdict) => match verdict.outcome() {
+                        super::lean::Outcome::Verified => (claimed, None),
+                        super::lean::Outcome::Conditional => {
+                            (Status::Conditional, verdict.objection())
+                        }
+                        super::lean::Outcome::Failed => (Status::Asserted, verdict.objection()),
+                    },
                 }
             };
-            if let Some(objection) = objection {
-                claim.status = Status::Asserted;
+            claim.status = granted;
+            // A claim already filed as `conditional` over a conditional verdict
+            // got exactly what it asked for, so it is not listed as unbacked:
+            // that list is for a claim the ledger took something away from, and
+            // padding it with agreements is how it stops being read.
+            if granted != claimed
+                && let Some(objection) = objection
+            {
                 self.unbacked.push(Unbacked {
                     id: claim.id.clone(),
                     source: claim.source.clone(),
@@ -754,11 +810,15 @@ impl Ledger {
     /// [`Ledger::check_formalisations`] — so unlike every other status here,
     /// the count is of something the runtime verified rather than of something
     /// a note asserted.
+    /// A conditional claim counts too, and for the same reason `Proved` does:
+    /// the run may build on it. What it may not do is treat it as needing
+    /// nothing further, which is [`super::blueprint::claim_standing`]'s job and
+    /// not this counter's.
     pub(super) fn established(&self) -> usize {
         self.count(|status| {
             matches!(
                 status,
-                Status::Proved | Status::Formalised | Status::Checked
+                Status::Proved | Status::Formalised | Status::Conditional | Status::Checked
             )
         })
     }
@@ -791,11 +851,15 @@ impl Ledger {
              `bearing`, and `anchor` lines. A result this run *computed* belongs here as much as \
              one it read: write the note beside the output in `code/out/` and mark it \
              `status: checked`.\n\n\
-             `status: formalised` is the one status this file does not take on trust. It means \
-             the Lean kernel checked it *here*, so it needs a `formalisation:` line naming the \
-             `.lean` file and a passing `lean_check` verdict for that file; without one the row \
-             is recorded as `asserted` and listed below with the reason. Everything else on this \
-             page is a word somebody typed.\n\n\
+             `status: formalised` and `status: conditional` are the two statuses this file does \
+             not take on trust. Both need a `formalisation:` line naming a `.lean` file, and both \
+             are read off that file's `lean_check` verdict rather than off the word in the note. \
+             `formalised` means the kernel checked it here, resting on nothing but Lean's own \
+             three axioms. `conditional` means the kernel checked it *given* results cited from \
+             the literature as axioms under `namespace Cited` — the implication is proved and the \
+             hypothesis is somebody else's paper, so give each cited axiom its own claim carrying \
+             the source. A file that supports neither is recorded as `asserted` and listed below \
+             with the reason. Everything else on this page is a word somebody typed.\n\n\
              `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose \
              hypotheses fail here is worse than no theorem, because it looks like progress.\n\n",
         );
