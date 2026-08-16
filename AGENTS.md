@@ -32,6 +32,7 @@ evidence for it stays available.
   research tree, the scratch, checkpointing, and reading what does not fit.
 - [`docs/ledgers.md`](docs/ledgers.md) — the derived ledgers: what each holds,
   the failure each stops, what bounds them, and how a run declares one.
+- [`docs/memory.md`](docs/memory.md) — the four memory stores, and their audit.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
@@ -484,8 +485,7 @@ that turned out wrong, the failure a control was written to stop — goes to the
 `docs/` file that owns that subject, listed under *Where the rest of this
 lives*. User-facing instructions stay in `README.md`. Do not grow a third tree:
 a document with no rule above it is one nobody has a reason to open. A `docs/`
-file still earns its length, and is split when it has stopped being about one
-subject — a judgement about what a reader came for, not a line count.
+file is split when it has stopped being about one subject, not at a line count.
 
 ## Working agreement for coding agents
 

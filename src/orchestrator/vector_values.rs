@@ -174,6 +174,42 @@ fn visible_datasets(datasets: &Value, current_session: &str, library: &str) -> V
         .collect()
 }
 
+/// Reads Cognee's `/health/detailed` report as a verdict on whether a document
+/// posted now would survive.
+///
+/// The report names each component it depends on and gives each a status; this
+/// takes the first one that is not `healthy` and hands its own words back, so
+/// the refusal a tool returns says *what* is broken rather than that something
+/// is. All six components the server reports — its relational store, its vector
+/// store, the graph, file storage, the model endpoint and the embedding service
+/// — are on the path an ingest takes, so none of them is one to pass over: the
+/// pipeline that dropped 193 findings was stopped by the model endpoint, and a
+/// dead file store would drop them just as quietly.
+///
+/// A report this runtime cannot read is not a refusal. Silence about a
+/// component means the server did not claim it was broken, and a runtime that
+/// refused writes on an unfamiliar shape would stop a memory that works.
+fn indexing_health(report: &Value) -> IngestHealth {
+    let Some(components) = report.get("components").and_then(Value::as_object) else {
+        return IngestHealth::Ready;
+    };
+    for (name, component) in components {
+        let status = component.get("status").and_then(Value::as_str).unwrap_or("");
+        if status.is_empty() || status == "healthy" {
+            continue;
+        }
+        let detail = component
+            .get("details")
+            .and_then(Value::as_str)
+            .unwrap_or("no detail given");
+        return IngestHealth::Refusing(format!(
+            "{name} is {status} ({})",
+            truncate_chars(detail, 300)
+        ));
+    }
+    IngestHealth::Ready
+}
+
 fn fnv1a(bytes: &[u8]) -> u64 {
     bytes.iter().fold(0xcbf2_9ce4_8422_2325, |hash, byte| {
         (hash ^ u64::from(*byte)).wrapping_mul(0x0000_0100_0000_01b3)
@@ -181,10 +217,34 @@ fn fnv1a(bytes: &[u8]) -> u64 {
 }
 
 /// Renders both Cognee's plain chunk results and richer result objects.
+///
+/// A result object carries the passage twice — once as `text` and again as
+/// `raw.value` — beside a dozen fields the reader cannot use: `score: null`,
+/// `metadata: {}`, `structured: null`, the dataset's UUID. Pretty-printing the
+/// object put all of that in the prompt, so a live recall arrived as
+/// `{ "dataset_id": null, "kind": "chunk", … }` with the passage escaped inside
+/// it, at something over twice the tokens of the passage itself — and the
+/// 4,000-character clip then fell inside the scaffolding rather than at the end
+/// of the text. The passage is what was asked for, so the passage is what is
+/// returned, with the source named when the server gives one.
+///
+/// Anything without a usable `text` still renders whole. A shape this runtime
+/// does not recognise is one where guessing which field mattered would lose the
+/// answer, and a verbose result beats a silently emptied one.
 fn render_result(value: &Value) -> String {
-    match value {
-        Value::String(text) => text.clone(),
-        _ => serde_json::to_string_pretty(value).unwrap_or_else(|_| value.to_string()),
+    if let Value::String(text) = value {
+        return text.clone();
+    }
+    let text = value
+        .get("text")
+        .and_then(Value::as_str)
+        .filter(|text| !text.trim().is_empty());
+    match text {
+        None => serde_json::to_string_pretty(value).unwrap_or_else(|_| value.to_string()),
+        Some(text) => match value.get("dataset_name").and_then(Value::as_str) {
+            None => text.to_string(),
+            Some(dataset) => format!("{text}\n\n(from {dataset})"),
+        },
     }
 }
 
