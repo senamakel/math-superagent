@@ -925,7 +925,7 @@ pub(super) fn index(workspace: &Path) -> String {
             (
                 node.id.clone(),
                 node.standing.label().replace('*', ""),
-                edges(node),
+                edges(&graph, node),
             )
         })
         .collect();
@@ -954,13 +954,24 @@ pub(super) fn index(workspace: &Path) -> String {
 /// only this ledger knows — what rests on what — was the part being dropped for
 /// space.
 ///
-/// A node with nothing under it says so rather than rendering an empty line: a
-/// root is a real and useful thing to be, and a blank reads as a missing field.
-fn edges(node: &Node) -> String {
-    if node.needs.is_empty() {
-        return "rests on nothing — a root".to_string();
+/// Both directions, because which one a node has depends on what it is. A
+/// skeleton rests on its gaps; a gap rests on nothing and is instead *needed
+/// by* the skeleton above it, which is the fact that says what closing it would
+/// buy. A node with neither renders no edge text rather than a filler phrase.
+fn edges(graph: &Blueprint, node: &Node) -> String {
+    if !node.needs.is_empty() {
+        return format!("rests on {}", node.needs.join(", "));
     }
-    format!("rests on {}", node.needs.join(", "))
+    let dependents: Vec<&str> = graph
+        .nodes
+        .values()
+        .filter(|other| other.needs.iter().any(|need| need == &node.id))
+        .map(|other| other.id.as_str())
+        .collect();
+    if dependents.is_empty() {
+        return String::new();
+    }
+    format!("needed by {}", dependents.join(", "))
 }
 
 fn cell(text: &str) -> String {

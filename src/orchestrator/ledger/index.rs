@@ -169,7 +169,7 @@ pub(in crate::orchestrator) fn render<'a>(
 /// `None` for a ledger with no statuses, for a single row — one row does not
 /// establish that a value is constant, and hoisting it costs more than it saves
 /// — and for the ordinary case where the status is the thing worth reading.
-fn shared_status<'a>(rows: &[Row<'a>]) -> Option<String> {
+fn shared_status(rows: &[Row<'_>]) -> Option<String> {
     if rows.len() < 2 {
         return None;
     }

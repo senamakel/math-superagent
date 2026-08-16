@@ -68,8 +68,11 @@ fn an_index_says_how_to_reach_what_it_dropped() {
         index.contains("\"approaches\""),
         "with the slug filled in, not left as a placeholder: {index}"
     );
-    assert!(index.contains("not the ledger"));
-    assert!(index.contains("holds more on every line"));
+    // One line rather than the paragraph it was: the ledger brief above it in
+    // every prompt says the rest, and the searcher — the one role that reads an
+    // index without the brief — needs the call, which is still here.
+    assert!(index.contains("Index only"));
+    assert!(index.contains("the run holds more on each of them"));
 }
 
 /// Past the row bound the index still says what it did not show.
@@ -186,4 +189,68 @@ fn a_headline_that_repeats_the_id_is_dropped() {
         !index.contains("— ducci"),
         "the id is not repeated as its own summary: {index}"
     );
+}
+
+/// A status every row shares is stated once, not on every line.
+///
+/// The claims index on a live workspace read `(asserted, yes)` on all seventy
+/// of its lines: six hundred characters, in twenty prompts, on every model call,
+/// spent on a value that never varied. A constant is a header, not a column.
+#[test]
+fn a_status_every_row_shares_is_hoisted_out_of_the_rows() {
+    let index = index_of(10);
+    assert!(
+        index.contains("Every row below is `refuted`."),
+        "the constant is stated once: {index}"
+    );
+    assert!(
+        !index.contains("` (refuted)"),
+        "and not on any row: {index}"
+    );
+}
+
+/// When the status varies it stays on the row, because then it is the payload.
+#[test]
+fn a_status_that_varies_stays_on_the_row() {
+    let owned = [
+        ("open-one".to_string(), "open".to_string(), "still to do".to_string()),
+        ("done-one".to_string(), "done".to_string(), "carried out".to_string()),
+    ];
+    let index = render(
+        "tasks",
+        "Tasks",
+        "…",
+        owned.iter().map(|(id, status, headline)| Row {
+            id,
+            status,
+            headline,
+        }),
+        HEADLINE,
+    );
+    assert!(index.contains("- `open-one` (open)"), "{index}");
+    assert!(index.contains("- `done-one` (done)"), "{index}");
+    assert!(!index.contains("Every row below"), "{index}");
+}
+
+/// One row does not establish that a value is constant.
+#[test]
+fn a_single_row_keeps_its_status_where_it_is() {
+    let owned = [(
+        "only-one".to_string(),
+        "proposed".to_string(),
+        "the only entry".to_string(),
+    )];
+    let index = render(
+        "approaches",
+        "Approaches",
+        "…",
+        owned.iter().map(|(id, status, headline)| Row {
+            id,
+            status,
+            headline,
+        }),
+        HEADLINE,
+    );
+    assert!(index.contains("- `only-one` (proposed)"), "{index}");
+    assert!(!index.contains("Every row below"), "{index}");
 }
