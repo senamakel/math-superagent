@@ -89,28 +89,28 @@ the attempts and the nine in [`docs/ledgers.md`](docs/ledgers.md) are this shape
 - **Rendered into `derived/`, which the file tools refuse.** The folder name is
   the invariant: nothing in it is hand-written. It stays committed — it is the
   record of what was established — but `read_document` and `grep_workspace`
-  refuse it and name `read_ledger`, which bounds and selects by `id`, `status`
-  or `query`. Both doors open made the cheap one optional, and `CLAIMS.md` cost
-  7,488 tokens to answer about one row. Older workspaces migrate once, at
-  startup, never overwriting.
+  refuse it and name `read_ledger`, which bounds and selects by `id`, `status` or
+  `query`. Both doors open made the cheap one optional, and `CLAIMS.md` cost
+  7,488 tokens to answer about one row. Older workspaces migrate once at startup,
+  never overwriting.
 
 ## Candidates
 
-Several candidate solutions run at once, each on its own branch and checkout.
-`spawn_candidates` starts them, `attempt_diff` reads them back, the `archivist`
-keeps one.
+Several candidate solutions run at once, each on its own branch and checkout:
+`spawn_candidates` starts them, `attempt_diff` reads them back, `archivist` keeps
+one.
 
 - **Fork the files, share the memory.** A candidate's checkout is a linked
-  worktree, so `code/`, `research/` and its ledgers are its own. Memory is not
-  re-rooted and must not be: it lives outside the workspace and is the only
-  channel between candidates. That split is what makes the concurrency useful.
+  worktree, so `code/`, `research/` and its ledgers are its own; memory is not
+  re-rooted and must not be, being the only channel between them. Enforced for
+  the file tools — a shell cannot be confined by its cwd, so an absolute
+  `/workspace/…` path still reaches the trunk. [`docs/workspace.md`](docs/workspace.md).
 - **One role may make a candidate authoritative.** `adopt_attempt` and
-  `abandon_attempt` are the archivist's alone, and it holds no shell and no
-  file-write tool — so every trunk change carries a branch and a recorded reason.
-- **Adoption copies named files; it is not a merge.** A merge would also take
-  the losing candidate's account of why it was right, which the next attempt
-  then reads as the trunk's own.
-- **There is no general git tool.** Every operation is a named verb with checked
+  `abandon_attempt` are the archivist's alone, and it holds no shell and no file
+  write — so every trunk change carries a branch and a recorded reason.
+- **Adoption copies named files, and is not a merge** — a merge would also take
+  the losing candidate's account of why it was right.
+- **There is no general git tool** — every operation is a named verb with checked
   arguments; one taking a command line is `execute_command` by another name.
 
 ## Schools

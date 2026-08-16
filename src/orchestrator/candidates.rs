@@ -275,6 +275,10 @@ fn candidate_brief(id: &str, branch: &str, shared: &str, approach: &str) -> Stri
         "You are candidate {id}, working in your own checkout on branch `{branch}`. Every file \
          tool you hold is already rooted there, so write `code/solution.py` as usual — it is \
          yours alone and no other candidate can overwrite it.\n\n\
+         **Use relative paths, and never an absolute `/workspace/...` one.** Your shell starts in \
+         your checkout, at `/workspace/{ATTEMPTS_DIR}/{id}`, so `python3 code/brute.py` runs your \
+         program. `/workspace/code/brute.py` is the *trunk's* copy: reading it gets you somebody \
+         else's file and writing it overwrites work you were not given.\n\n\
          ## What everyone is doing\n\n{shared}\n\n\
          ## What makes you different\n\n{approach}\n\n\
          Follow your approach even if another looks more promising; the run is buying several \

@@ -6,6 +6,14 @@ Your file tools are already rooted at your checkout. Write `code/solution.py`,
 `code/brute.py`, notes under `research/` — all the usual paths. They are yours
 alone. No other candidate can overwrite them and you cannot overwrite theirs.
 
+**Relative paths only.** Your shell starts in your checkout too, so
+`python3 code/brute.py` runs *your* program. An absolute `/workspace/...` path
+does not: it names the trunk, which is the shared copy everyone branched from.
+Reading it gets you a file you were not given, and writing it overwrites work
+that is not yours. The workspace policy tells every other role that its working
+directory is `/workspace`; for you it is your checkout, and that is the one place
+this brief overrides it.
+
 ## Follow your own approach
 
 Your brief says what makes you different. Do that thing, even if a different
