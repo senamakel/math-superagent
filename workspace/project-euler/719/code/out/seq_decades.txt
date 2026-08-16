@@ -1,0 +1,59 @@
+# Exact decade-level sequences from the A038206 b-file (complete to 10^9)
+
+Extracted by `code/seq_extract.py` / `code/seq_decades.py` from
+`research/sources/oeis_a038206_b.full.md` (3200-term b-file; term 3200 =
+1028956744 > 10^9, so every root <= 10^9 is present).
+
+Conventions: for k, decade k = (10^{k-1}, 10^k].
+
+| k | roots in decade k (D_k) | sum of squares in decade k (I_k) | cumulative count <= 10^k | cumulative sum over roots <= 10^k |
+|---|---|---|---|---|
+| 1 | 2 | 181 | 4 | 182 |
+| 2 | 7 | 41152 | 11 | 41334 |
+| 3 | 19 | 10763323 | 30 | 10804657 |
+| 4 | 47 | 2808038185 | 77 | 2818842842 |
+| 5 | 90 | 497165960336 | 167 | 499984803178 |
+| 6 | 241 | 127588845744805 | 408 | 128088830547983 |
+| 7 | 411 | 20614567383873982 | 819 | 20742656214421965 |
+| 8 | 849 | 4199424739114802513 | 1668 | 4220167395329224478 |
+| 9 | 1523 | 711775080208611607561 | 3191 | 715995247603940832039 |
+
+Meaning of the cumulative-sum column: because T(N) sums m^2 over roots m <=
+sqrt(N), the entry at row k equals T(10^{2k}). Cross-checks against known
+values: k=2 -> 41333 = T(10^4) (oracle); k=3 -> 10804656 = T(10^6);
+k=6 -> 128088830547983 (T(10^12) computed as 128088830547982 differs by 1^2,
+the excluded root m=1 — the b-file row includes m=1, our answer excludes it).
+
+Mod-9 split of the 406 roots in [2, 10^6]: residue 0 -> 198, residue 1 -> 208
+(exactly 406 + the two sentinel roots 0,1 = 408 lines). Zero violations.
+
+Tool results over these terms (all exact over the terms supplied):
+
+- `analyze_sequence` on D_k, c_k, I_k, cumulative sums: differences never
+  become constant within 8 levels; leading growth ratios for I_k are
+  227.36, 261.55, 260.89, 177.05, 256.63 — irregular, no nice closed form.
+- `find_linear_recurrence`: no constant-coefficient linear recurrence of
+  order <= 4 (D_k, I_k, c_k) or <= 6 (cumulative sums) fits.
+- `oeis_lookup`: [4,11,30,77,167,408,819,1668,3191] -> no entry;
+  [2,7,19,47,90,241,411,849,1523] -> no entry;
+  [181,41152,...,4199424739114802513] -> no entry. None of these derived
+  sequences is catalogued, so no closed form will be looked up.
+- `find_linear_recurrence` on the first 105 roots of A038206 (max_order 10):
+  no constant-coefficient linear recurrence of order <= 10 fits (extends the
+  earlier 30-term negative recorded in
+  research/approaches/a038206-no-recurrence.md).
+
+Consecutive-root pairs (m, m+1), 19 of them among the 406 roots <= 10^6:
+(9,10) (99,100) (369,370) (990,991) (999,1000) (9990,9991) (9999,10000)
+(88812,88813) (99630,99631) (99900,99901) (99990,99991) (99999,100000)
+(336699,336700) (961038,961039) (999009,999010) (999630,999631)
+(999900,999901) (999990,999991) (999999,1000000).
+The six (10^k-1, 10^k) pairs are provable (9-repunit and power-of-10 roots);
+the (10^k-10, 10^k-10+1) and (10^k-10^2, ...) pairs are a suspicious partial
+family; the rest look sporadic. 38 of 406 roots total — no enumeration-
+reducing power (and verifying a non-uniform sporadic family cannot beat the
+mod-9-pruned root scan already used).
+
+Verdict: no exploitable structural regularity beyond the established
+mod-9 filter; the O(sqrt N) root scan with the digit-partition recursion
+remains the method, and T(10^12) = 128088830547982 stands double-verified.

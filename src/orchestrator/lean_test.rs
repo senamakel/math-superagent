@@ -595,3 +595,84 @@ fn a_file_stating_a_tautology_cannot_back_a_claim() {
     );
     assert_eq!(checked.record()["tautologies"][0], "pe622_answer_nat");
 }
+
+/// The two failures that are about Mathlib's packaging rather than about
+/// mathematics, and that between them accounted for most of the first bench
+/// run's losses.
+mod stale_mathlib {
+    use super::CLEAN;
+    use super::super::{parse, unresolvable_imports};
+
+    /// The pre-flight must not fire where there is no Mathlib to check against.
+    /// The deterministic suite runs on such a host, and a check that reported
+    /// every import as missing would fail every file on it.
+    #[test]
+    fn no_search_path_means_no_opinion() {
+        // Neither `LEAN_PATH` nor the image's file exists in the test
+        // environment, so the pre-flight declines rather than guesses.
+        assert!(
+            unresolvable_imports("import Mathlib.Data.Nat.Basic\n").is_empty(),
+            "a host with no Mathlib must not report an import as missing"
+        );
+    }
+
+    /// The retired binder is read off the compiler's objection, never off the
+    /// source alone: `for x in`, `open … in` and `let … in` are ordinary Lean.
+    #[test]
+    fn the_retired_binder_is_diagnosed_from_the_error() {
+        let checked = parse(
+            "code/a.lean",
+            "theorem t (n : Nat) : (∑ i in Finset.range n, i) = 0 := by simp\n",
+            false,
+            "code/a.lean:1:32: error: unexpected token 'in'; expected ','\n",
+        );
+        assert!(checked.retired_binder);
+        let objection = checked.objection().expect("it does not compile");
+        assert!(objection.contains('∈'), "the fix is named: {objection}");
+        assert!(objection.contains("retired"), "{objection}");
+    }
+
+    /// A file that compiles is not accused of anything, whatever it contains.
+    #[test]
+    fn a_compiling_file_is_not_accused() {
+        let checked = parse(
+            "code/a.lean",
+            "theorem t : True := by trivial -- for x in xs\n",
+            true,
+            CLEAN,
+        );
+        assert!(!checked.retired_binder);
+        assert!(checked.verified());
+    }
+
+    /// An unrelated syntax error keeps the plain message, so the specific one
+    /// stays a signal rather than becoming the default advice.
+    #[test]
+    fn an_unrelated_syntax_error_is_not_blamed_on_the_binder() {
+        let checked = parse(
+            "code/a.lean",
+            "theorem t : True := by trivial\n",
+            false,
+            "code/a.lean:1:0: error: unexpected token '<'; expected command\n",
+        );
+        assert!(!checked.retired_binder);
+        assert_eq!(
+            checked.objection(),
+            Some("`code/a.lean` does not compile".to_string())
+        );
+    }
+
+    /// The record carries it, so a replay can count this failure mode without
+    /// re-reading Lean's prose.
+    #[test]
+    fn the_record_carries_the_binder_finding() {
+        let record = parse(
+            "code/a.lean",
+            "theorem t (n : Nat) : (∑ i in Finset.range n, i) = 0 := by simp\n",
+            false,
+            "error: unexpected token 'in'; expected ','\n",
+        )
+        .record();
+        assert_eq!(record["retired_binder"], true);
+    }
+}
