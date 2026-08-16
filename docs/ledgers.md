@@ -1,7 +1,12 @@
 # The derived ledgers
 
-Nine files beside the library are written by code, never by an agent, and
-re-derived from disk on every relevant write. All nine follow the rule `INDEX.md`
+The files in `derived/` are written by code, never by an agent, and re-derived
+from disk on every relevant write. The folder name is the invariant — nothing in
+it is hand-written — and the file tools refuse it, so `read_ledger` is the way
+in: it bounds what it returns and selects by `id`, `status` or `query`, where
+`read_document` returned all 7,488 tokens of `CLAIMS.md` to answer about one
+row. A workspace written before the folder existed is migrated once, at startup,
+never overwriting. All nine follow the rule `INDEX.md`
 already established: what a source establishes is a judgement and stays with the
 agent that made it; whether the summary agrees with the files is not, so it is
 measured. Each is described through `record_description` when written, so no

@@ -1,6 +1,6 @@
 # Roles, adapters, and what each one can reach
 
-The twenty-two roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
+The roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
@@ -49,10 +49,21 @@ Algebras of Maximal Class II* as `pitman_ballot_theorem.md`.
 
 ## Expected problem-solving behavior
 
-The runtime has twenty-two roles plus an explicit solution loop.
+The runtime has twenty-three roles plus an explicit solution loop, and one more
+per candidate slot when several solutions are explored at once.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
+- The archivist reviews the candidate solutions as diffs and decides which one
+  the run keeps. It is the only role that may make a candidate authoritative,
+  and holds no shell and no file-write tool: everything it does to the trunk
+  goes through `adopt_attempt`, which copies named files and commits them with
+  the reason. See [`workspace.md`](workspace.md) for the branch layout.
+- A candidate role writes and verifies one solution in its own checkout,
+  following the approach it was given rather than the one that looks best once
+  it has started. Its file tools are rooted at that checkout, so several run at
+  once without colliding; memory is *not* re-rooted, and is the only channel
+  between them.
 - The goals agent translates an objective into completion criteria and spawns
   specialist subagents until the goal is met or precisely blocked.
 - The research agent uses Exa to find definitions, papers, official references,
