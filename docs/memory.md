@@ -130,6 +130,28 @@ A stack brought up with the checkout's own key reported every component healthy
 on the same image and the same compose file, which is the control that makes the
 key the cause rather than a coincidence.
 
+Two things changed because of it.
+
+**The launchers now export `.env` over the shell.** `scripts/dotenv` is sourced
+by `scripts/memory-up`, `scripts/run-agent` and `scripts/solve-euler`, exports
+every name the file defines, and prints — by name, never by value — any variable
+whose inherited value it had to override. An override is still one edit to
+`.env` away, which is the one place this repository keeps credentials.
+
+**The memory indexes on its own key.** `OPENROUTER_MEMORY_API_KEY` is what
+`compose.memory.yaml` hands Cognee, falling back to `OPENROUTER_API_KEY` when
+unset. Sharing one key meant the memory stopped storing at exactly the moment
+the run had been working hardest: the limit is spent by the run's own model
+calls, and the ingest that carries what the run just learned is the write that
+gets dropped. A separate key also makes the memory's spend readable on its own,
+which is worth having when deciding whether entity extraction is worth what it
+costs.
+
+Verified on the arrangement above: a stack brought up through the new path runs
+on the memory key — the container's `LLM_API_KEY` hashes to the same twelve
+characters as `.env`'s — reports every component healthy, and returned an
+ingested document to a question 100 seconds later.
+
 ## What is recallable, and what is not
 
 With a healthy stack the loop closes, and this is the measurement rather than

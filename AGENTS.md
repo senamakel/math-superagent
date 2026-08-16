@@ -282,16 +282,16 @@ contents. Document variable names and placeholders in `.env.example`.
 
 The runtime currently expects:
 
-- `OPENROUTER_API_KEY`
-- optional `OPENROUTER_MODEL`
+- `OPENROUTER_API_KEY`, and optional `OPENROUTER_MODEL`
+- `OPENROUTER_MEMORY_API_KEY`, what each problem's memory server indexes on —
+  unset falls back to the run's key, and shares its daily limit
 - `EXA_API_KEY`
-- `LANGFUSE_BASE_URL`
-- `LANGFUSE_PUBLIC_KEY`
-- `LANGFUSE_SECRET_KEY`
+- `LANGFUSE_BASE_URL`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`
 - `QDRANT_URL`, normally supplied by Compose
 
-Compose loads the trusted local `.env` and passes configuration to the agent.
-Do not put secret values directly in Docker command arguments.
+The launchers export `.env` over the shell (`scripts/dotenv`), because Compose
+prefers the environment to the file and a stale exported key silently outranked
+this checkout's for a day. Never put a secret in a Docker command argument.
 
 ## Build and test contract
 
