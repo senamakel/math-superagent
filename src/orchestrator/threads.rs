@@ -39,7 +39,7 @@ use super::text::truncate;
 pub(super) const THREADS_DIR: &str = "research/threads";
 
 /// The derived table, filed with the library it describes.
-pub(super) const THREADS_PATH: &str = "research/THREADS.md";
+pub(super) const THREADS_PATH: &str = "derived/THREADS.md";
 
 /// Threads one table lists.
 const MAX_ROWS: usize = 24;

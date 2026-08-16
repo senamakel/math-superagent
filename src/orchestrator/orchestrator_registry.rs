@@ -122,6 +122,22 @@ const LEDGER_WRITE_TOOLS: [&str; 2] = ["record_entry", "close_entry"];
 /// own programs, applied to its bookkeeping.
 const LEDGER_KEEPER_TOOLS: [&str; 2] = ["define_ledger", "retire_ledger"];
 
+/// Reading what the candidate solutions did.
+///
+/// Granted widely, on the argument recall is granted widely on: a role that
+/// cannot see that a candidate already tried the sieve and it did not help will
+/// propose the sieve. None of these changes anything, so the grant costs
+/// nothing but the tokens a role chooses to spend.
+const VCS_READING_TOOLS: [&str; 3] = ["list_attempts", "attempt_diff", "attempt_log"];
+
+/// Making one candidate's work the run's work.
+///
+/// The archivist's alone. This is the only pair of operations in the runtime
+/// that makes one line of work authoritative, and a runtime where any role can
+/// perform it has no answer to "who decided this was the answer". See
+/// [`vcs_tool`] for why there is no general git tool beside them.
+const VCS_WRITING_TOOLS: [&str; 2] = ["adopt_attempt", "abandon_attempt"];
+
 const DISCOVERY_TOOLS: [&str; 4] = [
     "citation_graph",
     "find_similar_sources",
@@ -247,10 +263,53 @@ fn role_registry(research_enabled: bool) -> Result<AgentRegistry> {
         ),
     )?;
     register_code_writing_definitions(&mut registry, &document_tools, memory_tools)?;
+    register_candidate_definitions(&mut registry, &document_tools, memory_tools)?;
     for definition in support_agents(research_enabled, &document_tools, memory_tools) {
         registry.register(definition)?;
     }
     Ok(registry)
+}
+
+/// Declares one role per candidate slot.
+///
+/// They carry exactly the code-writing authority — a candidate writes and runs
+/// programs, which is the whole of what it does — and differ only in *where*
+/// that authority points. The harness is what roots each one at its own
+/// checkout; see `register_candidate_agents`.
+///
+/// Declared per slot rather than as one role because a subagent's harness is
+/// registered by name, and two candidates running at once must resolve to two
+/// harnesses rooted at two directories.
+///
+/// # Errors
+///
+/// Returns an error when a name is already registered.
+fn register_candidate_definitions(
+    registry: &mut AgentRegistry,
+    document_tools: &[&'static str],
+    memory_tools: [&'static str; 3],
+) -> Result<()> {
+    for id in candidates::slots() {
+        let role = candidates::role_for(&id);
+        registry.register(
+            AgentDefinition::new(
+                role,
+                format!("Candidate {id}"),
+                "Writes and verifies one candidate solution on its own branch, in its own \
+                 checkout, following the approach it was given rather than the one that looks \
+                 best once it has started.",
+            )
+            .with_model("openrouter")
+            .with_tools(
+                ["write_tool_file", "execute_command", "apply_patch"]
+                    .into_iter()
+                    .chain(memory_tools)
+                    .chain(SCRATCH_TOOLS)
+                    .chain(document_tools.iter().copied()),
+            ),
+        )?;
+    }
+    Ok(())
 }
 
 /// Declares the roles carrying shell and file-write authority.
@@ -367,29 +426,8 @@ fn support_agents(
         )
         .with_model("openrouter")
         .with_tools(["read_document"]),
-        AgentDefinition::new(
-            "reflection",
-            "Reflection Agent",
-            "Judges one attempt, extracts the lesson, and decides whether it is really done.",
-        )
-        .with_model("openrouter")
-        // One of the three roles that may post to the board. A lesson drawn
-        // from an attempt that failed is what the other schools would
-        // otherwise pay to discover, and it is asserted rather than
-        // established, which is exactly what the board carries and the claim
-        // ledger must not.
-        // It closes tasks rather than opening them, and that split is the
-        // point: this role is the one that has just seen what an attempt
-        // actually produced, so it is the only one that can say what came of a
-        // task truthfully. What to do *next* is the planner's judgement, not
-        // the judgement of whoever finished the last thing.
-        .with_tools(
-            BOARD_TOOLS
-                .into_iter()
-                .chain(LEDGER_WRITE_TOOLS)
-                .chain(memory_tools)
-                .chain(document_tools.iter().copied()),
-        ),
+        reflection(document_tools, memory_tools),
+        archivist(document_tools, memory_tools),
         AgentDefinition::new(
             "pattern_finder",
             "Pattern Recognition Agent",
@@ -668,6 +706,11 @@ fn library_agents(
                 "steer_agent",
                 "await_agent",
                 "await_agents",
+                // Starting several candidate solutions at once, each on its own
+                // branch. The planner's tool rather than a specialist's: it is
+                // the role that decides the run has more than one plausible
+                // program and no argument for preferring one.
+                "spawn_candidates",
             ]
             .into_iter()
             // The role that decides what the next run is spent on, and so the
@@ -680,9 +723,88 @@ fn library_agents(
             // runtime does not carry.
             .chain(LEDGER_WRITE_TOOLS)
             .chain(LEDGER_KEEPER_TOOLS)
+            // The role that starts candidates is the one that has to see what
+            // they did. It cannot adopt one — that is the archivist's — but a
+            // planner deciding what to spend the next run on while unable to
+            // read the last five candidates is deciding blind.
+            .chain(VCS_READING_TOOLS)
             .chain(memory_tools)
             .chain(SCRATCH_TOOLS)
             .chain(document_tools.iter().copied()),
         ),
     ]
+}
+
+/// The one role that may make a candidate's work the run's work.
+///
+/// Split out of [`support_agents`] because it is the longest single definition
+/// there and its argument is about authority rather than about tools.
+fn archivist(
+    document_tools: &[&'static str],
+    memory_tools: [&'static str; 3],
+) -> AgentDefinition {
+    // The one role that may make a candidate's work the run's work.
+    //
+    // It holds no shell, no `write_tool_file` and no `apply_patch`, and
+    // that is the whole shape of it: this role *decides*, and everything it
+    // can do to the trunk goes through `adopt_attempt`, which copies named
+    // files and commits them with the reason. A role that could also write
+    // files directly could produce the same trunk state with no branch
+    // behind it and no reason recorded, which is the outcome the attempts
+    // ledger exists to make impossible.
+    //
+    // It reads documents because judging a candidate means reading the
+    // goal and the oracle it was scored against, and it records onto the
+    // `attempts` ledger because a decision nobody wrote down is one the
+    // next attempt re-litigates.
+    AgentDefinition::new(
+        "archivist",
+        "Archivist",
+        "Reviews the candidate solutions on their own branches as diffs, keeps the one that \
+         won by taking its files into the trunk, and closes the rest with the reason each \
+         was not kept.",
+    )
+    .with_model("openrouter")
+    .with_tools(
+        VCS_READING_TOOLS
+            .into_iter()
+            .chain(VCS_WRITING_TOOLS)
+            .chain(LEDGER_WRITE_TOOLS)
+            .chain(BOARD_TOOLS)
+            .chain(memory_tools)
+            .chain(document_tools.iter().copied()),
+    )
+}
+
+/// The role that judges one attempt and draws the lesson from it.
+///
+/// Split out of [`support_agents`] for length, like [`archivist`] beside it.
+fn reflection(
+    document_tools: &[&'static str],
+    memory_tools: [&'static str; 3],
+) -> AgentDefinition {
+    AgentDefinition::new(
+        "reflection",
+        "Reflection Agent",
+        "Judges one attempt, extracts the lesson, and decides whether it is really done.",
+    )
+    .with_model("openrouter")
+    // One of the three roles that may post to the board. A lesson drawn
+    // from an attempt that failed is what the other schools would
+    // otherwise pay to discover, and it is asserted rather than
+    // established, which is exactly what the board carries and the claim
+    // ledger must not.
+    // It closes tasks rather than opening them, and that split is the
+    // point: this role is the one that has just seen what an attempt
+    // actually produced, so it is the only one that can say what came of a
+    // task truthfully. What to do *next* is the planner's judgement, not
+    // the judgement of whoever finished the last thing.
+    .with_tools(
+        BOARD_TOOLS
+            .into_iter()
+            .chain(LEDGER_WRITE_TOOLS)
+            .chain(VCS_READING_TOOLS)
+            .chain(memory_tools)
+            .chain(document_tools.iter().copied()),
+    )
 }

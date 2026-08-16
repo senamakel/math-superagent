@@ -8,12 +8,16 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
+| [[ca20-good-prime-lift]] | CA_20,0 — over any field K of characteristic 0, every monic f ∈ K[x] of degree 20 that shares a non-constant factor with each of its first 19 Hasse derivatives… | > The load-bearing direction is the reduction-mod-p lift (G-lift): for any prime p, if no CA-polynomial of degree 20 exists over F̄_p (that is, CA_20,p holds),… | live | 1 |
 | [[full-ca-regular-sequence]] | Casas–Alvero (CA). Over any field K of characteristic 0, every monic f ∈ K[x] with deg f = n ≥ 1 satisfying gcd(f, f^{(i)}) ≠ 1 for all i = 1,…,n−1 is f =… | > Write CA_n,0 for the conjecture in degree n over char 0, and T for the set {1,…,n}^{n−1} of tuples T = (j_1,…,j_{n−1}). Let G_{T,i} = Φ_{j_i}(σ_i) be the… | live | 3 |
 
 ## The open gaps — each one is a task
 
 Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
 
+- [[ca20-good-prime-lift]] `G-good-prime` — There exists a good prime for n = 20 — that is, some prime p ≥ 23 with CA_20,p (equivalently rank_{F_p}(M_T) = C for all T ∈ {1,…,20}^{19}, equivalently p ∤ J_T for all T). By G-lift this single prime settles CA_20,0. This is the whole remaining content of the degree-20 problem.
+  - next: Attack the smallest candidate-good prime p = 23 (the first prime not certified bad by the binomial criterion, badprimes-n20-certified-frontier). Concretely, a tool_builder/coder can: (i) re-derive the lift direction k=0 — for a random monic degree-20 f over ℚ with gcd(f,H_i(f)) ≠ 1, confirm Res(f,H_i(f)) ≡ 0 mod 23 for each i, so a char-0 counterexample forces a char-23 one; (ii) encode "∃ degree-20 f over F̄_23, not a pure power, with Res(f,H_i(f))=0 ∀i" by the scenario/rank formulation and run the elimination (Gröbner/resultant over F_23, or a SAT/SMT encoding of rank_{F_23}(M_T) < C for…
+  - _no thread — nothing is attacking this_
 - [[full-ca-regular-sequence]] `G-reformulation-equivalence` — For every n, CA_n,0 holds iff for every T ∈ {1,…,n}^{n−1} the sequence (G_{T,1},…,G_{T,n−1}), G_{T,i} = Φ_{j_i}(σ_i(x_1,…,x_{n−1})), is a regular sequence in ℚ[x_1,…,x_{n−1}]. This is the equivalence Ghosh proved (arXiv:2402.18717, Prop 5.2), restated as Conj 1.6/1.7 in Schaub–Spivakovsky (arXiv:2411.13967, §1). It holds over any field regardless of characteristic, so it contributes no char-0 content — that is carried entirely by J_T ≠ 0.
   - next: extract the statement verbatim from research/sources/ghosh2024_finiteness_full.full.md and schaub_spivakovsky_bad-primes_2024.full.md, write the claim block with the exact Φ_j definition and the Hasse-vs-formal derivative convention, then sympy-verify both directions at n = 3, 4 against the exact oracle (in particular: a char-p witness must correspond to a prime p dividing some J_T).
   - _no thread — nothing is attacking this_
@@ -28,6 +32,10 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
 
 Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
 
+- [[ca20-good-prime-lift]] `G-lift` — For any prime p, CA_20,p (no degree-20 Casas–Alvero polynomial over F̄_p that is not a pure power) implies CA_20,0. This is the k=0 case of the Graf-von-Bothmer–Labs–Schicho–van de Woestijne lift: no degree-d CA-polys over F̄_p ⟹ CA in degree d p^k for all k ≥ 0 (char 0 and char p); and the p-adic form of Draisma–de Jong covers n = n′ p^e with n′ < p, here n′=20, e=0, p ≥ 23. (closed by gvb-lift (peer-reviewed, Graf-von-Bothmer et al. 2007, quoted as Castryck Thm 3); pdic-valuation-method)
+- [[ca20-good-prime-lift]] `G-minors-test` — For n = 20, a prime p is bad iff p | J_T for some T ∈ {1,…,20}^{19}, where J_T is the gcd of all C×C minors of the integer matrix M_T (C = binom(190,18)); equivalently p is good iff rank_{F_p}(M_T) = C for all T. This is the unconditional Schaub–Spivakovsky criterion (Thm 3.1) applied at n = 20. (closed by bad-prime-minors-criterion)
+- [[ca20-good-prime-lift]] `G-upper-bound` — Conditional on CA_20,0, every bad prime p for 20 satisfies p < C! · ∏_{i=1}^{19} binom(i+18,18) binom(d−i+18,18), d = 172, C = binom(190,18), so the set of bad primes (equivalently the good-prime search) is finite and explicitly bounded. (closed by bad-prime-upper-bound)
+- [[ca20-good-prime-lift]] `G-minors-boundary` — The direct minors/rank criterion is computationally infeasible at n = 20: it is SNF-feasible only to n ≤ 4, rank-over-F_p-feasible only to n = 5, and rank-infeasible already at n = 6 (C=1365, ~2.2e5 core-hours for the full sweep); at n = 20 the sweep is |T| = 20^19 tuples × a binom(190,18)-rank test. Hence G-good-prime must use a method that beats this wall. (closed by minors-criterion-feasibility-boundary)
 - [[full-ca-regular-sequence]] `G-macaulay-rank` — For homogeneous forms of degrees 1,…,n−1 in n−1 variables over a field, the following are equivalent: (i) they form a regular sequence (equivalently √I = (x_1,…,x_{n−1})); (ii) m^d ⊂ I with d = Σ deg − (n−2) = (n²−3n+4)/2 (Macaulay 1916); (iii) the degree-d multiplication matrix M_T has full rank C = binom(n(n−1)/2, n−2); (iv) J_T := gcd of all C×C minors of M_T is nonzero. (closed by research/sources/schaub_spivakovsky_bad-primes_2024.full.md (Thm 2.1, the statement of Macaulay's theorem; Thm 3.1, the rank/gcd criterion), classical source: Macaulay, The algebraic theory of modular systems, 1916.)
 
 ## Skeletons that could not be read

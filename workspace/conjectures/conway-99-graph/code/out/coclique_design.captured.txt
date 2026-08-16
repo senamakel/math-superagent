@@ -1,0 +1,98 @@
+what ran: code/out/coclique_design.py
+oracle function: from lib.srg import rook, bvls_graph, is_srg
+search space: none for the derivations; only tiny/exhaustive rook(3) (9 vtx) and a greedy bvls lower bound
+
+[sanity] is_srg(rook(3), 9,4,1,2): (True, 'srg(v,k,lambda,mu) confirmed by exact common-neighbour counts')
+[sanity] is_srg(bvls_graph(), 243,22,1,2): (True, 'srg(v,k,lambda,mu) confirmed by exact common-neighbour counts')
+========================================================================
+TASK A - tight-Hoffman-bound structure at srg(99,14,1,2), symbolic
+1) Hoffman coclique bound  alpha <= v*(-s)/(k-s) = 99*4/18 = 22  (integer 22)
+
+2) If a coclique C with |C| = alpha = 22 existed, equality in the ratio bound
+   forces f = 1_C - (alpha/v)*1 into the s=-4 eigenspace, i.e. A f = s f.
+   f_x for x outside C = -alpha/v = -22/99 = -2/9
+   expected (A f)_x = s*f_x = (-4)*(-2/9) = 8/9
+
+3) For x outside C, (A f)_x = d_C*(1-alpha/v) + (k-d_C)*(-alpha/v) = d_C - 28/9   [the d_C*alpha/v terms cancel, leaving d_C - alpha*k/v]
+   with numbers: d_C*(1-2/9) + (14-d_C)*(-2/9) = d_C - 28/9 = (9*d_C - 28)/9  [since alpha*k/v = 22*14/99 = 28/9]
+
+4) Eigenvalue equation (A f)_x = s*f_x at x outside:
+   d_C - 28/9 = 8/9
+   => 9*d_C - 28 = 8  =>  9*d_C = 36  =>  d_C = 4 (exact)
+   CLOSED FORM  d_C = alpha*(k-s)/v = 22*(14-(-4))/99 = 396/99 = 4
+
+5) Every pair in C has exactly mu = 2 common neighbours
+   (C is a coclique, so every two of its vertices are non-adjacent;
+   srg mu=2 gives exactly 2 common neighbours for each non-adjacent pair,
+   and those common neighbours lie OUTSIDE C since no vertex of C is
+   adjacent to any other vertex of C).
+   => the neighbourhoods (N(x) intersect C) for x outside C are the
+      blocks of a design with:
+      points v' = alpha = 22, block size k' = d_C = 4, lambda' = mu = 2
+      blocks b = v - alpha = 99 - 22 = 77,  replication r = lambda'*(v'-1)/(k'-1) = 2*21/3 = 14
+   i.e. a 2-(22,4,2) design.
+
+6) Parameter identities (exact):
+   b*C(k,2) = 77*6 = 462
+   lambda*C(v,2) = 2*231 = 462
+   match: True
+   b*k = 77*4 = 308;  v*r = 22*14 = 308;  match: True
+   r = lambda*(v-1)/(k-1) = 2*21/3 = 14;  r = 14: True
+
+========================================================================
+TASK B - equality-force at the controls (refuted-on-arrival or 99-specific?)
+
+B1) rook(3) srg(9,4,1,2): alpha=3, k=4, v=9, s=-2
+    forced outside-degree into a max coclique = alpha*(k-s)/v = 3*6/9 = 2
+    [NB: this is the correct closed form; alpha*k/v = 4/3 is NOT the equality-force value]
+    ACTUAL alpha(rook(3)) = 3  (exhaustive, 6 max cocliques)
+    outside-degree multisets over all max cocliques: [(2, 2, 2, 2, 2, 2)]
+    every outside vertex has degree-into-C = forced value 2 over every 3-coclique: True
+    forced value MATCHES actual (each of the 6 outside vertex degrees equals 2): True
+    rook(3) design analogy: 2-(3,2,2), b=6, r=4
+      b*C(k,2)=6  lambda*C(v,2)=6 match:True;   b*k=12 v*r=12 match:True
+
+B2) bvls_graph() srg(243,22,1,2): alpha=45, k=22, v=243, s=-5
+    forced outside-degree into a 45-coclique = alpha*(k-s)/v = 45*27/243 = 5  (= 5, integer)
+    (if such a coclique existed) design: 2-(45,5,2), b=198, r=22
+      b*C(k,2)=1980  lambda*C(v,2)=1980 match:True;   b*k=990 v*r=990 match:True
+    greedy lower bound on alpha(bvls) >= 33 (bound only, not exact; exact alpha <= 45 is open here). This does not assert a 45-coclique.
+
+========================================================================
+TASK C - does a 2-(22,4,2) design exist? arithmetic necessary conditions
+params: v=22, k=4, lambda=2, b=77, r=14
+1) integers: b=77, r=14 both positive integers: True
+2) Fisher's inequality b >= v : 77 >= 22 : True
+   twin identity b*k = v*r : 77*4=308 vs 22*14=308: True
+   pair count b*C(k,2)=lambda*C(v,2): 462 vs 462: True
+   replication r=lambda*(v-1)/(k-1): 42/3 = 14 == r: True
+
+3) Bruck-Ryser-Chowla (symmetric-design theorem): needs b == v.
+   Here b=77 != v=22=22, so the design is NOT symmetric and BRC's
+   symmetric form does NOT apply. (If it did, with v even, n=r-lambda=12
+   would need to be a square; 12 is a non-square False,
+   but that exclusion is inapplicable at an asymmetric 2-design.)
+
+4) Incidence-matrix Gram/determinant necessary condition (always applies):
+   N^T N = (r-lambda)I + lambda J  =>  det(N^T N) = (r-lambda)^(v-1) * (b*k)
+     = 12^21 * 308
+     factorised = 2^44 * 3^21 * 7^1 * 11^1
+     det = 14169576932085868051562496
+     squarefree part = 231
+   By Cauchy-Binet, det(N^T N) must be a sum of 22 squares of integers
+   (sum of v x v minor squares). This is TRIVIALLY satisfiable: by
+   Lagrange every positive integer is a sum of (at most) 4 squares, and
+   any sum of 4 can be padded to 22 squares with zeros. So this
+   condition imposes no obstruction here (squarefree part 231 is
+   trivially a sum of 22>=4 squares).
+
+5) VERDICT: 2-(22,4,2) is NOT arithmetically excluded.
+   All standard necessary conditions (integers, Fisher, the three
+   parameter identities, the Gram/determinant sum-of-squares condition)
+   are satisfied. The symmetric-form BRC does not apply (b != v).
+   Existence is a construction/existence question the arithmetic does
+   not rule out; the 2-(22,4,2) parameters are feasible.
+
+========================================================================
+wall clock: 0.27 s
+ALL CHECKS DONE

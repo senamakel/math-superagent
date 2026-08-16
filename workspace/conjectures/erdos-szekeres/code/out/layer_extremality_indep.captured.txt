@@ -1,0 +1,4 @@
+=== Independent (gift-wrap) cross-check of layer-extremality ===
+n=5: profile=[4, 4] Conjecture C = PASS
+n=6: profile=[5, 5, 3, 3] Conjecture C = PASS
+n=7: profile=[6, 6, 6, 5, 6, 3] Conjecture C = PASS

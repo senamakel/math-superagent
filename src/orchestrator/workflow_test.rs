@@ -44,12 +44,12 @@ fn verdict(fields: Value) -> Respond {
 /// the fold that applies it.
 const STAGE_ONE_CALLS: usize = 5;
 
-/// One pass's calls: the attempt, its five evaluation arms, the goals child's
+/// One pass's calls: the attempt, its six evaluation arms, the goals child's
 /// gate, the fold that applies it, and the barrier.
 ///
 /// The judge is not among them. It scores the finished run on the way out
 /// instead, which is one call after the loop rather than one per pass.
-const PASS_CALLS: usize = 9;
+const PASS_CALLS: usize = 10;
 
 /// A state that routes somewhere non-terminal, so the loop keeps going.
 fn stuck(unproductive: usize, computational: usize) -> Respond {
@@ -618,6 +618,7 @@ async fn the_merge_is_handed_every_arms_output() {
                 Respond::value(from_arm.clone()),
                 Respond::value(from_arm.clone()),
                 Respond::value(from_arm.clone()),
+                Respond::value(from_arm.clone()),
                 Respond::value(finished),
             ]),
         )
@@ -869,10 +870,15 @@ async fn the_escalation_returns_to_the_loop() {
         Respond::value(state.to_accumulator())
     };
 
-    // Stage one is five calls and a pass is nine, so the fourteenth answer is
-    // the merge the routing reads. The fifteenth is the escalation itself,
-    // which reports solved so the head leaves rather than escalating forever.
-    let mut answers: Vec<Respond> = (0..14).map(|_| state(STUCK_THRESHOLD, false)).collect();
+    // Stage one and one whole pass answer stuck, so the last of them is the
+    // merge the routing reads. The next answer is the escalation itself, which
+    // reports solved so the head leaves rather than escalating forever. Counted
+    // from the two constants rather than written as a literal: adding an
+    // evaluation arm moves this boundary, and a literal moves the test's
+    // meaning silently — the escalation simply stops being reached.
+    let mut answers: Vec<Respond> = (0..STAGE_ONE_CALLS + PASS_CALLS)
+        .map(|_| state(STUCK_THRESHOLD, false))
+        .collect();
     answers.push(state(0, true));
 
     let run = TestHarness::new(&graph())

@@ -30,7 +30,7 @@ plausible-but-wrong argument that "no human would have actually made that
 mistake" (`04`§I.3).
 
 **Gap:** Lean and Mathlib were the largest thing in the image and nothing ran
-them. `research/CLAIMS.md` could not distinguish a kernel-checked lemma from a
+them. `derived/CLAIMS.md` could not distinguish a kernel-checked lemma from a
 sentence claiming one.
 
 **Built:** `src/orchestrator/lean.rs` — a tool that runs `lean`, parses
@@ -52,7 +52,7 @@ reaches the goal. Both hold the goal fixed.
 
 **Built:** `src/prompts/weakener.md`, the role in the registry, and
 `src/orchestrator/weakened.rs` — the difficulty ladder as a seventh derived
-ledger (`research/weakened/<slug>.md` → `research/WEAKENED.md`). It runs
+ledger (`research/weakened/<slug>.md` → `derived/WEAKENED.md`). It runs
 concurrently with the reducer inside the existing reduction arm, sharing its
 cadence, fingerprint gate, and single-writer gate.
 
@@ -134,17 +134,17 @@ propagating each established fact through the entailment relation gave about 37�
 more answers than direct proofs — 597,582 facts closing into all 22,028,942
 implications.
 
-**Gap:** two, and they turned out to be one shape. `research/BACKWARD.md` held
+**Gap:** two, and they turned out to be one shape. `derived/BACKWARD.md` held
 every dependency edge and drew none of them, so nothing could say which lemma
 was ready to be picked up, and a decomposition proving its own hypothesis read
 as two sound files. And `search_claims` retrieved a claim while nothing derived
 one: a ledger holding `A` and "`B` follows from `A`" did not hold `B`.
 
-**Built:** `src/orchestrator/blueprint.rs` derives `research/BLUEPRINT.md` — a
+**Built:** `src/orchestrator/blueprint.rs` derives `derived/BLUEPRINT.md` — a
 node per goal, lemma and claim, a standing that is the minimum over what it
 rests on, a **ready** list, and a cycle report above everything else because a
 cycle invalidates what is below it. `src/orchestrator/closure.rs` derives
-`research/ENTAILMENT.md` from one new `follows-from:` field, closed to a fixed
+`derived/ENTAILMENT.md` from one new `follows-from:` field, closed to a fixed
 point rather than one hop — stopping at one hop discards every sound step above
 the first, which is most of the 37×. It reports what is established for free,
 what the library already entails (the Dalmatian filter), and contradictions no
@@ -313,7 +313,7 @@ what changed is that something now runs them.
   with a status per node is what let ~25 strangers take independent pieces of
   PFR in three weeks. The tool itself is a LaTeX/Lean build pipeline and would
   be the wrong shape here, where the statements live in Markdown blocks that
-  code already parses. `research/BLUEPRINT.md` is the same idea derived from the
+  code already parses. `derived/BLUEPRINT.md` is the same idea derived from the
   ledgers that already held the edges, and it adds no file for an agent to write.
 - **`lean4checker` / `lean4lean` — declined, and the hole closed another way.**
   Kernel replay needs a build against the exact toolchain, which makes it an

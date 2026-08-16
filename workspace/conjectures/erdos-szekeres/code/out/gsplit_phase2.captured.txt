@@ -1,0 +1,25 @@
+$ python code/out/gsplit_enum_definitive.py
+=== Phase 1: validate corrected ordered-pair enumeration vs 2^N oracle ===
+N=8: oracle=56  ordered_pair=56  N(N-1)=56
+   missing=0  extra=0  EXACT MATCH: True
+N=10: oracle=90  ordered_pair=90  N(N-1)=90
+   missing=0  extra=0  EXACT MATCH: True
+N=12: oracle=132  ordered_pair=132  N(N-1)=132
+   missing=0  extra=0  EXACT MATCH: True
+N=14: oracle=182  ordered_pair=182  N(N-1)=182
+   missing=0  extra=0  EXACT MATCH: True
+N=16: oracle=240  ordered_pair=240  N(N-1)=240
+   missing=0  extra=0  EXACT MATCH: True
+ALL N EXACT (zero missing, zero extra, count=N(N-1)): True
+
+=== Phase 2: re-run n=7 gsplit question on verified es_construct ===
+n=5: N=8  sides_enum=56 (=N(N-1)=56? True)  size-target checked=8  VALID splits (halves 4 pts, (n-1)-avoiding): 4
+      L=[1, 4, 5, 6]  R=[0, 2, 3, 7]
+      L=[0, 5, 6, 7]  R=[1, 2, 3, 4]
+      L=[1, 2, 3, 4]  R=[0, 5, 6, 7]
+      L=[0, 2, 3, 7]  R=[1, 4, 5, 6]
+n=6: N=16  sides_enum=240 (=N(N-1)=240? True)  size-target checked=22  VALID splits (halves 8 pts, (n-1)-avoiding): 2
+      L=[1, 5, 6, 7, 8, 9, 10, 11]  R=[0, 2, 3, 4, 12, 13, 14, 15]
+      L=[0, 2, 3, 4, 12, 13, 14, 15]  R=[1, 5, 6, 7, 8, 9, 10, 11]
+n=7: N=32  sides_enum=992 (=N(N-1)=992? True)  size-target checked=32  VALID splits (halves 16 pts, (n-1)-avoiding): 0
+EXIT: 0

@@ -91,11 +91,15 @@ charp-break: The factorization H_i(f)(β) = e_{n−i}(β−β_1,…) is valid ov
       but centroid(g) = c requires dividing by n−1 ≡ 0 — the witness sits
       exactly on that break. Verified by hand via Lucas for p = 2,3,5 in
       research/notes/root-difference-identity-verified.md.
-first-step-status: identity VERIFIED on paper (tautology, char-free); char-p break
-      LOCATED (per-color vacuity {2..p−1} + no F_p convex-hull ordering, and the
-      p | n−1 descent break). Stage 1 script written but NOT yet run; Stage 2
-      (pinned-centroid pinning + descent induction core) is the new concrete
-      work a tool_builder starts today.
+first-step-status: identity SETTLED by proof (char-free tautology over any commutative
+      ring, research/notes/root-difference-identity-verified.md). The Stage 1
+      symbolic capture is DELIBERATELY SUPERSEDED (directive 10 option 2): the
+      zero-byte capture was a failed redirection and must not be re-run;
+      code/rootdiff/verify_rootdiff_identity.py is not load-bearing. The only
+      live question is the char-p break (rdc-charp-break), located on paper as
+      per-color vacuity {2..p-1} + no F_p convex-hull ordering + the p|n-1
+      descent break. Stage 2 (pinned-centroid pinning + descent induction core)
+      remains the concrete arithmetic work once the break is named.
 precedent: gvb-lift, bad-prime-criterion (Schaub–Spivakovsky Cor 8),
       bad-prime-minors-criterion (arXiv:2411.13967 Thm 3.1), ghosh-complete-
       intersection (the G_{T,i}/regular-sequence reformulation), polstra-convex

@@ -445,9 +445,15 @@ workspace/project-euler/66/
 │   ├── out/            # what those programs produced
 │   ├── lib/            # what other programs import, one subject per module
 │   └── <question>/     # the programs attacking one question, with its INDEX.md
-├── research/           # sources/, summaries/, and current-run derived ledgers
-└── config/             # config.toml, problem.url, the ledgers, trace.jsonl
+├── research/           # sources/, summaries/, notes/, and the run's own prose
+├── derived/            # the ledgers the runtime renders — never hand-written
+├── attempts/<id>/      # one candidate solution's own checkout, on its own branch
+└── config/             # config.toml, problem.url, the queues, trace.jsonl
 ```
+
+`derived/` is committed and meant to be read by people, but the agent's file
+tools refuse it: a rendered ledger is reached with `read_ledger`, which bounds
+what it returns and can select one entry rather than returning all of them.
 
 Generated programs, calculations, and other artifacts appear in
 `workspace/default` unless another workspace is selected. A new workspace is
@@ -546,7 +552,7 @@ Open-ended objectives go to the goals agent, which spawns other specialists and
 tracks evidence against explicit completion criteria; research questions go to
 the Exa-backed research agent; computations and executable checks go to the
 tool-builder, a reduction already stated as a finite decision problem to the
-`sat_solver`, and so on across the fourteen roles. The orchestrator then writes
+`sat_solver`, and so on across the roles. The orchestrator then writes
 one answer separating cited facts from its own reasoning.
 
 Subagent work runs asynchronously. `spawn_agent` returns a run ID immediately,

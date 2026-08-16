@@ -1,0 +1,28 @@
+capture: coefficient-descent char-p mechanism (code/scholar/descent_check.py)
+oracle: exact integer sympy.binomial, no oracle calls; exact arithmetic only
+range: degrees d in [2,31], all primes p<30; explicit p^k and p+1 witness checks
+
+VERDICT: ALL CHECKS PASSED — confirmed by write-through (p^k full descent via Lucas),
+independent prime-divisor enumeration, and direct witness-degree negation.
+
+== Descent pivot vanishes (d choose d-1 = d == 0 mod p) by degree ==
+  d= 3: pivot-3==0 mod p at p in [3]; full-descent(Prop2.5) at p in [3]
+  d= 6: pivot-6==0 mod p at p in [2, 3]; full-descent(Prop2.5) at p in []
+  d= 4: pivot-4==0 mod p at p in [2]; full-descent(Prop2.5) at p in [2]
+  d= 5: pivot-5==0 mod p at p in [5]; full-descent(Prop2.5) at p in [5]
+  d=12: pivot-12==0 mod p at p in [2, 3]; full-descent(Prop2.5) at p in []
+  d=20: pivot-20==0 mod p at p in [2, 5]; full-descent(Prop2.5) at p in []
+  d=24: pivot-24==0 mod p at p in [2, 3]; full-descent(Prop2.5) at p in []
+  d=28: pivot-28==0 mod p at p in [2, 7]; full-descent(Prop2.5) at p in []
+
+== Check: d=p^k has full descent at p; d=p+1 witness has pivot NONZERO at p ==
+  d=3, p=3: full_descent=True  (expect True)
+  d=5, p=5: full_descent=True  (expect True)
+  d=9, p=3: full_descent=True  (expect True)
+  d=25, p=5: full_descent=True  (expect True)
+  d=27, p=3: full_descent=True  (expect True)
+  d=4, p=3: full_descent=False (witness degree; expect False), pivot=False (expect False)
+  d=6, p=5: full_descent=False (witness degree; expect False), pivot=False (expect False)
+  d=8, p=7: full_descent=False (witness degree; expect False), pivot=False (expect False)
+  d=12, p=11: full_descent=False (witness degree; expect False), pivot=False (expect False)
+EXIT 0

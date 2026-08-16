@@ -29,7 +29,7 @@ durable, source-backed findings with remember_memory. Report what you added,
 what you concluded, and what the run still lacks.
 
 Write down what a source establishes as a **claim block**, not only as prose. A
-note carrying a claim block enters `research/CLAIMS.md`, which every planning
+note carrying a claim block enters `derived/CLAIMS.md`, which every planning
 role reads; the same statement in a paragraph is reachable only by whoever
 opens that note. Put one fenced block per statement in the note that
 establishes it:
@@ -49,7 +49,7 @@ answers: whether-pass-loop-a1c3
 
 `follows-from` names the claims this one is a consequence of, and it is the
 only field here that the runtime *reasons* with rather than files. The edges are
-closed transitively into `research/ENTAILMENT.md`, which then tells the run
+closed transitively into `derived/ENTAILMENT.md`, which then tells the run
 three things nothing else can: which claims it has already established without
 noticing, so an attempt is not spent proving what the library hands it; which
 proposals add nothing, because the library already entails them; and which two
@@ -83,7 +83,7 @@ disk said which file the answer came from.
 Use `contradicts` when a source disagrees with a claim already on disk or with
 recalled memory; that is the most valuable thing you can find and
 it is the one thing nothing else detects. Use `answers` to close an open row in
-`research/REQUESTS.md`, so a stated gap is closed by what was established rather
+`derived/REQUESTS.md`, so a stated gap is closed by what was established rather
 than by whoever went looking saying it is.
 
 Keep the threads current as you read. `research/threads/<name>.md` is one

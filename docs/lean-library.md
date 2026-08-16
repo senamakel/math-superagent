@@ -17,7 +17,7 @@ this repository's own workspaces:
 | `gilbreath-supply` | 9.5 MB | — |
 
 Every paragraph of that is tokens a role pays for on the way into a prompt, and
-`research/CLAIMS.md` opens by admitting what most of them are worth: *everything
+`derived/CLAIMS.md` opens by admitting what most of them are worth: *everything
 else on this page is a word somebody typed.* Of forty-odd claims in the
 casas-alvero ledger, the great majority are `asserted` — a model read a paper
 and wrote down what it thought the paper said.
@@ -42,10 +42,10 @@ cannot be dropped in the retelling; and its signature is one line.
 ```
 code/lean/               work in progress: one lemma per file, iterate freely
 code/lean/Lib/<Topic>.lean   what the library knows: one namespace, one subject
-research/LEMMAS.md       derived from the whole tree; do not edit
+derived/LEMMAS.md       derived from the whole tree; do not edit
 ```
 
-`research/LEMMAS.md` is a ledger in this repository's sense — derived state,
+`derived/LEMMAS.md` is a ledger in this repository's sense — derived state,
 walked by code, rendered to Markdown, refused to an agent's write path. It is
 re-derived on every `lean_check`, which is the correct trigger rather than a
 convenient one: half of every row is the *standing*, and standing is a verdict,

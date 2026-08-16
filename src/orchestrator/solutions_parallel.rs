@@ -50,6 +50,8 @@ pub(super) enum Slot {
     Chosen,
     /// What the refutation arm found trying to break the current statement.
     Refutation,
+    /// What the kernel said about the statement the graph ranked first.
+    Verification,
 }
 
 /// One arm's contribution to a diversify.
@@ -83,6 +85,7 @@ pub(super) struct DiversifyFindings {
     grounding: String,
     chosen: String,
     refutation: String,
+    verification: String,
 }
 
 impl DiversifyFindings {
@@ -91,7 +94,7 @@ impl DiversifyFindings {
     /// One list, read by both directions of the round trip, so a slot cannot be
     /// written under one name and read under another — which is precisely how
     /// an arm's findings go missing without an error anywhere.
-    fn slots(&mut self) -> [(&'static str, &mut String); 6] {
+    fn slots(&mut self) -> [(&'static str, &mut String); 7] {
         [
             ("library", &mut self.library),
             ("digest", &mut self.digest),
@@ -99,6 +102,7 @@ impl DiversifyFindings {
             ("grounding", &mut self.grounding),
             ("chosen", &mut self.chosen),
             ("refutation", &mut self.refutation),
+            ("verification", &mut self.verification),
         ]
     }
 
@@ -111,6 +115,7 @@ impl DiversifyFindings {
             Slot::Grounding => &mut self.grounding,
             Slot::Chosen => &mut self.chosen,
             Slot::Refutation => &mut self.refutation,
+            Slot::Verification => &mut self.verification,
         };
         *slot = finding.text;
     }
@@ -168,7 +173,7 @@ impl DiversifyFindings {
     /// The findings as the labelled sections `merge_context` expects, in the
     /// order a reader wants them: what was gathered, what it means, what the
     /// numbers show, and what to do next.
-    pub(super) fn sections(&self) -> [(&'static str, &str); 6] {
+    pub(super) fn sections(&self) -> [(&'static str, &str); 7] {
         [
             ("Reference material", self.library.as_str()),
             ("What the sources establish", self.digest.as_str()),
@@ -187,6 +192,14 @@ impl DiversifyFindings {
             (
                 "Attempts to break the current statement",
                 self.refutation.as_str(),
+            ),
+            // Named for the kernel rather than for the arm, on the same
+            // argument as the line above. "The verification arm reported" is
+            // process; "what the kernel checked" is the one fact in this
+            // briefing that is not somebody's judgement of somebody's work.
+            (
+                "What the kernel checked, and what it refused",
+                self.verification.as_str(),
             ),
         ]
     }

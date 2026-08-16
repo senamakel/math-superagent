@@ -1,0 +1,235 @@
+========================================================================
+PART (1):  f = x^20 - x
+  f = x**20 - x
+  j= 1  deg(gcd(f, f^( 1))) = 0   [FAIL]
+  j= 2  deg(gcd(f, f^( 2))) = 1   [PASS]
+  j= 3  deg(gcd(f, f^( 3))) = 1   [PASS]
+  j= 4  deg(gcd(f, f^( 4))) = 1   [PASS]
+  j= 5  deg(gcd(f, f^( 5))) = 1   [PASS]
+  j= 6  deg(gcd(f, f^( 6))) = 1   [PASS]
+  j= 7  deg(gcd(f, f^( 7))) = 1   [PASS]
+  j= 8  deg(gcd(f, f^( 8))) = 1   [PASS]
+  j= 9  deg(gcd(f, f^( 9))) = 1   [PASS]
+  j=10  deg(gcd(f, f^(10))) = 1   [PASS]
+  j=11  deg(gcd(f, f^(11))) = 1   [PASS]
+  j=12  deg(gcd(f, f^(12))) = 1   [PASS]
+  j=13  deg(gcd(f, f^(13))) = 1   [PASS]
+  j=14  deg(gcd(f, f^(14))) = 1   [PASS]
+  j=15  deg(gcd(f, f^(15))) = 1   [PASS]
+  j=16  deg(gcd(f, f^(16))) = 1   [PASS]
+  j=17  deg(gcd(f, f^(17))) = 1   [PASS]
+  j=18  deg(gcd(f, f^(18))) = 1   [PASS]
+  j=19  deg(gcd(f, f^(19))) = 1   [PASS]
+  -> score k = 18 (out of 19)
+  -> failing j = [1]
+========================================================================
+PART (2):  f = x^19 (x - 1)
+  f = x**20 - x**19
+  j= 1  deg(gcd(f, f^( 1))) = 18   [PASS]
+  j= 2  deg(gcd(f, f^( 2))) = 17   [PASS]
+  j= 3  deg(gcd(f, f^( 3))) = 16   [PASS]
+  j= 4  deg(gcd(f, f^( 4))) = 15   [PASS]
+  j= 5  deg(gcd(f, f^( 5))) = 14   [PASS]
+  j= 6  deg(gcd(f, f^( 6))) = 13   [PASS]
+  j= 7  deg(gcd(f, f^( 7))) = 12   [PASS]
+  j= 8  deg(gcd(f, f^( 8))) = 11   [PASS]
+  j= 9  deg(gcd(f, f^( 9))) = 10   [PASS]
+  j=10  deg(gcd(f, f^(10))) = 9   [PASS]
+  j=11  deg(gcd(f, f^(11))) = 8   [PASS]
+  j=12  deg(gcd(f, f^(12))) = 7   [PASS]
+  j=13  deg(gcd(f, f^(13))) = 6   [PASS]
+  j=14  deg(gcd(f, f^(14))) = 5   [PASS]
+  j=15  deg(gcd(f, f^(15))) = 4   [PASS]
+  j=16  deg(gcd(f, f^(16))) = 3   [PASS]
+  j=17  deg(gcd(f, f^(17))) = 2   [PASS]
+  j=18  deg(gcd(f, f^(18))) = 1   [PASS]
+  j=19  deg(gcd(f, f^(19))) = 0   [FAIL]
+  -> score k = 18 (out of 19)
+  -> failing j = [19]
+========================================================================
+PART (2):  f = x^19 (x - 2)
+  f = x**20 - 2*x**19
+  j= 1  deg(gcd(f, f^( 1))) = 18   [PASS]
+  j= 2  deg(gcd(f, f^( 2))) = 17   [PASS]
+  j= 3  deg(gcd(f, f^( 3))) = 16   [PASS]
+  j= 4  deg(gcd(f, f^( 4))) = 15   [PASS]
+  j= 5  deg(gcd(f, f^( 5))) = 14   [PASS]
+  j= 6  deg(gcd(f, f^( 6))) = 13   [PASS]
+  j= 7  deg(gcd(f, f^( 7))) = 12   [PASS]
+  j= 8  deg(gcd(f, f^( 8))) = 11   [PASS]
+  j= 9  deg(gcd(f, f^( 9))) = 10   [PASS]
+  j=10  deg(gcd(f, f^(10))) = 9   [PASS]
+  j=11  deg(gcd(f, f^(11))) = 8   [PASS]
+  j=12  deg(gcd(f, f^(12))) = 7   [PASS]
+  j=13  deg(gcd(f, f^(13))) = 6   [PASS]
+  j=14  deg(gcd(f, f^(14))) = 5   [PASS]
+  j=15  deg(gcd(f, f^(15))) = 4   [PASS]
+  j=16  deg(gcd(f, f^(16))) = 3   [PASS]
+  j=17  deg(gcd(f, f^(17))) = 2   [PASS]
+  j=18  deg(gcd(f, f^(18))) = 1   [PASS]
+  j=19  deg(gcd(f, f^(19))) = 0   [FAIL]
+  -> score k = 18 (out of 19)
+  -> failing j = [19]
+========================================================================
+PART (2):  f = x^19 (x - 3)
+  f = x**20 - 3*x**19
+  j= 1  deg(gcd(f, f^( 1))) = 18   [PASS]
+  j= 2  deg(gcd(f, f^( 2))) = 17   [PASS]
+  j= 3  deg(gcd(f, f^( 3))) = 16   [PASS]
+  j= 4  deg(gcd(f, f^( 4))) = 15   [PASS]
+  j= 5  deg(gcd(f, f^( 5))) = 14   [PASS]
+  j= 6  deg(gcd(f, f^( 6))) = 13   [PASS]
+  j= 7  deg(gcd(f, f^( 7))) = 12   [PASS]
+  j= 8  deg(gcd(f, f^( 8))) = 11   [PASS]
+  j= 9  deg(gcd(f, f^( 9))) = 10   [PASS]
+  j=10  deg(gcd(f, f^(10))) = 9   [PASS]
+  j=11  deg(gcd(f, f^(11))) = 8   [PASS]
+  j=12  deg(gcd(f, f^(12))) = 7   [PASS]
+  j=13  deg(gcd(f, f^(13))) = 6   [PASS]
+  j=14  deg(gcd(f, f^(14))) = 5   [PASS]
+  j=15  deg(gcd(f, f^(15))) = 4   [PASS]
+  j=16  deg(gcd(f, f^(16))) = 3   [PASS]
+  j=17  deg(gcd(f, f^(17))) = 2   [PASS]
+  j=18  deg(gcd(f, f^(18))) = 1   [PASS]
+  j=19  deg(gcd(f, f^(19))) = 0   [FAIL]
+  -> score k = 18 (out of 19)
+  -> failing j = [19]
+========================================================================
+PART (2b): general family f = (x-a)^19 (x-b): can aligning f^(19)'s root with a root of f give 19?
+  a= 2 b=18 | r19=(19a+b)/20 = 14/5 | in {a,b}? False
+========================================================================
+   (x-2)^19 (x-18)
+  f = x**20 - 56*x**19 + 1368*x**18 - 20064*x**17 + 201552*x**16 - 1488384*x**15 + 8434176*x**14 - 37705728*x**13 + 135442944*x**12 - 395579392*x**11 + 945950720*x**10 - 1857503232*x**9 + 2992644096*x**8 - 3937271808*x**7 + 4191289344*x**6 - 3556245504*x**5 + 2349662208*x**4 - 1165492224*x**3 + 408420352*x**2 - 90177536*x + 9437184
+  j= 1  deg(gcd(f, f^( 1))) = 18   [PASS]
+  j= 2  deg(gcd(f, f^( 2))) = 17   [PASS]
+  j= 3  deg(gcd(f, f^( 3))) = 16   [PASS]
+  j= 4  deg(gcd(f, f^( 4))) = 15   [PASS]
+  j= 5  deg(gcd(f, f^( 5))) = 14   [PASS]
+  j= 6  deg(gcd(f, f^( 6))) = 13   [PASS]
+  j= 7  deg(gcd(f, f^( 7))) = 12   [PASS]
+  j= 8  deg(gcd(f, f^( 8))) = 11   [PASS]
+  j= 9  deg(gcd(f, f^( 9))) = 10   [PASS]
+  j=10  deg(gcd(f, f^(10))) = 9   [PASS]
+  j=11  deg(gcd(f, f^(11))) = 8   [PASS]
+  j=12  deg(gcd(f, f^(12))) = 7   [PASS]
+  j=13  deg(gcd(f, f^(13))) = 6   [PASS]
+  j=14  deg(gcd(f, f^(14))) = 5   [PASS]
+  j=15  deg(gcd(f, f^(15))) = 4   [PASS]
+  j=16  deg(gcd(f, f^(16))) = 3   [PASS]
+  j=17  deg(gcd(f, f^(17))) = 2   [PASS]
+  j=18  deg(gcd(f, f^(18))) = 1   [PASS]
+  j=19  deg(gcd(f, f^(19))) = 0   [FAIL]
+  -> score k = 18 (out of 19)
+  -> failing j = [19]
+  a= 2 b= 1 | r19=(19a+b)/20 = 39/20 | in {a,b}? False
+========================================================================
+   (x-2)^19 (x-1)
+  f = x**20 - 39*x**19 + 722*x**18 - 8436*x**17 + 69768*x**16 - 434112*x**15 + 2108544*x**14 - 8186112*x**13 + 25798656*x**12 - 66646528*x**11 + 141892608*x**10 - 249387008*x**9 + 361181184*x**8 - 428654592*x**7 + 412778496*x**6 - 317521920*x**5 + 190513152*x**4 - 85917696*x**3 + 27394048*x**2 - 5505024*x + 524288
+  j= 1  deg(gcd(f, f^( 1))) = 18   [PASS]
+  j= 2  deg(gcd(f, f^( 2))) = 17   [PASS]
+  j= 3  deg(gcd(f, f^( 3))) = 16   [PASS]
+  j= 4  deg(gcd(f, f^( 4))) = 15   [PASS]
+  j= 5  deg(gcd(f, f^( 5))) = 14   [PASS]
+  j= 6  deg(gcd(f, f^( 6))) = 13   [PASS]
+  j= 7  deg(gcd(f, f^( 7))) = 12   [PASS]
+  j= 8  deg(gcd(f, f^( 8))) = 11   [PASS]
+  j= 9  deg(gcd(f, f^( 9))) = 10   [PASS]
+  j=10  deg(gcd(f, f^(10))) = 9   [PASS]
+  j=11  deg(gcd(f, f^(11))) = 8   [PASS]
+  j=12  deg(gcd(f, f^(12))) = 7   [PASS]
+  j=13  deg(gcd(f, f^(13))) = 6   [PASS]
+  j=14  deg(gcd(f, f^(14))) = 5   [PASS]
+  j=15  deg(gcd(f, f^(15))) = 4   [PASS]
+  j=16  deg(gcd(f, f^(16))) = 3   [PASS]
+  j=17  deg(gcd(f, f^(17))) = 2   [PASS]
+  j=18  deg(gcd(f, f^(18))) = 1   [PASS]
+  j=19  deg(gcd(f, f^(19))) = 0   [FAIL]
+  -> score k = 18 (out of 19)
+  -> failing j = [19]
+  a= 4 b=16 | r19=(19a+b)/20 = 23/5 | in {a,b}? False
+========================================================================
+   (x-4)^19 (x-16)
+  f = x**20 - 92*x**19 + 3952*x**18 - 105792*x**17 + 1984512*x**16 - 27783168*x**15 + 301645824*x**14 - 2603679744*x**13 + 18162253824*x**12 - 103469809664*x**11 + 484326768640*x**10 - 1866859544576*x**9 + 5917592518656*x**8 - 15346723454976*x**7 + 32254130651136*x**6 - 54103703027712*x**5 + 70750996267008*x**4 - 69526930587648*x**3 + 48309792145408*x**2 - 21165598834688*x + 4398046511104
+  j= 1  deg(gcd(f, f^( 1))) = 18   [PASS]
+  j= 2  deg(gcd(f, f^( 2))) = 17   [PASS]
+  j= 3  deg(gcd(f, f^( 3))) = 16   [PASS]
+  j= 4  deg(gcd(f, f^( 4))) = 15   [PASS]
+  j= 5  deg(gcd(f, f^( 5))) = 14   [PASS]
+  j= 6  deg(gcd(f, f^( 6))) = 13   [PASS]
+  j= 7  deg(gcd(f, f^( 7))) = 12   [PASS]
+  j= 8  deg(gcd(f, f^( 8))) = 11   [PASS]
+  j= 9  deg(gcd(f, f^( 9))) = 10   [PASS]
+  j=10  deg(gcd(f, f^(10))) = 9   [PASS]
+  j=11  deg(gcd(f, f^(11))) = 8   [PASS]
+  j=12  deg(gcd(f, f^(12))) = 7   [PASS]
+  j=13  deg(gcd(f, f^(13))) = 6   [PASS]
+  j=14  deg(gcd(f, f^(14))) = 5   [PASS]
+  j=15  deg(gcd(f, f^(15))) = 4   [PASS]
+  j=16  deg(gcd(f, f^(16))) = 3   [PASS]
+  j=17  deg(gcd(f, f^(17))) = 2   [PASS]
+  j=18  deg(gcd(f, f^(18))) = 1   [PASS]
+  j=19  deg(gcd(f, f^(19))) = 0   [FAIL]
+  -> score k = 18 (out of 19)
+  -> failing j = [19]
+  a= 3 b=17 | r19=(19a+b)/20 = 37/10 | in {a,b}? False
+========================================================================
+   (x-3)^19 (x-17)
+  f = x**20 - 74*x**19 + 2508*x**18 - 52326*x**17 + 758727*x**16 - 8162856*x**15 + 67814496*x**14 - 446445432*x**13 + 2369268954*x**12 - 10248465708*x**11 + 36365523480*x**10 - 106121209428*x**9 + 254393366526*x**8 - 498487406472*x**7 + 790988281344*x**6 - 1001094543576*x**5 + 987190452693*x**4 - 731191602906*x**3 + 382771443132*x**2 - 126299079414*x + 19758444939
+  j= 1  deg(gcd(f, f^( 1))) = 18   [PASS]
+  j= 2  deg(gcd(f, f^( 2))) = 17   [PASS]
+  j= 3  deg(gcd(f, f^( 3))) = 16   [PASS]
+  j= 4  deg(gcd(f, f^( 4))) = 15   [PASS]
+  j= 5  deg(gcd(f, f^( 5))) = 14   [PASS]
+  j= 6  deg(gcd(f, f^( 6))) = 13   [PASS]
+  j= 7  deg(gcd(f, f^( 7))) = 12   [PASS]
+  j= 8  deg(gcd(f, f^( 8))) = 11   [PASS]
+  j= 9  deg(gcd(f, f^( 9))) = 10   [PASS]
+  j=10  deg(gcd(f, f^(10))) = 9   [PASS]
+  j=11  deg(gcd(f, f^(11))) = 8   [PASS]
+  j=12  deg(gcd(f, f^(12))) = 7   [PASS]
+  j=13  deg(gcd(f, f^(13))) = 6   [PASS]
+  j=14  deg(gcd(f, f^(14))) = 5   [PASS]
+  j=15  deg(gcd(f, f^(15))) = 4   [PASS]
+  j=16  deg(gcd(f, f^(16))) = 3   [PASS]
+  j=17  deg(gcd(f, f^(17))) = 2   [PASS]
+  j=18  deg(gcd(f, f^(18))) = 1   [PASS]
+  j=19  deg(gcd(f, f^(19))) = 0   [FAIL]
+  -> score k = 18 (out of 19)
+  -> failing j = [19]
+  a= 0 b= 5 | r19=(19a+b)/20 = 1/4 | in {a,b}? False
+========================================================================
+   (x-0)^19 (x-5)
+  f = x**20 - 5*x**19
+  j= 1  deg(gcd(f, f^( 1))) = 18   [PASS]
+  j= 2  deg(gcd(f, f^( 2))) = 17   [PASS]
+  j= 3  deg(gcd(f, f^( 3))) = 16   [PASS]
+  j= 4  deg(gcd(f, f^( 4))) = 15   [PASS]
+  j= 5  deg(gcd(f, f^( 5))) = 14   [PASS]
+  j= 6  deg(gcd(f, f^( 6))) = 13   [PASS]
+  j= 7  deg(gcd(f, f^( 7))) = 12   [PASS]
+  j= 8  deg(gcd(f, f^( 8))) = 11   [PASS]
+  j= 9  deg(gcd(f, f^( 9))) = 10   [PASS]
+  j=10  deg(gcd(f, f^(10))) = 9   [PASS]
+  j=11  deg(gcd(f, f^(11))) = 8   [PASS]
+  j=12  deg(gcd(f, f^(12))) = 7   [PASS]
+  j=13  deg(gcd(f, f^(13))) = 6   [PASS]
+  j=14  deg(gcd(f, f^(14))) = 5   [PASS]
+  j=15  deg(gcd(f, f^(15))) = 4   [PASS]
+  j=16  deg(gcd(f, f^(16))) = 3   [PASS]
+  j=17  deg(gcd(f, f^(17))) = 2   [PASS]
+  j=18  deg(gcd(f, f^(18))) = 1   [PASS]
+  j=19  deg(gcd(f, f^(19))) = 0   [FAIL]
+  -> score k = 18 (out of 19)
+  -> failing j = [19]
+========================================================================
+VERDICT
+  x^20 - x          : score 18, failing derivative = [1]
+  x^19 (x-1)        : score 18, failing = j=19 (f^(19) linear, root 1/20 not a root of f)
+  x^19 (x-2)        : score 18, failing = j=19 (root 1/10)
+  x^19 (x-3)        : score 18, failing = j=19 (root 3/20)
+  Verdict: 18 is the real ceiling for these families; for x^20 - x the
+  UNIQUE failing derivative is j = 1 (f' = 20x^19 - 1) — NOT j = 19.
+  f^(19) = 20!·x shares root 0 with f, so j = 19 PASSES for x^20-x.
+  For the mult-19-root family, j = 19 (the LINEAR f^(19)) is the binding
+  failure and cannot be aligned to a genuine second root in Q: that would
+  force a = b (pure power, rejected).  ALL EXACT CHECKS PASSED.

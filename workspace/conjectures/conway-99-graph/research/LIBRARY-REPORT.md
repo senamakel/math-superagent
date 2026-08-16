@@ -35,6 +35,10 @@ themselves.
 | `makhnev-1988-lambda1-russian-fulltext` | https://www.mathnet.ru/php/getFT.phtml?jrnid=mzm&option_lang=rus&paperid=4220&what=fullt | **PRIMARY SOURCE now in-hand, full Russian original (open on mathnet.ru).** The paper whose conditional (n_3=0 -> no 99) Reimbayev relies on. Thm 1: lambda=1 SRG satisfying (*) is mu<=3 or (27,10,1,5). Thm 2: no srg(99,14,1,2)/(115,18,1,3) satisfies (*); the 99-proof builds an srg(33,12,1,6) subobject from a triangle closure + 60 outer points (20 outer triangles), contradicting Thm 1. English translation paywalled (Springer 10.1007/BF01158426) but Russian original full text is open. Closes the single most valuable gap. |
 | `keramatipour-sat-conway99` | https://arxiv.org/pdf/2604.23037 | SAT-solver approach; discussed limits + five-member list |
 | `zehavi-oliveira-not-conway-99` | https://arxiv.org/pdf/1707.08047 | "Not Conway's 99-graph problem" — a solved variant, boundary work |
+| `greaves-koolen-park-delsarte-bound` | https://arxiv.org/pdf/2012.09391 | **FULL TEXT** Greaves, Koolen, Park 2021 "Improving the Delsarte bound" — maximal-clique/Delsarte/claw repertoire; Theorem 4.3 infinite family excluded for srg with smallest eigenvalue -m; appendix tables of nonexistent srg at smallest eigenvalue -4,-5,-6,-7. **Checked: (99,14,1,2) appears in NONE of the tables** (the -4 table lists only 4 sets, all v>>99). |
+| `koolen-cao-yang-smallest-eigenvalue-survey` | https://arxiv.org/pdf/2011.11935 | **FULL TEXT** Koolen, Cao, Yang 2021 survey "Recent progress on graphs with fixed smallest eigenvalue" — Hoffman-graph + distance-regular classification programme; confirms -2 theory complete (CGSS generalized line graphs), -3/-4 not; Neumaier geometric dichotomy fails its hypothesis at (99,14,1,2). The named survey for the least-eigenvalue-minus-4 approach. |
+| `lou-murin-srg991412-2014` | https://math.mit.edu/research/highschool/primes/materials/2014/Lou-Murin.pdf | **FULL TEXT (acquired this cycle)** — Lou & Murin, MIT PRIMES-USA 2014, "On the Strongly Regular Graph of Parameters (99,14,1,2)". This fills the previously-unobtainable "Lou & Murin" lead. Unrefereed; carries alpha<=22 (independently matches run's checked closed form 22), alpha=9 not maximal, no automorphism of order p>14/13/11, and the alpha=22 => (22,4,2) block-design reduction (Sec. 7). |
+| **`forced-structure-reduction-conway99`** | https://arxiv.org/html/2608.11211v1 | **FULL TEXT (CAISc 2026 preprint, AI agent, not peer-reviewed)**. Independently confirms the run's forced-structure reduction: inner–outer adjacency fully forced by λ=1 (N(0)=7K2) + μ=2; only unknown is the (k−2)-regular outer-outer graph = 12-regular on 84 vtx for (99,14,1,2). Prop 1 (exhaustive): no circulant on Z/99Z exceeds 33/49 difference-classes (68%). Orbit-existence CP-SAT validated on srg(9,4,1,2) & Paley(13,6,2,3), leaves open single-fixed-point Z_7 sub-case unresolved (48h/14 cores). Best heuristic 69.43% (3437/4950); a provable bound < 4950 would be a nonexistence proof, none claimed. See note `forced-structure-reduction-2026.md`. |
 | `makhnev-symmetric-graphs-automorphisms-lecture` | https://www.math.uni-bielefeld.de/~baumeist/sommerschule/makhnev.pdf | Makhnev lecture note. Sources the Wilbrink 1984 order-11 exclusion and |G| divides 2·3³·7, plus Makhnev–Minakova fixed-point dichotomy & involution classification — the only traceable route to the paywalled Wilbrink 1984. |
 | `ostergard-soicher-no-mclaughlin-geometry` | https://arxiv.org/pdf/1607.03372 (published JCTA 155, doi 10.1016/j.jcta.2017.10.004) | "There is no McLaughlin geometry". Cautionary: a pseudogeometric SRG achieving the Krein bound need not be geometric when α>1. NOTE: an initial guessed arXiv id 1705.06821 fetched a wrong ML paper; corrected. |
 
@@ -83,7 +87,10 @@ Highest-value claims (status: checked where computed over Z, else sourced):
 ## Durable memory (Cognee)
 Stored: five-member family fact; the BN1988 mu=2 bound and open-99 status; the
 automorphism bounds; the reconciled Bagchi finding; the srg(33,8,1,2) integrality
-mechanism; the library-safety lesson (never guess arXiv ids).
+mechanism; the library-safety lesson (never guess arXiv ids); the
+forced-structure-reduction-conway99 preprint (2026-04 acquisition; its Section 4
+independently confirms the run's derived-design-at-a-vertex / g-reduce reduction
+and its Section 5 documents the open Z_7 prescribed-automorphism sub-case).
 
 ## Gaps / could not obtain
 - **Makhnev 1988 "Strongly regular graphs with λ=1" — CLOSED.** The full Russian
@@ -94,7 +101,6 @@ mechanism; the library-safety lesson (never guess arXiv ids).
   attack now rests on a real theorem. Remaining cost: n_3=0 is itself only
   Reimbayev's conjecture, and the oracle run that rook(3)/BvLS satisfy (*) is
   pending tool_builder/coder execution (admissibility check).
-- **Lou & Murin, "On the Strongly Regular Graph of Parameters (99,14,1,2)"** — cited by Reimbayev (order-six paper, ref [9]) but not found in any database index; appears unpublished/a working note (possibly a course project by S. Lou / M. Murin). A lead, not obtainable so far.
 - **Von der Flaass 1984 "Strongly regular graphs with λ=1"** (conference abstract) — cited in Makhnev 1988's literature list; originals of the λ=1 classification. Not obtained.
 - Behbahani & Lam 2011 journal paper full text (paywalled; Discrete Math 311(2-3) 132-144) — filled for the run by the 2009 PhD thesis (primary source, in-hand).
 - Makhnev & Minakova 2004 journal full text (paywalled) — filled by verbatim Thm 1.6 in Behbahani thesis.
@@ -105,6 +111,24 @@ mechanism; the library-safety lesson (never guess arXiv ids).
 - `ostergard-soicher-no-mclaughlin-geometry`: an earlier guessed arXiv id
   `1705.06821` fetched a spatial-VAE ML paper. The correct id is `1607.03372`.
   Verified the full text is the McLaughlin-geometry paper before relying on it.
+
+## Could not obtain (do not re-attempt without a new reason)
+- **Cameron 1975, "Partial quadrangles", Quart. J. Math. Oxford (2) 26 (1975)
+  61–73** (doi 10.1093/qmath/26.1.61) — paywalled on Oxford Academic. This is
+  the defining paper of the run's *adopted* approach `pq-2-6-2-classification`.
+  **Its mathematical content is fully carried by in-library secondary
+  sources**: the exact PQ axioms (partial linear space of order (s,t); three
+  pairwise-collinear points lie on one line; two non-collinear points meet
+  exactly μ common points on lines) and the theorem that an SRG is the point
+  graph of a PQ iff it is K4−e-free (diamond-free), with lines recoverable as
+  maximal cliques, are stated verbatim in `brouwer-ihringer-kantor-4vertex-
+  condition.full.md` (its citation [7]) and in the Mohammadian–Tayfeh-Rezaie
+  abstract/body held at `research/sources/mohammadian-*-diamond-free-srg.full.md`.
+  Only the original typescript is absent. Do not redownload.
+- **Behbahani–Lam–Östergård 2012, "On triple systems and strongly regular
+  graphs"** (JCTA 119, paywalled) — full text unobtainable; abstract captured.
+- **Behbahani–Lam 2011; Makhnev–Minakova 2004; Bagchi 2006** — paywalled
+  journal full texts; each filled by a primary/summary in-hand.
 
 ## Oracle inputs supplied
 - Explicit BvLS construction: van Lint 1975 (5×11 parity-check H of ternary

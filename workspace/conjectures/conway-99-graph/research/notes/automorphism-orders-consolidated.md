@@ -99,7 +99,7 @@ status: asserted-by-source (peer-reviewed papers; exact statements consolidated
   from library full texts and abstracts). The computer-assistance status of the
   Frob(21) elimination differs between arXiv and published versions — flagged.
 bearing: gives the run's automorphism frontier precisely; any new excluded
-  order (e.g. proving G trivial, or excluding Z2) is a genuine advance.
+  order (e.g. proving G trivial, or excluding Z2) is a genuine advance. Directive 18 confirms this request is answered and closed (resumption artifact; do not re-open).
 anchor: research/sources/cesarz-woldar-automorph-conway99.full.md,
   research/sources/crnkovic-maksimovic-composite-automorphism.full.md
 answers: exact-list-prime-051a

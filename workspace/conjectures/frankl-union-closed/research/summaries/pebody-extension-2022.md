@@ -11,8 +11,8 @@ hypotheses: iid coupling of (X,S), H(X|S) fixed, E(X) fixed
 holds-here: yes (as the iid ceiling)
 status: proved
 bearing: states the barrier as an optimization: the value of min over distributions of E[H(X∪Y)]/E[H(X)]. Gives the precise object whose value a "barrier theorem" would compute for any coupling class it covers.
-anchor: research/sources/pebody-extension-2022.full.md
-follows-from: ahs-barrier
+anchor: research/sources/pebody-extension-2022.html.full.md
+follows-from: ahs-barrier-3-minus-rt5-over-2
 ```
 
 **Bearing:** confirms and refines AHS's value. Together these four sources (AHS, Chase–Lovett, Sawin, Pebody) give (3−√5)/2, its optimality for iid and for the approximate relaxation, and the escape by dependent couplings.

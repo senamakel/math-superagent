@@ -179,6 +179,129 @@ pub(in crate::orchestrator) async fn refutation_arm(
     vec![Finding::new(Slot::Refutation, merged)]
 }
 
+/// The verification arm: hand the statement graph's first entry to the kernel.
+///
+/// The refutation arm's argument, one engine over. The runtime had four ways to
+/// prove something and every one of them was *delegated to* — and `lean_prover`
+/// is the one where that costs the most, because everything else this runtime
+/// produces is a reason to believe something and a proof the kernel accepted is
+/// the thing itself. Across three live calibration runs nothing was formalised
+/// at all, and no file on disk could tell a lemma Lean had checked from a
+/// sentence a model had typed.
+///
+/// Three things make it affordable, and they are the same three decision.
+///
+/// **It picks rather than sweeps.** [`super::verify::next`] takes the first
+/// entry of a ranking over the statement graph — what the run is already
+/// building on, ordered by how much rests on it — so one check per pass goes to
+/// the node whose mistake would cost the most. A fleet of provers is the other
+/// way to cover a blueprint; this is the one that fits the container's memory
+/// ceiling, and the queue is written into `research/BLUEPRINT.md` so what was
+/// not reached is visible.
+///
+/// **It asks for something different the second time.** A node that survived a
+/// proof attempt is asked to be decomposed, and its sub-lemmas become gaps —
+/// which become blueprint nodes, which come back through this same ranking once
+/// their dependencies are settled. That is the recursion, and it runs at the
+/// speed of the loop rather than inside one turn.
+///
+/// **It stops.** `MAX_ATTEMPTS` is two and the attempt is recorded *before* the
+/// prover is delegated to, so a node nobody can close stops being the
+/// highest-ranked target instead of being re-attempted every pass for the rest
+/// of the run. A record that cannot be written means no delegation: an
+/// uncounted attempt is an unbounded one.
+///
+/// It returns nothing at all when there is no graph yet, which is the ordinary
+/// state of an early run and costs a child run to discover any other way.
+pub(in crate::orchestrator) async fn verification_arm(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+    state: &SolutionState,
+) -> Vec<Finding> {
+    let Some(workspace) = workspace else {
+        return Vec::new();
+    };
+    // Choosing and recording are one critical section, and the lock is what
+    // makes them one. Schools share a workspace and run this arm concurrently:
+    // without it, two of them read the same ranking, see the same zero attempts
+    // on the same top-ranked node, and both spend the run's scarcest budget
+    // proving it. Taken at the arm's boundary and released before the
+    // delegation, so nothing the prover writes can meet it again — the rule
+    // `worklock` states, since the mutex is not reentrant.
+    let assignment = {
+        let _writing = super::worklock::writes().await;
+        let Some(assignment) = super::verify::next(workspace) else {
+            return Vec::new();
+        };
+        if let Err(error) =
+            super::verify::note_attempt(workspace, &assignment.target.id, assignment.stage).await
+        {
+            return vec![Finding::new(
+                Slot::Verification,
+                format!(
+                    "No formalisation was attempted this pass: the attempt record under `{}` \
+                     could not be written ({error}). Nothing was delegated, because an attempt \
+                     this runtime cannot count is one it cannot stop repeating.",
+                    super::verify::LEDGER_DIR
+                ),
+            )];
+        }
+        assignment
+    };
+    let instruction = match assignment.stage {
+        super::verify::Stage::Prove => {
+            "State this in Lean 4 against Mathlib and prove it. Add a `#print axioms` line for \
+             every theorem the statement rests on, then call `lean_check` on the file.\n\n\
+             Get the *statement* right before you get the proof right. A Lean proof of a \
+             neighbouring statement is worth less than no proof at all, because it reads as a \
+             check that passed — so write the statement, read it back against the source file \
+             above, and say in your report which of the original's hypotheses each binder \
+             carries.\n\n\
+             If it passes, file it as a `claim` block with `status: formalised` and a \
+             `formalisation:` line naming the file. Do not mark anything formalised that \
+             `lean_check` did not pass."
+        }
+        super::verify::Stage::Decompose => {
+            "You are not being asked to prove this again. The last attempt did not close it, so \
+             break it down instead.\n\n\
+             Split the statement into named sub-lemmas that would together give it, state each \
+             one in Lean, and prove the ones you can. Leave `sorry` in the ones you cannot — a \
+             `sorry` here is the point rather than a failure, because it says exactly where the \
+             argument is missing. Then write the combining step: the theorem that follows from \
+             the sub-lemmas, so the decomposition is checked even while its leaves are open.\n\n\
+             Write each unproved sub-lemma into the skeleton file above as a fenced `gap` block \
+             with `id`, `lemma`, `status` and `next` lines, so the statement graph carries it and \
+             the run can pick it up on its own. A sub-lemma with no `next` a role could act on \
+             today is a research request rather than a task — decompose further until each one \
+             has one.\n\n\
+             Call `lean_check` on the file whatever the outcome. A file that compiles with three \
+             `sorry` in it is a recorded decomposition; a file nobody checked is nothing."
+        }
+    };
+    let report = delegate(
+        subagents,
+        super::lean::LEAN_ROLE,
+        format!(
+            "{instruction}\n\nThis node was chosen by the statement graph rather than by \
+             preference, so do not substitute a different one.\n\n{}\n\nProblem:\n{}",
+            assignment.briefing(),
+            state.problem()
+        ),
+    )
+    .await;
+    // Beside the report rather than instead of it, on the argument the
+    // refutation arm makes: the verdicts say what the kernel established, and
+    // the report says what the prover believes the Lean statement means — which
+    // is the judgement no file records and the one place this arm can still be
+    // wrong.
+    let filed = super::lean::briefing(workspace);
+    let merged = merge_context(&[
+        ("What the kernel recorded", filed.as_str()),
+        ("What the prover reports", report.as_str()),
+    ]);
+    vec![Finding::new(Slot::Verification, merged)]
+}
+
 /// Checks the literature *after* the run believes it is done.
 ///
 /// Every other literature sweep in this runtime runs while the run is stuck, to

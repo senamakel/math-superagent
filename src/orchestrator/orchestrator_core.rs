@@ -6,6 +6,8 @@ mod backward;
 mod blueprint;
 mod board;
 mod board_tool;
+mod candidates;
+mod capture;
 mod caps;
 mod checkpoint;
 mod claims;
@@ -58,7 +60,10 @@ mod solutions;
 mod teams;
 mod text;
 mod threads;
+mod vcs;
+mod vcs_tool;
 mod vector;
+mod verify;
 mod weakened;
 mod worklock;
 mod workflow;
@@ -71,7 +76,7 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use tinyagents::harness::message::estimate_slice_tokens;
-use tinyagents::harness::middleware::ContextCompressionMiddleware;
+use tinyagents::harness::middleware::{ContextCompressionMiddleware, PromptCacheGuardMiddleware};
 use tinyagents::harness::model::{ChatModel, ModelRequest};
 use tinyagents::harness::summarization::{
     CompressionProvenance, SummarizationPolicy, Summarizer, SummaryRecord, estimate_tokens,
@@ -166,14 +171,14 @@ pub fn ledger_report(workspace: &Path) -> String {
         graph.is_circular(),
     );
     for (title, body) in [
-        ("research/BLUEPRINT.md", graph.render()),
-        ("research/ENTAILMENT.md", entailment.render()),
+        ("derived/BLUEPRINT.md", graph.render()),
+        ("derived/ENTAILMENT.md", entailment.render()),
         // The lemma index belongs here for the same reason those two do, and
         // for one more: it is the only ledger whose sources are `.lean` files
         // rather than notes, so a run whose container predates this module
         // leaves the file absent while the tree it derives from is on disk.
         // Rendering it here is how that workspace can still be read.
-        ("research/LEMMAS.md", lemmas::collect(workspace).render()),
+        (lemmas::LEMMAS_PATH, lemmas::collect(workspace).render()),
         ("briefing: statement graph", graph.briefing()),
         ("briefing: entailment", entailment.briefing()),
     ] {
@@ -184,7 +189,7 @@ pub fn ledger_report(workspace: &Path) -> String {
 }
 
 /// Specialists the goals agent may delegate to.
-const SPECIALISTS: [&str; 16] = [
+const SPECIALISTS: [&str; 17] = [
     "research",
     "tool_builder",
     "coder",
@@ -201,6 +206,9 @@ const SPECIALISTS: [&str; 16] = [
     "refuter",
     "librarian",
     "scholar",
+    // The role that reads the candidate branches back and keeps one. Without it
+    // on this bench, `spawn_candidates` starts work nobody can adopt.
+    "archivist",
 ];
 
 /// Agents the pattern agent may commission work from.
@@ -275,7 +283,7 @@ const REASONING_ROLES: [&str; 6] = [
 ];
 
 /// Agents the top-level orchestrator may delegate to directly.
-const DELEGATES: [&str; 18] = [
+const DELEGATES: [&str; 19] = [
     "research",
     "tool_builder",
     "coder",
@@ -294,6 +302,7 @@ const DELEGATES: [&str; 18] = [
     "refuter",
     "librarian",
     "scholar",
+    "archivist",
 ];
 
 const COMPRESSION_TRIGGER_TOKENS: u64 = 300_000;
@@ -316,6 +325,9 @@ const RESEARCH_PROMPT: &str = include_str!("../prompts/research.md");
 
 const TOOL_BUILDER_PROMPT: &str = include_str!("../prompts/tool_builder.md");
 const CODER_PROMPT: &str = include_str!("../prompts/coder.md");
+
+/// The role one candidate solution runs as, in its own checkout.
+const CANDIDATE_PROMPT: &str = include_str!("../prompts/candidate.md");
 const SAT_SOLVER_PROMPT: &str = include_str!("../prompts/sat_solver.md");
 const SMT_SOLVER_PROMPT: &str = include_str!("../prompts/smt_solver.md");
 const THEOREM_PROVER_PROMPT: &str = include_str!("../prompts/theorem_prover.md");
@@ -325,6 +337,9 @@ const LEAN_PROVER_PROMPT: &str = include_str!("../prompts/lean_prover.md");
 const REFLECTION_PROMPT: &str = include_str!("../prompts/reflection.md");
 
 const JUDGE_PROMPT: &str = include_str!("../prompts/judge.md");
+
+/// The role that decides which candidate solution the run keeps.
+const ARCHIVIST_PROMPT: &str = include_str!("../prompts/archivist.md");
 
 const PATTERN_PROMPT: &str = include_str!("../prompts/pattern_finder.md");
 

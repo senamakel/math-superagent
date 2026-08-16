@@ -1,7 +1,7 @@
 # Approaches — the lines of attack this run has considered
 
 One file per candidate, `<slug>.md`, each carrying a fenced `approach` block.
-`research/APPROACHES.md` beside this folder is derived from them and is not
+`derived/APPROACHES.md` beside this folder is derived from them and is not
 yours to edit.
 
 This folder exists from the first second of a run because the inventor is told

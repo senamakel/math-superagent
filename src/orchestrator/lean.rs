@@ -426,6 +426,74 @@ pub(super) fn verdict(workspace: &Path, file: &str) -> Option<Verdict> {
     Verdict::from_record(&value)
 }
 
+/// Every verdict filed for this workspace, weakest news first.
+///
+/// Read off disk rather than taken from the prover's reply, which is the
+/// argument `refute.rs` already makes about its own verdicts: a role's prose is
+/// a summary of its own work and the record is the work. It matters more here,
+/// because the ordinary way a formalisation turn ends is the run cap killing it
+/// — which destroys the report and leaves every `.lean` file and every verdict
+/// beside it.
+///
+/// Ordered so a reader skimming one line sees the check that did *not* pass.
+/// A verified proof needs no action; a file that compiles with three `sorry`
+/// still in it is the one somebody has to go back to.
+pub(super) fn collect(workspace: &Path) -> Vec<Verdict> {
+    let Ok(entries) = std::fs::read_dir(workspace.join(VERDICT_DIR)) else {
+        return Vec::new();
+    };
+    let mut paths: Vec<PathBuf> = entries.flatten().map(|entry| entry.path()).collect();
+    paths.sort();
+    let mut verdicts: Vec<Verdict> = paths
+        .iter()
+        .filter_map(|path| {
+            let text = std::fs::read_to_string(path).ok()?;
+            let value = serde_json::from_str::<serde_json::Value>(&text).ok()?;
+            Verdict::from_record(&value)
+        })
+        .collect();
+    verdicts.sort_by_key(Verdict::verified);
+    verdicts
+}
+
+/// One line per filed verdict, for a reader who is not the prover.
+///
+/// The objection is carried rather than a bare pass/fail, because the two say
+/// different things to whoever reads this next: "does not compile" is work for
+/// the same role again, and "rests on `key_estimate`, which nothing proved" is
+/// a new statement somebody has to go and prove.
+pub(super) fn briefing(workspace: &Path) -> String {
+    let mut out = String::new();
+    for verdict in collect(workspace) {
+        match verdict.objection() {
+            Some(objection) => {
+                let _ = writeln!(out, "- {objection}");
+            }
+            None => {
+                let _ = writeln!(
+                    out,
+                    "- `{}` — the kernel checked it, on Lean's three axioms alone",
+                    verdict.file
+                );
+            }
+        }
+    }
+    out
+}
+
+/// How many formalisations passed, out of how many were attempted.
+///
+/// Counted for the judge, which reads what is on disk rather than what an
+/// attempt reported. A failed check is deliberately in the denominator: a run
+/// that tried to formalise four lemmas and closed one has done something the
+/// count of claims cannot show, and a statistic that hid the three would make
+/// the honest run and the run that never tried look identical.
+pub(super) fn counts(workspace: &Path) -> (usize, usize) {
+    let verdicts = collect(workspace);
+    let passed = verdicts.iter().filter(|verdict| verdict.verified()).count();
+    (passed, verdicts.len())
+}
+
 /// Parses one `lean` invocation's output into a verdict.
 ///
 /// Split from the process handling so the parse is testable without Lean
@@ -475,7 +543,7 @@ fn parse(file: &str, exit_ok: bool, output: &str) -> Verdict {
 pub(super) struct LeanCheck {
     workspace: PathBuf,
     timeout: Duration,
-    /// The write path, held so a check can re-derive `research/LEMMAS.md`.
+    /// The write path, held so a check can re-derive `derived/LEMMAS.md`.
     ///
     /// Optional because [`check_file`] runs this same kernel path from the host
     /// binary, where there is no run and nothing to re-derive. Held rather than

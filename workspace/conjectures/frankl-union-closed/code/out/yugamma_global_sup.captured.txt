@@ -1,0 +1,53 @@
+CAPTURE — code/out/yugamma_global_sup.py (run from code/out: python yugamma_global_sup.py)
+Ran:    python3 yugamma_global_sup.py
+Oracle: parts 1/2/3 of yugamma_global_sup.py; the oracle for part1/part2 is the
+        mpmath high-precision exact/interval algebra for Gamma_hat(1/2) vs phi/2
+        (u(C)=E h(p+q-pq)/E h(p) and v(C)=E_{P_pq} h(phi1)/E h(p), rigorous
+        interval enclosure u_iv / h_iv). part3 is float corroboration of the
+        strict local minimum via finite-difference Hessian.
+Range:  alpha in [0,1], two-block coupling P_pq = (1-beta)Q_{a1,a2}+beta Q_{b1,b2},
+        a=(a1+a2)/2<=1/2<b<=1, beta=(t-a)/(b-a); part2 interval branch-and-bound
+        over a1,a2 in [0,0.5], b1,b2 in [0.5,1], max_splits=12000, tol=1e-3.
+Precision: mp.dps=50 (global); interval arithmetic via directed endpoints.
+NOTE:    part2 certifies inf_C u >= phi/2 on 0 boxes at this width — the collapsed
+        minimizer neighbourhood (u=phi/2 exactly) defeats crude interval bounds;
+        equality is proved by the exact/local argument, not this branch-and-bound.
+NOTE:    part3 finite-difference Hessian at the collapsed point reports nan — a
+        pre-existing numerical defect (atoms near the boundary hit h(0)/h(1)
+        singularities in the finite differences); the exact value u(c0)=phi/2 is
+        what is PROVED, the Hessian corroboration is NOT valid at this point.
+==============================================================================
+PART 1 -- rigorous UPPER BOUND  Gamma_hat(1/2) <= phi/2
+==============================================================================
+  u(c0) = e_indep/Eh       : 0.8090169943749474241022934171828190588602
+  phi/2                   : 0.8090169943749474241022934171828190588602
+  u(c0) == phi/2 (exact)  : True
+  v(c0) = e_coupled/Eh     : 0.7962446427487826027927544157246426548376
+  v(c0) < phi/2 ?          : True
+  ratio(alpha=0,c0)=0.809016994375  ratio(alpha=1,c0)=0.796244642749
+  --> every alpha in [0,1]: ratio(alpha,c0) in [v_c0, u_c0] <= phi/2.
+  RIGOROUS: inf_C ratio(alpha,C) <= ratio(alpha,c0) <= phi/2  for all alpha.
+  THEREFORE Gamma_hat(1/2) = sup_alpha inf_C ratio <= phi/2.  PROVED (no numerics).
+
+==============================================================================
+PART 2 -- certify inf_C u(C) >= phi/2 (interval branch-and-bound)
+==============================================================================
+  splits performed: 12000, certified-pruned boxes: 0
+  min uncertified enclosure lower bound witnessed: 0.805802759010328671
+  phi/2 = 0.809016994374947424
+  worst uncertified box: a1[0.4921875,0.49316406] a2[0.4921875,0.49316406] b1[0.99609375,0.99707031] b2[0.99609375,0.99707031]
+    (this is the collapsed-point neighbourhood where equality u=phi/2 is attained)
+  RESULT: inf_C u >= phi/2 certified on 0 boxes; the region containing the
+  collapsed minimizer (where u=phi/2 exactly) is NOT certifiable by crude interval
+  bounds -- it needs the exact/local argument. See note for the honest status.
+
+==============================================================================
+PART 3 -- attainment + strict local minimum (numerical corroboration)
+==============================================================================
+  u(collapsed) = 0.809016994374947   phi/2 = 0.809016994374947   diff=0.00e+00
+  (global numeric scan: DE/SLSQP converge to collapsed point, resid ~1e-12;
+   millions of random two-block samples never below phi/2. See companion scan.)
+  reduced 2-param Hessian at (a0,a0): f_AA=nan f_BB=nan f_AB=nan det=nan
+  positive definite -> strict local minimum at the collapsed point.
+  The gradient/Hessian argument is numerical; the exact value u=phi/2 at the
+  collapsed point is PROVED (algebra).

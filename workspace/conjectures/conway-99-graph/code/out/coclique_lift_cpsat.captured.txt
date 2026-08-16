@@ -1,0 +1,10 @@
+what ran: code/out/coclique_lift_cpsat.py (OR-Tools CP-SAT, exact integer)
+oracle function: CP-SAT feasibility; ring Z
+model: 2-(22,4,2) clean design; 7315 bools, 22 point rows, 231 pair rows, 1540 triple<=1 rows, symmetry break [0, 1, 2, 3]
+wall clock: 167.35s
+CP-SAT status: OPTIMAL (branches=156131, conflicts=596)
+blocks found: 77
+independent verify: deg14={14}, pairs2={2}(231 pairs), clean (max triple overlap)=1
+  -> 2-(22,4,2): True, clean: True
+CLEAN DESIGN FOUND -> code/out/coclique_lift_clean_design.txt
+Q2 EXISTENCE (clean): YES -- constructive certificate, verified by independent counting

@@ -12,7 +12,7 @@ cap; the file it wrote is not.
 Write a Markdown note beside an output when the output settles something, and
 put a fenced `claim` block in that note with `status: checked`. That is what a
 verified computation earns, and it is how a computed result reaches
-`research/CLAIMS.md` — which is otherwise a record of what the run has *read*
+`derived/CLAIMS.md` — which is otherwise a record of what the run has *read*
 rather than what it has established.
 
 An output that records a check against a known value must say so in words a

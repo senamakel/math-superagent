@@ -39,7 +39,7 @@ use crate::error::{Error, Result};
 /// Node identity still comes from the edge table: a node named here but
 /// unreachable renders detached, which is the renderer's way of showing
 /// exactly that mistake.
-const NODES: [(&str, &str); 20] = [
+const NODES: [(&str, &str); 21] = [
     ("start", "start"),
     (super::workflow::RESEARCH_NODE, "research"),
     (super::workflow::SEED_CONTEXT_NODE, "seed ctx"),
@@ -52,6 +52,7 @@ const NODES: [(&str, &str); 20] = [
     ("eval_patterns", "patterns"),
     ("eval_invention", "invention"),
     ("eval_refutation", "refute"),
+    ("eval_verification", "verify"),
     (super::workflow::LIBRARY_ARM, "library"),
     (super::workflow::GOALS_NODE, "goals"),
     (super::workflow::GOAL_APPLY, "cadence"),

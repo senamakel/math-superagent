@@ -228,5 +228,5 @@ fn the_write_path_recognises_an_approach() {
     assert!(is_approach("research/approaches/generating-function.md"));
     assert!(!is_approach("research/approaches/INDEX.md"));
     assert!(!is_approach("research/threads/passes.md"));
-    assert!(!is_approach("research/APPROACHES.md"));
+    assert!(!is_approach("derived/APPROACHES.md"));
 }

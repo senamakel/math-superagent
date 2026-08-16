@@ -44,7 +44,7 @@ use super::claims::{Claim, Ledger, Status};
 use super::text::truncate;
 
 /// The derived report, filed with the library it is computed from.
-pub(super) const CLOSURE_PATH: &str = "research/ENTAILMENT.md";
+pub(super) const CLOSURE_PATH: &str = "derived/ENTAILMENT.md";
 
 /// Rows one section lists.
 const MAX_ROWS: usize = 30;

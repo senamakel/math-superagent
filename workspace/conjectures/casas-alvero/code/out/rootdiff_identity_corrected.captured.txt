@@ -1,0 +1,37 @@
+-- A. Identity 1 over QQ: H_i(f) == e_{n-i}(x-beta_*) for n=4,5,6
+-- B. Identity 2 (resultant = product over roots) on concrete QQ
+-- C. Identities over F_p, n = p+1, p = 2, 3, 5 (witness x^{p+1}-x^p)
+-- D. Char-p break located via lib.casas_alvero
+   p=2: H_i == 0 for i in []
+   p=2: derivative i witnessed by roots: {1: [0], 2: [1]}
+   p=3: H_i == 0 for i in [2]
+   p=3: derivative i witnessed by roots: {1: [0], 2: [0, 1], 3: [1]}
+   p=5: H_i == 0 for i in [2, 3, 4]
+   p=5: derivative i witnessed by roots: {1: [0], 2: [0, 1], 3: [0, 1], 4: [0, 1], 5: [1]}
+
+ROOT-DIFFERENCE IDENTITY VERIFICATION (corrected)
+oracle: lib.casas_alvero.is_ca_hasse / is_pure_power (section D)
+range: n=4,5,6 QQ identities 1,2; n=p+1 F_p p=2,3,5 witness
+
+[PASS] n=4 all i=0..n: H_i(f) == e_{n-i} (corrected)
+[PASS] n=5 all i=0..n: H_i(f) == e_{n-i} (corrected)
+[PASS] n=6 all i=0..n: H_i(f) == e_{n-i} (corrected)
+[PASS] Identity 1 holds over QQ for n=4,5,6 (corrected test)
+[PASS] Identity 2 on QQ deg 4 (concrete QQ)
+[PASS] Identity 2 on QQ deg 4 (concrete QQ)
+[PASS] Identity 2 on QQ deg 5 (concrete QQ)
+[PASS] Identity 2 on QQ deg 6 (concrete QQ)
+[PASS] p=2: witness H_i == e_{n-i}(x,...,x,x-1) over F_p
+[PASS] p=2: Res_x(f,H_i) == H_i(0)^p * H_i(1) over F_p
+[PASS] p=3: witness H_i == e_{n-i}(x,...,x,x-1) over F_p
+[PASS] p=3: Res_x(f,H_i) == H_i(0)^p * H_i(1) over F_p
+[PASS] p=5: witness H_i == e_{n-i}(x,...,x,x-1) over F_p
+[PASS] p=5: Res_x(f,H_i) == H_i(0)^p * H_i(1) over F_p
+[PASS] p=2 witness is Hasse-CA and NOT pure power (oracle)  (is_ca_hasse=True, is_pure_power=False)
+[PASS] p=2: distinct roots 0,1 both survive (break located)
+[PASS] p=3 witness is Hasse-CA and NOT pure power (oracle)  (is_ca_hasse=True, is_pure_power=False)
+[PASS] p=3: distinct roots 0,1 both survive (break located)
+[PASS] p=5 witness is Hasse-CA and NOT pure power (oracle)  (is_ca_hasse=True, is_pure_power=False)
+[PASS] p=5: distinct roots 0,1 both survive (break located)
+
+ALL CHECKS PASSED (20 passed, 0 failed)

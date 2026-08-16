@@ -1,0 +1,42 @@
+ATTACK on claim yu-gamma-half-is-phi-over-2 (code/out/alpha0_inf_scan.py)
+What was run: direct-search inf of the alpha=0 coupling ratio g(P,0)/E h(p) at
+t=1/2 over the FULL 4-parameter two-atom class (a1,a2,b1,b2).
+Oracle/function: ratio() = iid-OR entropy ratio E_{P^2}h(p+q-pq)/E h(p) of the
+admissible marginal (direct definition, mpmath 50-digit reference evaluation).
+Range: a1,a2 in [0,0.5], b1,b2 in [0.5,1], a=(a1+a2)/2 <= 0.5 < b=(b1+b2)/2,
+beta=(t-a)/(b-a) in (0,1]. 400-start SLSQP + targeted grid + 50-digit mpmath.
+
+RESULT: inf = 0.8090169943749473 = phi/2 = (1+sqrt5)/4 exactly (mpmath
+50-digit 0.80901699437494755, diff 9.9e-17), achieved at the boundary
+a1=a2=(3-sqrt5)/2, b1=b2=1.
+
+VERDICT: CONFIRMS the alpha=0 part of yu-gamma-half-is-phi-over-2 by an
+independent direct-search route. My doubt -- that an admissible marginal in the
+full class could approach the unconstrained iid-OR barrier (3-sqrt5)/2=0.382,
+far below phi/2 -- is REFUTED: the feasibility constraint a=(a1+a2)/2 <= t=1/2
+< b=(b1+b2)/2 forces the marginal's ratio up to phi/2. Analytic check: at
+a=(3-sqrt5)/2, 2a-a^2=1-a so h(2a-a^2)=h(a); with b=1 the ratio is
+(1-beta)=(1-t)/(1-a)=(0.5)/(1-a)=phi/2 exactly; R(a)>phi/2 for a in (0,0.382)
+and (0.382,0.5) (R(0)=1, R(0.5)=0.811), so phi/2 is the min.
+
+Evidence class: this global inf over alpha=0, full class is a NUMERIC
+corroboration (SLSQP locations + 50-digit reference), not a theorem. The 50-digit
+value matching phi/2 to 1e-16 at the exact (3-sqrt5)/2,1,1 boundary, plus the
+analytic R(a)>=phi/2 argument, make it a strong check. Combined with the
+existing numerical result that alpha>0 gives smaller infs, this corroborates
+sup_alpha Gamma_hat(1/2) = phi/2. No UC claim.
+
+phi/2 = 0.8090169943749475  (3-sqrt5)/2 = 0.3819660112501051
+
+best ratio found (float SLSQP, two-atom alpha=0 t=1/2): 0.8090169943749473
+best_x (a1,a2,b1,b2): [0.38196604 0.38196603 1.         1.        ]
+vs phi/2 = 0.8090169943749475   gap = 1.1102230246251565e-16
+
+mpmath 50-digit ratio at best_x = 0.80901699437494755001664276575001456525617447911883
+difference from phi/2 = 9.875377333015466608789258805333758436160374484253e-17
+
+Targeted scan for low ratios (marginals with b weight large, h(b)~0):
+lowest ratio on targeted grid: 0.8090169945742187 at (0.382, 0.382, 1.0, 1.0)
+mpmath 50-digit: 0.80901699457421851043385233215798678683993909993779
+
+Barrier check reminder: unconstrained iid-OR min = 0.3819660112501051  (< phi/2 0.8090169943749475 )

@@ -12,6 +12,7 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 | [[g-encode]] | no srg(99,14,1,2) exists | supplies the second equivalence: D exists iff the CP-SAT/SAT instance phi(99) is satisfiable | broken | 0 |
 | [[g-reduce]] | no srg(99,14,1,2) exists | supplies the first equivalence in the chain: srg(99,14,1,2) exists iff its vertex-derived design D exists | broken | 0 |
 | [[g-unsat]] | no srg(99,14,1,2) exists | closes the chain: phi(99) UNSAT therefore no srg exists | broken | 0 |
+| [[n3-dichotomy]] | no srg(99,14,1,2) exists | Let Γ be a putative srg(99,14,1,2) and n3(Γ) its count of disjoint-triangle pairs joined by exactly 2 edges. n3(Γ) ∈ ℤ≥0, so n3 = 0 or n3 ≥ 1. G-n3-zero… | live | 1 |
 
 ## The open gaps — each one is a task
 
@@ -26,6 +27,15 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
 - [[derived-design-at-a-vertex]] `G-unsat` — The vertex-derived design at (99,14,1,2) does not exist: there is no partial Steiner triple system on 84 points with 140 blocks and replication 5, attached by 84 cross lines to the 7 matched edges of a 7K2, whose collinearity graph has mu=2. Equivalently phi(99) is unsatisfiable.
   - next: sat_solver runs phi(99) with a stated search space and symmetry reduction (fix v0 and the 7K2), recording the space, worker count, and the wall-clock at which it is abandoned if it does not terminate — that boundary is itself a reportable result. In parallel, inventor/theorem_prover seeks a counting obstruction on the 84-point outer design specific to (84,140,5); any candidate must fail on the rook's graph and BvLS before effort is spent.
   - _no thread — nothing is attacking this_
+- [[n3-dichotomy]] `G-n3-positive` — No srg(99,14,1,2) has n3 ≥ 1. Equivalently: the n3 seed — two disjoint triangles T1 = {a,b,c}, T2 = {d,e,f} joined by exactly 2 edges (cross edges a–d, b–e; the other seven cross pairs non-adjacent) — admits no completion to a graph on 99 vertices that is locally 7K2 with λ = 1 and μ = 2. Since n3-99-forced-at-least-3 sharpens this to n3 ∈ {3, 6, 9, …}, it suffices to rule out any graph containing the seed.
+  - next: grow the *exact* forced closure of the 6-vertex n3 seed by ADDING witness vertices — for each edge, its unique triangle third vertex (λ = 1); for each non-adjacent pair, its two common neighbours (μ = 2) — tracking that the total never exceeds 99 vertices, no vertex exceeds degree 14, and no point lies on more than 7 lines. This is the step the radius-1 result did NOT take: n3-seed-locally-consistent-radius1 uses the relaxed upper-bound criterion (deficits satisfiable by the other ~91 vertices) and is therefore NOT an obstruction. tool_builder enumerates one more shell completely (report the…
+  - _no thread — nothing is attacking this_
+
+## Gaps already discharged
+
+Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
+
+- [[n3-dichotomy]] `G-n3-zero` — No srg(99,14,1,2) has n3 = 0, where n3 = 0 is Makhnev's condition (*) — no pair of disjoint triangles is joined by exactly 2 edges. Under (*), Makhnev's closure of a triangle forces a subobject Λ₀ = srg(33,12,1,6), which is parameter-infeasible. (closed by makhnev1988-condstar-theorems (sourced, primary Russian full text) with the decisive infeasibility step re-derived as makhnev99-shorter-proof-integrality (checked: the g-numerator 2k+(v−1)(λ−μ) = −136 is not divisible by √Δ = 7, so srg(33,12,1,6) has no integral eigenvalue multiplicity). Admissibility gate passed on both controls in makhnev-condstar-gate-passed (rook(3) and bvls both have n3 = 0 and μ = 2 ≤ 3).)
 
 ## Reductions that broke, and why
 

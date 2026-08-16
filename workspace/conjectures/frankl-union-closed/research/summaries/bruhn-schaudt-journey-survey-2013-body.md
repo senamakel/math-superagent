@@ -75,7 +75,12 @@ hypotheses: A counterexample, m = min universe size over counterexamples.
 holds-here: true.
 status: asserted-by-source (survey Lemma 18 / Corollary 19; independently
   Roberts–Simpson primary source in this library).
-bearing: minimal counterexample has |A| ≥ 4q−1 ≥ 47; |F| ≤ 50 settled.
+bearing: minimal counterexample has |A| >= 4q-1. With the survey's m<=12 this
+  was >= 47; with the later Zivkovic-Vuckovic m>=13 (2017 computer-assisted)
+  and Hu's Theorem 1 the value is >= 4*13-1 = 51 (claim hu-theorem1-4m-minus-1,
+  research/summaries/hu-union-closed-2017.md). Superseded numerical value, not a
+  contradiction: the 47 used the older m<=12, the 51 uses m>=13. |F| <= 50
+  settled either way.
 anchor: research/sources/bruhn-schaudt-journey-survey-2013-body.full.md, §5.1
 ```
 

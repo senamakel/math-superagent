@@ -142,7 +142,7 @@ anchor: research/sources/grafvonbothmer2007_infinitely_many.full.md,
   research/sources/castryck2012_degree12_html.full.md,
   research/sources/massri2018_degree20.full.md,
   research/sources/ghosh2024_finiteness_full.full.md,
-  research/sources/polstra2017_convex-hulls-casas-alvero.full.md,
+  research/sources/polstra2012_convex-hulls-casas-alvero.full.md,
   research/sources/yakubovich2025_validity-casas-alvero.full.md,
   research/sources/chellali2012_degree-5p-hal.full.md
 falsifies: A held source contradicting any specific class; note Massri, Ghosh
@@ -308,8 +308,167 @@ status: asserted-by-source (Polstra: refereed undergrad journal; Yakubovich:
 bearing: Supplies the real-rooted settled class the library was missing.
   Convex-hull statement is a geometric constraint on a minimal counterexample,
   complementing Laterveer-Ounaïes' Gauss-Lucas hull result.
-anchor: research/sources/polstra2017_convex-hulls-casas-alvero.full.md,
+anchor: research/summaries/polstra2012_convex-hulls-casas-alvero.md,
+  research/sources/polstra2012_convex-hulls-casas-alvero.full.md (full text held,
+  Thm 3.1 + Cor 3.5 verified in source),
   research/sources/yakubovich2025_validity-casas-alvero.full.md
 falsifies: a real-rooted counterexample, or a counterexample with all roots on
   its convex hull.
 ```
+
+## A sixth claimed-proof family (Dobrowolski 2017)
+
+```claim
+id: dobrowolski-2017-withdrawn
+statement: Dobrowolski, "Casas-Alvero Conjecture is true" (arXiv:1705.01704,
+  4 May 2017) is a claimed complete proof that was WITHDRAWN by the author on
+  7 May 2017 (v2): the arXiv comment reads "Jacob Tsimerman found an
+  irreparable error in the proof." So it joins Battiston 2015 (withdrawn,
+  Schicho found the error) as a claimed proof withdrawn with a named error.
+hypotheses: none — historical fact about the literature
+holds-here: true
+status: asserted-by-source (the arXiv abs page itself, held)
+bearing: Reinforces the pattern in GOAL.md: every claimed complete proof of CA
+  is either withdrawn with a named error or remains an unverified preprint
+  (Ghosh 2025/26). None stands. Confirms the working assumption that CA is open.
+anchor: research/sources/dobrowolski2017_casas-alvero-true.full.md (withdrawal
+  comment); research/summaries/dobrowolski2017_casas-alvero-true.md
+falsifies: a source showing the Dobrowolski proof was rehabilitated/validated
+  (none in any held source).
+```
+
+## Polstra convex-hull theorem — full text now held
+
+```claim
+id: polstra-convex-hull-theorem
+statement: (Polstra 2012, RHUMJ 13(1) art.2, Thm 3.1) If a polynomial f over C
+  shares a root with each of its first n−1 derivatives, then each root of f is
+  a vertex of its convex hull C_f IFF f has a single root of multiplicity n.
+  Contrapositive (usable form): a counterexample to CA over C must have a root
+  that is NOT a vertex of C_f. Proof: the nested hulls
+  C_{f^(n-1)} ⊆ ... ⊆ C_{f'} ⊆ C_f (Gauss–Lucas); the (n−1)-st derivative has a
+  single root z0 which f shares; since z0 ∈ C_f and is then a vertex (Prop 2.7),
+  and a vertex of C_f is a root of f (Prop 2.8), z0 is forced to be a root of
+  every derivative, so f has z0 as its only root of multiplicity n. Cor 3.5:
+  if the roots lie on the boundary of a strictly convex set, f has a single
+  root of multiplicity n.
+hypotheses: char 0 (analytic proof over C via Gauss–Lucas); degree n; f shares
+  a root with each of its first n−1 derivatives; every root a vertex of C_f.
+holds-here: yes — this is the load-bearing polstra-convex-hull collapse step of
+  the adopted root-difference-coloring approach ("evenly a counterexample has a
+  non-vertex root"). No char-p content; over C only.
+status: asserted-by-source (peer-reviewed undergrad journal); full proof read in
+  the now-held full text at
+  research/sources/polstra2012_convex-hulls-casas-alvero.full.md (lines
+  ~230-260). Consistent with (and weaker than) the independently-held
+  Castryck 2012 Prop 12 / Laterveer–Ounaïes Gauss–Lucas hull result, so no
+  single point of failure depends on Polstra alone.
+bearing: Supplies the geometric collapse step the adopted approach rests on,
+  now backed by a genuinely held primary source (previously only a summary
+  claiming "full text held" while the file was absent). The ≥1 non-vertex root
+  statement is the contrapositive used in the approach.
+anchor: research/sources/polstra2012_convex-hulls-casas-alvero.full.md
+  (Thm 3.1 ~line 230, proof lines 232-258; Cor 3.5 ~line 290)
+falsifies: a counterexample over C whose roots are all vertices of C_f yet is
+  not a pure power — impossible by the theorem, which is why this is the
+  collapse step; or a real-rooted counterexample (Thm 4.3).
+```
+
+## Cross-source discrepancy on the smallest open degree (2020 survey)
+
+A 2020 primary survey — Cima, Gasull, Mañosas, "Around some extensions of the
+Casas-Alvero conjecture for non-polynomial functions", Extracta Math. 35(2)
+(2020) 221–228, doi:10.17398/2605-5686.35.2.221 (held at
+`research/sources/cima_gasull_manosas_2020_extensions-casas-alvero.full.md`)
+— states in its introduction: **"The first cases left open are those where
+n = 24, 28 or 30."** It **skips 20**, directly contradicting the run's
+`s smallest-open-degree = 20`.
+
+**Resolution — the survey is in error; 20 stands as smallest open.**
+- 20 = 4·5. The 4p^e theorem (Draisma–de Jong) **excludes p ∈ {3,5,7}**, so
+  p = 5 is excluded: **20 is NOT covered by 4p^e**.
+- 20 is not p^k, 2p^k, 3p^k, or 5p^e (no prime-power base divides 20 fitting
+  the theorem), nor of form n·p^ℓ with a known good p for a smaller base.
+- The same survey's own cited references settle 12 (Castryck et al.), not 20.
+- The run holds Massri 2018, a *partial* degree-20 result (no counterexample
+  with three recycled roots) — vacuous if 20 were settled.
+- Schaub–Spivakovsky 2024 (held) explicitly: "the smallest degree n for which
+  CA_{n,0} is not known is n = 20".
+
+The 2020 survey's "24, 28, 30" is a passing status remark and likely an
+oversight (its focus is non-polynomial extensions, not the degree count). This
+does not weaken `smallest-open-degree = 20`; it is one more cross-check that
+survives. Recorded as the contradiction-type finding of the librarian cycle.
+
+The same survey reproduces a **second char-p counterexample family**:
+over F_5, P(x) = x²(x²+1) has roots {0,0,2,3} and derivatives
+P′ = 2x(2x²+1), P″ = 2(x²+1), P‴ = 4x each sharing a root with P, and P is not
+a pure power. This is another primary citation (beyond x^{p+1}−x^p) for
+**CA false in char p** — a further negative control the oracle already handles.
+
+## Unobtainable primary: Díaz-Toca & González-Vega (Maple verification origin)
+
+The run's verification bound ("n ≤ 7 by Gröbner/Maple, Díaz-Toca &
+González-Vega 2006; n ≤ 8 by personal comm.") traces to a primary source the
+library does **not** hold and cannot: G. Díaz-Toca & L. González-Vega, "On
+analyzing a conjecture about univariate polynomials and their roots by using
+Maple", Maple Conference 2006 (Waterloo), pp. 81–98, Maplesoft (2006),
+ISBN 1-897310-13-7; and the related 2005 note in *Algorithmic Algebra and
+Logic* (A3L 2005), pp. 83–90. Both are non-refereed conference proceedings
+with **no open full text** (checked: MaRDI portal, zbMATH DE 5117579, RISC
+Gröbner bibliography, researchr/dblp — all metadata-only). **Do not retry the
+fetch.**
+
+The content is not lost: its result is quoted identically by every held
+source that cites it — "in 2006, proved by Maple that CA holds for n ≤ 7,
+then n ≤ 8" (Graf-von-Bothmer 2007; Castryck 2012; Cima–Gasull–Mañosas 2020).
+This is the same documented-dead-end pattern as the paywalled original
+Casas-Alvero (2001) paper: the statement and status are fully covered by the
+held secondary sources, so nothing about the conjecture's mathematics is
+missing.
+```
+
+## Two further claimed-proof data points (Zenodo, 2025) — recorded, not evidence
+
+```claim
+id: okolo-2025-zenodo-crank
+statement: Hanyelichukwu Paul Okolo, "A Resolution of the Casas-Alvero
+  Conjecture and the Principle of Simplicity at Maximal Stability", Zenodo
+  16651270, preprint 2025-07-31, is a non-rigorous speculative preprint
+  invoking new "forces" (Blackness, Retraction, Alignment Dissonance) and an
+  "Organized Complexity" framework claiming a universal law with consequences
+  for particle physics and cosmology. It is a data point in the claimed-proof
+  family, NOT evidence, and not worth downloading.
+hypotheses: none — classification of the claimed-proof literature
+holds-here: true
+status: asserted-by-source (Zenodo record metadata, cited once in the run's
+  frontier; assessed from abstract-level information only, full text not
+  fetched)
+bearing: Documents that the claimed-proof family keeps growing in 2025; no
+  degree is settled by it, and it does not change the open status of CA.
+anchor: https://doi.org/10.5281/zenodo.16651270 (frontier lead, not held)
+falsifies: a source showing this preprint was peer-reviewed and its CA
+  resolution validated.
+```
+
+```claim
+id: leggett-2025-zenodo-dyadic
+statement: Keenan Leggett, "A Proof of the Casas-Alvero Conjecture within a
+  Dyadic Dynamic System", Zenodo 17363753, preprint 2025-10-16, claims a proof
+  of CA inside a dyadic dynamical-system framework. Same status as the other
+  2025 Zenodo/arXiv claimed proofs: a preprint with no peer review, no
+  independent validation, no published gap finding; every held 2024-2025
+  refereed source still treats CA as open.
+hypotheses: none — classification of the claimed-proof literature
+holds-here: true
+status: asserted-by-source (Zenodo record metadata via search; full text not
+  fetched, not worth fetching)
+bearing: Documents the continued growth of the claimed-proof family into
+  2025-2026; reinforces that "a proof has been claimed" (ca-status-2025) and
+  "no proof stands" are both true simultaneously.
+anchor: https://doi.org/10.5281/zenodo.17363753 (frontier lead, not held)
+falsifies: a source showing this preprint was peer-reviewed and its CA
+  resolution validated.
+```
+
+

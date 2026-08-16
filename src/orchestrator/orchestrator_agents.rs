@@ -94,6 +94,15 @@ fn build_planner_harness<const N: usize>(
         for tool in board_tool::BoardTool::all(parts.documents, &posting_as(subagents)) {
             register_resilient(&mut harness, tool);
         }
+        // The role that decides what the next run is spent on is the one placed
+        // to decide it is worth spending on five programs at once instead of
+        // one. Reading them back is `VCS_READING_TOOLS`, granted below.
+        for tool in candidates::SpawnCandidates::all(parts.documents.root(), subagents) {
+            register_resilient(&mut harness, tool);
+        }
+        for tool in vcs_tool::VcsTool::reading(parts.documents.root()) {
+            register_resilient(&mut harness, tool);
+        }
     }
     // Both planners keep the task list, unlike the scratch and the board above.
     // What to do next is the question both of them are answering — the
@@ -201,7 +210,7 @@ fn register_code_writing_agents(
                 &mut harness,
                 Arc::new(
                     lean::LeanCheck::new(parts.workspace.to_path_buf(), parts.budget.tool_timeout)
-                        // The check re-derives `research/LEMMAS.md`, so it needs
+                        // The check re-derives `derived/LEMMAS.md`, so it needs
                         // the write path. Given here rather than looked up
                         // inside the tool, so a derived ledger still goes
                         // through the one writer that is allowed to produce one.
@@ -213,6 +222,51 @@ fn register_code_writing_agents(
         register_memory(&mut harness, parts.vector_store);
         register_scratch(&mut harness, parts.vector_store, true);
         subagents.register(name, Arc::new(harness), prompt)?;
+    }
+    Ok(())
+}
+
+/// Registers one role per candidate slot, each rooted at its own checkout.
+///
+/// The whole of the isolation is the root handed to `WorkspaceDocuments`. Every
+/// file tool, every layout rule and every ledger derivation resolves against it,
+/// so a candidate writing `code/solution.py` writes its *own*, and five of them
+/// doing it at once do not collide. Nothing about the tools changes; only where
+/// they point.
+///
+/// Memory is deliberately not re-rooted. It lives outside the workspace
+/// entirely, so candidates share what they establish while sharing none of their
+/// files — which is the split that makes running them at once worth doing.
+///
+/// The checkout does not exist yet at registration and does not need to:
+/// `spawn_candidates` creates it before it spawns the role that uses it.
+///
+/// # Errors
+///
+/// Returns an error when a slot's documents cannot be built or its role is
+/// already registered.
+fn register_candidate_agents(
+    subagents: &AsyncSubagentManager,
+    parts: &CodeWriters<'_>,
+    prompt: &str,
+) -> Result<()> {
+    for id in candidates::slots() {
+        let checkout = candidates::checkout_of(parts.workspace, &id);
+        let documents = WorkspaceDocuments::new(checkout.clone())?;
+        let role = candidates::role_for(&id);
+        let mut harness =
+            build_tool_builder_harness(parts.model, parts.budget, parts.tracer, &checkout, &documents, &role);
+        // Its own checkpointer, committing its own work tree onto its own
+        // branch. Sharing the trunk's would commit a candidate's files to
+        // `work`, which is the one thing the branch exists to prevent.
+        harness.push_middleware(Arc::new(checkpoint::WorkspaceCheckpoint::in_worktree(
+            parts.workspace.to_path_buf(),
+            checkout,
+            None,
+        )) as Arc<dyn tinyagents::harness::middleware::Middleware<()>>);
+        register_memory(&mut harness, parts.vector_store);
+        register_scratch(&mut harness, parts.vector_store, true);
+        subagents.register(&role, Arc::new(harness), prompt.to_string())?;
     }
     Ok(())
 }
@@ -302,6 +356,7 @@ impl SupportAgents<'_> {
 /// Role prompts for the four agents the solution loop adds.
 struct SupportPrompts {
     reflection: String,
+    archivist: String,
     judge: String,
     pattern: String,
     inventor: String,
@@ -605,6 +660,50 @@ fn register_refuter(
 /// Each gets only the tools its role needs: reflection has no research or
 /// execution tools at all, so it cannot drift into solving the problem it is
 /// supposed to be judging.
+/// Assembles the archivist: the one role that may make a candidate's work the
+/// run's work.
+///
+/// What it is *not* given is the shape of the role. No `execute_command`, no
+/// `write_tool_file`, no `apply_patch` — everything it can do to the trunk goes
+/// through `adopt_attempt`, which copies named files out of a branch and
+/// commits them with the reason. A role that could also write files directly
+/// could produce the same trunk state with no branch behind it and no reason
+/// recorded, and the attempts ledger would describe a decision that did not
+/// happen that way.
+///
+/// It gets memory, unlike the judge, because deciding between five candidates
+/// is exactly the judgement that benefits from what earlier candidates on this
+/// problem turned out to be worth.
+fn register_archivist(
+    subagents: &AsyncSubagentManager,
+    parts: &SupportAgents<'_>,
+    prompt: &str,
+) -> Result<()> {
+    let mut archivist = specialist_harness(
+        parts.model_for("archivist"),
+        parts.budget,
+        "archivist",
+        parts.tracer,
+    );
+    for tool in parts.documents.tools_as("archivist") {
+        register_resilient(&mut archivist, tool);
+    }
+    for tool in vcs_tool::VcsTool::all(&parts.workspace) {
+        register_resilient(&mut archivist, tool);
+    }
+    // It records what it decided. A decision nobody wrote down is one the next
+    // attempt re-litigates, which is the whole cost the attempts ledger exists
+    // to stop.
+    for tool in ledger::LedgerTool::writers(parts.documents, "archivist") {
+        register_resilient(&mut archivist, tool);
+    }
+    for tool in board_tool::BoardTool::all(parts.documents, parts.school) {
+        register_resilient(&mut archivist, tool);
+    }
+    register_memory(&mut archivist, &parts.vector_store);
+    subagents.register("archivist", Arc::new(archivist), prompt)
+}
+
 fn register_support_agents(
     subagents: &AsyncSubagentManager,
     parts: &SupportAgents<'_>,
@@ -633,7 +732,16 @@ fn register_support_agents(
     for tool in ledger::LedgerTool::writers(parts.documents, "reflection") {
         register_resilient(&mut reflection, tool);
     }
+    // Reading the candidates, never keeping one. The role that has just seen
+    // what an attempt produced is placed to see what the candidates beside it
+    // produced too, and a lesson drawn from five diffs is worth more than one
+    // drawn from the attempt alone.
+    for tool in vcs_tool::VcsTool::reading(&parts.workspace) {
+        register_resilient(&mut reflection, tool);
+    }
     subagents.register("reflection", Arc::new(reflection), prompts.reflection)?;
+
+    register_archivist(subagents, parts, &prompts.archivist)?;
 
     // The judge is as tool-poor as reflection, and for the same reason: a
     // judge that can start solving stops judging. It reads the workspace only

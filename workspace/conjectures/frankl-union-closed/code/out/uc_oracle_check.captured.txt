@@ -1,0 +1,16 @@
+[PASS] guard 2^[0]  (|F|=1, uc=True, all half=True, abundant=[], strict_abundant=False)
+[PASS] guard 2^[1]  (|F|=2, uc=True, all half=True, abundant=[0], strict_abundant=False)
+[PASS] guard 2^[2]  (|F|=4, uc=True, all half=True, abundant=[0, 1], strict_abundant=False)
+[PASS] guard 2^[3]  (|F|=8, uc=True, all half=True, abundant=[0, 1, 2], strict_abundant=False)
+[PASS] guard 2^[4]  (|F|=16, uc=True, all half=True, abundant=[0, 1, 2, 3], strict_abundant=False)
+[PASS] family {empty,{1}} reports {1} abundant  (uc=True, abundant=[0])
+[PASS] negative control {{1},{2},{3}} rejected (not union-closed, no abundant elt)  (uc=False, abundant=[])
+[PASS] exhaustive n=1  (3 union-closed families (excl. empty collection, incl. {∅}), counterexample=none)
+[PASS] exhaustive n=2  (13 union-closed families (excl. empty collection, incl. {∅}), counterexample=none)
+[PASS] exhaustive n=3  (121 union-closed families (excl. empty collection, incl. {∅}), counterexample=none)
+[PASS] exhaustive n=4  (4959 union-closed families (excl. empty collection, incl. {∅}), counterexample=none)
+  union-closed family counts: {1: 3, 2: 13, 3: 121, 4: 4959}
+[PASS] closure {{1},{1,2}} -> {{1},{1,2}}  (got sorted=[1, 3])
+[PASS] closure {{1},{2}} -> {{1},{2},{1,2}}  (got sorted=[1, 2, 3])
+
+ALL ORACLE CHECKS PASSED

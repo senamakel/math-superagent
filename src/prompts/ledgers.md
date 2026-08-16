@@ -4,7 +4,7 @@ This workspace keeps its state in **ledgers** — the task list, the sub-goals,
 the claims, the approaches, the threads, and any axis this run has added for
 itself. `list_ledgers` names every one and says what it holds.
 
-**The rendered files in your context are shortened.** `research/APPROACHES.md`
+**The rendered files in your context are shortened.** `derived/APPROACHES.md`
 and the rest carry a bounded row per entry, because everything in this prompt is
 re-sent on every call you make. The whole of a refutation, the full statement of
 a claim, the complete detail of a task — those are on disk, and `read_ledger`

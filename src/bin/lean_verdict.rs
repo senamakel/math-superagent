@@ -17,7 +17,7 @@
 //! kernel check is that there is exactly one.
 //!
 //! **This binary never writes a verdict, and that is a control rather than a
-//! default.** `code/out/lean/` is what `research/CLAIMS.md` consults before it
+//! default.** `code/out/lean/` is what `derived/CLAIMS.md` consults before it
 //! will record a claim as formalised, and the only thing that may write there is
 //! the `lean_check` tool.
 //!

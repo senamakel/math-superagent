@@ -1,0 +1,6 @@
+what ran: code/out/coclique_lift.py  (scipy.optimize.milp, HiGHS)
+oracle function: exact 0/1 integer program; ring Z
+model: 2-(22,4,2) design, b=77, r=14 -- 7315 binary vars, 253 equality constraints + 1540 triple<=1 constraints (Q2) + symmetry break fixing block {0,1,2,3}
+wall clock: 481.79s  status: Time limit reached. (HiGHS Status 13: model_status is Time limit reached; primal_status is None)
+no feasible point found.  status: Time limit reached. (HiGHS Status 13: model_status is Time limit reached; primal_status is None)
+EXISTENCE SETTLED: INCONCLUSIVE (timeout/node bound)

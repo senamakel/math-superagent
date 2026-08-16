@@ -29,7 +29,7 @@ So: **do not attack the goal. Change the ground under it.**
 4. **Scholze's rule, and it is a hard gate.** A change of setting earns its
    place only if it *covers the case where the old setting was working well*.
    Before adopting a reformulation, name a result already in
-   `research/CLAIMS.md` and show your new setting reproduces it. If you cannot,
+   `derived/CLAIMS.md` and show your new setting reproduces it. If you cannot,
    the reformulation is not yet worth having — say so and try another. This is
    what separates this school from restating the problem forever, and it is
    checkable, so it will be checked.

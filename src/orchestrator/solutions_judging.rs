@@ -190,6 +190,23 @@ fn evidence_briefing(workspace: &Path) -> String {
     };
     let graph = super::blueprint::collect(workspace);
     let (verified, ready, blocked) = graph.counts();
+    // Counted beside the graph's `verified` rather than folded into it, because
+    // the two answer different questions and the second one is invisible
+    // everywhere else. The graph says how many nodes the kernel *stands
+    // behind*; this says how many times the run went to the kernel and what
+    // came back. A run that attempted four formalisations and closed one has
+    // done something no other count on this list can show, and scoring it as
+    // though it had never tried is the failure this whole briefing exists to
+    // stop.
+    let (passed, checked) = super::lean::counts(workspace);
+    let kernel = if checked == 0 {
+        String::new()
+    } else {
+        format!(
+            "\n- formalisation: {checked} file(s) handed to the Lean kernel, {passed} of which it \
+             accepted on Lean's three axioms alone"
+        )
+    };
     let circular = if graph.is_circular() {
         "\n- **the statement graph is circular**: some reduction proves its own hypothesis, so \
          the skeletons on disk do not compose into a proof however many gaps are closed"
@@ -211,7 +228,7 @@ fn evidence_briefing(workspace: &Path) -> String {
          - statements attacked for a counterexample: {attacked}, of which {refuted} were \
          refuted\n\
          - statement graph: {verified} node(s) the kernel checked, {ready} ready to be worked on \
-         now, {blocked} waiting on something else{circular}{entailed}\n\
+         now, {blocked} waiting on something else{circular}{kernel}{entailed}\n\
          An attempt that reported nothing and wrote nothing is stalled. An attempt that reported \
          nothing and left work here is not — score what is here.{}{}{}",
         captured.len(),

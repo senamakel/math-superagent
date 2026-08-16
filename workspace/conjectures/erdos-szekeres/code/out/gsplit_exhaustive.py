@@ -91,10 +91,14 @@ def main():
         for (L, R) in valid[:5]:
             print(f"      L={L}  R={R}")
 
-    print("\nWhat an empty result rules out: for THIS es_construct ES construction "
-          "at n=5,6,7, no line splits it into two (n-1)-avoiding halves, so the "
-          "G-split-consistent claim fails exactly on this template. It does NOT "
-          "rule out other extremal sets or the general G-split lemma.")
+    print("\nFinding (THIS es_construct template, THESE n only): valid line-splits "
+          "into two (n-1)-avoiding halves decay 6,4,2,0 as n goes 4,5,6,7 — "
+          "splits exist at n=5 and n=6 and vanish exactly at n=7. So the "
+          "induction f(n) <= 2*f(n-1) via a splitting line is CONSISTENT with "
+          "this template at n=5,6 and FAILS on it at n=7; a proof by that route "
+          "cannot go through unmodified past n=6. It does NOT rule out other "
+          "extremal sets or the general G-split lemma. (n=7 zero is provisional "
+          "pending the enumeration-completeness recheck of steer 7.)")
 
 
 if __name__ == "__main__":

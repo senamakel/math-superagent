@@ -46,7 +46,7 @@ use super::text::truncate;
 pub(super) const LEAN_DIR: &str = "code/lean";
 
 /// The derived index, filed with the library it describes.
-pub(super) const LEMMAS_PATH: &str = "research/LEMMAS.md";
+pub(super) const LEMMAS_PATH: &str = "derived/LEMMAS.md";
 
 /// Declarations one table lists.
 ///

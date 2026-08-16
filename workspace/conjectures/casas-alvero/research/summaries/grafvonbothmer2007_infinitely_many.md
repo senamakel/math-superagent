@@ -1,8 +1,8 @@
 # Graf von Bothmer, Labs, Schicho, van de Woestijne, *The CA conjecture for infinitely many degrees* (J. Algebra 316 (2007) 224–230)
 
-Full text: [[grafvonbothmer2007_infinitely_many.full]]
+Full text: [[grafvonbothmer2007_infinitely_many_html]] (arXiv HTML v2, held in full since the 2026 librarian cycle; the older [[grafvonbothmer2007_infinitely_many]] file is the landing page only and is superseded).
 
-The foundational breakthrough: proves CA for degrees `p^k` and `2p^k` (char 0), and exhibits the char-p counterexamples that are the negative control for every argument in this run. (NOTE: the held `.full.md` is only the arXiv landing page with the abstract; the paper body is not physically held. The statements below are from the abstract and from what the other held sources — Castryck §1, Draisma–de Jong §7, Schaub–Spivakovsky — quote and re-derive from it.)
+The foundational breakthrough: proves CA for degrees `p^k` and `2p^k` (char 0), and exhibits the char-p counterexamples that are the negative control for every argument in this run. The full text is now held (Section 2 = lift mechanism via Prop 2.2–2.6; Section 3 = Prop 3.1, the char-p witness x^{p+1}−x^p; Section 4 = computational aspects; Remark 3.2 gives the explicit huge bad prime 7390044713023799 for degree 6).
 
 ## The lift theorem and its consequences
 

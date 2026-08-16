@@ -388,7 +388,7 @@ fn a_pipe_in_a_field_does_not_break_the_table() -> std::io::Result<()> {
 #[test]
 fn only_skeleton_files_drive_the_table() {
     assert!(is_backward("research/backward/event-rate.md"));
-    assert!(!is_backward("research/BACKWARD.md"));
+    assert!(!is_backward("derived/BACKWARD.md"));
     assert!(!is_backward("research/backward/INDEX.md"));
     assert!(!is_backward("research/backward/notes.txt"));
     assert!(!is_backward("research/backwards/event-rate.md"));

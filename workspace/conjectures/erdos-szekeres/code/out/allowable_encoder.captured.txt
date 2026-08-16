@@ -1,0 +1,83 @@
+======================================================================
+allowable_encoder.py — exact circular-sequence encoder + depth/block +
+convexity-readable test on the verified es_construct ES construction
+All arithmetic exact (fractions.Fraction); directions sorted by cross-product.
+======================================================================
+
+--- n=4  |S|=4=2^2  numBlocks=3 ---
+  events (pairs) = 6 = C(4,2): OK
+  all x distinct (no angle-0 tie): True
+  [A] replay ok (adjacent/disjoint-block reversals): True
+  [A] of 6 events, 6 are single adjacent reversals (rest simultaneous at tied angle)
+  [C] depth statistics vs block index (|T_i| should be C(2,i)):
+    stat S2: exact==blockidx:False  block-value-ranges={0: (1.0, 1.0), 1: (3.0, 3.0), 2: (3.0, 3.0)}  strictly-monotone-in-block:False
+    stat S3: exact==blockidx:False  block-value-ranges={0: (1, 1), 1: (1, 1), 2: (1, 1)}  strictly-monotone-in-block:False
+    stat S4: exact==blockidx:False  block-value-ranges={0: (0, 0), 1: (0, 1), 2: (2, 2)}  strictly-monotone-in-block:False
+    stat S5: exact==blockidx:False  block-value-ranges={0: (2, 2), 1: (5, 5), 2: (4, 4)}  strictly-monotone-in-block:False
+
+--- n=5  |S|=8=2^3  numBlocks=4 ---
+  events (pairs) = 28 = C(8,2): OK
+  all x distinct (no angle-0 tie): True
+  [A] replay ok (adjacent/disjoint-block reversals): True
+  [A] of 28 events, 28 are single adjacent reversals (rest simultaneous at tied angle)
+  [C] depth statistics vs block index (|T_i| should be C(3,i)):
+    stat S2: exact==blockidx:False  block-value-ranges={0: (3.5714285714285716, 3.571), 1: (13.285714285714286, 15.714), 2: (13.857142857142858, 15.143), 3: (17.285714285714285, 17.286)}  strictly-monotone-in-block:False
+    stat S3: exact==blockidx:False  block-value-ranges={0: (3, 3), 1: (3, 3), 2: (3, 3), 3: (3, 3)}  strictly-monotone-in-block:False
+    stat S4: exact==blockidx:False  block-value-ranges={0: (0, 0), 1: (0, 2), 2: (3, 5), 3: (10, 10)}  strictly-monotone-in-block:False
+    stat S5: exact==blockidx:False  block-value-ranges={0: (10, 10), 1: (26, 27), 2: (23, 24), 3: (21, 21)}  strictly-monotone-in-block:False
+
+--- n=6  |S|=16=2^4  numBlocks=5 ---
+  events (pairs) = 120 = C(16,2): OK
+  all x distinct (no angle-0 tie): True
+  [A] replay ok (adjacent/disjoint-block reversals): False  detail:['non-adjacent swap 11,13', 'non-adjacent swap 11,12', 'non-adjacent swap 2,4']
+  [A] of 120 events, 120 are single adjacent reversals (rest simultaneous at tied angle)
+  [C] depth statistics vs block index (|T_i| should be C(4,i)):
+    stat S2: exact==blockidx:False  block-value-ranges={0: (11.533333333333333, 11.533), 1: (45.86666666666667, 51.4), 2: (66.46666666666667, 67.8), 3: (63.666666666666664, 68.2), 4: (80.26666666666667, 80.267)}  strictly-monotone-in-block:False
+    stat S3: exact==blockidx:False  block-value-ranges={0: (7, 7), 1: (7, 7), 2: (7, 7), 3: (7, 7), 4: (7, 7)}  strictly-monotone-in-block:False
+    stat S4: exact==blockidx:False  block-value-ranges={0: (0, 0), 1: (0, 3), 2: (4, 9), 3: (19, 23), 4: (45, 45)}  strictly-monotone-in-block:False
+    stat S5: exact==blockidx:False  block-value-ranges={0: (45, 45), 1: (107, 118), 2: (112, 119), 3: (95, 98), 4: (92, 92)}  strictly-monotone-in-block:False
+
+--- n=7  |S|=32=2^5  numBlocks=6 ---
+  events (pairs) = 496 = C(32,2): OK
+  all x distinct (no angle-0 tie): True
+  [A] replay ok (adjacent/disjoint-block reversals): False  detail:['non-adjacent swap 12,21', 'non-adjacent swap 10,19', 'non-adjacent swap 12,22']
+  [A] of 496 events, 496 are single adjacent reversals (rest simultaneous at tied angle)
+  [C] depth statistics vs block index (|T_i| should be C(5,i)):
+    stat S2: exact==blockidx:False  block-value-ranges={0: (35.645161290322584, 35.645), 1: (144.2258064516129, 154.065), 2: (243.29032258064515, 264.355), 3: (261.80645161290323, 284.645), 4: (292.2903225806452, 302.129), 5: (348.5806451612903, 348.581)}  strictly-monotone-in-block:False
+    stat S3: exact==blockidx:False  block-value-ranges={0: (15, 15), 1: (15, 15), 2: (15, 15), 3: (15, 15), 4: (15, 15), 5: (15, 15)}  strictly-monotone-in-block:False
+    stat S4: exact==blockidx:False  block-value-ranges={0: (0, 0), 1: (0, 4), 2: (5, 14), 3: (27, 42), 4: (89, 97), 5: (192, 192)}  strictly-monotone-in-block:False
+    stat S5: exact==blockidx:False  block-value-ranges={0: (192, 192), 1: (466, 493), 2: (454, 494), 3: (455, 495), 4: (390, 395), 5: (385, 385)}  strictly-monotone-in-block:False
+
+======================================================================
+D. REALIZATION-INVARIANCE FALSIFIER (approach file's critical test)
+   For a depth statistic to carry ORDER-TYPE structure it must be invariant
+   under realization-preserving moves.  Test: horizontal stretch x->s*x
+   (s>0) preserves every orientation sign (order type unchanged) — an
+   order-type-PRESERVING move.  Reflection x->-x negates all orientations.
+   Report whether each stat changes per point under stretch.
+======================================================================
+  n=5 stat S2: invariant under x-stretch (order-type-preserving): True   invariant under reflection: False
+  n=5 stat S3: invariant under x-stretch (order-type-preserving): True   invariant under reflection: True
+  n=5 stat S4: invariant under x-stretch (order-type-preserving): True   invariant under reflection: False
+  n=5 stat S5: invariant under x-stretch (order-type-preserving): True   invariant under reflection: False
+  n=6 stat S2: invariant under x-stretch (order-type-preserving): True   invariant under reflection: False
+  n=6 stat S3: invariant under x-stretch (order-type-preserving): True   invariant under reflection: True
+  n=6 stat S4: invariant under x-stretch (order-type-preserving): True   invariant under reflection: False
+  n=6 stat S5: invariant under x-stretch (order-type-preserving): True   invariant under reflection: False
+  n=7 stat S2: invariant under x-stretch (order-type-preserving): True   invariant under reflection: False
+  n=7 stat S3: invariant under x-stretch (order-type-preserving): True   invariant under reflection: True
+  n=7 stat S4: invariant under x-stretch (order-type-preserving): True   invariant under reflection: False
+  n=7 stat S5: invariant under x-stretch (order-type-preserving): True   invariant under reflection: False
+
+======================================================================
+B. CONVEXITY READABLE FROM SEQUENCE (extreme-in-projection criterion)
+   S in convex position <=> every p in S is extreme relative to S in the
+   sequence sense (first or last in some S-restricted projection order).
+   Cross-checked against independent oracle es_geom.in_convex_position
+   over ALL subsets at n=5,6.
+======================================================================
+  n=5: 93/100 subsets agree between sequence-criterion and oracle  -> FAIL  disagree:[([0, 1, 2], False, True), ([0, 1, 3], False, True), ([0, 1, 4], False, True)]
+  n=6: 58651/58659 subsets agree between sequence-criterion and oracle  -> FAIL  disagree:[([0, 1, 2], False, True), ([0, 1, 3], False, True), ([0, 1, 4], False, True)]
+
+
+[written code/out/allowable_encoder.captured.txt]

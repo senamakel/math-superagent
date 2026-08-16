@@ -25,7 +25,7 @@ status: asserted-by-source (survey statement; primary values are Yu arXiv:2212.0
 bearing: THE current-record claim this run may rely on: 0.3823455. Distinguish from Liu's conditionally-IID value ~0.38271 which is conditional (see liu-conditionally-iid).
 anchor: research/sources/das-wu-frequent-elements-2024.full.md
 answers: exact-current-published-c8b8
-follows-from: yu-record-0-38234, cambie-record
+follows-from: yu-record-0-38234, cambie-question2-exact-0-3823455
 ```
 
 ```claim

@@ -85,7 +85,19 @@ fn specialist_harness(
         )))
         // Reflects on a failing tool the moment it fails, rather than waiting
         // for the attempt to end. See `agent::reflection`.
-        .push_middleware(Arc::new(ReflectionMiddleware::new()));
+        .push_middleware(Arc::new(ReflectionMiddleware::new()))
+        // Says when the cacheable prefix moved.
+        //
+        // Every role's prompt is assembled most-shared-to-least precisely so
+        // the provider caches on a block every agent has in common, and the
+        // dossier goes in a spawn message rather than a system prompt for the
+        // same reason. None of that was measured: a change that quietly
+        // reordered the prefix would show up only as a bill. This middleware
+        // ships with the harness and was registered nowhere — it compares each
+        // request's layout against the last within one run and logs when the
+        // prefix is invalidated, which is the difference between a cache
+        // discipline and an intention.
+        .push_middleware(Arc::new(PromptCacheGuardMiddleware::new()));
     harness
 }
 

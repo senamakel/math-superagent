@@ -78,3 +78,56 @@ fn a_multibyte_ledger_is_cut_on_a_boundary() {
     let cut = fit(APPROACHES_PATH, &huge).expect("an oversized ledger is cut");
     assert!(cut.contains('δ'), "the mathematics survives the cut");
 }
+
+
+/// The nine rendered ledgers move into `derived/` once, on a workspace that
+/// predates the folder — which is every workspace on disk.
+#[test]
+fn a_workspace_written_before_the_derived_folder_is_migrated_once() {
+    let root = std::env::temp_dir().join("ledger-migrate-once");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research")).expect("created");
+    std::fs::write(root.join("research/CLAIMS.md"), "old claims\n").expect("written");
+    std::fs::write(root.join("research/APPROACHES.md"), "old approaches\n").expect("written");
+    // An ordinary note beside them, which is not derived and must not move.
+    std::fs::write(root.join("research/pell.md"), "a note\n").expect("written");
+
+    let moved = super::migrate_derived(&root);
+    assert_eq!(moved.len(), 2, "both ledgers move: {moved:?}");
+    assert_eq!(
+        std::fs::read_to_string(root.join("derived/CLAIMS.md")).expect("moved"),
+        "old claims\n"
+    );
+    assert!(
+        !root.join("research/CLAIMS.md").exists(),
+        "the old copy must not be left behind to go stale"
+    );
+    assert!(
+        root.join("research/pell.md").is_file(),
+        "a note that is not a derived ledger must stay where it is"
+    );
+
+    // Idempotent: a second start moves nothing.
+    assert!(super::migrate_derived(&root).is_empty());
+}
+
+/// A destination that already exists wins, and the source is left alone.
+///
+/// `docs/workspace.md` forbids overwriting a file carrying a result, and one of
+/// these may be mid-write.
+#[test]
+fn migration_never_overwrites_what_is_already_there() {
+    let root = std::env::temp_dir().join("ledger-migrate-clobber");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research")).expect("created");
+    std::fs::create_dir_all(root.join("derived")).expect("created");
+    std::fs::write(root.join("research/CLAIMS.md"), "the old one\n").expect("written");
+    std::fs::write(root.join("derived/CLAIMS.md"), "the current one\n").expect("written");
+
+    assert!(super::migrate_derived(&root).is_empty());
+    assert_eq!(
+        std::fs::read_to_string(root.join("derived/CLAIMS.md")).expect("kept"),
+        "the current one\n",
+        "the newer file was clobbered by the older one"
+    );
+}

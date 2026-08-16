@@ -11,11 +11,27 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## lesson
 
+- **chisel**: Adopted line (converge round): orbit-matrix-residual-group. Any nontrivial Aut of a putative srg(99,14,1,2) is Z2 or Z3 (only primes 2,3; |G||2·3³·7·11; no Z6/S3/Z9/E9; 2‖G‖⇒G=Z2). Crnković–Maksimović 2020 already exhausted Z6/S3/Z9/E9 and proved order-3 is FIXED-POINT-FREE. Residual: Z3 has exactly 33 point-orbits + 77 line-orbits on the 231-line triangle geometry (the new synthesis: run orbit matrices on point-line incidence, not just vertex adjacency); Z2 has ≥50 orbits with f odd. Completing both is a finite Kramer–Mesner-type analysis: UNSAT on both ⇒ |Aut|=1 (exhausts the published… (refers: orbit-matrix-residual-group, seidel-twograph-descendant, terwilliger-subconstituent-modules, aut-cm-2020)
 - **chisel**: For the Conway 99-graph problem: the n3 seed (two disjoint triangles joined by exactly 2 edges) extends locally to EVERY radius — radius-6 is a stable fixpoint with 0 free interior bits (complete enumeration, 2 survivors at radius 1 rising to 19 at radius 5, all materialising no new witnesses at radius 6). So no local ball can kill the n3>=1 case; the obstruction, if any, is global (lives in how the ~91 outside vertices interlock to absorb mu=2/degree deficits). Also: solution.md §1 typo — the correct characteristic polynomial for the forced subgraph srg(33,12,1,6) is x^2+5x-6 (discriminant… (refers: n3-seed-locally-consistent-radius1, makhnev99-shorter-proof-integrality)
 - **chisel**: A hypothetical srg(99,14,1,2) is provably NOT rank 3 (in fact not vertex-transitive): rank-3 on 99 points forces |G| divisible by 99*lcm(14,84)=8316, but the MM04 bound is |G| | 4158, and 8316=2*4158. Both controls (rook(3), BvLS(243)) ARE rank 3, hence satisfy every t-vertex condition trivially. So the 5-vertex condition is the first rung of the vertex-condition hierarchy where a 99-only obstruction can exist without also ruling out 9 or 243. This is the fact that makes the adopted PQ/diamond-free vertex-condition route a genuine filter rather than a relabelling: the two-weight-code and SNF… (refers: srg99-not-vertex-transitive, pq-2-6-2-classification)
 
 ## offer
 
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+Done. Here is the report.
+
+## Slug
+`n3-dichotomy` — written to `research/backward/n3-dichotomy.md`, recorded in the `goals` ledger, and stored in durable memory.
+
+## The decomposition
+
+I worked backward from the goal and found that the workspace already holds a *complete* two-case split, which is the cheapest possible result. The goal reduces to:
+
+- **n₃ = 0 or n₃ ≥ 1** — exhaustive because n₃ is a non-negative integer count.
+- **G-n3-zero** (`status: discharged`): Makhnev 1988 Thm 2 rules out n₃ = 0 at…
 - **chisel**: Decomposition just opened:
 
 What would suffice:

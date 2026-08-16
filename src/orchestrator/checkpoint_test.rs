@@ -1,10 +1,16 @@
 //! Unit tests for workspace checkpointing.
 #![allow(clippy::expect_used)]
 
-use super::{
-    HISTORY_DIR, NEVER_COMMITTED, WRITING_TOOLS, WorkspaceCheckpoint, exclude_file,
-    history_directory, summarise,
-};
+use super::super::vcs::{Git, HISTORY_DIR};
+use super::{WRITING_TOOLS, WorkspaceCheckpoint, summarise};
+
+/// Where the history of a workspace lives.
+///
+/// The exclude list and the repository verbs are [`super::super::vcs`]'s now;
+/// what is tested here is the middleware's policy on top of them.
+fn history_directory(workspace: &std::path::Path) -> std::path::PathBuf {
+    Git::history(workspace).git_dir().to_path_buf()
+}
 
 #[test]
 fn only_writing_tools_trigger_a_checkpoint() {
@@ -26,58 +32,6 @@ fn commit_subjects_are_one_condensed_line() {
     assert_eq!(summarise("  padded\t words  "), "padded words");
     assert_eq!(summarise(""), "workspace updated");
     assert!(summarise(&"x".repeat(200)).chars().count() <= 72);
-}
-
-#[test]
-fn history_lives_beside_the_workspace_not_inside_a_dot_git() {
-    let path = history_directory(std::path::Path::new("/workspace"));
-    assert!(path.ends_with(HISTORY_DIR));
-    // A plain `.git` would make the outer repository treat this as an
-    // embedded repository and refuse to track through it.
-    assert_ne!(HISTORY_DIR, ".git");
-}
-
-/// The event log is the single largest thing a workspace produces and the one
-/// nothing reads out of history.
-///
-/// Thirteen live workspaces held 71.6 GB of `.workspace-history` against 47 MB
-/// of `research/`, and one of them committed `config/trace.jsonl` 137 times at
-/// roughly 600 MB a commit. `AGENTS.md` already said the file was ignored; only
-/// the outer `.gitignore` implemented it, and this exclude file is a separate
-/// git directory that never got the rule.
-#[test]
-fn the_event_log_never_enters_the_workspace_history() {
-    assert!(NEVER_COMMITTED.contains(&"config/trace.jsonl"));
-    assert!(NEVER_COMMITTED.contains(&"config/console.log"));
-    let rendered = exclude_file();
-    assert!(rendered.contains("config/trace.jsonl\n"));
-    // The history directory must still lead, or it enters its own history.
-    assert!(rendered.starts_with(&format!("{HISTORY_DIR}/\n")));
-}
-
-/// What the exclude file drops must be exactly what has a committed readable
-/// counterpart beside it — never a reasoning artifact.
-///
-/// This is the rule that keeps the list from growing into "whatever is large":
-/// `research/` is 0.05% of the tree and is what the product is for.
-#[test]
-fn nothing_a_reader_would_open_is_excluded() {
-    for kept in [
-        "research/",
-        "research/CLAIMS.md",
-        "code/out/",
-        "GOAL.md",
-        "config/config.toml",
-        "config/DIRECTIVES.md",
-    ] {
-        assert!(
-            !NEVER_COMMITTED.contains(&kept),
-            "`{kept}` is what the derivation cites and must stay in history"
-        );
-    }
-    // The hidden caches go, and each names a Markdown counterpart that stays.
-    assert!(NEVER_COMMITTED.contains(&"config/.*.json"));
-    assert!(!NEVER_COMMITTED.contains(&"research/FRONTIER.md"));
 }
 
 /// A file committed before it was excluded must stop being committed, and must
@@ -109,8 +63,9 @@ async fn a_previously_committed_event_log_is_untracked_but_left_on_disk() {
     // the only way to reach the state — a fresh workspace never tracks the log,
     // so a test that let the middleware create one would pass without
     // exercising `untrack_excluded` at all.
-    if checkpoint
-        .git(&["init", "--quiet", "--initial-branch", "work"])
+    let git = Git::history(&directory);
+    if git
+        .run(&["init", "--quiet", "--initial-branch", "work"])
         .await
         .is_err()
     {
@@ -125,17 +80,13 @@ async fn a_previously_committed_event_log_is_untracked_but_left_on_disk() {
         format!("{HISTORY_DIR}/\n.python-packages/\n__pycache__/\nraw/\n"),
     )
     .expect("write is possible");
-    checkpoint
-        .git(&["add", "--all"])
-        .await
-        .expect("staging succeeds");
-    checkpoint
-        .git(&["commit", "--quiet", "--message", "before the exclusion"])
+    git.run(&["add", "--all"]).await.expect("staging succeeds");
+    git.run(&["commit", "--quiet", "--message", "before the exclusion"])
         .await
         .expect("the seed commit succeeds");
 
-    let seeded = checkpoint
-        .git(&["ls-files"])
+    let seeded = git
+        .run(&["ls-files"])
         .await
         .expect("listing tracked files succeeds");
     assert!(
@@ -150,8 +101,8 @@ async fn a_previously_committed_event_log_is_untracked_but_left_on_disk() {
         .await
         .expect("commit succeeds");
 
-    let tracked = checkpoint
-        .git(&["ls-files"])
+    let tracked = git
+        .run(&["ls-files"])
         .await
         .expect("listing tracked files succeeds");
     assert!(
@@ -248,8 +199,8 @@ async fn concurrent_checkpoints_all_land_and_leave_no_index_lock() {
     // A commit that found nothing staged is normal — the one before it staged
     // the whole work tree — so the property is that every file is tracked, not
     // that every call produced its own commit.
-    let tracked = checkpoint
-        .git(&["ls-files"])
+    let tracked = Git::history(&directory)
+        .run(&["ls-files"])
         .await
         .expect("the history lists its files");
     for n in 0..writers {

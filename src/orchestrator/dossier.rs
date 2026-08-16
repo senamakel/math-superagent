@@ -56,8 +56,8 @@ fn budget_tokens() -> u64 {
 /// should go when the run has written enough that everything cannot fit.
 const REMAINDER: [&str; 4] = [
     "TASKS.md",
-    "research/FRONTIER.md",
-    "research/REQUESTS.md",
+    "derived/FRONTIER.md",
+    "derived/REQUESTS.md",
     "code/lib/INDEX.md",
 ];
 

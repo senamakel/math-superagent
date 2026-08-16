@@ -5,22 +5,23 @@ repository. `CLAUDE.md` points here so every agent follows the same rules.
 
 ## What this repository is
 
-This repository contains a Dockerized mathematical problem-solving agent. Its
-specialty is deep research: it combines mathematical reasoning with source
-discovery, small programs, numerical experiments, and explicit verification.
+This repository contains a Dockerized mathematical problem-solving agent. Its specialty is
+deep research: it combines mathematical reasoning with source discovery,
+small programs, numerical experiments, and explicit verification.
 
 The product should help a reader understand why an answer is true, not merely
-produce a plausible final expression. Preserve that standard in prompts, tools,
-examples, tests, and documentation.
+produce a plausible final expression. Preserve that standard in prompts,
+tools, examples, tests, and documentation.
 
 ## Where the rest of this lives
 
 This file is the working agreement: the rules to follow and the checks to run.
-The rationale behind them — every threshold a live run has met, and what it cost
-— is one level down, so a rule stays readable and its evidence stays available.
+The design rationale behind them — every threshold that a live run has already
+met, and what it cost — is one level down, so that a rule stays readable and the
+evidence for it stays available.
 
-- [`docs/roles.md`](docs/roles.md) — the twenty-two roles, the source adapters,
-  the two recall paths, and which workspace files reach which role's prompt.
+- [`docs/roles.md`](docs/roles.md) — the roles, the source adapters, the two
+  recall paths, and which workspace files reach which role's prompt.
 - [`docs/solution-loop.md`](docs/solution-loop.md) — the attempt/evaluate graph,
   the two child workflows, and how a tool or provider failure is absorbed.
 - [`docs/routing.md`](docs/routing.md) — which role answers which question, what
@@ -37,11 +38,11 @@ The rationale behind them — every threshold a live run has met, and what it co
   problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
   harness is measured against, the two-layer evidence screen, and what round 1
-  measured: that de-naming failed on all three problems, and that the shared
-  board carries the answer between schools unscreened.
+  measured.
 
 Two pairs read a mathematician's method against this runtime and say what to
-build next. A change to a control should start from the argument that made it:
+build next. They are why several of the rules above exist, so a change to a
+control should start from the argument that produced it:
 
 - [`docs/tao-gap-analysis.md`](docs/tao-gap-analysis.md) and
   [`docs/tao-proposals.md`](docs/tao-proposals.md) — Terence Tao's method set
@@ -49,15 +50,14 @@ build next. A change to a control should start from the argument that made it:
   Research in [`research/tao/`](research/tao/).
 - [`docs/methods-gap-analysis.md`](docs/methods-gap-analysis.md) and
   [`docs/methods-proposals.md`](docs/methods-proposals.md) — ten more
-  mathematicians, chosen so the set spans the method space rather than one
-  corner of it, and read for where they *disagree* with Tao and with each other.
-  Research in [`research/mathematicians/`](research/mathematicians/), whose
-  `11-harness-inventory.md` is the current capability map and supersedes
-  `research/tao/03-harness-inventory.md`.
+  mathematicians spanning the method space, read for where they *disagree* with
+  Tao and each other. Research in
+  [`research/mathematicians/`](research/mathematicians/), whose
+  `11-harness-inventory.md` is the current capability map.
 
-Keep them consistent with the code. A rule the code does not enforce is the
-failure this repository keeps recording: a prompt instruction is not a control,
-and neither is a document.
+Keep them consistent with the code. A rule here that the code does not enforce
+is the failure this repository keeps recording: a prompt instruction is not a
+control, and neither is a document.
 
 ## Gating
 
@@ -71,8 +71,8 @@ outline, and `section`, `lines` and `grep_workspace` reach any part.
 ## Ledgers
 
 A *ledger* is derived state — an append-only queue, or one file per entry —
-walked by code and rendered into Markdown. `TASKS.md`, the board, the sub-goals
-and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
+walked by code and rendered into Markdown. `TASKS.md`, the board, the sub-goals,
+the attempts and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
 
 - **No agent writes one; the write path refuses a derived file.** Editing one is
   work queued for deletion on the next derivation, not a change.
@@ -82,30 +82,50 @@ and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
 - **A prompt carries the *index*, not the ledger**: one line per entry, its
   identity and status, ending in the `read_ledger` call that fetches the rest. A
   role told less must be told where the rest is, or it is cheaper *and dumber*.
-- **One write operation:** an event names an entry and merges fields, and
-  closing keeps the entry with its reason rather than deleting it.
+  `ledger::fit` clamps what is left, and is only a backstop.
+- **One write operation:** an event names an entry and merges fields; closing
+  keeps the entry with its reason rather than deleting it.
 - **A declaration cannot raise a bound, shadow a built-in, or reach a prompt.**
   The tool schema is fixed for a run, so `ledger` is a checked string and never
   an enum, which lets a run define an axis and use it the same turn.
+- **Rendered into `derived/`, which the file tools refuse.** The folder name is
+  the invariant: nothing in it is hand-written. It stays committed — it is the
+  record of what was established — but `read_document` and `grep_workspace`
+  refuse it and name `read_ledger`, which bounds and selects by `id`, `status` or
+  `query`. Older workspaces migrate once at startup, never overwriting.
 
-Lean carries the mathematics, not only the check: statements go under
-`code/lean/Lib/`, `research/LEMMAS.md` derives from it, and what does not move
-there is in [`docs/lean-library.md`](docs/lean-library.md).
+- **Lean carries the mathematics, not only the check.** Statements go under
+  `code/lean/Lib/`; `derived/LEMMAS.md` derives from them. A result read from the
+  literature is an `axiom` under `namespace Cited` and earns `conditional`, never
+  `formalised` — and never by typing it, the status being read off the verdict.
+  Only `lean_check` writes `code/out/lean/`, which is why `lean-verdict` cannot,
+  being in the image and so reachable from `execute_command`. `./lean-check` and
+  `scripts/lean-replay --all` reach the kernel without a run.
+  [`docs/lean-library.md`](docs/lean-library.md).
 
-- **A result from the literature is an `axiom` under `namespace Cited`, sourced
-  in its docstring.** It earns `conditional`, never `formalised`: the kernel
-  checked the implication and nothing checked the hypothesis.
-- **A formalised status is read off the verdict, never typed.** A note claiming
-  `formalised` over cited axioms is filed `conditional`, with the axiom named.
-- **The kernel is reachable without a run**: `./lean-check <workspace> <file>`,
-  `scripts/lean-replay --all`; exit 0/1/2 is the verdict. Nothing but the
-  `lean_check` tool may write `code/out/lean/`, which is why `lean-verdict` — in
-  the image, so reachable from `execute_command` — cannot file one at all.
+## Candidates
+
+Several candidate solutions run at once, each on its own branch and checkout:
+`spawn_candidates` starts them, `attempt_diff` reads them back, `archivist` keeps
+one.
+
+- **Fork the files, share the memory.** A candidate's checkout is a linked
+  worktree, so `code/`, `research/` and its ledgers are its own; memory is not
+  re-rooted and must not be, being the only channel between them. Enforced for
+  the file tools only — a shell cannot be confined by its cwd.
+  [`docs/workspace.md`](docs/workspace.md).
+- **One role may make a candidate authoritative.** `adopt_attempt` and
+  `abandon_attempt` are the archivist's alone, and it holds no shell and no file
+  write — so every trunk change carries a branch and a recorded reason.
+- **Adoption copies named files, and is not a merge** — a merge would also take
+  the losing candidate's account of why it was right.
+- **There is no general git tool** — every operation is a named verb with checked
+  arguments; one taking a command line is `execute_command` by another name.
 
 ## Schools
 
-A *school* is one way of attacking a problem; two or three run concurrently on one
-workspace, sharing the ledgers and a board. Each one's bet is in
+A *school* is one way of attacking a problem; two or three run concurrently on
+one workspace, sharing the ledgers and a board. Each one's bet:
 [`docs/schools.md`](docs/schools.md). Not a second loop, graph, or set of roles.
 
 - **Four things, and it must stay four:** a method-policy overlay layered *after*
@@ -115,8 +135,8 @@ workspace, sharing the ledgers and a board. Each one's bet is in
 - **Thresholds are a struct, not a second set of constants.** `route` and the jq
   both read one; `orchestrator::parity` proves they agree for every school, and
   none may move `blocked`.
-- **A board post is asserted, never established.** `teams/BOARD.md` never feeds a
-  ledger, and the posting school is baked into the tool.
+- **A board post is asserted, never established.** `teams/BOARD.md` never feeds
+  a ledger, and the posting school is baked into the tool.
 - **A lock is taken at a tool-call boundary, never below one.** `worklock.rs`
   serialises the write cascade and the checkpoint; the mutex is not reentrant.
 
@@ -163,17 +183,16 @@ creates no container.
 ./steer --workspace conjectures/erdos-gyarfas "stop enumerating and prove it"
 ```
 
-Direction never blocks the run. It is queued in the workspace and picked up at
-the next boundary, so a directive reaches the work in seconds to minutes, and
-the run keeps going whether or not anyone is watching. What became of one goes
-to that workspace's `config/DIRECTIVES.md`; the queue is
-`config/directives.jsonl`, appended to by the host and never by the run.
-[`docs/solution-loop.md`](docs/solution-loop.md#direction-from-a-human) has what
-a directive reaches and what it deliberately cannot.
+Direction never blocks the run: it is queued in `config/directives.jsonl` —
+appended to by the host, never by the run — and picked up at the next boundary,
+so it reaches the work in seconds to minutes whether or not anyone is watching.
+What became of one goes to `config/DIRECTIVES.md`.
 
 A directive is asserted, not established. It is routed into the next attempt as
-an instruction and must never be filed as a claim — the `director` role that
-acts on one is not given `research/CLAIMS.md` for exactly that reason.
+an instruction and must never be filed as a claim — which is why the `director`
+role acting on one is not given `derived/CLAIMS.md`.
+[`docs/solution-loop.md`](docs/solution-loop.md#direction-from-a-human) has what
+a directive reaches and what it deliberately cannot.
 
 Start a run detached so it outlives the terminal, then watch it:
 
@@ -181,31 +200,22 @@ Start a run detached so it outlives the terminal, then watch it:
 nohup ./euler 763 > workspace/project-euler/763/config/start.log 2>&1 &
 ```
 
-`start.log` holds the image build and the statement fetch, which happen before
-any container exists and are therefore the only place a failed start says why.
-Everything after is the container's — and the runtime's console arrives on its
-**stderr**, not stdout, so `docker logs` needs `2>&1` and any follower must read
-both streams.
-
-Before starting anything, check nothing is already running for that workspace,
-matching by **mount** and never by name: the project name comes from the
-checkout directory, so a worktree's container is not `riemann-agent-run` at all.
-
-```sh
-docker inspect $(docker ps -q) --format '{{.Name}} {{range .Mounts}}{{.Source}} {{end}}' | grep project-euler
-```
-
-Two containers on one workspace is silent: both write, and the damage shows up
-later as a checkpoint history interleaving two investigations. Stop one with
-`docker rm -f <name>`; the next `./euler` continues from disk. Every checkout
-shares the `math-agent:local` tag, so a build in one replaces the image another
-is about to run — rebuild before trusting it.
+Two containers on one workspace is the failure to look for, and it is silent —
+both runs write, and the damage appears later as an interleaved history. Check
+before starting, and **match by mount, not by name**. Stop one with
+`docker rm -f <name>`; the workspace survives and the next `./euler` continues.
+`start.log` is the only place a failed *start* says why, and the runtime's
+console is on the container's **stderr**, so `docker logs` needs `2>&1`.
+[`docs/runtime.md`](docs/runtime.md#watching-a-run) has the commands and the
+runs behind each of these. Every checkout shares the `math-agent:local` tag, so
+a build in one replaces the image another is about to run.
 
 ## Calibration runs
 
 An open conjecture gives a run no known destination, so nothing separates a
-harness closing in on a proof from one producing plausible activity. A
-**calibration run** is the reference: a solved conjecture, stated as open.
+harness closing in on a proof from one producing plausible activity, and every
+architecture change is made blind. A **calibration run** supplies the reference:
+a conjecture already solved, stated as open, its answer withheld in code.
 
 ```sh
 ./calibrate unit-distance-plane-chromatic     # start or continue
@@ -241,18 +251,17 @@ Watch it with `./diagnose` / `./euler-tui --workspace conjectures/<slug>`.
 ## Docker and workspace rules
 
 The orchestrator must run through `./agent`, which starts the runtime and Qdrant
-through Docker Compose. Do not add a host-side fallback for tool execution.
-
-The Docker boundary is part of the security model:
+through Docker Compose. Do not add a host-side fallback for tool execution. The
+Docker boundary is part of the security model:
 
 - Run as an unprivileged user, with the root filesystem read-only, all Linux
   capabilities dropped, and `no-new-privileges` enabled.
 - Mount only the selected directory below `workspace/` at `/workspace`; never
   the repository, home directory, Docker socket, or broad host paths.
 - Keep process, memory, command-time, and command-output limits. Keeping a
-  limit is the requirement; the value is a judgement, and 2 GiB was the wrong
-  one — [`docs/runtime.md`](docs/runtime.md#the-memory-cap) has the live run that
-  raised it. Read `docker events --filter event=oom` when a container vanishes.
+  limit is the requirement, its value a judgement —
+  [`docs/runtime.md`](docs/runtime.md#the-memory-cap). Read
+  `docker events --filter event=oom` when a container vanishes.
 - Keep network access because provider, search, and telemetry calls need it.
 
 Every agent working directory is `/workspace`. The helper accepts
@@ -264,22 +273,18 @@ with `/workspace` as their current directory. A prompt instruction is not a
 security control; enforce boundaries in code and Docker configuration.
 
 Workspace contents are committed: the derivation, the program and the per-run
-notes record how an answer was reached, so they belong in history rather than
-only on the machine that made them.
+notes are the record of how an answer was reached, which is the point of the
+product. They belong in history, not in every commit — `.claude/settings.json`
+sets `AUTO_COMMIT_EVERY=25` here, and the fine-grained record survives in each
+workspace's `.workspace-history`. Do not add a generated artifact to a source
+directory.
 
-They belong in history, not in every commit. A live run writes continuously, so
-`.claude/settings.json` sets `AUTO_COMMIT_EVERY=25` here: everything is still
-committed and nothing excluded, it is batched, and the fine-grained record
-survives in each workspace's `.workspace-history` — what `WorkspaceCheckpoint`
-is for. Do not add a generated artifact to a source directory.
-
-What is ignored is what a reader would never open: `.python-packages/`, bytecode
-caches, `raw/`, the bulky enumeration pools beside the counts that cite them,
-`trace.jsonl` and `console.log`, and the hidden `config/.*.json` state — each
-already has a committed human-readable counterpart beside it, such as
-`research/FRONTIER.md`. Everything a reader would open stays committed, and
-[`docs/workspace.md`](docs/workspace.md) has the hour of commit spam behind the
-batch size.
+What is ignored is only what a reader would never open — bytecode, `raw/`, the
+bulky enumeration pools, the event logs, the hidden `config/.*.json` caches —
+each with a committed readable counterpart beside it, such as
+`derived/FRONTIER.md`. Everything a reader would open stays committed.
+[`docs/workspace.md`](docs/workspace.md) has the list and the measured hour of
+commit spam that set the batch size.
 
 ## Secrets
 
@@ -320,15 +325,12 @@ sh -n agent euler steer langfuse-turns langfuse-review scripts/run-agent \
 docker compose config --quiet
 ```
 
-Use a live `./agent` smoke test when changing provider setup, delegation,
-research, tool execution, environment forwarding, or Docker behavior. Live
-tests spend provider credits, so keep the prompt focused. Never put live network
-tests in the deterministic unit-test suite.
-
-Use `./euler <number>` for Project Euler smoke tests. Keep fetched statements
-and generated solutions under `workspace/project-euler/<number>`. The wrapper
-must fetch the official statement, reject invalid problem numbers, and avoid
-prompts that ask agents to find published answers.
+Use a live `./agent` or `./euler <number>` smoke test when changing provider
+setup, delegation, research, tool execution, environment forwarding, or Docker
+behavior. Live tests spend provider credits, so keep the prompt focused, and
+never put a network test in the deterministic suite. The `./euler` wrapper must
+fetch the official statement, reject invalid problem numbers, and never prompt
+an agent to look a published answer up.
 
 Do not ignore or delete a failing test to make CI pass. Fix the cause or report
 the blocker with the failing output.
@@ -397,31 +399,24 @@ new dependencies:
 - add a comment in `Cargo.toml` explaining the dependency;
 - keep `Cargo.lock` committed.
 
-Two crates are vendored as Git submodules. Initialize both with:
+Two crates are vendored as Git submodules — `vendor/tinyagents`, the harness
+that runs one agent turn, and `vendor/tinyflows`, the state-graph runtime every
+control-flow graph is built on, reached through `agent::flow`. Initialize both:
 
 ```sh
 git submodule update --init --recursive
 ```
-
-- `vendor/tinyagents` — the harness that runs one agent turn: the model
-  providers, the tool runtime, middleware, and steering.
-- `vendor/tinyflows` — the state-graph runtime every control-flow graph in this
-  crate is built on, reached through `agent::flow`. It is the same runtime that
-  used to be consumed from TinyAgents, extracted into TinyFlows and maintained
-  there.
 
 The split is the rule to keep: TinyAgents runs a turn, TinyFlows decides which
 turn runs next. A new graph is built with `agent::flow`, never with
 `tinyagents::graph`, and the two error types are converted only by
 `agent::flow::into_graph` / `from_graph`.
 
-TinyFlows has two layers and this crate uses both. The solution loop runs on the
-declarative **workflow engine**, which owns the routing and keeps the control
-flow a document an outside agent can read and patch; `agent::flow` is the
-lower-level state-graph runtime and now drives only each detached sub-agent's
-own single-node graph. [`docs/solution-loop.md`](docs/solution-loop.md) has the
-graph, the fan-out every attempt converges through, and the two child workflows.
-These five rules hold across both layers and must not be broken:
+TinyFlows has two layers and this crate uses both: the solution loop runs on the
+declarative **workflow engine**, and `agent::flow` drives each detached
+sub-agent's single-node graph. [`docs/solution-loop.md`](docs/solution-loop.md)
+has the graph, the fan-out and the two child workflows. Five rules hold across
+both layers and must not be broken:
 
 - **Derive, never restate.** The workflow role registry is read off
   `AgentRegistry`, the ladder's thresholds are generated from the Rust
@@ -448,12 +443,19 @@ Use the checkout's normal target configuration.
 
 ## Git workflow
 
-- Work in the current checkout. Do not create or use Git worktrees.
-- Do not create feature branches.
-- Commit directly to `main` and push `main` to its configured remote.
+- Substantial work gets its own worktree and branch: `worktree <slug>`, then
+  work in `./worktrees/<slug>`. Small, obvious changes may go straight onto
+  `main`. This rule read "do not create or use Git worktrees" for long enough
+  that the checkout already held one nobody had removed — a rule the practice
+  contradicts is one that stops being read, so it now says what is done.
 - Never force-push, rewrite published history, or bypass hooks.
 - Keep commits focused, with concise imperative subjects.
 - Preserve unrelated user changes in a dirty working tree.
+
+Two git repositories are in play and they are not the same one. This is the
+product repository. Each **workspace** has its own, in `.workspace-history`, and
+the runtime is what commits to it — `src/orchestrator/vcs.rs` holds every verb,
+`docs/workspace.md` has the shape, and no rule above applies to it.
 
 An auto-commit hook may checkpoint edits while work is in progress. Those
 commits are expected. Do not reset or rewrite them. Commit manually only when a
@@ -465,35 +467,33 @@ Keep `README.md`, this file, rustdoc, examples, and runtime behavior consistent.
 Write for a reader who has not seen the code. Prefer a concrete command or
 example over broad claims.
 
-Keep this file at 500 lines or fewer. It was 1,734 lines for long enough that
-the rule read as advice, and `CLAUDE.md` symlinks here: this file is loaded in
-full, every time, by a reader looking for one thing, which is what makes length
-a cost rather than a preference. Adding a section means finding the lines for it.
+Keep this file at 500 lines or fewer. `CLAUDE.md` symlinks here, so it is loaded
+in full every time, which is what makes length a cost rather than a preference.
+Adding a section means finding the lines for it.
 
 `README.md` is read start to finish by someone new, so it is held to the same
 intent without the number: the fix for its length is moving what a user does not
-need on a first pass, not trimming paragraphs to a threshold.
+need on a first pass, not trimming to a threshold.
 
-**`docs/` is not held to that cap.** Nothing loads those files into a prompt and
-nobody reads one end to end; a reader arrives at `docs/ledgers.md` because a rule
-above it sent them there, reads that section, and leaves. Splitting such a file
-on a line count splits an argument where a number fell rather than at a seam —
-applied there once, it held `docs/roles.md` at 499 lines by trimming an argument
-rather than by having finished it.
+**`docs/` is not held to that cap**, because nothing loads those files into a
+prompt and nobody reads one end to end. Splitting one on a line count splits an
+argument where a number fell rather than at a seam; split it when it has stopped
+being about one subject.
 
 The split is by *kind*, not by size. A rule to follow and a check to run stay
 here; the evidence behind a rule — the live run that met a ceiling, the number
 that turned out wrong, the failure a control was written to stop — goes to the
 `docs/` file that owns that subject, listed under *Where the rest of this
 lives*. User-facing instructions stay in `README.md`. Do not grow a third tree:
-a document with no rule above it is one nobody has a reason to open. A `docs/`
-file is split when it has stopped being about one subject, not at a line count.
+a document with no rule above it is one nobody has a reason to open.
 
 ## Working agreement for coding agents
 
 1. Inspect the surrounding code before editing and match its conventions.
-2. Execute a clear task directly; do not stop for a plan when the step is obvious.
-3. Stay within scope. Raise unrelated problems instead of folding them in.
+2. Execute a clear task directly. Do not stop for a plan when the next step is
+   obvious.
+3. Stay within scope. Raise unrelated problems instead of folding them into the
+   change.
 4. Deliver finished code without placeholders or commented-out alternatives.
 5. Preserve security checks, tests, lints, and Docker restrictions.
 6. Report commands actually run and their real outcomes.

@@ -106,7 +106,7 @@ reformulation now reaches 4 when it is checkable — named in mathematics, with
 cited precedent, a reason it fits, a first step, and an alternative closed with
 its reason — and 3 when nobody took it to the literature or weighed it against
 anything. A suggestion to think differently still scores 1. The judge is
-deliberately not routed `research/APPROACHES.md`: a judge holding the ledger
+deliberately not routed `derived/APPROACHES.md`: a judge holding the ledger
 would credit an attempt for the *content* of approaches the report never
 mentions. It is given their number, which is a narrower thing and answers a
 question the report cannot when the run cap has destroyed it — whether the

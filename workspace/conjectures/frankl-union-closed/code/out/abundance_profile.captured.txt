@@ -1,0 +1,8 @@
+n=1: UC families=2 | min-over-families of max-frequency BEST=0.500000 | min-of-min-frequency WORST=0.500000
+    achieving family (min max-freq): [0, 1]
+n=2: UC families=12 | min-over-families of max-frequency BEST=0.500000 | min-of-min-frequency WORST=0.333333
+    achieving family (min max-freq): [0, 1]
+n=3: UC families=120 | min-over-families of max-frequency BEST=0.500000 | min-of-min-frequency WORST=0.200000
+    achieving family (min max-freq): [0, 1]
+n=4: UC families=4958 | min-over-families of max-frequency BEST=0.500000 | min-of-min-frequency WORST=0.111111
+    achieving family (min max-freq): [0, 1]

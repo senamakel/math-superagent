@@ -12,7 +12,9 @@
 //!                                 └─ body ─> attempt ──┬─> judge ──────────┐
 //!                                    ▲                 ├─> reflect ────────┤
 //!                                    │                 ├─> patterns ───────┤
-//!                                    │                 ├─> invention ──────┼─> merge
+//!                                    │                 ├─> invention ──────┤
+//!                                    │                 ├─> refute ─────────┼─> merge
+//!                                    │                 ├─> verify ─────────┤     │
 //!                                    │                 ├─> library (opens) ┤     │
 //!                                    │                 └─> goals ─> cadence┘     │
 //!                                    │                                        route
@@ -23,10 +25,17 @@
 //!
 //! Three stages. **Research** runs once: establish what the workspace already
 //! has, then go looking for what it does not. **Attempt** is one attempt.
-//! **Evaluation** asks five questions about that attempt *at the same time* —
-//! how it was conducted, what it established, what structure is in its numbers,
-//! what a different line of attack would be, and what would suffice to prove the
-//! goal — and merges their answers before anything routes.
+//! **Evaluation** asks seven questions *at the same time*. Five are about the
+//! attempt — how it was conducted, what it established, what structure is in its
+//! numbers, what a different line of attack would be, and what would suffice to
+//! prove the goal. Two are about the mathematics instead: whether the statement
+//! being pursued is true at all, and what the kernel makes of the proposition the
+//! most of the argument rests on. Their answers merge before anything routes.
+//!
+//! Those last two are the only *scheduled* uses of the engines this image
+//! carries. `sat_solver`, `smt_solver`, `theorem_prover` and `lean_prover` are
+//! otherwise delegated to when some role remembers to ask — and across three
+//! live calibration runs the Lean kernel was never asked at all.
 //!
 //! The fan-out is the point. Those five used to run in a line, and three of them
 //! were not nodes at all: they were `tokio::spawn`s hidden inside the

@@ -27,6 +27,13 @@ impl OrchestratorAgent {
         let budget = RunBudget::from_env();
         let research_enabled = research_enabled_from_env();
         let tracer = start_tracer(&workspace, budget, research_enabled);
+        // Every workspace on disk predates `derived/`, so its nine rendered
+        // ledgers are still under `research/`. Moved once, never overwriting,
+        // and said out loud — a file that changed location silently is one a
+        // reader concludes was deleted.
+        for moved in ledger::migrate_derived(&workspace) {
+            tracer.note(&format!("workspace layout: moved {moved}"));
+        }
         convert_problem_statement(&workspace);
         let vector_store = VectorStore::from_env()?;
         let screen = start_screen(&workspace, &model, &tracer)?;
@@ -439,19 +446,19 @@ fn register_school(
         std::mem::take(&mut prompts.research),
     )?;
 
-    register_code_writing_agents(
-        subagents,
-        &CodeWriters {
-            model: parts.model,
-            budget: parts.budget,
-            tracer: parts.tracer,
-            workspace: parts.workspace,
-            documents: parts.documents,
-            checkpoint: parts.checkpoint,
-            vector_store: parts.vector_store,
-        },
-        prompts.code_writers(),
-    )?;
+    let code_writers = CodeWriters {
+        model: parts.model,
+        budget: parts.budget,
+        tracer: parts.tracer,
+        workspace: parts.workspace,
+        documents: parts.documents,
+        checkpoint: parts.checkpoint,
+        vector_store: parts.vector_store,
+    };
+    register_code_writing_agents(subagents, &code_writers, prompts.code_writers())?;
+    // One role per candidate slot, sharing the code-writing authority but
+    // rooted at its own checkout. See `register_candidate_agents`.
+    register_candidate_agents(subagents, &code_writers, &prompts.candidate)?;
 
     register_support_agents(
         subagents,

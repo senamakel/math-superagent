@@ -36,13 +36,13 @@ gives expanding a definition a low priority because it is irreversible
 Commelin being forced to state exactly which properties the Breen–Deligne
 resolution's use actually consumed (`08`§A7).
 
-**Gap:** `research/BACKWARD.md` records `rests-on` per gap (`backward.rs`), so a
+**Gap:** `derived/BACKWARD.md` records `rests-on` per gap (`backward.rs`), so a
 hypothesis that no step below cites is already detectable from data on disk.
 Nothing looks.
 
 **Build:** a derivation-time report over the existing skeleton/gap graph: for
 each hypothesis on a goal or lemma, whether any node below it cites that
-hypothesis. Rendered into `research/BLUEPRINT.md`, which already walks this
+hypothesis. Rendered into `derived/BLUEPRINT.md`, which already walks this
 graph and already reports cycles above everything else.
 
 **Cost:** small. One walk over a structure `blueprint.rs` builds, plus tests. No
@@ -55,7 +55,7 @@ moves in the Tao sample and concludes "unclear, and that is the finding".
 Scholze supplies the answer: simplification is a *by-product of being forced to
 name the hypotheses actually used*, not an act of taste.
 
-## 2. Formalisation targeting off the blueprint's in-degree
+## 2. Formalisation targeting off the blueprint's in-degree — **built**
 
 **Evidence:** Scholze's stated criterion for what to formalise — "As it will be
 used as a black box, a mistake in this proof could remain uncaught" — and his
@@ -75,6 +75,18 @@ standing below `Formalised`.
 **Cost:** very small — a sort over a graph already built, and a section in a
 file already written.
 
+**Built as `Blueprint::targets`, `orchestrator::verify`, and the `eval_verification`
+arm.** The sort and the section came in as described. What the estimate missed
+is that a priority order buys nothing while the tool it prioritises is only ever
+*delegated to* — the gap above says "there is no priority order", and the larger
+half of the gap was that there was no scheduled caller either. So the arm is the
+build: one target per pass, ranked; a second pass on a node that failed asks for
+a decomposition rather than another proof; two attempts and it moves on.
+[`solution-loop.md`](solution-loop.md) has the three decisions and what each
+costs. One pre-existing fault fell out of writing the tests: an entailed
+`formalised` claim had its `Verified` standing overwritten with `Established`,
+so the kernel would be sent back to re-check what it had already accepted.
+
 ## 3. Repair the refuted statement instead of filing it
 
 **Evidence:** the one measured case in the directory. Berndt, Dixit, Roy and
@@ -88,7 +100,7 @@ was completed by what the Kolyvagin–Flach failure taught, and he called that
 "the most important moment of my working life" (`04`§B1).
 
 **Gap:** `refute.rs` parses an SZS status into four findings and files a verdict.
-`research/APPROACHES.md`'s `refuted` and `spent` are absorbing states nothing
+`derived/APPROACHES.md`'s `refuted` and `spent` are absorbing states nothing
 revisits.
 
 **Build:** before the refuter writes its verdict, one further question — what is
@@ -120,7 +132,7 @@ discharges no gap, and reads as unproductive to every derived ledger.
 
 **Build:** *not* a higher threshold — that spends more budget on the same
 measurement. A distinct outcome: an attempt that added definitions or worked
-examples without moving the goal is recorded as such, and `research/THREADS.md`
+examples without moving the goal is recorded as such, and `derived/THREADS.md`
 is where it shows. Whether it should reset `unproductive` is the real design
 question and should be decided the way `BANKED` was: honoured only against
 something read off disk, so it cannot be asserted into existence.
@@ -147,7 +159,7 @@ and reports standing. It walks depth and discards it, so a claim established at
 depth twelve and one established at depth one render identically.
 
 **Build:** carry a maximum depth along the same walk that already folds standing
-as a minimum. Render it beside the claim in `research/ENTAILMENT.md`.
+as a minimum. Render it beside the claim in `derived/ENTAILMENT.md`.
 
 **Cost:** very small — one accumulator on an existing fixed-point walk.
 
@@ -284,7 +296,7 @@ argues for publishing the infrastructure *ahead of* the theorem, in terms that
 do not mention the motivating problem (`05`§B2). Erdős's catalogue is the same
 thing with status and price attached (`02`§A6).
 
-**Gap:** `research/BACKWARD.md` gaps already carry `id`, `lemma`, `status` and a
+**Gap:** `derived/BACKWARD.md` gaps already carry `id`, `lemma`, `status` and a
 first move a `tool_builder` could run today — a publishable work item, inside a
 directory nothing outside the workspace reads.
 

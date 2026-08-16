@@ -1,5 +1,9 @@
 # Bad-prime-minors criterion verified for n=5 (rank-over-F_p route), with independent semantic route on small primes
 
+> **Library update (librarian cycle 2):** the degree-6 bad-prime list (53 primes, Castryck et al. 2012 Table 1) is now locally held in full at `research/sources/castryck2012_degree12_html.full.md` lines 149-175. The 53 primes: 2, 5, 7, 11, 13, 19, 23, 29, 37, 47, 61, 67, 73, 97, 257, 811, 983, 1069, 1087, 1187, 1487, 1499, 1901, 2287, 3209, 3877, 3881, 4019, 4943, 5471, 6983, 8699, 9337, 15131, 15823, 20771, 21379, 23993, 150203, 266587, 547061, 685177, 885061, 1030951, 7783207, 17250187, 40362599, 9348983563, 70016757407, 2610767527031, 225833117528659, 7390044713023799, 51313000813080529. Ground truth for a future computational cycle (n=6 minor/rank criterion is infeasible — see below — but a dedicated criterion computation could reproduce or refine this list).
+
+> **Deg-6 explicit witness (Graf von Bothmer et al 2007, Remark 3.2, source-line 199):** the quadrinomial P = X^6 + 3144481702696843 X^4 + X^3 + 2707944513497181 X^2 is a CA counterexample in characteristic 7390044713023799, even though CA holds for d=6 over Q. The prime 7390044713023799 is already in Castryck Table 1 line 187 and Chellali-Salinier line 591; the new source contributes the *explicit polynomial* that realises it. Recorded here as a candidate negative control for the oracle (Hasse-CA and not a pure power over F_p).
+
 Follows the n=4 verification (research/notes/badprimes-criterion-n4-n20.md).
 Two independent routes, both exit 0.
 

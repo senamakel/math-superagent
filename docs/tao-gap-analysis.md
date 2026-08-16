@@ -30,15 +30,15 @@ change is described at the end.
 | Cheap tools first, the expensive reasoner last | `04` R5, EQT's 22M → ~1,000 | An attempt is a model call that may delegate. No ladder, no cost-per-subgoal instrumentation | Absent |
 | Prove and disprove concurrently; look for the counterexample first | `01`§10, `04` R11, EQT's 13.6M | Four proving roles, all delegated *to*, none scheduled *against* the statement | **[closed]** |
 | Propagate every established fact through the entailment relation before scheduling new work | `04` R5b (~37× in EQT) | `search_claims` retrieved; nothing closed the claim set under implication | **[closed]** |
-| Record which techniques are known not to apply to a subgoal | `01`§16, `04` R5c | `research/APPROACHES.md` closes a *route* with a reason; no per-subgoal immunity anything schedules on | Partly, unused |
+| Record which techniques are known not to apply to a subgoal | `01`§16, `04` R5c | `derived/APPROACHES.md` closes a *route* with a reason; no per-subgoal immunity anything schedules on | Partly, unused |
 | Check the literature *after* a solve — a short proof raises the prior it is known | `01`§19, `04` R33 | No post-solve check, and `open_library` returned *early* on a solve. Erdős #728 is the live example: an AI solution matching Pomerance 2014 | **[closed]** |
 | Fund the branch that is not currently winning | `02` F4 — Polymath8's real lesson | One line of attack; `diversify` fires only after two consecutive unproductive attempts | Absent |
 | Rewrite someone else's fresh proof in a cleaner formalism | `01`§—, `02` G1–G3 | No simplification mode. The librarian acquires, the scholar digests, nobody rewrites | Absent |
-| A statement DAG with a status lattice, worked against admitted siblings | `04` R2/R3, the Lean blueprint | `research/BACKWARD.md` was the closest thing and was a flat skeleton-plus-gaps, not a DAG | **[closed]** |
+| A statement DAG with a status lattice, worked against admitted siblings | `04` R2/R3, the Lean blueprint | `derived/BACKWARD.md` was the closest thing and was a flat skeleton-plus-gaps, not a DAG | **[closed]** |
 | Test whether a conjecture is *informative* before testing whether it is true | Graffiti's Dalmatian heuristic, `04` R28 | Nothing filtered a proposal against what the library already gives | **[closed]** |
 | A theorem given an assumed axiom is a conditional result, not a theorem | `01`§21–23, `04` R1, lean4checker | `lean_check` accepted any file that compiled and printed axioms — one `axiom` line passed every check | **[closed]** |
 | Numerics before theory | `01`§20, `04` R10 | The method policy's first step is a naive oracle, and `attempt_step` spawns it rather than asking. This one the runtime already does | Present |
-| Direction reaches a live run, queued, never a claim | `04` R20 | `./steer` → `config/directives.jsonl`, `director` denied `research/CLAIMS.md` | Present |
+| Direction reaches a live run, queued, never a claim | `04` R20 | `./steer` → `config/directives.jsonl`, `director` denied `derived/CLAIMS.md` | Present |
 | Declare the harness's knobs, and report the run even on failure | `04` §III.5 | Six of seven knobs map to files that exist. Attempts abandoned are not counted | Partly |
 | One monotone, legible statistic; watch for the Zeno regime | `01`§35, `02` F3 | The judge's 1–5 score is pushed to `state.scores` (`solutions_judging.rs:49`) and read by no code | **Unused** |
 | Modularise so no participant needs the whole argument | `01`§34, `02` F2 | Twenty-two tool-boundaried roles, enforced in code. The runtime's real strength | Present |
@@ -60,7 +60,7 @@ here were not missing capabilities but relations nothing had ever followed.
 
 ### The graph the ledgers already implied
 
-`research/BACKWARD.md` held every edge and drew none of them. A skeleton names
+`derived/BACKWARD.md` held every edge and drew none of them. A skeleton names
 its gaps and the claims it rests on; a gap is discharged by a claim or by
 another skeleton proving it outright. `blueprint.rs` follows those edges and
 answers three questions no single file could.
@@ -125,7 +125,7 @@ Rust ever invoked it: the only `#print axioms` and `sorry` references in the
 crate were prompt text and a test asserting that the *prompt* contains those
 rules (`orchestrator_roles_test.rs:94-97`). So the strongest artifact this
 runtime can produce and a sentence claiming that artifact were the same row in
-`research/CLAIMS.md`, and the ledger did not try to tell them apart.
+`derived/CLAIMS.md`, and the ledger did not try to tell them apart.
 
 That is this repository's own recurring failure — a prompt instruction is not a
 control — landing in the one place it costs the most. Tao's stated reason for
@@ -339,7 +339,7 @@ fastest results in `02`'s sample came from exactly this. It is a role and a
 prompt, and it is cheap — but it only pays once the librarian is reliably
 acquiring proofs worth rewriting, and on the runs measured so far it is not.
 
-**Techniques known not to apply, scheduled on.** `research/APPROACHES.md` closes
+**Techniques known not to apply, scheduled on.** `derived/APPROACHES.md` closes
 a route with a reason and nothing reads that reason when choosing the next one.
 Now that the entailment closure exists, the natural form of this is an edge in
 the same relation rather than a new ledger, which is a reason to wait rather
@@ -413,7 +413,7 @@ derived from it correctly: three lemmas ready to be picked up independently, the
 goal blocked on all three, which is the right shape for a problem whose whole
 difficulty is one summatory-totient evaluation. It also reported eleven edges
 resting on things that do not exist — on `is`, on `the`, on `covers`. Asked what
-its skeleton rested on, `reducer` had written `rests-on: none (research/CLAIMS.md
+its skeleton rested on, `reducer` had written `rests-on: none (derived/CLAIMS.md
 is empty; no claim in the ledger covers this)`, which is a good answer to the
 question and not a list, and `identifiers` split it on whitespace. The split is
 older than any of this work; the graph is simply the first thing that ever
@@ -427,7 +427,7 @@ splitter, which is how the shape rule announced that it was one rule doing two
 jobs.
 
 **The fourth bug is the one worth stating plainly: the closure could not have
-worked at all.** Eleven minutes in, the run derived `research/ENTAILMENT.md` and
+worked at all.** Eleven minutes in, the run derived `derived/ENTAILMENT.md` and
 it was empty — as it is over all eight committed workspaces, and for the same
 reason. No prompt in `src/prompts/` contained the string `follows-from`. The
 field was parsed, closed transitively, rendered, routed to three roles and

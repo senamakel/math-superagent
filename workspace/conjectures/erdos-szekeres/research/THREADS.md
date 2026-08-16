@@ -6,7 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[extremal-structure]] | What local/global structure is a 2^{n-2}-point set with no convex n-gon forced into, and how close must it be to the ES construction? | open | es61-lower-bound, es35-cups-caps-bound, ms-cups-caps-tight, baek-balko-split, baek-balko-decomposable, damasdi-saturation, ps-es6, ms-toth-valtr-bound, smqh-no-realizable-4fold-32-no7gon | (1) exhaustive line-split test of es_construct at n=5,6,7 (does ANY line split the 2^{n-2} construction into two (n-1)-avoiding halves? task… |
+| [[extremal-structure]] | What local/global structure is a 2^{n-2}-point set with no convex n-gon forced into, and how close must it be to the ES construction? | open | es61-lower-bound, es35-cups-caps-bound, ms-cups-caps-tight, baek-balko-split, baek-balko-decomposable, damasdi-saturation, ps-es6, ms-toth-valtr-bound, smqh-no-realizable-4fold-32-no7gon | (1) FIRST (steer 11): task `gsplit-enumeration-recheck` — one command, not another design pass. Phase 1 is done: the rotating-line enumerator… |
 
 ## Threads that could not be read
 
