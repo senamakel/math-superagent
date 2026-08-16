@@ -10,10 +10,21 @@ instead of a record. The catalogue above is what already exists; read it before
 you conclude something has nowhere to go.
 
 **The signal that a new one is warranted** is not a good idea for a category. It
-is that you are already writing the same *shape* of entry over and over into
-prose, or into a folder nobody designed, and nothing walks it. Three or four
-entries of one shape that a role will have to find again is the case. One is
-not.
+is that the same *shape* of entry is already being written over and over into
+prose, into a folder nobody designed, or into a Markdown list nobody walks.
+Three or four entries of one shape that a role will have to find again is the
+case. One is not. Two specific things to act on when you see them:
+
+- **A file that has become a list.** A workspace file carrying dozens of bullets
+  of the same shape — each with an id, a state, a reason — is a ledger somebody
+  is maintaining by hand. It has no bound, so it grows into every prompt that
+  carries it; nothing derives it, so nothing catches a row that contradicts
+  another; and closing an item means deleting it, which is how the record of
+  what was decided disappears. Declare the ledger, record the rows into it, and
+  the file becomes what it should have been.
+- **Somebody else saying so.** The curator reads the whole workspace and says
+  in the brief when it finds such a file. Nothing else in the run can act on
+  that but you.
 
 ```
 define_ledger { slug: "obstructions", title: "Obstructions",
