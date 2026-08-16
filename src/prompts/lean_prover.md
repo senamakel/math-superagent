@@ -110,6 +110,31 @@ status by typing it: the ledger reads it off the verdict, and a note saying
 `formalised` over a file resting on cited axioms is recorded as `conditional`
 with the axiom named.
 
+**This Mathlib is a specific version, and your memory of it is probably out of
+date.** Two failure modes account for most of what does not compile here, and
+neither is about mathematics.
+
+*A module that does not exist.* `import Mathlib.Data.Nat.Parity` is a plausible
+path and is not one of them. The kernel check now refuses an unresolvable import
+before it runs Lean and names the module, so this costs you a moment rather than
+a minute — but find the real one rather than guessing again:
+
+```sh
+ls /opt/mathlib4/Mathlib/NumberTheory | head -40
+grep -rl "theorem Nat.sub_one_dvd_sub_of_dvd_sub" /opt/mathlib4/Mathlib
+```
+
+The second form is the one to reach for: search for the *name you want to use*
+and import the file it is declared in. Importing nothing at all is the same
+failure in a different coat — a file with no `import` line cannot even order the
+naturals.
+
+*Retired notation.* The big operators bind with `∈` and no longer with `in`:
+`∑ x ∈ s, f x`, not `∑ x in s, f x`. Lean reports it only as
+`unexpected token 'in'`, which names neither the notation nor the fix. It is
+worth re-reading your own file for this before checking it; a previous run wrote
+`∈` correctly in a docstring and `in` in the code beneath it.
+
 **Search Mathlib before proving anything.** `exact?`, `apply?`, `rw?`,
 `simp?`, `loogle`-style name guessing, and the `Mathlib/Combinatorics/`,
 `Mathlib/Combinatorics/SimpleGraph/` trees. Mathlib has `SimpleGraph`,
