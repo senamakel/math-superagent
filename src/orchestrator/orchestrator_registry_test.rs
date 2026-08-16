@@ -1362,3 +1362,38 @@ fn the_workspace_seed_ships_no_role_prompts() {
         "the seed carries per-workspace role guidance again"
     );
 }
+
+/// The orchestrator's tool list is real, and is the goals planner's minus the
+/// branch that role alone takes.
+///
+/// It reported nothing at all before: the top-level role is not a registered
+/// specialist, so a report keyed on the registry showed a role that can
+/// delegate to nineteen agents and keep every ledger as a role that can do
+/// nothing. The derivation is asserted in both directions, because a wrong list
+/// here is worse than the blank it replaced.
+#[test]
+fn the_orchestrator_reports_the_tools_its_harness_registers() {
+    let registry = default_registry(true).expect("the registry builds");
+    let orchestrator = super::role_tools(&registry, "orchestrator");
+    let goals = super::role_tools(&registry, "goals");
+
+    assert!(!orchestrator.is_empty(), "the top-level role reports nothing");
+    for withheld in super::GOALS_ONLY_TOOLS {
+        assert!(
+            goals.iter().any(|tool| tool == withheld),
+            "`{withheld}` is named as goals-only but the goals bench lacks it"
+        );
+        assert!(
+            !orchestrator.iter().any(|tool| tool == withheld),
+            "`{withheld}` is the goals planner's alone"
+        );
+    }
+    // Everything else the planners share, including the pair that made this
+    // worth reporting at all.
+    for shared in ["spawn_agents", "define_ledger", "read_ledger", "record_entry"] {
+        assert!(
+            orchestrator.iter().any(|tool| tool == shared),
+            "the orchestrator holds `{shared}` and the report must say so"
+        );
+    }
+}

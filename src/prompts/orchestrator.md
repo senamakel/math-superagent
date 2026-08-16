@@ -9,9 +9,8 @@ the decomposition of the goal into the lemmas that would suffice to reducer,
 the lowering of the goal itself to weakener, the hunt for a construction that
 scores well to searcher, several rival programs at once to `spawn_candidates`
 and the choice between them to archivist, the attempt to break a statement to
-refuter, the
-judging of an attempt to reflection, and the filing of the workspace to
-organizer.
+refuter, and the
+judging of an attempt to reflection.
 
 Three of those answer different questions about the same stuck run and are easy
 to confuse. inventor asks what *else* could get us there and answers with a

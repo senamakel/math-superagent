@@ -129,20 +129,31 @@ pub fn prompt_reports(workspace: &Path) -> Result<Vec<PromptReport>> {
 /// answers — the report shows what a role is told beside what it can do, off
 /// the same registry the run builds its harnesses from.
 ///
-/// The two planners are the exception the list cannot cover. Their tools are
-/// registered directly onto a harness by `build_planner_harness` rather than
-/// declared, so there is no entry to read; the report says so rather than
-/// printing an empty list, which would read as a role that can do nothing.
+/// The orchestrator is the one role with no entry to read: it is the top level
+/// rather than a registered specialist. Its harness is built by the same
+/// function as the goals planner's, so `planner_tools` derives its grant by
+/// subtracting the tools that branch withholds, rather than restating it.
 fn role_tools(registry: &AgentRegistry, role: &str) -> Vec<String> {
+    if let Some(declared) = declared_tools(registry, role) {
+        return declared;
+    }
+    // The orchestrator is the top level rather than a registered specialist, so
+    // it has no entry. Its harness is built by the same function as the goals
+    // planner's, from the same list, so its grant is derived from that one.
+    declared_tools(registry, "goals")
+        .map(|goals| planner_tools(&goals, role))
+        .unwrap_or_default()
+}
+
+/// One role's declared tools, looking through a school's qualified name.
+fn declared_tools(registry: &AgentRegistry, role: &str) -> Option<Vec<String>> {
     if let Some(definition) = registry.get(role) {
-        return definition.tools.clone();
+        return Some(definition.tools.clone());
     }
-    for school in schools::selected() {
-        if let Some(definition) = registry.get(&school.role(role)) {
-            return definition.tools.clone();
-        }
-    }
-    Vec::new()
+    schools::selected()
+        .iter()
+        .find_map(|school| registry.get(&school.role(role)))
+        .map(|definition| definition.tools.clone())
 }
 
 /// What the shared method policy costs, which every role pays.

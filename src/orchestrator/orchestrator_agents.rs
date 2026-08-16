@@ -66,6 +66,44 @@ fn register_planners(
     ))
 }
 
+/// What [`build_planner_harness`] gives `goals` and withholds from the
+/// orchestrator.
+///
+/// The two planners are built by one function from one list, and the single
+/// `role == "goals"` branch below is the whole difference. Naming that branch's
+/// tools here lets the orchestrator's grant be *derived* — the goals
+/// definition, minus these — rather than written down a second time and left to
+/// drift from the harness that actually registers it. See [`planner_tools`].
+const GOALS_ONLY_TOOLS: [&str; 7] = [
+    "note_scratch",
+    "recall_scratch",
+    "post_board",
+    "spawn_candidates",
+    "list_attempts",
+    "attempt_diff",
+    "attempt_log",
+];
+
+/// The tools a planner holds, derived from the `goals` registry entry.
+///
+/// The orchestrator is the top level rather than a registered specialist, so
+/// nothing declares its tools and a report of them was blank — a role that can
+/// delegate to nineteen agents, keep every ledger and declare new ones, reading
+/// as a role that can do nothing. It is built by the same function as `goals`
+/// from the same list, so its grant is that role's minus
+/// [`GOALS_ONLY_TOOLS`], and that subtraction is the honest derivation rather
+/// than a second list.
+pub(super) fn planner_tools(goals: &[String], role: &str) -> Vec<String> {
+    if role == "goals" {
+        return goals.to_vec();
+    }
+    goals
+        .iter()
+        .filter(|tool| !GOALS_ONLY_TOOLS.contains(&tool.as_str()))
+        .cloned()
+        .collect()
+}
+
 /// Assembles one planner's harness: its delegation bench, the document tools,
 /// and both ways back into what the run already knows.
 fn build_planner_harness<const N: usize>(

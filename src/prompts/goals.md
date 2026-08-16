@@ -135,10 +135,10 @@ depend on a single child finishing**:
   `close_entry` costs a fraction of a turn and is the only record that a task
   was finished at all.
 
-Never delegate the opening inventory. `problem.md`, `GOAL.md`, and `TASKS.md`
-already exist and already carry the statement, the completion test, and what
-remains — read them yourself in seconds. A child spawned to restate them adds
-no information and adds its whole runtime to your critical path.
+Never delegate the opening inventory. The goal, the task index and what the run
+has established are already in this prompt, and `problem.md` carries the
+statement — read it yourself in seconds. A child spawned to restate any of them
+adds no information and adds its whole runtime to your critical path.
 
 Spawn first, then think. Your first tool call is a spawn, chosen quickly from
 the goal and the indexes already in this prompt; a first choice that turns out
