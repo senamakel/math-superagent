@@ -139,3 +139,42 @@ status: inference from the class characterization (bounded/congruence-normal pro
 bearing: refutes congruence-doubling-induction as a route to the general conjecture; leaves a bounded-lattice special case open
 anchor: https://link.springer.com/article/10.1007/BF01108710; https://doi.org/10.4153/cjm-1992-017-7; Nation Congruences of finite semidistributive lattices (2024)
 ```
+
+## 4. Forbidden-sublattice (N₅/M₃) lifting — lattice kernel
+
+The inventor's approach (research/approaches/forbidden-sublattice-lifting.md)
+rests on an explicit lattice kernel: that N₅ and M₃ each contain a
+join-irreducible whose principal filter has size ≤ 5/2, which the lift attempts
+to propagate to the whole lattice. I hand-verified this explicitly (script
+code/out/n5_m3_joinirreducible_check.py written for tool_builder confirmation).
+
+**M₃ (the diamond): kernel is CORRECT.** Each atom a,b,c has principal filter
+{a,1} of size 2 ≤ 5/2, and atoms are join-irreducible. Verified.
+
+**N₅ (the pentagon): kernel is WRONG as stated.** The inventor claims "N₅ has
+the join-irreducible b with |↑b| = 2". In fact, for the (unique) pentagon
+(0<a<c<1, 0<b<c<1, a∥b), the join-irreducibles are {a, b, 1} with filter sizes
+|[a)|=3, |[b)|=3, |[1)|=1. The only join-irreducible with |↑j| ≤ 5/2 is the top
+1̂ (filter 1, vacuous). The element c with |[c)|=2 is NOT join-irreducible
+(c = a∨b). So N₅'s *only* abundant join-irreducible is its top, whose filter is
+the whole copy — and lifting the top is trivial/meaningless. The M₃ half of the
+kernel survives; the N₅ half does not, and the "local abundant join-irreducible
+b of the N₅ copy" that the lift was supposed to propagate does not exist.
+
+```claim
+id: n5-m3-joinirreducible-filters
+statement: In the diamond M₃ each atom a has principal-filter size |[a)|=2 ≤ 5/2 (kernel confirmed). In the pentagon N₅ the join-irreducibles are {a,b,1̂} with filter sizes {3,3,1}; the only join-irreducible with |[j)| ≤ 5/2 is the top 1̂ (filter size 1, vacuous). The element c with |[c)|=2 is join-reducible (c=a∨b). Hence N₅ has no non-trivial abundant join-irreducible to lift; the inventor's claim "b with |↑b|=2" is false for any labelling of N₅.
+hypotheses: N₅, M₃ the standard pentagon/diamond lattices; [j)=principal filter
+holds-here: yes (this is the lattice-form kernel of the lift proposal)
+status: checked (hand-verified for both standard N₅ labellings; script written for mechanical confirmation)
+bearing: corrects the checkable kernel of forbidden-sublattice-lifting — the M₃ half stands, the N₅ half is refuted as stated
+anchor: code/out/n5_m3_joinirreducible_check.py (hand-derived, awaiting tool_builder confirmation)
+```
+
+This does not refute the *program* (lift an abundant join-irreducible from a
+sublattice copy), only the specific claim that N₅ supplies such a
+join-irreducible: a valid lift would have to start from M₃, or from a different
+choice of abundant join-irreducible in N₅ relative to the containing lattice.
+No published "forbidden-sublattice lifting of an abundant join-irreducible" for
+Frankl's/union-closed was found (searched N₅/M₃ lifting join-irreducible
+union-closed/UC).

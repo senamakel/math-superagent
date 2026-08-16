@@ -92,6 +92,23 @@ what would falsify it.
   `research/summaries/wikipedia-cc-system.md` (claims `fw-rank3-signotope-pseudoline`,
   `cc-system-axioms`).
 
+- **Splitting-line induction holds on the es_construct template through n=6,
+  fails at n=7. (checked, scoped strictly)** For the verified `es_construct`
+  ES construction (N = 2^{n-2} points, no convex n-gon), the rotating directed-line
+  enumeration (validated exactly against a 2^N convex-hull-separation oracle at
+  N=8,10,12,14,16: N(N-1) distinct open half-plane sides, zero missing/zero
+  extra) finds over all N(N-1) open half-plane bipartitions: splits into two
+  (n-1)-avoiding halves of size exactly 2^{n-3} **exist at n=5 (4) and n=6 (2)
+  and do NOT exist at n=7 (0)**. The n=5,6,7 counts were re-captured with full
+  provenance (`EXIT: 0`) on the validated enumerator. *Evidence:* computed and
+  checked, exact integer determinants. *Falsified by:* an exact orientation table
+  finding a valid split at n=7, or re-running the validated enumerator giving
+  different counts. **Scope: this template only, at these n.** It shows the
+  splitting-line induction f(n) ≤ 2f(n-1) succeeds on this construction for
+  n≤6 and fails on it at n=7 — NOT a statement about other extremal sets or the
+  general G-split lemma. `code/out/gsplit_phase2.captured.txt` (claim
+  `gsplit-enum-completeness-and-n7-zero`, status checked).
+
 ## Ruled out
 
 Approaches that failed, and the reason each failed — plus what is excluded from
@@ -111,6 +128,53 @@ counting as progress.
 - **Steering rule in force (steer 4): no new sources.** Phase 1's exit test is
   met; gathering is admissible only against a stated gap in
   `research/REQUESTS.md`. The pending computation must be run first.
+- **All earlier gsplit counts are SUPERSEDED (steer 10).** The
+  `gsplit_exhaustive.captured.txt` run was a shell error, not a result: its
+  command used `${PIPESTATUS[0]}` (a bash array) under `/bin/sh` and died
+  `exit: 2 ... Bad substitution`, so the script never re-ran. The operator's
+  recheck of the pair-line scheme on `es_construct` gives 50/222/946 distinct
+  bipartitions at n=5,6,7 — not the 57/241/993 the old capture reported — with
+  33-40 false positives per set. The pair-line enumeration is wrong in both
+  directions. The 6/4/2/0 valid-split decay and the un-provenanced
+  `gsplit_enum_definitive` capture are superseded too, pending the rotating-line
+  re-run (task `gsplit-enumeration-recheck`).
+
+### Steer 10 — the pair-line numbers were wrong in both directions; all prior gsplit counts superseded
+
+The operator's recheck of the pair-line scheme on `es_construct` produced
+50/222/946 distinct bipartitions at n=5,6,7 — not the 57/241/993 the original
+`gsplit_exhaustive.captured.txt` reported — with 33-40 false positives per set.
+The old numbers came from a different code path than the one in the file, and
+the pair-line enumeration is wrong in both directions. In addition, the
+`gsplit_exhaustive.py` capture was a shell error, not a run: its command used
+`${PIPESTATUS[0]}`, which is a bash array, under `/bin/sh` (dash), and died
+`exit: 2 ... Bad substitution` before the script executed.
+
+The executable core is unchanged in direction and is now the head of the queue:
+task `gsplit-enumeration-recheck` — (1) drop PIPESTATUS and all bashisms, capture
+as `cd /workspace && timeout 550 python code/out/X.py > code/out/X.captured.txt
+2>&1; echo EXIT: $?` (no pipe, no tee, no arrays); (2) replace
+`candidate_bipartitions` in `gsplit_exhaustive.py` with the rotating-line
+enumerator — for each point p, sort the other N−1 points by angle around p and
+sweep a directed line through p, N−1 bipartitions per p, N(N−1) total,
+O(N² log N), exhaustive by the rotation argument; (3) validate it element-wise
+against the 2^N disjoint-convex-hulls oracle at N=8,10,12,14,16 with zero missing
+and zero extra; (4) re-run n=5,6,7 fresh and treat that output as the only record.
+**(Superseded by steer 11: steps (2)–(3) are now accepted done; only the
+provenance re-capture in step (1)/(4) remains — see the next note.)**
+
+`code/out/gsplit_enum_definitive.py` already implements the rotating-line
+construction as `ordered_pair_sides` (ordered pairs + 4 boundary inclusions) and
+its Phase-1 capture shows the exact N(N−1)=56,90,132,182,240 match against the
+2^N oracle with 0 missing / 0 extra — that logic is reusable, but its capture
+lacks the command+exit line and it still repeats the stale 2·C(N,2)+1 pair-line
+claim, so it must be re-captured under the safe command. The stale files
+`gsplit_enum_validate.py` / `gsplit_enum_recheck.py` disagree with each other and
+must not be cited again (see `gsplit_enum_definitive_claim.md`).
+
+### Steer 11 — Phase 1 accepted done; remaining work is one provenance re-capture
+
+The operator accepted Phase 1 of the rotating-line enumerator: `code/out/gsplit_enum_definitive.py` matches the 2^N disjoint-convex-hulls oracle exactly at N=8,10,12,14,16 — zero missing, zero extra, count N(N−1). That part needs nothing further. What remains is one command, not another design pass: re-capture the n=5,6,7 split counts with provenance into `code/out/gsplit_phase2.captured.txt` (the exact command is in the Gaps head-of-queue note and in task `gsplit-enumeration-recheck`), then — if it reproduces 4 splits at n=5, 2 at n=6, 0 at n=7 — promote `gsplit-enum-completeness-and-n7-zero` to checked for the split counts, retire `gsplit-exhaustive-esconstruct` pointing at the new capture, and write the scoped Established finding. If it does not reproduce, report the new numbers plainly. Do not start another enumerator.
 
 ## Numbers
 
@@ -145,28 +209,37 @@ before relying on any cross-run finding.
 
 What the run still needs and has not found.
 
-- **STEERING — scored program search is now the head of the queue (steer 6).**
-  The work to do next is the scored search under `code/search/es-nogon`: tool_builder
-  writes `PROBLEM.md` + `score.py` against the VERIFIED `lib.es_geom` orientation
-  predicate (the searcher must NOT write the scorer); run the k=6 rung first and
-  confirm it caps at exactly 16 before touching k=7; then run ≥50 k=7 candidates
-  and report the score distribution, which constraint binds, and whether the top
-  score is believed. 32 reproduces the known `es_construct` construction; 33+
-  refutes ES(7)=33 and must be re-verified independently before being reported.
-  The pending `gsplit_exhaustive.py` capture and the construction quarantine /
-  layer-profile conjecture remain queued behind it, not abandoned.
+- **STEERING — head of queue (steer 11): re-capture gsplit Phase 2 with
+  provenance; one command, no further design pass.** Task
+  `gsplit-enumeration-recheck`: Phase 1 is accepted done — the rotating-line
+  enumerator (`code/out/gsplit_enum_definitive.py`) matches the 2^N disjoint-
+  hulls oracle exactly at N=8,10,12,14,16 (zero missing, zero extra, count
+  N(N−1)). Run exactly, with no pipe/tee/arrays:
+  `cd /workspace && { echo "$ python code/out/gsplit_enum_definitive.py"; timeout 550 python code/out/gsplit_enum_definitive.py; echo "EXIT: \0"; } > code/out/gsplit_phase2.captured.txt 2>&1`
+  and read the capture back. If it reproduces 4 splits at n=5, 2 at n=6, 0 at
+  n=7: promote `gsplit-enum-completeness-and-n7-zero` to checked for the split
+  counts too, retire `gsplit-exhaustive-esconstruct` pointing at
+  `code/out/gsplit_phase2.captured.txt`, and write the scoped Established finding
+  (below). If it does NOT reproduce, say so plainly and give the new numbers.
+  Do not start another enumerator. Only after it passes: the scored search under
+  `code/search/es-nogon` (steer 6) — tool_builder writes `PROBLEM.md` +
+  `score.py` against the VERIFIED `lib.es_geom` orientation predicate, k=6 rung
+  caps at exactly 16 before k=7, then ≥50 k=7 candidates; 32 reproduces
+  `es_construct`, 33+ refutes ES(7)=33 and must be re-verified independently.
+  The construction quarantine / layer-profile conjecture stays queued behind it.
 
-- **Exhaustive line-split test of es_construct (task `gsplit-exhaustive-line-test`).**
-  `gsplit_line.py` checked only the even/odd block bipartition (each half is
-  2^{n-3} and (n-1)-avoiding at n=5,6,7, but NOT strictly line-separable) — a
-  dead guess, not an obstruction. Open: does ANY line split the verified
-  `es_construct` set into two (n−1)-avoiding halves at n=5,6,7? Starter
-  `code/out/gsplit_exhaustive.py` is written but **its run is not yet captured**;
-  verify its bipartition enumeration (C(N,2) pair-lines × on-line assignments)
-  before trusting its output. An empty result would rule out the split reduction
-  `f(n) <= 2f(n-1)` for THIS construction at THESE n — not for all extremal sets.
-  State in `code/out/gsplit_state.md` (claims `gsplit-even-odd-not-line-separable`,
-  `gsplit-exhaustive-pending`).
+- **gsplit split counts 4/2/0 at n=5/6/7 — pending the steer-11 provenance
+  re-capture.** The earlier 6/4/2/0 decay and 57/241/993 / 50/222/946 counts are
+  superseded (steer 10: pair-line enumerator wrong in both directions, and the
+  old capture was a shell error). Phase 1 of the rotating-line enumerator is now
+  accepted done (exact N(N−1) oracle match at N=8..16, zero missing/extra). What
+  remains is the single provenance re-capture (task `gsplit-enumeration-recheck`)
+  that must reproduce 4 splits at n=5, 2 at n=6, 0 at n=7 before those split
+  counts are promoted to checked. Claims `gsplit-even-odd-not-line-separable`
+  and `gsplit-exhaustive-esconstruct` (in `code/out/gsplit_exhaustive_claim.md`)
+  carry superseded counts; `gsplit-exhaustive-esconstruct` is to be retired
+  pointing at the new `code/out/gsplit_phase2.captured.txt` anchor on
+  reproduction.
 - **Balko–Valtr SAT encoding still only at DOI/abstract.** Needed to reproduce
   ES(5)=9 / ES(6)=17 with our own encoder. Filed as `balko-valtr-attack-baa4` in
   `research/REQUESTS.md`.

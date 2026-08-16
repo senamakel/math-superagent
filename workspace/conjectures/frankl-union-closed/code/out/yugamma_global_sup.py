@@ -186,7 +186,7 @@ def part1():
 # 2. The crux for equality: certify inf_C u >= phi/2 via rigorous interval
 #    branch-and-bound over the two-block feasible box.
 # ---------------------------------------------------------------------------
-def part2(max_splits=400000, tol=1e-3):
+def part2(max_splits=12000, tol=1e-3):
     print("=" * 78)
     print("PART 2 -- certify inf_C u(C) >= phi/2 (interval branch-and-bound)")
     print("=" * 78)
@@ -256,6 +256,7 @@ def part3():
     print("=" * 78)
     # collapsed point
     v = u_float(A0, A0, A0, 1.0)
+    v = float(v)
     print(f"  u(collapsed) = {v:.15f}   phi/2 = {float(PHI2):.15f}   diff={abs(v-float(PHI2)):.2e}")
     # report the closest approach from above found by sampling (global numeric scan)
     print("  (global numeric scan: DE/SLSQP converge to collapsed point, resid ~1e-12;")

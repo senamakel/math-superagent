@@ -1,36 +1,43 @@
-# Vaughan, "Families Implying the Frankl Conjecture" (EJC 2002)
+# Vaughan, "Families implying Frankl's conjecture" — arXiv ID WRONG (defective)
 
-## Status: NOT OBTAINABLE — record only
+## This file does NOT contain Vaughan's union-closed paper
 
-This file documents an attempted library addition that failed, so nobody repeats the attempt.
+The local body `research/sources/vaughan-families-implying-frankl-2002.full.md`
+was downloaded as arXiv:math/0208012 but is actually:
 
-**Citation:** Theresa P. Vaughan, "Families implying the Frankl conjecture,"
-*European Journal of Combinatorics* 23(7) (2002), 851–860. DOI: 10.1006/eujc.2002.0586.
+> *"Anchored vector bundles and algebroids"* — a **differential-geometry** paper
+> (arXiv:math/0208012v1, math.DG, 02 Aug 2002).
 
-**What was attempted:**
-- DOI `https://doi.org/10.1006/eujc.2002.0586` → resolves to a redirect stub (107 bytes,
-  "Redirecting"), not the paper. Elsevier EJC 2002 content is paywalled.
-- Open-archive search (sci-hub and academia excluded) found no freely accessible PDF:
-  no arXiv preprint, no author-hosted copy (Vaughan has no public archive hosting this paper).
-- Exa classified the paper under extremal set theory (05D05); MaRDI/zbMATH records confirm
-  the bibliographic identity but provide no full text.
+The union-closed paper *Vaughan, "Families implying the Frankl conjecture",
+European J. Combin. 23 (2002)* is **not on arXiv**, and its body is paywalled.
+The file carries a loud defective marker at line 1.
 
-**What is known from secondary records (zbMATH abstraction, quoted via MaRDI):**
-The paper introduces **FC(n)-families**: a collection B of n-element sets such that any
-union-closed family A containing B has some element of ∪B present in at least half of A's
-members. A *proper* FC(n)-family contains no FC(m)-family for m < n. Vaughan constructs
-proper FC(n)-families for n = 5, 6, 7, building on Poonen's results.
+## Impact
 
-**Why it matters (so the record is not a dead end):**
-Pulaj's cutting-planes paper (already held, `research/sources/pulaj-cutting-planes-2017.full.md`)
-states that the corrected Poonen Theorem 1 condition `B⊎A ⊆ B` (containment) is "an equivalent
-condition we find in Vaughan [19]" — the citation for this EJC paper. So Vaughan [19] is the
-carrier of the corrected hypothesis, which Poonen's own errata (also held, now) confirms.
+- **No load-bearing claim anchors here.** The genuine Vaughan content (which
+  3-set families imply UC) is carried by **Morris (math/0702348)**,
+  **Poonen's errata**, **Pulaj**, and the **Bruhn–Schaudt survey** — all real
+  bodies on disk.
+- ROOT.md's small-set row does not cite this file for a specific new claim, so
+  the defect is a mislabeled body on disk, not a corrupted established result.
 
-**If the full text is needed later:** try Interlibrary Loan, or the JSTOR/Cambridge
-aggregations; or rely on the secondary statement in `pulaj-cutting-planes-2017.full.md`
-(theorem statement and condition) and in `morris-fc-families-2007.full.md` (which quotes
-Poonen's Theorem and Vaughan's FC machinery).
+## Verdict: this source does not help
 
-This is a **record of an unobtainable source**, not a claim about UC. It establishes no
-theorem; do not cite it as a source of any result.
+Do not re-read `vaughan-families-implying-frankl-2002.full.md` and do not
+re-attempt downloading Vaughan's paper from arXiv:math/0208012 — that ID is the
+wrong paper. If Vaughan's 3-set-families implications are needed, source them
+from Morris / Pulaj / the survey.
+
+```claim
+id: vaughan-file-is-defective
+statement: the local 'vaughan-families-implying-frankl-2002' body is NOT
+  Vaughan's union-closed paper; arXiv:math/0208012 is 'Anchored vector bundles
+  and algebroids' (differential geometry). Vaughan's actual 3-set-families work
+  lives in Morris/Pulaj/the survey.
+hypotheses: none
+holds-here: n/a
+status: defect recorded
+bearing: prevents re-reading this mislabeled file; routes Vaughan content to
+  the genuine carriers
+anchor: research/sources/vaughan-families-implying-frankl-2002.full.md line 1
+```

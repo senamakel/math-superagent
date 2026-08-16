@@ -116,12 +116,16 @@ hypotheses: Gamma is the collinearity graph of a partial quadrangle / generalize
   implies Gamma = PQ(2,6,2) collinearity graph.
 holds-here: yes (99 is diamond-free, so it is a PQ collinearity graph, so it
   must satisfy the 5-vertex condition)
-status: asserted (the PQ 5-vertex part is asserted in the survey, no proof named;
-  the GQ part is cited to Reichard [31])
+status: sourced (primary proof now in library: Pech, "On highly regular strongly
+  regular graphs", Algebraic Combinatorics 4 (2021) no. 5, pp. 843-878, doi
+  10.5802/alco.183 — point graphs of partial quadrangles satisfy the 5-vertex
+  condition; GQ(q,q^2) point graphs are (3,7)-regular, strengthening Reichard's
+  7-vertex result). Previously asserted-by-survey only.
 bearing: Makes the 5-vertex condition a NECESSARY condition on a hypothetical
   srg(99,14,1,2) -- the first hierarchy rung the non-rank-3 99-graph does not get
   for free. Both controls (rook, BvLS) are rank-3 PQs, so pass trivially: the
   admissibility step (must break on 9 and 243) is absent by construction.
-anchor: research/sources/brouwer-ihringer-kantor-4vertex-condition.full.md
+anchor: research/sources/brouwer-ihringer-kantor-4vertex-condition.full.md;
+  research/sources/pech-highly-regular-alco.full.md; research/summaries/pech-highly-regular-alco.md
 answers: pq-5vertex-condition-requirement
 ```

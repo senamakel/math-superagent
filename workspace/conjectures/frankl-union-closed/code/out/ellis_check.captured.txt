@@ -1,0 +1,6 @@
+x = 0.3
+Prob[1 in A] = 1/2  Prob[2 in A] = 1/2
+q distribution: {0: 0.09, 1: 0.16, 2: 0.16, 3: 0.59}
+LHS (direct)   = -0.04679700005769272
+LHS (closed)   = -0.046797000057692495
+ALL CHECKS PASS: marginals = 1/2, LHS < -0.04

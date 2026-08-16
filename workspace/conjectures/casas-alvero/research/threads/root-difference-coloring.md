@@ -1,39 +1,53 @@
-# Thread: root-difference-coloring first step
+# Thread: root-difference-coloring — char-p collapse mechanism resolved
 
 ```thread
-question: Does the root-difference identity H_i(f)(x) = e_{n-i}(x-beta_1,...,x-beta_n)
-      and the resultant form R_i = prod_beta H_i(f)(beta) hold exactly, and where
-      does the collapse argument break in characteristic p?
+question: Where does the root-difference-coloring collapse step break in
+      characteristic p, and is that the whole of the admissibility test?
 status: open
-rests-on: root-difference-coloring (adopted approach), hasse-vs-ordinary (dead),
-      polstra-convex-hull, ghosh-complete-intersection
-next: EXECUTE code/rootdiff/verify_rootdiff_identity.py (directive 7, no rewrite) with
-      a tool_builder/coder executor and capture to code/out/rootdiff_identity.captured.txt —
-      the capture does not exist yet and is the gate on everything else. Report the
-      verdict on identities (A) H_i(f)(x)=e_{n-i}(x-beta_*) and (B) R_i=prod_beta H_i(f)(beta)
-      over QQ (n=4,5,6) and F_p (n=p+1, p=2,3,5) against the script docstring's failure
-      criterion verbatim; then run the char-p break test and name the step that breaks.
+rests-on: root-difference-identity (proved char-free,
+      research/notes/root-difference-identity-verified.md),
+      gvb-coefficient-descent-charp (this note),
+      hasse-vs-ordinary (dead), polstra-convex-hull-theorem
+next: The char-p break is now NAMED at the pivot level (coefficient descent,
+      stops where the first pivot (d choose d-1) = d is not 0 mod p, i.e. the
+      witness degree d = p+1). What remains open is the CHAR-0-only ingredient
+      to collapse the degrees between the p^k grid — the convex-hull /
+      Gauss-Lucas propagation — and whether it can be made to force collapse
+      at d = p+1. Test the descent pivot boundary against the bad-prime lists
+      (binomial criterion, n=3,4,5 calibrated in badprimes-criterion-n5.md),
+      and confirm (d choose i) ≡ 0 mod p for all 1<=i<=d-1 at d=p^k with
+      code/scholar/descent_check.py (written, awaiting execution).
 ```
 
-## Findings (on paper)
+## Findings
 
-1. **The identity holds, and is a tautology.** H_i(f) = [t^i] f(x+t) = e_{n-i}(x-beta_*)
-   because the coefficient of t^i in prod_j((x-beta_j)+t) is the elementary
-   symmetric polynomial (its definition). R_i = prod_beta H_i(f)(beta) with
-   c_n = 1 is the resultant-norm identity for monic f. Char-free. See
-   research/notes/root-difference-identity-verified.md.
+1. **The identity holds and is a tautology, char-free** (already recorded in
+   `root-difference-identity-verified.md`): `H_i(f)(x) = e_{n-i}(x-beta_*)`,
+   `R_i = prod_beta H_i(f)(beta)`, valid over any commutative ring.
 
-2. **Char-p break located, precisely.** For the witness x^{p+1}-x^p over F_p:
-   H_1 = x^p, H_i = 0 for 2 <= i <= p-1 (Lucas), H_p = x-1. Consistent 2-root
-   coloring (0 witnesses i<p, 1 witnesses i=p) survives. The break is the
-   collapse step: per-color vacuity (H_i = 0 removes constraints) plus no
-   F_p analogue of the Polstra/Gauss-Lucas convex-hull propagation.
+2. **The char-p collapse is NOT absent — it is coefficient descent.**
+   Graf von Bothmer et al 2007 (Props 2.5, 2.6, Lemma 2.4) prove X_{p^k}(Fbar_p)
+   and X_{2p^k}(Fbar_p) are empty: since `(d choose i) ≡ 0 mod p` for all
+   `1<=i<=d-1` when `d = p^k`, `P_{d-1} = a_1` forces `a_1=0`, then `P_{d-2}=a_2`
+   forces `a_2=0`, ... and the descent collapses all coefficients to 0.
 
-3. **Correction:** the approach file's "degenerate for i >= p" is the ordinary
-   derivative story; for Hasse derivatives of the witness it is {2,...,p-1}.
+3. **The break is the first pivot `(d choose d-1) = d ≡ 0 mod p`.** At the
+   witness degree `d = p+1`, `(p+1 choose p) = p+1 ≢ 0 mod p`, so the descent
+   never starts and `x^{p+1} - x^p` survives. This corrects the earlier claim
+   that "the convex-hull propagation has no F_p analogue" — the F_p collapse
+   exists and is coefficient descent; the char-0-only piece is confined to the
+   convex-hull/Gauss-Lucas propagation between the p^k grid.
 
-## Remaining gap
+4. **Remaining open gap (unchanged in substance):** the char-0 collapse at
+   `d = p+1` — forcing all roots to coincide via the convex-hull propagation
+   that has no F_p analogue. This is the conjecture to establish for small n
+   (5, 6) before any claim to n=20. The char-p break is now named at the tuple
+   level; that is what GOAL.md's admissibility test requires.
 
-The collapse step itself — "the e_{n-i} = 0 colorings force all n roots to
-coincide in char 0" — is the conjecture to establish for small n (5, 6) before
-any claim to n = 20. Not yet attacked.
+## Blocked-by / next-step
+
+- Resolve `code/scholar/descent_check.py` (confirm the binomial-descent
+  hypothesis at p^k). Then test the pivot boundary `p | (d choose d-1)` against
+  the bad-prime lists to confirm the correspondence "p ∤ d ⇒ witnesses exist"
+  holds at the small degrees where the bad lists are known, and mark the
+  approximation `p^k`/`2p^k` grid vs `p+1` gap.

@@ -1,0 +1,29 @@
+{"id": "c0000", "island": 0, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0001", "island": 1, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0002", "island": 2, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0003", "island": 3, "reason": "INVALID: legacy in-module main(), no module-path params, rejected"}
+{"id": "c0004", "island": 0, "reason": "INVALID: diagnostic probe, no readable params"}
+{"id": "c0005", "island": 1, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0006", "island": 2, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0007", "island": 3, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0008", "island": 0, "reason": "INVALID: legacy in-module main(), no module-path params, rejected"}
+{"id": "c0009", "island": 1, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0010", "island": 2, "reason": "INVALID: malformed (IndentationError), not a candidate"}
+{"id": "c0016", "island": 0, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0017", "island": 1, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0018", "island": 2, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0019", "island": 3, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0020", "island": 0, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0021", "island": 1, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0022", "island": 2, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0023", "island": 3, "status": "SCORE", "score": "0.3823435642"}
+{"id": "c0024", "island": 0, "reason": "INVALID: certified score 0.3823610000 above proved ceiling t_hat_max (missing-inf artifact)"}
+{"id": "c0025", "island": 1, "reason": "INVALID: certified score 0.3823610000 above proved ceiling t_hat_max (missing-inf artifact)"}
+{"id": "c0026", "island": 2, "reason": "INVALID: certified score 0.3824280000 above proved ceiling t_hat_max (missing-inf artifact)"}
+{"id": "c0027", "island": 3, "reason": "INVALID: certified score 0.3825300000 above proved ceiling t_hat_max (missing-inf artifact)"}
+{"id": "c0028", "island": 0, "reason": "INVALID: certified score 0.3826835000 above proved ceiling t_hat_max (missing-inf artifact)"}
+{"id": "c0029", "island": 1, "reason": "INVALID: certified score 0.3828830000 above proved ceiling t_hat_max (missing-inf artifact)"}
+{"id": "c0030", "island": 2, "reason": "INVALID: certified score 0.3838000000 above proved ceiling t_hat_max (missing-inf artifact)"}
+{"id": "c0031", "island": 3, "reason": "INVALID: certified score 0.3859550000 above proved ceiling t_hat_max (missing-inf artifact)"}
+{"id": "c0032", "island": 0, "reason": "INVALID: certified score 0.3937600000 above proved ceiling t_hat_max (missing-inf artifact)"}
+{"id": "c0033", "island": 1, "reason": "INVALID: degenerate-atom a=0.01 < A_FLOOR=0.1 (small-a hole)"}

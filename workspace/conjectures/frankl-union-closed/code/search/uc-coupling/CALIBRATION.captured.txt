@@ -1,0 +1,43 @@
+CALIBRATION — code/search/uc-coupling/score.py
+HARNESS-CONTRACT CALIBRATION (module-path form — the ONE argument the harness makes)
+
+Ran:    python3 score.py candidates/c0009.py              <- REAL harness invocation
+Oracle: score.main() -> parse_args(module-path) -> gamma_hat_at() (rigorous
+        mpmath.iv interval eval of g(P_pq,alpha)/E h(p) over the t-grid).
+        Candidate params read FROM THE MODULE (c0009.py exposes lowercase
+        alpha/a1/a2/b1/b2; Yu's certified witness).
+Range:  alpha=0.035, a1=a2=b1=0.3300622, b2=1.0 (Yu certified witness);
+        t-grid N=20000 points in (a, min(b,1/2)] = (0.3300622, 0.5],
+        beta=(t-a)/(b-a); certified t = largest grid t with Gamma_hat interval
+        lower endpoint >= 1. precision mp.prec=160.
+Target: certify at least t=0.38234 with Gamma_hat(0.38234) lower >= 1.00000889.
+
+=== RESULT (captured from the real harness call) ===
+SCORE: 0.3823435642
+Gamma_hat[cert=0.3823435642] = [[1.0000030850798873328, 1.0000030850798873328], [1.0000030850798919957, 1.0000030850798919957]]
+certified lower endpoint = [1.0000030850798873328, 1.0000030850798873328]
+binding = Gamma_hat(t)>=1 boundary
+frontier: certified t must stay <= ~0.3823455 (proved ceiling t_hat_max; Yu witness 0.38234 / Cambie 0.3823455334)
+
+Gamma_hat[0.38234] (reference-t margin, ref_line) = lower 1.00000889 OK — the
+interval lower endpoint at Yu's certified t=0.38234 stays >= 1.00000889.
+
+=== LESSON ===
+The scorer MUST be calibrated through the call the harness actually makes
+(`python3 score.py candidates/<id>.py`, ONE module-path argument), never by
+the old five-positional-float form. The earlier CALIBRATION invoked the
+five-argument form, which is why a scorer that the searcher could not call
+still passed calibration. The module-path form is what c0009/c0000/c0001 now
+use; Yu's 0.38234 still certifies (SCORE: 0.3823435642), so the fix did not
+break calibration.
+
+=== OLD INTERFACE SELF-TESTS (kept for the constraint checks; the interface
+form is historical, the constraint semantics are unchanged) ===
+--- alpha out of [0,1] ---
+INVALID: alpha out of [0,1], alpha=1.5
+--- a>=b ---
+INVALID: need a<t<b (0<=a<b<=1) for beta=(t-a)/(b-a); a=0.40000000000000002, b=0.29999999999999999
+--- min(b,1/2)<=a ---
+INVALID: no feasible t: min(b,1/2)=0.5 <= a=0.90000000000000002
+--- E h(p)=0 ---
+INVALID: E h(p) <= 0 on the whole feasible range (no interior atom)

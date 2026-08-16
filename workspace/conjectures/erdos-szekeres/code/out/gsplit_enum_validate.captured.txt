@@ -1,0 +1,21 @@
+N=3 triangle open sides: 6  (expect 6: 3 singles + 3 pairs)
+N=4 convex quad open sides: 12  sizes: [1, 2, 3]
+
+triangle N=3: oracle open-sides=6 pair-line distinct(nontrivial)=5
+  pair-line missing any genuine open side? True  (1)
+  pair-line extras (not genuine)? False (0)
+
+convex quad N=4: oracle open-sides=12 pair-line distinct(nontrivial)=10
+  pair-line missing any genuine open side? True  (2)
+  pair-line extras (not genuine)? False (0)
+
+quad+1 interior N=5: oracle open-sides=16 pair-line distinct(nontrivial)=20
+  pair-line missing any genuine open side? True  (2)
+  pair-line extras (not genuine)? True (6)
+
+=== random general-position sets, N=8..16 ===
+N=8: oracle=56 pairline_nz=52 2*C(N,2)+1=57 missing=4 extra=0
+N=10: oracle=90 pairline_nz=86 2*C(N,2)+1=91 missing=4 extra=0
+N=12: oracle=132 pairline_nz=130 2*C(N,2)+1=133 missing=2 extra=0
+N=14: oracle=182 pairline_nz=175 2*C(N,2)+1=183 missing=7 extra=0
+N=16: oracle=240 pairline_nz=232 2*C(N,2)+1=241 missing=8 extra=0

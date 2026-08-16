@@ -20,9 +20,19 @@ states these fall into "two families of strongly regular graphs with the
 
 - Full text is paywalled (ScienceDirect/Springer). Obtained: abstract +
   surrounding citation context only. OpenAlex id W2919508139 (2012).
-- Related projective-type results: an STS block graph satisfies the 4-vertex
-  condition for STS arising from points/lines of PG(n,2) and several PG(n,q)
-  constructions (Higman; the "highly regular SRG" literature).
+- EXACT classification now pinned by a source already in the library:
+  Brouwer–Ihringer–Kantor, "Strongly regular graphs satisfying the 4-vertex
+  condition" (arXiv 2107.00076, full text held), §3.4 "Block graphs of Steiner
+  triple systems": Higman [14] found an STS(v) whose block graph satisfies the
+  4-vertex condition is either a projective space PG(m,2) or has v ∈ {9,13,25};
+  [25] rules out 13 and 25, leaving only the affine plane AG(2,3). All examples
+  are rank 3. These are the block graphs G(B) (vertices = blocks of the STS),
+  srg(v(v−1)/6, 3(v−3)/2, (v+3)/2, 9) — not the collinearity graphs. For PG(m,2)
+  (v = 2^m−1) and AG(2,3) (v = 9), neither block-graph parameter set is the
+  (99,14,1,2) spectrum, and no rank-3 graph can be srg(99,14,1,2) (which has
+  |G| constrained tiny / would need Aut large enough for rank-3). This is
+  exactly the content BLÖ's "two families" abstract gestures at; it concerns
+  GENUINE STS block graphs.
 - The run already holds the BvLS graph as the BvLS STS block graph at 243 and
   rook(3)=PG(2,3)"[partial] grid" at 9 — the two existing members of the family.
 
@@ -73,19 +83,23 @@ anchor: research/summaries (Kaski-Östergård 2004; Heinlein-Östergård 2023),
 ```claim
 id: sts-4vertex-two-families
 statement: The Steiner triple systems whose block graphs satisfy the 4-vertex
-  condition fall into two families of strongly regular graphs
-  (Behbahani-Lam-Östergård 2012, JCTA 119). The 99 triangle geometry is a
-  *partial* STS, so it escapes this STS classification; but if it were a
-  genuine STS its block graph srg(99,14,1,2) would have to be in one of the
-  two 4-vertex SRG families, which have spectra other than (3^54,-4^44).
-  The partial case is not settled by this.
+  condition are exactly those from PG(m,2), the affine plane AG(2,3), and
+  (ruled out) STS(13), STS(25) — i.e. Higman's classification with 13 and 25
+  eliminated; all are rank-3 block graphs (Behbahani-Lam-Östergård 2012
+  abstract "two families"; the precise list is Brouwer-Ihringer-Kantor §3.4).
+  These are the *block* graphs (vertices = blocks of the STS, srg(v(v−1)/6,
+  3(v−3)/2, (v+3)/2, 9)), NOT the collinearity graph. The 99 triangle geometry
+  is a *partial* STS, so it escapes this STS classification; and no member of
+  the classified STS block-graph list has the (99,14,1,2) collinearity
+  spectrum. The partial case is not settled by this.
 hypotheses: block graph is the collinearity graph of the (partial) STS.
 holds-here: yes — a constraint on the geometry, not a rule-out.
-status: sourced (abstract only; full text paywalled). Marked partial — the
-  exact two families and spectra are not yet read.
-bearing: structural input to the design-theoretic attack; flags that a genuine
-  STS realization at 99 is excluded but a partial one is not.
-anchor: DOI 10.1016/j.jcta.2012.03.013 abstract (read via read_sources).
+status: sourced (BIK full text §3.4, held in library; BLÖ 2012 abstract).
+bearing: the "two families" of BLÖ are now pinned exactly (PG(m,2) block
+  graphs + AG(2,3)); the partial-STS 99 geometry escapes it, confirming the
+  design-theoretic route must be partial-STS-specific, not genuine-STS.
+anchor: research/sources/brouwer-ihringer-kantor-4vertex-condition.full.md
+  §3.4 (lines 225-233); DOI 10.1016/j.jcta.2012.03.013 abstract.
 ```
 
 ## What would settle more

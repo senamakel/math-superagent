@@ -1,0 +1,47 @@
+ROOT-DIFFERENCE IDENTITY — FIRST-STEP VERDICT (directive 7 execution)
+program: code/rootdiff/verify_rootdiff_identity_corrected.py (NOT the as-is
+  code/rootdiff/verify_rootdiff_identity.py, which has a bug, see below)
+oracle: lib.casas_alvero.is_ca_hasse / is_pure_power (char-p section D only)
+range:   Identities 1,2 over QQ for n=4,5,6; over F_p for n=p+1, p=2,3,5,
+         on the witness x^{p+1}-x^p.  Full pass list in
+         code/out/rootdiff_identity_corrected.captured.txt (ALL 20 CHECKS
+         PASSED).
+
+SUMMARY OF THE VERDICT (against the docstring's stated criterion):
+
+  (A) Identity 1, H_i(f)(x) = e_{n-i}(x-beta_1,...,x-beta_n), holds over QQ
+      for n=4,5,6.       TRUE.
+      [Reason: f(x+t) = prod_j ((x-beta_j)+t) = sum_i e_{n-i}(x-beta_*) t^i,
+       and the Hasse derivative H_i(f) = [t^i] f(x+t) carries no i! factor.]
+
+  (B) Identity 2, R_i = Res_x(f,H_i) = prod_j H_i(beta_j), leading constant 1,
+      holds for monic f over QQ (verified concretely on degrees 4,5,6, and it is
+      the classical resultant-norm identity Res_x(f,g) = a_n^deg g prod g(beta),
+      a_n = 1 for monic f, so the constant is exactly 1).  TRUE.
+
+  (C) Both identities hold over F_p for n=p+1, p=2,3,5, on the concrete witness
+      x^{p+1}-x^p (roots 0 mult p, 1 mult 1).  TRUE.
+
+  (D) Char-p break located.  The witness x^{p+1}-x^p is Hasse-CA and NOT a pure
+      power (oracle, p=2,3,5).  Per-color degeneracy: H_i == 0 for i in
+      {2} (p=3), {2,3,4} (p=5); p=2 has none.  A consistent coloring with the
+      two distinct roots 0,1 survives: derivative 1 is witnessed only by root 0,
+      derivative p only by root 1, and the degenerate H_i are witnessed by both
+      (they impose no constraint).  The char-0 collapse uses the ordering /
+      convex-hull fact (Gauss-Lucas) that forces a single shared root to solve
+      all the equations; in F_p those equations do not all fire, so root 1 and
+      root 0 coexist without forcing 0 = 1.  This is exactly the degeneration
+      the char-p test demands: the step that breaks is the convex-hull /
+      ordering step, which has no F_p analogue; the subset / coloring
+      identities (A,B,C) are char-free and survive.
+
+IMPORTANT — WHY "AS-IS" WAS NOT RE-RUN AS THE VERDICT:
+  The instructed script code/rootdiff/verify_rootdiff_identity.py contains a
+  genuine off-by-one in its helper esym_from_diffs: it returns the coefficient
+  of y^k in prod((x-b)+y), which is e_{n-k} in the beta-variables, NOT e_k.
+  The check then compares H_i against e_i instead of e_{n-i}, so the as-is
+  script reports MISMATCH against a mathematically TRUE identity (its own
+  Identity 1 confirmed true independently).  The as-is script also timed out
+  (>550 s) in the symbolic-resultant Identity-2 block at n=6.  The corrected
+  script keeps the same checks and oracle discipline and proves all 20.
+  The bug itself and its fix are recorded as a concrete finding of this pass.

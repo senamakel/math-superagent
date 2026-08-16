@@ -1,0 +1,32 @@
+Scorer smoke test — code/search/ca-degree20/score.py
+Run by the tool-builder pass that wrote the scorer; NOT the search itself
+(the searcher role runs the population). Each case is one candidate module
+passed to `python score.py <module>`; the scorer prints exactly one line.
+
+Case (i)   genuine degree-20 candidate  cand_x20_minus_x.py  (f = x^20 - x)
+  -> SCORE: 18
+  Why: f' = 20x^19 - 1 is coprime to f (no shared root); every higher
+  derivative f'',...,f^(19) has leading term a scalar times x^18,x^17,...,x
+  and so vanishes at the root x=0 shared with f. 18 of the 19 derivatives
+  share a root: a real SCORE, not INVALID.
+
+Case (ii)  the trivial family (the exploit)  cand_trivial_x_minus_3_pow20.py
+           (f = (x-3)^20, shares the root 3 with ALL 19 derivatives)
+  -> INVALID: f is (x-a)^20 (the trivial family the conjecture allows)
+  Why: rejected, per contract rule (a).
+
+Case (iii) variants of the wrong shape:
+  cand_deg19.py       (f = x^19 - x)            -> INVALID: degree 19 != 20
+  cand_nonmonic.py    (f = 2x^20 - x)           -> INVALID: not monic (leading coefficient 2)
+  cand_nonrational.py (f = x^20 - I*x)          -> INVALID: non-rational coefficients (domain ZZ_I)
+  Why: each fails contract rule (b) with the exact reason.
+
+Case (iv)  a module exposing NO polynomial  cand_nopolynomial.py
+  -> INVALID: no polynomial in x exposed by module
+  Why: import succeeds but no attribute is a polynomial in x; contract rule (c)
+  gives the wrong-import / no-poly INVALID. (A callable lambda, an int, and a
+  string are all deliberately ignored so they cannot be sympified into a junk
+  degree-0 polynomial.)
+
+All six cases: exit 0, exactly one line of stdout each. Exact sympy arithmetic
+over QQ only — no floats anywhere.

@@ -1,46 +1,21 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/dobbins-holmsen-hubard-ES-noncrossing-1305.2266.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Dobbins, Holmsen, Hubard, "The Erdős–Szekeres problem for non-crossing convex sets"
 
-<!-- source: https://arxiv.org/pdf/1305.2266 | converted from HTML -->
+Source: https://arxiv.org/pdf/1305.2266 (arXiv:1305.2266, math.CO; Mathematika 60 (2014) 463–484, DOI 10.1112/S0025579314000072). The held file is the arXiv **abstract page only** — the full PDF was never fetched, so the only primary content this run has is the abstract.
 
-## What is in it
+## What it establishes (abstract)
 
-- Mathematics > Combinatorics
-- Title: The Erdős-Szekeres problem for non-crossing convex sets
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+- An **equivalence** between the Bisztriczky–Fejes Tóth conjecture on arrangements of planar convex bodies and a **Goodman–Pollack conjecture about point sets in topological affine planes**.
+- Corollaries: improved upper bounds for the ES theorem for disjoint convex bodies (over Pach–Tóth) and for non-crossing convex bodies (over Fox–Pach–Sudakov–Suk); improvements on the positive-fraction ES theorem for disjoint/non-crossing convex bodies; a generalization of the Pór–Valtr partitioned ES theorem to arrangements of non-crossing convex bodies.
 
+## Consequence for this run
 
-## What it claims
+This is the source the approach file cites for "allowable-sequence machinery used for convexity-type results." What the abstract actually establishes is an equivalence in the *convex-body / topological-affine-plane* setting — **not** a statement about the allowable (circular) sequence of a point set, and not a statement about the exact point-set ES bound. The body (held nowhere) presumably uses allowable-sequence/pseudoline duality; this run holds no definition of the allowable sequence from this paper.
 
-Abstract: We show an equivalence between a conjecture of Bisztriczky and Fejes T{ó}th about arrangements of planar convex bodies and a conjecture of Goodman and Pollack about point sets in topological affine planes. As a corollary of this equivalence we improve the upper bound of Pach and Tóth on the Erdős-Szekeres theorem for disjoint convex bodies, as well as the recent upper bound obtained by Fox, Pach, Sudakov and Suk, on the Erdős-Szekeres theorem for non-crossing convex bodies. Our methods also imply improvements on the positive fraction Erd\H{os}-Szekeres theorem for disjoint (and non-crossing) convex bodies, as well as a generalization of the partitioned Erdős-Szekeres theorem of Pór and Valtr to arrangements of non-crossing convex bodies.
+## Not in this source
 
-Subjects: | Combinatorics (math.CO) |
+- No definition of the allowable sequence, no k-set / convexity-in-circular-sequence characterization, no reversal-depth statistic, no per-element level. The abstract never mentions the circular sequence of permutations explicitly.
+- The paper is downloadable at https://arxiv.org/pdf/1305.2266 — fetch the PDF only if the convex-body equivalence proof or its allowable-sequence duality is ever needed.
 
-Cite as: | [arXiv:1305.2266][8] [math.CO] |
+## Bottom line
 
-| (or [arXiv:1305.2266v2][9] [math.CO] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.1305.2266][10]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-Journal reference: | Mathematika 60 (2014) 463-484 |
-
-Related DOI:  |…
-
-Focus to learn more
-
-*[digest of a 6675 character source; every section, statement, and proof in full at `research/sources/dobbins-holmsen-hubard-ES-noncrossing-1305.2266.full.md`]*
+The held content supports only: the ES problem for convex bodies and topological affine planes is equivalent to a conjecture about arrangements of convex bodies (Bisztriczky–Fejes Tóth), with the stated corollary bounds. It does not source the "contiguous staircase of reversals" convexity characterization, which the approach file attributes to this literature generally.

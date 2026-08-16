@@ -1,0 +1,9 @@
+blocks: 77
+distinct: 77 repeated blocks: 0
+pair-overlap histogram (over the C(22,2)=231 pairs):
+   overlap=2: 231 pairs
+triple-overlap histogram (over the C(22,3)=1540 triples):
+   overlap=1: 296 triples
+   overlap=2: 6 triples
+pairs of blocks sharing exactly 3 vertices (direct mu=2 violation count): 6
+number of unordered block-pairs sharing exactly 3 vertices = 6

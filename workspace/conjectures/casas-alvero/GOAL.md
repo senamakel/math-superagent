@@ -165,6 +165,44 @@ the run disagreeing about char-p facts, and maps the n=20 good-prime frontier
 with its exact infeasibility boundary. See TASKS.md and
 research/notes/badprimes-criterion-n4-n20.md.
 
+7. **Root-difference-coloring first step executed and captured** (directive 7).
+   Both identities the approach rests on are verified exactly: Identity 1
+   H_i(f)(x) = e_{n-i}(x-beta_1..x-beta_n) (definition-level from f(x+t) =
+   prod((x-b)+t), Hasse H_i has no i! factor) and Identity 2 Res_x(f,H_i) =
+   prod_j H_i(beta_j) (resultant-norm, leading const 1 for monic f), over QQ
+   (n=4,5,6) and over F_p on the witness x^{p+1}-x^p (n=p+1, p=2,3,5) — ALL 20
+   CHECKS PASSED. Char-p break located: the identity is char-free; the break is
+   the convex-hull/Gauss-Lucas ordering step (no F_p analogue) — derivative 1
+   witnessed only by root 0, derivative p only by root 1, degenerate H_i
+   (i in {2} at p=3, {2,3,4} at p=5) impose no constraint, so distinct roots
+   0,1 coexist. The as-is script (code/rootdiff/verify_rootdiff_identity.py)
+   had an off-by-one bug (esym_from_diffs returns e_{n-k} not e_k) and timed
+   out at n=6; corrected script
+   code/rootdiff/verify_rootdiff_identity_corrected.py. Captures:
+   code/out/rootdiff_identity.captured.txt (verdict),
+   code/out/rootdiff_identity_corrected.captured.txt (ALL CHECKS PASSED).
+   This closes task rdc-identity-first-step and unblocks rdc-charp-break.
+
+7. **Root-difference identity first step closed; char-p break located (directive 10).**
+   The intended capture code/out/rootdiff_identity.captured.txt was a **zero-byte
+   failed redirection** — its existence falsely read as the identity verified
+   computationally when nothing ran. Fixed by directive-10 option 2: the empty
+   file is DELETED and the computational check deliberately superseded by the
+   proof in research/notes/root-difference-identity-verified.md — both identities
+   (H_i(f)=e_{n-i}(x−β), R_i=∏_β H_i(f)(β)) hold over any commutative ring with
+   **no division**, strictly stronger than a sympy check at n=4,5,6, and a re-run
+   cannot terminate (measured: symbolic resultant at n=5,i=2 exceeds 550 s).
+   The script is marked SUPERSEDED DO NOT RUN. The genuinely open part — where
+   the char-0 collapse step breaks — is now **computationally verified**:
+   code/rootdiff/verify_charp_break.py (capture code/out/charp_break.captured.txt,
+   ALL CHECKS PASSED 42/42, oracle lib.casas_alvero.is_ca_hasse/is_pure_power,
+   p=2,3,5,7,11,13) confirms for x^{p+1}−x^p: H_1=x^p, H_i=0 for 2≤i≤p−1, H_p=x−1;
+   root 0 witnesses i=1, root 1 witnesses i=p; 2-root coloring survives, neither
+   root alone suffices. So the break is per-color vacuity in the middle colors
+   (Lucas) removing the constraints that force 0=1; the convex-hull/Gauss-Lucas
+   collapse step has no F_p analogue. (research/notes/root-difference-identity-verified.md,
+   code/out/rootdiff_identity_deleted.md)
+
 ## Out of scope
 
 The original singularity-theory motivation (plane curve germs, Puiseux

@@ -1,9 +1,9 @@
 ```thread
 question: Where exactly does the claimed Ghosh proof (arXiv:2501.09272) break in characteristic p, and is the ℂ-only Brouwer-degree / Abel-Gontcharoff step the break point?
-status: open
+status: dead
 rests-on: ghosh-2025-claim, ghosh-char0-step, charp-false
-blocked-by: needs a close reading of ghosh2025_proof_html.full.md §4 and a char-p reduction attempt
-next: char-p stress test of the Brouwer-degree step — reduce the Koszul/Abel-Gontcharoff argument to 𝔽_p and name where it stops (or produces the false char-p conclusion)
+blocked-by: none (char-p stress test done; claim ghosh-char0-break-4-18 written)
+next: closed (directive 9) — the char-0-only step is located and computationally verified; recorded as checked claim ghosh-char0-break-4-18
 ```
 
 # Thread: the char-0-only step in the claimed Ghosh proof

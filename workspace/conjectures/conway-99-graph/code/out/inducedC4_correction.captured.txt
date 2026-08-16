@@ -1,0 +1,25 @@
+=== induced-C4 correction (pattern_finder, exact) ===
+Report 10 Finding 2 claimed induced C4 = C(mu,2)*#nonedges (= #nonedges in mu=2).
+That is WRONG by a factor of 2: each induced C4 has TWO nonedge pairs (opposite
+vertex pairs), so summing C(mu,2) over the #nonedges nonedges double-counts.
+
+Correct identity (proved from c7 + double-counting):
+   induced C4 = (1/2) * C(mu,2) * #nonedges   for every srg(v,k,1,2).
+
+Proof: (a) c7 (proved in report 10, derived from lambda=1): common neighbours
+of a nonedge pair are pairwise nonadjacent. (b) each (nonedge, nonadjacent-cn-
+pair) gives one induced C4 (the cn pair + the nonedge's two endpoints). (c) each
+induced C4 is produced by exactly 2 of its nonedges. Hence induced C4 =
+(1/2)*sum over nonedges of C(mu,2) = (1/2)*C(mu,2)*#nonedges.  [EXACT, PROOF]
+
+EXACT full brute-force validation (C(n,4) subsets, induced subgraph = 4 edges
+all degree 2):
+  rook(3)  ne=18  mu=2  TRUE ic4=  9   (1/2)C(2,2)*18 =  9  match
+  doily    ne=60  mu=3  TRUE ic4= 90   (1/2)C(3,2)*60 = 90  match
+  GQ(2,4)  ne=216 mu=5  TRUE ic4=1080  (1/2)C(5,2)*216=1080 match
+  BvLS     ne=26730 mu=2 ic4 = 13365  (implied by proof; exact count deferred)
+
+mu=2 subfamily closed form: induced C4 = #nonedges/2 = v*k(k-2)/8.
+  rook: 9*4*2/8 = 9 ✓   BvLS: 243*22*20/8 = 13365 ✓
+  Report 10's value [18,4158,26730,...] (v*k(k-2)/4) is the #nonedges, exactly
+  2x the induced-C4 count.  c7 (Finding 1) is UNAFFECTED and correct.

@@ -73,6 +73,18 @@ line 2372) reads `0.500000  0.80901699  alpha*=0.0000  (0.381966…)`.
   α>0 coupling beats φ/2) — full-4-param SLSQP inf grid, matched to ~1e-14; and
   the scan's alpha*=0 line. This is *not* a theorem; the full-4-param inf is a
   numerical search.
+- **Independent direct-search check of the α=0 full-4-param inf
+  (`code/out/alpha0_inf_scan.py`):** at α=0 the objective is exactly the iid-OR
+  ratio of the marginal, `E_{P^⊗2}h(p+q−pq)/E h(p)`. A 400-start SLSQP over the
+  full (a1,a2,b1,b2) feasible class finds inf = 0.8090169943749473, matching
+  φ/2 to 1e-16, with mpmath 50-digit value 0.80901699437494755 (diff from φ/2
+  ≈ 9.9e-17) at the boundary a1=a2=(3−√5)/2, b1=b2=1. A targeted grid agrees
+  (0.80901699457, same achiever). This rules out my doubt that an *admissible*
+  marginal could approach the unconstrained iid-OR barrier (3−√5)/2=0.382: the
+  feasibility constraint a=(a1+a2)/2 ≤ t=1/2 < b forces the ratio up to φ/2.
+  Still numerical (SLSQP locations + 50-digit evaluation), so the global inf
+  remains a numeric corroboration, not a theorem — consistent with the claim's
+  status.
 - **Consistent:** monotonicity Γ̂ non-increasing + scan values 1.134 @ 0.30 → 1.005
   @ 0.38 → 0.809 @ 0.5.
 

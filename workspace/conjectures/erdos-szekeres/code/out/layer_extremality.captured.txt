@@ -1,0 +1,31 @@
+=== Layer-extremality of es_construct ES construction (exact oracle) ===
+
+n=4: |X|=4 gp=True whole-set contains convex (n-1)-gon = True
+  onion profile: [3, 1]   sum=4
+  layer 0: m=3: contains convex (n-1)-gon = True
+  layer 1: m=1: entire layer convex = False
+  Conjecture C (all layers maximally convex): FAIL
+
+n=5: |X|=8 gp=True whole-set contains convex (n-1)-gon = True
+  onion profile: [4, 4]   sum=8
+  layer 0: m=4: contains convex (n-1)-gon = True
+  layer 1: m=4: contains convex (n-1)-gon = True
+  Conjecture C (all layers maximally convex): PASS
+
+n=6: |X|=16 gp=True whole-set contains convex (n-1)-gon = True
+  onion profile: [5, 5, 3, 3]   sum=16
+  layer 0: m=5: contains convex (n-1)-gon = True
+  layer 1: m=5: contains convex (n-1)-gon = True
+  layer 2: m=3: entire layer convex = True
+  layer 3: m=3: entire layer convex = True
+  Conjecture C (all layers maximally convex): PASS
+
+n=7: |X|=32 gp=True whole-set contains convex (n-1)-gon = True
+  onion profile: [6, 6, 6, 5, 6, 3]   sum=32
+  layer 0: m=6: contains convex (n-1)-gon = True
+  layer 1: m=6: contains convex (n-1)-gon = True
+  layer 2: m=6: contains convex (n-1)-gon = True
+  layer 3: m=5: entire layer convex = True
+  layer 4: m=6: contains convex (n-1)-gon = True
+  layer 5: m=3: entire layer convex = True
+  Conjecture C (all layers maximally convex): PASS
