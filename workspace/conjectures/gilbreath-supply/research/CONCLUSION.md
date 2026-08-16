@@ -1,6 +1,6 @@
 # CONCLUSION — the run's answer is NO
 
-Terminus deliverable, written under directive 33. This file is the closing
+Terminus deliverable, written under directive 33 and amended under directive 34 (deliverable 5 folded in). This file is the closing
 statement of the investigation: the single hypothesis GOAL.md put under test is
 refuted, the problem closes as a clean negative, and exactly one open statement
 survives. No new line of work is opened here; this file is meant to be the end.
@@ -139,8 +139,21 @@ guard-checked.
   excess) is **not decided** by the measured range. Both extrapolations are
   stated and neither is declared.
 
+- **The ~9× Markov margin, and the mod-4 switch bias is fold-inert
+  (deliverable 5).** The primes' centred lag-1 anticorrelation of `h` is
+  `corr(h_j,h_{j+1}) = −0.152@500 → −0.0555@40000 → −0.0416@256000`, i.e.
+  `1−2a ≈ −0.08` (switching prob `a≈0.52`); the fold second moment
+  `E[S(n)²]/(n−2)` stays O(1) for two-state Markov inputs up to
+  `|1−2a| ≈ 0.74` (`a≈0.87`, measured over `n∈[1024,49152]`), so the primes
+  sit ~9× below the empirical collapse boundary. At the primes' parameters the
+  bias is inert: `E[S²]/(n−2) = 1.004` for the primes (over `n∈[1024,20000]`)
+  equals the O(1) level of iid at the same p and of a 2-state Markov at the
+  primes' exact (p, ac1).
+
 The whole of what was measured, and its genericity, is recorded in
-`code/out/pattern_finder_deliverable_3_fold_genericity.md`.
+`code/out/pattern_finder_deliverable_3_fold_genericity.md`; the atomic-level
+mod-4 switch-bias measurement is
+`code/out/pattern_finder_deliverable_5_mod4_switch_bias.md`.
 
 ---
 
@@ -150,12 +163,26 @@ The run adds one door to the five in `problem.md`:
 
 > **No `ν₂` statistic is prime-specific.** Every measurable regularity of
 > `ν₂(n)` — the white-noise law, the second-moment plateau, the finite
-> exceptional sets, and dip sparsity itself — is reproduced by matched iid
-> strings at the measured prime switch density `p ≈ 0.585`.
+> exceptional sets, dip sparsity itself, and the mod-4 switch bias — is
+> reproduced by matched iid (or same-parameter Markov) strings at the measured
+> prime switch density `p ≈ 0.585`; deliverable 5 completes this at the atomic
+> level.
 
 Witness: the matched-iid control. Dip counts `[2,3000)`: at `c=0.45` primes 81
 vs random 68–78; at `c=0.48` primes 367 vs random 355–371. Last-dip `≤ 7000`:
 at `c=0.45` primes 763 vs 699–996; at `c=0.48` primes 5655 vs 5595–6989.
+
+**Stronger witness — the mod-4 switch bias (deliverable 5).** The strongest
+known prime-specific signal is Lemke Oliver–Soundararajan's switch-preference
+for consecutive-prime residues mod 4 (`los-switch-preferred-mod4`,
+`los-scale-bias-slowdecay`, asserted as conjecture), and it is fold-inert.
+Over the first N primes the switch density is `p(N)=0.5788@40000` and the
+lag-1 anticorrelation of `h` is `−0.0555@40000 → −0.0416@256000`, with
+`|corr|·√N` climbing 3.4→21.1 (persistent, not noise) and decaying at the LOS
+`loglog N / log N` scale. Yet `E[S(n)²]/(n−2) = 1.004` for the primes
+(`n∈[1024,20000]`) is the same O(1) level as iid at the same p and as a 2-state
+Markov with the primes' exact (p, ac1): the one persistent prime-specific
+raw-input statistic confers no second-moment advantage under Φ.
 
 ```claim
 id: sixth-door-no-nu2-statistic-prime-specific
@@ -165,7 +192,14 @@ statement: >
   dip counts and last-dip positions essentially exactly (dip counts [2,3000):
   c=0.45 primes 81 vs random 68-78; c=0.48 primes 367 vs random 355-371;
   last-dip <= 7000: c=0.45 primes 763 vs 699-996; c=0.48 primes 5655 vs
-  5595-6989). The primes sit in the generic-balanced-good class.
+  5595-6989). Stronger atomic witness (deliverable 5): the Lemke
+  Oliver-Soundararajan mod-4 switch preference -- the strongest known
+  prime-specific signal (los-switch-preferred-mod4, los-scale-bias-slowdecay,
+  asserted conjecture) -- is real and persistent in h (switch density
+  0.5788@40000; lag-1 corr -0.0555@40000 -> -0.0416@256000, |corr|sqrt(N)
+  3.4 -> 21.1) yet FOLD-INERT: E[S(n)^2]/(n-2) = 1.004 for the primes equals
+  the O(1) level of iid at the same p and of a 2-state Markov at the primes'
+  exact (p, ac1). The primes sit in the generic-balanced-good class.
 hypotheses: canonical floored fold d in [2,n-1]; guard-checked prime JSON;
   random controls at p ~ 0.585 via the exact submask-zeta fold.
 holds-here: yes (measured; exact over n=2..40000, trials <= 8000).
@@ -175,9 +209,13 @@ bearing: >
   problem.md result type 6. It kills the last candidate route to a
   prime-specific regularity and, together with the five problem.md doors,
   completes the negative: Phi has no output regularity the switch-density
-  form cannot see. What survives is only an unconditional arithmetic bound
-  (section 5), unreachable by any measurement.
+  form cannot see. Deliverable 5 completes this at the atomic level -- the
+  one persistent prime-specific raw-input signal, the mod-4 switch bias, is
+  fold-inert -- so this stays ONE door with a stronger witness, not a seventh
+  door. What survives is only an unconditional arithmetic bound (section 5),
+  unreachable by any measurement.
 anchor: code/out/pattern_finder_deliverable_3_fold_genericity.md ;
+  code/out/pattern_finder_deliverable_5_mod4_switch_bias.md ;
   research/notes/fold_genericity_all_nu2_regularities.md
 ```
 

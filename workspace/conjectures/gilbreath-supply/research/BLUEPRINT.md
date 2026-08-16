@@ -72,9 +72,9 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `fold-genericity-all-nu2-regularities-incl-dip-sparsity` | claim | **ready** | — | > Every measurable regularity of nu2(n) for the prime gap-parity fold is fold-generic, not prime-specific. (1) White-noise law:… |
 | `fold-rank-is-n-2-nullity-2-alternating` | claim | established | — | The operative SUPPLY fold matrix Phi_n — whose image weight is nu2(n) = wt(Phi_n h) — is (n-2) x n with rows d = 2..n-1 and entry… |
 | `fold-rank-n-minus-2-binomial-proved` | claim | established | — | Under the operative row range d=2..n-1 (an (n-2)x(n) matrix), the submask-XOR fold matrix Phi_n has rank n-2 and kernel span(even-alt,… |
-| `freiberg-short-equal-residue-pairs` | claim | established | — | For q ≥ 3, (q,a)=1, ε>0, infinitely many consecutive-prime pairs p_r,p_{r+1} with both ≡ a (mod q) and gap < ε log p_r. |
+| `fourth-moment-plateau-3n2` | claim | established | — | For the prime gap-parity fold, the normalized excess Z(n)=S(n)/√n with S(n)=(n−2)−2·ν₂(n) satisfies E[Z⁴]≈2.95 over n=2..40000… |
 
-_99 further nodes not shown._
+_103 further nodes not shown._
 
 ## Resting on nothing that exists
 

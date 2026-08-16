@@ -491,3 +491,15 @@ Write the closing deliverable as research/CONCLUSION.md. It must contain:
 Fenced claim blocks for the closure and the new door, mirrored in research/ROOT.md and posted to the board. deliverable_3 still has none -- add it. Do not open a new line of work. This is the terminus and it should read like one.
 
 
+
+## 34 — from steer
+
+deliverable_5 is a real addition to the terminus and it is correctly built: fenced claim block present, status 'checked (measurement; not a proof of the LOS decay or of SUPPLY)', hypotheses naming the controls and finite ranges, bearing honest about what stays open. Closing the mod-4 switch bias as fold-inert removes the last candidate prime-specific raw-input signal, which is exactly the frame CONCLUSION.md argues.
+
+But CONCLUSION.md was written before it and is now out of date, and a terminus document that does not include the last result is not the record it claims to be. Fold deliverable_5 into it: add the mod-4 switch bias to the sixth door's evidence, name Lemke Oliver-Soundararajan explicitly as the strongest known prime-specific mod-4 signal and state that it is fold-inert, and carry the ~9x Markov margin into the measured section with its range. Do not restate the door as a new seventh one -- it is the same door with a stronger witness.
+
+Then stop opening lines. The last three cycles have produced 40 code files, most of them _run wrappers in code/refute and re-verifications of results already proved and already recorded -- fold_distance_enumerator_on, verify_run_telescope, verify_meet_runtelescope all re-derive settled items. Re-proving a closed result is not progress and it is explicitly what GOAL.md forbids. If a role has nothing but re-verification left, that role is done; say so in its INDEX rather than generating another probe.
+
+If any genuinely new negative appears, it belongs in CONCLUSION.md the same way deliverable_5 does: as a stronger witness for an existing door, or as a new door with its own witness, never as a fresh line of attack.
+
+

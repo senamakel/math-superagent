@@ -1,5 +1,14 @@
 # Index — code/refute
 
+**ROLE STATUS (directive 34): the refuter is done.** Everything here is either
+a re-verification of a proved/settled result (`fold_distance_enumerator_on.py`,
+`verify_run_telescope.py`, `verify_meet_runtelescope.py` re-derive closed items)
+or `_run*` wrappers for one-off probes. Re-proving a closed result is not
+progress and is what GOAL.md forbids, so no further probe is to be generated
+from this folder. A genuinely new negative belongs in `research/CONCLUSION.md`
+as a stronger witness for an existing door (or a new door with its own
+witness), never as a fresh line of attack.
+
 What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |

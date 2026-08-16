@@ -26,7 +26,57 @@ the dyadic-period collapse inputs (all-ones, Thue–Morse — closed doors) from
 prime-like spread, and the priced arithmetic input is the joint frequency of h
 at the 2–4 positions in one local block — a *bounded-complexity local* statistic,
 strictly weaker-looking than global mod-4 switch density.
-status: proposed
+status: refuted
+killed-by: The exact substitution rules this approach mounts its entire
+transfer on are FALSE for the actual fold spacetime. Recorded as claim
+`substitution-incidence-rules-false` (hand-verified): (i) h=(0,0,0,1), n=2, d=1:
+T(4,2)=h[1]⊕h[3]=1 but T(2,1)=h[0]⊕h[1]=0, so rule T(2n,2d)=T(n,d) fails;
+(ii) h=(1,0,0), n=1, d=0: T(2,1)=h[0]⊕h[1]=1≠0, so rule T(2n,2d+1)=0 fails.
+Structural reason: Φ^{2d}=(1+σ)^{2d}=(1+σ²)^d reads even-offset positions of a
+fixed h while Φ^d reads consecutive offsets — different data; the claimed
+self-similarity would require h to be dyadic-periodic, which is a closed door.
+Since the Perron–Frobenius / MPS transfer was to run on those rules, the first-step
+falsifier fires before the weighting step. The deeper speculation (an h-weighted
+incidence matrix whose Perron eigenvalue separates primes from collapse) survives
+as an untested idea but has no published precedent, and the substitution framework
+(primitive substitutions, incidence matrices, Perron eigenvalue) is real but does
+not reach the operative finitary sheet d∈[2,n−1] without correct rules.
+precedent: (the substitution/symbolic-dynamics engine is real, named, citable, but
+the h-weighted spectral-gap transfer was the route's own open construction and its
+literal rules are false — see "Grounded, and what is not")
+- Bédaride–Hilion, "Geometric realizations of two-dimensional substitutive tilings", Quart. J. Math. 2012, https://doi.org/10.1093/qmath/has025 (Perron–Frobenius for primitive incidence matrix).
+- Primitive-substitution fixed points / incidence matrices / Perron: Břinda, "Abelian complexity of infinite words" thesis 2018, https://doi.org/10.5281/zenodo.2112128 (fixed points exist; Perron eigenvalue governs letter frequencies); Balance-for-fixed-points literature (Theor. Comput. Sci. 2003).
+- Callan, "Sierpinski's triangle and the Prouhet-Thue-Morse word", arXiv:math/0610932 (Pascal mod 2 lower-triangular matrix, its PTM-word inverse, = Sierpiński structure).
+- Rowland–Yassawi, "A characterization of p-automatic sequences as columns of linear cellular automata", Adv. Appl. Math. 2014, https://doi.org/10.1016/j.aam.2014.10.002 (Linear CA/F₂ spacetime as p-automatic substitution system).
+- In-workspace (established): claim `substitution-incidence-rules-false` (the killed rules); claim `takei-rule90-mixing-limits-uniform` (Rule 90 randomization); adopted route `lucas-mixing-finite-transfer`; refuted `dyadic-renormalization-selfsimilar`.
+- Primitive substitutions, incidence matrices, Perron eigenvalues: classical, in
+  the self-similar tiling literature. E.g. Bédaride–Hilion, "Geometric realizations
+  of two-dimensional substitutive tilings", Quart. J. Math. 2012,
+  https://doi.org/10.1093/qmath/has025 (Perron–Frobenius theorem for the primitive
+  incidence matrix; Perron eigenvalue governs patch growth). Balances for fixed
+  points of primitive substitutions, Theor. Comput. Sci. 2003,
+  https://www.sciencedirect.com/science/article/pii/S0304397503000926 (asymptotic
+  balance governed by the incidence spectrum).
+- Rule 90 and Pascal's triangle mod 2 as the Sierpiński gasket / spacetime fractal:
+  Gütschow–Nesme–Werner, "The fractal structure of cellular automata on abelian
+  groups", DCMT 2010, https://doi.org/10.46298/dmtcs.2759 ; Rupe–Crutchfield,
+  "Spacetime symmetries, invariant sets, and additive subdynamics of cellular
+  automata" (2018), https://escholarship.org/uc/item/20s962t1 (Rule 90 linear
+  subdynamics).
+- Linear CA over finite fields and p-automatic column/spacetime structure (the fold
+  spacetime is a 2-automatic substitution system): Rowland–Yassawi, "A
+  characterization of p-automatic sequences as columns of linear cellular automata",
+  Adv. Appl. Math. 2014, https://doi.org/10.1016/j.aam.2014.10.002.
+- Takei, "Limiting measures for addition modulo a prime number cellular automata",
+  IJNC 2017, https://doi.org/10.15803/ijnc.7.2_124 (Rule 90 randomization of
+  shift-invariant measures; in-workspace claim `takei-rule90-mixing-limits-uniform`
+  and `harmonic-mixing-randomized-by-rule90`).
+- In-workspace (established): claim `fold-rank-is-n-2-nullity-2-alternating`
+  (rank/ker of the fold); claim `linearisation-fold-weight` (ν₂(n)=wt(Φ_n h));
+  adopted route `lucas-mixing-finite-transfer` (Rule 90 as Φ=1+σ); refuted
+  `dyadic-renormalization-selfsimilar` (the defect this route names and repairs:
+  no fixed point / scale-invariance equation — here supplied by the Perron
+  eigenvector of the primitive substitution).
 first-step: Machine-derive the exact substitution rules and 16×16 incidence
 matrix for the spacetime of Φ; verify T(2n±1, 2d±1) rules against the brute
 submask-XOR oracle for n ≤ 200; then compute the empirical 4-block frequencies of
@@ -36,13 +86,51 @@ prime-weighted Perron eigenvalue does NOT separate from the controls, the
 substitution transfer is inert and the route dies cheaply.
 ```
 
-## Speculation, marked
+## Grounded, and what is not
 
-The mechanism (substitution + incidence matrix) is standard symbolic dynamics;
-that the *h-weighted* incidence matrix's spectral gap is provable from a local
-(4-point) input on h, and that this local input is genuinely weaker than switch
-density, is speculation to be priced. Risk to name now: the 2×2 block at position
-(n,d) reads h at indices differing by 1, so the coarsest local statistic may
-re-enter the g=0 adjacent-switch parity barrier. Whether the *Perron* aggregate
-averages it away (as it must, since ν₂/n→1/2 is measured) is exactly what the
-first-step's eigenvalue computation tests.
+**The substitution/symbolic-dynamics engine is real and fully named.**
+Primitive substitutions carry an incidence matrix A whose Perron (Perron–Frobenius)
+eigenvalue λ rules asymptotic growth, with a unique positive Perron eigenvector u
+satisfying Au = λu — the fixed point of the substitution (frequencies of letters /
+tile types). This is the classical framework whose fixed point the refuted
+`dyadic-renormalization-selfsimilar` route lacked: for a primitive substitution the
+self-similarity equation is literally u = the Perron eigenvector, so there IS a fixed
+point to bootstrap off. Rule 90's spacetime diagram is the Sierpiński triangle /
+Pascal mod 2 / pre-Sierpiński gasket, and its substitution structure is standard
+(Gütschow–Nesme–Werner; the p-automatic column characterization of Rowland–Yassawi;
+Takei's limiting-measure analysis, already in this library).
+
+**The specific claim — "the h-weighted incidence matrix has a spectral gap separating
+the primes from the dyadic-period collapse inputs" — has NO published precedent for or
+against, and the divergence from the standard primitive-substitution setup must be
+named.** A textbook primitive substitution is unweighted and iterated uniformly; the
+fold here is a *finitary* object (one row per n, not an infinite uniform iterator) and
+the weighting is by the empirical 16-local-block frequency of the *prime string*,
+which is not itself a symbolic-dynamics object (the primes are far from automatic —
+`diagonal-2regular-automaton` refutation, and the non-automaticity literature already
+in the library). So "spectral gap of the h-weighted incidence matrix" is the route's
+own new construction, not a sourced theorem. The precise arithmetic input (the
+frequency of h at the 2–4 positions of one local 2×2 block) is a bounded-complexity
+local statistic, so it does not reopen the "h is complicated enough" family — but
+whether that local 4-point input is genuinely weaker than mod-4 switch density is
+exactly the risk the file flags, and the falsifier is designed to kill it cheaply.
+
+**Hypotheses check.** The four substitution rules T(2n,2d)=T(n,d), T(2n,2d+1)=0,
+T(2n+1,2d)=T(n,d), T(2n+1,2d+1)=T(n,d) follow from Lucas (C(2d,2i)≡C(d,i), C(2d,2i+1)≡0)
+and are consistent with the in-workspace Sierpiński/lucas facts, but have NOT been
+machine-verified on the operative (reversed) indexing — that is the first-step's
+first task, and it must run against the brute oracle before the 2×2 rule set is
+trusted. The unweighted incidence Perron eigenvalue of the Sierpiński/spacetime
+substitution is log₂3 by the Hausdorff-dimension fact (well-sourced); the operative
+restriction to the sheet d∈[2,n−1] changes the integer, and the weighted case is the
+open question.
+
+**Verdict.** Grounded as machinery: substitution + incidence + Perron is a real,
+named, citable framework, and it supplies exactly the fixed point the refuted
+renormalization route lacked. Not grounded as a theorem: the h-weighted spectral-gap
+transfer and the 4-point-input weakness are the route's own construction with no
+published precedent, and the substitution rules on the operative sheet are unverified.
+Status `grounded` means "the framework is real and sourced, and the first-step is a
+cheap, decisive test of the actual new claim" — run it (machine-verify the rules and
+compute the weighted Perron eigenvalue against the negative controls) before spending
+number theory.
