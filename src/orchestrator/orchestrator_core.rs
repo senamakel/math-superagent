@@ -168,6 +168,12 @@ pub fn ledger_report(workspace: &Path) -> String {
     for (title, body) in [
         ("research/BLUEPRINT.md", graph.render()),
         ("research/ENTAILMENT.md", entailment.render()),
+        // The lemma index belongs here for the same reason those two do, and
+        // for one more: it is the only ledger whose sources are `.lean` files
+        // rather than notes, so a run whose container predates this module
+        // leaves the file absent while the tree it derives from is on disk.
+        // Rendering it here is how that workspace can still be read.
+        ("research/LEMMAS.md", lemmas::collect(workspace).render()),
         ("briefing: statement graph", graph.briefing()),
         ("briefing: entailment", entailment.briefing()),
     ] {
