@@ -29,7 +29,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use serde_json::{Map, Value, json};
 
-use super::{engine, registry};
+use super::{derived, engine, registry};
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 use crate::orchestrator::documents::WorkspaceDocuments;
 
@@ -498,16 +498,17 @@ impl LedgerTool {
         let slug = text(arguments, "ledger");
         let spec = self.spec(&slug)?;
         // A ledger rendered by its own module has no entries this engine can
-        // read, so the honest answer is the file itself rather than an empty
-        // list that reads as "the run recorded nothing".
+        // read, so the answer comes out of the rendered file rather than from an
+        // empty list that would read as "the run recorded nothing".
         if matches!(spec.source, super::spec::Source::Derived) {
             let path = self.documents.root().join(&spec.derived);
-            return Ok(std::fs::read_to_string(path).unwrap_or_else(|_| {
-                format!(
+            let Ok(rendered) = std::fs::read_to_string(path) else {
+                return Ok(format!(
                     "`{}` has not been rendered yet — nothing has been written to it.",
                     spec.derived
-                )
-            }));
+                ));
+            };
+            return Ok(derived::select(&spec.derived, &rendered, arguments));
         }
         let entries = engine::collect(self.documents.root(), &spec);
         let wanted_status = text(arguments, "status").to_ascii_lowercase();
@@ -701,7 +702,7 @@ impl LedgerTool {
 }
 
 /// Reads a string argument, trimmed, or the empty string.
-fn text(arguments: &Value, name: &str) -> String {
+pub(super) fn text(arguments: &Value, name: &str) -> String {
     arguments
         .get(name)
         .and_then(Value::as_str)

@@ -108,7 +108,7 @@ The measurement that justifies the slot is the Equational Theories Project's:
 13.3 million at size 3 alone, for 165 CPU-hours, before any clever proof search
 ran. Most false statements are false small. What the arm attacks is read off the
 two ledgers holding statements somebody committed to proving — the open gaps of
-`research/BACKWARD.md` and the current rung of `research/WEAKENED.md` — because
+`derived/BACKWARD.md` and the current rung of `derived/WEAKENED.md` — because
 those are exactly the propositions worth breaking. Its findings are read back
 off disk beside the refuter's report, on the same argument the reduction arm
 makes: a role's prose is a summary of its own work and the record is the work.
@@ -157,7 +157,7 @@ open. The reducer asks what would be *enough* and answers with lemmas that imply
 the goal; the weakener asks what would be *easier* and answers with a target that
 deliberately does not. It writes `research/weakened/<slug>.md` — the
 difficulties that make the goal hard, then a ladder of rungs each naming which of
-them are switched off — and `research/WEAKENED.md` is derived from those files.
+them are switched off — and `derived/WEAKENED.md` is derived from those files.
 It is deliberately *not* gated on the run being stuck, and that is a lesson this
 repository has already paid for: `open_invention`'s stuck-gate was reachable in
 principle and not in practice, and across a day of live runs the inventor was
@@ -166,7 +166,7 @@ full-strength statement, not after.
 
 So the `reducer` is delegated a decomposition: the goal, the lemmas that would
 imply it, the inference combining them, and one `gap` per lemma nobody has
-proved. It writes `research/backward/<slug>.md`, `research/BACKWARD.md` is
+proved. It writes `research/backward/<slug>.md`, `derived/BACKWARD.md` is
 derived from those files, and the open gaps reach the next attempt under their
 own heading — as targets rather than as gathered material, which is why they
 travel in a third `Mailbox` rather than in `fresh_context`.
@@ -353,7 +353,7 @@ that cannot be regenerated.
   `SOLVED`-needs-a-program evidence gate is untouched. A human cannot force
   diversification, reject a verdict, or end the run through this channel.
 - **Become a claim.** A directive is asserted, never established. The `director`
-  is not given `research/CLAIMS.md`, so the role acting on an unevidenced
+  is not given `derived/CLAIMS.md`, so the role acting on an unevidenced
   instruction is not also holding the evidence ledger.
 - **Compute.** No shell, no `write_tool_file`, no delegation. A role that could
   both reinterpret the goal and run programs against it would be a second

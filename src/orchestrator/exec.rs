@@ -6,14 +6,13 @@
 //! thing: everything that decides what a run is allowed to execute, and what it
 //! is told about how the execution went.
 
-use std::collections::VecDeque;
-use std::fmt::Write as _;
 use std::path::PathBuf;
 use std::time::Duration;
 
 use async_trait::async_trait;
 use serde_json::json;
 
+use super::capture::Capture;
 use super::{layout, string_argument};
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
@@ -28,21 +27,6 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 /// reaches the console, and everything in flight is lost. Raising the limit
 /// treated the symptom; the middle of the stream is now dropped as it arrives.
 pub(super) const MAX_COMMAND_OUTPUT_BYTES: usize = 64 * 1024;
-
-/// How much of [`MAX_COMMAND_OUTPUT_BYTES`] the beginning of a stream keeps.
-///
-/// The tail gets the larger share, and that is the correction of a measured
-/// loss. A program prints its setup first and its conclusion last — the final
-/// answer, the assertion that passed, the traceback explaining the failure.
-/// Keeping only the head threw away exactly that: a live verification script
-/// printed a ~65 KB reconstructed binary string and then its answer, and the
-/// answer was what fell off the end, so the run executed correctly and learned
-/// nothing from it. The head is kept too, because the first lines carry the
-/// command's own echo of what it was doing and a lone tail can be unreadable.
-const HEAD_BUDGET: usize = MAX_COMMAND_OUTPUT_BYTES / 4;
-
-/// The remainder of [`MAX_COMMAND_OUTPUT_BYTES`], kept from the end.
-const TAIL_BUDGET: usize = MAX_COMMAND_OUTPUT_BYTES - HEAD_BUDGET;
 
 /// Where every command's output is written, so that running a program leaves
 /// something behind.
@@ -92,66 +76,24 @@ const COMMAND_LOG_MARK: &str = "\n=== command ===\n";
 /// on a pipe nobody will close.
 const DRAIN_GRACE: Duration = Duration::from_secs(5);
 
-/// One stream's output, bounded in memory as it arrives.
+/// Awaits one drain, giving up on it rather than waiting for it.
 ///
-/// Keeps the first [`HEAD_BUDGET`] bytes and a rolling window of the last
-/// [`TAIL_BUDGET`], counting everything so the render can say how much was
-/// dropped. Memory is therefore flat in the length of the stream rather than
-/// linear in it, which is the whole reason this type exists instead of a
-/// `Vec<u8>` shortened afterwards.
-#[derive(Debug, Default)]
-struct Capture {
-    head: Vec<u8>,
-    tail: VecDeque<u8>,
-    total: usize,
-}
-
-impl Capture {
-    /// Adds one freshly read chunk, discarding the middle of the stream.
-    fn push(&mut self, chunk: &[u8]) {
-        self.total += chunk.len();
-        let mut chunk = chunk;
-        if self.head.len() < HEAD_BUDGET {
-            let take = (HEAD_BUDGET - self.head.len()).min(chunk.len());
-            self.head.extend_from_slice(&chunk[..take]);
-            chunk = &chunk[take..];
-        }
-        self.tail.extend(chunk.iter().copied());
-        while self.tail.len() > TAIL_BUDGET {
-            self.tail.pop_front();
-        }
-    }
-
-    /// Renders what was kept, saying so when anything was dropped.
-    ///
-    /// Both ends are decoded lossily rather than refused: a program that prints
-    /// one invalid byte has still told the run something, and the boundary
-    /// between the kept head and the kept tail can fall mid-character anyway.
-    fn render(&self) -> String {
-        let tail = self.tail.iter().copied().collect::<Vec<_>>();
-        let kept = self.head.len() + tail.len();
-        if self.total <= kept {
-            // Nothing was dropped, so the two halves are the whole stream and
-            // concatenate back into it exactly.
-            let mut whole = self.head.clone();
-            whole.extend_from_slice(&tail);
-            return String::from_utf8_lossy(&whole).into_owned();
-        }
-        let dropped = self.total - kept;
-        let mut rendered = String::from_utf8_lossy(&self.head).into_owned();
-        let _ = write!(
-            rendered,
-            "\n[{dropped} bytes truncated from the middle; the end of the output follows]\n"
-        );
-        rendered.push_str(&String::from_utf8_lossy(&tail));
-        rendered
-    }
+/// A drain that times out or whose task died leaves an empty capture, so the
+/// tool still reports the command's status. The alternative is holding the tool
+/// open on a descendant that survived the signal, which is the failure
+/// [`DRAIN_GRACE`] exists to bound.
+async fn drained(task: tokio::task::JoinHandle<Capture>) -> Capture {
+    tokio::time::timeout(DRAIN_GRACE, task)
+        .await
+        .ok()
+        .and_then(std::result::Result::ok)
+        .unwrap_or_else(|| Capture::bounded(MAX_COMMAND_OUTPUT_BYTES))
 }
 
 /// Reads a pipe to its end, keeping a bounded window of what it carried.
 async fn drain<R: tokio::io::AsyncRead + Unpin>(pipe: &mut Option<R>) -> Capture {
     use tokio::io::AsyncReadExt;
-    let mut capture = Capture::default();
+    let mut capture = Capture::bounded(MAX_COMMAND_OUTPUT_BYTES);
     let Some(pipe) = pipe.as_mut() else {
         return capture;
     };
@@ -244,14 +186,8 @@ impl ExecuteCommand {
         // Bounded so a descendant that survived the signal — one that changed
         // its own process group, or is stuck in uninterruptible I/O — cannot
         // hold the tool open indefinitely. What was read by then is the result.
-        let stdout = tokio::time::timeout(DRAIN_GRACE, reading_out)
-            .await
-            .unwrap_or_else(|_| Ok(Capture::default()))
-            .unwrap_or_default();
-        let stderr = tokio::time::timeout(DRAIN_GRACE, reading_err)
-            .await
-            .unwrap_or_else(|_| Ok(Capture::default()))
-            .unwrap_or_default();
+        let stdout = drained(reading_out).await;
+        let stderr = drained(reading_err).await;
         let status = match finished {
             Ok(Ok(status)) => Some(status),
             Ok(Err(error)) => {

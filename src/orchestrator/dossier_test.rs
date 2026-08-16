@@ -17,6 +17,7 @@ fn reducer(root: &std::path::Path) -> String {
 fn workspace(name: &str) -> std::io::Result<std::path::PathBuf> {
     let root = std::env::temp_dir().join(format!("math-agent-dossier-{name}"));
     let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("derived"))?;
     std::fs::create_dir_all(root.join("research/approaches"))?;
     std::fs::create_dir_all(root.join("research/backward"))?;
     std::fs::create_dir_all(root.join("reflections"))?;
@@ -40,17 +41,17 @@ fn sections_arrive_in_priority_order() -> std::io::Result<()> {
     )?;
     write(
         &root,
-        "research/APPROACHES.md",
+        "derived/APPROACHES.md",
         "# Approaches\n\nA table of approaches.",
     )?;
     write(
         &root,
-        "research/THREADS.md",
+        "derived/THREADS.md",
         "# Threads\n\nA table of threads.",
     )?;
     write(
         &root,
-        "research/CLAIMS.md",
+        "derived/CLAIMS.md",
         "# Claims\n\nA table of claims.",
     )?;
     write(&root, "TASKS.md", "Some tasks.")?;
@@ -58,13 +59,13 @@ fn sections_arrive_in_priority_order() -> std::io::Result<()> {
     let dossier = inventor(&root);
     let goal = dossier.find("GOAL.md").expect("the goal is included");
     let approaches = dossier
-        .find("research/APPROACHES.md")
+        .find("derived/APPROACHES.md")
         .expect("the approaches are included");
     let threads = dossier
-        .find("research/THREADS.md")
+        .find("derived/THREADS.md")
         .expect("the threads are included");
     let claims = dossier
-        .find("research/CLAIMS.md")
+        .find("derived/CLAIMS.md")
         .expect("the claims are included");
     let tasks = dossier.find("TASKS.md").expect("the tasks are included");
     assert!(goal < approaches, "the goal precedes the approaches");
@@ -109,12 +110,12 @@ fn the_goal_survives_a_budget_too_small_for_the_rest() -> std::io::Result<()> {
         "GOAL.md",
         "Prove the conjecture for every n above eleven.",
     )?;
-    write(&root, "research/CLAIMS.md", &"claim text. ".repeat(500))?;
+    write(&root, "derived/CLAIMS.md", &"claim text. ".repeat(500))?;
 
     // Sixty tokens is far less than the claims alone.
     let dossier = build(&root, 60);
     assert!(dossier.contains("every n above eleven"));
-    assert!(!dossier.contains("research/CLAIMS.md"));
+    assert!(!dossier.contains("derived/CLAIMS.md"));
     Ok(())
 }
 
@@ -127,12 +128,12 @@ fn a_cut_section_says_it_was_cut() -> std::io::Result<()> {
     write(&root, "GOAL.md", "A goal.")?;
     write(
         &root,
-        "research/CLAIMS.md",
+        "derived/CLAIMS.md",
         &"a distinctive claim sentence. ".repeat(400),
     )?;
 
     let dossier = build(&root, 200);
-    assert!(dossier.contains("research/CLAIMS.md"));
+    assert!(dossier.contains("derived/CLAIMS.md"));
     assert!(dossier.contains("was cut here to fit this dossier's budget"));
     assert!(dossier.contains("Read the file for the rest"));
     Ok(())
@@ -145,7 +146,7 @@ fn an_oversized_file_is_truncated_rather_than_fatal() -> std::io::Result<()> {
     let root = workspace("oversized")?;
     write(&root, "GOAL.md", "A goal.")?;
     // Larger than MAX_WORKSPACE_CONTEXT_BYTES, which the startup path rejects.
-    write(&root, "research/CLAIMS.md", &"x".repeat(400 * 1024))?;
+    write(&root, "derived/CLAIMS.md", &"x".repeat(400 * 1024))?;
 
     let dossier = inventor(&root);
     assert!(!dossier.is_empty());
@@ -160,14 +161,14 @@ fn the_total_stays_within_budget() -> std::io::Result<()> {
     let root = workspace("budget")?;
     write(&root, "GOAL.md", "A goal.")?;
     for relative in [
-        "research/APPROACHES.md",
-        "research/THREADS.md",
-        "research/CLAIMS.md",
+        "derived/APPROACHES.md",
+        "derived/THREADS.md",
+        "derived/CLAIMS.md",
         "CONTEXT.md",
         "reflections/INDEX.md",
         "TASKS.md",
-        "research/FRONTIER.md",
-        "research/REQUESTS.md",
+        "derived/FRONTIER.md",
+        "derived/REQUESTS.md",
         "code/lib/INDEX.md",
     ] {
         write(&root, relative, &"filler text. ".repeat(2_000))?;
@@ -195,7 +196,7 @@ fn missing_files_are_skipped_silently() -> std::io::Result<()> {
 
     let dossier = inventor(&root);
     assert!(dossier.contains("A goal."));
-    assert!(!dossier.contains("research/CLAIMS.md"));
+    assert!(!dossier.contains("derived/CLAIMS.md"));
     assert!(!dossier.contains("TASKS.md"));
     Ok(())
 }
@@ -243,25 +244,25 @@ fn the_reduction_dossier_leads_with_the_goal_then_what_is_established()
 -> std::io::Result<()> {
     let root = workspace("reduction-order")?;
     write(&root, "GOAL.md", "Prove b_k >= 1 for every k.")?;
-    write(&root, "research/CLAIMS.md", "# Claims\n\nA table of claims.")?;
+    write(&root, "derived/CLAIMS.md", "# Claims\n\nA table of claims.")?;
     write(
         &root,
-        "research/BACKWARD.md",
+        "derived/BACKWARD.md",
         "# Backward\n\nA table of skeletons.",
     )?;
-    write(&root, "research/THREADS.md", "# Threads\n\nA table.")?;
+    write(&root, "derived/THREADS.md", "# Threads\n\nA table.")?;
     write(&root, "TASKS.md", "Some tasks.")?;
 
     let dossier = reducer(&root);
     let goal = dossier.find("GOAL.md").expect("the goal is included");
     let claims = dossier
-        .find("research/CLAIMS.md")
+        .find("derived/CLAIMS.md")
         .expect("the claims are included");
     let backward = dossier
-        .find("research/BACKWARD.md")
+        .find("derived/BACKWARD.md")
         .expect("the skeletons are included");
     let threads = dossier
-        .find("research/THREADS.md")
+        .find("derived/THREADS.md")
         .expect("the threads are included");
     let tasks = dossier.find("TASKS.md").expect("the tasks are included");
     assert!(goal < claims, "the goal precedes what the run established");
@@ -270,7 +271,7 @@ fn the_reduction_dossier_leads_with_the_goal_then_what_is_established()
     assert!(threads < tasks, "the ranked sections precede the remainder");
     // The method ledger is this role's boundary, in the dossier as in its
     // prompt context: a role holding it drifts into proposing methods.
-    assert!(!dossier.contains("research/APPROACHES.md"));
+    assert!(!dossier.contains("derived/APPROACHES.md"));
     Ok(())
 }
 

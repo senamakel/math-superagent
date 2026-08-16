@@ -47,7 +47,7 @@ use super::text::truncate;
 pub(super) const WEAKENED_DIR: &str = "research/weakened";
 
 /// The derived table, filed with the library it describes.
-pub(super) const WEAKENED_PATH: &str = "research/WEAKENED.md";
+pub(super) const WEAKENED_PATH: &str = "derived/WEAKENED.md";
 
 /// Rungs one table lists.
 const MAX_ROWS: usize = 24;

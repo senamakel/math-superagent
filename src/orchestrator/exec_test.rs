@@ -17,7 +17,7 @@ fn workspace_named(name: &str) -> std::path::PathBuf {
 }
 
 fn captured(bytes: &[u8], chunk: usize) -> Capture {
-    let mut capture = Capture::default();
+    let mut capture = Capture::bounded(MAX_COMMAND_OUTPUT_BYTES);
     for piece in bytes.chunks(chunk) {
         capture.push(piece);
     }
@@ -51,18 +51,19 @@ fn the_kept_window_does_not_grow_with_the_length_of_the_stream() {
     // The bound is on memory, not only on what the model reads. A `Vec` grown
     // to the full stream and shortened afterwards is what OOM-killed a live
     // container, so the retained bytes must stay flat as the stream grows.
-    let mut capture = Capture::default();
+    let mut capture = Capture::bounded(MAX_COMMAND_OUTPUT_BYTES);
     let chunk = vec![b'y'; 16 * 1024];
     for _ in 0..512 {
         capture.push(&chunk);
     }
-    assert_eq!(capture.total, 512 * 16 * 1024);
-    assert_eq!(
-        capture.head.len() + capture.tail.len(),
-        MAX_COMMAND_OUTPUT_BYTES,
+    assert_eq!(capture.total(), 512 * 16 * 1024);
+    // The retained window is what the render is made of, so bounding the render
+    // bounds the memory. `capture_test` asserts the same property on the two
+    // buffers directly, where they are visible.
+    assert!(
+        capture.render().len() < MAX_COMMAND_OUTPUT_BYTES + 200,
         "8 MiB of output must be held in one 64 KiB window"
     );
-    assert!(capture.render().len() < MAX_COMMAND_OUTPUT_BYTES + 200);
 }
 
 #[test]

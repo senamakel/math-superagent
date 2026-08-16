@@ -211,7 +211,16 @@ impl AsyncSubagentManager {
             })
     }
 
-    fn spawn(&self, agent_name: &str, input: String) -> Result<TaskId> {
+    /// Starts one subagent and returns its run id without waiting for it.
+    ///
+    /// Visible to the orchestrator module rather than private because
+    /// `spawn_candidates` starts a fan-out of its own: it creates a branch and a
+    /// checkout per candidate first, which `spawn_agents` knows nothing about.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when no subagent of that name is registered.
+    pub(in crate::orchestrator) fn spawn(&self, agent_name: &str, input: String) -> Result<TaskId> {
         // Resolved once, and everything downstream — the run record, the trace
         // child, the session memory — is written under the resolved name, so
         // which school ran a turn is answerable from the record rather than

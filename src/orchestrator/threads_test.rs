@@ -125,5 +125,5 @@ fn the_write_path_recognises_a_thread() {
     assert!(is_thread("research/threads/passes.md"));
     assert!(!is_thread("research/threads/INDEX.md"));
     assert!(!is_thread("research/L1.0/siegel.md"));
-    assert!(!is_thread("research/THREADS.md"));
+    assert!(!is_thread("derived/THREADS.md"));
 }

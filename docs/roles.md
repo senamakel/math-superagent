@@ -1,6 +1,6 @@
 # Roles, adapters, and what each one can reach
 
-The twenty-two roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
+The roles the runtime registers, the sources they read through, and the two ways any of them gets back to what the run already knows. What a role is *told* is in [context routing](#workspace-context-routing) at the end of this file; what it is *allowed to do* is the tool boundary each section describes.
 
 The working agreement is [`AGENTS.md`](../AGENTS.md); this file is the part of it that goes deeper than a rule.
 
@@ -32,7 +32,7 @@ another arXiv paper is the ordinary case and the frontier's whole point.
 It did not, and that is why four live runs made zero `exa_search` calls between
 them. The team's brief opened *"Keep this run's reference library useful, which
 mostly means not adding to it"* and made fetching conditional on an attempt
-reporting STUCK or `research/REQUESTS.md` naming a gap. Neither can hold at t=0:
+reporting STUCK or `derived/REQUESTS.md` naming a gap. Neither can hold at t=0:
 attempt 1 has only just started and a fresh workspace has no `REQUESTS.md`. So
 it replied NOTHING FURTHER, and because it was `Completion::Attainable` that
 reply retired it permanently — inside ninety seconds on every run, leaving hours
@@ -49,10 +49,21 @@ Algebras of Maximal Class II* as `pitman_ballot_theorem.md`.
 
 ## Expected problem-solving behavior
 
-The runtime has twenty-two roles plus an explicit solution loop.
+The runtime has twenty-three roles plus an explicit solution loop, and one more
+per candidate slot when several solutions are explored at once.
 
 - The orchestrator decomposes a problem, delegates focused tasks, and combines
   the results.
+- The archivist reviews the candidate solutions as diffs and decides which one
+  the run keeps. It is the only role that may make a candidate authoritative,
+  and holds no shell and no file-write tool: everything it does to the trunk
+  goes through `adopt_attempt`, which copies named files and commits them with
+  the reason. See [`workspace.md`](workspace.md) for the branch layout.
+- A candidate role writes and verifies one solution in its own checkout,
+  following the approach it was given rather than the one that looks best once
+  it has started. Its file tools are rooted at that checkout, so several run at
+  once without colliding; memory is *not* re-rooted, and is the only channel
+  between them.
 - The goals agent translates an objective into completion criteria and spawns
   specialist subagents until the goal is met or precisely blocked.
 - The research agent uses Exa to find definitions, papers, official references,
@@ -60,9 +71,9 @@ The runtime has twenty-two roles plus an explicit solution loop.
   a digest, an index row, and a share of every later reader's attention, so it
   fetches only when the solver reports an attempt STUCK, when `ROOT.md` names a
   specific gap it knows a specific source for, or not at all. It works the open
-  rows of `research/REQUESTS.md` — gaps other roles stated precisely — before
+  rows of `derived/REQUESTS.md` — gaps other roles stated precisely — before
   anything it thought of itself, checks `search_claims` before going looking for
-  what the library may already establish, and follows `research/FRONTIER.md`,
+  what the library may already establish, and follows `derived/FRONTIER.md`,
   the citations inside the sources it already has. The loop posts
   each attempt's verdict to the teams so "is the run short of something" is a
   signal rather than a guess. It returns source URLs, separates evidence from inference,
@@ -112,7 +123,7 @@ The runtime has twenty-two roles plus an explicit solution loop.
 
   It *was* held to that by its prompt, which is this repository's own recurring
   failure in the place it costs most: no line of Rust ran Lean, so
-  `research/CLAIMS.md` could not tell a kernel-checked lemma from a sentence
+  `derived/CLAIMS.md` could not tell a kernel-checked lemma from a sentence
   claiming one. `lean_check` is the control. It runs the kernel, parses the result — compiled
   or not, every `sorry`, every `#print axioms` line — and files a verdict under
   `code/out/lean/`. A claim may be `status: formalised` only with a
@@ -154,7 +165,7 @@ The runtime has twenty-two roles plus an explicit solution loop.
   there and answers with a route; the reducer asks what would be *enough* and
   answers with lemmas. It writes a proof skeleton to
   `research/backward/<slug>.md` — the goal, the inference combining the lemmas,
-  and one `gap` block per lemma nobody has proved — and `research/BACKWARD.md`
+  and one `gap` block per lemma nobody has proved — and `derived/BACKWARD.md`
   is derived from those files. Every open gap carries a first move a
   tool_builder could run today, which is what makes it a task rather than a
   wish; a lemma with no first move belongs in `request_research`. It exists
@@ -166,7 +177,7 @@ The runtime has twenty-two roles plus an explicit solution loop.
   is discharged by a proof or a claim, never by a program this role wrote), no
   delegation bench (a skeleton is checked by the forward loop attacking its
   gaps), and no scratch (a gap opened on unsettled arithmetic is a task nothing
-  can close). It is also denied `research/APPROACHES.md`, in its prompt context
+  can close). It is also denied `derived/APPROACHES.md`, in its prompt context
   and in its dossier, because a role holding the method ledger drifts into
   proposing methods. Like the inventor it is on the stronger reasoning model:
   whether a set of lemmas actually implies the goal is the definition of a
@@ -177,7 +188,7 @@ The runtime has twenty-two roles plus an explicit solution loop.
   names the difficulties, then writes a ladder of weakened versions to
   `research/weakened/<slug>.md` — each rung saying which are switched off and
   what turning the next one back on would take — from which
-  `research/WEAKENED.md` is derived. A rung does not imply the goal, which is not
+  `derived/WEAKENED.md` is derived. A rung does not imply the goal, which is not
   a defect in it. A failed rung stays on the ladder with its reason, because
   deleting it is how the same one is proposed again three attempts later. Its
   tool set is the reducer's exactly, and it is on the stronger reasoning model
@@ -242,7 +253,7 @@ The runtime has twenty-two roles plus an explicit solution loop.
   that does not change the plan on disk changes nothing once that attempt is
   over. It has the document tools and nothing that computes: no shell, no tool
   writing, no delegation. It is also the one reasoning role denied
-  `research/CLAIMS.md`, because a directive is asserted rather than established
+  `derived/CLAIMS.md`, because a directive is asserted rather than established
   and a role acting on an unevidenced instruction should not be holding the
   evidence ledger while it does. Its reply is written to
   `config/DIRECTIVES.md`, which is what the operator reads, so a directive it
@@ -395,20 +406,22 @@ not read unevidenced text beside it. See [`schools.md`](schools.md).
 
 | Role | Additional files |
 | --- | --- |
-| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `research/BLUEPRINT.md`, `research/ENTAILMENT.md`, `CONTEXT.md` — the graph says which open gap is *ready*, which the flat list cannot, and the entailment report says what the run already holds |
+| orchestrator, goals | `config/config.toml`, `GOAL.md`, `TASKS.md`, `code/lib/INDEX.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/BACKWARD.md`, `derived/BLUEPRINT.md`, `derived/ENTAILMENT.md`, `CONTEXT.md` — the graph says which open gap is *ready*, which the flat list cannot, and the entailment report says what the run already holds |
 | tool_builder, coder, sat_solver, smt_solver, theorem_prover, symbolic_math, lean_prover | the planners' files, minus the threads, plus `code/AGENTS.md` and `code/INDEX.md` |
 | judge | `GOAL.md`, `INDEX.md` |
 | reflection | the judge's files plus `TASKS.md` |
 | pattern_finder | `GOAL.md`, `code/lib/INDEX.md`, `CONTEXT.md` |
-| librarian, research | `GOAL.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/FRONTIER.md`, `CONTEXT.md` |
-| inventor | `GOAL.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/CLAIMS.md`, `CONTEXT.md`, plus a dossier built at delegation time |
-| reducer | `GOAL.md`, `research/BACKWARD.md`, `research/BLUEPRINT.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `research/APPROACHES.md`. It is the only role that can fix a decomposition that proves its own hypothesis, and until the graph existed the only one that could not see one |
-| weakener | `GOAL.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `research/THREADS.md`, `CONTEXT.md` — and deliberately **not** `research/APPROACHES.md` or `research/BACKWARD.md` |
-| searcher | `GOAL.md`, `research/CLAIMS.md`, `CONTEXT.md` — everything about the search itself arrives through `search_brief`, because it changes with every candidate |
-| refuter | `GOAL.md`, `research/BACKWARD.md`, `research/WEAKENED.md`, `research/CLAIMS.md`, `CONTEXT.md` — the two ledgers holding statements somebody committed to proving, which are the ones worth attacking |
-| scholar | `GOAL.md`, `TASKS.md`, `research/CLAIMS.md`, `research/ENTAILMENT.md`, `research/THREADS.md`, `CONTEXT.md` — it draws the `follows-from:` edges, so it sees what they already establish |
-| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `research/CLAIMS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `research/BACKWARD.md`, `CONTEXT.md` |
-| director | `GOAL.md`, `TASKS.md`, `research/THREADS.md`, `research/APPROACHES.md`, `CONTEXT.md` |
+| librarian, research | `GOAL.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/FRONTIER.md`, `CONTEXT.md` |
+| inventor | `GOAL.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/CLAIMS.md`, `CONTEXT.md`, plus a dossier built at delegation time |
+| reducer | `GOAL.md`, `derived/BACKWARD.md`, `derived/BLUEPRINT.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `CONTEXT.md`, plus its own dossier built at delegation time — and deliberately **not** `derived/APPROACHES.md`. It is the only role that can fix a decomposition that proves its own hypothesis, and until the graph existed the only one that could not see one |
+| weakener | `GOAL.md`, `derived/WEAKENED.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `CONTEXT.md` — and deliberately **not** `derived/APPROACHES.md` or `derived/BACKWARD.md` |
+| searcher | `GOAL.md`, `derived/CLAIMS.md`, `CONTEXT.md` — everything about the search itself arrives through `search_brief`, because it changes with every candidate |
+| archivist | `GOAL.md`, `derived/CLAIMS.md`, `CONTEXT.md` — what a candidate is judged *against*, and nothing about how the run arrived here |
+| candidate*NN* | the same as the code-writing roles, but resolved against its own checkout under `attempts/NN/` |
+| refuter | `GOAL.md`, `derived/BACKWARD.md`, `derived/WEAKENED.md`, `derived/CLAIMS.md`, `CONTEXT.md` — the two ledgers holding statements somebody committed to proving, which are the ones worth attacking |
+| scholar | `GOAL.md`, `TASKS.md`, `derived/CLAIMS.md`, `derived/ENTAILMENT.md`, `derived/THREADS.md`, `CONTEXT.md` — it draws the `follows-from:` edges, so it sees what they already establish |
+| context_curator | `GOAL.md`, `TASKS.md`, `INDEX.md`, `derived/CLAIMS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `derived/BACKWARD.md`, `CONTEXT.md` |
+| director | `GOAL.md`, `TASKS.md`, `derived/THREADS.md`, `derived/APPROACHES.md`, `CONTEXT.md` |
 | organizer | none — it falls through to the empty default |
 
 That table is what `role_context` returns today, and it is narrower than what
@@ -424,14 +437,14 @@ maintain a file no prompt would ever show it. What it did is now done by three
 things that are each owned and each measured. `CONTEXT.md` carries the beliefs —
 the curator owns it, it is routed to every reasoning role, it is held to a token
 budget, and it separates `Established` from `Recalled (durable memory — not this
-run's own findings)`, which `MEMORY.md` never did. `research/CLAIMS.md` carries
+run's own findings)`, which `MEMORY.md` never did. `derived/CLAIMS.md` carries
 the statements one at a time with hypotheses, `holds-here` and `status`, derived
 from the notes rather than asserted. Cognee carries what outlives the workspace.
 The launchers' phase-2 text points at `CONTEXT.md` and the claim ledger for the
 same reason.
 
 The inventor's failed-approaches need is met by `CONTEXT.md`'s `Ruled out`
-section and, more directly, by `research/APPROACHES.md`, where a closed line of
+section and, more directly, by `derived/APPROACHES.md`, where a closed line of
 attack keeps the reason it closed. The organizer having no arm is not a gap either —
 the role was removed; see `docs/runtime.md` if its name still appears in the
 registry list there.
@@ -472,10 +485,10 @@ Four of these are load-bearing rather than tidy-minded:
   evidence of progress, and treating it as such keeps the loop retrying. That
   was a routing decision while the scratch was `SCRATCHPAD.md`; now that it is
   a Cognee store it is a tool boundary, enforced by `register_scratch`.
-- Only the librarian and research see `research/FRONTIER.md`. It is a list of
+- Only the librarian and research see `derived/FRONTIER.md`. It is a list of
   things nobody has read, useful exactly to the roles deciding what to fetch
   next and noise to everyone else.
-- The tool-builder and the coder see `research/CLAIMS.md` but not the threads.
+- The tool-builder and the coder see `derived/CLAIMS.md` but not the threads.
   A closed form the library establishes changes what they implement; which
   direction the run is pursuing is the planners' decision, not theirs. The
   `holds-here` column is the load-bearing part — implementing a theorem whose

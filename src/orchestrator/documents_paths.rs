@@ -204,8 +204,18 @@ impl DocumentToolKind {
 /// does. A live `context_curator` read 37,609 bytes of one straight into a
 /// model call. Hiding the trace and leaving this beside it hid the file the
 /// policy names and not the one an agent actually reaches for.
-const HIDDEN_ENTRIES: [&str; 8] = [
+///
+/// `derived/` is the newest and the only one that is *not* runtime bookkeeping.
+/// It holds the nine rendered ledgers, which are the run's own reasoning and are
+/// committed and read by people. They are hidden from the file tools anyway,
+/// because a rendered ledger is the expensive way in: `read_ledger` bounds what
+/// it returns and filters by id, status or query, and `read_document` on the
+/// same file returns all of it. Leaving both doors open left the cheap one
+/// optional, and `CLAIMS.md` was measured at 7,488 tokens against a question
+/// about one row. The refusal below names the tool to use instead.
+const HIDDEN_ENTRIES: [&str; 9] = [
     ".workspace-history",
+    DERIVED_DIR,
     ".python-packages",
     "__pycache__",
     ".document-index.json",
@@ -236,16 +246,51 @@ const MAX_LISTING_ENTRIES: usize = 400;
 /// Enforced here rather than by asking the model to avoid the file, because a
 /// prompt instruction is not a control — and the workspace policy previously
 /// told agents to read this very file.
+/// Names the ledger a path *used* to be, when it names one.
+///
+/// The nine rendered ledgers moved from `research/` to `derived/`, and a role
+/// that learnt the old path — from a note on disk, from a summary it wrote last
+/// week, from its own memory — asks for it and gets "No such file or
+/// directory". That is true and useless: a live librarian hit exactly this on
+/// `research/FRONTIER.md` minutes after the move. A path that was somewhere
+/// must say where it went, or the run pays a turn to rediscover it.
+pub(super) fn moved_ledger(relative: &str) -> Option<String> {
+    let rest = relative
+        .trim_start_matches("/workspace/")
+        .trim_start_matches("./")
+        .strip_prefix("research/")?;
+    if !super::ledger::is_derived_file(rest) {
+        return None;
+    }
+    let name = rest.strip_suffix(".md")?;
+    Some(format!(
+        "`research/{name}.md` moved to `{DERIVED_DIR}/{name}.md`, which is derived and not read \
+         as a file. Read it with `read_ledger`, which bounds what it returns and can select by \
+         `id`, `status` or `query`; `list_ledgers` names them all."
+    ))
+}
+
 fn ensure_visible(relative: &str) -> Result<()> {
     let hidden = std::path::Path::new(relative)
         .components()
         .filter_map(|component| component.as_os_str().to_str())
         .find(|name| HIDDEN_ENTRIES.contains(name));
-    if let Some(hidden) = hidden {
+    let Some(hidden) = hidden else {
+        return Ok(());
+    };
+    // A refusal that does not name the way forward costs the turn twice: once
+    // to be refused and once to guess. `docs/ledgers.md` already requires this
+    // of the *write* guard, and the read guard is held to the same standard.
+    if hidden == DERIVED_DIR {
         return Err(tinyagents::TinyAgentsError::Validation(format!(
-            "`{hidden}` is runtime bookkeeping, not a workspace document; it is \
-             already in your context or irrelevant to the problem"
+            "`{relative}` is a derived ledger, rendered by this runtime from the notes a run \
+             writes. Read it with `read_ledger`, which returns it bounded and can select by \
+             `id`, `status` or `query` — `list_ledgers` names them all. Reading the file whole \
+             costs several thousand tokens to answer a question about one row."
         )));
     }
-    Ok(())
+    Err(tinyagents::TinyAgentsError::Validation(format!(
+        "`{hidden}` is runtime bookkeeping, not a workspace document; it is \
+         already in your context or irrelevant to the problem"
+    )))
 }

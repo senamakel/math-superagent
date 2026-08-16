@@ -42,7 +42,7 @@ use super::ledger::budget;
 use super::text::truncate;
 
 /// The derived graph, filed with the ledgers it is computed from.
-pub(super) const BLUEPRINT_PATH: &str = "research/BLUEPRINT.md";
+pub(super) const BLUEPRINT_PATH: &str = "derived/BLUEPRINT.md";
 
 /// Nodes one section lists before it is summarised.
 const MAX_ROWS: usize = 40;

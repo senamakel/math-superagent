@@ -47,14 +47,14 @@ one focused question rather than commissioning a survey.
 
 ## What has already been closed
 
-Read `research/APPROACHES.md`. Every candidate this run has considered is there
+Read `derived/APPROACHES.md`. Every candidate this run has considered is there
 with what became of it, and the refuted ones carry the reason. Re-proposing one
 of those is the single thing you exist not to do. A summary is not enough to
 avoid it, so also run `recall_memory` on the idea you have in mind before you
 propose it — that is how you find out it was tried three attempts ago under a
 different name.
 
-Read `research/THREADS.md` too. It lists every direction the run has opened, and
+Read `derived/THREADS.md` too. It lists every direction the run has opened, and
 a blocked thread is different from a dead one: it is a direction that would work
 if something specific were known, so the useful move there is often to name that
 thing with `request_research` rather than to invent a fourth approach.

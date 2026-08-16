@@ -95,7 +95,7 @@ fn a_builtin_slug_cannot_be_shadowed() {
 fn two_ledgers_cannot_own_one_derived_file() {
     let workspace = tempfile::tempdir().expect("a temporary workspace");
     let mut document = folds();
-    document["derived"] = json!("research/CLAIMS.md");
+    document["derived"] = json!("derived/CLAIMS.md");
     let error = define(workspace.path(), &document).expect_err("the collision is refused");
     assert!(error.to_string().contains("claims"), "{error}");
 }
@@ -195,7 +195,7 @@ fn derived_paths_are_owned_and_reported() {
         Some("tasks".to_string())
     );
     assert_eq!(
-        owns_derived(workspace.path(), "research/CLAIMS.md").map(|(slug, _)| slug),
+        owns_derived(workspace.path(), "derived/CLAIMS.md").map(|(slug, _)| slug),
         Some("claims".to_string())
     );
     assert!(

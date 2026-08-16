@@ -41,7 +41,7 @@ use super::text::truncate;
 const LEDGER_PATH: &str = "config/.frontier.json";
 
 /// The rendered table, filed with the library it describes.
-pub(super) const FRONTIER_PATH: &str = "research/FRONTIER.md";
+pub(super) const FRONTIER_PATH: &str = "derived/FRONTIER.md";
 
 /// Rows the rendered table carries.
 ///

@@ -248,6 +248,11 @@ impl WorkspaceDocuments {
         ensure_visible(relative)?;
         let path = self.path(relative)?;
         let canonical = path.canonicalize().map_err(|error| {
+            // A path that names a ledger's old home says where it went, rather
+            // than reporting a true and useless absence.
+            if let Some(moved) = moved_ledger(relative) {
+                return tinyagents::TinyAgentsError::Validation(moved);
+            }
             tinyagents::TinyAgentsError::Tool(format!(
                 "failed to resolve workspace document `{relative}`: {error}{}",
                 self.nearby(relative)

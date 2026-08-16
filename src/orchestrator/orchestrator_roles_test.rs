@@ -30,7 +30,7 @@ fn both_code_writing_roles_see_the_same_working_context() {
     assert!(role_context("coder").contains(&"code/lib/INDEX.md"));
     // An encoding rests on what the run believes about the objects it encodes,
     // and a bound the library already establishes removes constraints.
-    assert!(role_context("sat_solver").contains(&"research/CLAIMS.md"));
+    assert!(role_context("sat_solver").contains(&"derived/CLAIMS.md"));
 }
 
 #[test]
@@ -117,8 +117,8 @@ fn the_formalisation_agent_must_report_what_the_kernel_checked() -> agent::Resul
 #[test]
 fn the_reducer_is_given_what_is_established_and_not_the_method_ledger() {
     let context = role_context("reducer");
-    assert!(!context.contains(&"research/APPROACHES.md"));
-    for required in ["GOAL.md", "research/BACKWARD.md", "research/CLAIMS.md"] {
+    assert!(!context.contains(&"derived/APPROACHES.md"));
+    for required in ["GOAL.md", "derived/BACKWARD.md", "derived/CLAIMS.md"] {
         assert!(
             context.contains(&required),
             "the reducer must be sent `{required}`"
@@ -133,11 +133,11 @@ fn the_reducer_is_given_what_is_established_and_not_the_method_ledger() {
 fn the_open_gaps_reach_the_planners_and_not_the_judge() {
     for role in ["goals", "orchestrator", "context_curator", "reducer"] {
         assert!(
-            role_context(role).contains(&"research/BACKWARD.md"),
+            role_context(role).contains(&"derived/BACKWARD.md"),
             "{role} decides what to attack and needs the open gaps"
         );
     }
-    assert!(!role_context("judge").contains(&"research/BACKWARD.md"));
+    assert!(!role_context("judge").contains(&"derived/BACKWARD.md"));
 }
 
 #[test]
