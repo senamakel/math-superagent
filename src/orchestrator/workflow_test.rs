@@ -702,7 +702,7 @@ async fn the_goals_child_is_seeded_with_the_attempt() {
 async fn the_evaluation_arms_run_concurrently() {
     use std::time::{Duration, Instant};
 
-    let arm_time = Duration::from_millis(300);
+    let arm_time = Duration::from_secs(1);
     let stuck = json!({
         "attempts": 1, "solved": false, "unproductive": STUCK_THRESHOLD, "blocked": 0,
         "computational": 0, "unverified": 0, "restarts": 0, "since_reduction": 0,
@@ -750,12 +750,21 @@ async fn the_evaluation_arms_run_concurrently() {
     // The bound is six, and it was five for six calls until a full suite on a
     // loaded box failed it once in four runs while passing every time in
     // isolation. That is what this assertion is worth and what it costs: it is
-    // a wall-clock measurement, so it reports the machine as well as the graph,
-    // and a bound that sits too close to the concurrent time turns a busy CI
-    // agent into a red build on code nobody touched. Six still separates the
-    // two cases by a factor of one and a half against a sequence of nine, which
-    // is the property being tested; tightening it further buys resolution the
-    // measurement does not have.
+    // a wall-clock measurement, so it reports the machine as well as the graph.
+    //
+    // Widening the ratio was the wrong repair and it failed again, at 1.851s
+    // against an 1.800s bound, with 300ms arms. That number is the argument for
+    // what changed instead: 1.851s sits far nearer the concurrent 0.9s than the
+    // sequential 2.7s, so the arms plainly did overlap and the test was reading
+    // roughly 950ms of scheduler jitter from an oversubscribed box. Jitter of
+    // that kind is *additive* — a fixed cost of contention — so at a 300ms unit
+    // it is three arm-times and swamps a bound placed between three and nine.
+    // The unit is therefore a second: the same 950ms is now under one arm-time,
+    // the gap between the concurrent 3s and this 6s bound is 3s rather than
+    // 900ms, and the ratio keeps its factor of one and a half against a
+    // sequence of nine. It costs about two extra seconds in a suite that runs
+    // in under a minute, which is the honest price of measuring wall-clock at
+    // all.
     assert!(
         elapsed < arm_time * 6,
         "the arms took {elapsed:?}, which is more than six of the {arm_time:?} each one costs — \
