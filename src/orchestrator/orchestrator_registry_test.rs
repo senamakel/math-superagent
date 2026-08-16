@@ -460,29 +460,31 @@ fn the_pattern_agent_sees_the_raw_data_it_analyses() {
     assert!(super::PATTERN_PROMPT.contains("note_scratch"));
 }
 
-/// `config/config.toml` reached the two executing arms and now reaches nobody.
-/// Its policy lines restated the built-in prompts, its `[artifacts]` names were
-/// stale, and its one hard number is enforced by the tool that owns it — see
-/// [`super::role_context`].
+/// `config/config.toml` reaches no prompt at all, and that is the assertion.
+///
+/// It used to head the two executing arms. Nothing in it was a fact only that
+/// file held: its policy lines restate the built-in prompts in TOML, its
+/// `[artifacts]` names are stale — `tasks.md` where the runtime writes
+/// `derived/TASKS.md`, so a role that believed them wrote where no ledger derives from
+/// — and its one hard number is enforced by `execute_command` and named in the
+/// error a timeout returns, which is where a limit is actually learned. This
+/// is a test rather than a comment because a routed file is the cheapest thing
+/// in the runtime to add back.
 #[test]
-fn no_role_is_sent_the_runtime_configuration() {
-    for role in [
-        "tool_builder",
-        "goals",
-        "orchestrator",
-        "coder",
-        "lean_prover",
-        "reflection",
-        "inventor",
-        "pattern_finder",
-        "librarian",
-        "director",
-    ] {
+fn no_role_receives_the_runtime_configuration() -> agent::Result<()> {
+    use super::{RolePrompts, schools};
+
+    // Every role the runtime assembles a prompt for, rather than a list here
+    // that a new role would not be added to.
+    let school = schools::ALL.first().expect("a school is defined");
+    let prompts = RolePrompts::for_school(template_workspace(), school, true)?;
+    for (role, _) in prompts.by_role() {
         assert!(
             !role_context(role).contains(&"config/config.toml"),
-            "`{role}` is sent the runtime configuration"
+            "`{role}` is routed a file it cannot learn anything from"
         );
     }
+    Ok(())
 }
 
 /// The shared brief is the last workspace file in every role that gets one,
@@ -670,12 +672,19 @@ fn the_method_policy_leads_every_assembled_prompt() {
         "the shared policy must lead"
     );
     assert!(assembled.contains("ROLE BODY"));
-    // The role's own guidance sits with the role's own prompt and above the
-    // workspace state, which is the volatile part and now ends the string.
-    let role = assembled.find("role ctx").expect("the guidance is carried");
-    let state = assembled.find("shared ctx").expect("the state is carried");
-    assert!(role < state, "the guidance follows the workspace state");
-    assert!(assembled.ends_with("shared ctx"));
+    // The gradient is volatility, not topic. A role's own guidance is fixed for
+    // the workspace, so it sits with the built-in prompt it continues; the
+    // workspace state moves on every write, so it goes last and takes the cache
+    // miss alone. These were once the other way round, and a single
+    // `record_entry` re-sent the guidance uncached for a change unrelated to it.
+    assert!(
+        assembled.contains("ROLE BODY\n\nrole ctx"),
+        "the role's guidance belongs with the prompt it continues: {assembled}"
+    );
+    assert!(
+        assembled.ends_with("shared ctx"),
+        "the most volatile block must be last: {assembled}"
+    );
     // Trimmed, so an editor adding a trailing newline to a prompt file cannot
     // silently invalidate every cached prefix.
     assert!(!assembled.contains("\n\n\n"), "{assembled}");
