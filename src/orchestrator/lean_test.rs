@@ -441,3 +441,57 @@ mod cited {
         assert_eq!(record["cited"][0], "Cited.mihailescu2004");
     }
 }
+
+/// A hallucinated import, which the first bench run found twice in nine files.
+///
+/// Lean reports it as a missing `.olean` object file — a message that reads
+/// like a broken toolchain and is nothing of the kind. Both files it hit were
+/// otherwise correct, so a verdict that only said "does not compile" sent the
+/// role to debug its mathematics instead of its import line.
+mod missing_modules {
+    use super::parse;
+
+    const MISSING: &str = "/workspace/code/a.lean:1:0: error: object file \
+        '/opt/mathlib4/.lake/build/lib/lean/Mathlib/Data/Nat/Parity.olean' of module \
+        Mathlib.Data.Nat.Parity does not exist\n";
+
+    #[test]
+    fn the_module_is_named_rather_than_the_object_file() {
+        let checked = parse("code/a.lean", false, MISSING);
+        assert!(!checked.compiled);
+        assert_eq!(checked.missing_modules, vec!["Mathlib.Data.Nat.Parity"]);
+        let objection = checked.objection().expect("it does not compile");
+        assert!(objection.contains("Mathlib.Data.Nat.Parity"), "{objection}");
+        assert!(
+            objection.contains("/opt/mathlib4/Mathlib"),
+            "the objection says how to find the real module: {objection}"
+        );
+    }
+
+    /// Every other compile failure keeps the plain message, so the specific one
+    /// stays a signal.
+    #[test]
+    fn an_ordinary_compile_failure_is_unchanged() {
+        let checked = parse("code/a.lean", false, "code/a.lean:3:0: error: unsolved goals\n");
+        assert!(checked.missing_modules.is_empty());
+        assert_eq!(
+            checked.objection(),
+            Some("`code/a.lean` does not compile".to_string())
+        );
+    }
+
+    /// The same module named on two lines is one problem, not two.
+    #[test]
+    fn a_repeated_module_is_listed_once() {
+        let checked = parse("code/a.lean", false, &format!("{MISSING}{MISSING}"));
+        assert_eq!(checked.missing_modules.len(), 1);
+    }
+
+    /// The record carries it, so a replay can count this failure mode without
+    /// re-parsing Lean's prose.
+    #[test]
+    fn the_record_carries_the_missing_module() {
+        let record = parse("code/a.lean", false, MISSING).record();
+        assert_eq!(record["missing_modules"][0], "Mathlib.Data.Nat.Parity");
+    }
+}

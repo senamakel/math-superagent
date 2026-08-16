@@ -152,6 +152,15 @@ pub struct Verdict {
     pub(super) sorries: Vec<String>,
     /// Every `#print axioms` line, verbatim.
     pub(super) axioms: Vec<String>,
+    /// Modules the file imported that this Mathlib does not have.
+    ///
+    /// Parsed rather than left inside the error text, because it is the one
+    /// compile failure whose fix is mechanical and whose message is opaque.
+    /// Lean reports it as a missing `.olean` *object file*, which reads like a
+    /// broken toolchain and is nothing of the kind: the import names a module
+    /// that does not exist. Two of the seven failures in the first bench run
+    /// were this, and both files were otherwise correct.
+    pub(super) missing_modules: Vec<String>,
 }
 
 impl Verdict {
@@ -262,6 +271,16 @@ impl Verdict {
     /// knows what to write next, and one reading "not verified" does not.
     pub(super) fn objection(&self) -> Option<String> {
         if !self.compiled {
+            if !self.missing_modules.is_empty() {
+                return Some(format!(
+                    "`{}` imports {}, which this Mathlib does not have — the error names a \
+                     missing `.olean`, but the toolchain is fine and the import is wrong. Find \
+                     the real module with `ls /opt/mathlib4/Mathlib/<Area>` or \
+                     `grep -rl \"theorem <name>\" /opt/mathlib4/Mathlib` before guessing again",
+                    self.file,
+                    names(&self.missing_modules)
+                ));
+            }
             return Some(format!("`{}` does not compile", self.file));
         }
         if !self.sorries.is_empty() {
@@ -317,6 +336,7 @@ impl Verdict {
             "compiled": self.compiled,
             "sorries": self.sorries,
             "axioms": self.axioms,
+            "missing_modules": self.missing_modules,
             "cited": self.cited_axioms(),
             "verified": self.verified(),
             "outcome": self.outcome().as_str(),
@@ -330,6 +350,7 @@ impl Verdict {
             compiled: value.get("compiled")?.as_bool()?,
             sorries: strings(value.get("sorries")),
             axioms: strings(value.get("axioms")),
+            missing_modules: strings(value.get("missing_modules")),
         })
     }
 
@@ -513,6 +534,7 @@ pub(super) fn counts(workspace: &Path) -> (usize, usize) {
 fn parse(file: &str, exit_ok: bool, output: &str) -> Verdict {
     let mut sorries = Vec::new();
     let mut axioms = Vec::new();
+    let mut missing_modules = Vec::new();
     let mut errored = false;
     for line in output.lines() {
         let trimmed = line.trim();
@@ -524,6 +546,15 @@ fn parse(file: &str, exit_ok: bool, output: &str) -> Verdict {
             axioms.push(trimmed.to_string());
         } else if trimmed.contains("error:") {
             errored = true;
+            // `object file '…/Mathlib/Data/Nat/Parity.olean' of module
+            // Mathlib.Data.Nat.Parity does not exist`
+            if trimmed.contains("does not exist")
+                && let Some((_, after)) = trimmed.split_once("of module ")
+                && let Some(module) = after.split_whitespace().next()
+                && !missing_modules.iter().any(|seen| seen == module)
+            {
+                missing_modules.push(module.to_string());
+            }
         }
     }
     Verdict {
@@ -535,6 +566,7 @@ fn parse(file: &str, exit_ok: bool, output: &str) -> Verdict {
         compiled: exit_ok && !errored,
         sorries,
         axioms,
+        missing_modules,
     }
 }
 
