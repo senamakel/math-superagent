@@ -232,3 +232,98 @@ fn verified_declarations_are_rendered_before_unchecked_ones() {
         .expect("the unchecked row is rendered");
     assert!(verified_at < unchecked_at, "verified sorts first");
 }
+
+/// A file written and never checked must reach the index on the *write*.
+///
+/// The other refresh runs on `lean_check`, and that is the wrong event to rely
+/// on alone: a file nobody checks never fires it, so the unchecked files — the
+/// whole reason the index carries a standing — were the ones least likely to
+/// appear in it. A live PE 622 run reached seventeen `.lean` files against two
+/// verdicts while the index still described the tree as it had been two checks
+/// earlier.
+#[test]
+fn a_written_file_is_indexed_before_any_check() {
+    let root = workspace_with("write-first", "Lib/A.lean", "theorem a : True := trivial\n");
+    // A second file arriving after the first would have been invisible until
+    // something checked it.
+    std::fs::write(
+        root.join(super::LEAN_DIR).join("Lib/B.lean"),
+        "theorem b : True := trivial\n",
+    )
+    .expect("the second source is written");
+
+    let lemmas = collect(&root);
+    let names: Vec<&str> = lemmas
+        .declarations
+        .iter()
+        .map(|declaration| declaration.name.as_str())
+        .collect();
+    assert!(names.contains(&"a") && names.contains(&"b"), "{names:?}");
+    assert!(
+        lemmas
+            .declarations
+            .iter()
+            .all(|declaration| declaration.standing == Standing::Unchecked),
+        "a file with no verdict is unchecked, not absent"
+    );
+    assert_eq!(lemmas.unchecked_files.len(), 2);
+}
+
+/// `X = X`: the one wrong statement a kernel check cannot object to.
+///
+/// The case is real. A live PE 622 run, told the answer was not accepted until
+/// a `.lean` file with a passing verdict carried it, wrote
+/// `theorem pe622_answer_nat : 3010983666182123972 = 3010983666182123972 := by
+/// rfl` under a docstring calling it "the answer stated directly". Every check
+/// in `lean.rs` would have passed it as `verified`.
+mod tautologies {
+    use super::super::tautologies;
+
+    #[test]
+    fn a_statement_whose_sides_are_identical_is_caught() {
+        let found = tautologies(
+            "theorem pe622_answer_nat : 3010983666182123972 = 3010983666182123972 := by rfl\n",
+        );
+        assert_eq!(found, vec!["pe622_answer_nat"]);
+    }
+
+    /// The check must be this narrow. `rfl` on a closed numeral is an ordinary
+    /// and useful fact, and a check that refused it would make the runtime
+    /// unable to state arithmetic at all.
+    #[test]
+    fn an_honest_rfl_still_passes() {
+        for source in [
+            "theorem two : 2 + 2 = 4 := by rfl\n",
+            "theorem sig : sigma 1 15 = 24 := by decide\n",
+            "theorem answer : 3010983666182119516 + 4456 = 3010983666182123972 := by norm_num\n",
+        ] {
+            assert!(tautologies(source).is_empty(), "refused: {source}");
+        }
+    }
+
+    /// A `def` of a proposition is not an assertion of one.
+    #[test]
+    fn a_definition_is_not_a_claim() {
+        assert!(tautologies("def trivially (n : Nat) : Prop := n = n\n").is_empty());
+    }
+
+    /// The relations that contain or neighbour `=` must not be mis-split — that
+    /// is the only way this check could report a real theorem as empty.
+    #[test]
+    fn a_neighbouring_relation_is_not_mistaken_for_equality() {
+        for source in [
+            "theorem ne (n : Nat) : n ≠ n := by simp\n",
+            "theorem le (n : Nat) : n ≤ n := le_refl n\n",
+            "theorem ge (n : Nat) : n ≥ n := le_refl n\n",
+        ] {
+            assert!(tautologies(source).is_empty(), "mis-split: {source}");
+        }
+    }
+
+    /// Binders carry their own `:`, so the proposition is taken after the last.
+    #[test]
+    fn a_binder_colon_does_not_confuse_the_split() {
+        let found = tautologies("theorem t (n : Nat) (h : 0 < n) : n = n := rfl\n");
+        assert_eq!(found, vec!["t"]);
+    }
+}

@@ -1,0 +1,6 @@
+{
+  "finding": "refuted",
+  "model": "tff('declare_$i1',type,'fmb_$i_1':$i).\ntff('declare_$i2',type,'fmb_$i_2':$i).\ntff('finite_domain_$i',axiom,\n      ! [X:$i] : (\n         X = 'fmb_$i_1' | X = 'fmb_$i_2'\n      ) ).\n\ntff('distinct_domain_$i',axiom,\n         'fmb_$i_1' != 'fmb_$i_2'\n).\n\ntff(declare_e,type,e:$i).\ntff(e_definition,axiom,e = 'fmb_$i_1').\ntff(declare_a,type,a:$i).\ntff(a_definition,axiom,a = 'fmb_$i_2').\ntff(declare_a2,type,a2:$i).\ntff(a2_definition,axiom,a2 = 'fmb_$i_1').\ntff(declare_a3,type,a3:$i).\ntff(a3_definition,axiom,a3 = 'fmb_$i_2').\ntff(declare_a4,type,a4:$i).\ntff(a4_definition,axiom,a4 = 'fmb_$i_1').\ntff(declare_g,type,g: ($i * $i) > $i).\ntff(function_g,axiom,\n           g('fmb_$i_1','fmb_$i_1') = 'fmb_$i_1'\n         & g('fmb_$i_1','fmb_$i_2') = 'fmb_$i_2'\n         & g('fmb_$i_2','fmb_$i_1') = 'fmb_$i_2'\n         & g('fmb_$i_2','fmb_$i_2') = 'fmb_$i_1'\n\n).\n\n",
+  "problem": "code/refute/ord8_worked.p",
+  "status": "CounterSatisfiable"
+}
