@@ -1,0 +1,11 @@
+{
+  "axioms": [
+    "'ErdosGyarfas.chord_deletion_lemma' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean/LemmaA_chord_deletion.lean",
+  "sorries": [
+    "/workspace/code/lean/LemmaA_chord_deletion.lean:45:8: warning: declaration uses `sorry`"
+  ],
+  "verified": false
+}

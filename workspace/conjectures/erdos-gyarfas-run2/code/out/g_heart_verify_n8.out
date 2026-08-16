@@ -1,0 +1,20 @@
+# G-heart lemma verification (2-connected, delta>=3, 4/8/16-cycle)
+# CORRECTED generator (code/lib/biconnected_gen.py generator + lib/canonical.py
+# exact canonical dedup), each delta>=3 graph verified with the exact oracle
+# (code/lib/erdos_gyarfas.py has_power_of_two_cycle), plus an independent
+# nx.simple_cycles 4/8-detector cross-check at n=8 (both 2581/2581).
+#
+# n | #2conn | #delta>=3 | #with_2power | verdict
+# --+--------+-----------+--------------+--------
+3 | 1 | 0 | 0 | VERIFIED
+4 | 3 | 1 | 1 | VERIFIED
+5 | 10 | 3 | 3 | VERIFIED
+6 | 56 | 19 | 19 | VERIFIED
+7 | 468 | 149 | 149 | VERIFIED
+8 | 7123 | 2581 | 2581 | VERIFIED
+#
+# TOTAL WALL TIME (n=8 fast canonical run): 28.3s
+# #2conn matches A002218: 1,3,10,56,468,7123.
+# 2-connected min-degree>=3 counts: 1,3,19,149,2581 at n=4..8.
+# Every 2-connected min-degree>=3 graph on 3..8 vertices has a power-of-two
+# cycle (4 or 8). No counterexample.

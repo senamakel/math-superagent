@@ -1,0 +1,28 @@
+check_girth5_upto13: 2-connected min-degree>=3 girth-5 graphs on n=10..13
+  (generator output loaded; cache/regeneration time 0.3s)
+n=10 : 1 girth-5 min-degree>=3 graphs
+n=11 : 0 girth-5 min-degree>=3 graphs
+n=12 : 2 girth-5 min-degree>=3 graphs
+n=13 : 4 girth-5 min-degree>=3 graphs
+
+Verification (asserted per graph): girth>=5, min-degree>=3, and a
+power-of-two cycle = an 8-cycle, via the independent nx.simple_cycles route.
+FAILED graphs: none
+
+Good-chord scan (definition from edge_transfer_girth5.py):
+ n #GRAPHS #DEL_CHORDS  #GOOD  #BAD  worst?
+10       1          15     15     0  False
+12       1          18     18     0  False
+12       1          18     18     0  False
+13       1          20     20     0  False
+13       1          21     21     0  False
+13       1          20     20     0  False
+13       1          20     20     0  False
+-------------------------------------------
+TOT       7         132    132     0
+
+=> NO WORST CASE: every 2-connected min-degree>=3 girth-5 graph on
+   n=10..13 has a power-of-two cycle (an 8-cycle), so every deletable
+   chord of every such graph is GOOD. The chord-deletion induction step
+   closes over the entire girth-5 danger region through n=13.
+TOTAL WALL TIME (analysis, cache loaded): 0.4s

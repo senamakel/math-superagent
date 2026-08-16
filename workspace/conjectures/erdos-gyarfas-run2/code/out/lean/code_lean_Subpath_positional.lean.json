@@ -1,0 +1,9 @@
+{
+  "axioms": [
+    "'ErdosGyarfas.subpathPos_mem_is_getVert' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "compiled": false,
+  "file": "code/lean/Subpath_positional.lean",
+  "sorries": [],
+  "verified": false
+}

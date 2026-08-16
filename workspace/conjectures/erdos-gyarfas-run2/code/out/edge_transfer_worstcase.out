@@ -1,0 +1,15 @@
+edge_transfer_worstcase: 2-connected delta>=3 class, n <= 8 (committed generator)
+  n=3: 0 graphs
+  n=4: 1 graphs
+  n=5: 3 graphs
+  n=6: 19 graphs
+  n=7: 149 graphs
+  n=8: 2581 graphs
+TOTAL graphs scanned: 2753
+Graphs with NO good deletable chord (worst cases): 0
+=> No worst case in the verified range: every graph has a good
+   deletable chord, so the chord-deletion step closes on ALL of
+   n<=8. (Consistent with Moore bound: every delta>=3 graph on
+   <=8 vertices has girth <=4, hence a 4-cycle.)
+Structural-fact mismatches (per-chord vs direct): 0
+ELAPSED 40.0

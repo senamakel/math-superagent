@@ -1,0 +1,4 @@
+verify_pirzada_orders.py: Pirzada unicyclic-cubic recurrence arithmetic check
+Paper's printed recurrence |G_i|=|G_{i-1}|+2^(i+4) gives G2=158, G3=286 (does NOT match paper's stated 222,478)
+Derived closed form |G_i| = 2^(i+6)-34 gives G1=94, G2=222, G3=478 (matches stated values)
+=> the printed recurrence is a typo; the closed form 2^(i+6)-34 reproduces the stated orders.

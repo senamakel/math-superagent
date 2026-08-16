@@ -1,0 +1,11 @@
+{
+  "axioms": [
+    "'ErdosGyarfas.erdos_gyarfas_conjecture' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean/ErdosGyarfas_Statement.lean",
+  "sorries": [
+    "/workspace/code/lean/ErdosGyarfas_Statement.lean:39:8: warning: declaration uses `sorry`"
+  ],
+  "verified": false
+}

@@ -1,0 +1,5 @@
+check_gebendorfer_girth5_8cycle.py: Petersen geometric probe (girth-5, cubic, n=10)
+girth: 5
+has 4/8/16-cycle: True 8
+cycles by length (4,8,16): {4: 0, 8: 15, 16: 0}
+claims: Petersen has an 8-cycle? -> True

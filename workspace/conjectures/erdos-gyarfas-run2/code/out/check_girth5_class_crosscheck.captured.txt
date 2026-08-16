@@ -1,0 +1,13 @@
+cross-check: independent nx.simple_cycles 8-cycle detector
+  n= 3 : 0 girth-5 min-deg>=3 graphs
+  n= 4 : 0 girth-5 min-deg>=3 graphs
+  n= 5 : 0 girth-5 min-deg>=3 graphs
+  n= 6 : 0 girth-5 min-deg>=3 graphs
+  n= 7 : 0 girth-5 min-deg>=3 graphs
+  n= 8 : 0 girth-5 min-deg>=3 graphs
+  n= 9 : 0 girth-5 min-deg>=3 graphs
+  n=10 : 1 girth-5 min-deg>=3 graphs
+  n=11 : 0 girth-5 min-deg>=3 graphs
+TOTAL 1 graphs in class, ALL have an 8-cycle (independent nx route).
+=> class counts and 8-cycle claim confirmed by a second, independent tool.
+ELAPSED_SECONDS=6.539

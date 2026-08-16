@@ -1,0 +1,9 @@
+{
+  "axioms": [
+    "'ErdosGyarfas.neighbor_of_longest_path_vertices_is_on_path' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean/LongestPathLemma_b1.lean",
+  "sorries": [],
+  "verified": true
+}

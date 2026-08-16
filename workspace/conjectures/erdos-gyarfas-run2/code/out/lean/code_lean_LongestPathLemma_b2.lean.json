@@ -1,0 +1,9 @@
+{
+  "axioms": [
+    "'ErdosGyarfas.cycle_from_two_neighbors' depends on axioms: [propext, sorryAx, Quot.sound]"
+  ],
+  "compiled": false,
+  "file": "code/lean/LongestPathLemma_b2.lean",
+  "sorries": [],
+  "verified": false
+}

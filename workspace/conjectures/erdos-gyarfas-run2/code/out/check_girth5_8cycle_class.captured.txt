@@ -1,0 +1,15 @@
+check_girth5_8cycle_class: 2-connected girth>=5 min-degree>=3, n<=13
+  n= 3 :     0 graphs
+  n= 4 :     0 graphs
+  n= 5 :     0 graphs
+  n= 6 :     0 graphs
+  n= 7 :     0 graphs
+  n= 8 :     0 graphs
+  n= 9 :     0 graphs
+  n=10 :     1 graphs
+  n=11 :     0 graphs
+  n=12 :     2 graphs
+  n=13 :     4 graphs
+TOTAL girth>=5 min-degree>=3 graphs: 7
+Graphs with NO power-of-two cycle: 0
+=> Every 2-connected girth>=5 min-degree>=3 graph on n<=13 has a power-of-two cycle (no 4-cycle, so an 8-cycle).

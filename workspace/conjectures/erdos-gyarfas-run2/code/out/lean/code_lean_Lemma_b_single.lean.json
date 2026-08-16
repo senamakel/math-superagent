@@ -1,0 +1,10 @@
+{
+  "axioms": [
+    "'ErdosGyarfas.subpathPos_mem_is_getVert' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'ErdosGyarfas.cycle_from_neighbor' depends on axioms: [sorryAx]"
+  ],
+  "compiled": false,
+  "file": "code/lean/Lemma_b_single.lean",
+  "sorries": [],
+  "verified": false
+}

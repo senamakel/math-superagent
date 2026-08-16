@@ -1,0 +1,11 @@
+{
+  "axioms": [
+    "'ErdosGyarfas.cycle_lengths_transfer' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean/LemmaB_cycle_lengths_transfer.lean",
+  "sorries": [
+    "/workspace/code/lean/LemmaB_cycle_lengths_transfer.lean:45:8: warning: declaration uses `sorry`"
+  ],
+  "verified": false
+}

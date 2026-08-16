@@ -1,0 +1,13 @@
+{
+  "axioms": [
+    "'ErdosGyarfas.cycle_using_edge_splits_to_path' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'ErdosGyarfas.cycle_lengths_transfer_subset_cycle' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean/LemmaB_cycle_splits_to_path.lean",
+  "sorries": [
+    "/workspace/code/lean/LemmaB_cycle_splits_to_path.lean:36:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/LemmaB_cycle_splits_to_path.lean:46:8: warning: declaration uses `sorry`"
+  ],
+  "verified": false
+}

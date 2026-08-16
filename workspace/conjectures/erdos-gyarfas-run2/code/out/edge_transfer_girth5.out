@@ -1,0 +1,17 @@
+=== PETERSEN GRAPH (n=10, cubic, girth 5, the (3,5)-cage) ===
+girth=5, min_deg=3, n=10
+Petersen's own power-of-two cycle lengths present: [8]
+deletable chords tested: 15 (2-connected & delta>=2 after deletion)
+of which GOOD: 15, NOT GOOD: 0
+EVERY deletable chord of Petersen is good: True
+
+=== ENUMERATION: 2-connected min-degree>=3 girth-5 graphs, n=10,11 ===
+generation time: 6.1s
+n=10: 1 2-connected min-degree>=3 girth-5 graphs
+n=11: 0 2-connected min-degree>=3 girth-5 graphs
+
+=> NO WORST CASE: every 2-connected min-degree>=3 girth-5 graph on n=10,11
+   has a power-of-two cycle (an 8-cycle), so every deletable chord is good.
+   The chord-deletion induction closes on the entire girth-5 danger region
+   below the Moore-bound floor.
+TOTAL WALL TIME: 6.1s

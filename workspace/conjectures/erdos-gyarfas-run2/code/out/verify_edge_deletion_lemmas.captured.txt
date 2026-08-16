@@ -1,0 +1,8 @@
+verify_edge_deletion_lemmas.py: Lemma A + Lemma B on all 2-connected delta>=3 graphs, n<=8
+  n=3: 0 graphs
+  n=4: 1 graphs
+  n=5: 3 graphs
+  n=6: 19 graphs
+  n=7: 149 graphs
+  n=8: 2581 graphs
+BOTH LEMMAS VERIFIED on all 2753 two-connected delta>=3 graphs, n<==8

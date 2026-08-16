@@ -1,0 +1,9 @@
+{
+  "axioms": [
+    "'ErdosGyarfas.cycle_from_neighbor' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "compiled": true,
+  "file": "code/lean/Lemma_b_single_fixed.lean",
+  "sorries": [],
+  "verified": true
+}

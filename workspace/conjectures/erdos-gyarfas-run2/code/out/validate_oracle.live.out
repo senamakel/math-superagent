@@ -1,0 +1,19 @@
+=== Ground-truth checks (hand-computable) ===
+PASS  K3 (triangle)          power2=False (expect False) len=None
+PASS  C5 (odd)               power2=False (expect False) len=None
+PASS  C7 (odd)               power2=False (expect False) len=None
+PASS  C9 (odd)               power2=False (expect False) len=None
+PASS  C4                     power2=True (expect True) len=4
+PASS  C8                     power2=True (expect True) len=8
+PASS  C16                    power2=True (expect True) len=16
+PASS  Petersen               power2=True (expect True) len=8
+PASS  K4                     power2=True (expect True) len=4
+
+=== Independent cross-check: oracle counts vs Johnson enumeration ===
+OK   Petersen   oracle={5: 12, 6: 10, 8: 15, 9: 20} johnson={5: 12, 6: 10, 8: 15, 9: 20}
+OK   K4         oracle={3: 4, 4: 3} johnson={3: 4, 4: 3}
+OK   C8         oracle={8: 1} johnson={8: 1}
+OK   C5         oracle={5: 1} johnson={5: 1}
+OK   K3         oracle={3: 1} johnson={3: 1}
+
+All oracle validation checks PASSED.
