@@ -120,6 +120,22 @@ const ISLAND_STALE: usize = 12;
 /// candidate one.
 const SCORE_TIMEOUT: Duration = Duration::from_mins(1);
 
+/// Address space one scoring run may claim, in bytes.
+///
+/// The container's own cap is 8 GiB and is the wrong instrument for this: it
+/// kills the *run*, so a single candidate that allocates without bound ends an
+/// investigation and leaves an OOM to be found in `docker events` rather than a
+/// rejected candidate on the board. This is deliberately far below it, so the
+/// scorer dies and the search carries on.
+///
+/// Two gibibytes rather than one because the image bakes in `numpy`, `sympy`
+/// and `scipy`, and importing them reserves address space well beyond what they
+/// touch — `ulimit -v` bounds the reservation, not the resident set, so a tight
+/// value would reject honest scorers at `import numpy`. A verifier reads one
+/// candidate and returns a number; one needing more than this is one the search
+/// cannot afford thousands of calls to.
+const SCORER_MEMORY: usize = 2 * 1024 * 1024 * 1024;
+
 /// How much of a scorer's output is kept.
 const MAX_SCORE_OUTPUT: usize = 8 * 1024;
 
@@ -214,12 +230,20 @@ impl Population {
         self.candidates.len() - self.scored().count()
     }
 
-    /// Which island the next proposal belongs to.
+    /// Which island the next proposal is *expected* to land on.
     ///
-    /// Round-robin over the recorded count rather than random, because this
-    /// crate cannot use `Math::random`-style nondeterminism in anything a test
-    /// has to pin down — and round-robin gives every island the same number of
-    /// proposals, which is what the island model wants anyway.
+    /// Round-robin rather than random, because this crate cannot use
+    /// `Math::random`-style nondeterminism in anything a test has to pin down —
+    /// and round-robin gives every island the same number of proposals, which
+    /// is what the island model wants anyway.
+    ///
+    /// Advisory, and only advisory. What a candidate's island actually *is* is
+    /// `index % ISLANDS` for the index [`reserve`] claimed, because that index
+    /// is decided by the kernel and this count is not: a torn ledger line or a
+    /// concurrent submission makes the two disagree. The brief reports this so
+    /// a proposal knows roughly which island it is writing for; the ledger
+    /// records the other. Deriving the recorded island from here is the bug
+    /// [`reserve`] exists to prevent, one field over.
     pub(super) fn next_island(&self) -> usize {
         self.candidates.len() % ISLANDS
     }
@@ -297,17 +321,18 @@ impl Population {
         out.push_str("| Candidate | Island | Score |\n| --- | --- | --- |\n");
         let mut ranked: Vec<&Candidate> = self.scored().collect();
         ranked.sort_by(|left, right| compare(right, left));
-        for candidate in ranked.iter().take(MAX_ROWS) {
-            let shown = match &candidate.outcome {
-                Outcome::Scored { shown, .. } => shown.as_str(),
-                Outcome::Invalid(_) => continue,
+        let (rows, dropped) = super::ledger::budget::listed(ranked, MAX_ROWS, |out, candidate| {
+            let Outcome::Scored { shown, .. } = &candidate.outcome else {
+                return;
             };
             let _ = writeln!(
                 out,
                 "| `{CANDIDATE_DIR}/{}.py` | {} | `{shown}` |",
                 candidate.id, candidate.island
             );
-        }
+        });
+        out.push_str(&rows);
+        out.push_str(&super::ledger::budget::elided(dropped, LEDGER));
         self.append_rejections(&mut out);
         out
     }
@@ -332,9 +357,26 @@ impl Population {
         out.push_str("\n## Why candidates were discarded\n\n");
         let mut rows: Vec<(&&str, &usize)> = reasons.iter().collect();
         rows.sort_by(|left, right| right.1.cmp(left.1));
-        for (reason, count) in rows.into_iter().take(MAX_ROWS) {
-            let _ = writeln!(out, "- {count}× {reason}");
-        }
+        // Bounded on both axes, because bounding the rows alone still admits
+        // forty six-kilobyte reasons — which is the same unbounded file by
+        // another route, and the shape `APPROACHES.md` reached 86 KB through.
+        let (listed, dropped) =
+            super::ledger::budget::listed(rows, MAX_ROWS, |out, (reason, count)| {
+                let mut reason = (*reason).to_string();
+                // `nth(n)` is the byte offset of the character *after* the
+                // first `n`, which is exactly where to cut to keep `n` of
+                // them; `None` means there were fewer, so keep all. Truncating
+                // to the last offset that fits instead drops a character, and
+                // on a multi-byte boundary `truncate` would panic.
+                let cut = reason
+                    .char_indices()
+                    .nth(super::ledger::budget::REASON_CHARS)
+                    .map_or(reason.len(), |(at, _)| at);
+                reason.truncate(cut);
+                let _ = writeln!(out, "- {count}× {reason}");
+            });
+        out.push_str(&listed);
+        out.push_str(&super::ledger::budget::elided(dropped, LEDGER));
     }
 }
 
@@ -432,6 +474,65 @@ pub(super) fn parse_outcome(output: &str) -> Outcome {
             "scorer printed no `{SCORE_MARK}` line, so nothing was verified"
         )),
     }
+}
+
+/// Candidates one search may record before it is refused.
+///
+/// A runaway guard rather than a budget — the run budget is what actually ends
+/// a search — in the spirit of `ledger::registry::MAX_DEFINED`. It also bounds
+/// the scan in [`reserve`], which would otherwise have no termination condition
+/// if every name were somehow taken.
+const MAX_CANDIDATES: usize = 5_000;
+
+/// Claims the next free candidate id by creating its file.
+///
+/// The id used to be `format!("c{:04}", population.candidates.len())`, derived
+/// from the number of ledger rows that *parsed*, and that is wrong in two ways
+/// that both destroy work silently.
+///
+/// A torn final line is an ordinary event here — [`Population::load`] skips one
+/// by design, because the ledger is appended to by a tool the run cap can kill
+/// mid-write. But skipping it also lowers the count, so the next candidate
+/// takes an id that is already on disk and **overwrites the program that holds
+/// it**, while both rows stay in the ledger pointing at one file.
+///
+/// And two searchers submitting at once both read the same length, both write
+/// `c0007.py`, and one program is gone. That is not hypothetical: sharing one
+/// population across concurrent searchers is the whole point of running more
+/// than one.
+///
+/// `create_new(true)` moves the decision to the kernel, which is the only place
+/// it can be made correctly: the first caller whose `open` succeeds owns that
+/// index, and every other caller moves on. The scan starts from the population
+/// count because that is a good guess, never because it is trusted.
+///
+/// # Errors
+///
+/// Returns an error when no free id exists below [`MAX_CANDIDATES`], or when
+/// the candidate file cannot be created for a reason other than already
+/// existing.
+fn reserve(parent: &Path, from: usize) -> Result<(usize, String)> {
+    for index in from..MAX_CANDIDATES {
+        let id = format!("c{index:04}");
+        match std::fs::OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(parent.join(format!("{id}.py")))
+        {
+            Ok(_) => return Ok((index, id)),
+            // Taken by another submission; try the next index.
+            Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {}
+            Err(error) => {
+                return Err(tinyagents::TinyAgentsError::Tool(format!(
+                    "failed to create the candidate: {error}"
+                )));
+            }
+        }
+    }
+    Err(tinyagents::TinyAgentsError::Validation(format!(
+        "this search has already recorded {MAX_CANDIDATES} candidates; start another search \
+         rather than growing this one"
+    )))
 }
 
 /// Whether a name is safe to use as a search's directory.
@@ -578,11 +679,35 @@ impl SubmitCandidate {
     /// means to a search: this candidate is too slow to be worth having, and
     /// the next one should be cheaper. Treating it as a tool failure would end
     /// the searcher's turn on the most ordinary event in the loop.
+    ///
+    /// Memory is bounded for the same reason and by a harder mechanism. The
+    /// timeout bounds how long a candidate may take and bounded nothing about
+    /// how much it may allocate, so a construction that builds a list of every
+    /// subset was answered by the *container's* cap — which kills the run, not
+    /// the candidate, and leaves an OOM to be diagnosed from
+    /// `docker events`. [`SCORER_MEMORY`] is well below that cap so the
+    /// scorer dies first and the search continues, and it is enforced by
+    /// `setrlimit` in the child rather than by polling its RSS, so the
+    /// allocation fails at the point it is made instead of being noticed a
+    /// tick later.
     async fn score(&self, root: &Path, relative: &str) -> Outcome {
-        let mut command = tokio::process::Command::new("python3");
+        let mut command = tokio::process::Command::new("sh");
         let run = command
-            .arg(SCORER)
-            .arg(relative)
+            .arg("-c")
+            // `ulimit` rather than a `pre_exec` hook calling `setrlimit`,
+            // because `pre_exec` is `unsafe` and this crate forbids `unsafe`.
+            // The shell reaches the same kernel limit without a new dependency
+            // and without the one construct the crate does not allow.
+            //
+            // Both interpolated values are constants or derived from an
+            // integer — `SCORER` is a `const` and `relative` is
+            // `candidates/c0007.py` built from a reserved index — so there is
+            // nothing here a candidate could steer. Neither is ever the
+            // model's text.
+            .arg(format!(
+                "ulimit -v {}; exec python3 {SCORER} {relative}",
+                SCORER_MEMORY / 1024
+            ))
             .current_dir(root)
             .kill_on_drop(true)
             .stdout(std::process::Stdio::piped())
@@ -656,16 +781,16 @@ impl Tool<()> for SubmitCandidate {
             )));
         }
         let mut population = Population::load(&self.workspace, &slug);
-        // Derived rather than supplied, so a proposal cannot overwrite an
-        // earlier one — by collision or by choosing to.
-        let id = format!("c{:04}", population.candidates.len());
-        let island = population.next_island();
-        let relative = format!("{CANDIDATE_DIR}/{id}.py");
-        let path = root.join(&relative);
-        let parent = path.parent().unwrap_or(&root).to_path_buf();
+        let parent = root.join(CANDIDATE_DIR);
         tokio::fs::create_dir_all(&parent).await.map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!("failed to create {CANDIDATE_DIR}: {error}"))
         })?;
+        // Derived rather than supplied, so a proposal cannot overwrite an
+        // earlier one — by collision or by choosing to.
+        let (index, id) = reserve(&parent, population.candidates.len())?;
+        let island = index % ISLANDS;
+        let relative = format!("{CANDIDATE_DIR}/{id}.py");
+        let path = root.join(&relative);
         tokio::fs::write(&path, &program).await.map_err(|error| {
             tinyagents::TinyAgentsError::Tool(format!("failed to write the candidate: {error}"))
         })?;

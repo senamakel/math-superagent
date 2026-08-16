@@ -570,3 +570,242 @@ async fn a_brief_carries_the_scorer_source_and_the_previous_programs() {
     );
     assert!(result.content.contains("worst first"));
 }
+
+/// Two searchers submitting at once must not be handed the same id.
+///
+/// The id used to be the count of *parsed* ledger rows, so both callers read
+/// the same length, both wrote `candidates/c0000.py`, and one program was
+/// destroyed while both rows landed in the ledger pointing at the survivor.
+/// Sharing one population across concurrent searchers is the reason to run more
+/// than one, so this is the ordinary case rather than a rare one.
+#[tokio::test]
+async fn two_submissions_racing_on_one_ledger_get_different_ids_and_both_programs_survive() {
+    if !has_python() {
+        return;
+    }
+    let workspace = workspace_named("race");
+    write_scorer(&workspace, "capset", "SCORE: 1");
+    let tool = SubmitCandidate::new(workspace.clone());
+
+    let (left, right) = tokio::join!(
+        tool.call(
+            &(),
+            call(
+                "submit_candidate",
+                serde_json::json!({ "slug": "capset", "program": "# left\n" }),
+            ),
+        ),
+        tool.call(
+            &(),
+            call(
+                "submit_candidate",
+                serde_json::json!({ "slug": "capset", "program": "# right\n" }),
+            ),
+        ),
+    );
+    left.expect("the first submission succeeds");
+    right.expect("the second submission succeeds");
+
+    let candidates = search_root(&workspace, "capset").join(CANDIDATE_DIR);
+    let mut written: Vec<String> = std::fs::read_dir(&candidates)
+        .expect("the candidate directory exists")
+        .filter_map(|entry| Some(entry.ok()?.file_name().to_string_lossy().into_owned()))
+        .collect();
+    written.sort();
+    assert_eq!(
+        written.len(),
+        2,
+        "each submission must own a file, but found {written:?}"
+    );
+
+    // Both programs, not one twice: an overwrite loses a body while keeping
+    // both ledger rows, which is invisible from the row count alone.
+    let bodies: std::collections::BTreeSet<String> = written
+        .iter()
+        .map(|name| std::fs::read_to_string(candidates.join(name)).unwrap_or_default())
+        .collect();
+    assert_eq!(bodies.len(), 2, "one program was overwritten: {bodies:?}");
+
+    let population = Population::load(&workspace, "capset");
+    assert_eq!(population.candidates.len(), 2);
+    let ids: std::collections::BTreeSet<&str> = population
+        .candidates
+        .iter()
+        .map(|candidate| candidate.id.as_str())
+        .collect();
+    assert_eq!(ids.len(), 2, "the ledger recorded one id twice: {ids:?}");
+}
+
+/// A torn line must not make the next candidate overwrite an existing program.
+///
+/// `Population::load` skips an unparseable row on purpose, which also lowers
+/// the count the id was derived from — so the very next submission reused a
+/// live id. The reservation scans past what is on disk instead of trusting the
+/// count, so a torn ledger costs one row and no program.
+#[tokio::test]
+async fn a_torn_ledger_line_does_not_make_the_next_candidate_overwrite_an_earlier_one() {
+    if !has_python() {
+        return;
+    }
+    let workspace = workspace_named("torn-reserve");
+    write_scorer(&workspace, "capset", "SCORE: 1");
+    let root = search_root(&workspace, "capset");
+    std::fs::create_dir_all(root.join(CANDIDATE_DIR)).expect("candidates directory is creatable");
+    // Two candidates on disk, but the second row is torn, so the population
+    // parses one and would previously have handed out `c0001` again.
+    for id in ["c0000", "c0001"] {
+        std::fs::write(
+            root.join(CANDIDATE_DIR).join(format!("{id}.py")),
+            format!("# {id}\n"),
+        )
+        .expect("write is possible");
+    }
+    write_ledger(
+        &workspace,
+        "capset",
+        &format!("{}\n{{\"id\": \"c0001\", \"isla", scored_row("c0000", 0, "1")),
+    );
+    assert_eq!(Population::load(&workspace, "capset").candidates.len(), 1);
+
+    SubmitCandidate::new(workspace.clone())
+        .call(
+            &(),
+            call(
+                "submit_candidate",
+                serde_json::json!({ "slug": "capset", "program": "# fresh\n" }),
+            ),
+        )
+        .await
+        .expect("the submission succeeds");
+
+    assert_eq!(
+        std::fs::read_to_string(root.join(CANDIDATE_DIR).join("c0001.py"))
+            .expect("the earlier candidate still exists"),
+        "# c0001\n",
+        "the torn row's program was overwritten"
+    );
+}
+
+/// A board cut to its bound must say so, and say where the rest is.
+///
+/// `render` took `MAX_ROWS` on both its sections and appended nothing, so a
+/// search with four hundred scored candidates produced a file that read as the
+/// complete list of twenty. That is the failure the whole ledger budget exists
+/// to prevent — a cut list reading as complete is worse than a long one,
+/// because the reader concludes the run holds nothing more.
+#[test]
+fn the_board_says_how_many_rows_it_left_out_and_where_the_rest_is() {
+    let workspace = workspace_named("elision");
+    let mut text = String::new();
+    for index in 0..60 {
+        text.push_str(&scored_row(&format!("c{index:04}"), index % 4, "1.5"));
+    }
+    // More distinct discard reasons than the section can show, so both bounds
+    // are exercised by one fixture.
+    for index in 60..100 {
+        text.push_str(&discarded_row(
+            &format!("c{index:04}"),
+            index % 4,
+            &format!("reason number {index}"),
+        ));
+    }
+    write_ledger(&workspace, "elision", &text);
+
+    let rendered = Population::load(&workspace, "elision").render("elision");
+    assert!(
+        rendered.contains("60 candidates scored, 40 discarded"),
+        "the counts are always exact, whatever the sections show: {rendered}"
+    );
+    assert!(
+        rendered.contains("40 more not shown here"),
+        "the leaderboard must say what it dropped: {rendered}"
+    );
+    assert!(
+        rendered.contains(LEDGER),
+        "an elision must name where the rest is: {rendered}"
+    );
+}
+
+/// Past the bound, more candidates must not mean more file.
+///
+/// A ceiling alone cannot catch a section that grows slowly, and this is the
+/// property that actually matters for a search — the one ledger whose entry
+/// count is unbounded by design, since being wrong thousands of times cheaply
+/// is the method.
+#[test]
+fn past_the_bound_more_candidates_do_not_grow_the_board() {
+    let render_with = |count: usize, name: &str| {
+        let workspace = workspace_named(name);
+        let mut text = String::new();
+        for index in 0..count {
+            text.push_str(&scored_row(&format!("c{index:04}"), index % 4, "1.5"));
+            // Distinct reasons, each absurdly long. Identical ones would fold
+            // into a single counted row and the rejection section would be
+            // flat whatever the renderer did — a fixture that cannot fail.
+            text.push_str(&discarded_row(
+                &format!("d{index:04}"),
+                index % 4,
+                &format!("reason {index} {}", "x".repeat(6_000)),
+            ));
+        }
+        write_ledger(&workspace, name, &text);
+        Population::load(&workspace, name).render(name).len()
+    };
+
+    let small = render_with(300, "ceiling-small");
+    let large = render_with(900, "ceiling-large");
+    assert!(
+        large.saturating_sub(small) < 200,
+        "the board grew by {} characters between 300 and 900 candidates",
+        large - small
+    );
+    assert!(
+        large < 20_000,
+        "the board is {large} characters against a 20,000 ceiling"
+    );
+}
+
+/// A scorer that allocates without bound must lose the candidate, not the run.
+///
+/// The container's cap is 8 GiB and kills the whole investigation, leaving an
+/// OOM to be reconstructed from `docker events`. `SCORER_MEMORY` is far below
+/// it so the scorer dies first and the search carries on with an ordinary
+/// rejection.
+#[tokio::test]
+async fn a_scorer_that_allocates_without_bound_is_rejected_rather_than_killing_the_run() {
+    if !has_python() {
+        return;
+    }
+    let workspace = workspace_named("memory");
+    let root = search_root(&workspace, "capset");
+    std::fs::create_dir_all(&root).expect("the search directory is creatable");
+    // Well past SCORER_MEMORY, and touched so it cannot be a lazy reservation.
+    std::fs::write(
+        root.join(SCORER),
+        "import sys\nb = bytearray(6 * 1024 * 1024 * 1024)\nb[-1] = 1\nprint('SCORE: 999')\n",
+    )
+    .expect("write is possible");
+
+    let result = SubmitCandidate::new(workspace.clone())
+        .call(
+            &(),
+            call(
+                "submit_candidate",
+                serde_json::json!({ "slug": "capset", "program": "# hungry\n" }),
+            ),
+        )
+        .await
+        .expect("a rejected candidate is an ordinary result, never a tool error");
+    assert!(
+        result.content.contains("discarded"),
+        "the candidate must be discarded, not scored 999: {}",
+        result.content
+    );
+
+    let population = Population::load(&workspace, "capset");
+    assert_eq!(population.candidates.len(), 1, "the attempt is still recorded");
+    assert!(
+        population.best().is_none(),
+        "a scorer that never printed a verdict must put nothing on the board"
+    );
+}
