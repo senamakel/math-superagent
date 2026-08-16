@@ -85,6 +85,9 @@ if [ ! -f "$workspace_path/$lean_file" ]; then
     exit 2
 fi
 
+stderr_file=$(mktemp)
+trap 'rm -f "$stderr_file"' EXIT INT TERM
+
 if ! docker image inspect "$image" >/dev/null 2>&1; then
     echo "the runtime image $image is not built, and it carries Lean and Mathlib." >&2
     echo "build it with:  ./agent build" >&2
@@ -94,9 +97,17 @@ fi
 # The same hardening compose.yaml applies to a run. A check is a smaller thing
 # than a run and gets no more privilege for it: `lean` is a compiler being
 # pointed at a file a model wrote, which is exactly the input the sandbox is
-# there for. `--read-only` is the container root, independent of the mount mode
-# above; /tmp is a tmpfs because Lean writes there.
-exec docker run --rm \
+# there for. `--read-only` is the container root; /tmp is a tmpfs because Lean
+# writes there.
+#
+# Run rather than exec'd, so the one failure that is not about Lean can be
+# translated. Every checkout shares the `math-agent:local` tag, so a build in
+# another one replaces this image — and when the replacement predates
+# `lean-verdict`, docker fails with an OCI `stat ... no such file` wall of text
+# that reads like a broken script. It cost a whole bench run scored as nine
+# model failures. The exit code is preserved either way.
+set +e
+docker run --rm \
     --user "$(id -u):$(id -g)" \
     --read-only \
     --cap-drop ALL \
@@ -109,4 +120,21 @@ exec docker run --rm \
     --workdir /workspace \
     --entrypoint /usr/local/bin/lean-verdict \
     "$image" \
-    /workspace "$lean_file" $passthrough
+    /workspace "$lean_file" $passthrough 2>"$stderr_file"
+status=$?
+set -e
+
+if grep -q 'lean-verdict.*no such file' "$stderr_file" 2>/dev/null; then
+    echo "$image has no /usr/local/bin/lean-verdict." >&2
+    echo "" >&2
+    echo "Every checkout shares this image tag, so a build in another one has" >&2
+    echo "replaced it with a version predating that binary. Rebuild from here:" >&2
+    echo "" >&2
+    echo "  ./agent build" >&2
+    rm -f "$stderr_file"
+    exit 2
+fi
+
+cat "$stderr_file" >&2
+rm -f "$stderr_file"
+exit "$status"
