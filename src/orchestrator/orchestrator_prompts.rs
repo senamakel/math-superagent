@@ -221,10 +221,25 @@ const UNIVERSAL_CONTEXT: [&str; 1] = ["AGENTS.md"];
 /// [`UNIVERSAL_CONTEXT`]. Durable knowledge is not duplicated here: every role
 /// recalls it from Cognee with `recall_memory` and can store verified findings
 /// with `remember_memory`.
+///
+/// `config/config.toml` used to head the two executing arms and no longer
+/// reaches any prompt. Nothing in it was a fact only that file held. Its policy
+/// lines — show the derivation, verify with code, cite external claims — are
+/// the built-in prompts restated in TOML, so a role read them twice and had two
+/// wordings to reconcile. Its `[artifacts]` names are stale (`tasks.md`, where
+/// the runtime writes `TASKS.md`), which is worse than absent: a role that
+/// believes them writes to a path no ledger derives from. And its one hard
+/// number, `maximum_tool_runtime_seconds`, is enforced by `execute_command` and
+/// named in the error a timeout returns, which is where a limit is actually
+/// learned. A file is routed because a role cannot do its work without it, and
+/// this one failed that test on every line.
+///
+/// Order matters, and only at the end: `CONTEXT.md` is moved last whatever
+/// position an arm below writes it in. [`RolePrompts::for_school`] does the
+/// move, and says why it is enforced there rather than trusted to the lists.
 fn role_context(role: &str) -> &'static [&'static str] {
     match role {
         "orchestrator" | "goals" => &[
-            "config/config.toml",
             "GOAL.md",
             "TASKS.md",
             "code/lib/INDEX.md",
@@ -253,7 +268,6 @@ fn role_context(role: &str) -> &'static [&'static str] {
         ],
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
         | "symbolic_math" | "lean_prover" => &[
-            "config/config.toml",
             "GOAL.md",
             "TASKS.md",
             "code/AGENTS.md",
@@ -498,6 +512,70 @@ const LEDGER_BRIEF: &str = include_str!("../prompts/ledgers.md");
 /// paying for instructions they cannot act on.
 const LEDGER_WRITING_BRIEF: &str = include_str!("../prompts/ledger_writing.md");
 
+/// What the two roles holding `define_ledger` are additionally told.
+///
+/// Separate again, and for a sharper version of the same reason: this is the
+/// narrowest grant in the runtime and a paragraph about declaring an axis is
+/// actively harmful in the twenty prompts that cannot declare one — it reads as
+/// an invitation to ask somebody to.
+const LEDGER_KEEPING_BRIEF: &str = include_str!("../prompts/ledger_keeping.md");
+
+/// The roles that receive [`LEDGER_KEEPING_BRIEF`].
+///
+/// The two planners, matching `LEDGER_KEEPER_TOOLS` and the `keepers` call in
+/// `build_planner_harness`. Not derived, for the reason [`LEDGER_WRITER_ROLES`]
+/// is not, and asserted against the grant by a test for the same reason.
+const LEDGER_KEEPER_ROLES: [&str; 2] = ["orchestrator", "goals"];
+
+/// One line per ledger this workspace actually keeps, for `role`.
+///
+/// Written because [`LEDGER_BRIEF`] said *"`list_ledgers` names every one"* and
+/// left it there — a tool call a model has to think to make before it can find
+/// out what exists. That is precisely the shape of the `post_board` failure
+/// this file already records: granted, described nowhere a role would read
+/// before acting, and called zero times in a live three-school hour. A role
+/// that does not know the `weakened` ledger exists does not call `list_ledgers`
+/// to discover it; it writes the ladder into prose, and nothing walks prose.
+///
+/// It is derived from the registry rather than written down, so a ledger the
+/// run *defines mid-flight* is named in the next prompt assembled — which is
+/// the whole reason `define_ledger` is worth holding. A written list would be a
+/// second answer to what exists, and the stale one.
+///
+/// Cheap enough to be universal: a dozen rows of slug, one truncated sentence,
+/// and whether this role may write it. Which is the other half of the point —
+/// "yours" and "read-only" are read off `writable_by`, so a role learns which
+/// ledgers are its own from the same list, rather than from a refusal.
+fn ledger_catalogue(workspace: &Path, role: &str) -> String {
+    let (specs, _) = ledger::registry::all(workspace);
+    if specs.is_empty() {
+        return String::new();
+    }
+    let mut out = String::from(
+        "**The ledgers this workspace keeps right now.** `list_ledgers` says more about any of \
+         them — the fields, the statuses, how many entries.\n\n",
+    );
+    for spec in specs {
+        let _ = writeln!(
+            out,
+            "- `{}` ({}) — {}{}",
+            spec.slug,
+            if spec.writable_by(role) {
+                "yours to write"
+            } else {
+                "read-only for you"
+            },
+            text::truncate(spec.purpose.split('\n').next().unwrap_or_default(), 120),
+            if spec.builtin {
+                ""
+            } else {
+                " _(defined by this run)_"
+            },
+        );
+    }
+    out
+}
+
 /// The roles that receive [`LEDGER_WRITING_BRIEF`].
 ///
 /// Derived from nothing, for the reason [`BOARD_ROLES`] is not: the grants live
@@ -540,15 +618,29 @@ const LEDGER_WRITER_ROLES: [&str; 6] = [
 /// Returns the empty string only for a role the reader brief is withheld from
 /// and that cannot write — which is the judge and the searcher, and nothing
 /// else. See [`LEDGER_BRIEF_WITHHELD`].
-fn ledger_layer(role: &str) -> String {
+///
+/// `workspace` reaches [`ledger_catalogue`] only. The brief is static text and
+/// the catalogue is this workspace's registry, and the two are assembled
+/// together because they are one instruction: here is what exists, here is how
+/// to reach it.
+fn ledger_layer(workspace: &Path, role: &str) -> String {
     let mut layer = String::new();
     if !LEDGER_BRIEF_WITHHELD.contains(&role) {
         layer.push_str("\n\n");
         layer.push_str(LEDGER_BRIEF.trim());
+        let catalogue = ledger_catalogue(workspace, role);
+        if !catalogue.is_empty() {
+            layer.push_str("\n\n");
+            layer.push_str(catalogue.trim());
+        }
     }
     if LEDGER_WRITER_ROLES.contains(&role) {
         layer.push_str("\n\n");
         layer.push_str(LEDGER_WRITING_BRIEF.trim());
+    }
+    if LEDGER_KEEPER_ROLES.contains(&role) {
+        layer.push_str("\n\n");
+        layer.push_str(LEDGER_KEEPING_BRIEF.trim());
     }
     layer
 }
@@ -620,14 +712,26 @@ impl RolePrompts {
         let role = |name: &str, base: &str| -> Result<String> {
             let mut files: Vec<&str> = UNIVERSAL_CONTEXT.to_vec();
             files.extend_from_slice(role_context(name));
+            // The shared brief goes last in every role, and that is enforced
+            // here rather than left to twelve hand-written lists staying in
+            // agreement. It is the file most likely to be *acted on* — the
+            // curator writes it precisely to say what everyone should know
+            // right now — and the end of a prompt is the position a model
+            // weights most and the one a truncated prompt keeps. It is also the
+            // most volatile: putting it last keeps every stable block above it
+            // identical between calls, which is what the provider prompt cache
+            // keys on. A stable sort, so nothing else moves.
+            files.sort_by_key(|relative| *relative == shared_context::CONTEXT_FILE);
             let context = load_workspace_files(workspace, &files)?;
             let guidance = load_workspace_files(workspace, &[&format!("prompts/{name}.md")])?;
             // Appended to the role's own guidance rather than prepended to the
             // shared prefix: this text is per-role, and `workspace_prompt`
             // orders most-shared-to-least so the provider cache keys on a block
             // every agent has in common. A per-role brief at the front would
-            // give each role its own cache namespace.
-            let guidance = format!("{guidance}{}", ledger_layer(name));
+            // give each role its own cache namespace. It lands beside the
+            // built-in role prompt and above the workspace state — see
+            // `workspace_prompt` for why those two swapped.
+            let guidance = format!("{guidance}{}", ledger_layer(workspace, name));
             // Concatenated rather than branched: an empty layer leaves `base`
             // exactly as it was, and `workspace_prompt` trims what it is given,
             // so the control school's output is unchanged to the byte.

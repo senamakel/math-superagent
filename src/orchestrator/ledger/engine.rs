@@ -357,15 +357,20 @@ pub(in crate::orchestrator) fn render(spec: &LedgerSpec, entries: &Entries) -> S
 /// a queue ledger, so every closed row keeps its `detail` and its `reason` —
 /// which is right for the file and wrong for a prompt, where it came to 8,539
 /// tokens in each of thirteen roles, 25% of everything assembled. Most of that
-/// is *history*: "Recently done" alone averaged 6,363 of it. The index keeps
-/// every id, so "have I already ruled this out" stays answerable, and drops the
-/// paragraph explaining why.
+/// is *history*: "Recently done" alone averaged 6,363 of it. The index dropped
+/// the paragraph explaining why each row closed and kept the row.
+///
+/// [`CLOSED_IN_INDEX`] finishes that argument: the open rows are the work, the
+/// closed ones are the archive, and an index is read top-down for what to do
+/// next. Every open and blocked row is carried; each closed status keeps its
+/// most recent few and says how many it left, with the call that fetches them.
 ///
 /// Sections are deliberately not preserved. An index is read for whether an id
 /// is on it, and a status per line already says what a heading would, so the
 /// headings would cost a line each to repeat what is on every row beneath them.
 pub(in crate::orchestrator) fn index(spec: &LedgerSpec, entries: &Entries) -> String {
-    let rows: Vec<(String, String, String)> = ordered(&entries.entries, spec.default_order())
+    let (kept, elided) = indexed_entries(spec, entries);
+    let rows: Vec<(String, String, String)> = kept
         .into_iter()
         .map(|entry| {
             (
@@ -375,10 +380,19 @@ pub(in crate::orchestrator) fn index(spec: &LedgerSpec, entries: &Entries) -> St
             )
         })
         .collect();
+    let mut purpose = spec.purpose.clone();
+    if !elided.is_empty() {
+        let _ = write!(
+            purpose,
+            "\n\nThe closed rows below are the {CLOSED_IN_INDEX} most recent of each kind. Not \
+             shown: {}. Those are on `read_ledger`, not gone.",
+            elided.join(", ")
+        );
+    }
     super::index::render(
         &spec.slug,
         &spec.title,
-        &spec.purpose,
+        &purpose,
         rows.iter()
             .map(|(id, status, headline)| super::index::Row {
                 id,
@@ -387,6 +401,52 @@ pub(in crate::orchestrator) fn index(spec: &LedgerSpec, entries: &Entries) -> St
             }),
         super::index::HEADLINE,
     )
+}
+
+/// Closed rows per status an index carries.
+///
+/// Enough that "what has this run just finished" is answerable without a call —
+/// the question a role picking up work actually asks — and few enough that a
+/// long-lived workspace's archive stops being re-sent on every model call in
+/// every role holding the file. The rest is one `read_ledger` away, and the
+/// index says so by status.
+const CLOSED_IN_INDEX: usize = 5;
+
+/// The entries an index carries, and a phrase per status it cut rows from.
+///
+/// Closedness is read off the declaration rather than a status name, so this
+/// works for a ledger a run defines mid-flight, and does nothing at all to the
+/// ledgers that declare no closed status — which is most of them.
+fn indexed_entries<'a>(
+    spec: &LedgerSpec,
+    entries: &'a Entries,
+) -> (Vec<&'a Entry>, Vec<String>) {
+    let closed = |entry: &Entry| {
+        spec.status(&entry.status(spec))
+            .is_some_and(|status| status.closed)
+    };
+    let mut open: Vec<&Entry> = Vec::new();
+    // Most recent first within a status, whatever order the ledger renders its
+    // own sections in: "latest done" is the question being answered, and a
+    // ledger ordering its archive as recorded still answers it from the end.
+    let mut archive: BTreeMap<String, Vec<&Entry>> = BTreeMap::new();
+    for entry in ordered(&entries.entries, spec.default_order()) {
+        if closed(entry) {
+            archive.entry(entry.status(spec)).or_default().push(entry);
+        } else {
+            open.push(entry);
+        }
+    }
+    let mut elided = Vec::new();
+    for (status, mut rows) in archive {
+        rows.sort_by_key(|entry| std::cmp::Reverse(entry.touched.unwrap_or(0)));
+        if rows.len() > CLOSED_IN_INDEX {
+            elided.push(format!("{} more `{status}`", rows.len() - CLOSED_IN_INDEX));
+            rows.truncate(CLOSED_IN_INDEX);
+        }
+        open.extend(rows);
+    }
+    (open, elided)
 }
 
 fn source_label(source: &Source) -> String {
