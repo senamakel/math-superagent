@@ -397,17 +397,21 @@ fn the_verification_queue_is_ordered_by_what_rests_on_each_node() {
     assert!(wide.established, "the run is already building on it");
 }
 
-/// The two kinds of candidate are not interchangeable, and the order between
-/// them is the argument rather than a tie-break.
+/// Being established is what makes a load dangerous, not a substitute for
+/// having one.
 ///
-/// A node the run treats as settled is being used as a black box right now, so
-/// a mistake in it compounds silently. An open node has to be *proved* before
-/// the kernel can check it, and the kernel is an expensive way to discover that
-/// nobody has proved it yet.
+/// This test asserted the opposite first, on the reading that "the run is
+/// already building on it" *is* the black-box condition. Run against the
+/// `hypercube-induced-degree` workspace, that ordering put ten load-0 nodes at
+/// the head of the queue in alphabetical order, and the first statement the
+/// kernel would have been handed was a note recording that a transcription in
+/// the library is wrong. Nothing rests on it, so checking it protects nothing.
 #[test]
-fn an_established_node_outranks_an_open_one_that_more_rests_on() {
-    let root = workspace("established-first");
-    claim(&root, "held", "id: held\nstatement: the estimate\nstatus: proved\n");
+fn a_node_more_rests_on_outranks_an_established_one_nothing_cites() {
+    let root = workspace("load-first");
+    // Proved, and nothing cites it — the shape ten nodes had in the live
+    // workspace that settled this order.
+    claim(&root, "held", "id: held\nstatement: a side estimate\nstatus: proved\n");
     skeleton(
         &root,
         "main",
@@ -416,16 +420,53 @@ fn an_established_node_outranks_an_open_one_that_more_rests_on() {
             "id: open-hub\nlemma: the hub\nstatus: open\nnext: expand\n",
             "id: a\nlemma: first user\nstatus: open\ndischarged-by: open-hub\nnext: expand\n",
             "id: b\nlemma: second user\nstatus: open\ndischarged-by: open-hub\nnext: expand\n",
-            "id: c\nlemma: third user\nstatus: open\ndischarged-by: held\nnext: expand\n",
         ],
     );
 
     let targets = collect(&root).targets();
     let first = targets.first().expect("the queue is not empty");
 
+    assert!(
+        first.id.ends_with("/open-hub"),
+        "two lemmas cite the hub and nothing cites the proved claim: {}",
+        targets
+            .iter()
+            .map(|target| format!("{}(load {})", target.id, target.load))
+            .collect::<Vec<_>>()
+            .join(", ")
+    );
+}
+
+/// Within one load, being built on already is what decides.
+///
+/// The second key, and it still has the argument the first one lost: two nodes
+/// one thing each rests on are equally exposed, and the one the run treats as
+/// settled is the one whose mistake is compounding right now.
+#[test]
+fn at_equal_load_the_established_node_goes_first() {
+    let root = workspace("equal-load");
+    claim(&root, "held", "id: held\nstatement: the estimate\nstatus: proved\n");
+    skeleton(
+        &root,
+        "main",
+        "goal: the theorem\nimplies: the lemmas combine\n",
+        &[
+            // Its own goal cites every gap, so `open-one` is at load 2 with one
+            // further citer and the claim needs two of them to match it.
+            "id: open-one\nlemma: an open lemma\nstatus: open\nnext: expand\n",
+            "id: a\nlemma: rests on the open lemma\nstatus: open\ndischarged-by: open-one\nnext: expand\n",
+            "id: b\nlemma: rests on the claim\nstatus: open\ndischarged-by: held\nnext: expand\n",
+            "id: c\nlemma: also rests on the claim\nstatus: open\ndischarged-by: held\nnext: expand\n",
+        ],
+    );
+
+    let targets = collect(&root).targets();
+    let first = targets.first().expect("the queue is not empty");
+
+    assert_eq!(first.load, 2);
     assert_eq!(
         first.id, "held",
-        "an established node comes first even though more rests on the open hub"
+        "one node rests on each, so the established one is the exposed one"
     );
 }
 

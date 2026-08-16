@@ -524,15 +524,31 @@ impl Blueprint {
     /// then it turned out to contain a fatal mistake". Perelman prices the
     /// absence of the check at five years and three independent teams.
     ///
-    /// Three keys, in this order, and each earns its place:
+    /// Three keys, in this order, and the order was settled by running the
+    /// wrong one against a live workspace:
     ///
-    /// 1. **Established before ready.** A node the run is already building on
-    ///    is the one whose mistake is compounding right now. An open one is
-    ///    worth the kernel later, once somebody has a proof to check.
-    /// 2. **Load, descending.** How much of the argument a mistake would take
-    ///    with it.
+    /// 1. **Load, descending.** How much of the argument a mistake takes with
+    ///    it. This is the criterion, so it is the first key.
+    /// 2. **Established before ready.** Within one load, the node the run is
+    ///    already building on is the one whose mistake is compounding now; an
+    ///    open one has to be proved before a kernel can check it at all.
     /// 3. **Id.** So two equal targets order the same way on every derivation,
     ///    which is what lets a caller treat the list as a queue.
+    ///
+    /// The first two were the other way round to begin with, on the reading
+    /// that "already building on it" *is* the black-box condition. Against the
+    /// `hypercube-induced-degree` workspace that ordering put ten load-0 nodes
+    /// at the head of the queue, alphabetically, and the kernel's first job
+    /// would have been a note recording that a transcription in the library is
+    /// wrong. A node nothing rests on is used as a black box by nothing, so it
+    /// cannot outrank one three arguments cite: being established is what makes
+    /// a load dangerous, not a substitute for having one.
+    ///
+    /// A goal node carries load 0 — nothing rests on the top of a DAG — and is
+    /// deliberately not special-cased. It is `Blocked` while any lemma under it
+    /// is open, so it is not a candidate until the argument beneath it is
+    /// settled, which is exactly when it should be the target and when the
+    /// queue above it has drained anyway.
     ///
     /// `Verified` is absent because the kernel has already spoken. `Blocked`,
     /// `Refuted` and `Abandoned` are absent for the same reason in three
@@ -554,9 +570,9 @@ impl Blueprint {
             .collect();
         targets.sort_by(|left, right| {
             right
-                .established
-                .cmp(&left.established)
-                .then(right.load.cmp(&left.load))
+                .load
+                .cmp(&left.load)
+                .then(right.established.cmp(&left.established))
                 .then(left.id.cmp(&right.id))
         });
         targets
@@ -750,11 +766,11 @@ impl Blueprint {
             return;
         }
         out.push_str(
-            "## Verify these first\n\nRanked by how much of the argument rests on each, with what \
-             the run is already building on ahead of what it has yet to prove. An unchecked lemma \
-             three other nodes cite is used as a black box, so a mistake in it stays uncaught and \
-             everything above it inherits it. This is the queue the verification arm works, one \
-             entry per pass.\n\n",
+            "## Verify these first\n\nRanked by how much of the argument rests on each, and within \
+             one load by whether the run is already building on it. An unchecked lemma three other \
+             nodes cite is used as a black box, so a mistake in it stays uncaught and everything \
+             above it inherits it — where a node nothing rests on is used by nothing, whatever its \
+             standing. This is the queue the verification arm works, one entry per pass.\n\n",
         );
         let listed: Vec<&Target> = targets.iter().take(MAX_TARGETS).collect();
         let (rows, dropped) = budget::listed(&listed, MAX_TARGETS, |rows, target| {
