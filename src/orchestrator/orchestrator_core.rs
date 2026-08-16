@@ -58,6 +58,7 @@ mod threads;
 mod vcs;
 mod vcs_tool;
 mod vector;
+mod verify;
 mod weakened;
 mod worklock;
 mod workflow;

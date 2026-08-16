@@ -44,6 +44,7 @@ use super::async_subagents::AsyncSubagentManager;
 use super::solutions::{
     Beside, Mailboxes, SolutionState, attempt_step, diversify_invention_arm, diversify_library_arm,
     diversify_merge, diversify_pattern_arm, judge_step, novelty_arm, reflect_step, refutation_arm,
+    verification_arm,
 };
 use super::vector::VectorStore;
 
@@ -52,7 +53,7 @@ use super::vector::VectorStore;
 /// A closed set, matched by name. An unknown step is an error rather than a
 /// no-op: a workflow naming a step that does not exist would otherwise run,
 /// change nothing, and route on a state nobody advanced.
-const STEPS: [&str; 15] = [
+const STEPS: [&str; 16] = [
     "init_context",
     "seed_context",
     "attempt",
@@ -61,6 +62,7 @@ const STEPS: [&str; 15] = [
     "eval_patterns",
     "eval_invention",
     "eval_refutation",
+    "eval_verification",
     "eval_library",
     "eval_merge",
     "goal_gate",
@@ -376,6 +378,10 @@ impl LoopSteps {
             }
             "eval_refutation" => {
                 let findings = refutation_arm(&self.subagents, workspace, &state).await;
+                fold_arm(state, findings)
+            }
+            "eval_verification" => {
+                let findings = verification_arm(&self.subagents, workspace, &state).await;
                 fold_arm(state, findings)
             }
             // The one arm that returns before its work does. It starts the
