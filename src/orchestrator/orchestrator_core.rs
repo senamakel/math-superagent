@@ -109,6 +109,26 @@ pub use tinyagents::harness::host::AgentDefinition;
 #[cfg(feature = "graph-debug")]
 pub use diagram::{render_flows, render_solution_loop};
 
+/// Moves a workspace's rendered ledgers into `derived/`, once.
+///
+/// The runtime already does this at startup, so a workspace a run touches
+/// migrates itself. That leaves every workspace nobody has started since the
+/// folder existed — which on this box is most of them — holding its ledgers
+/// under `research/`, where the prompts no longer look. A ledger the prompts
+/// cannot find is not an error a run reports: `load_workspace_files` skips a
+/// missing path, so the role is simply told less and nothing says so.
+///
+/// Exposed for `examples/migrate_derived`, which is the whole reason this is
+/// public: migrating a workspace should not require an API key, a container, or
+/// starting the run that the missing ledger would then be absent from.
+///
+/// Returns what it moved, in `old -> new` form, so a caller can say so. Moving
+/// nothing is the ordinary result on a workspace already migrated.
+#[must_use]
+pub fn migrate_derived(workspace: &Path) -> Vec<String> {
+    ledger::migrate_derived(workspace)
+}
+
 /// Renders one declared ledger from its source, without writing it.
 ///
 /// The runtime re-derives a ledger beside every write to it, so this exists for
