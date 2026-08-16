@@ -309,6 +309,35 @@ impl Git {
         self.run(&["diff", "--cached", "--name-only"]).await
     }
 
+    /// What is staged among exactly these paths.
+    pub(super) async fn staged_among(&self, paths: &[String]) -> Result<String> {
+        let mut arguments = vec!["diff", "--cached", "--name-only", "--"];
+        arguments.extend(paths.iter().map(String::as_str));
+        self.run(&arguments).await
+    }
+
+    /// Commits exactly these paths, returning the short commit id.
+    ///
+    /// A pathspec rather than whatever happens to be staged, and that is the
+    /// whole point. The trunk is written continuously by the run around it, so
+    /// a commit taken over the whole work tree sweeps up every unrelated change
+    /// in flight at that moment. A live adoption named one file and produced a
+    /// commit containing fourteen — the candidate's program plus three derived
+    /// ledgers, two research notes and the run's own queues — under a message
+    /// saying they came from that candidate. Nothing was lost, and the record
+    /// was wrong, which is worse for a tool whose reason to exist is that every
+    /// trunk change carries a branch and a reason.
+    pub(super) async fn commit_paths(&self, message: &str, paths: &[String]) -> Result<String> {
+        let mut arguments = vec!["commit", "--quiet", "--message", message, "--"];
+        arguments.extend(paths.iter().map(String::as_str));
+        self.run(&arguments).await?;
+        Ok(self
+            .run(&["rev-parse", "--short", "HEAD"])
+            .await?
+            .trim()
+            .to_string())
+    }
+
     /// Commits what is staged, returning the short commit id.
     pub(super) async fn commit(&self, message: &str) -> Result<String> {
         self.run(&["commit", "--quiet", "--message", message])
