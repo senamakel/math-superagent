@@ -925,7 +925,7 @@ pub(super) fn index(workspace: &Path) -> String {
             (
                 node.id.clone(),
                 node.standing.label().replace('*', ""),
-                node.statement.clone(),
+                edges(node),
             )
         })
         .collect();
@@ -941,6 +941,26 @@ pub(super) fn index(workspace: &Path) -> String {
             }),
         super::ledger::index::HEADLINE,
     )
+}
+
+/// What one node's index line says beyond its id and its standing.
+///
+/// The edges, and not the statement. The statement was here and was the same
+/// text `CLAIMS.md` carries a few thousand characters earlier in the same
+/// prompt — measured on one live workspace, the claims index and this one came
+/// to 17,829 characters between them, over the same seventy ids, and the second
+/// copy was the shorter one. Every role routed this file is routed the claim
+/// ledger too, so the statement is above and one `read_ledger` away, while what
+/// only this ledger knows — what rests on what — was the part being dropped for
+/// space.
+///
+/// A node with nothing under it says so rather than rendering an empty line: a
+/// root is a real and useful thing to be, and a blank reads as a missing field.
+fn edges(node: &Node) -> String {
+    if node.needs.is_empty() {
+        return "rests on nothing — a root".to_string();
+    }
+    format!("rests on {}", node.needs.join(", "))
 }
 
 fn cell(text: &str) -> String {
