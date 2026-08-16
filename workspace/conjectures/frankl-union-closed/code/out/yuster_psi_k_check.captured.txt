@@ -1,0 +1,11 @@
+k=2: psi_k=0.3819660113  alpha_k/(1+alpha_k)=0.3819660113  match=True
+k=3: psi_k=0.3176721962  alpha_k/(1+alpha_k)=0.3176721962  match=True
+k=4: psi_k=0.275508041  alpha_k/(1+alpha_k)=0.275508041  match=True
+k=5: psi_k=0.2451223338  alpha_k/(1+alpha_k)=0.2451223338  match=True
+k=6: psi_k=0.2219104013  alpha_k/(1+alpha_k)=0.2219104013  match=True
+k=7: psi_k=0.2034556459  alpha_k/(1+alpha_k)=0.2034556459  match=True
+k=8: psi_k=0.18834768  alpha_k/(1+alpha_k)=0.18834768  match=True
+k=9: psi_k=0.1756994368  alpha_k/(1+alpha_k)=0.1756994368  match=True
+k=10: psi_k=0.1649209573  alpha_k/(1+alpha_k)=0.1649209573  match=True
+psi_2 should be (3-sqrt5)/2 = 0.3819660113  got 0.3819660113
+ALL CHECKS DONE

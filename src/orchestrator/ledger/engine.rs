@@ -55,6 +55,22 @@ pub(in crate::orchestrator) struct Entry {
     pub(in crate::orchestrator) fields: BTreeMap<String, String>,
     /// Who recorded it last. Empty for an items ledger, which has no sender.
     pub(in crate::orchestrator) from: String,
+    /// Where this entry's *last* event sits in the queue, if it came from one.
+    ///
+    /// What [`super::spec::Order::Recent`] sorts on. The line number is the
+    /// ordering, not the `at` timestamp: the timestamps are written by whichever
+    /// container is running, and the queue's own append order is the only thing
+    /// the fold can read that is guaranteed monotone.
+    ///
+    /// `None` for a [`Source::Items`] ledger, which has no queue and therefore
+    /// no touch order. A file's modification time would be the obvious stand-in
+    /// and is not usable: the run rewrites items files for reasons that have
+    /// nothing to do with priority — a `merge` that changes one field, a
+    /// checkpoint restore, a `git` checkout — so mtime would shuffle the section
+    /// on events no reader can see. So an items ledger keeps recorded order
+    /// under either [`super::spec::Order`], which [`ordered`] gets for free by
+    /// sorting stably on a key that is equal for every one of its entries.
+    pub(in crate::orchestrator) touched: Option<usize>,
 }
 
 impl Entry {
@@ -154,6 +170,10 @@ fn fold_queue(workspace: &Path, path: &str) -> Entries {
             out.entries.len() - 1
         });
         let entry = &mut out.entries[position];
+        // Every event, not only the first: the last one to name an id is what
+        // `Order::Recent` reads, which is what lets a role re-prioritise an
+        // existing task by recording against it.
+        entry.touched = Some(line_number);
         if let Some(from) = event.get("from").and_then(Value::as_str) {
             entry.from = from.trim().to_string();
         }
@@ -225,6 +245,9 @@ fn read_items(workspace: &Path, dir: &str, block: &str, spec: &LedgerSpec) -> En
             id,
             fields,
             from: String::new(),
+            // No queue, so no touch order. See [`Entry::touched`] for why the
+            // file's modification time is not the fallback.
+            touched: None,
         });
     }
     out
@@ -328,8 +351,28 @@ fn source_label(source: &Source) -> String {
     }
 }
 
+/// Puts entries in the order a section, or a `read_ledger` call, asked for.
+///
+/// Ordering happens here rather than in [`collect`], so the fold keeps saying
+/// one thing — first-seen order — and every reader picks its own view of it.
+///
+/// The sort is stable and keyed on [`Entry::touched`], which makes the items
+/// case fall out rather than needing a branch: every one of its entries has the
+/// same key, so a stable sort leaves them exactly as they were read.
+pub(in crate::orchestrator) fn ordered<'a>(
+    entries: &'a [Entry],
+    order: super::spec::Order,
+) -> Vec<&'a Entry> {
+    let mut out: Vec<&Entry> = entries.iter().collect();
+    if order == super::spec::Order::Recent {
+        out.sort_by_key(|entry| std::cmp::Reverse(entry.touched.unwrap_or(0)));
+    }
+    out
+}
+
 fn append_section(out: &mut String, spec: &LedgerSpec, entries: &Entries, section: &super::spec::Section) {
-    let matching = entries.entries.iter().filter(|entry| {
+    let sorted = ordered(&entries.entries, section.order);
+    let matching = sorted.into_iter().filter(|entry| {
         section.statuses.is_empty()
             || section
                 .statuses

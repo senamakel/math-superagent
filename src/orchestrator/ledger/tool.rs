@@ -196,7 +196,7 @@ impl Tool<()> for LedgerTool {
                 "Reads entries out of one ledger, in full and unabridged. The rendered files in \
                  your prompt are shortened; this is where the whole reason an approach was \
                  refuted, or the whole statement of a claim, actually lives. Filter by status or \
-                 by id, or search the text."
+                 by id, search the text, or sort by what was touched most recently."
             }
             Kind::Record => {
                 "Records or updates one entry in a ledger — a task to do, a sub-goal, a row in an \
@@ -261,6 +261,16 @@ impl Tool<()> for LedgerTool {
                     "limit": {
                         "type": "integer",
                         "description": "Entries to return. Optional; bounded whatever you ask for."
+                    },
+                    // A checked string rather than an enum, for the reason the
+                    // module documentation gives about `ledger`: the schema vec
+                    // is built once per run. An unknown value returns the real
+                    // ones, which is the same discovery path.
+                    "sort": {
+                        "type": "string",
+                        "description": "`recent` for most-recently-recorded-or-updated first, \
+                                        `recorded` for the order entries were first written. \
+                                        Optional; the ledger's own order is used when you omit it."
                     }
                 },
                 "required": ["ledger"],
@@ -510,9 +520,15 @@ impl LedgerTool {
             .unwrap_or(MAX_READ)
             .clamp(1, MAX_READ);
 
-        let matching: Vec<&engine::Entry> = entries
-            .entries
-            .iter()
+        let sort = text(arguments, "sort");
+        let order = if sort.is_empty() {
+            spec.default_order()
+        } else {
+            super::spec::order(&sort)?
+        };
+
+        let matching: Vec<&engine::Entry> = engine::ordered(&entries.entries, order)
+            .into_iter()
             .filter(|entry| wanted_id.is_empty() || entry.id == wanted_id)
             .filter(|entry| wanted_status.is_empty() || entry.status(&spec) == wanted_status)
             .filter(|entry| {

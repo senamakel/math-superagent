@@ -301,6 +301,158 @@ async fn a_read_says_what_it_did_not_show() {
     assert!(!filtered.contains("task-12"));
 }
 
+/// The failure this ordering was built for, end to end on the built-in ledger.
+///
+/// A live `director` turned a human directive into task rows correctly and then
+/// reported that it could not get them read: `TASKS.md` rendered in first-seen
+/// order, so the fresh, higher-priority row landed at the *bottom* of a section
+/// whose blurb tells the next role to work the first one it can.
+#[tokio::test]
+async fn a_task_added_last_leads_do_next() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let root = workspace.path();
+    for id in ["gsplit-exhaustive-line-test", "the-directives-task"] {
+        run(
+            root,
+            Kind::Record,
+            "director",
+            json!({
+                "ledger": "tasks",
+                "id": id,
+                "fields": { "title": format!("Work on {id}"), "status": "open" }
+            }),
+        )
+        .await
+        .expect("recorded");
+    }
+
+    let rendered = std::fs::read_to_string(root.join("TASKS.md")).expect("TASKS.md exists");
+    let new = rendered.find("the-directives-task").expect("it renders");
+    let old = rendered
+        .find("gsplit-exhaustive-line-test")
+        .expect("it renders");
+    assert!(
+        new < old,
+        "the newest task leads `Do next`, which is the section a role works from the top of:\n\
+         {rendered}"
+    );
+
+    // And an older row is raised by recording against it — the reason the order
+    // is by last event rather than by newest created.
+    run(
+        root,
+        Kind::Record,
+        "director",
+        json!({
+            "ledger": "tasks",
+            "id": "gsplit-exhaustive-line-test",
+            "fields": { "detail": "directive 12 raises this" }
+        }),
+    )
+    .await
+    .expect("recorded");
+    let rendered = std::fs::read_to_string(root.join("TASKS.md")).expect("TASKS.md exists");
+    assert!(
+        rendered.find("gsplit-exhaustive-line-test") < rendered.find("the-directives-task"),
+        "touching an existing task raises it, using a tool every writing role holds:\n{rendered}"
+    );
+}
+
+/// The archives keep arrival order: they are read for what is on them.
+#[tokio::test]
+async fn recently_done_is_not_reordered() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let root = workspace.path();
+    for id in ["first-finished", "second-finished"] {
+        run(
+            root,
+            Kind::Record,
+            "goals",
+            json!({
+                "ledger": "tasks",
+                "id": id,
+                "fields": { "title": format!("Task {id}"), "status": "open" }
+            }),
+        )
+        .await
+        .expect("recorded");
+    }
+    for id in ["first-finished", "second-finished"] {
+        run(
+            root,
+            Kind::Close,
+            "goals",
+            json!({
+                "ledger": "tasks",
+                "id": id,
+                "status": "done",
+                "reason": "carried out, with the capture beside it"
+            }),
+        )
+        .await
+        .expect("closed");
+    }
+    let rendered = std::fs::read_to_string(root.join("TASKS.md")).expect("TASKS.md exists");
+    assert!(
+        rendered.find("first-finished") < rendered.find("second-finished"),
+        "`Recently done` is an archive and stays in recorded order:\n{rendered}"
+    );
+}
+
+/// `sort` overrides the ledger's own order, and an unknown one names the real
+/// ones rather than failing opaquely.
+#[tokio::test]
+async fn a_read_can_sort_and_says_what_the_orders_are() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let root = workspace.path();
+    for id in ["oldest-task", "newest-task"] {
+        run(
+            root,
+            Kind::Record,
+            "goals",
+            json!({
+                "ledger": "tasks",
+                "id": id,
+                "fields": { "title": format!("Task {id}"), "status": "open" }
+            }),
+        )
+        .await
+        .expect("recorded");
+    }
+
+    let recent = run(root, Kind::Read, "goals", json!({ "ledger": "tasks" }))
+        .await
+        .expect("it reads");
+    assert!(
+        recent.find("newest-task") < recent.find("oldest-task"),
+        "the task ledger's own order is most-recently-touched first: {recent}"
+    );
+
+    let recorded = run(
+        root,
+        Kind::Read,
+        "goals",
+        json!({ "ledger": "tasks", "sort": "recorded" }),
+    )
+    .await
+    .expect("it reads");
+    assert!(
+        recorded.find("oldest-task") < recorded.find("newest-task"),
+        "`sort` overrides the spec: {recorded}"
+    );
+
+    let error = run(
+        root,
+        Kind::Read,
+        "goals",
+        json!({ "ledger": "tasks", "sort": "newest" }),
+    )
+    .await
+    .expect_err("an unknown order is refused");
+    assert!(error.contains("recorded"), "the real orders are offered: {error}");
+    assert!(error.contains("recent"), "{error}");
+}
+
 /// Fields are text. A nested object is refused rather than stored as JSON that
 /// renders as JSON.
 #[tokio::test]

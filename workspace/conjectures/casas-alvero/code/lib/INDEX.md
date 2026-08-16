@@ -1,0 +1,10 @@
+# Index — code/lib
+
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+
+| File | Purpose |
+| --- | --- |
+| `badprimes.py` | Exact machinery for the Schaub-Spivakovsky bad-prime-minors criterion (arXiv:2411.13967 Thm 3.1): Phi_j involutions, G_{T,i} via simultaneous substitution, M_T (D×C integer matrices), J_T = gcd of all C×C minors computed exactly as |
+| `casas_alvero.py` | THE canonical exact oracle for the CA hypothesis. is_ca (ordinary derivatives), is_pure_power, is_counterexample, charp_witness, run_guards; is_ca_hasse — Hasse-derivative hypothesis (published char-p bad-prime formulation; agrees with is_ca in char 0 and p>=n, diverges for p<n). Guard 5 (new): char-0 agreement is_ca(f,0)==is_ca_hasse(f,0) asserted on all 64 guard-1/2 polynomials + 8 structured ones, so the Hasse formulation can never drift from the ordinary oracle in char 0. Established correct: full guard suite incl. guard 5 (72 checks) ALL PASS (captured code/out/oracle_guard.captured.txt), cross-checked vs code/brute.py, Hasse counts match the published bad-prime lists (code/out/badprimes_sn.captured.txt). |
+| `casasalvero.py` | S_n-scheme exact machinery: sn_equations (ordinary), hasse_sn_equations (Hasse, published char-p formulation), pure_power_generators, rabinowitsch_membership, prove_ca_elimination, sn_ideal_groebner. Established correct: Rabinowitsch control cases (sympy+Singular), vanish-on-pure-power for n=2..6, and rad(I)=rad(P) over GF(p) reproduces published bad-prime lists {2} n=3 and {3,5,7} n=4 (code/out/badprimes_sn.captured.txt, exit 0). |
+| `ghosh2025.py` | Faithful implementation of Ghosh (arXiv:2501.09272) §2 objects: HD^i_k (eq 2.1, from the definition), Phi^#_{d,j} (eq 2.2, simultaneous-substitution algebra map), F(i,j,n) and its x_n-decomposition into f(i,j,n), g(i,j,n), over QQ/GF(p). Verified by code/ghosh_charp/verify_break.py (1313 checks PASS, captured code/out/ghosh_break.captured.txt). |

@@ -1,0 +1,26 @@
+DEGREE n=5 BAD PRIMES, INDEPENDENT SEMANTIC ROUTE (literal definition, canonical oracle)
+program: code/badprimes_criterion/semantic_n5_smallprimes.py
+oracle: lib.casas_alvero.is_ca_hasse / is_pure_power (exact over GF(p), no floating point); counterexample = is_ca_hasse and not is_pure_power
+base ring: GF(p), p in {2,3,5,7,11,13}; term order: not used (oracle decisions, no Groebner basis)
+ground truth: Castryck-Laterveer-Ounaies 2012 Thm 4 (bad primes of degree 5 = {2,3,7,11,131,193,599,3541,8009}); this route covers the small primes by exhaustive enumeration of all p^5 monic degree-5 polynomials
+scope: 552551 polynomials total; large bad primes (>=131) are out of enumeration reach (131^5 ~ 3.9e10) and covered only by the rank route; agreement asserted on all six primes in scope
+search space: 552551 monic degree-5 polynomials over F_p, p in [2, 3, 5, 7, 11, 13] (p^5 each: {2: 32, 3: 243, 5: 3125, 7: 16807, 11: 161051, 13: 371293})
+worker count: 28
+wall time over 28 workers: 85.4 s
+
+counterexample counts (Hasse-CA degree-5 polys over F_p, not pure powers):
+  p= 2 :      2 counterexamples  bad=True
+  p= 3 :     12 counterexamples  bad=True
+  p= 5 :      0 counterexamples  bad=False
+  p= 7 :     42 counterexamples  bad=True
+  p=11 :    110 counterexamples  bad=True
+  p=13 :      0 counterexamples  bad=False
+
+  witness over F_2: f = x^5 1 x^1
+  witness over F_3: f = x^5 1 x^4 + 1 x^3
+  witness over F_7: f = x^5 1 x^4 + 3 x^3 + 4 x^2 + 4 x^1 + 2 x^0
+  witness over F_11: f = x^5 1 x^4 + 1 x^2 + 5 x^1 + 4 x^0
+
+agreement: (counterexample over F_p exists) == (p in {2, 3, 7, 11}) for every p in [2, 3, 5, 7, 11, 13]
+RESULT: semantic route (literal definition via canonical oracle) agrees with the published bad-prime list on all small primes; matches the rank-over-F_p criterion route (code/out/badprimes_n5.captured.txt) on 2,3,7,11 bad and 5,13 good.
+ALL CHECKS PASSED

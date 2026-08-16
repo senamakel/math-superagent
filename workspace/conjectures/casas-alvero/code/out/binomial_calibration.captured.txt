@@ -1,0 +1,71 @@
+BINOMIAL-CRITERION CALIBRATION vs TRUE BAD-PRIME LISTS (degrees where the full list is known)
+program: code/n5/binomial_calibration.py
+criterion: SUFFICIENT binomial criterion (arXiv:2307.05997 Cor 8): p bad for degree d if p | C(d,i)-1 for some i in 1..d-1;
+  computed exactly by lib.badprimes.criterion_bad_primes (sympy binomial + factorint, exact integers)
+true bad lists: n=3 {2}, n=4 {3,5,7} (de Jong-Draisma, via Castryck-Laterveer-Ounaies 2012 Sec 1.7,
+  arXiv:1208.5404), n=5 {2,3,7,11,131,193,599,3541,8009} (Castryck-Laterveer-Ounaies 2012 Thm 4, arXiv:1208.5404)
+scope: n = 3, 4, 5; exact integer arithmetic throughout; negative control = first 10 primes outside each true bad list must divide no C(n,i)-1
+
+degree n = 3
+  true bad primes          : [2]  (1 primes)
+  binomial-certified-bad   : [2]  (1 primes)
+  missing (true - certified): []  (0 primes)
+  ratio |certified|/|true| : 1/1 = 1.000
+  negative control (good primes, must divide no C(n,i)-1):
+    p= 3: ok
+    p= 5: ok
+    p= 7: ok
+    p=11: ok
+    p=13: ok
+    p=17: ok
+    p=19: ok
+    p=23: ok
+    p=29: ok
+    p=31: ok
+
+degree n = 4
+  true bad primes          : [3, 5, 7]  (3 primes)
+  binomial-certified-bad   : [3, 5]  (2 primes)
+  missing (true - certified): [7]  (1 primes)
+  ratio |certified|/|true| : 2/3 = 0.667
+  negative control (good primes, must divide no C(n,i)-1):
+    p= 2: ok
+    p=11: ok
+    p=13: ok
+    p=17: ok
+    p=19: ok
+    p=23: ok
+    p=29: ok
+    p=31: ok
+    p=37: ok
+    p=41: ok
+
+degree n = 5
+  true bad primes          : [2, 3, 7, 11, 131, 193, 599, 3541, 8009]  (9 primes)
+  binomial-certified-bad   : [2, 3]  (2 primes)
+  missing (true - certified): [7, 11, 131, 193, 599, 3541, 8009]  (7 primes)
+  ratio |certified|/|true| : 2/9 = 0.222
+  negative control (good primes, must divide no C(n,i)-1):
+    p= 5: ok
+    p=13: ok
+    p=17: ok
+    p=19: ok
+    p=23: ok
+    p=29: ok
+    p=31: ok
+    p=37: ok
+    p=41: ok
+    p=43: ok
+
+SUMMARY (per degree): true list | certified subset | gap | ratio
+  n=3  true=[2]  certified=[2]  gap=[]  ratio=1/1=1.000
+  n=4  true=[3, 5, 7]  certified=[3, 5]  gap=[7]  ratio=2/3=0.667
+  n=5  true=[2, 3, 7, 11, 131, 193, 599, 3541, 8009]  certified=[2, 3]  gap=[7, 11, 131, 193, 599, 3541, 8009]  ratio=2/9=0.222
+
+CALIBRATION TAKEAWAY: the binomial criterion is sufficient, never exhaustive.  At n=4 it
+captures {3,5} of the true {3,5,7} (ratio 2/3); at n=5 it captures only {2,3} of the 9 true
+bad primes {2,3,7,11,131,193,599,3541,8009} (ratio 2/9).  The n=20 frontier uses this same
+criterion, so its 18 certified primes are a lower bound on the true degree-20 bad-prime set
+and its non-certified 'candidate good' primes are NOT proven good.  Calibrated at n=5:
+the criterion certified only 2 of the 9 true bad primes (22%).
+ALL CHECKS PASSED

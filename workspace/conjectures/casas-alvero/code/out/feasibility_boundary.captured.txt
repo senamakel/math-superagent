@@ -1,0 +1,36 @@
+CASAS-ALVERO MINOR-CRITERION FEASIBILITY BOUNDARY, n = 3..8
+program: code/n5/feasibility_boundary.py
+computed exactly: d=(n^2-3n+4)/2, C=binom((n^2-n)/2, n-2), D=sum_{i=1}^{n-1} binom(d-i+n-2, n-2), tuples=n^(n-1); C, D cross-checked against lib.badprimes.lex_monomials
+measured anchors: n=4 SNF 19x15 = 0.002 s (commands.log); n=5 SNF 195x120 > 90 s cap (commands.log); n=5 rank 106250 ranks/28 workers = 384.1 s (badprimes_n5.captured.txt)
+rank route nominal cost: O(D*C^2) mod-p ops per (tuple, prime) rank, times tuples n^(n-1) times #primes per sweep
+CASAS-ALVERO MINOR-CRITERION FEASIBILITY BOUNDARY (n = 3..8)
+criterion: Schaub-Spivakovsky arXiv:2411.13967 Thm 3.1; p bad for degree n iff rank_{F_p}(M_T) < C for some T in {1..n}^{n-1},
+  M_T the D x C integer matrix of the Phi_j-transformed elementary symmetric polys (lib.badprimes); C = #monomials of degree d in n-1
+  variables, D = total #rows = sum_i #monomials of degree d - i.  Computed exactly; C, D cross-checked against lex_monomials.
+measured anchors: n=4 SNF 19x15 = 0.002 s/matrix (commands.log); n=5 SNF one 195x120 > 90 s cap (commands.log);
+  n=5 rank route: 106250 ranks (625 tuples x 170 primes), 28 workers, 384.1 s internal wall (badprimes_n5.captured.txt).
+rank cost model: O(D*C^2) mod-p ops per (tuple, prime) rank; per-rank core-time at n=5 measured 0.1012 s (= 384.1*28/106250).
+
+n   d      C                D                 tuples         D*C^2 (ops/rank)  est core-s/rank(n)  route
+--------------------------------------------------------------------------------------------------------
+3   2      3                3                  9               27                 0.0000                SNF
+4   4      15               19                 64              4275               0.0002                SNF
+5   7      120              195                625             2808000            0.1012                rank-only
+6   11     1365             2751               7776            5.126e+09          1.848e+02             neither
+7   16     20349            49259              117649          2.040e+13          7.353e+05             neither
+8   22     376740           1067760            2097152         1.516e+17          5.463e+09             neither
+
+route legend: SNF = full minors criterion feasible via exact Smith normal form (J_T for every T, or lcm);
+  rank-only = SNF infeasible, rank-mod-p over F_p feasible; neither = both infeasible.
+
+BOUNDARY STATEMENT:
+  * n <= 4 : SNF route feasible.  n=4 measured: all 64 tuples, 19x15 SNF 0.002 s each, lcm J_T = 1575 = 3^2.5^2.7 -> bad primes {3,5,7} (verify_badprimes_n4.py, ALL CHECKS PASSED).
+  * n = 5  : SNF infeasible (one 195x120 SNF > 90 s cap), rank route feasible: 106250 ranks over 28 workers in 384.1 s, reproduces exactly {2,3,7,11,131,193,599,3541,8009}.
+  * n = 6  : rank route infeasible.  C = 1365 (vs 120 at n=5), D = 2751 (vs 195), so one (tuple, prime) rank costs
+       (D*C^2)_6/(D*C^2)_5 = 5125731975/2808000 = 1825.4 times the n=5 cost, i.e. 184.8 core-seconds per rank;
+       the full n=6 sweep (7776 tuples x ~550 primes up to 8009) would be ~ 2.20e+05 core-hours -- infeasible.
+       (SNF at n=6 is far worse: C = 1365, so the gcd-of-all-minors problem is out of reach; the n=5 90 s cap is already for C = 120.)
+  * n = 7, 8 : C = 20349, 376740 and D*C^2 = 2.040e+13, 1.516e+17 ops/rank -- the rank route is infeasible a fortiori (neither).
+
+FEASIBILITY BOUNDARY: the minor criterion is fully feasible at n <= 4 (SNF), rank-only at n = 5, and at n >= 6 the rank route is also infeasible (C = 1365, D = 2751 at n = 6 make a single rank ~ 185 core-seconds and the full sweep ~ 2.20e+05 core-hours).
+Numbers above the measured anchors (n=4, n=5) are magnitude extrapolations of the measured O(D*C^2) per-rank cost, not new verifications.

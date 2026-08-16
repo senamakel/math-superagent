@@ -1,0 +1,5 @@
+# ordinary-vs-hasse-badprimes
+
+*Re-derived: `research/CLAIMS.md`, `research/THREADS.md`, `research/BACKWARD.md`, `research/WEAKENED.md`, `research/BLUEPRINT.md`, `research/ENTAILMENT.md`.*
+
+The published bad-prime lists {2} for n=3 and {3,5,7} for n=4 are **Hasse**-derivative lists; the ordinary-derivative hypothesis degenerates in char p for p < n and wrongly marks p=2 bad for n=4. The Hasse S_n-scheme rad(I)=rad(P) computation over GF(p) reproduces both lists exactly (all 17 primes p<60), cross-checked by bounded F_p enumeration via `is_ca_hasse`. Claim `bad-prime-lists-hasse-formulation` is checked.

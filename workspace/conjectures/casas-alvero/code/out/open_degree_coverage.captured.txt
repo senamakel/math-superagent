@@ -1,0 +1,71 @@
+=== Predicted open (no 6/7 family) vs published ===
+predicted open (m<=5 families): [20, 24, 28, 30, 35, 36, 40, 42, 45, 48, 55, 56, 60, 63, 66, 70, 72, 77, 78, 80, 84, 88, 90, 91, 96, 99, 100]
+published open          : [20, 24, 28, 30, 35, 36, 40, 42, 45, 48, 55, 56, 60, 63, 66, 70, 72, 77, 78, 80, 84, 88, 90, 91, 98, 99, 100]
+pred == published? False
+
+In predicted but NOT published (would need 6/7 to close): [96]
+In published but NOT predicted (covered by m<=5 but listed open): [98]
+
+=== For each published-open n: how is it excluded / or why uncovered ===
+  n= 20: came-from=NOTHING(m<=5)    [5*p^k excluded: p=2 is bad for 5] [4*p^k excluded: p=5]
+  n= 24: came-from=NOTHING(m<=5)  6*p^k candidate  [3*p^k excluded: p=2]
+  n= 28: came-from=NOTHING(m<=5)   7*p^k candidate [4*p^k excluded: p=7]
+  n= 30: came-from=NOTHING(m<=5)  6*p^k candidate 
+  n= 35: came-from=NOTHING(m<=5)   7*p^k candidate [5*p^k excluded: p=7 is bad for 5]
+  n= 36: came-from=NOTHING(m<=5)    [4*p^k excluded: p=3]
+  n= 40: came-from=NOTHING(m<=5)    [5*p^k excluded: p=2 is bad for 5]
+  n= 42: came-from=NOTHING(m<=5)  6*p^k candidate 
+  n= 45: came-from=NOTHING(m<=5)    [5*p^k excluded: p=3 is bad for 5]
+  n= 48: came-from=NOTHING(m<=5)  6*p^k candidate  [3*p^k excluded: p=2]
+  n= 55: came-from=NOTHING(m<=5)    [5*p^k excluded: p=11 is bad for 5]
+  n= 56: came-from=NOTHING(m<=5)   7*p^k candidate
+  n= 60: came-from=NOTHING(m<=5)   
+  n= 63: came-from=NOTHING(m<=5)   7*p^k candidate
+  n= 66: came-from=NOTHING(m<=5)  6*p^k candidate 
+  n= 70: came-from=NOTHING(m<=5)   
+  n= 72: came-from=NOTHING(m<=5)   
+  n= 77: came-from=NOTHING(m<=5)   7*p^k candidate
+  n= 78: came-from=NOTHING(m<=5)  6*p^k candidate 
+  n= 80: came-from=NOTHING(m<=5)    [5*p^k excluded: p=2 is bad for 5]
+  n= 84: came-from=NOTHING(m<=5)   
+  n= 88: came-from=NOTHING(m<=5)   
+  n= 90: came-from=NOTHING(m<=5)   
+  n= 91: came-from=NOTHING(m<=5)   7*p^k candidate
+  n= 98: came-from=['2*p^k (p=7)']   
+  n= 99: came-from=NOTHING(m<=5)   
+  n=100: came-from=NOTHING(m<=5)    [4*p^k excluded: p=5]
+=== Negative controls (directive) ===
+  known SETTLED (2^4)          n= 16: covered=True  pub_open=False correct-consistent=True  buggy-would-flag=True
+  known OPEN (4*5 and 5*2^2)   n= 20: covered=False pub_open=True  correct-consistent=True  buggy-would-flag=True
+  OPEN exemplar (4*7, p=7 bad) n= 28: covered=False pub_open=True  correct-consistent=True  buggy-would-flag=True
+  => Negative controls hold: under the CORRECT comparison 16, 20, 28 all land on the consistent side; under the OLD buggy (pub!=cov) comparison all three are FALSELY flagged as mismatches.  That proves the old comparison was inverted.
+
+=== Full comparison over all n in (9..100), n != 12 ===
+  GENUINE mismatches (pub_open == covered): [96, 98]
+  # genuine: 2
+  OLD/BUGGY would have reported as 'mismatch': [9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 97, 99, 100]
+  # old-buggy: 89
+    n= 96: covered=False pub_open=False
+       how covered/not: p^k=False
+       prime factors: [2, 3]
+    n= 98: covered=True pub_open=True
+       how covered/not: p^k=False
+       prime factors: [2, 7]
+=== Full m<=7 coverage test ===
+  n=96: published_open=False covered(m<=7)=False  representations: [(3, 2, False), (6, 2, False)]
+  n=98: published_open=True covered(m<=7)=True  representations: [(2, 7, True)]
+
+Only inconsistent degrees under full m<=7 coverage: [96, 98]
+
+== n=98 detail ==
+  98: (2, 7, 49, True)
+== n=96 detail ==
+  96: (3, 2, 32, False)
+  96: (6, 2, 16, False)
+=== n=96  = {2: 5, 3: 1} ===
+  published open? False
+  96 = 3*2^5 : p=2 (bad for 3? True) -> covered=False
+  96 = 6*2^4 : p=2 bad for 6? True -> covered=False
+=== n=98  = {2: 1, 7: 2} ===
+  published open? True
+  98 = 2*7^2 : p=7 (bad for 2? False) -> covered=True

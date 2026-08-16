@@ -9,7 +9,7 @@
 use serde_json::json;
 
 use super::super::budget;
-use super::{Check, Role, Source, parse};
+use super::{Check, Order, Role, Source, parse};
 
 fn minimal() -> serde_json::Value {
     json!({
@@ -165,6 +165,46 @@ fn a_ledger_needs_a_status_and_a_derived_path() {
     let mut document = minimal();
     document.as_object_mut().expect("an object").remove("derived");
     assert!(parse(&document, false).is_err());
+}
+
+/// `order` is a closed set of two, parsed on the way in.
+///
+/// A section that says nothing keeps first-seen order, so every ledger that
+/// predates this renders exactly as it did.
+#[test]
+fn a_section_order_is_read_and_defaults_to_recorded() {
+    let spec = parse(&minimal(), true).expect("parses");
+    assert_eq!(spec.sections[0].order, Order::Recorded);
+    assert_eq!(spec.default_order(), Order::Recorded);
+
+    let mut document = minimal();
+    document["sections"][0]["order"] = json!("recent");
+    let spec = parse(&document, true).expect("parses");
+    assert_eq!(spec.sections[0].order, Order::Recent);
+    assert_eq!(
+        spec.default_order(),
+        Order::Recent,
+        "`read_ledger` without a `sort` follows the first section"
+    );
+}
+
+/// An order nobody implements is a fault, not a silent fallback.
+///
+/// The opposite reading from an unknown `check`, and for the reason that
+/// separates them: a dropped check costs one unreported fault, while a dropped
+/// order renders the section in an order the declaration did not ask for and
+/// nothing anywhere says so.
+#[test]
+fn a_section_with_an_unknown_order_is_refused() {
+    for bad in ["newest", "alphabetical", "Recent", ""] {
+        let mut document = minimal();
+        document["sections"][0]["order"] = json!(bad);
+        let error = parse(&document, false).expect_err("an unknown order is refused");
+        assert!(
+            error.to_string().contains("recorded") && error.to_string().contains("recent"),
+            "the message names the real orders: {error}"
+        );
+    }
 }
 
 /// An unrecognised check is dropped rather than refusing the whole ledger.

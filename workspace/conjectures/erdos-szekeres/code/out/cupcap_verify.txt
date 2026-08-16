@@ -1,0 +1,19 @@
+==============================================================================
+G-cupcap verification (Erdos-Szekeres 1935) -- exact arithmetic
+==============================================================================
+  grid {0,1,2}^2 all subsets: 58 valid (general-position, distinct-x) sets
+  random small sets size 3..8: 202 valid (general-position, distinct-x) sets
+  random small sets size 3..7 (wider coords): 364 valid (general-position, distinct-x) sets
+
+sets checked        : 624
+cases (set, n)      : 1220
+agreement           : 1220
+mismatches          : 0
+lib-vs-ref cup/cap  : 0 disagreements on any subset
+
+Diagnostic: a cup and a cap can share both x-extreme points while
+their union (of exactly n points) is NOT convex -- which is why the
+claim states the union must be convex.  Such nonconvex shared-extreme
+pairs were observed on 0 of the sets.
+
+RESULT: PASS -- characterization holds on every case

@@ -1,0 +1,28 @@
+== Oracle checks against the statement's worked examples ==
+  (x-0)^1 over Q : hypothesis=True pure_power=True  OK
+  (x-1)^1 over Q : hypothesis=True pure_power=True  OK
+  (x-3/2)^1 over Q : hypothesis=True pure_power=True  OK
+  (x-0)^2 over Q : hypothesis=True pure_power=True  OK
+  (x-1)^2 over Q : hypothesis=True pure_power=True  OK
+  (x-3/2)^2 over Q : hypothesis=True pure_power=True  OK
+  (x-0)^3 over Q : hypothesis=True pure_power=True  OK
+  (x-1)^3 over Q : hypothesis=True pure_power=True  OK
+  (x-3/2)^3 over Q : hypothesis=True pure_power=True  OK
+  (x-0)^4 over Q : hypothesis=True pure_power=True  OK
+  (x-1)^4 over Q : hypothesis=True pure_power=True  OK
+  (x-3/2)^4 over Q : hypothesis=True pure_power=True  OK
+  (x-0)^5 over Q : hypothesis=True pure_power=True  OK
+  (x-1)^5 over Q : hypothesis=True pure_power=True  OK
+  (x-3/2)^5 over Q : hypothesis=True pure_power=True  OK
+  (x-0)^6 over Q : hypothesis=True pure_power=True  OK
+  (x-1)^6 over Q : hypothesis=True pure_power=True  OK
+  (x-3/2)^6 over Q : hypothesis=True pure_power=True  OK
+  generic random monic f over Q (8 samples): all fail hypothesis  OK
+  x^3 - x^p in F_2 : hypothesis=True pure_power=False  OK (char-p counterexample)
+  x^4 - x^p in F_3 : hypothesis=True pure_power=False  OK (char-p counterexample)
+  x^6 - x^p in F_5 : hypothesis=True pure_power=False  OK (char-p counterexample)
+  x^8 - x^p in F_7 : hypothesis=True pure_power=False  OK (char-p counterexample)
+  (x-1)^3 in F_3 : hypothesis=True pure_power=True OK
+  (x-1)^5 in F_5 : hypothesis=True pure_power=True OK
+==============================
+ALL WORKED-EXAMPLE CHECKS PASSED

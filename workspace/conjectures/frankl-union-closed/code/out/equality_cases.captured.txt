@@ -1,0 +1,18 @@
+=== n=1 (near-cube profile (1,)) ===
+  families with min_present*2==m : 1
+    |F|=2 |UF|=1 counts=[1] nearcube_sorted_profile=(1,) is_nearcube=False fam=[0, 1]
+=== n=2 (near-cube profile (2, 1)) ===
+  families with min_present*3==m : 2
+    |F|=3 |UF|=2 counts=[2, 1] nearcube_sorted_profile=(2, 1) is_nearcube=False fam=[0, 1, 3]
+    |F|=3 |UF|=2 counts=[1, 2] nearcube_sorted_profile=(2, 1) is_nearcube=False fam=[0, 2, 3]
+=== n=3 (near-cube profile (3, 3, 1)) ===
+  families with min_present*5==m : 3
+    |F|=5 |UF|=3 counts=[3, 3, 1] nearcube_sorted_profile=(3, 3, 1) is_nearcube=False fam=[0, 1, 2, 3, 7]
+    |F|=5 |UF|=3 counts=[3, 1, 3] nearcube_sorted_profile=(3, 3, 1) is_nearcube=False fam=[0, 1, 4, 5, 7]
+    |F|=5 |UF|=3 counts=[1, 3, 3] nearcube_sorted_profile=(3, 3, 1) is_nearcube=False fam=[0, 2, 4, 6, 7]
+=== n=4 (near-cube profile (5, 5, 5, 1)) ===
+  families with min_present*9==m : 4
+    |F|=9 |UF|=4 counts=[5, 5, 5, 1] nearcube_sorted_profile=(5, 5, 5, 1) is_nearcube=False fam=[0, 1, 2, 3, 4, 5, 6, 7, 15]
+    |F|=9 |UF|=4 counts=[5, 5, 1, 5] nearcube_sorted_profile=(5, 5, 5, 1) is_nearcube=False fam=[0, 1, 2, 3, 8, 9, 10, 11, 15]
+    |F|=9 |UF|=4 counts=[5, 1, 5, 5] nearcube_sorted_profile=(5, 5, 5, 1) is_nearcube=False fam=[0, 1, 4, 5, 8, 9, 12, 13, 15]
+    |F|=9 |UF|=4 counts=[1, 5, 5, 5] nearcube_sorted_profile=(5, 5, 5, 1) is_nearcube=False fam=[0, 2, 4, 6, 8, 10, 12, 14, 15]

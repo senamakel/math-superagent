@@ -1,0 +1,31 @@
+refute_deg4_char7.captured.txt — hand-verified arithmetic for the F_7 witness
+ran: find_counterexample on code/refute/ca_deg4_char7.p -> CounterSatisfiable
+oracle: exact mod-7 arithmetic (hand recomputed, no floating point)
+claim: deg4-char7-refuted (status checked)
+
+Witness: f = x^4 + x^3 + 4x over F_7, Hasse derivatives H_i.
+Value tables indexed by x = 0..6:
+
+  f  = x^4+x^3+4x  : [0, 6, 4, 1, 0, 0, 3]   roots {0,4,5}
+  H_1= 4x^3+3x^2+4 : [4, 4, 6, 6, 0, 5, 3]   H_1(4)=0, f(4)=0 -> common root 4
+  H_2= 6x^2+3x     : [0, 2, 2, 0, 3, 4, 3]   H_2(0)=0, f(0)=0 -> common root 0
+  H_3= 4x+1        : [1, 5, 2, 6, 3, 0, 4]   H_3(5)=0, f(5)=0 -> common root 5
+
+Detail:
+  f(0)=0; f(1)=1+1+4=6; f(2)=16+8+8=32=4? 32 mod 7 = 4 (7*4=28, rem 4);
+      wait x^4 at 2 = 16, x^3=8, 4x=8, sum 32, 32 mod 7 = 4 -> OK
+  f(3)=81+27+12=120, 120 mod 7 = 1; f(4)=256+64+16=336 = 0 (7*48);
+  f(5)=625+125+20=770 = 0 (7*110); f(6)=1296+216+24=1536, mod 7 = 3.
+  H_1 = 4x^3+3x^2+4: H_1(4)=4*64+3*16+4=308 = 0 (7*44).
+  H_2 = 6x^2+3x: H_2(0)=0.  H_3 = 4x+1: H_3(5)=21 = 0 (7*3).
+
+Pure-power (x-a)^4 tables (a=0..6): each has exactly one zero; f has three
+zeros {0,4,5}, so f is not a pure power.
+
+PURE POWERS (index 0..6):
+  a=0:[0,1,2,4,4,2,1]  a=1:[1,0,1,2,4,4,2]  a=2:[2,1,0,1,2,4,4]
+  a=3:[4,2,1,0,1,2,4]  a=4:[4,4,2,1,0,1,2]  a=5:[2,4,4,2,1,0,1]
+  a=6:[1,2,4,4,2,1,0]
+None equals f's table [0,6,4,1,0,0,3]. -> f is a counterexample.
+
+RESULT: refuted. p=7 is a bad prime for n=4 (third of the published {3,5,7}).

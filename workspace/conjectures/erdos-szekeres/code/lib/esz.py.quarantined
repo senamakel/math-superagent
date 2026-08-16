@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+###############################################################################
+# QUARANTINED-DEFECTIVE — DO NOT IMPORT. This module is known to be broken.
+#   * es_set (exact arc placement) leaks a convex n-gon: largestConvex 6 at
+#     n=5, 9 at n=6.
+# Do NOT build on it, do NOT fix it in place. The single VERIFIED construction
+# is code/lib/es_construct.py (es_set / es_set_blocks). Superseded and kept on
+# disk only so the record of the failure is not lost.
+###############################################################################
+"""Erdos-Szekeres lower-bound construction: 2^(n-2) points, no convex n-gon.
+
+Realisation of the construction in Morris-Soltan (survey), Thm 2.6 (due to
+Erdos-Szekeres 1961 / corrected Kalbfleisch-Stanton), built in exact
+rationals and verified at every stage against the exact oracle in brute.py.
+
+Definitions
+-----------
+g(a, b): an exact set of comb(a+b-4, a-2) points with NO a-cap and NO b-cup,
+         all pair-slopes in (-1,1) (flat).  This is the "cup/cap-swapped"
+         mirror of the classical no-cup/no-cap extremal set f(a,b).  Bases:
+             g(3,b) = b-1 points on a cup      (no 3-cap, no b-cup)
+             g(a,3) = a-1 points on a cap      (no a-cap, no 3-cup)
+         Recursion (mirror of Thm 2.5):  g(a,b) = merge_g( g(a-1,b), g(a,b-1) ).
+
+Block for index i at parameter n:  T_i = g(i+2, n-i), size C(n-2, i),
+         no (i+2)-cap, no (n-i)-cup.
+
+es_set(n): union over i=0..n-2 of a tiny copy of T_i placed near a point of a
+         convex arc (here the parabola Y=X^2 re-centred).  |X| = 2^(n-2), and
+         the oracle must report largest convex subset = n-1 (no convex n-gon).
+
+Every block and the final set is checked with brute.cup_cap_spectrum / the
+largest-convex-subset oracle before the construction is considered valid.
+"""
+
+from fractions import Fraction
+from math import comb
+
+
+# ---------------------------------------------------------------------------
+# exact helpers
+# ---------------------------------------------------------------------------
+
+def _bbox(S):
+    xs = [p[0] for p in S]; ys = [p[1] for p in S]
+    return min(xs), max(xs), min(ys), max(ys)
+
+
+def _max_abs_slope(S):
+    m = Fraction(0)
+    for i in range(len(S)):
+        for j in range(i + 1, len(S)):
+            dx = S[j][0] - S[i][0]
+            if dx != 0:
+                s = abs((S[j][1] - S[i][1]) / dx)
+                if s > m:
+                    m = s
+    return m
+
+
+def _shiftx(S, dx):
+    return [(x + dx, y) for (x, y) in S]
+
+
+def _shifty(S, dy):
+    return [(x, y + dy) for (x, y) in S]
+
+
+def _flatten(S, bound=Fraction(3, 10)):
+    """Scale y (about origin) so every pair-slope |slope| < bound. Preserves
+    all combinatorial structure (no cup/cap destroyed or created)."""
+    m = _max_abs_slope(S)
+    if m == 0:
+        return S
+    f = bound / (2 * m) if bound < 2 * m else Fraction(1, 2)
+    return [(x, y * f) for (x, y) in S]
+
+
+def _mirror(S):
+    """Vertical reflection y -> -y (swaps cups and caps)."""
+    return [(x, -y) for (x, y) in S]
+
+
+# ---------------------------------------------------------------------------
+# bases
+# ---------------------------------------------------------------------------
+
+def _cup(k):
+    """k points on a strictly convex-up arc: a k-cup, flat."""
+    d = Fraction(1, 20)
+    return [(Fraction(i), d * i * i) for i in range(k)]
+
+
+def _cap(k):
+    """k points on a strictly concave-down arc: a k-cap, flat."""
+    d = Fraction(1, 20)
+    return [(Fraction(i), -d * i * i) for i in range(k)]
+
+
+# ---------------------------------------------------------------------------
+# g(a,b): no a-cap, no b-cup  (built and verified against the oracle)
+# ---------------------------------------------------------------------------
+
+def _merge(A, B, big=Fraction(3, 5)):
+    """Place B to the upper-right of A so every A-B connecting slope is steep
+    (>= big ~ 0.6, exceeding the internal flat slopes).  Returns A+B.  Matches
+    the mirror of Thm 2.5's merge, chosen so cross-caps carry only one element
+    of the B side."""
+    Ax0, Ax1, Ay0, Ay1 = _bbox(A)
+    Bx0, Bx1, By0, By1 = _bbox(B)
+    gap = Fraction(10)
+    shift_x = Ax1 - Bx0 + gap
+    # lowest A-B slope: A's top (Ay1) down to B's bottom (By0+dy), at x-gap
+    dy = Ay1 + big * gap - By0
+    return A + _shifty(_shiftx(B, shift_x), dy)
+
+
+def g(a, b):
+    """Exact set of comb(a+b-4, a-2) points with NO a-cap and NO b-cup.
+    Recursion is the vertical mirror of the classical no-cup/no-cap set: we
+    build h (no a-cup, no b-cap) then mirror.  This keeps flatness handling
+    consistent (a down-right merge)."""
+    if a < 3 or b < 3:
+        raise ValueError((a, b))
+    if a == 3:
+        return _mirror(_cap(b - 1))   # (b-1) points on a cup -> no 3-cap, no b-cup
+    if b == 3:
+        return _mirror(_cup(a - 1))   # (a-1) points on a cap
+    A = _flatten(g(a - 1, b))
+    B = _flatten(g(a, b - 1))
+    return _merge(A, B)
+
+
+# ---------------------------------------------------------------------------
+# es_set(n): blocks T_i = g(i+2, n-i) placed on a convex arc
+# ---------------------------------------------------------------------------
+
+def es_blocks(n):
+    """List of blocks for parameter n (exact rationals).  Sizes sum to 2^(n-2)."""
+    blocks = []
+    for i in range(n - 1):
+        if i == 0 or i == n - 2:
+            blocks.append([(Fraction(0), Fraction(0))])       # singleton ends
+        else:
+            Ti = g(i + 2, n - i)
+            Ti = _flatten(Ti, Fraction(3, 10))
+            blocks.append(Ti)
+    return blocks
+
+
+def es_set(n):
+    """2^(n-2) points, no convex n-gon (exact rationals)."""
+    blocks = es_blocks(n)
+    scale = Fraction(1, 10 ** 5)
+    out = []
+    for idx, Ti in enumerate(blocks):
+        X = Fraction(idx)
+        Y = X * X
+        for (px, py) in Ti:
+            out.append((X + scale * px, Y + scale * py))
+    return out
+
+
+def es_set_exact(n):
+    return es_set(n)
+
+
+if __name__ == "__main__":
+    from brute import cup_cap_spectrum, largest_convex_subset, general_position
+    for n in (3, 4, 5, 6):
+        blocks = es_blocks(n)
+        print(f"n={n} block sizes: {[len(b) for b in blocks]} sum={sum(len(b) for b in blocks)} "
+              f"(expect 2^{n-2}={2**(n-2)})")
+        for i, Ti in enumerate(blocks):
+            cu, ca = cup_cap_spectrum(Ti)
+            print(f"   block {i}: size={len(Ti)} cup={cu} cap={ca} "
+                  f"maxSlope={float(_max_abs_slope(Ti)):.3f}")
+        S = es_set_exact(n)
+        k, _ = largest_convex_subset(S)
+        print(f"   FINAL: {len(S)} pts general={general_position(S)} "
+              f"largest convex subset={k} (expect {n-1})")

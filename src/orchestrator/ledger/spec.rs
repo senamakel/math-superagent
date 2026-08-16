@@ -112,6 +112,68 @@ pub(in crate::orchestrator) struct StatusSpec {
     pub(in crate::orchestrator) needs_reason: bool,
 }
 
+/// The order a section lists its rows in.
+///
+/// Two values, and it must stay two. The reason is the same one that keeps
+/// [`Check`] a closed set: a section that could declare a sort *expression*
+/// would be configuration deciding what a role works on next, which is a
+/// question about the run rather than about layout.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub(in crate::orchestrator) enum Order {
+    /// First-seen order: the order ids arrived in the source.
+    ///
+    /// The default, so a ledger that says nothing renders exactly as it did
+    /// before this existed.
+    #[default]
+    Recorded,
+    /// Most-recently-touched first: by the position of the entry's *last*
+    /// event, not the first.
+    ///
+    /// A live conjecture run is why. A human directive reached the `director`,
+    /// which filed the new work correctly and then reported that it had no way
+    /// to put it where a reader would see it — the fresh, higher-priority task
+    /// rendered *below* a stale one under a blurb reading "In order. Work the
+    /// first one you can." `docs/ledgers.md` has the quote.
+    ///
+    /// Last-event rather than newest-created, deliberately: because
+    /// `record_entry` merges into an existing id, an old task that is still the
+    /// most important is re-prioritised by recording an event against it, with
+    /// a tool every writing role already holds. Newest-created would fix the
+    /// arriving task and permanently bury that one.
+    Recent,
+}
+
+/// The order names a spec and `read_ledger` both accept.
+///
+/// One list, so the message a bad `sort` returns and the message a bad `order`
+/// returns cannot drift apart.
+pub(in crate::orchestrator) const ORDERS: [&str; 2] = ["recorded", "recent"];
+
+/// Reads an order name, or says which ones exist.
+///
+/// The discovery path the `ledger` argument already uses: a caller that guessed
+/// learns the real names from the failure, in one turn.
+///
+/// # Errors
+///
+/// Returns an error when `name` is not one of [`ORDERS`]. Never falls back
+/// silently — a mistyped order would otherwise render a section in an order
+/// nobody asked for and nothing would say so.
+pub(in crate::orchestrator) fn order(name: &str) -> Result<Order> {
+    match name.trim() {
+        "recorded" => Ok(Order::Recorded),
+        "recent" => Ok(Order::Recent),
+        other => Err(invalid(&format!(
+            "`{other}` is not an order; use {}",
+            ORDERS
+                .iter()
+                .map(|name| format!("`{name}`"))
+                .collect::<Vec<_>>()
+                .join(" or ")
+        ))),
+    }
+}
+
 /// One rendered section of the derived file.
 #[derive(Clone, Debug)]
 pub(in crate::orchestrator) struct Section {
@@ -122,6 +184,8 @@ pub(in crate::orchestrator) struct Section {
     pub(in crate::orchestrator) statuses: Vec<String>,
     /// Rows this section renders, already clamped against [`super::budget`].
     pub(in crate::orchestrator) cap: usize,
+    /// The order those rows appear in. See [`Order`].
+    pub(in crate::orchestrator) order: Order,
 }
 
 /// A fault the engine checks for, from a closed set.
@@ -190,6 +254,17 @@ impl LedgerSpec {
     /// The field carrying the status, if the spec declares one.
     pub(in crate::orchestrator) fn status_field(&self) -> Option<&Field> {
         self.fields.iter().find(|field| field.role == Role::Status)
+    }
+
+    /// The order `read_ledger` uses when the call does not name one.
+    ///
+    /// The first section's, because that is the ledger's own answer to what a
+    /// reader arriving at it wants first — for `tasks`, "Do next". A per-call
+    /// `sort` overrides it; a ledger declaring no sections gets
+    /// [`Order::Recorded`], which is what every ledger did before ordering
+    /// existed.
+    pub(in crate::orchestrator) fn default_order(&self) -> Order {
+        self.sections.first().map_or(Order::default(), |section| section.order)
     }
 
     /// Whether `status` is one this spec declares.
@@ -424,6 +499,14 @@ fn parse_sections(document: &Value, statuses: &[StatusSpec]) -> Result<Vec<Secti
                     .and_then(|cap| usize::try_from(cap).ok())
                     .unwrap_or(super::budget::MAX_LISTED)
                     .min(super::budget::MAX_LISTED),
+                // Parsed and reported like every other spec fault, never
+                // defaulted past: a section silently rendering in an order
+                // nobody declared is the failure this option exists to fix,
+                // arrived at from the other direction.
+                order: match item.get("order") {
+                    Some(value) => order(value.as_str().unwrap_or_default()).unwrap_or_default(),
+                    None => Order::default(),
+                },
             })
         })
         .collect()

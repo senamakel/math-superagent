@@ -1,0 +1,6 @@
+{
+  "finding": "refuted",
+  "model": "tff('declare_$i1',type,'fmb_$i_1':$i).\ntff('declare_$i2',type,'fmb_$i_2':$i).\ntff('finite_domain_$i',axiom,\n      ! [X:$i] : (\n         X = 'fmb_$i_1' | X = 'fmb_$i_2'\n      ) ).\n\ntff('distinct_domain_$i',axiom,\n         'fmb_$i_1' != 'fmb_$i_2'\n).\n\ntff(declare_c0,type,c0:$i).\ntff(c0_definition,axiom,c0 = 'fmb_$i_1').\ntff(declare_c1,type,c1:$i).\ntff(c1_definition,axiom,c1 = 'fmb_$i_2').\ntff(declare_f,type,f: ($i) > $i).\ntff(function_f,axiom,\n           f('fmb_$i_1') = 'fmb_$i_1'\n         & f('fmb_$i_2') = 'fmb_$i_1'\n\n).\n\ntff(declare_fp,type,fp: ($i) > $i).\ntff(function_fp,axiom,\n           fp('fmb_$i_1') = 'fmb_$i_1'\n         & fp('fmb_$i_2') = 'fmb_$i_2'\n\n).\n\n",
+  "problem": "code/refute/ca_deg3_char2.p",
+  "status": "CounterSatisfiable"
+}

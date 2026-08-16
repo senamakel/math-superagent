@@ -1,0 +1,38 @@
+$ python code/out/gsplit_exhaustive.py
+
+=== G-split-consistent: exhaustive line-split test on es_construct ===
+
+n=4: N=4 (want 2^2=4) generalPosition=True has_convex_4_gon=False
+   distinct line-bipartitions enumerated: 13
+   splits tried (size-target candidates): 13
+   VALID splits (both halves exactly 2 pts, both (n-1)-avoiding): 6
+      L=[0, 1]  R=[2, 3]
+      L=[0, 3]  R=[1, 2]
+      L=[1, 2]  R=[0, 3]
+      L=[2, 3]  R=[0, 1]
+      L=[0, 2]  R=[1, 3]
+
+n=5: N=8 (want 2^3=8) generalPosition=True has_convex_5_gon=False
+   distinct line-bipartitions enumerated: 57
+   splits tried (size-target candidates): 57
+   VALID splits (both halves exactly 4 pts, both (n-1)-avoiding): 4
+      L=[0, 5, 6, 7]  R=[1, 2, 3, 4]
+      L=[1, 2, 3, 4]  R=[0, 5, 6, 7]
+      L=[1, 4, 5, 6]  R=[0, 2, 3, 7]
+      L=[0, 2, 3, 7]  R=[1, 4, 5, 6]
+
+n=6: N=16 (want 2^4=16) generalPosition=True has_convex_6_gon=False
+   distinct line-bipartitions enumerated: 241
+   splits tried (size-target candidates): 241
+   VALID splits (both halves exactly 8 pts, both (n-1)-avoiding): 2
+      L=[1, 5, 6, 7, 8, 9, 10, 11]  R=[0, 2, 3, 4, 12, 13, 14, 15]
+      L=[0, 2, 3, 4, 12, 13, 14, 15]  R=[1, 5, 6, 7, 8, 9, 10, 11]
+
+n=7: N=32 (want 2^5=32) generalPosition=True has_convex_7_gon=False
+   distinct line-bipartitions enumerated: 993
+   splits tried (size-target candidates): 993
+   VALID splits (both halves exactly 16 pts, both (n-1)-avoiding): 0
+
+What an empty result rules out: for THIS es_construct ES construction at n=5,6,7, no line splits it into two (n-1)-avoiding halves, so the G-split-consistent claim fails exactly on this template. It does NOT rule out other extremal sets or the general G-split lemma.
+
+EXIT CODE: 0

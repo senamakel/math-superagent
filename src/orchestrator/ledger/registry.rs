@@ -66,7 +66,9 @@ fn tasks() -> Value {
         "slug": "tasks",
         "title": "Tasks",
         "purpose": "What this run is doing next, what it has decided not to do and why, and what \
-                    it has finished. Ordered: the first open row is the next thing to work on.",
+                    it has finished. Ordered: the first open row is the most recently added or \
+                    updated, and is the next thing to work on. Recording against an existing task \
+                    moves it back to the top.",
         "source": "queue",
         "path": "config/tasks.jsonl",
         "derived": "TASKS.md",
@@ -86,17 +88,27 @@ fn tasks() -> Value {
             { "name": "dropped", "closed": true, "needs_reason": true }
         ],
         "sections": [
+            // The two work queues sort most-recently-touched first. A live
+            // director filed a directive's work correctly and could not get it
+            // read: the new row rendered last, under a blurb telling the next
+            // role to work the first one. See `docs/ledgers.md`.
             {
                 "heading": "Do next",
-                "blurb": "In order. Work the first one you can.",
-                "statuses": ["open"]
+                "blurb": "Most recently added or updated first. Work the first one you can. To \
+                          raise an older task, record against it — that moves it back to the top.",
+                "statuses": ["open"],
+                "order": "recent"
             },
             {
                 "heading": "Blocked",
-                "blurb": "Waiting on something named. A blocked row with no blocker is a mood, \
-                          and is reported as a fault below.",
-                "statuses": ["blocked"]
+                "blurb": "Waiting on something named, most recently touched first. A blocked row \
+                          with no blocker is a mood, and is reported as a fault below.",
+                "statuses": ["blocked"],
+                "order": "recent"
             },
+            // The two archives stay in recorded order. They are read for what is
+            // on them rather than worked from the top, and a stable list is
+            // what makes "have I already ruled this out" cheap to answer.
             {
                 "heading": "Do not do",
                 "blurb": "Ruled out, with the reason. Re-proposing one of these is the cheapest \

@@ -3,8 +3,8 @@
 
 use serde_json::{Map, Value, json};
 
-use super::super::spec::{LedgerSpec, parse};
-use super::{append, collect, merge, render};
+use super::super::spec::{LedgerSpec, Order, parse};
+use super::{append, collect, merge, ordered, render};
 
 fn tasks_spec() -> LedgerSpec {
     parse(
@@ -38,6 +38,41 @@ fn tasks_spec() -> LedgerSpec {
         true,
     )
     .expect("the task spec parses")
+}
+
+/// The shape the built-in `tasks` now has: a work queue ordered by what was
+/// touched last, above an archive that keeps arrival order.
+fn recent_tasks_spec() -> LedgerSpec {
+    parse(
+        &json!({
+            "slug": "tasks",
+            "title": "Tasks",
+            "source": "queue",
+            "path": "config/tasks.jsonl",
+            "derived": "TASKS.md",
+            "fields": [
+                { "name": "id", "role": "id" },
+                { "name": "title", "role": "title" },
+                { "name": "reason", "role": "prose" },
+                { "name": "status", "role": "status" }
+            ],
+            "statuses": [
+                { "name": "open" },
+                { "name": "done", "closed": true }
+            ],
+            "sections": [
+                {
+                    "heading": "Do next",
+                    "blurb": "Most recently added first.",
+                    "statuses": ["open"],
+                    "order": "recent"
+                },
+                { "heading": "Recently done", "statuses": ["done"] }
+            ]
+        }),
+        true,
+    )
+    .expect("the recent task spec parses")
 }
 
 fn folds_spec() -> LedgerSpec {
@@ -272,6 +307,144 @@ fn entries_keep_the_order_they_arrived_in() {
     let entries = collect(workspace.path(), &spec);
     let ids: Vec<&str> = entries.entries.iter().map(|entry| entry.id.as_str()).collect();
     assert_eq!(ids, vec!["zebra", "alpha", "mango"]);
+}
+
+/// The two orders on one queue, on a fixture where they cannot agree.
+///
+/// Three tasks arrive, then the *first* is touched again. That separates all
+/// three candidate answers: recorded order is the arrival order, recent order
+/// puts the re-touched one first and the rest newest-first behind it, and
+/// newest-*created*-first — the ordering this deliberately is not — would put
+/// the re-touched one last.
+#[test]
+fn recent_order_is_by_last_event_and_recorded_order_is_by_first() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = tasks_spec();
+    for id in ["alpha", "beta", "gamma"] {
+        append(
+            workspace.path(),
+            &spec,
+            "goals",
+            id,
+            &fields(&[("title", id), ("status", "open")]),
+        )
+        .expect("recorded");
+    }
+    append(
+        workspace.path(),
+        &spec,
+        "director",
+        "alpha",
+        &fields(&[("detail", "raised by a directive")]),
+    )
+    .expect("recorded");
+
+    let entries = collect(workspace.path(), &spec);
+    let ids = |order| {
+        ordered(&entries.entries, order)
+            .into_iter()
+            .map(|entry| entry.id.clone())
+            .collect::<Vec<String>>()
+    };
+    assert_eq!(
+        ids(Order::Recorded),
+        vec!["alpha", "beta", "gamma"],
+        "recorded order is the order the ids were first seen"
+    );
+    assert_eq!(
+        ids(Order::Recent),
+        vec!["alpha", "gamma", "beta"],
+        "recent order is by last event: alpha was touched after gamma arrived"
+    );
+}
+
+/// The motivating case, at the level the render decides it: a task recorded
+/// last is the first row of `Do next`.
+#[test]
+fn a_task_recorded_last_renders_first_under_a_recent_section() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = recent_tasks_spec();
+    for id in ["stale-exhaustive-line-test", "the-directives-task"] {
+        append(
+            workspace.path(),
+            &spec,
+            "director",
+            id,
+            &fields(&[("title", id), ("status", "open")]),
+        )
+        .expect("recorded");
+    }
+    let rendered = render(&spec, &collect(workspace.path(), &spec));
+    let new = rendered
+        .find("the-directives-task")
+        .expect("the new task renders");
+    let old = rendered
+        .find("stale-exhaustive-line-test")
+        .expect("the old task renders");
+    assert!(
+        new < old,
+        "the newest task leads the section a role is told to work from the top of:\n{rendered}"
+    );
+}
+
+/// A section that does not declare an order keeps the one every ledger had
+/// before ordering existed.
+#[test]
+fn a_section_without_an_order_is_unaffected() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = recent_tasks_spec();
+    for id in ["first-done", "second-done"] {
+        append(
+            workspace.path(),
+            &spec,
+            "goals",
+            id,
+            &fields(&[("title", id), ("status", "done"), ("reason", "it finished")]),
+        )
+        .expect("recorded");
+    }
+    assert_eq!(
+        spec.sections[1].order,
+        Order::Recorded,
+        "`Recently done` is an archive, not a queue"
+    );
+    let rendered = render(&spec, &collect(workspace.path(), &spec));
+    let first = rendered.find("first-done").expect("it renders");
+    let second = rendered.find("second-done").expect("it renders");
+    assert!(
+        first < second,
+        "a recorded section still lists in arrival order:\n{rendered}"
+    );
+}
+
+/// An items ledger has no queue, so `recent` leaves it in recorded order rather
+/// than inventing one out of the filesystem.
+#[test]
+fn an_items_ledger_keeps_recorded_order_under_either_order() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = folds_spec();
+    for id in ["aaa", "bbb", "ccc"] {
+        merge(
+            workspace.path(),
+            &spec,
+            id,
+            &fields(&[("subject", id), ("status", "open")]),
+        )
+        .expect("the block is written");
+    }
+    let entries = collect(workspace.path(), &spec);
+    let ids = |order| {
+        ordered(&entries.entries, order)
+            .into_iter()
+            .map(|entry| entry.id.clone())
+            .collect::<Vec<String>>()
+    };
+    assert_eq!(ids(Order::Recorded), vec!["aaa", "bbb", "ccc"]);
+    assert_eq!(
+        ids(Order::Recent),
+        vec!["aaa", "bbb", "ccc"],
+        "no queue means no touch order, and mtime is not a stand-in for one"
+    );
 }
 
 /// Merging into an items file changes the named fields and nothing else.

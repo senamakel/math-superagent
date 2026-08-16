@@ -1,0 +1,15 @@
+# Divided-power Gauss–Lucas chain (refuted)
+
+```approach
+idea: Replace "f shares a root with every derivative" by the divided-power recurrence H_{i+1}f = (H_i f)′/(i+1), which makes the hypothesis a nested chain f ⊃ H_1f ⊃ H_2f ⊃ … ⊃ H_{n-1}f: each level is, up to a scalar, the ordinary derivative of the previous, and each level must share a root with f. Gauss–Lucas then puts every level's root set inside the convex hull of the previous level's root set, so the n−1 "hit" roots of f form a covering of the levels with a nested-hull constraint.
+mechanism: Level i is "hit" by a root β of f exactly when H_i f(β) = 0. A root of multiplicity m hits levels 1,…,m−1 for free, contributing Σ(m−1) = n − r hits where r = #distinct roots; the remaining r−1 levels must each be hit by a higher Taylor coefficient vanishing. The new ingredient over the single-shot convex-hull fact is the *chain*: H_{i+1}f ∝ (H_i f)′, so a root β of f hitting level i+1 lies in conv(roots of H_i f) ⊆ … ⊆ conv(roots of f), and the same β also lies on the root set of f itself. The conjecture is that this double membership (β a vertex-pattern of the nested hulls *and* a root of f) plus the free-multiplicity counting forces r = 1 unless some level is hit by a non-vertex root — and a non-vertex root, being interior to conv(roots of f), cannot sustain the chain to the top level.
+status: refuted
+killed-by: no new object survives. In char 0 the Hasse derivative is H_i(f) = f^{(i)}/i!, so the "divided-power chain" is literally the rescaled ordinary-derivative tower {f, f′, f″/2, …} — the problem's own object, not a change of representation. The one genuinely new claim, "an interior root cannot hit the top level", is not a convexity fact at all: the top level H_{n-1}f = nx + a_{n-1} has the single root c = -a_{n-1}/n, so β hits level n-1 iff n(β-c) = 0 iff β = c — this is the pinned-centroid fact (centroid-recursion), an algebra identity, not Gauss–Lucas. Everything else is the already-adopted Polstra convex-hull fact plus the elementary multiplicity count Σ(m_j-1) = n-r. The load-bearing covering conjecture is therefore subsumed at its top level by the pinned centroid and remains unproved below it, with no object of its own.
+first-step: superseded — see research/approaches/centroid-recursion.md (the top-level obstruction it needs is the pinned centroid) and the adopted polstra-convex-hull claim.
+precedent: _unchecked_
+charp-break: the chain identity divides by i+1, failing at p ≤ n; Gauss–Lucas is a ℂ statement. Both are char-0-only, but this does not rescue the candidate: the char-0 content it still has is the pinned centroid (adopted) and the convex hull (adopted), so its char-p break buys nothing that is not already owned elsewhere.
+```
+
+## What survives, if anything
+
+The free-multiplicity count Σ(m_j-1) = n - r is correct and worth keeping as a bookkeeping lemma in the convex-hull thread; it is not itself an approach. The top-level "obstruction" is the pinned centroid, adopted as centroid-recursion.

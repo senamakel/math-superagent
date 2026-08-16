@@ -1,0 +1,44 @@
+n=1: UC families=2, |distinct profiles|=1
+   WORST=1/2  == 1/(2^0+1)=1/2 ? True
+   achieving family: [0, 1]
+   achieving counts (sorted desc): [1]
+   min rarest count by |F| (m -> rare): [(1, 1), (2, 1)]
+   all satisfy rare*den>=m ? True
+   claim A (min_count*den>=m): failures=0, equality-iff-nearcube failures=0
+   claim B: near-n-cube profile (1,) == [2^-1+1 x0, 1] ? True
+   claim C: UC families with degree-1 element but NO abundant element = 0
+
+n=2: UC families=12, |distinct profiles|=4
+   WORST=1/3  == 1/(2^1+1)=1/3 ? True
+   achieving family: [0, 1, 3]
+   achieving counts (sorted desc): [2, 1]
+   min rarest count by |F| (m -> rare): [(1, 1), (2, 1), (3, 1), (4, 2)]
+   all satisfy rare*den>=m ? True
+   claim A (min_count*den>=m): failures=0, equality-iff-nearcube failures=1
+   claim B: near-n-cube profile (2, 1) == [2^0+1 x1, 1] ? True
+   claim C: UC families with degree-1 element but NO abundant element = 0
+
+n=3: UC families=120, |distinct profiles|=18
+   WORST=1/5  == 1/(2^2+1)=1/5 ? True
+   achieving family: [0, 1, 2, 3, 7]
+   achieving counts (sorted desc): [3, 3, 1]
+   min rarest count by |F| (m -> rare): [(1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 2), (7, 3), (8, 4)]
+   all satisfy rare*den>=m ? True
+   claim A (min_count*den>=m): failures=0, equality-iff-nearcube failures=2
+   claim B: near-n-cube profile (3, 3, 1) == [2^1+1 x2, 1] ? True
+   claim C: UC families with degree-1 element but NO abundant element = 0
+
+n=4: UC families=4958, |distinct profiles|=138
+   WORST=1/9  == 1/(2^3+1)=1/9 ? True
+   achieving family: [0, 1, 2, 3, 4, 5, 6, 7, 15]
+   achieving counts (sorted desc): [5, 5, 5, 1]
+   min rarest count by |F| (m -> rare): [(1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1), (8, 1), (9, 1), (10, 2), (11, 3), (12, 4), (13, 5), (14, 6), (15, 7), (16, 8)]
+   all satisfy rare*den>=m ? True
+   claim A (min_count*den>=m): failures=0, equality-iff-nearcube failures=3
+   claim B: near-n-cube profile (5, 5, 5, 1) == [2^2+1 x3, 1] ? True
+   claim C: UC families with degree-1 element but NO abundant element = 0
+
+n=5 infeasible by this route: 2^32 = 4,294,967,296 subfamilies to test,
+  and there are ~2.7M UC families; direct enumeration of all is too heavy.
+  (The stated '~2.7M families' is A102896(5); enumerating all subfamilies
+   to find them is 2^32 step -- declared infeasible; pass capped at n=4.)

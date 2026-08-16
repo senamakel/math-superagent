@@ -1,0 +1,28 @@
+SCHAUB-SPIVAKOVSKY BAD-PRIME-MINORS CRITERION, DEGREE n=5 (arXiv:2411.13967 Thm 3.1), RANK-OVER-F_p ROUTE
+program: code/badprimes_criterion/verify_badprimes_n5.py
+oracle: lib.badprimes.rank_mod_p (exact modular Gaussian elimination over F_p; p | J_T <=> rank_{F_p}(M_T) < C=120)
+base ring: integer matrix M_T (D=195 x C=120), rank computed mod p; term order: not used (exact matrix rank, no Groebner basis)
+ground truth: Castryck-Laterveer-Ounaies 2012 Thm 4, bad primes of degree 5 = {2,3,7,11,131,193,599,3541,8009}
+scope: all 625 tuples T in {1..5}^4 x every prime < 1000 plus the listed primes 3541, 8009; rank<->J_T equivalence validated at n=4 (code/out/badprimes_n4.captured.txt); SNF route at n=5 measured infeasible (>90 s per 195x120 matrix, code/out/commands.log)
+parameters: n=5, d=7, C=120, D=195
+search space: 625 tuples T in {1..5}^4 x 170 primes (168 primes < 1000 plus listed primes >= 1000) = 106250 rank computations
+worker count: 28
+wall time for 106250 ranks over 28 workers: 384.1 s
+
+certified BAD primes (rank_{F_p}(M_T) < 120 for some T):
+  p=    2  witnesses=500  min rank=114  first witness T=(1, 2, 1, 4)
+  p=    3  witnesses=480  min rank=114  first witness T=(1, 2, 1, 4)
+  p=    7  witnesses=180  min rank=118  first witness T=(1, 3, 2, 2)
+  p=   11  witnesses= 80  min rank=114  first witness T=(3, 1, 1, 3)
+  p=  131  witnesses= 60  min rank=118  first witness T=(3, 2, 2, 1)
+  p=  193  witnesses= 60  min rank=118  first witness T=(3, 3, 2, 4)
+  p=  599  witnesses=180  min rank=118  first witness T=(1, 4, 2, 5)
+  p= 3541  witnesses=180  min rank=118  first witness T=(1, 4, 2, 5)
+  p= 8009  witnesses=120  min rank=119  first witness T=(1, 4, 2, 5)
+
+primes decided GOOD (full rank 120 on all 625 tuples): 161 primes q < 1000 outside the list
+  smallest such: [5, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53]
+
+spot check: rank_{3547}(M_(1,2,3,4)) = 120 (expected 120, sample only)
+RESULT: rank-over-F_p criterion at n=5 reproduces exactly the published bad-prime list {2, 3, 7, 11, 131, 193, 599, 3541, 8009} (Castryck 2012 Thm 4), and certifies no bad prime below 1000 outside it.
+ALL CHECKS PASSED

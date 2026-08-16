@@ -1,0 +1,12 @@
+phi        = 1/2 + sqrt(5)/2
+alpha2     = -1/2 + sqrt(5)/2  (should be (sqrt5-1)/2 = 1/phi)
+alpha2/(1+alpha2) = 3/2 - sqrt(5)/2  (should be (3-sqrt5)/2 = 3/2 - sqrt(5)/2 )
+tie-back OK: alpha_2/(1+alpha_2) == (3-sqrt5)/2
+equality point 1/(1+alpha2) = -1/2 + sqrt(5)/2  should be 1/phi = -1/2 + sqrt(5)/2
+equality point OK
+x=0.010000  h(x^2)-phi*x*h(x) =   0.00011491
+x= 0.10000  h(x^2)-phi*x*h(x) =    0.0034020
+x= 0.50000  h(x^2)-phi*x*h(x) =    0.0015673
+x= 0.61803  h(x^2)-phi*x*h(x) =       0E-124
+x= 0.99000  h(x^2)-phi*x*h(x) =    0.0079434
+ALL CHECKS DONE

@@ -1,0 +1,24 @@
+Claim B: near-n-cube profiles (n=1..8), exact:
+
+ n | |F|=2^{n-1}+1 | profile (sorted desc)          | shape | max/|F|
+---+--------------+---------------------------------+-------+-------
+ 1 |            2 | [1]                            | OK    | 1/2 >= 1/2 ? True
+ 2 |            3 | [2, 1]                         | OK    | 2/3 >= 1/2 ? True
+ 3 |            5 | [3, 3, 1]                      | OK    | 3/5 >= 1/2 ? True
+ 4 |            9 | [5, 5, 5, 1]                   | OK    | 5/9 >= 1/2 ? True
+ 5 |           17 | [9, 9, 9, 9, 1]                | OK    | 9/17 >= 1/2 ? True
+ 6 |           33 | [17, 17, 17, 17, 17, 1]        | OK    | 17/33 >= 1/2 ? True
+ 7 |           65 | [33, 33, 33, 33, 33, 33, 1]    | OK    | 33/65 >= 1/2 ? True
+ 8 |          129 | [65, 65, 65, 65, 65, 65, 65, 1] | OK    | 65/129 >= 1/2 ? True
+
+Claim B: ALL PASS
+Claim D n=1: UC families with min present count == 1: 2, of which non-near-cube-shaped: 0 -> HOLDS
+   n=2 NON-near-cube min-1 profile: (1, 0), fam=[1]
+   n=2 NON-near-cube min-1 profile: (1, 0), fam=[0, 1]
+Claim D n=2: UC families with min present count == 1: 10, of which non-near-cube-shaped: 6 -> FAILS
+   n=3 NON-near-cube min-1 profile: (1, 0, 0), fam=[1]
+   n=3 NON-near-cube min-1 profile: (1, 0, 0), fam=[0, 1]
+Claim D n=3: UC families with min present count == 1: 56, of which non-near-cube-shaped: 50 -> FAILS
+   n=4 NON-near-cube min-1 profile: (1, 0, 0, 0), fam=[1]
+   n=4 NON-near-cube min-1 profile: (1, 0, 0, 0), fam=[0, 1]
+Claim D n=4: UC families with min present count == 1: 590, of which non-near-cube-shaped: 582 -> FAILS

@@ -1,0 +1,15 @@
+# Bézoutian / Hankel rank family (refuted)
+
+```approach
+idea: Move the hypothesis from resultants to matrix ranks: by Hermite's theorem, rank Béz(f, g) = n − deg gcd(f, g), so gcd(f, f^(i)) ≠ 1 ⇔ the Bézoutian matrix Béz(f, f^(i)) is singular. The n−1 conditions become a *family* of n×n symmetric matrices Béz(f, f^(1)), …, Béz(f, f^(n-1)) that are all rank-deficient and are tied to one another by a differential recurrence — the new object is that recurrence, not any single matrix.
+mechanism: In the cyclic algebra A = K[x]/(f) (squarefree case A ≅ K^n), f^(i) maps to the multiplication matrix f^(i)(M_x) on the companion matrix M_x, and Béz(f, f^(i)) = f^(i)(M_x) · H for one fixed Hankel matrix H (Barnett's formula). The hypothesis is: the commuting family {f^(i)(M_x)} is entirely singular. The char-0 ingredient that the pure rank statement lacks: over char 0 every f^(i) ≢ 0 with deg = n−i, so each singularity must come from a genuine shared root, whereas over char p all f^(i) with i ≥ p vanish identically and the conditions become vacuous — that collapse is exactly what a proof must use. The bet is that the Hankel/Barnett structure gives a rank-pigeonhole: n−1 strictly-nested rank drops on a single cyclic matrix force M_x to have one eigenvalue.
+status: refuted
+killed-by: reformulation, not a reduction. det Béz(f,g) = ±Res(f,g), so "Béz(f, H_i f) singular" is the same resultant condition R_i = 0 the run already adopts, and its determinant-level computation is the known Gröbner wall (d = 8 over ℚ, minor-criterion wall at n = 6). Barnett's formula plus the companion-matrix spectrum give the strongest form of the idea: the eigenvalues of H_i f(M_x) are H_i f(β_j) = e_{n-i}(β_j - β_*), which is exactly the root-difference identity the run already owns (root-difference-coloring, adopted). So the entire hypothesis, in the cleanest matrix language, is the adopted colouring structure restated in A = K[x]/(f); no new lever appears. The candidate's load-bearing bet — a rank-pigeonhole forcing M_x to one eigenvalue — is unproved and is precisely CA itself stated for the companion matrix.
+first-step: superseded. The one surviving refinement — rank Béz(f, H_i f) = n − deg gcd(f, H_i f) encodes the gcd degree, sharper than "gcd ≠ 1" — should be attached to root-difference-coloring as a bookkeeping refinement of the colour multiplicities, not pursued as a line of its own.
+precedent: _unchecked_
+charp-break: Hermite's rank identity and Barnett's formula are char-free, which the candidate itself names as the danger; its char-0-only step (f^(i) ≢ 0 for i < n) is real, but since the clean matrix form is the adopted root-difference identity, this char-p analysis belongs to that adopted line, not to a separate approach.
+```
+
+## What survives, if anything
+
+The eigenvalue bridge — H_i f(M_x) has spectrum {e_{n-i}(β_j-β_*)} — is a correct and useful *dictionary* between the cyclic algebra A = K[x]/(f) and the root-difference identity. It is recorded here as a pointer for root-difference-coloring, not as an independent approach.

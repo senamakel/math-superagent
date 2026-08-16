@@ -1,0 +1,207 @@
+Operator verification run — captures and claim-filing
+======================================================
+WHAT WAS RUN: five programs under code/out/ (yugamma_symbolic.py,
+  yugamma_highprec.py, yu_crosscheck.py, three_set_sanity.py, uc_oracle_check.py)
+  plus the TPTP encoding review of code/refute/uc_with_three_set.p and its
+  counter-model decode via check_three_set_model.py.
+ORACLE FUNCTION: all union-closure / abundance checks go through the single
+  canonical oracle code/lib/uc.py (decide_union_closed, abundance,
+  abundant_elements). No second implementation.
+RANGE: identities at t=1/2 (phi/2); Yu certified point 1.00000889; exhaustive
+  oracle sweep over all union-closed families on ground set [n], n = 0..4
+  (2^n elements; 2^(2^n) subfamilies, 65536 at n=4); oracle guards n=0..4;
+  TPTP model on the 4-element ground set {e1,e2,e3,e4} with 6 member slots.
+
+----------------------------------------------------------------------
+1) python code/out/yugamma_symbolic.py      (exit 0)
+----------------------------------------------------------------------
+Expected: "exact equal? True" and value reported as (1+sqrt5)/4.
+ACTUAL OUTPUT:
+  collapse Gamma(1/2)  = nan
+  phi/2                = 1/4 + sqrt(5)/4
+  exact equal?         : False
+  numerical val        : nan
+  numerical target     : 0.8090169943749474241022934171828190588602
+
+VERDICT: DOES NOT CONFIRM the expected output. The script prints
+  'exact equal? : False' and reports nan, not True.
+CAUSE (in code, not a runtime fault): in yugamma_symbolic.py the entropy
+  helper h(x) = -x*log(x)/log2 - (1-x)*log(1-x)/log2 has NO clamp. gamma_at
+  votes h(1), i.e. 0*log(0) = nan in sympy, which poisons the ratio
+  e_indep/eh and the equality test simplify(val - target) == 0 -> False.
+  (The expression still simplifies phi/2 to 1/4 + sqrt(5)/4.)
+CONSEQUENCE: "exact equal? True" is NOT confirmed; the symbolic proof file
+  as written fails to prove the identity and reports False. See (2).
+
+----------------------------------------------------------------------
+2) python code/out/yugamma_highprec.py      (exit 0)
+----------------------------------------------------------------------
+Expected: 60-digit check, diff exactly 0.
+ACTUAL OUTPUT:
+  collapse Gamma at t=0.5 (60 digits):
+    v      = 0.80901699437494742410229341718281905886015458990288
+    phi/2  = 0.80901699437494742410229341718281905886015458990288
+    diff   = 0.0
+    relative = 0.0
+
+VERDICT: CONFIRMED. diff is exactly 0 at 60 digits. Note this program's h()
+  clamps x in [0,1] to 0, so it is immune to the nan that breaks the symbolic
+  script; this is what establishes that collapse-Gamma(1/2) = phi/2
+  = (1+sqrt5)/4 = 0.80901699... holds numerically to 60 digits, and that (1)'s
+  False is a symbolic-nan artifact, not a mathematical disagreement.
+
+----------------------------------------------------------------------
+3) python code/out/yu_crosscheck.py         (exit 0)
+----------------------------------------------------------------------
+Last line (expected: computed value and abs diff from 1.00000889):
+  Cross-check value:               1.00000889
+  Abs diff from 1.00000889:        2.937e-09
+(full tail: g/E h(p) = 1.00000889294; Reference (yu_optimization.py)
+  >= 1.00000889; Cross-check value 1.00000889; Abs diff 2.937e-09.)
+
+VERDICT: CONFIRMED. The independent cross-check (math.fsum, explicit 3-sort
+  phi, explicit Q-atoms) gives ratio 1.00000889294, abs diff 2.937e-09 from
+  the certified Yu point 1.00000889. (Abs diff reported at 3 sig figs in the
+  capture: 2.937e-09; exact diff = 2.937015e-09 from the printed ratio.)
+
+----------------------------------------------------------------------
+4) python code/out/three_set_sanity.py      (exit 0)
+----------------------------------------------------------------------
+ACTUAL OUTPUT:
+  n=1: UC families containing a 3-set = 0, lacking an abundant element = 0
+  n=2: UC families containing a 3-set = 0, lacking an abundant element = 0
+  n=3: UC families containing a 3-set = 90, lacking an abundant element = 0
+  n=4: UC families containing a 3-set = 4838, lacking an abundant element = 0
+
+VERDICT: CONFIRMED. n=3: 90 UC families containing a 3-set, 0 lacking an
+  abundant element. n=4: 4838 / 0. This is the exact-oracle exhaustive sweep
+  (declared exponential, oracle-bound n<=4) refuting the model-finder's
+  'refuted' verdict. Note: no union-closed family with a 3-set on n<=4 lacks
+  an abundant element.
+
+----------------------------------------------------------------------
+5) python code/out/uc_oracle_check.py       (exit 0)
+----------------------------------------------------------------------
+ACTUAL OUTPUT (ALL PASS):
+  [PASS] guard 2^[0]  (|F|=1, uc=True, all half=True, abundant=[], strict_abundant=False)
+  [PASS] guard 2^[1]  (|F|=2, uc=True, all half=True, abundant=[0], strict_abundant=False)
+  [PASS] guard 2^[2]  (|F|=4, uc=True, all half=True, abundant=[0, 1], strict_abundant=False)
+  [PASS] guard 2^[3]  (|F|=8, uc=True, all half=True, abundant=[0, 1, 2], strict_abundant=False)
+  [PASS] guard 2^[4]  (|F|=16, uc=True, all half=True, abundant=[0, 1, 2, 3], strict_abundant=False)
+  [PASS] family {empty,{1}} reports {1} abundant  (uc=True, abundant=[0])
+  [PASS] negative control {{1},{2},{3}} rejected (not union-closed, no abundant elt)  (uc=False, abundant=[])
+  [PASS] exhaustive n=1  (3 union-closed families (excl. empty collection, incl. {empty}), counterexample=none)
+  [PASS] exhaustive n=2  (13 union-closed families (excl. empty collection, incl. {empty}), counterexample=none)
+  [PASS] exhaustive n=3  (121 union-closed families (excl. empty collection, incl. {empty}), counterexample=none)
+  [PASS] exhaustive n=4  (4959 union-closed families (excl. empty collection, incl. {empty}), counterexample=none)
+    union-closed family counts: {1: 3, 2: 13, 3: 121, 4: 4959}
+  [PASS] closure {{1},{1,2}} -> {{1},{1,2}}  (got sorted=[1, 3])
+  [PASS] closure {{1},{2}} -> {{1},{2},{1,2}}  (got sorted=[1, 2, 3])
+  ALL ORACLE CHECKS PASSED
+
+VERDICT: CONFIRMED, ALL PASS, exit 0. Oracle (lib/uc) is established correct:
+  1/2 attained exactly on 2^[n], singleton abundance, negative antichain
+  control rejected, exhaustive n<=4 (no UC counterexample except that {empty}
+  is excluded), closure() correct.
+
+----------------------------------------------------------------------
+Directive item 1 — TPTP encoding code/refute/uc_with_three_set.p
+----------------------------------------------------------------------
+Target: "Every union-closed family F != {empty} that contains a 3-element set
+  {x,y,z} has an element in at least |F|/2 members." Bounded fragment searched:
+  4-element ground set {e1,e2,e3,e4}, exactly 6 member slots s1..s6, contains
+  the 3-set {e1,e2,e3}, union-closed, NO element in >= 3 of the 6 (|F|=6).
+  Model finder returned finding=refuted, CounterSatisfiable.
+
+(a) Does it assert union-closure for ALL pairs of member slots, or only a
+    SUBSET?
+    ALL pairs. The axiom `union_closed` quantifies the two slots I,J over the
+    full set {s1..s6} (no restriction) and requires a K in {s1..s6} equal to
+    their union:
+      fof(union_closed, axiom,
+        ( ! [I,J] :
+            ( ( ( I = s1 | ... | I = s6 )
+              & ( J = s1 | ... | J = s6 ) )
+            => ? [K] : ( ( K = s1 | ... | K = s6 )
+                        & ! [E] : ( member(K,E)
+                                    <=> ( member(I,E) | member(J,E) ) ) ) ) ) ).
+    So union-closure (a) is NOT the bug: all pairs of slots are covered.
+
+(b) Does any axiom force the abundant element to range over the whole
+    4-element ground set, or only over {x,y,z}?
+    Both range over the FULL 4-element ground set. The four separate
+    no_abundant_e1..e4 axioms each forbid an element in >= 3 of the 6 slots,
+    e.g.
+      fof(no_abundant_e4, axiom,
+        ( ! [I,J,K] : (... => ( ~ member(I,e4) | ~ member(J,e4) | ~ member(K,e4) ) ) ) ).
+    and the goal exists over E = e1|e2|e3|e4. So the abundant element ranges
+    over all four, including e4 (which may lie outside {e1,e2,e3}).
+    Therefore (b) is NOT the bug either.
+
+(c) How is the cardinality condition 'at least |F|/2 = 3 members' encoded, and
+    can the finite domain collapse slots onto one value to satisfy it
+    vacuously?
+    The intended |F| = 6 is encoded purely by declaring six member SLOTS s1..s6
+    plus the axiom:
+      fof(slots_distinct_sets, axiom,
+        ( ! [I,J] :
+            ( ( ( I = s1 | ... | I = s6 )
+              & ( J = s1 | ... | J = s6 ) )
+            => ( I = J
+              | ? [E] : ( ( member(I,E) & ~ member(J,E) )
+                        | ( ~ member(I,E) & member(J,E) ) ) ) ) ) ).
+    'abundant' is then "in >= 3 of the 6 slots" (three pairwise-distinct slots
+    I,J,K). CAN THE DOMAIN COLLAPSE? YES — and it does. This axiom asserts only
+    that two DISTINCT OBJECTS with distinct names differ on some element; it
+    never forces the six named slots s1..s6 to be pairwise-distinct OBJECTS.
+    The finite-domain finder maps four slots to one object (s1=s2=s3=s4=fmb_1),
+    so the distinct members are 3, not 6. Then "I,J,K pairwise-distinct slots"
+    can never name three objects that contain any single element, and every
+    no_abundant_e* clause is satisfied vacuously. The multiplicity count over 6
+    slots is NOT the genuine |F|.
+
+WHICH FAILURE MODE IS PRESENT: (c). The encoding bug is the cardinality /
+  slot-distinctness encoding: a cardinality bound carried as a slot count plus
+  a weak distinctness axiom has no protection against the finite-domain finder
+  collapsing the six slots onto fewer objects. (a) and (b) are correctly
+  encoded and are not the failure.
+
+THE COUNTER-MODEL, DECODED (from the artifact and check_three_set_model.py):
+  Domain objects {fmb_1, fmb_2, fmb_3, fmb_4}:
+    fmb_1 = {e1,e3}, fmb_2 = {e4}, fmb_3 = {}, fmb_4 = {e1,e2,e3}
+  Slot assignments: s1=s2=s3=s4=fmb_1, s5=fmb_4, s6=fmb_3.
+  Distinct member sets: { {}, {e1,e3}, {e1,e2,e3} } => |F| = 3 (not 6).
+
+RUN THROUGH THE CANONICAL ORACLE (lib.uc) via check_three_set_model.py, exit 0:
+  Family (distinct member masks): {0, 5, 7}
+  distinct member count |F| = 3
+  union-closed: True
+  abundance per element e1..e4: [2, 1, 2, 0]
+  abundant elements (2*count >= |F|): [0, 2]
+  => e1 (mask 0) and e3 (index 2) are each in 2 of the 3 members (2/3 >= 1/2).
+  => The decoded family IS union-closed AND HAS an abundant element.
+
+VERDICT: The 'refuted', CounterSatisfiable finding is a FIRST-ORDER ENCODING
+  ARTIFACT (failure mode (c)), not a mathematical refutation. The decoded
+  family is union-closed, contains the 3-set {e1,e2,e3}, and HAS an abundant
+  element, so it is NOT a counterexample to the rung. R-uc-with-three-set
+  remains OPEN. This is consistent with the exact exhaustive sweep (4): NO
+  union-closed family on n<=4 with a 3-set lacks an abundant element. The
+  spurious verdict is already documented as deleted/invalid in
+  code/out/refute/REJECTED_uc_with_three_set.md and
+  code/out/refute/three_set_model_verdict.md.
+
+----------------------------------------------------------------------
+SUMMARY VERDICTS
+----------------------------------------------------------------------
+1. yugamma_symbolic.py: NOT confirmed — prints 'nan' / 'exact equal? : False'
+   (symbolic 0*log(0) bug; identity holds numerically, see 2).
+2. yugamma_highprec.py: CONFIRMED — diff = 0 exactly at 60 digits.
+3. yu_crosscheck.py: CONFIRMED — value 1.00000889, abs diff 2.937e-09.
+4. three_set_sanity.py: CONFIRMED — n=3: 90/0; n=4: 4838/0.
+5. uc_oracle_check.py: CONFIRMED — ALL PASS.
+TPTP encoding: (a) union-closure over ALL pairs — correct, not the bug;
+  (b) abundant element ranges over full 4-ground set — correct, not the bug;
+  (c) cardinality |F|=6 by slot-count + weak distinctness — PRESENT BUG;
+  domain collapse satisfies 'no abundant' vacuously. Decoded family is
+  union-closed with an abundant element — not a counterexample.

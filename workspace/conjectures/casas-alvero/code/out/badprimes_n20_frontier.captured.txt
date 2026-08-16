@@ -1,0 +1,71 @@
+CERTIFIED-BAD FRONTIER FOR DEGREE n=20 (Schaub-Spivakovsky sufficient binomial criterion, arXiv:2307.05997 Cor 8)
+program: code/badprimes_criterion/certified_bad_frontier_n20.py
+oracle: sympy binomial + factorint (exact integers, all values <= C(20,10)-1 = 184755); criterion: p | C(20,i)-1 for some i in 1..19
+range: i = 1..19; certified primes collected exactly; frontier = 20 smallest primes not certified, plus those < 100
+certified-bad primes for degree 20 (p | C(20,i)-1, 1<=i<=19): 18 primes
+  2, 3, 5, 7, 11, 13, 17, 19, 37, 67, 89, 103, 109, 113, 173, 419, 1223, 15269
+  p=2 certified by i=[4, 16]
+  p=3 certified by i=[2, 10, 18]
+  p=5 certified by i=[10]
+  p=7 certified by i=[2, 4, 6, 14, 16, 18]
+  p=11 certified by i=[9, 11]
+  p=13 certified by i=[7, 13]
+  p=17 certified by i=[3, 17]
+  p=19 certified by i=[1, 19]
+  p=37 certified by i=[5, 15]
+  p=67 certified by i=[3, 7, 13, 17]
+  p=89 certified by i=[7, 13]
+  p=103 certified by i=[8, 12]
+  p=109 certified by i=[10]
+  p=113 certified by i=[6, 10, 14]
+  p=173 certified by i=[4, 16]
+  p=419 certified by i=[5, 15]
+  p=1223 certified by i=[8, 12]
+  p=15269 certified by i=[9, 11]
+smallest certified primes: [2, 3, 5, 7, 11, 13, 17, 19, 37, 67, 89, 103, 109, 113, 173, 419, 1223, 15269]
+largest certified prime: 15269
+candidate good prime p=23: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=29: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=31: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=41: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=43: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=47: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=53: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=59: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=61: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=71: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=73: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=79: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=83: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=97: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=101: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=107: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=127: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=131: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=137: divides C(20,i)-1 for i=[] (must be [])
+candidate good prime p=139: divides C(20,i)-1 for i=[] (must be [])
+20 smallest primes NOT certified (candidate good primes):
+   1. p=23
+   2. p=29
+   3. p=31
+   4. p=41
+   5. p=43
+   6. p=47
+   7. p=53
+   8. p=59
+   9. p=61
+  10. p=71
+  11. p=73
+  12. p=79
+  13. p=83
+  14. p=97
+  15. p=101
+  16. p=107
+  17. p=127
+  18. p=131
+  19. p=137
+  20. p=139
+candidate good primes < 100: [23, 29, 31, 41, 43, 47, 53, 59, 61, 71, 73, 79, 83, 97]
+RESULT: degree-20 certified-bad list has 18 primes; frontier (20 smallest not certified) = [23, 29, 31, 41, 43, 47, 53, 59, 61, 71, 73, 79, 83, 97, 101, 107, 127, 131, 137, 139]; candidates < 100 = [23, 29, 31, 41, 43, 47, 53, 59, 61, 71, 73, 79, 83, 97]
+ALL CHECKS PASSED
+ALL CHECKS PASSED

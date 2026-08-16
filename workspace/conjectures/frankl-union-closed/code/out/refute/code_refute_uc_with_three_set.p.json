@@ -1,0 +1,11 @@
+{
+  "finding": "invalid-encoding",
+  "original_verdict": "refuted",
+  "original_status": "CounterSatisfiable",
+  "problem": "code/refute/uc_with_three_set.p",
+  "corrected_assessment": "The 'refuted' verdict is an ENCODING BUG, not a refutation. The counter-model collapses four of the six member slots onto one object (s1=s2=s3=s4=fmb_1), so the genuine |F| is 3, not 6. The 'no element in >=3 of 6 slots' condition is satisfied only by counting a single set four times.",
+  "oracle_check": "Decoded family F = { {}, {e1,e3}, {e1,e2,e3} } (3 distinct sets) is union-closed and has abundant elements e1 and e3 (each in 2 of 3 members). NOT a counterexample to R-uc-with-three-set.",
+  "encoding_bug": "slots_distinct_sets axiom asserts only that different OBJECTS are different sets; it never forces the six named slots s1..s6 to be pairwise-distinct objects. The cardinality of |F| (member-slot count) is therefore not protected.",
+  "conclusion": "Rung R-uc-with-three-set remains OPEN. This artifact proves nothing and must not be cited as evidence.",
+  "corrected_verdict": "R-uc-with-three-set: no counterexample found here; prior 'refuted' was an artifact. See three_set_model_verdict.md"
+}

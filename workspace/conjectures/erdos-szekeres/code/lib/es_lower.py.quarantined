@@ -1,0 +1,104 @@
+###############################################################################
+# QUARANTINED-DEFECTIVE — DO NOT IMPORT. This module is unverified/superseded.
+#   * Exact-rational recursive g(a,b) + parabola placement; never oracle-
+#     verified as a whole.
+# Do NOT build on it, do NOT fix it in place. The single VERIFIED construction
+# is code/lib/es_construct.py (es_set / es_set_blocks). Superseded and kept on
+# disk only so the record of the failure is not lost.
+###############################################################################
+"""Correct Erdős–Szekeres lower-bound construction, exact rationals, oracle-checked.
+
+Goal (GOAL.md criterion 3): a set of 2**(n-2) planar points in general position
+with NO n points in convex position, verified exactly by the oracle in lib.es_geom.
+This realises the classical Erdős–Szekeres 1961 construction (see
+research/summaries/erdos-szekeres-1961-construction-concrete.md): X_n = union of
+n-1 blocks S_k (k=0..n-2), |S_k| = C(n-2,k), each block a flat cup/cap-extremal
+set placed at a distinct point of a convex arc, scaled tiny so that any subset in
+convex position takes at most one point out of most blocks and hence <= n-1 points.
+
+Definitions (Erdős–Szekeres 1935 cups-and-caps):
+  A *cup* is a subsequence (in x-order) whose consecutive slopes strictly
+  increase (convex arc); a *cap* one whose slopes strictly decrease.
+  g(a,b) = extremal set with NO a-cup and NO b-cap, of size C(a+b-4,a-2).
+  (modern normalisation: f(a,b) = C(a+b-4,a-2)+1 forces an a-cup or b-cap.)
+
+Block recursion (standard): g(a,b) = A ∪ B  with A = g(a-1,b) (no (a-1)-cup,
+no b-cap), B = g(a,b-1) (no a-cup, no (b-1)-cap); sizes C(a+b-5,a-3) + C(a+b-5,a-2)
+= C(a+b-4,a-2).  All of A left of all of B, B lifted so every A->B connecting
+slope is strictly LARGER than every internal slope.  That separation keeps
+"no a-cup, no b-cap".
+
+The full construction X_n uses block T_i = g(i+2, n-i) (no (i+2)-cup,
+no (n-i)-cap), size C(n-2,i), placed tiny at a point of the convex arc y=x^2.
+
+Every block and the full set is checked with the exact oracle before use.
+"""
+from fractions import Fraction
+from math import comb
+
+
+def _bbox(S):
+    xs = [p[0] for p in S]
+    ys = [p[1] for p in S]
+    return min(xs), max(xs), min(ys), max(ys)
+
+
+def _max_abs_slope(S):
+    m = Fraction(0)
+    for i in range(len(S)):
+        for j in range(i + 1, len(S)):
+            dx = S[j][0] - S[i][0]
+            if dx != 0:
+                s = abs((S[j][1] - S[i][1]) / dx)
+                if s > m:
+                    m = s
+    return m
+
+
+def _flatten(S, bound=Fraction(1, 5)):
+    """Scale y about the x-axis so every pair-slope |slope| < bound.
+    Scaling y (with x fixed) preserves the order type / cup-cap structure
+    (it is a vertical affine map -> an order-type-preserving projective map
+    in general position), so no cup or cap is created or destroyed."""
+    m = _max_abs_slope(S)
+    if m == 0:
+        return S
+    f = bound / (2 * m)
+    return [(x, y * f) for (x, y) in S]
+
+
+def g(a, b):
+    """Exact set of C(a+b-4,a-2) points with NO a-cup and NO b-cap (rationals)."""
+    if a <= 2 or b <= 2:
+        # no a-cup for a<=2 / no b-cap for b<=2 with a single point: size C(...)=1
+        return [(Fraction(0), Fraction(0))]
+    A = _flatten(g(a - 1, b))
+    B = _flatten(g(a, b - 1))
+    Ax0, Ax1, Ay0, Ay1 = _bbox(A)
+    Bx0, Bx1, By0, By1 = _bbox(B)
+    gap = Fraction(10)
+    shiftx = Ax1 - Bx0 + gap
+    # Internal slopes (post-flatten, bound 1/5) are <= ~0.1.  Lift B so every
+    # A->B cross slope is ~2, far exceeding ALL internal slopes (cross maximal,
+    # A on the left).  This exact geometry is verified by the oracle in
+    # code/out/merge_geometry_probe.py to keep no a-cup and no b-cap.
+    dy = Ay1 + Fraction(2) * gap - By0
+    Bs = [(x + shiftx, y + dy) for (x, y) in B]
+    return A + Bs
+
+
+def es_lower_blocks(n):
+    """T_i = g(i+2, n-i) for i=0..n-2; sizes sum to 2**(n-2)."""
+    return [g(i + 2, n - i) for i in range(n - 1)]
+
+
+def es_lower_set(n, scale=Fraction(1, 10 ** 6)):
+    """X_n: 2**(n-2) points, no convex n-gon. Blocks tiny on the arc y=x^2."""
+    blocks = es_lower_blocks(n)
+    out = []
+    for idx, Ti in enumerate(blocks):
+        Xs = Fraction(idx)
+        Ys = Xs * Xs
+        for (px, py) in Ti:
+            out.append((Xs + scale * px, Ys + scale * py))
+    return out

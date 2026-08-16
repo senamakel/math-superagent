@@ -1,0 +1,159 @@
+###############################################################################
+# QUARANTINED-DEFECTIVE — DO NOT IMPORT. This module is known to be broken.
+#   * es_lower_set uses floating-point radial placement + integer rounding and
+#     FAILS general position at n>=5 (largestConvex 5 at n=5, 8 at n=6).
+#   * cups_caps_block violates its own cap/cup bounds.
+# Do NOT build on it, do NOT fix it in place. The single VERIFIED construction
+# is code/lib/es_construct.py (es_set / es_set_blocks). Superseded and kept
+# on disk only so the record of the failure is not lost.
+###############################################################################
+"""Erdos-Szekeres 1961 lower-bound construction: a set of 2**(n-2) points in
+general position containing NO convex n-gon, with exact integer coordinates.
+
+Construction (Erdos-Szekeres 1960/61; see research/ROOT.md section 2 and the
+primary source erdos-szekeres-1961-...-renyi.pdf.full.md)
+
+  X_n = union_{i=0}^{n-2} T_i ,   |T_i| = C(n-2, i)
+where each block T_i is a cups/caps-extremal set with no (i+2)-cap and no
+(n-i)-cup, and the blocks are placed radially around a large circle
+(Morris-Soltan survey Theorem 2.6) so that any subset of X_n in convex
+position uses at most
+  (k+1) + (l-k-1) + (n-l-1) = n-1  points.
+
+Cups/caps-extremal block (modern normalisation, f(k,l)=C(k+l-4,k-2)+1):
+  S(k,l) is a set of C(k+l-4,k-2) points with no k-cap (no concave k-sequence
+  of decreasing slopes) and no l-cup (no convex l-sequence of increasing
+  slopes).  Recursive merge:
+    S(k,l)  =  A  (left:  S(k,l-1), no k-cap no (l-1)-cup)        size C(k+l-5,k-2)
+            union  B  (right: S(k-1,l), no (k-1)-cap no l-cup)    size C(k+l-5,k-3)
+  with all of A left of all of B and B lifted high enough that every
+  A-to-B slope strictly exceeds every within-A and within-B slope (condition
+  P1 below).  That single separation forces S(k,l) to keep no k-cap and no
+  l-cup; the oracle (longest_cap/longest_cup) verifies it.
+
+The sufficient separation condition (derived in this module's docstring and
+verified by the oracle): if every cross (A-to-B) slope is strictly larger
+than every within-A and within-B slope, then
+  * a cap (decreasing slopes) cannot contain two A-points followed by a
+    B-point (cross slope is the maximum, contradicting decrease), so caps are
+    either all-in-A (<= k-1) or one A-point plus a B-cap (<= (k-2)+1 = k-1);
+  * a cup (increasing slopes) cannot contain two B-points after an A-point
+    (cross slope is the maximum), so cups are all-in-A (<= l-2), all-in-B
+    (<= l-1), or one B-point at the end of an A-cup (<= (l-2)+1 = l-1).
+  Hence no k-cap and no l-cup, by induction.  The oracle is the check.
+
+All coordinates are exact integers.
+
+Functions
+---------
+cups_caps_block(k, l, lift_prop=0.8) -> list[(int,int)]
+    Exact integer set of C(k+l-4, k-2) points with no k-cap and no l-cup, and
+    every internal slope in [0,1) (so blocks fit the Morris-Soltan radial
+    placement).  lift_prop tunes the cross-slope window.
+es_lower_set(n) -> list[(int,int)]
+    The full X_n construction: 2**(n-2) points, no convex n-gon.
+"""
+
+from math import comb
+
+from lib.es_geom import longest_cap, longest_cup
+
+
+def _span_slopes(pts):
+    """max pairwise |slope| within pts (exact, as float for tuning only)."""
+    mx = 0.0
+    for i in range(len(pts)):
+        for j in range(i + 1, len(pts)):
+            dx = pts[j][0] - pts[i][0]
+            dy = pts[j][1] - pts[i][1]
+            if dx == 0:
+                continue
+            mx = max(mx, abs(dy / dx))
+    return mx
+
+
+def cups_caps_block(k, l, lift_prop=0.6):
+    """Exact integer set with no k-cap, no l-cup, all internal slopes in [0,1).
+
+    Sizes: |S(k,l)| = C(k+l-4, k-2).  Verified by the oracle at the call site."""
+    if k <= 2 or l <= 2:
+        return [(0, 0)]
+    A = cups_caps_block(k, l - 1, lift_prop)   # no k-cap, no (l-1)-cup
+    B = cups_caps_block(k - 1, l, lift_prop)   # no (k-1)-cap, no l-cup
+    # x-normalise A and B to non-negative integer x, y
+    A = _posnormal(A)
+    B = _posnormal(B)
+    X_A = max(x for x, _ in A) + 1             # number of x-columns used by A
+    X_B = max(x for x, _ in B) + 1
+    # max internal slope of A and B
+    span = max(_span_slopes(A), _span_slopes(B))
+    # place B to the right (x starts at X_A) and lift so cross slopes are in
+    # (span, 1).  We want cross slope ~ lift_prop: choose lift so average
+    # cross slope lands near lift_prop but strictly > span.
+    # cross slope lower bound: (lift - yA_max) / (X_A + X_B - 1)
+    yA_max = max(y for _, y in A) if A else 0
+    yB_max = max(y for _, y in B) if B else 0
+    # choose lift distinctly, strict integer, ensuring cross slopes in window
+    lift = int((lift_prop) * (X_A + X_B - 1 + yA_max + yB_max + 4)) + 1
+    # ensure lift is strictly greater than span requirement:
+    min_cross = (lift - yA_max) / (X_A + X_B - 1) if (X_A + X_B - 1) > 0 else 0
+    while min_cross <= span + 1e-9:
+        lift += 1
+        min_cross = (lift - yA_max) / (X_A + X_B - 1) if (X_A + X_B - 1) > 0 else 0
+    # avoid collinearity: guarantee no cross triple aligns by adding a small
+    # per-point x-skew?  Instead simply use distinct integer ys already; check
+    # collinearity via oracle at the caller.  Shift B.
+    B_shift = [(X_A + x, y + lift) for x, y in B]
+    return A + B_shift
+
+
+def _posnormal(pts):
+    minx = min(x for x, _ in pts)
+    miny = min(y for _, y in pts)
+    return [(x - minx, y - miny) for x, y in pts]
+
+
+def es_lower_set(n, R=10 ** 12):
+    """X_n: union of blocks T_i placed radially on a large circle."""
+    import math
+    blocks = []
+    for i in range(n - 1):
+        blocks.append(cups_caps_block(i + 2, n - i))
+    total = sum(len(b) for b in blocks)
+    assert total == 2 ** (n - 2), (n, total, [len(b) for b in blocks])
+    out = []
+    for i, block in enumerate(blocks):
+        if len(block) == 1:
+            ang = math.pi / 4 - i * math.pi / (2 * (n - 2))
+            out.append((int(round(R * math.cos(ang))),
+                        int(round(R * math.sin(ang)))))
+            continue
+        norm = _posnormal(block)
+        # scale block down: coordinates fit in a tiny window relative to R
+        spanx = max(x for x, _ in norm)
+        spany = max(y for _, y in norm)
+        scale = max(1, R // (20 * (spanx + spany + 1)))
+        small = [(x * scale, y * scale) for x, y in norm]
+        ang = math.pi / 4 - i * math.pi / (2 * (n - 2))
+        cx = int(round(R * math.cos(ang)))
+        cy = int(round(R * math.sin(ang)))
+        # centre the tiny block on (cx, cy)
+        cx0 = (max(x for x, _ in small) + min(x for x, _ in small)) // 2
+        cy0 = (max(y for _, y in small) + min(y for _, y in small)) // 2
+        for x, y in small:
+            out.append((cx + (x - cx0), cy + (y - cy0)))
+    return out
+
+
+def block_report(n):
+    """Verification table of block cap/cup bounds for X_n."""
+    from math import comb
+    import lib.es_geom as G
+    res = []
+    for i in range(n - 1):
+        blk = cups_caps_block(i + 2, n - i)
+        cap = longest_cap(blk)
+        cup = longest_cup(blk)
+        res.append((i, len(blk), comb(n - 2, i), cap, cup,
+                    G.in_general_position(blk)))
+    return res
