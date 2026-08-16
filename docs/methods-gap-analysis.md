@@ -32,14 +32,14 @@ vocabulary is otherwise the Tao file's:
 | The move | Source | What this runtime does | Status |
 |---|---|---|---|
 | Restate the goal in a different ambient category, keeping the goal fixed | `01`§A4, `06`§A4, `08`§A1, `09`§A6 | `inventor` re-routes to the goal, `reducer` finds sufficient lemmas, `weakener` lowers it. None moves the ground under it | **Absent** |
-| Drop a hypothesis that no step below actually cites | `01`§A3, `03`§A10, `08`§A7 | `research/BACKWARD.md` records `rests-on` per gap (`backward.rs`), so an inherited hypothesis is detectable. Nothing looks | **Absent**, and computable today |
+| Drop a hypothesis that no step below actually cites | `01`§A3, `03`§A10, `08`§A7 | `derived/BACKWARD.md` records `rests-on` per gap (`backward.rs`), so an inherited hypothesis is detectable. Nothing looks | **Absent**, and computable today |
 | Rank the *applicable moves* by how likely each is to appear in the final argument, and take the safest | `03`§A1 | `route()` (`solutions_attempt.rs:383`) routes on state — attempt count, verdicts. Nothing enumerates moves | **Absent** |
 | Ban backtracking, and define the tractable class as what needs none | `03`§A2 | `Route::Retry` and `MAX_RESTARTS = 2` (`solutions_attempt.rs:91`). No notion of a subgoal that should need neither | **Absent** |
 | Classify the subgoal *before* attempting: does a progress measure exist on partial arguments? | `03`§A5 | `reflection` answers `KIND: MATHEMATICAL \| COMPUTATIONAL` after the fact (`solutions_judging.rs:551`). Solvers and reasoners both present, no classifier | **Partly, backwards** |
 | Gate a simple, general, not-obviously-true lemma to refutation *before* spending on a proof | `03`§A7, `09`§A2 | `refutation_arm` (`solutions_routing.rs:144`) runs on a cadence against gaps already committed to | **Partly** |
-| Measure overshoot — did the run's output exceed its goal? | `01`§A2, `02`§A2 | `research/CLAIMS.md` scores a run discharging its goal identically to one discharging it plus four unasked questions | **Absent** |
+| Measure overshoot — did the run's output exceed its goal? | `01`§A2, `02`§A2 | `derived/CLAIMS.md` scores a run discharging its goal identically to one discharging it plus four unasked questions | **Absent** |
 | A place to record a believed statement with no justification | `07`§A1, `03`§A11 | Every ledger schema demands justification structure at write time; `note_scratch` is unreachable from durable recall by design | **Absent** |
-| Extract the corrected statement from a refutation instead of filing it | `07`§B2, `04`§B1 | `refute.rs` files a verdict; `research/APPROACHES.md`'s `refuted` and `spent` are absorbing | **Absent** |
+| Extract the corrected statement from a refutation instead of filing it | `07`§B2, `04`§B1 | `refute.rs` files a verdict; `derived/APPROACHES.md`'s `refuted` and `spent` are absorbing | **Absent** |
 | Revive an abandoned approach when a *later* failure supplies what it lacked | `04`§B1 | Same absorbing states. Immunity is recorded per-approach and never re-examined | **Absent** |
 | Estimate difficulty — of the goal, of a gap, of an approach | `02`§A3 | Nothing anywhere. Erdős's own thirty-year pricing was noise below \$500, which is the bar to beat | **Absent** |
 | Target formal verification at what will be used as a black box | `08`§A2 | `blueprint.rs:44` derives the statement graph with standing as a minimum over `rests-on`. In-degree is the criterion and nothing reads it | **Unused** |
@@ -53,7 +53,7 @@ vocabulary is otherwise the Tao file's:
 | Score orientation — an attempt that mapped the objects and moved no goal | `04`§A1, `01`§A10 | `STUCK_THRESHOLD = 2` (`solutions_attempt.rs:8`) diversifies after two such attempts | **Absent** |
 | Score legibility — can another role act on this derivation? | `05`§A1, `05`§B1 | `research/ROOT.md` is agent-written and read by no verdict. `CLAUDE.md` states this as the product standard | **Unenforced** |
 | Publish the infrastructure separately from the theorem it was built for | `05`§B2, `10`§A1 | Workspace-local. Nothing writes a technique in terms that omit the motivating problem | **Absent** |
-| Take a *named gap* from another run's decomposition as a goal | `10`§A1 | `research/BACKWARD.md` gaps carry `id`, `lemma`, `status` and a first move — already publishable, and readable only inside their own workspace | **Absent** |
+| Take a *named gap* from another run's decomposition as a goal | `10`§A1 | `derived/BACKWARD.md` gaps carry `id`, `lemma`, `status` and a first move — already publishable, and readable only inside their own workspace | **Absent** |
 | Post a half-formed contribution another role can see | `03`§A11 | `note_scratch`/`recall_scratch` is a separate vector dataset, unreachable from durable recall. That separation is correct and it is also why no role sees another's provisional work | **Absent, deliberately** |
 | Distinguish a lookup from a derivation | `09`§A8 | `Status::Catalogued` exists and its doc comment carries the Project Euler 241 incident that motivated it | **Present** |
 | Withhold the answer-lookup routes under research gating | — | `search_tools()` returns nothing when research is off, by not registering (`orchestrator_registry.rs:13`). **Except `download_document`**, still `document_tools[0]` at `:45-46` | **Partly** |

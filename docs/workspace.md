@@ -641,8 +641,8 @@ while the derivation and the notes already carry the reasoning worth keeping —
 read the trace locally or in Langfuse instead. The hidden `config/.*.json` is
 the runtime's own cache of the frontier, the request ledger and the document
 index, rewritten on nearly every tool call, and each already has a committed
-human-readable counterpart beside it — `research/FRONTIER.md`,
-`research/REQUESTS.md` — which is what the derivation cites.
+human-readable counterpart beside it — `derived/FRONTIER.md`,
+`derived/REQUESTS.md` — which is what the derivation cites.
 
 ## Workspace checkpointing
 
