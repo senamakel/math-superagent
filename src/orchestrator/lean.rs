@@ -167,6 +167,16 @@ pub struct Verdict {
     /// the one a Lean-first mandate invites — see [`super::lemmas::tautologies`]
     /// for the live instance that put this here.
     pub(super) tautologies: Vec<String>,
+    /// Whether the file uses the retired `∑ x in s` binder.
+    ///
+    /// Its own field because the error Lean gives — `unexpected token 'in';
+    /// expected ','` — names neither the notation nor the fix, and the fix is a
+    /// single character. It is the second-most common failure the first bench
+    /// run produced after a bad import, and it is a dating problem rather than
+    /// a reasoning one: Mathlib retired `in` for `∈` in the big operators, and a
+    /// model trained before that writes the old form. One reply wrote `∈`
+    /// correctly in its own docstring and `in` in the code beneath it.
+    pub(super) retired_binder: bool,
     /// Modules the file imported that this Mathlib does not have.
     ///
     /// Parsed rather than left inside the error text, because it is the one
@@ -336,6 +346,14 @@ impl Verdict {
                     names(&self.missing_modules)
                 ));
             }
+            if self.retired_binder {
+                return Some(format!(
+                    "`{}` does not compile, and uses `in` as a big-operator binder — this Mathlib \
+                     retired it. Write `∑ x ∈ s, f x` and `∏ x ∈ s, f x` with `∈`, not `in`; the \
+                     compiler reports it only as `unexpected token 'in'`",
+                    self.file
+                ));
+            }
             return Some(format!("`{}` does not compile", self.file));
         }
         if !self.sorries.is_empty() {
@@ -402,6 +420,7 @@ impl Verdict {
             "axioms": self.axioms,
             "declarations": self.declarations,
             "missing_modules": self.missing_modules,
+            "retired_binder": self.retired_binder,
             "tautologies": self.tautologies,
             "cited": self.cited_axioms(),
             "verified": self.verified(),
@@ -424,6 +443,10 @@ impl Verdict {
             axioms: strings(value.get("axioms")),
             declarations: strings(value.get("declarations")),
             missing_modules: strings(value.get("missing_modules")),
+            retired_binder: value
+                .get("retired_binder")
+                .and_then(serde_json::Value::as_bool)
+                .unwrap_or_default(),
             tautologies: strings(value.get("tautologies")),
         })
     }
@@ -662,6 +685,10 @@ fn parse(file: &str, source: &str, exit_ok: bool, output: &str) -> Verdict {
     let mut axioms = Vec::new();
     let mut missing_modules = Vec::new();
     let mut errored = false;
+    // Only when the compiler actually objected at a `in`. The notation appears
+    // in plenty of files that compile — `for x in`, `open … in` — so the source
+    // alone would report it constantly and mean nothing.
+    let mut retired_binder = false;
     for line in output.lines() {
         let trimmed = line.trim();
         if trimmed.contains("declaration uses") && trimmed.contains("sorry") {
@@ -672,6 +699,9 @@ fn parse(file: &str, source: &str, exit_ok: bool, output: &str) -> Verdict {
             axioms.push(trimmed.to_string());
         } else if trimmed.contains("error:") {
             errored = true;
+            if trimmed.contains("unexpected token 'in'") && source.contains(" in ") {
+                retired_binder = true;
+            }
             // `object file '…/Mathlib/Data/Nat/Parity.olean' of module
             // Mathlib.Data.Nat.Parity does not exist`
             if trimmed.contains("does not exist")
@@ -694,8 +724,95 @@ fn parse(file: &str, source: &str, exit_ok: bool, output: &str) -> Verdict {
         axioms,
         declarations: declarations(source),
         tautologies: super::lemmas::tautologies(source),
+        retired_binder,
         missing_modules,
     }
+}
+
+/// Where the wrapper keeps the module search path, when the environment does
+/// not carry it.
+///
+/// `/usr/local/bin/lean` in the runtime image reads this file and exports it,
+/// because the value is only known after Mathlib is built. Reading the same
+/// file is how the pre-flight below sees the same modules `lean` will.
+const LEAN_PATH_FILE: &str = "/opt/lean_path.txt";
+
+/// The modules `source` imports that no search-path root provides.
+///
+/// A pre-flight, and it exists because of what a bad import costs. Lean reports
+/// one as a missing `.olean` *object file* — opaque enough that
+/// [`Verdict::objection`] has to translate it — but the expensive part is that
+/// it reports it *after* elaborating everything that did resolve. Two of the
+/// seven failures in the first bench run were a module that does not exist, and
+/// each spent a full Mathlib elaboration to say so.
+///
+/// Checking the file system first costs a `stat` per import and turns a
+/// minute-long failure into an immediate one, with the module named.
+///
+/// It is a pre-flight and never a substitute: an import that resolves here can
+/// still fail in Lean for reasons this cannot see, so a clean pre-flight
+/// changes nothing and the compiler still decides. And an environment with no
+/// search path — a host running the deterministic suite, which has no Mathlib —
+/// returns nothing, so the check simply does not fire.
+fn unresolvable_imports(source: &str) -> Vec<String> {
+    let Some(path) = std::env::var("LEAN_PATH")
+        .ok()
+        .filter(|value| !value.is_empty())
+        .or_else(|| std::fs::read_to_string(LEAN_PATH_FILE).ok())
+    else {
+        return Vec::new();
+    };
+    let path = path.trim().to_string();
+    let roots: Vec<&str> = path.split(':').filter(|root| !root.is_empty()).collect();
+    if roots.is_empty() {
+        return Vec::new();
+    }
+    let mut missing = Vec::new();
+    for line in source.lines() {
+        let trimmed = line.trim();
+        // Imports precede every command in a Lean file, so the first line that
+        // is neither an import nor blank nor a comment ends the header. Stopping
+        // there keeps the word `import` inside a docstring from being read as
+        // one.
+        let Some(module) = trimmed.strip_prefix("import ") else {
+            if trimmed.is_empty() || trimmed.starts_with("--") || trimmed.starts_with("/-") {
+                continue;
+            }
+            break;
+        };
+        let module = module.trim();
+        if module.is_empty() || missing.iter().any(|seen| seen == module) {
+            continue;
+        }
+        let relative = format!("{}.olean", module.replace('.', "/"));
+        if !roots
+            .iter()
+            .any(|root| Path::new(root).join(&relative).is_file())
+        {
+            missing.push(module.to_string());
+        }
+    }
+    missing
+}
+
+/// The verdict an unresolvable import produces, without running Lean.
+///
+/// Shaped exactly as the compiler's own would be — `compiled: false`, the
+/// modules named — so a caller cannot tell the short-circuit from the slow
+/// path, and neither can the ledger.
+fn preflight(file: &str, source: &str) -> Option<(Verdict, String)> {
+    let missing = unresolvable_imports(source);
+    if missing.is_empty() {
+        return None;
+    }
+    let output = missing
+        .iter()
+        .map(|module| format!("error: module {module} is not on the Lean search path"))
+        .collect::<Vec<_>>()
+        .join("\n");
+    let mut verdict = parse(file, source, false, &output);
+    verdict.missing_modules = missing;
+    Some((verdict, output))
 }
 
 /// Runs `lean` over one workspace file and records what the kernel said.
@@ -860,8 +977,13 @@ impl Tool<()> for LeanCheck {
         // is the one the kernel was given. A file rewritten while `lean` runs
         // would otherwise have its new statement filed under the old verdict.
         let source = tokio::fs::read_to_string(&path).await.unwrap_or_default();
-        let (exit_ok, output) = self.run(&path).await?;
-        let verdict = parse(&relative, &source, exit_ok, &output);
+        let (verdict, output) = if let Some(short) = preflight(&relative, &source) {
+            short
+        } else {
+            let (exit_ok, output) = self.run(&path).await?;
+            let verdict = parse(&relative, &source, exit_ok, &output);
+            (verdict, output)
+        };
         self.file_verdict(&verdict).await?;
         // After the verdict is on disk and not before: half of every row in the
         // lemma index is the standing this check just decided, so a derivation
@@ -987,8 +1109,13 @@ pub async fn check_file(
     let checker = LeanCheck::new(workspace.to_path_buf(), timeout);
     let relative = paths::strip_workspace_prefix(file).to_string();
     let source = tokio::fs::read_to_string(&path).await.unwrap_or_default();
-    let (exit_ok, output) = checker.run(&path).await?;
-    let verdict = parse(&relative, &source, exit_ok, &output);
+    let (verdict, output) = if let Some(short) = preflight(&relative, &source) {
+        short
+    } else {
+        let (exit_ok, output) = checker.run(&path).await?;
+        let verdict = parse(&relative, &source, exit_ok, &output);
+        (verdict, output)
+    };
     if write_verdict {
         checker.file_verdict(&verdict).await?;
     }
