@@ -166,6 +166,38 @@ not exist and the same node would rank first every pass for the rest of the run.
 A record that cannot be written means no delegation at all: an attempt the
 runtime cannot count is one it cannot stop repeating.
 
+### What one check costs, measured
+
+The first run to use this arm priced it. On `hypercube-induced-degree`, two
+schools reached the fan-out ten minutes apart and were assigned different nodes
+— `f-lower-bound-ceil-sqrt-n` to `rising-sea` at 59:28, `huang-degree-bounds-lambda`
+to `chisel` at 69:34 — which is the lock doing its job: one workspace, two
+schools, no collision.
+
+The first closed in about four minutes: three `lean_check` calls, one of them on
+a scratch probe, and a passing verdict. The second was still going twenty-seven
+minutes later, and not because it was thrashing — it had worked its way down to
+writing real lemmas (`sum_half_neigh`, the half-and-half sum collapse) after
+twelve probe files spent finding out which Mathlib names exist. One child run,
+$2.37, still open.
+
+So a formalisation is an attempt-sized piece of work, not a step inside one:
+`docs/calibration.md` measures an attempt at 13–20 minutes, and this sits at the
+top of that range or past it. Three consequences the design already reflects, now
+with a number behind them. One target per pass is not a concession to memory but
+to *time* — two concurrent Mathlib elaborations would not halve this, and the
+run has a four-hour ceiling. `MAX_ATTEMPTS` of two bounds a node at roughly an
+hour of child time before the ranking moves on. And the arm must never be
+awaited by anything: at this cost, a loop that blocked on the kernel would spend
+its budget verifying rather than solving.
+
+Most of that time is not proving. It is finding the names: `Mathlib.Data.Nat.Ceil`
+and `Mathlib.Algebra.BigOperators.Basic` are both gone from current Mathlib under
+those paths, and the prover discovered that a file at a time. The prompt already
+offers the cheap route for it — run `lean` through `execute_command` while
+iterating, which files no verdict — and the run took it for eleven of its twelve
+probes.
+
 Choosing and recording are one critical section under `worklock::writes`, taken
 at the arm's boundary and released before the delegation. Schools share a
 workspace and run this arm concurrently, so without the lock two of them read

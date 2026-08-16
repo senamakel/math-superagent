@@ -730,6 +730,7 @@ async fn the_evaluation_arms_run_concurrently() {
                 slow(),
                 slow(),
                 slow(),
+                slow(),
                 Respond::value(finished),
             ]),
         )
@@ -741,15 +742,23 @@ async fn the_evaluation_arms_run_concurrently() {
     for arm in eval_arm_ids() {
         run.assert_node_ran(arm);
     }
-    // Eight slow calls happen in a pass — five single-node arms, the goals
-    // child's gate and the fold that applies it, and the barrier. Run in
-    // sequence that is eight arm-times. Run concurrently the critical path is
-    // the backward branch's two nodes plus the barrier, so three. The bound is
-    // five: wide enough that a loaded machine does not fail it, tight enough
-    // that losing the fan-out does.
+    // Nine slow calls happen in a pass — six single-node arms, the goals child's
+    // gate and the fold that applies it, and the barrier. Run in sequence that
+    // is nine arm-times. Run concurrently the critical path is the backward
+    // branch's two nodes plus the barrier, so three.
+    //
+    // The bound is six, and it was five for six calls until a full suite on a
+    // loaded box failed it once in four runs while passing every time in
+    // isolation. That is what this assertion is worth and what it costs: it is
+    // a wall-clock measurement, so it reports the machine as well as the graph,
+    // and a bound that sits too close to the concurrent time turns a busy CI
+    // agent into a red build on code nobody touched. Six still separates the
+    // two cases by a factor of one and a half against a sequence of nine, which
+    // is the property being tested; tightening it further buys resolution the
+    // measurement does not have.
     assert!(
-        elapsed < arm_time * 5,
-        "the arms took {elapsed:?}, which is more than five of the {arm_time:?} each one costs — \
+        elapsed < arm_time * 6,
+        "the arms took {elapsed:?}, which is more than six of the {arm_time:?} each one costs — \
          they ran in something close to sequence"
     );
 }
