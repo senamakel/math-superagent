@@ -25,7 +25,11 @@ idea: >
   with weight 2^{-n}(1-z)^{wt}(1+z)^{n-wt} = p^{wt}(1-p)^{n-wt} at z = 1-2p — exactly
   the iid-Bernoulli(p) measure. So the geometry and the arithmetic are THE SAME OBJECT
   seen through two bases (Walsh and submask), and the second moment under ANY product
-  measure is E_p[S^2] = F_n(1-2p) = O(n), uniformly in p.
+  measure is E_p[S^2] = F_n(1-2p) = O(n), for p bounded away from 0 and 1
+  (|1-2p| <= z_0 < 1); NOT uniformly over all p in (0,1). [Corrected by the
+  refuter: at p -> 0 the terms all -> 1 and F_n(1-2p) -> (n-2)^2 = Theta(n^2),
+  because h == 0 (and all-ones) are kernel inputs with every cell T=0, eps=+1,
+  S=n-2. See claim parseval-second-moment-not-uniform-in-p.]
 mechanism: >
   (1) SELF-DUALITY (exact, index bookkeeping only). By the fold definition
   T_omega(n,d) = XOR_{j in M_d} omega[j] and <omega,1_{M_d}> = sum_{j in M_d} omega[j],
@@ -49,7 +53,7 @@ mechanism: >
   E_omega[S_omega(n)^2] = F_n(0) = n-2, which is EXACTLY the on-disk proved claim
   `fair-model-exact-binomial` (wt(Phi h) ~ Binomial(n-2,1/2) => var S = n-2). The new
   setting reproduces an established result, so it earns its place.
-status: adopted
+status: grounded
 precedent: >
   Sourced: Mattila, "On the eigenvalues of combined meet and join matrices", Linear
   Algebra Appl. 2014 (doi 10.1016/j.laa.2014.10.001) and Mattila dissertation 2015
@@ -146,7 +150,10 @@ At `z = 1−2p`, the weight is `2^{−n}(2p)^{wt}(2(1−p))^{n−wt} = p^{wt}(1�
 iid-Bernoulli(p) measure, so
 
 ```
-E_p[S²] = F_n(1−2p) = O(n)   uniformly in p ∈ (0,1),
+E_p[S²] = F_n(1−2p) = O(n)   for p with |1−2p| ≤ z₀ < 1 (bounded away from 0 and 1);
+the "uniformly in p ∈ (0,1)" phrasing is FALSE (refuter claim
+parseval-second-moment-not-uniform-in-p: at p→0, F_n(1−2p)→(n−2)²=Θ(n²) via the
+kernel input h≡0/all-ones giving every cell T=0, eps=+1, S=n−2).
 ```
 
 because `F_n(z) = O(n)` for `|z| < 1` is a theorem (`downset-row-code-distance-closed-form`).

@@ -27,12 +27,14 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `deep-cells-are-large-gap-driven` | In Odlyzko's data, every very large value of g(n) (slow {0,2}-reduction) examined was caused by a large prime gap; correlation between maximal g(n) and maximal prime gap per block is ~0.52. | yes | asserted | `research/summaries/odlyzko_iterated_abs_values_diff_primes.md` |
 | `delsarte-lp-holds-for-nonlinear-row-sets` | > The Delsarte LP bound does NOT require the code C to be linear: for any subset C ⊆ F₂ⁿ with distance distribution A_i^C = #{(x,y)∈C²: Δ(x,y)=i}/\|C\| (WLOG 0 ∈ C), the constraint Σ_i A_i^C K_ℓ(i) = (1/\|C\|) Σ_{wt(z)=ℓ}… | yes | proved | `research/notes/scholar_krawtchouk_gate_resolution.md` |
 | `density-model-rising-mean-is-generic` | The rising averaged fold mean M(N) -> ~0.4973 (N=4000) for the prime switch string is reproduced by Bernoulli random strings at the measured prime switch density p=0.5968 (mean 0.4977) and at balanced density 0.5… | yes | asserted | `code/out/density_model_control.note.md` |
+| `derivative-ladder-identities-survive` | > The foundational F2 identities of the adopted derivative-ladder derivative-ladder-delta-commutation approach survive hostile machine verification: (L1) T_{Delta^k h}(n,d)=T(n+k,d+k) and (L4) T(n+1,d)= T(n,d) ^… | yes | checked | `code/out/refuter_derivative_ladder_check.md` |
 | `dip-boundary-effect-small-n` | Every ν₂(n)/n < 0.40 dip occurs at n ≤ 105, the set being exactly {53, 71, 105}; every ν₂(n)/n < 0.42 dip occurs at n ≤ 274, the set being {53,56,62,71,103,105,145,153,210,274}. Both are empty in every tail window and… | yes | asserted | `code/out/refuter_dip_sparsity_findings.md` |
 | `dip-sparsity-not-robust-to-0.48` | For the prime gap-parity h, the dip set {n : ν₂(n)/n < c} is sparse only for c ≲ 0.45. At c=0.48 it is NOT sparse: density 0.112 over [50,3000], 0.033 over [1500,3000], 0.030 over [2700,3000] (tool_builder capture,… | yes | asserted | `code/out/refuter_dip_sparsity_findings.md` |
 | `dip-sparsity-tail-clean-through-0.49-at-40000` | At the N=40000 ceiling (fixed floored oracle, asserts nu2(53)==18 and mu_4000 within 0.01 of 0.4977), the tail window [0.9N,N] of {n : nu2(n)/n < c} is EMPTY for every c in 0.40..0.49. The full-window density… | yes | asserted | `code/out/dip_sparsity_real.note.md` |
 | `dip-sparsity-to-20000` | For the prime h, {n:ν₂/n<0.40}={53,71,105} finite, empty past 105; <0.42 ends at 274; tail windows [N/2,N] and [0.9N,N] empty at every threshold ≤0.48 at N=20000; min ν₂/n over [10000,20000]=0.485. NOT robust to c=0.48… | yes | asserted | `research/notes/dip_sparsity_and_monotonicity.md` |
 | `donoho-stark-finite-abelian-product` | For a non-zero complex function f on a finite abelian group A, \|supp f\| · \|supp f̂\| ≥ \|A\|, with equality exactly for (up to translations, modulations, scalars) constant multiples of subgroup indicators. | yes | proved | `research/summaries/matusiak_ozaydin_przebinda_donoho_stark.md` |
 | `downset-row-intersection-meet-formula` | > For d,d' in [2,n-1], the fold rows satisfy M_d ∩ M_d' = M_{d∧d'}, hence \|M_d ∩ M_d'\| = 2^{pc(d∧d')} and \|M_d △ M_d'\| = 2^{pc(d)} + 2^{pc(d')} - 2^{pc(d∧d')+1}, where M_d = {n-1-d+o : o ⊆ d}. | yes | proved | `research/notes/subcube_intersection_claim.md` |
+| `dyadic-nu2-no-collapse-through-k25` | > At the 23 dyadic sample indices k = 3..25, n = 2^k, 2^k+1, 2^k-1 (n up to 2^25 = 33554432), the prime fold does NOT collapse: nu2(2^k)/2^k stays at 1/2, with nu2(2^25)/2^25 = 16778104/33554432 = 0.50003 (exactly 1/2 +… | yes | asserted | `code/out/dyadic_extension_k25.note.md` |
 | `endpoint-sign-corrected-identity` | The character-product form of the endpoint parity is (-1)^{T(n,d)} = ∏_R χ(r_{a_R}) χ(r_{b_R}) with NO (-1)^{#runs(d)} prefactor. The committed form carrying the spurious (-1)^{#runs(d)} factor is false for every binary… | yes | proved | `research/notes/endpoint-sign-abandoned.md` |
 | `entropy-neither-necessary-nor-sufficient-for-randomization` | For Φ = 1+σ over Z/2, nonzero entropy of the initial measure is neither necessary nor sufficient for asymptotic randomization by Φ. | yes | asserted | `research/notes/pivato_lucas_mixing_equivalence.md` |
 | `essential-coding-theory-machinery` | The weight-distribution/MacWilliams/Krawtchouk/Delsarte-LP machinery on F_q^n is developed at textbook depth: weight enumerators transform by the Krawtchouk substitution, dual-positivity gives the linear constraints… | yes | asserted | `research/summaries/essential_coding_theory_guruswami_rudra_sudan_fulltext.md` |
@@ -66,10 +68,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `krawtchouk-polynomials-encyclopedic` | > Krawtchouk polynomials K_k(x;n,q)=Σ_j(−1)^j(q−1)^{k−j}C(x,j)C(n−x,k−j) are the discrete orthogonal polynomials diagonalising the Walsh/MacWilliams transform on the Boolean cube, with generating function… | yes | asserted | `research/summaries/wikipedia_krawtchouk_polynomials.md` |
 | `kummer-2adic-valuation-lift-refuted` | The 2-adic valuation of A_k(i) = \|A_{k-1}(i) - A_{k-1}(i+1)\| is NOT a function of the two operands' valuations alone: under the ultrametric law the cancellation case v2(a)=v2(b) gives v2(a-b) its value from the 2-adic… | yes | asserted | `research/notes/scholar_pass_approaches_refutation.md` |
 | `lau-nonconstant-pattern-open` | Even a single non-constant residue-class pattern of consecutive primes of length m — in particular a 2-term pattern like (1,3) or (3,1) mod 4 — is not known to occur infinitely often. Constant patterns (a,…,a) are good… | yes | asserted | `research/summaries/lau_residue_patterns.md` |
-| `lau-pattern-count-bound` | For q squarefree with φ(q) ≫ (log m)^10, at least ≫ m/(log m)^10 · φ(q)^2 residue-class m-tuples occur infinitely often among consecutive primes. | no | proved | `research/summaries/lau_residue_patterns.md` |
-| `linearisation-fold-weight` | nu2(n) — the number of 2s in the floored maximal {0,2} suffix of the right diagonal of the absolute-difference triangle of the primes — equals wt(Phi_n h) over F2, h[j] = ((q_{j+1} - q_j)/2) mod 2, Phi_n the… | yes | asserted | `research/notes/scholar_verification_pass_supply.md` |
 
-_69 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_74 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -94,6 +94,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `dip-sparsity-not-robust-to-0.48` (code/out/refuter_dip_sparsity_findings.md) — asserted by the source, not proved there and not checked here
 - `dip-sparsity-tail-clean-through-0.49-at-40000` (code/out/dip_sparsity_real.note.md) — asserted by the source, not proved there and not checked here
 - `dip-sparsity-to-20000` (research/notes/dip_sparsity_and_monotonicity.md) — asserted by the source, not proved there and not checked here
+- `dyadic-nu2-no-collapse-through-k25` (code/out/dyadic_extension_k25.note.md) — asserted by the source, not proved there and not checked here
 - `entropy-neither-necessary-nor-sufficient-for-randomization` (research/notes/pivato_lucas_mixing_equivalence.md) — asserted by the source, not proved there and not checked here
 - `essential-coding-theory-machinery` (research/summaries/essential_coding_theory_guruswami_rudra_sudan_fulltext.md) — asserted by the source, not proved there and not checked here
 - `exceptional-sets-finite-through-40000` (research/claims_normalized_white_noise.md) — asserted by the source, not proved there and not checked here
@@ -122,9 +123,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `n40000-second-moment-density1-measured` (code/out/chebyshev_second_moment_N40000.settles.md) — asserted by the source, not proved there and not checked here
 - `negative-controls-dense-dips` (research/notes/dip_sparsity_and_monotonicity.md) — asserted by the source, not proved there and not checked here
 - `odlyzko-0-2-reduction` (research/summaries/odlyzko_iterated_abs_values_diff_primes.md) — asserted by the source, not proved there and not checked here
-- `pivato-thm71-does-not-close-walsh-request` (research/notes/scholar_pass_new_material.md) — asserted by the source, not proved there and not checked here
 
-_10 more not shown here; they are in `research/`._
+_12 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 

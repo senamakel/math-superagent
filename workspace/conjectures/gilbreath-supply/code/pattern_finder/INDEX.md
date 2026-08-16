@@ -2,6 +2,16 @@
 
 What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
+**Status: DONE (directive 35).** This folder has only extensions and
+re-verifications of settled results left — `extend_dyadic_k25.py`,
+`extend_dyadic_sequence.py`, `extend_second_moment.py`,
+`three_exact_verifications.py`, `final_reduction_check.py`. The dyadic-sequence
+extension is not on the surviving open statement (research/CONCLUSION.md §5:
+an unconditional second-moment / submask-window Walsh bound, which no
+measurement reaches), and directive 34 closed the line. Do not start new
+pattern-finder work and do not re-run the k=25 extension (see task
+`kill-dyadic-k25-and-no-rerun`).
+
 | File | Purpose |
 | --- | --- |
 | `acf_and_switch.py` | _(undescribed)_ |

@@ -1,0 +1,73 @@
+guards pass: nu2(53)=18 nu2(64)=27 nu2(4000)=1975 nu2(40000)=20081 (JSON)
+building prime h of length 8388610...
+  done in 58.4s
+ 3        8       2      +2       1      +5       1      +3 0.250000 +0.2500
+ 4       16      12     -10       6      +3       2      +9 0.750000 -0.6250
+ 5       32      13      +4      18      -5      12      +5 0.406250 +0.1250
+ 6       64      27      +8      39     -15      30      +1 0.421875 +0.1250
+ 7      128      66      -6      59      +9      57     +11 0.515625 -0.0469
+ 8      256     136     -18     128      -1     127      -1 0.531250 -0.0703
+ 9      512     243     +24     257      -3     269     -29 0.474609 +0.0469
+10     1024     502     +18     497     +29     506      +9 0.490234 +0.0176
+11     2048    1003     +40     994     +59    1015     +15 0.489746 +0.0195
+12     4096    2010     +74    2097     -99    2047      -1 0.490723 +0.0181
+13     8192    4184    -178    4068     +55    4082     +25 0.510742 -0.0217
+14    16384    8338    -294    8055    +273    8270    -159 0.508911 -0.0179
+15    32768   16464    -162   16537    -307   16386      -7 0.502441 -0.0049
+16    65536   32608    +318   32703    +129   32759     +15 0.497559 +0.0049
+17   131072   65308    +454   65569     -67   65845    -621 0.498260 +0.0035
+18   262144  131146    -150  131418    -693  130892    +357 0.500282 -0.0006
+19   524288  261803    +680  262106     +75  262747   -1209 0.499350 +0.0013
+20  1048576  524358    -142  523369   +1837  525294   -2015 0.500067 -0.0001
+21  2097152 1049371   -1592 1048540     +71 1048352    +445 0.500379 -0.0008
+22  4194304 2099362   -4422 2097290    -277 2097047    +207 0.500527 -0.0011
+23  8388608 4191662   +5282 4195033   -1459 4194910   -1215 0.499685 +0.0006
+
+-- cross-check nu2(2^k), k=3..15 vs canonical JSON --
+  k= 3 n=       8 nu2=      2 json=      2 match=True
+  k= 4 n=      16 nu2=     12 json=     12 match=True
+  k= 5 n=      32 nu2=     13 json=     13 match=True
+  k= 6 n=      64 nu2=     27 json=     27 match=True
+  k= 7 n=     128 nu2=     66 json=     66 match=True
+  k= 8 n=     256 nu2=    136 json=    136 match=True
+  k= 9 n=     512 nu2=    243 json=    243 match=True
+  k=10 n=    1024 nu2=    502 json=    502 match=True
+  k=11 n=    2048 nu2=   1003 json=   1003 match=True
+  k=12 n=    4096 nu2=   2010 json=   2010 match=True
+  k=13 n=    8192 nu2=   4184 json=   4184 match=True
+  k=14 n=   16384 nu2=   8338 json=   8338 match=True
+  k=15 n=   32768 nu2=  16464 json=  16464 match=True
+ALL MATCH
+
+-- neighbors 3*2^k and 5*2^k (exact) --
+m=3:
+k= 6 n=     192 nu2=    101 S=   -12 ratio=0.526042
+k= 7 n=     384 nu2=    170 S=   +42 ratio=0.442708
+k= 8 n=     768 nu2=    349 S=   +68 ratio=0.454427
+k= 9 n=    1536 nu2=    759 S=   +16 ratio=0.494141
+k=10 n=    3072 nu2=   1505 S=   +60 ratio=0.489909
+k=11 n=    6144 nu2=   3053 S=   +36 ratio=0.496908
+k=12 n=   12288 nu2=   6084 S=  +118 ratio=0.495117
+k=13 n=   24576 nu2=  12218 S=  +138 ratio=0.497152
+k=14 n=   49152 nu2=  24561 S=   +28 ratio=0.499695
+k=15 n=   98304 nu2=  49253 S=  -204 ratio=0.501027
+k=16 n=  196608 nu2=  97945 S=  +716 ratio=0.498174
+k=17 n=  393216 nu2= 196407 S=  +400 ratio=0.499489
+k=18 n=  786432 nu2= 393297 S=  -164 ratio=0.500103
+k=19 n= 1572864 nu2= 786464 S=   -66 ratio=0.500020
+k=20 n= 3145728 nu2=1573701 S= -1676 ratio=0.500266
+k=21 n= 6291456 nu2=3146193 S=  -932 ratio=0.500074
+Traceback (most recent call last):
+  File "/workspace/code/pattern_finder/extend_dyadic_sequence.py", line 90, in <module>
+    nu2_n, S_n = nu2_S(n)
+                 ^^^^^^^^
+  File "/workspace/code/pattern_finder/extend_dyadic_sequence.py", line 47, in nu2_S
+    S, ones = s_sos(n, h[:n])
+              ^^^^^^^^^^^^^^^
+  File "/workspace/code/lib/supply_fold.py", line 83, in s_sos
+    b = [1 - 2 * h[j] for j in range(n)]            # tau's in original order
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/lib/supply_fold.py", line 83, in <listcomp>
+    b = [1 - 2 * h[j] for j in range(n)]            # tau's in original order
+                 ~^^^
+IndexError: list index out of range

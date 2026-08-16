@@ -62,7 +62,7 @@ mechanism: >
   u_j = (-1)^{h[j]} = s_j s_{j+1} = chi(q_j) chi(q_{j+1}), a genuinely
   second-order object, NOT the one-point switch density.
 
-status: adopted
+status: grounded
 
 precedent: >
   In-workspace (established): lucas-submask-odd (rows are submask supports);
@@ -74,11 +74,32 @@ precedent: >
   theory engine (MacWilliams 1963; Delsarte 1973; Guruswami CMU notes) is
   named and citable but is no longer load-bearing for (C): the closed form
   replaces it. The formula |M_d ∩ M_{d'}| = 2^{pc(d ∧ d')} and its
-  distance corollary are NEW to this run (checked only by hand here), and
-  research should price whether it appears in the Boolean-cube / subcube-
-  intersection literature (e.g. as an instance of the general fact that affine
-  subcubes intersect in an affine subcube) — expected, but the specific
-  down-set row code and its distance distribution A_k are the new object.
+  distance corollary are NEW to this run (checked only by hand here), and research
+  priced the Boolean-cube / subcube-intersection literature and confirmed both
+  the formula and the machinery:
+  - The intersection-counting fact that two affine subcubes of F_2^n intersect in
+    an affine subcube of dimension = the size of the intersection of their free-
+    coordinate sets, hence cardinality 2^{pc(d∧d')}, is a STANDARD fact of the
+    Boolean-cube / subcube theory (Friedgut–Kalai–Naor, "Every monotone graph
+    property has a sharp threshold", Proc. AMS 1996; Chung–Sieger, "Quasi-random
+    influences of Boolean functions", arXiv:2209.03573, which reads a subcube as
+    free coordinates S; Kupavskii–Noskov on downsets and the ∧/∨ family algebra,
+    arXiv:2209.04756, with Harris–Kleitman/Daykin downset correlation
+    inequalities). So the reflection identity M_d = {n-1-y : y⊆d} and the
+    meet-closure M_d ∩ M_{d'} = M_{d∧d'} are instances of a general,
+    sourced subcube fact — the run's contribution is applying it to THIS row set.
+  - The meet/join-matrix spectral machinery named in the sibling route
+    `meet-join-parseval-self-duality` is confirmed real and citable: Mattila,
+    "On the eigenvalues of combined meet and join matrices", Linear Algebra
+    Appl. 2014 (doi 10.1016/j.laa.2014.10.001) and Ilmonen–Kaarnioja,
+    "Generalized eigenvalue problems for meet and join matrices on semilattices",
+    LAA 2017 (doi 10.1016/j.laa.2017.09.023) — the named home of the
+    Boolean-lattice meet matrix (2^{pc(d∧d')}) = ⊗[[1,1],[1,2]] spectral theory.
+  The specific down-set row code and its distance distribution A_k remain the
+  new object; no source computes A_k for a Pascal-fold row set. Grounded as
+  geometry; the arithmetic side (A) remains open (see meet-join-parseval sharp
+  negative: the geometry carries no pointwise force, so (A) is irreducibly
+  arithmetic).
 
 first-step: >
   tool_builder, exact integer arithmetic, no number theory beyond the row-set

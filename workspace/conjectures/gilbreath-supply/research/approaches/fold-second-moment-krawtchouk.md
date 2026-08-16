@@ -75,7 +75,7 @@ mechanism: >
   dichotomy resolved on the geometry side, which is what GOAL.md asks the run
   to test.
 
-status: adopted
+status: grounded (geometry engine = Delsarte/MacWilliams/Krawtchouk distance distribution, sourced and now closed by downset-row-code-distance-closed-form which proves F_n(z)=O(n) for |z|<1 via the exact meet formula; condition (A) is irreducibly arithmetic per meet-join-parseval sharp negative, so the route's second moment E[S(n)^2]=O(n) for the prime string remains the single open input)
 
 precedent: >
   The engine is named, standard coding theory: Delsarte's linear programming

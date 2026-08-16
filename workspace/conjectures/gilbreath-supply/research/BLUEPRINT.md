@@ -52,12 +52,14 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `deep-cells-are-large-gap-driven` | claim | **ready** | — | In Odlyzko's data, every very large value of g(n) (slow {0,2}-reduction) examined was caused by a large prime gap; correlation between… |
 | `delsarte-lp-holds-for-nonlinear-row-sets` | claim | established | — | > The Delsarte LP bound does NOT require the code C to be linear: for any subset C ⊆ F₂ⁿ with distance distribution A_i^C = #{(x,y)∈C²:… |
 | `density-model-rising-mean-is-generic` | claim | **ready** | — | The rising averaged fold mean M(N) -> ~0.4973 (N=4000) for the prime switch string is reproduced by Bernoulli random strings at the… |
+| `derivative-ladder-identities-survive` | claim | established | — | > The foundational F2 identities of the adopted derivative-ladder derivative-ladder-delta-commutation approach survive hostile machine… |
 | `dip-boundary-effect-small-n` | claim | **ready** | — | Every ν₂(n)/n < 0.40 dip occurs at n ≤ 105, the set being exactly {53, 71, 105}; every ν₂(n)/n < 0.42 dip occurs at n ≤ 274, the set being… |
 | `dip-sparsity-not-robust-to-0.48` | claim | **ready** | — | For the prime gap-parity h, the dip set {n : ν₂(n)/n < c} is sparse only for c ≲ 0.45. At c=0.48 it is NOT sparse: density 0.112 over… |
 | `dip-sparsity-tail-clean-through-0.49-at-40000` | claim | **ready** | — | At the N=40000 ceiling (fixed floored oracle, asserts nu2(53)==18 and mu_4000 within 0.01 of 0.4977), the tail window [0.9N,N] of {n :… |
 | `dip-sparsity-to-20000` | claim | **ready** | — | For the prime h, {n:ν₂/n<0.40}={53,71,105} finite, empty past 105; <0.42 ends at 274; tail windows [N/2,N] and [0.9N,N] empty at every… |
 | `donoho-stark-finite-abelian-product` | claim | established | — | For a non-zero complex function f on a finite abelian group A, \|supp f\| · \|supp f̂\| ≥ \|A\|, with equality exactly for (up to translations,… |
 | `downset-row-intersection-meet-formula` | claim | established | — | > For d,d' in [2,n-1], the fold rows satisfy M_d ∩ M_d' = M_{d∧d'}, hence \|M_d ∩ M_d'\| = 2^{pc(d∧d')} and \|M_d △ M_d'\| = 2^{pc(d)} +… |
+| `dyadic-nu2-no-collapse-through-k25` | claim | **ready** | — | > At the 23 dyadic sample indices k = 3..25, n = 2^k, 2^k+1, 2^k-1 (n up to 2^25 = 33554432), the prime fold does NOT collapse:… |
 | `endpoint-sign-corrected-identity` | claim | established | — | The character-product form of the endpoint parity is (-1)^{T(n,d)} = ∏_R χ(r_{a_R}) χ(r_{b_R}) with NO (-1)^{#runs(d)} prefactor. The… |
 | `entropy-neither-necessary-nor-sufficient-for-randomization` | claim | **ready** | — | For Φ = 1+σ over Z/2, nonzero entropy of the initial measure is neither necessary nor sufficient for asymptotic randomization by Φ. |
 | `essential-coding-theory-machinery` | claim | **ready** | — | The weight-distribution/MacWilliams/Krawtchouk/Delsarte-LP machinery on F_q^n is developed at textbook depth: weight enumerators transform… |
@@ -71,10 +73,8 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `fold-excess-increments-white` | claim | **ready** | — | > Let S(n) = (n−2) − 2·ν₂(n) be the signed excess of the floored submask fold. The operative discriminator between the density-1-SUPPLY… |
 | `fold-genericity-all-nu2-regularities-incl-dip-sparsity` | claim | **ready** | — | > Every measurable regularity of nu2(n) for the prime gap-parity fold is fold-generic, not prime-specific. (1) White-noise law:… |
 | `fold-rank-is-n-2-nullity-2-alternating` | claim | established | — | The operative SUPPLY fold matrix Phi_n — whose image weight is nu2(n) = wt(Phi_n h) — is (n-2) x n with rows d = 2..n-1 and entry… |
-| `fold-rank-n-minus-2-binomial-proved` | claim | established | — | Under the operative row range d=2..n-1 (an (n-2)x(n) matrix), the submask-XOR fold matrix Phi_n has rank n-2 and kernel span(even-alt,… |
-| `fourth-moment-plateau-3n2` | claim | established | — | For the prime gap-parity fold, the normalized excess Z(n)=S(n)/√n with S(n)=(n−2)−2·ν₂(n) satisfies E[Z⁴]≈2.95 over n=2..40000… |
 
-_103 further nodes not shown._
+_108 further nodes not shown._
 
 ## Resting on nothing that exists
 

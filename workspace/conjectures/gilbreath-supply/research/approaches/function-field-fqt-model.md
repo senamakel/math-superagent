@@ -26,7 +26,7 @@ mechanism: > The dictionary is classical: integer primes q ↔ monic irreducible
   there, that is a strong structural negative: even with the arithmetic granted,
   Φ does not force linear weight, and SUPPLY over Z is likely false in its
   current form.
-status: adopted
+status: grounded
 
 grounding-note: >
   RESEARCH VERDICT — the machinery is real and named, and the Scholze gate

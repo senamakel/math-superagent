@@ -61,6 +61,15 @@ r_j = q_j mod 4, since the equality fails for arbitrary binary strings.
   through n=40000 — ten times the parent investigation's OOM depth (4000) and
   double this workspace's prior smax ceiling (20000). The mean M(N) sweep runs
   to N=8000.
+- **Dyadic sample ceiling: n = 2^25 = 33554432, k = 3..25** (claim
+  `dyadic-nu2-no-collapse-through-k25`, status measured, directive 36): at the
+  23 dyadic sample indices n = 2^k, 2^k±1, ν₂(2^k)/2^k stays at 1/2 —
+  ν₂(2^25)/2^25 = 16778104/33554432 = 0.50003 — and |S(2^k)| ≤ 5282 (max at
+  k=23; S(2^25) = −1778), so |S|/n ≈ 1.6e-4 against the 0.04n falsifier
+  threshold for c=0.48. Closed door 4 lives at powers of two; the fold does NOT
+  collapse there for the primes. Scoped to dyadic sample points only, not a
+  sweep: it does NOT extend the density-1/dip-sparsity results, whose ceiling
+  stays at N = 40000. Anchor: code/out/dyadic_extension_k25.note.md.
 - **Second-moment ceiling: N = 40000** (claim
   `n40000-second-moment-density1-measured`, status measured-not-proved, directive
   14): `μ_N = 0.499658`; over `[30000,40000]` every n has `ν₂/n ≥ 0.49` (min

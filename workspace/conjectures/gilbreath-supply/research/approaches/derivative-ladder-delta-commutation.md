@@ -23,7 +23,7 @@ to wt(Φ_n h) for a fixed input. It prices GOAL priority 2 precisely: the weakes
 input that suffices must be invariant under h → Δ^k h, and for k=1 the object is
 the distance-2 two-point correlation [q_j ≢ q_{j+2} mod 4], the same parity-barrier
 family as switch density (index-domain quadratic-character 2-point correlation).
-status: adopted
+status: grounded (identities machine-verified; arithmetic input = the distance-2 parity barrier, open — see claim derivative-ladder-identities-survive, anchor code/out/refuter_derivative_ladder_check.md)
 precedent: (identity is derived, not sourced; the constituents are sourced)
 - Canonical fold-cell form and linearisation: claim `linearisation-fold-weight`
   (ν₂(n) = wt(Φ_n h), T(n,d) = ⊕_{o⊆d} h[n−1−d+o]) — problem.md fact 1, imported

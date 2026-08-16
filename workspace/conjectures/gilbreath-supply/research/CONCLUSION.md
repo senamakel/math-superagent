@@ -119,6 +119,18 @@ numerical check, and a sourced claim are never conflated.
 All measured, not proved; every number is exact over the stated range and
 guard-checked.
 
+- **Dyadic samples at `n = 2^k` (k = 3..25, `n` up to `2^25 = 33554432`) — a
+  separate ceiling, NOT the `N = 40000` sweep.** Claim
+  `dyadic-nu2-no-collapse-through-k25` (directive 36, exact integers): at the 23
+  sample indices `n = 2^k, 2^k±1`, `ν₂(2^k)/2^k` stays at `1/2` —
+  `ν₂(2^25)/2^25 = 16778104/33554432 = 0.50003` — and `|S(2^k)| ≤ 5282` (max at
+  k=23; `S(2^25) = −1778`), so `|S|/n ≈ 1.6e-4` against the
+  `0.04n = (1−2·0.48)n` falsifier threshold — three orders of magnitude past the
+  `N = 40000` ceiling. Closed door 4 lives at powers of two; the fold does NOT
+  collapse there for the primes. This is 23 sampled dyadic points, not a sweep:
+  it does NOT extend the density-1 or dip-sparsity results, which remain
+  measured only to `N = 40000`.
+
 - **`μ_N = 0.499658` at `N = 40000`** (canonical floored oracle `s_sos`,
   entry guards `ν₂(53)=18`, `ν₂(64)=27`, `ν₂(4000)=1975`). The prime mean sits
   exactly on the fair-model `1/2` value.

@@ -20,7 +20,7 @@ mechanism: Lucas' theorem makes the fold Φ read h along binary submask sets,
       to the mod-4 switch-density mean (Bernoulli(ρ) is Lucas mixing for every
       ρ, see precision note) — and reads h only where Lucas makes Φ read it;
       part (b) is pure finite linear algebra.
-status: adopted
+status: grounded (theorem real & precisely stated, Pivato–Yassawi Thm 7.1; hypotheses hold here — SUPPLY's fold is the finite 1+σ over Z/2 and Lucas is its engine. The open content is the finite transfer step (a)+(b): lucas-mixing of the prime gap-parity string and the quantitative density-one transfer are NOT in any source and remain open. Step (a) is orthogonal to the mod-4 switch-density mean — Bernoulli(ρ) is Lucas mixing for every ρ — so it does not inherit the ABGS dead end, but it is an unestablished correlation-decay statement on the primes, not a theorem.)
 precedent:
   - "Pivato & Yassawi, Asymptotic randomization of sofic shifts by linear
      cellular automata (2006), arXiv:math/0306136, Theorem 7.1: for Φ=1+σ and
