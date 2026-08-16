@@ -390,6 +390,42 @@ The bounds are untouched. Ordering decides which rows a section shows first, not
 how many it shows or how much prose each carries, and `ledger/ceiling_test.rs`
 holds both of those where they were.
 
+## The attempts ledger
+
+`spawn_candidates` puts several candidate solutions on their own git branches at
+once (see [`workspace.md`](workspace.md#candidate-branches)). Git answers half
+the question that raises — the branches are on disk and `attempt_diff` reads
+them — and cannot answer the other half, because **the reason a candidate lost
+is not in its diff**. Without somewhere to put it the next round re-proposes a
+dead candidate, which is the failure `TASKS.md` had and the same fix.
+
+It is a declaration rather than a module: `source: queue`, backed by
+`config/attempts.jsonl`, rendered to `derived/ATTEMPTS.md`. A queue for the
+reason the board is one — several candidates finish at once and each records
+itself, so one `write_all` of one whole line needs no lock, and the events fold,
+so a candidate that is proposed, then scored, then adopted is three events and
+one row.
+
+Two decisions in it are worth keeping:
+
+- **`score` is a field, not a status.** The number is the scorer's and the ledger
+  has no opinion about it; the *decision* is the status. Keeping them apart is
+  what lets a candidate be the highest scoring one and still be rejected, with
+  the reason saying why — exactly the case a search over programs produces.
+- **Two prose fields, and no more.** The engine gives every prose field its own
+  bounded line on every rendered row, so a field costs `REASON_CHARS` times the
+  row cap whether or not anybody fills it in. A first draft carried `branch` and
+  `approach` as well and rendered 76 KB on the ceiling fixture; `branch` is
+  determined by the id and `approach` said again what the headline says.
+
+The sections are capped well below the engine's default of forty, because this
+ledger is read at the top of every round rather than opened once — its cost is
+paid over and over, and a round explores at most ten candidates.
+
+The `searcher` is deliberately not a writer. It holds no write tool at all (see
+[`roles.md`](roles.md)), and a role that could record its own candidate's verdict
+is one that can grade its own homework.
+
 ## A ledger a run can declare
 
 Nine of these are Rust modules, and eight of the nine should stay that way:
