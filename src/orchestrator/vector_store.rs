@@ -74,6 +74,16 @@ impl VectorStore {
         // [`SCOPE_SAFE_SEARCH_TYPES`]: a retriever that ignores `node_name`
         // searches every project on the server, and this runtime has already
         // shipped that leak once through the dataset field.
+        // Named separately from the scoping guard below because the reason is
+        // different and a wrong reason is worse than none: this retriever is
+        // scopable and simply absent, needing a memify pass nothing here runs.
+        if search_type == UNSUPPORTED_TRIPLET_SEARCH {
+            return Err(tinyagents::TinyAgentsError::Validation(format!(
+                "`{search_type}` needs a `create_triplet_embeddings` memify pass this runtime does \
+                 not run, and answers `404 [NoDataError]` without one; ask for \
+                 `{GRAPH_SEARCH}` instead"
+            )));
+        }
         if !SCOPE_SAFE_SEARCH_TYPES.contains(&search_type) {
             return Err(tinyagents::TinyAgentsError::Validation(format!(
                 "`{search_type}` cannot be scoped to one project on this server and must not be \
@@ -129,11 +139,18 @@ impl VectorStore {
     /// The two retrievers answer different questions about the same memory and
     /// miss in opposite directions. `CHUNKS` returns the passages nearest a
     /// phrase, so it finds what a source said and is blind to anything nobody
-    /// wrote in one place. `TRIPLET_COMPLETION` returns the graph's own
-    /// subject–predicate–object edges, so it finds what the run connected
-    /// across sources and is blind to the wording. A run that only ever asks
-    /// for chunks is paying for a graph store and using it as a search box —
-    /// which is what this runtime did for as long as recall meant one search.
+    /// wrote in one place. `GRAPH_COMPLETION` returns the nodes and edges the
+    /// graph holds around the query, so it finds what the run connected across
+    /// sources and is blind to the wording. A run that only ever asks for
+    /// chunks is paying for a graph store and using it as a search box — which
+    /// is what this runtime did for as long as recall meant one search.
+    ///
+    /// The graph half was [`UNSUPPORTED_TRIPLET_SEARCH`] until a live probe
+    /// showed this server refuses it outright, so the half that was supposed to
+    /// make recall more than a search box had never once answered. It is
+    /// `GRAPH_COMPLETION` now, which the same probe answered with nodes and
+    /// edges — and answered while the model endpoint was down, because
+    /// `only_context` returns the retrieved context rather than prose about it.
     ///
     /// Concurrent because they are independent and the slower one is what the
     /// caller waits for either way; sequential would make the richer answer
@@ -157,7 +174,7 @@ impl VectorStore {
         let chunk_limit = limit.saturating_sub(graph_limit).max(1);
         let (passages, triples) = tokio::join!(
             self.search(query, CHUNK_SEARCH, chunk_limit),
-            self.search(query, TRIPLET_SEARCH, graph_limit)
+            self.search(query, GRAPH_SEARCH, graph_limit)
         );
         let passages = match passages {
             Ok(found) => found,
@@ -225,7 +242,76 @@ impl VectorStore {
             session_dataset,
             scratch_dataset,
             library_dataset,
+            indexing: Arc::new(tokio::sync::Mutex::new(None)),
         })
+    }
+
+    /// Refuses a write the server would accept and then drop.
+    ///
+    /// Called by [`VectorStore::post_parts`], so every store — durable, scratch,
+    /// session and library — passes through it, and the check is one place
+    /// rather than five. See [`IngestHealth`] for the failure it is written
+    /// against: a `200 {"status":"running"}` for a document the ingest pipeline
+    /// then refuses to persist, which is how one workspace's memory server came
+    /// to hold nothing at all while its run recorded 193 stored findings.
+    ///
+    /// A verdict stands for [`HEALTH_TTL`], and the probe itself is bounded by
+    /// [`HEALTH_TIMEOUT`]. A probe that does not answer is treated as a refusal
+    /// and says so: the broken case *is* the slow case here, so reading silence
+    /// as permission would reopen exactly the hole this closes.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when the server reports it cannot index.
+    async fn refuse_if_not_indexable(&self) -> Result<()> {
+        let mut cached = self.indexing.lock().await;
+        let fresh = match cached.as_ref() {
+            Some((taken, health)) if taken.elapsed() < HEALTH_TTL => health.clone(),
+            _ => {
+                let health = self.probe_indexing().await;
+                *cached = Some((Instant::now(), health.clone()));
+                health
+            }
+        };
+        match fresh {
+            IngestHealth::Ready => Ok(()),
+            IngestHealth::Refusing(detail) => Err(tinyagents::TinyAgentsError::Tool(format!(
+                "the memory server cannot index right now, so this document would be accepted and \
+                 dropped rather than stored: {detail}. Write it to the workspace instead and store \
+                 it once the memory recovers"
+            ))),
+        }
+    }
+
+    /// Asks the server whether it can index, and reads the answer as a verdict.
+    ///
+    /// Never fails: an unreachable server is already reported by the write that
+    /// follows, and turning a probe's transport error into a refusal would stop
+    /// writes for a reason the write itself has not met yet. Only a *definite*
+    /// no — a component the server itself calls unhealthy, or a report that
+    /// does not arrive within [`HEALTH_TIMEOUT`] — refuses.
+    async fn probe_indexing(&self) -> IngestHealth {
+        let request = self
+            .client
+            .get(format!("{}/health/detailed", self.base_url))
+            .send();
+        let Ok(response) = tokio::time::timeout(HEALTH_TIMEOUT, request).await else {
+            return IngestHealth::Refusing(format!(
+                "its own health report did not answer within {} seconds, which is what a failed \
+                 model-endpoint check looks like from outside",
+                HEALTH_TIMEOUT.as_secs()
+            ));
+        };
+        let Ok(response) = response else {
+            return IngestHealth::Ready;
+        };
+        if !response.status().is_success() {
+            return IngestHealth::Ready;
+        }
+        let Ok(body) = response.json::<Value>().await else {
+            return IngestHealth::Ready;
+        };
+        indexing_health(&body)
     }
 
     /// Records one provisional note in this project's scratch.
@@ -452,6 +538,7 @@ impl VectorStore {
         dataset: &str,
         node_set: &str,
     ) -> Result<()> {
+        self.refuse_if_not_indexable().await?;
         let mut form = reqwest::multipart::Form::new()
             .text("datasetName", dataset.to_string())
             .text("node_set", node_set.to_string())

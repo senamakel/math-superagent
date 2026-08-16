@@ -258,13 +258,31 @@ the code writers execute rather than judge; the planners drive every turn.
 Three tests assert the split in both directions, because the mistake is
 silent: adding a role costs money on every run and nothing fails to say so.
 
-The model is `deepseek/deepseek-v4-pro`, routed to DeepSeek's own endpoint
-rather than the run's usual `deepinfra`, which is not a trade: it is both the
-cheapest route for this model — $0.43/$0.87 per million against DeepInfra's
-$1.30/$2.60 — and the only one of the two that is not quantized, DeepInfra
-serving it at fp4. The caching argument barely applies to the inventor anyway,
-whose prompt carries a dossier rebuilt from disk on every call.
-`MATH_AGENT_REASONING_MODEL` and `MATH_AGENT_REASONING_PROVIDER` override
+The model is `deepseek/deepseek-v4-flash-0731` — the model every other role
+uses, routed to `deepinfra` like the rest, so **the split is off at its
+default**, and only the default: `REASONING_ROLES` still selects the four, and
+`MATH_AGENT_REASONING_MODEL` turns it back on in one variable.
+
+Price is why, and it is the numbers that moved rather than the reasoning above.
+`deepseek-v4-pro` was $0.43/$0.87 per million when this section was written and
+$0.66/$1.98 on 2026-08-17, against $0.08/$0.18 for flash: a judgement went from
+five working turns to ten, and what it buys has never been measured here. The
+route moved with it. Pro used to leave through DeepSeek's own endpoint, which
+was then both cheaper than DeepInfra's $1.30/$2.60 and unquantized against its
+fp4; DeepSeek's rise and DeepInfra's move to fp8 spent both halves of that
+argument, so one provider now serves both models. Neither is the cheapest route
+— StreamLake ($0.40/$0.79, fp8) and Baidu ($0.41/$0.81, fp8) undercut both — so
+read the endpoint list before settling.
+
+Every price in this section was true the day it was written and is a guess after
+it, which is how a comment came to argue from $0.43/$0.87 for a route charging
+$0.66/$1.98. `scripts/model-prices` prints the live table from OpenRouter's
+public endpoint listing — input, output and cache-read rates per provider, with
+the pinned row marked and the cheapest one beside it — for whichever models this
+checkout actually pins, read from the constants rather than a list of its own.
+It needs no credentials, so it costs nothing to check before changing a route. The caching argument barely applies to
+the inventor anyway, whose prompt carries a dossier rebuilt from disk on every
+call. `MATH_AGENT_REASONING_MODEL` and `MATH_AGENT_REASONING_PROVIDER` override
 both; `OPENROUTER_MODEL` still overrides every role at once.
 
 Preference alone is not enough, because every fallback costs twice: once for

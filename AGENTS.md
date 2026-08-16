@@ -34,6 +34,7 @@ evidence for it stays available.
   the failure each stops, what bounds them, and how a run declares one.
 - [`docs/lean-library.md`](docs/lean-library.md) — writing the mathematics as
   Lean rather than prose, the `Cited` namespace, and the first replay's numbers.
+- [`docs/memory.md`](docs/memory.md) — the four memory stores, and their audit.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
@@ -293,16 +294,15 @@ contents. Document variable names and placeholders in `.env.example`.
 
 The runtime currently expects:
 
-- `OPENROUTER_API_KEY`
-- optional `OPENROUTER_MODEL`
+- `OPENROUTER_API_KEY`, and optional `OPENROUTER_MODEL`
+- `OPENROUTER_MEMORY_API_KEY`, the memory's own; unset shares the run's limit
 - `EXA_API_KEY`
-- `LANGFUSE_BASE_URL`
-- `LANGFUSE_PUBLIC_KEY`
-- `LANGFUSE_SECRET_KEY`
+- `LANGFUSE_BASE_URL`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`
 - `QDRANT_URL`, normally supplied by Compose
 
-Compose loads the trusted local `.env` and passes configuration to the agent.
-Do not put secret values directly in Docker command arguments.
+The launchers export `.env` over the shell (`scripts/dotenv`), because Compose
+prefers the environment to the file and a stale exported key silently outranked
+this checkout's for a day. Never put a secret in a Docker command argument.
 
 ## Build and test contract
 

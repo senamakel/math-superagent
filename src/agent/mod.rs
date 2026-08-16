@@ -51,22 +51,42 @@ const PREFERRED_PROVIDER: &str = "deepinfra";
 /// It is also what makes the inventor's dossier worth assembling. Sixteen
 /// thousand tokens of record only pays off if the model reading it can hold the
 /// whole thing against a new idea.
-const REASONING_MODEL: &str = "deepseek/deepseek-v4-pro";
+///
+/// **It is the flash model today**, which is to say the split is switched off
+/// at its default while every part of the mechanism stays: `REASONING_ROLES`
+/// still selects the four roles, `MATH_AGENT_REASONING_MODEL` still moves them,
+/// and turning the split back on is one variable rather than a rewrite. The
+/// reason is price — `deepseek-v4-pro` cost $0.43/$0.87 per million when the
+/// paragraph above was written and $0.66/$1.98 on 2026-08-17, against
+/// $0.08/$0.18 for flash, so a judgement now costs roughly ten times a working
+/// turn rather than five. What that buys is unmeasured here, and a cost this
+/// repository has not measured a benefit for is one the default should not
+/// carry.
+const REASONING_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
 
 /// Preferred route for [`REASONING_MODEL`], verified against the endpoint list.
 ///
-/// `DeepSeek`'s own endpoint rather than the run's usual `deepinfra`, and the
-/// choice is not a trade: at the time of writing it is both the cheapest route
-/// for this model — $0.43/$0.87 per million against `DeepInfra`'s $1.30/$2.60 —
-/// and the only one of the two that is not quantized, `DeepInfra` serving it at
-/// fp4. Paying three times as much for a lower-precision copy of a model chosen
-/// for its judgement would defeat the point of choosing it.
+/// `DeepInfra`, which is the run's route for the flash model too, so both
+/// models now leave through one provider.
+///
+/// It was `DeepSeek`'s own endpoint, on an argument that has since expired:
+/// $0.43/$0.87 per million against `DeepInfra`'s $1.30/$2.60, unquantized
+/// against fp4. `DeepSeek` has raised its prices — the same endpoint reads
+/// $0.66/$1.98 on 2026-08-17, a completion rate more than doubled — and
+/// `DeepInfra` now serves this model at fp8 rather than fp4, so the precision
+/// half of that argument is gone as well.
+///
+/// What the pin does *not* buy is a cheaper route. `DeepInfra` is still the
+/// dearer of the two per token, and `StreamLake` ($0.40/$0.79, fp8) and `Baidu`
+/// ($0.41/$0.81, fp8) are cheaper than either — `MATH_AGENT_REASONING_PROVIDER`
+/// moves it in one variable, and the endpoint list is worth re-reading before
+/// leaving it where it is.
 ///
 /// The usual argument for one pinned provider — prompt caching across a large
 /// fixed prefix — is weak for these roles: the inventor's prompt carries a
 /// dossier rebuilt from disk on every call, and the judge and reflection are
 /// handed a different attempt report each time.
-const REASONING_PROVIDER: &str = "deepseek";
+const REASONING_PROVIDER: &str = "deepinfra";
 
 pub use tinyagents::harness::message::Message;
 pub use tinyagents::harness::model::ModelResponse;
