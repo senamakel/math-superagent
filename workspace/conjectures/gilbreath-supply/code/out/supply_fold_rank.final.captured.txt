@@ -1,0 +1,41 @@
+=== DECISIVE: rank and nullity of the operative Phi_n (rows d=2..n-1) ===
+   (what nu2(n)=wt(Phi_n h) actually sums: d in [2, n-1], so (n-2) x n)
+
+  n       shape   rank  nullity   allones_ker   evenalt_ker   oddalt_ker
+  2         0x2      0        2          True           True          True
+  3         1x3      1        2          True           True          True
+  4         2x4      2        2          True           True          True
+  5         3x5      3        2          True           True          True
+  6         4x6      4        2          True           True          True
+  7         5x7      5        2          True           True          True
+  8         6x8      6        2          True           True          True
+  9         7x9      7        2          True           True          True
+ 10        8x10      8        2          True           True          True
+ 11        9x11      9        2          True           True          True
+ 12       10x12     10        2          True           True          True
+ 13       11x13     11        2          True           True          True
+ 14       12x14     12        2          True           True          True
+ 15       13x15     13        2          True           True          True
+ 16       14x16     14        2          True           True          True
+ 17       15x17     15        2          True           True          True
+ 18       16x18     16        2          True           True          True
+ 19       17x19     17        2          True           True          True
+ 20       18x20     18        2          True           True          True
+
+rank == n-2 (full row rank) for all n in 2..20: True
+
+=== Direct negative control: each rank-claim under every row range ===
+   (to show 'rank n-3' fits NO convention)
+n=6: A d=0..n-1 (n rows): rank=6, nullity=0 | B d=2..n-1 (n-2 rows, operative): rank=4, nullity=2 | C d=1..n-1 (n-1 rows, 'k=1..n-1' verbal): rank=5, nullity=1
+n=8: A d=0..n-1 (n rows): rank=8, nullity=0 | B d=2..n-1 (n-2 rows, operative): rank=6, nullity=2 | C d=1..n-1 (n-1 rows, 'k=1..n-1' verbal): rank=7, nullity=1
+n=10: A d=0..n-1 (n rows): rank=10, nullity=0 | B d=2..n-1 (n-2 rows, operative): rank=8, nullity=2 | C d=1..n-1 (n-1 rows, 'k=1..n-1' verbal): rank=9, nullity=1
+n=12: A d=0..n-1 (n rows): rank=12, nullity=0 | B d=2..n-1 (n-2 rows, operative): rank=10, nullity=2 | C d=1..n-1 (n-1 rows, 'k=1..n-1' verbal): rank=11, nullity=1
+
+=== Kernel is exactly span(even-alt, odd-alt); all-ones is their sum ===
+n=4: rank=2 nullity=2 | e,o,(e^o)=ones all in ker: True | all-ones = e XOR o: True
+n=6: rank=4 nullity=2 | e,o,(e^o)=ones all in ker: True | all-ones = e XOR o: True
+n=8: rank=6 nullity=2 | e,o,(e^o)=ones all in ker: True | all-ones = e XOR o: True
+n=10: rank=8 nullity=2 | e,o,(e^o)=ones all in ker: True | all-ones = e XOR o: True
+
+=== Sanity: wt(Phi_n h) via matrix image == nu2 via t_direct oracle ===
+all image==oracle matches: True

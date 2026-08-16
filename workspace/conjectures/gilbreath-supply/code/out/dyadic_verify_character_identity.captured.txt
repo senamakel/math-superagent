@@ -1,0 +1,16 @@
+n sweep: 20..120
+(n,d) pairs checked           : 6868
+corrected form passes         : 6868 (6868/6868)
+corrected form FAILS          : 0
+spurious (-1)^{#runs} FAILS  : 449 (449/6868)  [negative control, MUST be > 0]
+spurious-form failure examples (n,d,true_sign,spurious_sign):
+   (20, 3, -1, 1)
+   (20, 7, 1, -1)
+   (20, 15, -1, 1)
+   (21, 3, -1, 1)
+   (21, 7, 1, -1)
+   (21, 15, -1, 1)
+   (22, 3, 1, -1)
+   (22, 7, 1, -1)
+
+RESULT: corrected identity holds on all 6868 pairs; spurious form fails on 449 pairs (incl. d=3, see examples).

@@ -1,0 +1,23 @@
+======================================================================
+TASK B — kernel component of prime switch bit h
+======================================================================
+Phi_n: (n-2) x n, rows d in [2,n-1], entry C(d-1, j-(n-d)) mod 2.
+Known ker = span(even-alt, odd-alt), so the 4 collapse vectors are 0, even-alt, odd-alt, all-ones.
+
+   n rank null  ker=span?  wt(h)/n   dmin/n  attaining v
+--------------------------------------------------------
+   8    6    2       True   0.6250   0.1250  even-alt
+  16   14    2       True   0.6875   0.1875  even-alt
+  32   30    2       True   0.6250   0.3750  all-ones
+  64   62    2       True   0.6875   0.3125  all-ones
+ 128  126    2       True   0.6484   0.3516  all-ones
+
+Interpretation: dmin/n = min over collapse directions of the
+distance from the prime h to that direction. wt(h)/n = switch
+density. A small dmin/n would mean h is close to a direction
+whose fold image has weight 0 (nu2 = 0); a dmin/n near 1/2
+would mean h is far from every collapse direction.
+NOTE: dmin over the kernel is essentially the distance to the
+nearest parity-alternating string; with this script's own
+measured wt(h)/n in 0.6250..0.6875 (n=8..128, see table), dmin/n
+is expected ~ |wt(h)/n - 0.5| away from 0, not near 0.

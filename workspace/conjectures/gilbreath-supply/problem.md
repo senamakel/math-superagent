@@ -26,8 +26,9 @@ The **right diagonal through column n** is the sequence of cells
 ```
 
 so `δ_0(n) = q_n`, and each subsequent cell sits one row lower and one column
-left. Read this diagonal from its bottom end and take the longest unbroken run
-of cells whose value is `0` or `2` — the **maximal {0,2} suffix**. Define
+left. Read this diagonal from its bottom end **over the depth range
+`k = 2, …, n−1`** and take the longest unbroken run of cells whose value is `0`
+or `2` — the **maximal {0,2} suffix**. Define
 
 ```
 ν₂(n) = the number of 2s in that suffix.
@@ -37,11 +38,18 @@ That is the whole object. `ν₂(n)` is a well-defined non-negative integer for
 each `n`, computable exactly in `O(n²)` integer operations, and the target is a
 linear lower bound on it.
 
-**Convention note.** The suffix is floored at index 2 (the run's canonical
-`lib.rightdiag.cycle_and_nu2`). A variant that floors at index 0 differs by at
-most 1 and changes nothing asymptotic, but pick one convention, state it, and
-keep it — an earlier investigation lost a cycle to two conventions disagreeing
-by exactly 1 on the degenerate cases.
+**Convention note — this floor is not cosmetic, it is load-bearing.** The
+range must start at `k = 2`. Reading from `k = 0` makes `ν₂(n) = 0` for every
+`n ≥ 2` and the problem vacuous: the bottom cell of the right diagonal is
+`A_{n−1}(0)`, which is always `1`, so an unfloored suffix terminates
+immediately and is empty. An earlier draft of this file said "read from its
+bottom end" with no floor and was **wrong**; the degeneracy was caught by
+computation (`code/out/oracle_validation_report.md`,
+`code/out/avg_supply_note.md`) rather than by reading. The floored range
+`k ∈ [2, n−1]` is the operative definition, it is the one every measured value
+below refers to, and it is the one the linearisation of result 1 is a theorem
+about. A `literal_suffix_nu2` that returns identically `0` is the unfloored
+reading and is useful only as a negative control.
 
 ## What is already established, and may be used freely
 
@@ -54,8 +62,16 @@ These are imported as proved. Do not re-derive them.
    under an explicit binomial fold?*
 2. **Lucas.** `C(d,i) mod 2 = 1` iff `i` is a binary submask of `d`. Hence the
    depth-`d` fold cell is `XOR` over submasks of `d`.
-3. **Kernel.** `rank Φ_n = n−3`, nullity 1, and `ker Φ_n = span(all-ones)`
-   (exact `F₂` elimination, verified `n = 2..20`).
+3. **Kernel.** Under the operative row range `d = 2..n−1` (an `(n−2)×n` matrix),
+   `rank Φ_n = n−2` — full row rank — with **nullity 2** and
+   `ker Φ_n = span(even-alt, odd-alt)`, where all-ones is the XOR of those two
+   generators (exact `F₂` elimination, verified `n = 2..20`, with a negative
+   control over all three plausible row ranges).
+   **Corrected.** An earlier statement of "rank `n−3`, nullity 1,
+   `ker = span(all-ones)`" is wrong and fits *no* row-range convention; see
+   `code/out/supply_fold_rank.final.captured.txt`. The kernel is strictly larger
+   than that: there are two independent collapse directions, not one. All-ones
+   remains in the kernel, so closed door 1 is unaffected.
 4. **Dyadic collapse.** If `h` is eventually periodic with minimal period a
    power of two, `ν₂(n) = O(1)`. Proved from (1)+(2).
 5. **The primes are not eventually periodic.** Proved, conditional on Shiu 2000
@@ -67,9 +83,10 @@ Exact integers, streamed one row at a time:
 
 | quantity | value |
 | --- | --- |
-| `ν₂(n)/n`, real primes, `n = 50..3999` | `0.420 … 0.520`, no downward drift |
+| `ν₂(n)/n`, real primes, `n = 50..4000` | `0.3396 … 0.6170`, no downward drift (a narrower `0.42…0.52` was quoted from a sampled sub-window; the full sweep is wider and this row is the corrected one) |
+| Cesàro mean `M(n)` of `ν₂/n`, real primes | rising: `0.4394` (n=100) → `0.4973` (n=4000) |
 | `ν₂(n)/n` at `n = 4000` | `0.4933` |
-| `ν₂/w` (`w` = number of gaps ≡ 2 mod 4) | min `0.7049` over `n = 100..2000` |
+| `ν₂/w` (`w` = number of gaps ≡ 2 mod 4) | **UNVERIFIED — do not cite.** `0.7049` was quoted as the min over `n = 100..2000`; an independent recomputation got `0.597` at `n = 105`. The `w` convention or the `n`-range behind `0.7049` has not been traced. Nothing should lean on this row until it is. |
 
 So the truth is `c ≈ 0.49`, and **any** fixed `c > 0` suffices. Even the far
 weaker `ν₂(n) > n^{0.526}` would do — at `n = 10⁶` that asks for ~2,900 against

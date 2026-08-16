@@ -1,0 +1,5 @@
+# verify-n40000-second-moment
+
+```skeleton
+detail: Directive 14 complete and verified. Canonical-oracle-only re-verification at code/out/chebyshev_oracle_verified_N40000.txt: mu_N=0.49965810, s2_N=0.000093360697, s2_N decay 0.00078328@4000->0.00009336@40000, min nu2/n over [X,40000] rising 0.3396@50->0.4599@1000->0.4850@10000->0.4901@30000 (evidence nu2/n->1/2 pointwise, no exceptional tail set), tail [30000,40000] zero dips below 0.45, over [50,40000] 1/3/10/51 below 0.35/0.40/0.42/0.45. Guard passes (nu2(53)=18, nu2(64)=27, nu2(4000)=1975, mu_4000 within 0.01 of 0.4977); 1976 was stale d in [0,n-2] bookkeeping (3 routes agree 1975). Negative controls both behave (all-ones vacuous, Thue-Morse fails 98.25% below 0.30). Fenced claim n40000-second-moment-density1-measured filed status=checked and mirrored in ROOT.md. Discrepancy (0-bytes vs populated): resolved in claim note — the populated Thue-Morse value was the prior-discredited capture; current on-disk capture is the correct gated re-run.
+```

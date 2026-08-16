@@ -1,0 +1,86 @@
+==== PRIMES: n=400 ====
+S(n) = -16, |S|/n = 0.0400, density(T=1) = 0.5201
+  [popcount]  per-class counts(+1/-1) and net sign-sum:
+    popcount=   1:  +1=     0  -1=     8  net=      -8
+    popcount=   2:  +1=    18  -1=    18  net=      +0
+    popcount=   3:  +1=    40  -1=    41  net=      -1
+    popcount=   4:  +1=    50  -1=    61  net=     -11
+    popcount=   5:  +1=    55  -1=    40  net=     +15
+    popcount=   6:  +1=    21  -1=    29  net=      -8
+    popcount=   7:  +1=     6  -1=     9  net=      -3
+    popcount=   8:  +1=     1  -1=     1  net=      +0
+  popcount<= 5: 331 depths (0.832 of all), +1=163, -1=168, net S_low=-5
+  popcount>  5: 67 depths (0.168 of all), +1=28, -1=39, net S_high=-11
+  ratios: |S_low|/|S_high| = 5/11 = 0.455,  |S_low|/|S| = 5/16 = 0.312
+  [run-count]  per-class counts and net sign-sum:
+    runs=   1:  +1=     4  -1=     3  net=      +1
+    runs=   2:  +1=    13  -1=    23  net=     -10
+    runs=   4:  +1=    40  -1=    42  net=      -2
+    runs=   8:  +1=    58  -1=    53  net=      +5
+    runs=  16:  +1=    45  -1=    50  net=      -5
+    runs=  32:  +1=    22  -1=    28  net=      -6
+    runs=  64:  +1=     7  -1=     8  net=      -1
+    runs= 128:  +1=     2  -1=     0  net=      +2
+  runs<=4 (few-run): 125 depths (0.314 of all), +1=57, -1=68, net=-11
+  runs>=8 (many-run): 273 depths (0.686 of all), +1=134, -1=139, net=-5
+
+==== PRIMES: n=1000 ====
+S(n) = -2, |S|/n = 0.0020, density(T=1) = 0.5010
+  [popcount]  per-class counts(+1/-1) and net sign-sum:
+    popcount=   1:  +1=     3  -1=     6  net=      -3
+    popcount=   2:  +1=    18  -1=    27  net=      -9
+    popcount=   3:  +1=    53  -1=    67  net=     -14
+    popcount=   4:  +1=   115  -1=    95  net=     +20
+    popcount=   5:  +1=   122  -1=   130  net=      -8
+    popcount=   6:  +1=   108  -1=   100  net=      +8
+    popcount=   7:  +1=    57  -1=    56  net=      +1
+    popcount=   8:  +1=    20  -1=    16  net=      +4
+    popcount=   9:  +1=     2  -1=     3  net=      -1
+  popcount<= 5: 636 depths (0.637 of all), +1=311, -1=325, net S_low=-14
+  popcount>  5: 362 depths (0.363 of all), +1=187, -1=175, net S_high=+12
+  ratios: |S_low|/|S_high| = 14/12 = 1.167,  |S_low|/|S| = 14/2 = 7.000
+  [run-count]  per-class counts and net sign-sum:
+    runs=   1:  +1=     6  -1=     2  net=      +4
+    runs=   2:  +1=    21  -1=    24  net=      -3
+    runs=   4:  +1=    54  -1=    66  net=     -12
+    runs=   8:  +1=   105  -1=   105  net=      +0
+    runs=  16:  +1=   136  -1=   116  net=     +20
+    runs=  32:  +1=    99  -1=   110  net=     -11
+    runs=  64:  +1=    64  -1=    49  net=     +15
+    runs= 128:  +1=    11  -1=    25  net=     -14
+    runs= 256:  +1=     2  -1=     3  net=      -1
+  runs<=4 (few-run): 173 depths (0.173 of all), +1=81, -1=92, net=-11
+  runs>=8 (many-run): 825 depths (0.827 of all), +1=417, -1=408, net=+9
+
+==== PRIMES: n=4000 ====
+S(n) = 48, |S|/n = 0.0120, density(T=1) = 0.4940
+  [popcount]  per-class counts(+1/-1) and net sign-sum:
+    popcount=   1:  +1=     4  -1=     7  net=      -3
+    popcount=   2:  +1=    39  -1=    27  net=     +12
+    popcount=   3:  +1=   115  -1=   105  net=     +10
+    popcount=   4:  +1=   256  -1=   239  net=     +17
+    popcount=   5:  +1=   412  -1=   380  net=     +32
+    popcount=   6:  +1=   461  -1=   461  net=      +0
+    popcount=   7:  +1=   388  -1=   393  net=      -5
+    popcount=   8:  +1=   235  -1=   235  net=      +0
+    popcount=   9:  +1=    89  -1=   101  net=     -12
+    popcount=  10:  +1=    20  -1=    26  net=      -6
+    popcount=  11:  +1=     4  -1=     1  net=      +3
+  popcount<= 5: 1584 depths (0.396 of all), +1=826, -1=758, net S_low=+68
+  popcount>  5: 2414 depths (0.604 of all), +1=1197, -1=1217, net S_high=-20
+  ratios: |S_low|/|S_high| = 68/20 = 3.400,  |S_low|/|S| = 68/48 = 1.417
+  [run-count]  per-class counts and net sign-sum:
+    runs=   1:  +1=     7  -1=     3  net=      +4
+    runs=   2:  +1=    31  -1=    35  net=      -4
+    runs=   4:  +1=   108  -1=   112  net=      -4
+    runs=   8:  +1=   252  -1=   243  net=      +9
+    runs=  16:  +1=   423  -1=   369  net=     +54
+    runs=  32:  +1=   452  -1=   471  net=     -19
+    runs=  64:  +1=   413  -1=   368  net=     +45
+    runs= 128:  +1=   221  -1=   249  net=     -28
+    runs= 256:  +1=    95  -1=    95  net=      +0
+    runs= 512:  +1=    17  -1=    29  net=     -12
+    runs=1024:  +1=     4  -1=     1  net=      +3
+  runs<=4 (few-run): 296 depths (0.074 of all), +1=146, -1=150, net=-4
+  runs>=8 (many-run): 3702 depths (0.926 of all), +1=1877, -1=1825, net=+52
+

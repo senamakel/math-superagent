@@ -1,0 +1,26 @@
+REFUTATION (confirmed, single established result):
+  the literal windowed form of G-sup-implies-switch, and the
+  unqualified R-switch-equivalence, are FALSE.
+  Witness family h = e_{n-1}: a single 1 at the window's final
+  index n-1, zeros elsewhere. For every depth d in [2,n-1] the
+  diagonal reads offset o=d (a submask of d) at index n-1 = 1, so
+  T(n,d)=1 for all n-2 depths:  nu2(n) = n-2 = Theta(n), while the
+  switch density away from the boundary spike is 0.
+
+  RANGE SWEPT: n = 4..12 (inclusive), h length n, d in [2, n-1].
+
+  Negative control: h = e_0 (single 1 at the FIRST index) does NOT
+  give linear weight -- this refutation is about the shared final-
+  index boundary spike, not about any single 1. See last columns;
+  the control's nu2/n -> 0 while the positive case's nu2/n = 1.
+
+n    nu2(e_{n-1})  nu2/n(pos)  switch_density(pos)  nu2(e_0)  nu2/n(neg)  switch_density(neg)
+  4            2      1.000                0.000        1      0.500               0.333
+  5            3      1.000                0.000        1      0.333               0.250
+  6            4      1.000                0.000        1      0.250               0.200
+  7            5      1.000                0.000        1      0.200               0.167
+  8            6      1.000                0.000        1      0.167               0.143
+  9            7      1.000                0.000        1      0.143               0.125
+ 10            8      1.000                0.000        1      0.125               0.111
+ 11            9      1.000                0.000        1      0.111               0.100
+ 12           10      1.000                0.000        1      0.100               0.091

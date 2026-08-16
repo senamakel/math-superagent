@@ -1,0 +1,174 @@
+[guard] assert_supply_guard(40000): nu2(53)==18, nu2(64)==27, primes mu_4000 within 0.01 of 0.4977 — canonical oracle OK
+oracle cross-check: s_sos == s_direct on n=4..200 and spots 53,64,100 (prime h): OK
+SEQUENCE : PRIMES
+ORACLE   : lib.nu2.fold_nu2=lib.supply_fold.s_sos
+N-RANGE  : [2, 40000]
+[primes] STAGE1 parallel nu2 (n=2..40000) in 91.2s (nproc=28)
+[primes] STAGE2 exact reduce in 19.0s
+=== PRIMES h : N = 40000 ===
+(1) M(N) = (1/N) sum_{n=2..N} nu2(n)/n  at checkpoints:
+   N        M(N)        nu2(N)/N
+     100  0.43940386   0.44000000
+    1000  0.49062014   0.50000000
+    5000  0.49774843   0.48960000
+   10000  0.49881056   0.50770000
+   20000  0.49935622   0.49950000
+   30000  0.49956482   0.50266667
+   40000  0.49965810   0.50202500
+monotonicity violations (M(N) < M(N-1)) over N=3..40000: count = 16814  density = 0.420371
+(2) dip sparsity at N = 40000:  {n in range : nu2(n)/n < c}
+   c     range       count    width    density
+  0.30  full           0   39951  0.000000
+  0.35  full           1   39951  0.000025
+  0.40  full           3   39951  0.000075
+  0.42  full          10   39951  0.000250
+  0.45  full          51   39951  0.001277
+  0.48  full         354   39951  0.008861
+  0.30  half           0   20001  0.000000
+  0.35  half           0   20001  0.000000
+  0.40  half           0   20001  0.000000
+  0.42  half           0   20001  0.000000
+  0.45  half           0   20001  0.000000
+  0.48  half           0   20001  0.000000
+  0.30  tail           0    4001  0.000000
+  0.35  tail           0    4001  0.000000
+  0.40  tail           0    4001  0.000000
+  0.42  tail           0    4001  0.000000
+  0.45  tail           0    4001  0.000000
+  0.48  tail           0    4001  0.000000
+min of nu2(n)/n over [X, N]:
+   X=    50:  min = 0.33962264
+   X=  1000:  min = 0.45995045
+   X= 10000:  min = 0.48502304
+   X= 30000:  min = 0.49011407
+(3)+(4) exact variance s2_N, mu_N, std, Chebyshev density bound:
+  N= 4000  mu=0.497259  s2=0.00078328 std=0.027987  eps=0.05  #<mu-eps=     76  Cheb=   0.3133  real-below=0.019005
+  N= 4000  mu=0.497259  s2=0.00078328 std=0.027987  eps=0.10  #<mu-eps=     23  Cheb=   0.0783  real-below=0.005751
+  N= 4000  mu=0.497259  s2=0.00078328 std=0.027987  eps=0.15  #<mu-eps=     17  Cheb=   0.0348  real-below=0.004251
+  N= 4000  mu=0.497259  s2=0.00078328 std=0.027987  eps=0.20  #<mu-eps=     10  Cheb=   0.0196  real-below=0.002501
+  N= 8000  mu=0.498502  s2=0.00041486 std=0.020368  eps=0.05  #<mu-eps=     77  Cheb=   0.1659  real-below=0.009626
+  N= 8000  mu=0.498502  s2=0.00041486 std=0.020368  eps=0.10  #<mu-eps=     23  Cheb=   0.0415  real-below=0.002875
+  N= 8000  mu=0.498502  s2=0.00041486 std=0.020368  eps=0.15  #<mu-eps=     17  Cheb=   0.0184  real-below=0.002125
+  N= 8000  mu=0.498502  s2=0.00041486 std=0.020368  eps=0.20  #<mu-eps=     10  Cheb=   0.0104  real-below=0.001250
+  N=12000  mu=0.498981  s2=0.00028561 std=0.016900  eps=0.05  #<mu-eps=     79  Cheb=   0.1142  real-below=0.006584
+  N=12000  mu=0.498981  s2=0.00028561 std=0.016900  eps=0.10  #<mu-eps=     23  Cheb=   0.0286  real-below=0.001917
+  N=12000  mu=0.498981  s2=0.00028561 std=0.016900  eps=0.15  #<mu-eps=     17  Cheb=   0.0127  real-below=0.001417
+  N=12000  mu=0.498981  s2=0.00028561 std=0.016900  eps=0.20  #<mu-eps=     10  Cheb=   0.0071  real-below=0.000833
+  N=16000  mu=0.499222  s2=0.00021897 std=0.014798  eps=0.05  #<mu-eps=     79  Cheb=   0.0876  real-below=0.004938
+  N=16000  mu=0.499222  s2=0.00021897 std=0.014798  eps=0.10  #<mu-eps=     23  Cheb=   0.0219  real-below=0.001438
+  N=16000  mu=0.499222  s2=0.00021897 std=0.014798  eps=0.15  #<mu-eps=     17  Cheb=   0.0097  real-below=0.001063
+  N=16000  mu=0.499222  s2=0.00021897 std=0.014798  eps=0.20  #<mu-eps=     10  Cheb=   0.0055  real-below=0.000625
+  N=20000  mu=0.499356  s2=0.00017795 std=0.013340  eps=0.05  #<mu-eps=     79  Cheb=   0.0712  real-below=0.003950
+  N=20000  mu=0.499356  s2=0.00017795 std=0.013340  eps=0.10  #<mu-eps=     23  Cheb=   0.0178  real-below=0.001150
+  N=20000  mu=0.499356  s2=0.00017795 std=0.013340  eps=0.15  #<mu-eps=     17  Cheb=   0.0079  real-below=0.000850
+  N=20000  mu=0.499356  s2=0.00017795 std=0.013340  eps=0.20  #<mu-eps=     10  Cheb=   0.0044  real-below=0.000500
+  N=24000  mu=0.499467  s2=0.00015020 std=0.012256  eps=0.05  #<mu-eps=     79  Cheb=   0.0601  real-below=0.003292
+  N=24000  mu=0.499467  s2=0.00015020 std=0.012256  eps=0.10  #<mu-eps=     23  Cheb=   0.0150  real-below=0.000958
+  N=24000  mu=0.499467  s2=0.00015020 std=0.012256  eps=0.15  #<mu-eps=     17  Cheb=   0.0067  real-below=0.000708
+  N=24000  mu=0.499467  s2=0.00015020 std=0.012256  eps=0.20  #<mu-eps=     10  Cheb=   0.0038  real-below=0.000417
+  N=28000  mu=0.499537  s2=0.00013019 std=0.011410  eps=0.05  #<mu-eps=     80  Cheb=   0.0521  real-below=0.002857
+  N=28000  mu=0.499537  s2=0.00013019 std=0.011410  eps=0.10  #<mu-eps=     23  Cheb=   0.0130  real-below=0.000821
+  N=28000  mu=0.499537  s2=0.00013019 std=0.011410  eps=0.15  #<mu-eps=     17  Cheb=   0.0058  real-below=0.000607
+  N=28000  mu=0.499537  s2=0.00013019 std=0.011410  eps=0.20  #<mu-eps=     10  Cheb=   0.0033  real-below=0.000357
+  N=32000  mu=0.499584  s2=0.00011496 std=0.010722  eps=0.05  #<mu-eps=     80  Cheb=   0.0460  real-below=0.002500
+  N=32000  mu=0.499584  s2=0.00011496 std=0.010722  eps=0.10  #<mu-eps=     23  Cheb=   0.0115  real-below=0.000719
+  N=32000  mu=0.499584  s2=0.00011496 std=0.010722  eps=0.15  #<mu-eps=     17  Cheb=   0.0051  real-below=0.000531
+  N=32000  mu=0.499584  s2=0.00011496 std=0.010722  eps=0.20  #<mu-eps=     10  Cheb=   0.0029  real-below=0.000313
+  N=36000  mu=0.499622  s2=0.00010298 std=0.010148  eps=0.05  #<mu-eps=     80  Cheb=   0.0412  real-below=0.002222
+  N=36000  mu=0.499622  s2=0.00010298 std=0.010148  eps=0.10  #<mu-eps=     23  Cheb=   0.0103  real-below=0.000639
+  N=36000  mu=0.499622  s2=0.00010298 std=0.010148  eps=0.15  #<mu-eps=     17  Cheb=   0.0046  real-below=0.000472
+  N=36000  mu=0.499622  s2=0.00010298 std=0.010148  eps=0.20  #<mu-eps=     10  Cheb=   0.0026  real-below=0.000278
+  N=40000  mu=0.499658  s2=0.00009336 std=0.009662  eps=0.05  #<mu-eps=     80  Cheb=   0.0373  real-below=0.002000
+  N=40000  mu=0.499658  s2=0.00009336 std=0.009662  eps=0.10  #<mu-eps=     23  Cheb=   0.0093  real-below=0.000575
+  N=40000  mu=0.499658  s2=0.00009336 std=0.009662  eps=0.15  #<mu-eps=     17  Cheb=   0.0041  real-below=0.000425
+  N=40000  mu=0.499658  s2=0.00009336 std=0.009662  eps=0.20  #<mu-eps=     10  Cheb=   0.0023  real-below=0.000250
+   ---- fair-variance ratio & theoretical decoupled-random reference ----
+   Np      mu_N      s2_N      s2*4Np  s2*4Np/lnNp   theo_decoupled   theo*4Np  theo*4Np/lnNp  meas/theo
+   4000 0.497259 0.00078328  12.5325     1.511 0.00041138   6.5820     0.794   1.904
+   8000 0.498502 0.00041486  13.2756     1.477 0.00022734   7.2749     0.809   1.825
+  12000 0.498981 0.00028561  13.7094     1.460 0.00016000   7.6802     0.818   1.785
+  16000 0.499222 0.00021897  14.0140     1.448 0.00012450   7.9678     0.823   1.759
+  20000 0.499356 0.00017795  14.2358     1.437 0.00010239   8.1910     0.827   1.738
+  24000 0.499467 0.00015020  14.4191     1.430 0.00008722   8.3733     0.830   1.722
+  28000 0.499537 0.00013019  14.5809     1.424 0.00007614   8.5274     0.833   1.710
+  32000 0.499584 0.00011496  14.7146     1.418 0.00006766   8.6609     0.835   1.699
+  36000 0.499622 0.00010298  14.8296     1.414 0.00006096   8.7787     0.837   1.689
+  40000 0.499658 0.00009336  14.9377     1.410 0.00005553   8.8840     0.838   1.681
+
+=== ALL-ONES h (neg control: mean 0, var 0, vacuous) : N = 4000 ===
+(1) M(N) = (1/N) sum_{n=2..N} nu2(n)/n  at checkpoints:
+   N        M(N)        nu2(N)/N
+     100  0.00000000   0.00000000
+    1000  0.00000000   0.00000000
+monotonicity violations (M(N) < M(N-1)) over N=3..4000: count = 0  density = 0.000000
+(2) dip sparsity at N = 4000:  {n in range : nu2(n)/n < c}
+   c     range       count    width    density
+  0.30  full        3951    3951  1.000000
+  0.35  full        3951    3951  1.000000
+  0.40  full        3951    3951  1.000000
+  0.42  full        3951    3951  1.000000
+  0.45  full        3951    3951  1.000000
+  0.48  full        3951    3951  1.000000
+  0.30  half        2001    2001  1.000000
+  0.35  half        2001    2001  1.000000
+  0.40  half        2001    2001  1.000000
+  0.42  half        2001    2001  1.000000
+  0.45  half        2001    2001  1.000000
+  0.48  half        2001    2001  1.000000
+  0.30  tail         401     401  1.000000
+  0.35  tail         401     401  1.000000
+  0.40  tail         401     401  1.000000
+  0.42  tail         401     401  1.000000
+  0.45  tail         401     401  1.000000
+  0.48  tail         401     401  1.000000
+min of nu2(n)/n over [X, N]:
+   X=    50:  min = 0.00000000
+   X=  1000:  min = 0.00000000
+(3)+(4) exact variance s2_N, mu_N, std, Chebyshev density bound:
+  N= 4000  mu=0.000000  s2=0.00000000 std=0.000000  eps=0.05  #<mu-eps=      0  Cheb=   0.0000  real-below=0.000000
+  N= 4000  mu=0.000000  s2=0.00000000 std=0.000000  eps=0.10  #<mu-eps=      0  Cheb=   0.0000  real-below=0.000000
+  N= 4000  mu=0.000000  s2=0.00000000 std=0.000000  eps=0.15  #<mu-eps=      0  Cheb=   0.0000  real-below=0.000000
+  N= 4000  mu=0.000000  s2=0.00000000 std=0.000000  eps=0.20  #<mu-eps=      0  Cheb=   0.0000  real-below=0.000000
+   ---- fair-variance ratio & theoretical decoupled-random reference ----
+   Np      mu_N      s2_N      s2*4Np  s2*4Np/lnNp   theo_decoupled   theo*4Np  theo*4Np/lnNp  meas/theo
+   4000 0.000000 0.00000000   0.0000     0.000 0.00041138   6.5820     0.794   0.000
+
+=== THUE-MORSE h (neg control: must FAIL density-1) : N = 4000 ===
+(1) M(N) = (1/N) sum_{n=2..N} nu2(n)/n  at checkpoints:
+   N        M(N)        nu2(N)/N
+     100  0.22547343   0.14000000
+    1000  0.10804338   0.02100000
+monotonicity violations (M(N) < M(N-1)) over N=3..4000: count = 3312  density = 0.828414
+(2) dip sparsity at N = 4000:  {n in range : nu2(n)/n < c}
+   c     range       count    width    density
+  0.30  full        3882    3951  0.982536
+  0.35  full        3922    3951  0.992660
+  0.40  full        3934    3951  0.995697
+  0.42  full        3939    3951  0.996963
+  0.45  full        3939    3951  0.996963
+  0.48  full        3939    3951  0.996963
+  0.30  half        1987    2001  0.993003
+  0.35  half        1996    2001  0.997501
+  0.40  half        1998    2001  0.998501
+  0.42  half        1999    2001  0.999000
+  0.45  half        1999    2001  0.999000
+  0.48  half        1999    2001  0.999000
+  0.30  tail         401     401  1.000000
+  0.35  tail         401     401  1.000000
+  0.40  tail         401     401  1.000000
+  0.42  tail         401     401  1.000000
+  0.45  tail         401     401  1.000000
+  0.48  tail         401     401  1.000000
+min of nu2(n)/n over [X, N]:
+   X=    50:  min = 0.00306920
+   X=  1000:  min = 0.00306920
+(3)+(4) exact variance s2_N, mu_N, std, Chebyshev density bound:
+  N= 4000  mu=0.064146  s2=0.00534607 std=0.073117  eps=0.05  #<mu-eps=    541  Cheb=   2.1384  real-below=0.135284
+  N= 4000  mu=0.064146  s2=0.00534607 std=0.073117  eps=0.10  #<mu-eps=      0  Cheb=   0.5346  real-below=0.000000
+  N= 4000  mu=0.064146  s2=0.00534607 std=0.073117  eps=0.15  #<mu-eps=      0  Cheb=   0.2376  real-below=0.000000
+  N= 4000  mu=0.064146  s2=0.00534607 std=0.073117  eps=0.20  #<mu-eps=      0  Cheb=   0.1337  real-below=0.000000
+   ---- fair-variance ratio & theoretical decoupled-random reference ----
+   Np      mu_N      s2_N      s2*4Np  s2*4Np/lnNp   theo_decoupled   theo*4Np  theo*4Np/lnNp  meas/theo
+   4000 0.064146 0.00534607  85.5371    10.313 0.00041138   6.5820     0.794  12.996
+
+TOTAL runtime: 262.1s;  exact ceiling reached: N=40000

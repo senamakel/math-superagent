@@ -1,0 +1,67 @@
+SEQUENCE : { nu2(n)/n : n = 2..N }, N=80000  (PRIMES only)
+ORACLE   : lib.supply_fold.s_sos via lib.nu2.fold_nu2 (s_sos==s_direct on n=4..200 + 53,64,100 in parent)
+N-RANGE  : [2, 80000], streamed one n at a time (no triangle)
+
+=== ENTRY GUARD (canonical oracle, primes h) ===
+  [guard, fresh oracle] fold_nu2(53)=18 fold_nu2(64)=27 fold_nu2(4000)=1975  -> PASS
+
+=== STAGE1 : compute_nu2 to N=80000 (nproc=28) ===
+  [STAGE1] 325.8s ; nu2[80000]=39894 (~0.4987)
+  [ARRAY-ASSERT] nu2[53]=18 nu2[64]=27 nu2[4000]=1975 mu_4000(prod)=0.497259  -> PASS
+
+=== s2_N and Ratio B at checkpoints (exact Fractions) ===
+    1000  mu=0.49111125  s2=2.4916322565e-03  RatioB=1.443
+    4000  mu=0.49738323  s2=7.2163270955e-04  RatioB=1.392
+   10000  mu=0.49886045  s2=3.1327239902e-04  RatioB=1.361
+   20000  mu=0.49938119  s2=1.6548686662e-04  RatioB=1.337
+   40000  mu=0.49967059  s2=8.7121263299e-05  RatioB=1.315
+   80000  mu=0.49982676  s2=4.5749115971e-05  RatioB=1.297
+  FINAL N=80000: s2_N=4.5749115971e-05 RatioB=1.297
+
+=== EXTENDED Ratio B sequence ===
+  N        RatioB
+    1000   1.443
+    4000   1.392
+   10000   1.361
+   20000   1.337
+   40000   1.315
+   80000   1.297
+
+=== PER-DOUBLING DECREMENTS (each step ~2x N) ===
+  from        to        decrement
+    1000  ->   4000   0.051
+    4000  ->  10000   0.032
+   10000  ->  20000   0.024
+   20000  ->  40000   0.021
+   40000  ->  80000   0.019
+
+TREND (measured, not proved): shrinking (last decrement 0.019 < previous 0.021) -> consistent with limit > 1
+  Ratio B at largest completed N: 1.297 (baseline 40000 axis = 1.315)
+
+STAGE1 325.8s ; reduce 10.7s ; total 337.3s ; nproc=28 ; N=80000 completed
+LABEL: measured, not proved.
+
+=== CLOSURE NOTE (honest, measured-not-proved) ===
+N=160000 was NOT attempted: STAGE1 for N=80000 took 325.8s, and 160000 is
+~4x that work (~22 min), well over the per-command budget. Per the steering
+note ("only attempt 160000 if 80000 finished well under budget") we stop at
+80000, which is exactly the one doubling past the previous ceiling of 40000.
+This is the sharpest new per-doubling decrement available.
+
+DECREMENT SEQUENCE (per ~2x N step): 0.051, 0.032, 0.024, 0.021, 0.019.
+Reading: the decrements ARE still shrinking (0.024 -> 0.021 -> 0.019), which
+is the signature of Ratio B converging to a limit ABOVE 1 — consistent with
+limit > 1. But the decrements are barely shrinking and the absolute value at
+80000 (Ratio B = 1.297) is still some distance above 1, so this is evidence,
+NOT a proof that the limit exceeds 1. A single extra point cannot separate
+"limit exactly 1 approached from above" from "limit > 1" — that would need
+several more doublings (160000, 320000, ...) each ~4x the prior runtime.
+
+NEGATIVE-CONTROL honesty: this run has no failing control, and that is a real
+limitation. The oracle and guards are the parent run's well-tested canonical
+pair (s_sos == s_direct on n=4..200 plus 53/64/100; all-ones vacuous and
+thue-morse density-1 failure were verified with the SAME oracle in the
+parent chebyshev capture). Within this run, the array-level guard asserts
+the four operator values on the PRODUCED array, which is the specified check.
+BASELINE reproduced exactly, which independently confirms the reduce
+convention (denominator N-1) used here matches the earlier capture.

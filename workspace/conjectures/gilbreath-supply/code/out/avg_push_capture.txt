@@ -1,0 +1,44 @@
+======================================================================
+TASK A — density-matched model control (averaged fold mean)
+======================================================================
+PRIME switch-bit density (measured)
+  ones(h[0..3999]) = 2387  density over full length = 0.5968
+  density over [50,4000) = 0.5962
+  (prompt guessed ~0.575; actual measured = 0.5968)
+
+VERIFY fold_nu2 (SOS) == s_direct (literal oracle) on prime h
+  n=  4  s_direct=2  s_sos=2  fold_nu2=2  agree=True
+  n=  8  s_direct=2  s_sos=2  fold_nu2=2  agree=True
+  n= 16  s_direct=12  s_sos=12  fold_nu2=12  agree=True
+  n= 32  s_direct=13  s_sos=13  fold_nu2=13  agree=True
+  n= 64  s_direct=27  s_sos=27  fold_nu2=27  agree=True
+
+PRIME  M(N) = (1/N) sum_{n=2..N} nu2(n)/n   (exact via s_sos)
+  M(  100) = 0.4394
+  M(  500) = 0.4832
+  M( 1000) = 0.4906
+  M( 2000) = 0.4952
+  M( 4000) = 0.4973
+
+THUE-MORSE  M(N)  (density 1/2 but fold mean -> 0)
+  M(  100) = 0.2255
+  M(  500) = 0.1378
+  M( 1000) = 0.1080
+  M( 2000) = 0.0836
+  M( 4000) = 0.0641
+
+RANDOM MODELS: 20 independent trials per model;
+  each trial = one fresh Bernoulli string of length 4001, all
+  sample points read from the same string (prefix-consistent).
+  Bernoulli(p) with p = measured prime density = 0.5968
+  Bernoulli(0.5) balanced control.
+  Per N: mean over trials, spread min/max, sample std (numpy, 1ddof).
+
+     N   primeM Ber(p) mean     std     min     max | Ber(0.5) mean     std     min     max |   ThueM
+   100   0.4394      0.4503  0.0106  0.4306  0.4685 |        0.4542  0.0086  0.4272  0.4640 |  0.2255
+   500   0.4832      0.4865  0.0025  0.4824  0.4904 |        0.4874  0.0017  0.4834  0.4902 |  0.1378
+  1000   0.4906      0.4926  0.0015  0.4901  0.4949 |        0.4929  0.0012  0.4905  0.4945 |  0.1080
+  2000   0.4952      0.4959  0.0009  0.4944  0.4974 |        0.4961  0.0007  0.4949  0.4972 |  0.0836
+  4000   0.4973      0.4977  0.0004  0.4969  0.4985 |        0.4979  0.0004  0.4972  0.4985 |  0.0641
+
+Trials used: 20 (total run kept within ~600s; prime/thue deterministic, no trials).

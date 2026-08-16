@@ -1,0 +1,33 @@
+== Theorem 5: Fibonacci run-length transform ==
+n= 1 sumT=1 runlen=1 OK
+n= 2 sumT=1 runlen=1 OK
+n= 3 sumT=2 runlen=2 OK
+n= 4 sumT=1 runlen=1 OK
+n= 5 sumT=1 runlen=1 OK
+n= 6 sumT=2 runlen=2 OK
+n= 7 sumT=3 runlen=3 OK
+n= 8 sumT=1 runlen=1 OK
+n= 9 sumT=1 runlen=1 OK
+n=10 sumT=1 runlen=1 OK
+n=11 sumT=2 runlen=2 OK
+n=12 sumT=2 runlen=2 OK
+n=13 sumT=2 runlen=2 OK
+n=14 sumT=3 runlen=3 OK
+n=15 sumT=5 runlen=5 OK
+n=16 sumT=1 runlen=1 OK
+n=17 sumT=1 runlen=1 OK
+n=18 sumT=1 runlen=1 OK
+n=19 sumT=2 runlen=2 OK
+Theorem5 all match: True
+
+== Theorem 9: positive integers run-length transform ==
+Theorem9 all match with S(L)=L+1: True
+Negative control (S(L)=L must fail): True
+
+== SUPPLY fold Phi: submask-XOR transform invertibility ==
+Zeta (Phi) transform invertible round-trips over 50 random h: True
+
+== weight of transform for random dense h (dimension sqrt-ish) ==
+k= 16 wt(h)=  6/16  wt(Phi h)=  7/16
+k= 32 wt(h)= 16/32  wt(Phi h)= 16/32
+k= 64 wt(h)= 31/64  wt(Phi h)= 30/64

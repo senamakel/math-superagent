@@ -1,39 +1,17 @@
 # Index — code/lib
 
-What other programs import. One subject per module, so reading the part you
-need costs almost nothing.
-
-`/workspace/code` is on `PYTHONPATH`, so a module here is importable by name
-from any working directory and any invocation:
-
-```python
-from lib.perms import lex_ranks
-```
-
-Never write `sys.path.insert`. If an import fails, the file is in the wrong
-place and moving it is the fix.
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
 
 | File | Purpose |
 | --- | --- |
-
-_No library modules yet._
-
-## Adding one
-
-A routine earns a place here when a second program would otherwise repeat it,
-or when getting it right took real work — exact arithmetic, an off-by-one in a
-recurrence, a verified base case. A single-use expression does not. The third
-time you type a routine out, it belonged here the first time.
-
-Write `code/lib/<subject>.py` holding the functions for one subject, each with
-a docstring, each callable without reading its source: explicit arguments, one
-job, no reliance on globals or on a file written earlier in the run. Check it
-against a case whose answer is already known, then `describe_file` it. The
-description carries each function's signature, what it returns, and what
-established that it is correct — an unverified helper must say `unverified`, so
-a later agent knows what it is standing on.
-
-Keep a module small enough to read whole. A second subject is a second module.
-
-Every helper uses exact integer or rational arithmetic unless its row says
-otherwise. Say so explicitly when a function returns a float.
+| `capture.py` | Atomic-capture runner (Directive 23 fix): runs a command redirecting stdout+stderr to a temp file `<target>.tmp.<pid>`, and only os.replace()s it onto the target when exit code is 0; on nonzero exit/timeout deletes the temp and leaves any previous target intact. Captures exit status explicitly. Library entry capture_command(cmd, target, timeout=None) -> (returncode, report); CLI `python3 -m lib.capture --target FILE [--timeout S] -- CMD...`. Fixes the `> file` truncation pattern that left 0-byte captures reading as passes. |
+| `direct_fold.py` | _(undescribed)_ |
+| `downset_rows.py` | Fold row set M_d as n-bit masks, symmetric-difference distance dist(d,d'), distance distribution A_k, enumerator F_n(z) = sum z^{dist}, Walsh spectrum C_n^hat(omega) and its Krawtchouk diagonalization of F_n(z) — all pure exact functions of Phi_n, no input h. |
+| `fold_matrix.py` | The SUPPLY fold as the submask-XOR matrix Z[d][s]=[s⊆d] and exact F2 algebra on it: is_unit_lower_triangular, rank_f2, matvec, in_kernel. Proven rank n-2 / kernel span(even-alt,odd-alt) via the unit-lower-triangular argument. |
+| `nu2.py` | nu2 fold weight for SUPPLY and its averaged/empirical statistics (stream_mean_var, fold_nu2, literal_suffix_nu2, Thue-Morse helper). fold_nu2 uses the SOS transform (lib.supply_fold.s_sos), verified equal to brute submask-XOR on n=4..60 and reproducing nu2(4000)=1976 (0.4940). literal_suffix_nu2 is a negative re-grounding control that shows the raw suffix is 0 for all n. |
+| `nu2_4000_reconcile.py` | Decisive reconciliation of nu2(4000): computes it three independent ways on the same prime_h(4002) residue-switch h under the floored fold d in [2,n-1] convention — (a) fold_nu2/s_sos, (b) s_direct literal submask-XOR oracle, (c) from-scratch literal brute in the script. All three give 1975 (agree), and 18/27 at n=53/64; computes exact mu_4000 = (1/4000) sum nu2(n)/n = 0.497259. Settles the 1975-vs-1976 collision as 1975 for this input/convention. |
+| `nu2_guard.py` | Canonical oracle wrappers and the mandatory entry guard (nu2(53)==18, nu2(64)==27, mu_4000≈0.4977) that every averaged SUPPLY script must call so a degenerate/unfloored/wrong oracle aborts instead of printing a table; also the fair-variance ratio column s2_N*4N vs the decoupled random model. |
+| `primes.py` | Primes module for SUPPLY: first_primes(n) via sympy, mod4_string(n) = r_j=q_j mod 4, h_string(n)/prime_gap_parity(n) = h[j]=[r_{j+1}!=r_j] (linearisation gap-parity string). Verified against brute.py's streaming triangle via the identity #{d:T=1}=nu2(n). |
+| `sparse_fold.py` | Exact sparse-input capacity curve Cap(n,k)=max wt(Phi_n h) over k-sparse h, plus per-position single-1 fold weight and fixed-sparse-family growth. Each fold weight cross-checked between the SOS transform and the literal submask oracle per row. Answers the shared first move of gaps G-eq-sparse-fold-is-sublinear and G-weak-input-strictness. |
+| `submasks.py` | _(undescribed)_ |
+| `supply_fold.py` | SUPPLY endpoint-comparison density. Computes T(n,d)=XOR over bitwise submasks o of d of h[n-1-d+o], S(n)=sum_{d=2}^{n-1}(-1)^{T(n,d)}, and density of T=1. Key identity: substituting s=d-o (no borrow), T(n,d)=XOR_{s⊆d} h[n-1-s], the digital submask zeta-XOR of the reversed window, so (-1)^T = prod_{s⊆d} tau_{n-1-s}. s_sos(n,h) computes S via an O(n log n) submask-product SOS transform; s_direct / t_direct are the literal-submask oracle; s_char_runs(n,r) is a third route from the run-endpoint character-sum form. s_terms_sos(n,h) returns the per-depth terms [(-1)^{T(n,d)}]_{d=2..n-1} via the same SOS (sum and -1-count == s_sos), used by the popcount-stratification. All three totals agree on n=4..199 (and SOS/direct on n=2..200); s_terms_sos cross-checked at n=64,200. Exact integer arithmetic; only ratio density is float. |

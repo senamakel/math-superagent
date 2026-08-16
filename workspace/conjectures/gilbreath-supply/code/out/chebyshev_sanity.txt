@@ -1,0 +1,16 @@
+======================================================================
+TASK C — Chebyshev logic sanity: bounded mean != density-1
+======================================================================
+c = 0.49
+two-point a in {c/2, 1} with E[a] = c exactly:
+  P(a=c/2)   = theta = 2(1-c)/(2-c) = 0.675497
+  P(a=1)     = 1-theta             = 0.324503
+  check mean = 0.490000 = c  (exact)
+
+EXPLICIT FINITE PREFIX (L=1000):
+  #(a=c/2) = 675   #(a=1) = 325
+  sample mean = 0.490375
+  P(sample a >= c/2) = 1.0000   (trivially 1: all terms are c/2 or 1)
+  P(sample a >= c)   = 0.3250   (bounded away from 1)
+
+LESSON (the sanity check's point): the statement '(1/N)Σa_n is bounded below' is a Chebyshev/mean condition; it does NOT imply that the set where a_n is large has density approaching 1. Here the mean is exactly c yet P(a_n >= c) stays ~0.32 < 1 for every N. In the SUPPLY analogue (GOAL priority 1), the averaged form M(N)=mean(ν₂/n) rising to ~0.49 is a *bounded-mean* fact; turning it into 'ν₂(n) >= c·n for density-1 many n' is exactly the step that does NOT follow from the mean alone and needs a second moment / concentration argument.

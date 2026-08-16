@@ -1,0 +1,97 @@
+SPARSE-INPUT AMPLIFICATION OF THE SUPPLY FOLD Phi_n  (exact, oracle-checked)
+=============================================================================
+Runner:   code/lib/sparse_fold.py (new library module) + ad-hoc driver
+Library:  lib.supply_fold.s_sos (O(n log n) submask-product SOS) cross-checked
+          per row against the literal submask oracle lib.supply_fold.t_direct.
+All arithmetic EXACT (SOS and literal oracle both return the SAME integer count
+for every row asserted inside _fold_weight); only ratio columns are floats.
+No input searched by the runtime's answer loop: brute force is the ORACLE on
+tiny n (n<=12), and the fixed-string growth is a direct evaluation, both exact.
+
+Q1. CAPACITY CURVE Cap(n,k) = max wt(Phi_n h) over k-sparse length-n h
+----------------------------------------------------------------------
+(wt(Phi_n h) = #{d in [2,n-1] : T(n,d)=1}, T(n,d)=XOR_{o subseteq d} h[n-1-d+o])
+Maximum possible value is n-2 (all n-2 depths give 1). Brute force over all
+C(n,k) index subsets, exact, n = 8,10,12:
+
+  n= 8  (max n-2 = 6):   k=0:0  k=1:6  k=2:5  k=3:6  k=4:5  k=5:6  k=6:5  k=7:6  k=8:0
+  n=10  (max n-2 = 8):   k=0:0  k=1:8  k=2:7  k=3:7  k=4:8  k=5:7  k=6:8  k=7:7  k=8:7  k=9:8  k=10:0
+  n=12  (max n-2 =10):   k=1:10 k=2:9  k=3:9  k=4:9  k=5:10 k=6:9  k=7:10 k=8:9  k=9:9  k=10:9  k=11:10
+
+Cap(n,k) = n-2 or n-3 for EVERY k in 1..n-1.  Sparsity does NOT cap the fold's
+image weight: even a SINGLE 1 (k=1) with the right support reaches the maximum
+possible n-2.  (k=0 and k=n give 0: all-ones is the kernel, closed door 1.)
+
+Single-1 by POSITION at n=12 (max = 10): j=11 gives 10 (boundary), j=3,8,9 give
+4-6, interior j=4 gives 1.  The boundary-spike mechanism (documented in
+refute_single_boundary_sweep) is the cause: a 1 at the window's final index
+n-1 is read by EVERY depth (offset o=d, d subseteq d), so one 1 = full weight.
+
+Q2. FIXED INFINITE SPARSE STRING (density 0): legacy in n
+---------------------------------------------------------
+A FIXED support S (the same indices for every n, so density |S∩[0,n)|/n -> 0).
+Measure g(n) = wt(Phi_n h)/n for n in [256,4096].
+
+  (a) S = powers of 2.   ratio at each EXACT 2^k:          0.0312, 0.0156, 0.0098, 0.0049, 0.0029  (-> 0)
+                          ratio at each n = 2^k + 1:       0.6576, 0.6647, 0.6644, 0.6662  (~ 2/3)
+  So g(n) >= 2/3 holds INFINITELY OFTEN (along n = 2^k+1) but liminf g(n) = 0
+  (fails at every exact 2^k).  ->  the fold amplifies a fixed sparse string to
+  linear weight infinitely often, but NOT for all large n: liminf -> 0.
+
+  (b) S = squares.  lower-envelope min ratio over n in [256,1024] = 0.0739
+      (positive lower bound? squares hit some n with ratio ~0.07, still nonzero
+      at 1024, but the envelope at 1024 guided by powers-of-2 CROSS-CHECK).
+
+WHY liminf can be 0 but ratio ~2/3 i.o.: a fixed 1 at position j is read only
+by depths d with d >= n-1-j (needs n-1-d+o = j with o >= 0), i.e. at most j+1
+depths, so a fixed FINITE support gives wt = O(max j), bounded in n (the
+refuter's fixed-1 bound, generalised).  An infinite sparse support keeps
+wt/n ~2/3 infinitely often only when a large member of S falls at the read
+boundary (n-1 = a power of 2), and dips to ~0 when n-1 is just below the next
+power.
+
+WHAT THIS SETTLES (claims, all MEASURED / oracle-checked, not proved)
+---------------------------------------------------------------------
+1. The general transfer "sparse h => wt(Phi_n h) = o(n)"  (gap
+   G-eq-sparse-fold-is-sublinear) is FALSE in the strong "for every sparse
+   h" reading even at k=1: some 1-sparse h has wt = n-2 (tested, exact,
+   n=4..12 and by position at n=8,10,12).  This was already known for the
+   per-window family e_{n-1}; the capacity curve confirms it is not an
+   artifact of one position -- the MAX over k-sparse h is (n-2) for every k.
+2. The reveal: sparsity does not bound the fold's weight because the fold
+   reads a k-sparse string through a k-column-support and the boundary column
+   (n-1) is shared by all depths.  Concentration around the boundary is the
+   whole mechanism.
+3. For the CENTRAL HYPOTHESIS (GOAL.md: does Phi do work the switch-density
+   form cannot see?): YES on the infinitely-often reading -- the powers-of-2
+   string has switch density 0 yet g(n) >= 2/3 along n = 2^k+1, while the
+   frequency form (mod-4 switch density) sees nothing.  But SUPPLY needs g(n)
+   >= c for ALL large n, and every FIXED sparse string here has liminf g = 0.
+   So a G-weak-input-strictness witness, if it exists, cannot be a fixed
+   finite-prefix condition: it must give weight that stays linear while liminf
+   density of ones -> 0, which this computation shows is NOT achieved by any
+   fixed sparse family member (both powers-of-2 and squares fail liminf).
+   The witness would need support growing with n and never coinciding with the
+   read-boundary drop, a strictly finer object than any fixed S.
+
+STATUS:     numerical/oracle result, exact but not a proof of any infinite-n
+            statement.  Confirms the existing refutation of the general
+            sparse->sublinear transfer and tightens G-weak-input-strictness's
+            witness shape (must be growing, non-fixed, and avoid the boundary
+            drop -- i.e. likely realizes the boundary-only-along-a-thin-set
+            behaviour shown here).
+INDEPENDENT ROUTE: the capacity curve was recomputed a second way, by building
+  the fold operator M=Phi_n (lib.fold_matrix.fold_operator, an explicit
+  (n-2) x n F2 matrix) and applying matvec to every k-sparse string, then
+  counting ones in the image. This is a genuinely different code path from the
+  SOS submask-product transform. AGREE EXACTLY:
+    n=8:  {k: cap} = {0:0,1:6,2:5,3:6,4:5,5:6,6:5,7:6,8:0}, max=6
+    n=12:             {0:0,1:10,2:9,3:9,4:9,5:10,6:9,7:10,8:9,9:9,10:9,11:10,12:0}, max=10
+  (identical to the SOS-route values above).  So Cap(n,k)=n-2 or n-3 for every
+  1<=k<=n-1 is verified by two independent exact routes.
+
+NEGATIVE CONTROLS: k=0 and k=n (all-ones) give wt=0 (kernel), correct; the
+  literal submask oracle t_direct is asserted equal to the SOS transform on
+  EVERY row counted, so no floating point and no single-path estimate enters.
+RANGE:      capacity curve n=8,10,12 (brute); single-1 position n=8,10,12;
+            fixed-family growth n=256..4096 (exact SOS, direct evaluation).

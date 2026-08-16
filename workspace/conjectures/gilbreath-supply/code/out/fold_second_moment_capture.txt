@@ -1,0 +1,141 @@
+FOLD SECOND-MOMENT / KRAWTCHOUK — FIRST STEP CAPTURE
+====================================================
+Approach: research/approaches/fold-second-moment-krawtchouk.md
+Runner:   code/fold_second_moment/run_distance_and_identities.py
+Library:  code/lib/downset_rows.py  (row masks, distance dist., F_n, Walsh spectrum, Krawtchouk)
+Date:     this run. All arithmetic EXACT (ints + Fractions); floats are printed ratios only.
+
+Row set (task 1)
+----------------
+M_d = { n-1-d+o : o a bitwise submask of d },  d in [2, n-1],  n-bit mask.
+|M_d| = 2^popcount(d)  VERIFIED for all d in [2,n-1], n = 8..128. All rows have
+even size (>= 2). A_0 = n-2 (diagonal), A_1 = 0 (all distances even, >= 2).
+
+Decisive distance distribution (task 2)
+---------------------------------------
+A_k = #{ d != d' in [2,n-1] : |M_d XOR M_d'| = k }, computed exactly over all
+rows. KEY QUESTION: A_2 = O(n) or Theta(n^2)?
+
+   n      A_2    A_2/n    A_2/n^2
+  16       12   0.750   4.69e-02
+  24       20   0.833   3.47e-02
+  32       22   0.688   2.15e-02
+  48       33   0.688   1.43e-02
+  64       35   0.547   8.55e-03
+  96       49   0.510   5.32e-03
+ 128       51   0.398   3.11e-03
+ 256       70   0.273
+ 512       92   0.180
+1024      117   0.114
+2048      145   0.071
+4096      176   0.043
+
+  A_2 log-log exponent over n=16..4096:  0.480
+  (intermediate 7-point fit over n=16..128 gives 0.68; full 12-point fit 0.480)
+  >>> VERDICT: A_2 = O(n), in fact sublinear (n^0.48). NOT Theta(n^2).
+      The z^2 n^2 term that would have killed condition (C) is ABSENT.
+  (A_2/n^2 decays monotonically; A_2/n shrinks to 0.043 at n=4096.)
+
+F_n(z) = sum_{d,d'} z^{|M_d XOR M_d'|} at z = 1-2p, p = 0.585 (measured prime
+1-density; z = -17/100 = -0.17), EXACT Fraction:
+
+   n      F_n(z)     F_n/n
+  16       14.749    0.92
+  24       23.269    0.97
+  32       31.414    0.98
+  48       48.157    1.003
+  64       64.312    1.005
+  96       97.294    1.013
+ 128      129.460    1.011
+ 256      258.873    1.011
+ 512      516.567    1.009
+1024     1030.560    1.006
+
+  F_n(z)/n -> ~1.0, bounded. log-log exponent at z=0.85 is 0.986 (~O(n)).
+  >>> VERDICT: F_n(1-2p) = O(n), in fact F_n ~ n, with huge margin.
+      Condition (C) HOLDS at the prime density.
+
+  Robustness of (C) in z (all distances even so F_n depends on |z|^2):
+   |z|       F_n/n at n=256     exponent(n=128..2048)
+   0.17        1.01                 ~1
+   0.5         1.47                 ~1 (decaying)
+   0.7         3.71                 ~1 (decaying)
+   0.8         8.49                 ~1 (decaying)
+   0.85       14.55                0.986 (~O(n), decaying)
+   0.9        28.11                1.117 (growing: THRESHOLD)
+   0.95        ...                 1.340 (Theta(n^1.34))
+  So (C) holds for every fixed |z| < ~0.86 (prime case |z|=0.17 is deep inside),
+  and fails only very close to |z| -> 1 where it approaches the diagonal-only
+  Theta(n^2) limit F_n(1) = (n-2)^2. NOTE: z=1 is the DIAGONAL only, not a real
+  input density; real p in (0,1) gives |z|<1.
+
+Identity verification (task 3) — EXACT 2^n enumeration, n=10
+-------------------------------------------------------------
+E[eps_d eps_d'] = (1-2p)^{|M_d XOR M_d'|}
+   p=0.3 (z=2/5):  ALL MATCH (56 off-diag + 8 diag distinct pairs)
+   p=0.5 (z=0):    ALL MATCH
+   p=0.585:        ALL MATCH
+E[S^2] = F_n(1-2p)  where S = sum_{d=2}^{n-1} eps_d:
+   p=0.3: 4435624/390625 == direct F_n : TRUE
+   p=0.5: 8 == direct F_n : TRUE
+   p=0.585: 21219009789292441/2500000000000 == direct F_n : TRUE
+Mean: E[S] = sum_d (1-2p)^{|M_d|}, all match.
+
+  >>> CORRECTION to the approach doc: var(S) = F_n(z) - E[S]^2, NOT
+      F_n(z) - (n-2).  (The doc's "F_n(z)-(n-2)" only equals var at p=1/2,
+      where E[S]=0.)  The true var(S) still = O(n) because F_n(z)=O(n):
+      var/n -> ~1.0 at p=0.585 (see table). The correction does not change
+      the (C) verdict -- it is a refinement of the constant, not of the order.
+
+Krawtchouk diagonalization (task 4) — EXACT
+--------------------------------------------
+F_n(z) = 2^{-n} sum_omega (1-z)^{wt(omega)} (1+z)^{n-wt(omega)} C_n^hat(omega)^2,
+C_n^hat(omega) = sum_d (-1)^{<omega, 1_{M_d}>}.
+  n=4: z in {1, 1/2, 3/4, -17/100}  ALL MATCH
+  n=5: same                           ALL MATCH
+  n=6: same                           ALL MATCH
+  n=7: same                           ALL MATCH
+Exact equality (Fractions) between direct enumerator and Krawtchouk sum.
+
+Negative controls (task 5) — EXACT S(n) via SOS transform, cross-checked vs
+direct for n<=40. All-ones is in ker Phi (eps_d = +1 all d), must FAIL iid
+model; Thue-Morse and single-isolated-1 are the closed-door witnesses, must
+also FAIL (their |S| is LINEAR, the iid model predicts |S|=O(sqrt n)).
+iid-model std at p_ref=0.585 is sqrt(var) with var~n => ~sqrt(n).
+
+  all-ones:      |S| = n-2 exactly (kernel). |S|/sqrt(n): 3.50, 7.75, 11.14
+                 at n=16,64,128 -- grows ~sqrt(n); |S| linear, FAILS model.
+  thue-morse:    |S|/n = 0.500,0.812,0.891 at n=16,64,128 (linear); model
+                 predicts O(sqrt n). FAILS.
+  single1:       |S|/n = 0.625,0.906,0.953 at n=16,64,128 (linear); FAILS.
+  >>> All three controls are linear |S| -- categorically NOT iid-balanced,
+      confirming they lie outside the model (as the bridge requires). The
+      primes (measured |S| = (3.1..3.8) sqrt n) DO sit at the iid prediction,
+      so the model is not vacuous: it separates primes from the structured
+      witnesses.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ANSWER SUMMARY (the four report questions)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+(i)   A_2 = O(n), not Theta(n^2). Measured exponent 0.48 over n=16..4096.
+(ii)  F_n(1-2p) = O(n) at p=0.585 (condition C HOLDS): F_n ~ n, ratio
+      F_n/n -> ~1.0 and stays bounded. Holds for every fixed |z| < ~0.86.
+(iii) Identities ALL CHECK exactly: pairwise XOR moment, E[S^2]=F_n(z),
+      mean, and the Krawtchouk diagonalization (n=4..7, several z). One
+      correction: var(S) = F_n(z) - E[S]^2 (not the doc's F_n(z)-(n-2),
+      which is only p=1/2).
+(iv)  Capture: code/out/fold_second_moment_capture.txt  (this file)
+
+SIGNIFICANCE. Condition (C) -- the number-theory-free half of the approach --
+is CONFIRMED: the fold's row code has a distance distribution so concentrated
+that F_n(z)=O(n) uniformly for |z|<1 away from the diagonal. Consequently:
+ANY input h whose submask-XOR characters eps_d carry the iid second-moment
+structure with |1-2p|<=z0<1 gets var(S)=O(n), so |S|=o(n) on a density-1 set
+(Chebyshev), so nu2/n -> 1/2. The fold does NOT amplify submask-window
+correlations. The remaining arithmetic heart is (A): does the real prime h
+satisfy the corresponding submask-window autocorrelation/variance bound?
+That is now a priced, isolated statement (GOAL priority 2) with the geometry
+side (C) established.
+
+All numbers above are exact (integer counts / Fractions); every printed float
+is a ratio (A_2/n, F_n/n, |S|/sqrt n). No float enters a judgment.

@@ -1,0 +1,29 @@
+SEQUENCE: { nu2(n)/n : n = 2..N }, N=40000  (primes vs uniform-h fair model)
+ORACLE: lib.supply_fold.s_sos via lib.nu2.fold_nu2 (s_sos==s_direct; guard nu2(53)=18, nu2(64)=27, nu2(4000)=1975, mu_4000~0.4977)
+n-range: n = 2..40000, streamed one n at a time via s_sos (no triangle)
+DATA-PATH CHECK: hP[:8]=[1, 1, 1, 0, 1, 0, 1, 0]  canonical prime h[:8]=[1, 1, 1, 0, 1, 0, 1, 0]  (must match)
+
+=== PRIMES : compute_nu2 to N=40000 ===
+   [primes] STAGE1 289.8s (nproc=28); nu2[40000]=20081 (~0.5020)
+
+=== FAIR MODEL : 4 uniform-h trials to N=40000 ===
+   [fair trial 1/4] 212.9s; nu2[40000]=20069 (~0.5017)
+   [fair trial 2/4] 146.4s; nu2[40000]=20150 (~0.5038)
+   [fair trial 3/4] 84.3s; nu2[40000]=19944 (~0.4986)
+   [fair trial 4/4] 94.0s; nu2[40000]=20086 (~0.5021)
+
+CHECKPOINT  |  primes s2_N   | fair mean s2  | fair std  | primes/fair |  p*4N/lnN  |  f*4N/lnN
+    1000  |  0.0024916323 | 0.0016453634 | 1.5945e-04 |   1.5143 | 1.443 | 0.953
+    4000  |  0.0007216327 | 0.0005025400 | 4.2285e-05 |   1.4360 | 1.392 | 0.969
+   10000  |  0.0003132724 | 0.0002246473 | 1.7408e-05 |   1.3945 | 1.361 | 0.976
+   20000  |  0.0001654869 | 0.0001211611 | 8.7457e-06 |   1.3658 | 1.337 | 0.979
+   30000  |  0.0001137617 | 0.0000841923 | 5.8757e-06 |   1.3512 | 1.324 | 0.980
+   40000  |  0.0000871213 | 0.0000649518 | 4.4216e-06 |   1.3413 | 1.315 | 0.981
+
+TREND (primes/fair vs ln N): slope = -0.0466  (neg => falling; >= ~0 => not tending to 1)
+VERDICT: from 1000 -> 40000, primes/fair = 1.514 -> 1.341.  CONSTANT ABOVE 1 (ratio plateaued at ~1.34, not falling to 1)
+
+runtime 864.2s ; fair-MC block 538s ; trials=4
+LABEL: measured, not proved.
+
+WROTE /workspace/code/averaged/../out/fair_prefix_variance_40000.txt

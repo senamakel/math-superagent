@@ -1,0 +1,162 @@
+============================================================================
+PART A — the two all-n structural theorems (exact F2 elimination)
+============================================================================
+
+[A1] T1: Z is unit lower-triangular; M = rows d=2..n-1 of Z.
+   n  ZunitLT  det(mat)    shape(M)  rankM nullity  rank==n-2
+   2     True      True         0x2      0       2       True
+   3     True      True         1x3      1       2       True
+   4     True      True         2x4      2       2       True
+   5     True      True         3x5      3       2       True
+   6     True      True         4x6      4       2       True
+   7     True      True         5x7      5       2       True
+   8     True      True         6x8      6       2       True
+   9     True      True         7x9      7       2       True
+  10     True      True        8x10      8       2       True
+  11     True      True        9x11      9       2       True
+  12     True      True       10x12     10       2       True
+  13     True      True       11x13     11       2       True
+  14     True      True       12x14     12       2       True
+  15     True      True       13x15     13       2       True
+  16     True      True       14x16     14       2       True
+  17     True      True       15x17     15       2       True
+  18     True      True       16x18     16       2       True
+  19     True      True       17x19     17       2       True
+  20     True      True       18x20     18       2       True
+  21     True      True       19x21     19       2       True
+  22     True      True       20x22     20       2       True
+  23     True      True       21x23     21       2       True
+  24     True      True       22x24     22       2       True
+  25     True      True       23x25     23       2       True
+  26     True      True       24x26     24       2       True
+  27     True      True       25x27     25       2       True
+  28     True      True       26x28     26       2       True
+  29     True      True       27x29     27       2       True
+  30     True      True       28x30     28       2       True
+  31     True      True       29x31     29       2       True
+  32     True      True       30x32     30       2       True
+  33     True      True       31x33     31       2       True
+  34     True      True       32x34     32       2       True
+  35     True      True       33x35     33       2       True
+  36     True      True       34x36     34       2       True
+  37     True      True       35x37     35       2       True
+  38     True      True       36x38     36       2       True
+  39     True      True       37x39     37       2       True
+  40     True      True       38x40     38       2       True
+
+  rank == n-2 for ALL n in 2..40: True
+
+[A2] T2: ker M = span(even-alt, odd-alt) for n = 2..40.
+   n even_ker odd_ker ones_ker   indep(e,o)  rank nullity  span_ok
+   2     True    True     True         True     0       2     True
+   3     True    True     True         True     1       2     True
+   4     True    True     True         True     2       2     True
+   5     True    True     True         True     3       2     True
+   6     True    True     True         True     4       2     True
+   7     True    True     True         True     5       2     True
+   8     True    True     True         True     6       2     True
+   9     True    True     True         True     7       2     True
+  10     True    True     True         True     8       2     True
+  11     True    True     True         True     9       2     True
+  12     True    True     True         True    10       2     True
+  13     True    True     True         True    11       2     True
+  14     True    True     True         True    12       2     True
+  15     True    True     True         True    13       2     True
+  16     True    True     True         True    14       2     True
+  17     True    True     True         True    15       2     True
+  18     True    True     True         True    16       2     True
+  19     True    True     True         True    17       2     True
+  20     True    True     True         True    18       2     True
+  21     True    True     True         True    19       2     True
+  22     True    True     True         True    20       2     True
+  23     True    True     True         True    21       2     True
+  24     True    True     True         True    22       2     True
+  25     True    True     True         True    23       2     True
+  26     True    True     True         True    24       2     True
+  27     True    True     True         True    25       2     True
+  28     True    True     True         True    26       2     True
+  29     True    True     True         True    27       2     True
+  30     True    True     True         True    28       2     True
+  31     True    True     True         True    29       2     True
+  32     True    True     True         True    30       2     True
+  33     True    True     True         True    31       2     True
+  34     True    True     True         True    32       2     True
+  35     True    True     True         True    33       2     True
+  36     True    True     True         True    34       2     True
+  37     True    True     True         True    35       2     True
+  38     True    True     True         True    36       2     True
+  39     True    True     True         True    37       2     True
+  40     True    True     True         True    38       2     True
+
+[A3] Exhaustive kernel-set equality ker M == span{e,o} for n=2..12
+  n= 2: |ker by brute|=   4  |span([1, 0], [0, 1])|=   4  equal: True
+  n= 3: |ker by brute|=   4  |span([1, 0, 1], [0, 1, 0])|=   4  equal: True
+  n= 4: |ker by brute|=   4  |span([1, 0, 1, 0], [0, 1, 0, 1])|=   4  equal: True
+  n= 5: |ker by brute|=   4  |span([1, 0, 1, 0, 1], [0, 1, 0, 1, 0])|=   4  equal: True
+  n= 6: |ker by brute|=   4  |span([1, 0, 1, 0, 1, 0], [0, 1, 0, 1, 0, 1])|=   4  equal: True
+  n= 7: |ker by brute|=   4  |span([1, 0, 1, 0, 1, 0, 1], [0, 1, 0, 1, 0, 1, 0])|=   4  equal: True
+  n= 8: |ker by brute|=   4  |span([1, 0, 1, 0, 1, 0, 1, 0], [0, 1, 0, 1, 0, 1, 0, 1])|=   4  equal: True
+  n= 9: |ker by brute|=   4  |span([1, 0, 1, 0, 1, 0, 1, 0, 1], [0, 1, 0, 1, 0, 1, 0, 1, 0])|=   4  equal: True
+  n=10: |ker by brute|=   4  |span([1, 0, 1, 0, 1, 0, 1, 0, 1, 0], [0, 1, 0, 1, 0, 1, 0, 1, 0, 1])|=   4  equal: True
+  n=11: |ker by brute|=   4  |span([1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1], [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0])|=   4  equal: True
+  n=12: |ker by brute|=   4  |span([1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0], [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1])|=   4  equal: True
+  exhaustive kernel == span(even-alt,odd-alt) for all n in 2..12: True
+
+============================================================================
+PART B — surjectivity makes wt(Phi_n h) ~ Binomial(n-2, 1/2)
+============================================================================
+
+  n #preimg/val dist==Bin(n-2,1/2)  E[wt]==(n-2)/2  Var==(n-2)/4
+  2           4               True            True          True
+  3           4               True            True          True
+  4           4               True            True          True
+  5           4               True            True          True
+  6           4               True            True          True
+  7           4               True            True          True
+  8           4               True            True          True
+  9           4               True            True          True
+
+Exact values (Fraction E[wt], Var(wt), and the coefficient check):
+  n=4: E[wt]=1  Var(wt)=1/2  expected (n-2)/2=2/2=1  expected (n-2)/4=1/2
+  n=5: E[wt]=3/2  Var(wt)=3/4  expected (n-2)/2=3/2=3/2  expected (n-2)/4=3/4
+  n=6: E[wt]=2  Var(wt)=1  expected (n-2)/2=4/2=2  expected (n-2)/4=1
+  n=7: E[wt]=5/2  Var(wt)=5/4  expected (n-2)/2=5/2=5/2  expected (n-2)/4=5/4
+
+============================================================================
+PART C — surjectivity / exactly-4-preimage census (exact)
+============================================================================
+
+  n 2^(n-2) imgs fibers all=4 every img hit
+  2            1         True          True
+  3            2         True          True
+  4            4         True          True
+  5            8         True          True
+  6           16         True          True
+  7           32         True          True
+  8           64         True          True
+
+============================================================================
+PART D — canonical oracle (lib.nu2.fold_nu2), exact
+============================================================================
+  nu2(53)   = 18   (expected 18)
+  nu2(64)   = 27   (expected 27)
+  nu2(4000) = 1975   (expected 1975)
+  sos == literal submask-XOR at 53,64,100: True
+  mu_4000   = 0.497259  (exact Fraction num_bits=5761, den_bits=5762)   (within 0.01 of 0.4977: True)
+
+============================================================================
+CAPTURE SUMMARY
+============================================================================
+  A. Z unit lower-triangular, rank M = n-2, nullity 2      PASS: True
+  A. ker M = span(even-alt, odd-alt) (brute-set equality)  PASS: True
+  B. wt(Phi_n h) ~ Binomial(n-2,1/2): E, Var exact         PASS: True
+  C. surjective, every image exactly 4 preimages           PASS: True
+  D. canonical oracle 53=18 64=27 4000=1975 mu_4000~0.4977 PASS: True
+
+  EXACT NUMBERS:
+    rank(Phi_n)      = n-2   (verified n = 2..40)
+    nullity          = 2     (verified n = 2..40)
+    ker(Phi_n)       = span(even-alt, odd-alt)  (n=2..40, brute n=2..12)
+    E[wt(Phi_n h)]   = (n-2)/2   (exact, uniform h)
+    Var(wt(Phi_n h)) = (n-2)/4   (exact, uniform h)
+    nu2(53)=18  nu2(64)=27  nu2(4000)=1975  mu_4000 = 0.497259

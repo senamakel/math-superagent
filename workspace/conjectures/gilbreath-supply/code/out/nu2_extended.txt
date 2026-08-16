@@ -1,0 +1,25 @@
+nu2_extended: primes, per-n submask-product SOS (s_sos), d in [2,n-1]
+N=20000
+(1) n in [50,20000] with nu2(n)/n < 0.42:
+    n=53  nu2=18  nu2/n=0.339623
+    n=56  nu2=23  nu2/n=0.410714
+    n=62  nu2=25  nu2/n=0.403226
+    n=71  nu2=28  nu2/n=0.394366
+    n=103  nu2=42  nu2/n=0.407767
+    n=105  nu2=40  nu2/n=0.380952
+    n=145  nu2=58  nu2/n=0.400000
+    n=153  nu2=62  nu2/n=0.405229
+    n=210  nu2=88  nu2/n=0.419048
+    n=274  nu2=114  nu2/n=0.416058
+    count of such n = 10
+    largest such n = 274
+(2) mean of nu2/n over n in [50,N]:
+    N=1000: mean = 0.49569542
+    N=5000: mean = 0.49879385
+    N=10000: mean = 0.49933593
+    N=20000: mean = 0.49961960
+(3) last-half-window variance sigma^2 of nu2/n over [N/2, N):
+    N=1000: window n in [500,999] (count 500): sigma^2 = 0.00034392  (mean=0.49801841)
+    N=5000: window n in [2500,4999] (count 2500): sigma^2 = 0.00007156  (mean=0.49949806)
+    N=10000: window n in [5000,9999] (count 5000): sigma^2 = 0.00003562  (mean=0.49986908)
+    N=20000: window n in [10000,19999] (count 10000): sigma^2 = 0.00001718  (mean=0.49990270)

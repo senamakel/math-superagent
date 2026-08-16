@@ -1,54 +1,433 @@
 # Shared context
 
-What this run knows, in its own words. The context curator writes this file and
-is the only role that writes it; nearly every other role is sent it on every
-model call. So what is here is what the run knows without going to look, and
-what is missing is what each agent rediscovers separately.
+The library is populated and the run has computed results. `research/CLAIMS.md`
+holds ~40 claim blocks digested from the on-disk sources (ABGS §1/§9, Lemke
+Oliver–Soundararajan, Shiu, Freiberg, Maynard, Rampersad–Wiebe, Bacher,
+Szechtman, Pivato–Yassawi, Takei); `code/out/` carries this run's captures.
+The `ν₂ = wt(Φ_n h)` oracle is the submask-product SOS transform, cross-checked
+against a direct brute oracle (`s_sos == s_direct` on n=8..60). The
+literal-vs-fold grounding defect is resolved (directive 6): the unfloored
+bottom-end reading is identically 0 for every n≥2 because the bottom cell
+`A_{n−1}(0)` is always 1, so the floor `k∈[2,n−1]` is load-bearing and
+`literal_suffix_nu2` is the labelled negative control, not a bug. The
+operative definition is the floored one; `wt(Φ_n h)` is a theorem about it.
+`problem.md` is **not authoritative**: three imported values were wrong and
+computation caught all three — treat every imported number as a claim to check
+and keep printing the stated value beside the run's own.
 
-It carries what an agent would otherwise rebuild from disk, from the note store,
-or from a session it was not present for: established results with their basis,
-approaches that died and why, what the computed numbers look like, what durable
-memory relates this problem to, and where two accounts disagree. It is not a
-catalogue of files — `research/INDEX.md` is that — and not a narration of what
-agents did.
+**Claims renderer caveat (directive 15, live in this container):** the harness's
+CLAIMS.md renderer mapped `status: measured` to `asserted` — `Status::parse` had
+no `measured` variant — so every claim labelled "measured, not proved" rendered
+in the derived table as "asserted by the source", the opposite of what happened.
+That is a harness bug, fixed in the repository (not this container) with a
+regression test. Until restart, do not treat the derived proved/checked/asserted
+counts as evidence, do not relabel measured work "checked" to fix the table, and
+keep writing "measured, not proved".
 
-**It has a token budget** (`MATH_AGENT_CONTEXT_TOKENS`, 10,000 by default). The
-file is re-sent on every model call in every role that reads it, so length here
-is a bill the whole run pays many times over; a brief past its budget is cut
-where it exceeds it on the way into a prompt, with a notice saying so. Link the
-file that still holds any detail compressed away — source notes under
-`research/summaries/`, untouched full texts under `research/sources/`,
-reflections, threads. Durable findings belong in Cognee. A statement nobody can
-trace to a source is worth less than no statement.
+## Sources on disk (digested into claims; not all full texts downloaded)
 
-## Established
+The earlier run left these under `research/`. Each has a summary under
+`research/summaries/`; most have a full text under `research/sources/`. The
+bearings below are now carried as claim blocks in `research/CLAIMS.md`, so treat
+this table as a pointer, not as evidence.
 
-What this run may treat as known, each marked proved, computed and checked,
-sourced, or conjectured, with a link to what establishes it.
+| Source | File (summary / full) | What it bears on |
+| --- | --- | --- |
+| Odlyzko 1993, *Iterated abs. values of differences of consecutive primes*, Math. Comp. 61 | `summaries/odlyzko_iterated_abs_values_diff_primes.md` / `sources/...full.md` | The absolute-difference triangle itself; Gilbreath verified to `10^13`; the `G(N)`/0-or-2 stop-block structure — closest direct prior work on this exact object |
+| Lemke Oliver & Soundararajan 2016, *Unexpected biases... consecutive primes*, PNAS | `summaries/lemke_oliver_soundararajan_bias.md` / `sources/...full.md` | Consecutive-prime residue-pair biases — the object the switch-density reduction is about; conjectural (HL) explanation |
+| Matomäki & Radziwiłł 2016, *Multiplicative functions in short intervals*, Ann. Math. 183 | `summaries/matomaki_radziwill_multiplicative_short_intervals.md` / `sources/...full.md` (arXiv:1501.04585) | Value-domain short-average cancellations of bounded multiplicative functions (μ, λ). Named engine of the **refuted** `matomaki-radziwill-index-autocorrelation` approach (not multiplicative in the prime index; g=0 = switch-density barrier) |
+| Matomäki, Radziwiłł & Tao 2020, *Fourier uniformity ... short intervals on average*, Invent. Math. 220 | `summaries/matomaki_radziwill_tao_fourier_uniformity_averaged.md` / `sources/...full.md` (arXiv:1812.01224) | Quantified averaged correlations of multiplicative functions vanish. Same refuted approach as above; value-domain only, the index transfer it needs is exactly what the refutation says it cannot give |
+| Green & Tao 2012, *Möbius function strongly orthogonal to nilsequences*, Ann. Math. 175 | `summaries/green_tao_mobius_nilsequences.md` / `sources/...full.md` (arXiv:0807.1736) | μ orthogonal to nilsequences with log-savings. Named engine of the **refuted** `gowers-u2-nilsequence-uniformity` approach (basis mismatch: fold on ANF/zeta basis, not Walsh/U²) |
+| Ash, Beltis, Gross & Sinnott 2011, *Frequencies of successive pairs of prime residues*, Exp. Math. | `summaries/citations_w2027719385.md` (citation graph only, not read) | The named open problem `problem.md` says switch-density reduces to: frequency of consecutive-pair residues mod m |
+| Encyclopedia of Math, *Gilbreath conjecture* | `summaries/encyclopedia_gilbreath.md` / `sources/...full.md` | Background; Gilbreath is out of scope, do not claim |
+| Odlyzko paper list | `summaries/odlyzko_gilbreath.md` / `sources/...full.md` | Bibliography; not itself a result |
+| Shiu 2000, *Strings of congruent primes*, J. London Math. Soc. | `summaries/shiu_strings_congruent_primes.md` (summary exists, **full text was NOT downloaded** — Wiley cookie wall) | `problem.md` fact 5's cited input: arbitrarily long runs of consecutive primes in one class mod 4. The summary file is a cookie-error page, so the Shiu input is **unsourced** here. |
 
-## Ruled out
+## The target (per `problem.md`)
 
-Approaches that failed, and the reason each failed. A known dead end is a
-result, and this section is what stops the run paying for one twice.
+**SUPPLY**: exists `c > 0` with `ν₂(n) ≥ c·n` for all large `n`, where `ν₂(n)`
+counts 2s in the maximal {0,2} suffix of the right diagonal `δ_k(n) = A_k(n−1−k)`
+through the absolute-difference triangle of the primes. Convention: suffix
+floored at index 2 (`lib.rightdiag.cycle_and_nu2`); pick one, state it, keep it.
+Identical to a `2`-suffix floored at index 0 up to ±1, asymptotically unchanged.
+Never materialise the triangle (parent run OOM-killed at depth 4000); stream one
+row at a time and collect only the single diagonal cell per depth.
 
-## Numbers
+## Asserted by `problem.md`, unverified here
 
-Computed terms, the range over which the oracle and the method agree, the size
-of the object at the bound in the statement.
+Claims the file lists as "established" but that **no workspace artifact
+supports** (not even a source on disk, in most cases). If the run relies on any,
+it must re-derive or source it first. GP = "Gilbreath parent workspace", which
+is **not reachable from this workspace** — citing it is impossible here.
+
+1. **Linearisation.** `ν₂(n) = wt(Φ_n h)` over F₂, with `h[j] = ((q_{j+1}−q_j)/2) mod 2`
+   and `Φ_n` the Pascal-mod-2 fold with entries `C(k−1, j−(n−k)) mod 2`. (Asserted; no derivation on disk.)
+2. **Lucas.** `C(d,i) mod 2 = 1` iff `i` binary-submask of `d`. (True classical theorem; sourceable, but uncited here.)
+3. **Kernel (corrected, directive 5).** `rank Φ_n = n−2` — **full row rank** — nullity 2, `ker Φ_n = span(even-alt, odd-alt)` with all-ones = even-alt ⊕ odd-alt. Machine-verified n = 2..20 (`fold-rank-is-n-2-nullity-2-alternating`); the all-n proof is the unit-lower-triangular submask-XOR argument (task `prove-fold-rank-all-n`). The old "rank n−3, nullity 1, ker = span(all-ones)" is wrong and fits no row-range convention — do not re-import it from any summary or note that still carries it. Full row rank means Φ_n is **surjective onto F₂^{n−2}**, the opposite of "nearly singular".
+4. **Dyadic collapse.** Eventually-periodic `h` with power-of-two period ⇒ `ν₂(n) = O(1)`. "Proved from (1)+(2)" — proof absent here.
+5. **Primes not eventually periodic.** "Proved, conditional on Shiu 2000, held at abstract level only" — the file itself flags this as **conditional, not proved**; the Shiu 2000 source is a cookie-error stub here (see *Sources on disk*).
+
+## Measured (this run's own sweep; range operator-corrected)
+
+`code/out/averaged_mean_capture.txt`, exact, convention d ∈ [2, n−1]:
+
+| quantity | value |
+| --- | --- |
+| `ν₂(n)/n`, primes, n=50..4000 | min 0.3396, max 0.6170 (corrected — the old 0.42..0.52 was a sampled sub-window; claim `nu2-range-measured-wider`) |
+| Cesàro mean `M(n)` of `ν₂/n`, primes | 0.4394 (n=100) → 0.4973 (n=4000), rising |
+| Cesàro mean, Thue–Morse | 0.2255 → 0.0641, falling |
+| Cesàro mean, all-ones (kernel vector) | 0.0000 throughout |
+| `ν₂/n` at n=4000 | 0.4938 (literature 0.4933) |
+
+Indicated truth `c ≈ 0.49`; even the min 0.34 is bounded away from 0. The
+separation is clean and is **GOAL.md priority 1** — push the averaged form
+(thread `averaged-mean-structure`).
+
+**Fair model is PROVED, not measured (directive 10).** `code/out/fair_model_exact.txt`
+is stronger than it was labelled: rank `Φ_n = n−2` (full row rank, nullity 2)
+makes `Φ_n` surjective onto `F₂^{n−2}`, so every image has `2² = 4` preimages,
+and for `h` uniform on the cube `wt(Φ_n h)` is **exactly Binomial(n−2, 1/2)** —
+the table (`4·C(10,k)` at n=12) is the confirming check, not the evidence.
+Corollary (Chernoff): SUPPLY holds for a uniformly random `h` with probability
+`1 − exp(−cn)`. So the decaying `s2_N ≈ 1/N` is the fair-model prediction
+(`Var(ν₂/n) = (n−2)/(4n²) ≈ 1/(4n)`), **not** prime-specific evidence; the
+measured prime mean `0.4977` sits on the random prediction `1/2`. This touches
+**none** of the five closed doors (it is about the fold on uniform input, not an
+"h is complicated enough" hypothesis) — the whole remaining difficulty is that
+the primes are not known to be non-adversarial for this fold (thread
+`fair-model-non-adversarial-reframing`, tasks
+`establish-fair-model-exact-binomial-proved`, `fair-model-variance-ratio-null`).
+
+**Pointwise ceiling now N = 40000** (directive 8; claim
+`smax-decay-through-40000`, status measured-not-proved): the streamed pipeline
+`code/nu2_extended/track_smax.py` (s_sos == s_direct == s_char_runs, exact)
+extends the |S(n)|/n decay to n=40000 — ten times the parent run's OOM depth
+(4000) and double the prior smax ceiling (20000). Pointwise max |S(n)|/n keeps
+decaying; max|S(n)| grows 104→712 from n=1000 to 40000, slower than n —
+evidence for c = 1/2, not an argument. `code/out/nu2_terms.txt` is **superseded** (claim
+`nu2-terms-superseded`): three cross-checked routes give ν₂(53)=18, ν₂(64)=27,
+not the file's 19 and 28.
+
+**Second-moment ceiling N = 40000** (directive 14; claim
+`n40000-second-moment-density1-measured`, status measured-not-proved): `μ_N =
+0.499658`; over `[30000,40000]` every n has `ν₂/n ≥ 0.49` (min 0.490114, zero
+dips below 0.45); over `[50,40000]` only 1 n below 0.35, 3 below 0.40, 10 below
+0.42, 51 below 0.45 (all densities < 0.0013); `s2_N` decays 0.000783@4000 →
+0.0000934@40000. **Sharper than density-1:** the tail min of `ν₂/n` over `[X,N]`
+is rising — 0.3396@50 → 0.4599@1000 → 0.4850@10000 → 0.4901@30000 — evidence
+for `ν₂/n → 1/2` *pointwise*, no exceptional set in the tail. The sharpest open
+problem: prove `s2_N → 0` (weaker input for SUPPLY, gives the density-1 form) or
+that the exceptional set is finite (stronger, pointwise). The two are not
+equivalent. The `s2_N/(1/(4N))` ratio is **dropped** (directive 14) — s2_N is a
+prefix statistic and 1/(4n) a per-index variance, different objects.
+
+**Prefix-variance null (directive 15):** the correct like-for-like test is the
+primes' *prefix* variance `s2_N` against a Monte Carlo *fair-model prefix*
+variance (uniform h, same overlapping-window statistic), not against the
+analytic `1/(4N)` (that comparison was the flaw directive 14 dropped). Measured
+primes/fair = 1.399@100 → 1.283@4000, falling steadily — the primes carry ~28%
+more prefix variance than uniform at N=4000 and the excess is shrinking. Pushed
+to the N=40000 ceiling (task `push-prefix-variance-null-40000`); the question is
+whether the ratio tends to 1, to a constant above 1, or keeps falling — tending
+to 1 means the primes are asymptotically indistinguishable from uniform for this
+statistic, the sharpest framing of the difficulty.
+
+**Prefix-variance null RESOLVED (directive 18):** the correct null is
+`log(N)/(4N)`, not `1/(4N)` — each `ν₂(n)/n` has fair variance ≈ `1/(4n)`, so
+the prefix variance is their average `(1/N)Σ 1/(4n) ≈ log(N)/(4N)` (established,
+not fitted). Ratio A `= s2_N·4N = 13.94` fails the constant null; Ratio B
+`= s2_N·4N/log N = 1.3155` tracks the log null with a ~32% excess at N=40000.
+Ratio B across N: 1.443@1000 → 1.392@4000 → 1.361@10000 → 1.337@20000 →
+1.315@40000 — a persistent excess falling with slowly-decaying decrements
+(−0.0507, −0.0316, −0.0237, −0.0213; the last two steps are each ~a doubling of
+N and the decrement only shrank from 0.0237 to 0.0213, ratio ≈0.9). The
+measured range does NOT determine whether the limit is 1 (primes asymptotically
+uniform for this statistic) or a constant above 1 (permanent structural
+excess); a log-linear fit to the measured ratio reaches 1 near N ≈ 7×10^7,
+unreachable here (directive 20), so the limit stays undetermined and the
+'plateaued / CONSTANT ABOVE 1' verdict is withdrawn (task
+`correct-ratio-b-overclaim`). Deep-tail
+`[0.9N,N]`: primes' dip density is 0 at every c=0.40..0.49 (first break
+`c=None`); all-ones and Thue-Morse both break at c=0.40. Claim
+`fair-variance-log-null-tail-clean-40000` (measured), mirrored in ROOT.md.
+
+## Ruled out (five closed doors — do not reopen; witnesses in `problem.md` §4)
+
+1. **Weight alone.** `ν₂ ≥ c·wt(h)` false: `h` all-ones has max weight, `ν₂=O(1)` (it is a kernel vector — all-ones = even-alt ⊕ odd-alt; closed door 1 survives the rank correction untouched).
+2. **No long constant runs.** False for primes (Shiu 2000: arbitrarily long same-class mod-4 runs ⇒ long all-zero runs in `h`; source is a stub here — see *Sources on disk*).
+3. **Aperiodicity.** Insufficient: Thue–Morse is aperiodic, `ν₂` sublinear.
+4. **Anti-dyadicity.** Insufficient: balanced AND anti-dyadic half-step strings give `wt(Φ_m h) ∈ {1,2}`, m=8,16,24,32.
+5. **Periodicity of primes.** True (conditional) and inert since 4 fails the converse.
+
+**Unifying obstruction:** `Φ` has low-weight images on structurally rich
+inputs; full row rank (n−2) pins the kernel to 2 dimensions but says nothing
+about image weight. So *any* hypothesis of the form "h is complicated enough"
+is refuted as a family. (GOAL.md repeats this: that family is closed, do not
+reopen.)
+
+## The known reduction, and why it is a dead end (per `problem.md`)
+
+`ν₂ ≥ c·n` ⇐ positive fraction of consecutive prime pairs differing mod 4 —
+a named open problem (Ash–Beltis–Gross–Sinnott 2011 §9: frequency limit
+unknown, "cannot be treated using L-functions"), behind the parity barrier;
+the unconditional literature bounds the wrong (equal-residue) side. The ABGS
+2011 source is on disk but only as a citation graph with no abstract read. So
+the switch-density form is understood as available and dead.
+
+**The run's hypothesis to test (GOAL.md):** can the fold `Φ` do work the
+switch-density form cannot see — i.e. is `ν₂ = wt(Φ_n h)` forced large by
+`Φ`'s cancellation properties on weaker arithmetic inputs than positive switch
+density?
+
+## Established — the fold row-set geometry (this pass)
+
+**Downset-row intersection formula (`downset-row-intersection-meet-formula`, proved-by-derivation, all n, no primes):** the fold row `M_d = {n−1−d+o : o ⊆ d}` maps under the reflection `x ↦ n−1−x` bijectively onto the digital downset `↓d`; downsets meet as `↓d ∩ ↓d' = ↓(d∧d')`, so `M_d ∩ M_d' = M_{d∧d'}`, `|M_d ∩ M_d'| = 2^{pc(d∧d')}`, `|M_d △ M_d'| = 2^{pc(d)} + 2^{pc(d')} − 2^{pc(d∧d')+1}`. Independent hand-check on concrete instances (n=8,d=5,d'=3 → {6,7}; n=16,d=7,d'=10 → {13,15}) reproduces it; mechanical route `code/scholar/downset_verify.py` (n=4..199 + negative control) for coder/tool_builder. This is the geometry lemma behind the second-moment route.
+
+**Consequence (`fold-distance-enumerator-On`, proved conditional on the meet formula, no primes, no duality):** `F_n(z) = Σ_{d,d'} z^{|M_d △ M_d'|} = O(n)` for every fixed `|z|<1`, uniformly in n. Proof is sound under attack — distinct rows with popcounts p≥q have dist ≥ 2^{p−1}, and the popcount split at K=c·log₂log₂ n gives `n²|z|^{2^K}=o(1)` for c>1, low-popcount pairs `n^{o(1)}`, diagonal `n−2`.
+
+**What this settles:** the geometry side of the second-moment route is closed. Density-1 SUPPLY reduces to exactly **one open arithmetic input (A): `E[S(n)²] = O(n)` for the real prime gap-parity string h**, which by Chebyshev gives `ν₂/n → 1/2` on a density-1 set (GOAL priority 1). **Directive 31 pins the scope: (A) alone gives density-1 SUPPLY only, NOT pointwise SUPPLY** — the stronger uniform subgaussian/exponential tail on `Z(n)=S(n)/√n` is what makes every exceptional set `{ν₂/n<c}`, c<1/2, finite (claim `prime-E-S2-On-sharp-conjecture`, sharp form recorded in `code/out/pattern_normalized_white_noise.md`). Touches none of the five closed doors. NOT a proof of SUPPLY; (A) is genuinely open and `walsh-spectral-subset-b904` stays open. Anchors: `research/notes/scholar_intersection_formula.md`, `research/notes/subcube_intersection_claim.md`, mirrored in `research/ROOT.md`.
+
+## What is missing (gaps => potential `request_research`)
+
+- **A real Shiu-2000 source.** The only copy on disk is a Wiley cookie-error
+  page. The primes-not-periodic / long-constant-runs facts depend on it and are
+  currently unsourced.
+- **The weakest arithmetic input that suffices** (GOAL priority 2): the run must
+  price bounded autocorrelation of `h`, a second-moment/variance bound, a
+  Walsh/Fourier coefficient bound, or an input on `h` only along binary-submask
+  sets (which is what Lucas makes `Φ` read) — from which `wt(Φ_n h) ≥ c·n`
+  follows. **Directive 9 sharpened the live target to the second-moment input,**
+  and **directive 10 corrects its framing**: `s2_N → 0` is the fair-model null
+  (`Var(ν₂/n) = (n−2)/(4n²) ≈ 1/(4n)` for uniform h), not prime-specific
+  evidence — the decisive column is the ratio `s2_N/(1/(4N))` (≈1 = primes look
+  uniform, deviation = where a theorem must live). Chebyshev plus `s2_N → 0`
+  still gives density-1 `ν₂(n) ≥ c·n` (thread `variance-vanishing-density1`,
+  task `chebyshev-second-moment-density1`; ratio task
+  `fair-model-variance-ratio-null`). The reduction to switch density is
+  known equivalent-direction but not known to be *necessary*. (Open request
+  `walsh-spectral-subset-b904` in REQUESTS.md.) **Directive 7 freezes sources,
+  restated by directive 27 after search restarted (sources 36→43, summaries
+  48→57, frontier 310→348, 293 candidates still unworked):** no new source or
+  download without first naming which unworked FRONTIER candidate was read and
+  why none answers.
+- Whether SUPPLY is *equivalent* to positive switch density (GOAL priority 3) —
+  a genuine negative theorem that would close the problem honestly. The
+  `switch-equivalence` skeleton for *arbitrary* h is already **broken** (sparse
+  witness h = e_{2^m}); the restricted prime-windowed form survives in
+  `supply-switch-equivalence.md`.
 
 ## Recalled
 
-What durable memory holds about this problem or problems of its shape, marked as
-recalled rather than as this run's own finding, with hypotheses checked against
-this problem before being relied on.
+One durable finding stored this run (Cognee): the three analytic-number-theory
+sources added (Matomäki–Radziwiłł, MRTF, Green–Tao) are value-domain
+orthogonality/correlation-cancellation theorems; their named approaches
+(`matomaki-radziwill-index-autocorrelation`, `gowers-u2-nilsequence-uniformity`)
+are **refuted**, and the sources cannot by themselves reach the fold object.
+The rest of Cognee is empty, so `recall_memory`/`recall_scratch` return nothing
+for the measured and claim content — that is this run's capture
+(`code/out/`), not recalled memory; trace it to those, not to `problem.md`.
 
 ## Contradictions
 
-Where sources disagree, where a source contradicts recalled memory, or where a
-computation contradicts a conjecture. The most valuable rows here: record them
-rather than silently picking a side.
+- **Stale "engine of the open approach" framing, resolved (this pass):** the
+  three analytic-number-theory summaries (Matomäki–Radziwiłł,
+  Matomäki–Radziwiłł–Tao, Green–Tao) initially described themselves as the
+  "named engine of the open / proposed (not refuted)" `matomaki-radziwill-
+  index-autocorrelation` and `gowers-u2-nilsequence-uniformity` approaches. Both
+  approaches are recorded **refuted** in `research/APPROACHES.md` — MR for the
+  index-domain object not being multiplicative in the prime index (and g=0 being
+  exactly the switch-density parity barrier), Gowers/GT for a basis mismatch
+  (the fold lives on the ANF/zeta basis, not the Walsh/U² basis). Corrected the
+  three summaries' framing, added `contradicts` edges, and filed the finding in
+  Cognee. The sources remain genuine value-domain machinery; their bearing is
+  negative for those two routes.
+- **Kernel is 2-dimensional, not 1 (directive 5, live consequence):** the
+  correction to rank n−2 / nullity 2 means every low-weight-image argument
+  calibrated against a 1-dimensional kernel needs recomputing — thread
+  `kernel-recalibration`, task `kernel-component-of-prime-h` (does the prime
+  switch bit h have a large component along even-alt / odd-alt?). All-ones
+  stays in the kernel, so closed door 1 is **untouched** — do not read the
+  correction as reopening it.
+- `rw-not-the-submask-xor-fold` vs the earlier gloss "RW is the fold itself":
+  recorded in `research/CLAIMS.md` (RW's run-length transform is NOT SUPPLY's
+  submask-XOR fold Φ).
+- **rw Theorem-9 mismatch** (task `reconcile-verifier-anomalies`): the
+  positive-integers run-length transform disagrees for every n=1..19; either
+  the sum_T parameters or the transform interpretation is off. The former
+  "bacher rank n−1" anomaly is resolved — that was the d=1..n−1 row range,
+  not the operative d=2..n−1; the rank question itself is settled by
+  directive 5.
+- **`code/out/dip_sparsity_monotonic.txt` is VACUOUS (directives 11/12):** it
+  ran on the unfloored literal-suffix oracle (identically 0 for all n), so its
+  M(N)=0 and density-1.0-for-every-threshold table would read as "SUPPLY
+  refuted" by a bug. Do not cite or build on it; it is to be deleted, with the
+  refuter's `code/out/refuter_dip_sparsity_findings.md` the surviving dip
+  source (task `retire-vacuous-dip-capture`). The corrected N=20000 re-run
+  shows c=0.48 half/tail = 0, conflicting with the refuter's N=3000 tail 0.030
+  — resolve via `recompute-dip-sparsity-40000`.
+- **`code/out/chebyshev_second_moment_N40000.txt` — discrepancy recorded, not chased (directive 14):** the run's own note said the capture was found at 0 bytes, but the operator read a populated file before this run carrying `mu=0.064146` — that is the **Thue-Morse negative-control** value at its own N=4000 ceiling, not contamination of the primes table (which reads `mu_N=0.499658` at N=40000). The capture is vindicated as the strongest artifact; claim `n40000-second-moment-density1-measured` is filed from it. The prior directive-13 "discredited" verdict is superseded.
+- Convention edge in the sweep: `pattern_finder_nu2_structure.md` quotes
+  ν₂(53)/53 = 0.3585 while the capture's min is 0.3396 — the ±1 suffix-floor
+  convention difference `problem.md` warns about; quote the convention (here
+  d ∈ [2, n−1]) when stating the min.
+- **`nu2(4000)` guard constant is 1975, not 1976 (directive 16, authorized).**
+  The operative floored range `k∈[2,n−1]` (problem.md) gives `nu2(4000)=1975`
+  (ratio 0.4938); `1976` is the unfloored `k∈[0,n−2]` column of
+  `code/out/averaged_mean_capture.txt` (ratio 0.4940) — a floored-versus-
+  unfloored offset, not a discrepancy. `code/lib/nu2.py` and `code/avg_nu2.py`
+  still quote 1976: do not re-import it as a 'correction'.
+  `code/lib/nu2_guard.py` must assert 1975 and carry this reason beside the
+  constant.
 
-## Gaps
+- **Guard/data-path call site RESOLVED (directive 18):** the call site that put
+  Thue-Morse numbers under a primes header was `format_rows()` in
+  `code/averaged/chebyshev_verify_oracle.py`, which hardcoded the row label
+  `mu_N (Primes)` / `s2_N (Primes)` for every sequence — the THUE-MORSE and
+  ALL-ONES control sections printed `mu_N (Primes)` under their own headers.
+  It was a mislabel, not a wrong h in STAGE1: the prime h was fed correctly.
+  The source now threads `seq` and carries the produced-array assert + h-bit
+  print (task `fix-data-path-array-guard` closed); the on-disk capture
+  `chebyshev_oracle_verified_N40000.txt` predates the fix and must be regenerated
+  (task `run-chebyshev-second-moment-40000`).
 
-What the run still needs and has not found. State a gap precisely enough to be a
-research request rather than a mood.
+## The obvious next unresolved thing
+
+**Directive 30 is now the head.** (1) `code/refute/` lists 47 files: delete every file whose name begins with an underscore or matches `*_probe.py`, `*_run*.py`, `*_run*.sh`, or `*.p`, keeping only `endpoint_sign_check.py` (the single script the abandonment note cites to reproduce the blocker); count before and after and report BOTH numbers in `config/DIRECTIVES.md` — nothing else counts as done, and no new file may be created in `code/refute/` until the count is reported. (2) Search is ABSOLUTELY frozen: no exa_search and no download until the Ratio B decrement-ratio discriminator at N=160000 has a capture, or a note states the projected runtime and why it is unaffordable — there is no source that answers that question. (3) The endpoint-sign resolution is accepted as a real result: file the claim block (committed `(-1)^#runs` form false, corrected identity holds; range checked = 6868 (n,d) pairs n=20..120, 449 committed failures) and keep `endpoint-sign-abandoned.md` pointing at it.
+
+**Directive 29 (now second in line).** The zero-byte captures are cleared — code/out has none (confirmed: `g_run_telescope_verify_negctrl_full.captured.txt` is 833 bytes, populated). The endpoint-sign investigation is **abandoned**, not consolidated: `research/notes/endpoint-sign-abandoned.md` names the blocker — the TPTP model-finder returns 'undecided' because the d=3 axioms pin every boolean atom, so a conjecture false for every input has no free model to exhibit; only the Python checks decide the question and they were never run to a capture. The refuter is redirected to the Ratio B decrement-ratio discriminator at **N=160000** (task `extend-ratio-b-n160000`, thread `ratio-b-decrement-limit`): does r_k keep falling (Ratio B → constant above 1) or turn back toward 1 (Ratio B → 1)? Unaffordable ⇒ state the projected runtime, do not substitute smaller experiments. `code/out/excess_seq.txt` still lacks its directive-13 header (task `header-excess-seq-capture`).
+
+**Directive 28 (superseded in the endpoint-sign prong only):** (1) A NEW 0-byte capture — `code/out/g_run_telescope_verify_negctrl_full.captured.txt` (fifth occurrence, first since `code/lib/capture.py` was written) — CLEARED by directive 29: the file is now populated (833 bytes) and code/out holds no 0-byte capture. (2) Consolidate `code/refute/` — superseded by directive 29's abandonment; see the head and task `abandon-endpoint-sign-scratch`.
+
+**Directive 27 (still current outside the endpoint-sign prong): the claim-block refresh and the search re-freeze.** Directive 26's negative control is now done: `code/gfold/g_run_telescope_verify.py` perturbs the telescoping identity with a 3-valued boundary (r = q_j mod 3) and it breaks — MISMATCHES = 438, first at d=1 pos=0 — shown in `code/out/g_run_telescope_verify_negctrl.captured.txt`; the full 30-trial capture is the 0-byte file directive 28 reopened (task `fix-truncation-mechanism-temp-file`). What remains of directive 26 is the claim block: `research/notes/g_run_telescope_verified.md` still says 6 random trials (capture has 30), records no negative-control count, and its `bearing` does not say what the identity buys for `wt(Φ_n h)` — 51M passes with zero failures is equally the signature of a predicate true by construction. Update the `g-run-telescope-verified` block: hypotheses to the exact counts (30 random h, not the stale '6'), `bearing` stating plainly that the identity restates the fold cell as run-endpoint products and by itself buys nothing direct for `wt(Φ_n h) ≥ c·n`; mirror in `research/ROOT.md` (task `g-telescope-negative-control-claim`).
+
+**Directive 27 also corrects two regressions of directive 7.** (1) Search restarted: sources 36→43, summaries 48→57, frontier 310→348, 293 candidates still unworked — refreeze (task `refreeze-search-name-frontier-candidate`); before any new fetch, name the unworked FRONTIER candidate read and why it did not answer. The open questions (decrement-ratio discriminator, second-moment structure, telescoping identity's bearing) are all in-house computations; no source answers them. (2) The refuter's endpoint-sign spray is **abandoned** by directive 29 (see head): `code/refute/` is to be pruned to the single reproducer `endpoint_sign_check.py` with the pickles and near-identical runners deleted (task `abandon-endpoint-sign-scratch`), not consolidated. Code files went 116→134 this tick against 13 new captures.
+
+**Directive 18 (earlier head): the fair-variance capture is vindicated and the prefix-variance null is settled.** `code/out/fair_variance_at_40000.txt` is correct and citable — `ν₂(40000)=20081` is the primes, both controls discriminate, and the null is `log(N)/(4N)` (Ratio B = 1.3155 at N=40000). Claim `fair-variance-log-null-tail-clean-40000` is filed and mirrored in ROOT.md. Directive 17's call site is named (see Contradictions); task `fix-data-path-array-guard` is closed.
+
+**Directive 19 corrects one over-claim in that result.** Ratio B's falling
+decrements (−0.0507 → −0.0316 → −0.0237 → −0.0213; the last two steps are each
+~a doubling of N and the decrement only shrank to ≈0.9 of its predecessor) do
+NOT separate a limit of 1 from a constant above 1 — the note's 'consistent with
+a constant above 1, not with 1' reading is withdrawn. The established statement
+is: the excess PERSISTS across N=1000..40000 (1.443 → 1.316) and the measured
+range is silent on the limit. The two limits mean opposite things (uniform vs
+permanent structural excess), so the honest settlement is NOT to extend the
+range: a log-linear fit to the measured ratio reaches 1 near N≈7×10^7 —
+unreachable here (directive 20) — so the limit stays undetermined and the
+verdict 'plateaued / CONSTANT ABOVE 1' is withdrawn. The next step is task
+`correct-ratio-b-overclaim` (fix the script verdict, regenerate the four
+captures, stop dumping the mu_4000 Fraction; keep the fair-column
+f·4N/lnN = 0.967→0.990 validation). A budget-capped Ratio B extension to
+N=80000 is already captured (limit still undetermined); the stale
+`chebyshev_oracle_verified_N40000.txt` regeneration stays queued.
+
+**Directive 21 corrects a reasoning error in the decrement reading.** "The
+decrements are still shrinking" is NOT a signature of a limit above 1 — the
+harmonic sequence has strictly shrinking decrements yet diverges. The
+discriminating statistic is the RATIO of consecutive decrements, computed at
+FULL PRECISION. **Directive 25 resolves the re-check (directive 24's correction ran against the operator, not the run):** the run's exact decrement ratios are the record — r_3 = 0.899404441, r_4 = 0.877780046 (`code/out/directive21_exact_ratios.captured.txt`). The operator's 0.875 / 0.905 were rounded-table artifacts and must not be cited as data. The final exact ratio FALLS (r_4 < r_3), so the modest lean is toward a limit ABOVE 1 (convergent geometric tail ≈1.126), NOT toward limit 1 and not "neither" — the whole direction rests on that one number: a single ratio is thin evidence, keep the caution. Both extrapolations stay stated and undeclared. Purge the rounded figures and the stale "rising / leans toward limit 1" reading wherever they survive (task `purge-rounded-ratio-figures-directive25`).
+
+**Directive 22: two fair-prefix captures are 0 bytes — restore, do not re-run.**
+`code/out/fair_prefix_variance_N40000_5trials.txt` and
+`code/out/fair_prefix_variance_40000.txt` are empty (third 0-byte capture; the
+chebyshev settle note reported the same earlier). The 5-trial data survives
+verbatim in `code/out/push_pv_run.log` — recover the table from there, do not
+re-run (~530s of hard-won compute). Then apply only the directive-20/21
+conclusion edits (drop "CONSTANT ABOVE 1 / plateaued"; report the
+decrement-RATIO as the discriminator with FULL-precision exact ratios
+r_3 = 0.899404441, r_4 = 0.877780046 — final falls, modest lean toward a limit
+ABOVE 1, resting on that one number (thin evidence; directive 25 — the
+operator's rounded 0.875/0.905 are NOT carried); both extrapolations stated,
+neither declared) and leave every data row
+untouched.
+Rule for all roles: correcting a conclusion edits the conclusion and leaves the
+data; a capture that must be replaced goes under a new name with the old marked
+superseded in place. The truncation mechanism is to be found and fixed (likely
+a `> file` redirection opening before the command succeeds — write to a temp
+file and mv on exit 0), recorded in `code/out/INDEX.md`. Head is task
+`restore-zero-byte-fair-prefix-captures`, then `fix-truncation-mechanism-temp-file`.
+
+**Checker pre-flight (directive 21, solver):** before running a checker, read
+the approaches ledger to confirm the approach it serves is still live, check
+its input distribution against the real object (primes h, not iid/fair), and
+file the result as a fenced claim block — otherwise the capture is discardable
+bookkeeping (attempt 2's `anf_dictionary_check` / `anf_second_moment_check`;
+task `anf-captures-disposition`).
+
+**Directive 14 (already filed):** claim `n40000-second-moment-density1-measured`
+is filed and mirrored in ROOT.md — the N=40000 capture is the strongest artifact
+(`μ_N=0.499658`, tail min of `ν₂/n` over `[X,N]` rising 0.3396@50 → 0.4901@30000,
+evidence for `ν₂/n → 1/2` pointwise). Directive 14 dropped only the *wrong-null*
+comparison (`s2_N` vs the per-index `1/(4N)`); directive 18 now supplies the
+correct null (`log(N)/(4N)`, Ratio B = 1.3155). Sharpest open problem unchanged:
+prove `s2_N → 0` (weaker SUPPLY input, density-1 form) or that the exceptional
+set is finite (stronger, pointwise). The guard module stays the structural fix:
+ONE canonical oracle in code/lib (floored `s_sos`, ν₂(53)=18, ν₂(64)=27), every
+script imports it, entry guards + capture-header discipline (task
+`add-oracle-guard-assertions`); then the dip recompute to N=40000 (task
+`recompute-dip-sparsity-40000`).
+
+**Directive 12 (still queued behind it): the dip-sparsity threshold, on a non-vacuous oracle.**
+`code/out/dip_sparsity_monotonic.txt` was a vacuous capture (unfloored
+literal-suffix oracle, identically 0) and must not be cited or built on; the
+real dip numbers live in `code/out/refuter_dip_sparsity_findings.md`. That
+source answers the averaged push's headline: M is NOT monotone (density-0.318
+decreases; only bounded-below survives, M ≥ 0.396 on all n ≥ 50), and dips are
+sparse for c ≲ 0.45 with the < 0.40 set exactly {53,71,105} — so the density-1
+form holds up to c ≈ 0.45 and the threshold to locate is between 0.45 and 0.48.
+Recompute the dip tail densities to N=40000 over c = 0.40..0.49 (step 0.01)
+with all-ones and Thue-Morse controls, and resolve the c=0.48 tail conflict
+(refuter N=3000 tail 0.030 vs corrected N=20000 half/tail 0) — task
+`recompute-dip-sparsity-40000`, with the oracle guards of
+`add-oracle-guard-assertions` and the file removal of
+`retire-vacuous-dip-capture` preceding it.
+
+**Directive 10 next in line: file the fair-model binomial as proved, then measure the
+ratio.** Record
+`fair-model-exact-binomial` as PROVED from rank n−2 / nullity 2 (the exact-count
+table confirms it; do not file it as measured), file the `uniform-random-h-supply-w.h.p.`
+Chernoff corollary, and state that the reframing touches none of the five closed
+doors (task `establish-fair-model-exact-binomial-proved`). Then add the
+`s2_N/(1/(4N))` ratio column to the streamed variance recomputation — that
+single column decides whether the primes are behaving like a uniform string or
+deviating (task `fair-model-variance-ratio-null`). The rank/surjectivity premise
+tasks (`prove-fold-rank-all-n`, `state-fold-full-row-rank-surjectivity`) are
+unblocked because they are now the load-bearing premise of the proved result.
+
+**Directive 7 + 8 — search frozen, averaged push only.** Search produced nothing
+(52 exa_search calls and 41 downloads since the last check, all discarded;
+sources stayed 35, summaries 46) while FRONTIER holds 204 unworked candidates:
+stop searching. The remaining gap is not a source gap. The refuter was flailing
+on scratch (spray of one-off files in `code/refute/`, three near-identical
+runners, run-failed 7→9); consolidate to one parameterised script with one
+sweeping capture plus a negative control shown failing. **What is next is the
+averaged push and nothing else** — directives 3, 5, 6, 7, 8 open, answered with
+captures only, using the 40000-term pipeline:
+
+(a) ANSWERED-IN-PART (directive 12, refuter capture N=50..3000): M is NOT
+monotone (density-0.318 decreases; only bounded-below survives, M ≥ 0.396 on
+all n ≥ 50); dips sparse for c ≲ 0.45, < 0.40 set exactly {53,71,105}. Next:
+recompute dip tail densities to N=40000 over c=0.40..0.49 to locate the
+sparsity threshold and resolve the c=0.48 tail conflict (refuter 0.030 vs
+corrected N=20000 0) — task `recompute-dip-sparsity-40000`;
+(b) ANSWERED (avg_push_capture.txt TASK A): density-matched Bernoulli(p=0.5968) and Bernoulli(0.5) reproduce the rising prime mean — the MEAN is fold-generic, not prime-specific. The POINTWISE dip sparsity is the prime-specific signal;
+(c) ANSWERED (directive 9, claim `mean-bounded-not-density1`): a bounded mean gives only positive lower density / infinitely-often, NOT density-1. The density-1 route is now variance-vanishing — s2_N → 0 plus Chebyshev (task `chebyshev-second-moment-density1`, thread `variance-vanishing-density1`);
+(d) ANSWERED (avg_push_capture.txt TASK B): prime h's min Hamming distance to the 4 kernel directions is dmin/n ≈ 0.13..0.37 (n=8..128) — not close to any collapse direction; closed door 1 untouched.
+
+The directive-5 follow-ups (`prove-fold-rank-all-n`, `state-fold-full-row-rank-
+surjectivity`) and the rw Theorem-9 mismatch (`reconcile-verifier-anomalies`) are
+parked behind these captures. Each capture states its range and carries a
+negative control shown failing.
+
+## Pointers
+
+- `problem.md` — the full problem, the five doors, the measurement table, the
+  asserted facts, the convention warning, and the hierarchy of acceptable
+  results.
+- `GOAL.md` — the single hypothesis (does the fold `Φ` beat the switch-density
+  form?), the priorities, and the streaming rule (one row at a time, never
+  materialise the triangle).
+- `research/CLAIMS.md` — the claim blocks; `research/THREADS.md` — live and dead
+  directions (`frontier-refocus`, `switch-side-gap`, `averaged-mean-structure`);
+  `research/BACKWARD.md` — the skeletons and their open gaps. Read ledgers with
+  `read_ledger`, never by editing the rendered files.

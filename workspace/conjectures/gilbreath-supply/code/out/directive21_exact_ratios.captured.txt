@@ -1,0 +1,42 @@
+=== Directive 21 — EXACT decrement-ratio arithmetic (from given s2_N) ===
+
+  N        s2_N              RatioB = s2*4N/lnN
+    1000  2.4916322565e-03  1.4428028532
+    4000  7.2163270955e-04  1.3920972087
+   10000  3.1327239902e-04  1.3605247423
+   20000  1.6548686662e-04  1.3367966849
+   40000  8.7121263299e-05  1.3154555648
+   80000  4.5749115971e-05  1.2967227554
+
+=== PER-DOUBLING DECREMENTS (exact, full precision) ===
+  k   from->to      d_k = RatioB[k]-RatioB[k+1]
+  d_1    1000 ->  4000   0.0507056445
+  d_2    4000 -> 10000   0.0315724664
+  d_3   10000 -> 20000   0.0237280573
+  d_4   20000 -> 40000   0.0213411201
+  d_5   40000 -> 80000   0.0187328094
+
+=== DECREMENT RATIOS r_k = d_{k+1}/d_k  (same full-precision operands) ===
+  r_1 = 0.031572 / 0.050706 = 0.622661771
+  r_2 = 0.023728 / 0.031572 = 0.751542721
+  r_3 = 0.021341 / 0.023728 = 0.899404441
+  r_4 = 0.018733 / 0.021341 = 0.877780046
+
+  r_1 = 0.622661771
+  r_2 = 0.751542721
+  r_3 = 0.899404441
+  r_4 = 0.877780046
+
+=== (3) DIRECTION: r_4 FALLS relative to r_3 ===
+  r_3 = 0.899404441   r_4 = 0.877780046
+
+=== (4) HONEST READING (depends on the single number above) ===
+  The last ratio r_4 FALLS below r_3. To be precise: neither limit is
+  favoured by this final step — `limit of Ratio B = 1` (uniform) and
+  `limit > 1` (constant above 1) both remain open; 6 points cannot
+  separate them. A sub-1 last ratio would lean toward a convergent
+  tail (limit > 1), but the evidence is thin and nothing is declared.
+
+LABEL: measured, not proved.  Operator approximations (0.63,0.75,0.875,
+0.905) are deliberately NOT repeated as data; the exact values above are
+the record.

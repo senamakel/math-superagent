@@ -1,0 +1,74 @@
+INDEPENDENT VERIFICATION of fair-variance Null/Ratio-B (SUPPLY fold)
+CAPTURE oracle : lib.supply_fold.s_sos (submask-PRODUCT zeta, +-1 algebra)
+THIS RUN oracle: DIRECT submask-XOR decomposition T(n,d)=XOR_{s<=d} h[n-1-s],
+   (L) from-scratch literal per-submask expansion ; (Z) subset-XOR zeta (0/1, uint8)
+   (D) lib.supply_fold.s_direct (library literal direct oracle)
+convention: floored fold d in [2,n-1] (nu2(53)=18, nu2(64)=27)
+all arithmetic exact (ints/Fractions); ratios float only at display
+NPROC=28
+
+=== (a) four-way agreement n = 2..200 (L, Z, D, s_sos), PRIMES ===
+   n=2..200: L==Z==D==s_sos on all 199 n; S==(n-2)-2*ones on all: True
+
+=== (b) checkpoints: literals (53,64,4000) + literal at 40000 + zeta ===
+   nu2[53] literal=18 zeta=18  capture expects 18 : PASS
+   nu2[64] literal=27 zeta=27  capture expects 27 : PASS
+   nu2[4000] literal=1975 zeta=1975  capture expects 1975 : PASS
+   nu2[40000] literal=20081 zeta=20081  capture expects 20081 : PASS
+   s_direct(40000): S=-164 ones=20081 (ones==nu2: True, S==(n-2)-2*ones: True)
+
+=== (L) full literal prefix n = 2..10000, PRIMES (parallel) ===
+   computed 9999 n-values; nu2[10000]=5077
+   literal prefix == four-way block on [2,200] and == 1975 at 4000: PASS
+
+=== (Z) full XOR-zeta prefix n = 2..40000, PRIMES (parallel) ===
+   nu2[40000]=20081  (~0.5020 of n)
+=== (Z) full XOR-zeta prefix n = 2..40000, ALL-ONES (parallel) ===
+   nu2[40000]=0  (~0.0000 of n)
+=== (Z) full XOR-zeta prefix n = 2..40000, THUE-MORS (parallel) ===
+   nu2[40000]=96  (~0.0024 of n)
+
+=== samples beyond N_LIT: L/Z/D/s_sos on 15 spread n-values ===
+   sample n: 1400,2000,4096,6000,8192,10000,15000,16384,20000,24000,30000,32768,36000,38000,39999
+   all routes agree on every sample n; S-relation holds: True
+
+=== cross-check full prefixes Z vs L on n = 2..10000: 0 mismatches
+   Z prefix and literal prefix are the same sequence to 10000: True
+
+=== (c) exact prefix variance & ratios, PRIMES (from Z full prefix) ===
+    N         mu_N         s2_N      s2*4N  s2*4N/lnN |  cap R.B        match
+ 1000     0.491111  2.49163e-03     9.9665     1.4428 |   1.4428 PASS
+ 4000     0.497383  7.21633e-04    11.5461     1.3921 |   1.3921 PASS
+10000     0.498860  3.13272e-04    12.5309     1.3605 |   1.3605 PASS
+20000     0.499381  1.65487e-04    13.2389     1.3368 |   1.3368 PASS
+40000     0.499671  8.71213e-05    13.9394     1.3155 |   1.3155 PASS
+   Ratio A at 40000 = 13.9394 (capture 13.9394)
+   Ratio B sequence: 1.443 1.392 1.361 1.337 1.315
+   capture sequence: 1.443 1.392 1.361 1.337 1.315
+   mu_40000 = 0.499671 (capture 0.499671); s2_40000 = 8.71213e-05 (capture 8.71213e-05)
+
+   per-step decrements (1000->4000->10000->20000->40000): 0.0507 0.0316 0.0237 0.0213
+   per-doubling decrements (1000->2000@?, use 4000->10000 as 2.5x):
+   last two doublings (10000->20000, 20000->40000): 0.0237, 0.0213 (ratio 0.899) -- decrement barely shrank
+
+=== (d) deep tail [36000,40000]: nu2(n)/n >= 0.40 for ALL n (PRIMES) ===
+   count with nu2(n)/n < 0.40 in tail: 0
+   min nu2(n)/n over the tail: 6043/12324 = 0.4903
+   min >= 0.49 (capture: dip density 0 at every c=0.40..0.49): True
+
+   negative controls (must DIP: density of nu2/n < 0.40 in tail > 0.01):
+     ALL-ONES   tail density(nu2/n<0.40) over [10800,12000] = 1.0000  (capture at 40000: ALL-ONES 1.0000, THUE-MORS 0.9998)
+     THUE-MORS  tail density(nu2/n<0.40) over [10800,12000] = 1.0000  (capture at 40000: ALL-ONES 1.0000, THUE-MORS 0.9998)
+
+SUMMARY (measured, not proved):
+  oracle used: DIRECT submask-XOR route -- (L) literal expansion, (Z) exact XOR-zeta,
+    (D) lib.s_direct -- a different algebra/path from the capture's s_sos (+-1 product zeta).
+  full exact prefixes reached: literal to N=10000 (PRIMES), XOR-zeta to N=40000 (all 3 families);
+  checkpoints 20000/40000 additionally cross-checked by literal + s_direct + s_sos samples at 15 n-values.
+  Ratio B: 1.443 1.392 1.361 1.337 1.315 ; Ratio A(40000)=13.9394 -- MATCHES the capture.
+  convergence classification: Ratio B is DECREASING but the excess PERSISTS to 40000 (1.443->1.315);
+    per-doubling decrements barely shrink (0.0237, 0.0213, ratio 0.9) -- one decade of data does
+    NOT determine whether limit B is 1 or a constant above 1; extension to 80000 is separate (fair_variance_extend_80000.py).
+  deep tail [36000,40000]: nu2/n >= 0.49 everywhere for PRIMES (min 6043/12324); controls dip at c=0.40.
+  NODES: this is a measurement, not a proof; exact arithmetic; negative controls failed exactly where required.
+runtime 297.3s

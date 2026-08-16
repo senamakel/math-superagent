@@ -1,0 +1,102 @@
+==============================================================================
+COMPUTATION B — averaged push (directives 3,5,6)
+==============================================================================
+h[j] = ((q_{j+1}-q_j)//2) mod 2, length 20000 (prompt's definition,
+problem.md fact 1). nu2(n)=wt(Phi_n h), d in [2,n-1], computed
+per n by the exact submask-product SOS fold (s_sos), streamed.
+
+ORACLE VERIFY: s_sos == s_direct literal submask-XOR on n=4..200:
+  PASSED (0 mismatches)
+
+streamed nu2(n) for n=2..20000 in 132.3s (SOS exact); reached n=20000.
+
+------------------------------------------------------------------------------
+(1) DIP SPARSITY — exact list and max n with nu2/n < c
+------------------------------------------------------------------------------
+  c=0.40: count = 3 over n in [50,20000]
+    list (first 30): [53, 71, 105]
+    exact list tail (last 8 n): [(53, 0.3585), (71, 0.3803), (105, 0.3905)]
+    MAX n with nu2/n < 0.40 = 105 (nu2=41, ratio=0.3905)
+  c=0.42: count = 10 over n in [50,20000]
+    list (first 30): [53, 62, 66, 71, 103, 105, 145, 153, 210, 274]
+    exact list tail (last 8 n): [(66, 0.4091), (71, 0.3803), (103, 0.4175), (105, 0.3905), (145, 0.4069), (153, 0.4118), (210, 0.4143), (274, 0.4197)]
+    MAX n with nu2/n < 0.42 = 274 (nu2=115, ratio=0.4197)
+  c=0.45: count = 46 over n in [50,20000]
+    list (first 30): [53, 56, 58, 62, 64, 66, 67, 68, 71, 76, 81, 100, 103, 105, 110, 120, 137, 145, 153, 155, 158, 172, 193, 209, 210, 213, 274, 278, 281, 297 ...]
+    exact list tail (last 8 n): [(425, 0.44), (426, 0.4484), (446, 0.4417), (461, 0.4403), (475, 0.4484), (536, 0.4496), (592, 0.4443), (763, 0.4469)]
+    MAX n with nu2/n < 0.45 = 763 (nu2=341, ratio=0.4469)
+
+  HEADLINE: max n in [50,20000] with nu2/n < 0.42 = 274; count = 10.
+  Sparsity verdict (measured): the set of n with nu2/n<0.42 is
+  FINITE (bounded) out to N=20000 — it stops at n=274 and does not
+  recur. Confirm the largest is 274 (see nu2_extended for the
+  h_string variant; recomputed here with gap-parity h).
+
+------------------------------------------------------------------------------
+(2) CHEBYSHEV / DENSITY-1 SEPARATION
+------------------------------------------------------------------------------
+  Cesaro mean M(N) and population variance s2(N) of nu2/n over
+  n in [50,N]:
+        N      M(N)       s2(N) #nu2/n<0.40 #nu2/n<0.45
+      100   0.48735   2.813e-03           2          12
+      500   0.49375   1.227e-03           3          43
+     1000   0.49600   7.657e-04           3          46
+     2000   0.49792   4.591e-04           3          46
+     4000   0.49864   2.735e-04           3          46
+    10000   0.49937   1.323e-04           3          46
+    20000   0.49963   7.466e-05           3          46
+
+    last-half window [500,1000]: mean=0.49804 s2=3.405e-04
+    last-half window [1000,2000]: mean=0.49974 s2=1.606e-04
+    last-half window [2000,4000]: mean=0.49935 s2=9.139e-05
+    last-half window [5000,10000]: mean=0.49987 s2=3.567e-05
+    last-half window [10000,20000]: mean=0.49990 s2=1.718e-05
+
+  Explicit separation (the Chebyshev step):
+    * A MEAN bounded below, ALONE, implies only that nu2/n >= c on a
+      set of positive upper density (and hence infinitely often),
+      NOT density 1 (chebyshev_sanity.txt shows a mean can be exactly
+      c with P(nu2/n>=c)=0.32 < 1 forever).
+    * MEAN bounded below AND VARIANCE -> 0 DOES imply (by 
+      Chebyshev) that nu2/n >= c on a set of asymptotic density 1.
+      s2(N) here decays (measured), so the density-1 conclusion is
+      ARGUABLE from the measured variance, if s2 genuinely -> 0;
+      the tail counts (#nu2/n < 0.40) are finite/small throughout,
+      consistent with the density-1 set being nearly everything.
+  Both the decay of s2 and the tail counts are MEASURED, not proved;
+  the implication is a theorem (Chebyshev) whose hypotheses are the
+  measured mean/var. The gap school still ranks this measured-not-proved.
+
+------------------------------------------------------------------------------
+(3) DENSITY-MATCHED SURROGATE CONTROL (directive 5b)
+------------------------------------------------------------------------------
+  measured prime switch density p = 0.5855 (ones(h[0..19999])=11710)
+  PRIME M2(N) = (1/N) sum_{n=2..N} nu2/n  (headline anchor):
+    M2(  100) = 0.4507
+    M2(  500) = 0.4858
+    M2( 1000) = 0.4919
+    M2( 2000) = 0.4958
+    M2( 4000) = 0.4976
+    (auto-anchor: M2(100)=0.4507 M2(4000)=0.4976)
+
+  MODEL: Bernoulli(p=0.5855) i.i.d. strings (same 1-density as
+  primes, otherwise independent), 15 trials, each a fresh
+  string; per trial compute M2_model over [2,S] for S in sample set
+  via the SAME fold (s_sos per n, same [2,N]/[50,N] window for BOTH).
+  The comparison uses the SAME statistic for prime and surrogate,
+  so the rise/level contrast is apples-to-apples.
+       S prime M2 model mean       sd     min     max
+     100   0.4507     0.4522   0.0079  0.4404  0.4647
+     500   0.4858     0.4864   0.0019  0.4838  0.4902
+    1000   0.4919     0.4924   0.0010  0.4910  0.4944
+    2000   0.4958     0.4958   0.0005  0.4951  0.4968
+    4000   0.4976     0.4977   0.0002  0.4974  0.4981
+
+  Reading (measured): does the density-matched surrogate reproduce
+  the RISING mean (0.4394 -> 0.4973), or only the level (~0.5)?
+  If the model mean also rises across 100->4000 by the same amount,
+  the rise is density-driven (a generic balanced-string effect of
+  the fold, NOT special to the primes). If the model mean is flat /
+  lower, the rise is fold-driven structure of the actual prime h.
+
+All items above are MEASURED, not proved.

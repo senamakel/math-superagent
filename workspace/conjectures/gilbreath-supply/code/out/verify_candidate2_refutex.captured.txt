@@ -1,0 +1,41 @@
+=== CAPTURED OUTPUT: code/verify_candidate2_refutex.py ===
+Program: code/verify_candidate2_refutex.py
+Approach: research/approaches/walsh-subset-sum-fold-structure.md (REFUTED)
+Command: python3 code/verify_candidate2_refutex.py  (from /workspace)
+This probe had been DRAFTED but NEVER EXECUTED (the approach doc says "NOT
+executed in this run"). This run executes it for the first time.
+
+WHAT IT SETTLES
+The negative-control premise of the refuted Walsh/subset-sum approach: balanced
+(weight-floor(n/2), maximally weighted) binary strings can have fold weight
+wt(Phi_n x) = 0 -- they lie in ker Phi_n. Therefore no structural bound on
+wt(Phi_n x) from Phi's geometry alone, valid over balanced inputs, can exist.
+
+VERBATIM
+  n=8 : min over ALL 70 balanced strings: min wt(Phi_n x) = 0  (n/2 = 4)
+        witness: 10101010
+  n=16: min over ALL 12870 balanced strings: min wt(Phi_n x) = 0  (n/2 = 8)
+        witness: 1010101010101010
+  n=24: min over 200 balanced strings (subsample): min wt(Phi_n x) = 2  (n/2 = 12)
+        witness: 111111111111000000000000
+
+WHY THE WITNESS IS EXPECTED (and a check, not a coincidence)
+The alternating strings 10101010 (n=8) and 1010101010101010 (n=16) are the
+even-alt kernel generator span(even-alt, odd-alt) = ker Phi_n (problem.md fact 3,
+corrected rank n-2 nullity 2). Each is balanced (n/2 ones) and has wt(Phi_n x)=0
+by definition of the kernel. So the n=8,16 minima of 0 are the kernel generators
+themselves -- an independent confirmation, through the fold-weight oracle s_sos,
+that those alternating vectors are kernel vectors, and the clean demonstration
+that "balanced" does NOT deflect the kernel collapse.
+
+STATUS
+This is a NEGATIVE CONTROL confirming an already-refuted approach; it does NOT
+reopen closed door 4. It answers the refutation's own premise check: the kind of
+obstruction the five closed doors name (max-weight, structurally rich inputs with
+tiny fold image) is real, and the kernel vectors provide it exactly at the most
+weighted possible strings. Count checked: all 70 balanced strings at n=8 and all
+12870 at n=16 (exhaustive); 200-subsample at n=24. The n=24 subsample minimum of
+2 comes from a NON-kernel string (111111111111000000000000 is not the even-alt
+alternating pattern), so it is not a kernel artefact -- it is a genuinely
+near-max-weight non-kernel balanced string with tiny fold image (2 << n/2 = 12),
+which is the door-4-style obstruction the refutation needs.

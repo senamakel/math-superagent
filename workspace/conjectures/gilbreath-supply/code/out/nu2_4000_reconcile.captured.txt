@@ -1,0 +1,13 @@
+SEQUENCE : primes (residue-switch h, prime_h(4002))
+ORACLE   : s_sos / s_direct / from-scratch literal submask-XOR
+CONVENTION: floored fold d in [2, n-1], T(n,d) = XOR_o submask of d h[n-1-d+o]
+s_direct signature: s_direct(n, h) -> (S, ones); S=sum (-1)^T over d in [2,n-1], ones=#d with T=1 (== nu2(n)).
+
+n=53: ssos=18 s_direct=18 scratch=18  agree=True
+n=64: ssos=27 s_direct=27 scratch=27  agree=True
+
+n=4000: ssos=1975 s_direct=1975 scratch=1975  agree=True
+nu2(4000) = 1975  -> nu2/4000 = 1975/4000 = 0.493750
+
+mu_4000 = (1/4000) * sum_{n=2}^{4000} nu2(n)/n = 0.497259  (exact Fraction num_bits=5761, den_bits=5762)
+(check) s_direct(4000): S=48, ones=1975, nd=3998, S == nd-2*ones: True

@@ -1,0 +1,23 @@
+=== CAPTURED OUTPUT: anf_dictionary_check.py ===
+RUN: python3 code/out/anf_dictionary_check.py (from /workspace), clean exit 0.
+
+WHAT IT SETTLES
+The algebraic-normal-form / Reed-Muller dictionary for the fold is EXACT.
+For g_n(x)=h[n-1-x] (the n-prefix of the reversed prime-gap-parity string),
+the ANF coefficient a_d = XOR_{x binary-submask of d} g_n(x) equals the fold
+cell T(n,d) = XOR_{o submask of d} h[n-1-d+o] for every d in [0,n-1] and
+every n in 3..40 (0 mismatches over 38 values of n, all d).
+
+Consequence: nu2(n) = #{d in [2,n-1] : T(n,d)=1} = the number of degree-1..d
+ANF coefficients equal to 1 among indices 2..n-1 of the reversed string.
+This is the encoding the anf-mobius-reed-muller approach relies on, and it
+now rests on an executed check rather than a hand-claimed identity.
+
+NEGATIVE CONTROL (from the script)
+all-ones h: ANF support size = 1 (only d=0), matching nu2=O(1) — the kernel
+vector maps to a single low ANF coefficient. PASS.
+
+VERBATIM TAIL
+  n=40: T(n,d) == a_d for all d in [0,39]  (OK)
+  Total mismatches over n=3..40: 0
+  all-ones h ANF support size: 1 (expect 1) -> PASS

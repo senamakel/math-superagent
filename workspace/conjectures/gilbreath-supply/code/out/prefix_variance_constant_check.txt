@@ -1,0 +1,27 @@
+==============================================================================
+TASK 2 — THE CONSTANT CHECK: prefix variance s2_N of nu2(n)/n
+        primes vs FAIR-MODEL (uniform random h)
+==============================================================================
+oracle: nu2(53)==18 asserted (got 136 for n=256 loop tail; n=53 assert passed), s_sos==s_direct on n in {8,16,32,64,100,128,256}: OK
+
+(a) PRIMES (deterministic, exact s_sos)
+    s2_N = pop-var of {nu2(n)/n : n=2..N};  mu_N its mean
+       N       mu_N           s2_N     s2_N*4*N   s2_N*4*N/lnN     1/(4N)
+     100   0.443842     0.01659507     6.638029       1.441430  0.0025000
+     400   0.481072     0.00545762     8.732191       1.457439  0.0006250
+    1000   0.491111     0.00249163     9.966529       1.442803  0.0002500
+    2000   0.495425     0.00134448    10.755811       1.415070  0.0001250
+    4000   0.497383     0.00072163    11.546123       1.392097  0.0000625
+
+(b) FAIR-MODEL Monte Carlo: 30 independent uniform h strings, length 4100, exact s_sos
+    nproc=28
+  (21s elapsed, Monte Carlo block 17s)
+       N   fair mean s2   fair std   fair s2*4*N  primes/fair  fair 1/(4N)
+     100     0.01186320 0.00328344      4.745279       1.3989    0.0025000
+     400     0.00402924 0.00088066      6.446789       1.3545    0.0006250
+    1000     0.00187463 0.00036018      7.498530       1.3291    0.0002500
+    2000     0.00103261 0.00018122      8.260869       1.3020    0.0001250
+    4000     0.00056235 0.00009083      8.997654       1.2832    0.0000625
+
+SUMMARY: at N=4000 primes_s2/fair_s2 = 1.283 => primes sit above the fair-model (uniform h) variance.
+LABEL: measured, not proved.

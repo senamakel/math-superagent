@@ -1,0 +1,93 @@
+SEQUENCE: internals { nu2(n)/n : n = 2..N }, N=40000
+ORACLE: lib.supply_fold.s_sos via lib.nu2.fold_nu2 (canonical floored fold; s_sos==s_direct, nu2(53)=18, nu2(64)=27)
+n-range: n = 2..40000, streamed one n at a time via s_sos (no triangle materialised)
+
+=== PRIMES  compute_nu2 to N=40000 (parallel s_sos) ===
+   nu2[40000]=20081  (~0.5020 of n)
+=== ALL-ONES  compute_nu2 to N=40000 (parallel s_sos) ===
+   nu2[40000]=0  (~0.0000 of n)
+=== THUE-MORS  compute_nu2 to N=40000 (parallel s_sos) ===
+   nu2[40000]=96  (~0.0024 of n)
+
+CHECKPOINT TABLE  (s2_N = population variance of a_n over n=2..N;
+  null_log = (1/N)*sum_{n=2..N} 1/(4n) ~= log(N)/(4N); null_const = 1/(4N) [operator's guess])
+  Ratio A = s2_N*4N  (vs 1 if the const null fit);  Ratio B = s2_N*4N/log(N)  (vs 1 if the log null fits)
+family           N         mu_N         s2_N      s2*4N  s2*4N/lnN     null_log   null_const
+PRIMES         100     0.443842  1.65951e-02     6.6380     1.4414  1.05742e-02  2.52525e-03
+PRIMES         400     0.481072  5.45762e-03     8.7322     1.4574  3.48993e-03  6.26566e-04
+PRIMES        1000     0.491111  2.49163e-03     9.9665     1.4428  1.62299e-03  2.50250e-04
+PRIMES        4000     0.497383  7.21633e-04    11.5461     1.3921  4.92085e-04  6.25156e-05
+PRIMES       10000     0.498860  3.13272e-04    12.5309     1.3605  2.19712e-04  2.50025e-05
+PRIMES       20000     0.499381  1.65487e-04    13.2389     1.3368  1.18515e-04  1.25006e-05
+PRIMES       40000     0.499671  8.71213e-05    13.9394     1.3155  6.35882e-05  6.25016e-06
+ALL-ONES       100     0.000000  0.00000e+00     0.0000     0.0000  1.05742e-02  2.52525e-03
+ALL-ONES       400     0.000000  0.00000e+00     0.0000     0.0000  3.48993e-03  6.26566e-04
+ALL-ONES      1000     0.000000  0.00000e+00     0.0000     0.0000  1.62299e-03  2.50250e-04
+ALL-ONES      4000     0.000000  0.00000e+00     0.0000     0.0000  4.92085e-04  6.25156e-05
+ALL-ONES     10000     0.000000  0.00000e+00     0.0000     0.0000  2.19712e-04  2.50025e-05
+ALL-ONES     20000     0.000000  0.00000e+00     0.0000     0.0000  1.18515e-04  1.25006e-05
+ALL-ONES     40000     0.000000  0.00000e+00     0.0000     0.0000  6.35882e-05  6.25016e-06
+THUE-MORS      100     0.227751  1.82247e-02     7.2899     1.5830  1.05742e-02  2.52525e-03
+THUE-MORS      400     0.150593  1.37797e-02    22.0475     3.6798  3.48993e-03  6.26566e-04
+THUE-MORS     1000     0.108152  9.80645e-03    39.2258     5.6785  1.62299e-03  2.50250e-04
+THUE-MORS     4000     0.064162  5.34638e-03    85.5421    10.3137  4.92085e-04  6.25156e-05
+THUE-MORS    10000     0.045910  3.44069e-03   137.6278    14.9427  2.19712e-04  2.50025e-05
+THUE-MORS    20000     0.034771  2.35813e-03   188.6505    19.0489  1.18515e-04  1.25006e-05
+THUE-MORS    40000     0.026259  1.59002e-03   254.4037    24.0080  6.35882e-05  6.25016e-06
+
+RATIO B (s2_N*4N/log N) by family at the checkpoints:
+  PRIMES        1.441 1.457 1.443 1.392 1.361 1.337 1.315
+  ALL-ONES      0.000 0.000 0.000 0.000 0.000 0.000 0.000
+  THUE-MORS     1.583 3.680 5.679 10.314 14.943 19.049 24.008
+
+DIP TABLE: density of {n in [50,N]: nu2(n)/n < c} over [50,N], [N//2,N]=[20000,40000], [0.9N,N]=[36000,40000]
+family           c  d[50,N] d[N/2,N] d[0.9N,N]
+PRIMES       0.40   0.0001   0.0000   0.0000
+PRIMES       0.41   0.0002   0.0000   0.0000
+PRIMES       0.42   0.0003   0.0000   0.0000
+PRIMES       0.43   0.0004   0.0000   0.0000
+PRIMES       0.44   0.0006   0.0000   0.0000
+PRIMES       0.45   0.0013   0.0000   0.0000
+PRIMES       0.46   0.0022   0.0000   0.0000
+PRIMES       0.47   0.0039   0.0000   0.0000
+PRIMES       0.48   0.0089   0.0000   0.0000
+PRIMES       0.49   0.0339   0.0005   0.0000
+
+
+
+ALL-ONES     0.40   1.0000   1.0000   1.0000
+ALL-ONES     0.41   1.0000   1.0000   1.0000
+ALL-ONES     0.42   1.0000   1.0000   1.0000
+ALL-ONES     0.43   1.0000   1.0000   1.0000
+ALL-ONES     0.44   1.0000   1.0000   1.0000
+ALL-ONES     0.45   1.0000   1.0000   1.0000
+ALL-ONES     0.46   1.0000   1.0000   1.0000
+ALL-ONES     0.47   1.0000   1.0000   1.0000
+ALL-ONES     0.48   1.0000   1.0000   1.0000
+ALL-ONES     0.49   1.0000   1.0000   1.0000
+
+
+
+THUE-MORS    0.40   0.9993   0.9999   0.9998
+THUE-MORS    0.41   0.9995   0.9999   1.0000
+THUE-MORS    0.42   0.9995   0.9999   1.0000
+THUE-MORS    0.43   0.9995   0.9999   1.0000
+THUE-MORS    0.44   0.9995   0.9999   1.0000
+THUE-MORS    0.45   0.9995   0.9999   1.0000
+THUE-MORS    0.46   0.9995   0.9999   1.0000
+THUE-MORS    0.47   0.9995   0.9999   1.0000
+THUE-MORS    0.48   0.9995   0.9999   1.0000
+THUE-MORS    0.49   0.9995   0.9999   1.0000
+
+
+
+
+SPARSITY-BREAK (deep tail [0.9N,N] density first > 0.01, ascending c):
+  PRIMES        tail-dip first > 0.01 at c=None
+  ALL-ONES      tail-dip first > 0.01 at c=0.4
+  THUE-MORS     tail-dip first > 0.01 at c=0.4
+
+SUMMARY: at N=40000, Ratio A (s2*4N) = 13.9394 ; Ratio B (s2*4N/log N) = 1.3155 ; null log = 6.3588e-05 ; null const = 6.2500e-06
+SUMMARY-ONE-LINE: primes TRACK the log(N)/(4N) null (Ratio B near 1: 1.315); they DEVIATE from the constant 1/(4N) null (Ratio A=13.939 vs 1) ; deep-tail dip density first >0.01 at c=None
+
+runtime 1736.5s ; oracle assertions passed=True

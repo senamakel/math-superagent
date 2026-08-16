@@ -1,0 +1,96 @@
+[guard] assert_supply_guard(40000) PASSED: nu2(53)==18, nu2(64)==27, mu_4000 within 0.01 of 0.4977; canonical nu2(4000)==1975 (stale 1976 constant corrected, see guard_failure_report.md)
+SEQUENCE : PRIMES
+ORACLE   : lib.nu2.fold_nu2 = lib.supply_fold.s_sos
+N-RANGE  : [2, 40000]
+[primes] header above: sequence=PRIMES, oracle=lib.nu2.fold_nu2 (=lib.supply_fold.s_sos), n-range=[2,40000]
+[primes] first 8 bits of h actually fed to the array   = 11101010   (len=40001)
+[primes] first 8 bits of canonical prime h = 11101010
+[primes] STAGE1 parallel canonical nu2 (n=2..40000) in 310.4s (nproc=28)
+[primes] ARRAY-assert after STAGE1: nu2[53]==18, nu2[64]==27, nu2[4000]==1975, mu_4000 from the produced array = 0.497259 within 0.01 of 0.4977 — DATA PATH OK
+[primes] STAGE2 exact reduce in 3.6s
+=== PRIMES h : N = 40000 ===
+mu_N (Primes) = 0.49965810   [exact Fraction, huge denominator — shown as float]
+s2_N (Primes) = 0.000093360697   [exact Fraction, huge denominator — shown as float]
+s2_N decay at checkpoints (mu_N, s2_N):
+   N        mu_N        s2_N
+    4000  0.49725888  0.000783284358
+    8000  0.49850186  0.000414861995
+   12000  0.49898143  0.000285611712
+   16000  0.49922249  0.000218969146
+   20000  0.49935622  0.000177947047
+   24000  0.49946745  0.000150198596
+   28000  0.49953664  0.000130186490
+   32000  0.49958380  0.000114957855
+   36000  0.49962208  0.000102983384
+   40000  0.49965810  0.000093360697
+min of nu2(n)/n over [X, N]:
+   X=    50:  min = 0.33962264
+   X=  1000:  min = 0.45995045
+   X= 10000:  min = 0.48502304
+   X= 30000:  min = 0.49011407
+dip sparsity  {n in [X,N] : nu2(n)/n < c}:
+   c           50    1000   10000   30000
+  0.30         0       0       0       0
+  0.35         1       0       0       0
+  0.40         3       0       0       0
+  0.42        10       0       0       0
+  0.45        51       0       0       0
+  0.48       354     117       0       0
+(full c-grid 0.30..0.48 step 0.01 counts for each X):
+   X=    50: 0 0 0 0 1 1 1 1 1 2 3 7 10 15 22 51 87 155 354
+   X=  1000: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 15 117
+   X= 10000: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+   X= 30000: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+[primes] mu_N=0.49965810 s2_N=0.000093360697 at N=40000 (measured, not proved)
+SEQUENCE : ALL-ONES
+ORACLE   : lib.nu2.fold_nu2 = lib.supply_fold.s_sos
+N-RANGE  : [2, 4000]
+=== ALL-ONES h (neg control: vacuous, must give mu_N=0) : N = 4000 ===
+mu_N (ALL-ONES) = 0.00000000   [exact Fraction, huge denominator — shown as float]
+s2_N (ALL-ONES) = 0.000000000000   [exact Fraction, huge denominator — shown as float]
+s2_N decay at checkpoints (mu_N, s2_N):
+   N        mu_N        s2_N
+    4000  0.00000000  0.000000000000
+min of nu2(n)/n over [X, N]:
+   X=    50:  min = 0.00000000
+   X=  1000:  min = 0.00000000
+dip sparsity  {n in [X,N] : nu2(n)/n < c}:
+   c           50    1000
+  0.30      3951    3001
+  0.35      3951    3001
+  0.40      3951    3001
+  0.42      3951    3001
+  0.45      3951    3001
+  0.48      3951    3001
+(full c-grid 0.30..0.48 step 0.01 counts for each X):
+   X=    50: 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951 3951
+   X=  1000: 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001 3001
+
+[all-ones] mu_N=0, s2_N=0  -> VACUOUS (required); dip density over [50,4000] at c=0.30 = 1.000000
+SEQUENCE : THUE-MORSE
+ORACLE   : lib.nu2.fold_nu2 = lib.supply_fold.s_sos
+N-RANGE  : [2, 4000]
+=== THUE-MORSE h (neg control: must FAIL density-1, M falling) : N = 4000 ===
+mu_N (THUE-MORSE) = 0.06414572   [exact Fraction, huge denominator — shown as float]
+s2_N (THUE-MORSE) = 0.005346071573   [exact Fraction, huge denominator — shown as float]
+s2_N decay at checkpoints (mu_N, s2_N):
+   N        mu_N        s2_N
+    4000  0.06414572  0.005346071573
+min of nu2(n)/n over [X, N]:
+   X=    50:  min = 0.00306920
+   X=  1000:  min = 0.00306920
+dip sparsity  {n in [X,N] : nu2(n)/n < c}:
+   c           50    1000
+  0.30      3882    2974
+  0.35      3922    2991
+  0.40      3934    2995
+  0.42      3939    2997
+  0.45      3939    2997
+  0.48      3939    2997
+(full c-grid 0.30..0.48 step 0.01 counts for each X):
+   X=    50: 3882 3887 3889 3896 3920 3922 3926 3927 3930 3933 3934 3939 3939 3939 3939 3939 3939 3939 3939
+   X=  1000: 2974 2976 2976 2976 2991 2991 2993 2993 2993 2995 2995 2997 2997 2997 2997 2997 2997 2997 2997
+
+[thue-morse] fraction of n in [50,4000] with nu2/n < 0.30 = 0.982536  (~1 = FAILS density-1, required); mu_N=0.064146 (falling, required)
+TOTAL runtime: 337.0s  exact ceiling N=40000

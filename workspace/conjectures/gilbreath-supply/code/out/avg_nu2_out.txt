@@ -1,0 +1,24 @@
+Ceiling N = 4000. Streamed one n at a time; exact Fractions.
+
+=== Task 1: re-grounding the linearisation, n = 3..60 ===
+(a) literal geometric suffix vs (b) fold wt(Phi_n h)
+for n = 3..60: literal==fold in 2/58 cases; differ by convention in 58 cases (literal is identically 0:
+   literal_suffix_nu2(10)=0, fold fold_nu2(10)=7)
+Fold reproduces the measured object; literal suffix is a degenerate negative control.
+
+=== Exact ratio at n = 4000 ===
+nu2(4000) = 1976   nu2/4000 = 1976/4000 = 0.494000   (problem.md measured 0.4933; brute.py 0.4940)
+
+=== Streamed empirical mean mu_N = (1/N) sum nu2(n)/n and variance ===
+N          | primes mu_N  | primes s2_N  | all-ones mu_N | Thue-Morse mu_N
+     100 | 0.455254     | 0.01273002 | 0.000000      | 0.227751
+     400 | 0.484269     | 0.00427227 | 0.000000      | 0.150593
+    1000 | 0.492404     | 0.00199461 | 0.000000      | 0.108152
+    2000 | 0.496072     | 0.00109069 | 0.000000      | 0.083675
+    4000 | 0.497711     | 0.00059362 | 0.000000      | 0.064162
+
+=== Final (N) ===
+primes:   mu_N = 0.497711, s2_N = 0.00059362
+all-ones: mu_N = 0.000000
+Thue-Morse: mu_N = 0.064162
+exact nu2(4000)/4000 = 1976/4000 = 0.494000

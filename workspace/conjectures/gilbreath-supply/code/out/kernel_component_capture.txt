@@ -1,0 +1,49 @@
+==============================================================================
+COMPUTATION A — kernel-component of the prime switch bit h
+==============================================================================
+Setting: Phi_n is (n-2) x n (rows d=2..n-1), rank n-2 (full row
+rank), nullity 2, ker = span(even-alt, odd-alt) with
+even-alt[j]=1 iff j even, odd-alt[j]=1 iff j odd (convention
+cross-checked against code/out/supply_fold_rank.final.captured.txt,
+which shows e,o,(e^o)=ones all fold to 0 for n=4..20).
+h[j] = ((q_{j+1}-q_j)//2) mod 2, q the primes.
+
+n = 4000
+(i) correlation of h with the two kernel directions (cols j=0..n-1):
+    <h, even-alt> mod 2 = 0   (<h, odd-alt> mod 2 = 0)
+    real imbalance sum (-1)^(h+even-alt) = -28  (= agree-disagree, of 4000)
+    real imbalance sum (-1)^(h+odd-alt)  = +28  (of 4000)
+    wt(h) = 2386 of 4000 (switch density 0.5965)
+    Hamming distance from h to each of the 4 kernel vectors:
+        d(h,0        ) = 2386   d/n = 0.5965
+        d(h,even-alt ) = 2014   d/n = 0.5035
+        d(h,odd-alt  ) = 1986   d/n = 0.4965
+        d(h,all-ones ) = 1614   d/n = 0.4035
+    -> min distance to kernel (collapse dirs) dmin/n = 0.4035
+
+(ii) fold weight wt(Phi_n v) over F2 (exact submask-XOR fold;
+     s_sos verified == s_direct literal oracle on n=4..200):
+    wt(Phi_n even-alt) = 0  (= nu2 for input even-alt)
+    wt(Phi_n odd-alt)  = 0
+    wt(Phi_n all-ones) = 0
+    wt(Phi_n h) = 1976   (= nu2(4000), ratio 0.4940)
+    (kernel vectors fold to weight 0, collision by construction;
+     the prime h does NOT: its image weight is ~0.49 n >> 0.)
+
+    kernel component of h: even-alt coeff = 0 (mod2), odd-alt coeff = 0 (mod2)
+    wt(Phi_n (h projected OFF kernel)) = 1976   ratio 0.4940
+    (image weight is unchanged by subtracting the kernel part,
+     as it must be: wt(Phi h) = wt(Phi h_perp) exactly.)
+
+(iii) kernel-proximity vs density-matched random surrogate
+      min Hamming distance to the 4 kernel vectors, prime vs
+      Bernoulli(p=0.5962) random strings, 30 trials (N=4000):
+      prime   dmin/n = 0.4035
+      random  mean dmin/n = 0.4015  sd = 0.0090  (min..max 0.3852..0.4255)
+
+NOTE: the mod-2 F2 component <h,even-alt> is a PARITY (0/1); for a
+random h it is 0 or 1 with prob 1/2 each, so it is not informative
+about a 'large real component'. The informative measures are the
+real imbalance (how far h is from the pure alternating pattern) and
+the Hamming distance to the kernel (how far h is from colliding).
+All numbers above are measured, not proved.

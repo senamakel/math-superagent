@@ -1,0 +1,64 @@
+[guard] assert_supply_guard(40000): nu2(53)==18, nu2(64)==27, primes mu_4000 within 0.01 of 0.4977 — canonical oracle OK
+oracle: s_sos == s_direct on n=4..200 and spots 53,64,100 (prime h): OK
+SEQUENCE : PRIMES-dip-sparsity
+ORACLE   : lib.nu2.fold_nu2=lib.supply_fold.s_sos
+N-RANGE  : [2, 40000]
+[PRIMES] STAGE1 parallel nu2 (n=2..40000) in 82.0s (nproc=28)
+[PRIMES] assertion nu2(53)==18 OK; mu_4000=0.497259 (within 0.01 of 0.4977) OK
+=== PRIMES : N = 40000  (streamed 82.0s) ===
+FINE dip density { n : nu2(n)/n < c } per window and c:
+   c     full-dens   half-dens   tail-dens   tail-count/width   (min over tail)
+  0.40   0.000075   0.000000   0.000000         0/ 4001     (0.490344)
+  0.41   0.000175   0.000000   0.000000         0/ 4001     (0.490344)
+  0.42   0.000250   0.000000   0.000000         0/ 4001     (0.490344)
+  0.43   0.000375   0.000000   0.000000         0/ 4001     (0.490344)
+  0.44   0.000551   0.000000   0.000000         0/ 4001     (0.490344)
+  0.45   0.001277   0.000000   0.000000         0/ 4001     (0.490344)
+  0.46   0.002178   0.000000   0.000000         0/ 4001     (0.490344)
+  0.47   0.003880   0.000000   0.000000         0/ 4001     (0.490344)
+  0.48   0.008861   0.000000   0.000000         0/ 4001     (0.490344)
+  0.49   0.033917   0.000500   0.000000         0/ 4001     (0.490344)
+window min of nu2(n)/n: full=0.339623  half=0.487947  tail=0.490344
+SPARSITY BREAK (tail window):
+  largest c whose tail window is EMPTY of dips = 0.49  (49/100)
+  exact c where tail dip density first turns positive = NONE  (tail empty of dips at every c in sweep)
+
+[ALL-ONES h (neg control, must fail: vacuous)] STAGE1 parallel nu2 (n=2..4000) in 0.5s (nproc=28)
+=== ALL-ONES h (neg control, must fail: vacuous) : N = 4000  (streamed 0.5s) ===
+FINE dip density { n : nu2(n)/n < c } per window and c:
+   c     full-dens   half-dens   tail-dens   tail-count/width   (min over tail)
+  0.40   1.000000   1.000000   1.000000       401/  401     (0.000000)
+  0.41   1.000000   1.000000   1.000000       401/  401     (0.000000)
+  0.42   1.000000   1.000000   1.000000       401/  401     (0.000000)
+  0.43   1.000000   1.000000   1.000000       401/  401     (0.000000)
+  0.44   1.000000   1.000000   1.000000       401/  401     (0.000000)
+  0.45   1.000000   1.000000   1.000000       401/  401     (0.000000)
+  0.46   1.000000   1.000000   1.000000       401/  401     (0.000000)
+  0.47   1.000000   1.000000   1.000000       401/  401     (0.000000)
+  0.48   1.000000   1.000000   1.000000       401/  401     (0.000000)
+  0.49   1.000000   1.000000   1.000000       401/  401     (0.000000)
+window min of nu2(n)/n: full=0.000000  half=0.000000  tail=0.000000
+SPARSITY BREAK (tail window):
+  largest c whose tail window is EMPTY of dips = NONE  (tail has dips at every c in sweep)
+  exact c where tail dip density first turns positive = 0.40  (2/5)
+
+[THUE-MORSE h (neg control, must fail)] STAGE1 parallel nu2 (n=2..4000) in 0.6s (nproc=28)
+=== THUE-MORSE h (neg control, must fail) : N = 4000  (streamed 0.6s) ===
+FINE dip density { n : nu2(n)/n < c } per window and c:
+   c     full-dens   half-dens   tail-dens   tail-count/width   (min over tail)
+  0.40   0.995697   0.998501   1.000000       401/  401     (0.003125)
+  0.41   0.996963   0.999000   1.000000       401/  401     (0.003125)
+  0.42   0.996963   0.999000   1.000000       401/  401     (0.003125)
+  0.43   0.996963   0.999000   1.000000       401/  401     (0.003125)
+  0.44   0.996963   0.999000   1.000000       401/  401     (0.003125)
+  0.45   0.996963   0.999000   1.000000       401/  401     (0.003125)
+  0.46   0.996963   0.999000   1.000000       401/  401     (0.003125)
+  0.47   0.996963   0.999000   1.000000       401/  401     (0.003125)
+  0.48   0.996963   0.999000   1.000000       401/  401     (0.003125)
+  0.49   0.996963   0.999000   1.000000       401/  401     (0.003125)
+window min of nu2(n)/n: full=0.003069  half=0.003069  tail=0.003125
+SPARSITY BREAK (tail window):
+  largest c whose tail window is EMPTY of dips = NONE  (tail has dips at every c in sweep)
+  exact c where tail dip density first turns positive = 0.40  (2/5)
+
+TOTAL runtime: 88.6s; exact ceiling N=40000

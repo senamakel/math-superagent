@@ -1,0 +1,17 @@
+(a) |M_d| = 2^popcount(d):
+  all match
+(b) E[S(n)^2] formula vs direct enumeration:
+  n=4 p=0.5: formula=2.000000 direct=2.000000  OK
+  n=4 p=0.585: formula=2.057800 direct=2.057800  OK
+  n=4 p=0.3: formula=2.320000 direct=2.320000  OK
+  n=5 p=0.5: formula=3.000000 direct=3.000000  OK
+  n=5 p=0.585: formula=3.117270 direct=3.117270  OK
+  n=5 p=0.3: formula=3.691200 direct=3.691200  OK
+  n=6 p=0.5: formula=4.000000 direct=4.000000  OK
+  n=6 p=0.585: formula=4.178411 direct=4.178411  OK
+  n=6 p=0.3: formula=5.113600 direct=5.113600  OK
+(c) E[S(n)^2]/n (should be O(1) for p bounded away from 0,1):
+  n=8: E[S^2]=6.30  E[S^2]/n=0.788
+  n=16: E[S^2]=14.75  E[S^2]/n=0.922
+  n=32: E[S^2]=31.41  E[S^2]/n=0.982
+  n=64: E[S^2]=64.31  E[S^2]/n=1.005

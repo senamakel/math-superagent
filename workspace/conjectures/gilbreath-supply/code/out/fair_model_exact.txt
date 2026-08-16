@@ -1,0 +1,56 @@
+Exact brute-force verification of the iid-fair-model claim for SUPPLY
+T(n,d) = XOR over bitwise submasks s of d of h[n-1-s],  nu2(n) = #{d in [2,n-1] : T(n,d)=1}
+
+  n  #d 2^n strings    mean(nu2)   (n-2)/2 mean==exp symmetric
+---------------------------------------------------------------------------
+  2   0           4            0         0      True      True
+  3   1           8          1/2       1/2      True      True
+  4   2          16            1         1      True      True
+  5   3          32          3/2       3/2      True      True
+  6   4          64            2         2      True      True
+  7   5         128          5/2       5/2      True      True
+  8   6         256            3         3      True      True
+  9   7         512          7/2       7/2      True      True
+ 10   8        1024            4         4      True      True
+ 11   9        2048          9/2       9/2      True      True
+ 12  10        4096            5         5      True      True
+---------------------------------------------------------------------------
+
+Exact equality table (empirical mean vs (n-2)/2):
+  n= 2: mean = 0  expected = 0  equal=YES
+  n= 3: mean = 1/2  expected = 1/2  equal=YES
+  n= 4: mean = 1  expected = 1  equal=YES
+  n= 5: mean = 3/2  expected = 3/2  equal=YES
+  n= 6: mean = 2  expected = 2  equal=YES
+  n= 7: mean = 5/2  expected = 5/2  equal=YES
+  n= 8: mean = 3  expected = 3  equal=YES
+  n= 9: mean = 7/2  expected = 7/2  equal=YES
+  n=10: mean = 4  expected = 4  equal=YES
+  n=11: mean = 9/2  expected = 9/2  equal=YES
+  n=12: mean = 5  expected = 5  equal=YES
+
+Empirical distributions (nu2 value -> #strings, showing symmetry about (n-2)/2):
+  n= 2 (nd=0, center=0):
+      [(0, 4)]
+  n= 3 (nd=1, center=1/2):
+      [(0, 4), (1, 4)]
+  n= 4 (nd=2, center=1):
+      [(0, 4), (1, 8), (2, 4)]
+  n= 5 (nd=3, center=3/2):
+      [(0, 4), (1, 12), (2, 12), (3, 4)]
+  n= 6 (nd=4, center=2):
+      [(0, 4), (1, 16), (2, 24), (3, 16), (4, 4)]
+  n= 7 (nd=5, center=5/2):
+      [(0, 4), (1, 20), (2, 40), (3, 40), (4, 20), (5, 4)]
+  n= 8 (nd=6, center=3):
+      [(0, 4), (1, 24), (2, 60), (3, 80), (4, 60), (5, 24), (6, 4)]
+  n= 9 (nd=7, center=7/2):
+      [(0, 4), (1, 28), (2, 84), (3, 140), (4, 140), (5, 84), (6, 28), (7, 4)]
+  n=10 (nd=8, center=4):
+      [(0, 4), (1, 32), (2, 112), (3, 224), (4, 280), (5, 224), (6, 112), (7, 32), (8, 4)]
+  n=11 (nd=9, center=9/2):
+      [(0, 4), (1, 36), (2, 144), (3, 336), (4, 504), (5, 504), (6, 336), (7, 144), (8, 36), (9, 4)]
+  n=12 (nd=10, center=5):
+      [(0, 4), (1, 40), (2, 180), (3, 480), (4, 840), (5, 1008), (6, 840), (7, 480), (8, 180), (9, 40), (10, 4)]
+
+OVERALL: ALL CHECKS PASS (mean exact and distribution symmetric for every n).

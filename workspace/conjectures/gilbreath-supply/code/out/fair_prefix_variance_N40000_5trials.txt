@@ -1,0 +1,43 @@
+SEQUENCE: { nu2(n)/n : n = 2..N }, N=40000  (primes vs uniform-h fair model)
+ORACLE: lib.supply_fold.s_sos via lib.nu2.fold_nu2 (s_sos==s_direct; guard nu2(53)=18, nu2(64)=27, nu2(4000)=1975, mu_4000~0.4977)
+n-range: n = 2..40000, streamed one n at a time via s_sos (no triangle)
+DATA-PATH CHECK: hP[:8]=[1, 1, 1, 0, 1, 0, 1, 0]  canonical prime h[:8]=[1, 1, 1, 0, 1, 0, 1, 0]  (must match)
+
+=== PRIMES : compute_nu2 to N=40000 ===
+   [primes] STAGE1 160.5s (nproc=14); nu2[40000]=20081 (~0.5020)
+
+=== FAIR MODEL : 5 uniform-h trials to N=40000 ===
+   [fair trial 1/5] 155.1s; nu2[40000]=20069 (~0.5017)
+   [fair trial 2/5] 159.4s; nu2[40000]=20150 (~0.5038)
+   [fair trial 3/5] 172.0s; nu2[40000]=19944 (~0.4986)
+   [fair trial 4/5] 158.0s; nu2[40000]=20086 (~0.5021)
+   [fair trial 5/5] 154.8s; nu2[40000]=19879 (~0.4970)
+
+CHECKPOINT  |  primes s2_N   | fair mean s2  | fair std  | primes/fair |  p*4N/lnN  |  f*4N/lnN | Delta(primes/fair)
+    1000  |  0.0024916323 | 0.0016697120 | 1.4844e-04 |   1.4923 | 1.443 | 0.967 |
+    4000  |  0.0007216327 | 0.0005083610 | 3.8864e-05 |   1.4195 | 1.392 | 0.981 |
+   10000  |  0.0003132724 | 0.0002270165 | 1.5980e-05 |   1.3800 | 1.361 | 0.986 |
+   20000  |  0.0001654869 | 0.0001223291 | 8.0116e-06 |   1.3528 | 1.337 | 0.988 |
+   30000  |  0.0001137617 | 0.0000849867 | 5.3897e-06 |   1.3386 | 1.324 | 0.989 |
+   40000  |  0.0000871213 | 0.0000655493 | 4.0556e-06 |   1.3291 | 1.315 | 0.990 |
+
+PER-DOUBLING DECREMENT of primes/fair (Delta between consecutive checkpoints):
+  from        to         Delta
+    1000  ->   4000     0.0727
+    4000  ->  10000     0.0396
+   10000  ->  20000     0.0272
+   20000  ->  30000     0.0142
+   30000  ->  40000     0.0095
+  consecutive-Delta ratios: 0.544, 0.686, 0.524, 0.667
+
+TREND (primes/fair vs ln N): slope = -0.0440  (negative => falling at every measured checkpoint; the excess PERSISTS across N=1000..40000, falling 1.492 -> 1.329)
+  per-doubling decrements decay slowly (a log-linear fit reaches the fair value 1 only near N ~ 6.3e+07, far beyond the measured range)
+
+VERDICT: primes/fair falls monotonically 1.492 -> 1.329 over N = 1000..40000, roughly linearly in ln N (slope -0.0440), with per-doubling decrements that decay slowly. The measured range does NOT determine whether the limit is 1 or a constant above 1: log-linear extrapolation reaches 1 only near N ~ 6.3e+07, unreachable here. The excess PERSISTS over the measured range; no limit is declared.
+
+CONTROL: fair f*4N/lnN converges 0.967 -> 0.990 toward 1 across these checkpoints, independently validating the proved log(N)/(4N) null.
+
+runtime 969.4s ; fair-MC block 799s ; trials=5
+LABEL: measured, not proved.
+
+WROTE /workspace/code/averaged/../out/fair_prefix_variance_40000.txt

@@ -1,0 +1,123 @@
+=== CAPTURED OUTPUT: scripts previously declared 'unrun' ===
+Each of the three scripts below was found on disk, never executed. They were
+run with `python3 code/out/<script>` from /workspace and output captured here.
+
+RUN STATUS (per script):
+  rw_verify.py           RAN. First invocation raised `TypeError: 'dict' object is
+                         not callable` in runlen_transform (`p *= S(L)` with S a
+                         dict). One-line fix applied: `S(L)` -> `S[L]`. Re-ran clean.
+  abgs_m4_check.py       RAN clean on first run; no edit needed.
+  bacher_pascal_verify.py RAN. First invocation raised `TypeError: unsupported
+                         format string passed to NegativeOne.__format__` at the det
+                         print (sympy int passed to :6d). One-line fix applied:
+                         int() around det/expect values. Re-ran clean.
+
+The blocks below are verbatim stdout of the post-fix runs.
+
+=== rw_verify.py === covering Rampersad-Wiebe run-length transform theoms (Thm5 Fibonacci, Thm9 positive ints) + SUPPLY submask-XOR (zeta/Mobius) invertibility + Phi weight, range n=1..19 (theorems), 50 random h / k in {16,32,64} (invert. & weight) ===
+== Theorem 5: Fibonacci run-length transform ==
+n= 1 sumT=1 runlen=1 OK
+n= 2 sumT=1 runlen=1 OK
+n= 3 sumT=2 runlen=2 OK
+n= 4 sumT=1 runlen=1 OK
+n= 5 sumT=1 runlen=1 OK
+n= 6 sumT=2 runlen=2 OK
+n= 7 sumT=3 runlen=3 OK
+n= 8 sumT=1 runlen=1 OK
+n= 9 sumT=1 runlen=1 OK
+n=10 sumT=1 runlen=1 OK
+n=11 sumT=2 runlen=2 OK
+n=12 sumT=2 runlen=2 OK
+n=13 sumT=2 runlen=2 OK
+n=14 sumT=3 runlen=3 OK
+n=15 sumT=5 runlen=5 OK
+n=16 sumT=1 runlen=1 OK
+n=17 sumT=1 runlen=1 OK
+n=18 sumT=1 runlen=1 OK
+n=19 sumT=2 runlen=2 OK
+Theorem5 all match: True
+
+== Theorem 9: positive integers run-length transform ==
+n= 1 sumT=2 runlen=1 MISMATCH
+n= 2 sumT=2 runlen=1 MISMATCH
+n= 3 sumT=3 runlen=2 MISMATCH
+n= 4 sumT=2 runlen=1 MISMATCH
+n= 5 sumT=4 runlen=1 MISMATCH
+n= 6 sumT=3 runlen=2 MISMATCH
+n= 7 sumT=4 runlen=3 MISMATCH
+n= 8 sumT=2 runlen=1 MISMATCH
+n= 9 sumT=4 runlen=1 MISMATCH
+n=10 sumT=4 runlen=1 MISMATCH
+n=11 sumT=6 runlen=2 MISMATCH
+n=12 sumT=3 runlen=2 MISMATCH
+n=13 sumT=6 runlen=2 MISMATCH
+n=14 sumT=4 runlen=3 MISMATCH
+n=15 sumT=5 runlen=4 MISMATCH
+n=16 sumT=2 runlen=1 MISMATCH
+n=17 sumT=4 runlen=1 MISMATCH
+n=18 sumT=4 runlen=1 MISMATCH
+n=19 sumT=6 runlen=2 MISMATCH
+Theorem9 all match: False
+
+== SUPPLY fold Phi: submask-XOR transform invertibility ==
+Zeta (Phi) transform invertible round-trips over 50 random h: True
+
+== weight of transform for random dense h (dimension sqrt-ish) ==
+k= 16 wt(h)=  6/16  wt(Phi h)=  7/16
+k= 32 wt(h)= 16/32  wt(Phi h)= 16/32
+k= 64 wt(h)= 31/64  wt(Phi h)= 30/64
+
+=== abgs_m4_check.py === covering ABGS m=4 consecutive-prime-pair counts mod 4 (switch vs equal) and switch-density ratio, range single table total 78330 pairs over 10^3..10^6 ===
+total pairs: 78330
+switch (1,3)+(3,1) = 45041  = 57.502%
+equal  (1,1)+(3,3) = 33289   = 42.498%
+switch/equal ratio = 1.3530
+largest/smallest = 1.3588
+
+Each count vs fair share (total/4 = 19582.5):
+  (1, 1):  16574  dev -3008.5 (-3.84%)
+  (1, 3):  22521  dev +2938.5 (+3.75%)
+  (3, 1):  22520  dev +2937.5 (+3.75%)
+  (3, 3):  16715  dev -2867.5 (-3.66%)
+
+=== bacher_pascal_verify.py === covering Bacher symmetric Pascal det formulas (P(2n), P(2n+1), n=1,2,4,8,16) + this problem fold Phi_n rank/nullity, range n=2..20 (rank) ===
+== Bacher symmetric Pascal det ==
+n= 1  det P(2n)=    -1 expect     -1 match=True | det P(2n+1)=     1 expect      1 match=True
+n= 2  det P(2n)=     1 expect      1 match=True | det P(2n+1)=    -1 expect     -1 match=True
+n= 4  det P(2n)=     1 expect      1 match=True | det P(2n+1)=    -1 expect     -1 match=True
+n= 8  det P(2n)=     1 expect      1 match=True | det P(2n+1)=    -1 expect     -1 match=True
+n=16  det P(2n)=     1 expect      1 match=True | det P(2n+1)=    -1 expect     -1 match=True
+
+== This problem's fold matrix Phi_n (rank / nullity) ==
+n= 2  Phi_n is 1x2  rank=1 (n-3=-1)  nullity=1
+n= 3  Phi_n is 2x3  rank=2 (n-3=0)  nullity=1
+n= 4  Phi_n is 3x4  rank=3 (n-3=1)  nullity=1
+n= 5  Phi_n is 4x5  rank=4 (n-3=2)  nullity=1
+n= 6  Phi_n is 5x6  rank=5 (n-3=3)  nullity=1
+n= 7  Phi_n is 6x7  rank=6 (n-3=4)  nullity=1
+n= 8  Phi_n is 7x8  rank=7 (n-3=5)  nullity=1
+n= 9  Phi_n is 8x9  rank=8 (n-3=6)  nullity=1
+n=10  Phi_n is 9x10  rank=9 (n-3=7)  nullity=1
+
+== rank Phi_n = n-3 up to n=20? ==
+  n=2 rank=1 != n-3
+  n=3 rank=2 != n-3
+  n=4 rank=3 != n-3
+  n=5 rank=4 != n-3
+  n=6 rank=5 != n-3
+  n=7 rank=6 != n-3
+  n=8 rank=7 != n-3
+  n=9 rank=8 != n-3
+  n=10 rank=9 != n-3
+  n=11 rank=10 != n-3
+  n=12 rank=11 != n-3
+  n=13 rank=12 != n-3
+  n=14 rank=13 != n-3
+  n=15 rank=14 != n-3
+  n=16 rank=15 != n-3
+  n=17 rank=16 != n-3
+  n=18 rank=17 != n-3
+  n=19 rank=18 != n-3
+  n=20 rank=19 != n-3
+all n in 2..20 rank=n-3: False
+

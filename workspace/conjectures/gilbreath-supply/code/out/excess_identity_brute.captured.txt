@@ -1,0 +1,1 @@
+N=1000: brute identity 2*nu2-(n-2) == -S held for EVERY n in [2,1000]; ones==fold_nu2 for all; 0 mismatches.

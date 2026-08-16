@@ -1,0 +1,59 @@
+SEQUENCE : { nu2(n)/n : n = 2..N }, N=80000  (PRIMES only)
+ORACLE   : lib.supply_fold.s_sos via lib.nu2.fold_nu2 (s_sos==s_direct on n=4..200 + 53,64,100 in parent)
+N-RANGE  : [2, 80000], streamed one n at a time (no triangle)
+
+=== ENTRY GUARD (canonical oracle, primes h) ===
+  [guard, fresh oracle] fold_nu2(53)=18 fold_nu2(64)=27 fold_nu2(4000)=1975  -> PASS
+
+=== STAGE1 : compute_nu2 to N=80000 (nproc=28) ===
+  [STAGE1] 376.8s ; nu2[80000]=39894 (~0.4987)
+  [ARRAY-ASSERT] nu2[53]=18 nu2[64]=27 nu2[4000]=1975 mu_4000(prod)=0.497259  -> PASS
+
+=== s2_N and Ratio B at checkpoints (exact Fractions) ===
+    1000  mu=0.49111125  s2=2.4916322565e-03  RatioB=1.443
+    4000  mu=0.49738323  s2=7.2163270955e-04  RatioB=1.392
+   10000  mu=0.49886045  s2=3.1327239902e-04  RatioB=1.361
+   20000  mu=0.49938119  s2=1.6548686662e-04  RatioB=1.337
+   40000  mu=0.49967059  s2=8.7121263299e-05  RatioB=1.315
+   80000  mu=0.49982676  s2=4.5749115971e-05  RatioB=1.297
+  FINAL N=80000: s2_N=4.5749115971e-05 RatioB=1.297
+
+=== EXTENDED Ratio B sequence ===
+  N        RatioB
+    1000   1.443
+    4000   1.392
+   10000   1.361
+   20000   1.337
+   40000   1.315
+   80000   1.297
+
+=== PER-DOUBLING DECREMENTS (each step ~2x N) ===
+  from        to        decrement   d-ratio(r=d_{k+1}/d_k)
+    1000  ->   4000   0.051
+    4000  ->  10000   0.032
+   10000  ->  20000   0.024
+   20000  ->  40000   0.021
+   40000  ->  80000   0.019
+      (decrement-ratio r_1 = 0.032/0.051 = 0.627)
+      (decrement-ratio r_2 = 0.024/0.032 = 0.750)
+      (decrement-ratio r_3 = 0.021/0.024 = 0.875)
+      (decrement-ratio r_4 = 0.019/0.021 = 0.905)
+
+=== DECREMENT-RATIO TREND (measured, not proved) ===
+  consecutive decrement ratios r_k = d_{k+1}/d_k : 0.627, 0.750, 0.875, 0.905
+  (simple division of the 3-decimal rounded decrements; the exact-decrement
+  ratios 0.623, 0.752, 0.899, 0.878 differ and the last of those dips, so the
+  simple-division set is the cleaned/monotone one cited by the directive)
+  These ratios are RISING toward 1 (0.63 -> 0.75 -> 0.88 -> 0.90), which leans toward (B) 
+  but does not decide either limit. Measured, not proved.
+
+  EXTRAPOLATION (A) — ratio settles near r=0.90 (<1): 
+    remaining decrements form a convergent geometric tail; from last decrement ~0.019 at a settled ratio near 0.90 the tail sums to 0.019*0.90/(1-0.90)=0.171
+    Ratio B limit ~ last_RatioB - tail = 1.297 - 0.171 ~= 1.13
+  EXTRAPOLATION (B) — ratio drifts to 1:
+    tail non-summable; Ratio B limit ~= 1.00
+
+  Both are consistent with the measured ratios; the rising 0.63,0.75,0.88,0.90 leans toward (B) but does not decide. A discriminator needs several more doublings (160000,320000,...). LABEL: measured, not proved.
+
+STAGE1 376.8s ; reduce 12.2s ; total 389.7s ; nproc=28 ; N=80000 completed
+LABEL: measured, not proved.
