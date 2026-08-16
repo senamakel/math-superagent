@@ -124,19 +124,41 @@ def ask(model, provider, system, user, key):
 
 
 def extract_lean(text):
-    """The Lean out of a reply.
+    """The Lean out of a reply, and whether it had to be unwrapped.
 
     Fenced blocks first, and every one of them concatenated rather than only the
     first: a model asked for a definition and a theorem often gives two blocks,
-    and taking the first would score a correct answer as an incomplete file. A
-    reply with no fence at all is taken whole, on the assumption it is bare Lean
-    — which is wrong often enough to fail loudly rather than silently, since a
-    prose reply will simply not compile.
+    and taking the first would score a correct answer as an incomplete file.
+
+    Failing that, a tool-call envelope. One reply in the first scored run came
+    back as `<write_file><path>…</path><content>theorem …</content></write_file>`
+    — a harness the model has seen elsewhere, emitted instead of a fence. The
+    Lean inside was correct, including the `Cited` namespace the task asked for.
+    Taking the reply whole put `<write_file>` on line 1 and the file failed at
+    the first token, so the bench recorded *cannot write Lean* about a reply that
+    had written it.
+
+    That is the wrong measurement, and rescuing it silently would be the wrong
+    correction: following the output format is part of being usable inside a
+    run, and a model that ignores it costs a turn. So the content is unwrapped
+    *and* the deviation is returned, to be reported beside the score rather than
+    folded into it.
+
+    A reply with no fence and no envelope is taken whole, which fails loudly —
+    prose does not compile.
     """
     blocks = re.findall(r"```(?:lean4?)?\n(.*?)```", text, re.DOTALL)
     if blocks:
-        return "\n\n".join(block.strip() for block in blocks) + "\n"
-    return text.strip() + "\n"
+        return "\n\n".join(block.strip() for block in blocks) + "\n", ""
+    # `<content>` is the payload in every envelope shape seen so far; the tag
+    # around it varies and is not matched, so a new wrapper still works.
+    wrapped = re.findall(r"<content>\s*(.*?)\s*</content>", text, re.DOTALL)
+    if wrapped:
+        return "\n\n".join(block.strip() for block in wrapped) + "\n", (
+            "the reply came wrapped in a tool-call envelope rather than a ```lean fence; "
+            "the Lean was unwrapped and checked, and this is recorded as a format deviation"
+        )
+    return text.strip() + "\n", ""
 
 
 def check(relative):
@@ -198,6 +220,7 @@ def main():
     REPORTS.mkdir(parents=True, exist_ok=True)
 
     rows = []
+    deviations = []
     for task in tasks:
         print(f"{task['id']} ... ", end="", flush=True)
         try:
@@ -211,9 +234,13 @@ def main():
             continue
 
         source = candidates / f"{task['id']}.lean"
-        source.write_text(extract_lean(reply))
+        lean, deviation = extract_lean(reply)
+        source.write_text(lean)
         relative = f"code/lean/{slug}/{task['id']}.lean"
         outcome, compiled, report = check(relative)
+        if deviation:
+            report = f"[format] {deviation}\n\n{report}"
+            deviations.append(task["id"])
         if outcome == "check-error":
             print("CHECK ERROR — the harness failed, not the model; not scored")
             rows.append((task, outcome, False, report))
@@ -247,6 +274,14 @@ def main():
             "`proof` task is scored on the verdict.\n\n"
         )
         out.write(f"**{passes} of {scored} passed.**\n\n")
+        if deviations:
+            out.write(
+                f"{len(deviations)} reply/replies did not use a ```lean fence and were "
+                "unwrapped from a tool-call envelope before checking: "
+                + ", ".join(f"`{name}`" for name in deviations)
+                + ". The Lean was scored on its merits; the format deviation is a real "
+                "cost inside a run and is recorded here rather than folded into the score.\n\n"
+            )
         if unscored:
             out.write(
                 f"{len(unscored)} task(s) are **not scored**: `scripts/lean-check` failed "
