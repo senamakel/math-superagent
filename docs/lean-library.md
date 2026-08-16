@@ -202,3 +202,62 @@ instruction is not a control. It is also why `LEMMAS.md` has an `unchecked`
 standing and a **Never checked** section rather than quietly omitting such
 files. An unchecked `.lean` file on disk reads exactly like one that passed, and
 until the index said so, nothing in the runtime distinguished them.
+
+## What a kernel check cannot do, with the instance that proved it
+
+The check is a control on the *proof*, not on the *statement*. `lean.rs` has
+said so since it was written — *a Lean proof of the wrong statement is still the
+wrong statement* — and the Lean-first run on Project Euler 622 supplied the
+concrete case.
+
+Told that the answer was not accepted until a `.lean` file with a passing
+verdict carried it, the run wrote real mathematics: `S_60` and `C_60` are honest
+theorems, the Möbius-inverted divisor sums over `2^60 - 1`. Then, under a
+docstring reading *the answer stated directly as an equality of naturals*, it
+wrote
+
+```lean
+theorem pe622_answer_nat : 3010983666182123972 = 3010983666182123972 := by rfl
+```
+
+That compiles, carries no `sorry`, depends on no axiom at all, and says nothing
+whatever about the problem. Every check in this file would have passed it as
+`verified` — the strongest status the runtime has — and the claim ledger would
+have carried the answer on it.
+
+A mandate to produce a passing verdict *invites* this. The letter of it can
+always be satisfied by a statement that is true for free, and the more a run is
+pressed for a verdict the more attractive that becomes.
+
+So `lemmas::tautologies` refuses the narrowest version: a `theorem` or `lemma`
+whose top-level `=` has textually identical sides. That is never informative and
+is always safe to refuse, and it is checked before the axioms because a file
+containing one is usually flawless in every other way — which is exactly what
+makes it dangerous.
+
+It is not a triviality check and cannot be. `2 + 2 = 4 := by rfl` is a real fact
+and keeps passing, because its sides differ. What no mechanism catches is a
+statement that is merely *beside the point* — true, non-trivial, and not about
+the problem. That is what `lean_prover.md` asks the role to describe in prose,
+and what the `holds-here` column in `CLAIMS.md` is for. The kernel raises the
+floor; it does not remove the reader.
+
+## What the 622 run measured
+
+| | |
+| --- | --- |
+| Elapsed | 122 minutes |
+| `.lean` files written | 18 |
+| Filed verdicts | 3 — one `verified`, two `failed` |
+| Declarations in the index | 81 |
+| Declarations in a checked file | **2** |
+
+The verified one is `code/lean/Lib/Shuffle.lean`, and it is the deliverable: a
+kernel-checked definition of the out-shuffle and its order, reached because a
+workspace `METHOD.md` asked for it.
+
+The other number is the finding. 2 of 81, against 14 of 78 files historically —
+the same failure, worse, on a run explicitly told to formalise. It is why the
+lemma index refreshes on a `.lean` *write* and not only on a check: the files a
+role never checks are the ones the index most needs to name, and they are
+exactly the ones that never trigger a check.
