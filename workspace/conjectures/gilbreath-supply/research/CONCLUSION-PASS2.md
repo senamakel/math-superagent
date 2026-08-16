@@ -49,10 +49,24 @@ n     8      10     12     14     16     32     64     128
 w/n   0.375  0.300  0.250  0.286  0.188  0.156  0.125  0.125
 ```
 
-The primes sit at switch density ≈ 0.585, far above. Whether the ratio tends to
-0 or plateaus near 1/8 was **not settled** — the column had fallen monotonically
-and then held at 0.125 twice, and the run was stopped before resolving it. That
-is the single most valuable unfinished computation here.
+The primes sit at switch density ≈ 0.585, far above.
+
+**[Resolved by the third pass — superseding this paragraph's open reading.]**
+The 1/8 plateau was a 300-sample/coarse-grid artifact. The exact-mean half
+(Krawtchouk closed form, zero sampling, exhaustive-verified — claim
+`threshold-mean-exact-parity-formula`) falls monotonically from n=14 onward:
+0.375@8, 0.188@16, 0.156@32, 0.109@64, 0.086@128, 0.063@256, 0.047@512,
+0.034@1024, 0.025@2048, 0.019@4096, 0.0053@2^16, 0.0028@2^18. At n=64,128 the
+exact value is 0.109/0.086 — NOT 0.125. The sampled-typical threshold (mean AND
+frac>=0.5, S=4000) falls 0.375@8 → 0.020@4096, crossing well below 1/8. Read in
+ABSOLUTE weight, the threshold weight w(n) ~ n^0.55 is SUBLINEAR — "linear
+supply is typical once the switch count exceeds about n^0.55", a strictly
+weaker arithmetic demand than positive mod-4 switch density (a sublinear count
+vs a positive fraction). "Tends to 0" is the inference over every measured
+n>=64, NOT a proof; a proof needs the open lemmas G-threshold-asymptotic-zero
+and G-threshold-concentration (pure F2/hypergeometric, no primes). Genericity
+gap unchanged: "typical is not this string" — claim
+`threshold-weight-sublinear-n055-measured`.
 
 ### 3. `K*(n) = ⌊n/2⌋`, not `⌈n/2⌉` (settled, exhaustive n=2..18)
 

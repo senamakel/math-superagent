@@ -6,6 +6,29 @@ bound, and the restricted classes already settled with their hypotheses. It is
 the single file a fresh reader opens to know where the run stands; the ladders
 (`research/weakened/supply.md`) carry the rung-by-rung state.
 
+## Third-pass claim blocks (directive 47/48)
+
+The third-pass conclusion's settled statements are in the claims ledger, not
+only in prose. Four claim ids (filed in `research/CONCLUSION-PASS3.md`,
+mirrored in `research/notes/pass3_threshold_claim_blocks.md`):
+
+- **`threshold-weight-sublinear`** (measured-not-proved): the exact-mean
+  linear-supply threshold weight `w*(n) ~ n^0.555 · P(log₂ n)`, P a bounded
+  period-1 log-periodic factor of amplitude ~0.07; per-n `w*` exact over
+  n=8..262144; ratio `θ = w*/n → 0`. Arithmetic demand = a sublinear switch
+  count, strictly weaker than positive mod-4 switch density. Type 4, never type 1.
+- **`threshold-closed-forms-rejected`** (measured-not-proved): `√n` rejected at
+  27σ, `n^{log₂3−1}` rejected at 14σ with monotone residual drift; `5/9` NOT
+  separable from the fit (residual sd 0.01466 for both, exponent gap ~30× below
+  the periodic swing). Records what the data cannot support.
+- **`G-threshold-asymptotic-zero`** (open): `(1/n)Σ_d K_w(2^popcount(d);n)/C(n,w) → 0`
+  for every fixed θ ∈ (0,1/2) — the mean-crossing threshold tends to 0. Pure
+  F₂/hypergeometric, no primes.
+- **`G-threshold-concentration`** (open): `Var(ν₂(n)) = o(n²)` at every fixed θ,
+  so the fraction criterion holds in the limit. Pure F₂/hypergeometric, no primes.
+  Together these two are the named gap between the measurement and a theorem,
+  and are the most tractable open items in this workspace.
+
 ## What SUPPLY asserts
 
 There is c > 0 with ν₂(n) = wt(Φ_n h) ≥ c·n for all sufficiently large n, h the
@@ -250,6 +273,20 @@ The three classes whose hypotheses hold here and are settled:
    transfer this library does not have.
 3. SUPPLY ⇔ switch density restricted to prime-realizable h (G-sup-implies-switch)
    — GOAL priority 3.
+
+**Third-pass threshold result (measured-not-proved; ids in research/CLAIMS.md).**
+`threshold-weight-sublinear`: the exact-mean linear-supply threshold weight
+`w*(n) = n^0.555 · P(log₂ n)` with P a bounded period-1-in-log₂n factor of
+amplitude ~0.07, so `theta = w*/n → 0` (per-n `w*` EXACT over n=8..2^18,
+3,3,3,4,3,5,7,11,16,24,35,52,77,112,164,239,349,507,738; exponent 0.555 and
+amplitude FITTED). Linear supply is typical once the switch count exceeds
+`~n^0.56` — a SUBLINEAR demand, strictly weaker than positive mod-4 switch
+density (problem.md result type 4, never type 1). `threshold-closed-forms-rejected`:
+E=1/2 rejected >25σ, E=log₂3−1 rejected ~14.8σ, E=5/9 NOT separable from the
+fit (identical residual sd). The two open lemmas converting this to a theorem —
+`G-threshold-asymptotic-zero` and `G-threshold-concentration` — are PURE
+F2/hypergeometric with no primes, the most tractable open items the workspace
+has. Genericity caveat unchanged: *typical is not this string*.
 
 **Directive 32 closes the sequence-analysis route** (claim `per-scale-refinement-collapses-to-switch-density`, status checked): the per-scale second-moment refinement collapses back to the g=0 switch-density scale (g=0 variance share 0.425@400, 0.730@1000, 0.553@4000), and the √n white-noise plateau is fold-generic (uniform h reproduces it), so the sequence data yields no arithmetic input weaker than mod-4 switch density. GOAL priority 2 is therefore unanswered by any measurement and remains open only as an unconditional arithmetic theorem (terminus: `research/notes/terminus-assessment-directive32.md`).
 

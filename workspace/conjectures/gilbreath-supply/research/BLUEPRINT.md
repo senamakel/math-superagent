@@ -42,6 +42,14 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/supply-k-functional.md`
 - `supply-switch-equivalence/G-sup-implies-switch` (lemma) — > For h arising from the primes (h[j] = [q_{j+1} ≢ q_j mod 4]), if a window h[a..b] has w ones with w = o(b−a), then its diagonal…
   - open `research/backward/supply-switch-equivalence.md`
+- `supply-threshold-limit/G-data-reconciliation` (lemma) — The measured threshold column τ(n)/n = 0.375, 0.300, 0.250, 0.286, 0.188, 0.156, 0.125, 0.125 at n = 8,10,12,14,16,32,64,128 is reproduced…
+  - open `research/backward/supply-threshold-limit.md`
+- `supply-threshold-limit/G-threshold-asymptotic-zero` (lemma) — For every fixed θ ∈ (0,1/2) and w = ⌊θn⌋, the biased-cell sum is sublinear: (1/n)·Σ_{d=2}^{n−1} K_w(2^popcount(d); n)/C(n,w) → 0 as n → ∞.…
+  - open `research/backward/supply-threshold-limit.md`
+- `supply-threshold-limit/G-threshold-concentration` (lemma) — For every fixed θ ∈ (0,1/2), w = ⌊θn⌋, Var(ν₂(n)) = o(n²), hence ν₂(n)/n → 1/2 in probability; the fraction P[ν₂/n ≥ 0.40] → 1, so the…
+  - open `research/backward/supply-threshold-limit.md`
+- `supply-threshold-limit/G-threshold-parity-control` (lemma) — (the one safe cell-parity bound, replacing the refuted pointwise bound) For X ~ Hypergeometric(n, m, w) with w = ⌊θn⌋, θ ∈ (0,1) fixed: (i)…
+  - open `research/backward/supply-threshold-limit.md`
 - `weak-input-fold/G-weak-input-primes-satisfy-C` (lemma) — The real prime gap-parity string h[j] = ((q_{j+1}−q_j)/2) mod 2 satisfies the condition C(h) of G-weak-input-submask-density. Equivalently:…
   - open `research/backward/weak-input-fold.md`
 - `weak-input-fold/G-weak-input-strictness` (lemma) — There is a binary string h* with switch density 0 (the density of its 1-coordinates is 0; h is the indicator of gaps ≡ 2 mod 4, so this…
@@ -58,8 +66,9 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
 | `C-fold-generic-expectation` | claim | established | — | If h is uniform on the domain of the F₂ fold matrix Φ_n and rank Φ_n = r, then E_h[wt(Φ_n h)] = r/2. With the corrected rank r = n−2 this… |
+| `G-threshold-asymptotic-zero` | claim | **ready** | — | OPEN LEMMA (named gap from measurement to theorem). For every fixed theta in (0,1/2), w = floor(theta*n), the biased-cell sum… |
+| `G-threshold-concentration` | claim | **ready** | — | OPEN LEMMA (named gap between measured fraction-half and a theorem). For every fixed theta in (0,1/2), w = floor(theta*n), Var(nu2(n)) =… |
 | `a2-is-theta-log-squared-confirmed` | claim | established | — | > The number of distance-2 row pairs of the SUPPLY fold, A_2(n), equals exactly C(k,2) plus the count of pairs {2^a,2^a+2^b} and… |
-| `abel-boundary-recurrence-relation-false` | claim | established | — | The proposed first-order neighbour relation T(n,d)=T(n−1,d)⊕T(n−1,d−1) for the SUPPLY fold cell T(n,d)=⊕_{o⊆d}h[n−1−d+o] is FALSE for… |
 | `abgs-mod4-nonuniform-measured` | claim | **ready** | — | For m=4 over x=10^3..10^6 the consecutive-pair classes are measured non-uniform: switch pairs (1,3),(3,1) total 45041 (57.5%) vs equal… |
 | `abgs-p1-wide-open` | claim | **ready** | — | The asymptotic frequency of consecutive-prime pairs in a given ordered residue class (a, a+d) mod m — the asymptotics of N(a,d,m,x) — is an… |
 | `abgs-pair-frequency-equality-open` | claim | **ready** | — | Whether the ordered residue-pair classes of consecutive primes mod m occur asymptotically equally often — N(a,d,m,x)/N(a',d',m,x) → 1 for… |
@@ -81,14 +90,10 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `deep-cells-are-large-gap-driven` | claim | **ready** | — | In Odlyzko's data, every very large value of g(n) (slow {0,2}-reduction) examined was caused by a large prime gap; correlation between… |
 | `delsarte-lp-holds-for-nonlinear-row-sets` | claim | established | — | > The Delsarte LP bound does NOT require the code C to be linear: for any subset C ⊆ F₂ⁿ with distance distribution A_i^C = #{(x,y)∈C²:… |
 | `density-model-rising-mean-is-generic` | claim | established | — | The rising averaged fold mean M(N) -> ~0.4973 (N=4000) for the prime switch string is reproduced by Bernoulli random strings at the… |
-| `derivative-ladder-identities-survive` | claim | established | — | > The foundational F2 identities of the adopted derivative-ladder derivative-ladder-delta-commutation approach survive hostile machine… |
-| `dip-boundary-effect-small-n` | claim | established | — | Every ν₂(n)/n < 0.40 dip occurs at n ≤ 105, the set being exactly {53, 71, 105}; every ν₂(n)/n < 0.42 dip occurs at n ≤ 274, the set being… |
-| `dip-sparsity-not-robust-to-0.48` | claim | established | — | For the prime gap-parity h, the dip set {n : ν₂(n)/n < c} is sparse only for c ≲ 0.45. At c=0.48 it is NOT sparse: density 0.112 over… |
 | `dip-sparsity-tail-clean-through-0.49-at-40000` | claim | established | — | At the N=40000 ceiling (fixed floored oracle, asserts nu2(53)==18 and mu_4000 within 0.01 of 0.4977), the tail window [0.9N,N] of {n :… |
 | `dip-sparsity-to-20000` | claim | established | — | For the prime h, {n:ν₂/n<0.40}={53,71,105} finite, empty past 105; <0.42 ends at 274; tail windows [N/2,N] and [0.9N,N] empty at every… |
 | `donoho-stark-finite-abelian-product` | claim | established | — | For a non-zero complex function f on a finite abelian group A, \|supp f\| · \|supp f̂\| ≥ \|A\|, with equality exactly for (up to translations,… |
 | `downset-row-intersection-meet-formula` | claim | established | — | > For d,d' in [2,n-1], the fold rows satisfy M_d ∩ M_d' = M_{d∧d'}, hence \|M_d ∩ M_d'\| = 2^{pc(d∧d')} and \|M_d △ M_d'\| = 2^{pc(d)} +… |
-| `dyadic-nu2-no-collapse-through-k25` | claim | established | — | > At the 23 dyadic sample indices k = 3..25, n = 2^k, 2^k+1, 2^k-1 (n up to 2^25 = 33554432), the prime fold does NOT collapse:… |
 | `endpoint-sign-corrected-identity` | claim | established | — | The character-product form of the endpoint parity is (-1)^{T(n,d)} = ∏_R χ(r_{a_R}) χ(r_{b_R}) with NO (-1)^{#runs(d)} prefactor. The… |
 | `enminus2-linear-supply-switch-density-not-necessary` | claim | established | — | The per-window family h^(n) = e_{n-2} (a single 1 at index n-2, zeros elsewhere in a length-n window) has switch density 1/n -> 0, yet… |
 | `entropy-neither-necessary-nor-sufficient-for-randomization` | claim | **ready** | — | For Φ = 1+σ over Z/2, nonzero entropy of the initial measure is neither necessary nor sufficient for asymptotic randomization by Φ. |
@@ -97,14 +102,18 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `excess-is-negative-character-sum` | claim | established | — | > For the canonical fold form, ν₂(n) = #{d ∈ [2,n−1] : T(n,d)=1} with S(n) = Σ_{d=2}^{n-1} (−1)^{T(n,d)}, the identity 2·ν₂(n) − (n−2) =… |
 | `fair-mc-primes-ratio-constant-133-40000` | claim | established | — | The like-for-like ratio of the primes' prefix empirical variance of nu2(n)/n to the uniform-h fair-model Monte Carlo prefix variance is… |
 | `fair-model-exact-binomial` | claim | established | — | For h uniform on F2^n, wt(Phi_n h) is EXACTLY Binomial(n-2, 1/2): Pr[wt(Phi_n h) = k] = C(n-2, k) / 2^{n-2}. Equivalently the weight-k… |
+| `fold-cell-degree-is-2^popcount` | claim | established | — | > The fold cell T(n,d) = XOR_{o⊆d} h[n−1−d+o] is a parity (Walsh character) over 2^popcount(d) distinct h-positions (the 2^popcount(d)… |
+| `fold-distance-enumerator-On` | claim | established | — | For the fold row code R_n={1_{M_d}:d∈[2,n-1]}, F_n(z)=Σ_{d,d'}z^{\|M_d△M_{d'}\|} = O(n) for every \|z\|<1, uniformly in n. |
+| `fold-excess-increments-white` | claim | established | — | > Let S(n) = (n−2) − 2·ν₂(n) be the signed excess of the floored submask fold. The operative discriminator between the density-1-SUPPLY… |
 
-_157 further nodes not shown._
+_158 further nodes not shown._
 
 ## Resting on nothing that exists
 
 Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
 
 - `g-input-strictness` rests on `read-cone-column-equivalence`, which does not exist
+- `order-k-second-moment-supply` rests on `fourth-moment-plateau-3n2`, which does not exist
 - `supply-from-endpoint-parity` rests on `problem.md`, which does not exist
 - `supply-from-endpoint-parity` rests on `facts`, which does not exist
 - `supply-from-endpoint-parity` rests on `1`, which does not exist

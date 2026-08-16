@@ -1,0 +1,160 @@
+sequence = weight-w binary strings over F2^n (all weights, exact mean)
+oracle   = DIRECT hypergeometric odd-count (cf scholar gen-func); brute = lib.supply_fold.s_sos
+range    = brute n in {6,8,10,12,14}; threshold to n=32768
+==============================================================================
+PART 1 -- P_d(w): direct hypergeometric odd-count vs scholar gen-func
+==============================================================================
+  (n,w,k)=(8,3,2): direct=0.535714 scholar=0.535714 match=True
+  (n,w,k)=(8,3,4): direct=0.500000 scholar=0.500000 match=True
+  (n,w,k)=(10,2,2): direct=0.355556 scholar=0.355556 match=True
+  (n,w,k)=(12,4,8): direct=0.517172 scholar=0.517172 match=True
+  (n,w,k)=(16,5,4): direct=0.513736 scholar=0.513736 match=True
+  (n,w,k)=(20,4,2): direct=0.336842 scholar=0.336842 match=True
+  (n,w,k)=(12,3,8): direct=0.472727 scholar=0.472727 match=True
+  (n,w,k)=(14,4,2): direct=0.439560 scholar=0.439560 match=True
+  (n,w,k)=(16,3,8): direct=0.500000 scholar=0.500000 match=True
+  (n,w,k)=(6,2,4): direct=0.533333 scholar=0.533333 match=True
+  PART 1 cross-check: PASS
+
+==============================================================================
+PART 2 -- mean_n(w) formula vs literal brute enumeration (s_sos)
+==============================================================================
+  n=6 w=1: formula=0.333333 brute=0.333333 match=True
+  n=6 w=2: formula=0.355556 brute=0.355556 match=True
+  n=8 w=1: formula=0.375000 brute=0.375000 match=True
+  n=8 w=3: formula=0.446429 brute=0.446429 match=True
+  n=8 w=4: formula=0.314286 brute=0.314286 match=True
+  n=10 w=2: formula=0.355556 brute=0.355556 match=True
+  n=10 w=3: formula=0.406667 brute=0.406667 match=True
+  n=12 w=3: formula=0.400758 brute=0.400758 match=True
+  n=12 w=5: formula=0.422980 brute=0.422980 match=True
+  n=14 w=4: formula=0.423006 brute=0.423006 match=True
+  PART 2 cross-check: PASS
+
+==============================================================================
+PART 3 -- exact mean-threshold theta_mean(n)=min{w/n: mean>=0.40}
+==============================================================================
+  n=8 w=3 mean nu2/n = 0.4464  (expected 0.4464) OK
+  n=    64  first w=    7  w/n=0.109375
+  n=   128  first w=   11  w/n=0.085938
+  n=   256  first w=   16  w/n=0.062500
+  n=   512  first w=   24  w/n=0.046875
+  n=  1024  first w=   35  w/n=0.034180
+  n=  2048  first w=   52  w/n=0.025391
+  n=  4096  first w=   77  w/n=0.018799
+  n=  8192  first w=  112  w/n=0.013672
+  n= 16384  first w=  164  w/n=0.010010
+  n= 32768  first w=  239  w/n=0.007294
+
+==============================================================================
+PART 4 -- exact per-weight mean_n(w) near the crossing (for the
+          sampled-FRAC comparison)
+==============================================================================
+  n=64: crossing w=7 (w/n=0.1094)
+      w=    3  w/n=0.0469  mean=0.30694
+      w=    4  w/n=0.0625  mean=0.32933
+      w=    5  w/n=0.0781  mean=0.37333
+      w=    6  w/n=0.0938  mean=0.37952
+      w=    7  w/n=0.1094  mean=0.41236
+      w=    8  w/n=0.1250  mean=0.41058
+      w=    9  w/n=0.1406  mean=0.43750
+      w=   10  w/n=0.1562  mean=0.43116
+      w=   11  w/n=0.1719  mean=0.45447
+  n=256: crossing w=16 (w/n=0.0625)
+      w=   12  w/n=0.0469  mean=0.36960
+      w=   13  w/n=0.0508  mean=0.38263
+      w=   14  w/n=0.0547  mean=0.38693
+      w=   15  w/n=0.0586  mean=0.39825
+      w=   16  w/n=0.0625  mean=0.40108
+      w=   17  w/n=0.0664  mean=0.41111
+      w=   18  w/n=0.0703  mean=0.41281
+      w=   19  w/n=0.0742  mean=0.42186
+      w=   20  w/n=0.0781  mean=0.42267
+  n=1024: crossing w=35 (w/n=0.0342)
+      w=   31  w/n=0.0303  mean=0.38896
+      w=   32  w/n=0.0312  mean=0.39119
+      w=   33  w/n=0.0322  mean=0.39524
+      w=   34  w/n=0.0332  mean=0.39721
+      w=   35  w/n=0.0342  mean=0.40100
+      w=   36  w/n=0.0352  mean=0.40273
+      w=   37  w/n=0.0361  mean=0.40630
+      w=   38  w/n=0.0371  mean=0.40781
+      w=   39  w/n=0.0381  mean=0.41118
+  n=4096: crossing w=77 (w/n=0.0188)
+      w=   73  w/n=0.0178  mean=0.39643
+      w=   74  w/n=0.0181  mean=0.39744
+      w=   75  w/n=0.0183  mean=0.39891
+      w=   76  w/n=0.0186  mean=0.39987
+      w=   77  w/n=0.0188  mean=0.40130
+      w=   78  w/n=0.0190  mean=0.40221
+      w=   79  w/n=0.0193  mean=0.40359
+      w=   80  w/n=0.0195  mean=0.40447
+      w=   81  w/n=0.0198  mean=0.40581
+  n=16384: crossing w=164 (w/n=0.0100)
+      w=  160  w/n=0.0098  mean=0.39817
+      w=  161  w/n=0.0098  mean=0.39877
+      w=  162  w/n=0.0099  mean=0.39924
+      w=  163  w/n=0.0099  mean=0.39983
+      w=  164  w/n=0.0100  mean=0.40030
+      w=  165  w/n=0.0101  mean=0.40088
+      w=  166  w/n=0.0101  mean=0.40133
+      w=  167  w/n=0.0102  mean=0.40190
+      w=  168  w/n=0.0103  mean=0.40235
+  n=32768: crossing w=239 (w/n=0.0073)
+      w=  235  w/n=0.0072  mean=0.39872
+      w=  236  w/n=0.0072  mean=0.39905
+      w=  237  w/n=0.0072  mean=0.39944
+      w=  238  w/n=0.0073  mean=0.39976
+      w=  239  w/n=0.0073  mean=0.40014
+      w=  240  w/n=0.0073  mean=0.40046
+      w=  241  w/n=0.0074  mean=0.40083
+      w=  242  w/n=0.0074  mean=0.40115
+      w=  243  w/n=0.0074  mean=0.40152
+
+==============================================================================
+NEGATIVE CONTROL -- all-ones string (max weight n) is in the fold
+kernel: nu2/n -> 0, so weight alone never forces linear supply
+==============================================================================
+  n=8: all-ones nu2=0  nu2/n=0.0000
+  n=16: all-ones nu2=0  nu2/n=0.0000
+  n=32: all-ones nu2=0  nu2/n=0.0000
+  n=64: all-ones nu2=0  nu2/n=0.0000
+  n=128: all-ones nu2=0  nu2/n=0.0000
+  n=256: all-ones nu2=0  nu2/n=0.0000
+
+==============================================================================
+LOG-LOG SLOPE of theta_mean(n)=w/n vs n over the large-n tail
+==============================================================================
+  tail n>=512, theta=w/n:
+    n=   512 theta=0.046875
+    n=  1024 theta=0.034180
+    n=  2048 theta=0.025391
+    n=  4096 theta=0.018799
+    n=  8192 theta=0.013672
+    n= 16384 theta=0.010010
+    n= 32768 theta=0.007294
+  log(theta) = -0.2759 + (-0.4460)*log(n)
+  -> theta_mean(n) ~ C * n^-0.4460  (slope -0.4460)
+  slope < 0 => theta -> 0 (tends-to-zero); slope == 0 => plateau
+  Behaviour on measured range: TENDS TO 0
+
+==============================================================================
+SUMMARY
+==============================================================================
+  PART 1 (P formula agree): PASS
+  PART 2 (mean vs brute):   PASS
+  cross-check overall:      PASS
+  theta_mean(n)/n column to n=32768 (exact, direct odd-count route):
+    n=    64  0.109375
+    n=   128  0.085938
+    n=   256  0.062500
+    n=   512  0.046875
+    n=  1024  0.034180
+    n=  2048  0.025391
+    n=  4096  0.018799
+    n=  8192  0.013672
+    n= 16384  0.010010
+    n= 32768  0.007294
+  This is exact, so theta_mean(n)/n is a proved value for each n;
+  the LIMIT (tends-to-0 vs plateau) is inferred from the slope, data
+  not a proof.

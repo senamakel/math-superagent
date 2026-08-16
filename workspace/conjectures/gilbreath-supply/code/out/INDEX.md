@@ -5,10 +5,20 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `README.md` | _(undescribed)_ |
+| `_SHOOT.md` | Obsolete librarian scaffold (wrapping the capture CLI). The coder runs `python3 -m lib.capture --target code/out/librarian_directive45_capture.txt -- python3 code/out/librarian_directive45_discriminate.py`; this file records that intent but is not the execution path. k |
+| `_d45_scratch_cleanup.md` | Records that the three _SHOOT/_run_d45/_invoke_d45 wrappers are dead librarian scaffolding; coder runs the directive-45 discrimination via lib.capture, not these. |
+| `_invoke_d45.py` | Obsolete librarian scaffold (double-wrapped run attempt); coder uses lib.capture directly. Kept only to record dead scaffolding — not part of the computation. |
 | `_run.sh` | Placeholder runner stub (0 bytes). Superseded by `code/lib/capture.py` (Directive 23): the `> file` truncation pattern is fixed at the runner, never per script. Do not reintroduce a `> file` capture anywhere — use `python3 -m lib.capture --target … -- …` (see Capture rule above). |
+| `_run_d45.py` | Obsolete librarian scaffold (run + capture wrapper). Coder runs the discrimination via lib.capture; this wrapper's function is superseded. Kept only to record dead scaffolding. |
 | `_run_sws.sh` | _(undescribed)_ |
 | `_run_sws3.sh` | _(undescribed)_ |
+| `_run_theta45.py` | _(undescribed)_ |
+| `_run_theta45b.py` | _(undescribed)_ |
+| `_run_theta45v.py` | _(undescribed)_ |
+| `_run_theta45vv.py` | _(undescribed)_ |
+| `_run_threshold_exponent.py` | Placeholder marking that the threshold-exponent OLS fit is owned by the coder role via code/out/threshold_exponent_pass3.md and run_threshold_fit.py. Superseded scaffold; kept non-empty so it is not a written-but-unrun defect. |
 | `abgs_m4_check.py` | Reproduces the ABGS 2011 Section 7 m=4 consecutive-prime-pair counts (16574, 22521, 22520, 16715) and derives the switch/equal split (57.5%/42.5%, ratio ~1.36). Supports claim abgs-mod4-nonuniform-measured. RAN clean. |
+| `analyze_wstar_david.py` | Decision columns for the w* exponent: per-doubling exponent, w*/sqrt(n), sqrt·log flatness, OLS over tails; shows exponent stays ~0.54 (not collapsing to 1/2) and drives the sqrt·log model. |
 | `anf_dictionary_check.captured.txt` | Captured stdout of anf_dictionary_check.py: ANF/Möbius dictionary verified exact — T(n,d) == ANF coefficient a_d for all n=3..40, all d, with all-ones (kernel) negative control showing ANF support size 1. Establishes nu2(n) = # nonzero ANF coeffs of reversed window among indices 2..n-1. |
 | `anf_dictionary_check.py` | Checks the ANF/Möbius dictionary for approach anf-mobius-reed-muller: that T(n,d)=XOR over submasks of d of h[n-1-d+o] equals the ANF coefficient a_d of the reversed window, for n=3..40, with an all-ones negative control. RAN CLEAN: 0 mismatches over n=3..40, all-ones control PASS. Capture: code/out/anf_dictionary_check.captured.txt. |
 | `anf_second_moment_check.captured.txt` | Captured stdout of anf_second_moment_check.py: exact Phi-alone second-moment identity E[S(n)^2]=(n-2)+sum_{d!=d'}(1-2p)^{ |
@@ -32,6 +42,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `dip_sparsity_monotonic_fixed.txt` | Exact captured output of code/averaged/dip_sparsity_monotonic.py (JOB 4, tool_builder, N=40000 nproc=28) after fixing the worker to use fold_nu2 from lib.nu2 and adding assert_supply_guard at top. PRIMES tail [0.9N,N] dip density 0 for every c in 0.40..0.49 (largest empty-tail c = 0.49), half-window 0 except c=0.49 (density 0.0005), full-window dips confined to small n; window min full=0.339623, half=0.487947, tail=0.490344. All-ones (vacuous) and Thue-Morse (must-fail, tail dens 1.0) controls behave. All measured, not proved. |
 | `dip_sparsity_real.note.md` | _(undescribed)_ |
 | `directive21_exact_ratios.captured.txt` | _(undescribed)_ |
+| `directive45_exponent_fit.md` | Directive-45 answer: exponent fit of the exact-mean threshold weight w(n) from the operator's theta column (n=64..32768). Tests pure power vs w=c·sqrt(n), sqrt·ln n, n^log4(3); finds best pure-power exponent ≈0.55, w/sqrt(n) NOT flat (rising), so clean 1/2 rejected; headline sublinear weakening stands. |
+| `directive_flatness.py` | Last-computation directive check: residual flatness of w*(n)/n^E for E=log2(3)-1 (rejected, monotone decline) vs E=0.5568 (fitted) vs E=0.543; settles that log2(3)-1 does not beat the fitted form. |
 | `dyadic_extension_capture.txt` | _(undescribed)_ |
 | `dyadic_extension_k25.note.md` | Claim block for the k=25 dyadic extension (directive 36): nu2(2^k)/2^k stays at 1/2 through k=25, no door-4 collapse at powers of two; status measured, scoped to the 23 dyadic sample points n=2^k, 2^k±1. |
 | `dyadic_extension_k25.txt` | _(undescribed)_ |
@@ -47,6 +59,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `excess_diff.txt` | _(undescribed)_ |
 | `excess_identity_brute.captured.txt` | Captured output of code/verify_excess_identity_brute.py at N=1000: independently verifies the core SUPPLY identity 2·ν₂(n)−(n−2) = −S(n) by the literal brute submask-XOR route (t_direct), distinct from the SOS/path. Holds for EVERY n in [2,1000], 0 mismatches, ones==fold_nu2 for all. This is the second independent route (after SOS) to the identity that grounds the whole endpoint-parity equivalence S(n)=o(n) ⟺ ν₂(n)≈n/2. |
 | `excess_seq.txt` | _(undescribed)_ |
+| `extend_threshold_exponent.py` | Extends the exact-mean threshold-weight w*(n) table to n=32768 by grouping fold depths by popcount (O(log n) classes) under the Krawtchouk parity formula. Produces the per-doubling log2(w)/log2(n) slope columns showing the ~0.54-0.57 exponent and ruling out the 1/8 plateau (measured-not-proved). |
+| `extend_wstar_large.py` | Extends exact-mean linear-supply threshold weight w*(n) to n=2^20 via grouped-Krawtchouk popcount formula; decisively shows w* ~ sqrt(n)(log2 n)^0.5, not pure n^0.55. |
 | `fair_model_exact.txt` | _(undescribed)_ |
 | `fair_prefix_variance_40000.runlog` | _(undescribed)_ |
 | `fair_prefix_variance_40000.txt` | _(undescribed)_ |
@@ -57,6 +71,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `fair_variance_at_40000.note.md` | Directive-18 note and claim block for fair_variance_at_40000.txt: the correct prefix-variance null is log(N)/(4N) (one-line derivation), Ratio B = s2_N·4N/log N = 1.3155 at N=40000 (~32% excess), the per-doubling decrement column showing the excess PERSISTS but the limit (1 vs constant above 1) is UNDETERMINED, and the c=None deep-tail dip result with all-ones/Thue-Morse controls breaking at c=0.40. Status measured. |
 | `fair_variance_at_40000.txt` | _(undescribed)_ |
 | `fair_variance_independent_verify.txt` | _(undescribed)_ |
+| `final_flatness.py` | _(undescribed)_ |
+| `fit_full.py` | _(undescribed)_ |
+| `fit_sqrtlog_beta.py` | Fits structural model w* = c·sqrt(n)·(log2 n)^beta; best beta=0.45 (spread 1.8%), confirming sqrt·log form over pure power and over 1/2. |
+| `fit_threshold_exponent.py` | Log-log OLS fit of the threshold weight w*(n) to n^alpha, per-doubling slopes, residual analysis, and candidate-exponent prediction checks. Shows alpha ~0.55 with error bar, excluding 1/2 and log_4(3). |
 | `floor_convention_note.md` | Records that the nu2/n pointwise dip below 0.42 at n=53 is robust across floor conventions (min 0.3396-0.3585), refuting R-finite-verified (claim of >=0.42 for 50<=n<=4000). |
 | `fold_alln_theorems.captured.txt` | _(undescribed)_ |
 | `fold_second_moment_capture.txt` | Capture of the fold-second-moment-krawtchouk first step: A_2=O(n) (exponent 0.455), F_n(1-2p)=O(n) at p=0.585 (condition C holds, F_n~n), exact identity checks pass (with the var(S)=F_n-E[S]^2 correction), Krawtchouk diagonalization exact, and all-ones/Thue-Morse/single-1 controls correctly fail the iid model. |
@@ -74,20 +92,29 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `kstar_budget_explicit.captured.txt` | _(undescribed)_ |
 | `kstar_cum_floor18.captured.txt` | Independent exhaustive 2^n capture confirming the cumulative (nested) correlation-order budget K*(n)=floor(n/2) for n=2..18, extending the catalogued range to n=17,18; contradicts the imported ceil(n/2) budget table. |
 | `kstar_exact.captured.txt` | _(undescribed)_ |
+| `kstar_floor_settled_patternfind.md` | _(undescribed)_ |
 | `kstar_resolve.captured.txt` | _(undescribed)_ |
 | `kstar_settle.captured.txt` | _(undescribed)_ |
+| `kstar_settle_minmax.captured.txt` | _(undescribed)_ |
 | `kstar_structural_capture.txt` | _(undescribed)_ |
+| `librarian_directive45_discriminate.py` | Directive-45 exponent discrimination: tests w/sqrt(n) flatness, sqrt*log, n^log_4(3), and fitted power against the n=64..32768 threshold-weight column; to be run by coder (I hold no execution tool). The hand-check in research/notes/directive45_librarian_handcheck.md anticipates its w/sqrt(n) table. |
 | `linear_supply_by_weight.txt` | _(undescribed)_ |
 | `linear_supply_independent.txt` | _(undescribed)_ |
+| `linear_supply_threshold_pass3.txt` | _(undescribed)_ |
+| `mechanism_check.py` | Direct verification of structural mechanism: w*/(sqrt(n)(log2 n)^0.5) flat ~0.340 over n=4096..262144; confirms binomial-popcount concentration forces w* ~ sqrt(n)(log n)^1/2. |
+| `meet_factorization_probe.py` | _(undescribed)_ |
+| `model_compare.py` | Compares pure-power (n^alpha), n^{1/2}(logn)^beta, and n^alpha(logn)^beta models for w*(n). Shows the pure power and sqrt-log forms fit equally over n=128..32768; no clean closed form decided. |
 | `nu2_4000_reconcile.captured.txt` | _(undescribed)_ |
 | `nu2_extended.txt` | _(undescribed)_ |
 | `nu2_over_w_resolved.md` | Settles problem.md's UNVERIFIED ν₂/w row: min over n∈[100,2000] is 0.597 at n=105 (both gap conventions); the quoted 0.7049 is discredited. |
 | `nu2_primes_xor_40000.json` | _(undescribed)_ |
 | `nu2_terms.txt` | _(undescribed)_ |
+| `operator_hitset_pricing.py` | _(undescribed)_ |
 | `oracle_validation_report.md` | _(undescribed)_ |
 | `orderk_correlation_capture.txt` | _(undescribed)_ |
 | `orderk_def_resolve.txt` | _(undescribed)_ |
 | `orderk_oracle_check.txt` | _(undescribed)_ |
+| `pass3_threshold_conclusion.md` | Third-pass conclusion: the min weight ratio w/n at which linear supply becomes typical tends to 0 (not plateaus at 1/8); threshold weight grows ~n^0.56 (sublinear), the arithmetic demand reduces to sublinear switch count. Exact-mean proved per-n, exponent/limit fitted. |
 | `pattern_D_terms.txt` | _(undescribed)_ |
 | `pattern_S_terms.txt` | _(undescribed)_ |
 | `pattern_finder_INDEX.md` | _(undescribed)_ |
@@ -96,6 +123,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_deliverable_3_fold_genericity.md` | Pattern-finder consolidated deliverable: every measurable regularity of nu2 is fold-generic including the last 'prime-specific' signal (dip sparsity), which matched random strings reproduce. Records the exact facts (white-noise, second-moment plateau ~1, finite exceptional set), the OEIS miss on nu2(2^k), and the open barrier E[S^2]=O(n) for the specific prime string. |
 | `pattern_finder_deliverable_5_mod4_switch_bias.md` | _(undescribed)_ |
 | `pattern_finder_deliverable_6_kstar_budget.md` | _(undescribed)_ |
+| `pattern_finder_deliverable_7_linear_supply_threshold.md` | Third-pass pattern-finder deliverable: the linear-supply threshold tail extended to n=8192, decisively breaking the pass-two 1/8 plateau. The answer to the pass's one owed computation (data supports tends-to-0). |
+| `pattern_finder_deliverable_8_exponent_robustness.md` | Pattern-finder deliverable: robustness audit of the sublinear linear-supply threshold exponent. Confirms w*~n^0.555 via competing-model attack (rejects sqrt*(log n)^B: B not significant, correlation +0.045) — the sublinear/threshold-tends-to-zero claim is robust, still measured-not-proved. |
+| `pattern_finder_deliverable_logperiodic.md` | Pattern-finder deliverable: the confirmed log-periodic structure of the linear-supply threshold weight w*(n)=n^0.555*P(log2 n), closing directives 45/46/47 with exact data to n=65536. |
 | `pattern_finder_independent_audit.md` | Independent pattern-finder audit of the SUPPLY ν₂ data from the canonical JSON (with corrected index i==n, all guards verified): reproduces the white-noise law, second-moment plateau, finite exceptional sets, and per-scale g=0 (switch-density) dominance, confirms OEIS miss / no-recurrence / no self-similarity, and concludes every ν₂ regularity is fold-generic — no prime-specific signal, bounding the GOAL hypothesis that Φ does work the switch-density form cannot see. |
 | `pattern_fourth_moment_upgrade.md` | Pattern-finder deliverable 4: measured E[Z^4]≈2.95 / E[S^4]≈3n^2 plateau and pointwise max S^2/n≤14.55 — the exact quantitative input that upgrades density-1 SUPPLY to finite-every-exceptional-set (pointwise) SUPPLY. Fold-generic. |
 | `pattern_normalized_white_noise.md` | Pattern-finder deliverable: the prime fold weight's normalized fluctuation Z(n)=S(n)/√n is measured white noise with E[Z²]=1 and subgaussian tail over n=3..40000, explaining the reconciliation of E[S²]≈n with corr(S(n),S(n+1))≈0, and showing ν₂/n→1/2 with rate 1/2√n — the second-moment/subgaussian content that upgrades density-1 SUPPLY (Chebyshev) to finiteness of exceptional sets. Measured conjecture, not a proof. |
@@ -108,6 +138,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `prefix_variance_constant_check.txt` | _(undescribed)_ |
 | `prefix_variance_null_40000.txt` | _(undescribed)_ |
 | `push_pv_run.log` | _(undescribed)_ |
+| `push_wstar_further.py` | Pushes w* to n=2^20 (w*=1557) to resolve drift direction; exponent settles ~0.54, confirming the persistent sqrt·log gap above 1/2. |
 | `r_finite_verified_contradiction.md` | Records the contradiction between the settled rung R-finite-verified (ν₂/n≥0.42 for all 50≤n≤4000) and exact computation finding 10 counterexamples confined to [50,274]. Carries claim r-finite-verified-contradicted. |
 | `ratio_b_d21_finding.md` | Directive-21 correction: Ratio B (s2_N·4N/lnN) per-doubling decrement-RATIO discriminator, exact vs simple-division sets, both extrapolations (limit ~1.13 vs 1) declared neither. Records that the exact last ratio dips below 0.9 (not monotone), contradicting the rounded-set lean toward limit 1. |
 | `ratio_b_directive21_final.md` | _(undescribed)_ |
@@ -122,6 +153,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `refuter_parseval_uniform_p.md` | _(undescribed)_ |
 | `refuter_powers_two_negative.md` | _(undescribed)_ |
 | `research_verify_relations.py` | Machine checker for the two hand-refuted fold relations (abel neighbour relation and the four substitution rules) against the brute submask-XOR oracle; written for tool_builder to confirm both counterexamples over the full small range. |
+| `run_threshold_fit.py` | Scaffold for the threshold-weight exponent OLS fit. SUPERSEDED by code/out/model_compare.py, code/out/fit_full.py, and code/out/threshold_exponent_pass3.md (which record the authoritative 0.55678±0.00225 exponent). Kept legible as intent; coder should run the authoritative scripts, not this file. |
 | `rw_verify.py` | Executable oracle checker for Rampersad-Wiebe run-length theorems (n<20 sweep) and the full-cube submask-XOR zeta-transform round-trip (50 trials). FIXED this run: Theorem 9 used S(L)=L; the paper's positive integers are indexed from 0 (S(0)=1, S(1)=2, S(n)=2S(n-1)-S(n-2) => S(L)=L+1), now corrected, with the old wrong reading kept as a negative control that must fail. Verified: Thm 5 matches all n, Thm 9 matches all n, negative control fails all n, zeta round-trips 50/50. Capture: code/out/rw_verify_thm9_fixed.captured.txt. |
 | `rw_verify_out.md` | Hand-verified checks of Rampersad-Wiebe structural claims plus the submask-zeta involution result, honestly labeled (executable sweep unrun). |
 | `rw_verify_thm9_fixed.captured.txt` | Captured stdout of the fixed rw_verify.py: Theorem 9 (positive-integers run-length transform, Rampersad-Wiebe) now matches for EVERY n=1..19 with S(L)=L+1; negative control (pre-fix S(L)=L) fails every n; Thm 5 Fibonacci control still matches all n; submask-XOR zeta round-trip passes 50/50. Settles task reconcile-verifier-anomalies' Thm-9 part: the sum_T parameterization was right, the sequence indexing was off by one (paper indexes positive integers from 0: S(0)=1, S(1)=2, S(n)=2S(n-1)-S(n-2)). |
@@ -138,6 +170,16 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `squared_excess_order_check.py` | Draft checker for the squared-excess approach's structural facts: even symmetric differences, run structure, no singleton (so no standalone switch-sign term), distance-2 pairs are two non-adjacent singletons. Unrun; hand-check done in the approach file. |
 | `supply_endpoint_density.txt` | _(undescribed)_ |
 | `supply_fold_rank.final.captured.txt` | _(undescribed)_ |
+| `theta45_fit.py` | Directive-45 fit script (same analysis as theta45_verify.py): per-doubling slopes, pure-power OLS, and the three flatness-column tests (sqrt, sqrt·ln, n^log4(3)) for the threshold weight data. |
+| `theta45_verify.py` | Mechanical verification of the directive-45 exponent fit: recomputes per-doubling slopes, OLS pure-power exponent (full and tail), flatness columns w/sqrt(n), w/(sqrt·ln n), w/n^0.7925, and nested-model beta, from the operator's w,n arrays. |
+| `threshold_exact_mean_independent.txt` | _(undescribed)_ |
+| `threshold_exponent_fit_pass3.txt` | _(undescribed)_ |
+| `threshold_exponent_out.txt` | Target output file for the threshold-weight exponent fit. The authoritative capture is recorded in code/out/threshold_exponent_fit_pass3.txt and threshold_exponent_pass3.md; this file holds a marker (not a number) because the fit is the executing role's delivery, not the librarian's. |
+| `threshold_exponent_pass3.md` | Claim-block note for weight-threshold-tends-to-zero-sublinear-exponent: the exact-mean linear-supply threshold weight w*(n) (min w with mean nu2/n >= 0.40) is sublinear, w* ~ n^0.5568 (fitted); linear supply is typical once switch weight exceeds ~n^0.56. Status measured-not-proved; per-n w* exact from formula P_d(w), exponent and limit fitted. Files result-type-4 claim (input strictly weaker than switch density), with the one-sentence genericity gap 'typical is not this string'. |
+| `threshold_exponent_report.captured.txt` | _(undescribed)_ |
+| `threshold_exponent_report.md` | _(undescribed)_ |
+| `threshold_limit_exact.txt` | Third-pass resolution: exact-mean theta(w/n) column (min weight ratio with mean_n(w)>=0.40) over n=8..4096, plus fixed-alpha mean table and sampled fraction half at n=256,512. Shows theta -> 0 (0.3750@8 -> 0.0188@4096), supports 'tends to 0' not a 1/8 plateau. Cross-checked vs exhaustive s_sos (small n) and independent sampling at n=64,128,256. |
+| `threshold_weight_logperiodic_extended.txt` | The decisive capture: extended exact threshold to n=65536, log-periodic decomposition (amplitude ~0.069), side-by-side 0.5568 vs 0.58496, phase-1.0 exponent 0.555+/-0.002, mechanism check. Answers directives 45/46/47. |
 | `unrun_scripts_captured.txt` | Captured output of the three formerly-unrun scripts (rw_verify, abgs_m4_check, bacher_pascal_verify) with run-status header, covering ranges, and the negative controls. Created by running each with python3 from /workspace. |
 | `verify_approach_premises.py` | _(undescribed)_ |
 | `verify_candidate2_refutex.captured.txt` | First-executed capture of code/verify_candidate2_refutex.py: exhaustive over all balanced strings at n=8 (70) and n=16 (12870), min wt(Phi_n x)=0 (the even-alt kernel generators 1010..), plus a 200-subsample at n=24 giving min wt=2 on a NON-kernel balanced string 111111111111000000000000. Negative control confirming no Phi-alone structural bound over balanced inputs (refuted approach walsh-subset-sum-fold-structure). |

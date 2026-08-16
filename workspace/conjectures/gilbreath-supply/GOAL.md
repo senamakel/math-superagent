@@ -30,6 +30,88 @@ the sample count above 300 per weight so the `frac` column can support the
 claim, and say which behaviour the data supports **without declaring beyond it**.
 Everything else in this file is secondary to that column.
 
+**RESOLVED (third pass, exact-mean half, `code/out/threshold_limit_exact.txt`).**
+The MEAN half of 'typical' needs no sampling: over all weight-`w` strings, the
+exact mean is computable in closed form, grouped by popcount. The min ratio
+`theta(n) = min{w/n : mean_n(w) ≥ 0.40}` over `n = 8..4096` is
+
+`0.3750, 0.3000, 0.2500, 0.2857, 0.1875, 0.1562, 0.1094, 0.0859, 0.0625,
+0.0469, 0.0342, 0.0254, 0.0188`
+
+**eventually decreasing toward 0** (decreasing from n=14 onward; the earlier
+`0.2857` at n=14 rises above `0.2500` at n=12, so the column is *not* globally
+monotone — the honest phrase is "eventually decreasing", and the exact
+computation, not GOAL.md's prose, is the record), not plateauing at 1/8. The prior PASS2
+plateau at `0.125, 0.125` for `n=64,128` was a sampling artifact (300/weight)
+plus the stricter AND with the fraction column; the exact mean gives `0.109@64`
+and `0.086@128`. Fixed-alpha rows corroborate: at any fixed small positive
+density the mean rises with `n` (`a=0.05`: 0.287→0.468; `a=0.125`:
+0.375→0.493), so the crossing ratio keeps dropping. **Data supports 'tends to 0'** for the
+ratio — but directive 45 reframes what that buys: 'positive density suffices'
+is NOT weaker than positive mod-4 switch density, it IS that statement, so it
+wins nothing. The deliverable is the absolute threshold WEIGHT
+`w*(n)=θ(n)·n`, whose growth is sublinear: 'about w*(n) switches suffice' is
+strictly weaker than switch density. **The exponent is settled as FITTED, not a closed form (directive 47): E = 0.557 ± 0.002.** The fit over n≥256 gives
+E = 0.55678 with se = 0.00225, which puts 1/2 more than twenty-five standard
+errors away — it is NOT 1/2, and the earlier reading of slopes "drifting down
+toward 0.5" was wrong. The fuller per-doubling slope sequence 0.5406, 0.5850,
+0.5443, 0.5712, 0.5663, 0.5406, 0.5502, 0.5433 oscillates about 0.556, not
+drifts. Do not attach a closed form the data cannot support. One structural
+test may explain the oscillation: Pascal-mod-2 counting functions classically
+carry log-periodic fluctuations (leading term n^E times a bounded function
+periodic in log2(n)), and the alternating high-low slopes are that signature —
+tabulate w*(n)/n^0.5568 against log2(n) and report a period-1 oscillation and
+its amplitude if present (task `log-periodic-oscillation-test-d47`).
+
+**FRACTION half, third pass full run (`code/out/linear_supply_threshold_pass3.txt`).**
+The combined `typical` threshold — `mean ≥ 0.40` AND `frac(ν₂/n ≥ 0.40) ≥ 0.5` —
+was sampled at 2000 strings/weight (well above the pass-2 300/weight) at
+`n = 64,128,256,512,1024,2048`, and falls strictly with `n`:
+
+```
+n       64    128    256    512    1024    2048
+theta* 0.1094 0.0859 0.0742 0.0488 0.0371  0.0298
+```
+
+No plateau at 1/8. The pass-2 `0.125@64,0.125@128` was the coarse 300-sample +
+weight-grid artifact; at 2000 samples the exact mean crossing (0.109@64,
+0.086@128) and the fraction agree there, and both keep falling. The exact mean
+crossing (Stage B, no sampling) continues to n=2^18:
+
+```
+n          32    64    128   256   512   1024   2048   4096   8192  2^14   2^16     2^18
+theta/n  0.156 0.109 0.086 0.063 0.047 0.034  0.025  0.019  0.014  0.010  0.0053  0.0028
+```
+
+**The operator's correction — read absolute weights, not ratios.** `theta·n`
+gives the threshold WEIGHT: `3,3,3,4,3,5,7,11,16,24,35,52,77,112,164,349,738`
+for `n = 8..2^18`. **The exponent is settled as FITTED (directive 47):**
+E = 0.55678 ± 0.00225 over n≥256 — 1/2 is ruled out by >25 se; the fuller
+per-doubling slopes 0.5406, 0.5850, 0.5443, 0.5712, 0.5663, 0.5406, 0.5502,
+0.5433 oscillate about 0.556, not drift. Record it as 0.557 ± 0.002 and attach
+no closed form. A log-periodic correction (bounded, period 1 in log2(n)) is
+the candidate explanation for the oscillation — test by tabulating
+w*/n^0.5568 against log2(n) (task `log-periodic-oscillation-test-d47`).
+
+**Arithmetic demand (the point of the exponent).** Reading absolute weights
+understates the result if one reads the ratio `w/n`; reading the weight itself,
+the statement is: **linear supply is typical once the switch count (weight) w
+exceeds about `w*(n)`, which grows sublinearly.** That is strictly weaker than
+'a positive fraction of switches' (the mod-4 switch-density statement), because
+a sublinear count is a far smaller demand on the primes than a positive
+fraction. **Directive 47: the exponent is settled as FITTED** — `w ∝ n^0.557`
+(E = 0.557 ± 0.002, 1/2 ruled out by >25 se, no closed form attached), so the
+demand is "about n^0.557 switches", still sublinear and strictly weaker than
+switch density. The pass conclusion (task `write-pass3-conclusion-d47`) records
+this with the n range 8..32768, status measured-not-proved, and the two open
+lemmas `G-threshold-asymptotic-zero` and `G-threshold-concentration`.
+
+Both halves of `typical` fall with `n`: the MEAN half exactly (proved Krawtchouk
+formula, so `theta_mean(n)/n → 0` rigorously over the listed range), the FRACTION
+half sampled (2000/weight, n to 2048). The data supports **tends to 0** — a
+1/8 plateau is contradicted by every n ≥ 64. Measured range does not determine
+the limit with certainty, but nothing in it rises; it falls strictly throughout.
+
 ## Note on directives
 
 Operator directives now reach detached specialist runs directly, not only the

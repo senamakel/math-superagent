@@ -648,3 +648,104 @@ Record it as a closed candidate with the table as its witness, and note the cave
 Stop producing K* captures. Six now agree. If no candidate survives pricing, write the pass's conclusion and say the answer is no.
 
 Directive 43 carried. I withdrew the directive-41/42 hit-set push: recorded the operator's table as the witness of a new closed candidate `hit-set-positional-supply` (status refuted, with the honest XOR-not-sum caveat), marked the `hit-set-functional` thread dead with `killed-by` naming the pricing failure, and dropped `build-hit-set-functional`, `price-hit-set-functional`, and the two `linear-supply-threshold` tasks that were parked behind that now-withdrawn head. I wrote `research/CONCLUSION-PASS2.md` stating the pass's answer is NO, updated the `stop-kstar-captures` reason to "six captures agree," and amended CONTEXT.md's head so every role sees directive 43 as current rather than the withdrawn push. I left the table labelled operator-asserted, not a run claim — it is not filed in the claims ledger until tool_builder independently re-derives it.
+
+## 44 — from steer
+
+Third pass. Read research/CONCLUSION-PASS2.md and the new section at the top of GOAL.md before anything else.
+
+This pass owes ONE computation and everything else is secondary to it: does the minimum weight ratio at which linear supply becomes typical tend to 0, or plateau near 1/8? The measured column is 0.375, 0.300, 0.250, 0.286, 0.188, 0.156, 0.125, 0.125 for n = 8, 10, 12, 14, 16, 32, 64, 128. It fell monotonically then held at 0.125 twice, and pass 2 was stopped before resolving it.
+
+Do three things. Push n as far as the sampled method allows and report the ratio per n. Raise the sample count well above 300 per weight, because the 'typical' test is a fraction >= 0.5 and 300 samples cannot support a claim about where that crosses. State which behaviour the data supports and do not declare beyond it -- 'the measured range does not determine the limit' is an acceptable and expected answer.
+
+Why it matters, so you can price your own effort: if the ratio tends to 0 then linear supply is typical at ANY positive density, and the arithmetic input the primes need drops to positive density plus non-adversariality. That is materially weaker than pointwise mod-4 switch density and would be this workspace's first affirmative result across three passes. If it plateaus, the constant is real and belongs in the statement, and the demand does not weaken.
+
+Do not re-derive K* = floor(n/2), the fold-genericity measurements, or the withdrawn equivalence conclusion. Six captures already agree on K*; pass 2 spent eight artifacts on it across three directives telling it to stop.
+
+One change you should know about: operator directives are now delivered directly to live detached runs, not only to the next attempt and the director. If a directive contradicts what you are doing, it outranks the instruction you were spawned with -- apply it, and say in your report what you stopped.
+
+The ledger now reflects the directive. My reply, written to the operator-read ledger:
+
+Directive 44 reopened pass 3's single owed computation, which the task ledger had closed as `dropped` under directive 43. I reopened `linear-supply-threshold-limit` as the head (clearing its stale drop reason and blocked-by field) and its follow-up `linear-supply-threshold-claim-block`, updated the live `supply-class-characterisation` thread's `next` to the directive's three requirements (push n as far as possible, raise samples well above 300, and treat "the measured range does not determine the limit" as an expected answer), and amended CONTEXT.md's "one computation this pass owes" section in place to make the sample-count raise and the honest-limit framing explicit. GOAL.md and CONTEXT.md already carried the directive's content, so no new file was added and no direction was widened — the existing pass-2 thread was reused rather than duplicated.
+
+## 45 — from steer
+
+threshold_limit_exact.txt settles the pass's head question and is well built -- header with sequence/oracle/range, exact Krawtchouk closed form cross-checked against s_sos, cross-check PASS, and it correctly says 'NOT a proof of the limit, shows the per-n trend only'. Accepted.
+
+Two corrections, the second important.
+
+(1) GOAL.md says theta is 'monotone decreasing toward 0'. Its own table is not: theta goes 0.2500 at n=12 UP to 0.2857 at n=14. Write 'eventually decreasing' or 'decreasing from n=14 onward'. The capture did not make this claim; the write-up did.
+
+(2) You have understated your own result. GOAL.md restates it as 'at ANY fixed positive density the mean eventually exceeds 0.40'. Read absolute weights, not ratios. theta*n gives the threshold WEIGHT: 3,3,3,4,3,5,7,11,16,24,35,52,77 for n=8..4096. The slope of log2(w) against log2(n) between consecutive doublings is 0.74, 0.49, 0.65, 0.54, 0.58, 0.55, 0.57, 0.57 -- settling near 0.57. The threshold weight grows like n^0.57. That is SUBLINEAR.
+
+This is the difference between a measurement and the affirmative result three passes have been chasing. 'Positive density suffices' is NOT weaker than positive mod-4 switch density -- it is that statement, so restating it wins nothing. 'About n^0.57 switches suffice' IS strictly weaker, because a sublinear switch count is a far smaller demand on the primes than a positive fraction.
+
+So: fit the exponent over the large-n rows with an error bar, and test it against constants this fold produces -- log_4(3) = 0.7925, 1/2, log(3)/log(4). If it is a clean closed form say which; if not, say fitted. Then state the arithmetic demand plainly: linear supply is typical once the switch count exceeds about n^0.57, and compare that against what the mod-4 statement asks.
+
+Claim block with the n range, status measured-not-proved, and post to the board.
+
+
+
+## 46 — from steer
+
+The independent verification is accepted -- threshold_exact_mean_independent.txt reaches n=32768 by an exact route, both cross-check parts PASS, and it states the standing correctly: exact per n, limit inferred from the slope, not a proof. That is the right shape.
+
+Directive 45's exponent fit is still owed, and the extended data has moved the answer. Compute it from your own theta column. The threshold weights theta*n are 7, 11, 16, 24, 35, 52, 77, 112, 164, 239 for n = 64 .. 32768. The slope of log2(w) per doubling is 0.652, 0.541, 0.585, 0.544, 0.571, 0.567, 0.540, 0.551, 0.543. My earlier estimate of 0.57 was from the shorter range and is too high: the local slope over the last four doublings is 0.545, and it is drifting DOWN, not settling at 0.57.
+
+That matters because 1/2 is now in range. Test it directly rather than eyeballing: fit log2(w) against log2(n) over the large-n rows with an error bar, and separately test the hypothesis w = c*sqrt(n) by tabulating w/sqrt(n) -- if that column is flat the exponent is exactly 1/2 and there is likely a clean derivation behind it. Also test w = c*sqrt(n)*log(n) and w = n^(log_4 3), and say which the data prefers and by how much. Do not declare a closed form the data cannot separate.
+
+If it is 1/2, say so prominently: linear supply is typical once the switch count exceeds about sqrt(n), which is a dramatically weaker demand on the primes than a positive fraction, and it would be the strongest statement this workspace has produced.
+
+Everything else stays secondary. Do not reopen K*, fold-genericity, or the withdrawn equivalence conclusion.
+
+
+
+## 47 — from steer
+
+The exponent fit answers directive 46 and it rules out my suggestion. E = 0.55678 with se = 0.00225 over n >= 256 puts 1/2 more than twenty-five standard errors away. It is not 1/2, and my reading last tick that the local slope was 'drifting down toward 0.5' was wrong -- the fuller sequence 0.5406, 0.5850, 0.5443, 0.5712, 0.5663, 0.5406, 0.5502, 0.5433 does not drift, it oscillates about 0.556. Record the exponent as fitted, 0.557 +/- 0.002, and do not attach a closed form the data cannot support.
+
+One structural thing worth testing, because it may explain the oscillation rather than leaving it as noise. Counting functions built on Pascal mod 2 classically carry LOG-PERIODIC fluctuations: the leading term is n^E times a bounded function periodic in log2(n), not a clean power. Your slopes alternate high-low-high-low across consecutive doublings, which is exactly that signature. Test it directly: tabulate w*(n) / n^0.5568 against log2(n) and look for a bounded oscillation of period 1 rather than a trend. If it is there, say so and give its amplitude -- that turns an untidy fit into a described phenomenon, and it means the exponent is genuinely 0.557 with a periodic correction rather than a badly-fitted 5/9 or 4/7.
+
+The pass's head question is now answered: theta tends to 0, the threshold weight is sublinear at n^0.557, and the arithmetic demand -- a sublinear switch count rather than a positive fraction -- is strictly weaker than pointwise mod-4 switch density. Write that up as the pass conclusion with the claim block, the n range 8..32768, status measured-not-proved, and the two open lemmas you already named (G-threshold-asymptotic-zero, G-threshold-concentration) as what a proof would need. Keep the genericity caveat: typical is not this string.
+
+Do not open new lines after that. The write-up is the last thing this pass owes.
+
+I carried out directive 47. The task ledger now shows the two remaining pieces of work in order — a `log-periodic-oscillation-test-d47` task (tabulate `w*(n)/n^0.5568` against `log2(n)`, report a period-1 oscillation and its amplitude) followed by `write-pass3-conclusion-d47` (the pass conclusion, blocked on the oscillation test); the now-superseded `fit-threshold-weight-exponent-d46` is closed as done.
+
+GOAL.md, CONTEXT.md, and the `supply-class-characterisation` thread now record the exponent as **fitted 0.557 ± 0.002** (E = 0.55678, se = 0.00225, 1/2 ruled out at >25 se), with no closed form attached and the log-periodic correction named as the candidate explanation for the oscillating slopes. I did not file the claim block or compute anything — the write-up task hands that to the role that executes, per the directive's "write that up as the pass conclusion" instruction.
+
+## 48 — from steer
+
+log_periodic_pascal_mod2_engine.md is the right way to use the library: it sources the log-periodicity to OEIS A006046 with its a(2k)=3a(k) recursion, separates what is authoritative there (the exactness of the OEIS forms) from what is analogy (the transfer to w*'s exponent), and names an explicit falsifier -- a monotone trend in w*(n)/n^0.5568 against log2(n) instead of a bounded oscillation. Run that tabulation; it is the deciding computation.
+
+One mathematical consequence to test at the same time, because it may change the exponent you report. If a log-periodic correction is present, a straight log-log fit over a finite window is BIASED -- the oscillation pulls the fitted slope away from the true exponent, and your window is only about seven doublings. So 0.5568 +/- 0.0023 may not be the exponent; it may be the exponent plus a window artifact.
+
+The natural constant here is log2(3) - 1 = 0.58496. Pascal mod 2 counting functions carry log2(3) as their exponent (A006046 is exactly a(2k)=3a(k)), and 0.58496 sits inside the range your own local slopes span -- your n=256->512 doubling gave 0.5850, which is that constant to four decimals. Test it directly: tabulate w*(n) / n^0.58496 against log2(n) and compare the residual against the same tabulation at 0.5568. If the log2(3)-1 version is the one with a bounded periodic residual and no trend, the exponent is exactly log2(3)-1 with a log-periodic correction, and the 0.5568 fit was biased low by the oscillation.
+
+Report both tabulations side by side and say which the data prefers, with the residual ranges. If neither is flat, say so and keep 0.557 as fitted. Do not declare log2(3)-1 because it is prettier -- it has to beat the alternative on the residual.
+
+This is the last computation. After it, write the pass conclusion.
+
+I've read the directive, the engine note it names, the thread, and both open tasks. The directive's arithmetic is consistent with what's on disk: `log₂3 − 1 = 0.58496`, A006046's `a(2k)=3a(k)`/`a(2ⁿ)=3ⁿ` is the authoritative part, the transfer to `w*` is analogy-only, and the n=256→512 slope 0.5850 is already recorded in the thread.
+
+I made three coordinated edits, all preserving the directive's "last computation, then conclude" ordering:
+
+1. **`log-periodic-oscillation-test-d47`** (the head task) is rewritten as the two-horse test: tabulate `w*(n)/n^0.5568` **and** `w*(n)/n^0.58496` against `log₂(n)` side by side with residual ranges, report which residual is bounded-periodic with no trend, and keep 0.557 as fitted if neither is flat.
+2. **`write-pass3-conclusion-d47`** no longer hard-codes "exponent 0.557" — it reports whichever exponent the residual test decides, since the directive says the reported exponent may change.
+3. **The thread** (`supply-class-characterisation.md`) and **CONTEXT.md** now state the bias argument — a straight log-log fit over ~7 doublings is pulled off the true exponent by a log-periodic correction — and name `log₂3 − 1` as the candidate that must *beat* 0.5568 on the residual, not by prettiness.
+
+No new thread or research request was needed: the directive refines the existing open head rather than starting or abandoning a direction, and no source gap is named (the tabulation uses the exact threshold weights already on disk).
+
+## 49 — from steer
+
+CONCLUSION-PASS3.md reads correctly. The head question is answered, the result is filed as problem.md type 4 and never type 1, the genericity caveat 'typical is not this string' is in both the summary and the body, and the log-periodic decomposition is reported as confirmed off exact per-n values rather than a fit. Directive 47 and 48 are otherwise discharged.
+
+It has ZERO fenced claim blocks and it asserts several settled conclusions. That was an explicit item in directive 47 and it is the one recurring defect in this workspace across all three passes. Add them now — the pass is not closed until its results are in the ledger rather than only in prose.
+
+At minimum:
+- threshold-weight-sublinear: w*(n) ~ n^0.555 with a bounded log2-periodic factor of amplitude ~0.07; hypotheses naming the exact-mean Krawtchouk route and the range n=8..262144; status measured-not-proved with per-n w* exact and the exponent fitted; bearing that the arithmetic demand is a sublinear switch count, strictly weaker than a positive fraction, and that this is type 4 not type 1.
+- threshold-closed-forms-rejected: sqrt(n) rejected at 27 sigma, n^(log2(3)-1) rejected at 14 sigma with monotone residual drift, and 5/9 NOT separable from the fit — residual sd 0.01466 for both, the exponent gap ~30x smaller than the periodic swing. This one matters as much as the positive result: it records what the data cannot support, and it is what stops a later reader adopting 5/9 because it is tidy.
+- The two open lemmas, G-threshold-asymptotic-zero and G-threshold-concentration, as the named gap between the measurement and a theorem. State plainly that both are pure F2/hypergeometric with no primes in them, which is what makes them the most tractable open items this workspace has.
+
+Mirror every id in research/ROOT.md and post the summary to the board. Then stop — no new lines of work. The claim blocks are the last thing this pass owes.
+
+

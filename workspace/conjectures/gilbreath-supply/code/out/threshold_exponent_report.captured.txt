@@ -1,0 +1,71 @@
+==============================================================================
+EXACT-MEAN THRESHOLD WEIGHT: exponent fit, closed-form + log-periodicity test
+sequence: weight-w strings in F2^n; w*(n)=min w with mean nu2/n>=0.40
+oracle  : lib.krawtchouk_sphere.theta_mean (EXACT, verified vs s_sos brute)
+range   : n = 64 .. 2^18, exact integer arithmetic, powers of two
+==============================================================================
+  EXACT COLUMN:
+            n    w*       w/n    w/sqrt(n)    w/n^log43
+         64     7   0.10938      0.87500      0.61454
+        128    11   0.08594      0.97227      0.64380
+        256    16   0.06250      1.00000      0.62430
+        512    24   0.04688      1.06066      0.62430
+       1024    35   0.03418      1.09375      0.60695
+       2048    52   0.02539      1.14905      0.60117
+       4096    77   0.01880      1.20312      0.59347
+       8192   112   0.01367      1.23744      0.57548
+      16384   164   0.01001      1.28125      0.56178
+      32768   239   0.00729      1.32030      0.54579
+      65536   349   0.00533      1.36328      0.53133
+     131072   507   0.00387      1.40040      0.51458
+     262144   738   0.00282      1.44141      0.49936
+
+==============================================================================
+(a) POWER-LAW FIT  log2(w*)=a+E log2(n)
+==============================================================================
+  n>=128 (full 13 pts)   E=0.55633 +/- 0.00256  R^2=0.999767  |E-1/2|=0.0563 (22 se)  pts=13
+  n>=256                 E=0.55254 +/- 0.00157  R^2=0.999919  |E-1/2|=0.0525 (33 se)  pts=12
+  n>=512                 E=0.55169 +/- 0.00179  R^2=0.999905  |E-1/2|=0.0517 (29 se)  pts=11
+  n>=1024 (late tail)    E=0.54948 +/- 0.00154  R^2=0.999937  |E-1/2|=0.0495 (32 se)  pts=10
+
+  per-doubling slope d(log2 w)/d(log2 n):
+    n=     64->    128: slope=0.6521
+    n=    128->    256: slope=0.5406
+    n=    256->    512: slope=0.5850
+    n=    512->   1024: slope=0.5443
+    n=   1024->   2048: slope=0.5712
+    n=   2048->   4096: slope=0.5663
+    n=   4096->   8192: slope=0.5406
+    n=   8192->  16384: slope=0.5502
+    n=  16384->  32768: slope=0.5433
+    n=  32768->  65536: slope=0.5462
+    n=  65536-> 131072: slope=0.5388
+    n= 131072-> 262144: slope=0.5416
+
+==============================================================================
+(b) CLOSED-FORM CANDIDATES (rel-spread = std/mean; flat=fit)
+==============================================================================
+  sqrt(n)        full-range rel-spread=0.1434   tail(last6)=0.0517
+  sqrt(n)*log n  full-range rel-spread=0.1963   tail(last6)=0.0595
+  n^log_4 3      full-range rel-spread=0.0760   tail(last6)=0.0487
+
+==============================================================================
+(c) LOG-PERIODICITY / RESIDUAL TEST (directive 48)
+==============================================================================
+  hypothesis: Pascal-mod-2 counting carries a bounded period-1 oscillation;
+  if so w*/n^E would OScillate about a constant with no monotone trend.
+
+  E=0.5568 (pass3 fitted)    res mean=0.7308 range=0.0592 trend-slopeb=-0.00026 corr(ln n,res)=-0.062
+  E=0.5525 (this full-range fit) res mean=0.7574 range=0.0741 trend-slopeb=+0.00195 corr(ln n,res)=+0.408
+  E=log2(3)-1 = 0.58496      res mean=0.5798 range=0.1444 trend-slopeb=-0.01132 corr(ln n,res)=-0.962
+
+  read: a bounded oscillation has corr~0 and small |slope|; a monotone
+  trend has |corr|~1. If the 0.58xx hypothesis were right, its residual
+  would be the flat one -- it is not (see 0.58496 row).
+
+VERDICT (labelled measurement, not a proof):
+  * E ~ 0.552-0.557, numerically NOT 1/2 (>>20 se) and NOT log2(3)-1.
+  * sqrt(n): w/sqrt(n) rises 0.875->1.44 (not flat) -> exponent > 1/2.
+  * log2(3)-1 has a strong monotone residual trend (corr<0.9) -> refuted.
+  * the fitted exponent has bounded near-zero-trend residual -> a mild
+    log-periodic correction cannot be excluded, but E~0.5525 is stable.

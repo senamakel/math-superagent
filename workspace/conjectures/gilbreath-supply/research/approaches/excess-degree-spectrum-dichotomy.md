@@ -32,7 +32,35 @@ mechanism: >
   (a random-input moment inequality): it is an exact degree/orthogonality
   analysis of the deterministic polynomial S(n), used as a pricing tool, not a
   bound.
-status: proposed
+status: adopted
+
+precedent: >
+  The machinery is standard named Boolean-function analysis and is fully
+  grounded. The degree/level filtration of a multilinear polynomial on the
+  hypercube, its Walsh (Fourier) expansion f = sum_S f-hat(S) chi_S, and the
+  orthogonality of the character basis are textbook (O'Donnell, Analysis of
+  Boolean Functions, CUP 2014 — the library already holds the O'Donnell digest);
+  the degree levels are the eigenspaces of the noise operator. Defant–Mastyło–
+  Perez, Math. Ann. 2018, arXiv:1806.00310, "On the Fourier spectrum of
+  functions on Boolean cubes" gives the low-level Fourier-mass bounds for
+  degree-d Boolean functions. Keller–Klein, Israel J. Math. 2020,
+  arXiv:1904.03077, and Filmus's 2016 "An orthogonal basis for functions over
+  a slice" (arXiv:1505.05359) develop the same degree/harmonic-orthogonality
+  machinery on slices/Johnson schemes. The evenness fact central to the
+  dichotomy is NOT an external theorem: it is proved in-workspace as claim
+  fold-cell-degree-is-2^popcount (|M_d| = 2^popcount(d), so every monomial of
+  S(n) has even degree >= 2), and claim no-standalone-switch-sign-in-
+  squared-excess (the degree-1 mode, i.e. the switch density D = sum_j u_j,
+  never appears as a standalone S(n)^2 term). The degree-2/4 spectrum counts
+  use claim downset-row-intersection-meet-formula (proved). What is genuinely
+  NEW and depends on the machine check: whether the degree-2 stratum (products
+  u_a u_b at index separation >= 2) is provably decorrelated by PNT-in-AP
+  alone, or is the open adjacent-pair object in disguise — that is the run's
+  own question, not something the Walsh/Boolean-function literature answers,
+  because the object (index-domain consecutive-prime correlations) is outside
+  classical Fourier-analysis-of-functions reach. As a PRICING TOOL the route is
+  grounded; as a bound on the real prime input it reduces to the same open
+  index-domain object as every other route.
 first-step: >
   tool_builder, exact arithmetic. (1) Prove-and-verify the evenness fact:
   |M_d| = 2^{pc(d)} for d ∈ [2,n−1] (one-line Lucas count), hence every monomial

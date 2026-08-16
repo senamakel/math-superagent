@@ -1,0 +1,7 @@
+# threshold_exponent_out.txt
+# Target output file for the threshold-weight exponent fit.
+# The authoritative fit script is code/out/run_threshold_fit.py
+# (writes this file). It has not yet been executed in this workspace —
+# running programs is the executing roles' job, not the librarian's.
+# Do not read this file for a number; read the capture produced by
+# running run_threshold_fit.py instead.

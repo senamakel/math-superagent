@@ -1,0 +1,6 @@
+{
+  "finding": "refuted",
+  "model": "tff('declare_$i1',type,'fmb_$i_1':$i).\ntff('finite_domain_$i',axiom,\n      ! [X:$i] : (\n         X = 'fmb_$i_1'\n      ) ).\n\ntff(declare_t2,type,t2: $o).\ntff(t2_definition,axiom,t2).\ntff(declare_h3,type,h3: $o).\ntff(h3_definition,axiom,~h3).\ntff(declare_h5,type,h5: $o).\ntff(h5_definition,axiom,h5).\ntff(declare_t4,type,t4: $o).\ntff(t4_definition,axiom,t4).\ntff(declare_h1,type,h1: $o).\ntff(h1_definition,axiom,~h1).\ntff(declare_t3,type,t3: $o).\ntff(t3_definition,axiom,t3).\ntff(declare_h2,type,h2: $o).\ntff(h2_definition,axiom,~h2).\ntff(declare_h4,type,h4: $o).\ntff(h4_definition,axiom,h4).\ntff(declare_t5,type,t5: $o).\ntff(t5_definition,axiom,t5).\ntff(declare_h0,type,h0: $o).\ntff(h0_definition,axiom,~h0).\n",
+  "problem": "code/refute/sparse_wt2_fold3_n6b.p",
+  "status": "CounterSatisfiable"
+}

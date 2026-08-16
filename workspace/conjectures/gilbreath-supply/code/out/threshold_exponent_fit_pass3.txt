@@ -1,0 +1,62 @@
+sequence = exact-mean threshold weight w*(n) over weight-w strings in F2^n
+oracle   = verified threshold formula P_d(w) (cross-checked vs s_sos brute);
+           per-n w* EXACT, see threshold_limit_exact.txt / threshold_exact_mean_independent.txt
+range    = n in {8,10,12,14,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768}
+==============================================================================
+n-list: [8, 10, 12, 14, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768]
+w*    : [3, 3, 3, 4, 3, 5, 7, 11, 16, 24, 35, 52, 77, 112, 164, 239]
+
+per-doubling slope  s = log2(w*(2n)/w*(n)) = d log2 w / d log2 n  (doubling pairs only):
+  n=    16 ->     32:  slope=0.7370
+  n=    32 ->     64:  slope=0.4854
+  n=    64 ->    128:  slope=0.6521
+  n=   128 ->    256:  slope=0.5406
+  n=   256 ->    512:  slope=0.5850
+  n=   512 ->   1024:  slope=0.5443
+  n=  1024 ->   2048:  slope=0.5712
+  n=  2048 ->   4096:  slope=0.5663
+  n=  4096 ->   8192:  slope=0.5406
+  n=  8192 ->  16384:  slope=0.5502
+  n= 16384 ->  32768:  slope=0.5433
+
+OLS fit  log2(w*) = a + E*log2(n)   (E = exponent, se = standard error):
+  n>=256  (task tail)  E=0.55678  se=0.00225  a=-0.4346  sse=0.0013  npts=8
+  n>=128            E=0.55701  se=0.00174  a=-0.4375  sse=0.0013  npts=9
+  n>=64             E=0.56231  se=0.00336  a=-0.5029  sse=0.0075  npts=10
+  n>=512            E=0.55397  se=0.00208  a=-0.3980  sse=0.0006  npts=7
+  all n>=16         E=0.56810  se=0.00435  a=-0.5703  sse=0.0271  npts=12
+
+TASK TAIL n>=256:  E = 0.55678 +/- 0.00225   (log2 w* = -0.4346 + 0.55678 * log2 n)
+
+candidate closed forms:
+  1/2                  |E - 0.5000| = 0.0568
+  log_4(3)=0.7925      |E - 0.7925| = 0.2357
+  2/3                  |E - 0.6667| = 0.1099
+
+PLAIN STATEMENT: E is a FITTED value (numerical regression over the sampled
+n-list), NOT a closed form.  It sits between n^1/2 and n^log_4(3) and is not
+equal to either:  E ~ 0.5568 is sublinear (~n^0.56), so linear supply is typical
+once the switch weight exceeds ~n^0.56 — strictly weaker than a positive fraction
+(n^1) of on-bits, and the arithmetic demand on the primes is sublinear.
+
+theta = w*/n at each n (exact per-n; the LIMIT is fitted, not proved):
+  n=     8  w*=   3  theta=0.375000
+  n=    10  w*=   3  theta=0.300000
+  n=    12  w*=   3  theta=0.250000
+  n=    14  w*=   4  theta=0.285714
+  n=    16  w*=   3  theta=0.187500
+  n=    32  w*=   5  theta=0.156250
+  n=    64  w*=   7  theta=0.109375
+  n=   128  w*=  11  theta=0.085938
+  n=   256  w*=  16  theta=0.062500
+  n=   512  w*=  24  theta=0.046875
+  n=  1024  w*=  35  theta=0.034180
+  n=  2048  w*=  52  theta=0.025391
+  n=  4096  w*=  77  theta=0.018799
+  n=  8192  w*= 112  theta=0.013672
+  n= 16384  w*= 164  theta=0.010010
+  n= 32768  w*= 239  theta=0.007294
+
+MEASURED, NOT PROVED: per-n w* are exact; the sublinear exponent and the
+tend-to-zero limit are fitted from the data, not a theorem.
+

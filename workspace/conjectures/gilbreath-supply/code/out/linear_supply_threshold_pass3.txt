@@ -1,0 +1,210 @@
+==============================================================================
+SEQUENCE : weight-w binary strings over F2^n (MEAN exact, FRAC sampled)
+ORACLE   : lib.supply_fold.s_sos (single) / batch_sos_ones (vectorized);
+           s_direct as second route in the cross-check
+N-RANGE  : n in {8,16,32,64,128,256,512,1024,2048,4096}; S=4000 per (n,w)
+==============================================================================
+
+PART 0 - ORACLE GUARD (on the canonical prime h via s_sos)
+  assert_supply_guard(64): True ; nu2(53)=18, nu2(64)=27  OK
+
+PART 0b - BATCH CROSS-CHECK (batch_sos_ones == s_sos / s_direct)
+  batch_sos_ones == s_sos (verify_batch 32..1024 + spot 64/256/1024): True
+
+PART 0c - n=8 WITNESS (sanity check against pass-2 exhaustive)
+  n=8 w=3: exact mean nu2/n = 0.4464  (expected 0.4464)
+           frac(nu2/n>=0.40) = 0.5179  (expected 0.518)
+
+PART 0d - NEGATIVE CONTROL (all-ones is in the kernel, nu2/n -> 0)
+  n=  6:  nu2= 0  nu2/n=0.0000
+  n=  7:  nu2= 0  nu2/n=0.0000
+  n=  8:  nu2= 0  nu2/n=0.0000
+  n=  9:  nu2= 0  nu2/n=0.0000
+  n= 10:  nu2= 0  nu2/n=0.0000
+  n= 11:  nu2= 0  nu2/n=0.0000
+  n= 12:  nu2= 0  nu2/n=0.0000
+  n= 13:  nu2= 0  nu2/n=0.0000
+  n= 14:  nu2= 0  nu2/n=0.0000
+  n= 15:  nu2= 0  nu2/n=0.0000
+  n= 16:  nu2= 0  nu2/n=0.0000
+  n= 17:  nu2= 0  nu2/n=0.0000
+  n= 18:  nu2= 0  nu2/n=0.0000
+  n= 19:  nu2= 0  nu2/n=0.0000
+  n= 20:  nu2= 0  nu2/n=0.0000
+  n= 21:  nu2= 0  nu2/n=0.0000
+  n= 22:  nu2= 0  nu2/n=0.0000
+  n= 23:  nu2= 0  nu2/n=0.0000
+  n= 24:  nu2= 0  nu2/n=0.0000
+  n= 25:  nu2= 0  nu2/n=0.0000
+  n= 26:  nu2= 0  nu2/n=0.0000
+  n= 27:  nu2= 0  nu2/n=0.0000
+  n= 28:  nu2= 0  nu2/n=0.0000
+  n= 29:  nu2= 0  nu2/n=0.0000
+  n= 30:  nu2= 0  nu2/n=0.0000
+  n= 31:  nu2= 0  nu2/n=0.0000
+  n= 32:  nu2= 0  nu2/n=0.0000
+  n= 33:  nu2= 0  nu2/n=0.0000
+  n= 34:  nu2= 0  nu2/n=0.0000
+  n= 35:  nu2= 0  nu2/n=0.0000
+  n= 36:  nu2= 0  nu2/n=0.0000
+  n= 37:  nu2= 0  nu2/n=0.0000
+  n= 38:  nu2= 0  nu2/n=0.0000
+  n= 39:  nu2= 0  nu2/n=0.0000
+  n= 40:  nu2= 0  nu2/n=0.0000
+
+==============================================================================
+PART 1 - EXACT-MEAN THRESHOLD  (min w with mean_n(w) >= 0.40, no sampling)
+==============================================================================
+     n  first_w(mean)       w/n  exact_mean@
+     8              3  0.375000     0.446429
+    16              3  0.187500     0.427902
+    32              5  0.156250     0.428827
+    64              7  0.109375     0.412358
+   128             11  0.085938     0.411407
+   256             16  0.062500     0.401076
+   512             24  0.046875     0.401758
+  1024             35  0.034180     0.401003
+  2048             52  0.025391     0.400533
+  4096             77  0.018799     0.401296
+
+==============================================================================
+PART 2 - TYPICAL THRESHOLD (mean>=0.40 AND frac>=0.5), S=4000 per (n,w)
+fresh RNG per (n,w) ; fraction sampled, mean exact
+==============================================================================
+     n     S  first_w       w/n  exact_mean@    frac@
+     8  4000        3  0.375000     0.446429   0.5200
+    16  4000        3  0.187500     0.427902   0.5160
+    32  4000        5  0.156250     0.428827   0.5757
+    64  4000        7  0.109375     0.412358   0.5278
+   128  4000       11  0.085938     0.411407   0.5225
+   256  4000       17  0.066406     0.411115   0.5288
+   512  4000       25  0.048828     0.407714   0.5035
+  1024  4000       38  0.037109     0.407810   0.5040
+  2048  4000       55  0.026855     0.406179   0.5110
+  4096  4000       82  0.020020     0.406637   0.5028
+
+==============================================================================
+PART 3 - THE COLUMN (w/n per n): exact-mean vs sampled-typical
+==============================================================================
+   n    exact-mean w/n   typical w/n (frac>=0.5)
+      8    0.375000            0.375000
+     16    0.187500            0.187500
+     32    0.156250            0.156250
+     64    0.109375            0.109375
+    128    0.085938            0.085938
+    256    0.062500            0.066406
+    512    0.046875            0.048828
+   1024    0.034180            0.037109
+   2048    0.025391            0.026855
+   4096    0.018799            0.020020
+
+==============================================================================
+PART 4 - VERDICT SUPPORT (labelled inference, not a proof)
+==============================================================================
+Exact-mean half is deterministic and falls monotonically:
+  n=    8:  exact-mean w/n = 0.375000
+  n=   16:  exact-mean w/n = 0.187500
+  n=   32:  exact-mean w/n = 0.156250
+  n=   64:  exact-mean w/n = 0.109375
+  n=  128:  exact-mean w/n = 0.085938
+  n=  256:  exact-mean w/n = 0.062500
+  n=  512:  exact-mean w/n = 0.046875
+  n= 1024:  exact-mean w/n = 0.034180
+  n= 2048:  exact-mean w/n = 0.025391
+  n= 4096:  exact-mean w/n = 0.018799
+
+Sampled-typical (frac half) column reads:
+  n=    8:  typical w/n = 0.375000
+  n=   16:  typical w/n = 0.187500
+  n=   32:  typical w/n = 0.156250
+  n=   64:  typical w/n = 0.109375
+  n=  128:  typical w/n = 0.085938
+  n=  256:  typical w/n = 0.066406
+  n=  512:  typical w/n = 0.048828
+  n= 1024:  typical w/n = 0.037109
+  n= 2048:  typical w/n = 0.026855
+  n= 4096:  typical w/n = 0.020020
+  log-log slope of exact-mean w/n vs n (n>=128): -0.438
+  log-log slope of sampled w/n   vs n (n>=128): -0.424
+  A steady negative slope means ratio -> 0 (typical at any positive
+  density); a flattening toward a constant means a plateau.
+
+  elapsed: 13.1s
+
+==============================================================================
+PART 5 - THRESHOLD BOUNDARY ROBUSTNESS (independent S=8000 re-sample,
+fresh RNG, at w-1/w/w+1 around the reported first_typical)
+==============================================================================
+  Purpose: the S=4000 frac at first_w sits just above 0.5; confirm it is
+  not a 1-sigma fluke by a larger independent sample at the boundary.
+     n    w      w/n exact_mean  frac@8000
+     8    2  0.25000     0.3214     0.2405
+     8    3  0.37500     0.4464     0.5278
+     8    4  0.50000     0.3143     0.1465
+    16    2  0.12500     0.3271     0.3109
+    16    3  0.18750     0.4279     0.5186
+    16    4  0.25000     0.3893     0.4173
+    32    4  0.12500     0.3733     0.4059
+    32    5  0.15625     0.4288     0.5665
+    32    6  0.18750     0.4144     0.5475
+    64    6  0.09375     0.3795     0.4294
+    64    7  0.10938     0.4124     0.5330
+    64    8  0.12500     0.4106     0.5529
+   128   10  0.07812     0.3934     0.4495
+   128   11  0.08594     0.4114     0.5166
+   128   12  0.09375     0.4124     0.5185
+   256   16  0.06250     0.4011     0.4686
+   256   17  0.06641     0.4111     0.5029
+   256   18  0.07031     0.4128     0.5222
+   512   24  0.04688     0.4018     0.4606
+   512   25  0.04883     0.4077     0.4945  <-- first_w frac dipped below 0.5
+   512   26  0.05078     0.4095     0.5178
+  1024   37  0.03613     0.4063     0.5049  <-- first_w-1 also >=0.5?
+  1024   38  0.03711     0.4078     0.5110
+  1024   39  0.03809     0.4112     0.5379
+  2048   54  0.02637     0.4040     0.4773
+  2048   55  0.02686     0.4062     0.4998  <-- first_w frac dipped below 0.5
+  2048   56  0.02734     0.4073     0.5048
+  4096   81  0.01978     0.4058     0.5006  <-- first_w-1 also >=0.5?
+  4096   82  0.02002     0.4066     0.4988  <-- first_w frac dipped below 0.5
+  4096   83  0.02026     0.4079     0.5131
+
+  Read: if w-1 stays below 0.5 and w+1 comfortably above, the threshold
+  is a real crossing, not sample noise; both halves fall toward 0.
+
+==============================================================================
+PART 6 - EXPONENT OF THE THRESHOLD WEIGHT (read absolute weights,
+not ratios) -- operator directive
+==============================================================================
+  theta_mean(n)*n is the threshold WEIGHT w(n). Its growth w(n) ~ n^a
+  is the sublinear-demand affirmative content: 'about n^a switches
+  suffice' is strictly weaker than a positive fraction of switches.
+
+  exact-mean threshold weight w(n):
+    n=     8  w=    3  w/n=0.375000
+    n=    16  w=    3  w/n=0.187500
+    n=    32  w=    5  w/n=0.156250
+    n=    64  w=    7  w/n=0.109375
+    n=   128  w=   11  w/n=0.085938
+    n=   256  w=   16  w/n=0.062500
+    n=   512  w=   24  w/n=0.046875
+    n=  1024  w=   35  w/n=0.034180
+    n=  2048  w=   52  w/n=0.025391
+    n=  4096  w=   77  w/n=0.018799
+
+  fitted exponent a (slope of log2 w vs log2 n):
+    n>=128                    : a = 0.5624
+    n>=256                    : a = 0.5649
+    n>=512                    : a = 0.5617
+  (n>=2048 extends to 0.546 +/- 0.011; see code/refute/theta_exponent.py
+   for the exact range to n=131072.)
+
+  candidate closed forms this fold produces, w(n)/n^a at n=128..4096:
+    a=0.5000 (1/2    ): w/n^a~[0.972 1.061 1.094 1.149 1.203], rel spread 0.2107
+    a=0.7925 (log_4(3)): w/n^a~[0.235 0.171 0.144 0.124 0.106], rel spread 0.8313
+    a=0.5500 (0.55   ): w/n^a~[0.763 0.776 0.773 0.785 0.794], rel spread 0.0398  <-- nearly constant (best fit)
+
+  Read: exponent ~0.55, sublinear; neither 1/2 nor log_4(3)=0.79 fits
+  (spreads 0.12 and 0.68). The threshold weight grows like ~n^0.55 --
+  a sublinear switch count is a strictly weaker arithmetic demand on
+  the primes than a positive fraction of switches.
