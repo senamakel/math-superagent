@@ -707,6 +707,66 @@ pub(super) fn collect(workspace: &Path) -> Blueprint {
     build(&super::backward::collect(workspace), &ledger, &closure)
 }
 
+/// The index a prompt carries in place of the graph.
+///
+/// Every node keeps its propagated standing, which is the one thing this ledger
+/// exists to say. `BACKWARD.md` already lists the open lemmas; what this file
+/// adds is that most of them are **blocked** and a few are **ready**, and a line
+/// reading `` `main-bound` (**ready**) — … `` carries that distinction whole.
+/// What it drops is the dependency edges, which a reader needs only once they
+/// have chosen a node and are working inside it.
+///
+/// Cycles go in the purpose rather than being left to `read_ledger`, and that
+/// is the one place this index deviates from the others. A cycle means some
+/// node's standing was computed from itself, so *every row below is describing
+/// an argument that does not close* — a warning that arrives only if somebody
+/// pulls the file is a warning about the rows they are already reading.
+pub(super) fn index(workspace: &Path) -> String {
+    let graph = collect(workspace);
+    let mut purpose = String::from(
+        "Which proposition rests on which, and what that makes each one's standing. A **ready** \
+         node can be picked up today without reading the rest of the argument; a blocked one \
+         rests on something unsettled. Read the standing before choosing what to attack.",
+    );
+    if !graph.cycles.is_empty() {
+        let _ = write!(
+            purpose,
+            "\n\n**The graph is circular, so every standing below was computed from an argument \
+             that does not close. Fix this first:** {}",
+            graph
+                .cycles
+                .iter()
+                .take(MAX_ROWS)
+                .map(|cycle| cycle.join(" → "))
+                .collect::<Vec<_>>()
+                .join("; ")
+        );
+    }
+    let rows: Vec<(String, String, String)> = graph
+        .nodes
+        .values()
+        .map(|node| {
+            (
+                node.id.clone(),
+                node.standing.label().replace('*', ""),
+                node.statement.clone(),
+            )
+        })
+        .collect();
+    super::ledger::index::render(
+        "blueprint",
+        "Blueprint",
+        &purpose,
+        rows.iter()
+            .map(|(id, status, headline)| super::ledger::index::Row {
+                id,
+                status,
+                headline,
+            }),
+        super::ledger::index::HEADLINE,
+    )
+}
+
 fn cell(text: &str) -> String {
     if text.trim().is_empty() {
         return "—".to_string();

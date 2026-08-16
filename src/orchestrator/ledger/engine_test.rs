@@ -603,3 +603,97 @@ fn a_required_id_is_met_by_the_entrys_own_identity() {
         entries.faults
     );
 }
+
+/// The index keeps every id and status, and drops the prose behind them.
+///
+/// This is the trade the whole module makes, measured on the ledger that made
+/// it worth making: `TASKS.md` was 8,539 tokens in each of thirteen prompts,
+/// and most of that was `detail` and `reason` fields on rows nobody was going
+/// to work again. The obligation a closed row discharges is *do not re-propose
+/// this*, and an id beside the word `dropped` discharges it.
+#[test]
+fn the_index_keeps_identities_and_drops_the_prose() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = tasks_spec();
+
+    append(
+        workspace.path(),
+        &spec,
+        "goals",
+        "enumerate-the-ball",
+        &fields(&[
+            ("title", "Enumerate the radius-2 ball"),
+            ("detail", &"a paragraph nobody needs up front. ".repeat(80)),
+            ("status", "open"),
+        ]),
+    )
+    .expect("the open task is recorded");
+    append(
+        workspace.path(),
+        &spec,
+        "goals",
+        "search-the-answer-space",
+        &fields(&[
+            ("title", "Search the answer space"),
+            ("status", "dropped"),
+            ("reason", &"the reason it was ruled out, at length. ".repeat(80)),
+        ]),
+    )
+    .expect("the dropped task is recorded");
+
+    let entries = collect(workspace.path(), &spec);
+    let index = super::index(&spec, &entries);
+
+    for expected in [
+        "enumerate-the-ball",
+        "search-the-answer-space",
+        "(open)",
+        "(dropped)",
+        "Enumerate the radius-2 ball",
+    ] {
+        assert!(index.contains(expected), "`{expected}` survives: {index}");
+    }
+    assert!(
+        !index.contains("a paragraph nobody needs up front."),
+        "the detail is dropped: {index}"
+    );
+    assert!(
+        !index.contains("the reason it was ruled out, at length."),
+        "the reason is dropped: {index}"
+    );
+    assert!(
+        index.len() < render(&spec, &entries).len(),
+        "an index is smaller than the file it replaces"
+    );
+}
+
+/// An index that shortens a ledger has to say so, and say how to reach the rest.
+///
+/// A role that reads a shortened list and never calls `read_ledger` is cheaper
+/// *and dumber* — it concludes the run holds nothing more and re-proposes what
+/// was cut, which is strictly worse than sending the whole file.
+#[test]
+fn the_index_names_the_call_that_fetches_what_it_dropped() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = tasks_spec();
+    append(
+        workspace.path(),
+        &spec,
+        "goals",
+        "one-task",
+        &fields(&[("title", "One task"), ("status", "open")]),
+    )
+    .expect("the task is recorded");
+
+    let entries = collect(workspace.path(), &spec);
+    let index = super::index(&spec, &entries);
+
+    assert!(
+        index.contains("This is the index, not the ledger."),
+        "the copy says it is shortened: {index}"
+    );
+    assert!(
+        index.contains(r#"read_ledger { ledger: "tasks""#),
+        "the index names the call and the slug: {index}"
+    );
+}

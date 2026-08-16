@@ -343,6 +343,52 @@ pub(in crate::orchestrator) fn render(spec: &LedgerSpec, entries: &Entries) -> S
     out
 }
 
+/// Renders the index a prompt carries in place of [`render`]'s output.
+///
+/// One function for every declared ledger, rather than one per ledger the way
+/// the Rust-module ones are written. A declaration already names everything an
+/// index needs — the slug `read_ledger` takes, the title, the purpose, and which
+/// field is the id, the status and the one-line title — so a per-ledger index
+/// here would be a second answer to a question the spec has already answered.
+/// It also means a ledger a *run* declares is indexed the same day it is
+/// declared, without a release.
+///
+/// The saving is the largest in the runtime and it is not close. `TASKS.md` is
+/// a queue ledger, so every closed row keeps its `detail` and its `reason` —
+/// which is right for the file and wrong for a prompt, where it came to 8,539
+/// tokens in each of thirteen roles, 25% of everything assembled. Most of that
+/// is *history*: "Recently done" alone averaged 6,363 of it. The index keeps
+/// every id, so "have I already ruled this out" stays answerable, and drops the
+/// paragraph explaining why.
+///
+/// Sections are deliberately not preserved. An index is read for whether an id
+/// is on it, and a status per line already says what a heading would, so the
+/// headings would cost a line each to repeat what is on every row beneath them.
+pub(in crate::orchestrator) fn index(spec: &LedgerSpec, entries: &Entries) -> String {
+    let rows: Vec<(String, String, String)> = ordered(&entries.entries, spec.default_order())
+        .into_iter()
+        .map(|entry| {
+            (
+                entry.id.clone(),
+                entry.status(spec),
+                entry.title(spec).to_string(),
+            )
+        })
+        .collect();
+    super::index::render(
+        &spec.slug,
+        &spec.title,
+        &spec.purpose,
+        rows.iter()
+            .map(|(id, status, headline)| super::index::Row {
+                id,
+                status,
+                headline,
+            }),
+        super::index::HEADLINE,
+    )
+}
+
 fn source_label(source: &Source) -> String {
     match source {
         Source::Queue { path } => path.clone(),

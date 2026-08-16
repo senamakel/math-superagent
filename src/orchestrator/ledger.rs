@@ -86,8 +86,20 @@ pub(super) fn is_routed(relative: &str) -> bool {
 ///
 /// `None` leaves the caller's own string alone, which is the answer for a file
 /// no module indexes and for one too small to be worth indexing — see
-/// [`index::worth_indexing`], and `research/ENTAILMENT.md`, which an index would
+/// [`index::worth_indexing`], and `derived/ENTAILMENT.md`, which an index would
 /// make *larger*.
+///
+/// The arms below are the ledgers rendered by their own Rust module. Everything
+/// else falls through to [`declared`], which indexes any ledger a *declaration*
+/// describes — the built-in queues, and the ones a run declares mid-flight. That
+/// fallback is where the largest saving in the runtime lives: `TASKS.md` is a
+/// declared ledger, and it was 8,539 tokens in each of thirteen prompts because
+/// nothing here matched it.
+///
+/// `derived/FRONTIER.md` is deliberately not indexed. Its entries are keyed by
+/// URL, so an index keeps the longest part of every row and drops the citation
+/// count that is the reason to read it — the case [`index::worth_indexing`]
+/// makes mechanically, arrived at by hand.
 pub(super) fn indexed(workspace: &Path, relative: &str, content: &str) -> Option<String> {
     if !index::worth_indexing(content) {
         return None;
@@ -97,12 +109,36 @@ pub(super) fn indexed(workspace: &Path, relative: &str, content: &str) -> Option
         super::backward::BACKWARD_PATH => super::backward::index(workspace),
         super::weakened::WEAKENED_PATH => super::weakened::index(workspace),
         super::claims::CLAIMS_PATH => super::claims::index(workspace),
-        _ => return None,
+        super::threads::THREADS_PATH => super::threads::index(workspace),
+        super::blueprint::BLUEPRINT_PATH => super::blueprint::index(workspace),
+        _ => declared(workspace, relative)?,
     };
     // A ledger whose index is no smaller than the file is one whose entries are
     // already one line each. Sending the index would cost the same and lose the
     // sections around it.
     (index.chars().count() < content.chars().count()).then_some(index)
+}
+
+/// The index of the declared ledger that owns `relative`, if one does.
+///
+/// Keyed on the spec's own `derived` path rather than on a list here, so a
+/// ledger a run declares mid-flight is indexed on the same pass that renders it.
+/// A second list would be a second answer to the question of which file belongs
+/// to which ledger, and the declaration is already the first.
+///
+/// A [`spec::Source::Derived`] ledger is skipped: the engine reads it as empty
+/// because its entries live in a Rust module, so an index built here would say
+/// the run holds nothing. Those are the arms above.
+fn declared(workspace: &Path, relative: &str) -> Option<String> {
+    let spec = registry::all(workspace)
+        .0
+        .into_iter()
+        .find(|spec| spec.derived == relative)?;
+    if matches!(spec.source, spec::Source::Derived) {
+        return None;
+    }
+    let entries = engine::collect(workspace, &spec);
+    Some(engine::index(&spec, &entries))
 }
 
 /// Clamps a derived ledger to its budget on the way into a system prompt.

@@ -127,3 +127,50 @@ fn the_write_path_recognises_a_thread() {
     assert!(!is_thread("research/L1.0/siegel.md"));
     assert!(!is_thread("derived/THREADS.md"));
 }
+
+/// The index keeps the question and the stance, and drops the working notes.
+///
+/// The obligation this ledger discharges is *do not re-open a dead direction*,
+/// and a line reading `` `slug` (dead) — <question> `` discharges it. What a
+/// role does not need before choosing a direction is what it rests on, what is
+/// in the way, and the next concrete step — all of which are a `read_ledger`
+/// away and none of which fit in a prompt thirteen roles carry.
+#[test]
+fn the_index_keeps_the_question_and_the_stance() -> std::io::Result<()> {
+    let root = workspace("index")?;
+    thread(
+        &root,
+        "polylog-evaluation",
+        "question: Can G(n) be evaluated at n=10^5 without the DP?\n\
+         status: open\n\
+         next: check whether the skip budget decomposes over bit positions",
+    )?;
+    thread(
+        &root,
+        "brute-force-sieve",
+        "question: Does a sieve reach the bound directly?\n\
+         status: dead\n\
+         blocked-by: the bound is 10^12 and the sieve is linear in it",
+    )?;
+
+    let index = super::index(&root);
+
+    assert!(index.contains("polylog-evaluation"), "{index}");
+    assert!(index.contains("brute-force-sieve"), "{index}");
+    assert!(index.contains("(open)"), "the stance survives: {index}");
+    assert!(index.contains("(dead)"), "a dead thread reads as dead: {index}");
+    assert!(index.contains("Can G(n) be evaluated"), "{index}");
+    assert!(
+        !index.contains("skip budget decomposes"),
+        "the next step is dropped: {index}"
+    );
+    assert!(
+        !index.contains("the sieve is linear"),
+        "the blocker is dropped: {index}"
+    );
+    assert!(
+        index.contains(r#"read_ledger { ledger: "threads""#),
+        "the index names the call that fetches the rest: {index}"
+    );
+    Ok(())
+}

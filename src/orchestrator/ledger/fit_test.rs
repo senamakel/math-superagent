@@ -7,6 +7,8 @@
 //! here directly.
 #![allow(clippy::expect_used)]
 
+use std::fmt::Write as _;
+
 use super::{DEFAULT_LEDGER_TOKENS, fit, is_routed};
 use crate::orchestrator::approaches::APPROACHES_PATH;
 use crate::orchestrator::shared_context::CHARS_PER_TOKEN;
@@ -129,5 +131,78 @@ fn migration_never_overwrites_what_is_already_there() {
         std::fs::read_to_string(root.join("derived/CLAIMS.md")).expect("kept"),
         "the current one\n",
         "the newer file was clobbered by the older one"
+    );
+}
+
+/// A declared ledger is indexed, without an arm naming it.
+///
+/// `TASKS.md` is the reason this route exists. It is the largest single item in
+/// the runtime's prompt bill — 8,539 tokens in each of thirteen roles — and it
+/// was routed whole for exactly one reason: `indexed` matched on the four Rust
+/// modules and nothing else, so a *declared* ledger fell through to `None`. The
+/// fallback is keyed on the spec's own derived path, so a ledger a run declares
+/// mid-flight is covered on the pass that renders it.
+#[test]
+fn a_declared_ledger_is_indexed_by_its_declaration() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let root = workspace.path();
+    std::fs::create_dir_all(root.join("config")).expect("created");
+    let mut events = String::new();
+    for row in 0..12 {
+        let event = serde_json::json!({
+            "id": format!("task-{row}"),
+            "from": "goals",
+            "fields": {
+                "title": format!("Task {row}"),
+                "detail": "a paragraph nobody needs up front. ".repeat(60),
+                "status": "open",
+            },
+        });
+        let _ = writeln!(events, "{event}");
+    }
+    std::fs::write(root.join("config/tasks.jsonl"), events).expect("written");
+
+    let spec = super::registry::find(root, "tasks").expect("the tasks ledger is built in");
+    let entries = super::engine::collect(root, &spec);
+    let rendered = super::engine::render(&spec, &entries);
+    assert!(
+        super::index::worth_indexing(&rendered),
+        "the fixture is large enough to be worth indexing: {} chars",
+        rendered.len()
+    );
+
+    let index = super::indexed(root, "TASKS.md", &rendered).expect("TASKS.md is indexed");
+    assert!(
+        index.chars().count() < rendered.chars().count(),
+        "the index is smaller than the file"
+    );
+    for row in 0..12 {
+        assert!(
+            index.contains(&format!("task-{row}")),
+            "every id survives: {index}"
+        );
+    }
+    assert!(
+        !index.contains("a paragraph nobody needs up front."),
+        "the prose is dropped: {index}"
+    );
+}
+
+/// A file no ledger owns is left exactly as the caller had it.
+///
+/// The fallback looks a declaration up by its derived path, so it must not
+/// answer for `CONTEXT.md`, `GOAL.md`, or anything else routed into a prompt
+/// that is not a ledger at all.
+#[test]
+fn a_file_no_ledger_owns_is_not_indexed() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let content = "# Shared context\n\n".to_string() + &"a sentence the curator wrote. ".repeat(400);
+    assert!(
+        super::index::worth_indexing(&content),
+        "the fixture is large enough that only ownership can be deciding"
+    );
+    assert!(
+        super::indexed(workspace.path(), "CONTEXT.md", &content).is_none(),
+        "CONTEXT.md belongs to no ledger and is passed through"
     );
 }

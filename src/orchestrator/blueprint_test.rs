@@ -359,3 +359,84 @@ fn a_goal_left_blocked_by_its_claims_is_not_a_decomposition_problem() {
         "the reader should be sent to what the goal rests on: {rendered}"
     );
 }
+
+/// The index keeps every node's standing, which is what this ledger is for.
+///
+/// `BACKWARD.md` already lists the open lemmas. What the graph adds is that most
+/// of them are blocked and a few are **ready** — pickable up today without
+/// reading the rest of the argument. A line carrying the id and the standing
+/// carries that whole distinction; the dependency edges behind it are only
+/// needed once a node has been chosen.
+#[test]
+fn the_index_keeps_every_standing() {
+    let root = workspace("index-standing");
+    claim(
+        &root,
+        "settled",
+        "id: base-bound\nstatement: The base bound holds.\nstatus: proved\n",
+    );
+    skeleton(
+        &root,
+        "main",
+        "goal: The theorem holds\nimplies: the two lemmas give it\n",
+        &[
+            "id: ready-lemma\nlemma: A lemma resting on the settled bound.\nstatus: open\n\
+             rests-on: base-bound\nnext: start here\n",
+            "id: blocked-lemma\nlemma: A lemma resting on the other one.\nstatus: open\n\
+             rests-on: main/ready-lemma\nnext: wait\n",
+        ],
+    );
+
+    let index = super::index(&root);
+
+    for expected in ["ready-lemma", "blocked-lemma", "base-bound"] {
+        assert!(index.contains(expected), "`{expected}` survives: {index}");
+    }
+    assert!(
+        index.contains("(ready)"),
+        "a node whose dependencies are settled reads as ready: {index}"
+    );
+    assert!(
+        index.contains("(blocked)"),
+        "a node resting on an open lemma reads as blocked: {index}"
+    );
+    assert!(
+        !index.contains("start here"),
+        "the next step is dropped: {index}"
+    );
+}
+
+/// A cycle survives indexing, because it invalidates every row beneath it.
+///
+/// This is the one place the blueprint index deviates from the others. A cycle
+/// means some node's standing was computed from itself, so every standing in
+/// the list is describing an argument that does not close. Leaving that to
+/// `read_ledger` would be a warning that arrives only if somebody pulls the
+/// file — about the rows they are already reading.
+#[test]
+fn a_cycle_is_stated_in_the_index_and_not_left_to_a_pull() {
+    let root = workspace("index-circular");
+    skeleton(
+        &root,
+        "alpha",
+        "goal: A holds\nimplies: B gives A\n",
+        &["id: beta\nlemma: B holds\nstatus: open\nnext: see the other skeleton\n"],
+    );
+    skeleton(
+        &root,
+        "beta",
+        "goal: B holds\nimplies: A gives B\n",
+        &["id: alpha\nlemma: A holds\nstatus: open\nnext: see the other skeleton\n"],
+    );
+
+    let index = super::index(&root);
+
+    assert!(
+        index.contains("circular"),
+        "the index says the graph does not close: {index}"
+    );
+    assert!(
+        index.contains('→'),
+        "the index names the loop, not just its existence: {index}"
+    );
+}

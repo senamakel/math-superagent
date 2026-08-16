@@ -323,6 +323,46 @@ pub(super) async fn refresh(documents: &super::documents::WorkspaceDocuments) {
     .await;
 }
 
+/// The index a prompt carries in place of the table.
+///
+/// A thread's payload is spread across four fields — what it rests on, what is
+/// in the way, the next concrete step — and only the *question* is what a role
+/// needs before deciding to open one. So the index keeps the slug, the stance
+/// and the question, and the rest is a `read_ledger` away.
+///
+/// Keeping the stance is what makes this safe to shorten. The obligation this
+/// ledger discharges is *do not re-open a dead direction*, and a line that says
+/// `dead` discharges it; the paragraph on why it died is only needed by somebody
+/// about to argue with it.
+pub(super) fn index(workspace: &Path) -> String {
+    let threads = collect(workspace);
+    let rows: Vec<(String, String, String)> = threads
+        .threads
+        .iter()
+        .map(|thread| {
+            (
+                thread.slug.clone(),
+                thread.stance.label().replace('*', ""),
+                thread.question.clone(),
+            )
+        })
+        .collect();
+    super::ledger::index::render(
+        "threads",
+        "Threads",
+        "Every direction of attack this run has opened. A dead one is kept on purpose — the \
+         reason it died is what stops the next attempt paying for it again — so read the stance \
+         before re-opening anything.",
+        rows.iter()
+            .map(|(id, status, headline)| super::ledger::index::Row {
+                id,
+                status,
+                headline,
+            }),
+        super::ledger::index::HEADLINE,
+    )
+}
+
 /// Whether a written path is a thread file the table is derived from.
 pub(super) fn is_thread(relative: &str) -> bool {
     relative.starts_with(&format!("{THREADS_DIR}/"))
