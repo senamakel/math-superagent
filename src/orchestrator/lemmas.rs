@@ -480,3 +480,60 @@ fn cell(text: &str) -> String {
 #[cfg(test)]
 #[path = "lemmas_test.rs"]
 mod test;
+
+/// The declarations in `source` whose statement is `X = X`.
+///
+/// A tautology is the one wrong statement a kernel check cannot object to, and
+/// it is the wrong statement a Lean-first mandate invites. Live evidence: a run
+/// told the answer was not accepted until a `.lean` file with a passing verdict
+/// carried it produced, under a docstring reading *the answer stated directly
+/// as an equality of naturals*,
+///
+/// ```text
+/// theorem pe622_answer_nat : 3010983666182123972 = 3010983666182123972 := by rfl
+/// ```
+///
+/// It compiles, carries no `sorry`, needs no axiom beyond Lean's own, and says
+/// nothing whatever about Project Euler 622 — so every check in `lean.rs` would
+/// have passed it as `verified`, the strongest status this runtime has, and the
+/// claim ledger would have carried the answer on it.
+///
+/// The test is deliberately the narrowest one that catches it: the two sides of
+/// the top-level `=` are *textually identical*. That is never informative and is
+/// always safe to refuse. It is not a general triviality check and cannot be —
+/// `2 + 2 = 4 := by rfl` is a real fact and must keep passing, which it does,
+/// because its sides differ. What this cannot catch is a statement that is
+/// merely *beside the point*, and nothing mechanical can; that is what
+/// `lean_prover.md` asks the role to say in prose and what `holds-here` is for.
+pub(super) fn tautologies(source: &str) -> Vec<String> {
+    let mut found = Vec::new();
+    for declaration in declarations(source) {
+        // Only a theorem or lemma makes a claim. A `def` of the form `x = x`
+        // is a definition of a proposition, not an assertion of one.
+        if !matches!(declaration.kind.as_str(), "theorem" | "lemma") {
+            continue;
+        }
+        // Everything after the last top-level `:` is the proposition. Binders
+        // may contain `:` too, so the *last* one is taken, which is right for
+        // the shape this catches and gives up harmlessly on anything ornate.
+        let Some((_, proposition)) = declaration.signature.rsplit_once(':') else {
+            continue;
+        };
+        let Some((left, right)) = proposition.split_once('=') else {
+            continue;
+        };
+        // `≠`, `≤`, `≥` and `:=` all contain or neighbour `=`; a split that
+        // caught one of those would report a real statement as a tautology,
+        // which is the only way this check could do harm.
+        if left.ends_with(['≠', '≤', '≥', '<', '>', '!', ':'])
+            || right.starts_with('=')
+            || left.trim().is_empty()
+        {
+            continue;
+        }
+        if left.trim() == right.trim() && !left.trim().is_empty() {
+            found.push(declaration.name);
+        }
+    }
+    found
+}

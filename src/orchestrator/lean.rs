@@ -152,6 +152,12 @@ pub struct Verdict {
     pub(super) sorries: Vec<String>,
     /// Every `#print axioms` line, verbatim.
     pub(super) axioms: Vec<String>,
+    /// Declarations whose statement is `X = X`.
+    ///
+    /// The one wrong statement a kernel check cannot object to on its own, and
+    /// the one a Lean-first mandate invites — see [`super::lemmas::tautologies`]
+    /// for the live instance that put this here.
+    pub(super) tautologies: Vec<String>,
     /// Modules the file imported that this Mathlib does not have.
     ///
     /// Parsed rather than left inside the error text, because it is the one
@@ -187,6 +193,7 @@ impl Verdict {
     /// nothing at all about a hole in the proof.
     pub(super) fn outcome(&self) -> Outcome {
         let structurally_sound = self.compiled
+            && self.tautologies.is_empty()
             && self.sorries.is_empty()
             && !self.axioms.is_empty()
             && !self.axioms.iter().any(|line| line.contains("sorryAx"));
@@ -290,6 +297,15 @@ impl Verdict {
                 self.sorries.len()
             ));
         }
+        if !self.tautologies.is_empty() {
+            return Some(format!(
+                "`{}` states {}, whose two sides are identical — a theorem of the form `X = X` \
+                 compiles, needs no axiom and proves nothing, so it cannot carry a claim. State \
+                 what the value *is a consequence of*, not that it equals itself",
+                self.file,
+                names(&self.tautologies)
+            ));
+        }
         if self.axioms.is_empty() {
             return Some(format!(
                 "`{}` has no `#print axioms` line, so what the proof rests on is unstated",
@@ -337,6 +353,7 @@ impl Verdict {
             "sorries": self.sorries,
             "axioms": self.axioms,
             "missing_modules": self.missing_modules,
+            "tautologies": self.tautologies,
             "cited": self.cited_axioms(),
             "verified": self.verified(),
             "outcome": self.outcome().as_str(),
@@ -351,6 +368,7 @@ impl Verdict {
             sorries: strings(value.get("sorries")),
             axioms: strings(value.get("axioms")),
             missing_modules: strings(value.get("missing_modules")),
+            tautologies: strings(value.get("tautologies")),
         })
     }
 
@@ -566,6 +584,7 @@ fn parse(file: &str, exit_ok: bool, output: &str) -> Verdict {
         compiled: exit_ok && !errored,
         sorries,
         axioms,
+        tautologies: Vec::new(),
         missing_modules,
     }
 }
@@ -662,6 +681,18 @@ impl LeanCheck {
     }
 }
 
+/// The `X = X` declarations in one source, or none when it cannot be read.
+///
+/// Unreadable is treated as none rather than as an error: the file has just
+/// been compiled, so it plainly exists, and a verdict that failed because a
+/// second read raced a writer would be worse than one that misses a tautology.
+async fn read_tautologies(path: &Path) -> Vec<String> {
+    match tokio::fs::read_to_string(path).await {
+        Ok(source) => super::lemmas::tautologies(&source),
+        Err(_) => Vec::new(),
+    }
+}
+
 /// Shortens Lean's output, keeping the beginning.
 ///
 /// The head rather than the tail, which is the reverse of the shell tool's
@@ -729,7 +760,10 @@ impl Tool<()> for LeanCheck {
         }
         let relative = paths::strip_workspace_prefix(&requested).to_string();
         let (exit_ok, output) = self.run(&path).await?;
-        let verdict = parse(&relative, exit_ok, &output);
+        let mut verdict = parse(&relative, exit_ok, &output);
+        // Read off the source rather than off Lean's output, because Lean has
+        // no complaint to make: `X = X` is a theorem it proves gladly.
+        verdict.tautologies = read_tautologies(&path).await;
         self.file_verdict(&verdict).await?;
         // After the verdict is on disk and not before: half of every row in the
         // lemma index is the standing this check just decided, so a derivation
@@ -855,7 +889,8 @@ pub async fn check_file(
     let checker = LeanCheck::new(workspace.to_path_buf(), timeout);
     let relative = paths::strip_workspace_prefix(file).to_string();
     let (exit_ok, output) = checker.run(&path).await?;
-    let verdict = parse(&relative, exit_ok, &output);
+    let mut verdict = parse(&relative, exit_ok, &output);
+    verdict.tautologies = read_tautologies(&path).await;
     if write_verdict {
         checker.file_verdict(&verdict).await?;
     }

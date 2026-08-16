@@ -495,3 +495,26 @@ mod missing_modules {
         assert_eq!(record["missing_modules"][0], "Mathlib.Data.Nat.Parity");
     }
 }
+
+/// A tautology fails the verdict, whatever else is right about the file.
+///
+/// It is checked before the axioms and before the `sorry` list because a file
+/// containing one is typically flawless in every other respect — that is what
+/// makes it dangerous. `X = X` compiles, needs no axiom, and would otherwise be
+/// `verified`, the strongest status this runtime has.
+#[test]
+fn a_file_stating_a_tautology_cannot_back_a_claim() {
+    let mut checked = parse("code/lean/Lib/Answer.lean", true, CLEAN);
+    assert!(checked.verified(), "clean before the tautology is added");
+    checked.tautologies = vec!["pe622_answer_nat".to_string()];
+    assert_eq!(checked.outcome(), Outcome::Failed);
+    let objection = checked
+        .objection()
+        .expect("a tautology is an objection");
+    assert!(objection.contains("pe622_answer_nat"), "{objection}");
+    assert!(
+        objection.contains("identical"),
+        "the objection says what is wrong with it: {objection}"
+    );
+    assert_eq!(checked.record()["tautologies"][0], "pe622_answer_nat");
+}
