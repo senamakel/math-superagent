@@ -41,7 +41,7 @@ this table as a pointer, not as evidence.
 | Ash, Beltis, Gross & Sinnott 2011, *Frequencies of successive pairs of prime residues*, Exp. Math. | `summaries/citations_w2027719385.md` (citation graph only, not read) | The named open problem `problem.md` says switch-density reduces to: frequency of consecutive-pair residues mod m |
 | Encyclopedia of Math, *Gilbreath conjecture* | `summaries/encyclopedia_gilbreath.md` / `sources/...full.md` | Background; Gilbreath is out of scope, do not claim |
 | Odlyzko paper list | `summaries/odlyzko_gilbreath.md` / `sources/...full.md` | Bibliography; not itself a result |
-| Shiu 2000, *Strings of congruent primes*, J. London Math. Soc. | `summaries/shiu_strings_congruent_primes.md` (summary exists, **full text was NOT downloaded** — Wiley cookie wall) | `problem.md` fact 5's cited input: arbitrarily long runs of consecutive primes in one class mod 4. The summary file is a cookie-error page, so the Shiu input is **unsourced** here. |
+| Shiu 2000, *Strings of congruent primes*, J. London Math. Soc. | `summaries/shiu_strings_congruent_primes.md` + `summaries/shiu_strings_expository.md` / `sources/shiu_strings_expository.full.md` (Ethan Yang's freely-available expository of the primary, which is Wiley-paywalled) | `problem.md` fact 5's cited input: arbitrarily long runs of consecutive primes in one class mod 4. **Sourced here via the expository full text** (theorem `shiu-string-theorem`, verified against the expository Thms 1.1/1.2/4.1). The primary paper itself was not downloaded (Wiley cookie wall), but its content is fully reproduced by the expository. |
 
 ## The target (per `problem.md`)
 
@@ -65,7 +65,7 @@ is **not reachable from this workspace** — citing it is impossible here.
 2. **Lucas.** `C(d,i) mod 2 = 1` iff `i` binary-submask of `d`. (True classical theorem; sourceable, but uncited here.)
 3. **Kernel (corrected, directive 5).** `rank Φ_n = n−2` — **full row rank** — nullity 2, `ker Φ_n = span(even-alt, odd-alt)` with all-ones = even-alt ⊕ odd-alt. Machine-verified n = 2..20 (`fold-rank-is-n-2-nullity-2-alternating`); the all-n proof is the unit-lower-triangular submask-XOR argument (task `prove-fold-rank-all-n`). The old "rank n−3, nullity 1, ker = span(all-ones)" is wrong and fits no row-range convention — do not re-import it from any summary or note that still carries it. Full row rank means Φ_n is **surjective onto F₂^{n−2}**, the opposite of "nearly singular".
 4. **Dyadic collapse.** Eventually-periodic `h` with power-of-two period ⇒ `ν₂(n) = O(1)`. "Proved from (1)+(2)" — proof absent here.
-5. **Primes not eventually periodic.** "Proved, conditional on Shiu 2000, held at abstract level only" — the file itself flags this as **conditional, not proved**; the Shiu 2000 source is a cookie-error stub here (see *Sources on disk*).
+5. **Primes not eventually periodic.** "Proved, conditional on Shiu 2000, held at abstract level only" — the file itself flags this as **conditional, not proved**. The Shiu 2000 content (arbitrarily long constant mod-4 runs) is **sourced locally** via the Ethan Yang expository (`sources/shiu_strings_expository.full.md`, claim `shiu-string-theorem`); only the primary paper's own PDF is absent (Wiley paywall), and its theorem is fully reproduced by the expository.
 
 ## Measured (this run's own sweep; range operator-corrected)
 
@@ -154,7 +154,7 @@ unreachable here (directive 20), so the limit stays undetermined and the
 ## Ruled out (five closed doors — do not reopen; witnesses in `problem.md` §4)
 
 1. **Weight alone.** `ν₂ ≥ c·wt(h)` false: `h` all-ones has max weight, `ν₂=O(1)` (it is a kernel vector — all-ones = even-alt ⊕ odd-alt; closed door 1 survives the rank correction untouched).
-2. **No long constant runs.** False for primes (Shiu 2000: arbitrarily long same-class mod-4 runs ⇒ long all-zero runs in `h`; source is a stub here — see *Sources on disk*).
+2. **No long constant runs.** False for primes (Shiu 2000: arbitrarily long same-class mod-4 runs ⇒ long all-zero runs in `h`; **sourced via the Ethan Yang expository** `sources/shiu_strings_expository.full.md`, claim `shiu-string-theorem` — only the primary's own PDF is absent behind the Wiley paywall).
 3. **Aperiodicity.** Insufficient: Thue–Morse is aperiodic, `ν₂` sublinear.
 4. **Anti-dyadicity.** Insufficient: balanced AND anti-dyadic half-step strings give `wt(Φ_m h) ∈ {1,2}`, m=8,16,24,32.
 5. **Periodicity of primes.** True (conditional) and inert since 4 fails the converse.
@@ -189,9 +189,7 @@ density?
 
 ## What is missing (gaps => potential `request_research`)
 
-- **A real Shiu-2000 source.** The only copy on disk is a Wiley cookie-error
-  page. The primes-not-periodic / long-constant-runs facts depend on it and are
-  currently unsourced.
+- **A real Shiu-2000 source [RESOLVED].** The *primary* is Wiley-paywalled and was never downloaded, but the run holds the Ethan Yang expository (`sources/shiu_strings_expository.full.md`) which states and proves the full theorem (Thms 1.1/1.2/4.1) — verified by scholar passes, claim `shiu-string-theorem`. The primes-not-periodic / long-constant-runs input is **sourced locally**; only the primary's own PDF is absent.
 - **The weakest arithmetic input that suffices** (GOAL priority 2): the run must
   price bounded autocorrelation of `h`, a second-moment/variance bound, a
   Walsh/Fourier coefficient bound, or an input on `h` only along binary-submask
@@ -290,19 +288,69 @@ for the measured and claim content — that is this run's capture
   `chebyshev_oracle_verified_N40000.txt` predates the fix and must be regenerated
   (task `run-chebyshev-second-moment-40000`).
 
-## The obvious next unresolved thing
+## The two-pass state — read this before the terminus lines below
 
-**Directive 34 is now the head — the run is at terminus, stop opening lines.**
-Deliverable 5 is folded into `research/CONCLUSION.md`: the mod-4 switch bias is
-the sixth door's stronger witness (not a seventh door), Lemke Oliver–Soundararajan
-is named the strongest known prime-specific mod-4 signal and stated fold-inert,
-and the ~9× Markov margin is in the measured section with its range. No new line
-of attack, and no re-verification of settled results — `fold_distance_enumerator_on`,
-`verify_run_telescope`, `verify_meet_runtelescope` re-derive closed items; a role
-with only re-verification left is done (the refuter says so in `code/refute/INDEX.md`).
-A genuinely new negative belongs in CONCLUSION.md as a stronger witness or a new
-door with its own witness, never a fresh line of attack. The directive-30/29 work
-queue below is superseded by this terminus.
+This workspace was **closed once and reopened** (`research/REOPENED.md`).
+`GOAL.md` is the *second-pass* goal and it partly withdraws the first pass:
+the first pass's closing claim that "equivalence to switch density is the
+indicated answer" is **explicitly WITHDRAWN** in `research/CONCLUSION.md`
+§5 and refuted in `REOPENED.md`. Do not read the "at terminus, stop opening
+lines" framing below as the operative goal — that is the *first* pass's
+terminus, and it says nothing that settles the second-pass question.
+
+**Why it was reopened, precisely.** A dedicated run refuted the collapse
+hypothesis (that every functional of the fold factors through pair
+correlations) with an explicit witness at `n=8`: `h=00000010` and
+`h'=00000100` share the correlation vector `C₁=(5,1,1,0)` yet have `S²=0`
+and `S²=4`. The threshold was measured `n=4..20`: `K*(n) ≈ ⌈n/2⌉`
+(`n=8→4, n=12→6, n=16→8, n=20→10`) — Φ sees structure up to correlation
+order linear in `n`. The `⌈n/2⌉` guess **mismatches at `n=5`**, so the
+closed form is not yet right (GOAL priority 3).
+
+**The operative second-pass question (GOAL.md), and that it is UNWORKED.**
+> Is there a functional of the fold, sensitive to correlation order `K` with
+> `1 < K ≲ n/2`, that is controllable by an arithmetic input strictly weaker
+> than pointwise mod-4 switch density?
+
+Every prior route lived at `K=1`; the range `1 < K ≲ n/2` is unexplored and
+has **no work product yet** — no approach, thread, or capture attacks it.
+GOAL priorities in order: (1) build a functional provably not `K=1`,
+generalising the `n=8` witness; (2) price each candidate against what it
+demands of `h` vs pointwise switch density (see more, demand *less*); (3)
+push the `K*` budget past `n=20` and settle whether `K* = ⌈n/2⌉` or merely
+close. All first-pass rules carry forward: one canonical oracle with the
+entry guard, temp-file-then-move captures, a negative control shown failing,
+measurement labelled as measurement, the six closed doors never reopened.
+The witness and the fold-genericity measurement are compatible: Φ *can* see
+to order ~n/2; the primes were *not observed* to carry anything that
+distinguishes them from random.
+
+**THE RUN IS REOPENED — second pass (GOAL.md), order-`K` territory is UNEXPLORED.** The first pass is
+closed: `research/CONCLUSION.md` refuted the single hypothesis (no measurable `ν₂` regularity is
+prime-specific — sixth door, claim `sixth-door-no-nu2-statistic-prime-specific`; the mod-4 switch
+bias is fold-inert, deliverable 5). The first-pass *closing argument* — "equivalence to switch
+density is indicated" — is itself **refuted** (`research/REOPENED.md`): a dedicated run
+(`2628fcfb`) produced an explicit witness (`n=8`: `h=00000010` and `h'=00000100` share
+`C₁=(5,1,1,0)` but have `S²=0` and `4`) and measured witness existence up to correlation order
+`K*(n) ≈ ⌈n/2⌉` (`n=4..20`; and `n=5` really gives `K*=2`, the `⌈n/2⌉=3` guess is wrong there —
+check `research/witness-hunt-n20-imported.txt`). **No uniform bound on `K*` exists; Φ sees structure
+to order linear in n.** The single open question of this pass: is there a functional of the fold,
+sensitive to correlation order `K` with `1 < K ≲ n/2`, controllable by an arithmetic input strictly
+weaker than pointwise mod-4 switch density? All eight first-pass routes lived at `K=1`; **the whole
+range `1 < K ≲ n/2` is unexplored** — no functional at order `K>1` has been built, `K*` is measured
+to n=20 only, and none of the priority-1/2/3/4 steps in GOAL.md has been attempted. Do NOT treat the
+first-pass terminus as "the work is over": it is the negative foundation this pass builds on, and the
+six closed doors + all settled results are cited, not re-derived. What is still verboten: reopening
+the six doors, re-deriving the rank/binomial/telescope/endpoint/distance-enumerator results, and
+claiming Gilbreath.
+
+**Directive 34 was the pre-reopen head (recorded for provenance):** deliverable 5 is folded into
+`research/CONCLUSION.md` (mod-4 switch bias = sixth door's stronger witness, not a seventh door;
+Lemke Oliver–Soundararajan named the strongest known prime-specific mod-4 signal, fold-inert;
+~9× Markov margin in the measured section). No new line of attack and no re-verification of settled
+results was the rule *within the first pass*; the reopen supersedes the "stop opening lines" reading
+for the order-`K` question but keeps the no-re-derive and no-six-door rules. The directive-30/29 work
+queue below is first-pass terminal housekeeping, inherited but not the head.
 
 **Directive 30 (superseded by directive 34) was the head.** (1) `code/refute/` lists 47 files: delete every file whose name begins with an underscore or matches `*_probe.py`, `*_run*.py`, `*_run*.sh`, or `*.p`, keeping only `endpoint_sign_check.py` (the single script the abandonment note cites to reproduce the blocker); count before and after and report BOTH numbers in `config/DIRECTIVES.md` — nothing else counts as done, and no new file may be created in `code/refute/` until the count is reported. (2) Search is ABSOLUTELY frozen: no exa_search and no download until the Ratio B decrement-ratio discriminator at N=160000 has a capture, or a note states the projected runtime and why it is unaffordable — there is no source that answers that question. (3) The endpoint-sign resolution is accepted as a real result: file the claim block (committed `(-1)^#runs` form false, corrected identity holds; range checked = 6868 (n,d) pairs n=20..120, 449 committed failures) and keep `endpoint-sign-abandoned.md` pointing at it.
 

@@ -1,0 +1,22 @@
+Independent COLLAPSE cross-check: K*(n) =? ceil(n/2)
+S2(constant on every C_K fiber) for K=1..n-1; n=4..12
+==============================================================================
+  n ceil(n/2) min K const  witness K=1  witness K=2  witness K=3  witness K=n-1
+------------------------------------------------------------------------------
+  4         2           2         True        False        False          False
+  5         3           2         True        False        False          False
+   ^^ MISMATCH: claim says 3, found 2
+  6         3           3         True         True        False          False
+  7         4           4         True         True         True          False
+  8         4           4         True         True         True          False
+  9         5           5         True         True         True          False
+ 10         5           5         True         True         True          False
+ 11         6           6         True         True         True          False
+ 12         6           6         True         True         True          False
+==============================================================================
+Sample check: n=8, find witness with equal C_K (K<4), different S2:
+  K=1: witness pair:
+    h  = 00000010   S2=0
+    h' = 00000100  S2=4
+    C_K(h)  = (5, 1, 1, 0)
+    C_K(h') = (5, 1, 1, 0)

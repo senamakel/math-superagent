@@ -252,6 +252,16 @@ this single fact accounts for eight dead candidate routes at once. Any future
 attack must either work in the index domain or supply a transfer between the
 two.
 
+> **WITHDRAWN — see `research/REOPENED.md`.** The paragraph below argued that
+> equivalence was indicated because every route collapsed at `g=0` to the
+> switch-pair correlation. A dedicated run has since **refuted** the collapse
+> hypothesis with an explicit witness (`n=8`: `h=00000010` and `h'=00000100`
+> share `C₁=(5,1,1,0)` but have `S²=0` and `4`), and measured witnesses up to
+> correlation order `K*(n) ≈ ⌈n/2⌉` for `n=4..20`. No theorem forces a
+> functional of the fold through pair correlations, so the eight collapses were
+> a property of those eight routes, not a law. Read the paragraph as a record of
+> what was believed, not as a finding.
+
 **Equivalence is the indicated answer** (same source, same caveat). Every
 second-moment and correlation object built here collapses, at the coarsest
 dyadic scale `g=0`, to the mod-4 switch-pair correlation. Across eight

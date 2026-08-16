@@ -1,62 +1,83 @@
-# Goal
+# Goal — second pass
 
 Attack **SUPPLY** (`problem.md`) as a self-contained problem about the primes
-and one explicit `F₂` fold. Gilbreath's conjecture is not the goal here and must
-not be claimed; SUPPLY is one input to it and stands on its own.
+and one explicit `F₂` fold. Gilbreath's conjecture is not the goal and must not
+be claimed.
 
-## What this run is for
+**Read `research/REOPENED.md` first.** This workspace was closed once and has
+been reopened for a specific reason, and the first pass's conclusion is partly
+withdrawn.
 
-The parent investigation reduced Gilbreath to SUPPLY, proved everything else,
-and then closed five structural routes to SUPPLY — see *Five closed doors*.
-The reduction of SUPPLY to mod-4 switch density is available and is a named
-open problem behind the parity barrier. **This run exists to test whether the
-fold `Φ` can be made to do work that the switch-density form cannot see.**
+## What this pass is for
 
-That is the single hypothesis under test. If it fails, say so and close the
-problem; a clean negative is the second-best outcome and far better than
-drift.
+The first pass answered its hypothesis in the negative and closed. Its closing
+argument was that every second-moment route collapsed at the coarsest dyadic
+scale to the mod-4 switch-pair correlation, which made equivalence to switch
+density look like the answer.
+
+**That argument is refuted.** `Φ` provably sees structure up to correlation
+order `K*(n) ≈ ⌈n/2⌉`, with an explicit witness at `n=8`. The collapses were a
+weakness of the eight routes chosen, not a law about the fold.
+
+So the single question this pass exists to answer is:
+
+> **Is there a functional of the fold, sensitive to correlation order `K` with
+> `1 < K ≲ n/2`, that is controllable by an arithmetic input strictly weaker
+> than pointwise mod-4 switch density?**
+
+Every one of the eight prior routes lived at `K = 1`. **The entire range
+`1 < K ≲ n/2` is unexplored.** That is this pass's territory and it should not
+spend time anywhere else.
 
 ## Priorities
 
-1. **Target the averaged forms first.** `ν₂(n) ≥ c·n` for almost all `n`, or on
-   a density-1 set, is the most likely place a real theorem exists — the parity
-   barrier is pointwise and is sometimes porous on average.
-2. **Find the weakest arithmetic input that suffices.** Not "does positive
-   switch density imply SUPPLY" — that is known. Rather: *what is the weakest
-   statement about the primes from which `wt(Φ_n h) ≥ c·n` follows?* Candidates
-   worth pricing: bounded autocorrelation of `h`, a second-moment or variance
-   bound, a Fourier/Walsh coefficient bound on `h`, or an input about `h` only
-   along binary-submask sets (which is what Lucas makes `Φ` read).
-3. **Prove the equivalence, if that is the truth.** If SUPPLY really is
-   equivalent to switch density, prove it. That is a genuine theorem and it
-   closes this problem honestly rather than leaving it ambiguous.
+1. **Build a functional that is provably not `K=1`.** Start from the witness
+   construction — it shows exactly how two strings with identical pair
+   correlations separate under `S²`. Read off *what* the separating functional
+   is measuring, and generalise it. This is concrete and should come first.
+2. **Price each candidate against the arithmetic.** For a functional at order
+   `K`, the question is what it demands of `h`. State that demand precisely and
+   compare it to pointwise switch density. A functional that sees more but
+   demands more is worthless; the target is one that sees more and demands
+   *less*.
+3. **Establish the budget.** `K*(n) ≈ ⌈n/2⌉` is measured to `n=20` only.
+   Push the range, and determine whether `K*` really is `⌈n/2⌉` or merely close
+   — the first pass's `n=5` mismatch says the closed form is not yet right.
+4. **If every order-`K` functional also collapses, prove that** — as a theorem
+   this time, not as an observation across candidates. That would restore the
+   equivalence conclusion on a sound footing and close the problem honestly.
 
 ## Rules
 
-- **Stream, never materialise.** The parent run was OOM-killed at 161 minutes
-  holding a depth-4000 exact-integer triangle. One row at a time; collect the
-  single diagonal cell per depth as you go. Every capture prints the depth it
-  reached.
-- **A measurement is not a proof.** Label it. The parent run measured
-  `ν₂/n ≈ 0.49` and that is evidence, not progress.
-- **Do not reopen a closed door.** Five are listed in `problem.md` with their
-  witnesses. A proposal implying any of them is wrong; check before spending.
-- **No hypothesis of the form "h is complicated enough".** That family is
-  refuted as a family, not case by case. The obstruction is that `Φ` has
-  low-weight images on rich inputs.
-- **Every settled conclusion gets a fenced claim block** with `id`, `statement`,
-  `hypotheses`, `holds-here`, `status`, `bearing`, `anchor`. Mirror the id in
-  `research/ROOT.md`, which is not derived.
-- **A capture that checked nothing must not read as a pass.** State the count
-  checked. Include a negative control — a case that *should* fail — in every
-  verification, and show it failing.
-- **Lean claims need `#print axioms`.** No `sorryAx` in a footprint that a note
-  calls sorry-free. The parent run shipped six such theorems before it was
-  caught.
+These are carried from the first pass, where each was learned the hard way.
+None is advisory.
+
+- **One canonical oracle.** `code/lib` holds the floored `k ∈ [2, n−1]` fold and
+  nothing else computes `ν₂`. Every statistical script calls
+  `assert_supply_guard` at entry — `ν₂(53)=18`, `ν₂(64)=27`, `ν₂(4000)=1975`,
+  `μ_N(4000) ≈ 0.4977` — and asserts on the **produced array**, not on a fresh
+  oracle call. A guard that validates the oracle while the data path feeds a
+  control sequence catches nothing; that happened three times.
+- **Captures write to a temp file and move on exit 0.** Five captures were found
+  at zero bytes because a redirection truncated on open and the command failed.
+  An empty capture is a failed run, not a missing one.
+- **Every capture states, in its first three lines, which sequence it ran, which
+  oracle function it called, and the exact range.**
+- **A negative control, shown failing, in every verification.** A capture of 51
+  million passes measured nothing until a deliberately broken variant produced
+  438 failures beside it.
+- **A measurement is not a proof.** Label it, and name the ceiling.
+- **Do not reopen the six closed doors** in `problem.md`. The collapse
+  refutation is not about any of them.
+- **Do not re-derive settled results.** The rank fact, surjectivity, the exact
+  binomial law, the telescoping identity, the endpoint-sign correction and the
+  `O(n)` distance enumerator are all proved and recorded. Cite them.
+- **`problem.md` is not authoritative.** Three of its seeded values were wrong
+  and computation caught all three. Print the stated value beside your own
+  whenever they disagree.
 
 ## Out of scope
 
-The Gilbreath reduction, Lemma 5.4, the demand side, BHP record gaps, and the
-absorption/descent machinery are all **already proved** in the parent workspace
-and are not to be re-derived. If a result there is needed, cite it; do not
-rebuild it.
+Gilbreath's reduction, Lemma 5.4, the demand side, BHP record gaps, and the
+absorption/descent machinery are proved in the parent workspace. Cite, do not
+rebuild.

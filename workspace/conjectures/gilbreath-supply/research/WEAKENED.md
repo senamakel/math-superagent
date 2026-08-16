@@ -10,6 +10,7 @@ Rungs are listed weakest first, which is the order to climb them. Attack the cur
 
 | Ladder | Full-strength goal | Difficulties | Status |
 | --- | --- | --- | --- |
+| [[supply-k-functional]] | There is a constant c > 0 such that ν₂(n) ≥ c·n for all sufficiently large n, where ν₂(n) = wt(Φ_n h) over F₂, h[j] = ((q_{j+1} − q_j)/2) mod 2, and Φ_n is the… | primes-input, pointwise-all-n, unconditional-effective, k1-collapse, submask-read | open |
 | [[supply]] | There is a constant c > 0 such that ν₂(n) ≥ c·n for all sufficiently large n, where ν₂(n) = wt(Φ_n h) over F₂, h[j] = ((q_{j+1} − q_j)/2) mod 2, and Φ_n is the… | primes-input, pointwise-all-n, unconditional-effective, fold-collapse, submask-read | open |
 
 ## The rungs, weakest first
@@ -18,19 +19,32 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
+| `R-random-expectation` | [[supply-k-functional]] | For h uniform on F₂ⁿ, E_h[wt(Φ_n h)] = (n−2)/2 ≥ n/3 for every n ≥ 6, by rank Φ_n = n−2 (full row rank of the operative (n−2)×n matrix, rows d=2..n−1). The… | primes-input, pointwise-all-n, unconditional-effective | **settled** |
+| `R-k-functional` | [[supply-k-functional]] | There exists a functional F of the fold, defined for all n, that is provably sensitive to correlation order K with 1 < K ≲ n/2 — i.e. for all large n some pair… | primes-input, unconditional-effective, pointwise-all-n | open |
 | `R-random-expectation` | [[supply]] | For h uniform on the domain of Φ_n, with rank Φ_n = n−2 (corrected; full row rank of the operative (n−2)×n matrix, rows d=2..n−1 — see… | primes-input, pointwise-all-n, unconditional-effective | **settled** |
+| `R-random-pointwise` | [[supply-k-functional]] | For h uniform on F₂ⁿ, wt(Φ_n h) ≥ c·n with probability 1 − exp(−Ω_c(n)) for every fixed c < 1/2; in particular wt(Φ_n h) ≥ n/4 w.h.p. The fold's weight is… | primes-input, unconditional-effective | **settled** |
+| `R-k1-functional` | [[supply-k-functional]] | There is a functional of the fold sensitive only to correlation order K=1 (pair correlations) that, together with an arithmetic input strictly weaker than… | pointwise-all-n, unconditional-effective | failed |
 | `R-random-pointwise` | [[supply]] | For h uniform on the domain of Φ_n, wt(Φ_n h) ≥ n/4 holds with probability 1 − exp(−Ω(n)); in particular for all but an exponentially small fraction of h. The… | primes-input, unconditional-effective | open |
+| `R-finite-verified` | [[supply-k-functional]] | For the real prime string h (floored convention, index 2), ν₂(n)/n ≥ 0.42 for every n with 50 ≤ n ≤ 4000, c = 0.42 explicit. Numerical evidence, not a theorem. | pointwise-all-n | **settled** |
+| `R-k-functional-input` | [[supply-k-functional]] | There is a functional F of the fold, sensitive to correlation order K with 1 < K ≲ n/2 (so it beats k1-collapse), such that F(h) ≥ c·n is forced by an… | unconditional-effective | open |
+| `R-averaged-supply` | [[supply-k-functional]] | There is c > 0 and a set S of natural density 1 such that ν₂(n) ≥ c·n for every n ∈ S, where h is the real prime gap-parity string. The parity barrier is… | pointwise-all-n | open |
+| `R-conditional-pointwise` | [[supply-k-functional]] | ν₂(n) ≥ c·n for all sufficiently large n, conditional on one named weak arithmetic input about the real prime string h — for instance Shiu 2000 (held abstract… | unconditional-effective | open |
+| `R-switch-equivalence` | [[supply-k-functional]] | For every binary string h, if ν₂(n) ≥ c·n for all sufficiently large n then h has positive mod-4 switch density. Equivalently: every h with switch density 0… | primes-input | open |
 | `R-finite-verified` | [[supply]] | For the real prime string h (floor convention at index 2), ν₂(n)/n ≥ 0.42 for every n with 50 ≤ n ≤ 4000, c = 0.42 explicit. Numerical evidence, not a theorem. | pointwise-all-n | **settled** |
 | `R-submask-sufficiency` | [[supply]] | There exists a condition C(h), stated entirely in the submask-XOR coordinates that Lucas makes Φ_n read, strictly weaker than positive mod-4 switch density,… | primes-input | open |
 | `R-switch-equivalence` | [[supply]] | For every binary string h, if ν₂(n) ≥ c·n for all sufficiently large n then h has positive mod-4 switch density. Equivalently: every h with switch density 0… | primes-input | open |
 | `R-averaged-supply` | [[supply]] | There is c > 0 and a set S of natural density 1 such that ν₂(n) ≥ c·n for every n ∈ S, where h is the real prime gap-parity string. The parity barrier is… | pointwise-all-n | open |
 | `R-conditional-pointwise` | [[supply]] | ν₂(n) ≥ c·n for all sufficiently large n, conditional on one named weak arithmetic input about the real prime string h — for instance Shiu 2000 (held abstract… | unconditional-effective | open |
+| `R-full-supply` | [[supply-k-functional]] | There is a constant c > 0 such that ν₂(n) ≥ c·n for all sufficiently large n — the full SUPPLY conjecture, no difficulty switched off. | — | open |
 | `R-full-supply` | [[supply]] | There is a constant c > 0 such that ν₂(n) ≥ c·n for all sufficiently large n — the full SUPPLY conjecture, no difficulty switched off. | — | open |
 
 ## The current rung — attack this one
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
+- [[supply-k-functional]] → `R-k-functional`: There exists a functional F of the fold, defined for all n, that is provably sensitive to correlation order K with 1 < K ≲ n/2 — i.e. for all large n some pair h, h′ with identical correlation vectors of order ≤ 1 have F_n(h) ≠ F_n(h′). The n=8 witness (h = 00000010, h′ = 00000100 share C₁ = (5,1,1,0) but S² = 0 vs 4) is the seed to generalize; S² itself is the candidate functional.
+  - switched off: primes-input, unconditional-effective, pointwise-all-n
+  - to merge the next difficulty back: Read off exactly what S² separates in the n=8 witness — the separating coordinate pattern in submask-XOR coordinates — and generalize it to a functional defined for all n. Then turn `primes-input` back on via R-k-functional-input: price what arithmetic input on the prime string forces F to be large. Expected bite: `submask-read` (the functional must live in ⟨h,χ_S⟩ coordinates and avoid the five closed doors), and the risk that the generalized functional collapses back to K=1 at larger n (`k1-collapse`).
 - [[supply]] → `R-random-pointwise`: For h uniform on the domain of Φ_n, wt(Φ_n h) ≥ n/4 holds with probability 1 − exp(−Ω(n)); in particular for all but an exponentially small fraction of h. The fold's weight is linear on random input, not merely in expectation.
   - switched off: primes-input, unconditional-effective
   - to merge the next difficulty back: Settle by the concentration argument named above, which must use Φ_n-specific structure (Lucas), not the bare rank. Turn `primes-input` back on: replace "h random" with a deterministic condition C(h) phrased only in the submask-XOR coordinates ⟨h, χ_S⟩. First move — enumerate which submask-XOR patterns force a positive density of odd depths from the Lucas row structure, and check C(h) is not implied by any closed-door hypothesis (all-ones, Thue–Morse, balanced anti-dyadic strings are the negative controls). That is R-submask-sufficiency.
@@ -39,8 +53,17 @@ The weakest statement nobody has settled yet. Aiming higher is how a run spends 
 
 Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
 
+- [[supply-k-functional]] `R-random-expectation`: For h uniform on F₂ⁿ, E_h[wt(Φ_n h)] = (n−2)/2 ≥ n/3 for every n ≥ 6, by rank Φ_n = n−2 (full row rank of the operative (n−2)×n matrix, rows d=2..n−1). The fold imposes no weight obstruction on generic input. (off: primes-input, pointwise-all-n, unconditional-effective; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[supply-k-functional]] `R-random-pointwise`: For h uniform on F₂ⁿ, wt(Φ_n h) ≥ c·n with probability 1 − exp(−Ω_c(n)) for every fixed c < 1/2; in particular wt(Φ_n h) ≥ n/4 w.h.p. The fold's weight is linear on generic input, not merely in expectation. (off: primes-input, unconditional-effective; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[supply-k-functional]] `R-finite-verified`: For the real prime string h (floored convention, index 2), ν₂(n)/n ≥ 0.42 for every n with 50 ≤ n ≤ 4000, c = 0.42 explicit. Numerical evidence, not a theorem. (off: pointwise-all-n; _nothing named — say which claim established it, or a reader cannot check it_)
 - [[supply]] `R-finite-verified`: For the real prime string h (floor convention at index 2), ν₂(n)/n ≥ 0.42 for every n with 50 ≤ n ≤ 4000, c = 0.42 explicit. Numerical evidence, not a theorem. (off: pointwise-all-n; _nothing named — say which claim established it, or a reader cannot check it_)
 - [[supply]] `R-random-expectation`: For h uniform on the domain of Φ_n, with rank Φ_n = n−2 (corrected; full row rank of the operative (n−2)×n matrix, rows d=2..n−1 — see fold-rank-is-n-2-nullity-2-alternating), E_h[wt(Φ_n h)] = (n−2)/2 ≥ n/3 for all n ≥ 6. The fold imposes no weight obstruction on generic input; a linear lower bound is the generic behaviour. (off: primes-input, pointwise-all-n, unconditional-effective; _nothing named — say which claim established it, or a reader cannot check it_)
+
+## Rungs that failed, and why
+
+Do not propose these again. A weakened version that did not work is information about the difficulty it left on, and the reason is the useful half; one left blank makes the row worthless.
+
+- [[supply-k-functional]] `R-k1-functional`: There is a functional of the fold sensitive only to correlation order K=1 (pair correlations) that, together with an arithmetic input strictly weaker than positive mod-4 switch density, forces ν₂(n) ≥ c·n for all large n. — _no reason recorded — say what went wrong, or the next weakener will propose it again_
 
 ## Ladders that could not be read
 
