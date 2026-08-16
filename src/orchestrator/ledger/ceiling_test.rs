@@ -24,7 +24,7 @@
 use std::fmt::Write as _;
 use std::path::PathBuf;
 
-use super::super::{approaches, backward, claims, threads, weakened};
+use super::super::{approaches, backward, claims, lemmas, threads, weakened};
 
 /// Entries a fixture writes. Far past any ledger's row bound, so the caps are
 /// what decides the size rather than the input.
@@ -254,6 +254,39 @@ fn past_the_bound_more_entries_do_not_grow_the_file() -> std::io::Result<()> {
         "tripling the entries from 60 to 180 grew the render by {growth} characters \
          ({small} -> {large}). Past the row bound only the elided counts should move; a section \
          is still rendering every entry."
+    );
+    Ok(())
+}
+
+/// The lemma index, whose pathological case is different from every other
+/// ledger's: the prose is not a field a role typed, it is a Lean *signature*,
+/// and a real one runs long. A theorem over a dozen binders with a Mathlib
+/// conclusion is hundreds of characters before anybody is being careless, so a
+/// bound that governed only the row count would let a sixty-row table carry
+/// forty thousand characters of type.
+#[test]
+fn the_lemma_ledger_stays_under_its_ceiling() -> std::io::Result<()> {
+    let root = workspace("lemmas")?;
+    let lean = root.join(lemmas::LEAN_DIR).join("Lib");
+    std::fs::create_dir_all(&lean)?;
+    for index in 0..ENTRIES {
+        let mut body = String::new();
+        let _ = writeln!(body, "/-- src: {} -/", prose("arXiv:2307.05997 §4"));
+        // Ten declarations per file, each with a signature nobody would write
+        // and every one of them past any sane truncation.
+        for declaration in 0..10 {
+            let _ = writeln!(
+                body,
+                "theorem lemma_{index}_{declaration} (n : Nat) : {} := by sorry",
+                prose("n = n ∧")
+            );
+        }
+        std::fs::write(lean.join(format!("Topic{index}.lean")), body)?;
+    }
+    under(
+        lemmas::LEMMAS_PATH,
+        &lemmas::collect(&root).render(),
+        40_000,
     );
     Ok(())
 }

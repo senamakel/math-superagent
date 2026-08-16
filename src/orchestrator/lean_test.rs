@@ -9,7 +9,7 @@
 
 use std::time::Duration;
 
-use super::{LeanCheck, VERDICT_DIR, Verdict, parse, verdict};
+use super::{LeanCheck, Outcome, VERDICT_DIR, Verdict, parse, verdict};
 use crate::agent::{Tool, ToolCall};
 
 /// A workspace of this test's own, so one test's verdicts are not another's.
@@ -134,7 +134,7 @@ fn lean_s_own_axioms_are_not_treated_as_assumptions() {
             &format!("'main' depends on axioms: {listed}"),
         );
         assert!(
-            checked.untrusted_axioms().is_empty(),
+            checked.unproved_axioms().is_empty(),
             "{listed} is Lean's own foundation, not an assumption"
         );
         assert!(checked.verified(), "{listed} should pass");
@@ -262,7 +262,7 @@ mod what_lean_actually_prints {
             "'two_le_four' does not depend on any axioms\n",
         );
         assert!(checked.compiled);
-        assert!(checked.untrusted_axioms().is_empty());
+        assert!(checked.unproved_axioms().is_empty());
         assert!(
             checked.verified(),
             "an axiom-free kernel-checked proof is the best result available: {:?}",
@@ -302,7 +302,7 @@ mod what_lean_actually_prints {
         );
         assert!(checked.compiled && checked.sorries.is_empty());
         assert!(!checked.verified());
-        assert_eq!(checked.untrusted_axioms(), vec!["key_estimate".to_string()]);
+        assert_eq!(checked.unproved_axioms(), vec!["key_estimate".to_string()]);
     }
 
     /// `native_decide` does not print `Lean.ofReduceBool` on this toolchain; it
@@ -324,5 +324,120 @@ mod what_lean_actually_prints {
                 .contains("native_decide"),
             "the objection names the generated axiom, so the role can see where it came from"
         );
+    }
+}
+
+/// The `Cited` namespace, and what it is worth.
+///
+/// This is the seam that lets a research library be written in Lean at all. A
+/// paper's theorem restated as a bare `axiom` is indistinguishable from a hole
+/// somebody left, so the check refuses it — correctly, and at the cost of
+/// making the honest thing unrecordable. The namespace separates the two, and
+/// buys strictly less than it might look like: a conditional result is not a
+/// verified one, and every test below says so.
+mod cited {
+    use super::{Outcome, parse};
+
+    /// A result read from the literature, proved nowhere here.
+    const CITED: &str =
+        "'catalan' depends on axioms: [propext, Cited.mihailescu2004, Quot.sound]\n";
+
+    #[test]
+    fn a_proof_resting_only_on_cited_results_is_conditional() {
+        let checked = parse("code/lean/Lib/Catalan.lean", true, CITED);
+        assert_eq!(checked.outcome(), Outcome::Conditional);
+        assert!(
+            !checked.verified(),
+            "conditional is not verified — the kernel checked the implication and not the \
+             hypothesis, and rounding it up is exactly what this file exists to stop"
+        );
+        assert_eq!(checked.cited_axioms(), vec!["Cited.mihailescu2004"]);
+        assert!(checked.unproved_axioms().is_empty());
+    }
+
+    /// The objection is what reaches the ledger, so it has to say which status
+    /// the file *does* support rather than only which one it does not.
+    #[test]
+    fn the_objection_points_at_the_conditional_status() {
+        let checked = parse("code/lean/Lib/Catalan.lean", true, CITED);
+        let objection = checked
+            .objection()
+            .expect("a cited axiom still blocks `formalised`");
+        assert!(objection.contains("Cited.mihailescu2004"), "{objection}");
+        assert!(
+            objection.contains("conditional"),
+            "the role is told what it may file instead: {objection}"
+        );
+    }
+
+    /// One attributed axiom does not launder the one beside it.
+    #[test]
+    fn an_unproved_axiom_beside_a_cited_one_still_fails() {
+        let checked = parse(
+            "code/lean/Lib/Catalan.lean",
+            true,
+            "'main' depends on axioms: [Cited.mihailescu2004, key_estimate]\n",
+        );
+        assert_eq!(checked.outcome(), Outcome::Failed);
+        assert_eq!(checked.unproved_axioms(), vec!["key_estimate"]);
+        assert!(
+            checked
+                .objection()
+                .expect("an assumed axiom is an objection")
+                .contains("key_estimate"),
+            "the objection names the hole and not the citation"
+        );
+    }
+
+    /// A citation says where a hypothesis came from. It says nothing about a
+    /// gap in the proof, so it must not rescue a file that has one.
+    #[test]
+    fn a_cited_axiom_does_not_excuse_a_sorry() {
+        let checked = parse(
+            "code/lean/Lib/Catalan.lean",
+            true,
+            "code/lean/Lib/Catalan.lean:4:0: warning: declaration uses `sorry`\n\
+             'main' depends on axioms: [Cited.mihailescu2004, sorryAx]\n",
+        );
+        assert_eq!(checked.outcome(), Outcome::Failed);
+        assert_eq!(checked.sorries.len(), 1);
+    }
+
+    /// The trusted three alone are still the strongest result, and the
+    /// namespace must not have moved that line.
+    #[test]
+    fn a_clean_proof_is_still_verified() {
+        let checked = parse(
+            "code/lean/Lib/Catalan.lean",
+            true,
+            "'main' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+        );
+        assert_eq!(checked.outcome(), Outcome::Verified);
+        assert!(checked.cited_axioms().is_empty());
+    }
+
+    /// A name that merely mentions the namespace is not in it. Prefix-matched
+    /// rather than searched for, so `NotCited.foo` and `myCited.bar` stay
+    /// holes.
+    #[test]
+    fn the_namespace_is_a_prefix_and_not_a_substring() {
+        let checked = parse(
+            "code/lean/Lib/Catalan.lean",
+            true,
+            "'main' depends on axioms: [NotCited.sneaky]\n",
+        );
+        assert_eq!(checked.outcome(), Outcome::Failed);
+        assert_eq!(checked.unproved_axioms(), vec!["NotCited.sneaky"]);
+    }
+
+    /// The record carries the outcome as a word, and keeps the boolean beside
+    /// it: thirty-two verdicts already on disk have the old shape, and a reader
+    /// that learned it should not start seeing nothing where it saw `false`.
+    #[test]
+    fn the_record_carries_both_the_outcome_and_the_boolean() {
+        let record = parse("code/lean/Lib/Catalan.lean", true, CITED).record();
+        assert_eq!(record["outcome"], "conditional");
+        assert_eq!(record["verified"], false);
+        assert_eq!(record["cited"][0], "Cited.mihailescu2004");
     }
 }

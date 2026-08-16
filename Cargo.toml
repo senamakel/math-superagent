@@ -112,6 +112,15 @@ name = "euler-tui"
 path = "src/bin/euler_tui.rs"
 required-features = ["tui"]
 
+# Builds the `lean-verdict` binary, which runs the Lean kernel over one
+# workspace file and prints the verdict. Unlike the two above it carries no
+# feature gate and ships in the runtime image: Lean and Mathlib are in that
+# image and nowhere else, so this is the only way to check a `.lean` file
+# without starting a run.
+[[bin]]
+name = "lean-verdict"
+path = "src/bin/lean_verdict.rs"
+
 # Lints apply to the whole crate and to every target. CI runs clippy with
 # `-D warnings`, so anything set to "warn" here fails the build in CI.
 [lints.rust]

@@ -216,6 +216,16 @@ fn role_context(role: &str) -> &'static [&'static str] {
             "code/INDEX.md",
             "code/lib/INDEX.md",
             "derived/CLAIMS.md",
+            // What the run has already stated in Lean, one signature per row.
+            // Sent to all seven rather than to `lean_prover` alone, and the
+            // reason is the same one `code/lib/INDEX.md` is: this is the
+            // reuse index. A signature says exactly what a lemma assumes,
+            // which is the form the other six need when they are deciding
+            // whether the thing they are about to compute is already settled —
+            // and `lean_prover` needs it most, because the failure it prevents
+            // is a role spending an attempt re-proving a lemma the kernel
+            // accepted three attempts ago.
+            lemmas::LEMMAS_PATH,
             "CONTEXT.md",
         ],
         // Not sent `research/APPROACHES.md`, though the judge now scores an
