@@ -358,12 +358,52 @@ that cannot be regenerated.
 - **Compute.** No shell, no `write_tool_file`, no delegation. A role that could
   both reinterpret the goal and run programs against it would be a second
   investigation answering to nobody.
-- **Redirect an attempt already in flight.** Delivery is at the attempt
-  boundary, and a live attempt has run forty minutes. The director's file edits
-  are the mitigation — they land within a team cycle and are visible to any role
-  that reads the workspace. Reaching further would mean driving
-  `AsyncSubagentManager::steer` from outside the run, which holds no handle for
-  it today.
+- **Redirect the attempt itself, mid-turn.** The attempt is briefed at its own
+  boundary through the mailbox, and a live attempt has run forty minutes. The
+  director's file edits remain the mitigation for that one — they land within a
+  team cycle and are visible to any role that reads the workspace.
+
+### The third delivery, and the runs that were missing it
+
+The two deliveries above both stop at the orchestrator. That was recorded here
+as an accepted limit, on the argument that reaching further would mean driving
+`AsyncSubagentManager::steer` from *outside* the run, where no handle exists.
+The argument was right about the outside and wrong about the cost, and two live
+investigations paid it.
+
+A detached specialist holds the instruction it was spawned with. It does not
+re-read the mailbox, and it does not read `TASKS.md` mid-run. So a directive
+aimed at a role already working never arrived: the loop wrote it to
+`config/DIRECTIVES.md`, the director rewrote the task ledger, the operator saw a
+receipt — and the role carried on. In the `gilbreath-supply` second pass a
+`tool_builder` produced **eight** artifacts re-confirming a settled number
+across three consecutive directives telling it to stop, each of which was
+acknowledged in the ledger. The same shape had already cost the first pass a
+comparable stretch on scratch-file consolidation, where a directory grew
+31 → 35 → 47 → 52 files under four directives asking for the opposite.
+
+`deliver_to_live_runs` closes it, from *inside* the drain where the manager is
+in scope. Every run still `Pending` or `Running` is sent the directive text as
+its own `SteeringCommand::Redirect`, prefixed to say it outranks the instruction
+the run was spawned with. Three properties are load-bearing:
+
+- **A terminal run is skipped, not an error.** The queue's exactly-once
+  guarantee is the cursor; a specialist finishing between the drain and the
+  redirect is ordinary. Erroring there would let one finished role suppress the
+  directive for every other.
+- **The count is traced, never assumed.** `directive N delivered to K live
+  run(s)` is what separates a directive nothing was working to receive from one
+  that reached the role it was written for. Without it, an operator is back to
+  inferring delivery from behaviour, which is exactly how the failure survived
+  two investigations.
+- **It does not widen what a directive may do.** The text is the same text, and
+  it arrives as an instruction to a role that already has its own tools. No new
+  capability reaches anything.
+
+`async_subagents::test::a_directive_reaches_every_live_run` pins the delivery,
+and `a_finished_run_is_skipped_rather_than_failing_the_delivery` pins the
+skip — the second matters more, because it is the one a plausible "return an
+error on any unreachable run" implementation gets wrong.
 
 The director's `TeamBudget::attentive()` is the one allowance shaped by waiting
 rather than working: every cycle counts including idle ones, so a custodial

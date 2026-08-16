@@ -667,6 +667,7 @@ impl OrchestratorAgent {
                             "\n\nDirective {} from {}:\n{}",
                             directive.id, directive.from, directive.text
                         );
+                        deliver_to_live_runs(&subagents, directive, &tracer);
                     }
                     for message in &inbox {
                         let _ = write!(prompt, "\n\nFrom {}: {}", message.from, message.body);
@@ -789,4 +790,39 @@ impl OrchestratorAgent {
             ));
         }
     }
+}
+
+/// Delivers one directive to every detached run that is still working.
+///
+/// The third delivery a directive gets, and the only one that reaches a role
+/// already mid-task. The mailbox briefs the *next attempt* and the director's
+/// prompt briefs the director — both stop at the orchestrator, so a specialist
+/// spawned before the directive arrived holds the instruction it started with
+/// and never hears the new one. Two live investigations lost hours to exactly
+/// that: the loop recorded each directive in `config/DIRECTIVES.md` while the
+/// role it was aimed at carried on, in one case producing eight artifacts
+/// re-confirming a settled number across three directives telling it to stop.
+///
+/// The count is traced rather than assumed. "Delivered to 0 live runs" is the
+/// line that distinguishes a directive nothing was working to receive from one
+/// that reached the role it was written for, and without it the operator is
+/// back to inferring delivery from behaviour.
+fn deliver_to_live_runs(
+    subagents: &AsyncSubagentManager,
+    directive: &crate::Directive,
+    tracer: &Arc<RunTracer>,
+) {
+    let reached = subagents.redirect_live(&format!(
+        "Direction from the operator running this investigation, which takes precedence over \
+         the instruction you were spawned with:\n{}\n\nApply it to what you are doing now. If \
+         it contradicts your current task, follow the directive and say in your report what you \
+         stopped. If you can show it is wrong, say so plainly and say what you did instead — do \
+         not silently ignore it.",
+        directive.text
+    ));
+    tracer.note(&format!(
+        "directive {} delivered to {} live run(s)",
+        directive.id,
+        reached.len()
+    ));
 }

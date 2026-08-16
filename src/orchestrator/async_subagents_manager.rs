@@ -391,6 +391,33 @@ impl AsyncSubagentManager {
         )
     }
 
+    /// Delivers operator direction to every detached run that is still live.
+    ///
+    /// Returns the runs actually reached, so the caller can say how many heard
+    /// it rather than assuming delivery.
+    ///
+    /// This is the third delivery a directive gets, and it exists because the
+    /// other two both stop at the orchestrator. The mailbox briefs the *next
+    /// attempt* and the director agent acts on the text — but a detached
+    /// specialist spawned before the directive arrived holds its own context
+    /// and never re-reads either. Two live investigations spent hours that way:
+    /// the loop acknowledged each directive in the ledger while the role it was
+    /// aimed at carried on with the instruction it was spawned with. In one, a
+    /// `tool_builder` produced eight artifacts re-confirming a settled number
+    /// across three directives telling it to stop, because none of the three
+    /// was ever delivered to it.
+    ///
+    /// A run that has gone terminal, or was never registered for steering, is
+    /// skipped rather than reported as an error: the queue's delivery guarantee
+    /// is the cursor, and one specialist finishing between the drain and this
+    /// call is ordinary, not a fault.
+    pub(super) fn redirect_live(&self, instruction: &str) -> Vec<String> {
+        self.outstanding_runs()
+            .into_iter()
+            .filter(|task_id| self.steer(task_id, instruction.to_string()).is_ok())
+            .collect()
+    }
+
     fn record(&self, task_id: &str) -> Result<RunRecord> {
         let task_id = TaskId::new(task_id);
         self.store.get(&task_id).ok_or_else(|| {

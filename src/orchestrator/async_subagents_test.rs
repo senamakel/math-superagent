@@ -488,3 +488,69 @@ fn a_qualified_name_still_names_its_role() {
     assert_eq!(super::base_role("judge@rising-sea"), "judge");
     assert_eq!(super::base_role("judge"), "judge");
 }
+
+/// Operator direction reaches every live detached run, not just the loop.
+///
+/// This is the regression for the failure that cost two live investigations
+/// hours apiece: a directive was posted to the mailbox and handed to the
+/// director, both of which stop at the orchestrator, while the specialist it
+/// was aimed at held the instruction it was spawned with and never heard it.
+/// Three consecutive directives to stop re-confirming a settled number were
+/// each acknowledged in the ledger while the role produced eight more
+/// artifacts.
+#[tokio::test]
+async fn a_directive_reaches_every_live_run() -> Result<()> {
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    let started = Arc::new(Semaphore::new(0));
+    let release = Arc::new(Semaphore::new(0));
+    manager.register_executor(
+        "worker",
+        Arc::new(SteerableExecutor {
+            started: started.clone(),
+            release: release.clone(),
+        }),
+    )?;
+
+    let first = manager.spawn("worker", "first".into())?;
+    let second = manager.spawn("worker", "second".into())?;
+    let _started = started.acquire_many(2).await.map_err(|error| {
+        tinyagents::TinyAgentsError::Tool(format!("test start semaphore closed: {error}"))
+    })?;
+
+    let reached = manager.redirect_live("stop re-confirming K*");
+    assert_eq!(reached.len(), 2, "both live runs must hear the directive");
+
+    release.add_permits(2);
+    for run in [&first, &second] {
+        let completed = manager.await_record(run.as_str(), 1).await?;
+        assert_eq!(
+            completed.result.and_then(|result| result.text),
+            Some(format!(
+                "{}:stop re-confirming K*",
+                if run == &first { "first" } else { "second" }
+            )),
+            "the directive must arrive as the run's own steering, not beside it"
+        );
+    }
+    Ok(())
+}
+
+/// A finished run is skipped, not reported as a delivery failure.
+///
+/// The queue's exactly-once guarantee is the cursor, so a specialist that
+/// completes between the drain and the redirect is ordinary. Counting it as
+/// reached would overstate delivery; erroring on it would make one finished
+/// role suppress the directive for every other.
+#[tokio::test]
+async fn a_finished_run_is_skipped_rather_than_failing_the_delivery() -> Result<()> {
+    let manager = AsyncSubagentManager::new(RunBudget::default(), None);
+    manager.register_executor("judge", Arc::new(EchoExecutor))?;
+    let done = manager.spawn("judge", "already done".into())?;
+    let _ = manager.await_record(done.as_str(), 1).await?;
+
+    assert!(
+        manager.redirect_live("late direction").is_empty(),
+        "a terminal run is not a live delivery"
+    );
+    Ok(())
+}
