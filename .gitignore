@@ -67,6 +67,14 @@ __pycache__/
 worktrees/*
 !worktrees/.gitkeep
 
+# Host-side reports rendered from state that is already committed.
+# `examples/dump_prompts` writes every role's assembled system prompt here, and
+# a live workspace comes to half a megabyte across twenty-four roles. It is the
+# same argument that keeps `derived/` out of a source directory: the sources are
+# in history, the rendering is regenerable by rerunning the command beside it,
+# and committing it would put a diff nobody can review into every batch.
+/reports/
+
 # Editor and OS noise
 .DS_Store
 .idea/
