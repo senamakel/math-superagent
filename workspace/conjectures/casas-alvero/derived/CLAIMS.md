@@ -9,7 +9,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `5p-bad-primes-chellali` | CA holds for degrees 5p^e (e≥1, p prime) with p ≠ 2,3,7,11,131,193, 599,3541,8009 (Chellali & Salinier 2012, HAL hal-00748843). This explicit bad-prime list for the 5p family is independent of Castryck et al.'s… | yes | asserted | `research/notes/casas-alvero-status.md` |
-| `abdesselam-chipalkatti-file-mislabeled` | The file research/sources/abdesselam-chipalkatti-hilbert-covariants.full.md (and its summary) holds the WRONG paper: Campagna & Pagh, "On Finding Frequent Patterns in Event Sequences", arXiv:1010.2358 (cs.DS… | yes | checked | `research/notes/abdesselam-chipalkatti-mislabel.md` |
+| `5p-bad-primes-chellali` | CA holds for degrees 5p^e (e≥1, p prime) with p ≠ 2,3,7,11,131,193,599,3541,8009. That is, the bad primes for the 5p family are exactly {2,3,7,11,131,193,599,3541,8009}. | yes | asserted | `research/summaries/chellali2012_degree-5p-hal.md` |
+| `abdesselam-chipalkatti-file-mislabel-corrected` | RESOLUTION of the abdesselam-chipalkatti-file-mislabeled claim. The intended paper (Abdesselam & Chipalkatti, "On Hilbert covariants", arXiv:1203.4761 = Canad. J. Math. 66(1) 2014 3-30, DOI 10.4153/CJM-2012-046-1) IS… | yes | checked | `research/notes/abdesselam-chipalkatti-mislabel.md` |
+| `ac-hilbert-covariant-perfect-power` | For a binary d-ic F over C, the Hilbert covariant H_{r,d}(F) vanishes identically iff F is the perfect power of an order-r form: G_{r,d}(F)=0 ⟺ F=G^μ ⟺ H_{r,d}(F)=0 (eq (1)). G_{r,d} and H_{r,d} agree up to a nonzero… | yes | proved | `research/summaries/abdesselam-chipalkatti2012_hilbert-covariants.md` |
 | `at-least-five-distinct-roots` | A non-trivial CA polynomial of degree N≥5 has at least five distinct roots, so N≥6, and at least 4 distinct roots in its open Gauss–Lucas hull. CA holds if f has at most 4 distinct roots (Prop 5). | yes | proved | `research/summaries/laterveer_ounaies_constraints_2012.md` |
 | `bad-prime-criterion` | If p is a prime with p \| ((d choose i) − 1) for some i∈{1,…,d−1}, then CA_{d,p} is false. Reason: for such p, no pure power of any a_j appears in any R_j mod p, so the point e_i (i-th coordinate 1, rest 0) lies in… | yes | proved | `research/summaries/schaub_spivakovsky_bad-primes_2023.md` |
 | `bad-prime-lists-hasse-formulation` | The published small-degree bad-prime lists are for the HASSE formulation of the CA hypothesis (H_i(f) Hasse derivatives): n=3 bad primes {2} (Castryck et al. 2012, Thm 4, line 135 of the held source) and n=4 bad primes… | yes | checked | `research/notes/ordinary-vs-hasse-badprimes.md` |
@@ -30,8 +32,10 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `charp-false` | CA is false in positive characteristic p; x^{p+1} - x^p is a separable counterexample not a pure power. Any proof of CA must use characteristic 0 somewhere and must break in char p. | yes | asserted | `research/notes/casas-alvero-status.md` |
 | `charp-witness-xpp1-xp` | In characteristic p, f(x) = x^{p+1} − x^p (and relatives) is a CA-polynomial (shares a non-trivial factor with every derivative) that is NOT a pure power. f(X^p) without constant term also works since all derivatives… | yes | asserted | `research/summaries/grafvonbothmer2007_infinitely_many.md` |
 | `charp-witness-xpp1-xp-hasse-recheck` | The clause "f(X^p) without constant term also works since all derivatives vanish" in claim charp-witness-xpp1-xp is ORDINARY-derivative vacuity and does not survive the Hasse formulation (H_i(f) = sum_j C(j,i) c_j… | yes | checked | `code/out/ordinary-vs-hasse-charp-witness.md` |
+| `charp-witness-xpp1-xp-xp-1-polynomial` | In characteristic 5, P(x) = x²(x²+1) = x²(x−2)(x−3) is a CA-polynomial (shares a root with each of P′, P″, P‴) that is not a pure power. A second char-p counterexample family, distinct from x^{p+1}−x^p but of the same… | yes | asserted | `research/summaries/cima_gasull_manosas_2020_extensions-casas-alvero.md` |
 | `charp-witnesses` | The char-p witnesses the oracle must recognise as satisfying the hypothesis but NOT being pure powers are: x^{p+1} - x^p in char p (separable counterexample, Wikipedia/Schaub-Spivakovsky), and the explicit… | yes | asserted | `research/notes/casas-alvero-status.md` |
 | `chavez-martinez-2018-fixed-roots` | Chávez Martínez 2018 thesis (UCrea, dir. González-Vega & Tabera) proves CA for char-0 polynomials with 2 and 3 distinct roots, and for degree 20 with 4/5/6 distinct roots in 302 of 627 cases (via Gröbner bases of top… | **unchecked** | asserted | `research/notes/casas-alvero-status.md` |
+| `clo-uresultant-factorization` | CLO GTM 185 Prop 5.8 / eq (5.9): for a well-constrained square system f1=...=fn=0 with bounded total degrees, no solutions at infinity and all multiplicities one, the u-resultant Res_{1,d1..dn}(u0+u1x1+...+unxn,… | yes | proved | `research/summaries/clo2005_using-algebraic-geometry.md` |
 | `computational-boundary` | Direct verification of CA by Gröbner basis is feasible over ℚ up to about degree 8; degree 12 was settled only by a combination of theoretical scenario reduction and Gröbner in characteristic p, costing ~3 weeks and ~90… | yes | asserted | `research/notes/casas-alvero-status.md` |
 | `ddj-not-two` | The set of common zeroes of a CA polynomial f with its derivatives cannot have cardinality two. (Section 6 of the survey; re-proved as Prop 1 in Laterveer–Ounaïes.) | yes | proved | `research/summaries/draisma_dejong2011_survey.md` |
 | `defrutos-discriminant-formulation` | (de Frutos Marin 2013 thesis, Teo 5.6.6) CA in degree n over C is equivalent to the non-vanishing of the superdiscriminant D_n = product_{i=1}^{n-2} Delta(n,I_i), where I_i = {i,i+1,...,n-2} and Delta(n,I) is a… | yes | asserted | `research/summaries/defrutosmarin2013_thesis.md` |
@@ -51,6 +55,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `deg7-char2-refuted` | CA in degree 7 over F_2 is FALSE in the Hasse formulation: f = x^7 + x^3 = x^3(x+1)^4 over F_2 has two distinct roots {0,1} (0 mult 3, 1 mult 4), is NOT a pure power, yet shares a root with every Hasse derivative H_1 =… | yes | checked | `code/out/refute_deg7_char2.md` |
 | `degree12-settled` | Conjecture 1 (CA) is true for d=12. Method: restrict to a small scenario list (five 5 scenarios of type 8), run the resultant/Gröbner algorithm in char p (=11) rather than char 0. Each of the 5 scenarios took ~3 weeks… | yes | asserted | `research/summaries/castryck2012_degree12_html.md` |
 | `dobrowolski-2017-withdrawn` | Dobrowolski, "Casas-Alvero Conjecture is true" (arXiv:1705.01704, 4 May 2017) is a claimed complete proof that was WITHDRAWN by the author on 7 May 2017 (v2): the arXiv comment reads "Jacob Tsimerman found an… | yes | asserted | `research/notes/casas-alvero-status.md` |
+| `frontier-lead-resolutions-openalex` | The four previously-unidentified frontier rows W1558046128, W2003962780, W2062454016, W1579326781 are now identified via the OpenAlex works API. W2003962780 is the origin paper (Casas-Alvero, "Higher Order Polar Germs",… | yes | asserted | `research/notes/casas-alvero-status.md` |
 | `ghosh-2025-claim` | Theorem A: Let f be monic of degree d≥3 over a char-0 field K. Then gcd(f,f_i) non-trivial for all i=1,…,d−1 iff f = (X−α)^d. I.e. CA holds in ALL degrees d≥3 over every char-0 field. Corollaries: for each d a finite… | **unchecked** | asserted | `research/summaries/ghosh2025_proof_html.md` |
 | `ghosh-char0-break-4-18` | In Ghosh's claimed proof of CA (arXiv:2501.09272), the downward induction's key injectivity lemma Prop 4.3 uses the leading coefficient of F(n,j_n,n) = Φ^#_{n,j_n}(HD^{n-1}_n(x_1,…,x_n)) as a unit in eq (4.18): the… | yes | checked | `research/notes/ghosh-char0-break-4-18.md` |
 | `ghosh-char0-break-4-18` | In the claimed Ghosh proof of CA (arXiv:2501.09272), the degree-lowering isomorphism eq (4.18) uses the leading coefficient −n of F(n,j_n,n) as a unit: F(n,j_n,n) has leading coefficient f(n,j_n,n), which equals 1 for… | yes | checked | `research/notes/ghosh-char0-break.md` |
@@ -62,20 +67,16 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `gvb-coefficient-descent-charp` | For degree d = p^k (and 2p^k), there is NO CA-polynomial over Fbar_p except the pure power x^d: the Hasse derivatives collapse the coefficients by descent (P_{d-1}=a_1 forces a_1=0, then P_{d-2}=a_2, ...) because (d… | yes | proved | `research/notes/gvb-coefficient-descent.md` |
 | `gvb-lift` | (as quoted and reformulated by Castryck et al, Theorem 3) Let d>0 and p prime. If no CA-polynomials of degree d exist over F_p-bar, then CA holds in degree d p^k for all integers k≥0 (over F_p-bar and over char-0).… | yes | asserted | `research/summaries/grafvonbothmer2007_infinitely_many.md` |
 | `gvb-lift-and-bad-primes` | If no CA-polynomials of degree d exist over F_p-bar, then CA holds in degree d p^k for all k≥0 (char 0 and char p). p is "bad" for d iff CA fails in degree d char p. Bad primes: sole bad prime for d=3 is p=2; bad primes… | yes | asserted | `research/summaries/castryck2012_degree12_html.md` |
-| `kostov-higher-order-discriminant-two-shared-roots` | For the monic generic family P = x^n + a_1 x^{n-1} + ... + a_n over C, the higher-order discriminant D~_m = Res(P, P^(m)) is irreducible and quasi-homogeneous of weight n(n-m) (weight(a_j)=j), and Res(D~_m, partial… | yes | asserted | `research/summaries/kostov2020_highorder-discriminants.md` |
-| `leggett-2025-zenodo-dyadic` | Keenan Leggett, "A Proof of the Casas-Alvero Conjecture within a Dyadic Dynamic System", Zenodo 17363753, preprint 2025-10-16, claims a proof of CA inside a dyadic dynamical-system framework. Same status as the other… | yes | asserted | `research/notes/casas-alvero-status.md` |
-| `lu-2017-claim` | Lu, "Casas-Alvero conjecture in computational algebraic geometry" (arXiv:1707.04754, 2017, preprint) claims a proof via regular sequences and dimension counts, in particular reducing CA to an F_p counting statement… | yes | asserted | `research/notes/casas-alvero-status.md` |
-| `macintyre-goncaroff-bounds` | The unique degree-n polynomial G_n(z; z_1,...,z_n) with G_n^(r)(z_{r+1}) = 0 for r = 0,...,n-1 (the Abel-Goncaroff polynomial) has \|G_n\| <= (1.3775)^(n+1) over the unit circle (Theorem I, n >= 4), and \|G_n\| <= 2(4/pi)^n… | yes | asserted | `research/summaries/macintyre1949_zeros-successive-derivatives.md` |
-| `massri-degree20-no-3-recycled` | In degree 20 there are no counterexamples with three recycled roots. | yes | asserted | `research/summaries/massri2018_degree20.md` |
-| `massri-finiteness-psums` | The number of possible counterexamples in normal form of degree p^r + p^s or p^r + 2p^s (p prime, r,s positive integers) is finite. | yes | asserted | `research/summaries/massri2018_degree20.md` |
+| `kostov-discriminant-factorization` | Res_{a_k}(R, ∂R/∂a_k) = c_k · (a_n)^{d(n,k)} · M_k^2 · T_k^3, where c_k ∈ ℚ^*, d(n,k) = min(1,n−k) + max(0,n−k−2), and M_k, T_k ∈ ℂ[a^k] (a^k = all a_j except a_k) have integer coefficients. The sets {M_k=0} and {T_k=0}… | yes | proved | `research/summaries/kostov2020_higher-order-discriminants.md` |
 
-_31 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_49 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it. Search the whole ledger with `search_claims`.
 
 - `5p-bad-primes-chellali` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
+- `5p-bad-primes-chellali` (research/summaries/chellali2012_degree-5p-hal.md) — asserted by the source, not proved there and not checked here
 - `badprimes-lists-corroborated-by-defrutosmarin2015` (research/notes/defrutosmarin2015-combinatorios-corroborates-badprimes.md) — asserted by the source, not proved there and not checked here
 - `badprimes-n20-certified-frontier` (research/notes/badprimes-criterion-n4-n20.md) — asserted by the source, not proved there and not checked here
 - `badprimes-n4-minor-criterion-verified` (research/notes/badprimes-criterion-n4-n20.md) — asserted by the source, not proved there and not checked here
@@ -88,6 +89,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `ca-status-2025` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
 - `charp-false` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
 - `charp-witness-xpp1-xp` (research/summaries/grafvonbothmer2007_infinitely_many.md) — asserted by the source, not proved there and not checked here
+- `charp-witness-xpp1-xp-xp-1-polynomial` (research/summaries/cima_gasull_manosas_2020_extensions-casas-alvero.md) — asserted by the source, not proved there and not checked here
 - `charp-witnesses` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
 - `computational-boundary` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
 - `defrutos-discriminant-formulation` (research/summaries/defrutosmarin2013_thesis.md) — asserted by the source, not proved there and not checked here
@@ -98,6 +100,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `deg6-explicit-witness-gvb` (research/notes/badprimes-criterion-n5.md) — asserted by the source, not proved there and not checked here
 - `degree12-settled` (research/summaries/castryck2012_degree12_html.md) — asserted by the source, not proved there and not checked here
 - `dobrowolski-2017-withdrawn` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
+- `frontier-lead-resolutions-openalex` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
 - `ghosh-char0-step` (research/summaries/ghosh2025_proof_html.md) — asserted by the source, not proved there and not checked here
 - `ghosh-complete-intersection` (research/summaries/ghosh2024_finiteness_html.md) — asserted by the source, not proved there and not checked here
 - `ghosh-dim-bound` (research/summaries/ghosh2024_finiteness_html.md) — asserted by the source, not proved there and not checked here
@@ -107,16 +110,13 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `gvb-lift-and-bad-primes` (research/summaries/castryck2012_degree12_html.md) — asserted by the source, not proved there and not checked here
 - `kostov-higher-order-discriminant-two-shared-roots` (research/summaries/kostov2020_highorder-discriminants.md) — asserted by the source, not proved there and not checked here
 - `leggett-2025-zenodo-dyadic` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
+- `lu-2017-charp-trap` (research/summaries/lu2017_casas-alvero-computational-ag.md) — asserted by the source, not proved there and not checked here
 - `lu-2017-claim` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
 - `macintyre-goncaroff-bounds` (research/summaries/macintyre1949_zeros-successive-derivatives.md) — asserted by the source, not proved there and not checked here
 - `massri-degree20-no-3-recycled` (research/summaries/massri2018_degree20.md) — asserted by the source, not proved there and not checked here
 - `massri-finiteness-psums` (research/summaries/massri2018_degree20.md) — asserted by the source, not proved there and not checked here
-- `massri-no-mult-11-degree20` (research/summaries/massri2018_degree20_html.md) — asserted by the source, not proved there and not checked here
-- `massri-prplus1-algebraic` (research/summaries/massri2018_degree20.md) — asserted by the source, not proved there and not checked here
-- `min-counter-structure` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
-- `minors-criterion-feasibility-boundary` (research/notes/badprimes-criterion-n5.md) — asserted by the source, not proved there and not checked here
 
-_12 more not shown here; they are in `research/`._
+_22 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 

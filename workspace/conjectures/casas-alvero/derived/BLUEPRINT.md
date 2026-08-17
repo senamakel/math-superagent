@@ -27,14 +27,15 @@ Ranked by how much of the argument rests on each, and within one load by whether
 - `bad-prime-minors-criterion` — 1 node(s) rest on it, and the run is already building on it — A prime p is bad for degree n iff p \| J_T for some T ∈ T, where J_T is the greatest common divisor of all C×C minors of the matrix M_T…
 - `bad-prime-upper-bound` — 1 node(s) rest on it, and the run is already building on it — If CA_{n,0} holds and p is a bad prime for n, then p < C! · Π_{i=1}^{n−1} (i+n−2 choose n−2)(d−i+n−2 choose n−2), where d=(n²−3n+4)/2, C=(…
 
-_95 further candidate(s) below these, in the table._
+_112 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
-| `5p-bad-primes-chellali` | claim | **ready** | — | CA holds for degrees 5p^e (e≥1, p prime) with p ≠ 2,3,7,11,131,193, 599,3541,8009 (Chellali & Salinier 2012, HAL hal-00748843). This… |
-| `abdesselam-chipalkatti-file-mislabeled` | claim | established | — | The file research/sources/abdesselam-chipalkatti-hilbert-covariants.full.md (and its summary) holds the WRONG paper: Campagna & Pagh, "On… |
+| `5p-bad-primes-chellali` | claim | **ready** | — | CA holds for degrees 5p^e (e≥1, p prime) with p ≠ 2,3,7,11,131,193,599,3541,8009. That is, the bad primes for the 5p family are exactly… |
+| `abdesselam-chipalkatti-file-mislabel-corrected` | claim | established | — | RESOLUTION of the abdesselam-chipalkatti-file-mislabeled claim. The intended paper (Abdesselam & Chipalkatti, "On Hilbert covariants",… |
+| `ac-hilbert-covariant-perfect-power` | claim | established | — | For a binary d-ic F over C, the Hilbert covariant H_{r,d}(F) vanishes identically iff F is the perfect power of an order-r form:… |
 | `at-least-five-distinct-roots` | claim | established | — | A non-trivial CA polynomial of degree N≥5 has at least five distinct roots, so N≥6, and at least 4 distinct roots in its open Gauss–Lucas… |
 | `bad-prime-criterion` | claim | established | — | If p is a prime with p \| ((d choose i) − 1) for some i∈{1,…,d−1}, then CA_{d,p} is false. Reason: for such p, no pure power of any a_j… |
 | `bad-prime-lists-hasse-formulation` | claim | established | — | The published small-degree bad-prime lists are for the HASSE formulation of the CA hypothesis (H_i(f) Hasse derivatives): n=3 bad primes… |
@@ -60,8 +61,10 @@ _95 further candidate(s) below these, in the table._
 | `charp-false` | claim | **ready** | — | CA is false in positive characteristic p; x^{p+1} - x^p is a separable counterexample not a pure power. Any proof of CA must use… |
 | `charp-witness-xpp1-xp` | claim | **ready** | — | In characteristic p, f(x) = x^{p+1} − x^p (and relatives) is a CA-polynomial (shares a non-trivial factor with every derivative) that is… |
 | `charp-witness-xpp1-xp-hasse-recheck` | claim | established | — | The clause "f(X^p) without constant term also works since all derivatives vanish" in claim charp-witness-xpp1-xp is ORDINARY-derivative… |
+| `charp-witness-xpp1-xp-xp-1-polynomial` | claim | **ready** | — | In characteristic 5, P(x) = x²(x²+1) = x²(x−2)(x−3) is a CA-polynomial (shares a root with each of P′, P″, P‴) that is not a pure power. A… |
 | `charp-witnesses` | claim | **ready** | — | The char-p witnesses the oracle must recognise as satisfying the hypothesis but NOT being pure powers are: x^{p+1} - x^p in char p… |
 | `chavez-martinez-2018-fixed-roots` | claim | **ready** | — | Chávez Martínez 2018 thesis (UCrea, dir. González-Vega & Tabera) proves CA for char-0 polynomials with 2 and 3 distinct roots, and for… |
+| `clo-uresultant-factorization` | claim | established | — | CLO GTM 185 Prop 5.8 / eq (5.9): for a well-constrained square system f1=...=fn=0 with bounded total degrees, no solutions at infinity and… |
 | `computational-boundary` | claim | **ready** | — | Direct verification of CA by Gröbner basis is feasible over ℚ up to about degree 8; degree 12 was settled only by a combination of… |
 | `ddj-not-two` | claim | established | — | The set of common zeroes of a CA polynomial f with its derivatives cannot have cardinality two. (Section 6 of the survey; re-proved as Prop… |
 | `defrutos-discriminant-formulation` | claim | **ready** | — | (de Frutos Marin 2013 thesis, Teo 5.6.6) CA in degree n over C is equivalent to the non-vanishing of the superdiscriminant D_n =… |
@@ -70,11 +73,8 @@ _95 further candidate(s) below these, in the table._
 | `defrutos-n5-badprimes-superdiscriminant` | claim | **ready** | — | The prime divisors of the degree-5 superdiscriminant D_5 = Delta(5,{3})·Delta(5,{2,3})·Delta(5,{1,2,3}) are exactly… |
 | `defrutos-one-exponent-discriminant-equals-binomial-criterion` | claim | established | — | Delta(n,{i}) = 1 - C(n,i) (Def 5.6.5), so p \| Delta(n,{i})  <=>  p \| C(n,i)-1. Hence de Frutos Marin's one-exponent discriminant is… |
 | `defrutos-superdiscriminant-consistent-deg5` | claim | **ready** | — | The union of prime divisors of the degree-5 superdiscriminant factors Delta(5,{3})=3^2, Delta(5,{2,3})=2^2·3^2·11·3541,… |
-| `deg4-char3-refuted` | claim | established | — | CA in degree 4 over F_3 is false in the Hasse formulation: f = x^4 + x = x(x+1)^3 over F_3 has two distinct roots, shares a root with each… |
-| `deg4-char5-refuted` | claim | established | — | CA in degree 4 over F_5 is false in the Hasse-derivative formulation: f = x^4 − x^2 = x^2(x−1)(x+1) has three distinct roots, shares a root… |
-| `deg4-char7-refuted` | claim | established | — | CA in degree 4 over F_7 (Hasse formulation) is false: f = x^4 + x^3 + 4x over F_7 shares a root with each Hasse derivative H_1, H_2, H_3… |
 
-_60 further nodes not shown._
+_77 further nodes not shown._
 
 ---
 

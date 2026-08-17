@@ -7,7 +7,11 @@
     "'EllisGilmer.ellis_lhs_negative' depends on axioms: [propext, Classical.choice, Quot.sound]",
     "'EllisGilmer.marginal_1_half' depends on axioms: [propext, Classical.choice, Quot.sound]",
     "'EllisGilmer.marginal_2_half' depends on axioms: [propext, Classical.choice, Quot.sound]",
-    "'EllisGilmer.boundary_distribution' depends on axioms: [propext, Classical.choice, Quot.sound]"
+    "'EllisGilmer.boundary_distribution' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'EllisGilmer.perturbed_marginal_1' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'EllisGilmer.perturbed_marginal_2' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'EllisGilmer.perturbed_mass_sum_one' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'EllisGilmer.gilmer_refuted_boundary' depends on axioms: [propext, Classical.choice, Quot.sound]"
   ],
   "cited": [],
   "compiled": true,
@@ -20,20 +24,22 @@
     "theorem marginal_1_half (x : ℝ) : mass x 1 + mass x 3 = 1/2",
     "theorem marginal_2_half (x : ℝ) : mass x 2 + mass x 3 = 1/2",
     "theorem boundary_distribution : (∀ i : Fin 4, 0 < mass (3/10) i) ∧ (∑ i : Fin 4, mass (3/10) i = 1) ∧ mass (3/10) 1 + mass (3/10) 3 = 1/2 ∧ mass (3/10) 2 + mass (3/10) 3 = 1/2",
+    "theorem perturbed_marginal_1 (x ε : ℝ) : perturbed_mass x ε 1 + perturbed_mass x ε 3 = 1/2 - ε",
+    "theorem perturbed_marginal_2 (x ε : ℝ) : perturbed_mass x ε 2 + perturbed_mass x ε 3 = 1/2 - ε",
+    "theorem perturbed_mass_sum_one (x ε : ℝ) : ∑ i : Fin 4, perturbed_mass x ε i = 1",
     "theorem gap_union_weights (x : ℝ) (hx0 : 0 < x) (hx1 : x < 1/2) : q_weight x 0 = x^2 ∧ q_weight x 1 = 1/4 - x^2 ∧ q_weight x 2 = 1/4 - x^2 ∧ q_weight x 3 = 1/2 + x^2",
     "theorem gap_entropy_rewrite {ι : Type*} [Fintype ι] (p q : ι → ℝ) (hp : ∀ s, p s ≠ 0) (hq : ∀ s, q s ≠ 0) : (∑ s, q s * (log (1 / q s) + log (q s / p s))) = ∑ s, q s * log (1 / p s)",
-    "theorem gap_perturbed_strict : ∃ ε : ℝ, 0 < ε ∧ ∃ f : Fin 4 → ℝ, (∀ i, 0 < f i) ∧ (∑ i, f i = 1) ∧ 0 < hsum f ∧ (∑ i, f i * log (1 / f i) < 0)",
-    "theorem gilmer_refuted_boundary : ∃ f : Fin 4 → ℝ, (∀ i, 0 < f i) ∧ (∑ i, f i = 1) ∧ (∑ i, f i * log (1 / f i) < 0)"
+    "theorem gap_perturbed_strict : ∃ p : Fin 4 → ℝ, (∀ i, 0 < p i) ∧ (∑ i, p i = 1) ∧ 0 < hsum p ∧ p 1 + p 3 < 1/2 ∧ p 2 + p 3 < 1/2 ∧ LHS_of p < 0",
+    "theorem gilmer_refuted_boundary : ∃ x : ℝ, 0 < x ∧ x < 1/2 ∧ mass x 1 + mass x 3 = 1/2 ∧ mass x 2 + mass x 3 = 1/2 ∧ LHS x < 0"
   ],
   "file": "code/lean/ellis_gilmer_conjecture_refuted.lean",
   "missing_modules": [],
   "outcome": "failed",
   "retired_binder": false,
   "sorries": [
-    "/workspace/code/lean/ellis_gilmer_conjecture_refuted.lean:167:8: warning: declaration uses `sorry`",
-    "/workspace/code/lean/ellis_gilmer_conjecture_refuted.lean:184:8: warning: declaration uses `sorry`",
-    "/workspace/code/lean/ellis_gilmer_conjecture_refuted.lean:204:8: warning: declaration uses `sorry`",
-    "/workspace/code/lean/ellis_gilmer_conjecture_refuted.lean:219:8: warning: declaration uses `sorry`"
+    "/workspace/code/lean/ellis_gilmer_conjecture_refuted.lean:213:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/ellis_gilmer_conjecture_refuted.lean:230:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/ellis_gilmer_conjecture_refuted.lean:252:8: warning: declaration uses `sorry`"
   ],
   "tautologies": [],
   "verified": false

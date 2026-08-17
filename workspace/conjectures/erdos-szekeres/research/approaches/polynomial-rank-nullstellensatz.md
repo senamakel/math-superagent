@@ -28,9 +28,19 @@ MY host is the Boolean cube of size exactly 2^{n-2}, and the bound is algebraic
 lifting to caps/cups (strict-convex-lifting, closed because its charge is the
 4^n partition budget). The algebraic variable N ≤ 2^{n-2} is new to the run.
 
-status: grounded-as-reformulation (tools real; application to ES is novel and the
-load-bearing step is the run's own unproved claim — see precedent and the caveat
-on the 4^n-collapse risk)
+status: refuted
+killed-by: The load-bearing step is exactly the injection that killed
+boolean-lattice-injection-compression twice over: the mechanism needs an
+injective index of ARBITRARY no-convex-n-gon sets into {0,1}^{n-2}, and the
+α-injectivity whose natural host the closed route etv-grid-simplex-compression
+established is the grid simplex C(2n-4,n-2) ≈ 4^n, NOT 2^{n-2}. The es_construct
+alignment check (nonzero set = 2^{n-2} = |X|) only re-verifies the already-known
+LOWER bound — it cannot give the required injection for general sets, and the
+critical "4^n-collapse" risk the inventor flagged is unresolvable by the
+literature (no published CN/Alon–Füredi application to the ES upper bound exists,
+so nothing grounds the Boolean-cube host for arbitrary sets). Closed as a proof
+route; this is the same obstruction that closed ETV and the boolean-lattice line,
+re-stated in an algebraic register. Not re-derived.
 
 precedent: The polynomial-grid machinery is REAL and standard: N. Alon,
 "Combinatorial Nullstellensatz", Combin. Probab. Comput. 8 (1999) 7–29

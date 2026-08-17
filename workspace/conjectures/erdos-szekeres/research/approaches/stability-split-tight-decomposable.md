@@ -35,36 +35,61 @@ n=7 template 32-point set is expected to be decomposable/split-tight so it is
 NOT a counterexample, and the claim is quantified over every n-avoiding set of
 size 2^{n-2} — a structural property, precisely what GOAL criterion 4 asks for.
 
-status: grounded-as-structural-conjecture (the dichotomy is a real, novel,
-enumerable structural claim worth testing — GOAL criterion 4 material — but the
-inventor's stated deductive route to the bound is UNSOUND, see killed-by; do not
-treat this as a proof route until the split-tight→convex step is repaired)
+status: adopted
 
-killed-by: (the deductive step to the bound, not the structural claim itself)
+decision-note (this round's convergence): Adopted as a STRUCTURAL / GOAL-4
+certificate, NOT as a route to the bound (the split-tight deductive step is
+UNSOUND — killed-by below — and Thm 8 is asserted-by-source). What is adopted is
+the *lifted sub-claim* that research surfaced and the librarian had already
+flagged as the one genuinely useful untouched computation: test, with the run's
+own verified exact oracle, whether the run's canonical es_construct extremal
+sets satisfy Baek–Balko's DEF decomposition (the "deep below" definition is on
+disk verbatim, lines 425–443 of the held SoCG PDF). This is a certificate the
+run can produce TODAY, independent of the unproved Theorem 8, over order types
+from the Aichholzer database (n ≤ 10, realizable, with realizing sets). The
+recursive-decomposition certificate X = A ⊔ B with each half (n−1)-avoiding and
+A deep below B, at size 2^{n-2} = 2·2^{n-3}, is a finite, exact, enumerable
+claim — precisely what GOAL criterion 4 asks for — and a clean classification
+table is already a new partial result whether or not the dichotomy itself holds.
+The first-step below is tool_builder-workable today.
+
+first-step: (tool_builder, today, exact, over es_construct and then Aichholzer)
+(1) DEFine deep-below and decomposable exactly (both on disk); implement an
+exact predicate with lib/es_geom orientation determinants: A is deep below B iff
+y(A)<y(B) AND every point of B lies above every line through two points of A AND
+every point of A lies below every line through two points of B. (2) Positive
+control: verify es_construct(n) is EXACTLY decomposable under this definition at
+n=5,6,7 (recursively: decompose X into A⊔B with each half (n-1)-avoiding,
+|A|,|B|≤2^{n-3}, A deep below B). Confirm the binary tree {leaves} = X  with
+each level at most halving the convexity demand. (3) The lifted test: over every
+REALIZABLE n-avoiding 2^{n-2}-point order type in the Aichholzer database up to
+n=10 (8-point 5-avoiding, 16-point 6-avoiding, 32-point 7-avoiding if present),
+test whether each admits a recursive deep-below decomposition; report the
+survival statistics (how many are neither split-tight nor decomposable). If
+NONE is, that is the first lifted all-sets structural result; if the first
+counterexample appears, it immediately becomes ROOT's restricted-class evidence
+and refines the target. Also verify the split n-gon / split-free status of each
+(exact cap/cup sharing-rightmost-point scan). State the search space and worker
+count; the exact oracle is the referee. The one external upgrade: fetch JCTA
+2026 full text (DOI 10.1016/j.jcta.2026.106195) for the proof of Thm 8, which
+is the only piece that would promote the decomposable branch from asserted to
+verified.
+
+killed-by: (the DEDUCTIVE step to the bound, NOT the adopted structural claim)
 The route "split-tight OR decomposable ⟹ ES(n)≤2^{n-2}+1" is unsound at the
-split-tight branch, because a SPLIT k-gon is NOT a convex k-gon. From the held
-Baek–Balko text (research/summaries/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.md):
-"Split k-gon ... an a-cap and a u-cup that share the rightmost point, with
-a+u=k+2. It has k or k+1 points; IF THEY ALSO SHARE THE LEFTMOST POINT, the k
+split-tight branch: a SPLIT k-gon is NOT a convex k-gon. From the held Baek–Balko
+text, "Split k-gon ... an a-cap and a u-cup that share the rightmost point, with
+a+u=k+2; it has k or k+1 points; IF they also share the leftmost point, the k
 points are in convex position." So a split n-gon shares only the rightmost point
-and need not give n points in convex position — indeed that strictness is EXACTLY
-where the hardness lives (ROOT.md §5.1: "the obstruction that makes the original
-conjecture hard survives only in the strictness of 'convex' versus 'split
-convex'"). A set being split-tight therefore contributes NO convex-n-gon forcing;
-it only says it contains a relaxation of one. The split threshold theorem
-2^{k-2}+1 already guarantees EVERY 2^{n-2}+1-point set contains a split n-gon —
-so split-tightness at the threshold size is automatic for every set and can never
-be the discriminator that separates extremal from non-extremal. Moreover (a) the
-decomposable theorem (Baek–Balko Thm 8) is itself only asserted-by-source in this
-library ("The proof of Theorem 8 is omitted" in the held SoCG version; deferred
-to JCTA 2026), so the decomposable branch rests on an unverified theorem; and (b)
-the dichotomy is stated at size 2^{n-2}, where split-tightness is NOT guaranteed
-(at that size, even the split threshold does not force a split n-gon — the tight
-extremal witnesses are split-free), so the two disjuncts do not cover all extremal
-sets on any known basis. WHAT SURVIVES: the dichotomy as a NOVEL TESTABLE
-STRUCTURAL CLAIM about 2^{n-2}-point n-avoiding sets — a genuine classification
-question that, if it held (or produced a counterexample), would be a real partial
-result (GOAL criterion 4), but it does not by itself resolve the upper bound.
+and need not produce n points in convex position — that strictness is EXACTLY
+where the hardness lives (ROOT.md §5.1). The split threshold 2^{k-2}+1 already
+forces a split n-gon in EVERY 2^{n-2}+1-set, so split-tightness is automatic at
+that threshold and can never discriminate extremal from non-extremal; and at the
+extremal size 2^{n-2} the split threshold does NOT force a split n-gon (the tight
+witness es_construct(a=u=k) is split-FREE, not split-tight), so the two disjuncts
+do not cover all extremal sets on any known basis. The decomposable branch rests
+on Thm 8, asserted-by-source, proof omitted in SoCG, deferred to JCTA 2026 — hence
+the adoption below is of the structural certificate, not of the deductive bound.
 
 precedent: Baek & Balko, "The Erdős–Szekeres Conjecture Revisited", SoCG 2025,
 doi 10.4230/LIPIcs.SoCG.2025.13 — full text held and digested. ESsplit(k)=2^{k-2}+1
@@ -87,31 +112,6 @@ split-tight or decomposable; that dichotomy is the run's own claim, untested ove
 realizable order types. The SAT/signotope target parallel: the signotope analogue
 (every signotope on ≥2^{k-2}+1 vertices has a weak k-gon) is OPEN and equivalent
 to a Goodman–Pollack conjecture (baek-balko-signotope-analogue-open).
-
-first-step: (tool_builder, today, exact, over Aichholzer order types) Positive
-control on the template: verify es_construct(5,6,7) is decomposable / contains
-top-level split-n-gons (exact cap/cup sharing-rightmost-point scan with
-lib/es_geom at n=5,6,7). Then the real first target: over every REALIZABLE
-n-avoiding set of size 2^{n-2} in the Aichholzer order-type database up to n=10
-(8-point 5-avoiding, 16-point 6-avoiding, 32-point 7-avoiding if present), test
-the dichotomy: is each one split-tight (contains a split n-gon) or decomposable?
-State the survival statistics: how many n-avoiding 2^{n-2}-sets are neither. If
-NONE is (the 2^{n-2}-size gives enough room to force a split/decomposable
-certificate), that is the first lifted (all-sets) structural result of the run;
-if the FIRST counterexample (a realizable 2^{n-2}-set that is neither split-tight
-nor decomposable) appears, that is the counterexample that kills the dichotomy
-and refines the target. Concretely first compute over all 8-point and 16-point
-realizable order types (small enough to enumerate exactly, in Aichholzer's n≤11
-database) the FULL table: which are n-avoiding, which are split-free, which are
-decomposable — this is a finite, several-CPU-job enumeration with a stated
-search space and the exact oracle as referee. Speculative core to attack first:
-whether "not decomposable at any level" forces a split-n-gon (i.e. extremal sets
-are split-rich), or whether a split-free decomposable-free realizable set exists
-at some n. NOTE the sharpened framing: this first-step is valuable as a STRUCTURAL
-classification (does every no-convex-n-gon 2^{n-2}-set have a recursive
-deep-below decomposition, even if not line-separated?), NOT as a route to the
-bound — the decomposable branch is the only one that gives convex position, and
-it is asserted-by-source.
 
 falsified-by: a realizable n-avoiding set of size 2^{n-2} that is neither
 split-tight (no split n-gon) nor decomposable — an explicit, exact-coordinate

@@ -1,0 +1,6 @@
+```approach
+idea: Supersaturation / isoperimetric counting of convex 4-sets as a forcing invariant.
+mechanism: (unchanged) A set is in convex position iff all 4-subsets are convex (es35-four-criterion); "no convex n-gon" = every n-subset has a non-convex 4-subset, so the non-convex 4-sets 4-uniformly cover the n-subsets; a covering-ratio inequality was hoped to force N ≤ 2^{n-2}.
+status: refuted
+killed-by: The covering inequality is exactly the wrong direction and is satisfied trivially at every N. Double-counting gives nnc·C(N−4,n−4) ≥ C(N,n), and C(N,n)/C(N−4,n−4) = C(N,4)/C(n,4), so the cover condition reduces to nnc ≥ C(N,4)/C(n,4) — a lower bound on non-convex-4-set density that any set with ≥1 non-convex 4-subset satisfies at EVERY N. It never tightens, so it cannot force N ≤ 2^{n-2} from above. To bound N one would need an UPPER bound on nnc, but n-avoiding sets are the most non-convex-rich, not the least; no such bound exists. Structural verdict identical to the Kruskal–Katona / convexity-complex-fvector closure (bounding the wrong side of a density inequality). Literature: the real convex-quadrilateral density minima (Balogh–Salazar, DCG 38 (2006); Morris–Soltan Problem 5.1) are 4^k-type, never 2^{n-2}. Closed on the literature + the identity, not on absence.
+```

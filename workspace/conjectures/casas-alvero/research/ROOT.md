@@ -107,3 +107,23 @@ Canonical sources under `research/sources/` (full text read-only), one
 technical digest per source in `research/summaries/`. See `research/README.md`
 and the FRONTIER for the citation graph. Every claim above traces to a held
 source; nothing here is recalled from memory.
+
+## Library-integrity record (librarian, 2026-08)
+
+- **Hilbert-covariants mislabel RESOLVED.** The intended Abdesselam–
+  Chipalkatti paper, "On Hilbert covariants" (arXiv:**1203.4761** = Canad. J.
+  Math. 66(1) 2014 3–30, DOI 10.4153/CJM-2012-046-1), IS held in full at
+  `research/sources/abdesselam-chipalkatti2012_hilbert-covariants.full.md`
+  (Prop 3.2: G_{1,d} = (F,F)_2 = Hessian of F). Two wrong-content files
+  (arXiv:1010.2358 data-mining; arXiv:1010.2667 wireless) are marked
+  DO-NOT-CITE in-file and in their summaries. → `research/notes/abdesselam-
+  chipalkatti-mislabel.md` (corrected), claim
+  `abdesselam-chipalkatti-file-mislabel-corrected`.
+- **Origin paper (Casas-Alvero 2001, J. Algebra 240:326–337) is bronze-OA
+  but network-blocked from this host** (OpenAlex content 401, ScienceDirect
+  403). Full text still un-held; the statement/motivation/status are fully
+  covered by the held secondary tier. A later run with working publisher
+  access should retry. → `research/notes/librarian-cycle-hessian-anchored.md`.
+- **Fresh arXiv sweep 2026-08-17: coverage confirmed complete.** No new
+  primary 2023–2026 treatment absent. → `research/summaries/arxiv_search_
+  casasalvero_fresh.md`.

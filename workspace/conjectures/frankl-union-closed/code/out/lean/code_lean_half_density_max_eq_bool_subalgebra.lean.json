@@ -1,0 +1,32 @@
+{
+  "axioms": [
+    "'HalfDensity.block_is_union_closed' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'HalfDensity.half_density_max_eq_bool_subalgebra' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'HalfDensity.half_density_atoms_structure' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem block_is_union_closed {α : Type*} [DecidableEq α] {F : Finset (Finset α)} (h : IsBlockFamily F) : IsUnionClosed F",
+    "theorem max_half_is_block {α : Type*} [Fintype α] [DecidableEq α] (hn : Fintype.card α ≤ 5) (F : Finset (Finset α)) (hne : F.Nonempty) (huc : IsUnionClosed F) (hm : MaxDensityHalf F) : IsBlockFamily F",
+    "theorem block_elements_half {α : Type*} [DecidableEq α] {F : Finset (Finset α)} (h : IsBlockFamily F) : ∀ a, present F a → DensityHalf F a",
+    "theorem block_card_two_pow {α : Type*} [DecidableEq α] {F : Finset (Finset α)} (h : IsBlockFamily F) : ∃ k : ℕ, 1 ≤ k ∧ F.card = 2 ^ k",
+    "theorem block_symm_diff_closed {α : Type*} [DecidableEq α] {F : Finset (Finset α)} (h : IsBlockFamily F) : SymmDiffClosed F",
+    "theorem block_atoms_exactly_one {α : Type*} [DecidableEq α] {F : Finset (Finset α)} (h : IsBlockFamily F) : DisjointAtoms (atoms F) ∧ ∀ a, present F a → ∃ A, IsAtom F A ∧ a ∈ A ∧ ∀ B, IsAtom F B → a ∈ B → B = A",
+    "theorem half_density_max_eq_bool_subalgebra {α : Type*} [Fintype α] [DecidableEq α] (hn : Fintype.card α ≤ 5) (F : Finset (Finset α)) (hne : F.Nonempty) (huc : IsUnionClosed F) (hm : MaxDensityHalf F) : IsBlockFamily F ∧ (∀ a, present F a → DensityHalf F a) ∧ (∃ k : ℕ, 1 ≤ k ∧ F.card = 2 ^ k) ∧ SymmDiffClosed F",
+    "theorem half_density_atoms_structure {α : Type*} [Fintype α] [DecidableEq α] (hn : Fintype.card α ≤ 5) (F : Finset (Finset α)) (hne : F.Nonempty) (huc : IsUnionClosed F) (hm : MaxDensityHalf F) : DisjointAtoms (atoms F) ∧ ∀ a, present F a → ∃ A, IsAtom F A ∧ a ∈ A ∧ ∀ B, IsAtom F B → a ∈ B → B = A"
+  ],
+  "file": "code/lean/half_density_max_eq_bool_subalgebra.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/half_density_max_eq_bool_subalgebra.lean:144:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/half_density_max_eq_bool_subalgebra.lean:161:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/half_density_max_eq_bool_subalgebra.lean:176:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/half_density_max_eq_bool_subalgebra.lean:192:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/half_density_max_eq_bool_subalgebra.lean:207:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

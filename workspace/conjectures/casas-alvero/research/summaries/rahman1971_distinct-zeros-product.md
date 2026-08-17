@@ -1,5 +1,20 @@
 # Rahman 1971 — Distinct zeros of the product of a polynomial and its successive derivatives
 
+```claim
+id: popoviciu-erdos-rahman-nplus2
+statement: If p(z) is a real-rooted polynomial of degree n, the product P = p·p'·…·p^{(n-1)} has at least n+1 distinct zeros unless p ≍ (z-a)^n (pure power, 1 distinct zero). Among non-degenerate real-rooted p, P has n+1 distinct zeros exactly for p ≍ (z-a)(z-b)^{n-1}, (z-a)^2(z-b)^2, or (z-a)^3(z-b)^3, and at least n+2 otherwise. The Popoviciu-Erdős conjecture (real or complex) is the n+1 bound.
+hypotheses: modern real-rooted hypothesis used in Rahman's proof (the conjecture itself is for polynomial coefficients); degree n; derivative product P over its zero-union.
+holds-here: yes (the n+1/n+2 counting fact for real-rooted polynomials is what the degree-20 binomial search runs against; the union counting complements the shared-root CA hypothesis)
+status: proved (for the real-rooted statements; the conjecture in general is open)
+bearing: The shared-root CA hypothesis is a statement about COMMON roots; this is the dual statement about the UNION of all derivative zero sets. A genuine CA counterexample would force P to collapse to only the ≤5 distinct roots of f, far below n+1 — linking the two. The extremal shapes z(z^2-1) and z(z^2-1)^2 are non-binomial constructions for the degree-20 diversification task.
+anchor: research/sources/rahman1971_distinct-zeros-product.full.md
+contradicts: none
+follows-from: none
+answers: none
+```
+
+Q. I. Rahman, "The Distinct Zeros of the Product of a Polynomial and its Successive Derivatives", Canad. Math. Bull. **14** (2), 1971, pp. 267–269.
+
 <!-- source: https://www.cambridge.org/core/services/aop-cambridge-core/content/view/1DFE2645D96C7BF19E72108915B302AD/S0008439500058276a.pdf/the-distinct-zeros-of-the-product-of-a-polynomial-and-its-successive-derivatives.pdf
   and https://doi.org/10.4153/cmb-1971-050-9 (landing / bibliography) -->
 

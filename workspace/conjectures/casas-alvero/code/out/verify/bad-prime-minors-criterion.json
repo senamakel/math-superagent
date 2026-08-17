@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "bad-prime-minors-criterion",
+  "source": "code/lean/bad_prime_minors_criterion.lean",
+  "stage": "prove"
+}

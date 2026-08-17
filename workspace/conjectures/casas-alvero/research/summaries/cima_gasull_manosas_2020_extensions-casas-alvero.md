@@ -56,6 +56,46 @@ These reinforce the authors' closing intuition: CA rigidity is specific to
 polynomials, so a functional-analytic route would have to explain what the
 polynomial structure supplies that smooth/analytic functions lack.
 
+```claim
+id: smallest-open-degree-20-vs-2020-survey
+statement: The smallest open degree is 20, not 24/28/30. The Cima–Gasull–Mañosas 2020
+  survey's status remark "the first cases left open are n = 24, 28, 30" skips 20 and
+  is an error in a passing remark: 20 = 4·5 is NOT covered by the 4p^e theorem (which
+  excludes p ∈ {3,5,7}, so p=5 is excluded) and not of any settled np^ℓ form. Castryck
+  et al. 2012 ("d=20, the next open case") and Schaub–Spivakovsky 2024 ("smallest degree
+  for which CA is not known is n=20") both say 20.
+hypotheses: char 0
+holds-here: yes — reconciling a cross-source discrepancy in favour of 20
+status: asserted-by-source (two independent primary sources: Castryck 2012, Schaub-Spivakovsky 2024)
+bearing: corrects `problem.md`'s stale "30" and the 2020 survey's "24/28/30". The run
+  must treat 20, not 30 or 24, as the target degree.
+anchor: research/sources/castryck2012_degree12_html.full.md (eq 6.5),
+  research/sources/schaub_spivakovsky_bad-primes_2024.full.md,
+  research/sources/cima_gasull_manosas_2020_extensions-casas-alvero.full.md (intro)
+contradicts: (no held claim id — this is a cross-source discrepancy with
+  a passing remark in the Cima-Gasull-Manosas 2020 survey, which lists the
+  first open cases as 24/28/30; recorded as a sourced disagreement, not as a
+  contradiction of a claim this library holds, so it must not be filed as a
+  phantom id)
+falsifies: a held source settling degree 20, or showing 20 covered by a settled family.
+```
+
+```claim
+id: charp-witness-xpp1-xp-xp-1-polynomial
+statement: In characteristic 5, P(x) = x²(x²+1) = x²(x−2)(x−3) is a CA-polynomial
+  (shares a root with each of P′, P″, P‴) that is not a pure power. A second char-p
+  counterexample family, distinct from x^{p+1}−x^p but of the same shape
+  (x^{p−1}·quadratic). Confirms (not contradicts) the hard constraint: CA is false
+  in char p.
+hypotheses: char p = 5
+holds-here: yes — a negative control the oracle must pass, now with a second primary citation
+status: asserted-by-source (Cima–Gasull–Mañosas 2020, Extracta Math.)
+bearing: any char-0 proof must break in char p; this family and x^{p+1}−x^p are the
+  two families the oracle recognises as satisfying the hypothesis without being a pure power.
+anchor: research/sources/cima_gasull_manosas_2020_extensions-casas-alvero.full.md
+falsifies: an oracle run showing x²(x²+1) over F_5 is a pure power, or fails the hypothesis.
+```
+
 ## For the run
 
 - **Records a cross-source discrepancy** (survey says 24/28/30; Castryck &

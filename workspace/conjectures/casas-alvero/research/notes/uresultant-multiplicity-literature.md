@@ -120,7 +120,8 @@ complete-intersection question.
   partial R_i ∉ (…). arXiv:2312.08742; also 2307.05997 (bad primes).
 - Lu, arXiv:1707.04754 (held): regular sequences, dimension of varieties.
 - Ghosh, arXiv:2402.18717 (held): almost/complete intersection, Q6.4.
-- Valabrega–Valla, *Form rings and regular sequences*, Nagoya 1978 (not held;
+- Valabrega–Valla, *Form rings and regular sequences*, Nagoya 1978 (held:
+  research/sources/valabrega-valla1978_form-rings-regular-sequences.full.md;
   classical): multiplicity = product of initial orders iff gr CM.
 - Castryck–Laterveer–Ounaïes 2012 (held) d=12: the weighted-projective variety
   V_k(d,0) = (Res_x(F,F_H^(j))|j=2..d−1) with weights (d−2,…,1) — the same
@@ -166,7 +167,10 @@ statement: The quotient length |QQ[a_2..a_n]/(R_1..R_{n-1})| and Samuel
 hypotheses: same ring/setup as uresultant-order-n-n-i-sourced; additionally the
       ideal (R_1..R_{n-1}) is a regular sequence of height n-1 (an 0-dim
       complete intersection) — which holds iff CA holds in degree n.
-holds-here: yes (verified computationally n=3,4,5,6)
+holds-here: yes (verified computationally n=3,4,5,6,7,8 — n=8 via exact
+      homogeneity route, code/out/uresultant_n8_homogeneity.captured.txt;
+      n=7 via expand + Samuel, uresultant_n7.captured.txt; Singular vdim
+      route stops at n=7 with a measured 3000 s wall)
 status: checked
 bearing: the n^(n-2) identification with labeled trees is NEW/unpublished —
       not in de Frutos, Schaub-Spivakovsky, Castryck et al, Lu, Ghosh, or any
@@ -174,8 +178,9 @@ bearing: the n^(n-2) identification with labeled trees is NEW/unpublished —
       is a certificate in verified degrees, not an unconditional theorem.
 anchor: research/notes/uresultant-multiplicity-certificate-novelty.md,
       code/out/uresultant_n4.captured.txt, uresultant_n5_multmap.captured.txt,
-      uresultant_n6.captured.txt
+      uresultant_n6.captured.txt, uresultant_n7.captured.txt,
+      uresultant_n8_homogeneity.captured.txt
 follows-from: uresultant-order-n-n-i-sourced,
-      samuel-multiplicity-product-of-orders (Valabrega-Valla)
+      valabrega-valla-initial-forms-regular-sequence (Valabrega-Valla)
 answers: uresultant-multiplicity-literature-novelty
 ```

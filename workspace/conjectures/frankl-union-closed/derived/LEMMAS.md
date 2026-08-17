@@ -28,6 +28,7 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `GnmEnvelope.isUpset_powerset_univ` | theorem | unchecked | {α : Type*} [DecidableEq α] : | — | `code/lean/gnm_envelope.lean` |
 | `GnmEnvelope.upset_realizable` | theorem | unchecked | {α : Type*} [Fintype α] [DecidableEq α] | — | `code/lean/gnm_envelope.lean` |
 | `EllisGilmer.LHS` | def | failed | (x : ℝ) : ℝ | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
+| `EllisGilmer.LHS_of` | def | failed | (p : Fin 4 → ℝ) : ℝ | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
 | `EllisGilmer.boundary_distribution` | theorem | failed | : | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
 | `EllisGilmer.closed` | def | failed | (x : ℝ) : ℝ | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
 | `EllisGilmer.closed_at_3_10` | theorem | failed | : closed (3/10) = (2/25) * log (2/3) | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
@@ -44,9 +45,32 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `EllisGilmer.marginal_2_half` | theorem | failed | (x : ℝ) : mass x 2 + mass x 3 = 1/2 | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
 | `EllisGilmer.mass` | def | failed | (x : ℝ) (i : Fin 4) : ℝ | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
 | `EllisGilmer.or` | def | failed | (i j : Fin 4) : Fin 4 | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
+| `EllisGilmer.perturbed_marginal_1` | theorem | failed | (x ε : ℝ) : | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
+| `EllisGilmer.perturbed_marginal_2` | theorem | failed | (x ε : ℝ) : | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
+| `EllisGilmer.perturbed_mass` | def | failed | (x ε : ℝ) (i : Fin 4) : ℝ | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
+| `EllisGilmer.perturbed_mass_sum_one` | theorem | failed | (x ε : ℝ) : | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
 | `EllisGilmer.q_weight` | def | failed | (x : ℝ) (s : Fin 4) : ℝ | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
+| `EllisGilmer.union_weight` | def | failed | (p : Fin 4 → ℝ) (s : Fin 4) : ℝ | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
+| `HalfDensity.DensityHalf` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) (a : α) : Prop | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.DisjointAtoms` | def | failed | {α : Type*} [DecidableEq α] (ats : Finset (Finset α)) : Prop | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.IsAtom` | def | failed | {α : Type*} (F : Finset (Finset α)) (A : Finset α) : Prop | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.IsBlockFamily` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) : Prop | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.IsUnionClosed` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) : Prop | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.MaxDensityHalf` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) : Prop | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.SymmDiffClosed` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) : Prop | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.atoms` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) : Finset (Finset α) | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.block_atoms_exactly_one` | theorem | failed | {α : Type*} [DecidableEq α] | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.block_card_two_pow` | theorem | failed | {α : Type*} [DecidableEq α] | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.block_elements_half` | theorem | failed | {α : Type*} [DecidableEq α] | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.block_is_union_closed` | theorem | failed | {α : Type*} [DecidableEq α] | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.block_symm_diff_closed` | theorem | failed | {α : Type*} [DecidableEq α] | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.count` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) (a : α) : ℕ | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.half_density_atoms_structure` | theorem | failed | {α : Type*} [Fintype α] [DecidableEq α] | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.half_density_max_eq_bool_subalgebra` | theorem | failed | {α : Type*} [Fintype α] [DecidableEq α] | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.max_half_is_block` | theorem | failed | {α : Type*} [Fintype α] [DecidableEq α] | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
+| `HalfDensity.present` | def | failed | {α : Type*} (F : Finset (Finset α)) (a : α) : Prop | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
 
-37 declarations, 11 of them in a file the kernel has checked.
+61 declarations, 11 of them in a file the kernel has checked.
 
 ## Never checked
 

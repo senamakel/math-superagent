@@ -25,6 +25,26 @@ finite fields.
   for each k there is m_k with x_k^{m_k} ∈ LM(J), J = ⟨H_1,…,H_{n−1}⟩,
   H_i(x_i) the derivative-polynomials.
 
+```claim
+id: lu-2017-charp-trap
+statement: Lu 2017 (arXiv:1707.04754) reduces the char-0 CA conjecture to a count of
+  F_p-points of size p (Prop 2.3) and proves those F_p statements (§4). CA is false
+  in char p (x^{p+1}−x^p is a counterexample), so an argument whose core is a char-p
+  count cannot itself prove CA: the count of size p corresponds to the pure-power
+  branch, and ruling out the other (counterexample) F_p-point branches is the missing
+  char-0 content the paper does not supply.
+hypotheses: char-0 conclusion; the reduction proceeds through F_p-points for large primes p
+holds-here: yes — this is a claimed proof that has not located its char-0-only step
+status: asserted-by-source (preprint, unverified); the char-p-trap diagnosis is this run's reading, not Lu's
+bearing: another entry in the claimed-proof family (Battiston withdrawn, de las Heras
+  unpublished, Yakubovich unpublished, Ghosh unverified). Its Char-p-p test: for n=p+1,
+  run Prop 2.3's counting claim against the known char-p counterexamples — the
+  F_p-point count must NOT be p for the counterexample branches if the claim is consistent.
+anchor: research/sources/lu2017_casas-alvero-computational-ag.full.md (Props 2.3, 4.1-4.5)
+contradicts: nothing on disk — it is a claim flagged as falling into the char-p trap
+falsifies: a step in Lu's §4 showing the counterexample F_p-branches are counted out.
+```
+
 ## Status — claimed proof, suspect char-p relation
 
 This is another entry in the claimed-proof family (Battiston withdrawn,

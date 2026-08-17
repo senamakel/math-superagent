@@ -26,9 +26,17 @@ order-dimension, not allowable-sequence. It is a pure eigen/association-scheme
 inequality, and the host of size exactly 2^{n-2} is the feature the counted
 routes lacked.
 
-status: grounded-as-reformulation (the spectral/Delsarte machinery is real but
-its application to point-set convexity has NO precedent — see precedent; the
-2^{n-2}-as-spectral-threshold claim is entirely the run's own and unsupported)
+status: refuted
+killed-by: Delsarte LP / Krawtchouk / Hamming-scheme bounds constrain CODE SIZES at
+a Hamming/rank-distance threshold; planar convexity is ORDER-TYPE data, not a
+metric, so a convexity interaction matrix over a point set is not an
+association-scheme matrix and Delsarte's LP cannot even be posed. This is the
+weakest-grounded of the three proposed candidates and is closed as a proof
+route: the 2^{n-2} host is the extremal construction's own index space, not an
+a-priori indexing of arbitrary sets, and the same injection-loading problem that
+killed boolean-lattice-injection-compression applies. No published source frames
+ES as a spectral threshold; the empirical alignment check was the only surviving
+fragment.
 
 precedent: The association-scheme / Delsarte LP / Krawtchouk machinery is REAL
 and standard, but its domain is coding theory: P. Delsarte, "An algebraic

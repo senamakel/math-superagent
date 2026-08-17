@@ -25,14 +25,17 @@ Ranked by how much of the argument rests on each, and within one load by whether
 - `half-density-max-eq-bool-subalgebra` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For every nonempty union-closed family F ⊆ 2^[n], n<=5, whose MAXIMUM element density is exactly 1/2, F is a Boolean subalgebra…
 - `uc-via-entropy-coupling/G-coupling-half` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For every distribution μ on {0,1}^n with H(μ) > 0 and max_i Pr_{A∼μ}[A_i=1] < 1/2, there is a conditionally-iid coupling (A,B) of (μ,μ) —…
 
-_194 further candidate(s) below these, in the table._
+_201 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
 | `abe-nakano-modular` | claim | **ready** | — | Every finite modular lattice L with \|L\| ≥ 2 satisfies Frankl's conjecture: some join-irreducible x has \|{y: y ≥ x}\| ≤ \|L\|/2. |
+| `abundance-not-in-single-variable-hilbert-series` | claim | **ready** | — | The abundance count delta(i) = #{A in F : i in A} is multigraded (Z^n-graded) data and is NOT a coefficient of the single-variable Hilbert… |
 | `abundance-profile-odd-filter-minmax` | goal | blocked | `half-density-max-eq-bool-subalgebra` | Prove/verify: for every non-Boolean union-closed family F on [n], max-density(F) >= 2^{n-1}/(2^n-1). The VALUE is correct; the claimed… |
+| `ad-conclusion-is-aggregate-not-per-element` | claim | **ready** | — | Ahlswede–Daykin's four-functions theorem (if alpha(A)beta(B) <= gamma(A u B) delta(A n B) for all A,B in P(n) then (sum alpha)(sum beta) <=… |
+| `ad-uc-application-is-avg-size-route-known-not-to-force-abundance` | claim | **ready** | — | The only application of the AD/FKG-averaging engine to union-closed families in the literature is through the average-set-size / Reimer… |
 | `ahs-barrier-3-minus-rt5-over-2` | claim | established | — | min_μ∈ℳ_φ E[H(xy)]−E[H(x)] over independent (μ×μ) copies is minimized at φ*=(√5−1)/2, giving constant 1−φ*=(3−√5)/2 for UC; a natural… |
 | `ahs-published-ejc` | claim | **ready** | — | The (3−√5)/2 barrier constant is a peer-reviewed result: Alweiss–Huang–Sellke, Electron. J. Combin. 31(3):P3.35 (2024), doi:10.37236/12232. |
 | `ahs-published-note` | claim | **ready** | — | As of the published EJC record (Sep 2024), the peer-reviewed record for the union-closed constant is NOT Liu/Cambie (still preprints); the… |
@@ -59,6 +62,7 @@ _194 further candidate(s) below these, in the table._
 | `cc-no-abundance-without-closure-on-4` | claim | **ready** | — | Over ALL 32,767 nonempty empty-free subfamilies of [4] there exist exactly 74 NON-union-closed families satisfying the arithmetic… |
 | `chase-lovett-approximate` | claim | established | — | For (1−ε)-approximate union-closed families (ε < 1/2, nearly all pixel- unions in F), some element is in at least ψ = (3−√5)/2 fraction of… |
 | `chase-lovett-psi-optimal-approximate` | claim | established | — | For (1−ε)-approximate union-closed ℱ (ε<1/2), some element is in at least ψ−δ fraction of sets (δ=2ε(1+log(1/ε)/log\|ℱ\|), ψ=(3−√5)/2), and ψ… |
+| `chen-de-li-nadimpalli-servedio-uc-hard-to-test` | claim | **ready** | — | The property of being a union-closed family (a function f:{0,1}^n->{0,1} whose satisfying assignments are a union-closed family) is… |
 | `cms-averaged-frankl-wrong` | claim | established | — | The averaged Frankl property (average over b of w(b) is nonnegative) does NOT hold for all union-closed families; the averaging method has… |
 | `cms-averaged-threshold` | claim | established | — | The first author verified the averaged Frankl property whenever n ≥ 2m − 2^(m/2) (m ≥ 3); one cannot replace 2^(m/2) with the upper integer… |
 | `colbert-dim-at-most-2` | claim | established | — | Every nontrivial union-closed family of dimension at most two (every chain of sets has length (number of elements minus one) ≤ 2) has an… |
@@ -67,12 +71,8 @@ _194 further candidate(s) below these, in the table._
 | `colbert-topological-dcc` | claim | established | — | Let (X, τ) be a topological space satisfying the descending chain condition on its open sets, τ ≠ {∅}. Then X has an abundant element of τ… |
 | `coupling-interval-bb-infeasible-10s` | claim | established | — | The rigorous mpmath.iv interval branch-and-bound CANNOT certify t=0.38234 within a 10s budget: the margin of the true infimum above 1 is… |
 | `coupling-true-inf-crossing-0-3824` | claim | established | — | Over the full 4-parameter two-atom class, the true inf of g(P,alpha)/Eh (inf over P taken internally, alpha=0.035) crosses 1 between… |
-| `coupling-true-inf-crossing-4d` | claim | **ready** | — | Over the full 4-parameter two-atom coupling class, the true infimum of g/Eh — with the inf over the coupling P taken internally, i.e. the… |
-| `czedli-averaged-frankl-large-families` | claim | **ready** | — | For a union-closed family F over an m-element set A, m ≥ 3, with n = \|F\| ≥ 2^m − 2^(m/2), the averaged Frankl property holds: ∑_{a∈A}(n −… |
-| `czedli-lattice-averaged-large` | claim | **ready** | — | For a finite lattice L with m = \|J(L)\| ≥ 3 and \|L\| ≥ 2^m − 2^(m/2), the averaged lattice-theoretic Frankl inequality holds: ∑_{a∈J(L)}(\|L\|… |
-| `czedli-schmidt-large-semimodular` | claim | established | — | Every finite large semimodular lattice L (\|L\| > 5·2^(m−3), m=\|J(L)\|) satisfies Frankl's conjecture; if \|L\| > 6·2^(m−3) then J(L)=A(L). |
 
-_162 further nodes not shown._
+_169 further nodes not shown._
 
 ## Resting on nothing that exists
 

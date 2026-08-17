@@ -31,6 +31,22 @@ Salinier, proving CA for degrees `5p^e` (e ≥ 1 integer, p prime) with an
 
 ## Status labels
 
+```claim
+id: 5p-bad-primes-chellali
+statement: CA holds for degrees 5p^e (e≥1, p prime) with p ≠ 2,3,7,11,131,193,599,3541,8009.
+  That is, the bad primes for the 5p family are exactly {2,3,7,11,131,193,599,3541,8009}.
+hypotheses: char 0, degree 5p^e, p outside the listed set
+holds-here: yes — this is the independently-derived bad-prime list for the degree-5p family
+status: asserted-by-source (French-language HAL deposit 2012, not re-proved here)
+bearing: this explicit bad-prime list for 5p^e is INDEPENDENT of Castryck et al.'s
+  computational classification of 5p^k primes; cross-check the two — they agree on
+  {2,3,7,11,131,193,599,3541,8009}. A concrete finite set for the run's own
+  bad-prime computations (Ghosh J_T / Schaub-Spivakovsky criterion) to verify.
+anchor: research/sources/chellali2012_degree-5p-hal.full.md (Prop 2.2)
+falsifies: a degree-5p^e counterexample for p outside the list, or a source listing a
+  different 5p bad-prime set.
+```
+
 - Main theorem (degree 5p^e, p outside the list): **asserted-by-source**, not
   re-proved here. French-language HAL deposit, not a journal-refereed check
   recorded here.

@@ -6,18 +6,21 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 9 | https://doi.org/10.1090/s0273-0979-00-00877-6 | The Erdos-Szekeres problem on points in convex position – a survey | cited by Fast Formal Proof of the Erdős–Szekeres Conjecture for Convex Polygons with at Most 6 Points (2000, cited 115 times) |
 | 5 | https://dblp.uni-trier.de | DBLP | Change to browse by: [cs][17] ### References & Citations - [NASA ADS][18] - [Google Scholar][19] - [Semantic Scholar][20] ### [DBLP][21] - CS Bibliography [listing][22] \| [bibtex][23] [Peter… |
 | 4 | https://doi.org/10.1007/978-0-8176-4842-8_3 | A Combinatorial Problem in Geometry | cited by Fast Formal Proof of the Erdős–Szekeres Conjecture for Convex Polygons with at Most 6 Points (2009, cited 1264 times) |
+| 4 | https://doi.org/10.1017/s144618110000300x | Computer solution to the 17-point Erdős-Szekeres problem | cited by Fast Formal Proof of the Erdős–Szekeres Conjecture for Convex Polygons with at Most 6 Points (2006, cited 77 times) |
 | 4 | https://doi.org/10.1090%2FS0273-0979-00-00877-6 | 10.1090/S0273-0979-00-00877-6 | on points in convex position—A survey", *[Bulletin of the American Mathematical Society][82]*, **37**(4): 437– 458, [doi][53]: [10.1090/S0273-0979-00-00877-6][83] - Nicolás, Carlos M. (2007), "The… |
 | 4 | https://doi.org/10.1016/j.jcta.2026.106195 | The Erdős–Szekeres conjecture revisited | cites Ramsey-remainder (2026, cited 0 times) |
 | 4 | https://doi.org/10.1016/j.ejc.2024.104085 | https://doi.org/10.1016/j.ejc.2024.104085 | 24/SCI/008). ## References 1. J. Baek. On the Erdős-Tuza-Valtr conjecture. European J. Combin., 124:Paper No. 104085, 15, 2025. URL: [https://doi.org/10.1016/j.ejc.2024.104085][24]. 2. M. Balko.… |
 | 4 | http://www.numdam.org/item?id=CM_1935__2__463_0 | "A combinatorial problem in geometry" | COMPOSITIO MATHEMATICA P. ERDÖS G. SZEKERES A combinatorial problem in geometry Compositio Mathematica, tome 2 (1935), p. 463-470 <http://www.numdam.org/item?id=CM_1935__2__463_0> © Foundation… |
 | 4 | https://link.springer.com/product/springer-plus | View plans | chapters or articles per month - Access and download chapters and articles from more than 300k books and 2,500 journals - Cancel anytime [View plans][7] ## Buy Now Price includes VAT (Kuwait) Instant… |
-| 3 | https://doi.org/10.1017/s144618110000300x | Computer solution to the 17-point Erdős-Szekeres problem | cited by Fast Formal Proof of the Erdős–Szekeres Conjecture for Convex Polygons with at Most 6 Points (2006, cited 77 times) |
 | 3 | http://www.emis.de/MATH-item?0958.52018 | MATH | V.: The Erdős–Szekeres problem on points in convex position—a survey. Bull. Am. Math. Soc. **37**, 437–458 (2000) [Article][48] [MATH][49] [Google Scholar][50] 20. Morris, W., Soltan, V.: The… |
+| 3 | https://doi.org/10.1007/s00454-007-1343-6 | The Empty Hexagon Theorem | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (2007, cited 92 times) |
+| 3 | https://doi.org/10.1007/s00454-007-9018-x | Empty Convex Hexagons in Planar Point Sets | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (2007, cited 105 times) |
 | 3 | https://link.springer.com/10.1007/978-3-030-25005-8_4?fromPaywallRec=false | On Erdős–Szekeres-Type Problems for k-convex Point Sets | by Pach and Solymosi. ## Article PDF [Download][1] to read the full article text ### Similar content being viewed by others ### [On Erdős–Szekeres-Type Problems for k-convex Point Sets][7] Chapter ©… |
+| 3 | https://doi.org/10.1007/3-540-47738-1_7 | Problems and Results around the Erdös-Szekeres Convex Polygon Theorem | cited by THE ERDŐS–SZEKERES PROBLEM FOR NON‐CROSSING CONVEX SETS (2001, cited 44 times) |
 | 3 | https://doi.org/10.1007/pl00009350 | A Positive Fraction Erdos - Szekeres Theorem | cited by THE ERDŐS–SZEKERES PROBLEM FOR NON‐CROSSING CONVEX SETS (1998, cited 54 times) |
+| 3 | https://doi.org/10.1007/s00454-002-2829-x | Link | sets of points without empty convex 6-gons. Discrete Comput. Geom. 29 ( 1), pp. 153–158. External Links: ISSN 0179-5376,1432-0444, [Link][35] Cited by: §2, §2, §6. - [32] J. Reeves (2022)… |
 | 3 | https://doi.org/10.1007/BF02187831 | https://doi.org/10.1007/BF02187831 | Valtr. Convex independent sets and 7-holes in restricted planar point sets. Discrete & Computational Geometry, 7(2):135-152, 1992. URL: [https://doi.org/10.1007/BF02187831][46]. 24. P. Valtr. Private… |
 | 3 | https://doi.org/10.4153/CMB-1983-077-8 | Link | Horton (1983) Sets with no empty convex 7 7 -gons. Canad. Math. Bull. 26 ( 4), pp. 482–484. External Links: ISSN 0008-4395,1496-4287, [Link][27] Cited by: §2. - [24] M. Kirchweger, T. Peitl, and S.… |
 | 3 | https://doi.org/10.1016/0097-3165(84)90050-5 | Crossref | E. Goodman and R. Pollack, Semispaces of configurations, cell complexes of arrangements,J. Combin. Theory Ser. A37 (1984), 257---293. [Crossref][18] [Google Scholar][19] [9] B. Grünbaum,Convex… |
@@ -33,8 +36,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | http://www.ams.org/mathscinet-getitem?mr=1779413 | MathSciNet | The Erdős–Szekeres problem on points in convex position – a survey. Bull. Am. Math. Soc. **37**, 437–458 (2000) [Article][103] [MathSciNet][104] [MATH][105] [Google Scholar][106] 18. Nešetřil, J.,… |
 | 2 | https://ar5iv.labs.arxiv.org/html/1510.06255 | [1510.06255] An improved upper bound for the Erdős-Szekeres conjecture | resembles https://drops.dagstuhl.de/storage/00lipics/lipics-vol332-socg2025/LIPIcs.SoCG.2025.13/LIPIcs.SoCG.2025.13.pdf |
 | 2 | https://doi.org/10.1007/S00454-016-9791-5 | https://doi.org/10.1007/S00454-016-9791-5 | N. Mojarrad and G. Vlachos. An improved upper bound for the Erdős-Szekeres conjecture. Discrete Comput. Geom., 56(1):165-180, 2016. URL: [https://doi.org/10.1007/S00454-016-9791-5][39]. 17. G.… |
-| 2 | https://doi.org/10.1007/s00454-007-1343-6 | The Empty Hexagon Theorem | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (2007, cited 92 times) |
-| 2 | https://doi.org/10.1007/s00454-007-9018-x | Empty Convex Hexagons in Planar Point Sets | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (2007, cited 105 times) |
 | 2 | https://doi.org/10.1016/0012-365x(92)90665-3 | Sets in Rd with no large empty convex subsets | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (1992, cited 36 times) |
 | 2 | https://doi.org/10.1016/s0925-7721(03)00013-0 | Chromatic variants of the Erdos–Szekeres theorem on points in convex position | cites Ramsey-remainder (2003, cited 33 times) |
 | 2 | https://doi.org/10.1007/bf02187831 | Convex independent sets and 7-holes in restricted planar point sets | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (1992, cited 54 times) |
@@ -45,9 +46,8 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://doi.org/10.1016/0012-365x(80)90096-5 | Proof of a conjecture of Burr, Grünbaum, and Sloane | cited by THE ERDŐS–SZEKERES PROBLEM FOR NON‐CROSSING CONVEX SETS (1980, cited 68 times) |
 | 2 | https://doi.org/10.5169/seals-32945 | Konvexe Fünfecke in ebenen Punktmengen | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (1978, cited 116 times) |
 | 2 | https://openalex.org/W584360559 | Elementary Real Analysis | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (1962, cited 69 times) |
-| 2 | https://doi.org/10.1007/3-540-47738-1_7 | Problems and Results around the Erdös-Szekeres Convex Polygon Theorem | cited by THE ERDŐS–SZEKERES PROBLEM FOR NON‐CROSSING CONVEX SETS (2001, cited 44 times) |
 
-_1238 further candidates not shown; they are cited once each._
+_1242 further candidates not shown; they are cited once each._
 
 ---
 

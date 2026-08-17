@@ -14,12 +14,18 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `Polynomial.degree_one_CA_polynomial` | theorem | unchecked | {K : Type*} [Field K] (f : K[X]) : | — | `code/lean/gvb_lift.lean` |
 | `Polynomial.degree_one_has_no_nontrivial_root_sharing` | lemma | unchecked | — | — | `code/lean/gvb_lift.lean` |
 | `Polynomial.degree_two_CA_polynomial` | theorem | unchecked | {K : Type*} [Field K] [IsAlgClosed K] | — | `code/lean/gvb_lift.lean` |
+| `Test.CAPolynomialDegree` | def | failed | {R : Type*} [CommRing R] (f : R[X]) (d : ℕ) : Prop | — | `code/lean/gvb_base_probe.lean` |
+| `Test.IsPowerOfLinear` | def | failed | {R : Type*} [CommRing R] (f : R[X]) : Prop | — | `code/lean/gvb_base_probe.lean` |
+| `Test.NoCAPolynomial` | def | failed | (K : Type*) [Field K] (d : ℕ) : Prop | — | `code/lean/gvb_base_probe.lean` |
+| `Test.SharedRootWithHasseDeriv` | def | failed | {R : Type*} [CommRing R] (f : R[X]) (j : ℕ) : Prop | — | `code/lean/gvb_base_probe.lean` |
+| `degree_one_is_power_of_linear` | theorem | failed | {K : Type*} [Field K] (f : K[X]) | — | `code/lean/gvb_base_probe.lean` |
 
-6 declarations, 0 of them in a file the kernel has checked.
+11 declarations, 0 of them in a file the kernel has checked.
 
 ## Never checked
 
 These files are in the tree and no `lean_check` verdict exists for them. Nothing on this page from one of them is evidence of anything.
 
 - `code/lean/gvb_lift.lean`
+- `code/lean/gvb_probe2.lean`
 - `code/lean/probe.lean`

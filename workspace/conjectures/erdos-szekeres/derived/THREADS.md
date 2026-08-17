@@ -8,6 +8,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | --- | --- | --- | --- | --- |
 | [[allowable-sequence]] | Does the Goodman–Pollack allowable (circular) sequence of an extremal n-avoiding set carry the convexity/staircase structure through which the ES upper bound… | dead | gp-allowable-sequence-definition | CLOSED as dead (directive 13): adjudicated and refuted on both load-bearing claims; the two tasks `allseq-adjudicate` and `allowable-sequence-continue` are… |
 | [[extremal-structure]] | What local/global structure is a 2^{n-2}-point set with no convex n-gon forced into, and how close must it be to the ES construction? | open | es61-lower-bound, es35-cups-caps-bound, ms-cups-caps-tight, baek-balko-split, baek-balko-decomposable, damasdi-saturation, ps-es6, ms-toth-valtr-bound, smqh-no-realizable-4fold-32-no7gon | CURRENT (directive 22) — pattern_finder STANDING RULE: no more spectra of es_construct. No further k-subset convex spectra, no OEIS lookups on numbers off this… |
+| [[three-adopted-first-steps]] | Can the three adopted first-step programs — convex-4set supersaturation (NNC covering ratio), layer-transfer-matrix (cross-layer cone capacities), and… | open | es-construct-layer-extremality | tasks con4-supersat-nnc-count, layer-transfer-matrix-cone-cap, polar-dual-exact-verification, aichholzer-fetch — in that order. Report numbers, not readings;… |
 
 ## What is in the way
 

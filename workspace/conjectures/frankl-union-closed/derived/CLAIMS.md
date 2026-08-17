@@ -9,6 +9,9 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `abe-nakano-modular` | Every finite modular lattice L with \|L\| ≥ 2 satisfies Frankl's conjecture: some join-irreducible x has \|{y: y ≥ x}\| ≤ \|L\|/2. | yes | asserted | `research/summaries/abefrankl-abe-nakano-modular-1998.md` |
+| `abundance-not-in-single-variable-hilbert-series` | The abundance count delta(i) = #{A in F : i in A} is multigraded (Z^n-graded) data and is NOT a coefficient of the single-variable Hilbert series of k[x]/I_F, which collapses total degree and counts the complement of F… | yes | asserted | `code/out/three_approach_literature_grounding.md` |
+| `ad-conclusion-is-aggregate-not-per-element` | Ahlswede–Daykin's four-functions theorem (if alpha(A)beta(B) <= gamma(A u B) delta(A n B) for all A,B in P(n) then (sum alpha)(sum beta) <= (sum gamma)(sum delta)) has an AGGREGATE Sigma-product (correlation/overlap)… | yes | asserted | `code/out/three_approach_literature_grounding.md` |
+| `ad-uc-application-is-avg-size-route-known-not-to-force-abundance` | The only application of the AD/FKG-averaging engine to union-closed families in the literature is through the average-set-size / Reimer direction (Balla–Bollobás–Eccles, JCTA 2013, determining minimum average size and… | yes | asserted | `code/out/three_approach_literature_grounding.md` |
 | `ahs-barrier-3-minus-rt5-over-2` | min_μ∈ℳ_φ E[H(xy)]−E[H(x)] over independent (μ×μ) copies is minimized at φ* = (√5−1)/2, giving the constant 1−φ*=(3−√5)/2 for the union-closed conjecture; this is a natural barrier for the iid method of Gilmer, not a… | yes | proved | `research/summaries/alweiss-huang-sellke-barrier-2022.html.md` |
 | `ahs-barrier-3-minus-rt5-over-2` | min_μ∈ℳ_φ E[H(xy)]−E[H(x)] over independent (μ×μ) copies is minimized at φ*=(√5−1)/2, giving constant 1−φ*=(3−√5)/2 for UC; a natural barrier for the iid method of Gilmer, not a barrier to the full conjecture (dependent… | yes | proved | `research/summaries/alweiss-huang-sellke-barrier-2022.md` |
 | `ahs-published-ejc` | The (3−√5)/2 barrier constant is a peer-reviewed result: Alweiss–Huang–Sellke, Electron. J. Combin. 31(3):P3.35 (2024), doi:10.37236/12232. | yes | asserted | `research/summaries/alweiss-huang-sellke-published-ejc-2024.md` |
@@ -38,6 +41,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `cc-no-abundance-without-closure-on-4` | Over ALL 32,767 nonempty empty-free subfamilies of [4] there exist exactly 74 NON-union-closed families satisfying the arithmetic counterexample constraints (A) n_max >= 2*k_min + 1, (D) no degree-1 element (every… | yes | asserted | `code/out/combine_constraints_finding.md` |
 | `chase-lovett-approximate` | For (1−ε)-approximate union-closed families (ε < 1/2, nearly all pixel- unions in F), some element is in at least ψ = (3−√5)/2 fraction of sets; ψ is optimal for this relaxation. | yes | proved | `research/summaries/chase-lovett-approximate-union-closed-2022.md` |
 | `chase-lovett-psi-optimal-approximate` | For (1−ε)-approximate union-closed ℱ (ε<1/2), some element is in at least ψ−δ fraction of sets (δ=2ε(1+log(1/ε)/log\|ℱ\|), ψ=(3−√5)/2), and ψ is optimal: a family of layers at sizes ψn+n^{2/3} and ≥(1−ψ)n is 1−o(1) approx… | yes | proved | `research/summaries/chase-lovett-approximate-union-closed-2022.html.md` |
+| `chen-de-li-nadimpalli-servedio-uc-hard-to-test` | The property of being a union-closed family (a function f:{0,1}^n->{0,1} whose satisfying assignments are a union-closed family) is information-theoretically hard to test: non-adaptive two-sided epsilon-testers require… | yes | asserted | `code/out/three_approach_literature_grounding.md` |
 | `cms-averaged-frankl-wrong` | The averaged Frankl property (average over b of w(b) is nonnegative) does NOT hold for all union-closed families; the averaging method has intrinsic limits. | yes | proved | `research/summaries/czedli-maroti-schmidt-scope-averaging-2009.md` |
 | `cms-averaged-threshold` | The first author verified the averaged Frankl property whenever n ≥ 2m − 2^(m/2) (m ≥ 3); one cannot replace 2^(m/2) with the upper integer part of 2^(m/3); and if Frankl's conjecture holds for m-element base sets, the… | yes | proved | `research/summaries/czedli-maroti-schmidt-scope-averaging-2009.md` |
 | `colbert-dim-at-most-2` | Every nontrivial union-closed family of dimension at most two (every chain of sets has length (number of elements minus one) ≤ 2) has an abundant element. Dimension at most one is a lemma; both finite and infinite. | yes | proved | `research/summaries/colbert-chain-conditions-2412.md` |
@@ -55,6 +59,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `daswu-large-kth` | For 0 ≤ α < (3−√5)/2 there is c_α≥0 such that if \|F\| ≥ 2^{c_α(k−1)} then at least k elements each appear in ≥ α\|F\| sets. | yes | proved | `research/summaries/das-wu-frequent-elements-2024.md` |
 | `daswu-nagel` | For k ≥ 2 and \|∪F\| ≥ k, the kth-most frequent element lies in at least \|F\|/(2^{k−1}+1) sets, with equality iff F is a near-k-cube (= Boolean lattice 2^[k−1] plus one extra set). | yes | proved | `research/summaries/das-wu-frequent-elements-2024.md` |
 | `daswu-record-0-3823455` | The current best constant for Frankl's conjecture is ≈ 0.3823455 = 0.38234 (355), obtained by Sawin's dependent-coupling method as evaluated by Yu and Cambie; no source in this library exceeds it unconditionally. This… | yes | asserted | `research/summaries/das-wu-frequent-elements-2024.md` |
+| `defranco-boolean-polynomial-encoding` | For m subsets of an n-universe, a Boolean polynomial ICC_{m,n}(X) is constructed (in the equivalent Intersection-Closed form) such that the Union-Closed Conjecture is true for (m,n) iff ICC_{m,n}(X) is the zero Boolean… | yes | asserted | `code/out/three_approach_literature_grounding.md` |
 | `demontis-claimed-uc-proof-unaudited` | Demontis (arXiv:2405.03731, 2024) claims a complete proof that every finite union-closed family F ≠ {∅} has an element in ≥ \|F\|/2 members. The claim has no recorded reception (0 citations, no peer review; published in… | **unchecked** | asserted | `research/summaries/demontis-union-closed-set-conjecture-is-true-2024.md` |
 | `eccles-stability` | Stability result for the union-closed size problem: near-extremal union-closed families (max total size) cluster around the explicit extremal form P(n)\𝒜={B∪{n}: B∈I(m′)} (one complement-universal element), far from any… | yes | proved | `research/summaries/eccles-stability-result-2015-html.md` |
 | `eccles-stability` | Stability result for the union-closed size problem: near-extremal union-closed families (max total size) cluster around the explicit extremal form P(n)\𝒜 = {B∪{n}: B∈I(m′)} (one complement-universal element), far from… | yes | asserted | `research/summaries/eccles-stability-result-2015.md` |
@@ -63,13 +68,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `ellis-ivan-leader-small-set-3-fails` | For every ε>0 there is a union-closed family with unique smallest set S of size k such that no element of S is in more than (1+o(1))log₂k/(2k) of the sets; for k=3 this is ≈(1+o(1))log₂3/6<1/2. Hence containing a… | yes | proved | `research/summaries/ellis-ivan-leader-small-sets-2022.html.md` |
 | `ellis-ivan-leader-smallest-set-frequency` | For any k >= 3 there is a union-closed family whose unique smallest set S has size k, with every element of S having frequency (1+o(1))·(log2 k)/(2k). For k=3 this is below the conjecture's Sarvate-Renaud 2-set… | yes | proved | `research/summaries/ellis-ivan-leader-small-sets-2022.md` |
 | `falgas-ravry-separating-degree` | A separating union-closed family S on [n] (elements ordered by increasing degree) has d_S(i) ≥ i−1 for all i, so \|S\|≥n−1 and w(S)≥C(n,2), equality iff the staircase T_n or T_n∪{∅}; average degree over Ω is… | yes | proved | `research/summaries/falgas-ravry-minimal-weight-2011.md` |
-| `gilmer-constant-0-01` | For any union-closed family F ⊆ 2^[n], F ≠ {∅}, there is i ∈ [n] in at least a 0.01 fraction of the sets of F. This is the first constant lower bound, improving Knill's and Wójick's Ω(1/log₂\|F\|) bounds. Method (Theorem… | yes | asserted | `research/summaries/gilmer-constant-lower-bound-2022.pdf.md` |
-| `gilmer-constant-0point01` | Every union-closed family ℱ⊆2^[n], ℱ≠{∅}, has an element in at least 0.01 fraction of the sets; proven via the entropy inequality that if A,B independent uniform in ℱ have all marginals <0.01 and H(A)>0, then… | yes | proved | `research/summaries/gilmer-constant-lower-bound-2022.html.md` |
-| `gilmer-constant-0point01` | Every union-closed family ℱ⊆2^[n], ℱ≠{∅}, has an element in at least 0.01 fraction of the sets; via H(A∪B) ≥ 1.26·H(A) for independent samples with all marginals ≤0.01, contradicting A∪B∈ℱ (whence H(A∪B) ≤ log\|ℱ\| =… | yes | proved | `research/summaries/gilmer-constant-lower-bound-2022.md` |
-| `gnm-envelope-rarest-floor-tight` | Define g(n,m) = min over union-closed families F on [n] with \|F\| = m of rare(F), where rare(F) is the least frequent present element's count. Then g(n,m) = max(1, m - 2^{n-1}) for every m, verified EXHAUSTIVELY and… | yes | asserted | `code/out/gnm_envelope_finding.md` |
-| `graph-bipartite-equivalent` | The graph formulation is equivalent to: every finite bipartite graph with an edge has, in each bipartition class, a vertex in at most half the maximal stable sets. The conjecture is trivial for non-bipartite graphs. | yes | proved | `research/summaries/bruhn-charbit-schaudt-telle-graph-formulation-2015.md` |
 
-_144 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_151 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -89,6 +89,9 @@ Each of these was written as a formalised claim and has been recorded as `assert
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it. Search the whole ledger with `search_claims`.
 
 - `abe-nakano-modular` (research/summaries/abefrankl-abe-nakano-modular-1998.md) — asserted by the source, not proved there and not checked here
+- `abundance-not-in-single-variable-hilbert-series` (code/out/three_approach_literature_grounding.md) — asserted by the source, not proved there and not checked here
+- `ad-conclusion-is-aggregate-not-per-element` (code/out/three_approach_literature_grounding.md) — asserted by the source, not proved there and not checked here
+- `ad-uc-application-is-avg-size-route-known-not-to-force-abundance` (code/out/three_approach_literature_grounding.md) — asserted by the source, not proved there and not checked here
 - `ahs-published-ejc` (research/summaries/alweiss-huang-sellke-published-ejc-2024.md) — asserted by the source, not proved there and not checked here
 - `ahs-published-note` (research/summaries/alweiss-huang-sellke-published-ejc-2024.md) — asserted by the source, not proved there and not checked here
 - `balla-density` (research/summaries/balla-density-claim.md) — asserted by the source, not proved there and not checked here
@@ -102,16 +105,19 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `cambie-survey-two-abundant-capped` (research/summaries/cambie-progress-offsprings-2023.md) — asserted by the source, not proved there and not checked here
 - `carvalho-reduction-descendants` (research/summaries/carvalho-machiavelo-supratopologies-normalized-2024.md) — asserted by the source, not proved there and not checked here
 - `cc-no-abundance-without-closure-on-4` (code/out/combine_constraints_finding.md) — asserted by the source, not proved there and not checked here
+- `chen-de-li-nadimpalli-servedio-uc-hard-to-test` (code/out/three_approach_literature_grounding.md) — asserted by the source, not proved there and not checked here
 - `colbert-order-2026-version-of-record` (research/summaries/colbert-order-2026-openaccess.md) — asserted by the source, not proved there and not checked here
 - `coupling-true-inf-crossing-0-3824` (code/out/coupling_capture_findings_claims.md) — asserted by the source, not proved there and not checked here
 - `coupling-true-inf-crossing-4d` (code/out/coupling_inf_bb_claims.md) — asserted by the source, not proved there and not checked here
 - `czedli-averaged-frankl-large-families` (research/summaries/czedli-averaging-large-union-closed-2009.md) — asserted by the source, not proved there and not checked here
 - `czedli-lattice-averaged-large` (research/summaries/czedli-averaging-large-union-closed-2009.md) — asserted by the source, not proved there and not checked here
 - `daswu-record-0-3823455` (research/summaries/das-wu-frequent-elements-2024.md) — asserted by the source, not proved there and not checked here
+- `defranco-boolean-polynomial-encoding` (code/out/three_approach_literature_grounding.md) — asserted by the source, not proved there and not checked here
 - `eccles-stability` (research/summaries/eccles-stability-result-2015.md) — asserted by the source, not proved there and not checked here
 - `ellis-gilmer-conjecture-refuted` (research/summaries/ellis-counterexample-gilmer-conjecture-2022.md) — asserted by the source, not proved there and not checked here
 - `gilmer-constant-0-01` (research/summaries/gilmer-constant-lower-bound-2022.pdf.md) — asserted by the source, not proved there and not checked here
 - `gnm-envelope-rarest-floor-tight` (code/out/gnm_envelope_finding.md) — asserted by the source, not proved there and not checked here
+- `gpw-lcm-lattice-determines-resolution` (code/out/three_approach_literature_grounding.md) — asserted by the source, not proved there and not checked here
 - `hak-functional-preorders-average-rare` (research/summaries/hachimori-kashiwabara-functional-preorders-2025.md) — asserted by the source, not proved there and not checked here
 - `hak-minimality-concepts-2024-paywalled-gap` (research/summaries/hachimori-kashiwabara-minimality-concepts-2024.md) — asserted by the source, not proved there and not checked here
 - `half-density-coordinatewise-false` (code/out/half_density_claims.md) — asserted by the source, not proved there and not checked here
@@ -122,14 +128,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `knill-log-bound` (research/summaries/knill-graph-generated-1994.md) — asserted by the source, not proved there and not checked here
 - `kpt-p38-rebuilt-verified` (code/out/constraint_delim_claims.md) — asserted by the source, not proved there and not checked here
 - `kpt-published-status` (research/summaries/kabela-polk-teska-abundant-elements-2022.md) — asserted by the source, not proved there and not checked here
-- `kpt-thm5-corrob-n4` (code/out/kpt_thm5_verify_finding.md) — asserted by the source, not proved there and not checked here
-- `kpt-thm5-counterexample-corollary` (code/out/kpt_thm5_verify_finding.md) — asserted by the source, not proved there and not checked here
-- `large-family-progression` (research/summaries/large-family-progression.md) — asserted by the source, not proved there and not checked here
-- `lattice-poonen` (research/summaries/verification-ranges-and-lattice-classes.md) — asserted by the source, not proved there and not checked here
-- `lattice-settled-classes` (research/summaries/verification-ranges-and-lattice-classes.md) — asserted by the source, not proved there and not checked here
-- `lattice-settled-classes-survey` (research/summaries/bruhn-schaudt-journey-survey-2013-body.md) — asserted by the source, not proved there and not checked here
 
-_62 more not shown here; they are in `research/`._
+_68 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 

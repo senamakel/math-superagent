@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "gvb-lift",
   "source": "code/lean/gvb_lift.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

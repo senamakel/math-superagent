@@ -69,6 +69,22 @@ noncomputable def or (i j : Fin 4) : Fin 4 :=
 noncomputable def q_weight (x : ℝ) (s : Fin 4) : ℝ :=
   ∑ t : Fin 4, ∑ u : Fin 4, if or t u = s then mass x t * mass x u else 0
 
+/-- Weight of region `s` in the iid-union distribution of two samples from an
+ARBITRARY distribution `p` over the four regions.  This is the model-level
+object: `q(s) = Σ_{t,u : or t u = s} p_t · p_u`. -/
+noncomputable def union_weight (p : Fin 4 → ℝ) (s : Fin 4) : ℝ :=
+  ∑ t : Fin 4, ∑ u : Fin 4, if or t u = s then p t * p u else 0
+
+/-- The quantity in Ellis's rewrite (1) as a FUNCTION of an arbitrary
+distribution `p` over the four regions: the difference between the union-pushforward
+cross-entropy `Σ_s q_s·log(1/p_s)` and the entropy `Σ_s p_s·log(1/p_s)`.
+
+This is the object Ellis's refutation makes NEGATIVE.  It is a difference of two
+entropy-like sums — never the entropy of `p` itself, which is always positive. -/
+noncomputable def LHS_of (p : Fin 4 → ℝ) : ℝ :=
+  (∑ s : Fin 4, union_weight p s * log (1 / p s)) -
+    ∑ s : Fin 4, p s * log (1 / p s)
+
 /-- The quantity in Ellis's rewrite (1), natural-log scale, at the n=2
 counterexample, with the union weights substituted in closed form:
 `q(∅) = x²`, `q({1}) = q({2}) = 1/4 − x²`, `q({1,2}) = 1/2 + x²`,
@@ -150,6 +166,36 @@ theorem boundary_distribution :
       · exact marginal_1_half (3/10)
       · exact marginal_2_half (3/10)
 
+/-- Ellis's strict-hypothesis perturbation, as a function of a base mass `x` and a
+perturbation `ε > 0`: `p′_ε(∅)=x`, `p′_ε({1,2})=x−2ε`, `p′_ε({1})=p′_ε({2})=1/2+ε−x`.
+At `ε = 0` this is `mass x`; each element's marginal is `1/2 − ε`, strictly below
+`1/2` for `ε > 0`. -/
+noncomputable def perturbed_mass (x ε : ℝ) (i : Fin 4) : ℝ :=
+  if i.1 = 0 then x
+  else if i.1 = 1 then (1/2 + ε - x)
+  else if i.1 = 2 then (1/2 + ε - x)
+  else (x - 2*ε)
+
+/-- Marginal of element 1 under the perturbed distribution is `1/2 − ε`. -/
+theorem perturbed_marginal_1 (x ε : ℝ) :
+    perturbed_mass x ε 1 + perturbed_mass x ε 3 = 1/2 - ε := by
+  unfold perturbed_mass
+  norm_num
+  ring
+
+/-- Marginal of element 2 under the perturbed distribution is `1/2 − ε`. -/
+theorem perturbed_marginal_2 (x ε : ℝ) :
+    perturbed_mass x ε 2 + perturbed_mass x ε 3 = 1/2 - ε := by
+  unfold perturbed_mass
+  norm_num
+  ring
+
+/-- The perturbed distribution sums to one (all four regions), for any `x` and `ε`. -/
+theorem perturbed_mass_sum_one (x ε : ℝ) :
+    ∑ i : Fin 4, perturbed_mass x ε i = 1 := by
+  simp [Fin.sum_univ_four, perturbed_mass]
+  ring
+
 -- ---------------------------------------------------------------------------
 -- G A P S  (the decomposition: what a full proof of the refutation still needs)
 -- ---------------------------------------------------------------------------
@@ -190,37 +236,37 @@ theorem gap_entropy_rewrite {ι : Type*} [Fintype ι] (p q : ι → ℝ)
 /-- gap G-perturb:
 id: ellis-gilmer-conjecture-refuted/gap-perturbed-strict
 lemma: a strict-hypothesis counterexample exists: some distribution `p′` on the
-  four regions has every marginal `< 1/2`, `H(p′) > 0`, and quantity (1) strictly
-  negative.  Ellis's construction `p′(∅)=x`, `p′({1,2})=x−2ε`,
-  `p′({1})=p′({2})=1/2+ε−x` gives each marginal `1/2−ε`; quantity (1) is
-  continuous in the distribution and equals `(2/25)ln(2/3) < 0` at `ε = 0`, so it
-  stays negative for small `ε > 0`.
+  four regions has every marginal strictly `< 1/2`, positive entropy, and the
+  DIFFERENCE quantity (1) — the union-pushforward cross-entropy minus the entropy,
+  i.e. `LHS_of p′` — strictly negative.  (This is the corrected statement: what
+  is negative is the difference, NOT the entropy `hsum p′`, which is always
+  positive.)  Ellis's construction `p′ = perturbed_mass x ε` gives each marginal
+  `1/2−ε`; `LHS_of (perturbed_mass (3/10) ε)` tends to `LHS(3/10) = (2/25)ln(2/3)
+  < 0` as `ε → 0`, so by continuity it stays negative for small `ε > 0`.
 status: open
-next: a continuity lemma for (1) as a function of the distribution (a finite sum
-  of `log(1/·)` terms, continuous on the positive simplex) plus an `ε/δ` step
+next: a continuity lemma for `LHS_of` as a function of the distribution (a finite
+  sum of `log(1/·)` terms, continuous on the positive simplex) plus an `ε/δ` step
   lifting the strict negativity at `ε = 0` to a neighbourhood, then instantiate
   with a rational `ε` and `norm_num`.
 -/
 theorem gap_perturbed_strict :
-    ∃ ε : ℝ, 0 < ε ∧ ∃ f : Fin 4 → ℝ,
-      (∀ i, 0 < f i) ∧ (∑ i, f i = 1) ∧ 0 < hsum f ∧
-        (∑ i, f i * log (1 / f i) < 0) := by
+    ∃ p : Fin 4 → ℝ,
+      (∀ i, 0 < p i) ∧ (∑ i, p i = 1) ∧ 0 < hsum p ∧
+        p 1 + p 3 < 1/2 ∧ p 2 + p 3 < 1/2 ∧ LHS_of p < 0 := by
   sorry
 
-/-- **Combining step.**  The concrete distribution at `x = 3/10` — which
-`boundary_distribution` shows has both marginals exactly `1/2`, positive mass and
-total mass one — makes Gilmer's inequality fail: with the union weights
-(`gap_union_weights`) substituted into (1), and `gap_entropy_rewrite` the identity
-identifying (1) with Gilmer's LHS, `ellis_lhs_negative` gives the strict
-negativity.  This theorem states the boundary refutation, a distribution with both
-marginals `1/2`, entropy positive and (1) negative.  The `sorry` is the glue
-fitting the pieces together; `gap_perturbed_strict` then moves the boundary
-marginals strictly below `1/2` under the strict hypothesis. -/
+/-- **Combining step (boundary).**  The concrete distribution `mass (3/10)` —
+which `boundary_distribution` shows has both marginals exactly `1/2`, all four
+masses positive, and total mass one — makes Gilmer's inequality fail: `LHS (3/10)
+= (2/25)·ln(2/3) < 0` (`ellis_lhs_negative`).  This is the boundary refutation: a
+distribution with both marginals exactly `1/2` for which the quantity in (1) is
+negative. **PROVEN** at `x = 3/10`; `gap_perturbed_strict` then perturbs the
+marginals strictly below `1/2`. -/
 theorem gilmer_refuted_boundary :
-    ∃ f : Fin 4 → ℝ,
-      (∀ i, 0 < f i) ∧ (∑ i, f i = 1)
-        ∧ (∑ i, f i * log (1 / f i) < 0) := by
-  sorry
+    ∃ x : ℝ, 0 < x ∧ x < 1/2 ∧ mass x 1 + mass x 3 = 1/2 ∧
+      mass x 2 + mass x 3 = 1/2 ∧ LHS x < 0 := by
+  refine ⟨3/10, by norm_num, by norm_num, marginal_1_half (3/10),
+    marginal_2_half (3/10), ellis_lhs_negative⟩
 
 end EllisGilmer
 
@@ -232,3 +278,7 @@ end EllisGilmer
 #print axioms EllisGilmer.marginal_1_half
 #print axioms EllisGilmer.marginal_2_half
 #print axioms EllisGilmer.boundary_distribution
+#print axioms EllisGilmer.perturbed_marginal_1
+#print axioms EllisGilmer.perturbed_marginal_2
+#print axioms EllisGilmer.perturbed_mass_sum_one
+#print axioms EllisGilmer.gilmer_refuted_boundary

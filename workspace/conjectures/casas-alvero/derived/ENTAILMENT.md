@@ -20,13 +20,16 @@ These add nothing the library did not have. That is not a criticism of them — 
 - `bad-prime-upper-bound` is covered by `bad-prime-minors-criterion`: If CA_{n,0} holds and p is a bad prime for n, then p < C! · Π_{i=1}^{n−1} (i+n−2 choose n−2)(d−i+n−2 choose n−2), where d=(n²−3n+4)/2, C=( (n²−n)/2 choose n−2…
 - `ca-variety-results` is covered by `resultant-reformulation`: CA for degree d is equivalent to V_k(d,t) = ∅ for ANY t∈{0,…,d−2}, where V_k(d,t) ⊂ weighted P is the projective variety cut out by the resultants I_k(d,t) =…
 - `resultant-monomials-d3-verified` is covered by `resultant-monomials`: The distinguished-monomial structure of Schaub–Spivakovsky (arXiv:2307.05997 Thm 6/9; de Frutos PhD Prop 2.2.1) holds exactly for d=3: R_1 = 4a_2^3 − a_1^2…
+- `resultant-monomials-d4-i3-hand-verified` is covered by `resultant-monomials`: The Schmidt-Spivakovsky distinguished-monomial structure (claim resultant-monomials, Thm 6/9) holds exactly at d=4, i=3: R_3 = -3a_1^4 + 16a_1^2a_2 - 64a_1a_3,…
+- `uresultant-multiplicity-trees-new` is covered by `uresultant-order-n-n-i-sourced`, `valabrega-valla-initial-forms-regular-sequence`: The quotient length \|QQ[a_2..a_n]/(R_1..R_{n-1})\| and Samuel multiplicity of the traceless-slice CA ideal equal n^(n-2), Cayley's number of labeled trees on n…
 
 
 ## Following from nothing recorded
 
 Each edge below names a claim no block on disk carries. Either the id is misspelled, or the run is deriving something from a belief nobody wrote down.
 
-- `uresultant-multiplicity-trees-new` follows from `samuel-multiplicity-product-of-orders`, which does not exist
+- `clo-uresultant-factorization` follows from `elimination-theorem`, which does not exist
+- `clo-uresultant-factorization` follows from `resultant-theory`, which does not exist
 
 ---
 

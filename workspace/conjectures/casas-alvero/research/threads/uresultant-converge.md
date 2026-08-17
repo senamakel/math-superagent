@@ -28,6 +28,14 @@ next: One tool_builder run from the existing code/uresultant/ scripts (ureesulta
   V(I)={0}, i.e. Res_u = c·u^B. Independent check: B = ∏ ord_0(R_i) under the weighted
   order w(a_j)=j (Valabrega–Valla; equality is STRICTLY STRONGER than CA — a mismatch is
   gr_m evidence about the associated graded, not a CA counterexample).
+- **VV hypothesis now source-anchored (scholar, 2026).** The Valabrega–Valla source
+  (Nagoya Math. J. 72, 93–101) is held in full and its Thm 2.3 + Cor 2.4 verified
+  verbatim. The equality B = ∏ ord_0(R_i) holds iff gr_{m0}(K[a]/(I)) is Cohen–Macaulay.
+  A mismatched dangling entailment edge was repaired: `uresultant-multiplicity-trees-new`
+  now correctly follows from `uresultant-order-n-n-i-sourced` +
+  `valabrega-valla-initial-forms-regular-sequence` (it previously referenced the
+  nonexistent `samuel-multiplicity-product-of-orders`). No new CA fact; this anchors
+  what the thread already assumed.
 - Four cycles produced 15 files in code/uresultant/, all underscore-prefixed probes, no
   capture; a second tool_builder restarted from a fresh Gröbner dump instead of continuing.
 - Ground truth held at n=4: bad primes {3,5,7}, lcm J_T = 1575 (badprimes_n4.captured.txt),

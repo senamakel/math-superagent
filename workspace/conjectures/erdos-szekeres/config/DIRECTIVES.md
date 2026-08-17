@@ -237,3 +237,27 @@ I've done three things.
 First, `record_entry` a task named `pattern-finder-no-more-esconstruct-spectra` (now at the head of the queue) carrying directive 22's operative content: no more k-subset convex spectra, OEIS lookups on numbers off this placement, or n=8 extensions of any template quantity; the 09:58–10:06 `convex_spectrum*` round is called out as the violation and is not to be extended; and the positive criterion — a pattern counts only if the quantity is defined for every n-avoiding set of size 2^{n-2} and is computed on two non-isomorphic sets and compared, otherwise it is a coordinate. Second, updated the `extremal-structure` thread so its CURRENT/next line reflects directive 22 (keeping the directive-21 record underneath). Third, amended CONTEXT.md's head-of-queue brief so the new rule — and the two queued tasks it must work instead — reach every role on every call.
 
 This is the smallest change that redirects work: the two queued tasks already led the queue, so the directive's new content was the prohibition plus the comparison criterion, and that is exactly what I filed. I did not compute or file any of it as a claim, and I did not touch the `convex_spectrum_finding.md` file itself — directive 22 says leave it where it is.
+
+## 23 — from steer
+
+Directive 23 — the approaches are good. Run their first steps. Stop searching.
+
+Directives 21 and 22 worked. The three new approaches — layer-transfer-matrix, convex-4set-supersaturation, polar-arrangement-euler-levels — are the best-formed things this run has produced: each names its mechanism, says which closed route it differs from, states a computable first step, and names the falsifier to hunt first. Two test against a SECOND family (Karolyi-Toth twin, Aichholzer order types). That is the all-set quantification directive 21 asked for. Adopt them.
+
+But code/out/commands.log has not grown since 10:04 — over half an hour with no command executed, spent on exa_search whose answers will not change what the first steps compute. You have three exact, bounded, runnable jobs on disk and are reading about them instead of running them. Literature was right while the approaches were being invented. They are invented now.
+
+Execute in this order, capturing each with the AGENTS.md idiom, EXIT line included:
+
+1. convex-4set-supersaturation. Count non-convex 4-subsets NNC(N) exactly on es_construct at n=5,6,7; test NNC * C(N-4,n-4) >= C(N,n) at N=2^{n-2}. Cheapest, sharpest falsifier: it either holds at the extremal and fails one larger, or it does not.
+2. layer-transfer-matrix. Cross-layer cone capacities on the verified onion layers, exact determinants, n=5,6,7. Then the same DP on the twin construction — the second family is the point; a capacity bound holding only on es_construct is another coordinate.
+3. polar-arrangement-euler-levels. Dual line arrangement of es_construct by exact rational duality; verify the primal oracle against the dual convex-q-cell criterion exhaustively to n=6. Worth having whatever the approach does.
+
+Fetch the Aichholzer order-type database if reachable — the second family is what makes these liftable. That is a fetch, not a sweep.
+
+Report numbers, not readings. Do not claim the conjecture proved.
+
+Changes are in place and the queue is correctly ordered. Summary:
+
+**Adopted the three approaches and made their first steps the head of the queue** — `con4-supersat-nnc-count` (item 1, on top, in the directive's execution order), `layer-transfer-matrix-cone-cap` (item 2), `polar-dual-exact-verification` (item 3), then `aichholzer-fetch`. The approaches' source files are flipped `proposed → adopted` with the directive as the reason; a new thread `three-adopted-first-steps` records the direction and the falsifiers to hunt; CONTEXT.md's head-of-queue bullet now reads as steer 23 ("run their first steps, stop searching"), superseding the directive-22 bullet while keeping the no-more-spectra standing rule intact. The Karolyi–Toth twin and the Aichholzer n≤10 database are both already held in the library (`karolyi-toth-twin-construction`, `aichholzer-order-db`), so I did not file a duplicate research request — `aichholzer-fetch` is a data fetch carrying that, not a gap.
+
+I did not touch the directive-22 template tasks (`lift-or-declare-strongest-template-fact`, `nullstellensatz-grid-first-target`) — directive 23 prioritizes the three new first steps but does not abandon those, so they stay queued behind; the exact-arithmetic and provenance idioms (AGENTS.md command+EXIT, `do not claim the conjecture proved`) are preserved in every task detail.

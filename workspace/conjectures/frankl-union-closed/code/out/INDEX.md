@@ -39,8 +39,11 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `coupling_inf_bb_claims.md` | Two filed claims from the STEP 1-4 capture: the true-inf crossing over the 4D two-atom class (verified-numerically, 0.3824-0.3825 at alpha 0.035, minimizer a≈0.3300622) and the interval B&B certification infeasibility boundary (measured, margin 8.89e-6, slope C~21). |
 | `ellis_check.captured.txt` | _(undescribed)_ |
 | `ellis_check.py` | Verifies Ellis's counterexample to Gilmer's conjecture (arXiv:2211.12401): distribution x=0.3 with marginals 1/2 for both elements but H-cross-entropy LHS < -0.04, in exact rational arithmetic (direct and closed form agree). Correctness: hand-verified arithmetic in source note. CAPTURED in ellis_check.captured.txt, exit 0, ALL CHECKS PASS. |
+| `eq_a053221_derivation.md` | Derived decomposition of EQ(n)=A053221 (KPT Thm5(3)-equality family count) into provable singleton + two-chain counts; labels the necessity-half as the open structural conjecture. |
 | `eq_classify.py` | _(undescribed)_ |
 | `eq_classify_verify.py` | _(undescribed)_ |
+| `eq_decomposition_verify.py` | _(undescribed)_ |
+| `eq_len2_investigate.py` | _(undescribed)_ |
 | `equality_cases.captured.txt` | _(undescribed)_ |
 | `equality_cases.py` | Lists every UC family attaining equality in the weak k=n Nagel bound; shows they are exactly the n coordinate permutations of the near-n-cube (relabeling artifact). |
 | `extend_tables_n5.py` | Extends four UC-family integer tables (degree1, KPT eq3, emptyfree, A-sat) from n<=4 to n=5 exactly via the validated cascade; source of the EQ(n)=A053221 finding. |
@@ -57,6 +60,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `half_density_distr_crosscheck.py` | _(undescribed)_ |
 | `half_density_finding.md` | The executed finding behind the half-density front: numbered results (max-density characterization holds n<=5 exhaustively; coordinate-wise is FALSE with witnesses; n=6 G-shape boundary; random n=6/7), what it settles, ceiling (not a proof for general n), file map. |
 | `half_density_front.captured.txt` | Captured output of the three never-run half-density programs (half_density_complement.py, half_density_verify.py, block_union_atom_check.py): max-density-1/2 = Boolean subalgebra, counts Bell(n+1)-1 refined by S(n+1,k+1) n=1..5; coordinate-wise statement refuted (42 non-Boolean n=3, 752255 n=5); atom structure 0 failures. |
+| `half_density_lean_decomposition.md` | Records the Lean decomposition verdict for node half-density-max-eq-bool-subalgebra: which direction the kernel proves (block -> union-closed), which is the gapped hard leaf (max-half -> block), the five gaps with status/next, and what is not formalised (Bell/Stirling counting, the exhaustive n<=5 computation). Written because the memory server was down when remember_memory was attempted. |
 | `half_density_probe.captured.txt` | _(undescribed)_ |
 | `half_density_probe.py` | Attack on the max-density=1/2 characterization beyond exhaustive n<=5: explicit n=3 witnesses (P1), exhaustive n=6 G-shape subclass over all 7581 up-sets of 2^[5] (P2, correct minimal-removal enumerator, Dedekind M(5) self-checked), random closure probes n=6,7 (P3). Exact fractions only; oracle = lib.uc. Produced half_density_probe_p2.captured.txt: 2 boundary families (full cube |
 | `half_density_probe_p2.captured.txt` | Captured output of half_density_probe.py (P2/P3): up-set count 7581 = Dedekind M(5) with self-check, exhaustive n=6 G-shape boundary = 2 families both Boolean, random n=6/7 closures zero boundary families. |
@@ -140,9 +144,11 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `profile_scan.py` | Exhaustive scan of all UC families on [n] (n<=4) via lib.uc, computing WORST(n)=1/(2^{n-1}+1), distinct-profile counts, claim A (Nagel k=n) and claim C (degree-1 forces abundance). Verified against expected values 1/2,1/3,1/5,1/9 and the independent brute force. |
 | `psi_alpha_tieback_verify.md` | Algebraic proof that Yuster's ψ_k (root of (1-x)^k=x) equals Ho's α_k/(1+α_k), unifying the two order-k barrier formulations; ψ_2=(3-sqrt5)/2. |
 | `run_raz_check.sh` | _(undescribed)_ |
+| `run_raz_full.sh` | Shell wrapper to capture Raz 2017 verification output. |
 | `spence_verify.captured.txt` | Captured output (exit 0) of spence_verify.py: confirms Spence 2026 Prop 3.1 (5x4 matrix, every column exactly 2 ones among 5 rows, row set not union-closed) and Prop 4.1 (Schrader t3=0 < |
 | `spence_verify.py` | Verifies two finite claims of Spence's union-closed audit (2026) with the canonical oracle lib.uc: Prop 3.1's 5x4 matrix (every column exactly 2 ones among 5 rows, row set not union-closed) and Prop 4.1's Schrader t-computation failing on {empty,{1},{2},{3}}. Confirmed by hand and executed (exit 0); capture in spence_verify.captured.txt. It settles finite audit details, not UC. |
 | `step4_verdicts_derived.captured.txt` | Capture of re-deriving SEARCH.md from scores.jsonl after STEP 4 verdicts: confirms 0.421992 is gone from the derived search file and the top row is the Yu block at 0.3823435642. Acceptance test for task write-step4-verdicts-to-scores-jsonl. |
+| `three_approach_literature_grounding.md` | Literature-grounding claims for the three proposed approaches: grounds lcm-monomial-algebra (GPW), refutes polynomial-method-nullstellensatz (DeFranco encoding is prior art) and fkq-correlation (AD is aggregate, collapses to refuted overlap). Six filed claims with anchors. |
 | `three_set_sanity.py` | Exhaustive exact-oracle check (n<=4) that every union-closed family containing a 3-element set has an abundant element: n=3 90 families, n=4 4838, all abundant. Used to reject the bogus refuted artifact. Declared exponential oracle bound n<=4. |
 | `top_density_distribution.py` | _(undescribed)_ |
 | `top_half_direct.py` | _(undescribed)_ |

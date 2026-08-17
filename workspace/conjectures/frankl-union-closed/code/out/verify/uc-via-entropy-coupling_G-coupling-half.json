@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "uc-via-entropy-coupling/G-coupling-half",
+  "source": "code/lean/uc_via_entropy_coupling_G_coupling_half.lean",
+  "stage": "prove"
+}
