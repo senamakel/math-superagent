@@ -3,7 +3,7 @@
 
 use std::path::{Path, PathBuf};
 
-use super::{Candidate, LIB_DIR, Source, gather, parse_candidates, safe_name};
+use super::{Candidate, LIB_DIR, PROBE_DIR, Report, Source, gather, parse_candidates, safe_name};
 
 fn candidate(name: &str, cited: bool) -> Candidate {
     Candidate {
@@ -230,4 +230,41 @@ fn a_single_file_is_read_as_itself() {
 fn a_missing_path_yields_nothing_rather_than_failing() {
     let root = tempfile::tempdir().expect("a temporary workspace");
     assert!(gather(root.path(), Path::new("nowhere"), 1_000).0.is_empty());
+}
+
+/// A statement kept with gaps is reported apart from a result.
+///
+/// The two are different things and a report that merged them would let a
+/// reader take a `sorry` for a proof.
+#[test]
+fn a_stated_file_is_reported_apart_from_a_verified_one() {
+    let report = Report {
+        landed: vec!["proved_thing".to_string()],
+        stated: vec!["conjecture_statement".to_string()],
+        rejected: vec!["broken".to_string()],
+        skipped: 0,
+        unread: 0,
+    };
+
+    let rendered = report.render();
+
+    assert!(rendered.contains("1 verified"));
+    assert!(rendered.contains("1 stated with gaps"));
+    assert!(rendered.contains("1 rejected"));
+    assert!(
+        rendered.contains("back no claim"),
+        "the report must say a stated file is not a result: {rendered}"
+    );
+    // All three counted in the total, so nothing is silently absent.
+    assert!(rendered.contains("milled 3 statement(s)"));
+}
+
+/// The probe directory is not the library, and the difference is the point.
+#[test]
+fn probes_have_a_home_that_is_not_the_library() {
+    assert_ne!(PROBE_DIR, LIB_DIR);
+    assert!(
+        !PROBE_DIR.starts_with(LIB_DIR),
+        "a probe under the library is the litter this exists to stop"
+    );
 }
