@@ -11,6 +11,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://doi.org/10.1016%2F0020-0190%2895%2900067-M | 10.1016/0020-0190(95)00067-M | Luca, Aldo (1995), "A division property of the Fibonacci word", *[Information Processing Letters][86]*, **54**(6): 307– 312, [doi][62]: [10.1016/0020-0190(95)00067-M][87]. - Mignosi, F.; Pirillo, G.… |
 | 2 | http://oeisf.org | The OEIS Foundation Inc. | [Contribute][13] [Format][14] [Style Sheet][15] [Transforms][16] [Superseeker][17] [Recents][18] [The OEIS Community][19] Maintained by [The OEIS Foundation Inc.][20] Last modified August 17 10:12… |
 | 2 | http://www-igm.univ-mlv.fr/%7Eberstel/Lothaire/ChapitresACW/C2.ps | Sturmian Words | Contents 1. ***[Contents and Preface][2]*** 2. ***[Finite and Infinite Words][3]***( [Jean Berstel][4], [Dominique Perrin][5]) 3. ***[Sturmian Words][6]***( [Jean Berstel][4], [Patrice… |
+| 2 | https://doi.org/10.2307/2371441 | https://doi.org/10.2307/2371441 | ~Q)][9] ## References Morse, M. and Hedlund, G. A. "Symbolic Dynamics II. Sturmian Trajectories." *Amer. J. Math.***62**, 1-42, 1940. [https://doi.org/10.2307/2371441][10]. ## Referenced on… |
 | 2 | https://beian.miit.gov.cn | 浙ICP备2021040463号-3 | 收藏 [举报][11] 刷新页面 返回顶部 [12] ### 公告 [博客园][3] &copy; 2004-2026 [浙公网安备 33010602011771号][13] [浙ICP备2021040463号-3][14] |
 | 2 | https://i.cnblogs.com/ | 管理 | - mizu164 - 博客园 [image: 返回主页] [1] # [2] ## - [博客园][3] - [首页][1] - [新随笔][4] - [联系][5] - 订阅 --> - [管理][6] # [LOJ138 类欧几里得算法【万能欧几里得】][7] [题目链接][8] 题目描述：求 |
 | 2 | https://i.cnblogs.com/EditPosts.aspx?opt=1 | 新随笔 | - mizu164 - 博客园 [image: 返回主页] [1] # [2] ## - [博客园][3] - [首页][1] - [新随笔][4] - [联系][5] - 订阅 --> - [管理][6] # [LOJ138 类欧几里得算法【万能欧几里得】][7] [题目链接][8] 题目描述：求 |
@@ -43,11 +44,10 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 1 | https://doi.org/10.1016/0304-3975(94)00035-h | Some combinatorial properties of Sturmian words | cited by A division property of the Fibonacci word (1994, cited 206 times) |
 | 1 | https://doi.org/10.1016/S0304-3975(00)00436-9 | Words and forbidden factors | Melançon, [Lyndon factorization of sturmian words][54], Discr. Math., 210 (2000), 137-149. F. Mignosi, A. Restivo, and M. Sciortino, [Words and forbidden factors][55], WORDS (Rouen, 1999). Theoret.… |
 | 1 | https://doi.org/10.1017/s0004972700047559 | On Sturmian and episturmian words, and related topics | cites A division property of the Fibonacci word (2006, cited 23 times) |
+| 1 | https://github.com/ReedOei/SturmianWords | — | proofs of known and unknown results about characteristic Sturmian words. The Pecan code for the following examples is available at https://github.com/ReedOei/SturmianWords We quote some of this code… |
 | 1 | http://oeis.org/A005203 | A005203 | of the limiting value of this sequence is illustrated above. Converted to [decimal][6], this sequence gives 1, 2, 5, 22, 181, ... (OEIS [A005203][7]), with the [image: n] th term given by the… |
-| 1 | http://www.amazon.com/exec/obidos/ASIN/0716723573/ref=nosim/ericstreasuretro | Fractals, Chaos, Power Laws: Minutes from an Infinite Paradise. | Hoggatt, V. E. Jr. "Sequences Associated with *t*-ary Coding of Fibonacci's Rabbits." *Fib. Quart.***15**, 311-318, 1977. Schroeder, M. *[Fractals, Chaos, Power Laws: Minutes from an Infinite… |
-| 1 | https://archive.bridgesmathart.org/2018/bridges2018-187.html | On a Better Golden Rectangle (That Is Not 61.8033...% Useless!) | and "Quasi-crystalline" characteristics of the sequence and Fibonacci words.][52], hal-02082456, 2019. Douglas M. McKenna, [On a Better Golden Rectangle (That Is Not 61.8033...% Useless!)][53],… |
 
-_226 further candidates not shown; they are cited once each._
+_272 further candidates not shown; they are cited once each._
 
 ---
 

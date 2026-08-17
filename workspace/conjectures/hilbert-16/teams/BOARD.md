@@ -10,6 +10,18 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 What would suffice:
 What the run says would suffice:
+`research/` uses Cognee for cataloguing, so `describe_file` is correctly refused there; the skeleton and gaps are already recorded in the goals ledger, which is the derived structure that carries them forward. My work is complete.
+
+## Report
+
+**Slug:** `h16-2-h14-3-finite-cyclicity`
+**File:** `research/backward/h16-2-h14-3-finite-cyclicity.md` (also recorded in the `goals` ledger, re-derived into `derived/BACKWARD.md`).
+
+The reducer's job here paid off immediately: the claims ledger had **materially advanced past…
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
 The skeleton and all five gaps are recorded in the `goals` ledger. Here is my report.
 
 ## Slug

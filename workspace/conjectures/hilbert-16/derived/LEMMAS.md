@@ -8,6 +8,33 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 
 | Declaration | Kind | Standing | Statement | Source | File |
 | --- | --- | --- | --- | --- | --- |
+| `LuH14.F` | def | unchecked | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.FiveParam` | structure | unchecked | where | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.L` | def | unchecked | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.P30poly` | def | unchecked | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.PRing` | abbrev | unchecked | — | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.W6coeffs` | def | unchecked | : Fin 30 → ℤ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.W6poly` | def | unchecked | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.X` | def | unchecked | (p : FiveParam) : (ℝ × ℝ) → (ℝ × ℝ) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.Xv` | def | unchecked | (i : Fin 5) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.a` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.alpha` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.bautin_L4_identity` | theorem | unchecked | : True | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.bautin_L6_identity` | theorem | unchecked | : | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.beta` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.c` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.checkP30` | def | unchecked | : Bool | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.darboux_identities` | theorem | unchecked | (p : FiveParam) : True | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.ell` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.gamma` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.h14_p30_check` | theorem | unchecked | : checkP30 = true | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.monomial` | def | unchecked | (m : Fin 5 → ℕ) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.param_identities` | theorem | unchecked | (p : FiveParam) : | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.sigma` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.tau` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.Generated.Var` | abbrev | unchecked | — | — | `code/lean/Lib/Generated/P30Data.lean` |
+| `LuH14.Generated.coeffs` | def | unchecked | : Fin 30 → ℤ | — | `code/lean/Lib/Generated/P30Data.lean` |
+| `LuH14.Generated.ms` | def | unchecked | : Fin 30 → Var → Nat | — | `code/lean/Lib/Generated/P30Data.lean` |
 | `Bautin.Cited.at_most_three_small_amplitude` | axiom | failed | : | Bautin 1954, "On the number of limit cycles which appear with the | `code/lean/Lib/Bautin.lean` |
 | `Bautin.Cited.m_two_eq_three` | theorem | failed | : | — | `code/lean/Lib/Bautin.lean` |
 | `Bautin.Cited.three_attained` | axiom | failed | : | Bautin 1954; the bound is attained: some quadratic focus realises the | `code/lean/Lib/Bautin.lean` |
@@ -17,11 +44,11 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `Bautin.QuadraticFocusField` | structure | failed | where | — | `code/lean/Lib/Bautin.lean` |
 | `Bautin.QuadraticFocusField.coeffVec` | def | failed | (f : QuadraticFocusField) : ParamIndex → ℝ | — | `code/lean/Lib/Bautin.lean` |
 | `Bautin.SmallAmplitudeCyclicity` | def | failed | (f : QuadraticFocusField) : ℕ | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V₁` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V₂` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V₃` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
+| `Bautin.V1` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
+| `Bautin.V2` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
+| `Bautin.V3` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
 | `Bautin.bautinIdeal` | def | failed | : Ideal LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.bautinIdeal₃` | def | failed | : Ideal LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
+| `Bautin.bautinIdeal3` | def | failed | : Ideal LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
 | `Bautin.bautin_finitely_generated` | theorem | failed | : | — | `code/lean/Lib/Bautin.lean` |
 | `Bautin.bautin_ideal_proper` | theorem | failed | : | — | `code/lean/Lib/Bautin.lean` |
 | `Bautin.evalAt` | def | failed | (V : LyapunovRing) (f : QuadraticFocusField) : ℝ | — | `code/lean/Lib/Bautin.lean` |
@@ -30,7 +57,16 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `H16.LimitCycleSet` | def | failed | (X : Plane → Plane) : Set (Set Plane) | — | `code/lean/Lib/Statement.lean` |
 | `H16.PlanarPolyField` | structure | failed | (n : ℕ) where | — | `code/lean/Lib/Statement.lean` |
 | `H16.PlanarPolyField.limitCycleCount` | def | failed | (f : PlanarPolyField n) : ℕ | — | `code/lean/Lib/Statement.lean` |
+| `H16.PlanarPolyField.toMap` | def | failed | (f : PlanarPolyField n) : Plane → Plane | — | `code/lean/Lib/Statement.lean` |
 | `H16.Plane` | abbrev | failed | : Type | — | `code/lean/Lib/Statement.lean` |
 | `H16.h16_2` | theorem | failed | : | — | `code/lean/Lib/Statement.lean` |
+| `H16.now` | theorem | failed | states `(LimitCycleSet f.toMap).Finite ∧ ...ncard ≤ N`. | — | `code/lean/Lib/Statement.lean` |
 
-24 declarations, 0 of them in a file the kernel has checked.
+53 declarations, 0 of them in a file the kernel has checked.
+
+## Never checked
+
+These files are in the tree and no `lean_check` verdict exists for them. Nothing on this page from one of them is evidence of anything.
+
+- `code/lean/Lib/BautinRecurrence.lean`
+- `code/lean/Lib/Generated/P30Data.lean`

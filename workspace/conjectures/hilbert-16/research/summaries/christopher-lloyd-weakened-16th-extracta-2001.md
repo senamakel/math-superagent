@@ -1,6 +1,11 @@
-# Christopher–Lloyd, "Polynomial systems: a lower bound for the weakened 16th Hilbert problem"
+# Li–Li–Llibre–Zhang, "Polynomial systems: a lower bound for the weakened 16th Hilbert problem"
 
-<!-- source: https://ddd.uab.cat/pub/artpub/2001/110469/extmat_a2001v16n3p441.pdf | Extracta Mathematicae 16(3):441–447 (2001), open access -->
+<!-- source: https://ddd.uab.cat/pub/artpub/2001/110469/extmat_a2001v16n3p441.pdf | Extracta Mathematicae 16(3):441–447 (2001), open access
+     NOTE (scholar, 2nd pass): authors are Chengzhi Li, Weigu Li, Jaume Llibre,
+     Zhifen Zhang — NOT Christopher & Lloyd. The filename keeps the old
+     "christopher-lloyd" label; the paper proper is Li-Li-Llibre-Zhang 2001.
+     Christopher & Lloyd 1995 (Proc. R. Soc. A 450:219-224) is a different,
+     paywalled paper giving the H(n) ~ n² log n growth. -->
 
 **Primary treatment of the weakened (tangential) H16 lower bound at one
 singular point.** Let b_{m,n} be the maximum number of isolated zeros (counted

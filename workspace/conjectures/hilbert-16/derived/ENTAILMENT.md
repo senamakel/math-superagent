@@ -4,18 +4,7 @@ Derived from the `follows-from:` lines in every `claim` block, closed transitive
 
 A claim written `follows-from: a, b` says `a` and `b` together give it. That single edge is enough to answer three questions the claim ledger cannot: which claims the run has already established without noticing, which proposals would add nothing, and which pair of held beliefs cannot both be true.
 
-
-## Following from nothing recorded
-
-Each edge below names a claim no block on disk carries. Either the id is misspelled, or the run is deriving something from a belief nobody wrote down.
-
-- `drr-1994-citation-anchor` follows from `drr-121-graphics-reduction`, which does not exist
-- `drr-lu-claims-h14-3` follows from `drr-121-graphics-reduction`, which does not exist
-- `drr-mv-hemicycle-cyclicity-2` follows from `drr-121-graphics-reduction`, which does not exist
-- `drr-rousseau-zhu-15-pp-graphics` follows from `drr-121-graphics-reduction`, which does not exist
-- `drr-rr-boundary-only-for-3-graphics` follows from `drr-121-graphics-reduction`, which does not exist
-- `drr-rr-closes-i14` follows from `drr-121-graphics-reduction`, which does not exist
-- `h16-kaloshin-indep-proof` follows from `h16-kaloshin-elementary-bound`, which does not exist
+_Nothing to derive yet. Add a `follows-from:` line to a `claim` block naming the claim ids it is a consequence of, and this file fills in._
 
 ---
 

@@ -35,7 +35,7 @@ Ranked by how much of the argument rests on each, and within one load by whether
 - `pe1006-psi/G2-mechanical-word-representation` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For n with F(n) > k and rational slope a = F(n-1)/F(n), the k+1 length-k factors of F are produced exactly by the rotation/mechanical…
 - `pe1006-psi/G3-telescoped-second-moment` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — With v(x) = sum_{j=0}^{k-1} digit_j(x) 10^(k-1-j) where digit_j(x) = floor(x+(j+1)a) - floor(x+ja), summation by parts (telescoping) gives…
 
-_14 further candidate(s) below these, in the table._
+_15 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -47,10 +47,10 @@ _14 further candidate(s) below these, in the table._
 | `g2-mechanical-word-representation` | goal | **ready** | — | The k+1 length-k factors of F are produced exactly by the rotation/mechanical construction with slope a=F(n-1)/F(n), F(n)>k. |
 | `g3-telescoped-second-moment` | goal | **ready** | — | v(x) = floor(x+ka) - 10^(k-1) floor(x) + 9 sum_{j=1}^{k-1} 10^(k-1-j) floor(x+ja); Psi(k) is the second moment of this geometric floor-sum… |
 | `g4-universal-euclidean-floor-sum` | goal | **ready** | — | The universal Euclidean (Chtholly) algorithm evaluates Psi(k) mod M in O(log k), carrying the tuple (count, sum x^j, sum x^j floor, sum x^j… |
-| `governing-factor-complexity` | claim | **ready** | — | A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1. This is the defining… |
-| `governing-mechanical-word-reps` | claim | **ready** | — | Every length-k factor of a Sturmian word of slope a is generated, over the k+1 different arc-midpoint intercepts x_m (m=0..k), by the… |
-| `governing-sturmian` | claim | **ready** | — | The infinite Fibonacci word S = 0100101001001... (the S_n of the problem, S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01, in the limit) is a Sturmian… |
-| `governing-universal-euclidean` | claim | **ready** | — | The universal Euclidean algorithm (monoid generalisation of the AtCoder floor_sum, "Chtholly's algorithm") evaluates sums of the form… |
+| `governing-factor-complexity` | claim | **ready** | — | A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;… |
+| `governing-sturmian` | claim | **ready** | — | The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic… |
+| `governing-universal-euclidean` | claim | **ready** | — | The universal Euclidean algorithm (monoid generalisation of AtCoder floor_sum, "Chtholly's algorithm") evaluates sums of the form… |
+| `mechanical-word-digit-rule` | claim | **ready** | — | Let α in (0,1) and s_{α,ρ}(n) = floor((n+1)α + ρ) - floor(nα + ρ), n >= 0 (lower mechanical word with slope α, intercept ρ). All mechanical… |
 | `pe1006-psi` | goal | blocked | `pe1006-psi/G1-sturmian-factor-structure`, `pe1006-psi/G2-mechanical-word-representation`, `pe1006-psi/G3-telescoped-second-moment`, `pe1006-psi/G4-universal-euclidean-floor-sum` | compute Psi(k) mod M for k = 10^18, M = 101001001, where Psi(k) is the sum of squares of the decimal values of the k+1 distinct Fibonacci… |
 | `pe1006-psi/G1-sturmian-factor-structure` | lemma | **ready** | — | Let F be the infinite Fibonacci word (limit of S_0=S_1... with S_n = S_{n-1}S_{n-2}). For every length k ≥ 1, the set of distinct Fibonacci… |
 | `pe1006-psi/G2-mechanical-word-representation` | lemma | **ready** | — | For n with F(n) > k and rational slope a = F(n-1)/F(n), the k+1 length-k factors of F are produced exactly by the rotation/mechanical… |
@@ -58,6 +58,7 @@ _14 further candidate(s) below these, in the table._
 | `pe1006-psi/G4-universal-euclidean-floor-sum` | lemma | **ready** | — | The quantity Psi(k) = sum_{m=0}^k v(x_m)^2 mod M, with v(x_m) the telescoped geometric floor-sum from Lemma 3, is evaluated in O(log k)… |
 | `req-close-factor-complexity` | claim | **ready** | — | The infinite Fibonacci word is a Sturmian word; a Sturmian word has exactly P(s,n)=n+1 distinct factors of length n for every n >= 0 (the… |
 | `req-close-universal-euclidean` | claim | **ready** | — | The universal Euclidean algorithm (monoid generalisation of AtCoder floor_sum, aka "Chtholly's algorithm" / 万能欧几里得) evaluates sums… |
+| `steer-d2-literal-slope` | claim | **ready** | — | Steering directive 2 instructs the run to model the k+1 factors as a mechanical word of "slope a = F(n-1)/F(n)" for F(n) >> k. |
 | `universal-euclidean-geometric-floor-sum` | claim | **ready** | — | Let a,b,c,n be nonnegative integers, c>0. Define the operation string S(a,b,c,n) --- the "universal Euclidean" object --- to have exactly n… |
 
 ---

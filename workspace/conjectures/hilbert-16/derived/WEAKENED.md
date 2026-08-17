@@ -10,7 +10,7 @@ Rungs are listed weakest first, which is the order to climb them. Attack the cur
 
 | Ladder | Full-strength goal | Difficulties | Status |
 | --- | --- | --- | --- |
-| [[h16-limit-cycles]] | Hilbert's 16th problem part II: for planar polynomial vector fields X=(P,Q), deg P,deg Q <= n, H(n) = sup { # limit cycles } is finite for every n >= 2, with… | uniformity-over-family, degenerate-graphics, unbounded-degree, full-nonlinearity, global-scale | open |
+| [[h16-limit-cycles]] | Hilbert's 16th problem part II: for every n >= 2 and every planar polynomial vector field X = (P,Q) with max(deg P, deg Q) <= n, the number of limit cycles… | uniformity-over-family, degenerate-vertices, unbounded-n, full-displacement, infinity-and-global, nesting-classification | open |
 
 ## The rungs, weakest first
 
@@ -18,20 +18,29 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
-| `R-tangential-abelian` | [[h16-limit-cycles]] | For a fixed Hamiltonian H of degree n+1 and a polynomial 1-form omega with coefficients of degree <= n, the Abelian integral I(h) = integral over gamma(h)… | full-nonlinearity, global-scale, degenerate-graphics, unbounded-degree | open |
-| `R-local-focus-bautin` | [[h16-limit-cycles]] | For a quadratic planar vector field whose linearisation at a singular point is a focus or a centre, the germ of the displacement function at that point… | global-scale, degenerate-graphics, unbounded-degree | open |
-| `R-elementary-polycycle` | [[h16-limit-cycles]] | For a fixed elementary polycycle (a graph whose vertices are hyperbolic saddles and whose edges are separatrices), finite cyclicity holds: under a generic… | degenerate-graphics, unbounded-degree | open |
-| `R-one-degenerate-graphic` | [[h16-limit-cycles]] | For n=2, finite cyclicity of one named open graphic from the DRR list of 121 -- specifically a graphic through a degenerate (nilpotent, triple, or saddle-node)… | unbounded-degree | open |
-| `R-h2-uniform` | [[h16-limit-cycles]] | H(2) < infinity: there is a finite bound on the number of limit cycles of every planar quadratic vector field. By the Roussarie reduction this is equivalent to… | unbounded-degree | open |
-| `R-full` | [[h16-limit-cycles]] | H(n) < infinity for every n >= 2, uniformly over all planar polynomial fields of degree <= n, with any explicit bound (conjecturally the configuration of… | — | open |
+| `R-lu-finite-core` | [[h16-limit-cycles]] | For the source-normalized H14^3 hemicycle field x' = -y - d x + B(x^2 - y^2), y' = (1+y)(x + d y), and the quadratic-focus rotation recurrence, the following… | uniformity-over-family, degenerate-vertices, unbounded-n, full-displacement, infinity-and-global, nesting-classification | open |
+| `R-local-focus-bautin` | [[h16-limit-cycles]] | For a quadratic planar vector field whose linearisation at a singular point is a focus or a centre, at most 3 small-amplitude limit cycles bifurcate from that… | degenerate-vertices, unbounded-n, infinity-and-global, nesting-classification | **settled** |
+| `R-tangential-abelian` | [[h16-limit-cycles]] | For a polynomial Hamiltonian H of degree n+1 and a polynomial 1-form omega with deg omega <= n, the Abelian integral I(h) = integral over the nonsingular ovals… | full-displacement, degenerate-vertices, infinity-and-global, nesting-classification | **settled** |
+| `R-elementary-polycycle` | [[h16-limit-cycles]] | For a fixed elementary polycycle — a graph whose vertices are hyperbolic saddles and whose edges are separatrices, allowed on the Poincare sphere — cyclicity… | degenerate-vertices, unbounded-n, nesting-classification | **settled** |
+| `R-one-degenerate-graphic` | [[h16-limit-cycles]] | For n = 2, finite cyclicity of one named DRR graphic through a degenerate (nilpotent triple, semihyperbolic, or degenerate) point currently open in the… | unbounded-n, nesting-classification | open |
+| `R-h2-uniform` | [[h16-limit-cycles]] | H(2) < infinity: there exists a finite bound, depending only on the degree 2, on the number of limit cycles of every planar quadratic vector field. By the DRR… | unbounded-n, nesting-classification | open |
+| `R-full` | [[h16-limit-cycles]] | H16.2 in full: for every n >= 2, H(n) < infinity uniformly over all planar polynomial fields of degree <= n, and the possible configurations (mutual positions,… | — | open |
 
 ## The current rung — attack this one
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
-- [[h16-limit-cycles]] → `R-tangential-abelian`: For a fixed Hamiltonian H of degree n+1 and a polynomial 1-form omega with coefficients of degree <= n, the Abelian integral I(h) = integral over gamma(h) subset {H=h} of omega has a number of isolated zeros uniformly bounded over the continuous family of ovals by an explicit bound (BNY: doubly exponential in n); equivalently V(n) < infinity.
-  - switched off: full-nonlinearity, global-scale, degenerate-graphics, unbounded-degree
-  - to merge the next difficulty back: Binyamini-Novikov-Yakovenko 2010 give the explicit doubly-exponential bound; the run has not settled it -- settle it by a Lean statement in namespace Cited (an axiom with src BNY 2010) plus the formalised Picard-Fuchs/anomaly argument the source carries. The loaded difficulty this rung does NOT exercise: it bounds a first-order (Melnikov) approximation of the displacement, not the full map -- that is full-nonlinearity switched back on at the next rung; turning it back on means replacing the linearised zero-count with a contraction/argument-principle argument on the full displacement.
+- [[h16-limit-cycles]] → `R-lu-finite-core`: For the source-normalized H14^3 hemicycle field x' = -y - d x + B(x^2 - y^2), y' = (1+y)(x + d y), and the quadratic-focus rotation recurrence, the following finite algebraic identities hold exactly over Q[symbols]: (i) bridge identities tau = a + c, ell = -alpha, sigma = gamma, beta = tau + ell with a = mu4 + B mu5, c = (1-2B) mu5, alpha = c - d, beta = a + d, gamma = d(B + mu2), tau = mu4 + (1-B) mu5, ell = d - c, sigma = gamma; (ii) Darboux cofactor identities X(L) = (x + d y) L for L = 1 + y, X(F) = (2 B x + d y) F for F = B(B-1)x^2 - B d x y - B^2 y^2 - d(2B-1)x + (d^2 - 2B)y + d^2 - 1,…
+  - switched off: uniformity-over-family, degenerate-vertices, unbounded-n, full-displacement, infinity-and-global, nesting-classification
+  - to merge the next difficulty back: Nothing is turned back on by the next rung; this rung is the certificate base for one hemicycle proof. The first rung with dynamics in it is R-local-focus-bautin: turning uniformity-over-family and full-displacement back on (n fixed at 2) means showing the displacement germ at a quadratic focus has at most 3 zeros uniformly in the coefficients — first move: run the exact Lyapunov/Bautin-ideal computation and close the M(2)=3 certificate in Lean (replacing the V1=V2=V3=0 placeholders).
+
+## Settled — what this run owns
+
+Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
+
+- [[h16-limit-cycles]] `R-local-focus-bautin`: For a quadratic planar vector field whose linearisation at a singular point is a focus or a centre, at most 3 small-amplitude limit cycles bifurcate from that point within the quadratic family, and the bound 3 is attained: M(2) = 3. Equivalently, the Bautin ideal — the ideal generated by the Lyapunov quantities as polynomials over Q in the eleven coefficients — has the structure bounding the zeros of the displacement germ by 3, and the bound is uniform over the whole quadratic coefficient family. (off: degenerate-vertices, unbounded-n, infinity-and-global, nesting-classification; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[h16-limit-cycles]] `R-tangential-abelian`: For a polynomial Hamiltonian H of degree n+1 and a polynomial 1-form omega with deg omega <= n, the Abelian integral I(h) = integral over the nonsingular ovals gamma(h) subset {H = h} of omega has a uniformly bounded number of isolated real zeros, counted with multiplicity and summed over ovals: V(n) < inf uniformly in (H, omega). Explicit forms: Binyamini-Novikov-Yakovenko 2010 give 2^{2^{Poly(n)}} with Poly(n) = O(n^61); Binyamini-Dor 2012 sharpen to N <= exp^+(n^2) * m + exp^+(n^2), linear in deg omega = m. This is the linearised (first-order Melnikov) bound on limit cycles born from… (off: full-displacement, degenerate-vertices, infinity-and-global, nesting-classification; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[h16-limit-cycles]] `R-elementary-polycycle`: For a fixed elementary polycycle — a graph whose vertices are hyperbolic saddles and whose edges are separatrices, allowed on the Poincare sphere — cyclicity in a generic finite-parameter family of planar fields with only elementary singular points is finite and uniformly bounded over the parameter box: Ilyashenko-Yakovenko proved finiteness (primitive-recursive bound); Kaloshin gives the explicit bound E(k) <= 2^{25 k^2} for a k-parameter family. (off: degenerate-vertices, unbounded-n, nesting-classification; _nothing named — say which claim established it, or a reader cannot check it_)
 
 ---
 

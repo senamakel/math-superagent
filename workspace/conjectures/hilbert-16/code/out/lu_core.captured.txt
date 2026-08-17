@@ -1,0 +1,36 @@
+# Lu H14^3 finite core — clean-room verification capture
+
+WHAT RAN:      `python code/bautin/verify_lu_core.py` (exact sympy rational/
+               symbolic arithmetic; no floats; NO importing of the paper's
+               scripts — definitions restated from the paper's text as held in
+               research/sources/lu-h14-3-hemicycle-html.full.md).
+WHICH DEFS:    (A) Bautin recurrence: u,v chart; Q1 = A u^2 + C u v + D v^2,
+               Q2 = E u v + F v^2; rotation R(p) = -v p_u + u p_v;
+               V2 = (u^2+v^2)/2; R(c_k)+Q1 V_{k-1,u}+Q2 V_{k-1,v}
+               = L_k (u^2+v^2)^{k/2} (even k), gauge c_{k,0}=0.
+               (B) H14^3 field: P=-y-dx+B(x^2-y^2), Q=(1+y)(x+dy),
+               L=1+y, F=B(B-1)x^2-B d x y-B^2 y^2-d(2B-1)x+(d^2-2B)y+d^2-1.
+WHICH IDENTITIES: (A) 8*L4 == AC+CD+2DF-EF; 192*L6+P30 == 0; P30 30 monomials.
+               (B) X(L) == (x+dy)L, X(F) == (2Bx+dy)F,
+               div X == (x+dy)+(2Bx+dy).
+
+Row output (all must be PASS):
+
+(A) 8*L4 == AC+CD+2DF-EF : PASS
+(A) 192*L6 == -P30 (equivalently 12*weighted_g6 + P30 == 0) : PASS
+(A) 192*L6 + P30 == 0 directly on the obstruction : PASS
+(A) P30 has exactly 30 monomials : PASS
+(B) X(L) == (x+d*y)*L : PASS
+(B) X(F) == (2B*x + d*y)*F : PASS
+(B) div X == (x+dy)+(2Bx+dy)  (inverse-integrating-factor cofactor) : PASS
+
+ALL CLEAN-ROOM CHECKS PASS
+
+Exit code: 0. Verdict: the finite algebraic core of the Lu H14^3
+reproducibility bundle (bridge identities, Darboux cofactors, degree-4 and
+degree-6 Bautin obstructions) holds under clean-room exact re-derivation.
+Degree-6 was previously only transcribed with pinned SHA-256; this capture
+executes it. The two remaining scripts (verify_h14_center_bautin.py,
+verify_h14_center_global_domains.py) and the human-proof remainder are still
+not machine-checked; the preprint is unrefereed. Asserted-by-source, not
+established.

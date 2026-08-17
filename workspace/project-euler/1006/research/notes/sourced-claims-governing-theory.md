@@ -1,83 +1,147 @@
-# Sourced claims — PE1006 governing theory
+# Sourced claims — PE1006 governing theory (corrected)
 
 Each claim below is backed by a source in `research/sources/` (full text, with its
 URL in the first line). A claim's `anchor` names that source. Status `sourced`
-means it is a standard theorem found in the library, not computed this run.
+means a standard theorem found in the library; `checked` means verified in-container
+against the brute oracle (see `code/out/`).
+
+**Correction recorded (contradicts steering directive 2's literal slope):** the
+problem's word is the characteristic Sturmian word of slope α = 1/φ² = (3−√5)/2
+≈ 0.381966 (Perrin–Restivo Example 2: "The Fibonacci word is the characteristic
+word of slope α = 2/(3+√5)"), which equals (3−√5)/2. Directive 2 says to take
+"slope a = F(n-1)/F(n)"; under any Fibonacci convention the ratio of
+*consecutive* Fibonacci numbers tends to 1/φ ≈ 0.618, which is the ones-density
+of the *complement* word (zeros ↔ ones). With exact rational arithmetic at k=3,
+slope 55/89 ≈ 0.618 generates the factor set {010, 011, 101, 110} ≠ the
+problem's {001, 010, 100, 101}; slope 34/89 ≈ 0.382 = F(n-2)/F(n) generates
+exactly {001, 010, 100, 101}. The correction: use F(n-2)/F(n) (consecutive
+Fibonacci numbers two apart), i.e. α = 1/φ². See
+`research/summaries/perrin-restivo-note-sturmian-words.md` and
+`code/out/check_slope.py` (verification script for tool_builder).
 
 ---
 
 ```claim
 id: governing-sturmian
-statement: The infinite Fibonacci word S = 0100101001001... (the S_n of the problem,
-S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01, in the limit) is a Sturmian word — specifically
-the characteristic Sturmian word of slope 2 - phi = (3 - sqrt5)/2 = 1/phi^2, where
-phi = (1+sqrt5)/2 is the golden ratio. Its digit at position n is
-floor((n+2)r) - floor((n+1)r) with r = 2 - phi, i.e. a mechanical word of slope 2-phi.
-hypotheses: S is the limit of the substitution 0 -> 01, 1 -> 0 applied to 0; slope 2-phi is irrational.
-holds-here: yes — this is exactly the word whose length-k substrings the problem calls Fibonacci subwords.
-bearing: It fixes the object under study as a Sturmian/mechanical word, opening the factor-complexity and mechanical-word theorems.
+statement: The infinite Fibonacci word S = 0100101001001... (the limit of the
+problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic word
+c_α of slope α = 2/(3+sqrt(5)) = (3-sqrt(5))/2 = 1/phi^2, phi = (1+sqrt(5))/2.
+Its digit at position n >= 0 is c_α(n) = floor((n+2)α) - floor((n+1)α), i.e. it
+is the lower mechanical word s_{α,0} = 0·c_α shifted by one letter
+(s_{α,0}(n) = floor((n+1)α) - floor(nα)). Equivalently (Wikipedia convention)
+digit n >= 1 is 2 + floor(n·phi) - floor((n+1)·phi).
+hypotheses: S is the limit of the substitution 0 -> 01, 1 -> 0 applied to 0;
+slope α = 1/phi^2 is irrational.
+holds-here: yes — this is exactly the word whose length-k substrings the problem
+calls Fibonacci subwords (verified: the problem's S_4 = 01001010 is the length-8
+prefix; factor set at k=3 matches the problem oracle).
 status: sourced
-anchor: research/sources/wikipedia-fibonacci-word.full.md (URL https://en.wikipedia.org/wiki/Fibonacci_word); research/sources/perrin-restivo-note-sturmian-words.full.md (https://hal.science/hal-00828351/file/noteSturmianWords.pdf); research/sources/perrin-sturmian-words-lecture2-mechanical.full.md
+anchor: research/sources/perrin-restivo-note-sturmian-words.full.md (Example 2,
+"The Fibonacci word is the characteristic word of slope α = 2/(3+sqrt(5))");
+research/sources/perrin-sturmian-words-lecture2-mechanical.full.md;
+research/sources/wikipedia-fibonacci-word.full.md
+bearing: Fixes the object under study as the characteristic Sturmian word of
+slope 1/phi^2, opening the mechanical-word and factor-complexity theorems.
 ```
 
 ```claim
 id: governing-factor-complexity
-statement: A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of
-length k for every k >= 1. This is the defining minimal-complexity property of Sturmian
-words (Morse–Hedlund). Consequently the infinite Fibonacci word has exactly k+1 distinct
-length-k substrings, which is precisely the "interestingly, for each positive integer k,
-there are only k+1 different Fibonacci subwords of length k" assertion of the problem.
-hypotheses: binary word, Sturmian (equivalently irrational mechanical, equivalently balanced and aperiodic).
-holds-here: yes — the problem itself asserts the k+1 count, and the Sturmian theorem is the standard explanation.
-bearing: Confirms the object set: the k+1 distinct subwords the solver must read as decimals and square-sum.
-status: sourced
-anchor: research/sources/perrin-restivo-note-sturmian-words.full.md (Theorem 1, Theorem 2 and Section 2: "Sturmian words have exactly n+1 factors of length n"); research/sources/perrin-sturmian-words-lecture2-mechanical.full.md (Morse–Hedlund 1940 equivalence theorem); research/sources/fibonacci-word-2d-factor-complexity-ar5iv.full.md (Proposition 4)
+statement: A Sturmian word has exactly k+1 distinct factors (contiguous
+substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;
+Perrin–Restivo Theorem 1: s is Sturmian iff mechanical of irrational slope, and
+the definition: exactly n+1 factors of length n). Hence the infinite Fibonacci
+word has exactly k+1 distinct length-k substrings — precisely the problem's
+"interestingly, for each positive integer k, there are only k+1 different
+Fibonacci subwords of length k".
+hypotheses: binary word, Sturmian (irrational mechanical / balanced and
+aperiodic).
+holds-here: yes — the problem asserts the k+1 count; the theorem is the
+standard explanation and the brute oracle confirms count = k+1 for k=1..20.
+status: sourced (confirmable in-container via code/out/PE1006-verification.md)
+anchor: research/sources/perrin-restivo-note-sturmian-words.full.md (Theorem 1,
+definition in Section 2); research/sources/perrin-sturmian-words-lecture2-mechanical.full.md
+(Morse–Hedlund 1940 equivalence); research/sources/fibonacci-word-2d-factor-complexity-ar5iv.full.md
+(Proposition 4)
+bearing: Confirms the object set: exactly k+1 distinct subwords per length,
+so Psi(k) is a sum of squares over k+1 decimals.
 ```
 
 ```claim
-id: governing-mechanical-word-reps
-statement: Every length-k factor of a Sturmian word of slope a is generated, over the k+1
-different arc-midpoint intercepts x_m (m=0..k), by the mechanical-word digit rule
-digit_j = floor((j+1)a + x) - floor(j a + x). The k+1 distinct factors are exactly the
-decimal strings these k+1 representatives produce. (Directive-2 construction; equivalently
-the factors are first-occurrence positions of the infinite word as in the Sivasankar–Rama
-Theorem 7.)
-hypotheses: a irrational slope (or rational approximation F(n-1)/F(n) with F(n) >> k, which reproduces the same factor set at exact-integer arithmetic).
-holds-here: yes — this is the model the solver uses to avoid enumerating the 10^18+1 factors directly.
-bearing: Reduces the object set to k+1 mechanical-word representatives with an arithmetic digit formula.
-status: sourced (directive 2) + structural
-anchor: research/sources/perrin-sturmian-words-lecture2-mechanical.full.md (interval/factor correspondence R^n(rho) in I_w); research/sources/fibonacci-word-2d-factor-complexity-ar5iv.full.md (Theorem 7 position theorem); config/directives.jsonl (directive 2)
+id: mechanical-word-digit-rule
+statement: Let α in (0,1) and s_{α,ρ}(n) = floor((n+1)α + ρ) - floor(nα + ρ),
+n >= 0 (lower mechanical word with slope α, intercept ρ). All mechanical words
+of one slope have the same factor set (Perrin Lecture 2, Proposition). The k+1
+distinct length-k factors of the Fibonacci word (slope α = 1/phi^2) are exactly
+the k+1 words (s_{α,ρ_j}(0), ..., s_{α,ρ_j}(k-1)) where ρ_j runs over the
+midpoints of the k+1 arcs of the circle R/Z cut at the k+2 points
+{m·(-α) mod 1 : m = 0..k}. In exact integer arithmetic α may be replaced by
+the rational F(n-2)/F(n) (A000045 convention), provided the denominator F(n) is
+large enough that the k+1 cut points are distinct and in the same cyclic order
+(k < F(n) is necessary; the exact threshold is the run's k=1..150 vs brute gate).
+hypotheses: α irrational (or rational approximant with denominator > k);
+arc-midpoint intercepts distinct (true for irrational α; needs denominator > k
+for the rational approximant).
+holds-here: yes with the corrected slope F(n-2)/F(n) -> 1/phi^2; the literal
+steer-directive slope F(n-1)/F(n) -> 1/phi fails (see contradiction block below).
+status: sourced (construction from Perrin Lecture 2 interval correspondence
+I_w and same-slope-same-factors proposition); k=3 vs problem oracle checked by
+hand in exact arithmetic (34/89 reproduces {001,010,100,101}; 55/89 does not);
+full k-range vs brute pending tool_builder's run of code/out/check_slope.py.
+anchor: research/sources/perrin-sturmian-words-lecture2-mechanical.full.md
+(rotation coding, interval I_w, same-slope-same-factors);
+research/sources/perrin-restivo-note-sturmian-words.full.md (digit formula,
+characteristic word)
+bearing: Reduces the object set to k+1 mechanical-word representatives with an
+arithmetic digit formula — this is what makes Psi(10^18) tractable at all.
+```
+
+```claim
+id: steer-d2-literal-slope
+statement: Steering directive 2 instructs the run to model the k+1 factors as a
+mechanical word of "slope a = F(n-1)/F(n)" for F(n) >> k.
+hypotheses: F is a Fibonacci sequence in any standard convention.
+holds-here: no — under every standard convention F(n-1)/F(n) -> 1/phi ~ 0.618,
+which is the ones-density of the complement word, not of S. Exact arithmetic at
+k=3 with 55/89 yields factors {010,011,101,110}, not the problem's
+{001,010,100,101}. The corrected slope is F(n-2)/F(n) -> 1/phi^2 ~ 0.382.
+status: asserted (steer input); refuted as stated by the k=3 exact check
+contradicts: mechanical-word-digit-rule
+bearing: Do not implement the directive's literal slope; use F(n-2)/F(n).
 ```
 
 ```claim
 id: governing-universal-euclidean
-statement: The universal Euclidean algorithm (monoid generalisation of the AtCoder
+statement: The universal Euclidean algorithm (monoid generalisation of AtCoder
 floor_sum, "Chtholly's algorithm") evaluates sums of the form
-sum_{i=0}^{n-1} x^i * floor((a*i+b)/c)  (and the (count, sum x^i, sum x^i floor,
-sum x^i floor^2) tuple) in O(log) time, via the U/R merge-and-flip recursion
-F(a,b,c,n,U,R) = R^q ... F(c, b mod c, a, n', R, U) ... U. It collapses to a geometric
-series in x for the pure-power sub-sums.
-hypotheses: c >= 1, a >= 0, b, n >= 0; x a unit in the ring (mod M, M = 101001001).
-holds-here: yes — directive 2 requires exactly this to evaluate Psi(k) = second moment of a
-geometrically weighted floor sum for k = 10^18 without enumerating k terms.
-bearing: This is the O(log) primitive that makes Psi(10^18) mod M computable at all.
+sum_{i=0}^{n-1} x^i * floor((a*i+b)/c), and the tuple
+(count, sum x^i, sum x^i floor, sum x^i floor^2), in O(log(max{a,c})) time via
+the merge-and-flip recursion F(a,b,c,n,U,R) = (b>=c: U^{b/c} F(a, b%c, c, n, U, R);
+a>=c: F(a%c, b, c, n, U, U^{a/c} R); else with m=floor((a n+b)/c): m=0 -> R^n,
+m>0 -> R^{(c-b-1)/a} U F(c, (c-b-1)%a, a, m-1, R, U) R^{n - floor((c m - b -1)/a)}).
+hypotheses: a,b,c,n >= 0 integers, c > 0; x a unit in the ring (mod M =
+101001001, x = 10^{-1}, exists since gcd(10, M) = 1); carried quantities linear
+in the floor argument (monoid closure).
+holds-here: yes — directive 2's Psi(k) is the second moment of a linearly
+(geometrically) weighted floor sum, within monoid closure.
 status: sourced
-anchor: research/sources/oi-wiki-universal-euclidean-floor-sum.full.md (https://oi.wiki/math/number-theory/euclidean/); research/sources/universal-euclidean-geometric-weight-fhq.full.md (https://www.cnblogs.com/dixiao/p/15719155.html); research/sources/loj138-universal-euclidean-floor-moments.full.md; research/sources/atcoder-math-hpp-v151.full.md (floor_sum)
+anchor: research/sources/oi-wiki-universal-euclidean-floor-sum.full.md;
+research/sources/universal-euclidean-geometric-weight-fhq.full.md;
+research/sources/loj138-universal-euclidean-floor-moments.full.md;
+research/sources/atcoder-math-hpp-v151.full.md (floor_sum)
+bearing: This is the O(log) primitive that makes Psi(10^18) mod M computable
+without enumerating ~10^18 terms.
 ```
 
 ---
 
 Notes on coverage:
 
-- **Answers the open request `citable-statement-theorem-039a`** (Sturmian / factor
-  complexity k+1): claims `governing-sturmian` and `governing-factor-complexity` carry
-  the citable theorem + source (Perrin–Restivo Theorem 1; Morse–Hedlund via Perrin
-  Lecture 2; Berstel DLT'95 survey).
-- **Answers the open requests `citable-precise-statement-600d` and
-  `citable-precise-statement-d2e7`** (universal Euclidean / geometric-weight floor_sum):
-  claim `governing-universal-euclidean` cites OI Wiki, fhq study note, LOJ138, and
-  AtCoder floor_sum.
-- The OEIS corpus `research/sources/oeis-A003849-first-1652-subwords.full.md`
-  (from https://oeis.org/A003849/a003849.txt) lists all length-1..10 factors
-  (001, 010, 100, 101 are lines 6–9 of the length-3 block), matching the problem's
-  length-3 subwords — an independent oracle for the factor set.
+- Answers request `citable-statement-theorem-039a` (Sturmian / factor complexity
+  k+1): `governing-sturmian` + `governing-factor-complexity`.
+- Answers requests `citable-precise-statement-600d`, `citable-precise-statement-d2e7`,
+  `citable-name-treatment-0c91` (universal Euclidean / geometric-weight floor_sum):
+  `governing-universal-euclidean`.
+- **Contradiction on disk:** `steer-d2-literal-slope` (holds-here: no) vs
+  `mechanical-word-digit-rule` (holds-here: yes, corrected slope). This is the
+  most valuable finding of this digest: a wrong slope at k=10^18 would swap
+  every digit, giving a completely different Psi.

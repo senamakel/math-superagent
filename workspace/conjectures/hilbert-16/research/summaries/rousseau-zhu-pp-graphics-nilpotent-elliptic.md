@@ -48,5 +48,5 @@ status: asserted
 bearing: confirms 121 count and the reduction's normal form at primary-adjacent
   level; 15 named rows closed.
 anchor: research/sources/rousseau-zhu-pp-graphics-nilpotent-elliptic.full.md
-follows-from: drr-121-graphics-reduction
+follows-from: h16-drr-121-graphics
 ```

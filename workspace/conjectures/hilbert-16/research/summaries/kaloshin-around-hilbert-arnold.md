@@ -37,7 +37,7 @@ holds-here: yes (elementary case undisputed).
 status: asserted
 bearing: independent confirmation of the elementary finite-cyclicity pillar.
 anchor: research/sources/kaloshin-around-hilbert-arnold.html.full.md
-follows-from: h16-kaloshin-elementary-bound
+follows-from: h16-kaloshin-uniform-bound
 ```
 
 ## Does not help

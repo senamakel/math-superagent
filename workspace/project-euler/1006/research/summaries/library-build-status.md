@@ -151,6 +151,44 @@ sources 9 and 8.
 - AtCoder `math.hpp` from raw.githubusercontent.com was rate-limited (429);
   the jsdelivr `@v1.5.1` tag mirror succeeded instead.
 
+## This librarian cycle — additions
+
+The memory/Cognee server is down again this cycle (every `remember_memory` and
+`describe_file`/`refresh_index` on `research/` fails with a server-health
+timeout), so the durable record is this file on disk. Recorded here so the
+findings survive when memory recovers.
+
+Three sources added on disk, all from URLs seen in search results:
+
+1. **Morse–Hedlund theorem** — MathWorld encyclopedia statement.
+   `research/summaries/mathworld-morse-hedlund-theorem.md` (small; that file IS
+   the full document). The primary authority behind the "k+1 distinct length-k
+   factors" claim: an aperiodic infinite word has p_w(n) >= n+1 for all n, and
+   Sturmian words are exactly the sharp case p_w(n) = n+1. Original: Morse &
+   Hedlund, "Symbolic Dynamics II. Sturmian Trajectories", Amer. J. Math. 62
+   (1940) 1-42, DOI 10.2307/2371441 (paywalled; the encyclopedic statement is
+   what is held).
+2. **Sturmian sequence** — MathWorld encyclopedia entry.
+   `research/summaries/mathworld-sturmian-sequence.md` (also the full doc).
+   Reproduces the 0->01, 1->0 substitution and the 01001010... word that is
+   PE1006's S_n limit — the object's encyclopedic definition.
+3. **Hieronymi et al., "Decidability of the FO theory of Sturmian words"**
+   (arXiv:2102.08207; LMCS 20(3:12), 2024).
+   Full text `research/sources/hieronymi-decidability-sturmian-words-ar5iv.full.md`;
+   summary `research/summaries/hieronymi-decidability-sturmian-words-ar5iv.md`.
+   Decidability via Ostrowski-numeration adders + Pecan. Anchors the Ostrowski
+   representation behind directive 1's lag-sum recursion; adjacent computational
+   angle (not the solving method) on Sturmian-word structure.
+
+The two confirmed primary sources remain paywalled: Morse–Hedlund 1940
+(Amer. J. Math., DOI 10.2307/2371441) and Coven–Hedlund 1973 (Math. Systems
+   Theory 7, DOI 10.1007/BF01762232). Both confirmed real via search (MathSciNet,
+   MaRDI, felix.unife.it directory) but no free full text is hosted; the
+   MathWorld entries above supply the encyclopedic statements, and Berstel's
+   DLT'95 / 2007 surveys and the Lothaire C2 chapter (on disk) carry the proofs.
+   - Berstel's 1986 "Fibonacci Words — A Survey" (The Book of L) remains
+     paywalled; covered by the DLT'95 and 2007 Berstel surveys on disk.
+
 ## Next steps for the solver (not the librarian)
 
 1. `code/brute.py`: naive Psi enumeration, must hit Psi(3)=20302 and

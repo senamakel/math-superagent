@@ -43,5 +43,5 @@ bearing: the bibliographic and methodological anchor of the DRR reduction; the
   exact 121-row list is not held (paywalled) but its constituent rows are used
   throughout the held follow-up papers.
 anchor: research/sources/dumortier-roussarie-rousseau-1994-121-graphics.full.md
-follows-from: drr-121-graphics-reduction
+follows-from: h16-drr-121-graphics
 ```

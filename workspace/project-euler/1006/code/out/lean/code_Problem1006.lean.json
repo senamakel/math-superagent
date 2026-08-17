@@ -1,0 +1,37 @@
+{
+  "axioms": [
+    "'PE1006.fib_factor_count' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'PE1006.mech_reproduces_factors' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'PE1006.mech_set_card' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'PE1006.slope_mem_Icc' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'PE1006.mech_digit_two_valued' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'PE1006.fib_inf_digit_two_valued' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'PE1006.exists_slope_denominator' depends on axioms: [sorryAx]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem slope_mem_Icc (n : ℕ) : (0 : ℚ) ≤ mechSlope n ∧ mechSlope n ≤ 1",
+    "theorem mech_digit_two_valued (a : ℚ) (x : ℚ) (j : ℕ) : (0 : ℤ) ≤ mechDigit a x j ∧ mechDigit a x j ≤ 1",
+    "theorem fib_inf_digit_two_valued (t : ℕ) : (0 : ℤ) ≤ fibInfDigit t ∧ fibInfDigit t ≤ 1",
+    "theorem exists_slope_denominator (k : ℕ) : ∃ n : ℕ, k < Nat.fib (n + 2)",
+    "theorem fib_factor_count (k : ℕ) : (FactorSet k).ncard = k + 1",
+    "theorem mech_reproduces_factors (k n : ℕ) (h : k < Nat.fib (n + 2)) : MechSet (mechSlope n) k = FactorSet k",
+    "theorem mech_set_card (k n : ℕ) (h : k < Nat.fib (n + 2)) : (MechSet (mechSlope n) k).ncard = k + 1"
+  ],
+  "file": "code/Problem1006.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/Problem1006.lean:83:8: warning: declaration uses `sorry`",
+    "/workspace/code/Problem1006.lean:88:8: warning: declaration uses `sorry`",
+    "/workspace/code/Problem1006.lean:93:8: warning: declaration uses `sorry`",
+    "/workspace/code/Problem1006.lean:99:8: warning: declaration uses `sorry`",
+    "/workspace/code/Problem1006.lean:105:8: warning: declaration uses `sorry`",
+    "/workspace/code/Problem1006.lean:113:8: warning: declaration uses `sorry`",
+    "/workspace/code/Problem1006.lean:119:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

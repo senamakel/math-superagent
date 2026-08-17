@@ -62,7 +62,7 @@ bearing: closes (I^1_14) fully, bringing the count to 89 of 121 after RSZ's 88;
   demonstrates the Bautin-trick + blow-up-to-3D-foliation method for center
   graphics through a nilpotent point.
 anchor: research/sources/rousseau-roussarie-center-graphics-nilpotent.full.md
-follows-from: drr-121-graphics-reduction
+follows-from: h16-drr-121-graphics
 ```
 
 ```claim
@@ -81,5 +81,5 @@ bearing: THE target set: these three graphics (plus other not-listed rows) are
   target one of them.
 anchor: research/sources/rousseau-roussarie-center-graphics-nilpotent.full.md
 contradicts: drr-88-then-closed-all-four (the librarian overclaim)
-follows-from: drr-121-graphics-reduction
+follows-from: h16-drr-121-graphics
 ```

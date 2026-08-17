@@ -6,6 +6,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
+| [[fake-saddle-transition-maps]] | Does the uniform fake-saddle transition-map expansion of Marín 2026, combined with a division-in-flat-class step, certify finite cyclicity of an open… | open | — | obtain DMRT 2015 (JDE 258:588-620) or its open preprint; identify which DRR degenerate graphic has fake saddles and whether the uniform expansion closes it;… |
 | [[lu-h14-3-verification]] | Does the finite computational core of Lu arXiv:2607.13785 (local uniform finite cyclicity of the H14_3 semihyperbolic hemicycle) stand up to independent exact… | open | RR, 2015, leave, H14_3, as, the, one, triple-point-at-infinity, graphic, with, no, partial, result | (directive 3, ordered) FIRST write code/bautin/verify_lu_core.py clean-room from the paper's stated definitions (exact sympy, NOT importing Lu's scripts),… |
 
 ## Resting on nothing recorded

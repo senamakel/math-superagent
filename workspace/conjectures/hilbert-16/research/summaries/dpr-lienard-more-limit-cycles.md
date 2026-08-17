@@ -25,14 +25,20 @@ no mathematics beyond metadata — do not re-open expecting content.
 ```claim
 id: h16-lienard-ldmp-n6
 statement: The Lins-de Melo-Pugh conjecture fails for n >= 6: a degree-6
-  classical Lienard system has 4 limit cycles (Dumortier-Panazzolo-Roussarie
-  2007); >= n-2 cycles exist for general n (De Maesschalck-Dumortier); n=5 open
-  per Llibre-Zhang 2017 survey.
+  classical Lienard system has 4 limit cycles (per the held Llibre-Zhang 2017
+  full text, the degree-6 base case uses De Maesschalck-Huzak 2015's slow
+  divergence integral I1(x)=0.4x^3-1.248x^5+1.17429x^7-0.3x^9 with 3 positive
+  zeros -> 4 cycles; DPR 2007's own paper established n >= 7 with one extra
+  cycle); >= n-2 cycles exist for general n (De Maesschalck-Huzak 2015);
+  n=5 open per Llibre-Zhang 2017 survey.
 hypotheses: classical Lienard form y'=-x, x'=y-F(x), deg F = n.
-holds-here: yes (received disproof; full text not held, abstract-level).
+holds-here: yes (received disproof; DPR 2007 full text not held — landing page
+  only; the Llibre-Zhang 2017 full survey postprint is held).
 status: asserted
 bearing: slow-fast test reference; kills any sharp Liénard-type conjecture;
   unrelated to H(2) uniformity.
-anchor: research/sources/dpr-lienard-more-limit-cycles.full.md
-contradicts: h16-lienard-ldmp-disproved (none -- same story, this is the record)
+anchor: research/sources/llibre-zhang-lienard-survey-postprint-2017.full.md
+contradicts: none (corrects the earlier degree-6-via-DPR2007 attribution: the
+  survey credits DPR 2007 with n>=7 and the degree-6 4-cycle case to the
+  De Maesschalck-Huzak induction presented in the survey)
 ```

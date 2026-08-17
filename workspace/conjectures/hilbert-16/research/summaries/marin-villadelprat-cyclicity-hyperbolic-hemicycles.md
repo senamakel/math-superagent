@@ -68,5 +68,5 @@ bearing: hyperbolic hemicycles are settled with sharp cyclicity 2/3; the open
   DRR rows must be the degenerate (nilpotent) ones; supplies the model
   division-in-ideal method for displacement expansions.
 anchor: research/sources/marin-villadelprat-cyclicity-hyperbolic-hemicycles.full.md
-follows-from: drr-121-graphics-reduction
+follows-from: h16-drr-121-graphics
 ```

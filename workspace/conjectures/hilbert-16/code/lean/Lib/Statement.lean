@@ -55,8 +55,8 @@ import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Eval
 import Mathlib.Algebra.MvPolynomial.Degrees
 import Mathlib.Data.Set.Card
-import Mathlib.Data.Set.Finite
-import Mathlib.Data.Matrix.Notation
+import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Data.Fin.VecNotation
 
 open Set
 open scoped Topology
@@ -86,12 +86,13 @@ limit cycle from the continuum of period orbits of a centre.
 -/
 def IsLimitCycle (X : Plane → Plane) (γ : ℝ → Plane) : Prop :=
   IsIntegralCurve γ (fun _ : ℝ => X) ∧
-  (∃ T > 0, ∀ t : ℝ, γ (t + T) = γ t) ∧
+  (∃ T > 0, (∀ t : ℝ, γ (t + T) = γ t) ∧ ∃ t₁ t₂ : ℝ, γ t₁ ≠ γ t₂) ∧
   -- isolated in the set of periodic orbits: some neighbourhood of γ's orbit
   -- contains no other periodic orbit.
   (∃ U : Set Plane, U ∈ 𝓝ˢ (γ '' Set.univ) ∧ ∀ δ : ℝ → Plane,
      -- δ a periodic-orbit would be forced out of U
-     IsIntegralCurve δ (fun _ : ℝ => X) → (∃ S > 0, ∀ t, δ (t + S) = δ t) →
+     IsIntegralCurve δ (fun _ : ℝ => X) →
+     (∃ S > 0, (∀ t, δ (t + S) = δ t) ∧ ∃ s₁ s₂ : ℝ, δ s₁ ≠ δ s₂) →
      δ '' Set.univ ⊆ U → δ '' Set.univ = γ '' Set.univ)
 
 /--
@@ -151,6 +152,10 @@ theorem h16_2 :
       (LimitCycleSet f.toMap).Finite ∧ (LimitCycleSet f.toMap).ncard ≤ N := by
   sorry
 
+-- The statement is the deliverable; the proof is genuinely open, so the
+-- axiom set is exactly `sorryAx`.
+#print axioms h16_2
+
 /-
 What prevented a cleaner statement, concretely (a reportable finding of this
 pass, not hand-waving):
@@ -176,5 +181,7 @@ pass, not hand-waving):
 -/
 
 end H16
+
+#print axioms H16.h16_2
 
 end

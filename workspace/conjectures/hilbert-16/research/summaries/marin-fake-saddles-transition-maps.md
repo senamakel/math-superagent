@@ -120,3 +120,38 @@ arguments use.
 proved (peer-reviewed article, full text held, mathematics checked by reading the
 proofs; not independently machine-verified in this run). The uniform-expansion
 statement (Thm 1.2) and the zero-cyclicity application are the load-bearing claims.
+
+```claim
+id: fake-saddle-uniform-transition-map-marin2026
+status: sourced
+statement: Marín 2026 (EJQTDE 2026 no.5, 1-10, "Fake saddles and their
+  transition maps") characterizes generic fake saddles (zero-linear-part,
+  non-zero-second-order-jet degenerate singularities, a.k.a. impassable grains)
+  and gives the FIRST TERM of a UNIFORM (in parameters) asymptotic expansion of
+  the Poincaré/Dulac transition map across them: in the normal form
+  Xµ = (x²f1 + a xy + y²f2)∂x + (x g1 + y g2) y ∂y, the origin is a fake saddle
+  iff d = 4(1−c) − (a−b)² > 0 or (c=1, a=b), and under d>0 the transition map
+  satisfies Πω_α(y;µ) = e^{γ±(µ)} y + flat remainder uniform in µ, with
+  γ±(µ) = PV∫ g1/(x f1) dx ± π(2b − c(a+b))/√d. Uniformity of the remainder is
+  what lets the result certify ZERO cyclicity at a centre (worked example: the
+  family Zµ, β>1/4, has no limit cycle near the origin for any µ0 with β0>1/4).
+hypotheses: C^K (K≥3) family of planar fields; degenerate (zero-linear-part)
+  singularity with non-zero second-order jet; d>0 (or the c=1,a=b exceptional
+  case); transverse sections Σα={x=α},Σω={x=ω} to the singular fiber y=0.
+evidence-class: sourced (peer-reviewed EJQTDE 2026, full text held in
+  research/sources/marin-fake-saddles-transition-maps.full.md).
+falsifier: a published counterexample to Theorem 1.2's uniform remainder, or
+  an error in the γ± evaluation; nothing located.
+holds-here: yes — gives the exact transition-map machinery the degenerate DRR
+  D-families at infinity (the DI₂a/etc. graphics) require, and a concrete
+  template for the division-in-flat-class step of the Lu H14³ / RR center
+  arguments. Also corrects Coll–Gasull–Prohens 2025 (DCDS-S 18:4021) which
+  claimed a necessity condition refuted by Example 3.1 (X4 with d=4 is a fake
+  saddle).
+```
+
+## Hand-off note (memory server down)
+
+The durable finding is recorded here (and will be stored in Cognee when the
+memory server recovers). This summary and the claim block are the authoritative
+copy.

@@ -1,99 +1,63 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/oi-wiki-universal-euclidean-floor-sum.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# OI Wiki — 类欧几里得算法 / 万能欧几里得算法 (universal Euclidean algorithm)
 
-<!-- source: https://oi.wiki/math/number-theory/euclidean/ | converted from HTML -->
+Source: https://oi.wiki/math/number-theory/euclidean/
+Full text: [[oi-wiki-universal-euclidean-floor-sum.full]]
 
-## What is in it
+## What this source establishes
 
-- 类欧几里德算法
-  - 引入
-  - 类欧几里得算法
-    - 代数解法
-    - 几何直观
-    - 例题
-  - 万能欧几里得算法
-    - 问题转化
-    - 算法过程
-- if MATRIX
-- else
-- endif
-    - 例题
-  - 习题
-  - 参考资料与注释
+A thorough treatment of the floor-sum family: the classic 类欧几里得
+(Euclidean-like) algorithm for Σ ⌊(ai+b)/c⌋, and its generalisation
+**万能欧几里得 (universal Euclidean)**, which elevates U and R to arbitrary
+monoid elements.
 
+**Monoid model (the core idea).** The operation string S(a,b,c,n) has n R's
+and m = ⌊(an+b)/c⌋ U's, the i-th R preceded by ⌊(ai+b)/c⌋ U's. Model each
+U and R as a monoid element; the answer is the product of the whole string.
+The note defines the contribution-merge for the (x, y, Σy) state:
+  (x₁,y₁,s₁)·(x₂,y₂,s₂) = (x₁+x₂, y₁+y₂, s₁+s₂+x₂·y₁),
+proven associative, with identity (0,0,0). This is the (count, height,
+running sum) monoid — a special case of the fhq 6-component one.
 
-## What it claims
+**The recursion (verbatim, O(log)).**
+  F(a,b,c,n,U,R):
+    if b ≥ c:  return U^(⌊b/c⌋) · F(a, b mod c, c, n, U, R)
+    if a ≥ c:  return F(a mod c, b, c, n, U, U^(⌊a/c⌋)·R)
+    m = ⌊(a·n+b)/c⌋
+    if m == 0: return Rⁿ
+    return R^(⌊(c−b−1)/a⌋) · U · F(c, (c−b−1) mod a, a, m−1, R, U) · R^(n − ⌊(c·m−b−1)/a⌋)
 
-- 数据结构
-- 堆
-- 块状数据结构
-- [单调栈][60]
-- [单调队列][61]
-- [ST 表][62]
-- [树状数组][63]
-- 线段树
-- [划分树][64]
-- 二叉搜索树 & 平衡树
-- [跳表][65]
-- 可持久化数据结构
-- 树套树
-- [K-D Tree][66]
-- 动态树
-- [析合树][67]
-- [PQ 树][68]
-- [手指树][69]
-- [霍夫曼树][70]
+**Complexity proof (important — this is the go/no-go fact).** Each round
+transforms the parameters (a,c) → (c, a mod c) — a Euclidean step — and each
+round costs O(log(a/c) + log(c/(a mod c))) for the three binary-exponentiation
+steps. The telescoping sum over all rounds gives **total
+O(log max{a,c} + log(b/c))**, i.e. O(log) in the parameters, NOT O(n). This is
+what makes the k=10^18 evaluation feasible: n appears only inside m and the
+final exponent, never as a loop bound.
 
-- 图论
-- [有向无环图][71]
-- [拓扑排序][72]
-- 最短路问题
-- 生成树问题
-- [斯坦纳树][73]
-- [拆点][74]
-- 连通性相关
-- [环计数问题][75]
-- [最小环][76]
-- [2-SAT][77]
-- [欧拉图][78]
-- [哈密顿图][79]
-- [二分图][80]
-- [平面图][81]
-- [弦图][82]
-- [图的着色][83]
-- 网络流
-- 图的匹配
-- [Prüfer 序列][84]
-- [矩阵树定理][85]
-- [LGV 引理][86]
-- [最大团搜索算法][87]
-- [支配树][88]
-- [图上随机游走][89]
+**Algebraic/geometric view.** The note also derives the classical
+类欧几里得 formulas (sum of floors, sum of floor², etc.) by the same
+U/R-string; the geometric intuition is the digitised line y = (ax+b)/c: each
+crossing of a vertical grid line writes R, of a horizontal line U.
 
-- 计算几何
-- 杂项
+## What it implies for PE1006
 
-- [分数规划][90]
-- 随机化
-- [悬线法][91]
-- [有限状态自动机][92]
-- [计算理论基础][93]
-- [字节顺序][94]
-- [约瑟夫问题][95]
-- [表达式求值][96]
-- [在一台机器上规划任务][97]
-- [主元素问题][98]
-- [Garsia–Wachs 算法][99]
-- [15-puzzle][100]
-- [Kahan 求和][101]
-- [珂朵莉树/颜色段均摊][102]
-- [空间优化简介][103]
+1. This is the structural statement of the primitive directive 2 relies on,
+   with the O(log) bound proven (not just asserted): the number of monoid
+   multiplications is O(log max{p,q}), independent of n.
+2. The (x,y,Σy) monoid is the prototype; the run needs its extension to
+   geometric weights xⁱ and second moments (handled by the fhq 6-component
+   Po or the LOJ138 moment array).
+3. The recursion's index arithmetic (⌊(c−b−1)/a⌋, (c−b−1) mod a, m−1,
+   n − ⌊(cm−b−1)/a⌋) is exact integer arithmetic — no floating point — which
+   is what lets the solver work mod M = 101001001 safely.
 
-- 专题
+## Claims anchored here
 
-- 万能欧几里得算法
-- 习题
-- 参考资料与注释
+`governing-universal-euclidean` (recursion + O(log) proof), answering
+`citable-precise-statement-600d`, `citable-precise-statement-d2e7`.
 
-[104]
+## What it does NOT establish
 
-*[digest of a 52734 character source; every section, statement, and proof in full at `research/sources/oi-wiki-universal-euclidean-floor-sum.full.md`]*
+- Nothing geometric-weight specific; the xⁱ weights are the fhq note's
+  contribution (this source's monoid is the un-weighted (x,y,Σy)).
+- Nothing about Sturmian words or PE1006 itself.

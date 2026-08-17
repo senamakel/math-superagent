@@ -1,96 +1,42 @@
-<!-- source: https://atcoder.github.io/ac-library/production/document_en/math.html | converted from HTML -->
+# AtCoder Library — `floor_sum` (official spec and source)
 
-[AC Library][1]
+Spec source: https://atcoder.github.io/ac-library/production/document_en/math.html ([[atcoder-math-floor_sum-doc]])
+Source code: https://cdn.jsdelivr.net/gh/atcoder/ac-library@v1.5.1/atcoder/math.hpp ([[atcoder-math-hpp-v151]])
 
-# Math
+## What these establish
 
-It contains number-theoretic algorithms.
+**Spec (official).**
+- `floor_sum(ll n, ll m, ll a, ll b)` returns Σ_{i=0}^{n−1} ⌊(a·i+b)/m⌋.
+  Constraints: 0 ≤ n < 2^32, 1 ≤ m < 2^32. Complexity **O(log m)**.
+- `pow_mod(x, n, m)` = x^n mod m, O(log n); `inv_mod(x, m)` with gcd(x,m)=1,
+  O(log m) — the two modular primitives the run needs (10^{-1} mod M, and
+  powers of 10^{-1} in the geometric monoid).
+- `crt(r, m)` solves a modular system — not needed for PE1006.
 
-## pow_mod
+**Source.** The verbatim `math.hpp` shows `floor_sum` reduces negative a,b via
+`safe_mod` and calls `internal::floor_sum_unsigned` — the unsigned-signature
+Euclidean loop that the universal-Euclidean monoid generalises. It confirms the
+standard recursion's *existence and exactness* for the plain (unweighted) case.
 
-```
-ll pow_mod(ll x, ll n, int m)
-```
+## What it implies for PE1006
 
-It returns $x^n \bmod m$.
+1. The bare `floor_sum` is **O(log m) but unweighted**: it cannot handle the
+   geometric weights 10ⁱ in Ψ's telescoped form. So the AtCoder primitive alone
+   is insufficient; the run needs the universal-Euclidean monoid (fhq/OI-wiki/
+   LOJ138), of which AtCoder's floor_sum is the x=1 special case. Using
+   `floor_sum` here would require summing k terms — infeasible at k=10^18.
+2. `inv_mod` gives x = 10^{-1} mod M (M = 101001001, gcd(10,M)=1), the base of
+   the geometric weights; `pow_mod` computes x^j and 10^{k−1−j} mod M.
+3. Verbatim source is a reference implementation to test the monoid against
+   (with x=1 weights the monoid should reproduce floor_sum's answers).
 
-**Constraints**
+## Claims anchored here
 
-- $0 \le n$
-- $1 \le m$
+`governing-universal-euclidean` (floor_sum as the x=1 special case; inv_mod /
+pow_mod as the modular primitives).
 
-**Complexity**
+## What it does NOT establish
 
-- $O(\log n)$
-
-## inv_mod
-
-```
-ll inv_mod(ll x, ll m)
-```
-
-It returns an integer $y$ such that $0 \le y < m$ and $xy \equiv 1 \pmod m$.
-
-**Constraints**
-
-- $\gcd(x, m) = 1$
-- $1 \leq m$
-
-**Complexity**
-
-- $O(\log m)$
-
-## crt
-
-```
-pair<ll, ll> crt(vector<ll> r, vector<ll> m)
-```
-
-Given two arrays $r,m$ with length $n$, it solves the modular equation system
-
-$$x \equiv r[i] \pmod{m[i]}, \forall i \in \lbrace 0,1,\cdots, n - 1 \rbrace.$$
-
-If there is no solution, it returns $(0, 0)$. Otherwise, all the solutions can be written as the form $x \equiv y \pmod z$, using integers $y, z$ $(0 \leq y < z = \mathrm{lcm}(m[i]))$. It returns this $(y, z)$ as a pair. If $n=0$, it returns $(0, 1)$.
-
-**Constraints**
-
-- $|r| = |m|$
-- $1 \le m[i]$
-- $\mathrm{lcm}(m[i])$ is in `ll`.
-
-**Complexity**
-
-- $O(n \log{\mathrm{lcm}(m[i])})$
-
-## floor_sum
-
-```
-ll floor_sum(ll n, ll m, ll a, ll b)
-```
-
-It returns
-
-$$\sum_{i = 0}^{n - 1} \left\lfloor \frac{a \times i + b}{m} \right\rfloor$$
-
-It returns the answer in $\bmod 2^{\mathrm{64}}$, if overflowed.
-
-**Constraints**
-
-- $0 \leq n \lt 2^{32}$
-- $1 \leq m \lt 2^{32}$
-
-**Complexity**
-
-- $O(\log m)$
-
-## Examples
-
-### AC code of [https://atcoder.jp/contests/practice2/tasks/practice2_c][2]
-
-#include <atcoder/math> #include <cstdio> using namespace std; using namespace atcoder; int main() { int t; scanf("%d", &t); for (int i = 0; i < t; i++) { long long n, m, a, b; scanf("%lld %lld %lld %lld", &n, &m, &a, &b); printf("%lld\n", floor_sum(n, m, a, b)); } return 0; }
-
-
-## Links
-
-[1]: ./index.html
-[2]: https://atcoder.jp/contests/practice2/tasks/practice2_c
+- No geometric-weight form; no moment closure. The O(log m) claim is for the
+  un-weighted sum only.
+- No Sturmian-word content.

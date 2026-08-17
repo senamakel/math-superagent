@@ -1,17 +1,22 @@
 {
-  "axioms": [],
+  "axioms": [
+    "'H16.h16_2' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'H16.h16_2' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
   "cited": [],
   "compiled": true,
   "declarations": [
-    "theorem h16_2 : ∀ n : ℕ, ∃ N : ℕ, ∀ f : PlanarPolyField n, f.limitCycleCount ≤ N"
+    "theorem h16_2 : ∀ n : ℕ, ∃ N : ℕ, ∀ f : PlanarPolyField n, (LimitCycleSet f.toMap).Finite ∧ (LimitCycleSet f.toMap).ncard ≤ N"
   ],
   "file": "code/lean/Lib/Statement.lean",
+  "generated_conclusions": [],
   "missing_modules": [],
   "outcome": "failed",
   "retired_binder": false,
   "sorries": [
-    "/workspace/code/lean/Lib/Statement.lean:121:8: warning: declaration uses `sorry`"
+    "/workspace/code/lean/Lib/Statement.lean:150:8: warning: declaration uses `sorry`"
   ],
   "tautologies": [],
+  "uncleared": [],
   "verified": false
 }

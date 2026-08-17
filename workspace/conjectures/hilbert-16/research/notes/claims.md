@@ -236,13 +236,20 @@ holds-here: yes, as lower bounds. NOTE: the precise asymptotic constant and
 ```claim
 id: h16-lienard-ldmp-disproved
 status: sourced
+note: attribution nuance (scholar, 2nd pass, per held Llibre-Zhang postprint
+  pp. 2-3): DPR 2007's own contribution was n >= 7 (one extra cycle beyond the
+  conjecture). The degree-6 system with 4 limit cycles is a base case in the
+  survey's own proof (following De Maesschalck-Huzak 2015): I1(x)=0.4x^3
+  -1.248x^5+1.17429x^7-0.3x^9 has exactly 3 positive zeros -> 4 cycles. The
+  core claim (conjecture FALSE for n>=6) is unaffected; only the specific
+  "degree-6 example from DPR 2007" attribution is loose.
 statement: The Lins–de Melo–Pugh conjecture — classical Liénard ẋ=y−F(x),
   ẏ=−x with deg F = n has at most ⌊(n−1)/2⌋ limit cycles — is FALSE for
-  n ≥ 6. Dumortier–Panazzolo–Roussarie (2007) built a degree-6 f with 4 limit
-  cycles (relaxation oscillations / canard bifurcations in a slow-fast
-  limit); later work gives ≥ ⌊(n−1)/2⌋ + 2 for n ≥ 6, ≥ n−2. n=5 was open as
-  of Llibre–Zhang 2017 survey. The classic bound is achieved (not exceeded)
-  by simple FSTS-canard families (De Maesschalck–Dumortier 2010).
+  n ≥ 6. A degree-6 f with 4 limit cycles exists (survey's own construction
+  following De Maesschalck–Huzak 2015; DPR 2007's own paper established n ≥ 7
+  with one extra cycle); later work gives ≥ n−2 cycles for n ≥ 6. n=5 was
+  open as of Llibre–Zhang 2017 survey. The classic bound is achieved (not
+  exceeded) by simple FSTS-canard families (De Maesschalck–Dumortier 2010).
 hypotheses: classical Liénard form.
 evidence-class: sourced (abstracts of DPR 2007, Dumortier–Llibre counterexamples,
   Llibre–Zhang survey). Full text of DPR 2007 NOT held (only AMS landing pages
@@ -258,9 +265,11 @@ status: sourced
 statement: For the classical Liénard system the exact maximum number of limit
   cycles for degree n=5 was open as of the 2017 Llibre–Zhang survey: whether a
   degree-5 system can have more than ⌊(5−1)/2⌋=2 limit cycles was unknown.
-evidence-class: sourced (Llibre–Zhang 2017 survey record held full in
-  research/sources/llibre-zhang-lienard-survey-expmath-2017.uab.full.md;
-  "n=5 remains open" per abstract and Theorem 2(c) of the survey).
+evidence-class: sourced (Llibre–Zhang 2017 FULL postprint held in
+  research/sources/llibre-zhang-lienard-survey-postprint-2017.full.md; the
+  survey's open problem is verbatim "What is the maximum number of limit
+  cycles for the Liénard differential systems (1) when n ≥ 5?" and Theorem 2
+  leaves only n=5 undecided).
 falsifier: a published determination of the degree-5 Liénard maximum after the
   survey.
 holds-here: reported as open per the held source; needs a post-2017 check.
@@ -318,10 +327,14 @@ statement: The Songling quadratic system — ẋ = λx − y − 10x² + (5+δ)x
   ẏ = x + x² + (−25+8ε−9δ)xy with δ≈−10⁻¹³, ε≈−10⁻⁵², λ≈−10⁻²⁰⁰ — has
   EXACTLY four limit cycles, proved rigorously by interval arithmetic
   (adaptive precision, P-map fixed points, explicit positional bounds for all
-  four cycles spanning scales from 10⁻⁷⁵ to ~0.04). This is a certified
-  computational reproduction of Shi's 1980 H(2) ≥ 4 lower bound, and a model
-  oracle (trapping-region/return-map with certified sign change) for this
-  run's own certifier.
+  four cycles spanning scales from 10⁻⁷⁵ to ~0.04). Verified configuration
+  (Fig. 2 caption): three of the four limit cycles surround the origin, the
+  fourth surrounds the equilibrium (0,1) — i.e. the (3,1) configuration
+  associated with Shi's H(2)≥4 example. The four are alternately stable /
+  unstable (P'<1 / P'>1, P' extremely close to 1 for the three inner cycles).
+  This is a certified computational reproduction of Shi's 1980 H(2) ≥ 4 lower
+  bound, and a model oracle (trapping-region/return-map with certified sign
+  change) for this run's own certifier.
 hypotheses: H(2) ≥ 4 with a (not necessarily (1,3)) configuration; does not
   show the 4 cycles can be arbitrary; the exponential separation of scales is
   essential to the difficulty.
@@ -351,7 +364,15 @@ holds-here: yes.
 ```claim
 id: h16-christopher-lloyd-weakened-16th
 status: sourced
-statement: Christopher & Lloyd (2001), "Polynomial systems: a lower bound for
+note: PROVENANCE CORRECTED (scholar, 2nd pass) — the held full text is by
+  Chengzhi Li, Weigu Li, Jaume Llibre, Zhifen Zhang (2001), not Christopher &
+  Lloyd. Christopher & Lloyd 1995 ("Polynomial systems: a lower bound for the
+  Hilbert numbers", Proc. R. Soc. Lond. A 450:219-224) is a DIFFERENT,
+  paywalled paper giving the H(n) ≳ n² log n growth. The two were conflated
+  by the librarian; the mathematical content of this claim (the b_{m,n}
+  tangential bound at one singular point) is correct and belongs to the
+  2001 Li-Li-Llibre-Zhang paper.
+statement: Li-Li-Llibre-Zhang (2001), "Polynomial systems: a lower bound for
   the weakened 16th Hilbert problem", Extracta Math. 16(3), 441–447: for m, n
   odd, the maximum number b_{m,n} of isolated zeros (with multiplicity) of the
   Abelian integral I(h)=∮_{H=h} ȳQ dx with H = y²/2 + x^{m+1}/(m+1), deg Q ≤
@@ -395,14 +416,16 @@ statement: Llibre & Zhang (2017), "Limit cycles of the classical Liénard
   differential systems: a survey on the Lins Neto, de Melo and Pugh's
   conjecture", Expo. Math. 35(3), 286–299: the LdMP conjecture (at most
   ⌊(n−1)/2⌋ cycles for deg F = n) holds for n ≤ 4 (no cycles for n=1,2; ≤1 for
-  n=3,4); is FALSE for n ≥ 6 (at least n−2 cycles, constructions: DPR 2007,
-  De Maesschalck–Dumortier, De Maesschalck–Huzak); and for n=5 is
-  OPEN/unresolved as of this survey. This replaces the contaminated held file
-  (which was an unrelated power-grid paper) as the correct Liénard-survey
-  anchor.
+  n=3,4); is FALSE for n ≥ 6 (at least n−2 cycles, constructions: DPR 2007
+  n≥7, De Maesschalck–Dumortier n≥6, De Maesschalck–Huzak n−2 for n≥6); and
+  for n=5 is OPEN/unresolved as of this survey. This replaces the contaminated
+  held file (which was an unrelated power-grid paper) as the correct
+  Liénard-survey anchor.
 hypotheses: classical Liénard ẋ=y−F(x), ẏ=−x, F of degree n.
-evidence-class: sourced (UAB postprint record held; survey text verified)
-  — research/sources/llibre-zhang-lienard-survey-expmath-2017.uab.full.md.
+evidence-class: sourced (FULL postprint PDF held, with complete proofs of the
+  known results)
+  — research/sources/llibre-zhang-lienard-survey-postprint-2017.full.md;
+  the earlier .uab record page is only metadata.
 falsifier: a source closing the n=5 case (≥3 cycles for deg-5 Liénard).
 holds-here: yes.
 ```

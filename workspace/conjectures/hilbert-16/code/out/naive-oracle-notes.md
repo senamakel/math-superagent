@@ -61,3 +61,24 @@ return map minus identity" frame.
 4. Van der Pol missing rotational symmetry (x) ⇒ `is_radial` = False ⇒ the
    oracle refuses, honestly, rather than giving a wrong count. This is the
    probe of what the naive method cannot do.
+
+## Run record
+
+Command: `cd /workspace && timeout 120 python code/brute.py` — exit 0, ran in
+seconds (timeout not hit). All 7 worked examples PASS:
+
+| case | certified count | roots (u=r²) |
+| --- | --- | --- |
+| cubic normal form `x'=−y+x(1−x²−y²)`, `y'=x+y(1−x²−y²)` | 1 | 1.0000 |
+| linear centre `x'=−y, y'=x` (A≡0) | 0 | — |
+| linear expanding focus `x'=x−2y, y'=2x+y` (A≡1) | 0 | — |
+| van der Pol-like `x'=y, y'=(1−x²−y²)y−x` | refused (non-radial) | — |
+| linear saddle `x'=x, y'=−y` | refused (non-radial) | — |
+| A=(1−u)(2−u), B=1 (two cycles) | 2 | 1, 2 |
+| A=(1−u)²(2−u), B=1 (semi-stable at u=1) | 1 | 2 |
+
+Excluded correctly: circle u=1 in the semi-stable case (double root, no sign
+change — not a hyperbolic limit cycle); gcd(A,B) exclusion branch for rings of
+equilibria is exercised by construction in cases 6–7 with gcd=1. Runs at
+worked-example sizes only (degree ≤ 3, one band), as required: the oracle pins
+down the meaning and does not attack the statement's bound.

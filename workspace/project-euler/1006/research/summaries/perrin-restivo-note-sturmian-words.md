@@ -1,68 +1,81 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/perrin-restivo-note-sturmian-words.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Perrin & Restivo — *A note on Sturmian words* (TCS 2012)
 
-<!-- source: https://hal.science/hal-00828351/file/noteSturmianWords.pdf | converted from PDF -->
+Source: https://hal.science/hal-00828351/file/noteSturmianWords.pdf
+Full text: [[perrin-restivo-note-sturmian-words.full]]
 
-## What it claims
+## What this source establishes
 
-We describe an algorithm which, given a factor of a Sturmian word, computes the next
-factor of the same length in the lexicographic order in linear time. It is based on a combinatorial
-property of Sturmian words which is related with the Burrows-Wheeler transformation.
+**Definitions it fixes.**
+- An infinite word over a binary alphabet is **Sturmian** iff it has exactly
+  n+1 factors of length n for every n ≥ 1. (Section 2; this is the classical,
+  complexity-based definition.)
+- A finite word is Sturmian iff it is a factor of an infinite Sturmian word.
+- A factor u of s is **right special** if u·0 and u·1 are both factors; every
+  Sturmian word has exactly one right-special factor of each length.
+- A set of words is **balanced** if any two words of equal length have counts
+  of the letter b differing by at most 1; the length-n factors of a Sturmian
+  word form a balanced set.
+- **Mechanical word:** for 0 ≤ α ≤ 1 and intercept ρ, the *lower mechanical
+  word* is s_{α,ρ}(n) = ⌊(n+1)α+ρ⌋ − ⌊nα+ρ⌋; the upper is the same with ⌈·⌉.
+  α is the slope. Note the digit is a **height difference over one step**, which
+  is how a mechanical word encodes a rotation (Perrin Lecture 2: s_{α,ρ}(n) = 0
+  iff {nα+ρ} ∈ [0,1−α)).
 
-1 Introduction
+**Theorem 1 (Sturmian ⟺ mechanical of irrational slope).** An infinite word s
+is Sturmian iff it is a mechanical word of irrational slope. The slope α is
+unique. (Lothaire ACW Thm 2.1.13, cited [8].)
 
-Sturmian words are inﬁnite words over a binary alphabet that have exactly n + 1 factors of length
-n for each n ≥ 0. Their origin can be traced back to the astronomer J. Bernoulli III. Their ﬁrst
-in-depth study is by Morse and Hedlund [11]. Many combinatorial properties were described in
-the paper by Coven and Hedlund [5]. Sturmian words, also called mechanical words, are used in
-computer graphics as digital approximation of straight lines. See [8] for a general exposition on
-Sturmian words.
-In this note, we describe an algorithm which, given a factor of a Sturmian word, computes the
-next factor of the same length in the lexicographic order in linear time. It may be used to generate
-the set of factors of a Sturmian word of given length in lexicographic order.
-This algorithm is based on a…
+**Characteristic word.** c_α := (s_{α,0} with the first letter, which is 0,
+deleted) = s_{α,1−α}. The Fibonacci word *is* a characteristic word:
 
-1
+> Example 2: "The Fibonacci word is the characteristic word of slope α = 2/(3+√5)."
 
-is…
+with the a/b alphabet relabelled (a↔0, b↔1). 2/(3+√5) = (3−√5)/2 = 1/φ² ≈
+0.38197. The problem's word S (digits 0/1) is exactly this characteristic word
+c_α = 010010100… (verified: the problem's S_4 = 01001010 is the length-8
+prefix of c_α).
 
-2…
+**Balance criterion (Prop 1).** w ∈ F(s) iff every factor u of w satisfies
+|u|_b − 1 < α|u| < |u|_b + 1 — the digitised-line height bound.
 
-W…
+**Standard words & the convergents (Ex. 4, 5, eq. (4)).** For slope α with
+continued fraction [0;1+d₁,d₂,…], the standard sequence s_{−1}=b, s_0=a,
+s_n = s_{n−1}^{d_n} s_{n−2} has |s_n|_b = p_n, |s_n| = q_n (convergents). The
+directive sequence (1,1,1,…) gives the Fibonacci words, whose slopes are the
+convergents of α. These are the mechanical-word rational approximants the
+solver needs (F(n-2)/F(n) → 1/φ²).
 
-## Statements it makes
+**Consecutive factors (Theorem 2).** Two equal-length factors u < v of a
+Sturmian set are lexicographically consecutive iff u = r·a·b·s, v = r·b·a·s
+(or u = ra, v = rb). Purely a structure statement; not needed for the floor-sum
+computation but confirms the factor set has the standard "one letter differs"
+lattice structure.
 
-Theorem 1 An inﬁnite word s is Sturmian if and only if it is mechanical of irrational slope.
+## What it implies for PE1006
 
-Proposition 1 Let s be a Sturmian word with slope α. Then w ∈ F (s) if and only if for any
-factor u of w one has |u|b − 1 < α|u| < |u|b + 1. (1)
+1. The problem's "only k+1 Fibonacci subwords of length k" is the factor-
+   complexity definition of Sturmian, so the count is guaranteed — no
+   enumeration needed (this already matches the brute oracle at k=1..20).
+2. **Slope correction (contradicts directive 2's literal wording):** the
+   Fibonacci word is characteristic of α = 2/(3+√5) = 1/φ², NOT of 1/φ ≈ 0.618.
+   The factor set of S is the factor set of c_α with the mechanical digit rule
+   at slope 1/φ²; a mechanical word of slope 1/φ (consecutive-Fibonacci ratio)
+   is the *complement word* with 0↔1 swapped, which has a different factor set
+   (exact-arithmetic check at k=3: 34/89 gives {001,010,100,101} = the problem's
+   oracle; 55/89 gives {010,011,101,110} ≠ oracle). The run must use slope
+   F(n-2)/F(n) → 1/φ².
+3. The mechanical digit formula s_{α,ρ}(n) = ⌊(n+1)α+ρ⌋ − ⌊nα+ρ⌋ is the exact
+   digit rule directive 2 needs, with intercept ρ the arc midpoint; all
+   arithmetic is exact once α is the rational F(n-2)/F(n).
 
-Corollary 1 Let F be a Sturmian set. If ra, rba ∈ F , then rab ∈ F .
+## Claims anchored here
 
-Corollary 2 Let F be a Sturmian set. If rabsa, rbasb, bsb ∈ F , then rabsb ∈ F .
+`governing-sturmian`, `governing-factor-complexity`, `mechanical-word-digit-rule`
+(in `research/notes/sourced-claims-governing-theory.md`).
 
-Theorem 2 Let F be a Sturmian set. Two words u, v of F of the same length are consecutive in
-the lexicographic order if and only if u = rabs and v = rbas or if u = ra and v = rb.
+## What it does NOT establish
 
-Corollary 3 Let F be a Sturmian set and let n ≥ 1. For any word u in F ∩ A
-n which is not
-maximal for the lexicographic order in F ∩ A
-n, there is a preﬁx r of u such that
-
-Proposition 2 Let F be a Sturmian set and let n ≥ 1. The ﬁrst and the last elements of F ∩ A
-n
-
-Proposition 3 For n ≥ 1, the right border of the set F ∩ A
-n is conjugate to a word in a∗b∗.
-
-Proposition 3 is related with another result proved in [10] that we introduce now.
-
-Theorem 3 One has T (w) = bpaq with p, q relatively prime if and only if w is a conjugate of a
-standard word.
-
-Proposition 4 The function PrincipalPrefix(u) returns the principal preﬁx of u if u is not
-maximal in the set of elements of F of the same length and −1 otherwise.
-
-Proposition 5 The algorithm Sturm generates the elements of length n of a Sturmian set in
-lexicographic order in quadratic time O(n2).
-
-*[digest of a 26559 character source; every section, statement, and proof in full at `research/sources/perrin-restivo-note-sturmian-words.full.md`]*
+- No statement about sums of squares of the factors interpreted as decimals —
+  Ψ(k) is entirely this run's computation.
+- No statement about computing Ψ via floor sums in O(log); that is the
+  universal-Euclidean claim, anchored elsewhere.

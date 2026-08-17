@@ -1,52 +1,54 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/loj138-universal-euclidean-floor-moments.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# LOJ138 (mizu164) — 万能欧几里得 *floor moments* (cnblogs)
 
-<!-- source: https://www.cnblogs.com/AThousandMoons/p/13129167.html | converted from HTML -->
+Source: https://www.cnblogs.com/AThousandMoons/p/13129167.html
+Full text: [[loj138-universal-euclidean-floor-moments.full]]
 
-## What is in it
+## What this source establishes
 
-- [2]
-- [LOJ138 类欧几里得算法【万能欧几里得】][7]
-    - 公告
+The **moment-array** generalisation of the universal Euclidean algorithm: it
+computes
+  Σ_{x=0}^{n} ⌊(px+r)/q⌋^{k₁} · x^{k₂}   (mod 1e9+7)
+for all k₁,k₂ with k₁+k₂ ≤ 10, in O(225·log max{p,q}).
 
+**The Node monoid.** A Node is (cnt1, cnt2, ans[k₁][k₂]) where cnt1, cnt2 are
+the counts of U and R in the sequence fragment, and ans[a][b] is the moment
+sum over the fragment. Concatenation C = A·B merges by the binomial expansion:
+  C.ans[a][b] = A.ans[a][b]
+    + Σ_{i=0..a} Σ_{j=0..b} C(a,i)·C(b,j)·A.cnt1^i·A.cnt2^j·B.ans[a−i][b−j]
+(derived from expanding (y + A.cnt1)^a·(x + A.cnt2)^b: the fragment B's
+contributions shift by the accumulated counts of the prefix A).
 
-## What it claims
+**The same recursion.** calc(p,q,r,n,a=U,b=R) with
+  m = (p·n+r)/q;
+  if m=0: return bⁿ;
+  if p ≥ q: return calc(p mod q, q, r, n, a, a^(p/q)·b);
+  else: return b^((q−r−1)/p) · a · calc(q, p, (q−r−1) mod p, m−1, b, a)
+        · b^(n − (m·q−r−1)/p).
+Complexity O(225·log max{p,q}) (fixed moment bound k₁+k₂≤10, so 11×11 array).
 
-```
-#include<bits/stdc++.h>
-#define Rint register int
-#define MP make_pair
-#define PB push_back
-#define fi first
-#define se second
-using namespace std;
-typedef long long LL;
-typedef pair<int, int> pii;
-const int mod = 1000000007;
-template<typename T>
-inline void read(T &x){
-	int ch = getchar(); x = 0; bool f = false;
-	for(;ch < '0' || ch > '9';ch = getchar()) f |= ch == '-';
-	for(;ch >= '0' && ch <= '9';ch = getchar()) x = x * 10 + ch - '0';
-	if(f) x = -x;
-}
-inline void qmo(int &x){x += (x >> 31) & mod;}
-template<typename T>
-inline bool chmax(T &a, const T &b){if(a < b) return a = b, 1; return 0;}
-template<typename T>
-inline bool chmin(T &a, const T &b){if(a > b) return a = b, 1; return 0;}
-int T, C[11][11];
-LL n, p, q, r, k1, k2;
-struct Node {
-	LL cnt1, cnt2;
-	int ans[11][11];
-	Node(){cnt1 = cnt2 = 0; memset(ans, 0, sizeof ans);}
-	Node operator = (const Node &o){cnt1 = o.cnt1; cnt2 = o.cnt2; memcpy(ans, o.ans, sizeof ans); return *this;}
-	Node operator * (const Node &o) const {
-		Node res;
-		res.cnt1 = cnt1 + o.cnt1;
-		res.cnt2 = cnt2 + o.cnt2;
-		memcpy(res.ans, ans, sizeof…
+## What it implies for PE1006
 
-posted…
+1. This is the full generalisation the run needs: Ψ(k) is a sum over the k+1
+   representatives of v(x)², and v(x)² expanded as a polynomial in the floors
+   ⌊x+ja⌋ with geometric weights = sums of the form Σ x^{j}·⌊…⌋ and
+   Σ x^{j}·⌊…⌋² — exactly the k₁=1,2 / k₂=0,1 moments of this primitive.
+2. The binomial merge rule shows the closure hypothesis concretely: moments up
+   to second order in floor and arbitrary order in the geometric exponent
+   stay closed under concatenation — the exact boundary directive 2's reduction
+   needs.
+3. The recursion is a second, independent statement of the same algorithm as
+   fhq/OI-wiki — good for cross-checking an implementation (they should agree
+   on the floor-moment values for the same inputs; use that as an oracle test
+   before running at k=10^18).
 
-*[digest of a 4225 character source; every section, statement, and proof in full at `research/sources/loj138-universal-euclidean-floor-moments.full.md`]*
+## Claims anchored here
+
+`governing-universal-euclidean` (moment-array form), answering
+`citable-precise-statement-600d`, `citable-precise-statement-d2e7`.
+
+## What it does NOT establish
+
+- Nothing about Sturmian words or Psi(k) itself.
+- It is a competitive-programming blog (mizu164), not peer-reviewed; treat the
+  recursion as independently confirmed by fhq and OI-wiki (which agree) and
+  by the brute oracle in-container.
