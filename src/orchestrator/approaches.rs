@@ -26,6 +26,21 @@
 //! `adopted` is the one the run is now pursuing; `spent` is one that was
 //! adopted, was carried out, and did not arrive. Keeping `refuted` and `spent`
 //! visible is the point of the file.
+//!
+//! Two of them say a thing the other five cannot, and both were read off
+//! `ProofAtlas`, whose route dispositions are seven-valued where this was five
+//! — `research/proofatlas/05-open-workspace-shape.md`. `narrowed` is an
+//! approach that failed *in general* and holds on a restriction, and it carries
+//! `survives`: the fragment that is still live. `reserved` is one that is not
+//! wrong and is not affordable now, and it carries `revive-when`: the condition
+//! that would make it worth trying again.
+//!
+//! Both were previously collapsed into `refuted`, which took the fragment and
+//! the revival condition down with the idea — the exact loss this module was
+//! written to stop, one level in. A restriction under which an idea works is a
+//! result; a condition under which a shelved idea becomes affordable is a
+//! standing instruction to a later attempt. Neither survives a status flag, so
+//! each stance *requires* its field and faults without it.
 
 use std::fmt::Write as _;
 use std::path::Path;
@@ -64,6 +79,21 @@ pub(super) enum Stance {
     Adopted,
     /// Adopted, carried out, and it did not arrive.
     Spent,
+    /// Closed in general, alive on a restriction named in `survives`.
+    ///
+    /// Deliberately *not* closed: the surviving fragment is work, and an
+    /// inventor that may not propose it is an inventor that has lost it. What
+    /// must not be re-proposed is the general form, which is why the fragment
+    /// is rendered beside the idea rather than instead of it.
+    Narrowed,
+    /// Not wrong, not affordable now, revived when `revive-when` holds.
+    ///
+    /// Closed, because nothing should pick it up today. It is separated from
+    /// `refuted` because the two answer different questions: `refuted` says the
+    /// idea is dead, `reserved` says the run is not ready for it, and an
+    /// inventor reading the first where the second was meant discards something
+    /// that was never wrong.
+    Reserved,
 }
 
 impl Stance {
@@ -78,6 +108,14 @@ impl Stance {
             Self::Adopted
         } else if lowered.starts_with("spent") || lowered.starts_with("exhaust") {
             Self::Spent
+        } else if lowered.starts_with("narrow") || lowered.starts_with("restrict") {
+            Self::Narrowed
+        } else if lowered.starts_with("reserv")
+            || lowered.starts_with("held")
+            || lowered.starts_with("shelv")
+            || lowered.starts_with("parked")
+        {
+            Self::Reserved
         } else if lowered.starts_with("ground") || lowered.starts_with("known") {
             Self::Grounded
         } else {
@@ -92,6 +130,8 @@ impl Stance {
             Self::Refuted => "refuted",
             Self::Adopted => "**adopted**",
             Self::Spent => "spent",
+            Self::Narrowed => "narrowed",
+            Self::Reserved => "reserved",
         }
     }
 
@@ -99,8 +139,35 @@ impl Stance {
     ///
     /// A closed approach is what the inventor must not re-propose, so the
     /// dossier and the table both need to pick them out.
+    ///
+    /// `Reserved` is closed and `Narrowed` is not, which is the whole
+    /// distinction between them: a reserved idea is one nothing should pick up
+    /// until its condition holds, and a narrowed one has a live fragment that an
+    /// inventor forbidden to propose it would lose.
     pub(super) fn is_closed(self) -> bool {
-        matches!(self, Self::Refuted | Self::Spent)
+        matches!(self, Self::Refuted | Self::Spent | Self::Reserved)
+    }
+
+    /// The field this stance requires, and the fault when it is missing.
+    ///
+    /// A stance that records a *result* — the fragment that survived, the
+    /// condition that would revive it — is worthless as a bare flag, so the
+    /// field is not optional. This is what makes the two new stances controls
+    /// rather than vocabulary.
+    fn required_field(self) -> Option<(&'static str, &'static str)> {
+        match self {
+            Self::Narrowed => Some((
+                "survives",
+                "is narrowed but names no `survives`, so the restriction it still holds on is lost \
+                 and the row says only that something failed",
+            )),
+            Self::Reserved => Some((
+                "revive-when",
+                "is reserved but names no `revive-when`, so nothing can ever bring it back and it \
+                 is a refuted approach wearing a softer word",
+            )),
+            _ => None,
+        }
     }
 }
 
@@ -125,6 +192,56 @@ pub(super) struct Approach {
     first_step: String,
     /// Why it is refuted or spent.
     killed_by: String,
+    /// The restriction a narrowed approach still holds on.
+    ///
+    /// Required by [`Stance::Narrowed`], because the fragment is the result;
+    /// without it the run has recorded a failure and thrown away what it bought.
+    survives: String,
+    /// The condition that would make a reserved approach worth trying again.
+    ///
+    /// Required by [`Stance::Reserved`]. A shelved idea with no revival
+    /// condition is never revived, which makes the stance a slower `refuted`.
+    revive_when: String,
+}
+
+impl Approach {
+    /// The value of the field this approach's stance requires.
+    ///
+    /// Empty when the stance requires none, which is what makes the fault check
+    /// at the read site one condition rather than a match over every stance.
+    fn required_value(&self) -> &str {
+        match self.stance {
+            Stance::Narrowed => &self.survives,
+            Stance::Reserved => &self.revive_when,
+            _ => "",
+        }
+    }
+
+    /// What to print as the reason a closed approach closed.
+    ///
+    /// A reserved approach closed for a reason that is not a refutation, so
+    /// printing `killed-by` for it would say the idea failed where the record
+    /// says only that the run is not ready for it. Its revival condition is the
+    /// honest reason, and it is the half a later attempt can act on.
+    fn closed_reason(&self) -> String {
+        if self.stance == Stance::Reserved {
+            if self.revive_when.is_empty() {
+                return "_no revival condition recorded — nothing can bring this back, so it is a \
+                        refuted approach wearing a softer word_"
+                    .to_string();
+            }
+            return format!(
+                "revive when {}",
+                truncate(&self.revive_when, budget::REASON_CHARS)
+            );
+        }
+        if self.killed_by.is_empty() {
+            return "_no reason recorded — say what closed it, or the next inventor will propose \
+                    it again_"
+                .to_string();
+        }
+        truncate(&self.killed_by, budget::REASON_CHARS)
+    }
 }
 
 /// Every approach on disk, with the faults found reading them.
@@ -189,6 +306,8 @@ pub(super) fn collect(workspace: &Path) -> Approaches {
                 "precedent" | "sources" => approach.precedent = references(&value),
                 "first-step" | "next" => approach.first_step = value,
                 "killed-by" | "refuted-by" => approach.killed_by = value,
+                "survives" | "holds-on" => approach.survives = value,
+                "revive-when" | "revive" => approach.revive_when = value,
                 _ => {}
             }
         }
@@ -196,6 +315,12 @@ pub(super) fn collect(workspace: &Path) -> Approaches {
             out.faults.push(format!(
                 "`{slug}` names no idea, so it is a note, not an approach"
             ));
+        }
+        if let Some((field, complaint)) = approach.stance.required_field()
+            && approach.required_value().is_empty()
+        {
+            out.faults
+                .push(format!("`{slug}` {complaint} — add a `{field}` line"));
         }
         out.approaches.push(approach);
     }
@@ -216,13 +341,18 @@ impl Approaches {
              unchecked, which is not the same as nothing having been found.\n\n\
              Refuted and spent approaches are kept deliberately. Proposing again what this run \
              already closed is the one failure the inventor exists to avoid, and the reason it \
-             closed is the only thing that prevents it.\n\n",
+             closed is the only thing that prevents it.\n\n\
+             Two stances carry a result rather than a verdict, and each requires its own line. \
+             `narrowed` failed in general and holds on the restriction in `survives`, which is \
+             live work and not a re-proposal. `reserved` did not fail at all — it waits for the \
+             condition in `revive-when`, and when that condition holds it should be proposed.\n\n",
         );
         if self.approaches.is_empty() {
             out.push_str(
                 "_No approaches yet. Record one as soon as a line of attack is named: \
                  `research/approaches/<name>.md`, with a fenced `approach` block carrying `idea`, \
-                 `mechanism`, `status`, `precedent`, `first-step`, and `killed-by` lines._\n",
+                 `mechanism`, `status`, `precedent`, `first-step`, and `killed-by` lines — plus \
+                 `survives` if the status is `narrowed`, or `revive-when` if it is `reserved`._\n",
             );
             self.append_faults(&mut out);
             return out;
@@ -255,6 +385,7 @@ impl Approaches {
             );
         }
         self.append_closed(&mut out);
+        self.append_narrowed(&mut out);
         self.append_unchecked(&mut out);
         self.append_faults(&mut out);
         out
@@ -267,13 +398,7 @@ impl Approaches {
     /// same idea arriving next time under a different name.
     fn append_closed(&self, out: &mut String) {
         let (rows, dropped) = budget::listed(self.closed(), budget::MAX_LISTED, |rows, approach| {
-            let reason = if approach.killed_by.is_empty() {
-                "_no reason recorded — say what closed it, or the next inventor will propose it \
-                 again_"
-                    .to_string()
-            } else {
-                truncate(&approach.killed_by, budget::REASON_CHARS)
-            };
+            let reason = approach.closed_reason();
             let _ = writeln!(
                 rows,
                 "- [[{}]] ({}): {reason}",
@@ -288,7 +413,42 @@ impl Approaches {
             "\n## What closed, and why\n\nDo not propose these again. A reason stated precisely is \
              what makes that possible; one left blank makes this row worthless. Each reason is \
              shortened here; the whole of it is in that approach's own file under \
-             `research/approaches/`.\n\n",
+             `research/approaches/`.\n\nA `reserved` row is the exception worth reading: it did \
+             not fail, and its reason is the condition that would bring it back. When that \
+             condition holds, propose it.\n\n",
+        );
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, APPROACHES_DIR));
+    }
+
+    /// Spells out what survived each narrowed approach.
+    ///
+    /// The section exists because the fragment is the result. An approach that
+    /// failed in general and holds on a restriction has bought the run
+    /// something, and folding it into `refuted` — which is what happened before
+    /// this stance existed — files the purchase as a loss and loses the
+    /// restriction with it.
+    fn append_narrowed(&self, out: &mut String) {
+        let narrowed = self
+            .approaches
+            .iter()
+            .filter(|approach| approach.stance == Stance::Narrowed);
+        let (rows, dropped) = budget::listed(narrowed, budget::MAX_LISTED, |rows, approach| {
+            let survives = if approach.survives.is_empty() {
+                "_no surviving restriction recorded — this row says only that something failed_"
+                    .to_string()
+            } else {
+                truncate(&approach.survives, budget::REASON_CHARS)
+            };
+            let _ = writeln!(rows, "- [[{}]]: {survives}", approach.slug);
+        });
+        if rows.is_empty() {
+            return;
+        }
+        out.push_str(
+            "\n## Narrowed, and what survived\n\nEach of these failed in general and still holds \
+             on the restriction named. The general form is closed; the restriction is live work, \
+             and proposing it is not re-proposing what was refuted.\n\n",
         );
         out.push_str(&rows);
         out.push_str(&budget::elided(dropped, APPROACHES_DIR));

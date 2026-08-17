@@ -558,30 +558,6 @@ fn cell(text: &str) -> String {
 #[path = "lemmas_test.rs"]
 mod test;
 
-/// The declarations in `source` whose statement is `X = X`.
-///
-/// A tautology is the one wrong statement a kernel check cannot object to, and
-/// it is the wrong statement a Lean-first mandate invites. Live evidence: a run
-/// told the answer was not accepted until a `.lean` file with a passing verdict
-/// carried it produced, under a docstring reading *the answer stated directly
-/// as an equality of naturals*,
-///
-/// ```text
-/// theorem pe622_answer_nat : 3010983666182123972 = 3010983666182123972 := by rfl
-/// ```
-///
-/// It compiles, carries no `sorry`, needs no axiom beyond Lean's own, and says
-/// nothing whatever about Project Euler 622 — so every check in `lean.rs` would
-/// have passed it as `verified`, the strongest status this runtime has, and the
-/// claim ledger would have carried the answer on it.
-///
-/// The test is deliberately the narrowest one that catches it: the two sides of
-/// the top-level `=` are *textually identical*. That is never informative and is
-/// always safe to refuse. It is not a general triviality check and cannot be —
-/// `2 + 2 = 4 := by rfl` is a real fact and must keep passing, which it does,
-/// because its sides differ. What this cannot catch is a statement that is
-/// merely *beside the point*, and nothing mechanical can; that is what
-/// `lean_prover.md` asks the role to say in prose and what `holds-here` is for.
 /// Whether a declaration's proposition is literally `True`.
 ///
 /// `True` is inhabited by definition, so asserting it says nothing whatever —
@@ -777,6 +753,82 @@ fn guarded(signature: &str, divisor: &str) -> bool {
     signature.contains(&format!("{divisor}.Pos")) || signature.contains(&format!("{divisor}.ne'"))
 }
 
+/// The two sides of the top-level `=` in `proposition`, if it has one.
+///
+/// `≠`, `≤`, `≥` and `:=` all contain or neighbour `=`; a split that caught one
+/// of those would report a real statement as a tautology, which is the only way
+/// this check could do harm.
+fn equality_sides(proposition: &str) -> Option<(&str, &str)> {
+    let (left, right) = proposition.split_once('=')?;
+    if left.ends_with(['≠', '≤', '≥', '<', '>', '!', ':']) || right.starts_with('=') {
+        return None;
+    }
+    Some((left, right))
+}
+
+/// The two sides of the top-level `↔` in `proposition`, if it has one.
+///
+/// Both spellings, because `<->` is Lean notation for the same connective and a
+/// model that reaches for one reaches for the other. Neither needs the
+/// neighbour guard `equality_sides` needs: no relation this runtime writes has
+/// `↔` as a substring, and `<->` is three characters that occur together in
+/// nothing else.
+fn iff_sides(proposition: &str) -> Option<(&str, &str)> {
+    proposition
+        .split_once('↔')
+        .or_else(|| proposition.split_once("<->"))
+}
+
+/// Whether `proposition` relates two textually identical sides.
+///
+/// Both splits are tried and their verdicts taken together, never in
+/// preference: `(a = b) ↔ (a = b)` splits on `=` into sides that differ, and
+/// stopping there would pass it. It is the `↔` split that catches it.
+///
+/// `→` is deliberately absent. `P → P` is as empty as `P ↔ P`, but nothing has
+/// yet produced one here, and this check earns its safety by refusing only the
+/// spellings that have actually been seen.
+fn states_itself(proposition: &str) -> bool {
+    [equality_sides(proposition), iff_sides(proposition)]
+        .into_iter()
+        .flatten()
+        .any(|(left, right)| {
+            let left = left.trim();
+            !left.is_empty() && left == right.trim()
+        })
+}
+
+/// The declarations in `source` that relate a statement to itself.
+///
+/// A tautology is the one wrong statement a kernel check cannot object to, and
+/// it is the wrong statement a Lean-first mandate invites. Live evidence: a run
+/// told the answer was not accepted until a `.lean` file with a passing verdict
+/// carried it produced, under a docstring reading *the answer stated directly
+/// as an equality of naturals*,
+///
+/// ```text
+/// theorem pe622_answer_nat : 3010983666182123972 = 3010983666182123972 := by rfl
+/// ```
+///
+/// It compiles, carries no `sorry`, needs no axiom beyond Lean's own, and says
+/// nothing whatever about Project Euler 622 — so every check in `lean.rs` would
+/// have passed it as `verified`, the strongest status this runtime has, and the
+/// claim ledger would have carried the answer on it.
+///
+/// The test is deliberately the narrowest one that catches it: the two sides of
+/// a top-level `=` or `↔` are *textually identical*. That is never informative
+/// and is always safe to refuse. It is not a general triviality check and cannot
+/// be — `2 + 2 = 4 := by rfl` is a real fact and must keep passing, which it
+/// does, because its sides differ. What this cannot catch is a statement that is
+/// merely *beside the point*, and nothing mechanical can; that is what
+/// `lean_prover.md` asks the role to say in prose and what `holds-here` is for.
+///
+/// The `↔` arm is read off `ProofAtlas`, which ships `P ↔ P := by rfl` as a
+/// *recorded declaration* in two of the seven bundles read in
+/// `research/proofatlas/04-known-theorem-bench.md`. It is the same empty
+/// statement wearing the other connective, and until this arm existed the
+/// proposition was split on `=` alone, so an `↔` statement never reached the
+/// comparison at all.
 pub(super) fn tautologies(source: &str) -> Vec<String> {
     let mut found = Vec::new();
     for declaration in declarations(source) {
@@ -805,19 +857,7 @@ pub(super) fn tautologies(source: &str) -> Vec<String> {
         let Some((_, proposition)) = declaration.signature.rsplit_once(':') else {
             continue;
         };
-        let Some((left, right)) = proposition.split_once('=') else {
-            continue;
-        };
-        // `≠`, `≤`, `≥` and `:=` all contain or neighbour `=`; a split that
-        // caught one of those would report a real statement as a tautology,
-        // which is the only way this check could do harm.
-        if left.ends_with(['≠', '≤', '≥', '<', '>', '!', ':'])
-            || right.starts_with('=')
-            || left.trim().is_empty()
-        {
-            continue;
-        }
-        if left.trim() == right.trim() && !left.trim().is_empty() {
+        if states_itself(proposition) {
             found.push(declaration.name);
         }
     }

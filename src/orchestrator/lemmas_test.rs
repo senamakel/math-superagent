@@ -381,6 +381,43 @@ mod tautologies {
         let source = "def StronglyRegular (_v _k : \u{2115}) : Prop := True\n";
         assert!(tautologies(source).is_empty());
     }
+
+    /// The same empty statement wearing the other connective.
+    ///
+    /// `ProofAtlas` ships exactly this as a *recorded declaration* in two of the
+    /// seven bundles read in `research/proofatlas/04-known-theorem-bench.md`.
+    /// Before the `↔` arm the proposition was split on `=` alone, so this never
+    /// reached the comparison.
+    #[test]
+    fn an_iff_with_identical_sides_is_caught() {
+        for source in [
+            "theorem restated (n : Nat) : Prime n \u{2194} Prime n := by rfl\n",
+            "theorem ascii (n : Nat) : Prime n <-> Prime n := Iff.rfl\n",
+        ] {
+            assert!(!tautologies(source).is_empty(), "missed: {source}");
+        }
+    }
+
+    /// An `↔` between sides that differ is the ordinary shape of a
+    /// characterisation, and must keep passing.
+    #[test]
+    fn an_iff_between_different_sides_still_passes() {
+        for source in [
+            "theorem even_iff (n : Nat) : Even n \u{2194} n % 2 = 0 := by omega\n",
+            "theorem spec : check c = true \u{2194} Spec c := by decide\n",
+        ] {
+            assert!(tautologies(source).is_empty(), "refused: {source}");
+        }
+    }
+
+    /// Both splits are tried and their verdicts taken together. Splitting this
+    /// on `=` gives sides that differ; only the `↔` split catches it, so a check
+    /// that stopped at the first successful split would pass it.
+    #[test]
+    fn an_equality_restated_across_an_iff_is_caught() {
+        let source = "theorem circular (a b : Nat) : (a = b) \u{2194} (a = b) := Iff.rfl\n";
+        assert_eq!(tautologies(source), vec!["circular".to_string()]);
+    }
 }
 
 /// The certificate boundary: generated data may not conclude anything.

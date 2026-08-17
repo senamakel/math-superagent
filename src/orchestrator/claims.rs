@@ -326,6 +326,24 @@ pub(super) struct Claim {
     pub(super) formalisation: String,
     /// Where in the source text to check it.
     pub(super) anchor: String,
+    /// What a search covered, and which exhaustive regime it lies outside.
+    ///
+    /// The half of a computational result that says what it is worth. A claim
+    /// backed by a program that swept a space is only as strong as the space,
+    /// and a *negative* one — nothing was found — is worth exactly its frame and
+    /// nothing else. "No counterexample below 10^9" and "no counterexample" are
+    /// different statements, and only the first is a result.
+    ///
+    /// The failure it stops is not hypothetical.
+    /// [`ProofAtlas`](../../research/proofatlas/02-refutation-path.md)'s
+    /// Domineering counterexample was missed by every earlier search because it
+    /// lay outside every frame those searches used — a 9×8 board against sweeps
+    /// bounded at 7×7 and at twenty empty cells. No amount of further compute
+    /// inside those frames would ever have reached it. Neither of that work's
+    /// published pages records a frame, so nobody could see that; recording one
+    /// is what turns "we looked and found nothing" from an absence into a
+    /// bankable result, and what tells the next attempt where to look instead.
+    pub(super) frame: String,
     /// The note the block was found in.
     pub(super) source: String,
 }
@@ -356,6 +374,14 @@ pub(super) struct Ledger {
     claims: Vec<Claim>,
     malformed: Vec<Malformed>,
     unbacked: Vec<Unbacked>,
+    /// Claims standing on a verdict that carries no collector provenance.
+    ///
+    /// Reported, never downgraded. See [`super::lean::Verdict::staleness`] for
+    /// why the two failures are graded differently: this one is mostly a
+    /// verdict written before the stamp existed, and taking standing away from
+    /// a run that earned it honestly would be a worse error than the one being
+    /// prevented. It clears itself as files are re-checked.
+    unprovenanced: Vec<String>,
 }
 
 /// The library's block format: a fenced block of `key: value` lines.
@@ -478,6 +504,9 @@ fn is_known(key: &str) -> bool {
             | "anchor"
             | "source"
             | "where"
+            | "search-frame"
+            | "frame"
+            | "swept"
     )
 }
 
@@ -605,6 +634,7 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
             claim.refutation = value.trim().replace(['`', ' '], "");
         }
         "anchor" | "source" | "where" => claim.anchor = value.to_string(),
+        "search-frame" | "frame" | "swept" => claim.frame = value.to_string(),
         _ => {}
     }
 }
@@ -737,13 +767,26 @@ impl Ledger {
                     // `conditional` over a fully clean file is left where it
                     // is, because understating what you have is not a failure
                     // the ledger should be correcting behind a role's back.
-                    Some(verdict) => match verdict.outcome() {
-                        super::lean::Outcome::Verified => (claimed, None),
-                        super::lean::Outcome::Conditional => {
-                            (Status::Conditional, verdict.objection())
+                    // A stale verdict is refused before its outcome is read.
+                    // The kernel did run and did accept something; it accepted
+                    // text the file no longer contains, so the outcome is about
+                    // a statement nobody is claiming and reporting it would be
+                    // worse than reporting nothing.
+                    Some(verdict) if verdict.staleness(workspace).is_some() => {
+                        (Status::Asserted, verdict.staleness(workspace))
+                    }
+                    Some(verdict) => {
+                        if !verdict.is_collected() {
+                            self.unprovenanced.push(claim.id.clone());
                         }
-                        super::lean::Outcome::Failed => (Status::Asserted, verdict.objection()),
-                    },
+                        match verdict.outcome() {
+                            super::lean::Outcome::Verified => (claimed, None),
+                            super::lean::Outcome::Conditional => {
+                                (Status::Conditional, verdict.objection())
+                            }
+                            super::lean::Outcome::Failed => (Status::Asserted, verdict.objection()),
+                        }
+                    }
                 }
             };
             claim.status = granted;
@@ -861,7 +904,11 @@ impl Ledger {
              the source. A file that supports neither is recorded as `asserted` and listed below \
              with the reason. Everything else on this page is a word somebody typed.\n\n\
              `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose \
-             hypotheses fail here is worse than no theorem, because it looks like progress.\n\n",
+             hypotheses fail here is worse than no theorem, because it looks like progress.\n\n\
+             A claim a program produced — `status: checked`, or any claim naming a `refutation` — \
+             also takes a `search-frame` line saying what was swept, and where one exists, the \
+             published exhaustive regime it lies outside. A sweep is worth its space and no more, \
+             and one that found nothing is worth nothing at all without it.\n\n",
         );
         if self.claims.is_empty() {
             out.push_str("_No claims recorded yet._\n");
@@ -891,8 +938,10 @@ impl Ledger {
         }
         self.append_contradictions(&mut out);
         self.append_unbacked(&mut out);
+        self.append_unprovenanced(&mut out);
         self.append_unverified(&mut out);
         self.append_catalogued(&mut out);
+        self.append_unframed(&mut out);
         self.append_faults(&mut out);
         out
     }
@@ -1023,6 +1072,86 @@ impl Ledger {
         out.push_str(&budget::elided(dropped, NOTES_ROOT));
     }
 
+    /// Lists claims standing on a verdict nothing says was collected here.
+    ///
+    /// The distinction is *collected* against *supplied*. `code/out/lean/` is
+    /// inside the workspace and writable, so a record shaped like a verdict can
+    /// be written by anything that can write a file; until the collector stamp
+    /// existed, a kernel run and a hand-typed JSON object were the same bytes to
+    /// this join. A stamped verdict says which toolchain ran, how long it took,
+    /// and what the source was when it ran.
+    ///
+    /// A gap rather than a downgrade, deliberately, and the reason is the
+    /// migration: every verdict written before the stamp existed is unstamped
+    /// through no fault of its own. The row asks for one more `lean_check` over
+    /// a file the run has already checked, which is cheap, and the section
+    /// empties itself as that happens.
+    fn append_unprovenanced(&self, out: &mut String) {
+        let (rows, dropped) =
+            budget::listed(&self.unprovenanced, budget::MAX_LISTED, |rows, id| {
+                let _ = writeln!(
+                    rows,
+                    "- `{id}` — its verdict carries no collector stamp, so nothing on disk says a \
+                     kernel produced it"
+                );
+            });
+        if rows.is_empty() {
+            return;
+        }
+        out.push_str(
+            "\n## Formalised on a verdict with no provenance\n\nA verdict record says what Lean \
+             found; a *collected* verdict also says which toolchain ran, how long it took, and \
+             what the file contained at the time. Without that stamp the record is a claim about \
+             a check rather than evidence of one — and `code/out/lean/` is writable, so the two \
+             are not distinguishable by reading it.\n\n\
+             Run `lean_check` over each file again. It re-earns the stamp, and these rows \
+             disappear.\n\n",
+        );
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, NOTES_ROOT));
+    }
+
+    /// Lists computational claims that never said what they swept.
+    ///
+    /// A claim the run checked with a program is worth its search space, and one
+    /// that names a counterexample is worth the space the counterexample was
+    /// found in. Neither is legible without the space, and the failure is
+    /// asymmetric: a numerical check that *found* something is still evidence
+    /// with no frame, while one that found nothing is evidence of nothing at all
+    /// until the frame is stated.
+    ///
+    /// Rendered as a gap rather than enforced as a downgrade. A sweep really was
+    /// run, and calling it asserted would be a lie in the other direction; what
+    /// is missing is a sentence, and the row asks for that sentence by name.
+    fn append_unframed(&self, out: &mut String) {
+        let unframed = self.claims.iter().filter(|claim| {
+            claim.frame.is_empty()
+                && (claim.status == Status::Checked || !claim.refutation.is_empty())
+        });
+        let (rows, dropped) = budget::listed(unframed, budget::MAX_LISTED, |rows, claim| {
+            let _ = writeln!(
+                rows,
+                "- `{}` ({}) — no `search-frame`: nothing says what was swept",
+                claim.id, claim.source
+            );
+        });
+        if rows.is_empty() {
+            return;
+        }
+        out.push_str(
+            "\n## Searched, with no frame recorded\n\nEach of these rests on a program that swept \
+             something, and none of them says what. Add a `search-frame` line naming the space \
+             covered and, where one exists, the published exhaustive regime it lies outside — \
+             `all n below 10^9`, `boards up to 9x8, which prior sweeps bounded at 7x7`.\n\n\
+             Without it a sweep that found nothing cannot be told from a question nobody asked, \
+             and a later attempt has no way to know it would be searching the same space again. \
+             The frame is also where a *missed* result becomes visible: an object outside every \
+             frame tried is one no further compute inside them would ever have reached.\n\n",
+        );
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, NOTES_ROOT));
+    }
+
     /// Reports blocks that could not be read, rather than dropping them.
     ///
     /// A claim silently discarded for a missing `id` is worse than a visible
@@ -1120,6 +1249,9 @@ pub(super) fn detail(claim: &Claim) -> String {
     );
     if !claim.bearing.is_empty() {
         let _ = writeln!(out, "- Bearing: {}", claim.bearing);
+    }
+    if !claim.frame.is_empty() {
+        let _ = writeln!(out, "- Searched: {}", claim.frame);
     }
     let _ = writeln!(out, "- Note: `{}`", claim.source);
     if !claim.anchor.is_empty() {

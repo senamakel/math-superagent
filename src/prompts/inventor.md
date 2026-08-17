@@ -41,6 +41,20 @@ start on today, and set the others to `refuted` with a `killed-by` line saying
 what closed them. Closing an alternative is not a failed round; it is what stops
 the next one paying for the same idea.
 
+`refuted` is not always the honest word, and reaching for it when it is not
+throws away what the round bought:
+
+- If the idea failed **in general** but still holds on a restriction, write
+  `status: narrowed` and a `survives` line naming that restriction. The
+  restriction is live work and proposing it later is not re-proposing what
+  closed.
+- If the idea did **not** fail and is only unaffordable now — a tool the run
+  does not have, a bound not yet in the library — write `status: reserved` and a
+  `revive-when` line naming the condition. When that condition holds, propose it.
+
+Both lines are required by the stance that uses them, and the derived table
+prints a fault naming the file when one is missing.
+
 Outside the loop you can also reach research directly with `spawn_agent` for a
 single check that would settle whether an idea is worth writing down at all. Ask
 one focused question rather than commissioning a survey.

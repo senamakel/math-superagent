@@ -201,7 +201,8 @@ library was a file, and a file is the wrong thing to retrieve: an agent about
 to compute something needs one statement with its hypotheses, not the note that
 happens to contain it. A note may carry fenced `claim` blocks — `id`,
 `statement`, `hypotheses`, `holds-here`, `status`, `bearing`, `anchor`,
-`contradicts`, `answers` — and `search_claims` retrieves those rows. Two checks
+`contradicts`, `answers`, `search-frame` — and `search_claims` retrieves those
+rows. Two checks
 fall out that were previously asked for in a prompt and never verified.
 `contradicts` naming another claim produces a contradiction the run can see,
 which the scholar prompt calls the most valuable thing it can find and which
@@ -210,6 +211,35 @@ load-bearing belief nobody verified, which is the distinction the method policy
 requires and the one a long run forgets it made. A block missing its `id` or
 `statement` is reported rather than dropped: a claim silently discarded leaves
 the note reading as though it recorded something.
+
+A formalised or conditional claim is joined to its verdict here, and the join
+now asks two more questions than "what did Lean say". A verdict whose recorded
+`source_digest` does not match the file on disk is **stale** — the kernel
+accepted text the file no longer contains — and the claim drops to `asserted`
+naming the file. A verdict carrying no `collector` block at all is reported
+under *Formalised on a verdict with no provenance* and keeps its standing, which
+is a migration allowance rather than a judgement:
+[`docs/lean-library.md`](lean-library.md#the-collector-stamp-collected-against-supplied)
+has both halves and the honest limit of each.
+
+`search-frame` is the field a computational claim is worth. A claim with
+`status: checked`, or any claim naming a `refutation`, rests on a program that
+swept a space, and the claim is worth the space and no more — so the ones that
+never say what they swept render as *Searched, with no frame recorded*. The
+asymmetry is why it is a section and not a nicety: a sweep that *found*
+something is evidence with or without a frame, while a sweep that found nothing
+is evidence of nothing at all until the space is stated, and is indistinguishable
+in a table from a question nobody asked.
+
+ProofAtlas supplied the failure
+([`research/proofatlas/02-refutation-path.md`](../research/proofatlas/02-refutation-path.md)).
+Its Domineering counterexample sits on a 9×8 board; every earlier search had been
+bounded at 7×7 and at twenty empty cells, so the witness was outside every frame
+tried and no additional compute inside them would ever have reached it. Neither
+published page records a frame, so nothing on either could have shown that. The
+frame is rendered as a gap rather than enforced as a downgrade — a sweep really
+did run, and calling it asserted would be false in the other direction; what is
+missing is one sentence, and the row asks for that sentence by name.
 
 `status: catalogued` renders its own section, *Taken from a catalogue*, rather
 than joining the unverified list, because the two debts differ: an asserted claim
@@ -245,9 +275,29 @@ attempt six and the literature check that would have killed it never happened.
 An approach is `research/approaches/<slug>.md` with a fenced `approach` block
 — `idea`, `mechanism`, `status`, `precedent`, `first-step`, `killed-by` — whose
 stances are a life cycle rather than a flag: `proposed`, `grounded`, `refuted`,
-`adopted`, `spent`. Empty `precedent` means nobody checked, which is not the same
-as nothing having been found; refuted and spent approaches are kept with their
-reasons, on the dead-thread argument.
+`adopted`, `spent`, `narrowed`, `reserved`. Empty `precedent` means nobody
+checked, which is not the same as nothing having been found; refuted and spent
+approaches are kept with their reasons, on the dead-thread argument.
+
+The last two stances were read off ProofAtlas, whose route dispositions are
+seven-valued where this was five
+([`research/proofatlas/05-open-workspace-shape.md`](../research/proofatlas/05-open-workspace-shape.md)).
+Both hold a *result* the other five discard by collapsing it into `refuted`:
+
+- `narrowed` failed in general and holds on a restriction, named in a required
+  `survives` line. It is deliberately **not** closed — the restriction is live
+  work, and an inventor forbidden to propose it loses the one thing the failure
+  bought. It renders in its own section, *Narrowed, and what survived*.
+- `reserved` did not fail at all; it is unaffordable now, and a required
+  `revive-when` line names the condition that changes that. It **is** closed, so
+  nothing picks it up today, but its rendered reason is the revival condition
+  rather than a refutation it never suffered. A reserved approach with no
+  condition can never be revived, so the renderer says so in those words.
+
+Each stance's field is required by the reader, not by the prompt: a missing one
+is a fault naming the file and the line to add. A stance that records a result
+is worthless as a bare flag, which is what makes these two controls rather than
+vocabulary.
 
 `derived/BACKWARD.md` (`backward.rs`) is the other axis: not what the run has
 tried, but what would be *enough*. An approach is a route to the goal; a

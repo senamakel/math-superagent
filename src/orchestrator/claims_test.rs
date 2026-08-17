@@ -281,6 +281,91 @@ fn a_catalogued_claim_is_separated_from_an_asserted_one() -> std::io::Result<()>
     Ok(())
 }
 
+/// A sweep is worth its search space and no more, so a computational claim that
+/// never says what it swept is called out by name.
+///
+/// The failure is `ProofAtlas`' Domineering counterexample, which every earlier
+/// search missed because it lay outside their frames rather than beyond their
+/// compute — 9x8 against sweeps bounded at 7x7. No published page recorded a
+/// frame, so nothing could show that.
+#[test]
+fn a_computational_claim_without_a_frame_is_called_out() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-unframed");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L1.0"))?;
+    std::fs::write(
+        root.join("research/L1.0/swept.md"),
+        note(
+            "id: no-small-counterexample\nstatement: No counterexample exists.\n\
+             holds-here: yes\nstatus: checked",
+        ),
+    )?;
+    std::fs::write(
+        root.join("research/L1.0/framed.md"),
+        note(
+            "id: no-counterexample-below-1e9\nstatement: No counterexample below 1e9.\n\
+             holds-here: yes\nstatus: checked\n\
+             search-frame: all n below 1e9, where the published sweep stopped at 1e7",
+        ),
+    )?;
+    let rendered = collect(&root).render();
+
+    assert!(rendered.contains("## Searched, with no frame recorded"));
+    assert!(rendered.contains("`no-small-counterexample`"));
+    let unframed = rendered
+        .split("## Searched, with no frame recorded")
+        .nth(1)
+        .unwrap_or_default();
+    let unframed = unframed.split("\n## ").next().unwrap_or_default();
+    assert!(
+        !unframed.contains("no-counterexample-below-1e9"),
+        "a claim that stated its frame must not be listed as missing one: {rendered}"
+    );
+    Ok(())
+}
+
+/// A claim naming a counterexample is judged the same way, because the witness
+/// is worth the space it was found in.
+#[test]
+fn a_refutation_without_a_frame_is_called_out_too() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-unframed-refutation");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L1.0"))?;
+    std::fs::write(
+        root.join("research/L1.0/witness.md"),
+        note(
+            "id: twelve-vertex-witness\nstatement: A 12-vertex tournament has no Hamilton \
+             decomposition.\nholds-here: yes\nstatus: asserted\nrefutation: witness.p",
+        ),
+    )?;
+    let rendered = collect(&root).render();
+
+    assert!(rendered.contains("## Searched, with no frame recorded"), "{rendered}");
+    assert!(rendered.contains("`twelve-vertex-witness`"));
+    Ok(())
+}
+
+/// The frame reaches a reader who searches for the claim, not only one who
+/// reads the derived table.
+#[test]
+fn a_search_result_carries_the_frame() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-frame-detail");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L1.0"))?;
+    std::fs::write(
+        root.join("research/L1.0/swept.md"),
+        note(
+            "id: swept-to-1e9\nstatement: No counterexample below 1e9.\nholds-here: yes\n\
+             status: checked\nswept: all n below 1e9",
+        ),
+    )?;
+    let ledger = collect(&root);
+    let found = ledger.search("swept-to-1e9");
+    assert_eq!(found.len(), 1);
+    assert!(super::detail(found[0]).contains("Searched: all n below 1e9"));
+    Ok(())
+}
+
 /// What the run computed counts as much as what it read.
 ///
 /// The ledger walked only `research/`, so a claim could originate only in a
@@ -443,6 +528,79 @@ fn a_formalised_claim_stands_only_when_the_kernel_backs_it() -> std::io::Result<
     assert_eq!(backed.established(), 1, "a kernel-backed claim is established");
     assert_eq!(backed.asserted(), 0);
     assert!(!backed.render().contains("Called formalised"));
+    Ok(())
+}
+
+/// A verdict describes a file at a moment, and the file goes on being edited.
+///
+/// The kernel really did run and really did accept something; it accepted text
+/// the file no longer contains, so the outcome is about a statement nobody is
+/// claiming. This is refused before the outcome is read.
+#[test]
+fn a_verdict_whose_file_has_changed_since_is_refused() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-stale");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+    std::fs::write(root.join("code/ramsey.lean"), "theorem r : True := trivial\n")?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: ramsey-bound\nstatement: The bound holds.\nholds-here: yes\n\
+             status: formalised\nformalisation: code/ramsey.lean",
+        ),
+    )?;
+    // A stamped verdict whose digest belongs to text the file no longer holds.
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_ramsey.lean.json"),
+        r#"{"file":"code/ramsey.lean","compiled":true,"sorries":[],
+            "axioms":["'r' depends on axioms: [propext, Classical.choice]"],
+            "collector":{"toolchain":"leanprover/lean4:v4.29.0","elapsed_ms":1200,
+            "source_digest":"00000000000000000000000000000000"}}"#,
+    )?;
+
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 0, "a stale verdict backs nothing");
+    assert_eq!(ledger.asserted(), 1, "it is downgraded, not dropped");
+    let rendered = ledger.render();
+    assert!(
+        rendered.contains("has changed since the kernel checked it"),
+        "the reason must name the staleness: {rendered}"
+    );
+    Ok(())
+}
+
+/// A verdict record carrying no collector stamp is reported, never downgraded.
+///
+/// Every record written before the stamp existed is unstamped through no fault
+/// of its own, and taking standing away from a run that earned it honestly is a
+/// worse error than the one being prevented. The row asks for one more check.
+#[test]
+fn a_verdict_with_no_collector_is_reported_but_keeps_its_standing() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-unstamped");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: unstamped-bound\nstatement: The bound holds.\nholds-here: yes\n\
+             status: formalised\nformalisation: code/ramsey.lean",
+        ),
+    )?;
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_ramsey.lean.json"),
+        r#"{"file":"code/ramsey.lean","compiled":true,"sorries":[],
+            "axioms":["'r' depends on axioms: [propext, Classical.choice]"]}"#,
+    )?;
+
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 1, "an honest verdict keeps its standing");
+    let rendered = ledger.render();
+    assert!(rendered.contains("## Formalised on a verdict with no provenance"));
+    assert!(rendered.contains("`unstamped-bound`"));
     Ok(())
 }
 
