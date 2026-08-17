@@ -1,0 +1,25 @@
+{
+  "axioms": [
+    "'Cited.column_injectivity_at_most_one' depends on axioms: [sorryAx]",
+    "'Cited.counting_identity' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'Cited.G_nonfibonacci_pairs_are_bounded' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem column_injectivity_at_most_one (k a n n' : ℕ) : 2 ≤ k → 1 < a → 2 * k ≤ n → 2 * k ≤ n' → Nat.choose n k = a → Nat.choose n' k = a → n = n'",
+    "theorem counting_identity (a : ℕ) (P : Finset (ℕ × ℕ)) (hP : ∀ p : ℕ × ℕ, p ∈ P ↔ ∃ n k : ℕ, Nat.choose n k = a ∧ p = (n, k)) (H : ℕ) (hH : H = (P.filter (fun p : ℕ × ℕ => 2 ≤ p.2 ∧ 2 * p.2 < p.1)).card) : P.card = 2 * H + 2",
+    "theorem G_nonfibonacci_pairs_are_bounded (eps : ℝ) (heps0 : 0 < eps) (heps1 : eps < 1) : (boundaryPairs eps).Finite"
+  ],
+  "file": "code/lean/Lib/Boundary.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/Boundary.lean:62:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/Lib/Boundary.lean:81:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/Lib/Boundary.lean:118:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

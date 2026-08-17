@@ -73,9 +73,10 @@ Held sources (see research/sources/, 37 full texts): Singmaster 1975 FQ
 (primary, infinite family + 2^48 search), Beukers–Shorey–Tijdeman 1999
 (primary via the de Gruyter *Number Theory in Progress Vol. 1* preview — MRSTT
 [4], the ineffectivity anchor), Matveev 2000 linear-forms-in-logarithms primary
-(explicit constants), Abbott–Erdős–Hanson 1974, Kane 2004 & 2007 (summaries),
+(explicit constants), Abbott–Erdős–Hanson 1974, Kane 2004 (summary), Kane 2007 h53 full text (INTEGERS 7 #A53, the record N(t)=O(log t·log₃t/(log₂t)³); see research/sources/kane-2007-h53.full.md, §8 method ceiling),
 MRSTT 2021 full text, Jenkins 2014 full text, de Weger 1997 full text,
-Blokhuis–Brouwer–de Weger 2017 full text, Bugeaud–Mignotte–Siksek–Stoll–Tengely
+Blokhuis–Brouwer–de Weger 2017 full text,
+Bugeaud–Mignotte–Siksek–Stoll–Tengely
 2008, Hajdu–Papp–Tijdeman 2022 (Ramanujan J),
 Gallegos-Ruiz–Katsipis–Tengely–Ulas 2020 (complete known-solutions list +
 near-collisions, arXiv:1904.11369 held), Hajdu–Pintér–Tengely–Varga 2014
