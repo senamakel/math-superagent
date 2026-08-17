@@ -61,7 +61,8 @@ fn specialist_harness(
     // direct endpoint receives as an unknown field, and rerouting recognises a
     // failed route by matching `OpenRouter`'s own error text. Wrapping a direct
     // provider in either is not a degraded pin, it is a malformed request.
-    let model: Arc<dyn ChatModel<()>> = if tier == ModelTier::Scribe {
+    let openrouter = crate::agent::configured_endpoint_is_openrouter();
+    let model: Arc<dyn ChatModel<()>> = if tier == ModelTier::Scribe || !openrouter {
         model
     } else {
         Arc::new(StickyProviderModel::new(model))
@@ -88,7 +89,7 @@ fn specialist_harness(
     // different provider rather than the one that just failed. See
     // `agent::reroute`. Withheld from a direct provider for the reason the
     // affinity wrapper is, above.
-    let model: Arc<dyn ChatModel<()>> = if tier == ModelTier::Scribe {
+    let model: Arc<dyn ChatModel<()>> = if tier == ModelTier::Scribe || !openrouter {
         model
     } else {
         Arc::new(ReroutingModel::new(model).with_tracer(tracer.clone(), agent))

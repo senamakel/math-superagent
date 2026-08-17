@@ -299,7 +299,7 @@ contents. Document variable names and placeholders in `.env.example`.
 
 The runtime currently expects:
 
-- `OPENROUTER_API_KEY`, and optional `OPENROUTER_MODEL`
+- `SURPLUS_API_KEY`; `OPENROUTER_API_KEY` and optional `OPENROUTER_MODEL` are the fallback
 - `OPENROUTER_MEMORY_API_KEY`, the memory's own; unset shares the run's limit
 - `EXA_API_KEY`
 - `LANGFUSE_BASE_URL`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`

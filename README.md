@@ -56,7 +56,7 @@ verifying the result before presenting it.
 │          ▼  /workspace: goal, tasks, research artifacts, code/lib/       │
 └───────┬─────────────────────────┬─────────────────────┬──────────────────┘
         │                         │                     │
-  workspace/<name>/         Cognee + Neo4j       OpenRouter, Exa,
+  workspace/<name>/         Cognee + Neo4j       Surplus/OpenRouter, Exa,
   committed to git          durable memory       Langfuse, trace.jsonl
 ```
 
@@ -192,10 +192,13 @@ lessons, sources, and failed approaches, and the three roles whose output is
 durable knowledge can store them. Pass `--no-research` to withhold web search;
 Cognee recall remains available.
 
-All model calls use DeepSeek V4 Flash through OpenRouter, preferring the
-DeepInfra route by default so the large fixed prompt prefix keeps hitting one
-provider's cache. Fallbacks stay enabled, so a busy provider never halts the
-runtime. Set `OPENROUTER_MODEL` or `MATH_AGENT_PROVIDER` to change either.
+All model calls use DeepSeek V4 Flash through Surplus Intelligence by default,
+with OpenRouter as an independently configured fallback. A Surplus provider or
+transport failure is retried once through OpenRouter; when `SURPLUS_API_KEY` is
+unset, an existing `OPENROUTER_API_KEY` installation runs on OpenRouter alone.
+Set `MATH_AGENT_API_KEY`, `MATH_AGENT_API_BASE_URL`, and `MATH_AGENT_MODEL` to
+replace the primary with another OpenAI-compatible endpoint. `OPENROUTER_MODEL`
+and `MATH_AGENT_PROVIDER` configure the fallback route.
 TinyAgents provides the model loop, tools, delegation, and middleware.
 
 
@@ -311,7 +314,7 @@ replay of what it had already seen.
 Requirements:
 
 - Docker
-- OpenRouter, Exa, and Langfuse credentials
+- Surplus (or fallback OpenRouter), Exa, and Langfuse credentials
 
 Copy the environment template and fill in the local values:
 
@@ -613,7 +616,7 @@ restrictions:
   `/workspace`;
 - the repository and Docker socket are not mounted.
 
-Network access stays enabled because OpenRouter, Exa, and Langfuse require it.
+Network access stays enabled because the model providers, Exa, and Langfuse require it.
 The tool-builder can change files under `/workspace`, but it cannot change the
 host repository through the container.
 
@@ -632,7 +635,7 @@ scripts/                    the helpers' implementations
 workspace/                  selectable agent workspaces, committed with their runs
 └── template/               seed instructions, prompts, and config
 src/prompts/                built-in role prompts, included at compile time
-src/agent/                  TinyAgents facade, OpenRouter, budget, tracing
+src/agent/                  TinyAgents facade, providers, budget, tracing
 src/orchestrator/           registry, specialists, workspace and document tools
 src/bin/euler_tui.rs        the tabbed console, behind the `tui` feature
 examples/                   the Docker entry point and two direct examples

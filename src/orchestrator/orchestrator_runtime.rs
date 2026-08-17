@@ -7,7 +7,7 @@ impl OrchestratorAgent {
     ///
     /// # Errors
     ///
-    /// Returns an error when `Docker` runtime markers, workspace, `OpenRouter`,
+    /// Returns an error when `Docker` runtime markers, workspace, provider,
     /// Exa, or Langfuse configuration are unavailable.
     pub fn from_env() -> Result<Self> {
         let _ = dotenvy::dotenv();
@@ -18,12 +18,12 @@ impl OrchestratorAgent {
         // it, so a stalled connection otherwise blocks for ten minutes before
         // the first retry.
         let model: Arc<dyn ChatModel<()>> =
-            Arc::new(BoundedTimeoutModel::new(openrouter_model_from_env()?));
+            Arc::new(BoundedTimeoutModel::new(provider_model_from_env()?));
         // The one role that is not on the run's default model. It gets the same
         // timeout bound, because a stalled connection is a property of the
         // transport rather than of the model behind it.
         let reasoning: Arc<dyn ChatModel<()>> =
-            Arc::new(BoundedTimeoutModel::new(openrouter_reasoning_model()?));
+            Arc::new(BoundedTimeoutModel::new(provider_reasoning_model()?));
         // The Lean tier, absent unless a key for it is configured. Bounded like
         // the others, because a stalled connection is a property of the
         // transport rather than of the model behind it.

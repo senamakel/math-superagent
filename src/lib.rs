@@ -7,7 +7,7 @@
 //! runs next — the attempt/judge/reflect solution loop, and the graph each
 //! detached sub-agent run is driven by. [`agent::flow`] is the seam between
 //! them and documents why the split falls where it does.
-//! [`HelloAgent`] supplies a minimal OpenRouter-backed loop with arithmetic,
+//! [`HelloAgent`] supplies a minimal provider-backed loop with arithmetic,
 //! echo, Exa search, and sub-agent delegation tools. Loop events are exported
 //! to Langfuse on a best-effort basis.
 //! [`OrchestratorAgent`] supplies a named specialist registry and delegates

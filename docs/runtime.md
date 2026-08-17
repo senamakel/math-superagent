@@ -228,9 +228,13 @@ estimated 300,000-token trigger. The summary should retain mathematical
 assumptions, intermediate results, source URLs, tool output, and unfinished
 work.
 
-OpenRouter uses `deepseek/deepseek-v4-flash-0731` unless `OPENROUTER_MODEL`
-overrides the model. `DeepInfra` is preferred through `provider.order`,
-overridable with `MATH_AGENT_PROVIDER`, and `allow_fallbacks` is enabled.
+Surplus Intelligence is the primary and uses `deepseek-v4-flash-0731` unless
+`MATH_AGENT_MODEL` overrides it. OpenRouter is the independent fallback and
+uses `deepseek/deepseek-v4-flash-0731` unless `OPENROUTER_MODEL` overrides it.
+On that fallback, `DeepInfra` is preferred through `provider.order`,
+overridable with `MATH_AGENT_PROVIDER`, and `allow_fallbacks` is enabled. An
+installation with no `SURPLUS_API_KEY` keeps its earlier behavior and runs on
+OpenRouter alone.
 
 Preferring one provider is what makes prompt caching pay: the cache is
 per-provider, and these agents carry a large fixed prefix, so bouncing between
@@ -258,10 +262,11 @@ the code writers execute rather than judge; the planners drive every turn.
 Three tests assert the split in both directions, because the mistake is
 silent: adding a role costs money on every run and nothing fails to say so.
 
-The model is `deepseek/deepseek-v4-flash-0731` — the model every other role
-uses, routed to `deepinfra` like the rest, so **the split is off at its
-default**, and only the default: `REASONING_ROLES` still selects the four, and
-`MATH_AGENT_REASONING_MODEL` turns it back on in one variable.
+The primary model is `deepseek-v4-flash-0731` — the model every other role
+uses — so **the split is off at its default**, and only the default:
+`REASONING_ROLES` still selects the four, and `MATH_AGENT_REASONING_MODEL`
+turns it back on in one variable. Its OpenRouter fallback uses the corresponding
+provider-qualified id.
 
 Price is why, and it is the numbers that moved rather than the reasoning above.
 `deepseek-v4-pro` was $0.43/$0.87 per million when this section was written and
@@ -282,10 +287,12 @@ the pinned row marked and the cheapest one beside it — for whichever models th
 checkout actually pins, read from the constants rather than a list of its own.
 It needs no credentials, so it costs nothing to check before changing a route. The caching argument barely applies to
 the inventor anyway, whose prompt carries a dossier rebuilt from disk on every
-call. `MATH_AGENT_REASONING_MODEL` and `MATH_AGENT_REASONING_PROVIDER` override
-both; `OPENROUTER_MODEL` still overrides every role at once.
+call. `MATH_AGENT_REASONING_MODEL` changes the primary;
+`MATH_AGENT_REASONING_OPENROUTER_MODEL` and `MATH_AGENT_REASONING_PROVIDER`
+change its fallback.
 
-Preference alone is not enough, because every fallback costs twice: once for
+Within OpenRouter-only mode, preference alone is not enough, because every
+provider fallback costs twice: once for
 the cold call on the new provider, and again next turn when routing swings back
 to the preferred one and finds its cache cold too. `StickyProviderModel`
 (`src/agent/sticky.rs`) closes that gap by reading which provider actually

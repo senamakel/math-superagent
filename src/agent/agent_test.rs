@@ -1,6 +1,9 @@
 //! Unit tests for the embedded `TinyAgents` runtime.
 
-use super::{Message, mock, openrouter_client};
+use super::{
+    Message, is_openrouter_base_url, is_surplus_base_url, mock, openrouter_client,
+    openrouter_model_name,
+};
 use tinyagents::harness::model::{ChatModel as _, ModelRequest};
 
 #[tokio::test]
@@ -75,4 +78,28 @@ async fn mock_harness_runs_without_application_domains() -> super::Result<()> {
     assert_eq!(run.text().as_deref(), Some("Hello from the slim agent."));
     assert_eq!(run.model_calls, 1);
     Ok(())
+}
+
+#[test]
+fn only_the_openrouter_endpoint_enables_its_routing_dialect() {
+    assert!(is_openrouter_base_url("https://openrouter.ai/api/v1"));
+    assert!(is_openrouter_base_url("https://openrouter.ai/api/v1/"));
+    assert!(!is_openrouter_base_url(
+        "https://api.surplusintelligence.ai/v1"
+    ));
+}
+
+#[test]
+fn the_default_endpoint_and_fallback_model_use_each_providers_dialect() {
+    assert!(is_surplus_base_url(
+        "https://api.surplusintelligence.ai/v1/"
+    ));
+    assert_eq!(
+        openrouter_model_name("deepseek-v4-flash-0731"),
+        "deepseek/deepseek-v4-flash-0731"
+    );
+    assert_eq!(
+        openrouter_model_name("anthropic/claude-sonnet-4.6"),
+        "anthropic/claude-sonnet-4.6"
+    );
 }

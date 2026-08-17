@@ -19,6 +19,10 @@ services:
       MATH_AGENT_RESEARCH: ${MATH_AGENT_RESEARCH:-on}
       MATH_AGENT_SCHOOLS: ${MATH_AGENT_SCHOOLS:-}
       MATH_AGENT_LOOP_MINUTES: ${MATH_AGENT_LOOP_MINUTES:-}
+      # Provider endpoint/model are ordinary run knobs. The API key is omitted
+      # deliberately and arrives through env_file, like MISTRAL_API_KEY below.
+      MATH_AGENT_API_BASE_URL: ${MATH_AGENT_API_BASE_URL:-}
+      MATH_AGENT_MODEL: ${MATH_AGENT_MODEL:-}
       MATH_AGENT_PROVIDER: ${MATH_AGENT_PROVIDER:-}
       MATH_AGENT_REQUEST_SECONDS: ${MATH_AGENT_REQUEST_SECONDS:-}
       MATH_AGENT_MAX_MODEL_CALLS: ${MATH_AGENT_MAX_MODEL_CALLS:-}
