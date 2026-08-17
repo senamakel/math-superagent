@@ -93,6 +93,10 @@ workspace_path=$repository_root/workspace/$workspace_subdir
 mkdir -p "$workspace_path"
 workspace_path=$(CDPATH= cd -- "$workspace_path" && pwd -P)
 
+# Selects workspace/template-euler on top of the shared seed: this problem has
+# one number, so `code/` leads with the oracle and Lean supplies the identity
+# that number rests on. See the seeding block in scripts/run-agent.
+export MATH_AGENT_TEMPLATE=euler
 export MATH_AGENT_WORKSPACE_PATH=$workspace_path
 export MATH_AGENT_LOCAL_UID=$(id -u)
 export MATH_AGENT_LOCAL_GID=$(id -g)

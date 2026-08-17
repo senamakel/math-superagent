@@ -26,8 +26,8 @@ cost — is one level down:
   each verdict routes to, and the live run behind every threshold.
 - [`docs/runtime.md`](docs/runtime.md) — the crate layout, `RunBudget`, and the
   tracing that makes a run legible.
-- [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the
-  research tree, the scratch, checkpointing, and reading what does not fit.
+- [`docs/workspace.md`](docs/workspace.md) — where a written file goes, the two
+  workspace seeds, the research tree, checkpointing, and reading what overflows.
 - [`docs/ledgers.md`](docs/ledgers.md) — the derived ledgers: what each holds,
   the failure each stops, what bounds them, and how a run declares one.
 - [`docs/lean-library.md`](docs/lean-library.md) — writing the mathematics as

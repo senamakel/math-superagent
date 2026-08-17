@@ -101,6 +101,12 @@ done
 #
 # Set `MATH_AGENT_RUN_MINUTES` to override for a specific investigation.
 
+# Selects workspace/template-conjecture on top of the shared seed: an open
+# problem is graded on what it established, so `code/` leads with the
+# mathematics and a program is evidence for a statement. See the seeding block
+# in scripts/run-agent.
+export MATH_AGENT_TEMPLATE=conjecture
+
 workspace_subdir=conjectures/$slug
 workspace_path=$repository_root/workspace/$workspace_subdir
 if [ ! -f "$workspace_path/problem.md" ]; then
