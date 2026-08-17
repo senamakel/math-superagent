@@ -641,29 +641,64 @@ fn line(verdict: &Verdict) -> String {
 /// expensive thing in the image.
 ///
 /// The parse is deliberately shallow and deliberately literal. It takes the text
-/// from a `theorem` or `lemma` keyword at the start of a line up to the `:=`
-/// that opens the proof, collapses its whitespace, and keeps it. It does not
-/// try to separate binders from the conclusion, or data from hypotheses: both
-/// need Lean's elaborator, and a runtime that guessed would file a wrong
+/// from a `theorem`, `lemma` or `axiom` keyword at the start of a line up to the
+/// `:=` that opens the proof, collapses its whitespace, and keeps it. It does
+/// not try to separate binders from the conclusion, or data from hypotheses:
+/// both need Lean's elaborator, and a runtime that guessed would file a wrong
 /// signature beside a right verdict, which is worse than filing none.
 ///
 /// What it is for is the reader. A row saying `formalised` should say *of
 /// what* — see [`Verdict::declarations`] for the live run where it did not.
+///
+/// # Why `axiom` counts as a declaration
+///
+/// It did not, and a live `conjectures/singmaster` run showed what that cost.
+/// The mill wrote a clean, compiling, attributed statement:
+///
+/// ```lean
+/// namespace Cited
+/// /-- … Beukers–Shorey–Tijdeman 1999, p. 11 (due to Minkowski 1968) -/
+/// axiom minkowski_equal_blocks (m : ℕ) (hm : m > 0) :
+///     (∏ i ∈ Finset.Icc 1 m, (4 * i - 2)) = (∏ i ∈ Finset.Icc 1 m, (m + i))
+/// end Cited
+/// ```
+///
+/// Its verdict came back with `declarations` empty, because nothing here looked
+/// for the one keyword such a file uses. [`Verdict::states_something`] requires
+/// a declaration, so the file "stated nothing", and `mill::run` deleted it —
+/// exactly the artifact the mill exists to produce, erased for having the shape
+/// its own documentation prescribes.
+///
+/// An `axiom` has no proof, so there is no `:=` to end its signature. It ends at
+/// a blank line or at whatever starts the next top-level construct, which is the
+/// same shallow-and-literal rule one step further: this reads Lean's *layout*,
+/// never its meaning.
 fn declarations(source: &str) -> Vec<String> {
     let mut found = Vec::new();
     let mut collecting: Option<String> = None;
+    let mut axiom = false;
     for line in source.lines() {
         let trimmed = line.trim_start();
+        // An axiom's signature ends where the next construct or a blank line
+        // begins, so it is closed *before* this line is considered as an
+        // opener — the line that ends one axiom is often the one that opens the
+        // next, and a close that consumed it would drop every second statement.
+        if axiom && ends_axiom(trimmed) {
+            push_signature(&mut found, collecting.take().as_deref());
+            axiom = false;
+        }
         if collecting.is_none() {
             // Anchored at the line start so `theorem` inside a docstring or a
             // comment does not open a signature that never closes.
             if !(trimmed.starts_with("theorem ")
                 || trimmed.starts_with("lemma ")
                 || trimmed.starts_with("private theorem ")
-                || trimmed.starts_with("protected theorem "))
+                || trimmed.starts_with("protected theorem ")
+                || trimmed.starts_with("axiom "))
             {
                 continue;
             }
+            axiom = trimmed.starts_with("axiom ");
             collecting = Some(String::new());
         }
         let Some(signature) = collecting.as_mut() else {
@@ -680,17 +715,55 @@ fn declarations(source: &str) -> Vec<String> {
         }
         signature.push_str(text.trim());
         if done || text.trim_end().ends_with("by") {
-            let finished = signature.split_whitespace().collect::<Vec<_>>().join(" ");
-            if !finished.is_empty() {
-                found.push(truncate(&finished, MAX_SIGNATURE_CHARS));
-            }
-            collecting = None;
+            push_signature(&mut found, collecting.take().as_deref());
+            axiom = false;
         }
     }
-    // A signature left open by a file that never closed it is dropped rather
-    // than reported half-read: a truncated statement in a ledger row reads as
-    // the whole statement.
+    // An axiom running to the end of the file is closed by the end of the file.
+    // A *theorem* left open is not: it was waiting for a `:=` that never came,
+    // so what is held is half a signature, and a truncated statement in a
+    // ledger row reads as the whole statement.
+    if axiom {
+        push_signature(&mut found, collecting.as_deref());
+    }
     found
+}
+
+/// Whether `trimmed` is where an axiom's signature stops.
+///
+/// A blank line, or the start of the next top-level construct. Layout rather
+/// than meaning, which is the whole of what this parser is willing to know: an
+/// `axiom` has no `:=` to end it, and finding its real end needs the elaborator.
+fn ends_axiom(trimmed: &str) -> bool {
+    const OPENERS: [&str; 12] = [
+        "axiom ",
+        "theorem ",
+        "lemma ",
+        "def ",
+        "noncomputable ",
+        "private ",
+        "protected ",
+        "instance ",
+        "namespace ",
+        "end",
+        "open ",
+        "#",
+    ];
+    trimmed.is_empty()
+        || trimmed.starts_with("/--")
+        || trimmed.starts_with("--")
+        || OPENERS.iter().any(|opener| trimmed.starts_with(opener))
+}
+
+/// Collapses a collected signature and files it, dropping an empty one.
+fn push_signature(found: &mut Vec<String>, signature: Option<&str>) {
+    let Some(signature) = signature else {
+        return;
+    };
+    let finished = signature.split_whitespace().collect::<Vec<_>>().join(" ");
+    if !finished.is_empty() {
+        found.push(truncate(&finished, MAX_SIGNATURE_CHARS));
+    }
 }
 
 /// Parses one `lean` invocation's output into a verdict.

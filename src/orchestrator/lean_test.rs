@@ -741,3 +741,85 @@ mod states_something {
         );
     }
 }
+
+/// The file the mill exists to produce, and what it used to be worth.
+///
+/// Verbatim from a live `conjectures/singmaster` run: a statement the run read
+/// out of a paper, stated under `namespace Cited` with its provenance, checked
+/// by the kernel, and compiling. Nothing here looked for `axiom`, so it
+/// declared nothing, `states_something` was false, and `mill::run` deleted it.
+#[test]
+fn a_cited_axiom_is_a_declaration() {
+    let source = "import Mathlib\n\
+                  \n\
+                  namespace Cited\n\
+                  \n\
+                  /--\n\
+                  Beukers–Shorey–Tijdeman 1999, p. 11 (due to Minkowski 1968).\n\
+                  -/\n\
+                  axiom minkowski_equal_blocks (m : ℕ) (hm : m > 0) :\n\
+                      (∏ i ∈ Finset.Icc 1 m, (4 * i - 2)) = (∏ i ∈ Finset.Icc 1 m, (m + i))\n\
+                  \n\
+                  end Cited\n";
+
+    let checked = parse("code/lean/Lib/minkowski.lean", source, true, "");
+
+    let signature = checked
+        .declarations
+        .first()
+        .expect("the axiom's signature is recorded");
+    assert!(signature.contains("minkowski_equal_blocks"), "{signature}");
+    assert!(
+        signature.contains("hm : m > 0"),
+        "the hypothesis the prose would have lost: {signature}"
+    );
+    assert!(
+        !signature.contains("end Cited"),
+        "the namespace's close is not part of the statement: {signature}"
+    );
+    assert!(
+        checked.states_something(),
+        "so the file is worth keeping rather than deleting"
+    );
+    assert!(
+        !checked.verified(),
+        "and it is still not a proof of anything"
+    );
+}
+
+/// Two axioms in a row are two declarations.
+///
+/// The line that ends one is the line that opens the next, so a close that
+/// consumed its line would drop every second statement — which a file of cited
+/// results, the shape this parser now exists for, is made of.
+#[test]
+fn consecutive_axioms_are_not_swallowed() {
+    let source = "namespace Cited\n\
+                  axiom first (n : ℕ) : n + 0 = n\n\
+                  axiom second (n : ℕ) : 0 + n = n\n\
+                  end Cited\n";
+
+    let checked = parse("code/lean/Lib/pair.lean", source, true, "");
+
+    assert_eq!(checked.declarations.len(), 2, "{:?}", checked.declarations);
+    assert!(checked.declarations[0].contains("first"));
+    assert!(checked.declarations[1].contains("second"));
+}
+
+/// An axiom is a statement, not a proof, so its signature stops at the layout.
+#[test]
+fn an_axiom_ends_at_the_next_construct() {
+    let source = "axiom stated (n : ℕ) : n = n\n\
+                  \n\
+                  theorem proved : 1 = 1 := rfl\n";
+
+    let checked = parse("code/lean/Lib/mixed.lean", source, true, "");
+
+    assert_eq!(
+        checked.declarations,
+        vec![
+            "axiom stated (n : ℕ) : n = n".to_string(),
+            "theorem proved : 1 = 1".to_string(),
+        ]
+    );
+}
