@@ -429,3 +429,58 @@ evidence-class: sourced (FULL postprint PDF held, with complete proofs of the
 falsifier: a source closing the n=5 case (≥3 cycles for deg-5 Liénard).
 holds-here: yes.
 ```
+
+```claim
+id: drr-ledger-no-consolidated-post2020
+status: sourced
+statement: No consolidated graphic-by-graphic ledger of the 121 DRR graphics
+  with a running closed-count and the paper closing each row exists in the
+  published literature, as of this run's searches (2023-2025). Christiane
+  Rousseau has published no status survey of the DRR program since the 2015
+  papers (Rousseau–Shan–Zhu arXiv:1502.00689; Roussarie–Rousseau Trans. Moscow
+  Math. Soc. 76, 2015): her authored arXiv/OpenAlex/Math-Net/Dialnet records
+  through 2025 and her Montréal publications page (held) show no consolidation.
+  The DRR 1994 original (the only complete 121-id list) is paywalled at
+  Academic Press/ScienceDirect with no open full text (UHasselt DSpace holds
+  only the metadata record; confirmed again this cycle). The closest thing to a
+  primary per-class ledger is Shan 2013 thesis Table 1.1 (held full text).
+hypotheses: n=2 quadratic DRR program.
+evidence-class: sourced for "no post-2020 Rousseau survey" (her publication
+  lists held/searched through 2025) and "DRR 1994 paywalled" (UHasselt metadata
+  only); the completeness of the negative claim is limited by search coverage.
+falsifier: a held post-2020 authoritative ledger with per-graphic status and a
+  closed-count (this would FILL the request, not falsify); a graphics-table in
+  a paper this run has not seen.
+holds-here: yes — this is the honest resolution of requests
+  dumortier-roussarie-rousseau-9c4f / complete-current-ledger-cb3d: the gap
+  cannot be closed from any single published source; the run's target
+  inventory must be assembled by triangulating RSZ 2015 + RR 2015 + Shan 2013
+  + the individual closure papers, which is exactly what research/drr-list.md
+  does.
+```
+
+```claim
+id: drr-shan-2013-table11-ledger
+status: sourced
+statement: Shan 2013 (PhD thesis, "Theory and applications of high codimension
+  bifurcations", York Univ.) Table 1.1 is the only primary per-class ledger of
+  the DRR program in this library. It counts 125 graphics in the standard
+  family around the origin (not 121 — the grouping/counting discrepancy is NOT
+  resolved). Per-class prose statements (robust): only (DF1a),(DF2a) degenerate
+  graphics have finite cyclicity, the rest 11 degenerate graphics are OPEN;
+  only (I₆a) elementary non-hyperbolic graphic remains OPEN; ≥20 nilpotent
+  graphics closed by Zhu–Rousseau; the thesis itself proves 4 RH-graphic
+  families through a triple nilpotent point (2 saddle-type Ji2,Ua(1), 2
+  elliptic-type IJb,I1b) surrounding a focus/center. The OCR'd done/open column
+  totals (85 done / 36 open / 4 my-work / total 125) do NOT sum cleanly
+  (classes sum to ~123) and must not be quoted as exact — cite the class labels
+  and prose, not the column arithmetic.
+hypotheses: n=2 quadratic DRR program; "125 graphics in the standard family
+  around the origin" (Shan's counting convention).
+evidence-class: sourced (full thesis text held,
+  research/sources/shan-phd-thesis-2013.full.md, lines ~527-630).
+falsifier: a primary ledger giving different per-class open counts; resolution
+  of the 121-vs-125 discrepancy from the DRR 1994 paper itself.
+holds-here: yes as a partial, per-class inventory; NOT a complete graphic-by-
+  graphic 121 list (that still requires the DRR 1994 paper).
+```

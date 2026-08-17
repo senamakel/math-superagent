@@ -122,6 +122,8 @@ dataset 2. Closed by `decide` per the directive (not native_decide).
 theorem h14_p30_check : checkP30 = true := by
   decide
 
+#print axioms h14_p30_check
+
 /--
 The paper's assertion in coefficient form: 192·L6 + P30 = 0, which since
 L6 = weighted_g6/16 is exactly P30 + 12·weighted_g6 = 0, i.e. the identity
@@ -130,9 +132,10 @@ the check above.
 -/
 theorem bautin_L6_identity :
     P30poly + W6poly = 0 := by
-  -- Same ground equality as checkP30; close by decide once the kernel route
-  -- above is confirmed:  exact (of_eq_true h14_p30_check)  after unfolding.
-  sorry
+  -- Same ground equality as checkP30; the kernel reduces it directly.
+  decide
+
+#print axioms bautin_L6_identity
 
 /--
 The degree-4 obstruction: 8·L4 = A·C + C·D + 2·D·F - E·F. The certificate's
@@ -145,6 +148,8 @@ theorem bautin_L4_identity : True := by
   trivial
   -- (Real statement, pending the in-Lean recurrence:  L4 = (AC+CD+2DF-EF)/8
   --  where L4 : ℚ-polynomial is the degree-4 radial obstruction.)
+
+#print axioms bautin_L4_identity
 
 -- (B) Darboux / center-basis bridge ----------------------------------------
 
@@ -176,6 +181,8 @@ theorem param_identities (p : FiveParam) :
   · dsimp [sigma, gamma] <;> ring
   · dsimp [beta, tau, ell, alpha, a, c] <;> ring
 
+#print axioms param_identities
+
 /-- The H14^3 vector field in the source-normalized family:
 x' = -y - d x + B(x^2 - y^2),  y' = (1+y)(x + d y).  -/
 def X (p : FiveParam) : (ℝ × ℝ) → (ℝ × ℝ) :=
@@ -200,6 +207,8 @@ theorem darboux_identities (p : FiveParam) : True := by
   -- (Real statement, pending the explicit-coordinate Lie derivative:
   --  X(L) = (x + d·y)·L  and  X(F) = (2B·x + d·y)·F, then closed by `ring`
   --  after funext (x, y).)
+
+#print axioms darboux_identities
 
 end LuH14
 

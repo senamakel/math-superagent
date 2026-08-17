@@ -35,13 +35,14 @@ Ranked by how much of the argument rests on each, and within one load by whether
 - `pe1006-psi/G2-mechanical-word-representation` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For n with F(n) > k and rational slope a = F(n-1)/F(n), the k+1 length-k factors of F are produced exactly by the rotation/mechanical…
 - `pe1006-psi/G3-telescoped-second-moment` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — With v(x) = sum_{j=0}^{k-1} digit_j(x) 10^(k-1-j) where digit_j(x) = floor(x+(j+1)a) - floor(x+ja), summation by parts (telescoping) gives…
 
-_15 further candidate(s) below these, in the table._
+_16 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
-| `fibonacci-sturmian-complexity` | claim | **ready** | — | The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, equivalently the characteristic Sturmian word of slope 1/phi) is a… |
+| `conjugate-christoffel-factor-sturmian` | claim | **ready** | — | A finite word w is a conjugate of a Christoffel word if and only if all its conjugates (cyclic rotations) are factors of a Sturmian… |
+| `fibonacci-sturmian-complexity` | claim | **ready** | — | The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word, and its factor… |
 | `fibonacci-word-sturmian-density-balance` | claim | **ready** | — | The infinite Fibonacci word F (substitution 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word with factor complexity p_F(n) = n… |
 | `g1-sturmian-factor-structure` | goal | **ready** | — | Length-k Fibonacci subwords = factors of infinite Fibonacci word; count = k+1 (Sturmian complexity p(k)=k+1). |
 | `g2-mechanical-word-representation` | goal | **ready** | — | The k+1 length-k factors of F are produced exactly by the rotation/mechanical construction with slope a=F(n-1)/F(n), F(n)>k. |

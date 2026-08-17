@@ -41,7 +41,7 @@ Ranked by how much of the argument rests on each, and within one load by whether
 - `h16-drr-121-graphics` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — H(2) < ∞ is equivalent (via the compactness/DRR program of Dumortier, Roussarie and Rousseau 1994, J. Diff. Eq. 110, 86-133) to proving…
 - `lu-finite-core-partially-verified` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The finite algebraic core of Lu arXiv:2607.13785's reproducibility bundle — the four bridge identities, the Darboux cofactors X(L)=(x+dy)L…
 
-_53 further candidate(s) below these, in the table._
+_55 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -51,11 +51,13 @@ _53 further candidate(s) below these, in the table._
 | `data-landing-pages-inventory` | claim | established | — | The following held files are landing/record pages with no mathematics beyond an abstract: rouseau-shan-zhu .full.md,… |
 | `drr-1994-citation-anchor` | claim | **ready** | — | DRR 1994 (JDE 110:86-133) gives the list of all graphics and degenerate graphics (limit periodic sets surrounding the origin in quadratic… |
 | `drr-huzak-df2a-closed` | claim | **ready** | — | The degenerate DRR graphic DF_{2a} has finite cyclicity (Huzak 2018, CPA 17(3):1305-1316), completing the study of the DF_{1a} family… |
+| `drr-ledger-no-consolidated-post2020` | claim | **ready** | — | No consolidated graphic-by-graphic ledger of the 121 DRR graphics with a running closed-count and the paper closing each row exists in the… |
 | `drr-lu-claims-h14-3` | claim | **ready** | — | Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite cyclicity of the H^3_14 semihyperbolic hemicycle of quadratic fields: a… |
 | `drr-mv-hemicycle-cyclicity-2` | claim | **ready** | — | For the quadratic D-system (7) with (a0,b0) in (-2,0)x(0,2) (two centers, reversible class Q3^R), the cyclicity of the hyperbolic hemicycle… |
 | `drr-rousseau-zhu-15-pp-graphics` | claim | **ready** | — | Any pp-graphic through a multiplicity-3 nilpotent singularity of elliptic type not surrounding a center in the DRR 121 list has finite… |
 | `drr-rr-boundary-only-for-3-graphics` | claim | **ready** | — | For the DRR graphics (I^1_6b), (H^3_13) and (DI_2b) through a triple nilpotent point at infinity surrounding a center, only the boundary… |
 | `drr-rr-closes-i14` | claim | **ready** | — | The DRR graphic (I^1_14), through a triple nilpotent point of saddle or elliptic type at infinity surrounding a center, has finite… |
+| `drr-shan-2013-table11-ledger` | claim | **ready** | — | Shan 2013 (PhD thesis, "Theory and applications of high codimension bifurcations", York Univ.) Table 1.1 is the only primary per-class… |
 | `fake-saddle-uniform-transition-map-marin2026` | claim | **ready** | — | Marín 2026 (EJQTDE 2026 no.5, 1-10, "Fake saddles and their transition maps") characterizes generic fake saddles (zero-linear-part,… |
 | `g-drr-status` | goal | established | — | Which of the 121 DRR graphics have finite cyclicity unproved today. |
 | `g-resolve` | goal | **ready** | — | Resolution of a DRR graphic: finite polynomial blow-ups within the quadratic family reduce each vertex to an elementary normal form;… |
@@ -85,10 +87,8 @@ _53 further candidate(s) below these, in the table._
 | `h16-drr-h14-3-lu-2026-claim` | claim | **ready** | — | H. Lu, "Local Uniform Finite Cyclicity of the H₁₄³ Semihyperbolic Hemicycle", arXiv:2607.13785 (Jul 2026, 80 pp., unrefereed preprint),… |
 | `h16-drr-lu-2026-does-not-complete-program` | claim | **ready** | — | Even if Lu 2026 is correct, the DRR program is not complete. The closure of (H³₁₄) is one graphic. As of RR 2015 the open/partially-open… |
 | `h16-drr-open-rows` | claim | **ready** | — | The DRR program is NOT complete: at least 33 of the 121 graphics were still open as of RSZ 2015 (88 closed), and the open rows lie… |
-| `h16-dulac-finiteness-theorem` | claim | **ready** | — | A planar polynomial vector field has only finitely many limit cycles; the same holds for an analytic vector field on the 2-sphere. Proved… |
-| `h16-dulac-proof-contested` | claim | **ready** | — | The published proof (Ilyashenko's approach) of finiteness of limit cycles for the non-hyperbolic-polycycle case has a gap: the argument… |
 
-_19 further nodes not shown._
+_21 further nodes not shown._
 
 ---
 

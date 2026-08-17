@@ -7,9 +7,13 @@ theorem, not a fact the run must reprove.
 ```claim
 id: fibonacci-sturmian-complexity
 statement: The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0,
-equivalently the characteristic Sturmian word of slope 1/phi) is a Sturmian
-word, and its factor complexity function counts exactly P(f, k) = k + 1 distinct
-factors (subwords) of length k, for every integer k >= 0.
+the S_n limit of PE1006) is a Sturmian word, and its factor complexity function
+counts exactly P(f, k) = k + 1 distinct factors (subwords) of length k, for
+every integer k >= 0. [Convention note: the problem's word has ones-density
+1/phi^2 approx 0.382 (Perrin-Restivo: characteristic of slope 2/(3+sqrt5);
+Berstel DLT'95: slope 1/tau^2); "slope 1/phi" in some sources (Wikipedia) means
+the ones-density of the digit-complement (rabbit) word, which has a DIFFERENT
+factor set. The mechanical digit rule for this problem must use 1/phi^2.]
 hypotheses: f is the infinite Fibonacci word; "factor" means contiguous substring;
 length k is a nonnegative integer.
 holds-here: true. PE1006's S_n are the finite Fibonacci-word prefixes whose limit

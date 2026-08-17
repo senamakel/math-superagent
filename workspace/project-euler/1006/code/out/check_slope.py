@@ -18,9 +18,10 @@ from math import floor
 
 PHI2INV = (3.0 - 5 ** 0.5) / 2.0   # 1/phi^2
 
-def fib_word(n):
+def fib_word(min_len):
+    """Return S_n (a prefix of the infinite Fibonacci word) with len >= min_len."""
     a, b = '0', '01'
-    for _ in range(n):
+    while len(b) < min_len:
         a, b = b, b + a
     return b
 
@@ -67,11 +68,9 @@ for k in range(1, 9):
     m618 = mech_factors(k, 1.0 / ((1 + 5 ** 0.5) / 2))  # 1/phi ~ 0.618 (directive literal)
     # rational approximants: F(n-2)/F(n) ~ 1/phi^2,  F(n-1)/F(n) ~ 1/phi
     f = [1, 1]
-    while f[-1] < 100:
+    while f[-1] < 89:
         f.append(f[-1] + f[-2])
-    for fn in f:
-        pass
-    # pick F(n) = 89: F(n-2)=34 F(n-1)=55 ; F(n-1)=55
+    # f ends [..., 34, 55, 89]: F(n-2)/F(n) = 34/89 ~ .382, F(n-1)/F(n) = 55/89 ~ .618
     rat382 = mech_factors_rat(k, f[-3], f[-1])   # F(n-2)/F(n) = 34/89 ~ .382
     rat618 = mech_factors_rat(k, f[-2], f[-1])   # F(n-1)/F(n) = 55/89 ~ .618 (directive)
     print(f"k={k} truth={len(truth)}")

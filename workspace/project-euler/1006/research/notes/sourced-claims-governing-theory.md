@@ -42,6 +42,7 @@ research/sources/perrin-sturmian-words-lecture2-mechanical.full.md;
 research/sources/wikipedia-fibonacci-word.full.md
 bearing: Fixes the object under study as the characteristic Sturmian word of
 slope 1/phi^2, opening the mechanical-word and factor-complexity theorems.
+answers: citable-statement-theorem-039a
 ```
 
 ```claim
@@ -64,6 +65,7 @@ definition in Section 2); research/sources/perrin-sturmian-words-lecture2-mechan
 (Proposition 4)
 bearing: Confirms the object set: exactly k+1 distinct subwords per length,
 so Psi(k) is a sum of squares over k+1 decimals.
+answers: citable-statement-theorem-039a
 ```
 
 ```claim
@@ -73,7 +75,7 @@ n >= 0 (lower mechanical word with slope α, intercept ρ). All mechanical words
 of one slope have the same factor set (Perrin Lecture 2, Proposition). The k+1
 distinct length-k factors of the Fibonacci word (slope α = 1/phi^2) are exactly
 the k+1 words (s_{α,ρ_j}(0), ..., s_{α,ρ_j}(k-1)) where ρ_j runs over the
-midpoints of the k+1 arcs of the circle R/Z cut at the k+2 points
+midpoints of the k+1 arcs of the circle R/Z cut at the k+1 points
 {m·(-α) mod 1 : m = 0..k}. In exact integer arithmetic α may be replaced by
 the rational F(n-2)/F(n) (A000045 convention), provided the denominator F(n) is
 large enough that the k+1 cut points are distinct and in the same cyclic order
@@ -82,11 +84,17 @@ hypotheses: α irrational (or rational approximant with denominator > k);
 arc-midpoint intercepts distinct (true for irrational α; needs denominator > k
 for the rational approximant).
 holds-here: yes with the corrected slope F(n-2)/F(n) -> 1/phi^2; the literal
-steer-directive slope F(n-1)/F(n) -> 1/phi fails (see contradiction block below).
+steer-directive slope F(n-1)/F(n) -> 1/phi fails (see contradiction block
+below). Verified in-container at k=1..100 (exact rational arithmetic).
 status: sourced (construction from Perrin Lecture 2 interval correspondence
-I_w and same-slope-same-factors proposition); k=3 vs problem oracle checked by
-hand in exact arithmetic (34/89 reproduces {001,010,100,101}; 55/89 does not);
-full k-range vs brute pending tool_builder's run of code/out/check_slope.py.
+I_w and same-slope-same-factors proposition); VERIFIED in-container with exact
+rational arithmetic: the construction with slope F(n-2)/F(n) reproduces the
+brute factor set (and count k+1) for every k = 1..100 (note
+research/notes/mechanical-slope-correction.md, programs /tmp/mech3.py..mech6.py,
+/tmp/bridge.py, prior cycle); k=3 oracle match also hand-checked in this
+digest (34/89 -> {001,010,100,101}). The literal directive slope F(n-1)/F(n)
+fails (produces 11, absent from the Fibonacci word; k=3 gives {010,011,101,110}).
+follows-from: governing-factor-complexity, governing-sturmian
 anchor: research/sources/perrin-sturmian-words-lecture2-mechanical.full.md
 (rotation coding, interval I_w, same-slope-same-factors);
 research/sources/perrin-restivo-note-sturmian-words.full.md (digit formula,
@@ -130,6 +138,7 @@ research/sources/loj138-universal-euclidean-floor-moments.full.md;
 research/sources/atcoder-math-hpp-v151.full.md (floor_sum)
 bearing: This is the O(log) primitive that makes Psi(10^18) mod M computable
 without enumerating ~10^18 terms.
+answers: citable-name-treatment-0c91, citable-precise-statement-600d, citable-precise-statement-d2e7
 ```
 
 ---

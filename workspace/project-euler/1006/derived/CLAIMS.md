@@ -8,7 +8,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
-| `fibonacci-sturmian-complexity` | The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, equivalently the characteristic Sturmian word of slope 1/phi) is a Sturmian word, and its factor complexity function counts exactly P(f, k) = k + 1… | yes | asserted | `research/summaries/claim-fibonacci-sturmian-complexity.md` |
+| `conjugate-christoffel-factor-sturmian` | A finite word w is a conjugate of a Christoffel word if and only if all its conjugates (cyclic rotations) are factors of a Sturmian (infinite) word; equivalently w is primitive and has exactly \|w\|-1 distinct circular… | yes | asserted | `research/summaries/bugeaud-reutenauer-conjugates-christoffel.md` |
+| `fibonacci-sturmian-complexity` | The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word, and its factor complexity function counts exactly P(f, k) = k + 1 distinct factors (subwords) of length… | yes | asserted | `research/summaries/claim-fibonacci-sturmian-complexity.md` |
 | `fibonacci-word-sturmian-density-balance` | The infinite Fibonacci word F (substitution 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word with factor complexity p_F(n) = n + 1 for every n >= 0, and every length-n factor has a number of 1's within 1 of… | yes | asserted | `research/summaries/claim-fibonacci-density-balance.md` |
 | `governing-factor-complexity` | A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity; Perrin–Restivo Theorem 1: s is Sturmian iff mechanical of irrational slope, and… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
 | `governing-sturmian` | The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic word c_α of slope α = 2/(3+sqrt(5)) = (3-sqrt(5))/2 = 1/phi^2, phi =… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
@@ -29,6 +30,7 @@ Resolve these before building on either side.
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it. Search the whole ledger with `search_claims`.
 
+- `conjugate-christoffel-factor-sturmian` (research/summaries/bugeaud-reutenauer-conjugates-christoffel.md) — asserted by the source, not proved there and not checked here
 - `fibonacci-sturmian-complexity` (research/summaries/claim-fibonacci-sturmian-complexity.md) — asserted by the source, not proved there and not checked here
 - `fibonacci-word-sturmian-density-balance` (research/summaries/claim-fibonacci-density-balance.md) — asserted by the source, not proved there and not checked here
 - `governing-factor-complexity` (research/notes/sourced-claims-governing-theory.md) — asserted by the source, not proved there and not checked here

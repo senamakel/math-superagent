@@ -8,33 +8,19 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 
 | Declaration | Kind | Standing | Statement | Source | File |
 | --- | --- | --- | --- | --- | --- |
-| `LuH14.F` | def | unchecked | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.FiveParam` | structure | unchecked | where | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.L` | def | unchecked | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.P30poly` | def | unchecked | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.PRing` | abbrev | unchecked | — | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.W6coeffs` | def | unchecked | : Fin 30 → ℤ | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.W6poly` | def | unchecked | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.X` | def | unchecked | (p : FiveParam) : (ℝ × ℝ) → (ℝ × ℝ) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.Xv` | def | unchecked | (i : Fin 5) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.a` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.alpha` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.bautin_L4_identity` | theorem | unchecked | : True | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.bautin_L6_identity` | theorem | unchecked | : | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.beta` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.c` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.checkP30` | def | unchecked | : Bool | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.darboux_identities` | theorem | unchecked | (p : FiveParam) : True | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.ell` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.gamma` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.h14_p30_check` | theorem | unchecked | : checkP30 = true | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.monomial` | def | unchecked | (m : Fin 5 → ℕ) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.param_identities` | theorem | unchecked | (p : FiveParam) : | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.sigma` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.tau` | def | unchecked | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.Generated.Var` | abbrev | unchecked | — | — | `code/lean/Lib/Generated/P30Data.lean` |
-| `LuH14.Generated.coeffs` | def | unchecked | : Fin 30 → ℤ | — | `code/lean/Lib/Generated/P30Data.lean` |
-| `LuH14.Generated.ms` | def | unchecked | : Fin 30 → Var → Nat | — | `code/lean/Lib/Generated/P30Data.lean` |
+| `LuH14.P30poly` | def | unchecked | : PRing | — | `code/lean/Lib/ReduceTest.lean` |
+| `LuH14.PRing` | abbrev | unchecked | — | — | `code/lean/Lib/ReduceTest.lean` |
+| `LuH14.W6coeffs` | def | unchecked | : Fin 30 → ℤ | — | `code/lean/Lib/ReduceTest.lean` |
+| `LuH14.W6poly` | def | unchecked | : PRing | — | `code/lean/Lib/ReduceTest.lean` |
+| `LuH14.Xv` | def | unchecked | (i : Fin 5) : PRing | — | `code/lean/Lib/ReduceTest.lean` |
+| `LuH14.checkP30` | def | unchecked | : Bool | — | `code/lean/Lib/ReduceTest.lean` |
+| `LuH14.monomial` | def | unchecked | (m : Fin 5 → ℕ) : PRing | — | `code/lean/Lib/ReduceTest.lean` |
+| `LuH14.Generated.Var` | abbrev | unchecked | — | — | `code/lean/LuH14/Generated.lean` |
+| `LuH14.Generated.coeffs` | def | unchecked | : Fin 30 → ℤ | — | `code/lean/LuH14/Generated.lean` |
+| `LuH14.Generated.ms` | def | unchecked | : Fin 30 → Var → Nat | — | `code/lean/LuH14/Generated.lean` |
+| `LuH14.Generated.Var` | abbrev | unchecked | — | — | `code/lean/lib/LuH14/Generated.lean` |
+| `LuH14.Generated.coeffs` | def | unchecked | : Fin 30 → ℤ | — | `code/lean/lib/LuH14/Generated.lean` |
+| `LuH14.Generated.ms` | def | unchecked | : Fin 30 → Var → Nat | — | `code/lean/lib/LuH14/Generated.lean` |
 | `Bautin.Cited.at_most_three_small_amplitude` | axiom | failed | : | Bautin 1954, "On the number of limit cycles which appear with the | `code/lean/Lib/Bautin.lean` |
 | `Bautin.Cited.m_two_eq_three` | theorem | failed | : | — | `code/lean/Lib/Bautin.lean` |
 | `Bautin.Cited.three_attained` | axiom | failed | : | Bautin 1954; the bound is attained: some quadratic focus realises the | `code/lean/Lib/Bautin.lean` |
@@ -53,6 +39,30 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `Bautin.bautin_ideal_proper` | theorem | failed | : | — | `code/lean/Lib/Bautin.lean` |
 | `Bautin.evalAt` | def | failed | (V : LyapunovRing) (f : QuadraticFocusField) : ℝ | — | `code/lean/Lib/Bautin.lean` |
 | `that` | theorem | failed | the Bautin ideal is generated by finitely many Lyapunov quantities | — | `code/lean/Lib/Bautin.lean` |
+| `LuH14.F` | def | failed | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.FiveParam` | structure | failed | where | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.L` | def | failed | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.P30poly` | def | failed | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.PRing` | abbrev | failed | — | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.W6coeffs` | def | failed | : Fin 30 → ℤ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.W6poly` | def | failed | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.X` | def | failed | (p : FiveParam) : (ℝ × ℝ) → (ℝ × ℝ) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.Xv` | def | failed | (i : Fin 5) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.a` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.alpha` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.bautin_L4_identity` | theorem | failed | : True | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.bautin_L6_identity` | theorem | failed | : | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.beta` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.c` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.checkP30` | def | failed | : Bool | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.darboux_identities` | theorem | failed | (p : FiveParam) : True | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.ell` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.gamma` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.h14_p30_check` | theorem | failed | : checkP30 = true | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.monomial` | def | failed | (m : Fin 5 → ℕ) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.param_identities` | theorem | failed | (p : FiveParam) : | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.sigma` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `LuH14.tau` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
 | `H16.IsLimitCycle` | def | failed | (X : Plane → Plane) (γ : ℝ → Plane) : Prop | — | `code/lean/Lib/Statement.lean` |
 | `H16.LimitCycleSet` | def | failed | (X : Plane → Plane) : Set (Set Plane) | — | `code/lean/Lib/Statement.lean` |
 | `H16.PlanarPolyField` | structure | failed | (n : ℕ) where | — | `code/lean/Lib/Statement.lean` |
@@ -62,11 +72,13 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `H16.h16_2` | theorem | failed | : | — | `code/lean/Lib/Statement.lean` |
 | `H16.now` | theorem | failed | states `(LimitCycleSet f.toMap).Finite ∧ ...ncard ≤ N`. | — | `code/lean/Lib/Statement.lean` |
 
-53 declarations, 0 of them in a file the kernel has checked.
+63 declarations, 0 of them in a file the kernel has checked.
 
 ## Never checked
 
 These files are in the tree and no `lean_check` verdict exists for them. Nothing on this page from one of them is evidence of anything.
 
-- `code/lean/Lib/BautinRecurrence.lean`
-- `code/lean/Lib/Generated/P30Data.lean`
+- `code/lean/Lib/ReduceTest.lean`
+- `code/lean/LuH14/Generated.lean`
+- `code/lean/check/lakefile.lean`
+- `code/lean/lib/LuH14/Generated.lean`

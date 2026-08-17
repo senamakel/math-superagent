@@ -6,17 +6,21 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
+A claim a program produced — `status: checked`, or any claim naming a `refutation` — also takes a `search-frame` line saying what was swept, and where one exists, the published exhaustive regime it lies outside. A sweep is worth its space and no more, and one that found nothing is worth nothing at all without it.
+
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `data-contamination-llibre-zhang` | The file research/sources/llibre-zhang-lienard-conjecture-survey.full.md does not contain the Llibre-Zhang Lienard survey: it is an unrelated arXiv paper on the German power grid (Mureddu, arXiv:1612.05532). Claims… | yes | checked | `research/summaries/llibre-zhang-lienard-conjecture-survey.md` |
 | `data-landing-pages-inventory` | The following held files are landing/record pages with no mathematics beyond an abstract: rouseau-shan-zhu .full.md, yakovenko-quantitative-ode .full.md and .html.full.md, kaloshin .full.md, binyamini-novikov-yakovenko… | yes | checked | `research/summaries/landing-pages-inventory.md` |
 | `drr-1994-citation-anchor` | DRR 1994 (JDE 110:86-133) gives the list of all graphics and degenerate graphics (limit periodic sets surrounding the origin in quadratic systems) whose finite cyclicity implies a uniform bound on the number of limit… | yes | asserted | `research/summaries/dumortier-roussarie-rousseau-1994-121-graphics.md` |
 | `drr-huzak-df2a-closed` | The degenerate DRR graphic DF_{2a} has finite cyclicity (Huzak 2018, CPA 17(3):1305-1316), completing the study of the DF_{1a} family (DF_{1a} by Dumortier-Rousseau 2009). Technique: family blow-up + slow divergence… | yes | asserted | `research/summaries/huzak-cyclicity-degenerate-df2a.md` |
+| `drr-ledger-no-consolidated-post2020` | No consolidated graphic-by-graphic ledger of the 121 DRR graphics with a running closed-count and the paper closing each row exists in the published literature, as of this run's searches (2023-2025). Christiane Rousseau… | yes | asserted | `research/notes/claims.md` |
 | `drr-lu-claims-h14-3` | Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite cyclicity of the H^3_14 semihyperbolic hemicycle of quadratic fields: a fixed annular neighborhood and a finite uniform bound B over the full… | **unchecked** | asserted | `research/summaries/lu-h14-3-hemicycle.md` |
 | `drr-mv-hemicycle-cyclicity-2` | For the quadratic D-system (7) with (a0,b0) in (-2,0)x(0,2) (two centers, reversible class Q3^R), the cyclicity of the hyperbolic hemicycle Gamma_u (resp Gamma_l), perturbed inside the whole quadratic family, is exactly… | yes | asserted | `research/summaries/marin-villadelprat-cyclicity-hyperbolic-hemicycles.md` |
 | `drr-rousseau-zhu-15-pp-graphics` | Any pp-graphic through a multiplicity-3 nilpotent singularity of elliptic type not surrounding a center in the DRR 121 list has finite cyclicity inside quadratic systems; Rousseau-Zhu (2002) prove this for 15 graphics.… | yes | asserted | `research/summaries/rousseau-zhu-pp-graphics-nilpotent-elliptic.md` |
 | `drr-rr-boundary-only-for-3-graphics` | For the DRR graphics (I^1_6b), (H^3_13) and (DI_2b) through a triple nilpotent point at infinity surrounding a center, only the boundary limit periodic set obtained in the blow-up has proved finite cyclicity (Theorem… | yes | asserted | `research/summaries/rousseau-roussarie-center-graphics-nilpotent.md` |
 | `drr-rr-closes-i14` | The DRR graphic (I^1_14), through a triple nilpotent point of saddle or elliptic type at infinity surrounding a center, has finite cyclicity inside the family of quadratic vector fields. | yes | asserted | `research/summaries/rousseau-roussarie-center-graphics-nilpotent.md` |
+| `drr-shan-2013-table11-ledger` | Shan 2013 (PhD thesis, "Theory and applications of high codimension bifurcations", York Univ.) Table 1.1 is the only primary per-class ledger of the DRR program in this library. It counts 125 graphics in the standard… | yes | asserted | `research/notes/claims.md` |
 | `fake-saddle-uniform-transition-map-marin2026` | Marín 2026 (EJQTDE 2026 no.5, 1-10, "Fake saddles and their transition maps") characterizes generic fake saddles (zero-linear-part, non-zero-second-order-jet degenerate singularities, a.k.a. impassable grains) and gives… | yes | asserted | `research/summaries/marin-fake-saddles-transition-maps.md` |
 | `h16-121-vs-125-rrousseau-survey` | Chris Rousseau's own survey "Hilbert's 16th problem for quadratic vector fields and cyclicity of graphics" (Nonlin. Anal. 30(1), 1997) describes the DRR program as proving finite cyclicity of the 121 graphics and… | yes | asserted | `research/notes/claims.md` |
 | `h16-abelian-integral-bounds` | Tangential/infinitesimal H16: the number of isolated zeros of Abelian integrals (and so limit cycles born in a first-order perturbation of a Hamiltonian polynomial field) is uniformly bounded. Varchenko, Khovanskii… | yes | asserted | `research/notes/claims.md` |
@@ -71,10 +75,12 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 
 - `drr-1994-citation-anchor` (research/summaries/dumortier-roussarie-rousseau-1994-121-graphics.md) — asserted by the source, not proved there and not checked here
 - `drr-huzak-df2a-closed` (research/summaries/huzak-cyclicity-degenerate-df2a.md) — asserted by the source, not proved there and not checked here
+- `drr-ledger-no-consolidated-post2020` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-mv-hemicycle-cyclicity-2` (research/summaries/marin-villadelprat-cyclicity-hyperbolic-hemicycles.md) — asserted by the source, not proved there and not checked here
 - `drr-rousseau-zhu-15-pp-graphics` (research/summaries/rousseau-zhu-pp-graphics-nilpotent-elliptic.md) — asserted by the source, not proved there and not checked here
 - `drr-rr-boundary-only-for-3-graphics` (research/summaries/rousseau-roussarie-center-graphics-nilpotent.md) — asserted by the source, not proved there and not checked here
 - `drr-rr-closes-i14` (research/summaries/rousseau-roussarie-center-graphics-nilpotent.md) — asserted by the source, not proved there and not checked here
+- `drr-shan-2013-table11-ledger` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `fake-saddle-uniform-transition-map-marin2026` (research/summaries/marin-fake-saddles-transition-maps.md) — asserted by the source, not proved there and not checked here
 - `h16-121-vs-125-rrousseau-survey` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `h16-abelian-integral-bounds` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
@@ -102,6 +108,16 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `h16-petrovskii-landis-retracted` (research/summaries/garcia-saldana-rebollo-chile-limit-cycles.md) — asserted by the source, not proved there and not checked here
 - `h16-strong-monotone-gasull-santana` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `lu-finite-core-partially-verified` (research/notes/lu-finite-core-verified.md) — asserted by the source, not proved there and not checked here
+
+## Searched, with no frame recorded
+
+Each of these rests on a program that swept something, and none of them says what. Add a `search-frame` line naming the space covered and, where one exists, the published exhaustive regime it lies outside — `all n below 10^9`, `boards up to 9x8, which prior sweeps bounded at 7x7`.
+
+Without it a sweep that found nothing cannot be told from a question nobody asked, and a later attempt has no way to know it would be searching the same space again. The frame is also where a *missed* result becomes visible: an object outside every frame tried is one no further compute inside them would ever have reached.
+
+- `data-contamination-llibre-zhang` (research/summaries/llibre-zhang-lienard-conjecture-survey.md) — no `search-frame`: nothing says what was swept
+- `data-landing-pages-inventory` (research/summaries/landing-pages-inventory.md) — no `search-frame`: nothing says what was swept
+- `h16-yakovenko-notes-landing-only` (research/summaries/yakovenko-quantitative-ode.html.md) — no `search-frame`: nothing says what was swept
 
 ---
 

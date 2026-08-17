@@ -69,6 +69,11 @@ for degree in range(3, 7):
 
 #
 
+# ---- capture header: first three lines mandated by the operator's directive ----
+print("ran: python code/bautin/verify_lu_core.py")
+print("definitions: Bautin/Lyapunov recurrence (rho,Q1,Q2,V2..V6,L4,L6), bridge params, Darboux field P,Q,L,F")
+print("identities: I bridge tau=a+c,ell=-alpha,sigma=gamma,beta=tau+ell | II X(L)=(x+dy)L, X(F)=(2Bx+dy)F, divX cofactor | III 8L4=AC+CD+2DF-EF | IV L6=weighted_g6/16 | V 192*L6+P30=0 | VI P30 has 30 monomials")
+
 # degree-4 identity: 8*L4 == AC+CD+2DF-EF
 assert sp.factor(8 * obstruction[4] - (A * C + C * D + 2 * D * F - E * F)) == 0
 print("(A) 8*L4 == AC+CD+2DF-EF : PASS")

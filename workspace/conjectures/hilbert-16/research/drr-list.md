@@ -109,3 +109,43 @@ paper.
 *Compiled from held sources and bounded fetch on 2025-06; every count and label
 above is traceable to the cited paper, and rows not traceable are marked
 `reported` or left out.*
+
+## Update (2026 librarian pass) — the ledger gap is confirmed unfillable from one source
+
+Two independent searches this pass (2023-2025 literature, Rousseau's own
+publication records through 2025, the UHasselt/MaRDI/MathSciNet records) confirm:
+
+1. **No consolidated post-2020 ledger exists.** Rousseau has published no status
+   survey of the DRR program since the 2015 papers. The DRR 1994 original (the
+   only complete 121-id list) is paywalled with only its metadata public —
+   re-confirmed via UHasselt DSpace (`http://hdl.handle.net/1942/3763`: abstract
+   and citations only, no PDF) and MathSciNet MR1275749. This is recorded as
+   claim `drr-ledger-no-consolidated-post2020`.
+
+2. **Shan 2013 Table 1.1 is the only primary per-class ledger** (claim
+   `drr-shan-2013-table11-ledger`). It counts **125** graphics in the standard
+   family around the origin and gives per-class done/open. Its prose (robust,
+   citing class names not column totals): **11 degenerate graphics open**
+   (only DF1a, DF2a done); **only (I₆a) elementary non-hyperbolic graphic
+   open**; ≥20 nilpotent closed by Zhu–Rousseau; the thesis proves the 4
+   RH-graphic families Ji2, Ua(1), IJb, I1b. The OCR'd done/open column totals
+   (85/36/4/125) do not sum cleanly and are **not** exact — cite class labels
+   and prose.
+
+3. **Fake-saddle / degenerate-graphics machinery now held.** Marín 2026
+   ("Fake saddles and their transition maps", EJQTDE 2026 no.5, open access,
+   held full) gives the uniform-in-µ transition-map expansion for a fake
+   saddle — the degenerate analogue of what RR 2015 build for nilpotent center
+   graphics — and certifies **zero cyclicity** at a centre family. It corrects
+   Coll–Gasull–Prohens 2025 and confirms De Maesschalck–Rebollo-Perdomo–
+   Torregrosa 2015 proved cyclicity ≤ 2 for the quadratic fake saddle (that JDE
+   paper itself stayed paywalled — see
+   `research/sources/demaesschalck-rebollo-torregrosa-fake-saddle-2014.full.md`,
+   a "Redirecting" stub). See thread `fake-saddle-transition-maps`.
+
+**Bottom line for the requests ledger:** the target inventory of the DRR
+program is assembled by triangulating RSZ 2015 + RR 2015 + Shan 2013 Table 1.1 +
+the individual closure papers — not from any one published ledger, none of which
+exists. The run's honest open-row statement stays: ≥89 of 121 fully closed by
+2015 (88 RSZ + I₁₄¹ RR), (I₆b¹),(H₁₃³),(DI₂b) boundary-sets-only, (H₁₄³) open
+with Lu 2026 preprint claiming it, ≥11 degenerate open.

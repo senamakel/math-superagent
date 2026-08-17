@@ -193,3 +193,36 @@ Built: first pass + second librarian pass. All full texts in `research/sources/`
   open now, and the paper that settled each recently-closed one. The library now establishes ~88 settled by
   2015 and identifies the post-2015 closures found (DF_{2a}, hemicycles), but no source in hand gives the
   complete ledger with the paper closing each graphic. This is the single most valuable next acquisition.
+  **2026 status: CLOSED as a literature question.** No consolidated post-2020 ledger exists in print
+  (Rousseau has produced no status survey since 2015; DRR 1994's only complete 121-id list is paywalled
+  with metadata only). The best primary per-class ledger is Shan 2013 Table 1.1 (125 graphics; 11
+  degenerate open; only (I6a) elementary non-hyperbolic open). The run's inventory is therefore a
+  triangulation of RSZ 2015 + RR 2015 + Shan 2013 + closure papers, recorded in `research/drr-list.md`
+  (claims `drr-ledger-no-consolidated-post2020`, `drr-shan-2013-table11-ledger`).
+
+## Added in the 2026 librarian pass
+
+14. **C. Shan, "Theory and applications of high codimension bifurcations", PhD thesis, York University
+    (2013)** — `research/sources/shan-phd-thesis-2013.full.md` (held)
+    — Table 1.1 is the only primary per-class DRR progress ledger: 125 graphics in the standard family,
+    11 degenerate open (only DF1a,DF2a done), only (I6a) elementary non-hyperbolic open, 4 RH-graphic
+    families proved in the thesis. OCR'd column totals unreliable (claims
+    `drr-ledger-no-consolidated-post2020`, `drr-shan-2013-table11-ledger`).
+
+15. **D. Marín, "Fake saddles and their transition maps", EJQTDE 2026 no.5, doi:10.14232/ejqtde.2026.1.5**
+    — `research/sources/marin-fake-saddles-transition-maps.full.md` (held; was already in library, summary
+    read this pass) — uniform-in-µ transition-map expansion for a fake saddle; corrects
+    Coll–Gasull–Prohens 2025; certifies zero cyclicity at a centre. Confirms DMRT 2015 (paywalled) proved
+    cyclicity ≤ 2. Anchors the degenerate-graphics thread (`fake-saddle-transition-maps`).
+
+## What could not be obtained, and why (2026 additions)
+
+- **De Maesschalck–Rebollo-Perdomo–Torregrosa 2015, "Cyclicity of a fake saddle inside the quadratic
+  vector fields", JDE 258:588–620** — paywalled; the JDE DOI download returned only a "Redirecting" stub
+  (`research/sources/demaesschalck-rebollo-torregrosa-fake-saddle-2014.full.md`, 110 bytes). Its cyclicity
+  ≤ 2 result is anchored instead via the held Marín 2026 paper and the UAB/MaRDI abstract records.
+- **"Limit cycles near hyperbolas in quadratic systems" (JDE 2008, DI2a strip of hyperbolas)** — 403
+  Forbidden on ScienceDirect; no open PDF located this cycle.
+- **Zhu 2005, "From pp-graphics to the finiteness part of H16 for quadratic systems"** — scanned PDF with
+  no text layer; not downloadable. Its content is represented in the held Zhu–Rousseau 2004 paper.
+- **DRR 1994 original full text** — re-confirmed paywalled (UHasselt metadata only, MathSciNet MR1275749).

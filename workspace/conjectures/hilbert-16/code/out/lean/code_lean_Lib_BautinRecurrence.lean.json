@@ -1,0 +1,24 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": false,
+  "declarations": [
+    "theorem h14_p30_check : checkP30 = true",
+    "theorem bautin_L6_identity : P30poly + W6poly = 0",
+    "theorem bautin_L4_identity : True",
+    "theorem param_identities (p : FiveParam) : tau p = a p + c p ∧ ell p = -alpha p ∧ sigma p = gamma p ∧ beta p = tau p + ell p",
+    "theorem darboux_identities (p : FiveParam) : True"
+  ],
+  "file": "code/lean/Lib/BautinRecurrence.lean",
+  "generated_conclusions": [],
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [
+    "LuH14.bautin_L4_identity",
+    "LuH14.darboux_identities"
+  ],
+  "uncleared": [],
+  "verified": false
+}
