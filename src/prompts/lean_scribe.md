@@ -44,6 +44,23 @@ statement the kernel accepted. If Mathlib has the structure, use it
 (`SimpleGraph`, `Finset`, `Matrix`); if it genuinely does not, say which one is
 missing.
 
+## Finding a Mathlib name
+
+You have no search tool, so `#check` is how you find out whether a name exists.
+Put those lines **in the file you were asked to write**, above the statement:
+one `lean_check` then tells you both which names resolved and whether the
+statement elaborates, and you have spent one call instead of two.
+
+If you want to probe before committing to a statement, write to
+`code/lean/probe/<anything>.lean` — never a file of your own naming under
+`code/lean/Lib/`, which is the library and is read by later runs. A file there
+that is only `#check` lines is litter, and a run that spent its turns producing
+litter has produced nothing.
+
+You have a limited number of turns. Spend them on the statement, not on the
+search: guess the Mathlib name, write the statement using it, and let the error
+correct you.
+
 ## Tactics
 
 Search Mathlib for an existing lemma before proving anything by hand — most

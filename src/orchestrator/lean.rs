@@ -252,6 +252,25 @@ impl Verdict {
         self.outcome() == Outcome::Verified
     }
 
+    /// Whether the file states something real, whatever it left unproved.
+    ///
+    /// Compiled, declares at least one thing, and states nothing vacuous. A
+    /// `sorry` is deliberately allowed, and that is the whole point of having
+    /// this beside [`Self::verified`]: for an open conjecture a faithful
+    /// statement with a hole in its proof is the deliverable rather than a
+    /// failure — the argument [`super::verify`] already makes for its
+    /// decomposition stage, where "a `sorry` here is the point".
+    ///
+    /// It is not a passing outcome and must never be read as one. Nothing may
+    /// be filed as `formalised` on it; it says only that the file is worth
+    /// keeping on disk for something else to work on.
+    pub(super) fn states_something(&self) -> bool {
+        self.compiled
+            && !self.declarations.is_empty()
+            && self.tautologies.is_empty()
+            && !self.retired_binder
+    }
+
     /// What this verdict amounts to.
     ///
     /// The four structural conditions are shared by both passing outcomes and

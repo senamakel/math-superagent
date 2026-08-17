@@ -680,3 +680,64 @@ mod stale_mathlib {
         assert_eq!(record["retired_binder"], true);
     }
 }
+
+/// A statement with a hole is kept apart from a statement that is empty.
+///
+/// The distinction the mill turns on. A live Casas-Alvero run produced a
+/// faithful statement of the conjecture over `ℂ`, compiling, in Mathlib's own
+/// vocabulary, whose only defect was a `sorry` nobody can currently remove —
+/// and the mill deleted it because it was not `verified`. It is still not
+/// verified and must never be filed as such; it is worth keeping.
+#[cfg(test)]
+mod states_something {
+    use super::*;
+
+    #[test]
+    fn a_compiling_statement_with_a_sorry_states_something() {
+        let checked = parse(
+            "code/a.lean",
+            "theorem t (n : Nat) : n + 0 = n := by sorry\n",
+            true,
+            "code/a.lean:1:8: warning: declaration uses `sorry`\n",
+        );
+        assert!(!checked.verified(), "a hole is still a hole");
+        assert!(
+            checked.states_something(),
+            "but the statement is there and is worth keeping"
+        );
+    }
+
+    #[test]
+    fn a_file_that_does_not_compile_states_nothing() {
+        let checked = parse(
+            "code/a.lean",
+            "theorem t : Nonsense := by rfl\n",
+            false,
+            "code/a.lean:1:12: error: unknown identifier 'Nonsense'\n",
+        );
+        assert!(!checked.states_something());
+    }
+
+    #[test]
+    fn a_file_of_only_probes_states_nothing() {
+        let checked = parse(
+            "code/a.lean",
+            "import Mathlib\n#check Polynomial.derivative\n",
+            true,
+            CLEAN,
+        );
+        assert!(
+            !checked.states_something(),
+            "a file with no declaration is a probe, not a statement"
+        );
+    }
+
+    #[test]
+    fn a_vacuous_statement_states_nothing() {
+        let checked = parse("code/a.lean", "axiom t : True\n", true, CLEAN);
+        assert!(
+            !checked.states_something(),
+            "`True` is refused here as it is everywhere else"
+        );
+    }
+}
