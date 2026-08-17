@@ -500,6 +500,74 @@ The `searcher` is deliberately not a writer. It holds no write tool at all (see
 [`roles.md`](roles.md)), and a role that could record its own candidate's verdict
 is one that can grade its own homework.
 
+## The reduction ledger: what the run is driving the problem down to
+
+`backward` answers *what would be enough* and answers it with a decomposition —
+lemmas that recombine into the goal. That is one kind of reduction, and the
+ledger's own output shows it is the only kind this runtime could express. Every
+skeleton a live casas-alvero run produced is a restatement of a published
+equivalence: `G-resultant-scheme` is Schaub–Spivakovsky's resultant
+reformulation, `G-macaulay-rank` is Macaulay 1916, `G-good-prime` is the
+degree-20 case of the lift theorem. Real work, and not the other kind:
+
+> Normalise the failure until two real numbers describe it. Show the obstruction
+> forces `1 + λ ≤ (m+1)·E_m(λ)`. Prove the strict reverse. Collide them.
+
+That is the whole architecture of the ProofAtlas Sendov proof
+([`../research/proofatlas/01-sendov-bundle-anatomy.md`](../research/proofatlas/01-sendov-bundle-anatomy.md)),
+and before `reductions` existed no role could state it as a goal, so no role
+pursued it and nothing recorded a run getting closer to one.
+
+`source: queue`, backed by `config/reductions.jsonl`, rendered to
+`derived/REDUCTIONS.md`. Three decisions in it:
+
+- **`parameter` is required.** Naming what the problem is being collapsed onto,
+  and how it is defined from the problem's data, is the hard part and the part a
+  row is worthless without. `λ = m(1−a)` is a target; "a size parameter" is a
+  mood.
+- **`lower` and `upper` are separate fields**, because they are separately
+  provable and usually proved by different arms — the obstruction forces one, an
+  estimate plus a certificate forces the other. A run holding one of them is
+  halfway rather than nowhere, and a single `gap` field could not say which half.
+- **`identity` is a status, and it is the one that makes this a bank.** A
+  reduction is a chain whose middle links are algebraic identities with no
+  consequence yet: an integration by parts, a cleared factorisation, a
+  coefficient bridge. None is a claim, none earns a verdict, and under every
+  other ledger here a turn that produced one filed *nothing* — so the loop
+  scored it as a pass with no progress and the restart cap ate the chain before
+  it closed. A link recorded against its target is progress the next attempt
+  reads.
+
+The `inventor` is deliberately not a writer. It proposes *routes*, and a route
+recorded as a reduction target is a wish with a parameter in it.
+
+## The thesis ledger: the one thing that crosses runs
+
+Every other ledger records what the run *did*. None recorded what it believed,
+and that is the gap a long investigation turns on. The Sendov development had a
+human holding one argument steady across months and many dead ends — the
+disclosure calls it selecting and reconciling outputs — while the model explored
+under it. This runtime had no such holder: `archivist` adopts a candidate,
+`inventor` proposes a route, and neither carries an argument from one run into
+the next.
+
+It persists for free, which is the point: a workspace's `config/` is committed
+and a run continues one rather than starting it, so a thesis written in run one
+is in front of run nine with no mechanism at all. What the ledger adds is a shape
+that can be **revised** rather than accumulated.
+
+- **`refuted-by` is required before the row opens.** A belief with no stated way
+  to lose is not a thesis, it is a mood, and it survives every round that should
+  have killed it while spending the run's whole budget.
+- **Capped at three live rows.** Two live theses is a run hedging; four is a run
+  with none.
+- **Four writers, not twenty.** A thesis every role may rewrite is one nobody
+  holds, which is the failure it exists to fix. The two planners set it,
+  `reflection` revises it against what a round actually produced — the only
+  moment in the loop where a round's evidence meets what the run believed before
+  it — and the `archivist`, already the role that decides what the trunk
+  believes, settles it.
+
 ## A ledger a run can declare
 
 Nine of these are Rust modules, and eight of the nine should stay that way:

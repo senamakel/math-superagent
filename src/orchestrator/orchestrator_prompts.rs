@@ -318,6 +318,16 @@ const ORCHESTRATOR_CONTEXT: &[&str] = &[
     // schedules an attempt at something the run already holds, which is the
     // most expensive mistake available to it.
     "derived/ENTAILMENT.md",
+    // The standing bet, and it is here for the reason none of the rest is: it
+    // was written by an *earlier run*. Everything else in this list is this
+    // investigation's own state, and a problem of this size is not settled
+    // inside one container — so the one file that carries an argument across
+    // runs belongs in front of the role that decides what the next run does.
+    "derived/THESIS.md",
+    // And the quantity the run is driving at, with how far apart its two sides
+    // are. A planner that cannot see the gap schedules work that does not narrow
+    // it, which is most work.
+    "derived/REDUCTIONS.md",
     // What the other schools have said. A planner deciding what to spend the
     // next run on is the reader a dead end found once and paid for once was
     // written for.
@@ -342,6 +352,12 @@ const GOALS_CONTEXT: &[&str] = &[
     "derived/BACKWARD.md",
     "derived/BLUEPRINT.md",
     "derived/ENTAILMENT.md",
+    // The standing bet, and the quantity the run is driving at. Both are here
+    // rather than left to recall for the same reason `TASKS.md` is: they are
+    // what the *next* decision is made against, and a planner that has to fetch
+    // them makes the decision first.
+    "derived/THESIS.md",
+    "derived/REDUCTIONS.md",
     board::PATH,
     shared_context::CONTEXT_FILE,
 ];
@@ -368,6 +384,12 @@ fn role_context(role: &str) -> &'static [&'static str] {
             // is a role spending an attempt re-proving a lemma the kernel
             // accepted three attempts ago.
             lemmas::LEMMAS_PATH,
+            // What the run is driving the problem down to. Sent to all seven,
+            // and the reason is that a reduction target is the one thing that
+            // makes a computation *worth* doing: the difference between sweeping
+            // a range because it is sweepable and sweeping it because it closes
+            // the gap between two bounds is this file.
+            "derived/REDUCTIONS.md",
             "CONTEXT.md",
         ],
         // Not sent `research/APPROACHES.md`, though the judge now scores an
@@ -387,7 +409,19 @@ fn role_context(role: &str) -> &'static [&'static str] {
         // that keeps `research/CLAIMS.md` away from the director, which acts on
         // an assertion and must never file one.
         "judge" => &["GOAL.md", "INDEX.md"],
-        "reflection" => &["GOAL.md", "derived/TASKS.md", "INDEX.md", board::PATH],
+        // Sent the thesis and the reduction ledger because it is the role that
+        // revises one and closes the other. Reflection is where a round's
+        // evidence meets what the run believed before it, which is the only
+        // moment in the loop that can notice a thesis its own `refuted-by` has
+        // come true.
+        "reflection" => &[
+            "GOAL.md",
+            "derived/TASKS.md",
+            "derived/THESIS.md",
+            "derived/REDUCTIONS.md",
+            "INDEX.md",
+            board::PATH,
+        ],
         "pattern_finder" => &["GOAL.md", "code/lib/INDEX.md", board::PATH, "CONTEXT.md"],
         // The scholar writes the claim blocks, so it is the role that draws the
         // `follows-from:` edges — and the one that should see what those edges
@@ -442,6 +476,7 @@ fn role_context(role: &str) -> &'static [&'static str] {
         "reducer" => &[
             "GOAL.md",
             "derived/BACKWARD.md",
+            "derived/REDUCTIONS.md",
             "derived/BLUEPRINT.md",
             "derived/CLAIMS.md",
             "derived/THREADS.md",

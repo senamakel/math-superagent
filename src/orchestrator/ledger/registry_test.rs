@@ -46,6 +46,8 @@ fn the_builtin_set_is_available_in_a_bare_workspace() {
         "entailment",
         "frontier",
         "requests",
+        "reductions",
+        "thesis",
     ] {
         assert!(slugs.contains(&expected), "`{expected}` is registered: {slugs:?}");
     }
@@ -57,6 +59,78 @@ fn the_builtin_set_is_available_in_a_bare_workspace() {
     assert!(
         !tasks.writable_by("judge"),
         "a role that scores an attempt does not file tasks"
+    );
+}
+
+/// The reduction ledger can hold a chain link that is not yet a result.
+///
+/// The whole reason it exists. An identity established on the way to a target
+/// earns no verdict anywhere else in this runtime, so a turn that produced one
+/// filed nothing and the loop scored it as a pass with no progress.
+#[test]
+fn a_reduction_target_banks_a_link_that_is_not_yet_a_result() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = find(workspace.path(), "reductions").expect("the reduction ledger");
+
+    assert_eq!(spec.derived, "derived/REDUCTIONS.md");
+    let statuses: Vec<&str> = spec.statuses.iter().map(|s| s.name.as_str()).collect();
+    assert!(
+        statuses.contains(&"identity"),
+        "a link with no consequence yet is recordable: {statuses:?}"
+    );
+    assert!(
+        !spec
+            .statuses
+            .iter()
+            .any(|status| status.name == "identity" && status.closed),
+        "banking a link does not close the target it belongs to"
+    );
+
+    // Both bounds are separate fields: a run holding one of them is halfway,
+    // and a single `gap` field could not say which half.
+    let fields: Vec<&str> = spec.fields.iter().map(|f| f.name.as_str()).collect();
+    for expected in ["parameter", "lower", "upper", "gap"] {
+        assert!(fields.contains(&expected), "`{expected}` is a field: {fields:?}");
+    }
+
+    assert!(spec.writable_by("reducer"), "the reducer owns the target");
+    assert!(
+        spec.writable_by("lean_prover"),
+        "the prover banks the links it establishes"
+    );
+    assert!(
+        !spec.writable_by("inventor"),
+        "a route recorded as a reduction target is a wish with a parameter in it"
+    );
+}
+
+/// A thesis cannot be filed without stating what would refute it.
+///
+/// A belief with no stated way to lose survives every run that should have
+/// killed it, which is the failure the ledger is against rather than a
+/// tidiness rule.
+#[test]
+fn a_thesis_must_say_what_would_refute_it() {
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let spec = find(workspace.path(), "thesis").expect("the thesis ledger");
+
+    assert_eq!(spec.derived, "derived/THESIS.md");
+    let required: Vec<&str> = spec
+        .fields
+        .iter()
+        .filter(|field| field.required)
+        .map(|field| field.name.as_str())
+        .collect();
+    assert!(
+        required.contains(&"refuted-by"),
+        "a thesis states its own refutation: {required:?}"
+    );
+    assert!(required.contains(&"because"), "and why it is believed: {required:?}");
+
+    assert!(spec.writable_by("reflection"), "reflection revises it against a round");
+    assert!(
+        !spec.writable_by("research"),
+        "a role that reads papers does not set what the run believes"
     );
 }
 

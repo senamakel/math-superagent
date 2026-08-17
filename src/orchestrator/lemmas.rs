@@ -135,6 +135,16 @@ pub(super) struct Lemmas {
     declarations: Vec<Declaration>,
     /// Files under [`LEAN_DIR`] that no `lean_check` verdict covers.
     unchecked_files: Vec<String>,
+    /// Generated data modules that no hand-written module reads.
+    ///
+    /// The other half of the certificate boundary, and the half that cannot be
+    /// checked one file at a time. [`generated_conclusions`] stops a generator
+    /// asserting its own result; this stops the quieter failure, where a run
+    /// emits a certificate, files it as evidence, and never writes the checker
+    /// — leaving a tree that *looks* like the `ProofAtlas` arrangement and
+    /// carries none of its force, because nothing the kernel checked ever read
+    /// the data.
+    orphan_generated: Vec<String>,
 }
 
 /// Walks `code/lean/` and reads every declaration out of it.
@@ -144,6 +154,8 @@ pub(super) fn collect(workspace: &Path) -> Lemmas {
     let mut sources: Vec<std::path::PathBuf> = Vec::new();
     walk(&root, &mut sources);
     sources.sort();
+    let mut generated: Vec<(String, String)> = Vec::new();
+    let mut consumers: Vec<String> = Vec::new();
     for path in sources {
         let Ok(text) = std::fs::read_to_string(&path) else {
             continue;
@@ -172,8 +184,55 @@ pub(super) fn collect(workspace: &Path) -> Lemmas {
             declaration.standing = standing;
             lemmas.declarations.push(declaration);
         }
+        if is_generated(&relative) {
+            generated.push((relative, text));
+        } else {
+            consumers.push(text);
+        }
     }
+    lemmas.orphan_generated = orphans(&generated, &consumers);
     lemmas
+}
+
+/// Generated modules whose declared names appear in no hand-written module.
+///
+/// Name containment rather than an import graph, and the weaker test is the
+/// right one here. A checker reaches its data by naming a declaration —
+/// `degreeReplayCheck finiteReplayInput499` — so the name is what actually
+/// records the consumption, where an import proves only that a file was in
+/// scope. The failure mode of each is what settles it: name containment can be
+/// fooled by a file that mentions a name and does nothing with it, which is a
+/// false pass on something a reader can see; an import test would report every
+/// data module reached through a re-export as an orphan, which is a false alarm
+/// on something correct, and a check that cries wolf is one a run learns to
+/// ignore.
+fn orphans(generated: &[(String, String)], consumers: &[String]) -> Vec<String> {
+    generated
+        .iter()
+        .filter(|(_, text)| {
+            let names: Vec<String> = declarations(text)
+                .into_iter()
+                .map(|declaration| {
+                    // The unqualified tail is what a checker in the same
+                    // namespace writes.
+                    declaration
+                        .name
+                        .rsplit('.')
+                        .next()
+                        .unwrap_or(&declaration.name)
+                        .to_string()
+                })
+                .filter(|name| !name.is_empty())
+                .collect();
+            // A generated module declaring nothing is not evidence of anything
+            // either, so it is reported on the same line rather than skipped.
+            names.is_empty()
+                || !names
+                    .iter()
+                    .any(|name| consumers.iter().any(|consumer| consumer.contains(name)))
+        })
+        .map(|(file, _)| file.clone())
+        .collect()
 }
 
 /// Collects every `.lean` file below `root`, depth first.
@@ -444,6 +503,24 @@ impl Lemmas {
             out.push_str(&listed);
             out.push_str(&budget::elided(more, LEAN_DIR));
         }
+
+        if !self.orphan_generated.is_empty() {
+            out.push_str(
+                "\n## Generated, and nothing reads it\n\nThese modules are certificate data — \
+                 machine-written, and untrusted for that reason. No hand-written module names \
+                 anything they declare, so nothing the kernel checked has read them and they \
+                 establish nothing. Write the checker: a `def` that decides the property of one \
+                 row, a theorem that its truth implies the mathematics, and a `theorem check … = \
+                 true := by decide` the kernel reduces. Data with no checker is a file, not \
+                 evidence.\n\n",
+            );
+            let (listed, more) =
+                budget::listed(&self.orphan_generated, budget::MAX_LISTED, |body, file| {
+                    let _ = writeln!(body, "- `{file}`");
+                });
+            out.push_str(&listed);
+            out.push_str(&budget::elided(more, LEAN_DIR));
+        }
         out
     }
 }
@@ -527,6 +604,177 @@ fn is_vacuous(signature: &str) -> bool {
         return false;
     };
     proposition.trim() == "True"
+}
+
+/// The path segment that marks a module as machine-generated certificate data.
+///
+/// A directory rather than a naming convention or a header comment, because it
+/// has to be decidable from the path alone: the check that a generated module
+/// declares no conclusion runs on one file, and a marker inside the file is one
+/// the generator that wrote the file also controls.
+pub(super) const GENERATED_SEGMENT: &str = "Generated";
+
+/// Whether this workspace-relative path is a generated certificate module.
+pub(super) fn is_generated(file: &str) -> bool {
+    file.split('/').any(|segment| segment == GENERATED_SEGMENT)
+}
+
+/// Conclusions declared inside a generated data module.
+///
+/// The certificate boundary, and it is one line of policy: **generated data may
+/// be wrong, so it may not conclude anything.** A `def` holding sixteen
+/// thousand rational endpoints is data — untrusted, and harmless, because
+/// nothing follows from it until a hand-written predicate reads it and the
+/// kernel reduces the result. A `theorem` in the same file is the generator
+/// asserting its own correctness, and no amount of kernel checking downstream
+/// recovers from that: the statement the kernel checked is the one the
+/// generator chose.
+///
+/// Read off a development that draws the line explicitly. Every module under
+/// `Certificate/Generated/` in the `ProofAtlas` Sendov package opens by saying so
+/// — *"All declarations below are untrusted certificate data. Mathematical
+/// conclusions must pass through the human-written replay and block checkers"*
+/// — and 559 of them keep to it. `research/proofatlas/` has the anatomy.
+///
+/// Returns empty for a file that is not generated, so the caller needs no
+/// second condition.
+pub(super) fn generated_conclusions(file: &str, source: &str) -> Vec<String> {
+    if !is_generated(file) {
+        return Vec::new();
+    }
+    declarations(source)
+        .into_iter()
+        .filter(|declaration| {
+            matches!(declaration.kind.as_str(), "theorem" | "lemma" | "axiom")
+        })
+        .map(|declaration| declaration.name)
+        .collect()
+}
+
+/// Statements that divide by something the statement does not say is nonzero.
+///
+/// Advisory, and deliberately so — this is the one check here that reports
+/// rather than refuses, because it cannot be made exact and a refusal that is
+/// sometimes wrong is worse than a note that is sometimes noise. `1 / 2` is
+/// fine, `x / y` under `hy : y ≠ 0` is fine, and `x / y` under nothing is the
+/// shape worth naming.
+///
+/// What it is for is a discipline the Sendov development follows everywhere and
+/// says out loud at each step — *no division by `J`, a root, or a product
+/// occurs*, *only the positive scalar `n²` is cancelled*, *`j = 0` is
+/// retained*. Keeping every identity cleared is why that proof needs no
+/// nonvanishing side conditions, and therefore why repeated roots and boundary
+/// zeros cost it no case analysis at all. In Lean the cost of ignoring it is
+/// paid later and paid twice: `x / 0 = 0` means the statement still typechecks,
+/// so the file passes, and the theorem it proves is quietly not the one the
+/// mathematics wanted.
+///
+/// Literal denominators are skipped, and so is any statement whose binders
+/// mention the divisor with `≠ 0`, `0 <`, `0 ≠`, or `.Pos`. Everything else is
+/// reported by name for a human to read.
+pub(super) fn uncleared_divisions(source: &str) -> Vec<String> {
+    let mut found = Vec::new();
+    for declaration in declarations(source) {
+        if !matches!(declaration.kind.as_str(), "theorem" | "lemma" | "axiom") {
+            continue;
+        }
+        if divisors(&declaration.signature)
+            .iter()
+            .any(|divisor| !guarded(&declaration.signature, divisor))
+        {
+            found.push(declaration.name);
+        }
+    }
+    found
+}
+
+/// The identifiers this signature divides by, ignoring numerals.
+///
+/// Textual and shallow on purpose: it takes the token after each `/` or before
+/// each `⁻¹`. A parenthesised or compound denominator yields its first
+/// identifier, which is the right conservative answer — a compound denominator
+/// is nonzero only if its parts are, so naming one part still points a reader
+/// at the right hypothesis.
+fn divisors(signature: &str) -> Vec<String> {
+    let mut found: Vec<String> = Vec::new();
+    let bytes: Vec<char> = signature.chars().collect();
+    for (index, character) in bytes.iter().enumerate() {
+        let candidate = if *character == '/' {
+            // `//` is not division and `/-` opens a comment.
+            if matches!(bytes.get(index + 1), Some('/' | '-')) {
+                continue;
+            }
+            identifier(&bytes[index + 1..], true)
+        } else if *character == '⁻' {
+            identifier(&bytes[..index], false)
+        } else {
+            continue;
+        };
+        let Some(name) = candidate else { continue };
+        // A numeral denominator is always safe, and `2` is the commonest
+        // denominator in mathematics.
+        if name.chars().next().is_some_and(|first| first.is_ascii_digit()) {
+            continue;
+        }
+        if !found.contains(&name) {
+            found.push(name);
+        }
+    }
+    found
+}
+
+/// The identifier at the near end of `text`, reading forward or backward.
+fn identifier(text: &[char], forward: bool) -> Option<String> {
+    let ordered: Vec<char> = if forward {
+        text.to_vec()
+    } else {
+        text.iter().rev().copied().collect()
+    };
+    let mut name: Vec<char> = Vec::new();
+    for character in ordered {
+        if character.is_whitespace() || character == '(' || character == ')' {
+            if name.is_empty() {
+                continue;
+            }
+            break;
+        }
+        if character.is_alphanumeric() || character == '_' || character == '\'' {
+            name.push(character);
+        } else if !name.is_empty() {
+            break;
+        }
+    }
+    if !forward {
+        name.reverse();
+    }
+    if name.is_empty() { None } else { Some(name.into_iter().collect()) }
+}
+
+/// Whether the signature states somewhere that `divisor` does not vanish.
+fn guarded(signature: &str, divisor: &str) -> bool {
+    for marker in ["≠ 0", "0 <", "0 ≠", "≠0", "0<"] {
+        for (index, _) in signature.match_indices(marker) {
+            let window_start = signature[..index]
+                .char_indices()
+                .rev()
+                .take(48)
+                .last()
+                .map_or(0, |(at, _)| at);
+            let before = &signature[window_start..index];
+            let after_end = signature[index..]
+                .char_indices()
+                .take(48)
+                .last()
+                .map_or(signature.len(), |(at, character)| {
+                    index + at + character.len_utf8()
+                });
+            let after = &signature[index..after_end];
+            if before.contains(divisor) || after.contains(divisor) {
+                return true;
+            }
+        }
+    }
+    signature.contains(&format!("{divisor}.Pos")) || signature.contains(&format!("{divisor}.ne'"))
 }
 
 pub(super) fn tautologies(source: &str) -> Vec<String> {

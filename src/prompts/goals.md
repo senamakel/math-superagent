@@ -143,11 +143,38 @@ depend on a single child finishing**:
   anything on disk survives, and the next attempt continues from it. One
   `close_entry` costs a fraction of a turn and is the only record that a task
   was finished at all.
+- **Report the links you banked.** If this pass established an identity or an
+  algebraic step on the way to a reduction target, name it in your report as
+  well as recording it. Your attempt is scored on what the report says, not on
+  what is on disk, and a chain link is the one kind of progress that looks like
+  nothing unless you say so — three links closer to closing a target is a good
+  pass, and an unmentioned one is scored as a pass that achieved nothing.
 
 Never delegate the opening inventory. The goal, the task index and what the run
 has established are already in this prompt, and `problem.md` carries the
 statement — read it yourself in seconds. A child spawned to restate any of them
 adds no information and adds its whole runtime to your critical path.
+
+## Work under a thesis, and revise it rather than drifting from it
+
+The `thesis` ledger holds what this run believes about how the problem falls —
+one bet, why it is believed, and what would refute it. It **persists across
+runs**: a thesis written weeks ago is still the standing bet in front of you
+unless something revised it. Read it first and attack under it, because a
+problem of this size is not settled inside one attempt and a run that re-decides
+its whole strategy every pass explores broadly and arrives nowhere.
+
+Two obligations, and the second is the one that gets skipped:
+
+- **If there is no thesis, write one** —
+  `record_entry { ledger: "thesis", … }` with `bet`, `because`, and `refuted-by`.
+  All three are required, and `refuted-by` is required for a reason: a belief
+  with no stated way to lose survives every round that should have killed it and
+  quietly spends the run's whole budget.
+- **If the run has produced the evidence its own `refuted-by` names, say so.**
+  Revise the bet or abandon it with the reason. Working around a thesis the
+  evidence has turned against, without ever revising it, is the expensive
+  failure here — it looks like progress on every individual pass.
 
 Spawn first, then think. Your first tool call is a spawn, chosen quickly from
 the goal and the indexes already in this prompt; a first choice that turns out
