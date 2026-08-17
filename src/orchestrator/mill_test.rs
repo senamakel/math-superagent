@@ -186,7 +186,8 @@ fn a_directory_is_read_in_name_order_and_bounded() {
         std::fs::write(notes.join(name), body).expect("a note");
     }
 
-    let gathered = gather(root.path(), Path::new("research/notes"), 1_000);
+    let (gathered, unread) = gather(root.path(), Path::new("research/notes"), 1_000);
+    assert_eq!(unread, 0);
 
     let labels: Vec<&str> = gathered.iter().map(|(label, _)| label.as_str()).collect();
     assert_eq!(labels.len(), 2, "only Markdown is read");
@@ -203,9 +204,13 @@ fn the_byte_bound_stops_a_directory_becoming_one_prompt() {
         std::fs::write(notes.join(name), "x".repeat(100)).expect("a note");
     }
 
-    let gathered = gather(root.path(), Path::new("notes"), 250);
+    let (gathered, unread) = gather(root.path(), Path::new("notes"), 250);
 
     assert_eq!(gathered.len(), 2, "the third note does not fit");
+    assert_eq!(
+        unread, 1,
+        "a file that did not fit must be counted, or the run reads as complete"
+    );
 }
 
 #[test]
@@ -214,14 +219,15 @@ fn a_single_file_is_read_as_itself() {
     std::fs::create_dir_all(root.path().join("research")).expect("the directory");
     std::fs::write(root.path().join("research/one.md"), "a statement").expect("the note");
 
-    let gathered = gather(root.path(), Path::new("research/one.md"), 1_000);
+    let (gathered, unread) = gather(root.path(), Path::new("research/one.md"), 1_000);
 
     assert_eq!(gathered.len(), 1);
+    assert_eq!(unread, 0);
     assert_eq!(gathered[0].1, "a statement");
 }
 
 #[test]
 fn a_missing_path_yields_nothing_rather_than_failing() {
     let root = tempfile::tempdir().expect("a temporary workspace");
-    assert!(gather(root.path(), Path::new("nowhere"), 1_000).is_empty());
+    assert!(gather(root.path(), Path::new("nowhere"), 1_000).0.is_empty());
 }

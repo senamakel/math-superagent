@@ -581,7 +581,7 @@ impl OrchestratorAgent {
                 "a mill source must be a workspace path, a URL, or an arXiv id".to_string(),
             ));
         };
-        let sources = match source {
+        let (sources, unread) = match source {
             mill::Source::Workspace(relative) => {
                 mill::gather(&self.workspace, &relative, MAX_WORKSPACE_CONTEXT_BYTES)
             }
@@ -604,6 +604,7 @@ impl OrchestratorAgent {
             &self.subagents,
             &self.workspace,
             sources,
+            unread,
             budget.unwrap_or(mill::DEFAULT_BUDGET),
         )
         .await;

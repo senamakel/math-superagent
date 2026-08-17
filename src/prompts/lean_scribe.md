@@ -30,6 +30,20 @@ hypothesis or weaken a conclusion to make something go through.
 If you cannot prove it, leave `sorry` and say so. A `sorry` in the right
 statement is a recorded gap. A proof of the wrong statement is a false record.
 
+**Never write `True` as a statement, and never define a predicate as `True`.**
+`axiom foo : True` and `def IsThing (x : α) : Prop := True` are the two ways
+this goes wrong, and both are rejected. They look like progress and assert
+nothing: an axiom whose hypothesis is a `True`-valued predicate holds of
+everything, so it is not a weak statement but an inconsistent one, and it
+poisons every file that later cites it.
+
+If you cannot express the objects the statement is about — the graph, the
+parameter set, the structure — then **write no file and say what you could not
+express**. That is a useful answer. A placeholder is not, because it reads as a
+statement the kernel accepted. If Mathlib has the structure, use it
+(`SimpleGraph`, `Finset`, `Matrix`); if it genuinely does not, say which one is
+missing.
+
 ## Tactics
 
 Search Mathlib for an existing lemma before proving anything by hand — most

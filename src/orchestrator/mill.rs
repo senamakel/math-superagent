@@ -286,17 +286,21 @@ fn extract_array(reply: &str) -> Option<String> {
 /// A file is itself; a directory is every Markdown file directly inside it, in
 /// name order so two runs over one directory read it the same way. Bounded, so
 /// a directory of two hundred notes does not become one prompt.
-pub(super) fn gather(workspace: &Path, relative: &Path, max_bytes: usize) -> Vec<(String, String)> {
+pub(super) fn gather(
+    workspace: &Path,
+    relative: &Path,
+    max_bytes: usize,
+) -> (Vec<(String, String)>, usize) {
     let root = workspace.join(relative);
     let mut sources = Vec::new();
     if root.is_file() {
         if let Ok(text) = std::fs::read_to_string(&root) {
             sources.push((relative.display().to_string(), text));
         }
-        return sources;
+        return (sources, 0);
     }
     let Ok(entries) = std::fs::read_dir(&root) else {
-        return sources;
+        return (sources, 0);
     };
     let mut paths: Vec<PathBuf> = entries
         .filter_map(std::result::Result::ok)
@@ -305,12 +309,18 @@ pub(super) fn gather(workspace: &Path, relative: &Path, max_bytes: usize) -> Vec
         .collect();
     paths.sort();
     let mut spent = 0usize;
+    let mut unread = 0usize;
     for path in paths {
         let Ok(text) = std::fs::read_to_string(&path) else {
+            unread += 1;
             continue;
         };
+        // Counted rather than broken out of. A directory whose first file is
+        // enormous and whose rest are small would otherwise report every one of
+        // them as unread, when only the one did not fit.
         if spent + text.len() > max_bytes {
-            break;
+            unread += 1;
+            continue;
         }
         spent += text.len();
         let label = path
@@ -320,7 +330,7 @@ pub(super) fn gather(workspace: &Path, relative: &Path, max_bytes: usize) -> Vec
             .to_string();
         sources.push((label, text));
     }
-    sources
+    (sources, unread)
 }
 
 /// What one mill run did.
@@ -332,6 +342,14 @@ pub(super) struct Report {
     pub(super) rejected: Vec<String>,
     /// Candidates found but not attempted, because the budget ran out.
     pub(super) skipped: usize,
+    /// Source files that did not fit the read bound and were never seen.
+    ///
+    /// Separate from `skipped`, because they are different failures with
+    /// different fixes: a skipped candidate was read and not attempted, and an
+    /// unread file might hold the best statement in the directory. A mill run
+    /// that read half a directory and said only what it milled reads exactly
+    /// like one that read all of it.
+    pub(super) unread: usize,
 }
 
 impl Report {
@@ -356,12 +374,20 @@ impl Report {
         if !self.rejected.is_empty() {
             let _ = write!(
                 out,
-                "\n\ndropped, because a file the kernel rejects is worse in the library than an \
-                 absent one:"
+                "\n\ndropped and removed, because a file the kernel rejects is worse in the \
+                 library than an absent one:"
             );
             for name in &self.rejected {
                 let _ = write!(out, "\n  {name}");
             }
+        }
+        if self.unread > 0 {
+            let _ = write!(
+                out,
+                "\n\n{} source file(s) were not read at all: the directory is larger than one \
+                 prompt. Mill a narrower path to reach them.",
+                self.unread
+            );
         }
         if self.skipped > 0 {
             let _ = write!(
@@ -417,9 +443,13 @@ pub(super) async fn run(
     subagents: &AsyncSubagentManager,
     workspace: &Path,
     sources: Vec<(String, String)>,
+    unread: usize,
     budget: usize,
 ) -> Report {
-    let mut report = Report::default();
+    let mut report = Report {
+        unread,
+        ..Report::default()
+    };
     if sources.is_empty() {
         return report;
     }
@@ -441,13 +471,24 @@ pub(super) async fn run(
         let _ = subagents
             .run_to_completion(super::lean::SCRIBE_ROLE, candidate.briefing())
             .await;
-        let verified = super::lean::verdict(workspace, &candidate.source_path())
-            .is_some_and(|verdict| verdict.verified());
+        let source = candidate.source_path();
+        let verified =
+            super::lean::verdict(workspace, &source).is_some_and(|verdict| verdict.verified());
         if verified {
             report.landed.push(candidate.name);
-        } else {
-            report.rejected.push(candidate.name);
+            continue;
         }
+        // Removed, not merely left unreported. The library is read by later
+        // runs and re-derived into `derived/LEMMAS.md`, so a file the kernel
+        // refused is worse sitting there than absent: it becomes a row that
+        // reads like work. A live run made this concrete — the scribe uses
+        // `#check` probes to find Mathlib names, and sixteen probe files
+        // reached `code/lean/Lib/` on one pass of ten statements.
+        //
+        // A failure to remove is not a failure of the mill: the file is
+        // already recorded as rejected, and the verdict beside it says why.
+        let _ = std::fs::remove_file(workspace.join(&source));
+        report.rejected.push(candidate.name);
     }
     report
 }

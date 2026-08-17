@@ -56,6 +56,7 @@ fn budget_for(role: &str) -> RunBudget {
         "judge" | "reflection" => base.for_judging(),
         "context_curator" | "librarian" => base.for_housekeeping(),
         "inventor" => base.for_invention(),
+        crate::orchestrator::lean::SCRIBE_ROLE => base.for_scribing(),
         _ => base,
     }
 }

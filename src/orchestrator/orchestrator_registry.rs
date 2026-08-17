@@ -403,13 +403,19 @@ fn register_code_writing_definitions(
     // would mean carving exceptions out of a list whose point is that its
     // members share everything.
     //
-    // Four verbs: write a file, check it, and read what it needs to read. No
+    // Two verbs: write a file and check it. No
     // shell, because it runs no experiments. No `apply_patch`, because it
     // rewrites its own file rather than editing anybody else's. No memory and
     // no scratch, because it is handed everything it needs in the message and
     // has nothing to carry to the next call. No ledger write of any kind, which
     // is what keeps the split below honest: it holds `lean_check`, so it can
     // establish that a file compiles, and it cannot file a claim that says so.
+    //
+    // And no reads, which a live run is why. With the document tools the scribe
+    // spent 180 of 191 tool calls re-issuing one identical `grep_workspace` and
+    // never wrote a file: a small model handed somewhere to browse browses
+    // instead of working. The brief carries the statement, the target file and
+    // the kernel's last objection, which is everything the job needs.
     registry.register(
         AgentDefinition::new(
             lean::SCRIBE_ROLE,
@@ -418,11 +424,7 @@ fn register_code_writing_definitions(
              compiles. Holds no mandate over what is worth formalising and files no claims.",
         )
         .with_model("openrouter")
-        .with_tools(
-            ["write_tool_file", "lean_check"]
-                .into_iter()
-                .chain(document_tools.iter().copied()),
-        ),
+        .with_tools(["write_tool_file", "lean_check"]),
     )?;
     Ok(())
 }

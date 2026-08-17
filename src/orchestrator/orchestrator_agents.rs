@@ -294,12 +294,8 @@ fn register_lean_scribe(
     parts: &CodeWriters<'_>,
     prompt: String,
 ) -> Result<()> {
-    let mut harness = specialist_harness(
-        parts.models,
-        parts.budget,
-        lean::SCRIBE_ROLE,
-        parts.tracer,
-    );
+    let budget = parts.budget.for_scribing();
+    let mut harness = specialist_harness(parts.models, budget, lean::SCRIBE_ROLE, parts.tracer);
     register_resilient(
         &mut harness,
         Arc::new(
@@ -309,13 +305,18 @@ fn register_lean_scribe(
     register_resilient(
         &mut harness,
         Arc::new(
-            lean::LeanCheck::new(parts.workspace.to_path_buf(), parts.budget.tool_timeout)
+            lean::LeanCheck::new(parts.workspace.to_path_buf(), budget.tool_timeout)
                 .deriving(parts.documents.clone()),
         ),
     );
-    for tool in parts.documents.tools_as(lean::SCRIBE_ROLE) {
-        register_resilient(&mut harness, tool);
-    }
+    // No document tools, and that is the whole of the fix for a live failure.
+    //
+    // Given the reads, the scribe spent 180 of 191 tool calls re-issuing one
+    // identical `grep_workspace` and never wrote a file. The brief already
+    // carries the statement, the file to write, and the kernel's last
+    // objection; the reads added nothing it needed and gave a small model
+    // somewhere to go instead of writing. A minimal prompt does not make a role
+    // minimal if its tool grant invites browsing.
     harness.push_middleware(parts.checkpoint.clone());
     subagents.register(lean::SCRIBE_ROLE, Arc::new(harness), prompt)?;
     Ok(())
