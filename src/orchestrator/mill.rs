@@ -45,6 +45,19 @@ use super::async_subagents::AsyncSubagentManager;
 /// somebody's scratch.
 pub(super) const LIB_DIR: &str = "code/lean/Lib";
 
+/// Where the scribe may hunt for a Mathlib name.
+///
+/// A directory of its own so that hunting leaves nothing in the library. The
+/// scribe holds no search tool — `#check` in a file is the only way it has to
+/// find out whether a name exists — and on a live Casas-Alvero run 17 of 26
+/// kernel verdicts were `test_*` probe files it had written into
+/// `code/lean/Lib/`. Naming the place for them is cheaper than forbidding them,
+/// because the need is real.
+///
+/// Swept at the end of a mill run: it is scratch by construction, and a probe
+/// nobody deleted reads to the next run exactly like a statement.
+pub(super) const PROBE_DIR: &str = "code/lean/probe";
+
 /// How many candidates one mill run formalises by default.
 ///
 /// The rate limit is the real bound — the scribe tier admits roughly 0.63
@@ -411,8 +424,17 @@ fn newest_lean(workspace: &Path) -> Option<std::time::SystemTime> {
 /// What one mill run did.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub(super) struct Report {
-    /// Candidates whose file the kernel accepted.
+    /// Candidates whose file the kernel accepted outright.
     pub(super) landed: Vec<String>,
+    /// Candidates whose file compiles and states something, with gaps.
+    ///
+    /// Kept rather than dropped, and reported apart from `landed` because the
+    /// difference matters: these are statements, not results. A live run on
+    /// Casas-Alvero produced this — a faithful statement of the conjecture over
+    /// `ℂ` in Mathlib's own vocabulary, compiling, whose only defect was the
+    /// `sorry` nobody on earth can currently remove. Deleting that was the
+    /// mill throwing away its best output.
+    pub(super) stated: Vec<String>,
     /// Candidates whose file the kernel rejected, and were therefore dropped.
     pub(super) rejected: Vec<String>,
     /// Candidates found but not attempted, because the budget ran out.
@@ -435,14 +457,26 @@ impl Report {
     /// the reporting failure this repository keeps writing controls against.
     pub(super) fn render(&self) -> String {
         let mut out = format!(
-            "milled {} statement(s): {} verified, {} rejected",
-            self.landed.len() + self.rejected.len(),
+            "milled {} statement(s): {} verified, {} stated with gaps, {} rejected",
+            self.landed.len() + self.stated.len() + self.rejected.len(),
             self.landed.len(),
+            self.stated.len(),
             self.rejected.len()
         );
         if !self.landed.is_empty() {
             let _ = write!(out, "\n\nlanded in {LIB_DIR}/:");
             for name in &self.landed {
+                let _ = write!(out, "\n  {name}.lean");
+            }
+        }
+        if !self.stated.is_empty() {
+            let _ = write!(
+                out,
+                "\n\nstated in {LIB_DIR}/, compiling, with gaps left as `sorry`. These are \
+                 statements rather than results and back no claim — but a faithful statement of \
+                 an open problem is what a decomposition starts from:"
+            );
+            for name in &self.stated {
                 let _ = write!(out, "\n  {name}.lean");
             }
         }
@@ -547,10 +581,17 @@ pub(super) async fn run(
             .run_to_completion(super::lean::SCRIBE_ROLE, candidate.briefing())
             .await;
         let source = candidate.source_path();
-        let verified =
-            super::lean::verdict(workspace, &source).is_some_and(|verdict| verdict.verified());
-        if verified {
+        let verdict = super::lean::verdict(workspace, &source);
+        if verdict.as_ref().is_some_and(super::lean::Verdict::verified) {
             report.landed.push(candidate.name);
+            continue;
+        }
+        // Kept, but never counted as verified. See `Verdict::states_something`.
+        if verdict
+            .as_ref()
+            .is_some_and(super::lean::Verdict::states_something)
+        {
+            report.stated.push(candidate.name);
             continue;
         }
         // Removed, not merely left unreported. The library is read by later
@@ -565,6 +606,10 @@ pub(super) async fn run(
         let _ = std::fs::remove_file(workspace.join(&source));
         report.rejected.push(candidate.name);
     }
+    // Scratch by construction; see `PROBE_DIR`. Swept whole rather than
+    // per-file, and failures ignored, because a probe left behind is untidy
+    // and a mill run that failed over one would be worse.
+    let _ = std::fs::remove_dir_all(workspace.join(PROBE_DIR));
     report
 }
 

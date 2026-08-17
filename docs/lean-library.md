@@ -379,6 +379,57 @@ saying so: the download is the librarian's tool and is not wired to this entry
 point. That is deliberate — milling nothing and reporting a clean pass is the
 failure worth avoiding.
 
+### What a mill run keeps, after the first Casas-Alvero pass
+
+The first version kept only kernel-`verified` files, on the argument that a
+`.lean` file which does not compile is worse in the library than an absent one.
+That argument is right and unchanged. What it got wrong is the middle case.
+
+A live pass over `workspace/conjectures/casas-alvero/research/summaries`
+produced this, and then deleted it:
+
+```lean
+theorem ca_at_least_five_distinct_roots (f : Polynomial ℂ) (hmonic : f.Monic)
+    (hdeg : f.natDegree ≥ 5)
+    (hderiv : ∀ i, 1 ≤ i → i ≤ f.natDegree - 1 → ¬ IsCoprime f (derivative^[i] f))
+    (hnot_pure_power : ¬ ∃ (g : Polynomial ℂ) (k : ℕ), 2 ≤ k ∧ f = g ^ k) : …
+```
+
+It compiles. Its binders are Mathlib's own vocabulary. Its only defect is the
+`sorry` underneath, which nobody on earth can currently remove, because the
+statement is an open conjecture. `verify.rs` already makes the argument for its
+own decomposition stage — *"a `sorry` here is the point rather than a failure,
+because it says exactly where the argument is missing"* — and the mill was
+throwing exactly that away.
+
+So a run now reports three classes, and `Verdict::states_something` is the
+predicate for the middle one: compiled, at least one declaration, nothing
+vacuous, no retired binder. A `sorry` is explicitly allowed.
+
+| class | kept | may back a claim |
+|---|---|---|
+| verified | yes | yes, `formalised` |
+| stated with gaps | yes | **no** |
+| rejected | no, removed | no |
+
+The middle row is the one to be careful about. It is not a passing outcome and
+`outcome()` does not admit it; it says only that the file is worth leaving on
+disk for something else to work on. A report that merged it with the first row
+would let a reader take a `sorry` for a proof, which is why the rendering names
+the two separately and says in words that a stated file backs no claim.
+
+### Probes have a directory
+
+The scribe holds no search tool, so `#check` inside a file is its only way to
+find out whether a Mathlib name exists. On the same Casas-Alvero pass, **17 of
+26 kernel verdicts were `test_*` files** it had written into `code/lean/Lib/`
+for exactly that purpose — `test_resultant`, `test_mvpoly`, `test_check9`.
+
+Forbidding the probes would be wrong, because the need is real. They have
+`code/lean/probe/` instead, the prompt names it, and a mill run sweeps it at the
+end: it is scratch by construction, and a probe nobody deleted reads to the next
+run exactly like a statement.
+
 ### The mill inside a run
 
 `./lean-mill` is a person deciding a workspace has read too much and formalised
