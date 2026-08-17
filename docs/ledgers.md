@@ -212,6 +212,16 @@ requires and the one a long run forgets it made. A block missing its `id` or
 `statement` is reported rather than dropped: a claim silently discarded leaves
 the note reading as though it recorded something.
 
+A formalised or conditional claim is joined to its verdict here, and the join
+now asks two more questions than "what did Lean say". A verdict whose recorded
+`source_digest` does not match the file on disk is **stale** — the kernel
+accepted text the file no longer contains — and the claim drops to `asserted`
+naming the file. A verdict carrying no `collector` block at all is reported
+under *Formalised on a verdict with no provenance* and keeps its standing, which
+is a migration allowance rather than a judgement:
+[`docs/lean-library.md`](lean-library.md#the-collector-stamp-collected-against-supplied)
+has both halves and the honest limit of each.
+
 `search-frame` is the field a computational claim is worth. A claim with
 `status: checked`, or any claim naming a `refutation`, rests on a program that
 swept a space, and the claim is worth the space and no more — so the ones that

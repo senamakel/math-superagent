@@ -374,6 +374,14 @@ pub(super) struct Ledger {
     claims: Vec<Claim>,
     malformed: Vec<Malformed>,
     unbacked: Vec<Unbacked>,
+    /// Claims standing on a verdict that carries no collector provenance.
+    ///
+    /// Reported, never downgraded. See [`super::lean::Verdict::staleness`] for
+    /// why the two failures are graded differently: this one is mostly a
+    /// verdict written before the stamp existed, and taking standing away from
+    /// a run that earned it honestly would be a worse error than the one being
+    /// prevented. It clears itself as files are re-checked.
+    unprovenanced: Vec<String>,
 }
 
 /// The library's block format: a fenced block of `key: value` lines.
@@ -759,13 +767,26 @@ impl Ledger {
                     // `conditional` over a fully clean file is left where it
                     // is, because understating what you have is not a failure
                     // the ledger should be correcting behind a role's back.
-                    Some(verdict) => match verdict.outcome() {
-                        super::lean::Outcome::Verified => (claimed, None),
-                        super::lean::Outcome::Conditional => {
-                            (Status::Conditional, verdict.objection())
+                    // A stale verdict is refused before its outcome is read.
+                    // The kernel did run and did accept something; it accepted
+                    // text the file no longer contains, so the outcome is about
+                    // a statement nobody is claiming and reporting it would be
+                    // worse than reporting nothing.
+                    Some(verdict) if verdict.staleness(workspace).is_some() => {
+                        (Status::Asserted, verdict.staleness(workspace))
+                    }
+                    Some(verdict) => {
+                        if !verdict.is_collected() {
+                            self.unprovenanced.push(claim.id.clone());
                         }
-                        super::lean::Outcome::Failed => (Status::Asserted, verdict.objection()),
-                    },
+                        match verdict.outcome() {
+                            super::lean::Outcome::Verified => (claimed, None),
+                            super::lean::Outcome::Conditional => {
+                                (Status::Conditional, verdict.objection())
+                            }
+                            super::lean::Outcome::Failed => (Status::Asserted, verdict.objection()),
+                        }
+                    }
                 }
             };
             claim.status = granted;
@@ -917,6 +938,7 @@ impl Ledger {
         }
         self.append_contradictions(&mut out);
         self.append_unbacked(&mut out);
+        self.append_unprovenanced(&mut out);
         self.append_unverified(&mut out);
         self.append_catalogued(&mut out);
         self.append_unframed(&mut out);
@@ -1045,6 +1067,45 @@ impl Ledger {
              these may confirm a final answer and may never be the reason for it. Reproduce the \
              terms with a program that does not read the catalogue, then say so; until then, \
              report the result as looked up.\n\n",
+        );
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, NOTES_ROOT));
+    }
+
+    /// Lists claims standing on a verdict nothing says was collected here.
+    ///
+    /// The distinction is *collected* against *supplied*. `code/out/lean/` is
+    /// inside the workspace and writable, so a record shaped like a verdict can
+    /// be written by anything that can write a file; until the collector stamp
+    /// existed, a kernel run and a hand-typed JSON object were the same bytes to
+    /// this join. A stamped verdict says which toolchain ran, how long it took,
+    /// and what the source was when it ran.
+    ///
+    /// A gap rather than a downgrade, deliberately, and the reason is the
+    /// migration: every verdict written before the stamp existed is unstamped
+    /// through no fault of its own. The row asks for one more `lean_check` over
+    /// a file the run has already checked, which is cheap, and the section
+    /// empties itself as that happens.
+    fn append_unprovenanced(&self, out: &mut String) {
+        let (rows, dropped) =
+            budget::listed(&self.unprovenanced, budget::MAX_LISTED, |rows, id| {
+                let _ = writeln!(
+                    rows,
+                    "- `{id}` — its verdict carries no collector stamp, so nothing on disk says a \
+                     kernel produced it"
+                );
+            });
+        if rows.is_empty() {
+            return;
+        }
+        out.push_str(
+            "\n## Formalised on a verdict with no provenance\n\nA verdict record says what Lean \
+             found; a *collected* verdict also says which toolchain ran, how long it took, and \
+             what the file contained at the time. Without that stamp the record is a claim about \
+             a check rather than evidence of one — and `code/out/lean/` is writable, so the two \
+             are not distinguishable by reading it.\n\n\
+             Run `lean_check` over each file again. It re-earns the stamp, and these rows \
+             disappear.\n\n",
         );
         out.push_str(&rows);
         out.push_str(&budget::elided(dropped, NOTES_ROOT));

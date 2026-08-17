@@ -273,6 +273,49 @@ async fn a_missing_file_is_refused_rather_than_reported_as_not_compiling() {
     assert!(tool.call(&(), call("code/absent.lean")).await.is_err());
 }
 
+/// The collector stamp survives the record, and a file edited after the check
+/// is detected by comparing what the kernel was given against what is there now.
+#[test]
+fn a_collected_verdict_carries_its_provenance_and_notices_a_changed_file() {
+    let workspace = workspace_named("collected");
+    std::fs::create_dir_all(workspace.join("code")).expect("the code folder is created");
+    let source = "theorem t : 2 + 2 = 4 := by norm_num\n";
+    std::fs::write(workspace.join("code/lemma.lean"), source).expect("the source is written");
+
+    let mut checked = parse("code/lemma.lean", source, true, CLEAN);
+    assert!(!checked.is_collected(), "parsing text is not collecting it");
+    checked.collected(&workspace, source, std::time::Duration::from_millis(1_234));
+    assert!(checked.is_collected());
+
+    let directory = workspace.join(VERDICT_DIR);
+    std::fs::create_dir_all(&directory).expect("the verdict folder is created");
+    std::fs::write(
+        directory.join("code_lemma.lean.json"),
+        serde_json::to_string(&checked.record()).expect("the record renders"),
+    )
+    .expect("the verdict is written");
+    let found = verdict(&workspace, "code/lemma.lean").expect("the verdict is found");
+    assert_eq!(found, checked, "the stamp survives the round trip");
+    assert_eq!(
+        found.record()["collector"]["elapsed_ms"],
+        1_234,
+        "the elapsed time is recorded, because a zero is the shape of a check nobody ran"
+    );
+    // Unchanged file: nothing to object to.
+    assert_eq!(found.staleness(&workspace), None);
+
+    // The statement is edited after the kernel saw it.
+    std::fs::write(
+        workspace.join("code/lemma.lean"),
+        "theorem t : 2 + 2 = 5 := by sorry\n",
+    )
+    .expect("the source is rewritten");
+    let objection = found
+        .staleness(&workspace)
+        .expect("a file edited after its check is stale");
+    assert!(objection.contains("has changed since the kernel checked it"));
+}
+
 #[test]
 fn a_verdict_round_trips_through_the_record_a_later_reader_finds() {
     // The ledger is re-derived long after the `lean_prover` run has ended, so

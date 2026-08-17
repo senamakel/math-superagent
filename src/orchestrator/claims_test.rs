@@ -531,6 +531,79 @@ fn a_formalised_claim_stands_only_when_the_kernel_backs_it() -> std::io::Result<
     Ok(())
 }
 
+/// A verdict describes a file at a moment, and the file goes on being edited.
+///
+/// The kernel really did run and really did accept something; it accepted text
+/// the file no longer contains, so the outcome is about a statement nobody is
+/// claiming. This is refused before the outcome is read.
+#[test]
+fn a_verdict_whose_file_has_changed_since_is_refused() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-stale");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+    std::fs::write(root.join("code/ramsey.lean"), "theorem r : True := trivial\n")?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: ramsey-bound\nstatement: The bound holds.\nholds-here: yes\n\
+             status: formalised\nformalisation: code/ramsey.lean",
+        ),
+    )?;
+    // A stamped verdict whose digest belongs to text the file no longer holds.
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_ramsey.lean.json"),
+        r#"{"file":"code/ramsey.lean","compiled":true,"sorries":[],
+            "axioms":["'r' depends on axioms: [propext, Classical.choice]"],
+            "collector":{"toolchain":"leanprover/lean4:v4.29.0","elapsed_ms":1200,
+            "source_digest":"00000000000000000000000000000000"}}"#,
+    )?;
+
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 0, "a stale verdict backs nothing");
+    assert_eq!(ledger.asserted(), 1, "it is downgraded, not dropped");
+    let rendered = ledger.render();
+    assert!(
+        rendered.contains("has changed since the kernel checked it"),
+        "the reason must name the staleness: {rendered}"
+    );
+    Ok(())
+}
+
+/// A verdict record carrying no collector stamp is reported, never downgraded.
+///
+/// Every record written before the stamp existed is unstamped through no fault
+/// of its own, and taking standing away from a run that earned it honestly is a
+/// worse error than the one being prevented. The row asks for one more check.
+#[test]
+fn a_verdict_with_no_collector_is_reported_but_keeps_its_standing() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-unstamped");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("code/out"))?;
+    std::fs::create_dir_all(root.join(super::super::lean::VERDICT_DIR))?;
+    std::fs::write(
+        root.join("code/out/NOTES.md"),
+        note(
+            "id: unstamped-bound\nstatement: The bound holds.\nholds-here: yes\n\
+             status: formalised\nformalisation: code/ramsey.lean",
+        ),
+    )?;
+    std::fs::write(
+        root.join(super::super::lean::VERDICT_DIR)
+            .join("code_ramsey.lean.json"),
+        r#"{"file":"code/ramsey.lean","compiled":true,"sorries":[],
+            "axioms":["'r' depends on axioms: [propext, Classical.choice]"]}"#,
+    )?;
+
+    let ledger = collect(&root);
+    assert_eq!(ledger.established(), 1, "an honest verdict keeps its standing");
+    let rendered = ledger.render();
+    assert!(rendered.contains("## Formalised on a verdict with no provenance"));
+    assert!(rendered.contains("`unstamped-bound`"));
+    Ok(())
+}
+
 /// A verdict that exists and does not pass is worse than none, so it is named.
 #[test]
 fn a_formalisation_with_a_sorry_in_it_is_downgraded_and_says_why() -> std::io::Result<()> {

@@ -241,6 +241,57 @@ The mount is read-only and **no verdict is ever filed**. `code/out/lean/` is the
 evidence `CLAIMS.md` consults, so the only thing that may write there is the
 `lean_check` tool inside a run.
 
+### The collector stamp: collected against supplied
+
+That rule says who *should* write a verdict. Nothing in a verdict said who
+*did*. `code/out/lean/` is inside the workspace and the write path refuses only
+`derived/`, so a record shaped like a verdict is a file like any other — and to
+the join in `claims.rs`, a kernel run and a hand-typed JSON object were the same
+bytes.
+
+So a verdict now carries a `collector` block, stamped in the two code paths that
+actually invoke the kernel and reachable from nowhere else — not the tool schema,
+not a prompt, not the write path:
+
+```json
+"collector": {
+  "toolchain": "leanprover/lean4:v4.29.0",
+  "elapsed_ms": 1234,
+  "source_digest": "9f86d081884c7d65..."
+}
+```
+
+The failure came from ProofAtlas, which blocks its largest result on exactly
+this and on nothing mathematical — 1,176 Lean files, zero `sorry`, a clean axiom
+list, and `buildTranscriptRecorded: false`, `collectorCommit: null`. Their
+sentence for it is *the retained audit is a summary rather than the complete
+build transcript required by the current evidence contract*.
+[`research/proofatlas/06-trust-model.md`](../research/proofatlas/06-trust-model.md)
+has the rest. A transcript you were given is a claim; a transcript you collected
+is evidence.
+
+The two halves are graded differently, and the asymmetry is the design:
+
+- **`source_digest` mismatch downgrades.** The kernel ran and accepted
+  something — text the file no longer contains. That is not a doubt about
+  provenance, it is a fact about staleness, so the claim drops to `asserted`
+  with the reason naming the file. This is also the common honest failure: a
+  verdict earned fairly, and the statement edited underneath it afterwards.
+- **A missing `collector` is reported, never downgraded.** Every verdict written
+  before the stamp existed is unstamped through no fault of its own, and taking
+  standing away from a run that earned it would be a worse error than the one
+  being prevented. Those claims render under *Formalised on a verdict with no
+  provenance*, which asks for one more `lean_check` over a file already checked
+  and empties itself as that happens.
+
+The honest limit: this is not a signature. A determined forger with file-write
+could write a plausible `collector` block, and `elapsed_ms` is recorded but never
+checked — a zero is the shape of a check nobody ran, and a reader notices it. The
+control's value is that absence is *visible* and the normal path stamps it
+without anyone remembering to, not that presence is unforgeable. Tightening a
+missing stamp into a downgrade is the follow-up, once live workspaces have
+re-checked.
+
 That was briefly a flag rather than a rule, and a live run found the hole in
 thirteen minutes: `lean-verdict` ships in the runtime image, so `execute_command`
 can call it, and a `--file-verdict` flag would have let a role file its own

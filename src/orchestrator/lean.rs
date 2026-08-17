@@ -152,6 +152,70 @@ impl Outcome {
     }
 }
 
+/// What produced a verdict, stamped by the tool that ran the kernel.
+///
+/// The distinction this exists to draw is *collected* against *supplied*. A
+/// verdict record lives in `code/out/lean/`, which is inside the workspace and
+/// writable, so a role that can write a file can write something shaped like a
+/// verdict and then name it from a claim. Nothing in the record itself said
+/// whether a kernel had ever run — a `lean_check` result and a hand-typed JSON
+/// object were the same bytes, and the claim ledger believed both.
+///
+/// Read off `ProofAtlas`, which blocks its largest result on exactly this and
+/// on nothing mathematical: 1,176 Lean files, zero `sorry`, a clean axiom list,
+/// and `buildTranscriptRecorded: false` — *the retained audit is a summary
+/// rather than the complete build transcript required by the current evidence
+/// contract*. See `research/proofatlas/06-trust-model.md`.
+///
+/// [`Collector::source_digest`] is the field with teeth, and it is checked
+/// rather than displayed: it catches the ordinary version of this failure,
+/// where the verdict was honestly collected and the file has since changed
+/// underneath it.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub(super) struct Collector {
+    /// The Lean toolchain the check ran on.
+    toolchain: String,
+    /// How long the kernel took, in milliseconds.
+    ///
+    /// Recorded because a zero is the shape of a verdict nobody ran. It is not
+    /// checked — a fast file is a real thing — but it is the field a reader
+    /// notices first when a record was fabricated.
+    elapsed_ms: u64,
+    /// Digest of the source bytes the kernel was actually given.
+    ///
+    /// The check that pays for itself. A verdict describes a file at a moment,
+    /// and the file goes on being edited; without this, a claim keeps standing
+    /// on a kernel run against a statement that is no longer in the file.
+    source_digest: String,
+}
+
+/// The digest a collected verdict records for the source it checked.
+fn source_digest(source: &str) -> String {
+    use sha2::{Digest as _, Sha256};
+    let mut hasher = Sha256::new();
+    hasher.update(source.as_bytes());
+    hasher.finalize().iter().take(16).fold(
+        String::with_capacity(32),
+        |mut accumulated, byte| {
+            use std::fmt::Write as _;
+            let _ = write!(accumulated, "{byte:02x}");
+            accumulated
+        },
+    )
+}
+
+/// The Lean toolchain this workspace pins, for the collector stamp.
+///
+/// Read from the project's `lean-toolchain` file rather than by invoking the
+/// compiler again: the file is what selects the toolchain, so it is the honest
+/// answer, and a second process per check would be paid on every call.
+fn pinned_toolchain(workspace: &Path) -> String {
+    std::fs::read_to_string(workspace.join("code/lean/lean-toolchain"))
+        .or_else(|_| std::fs::read_to_string(workspace.join("lean-toolchain")))
+        .map(|text| text.trim().to_string())
+        .unwrap_or_default()
+}
+
 /// What Lean did with one file.
 ///
 /// The three fields are separate because the three ways a formalisation lies
@@ -161,6 +225,9 @@ impl Outcome {
 /// declaration proved elsewhere in the same file — proves nothing while
 /// reporting no `sorry` at all, which is why the axioms are parsed rather than
 /// trusted to the warning list.
+///
+/// The collector stamp answers a fourth question the other three cannot:
+/// whether a kernel ran at all.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct Verdict {
     /// The workspace-relative source this verdict is about.
@@ -251,9 +318,69 @@ pub struct Verdict {
     /// reading `formalised` now says what was formalised, to the judge, to the
     /// next role, and to a reader.
     pub(super) declarations: Vec<String>,
+    /// What produced this verdict, when the tool that ran the kernel stamped it.
+    ///
+    /// `None` means the record carries no provenance, which is the reading a
+    /// verdict written before this field existed gets and the reading a
+    /// hand-written one gets. The two are not distinguishable here and are not
+    /// meant to be: neither is evidence that a kernel ran, and the ledger says
+    /// so about both.
+    pub(super) collector: Option<Collector>,
 }
 
 impl Verdict {
+    /// Stamps this verdict with what produced it.
+    ///
+    /// Called only from the paths that actually invoked the kernel, which is
+    /// the whole control: a field a role could set is a field that says
+    /// nothing, so nothing in the tool schema, the prompts, or the write path
+    /// can reach it.
+    fn collected(&mut self, workspace: &Path, source: &str, elapsed: Duration) {
+        self.collector = Some(Collector {
+            toolchain: pinned_toolchain(workspace),
+            elapsed_ms: u64::try_from(elapsed.as_millis()).unwrap_or(u64::MAX),
+            source_digest: source_digest(source),
+        });
+    }
+
+    /// Why this verdict cannot be relied on, if it cannot.
+    ///
+    /// Two separate failures, and only one of them is a downgrade.
+    ///
+    /// A **stale** verdict is one whose recorded source digest does not match
+    /// the file now on disk. That is not a doubt, it is a fact: the kernel ran
+    /// against text that is no longer there, so whatever it accepted is not
+    /// what the claim now names. It returns a reason and the caller downgrades.
+    ///
+    /// A verdict with **no collector at all** returns `None` here and is
+    /// reported elsewhere rather than downgraded. Every record written before
+    /// the stamp existed is in that state through no fault of its own, and a
+    /// live workspace would lose standing it earned honestly. It re-earns the
+    /// stamp the next time the file is checked.
+    ///
+    /// # Errors
+    ///
+    /// Returns the reason as `Some` when the verdict is stale.
+    pub(super) fn staleness(&self, workspace: &Path) -> Option<String> {
+        let collector = self.collector.as_ref()?;
+        if collector.source_digest.is_empty() {
+            return None;
+        }
+        let current = std::fs::read_to_string(workspace.join(&self.file)).ok()?;
+        if source_digest(&current) == collector.source_digest {
+            return None;
+        }
+        Some(format!(
+            "`{}` has changed since the kernel checked it, so this verdict is about text the file \
+             no longer contains; check it again",
+            self.file
+        ))
+    }
+
+    /// Whether a kernel run in this workspace produced this verdict.
+    pub(super) fn is_collected(&self) -> bool {
+        self.collector.is_some()
+    }
     /// Whether this verdict may stand behind a formalised claim.
     ///
     /// Four conditions, and the fourth is the one that reads as strict. It is
@@ -486,6 +613,13 @@ impl Verdict {
             "cited": self.cited_axioms(),
             "verified": self.verified(),
             "outcome": self.outcome().as_str(),
+            "collector": self.collector.as_ref().map(|collector| {
+                json!({
+                    "toolchain": collector.toolchain,
+                    "elapsed_ms": collector.elapsed_ms,
+                    "source_digest": collector.source_digest,
+                })
+            }),
         })
     }
 
@@ -511,6 +645,16 @@ impl Verdict {
             tautologies: strings(value.get("tautologies")),
             generated_conclusions: strings(value.get("generated_conclusions")),
             uncleared: strings(value.get("uncleared")),
+            // Absent on every record written before the stamp existed, and on
+            // every record a role wrote by hand. Both read as no provenance,
+            // which is what they are.
+            collector: value.get("collector").and_then(|collector| {
+                Some(Collector {
+                    toolchain: collector.get("toolchain")?.as_str()?.to_string(),
+                    elapsed_ms: collector.get("elapsed_ms")?.as_u64()?,
+                    source_digest: collector.get("source_digest")?.as_str()?.to_string(),
+                })
+            }),
         })
     }
 
@@ -807,6 +951,10 @@ fn parse(file: &str, source: &str, exit_ok: bool, output: &str) -> Verdict {
         uncleared: super::lemmas::uncleared_divisions(source),
         retired_binder,
         missing_modules,
+        // Parsing text is not collecting evidence. The stamp is applied by the
+        // caller that ran the kernel, so a verdict parsed from output the run
+        // was handed cannot acquire one.
+        collector: None,
     }
 }
 
@@ -1058,13 +1206,17 @@ impl Tool<()> for LeanCheck {
         // is the one the kernel was given. A file rewritten while `lean` runs
         // would otherwise have its new statement filed under the old verdict.
         let source = tokio::fs::read_to_string(&path).await.unwrap_or_default();
-        let (verdict, output) = if let Some(short) = preflight(&relative, &source) {
+        let started = std::time::Instant::now();
+        let (mut verdict, output) = if let Some(short) = preflight(&relative, &source) {
             short
         } else {
             let (exit_ok, output) = self.run(&path).await?;
             let verdict = parse(&relative, &source, exit_ok, &output);
             (verdict, output)
         };
+        // Stamped here and nowhere a role can reach: this is the only place
+        // that knows a kernel actually ran over these bytes.
+        verdict.collected(&self.workspace, &source, started.elapsed());
         self.file_verdict(&verdict).await?;
         // After the verdict is on disk and not before: half of every row in the
         // lemma index is the standing this check just decided, so a derivation
@@ -1190,13 +1342,15 @@ pub async fn check_file(
     let checker = LeanCheck::new(workspace.to_path_buf(), timeout);
     let relative = paths::strip_workspace_prefix(file).to_string();
     let source = tokio::fs::read_to_string(&path).await.unwrap_or_default();
-    let (verdict, output) = if let Some(short) = preflight(&relative, &source) {
+    let started = std::time::Instant::now();
+    let (mut verdict, output) = if let Some(short) = preflight(&relative, &source) {
         short
     } else {
         let (exit_ok, output) = checker.run(&path).await?;
         let verdict = parse(&relative, &source, exit_ok, &output);
         (verdict, output)
     };
+    verdict.collected(workspace, &source, started.elapsed());
     if write_verdict {
         checker.file_verdict(&verdict).await?;
     }
