@@ -105,7 +105,7 @@ the attempts and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
   banks a chain link that is not yet a result — without it the loop scores a
   turn that established one as a pass with no progress.
 - **A thesis crosses runs, and states what would refute it.** `thesis` is the
-  standing bet; `refuted-by` is required, because a belief with no way to lose
+  standing bet; `refuted-by` is required, or a belief with no way to lose
   survives every round that should have ended it.
 - **The kernel is scheduled, not remembered.** Every attempt ends with a checked
   `.lean` file *and* an executed program that is evidence for it; attempt one
@@ -211,7 +211,7 @@ nohup ./euler 763 > workspace/project-euler/763/config/start.log 2>&1 &
 Two containers on one workspace is the failure to look for, and it is silent —
 both runs write, and the damage appears later as an interleaved history. Check
 before starting, and **match by mount, not by name**. Stop one with
-`docker rm -f <name>`; the workspace survives and the next `./euler` continues.
+`docker rm -f <name>`; the workspace survives and `./euler` continues it.
 `start.log` is the only place a failed *start* says why, on **stderr**, so
 `docker logs` needs `2>&1`. Every checkout shares the `math-agent:local` tag, so
 a build in one replaces the image another is about to run.
@@ -484,9 +484,8 @@ about one subject, not when it crosses a number.
 The split is by *kind*, not by size. A rule to follow and a check to run stay
 here; the evidence behind a rule — the live run that met a ceiling, the number
 that turned out wrong, the failure a control was written to stop — goes to the
-`docs/` file that owns that subject. User-facing instructions stay in
-`README.md`. Do not grow a third tree: a document with no rule above it is one
-nobody has a reason to open.
+`docs/` file owning that subject, and user-facing instructions to `README.md`. Do
+not grow a third tree: a document with no rule above it is one nobody opens.
 
 ## Working agreement for coding agents
 
