@@ -1,564 +1,601 @@
-<!-- ✗ DEFECTIVE SOURCE FILE — DO NOT USE. This file was downloaded as arXiv:1209.5628 but contains "A Serre derivative for even weight Jacobi forms" (Oberdieck, number theory), NOT Maric-Zivkovic-Vuckovic's "Formalizing Frankl's conjecture: Fc-families" (LNCS 7362, 2012). The run's actual FC-machinery content is carried by Vuckovic-Zivkovic 2017 and Pulaj 2017. See research/summaries/maric-zivkovic-vuckovic-fc-families-2012.md. -->
+<!-- source: https://ar5iv.labs.arxiv.org/html/1207.3604 | converted from HTML -->
 
-<!-- source: https://arxiv.org/html/1209.5628 | converted from HTML -->
+[1207.3604] Formalizing Frankl’s Conjecture: FC-families
 
-A Serre derivative for even weight Jacobi forms
+# Formalizing Frankl’s Conjecture: FC-families Thanks: The first author was partially supported by the Serbian Ministry of Education and Science grant 174021 and by the SNF grant SCOPES IZ73Z0127979/1, the second author by the Serbian Ministry of Education and Science grant 174021 and the third author by the Serbian Ministry of Education and Science grant 044006 (III). Affiliation: Faculty of Mathematics, University of Belgrade
 
-arXiv is now an independent nonprofit! [Learn more][1] ×
+Filip Marić Affiliation: Faculty of Mathematics, University of Belgrade Miodrag Živković Bojan Vučković
 
-[License: arXiv.org perpetual non-exclusive license][2]
+###### Abstract
 
-arXiv:1209.5628v3 [math.NT] 11 Jun 2014
+The Frankl’s conjecture, formulated in 1979. and still open, states that in every family of sets closed for unions there is an element contained in at least half of the sets. FC-families are families for which it is proved that every union-closed family containing them satisfies the Frankl’s condition (e.g., in every union-closed family that contains a one-element set a, the element a is contained in at least half of the sets, so families of the form a are the simplest FC-families). FC-families play an important role in attacking the Frankl’s conjecture, since they enable significant search space pruning. We present a formalization of the computer assisted approach for proving that a family is an FC-family. Proof-by-computation paradigm is used and the proof assistant Isabelle/HOL is used both to check mathematical content, and to perform (verified) combinatorial searches on which the proofs rely. FC-families known in the literature are confirmed, and a new FC-family is discovered.
 
-# A Serre derivative for even weight Jacobi forms
+## 1 Introduction
 
-Georg Oberdieck
+Formalized mathematics and interactive theorem provers (sometimes referred to as proof assistants) have made great progress in recent years. Many classical mathematical theorems have been formally proved and proof assistants have been intensively used in hardware and software verification. The most successful proof assistants now days are Coq, Isabelle/HOL, HOL Light, etc.
 
-###### Abstract.
+Several of the most important results in formal theorem proving are for the problems that require proofs with much computational content. These proofs are usually highly complex (and therefore often require justifications by formal means) since they combine classical mathematical statements with complex computing machinery (usually computer implementation of combinatorial algorithms). The corresponding paradigm is sometimes referred to as *proof-by-evaluation*or *proof-by-computation*. Probably, the most famous examples of this approach are the proofs of the Four-Color Theorem and the Kepler’s conjecture.
 
-Using deformed or twisted Eisenstein Series, we construct a Jacobi-Serre derivative on even-weight Jacobi forms that generalizes the classical Serre derivative on modular forms. As an application, we obtain Ramanujan equations for the index 1 1 Eisenstein series E 4, 1, E 6, 1 E_{4,1},E_{6,1} and a newly defined E 2, 1 E_{2,1}. Finally, we relate the deformed Eisenstein Series directly to the classical first Jacobi theta function.
+Georges Gonthier has formalized a proof of the Four-Color Theorem 1 1 1 In 1852. Francis Guthrie conjectured that every map can be colored with at most 4 colors such that no two adjacent regions share the same color. in Coq [6]. The Four Colour Theorem is famous for being the first long-standing mathematical problem, analyzed by many famous mathematicians, finally resolved by a computer program (Appel and Haken [2]). This proof broke new ground because it involved using IBM 370 assembly language computer programs to carry out a gigantic case analysis, which could not be performed by hand. The proof attracted criticism: computer programming is known to be error-prone, and difficult to relate precisely to the formal statement of a mathematical theorem. Several attempts to simplify the proofs were made (e.g., Robertson et al. [13]), number of cases was reduced and programs were written in C instead of assembly language. However, all doubts were removed only when Gonthier employed proof assistant Coq reducing the whole proof to several basic logical principles.
 
-## 0. Introduction
+Another example of a similar kind is the proof of Kepler’s conjecture 2 2 2 In 1611 Kepler asserted that the so called cannonball packing is a densest arrangement of 3-dimensional balls of the same size.. As described by Nipkow et al. [9]: “In 1998. Thomas Hales announced the first (by now) accepted proof of Kepler’s conjecture. It involves 3 distinct large computations. After 4 years of refereeing by a team of 12 referees, the referees declared that they were 99% certain of the correctness of the proof. Dissatisfied with this, Hales started the informal open-to-all collaborative *flyspeck*project to formalize the whole proof with a theorem proof.”
 
-### 0.1. The Serre derivative
+In this work, we apply the proof-by-evaluation paradigm to a problem of verifying FC-families --- a special case of the Frankl’s conjecture. Frankl’s conjecture, an elementary and fundamental statement formulated by Péter Frankl in 1979., states that for every family of sets closed under unions, there is an element contained in at least half of the sets (or, dually, in every family of sets closed under intersections, there is an element contained in at most half of the sets). Up to the best of our knowledge, the problem is still open. The conjecture has been proved for many special cases. In particular, it is known to be true for: (i) families of at most 36 sets 3 3 3 Unpublished report by Roberts from 1992 claimis a similar result for families of at most 40 sets. [4]; (ii) families of sets such that their union has at most 11 elements [3].
 
-Let τ ∈ ℍ, q = e 2 ​ π ​ i ​ τ \tau\in{\mathbb{H}},q=e^{2\pi i\tau} and let F ⁡ ( τ) ∈ M k F(\tau)\in M_{k} be a modular form of weight k k. The differential F ′:= 1 2 ​ π ​ i ​ ∂ F ∂ τ F^{\prime}:=\frac{1}{2\pi i}\frac{\partial F}{\partial\tau} of F F fails to be modular, but can be completed to a modular form by adding a multiple of the non-modular second Eisenstein series E 2 E_{2}. We obtain a differential operator on modular forms
+FC-families are families for which it is proved that all union closed families containing them satisfy the Frankl’s condition (if the Frankl’s conjecture would be proved, then every family would be an FC-family). For example, it can easily be shown that if a family contains a one-element set, then it satisfies the Frankl’s condition. Similar results holds for any two-element set, etc. FC-families are important building block for attempting to prove the Frankl’s conjecture since they justify pruning large portions of the search space.
 
- | ∂ S: M k ⟶ M k + 2, F ↦ F ′ − k 12 ​ E 2 ​ F, \partial^{S}:M_{k}{\ \longrightarrow\ }M_{k+2},\quad F\mapsto F^{\prime}-\frac{k}{12}E_{2}F, |  |
+#### Related work.
 
-called the Serre derivative. By the finite dimensionality of the vector space M k M_{k} of modular forms of given weight k k, it is then easy to obtain differential equations among modular forms, e.g. the Ramanujan equations [Ram00] for the Eisenstein series E 4 E_{4} and E 6 E_{6},
+The Frankl’s conjecture has also been formulated and studied as a question in lattice theory [12, 1].
 
-(1) |  | ∂ S E 2 + 1 12 E 2 2 = − 1 12 E 4, ∂ S ( E 4) = − 1 3 E 6, and ∂ S ( E 6) = − 1 2 E 4 2. \partial^{S}E_{2}+\frac{1}{12}E_{2}^{2}=-\frac{1}{12}E_{4},\quad\partial^{S}(E_{4})=-\frac{1}{3}E_{6},\quad\text{and}\quad\partial^{S}(E_{6})=-\frac{1}{2}E_{4}^{2}. |  |
+FC-families have been introduced by Poonen [11] and further studied by Gao and Yu [5], Vaughan [14, 15, 16], Morris [8], Marković [7], Bošnjak and Marković [3], and Živković and Vučković [17].
 
-### 0.2. Deformed Eisenstein series
+The basic technique used (the Frankl’s condition characterization based on weight functions and shares) is introduced by Poonen [11] and later successfully used by Bošnjak and Marković [7, 3], and Živković and Vučković [17].
 
-Jacobi forms are a natural two-variable generalization of modular forms introduced by Eichler and Zagier in [EZ85]. Let z ∈ ℂ, p = e 2 ​ π ​ i ​ z z\in{\mathbb{C}},p=e^{2\pi iz} and let F ⁡ ( z, τ) F(z,\tau) be a Jacobi form of index m m and weight k k. As in the modular case, the differentials F ′ = 1 2 ​ π ​ i ​ ∂ F ∂ τ F^{\prime}=\frac{1}{2\pi i}\frac{\partial F}{\partial\tau} and F ∙ = 1 2 ​ π ​ i ​ ∂ F ∂ z F^{\bullet}=\frac{1}{2\pi i}\frac{\partial F}{\partial z} are no longer Jacobi forms. The topic of the paper considers the basic question how to complete these differentials (and also higher ones) to honest Jacobi forms.
+First attempts in using computer-assisted computational approach on solving special cases of the Frankl’s conjecture are described by Živković and Vučković [17]. Computations are performed by (unverified) Java programs. However, in order to increase the level of trust, Java programs generate certificates that can be checked by independent tools.
 
-Let B n B_{n} be the Bernoulli numbers given by x / ( e x − 1) = ∑ n B n ​ x n / n! x/(e^{x}-1)=\sum_{n}B_{n}x^{n}/n!; in particular we have B 1 = − 1 / 2 B_{1}=-1/2. Define the *deformed*or *twisted Eisenstein series*J n ​ ( z, τ) J_{n}(z,\tau) for all n ≥ 0 n\geq 0 by
+The present paper represent a formalized reformulation of the results of Živković and Vučković [17]. All mathematical content is rigorously formalized within Isabelle/HOL and proofs are mechanically checked. JAVA programs are reimplemented in a functional language of Isabelle/HOL and their correctness is formally verified. A clear separation of mathematical and computational content is done and parts of the proofs that rely on computations are clearly isolated. Since the whole formalization is performed and verified within a proof assistant, there is no need for explicit certificates for statements proved by computation.
 
-(2) |  | J n ​ ( z, τ) = δ n, 1 ​ p p − 1 + B n − n ​ ∑ k, r ≥ 1 r n − 1 ​ ( p k + ( − 1) n ​ p − k) ​ q k ​ r. J_{n}(z,\tau)=\delta_{n,1}\frac{p}{p-1}+B_{n}-n\sum_{k,r\geq 1}r^{n-1}(p^{k}+(-1)^{n}p^{-k})q^{kr}. |  |
+Our main contribution are rigorous, machine-verifiable proofs 4 4 4 Corresponding Isabelle/HOL proof documents are available from http://argo.matf.bg.ac.rs that all FC-families previously described in the literature are indeed FC-families. Unlike most pen-and-paper proofs, our proofs follow a uniform approach, supported by an underlying combinatorial search procedure. The second contribution is a new type of FC-families: four three-element sets all contained in a seven-element set.
 
-The name of the J n J_{n} reminds of the fact, that they restrict to the classical Eisenstein series E 2 ​ k E_{2k} at z = 0 z=0,
+#### Background logic and notation.
 
- | J 2 ​ k ​ ( 0, τ) = B 2 ​ k ​ E 2 ​ k ​ ( τ) and J 2 ​ k + 1 ​ ( 0, τ) = 0. J_{2k}(0,\tau)=B_{2k}E_{2k}(\tau)\quad\quad\text{ and }\quad\quad J_{2k+1}(0,\tau)=0. |  |
+Logic and the notation given in this paper will follow Isabelle/HOL. Isabelle/HOL [10] is a development of Higher Order Logic (HOL), and it conforms largely to everyday mathematical notation. The basic types include truth values ( 𝑏𝑜𝑜𝑙 \mathit{bool}), natural numbers ( 𝑛𝑎𝑡 \mathit{nat}) and integers ( 𝑖𝑛𝑡 \mathit{int}). Functions can be defined by recursion (either primitive or general). Sets over type α \alpha, type α ​ 𝑠𝑒𝑡 \alpha\,\mathit{set}, follow the usual mathematical conventions 5 5 5 In a strict type setting, sets containing elements of mixed types are not allowed.. Sets of sets (i.e., object of the type α ​ 𝑠𝑒𝑡 ​ 𝑠𝑒𝑡 \alpha\,\mathit{set}\,\mathit{set}) are called families. Set of all subset for a set A A is denoted by 𝗉𝗈𝗐 ​ A {\sf pow}\ A, and its number of elements is denoted by | A | |A|. Lists over type α \alpha, type α ​ 𝑙𝑖𝑠𝑡 \alpha\,\mathit{list}, come with the empty list [] [\,], the infix prepend constructor #\#, the infix @ @ that appends two lists, and the conversion function 𝑠𝑒𝑡 \mathit{set} from lists to sets. N-th element of a list l l is denoted by l [n] l_{[n]}. List [0, 1, …, n − 1] [0,1,\ldots,n-1] is denoted by [0.. < n] [0..<n]. The function 𝗌𝗈𝗋𝗍 {\sf sort} sorts a list, 𝗅𝗂𝗌𝗍𝗌𝗎𝗆 {\sf listsum} calculates its sum, and 𝗋𝖾𝗆𝖽𝗎𝗉𝗌 {\sf remdups} removes duplicate elements. List with no repeated elements are called distinct. Standard higher order functions 𝗆𝖺𝗉 {\sf map}, 𝖿𝗂𝗅𝗍𝖾𝗋 {\sf filter}, 𝖿𝗈𝗅𝖽𝗅 {\sf foldl} are also supported (for details see [10]).
 
-Under the elliptic and modular transformations, J n ​ ( z, τ) J_{n}(z,\tau) transforms like a Jacobi form of index 0 0 and weight n n, but adds additional lower order terms. Using these functions, one can complete differentials of Jacobi forms and obtain differential operators on Jacobi forms. This was already observed by Gaberdiel and Keller in [GK09]. As a result, they find a series of differential operators on all Jacobi forms, starting with the classical Heat operator.
+All definitions and statements given in this paper are formalized within Isabelle/HOL. However, in order to make the text accessible to a more general audience not familiar with Isabelle/HOL, many minor details are omitted and some imprecisions are introduced (for example, we used standard symbolics used in related work, although it is clear that some symbols are ambigous). Statements are grouped into propositions, lemmas, and theorems. Propositions usually express simple, technical results and are printed here without proofs. All sets and families are considered to be finite and this assumptions (present in Isabelle/HOL formalization) will not be explicitly stated in the rest of the paper.
 
-Here we use the same principle for the slightly weaker setting of differential operators that are defined only on even-weight Jacobi forms. As a new result, we give a natural and very intersting such operator of degree 2 2.
+#### Outline.
 
-Let 𝒥 k, m {\mathcal{J}}_{k,m} be the space of Jacobi forms of weight k k and index m m.
+The rest of the paper is organized as follows. In Section 2 we give mathematical background on union-closed families, the Frankl’s conjecture and prove main theoretical results. In Section 3 we formulate the combinatorial search algorithm, prove its correctness and give its efficient implementation. In Section 4 we introduce uniform families and techniques used for avoiding symmetries when analyzing them. In Section 5 we verify several kinds of uniform FC-families. Finally, in Section 6 we draw conclusions and give directions for further work.
 
-###### Theorem 1.
+## 2 Frankl’s Families
 
-For all k, m ≥ 0 k,m\geq 0, there is a differential operator, called the Jacobi-Serre derivative,
+### 2.1 Union Closed Families
 
- | ∂ J: 𝒥 2 ​ k, m ⟶ 𝒥 2 ​ k + 2, m, \partial^{J}:{\mathcal{J}}_{2k,m}{\ \longrightarrow\ }{\mathcal{J}}_{2k+2,m}, |  |
+First we give basic definitions of union-closed families, closure under unions, and operations used to incrementally obtain closed families.
 
-such that for every F ⁡ ( z, τ) ∈ 𝒥 2 ​ k, m F(z,\tau)\in{\mathcal{J}}_{2k,m} we have
+###### Definition 1
 
-(3) |  | ( ∂ J F) ​ ( 0, τ) = ∂ S ( F ⁡ ( 0, τ)). (\partial^{J}F)(0,\tau)=\partial^{S}(F(0,\tau)). |  |
+Let F F and F c F_{c} be families.
 
-∂ J \partial^{J} is given by the formula
+F F is *union closed*, denoted by 𝗎𝖼 ​ F {\sf uc}\ F, iff ∀ A ∈ F. ∀ B ∈ F. A ∪ B ∈ F. \forall A\in F.\ \forall B\in F.\ A\cup B\in F. F F is *union closed for F c F_{c}*, denoted by 𝗎𝖼 F c ​ F {\sf uc}_{F_{c}}\ F, iff 𝗎𝖼 F ∧ ( ∀ A ∈ F. ∀ B ∈ F c. A ∪ B ∈ F). {\sf uc}\ F\wedge(\forall A\in F.\ \forall B\in F_{c}.\ A\cup B\in F).
 
- | ∂ J ( F) = F ′ − k 12 ​ E 2 ​ F + 1 1 − 4 ​ m ​ ( F ∙ ⁣ ∙ − J 1 ​ F ∙ + m ​ J 2 ​ F − m 6 ​ E 2 ​ F). \partial^{J}(F)=F^{\prime}-\frac{k}{12}E_{2}F+\frac{1}{1-4m}\Big(F^{\bullet\bullet}-J_{1}F^{\bullet}+mJ_{2}F-\frac{m}{6}E_{2}F\Big). |  |
+*Closure of F F*, denoted by ⟨ F ⟩ \left\langle F\right\rangle, is the minimal family of sets (in sense of inclusion) that contains F F and is union closed. *Closure of F F for F c F_{c}*, denoted by ⟨ F ⟩ F c \left\langle F\right\rangle_{F_{c}}, is the minimal family of sets (in sense of inclusion) that contains F F and is union closed for F c F_{c}.
 
-By equation ( 3), ∂ J \partial^{J} directly generalizes the Serre derivative to Jacobi forms of even weight.
+*Insert and close operation*of set A A to family F F, denoted by 𝗂𝖼 ​ A ​ F {\sf ic}\ A\ F, is the family F ∪ { A } ∪ { A ∪ B. B ∈ F }. F\cup\ \{A\}\ \cup\ \{A\cup B.\ B\in F\}.*Insert and close operation for F c F_{c}*of set A A to family F F, denoted by 𝗂𝖼 F c ​ A ​ F {\sf ic}_{F_{c}}\ A\ F, is the family F ∪ { A } ∪ { A ∪ B. B ∈ F } ∪ { A ∪ B. B ∈ F c }. F\cup\ \{A\}\ \cup\ \{A\cup B.\ B\in F\}\ \cup\ \{A\cup B.\ B\in F_{c}\}.
 
-The main application of Theorem 1 and similar constructions for higher differential operators is to find differential equations for Jacobi forms. We examplify this application by stating the index 1 analogs of Ramanujan equation ( 1).
+###### Proposition 1
 
-Let
+1. 1.
 
-(4) |  | ϕ ⁡ ( z, τ) = ϕ − 2, 1 ​ ( z, τ) = ϕ 10, 1 Δ ⁡ ( τ) \phi(z,\tau)=\phi_{-2,1}(z,\tau)=\frac{\phi_{10,1}}{\Delta(\tau)} |  |
+⟨ F ⟩ = { ⋃ F ′. F ′ ∈ 𝗉𝗈𝗐 F − { ∅ } } \left\langle F\right\rangle=\{\bigcup F^{\prime}.\ F^{\prime}\in{\sf pow}\ F-\{\emptyset\}\}
 
-be one of the generators of the algebra of even-weight weak Jacobi forms ( [EZ85], Thm 9.3) and let
+2. 2.
 
- | ℘ ⁡ ( z, τ) = 1 ( 2 ​ π ​ i) 2 ​ ( 1 z 2 + ∑ n ≥ 1 ( 2 ​ n + 1) ​ 2 ​ ζ ​ ( 2 ​ n + 2) ​ E 2 ​ n + 2 ​ z 2 ​ n) \wp(z,\tau)=\frac{1}{(2\pi i)^{2}}\Big(\frac{1}{z^{2}}+\sum_{n\geq 1}(2n+1)2\zeta(2n+2)E_{2n+2}z^{2n}\Big) |  |
+⟨ F ∪ { A } ⟩ = 𝗂𝖼 ​ A ​ ⟨ F ⟩ \left\langle F\cup\{A\}\right\rangle={\sf ic}\ A\ \left\langle F\right\rangle, ⟨ F ∪ { A } ⟩ I = 𝗂𝖼 I ​ A ​ ⟨ F ⟩ \left\langle F\cup\{A\}\right\rangle_{I}={\sf ic}_{I}\ A\ \left\langle F\right\rangle
 
-be the Weierstrasse ℘ \wp function. We define the analog of E 2 E_{2} for Jacobi forms of index 1 1.
+3. 3.
 
-###### Definition 2.
+If F ⊆ 𝗉𝗈𝗐 ​ ⋃ A F\subseteq{\sf pow}\ \bigcup A and 𝗎𝖼 A ​ F {\sf uc}_{A}\ F then 𝗎𝖼 ⟨ A ⟩ ​ F {\sf uc}_{\left\langle A\right\rangle}\ F.
 
-E 2, 1 ​ ( z, τ):= ϕ ⁡ ( z, τ) ​ ( E 2 ​ ( τ) ​ ℘ ​ ( z, τ) − 1 12 ​ E 4). E_{2,1}(z,\tau):=\phi(z,\tau)\Big(E_{2}(\tau)\wp(z,\tau)-\frac{1}{12}E_{4}\Big).
+### 2.2 The Frankl’s Condition
 
-Although E 2, 1 E_{2,1} has several particular properties reminding of E 2 ​ ( τ) E_{2}(\tau), see Lemma 13, the definition is rather ad-hoc and it would be interesting to find a more conceptual approach to E 2, 1 ​ ( z, τ) E_{2,1}(z,\tau). 1 1 1 The function E 2, 1 E_{2,1} introduced by Choie in [Cho97] is different from ours. We state the Ramanujan equation for index 1 1 Jacobi forms.
+The next definition formalizes the Frankl’s condition and the notion of FC-family.
 
-###### Corollary 3.
+###### Definition 2
 
-Let E 4, 1 E_{4,1} and E 6, 1 E_{6,1} be the Jacobi-Eisenstein series of index 1 1 and weight 4 4 and 6 6 respectively. Then
+Family of sets F F satisfies the *Frankl’s condition*and we say that it is a *Frankl’s family*, denoted by 𝖿𝗋𝖺𝗇𝗄𝗅 ​ F {\sf frankl}\ F, if it contains an element that occurs in at least half sets in the family, i.e., 𝖿𝗋𝖺𝗇𝗄𝗅 ​ F ≡ ∃ a. a ∈ ⋃ F ∧ 2 ⋅ #a ​ F ≥ | F | {\sf frankl}\ F\ \equiv\ \exists a.\ a\in\bigcup F\ \wedge\ 2\cdot\#_{a}F\geq|F|, where #a ​ F \#_{a}F denotes | { A ∈ F. a ∈ A } | |\{A\in F.\ a\in A\}|
 
-(5) |  | ∂ J E 2, 1 + 1 12 ​ E 2 ​ E 2, 1 + 1 16 ​ E 4 ′ ​ ϕ − 2, 1 \displaystyle\partial^{J}E_{2,1}+\frac{1}{12}E_{2}E_{2,1}+\frac{1}{16}E_{4}^{\prime}\phi_{-2,1} | = − 1 12 ​ E 4, 1 \displaystyle=-\frac{1}{12}E_{4,1} |  |
+Family of sets F c F_{c} is *FC-family*if it is proved that every union closed family such that F ⊇ F c F\supseteq F_{c} is Frankl’s.
 
- | ∂ J E 4, 1 \displaystyle\partial^{J}E_{4,1} | = − 1 3 ​ E 6, 1 \displaystyle=-\frac{1}{3}E_{6,1} |  |
+### 2.3 Family Isomorphisms
 
- | ∂ J E 6, 1 \displaystyle\partial^{J}E_{6,1} | = − 1 2 ​ E 4 ​ E 4, 1. \displaystyle=-\frac{1}{2}E_{4}E_{4,1}. |  |
+The domain of the family does not play any important role for many properties related to the Frankl’s condition — many properties are invariant for domain changes using injective functions (that establish a kind of isomorphisms between two families). Therefore, in many cases it suffices to consider only families over canonical domains — initial ranges { 0, 1, …, n − 1 } \{0,1,\ldots,n-1\} of natural numbers.
 
-After restricting ( 5) to z = 0 z=0, we obtain Ramanujans original equations ( 1).
+###### Proposition 2
 
-### 0.3. Theta functions
+Let F F be a family of sets and f f a function injective on ⋃ F \bigcup{F}. Let F ′ F^{\prime} be the image of F F under f f (then f f is a bijection between ⋃ F \bigcup{F} and ⋃ F ′ \bigcup{F^{\prime}}).
 
-Unrelated to the differential operators above, we derive in the last part of the paper an interesting relation between deformed Eisenstein series and Jacobi theta functions. Let
+1. 1.
 
-(6) |  | θ 1 ( z, τ) = − i q 1 / 8 ( p 1 / 2 − p − 1 / 2) ∏ m ≥ 1 ( 1 − q m) ( 1 − p q m) ( 1 − p − 1 q m) \theta_{1}(z,\tau)=-iq^{1/8}(p^{1/2}-p^{-1/2})\prod_{m\geq 1}(1-q^{m})(1-pq^{m})(1-p^{-1}q^{m}) |  |
+If a ∈ ⋃ F a\in\bigcup{F}, then #a ​ F = #f ⁡ ( a) ​ F ′ \#_{a}F=\#_{f(a)}F^{\prime}.
 
-be the classical first Jacobi theta function. A straight-forward computation shows, that the function J 1 ​ ( z, τ) J_{1}(z,\tau) arises as the logarithmic derivative of θ 1 \theta_{1},
+2. 2.
 
-(7) |  | θ 1 ∙ θ 1 = J 1. \frac{\theta_{1}^{\bullet}}{\theta_{1}}=J_{1}. |  |
+| F | = | F ′ | |F|=|F^{\prime}|
 
-This can be generalized as follows. For a formal variable x x, let
+3. 3.
 
-(8) |  | J = ∑ n ≥ 0 J n n! ​ x n \curly{J}=\sum_{n\geq 0}\frac{J_{n}}{n!}x^{n} |  |
+If A ∈ F A\in F and A ′ ∈ F ′ A^{\prime}\in F^{\prime} is the image of A A under f f, then | A | = | A ′ | |A|=|A^{\prime}|.
 
-be the generating functions for the J n J_{n} functions.
+4. 4.
 
-###### Theorem 4.
+F F is union closed if and only if F ′ F^{\prime} is.
 
-We have
+5. 5.
 
- | J = x ⋅ θ 1 ∙ ​ ( 0, τ) ⋅ exp ( x ∂ z) ⋅ θ 1 ( z, τ) θ 1 ​ ( x 2 ​ π ​ i, τ) ​ θ 1 ​ ( z, τ), \curly{J}=x\cdot\theta_{1}^{\bullet}(0,\tau)\cdot\frac{\exp(x\partial_{z})\cdot\theta_{1}(z,\tau)}{\theta_{1}(\frac{x}{2\pi i},\tau)\theta_{1}(z,\tau)}, |  |
+F F is Frankl’s if and only if F ′ F^{\prime} is.
 
-where ∂ z = 1 2 ​ π ​ i ∂ ∂ z \partial_{z}=\frac{1}{2\pi i}\frac{\partial}{\partial z} and
+6. 6.
 
- | exp ( x ∂ z) ⋅ θ 1 ( z, τ):= ∑ k ≥ 0 x k k! ∂ z k ( θ 1 ( z, τ)). \exp(x\partial_{z})\cdot\theta_{1}(z,\tau):=\sum_{k\geq 0}\frac{x^{k}}{k!}\partial_{z}^{k}(\theta_{1}(z,\tau)). |  |
+If F ′ F^{\prime} is an FC-family, then so is F F.
 
-As an application, we obtain by a trivial relation among the deformed Eisenstein series a new 2 2 2 to the best of the author’s knowledge sequence of differential relations among the first theta function, see section 3.2.
+### 2.4 FC Characterization by Weight Functions and Shares
 
-### 0.4. Plan of the paper
+We describe the central technique for proving that a family is FC-family, relying on characterizations of the Frankl’s condition using weights and shares.
 
-The first section concerns the study of the deformed Eisenstein series J n J_{n}. We first re-derive their transformation behaviour for modular ( ( z, τ) ↦ ( z / τ, − 1 / τ) (z,\tau)\mapsto(z/\tau,-1/\tau)) and the elliptic ( ( z, τ) ↦ ( z + λ ​ τ + μ, τ) (z,\tau)\mapsto(z+\lambda\tau+\mu,\tau)) transformations. Then we complete J n J_{n} to meromorphic Jacobi forms K n K_{n} of index 0 0 and weight n n via,
+###### Definition 3
 
- | K n = ∑ k = 0 n ( − 1) n + k ​ ( n k) ​ J k ​ J 1 n − k. K_{n}=\sum_{k=0}^{n}(-1)^{n+k}\binom{n}{k}J_{k}J_{1}^{n-k}. |  |
+A function w: X → ℕ w:X\rightarrow\mathbb{N} is a *weight function on*A ⊆ X A\subseteq X, denoted by 𝗐𝖿 A ​ w {\sf wf}_{A}\ w, iff ∃ a ∈ A. w ⁡ ( a) > 0 \exists a\in A.\ w(a)>0. *Weight of a set A A wrt. weight function w w*, denoted by w ⁡ ( A) w(A), is the value ∑ a ∈ A w ⁡ ( a) \sum_{a\in A}w(a). *Weight of a family F F wrt. weight function w w*, denoted by w ⁡ ( F) w(F), is the value ∑ A ∈ F w ⁡ ( A) \sum_{A\in F}w(A).
 
-K n K_{n} is an element of weight n n in the vectorspace 𝕍 n {\mathbb{V}}_{n} of meromorphic Jacobi forms of index 0 0 (i.e. double periodic ones) with only pole at 0 0 of order ≤ n \leq n. We show how to use this to easily derive relation among derivatives and products of the functions J n J_{n}.
+###### Lemma 1
 
-In the second section, we prove the main theorem 1. For this, we use the basic fact, that the vector space of Jacobi forms of index m m, 𝒥 ∗, m {\mathcal{J}}_{\ast,m}, is isomorphic to 𝕍 m {\mathbb{V}}_{m} by the map F ↦ F / ϕ m F\mapsto F/\phi^{m}. After reexpressing differentials of Jacobi forms in 𝕍 m {\mathbb{V}}_{m}, we can easily write down differential operators for Jacobi forms. This gives a framework to also deal with more complicated differential equations and operators for Jacobi forms. We use this to find the definition for ∂ J \partial^{J} and prove Corollary 3.
+𝖿𝗋𝖺𝗇𝗄𝗅 ​ F ⇔ ∃ w. 𝗐𝖿 ( ⋃ F) ​ w ∧ 2 ⋅ w ⁡ ( F) ≥ w ⁡ ( ⋃ F) ⋅ | F | {\sf frankl}\ F\iff\exists w.\ {\sf wf}_{(\bigcup F)}\ w\ \wedge\ 2\cdot w(F)\;\geq\;w(\bigcup{F})\cdot|F|
 
-Finally, in the last section we prove Theorem 4 using the completions K n K_{n}. We also give a definition of deformed Eisenstein series J i, n J_{i,n} corresponding to the other classical theta functions and prove an analogous statement for them.
+###### Proof
 
-### 0.5. Relation to other work
+Assume 𝖿𝗋𝖺𝗇𝗄𝗅 ​ F {\sf frankl}\ F and let a a be the element satisfying the Frankl’s condition. Let w w be the weight function assigning 1 to a a and 0 to all other elements. Since w ⁡ ( F) = #a ​ F w(F)=\#_{a}F and w ⁡ ( ⋃ F) = 1 w(\bigcup{F})=1, the statements holds.
 
-Deformed Eisenstein series were considered already in [GK09] and [MTZ08] in the process of studying N = 2 N=2 superconformal field theories and differential equations for elliptic genera (which are vector valued weak Jacobi Forms). In particular, in [GK09] Gaberdiel and Keller study the modular and periodic properties of deformed Eisenstein Series and the proofs given here are analog. By arguments from conformal field theory, [GK09] then obtain a set differential operators for (all) weak Jacobi forms. In contrast, our method is completely elementary.
+Conversely, suppose that ¬ 𝖿𝗋𝖺𝗇𝗄𝗅 ​ F \neg{\sf frankl}\ F. Then, for every a ∈ ⋃ F a\in\bigcup{F}, 2 ⋅ #a ​ F < | F | 2\cdot\#_{a}F<|F|. Hence, 2 ⋅ w ⁡ ( F) = ∑ a ∈ ⋃ F w ⁡ ( a) ⋅ 2 ⋅ #a ​ F 2\cdot w(F)=\sum_{a\in\bigcup{F}}w(a)\cdot 2\cdot\#_{a}F < < | F | ⋅ ∑ a ∈ ⋃ F w ⁡ ( a) |F|\cdot\sum_{a\in\bigcup{F}}w(a) = = | F | ⋅ w ⁡ ( ⋃ F) |F|\cdot w(\bigcup{F}).
 
-Differential equation for Jacobi forms and deformed Eisenstein series appear also when studying Gromov-Witten invariants. The enumerative geometry of K3 surfaces and Hilbert schemes of K3 surfaces is encoded in various modular and Jacobi forms, see [MPT10], [PT14] and [Obe14]. In [Obe14] the calculation of the GW invariants are reduced to solving an explicit set of partial differential equations in 2 variables, that is obtained by applying WDVV equations (see [FP97]) in the case of the Hilbert scheme of 2 2 points of ℙ 1 × E \mathbb{P}^{1}\times E. Here E E is a smooth elliptic curve. The solution to this system is given by Jacobi forms of index 1 1 and deformed Eisenstein series. The equations give then complicated differential equations intertwining Jacobi forms and deformed Eisenstein series. Understanding this system was the author’s main motivation for studying these functions in more generality.
+A concept that will enable a slightly more operative formulation of the previous characterization is the concept of *share*6 6 6 Note that in order to accommodate for computer implementation only integer weights are allowed, and to avoid rational numbers share of a set A A is defined as 2 ⋅ w ⁡ ( A) − w ⁡ ( X) 2\cdot w(A)-w(X), instead of w ⁡ ( A) − w ⁡ ( X) / 2 w(A)-w(X)/2 that is used in the literature..
 
-### 0.6. Acknowledgements
+###### Definition 4
 
-I would like to thank the following people. The programmers behind the math software SAGE and mpmath for their work. Özlem Imamoglu, Jonas Jermann, Aaron Pixton, Martin Raum and Emanuel Scheidegger for various discussions and comments on the subject. And my advisor Rahul Pandharipande for his constant support and patience.
+Let w w be a weight function. *Share of a set A A wrt. w w and a set X X*, denoted by w ¯ X ​ ( A) \bar{w}_{X}(A), is the value 2 ⋅ w ⁡ ( A) − w ⁡ ( X) 2\cdot w(A)-w(X). *Share of a family F F wrt. w w and a set X X*, denoted by w ¯ X ​ ( F) \bar{w}_{X}(F), is the value ∑ A ∈ F w ¯ X ​ ( A) \sum_{A\in F}\bar{w}_{X}(A).
 
-## 1. Deformed Eisenstein series
+###### Example 1
 
-### 1.1. Transformation properties
+Let w w be a function such that w ⁡ ( a 0) = 1, w ⁡ ( a 1) = 2 w(a_{0})=1,w(a_{1})=2, and w ⁡ ( a) = 0 w(a)=0 for all other elements. w w is clearly a weight function. Then, w ⁡ ( { a 0, a 1, a 2 }) = 3 w(\{a_{0},a_{1},a_{2}\})=3 and w ⁡ ( { { a 0, a 1 }, { a 1, a 2 }, { a 1 } }) = 7 w(\{\{a_{0},a_{1}\},\{a_{1},a_{2}\},\{a_{1}\}\})=7. Also, w ¯ { a 0, a 1, a 2 } ​ ( { a 1, a 2 }) = 2 ⋅ w ⁡ ( { a 1, a 2 }) − w ⁡ ( { a 0, a 1, a 2 }) = 4 − 3 = 1, \bar{w}_{\{a_{0},a_{1},a_{2}\}}(\{a_{1},a_{2}\})=2\cdot w(\{a_{1},a_{2}\})-w(\{a_{0},a_{1},a_{2}\})=4-3=1, and w ¯ { a 0, a 1, a 2 } ​ ( { { a 0, a 1 }, { a 1, a 2 }, { a 1 } }) = ( 2 ⋅ 3 − 3) + ( 2 ⋅ 2 − 3) + ( 2 ⋅ 2 − 3) = 5. \bar{w}_{\{a_{0},a_{1},a_{2}\}}(\{\{a_{0},a_{1}\},\{a_{1},a_{2}\},\{a_{1}\}\})=(2\cdot 3-3)+(2\cdot 2-3)+(2\cdot 2-3)=5.
 
-We prove the transformation property of J n J_{n} for the elliptic and modular transformations.
+###### Proposition 3
 
-###### Lemma 5.
+w ¯ X ​ ( F) = 2 ⋅ w ⁡ ( F) − w ⁡ ( X) ⋅ | F | \bar{w}_{X}(F)=2\cdot w(F)-w(X)\cdot|F|
 
-For λ, μ ∈ ℤ \lambda,\mu\in{\mathbb{Z}},
+###### Lemma 2
 
- | J n ​ ( z + λ ​ τ + μ, τ) = ∑ k = 0 n ( − 1) n + k ​ ( n k) ​ λ n − k ​ J k ​ ( z, τ). J_{n}(z+\lambda\tau+\mu,\tau)=\sum_{k=0}^{n}(-1)^{n+k}\binom{n}{k}\lambda^{n-k}J_{k}(z,\tau). |  |
+𝖿𝗋𝖺𝗇𝗄𝗅 ​ F ⇔ ∃ w. 𝗐𝖿 ( ⋃ F) ​ w ∧ w ¯ ( ⋃ F) ​ ( F) ≥ 0 {\sf frankl}\ F\iff\exists w.\ {\sf wf}_{(\bigcup{F})}\ w\ \wedge\ \bar{w}_{(\bigcup{F})}(F)\geq 0
 
-###### Proof.
+###### Proof
 
-Replace p p by p ​ q λ pq^{\lambda} in the right hand side of ( 2) and calculate. ∎
+Follows directly from Proposition 3 and Lemma 1.
 
-Note next, that we have for all k ≥ 1 k\geq 1 the basic relation
+#### Hypercubes.
 
-(9) |  | k k + 1 ​ J k + 1 ∙ = J k ′. \frac{k}{k+1}J_{k+1}^{\bullet}=J_{k}^{\prime}. |  |
+Sets of a family can be grouped into so called hypercubes.
 
-###### Lemma 6 ( [GK09]).
+###### Definition 5
 
-J n ( z / τ, − 1 / τ) = ∑ k = 0 n ( n k) z n − k τ k J k \displaystyle{J_{n}(z/\tau,-1/\tau)=\sum_{k=0}^{n}\binom{n}{k}z^{n-k}\tau^{k}J_{k}}.
+An S S -*hypercube*with a base K K, denoted by 𝗁𝖼 K S {\sf hc}_{K}^{S}, is the family { A. K ⊆ A ∧ A ⊆ K ∪ S } \{A.\ K\subseteq A\wedge A\subseteq K\cup S\}. Alternatively, a hypercube can be characterized by 𝗁𝖼 K S = { K ∪ A. A ∈ 𝗉𝗈𝗐 S } {\sf hc}_{K}^{S}=\{K\cup A.\ A\in{\sf pow}\ S\}.
 
-###### Proof.
+###### Example 2
 
-Using the Taylor expansion p = ∑ k ≥ 0 ( 2 ​ π ​ i ​ z) k / k! p=\sum_{k\geq 0}(2\pi iz)^{k}/k! in the Fourier expansion of J 1 J_{1}, one obtains
+Let S ≡ { s 0, s 1 } S\equiv\{s_{0},s_{1}\}, and K ≡ { k 0, k 1 } K\equiv\{k_{0},k_{1}\}. If K ′ ⊆ K K^{\prime}\subseteq K, then all S S -hypercubes with a base K ′ K^{\prime} are:
 
-(10) |  | J 1 ​ ( z, τ) = 1 w + ∑ n ≥ 1 w 2 ​ n − 1 ( 2 ​ n)! ⋅ ( B 2 ​ n ​ E 2 ​ n ​ ( τ)), J_{1}(z,\tau)=\frac{1}{w}+\sum_{n\geq 1}\frac{w^{2n-1}}{(2n)!}\cdot\Big(B_{2n}E_{2n}(\tau)\Big), |  |
+ | 𝗁𝖼 { } S \displaystyle{\sf hc}_{\{\}}^{S} | = \displaystyle= | { { }, { s 0 }, { s 1 }, { s 0, s 1 } } \displaystyle\{\{\},\{s_{0}\},\{s_{1}\},\{s_{0},s_{1}\}\} |  |
 
-where w = 2 ​ π ​ i ​ z w=2\pi iz. By the transformation property of the Eisenstein series, we then have
+ | 𝗁𝖼 { k 0 } S \displaystyle{\sf hc}_{\{k_{0}\}}^{S} | = \displaystyle= | { { k 0 }, { k 0, s 0 }, { k 0, s 1 }, { k 0, s 0, s 1 } } \displaystyle\{\{k_{0}\},\{k_{0},s_{0}\},\{k_{0},s_{1}\},\{k_{0},s_{0},s_{1}\}\} |  |
 
- | J 1 ( z / τ, − 1 / τ) = z + τ J 1 ( z, τ). J_{1}(z/\tau,-1/\tau)=z+\tau J_{1}(z,\tau). |  |
+ | 𝗁𝖼 { k 1 } S \displaystyle{\sf hc}_{\{k_{1}\}}^{S} | = \displaystyle= | { { k 1 }, { k 1, s 0 }, { k 1, s 1 }, { k 1, s 0, s 1 } } \displaystyle\{\{k_{1}\},\{k_{1},s_{0}\},\{k_{1},s_{1}\},\{k_{1},s_{0},s_{1}\}\} |  |
 
-By induction, we proceed now as follows. Suppose we know how J i ​ ( z, τ) J_{i}(z,\tau) transforms under the substition ( z, τ) ↦ ( z / τ, − 1 / τ) (z,\tau)\mapsto(z/\tau,-1/\tau). Then, by differentiating the transformation equation for J i J_{i} with respect to τ \tau, and using ( 9), we obtain an expression for J i + 1 ∙ ( z / τ, − 1 / τ) J_{i+1}^{\bullet}(z/\tau,-1/\tau). Integrating with respect to z z, we find an expression for J i + 1 ( z / τ, − 1 / τ) J_{i+1}(z/\tau,-1/\tau) up to a function that depends only on τ \tau. Plugging in z = 0 z=0 and using that J 2 ​ g J_{2g} restricts to standard Eisenstein series, for which we know the transformation property, while J 2 ​ g + 1 J_{2g+1} restricts to 0 0, we obtain the transformation law for J i + 1 J_{i+1}. ∎
+ | 𝗁𝖼 { k 0, k 1 } S \displaystyle{\sf hc}_{\{k_{0},k_{1}\}}^{S} | = \displaystyle= | { { k 0, k 1 }, { k 0, k 1, s 0 }, { k 0, k 1, s 1 }, { k 0, k 1, s 0, s 1 } } \displaystyle\{\{k_{0},k_{1}\},\{k_{0},k_{1},s_{0}\},\{k_{0},k_{1},s_{1}\},\{k_{0},k_{1},s_{0},s_{1}\}\} |  |
 
-### 1.2. The completion
+Previous example indicates that (disjoint) S S -hypercubes can span the whole 𝗉𝗈𝗐 ⁡ ( K ∪ S) {\sf pow}\ (K\cup S). Indeed, this is generally the case.
 
-Define recursively functions K n ​ ( z, τ) K_{n}(z,\tau) for n ≥ 2 n\geq 2 by
+###### Proposition 4
 
-(11) |  | K n = J n − J 1 n − ∑ q = 2 n − 1 ( n q) ​ K q ​ J 1 n − q, K_{n}=J_{n}-J_{1}^{n}-\sum_{q=2}^{n-1}\binom{n}{q}K_{q}J_{1}^{n-q}, |  |
+(i) 𝗉𝗈𝗐 ⁡ ( K ∪ S) = ⋃ K ′ ⊆ K 𝗁𝖼 K ′ S {\sf pow}\ (K\cup S)=\bigcup_{K^{\prime}\subseteq K}{\sf hc}_{K^{\prime}}^{S}. (ii) If K 1 K_{1} and K 2 K_{2} are different and disjoint with S S, then 𝗁𝖼 K 1 S {\sf hc}_{K_{1}}^{S} and 𝗁𝖼 K 2 S {\sf hc}_{K_{2}}^{S} are disjoint.
 
-where the sum is empty for n = 2 n=2. An explicit formula can be given by
+Families of sets can be separated into (disjoint) parts belonging to different hypercubes (formed as 𝗁𝖼 K S ∩ F {\sf hc}_{K}^{S}\cap F).
 
-(12) |  | K n = ∑ k = 0 n ( − 1) n + k ​ ( n k) ​ J k ​ J 1 n − k. K_{n}=\sum_{k=0}^{n}(-1)^{n+k}\binom{n}{k}J_{k}J_{1}^{n-k}. |  |
+###### Definition 6
 
-###### Proposition 7.
+A *hyper-share of a family F F wrt. weight function w w, the hypercube 𝗁𝖼 K S {\sf hc}_{K}^{S} and the set X X*, denoted by w ¯ K ​ X S ​ ( F) \bar{w}^{S}_{KX}(F), is the value ∑ A ∈ 𝗁𝖼 K S ∩ F w ¯ X ​ ( A) \sum_{A\in{\sf hc}_{K}^{S}\cap F}\bar{w}_{X}(A).
 
-K n K_{n} are double-periodic in z z and are modular of weight n n, that is for all λ, μ ∈ ℤ \lambda,\mu\in{\mathbb{Z}}
+###### Example 3
 
- | K n ​ ( z + λ ​ τ + μ, τ) \displaystyle K_{n}(z+\lambda\tau+\mu,\tau) | = K n ​ ( z, τ) \displaystyle=K_{n}(z,\tau) |  |
+Let S S and K K be as in the Example 2, let X ≡ K ∪ S X\equiv K\cup S, let F ≡ { { s 0 }, { s 1 }, { k 0, s 0 }, { k 0, k 1, s 0, s 1 } } F\equiv\{\{s_{0}\},\{s_{1}\},\{k_{0},s_{0}\},\{k_{0},k_{1},s_{0},s_{1}\}\}, and w ⁡ ( a) = 1 w(a)=1 for all a ∈ X a\in X. Then, w ¯ { } ​ X S ​ ( F) = w ¯ X ​ ( { s 0 }) + w ¯ X ​ ( { s 1 }) = − 4 \bar{w}^{S}_{\{\}X}(F)=\bar{w}_{X}(\{s_{0}\})+\bar{w}_{X}(\{s_{1}\})=-4, w ¯ { k 0 } ​ X S ​ ( F) = w ¯ X ​ ( { k 0, s 0 }) = 0 \bar{w}^{S}_{\{k_{0}\}X}(F)=\bar{w}_{X}(\{k_{0},s_{0}\})=0, w ¯ { k 1 } ​ X S ​ ( F) = 0 \bar{w}^{S}_{\{k_{1}\}X}(F)=0, and w ¯ { k 0, k 1 } ​ X S ​ ( F) \bar{w}^{S}_{\{k_{0},k_{1}\}X}(F) = = w ¯ X ​ ( { k 0, k 1, s 0, s 1 }) = 4 \bar{w}_{X}(\{k_{0},k_{1},s_{0},s_{1}\})=4.
 
- | K n ( z / τ, − 1 / τ) \displaystyle K_{n}(z/\tau,-1/\tau) | = τ n ​ K n. \displaystyle=\tau^{n}K^{n}. |  |
+Share of a family can be expressed in terms of sum of hyper-shares.
 
-###### Proof.
+###### Proposition 5
 
-By induction on n n and a calculation using equation ( 11). ∎
+If K ∪ S = ⋃ F K\cup S=\bigcup{F} and K ∩ S = ∅ K\cap S=\emptyset, then w ¯ ( ⋃ F) ​ ( F) = ∑ K ′ ⊆ K w ¯ K ′ ​ ( ⋃ F) S ​ ( F) \bar{w}_{(\bigcup{F})}(F)=\sum_{K^{\prime}\subseteq K}\bar{w}^{S}_{K^{\prime}(\bigcup{F})}(F).
 
-### 1.3. Poles
+###### Lemma 3
 
-Let
+Let w w be a weight function on ⋃ F \bigcup{F}. If K ∪ S = ⋃ F K\cup S=\bigcup{F}, K ∩ S = ∅ K\cap S=\emptyset, and ∀ K ′ ⊆ K. w ¯ K ′ ​ ( ⋃ F) S ​ ( F) ≥ 0 \forall K^{\prime}\subseteq K.\ \bar{w}^{S}_{K^{\prime}(\bigcup{F})}(F)\geq 0, then 𝖿𝗋𝖺𝗇𝗄𝗅 ​ F {\sf frankl}\ F.
 
- | D = { λ + μ τ | 0 ≤ λ, μ < 1 } D=\{\lambda+\mu\tau\ |\ 0\leq\lambda,\mu<1\} |  |
+###### Proof
 
-be a fundamental region for z z with respect to a fixed τ \tau. By ( 7), J 1 J_{1} has a single pole of order 1 1 at 0 0 and no other pole in D D. By ( 9), J n J_{n} then has for n ≥ 2 n\geq 2 no poles at all in D D. 3 3 3 By Lemma 5, J n J_{n} has poles outside of D D.
+Immediate consequence of Proposition 5 and Lemma 2.
 
-###### Lemma 8.
+###### Definition 7
 
-For all n ≥ 2 n\geq 2, K n K_{n} has a pole of order n n at z = 0 z=0 and no other poles in a fundamental region. Moreover, if K n = ∑ a k ​ ( τ) ​ w k K_{n}=\sum a_{k}(\tau)w^{k}, where w = 2 ​ π ​ i ​ z w=2\pi iz, then a k a_{k} are holomorphic modular forms of weight k + n k+n, a − 1 = 0 a_{-1}=0 and a − n = ( − 1) n + 1 ​ ( n − 1) a_{-n}=(-1)^{n+1}(n-1). In particular,
+*Projection of a family F F onto a hypercube 𝗁𝖼 K S {\sf hc}_{K}^{S}*, denoted by 𝗁𝖼 K S ​ ⌊ F ⌋ {\sf hc}_{K}^{S}\left\lfloor{F}\right\rfloor, is the set { A − K. A ∈ 𝗁𝖼 K S ∩ F } \{A-K.\ A\in{\sf hc}_{K}^{S}\cap F\}.
 
- | K n ​ ( z, τ) = ( − 1) n + 1 ​ ( n − 1) w n + O ⁡ ( w − n + 4). K_{n}(z,\tau)=\frac{(-1)^{n+1}(n-1)}{w^{n}}+O(w^{-n+4}). |  |
+###### Example 4
 
-###### Proof.
+Let K K, S S and F F be as in Example 3. Then 𝗁𝖼 { } S ​ ⌊ F ⌋ = { { s 0 }, { s 1 } } {\sf hc}_{\{\}}^{S}\left\lfloor{F}\right\rfloor=\{\{s_{0}\},\{s_{1}\}\}, 𝗁𝖼 { k 0 } S ​ ⌊ F ⌋ = { { s 0 } } {\sf hc}_{\{k_{0}\}}^{S}\left\lfloor{F}\right\rfloor=\{\{s_{0}\}\}, 𝗁𝖼 { k 1 } S ​ ⌊ F ⌋ = { } {\sf hc}_{\{k_{1}\}}^{S}\left\lfloor{F}\right\rfloor=\{\}, and 𝗁𝖼 { k 0, k 1 } S ​ ⌊ F ⌋ = { { s 0, s 1 } } {\sf hc}_{\{k_{0},k_{1}\}}^{S}\left\lfloor{F}\right\rfloor=\{\{s_{0},s_{1}\}\}.
 
-The first part is by ( 12) and the analysis of the poles of J n J_{n}. The statement on holomorphicity of a k ​ ( τ) a_{k}(\tau) follows from the Fourier expansion of the J n J_{n} for a fixed z ≠ 0 z\neq 0. a − n a_{-n} follows from the expansion ( 10) and a − 1 = 1 a_{-1}=1, since an elliptic function with a single pole has no residuum. ∎
+###### Proposition 6
 
-Let 𝕍 {\mathbb{V}} be the ℂ {\mathbb{C}} -vector space spanned by all meromorphic Jacobi forms 4 4 4 that is, a meromorphic function that satisfies the elliptic and modular transformation equation f: ℂ × ℍ ⟶ ℂ ∪ { ∞ } f:{\mathbb{C}}\times{\mathbb{H}}{\ \longrightarrow\ }{\mathbb{C}}\cup\{\infty\} of index 0 0 and some weight, with only pole in the fundamental region at 0 0 and a Laurent series at 0 0 with coefficients holomorphic modular forms in τ \tau. By Lemma 8, a basis of 𝕍 {\mathbb{V}} as a module over the ring of holomorphic modular forms M ∗ M_{\ast} is given by the K n K_{n}. We will use later the natural filtration
+1. 1.
 
- | 𝕍 n = { f ∈ 𝕍 | f ​ has a pole of order ≤ n ​ at ​ 0 }. {\mathbb{V}}_{n}=\{f\in{\mathbb{V}}\ |\ f\text{ has a pole of order }\leq n\text{ at }0\}. |  |
+If K ∩ S = ∅ K\cap S=\emptyset and K ′ ⊆ K K^{\prime}\subseteq K, then 𝗁𝖼 K ′ S ​ ⌊ F ⌋ ⊆ 𝗉𝗈𝗐 ​ S {\sf hc}_{K^{\prime}}^{S}\left\lfloor{F}\right\rfloor\subseteq{\sf pow}\ S
 
-### 1.4. Relations
+2. 2.
 
-Two meromorphic Jacobi forms of index 0 0 with the same principal part at their singularities are equal up to a function of τ \tau. Since for n ≤ 5 n\leq 5 we only have a single negative term in the Taylor expansion of K n K_{n}, we easily obtain relations among products and derivatives of the K i K_{i} for low i i. Moreover, using ( 12) and induction on n n, we see that we can rewrite any derivative of J n J_{n} in the form of products of J i J_{i} for i ≤ n + 1 i\leq n+1. We give the first few examples.
+If 𝗎𝖼 ​ F {\sf uc}\ F, then 𝗎𝖼 ⁡ ( 𝗁𝖼 K S ​ ⌊ F ⌋) {\sf uc}\ ({\sf hc}_{K}^{S}\left\lfloor{F}\right\rfloor).
 
-###### Example 9.
+3. 3.
 
- | K 2 \displaystyle K_{2} | = J 1 ∙ − 1 12 ​ E 2 ​ ( τ) = − ℘ ⁡ ( z, τ) \displaystyle=J_{1}^{\bullet}-\frac{1}{12}E_{2}(\tau)=-\wp(z,\tau) |  |
+If 𝗎𝖼 ​ F {\sf uc}\ F, F c ⊆ F F_{c}\subseteq F, S = ⋃ F c S=\bigcup F_{c}, K ∩ S = ∅ K\cap S=\emptyset, then 𝗎𝖼 F c ​ ( 𝗁𝖼 K S ​ ⌊ F ⌋) {\sf uc}_{F_{c}}\ ({\sf hc}_{K}^{S}\left\lfloor{F}\right\rfloor).
 
- | J 2 ∙ \displaystyle J_{2}^{\bullet} | = J 3 − J 1 ​ J 2 + 1 6 ​ E 2 ​ J 1 \displaystyle=J_{3}-J_{1}J_{2}+\frac{1}{6}E_{2}J_{1} |  |
+4. 4.
 
- | J 3 ∙ \displaystyle J_{3}^{\bullet} | = J 4 − J 3 ​ J 1 + 1 4 ​ J 2 ​ E 2 − 1 120 ​ E 4 \displaystyle=J_{4}-J_{3}J_{1}+\frac{1}{4}J_{2}E_{2}-\frac{1}{120}E_{4} |  |
+If ∀ x ∈ K. w ⁡ ( x) = 0 \forall x\in K.\ w(x)=0, then w ¯ K ​ X S ​ ( F) = w ¯ X ​ ( 𝗁𝖼 K S ​ ⌊ F ⌋) \bar{w}^{S}_{KX}(F)=\bar{w}_{X}({\sf hc}_{K}^{S}\left\lfloor{F}\right\rfloor).
 
- | K 2 ⋅ K 2 \displaystyle K_{2}\cdot K_{2} | = − 1 3 ​ K 4 + 1 60 ​ E 4, \displaystyle=-\frac{1}{3}K_{4}+\frac{1}{60}E_{4}, |  |
+#### Union closed extensions.
 
-where we used ( 7) in the second equality of the first line.
+The next definition introduces an important notion for checking FC-families.
 
-## 2. Differential operators
+###### Definition 8
 
-### 2.1. Reduction to 𝕍 {\mathbb{V}}
+*Union closed extensions*of a family F c F_{c} are families that are created from elements of F c F_{c} and are union closed for F c F_{c}. Family of all union closed extensions is denoted by 𝗎𝖼𝖾 ​ F c {\sf uce}\ F_{c}, and 𝗎𝖼𝖾 F c ≡ { F ′. F ′ ⊆ 𝗉𝗈𝗐 ⋃ F c ∧ 𝗎𝖼 F c F ′ } {\sf uce}\ F_{c}\equiv\{F^{\prime}.\ F^{\prime}\subseteq{\sf pow}\ \bigcup{F_{c}}\wedge{\sf uc}_{F_{c}}\ F^{\prime}\}.
 
-Let ϕ = ϕ − 2, 1 \phi=\phi_{-2,1} be as in ( 4). As ϕ ⁡ ( z, τ) = θ 1 ​ ( z, τ) 2 / θ 1 ∙ ​ ( 0, τ) 2 \phi(z,\tau)=\theta_{1}(z,\tau)^{2}/\theta_{1}^{\bullet}(0,\tau)^{2} (see e.g. [DMZ12]), ϕ \phi has a single zero at 0 0 of order 2 2 in the fundamental region.
+###### Lemma 4
 
-Let F F be a (weak) Jacobi form of index m m and weight k k and consider F / ϕ m F/\phi^{m}. F / ϕ m F/\phi^{m} is a meromorphic Jacobi form of index 0 0, weight 2 ​ k + m 2k+m and has a single pole of order ≤ 2 ​ m \leq 2m at 0 0 in the fundamental region. Moreover, since the coefficients of a Taylor expansion of F F are quasi-modular forms [DMZ12], F / ϕ m ∈ 𝕍 2 ​ m F/\phi^{m}\in{\mathbb{V}}_{2m}. It is then easy to prove the following.
+Let F F be a non-empty union closed family, and let F c F_{c} be a subfamily (i.e., F c ⊆ F F_{c}\subseteq F). Let S S denote ⋃ F c \bigcup{F_{c}}, and let K K denote ⋃ F − ⋃ F c \bigcup{F}-\bigcup{F_{c}}. Let w w be a weight function on ⋃ F \bigcup{F}, that is zero for all elements of K K. If shares of all union closed extension of F c F_{c} are nonnegative, then F F is Frankl’s, i.e., if ∀ F ′ ∈ 𝗎𝖼𝖾 ​ F c. w ¯ ( ⋃ F c) ​ ( F ′) ≥ 0 \forall F^{\prime}\in{\sf uce}\ F_{c}.\ \bar{w}_{(\bigcup{F_{c}})}(F^{\prime})\geq 0, then 𝖿𝗋𝖺𝗇𝗄𝗅 ​ F {\sf frankl}\ F.
 
-###### Lemma 10.
+###### Proof
 
-Let 𝒥 ~ ∗, m \widetilde{{\mathcal{J}}}_{\ast,m} be the space of weak Jacobi forms of index m m. The map
+Since, K ∪ S = ⋃ F K\cup S=\bigcup F and K ∩ S = ∅ K\cap S=\emptyset, by Lemma 3, it suffices to show that ∀ K ′ ⊆ K. w ¯ K ′ ​ ( ⋃ F) S ​ ( F) ≥ 0 \forall K^{\prime}\subseteq K.\ \bar{w}^{S}_{K^{\prime}(\bigcup{F})}(F)\geq 0. Fix K ′ K^{\prime} and assume that K ′ ⊆ K K^{\prime}\subseteq K. Since w w is zero on K K, by Proposition 6, it holds that w ¯ K ′ ​ ( ⋃ F) S ​ ( F) = w ¯ ( ⋃ F) ​ ( 𝗁𝖼 K ′ S ​ ⌊ F ⌋) \bar{w}^{S}_{K^{\prime}(\bigcup{F})}(F)=\bar{w}_{(\bigcup{F})}({\sf hc}_{K^{\prime}}^{S}\left\lfloor{F}\right\rfloor). On the other hand, since 𝗎𝖼 ​ F {\sf uc}\ F, F c ⊆ F F_{c}\subseteq F, and K ∩ S = ∅ K\cap S=\emptyset, by Proposition 6 it holds that 𝗎𝖼 F c ​ ( 𝗁𝖼 K ′ S ​ ⌊ F ⌋) {\sf uc}_{F_{c}}\ ({\sf hc}_{K^{\prime}}^{S}\left\lfloor{F}\right\rfloor). Moreover, 𝗁𝖼 K ′ S ​ ⌊ F ⌋ ⊆ 𝗉𝗈𝗐 ​ S {\sf hc}_{K^{\prime}}^{S}\left\lfloor{F}\right\rfloor\subseteq{\sf pow}\ S, so 𝗁𝖼 K ′ S ​ ⌊ F ⌋ ∈ 𝗎𝖼𝖾 ​ F c {\sf hc}_{K^{\prime}}^{S}\left\lfloor{F}\right\rfloor\in{\sf uce}\ F_{c}. Then, w ¯ ( ⋃ F c) ​ ( 𝗁𝖼 K ′ S ​ ⌊ F ⌋) ≥ 0 \bar{w}_{(\bigcup{F_{c}})}({\sf hc}_{K^{\prime}}^{S}\left\lfloor{F}\right\rfloor)\geq 0 holds from the assumption. However, since w w is zero on K K, it holds that w ⁡ ( ⋃ F c) = w ⁡ ( ⋃ F) w(\bigcup{F_{c}})=w(\bigcup{F}) and w ¯ ( ⋃ F) ​ ( 𝗁𝖼 K ′ S ​ ⌊ F ⌋) = w ¯ ( ⋃ F c) ​ ( 𝗁𝖼 K ′ S ​ ⌊ F ⌋) ≥ 0 \bar{w}_{(\bigcup{F})}({\sf hc}_{K^{\prime}}^{S}\left\lfloor{F}\right\rfloor)=\bar{w}_{(\bigcup{F_{c}})}({\sf hc}_{K^{\prime}}^{S}\left\lfloor{F}\right\rfloor)\geq 0
 
-(13) |  | 𝒥 ~ ∗, m ⟶ 𝕍 2 ​ m, F ↦ F / ϕ m \widetilde{{\mathcal{J}}}_{\ast,m}{\ \longrightarrow\ }{\mathbb{V}}_{2m},\quad F\mapsto F/\phi^{m} |  |
+###### Theorem 2.1
 
-is an isomorphism.
+A family F c F_{c} is an FC-family if there is a weight function w w such that shares (wrt. w w and ⋃ F c \bigcup F_{c}) of all union closed extension of F c F_{c} are nonnegative.
 
-We will use this lemma, to transform statements on (weak) Jacobi forms to 𝕍 2 ​ m {\mathbb{V}}_{2m}.
+###### Proof
 
-### 2.2. Operators on 𝕍 2 ​ m {\mathbb{V}}_{2m}
+Consider a union-closed family F ⊇ F c F\supseteq F_{c}. Let w w be the weight function such that ∀ F ′ ∈ 𝗎𝖼𝖾 ​ F c. w ¯ ( ⋃ F c) ​ ( F ′) ≥ 0 \forall F^{\prime}\in{\sf uce}\ F_{c}.\ \bar{w}_{(\bigcup{F_{c}})}(F^{\prime})\geq 0. Let w ′ w^{\prime} be a function equal to w w on ⋃ F c \bigcup F_{c} and 0 on other elements. Since ∀ F ′ ∈ 𝗎𝖼𝖾 ​ F c. w ′ ¯ ( ⋃ F c) ​ ( F ′) = w ¯ ( ⋃ F c) ​ ( F ′) \forall F^{\prime}\in{\sf uce}\ F_{c}.\ \bar{w^{\prime}}_{(\bigcup{F_{c}})}(F^{\prime})=\bar{w}_{(\bigcup{F_{c}})}(F^{\prime}), Lemma 4 applies to F F and F F is Frankl’s.
 
-Define the three operators,
+## 3 Combinatorial search
 
- | ∙ \displaystyle\bullet | Multiplication by ​ K i: \displaystyle\text{ Multiplication by }K_{i}:\quad\quad | K i ⋅: \displaystyle K_{i}\cdot: | 𝕍 n ⟶ 𝕍 n + i, \displaystyle{\mathbb{V}}_{n}{\ \longrightarrow\ }{\mathbb{V}}_{n+i},\quad | f \displaystyle f | ↦ K i ⋅ f \displaystyle\mapsto K_{i}\cdot f |  |
+Theorem 2.1 inspires a procedure for verifying FC families. It should take a weight function on ⋃ F c \bigcup{F_{c}} and check that all union closed extensions of F c F_{c} have nonnegative shares. We will now define a procedure *SomeShareNegative*, denoted by 𝗌𝗌𝗇 ​ F c ​ w {\sf ssn}\ F_{c}\ w, such that if 𝗌𝗌𝗇 F c w = ⊥ {\sf ssn}\ F_{c}\ w=\bot, then for all F ′ ∈ 𝗎𝖼𝖾 ​ F c F^{\prime}\in{\sf uce}\ F_{c} it holds that w ¯ ( ⋃ F c) ​ ( F ′) ≥ 0 \bar{w}_{(\bigcup{F_{c}})}(F^{\prime})\geq 0. The heart of this procedure will be a recursive function 𝗌𝗌𝗇 F c, w, X ​ L ​ F t {\sf ssn}^{F_{c},w,X}\ L\ F_{t} that preforms a systematic traversal of all union closed extensions of F c F_{c}, but with pruning that speeds up the search. If a union closed extension of F c F_{c} has a negative share, it must contain one or more sets with a negative share. Therefore, a list L L of all different subsets of ⋃ F c \bigcup{F_{c}} with negative shares is formed and each candidate family is determined by elements of L L that it includes. A recursive procedure creates all candidate families by processing elements of L L sequentially, either skipping them (in one recursive branch) or including them into the current candidate family F t F_{t} (in the other recursive branch), maintaining the invariant that the current candidate family F t F_{t} is always union closed. If the current element of L L has been already included in F t F_{t} (by earlier closure operations required to maintain the invariant) the search can be pruned. If the sum of (negative) shares of the remaining elements of L L is less then the (nonnegative) share of the current F t F_{t}, then F t F_{t} cannot be extended to a family with a negative share (even in the extreme case when all the remaining elements of L L are included) so, again, the search can be pruned.
 
- | ∙ \displaystyle\bullet | Differentiation by ​ z: \displaystyle\text{ Differentiation by }z: | D z: \displaystyle D_{z}: | 𝕍 n → 𝕍 n + 1, \displaystyle{\mathbb{V}}_{n}\to{\mathbb{V}}_{n+1}, | f \displaystyle f | ↦ f ∙ \displaystyle\mapsto f^{\bullet} |  |
+###### Definition 9
 
- | ∙ \displaystyle\bullet | Differentiation by ​ τ: \displaystyle\text{ Differentiation by }\tau: | D τ: \displaystyle D_{\tau}: | 𝕍 n → 𝕍 n + 2, \displaystyle{\mathbb{V}}_{n}\to{\mathbb{V}}_{n+2}, | f \displaystyle f | ↦ f ′ − J 1 ​ f ∙ − k 12 ​ E 2 ​ f. \displaystyle\mapsto f^{\prime}-J_{1}f^{\bullet}-\frac{k}{12}E_{2}f. |  |
+The function 𝗌𝗌𝗇 F c, w, X ​ L ​ F t {\sf ssn}^{F_{c},w,X}\ L\ F_{t} is defined by a primitive recursion (over the structure of the list L L):
 
-For every operator T T of this form, we obtain via
+ | 𝗌𝗌𝗇 F c, w, X ​ [] ​ F t \displaystyle{\sf ssn}^{F_{c},w,X}\ [\,]\ F_{t} | ≡ \displaystyle\equiv | w ¯ X ​ ( F t) < 0 \displaystyle\bar{w}_{X}(F_{t})<0 |  |
 
-(14) |  | T ~: F ↦ ϕ m ​ T ​ ( F / ϕ m) \widetilde{T}:F\mapsto\phi^{m}T(F/\phi^{m}) |  |
+ | 𝗌𝗌𝗇 F c, w, X ​ ( h ​ #​ t) ​ F t \displaystyle{\sf ssn}^{F_{c},w,X}\ (h\;\#\;t)\ F_{t} | ≡ \displaystyle\equiv | if ​ w ¯ X ​ ( F t) + ∑ A ∈ h ​ #​ t w ¯ X ​ ( A) ≥ 0 ​ then ⊥ \displaystyle\mathrm{if\ }\bar{w}_{X}(F_{t})+\sum_{A\in h\;\#\;t}\bar{w}_{X}(A)\geq 0\mathrm{\ then\ }\bot |  |
 
-an operator on meromorphic Jacobi forms of fixed index m m. In general T ~ \widetilde{T} will introduce poles to holomorphic Jacobi forms, namely K i, D z, D τ K_{i},D_{z},D_{\tau} give rise to to poles of order i, 1, 2 i,1,2 respectively. By using appropriate linear combinations of these operators, one can cancel the appearing poles and obtain operators defined on holomorphic Jacobi forms. We illustrate the method in degree 2 2.
+ |  |  | else ​ if ​ 𝗌𝗌𝗇 F c, w, X ​ t ​ F t ​ then ⊤ \displaystyle\mathrm{else\ if\ }{\sf ssn}^{F_{c},w,X}\ t\ F_{t}\mathrm{\ then\ }\top |  |
 
-*Case degree 2.*Consider the operators of degree 2 2, D τ, D z 2 D_{\tau},D_{z}^{2} and multiplication by K 2 K_{2}, obtained from the list above. The action on monomials 1 / w n 1/w^{n} and 1 / w n − 1 1/w^{n-1} (with w = 2 ​ π ​ i ​ z w=2\pi iz) is given by
+ |  |  | else ​ if ​ h ∈ F t ​ then ⊥ \displaystyle\mathrm{else\ if\ }h\in F_{t}\mathrm{\ then\ }\bot |  |
 
- | D τ ​ ( 1 w n) \displaystyle D_{\tau}(\frac{1}{w^{n}}) | = n w n + 2 + O ⁡ ( w − n) \displaystyle=\frac{n}{w^{n+2}}+O(w^{-n}) | D τ ​ ( 1 w n − 1) \displaystyle D_{\tau}(\frac{1}{w^{n-1}}) | = ( n − 1) ​ 1 w n + 1 + O ⁡ ( w n − 1) \displaystyle=(n-1)\frac{1}{w^{n+1}}+O(w^{n-1}) |  |
+ |  |  | else ​ 𝗌𝗌𝗇 F c, w, X ​ t ​ ( 𝗂𝖼 F c ​ h ​ F t) \displaystyle\mathrm{else\ }{\sf ssn}^{F_{c},w,X}\ t\ ({\sf ic}_{F_{c}}\ h\ F_{t}) |  |
 
- | D z 2 ​ ( 1 w n) \displaystyle D_{z}^{2}(\frac{1}{w^{n}}) | = n ⁡ ( n + 1) ​ 1 w n + 2 + O ⁡ ( w − n) \displaystyle=n(n+1)\frac{1}{w^{n+2}}+O(w^{-n})\quad | D z 2 ​ ( 1 w n − 1) \displaystyle\quad D_{z}^{2}(\frac{1}{w^{n-1}}) | = n ⁡ ( n − 1) ​ 1 w n + 1 + O ⁡ ( w n − 1) \displaystyle=n(n-1)\frac{1}{w^{n+1}}+O(w^{n-1}) |  |
+Let L L be a distinct list such that its set is { A. A ∈ 𝗉𝗈𝗐 ⋃ F c ∧ w ¯ X ( A) < 0 } \{A.\ A\in{\sf pow}\ \bigcup{F_{c}}\wedge\bar{w}_{X}(A)<0\}.
 
- | K 2 ⋅ 1 w n \displaystyle K_{2}\cdot\frac{1}{w^{n}} | = − 1 w n + 2 + O ⁡ ( w − n) \displaystyle=\frac{-1}{w^{n+2}}+O(w^{-n}) | K 2 ⋅ 1 w n − 1 \displaystyle K_{2}\cdot\frac{1}{w^{n-1}} | = − 1 w n + 1 + O ⁡ ( w n − 1). \displaystyle=-\frac{1}{w^{n+1}}+O(w^{n-1}). |  |
+ | 𝗌𝗌𝗇 ​ F c ​ w ≡ 𝗌𝗌𝗇 ⟨ F c ⟩, w, ( ⋃ F c) ​ L ​ ∅ {\sf ssn}\ F_{c}\ w\equiv{\sf ssn}^{\left\langle F_{c}\right\rangle,w,(\bigcup{F_{c}})}\ L\ \emptyset |  |
 
-One finds that
+Next we prove the soundnes of the 𝗌𝗌𝗇 ​ F c ​ w {\sf ssn}\ F_{c}\ w function.
 
- | D H = 2 ​ n ​ D τ − D z 2 + n ⁡ ( n − 1) ​ K 2 D_{H}=2nD_{\tau}-D_{z}^{2}+n(n-1)K_{2} |  |
+###### Lemma 5
 
-is the unique linear combination (up to scalar), that sends 𝕍 n {\mathbb{V}}_{n} to 𝕍 n {\mathbb{V}}_{n}; by ( 14), D H D_{H} introduces then a differential operator
+If (i) 𝗌𝗌𝗇 F c, w, X L F t = ⊥ {\sf ssn}^{F_{c},w,X}\ L\ F_{t}=\bot, (ii) for all elements A A in L L it holds that w ¯ X ​ ( A) < 0 \bar{w}_{X}(A)<0, (iii) for all A ∈ F ′ − F t A\in F^{\prime}-F_{t}, if w ¯ X ​ ( A) < 0 \bar{w}_{X}(A)<0, then A A is in L L, (iv) F ′ ⊇ F t F^{\prime}\supseteq F_{t}, and (v) 𝗎𝖼 F c ​ F ′ {\sf uc}_{F_{c}}\ F^{\prime}, then w ¯ X ​ ( F ′) ≥ 0 \bar{w}_{X}(F^{\prime})\geq 0.
 
-(15) |  | D H: J ~ ∗, m ⟶ J ~ ∗ + 2, m. D_{H}:\widetilde{J}_{\ast,m}{\ \longrightarrow\ }\widetilde{J}_{\ast+2,m}. |  |
+###### Proof
 
-This is the classical Heat operator as found in [EZ85], [DMZ12], [GK09].
+The proof is by induction. First, note that
 
-Consider now the space J ~ 2 ∗, m \widetilde{J}_{2\ast,m} of even-weight weak Jacobi forms. Under ( 13), J ~ 2 ∗, m \widetilde{J}_{2\ast,m} is isomorphic to the space 𝕍 2 ​ m even {\mathbb{V}}_{2m}^{\text{even}} of even functions in 𝕍 2 ​ m {\mathbb{V}}_{2m}. Therefore, to find an operator J ~ 2 ∗, m ⟶ J ~ 2 ∗, m \widetilde{J}_{2\ast,m}{\ \longrightarrow\ }\widetilde{J}_{2\ast,m} of degree 2 2, we only need to consider the action of our 3 operators on the single monomial 1 / ( w 2 ​ m) 1/(w^{2m}), and not on 1 / w 2 ​ m − 1 1/w^{2m-1}. We obtain a second independent operator
+ | w ¯ X ​ ( F ′) = ∑ A ∈ F ′ w ¯ X ​ ( A) = ∑ A ∈ F t w ¯ X ​ ( A) + ∑ A ∈ F ′ − F t w ¯ X ​ ( A). \bar{w}_{X}(F^{\prime})=\sum_{A\in F^{\prime}}\bar{w}_{X}(A)=\sum_{A\in F_{t}}\bar{w}_{X}(A)+\sum_{A\in F^{\prime}-F_{t}}\bar{w}_{X}(A). |  | (1) |
 
- | T τ = D τ + n ​ K 2, T_{\tau}=D_{\tau}+nK_{2}, |  |
+Consider the base case of L = [] L=[\,]. Since 𝗌𝗌𝗇 F c, w, X [] F t = ⊥ {\sf ssn}^{F_{c},w,X}\ [\,]\ F_{t}=\bot, it holds that ∑ A ∈ F t w ¯ X ​ ( A) = w ¯ X ​ ( F t) ≥ 0 \sum_{A\in F_{t}}\bar{w}_{X}(A)=\bar{w}_{X}(F_{t})\geq 0 and first term in ( 1) is nonnegative. If there were some A ∈ F ′ − F t A\in F^{\prime}-F_{t} such that w ¯ X ​ ( A) < 0 \bar{w}_{X}(A)<0, then, from the assumptions it would be in L L, which is impossible since L L is empty. Therefore, the second term in ( 1) is also nonnegative which completes the proof.
 
-that, by ( 14) again, defines an operator on weak Jacobi forms,
+Consider the inductive step, and assume that L ≡ h ​ #​ t L\equiv h\;\#\;t.
 
-(16) |  | T τ: J ~ 2 ∗, m ⟶ J ~ 2 ∗ + 2, m. T_{\tau}:\widetilde{J}_{2\ast,m}{\ \longrightarrow\ }\widetilde{J}_{2\ast+2,m}. |  |
+First consider the case when w ¯ X ​ ( F t) + ∑ A ∈ h ​ #​ t w ¯ X ​ ( A) ≥ 0 \bar{w}_{X}(F_{t})+\sum_{A\in h\;\#\;t}\bar{w}_{X}(A)\geq 0. Let P P denote the set { A. A ∈ F ′ − F t ∧ w ¯ X ( A) ≥ 0 } \{A.\ A\in F^{\prime}-F_{t}\wedge\bar{w}_{X}(A)\geq 0\}, and let N N denote the set { A. A ∈ F ′ − F t ∧ w ¯ X ( A) < 0 } \{A.\ A\in F^{\prime}-F_{t}\wedge\bar{w}_{X}(A)<0\}. Since, by assumptions, all elements of N N are in L ≡ h ​ #​ t L\equiv h\;\#\;t, and since, by assumptions, all shares of h ​ #​ t − N h\;\#\;t-N are negative, it holds that
 
-It is known, that D H D_{H} preserves not only weak, but also (full) Jacobi forms. We check the same for T τ T_{\tau}.
+ | ∑ A ∈ h ​ #​ t w ¯ X ​ ( A) = ∑ A ∈ N w ¯ X ​ ( A) + ∑ A ∈ h ​ #​ t − N w ¯ X ​ ( A) ≤ ∑ A ∈ N w ¯ X ​ ( A). \sum_{A\in h\;\#\;t}\bar{w}_{X}(A)=\sum_{A\in N}\bar{w}_{X}(A)+\sum_{A\in h\;\#\;t-N}\bar{w}_{X}(A)\leq\sum_{A\in N}\bar{w}_{X}(A). |  | (2) |
 
-###### Proposition 11.
+It holds that ∑ A ∈ F ′ − F t w ¯ X ​ ( A) = ∑ A ∈ P w ¯ X ​ ( A) + ∑ A ∈ N w ¯ X ​ ( A). \sum_{A\in F^{\prime}-F_{t}}\bar{w}_{X}(A)=\sum_{A\in P}\bar{w}_{X}(A)+\sum_{A\in N}\bar{w}_{X}(A). Therefore, since all shares of P P are nonnegative, from ( 1) and ( 2) and the assumption of the current case it holds that
 
-T τ T_{\tau} defines an operator 𝒥 2 ​ k, m ⟶ 𝒥 2 ​ k + 2, m {\mathcal{J}}_{2k,m}{\ \longrightarrow\ }{\mathcal{J}}_{2k+2,m}.
+ | w ¯ X ​ ( F ′) ≥ ∑ A ∈ F t w ¯ X ​ ( A) + ∑ A ∈ N w ¯ X ​ ( A) ≥ w ¯ X ​ ( F t) + ∑ A ∈ h ​ #​ t w ¯ X ​ ( A) ≥ 0. \bar{w}_{X}(F^{\prime})\geq\sum_{A\in F_{t}}\bar{w}_{X}(A)+\sum_{A\in N}\bar{w}_{X}(A)\geq\bar{w}_{X}(F_{t})+\sum_{A\in h\;\#\;t}\bar{w}_{X}(A)\geq 0. |  |
 
-###### Proof.
+Next, consider the case when w ¯ X ​ ( F t) + ∑ A ∈ h ​ #​ t w ¯ X ​ ( A) < 0 \bar{w}_{X}(F_{t})+\sum_{A\in h\;\#\;t}\bar{w}_{X}(A)<0. Since, by assumptions, 𝗌𝗌𝗇 F c, w, X ( h #t) F t = ⊥ {\sf ssn}^{F_{c},w,X}\ (h\;\#\;t)\ F_{t}=\bot, by the definition of 𝗌𝗌𝗇 {\sf ssn} it must hold that 𝗌𝗌𝗇 F c, w, X t F t = ⊥ {\sf ssn}^{F_{c},w,X}\ t\ F_{t}=\bot.
 
-Let F F be an even weight Jacobi form of weight 2 ​ k 2k and index m m and let F ~ = F / ϕ m \widetilde{F}=F/\phi^{m}. From before, we deduce that T τ ​ F T_{\tau}F is a holomorphic function and satisfies the elliptic and modular transformation equations. We need to show that T τ ​ F T_{\tau}F has a Fourier expansion of the form
+Consider the case when h ∈ F t h\in F_{t} or h ∉ F ′ h\notin F^{\prime}. Then h ∉ F ′ − F t h\notin F^{\prime}-F_{t}. The conclusion follows by induction hypothesis for the recursive call 𝗌𝗌𝗇 F c, w, X ​ t ​ F t {\sf ssn}^{F_{c},w,X}\ t\ F_{t}, since all assumptions are satisfied. Indeed, all elements of F ′ − F t F^{\prime}-F_{t} with negative shares must be in t t, since h ∉ F ′ − F t h\notin F^{\prime}-F_{t}, and other assumptions are trivially satisfied.
 
- | ∑ n ≥ 0 ∑ r ∈ ℤ r 2 ≤ 4 ​ n ​ m c ⁡ ( n, r) ​ p r ​ q n. \sum_{n\geq 0}\sum_{\begin{subarray}{c}r\in{\mathbb{Z}}\\ r^{2}\leq 4nm\end{subarray}}c(n,r)p^{r}q^{n}. |  |
+Finally, consider the case when h ∉ F t h\notin F_{t} and h ∈ F ′ h\in F^{\prime}. The conclusion follows by induction hypothesis for the recursive call 𝗌𝗌𝗇 F c, w, X ​ t ​ ( 𝗂𝖼 F c ​ h ​ F t) {\sf ssn}^{F_{c},w,X}\ t\ ({\sf ic}_{F_{c}}\ h\ F_{t}), since all assumptions are satisfied for this call. Indeed, in this case 𝗌𝗌𝗇 F c, w, X ​ ( h ​ #​ t) ​ F t = 𝗌𝗌𝗇 F c, w, X ​ t ​ ( 𝗂𝖼 F c ​ h ​ F t) {\sf ssn}^{F_{c},w,X}\ (h\;\#\;t)\ F_{t}={\sf ssn}^{F_{c},w,X}\ t\ ({\sf ic}_{F_{c}}\ h\ F_{t}) and the left hand side is ⊥ \bot from the current assumptions. All elements of F ′ − 𝗂𝖼 F c ​ h ​ F t F^{\prime}-{\sf ic}_{F_{c}}\ h\ F_{t} with negative shares must be in t t. Indeed, this holds since F t ⊆ 𝗂𝖼 F c ​ h ​ F t F_{t}\subseteq{\sf ic}_{F_{c}}\ h\ F_{t}, and h ∈ 𝗂𝖼 F c ​ h ​ F t h\in{\sf ic}_{F_{c}}\ h\ F_{t}, and since all elements of F ′ − F t F^{\prime}-F_{t} with negative shares are in h ​ #​ t h\;\#\;t. It holds that 𝗂𝖼 F c ​ h ​ F t ⊆ F ′ {\sf ic}_{F_{c}}\ h\ F_{t}\subseteq F^{\prime} since F t ⊆ F ′ F_{t}\subseteq F^{\prime}, h ∈ F ′ h\in F^{\prime} and 𝗎𝖼 F c ​ F ′ {\sf uc}_{F_{c}}\ F^{\prime}. Other assumptions trivially hold.
 
-Equivalently, see [DMZ12], we need to show that ∀ α, β ∈ ℚ \forall\alpha,\beta\in{\mathbb{Q}},
+###### Theorem 3.1
 
- | q m ​ α 2 ​ T τ ​ ( F) ​ ( α ​ τ + β, τ) q^{m\alpha^{2}}T_{\tau}(F)(\alpha\tau+\beta,\tau) |  |
+If 𝗌𝗌𝗇 F c w = ⊥ {\sf ssn}\ F_{c}\ w=\bot and F ′ ∈ 𝗎𝖼𝖾 ​ F c F^{\prime}\in{\sf uce}\ F_{c} then w ¯ ( ⋃ F c) ​ ( F ′) ≥ 0 \bar{w}_{(\bigcup{F_{c}})}(F^{\prime})\geq 0.
 
-is bounded for τ → ∞ \tau\rightarrow\infty. We split this into two cases.
+###### Proof
 
-Case A. Assume α ∈ ℚ ​ ╲ ​ ℤ \alpha\in{\mathbb{Q}}\diagdown{\mathbb{Z}} or β ∈ ℚ ​ ╲ ​ ℤ \beta\in{\mathbb{Q}}\diagdown{\mathbb{Z}}. Then θ 1 ​ ( α ​ τ + β, τ) ≠ 0 \theta_{1}(\alpha\tau+\beta,\tau)\neq 0 and F ~ ​ ( α ​ τ + β, τ) \widetilde{F}(\alpha\tau+\beta,\tau) is a well defined function of ℍ {\mathbb{H}}. As θ 1 ​ ( α ​ τ + β, τ) \theta_{1}(\alpha\tau+\beta,\tau) is a modular form, it vanishes to a fixed order at τ = ∞ \tau=\infty and hence so does F ~ \widetilde{F}. When applying T τ T_{\tau} to F ~ \widetilde{F}, we take derivatives with respect to τ \tau and multiply with functions of the form J i J_{i}. The first does at most increase the order of convergence at τ = ∞ \tau=\infty. To see that this is true also for the second, note two things: a) we may restrict to 0 ≤ α, β < 1 0\leq\alpha,\beta<1 (with α, β = 0 \alpha,\beta=0 is excluded) and b) by the Fourier expansion of J i J_{i}, J i ​ ( α ​ τ + β, τ) J_{i}(\alpha\tau+\beta,\tau) is bounded for τ → ∞ \tau\rightarrow\infty. Therefore, T τ ​ ( F ~) T_{\tau}(\widetilde{F}) converges not worse then F ~ \widetilde{F} for τ ↦ ∞ \tau\mapsto\infty. Applying ϕ m \phi^{m}, the claim follows.
+Fix F ′ F^{\prime} from 𝗎𝖼𝖾 ​ F c {\sf uce}\ F_{c}. Then F ′ ⊆ 𝗉𝗈𝗐 ​ ⋃ F c F^{\prime}\subseteq{\sf pow}\ \bigcup{F_{c}} and 𝗎𝖼 F c ​ F ′ {\sf uc}_{F_{c}}\ F^{\prime}. Let L L be a distinct list such that its set is { A. A ∈ 𝗉𝗈𝗐 ⋃ F c ∧ w ¯ X ( A) < 0 } \{A.\ A\in{\sf pow}\ \bigcup{F_{c}}\wedge\bar{w}_{X}(A)<0\}. From 𝗌𝗌𝗇 F c w = ⊥ {\sf ssn}\ F_{c}\ w=\bot and the definition of 𝗌𝗌𝗇 {\sf ssn} it holds that 𝗌𝗌𝗇 ⟨ F c ⟩, w, ( ⋃ F c) L ∅ = ⊥ {\sf ssn}^{\left\langle F_{c}\right\rangle,w,(\bigcup{F_{c}})}\ L\ \emptyset=\bot. All assumptions of Lemma 5 apply. Indeed, for all A A in L L, w ¯ ( ⋃ F c) ​ ( A) < 0 \bar{w}_{(\bigcup{F_{c}})}(A)<0. For all A A in F ′ − ∅ F^{\prime}-\emptyset, if w ¯ ( ⋃ F c) ​ ( A) < 0 \bar{w}_{(\bigcup{F_{c}})}(A)<0, then, since F ′ ⊆ 𝗉𝗈𝗐 ​ ⋃ F c F^{\prime}\subseteq{\sf pow}\ \bigcup{F_{c}}, A A is in L L. ∅ ⊆ F ′ \emptyset\subseteq F^{\prime}. Since 𝗎𝖼 F c ​ F ′ {\sf uc}_{F_{c}}\ F^{\prime}, by Proposition 1, it holds that 𝗎𝖼 ⟨ F c ⟩ ​ F ′ {\sf uc}_{\left\langle F_{c}\right\rangle}\ F^{\prime}. Therefore, w ¯ ( ⋃ F c) ​ ( F ′) ≥ 0 \bar{w}_{(\bigcup{F_{c}})}(F^{\prime})\geq 0 holds.
 
-Case B. Assume α, β ∈ ℤ \alpha,\beta\in{\mathbb{Z}}. Then we can equally well assume α = β = 0 \alpha=\beta=0 and we need to show that T q ​ ( F) ​ ( 0, τ) T_{q}(F)(0,\tau) is bounded for τ → ∞ \tau\rightarrow\infty. Let F = F 0 + w 2 ​ F 2 + O ⁡ ( w 4) F=F_{0}+w^{2}F_{2}+O(w^{4}), with F 0, F 2 F_{0},F_{2} quasi modular forms. Then
+Apart from being sound, the procedure can also be shown to be complete. Namely, it could be shown that if 𝗌𝗌𝗇 F c w = ⊤ {\sf ssn}\ F_{c}\ w=\top, then there is an F ′ ∈ 𝗎𝖼𝖾 ​ F c F^{\prime}\in{\sf uce}\ F_{c} such that w ¯ ( ⋃ F c) ​ ( F ′) < 0 \bar{w}_{(\bigcup{F_{c}})}(F^{\prime})<0. This comes from the invariant that the current family F t F_{t} in the search is always in 𝗎𝖼𝖾 ​ F c {\sf uce}\ F_{c}, which is maintained by taking the closure 𝗂𝖼 F c ​ h ​ F t {\sf ic}_{F_{c}}\ h\ F_{t} whenever an element h h is added. Since this aspect of the procedure is not relevant for the rest of the proofs, it will not be formally stated nor proved.
 
- | ( T q ​ F) ​ ( 0, τ) = F 0 ′ + ( m 6 − k 12) ​ E 2 ​ F 0 − 2 ​ F 2 (T_{q}F)(0,\tau)=F_{0}^{\prime}+\Big(\frac{m}{6}-\frac{k}{12}\Big)E_{2}F_{0}-2F_{2} |  |
+### 3.1 Efficient implementation
 
-which is bounded for τ → ∞ \tau\rightarrow\infty. ∎
+In order to obtain executability and increase efficiency, a series of refinements of 𝗌𝗌𝗇 ​ F ​ w {\sf ssn}\ F\ w is done. Each refined version introduces a new implementation feature that makes it more efficient than the previous one, but still equivalent with it.
 
-###### Proof of Theorem 1.
+First, a function cannot operate on families of sets. Without loss of generality, it suffices only to consider families of sets of natural numbers. Sets of natural numbers are represented by natural number codes. A set A A is represented by the code A ~ = ∑ k ∈ A 2 k \tilde{A}=\sum_{k\in A}2^{k}. Families of sets of natural numbers F F are represented by (distinct) lists of natural number codes F ~ \tilde{F}. This representation will be referred to as *list-of-nats*representation (e.g., F = { { 0, 1 }, { 1, 2 }, { 0, 1, 2 } } F=\{\{0,1\},\{1,2\},\{0,1,2\}\} is represented by the list-of-nats F ~ = [3, 6, 7] \tilde{F}=[3,6,7]). Basic set operations have their corresponding list-of-nat counterparts.
 
-Define
+- •
 
- | ∂ J = 1 1 − 4 ​ m ( T τ − D H). \partial^{J}=\frac{1}{1-4m}(T_{\tau}-D_{H}). |  |
+The union of two sets ∪ \cup corresponds to bitwise disjunction (denoted by ⊔ \sqcup). It holds that if C = A ∪ B C=A\;\cup\;B, then C ~ = A ~ ⊔ B ~ \tilde{C}=\tilde{A}\;\sqcup\;\tilde{B}.
 
-By the previous proposition, ∂ J \partial^{J} is an operator on Jacobi forms, 𝒥 2 ​ k, m ⟶ 𝒥 2 ​ k + 2, m {\mathcal{J}}_{2k,m}{\ \longrightarrow\ }{\mathcal{J}}_{2k+2,m}. The claims of the Theorems follow now from direct calculations. ∎
+- •
 
-###### Remark 12.
+Adding a set A A to a family of sets F F (i.e., A ∪ F A\;\cup\;F) corresponds to the operation (also denoted by ⊔ \sqcup) that prepends A ~ \tilde{A} to F ~ \tilde{F}, but only if it is not already present, i.e., by: if ​ A ~ ∈ F ~ ​ then ​ F ~ ​ else ​ A ~ ​ #​ F ~ \mathrm{if\ }\tilde{A}\in\tilde{F}\mathrm{\ then\ }\tilde{F}\mathrm{\ else\ }\tilde{A}\;\#\;\tilde{F}. It holds that if F ′ = A ∪ F F^{\prime}=A\cup F, then F ′ ~ = A ~ ⊔ F ~ \tilde{F^{\prime}}=\tilde{A}\sqcup\tilde{F}.
 
-The case of higher degree works completely analog; see [GK09] for a list of operators on all Jacobi forms. With the above method, one can find additional operators defined only on even or odd Jacobi forms.
+- •
 
-### 2.3. Ramanujan’s equations
+Union of two families (i.e., F ′ ∪ F F^{\prime}\cup F), also denoted by ⊔ \sqcup, is performed by iteratively adding sets from one family to another, i.e., as 𝖿𝗈𝗅𝖽𝗅 ( λ A ~ F ~. A ~ ⊔ F ~) F ~ F ′ ~ {\sf foldl}\ (\lambda\ \tilde{A}\ \tilde{F}.\ \tilde{A}\sqcup\tilde{F})\ \tilde{F}\ \tilde{F^{\prime}}. It holds that if F ′′ = F ∪ F ′ F^{\prime\prime}=F\cup F^{\prime}, then F ′′ ~ = F ~ ⊔ F ′ ~ \tilde{F^{\prime\prime}}=\tilde{F}\sqcup\tilde{F^{\prime}}.
 
-Let E 2, 1 ​ ( z, τ) E_{2,1}(z,\tau) be defined as in Definition 2. The following is derived by straightforward means.
+- •
 
-###### Lemma 13.
+Adding a set A A to all members of a family of sets F F (i.e., { A ∪ B. B ∈ F } \{A\cup B.\ B\in F\}), denoted by [A ~ ⊔ B ~. B ~ ∈ F ~] [\tilde{A}\;\sqcup\;\tilde{B}.\ \tilde{B}\in\tilde{F}], is performed by 𝗆𝖺𝗉 ( λ B ~. A ~ ⊔ B ~) F ~ {\sf map}\ (\lambda\ \tilde{B}.\ \tilde{A}\sqcup\tilde{B})\ \tilde{F}. It holds that if F ′ = { A ∪ B. B ∈ F } F^{\prime}=\{A\cup B.\ B\in F\}, then F ′ ~ = [A ~ ⊔ B ~. B ~ ∈ F ~] \tilde{F^{\prime}}=[\tilde{A}\;\sqcup\;\tilde{B}.\ \tilde{B}\in\tilde{F}].
 
-E 2, 1 E_{2,1} satisfies the following properties:
+- •
 
-1. (a)
+Insert and close for F F (i.e., 𝗂𝖼 F c ​ a ​ F {\sf ic}_{F_{c}}\ a\ F), denoted by 𝗂𝖼 ~ \tilde{{\sf ic}}, is computed as ( [A ~] @ [A ~ ⊔ B ~. B ~ ∈ F ~] @ [A ~ ⊔ B ~. B ~ ∈ F c ~]) ⊔ F ~ ([\tilde{A}]\ @\ [\tilde{A}\;\sqcup\;\tilde{B}.\ \tilde{B}\in\tilde{F}]\ @\ [\tilde{A}\;\sqcup\;\tilde{B}.\ \tilde{B}\in\tilde{F_{c}}])\ \sqcup\ \tilde{F}. It holds that if F ′ = 𝗂𝖼 F c ​ a ​ F F^{\prime}={\sf ic}_{F_{c}}\ a\ F, then F ′ ~ = 𝗂𝖼 ~ F c ~ ​ a ~ ​ F ~. \tilde{F^{\prime}}={\sf\tilde{ic}}_{\tilde{F_{c}}}\ \tilde{a}\ \tilde{F}.
 
-holomorphic on ℂ × ℍ {\mathbb{C}}\times\mathbb{H}
+Important optimization to the basic 𝗌𝗌𝗇 ​ F c ​ w {\sf ssn}\ F_{c}\ w procedure is to avoid repeated computations of family shares (both for the elements of the list L L and the current family F t F_{t}). So, instead of accepting a list of families of sets L L, and the current family of sets F t F_{t}, the function is modified to accept a list of ordered pairs where first component is a list-of-nats representation of corresponding element of L L, and the second component is its share (wrt. w w and X X), and to accept an ordered pair ( F t ~, s t) (\tilde{F_{t}},s_{t}) where F t ~ \tilde{F_{t}} is the list-of-nats representation of F t F_{t}, and s t s_{t} is its family share (wrt. w w and X X). The summation of shares of elements in L L is also unnecessarily repeated. It can be avoided if the sum ( s l s_{l}) is passed trough the function.
 
-2. (b)
+ | 𝗌𝗌𝗇 F c ~, w, X ​ ( [], 0) ​ ( F t ~, s t) \displaystyle{\sf ssn}^{\tilde{F_{c}},w,X}\ ([\,],0)\ (\tilde{F_{t}},s_{t}) | ≡ \displaystyle\equiv | s t < 0 \displaystyle s_{t}<0 |  |
 
-has a Fourier expansion E 2, 1 ​ ( z, τ) = ∑ n ≥ 0 ∑ r ∈ ℤ r 2 ≤ 4 ​ n c ⁡ ( n, r) ​ p r ​ q n E_{2,1}(z,\tau)=\sum_{n\geq 0}\sum_{\begin{subarray}{c}r\in{\mathbb{Z}}\\ r^{2}\leq 4n\end{subarray}}c(n,r)p^{r}q^{n}. In particular c ⁡ ( n, r) = 0 c(n,r)=0 for 4 ​ n − r 2 < 0 4n-r^{2}<0.
+ | 𝗌𝗌𝗇 F c ~, w, X ​ ( ( h ~, s h) ​ #​ t, s l) ​ ( F t ~, s t) \displaystyle{\sf ssn}^{\tilde{F_{c}},w,X}\ ((\tilde{h},s_{h})\;\#\;t,\;s_{l})\ (\tilde{F_{t}},\;s_{t}) | ≡ \displaystyle\equiv | if ​ s t + s l ≥ 0 ​ then ⊥ \displaystyle\mathrm{if\ }s_{t}+s_{l}\geq 0\mathrm{\ then\ }\bot |  |
 
-3. (c)
+ |  |  | else ​ if ​ 𝗌𝗌𝗇 F c ~, w, X ​ ( t, s l − s h) ​ ( F t ~, s t) ​ then ⊤ \displaystyle\mathrm{else\ if\ }{\sf ssn}^{\tilde{F_{c}},w,X}\ (t,\;s_{l}-s_{h})\ (\tilde{F_{t}},\;s_{t})\mathrm{\ then\ }\top |  |
 
-satisfies the elliptic transformation equation, while the modular equation reads
+ |  |  | else ​ if ​ h ~ ∈ F t ~ ​ then ⊥ \displaystyle\mathrm{else\ if\ }\tilde{h}\in\tilde{F_{t}}\mathrm{\ then\ }\bot |  |
 
- | E 2, 1 ( z / τ, − 1 / τ) = e 2 ​ π ​ i ​ z 2 τ τ 2 E 2, 1 + 1 2 ​ π ​ i e 2 ​ π ​ i ​ z 2 τ τ ϕ 0, 1 E_{2,1}(z/\tau,-1/\tau)=e^{\frac{2\pi iz^{2}}{\tau}}\tau^{2}E_{2,1}+\frac{1}{2\pi i}e^{\frac{2\pi iz^{2}}{\tau}}\tau\phi_{0,1} |  |
+ |  |  | else ​ let ​ F t ~ ′ = 𝗂𝖼 ~ F c ~ ​ h ~ ​ F t ~; s t ′ = w ¯ X ​ ( F t ~ ′) ​ in \displaystyle\mathrm{else\ let\ }\tilde{F_{t}}^{\prime}={\sf\tilde{ic}}_{\tilde{F_{c}}}\ \tilde{h}\ \tilde{F_{t}};\ s_{t}^{\prime}=\bar{w}_{X}(\tilde{F_{t}}^{\prime})\mathrm{\ in} |  |
 
-4. (d)
+ |  |  | 𝗌𝗌𝗇 F c ~, w, X ​ ( t, l ​ s − s h) ​ ( F t ~ ′, s t ′) \displaystyle\hskip 9.24994pt{\sf ssn}^{\tilde{F_{c}},w,X}\ (t,ls-s_{h})\ (\tilde{F_{t}}^{\prime},s_{t}^{\prime}\;) |  |
 
-E 2, 1 ​ ( 0, τ) = E 2 ​ ( τ) E_{2,1}(0,\tau)=E_{2}(\tau).
+Another source of inefficiency is the calculation of w ¯ X ​ ( F t ~ ′) \bar{w}_{X}(\tilde{F_{t}}^{\prime}). If performed directly based on the definition of family share for F t ~ ′ \tilde{F_{t}}^{\prime}, the sum would contain shares of all elements from F t ~ \tilde{F_{t}} and of all elements that are added to F t ~ \tilde{F_{t}} when adding h ~ \tilde{h} and closing for F ~ \tilde{F}. However, it is already known that the sum of shares for elements of F t ~ \tilde{F_{t}} is s t s_{t} and the implementation could benefit from this fact. Also, calculating shares of sets that are added to F t ~ \tilde{F_{t}} can be made faster. Namely, it happens that set share of a same set is calculated over and over again in different parts of the search space. So, it is much better to precompute shares of all sets from 𝗉𝗈𝗐 ​ X {\sf pow}\ X and store them in a lookup table that will be consulted each time a set share is needed. Note that in this case there is no more need to pass the function w w itself, nor the domain X X, but only the lookup table, denoted by s w s_{w}.
 
-The first Fourier coefficients c ⁡ ( n, r) c(n,r) of E 2, 1 E_{2,1} are given by
+ | 𝗌𝗌𝗇 F ~ c, s w ​ ( [], 0) ​ ( F t ~, s t) \displaystyle{\sf ssn}^{\tilde{F}_{c},s_{w}}\ ([\,],0)\ (\tilde{F_{t}},s_{t}) | ≡ \displaystyle\equiv | s t < 0 \displaystyle s_{t}<0 |  |
 
- | − 4 -4 | − 3 -3 | − 2 -2 | − 1 -1 | 0 0 | 1 1 | 2 2 | 3 3 | 4 4 |
+ | 𝗌𝗌𝗇 F ~ c, s w ​ ( ( h ~, s h) ​ #​ t, s l) ​ ( F t ~, s t) \displaystyle{\sf ssn}^{\tilde{F}_{c},s_{w}}\ ((\tilde{h},s_{h})\;\#\;t,\;s_{l})\ (\tilde{F_{t}},\;s_{t}) | ≡ \displaystyle\equiv | if ​ s t + s l ≥ 0 ​ then ⊥ \displaystyle\mathrm{if\ }s_{t}+s_{l}\geq 0\mathrm{\ then\ }\bot |  |
 
-0 0 | 0 0 | 0 0 | 0 0 | 0 0 | 1 1 | 0 0 | 0 0 | 0 0 | 0 0 |
+ |  |  | else ​ if ​ 𝗌𝗌𝗇 F ~ c, s w ​ ( t, s l − s h) ​ ( F t ~, s t) ​ then ⊤ \displaystyle\mathrm{else\ if\ }{\sf ssn}^{\tilde{F}_{c},s_{w}}\ (t,\;s_{l}-s_{h})\ (\tilde{F_{t}},\;s_{t})\mathrm{\ then\ }\top |  |
 
-1 1 | 0 0 | 0 0 | 1 1 | − 28 -28 | 30 30 | − 28 -28 | 1 1 | 0 0 | 0 0 |
+ |  |  | else ​ if ​ h ~ ∈ F t ~ ​ then ⊥ \displaystyle\mathrm{else\ if\ }\tilde{h}\in\tilde{F_{t}}\mathrm{\ then\ }\bot |  |
 
-2 2 | 0 0 | 0 0 | 30 30 | − 264 -264 | 396 396 | − 264 -264 | 30 30 | 0 0 | 0 0 |
+ |  |  | else ​ 𝗌𝗌𝗇 F ~ c, s w ​ ( t, s l − s h) ​ ( 𝗂𝖼 ~ F ~ c s w ​ h ~ ​ ( F t ~, s t)) \displaystyle\mathrm{else\ }{\sf ssn}^{\tilde{F}_{c},s_{w}}\ (t,s_{l}-s_{h})\ ({\sf\tilde{ic}}_{\tilde{F}_{c}}^{s_{w}}\ \tilde{h}\ (\tilde{F_{t}},s_{t})) |  |
 
-3 3 | 0 0 | − 28 -28 | 396 396 | − 1620 -1620 | 2408 2408 | − 1620 -1620 | 396 396 | − 28 -28 | 0 0 |
+ | 𝗂𝖼 ~ F ~ c s w ​ h ~ ​ ( F t ~, s t) \displaystyle{\sf\tilde{ic}}_{\tilde{F}_{c}}^{s_{w}}\ \tilde{h}\ (\tilde{F_{t}},s_{t}) | ≡ \displaystyle\equiv | let a d d = [h ~] @ [h ~ ⊔ A ~. A ~ ∈ F t ~] @ [h ~ ⊔ A ~. A ~ ∈ F ~ c]; \displaystyle\mathrm{let\ }\ add\ =\ [\tilde{h}]\ @\ [\tilde{h}\;\sqcup\;\tilde{A}.\ \tilde{A}\in\tilde{F_{t}}]\ @\ [\tilde{h}\;\sqcup\;\tilde{A}.\ \tilde{A}\in\tilde{F}_{c}]; |  |
 
-4 4 | 1 1 | − 264 -264 | 2408 2408 | − 7944 -7944 | 11430 11430 | − 7944 -7944 | 2408 2408 | − 264 -264 | 1 1 |
+ |  |  | a d d = 𝖿𝗂𝗅𝗍𝖾𝗋 ( λ A ~. A ~ ∉ F ~) ( 𝗋𝖾𝗆𝖽𝗎𝗉𝗌 a d d) in \displaystyle\hskip 18.49988ptadd\ =\ {\sf filter}\ (\lambda\tilde{A}.\ \tilde{A}\notin\tilde{F})\ ({\sf remdups}\ add)\ \textrm{in} |  |
 
-###### Proof of Corollary 3.
+ |  |  | ( a ​ d ​ d ​ @ ​ F ~, s + 𝗅𝗂𝗌𝗍𝗌𝗎𝗆 ⁡ ( 𝗆𝖺𝗉 ​ s w ​ a ​ d ​ d)) \displaystyle(add\;@\;\tilde{F},\ s+{\sf listsum}\ ({\sf map}\ s_{w}\ add)) |  |
 
-A direct check. ∎
+It is shown that this implementation is (in some sense) equivalent to the starting, abstract one. This proof is technically involved, but conceptually uninteresting so we omit it in the text.
 
-## 3. The relation to theta functions
+## 4 Uniform n ​ k ​ m nkm -families
 
-### 3.1. Proof of Theorem 4
+Most FC-families that are considered in this paper are *uniform*, i.e., consist of sets having the same number of elements.
 
-Define functions h ~ n ​ ( τ) \widetilde{h}_{n}(\tau) by
+###### Definition 10
 
-(17) |  | 1 θ 1 ​ ( z, τ) = 1 w ​ ∑ n ≥ 0 h ~ n ​ ( τ) ​ w n, \frac{1}{\theta_{1}(z,\tau)}=\frac{1}{w}\sum_{n\geq 0}\widetilde{h}_{n}(\tau)w^{n}, |  |
+A family of sets F F is a *uniform n ​ k ​ m nkm -family*if it contains m m different sets, each containing k k elements and their union has at most n n elements. Uniform n ​ k ​ m nkm -family is *natural*if its union is contained in { 0, 1, …, n − 1 } \{0,1,\ldots,n-1\}.
 
-where as before w = 2 ​ π ​ i ​ z w=2\pi iz and let
+Within the Isabelle/HOL implementation, natural n ​ k ​ m nkm -families will be represented by *n ​ k ​ m nkm -lists*— (lexicografically) sorted, distinct lists of length m m containing sorted, distinct lists of length k k with all elements contained in { 0, 1, …, n − 1 } \{0,1,\ldots,n-1\}. To simplify presentation, we will identify natural n ​ k ​ m nkm -families with their corresponding n ​ k ​ m nkm -lists. Assuming that the Isabelle/HOL function 𝖼𝗈𝗆𝖻 ​ l ​ k {\sf comb}\;l\;k generates all sorted k k -element sublists of a sorted list l l, all n ​ k ​ m nkm -lists for given n n, k k and m m can be generated by 𝖿𝖺𝗆𝗌 n ​ k ​ m ≡ 𝖼𝗈𝗆𝖻 ( 𝖼𝗈𝗆𝖻 [0.. < n] k) m {\sf fams}^{nkm}\equiv{\sf comb}\;({\sf comb}\;[0..<n]\;k)\;m.
 
- | h n:= n! ⋅ h ~ n ​ ( τ) ​ θ 1 ∙ ​ ( 0, τ). h_{n}:=n!\cdot\widetilde{h}_{n}(\tau)\theta_{1}^{\bullet}(0,\tau). |  |
+#### Symmetries.
 
-Here 0! = 1 0!=1 and h 0 = 1 h_{0}=1. As θ 1 ​ ( z, τ) \theta_{1}(z,\tau) is odd, h n = 0 h_{n}=0 for all odd n n.
+Often one uniform n ​ k ​ m nkm -family can be obtained from the other by permuting its elements (e.g., { { a 0, a 1, a 2 }, { a 1, a 3, a 4 }, { a 2, a 3, a 4 } } \{\{a_{0},a_{1},a_{2}\},\{a_{1},a_{3},a_{4}\},\{a_{2},a_{3},a_{4}\}\} can be obtained from { { a 0, a 1, a 2 }, { a 0, a 1, a 3 }, { a 2, a 3, a 4 } } \{\{a_{0},a_{1},a_{2}\},\{a_{0},a_{1},a_{3}\},\{a_{2},a_{3},a_{4}\}\} by the permutation ( a 0 CLOSE, (a_{0}, a 1, a_{1}, a 2, a_{2}, a 3, a_{3}, OPEN a 4) a_{4}) ↦ \mapsto ( a 3, a 4, a 1, a 2, a 0) (a_{3},a_{4},a_{1},a_{2},a_{0})). Applying permutations on sets and families can be implemented in Isabelle/HOL by the functions 𝗉𝖾𝗋𝗆 _ 𝗌𝖾𝗍 A p ≡ 𝗌𝗈𝗋𝗍 ( 𝗆𝖺𝗉 ( λ x. p [x]) A) {\sf perm\_set}\ A\ p\equiv{\sf sort}\ ({\sf map}\ (\lambda x.\ p_{[x]})\ A) and 𝗉𝖾𝗋𝗆 ​ _ ​ 𝖿𝖺𝗆 ​ F ​ p ≡ 𝗌𝗈𝗋𝗍 ⁡ ( 𝗆𝖺𝗉 ​ 𝗉𝖾𝗋𝗆 ​ _ ​ 𝗌𝖾𝗍 ​ F) {\sf perm\_fam}\ F\ p\equiv{\sf sort}\ ({\sf map}\ {\sf perm\_set}\ F). Permutations establish bijections between natural uniform families:
 
-For n ≥ 0 n\geq 0, set
+###### Proposition 7
 
- | F n ( z, τ) = 1 θ 1 ( ∑ k = 0 n ( n k) h n − k θ 1 k ∙), F_{n}(z,\tau)=\frac{1}{\theta_{1}}\Big(\sum_{k=0}^{n}\binom{n}{k}h_{n-k}\theta_{1}^{k\bullet}\Big), |  |
+If p p is a permutation of [0, 1, …, n − 1] [0,1,\ldots,n-1] and F F is a natural uniform family, then 𝗉𝖾𝗋𝗆 ​ _ ​ 𝖿𝖺𝗆 ​ F ​ p {\sf perm\_fam}\ F\ p is also natural uniform family and there is a bijection between F F and 𝗉𝖾𝗋𝗆 ​ _ ​ 𝖿𝖺𝗆 ​ F ​ p {\sf perm\_fam}\ F\ p.
 
-where we let θ i k ∙ \theta_{i}^{k\bullet} (resp. θ i k ′ \theta_{i}^{k^{\prime}}) be the k k ’th derivative of θ i \theta_{i} with respect to z z (resp. τ \tau).
+Since, by Proposition 2, FC-families are preserved under bijections (isomorphisms), to check if all elements of a given list of n ​ k ​ m nkm -families ℱ \mathcal{F} are FC-families, many elements need not be considered. Indeed, it suffices to consider only a list (denoted by 𝗇𝖾𝖿 P ​ ℱ {\sf nef}^{P}\ \mathcal{F}) of its non-equivalent representatives (under a given list of permutations P P). Computation of such representatives can start from the given list ℱ \mathcal{F}, choose its arbitrary member for a representative, remove it and all its permuted variants from the lists, and repeat this sieving process until the list becomes empty. Isabelle/HOL implementation of this procedure can be given by:
 
-###### Theorem 14.
+ | 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r \displaystyle{\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r} | ≡ \displaystyle\equiv | case ​ ℱ ​ of ​ [] ⇒ ℱ r \displaystyle\mathrm{case}\ \mathcal{F}\ \mathrm{of}\ [\,]\Rightarrow\mathcal{F}_{r} |  |
 
-F n = J n F_{n}=J_{n} for all n ≥ 0 n\geq 0.
+ |  | | \displaystyle| | F #⇒ let ℱ F P = 𝗋𝖾𝗆𝖽𝗎𝗉𝗌 ( 𝗆𝖺𝗉 ( λ p. 𝗉𝖾𝗋𝗆 _ 𝖿𝖺𝗆 F p) P) in \displaystyle F\;\#\;\vbox{\hrule width=5.55002pt}\Rightarrow\mathrm{let}\ \mathcal{F}_{F}^{P}={\sf remdups}\ ({\sf map}\ (\lambda\ p.\ {\sf perm\_fam}\ F\ p)\ P)\ \mathrm{in} |  |
 
-Note that Theorem 14 directly implies Theorem 4.
+ |  |  | 𝗇𝖾𝖿 _ 𝖺𝗎𝗑 P ( 𝖿𝗂𝗅𝗍𝖾𝗋 ( λ F. F ∉ ℱ F P) ℱ) ( F #ℱ r) \displaystyle\hskip 18.49988pt\hskip 18.49988pt{\sf nef\_aux}^{P}\ ({\sf filter}\ (\lambda\ F.\ F\notin\mathcal{F}_{F}^{P})\ \mathcal{F})\ (F\;\#\;\mathcal{F}_{r}) |  |
 
-###### Proof.
+ | 𝗇𝖾𝖿 P ​ ℱ \displaystyle{\sf nef}^{P}\ \mathcal{F} | ≡ \displaystyle\equiv | 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ [] \displaystyle{\sf nef\_aux}^{P}\ \mathcal{F}\ [\,] |  |
 
-Differentiationg the equation
+The following lemma proves the correctness of this implementation.
 
- | θ 1 ​ ( z + λ ​ τ, τ) = − e − 2 ​ π ​ i ​ ( λ ​ z + 1 2 ​ λ 2 ​ τ) ​ θ 1 ​ ( z, τ) \theta_{1}(z+\lambda\tau,\tau)=-e^{-2\pi i(\lambda z+\frac{1}{2}\lambda^{2}\tau)}\theta_{1}(z,\tau) |  |
+###### Lemma 6
 
-we find
+If P P is a list of permutations of [0, 1, …, n − 1] [0,1,\ldots,n-1] and if ℱ \mathcal{F} is a list of natural n ​ k ​ m nkm -families, then for each element F ∈ ℱ F\in\mathcal{F} there is an F ′ ∈ 𝗇𝖾𝖿 P ​ ℱ F^{\prime}\in{\sf nef}^{P}\ \mathcal{F} such there is a bijection between F F and F ′ F^{\prime}.
 
- | θ 1 k ∙ ( z + λ τ, τ) = − ∑ l = 0 k ( − 1) l + k ( k l) e − 2 ​ π ​ i ​ ( λ ​ z + 1 2 ​ λ 2 ​ τ) λ k − l θ 1 l ∙. \theta_{1}^{k\bullet}(z+\lambda\tau,\tau)=-\sum_{l=0}^{k}(-1)^{l+k}\binom{k}{l}e^{-2\pi i(\lambda z+\frac{1}{2}\lambda^{2}\tau)}\lambda^{k-l}\theta_{1}^{l\bullet}. |  |
+###### Proof
 
-Therefore, independent of h k h_{k},
+First, note that the function 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r {\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r} is monotone, i.e., ℱ r ⊆ 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r \mathcal{F}_{r}\subseteq{\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r}.
 
- | F n ​ ( z + λ ​ τ) \displaystyle F_{n}(z+\lambda\tau) | = 1 θ 1 ( ∑ k = 0 n ( n k) h n − k ∑ l = 0 k ( − 1) l + k ( k l) λ k − l θ 1 l ∙) \displaystyle=\frac{1}{\theta_{1}}\left(\sum_{k=0}^{n}\binom{n}{k}h_{n-k}\sum_{l=0}^{k}(-1)^{l+k}\binom{k}{l}\lambda^{k-l}\theta_{1}^{l\bullet}\right) |  |
+By induction, we show that if the assumptions hold for ℱ \mathcal{F} and P P, then for each element F ∈ ℱ F\in\mathcal{F} there is an element F ′ ∈ 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r F^{\prime}\in{\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r} such there is a bijection between F F and F ′ F^{\prime}.
 
- |  | = 1 θ 1 ( ∑ k = 0 n ∑ l = 0 k ( n n − k + l) ( n − k + l l) ( − 1) n − k h k − l λ n − k θ 1 l ∙) \displaystyle=\frac{1}{\theta_{1}}\left(\sum_{k=0}^{n}\sum_{l=0}^{k}\binom{n}{n-k+l}\binom{n-k+l}{l}(-1)^{n-k}h_{k-l}\lambda^{n-k}\theta_{1}^{l\bullet}\right) |  |
+In the base case, when ℱ \mathcal{F} is empty, the statement trivially holds.
 
- |  | = 1 θ 1 ( ∑ k = 0 n ( − 1) n + k λ n − k ( n k) ∑ l = 0 k ( k l) h k − l θ 1 l ∙) \displaystyle=\frac{1}{\theta_{1}}\left(\sum_{k=0}^{n}(-1)^{n+k}\lambda^{n-k}\binom{n}{k}\sum_{l=0}^{k}\binom{k}{l}h_{k-l}\theta_{1}^{l\bullet}\right) |  |
+Assume that ℱ ≡ F ​ #​ ℱ ′ \mathcal{F}\equiv F\;\#\;\mathcal{F}^{\prime}. Let ℱ F P \mathcal{F}_{F}^{P} denote all different families obtained by permuting F F by all elements of P P (i.e., ℱ F P ≡ 𝗋𝖾𝗆𝖽𝗎𝗉𝗌 ( 𝗆𝖺𝗉 ( λ p. 𝗉𝖾𝗋𝗆 _ 𝖿𝖺𝗆 F p) P) \mathcal{F}_{F}^{P}\equiv{\sf remdups}\ ({\sf map}\ (\lambda\ p.\ {\sf perm\_fam}\ F\ p)\ P)) and let ℱ − \mathcal{F}^{-} denote what remains of ℱ \mathcal{F} when those are removed (i.e., ℱ − ≡ 𝖿𝗂𝗅𝗍𝖾𝗋 ( λ F. F ∉ ℱ F P) ℱ \mathcal{F}^{-}\equiv{\sf filter}\ (\lambda\ F.\ F\notin\mathcal{F}_{F}^{P})\ \mathcal{F}. It holds that 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r = 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ − ​ ( F ​ #​ ℱ r) {\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r}={\sf nef\_aux}^{P}\ \mathcal{F}^{-}\ (F\;\#\;\mathcal{F}_{r}).
 
- |  | = ∑ k = 0 n ( − 1) n + k ​ ( n k) ​ λ n − k ​ F k. \displaystyle=\sum_{k=0}^{n}(-1)^{n+k}\binom{n}{k}\lambda^{n-k}F_{k}. |  |
+Let F ′ F^{\prime} be an arbitrary element from ℱ \mathcal{F}. Since ℱ = F ​ #​ ℱ ′ \mathcal{F}=F\;\#\;\mathcal{F}^{\prime}, either F ′ = F F^{\prime}=F or F ′ ∈ ℱ ′ F^{\prime}\in\mathcal{F}^{\prime}.
 
-We proceed by induction on n n. For n = 0 n=0 nothing is to prove and n = 1 n=1 follows from ( 7). Assume now, that the claim of the theorem is true for all k < n k<n, with n ≥ 2 n\geq 2. Let
+Assume that F ′ = F F^{\prime}=F. By monotonicity it holds that F ∈ 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r F\in{\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r}, so F F is an element from 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r {\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r} such that there is a bijection (identity function) between F ′ F^{\prime} and it.
 
- | K n ~ = ∑ k = 0 n ( − 1) n + k ​ ( n k) ​ F k ​ F 1 n − k \widetilde{K_{n}}=\sum_{k=0}^{n}(-1)^{n+k}\binom{n}{k}F_{k}F_{1}^{n-k} |  |
+Assume that F ′ ∈ ℱ ′ F^{\prime}\in\mathcal{F}^{\prime}.
 
-and note that the recursion relation ( 11) holds for K n ~ \widetilde{K_{n}} as well.
+Consider the case when F ′ ∈ ℱ F P F^{\prime}\in\mathcal{F}_{F}^{P}. Then there is p ∈ P p\in P such that F ′ = 𝗉𝖾𝗋𝗆 ​ _ ​ 𝖿𝖺𝗆 ​ F ​ p F^{\prime}={\sf perm\_fam}\ F\ p. Since F ′ ∈ ℱ F^{\prime}\in\mathcal{F} is natural and p ∈ P p\in P is a permutation of [0, 1, …, n − 1] [0,1,\ldots,n-1], by Proposition 7, there is a bijection between F F and F ′ F^{\prime}. Since, by monotonicity, it holds that F ∈ 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r F\in{\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r}, F F is an element in 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r {\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r} such that there is a bijection between F ′ F^{\prime} and it.
 
-Let n = 2 ​ m n=2m be even. Then, for a fixed τ \tau, F 2 ​ m ​ ( z, τ) F_{2m}(z,\tau) doesn’t have any poles for z ∈ { λ + μ τ ∣ 0 ≤ λ, μ < 1 } z\in\{\lambda+\mu\tau\mid 0\leq\lambda,\mu<1\}. Indeed, θ 1 2 k ∙ = 2 k θ 1 k ′ \theta_{1}^{2k\bullet}=2^{k}\theta_{1}^{k^{\prime}} has a zero of order 1 at z = 0 z=0 and hence θ 1 2 k ∙ / θ 1 \theta_{1}^{2k\bullet}/\theta_{1} extends to a holomorphic function at z = 0 z=0. By induction we conclude that the principal part of K n ~ \widetilde{K_{n}} equals the principal part of K n K_{n}. Therefore it is left to show that F 2 ​ m ​ ( 0) = J 2 ​ m ​ ( 0) = B 2 ​ m ​ E 2 ​ m F_{2m}(0)=J_{2m}(0)=B_{2m}E_{2m}. This is equivalent to the identity,
+Consider the case when F ′ ∉ ℱ F P F^{\prime}\notin\mathcal{F}_{F}^{P}. Then F ′ ∈ ℱ − F^{\prime}\in\mathcal{F}^{-}. By inductive hypothesis for the call 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ − ​ ( F ​ #​ ℱ r) {\sf nef\_aux}^{P}\ \mathcal{F}^{-}\ (F\;\#\;\mathcal{F}_{r}), there is an element F ′′ F^{\prime\prime} in F ​ #​ ℱ r F\;\#\;\mathcal{F}_{r} such that there is a bijection between F ′ F^{\prime} and it. By monotonicity, F ′′ ∈ F ​ #​ ℱ r ⊆ 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ − ​ ( F ​ #​ ℱ r) = 𝗇𝖾𝖿 ​ _ ​ 𝖺𝗎𝗑 P ​ ℱ ​ ℱ r F^{\prime\prime}\in F\;\#\;\mathcal{F}_{r}\subseteq{\sf nef\_aux}^{P}\ \mathcal{F}^{-}\ (F\;\#\;\mathcal{F}_{r})={\sf nef\_aux}^{P}\ \mathcal{F}\ \mathcal{F}_{r}, so the statement holds.
 
-(18) |  | ∑ k = 0 m ( 2 ​ m 2 ​ k) ​ h 2 ​ m − 2 ​ k ​ θ 1 2 k ∙ θ 1 ​ ( 0) = B 2 ​ m ​ E 2 ​ m. \sum_{k=0}^{m}\binom{2m}{2k}h_{2m-2k}\frac{\theta_{1}^{2k\bullet}}{\theta_{1}}(0)=B_{2m}E_{2m}. |  |
+Finally, the following lemma shows that only non-equivalent representatives need to be considered when checking FC-families.
 
-As θ 1 2 k ∙ / θ 1 \theta_{1}^{2k\bullet}/\theta_{1} is an even holomorphic function,
+###### Lemma 7
 
- | ( θ 1 2 k ∙ θ 1) ∙ = θ 1 ( 2 k + 1) ∙ θ 1 − θ 1 2 k ∙ θ 1 ​ θ 1 ∙ θ 1 \Big(\frac{\theta_{1}^{2k\bullet}}{\theta_{1}}\Big)^{\bullet}=\frac{\theta_{1}^{(2k+1)\bullet}}{\theta_{1}}-\frac{\theta_{1}^{2k\bullet}}{\theta_{1}}\frac{\theta_{1}^{\bullet}}{\theta_{1}} |  |
+Let ℱ ⊆ 𝖿𝖺𝗆𝗌 n ​ k ​ m \mathcal{F}\subseteq{\sf fams}^{nkm} and P ⊆ 𝗉𝖾𝗋𝗆 ⁡ [0, 1, …, n − 1] P\subseteq{\sf perm}\;[0,1,\ldots,n-1]. If all families represented by elements of 𝗇𝖾𝖿 P ​ ℱ {\sf nef}^{P}\ \mathcal{F} are FC-families, then all families represented by elements of 𝖿𝖺𝗆𝗌 n ​ k ​ m {\sf fams}^{nkm} are FC-families.
 
-vanishes to first order at 0 0. Comparing poles and using θ 1 ∙ / θ 1 = 1 / w + O ⁡ ( w) \theta_{1}^{\bullet}/\theta_{1}=1/w+O(w), we obtain
+###### Proof
 
-(19) |  | ( θ 1 2 k ∙ / θ 1) ( 0, τ) = Res w = 0 ( θ 1 ( 2 k + 1) ∙ θ 1) = θ 1 ( 2 k + 1) ∙ ( 0, τ) θ 1 ∙ ​ ( 0, τ), (\theta_{1}^{2k\bullet}/\theta_{1})(0,\tau)=\text{Res}_{w=0}\Big(\frac{\theta_{1}^{(2k+1)\bullet}}{\theta_{1}}\Big)=\frac{\theta_{1}^{(2k+1)\bullet}(0,\tau)}{\theta_{1}^{\bullet}(0,\tau)}, |  |
+Let F ∈ 𝖿𝖺𝗆𝗌 n ​ k ​ m F\in{\sf fams}^{nkm}. By Lemma 6 there is an F ′ ∈ 𝗇𝖾𝖿 P ​ ℱ F^{\prime}\in{\sf nef}^{P}\ \mathcal{F} and a bijection between F F and F ′ F^{\prime}. So, F ′ F^{\prime} is an FC-family, and by Proposition 2, so is F F.
 
-where we used the Taylor expansion θ 1 = ∑ k ≥ 0 θ 1 ( 2 k + 1) ∙ ( 0) ( 2 ​ k + 1)! ​ w 2 ​ k + 1 \theta_{1}=\sum_{k\geq 0}\frac{\theta_{1}^{(2k+1)\bullet}(0)}{(2k+1)!}w^{2k+1} for the second equation and Res denotes the residuum.
+## 5 FC-families verified
 
-Therefore ( 18) reduces to
+Having established all the necessary mathematics, in this Section we prove that certain uniform families are FC-families (mainly by performing verified calculations). First, we calculate non-equivalent representatives for 𝖿𝖺𝗆𝗌 533 {\sf fams}^{533}, 𝖿𝖺𝗆𝗌 634 {\sf fams}^{634}, and 𝖿𝖺𝗆𝗌 734 {\sf fams}^{734}.
 
- | ∑ k = 0 m ( 2 ​ m 2 ​ k) ( 2 m − 2 k)! h ~ 2 ​ ( m − k) θ 1 ( 2 k + 1) ∙ ( 0) = B 2 ​ m E 2 ​ m, \sum_{k=0}^{m}\binom{2m}{2k}(2m-2k)!\widetilde{h}_{2(m-k)}\theta_{1}^{(2k+1)\bullet}(0)=B_{2m}E_{2m}, |  |
+###### Lemma 8
 
-which follows from comparing the 2 ​ m − 1 2m-1 -th Taylor coefficient of the left and right hand side of 1 θ 1 ​ ( z, τ) ⋅ θ 1 ​ ( z, τ) ∙ = J 1 \frac{1}{\theta_{1}(z,\tau)}\cdot\theta_{1}(z,\tau)^{\bullet}=J_{1}.
+The first column of Table 1 contains (respectively) all elements of:
 
-The case n = 2 ​ m + 1 n=2m+1 odd is similar and ommited. ∎
+𝗇𝖾𝖿 𝗉𝖾𝗋𝗆 [0.. < 5] 𝖿𝖺𝗆𝗌 533 {\sf nef}^{{\sf perm}\;[0..<5]}\ {\sf fams}^{533},
 
-###### Remark 15.
+𝗇𝖾𝖿 𝗉𝖾𝗋𝗆 [0.. < 6] ( 𝖿𝗂𝗅𝗍𝖾𝗋 ( λ F. ¬ 𝖼𝗁𝖾𝖼𝗄 𝟧𝟥𝟥 𝖥) 𝖿𝖺𝗆𝗌 634) {\sf nef}^{{\sf perm}\;[0..<6]}\ ({\sf filter}\ (\lambda F.\ \neg{\sf check_{533}\ F})\ {\sf fams}^{634}),
 
-Comparing the w 2 ​ n w^{2n} coefficient of 1 / θ 1 ​ ( z, τ) ⋅ θ 1 ​ ( z, τ) = 1 1/\theta_{1}(z,\tau)\cdot\theta_{1}(z,\tau)=1 using ( 17), we obtain the relation
+𝗇𝖾𝖿 𝗉𝖾𝗋𝗆 [0.. < 7] ( 𝖿𝗂𝗅𝗍𝖾𝗋 ( λ F. ¬ 𝖼𝗁𝖾𝖼𝗄 𝟧𝟥𝟥 F ∧ ¬ 𝖼𝗁𝖾𝖼𝗄 𝟨𝟥𝟦 F) 𝖿𝖺𝗆𝗌 734), {\sf nef}^{{\sf perm}\;[0..<7]}\ ({\sf filter}\ (\lambda F.\ \neg{\sf check_{533}}\ F\wedge\neg{\sf check_{634}}\ F)\ {\sf fams}^{734}),
 
-(20) |  | ∑ k = 0 m h ~ 2 ​ m − 2 ​ k ​ ( τ) ​ θ 1 ( 2 k + 1) ∙ ( 0, τ) ( 2 ​ k + 1)! = 0. \sum_{k=0}^{m}\widetilde{h}_{2m-2k}(\tau)\frac{\theta_{1}^{(2k+1)\bullet}(0,\tau)}{(2k+1)!}=0. |  |
+where 𝗉𝖾𝗋𝗆 ​ l {\sf perm}\;l is the function that generates all permutations of a list l l, 𝖼𝗁𝖾𝖼𝗄 𝟧𝟥𝟥 {\sf check_{533}} is a function that checks if any 3 of the 4 given 3-element sets are have their union contained in a 5-element set, and 𝖼𝗁𝖾𝖼𝗄 𝟨𝟥𝟦 {\sf check_{634}} is a function that checks if the union of 4 given 3-element sets is contained in a 6-element set. 7 7 7 Formal definition of these functions is not given here and is available in the Isabelle/HOL proof documents, along with correctness arguments.
 
-By ( 19),
+###### Proof
 
- | θ 1 ( 2 k + 1) ∙ ( 0, τ) = θ 1 ∙ ( 0, τ) ⋅ ( θ 1 2 k ∙ / θ 1) ( 0, τ) = θ 1 ∙ ( 0, τ) ⋅ ( θ 1 k ′ / θ 1) ( 0, τ). \theta_{1}^{(2k+1)\bullet}(0,\tau)=\theta_{1}^{\bullet}(0,\tau)\cdot(\theta_{1}^{2k\bullet}/\theta_{1})(0,\tau)=\theta_{1}^{\bullet}(0,\tau)\cdot(\theta_{1}^{k\prime}/\theta_{1})(0,\tau). |  |
+By calculations performed by a computer.
 
-Let P k = ( θ 1 k ′ / θ 1) ( 0, τ) P_{k}=(\theta_{1}^{k\prime}/\theta_{1})(0,\tau). Then using ( 6), P 1 = E 2 / 8 P_{1}=E_{2}/8 and taking the derivative of P n P_{n},
+F c F_{c} | w w |
 
-(21) |  | P n + 1 = P n ′ + 1 8 ​ E 2 ​ P n. P_{n+1}=P_{n}^{\prime}+\frac{1}{8}E_{2}P_{n}. |  |
+[[0, 1]] [[0,1]] | 0 ↦ 1, 1 ↦ 1 0\mapsto 1,1\mapsto 1 |
 
-By ( 20) and ( 21), we obtain a recursion relation for the function h n h_{n}.
+[[0, 1, 2], [0, 1, 3], [2, 3, 4]] [[0,1,2],[0,1,3],[2,3,4]] | 0 ↦ 2, 1 ↦ 2, 2 ↦ 2, 3 ↦ 2, 4 ↦ 1 0\mapsto 2,1\mapsto 2,2\mapsto 2,3\mapsto 2,4\mapsto 1 |
 
-The first few non-trivial identities given by Theorem 14 then read,
+[[0, 1, 2], [0, 1, 3], [0, 2, 4]] [[0,1,2],[0,1,3],[0,2,4]] | 0 ↦ 6, 1 ↦ 5, 2 ↦ 5, 3 ↦ 3, 4 ↦ 3 0\mapsto 6,1\mapsto 5,2\mapsto 5,3\mapsto 3,4\mapsto 3 |
 
- | J 2 \displaystyle J_{2} | = 1 θ 1 ​ ( θ 1 ∙ ⁣ ∙ − 1 12 ​ E 2 ​ θ 1) \displaystyle=\frac{1}{\theta_{1}}(\theta_{1}^{\bullet\bullet}-\frac{1}{12}E_{2}\theta_{1}) |  |
+[[0, 1, 2], [0, 1, 3], [0, 2, 3]] [[0,1,2],[0,1,3],[0,2,3]] | 0 ↦ 1, 1 ↦ 1, 2 ↦ 1, 3 ↦ 1 0\mapsto 1,1\mapsto 1,2\mapsto 1,3\mapsto 1 |
 
- | J 3 \displaystyle J_{3} | = 1 θ 1 ( θ 1 ∙ ∙ ∙ − 1 4 E 2 θ 1 ∙) \displaystyle=\frac{1}{\theta_{1}}(\theta_{1}^{\bullet\bullet\bullet}-\frac{1}{4}E_{2}\theta_{1}^{\bullet}) |  |
+[[0, 1, 2], [0, 1, 3], [0, 1, 4]] [[0,1,2],[0,1,3],[0,1,4]] | 0 ↦ 3, 1 ↦ 3, 2 ↦ 2, 3 ↦ 2, 4 ↦ 2 0\mapsto 3,1\mapsto 3,2\mapsto 2,3\mapsto 2,4\mapsto 2 |
 
- | J 4 \displaystyle J_{4} | = 1 θ 1 ( θ 1 ∙ ∙ ∙ ∙ − 1 2 E 2 θ 1 ∙ ⁣ ∙ + ( − 1 10 E 2 ′ + 7 240 E 2 2) θ 1. \displaystyle=\frac{1}{\theta_{1}}(\theta_{1}^{\bullet\bullet\bullet\bullet}-\frac{1}{2}E_{2}\theta_{1}^{\bullet\bullet}+(-\frac{1}{10}E_{2}^{\prime}+\frac{7}{240}E_{2}^{2})\theta_{1}. |  |
+[[0, 1, 2], [0, 3, 4], [1, 3, 5], [2, 4, 5]] [[0,1,2],[0,3,4],[1,3,5],[2,4,5]] | 0 ↦ 1, 1 ↦ 1, 2 ↦ 1, 3 ↦ 1, 4 ↦ 1, 5 ↦ 1 0\mapsto 1,1\mapsto 1,2\mapsto 1,3\mapsto 1,4\mapsto 1,5\mapsto 1 |
 
-### 3.2. Applications
+[[0, 1, 2], [0, 1, 3], [2, 4, 5], [3, 4, 5]] [[0,1,2],[0,1,3],[2,4,5],[3,4,5]] | 0 ↦ 1, 1 ↦ 1, 2 ↦ 1, 3 ↦ 1, 4 ↦ 1, 5 ↦ 1 0\mapsto 1,1\mapsto 1,2\mapsto 1,3\mapsto 1,4\mapsto 1,5\mapsto 1 |
 
-Let J = ∑ n ≥ 0 J n ​ x n / n! \curly{J}=\sum_{n\geq 0}J_{n}x^{n}/n! as in ( 8). By ( 9),
+[[0, 1, 2], [0, 3, 4], [1, 3, 5], [2, 4, 6]] [[0,1,2],[0,3,4],[1,3,5],[2,4,6]] | 0 ↦ 2, 1 ↦ 2, 2 ↦ 2, 3 ↦ 2, 4 ↦ 2, 5 ↦ 1, 6 ↦ 1 0\mapsto 2,1\mapsto 2,2\mapsto 2,3\mapsto 2,4\mapsto 2,5\mapsto 1,6\mapsto 1 |
 
- | ∂ τ J = ( ∂ ∂ x − 1 x) ​ ∂ z J, \partial_{\tau}\curly{J}=\Big(\frac{\partial}{\partial x}-\frac{1}{x}\Big)\partial_{z}\curly{J}, |  |
+[[0, 1, 2], [0, 3, 4], [0, 5, 6], [1, 3, 5]] [[0,1,2],[0,3,4],[0,5,6],[1,3,5]] | 0 ↦ 2, 1 ↦ 1, 2 ↦ 1, 3 ↦ 1, 4 ↦ 1, 5 ↦ 1, 6 ↦ 1 0\mapsto 2,1\mapsto 1,2\mapsto 1,3\mapsto 1,4\mapsto 1,5\mapsto 1,6\mapsto 1 |
 
-where ∂ τ = 1 2 ​ π ​ i ∂ ∂ τ \partial_{\tau}=\frac{1}{2\pi i}\frac{\partial}{\partial\tau} and ∂ z = 1 2 ​ π ​ i ∂ ∂ z \partial_{z}=\frac{1}{2\pi i}\frac{\partial}{\partial z}. By Theorem 4, this implies relation among differentials of θ 1 ​ ( z, τ) \theta_{1}(z,\tau). For example extracting the x 3 x^{3} coefficient, we have
+[[0, 1, 2], [0, 1, 3], [2, 4, 5], [4, 5, 6]] [[0,1,2],[0,1,3],[2,4,5],[4,5,6]] | 0 ↦ 3, 1 ↦ 3, 2 ↦ 4, 3 ↦ 2, 4 ↦ 3, 5 ↦ 3, 6 ↦ 2 0\mapsto 3,1\mapsto 3,2\mapsto 4,3\mapsto 2,4\mapsto 3,5\mapsto 3,6\mapsto 2 |
 
-###### Corollary 16.
+[[0, 1, 2], [0, 1, 3], [2, 4, 5], [3, 4, 6]] [[0,1,2],[0,1,3],[2,4,5],[3,4,6]] | 0 ↦ 3, 1 ↦ 3, 2 ↦ 3, 3 ↦ 3, 4 ↦ 2, 5 ↦ 1, 6 ↦ 1 0\mapsto 3,1\mapsto 3,2\mapsto 3,3\mapsto 3,4\mapsto 2,5\mapsto 1,6\mapsto 1 |
 
- | θ 1 ∙ ∙ ∙ ∙ θ 1 − 4 θ 1 ∙ ∙ ∙ θ 1 ∙ + 3 θ 1 ∙ ⁣ ∙ θ 1 ∙ ⁣ ∙ − θ 1 θ 1 ∙ ⁣ ∙ E 2 + ( θ 1 ∙) 2 E 2 + 1 2 θ 1 2 E 2 ′ = 0 \theta_{1}^{\bullet\bullet\bullet\bullet}\theta_{1}-4\theta_{1}^{\bullet\bullet\bullet}\theta_{1}^{\bullet}+3\theta_{1}^{\bullet\bullet}\theta_{1}^{\bullet\bullet}-\theta_{1}\theta_{1}^{\bullet\bullet}E_{2}+(\theta_{1}^{\bullet})^{2}E_{2}+\frac{1}{2}\theta_{1}^{2}E_{2}^{\prime}=0 |  |
+[[0, 1, 2], [0, 1, 3], [0, 4, 5], [4, 5, 6]] [[0,1,2],[0,1,3],[0,4,5],[4,5,6]] | 0 ↦ 6, 1 ↦ 4, 2 ↦ 3, 3 ↦ 3, 4 ↦ 4, 5 ↦ 4, 6 ↦ 2 0\mapsto 6,1\mapsto 4,2\mapsto 3,3\mapsto 3,4\mapsto 4,5\mapsto 4,6\mapsto 2 |
 
-### 3.3. The other theta functions
+[[0, 1, 2], [0, 1, 3], [0, 4, 5], [2, 4, 6]] [[0,1,2],[0,1,3],[0,4,5],[2,4,6]] | 0 ↦ 3, 1 ↦ 2, 2 ↦ 3, 3 ↦ 1, 4 ↦ 3, 5 ↦ 2, 6 ↦ 2 0\mapsto 3,1\mapsto 2,2\mapsto 3,3\mapsto 1,4\mapsto 3,5\mapsto 2,6\mapsto 2 |
 
-We consider an analog of deformed Eisenstein series corresponding to the theta functions θ 2, θ 3, θ 4 \theta_{2},\theta_{3},\theta_{4}. For n ≥ 1 n\geq 1, define
+[[0, 1, 2], [0, 1, 3], [0, 4, 5], [1, 4, 6]] [[0,1,2],[0,1,3],[0,4,5],[1,4,6]] | 0 ↦ 2, 1 ↦ 2, 2 ↦ 1, 3 ↦ 1, 4 ↦ 1, 5 ↦ 1, 6 ↦ 1 0\mapsto 2,1\mapsto 2,2\mapsto 1,3\mapsto 1,4\mapsto 1,5\mapsto 1,6\mapsto 1 |
 
- | J 2, n \displaystyle J_{2,n} | = 2 ​ J n ​ ( 2 ​ z, 2 ​ τ) − J n ​ ( z, τ) \displaystyle=2J_{n}(2z,2\tau)-J_{n}(z,\tau) |  |
+[[0, 1, 2], [0, 1, 3], [0, 4, 5], [0, 4, 6]] [[0,1,2],[0,1,3],[0,4,5],[0,4,6]] | 0 ↦ 2, 1 ↦ 1, 2 ↦ 1, 3 ↦ 1, 4 ↦ 1, 5 ↦ 1, 6 ↦ 1 0\mapsto 2,1\mapsto 1,2\mapsto 1,3\mapsto 1,4\mapsto 1,5\mapsto 1,6\mapsto 1 |
 
- | J 3, n \displaystyle J_{3,n} | = 2 2 − n ​ J n ​ ( 2 ​ z, τ) − 2 ​ J n ​ ( 2 ​ z, 2 ​ τ) + J n ​ ( z, τ) − 2 1 − n ​ J n ​ ( z, τ / 2) \displaystyle=2^{2-n}J_{n}(2z,\tau)-2J_{n}(2z,2\tau)+J_{n}(z,\tau)-2^{1-n}J_{n}(z,\tau/2) |  |
+Table 1: Families and weights
 
- | J 4, n \displaystyle J_{4,n} | = 1 2 n − 1 ​ J n ​ ( z, τ / 2) − J n ​ ( z, τ). \displaystyle=\frac{1}{2^{n-1}}J_{n}(z,\tau/2)-J_{n}(z,\tau). |  |
+Next, we show that all these representatives have non-negative shares.
 
-Concretely, we have
+###### Lemma 9
 
-(22) |  | J 2, n ​ ( z, τ) \displaystyle J_{2,n}(z,\tau) | = δ n, 1 ​ p p + 1 + B n − n ​ ∑ k, r ≥ 1 ( − 1) k ​ r n − 1 ​ ( p k + p − k) ​ q k ​ r \displaystyle=\delta_{n,1}\frac{p}{p+1}+B_{n}-n\sum_{k,r\geq 1}(-1)^{k}r^{n-1}(p^{k}+p^{-k})q^{kr} |  |
+For all F c F_{c} and w w given in Table 1, it holds that 𝗌𝗌𝗇 F c ~ w = ⊥ {\sf ssn}\ \tilde{F_{c}}\ w=\bot.
 
- | J 3, n ​ ( z, τ) \displaystyle J_{3,n}(z,\tau) | = − B n ​ ( 1 − 1 2 n − 1) − n ​ ∑ k, r ≥ 1 ( r − 1 2) n − 1 ​ ( − 1) k ​ ( p k + ( − 1) n ​ p − k) ​ q k ⁡ ( r − 1 2) \displaystyle=-B_{n}(1-\frac{1}{2^{n-1}})-n\sum_{k,r\geq 1}(r-\frac{1}{2})^{n-1}(-1)^{k}(p^{k}+(-1)^{n}p^{-k})q^{k(r-\frac{1}{2})} |  |
+###### Proof
 
- | J 4, n ​ ( z, τ) \displaystyle J_{4,n}(z,\tau) | = − B n ​ ( 1 − 1 2 n − 1) − n ​ ∑ k, r ≥ 1 ( r − 1 2) n − 1 ​ ( p k + ( − 1) n ​ p − k) ​ q k ⁡ ( r − 1 2). \displaystyle=-B_{n}(1-\frac{1}{2^{n-1}})-n\sum_{k,r\geq 1}(r-\frac{1}{2})^{n-1}(p^{k}+(-1)^{n}p^{-k})q^{k(r-\frac{1}{2})}. |  |
+By calculations performed by a computer.
 
-The statements of section 1 apply with minor modifications also to the J i, n J_{i,n}. In particular we can define periodic K i, n K_{i,n}, find relations and express the derivatives of J i, n J_{i,n} in terms of J i, n J_{i,n} itself.
+Finally, the main result can be easily proved.
 
-Let
+###### Theorem 5.1
 
- | θ 2 ​ ( z, τ) \displaystyle\theta_{2}(z,\tau) | = θ 1 ​ ( z + 1 2, τ) \displaystyle=\theta_{1}(z+\frac{1}{2},\tau) |  |
+The following are FC-families:
 
- | θ 3 ​ ( z, τ) \displaystyle\theta_{3}(z,\tau) | = q 1 / 8 ​ p 1 / 2 ​ θ 1 ​ ( z + 1 2 ​ τ + 1 2, τ) \displaystyle=q^{1/8}p^{1/2}\theta_{1}(z+\frac{1}{2}\tau+\frac{1}{2},\tau) |  |
+1. 1.
 
- | θ 4 ​ ( z, τ) \displaystyle\theta_{4}(z,\tau) | = θ 3 ​ ( z + 1 / 2, τ) = − i ​ q 1 / 8 ​ p 1 / 2 ​ θ 1 ​ ( z + 1 / 2 ​ τ, τ) \displaystyle=\theta_{3}(z+1/2,\tau)=-iq^{1/8}p^{1/2}\theta_{1}(z+1/2\tau,\tau) |  |
+all families containing one 1-element set (i.e., { { a } } \{\{a\}\});
 
-be the other theta functions. We state the analog of Theorem 4.
+2. 2.
 
-###### Theorem 17.
+all families containing one 2-element set (i.e., { { a, b } } \{\{a,b\}\}, for a ≠ b a\neq b);
 
-We have
+3. 3.
 
- | ∑ n ≥ 0 J i, n ​ ( z, τ) ​ x n n! = x ​ θ 1 ∙ ​ ( 0, τ) θ 1 ​ ( x 2 ​ π ​ i) ​ exp ( x ∂ p) ⋅ θ i ( z, τ) θ i ​ ( z, τ). \sum_{n\geq 0}J_{i,n}(z,\tau)\frac{x^{n}}{n!}=x\ \frac{\theta_{1}^{\bullet}(0,\tau)}{\theta_{1}(\frac{x}{2\pi i})}\ \frac{\exp(x\partial_{p})\cdot\theta_{i}(z,\tau)}{\theta_{i}(z,\tau)}. |  |
+all families containing 3 3-element sets whose union is contained in a 5-element set (i.e., uniform 533 533 -families);
 
-###### Proof.
+4. 4.
 
-With ( 22) one proves the formulas
+all families containing 4 3-element sets whose union is contained in a 6-element set (i.e., uniform 634 634 -families);
 
- | J 2, n ​ ( z, τ) \displaystyle J_{2,n}(z,\tau) | = J n ​ ( z + 1 2) \displaystyle=J_{n}(z+\frac{1}{2}) |  |
+5. 5.
 
- | J 3, n ​ ( z, τ) \displaystyle J_{3,n}(z,\tau) | = ∑ l = 0 n ( n l) ​ 1 2 n − l ​ J l ​ ( z + 1 2 + 1 2 ​ τ) \displaystyle=\sum_{l=0}^{n}\binom{n}{l}\frac{1}{2^{n-l}}J_{l}(z+\frac{1}{2}+\frac{1}{2}\tau) |  |
+all families containing 4 3-element sets whose union is contained in a 7-element set (i.e., uniform 734 734 -families).
 
- | J 4, n ​ ( z, τ) \displaystyle J_{4,n}(z,\tau) | = ∑ l = 0 n ( n l) ​ 1 2 n − l ​ J l ​ ( z + 1 2 ​ τ). \displaystyle=\sum_{l=0}^{n}\binom{n}{l}\frac{1}{2^{n-l}}J_{l}(z+\frac{1}{2}\tau). |  |
+###### Proof
 
-The claims then reduces directly to Theorem 4. ∎
+The case 1 trivially holds (since for each family member A A that does not contain a a, there is a member A ∪ { a } A\cup\{a\} that contains a a).
+
+Other proofs are based on the techniques described in this paper. By Proposition 2 it suffices to consider only families F F such that ⋃ F ⊆ { 0, 1, …, n − 1 } \bigcup F\subseteq{\{0,1,\ldots,n-1\}}. All families corresponding to rows in Table 1 are FC-families. Indeed, for each F c F_{c} and w w given in a table row, by Lemma 9 it holds that 𝗌𝗌𝗇 ​ F c ​ w {\sf ssn}\ F_{c}\ w. Therefore, by Lemma 3.1 for all F ′ ∈ 𝗎𝖼𝖾 ​ F c F^{\prime}\in{\sf uce}\ F_{c} it holds that w ¯ ( ⋃ F c) ​ ( F ′) ≥ 0 \bar{w}_{(\bigcup{F_{c}})}(F^{\prime})\geq 0. Then, F c F_{c} is FC-family by Theorem 2.1.
+
+In the case 2 this completes the proof.
+
+In the case 3 the statement holds by Lemma 7, since, by Lemma 8 four rows given in Table 1 correspond to four non-equivalent families.
+
+To show the case 4, let F c F_{c} be any family containing 4 3-element sets whose union is contained in { 0, 1, …, 5 } \{0,1,\ldots,5\} and let F F be a union-closed family such that F ⊇ F c F\supseteq F_{c}. If 𝖼𝗁𝖾𝖼𝗄 533 ​ F c {\sf check}_{533}\ F_{c} holds (i.e., if union of any 3 members of F c F_{c} is contained in a 5-element set), then F F is Frankl’s by case 3. If ¬ 𝖼𝗁𝖾𝖼𝗄 533 ​ F c \neg{\sf check}_{533}\ F_{c} holds, then F c F_{c} is in 𝖿𝗂𝗅𝗍𝖾𝗋 ( λ F. ¬ 𝖼𝗁𝖾𝖼𝗄 533 F) 𝖿𝖺𝗆𝗌 634 {\sf filter}\ (\lambda F.\neg{\sf check}_{533}\ F)\ {\sf fams}^{634}. The statement then holds by Lemma 7, since, by Lemma 8 two rows given in Table 1 correspond to two non-equivalent families of 𝖿𝗂𝗅𝗍𝖾𝗋 ( λ F. ¬ 𝖼𝗁𝖾𝖼𝗄 533 F) 𝖿𝖺𝗆𝗌 634 {\sf filter}\ (\lambda F.\neg{\sf check}_{533}\ F)\ {\sf fams}^{634}.
+
+The case 5 is proved similarly, using the proofs for both the case 3 and the case 4.
+
+## 6 Conclusions and further work
+
+In this paper, we have formalized (within Isabelle/HOL) a computer-assisted approach of Živković and Vučković for verifying FC-families. Well-known FC-families are confirmed and a new uniform FC-family is discovered.
+
+The Isabelle/HOL formalization has around 260KB of data organized into around 6500 lines of Isabelle/Isar proof text. Ratio between the size of the formalization and the size of the corresponding pen and paper proof (DeBruijn index) is estimated at around 5.5. Total time required to do the formalization is very roughly estimated at around 200 man/hours (25 full working days spread over a period of around 8 months).
+
+Total proof checking time of Isabelle/HOL takes around 28 minutes on a notebook PC with 2.1GHz Intel/Pentium CPU and 4GB RAM. The major fraction of this time (around 23 minutes) is spent in the combinatorial search. Checking Lemma 9 consumes most of this time, and its last 8 cases (related to the uniform-734 families) alone take 22.8 minutes. This is quite long compared to the original JAVA programs (that perform the whole combinatorial search in around 1 minute), but still bearable. The big difference is due to the use of machine-integers supporting atomic bitwise-or in JAVA and the use of big-integers that do not support atomic bitwise-or in Isabelle/ML. The search time could be reduced if machine-integers were also used in Isabelle/ML. In a simple approach, the code generator could be instructed to replace mathematical integers in the formalization by machine-integers in the code, but that would make a gap between the formalization and the generated code and would require trusting that no overflows occur. A better approach would require formalizing machine-integers and their properties and using them within the formalization itself.
+
+Compared to the prior pen-and-paper work, the computer assisted approach significantly reduces the complexity of mathematical arguments behind the proof and employs computing-machinery in doing its best — quickly enumerating and checking a large search space. This enables formulation of a general framework for checking various FC-families, without the need of employing human intellectual resources in analyzing specificities of separate families. Compared to the work of Živković and Vučković, apart from achieving the highest level of trust possible, the significant contribution of the formalization is the clear separation of mathematical background and combinatorial search algorithms, not present in earlier work. Also, separation of abstract properties of search algorithms and technical details of their implementation significantly simplifies reasoning about their correctness and brings them much closer to classic mathematical audience, not inclined towards computer science.
+
+This work represents a significant part in formally proving the Frankl’s conjecture for families F F such that | ⋃ F | ≤ 11 |\bigcup{F}|\leq 11, and | ⋃ F | ≤ 12 |\bigcup{F}|\leq 12 (already informally done by Živković and Vučković [17]) which in the focus of our current and future work. We also plan to investigate other FC-families (not necessarily uniform).
 
 ## References
 
-- [Cho97] Y. Choie, Correspondence among Eisenstein series E 2, 1 ​ ( τ, z) E_{2,1}(\tau,z), H 3 / 2 ​ ( τ) H_{3/2}(\tau) and E 2 ​ ( τ) E_{2}(\tau), Manuscripta Math. 93 (2), 177–187 (1997).
-- [DMZ12] A. Dabholkar, S. Murthy and D. Zagier, Quantum Black Holes, Wall Crossing, and Mock Modular Forms, (2012), arXiv:1208.4074.
-- [EZ85] M. Eichler and D. Zagier, The theory of Jacobi forms, volume 55 of Progress in Mathematics, Birkhäuser Boston Inc., Boston, MA, 1985.
-- [FP97] W. Fulton and R. Pandharipande, Notes on stable maps and quantum cohomology, in Algebraic geometry—Santa Cruz 1995, volume 62 of Proc. Sympos. Pure Math., pages 45–96, Amer. Math. Soc., Providence, RI, 1997.
-- [GK09] M. R. Gaberdiel and C. A. Keller, Differential operators for elliptic genera, Commun. Number Theory Phys. 3 (4), 593–618 (2009).
-- [MPT10] D. Maulik, R. Pandharipande and R. P. Thomas, Curves on K3 surfaces and modular forms, J.Topol.3:937-996,2010, 2010.
-- [MTZ08] G. Mason, M. P. Tuite and A. Zuevsky, Torus n n -point functions for ℝ \mathbb{R} -graded vertex operator superalgebras and continuous fermion orbifolds, Comm. Math. Phys. 283 (2), 305–342 (2008).
-- [Obe14] G. Oberdieck, Gromov-Witten invariants of the Hilbert scheme of points of a K3 surface, 2014, arXiv:1406.1139.
-- [PT14] R. Pandharipande and R. P. Thomas, The Katz-Klemm-Vafa conjecture for K3 surfaces, 2014, arXiv:1404.6698.
-- [Ram00] S. Ramanujan, On certain arithmetical functions [Trans. Cambridge Philos. Soc. 22 (1916), no. 9, 159–184], in Collected papers of Srinivasa Ramanujan, pages 136–162, AMS Chelsea Publ., Providence, RI, 2000.
+- [1] Tetsuya Abe. Strong Semimodular Lattices and Frankl’s Conjecture. Algebra Universalis, 44:379–382, 2000.
+- [2] Kenneth I. Appel and Wolfgang Haken. Every Planar Map is Four Colorable. American Mathematical Society, 1989.
+- [3] Ivica Bošnjak and Petar Marković. The 11-element Case of Frankl’s Conjecture. Electronic Journal of Combinatorics, 15(1), 2008.
+- [4] Giovanni Lo Faro. Union-closed Sets Conjecture: Improved Bounds. J. Combin. Math. Combin. Comput., 16:97–102, 1994.
+- [5] Weidong Gao and Hongquan Yu. Note on the Union-Closed Sets Conjecture. Ars Combinatorica, 49, 1998.
+- [6] Georges Gonthier. Formal Proof – the Four-Color Theorem. Notices of AMS, 55(11), 2008.
+- [7] Petar Marković. An attempt at Frankl’s Conjecture. Publications de l’Institut Mathématique, 81(95):29–43, 2007.
+- [8] Robert Morris. FC-families and Improved Bounds for Frankl’s Conjecture. European Journal of Combinatorics, 27(2):269 – 282, 2006.
+- [9] Tobias Nipkow, Gertrud Bauer, and Paula Schultz. Flyspeck I: Tame Graphs. In Ulrich Furbach and Natarajan Shankar, editors, IJCAR, volume 4130 of LNCS, pages 21–35. Springer, 2006.
+- [10] Tobias Nipkow, Lawrence C. Paulson, and Markus Wenzel. Isabelle/HOL — A Proof Assistant for Higher-Order Logic, volume 2283 of LNCS. Springer, 2002.
+- [11] Bjorn Poonen. Union-closed Families. Journal of Combinatorial Theory, Series A, 59(2):253 – 268, 1992.
+- [12] Jürgen Reinhold. Frankl’s Conjecture is True for Lower Semimodular Lattices. Graphs and Combinatorics, 16:115–116, 2000.
+- [13] N. Robertson, D. P. Sanders, P. D. Seymour, and R. Thomas. The Four Colour Theorem. Journal of Combinatorial Theory, Series B, 1997.
+- [14] Theresa P. Vaughan. Families Implying the Frankl Conjecture. European Journal of Combinatorics, 23(7):851 – 860, 2002.
+- [15] Theresa P. Vaughan. A Note on the Union-closed Sets Conjecture. J. Combin. Math. Combin. Comput., 45:95–108, 2003.
+- [16] Theresa P. Vaughan. Three-sets in a Union-closed Family. J. Combin. Math. Combin. Comput., 49:95–108, 2004.
+- [17] Miodrag Živković and Bojan Vučković. The 12-element Case of Frankl’s Conjecture. submitted, 2012.
 
-Departement Mathematik
-ETH Zürich
-georgo@math.ethz.ch
+[◄][1][image: ar5iv homepage] [2]
+[Feeling lucky?][3] [4]
+[Conversion report][5]
+[Report an issue][6]
+[View original on arXiv][7] [►][8]
 
 
 ## Links
 
-[1]: https://info.arxiv.org/about
-[2]: https://info.arxiv.org/help/license/index.html#licenses-available
+[1]: /html/1207.3602
+[2]: /
+[3]: /feeling_lucky
+[4]: /land_of_honey_and_milk
+[5]: /log/1207.3604
+[6]: https://github.com/dginev/ar5iv/issues/new?template=improve-article--arxiv-id-.md&title=Improve+article+1207.3604
+[7]: https://arxiv.org/pdf/1207.3604
+[8]: /html/1207.3605

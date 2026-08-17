@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "n3-dichotomy/G-n3-zero",
+  "source": "code/lean/n3_dichotomy_G_n3_zero.lean",
+  "stage": "prove"
+}

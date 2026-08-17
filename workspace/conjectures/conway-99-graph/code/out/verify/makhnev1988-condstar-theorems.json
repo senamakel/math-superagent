@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "makhnev1988-condstar-theorems",
+  "source": "code/lean/makhnev1988_condstar_theorems.lean",
+  "stage": "prove"
+}

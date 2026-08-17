@@ -1,0 +1,10 @@
+rook(3):
+[rook] root 0: k=4, M=4 outer, 2 matched pairs | s=0: edges 0/2 (0.0%), s=1: edges 4/4 (100.0%) | total H-adj 4/6 = 66.7%
+[rook] root 1: k=4, M=4 outer, 2 matched pairs | s=0: edges 0/2 (0.0%), s=1: edges 4/4 (100.0%) | total H-adj 4/6 = 66.7%
+[rook] root 4: k=4, M=4 outer, 2 matched pairs | s=0: edges 0/2 (0.0%), s=1: edges 4/4 (100.0%) | total H-adj 4/6 = 66.7%
+[rook] root 8: k=4, M=4 outer, 2 matched pairs | s=0: edges 0/2 (0.0%), s=1: edges 4/4 (100.0%) | total H-adj 4/6 = 66.7%
+bvls_graph():
+[bvls] root 0: k=22, M=220 outer, 11 matched pairs | s=0: edges 1980/19910 (9.9%), s=1: edges 220/4180 (5.3%) | total H-adj 2200/24090 = 9.1%
+[bvls] root 1: k=22, M=220 outer, 11 matched pairs | s=0: edges 1980/19910 (9.9%), s=1: edges 220/4180 (5.3%) | total H-adj 2200/24090 = 9.1%
+[bvls] root 121: k=22, M=220 outer, 11 matched pairs | s=0: edges 1980/19910 (9.9%), s=1: edges 220/4180 (5.3%) | total H-adj 2200/24090 = 9.1%
+[bvls] root 242: k=22, M=220 outer, 11 matched pairs | s=0: edges 1980/19910 (9.9%), s=1: edges 220/4180 (5.3%) | total H-adj 2200/24090 = 9.1%

@@ -198,6 +198,35 @@ offers the cheap route for it — run `lean` through `execute_command` while
 iterating, which files no verdict — and the run took it for eleven of its twelve
 probes.
 
+### The filename a node is addressed by
+
+The arm has to find a node's source and its verdict again a pass later, so both
+paths are *derived* from the node id rather than chosen by the prover: a file a
+model named is a file the model has to name identically next pass. Every
+character outside the Lean-safe set folds to `_`.
+
+That fold on its own is not injective, and the same run that priced the arm
+showed why it has to be. Its ranking held `spectral-interlacing-sqrt-lower-bound/
+G-eigenvalue-bounds-degree` beside plain hyphenated siblings, and `a/b` and
+`a-b` fold to one `a_b`. Two statements would then share a `.lean` file — the
+second overwriting the first's proof — and share an attempt record, so
+`verify::attempts` would read the other node's count and the bound would be
+spent on whichever asked second. The failure that matters is the last one: a
+kernel acceptance read back against the wrong statement, which everything
+downstream trusts.
+
+So the readable fold carries a fingerprint of the id it came from —
+`cauchy-bound` becomes `code/lean/cauchy_bound-d85af71b.lean`. FNV-1a written
+out rather than `DefaultHasher`, whose output std does not promise to keep
+stable across releases: this value sits *in a path*, so a run resuming a
+workspace under a newer toolchain has to derive the same name the run that wrote
+it did, or every node reads as unattempted and the kernel budget is spent twice.
+A hash in a filename is a compatibility commitment. A workspace written before
+this keeps its counts — the old path is read when the current one is missing,
+never written — and `verify::counts` deduplicates on the node id, so a node
+filed under both names is one statement in the denominator the judge is given
+rather than two.
+
 Choosing and recording are one critical section under `worklock::writes`, taken
 at the arm's boundary and released before the delegation. Schools share a
 workspace and run this arm concurrently, so without the lock two of them read

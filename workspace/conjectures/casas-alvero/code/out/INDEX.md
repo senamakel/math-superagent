@@ -31,9 +31,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `extend_p2_further.py` | Extends the F2 Hasse-CA multiplier sequence m(n,2)=sat/2 to fresh n (25,26,27) testing the popcount conjecture; parallel exact bit-arithmetic oracle. |
 | `extend_p2_multiplier.py` | Fast exact p=2 Hasse-CA satisfier count for monic degree-n polys over F2 via bit-parallel Lucas Hasse derivatives and bit-polynomial Euclid (no floats, no sympy). |
 | `extend_p2_popcount.py` | Parallel exact F2 Hasse-CA satisfier count extending the multiplier sequence m(n,2)=sat/2 to test the popcount conjecture. |
+| `extend_p3_multiplier.py` | _(undescribed)_ |
 | `fam_vs_mono.py` | _(undescribed)_ |
 | `family_exhaustive.py` | _(undescribed)_ |
 | `feasibility_boundary.captured.txt` | Maps the feasibility boundary of the bad-prime-minors criterion: SNF feasible at n=4 (19×15 matrices, 64 tuples, ms), SNF-infeasible at n=5 (single 195×120 SNF >90 s cap) but rank-only feasible; n=6 rank-infeasible (C=1365, D=2751, ~185 core-s/rank, full sweep ~2.2e5 core-hours); n=7,8 neither. ALL CHECKS PASSED. |
+| `fiveroots_multipattern.captured.txt` | Capture of code/roots5/multipattern.py: five-distinct-roots rung first step. Verifies mechanism (1) (root of mult m: f^(i)(a)=0 iff i<m, m!g(a)!=0 at i=m) exactly and vs oracle; mechanism (2) centroid (f^(n-1)=n!(x-c), i=n-1 forces c=alpha_k). Headline RULED-OUT result for 19 patterns n=5..10; ALL CHECKS PASSED, exit 0. |
+| `fiveroots_multipattern_note.md` | Verdict note with claim block status:checked: no 5-distinct-root multiplicity pattern is satisfiable by the pure multiplicity+centroid mechanism; survival needs a non-multiplicity higher-order coincidence. |
 | `ghosh_break.captured.txt` | 1313 exact checks (over QQ and GF(p)) verifying the named char-p break in the Ghosh proof (the leading coefficient -n of F(n,n,n) used as a unit in eq 4.18, which must fail at char p |
 | `list_p2_counterexamples.py` | List the actual Hasse-CA monic polynomials over F2 (pure powers and counterexamples) for small n to find the structural form behind m(n,2). |
 | `multiplier_seq_p23.py` | Compute the multiplier m=sat/p as a sequence in n for fixed p=2 and p=3, over a range large enough for sequence tools (m=1 at good primes, m>1 at bad). |
@@ -48,10 +51,13 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pc2_all_twoterm.py` | _(undescribed)_ |
 | `pc3_nonfamily.py` | _(undescribed)_ |
 | `pc3_nonfamily_print.py` | _(undescribed)_ |
+| `pc3_structure.py` | Enumerates F2 Hasse-CA counterexamples at pc=3 degrees exploring a structural form behind the rigid {2:6,4:5,6:3} support profile; support-2 law confirmed. |
 | `pc_regularity.py` | _(undescribed)_ |
 | `probe_extend.py` | Test the refined satisfier law (T) ce=sat-p (the p pure powers always satisfy), (C) sat is a multiple of p; good prime → m=1, bad prime → m=p except n=5,p=3 gives m=5=n; probe n=7,8,9 for more exceptions. |
 | `probe_n4_structure.py` | Verify the satisfier law at corner cases and probe the STRUCTURE of the extra satisfiers at a bad prime: sat(n,p)=p if p good (CA holds), =p² if p bad (conjectured). |
 | `probe_n5p3.py` | Probe the full structure of Hasse-CA satisfiers at n=5,p=3 (bad), where the count 15 breaks the naive p² law; lists every satisfier and marks pure powers. |
+| `probe_support_rigidity.py` | _(undescribed)_ |
+| `probe_support_rigidity2.py` | _(undescribed)_ |
 | `refute_char2.md` | Records the engine-refuted char-2 counterexample x^3+x^2 (negative control proving the TPTP encoding of the CA hypothesis is faithful) and what it does/doesn't establish. |
 | `refute_deg4_char3.md` | Refutation note: degree-4 char-3 counterexample x^4+x, confirming p=3 is a bad prime for n=4 and locating the char-p break of the run's two-roots centroid argument (f''' vanishes mod 3). |
 | `refute_deg4_char5.md` | Refutation note: degree-4 char-5 counterexample x^4-x^2 (Hasse formulation, 3 distinct roots, not a pure power), recording that p=5 is a bad prime for n=4 and corroborating the run's J_T criterion. |
@@ -65,17 +71,24 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `rootdiff_identity_corrected.captured.txt` | _(undescribed)_ |
 | `rootdiff_identity_deleted.md` | Documents that code/out/rootdiff_identity.captured.txt was deleted (was a zero-byte failed redirection) and must not be re-created by re-running code/rootdiff/verify_rootdiff_identity.py: the identity is settled by proof (directive 10 option 2, research/notes/root-difference-identity-verified.md) and a re-run cannot terminate (n=5,i=2 symbolic resultant exceeds 550 s, measured). Points to the real live verification, code/out/charp_break.captured.txt. |
 | `satisfier_table.py` | Gather the Hasse-CA counterexample count over F_p for degrees n=3..6 across small primes to characterize when the p(p-1) law holds. |
+| `scorer_rejection_check.captured.txt` | Capture of the scorer-rejection check (code/search/ca-degree20/rejects/): 4 expected-reject candidates (nonmonic `2x^20-x`, deg19 `x^19-x`, nonrational `x^20-Ix`, trivial `(x-4)^20`) driven through the LIVE scorer `score.py` — each rejected with its exact INVALID reason (exit 0); positive control genuine candidate c0008 still SCORE 18. Proves the rejection rules constrain the live population (task scorer-rejection-check). ALL CHECKS PASSED. |
 | `shapes_n15_n23.py` | Shape comparison of F2 Hasse-CA counterexamples at n=15 and n=23 (both popcount 4): m=457 vs 466; finds the counterexample shape accounting for the 9 extra at n=23 (by monomial-support size and two-term a-values). |
 | `shapes_n28.py` | Verifies pc=3 support-size profile rigidity at n=28 (m=8, {2:6,4:5,6:3}), highest feasible pc=3 degree. |
 | `shapes_pc2_pc3.py` | Support-size profiles of F2 Hasse-CA counterexamples at pc=2 and pc=3 degrees (n=5,6,7,9,10,11,13): pc=3 profile {2:6,4:5,6:3} rigid. |
 | `shapes_pc3_extend.py` | Extends the pc=3 support-size profile rigidity check to n=19,21,22,25,26 (all {2:6,4:5,6:3}). |
 | `shapes_pc4_compare.py` | _(undescribed)_ |
 | `shapes_pc4_parallel.py` | Parallel support-size profile of F2 Hasse-CA counterexamples at pc=4 degrees n=15,23,27 (support-2=14, support-4=106 constant; large support varies). |
+| `single_p3_debug.py` | _(undescribed)_ |
 | `test_n5_law.py` | Test the satisfier law at degree n=5: sat=p if p good, =p² if bad; ce=0 good, =p(p-1) bad; bad primes {2,3,7,…}, good {5,13,…}; checks p=2,3,7 (bad) and 5,13 (good). |
 | `test_n5_law_small.py` | Test the satisfier law at degree n=5 for small primes only (p in {2,3,5,7}, max 7^5=16807), keeping it fast. |
 | `test_twoterm_subset_sum.py` | Test the two-term subset-sum law for F2 Hasse-CA counterexamples: for n with set-bits B, x^a+x^n is a counterexample iff a is a proper nonempty subset-sum of B's bits. |
 | `two_term_family_lib.py` | _(undescribed)_ |
 | `two_term_rule.py` | _(undescribed)_ |
+| `twoterm_sharp.py` | _(undescribed)_ |
+| `twoterm_sharp2.py` | Clean-convention exact check of the two-monomial F2 Hasse-CA theorem S1-S3 over n=3..64: Hasse-CA holds iff (a&n)==a; failing index == a; no i!=a ever fails. All HOLDS. |
+| `twoterm_structure.py` | Observation script: for two-monomial x^n+x^a over F2 the failing Hasse-CA derivative is always i=a (legal subset-sum a always pass, illegal always fail at i=a). Motivates the proof. |
+| `twoterm_submask_wide.py` | Exact verification of the two-monomial F2 Hasse-CA submask law x^n+x^a iff (a&n)==a over n=3..64 (2015 candidates), extending past the 2^28 exhaustion ceiling to popcount classes 5,6. |
 | `verify_charp_agreement.py` | Independent verification of char-p oracle agreement between the canonical sympy oracle (code/lib/casas_alvero.py) and the naive Euclid/radical oracle (code/brute.py) on the char-p counterexample family and pure powers. |
 | `verify_n23_popcount.py` | Independently verify the n=23 p=2 Hasse-CA multiplier (m=466) using sympy's canonical oracle on masked random subsets, confirming parallel_p2_counts.py. |
 | `verify_twomonomial_pc4.py` | Verifies the two-monomial submask law (x^a+x^n is F2 Hasse-CA ce iff a proper submask of n) at pc=4 degrees n=15,23,27: 14 submasks == 14 actual ce each, confirming the support-2 = 2^pc-2 rigidity. |
+| `n96_discrepancy_verified.captured.txt` | Capture of code/librarian/verify_n96_discrepancy.py (directive 12): verifies the n=96 open-degree discrepancy from the HELD degree-7 bad-prime list, not from a count. ALL CHECKS PASSED, exit 0. Checks 1-3 (gate): degree-7 list has exactly 366 primes (largest == 135-digit Thm-4 prime), 127 ABSENT, every prime < 127 except 7 PRESENT. Check 4 (sourced corroboration): 2 in Castryck's degree-6 Table 1, 96 = 6*16 open yet eq 6.5 published-open list omits 96 while containing 98. |

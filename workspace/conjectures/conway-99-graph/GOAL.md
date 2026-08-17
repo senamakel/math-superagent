@@ -1,54 +1,60 @@
-# Goal — state at end of attempt 2
+# Goal — state at end of attempt 3
 
 Attack Conway's 99-graph problem (`problem.md`): the existence of `srg(99,14,1,2)`.
 This remains an OPEN problem; the deliverable is exact partial results with a
 named failing step on the controls, never a claim of the whole.
 
-## What attempt 2 established (all checked unless marked)
+## Where the run stands (end of attempt 3)
 
-1. **Oracle proven, count path exercised.** `code/lib/srg.py::is_srg` now classifies
-   λ vs μ count failures separately. Count-path negatives land in
-   `code/out/oracle-controls.captured.txt`: C9(1,2) (4-regular, 9 vtx, not rook)
-   fails (9,4,1,2) citing "LAMBDA wrong on 18 adjacent pairs, MU wrong on 18
-   non-adjacent pairs"; circulant(99,{1..7}) fails (99,14,1,2) citing counts.
-   rook(3) PASS, bvls(243) PASS with 2673 edges. `sys.path.insert` removed.
-   Claims c4/c5 are `checked`.
+The workspace holds eleven closed routes (solution.md §2) and one verified
+constraint. Attempt 3 carried out the final closure of the orbit-matrix
+programme and verified the decisive boundary number by a second independent
+route. All open tasks are closed; the run is at its natural consolidation point.
 
-2. **G-reduce part (c) REFUTED on BvLS (checked negative).** The outer partial
-   STS's collinearity graph has λ=1 but μ ∈ {0:330, 1:11880, 2:9900} — not an
-   srg(*,*,1,2). Parts (a),(b) hold on both controls. The reduction does NOT
-   recurse. `code/out/g_reduce_control.captured.txt`.
+## New this attempt
 
-3. **Hexagon/n3 line redirected, not dead.** n12 = (1/12)nk(k-2)(2k²-21k+53) + n3
-   is an identity (checked on both controls); both controls have n3=0 (checked).
-   At k=14 base count = 209286 + n3; n3 is a free shift, so the C6 count alone
-   cannot distinguish 99. Makhnev-type-2 conditional makes n3 the crux.
+8. **Route 11 closed: orbit-matrix Z2/Z3 completion — computational
+   infeasibility, NOT mathematics (directive 36/37).** The plain unbroken CP-SAT
+   encoder on the m=33 order-3 orbit matrix of a putative srg(99,14,1,2) ran its
+   full 3000s budget and exited `UNKNOWN`: final bound `#Model 2974.64s
+   var:41675/41745 constraints:56987/57165`, conflicts 5,039,266, branches
+   8,049,382 (`code/out/orbit_order3_final_boundary.captured.txt`, and the live
+   heartbeat in `orbit_z3_enc_g99_plain_detached.captured.txt`).
+   **No INFEASIBLE ⇒ no order-3 fixed-point-free automorphism is excluded.** The
+   residual order-2 case (more orbits, strictly larger model) is not worth the
+   same attempt at this rate. The published reduction of a putative Aut to
+   {Z2,Z3} stands untouched; the automorphism group of the graph remains open.
 
-4. **Makhnev 1988 Thm 2 gate PASSED (checked).** Primary Russian full text in
-   library; condition (*) = n3=0; Thm2 = no (99,14,1,2) with (*). Both controls
-   satisfy (*) with n3=0 (μ=2≤3, absorbed by Thm1 branch), so the conditional
-   is consistent with the existing members. `code/out/makhnev-1988-condition-captured.txt`.
+9. **Decisive boundary number independently re-verified in exact arithmetic.**
+   `code/out/orbit_order3_boundary_verify.py → .captured.txt`: heartbeat points
+   694.32s→15 vars fixed, 1889.85s→33 fixed; Δ=18 vars in 1195.53s = one per
+   66.42s; at that (slowing) rate presolve alone for 41,745 vars ≈ 32 days
+   (lower bound — rate slows: 46.29→57.27→66.42 s/var). The measurement survives
+   independent exact recomputation; it is a refutation-of-a-method boundary, not
+   a graph claim.
 
-5. **Order-6 counting does NOT force n3≥1 at 99 (checked).** All 62 Reimbayev
-   order-6 counts admit n3=0 at every family member (n3≡0 mod 3, interval
-   [0,4158] at k=14). So n3=0 is arithmetically consistent and family-realizable;
-   a forcing argument needs k=14-specific geometry.
+10. **Capture-doubling root cause found: NOT a second encoder.** Killing the
+    buffered duplicate (PID 5504) left the single plain process (5789) still
+    printing every `#Model` line twice — CP-SAT's native progress log plus the
+    `log_callback` echo. Intrinsic to one process. (Directive 36's "kill the
+    competing buffered encoder" was still executed; it was a genuine dead second
+    process that produced nothing readable.)
 
-## The open lever for phase 4
-
-**Is n3 ≥ 1 forced for a putative (99,14,1,2)?** n3 = number of disjoint triangle
-pairs joined by exactly two edges. Makhnev Thm2 gives: n3=0 ⇒ nonexistence
-(sourced, controls pass). Both controls have n3=0 and EXIST, so any argument
-forcing n3≥1 (or n3=0) at 99 must fail on 9 and 243; any forcing must be
-k=14-specific, since the order-6 identities are n3-agnostic in the family sense.
-A construction with n3=0 would refute the Makhnev conditional's consequence only
-if it built a real 99-graph (impossible if Thm2 is sound); a construction with
-n3≥1 is consistent with existence. The next attack should be a k=14 local
-geometric constraint on the triangle geometry (partial STS, 99 pts / 231 lines /
-7 per point) that no order-6 identity captures.
-
-## Completion test (unchanged from original GOAL)
+## Completion test (unchanged)
 
 No nonexistence argument is admissible until it is run against rook(3) and
 bvls_graph() through `code/lib.srg.is_srg` and the step that breaks on them is
-named. The oracle now satisfies that gate for its own correctness.
+named. Every closed route in this run satisfies that gate — each failed either
+on the controls (parameter-determined ⇒ cannot separate 99 from 9/243) or was a
+stated computational-infeasibility boundary (never a verdict).
+
+## What remains (the honest frontier, solution.md §7)
+
+- Existence or nonexistence of `srg(99,14,1,2)`: **open**, not claimed.
+- The **global closure of the n₃ ≥ 1 seed**: taking the radius-6 fixpoint
+  structures (19 survivors) and closing them into 99 vertices (do the outside
+  87–91 vertices join to satisfy μ=2 and degree-14 for every boundary pair?).
+  No local obstruction at any radius, no counting floor — what remains is the
+  cross-patch/global structural question, **harder than every closed route**.
+- Any live argument must be a=7-specific (√(4k−7)=7), breaking where a∈{3,9}
+  survive — the only shape the controls cannot refute.

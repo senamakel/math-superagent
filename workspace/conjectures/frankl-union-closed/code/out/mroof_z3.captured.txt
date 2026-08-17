@@ -1,0 +1,120 @@
+# M♮-concavity certificate feasibility — validation capture
+
+**What was run:** `code/out/mroof_z3.py` (main), an exact real-arithmetic
+checker `is_feasible_mroof(F_masks, n, x)` using Z3 (`Real` sort), checking
+feasibility of a signed-measure-style M♮-concave abundance certificate.
+Encoded: (i) w(A)=0 for A∉F, (ii) w(A)≥0, Σ_F w=1, (iii) Σ_{x∈A∈F} w(A)≥1/2,
+(iv) M♮-concavity (gross-substitutes exchange) as a disjunction of linear
+inequalities per (X,Y,u). All coefficients exact rationals via `z3.Q`.
+
+**Oracle/arithmetic:** M♮-concavity is checked directly over the Boolean
+lattice by enumerating (X,Y,u) triples; abundance density uses exact integer
+counts (`lib.uc`). No floats anywhere in the z3 encoding (all `Real` +
+`Q(1,2)`).
+
+**Range:** n = 1, 2, 3 (lattice enumeration O(n·4^n), bounded small here).
+
+**Logic:** `QF_LRA` (all inequalities linear in Real variables). Solver: **Z3
+4.8.12** (primary), cross-checked with **cvc5 1.0.3** CLI.
+
+---
+
+## Validation results (True/False per hand case)
+
+### Case (b): n=1, F = {empty, {x}}
+- `is_feasible_mroof({0,1}, 1, 0)` = **True** (matches expectation: x abundant). ✔
+- Control: n=2, F = {empty, {y}} (x in no set), ask about x: **False** (correct:
+  abundance sum is 0 < 1/2). ✔
+
+### Case (a): a genuinely union-closed family, truly-abundant element
+F = masks {0,1,3} = {empty, {x}, {x,y}} over [2], UC:
+- element x=0 (density 2/3, truly-abundant): feasible = **True** ✔
+- element y=1 (density 1/3, not abundant): feasible = **True** (M♮-certifiable
+  anyway — over-certification is possible in this family)
+
+⚠️ **The constant-weight argument in the task's case (a) premise is FALSE as
+stated.** The *whole-lattice* constant w≡1/|F| is M♮-concave (branch B1 is
+equality: 2c≤2c). But constraint (i) forces w to be **zero outside F**, and the
+support-restricted constant is NOT M♮-concave. Concrete counterexample at n=2,
+F={empty,{x,y}} (masks {0,3}): restricted constant is 1/2 on {00,11}, 0 on
+{01,10}; at X={x,y}, Y=∅, u=x, B1 reads 1/2+1/2 ≤ 0+0 (false) and Y\X is empty so
+branch B2 has no v. So the support restriction must not be assumed M♮-concave,
+and indeed the checker gives:
+
+### Case (c) controls — under- and over-certification
+
+**F={0,3} = {empty,{x,y}} over [2], element x (density 1/2): feasible = False**
+(both x=0 and x=1). The restricted constant is the ONLY M♮-candidate shape here
+and it fails; this is an **under-certification** the task's premise would have
+predicted feasible.
+
+**F={5,7} = {0101,0111} over [3], element x (density 1, truly abundant):**
+feasible = **False** — a **genuine under-certification with a clean proof**
+(elements y,z likewise). Family {5,7} is union-closed and x has density 1, yet
+no support-restricted M♮-w can make it abundant.
+
+Manual proof (both Z3 and cvc5 say `unsat`): w[5]=a, w[7]=b, a+b=1. Triple
+X={x,z}=0101, Y={y}=0010, u=x: B1 `a ≤ w[0100]+w[0011]=0`, B2(v=y) `a ≤ 0` ⇒ a=0.
+Triple X={x,y,z}=0111, Y={}, u=x: B1 `b ≤ w[0110]+w[0001]=0` ⇒ b=0. a+b=1
+contradicted. Hence x is NOT certifiable although truly abundant.
+
+**Antichain F={1,2}={ {x},{y} } over [2] (NOT union-closed), each density 1/2:**
+feasible = **True** for both x and y.
+
+**Over-certification probe** F={0,3,4}={empty,{x,y},{z}} over [3], element z
+(density 1/3, NOT abundant): feasible = **False** — the non-abundant element is
+*blocked* under M♮ here (no over-certification reached in this family).
+
+### n=3 sanity sweep (union-closed families, truly-abundant elements)
+82 (family, abundant-element) checks across 31 distinct UC families:
+**many truly-abundant elements come back infeasible** — i.e. the
+support-restricted M♮-class under-certifies on a broad set of UC families,
+including {5,7} (density 1!), {3,7}, {6,7}, {3,5,7}, {0,3,5,6,7}, etc. A sample
+of these (dense five-set family and antichains) was re-verified by **both Z3
+and cvc5** and agree.
+
+---
+
+## Solver cross-check (independent implementations)
+
+SMT-LIB dumped from the same encoding, run through cvc5 1.0.3 CLI and z3:
+
+| case | z3 4.8.12 | cvc5 1.0.3 |
+|---|---|---|
+| F={0,3} x=0 | unsat | **unsat** |
+| F={0,1,3} x=0 | sat | **sat** |
+| F={5,7} x=0 | unsat | **unsat** |
+| F={0,1} x=0 | sat | **sat** |
+| F={3,7} x=0 | unsat | **unsat** |
+| F={6,7} x=0 | unsat | **unsat** |
+| F={3,5,7} x=0 | unsat | **unsat** |
+| F={0,3,5,6,7} x=0 | unsat | **unsat** |
+| F={1,2} x=0 | sat | **sat** |
+
+Both solvers agree on every case. **No interpolation of disagreements.**
+
+---
+
+## Constants / names
+- fixed weights `Q(1,2)` for 1/2; all other masses determined by solver;
+  nonnegativity and Σ=1 enforced exactly.
+
+## Under-certification is the central finding
+The class of support-restricted M♮-concave weights **under-certifies**: there
+are genuinely-abundant elements (the extreme case: density 1 in family {5,7})
+that no such weight can certify. This does **not** refute Frankl's conjecture —
+it shows the M♮-certificate class is too *small*, not too large, for these
+families. The task's case (a) sanity expectation rested on a false premise
+(restricted constant is not M♮-concave) and is corrected here. Also observed:
+M♮ can *over*-certify (y in family {0,1,3} is certifiable but not abundant) and
+*block* non-abundant elements (z in family {0,3,4} is blocked), so the class is
+neither simply a subset nor a superset of the truly-abundant set — it is
+sensitive to family structure.
+
+## What remains unsettled
+- Whether ANY nonconstant M♮-concave support-restricted weight is ever
+  certifiable on the under-certification families ({5,7}, {3,7}, …) — the
+  checker says no for the abundance-at-1/2 threshold; weaker thresholds were
+  not tested.
+- The full over/under-certification classification over all n=3 UC families
+  (this pass sampled 31; the ~3-atom structure deserves a complete scan).

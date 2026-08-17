@@ -1,0 +1,6 @@
+Root-form weighted-homogeneity re-confirmed: ALL OK
+  n=3 i=1: prod_k e_2 at traceless distinct point = -400 (nonzero=True)
+  n=3 i=2: prod_k e_1 at traceless distinct point = -162 (nonzero=True)
+  n=4 i=1: prod_k e_3 at traceless distinct point = 1016064 (nonzero=True)
+  n=4 i=2: prod_k e_2 at traceless distinct point = 105241 (nonzero=True)
+  n=4 i=3: prod_k e_1 at traceless distinct point = -9216 (nonzero=True)

@@ -1,0 +1,16 @@
+NOT EVIDENCE — SYMMETRY BREAK UNVALIDATED
+====================================================================
+This detached run was launched with symbreak=True on a symmetry break that
+FAILED its own acceptance test: orbit_z3_symbreak_fixed_accept.py aborts at
+BvLS m=81 with `AssertionError: row 0 not lex-min` in canonical_conjugate
+(which cannot canonicalise the KNOWN-GOOD BvLS orbit matrix). Per directive 34,
+no verdict from this run may be reported or filed as evidence until the break
+is fixed so that the known-good BvLS m=81 matrix survives canonicalisation and
+the model ACCEPTS it (exactly as the unbroken encoding did in 3.30s). Any
+INFEASIBLE it produced would be a false nonexistence result for the order-3
+case — the same failure mode already recorded once with the localprop
+saturation branch. This run must be killed/quarantined; see task
+`symbreak-validation-before-g99`.
+
+Original header (retained verbatim):
+m=33 k=14 lam=1 mu=2 symbreak=True maxsec=3600.0

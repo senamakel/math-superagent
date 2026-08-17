@@ -6,8 +6,29 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[extremal-structure]] | What local/global structure is a 2^{n-2}-point set with no convex n-gon forced into, and how close must it be to the ES construction? | open | es61-lower-bound, es35-cups-caps-bound, ms-cups-caps-tight, baek-balko-split, baek-balko-decomposable, damasdi-saturation, ps-es6, ms-toth-valtr-bound, smqh-no-realizable-4fold-32-no7gon | (1) FIRST (steer 11): task `gsplit-enumeration-recheck` — one command, not another design pass. Phase 1 is done: the rotating-line enumerator… |
+| [[allowable-sequence]] | Does the Goodman–Pollack allowable (circular) sequence of an extremal n-avoiding set carry the convexity/staircase structure through which the ES upper bound… | dead | gp-allowable-sequence-definition | CLOSED as dead (directive 13): adjudicated and refuted on both load-bearing claims; the two tasks `allseq-adjudicate` and `allowable-sequence-continue` are… |
+| [[extremal-structure]] | What local/global structure is a 2^{n-2}-point set with no convex n-gon forced into, and how close must it be to the ES construction? | open | es61-lower-bound, es35-cups-caps-bound, ms-cups-caps-tight, baek-balko-split, baek-balko-decomposable, damasdi-saturation, ps-es6, ms-toth-valtr-bound, smqh-no-realizable-4fold-32-no7gon | CURRENT (directive 22) — pattern_finder STANDING RULE: no more spectra of es_construct. No further k-subset convex spectra, no OEIS lookups on numbers off this… |
+| [[three-adopted-first-steps]] | Can the three adopted first-step programs — convex-4set supersaturation (NNC covering ratio), layer-transfer-matrix (cross-layer cone capacities), and… | open | es-construct-layer-extremality | tasks con4-supersat-nnc-count, layer-transfer-matrix-cone-cap, polar-dual-exact-verification, aichholzer-fetch — in that order. Report numbers, not readings;… |
+
+## What is in the way
+
+Each blocked or dead thread and what would move it. A blocker stated precisely is the next research request; one left blank is a mood.
+
+- [[allowable-sequence]] (dead): _no blocker recorded — say what would unstick it, or the row is only a mood_
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "threads" }
+read_ledger { ledger: "threads", id: "<one of the ids above>" }
+read_ledger { ledger: "threads", status: "<a status above>" }
+read_ledger { ledger: "threads", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: a fenced `thread` block in `research/threads/<slug>.md`, written with `write_document`. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

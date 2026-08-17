@@ -1,0 +1,110 @@
+==============================================================================
+ROUTE 11  --  ORBIT-MATRIX PROGRAMME  --  FINAL BOUNDARY CLOSURE
+==============================================================================
+Model size at m=33        : 41745 variables, 57165 constraints
+
+STEP 1 -- HEARTBEAT REPRODUCTION AND EXACT PRESOLVE RATE
+------------------------------------------------------------------------------
+Heartbeat point 1 : t = 17358/25 s (~694.32 s)  var 41730/41745 => 15 variables fixed
+Heartbeat point 2 : t = 37797/20 s (~1889.85 s)  var 41712/41745 => 33 variables fixed
+
+Delta_vars = 33 - 15 = 18 variables
+Delta_t    = 37797/20 - 17358/25 = 119553/100 s  (~1195.53 s)
+rate = Delta_t / Delta_vars = 119553/100 / 18
+     = 39851/600 s per variable  (~66.42 s)
+  (boundary note: 'one per ~66 s')
+
+presolve-only extrapolation to all 41745 variables:
+  = 39851/600 * 41745 = 110905333/40 s
+  in days = 110905333/40 / 86400 = 110905333/3456000 days  (~32.09 days)
+  (boundary note: '~32 days for presolve')
+
+STEP 2 -- ORBIT-COUNT ARGUMENT: ORDER-2 MODEL STRICTLY WORSE
+------------------------------------------------------------------------------
+Points N = 99.
+A fixed-point-free order-3 automorphism on N points:
+  point-orbits = N/3 = 99/3 = 33
+
+An order-2 automorphism on N points with f fixed points (f odd, f>=1):
+  point-orbits = (N+f)/2 = (99+f)/2, which is >= (99+1)/2 = 50
+  for every f >= 1 (order-2 on an odd point set fixes >= 1 point, and
+  an involution fixes an odd number of points).
+
+Enumerating f over all odd values 1..99 (each line = orbit count):
+  f =   1  ->  (N+f)/2 = 50
+  f =   3  ->  (N+f)/2 = 51
+  f =   5  ->  (N+f)/2 = 52
+  f =   7  ->  (N+f)/2 = 53
+  f =   9  ->  (N+f)/2 = 54
+  f =  11  ->  (N+f)/2 = 55
+  f =  13  ->  (N+f)/2 = 56
+  f =  15  ->  (N+f)/2 = 57
+  f =  17  ->  (N+f)/2 = 58
+  f =  19  ->  (N+f)/2 = 59
+  f =  21  ->  (N+f)/2 = 60
+  f =  23  ->  (N+f)/2 = 61
+  f =  25  ->  (N+f)/2 = 62
+  f =  27  ->  (N+f)/2 = 63
+  f =  29  ->  (N+f)/2 = 64
+  f =  31  ->  (N+f)/2 = 65
+  f =  33  ->  (N+f)/2 = 66
+  f =  35  ->  (N+f)/2 = 67
+  f =  37  ->  (N+f)/2 = 68
+  f =  39  ->  (N+f)/2 = 69
+  f =  41  ->  (N+f)/2 = 70
+  f =  43  ->  (N+f)/2 = 71
+  f =  45  ->  (N+f)/2 = 72
+  f =  47  ->  (N+f)/2 = 73
+  f =  49  ->  (N+f)/2 = 74
+  f =  51  ->  (N+f)/2 = 75
+  f =  53  ->  (N+f)/2 = 76
+  f =  55  ->  (N+f)/2 = 77
+  f =  57  ->  (N+f)/2 = 78
+  f =  59  ->  (N+f)/2 = 79
+  f =  61  ->  (N+f)/2 = 80
+  f =  63  ->  (N+f)/2 = 81
+  f =  65  ->  (N+f)/2 = 82
+  f =  67  ->  (N+f)/2 = 83
+  f =  69  ->  (N+f)/2 = 84
+  f =  71  ->  (N+f)/2 = 85
+  f =  73  ->  (N+f)/2 = 86
+  f =  75  ->  (N+f)/2 = 87
+  f =  77  ->  (N+f)/2 = 88
+  f =  79  ->  (N+f)/2 = 89
+  f =  81  ->  (N+f)/2 = 90
+  f =  83  ->  (N+f)/2 = 91
+  f =  85  ->  (N+f)/2 = 92
+  f =  87  ->  (N+f)/2 = 93
+  f =  89  ->  (N+f)/2 = 94
+  f =  91  ->  (N+f)/2 = 95
+  f =  93  ->  (N+f)/2 = 96
+  f =  95  ->  (N+f)/2 = 97
+  f =  97  ->  (N+f)/2 = 98
+  f =  99  ->  (N+f)/2 = 99
+
+Minimum order-2 point-orbits (at f = 1) = (N+1)/2 = 50 >= 50.
+All 50 odd values give orbit counts >= 50: True.
+Every order-2 orbit count is >= 50 while order-3 has exactly 33.
+  50 > 33  => strictly more point-orbits for order-2.
+More point-orbits => a strictly larger orbit-matrix model => the
+order-2 case is strictly worse than the order-3 case that already
+fails to presolve at ~32 days. This is argued from the group action
+alone; no graph data is used.
+
+STEP 3 -- ONE-LINE HONEST VERDICT
+------------------------------------------------------------------------------
+Route 11 is closed by computational infeasibility (measured ~1 var/66 s, ~32 days of presolve for 41,745 variables), NOT by mathematics: no order-3 or order-2 automorphism exclusion is established, so the published Aut reduction to {Z2, Z3} and the openness of the automorphism group stand untouched.
+
+==============================================================================
+Summary of exact values
+==============================================================================
+  Delta_vars                     = 18
+  Delta_t                        = 119553/100 s  (~1195.53 s)
+  seconds per variable (2-point) = 39851/600 s  (~66.42 s)
+  extrapolated presolve wall     = 110905333/40 s
+                                  = 110905333/3456000 days  (~32.09 days)
+  order-3 point-orbits           = 33
+  order-2 point-orbit range      = [50, 99]  (all >= 50)
+
+VERDICT: closed by computational infeasibility, NOT by mathematics;
+         no order-3 or order-2 exclusion; Aut reduction and openness stand.

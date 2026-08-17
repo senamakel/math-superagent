@@ -1,0 +1,16 @@
+BvLS vertices: 243
+triangle graph vertices (nT): 891
+C3 degree (all rows equal?): {30}
+all eigenvalues integral (within 1e-6): True
+C3 spectrum (eigenval: mult), sorted:
+   -3: 648
+   3: 110
+   12: 132
+   30: 1
+sum of multiplicities = 891  (should equal nT=891)
+predicted C3 spectrum (closed form):
+   -3: 648
+   3: 110
+   12: 132
+   30: 1
+predicted == actual: True

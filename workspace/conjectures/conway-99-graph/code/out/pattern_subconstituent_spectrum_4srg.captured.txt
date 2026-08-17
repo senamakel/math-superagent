@@ -1,0 +1,12 @@
+=== rook(3) (9,4,1,2) mu=2: m=4, H degree=2 (k-lam)
+    spectrum (eigenvalue: mult): {-2: 1, 2: 1, 0: 2}
+    lambda counts: {0: 4}  mu counts: {2: 2}  -> srg: True
+=== doily (15,6,1,3) mu=3: m=8, H degree=3 (k-lam)
+    spectrum (eigenvalue: mult): {3: 1, -3: 1, 1: 3, -1: 3}
+    lambda counts: {0: 12}  mu counts: {2: 12, 0: 4}  -> srg: False
+=== GQ(2,4) (27,10,1,5) mu=5: m=16, H degree=5 (k-lam)
+    spectrum (eigenvalue: mult): {5: 1, -3: 5, 1: 10}
+    lambda counts: {0: 40}  mu counts: {2: 80}  -> srg: True
+=== bvls (243,22,1,2) mu=2: m=220, H degree=20 (k-lam)
+    spectrum (eigenvalue: mult): {20: 1, -2: 10, -5: 88, 4: 110, 0: 11}
+    lambda counts: {0: 220, 1: 1980}  mu counts: {2: 17930, 1: 3960}  -> srg: False

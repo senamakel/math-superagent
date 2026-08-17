@@ -1,0 +1,18 @@
+What ran: code/out/half_density_probe.py -- USED for the remainder: n=3 witnesses, fixed up-set enumerator; ONLY the P2 G-shape subclass is run again (P1 and P3 results stand from the same run: P1 42, P3 random n=6/7 none, both structural)
+Oracle: lib.uc.decide_union_closed (exact), exact Fraction densities; the P2 scan is exhaustive over the up-sets of 2^[5] (Dedekind M(5)=7581), each family 64 members
+
+P1: non-Boolean UC families on [3] with some element at density 1/2: 42 (expect 42)
+    F=[1, 3] counts=[2, 1, 0] half-elements=[1] over-half=[0] (max=1)
+    F=[2, 3] counts=[1, 2, 0] half-elements=[0] over-half=[1] (max=1)
+    F=[1, 5] counts=[2, 0, 1] half-elements=[2] over-half=[0] (max=1)
+    F=[4, 5] counts=[1, 0, 2] half-elements=[0] over-half=[2] (max=1)
+P2: upsets of 2^[5]: 7581 (expect Dedekind M(5)=7581)
+P2: boundary families (max density == 1/2): 2; non-Boolean among them: 0
+P2: boundary-family sizes |F|: [(32, 1), (64, 1)]
+P3: n=6 trials=400000 seed=20260711: boundary families 0, non-Boolean 0, sizes []
+P3: n=7 trials=200000 seed=20260711: boundary families 0, non-Boolean 0, sizes []
+
+SUMMARY
+  coordinate-wise statement refuted: 42 non-Boolean n=3 families with an element at density 1/2
+  max-density characterization: n=6 exhaustive G-shape subclass boundary=2, non-Boolean=0; n=6 random: (0, 0); n=7 random: (0, 0)
+  non-Boolean max-density-1/2 family found anywhere: False

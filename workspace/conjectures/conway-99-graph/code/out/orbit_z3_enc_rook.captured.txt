@@ -1,0 +1,9 @@
+=== rook(3) validation (must FIND) ===
+m=3 orbits (length 3), srg(9,4,1,2)
+solver status: OPTIMAL
+SOLUTION FOUND. equation M^2=(k-mu)I+(lam-mu)M+mu*3J holds: True (max abs diff 0)
+row sums: all==k : True
+diagonal values present: [0]
+  0 2 2
+  2 0 2
+  2 2 0

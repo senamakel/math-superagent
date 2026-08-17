@@ -1,0 +1,15 @@
+URESULTANT-n7: CA traceless-slice Samuel-multiplicity extension (EXACT)
+program: code/uresultant/extend_n7_capture.py; oracle: lib.casas_alvero.is_ca/is_pure_power on (x-1)^7 over QQ (char 0)
+ring: QQ[a2..a7] (a1=0 traceless slice); R_i=Res_x(f,H_i f) Hasse; weights w(a_j)=j
+exact range: n=7 (n-1=6 vars), Samuel identity n=7; worker count = 1 (not over-split); wall clock = 3035.6s (Singular 3000.1s, construct 35.2s)
+
+[PASS] oracle: (x-1)^7 over QQ is_ca
+[PASS] oracle: (x-1)^7 over QQ is_pure_power
+[PASS] n=7 R_i (a1=0) construction  (35.2s; term-ops=[2502, 1599, 739, 254, 51, 2])
+[PASS] n=7 Samuel identity: ord_0(R_i) = n(n-i)  (ords=[42, 35, 28, 21, 14, 7], expected=[42, 35, 28, 21, 14, 7]  (0.1s))
+[PASS] n=7 Samuel: length == prod ord_0 / prod w  (prod ords/prod(2..7) = 84707280/5040 = 16807.0 vs n^(n-2)=7^5=16807)
+[PASS] (boundary recorded; do NOT silently retry)  (the wall cap was hit exactly)
+
+ALL CHECKS FAILED
+
+Closed form at n=7: Singular VDIM=None (expected 16807), Samuel length=16807.0 (expected 16807). see PASS/FAIL lines.

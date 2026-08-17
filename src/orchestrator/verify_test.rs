@@ -182,12 +182,88 @@ fn a_node_the_kernel_already_accepted_is_not_offered_again() {
 /// verdict again a pass later.
 #[test]
 fn a_qualified_gap_key_becomes_one_addressable_source() {
-    assert_eq!(source_for("main/tail"), "code/lean/main_tail.lean");
-    assert_eq!(
-        source_for("cauchy-bound"),
-        "code/lean/cauchy_bound.lean",
+    assert!(
+        source_for("main/tail").starts_with("code/lean/main_tail-"),
+        "the readable part leads: {}",
+        source_for("main/tail")
+    );
+    assert!(
+        source_for("cauchy-bound").starts_with("code/lean/cauchy_bound-"),
         "a hyphen is not a Lean identifier character"
     );
+}
+
+/// Two ids that fold to the same readable name still get their own file.
+///
+/// A live blueprint ranked `spectral-…-lower-bound/G-eigenvalue-bounds-degree`
+/// alongside hyphenated siblings, so `a/b` against `a-b` is the shape that
+/// actually occurs. Sharing a path would mean one statement's proof overwriting
+/// the other's and one attempt record standing for both — and a kernel verdict
+/// read back against the wrong statement.
+#[test]
+fn ids_differing_only_in_a_separator_do_not_share_a_file() {
+    assert_ne!(source_for("main/tail"), source_for("main-tail"));
+    assert_ne!(source_for("a/b/c"), source_for("a-b-c"));
+}
+
+/// The derived name has to survive a restart, so it is a pure function of the id.
+#[test]
+fn the_derived_name_is_stable_for_one_id() {
+    assert_eq!(source_for("main/tail"), source_for("main/tail"));
+    assert_eq!(
+        source_for("cauchy-bound"),
+        "code/lean/cauchy_bound-d85af71b.lean",
+        "the fingerprint is a path, so a change to it is a compatibility break"
+    );
+}
+
+/// A workspace written before the fingerprint keeps its attempt count.
+///
+/// The permissive missing-record reading is zero, and here that would hand a
+/// node that had already spent both attempts a fresh pair on the most expensive
+/// tool in the image.
+#[tokio::test]
+async fn a_record_under_the_old_name_still_counts() {
+    let root = workspace("legacy-name");
+    let directory = root.join(LEDGER_DIR);
+    std::fs::create_dir_all(&directory).expect("the ledger directory is writable");
+    std::fs::write(
+        directory.join("main_tail.json"),
+        r#"{"node": "main/tail", "attempts": 2, "stage": "decompose",
+            "source": "code/lean/main_tail.lean"}"#,
+    )
+    .expect("the legacy record is writable");
+
+    assert_eq!(attempts(&root, "main/tail"), 2);
+
+    // And the next attempt moves the node onto the current name without
+    // disturbing the old file, which stays as the record it is.
+    note_attempt(&root, "main/tail", Stage::Decompose)
+        .await
+        .expect("the attempt record is writable");
+    assert_eq!(attempts(&root, "main/tail"), 3);
+    assert!(directory.join("main_tail.json").exists());
+}
+
+/// One node counts once, whichever names it is filed under.
+#[tokio::test]
+async fn a_node_filed_under_both_names_is_one_statement() {
+    let root = workspace("both-names");
+    let directory = root.join(LEDGER_DIR);
+    std::fs::create_dir_all(&directory).expect("the ledger directory is writable");
+    std::fs::write(
+        directory.join("main_tail.json"),
+        r#"{"node": "main/tail", "attempts": 1, "stage": "prove",
+            "source": "code/lean/main_tail.lean"}"#,
+    )
+    .expect("the legacy record is writable");
+    note_attempt(&root, "main/tail", Stage::Decompose)
+        .await
+        .expect("the attempt record is writable");
+
+    let (_, attempted) = counts(&root);
+
+    assert_eq!(attempted, 1, "one node, filed twice, is one statement");
 }
 
 /// Counting the attempt when it starts is what survives the ordinary ending.

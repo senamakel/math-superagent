@@ -1,0 +1,4 @@
+=== BvLS validation (must FIND) ===
+m=81 orbits (length 3), srg(243,22,1,2)
+solver status: UNKNOWN
+INCONCLUSIVE (timeout / unknown). No verdict.

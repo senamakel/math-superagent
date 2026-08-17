@@ -1,0 +1,45 @@
+# spence_verify.py — captured output
+
+Ran: python3 code/out/spence_verify.py
+Oracle: lib.uc (decide_union_closed, abundance) — the one canonical checker.
+Range: Spence's finite counterexample claims (Prop 3.1 matrix, Prop 4.1 Schrader family); n=4.
+
+Exit status: 0
+
+Output:
+column counts (bit0=rightmost/col4): [2, 2, 2, 2]
+every column exactly 2 ones (no heavy in 5 rows)? True
+row set distinct? True
+no all-zero column? True
+row set union-closed? (should be False, Remark 3.3) False
+Schrader check: t0=4 t1=4 t2=2 t3=0, |F_3|=1 -> 0 < 1 fails bound True
+family {0,{1},{2},{3}} union-closed? False
+abundant (has singletons -> trivially yes): [1, 1, 1]
+
+## What this settles
+
+1. **Spence Prop 3.1 (verified):** the 5x4 matrix with rows
+   {0000, 0011, 0101, 1010, 1100} has every column containing exactly two ones
+   — no column is "heavy" (> half of 5 rows) — yet Spence reports A2 returns
+   True for it. Confirmed: every column count is exactly 2 in 5 rows, the rows
+   are distinct, and there is no all-zero column. The row set is **not**
+   union-closed (Remark 3.3): 0011∨0101 = 0111 is not among the rows, and
+   lib.uc rejects it. This is a *finite counterexample detail* of the audit
+   paper, verified exactly; it does not touch the UC conjecture itself (the
+   matrix is a counterexample to a claimed proof method's premise, not to UC).
+
+2. **Spence Prop 4.1 (verified):** the Schrader t-computation for the family
+   {∅,{1},{2},{3}} fails: t₀=4, t₁=4, t₂=2, t₃=0 while |F₃|=1, so t₃ < |F₃|
+   (0 < 1), i.e. Schrader's bound fails on this family. Confirmed exactly.
+
+3. **Clarification:** the family {∅,{1},{2},{3}} is **not** union-closed
+   (lib.uc returns False — {1}∨{2}={1,2} is absent), so it is not a UC-family
+   counterexample; each element has abundance 1 in 3 sets (no abundant
+   element), correctly reported by lib.uc. The print label "union-closed
+   version is abundant-trivial" is a comment mismatch, not an error in the
+   computation: the script's own output states union-closed? False.
+
+## Status
+- All checks exit 0. Verified-computational, exact integer arithmetic, oracle
+  lib.uc. No UC claim is made: this settles two *finite audit claims* in
+  Spence's paper, not the conjecture.

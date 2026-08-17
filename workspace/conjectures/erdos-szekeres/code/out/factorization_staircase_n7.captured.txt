@@ -1,0 +1,14 @@
+$ python code/out/factorization_staircase_n7.py
+n=7 sizes=[1, 5, 10, 10, 5, 1] sum=32 (expect 32)
+  staircase gp: True
+  ARC      : total=39648 patterns=15 factorization=True
+  STAIRCASE: total=39648 patterns=15 factorization=True
+  g values identical arc vs staircase: True
+  recorded g (arc):
+    g_0: {0: 1, 1: 1}
+    g_1: {0: 1, 1: 5, 2: 10, 5: 1}
+    g_2: {0: 1, 1: 10, 3: 46, 4: 41}
+    g_3: {0: 1, 1: 10, 3: 46, 4: 41}
+    g_4: {0: 1, 1: 5, 2: 10, 5: 1}
+    g_5: {0: 1, 1: 1}
+EXIT: 0

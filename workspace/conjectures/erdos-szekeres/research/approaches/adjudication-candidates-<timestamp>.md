@@ -1,0 +1,1 @@
+Duplicate of adjudication-candidates-latest.md (same content); kept only for provenance against the timestamp-named write. The canonical durable record is research/approaches/adjudication-candidates-latest.md.

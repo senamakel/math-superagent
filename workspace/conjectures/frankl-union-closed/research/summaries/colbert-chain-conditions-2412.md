@@ -5,6 +5,12 @@
 **Attribution:** last name **Colbert** (distinct from Bouchard's arXiv:2310.02482, which was
 mislabeled "colbert" in an earlier download; this is the real Colbert paper).
 
+**Publication status (librarian live-web check, this run):** now journal-published as
+Colbert, "Chain Conditions and Optimal Elements in Generalized Union-Closed Families of
+Sets", *Order*, doi:10.1007/s11083-025-09717-w (2025). The source held here is the arXiv
+preprint (2412.18740) that predates the journal version; the three claims below are
+journal-backed in addition to preprint-backed. Status field: "proved (journal + preprint)".
+
 ## What it establishes
 
 Introduces **optimal elements**: `x ∈ U_F` is *optimal* if `F_x` is a maximal element of

@@ -1,0 +1,26 @@
+{
+  "axioms": [
+    "'union_card_shared_two' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'cupcap_gives_convex' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'convex_gives_cupcap' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'g_cupcap_verified' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem union_card_shared_two {C D : Finset (Fin m)} {k n : ℕ} (h2k : 2 ≤ k) (hkn : k ≤ n) (hC : C.card = k) (hD : D.card = n + 2 - k) (hCD : (C ∩ D).card = 2) : (C ∪ D).card = n",
+    "theorem cupcap_gives_convex {n : ℕ} (hn : 2 ≤ n) (convexPos : Finset (Fin m) → Prop) (isCup isCap : Finset (Fin m) → Prop) (sameExtremes : Finset (Fin m) → Finset (Fin m) → Prop) (hSharedTwo : ∀ C D : Finset (Fin m), sameExtremes C D → (C ∩ D).card = 2) (hRHS : ∃ k : ℕ, 2 ≤ k ∧ k ≤ n ∧ ∃ C D : Finset (Fin m), C.card = k ∧ D.card = n + 2 - k ∧ isCup C ∧ isCap D ∧ sameExtremes C D ∧ convexPos (C ∪…",
+    "theorem convex_gives_geometry {n : ℕ} (convexPos : Finset (Fin m) → Prop) (isCup isCap : Finset (Fin m) → Prop) (sameExtremes : Finset (Fin m) → Finset (Fin m) → Prop) (hLHS : ∃ S : Finset (Fin m), S.card = n ∧ convexPos S) : ∃ k : ℕ, 2 ≤ k ∧ k ≤ n ∧ ∃ C D : Finset (Fin m), C.card = k ∧ D.card = n + 2 - k ∧ isCup C ∧ isCap D ∧ sameExtremes C D ∧ convexPos (C ∪ D)",
+    "theorem convex_gives_cupcap {n : ℕ} (hn : 2 ≤ n) (convexPos : Finset (Fin m) → Prop) (isCup isCap : Finset (Fin m) → Prop) (sameExtremes : Finset (Fin m) → Finset (Fin m) → Prop) (hSharedTwo : ∀ C D : Finset (Fin m), sameExtremes C D → (C ∩ D).card = 2) (hLHS : ∃ S : Finset (Fin m), S.card = n ∧ convexPos S) : ∃ k : ℕ, 2 ≤ k ∧ k ≤ n ∧ ∃ C D : Finset (Fin m), C.card = k ∧ D.card = n + 2 - k ∧…",
+    "theorem g_cupcap_verified {n : ℕ} (hn : 2 ≤ n) (convexPos : Finset (Fin m) → Prop) (isCup isCap : Finset (Fin m) → Prop) (sameExtremes : Finset (Fin m) → Finset (Fin m) → Prop) (hSharedTwo : ∀ C D : Finset (Fin m), sameExtremes C D → (C ∩ D).card = 2) : (∃ S : Finset (Fin m), S.card = n ∧ convexPos S) ↔ (∃ k : ℕ, 2 ≤ k ∧ k ≤ n ∧ ∃ C D : Finset (Fin m), C.card = k ∧ D.card = n + 2 - k ∧ isCup C ∧…"
+  ],
+  "file": "code/lean/g_cupcap_verified.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/g_cupcap_verified.lean:166:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

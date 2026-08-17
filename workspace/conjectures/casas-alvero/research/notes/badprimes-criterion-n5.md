@@ -4,6 +4,31 @@
 
 > **Deg-6 explicit witness (Graf von Bothmer et al 2007, Remark 3.2, source-line 199):** the quadrinomial P = X^6 + 3144481702696843 X^4 + X^3 + 2707944513497181 X^2 is a CA counterexample in characteristic 7390044713023799, even though CA holds for d=6 over Q. The prime 7390044713023799 is already in Castryck Table 1 line 187 and Chellali-Salinier line 591; the new source contributes the *explicit polynomial* that realises it. Recorded here as a candidate negative control for the oracle (Hasse-CA and not a pure power over F_p).
 
+```claim
+id: deg6-explicit-witness-gvb
+statement: The quadrinomial P = X^6 + 3144481702696843·X^4 + X^3 +
+  2707944513497181·X^2 is a Casas-Alvero polynomial over F_p (Hasse
+  formulation) with p = 7390044713023799, and is NOT a pure power; yet CA
+  holds for degree 6 over Q. Hence p is a bad prime for degree 6, realised by
+  an explicit polynomial (Graf von Bothmer, Labs, Schicho, van de Woestijne
+  2007, Remark 3.2, source-line 199). The prime 7390044713023799 also appears
+  in Castryck Table 1 (line 187) and Chellali-Salinier (line 591).
+hypotheses: char K = 7390044713023799; degree 6; Hasse derivative formulation
+holds-here: yes -- an additional negative-control witness (beyond x^{p+1}-x^p
+  and the Castryck deg-6 example) the oracle should report as is_ca_hasse=True
+  and is_pure_power=False
+status: asserted-by-source (paper's own witness; NOT yet independently
+  re-verified by the run's oracle -- queued as
+  code/scholar/verify_deg6_witness.py, no code-exec role this pass)
+bearing: Adds a second huge-prime char-p witness to the oracle guard set; a
+  known bad prime for degree 6 must not be erroneously "good" under any
+  admissible argument (GOAL.md admissibility: no argument may survive a char-p
+  counterexample).
+anchor: research/sources/grafvonbothmer2007_infinitely_many_html.full.md (Remark
+  3.2), research/notes/badprimes-criterion-n5.md
+falsifies: an oracle run showing P over F_p is NOT Hasse-CA, or IS a pure power
+```
+
 Follows the n=4 verification (research/notes/badprimes-criterion-n4-n20.md).
 Two independent routes, both exit 0.
 

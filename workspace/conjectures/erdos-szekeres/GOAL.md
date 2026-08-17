@@ -4,6 +4,22 @@ Attack the **Erdős–Szekeres conjecture**: $\mathrm{ES}(n) = 2^{n-2}+1$, where
 $\mathrm{ES}(n)$ is the least $N$ forcing $n$ points in convex position among
 any $N$ points in general position in the plane.
 
+## Attempt log (newest first)
+
+- **Attempt 2 (this run):** Executed the operator's directive — which cut
+  family, if any, realizes the even/odd block bipartition at n=7. Result
+  (exhaustive, exact): a TRIPLE half-plane intersection realizes BOTH halves.
+  On verified `es_construct(7)`, E=[0,6..15,26..30], O=[1..5,16..25,31], each
+  16 pts and 6-avoiding. Of all 992 open half-plane sides: k=1 neither E nor O
+  is a side; k=2 no pair intersection equals either; k=3 — exactly 1 of the
+  C(16,3)=560 superset-side triples equals E (witness global sides
+  740,922,986) and 1 equals O (750,907,991). So k=3 is the minimum cut-family
+  size on this template. Confirms prior `evenodd_cutfamily` claim. Capture:
+  `code/out/triple_inter.captured.txt` (EXIT 0, exact arithmetic). Task
+  `triple-intersection-realizes-evenodd` closed done. This refutes the
+  hypothesis that the even/odd split fails at the triple level — a positive
+  structural fact about how close the split is to line-realizable.
+
 The full statement, the conventions, the obstruction that makes it hard, and the
 leads into the literature are in `problem.md`. Read that before deciding
 anything. The lower bound is settled; only the upper bound

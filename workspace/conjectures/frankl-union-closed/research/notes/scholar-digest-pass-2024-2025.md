@@ -133,3 +133,27 @@ Das–Wu Nagel; (11) Phan reformulation; (12) Carvalho–Machiavelo reductions.
 
 None of the new sources changes these gaps; several tighten the ground under
 them.
+
+## Addendum — library digestion completion pass
+
+Reran the coverage check: every substantive source in `research/summaries/`
+now carries a fenced claim block. Three blocks added this pass to previously
+claim-less sources (all re-derived straight into `derived/CLAIMS.md`):
+
+- **`markovic-bozin-equivalence`** — Božin 2004's Frankl-equivalence via a
+  probability MEASURE ON SETS (not per-element weights): UC holds iff for every
+  IC family A and every p:A→[0,1] with per-element coverage ≥1−f_A(a),
+  E[log|π_X(A)|]/log|A| ≥ 1/2. Distinct from, and more general than, Poonen's
+  weights; exact equivalence, no constant/class. The (⇒) tensor-power
+  construction is the least-verified link (asserted-by-source, handout only).
+- **`nagel-kth-frequency-question`** — Nagel's Question 2.1, now resolved by
+  Das–Wu (kth-most-frequent ≥ |F|/(2^{k−1}+1), equality near-k-cubes).
+- **`nagel-interior-operator-equivalences`** — the interior-operator/
+  congruence-recast theorems in Nagel §3.1, adjacent to bouchard-ucx-ladder.
+
+Also re-confirmed current status: the `file-coupling-inf-and-bb-feasibility-claims`
+task was already complete (claims `coupling-true-inf-crossing-4d` and
+`coupling-interval-bb-infeasible-10s` both verified in the store via
+`search_claims`, not by grepping the capped CLAIMS.md rendering). No
+grep-of-rendering false-alarm this time: the missing blocks were verified via
+`search_claims` before adding.

@@ -1,0 +1,41 @@
+[negative control] {{x},{y}}={1,2}: decide_union_closed -> False (expected False, REJECTED)
+[note] task example {{x,y},{x,y,z}}={3,7} is actually union-closed (3|7=7 in F); used {1,2} as the genuine non-UC control instead. -> True
+=== (1) enumeration counts (union-closed families on [n]) ===
+n=1: 3 union-closed families (expected 3)  OK
+n=2: 13 union-closed families (expected 13)  OK
+n=3: 121 union-closed families (expected 121)  OK
+n=4: 4959 union-closed families (expected 4959)  OK
+counts: [3, 13, 121, 4959]
+matches A102896 first four terms (3,13,121,4959): True
+
+=== (2) Alb(F) sample table ===
+--- n=1: 3 families ---
+  F=[0] |F|=1 counts=[0] Alb=[]
+  F=[1] |F|=1 counts=[1] Alb=[0]
+  F=[0, 1] |F|=2 counts=[1] Alb=[0]
+  |Alb| distribution over all 3 families: {0: 1, 1: 2}
+--- n=2: 13 families ---
+  F=[0] |F|=1 counts=[0, 0] Alb=[]
+  F=[1] |F|=1 counts=[1, 0] Alb=[0]
+  F=[0, 1] |F|=2 counts=[1, 0] Alb=[0]
+  |Alb| distribution over all 13 families: {0: 1, 1: 6, 2: 6}
+--- n=3: 121 families ---
+  F=[0] |F|=1 counts=[0, 0, 0] Alb=[]
+  F=[1] |F|=1 counts=[1, 0, 0] Alb=[0]
+  F=[0, 1] |F|=2 counts=[1, 0, 0] Alb=[0]
+  |Alb| distribution over all 121 families: {0: 1, 1: 18, 2: 60, 3: 42}
+--- n=4: 4959 families ---
+  F=[0] |F|=1 counts=[0, 0, 0, 0] Alb=[]
+  F=[1] |F|=1 counts=[1, 0, 0, 0] Alb=[0]
+  F=[0, 1] |F|=2 counts=[1, 0, 0, 0] Alb=[0]
+  |Alb| distribution over all 4959 families: {0: 1, 1: 64, 2: 942, 3: 2460, 4: 1492}
+
+=== (3) sweep: M♮-certifiability of non-abundant x ===
+mroof_z3.py not yet available; sweep() cannot run. (missing: /workspace/code/out/mroof_z3.py)
+non-abundant (family, x) candidate pairs across n=1..4: 4648
+sweep: SKIPPED (mroof_z3.py missing); recorded candidate count only.
+
+negative_control: PASS
+counts A102896 (3,13,121,4959): PASS
+Alb table computed: PASS
+ALL ENUMERATION + COUNT + Alb CHECKS PASSED

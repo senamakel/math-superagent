@@ -5,22 +5,56 @@ id: thread-incidence-code
 question: Is the incidence p-rank / SNF of the triangle geometry a live
   99-vs-243 separator, or a parameter-determined invariant that cannot separate
   them?
-status: open
+status: dead
 rests-on: incidence-code-of-triangle-geometry (approach, grounded), c4, c5,
   code/out/incidence_p_rank.captured.txt,
-  code/out/incidence_identity_check.captured.txt
+  code/out/incidence_prank_determinism.captured.txt
 blocked-by:
-next: FIRST settle parameter-determinism (directive 18). Measured: rook rank_2=5
-  /rank_3=5, doily 10/10, GQ(2,4) 21/21 (rank deficiency 4,5,6); BvLS rank_2=243
-  (full), rank_3=231. If the deficiency sequence is forced by (v,k,lambda,mu)
-  alone, it cannot separate 99 from 243 and the line dies exactly like
-  macwilliams-binary-code-arc / higman-module-restriction. Assmus-Key says the
-  p-rank of an STS genuinely varies with the system, and N is bound by
-  NN^T=7I+A (mod p, 7=1 over F_3) with every column of weight 3, so it may be
-  live — but this must be SHOWN (two systems with the same (v,k,1,2) but
-  different rank_2(N), or a proof the rank is not spectrum-determined) before
-  betting on it. Run every step against rook(3) and bvls_graph() through
-  code/lib.srg.
+deaded-by: directive 23, Route 8. Gate ANSWERED in incidence_prank_determinism.captured.txt
+  (the sharpest reasoning of the run): the 2-rank is NOT parameter-determined —
+  the naive spectral-multiplicity rule is VIOLATED on doily and GQ(2,4),
+  Assmus-Key leaves STS p-ranks varying with the system — so it COULD separate
+  99 from 243. BUT it is UNPROVABLE this way: a 99 value could only be settled
+  by an actual 99 system, i.e. the very graph whose existence is in question
+  (circular). The subtlety: within-family variation (rook rank_2=5 vs BvLS 243)
+  is NOT evidence against parameter-determinism, since such an invariant varies
+  across parameter points anyway; only a same-parameter split counts, and the
+  one test available (Shrikhande vs rook(4), both srg(16,6,2,2)) gives none
+  (rank_2(A+I)=16=16, rank_2(N)=16=16). Do not re-open.
+next:
+```
+
+```claim
+id: incidence-2rank-not-parameter-determined-but-unprovable
+statement: The incidence 2-rank of the triangle geometry's point-x-triangle
+  matrix N is NOT determined by the parameters, but is UNPROVABLE as a 99-vs-243
+  separator this way (code/out/incidence_prank_determinism.captured.txt, exact
+  arithmetic via lib.srg). The naive spectral-multiplicity rule for rank_2(A+I)
+  is VIOLATED on doily srg(15,6,1,3) (rule predicts 1, actual 5) and GQ(2,4)
+  srg(27,10,1,5) (predicts 1, actual 7), and Assmus-Key leaves STS 2-ranks
+  varying with the system, so rank_2(N) could in principle separate 99 from 243.
+  BUT: within-family variation (rook rank_2(N)=5 defect 4 vs BvLS 243 full) is
+  NOT evidence against parameter-determinism (a parameter-determined invariant
+  varies across parameter points too); only a SAME-parameter split counts, and
+  the one test available — Shrikhande vs rook(4), both srg(16,6,2,2), cospectral
+  non-isomorphic — gives none (rank_2(A+I)=16=16, rank_2(N)=16=16). A 99 value
+  could only be settled by an actual 99 system, i.e. the very graph whose
+  existence is in question (circular). Line closed as unusable (directive 23,
+  Route 8). Also records the premise correction: the full-rank 243 is rank_2(N)
+  (243x891 incidence matrix), NOT rank_2(A+I) which is 133 for BvLS.
+hypotheses: N = point x triangle incidence matrix, NN^T = (k/2)I + A; the
+  Shrikhande/rook(4) pair is the only same-(16,6,2,2) cospectral non-isomorphic
+  pair available.
+holds-here: yes — the gate is computed at the exact parameters of every family
+  member and the same-parameter control pair.
+status: checked (exact integer arithmetic; capture
+  code/out/incidence_prank_determinism.captured.txt).
+bearing: the incidence p-rank line cannot settle 99 absent the graph itself; it
+  is a genuine but unprovable-this-way invariant. Do not re-open.
+anchor: code/out/incidence_prank_determinism.captured.txt,
+  research/approaches/incidence-code-of-triangle-geometry.md
+contradicts: none
+answers: incidence-prank-parameter-determinism
 ```
 
 ## Why this is a phase-4 target

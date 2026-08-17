@@ -1,0 +1,161 @@
+# capture: odd_filter_minmax — what ran: code/out/odd_filter_min_maxdensity_verify.py + odd_filter_minimizers_char.py + odd_filter_minimizers_general.py; oracle fn: lib.uc.decide_union_closed/abundance; range: exhaustive UC families n=2,3,4 via all_uc_families, structural checks n=2..8
+# claim settled: min max-density over NON-Boolean UC families == 2^{n-1}/(2^n-1); uniqueness of the odd filter as sole minimizer is FALSE (n+1 minimizers)
+# date: 2026-08-17T06:01:01Z
+################################################################
+### PART 1: odd_filter_min_maxdensity_verify.py ###
+################################################################
+==============================================================================
+SYMBOLIC STEP CHECKS (sympy, exact)
+==============================================================================
+STEP 3 monotonic check: (m+2)/(2(m+1)) - (m+1)/(2m) = -1/(2*m*(m + 1))
+   d/dm[(m+1)/(2m)] = -1/(2*m**2)   (negative => decreasing)
+STEP 3 value check: 1/2 + 1/(2(2^n-1)) - 2^(n-1)/(2^n-1) = 0
+STEP 5 even bound - odd-filter value = (2**(n + 1) - mv - 2)/(2*mv*(2**n - 1))
+   at largest even m=2^n: 2**(-n - 1)*(2**n - 2)/(2**n - 1) (for n>=2 this is positive since 1/2^n > 1/(2^n + 1-2))
+   sign at even m=2^n: True (n=3 example)
+
+==============================================================================
+ORACLE ENUMERATION: min max-density over NON-Boolean UC families, n=2,3,4
+==============================================================================
+n=2: UC families=12, non-Boolean=8, min max-density=2/3 = 0.666667
+   predicted 2^1/(2^2-1) = 2/3 = 0.666667 (match=True)
+   # minimizers = 3  (claim says 1: the odd filter)
+      size 3 m=3, odd-filter=False
+      size 3 m=3, odd-filter=False
+      size 3 m=3, odd-filter=True
+n=3: UC families=120, non-Boolean=106, min max-density=4/7 = 0.571429
+   predicted 2^2/(2^3-1) = 4/7 = 0.571429 (match=True)
+   # minimizers = 4  (claim says 1: the odd filter)
+      size 7 m=7, odd-filter=False
+      size 7 m=7, odd-filter=False
+      size 7 m=7, odd-filter=False
+      size 7 m=7, odd-filter=True
+n=4: UC families=4958, non-Boolean=4907, min max-density=8/15 = 0.533333
+   predicted 2^3/(2^4-1) = 8/15 = 0.533333 (match=True)
+   # minimizers = 5  (claim says 1: the odd filter)
+      size 15 m=15, odd-filter=False
+      size 15 m=15, odd-filter=False
+      size 15 m=15, odd-filter=False
+      size 15 m=15, odd-filter=False
+      size 15 m=15, odd-filter=True
+
+==============================================================================
+STEP 4 / uniqueness: which 2^[n] \ {T} are union-closed?
+==============================================================================
+n=2: power set minus ONE set T.  Union-closed for T in {∅(odd filter), singletons} -> count 3
+   remove T=0 ( ∅(odd filter)): UC=True, non-Boolean=True, max-density=2/3
+   remove T=1 (     singleton): UC=True, non-Boolean=True, max-density=2/3
+   remove T=2 (     singleton): UC=True, non-Boolean=True, max-density=2/3
+   => 2 singleton-removals + 1 odd filter = 3 UC families of size 2^2-1
+n=3: power set minus ONE set T.  Union-closed for T in {∅(odd filter), singletons} -> count 4
+   remove T=0 ( ∅(odd filter)): UC=True, non-Boolean=True, max-density=4/7
+   remove T=1 (     singleton): UC=True, non-Boolean=True, max-density=4/7
+   remove T=2 (     singleton): UC=True, non-Boolean=True, max-density=4/7
+   remove T=4 (     singleton): UC=True, non-Boolean=True, max-density=4/7
+   => 3 singleton-removals + 1 odd filter = 4 UC families of size 2^3-1
+n=4: power set minus ONE set T.  Union-closed for T in {∅(odd filter), singletons} -> count 5
+   remove T=0 ( ∅(odd filter)): UC=True, non-Boolean=True, max-density=8/15
+   remove T=1 (     singleton): UC=True, non-Boolean=True, max-density=8/15
+   remove T=2 (     singleton): UC=True, non-Boolean=True, max-density=8/15
+   remove T=4 (     singleton): UC=True, non-Boolean=True, max-density=8/15
+   remove T=8 (     singleton): UC=True, non-Boolean=True, max-density=8/15
+   => 4 singleton-removals + 1 odd filter = 5 UC families of size 2^4-1
+
+==============================================================================
+CONFIRM: n remove-singleton families are distinct, non-Boolean, same bound
+==============================================================================
+   n=2 remove {x}: UC, non-Boolean, max-density=2/3 (== bound 2/3: True)
+   n=2 remove {x}: UC, non-Boolean, max-density=2/3 (== bound 2/3: True)
+   n=3 remove {x}: UC, non-Boolean, max-density=4/7 (== bound 4/7: True)
+   n=3 remove {x}: UC, non-Boolean, max-density=4/7 (== bound 4/7: True)
+   n=3 remove {x}: UC, non-Boolean, max-density=4/7 (== bound 4/7: True)
+   n=4 remove {x}: UC, non-Boolean, max-density=8/15 (== bound 8/15: True)
+   n=4 remove {x}: UC, non-Boolean, max-density=8/15 (== bound 8/15: True)
+   n=4 remove {x}: UC, non-Boolean, max-density=8/15 (== bound 8/15: True)
+   n=4 remove {x}: UC, non-Boolean, max-density=8/15 (== bound 8/15: True)
+[exit=0]
+
+################################################################
+### PART 2: odd_filter_minimizers_char.py ###
+################################################################
+Minimizers (families attaining min max-density over non-Boolean UC):
+
+n=2: 3 minimizers, min max-density = 2/3 = 0.666667
+   remove {1}  ->  power set minus singleton {1}   m=3, non-Boolean=True
+   remove {0}  ->  power set minus singleton {0}   m=3, non-Boolean=True
+   remove {}  ->  ODD FILTER 2^[n]\{∅}   m=3, non-Boolean=True
+
+n=3: 4 minimizers, min max-density = 4/7 = 0.571429
+   remove {2}  ->  power set minus singleton {2}   m=7, non-Boolean=True
+   remove {1}  ->  power set minus singleton {1}   m=7, non-Boolean=True
+   remove {0}  ->  power set minus singleton {0}   m=7, non-Boolean=True
+   remove {}  ->  ODD FILTER 2^[n]\{∅}   m=7, non-Boolean=True
+
+n=4: 5 minimizers, min max-density = 8/15 = 0.533333
+   remove {3}  ->  power set minus singleton {3}   m=15, non-Boolean=True
+   remove {2}  ->  power set minus singleton {2}   m=15, non-Boolean=True
+   remove {1}  ->  power set minus singleton {1}   m=15, non-Boolean=True
+   remove {0}  ->  power set minus singleton {0}   m=15, non-Boolean=True
+   remove {}  ->  ODD FILTER 2^[n]\{∅}   m=15, non-Boolean=True
+[exit=0]
+
+################################################################
+### PART 3: odd_filter_minimizers_general.py ###
+################################################################
+Structural facts, general n (exact arithmetic):
+n=2: odd filter and each of the 2 families 2^[n]\{singleton}  ->  ALL attain max-density 2/3 (= 0.66666667);  UC confirmed;  non-Boolean = True  (not at half)
+n=3: odd filter and each of the 3 families 2^[n]\{singleton}  ->  ALL attain max-density 4/7 (= 0.57142857);  UC confirmed;  non-Boolean = True  (not at half)
+n=4: odd filter and each of the 4 families 2^[n]\{singleton}  ->  ALL attain max-density 8/15 (= 0.53333333);  UC confirmed;  non-Boolean = True  (not at half)
+n=5: odd filter and each of the 5 families 2^[n]\{singleton}  ->  ALL attain max-density 16/31 (= 0.51612903);  UC confirmed;  non-Boolean = True  (not at half)
+n=6: odd filter and each of the 6 families 2^[n]\{singleton}  ->  ALL attain max-density 32/63 (= 0.50793651);  UC confirmed;  non-Boolean = True  (not at half)
+n=7: odd filter and each of the 7 families 2^[n]\{singleton}  ->  ALL attain max-density 64/127 (= 0.50393701);  UC confirmed;  non-Boolean = True  (not at half)
+n=8: odd filter and each of the 8 families 2^[n]\{singleton}  ->  ALL attain max-density 128/255 (= 0.50196078);  UC confirmed;  non-Boolean = True  (not at half)
+
+=> number of minimizers = n+1 for every n >= 2:
+     1 odd filter  +  n power-set-minus-singleton families
+
+Exact closed form for the singleton-removal family 2^[n]\{{x}}:
+  c_{x} = 2^(n-1) - 1   (x itself)
+  c_y   = 2^(n-1)       (every y != x)
+  max density = 2^(n-1) / (2^n - 1)   ==  odd-filter value.
+  identity check: max density = 2^(n-1)/(2^n-1)  -> 2**(n - 1)/(2**n - 1)
+  odd-filter density      = 2^(n-1)/(2^n-1)  -> 2**(n - 1)/(2**n - 1)
+  identical by construction (same closed form).
+[exit=0]
+
+################################################################
+### PART 4: odd_filter_indep_guard.py (independent route + guards) ###
+################################################################
+==============================================================================
+GUARDS (entry controls, exact)
+==============================================================================
+G1  2^[3]: every element density exactly 1/2 -> True (counts [4, 4, 4] vs |F|=8)
+G2  {{0}}: singleton reports element 0 abundant (2*1 >= 1) -> True
+G3  non-UC family {0},{1},{2},{0,1,2}: is_UC=False (want False) -> True; counts [2, 2, 2], none strictly > half -> True
+
+==============================================================================
+INDEPENDENT ROUTE (inline checker, no lib.uc): n=2,3,4
+==============================================================================
+n=2: non-Boolean UC families=8, min max-density=2/3 = 0.666667, # minimizers=3 (expected n+1=3) -> True
+     2^[n]\{singleton 1}
+     2^[n]\{singleton 0}
+     ODD FILTER 2^[n]\{∅}
+n=3: non-Boolean UC families=106, min max-density=4/7 = 0.571429, # minimizers=4 (expected n+1=4) -> True
+     2^[n]\{singleton 2}
+     2^[n]\{singleton 1}
+     2^[n]\{singleton 0}
+     ODD FILTER 2^[n]\{∅}
+n=4: non-Boolean UC families=4907, min max-density=8/15 = 0.533333, # minimizers=5 (expected n+1=5) -> True
+     2^[n]\{singleton 3}
+     2^[n]\{singleton 2}
+     2^[n]\{singleton 1}
+     2^[n]\{singleton 0}
+     ODD FILTER 2^[n]\{∅}
+
+==============================================================================
+VERDICT
+==============================================================================
+min max-density over non-Boolean UC families == 2^{n-1}/(2^n-1): CONFIRMED by independent inline route (n=2,3,4).
+odd filter is the UNIQUE minimizer: FALSE — n+1 minimizers (odd filter + n power-set-minus-singletons).
+ALL CHECKS PASS: True
+[exit=0]

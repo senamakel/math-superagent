@@ -1,0 +1,6 @@
+$ python code/out/transversal_convex_n9.py
+n=9: N=128 blocks=8 block sizes=[1, 7, 21, 35, 35, 21, 7, 1] total transversals=26471025
+  checked=26471025 non-convex transversals=0
+  ALL transversals convex: PASS
+RESULT n=9: all-transversals-convex = True
+EXIT: 0

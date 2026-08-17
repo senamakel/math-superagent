@@ -312,22 +312,35 @@ position; the paper's definition of split $k$-gon). Then:
   position, generalizing all previously known constructions, enabling computational
   attack for large $k$.
 
-- **Status: proved** (split-$k$-gon threshold and decomposable case are new proved
-  theorems; the general conjecture remains open).
+- **Status: updated — full SoCG 2025 PDF is now held and digested**
+  (`research/summaries/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.md`, anchor
+  `research/sources/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.full.md`,
+  LIPIcs 332, 13:1–13:15, DOI 10.4230/LIPIcs.SoCG.2025.13). Split-threshold result:
+  **proved-in-source** — the exact formula ESsplit(a,u,k) = 1 + Σ_{i=k-a+2}^{u} C(k-2, i-2)
+  (Theorem 4), ESsplit(k) = 2^{k-2}+1 (Theorem 3), and the abstract hypergraph analogue
+  (Theorem 6) are proved on disk (upper bound Lemma 10 by down-set injectivity; lower
+  bound Lemma 11 by delta-colorings; the geometric lower-bound Lemma 12 and the
+  combinatorial count Lemma 9 are "proof omitted", deferred to the journal version).
+  Decomposable-set result (Theorem 8): **asserted-by-source** — the SoCG version
+  states it but says "The proof of Theorem 8 is omitted" (deferred to JCTA 2026,
+  DOI 10.1016/j.jcta.2026.106195, not fetched). Cweak(7) > 33 (Theorem 7) is
+  proved-in-source. The general conjecture remains open. The run's `es_construct`
+  at a=u=k is the tightness witness (should be machine-checked for split-k-gon-freeness).
 
-This is the single most useful new result in the library for this run: it proves
-that the numerology $2^{k-2}+1$ is not an accident of the conjecture — it is the
-correct threshold for a strictly weaker notion — and it localizes the hardness to
-the exact convexity condition.
+If the paper's proofs hold, this is the single most useful result in the library:
+it would prove that the numerology $2^{k-2}+1$ is not an accident of the conjecture
+— the correct threshold for a strictly weaker notion — and localize the hardness to
+the exact convexity condition. The split threshold is now verified on disk; the
+decomposable claim is load-bearing-but-unverified pending the JCTA 2026 full text.
 
 ```claim
 id: baek-balko-split
-statement: ES_split(k) = 2^{k-2} + 1 (tight threshold for split k-gons); the ES conjecture holds for decomposable sets; the ordered 3-uniform hypergraph generalization fails; new 2^{k-2}-point no-convex-k-gon constructions generalize all prior ones.
+statement: ESsplit(k) = 2^{k-2} + 1 (tight threshold for split k-gons); the ES conjecture holds for decomposable sets; the ordered 3-uniform hypergraph generalization fails; new 2^{k-2}-point no-convex-k-gon constructions generalize all prior ones.
 hypotheses: split k-gon notion as defined in the paper; decomposable sets as defined there; ordered 3-uniform hypergraphs
 holds-here: yes (split k-gon is a relaxation of the real condition; the decomposition and hypergraph results are on stated restricted classes)
-status: proved (split threshold and decomposable case); the ES conjecture itself remains open
-bearing: proves 2^{k-2}+1 is the right number for a weaker notion, narrowing the conjecture's difficulty to "convex" vs "split"; supplies generalized constructions for computational probing of large k
-anchor: research/sources/baek-balko - The Erdos-Szekeres Conjecture Revisited - SoCG 2025 correct.full.md
+status: split threshold (Theorems 3/4/6) proved-in-source in the held SoCG 2025 PDF (Lemma 10 down-set injectivity; Lemma 11 delta-colorings; Lemmas 9 and 12 "proof omitted" — deferred); decomposable-set Theorem 8 asserted-by-source ("The proof of Theorem 8 is omitted", deferred to JCTA 2026)
+bearing: 2^{k-2}+1 is proved to be the right number for the split relaxation, narrowing the conjecture's difficulty to "convex" vs "split"; the split threshold and the tightness witness (the run's es_construct) are verified on disk; the decomposable claim stays load-bearing-but-unverified until JCTA 2026 is held.
+anchor: research/sources/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.full.md
 answers: (the Baek-Balko finding the task flagged)
 ```
 
@@ -437,14 +450,24 @@ anchor: research/sources/suk-erdos-szekeres-convex-polygon-problem-arxiv1604.086
    in the literature and independently reimplemented three times (Peters–Szekeres),
    but this run has not yet reproduced the 16-point no-6-gon witness with its own
    exact-arithmetic checker. That is GOAL criterion 3 and is open.
-2. **Full text of Balko–Valtr "A SAT attack…"** (EJC 66 (2017) 13–23) is paywalled;
-   the run has the abstract and its documented finding only (gap `balko-valtr-attack-baa4`).
-   The orientation-variable SAT formulation it needs is instead carried by Dumitru
-   (arXiv:2512.24061) and Scheucher (arXiv:2105.08406), both held.
-3. **Full primary text of Erdős–Szekeres 1961** for the lower-bound construction
-   (gap `full-text-faithful-b96b`); the construction is fully stated by Morris–Soltan
-   §2.3 and its integer realization by Duque et al., so the construction itself is
-   available without the journal page.
+2. **Balko–Valtr "A SAT attack…"** — **RESOLVED (requests `balko-valtr-attack-baa4` /
+   `open-access-full-1e6e` answered).** The open-access EuroComb ENDM 49 (2015) 425–431
+   full text is held at `research/sources/balko-valtr-A-SAT-attack-on-ES-ENDM2015.full.md`
+   (https://eurocomb2015.w.uib.no/files/2015/08/endm1938.pdf) — the same content as the
+   EJC 66 (2017) journal version, which remains paywalled but need not be fetched. It
+   refutes the Peters–Szekeres strengthened conjecture (cES(7)>32, cES(8)>64) on
+   NON-pseudolinear colorings, which do not touch the geometric ES conjecture; over
+   pseudolinear colorings it verifies Conjecture 3.1 at a=4,u=k=7 (N=16) and a=4,u=k=8
+   (N=22). The orientation-variable SAT formulation it carries is the family the run's
+   encoder must mirror (claims `balko-valtr-refutes-PS`, `balko-valtr-pseudolinear-verifies`).
+3. **Full primary text of Erdős–Szekeres 1961** — **RESOLVED (request
+   `full-text-faithful-b96b` answered).** The actual paper ("On some extremum problems in
+   elementary geometry", Ann. Univ. Sci. Budapest 3–4 (1961) 53–62) is held in full at
+   `research/sources/erdos-szekeres-1961-on-some-extremum-problems-elementary-geometry-renyi.pdf.full.md`
+   (https://renyi.hu/~p_erdos/1960-09.pdf), with the concrete construction in
+   `summaries/erdos-szekeres-1961-construction-concrete.md` (claim `es1961-construction-held`,
+   status checked). The construction is available both from the primary and from
+   Morris–Soltan §2.3 / Duque et al. integer realization.
 4. **Blank on ES(7)=33.** The current open case; Dumitru (arXiv:2512.24061) reports
    UN SAT certificates for anchored subfamilies but not a settled ES(7). Not a
    restricted class this run can cite as settled.
@@ -454,8 +477,8 @@ anchor: research/sources/suk-erdos-szekeres-convex-polygon-problem-arxiv1604.086
 - [ErSz35] P. Erdős & G. Szekeres, *A combinatorial problem in geometry*, Compositio
   Math. 2 (1935) 463–470.
 - [ErSz61] P. Erdős & G. Szekeres, *On some extremum problems in elementary geometry*,
-  Ann. Univ. Sci. Budapest. Eötvös Sect. Math. 3–4 (1961) 53–62 (lower bound; not
-  in full in library).
+  Ann. Univ. Sci. Budapest. Eötvös Sect. Math. 3–4 (1961) 53–62 (lower bound; held in
+  full in library at `research/sources/erdos-szekeres-1961-on-some-extremum-problems-elementary-geometry-renyi.pdf.full.md`).
 - [TV98] G. Tóth & P. Valtr, *Note on the Erdős–Szekeres theorem*, DCG 19 (1998).
 - [Suk17] A. Suk, *On the Erdős–Szekeres convex polygon problem*, JAMS 30 (2017).
 - [HMPT20] Holmsen–Mojarrad–Pach–Tardos, *Two extensions of the ES problem*, JEMS 22 (2020).

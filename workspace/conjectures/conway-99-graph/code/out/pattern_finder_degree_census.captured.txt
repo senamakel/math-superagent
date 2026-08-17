@@ -1,0 +1,23 @@
+=== polynomial-in-u family counts (degree in u) ===
+k = u^2+u+2                              POLY degree= 2 LC=    1 vals=(4, 14, 22, 112, 994)
+v = 1+k(k-2)/2                           POLY degree= 4 LC=    0 vals=(9, 99, 243, 6273, 494019)
+triangles vk/6                           POLY degree= 6 LC=    0 vals=(6, 231, 891, 117096, 81842481)
+induced C5 vk(k-2)(k-4)/5                POLY degree=10 LC=    0 vals=(0, 33264, 384912, 1669320576, 96451036488576)
+hexagons n3=0                            POLY degree=12 LC=    0 vals=(6, 209286, 4980690, 146767540920, 79371206037594576)
+n3-cap k(k-2)(k^2+2)/8                   POLY degree= 8 LC=    0 vals=(18, 4158, 26730, 19320840, 121781611728)
+distance-2 k(k-2)/2                      POLY degree= 4 LC=    0 vals=(4, 84, 220, 6160, 493024)
+outer blocks k(k-2)(k-4)/12              POLY degree= 6 LC=    0 vals=(0, 140, 660, 110880, 81348960)
+replication (k-4)/2                      POLY degree= 2 LC=    0 vals=(0, 5, 9, 54, 495)
+matching-pair/vertex k(k-2)/8            POLY degree= 4 LC=    0 vals=(1, 21, 55, 1540, 123256)
+
+=== rational-in-u, integer-valued at the 5 feasible index points ===
+coclique Hoffman v(u+1)/(k+u+1)          RATIONAL values=[3, 22, 45, 561, 15408]  all-integer-at-feasible=True
+multiplicity m_r                         RATIONAL values=[4, 54, 132, 3280, 250914]  all-integer-at-feasible=True
+multiplicity m_s                         RATIONAL values=[4, 44, 110, 2992, 243104]  all-integer-at-feasible=True
+
+=== divisibility driver: a = 2u+1 divides 63 ===
+u=  1  a=2u+1=  3  63/a= 21  (exact)  k=4
+u=  3  a=2u+1=  7  63/a=  9  (exact)  k=14
+u=  4  a=2u+1=  9  63/a=  7  (exact)  k=22
+u= 10  a=2u+1= 21  63/a=  3  (exact)  k=112
+u= 31  a=2u+1= 63  63/a=  1  (exact)  k=994

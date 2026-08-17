@@ -33,6 +33,27 @@ of CA over C using the convex hull of the roots**, plus special cases proved.
 
 ## Evidence class / falsifier
 
+```claim
+id: polstra-convex-hull-collapse
+statement: (Polstra Thm 3.1) If f shares a root with each of its n-1 derivatives over C,
+  then each root of f is a vertex of its convex hull iff f has a single root of
+  multiplicity n. Contrapositive (usable form): a genuine counterexample to CA over C
+  must have a root that is NOT a vertex of its convex hull C_f. Also (Cor 3.5): if the
+  roots of f lie on the boundary of a strictly convex set and f is CA, then f = (x-a)^n.
+hypotheses: char 0, analytic over C, via nested convex hulls C_{f^(n-1)} ⊆ ... ⊆ C_{f'} ⊆ C_f
+  (Gauss-Lucas, Cor 2.3)
+holds-here: yes -- this is the geometric collapse step the live root-difference-coloring
+  approach rests on, and it is char-0-only
+status: asserted-by-source (peer-reviewed undergraduate journal, full proof held and read)
+bearing: names the char-0-only step the run's coloring collapse must use: the convex-hull /
+  Gauss-Lucas propagation C_{f^(n-1)} ⊆ ... ⊆ C_f has NO F_p analogue, which is exactly
+  where the char-p counterexamples survive. A coloring collapse that survives in char p
+  cannot be this step.
+anchor: research/sources/polstra2012_convex-hulls-casas-alvero.full.md (Thm 3.1, Cor 3.5)
+falsifies: a counterexample over C all of whose roots are hull vertices, or the collapse
+  surviving in characteristic p.
+```
+
 - Thm 3.1, Cor 3.5: **asserted-by-source (peer-reviewed journal), full proof held
   and read.** Hypotheses: char 0, analytic over C via Gauss–Lucas.
 - Falsifier (for the run's use of it): if the convex-hull reformulation survived

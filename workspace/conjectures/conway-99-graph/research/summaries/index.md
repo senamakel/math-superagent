@@ -42,6 +42,9 @@ answer the question.
 ## Counting / subgraph structure
 - `reimbayev-hexagon-bound-*.md` — hexagon lower bound; n_3 pivot.
 - `reimbayev-subgraphs-order-six-*.md` — exact order≤6 subgraph counts in (n,k,n3).
+- `reimbayev-hamiltonian-order7-srg-l1-mu2.md` — order-7 Hamiltonian subgraph counts
+  (h0..h18) in (n,k,n3,h11); heptagon upper bound p7; FREE VARS n3 AND h11 (4n3>=h11>=2n3).
+  [acquisition this cycle; full text in sources/]
 - `reimbayev-srg19612-combinatorial.md` — spectrum-free proof srg(19,6,1,2) not exist.
 - `brouwer-ihringer-kantor-4vertex-condition.md` — 4-vertex condition; common
   neighbours of a nonadjacent pair are nonadjacent.

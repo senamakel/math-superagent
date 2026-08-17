@@ -25,7 +25,21 @@ mechanism: The 231 triangles are lines; N is the 99 x 231 incidence matrix.
   system), not the Delsarte two-weight theory. The honest risk is that for a
   partial STS forced to have NN^T = 7I+A the p-rank could still turn out to be
   parameter-determined; the first step is precisely the check that decides this.
-status: grounded
+status: refuted
+verdict: CLOSED AS UNUSABLE (directive 23, Route 8), after the directive-18 gate was answered
+  in code/out/incidence_prank_determinism.captured.txt. The 2-rank of N is NOT
+  parameter-determined — the naive spectral-multiplicity rule is VIOLATED on
+  doily and GQ(2,4), and Assmus-Key leaves the STS p-rank genuinely varying with
+  the system — so the invariant COULD in principle separate 99 from 243. BUT it
+  is unprovable this way: a 99 value could only be settled by an actual 99
+  system, i.e. the very graph whose existence is in question (circular). No
+  same-parameter split is demonstrable: the one available test (Shrikhande vs
+  rook(4), both srg(16,6,2,2)) gives identical rank_2(A+I)=16 and rank_2(N)=16.
+  The within-family rank variation (rook 5 vs BvLS 243) is NOT evidence against
+  parameter-determinism, since such an invariant varies across parameter points
+  anyway. Refuted not on the mechanism but on provability/circularity.
+reason: directive 23 (Route 8) closes the line as unusable; record in solution.md
+  and do not re-open (task record-routes-7-8-9).
 speculative: medium — concrete and computable, but must first be shown not to be
   a parameter-determined invariant like the two refuted code/SNF routes.
 precedent:

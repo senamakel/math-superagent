@@ -18,7 +18,8 @@ status: asserted-by-source (the made proof is [7]'s; re-stated and used in the h
 bearing: This is the engine of every settled family. It also frames the run's method:
   to settle char-0 CA in degree dp^k it suffices to find one prime p with no char-p
   degree-d counterexamples, then verify d's bad primes.
-anchor: research/sources/castryck2012_degree12_html.full.md (Thm 3; citing [7])
+anchor: research/sources/grafvonbothmer2007_infinitely_many_html.full.md (Section 2,
+  Props 2.1-2.6), research/sources/castryck2012_degree12_html.full.md (Thm 3; citing [7])
 falsifies: a degree dp^k counterexample in char 0 for a good prime p.
 ```
 
@@ -36,8 +37,8 @@ status: asserted-by-source (abstract of [7]; also Wikipedia, Schaub–Spivakovsk
 bearing: The oracle in code/lib must report x^{p+1}−x^p as satisfying the hypothesis and
   NOT a pure power. Every candidate argument must be run against it and the failing
   step named.
-anchor: research/sources/grafvonbothmer2007_infinitely_many.full.md (abstract),
-  research/sources/wikipedia_casas_alvero.full.md
+anchor: research/sources/grafvonbothmer2007_infinitely_many_html.full.md (Prop 3.1,
+  proof given in full text), research/sources/wikipedia_casas_alvero.full.md
 falsifies: a run of the oracle showing x^{p+1}−x^p does NOT pass, or IS a pure power.
 ```
 

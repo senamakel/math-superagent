@@ -46,13 +46,28 @@ rejected on import; the rest all scored.
 - The scores 0–17 are exactly the multiplicity pattern: `score = m-1` for a
   single root of multiplicity `m` plus no cross-multiplicity sharing.
 
-**Why 19 is not reached and does not need to be:** `k = 19` is precisely the
-*Casas–Alvero hypothesis* — every one of the 19 derivatives shares a root. By
-the conjecture (open at 20, believed true), the only satisfiers are the trivial
-family `(x-a)^20`, which the scorer rejects. So a score of 19 from any
-non-trivial construction would *be* the counterexample the search assumes does
-not exist. The plateau at 18 is therefore the meaningful answer, not a failure
-to search harder.
+**Why 19 is not reached, and why the 18 must be attributed to the family, not to degree 20:**
+
+`k = 19` is precisely the *Casas–Alvero hypothesis* — every one of the 19
+derivatives shares a root. By the conjecture (open at 20, believed true), the
+only satisfiers are the trivial family `(x-a)^20`, which the scorer rejects.
+So a score of 19 from any non-trivial construction would *be* the
+counterexample the search assumes does not exist.
+
+**Correction (directive 11): the blanket plateau at 18 is a BINOMIAL-family
+fact, not a general degree-20 ceiling.** For `f = x^20 - c·x^k` with `c≠0`
+every derivative `j > k` reduces to a scalar multiple of `x^(20-j)` and shares
+root 0; the derivative `j = k` equals `A·x^(20-k) - c·k!`, which at `x=0` is
+`-c·k! ≠ 0`, so it does NOT share root 0. Hence the *only* failing derivative
+is `j = k` and every non-trivial binomial scores 18 = 19 − 1 **for free** —
+that is an artifact of the two-term shape, not evidence about degree 20. A
+search population that is all binomials re-parameterised measures nothing.
+The 18 from the high-multiplicity family `(x-a)^19·(x-b)` is a *different*
+mechanism (a root of multiplicity 19 covering `j=1..18`, with the linear
+`f^(19)` the unique binder) and is the only structurally distinct route to 18
+seen so far. The meaningful comparison the search must make is the
+**first-failing-j distribution ACROSS genuinely different families**
+(see the distribution table below), not a single ceiling.
 
 ## Do I believe the top score?
 
@@ -145,6 +160,27 @@ best and it is robust.
 | c0069 | `(x-4)^19 (x-16/19)` — forced root-alignment attempt | SCORE 18 |
 | c0070 | `(x-3)^19 (x-17/19)` — forced root-alignment attempt | SCORE 18 |
 
+## Scorer-rejection path (verified live, not just in smoke test)
+
+The rejection rules were exercised through the actual scoring entry point
+(`python score.py rejects/<file>.py`), not only in the 6-case smoke test, so
+the scorer is confirmed to *constrain the population* — rejection is a real
+path, distinct from scoring, that the live population's 0-discard rate never
+proved. Four expected-rejects, each rejected with its exact reason
+(capture `code/out/scorer_rejection_check.captured.txt`):
+
+| candidate | expected | observed |
+|-----------|----------|----------|
+| `rejects/reject_nonmonic.py` \(`2x^20-x`\) | INVALID | `INVALID: not monic (leading coefficient 2)` |
+| `rejects/reject_deg19.py` \(`x^19-x`\) | INVALID | `INVALID: degree 19 != 20` |
+| `rejects/reject_nonrational.py` \(`x^20-Ix`\) | INVALID | `INVALID: non-rational coefficients (domain ZZ_I)` |
+| `rejects/reject_trivial.py` \(`(x-4)^20`\) | INVALID | `INVALID: f is (x-a)^20 (the trivial family...)` |
+
+Positive control through the same entry point: the genuine candidate
+`candidates/c0008.py` (`x^20-2x`) still scores **SCORE: 18**, proving the
+rejection path is genuinely distinct from the scoring path (rejection is not a
+blanket reject-everything, and scoring is not a blanket accept-everything).
+
 ## What to try next
 
 The plateau at 18 is structural, not a search artefact. The only route to 19 is
@@ -158,3 +194,26 @@ locus the broader CA research threads study (e.g. degree-20 no-3-recycled
 result), and it is where the interesting near-misses would live. But even there,
 the linear `f^(19)` is suspected to be the universal binding constraint for
 non-pure-power monic degree-20 polynomials over Q.
+
+## div2 diversified batch (added by diversify_run.py)
+
+| file | construction | first-failing-j | verdict |
+|------|--------------|-----------------|---------|
+| div2_cheb_h1.py | CHEBYSHEV | 2 | SCORE: 1 |
+| div2_cheb_h2.py | CHEBYSHEV | 1 | SCORE: 0 |
+| div2_cheb_h3.py | CHEBYSHEV | 2 | SCORE: 1 |
+| div2_cyclo_c1.py | CYCLOTOMIC | 4 | SCORE: 3 |
+| div2_cyclo_c2.py | CYCLOTOMIC | 2 | SCORE: 1 |
+| div2_cyclo_c3.py | CYCLOTOMIC | 12 | SCORE: 15 |
+| div2_factored_f1.py | FACTORED (x-r)^m g | 15 | SCORE: 14 |
+| div2_factored_f2.py | FACTORED (x-r)^m g | 14 | SCORE: 13 |
+| div2_factored_f3.py | FACTORED (x-r)^m g | 16 | SCORE: 15 |
+| div2_factored_f4.py | FACTORED (x-r)^m g | 15 | SCORE: 17 |
+| div2_rootset_r1.py | ROOT-MULTISET | 16 | SCORE: 15 |
+| div2_rootset_r2.py | ROOT-MULTISET | 15 | SCORE: 14 |
+| div2_rootset_r3.py | ROOT-MULTISET | 8 | SCORE: 8 |
+| div2_trinomial_t1.py | TRINOMIAL | 3 | SCORE: 17 |
+| div2_trinomial_t2.py | TRINOMIAL | 5 | SCORE: 17 |
+| div2_trinomial_t3.py | TRINOMIAL | 6 | SCORE: 17 |
+| div2_trinomial_t4.py | TRINOMIAL | 9 | SCORE: 17 |
+| div2_trinomial_t5.py | TRINOMIAL | 2 | SCORE: 17 |

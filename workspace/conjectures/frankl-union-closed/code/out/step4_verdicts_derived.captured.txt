@@ -1,0 +1,26 @@
+STEP 4 verdicts propagated into scores.jsonl and SEARCH.md re-derived.
+
+WHAT RAN: python3 code/search/uc-coupling/derive_search.py (the generator that
+re-derives SEARCH.md from scores.jsonl; located and executed; it was NOT the
+searcher harness, but reproduces its deterministic derivation).
+WHICH ORACLE: none — this is a ledger-derivation task, not a UC computation.
+The verdicts themselves came from the scorer code/search/uc-coupling/score.py
+(STEP 1-4 in earlier capture).
+
+RESULT:
+- 15 candidates scored, 14 discarded.
+- All 15 scored rows are the Yu-witness plateau at 0.3823435642 (c0000, c0001,
+  c0002, c0005, c0006, c0007, c0009, c0016..c0023), each in its island.
+- Top row = c0000 at 0.3823435642 (confirmed by reading SEARCH.md back).
+- 0.421992 does NOT appear anywhere in SEARCH.md (grep count 0, exit 1).
+- c0024..c0032 carry INVALID (certified score above proved ceiling
+  t_hat_max=0.3823455334, missing-inf artifacts). c0033 carries INVALID
+  (degenerate-atom a=0.01 < A_FLOOR=0.1). c0003/c0008 legacy, c0004 probe,
+  c0010 malformed all INVALID.
+
+ACCEPTANCE TEST (from task write-step4-verdicts-to-scores-jsonl): 0.421992 no
+longer appears in SEARCH.md — PASS. Top row is the Yu block at 0.3823435642 —
+PASS.
+
+STATUS: task write-step4-verdicts-to-scores-jsonl satisfied. The exploit is no
+longer presented as the top result in the derived search file.

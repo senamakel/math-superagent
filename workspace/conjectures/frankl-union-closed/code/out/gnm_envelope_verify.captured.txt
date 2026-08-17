@@ -1,0 +1,42 @@
+gnm_envelope_verify.py: verify g(n,m) = max(1, m - 2^(n-1))
+oracle: lib.uc.decide_union_closed / lib.uc.abundance (canonical)
+range: n in 1..6, m in 1..2^n; exhaustive cross-check n<=4; size lemma N in 0..6
+upset(N=0, size) upward-closed of right size for all sizes 0..1
+upset(N=1, size) upward-closed of right size for all sizes 0..2
+upset(N=2, size) upward-closed of right size for all sizes 0..4
+upset(N=3, size) upward-closed of right size for all sizes 0..8
+upset(N=4, size) upward-closed of right size for all sizes 0..16
+upset(N=5, size) upward-closed of right size for all sizes 0..32
+upset(N=6, size) upward-closed of right size for all sizes 0..64
+upset(N=0, *) all union-closed
+upset(N=1, *) all union-closed
+upset(N=2, *) all union-closed
+upset(N=3, *) all union-closed
+upset(N=4, *) all union-closed
+upset(N=5, *) all union-closed
+upset(N=6, *) all union-closed
+size lemma N=0: sizes of upsets == {0..1}: True
+size lemma N=1: sizes of upsets == {0..2}: True
+size lemma N=2: sizes of upsets == {0..4}: True
+size lemma N=3: sizes of upsets == {0..8}: True
+size lemma N=4: sizes of upsets == {0..16}: True
+size lemma N=5: sizes of upsets == {0..32}: True
+size lemma N=6: sizes of upsets == {0..64}: True
+n=1 (2^(n-1)=1): all m in 1..2^n construct UC of size m with rare == max(1,m-2^(n-1)); worst rare value = 1
+    construction-A sizes present: [2]
+n=2 (2^(n-1)=2): all m in 1..2^n construct UC of size m with rare == max(1,m-2^(n-1)); worst rare value = 2
+    construction-A sizes present: [3, 4]
+n=3 (2^(n-1)=4): all m in 1..2^n construct UC of size m with rare == max(1,m-2^(n-1)); worst rare value = 4
+    construction-A sizes present: [5, 6, 7, 8]
+n=4 (2^(n-1)=8): all m in 1..2^n construct UC of size m with rare == max(1,m-2^(n-1)); worst rare value = 8
+    construction-A sizes present: [9, 10, 11, 12, 13, 14, 15, 16]
+n=5 (2^(n-1)=16): all m in 1..2^n construct UC of size m with rare == max(1,m-2^(n-1)); worst rare value = 16
+    construction-A sizes present: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+n=6 (2^(n-1)=32): all m in 1..2^n construct UC of size m with rare == max(1,m-2^(n-1)); worst rare value = 32
+    construction-A sizes present: [33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64]
+n=1: exhaustive g(n,m) == max(1,m-2^(n-1)) for all m: True
+n=2: exhaustive g(n,m) == max(1,m-2^(n-1)) for all m: True
+n=3: exhaustive g(n,m) == max(1,m-2^(n-1)) for all m: True
+n=4: exhaustive g(n,m) == max(1,m-2^(n-1)) for all m: True
+
+ALL ASSERTIONS PASS: constructions (A),(B) give UC families of size m with rarest present element == max(1, m-2^(n-1)) for every n in 1..6, m in 1..2^n; exhaustive g matches at n<=4; upset size lemma holds for N in 0..6.

@@ -1,0 +1,142 @@
+constraint_delim.py -- delimit how close the held minimal-counterexample constraints come to forcing UC
+oracle: lib.uc.decide_union_closed + lib.uc.abundance (exact integer counts); strict test 2*c > |F|
+range : n=1..4 exhaustive; n=5 class-exhaustive; n=6,7 k=3 construction probes; n=8 one explicit family
+guards: 2^[n] density exactly 1/2; singleton abundant; non-UC negative control rejected -> OK
+
+==========================================================================
+PART 1 -- n = 1..4 EXHAUSTIVE: all union-closed EMPTY-FREE families
+==========================================================================
+guard: total UC family counts match A102896 (3,13,121,4959) -> OK
+guard: empty-free counts match (1,6,60,2479) -> OK
+
+ n |  total |      A |      C |  (i) A&C |      B |    D | (ii) f=0 |  close |   d=1 |  gehalf=1 |  (iii)
+---------------------------------------------------------------------------------------------------------
+ 1 |      1 |      0 |      0 |        0 |      1 |    0 |        0 |      0 |     1 |         1 |      0
+ 2 |      6 |      1 |      0 |        0 |      6 |    0 |        0 |      0 |     4 |         2 |      0
+ 3 |     60 |     32 |     37 |       25 |     60 |    0 |        0 |      0 |    14 |         3 |      0
+ 4 |   2479 |   2184 |   2041 |     1823 |   2479 |    0 |        0 |      0 |    51 |         4 |      0
+---------------------------------------------------------------------------------------------------------
+TOT |   2546 |   2217 |   2078 |     1848 |   2546 |    0 |        0 |      0 |    70 |        10 |      0
+
+(i)  families satisfying A and C simultaneously: 1848 / 2546 = 72.5844%
+     (B is automatic: rarest-count-floor is always true, 2546/2546; D never binds at n<=4: |F| <= 15 < 51)
+(ii) families with NO strict-abundant element (f=0): 0 (expected 0: empty-free UC <=> f>=1, UC verified at n<=4)
+     close (exactly one element at density >= 1/2, none strictly above): 0  [implies f=0 -> 0 here]
+     exactly one element at density >= 1/2 (any strictness): 10
+       example: n=1 F={{a}} |F|=1 counts=(1) f=1
+     d = max_x(2*c_x - m): NO family reaches d <= 0; the minimal excess is 1, hit by 70 families
+       example: n=1 F={{a}} |F|=1 counts=(1) d=1
+(iii) among f=0 families, satisfying A and C: 0 (empty here: there ARE no f=0 families at n<=4)
+  A&C examples:
+    n=3 F={{ab},{c},{abc}} |F|=3 k=1 nmax=3 f=3 counts=(2,2,2)
+    n=3 F={{b},{ac},{abc}} |F|=3 k=1 nmax=3 f=3 counts=(2,2,2)
+    n=3 F={{a},{ab},{ac},{abc}} |F|=4 k=1 nmax=3 f=1 counts=(4,2,2)
+  (part 1 took 0.1s)
+
+==========================================================================
+PART 2 -- n = 5 EXHAUSTIVE over min-set-size >= 3 class
+          (16 masks of size >= 3 -> 2^16 subfamilies; complete for
+           this class, NOT the 2^32 all-family space) + quick 
+           all-k generator sweep
+==========================================================================
+
+min-set-size >= 3, empty-free, union-closed families on [5]: 5035
+  k=3: count 4998, f=0 count 0, min f 3 (KPT Thm5(3) lower bound f>=2), tightness hits f==2: 0
+      min-f witness: |F|=1 F={{abc}} f=3 counts=(1,1,1,0,0)
+      KPT: f>=k by Thm 5(1); f-distribution {3: 110, 4: 1445, 5: 3443}
+  k=4: count 36, f=0 count 0, min f 4 (KPT Thm5(3) lower bound f>=4), tightness hits f==4: 10
+      min-f witness: |F|=1 F={{abcd}} f=4 counts=(1,1,1,1,0)
+      KPT: f>=k by Thm 5(1); f-distribution {4: 10, 5: 26}
+  k=5: count 1, f=0 count 0, min f 5 (KPT Thm5(3) lower bound f>=5), tightness hits f==5: 1
+      min-f witness: |F|=1 F={{abcde}} f=5 counts=(1,1,1,1,1)
+      KPT: f>=k by Thm 5(1); f-distribution {5: 1}
+  KPT Thm 5(1) at n=5: k>=2 forces f>=k; found min f per k: 3,4,5 == k => (1) is TIGHT here (trivial singleton witness {{abc}} etc.)
+  exhaustive k>=3 scan took 0.1s
+  all-k generator sweep (closures of <=3 generators from all 31 masks): 4991 families checked, f=0 found: 0
+  (part 2 took 0.2s total)
+
+==========================================================================
+PART 3 -- n = 6, k = 3: closure-based CONSTRUCTION search
+          (all closures of <= 4 generators from 42 size->=3 masks;
+           all closures of <= 6 generators restricted to 3-sets;
+           random generator sets up to size 14)
+          f=0 is IMPOSSIBLE here by constraint (C): it would need
+          max set size >= 2*3+1 = 7 > 6. Sweep = confirmation +
+          minimum-f hunt.
+==========================================================================
+guard: closure_small == lib.uc.closure on 1000 random generator sets -> OK
+  sweep A (<= 4 generators, all masks, k=3): 1.5s
+  sweep B (3-set generators, 5..6 gens): 1.6s
+  random i=5 (x40000): 1.0s
+  random mixed 5..14 (x80000): 2.8s
+
+  families constructed & checked: 289469
+  f=0 found: 0 (consistent with constraint (C): n_max >= 7 required)
+  min f found among k=3 families on [6]: 3
+  KPT Thm 5(3) lower bound at k=3, n=6: f >= 2*3-6+1 = 1 (weak);
+  KPT Thm 5(1) (k >= n-3: 3 >= 3) forces f >= k = 3 HERE -- the
+  min f found (3) equals the theorem's bound for every k=3 n<=6
+  min-f witness: |F|=1 F={{abc}} f=3 counts=(1,1,1,0,0,0) k=3 nmax=3
+    oracle recheck: decide_union_closed -> True, empty-free -> True, f recount matches
+  f-distribution (>=1): {3: 5881, 4: 55106, 5: 122683, 6: 105799}
+  (part 3 took 6.8s)
+
+==========================================================================
+PART 4 -- KPT two-abundant (2,3,8)-construction P_3^8
+          (Kabela-Polak-Teska Thm 6(1); built by hand from their
+           description, verified through the lib.uc oracle)
+==========================================================================
+constructed P_3^8 (n=8, 71 sets):
+  A = {A subset [8] : {0,1} subset A, |A| >= 3}   (63 sets)
+  E = {{0,2,4},{0,2,6},{0,4,6},{0,2,4,6}}
+  O = {{1,3,5},{1,3,7},{1,5,7},{1,3,5,7}}
+  P_3^8 = A | E | O
+  sample members: {abc} ; {abd} ; {abcd} ; {abe} ; {ace}
+oracle verification (lib.uc):
+  |F|           = 71   (paper: 63+4+4 = 71)
+  decide_union_closed(F) = True   (paper: union-closed)
+  empty-free    = True
+  min set size  = 3, max set size = 8   (paper: (2,3,8))
+  every element present = True
+  counts: elements 0,1 in 67 sets; elements 2..7 in 35 sets (paper: 67 and 35)
+  f = # strict-abundant = 2   (paper: exactly 2 abundant, 0 and 1)
+  # elements with 2c >= |F| = 2
+  check: 2*67 = 134 > 71 and 2*35 = 70 < 71 -> 0,1 abundant, 2..7 strictly below half
+  => a k=3 union-closed EMPTY-FREE family with exactly 2 strict-abundant
+     elements needs ground set n = 8 (= 2k+2); the construction idea
+     cannot produce a k=3 family with f=0 at n <= 6 (nor any n, by (C))
+  (part 4 checks only)
+
+==========================================================================
+PART 5 -- n = 7, k = 3 boundary: hunt a (2,3,7)-construction
+          (f=2, k=3, n=7: minimal n allowed by KPT Thm 5(2);
+           their Thm 6(2) inequality fails here, holds at n=8)
+          f=0 impossible (n<=12 machine-verified UC); this is a
+          boundary probe for minimal f, not a verification.
+==========================================================================
+  sweep 1 (<=3 generators, all masks, k=3): 1.2s, total 118055
+  sweep 2 (4 three-set generators): 2.4s, total 170415
+  sweep 3 (random 4..10 gens x20000): 5.7s, total 190415
+
+  n=7 k=3 families constructed & checked: 190415
+  f=0 found: 0 (required by n<=12 machine-verified UC)
+  min f found: 3  (KPT Thm 5(2) lower bound: f >= k-1 = 2)
+  f-distribution: {3: 15565, 4: 55650, 5: 60417, 6: 32600, 7: 26183}
+  (2,3,7)-constructions found: 0
+  best found: f=3 |F|=1 F={{abc}} counts=(1,1,1,0,0,0,0)
+  => a (2,3,7)-construction NOT found in this probe; k=3 at n=7 may force f>=3
+  (part 5 took 5.7s)
+
+==========================================================================
+SUMMARY -- how close the held constraints come to forcing UC
+  n<=4 (exhaustive, 2546 empty-free UC): (i) A&C holds widely;
+  (ii) f=0 families: 0 -- UC itself holds there, so the
+  constraints are tested on a domain where NO counterexample
+  exists; the closest any family comes is one element at exactly
+  density 1/2 (d=1). Boundary of the held-constraint machinery:
+  n<=6 k=3: KPT Thm 5(1) (k>=n-3) forces f>=k, f=0 excluded;
+  n=7  k=3: (C) compatible and Thm 5(2) gives f>=2 -- probe finds
+  min f per part5 (see above); n=8 k=3: P_3^8 attains f=2 with
+  ALL of A, C (and D: |F|=71 >= 51) holding -- the closest the
+  two-abundant construction idea reaches; f=0 untouched.
+  total wall time 12.8s

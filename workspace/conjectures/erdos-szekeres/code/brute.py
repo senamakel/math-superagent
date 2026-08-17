@@ -104,6 +104,8 @@ def _sorted_slopes(subpoints):
 def is_cup(subpoints):
     """True iff subpoints, sorted by x, have strictly increasing slopes
     (the classic 'cup': vertices of an upper convex chain)."""
+    if len(set(p[0] for p in subpoints)) != len(subpoints):
+        return False  # cup/cap undefined without distinct x-coordinates
     sl = _sorted_slopes(subpoints)
     return all(sl[i] < sl[i + 1] for i in range(len(sl) - 1)) if len(sl) >= 2 else True
 
@@ -111,6 +113,8 @@ def is_cup(subpoints):
 def is_cap(subpoints):
     """True iff subpoints, sorted by x, have strictly decreasing slopes
     (the classic 'cap')."""
+    if len(set(p[0] for p in subpoints)) != len(subpoints):
+        return False  # cup/cap undefined without distinct x-coordinates
     sl = _sorted_slopes(subpoints)
     return all(sl[i] > sl[i + 1] for i in range(len(sl) - 1)) if len(sl) >= 2 else True
 
@@ -136,7 +140,7 @@ def cup_cap_spectrum(pts):
 
 
 if __name__ == "__main__":
-    from lib.esz import es_set_exact as es_set
+    from lib.es_construct import es_set
 
     def show(name, pts):
         print(f"--- {name} ---")

@@ -1,0 +1,18 @@
+URESULTANT n=5 BOUNDARY CAPTURE (task uresultant-first-step, CONVERGE-OR-DISPOSE)
+ring: QQ[a2,a3,a4,a5] (a1=0); R_i=Res_x(f,H_i f) Hasse; weights w(a_j)=j
+oracle guard: lib.casas_alvero.is_ca/is_pure_power on (x-1)^5 over QQ
+pipeline: construction -> grevlex GB -> lex eliminant (u-resultant), lex CAPPED at 180s
+
+[PASS] oracle: (x-1)^5 over QQ is_ca & pure power
+[PASS] n=5 R_i (a1=0) construction  (0.1s; ops=[102, 60, 22, 2])
+[PASS] n=5 grevlex GB (scheme structure tractable)  (27 polys in 0.0s)
+
+ALL CHECKS FAILED
+WHAT THIS SETTLES (projected n=5 cost of the u-resultant route):
+  - n=4 fully validates (uresultant_n4.captured.txt): eliminant pure u^8 (V(I)={0}),
+    length 16, Samuel identity 16=prod ord_0/prod w, char-p break at bad {3,5,7}.
+  - n=5: construction 0.1s; grevlex GB 27 polys in 0.1s (the SCHEME structure is
+    cheap at n=5); the LEX ELIMINANT (the actual u-resultant) does NOT close
+    within a 180s subprocess cap / 600s wall.  The u-resultant wall is at n=5, exactly where
+    the multivariate-scheme wall already was.  grevlex-tractable, lex-infeasible.
+  - Honest boundary recorded; approach does not scale to n=5 by naive lex GB.

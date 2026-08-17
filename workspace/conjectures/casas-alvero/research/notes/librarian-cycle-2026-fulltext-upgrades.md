@@ -32,3 +32,63 @@ The old abstract-page files are kept (they carry the original source URL) but th
 ## Library totals after this cycle
 
 52 files in `research/sources/` (49 distinct sources; the Kostov mislabeled duplicate and two superseded landing-page records are the overlap). All full-text files indexed and searchable. Every claim the run cites in CLAIMS.md now traces to a held full text or a documented-blocked record.
+
+---
+
+## Cycle 2026 (librarian continuation) — frontier-row resolutions + currency sweep
+
+### Four frontier rows resolved via the OpenAlex works API (metadata records, now HELD)
+
+The OpenAlex records resolved four previously-unidentified frontier entries.
+Full detail: `research/notes/frontier-lead-resolutions-openalex.md`; claim
+`frontier-lead-resolutions-openalex` in `research/notes/casas-alvero-status.md`.
+
+- **W2003962780 = the ORIGIN paper**, Casas-Alvero, "Higher Order Polar Germs",
+  J. Algebra 240 (2001) 326–337. OpenAlex marks it bronze-OA with a content
+  mirror; **both the OpenAlex mirror (401) and ScienceDirect PDF (403) fail** —
+  fresh proof of the documented paywall. Not load-bearing (statement/status
+  fully covered by held secondary texts).
+- **W1579326781 = duplicate of a HELD source**: it is the original 2013 title
+  of Yakubovich arXiv:1308.5320, already held under its v5 title "Polynomial
+  problems of the Casas-Alvero type". No new download.
+- **W1558046128 = a 2003 Choice book review** of Qing Liu's "Algebraic geometry
+  and arithmetic curves" — not a primary treatment; discard as a lead.
+- **W2062454016 = Barwise–Eklof 1969 "Lefschetz's principle"** (J. Algebra 13,
+  554–570), paywalled, background-only (model-theoretic char-0→ℂ transfer; the
+  run's schemes are explicit over ℤ).
+
+The four OpenAlex API responses are held under `research/sources/openalex_W*.full.md`
+with their source URLs; the auto-digests were replaced by real summaries. The
+citation-graph side effects (book-review citations, Lefschetz citations) are
+noise and should be ignored.
+
+### The two documented network-blocked theses: re-attempted, still blocked (3rd cycle)
+
+- **de Frutos Marín 2015 JTN note**: the alternate host discovered this cycle,
+  `http://singacom.uva.es/JTN2015/contribuciones/ordinarias/frutos.pdf`, also
+  fails at the network layer (socket error, same as uvadoc.uva.es). The
+  abstract (with the L(3)..L(7) ineffective-prime lists) remains the only held
+  content; corroborated against the run's independently verified lists.
+- **Chávez Martínez 2018 thesis**: `http://hdl.handle.net/10902/15246` fails at
+  the network layer this cycle too. Abstract only (held): proves CA for 2 and 3
+  distinct roots in char 0; degree-20 4/5/6 distinct roots in 302 of 627 cases.
+
+### 2026 currency sweep — nothing new beyond the held set
+
+A fresh `exa_search` restricted to 2026-01-01+ and to 2025-09-01+ returns ONLY:
+Ghosh 2501.09272 (held, unverified claim, v2 Mar 2026), Ghosh 2402.18717
+(held), Schaub–Spivakovsky 2411.13967 and 2312.08742 and s40687-024-00444-z
+(all held), plus **one genuinely new data point**: Ender Uygun, "Arithmetic
+Projection of the Casas-Alvero Conjecture — Structural Rigidity in Fermat
+Polynomials and the FB Theorem" (OSF/Zenodo 17978524, 2025-12-18) — a claim in
+the documented "does-not-help" pattern (Fermat-number structural seal; no peer
+review). Recorded as claim `uygun-2025-zenodo-fermat` in
+`research/notes/casas-alvero-status.md`. No new settled degree, no new
+disproof, no new refereed partial result outside the held set.
+
+### Infrastructure note
+
+The Cognee memory server was unreachable throughout this cycle (health check
+timed out at 8s); the OpenAlex downloads and the two `remember_memory` calls
+were not filed in durable memory. Everything is recorded workspace-locally
+(the notes above), to be stored in Cognee once the memory server recovers.

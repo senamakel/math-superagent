@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "half-density-max-eq-bool-subalgebra",
+  "source": "code/lean/half_density_max_eq_bool_subalgebra.lean",
+  "stage": "decompose"
+}

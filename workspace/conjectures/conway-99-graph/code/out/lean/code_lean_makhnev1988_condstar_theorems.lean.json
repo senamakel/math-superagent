@@ -1,0 +1,27 @@
+{
+  "axioms": [
+    "'Makhnev1988.srg33_12_1_6_infeasible_by_integrality' depends on axioms: [propext,",
+    "'Makhnev1988.no_srg_99_14_1_2_condstar' depends on axioms: [propext,"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "lemma condstar_discriminant : ((1 : ℤ) - 6)^2 + 4 * ((12 : ℤ) - 6) = (49 : ℤ)",
+    "lemma condstar_sqrt : ((7 : ℤ) : ℤ)^2 = (49 : ℤ)",
+    "lemma condstar_mult_num : (2 * (12 : ℤ) + ((33 : ℤ) - 1) * ((1 : ℤ) - 6)) = -136",
+    "lemma not_seven_dvd_pos_136 : ¬ (7 : ℤ) ∣ (136 : ℤ)",
+    "lemma not_seven_dvd_neg_136 : ¬ (7 : ℤ) ∣ (-136 : ℤ)",
+    "lemma not_seven_dvd_mult_num : ¬ (7 : ℤ) ∣ (2 * (12 : ℤ) + ((33 : ℤ) - 1) * ((1 : ℤ) - 6))",
+    "theorem srg33_12_1_6_infeasible_by_integrality : ¬ ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V) (_ : DecidableRel G.Adj), G.IsSRGWith 33 12 1 6",
+    "lemma srg33_param_contradicts_thm1 : ¬ ((6 : ℕ) ≤ 3 ∨ (33 = 27 ∧ 12 = 10 ∧ 6 = 5))",
+    "theorem no_srg_99_14_1_2_condstar : ¬ ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V) (_ : DecidableRel G.Adj), G.IsSRGWith 99 14 1 2 ∧ CondStar G",
+    "lemma controls_in_mu_le_three : (2 : ℕ) ≤ 3"
+  ],
+  "file": "code/lean/makhnev1988_condstar_theorems.lean",
+  "missing_modules": [],
+  "outcome": "verified",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": true
+}

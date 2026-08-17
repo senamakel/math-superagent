@@ -129,6 +129,6 @@ Covered threads: entropy era (Gilmer, AHS, Chase–Lovett, Sawin, Pebody,
 Boppana, Yu, Cambie, Liu), survey (Bruhn–Schaudt 2013), graph formulation
 (Bruhn–Charbit–Schaudt–Telle 2015), lattice & minimal counterexamples
 (Poonen refs, Bouchard 2025, Czédli–Schmidt refs, Joshi–Waphare refs),
-verification (Bošnjak–Marković 2008, Marić–Živković–Vučković FC-families 2012),
-small sets (Ellis–Ivan–Leader 2022, Pulaj 2021), large/separating families
+verification (Bošnjak–Marković 2008, Marić–Živković–Vučković FC-families 2012
+[arXiv:1207.3604]), small sets (Ellis–Ivan–Leader 2022, Pulaj 2021), large/separating families
 (Balla–Bollobás–Eccles refs, Falgas-Ravry 2011, Maßberg refs, Karpas 2017).

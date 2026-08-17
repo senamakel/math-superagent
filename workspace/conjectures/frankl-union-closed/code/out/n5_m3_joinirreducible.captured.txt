@@ -1,0 +1,23 @@
+CAPTURE — n5_m3_joinirreducible_check.py
+Ran:    python3 code/out/n5_m3_joinirreducible_check.py
+Oracle: self-contained exact lattice computation (N5/M3 covering relations, transitive principal filters, join-irreducibles); no floats
+Range:  N5 two standard labellings + M3 diamond, |L| = 5 each
+
+PENTAGON layout A: chain 0<a<b<1 and 0<c<b, a∥c
+== N5 (layout A): |L|=5, join-irreducibles & filter sizes ==
+   a: |[a)|=3  <= 5/2=2.5? False
+   c: |[c)|=3  <= 5/2=2.5? False
+   1: |[1)|=1  <= 5/2=2.5? True
+   Frankl lattice form satisfied: True
+PENTAGON layout B: 0<a<c<1, 0<b<c<1, a∥b
+== N5 (layout B): |L|=5, join-irreducibles & filter sizes ==
+   a: |[a)|=3  <= 5/2=2.5? False
+   b: |[b)|=3  <= 5/2=2.5? False
+   1: |[1)|=1  <= 5/2=2.5? True
+   Frankl lattice form satisfied: True
+DIAMOND M3: 0 < a,b,c < 1
+== M3: |L|=5, join-irreducibles & filter sizes ==
+   a: |[a)|=2  <= 5/2=2.5? True
+   b: |[b)|=2  <= 5/2=2.5? True
+   c: |[c)|=2  <= 5/2=2.5? True
+   Frankl lattice form satisfied: True

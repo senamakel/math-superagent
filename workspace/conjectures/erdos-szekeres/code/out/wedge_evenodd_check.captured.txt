@@ -1,0 +1,20 @@
+n=7: even-index block half = [0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30]
+        odd-index block half  = [1, 2, 3, 4, 5, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 31]
+
+=== independent 6-avoidance of even/odd halves ===
+  even half size=16: largest convex subset = 5 (no convex 6-gon: True)
+  odd half size=16: largest convex subset = 5 (no convex 6-gon: True)
+  both halves (n-1)-avoiding: True
+
+=== double-wedge family (intersections of two open half-plane sides) ===
+  open half-plane sides: 992 (=N(N-1)=992? True)
+  pairs of sides: 491536
+  pairs with |inter|==16: 13030
+  distinct size-16 split bipartitions: 2454
+
+  even/odd bipartition among double-wedge intersections: False
+
+=== verdict ===
+  line family (open half-planes): 0 valid splits at n=7 (established by wedge_split_v2 / gsplit_phase2)
+  double-wedge side-pair family: 2454 distinct size-16 bipartitions; even/odd among them: False
+  independent even/odd 6-avoidance (largest_convex_subset): PASS

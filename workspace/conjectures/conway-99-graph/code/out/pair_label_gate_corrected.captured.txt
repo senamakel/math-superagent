@@ -1,0 +1,11 @@
+rook(3) = srg(9,4,1,2):
+[rook] root 0: k=4, M=4 outer, pair-bijection OK, edge-viol=0 nonedge-viol=0 inner-viol=0 => ALL RULES HOLD
+[rook] root 1: k=4, M=4 outer, pair-bijection OK, edge-viol=0 nonedge-viol=0 inner-viol=0 => ALL RULES HOLD
+[rook] root 4: k=4, M=4 outer, pair-bijection OK, edge-viol=0 nonedge-viol=0 inner-viol=0 => ALL RULES HOLD
+[rook] root 8: k=4, M=4 outer, pair-bijection OK, edge-viol=0 nonedge-viol=0 inner-viol=0 => ALL RULES HOLD
+
+bvls_graph() = srg(243,22,1,2):
+[bvls] root 0: k=22, M=220 outer, pair-bijection OK, edge-viol=0 nonedge-viol=0 inner-viol=0 => ALL RULES HOLD
+[bvls] root 1: k=22, M=220 outer, pair-bijection OK, edge-viol=0 nonedge-viol=0 inner-viol=0 => ALL RULES HOLD
+[bvls] root 121: k=22, M=220 outer, pair-bijection OK, edge-viol=0 nonedge-viol=0 inner-viol=0 => ALL RULES HOLD
+[bvls] root 242: k=22, M=220 outer, pair-bijection OK, edge-viol=0 nonedge-viol=0 inner-viol=0 => ALL RULES HOLD

@@ -6,12 +6,12 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
-| [[abundance-profile]] | What must the abundance profile (the exact integer vector of per-element membership counts) of a minimal counterexample to UC look like, and can the… | open | ahs-barrier, liu-conditionally-iid, yu-record-0-38234, eil-small-sets | compute exact abundance profiles with the canonical oracle code/lib/uc.py; state one structural claim about a minimal counterexample's profile, then attack it… |
+| [[abundance-profile]] | What must the abundance profile (the exact integer vector of per-element membership counts) of a minimal counterexample to UC look like, and can the… | open | ahs-barrier-3-minus-rt5-over-2, liu-conditionally-iid, yu-record-0-38234, ellis-ivan-leader-small-set-3-fails, spence-minimum-counterexample-odd, bouchard-averaging-height4, bouchard-upper-bound-length, gnm-envelope-rarest-floor-tight | fold the Spence parity \|F\|=2k+1 and tight-witness-per-deletion properties into the oracle profile scan (code/lib/uc.py) as necessary conditions to ASSERT on a… |
 | [[contradiction-sawin-ahs]] | Do Sawin's dependent-coupling improvement and its evaluations (Yu, Liu) genuinely contradict the AHS/Gilmer constant (3−√5)/2, or is that value a barrier only… | open | ahs-barrier, ahs-gilmer-conj, pebody-optimization, chaSe-lovett | none — the iid/dependent coupling split is settled; do not re-flag these as contradictions |
 | [[coupling-half]] | Does the finite-dimensional conditionally-iid coupling optimization (Yu arXiv:2212.00658; Liu arXiv:2306.08824) certify H(A∨B) > H(A) at density 1/2 — i.e.… | dead | yu-record-0-38234, liu-0-38271, sawin-above-barrier | \| (1) Open research/sources/yu-dimension-free-bounds-2023.full.md, find Yu's finite-dimensional optimization as stated, and write it verbatim in a note — the… |
 | [[coupling-scored-search]] | (CLOSED BY DIRECTIVE 10) Does the original scored program search over Yu's two-atom coupling — where a candidate supplies (α,a1,a2,b1,b2) and the scorer… | dead | yu-record-0-38234, yu-gamma-hat-nonincreasing, yu-gamma-half-is-phi-over-2 | \| (0) [directive 10] CLOSED. Γ̂(t) = sup_α inf_P g/Eh is a sup-INF. A candidate supplying the INF variable P made the scorer evaluate g/Eh at one P, an UPPER… |
 | [[three-set-refute-encoding]] | Does the bounded-fragment TPTP encoding code/refute/uc_with_three_set.p genuinely refute R-uc-with-three-set, or is the CounterSatisfiable verdict an artifact… | dead | bosnjak-markovic-11, verified-n12-comp | \| (1) Re-read code/refute/uc_with_three_set.p and confirm it asserts (a) union-closure for ALL pairs of member slots, (b) the abundant element ranges over the… |
-| [[yugamma-half-collapse]] | Does the Yu/Sawin two-atom conditionally-iid coupling certificate Gamma-hat(1/2) equal phi/2 = (1+sqrt5)/4 = cos(36 deg) exactly, and does that give the sharp… | open | yu-gamma-half-is-phi-over-2, yu-optimization-objective, iid-barrier-exact | \| DONE: the collapsed alpha=0 value Gamma-hat(1/2)=phi/2 is proved by exact algebra (claim yu-gamma-half-is-phi-over-2, code/out/yugamma_phi2_claim.md).… |
+| [[yugamma-half-collapse]] | Does the Yu/Sawin two-atom conditionally-iid coupling certificate Gamma-hat(1/2) equal phi/2 = (1+sqrt5)/4 = cos(36 deg) exactly, and does that give the sharp… | open | yu-gamma-half-is-phi-over-2, yu-optimization-objective, iid-barrier-exact, yu-collapsed-alpha0-inf-is-phiover2-via-boppana | \| (1) DONE: collapsed alpha=0 value Gamma-hat(1/2)=phi/2 proved by exact algebra (yu-gamma-half-is-phi-over-2). (2) DONE (this pass): the collapsed alpha=0 INF… |
 
 ## What is in the way
 
@@ -25,10 +25,24 @@ Each blocked or dead thread and what would move it. A blocker stated precisely i
 
 Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
 
-- [[abundance-profile]] rests on `ahs-barrier`, `eil-small-sets`, which no claim block on disk establishes
 - [[contradiction-sawin-ahs]] rests on `ahs-barrier`, `ahs-gilmer-conj`, `chaSe-lovett`, which no claim block on disk establishes
 - [[coupling-half]] rests on `liu-0-38271`, `sawin-above-barrier`, which no claim block on disk establishes
+- [[three-set-refute-encoding]] rests on `bosnjak-markovic-11`, which no claim block on disk establishes
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+- `gnm-envelope-lean` has no thread block, so nothing can say what it is chasing or what it rests on
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "threads" }
+read_ledger { ledger: "threads", id: "<one of the ids above>" }
+read_ledger { ledger: "threads", status: "<a status above>" }
+read_ledger { ledger: "threads", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: a fenced `thread` block in `research/threads/<slug>.md`, written with `write_document`. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

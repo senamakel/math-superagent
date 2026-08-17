@@ -39,4 +39,34 @@ The proof method: expand f(z) = Σ (n+k)! a_{n+k} G_{n+k}(z; z_1,…,z_n, 0,…,
 
 ## What it implies for this run
 
+## What it implies for this run
+
 If the root-difference-coloring approach needs a bound on |G_n| or a statement of the Abel–Gontcharoff interpolation properties in char 0, this is the primary source (with Levinson 1944, which is paywalled — see the download-failure record). The explicit M_n, L_n table and the (1.3775)^n / (4/π)^n bounds are the concrete estimates available.
+
+```claim
+id: macintyre-goncaroff-bounds
+statement: The unique degree-n polynomial G_n(z; z_1,...,z_n) with
+  G_n^(r)(z_{r+1}) = 0 for r = 0,...,n-1 (the Abel-Goncaroff polynomial) has
+  |G_n| <= (1.3775)^(n+1) over the unit circle (Theorem I, n >= 4), and
+  |G_n| <= 2(4/pi)^n when all z_r are real in [-1,1] (Theorem II). The
+  repeated-integral definition is char-free (holds over any field of
+  characteristic 0 via formal integration).
+hypotheses: characteristic 0; nodes z_r in the unit circle (Thm I) or in
+  [-1,1] (Thm II)
+holds-here: yes -- these are the concrete bounds available to the run's adopted
+  root-difference-coloring / Abel-Goncaroff toolchain (thread
+  root-difference-coloring), and the char-free definition is what lets the
+  Abel-Goncaroff expansion G_m be written over Q exactly.
+status: asserted-by-source (proved in the 1949 paper; the bounds are classical
+  and standard -- not re-derived by this run)
+bearing: The analytic (char-0-only) side of a CA argument must eventually meet
+  this growth/Max-modulus machinery; the Gauss-Lucas-hull collapse step has no
+  char-p analogue (already established), and these bounds quantify the
+  char-0-only content.
+anchor: research/sources/macintyre1949_zeros-successive-derivatives.full.md
+falsifies: a statement that the unit-circle or real-line bound on G_n does NOT
+  hold, or a claim that the Abel-Goncaroff expansion requires characteristic p
+  or a division.
+```
+
+Wikilink to full text: [[macintyre1949_zeros-successive-derivatives]]

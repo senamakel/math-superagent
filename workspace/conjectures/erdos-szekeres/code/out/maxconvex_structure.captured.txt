@@ -1,0 +1,81 @@
+$ python code/out/maxconvex_structure.py
+=== n=5: N=8, r=4, blocks=4, block sizes=[1, 3, 3, 1] ===
+total (n-1)-subsets checked: 70
+distinct (n-1)-convex subsets: 38
+wall clock: 0.01 s
+
+(b) distribution of block-index patterns (counts per block T_0..T_3):
+   pattern (0, 0, 3, 1): 1
+   pattern (0, 2, 1, 1): 9
+   pattern (0, 2, 2, 0): 9
+   pattern (1, 1, 1, 1): 9
+   pattern (1, 1, 2, 0): 9
+   pattern (1, 3, 0, 0): 1
+
+(c) transversal conjecture (every maximal (n-1)-convex subset is a full transversal taking exactly one point from each of the 4 blocks):
+   VERDICT: FAIL
+   non-transversal convex (n-1)-subsets: 29
+     witness 1: point-indices (0, 1, 2, 3), block-points-taken (1, 3, 0, 0)
+     witness 2: point-indices (0, 1, 4, 5), block-points-taken (1, 1, 2, 0)
+     witness 3: point-indices (0, 1, 4, 6), block-points-taken (1, 1, 2, 0)
+     witness 4: point-indices (0, 1, 5, 6), block-points-taken (1, 1, 2, 0)
+     witness 5: point-indices (0, 2, 4, 5), block-points-taken (1, 1, 2, 0)
+
+=== n=6: N=16, r=5, blocks=5, block sizes=[1, 4, 6, 4, 1] ===
+total (n-1)-subsets checked: 4368
+distinct (n-1)-convex subsets: 802
+wall clock: 0.52 s
+
+(b) distribution of block-index patterns (counts per block T_0..T_4):
+   pattern (0, 0, 0, 4, 1): 1
+   pattern (0, 0, 3, 1, 1): 40
+   pattern (0, 0, 3, 2, 0): 60
+   pattern (0, 2, 1, 1, 1): 144
+   pattern (0, 2, 1, 2, 0): 216
+   pattern (0, 2, 3, 0, 0): 60
+   pattern (1, 1, 1, 1, 1): 96
+   pattern (1, 1, 1, 2, 0): 144
+   pattern (1, 1, 3, 0, 0): 40
+   pattern (1, 4, 0, 0, 0): 1
+
+(c) transversal conjecture (every maximal (n-1)-convex subset is a full transversal taking exactly one point from each of the 5 blocks):
+   VERDICT: FAIL
+   non-transversal convex (n-1)-subsets: 706
+     witness 1: point-indices (0, 1, 2, 3, 4), block-points-taken (1, 4, 0, 0, 0)
+     witness 2: point-indices (0, 1, 5, 6, 8), block-points-taken (1, 1, 3, 0, 0)
+     witness 3: point-indices (0, 1, 5, 6, 9), block-points-taken (1, 1, 3, 0, 0)
+     witness 4: point-indices (0, 1, 5, 6, 10), block-points-taken (1, 1, 3, 0, 0)
+     witness 5: point-indices (0, 1, 5, 7, 8), block-points-taken (1, 1, 3, 0, 0)
+
+=== n=7: N=32, r=6, blocks=6, block sizes=[1, 5, 10, 10, 5, 1] ===
+total (n-1)-subsets checked: 906192
+distinct (n-1)-convex subsets: 39648
+wall clock: 124.57 s
+
+(b) distribution of block-index patterns (counts per block T_0..T_5):
+   pattern (0, 0, 0, 0, 5, 1): 1
+   pattern (0, 0, 0, 4, 1, 1): 205
+   pattern (0, 0, 0, 4, 2, 0): 410
+   pattern (0, 0, 3, 1, 1, 1): 2300
+   pattern (0, 0, 3, 1, 2, 0): 4600
+   pattern (0, 0, 3, 3, 0, 0): 2116
+   pattern (0, 2, 1, 1, 1, 1): 5000
+   pattern (0, 2, 1, 1, 2, 0): 10000
+   pattern (0, 2, 1, 3, 0, 0): 4600
+   pattern (0, 2, 4, 0, 0, 0): 410
+   pattern (1, 1, 1, 1, 1, 1): 2500
+   pattern (1, 1, 1, 1, 2, 0): 5000
+   pattern (1, 1, 1, 3, 0, 0): 2300
+   pattern (1, 1, 4, 0, 0, 0): 205
+   pattern (1, 5, 0, 0, 0, 0): 1
+
+(c) transversal conjecture (every maximal (n-1)-convex subset is a full transversal taking exactly one point from each of the 6 blocks):
+   VERDICT: FAIL
+   non-transversal convex (n-1)-subsets: 37148
+     witness 1: point-indices (0, 1, 2, 3, 4, 5), block-points-taken (1, 5, 0, 0, 0, 0)
+     witness 2: point-indices (0, 1, 6, 7, 9, 12), block-points-taken (1, 1, 4, 0, 0, 0)
+     witness 3: point-indices (0, 1, 6, 7, 9, 13), block-points-taken (1, 1, 4, 0, 0, 0)
+     witness 4: point-indices (0, 1, 6, 7, 9, 14), block-points-taken (1, 1, 4, 0, 0, 0)
+     witness 5: point-indices (0, 1, 6, 7, 9, 15), block-points-taken (1, 1, 4, 0, 0, 0)
+
+EXIT: 0

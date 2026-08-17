@@ -1,0 +1,28 @@
+URESULTANT mult-map / lex-free certificate (task uresultant-n5-multmap)
+ring: QQ[a2..a_n] (a1=0 traceless slice); I=(R_i) Hasse resultants; weights w(a_j)=j
+oracle guard: lib.casas_alvero is_ca/is_pure_power on (x-1)^n over QQ
+engine: Singular 4.3.1, dp order (grevlex), std GB, reduce; exact rational arithmetic
+worker count: 1; wall: < 60 s
+
+[PASS] oracle: (x-1)^4 over QQ is_ca
+[PASS] oracle: (x-1)^4 over QQ is_pure_power
+[PASS] oracle: (x-1)^5 over QQ is_ca
+[PASS] oracle: (x-1)^5 over QQ is_pure_power
+[PASS] n=4: quotient 0-dim with vdim/len = 16 = 4^2  (Singular std + vdim route, established in extend_n6 / vdim runs)
+[PASS] n=4: coordinate nilpotency -> V(I)={0} (all a_j^{k_j} in I)  (a2^k at k=7; a3^k at k=6; a4^k at k=1)
+[PASS] n=5: quotient 0-dim with vdim/len = 125 = 5^3  (Singular std + vdim route, established in extend_n6 / vdim runs)
+[PASS] n=5: coordinate nilpotency -> V(I)={0} (all a_j^{k_j} in I)  (a2^k at k=19; a3^k at k=13; a4^k at k=10; a5^k at k=1)
+[PASS] n=4: standard monomial basis size = 16 = 4^2  (LMs=[(0, 0, 1), (0, 6, 0), (1, 4, 0), (3, 2, 0), (4, 0, 0)])
+[PASS] n=4: mult-by-u char poly = pure power t^16 (V(I)={0}, no lex)  (charpoly = t**16)
+
+ALL CHECKS PASSED
+WHAT THIS SETTLES:
+  - n=4 VALIDATES the multiplication-map char poly: mul-by-a2 on the 16-dim
+    quotient has char poly t^16 (pure power) -> V(I)={0} = CA on the traceless
+    slice, certified WITHOUT lex, agreeing with the eliminant u^8 from the lex route.
+  - n=5 EXTENDS PAST THE LEX WALL: the lex eliminant does not close in 180s, but
+    coordinate nilpotency (a2^19, a3^13, a4^10, a5^1 all in I) plus 0-dim vdim=125
+    certify V(I)={0} = CA at degree 5, using only the grevlex GB.
+  - The 125x125 mult-map determinant is a NEW measured boundary (infeasible
+    symbolically), but coordinate nilpotency gives the same single-point
+    certificate without it.

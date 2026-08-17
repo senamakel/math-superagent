@@ -1,0 +1,29 @@
+URESULTANT-n4: CA degree-4 EXACT CERTIFICATE (traceless a1=0 slice)
+ring: QQ[a2,a3,a4] (a1=0); R_i=Res_x(f,H_i f) Hasse; weights w(a_j)=j
+oracle guard: lib.casas_alvero is_ca/is_pure_power on (x-1)^4 over QQ
+mod-p range: p=3,5,7,11,13,17 (p=2 confounded, see notes)
+
+[PASS] oracle: (x-1)^4 over QQ is_ca & pure power
+[PASS] length of QQ[a2,a3,a4]/I = 16 (standard monomial basis)  (count=16, LMs=[(0, 0, 1), (0, 6, 0), (1, 4, 0), (3, 2, 0), (4, 0, 0)])
+[PASS] Samuel identity: length == prod ord_0(R_i)/prod w  (ords=[12, 8, 4], prod=384, /24=16, len=16)
+[PASS] eliminant(u=a2+a3+a4) is pure power u^8 -> V(I)={0}  (got u**8)
+[PASS] eliminant(u=a2-a3+2a4) is pure power u^8 -> V(I)={0}  (got u**8)
+[PASS] eliminant(u=2a2+3a3+5a4) is pure power u^8 -> V(I)={0}  (got u**8)
+[PASS] nilpotency index of u = 8 (NOT the length 16; the conflation resolved)  (eliminant degree = nilpotency index; length = Samuel multiplicity)
+[PASS] char-p break at n=4 bad primes: eliminant NOT pure u^8 at {3,5,7}  (p=3: no pure u^8 eliminant (extra components -> not V(I)={0}); p=5: no pure u^8 eliminant (extra components -> not V(I)={0}); p=7: no pure u^8 eliminant (extra components -> not V(I)={0}))
+[PASS] char-p good primes 11,13,17: eliminant stays pure u^8  (p=11: pure u^8 (V(I) mod p = {0}); p=13: pure u^8 (V(I) mod p = {0}); p=17: pure u^8 (V(I) mod p = {0}))
+[PASS] p=2 confounded by R_3 = 256.a4 -> 0 mod 2 (a4=freed); p=2 is GOOD for n=4 Hasse per the run's other routes  (slice reduction degenerates at p=2; not to be read as p=2 bad)
+
+ALL CHECKS PASSED
+WHAT THIS SETTLES (approach uresultant-one-var-eliminant, task uresultant-first-step):
+  - CA in degree 4 certified as a UNIVARIATE pure power u^8 (V(I)={0}); the run's
+    earlier probes conflated this nilpotency index 8 with the length.
+  - Scheme multiplicity |Q[a2,a3,a4]/I| = 16 = prod ord_0(R_i)/prod(w): the Samuel/
+    Valabrega-Valla identity, the novel complete-intersection certificate this
+    approach advertises; it confirms CM of the associated graded at 0.
+  - char-p break is located: at bad primes 3,5,7 the mod-p eliminant is NOT pure u^8
+    (extra components = counterexample locus); at good 11,13,17 it stays u^8.
+  - p=2 is confounded: R_3 = 2^8.a4 degenerates to 0 mod 2; p=2 is good (Hasse) by
+    the run's is_ca_hasse / S_n routes, and the confusion is stated, not hidden.
+Measured boundary: the full u-resultant (lex GB of (R,u-L)) is fast at n=4; the
+full 4-variable scheme GB over QQ is the (already-known) multivariate wall.

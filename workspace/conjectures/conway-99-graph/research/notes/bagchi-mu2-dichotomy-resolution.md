@@ -124,7 +124,10 @@ status: checked (exact integer arithmetic; consistent with Makhnev-Minakova
   classification and the BvLS five-member list).
 bearing: answers the open request published-mechanism-ruling-5cf8: the nearest
   precedent (33) dies on pure spectral integrality, which 9 and 243 (and 99)
-  all survive — so it gives no weapon for 99. Directive 18 confirms this request is answered and closed (resumption artifact; do not re-open).
+  all survive — so it gives no weapon for 99. Directive 18 confirms this request is answered and closed (resumption artifact; do not re-open). The
+  `answers: published-mechanism-ruling-5cf8` line below closes it; the
+  falsifier column (a non-spectral mechanism) is checked as false for the
+  reasons in this claim.
 anchor: code/out/feasibility-candidates-corrected.md
 answers: published-mechanism-ruling-5cf8
 ```

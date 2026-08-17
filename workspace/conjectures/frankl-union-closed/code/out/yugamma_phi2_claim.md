@@ -111,6 +111,8 @@ hypotheses: Yu Prop 1 two-atom symmetric coupling, alpha=0 branch, t=1/2, a=(3-s
 holds-here: yes
 status: proved (exact algebra) for the collapsed value; numerical/scan corroboration that it is the sup Gamma_hat(1/2)
 bearing: the Yu/Sawin finite-dimensional relaxation certifies nothing at density 1/2, and its certificate value AT 1/2 is exactly phi/2 = 0.809, not 1 -- a quantitative barrier statement, consistent with Gamma_hat(1/2)<1 and Gamma_hat non-increasing in t. The collapsed extremal's a=(3-sqrt5)/2 ties it to the iid-OR barrier constant.
+status: formalised -- the exact collapsed value is proved in Lean 4 by kernel-verified algebra (`code/lean/yu_gamma_half_is_phi_over_2.lean`), with the collapse identity 2a-a^2=1-a and the identities w1=(1+sqrt5)/4=goldenRatio/2=cos(pi/5) all axiom-free; that this is the global sup Gamma_hat(1/2) stays corroborated-numerically (not formalised).
+formalisation: code/lean/yu_gamma_half_is_phi_over_2.lean
 anchor: code/out/yugamma_phi2_claim.md (yugamma_highprec.py, yugamma_confirm.py, commands.log)
 answers: coupling-half (partial: the Yu/Sawin relaxation at 1/2 has value phi/2<1, not a certificate; secure upper barrier statement)
 ```

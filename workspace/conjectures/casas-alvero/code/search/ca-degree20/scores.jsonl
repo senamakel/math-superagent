@@ -69,3 +69,21 @@
 {"id":"c0070","island":2,"score":"18"}
 {"id":"c0069","island":1,"score":"18"}
 {"id":"c0067","island":3,"reason":"rejected by the scorer: import failed: name 'Rational' is not defined"}
+{"id": "div2-cheb_h1", "island": "chebyshev", "score": "1"}
+{"id": "div2-cheb_h2", "island": "chebyshev", "score": "0"}
+{"id": "div2-cheb_h3", "island": "chebyshev", "score": "1"}
+{"id": "div2-cyclo_c1", "island": "cyclotomic", "score": "3"}
+{"id": "div2-cyclo_c2", "island": "cyclotomic", "score": "1"}
+{"id": "div2-cyclo_c3", "island": "cyclotomic", "score": "15"}
+{"id": "div2-factored_f1", "island": "factored (x-r)^m g", "score": "14"}
+{"id": "div2-factored_f2", "island": "factored (x-r)^m g", "score": "13"}
+{"id": "div2-factored_f3", "island": "factored (x-r)^m g", "score": "15"}
+{"id": "div2-factored_f4", "island": "factored (x-r)^m g", "score": "17"}
+{"id": "div2-rootset_r1", "island": "root-multiset", "score": "15"}
+{"id": "div2-rootset_r2", "island": "root-multiset", "score": "14"}
+{"id": "div2-rootset_r3", "island": "root-multiset", "score": "8"}
+{"id": "div2-trinomial_t1", "island": "trinomial", "score": "17"}
+{"id": "div2-trinomial_t2", "island": "trinomial", "score": "17"}
+{"id": "div2-trinomial_t3", "island": "trinomial", "score": "17"}
+{"id": "div2-trinomial_t4", "island": "trinomial", "score": "17"}
+{"id": "div2-trinomial_t5", "island": "trinomial", "score": "17"}

@@ -1,5 +1,18 @@
 # Status re-check (2026) and two new source leads
 
+> **UPDATE (librarian, this run): New lead 1 is now RESOLVED.** The de Frutos Marín
+> 2013 PhD thesis was downloaded in full text this run (network access to uvadoc.uva.es
+> now works from this environment) and is held at
+> `research/sources/defrutosmarin2013_thesis.full.md`, digested at
+> `research/summaries/defrutosmarin2013_thesis.md`. Its content directly corroborates
+> the run's bad-prime work: the superdiscriminant D_n formulation (Teo 5.6.6), the
+> binomial-criterion-as-one-exponent-discriminant identification (Δ(n,{i})=1−C(n,i)),
+> and the principled n=5 bad-prime list {2,3,7,11,131,193,599,3541,8009} as prime
+> divisors of D_5. See claims defrutos-discriminant-formulation,
+> defrutos-n5-badprimes-superdiscriminant, defrutos-good-prime-lifts. The 2015 JTN note
+> by the same author remains network-blocked (uva.es), but its substance is covered by
+> this thesis.
+
 Id: status-recheck-2026-and-new-leads
 
 ## What this cycle re-confirmed (authoritative, from live web searches + deep research)

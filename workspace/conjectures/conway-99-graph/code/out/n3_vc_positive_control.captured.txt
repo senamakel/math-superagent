@@ -1,0 +1,29 @@
+# Ran: python3 code/out/n3_vc_positive_control.py
+# Oracle: exact integer brute-force placement counter (induced subgraph =
+#   type-n3 template) on an explicit NON-regular host that CONTAINS the
+#   join-2 configuration.  Positive control for an unproven counter.
+# Host H on 7 vertices: T1={0,1,2}, T2={3,4,5}, cross edges 0-3,1-4,
+#   vertex 6 isolated.  n3 must equal 1 (one join-2 triangle pair, by eye).
+==============================================================================
+n3 (join-2 triangle pairs) in H = 1   (expected 1)
+triangles found: [(0, 1, 2), (3, 4, 5)]
+==============================================================================
+pair (x0,y0)=(0,3) -> (0,3) [the cross edge a-d]:
+   hand count = 1   counter = 1   MATCH
+pair (x0,y0)=(0,1) -> (0,1) [inside into one triangle]:
+   hand count = 1  counter = 1   MATCH
+pair (x0,y0)=(0,3) -> (0,1) [d would map into T1, no disjoint T2]:
+   hand count = 0  counter = 0   MATCH
+==============================================================================
+total type-n3 embeddings over ordered adjacent pairs (a->x, d->y) = 4
+PER-pair table (x(host,y):count):
+   (a=d-pair) image=(0,3): 1
+   (a=d-pair) image=(1,4): 1
+   (a=d-pair) image=(3,0): 1
+   (a=d-pair) image=(4,1): 1
+NONZERO total: True
+POSITIVE-CONTROL PASS: True
+=> The type-n3 counter finds a hand-verified NONZERO count on a host that
+   genuinely contains the join-2 configuration.  Its zero on rook(3) and
+   bvls is now meaningful: those hosts truly contain no such pair (n3=0).
+=> The 6-vertex-n3 counter is PROVEN on a positive control.

@@ -1,0 +1,26 @@
+$ python code/out/maxconvex_structure_verify.py
+=== n=5: N=8, blocks=[1, 3, 3, 1] ===
+  general position: True
+    witness (0, 1, 2, 3): hull-convex=True 4pt-criterion=True non-transversal=True counts=(1, 3, 0, 0)
+    witness (0, 1, 4, 5): hull-convex=True 4pt-criterion=True non-transversal=True counts=(1, 1, 2, 0)
+    witness (0, 1, 4, 6): hull-convex=True 4pt-criterion=True non-transversal=True counts=(1, 1, 2, 0)
+  route-1 (witnesses convex + non-transversal): ALL OK
+  route-2: all 9 transversals convex: True; count == prod(|T_i|)=9: True (0.001 s)
+
+=== n=6: N=16, blocks=[1, 4, 6, 4, 1] ===
+  general position: True
+    witness (0, 1, 2, 3, 4): hull-convex=True 4pt-criterion=True non-transversal=True counts=(1, 4, 0, 0, 0)
+    witness (0, 1, 5, 6, 8): hull-convex=True 4pt-criterion=True non-transversal=True counts=(1, 1, 3, 0, 0)
+    witness (0, 1, 5, 6, 9): hull-convex=True 4pt-criterion=True non-transversal=True counts=(1, 1, 3, 0, 0)
+  route-1 (witnesses convex + non-transversal): ALL OK
+  route-2: all 96 transversals convex: True; count == prod(|T_i|)=96: True (0.019 s)
+
+=== n=7: N=32, blocks=[1, 5, 10, 10, 5, 1] ===
+  general position: True
+    witness (0, 1, 2, 3, 4, 5): hull-convex=True 4pt-criterion=True non-transversal=True counts=(1, 5, 0, 0, 0, 0)
+    witness (0, 1, 6, 7, 9, 12): hull-convex=True 4pt-criterion=True non-transversal=True counts=(1, 1, 4, 0, 0, 0)
+    witness (0, 1, 6, 7, 9, 13): hull-convex=True 4pt-criterion=True non-transversal=True counts=(1, 1, 4, 0, 0, 0)
+  route-1 (witnesses convex + non-transversal): ALL OK
+  route-2: all 2500 transversals convex: True; count == prod(|T_i|)=2500: True (0.449 s)
+
+EXIT: 0

@@ -1,0 +1,20 @@
+independent verifier: bvls is_srg(243,22,1,2): True
+
+perm=(0, 2, 1, 4, 3) signs=(1, 1, 1, 2, 2): order=2, P A P^T==A (direct 243x243) = True
+   fixed size 27, edges 81, degrees [6], coclique=False
+   lambda dist={1: 162}, mu dist={0: 216, 2: 324}
+   is_srg(S,27,6,1,2) = (False, 'MU mismatch: 216 non-adjacent pairs have common-neighbour count != 2')
+
+perm=(3, 0, 1, 2, 4) signs=(1, 1, 2, 2, 2): order=4, P A P^T==A (direct 243x243) = True
+   fixed size 3, edges 3, degrees [2], coclique=False
+   lambda dist={1: 6}, mu dist={}
+   is_srg(S,3,2,1,2) = (True, 'srg(v,k,lambda,mu) confirmed by exact common-neighbour counts')
+
+perm=(1, 0, 4, 3, 2) signs=(1, 1, 1, 2, 1): order=2, P A P^T==A (direct 243x243) = True
+   fixed size 9, edges 0, degrees [0], coclique=True
+   lambda dist={}, mu dist={0: 72}
+
+CONCLUSION (independent route): same as main -- the BvLS fixed set of an
+order-2 automorphism can be a 6-regular graph that is neither a coclique
+nor strongly regular (mu non-constant), so the folklore lemma as stated
+fails on this control.

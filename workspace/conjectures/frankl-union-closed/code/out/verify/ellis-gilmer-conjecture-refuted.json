@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "ellis-gilmer-conjecture-refuted",
+  "source": "code/lean/ellis_gilmer_conjecture_refuted.lean",
+  "stage": "decompose"
+}

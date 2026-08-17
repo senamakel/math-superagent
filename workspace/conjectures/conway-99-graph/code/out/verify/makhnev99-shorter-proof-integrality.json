@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "makhnev99-shorter-proof-integrality",
+  "source": "code/lean/makhnev99_shorter_proof_integrality.lean",
+  "stage": "prove"
+}

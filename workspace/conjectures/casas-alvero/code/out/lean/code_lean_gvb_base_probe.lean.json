@@ -1,0 +1,15 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem degree_one_is_power_of_linear {K : Type*} [Field K] (f : K[X]) (h0 : f ≠ 0) (hdeg : f.natDegree = 1) : Test.IsPowerOfLinear f"
+  ],
+  "file": "code/lean/gvb_base_probe.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": false
+}

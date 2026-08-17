@@ -128,14 +128,23 @@ pub(super) struct Assignment {
     pub(super) previous: Option<Verdict>,
 }
 
-/// The Lean source one node's proof is written in.
+/// A filename that belongs to exactly one node id.
 ///
-/// Derived from the id rather than chosen by the prover, and that is what makes
-/// the loop close: the arm has to find the verdict again next pass, and a file
-/// the model named is a file the model has to name identically a pass later.
-/// Every character outside the Lean-safe set folds to `_`, so a gap key like
-/// `main-bound/step-2` and a claim id are both addressable.
-pub(super) fn source_for(id: &str) -> String {
+/// The readable part folds every character outside the Lean-safe set to `_`, so
+/// a gap key like `main-bound/step-2` and a claim id are both addressable. That
+/// fold alone is *not* injective, and a live blueprint proved it is not a
+/// hypothetical: its ranking held both `spectral-interlacing-sqrt-lower-bound/
+/// G-eigenvalue-bounds-degree` and plain hyphenated siblings, and `a/b` and
+/// `a-b` fold to the same `a_b`. Two statements would then share one `.lean`
+/// file and one verdict — the second overwriting the first's proof — and share
+/// one attempt record, so [`attempts`] would read the other node's count and
+/// the bound would be spent on whichever asked second. A kernel acceptance
+/// attributed to the wrong statement is the worst failure this file has,
+/// because everything downstream trusts a verdict.
+///
+/// So the fold carries a fingerprint of the id it came from. Readable first for
+/// a human opening `code/lean/`, unique second.
+fn file_stem(id: &str) -> String {
     let name: String = id
         .chars()
         .map(|character| {
@@ -146,11 +155,52 @@ pub(super) fn source_for(id: &str) -> String {
             }
         })
         .collect();
-    format!("{SOURCE_DIR}/{name}.lean")
+    format!("{name}-{:08x}", fingerprint(id))
+}
+
+/// FNV-1a over the id's bytes.
+///
+/// Written out rather than taken from `DefaultHasher`, whose output std does
+/// not promise to keep stable across releases. This value is *in a path*: a
+/// run resuming a workspace under a newer toolchain has to derive the same
+/// filename the run that wrote it did, or every node reads as unattempted and
+/// the kernel budget is spent again. A hash in a filename is a compatibility
+/// commitment, so it is one this file makes explicitly.
+fn fingerprint(id: &str) -> u32 {
+    const OFFSET: u32 = 0x811c_9dc5;
+    const PRIME: u32 = 0x0100_0193;
+    id.bytes().fold(OFFSET, |hash, byte| {
+        (hash ^ u32::from(byte)).wrapping_mul(PRIME)
+    })
+}
+
+/// The Lean source one node's proof is written in.
+///
+/// Derived from the id rather than chosen by the prover, and that is what makes
+/// the loop close: the arm has to find the verdict again next pass, and a file
+/// the model named is a file the model has to name identically a pass later.
+pub(super) fn source_for(id: &str) -> String {
+    format!("{SOURCE_DIR}/{}.lean", file_stem(id))
 }
 
 /// The attempt record's path for one node.
 fn record_path(workspace: &Path, id: &str) -> PathBuf {
+    workspace
+        .join(LEDGER_DIR)
+        .join(format!("{}.json", file_stem(id)))
+}
+
+/// Where a workspace written before [`file_stem`] carried a fingerprint filed
+/// this node's attempts.
+///
+/// Read-only, and only when the current path is missing. A workspace mid-run
+/// when this changed has real attempt counts on disk under the old name, and
+/// the permissive reading of a missing record — zero — is the one case where
+/// permissiveness is expensive rather than cheap: it hands a node that has
+/// already spent both attempts a fresh pair, on the most expensive tool in the
+/// image. Nothing writes here, so the old file is left as the record it is and
+/// the next `note_attempt` moves the node onto the new name.
+fn legacy_record_path(workspace: &Path, id: &str) -> PathBuf {
     let name: String = id.replace(['/', '\\'], "_");
     workspace.join(LEDGER_DIR).join(format!("{name}.json"))
 }
@@ -162,7 +212,9 @@ fn record_path(workspace: &Path, id: &str) -> PathBuf {
 /// proof attempt, and the failure the strict direction would allow is a node
 /// the run never checks because a JSON file was truncated.
 pub(super) fn attempts(workspace: &Path, id: &str) -> usize {
-    let Ok(text) = std::fs::read_to_string(record_path(workspace, id)) else {
+    let Ok(text) = std::fs::read_to_string(record_path(workspace, id))
+        .or_else(|_| std::fs::read_to_string(legacy_record_path(workspace, id)))
+    else {
         return 0;
     };
     let counted = serde_json::from_str::<serde_json::Value>(&text)
@@ -235,19 +287,35 @@ pub(super) fn counts(workspace: &Path) -> (usize, usize) {
     paths.sort();
     let mut attempted = 0;
     let mut accepted = 0;
+    // By node rather than by file. A workspace that predates the fingerprinted
+    // filename can hold both names for one node — the legacy record `attempts`
+    // still reads, and the one the next attempt wrote — and counting files
+    // would report a statement the run was asked about twice, inflating the
+    // denominator the judge is given.
+    let mut seen: Vec<String> = Vec::new();
     for path in paths {
-        let Some(source) = std::fs::read_to_string(&path)
+        let Some(value) = std::fs::read_to_string(&path)
             .ok()
             .and_then(|text| serde_json::from_str::<serde_json::Value>(&text).ok())
-            .and_then(|value| {
-                value
-                    .get("source")
-                    .and_then(serde_json::Value::as_str)
-                    .map(str::to_string)
-            })
         else {
             continue;
         };
+        let node = value
+            .get("node")
+            .and_then(serde_json::Value::as_str)
+            .unwrap_or_default()
+            .to_string();
+        if seen.contains(&node) {
+            continue;
+        }
+        let Some(source) = value
+            .get("source")
+            .and_then(serde_json::Value::as_str)
+            .map(str::to_string)
+        else {
+            continue;
+        };
+        seen.push(node);
         attempted += 1;
         if lean::verdict(workspace, &source).is_some_and(|verdict| verdict.verified()) {
             accepted += 1;

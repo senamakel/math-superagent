@@ -1,0 +1,36 @@
+$ python code/out/goodness_recovered.py
+
+===== n=4 sizes=[1, 2, 1] =====
+  recovered per-block goodness g_i(c):
+    g_0: {0: 1, 1: 1}
+    g_1: {0: 1, 1: 2, 2: 1}
+    g_2: {0: 1, 1: 1}
+  total exact=4  all-patterns-factorized=True
+
+===== n=5 sizes=[1, 3, 3, 1] =====
+  recovered per-block goodness g_i(c):
+    g_0: {0: 1, 1: 1}
+    g_1: {0: 1, 1: 3, 2: 3, 3: 1}
+    g_2: {0: 1, 1: 3, 2: 3, 3: 1}
+    g_3: {0: 1, 1: 1}
+  total exact=38  all-patterns-factorized=True
+
+===== n=6 sizes=[1, 4, 6, 4, 1] =====
+  recovered per-block goodness g_i(c):
+    g_0: {0: 1, 1: 1}
+    g_1: {0: 1, 1: 4, 2: 6, 4: 1}
+    g_2: {0: 1, 1: 6, 3: 10}
+    g_3: {0: 1, 1: 4, 2: 6, 4: 1}
+    g_4: {0: 1, 1: 1}
+  total exact=802  all-patterns-factorized=True
+
+===== n=7 sizes=[1, 5, 10, 10, 5, 1] =====
+  recovered per-block goodness g_i(c):
+    g_0: {0: 1, 1: 1}
+    g_1: {0: 1, 1: 5, 2: 10, 5: 1}
+    g_2: {0: 1, 1: 10, 3: 46, 4: 41}
+    g_3: {0: 1, 1: 10, 3: 46, 4: 41}
+    g_4: {0: 1, 1: 5, 2: 10, 5: 1}
+    g_5: {0: 1, 1: 1}
+  total exact=39648  all-patterns-factorized=True
+EXIT: 0

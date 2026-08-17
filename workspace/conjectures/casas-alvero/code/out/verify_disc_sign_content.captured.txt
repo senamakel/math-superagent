@@ -1,0 +1,10 @@
+n=3: R_1 = (-1)^{3} Disc : True
+n=4: R_1 = (-1)^{6} Disc : True
+n=5: R_1 = (-1)^{10} Disc : True
+n=6: R_1 = (-1)^{15} Disc : True
+n=7: R_1 = (-1)^{21} Disc : True
+SIGN: ALL OK
+n=3: R_{n-1} content = |-27| = 3^3, bad primes dividing it = [3]
+n=4: R_{n-1} content = |256| = 4^4, bad primes dividing it = [2, 4]
+n=5: R_{n-1} content = |-3125| = 5^5, bad primes dividing it = [5]
+n=6: R_{n-1} content = |46656| = 6^6, bad primes dividing it = [2, 3, 6]

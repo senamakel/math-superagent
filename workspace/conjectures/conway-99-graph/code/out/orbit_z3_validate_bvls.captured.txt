@@ -1,0 +1,14 @@
+=== GATE: validate the orbit-matrix srg-quotient equation on BvLS ===
+BvLS is_srg(243,22,1,2): True
+z3 translation is a genuine automorphism: True
+orbits = 81, all lengths equal 3: True
+orbit matrix row sums all = k=22: True [np.int64(22), np.int64(22), np.int64(22)] ...
+orbit matrix constant on orbits: True [orbit matrix constant on all 81 orbits (checked every vertex)]
+
+Check  M^2 = (k-mu)I + (lam-mu)M + mu*3*J   with k=22,lam=1,mu=2
+  -> M^2 = 20 I - M + 6 J  (lam-mu = -1)
+  EQUATION HOLDS: True   (max |entry diff| = 0, m=81)
+  M symmetric: True
+  diagonal values (must be in {0,2} for 3-vertex orbit): [2]
+  M spectrum (rounded) = Counter({4: 60, -5: 20, 22: 1})
+  residual off-ones spectrum after dropping largest: Counter({4: 60, -5: 20})  (should be within {4,-5} for BvLS)

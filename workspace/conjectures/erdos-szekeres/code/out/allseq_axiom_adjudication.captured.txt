@@ -1,0 +1,51 @@
+==========================================================================
+allseq_axiom_adjudication.py — resolve the [A] axiom inconsistency
+in code/out/allowable_encoder.py on the verified es_construct set.
+All arithmetic exact (Fractions).
+==========================================================================
+
+--- n=4 N=4 ---
+  events=6=C(4,2): True
+  distinct critical angles=6  tied-angle groups=0  tied group sizes=[]
+  [A] OLD replay() ok=True  detail=[]
+  [A] separate tally single-adjacent=6/6
+  => CONTRADICTION reproduced: no
+  => NO tied angles (every group size 1); the old encoder's len(g)>1 branch never ran, so it cannot be the only bug
+
+--- n=5 N=8 ---
+  events=28=C(8,2): True
+  distinct critical angles=28  tied-angle groups=0  tied group sizes=[]
+  [A] OLD replay() ok=True  detail=[]
+  [A] separate tally single-adjacent=28/28
+  => CONTRADICTION reproduced: no
+  => NO tied angles (every group size 1); the old encoder's len(g)>1 branch never ran, so it cannot be the only bug
+
+--- n=6 N=16 ---
+  events=120=C(16,2): True
+  distinct critical angles=117  tied-angle groups=3  tied group sizes=[2, 2, 2]
+  [A] OLD replay() ok=False  detail=['non-adjacent swap 11,13', 'non-adjacent swap 11,12', 'non-adjacent swap 2,4']
+  [A] separate tally single-adjacent=120/120
+  => CONTRADICTION reproduced: YES
+  => ties DO exist; OLD run-merging reversed merged positions in these groups of size [2, 2, 2]
+
+--- n=7 N=32 ---
+  events=496=C(32,2): True
+  distinct critical angles=484  tied-angle groups=11  tied group sizes=[2, 2, 2, 2, 2, 2, 2, 2]
+  [A] OLD replay() ok=False  detail=['non-adjacent swap 12,21', 'non-adjacent swap 10,19', 'non-adjacent swap 12,22']
+  [A] separate tally single-adjacent=496/496
+  => CONTRADICTION reproduced: YES
+  => ties DO exist; OLD run-merging reversed merged positions in these groups of size [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3]
+
+==========================================================================
+VERDICT
+==========================================================================
+  The old allowable_encoder.py used TWO inconsistent code paths:
+   - replay(): reverses MERGED RUNS of positions in multi-event groups
+   - tally:    swaps each event's pair independently
+  A tied group with disjoint side-by-side pairs [A,B,C,D] over (A,B),(C,D)
+  must give [B,A,D,C]; run-reversing gives [D,C,B,A] and corrupts the
+  running permutation, so later 'non-adjacent swap 11,13' reports are a
+  corrupted-state artifact, NOT an axiom violation.
+  The adjudicator's corrected per-pair replay (allseq_adjudicate.py 
+  TEST 1) gives PAIR/PASS (= N(N-1)/2 adjacent, zero non-adjacent) at
+  n=4..7, so the Goodman-Pollack axioms hold on es_construct.

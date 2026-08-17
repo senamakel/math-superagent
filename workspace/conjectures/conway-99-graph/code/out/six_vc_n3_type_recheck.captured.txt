@@ -1,0 +1,51 @@
+CAPI: code/out/six_vc_n3_type.py -- exact 6-vertex-condition embedding checker
+CAPI: definition: Reichard Def 4 (induced subgraphs of a type, count per fixed pair
+CAPI:   depends only on edge/non-edge).  Hosts = vertex-transitive rank-3 controls
+CAPI:   rook(3)=srg(9,4,1,2) and bvls=srg(243,22,1,2), so EVERY type must be
+CAPI:   constant on each adjacency class.  Exact ints, 243-bit bitsets.
+========================================================================================
+
+========================================================================================
+HOST rook(3) srg(9,4,1,2): n=9, edges=18, non-edges=18, vertex-transitive (rank-3 control)
+========================================================================================
+
+  type n3   pair (x0,y0)=(a,d) [ADJ]  over 18 pairs of the class
+      embedding counts: min=0 max=0 distinct_values=[0] constant_within_class=True
+      per-(x,y) embeddings = 0 ; induced-subgraph count = 0  (|Aut fix (x0,y0)|=1)
+
+  type n3   pair (x0,y0)=(a,e) [NONADJ]  over 18 pairs of the class
+      embedding counts: min=0 max=0 distinct_values=[0] constant_within_class=True
+      per-(x,y) embeddings = 0 ; induced-subgraph count = 0  (|Aut fix (x0,y0)|=1)
+
+  type C6   pair (x0,y0)=(a,b) [ADJ]  over 18 pairs of the class
+      embedding counts: min=2 max=2 distinct_values=[2] constant_within_class=True
+      per-(x,y) embeddings = 2 ; induced-subgraph count = 2  (|Aut fix (x0,y0)|=1)
+
+  type T2   pair (x0,y0)=(a,d) [ADJ]  over 18 pairs of the class
+      embedding counts: min=0 max=0 distinct_values=[0] constant_within_class=True
+      per-(x,y) embeddings = 0 ; induced-subgraph count = 0  (|Aut fix (x0,y0)|=4)
+
+========================================================================================
+HOST bvls srg(243,22,1,2): n=243, edges=2673, non-edges=26730, vertex-transitive (rank-3 control)
+========================================================================================
+
+  type n3   pair (x0,y0)=(a,d) [ADJ]  over 2673 pairs of the class
+      embedding counts: min=0 max=0 distinct_values=[0] constant_within_class=True
+      per-(x,y) embeddings = 0 ; induced-subgraph count = 0  (|Aut fix (x0,y0)|=1)
+
+  type n3   pair (x0,y0)=(a,e) [NONADJ]  over 26730 pairs of the class
+      embedding counts: min=0 max=0 distinct_values=[0] constant_within_class=True
+      per-(x,y) embeddings = 0 ; induced-subgraph count = 0  (|Aut fix (x0,y0)|=1)
+
+  type C6   pair (x0,y0)=(a,b) [ADJ]  over 2673 pairs of the class
+      embedding counts: min=11180 max=11180 distinct_values=[11180] constant_within_class=True
+      per-(x,y) embeddings = 11180 ; induced-subgraph count = 11180  (|Aut fix (x0,y0)|=1)
+
+  type T2   pair (x0,y0)=(a,d) [ADJ]  over 2673 pairs of the class
+      embedding counts: min=360 max=360 distinct_values=[360] constant_within_class=True
+      per-(x,y) embeddings = 360 ; induced-subgraph count = 90  (|Aut fix (x0,y0)|=4)
+
+========================================================================================
+CONTROL PASS: every type is constant within each adjacency class on BOTH vertex-transitive hosts: PASS
+The counting is self-consistent: no checker bug detected at the rank-3 controls.
+========================================================================================

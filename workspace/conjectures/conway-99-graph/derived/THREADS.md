@@ -10,10 +10,17 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | [[coclique-lift]] | Does a SUPER-SIMPLE 2-(22,4,2) design exist — 22 points, 77 blocks of size 4, every pair covered exactly twice (lambda=2), replication r=14, and no two blocks… | open | coclique-alpha22-forces-22242-design | CLOSED by directive 20 — settled YES constructively, not by literature. CP-SAT OPTIMAL in 167.35s (7315 bools, 156131 branches), explicit 77-block certificate… |
 | [[g-reduce]] | Does the vertex-derived design reduction (research/backward/derived-design-at-a-vertex.md) give a 99-specific nonexistence route: an srg(99,14,1,2) exists iff… | open | c4, c5 | restate part (c) correctly (see finding below), then identify the 99-specific question inside the (84,140,5) outer design that bvls(243) escapes. |
 | [[hexagon-bound]] | Does the Reimbayev lower bound on the number of hexagons in a lambda=1,mu=2 SRG give a route to (99,14,1,2)? Specifically: the number of hexagons is… | open | research/sources/reimbayev-hexagon-bound-srg-lambda1-mu2.full.md, research/sources/reimbayev-hexagon-bound-body.full.md, 1988 | build the exact C6 counter for the rook's graph and BvLS, compute the bound's value at n=99,k=14, and check the paper's claimed implications. |
-| [[incidence-code]] | Is the incidence p-rank / SNF of the triangle geometry a live 99-vs-243 separator, or a parameter-determined invariant that cannot separate them? | open | incidence-code-of-triangle-geometry | FIRST settle parameter-determinism (directive 18). Measured: rook rank_2=5 /rank_3=5, doily 10/10, GQ(2,4) 21/21 (rank deficiency 4,5,6); BvLS rank_2=243… |
+| [[incidence-code]] | Is the incidence p-rank / SNF of the triangle geometry a live 99-vs-243 separator, or a parameter-determined invariant that cannot separate them? | dead | incidence-code-of-triangle-geometry | — |
 | [[k14-l1-local]] | The Conway graph srg(99,14,1,2) has k=14 and λ=1, so its local structure (neighbourhood = perfect matching 7K2, i.e. the closed neighbourhood is a windmill… | open | wilbrink-brouwer-5714ceedings, milosevic-starcomplement-5714-template, shpectorov-zhao-85-nonexists-template, c5 | fix a vertex v0 of a putative srg(99,14,1,2); verify on rook(3) and BvLS that the verbatim analogue of the Wilbrink-Brouwer GD structure holds (7 groups of… |
 | [[n3-forced]] | Is n_3 >= 1 forced for a putative srg(99,14,1,2)? n_3 = number of unordered pairs of triangles joined by exactly 2 edges (equivalently, pairs of triangles… | open | makhnev1988-condstar-theorems | n_3 >= 1 at 99 is RE-DERIVED (claim makhnev99-shorter-proof-integrality, note research/notes/makhnev-99-shorter-proof.md). REMAINING TARGET (directive 12, task… |
+| [[pair-labeling-84]] | Is the pair-labeling reduction — fix vertex 0, N(0)=7K2, the 84 distance-2 vertices biject to the 84 non-matching pairs of the 14-set, and the entire remaining… | open | c5, integrality-five-members | (directive 40, gated) run the pair-labeling reduction on rook(3) FIRST — fix a vertex, N(0)=2K2, four outer pair-vertices, H 1-regular on 4, reproduce the… |
 | [[triangle-graph]] | A putative Conway 99-graph Gamma = srg(99,14,1,2) has 231 triangles (the 3-cliques; 231 = nk/6). Phillips 2026 (Thm 4.5) forces the 3-clique (triangle) graph… | open | phillips-triangle-graph-not-srg, integrality-five-members, c5 | state the exact sense in which C3(Gamma) fails strong regularity for a lambda=1 graph (which eigenvalue multiplicities / eigenvector structure are forced),… |
+
+## What is in the way
+
+Each blocked or dead thread and what would move it. A blocker stated precisely is the next research request; one left blank is a mood.
+
+- [[incidence-code]] (dead): _no blocker recorded — say what would unstick it, or the row is only a mood_
 
 ## Resting on nothing recorded
 
@@ -25,3 +32,17 @@ Either the belief was never written down as a claim — in which case nobody dow
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+- `orbit-matrix-z2z3` has no thread block, so nothing can say what it is chasing or what it rests on
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "threads" }
+read_ledger { ledger: "threads", id: "<one of the ids above>" }
+read_ledger { ledger: "threads", status: "<a status above>" }
+read_ledger { ledger: "threads", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: a fenced `thread` block in `research/threads/<slug>.md`, written with `write_document`. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

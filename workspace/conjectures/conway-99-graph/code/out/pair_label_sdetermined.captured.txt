@@ -1,0 +1,15 @@
+Closed-form s-sharing of non-matching pairs of K(k)-minus-matching:
+  k=4: M=4 non-matching pairs; unordered pair-pairs by s: s=0:2, s=1:4, total=6 (= 6 check: True)
+  k=14: M=84 non-matching pairs; unordered pair-pairs by s: s=0:2562, s=1:924, total=3486 (= 3486 check: True)
+  k=22: M=220 non-matching pairs; unordered pair-pairs by s: s=0:19910, s=1:4180, total=24090 (= 24090 check: True)
+  k=112: M=6160 non-matching pairs; unordered pair-pairs by s: s=0:18298280, s=1:671440, total=18969720 (= 18969720 check: True)
+  k=994: M=493024 non-matching pairs; unordered pair-pairs by s: s=0:121047498992, s=1:488586784, total=121536085776 (= 121536085776 check: True)
+
+[rook] root 0: k=4 s-determinism {0: (1, [0]), 1: (1, [1])} -> PURE (outer adjacency is a function of s)
+[rook] root 1: k=4 s-determinism {0: (1, [0]), 1: (1, [1])} -> PURE (outer adjacency is a function of s)
+[rook] root 4: k=4 s-determinism {0: (1, [0]), 1: (1, [1])} -> PURE (outer adjacency is a function of s)
+[rook] root 8: k=4 s-determinism {0: (1, [0]), 1: (1, [1])} -> PURE (outer adjacency is a function of s)
+[bvls] root 0: k=22 s-determinism {0: (2, [0, 1]), 1: (2, [0, 1])} -> NOT s-determined (real freedom)
+[bvls] root 1: k=22 s-determinism {0: (2, [0, 1]), 1: (2, [0, 1])} -> NOT s-determined (real freedom)
+[bvls] root 121: k=22 s-determinism {0: (2, [0, 1]), 1: (2, [0, 1])} -> NOT s-determined (real freedom)
+[bvls] root 242: k=22 s-determinism {0: (2, [0, 1]), 1: (2, [0, 1])} -> NOT s-determined (real freedom)

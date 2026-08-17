@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "n3-99-forced-at-least-3",
+  "source": "code/lean/n3_99_forced_at_least_3.lean",
+  "stage": "prove"
+}

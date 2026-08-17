@@ -1,0 +1,50 @@
+$ python code/out/transversal_adjudication.py
+========================================================================
+PART A — reproduce worked examples (sanity check)
+========================================================================
+  es_set(5): 8 points, largest_convex_subset = 4
+    PASS largest==4
+  es_set(6): 16 points, largest_convex_subset = 5
+    PASS largest==5
+  counts: es_set(5)=8, es_set(6)=16  (PASS)
+
+========================================================================
+PART B — every full transversal convex (n=5,6)
+========================================================================
+  n=5: blocks sizes [1, 3, 3, 1], prod sizes = 9, transversals checked = 9, ALL CONVEX = True
+  n=6: blocks sizes [1, 4, 6, 4, 1], prod sizes = 96, transversals checked = 96, ALL CONVEX = True
+
+========================================================================
+PART C — outer convex hull is one point per block (n=5,6)
+========================================================================
+  n=5: hull vertices = 4 (want 4); blocks present in order: [0, 1, 2, 3]; one-point-per-block = True
+  n=6: hull vertices = 5 (want 5); blocks present in order: [0, 1, 2, 3, 4]; one-point-per-block = True
+
+========================================================================
+PART D — placement-invariance: arbitrary within-cluster choice still convex
+========================================================================
+  n=5: perturbed set in_general_position = True, transversals = 9, ALL CONVEX = True
+  n=6: perturbed set in_general_position = True, transversals = 96, ALL CONVEX = True
+
+========================================================================
+PART E — characterization falsifier (generic circle clusters)
+========================================================================
+  circle-cluster set: 8 points, cluster sizes [1, 3, 3, 1] (full transversals = 9)
+  in_general_position = True
+  (i)  largest_convex_subset = 6  (NOT 5-avoiding iff >= 5)
+  (ii) all full transversals convex = True  (9 transversals)
+
+========================================================================
+CONCLUSION
+========================================================================
+Lemma (verified): clusters near distinct convex-position centers on
+  a strictly convex arc => every full transversal is convex.
+Part C+D confirm transversal-convexity is a STRUCTURAL consequence
+  of the construction's design (verified, NOT a discovery).
+Part E shows the forward direction fails: generic tiny-cluster sets
+  on a convex arc have convex transversals without being n-avoiding,
+  so transversal-convexity does NOT characterize n-avoiding sets.
+This finding has no bearing on the ES upper bound for general
+  extremal sets.
+ALL DONE
+EXIT: 0

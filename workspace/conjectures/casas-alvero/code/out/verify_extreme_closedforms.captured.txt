@@ -1,0 +1,13 @@
+n=3:
+   i=n-1: R_{n-1} matched (-1)^3 3^3 a_3: True
+   i=1: R_1 / Discriminant = -1, degree check: weighted degree of Disc = n(n-1) by homogeneity
+n=4:
+   i=n-1: R_{n-1} matched (-1)^4 4^4 a_4: True
+   i=1: R_1 / Discriminant = 1, degree check: weighted degree of Disc = n(n-1) by homogeneity
+n=5:
+   i=n-1: R_{n-1} matched (-1)^5 5^5 a_5: True
+   i=1: R_1 / Discriminant = 1, degree check: weighted degree of Disc = n(n-1) by homogeneity
+n=6:
+   i=n-1: R_{n-1} matched (-1)^6 6^6 a_6: True
+   i=1: R_1 / Discriminant = -1, degree check: weighted degree of Disc = n(n-1) by homogeneity
+EXTREME CLOSED FORMS: ALL OK

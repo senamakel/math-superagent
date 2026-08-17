@@ -1,40 +1,23 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/balko-valtr - A SAT attack on the Erdos-Szekeres conjecture - EJC 2017 full.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+> **Note — this file is a MIS-DOWNLOAD redirect.**
 
-<!-- source: https://arxiv.org/pdf/1601.03182 | converted from HTML -->
+`research/sources/balko-valtr - A SAT attack on the Erdos-Szekeres conjecture -
+EJC 2017 full.full.md` is a **MIS-DOWNLOAD stub** (see its header, "DO NOT CITE"):
+its URL https://arxiv.org/abs/1601.03182 is an unrelated probability paper ("The
+Two-Parameter Free Unitary Segal-Bargmann Transform"), NOT the Balko–Valtr SAT
+paper. There is no clean arXiv version of Balko–Valtr "A SAT attack on the
+Erdős–Szekeres conjecture"; it appears in ENDM 49 (2015) 425–431
+(DOI 10.1016/j.endm.2015.06.060) and EJC 66 (2017) 13–23 (DOI 10.1016/j.ejc.2017.06.010),
+both paywalled.
 
-## What is in it
+**The genuine full text this run holds is the ENDM 2015 (EuroComb) version:**
+- [[balko-valtr-A-SAT-attack-on-ES-ENDM2015]] — its digest carries claims
+  `balko-valtr-refutes-PS` (Peters–Szekeres strengthened conjecture is FALSE:
+  cES(7)>32, cES(8)>64, all counterexamples NON-pseudolinear, hence do NOT bear
+  on the geometric ES conjecture) and `balko-valtr-pseudolinear-verifies`
+  (over pseudolinear colorings the ETV reformulation is verified at
+  a=4,u=k=7 with N=16 and a=4,u=k=8 with N=22). It answers requests
+  `balko-valtr-attack-baa4` and `open-access-full-1e6e`.
 
-- Mathematics > Probability
-- Title: The Two-Parameter Free Unitary Segal-Bargmann Transform and its…
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
-
-
-## What it claims
-
-Abstract: Motivated by the two-parameter free unitary Segal-Bargmann transform in the form of conditional expectation, we derive the integral transform representation of the two-parameter free unitary Segal-Bargmann transform which coincides to the large-$N$ limit of the two-parameter Segal-Bargmann transform on the unitary group $\mathbb{U}(N)$ and explore its limiting behavior. We also extend the notion of circular systems in order to define a two-parameter free Segal-Bargmann transform and prove a version of Biane-Gross-Malliavin Theorem of the two-parameter free unitary Segal-Bargmann transform.
-
-Subjects: | Probability (math.PR); Functional Analysis (math.FA); Operator Algebras (math.OA) |
-
-Cite as: | [arXiv:1601.03182][6] [math.PR] |
-
-| (or [arXiv:1601.03182v2][7] [math.PR] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.1601.03182][8]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 6470 character source; every section, statement, and proof in full at `research/sources/balko-valtr - A SAT attack on the Erdos-Szekeres conjecture - EJC 2017 full.full.md`]*
+**Action for the run.** Cite the ENDM summary/full text, never the `EJC 2017
+full` stub or this summary. The geometric (pseudolinear) case is where Conjecture
+3.1 holds; the abstract-colorings case is where it fails — keep the two apart.

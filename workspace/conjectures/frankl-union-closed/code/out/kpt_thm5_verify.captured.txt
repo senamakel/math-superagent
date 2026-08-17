@@ -1,0 +1,52 @@
+Kabela-Polak-Teska Theorem 5 computational verification, n = 1..4
+oracle: lib.uc.decide_union_closed + lib.uc.abundance (exact integer counts); strict test 2*c > |F|
+range : n = 1..4, ALL union-closed families; theorem on empty-free (empty NOT in F) families only
+guard: enumeration counts match A102896 (3,13,121,4959) -> OK
+
+============ results ============
+empty-free union-closed families per n (guard subclass):
+  n=1: 1
+  n=2: 6
+  n=3: 60
+  n=4: 2479
+  total empty-free: 2546
+
+(a) Theorem 5 holds on all n<=4 empty-free families:
+  (1) k>=n-3 => f>=k: violations = 0  PASS
+  (2) k=n-4  => f>=k-1: violations = 0  PASS
+  (3) f>=min{n,2k-n+1}: violations = 0  PASS
+
+  max f over all empty-free n<=4 families: 4
+      witness: n=4 F={{a},{b},{a,b},{c},{a,c},{b,c},{a,b,c},{d},{a,d},{b,d},{a,b,d},{c,d},{a,c,d},{b,c,d},{a,b,c,d}} |F|=15 f=4 profile=(8, 8, 8, 8)
+
+(c/d) tightness & equality counts:
+  f == min{n, 2k-n+1} equality hits per n:
+    n=1: 1 / 1 empty-free families
+    n=2: 5 / 6 empty-free families
+    n=3: 16 / 60 empty-free families
+    n=4: 43 / 2479 empty-free families
+    total equality hits: 65
+
+  (1)-tightness witnesses (f == k, k >= n-3):
+    n=1 F={{a}} k=1 n=1 f=1 profile=(1,)
+    n=2 F={{a}} k=1 n=1 f=1 profile=(0, 1)
+    n=2 F={{b}} k=1 n=1 f=1 profile=(0, 1)
+    n=2 F={{a,b}} k=2 n=2 f=2 profile=(1, 1)
+    n=2 F={{a},{a,b}} k=1 n=2 f=1 profile=(1, 2)
+    total (1)-tight (f==k, k>=n-3) empty-free families: 139
+
+  (2)-tightness witnesses (f == k-1, k = n-4):
+    total (2)-tight (f==k-1, k=n-4) empty-free families: 0
+
+(b) counterexample corollary: f=0 forces n >= 2k+1
+  empty-free families with f=0 on n<=4: 0 (should be 0 since n<=4 range)
+  corollary holds (no f=0 family to violate n>=2k+1): YES (vacuous)
+
+(e) exhaustive route stops at n=5
+  n=5 would require 2^(2^5) = 2^32 = 4,294,967,296 subfamilies (2^32);
+  each a candidate union-closed family. That is the boundary: enumeration
+  of ALL subfamilies is infeasible at n=5 (A102896 counts are unknown by
+  direct enumeration there), which is exactly where exhaustive verification
+  of Theorem 5 stops.
+
+============ overall verdict: ALL BOUNDS (1)(2)(3) HOLD, 0 VIOLATIONS ============

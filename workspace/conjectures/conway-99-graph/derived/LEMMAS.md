@@ -8,10 +8,73 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 
 | Declaration | Kind | Standing | Statement | Source | File |
 | --- | --- | --- | --- | --- | --- |
-| `Cited.cesarz_woldar_2_divides_implies_order_divides_6` | axiom | failed | — | — | `code/lean/Lib/cesarz_woldar_2_divides_implies_order_divides_6.lean` |
-| `Cited.cesarz_woldar_7_divides_implies_z7` | axiom | failed | — | — | `code/lean/Lib/cesarz_woldar_7_divides_implies_z7.lean` |
-| `Cited.divisor63_integrality_five_member_family` | axiom | failed | : True | — | `code/lean/Lib/divisor63_integrality_five_member_family.lean` |
-| `Cited.makhnev_minakova_aut_order_divides_2_3_3_7_11` | axiom | failed | — | — | `code/lean/Lib/makhnev_minakova_aut_order_divides_2_3_3_7_11.lean` |
-| `Cited.makhnev_thm1_lambda1_star_implies_mu_le_3_or_271015` | axiom | failed | — | — | `code/lean/Lib/makhnev_thm1_lambda1_star_implies_mu_le_3_or_271015.lean` |
+| `Cited.makhnev_lemmas_6_9` | axiom | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] | Makhnev 1988, Mat. Zametki 44(5), Lemmas 6–9 — a putative | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Cited.makhnev_thm1` | axiom | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] | Makhnev 1988, Mat. Zametki 44(5), Thm 1 — a strongly regular graph with | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Cited.srg_multiplicity_integrality` | axiom | verified | {V : Type} [Fintype V] (G : SimpleGraph V) | standard spectral theory of strongly regular graphs (Bose–Mesner | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.CondStar` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] : Prop | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.condstar_discriminant` | lemma | verified | : | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.condstar_mult_num` | lemma | verified | : | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.condstar_sqrt` | lemma | verified | : ((7 : ℤ) : ℤ)^2 = (49 : ℤ) | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.controls_in_mu_le_three` | lemma | verified | : (2 : ℕ) ≤ 3 | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.edgeCountBetween` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.no_srg_99_14_1_2_condstar` | theorem | verified | : | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.not_seven_dvd_mult_num` | lemma | verified | : | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.not_seven_dvd_neg_136` | lemma | verified | : ¬ (7 : ℤ) ∣ (-136 : ℤ) | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.not_seven_dvd_pos_136` | lemma | verified | : ¬ (7 : ℤ) ∣ (136 : ℤ) | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.srg33_12_1_6_infeasible_by_integrality` | theorem | verified | : | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev1988.srg33_param_contradicts_thm1` | lemma | verified | : | — | `code/lean/makhnev1988_condstar_theorems.lean` |
+| `Makhnev99.Cited.makhnev_lemmas_6_9` | axiom | verified | {V : Type} [Fintype V] (G : SimpleGraph V) | Makhnev 1988, Mat. Zametki 44(5), Lemmas 6–9 — a putative | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.Cited.srg_multiplicity_integrality` | axiom | verified | {V : Type} [Fintype V] (G : SimpleGraph V) | standard spectral theory of strongly regular graphs (Bose–Mesner | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.CondStar` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] : Prop | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.discriminant_sq` | lemma | verified | : | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.edgeCountBetween` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.mult_num` | lemma | verified | : | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.no_srg_99_14_1_2_condstar` | theorem | verified | : | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.not_seven_dvd_136` | lemma | verified | : ¬ (7 : ℤ) ∣ (136 : ℤ) | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.not_seven_dvd_33_12_1_6_numerator` | theorem | verified | : | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.not_seven_dvd_mult_num` | lemma | verified | : | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.not_seven_dvd_neg_136` | lemma | verified | : ¬ (7 : ℤ) ∣ (-136 : ℤ) | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `Makhnev99.srg33_12_1_6_infeasible_by_integrality` | theorem | verified | : | — | `code/lean/makhnev99_shorter_proof_integrality.lean` |
+| `N3AtLeast3.Cited.n3_cap` | axiom | verified | {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) | count bound — `n₃ ≤ v·k·(k−2)/4 = 4158` at (99,14).  Checked in | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.Cited.n3_ge_one` | axiom | verified | {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) | Makhnev 1988, Mat. Zametki 44(5) 667–672, Thm 2 — any putative | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.Cited.n3_residue` | axiom | verified | {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) | R. Reimbayev, order-6 induced-subgraph counts for the family | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.TwoJoinedBy` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.any_srg99_n3_admissible` | theorem | verified | {V : Type} [Fintype V] [DecidableEq V] | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.any_srg99_n3_ge_three` | theorem | verified | {V : Type} [Fintype V] [DecidableEq V] | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.cap_eq` | lemma | verified | : (99 : ℕ) * 14 * (14 - 2) / 4 = 4158 | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.cap_sharp` | lemma | verified | : 3 ∣ (4158 : ℕ) ∧ (4159 : ℕ) > 4158 | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.count_admissible_multiples` | lemma | verified | : | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.edgeCountBetween` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.n3` | def | verified | {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.not_three_dvd_cap_succ` | lemma | verified | : ¬ (3 : ℕ) ∣ 4159 | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.residue_alone_admits_zero` | lemma | verified | : 3 ∣ (0 : ℕ) | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.sharpen` | lemma | verified | {n : ℕ} (h1 : 1 ≤ n) (hdvd : 3 ∣ n) : 3 ≤ n | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3AtLeast3.three_dvd_cap` | lemma | verified | : (3 : ℕ) ∣ 4158 | — | `code/lean/n3_99_forced_at_least_3.lean` |
+| `N3NoLocal.R8` | def | verified | (i j : Fin 8) : Prop | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.commonCN` | def | verified | (n : ℕ) (R : Fin n → Fin n → Prop) [DecidableRel R] | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.n3_seed_no_local_obstruction_every_radius` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.n3_seed_no_local_obstruction_radius1` | theorem | verified | : upper_ok 8 R8 | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.n3_seed_upper_ok_radius0` | theorem | verified | : upper_ok 6 seedRel | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.nbrFinset` | def | verified | (n : ℕ) (R : Fin n → Fin n → Prop) [DecidableRel R] | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.r8_extends_seed_edges` | theorem | verified | (i j : Fin 6) (h : seedRel i j) : | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.r8_fixpoint_closed` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.r8_witness_adj` | theorem | verified | : R8 0 6 ∧ R8 3 6 ∧ R8 1 7 ∧ R8 4 7 | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.seedRel` | def | verified | (i j : Fin 6) : Prop | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.seed_cross_edges` | theorem | verified | : (seedRel 0 3 ∧ seedRel 1 4) ∧ | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.seed_triangles_are_cliques` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.seed_triangles_disjoint` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3NoLocal.upper_ok` | def | verified | (n : ℕ) (R : Fin n → Fin n → Prop) [DecidableRel R] : Prop | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3Dichotomy.Cited.makhnev_lemmas_6_9` | axiom | verified | {V : Type} [Fintype V] (G : SimpleGraph V) | Makhnev 1988, Mat. Zametki 44(5), Lemmas 6–9 — a putative | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.Cited.srg_multiplicity_integrality` | axiom | verified | {V : Type} [Fintype V] (G : SimpleGraph V) | standard spectral theory of strongly regular graphs (Bose–Mesner | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.discriminant_sq` | lemma | verified | : ((1 : ℤ) - 6)^2 + 4 * ((12 : ℤ) - 6) = (7 : ℤ)^2 | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.edgeCountBetween` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.mult_num` | lemma | verified | : (2 * (12 : ℤ) + ((33 : ℤ) - 1) * ((1 : ℤ) - 6)) = -136 | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.n3_zero` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] : Prop | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.no_srg_99_14_1_2_n3_zero` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.not_seven_dvd_136` | lemma | verified | : ¬ (7 : ℤ) ∣ (136 : ℤ) | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.not_seven_dvd_33_12_1_6_numerator` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.not_seven_dvd_mult_num` | lemma | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.not_seven_dvd_neg_136` | lemma | verified | : ¬ (7 : ℤ) ∣ (-136 : ℤ) | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.srg33_12_1_6_infeasible` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
 
-5 declarations, 0 of them in a file the kernel has checked.
+68 declarations, 68 of them in a file the kernel has checked.

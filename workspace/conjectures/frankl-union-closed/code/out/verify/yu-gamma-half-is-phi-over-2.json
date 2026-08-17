@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "yu-gamma-half-is-phi-over-2",
+  "source": "code/lean/yu_gamma_half_is_phi_over_2.lean",
+  "stage": "prove"
+}

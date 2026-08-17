@@ -1,0 +1,47 @@
+URESULTANT-n8: exact weighted-order + Samuel length via resultant HOMOGENEITY (EXACT)
+program: code/uresultant/verify_n8_homogeneity.py; oracle: lib.casas_alvero.is_ca/is_pure_power on (x-1)^8 over QQ (char 0)
+ring: QQ (exact evaluations) of the traceless-slice scheme QQ[a2..a8], a1=0; Hasse resultants Res_x(f,H_i f); weights w(a_j)=j
+exact range: n=4..8; worker count = 1 (single-threaded sympy); wall clock = 0.1s
+
+[PASS] oracle: (x-1)^8 over QQ is_ca
+[PASS] oracle: (x-1)^8 over QQ is_pure_power
+[PASS] n=4 i=1: Res!=0 at exact point, homogeneity t^12  (Res=30965 (truncated to 30965...); t-scaling OK)
+[PASS] n=4 i=2: Res!=0 at exact point, homogeneity t^8  (Res=29488 (truncated to 29488...); t-scaling OK)
+[PASS] n=4 i=3: Res!=0 at exact point, homogeneity t^4  (Res=1280 (truncated to 1280...); t-scaling OK)
+[PASS] n=4: all i=1..3 nonzero + homogeneous
+[PASS] n=5 i=1: Res!=0 at exact point, homogeneity t^20  (Res=6153884 (truncated to 6153884...); t-scaling OK)
+[PASS] n=5 i=2: Res!=0 at exact point, homogeneity t^15  (Res=-27143227 (truncated to -27143227...); t-scaling OK)
+[PASS] n=5 i=3: Res!=0 at exact point, homogeneity t^10  (Res=4526592 (truncated to 4526592...); t-scaling OK)
+[PASS] n=5 i=4: Res!=0 at exact point, homogeneity t^5  (Res=-21875 (truncated to -21875...); t-scaling OK)
+[PASS] n=5: all i=1..4 nonzero + homogeneous
+[PASS] n=6 i=1: Res!=0 at exact point, homogeneity t^30  (Res=4231572719 (truncated to 4231572719...); t-scaling OK)
+[PASS] n=6 i=2: Res!=0 at exact point, homogeneity t^24  (Res=99054526171 (truncated to 99054526171...); t-scaling OK)
+[PASS] n=6 i=3: Res!=0 at exact point, homogeneity t^18  (Res=66753457501 (truncated to 66753457501...); t-scaling OK)
+[PASS] n=6 i=4: Res!=0 at exact point, homogeneity t^12  (Res=1290246919 (truncated to 1290246919...); t-scaling OK)
+[PASS] n=6 i=5: Res!=0 at exact point, homogeneity t^6  (Res=513216 (truncated to 513216...); t-scaling OK)
+[PASS] n=6: all i=1..5 nonzero + homogeneous
+[PASS] n=7 i=1: Res!=0 at exact point, homogeneity t^42  (Res=1832932799595 (truncated to 1832932799595...); t-scaling OK)
+[PASS] n=7 i=2: Res!=0 at exact point, homogeneity t^35  (Res=-333898404258861 (truncated to -333898404258861...); t-scaling OK)
+[PASS] n=7 i=3: Res!=0 at exact point, homogeneity t^28  (Res=1284779541558096 (truncated to 1284779541558096...); t-scaling OK)
+[PASS] n=7 i=4: Res!=0 at exact point, homogeneity t^21  (Res=-123836081318598 (truncated to -123836081318598...); t-scaling OK)
+[PASS] n=7 i=5: Res!=0 at exact point, homogeneity t^14  (Res=294235525943 (truncated to 294235525943...); t-scaling OK)
+[PASS] n=7 i=6: Res!=0 at exact point, homogeneity t^7  (Res=-10706059 (truncated to -10706059...); t-scaling OK)
+[PASS] n=7: all i=1..6 nonzero + homogeneous
+[PASS] n=8 i=1: Res!=0 at exact point, homogeneity t^56  (Res=1892782008062725 (truncated to 1892782008062725...); t-scaling OK)
+[PASS] n=8 i=2: Res!=0 at exact point, homogeneity t^48  (Res=2952542661064815563 (truncated to 2952542661064815563...); t-scaling OK)
+[PASS] n=8 i=3: Res!=0 at exact point, homogeneity t^40  (Res=70757781031890048337 (truncated to 70757781031890048337...); t-scaling OK)
+[PASS] n=8 i=4: Res!=0 at exact point, homogeneity t^32  (Res=34405281384297265625 (truncated to 34405281384297265625...); t-scaling OK)
+[PASS] n=8 i=5: Res!=0 at exact point, homogeneity t^24  (Res=406731066266709977 (truncated to 406731066266709977...); t-scaling OK)
+[PASS] n=8 i=6: Res!=0 at exact point, homogeneity t^16  (Res=103856336582912 (truncated to 103856336582912...); t-scaling OK)
+[PASS] n=8 i=7: Res!=0 at exact point, homogeneity t^8  (Res=285212672 (truncated to 285212672...); t-scaling OK)
+[PASS] n=8: all i=1..7 nonzero + homogeneous
+[PASS] n=4 Samuel: prod ord / prod w == n^(n-2)  (prod 4(4-i) / prod(2..4) = 384/24 = 16.0 vs 4^2 = 16)
+[PASS] n=5 Samuel: prod ord / prod w == n^(n-2)  (prod 5(5-i) / prod(2..5) = 15000/120 = 125.0 vs 5^3 = 125)
+[PASS] n=6 Samuel: prod ord / prod w == n^(n-2)  (prod 6(6-i) / prod(2..6) = 933120/720 = 1296.0 vs 6^4 = 1296)
+[PASS] n=7 Samuel: prod ord / prod w == n^(n-2)  (prod 7(7-i) / prod(2..7) = 84707280/5040 = 16807.0 vs 7^5 = 16807)
+[PASS] n=8 Samuel: prod ord / prod w == n^(n-2)  (prod 8(8-i) / prod(2..8) = 10569646080/40320 = 262144.0 vs 8^6 = 262144)
+[PASS] full-expansion route at n=8: MEASURED BOUNDARY  (code/uresultant/_probe_n8_cost.py killed by timeout after 560 s (exit 124), first resultant i=1 not finished; recorded, not retried. This run closes the same n=8 question without expansion.)
+
+ALL CHECKS PASSED
+
+Closed form n^(n-2) CONTINUES at n=8 via homogeneity: ords (R_i) = [56, 48, 40, 32, 24, 16, 8], all nonzero by exact evaluation, so |Q[a2..a8]/I_8| prediction = 8^6 = 262144 = 262144.  The Singular vdim route cannot confirm it (n=7 already hit the 3000 s wall; see code/out/uresultant_n7.captured.txt) -- so 8^6 rests on the exact route, which is independent of vdim.

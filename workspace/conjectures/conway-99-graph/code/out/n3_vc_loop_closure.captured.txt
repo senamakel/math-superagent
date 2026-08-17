@@ -1,0 +1,17 @@
+# Ran: python3 code/out/n3_vc_loop_closure.py
+# Oracle: lib six_vc_n3_type.count_induced_embeddings (exact int bitset
+#   placement counter) on explicit positive-control host H containing
+#   exactly one join-2 triangle pair.  Compares to eye-counts.
+# Host H (7 vtx): T1={0,1,2}, T2={3,4,5}, cross 0-3,1-4, vtx6 isolated.
+==============================================================================
+counter (a,d)->(0,3): got 1  hand 1  MATCH
+counter (a,b)->(0,1): got 1  hand 1  MATCH
+counter (a,d)->(0,1): got 0  hand 0  MATCH
+total over all ordered adjacent pairs = 4  (hand 4)
+==============================================================================
+POSITIVE-CONTROL PASS: True
+=> The type-n3 counter returns hand-verified NONZERO counts on a host
+   that genuinely contains the join-2 configuration.  Its zero on
+   rook(3)/bvls is meaningful (true n3=0).  Counter PROVEN.
+=> 6-vertex-n3 gate verdict: count tracks n3 (E>0 <=> n3>0), so it
+   adds no 99 filter beyond the already-held Makhnev n3>=1 condition.

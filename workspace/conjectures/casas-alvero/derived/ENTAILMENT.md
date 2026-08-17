@@ -4,6 +4,13 @@ Derived from the `follows-from:` lines in every `claim` block, closed transitive
 
 A claim written `follows-from: a, b` says `a` and `b` together give it. That single edge is enough to answer three questions the claim ledger cannot: which claims the run has already established without noticing, which proposals would add nothing, and which pair of held beliefs cannot both be true.
 
+## Established for free
+
+Every claim these rest on is established, so these are too, whatever status their block carries. Proving one again spends an attempt on something the run already has — update the status instead.
+
+- `ord0-resultant-weighted-order-proved-all-n` — filed as asserted, follows from `root-difference-identity`, `uresultant-order-n-n-i-sourced`
+  - In the traceless-slice CA ring QQ[a_2..a_n] with weight w(a_j)=j, each Hasse-resultant R_i = Res_x(f, H_i f) satisfies ord_0(R_i) = n(n-i) EXACTLY for all…
+
 ## Already entailed
 
 These add nothing the library did not have. That is not a criticism of them — a consequence worth naming is worth a block — but a *proposal* that lands in this list is not a result, and the cheapest time to find that out is before an attempt is spent on it.
@@ -12,4 +19,27 @@ These add nothing the library did not have. That is not a criticism of them — 
 - `bad-prime-criterion` is covered by `resultant-monomials`: If p is a prime with p \| ((d choose i) − 1) for some i∈{1,…,d−1}, then CA_{d,p} is false. Reason: for such p, no pure power of any a_j appears in any R_j mod…
 - `bad-prime-upper-bound` is covered by `bad-prime-minors-criterion`: If CA_{n,0} holds and p is a bad prime for n, then p < C! · Π_{i=1}^{n−1} (i+n−2 choose n−2)(d−i+n−2 choose n−2), where d=(n²−3n+4)/2, C=( (n²−n)/2 choose n−2…
 - `ca-variety-results` is covered by `resultant-reformulation`: CA for degree d is equivalent to V_k(d,t) = ∅ for ANY t∈{0,…,d−2}, where V_k(d,t) ⊂ weighted P is the projective variety cut out by the resultants I_k(d,t) =…
+- `resultant-monomials-d3-verified` is covered by `resultant-monomials`: The distinguished-monomial structure of Schaub–Spivakovsky (arXiv:2307.05997 Thm 6/9; de Frutos PhD Prop 2.2.1) holds exactly for d=3: R_1 = 4a_2^3 − a_1^2…
+- `resultant-monomials-d4-i3-hand-verified` is covered by `resultant-monomials`: The Schmidt-Spivakovsky distinguished-monomial structure (claim resultant-monomials, Thm 6/9) holds exactly at d=4, i=3: R_3 = -3a_1^4 + 16a_1^2a_2 - 64a_1a_3,…
+- `uresultant-multiplicity-trees-new` is covered by `uresultant-order-n-n-i-sourced`, `valabrega-valla-initial-forms-regular-sequence`: The quotient length \|QQ[a_2..a_n]/(R_1..R_{n-1})\| and Samuel multiplicity of the traceless-slice CA ideal equal n^(n-2), Cayley's number of labeled trees on n…
 
+
+## Following from nothing recorded
+
+Each edge below names a claim no block on disk carries. Either the id is misspelled, or the run is deriving something from a belief nobody wrote down.
+
+- `clo-uresultant-factorization` follows from `elimination-theorem`, which does not exist
+- `clo-uresultant-factorization` follows from `resultant-theory`, which does not exist
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "entailment" }
+read_ledger { ledger: "entailment", id: "<one of the ids above>" }
+read_ledger { ledger: "entailment", status: "<a status above>" }
+read_ledger { ledger: "entailment", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: nothing directly — it is the transitive closure of the claims' `follows-from` edges, so add the edge to a claim block. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

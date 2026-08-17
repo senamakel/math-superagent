@@ -1,0 +1,74 @@
+============================================================================
+triple_inter_capture.py -- exhaustive k=3 triple-intersection
+capture for the even/odd block bipartition of es_construct n=7
+============================================================================
+script     : code/out/triple_inter_capture.py
+python     : 3.11.2
+ring       : exact integer/Fraction arithmetic (lib.es_geom.orient determinants); no floats anywhere
+
+=== 1. worked gate (sizes, general position, 6-avoidance) ===
+n=7: N=32 points, block sizes [1, 5, 10, 10, 5, 1] (want [1,5,10,10,5,1], sum 32): True
+general position (exact, lib.es_geom): True
+E = T0 u T2 u T4, size 16: [0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30]
+O = T1 u T3 u T5, size 16: [1, 2, 3, 4, 5, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 31]
+partition check (disjoint, union = all 32): PASS
+largest_convex_subset(E) = 5 (want 5), largest_convex_subset(O) = 5 (want 5)  => both halves 6-avoiding: True
+  [t=28.2s]
+
+=== 2. side enumeration (validated ordered_pair_sides) ===
+distinct open half-plane sides: 992 (= N(N-1) = 992? True)
+  enumerator: out.gsplit_enum_definitive.ordered_pair_sides,
+  validated exactly vs a 2^N hull-separation oracle at N=8,10,12,
+  14,16: zero missing, zero extra, count N(N-1) (accepted done in
+  steer 11; see code/out/gsplit_enum_definitive_claim.md)
+  [t=28.5s]
+
+=== 3. superset families and EXHAUSTIVE triple enumeration ===
+|A_E| = sides that are supersets of E: 16
+|A_O| = sides that are supersets of O: 16
+
+SCALE CHECK: |A_E|, |A_O| <= 16, so C(16,3) = 560 unordered triples
+per family; full exhaustive triple enumeration is TRIVIAL -- no
+sampling, no pruning, no DP needed. Counting all C(|A|,3) triples exactly.
+  [t=28.5s]
+
+--- target E ---
+  |A_E| = 16; unordered triples of sides: C(16,3) = 560
+  triples with |inter| = 16: 1
+  triples whose intersection EQUALS E exactly: 1
+  WITNESS for E: triple (i,j,k) = (0,6,13) within A_E;
+    global side indices in the 992-list: 740,922,986;
+    side contents: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30, 31]
+    side contents: [0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    side contents: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+    direct re-check: (A[i]&A[j]&A[k]) == E: True, len = 16
+
+--- target O ---
+  |A_O| = 16; unordered triples of sides: C(16,3) = 560
+  triples with |inter| = 16: 1
+  triples whose intersection EQUALS O exactly: 1
+  WITNESS for O: triple (i,j,k) = (0,5,15) within A_O;
+    global side indices in the 992-list: 750,907,991;
+    side contents: [0, 1, 2, 3, 4, 5, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    side contents: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 31]
+    side contents: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    direct re-check: (A[i]&A[j]&A[k]) == O: True, len = 16
+
+=== 4. controls (k=1 single side, k=2 pair) reproduce record ===
+k=1: E among the 992 sides: False (record says False);  O: False (record says False)
+k=2: pairs with intersection == E: 0 (record says 0);  == O: 0 (record says 0)
+  [t=28.5s]
+
+=== 5. verdict ===
+k=1 (single side):        neither E nor O is a side          (control)
+k=2 (side pair):          no pair intersection equals E or O (control)
+k=3 (side triple):        1 triples of superset sides with |inter|=16 for E;
+                           1 triple(s) equal E exactly (yes witness);
+                           1 triples ... for O;
+                           1 triple(s) equal O exactly (yes witness)
+  => A TRIPLE intersection realizes BOTH E and O -- prior
+     capture (evenodd_cutfamily) CONFIRMED by exhaustive count
+     over all C(|A|,3) triples.
+
+=== END (exit 0 expected) ===
+total wall: 28.5s

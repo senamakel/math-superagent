@@ -1,0 +1,15 @@
+URESULTANT-n6: CA traceless-slice Samuel-multiplicity extension (EXACT)
+program: code/uresultant/extend_n6_capture.py; oracle: lib.casas_alvero.is_ca/is_pure_power on (x-1)^6 over QQ (char 0)
+ring: QQ[a2,a3,a4,a5,a6] (a1=0 traceless slice); R_i=Res_x(f,H_i f) Hasse; weights w(a_j)=j
+exact range: n=6 (n-1=5 vars), Samuel identity n=6; worker count = 1 (not over-split); wall clock = 2.3s (Singular 0.8s, construct 1.5s)
+
+[PASS] oracle: (x-1)^6 over QQ is_ca
+[PASS] oracle: (x-1)^6 over QQ is_pure_power
+[PASS] n=6 R_i (a1=0) construction  (1.5s; term-counts=[502, 303, 133, 36, 1])
+[PASS] n=6 Samuel identity: ord_0(R_i) = n(n-i)  (ords=[30, 24, 18, 12, 6], expected=[30, 24, 18, 12, 6]  (0.0s))
+[PASS] n=6 Samuel: length == prod ord_0 / prod w  (prod ords/prod(2..6) = 933120/720 = 1296.0 vs n^(n-2)=6^4=1296)
+[PASS] n=6 Singular: KRULLDIM=0, VDIM=6^4=1296  (Singular took 0.8s; KRULLDIM=0, VDIM=1296, expected 1296)
+
+ALL CHECKS PASSED
+
+Closed form n^(n-2) CONTINUES at n=6: |Q[a2..a6]/I_6| = 1296 = 6^4, from two independent exact routes (Singular vdim + Samuel identity).

@@ -38,7 +38,7 @@ body); re-fetched from `arxiv.org/html/<id>`:
 | Maßberg | 1508.05718 | 14,599 / separating families |
 | Falgas-Ravry | 1101.2589 | 44,759 / minimal weight 2n |
 | Vaughan | math/0208012 | 66,009 / families implying Frankl |
-| Marić–Živković–Vučković | 1209.5628 | 44,635 / FC-families |
+| Marić–Živković–Vučković | 1207.3604 | 71,323 / FC-families (repaired this cycle; 1209.5628 was the wrong body) |
 | Cambie progress survey | 2306.12351 | 31,933 / winter 2022–23 overview |
 
 Chase–Lovett, Pebody, and Boppana full bodies already existed as
@@ -98,3 +98,18 @@ holds the extracted claims with hypotheses, holds-here, and evidence class.
   proofs available only in the survey's restatement.
 - Pulaj 3-sets (Experimental Math) full proof body (paywall); the algorithmic
   content is in the three free companion sources already on disk.
+- **Poonen, "Union-closed families", JCTA 59:253–268 (1992)** — the origin of
+  the lattice formulation (FRONTIER's most-cited single work). Verified this
+  pass: ScienceDirect returns 403 (Elsevier paywall, no open access);
+  Poonen's MIT papers directory (`math.mit.edu/~poonen/papers/`) hosts only
+  his errata (fetched) and later lattice work, not the 1992 paper; no arXiv
+  version exists; ar5iv covers only arXiv IDs and returns 404 for the DOI.
+  The paper's content is nonetheless represented: its errata
+  (`poonen-errata-union-closed-correction.full.md`) records the known
+  statement corrections, and the Bruhn–Schaudt survey full body reproduces
+  Poonen's equivalent formulations, his Theorem 16 (FC local-configuration
+  characterization), and his two conjectures (separating ⟹ power-set-only,
+  unique-abundant-element). The FC characterization and Poonen's n≤7/m≤28
+  verification are additionally restated in the Morris and
+  Marić–Živković–Vučković FC-family full texts on disk. Gap recorded in
+  `research/REQUESTS.md` if a free copy surfaces.

@@ -1,0 +1,18 @@
+# verify_global_ledger_parity.py -- structural check of the n3
+#   global forced-line count
+# Claim: at the stable fixpoint, for every patch vertex v,
+#   |I(v)| == 2 * (#patch 3-cliques through v)  (parity identity),
+#   and every counted forced line is a genuine 3-clique.
+# Ran: python3 code/out/verify_global_ledger_parity.py
+  survivors checked: 19
+  survivors passing parity identity: 19 / 19
+  vertices checked in total: 210
+  parity breaks found: 0
+
+## Conclusion
+  The parity identity |I(v)| = 2*tris_through(v) holds for EVERY
+  vertex of EVERY radius-6 survivor.  Hence no line through a
+  patch vertex has exactly one patch point beyond it: every line
+  is fully inside (counted exactly as a 3-clique) or has BOTH
+  partners outside.  L_in is therefore EXACT and no forced line
+  count can over-subscribe by this mechanism.

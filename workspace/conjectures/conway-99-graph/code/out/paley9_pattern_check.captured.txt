@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/workspace/code/out/paley9_pattern_check.py", line 106, in <module>
+    total, fails = paley9_pattern_check()
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/code/out/paley9_pattern_check.py", line 59, in paley9_pattern_check
+    raise RuntimeError(f"v={v}: matching has {len(matching)} edges, need 7")
+RuntimeError: v=0: matching has 11 edges, need 7
