@@ -64,6 +64,9 @@ PASSING = {
 }
 
 ENDPOINT = "https://openrouter.ai/api/v1/chat/completions"
+OPENROUTER_APP_URL = "https://opencompany.tinyhumans.ai/"
+OPENROUTER_APP_TITLE = "OpenCompany"
+OPENROUTER_APP_CATEGORY = "personal-agent"
 
 # Generous. A reasoning model on a formalisation task thinks for a while, and a
 # timeout scored as a failure would measure the network rather than the model.
@@ -113,6 +116,9 @@ def ask(model, provider, system, user, key):
         headers={
             "Authorization": f"Bearer {key}",
             "Content-Type": "application/json",
+            "HTTP-Referer": OPENROUTER_APP_URL,
+            "X-OpenRouter-Title": OPENROUTER_APP_TITLE,
+            "X-OpenRouter-Categories": OPENROUTER_APP_CATEGORY,
         },
     )
     with urllib.request.urlopen(request, timeout=REQUEST_SECONDS) as response:

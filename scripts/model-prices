@@ -57,6 +57,11 @@ pins = dict(
     pair.split("=", 1) for pair in sys.argv[1].split() if "=" in pair
 )
 seen = set()
+openrouter_headers = {
+    "HTTP-Referer": "https://opencompany.tinyhumans.ai/",
+    "X-OpenRouter-Title": "OpenCompany",
+    "X-OpenRouter-Categories": "personal-agent",
+}
 
 
 def million(price):
@@ -73,7 +78,8 @@ for model in sys.argv[2:]:
     seen.add(model)
     url = f"https://openrouter.ai/api/v1/models/{model}/endpoints"
     try:
-        with urllib.request.urlopen(url, timeout=30) as response:
+        request = urllib.request.Request(url, headers=openrouter_headers)
+        with urllib.request.urlopen(request, timeout=30) as response:
             endpoints = json.load(response)["data"]["endpoints"]
     except Exception as error:                      # noqa: BLE001 - reported, not raised
         print(f"\n{model}: could not be read ({error})")
