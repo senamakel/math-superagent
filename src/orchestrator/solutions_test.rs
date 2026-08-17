@@ -1377,3 +1377,48 @@ fn a_patient_school_retries_where_the_control_diversifies() {
     current.unproductive = patient.thresholds.stuck;
     assert_eq!(route(&current, &patient.thresholds), Route::Diversify);
 }
+
+/// What an attempt is required to end with, and in which order.
+///
+/// The loop asked for an executed program and said nothing about the kernel, so
+/// a run's whole output could be programs and prose — evidence, all of it, and
+/// none of it the thing itself. The program requirement stays: it is what
+/// stopped attempts that ended in notes. What changes is that a statement now
+/// comes first and the program is evidence *for* one.
+#[test]
+fn an_attempt_is_required_to_reach_the_kernel_and_to_execute() {
+    use super::attempt_prompt;
+
+    let state = SolutionState::new("find the cycle lengths");
+    let prompt = attempt_prompt(&state, "", "", "", "", "");
+
+    let lean = prompt.find("`lean_check`").expect("the kernel is required");
+    let program = prompt
+        .find("program written to the workspace")
+        .expect("an executed program is still required");
+    assert!(lean < program, "the statement leads: {prompt}");
+    assert!(
+        prompt.contains("evidence for"),
+        "a program is evidence for a statement rather than a result: {prompt}"
+    );
+    assert!(
+        prompt.contains("lean_prover"),
+        "and the attempt is told who writes the Lean: {prompt}"
+    );
+}
+
+/// The first attempt opens two runs beside itself, and the second is the one
+/// nothing else in an early run would produce: `verify` schedules the kernel
+/// against a statement graph and `mill` against digested notes, and an early
+/// run has neither.
+#[test]
+fn the_opening_formalisation_asks_for_a_statement_and_not_a_proof() {
+    use super::statement_prompt;
+
+    let prompt = statement_prompt("find the cycle lengths");
+
+    assert!(prompt.contains("code/lean/Lib/Statement.lean"), "{prompt}");
+    assert!(prompt.contains(":= by sorry"), "{prompt}");
+    assert!(prompt.contains("not being asked to prove"), "{prompt}");
+    assert!(prompt.contains("lean_check"), "{prompt}");
+}

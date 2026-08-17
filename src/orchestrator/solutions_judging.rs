@@ -860,6 +860,7 @@ pub(in crate::orchestrator) async fn reduce_arm(
 pub(in crate::orchestrator) fn open_library(
     subagents: &AsyncSubagentManager,
     tracer: Option<&Arc<RunTracer>>,
+    workspace: Option<&Path>,
     outbox: &Mailbox,
     state: &SolutionState,
 ) {
@@ -877,6 +878,9 @@ pub(in crate::orchestrator) fn open_library(
     let subagents = subagents.clone();
     let outbox = outbox.clone();
     let state = state.clone();
+    // Owned, because the sweep outlives the step that started it. The arm it
+    // calls needs the workspace to know which notes the kernel has not seen.
+    let workspace = workspace.map(Path::to_path_buf);
     tokio::spawn(async move {
         let report = if rescue {
             delegate(
@@ -899,7 +903,7 @@ pub(in crate::orchestrator) fn open_library(
             )
             .await
         } else {
-            let findings = diversify_library_arm(&subagents, &state).await;
+            let findings = diversify_library_arm(&subagents, workspace.as_deref(), &state).await;
             let sections: Vec<(&str, &str)> = findings
                 .iter()
                 .map(|finding| match finding.slot {

@@ -93,19 +93,19 @@ the attempts and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
   refuse it and name `read_ledger`, which bounds and selects by `id`, `status` or
   `query`. Older workspaces migrate once at startup, never overwriting.
 - **Lean carries the mathematics, not only the check.** Statements go under
-  `code/lean/Lib/`; `derived/LEMMAS.md` derives from them. A result read from the
-  literature is an `axiom` under `namespace Cited` and earns `conditional`, never
-  `formalised` — and never by typing it, the status being read off the verdict.
-  Only `lean_check` writes `code/out/lean/`, which is why `lean-verdict` cannot,
-  being in the image and so reachable from `execute_command`. `./lean-check` and
-  `scripts/lean-replay --all` reach the kernel without a run.
+  `code/lean/Lib/`; `derived/LEMMAS.md` derives from them. A result read from
+  the literature is an `axiom` under `namespace Cited` earning `conditional`,
+  never `formalised` — read off the verdict, never typed. Only `lean_check`
+  files into `code/out/lean/`; `./lean-check` and `lean-replay` file nothing.
+- **The kernel is scheduled, not remembered.** Every attempt ends with a checked
+  `.lean` file *and* an executed program that is evidence for it; attempt one
+  states the problem in Lean; `verify` ranks the graph; the library arm and
+  `./lean-mill` turn notes into statements. A role told to formalise does not.
 - **Two Lean roles: judgement against writing.** `lean_prover` decides what to
   state, whether the Lean means the mathematics, and files the claim.
-  `lean_scribe` writes the file and argues with the kernel on a model built for
-  it — ~670 prompt tokens, no workspace context, memory, shell or ledger write,
-  reached only from `lean_prover`'s bench. It holds `lean_check` and cannot file
-  a claim; that is the boundary. Unset `MISTRAL_API_KEY` degrades it to the run's
-  model, said aloud; `./lean-mill <ws> <source>` runs it over prose on disk.
+  `lean_scribe` writes it on a model built for that — small prompt, no workspace
+  context, memory, shell or ledger write, `lean_check` but no claim, from
+  `lean_prover`'s bench alone; unset `MISTRAL_API_KEY` degrades it, said aloud.
 
 ## Candidates
 

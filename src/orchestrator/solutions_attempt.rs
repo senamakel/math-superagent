@@ -707,6 +707,7 @@ pub(in crate::orchestrator) async fn attempt_step(
     }
     if state.attempts == 1 {
         open_with_execution(subagents, tracer, &state.problem);
+        open_with_formalisation(subagents, tracer, &state.problem);
     }
     state.last_attempt = attempt_with_salvage(subagents, tracer, prompt, &state.problem).await;
     state.fresh_context.clear();
@@ -817,9 +818,19 @@ fn attempt_prompt(
          {direction}{steer}{}\n\
          {entailed}{gaps}{observations}{fresh}\n\n\
          Requirements for this attempt, all of them:\n\
-         - You must end this attempt with at least one program written to the workspace and \
-           executed. An attempt that produces only notes, plans, or restatements has failed, \
-           however well written they are.\n\
+         - You must end this attempt with at least one `.lean` file written and passed through \
+           `lean_check`: the statement you are attacking, or the lemma the argument turned on, \
+           stated in Lean 4 against Mathlib. Getting the *statement* right is most of the value \
+           and is frequently the whole deliverable — a proof left as `sorry` is a recorded \
+           result, because it says exactly where the argument is missing, while a file nobody \
+           checked is nothing. Everything else this run produces is a reason to believe \
+           something; this is the only thing that is not.\n\
+         - You must also end this attempt with at least one program written to the workspace \
+           and executed. A program is *evidence for* a statement rather than a result on its \
+           own, so say which statement each one is evidence for — the number it produced \
+           belongs beside the Lean file that says what the number means. An attempt that \
+           produces only notes, plans, or restatements has failed, however well written they \
+           are.\n\
          - Reproduce every worked example in the statement with that program before running \
            anything at full size.\n\
          - Before running any computation at a larger size than one this run has already run, \
@@ -827,8 +838,10 @@ fn attempt_prompt(
            cannot name it, the bigger run is not the next step and doing it anyway spends the \
            attempt for nothing: the next step is a different formulation, and \
            `research/APPROACHES.md` holds the ones this run has opened and what closed each.\n\
-         - Delegate the writing and running to tool_builder; it is the only role that can \
-           execute.\n\
+         - Delegate the Lean to lean_prover, and the writing and running of programs to \
+           tool_builder; it is the only role that can execute. Both at once rather than one \
+           after the other — the statement does not wait on the computation, and the \
+           computation is worth more once there is a statement for it to be about.\n\
          - Then report the answer, the method, and how you verified it by a second independent \
            route; or state precisely where you are blocked, what you executed, and what its \
            output was.",
@@ -863,6 +876,66 @@ fn open_with_execution(
     tokio::spawn(async move {
         let _ = subagents.run_to_completion("tool_builder", prompt).await;
     });
+}
+
+/// Starts the first formalisation itself, beside the oracle rather than after
+/// it.
+///
+/// The oracle pins down what the statement *means* to a program; this pins down
+/// what it means to the kernel, and the two are worth asking at the same moment
+/// for opposite reasons. The oracle can be wrong about the mathematics and still
+/// run. A Lean statement cannot be written at all without every hypothesis being
+/// named, which is why the most useful thing this run produces is often the
+/// question "what exactly is the hypothesis here", asked of a statement nobody
+/// had pinned down.
+///
+/// On the first attempt because that is when it is cheap and worth most:
+/// `verify` schedules the kernel against the statement *graph* and `mill`
+/// against the *notes*, and an early run has neither — so without this the
+/// loop's opening passes reach the kernel not at all, which is exactly when a
+/// mis-stated problem is cheapest to catch.
+///
+/// Fire-and-forget, on the same terms as the oracle: it never blocks the
+/// attempt, and a statement the attempt also writes costs one child run where no
+/// statement at all costs the run its only unfalsifiable artifact.
+fn open_with_formalisation(
+    subagents: &AsyncSubagentManager,
+    tracer: Option<&Arc<RunTracer>>,
+    problem: &str,
+) {
+    let subagents = subagents.clone();
+    let prompt = statement_prompt(problem);
+    if let Some(tracer) = tracer {
+        tracer.note("solution loop: opening the attempt with a formalisation of the statement");
+    }
+    tokio::spawn(async move {
+        let _ = subagents
+            .run_to_completion(super::lean::LEAN_ROLE, prompt)
+            .await;
+    });
+}
+
+/// The task the loop hands its opening formalisation.
+fn statement_prompt(problem: &str) -> String {
+    format!(
+        "State this problem in Lean 4 against Mathlib, and check that it elaborates.\n\n\
+         Problem:\n{problem}\n\n\
+         Write the definitions the statement needs and the statement itself to \
+         `code/lean/Lib/Statement.lean`, ending in `:= by sorry`. You are not being asked to \
+         prove anything: the deliverable is a statement whose type carries every hypothesis \
+         the problem has, and a `sorry` under it is exactly right. Search Mathlib for what \
+         already exists — the objects in this problem usually have a definition there already, \
+         and re-deriving one by hand costs a week and buys nothing.\n\n\
+         Then call `lean_check` on the file, and report the verdict verbatim. Say in prose \
+         what your statement means and where it could differ from the problem as written: a \
+         wrong formalisation is worse than none, because the run will then believe it proved \
+         something it did not. If some part of the problem cannot be stated yet — an object \
+         with no Mathlib counterpart, a bound nobody has made precise — say which part and \
+         what would have to be settled first. That is a finding about the problem and it will \
+         be read.\n\n\
+         Do not write a plan, do not attack the mathematics, and do not wait for anything: \
+         other agents are working the problem in parallel."
+    )
 }
 
 /// The task the loop hands its opening oracle run.

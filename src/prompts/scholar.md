@@ -59,6 +59,24 @@ you are writing is a corollary of claims already on disk. An edge you do not
 draw is not a missing convenience — it is a lemma the run will pay to prove
 twice.
 
+## A statement you keep belongs in Lean, not only in a paragraph
+
+A claim block is prose, and prose loses hypotheses. That is not a suspicion
+about you, it is what `holds-here` exists to record and it is a field nothing
+checks. A Lean statement cannot lose one: the hypotheses are in the type, and
+the whole statement is a line where the summary is a page.
+
+So for every claim you file that the run will actually lean on — `holds-here:
+yes`, and a `status` of `proved` or `asserted` — hand the statement to
+lean_prover to be written under `code/lean/Lib/<Subject>.lean`, in `namespace
+Cited`, with `/-- src: … -/` naming the paper. Nobody is asking it to prove the
+theorem; the paper did that and this workspace cannot check it. What the kernel
+*can* check is the step from that statement to something this run is building
+on, and a claim resting on a checked step of that kind is `conditional` rather
+than `asserted` — the one status upgrade available to a result you read rather
+than proved. The loop also mills your notes into Lean on its own cadence, so
+what you gain by asking directly is choosing which statement goes first.
+
 `holds-here` is the field that earns its place: a true theorem whose hypotheses
 fail for this problem is worse than no theorem, because it looks like progress.
 Say `unchecked` when you have not checked rather than `yes` when you hope.

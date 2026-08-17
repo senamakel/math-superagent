@@ -116,6 +116,13 @@ those are exactly the propositions worth breaking. Its findings are read back
 off disk beside the refuter's report, on the same argument the reduction arm
 makes: a role's prose is a summary of its own work and the record is the work.
 
+The library arm gained a third step on the same argument. It gathered and read;
+it now also *mills* — the notes written since the newest file in
+`code/lean/Lib/` go through `mill::run`, so what the run reads turns into
+statements the kernel has agreed to rather than paragraphs whose hypotheses
+nothing checks. Bounded far under the command-line mill's budget, because this
+runs on every diversify beside five other arms.
+
 `verify` is the seventh, and it is the same argument one engine over. `lean.rs`
 made a kernel check something the runtime *reads* rather than something a role
 reports; it left `lean_check` granted to `lean_prover` and `lean_prover`

@@ -55,15 +55,29 @@ fn tell_teams(teams: &[TeamHandle], state: &SolutionState, progressed: bool, les
     }
 }
 
-/// The gather-and-read arm: the librarian fetches, then the scholar reads.
+/// The gather-read-and-formalise arm: the librarian fetches, the scholar reads,
+/// then what was read is milled into Lean.
 ///
 /// Sequential inside one node on purpose. The scholar reads what the librarian
 /// just downloaded, so a digest written before the documents land describes
 /// nothing — and acquiring without reading is the gap this closes, since a
 /// downloaded paper nobody has read has cost the run context and taught it
 /// nothing. Two nodes would say the same thing with an extra edge.
+///
+/// The third step is that argument one further on, and it is what puts the mill
+/// inside a run rather than only behind `./lean-mill`. A source that has been
+/// read and written down as prose is a paragraph whose hypotheses nothing
+/// checks: `holds-here` is a human-written guess about a human-written summary,
+/// and a true theorem whose hypotheses fail here is worse than no theorem
+/// because it looks like progress. `mill::gather_fresh` takes the notes written
+/// since the kernel last saw anything and `mill::run` turns them into statements
+/// the kernel has agreed to — under `namespace Cited`, which is what a result
+/// this run did not prove is entitled to. The measurement that asks for it is
+/// the mill's own: 33 of 45 workspaces hold no Lean at all, and the library
+/// trails the reading by roughly forty to one.
 pub(in crate::orchestrator) async fn diversify_library_arm(
     subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
     state: &SolutionState,
 ) -> Vec<Finding> {
     let library = delegate(
@@ -94,11 +108,61 @@ pub(in crate::orchestrator) async fn diversify_library_arm(
         ),
     )
     .await;
-    vec![
+    let mut findings = vec![
         Finding::new(Slot::Library, library),
         Finding::new(Slot::Digest, digest),
-    ]
+    ];
+    if let Some(milled) = mill_what_was_read(subagents, workspace).await {
+        findings.push(Finding::new(Slot::Digest, milled));
+    }
+    findings
 }
+
+/// Mills the notes the library has taken on since the kernel last saw anything.
+///
+/// Returns nothing rather than an empty report when there is nothing new to
+/// mill, which is the ordinary state of a diversify that gathered no source
+/// worth a note — an arm that ran the extraction anyway would spend a scholar
+/// turn to be told so.
+///
+/// Bounded by `mill::LOOP_BUDGET` rather than by the mill's own default: this
+/// runs on every diversify of a run that may make hundreds, beside five other
+/// arms, and what it must not do is make the pass about the mill.
+async fn mill_what_was_read(
+    subagents: &AsyncSubagentManager,
+    workspace: Option<&Path>,
+) -> Option<String> {
+    let workspace = workspace?;
+    let (sources, unread) = super::mill::gather_fresh(
+        workspace,
+        std::path::Path::new(super::mill::LOOP_SOURCE),
+        MAX_MILL_BYTES,
+    );
+    if sources.is_empty() {
+        return None;
+    }
+    let report = super::mill::run(
+        subagents,
+        workspace,
+        sources,
+        unread,
+        super::mill::LOOP_BUDGET,
+    )
+    .await;
+    Some(format!(
+        "What the reading became, as Lean the kernel has checked: {}",
+        report.render()
+    ))
+}
+
+/// What one loop mill pass may read, in bytes.
+///
+/// Its own bound rather than the prompt-context ceiling the `./lean-mill` entry
+/// point uses, because the two are answering different questions: that one is
+/// "how much of a paper fits in a prompt", and this is "how much of a research
+/// tree is worth re-reading on a cadence". Notes are bounded to about a thousand
+/// tokens each by the scholar's own brief, so this is a couple of dozen of them.
+const MAX_MILL_BYTES: usize = 64 * 1024;
 
 /// The structure arm: what the numbers this run has already produced show.
 pub(in crate::orchestrator) async fn diversify_pattern_arm(
