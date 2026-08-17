@@ -18,6 +18,18 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/derived-design-at-a-vertex.md`
 - `n3-dichotomy/G-n3-positive` (lemma) — No srg(99,14,1,2) has n3 ≥ 1. Equivalently: the n3 seed — two disjoint triangles T1 = {a,b,c}, T2 = {d,e,f} joined by exactly 2 edges…
   - open `research/backward/n3-dichotomy.md`
+- `orbit-matrix-completion` (goal) — Complete the published orbit-matrix programme on residual Z2/Z3
+  - open `research/backward/orbit-matrix-completion.md`
+
+## Verify these first
+
+Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
+
+- `makhnev1988-condstar-theorems` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Makhnev 1988 (primary Russian full text) proves: under condition (*) [any two triangles joined by >=2 edges are joined by exactly 3 edges =…
+- `makhnev99-shorter-proof-integrality` — 1 node(s) rest on it, and the run is already building on it — Under Makhnev 1988 Thm 2's condition (*) [n3 = 0] at (99,14,1,2), the argument forces, from the closure of a triangle and its 60 exterior…
+- `n3-99-forced-at-least-3` — 1 node(s) rest on it, and the run is already building on it — Combining (a) the order-6 integrality residue n3 ≡ 0 (mod 3) with (b) the sourced+re-derived Makhnev 1988 conditional n3 >= 1 (any putative…
+
+_84 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -25,6 +37,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | --- | --- | --- | --- | --- |
 | `5vertex-pq-inert-6vertex-live` | claim | **ready** | — | The point graph of EVERY partial quadrangle satisfies the 5-vertex condition (Pech 2021 Thm 5.7, now PROVED in library: only two graph… |
 | `assmus-sts-2rank-grounded` | claim | **ready** | — | The incidence 2-rank of a Steiner triple system is NOT determined by its order/parameters alone: Assmus 1995 associates to every STS a… |
+| `audit-fixed-set-lemma-no-source-uses-it` | claim | **ready** | — | None of the four automorphism sources cited for (99,14,1,2) — Makhnev–Minakova 2004, Behbahani–Lam 2011, Cesarz–Woldar 2025,… |
 | `aut-bounds-established` | claim | **ready** | — | Automorphism group G of a putative srg(99,14,1,2): \|G\| divides 2.3^3.7.11 (Makhnev-Minakova 2004); if 7\|\|G\| then G congruent Z_7; if 2\|\|G\|… |
 | `aut-cm-2020` | claim | **ready** | — | No srg(99,14,1,2) has an automorphism group isomorphic to Z6, S3, Z9, or E9 (orders 6 and 9). Consequently the order of the automorphism… |
 | `aut-cw-2025` | claim | **ready** | — | If 7 \| \|G\| then G ≅ Z_7 and if 2 \| \|G\| then \|G\| \| 6 (G in {Z2,Z6,S3}) for G=Aut of a putative srg(99,14,1,2), with computer-free proofs. |
@@ -61,10 +74,9 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `divisor63-multiplicity-integrality` | claim | established | — | Eigenvalue-multiplicity integrality of any srg(v,k,1,2) holds iff a = sqrt(4k-7) = 2u+1 is an odd divisor of 63, i.e. a in {3,7,9,21,63}… |
 | `existence-status-open` | claim | **ready** | — | Existence of srg(99,14,1,2) is open: no construction and no nonexistence proof is known; Brouwer's table marks (99,14,1,2) with '?'. No… |
 | `five-member-list-vanlint1975` | claim | **ready** | — | The parameters of the family converge to exactly the five members (9,4),(99,14),(243,22),(6273,112),(494019,994), equivalently k=u^2+u+2… |
-| `forced-structure-reduction-conway99` | claim | **ready** | — | An independent (preprint, AI-agent) treatment confirms and extends the forced-structure reduction to the outer graph. For any srg(v,k,1,2)… |
-| `g-encode` | goal | refuted | — | no srg(99,14,1,2) exists |
+| `fixed-set-lemma-fails-on-bvls` | claim | established | — | The folklore lemma "under an automorphism of an srg(v,k,1,2), the fixed-point set is a coclique or a smaller strongly regular graph" is… |
 
-_40 further nodes not shown._
+_53 further nodes not shown._
 
 ## Resting on nothing that exists
 
@@ -81,3 +93,16 @@ Each edge below names a lemma or claim no file on disk carries. Either the id is
 - `g-reduce` rests on `mu`, which does not exist
 - `g-unsat` rests on `faithful`, which does not exist
 - `g-unsat` rests on `encoding`, which does not exist
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "blueprint" }
+read_ledger { ledger: "blueprint", id: "<one of the ids above>" }
+read_ledger { ledger: "blueprint", status: "<a status above>" }
+read_ledger { ledger: "blueprint", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: nothing directly — it is computed from the skeletons and the claims, so change one of those and this re-derives. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

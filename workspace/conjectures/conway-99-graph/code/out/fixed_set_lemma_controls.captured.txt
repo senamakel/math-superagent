@@ -1,0 +1,254 @@
+FOLKLORE FIXED-SET LEMMA on the two positive controls
+Method: for each non-identity automorphism g, compute Fix(g), then
+classify the induced subgraph Gamma[Fix(g)] as (i) coclique, (ii) itself
+an SRG (run exact lib.srg.is_srg-style common-neighbour counts), or (iii)
+neither.  All arithmetic exact integer, no floats.
+
+==============================================================================
+CONTROL 1: rook(3), srg(9,4,1,2)  [is_srg -> (True) srg(v,k,lambda,mu) confirmed by exact common-neighbour counts]
+  total automorphisms (by construction) = 72; non-identity = 71; distinct fixed sets = 22
+
+  automorphism (fixed set (0, 4, 8)): fixed set size = 3, fixed = [0, 4, 8]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  automorphism (fixed set (0, 3, 6)): fixed set size = 3, fixed = [0, 3, 6]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set (0,)): fixed set size = 1, fixed = [0]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set (2, 5, 8)): fixed set size = 3, fixed = [2, 5, 8]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set (8,)): fixed set size = 1, fixed = [8]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set ()): fixed set size = 0, fixed = []
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is EMPTY -> lemma case (iii), vacuously fine
+
+  automorphism (fixed set (1, 4, 7)): fixed set size = 3, fixed = [1, 4, 7]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set (4,)): fixed set size = 1, fixed = [4]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set (0, 1, 2)): fixed set size = 3, fixed = [0, 1, 2]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set (0, 5, 7)): fixed set size = 3, fixed = [0, 5, 7]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  automorphism (fixed set (2,)): fixed set size = 1, fixed = [2]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set (5,)): fixed set size = 1, fixed = [5]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set (7,)): fixed set size = 1, fixed = [7]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set (1,)): fixed set size = 1, fixed = [1]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set (6, 7, 8)): fixed set size = 3, fixed = [6, 7, 8]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set (6,)): fixed set size = 1, fixed = [6]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set (1, 3, 8)): fixed set size = 3, fixed = [1, 3, 8]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  automorphism (fixed set (3,)): fixed set size = 1, fixed = [3]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set (2, 3, 7)): fixed set size = 3, fixed = [2, 3, 7]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  automorphism (fixed set (1, 5, 6)): fixed set size = 3, fixed = [1, 5, 6]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  automorphism (fixed set (3, 4, 5)): fixed set size = 3, fixed = [3, 4, 5]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set (2, 4, 6)): fixed set size = 3, fixed = [2, 4, 6]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  TRUE check: every constructed automorphism really is one
+  of 72 constructed rooks autos, invalid = 0
+==============================================================================
+CONTROL 2: bvls_graph(), srg(243,22,1,2)  [is_srg -> (True) srg(v,k,lambda,mu) confirmed by exact common-neighbour counts]
+  non-identity automorphisms found = 39; distinct fixed sets = 22
+  (each is a coordinate-permutation/sign automorphism fixing vertex 0)
+
+  automorphism (fixed set size 1): fixed set size = 1, fixed = [0]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    fixed set is a single vertex -> trivially a coclique (lemma case (i))
+
+  automorphism (fixed set size 27): fixed set size = 27, fixed = [0, 5, 7, 36, 41, 43, 72, 77, 79, 81, 86, 88, 117, 122, 124, 153, 158, 160, 162, 167, 169, 198, 203, 205, 234, 239, 241]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 81; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [6]
+    induced subgraph is NOT strongly regular (non-constant lambda/mu) -> lemma case: neither coclique nor SRG (!!)
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 4, 8, 45, 49, 53, 63, 67, 71]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 41, 79, 81, 122, 160, 162, 203, 241]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 18; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [4]
+    induced subgraph IS STRONGLY REGULAR: srg(9,4,1,2) [lemma case (ii)]
+      (formal is_srg(sub,v,k,1,2) result: True)
+
+  automorphism (fixed set size 3): fixed set size = 3, fixed = [0, 43, 77]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 10, 20, 108, 118, 128, 216, 226, 236]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  automorphism (fixed set size 27): fixed set size = 27, fixed = [0, 3, 6, 11, 14, 17, 19, 22, 25, 135, 138, 141, 146, 149, 152, 154, 157, 160, 189, 192, 195, 200, 203, 206, 208, 211, 214]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 81; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [6]
+    induced subgraph is NOT strongly regular (non-constant lambda/mu) -> lemma case: neither coclique nor SRG (!!)
+
+  automorphism (fixed set size 3): fixed set size = 3, fixed = [0, 129, 231]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 1, 2, 159, 160, 161, 201, 202, 203]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 18; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [4]
+    induced subgraph IS STRONGLY REGULAR: srg(9,4,1,2) [lemma case (ii)]
+      (formal is_srg(sub,v,k,1,2) result: True)
+
+  automorphism (fixed set size 3): fixed set size = 3, fixed = [0, 116, 220]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 9, 18, 142, 151, 160, 194, 203, 212]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 18; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [4]
+    induced subgraph IS STRONGLY REGULAR: srg(9,4,1,2) [lemma case (ii)]
+      (formal is_srg(sub,v,k,1,2) result: True)
+
+  automorphism (fixed set size 3): fixed set size = 3, fixed = [0, 160, 203]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set size 3): fixed set size = 3, fixed = [0, 94, 188]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 27, 54, 106, 133, 160, 176, 203, 230]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 18; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [4]
+    induced subgraph IS STRONGLY REGULAR: srg(9,4,1,2) [lemma case (ii)]
+      (formal is_srg(sub,v,k,1,2) result: True)
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 33, 57, 90, 123, 147, 180, 213, 237]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  automorphism (fixed set size 27): fixed set size = 27, fixed = [0, 1, 2, 30, 31, 32, 60, 61, 62, 99, 100, 101, 129, 130, 131, 159, 160, 161, 171, 172, 173, 201, 202, 203, 231, 232, 233]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 81; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [6]
+    induced subgraph is NOT strongly regular (non-constant lambda/mu) -> lemma case: neither coclique nor SRG (!!)
+
+  automorphism (fixed set size 3): fixed set size = 3, fixed = [0, 146, 208]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 3; is a COCLIQUE (independent set): False
+    induced subgraph is the COMPLETE graph K_3 (all pairs adjacent, lambda=nF-2, non-adjacent pairs none) -> degenerate strongly regular graph [lemma case (ii)]
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 3, 6, 154, 157, 160, 200, 203, 206]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 18; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [4]
+    induced subgraph IS STRONGLY REGULAR: srg(9,4,1,2) [lemma case (ii)]
+      (formal is_srg(sub,v,k,1,2) result: True)
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 28, 56, 84, 112, 140, 168, 196, 224]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  automorphism (fixed set size 27): fixed set size = 27, fixed = [0, 9, 18, 29, 38, 47, 55, 64, 73, 87, 96, 105, 116, 125, 134, 142, 151, 160, 165, 174, 183, 194, 203, 212, 220, 229, 238]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 81; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [6]
+    induced subgraph is NOT strongly regular (non-constant lambda/mu) -> lemma case: neither coclique nor SRG (!!)
+
+  automorphism (fixed set size 27): fixed set size = 27, fixed = [0, 12, 24, 27, 39, 51, 54, 66, 78, 82, 94, 106, 109, 121, 133, 136, 148, 160, 164, 176, 188, 191, 203, 215, 218, 230, 242]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 81; is a COCLIQUE (independent set): False
+    induced degrees (of fixed set) = [6]
+    induced subgraph is NOT strongly regular (non-constant lambda/mu) -> lemma case: neither coclique nor SRG (!!)
+
+  automorphism (fixed set size 9): fixed set size = 9, fixed = [0, 15, 21, 83, 98, 104, 163, 178, 184]
+    validated as automorphism (A[perm i,perm j]==A[i,j]): True
+    induced-subgraph edges = 0; is a COCLIQUE (independent set): True
+    lemma case (i): fixed set is a coclique
+
+  of 40 constructed BvLS autos, invalid = 0
+==============================================================================
+LAMBDA=1 / MU=2 exact reasoning about a fixed vertex x:
+  Let x be fixed by g, and a,b fixed with a,b both adjacent to x.  Then x is
+  a common neighbour of a,b.  Because srg(v,k,1,2):
+    * a,b ADJACENT  -> exactly lambda=1 common neighbour = x is the UNIQUE one.
+    * a,b NON-adjacent -> exactly mu=2 common neighbours, x is one of two.
+  So lambda=1 does NOT force a,b non-adjacent.  If a,b are adjacent both to x,
+  {a,b,x} is a triangle and no other vertex is adjacent to both a,b.
+  The coclique-or-SRG dichotomy is exactly what is verified above on both
+  controls' actual adjacency matrices.
+
+FINAL: oracle guard passed both controls = True

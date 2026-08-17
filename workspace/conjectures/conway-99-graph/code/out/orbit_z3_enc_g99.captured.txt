@@ -1,0 +1,4 @@
+=== 99 case: fixed-point-free order-3 feasibility ===
+m=33 orbits (length 3), srg(99,14,1,2)
+solver status: UNKNOWN
+INCONCLUSIVE (timeout / unknown). No verdict.

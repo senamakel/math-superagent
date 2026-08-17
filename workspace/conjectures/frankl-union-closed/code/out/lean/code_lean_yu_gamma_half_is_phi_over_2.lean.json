@@ -1,0 +1,31 @@
+{
+  "axioms": [
+    "'YuGamma.h_symm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'YuGamma.a_sq' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'YuGamma.collapse_raw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'YuGamma.value_ratio' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'YuGamma.w1_eq' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'YuGamma.w1_eq_golden_half' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'YuGamma.w1_eq_cos_pi_div_five' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'YuGamma.h_one' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem h_symm (x : ℝ) : h (1 - x) = h x",
+    "theorem a_sq : a ^ 2 = 3 * a - 1",
+    "theorem collapse_raw : 2 * a - a ^ 2 = 1 - a",
+    "theorem value_ratio : w1 ^ 2 * h (2 * a - a ^ 2) = w1 * (w1 * h a)",
+    "theorem w1_eq : w1 = (1 + Real.sqrt 5) / 4",
+    "theorem w1_eq_golden_half : w1 = Real.goldenRatio / 2",
+    "theorem w1_eq_cos_pi_div_five : w1 = cos (Real.pi / 5)",
+    "theorem h_one : h 1 = 0"
+  ],
+  "file": "code/lean/yu_gamma_half_is_phi_over_2.lean",
+  "missing_modules": [],
+  "outcome": "verified",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": true
+}

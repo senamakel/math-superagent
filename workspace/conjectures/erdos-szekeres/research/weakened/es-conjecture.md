@@ -6,39 +6,47 @@ goal: For every n >= 4, every set of 2^(n-2)+1 points in general position in the
       Erdős–Szekeres conjecture ES(n) = 2^(n-2)+1). General position = no three
       collinear; "n points in convex position" = they are the vertex set of their
       own convex hull, not necessarily consecutive on the hull of the whole set.
-difficulties: unbounded n, zero slack, arbitrary order type, stability/uniqueness, search intractability, realizability gap
+difficulties: unbounded n, zero slack, arbitrary order type, stability/uniqueness, search intractability, realizability gap, adversarial extremal set
 status: open
 ```
 
+The ladder below is ordered weakest first (bottom of the ladder = top of the
+file after this header). A `settled` stance means the run has already
+established the statement by machine or source, not by one of my programs — the
+report distinguishes machine-settled (the run's own oracle) from source-settled
+(a theorem in the library).
+
 ```rung
-id: R-oracle-small-n
-statement: Reproduce the exact values ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17 with this
-      run's own tools: an exact integer/rational orientation oracle deciding general
-      position and reporting the largest convex subset, validated by hand against
-      ES(4)=5 and ES(5)=9; exhaustive enumeration over Aichholzer order types
-      (realizable, n <= 10) where applicable; and for n = 6 a SAT encoding that first
-      reproduces the 16-point negative (a 16-point general-position set with no convex
-      6-gon) before any UNSAT is trusted.
-off: unbounded n, search intractability, realizability gap
-stance: open
-merge: The oracle and encoder, once reproducing the known answers, are frozen. To
-      climb to R-one-interior, keep the exact constant 2^(n-2)+1 but take it to all
-      n under the hypothesis "at most one interior point"; the move is a hull-count
-      argument — the hull of a (2^(n-2)+1)-point set with <= 1 interior point has at
-      least 2^(n-2) >= n vertices, and those already form a convex n-gon.
+id: R-speedrun-exact-small-n
+statement: ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17. The run's own exact-arithmetic
+      oracle (lib/es_geom, integer/rational determinants, never float) decides
+      general position and reports the largest convex subset and the cup/cap
+      spectrum, and the verified es_construct 2^(n-2)-point lower-bound set is
+      confirmed to have largest convex subset n-1 at n=4,5,6 (no convex n-gon)
+      and no convex 7-gon at n=7.
+off: unbounded n, arbitrary order type, stability/uniqueness, search intractability, adversarial extremal set, realizability gap
+stance: settled
+merge: This rung is the frozen oracle and encoder (GOAL criterion 3), already
+      verified by build-oracle / disambiguate-es-lower-set. Climbing past it is
+      not a computation but a theorem: keep the exact constant 2^(n-2)+1 and take
+      n to all integers, which switches "unbounded n" back on first. The cheap
+      first step up is a hull-count: a set of 2^(n-2)+1 points with <= 1 interior
+      point has >= 2^(n-2) >= n hull vertices, which already give a convex n-gon.
 ```
 
 ```rung
 id: R-one-interior
-statement: For every n >= 4, every set of 2^(n-2)+1 points in general position with at
-      most one interior point (a point strictly inside the convex hull of the set)
+statement: For every n >= 4, every set of 2^(n-2)+1 points in general position with
+      at most one interior point (a point strictly inside the convex hull of the set)
       contains n points in convex position.
-off: arbitrary order type, stability/uniqueness
+off: arbitrary order type, stability/uniqueness, adversarial extremal set
 stance: open
 merge: Admit k interior points. The hull then has 2^(n-2)+1-k vertices, so the
       trivial hull argument dies exactly when k > 2^(n-2)+1-n; from there the first
-      move is to bound, for each interior point, how many hull vertices it can remove
-      from the usable convex n-gon, and to induct on k.
+      move is to bound, for each interior point, how many hull vertices it can
+      remove from the usable convex n-gon, and to induct on k. That climb switches
+      "adversarial extremal set" back on, since interior points are where the
+      recursion of the ES construction lives.
 ```
 
 ```rung
@@ -60,14 +68,54 @@ id: R-h-layers
 statement: For every n >= 4 and every fixed h >= 1, every set of 2^(n-2)+1 points in
       general position whose onion (convex-layer / repeated-hull) depth is at most h
       contains n points in convex position.
-off: arbitrary order type, stability/uniqueness
+off: arbitrary order type, stability/uniqueness, adversarial extremal set
 stance: open
 merge: Dropping the layer bound is exactly admitting the Erdős–Szekeres 1960
       construction, whose recursive union of n-1 blocks has depth growing with n and
       no convex n-gon at 2^(n-2) points. The first move is to show any extremal
       (2^(n-2)-point, convex-n-gon-free) set has layer depth at least some function
       g(n), and then to check whether depth < g(n) already forces the convex n-gon —
-      that is where "arbitrary order type" turns back on in full.
+      that is where "arbitrary order type" turns back on in full, and where the known
+      es-construct-layer-extremality claim (each onion layer of the extremal template
+      is itself maximally convex) becomes the tool.
+```
+
+```rung
+id: R-split-k-gon
+statement: For every n >= 4, every set of 2^(n-2)+1 points in general position
+      contains a "split n-gon" (the Baek–Balko vertex-2-coloring notion), and
+      2^(n-2)+1 is exactly the threshold: some 2^(n-2)-point set has no split n-gon.
+off: zero slack, stability/uniqueness, adversarial extremal set
+stance: settled
+merge: This is the Baek–Balko theorem (claims baek-balko-split,
+      baek-balko-decomposable — evidence: asserted-by-source, the held document is
+      the LIPIcs abstract page; proofs not yet held). If the paper's proofs hold, it
+      shows the exact constant survives under a relaxed notion of "convex", which is
+      strong evidence that the 2^(n-2)+1 candidate is the right number and that the
+      difficulty lives specifically in the convex-position condition versus the
+      split condition. Turning "zero slack" back on is precisely the gap between
+      split-n-gon and true convex-n-gon. Until the full text is held
+      (JCTA 2026, DOI 10.1016/j.jcta.2026.106195), treat as load-bearing but
+      unverified.
+```
+
+```rung
+id: R-factor-two
+statement: For every n >= 4, every set of 2^(n-1)+1 points in general position contains
+      n points in convex position — i.e. ES(n) <= 2^(n-1)+1, the conjecture with the
+      exact constant relaxed by a factor of two. This does not imply the conjecture;
+      it is a fixed-constant bound strictly stronger than any published 2^(n+o(n))
+      form once it holds for all n.
+off: zero slack
+stance: open
+merge: To remove the factor two, the argument must stop paying for the two halves of
+      the cups-and-caps decomposition independently (the binomial pays C(2n-4,n-2)
+      ~ 4^n, the conjecture needs no factor at all). The first move is to locate, in
+      whichever counting argument yields 2^(n-1), the single place the factor of two
+      enters and show that a set attaining it must already contain a convex n-gon.
+      Caution: the R-split-k-gon rung is settled, so a counting bound must be
+      sharpened against a set that avoids a convex n-gon but still contains split
+      n-gons — the extra slack is real.
 ```
 
 ```rung
@@ -85,23 +133,27 @@ merge: Going from ES(7) to all n requires turning the finite certificate into a
       uniform argument. The move is to extract from the n=7 proof a structural lemma
       (a forced subconfiguration or a counting invariant) that generalizes to n, then
       induct — this is precisely the step where "zero slack" and "stability/uniqueness"
-      turn back on, and it is the hardest merge on the ladder.
+      turn back on, and it is the hardest merge on the ladder. Not yet begun: the
+      run's own SAT encoder has not yet reproduced the k=6 cap (task es-nogon-k6-rung
+      is open), so this rung is not attackable until that reproduction exists.
 ```
 
 ```rung
-id: R-factor-two
-statement: For every n >= 4, every set of 2^(n-1)+1 points in general position contains
-      n points in convex position — i.e. ES(n) <= 2^(n-1)+1, the conjecture with the
-      exact constant relaxed by a factor of two. This does not imply the conjecture;
-      it is a fixed-constant bound strictly stronger than any published 2^(n+o(n))
-      form once it holds for all n.
-off: zero slack
-stance: open
-merge: To remove the factor two, the argument must stop paying for the two halves of
-      the cups-and-caps decomposition independently (the binomial pays C(2n-4,n-2)
-      ~ 4^n, the conjecture needs no factor at all). The first move is to locate, in
-      whichever counting argument yields 2^(n-1), the single place the factor of two
-      enters and show that a set attaining it must already contain a convex n-gon.
+id: R-decomposable
+statement: For every n >= 4, every decomposable set of 2^(n-2)+1 points in general
+      position contains n points in convex position, where a decomposable set is one
+      built recursively from the ES construction's block structure (Baek–Balko
+      definition).
+off: arbitrary order type, stability/uniqueness, adversarial extremal set
+stance: settled (if the Baek–Balko proofs hold; see merge)
+merge: This is the Baek–Balko decomposable theorem (claim
+      baek-balko-decomposable, evidence: asserted-by-source, held document is the
+      LIPIcs abstract page — proofs not yet held). It would settle the conjecture on
+      exactly the recursive-block class that the
+      combinatorially-minded search space most resembles; the open gap is
+      "arbitrary order type" outside this class, which is where the extremal ES
+      construction itself sits and where every structural rung above eventually
+      lands.
 ```
 
 ```rung
@@ -120,7 +172,9 @@ merge: Turning a structural constraint into the bound is exactly the
       essentially unique extremal set and any deviation from it already forces a
       convex n-gon. The first move is to take the hull-size bound and ask whether the
       hull plus second layer together avoid a convex n-gon only if they match the two
-      outermost blocks of the construction.
+      outermost blocks of the construction. The rum's checked claims (es-construct-
+      layer-extremality, es-construct-block-tightness, layer-profile-outer-hull-one-
+      per-block) pin down these outer structures on the confirmed template.
 ```
 
 ```rung

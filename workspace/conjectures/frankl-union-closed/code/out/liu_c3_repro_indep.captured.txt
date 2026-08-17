@@ -1,0 +1,32 @@
+liu_c3_objective_indep.py — independent Liu conditionally-IID 9-d objective
+h = natural-log binary entropy; objective = N/D per Liu Eq (84)
+mp.dps = 50
+
+======================================================================
+EVALUATION (1): Liu conditional record (q=0, P0 = p*d(x)+(1-p)*d(0))
+======================================================================
+  p    = 0.893604513905457
+  x    = 0.690787593924988
+  beta = 0.100052559862974
+  E_M[X] = p*x = 0.617290912081259
+  c' = 1 - p*x      = 0.382709087918741   (paper 0.382709087918741)
+  objective N/D     = 0.999999999999991   (should be 1.0 within ~1e-6)
+  9-d encoding: a1=p , a2=0 , a3=1-p , b0=x , b2=0 , b4=0 , q=0
+
+======================================================================
+EVALUATION (2): Sawin/Yu record as a 9-d two-atom point
+======================================================================
+  a    = 0.0788772927059232
+  b    = 0.329454738503037
+  beta = 0.0356069
+  P0   = (1-a)*d(1-b) + a*d(0), q=0
+  E_M[X] = (1-a)(1-b) = 0.617654466633297
+  c* = 1 - E_M[X]      = 0.382345533366703   (Sawin/Yu 0.3823455)
+  objective N/D        = 1.00026277270766
+  9-d encoding: a1=1-a , a2=0 , a3=a , b0=1-b , b2=0 , b4=0 , q=0
+
+--- guard checks ---
+  eval(1) objective within 1e-6 of 1.0: PASS
+  eval(1) c' reproduces 0.382709087918741: PASS
+  eval(2) c* reproduces 0.3823455: PASS
+  eval(2) objective >= 1 (certifies c*): PASS

@@ -12,12 +12,27 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 - `uc-via-entropy-coupling/G-coupling-half` (lemma) — For every distribution μ on {0,1}^n with H(μ) > 0 and max_i Pr_{A∼μ}[A_i=1] < 1/2, there is a conditionally-iid coupling (A,B) of (μ,μ) —…
   - open `research/backward/uc-via-entropy-coupling.md`
+- `uc-via-entropy-coupling-g-iid-half` (goal) — For every dist \u03bc on {0,1}^n with H(\u03bc)>0 and max_i Pr[A_i=1]<1/2, the iid coupling satisfies H(A\u2228B)>H(A) [Gilmer Conj 1]
+  - open `research/backward/uc-via-entropy-coupling-g-iid-half.md`
+- `uc-via-entropy-coupling-g-yu-twoatom-half` (goal) — Yu/Sawin two-atom conditionally-iid class reaches density 1/2
+  - open `research/backward/uc-via-entropy-coupling-g-yu-twoatom-half.md`
+
+## Verify these first
+
+Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
+
+- `ellis-gilmer-conjecture-refuted` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Gilmer's Conjecture 1 (iid A,B over subsets of [n], all marginals < 1/2, H(A)>0 ⟹ H(A∪B) + D(A∪B\|\|A) > H(A)) is FALSE. Counterexample on…
+- `half-density-max-eq-bool-subalgebra` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For every nonempty union-closed family F ⊆ 2^[n], n<=5, whose MAXIMUM element density is exactly 1/2, F is a Boolean subalgebra…
+- `uc-via-entropy-coupling/G-coupling-half` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For every distribution μ on {0,1}^n with H(μ) > 0 and max_i Pr_{A∼μ}[A_i=1] < 1/2, there is a conditionally-iid coupling (A,B) of (μ,μ) —…
+
+_194 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
 | `abe-nakano-modular` | claim | **ready** | — | Every finite modular lattice L with \|L\| ≥ 2 satisfies Frankl's conjecture: some join-irreducible x has \|{y: y ≥ x}\| ≤ \|L\|/2. |
+| `abundance-profile-odd-filter-minmax` | goal | blocked | `half-density-max-eq-bool-subalgebra` | Prove/verify: for every non-Boolean union-closed family F on [n], max-density(F) >= 2^{n-1}/(2^n-1). The VALUE is correct; the claimed… |
 | `ahs-barrier-3-minus-rt5-over-2` | claim | established | — | min_μ∈ℳ_φ E[H(xy)]−E[H(x)] over independent (μ×μ) copies is minimized at φ*=(√5−1)/2, giving constant 1−φ*=(3−√5)/2 for UC; a natural… |
 | `ahs-published-ejc` | claim | **ready** | — | The (3−√5)/2 barrier constant is a peer-reviewed result: Alweiss–Huang–Sellke, Electron. J. Combin. 31(3):P3.35 (2024), doi:10.37236/12232. |
 | `ahs-published-note` | claim | **ready** | — | As of the published EJC record (Sep 2024), the peer-reviewed record for the union-closed constant is NOT Liu/Cambie (still preprints); the… |
@@ -27,35 +42,57 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `balla-density` | claim | **ready** | — | For a union-closed family F with n = \|∪F\| ≥ 16, some element appears in at least sqrt((log₂ n)/n) * (\|F\|/2) sets of F. Equivalently the… |
 | `balla-min-density` | claim | **ready** | — | For a union-closed family F with n=\|∪F\|, density (average set size over n) ≥ (log₂n)/(2n); asymptotically s_n=(1+o(1))(log₂n)/(2n). Cor 2:… |
 | `bhasin-cubical-acyclicity` | claim | **ready** | — | For any simply rooted family F ⊆ 2^[n] with ∅ ∈ F, the associated cubical set X(F) is acyclic; equivalently Σ_{k=0}^{n} (−1)^k \|C_k(F)\| =… |
+| `bm-shypercube-counting` | claim | established | — | Let F be a union-closed family, C an S-hypercube of P(X) for S subset X, \|S\| = m > l > k, and let p_j = number of level-j sets of C in F.… |
+| `bm-weight-criterion-iff` | claim | established | — | A finite union-closed family F != {empty} is Frankl's (has an element present in at least \|F\|/2 members) IFF there is a non-negative weight… |
 | `boppana-entropy-inequality` | claim | established | — | h(x²) ≥ φ·x·h(x) for all x∈[0,1], φ = (1+√5)/2, h binary entropy; equality precisely where the (3−√5)/2 barrier saturates. |
-| `bosnjak-markovic-11` | claim | established | — | Frankl's (union-closed sets) conjecture holds for every union-closed family whose ground set \|∪F\| ≤ 11. |
+| `bouchard-averaging-height4` | claim | established | — | For any separating union-closed family A with height h = 4 ≤ n and 0 ≤ \|B\| ≤ 2 (B a smallest irredundant subfamily of A_<n/2 with b(B) =… |
 | `bouchard-conj33-implies-uc` | claim | established | — | Conjecture 3.3 (if an element y of maximum frequency has A = A_{y} ∪ A_{z} for some z, then \|A_{y}\| ≥ 2·\|A_{\underline{y}}\|) implies… |
-| `bouchard-lattice-no-mobius-basis` | claim | **ready** | — | Bouchard (arXiv:2503.00277) studies the lattice formulation of Frankl's conjecture with necessary conditions on a minimal counterexample,… |
 | `bouchard-minimal` | claim | **ready** | — | A minimal (fewest-element) counterexample lattice must satisfy several necessary conditions (obtained in the paper). |
 | `bouchard-ucn-minus1-to-ucn` | claim | established | — | For any union-closed family A with n > 1, UC_{n−1} ⟹ UC_n. (Proving the conjecture for the second-to-largest complementary class forces the… |
 | `bouchard-ucx-ladder` | claim | established | — | For any union-closed family A on [n], UCx holds for all x ∈ [⌈n/3⌉ + 1]; i.e. there is B with \|B\| = n−x+1 and \|A_B\| ≥ \|A_B\|. An affirmative… |
-| `bounded-iff-interval-doublings` | claim | established | — | A finite lattice is bounded (a bounded homomorphic image of a free lattice) iff it is obtainable from the one-element lattice by a finite… |
+| `bouchard-upper-bound-length` | claim | **ready** | — | For any union-closed family A on universe [n] with length ℓ (max member-set size; one less than the longest chain), \|A\| ≤ Σ_{i=0}^{ℓ}… |
 | `brown-idempotent-expansion` | claim | **ready** | — | In the Möbius (semigroup) algebra of a (semi)lattice L, the elements e_X = Σ_{Y≥X} μ(X,Y)·Y (X ∈ L) form a basis of pairwise orthogonal… |
 | `cambie-0-38234-published-route` | claim | **ready** | — | Using dependent samples (Sawin's suggestion) with the entropy approach, the union-closed conjecture holds with constant c ≈ 0.3823455 (>… |
 | `cambie-question2-exact-0-3823455` | claim | established | — | The maximum c of Sawin's Question 2 (linear combination of an iid and a negatively-correlated Sawin-style coupling, weight α) is exactly… |
 | `cambie-survey-two-abundant-capped` | claim | **ready** | — | Families whose smallest set has size ≥k (k arbitrary large) can have exactly 2 abundant elements (construction P_k^n), so UC cannot be… |
 | `carvalho-reduction-descendants` | claim | **ready** | — | There is a reduction process on normalized union-closed families (removing a minimal set and taking a dual/⊖-reduction) under which every… |
+| `cc-no-abundance-without-closure-on-4` | claim | **ready** | — | Over ALL 32,767 nonempty empty-free subfamilies of [4] there exist exactly 74 NON-union-closed families satisfying the arithmetic… |
 | `chase-lovett-approximate` | claim | established | — | For (1−ε)-approximate union-closed families (ε < 1/2, nearly all pixel- unions in F), some element is in at least ψ = (3−√5)/2 fraction of… |
 | `chase-lovett-psi-optimal-approximate` | claim | established | — | For (1−ε)-approximate union-closed ℱ (ε<1/2), some element is in at least ψ−δ fraction of sets (δ=2ε(1+log(1/ε)/log\|ℱ\|), ψ=(3−√5)/2), and ψ… |
 | `cms-averaged-frankl-wrong` | claim | established | — | The averaged Frankl property (average over b of w(b) is nonnegative) does NOT hold for all union-closed families; the averaging method has… |
 | `cms-averaged-threshold` | claim | established | — | The first author verified the averaged Frankl property whenever n ≥ 2m − 2^(m/2) (m ≥ 3); one cannot replace 2^(m/2) with the upper integer… |
 | `colbert-dim-at-most-2` | claim | established | — | Every nontrivial union-closed family of dimension at most two (every chain of sets has length (number of elements minus one) ≤ 2) has an… |
 | `colbert-infinite-uc-false` | claim | **ready** | — | UC (every nontrivial union-closed family has an abundant element) is FALSE for arbitrary infinite families — the abstract states the… |
+| `colbert-order-2026-version-of-record` | claim | **ready** | — | The journal version of record of Colbert's chain-condition results is now held in the library: Order 43, article 5 (2026), open access (CC… |
 | `colbert-topological-dcc` | claim | established | — | Let (X, τ) be a topological space satisfying the descending chain condition on its open sets, τ ≠ {∅}. Then X has an abundant element of τ… |
 | `coupling-interval-bb-infeasible-10s` | claim | established | — | The rigorous mpmath.iv interval branch-and-bound CANNOT certify t=0.38234 within a 10s budget: the margin of the true infimum above 1 is… |
 | `coupling-true-inf-crossing-0-3824` | claim | established | — | Over the full 4-parameter two-atom class, the true inf of g(P,alpha)/Eh (inf over P taken internally, alpha=0.035) crosses 1 between… |
 | `coupling-true-inf-crossing-4d` | claim | **ready** | — | Over the full 4-parameter two-atom coupling class, the true infimum of g/Eh — with the inf over the coupling P taken internally, i.e. the… |
+| `czedli-averaged-frankl-large-families` | claim | **ready** | — | For a union-closed family F over an m-element set A, m ≥ 3, with n = \|F\| ≥ 2^m − 2^(m/2), the averaged Frankl property holds: ∑_{a∈A}(n −… |
+| `czedli-lattice-averaged-large` | claim | **ready** | — | For a finite lattice L with m = \|J(L)\| ≥ 3 and \|L\| ≥ 2^m − 2^(m/2), the averaged lattice-theoretic Frankl inequality holds: ∑_{a∈J(L)}(\|L\|… |
 | `czedli-schmidt-large-semimodular` | claim | established | — | Every finite large semimodular lattice L (\|L\| > 5·2^(m−3), m=\|J(L)\|) satisfies Frankl's conjecture; if \|L\| > 6·2^(m−3) then J(L)=A(L). |
-| `czedli-schmidt-planar` | claim | established | — | Every finite semimodular planar lattice satisfies Frankl's conjecture; if \|L\| ≥ 4 and 1 is join-reducible then there are two distinct… |
-| `daswu-large-kth` | claim | established | — | For 0 ≤ α < (3−√5)/2 there is c_α≥0 such that if \|F\| ≥ 2^{c_α(k−1)} then at least k elements each appear in ≥ α\|F\| sets. |
-| `daswu-nagel` | claim | established | — | For k ≥ 2 and \|∪F\| ≥ k, the kth-most frequent element lies in at least \|F\|/(2^{k−1}+1) sets, with equality iff F is a near-k-cube (=… |
-| `daswu-record-0-3823455` | claim | established | — | The current best constant for Frankl's conjecture is ≈ 0.3823455 = 0.38234 (355), obtained by Sawin's dependent-coupling method as… |
-| `day-doubling-hypothesis-fails-general` | claim | **ready** | — | Not every finite lattice is a single interval-doubling of a quotient by a maximal congruence. The single-doubling correspondence holds only… |
-| `eccles-stability` | claim | **ready** | — | Stability result for the union-closed size problem: near-extremal union-closed families (max total size) cluster around the explicit… |
 
-_118 further nodes not shown._
+_162 further nodes not shown._
+
+## Resting on nothing that exists
+
+Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
+
+- `uc-via-entropy-coupling` rests on `reduction`, which does not exist
+- `uc-via-entropy-coupling` rests on `needs`, which does not exist
+- `uc-via-entropy-coupling` rests on `only`, which does not exist
+- `uc-via-entropy-coupling` rests on `union-closure`, which does not exist
+- `uc-via-entropy-coupling` rests on `H`, which does not exist
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "blueprint" }
+read_ledger { ledger: "blueprint", id: "<one of the ids above>" }
+read_ledger { ledger: "blueprint", status: "<a status above>" }
+read_ledger { ledger: "blueprint", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: nothing directly — it is computed from the skeletons and the claims, so change one of those and this re-derives. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

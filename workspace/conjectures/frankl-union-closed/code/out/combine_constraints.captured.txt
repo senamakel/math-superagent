@@ -1,0 +1,82 @@
+combine_constraints.py — combine the held minimal-counterexample constraints into ONE structural claim and attack it by hunting the counterexample on small n (GOAL.md phase 4).
+Oracle: lib.uc.decide_union_closed / lib.uc.abundance / lib.uc.abundant_elements; exact integer counts, no floats.
+Range: n=1..4 exhaustive — ALL 2^(2^n) subfamilies of [n] per n (65,536 at n=4); UC guard A102896 = 3,13,121,4959.
+
+PART 0: oracle guard (fixed families, exact integers)
+  guard powerset 2^[3]: uc=True, all-densities-1/2=True - PASS
+  guard {empty,{a}} uc=True, a abundant=True - PASS
+  guard antichain {a},{b},{c}: uc=False, abundant=[] - PASS
+  => PART 0 PASS
+
+PART 1: guards and per-UC-family constraint checks (n=1..4)
+  n=1: UC families=3 (guard A102896=3 PASS), empty-free UC=1 (guard 1 PASS)
+  n=2: UC families=13 (guard A102896=13 PASS), empty-free UC=6 (guard 6 PASS)
+  n=3: UC families=121 (guard A102896=121 PASS), empty-free UC=60 (guard 60 PASS)
+  n=4: UC families=4959 (guard A102896=4959 PASS), empty-free UC=2479 (guard 2479 PASS)
+
+  UC-family stats (n=1..4):
+    n=1: UC counterexamples (n_ground>=1, empty abundant list)=0; families with a degree-1 element=2, of which all have an abundant element: True (claim D backwards: degree-1 => NOT counterexample); empty-free UC satisfying (A) n_max>=2k_min+1: 0, violating: 1
+    n=2: UC counterexamples (n_ground>=1, empty abundant list)=0; families with a degree-1 element=10, of which all have an abundant element: True (claim D backwards: degree-1 => NOT counterexample); empty-free UC satisfying (A) n_max>=2k_min+1: 0, violating: 6
+    n=3: UC counterexamples (n_ground>=1, empty abundant list)=0; families with a degree-1 element=56, of which all have an abundant element: True (claim D backwards: degree-1 => NOT counterexample); empty-free UC satisfying (A) n_max>=2k_min+1: 37, violating: 23
+    n=4: UC counterexamples (n_ground>=1, empty abundant list)=0; families with a degree-1 element=590, of which all have an abundant element: True (claim D backwards: degree-1 => NOT counterexample); empty-free UC satisfying (A) n_max>=2k_min+1: 2041, violating: 438
+
+PART 2: vacuity of the rarest-count-floor (E) on the counterexample regime
+  (E): count_x >= m - 2^{n_ground-1} for every present element x (proved for ALL families, union-closure-free).
+  Under (B) Karpas forces m < 2^{n_ground-1} on a counterexample, so
+  m - 2^{n_ground-1} < 0 and (E) is vacuous: the envelope lower bound
+  does all its work only where counterexamples cannot live.
+  families total over n=1..4: 65808
+  families in Karpas regime (B) m < 2^(n_ground-1): 25695
+  of those with (E) floor >= 0: 0 (must be 0: (B) => floor < 0) - PASS
+  (E) violated over ALL families: 0 (must be 0, proved for all families) - PASS
+  (E) violated over UC families on [4] (4959 of them): 0 - PASS
+
+PART 3: THE NEGATIVE-CONTROL HUNT — does union-closure do the work?
+  Hunt: NON-union-closed family on [4], empty-free, satisfying (A) n_max >= 2k_min+1, (D) no degree-1, (B) m < 2^(n_ground-1), with NO abundant element (2*c >= m fails for every element).
+  nonempty empty-free subfamilies of [4] scanned: 32767
+  WITNESSES FOUND: 74 non-union-closed families on [4] satisfying (A)&(D)&(B) with no abundant element
+  distribution by (n_ground, m): {(4, 5): 13, (4, 7): 61}
+  first witness (enumeration order sub=916):
+    F = {{b}, {c}, {abc}, {d}, {ad}}
+    masks=[2, 4, 7, 8, 9], m=5, n_ground=4, k_min=1, n_max=3, counts=[2, 2, 2, 2], abundant=[]
+    (A) n_max>=2k_min+1: True, (D) no-degree-1: True, (B) m<2^(n_ground-1): True, no-abundant: True, union-closed: False
+
+  canonical witness (explicitly verified): F = {{a}, {ab}, {c}, {d}, {bcd}}
+    masks=[1, 3, 4, 8, 14], m=5, n_ground=4, k_min=1, n_max=3, counts=[2, 2, 2, 2], abundant=[]
+    (A) True, (D) True, (B) True, no-abundant True, oracle decide_union_closed=False
+  VERDICT: a witness exists on [4] — the held arithmetic constraints (A),(B),(D) MINUS union-closure do NOT force abundance. Union-closure is the hypothesis doing the work; the claim 'these constraints force abundance' is FALSE.
+
+PART 3b: pure-count question — smallest n_ground with a family of
+  size m < 2^(n_ground-1) and no abundant element (no closure, no (A)/(D) constraints).
+  smallest n_ground = 3, witness F = {{a}, {b}, {c}}: masks=[1, 2, 4], m=3 < 2^2=4, counts=[1, 1, 1], no-abundant=True
+
+PART 4: joint consistency — union-closed families on [4] satisfying
+  (A) n_max>=2k_min+1 AND (D) no-degree-1, that are NOT counterexamples.
+  such empty-free UC families on [4]: 1823 (of 2479 empty-free UC families)
+  example: F = {{ab}, {c}, {abc}}
+    masks=[3, 4, 7], m=3, n_ground=3, k_min=1, n_max=3, counts=[2, 2, 2, 0], abundant=[0, 1, 2]
+    (A) True, (D) True, union-closed=True, abundant nonempty -> NOT a counterexample (UC holds at n<=4, consistent with Bosnjak-Markovic n<=11).
+  (C) Roberts-Simpson m >= 4*n_ground - 1 is vacuous here: it needs n_ground >= 13, unreachable on [4] (recorded, not a failure).
+
+PART 5: THE COMBINED STRUCTURAL CLAIM (status recap)
+  A counterexample F (empty-free convention) must satisfy, with
+  k=k_min, N=n_max, n=n_ground, m=|F|:
+    (A) N >= 2k + 1           [KPT corollary, claimed proved]
+    (B) m < 2^{n-1}           [Karpas, claimed proved]
+    (C) m >= 4n - 1, n >= 13  [Roberts-Simpson/Hu, claimed proved]
+    (D) every element in >= 2 sets [verified-computational n<=4]
+    (E) count_x >= m - 2^{n-1} for all x  [proved for ALL families,
+         but VACUOUS under (B): m - 2^{n-1} < 0 — the envelope does
+         all its work where counterexamples cannot live]
+  NEGATIVE CONTROL: (A)&(B)&(D) minus union-closure do NOT force
+  abundance (witness on [4]); union-closure is indispensable.
+  On n<=4 no UC family is a counterexample: UC holds there (known
+  verified floor, consistent with Bosnjak-Markovic n<=11).
+  LARGER RUN: the non-UC hunt at n_ground=5 = 2^32 subfamilies = the
+  enumeration ceiling; the [4] verdict (a witness EXISTS) already
+  settles the claim, so pushing to n=5 only adds witness statistics.
+  The genuinely new next step is the UC-side extrapolation of (D) to
+  n=5 (2,771,103 UC families, reachable by the existing cascade),
+  extending the no-degree-1 verified floor beyond n=4.
+
+ALL PARTS PASS (exact integer arithmetic; oracle lib.uc)

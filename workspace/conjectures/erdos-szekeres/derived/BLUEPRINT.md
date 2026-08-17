@@ -8,14 +8,17 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 ## Ready to work on
 
-Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
+_Nothing is ready, and no lemma is blocked either: every proposition the decomposition names is settled, and what remains open is the goal itself. Check what it rests on — a goal still blocked when its lemmas are all discharged is resting on something nobody verified, or on an inference the skeleton never wrote down._
 
-- `extremal-split-stability/G-cupcap` (lemma) — (Cup–cap characterization, Erdős–Szekeres 1935.) After a rotation making all x-coordinates distinct: a set X in general position contains n…
-  - open `research/backward/extremal-split-stability.md`
-- `extremal-split-stability/G-split` (lemma) — (Extremal splitting / stability.) For every n ≥ 4, every extremal n-avoiding set X (\|X\| = f(n), no convex n-gon, general position) admits a…
-  - open `research/backward/extremal-split-stability.md`
-- `extremal-split-stability/G-split-consistent` (lemma) — (Consistency on the extremal template.) For n = 5, 6 the Erdős–Szekeres 1960 construction of 2^{n-2} points, realized in exact rational…
-  - open `research/backward/extremal-split-stability.md`
+## Verify these first
+
+Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
+
+- `gsplit-enum-completeness-and-n7-zero` — 2 node(s) rest on it, and the run is already building on it — The count of distinct nonempty-proper open half-plane sides of an N-point planar set in general position is exactly N(N-1), realized…
+- `extremal-split-stability/G-cupcap` — 1 node(s) rest on it, and the run is already building on it — (Cup–cap characterization, Erdős–Szekeres 1935.) After a rotation making all x-coordinates distinct: a set X in general position contains n…
+- `extremal-split-stability/G-split-consistent` — 1 node(s) rest on it, and the run is already building on it — (Consistency on the extremal template.) The Erdős–Szekeres 1960 construction of 2^{n-2} points, realized as es_construct, admits a line…
+
+_116 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -24,48 +27,61 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `MV2016-bin-form` | claim | **ready** | — | ES(n) ≤ C(2n-5,n-2) - C(2n-8,n-3) + 2 for n ≥ 2, ≈ (7/16)·C(2n-4,n-2). |
 | `Vlachos2015-bin-form` | claim | **ready** | — | limsup_{n→∞} ES(n)/C(2n-5,n-2) ≤ 29/32. |
 | `aichholzer-order-db` | claim | established | — | The order types of n <= 10 (size in standard small integer grids) are enumerated and held as a database with realizing point sets. |
-| `baek-ETV-n4n` | claim | **ready** | — | P(n,4,n) holds: any (n-1 choose 2)+2 points in general position contain a 4-cap or an n-gon. Equivalently N(n,4,n) = (n-1 choose 2)+1. This… |
-| `baek-balko-decomposable` | claim | established | — | The Erdős–Szekeres conjecture ES(k)=2^{k-2}+1 holds for 'decomposable' point sets: every decomposable set of 2^{k-2}+1 points contains k in… |
-| `baek-balko-split` | claim | established | — | Every set of at least 2^{k-2}+1 points in general position contains a 'split k-gon', and this is tight: 2^{k-2}+1 is exactly the threshold… |
-| `baek-interweaved-laced-cups` | claim | **ready** | — | Any 4-cap,n-cup-free configuration of size (n-1 choose 2)+2 contains a pair of interweaved laced (n−1)-cups (Thm 5.10), and any such pair… |
+| `baek-ETV-n4n` | claim | established | — | P(n,4,n) holds: any (n-1 choose 2)+2 points in general position contain a 4-cap or an n-gon. Equivalently N(n,4,n) = (n-1 choose 2)+1. This… |
+| `baek-balko-blowup-new-constructions` | claim | established | — | Lemma 14 (abstract): for any S and sequences X,Y with x_i+y_i ≤ k−1 and x_i+y_j ≤ k−1−s_{i,j}, the (X,Y)-blow-up b_{X,Y,k}(S) has no k… |
+| `baek-balko-decomposable` | claim | **ready** | — | For a,u ≤ k, every decomposable set of more than S(a,u,k) = Σ_{i=k-a+2}^{u} C(k-2, i-2) points contains an a-cap, a u-cup, or k points in… |
+| `baek-balko-signotope-analogue-open` | claim | **ready** | — | The signotope analogue of the ES conjecture — every signotope on ≥ 2^{k-2}+1 vertices contains a weak k-gon — is open and equivalent to a… |
+| `baek-balko-split` | claim | established | — | ESsplit(k) = 2^{k-2}+1 for every k ≥ 2 (Theorem 3), from the exact formula ESsplit(a,u,k) = 1 + Σ_{i=k-a+2}^{u} C(k-2, i-2) for all (a,u,k)… |
+| `baek-balko-weak7-fails` | claim | established | — | Cweak(7) > 33 (Theorem 7): there is a 2-coloring of K³_{33} with no weak 7-gon; and Cstrong(7) > 33 was already shown by Balko–Valtr. Hence… |
+| `baek-interweaved-laced-cups` | claim | established | — | Any 4-cap,n-cup-free configuration of size (n-1 choose 2)+2 contains a pair of interweaved laced (n−1)-cups (Thm 5.10), and any such pair… |
+| `balko-bhore-kconvex-abstract` | claim | **ready** | — | (abstract) Every fixed k and every general-position n-point set contains a k-convex subset of size Ω(log_k n); 3-convex n-point sets exist… |
 | `balko-valtr-pseudolinear-verifies` | claim | **ready** | — | Over pseudolinear colorings (every 4-tuple realizable), Conjecture 3.1 — the Erdős–Tuza–Valtr reformulation equivalent to the ES conjecture… |
 | `balko-valtr-refutes-PS` | claim | **ready** | — | The Peters–Szekeres strengthened conjecture is FALSE: cES(7) > 32 and cES(8) > 64, i.e. there exist red-blue colorings of K^3_{33} (resp.… |
 | `barany-valtr-positive-fraction` | claim | established | — | For every k ≥ 4 there is c_k > 0 such that every sufficiently large planar general-position set X contains k subsets Y_1,…,Y_k with \|Y_i\| ≥… |
+| `beagley-order-dimension-esz` | claim | **ready** | — | For the ES 1961 extremal set (2^{n-2} points, no convex n-gon) the convex-geometry closed-set lattice has order dimension exactly n−1;… |
 | `cc-system-axioms` | claim | **ready** | — | A CC system (Knuth) is a ternary relation pqr satisfying cyclic symmetry, antisymmetry, nondegeneracy, interiority and transitivity; a… |
+| `cfhmsv-big-line-big-convex` | claim | **ready** | — | For ES_ℓ(n) = min N such that every N-point planar set contains ℓ collinear members or n in convex position: (Thm 1.1) ES_ℓ(n) ≤ ℓ^2 ·… |
 | `cg98-first-improvement` | claim | established | — | ES(n) -> g(n) <= C(2n-4, n-2) for n >= 4 (removes the +1 from the 1935 upper bound). |
+| `chirotope-extendibility-npcomplete` | claim | **ready** | — | Deciding whether a boolean function defined on a subset of the triples of a groundset can be extended to a chirotope (equivalently a… |
 | `cups-caps-is-N3-monotone-path` | claim | established | — | ES(n) ≤ f(n,n) = C(2n-4,n-2)+1 is exactly N_3(2,n) = C(2n-4,n-2)+1, the ordered-3-uniform-hypergraph monotone-path Ramsey value; the… |
 | `damasdi-saturation` | claim | established | — | For each n >= 7 there is a planar set of (7/8)·2^{n-2} points that is saturated for convex n-gons (no n in convex position, adding any one… |
 | `dh-allowable-abstract-only` | claim | **ready** | — | The Dobbins–Holmsen–Hubard paper (arXiv:1305.2266; Mathematika 60 (2014) 463–484) is held only as its arXiv abstract page. The abstract… |
+| `dumitrescu-allowable-framework-primary` | claim | **ready** | — | (primary restatement) For an n-point planar set with distinct x-coordinates, rotating a horizontal line gives a circular (allowable)… |
+| `dumitrescu-dgp` | claim | **ready** | — | The Dirac-Goodman-Pollack conjecture — every nontrivial allowable n-sequence has a local sequence whose half-period is at least c n — is… |
 | `dumitru-es7` | claim | **ready** | — | There is a triple-orientation + 4-set-criterion + convex-layer-anchoring SAT encoding for ES(7); it yields UNSAT certificates for anchored… |
 | `empty-hexagon-h6` | claim | **ready** | — | H(6)=30: every set of 30 points in general position contains an empty convex hexagon (SAT proof, Lean-verified). |
+| `erdosproblems-107-open` | claim | **ready** | — | (encyclopedic) Erdős-Szekeres ES(n)=2^{n-2}+1 is open with no claimed solution (as of Apr 2026); Erdős offers $500 (proof) / $100… |
 | `es-5-lemma` | claim | established | — | A planar set Y of shape (3,3,2), (4,3,1), or (3,4,2) contains a convex pentagon. |
 | `es-construct-block-tightness` | claim | established | — | In the verified es_construct ES construction, every interior block T_i (1≤i≤n−3) of X_n satisfies longest_cup(T_i)=n−i−1 and… |
 | `es-construct-layer-extremality` | claim | established | — | In the verified es_construct realisation of the ES construction X_n (n=5,6,7), every convex (onion) layer is maximally convex: a layer of… |
+| `es-construct-realized-pattern-bijection` | claim | **ready** | — | In the verified es_construct ES construction X_n (n=4,5,6,7 exact; n=8 sampled), the realized block-count patterns of (n-1)-convex subsets… |
+| `es-construct-realized-pattern-classes-triangular` | claim | **ready** | — | In the verified es_construct ES construction X_n (n=4,5,6,7 exact; n=8 sampled), the number of distinct block-count patterns realized by… |
+| `es-construct-six-full-patterns` | claim | established | — | In the verified es_construct ES construction X_n (n=5,6,7,8), the (n-1)-convex subsets fall by block-count pattern into EXACTLY six FULL… |
+| `es-construct-transversal-convexity` | claim | established | — | In the verified es_construct ES construction X_n (n≤9), every full transversal — exactly one point from each block T_0..T_{n-2} — lies in… |
 | `es-construction-broken-integer` | claim | established | — | The integer lower-bound construction `es_lower_set` (code/lib/es_construction.py) does NOT have the ES property. At n=4 it reports largest… |
 | `es-construction-broken-rational` | claim | established | — | The rational reconstruction `es_set` (code/lib/esz.py) is also broken. At n=4 it correctly gives largest convex subset 3 (PASS: 4 points,… |
 | `es-construction-defective-checker-correct` | claim | established | — | In this workspace the ES lower-bound set es_lower_set(n) does NOT have the defining property (no convex n-gon at 2^{n-2} points). Captured:… |
 | `es-construction-integer-realization` | claim | **ready** | — | The Erdős–Szekeres 1961 lower-bound construction (n = 2^{t-2} points, no convex polygon with more than log₂(n)+1 vertices) can be realized… |
 | `es-convex-bodies` | claim | established | — | c(n) <= c'(n) <= 2^{n + O(sqrt(n log n))} for convex bodies / pseudoline convexity (2^{n+o(n)} type bounds). |
 | `es-exact-values` | claim | established | — | ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17. |
-| `es-higher-dim-sat` | claim | **ready** | — | SAT on acyclic chirotopes gives g^{(3)}(7)=13, g^{(4)}(8)<=13, g^{(5)}(9)<=13 (and k-hole analogues), DRAT-verified. |
-| `es-lower` | claim | established | — | ES(n) >= 2^{n-2} + 1, via a set X of 2^{n-2} points (blocks T_0..T_{n-2}, \|T_i\|=C(n-2,i), radial placement) whose largest convex subset has… |
-| `es-saturation` | claim | established | — | For every n >= 7 there is a saturated set of size (7/8)*2^{n-2} for convex n-gons, and the ES construction is saturated. |
-| `es-upper-1935` | claim | established | — | ES(n) <= binom(2n-4, n-2) + 1, and the cups-and-caps function f(k,l) = binom(k+l-4, k-2) + 1 is tight. |
-| `es-upper-norin-yuditsky` | claim | established | — | limsup_{n->inf} ES(n)/binom(2n-5,n-2) <= 7/8 (improves Vlachos's 29/32). |
-| `es-upper-toth-valtr` | claim | established | — | ES(n) <= binom(2n-5, n-3) + 2. |
-| `es1961-construction-held` | claim | established | — | The explicit 2^{n-2}-point planar construction with no convex n-gon (Erdős–Szekeres lower bound ES(n) ≥ 2^{n-2}) is concretely articulated… |
-| `es35-cups-caps-bound` | claim | established | — | ES(n) <= f(n,n) = C(2n-4, n-2) + 1, where f(k,l) is the least N such that any N-point set contains a k-cup or an l-cap. |
-| `es35-finiteness` | claim | established | — | For every n >= 3 there is a least N(n) such that every N(n) planar points in general position contain n in convex position. |
-| `es35-four-criterion` | claim | established | — | n planar points in general position form a convex n-gon iff every 4 of them form a convex quadrilateral. |
-| `es61-lower-bound` | claim | established | — | For every n >= 3 there exists a set of 2^{n-2} points in general position containing no n points in convex position; hence ES(n) >=… |
-| `etv-alpha-statistic-injective` | claim | **ready** | — | For any a-cap,b-cup-free configuration S with a slope labeling, the α-statistic p ↦ (α_1(p),…,α_{a-2}(p)) is injective into the grid… |
-| `etv-equivalent-to-es` | claim | **ready** | — | The Erdős–Tuza–Valtr conjecture is equivalent to the Erdős–Szekeres conjecture: for any triplet (n,a,b) with 2≤a,b≤n≤a+b−2,… |
-| `extremal-split-stability` | goal | blocked | `extremal-split-stability/G-cupcap`, `extremal-split-stability/G-split`, `extremal-split-stability/G-split-consistent` | For every n ≥ 3, ES(n) ≤ 2^{n-2}+1 — i.e. every set of 2^{n-2}+1 points in general position in the plane contains n points in convex… |
 
-_53 further nodes not shown._
+_81 further nodes not shown._
 
 ## Resting on nothing that exists
 
 Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
 
 - `extremal-split-stability` rests on `f`, which does not exist
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "blueprint" }
+read_ledger { ledger: "blueprint", id: "<one of the ids above>" }
+read_ledger { ledger: "blueprint", status: "<a status above>" }
+read_ledger { ledger: "blueprint", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: nothing directly — it is computed from the skeletons and the claims, so change one of those and this re-derives. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

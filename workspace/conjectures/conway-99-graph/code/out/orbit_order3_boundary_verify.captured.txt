@@ -1,0 +1,63 @@
+==============================================================================
+ORBIT-MATRIX-g99-DETACHED  --  EXACT FINAL-BOUNDARY PRESOLVE VERIFICATION
+==============================================================================
+Total variables         : 41745
+Total constraints       : 57165
+
+HEARTBEAT POINTS (from orbit_z3_enc_g99_plain_detached.captured.txt)
+  point 1: t = 17358/25 s = 694.32 s   var 41730/41745  => 15 vars fixed
+  point 2: t = 37797/20 s = 1889.85 s   var 41712/41745  => 33 vars fixed
+
+STEP 1 -- TWO-POINT RATE AND EXTRAPOLATION TO ALL 41745 VARIABLES
+------------------------------------------------------------------------------
+  Delta_vars = fixed2 - fixed1 = 33 - 15 = 18 variables
+  Delta_t    = t2 - t1 = 37797/20 - 17358/25 = 119553/100 s (estimate 1195.53 s)
+  seconds per variable (two-point) = Delta_t / Delta_vars
+        = 119553/100 / 18 = 39851/600 s  (estimate 66.42 s)
+  Stated boundary note: 'one per ~66 s'
+  extrapolated presolve wall = secs_per_var * 41745
+        = 39851/600 * 41745 = 110905333/40 s
+        in days = 110905333/40 s / 86400 = 110905333/3456000 days (estimate 32.09 days)
+  Stated boundary note: '~32 days for presolve'
+
+STEP 2 -- RATE FROM THE START vs TWO-POINT RATE
+------------------------------------------------------------------------------
+  rate from start: 15 vars in 17358/25 s
+        seconds per variable = 17358/25 / 15 = 5786/125 s (estimate 46.29 s)
+  rate over both points: 33 vars in 37797/20 s
+        seconds per variable = 37797/20 / 33 = 12599/220 s (estimate 57.27 s)
+
+  WHY the extrapolation is a LOWER BOUND on total wall-clock:
+   (a) fixing SLOWS as presolve progresses: early fixes are cheap
+       (Probe/MaxClique/PresolveToFixPoint), later ones need the full
+       propagation lag; the 18-var two-point slope (66.42 s/var)
+       is already slower than the start-to-15 rate (46.29 s/var).
+   (b) presolve fixing is the ONLY progress; after presolve finishes,
+       the search proper (branch-and-bound over the INFEASIBLE space)
+       has to exhaust a space far larger than the 41745 fixed variables,
+       by many orders of magnitude.
+
+STEP 3 -- HONEST VERDICT
+------------------------------------------------------------------------------
+  Boundary reached: UNKNOWN/TIMEOUT at 3000.4s wall; last #Model bound
+  2974.64s, var 41675/41745, constraints 56987/57165; 0 gap_integral,
+  5039266 conflicts, 8049382 branches (no feasible point found).
+
+  No INFEASIBLE was reached within the 3000s budget.
+  => NO order-3 fixed-point-free automorphism is EXCLUDED by this run.
+  The run is INCONCLUSIVE / TIMEOUT and proves nothing either way.
+  The Z3 (order-3) case REMAINS OPEN.
+
+==============================================================================
+Summary of exact values
+==============================================================================
+  Delta_vars                      = 18
+  Delta_t                         = 119553/100 s
+  seconds per variable (2-point)  = 39851/600 s  (est 66.42)
+  extrapolated presolve           = 110905333/40 s  (est 2772633.33)
+                                  = 110905333/3456000 days (est 32.09)
+  start-to-15 s/v                 = 5786/125 s  (est 46.29)
+  overall-to-33 s/v               = 12599/220 s  (est 57.27)
+
+VERDICT: no INFEASIBLE reached => no order-3 automorphism excluded;
+         the Z3 case remains open.

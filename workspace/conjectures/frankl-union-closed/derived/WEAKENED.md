@@ -19,12 +19,13 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
 | `R-uc-n1` | [[frankl-union-closed-ladder]] | Every union-closed family F ≠ {∅} on a ground set with \|∪F\| ≤ 1 has an element in at least \|F\|/2 members. | unbounded-n, unbounded-F | **settled** |
-| `R-uc-small-n` | [[frankl-union-closed-ladder]] | Every union-closed family F ≠ {∅} with \|∪F\| ≤ 11 has an element in at least \|F\|/2 members. | unbounded-n, unbounded-F | **settled** |
+| `R-uc-small-n` | [[frankl-union-closed-ladder]] | Every union-closed family F ≠ {∅} with \|∪F\| ≤ 12 has an element in at least \|F\|/2 members. | unbounded-n, unbounded-F | **settled** |
 | `R-constant-gilmer` | [[frankl-union-closed-ladder]] | There is an absolute constant c > 0 such that every union-closed family F ≠ {∅} has an element in at least c·\|F\| members. | tightness-at-half, entropy-coupling-cap | **settled** |
 | `R-uc-with-singleton` | [[frankl-union-closed-ladder]] | Every union-closed family F ≠ {∅} that contains a singleton {x} has an element in at least \|F\|/2 members. | no-class-restriction, small-set-forcing | **settled** |
 | `R-uc-with-two-set` | [[frankl-union-closed-ladder]] | Every union-closed family F ≠ {∅} that contains a 2-element set {x,y} has an element in at least \|F\|/2 members. | no-class-restriction, small-set-forcing | **settled** |
 | `R-uc-small-F` | [[frankl-union-closed-ladder]] | Every union-closed family F ≠ {∅} with \|F\| ≤ 50 has an element in at least \|F\|/2 members. | unbounded-F | **settled** |
-| `R-uc-lattice-classes` | [[frankl-union-closed-ladder]] | Every finite lattice in a settled class — lower semimodular, modular, geometric, distributive — has a join-irreducible element below at most half its elements… | no-class-restriction | **settled** |
+| `R-uc-lattice-classes` | [[frankl-union-closed-ladder]] | Every finite lattice in a settled class — lower semimodular, modular, geometric, distributive, planar semimodular, breadth ≤ 2 — has a join-irreducible element… | no-class-restriction | **settled** |
+| `R-uc-upper-semimodular` | [[frankl-union-closed-ladder]] | Every finite upper semimodular lattice L with \|L\| ≥ 2 has a join-irreducible element below at most half its elements (equivalently: UC holds for the… | no-class-restriction | open |
 | `R-constant-silver` | [[frankl-union-closed-ladder]] | Every union-closed family F ≠ {∅} has an element in at least ((3−√5)/2)·\|F\| ≈ 0.38197·\|F\| members. | tightness-at-half | **settled** |
 | `R-constant-beyond-silver` | [[frankl-union-closed-ladder]] | Every union-closed family F ≠ {∅} has an element in at least c·\|F\| members for some c > (3−√5)/2 — the current record being c ≈ 0.38234. | tightness-at-half | **settled** |
 | `R-uc-with-three-set` | [[frankl-union-closed-ladder]] | Every union-closed family F ≠ {∅} that contains a 3-element set {x,y,z} has an element (not necessarily in {x,y,z}) in at least \|F\|/2 members. | no-class-restriction | open |
@@ -33,20 +34,33 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
-- [[frankl-union-closed-ladder]] → `R-uc-with-three-set`: Every union-closed family F ≠ {∅} that contains a 3-element set {x,y,z} has an element (not necessarily in {x,y,z}) in at least |F|/2 members.
+- [[frankl-union-closed-ladder]] → `R-uc-upper-semimodular`: Every finite upper semimodular lattice L with |L| ≥ 2 has a join-irreducible element below at most half its elements (equivalently: UC holds for the union-closed families arising from upper semimodular lattices).
   - switched off: no-class-restriction
-  - to merge the next difficulty back: This is the first hard rung and the fault line. The forcing argument dies here: it is not generally true that one of x,y,z is abundant, so the abundant element may lie outside the 3-set and the local union trick gives nothing. Attack it with the FC-family machinery — decide whether {x,y,z} is an FC-family via the finite weight/LP computation, and if not, locate the boundary cases. The difficulty that bites is small-set-forcing: every union-closed family containing a 3-set is still conjectured to satisfy UC, but no local argument certifies it, which is exactly where the real obstruction sits.
+  - to merge the next difficulty back: The genuine fault line of the lattice line. Lower semimodular, modular, geometric, planar semimodular are settled, but whether UC holds for *upper* semimodular lattices in general is OPEN (claim `upper-semimodular-open`; confirmed still open as of Joshi–Waphare 2019). A subclass is settled: upper semimodular with |J(L)\A(L)| ≤ 3 (claim `joshiwaphare-upper-semimodular-3`), and breadth ≤ 2 (claim `joshiwaphare-breadth2`) — so the run's first move is to push the |J(L)\A(L)| ≤ 3 line up or find a violation structure. The difficulty that bites is the absent semimodular-cover discipline on the…
 
 ## Settled — what this run owns
 
 Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
 
 - [[frankl-union-closed-ladder]] `R-uc-n1`: Every union-closed family F ≠ {∅} on a ground set with |∪F| ≤ 1 has an element in at least |F|/2 members. (off: unbounded-n, unbounded-F; _nothing named — say which claim established it, or a reader cannot check it_)
-- [[frankl-union-closed-ladder]] `R-uc-small-n`: Every union-closed family F ≠ {∅} with |∪F| ≤ 11 has an element in at least |F|/2 members. (off: unbounded-n, unbounded-F; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[frankl-union-closed-ladder]] `R-uc-small-n`: Every union-closed family F ≠ {∅} with |∪F| ≤ 12 has an element in at least |F|/2 members. (off: unbounded-n, unbounded-F; _nothing named — say which claim established it, or a reader cannot check it_)
 - [[frankl-union-closed-ladder]] `R-uc-small-F`: Every union-closed family F ≠ {∅} with |F| ≤ 50 has an element in at least |F|/2 members. (off: unbounded-F; _nothing named — say which claim established it, or a reader cannot check it_)
-- [[frankl-union-closed-ladder]] `R-uc-lattice-classes`: Every finite lattice in a settled class — lower semimodular, modular, geometric, distributive — has a join-irreducible element below at most half its elements (equivalently: UC holds for the union-closed families arising from such lattices). (off: no-class-restriction; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[frankl-union-closed-ladder]] `R-uc-lattice-classes`: Every finite lattice in a settled class — lower semimodular, modular, geometric, distributive, planar semimodular, breadth ≤ 2 — has a join-irreducible element below at most half its elements (equivalently: UC holds for the union-closed families arising from such lattices). (off: no-class-restriction; _nothing named — say which claim established it, or a reader cannot check it_)
 - [[frankl-union-closed-ladder]] `R-constant-gilmer`: There is an absolute constant c > 0 such that every union-closed family F ≠ {∅} has an element in at least c·|F| members. (off: tightness-at-half, entropy-coupling-cap; _nothing named — say which claim established it, or a reader cannot check it_)
 - [[frankl-union-closed-ladder]] `R-constant-silver`: Every union-closed family F ≠ {∅} has an element in at least ((3−√5)/2)·|F| ≈ 0.38197·|F| members. (off: tightness-at-half; _nothing named — say which claim established it, or a reader cannot check it_)
 - [[frankl-union-closed-ladder]] `R-constant-beyond-silver`: Every union-closed family F ≠ {∅} has an element in at least c·|F| members for some c > (3−√5)/2 — the current record being c ≈ 0.38234. (off: tightness-at-half; _nothing named — say which claim established it, or a reader cannot check it_)
 - [[frankl-union-closed-ladder]] `R-uc-with-singleton`: Every union-closed family F ≠ {∅} that contains a singleton {x} has an element in at least |F|/2 members. (off: no-class-restriction, small-set-forcing; _nothing named — say which claim established it, or a reader cannot check it_)
 - [[frankl-union-closed-ladder]] `R-uc-with-two-set`: Every union-closed family F ≠ {∅} that contains a 2-element set {x,y} has an element in at least |F|/2 members. (off: no-class-restriction, small-set-forcing; _nothing named — say which claim established it, or a reader cannot check it_)
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "weakened" }
+read_ledger { ledger: "weakened", id: "<one of the ids above>" }
+read_ledger { ledger: "weakened", status: "<a status above>" }
+read_ledger { ledger: "weakened", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: fenced `ladder` and `rung` blocks in `research/weakened/<slug>.md`, written with `write_document`. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

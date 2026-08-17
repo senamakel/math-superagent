@@ -4,10 +4,30 @@ Derived from the `follows-from:` lines in every `claim` block, closed transitive
 
 A claim written `follows-from: a, b` says `a` and `b` together give it. That single edge is enough to answer three questions the claim ledger cannot: which claims the run has already established without noticing, which proposals would add nothing, and which pair of held beliefs cannot both be true.
 
+## Established for free
+
+Every claim these rest on is established, so these are too, whatever status their block carries. Proving one again spends an attempt on something the run already has — update the status instead.
+
+- `wiki-happy-ending-small-values` — filed as catalogued, follows from `es-exact-values`, `es61-lower-bound`, `horton-no-empty-7gon`, `heule-scheucher-empty6`
+  - (encyclopedic) ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17; ES(7) conjectured 33, open; bounds 2^{n-2}+1 <= ES(n) <= C(2n-4,n-2)+1, with Suk and HMPT asymptotic…
+
 ## Already entailed
 
 These add nothing the library did not have. That is not a criticism of them — a consequence worth naming is worth a block — but a *proposal* that lands in this list is not a result, and the cheapest time to find that out is before an attempt is spent on it.
 
+- `horton-no-empty-7gon` is covered by `horton-s-k-construction`: For every k there is a 2^k-point general-position set with no empty convex 7-gon; hence g(n) — the least N such that every N-point set contains an empty convex…
 - `ms-cups-caps-tight` is covered by `es35-cups-caps-bound`: f(k,l) = C(k+l-4, k-2) + 1 exactly; the cups-caps function is tight.
 - `signotope-rank3-pseudoline-correspondence` is covered by `fw-rank3-signotope-pseudoline`: Rank-3 signotopes on [n] (sign maps on triples with at-most-one-sign-change per 4-set) are in bijection with simple pseudoline arrangements with a fixed top…
 
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "entailment" }
+read_ledger { ledger: "entailment", id: "<one of the ids above>" }
+read_ledger { ledger: "entailment", status: "<a status above>" }
+read_ledger { ledger: "entailment", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: nothing directly — it is the transitive closure of the claims' `follows-from` edges, so add the edge to a claim block. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

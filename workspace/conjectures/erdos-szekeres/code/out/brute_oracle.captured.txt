@@ -1,0 +1,39 @@
+== oracle self-checks on hand-computable cases ==
+--- 4 vertices of a square (in convex position) ---
+  points      : 4
+  general pos : True
+  largest convex subset : 4
+    (exemplar)          : [(Fraction(0, 1), Fraction(0, 1)), (Fraction(2, 1), Fraction(1, 1)), (Fraction(4, 1), Fraction(4, 1)), (Fraction(1, 1), Fraction(3, 1))]
+  cup/cap spectrum      : (3, 3)
+--- triangle + one interior point (NOT 4 in convex position) ---
+  points      : 4
+  general pos : True
+  largest convex subset : 3
+    (exemplar)          : [(Fraction(0, 1), Fraction(0, 1)), (Fraction(4, 1), Fraction(0, 1)), (Fraction(0, 1), Fraction(4, 1))]
+  cup/cap spectrum      : (3, 3)
+
+== Erdos-Szekeres lower-bound construction (no convex n-gon at 2^(n-2) points) ==
+--- ES construction n=3 (expect maxConvex == 2) ---
+  points      : 2
+  general pos : True
+  largest convex subset : 2
+    (exemplar)          : [(Fraction(0, 1), Fraction(5000000001, 1000000)), (Fraction(1000, 1), Fraction(4000000001, 1000000))]
+  cup/cap spectrum      : (2, 2)
+--- ES construction n=4 (expect maxConvex == 3) ---
+  points      : 4
+  general pos : True
+  largest convex subset : 3
+    (exemplar)          : [(Fraction(0, 1), Fraction(5000000001, 1000000)), (Fraction(1000, 1), Fraction(160000000041, 40000000)), (Fraction(1000000001, 1000000), Fraction(4000000001, 1000000))]
+  cup/cap spectrum      : (3, 3)
+--- ES construction n=5 (expect maxConvex == 4) ---
+  points      : 8
+  general pos : True
+  largest convex subset : 4
+    (exemplar)          : [(Fraction(0, 1), Fraction(5000000001, 1000000)), (Fraction(1000, 1), Fraction(4000000001, 1000000)), (Fraction(1000000001, 1000000), Fraction(480000000121, 120000000)), (Fraction(500000001, 500000), Fraction(120000000031, 30000000))]
+  cup/cap spectrum      : (4, 4)
+--- ES construction n=6 (expect maxConvex == 5) ---
+  points      : 16
+  general pos : True
+  largest convex subset : 5
+    (exemplar)          : [(Fraction(0, 1), Fraction(5000000001, 1000000)), (Fraction(1000, 1), Fraction(4000000001, 1000000)), (Fraction(1000000001, 1000000), Fraction(800000000201, 200000000)), (Fraction(500000001, 500000), Fraction(200000000051, 50000000)), (Fraction(1000000003, 1000000), Fraction(800000000209, 200000000))]
+  cup/cap spectrum      : (5, 5)

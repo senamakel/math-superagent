@@ -1,0 +1,9 @@
+[rook(3)] v=9 k=4 nT=6
+  NN^T == (k/2)I + A  : True
+  N^TN == 3I + C3     : True
+  min(v,nT)=6; A spectrum(row) ~ [-2, 1, 4]
+
+[bvls] v=243 k=22 nT=891
+  NN^T == (k/2)I + A  : True
+  N^TN == 3I + C3     : True
+  min(v,nT)=243; A spectrum(row) ~ [-5, 4, 22]

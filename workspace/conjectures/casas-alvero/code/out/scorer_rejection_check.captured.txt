@@ -1,0 +1,26 @@
+scorer-rejection-check — expected-reject candidates through the live scorer
+
+### reject_nonmonic.py
+INVALID: not monic (leading coefficient 2)
+exit=0
+
+### reject_deg19.py
+INVALID: degree 19 != 20
+exit=0
+
+### reject_nonrational.py
+INVALID: non-rational coefficients (domain ZZ_I)
+exit=0
+
+### reject_trivial.py
+INVALID: f is (x-a)^20 (the trivial family the conjecture allows)
+exit=0
+
+### positive control: genuine candidate c0008 (x^20 - 2x), must SCORE not reject
+SCORE: 18
+exit=0
+
+### positive control: trivial-family candidate with a different c must still reject
+INVALID: f is (x-a)^20 (the trivial family the conjecture allows)
+exit=0
+ALL CHECKS PASSED: 4 expected-rejects rejected with correct reason + 1 genuine candidate scored 18 (rejection path distinct from scoring path)

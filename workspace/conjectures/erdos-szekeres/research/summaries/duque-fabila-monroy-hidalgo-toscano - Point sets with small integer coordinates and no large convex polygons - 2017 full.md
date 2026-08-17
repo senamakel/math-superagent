@@ -1,28 +1,18 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/duque-fabila-monroy-hidalgo-toscano - Point sets with small integer coordinates and no large convex polygons - 2017 full.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+> **Note — this file is a MIS-DOWNLOAD redirect.**
 
-<!-- source: https://arxiv.org/pdf/1708.02181 | converted from HTML -->
+`research/sources/duque-... - Point sets with small integer coordinates and no
+large convex polygons - 2017 full.full.md` is a **MIS-DOWNLOAD stub** (see its
+header, "DO NOT CITE"): its URL https://arxiv.org/abs/1708.02181 is an unrelated
+physics paper ("Bistability in the synchronization of actuated microfilaments"),
+NOT the Duque–Fabila-Monroy–Hidalgo-Toscano ES-construction paper.
 
-## What is in it
+**The genuine paper is held and digested at:**
+- [[duque-fabila-monroy-hidalgo-toscano - ES construction small integer coordinates - correct full]]
+  (arXiv:1602.03075 / DOI 10.1007/s00454-017-9931-6), whose digest carries claim
+  `es-construction-integer-realization` (asserted-by-source): the ES 1961
+  lower-bound construction ($2^{t-2}$ points, no convex polygon with more than
+  $\log_2(n)+1$ vertices, general position) is realizable on an integer grid of
+  size $O(n^2\log^3 n)$.
 
-- Physics > Fluid Dynamics
-- Title: Bistability in the synchronization of actuated microfilaments
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
-
-
-## What it claims
-
-Abstract: Cilia and flagella are essential building blocks for biological fluid transport and locomotion at the micron scale. They often beat in synchrony and may transition between different synchronization modes in the same cell type. Here, we investigate the behavior of elastic microfilaments, protruding from a surface and driven at their base by a configuration-dependent torque. We consider full hydrodynamic interactions among and within filaments and no slip at the surface. Isolated filaments exhibit periodic deformations, with increasing waviness and frequency as the magnitude of the driving torque increases. Two nearby but independently-driven filaments synchronize their beating in-phase or anti-phase. This synchrony arises autonomously via the interplay between hydrodynamic coupling and filament elasticity. Importantly, in-phase and anti-phase synchronization modes are bistable and co-exist for a range of driving torques and separation distances. These findings are consistent with experimental observations of in-phase and anti-phase synchronization in the biflagellate…
-
-Comme…
-
-*[digest of a 7356 character source; every section, statement, and proof in full at `research/sources/duque-fabila-monroy-hidalgo-toscano - Point sets with small integer coordinates and no large convex polygons - 2017 full.full.md`]*
+**Action for the run.** Never cite the `- 2017 full.md` file or its summary; both
+are the wrong-paper stub. Use the `- correct full` sibling.

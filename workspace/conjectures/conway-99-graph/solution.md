@@ -12,11 +12,46 @@ asserted-by-source) and an anchor (a capture file with a runnable program).
 this run or by the literature.** The problem is open. Nothing here claims the
 graph or its absence. What this run produced is a set of *bounded, exact,
 negative-checked structural results*: a short independent re-derivation of a
-forced `n₃ ≥ 1`, six closed attack routes with the obstruction that closed
+forced `n₃ ≥ 1`, **ten** closed attack routes with the obstruction that closed
 each, a family classification, a documented and retracted false positive, and a
 clean negative answer to the "how far does the local seed extend" question.
 
 ---
+
+## 0.5 The n₃ dichotomy — the whole problem is one lemma, now at the front
+
+**Evidence class: reasoned (the split is exhaustive by arithmetic; the two
+discharges are sourced/checked as cited).**
+
+The sharpest frame this run has produced (directive 39) collapses the attack on
+`G-n3-positive` into **a single open lemma**, everything below being either the
+discharged halves of it or closed routes that no longer need to be re-walked.
+A full account is in `research/backward/n3-dichotomy.md`. The split is
+exhaustive purely by arithmetic — n₃ is an integer, so n₃ = 0 or n₃ ≥ 1:
+
+- **`G-n3-zero` — discharged.** Under n₃ = 0 (Makhnev's condition (*)), the
+  forced closure of a triangle yields `Λ₀ = srg(33,12,1,6)`, which is
+  parameter-infeasible by eigenvalue-multiplicity integrality (g numerator
+  `2k+(v−1)(λ−μ) = −136`, not divisible by √Δ = 7). Sourced (Makhnev 1988 Thm 2,
+  primary Russian text) plus re-derived here (`check_srg33_12_1_6.captured.txt`,
+  `check_makhnev_n3_counts.captured.txt`; lean `n3_99_forced_at_least_3.lean`
+  no sorries). Contrapositive: **any surviving graph has n₃ ≥ 1** (§1).
+- **`G-n3-no-local-obstruction` — discharged.** The n₃ seed extends to a stable
+  radius-6 fixpoint with no local obstruction at any radius — 19 survivors, max
+  12 vertices, free bits 0, stop kind `fixpoint` (`n3_grow_radius.captured.txt`).
+  So the local route is a dead end and the live move is **global**.
+- **`G-n3-positive` — OPEN.** No srg(99,14,1,2) has n₃ ≥ 1. Its only remaining
+  route is a **global** forced-count obstruction: over-subscription of the 693
+  point-line incidences, the 231 lines, or the 99-point / 7-lines-per-point
+  budget — or a global counting identity of order ≥ 7 that pins n₃ into an empty
+  range. The exact line/point-replication ledger (route 7, and now with the
+  rook(3)/bvls control pass the directive 39 orders) is the live instrument for
+  the over-subscription half.
+
+Everything that follows — the eleven closed routes of §2, the family facts, the
+documented false positive, the local-radius answer — is therefore scaffolding:
+either a discharged branch of the dichotomy or a direction that cannot
+re-attack `G-n3-positive` and should not be re-opened.
 
 ## 1. What IS established: `n₃ ≥ 1` for any putative graph (re-derived)
 
@@ -99,7 +134,7 @@ nonexistence proof — the interior case `n₃ ≥ 1` is open.
 
 ---
 
-## 2. The six closed routes, each with the obstruction that closed it
+## 2. The eleven closed routes, each with the obstruction that closed it
 
 1. **Vertex-derived design reduction does not recurse (refuted on BvLS).**
    The reduction from a vertex to the outer partial Steiner triple system
@@ -145,6 +180,16 @@ nonexistence proof — the interior case `n₃ ≥ 1` is open.
 
 6. **The coclique-design route cannot rule anything out: the forced super-simple 2-(22,4,2) design EXISTS (settled constructively).** A tight 22-coclique `C` in a putative `srg(99,14,1,2)` forces the outside neighbourhoods `{N(b)∩C}` to be a 2-(22,4,2) design (b=77, r=14, k=4), and the lift additionally forbids any two blocks meeting in 3 points — a *super-simple* 2-(22,4,2) design (claim `super-simple-22242-gap`). Q2 — does such a design exist — is now settled **YES, constructively**: CP-SAT OPTIMAL in 167.35s (7315 booleans, 156131 branches), an explicit 77-block certificate in `code/out/coclique_lift_clean_design.txt`, independently verified — all point degrees 14, all 231 pairs covered exactly twice, max triple overlap 1 (`code/out/coclique_lift_cpsat.captured.txt`). **The design condition a 22-coclique would impose is satisfiable, so it cannot rule out the existence of such a coclique**: the route is closed as non-obstructive, not as a refutation of the graph — it bears on neither existence nor nonexistence. (Tool note: CP-SAT decided in 167s what MILP/HiGHS timed out on at 482s and what 4000 random draws could never have shown either way.)
 
+7. **Global incidence counting: no forcing floor over-subscribes the fixed budget (closed).** The n₃ seed, grown to its stable local fixpoint, pins a *forced* ledger of lines and incidences inside the fixed global budget of the partial STS (99 points, 231 lines, 693 incidences, 7 lines/point). For **all 19 radius-6 survivors** (`code/out/n3_global_ledger.captured.txt`) the forced line/incidence floor is **exactly absorbable**: residual 223–227 lines and 669–681 incidences, no parity break (no odd `|I(v)|`), no vertex over 7, no negative deficit, min 4 / max 8 forced lines `L_in`, min 12 / max 24 forced incidences. The capture's own conclusion: **if an obstruction exists at this seed it is genuinely global/structural — a later-radius or cross-patch conflict — NOT a counting floor.** This kills the last cheap route: the counting-floor obstruction is absent.
+
+8. **Incidence p-rank: closed as unusable, and this is the sharpest reasoning of the run.** The mod-2 (and mod-3) rank of the point×triangle incidence matrix `N` (`NNᵀ = (k/2)I + A`, `NᵀN = 3I + C₃`) is **NOT parameter-determined**: no spectral-multiplicity formula predicts the 2-rank (the naive even-eigenvalue rule fails on the doily `(15,6,1,3)` and GQ(2,4) `(27,10,1,5)` — rule predicts rank₂ 1, actual 5 and 7), so it *could* separate 99 from 243. But it is **unprovable this way**: a 99 value could only be settled by an actual 99 system, i.e. **the very graph whose existence is in question — circular**. Record the subtlety too: rank₂(N) varying across (9,4) and (243,22) is **NOT** evidence against parameter-determination, since such an invariant varies across parameter points anyway; **only a same-parameter split counts**, and the one available test — Shrikhande vs rook(4), both `srg(16,6,2,2)`, cospectral — gives **no** separation (rank₂(A+I) = 16 = 16, rank₂(N) = 16 = 16). `code/out/incidence_prank_determinism.captured.txt`. Closed as unusable (circular), not as contradicted.
+
+9. **Two-graph descendant: closed by arithmetic.** The regular-two-graph descendant condition is `k = 2μ` (with companion `n = 2(2k−λ−μ)`). At 99: `k = 14` vs `2μ = 4` **fails**; companion `n = 50 ≠ 99`. Equally at 243: `k = 22` vs `2μ = 4` fails, companion `n = 82 ≠ 243`. Only rook(3) is a descendant (`k = 4 = 2μ`, Paley two-graph on 10 points). The loose claim "BvLS descends from a 244-point two-graph" is about a *co-edge-regular*, **non-regular** two-graph whose descendants do include srg(243,22,1,2) — but the k=2μ criterion is exactly the *regular*-two-graph one, and there both BvLS and 99 fail. `code/out/verify_twograph_gate.captured.txt`. Non-obstructive for the usual reason: the reformulation is inert for 99 exactly as for 243.
+
+10. **The 6-vertex n₃-type gate is redundant, not wrong (closed, directives 26/27).** The 6-vertex-condition embedding count `E` for the n₃ template (two disjoint triangles joined by exactly two edges) tracks `n₃`: `E > 0 ⇔ n₃ > 0`. It therefore adds **no** 99 filter beyond the already-held Makhnev `n₃ ≥ 1` condition (§1). The count's zero at rook(3) and BvLS is **meaningful, not vacuous**: a hand-verified 7-vertex positive control `H` (`T₁={0,1,2}`, `T₂={3,4,5}`, cross edges `0-3`,`1-4`, vertex 6 isolated) contains exactly one join-2 pair, and the lib counter `count_induced_embeddings` returns the hand-checked nonzero counts `1, 1, 0`, total **4** over all ordered adjacent pairs (`code/out/n3_vc_loop_closure_recheck.captured.txt`, POSITIVE-CONTROL PASS). The one bad gate — a hypothesised `E = 16·n₃` — was caught and correctly retracted: over 37 random graphs the ratio `E/n₃` ranged **0.0 to 8.44**, not constant, so the identity test failed and `code/out/n3_vc_gate.captured.txt` is headed **SUPERSEDED / FLAWED IDENTITY TEST, Not evidence**. Verdict: the gate tracks n₃, n₃ ≥ 1 is already held, so the route closes as **redundant, not wrong** — this is the run's second self-retraction on record (the first is §4's localprop saturation bug).
+
+11. **The whole orbit-matrix programme — order-3 AND order-2 — closed by computational infeasibility, NOT by mathematics (directive 37).** The plain unbroken order-3 (m=33) CP-SAT orbit matrix of a putative `srg(99,14,1,2)` does not terminate within any practical budget. The heartbeat gives **two points**: 15 variables fixed at 694 s, 33 fixed at 1889 s — 18 variables in 1195 s, about one per **66 s**; at that rate fixing all **41,745** variables would take roughly **32 days, and that is presolve alone**, before any search of the space an INFEASIBLE verdict would have to exhaust (`code/out/orbit_z3_enc_g99_plain_detached.captured.txt`, lines 300–375; note `research/notes/orbit-order3-infeasibility-boundary.md`). An **order-2** automorphism has **more** orbits than the order-3 case (≈(99+f)/2 for f fixed points), so its model is strictly larger and strictly worse — the order-2 case is not worth the same attempt at this rate either. **The obstruction is computational infeasibility, not a mathematical obstruction**: **no order-3 or order-2 exclusion is established**, the published Aut reduction to {Z₂, Z₃} (Crnković–Maksimović, Behbahani–Lam, Cesarz–Woldar) stands untouched, and the graph's automorphism group **remains open**. What this route *did* establish is the stated boundary (model size 41,745 vars / 57,165 constraints at m=33; presolve rate ~1 var/66 s) — that is the measurement a next pass can act on. Closed as boundary-recorded, not as a verdict; the Z2/Z3 automorphism question is out of reach of this CP-SAT encoding on this budget.
+
 Each candidate was required to be run against the rook's graph `(9,4,1,2)` and
 the Berlekamp–van Lint–Seidel graph `(243,22,1,2)` through `code/lib/srg.py`,
 and to name the step that breaks on them. Routes 1–4 all survive on both
@@ -153,7 +198,13 @@ algebra, integrality, interlacing, Krein or absolute bound **cannot** conclude
 anything about 99 because it holds verbatim for 9 and 243). Route 5 is
 different: it is cleared *local* and is answered directly for every radius in
 §6. Route 6 is different again: it is a design-condition check, and the
-construction settles it affirmatively, so it is non-obstructive.
+construction settles it affirmatively, so it is non-obstructive. Routes 7 and 9
+are arithmetic/structural closures (global counting floor; regular-two-graph
+descendant) that each hold identically at 243, so they are refuted on arrival
+as 99 arguments. Route 8 (incidence p-rank) is closed as **unusable — circular**:
+it is not a spectrum function and could in principle separate 99, but a 99
+value could only be measured on an actual 99 system, the very graph whose
+existence is in question.
 
 ---
 
@@ -304,8 +355,14 @@ existence of `srg(99,14,1,2)`.
    structures (19 survivor sub-structures on 8–12 vertices) and attempt to
    close them into 99 vertices, i.e. decide whether the outside 87–91 vertices
    can be joined to satisfy μ=2 and degree-14 for every boundary pair. This is
-   the only place the obstruction, if it exists, can live. This is a *finite*
-   but hard combinatorial closure problem — the honest next attempt.
+   the only place the obstruction, if it exists, can live. **The global
+   counting floor is ruled out** (route 7), so what remains is the
+   **cross-patch / global structural** question — stated plainly, this is
+   **harder than everything closed so far**: no local obstruction at any radius,
+   no counting floor, and the residual 223–227 lines / 669–681 incidences are
+   arithmetically absorbable for all 19 survivors. The obstruction, if any,
+   lives in the interaction between patches or in a structural (not counting)
+   property of the full 99-point assignment.
 2. ~~A **coclique-design contradiction at 99**~~ — **closed (directive 20)**: the
    forced super-simple 2-(22,4,2) design **exists** (§2 route 6), so the design
    condition cannot rule out a 22-coclique. Not a live attack line.
@@ -318,7 +375,20 @@ existence of `srg(99,14,1,2)`.
 - The eigenvalue-only, counts-only, integrality, Krein, absolute-bound,
   interlacing, two-weight-code (Delsarte) and SNF/critical-group routes: all
   parameter-determined, all surviving unchanged on 9 and 243, all already
-  closed (CLOSED in §2 and in `research/APPROACHES.md`).
+  closed (CLOSED in §2 and in `research/APPROACHES.md`). Also not to repeat:
+  the **global incidence counting floor** (route 7 — ruled out for all 19
+  survivors), the **incidence p-rank** (route 8 — circular, unmeasurable
+  without the very graph), and the **regular two-graph descendant** (route 9 —
+  fails by k=2μ arithmetic at both 99 and 243).
+- **The orbit-matrix programme (route 11) — NOT to repeat in CP-SAT.** Closed
+  by computational infeasibility: the order-3 (m=33) search fixes ~1 variable
+  per 66 s (presolve alone ≈ 32 days for all 41,745 variables), and the order-2
+  case (≈(99+f)/2 orbits) is strictly larger and strictly worse. This bound
+  applies **only** to this CP-SAT encoding at this presolve rate; a different
+  encoder, a different solver, or a structural argument on the orbit matrix
+  that avoids the 41,745-variable search is still open. What route 11 does **not**
+  establish: no order-3 or order-2 automorphism exclusion, so the Aut reduction
+  to {Z₂, Z₃} and the open automorphism-group question stand untouched.
 - Re-running the local-radius growth: it is exhausted (fixed point).
 - Re-encoding the local ball in SAT/CP-SAT, and (per the operator) the
   radius-2 CP-SAT setup generally — it burned two specialists for zero
@@ -333,8 +403,11 @@ existence of `srg(99,14,1,2)`.
 
 - **Not established:** existence or nonexistence of `srg(99,14,1,2)`. Stated
   first and plainly (§0).
-- **Established (verified-computationally / sourced):** `n₃ ≥ 1` (§1); six
+- **Established (verified-computationally / sourced):** `n₃ ≥ 1` (§1); **eleven**
   closed routes with obstructions (§2); five-member family, `2u+1 | 63`
   integrality, `α = 22` coclique bound (§3); the retracted false positive (§4);
-  no local obstruction at any radius, stable fixpoint at radius 6 (§5–§6).
+  no local obstruction at any radius, stable fixpoint at radius 6 (§5–§6); no
+  global counting floor (route 7), incidence p-rank unmeasurable/circular
+  (route 8), two-graph reformulation inert (route 9); verified constraint
+  `3 ≤ n₃ ≤ 4158`.
 - **The run does not claim the problem.**

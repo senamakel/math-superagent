@@ -11,7 +11,8 @@ statement: For any planar point set X in general position with distinct x-coordi
   whose union is exactly n points in convex position.
 hypotheses: general position (no 3 collinear), distinct x-coordinates, n in 3..|X|.
 holds-here: true
-status: checked
+status: gapped (Lean decomposition; one open `sorry` leaf, no Cited axiom)
+formalisation: code/lean/g_cupcap_verified.lean
 bearing: confirms the classical cup/cap route to convexity that everything in ES uses;
   also shows "sharing both x-extreme points" was sufficient for convexity in every
   observed case (0 nonconvex shared-extreme pairs seen, though such pairs are plentiful).

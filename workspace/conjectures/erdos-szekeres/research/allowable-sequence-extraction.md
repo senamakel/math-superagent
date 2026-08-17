@@ -14,7 +14,33 @@ Scope: what the held sources actually establish about Goodman–Pollack allowabl
 | Morris–Soltan 2000 survey (BAMS 37:437–458) | Full text | **§5.5 Duality**: the *dual* ES problem (simple line arrangements + a point q, sub-arrangement whose q-cell is a convex n-gon); pseudoline version Nps(n); Goodman–Pollack conjecture Nps(n) ≤ 2^{n−2}+1. **No circular sequence of permutations, no k-sets, no reversal-depth** |
 | Goaoc–Welzl 2020/2022 | Full text (ar5iv) | Uses "order type" (Goodman–Pollack terminology) only; **no k-sets, no allowable sequence** |
 
-**The library holds no primary definition of the Goodman–Pollack allowable/circular sequence, no k-set characterization in it, and no staircase-of-reversals convexity statement.** The approach file's two load-bearing citations (GP80 for the representation and its convexity encoding; Abello–Eğecioğlu–Kumar for circular sequences as maximal chains in the weak Bruhat order with convexity via balanced tableaux) are both unheld. The staircase/convexity description appears in the approach file itself as its mechanism, attributed to that literature, but is **not sourced by anything on disk**.
+**UPDATE (later librarian cycle, now resolved).** The definition of the GP allowable
+(circular) sequence IS now held on disk — added as
+`sources/slmath-goodman-pollack-allowable-sequences-chapter22.full.md` (Hagit Last,
+"Two Proofs for Sylvester's Problem Using an Allowable Sequence", MSRI Publications
+52 (2005) 433–436, free at https://library.slmath.org/books/Book52/files/22last.pdf).
+It gives the exact construction (project S onto a line rotating 180° about a point P;
+new permutation per critical slope direction by reversing the collinear points =
+reversed substring; runs 1..n to n..1; each pair switches exactly once per
+half-period, so C(n,2) events for a simple configuration) and attributes it to
+GP80/GP93. This closes the definition half of the `gp80-not-held-circular-sequence-unsourced`
+gap — see claim `gp-allowable-sequence-definition`. What remains genuinely unsourced:
+the **convexity/balanced-tableaux content** of Abello–Eğecioğlu–Kumar 1995 (still not
+held) and the staircase-of-reversals characterization (still not sourced by any text;
+machine-verified pointwise-extreme criterion survives, contiguous-block form refuted —
+see the approach file's adjudication).
+
+So the broad statements below should be read with this update in view: the library
+**does now** hold a primary definition of the allowable/circular sequence; it **still
+does not** hold a k-set characterization in it, nor a staircase-of-reversals convexity
+statement, nor the AEK balanced-tableaux content.
+
+**The library holds no staircase-of-reversals convexity statement.** After the update
+above, the definitional gap is closed but the staircase/convexity description still
+appears only in the approach file as its mechanism, attributed to that literature; it is
+**not sourced by anything on disk** (and the adjudication in
+`research/approaches/allowable-sequence-circular-representation.md` refutes the literal
+contiguous-block form).
 
 ## Question (2): the "staircase of contiguous reversals" claim — is it stated anywhere?
 
@@ -29,7 +55,12 @@ Scope: what the held sources actually establish about Goodman–Pollack allowabl
 
 ## Question (1): exact definition of the GP allowable/circular sequence and of k-sets in it
 
-**The exact definitions cannot be quoted from the library** — the primary texts are not held. What can be said from held sources and from the approach file's citation of GP80:
+**The exact definitions CAN now be quoted from the library** — a free primary
+definition is held (`sources/slmath-goodman-pollack-allowable-sequences-chapter22.full.md`,
+Last 2005, MSRI 52:433–436; see claim `gp-allowable-sequence-definition`). The primary
+GP80 paper itself remains paywalled at Elsevier (DOI 10.1016/0097-3165(80)90011-4), but
+its definition of the circular/allowable sequence is faithfully reproduced by the held
+MSRI chapter and by Dumitrescu arXiv:2204.06101 (both held).
 
 - **From the approach file (this run's own record, unverified):** a 2-periodic sequence of permutations of the n points in which consecutive permutations differ by reversing a set of increasing blocks, and over one full period every unordered pair is reversed exactly once; convexity questions are encoded by it; GP80 classifies n = 3, 4, 5 into 1, 2, 19 classes and refutes Perrin's claim that every allowable sequence is realizable (counterexample at n = 5). **None of this is in any held source text**; it is the approach file's citation of GP80's abstract/known content.
 - **From Morris–Soltan §5.5 (held, verbatim):** the *dual* ES problem in terms of simple arrangements of lines — "The dual problem is then to determine the smallest integer N(n) so that every simple arrangement of N(n) lines together with a point q not on any line contains a sub-arrangement of n lines for which the cell containing q is a convex n-gon"; "Goodman and Pollack [37] conjectured that the inequality N(n) ≤ 2^{n−2} + 1 holds even if 'lines' in the dual Erdős–Szekeres problem are replaced by 'pseudolines'." This is the point-line duality ES problem (GP82 "A theorem of ordered duality"), distinct from the circular-sequence-of-permutations representation, and is the only *held* GP-adjacent material.

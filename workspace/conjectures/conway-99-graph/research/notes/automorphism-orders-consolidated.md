@@ -76,9 +76,16 @@ Behbahani–Lam; order-2/order-6/S₃ groups are constrained to {Z₂,Z₆,S₃}
 Net: a non-trivial automorphism group, if any, is very small. Whether G is
 trivial is open.
 
+This note is the answering source for the request `exact-list-prime-051a`
+(which prime orders are excluded, by whom, computer-assisted?) — see the
+`answers: exact-list-prime-051a` line in the claim block below; the consolidated
+table answers it fully.
+
 ## Gap for the run
 What remains open on automorphisms: whether G is trivial, and the exact orbit
-structure of remaining candidate groups (e.g. a hypothetical Z₂ or Z₇).
+structure of remaining candidate groups (e.g. a hypothetical Z₂ or Z₇). The
+*prime-order exclusion list* itself is settled (table above) — that is a
+different question from these open ones.
 Makhnev's own survey (2010) and the (85,14,3,2) / other μ=2 papers in the
 frontier apply his Higman-method to neighbours; those are secondary.
 

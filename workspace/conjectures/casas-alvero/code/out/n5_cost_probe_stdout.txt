@@ -1,0 +1,6 @@
+n=5 R_i (a1=0) construction: 0.1s
+  R_1: 102 ops
+  R_2: 60 ops
+  R_3: 22 ops
+  R_4: 2 ops
+n=5 a1=0 grevlex GB: 27 polys in 0.1s

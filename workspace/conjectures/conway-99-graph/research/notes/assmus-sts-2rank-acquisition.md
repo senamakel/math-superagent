@@ -77,5 +77,5 @@ answers: (none of the two open REQUESTS; this grounds a live approach instead)
 
 ## Files
 - Full text: `research/sources/assmus-2ranks-sts-fulltext.full.md`
-- Landing/abstract: `research/sources/assmus-2ranks-steiner-triple-systems.full.md`
+- Landing/abstract: `research/summaries/assmus-2ranks-steiner-triple-systems.ejc-1995.md` (source URL https://doi.org/10.37236/1203)
 - Computation: `code/out/incidence_p_rank.captured.txt`, `code/out/incidence_rank_crosscheck.captured.txt`

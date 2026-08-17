@@ -1,0 +1,78 @@
+=== STEP A / control: pi-wedge = full rotating-LINE enumeration ===
+n=5: N=8  sides_enum=56 (=N(N-1)=56? True)  size-target checked=8  VALID line splits=4 (distinct bipartitions=2)
+     L=[1, 4, 5, 6]  R=[0, 2, 3, 7]
+     L=[0, 5, 6, 7]  R=[1, 2, 3, 4]
+     L=[1, 2, 3, 4]  R=[0, 5, 6, 7]
+     L=[0, 2, 3, 7]  R=[1, 4, 5, 6]
+n=6: N=16  sides_enum=240 (=N(N-1)=240? True)  size-target checked=22  VALID line splits=2 (distinct bipartitions=1)
+     L=[1, 5, 6, 7, 8, 9, 10, 11]  R=[0, 2, 3, 4, 12, 13, 14, 15]
+     L=[0, 2, 3, 4, 12, 13, 14, 15]  R=[1, 5, 6, 7, 8, 9, 10, 11]
+n=7: N=32  sides_enum=992 (=N(N-1)=992? True)  size-target checked=32  VALID line splits=0 (distinct bipartitions=0)
+
+--- proper-wedge apex sweep n=5,6 (named apexes) ---
+
+=== STEP A / proper-wedge apex sweep: n=5 N=8 target=4 ===
+  apex (Fraction(2500, 1), Fraction(2750, 1)): distinct size-4 bipartitions swept; both-halves-(4)-avoiding: 2
+      PROPER wedge: L=[1, 2, 3, 6]
+             R=[0, 4, 5, 7]
+      PROPER wedge: L=[1, 4, 5, 6]
+             R=[0, 2, 3, 7]
+  apex (Fraction(2500, 1), Fraction(3000, 1)): distinct size-4 bipartitions swept; both-halves-(4)-avoiding: 2
+      PROPER wedge: L=[1, 2, 3, 6]
+             R=[0, 4, 5, 7]
+      PROPER wedge: L=[1, 4, 5, 6]
+             R=[0, 2, 3, 7]
+
+=== STEP A / proper-wedge apex sweep: n=6 N=16 target=8 ===
+  apex (Fraction(2500, 1), Fraction(2750, 1)): distinct size-8 bipartitions swept; both-halves-(5)-avoiding: 1
+      PROPER wedge: L=[1, 5, 6, 7, 8, 9, 10, 11]
+             R=[0, 2, 3, 4, 12, 13, 14, 15]
+  apex (Fraction(2500, 1), Fraction(3000, 1)): distinct size-8 bipartitions swept; both-halves-(5)-avoiding: 1
+      PROPER wedge: L=[1, 5, 6, 7, 8, 9, 10, 11]
+             R=[0, 2, 3, 4, 12, 13, 14, 15]
+
+--- n=7 proper-wedge apex sweep grid ---
+
+=== STEP A / proper-wedge apex sweep: n=7 N=32 target=16 ===
+  apex (Fraction(2300, 1), Fraction(2600, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2300, 1), Fraction(2725, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2300, 1), Fraction(2750, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2300, 1), Fraction(2850, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2300, 1), Fraction(3000, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2400, 1), Fraction(2600, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2400, 1), Fraction(2725, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 1
+      PROPER wedge: L=[1, 2, 3, 4, 5, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+             R=[0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 27, 28, 29, 30, 31]
+  apex (Fraction(2400, 1), Fraction(2750, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2400, 1), Fraction(2850, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2400, 1), Fraction(3000, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2500, 1), Fraction(2600, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2500, 1), Fraction(2725, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2500, 1), Fraction(2750, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2500, 1), Fraction(2850, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2500, 1), Fraction(3000, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2600, 1), Fraction(2600, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2600, 1), Fraction(2725, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2600, 1), Fraction(2750, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2600, 1), Fraction(2850, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2600, 1), Fraction(3000, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2700, 1), Fraction(2600, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2700, 1), Fraction(2725, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2700, 1), Fraction(2750, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2700, 1), Fraction(2850, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+  apex (Fraction(2700, 1), Fraction(3000, 1)): distinct size-16 bipartitions swept; both-halves-(6)-avoiding: 0
+
+=== SUMMARY ===
+Control pi-wedge (full line) valid bipartitions: n=5 -> 2, n=6 -> 1, n=7 -> 0
+n=5: proper-wedge valid splits over named apexes: 4
+n=6: proper-wedge valid splits over named apexes: 2
+n=7: proper-wedge valid splits over swept apex grid: 1 (apexes used: 25)
+  A PROPER WEDGE SPLIT EXISTS AT n=7:
+    apex (Fraction(2400, 1), Fraction(2725, 1)): L=[1, 2, 3, 4, 5, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+             R=[0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 27, 28, 29, 30, 31]
+
+  [context] even-index block indices (size 16):
+    [0, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 26, 27, 28, 29, 30]
+  [context] odd-index block indices  (size 16):
+    [1, 2, 3, 4, 5, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 31]
+  (compare against any valid wedge split index sets above)

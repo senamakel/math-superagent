@@ -1,0 +1,44 @@
+==============================================================================
+M♮-certificate Cert(F) vs Alb(F) classification (exact)
+  Alb  = abundant elements (density >= 1/2), exact integer counts
+  Cert = M♮-certifiable elements (Z3 QF_LRA, exact reals)
+  over-certification : x in Cert, x not in Alb
+  under-certification: x in Alb, x not in Cert
+==============================================================================
+
+--- n=1 (COMPLETE: 3/3 families) ---
+  families with over-certified element : 0
+  families with under-certified element: 0
+  families with Cert == Alb (rigid)     : 3
+
+--- n=2 (COMPLETE: 13/13 families) ---
+  families with over-certified element : 2
+  families with under-certified element: 2
+  families with Cert == Alb (rigid)     : 9
+  first over-cert exemplar: F=[0, 1, 3] over-cert=[1] alb=[0]
+  first under-cert exemplar: F=[3] under-cert=[0, 1] alb=[0, 1]
+
+--- n=3 (COMPLETE: 121/121 families) ---
+  families with over-certified element : 24
+  families with under-certified element: 46
+  families with Cert == Alb (rigid)     : 51
+  first over-cert exemplar: F=[0, 1, 3] over-cert=[1] alb=[0]
+  first under-cert exemplar: F=[1] under-cert=[0] alb=[0]
+
+--- n=4 (BOUNDED, partial by budget) ---
+  families covered: 932/4959 (PARTIAL (budget 240s))
+  families with over-certified element : 110
+  families with under-certified element: 663
+  families with Cert == Alb (rigid)     : 159
+  first over-cert exemplar: F=[0, 1, 3, 5, 7] over-cert=[1, 2] alb=[0]
+  first under-cert exemplar: F=[1] under-cert=[0] alb=[0]
+
+==============================================================================
+VERDICT
+  over-certification present (Cert not subset Alb)  : True
+  under-certification present (Alb not subset Cert) : True
+  BOTH directions present (approach neither rigid    : True
+    nor trivially valid): Cert != Alb is the norm, so the
+    M♮-weight certificate class neither PROVES UC nor is
+    it a clean characterization of abundance.
+  total (family,element) feasibility checks run (n<=3 + budget n=4): 1069

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "extremal-split-stability/G-cupcap",
+  "source": "code/lean/extremal_split_stability_G_cupcap.lean",
+  "stage": "decompose"
+}

@@ -1,0 +1,24 @@
+=== BvLS automorphisms fixing 0: orders and fixed-set sizes ===
+  fixed size 1: count=5, orders={2: 1, 10: 4}
+  fixed size 3: count=14, orders={4: 10, 5: 4}
+  fixed size 9: count=15, orders={2: 5, 4: 10}
+  fixed size 27: count=5, orders={2: 5}
+  fixed size 243: count=1, orders={1: 1}
+
+=== Detail on one 27-vertex 'neither' case ===
+automorphism perm: (0, 2, 1, 4, 3) signs: (1, 1, 1, 2, 2) order: 2
+|F| = 27 edges = 81
+degrees (fixed set): [6]
+lambda (adjacent common-neighbour) distribution: {1: 162}
+mu     (non-adjacent common-neighbour) distribution: {0: 216, 2: 324}
+
+Interpretation: the fixed set is NOT a coclique (81 edges) and NOT an SRG
+(lambda takes the values above, mu takes the values above -> non-constant).
+So the folklore lemma stated as 'fixed set is a coclique or a smaller SRG'
+FAILS on this control.  The fixed set is a 6-regular graph that is neither.
+
+=== Contrast: a size-9 fixed set that DOES induce srg(9,4,1,2) ===
+  fixed size 9, edges=18, deg=[4]
+     lambda dist={1: 36}, mu dist={2: 36}
+     -> strongly regular srg(9,4,1,2) confirmed (is_srg check below)
+     is_srg(F,9,4,1,2): (True, 'srg(v,k,lambda,mu) confirmed by exact common-neighbour counts')

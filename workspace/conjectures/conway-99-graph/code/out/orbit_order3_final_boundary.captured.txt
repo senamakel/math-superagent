@@ -1,0 +1,62 @@
+ORDINAL ORDER-3 ORBIT-MATRIX RUN — FINAL BOUNDARY (directive 36 closure)
+=====================================================================
+Task: orbit-matrix-g99-detached — srg(99,14,1,2), m=33 fixed-point-free order-3
+automorphism, orbit-matrix find-mode, PLAIN encoder (no symbreak), exact integer Z.
+
+Date/run: captured at the natural termination of the kept plain heartbeat process.
+
+ENCODER PROCESSES
+-----------------
+Killed (the buffered duplicate): PID 5504
+    cmd: python orbit_z3_encoder.py g99 3600   (started 04:15, no -u => buffered)
+    Verdict: the old buffered encoder writing the second half of every doubled line.
+    Killed early in this closure; the alive-check confirmed its PID went <defunct>.
+
+Kept (the plain unbuffered heartbeat writer, per directive 33): PID 5789
+    cmd: python -u orbit_z3_g99_plain_heartbeat.py g99 3000
+    Verdict: ran to its 3000s budget and exited <defunct>. Exactly ONE live
+    encoder process remained alive throughout after the kill (only 5789).
+
+NOTE ON THE DOUBLING: even after only the single plain process 5789 remained
+alive, every #Model line continued to appear twice with identical timestamps.
+Conclusion: the doubling is intrinsic to CP-SAT's own progress logging firing in
+addition to the log_callback heartbeat (the log_callback lambda echoes every
+line CP-SAT emits, including its own native progress log), NOT a second live
+process. Only one encoder process ever ran post-kill. The two summary blocks
+(lines ~754 and ~771) both come from this single process's final flush.
+
+FINAL BOUNDARY (read from tail of orbit_z3_enc_g99_plain_detached.captured.txt)
+------------------------------------------------------------------------------
+Last logged #Model bound: 2974.64s  var:41675/41745  constraints:56987/57165
+Solver walltime reached:   3000.4s   (usertime 3000.4, deterministic 3972.43)
+Final var/constraints:      41675/41745 variables, 56987/57165 constraints
+                            (528 primary variables)
+
+Solver summary (from CpSolverResponse):
+    status:         UNKNOWN
+    objective:      NA
+    best_bound:     NA
+    integers:       36465
+    booleans:       5841
+    conflicts:      5039266
+    branches:       8049382
+    restarts:       6401
+    lp_iterations:  0
+    gap_integral:   0
+
+Process state at capture: PID 5789 EXITED (zombie/defunct), having printed
+    "final solver status: UNKNOWN"
+    "INCONCLUSIVE (timeout/UNKNOWN): no verdict; record is the budget and the
+     last bound above."
+
+VERDICT (honest)
+----------------
+NO INFEASIBLE was reached within the 3000s budget.
+=> NO order-3 fixed-point-free automorphism is EXCLUDED by this run.
+   The run is INCONCLUSIVE / TIMEOUT and proves nothing either way.
+   Per verdict semantics: UNKNOWN/TIMEOUT proves nothing; the record is the
+   budget (3000s) and the boundary (var 41675/41745, constraints 56987/57165,
+   last bound 2974.64s over 3000.4s wall with 0 gap_integral).
+
+The order-3 automorphism nonexistence question REMAINS OPEN. No new search was
+started (directive 36 is operational cleanup + boundary recording only).

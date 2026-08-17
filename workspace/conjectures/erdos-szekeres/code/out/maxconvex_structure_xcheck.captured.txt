@@ -1,0 +1,11 @@
+$ python code/out/maxconvex_structure_xcheck.py
+n=5: main per-pattern sum 38 vs main total 38: OK
+  independent enumeration: 38 convex subsets (0.01s); pattern dict equality with main run: EXACT MATCH
+
+n=6: main per-pattern sum 802 vs main total 802: OK
+  independent enumeration: 802 convex subsets (1.26s); pattern dict equality with main run: EXACT MATCH
+
+n=7: main per-pattern sum 39648 vs main total 39648: OK
+  independent enumeration: 39648 convex subsets (333.84s); pattern dict equality with main run: EXACT MATCH
+
+EXIT: 0

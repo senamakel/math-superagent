@@ -1,0 +1,13 @@
+n=1: total nonempty UC = 2, |Alb| distribution = {1: 2}
+n=2: total nonempty UC = 12, |Alb| distribution = {1: 6, 2: 6}
+n=3: total nonempty UC = 120, |Alb| distribution = {1: 18, 2: 60, 3: 42}
+n=4: total nonempty UC = 4958, |Alb| distribution = {1: 64, 2: 942, 3: 2460, 4: 1492}
+n=5: total nonempty UC = 2771102, |Alb| distribution = {1: 265, 2: 30340, 3: 450750, 4: 1332525, 5: 957222}
+
+Sequence: # nonempty UC families with EXACTLY ONE abundant element,
+n=1..5:
+  n=1: 2
+  n=2: 6
+  n=3: 18
+  n=4: 64
+  n=5: 265

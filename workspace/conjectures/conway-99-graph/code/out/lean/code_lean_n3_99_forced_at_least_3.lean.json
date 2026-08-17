@@ -1,0 +1,31 @@
+{
+  "axioms": [
+    "'N3AtLeast3.cap_eq' depends on axioms: [propext]",
+    "'N3AtLeast3.three_dvd_cap' depends on axioms: [propext]",
+    "'N3AtLeast3.not_three_dvd_cap_succ' depends on axioms: [propext]",
+    "'N3AtLeast3.sharpen' depends on axioms: [propext, Quot.sound]",
+    "'N3AtLeast3.count_admissible_multiples' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'N3AtLeast3.any_srg99_n3_ge_three' depends on axioms: [propext,",
+    "'N3AtLeast3.any_srg99_n3_admissible' depends on axioms: [propext,"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "lemma cap_eq : (99 : ℕ) * 14 * (14 - 2) / 4 = 4158",
+    "lemma three_dvd_cap : (3 : ℕ) ∣ 4158",
+    "lemma not_three_dvd_cap_succ : ¬ (3 : ℕ) ∣ 4159",
+    "lemma sharpen {n : ℕ} (h1 : 1 ≤ n) (hdvd : 3 ∣ n) : 3 ≤ n",
+    "lemma count_admissible_multiples : ((Finset.range 4159).filter fun n => 3 ∣ n).card = 1387",
+    "theorem any_srg99_n3_ge_three {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj] (hG : G.IsSRGWith 99 14 1 2) : 3 ≤ n3 G",
+    "theorem any_srg99_n3_admissible {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj] (hG : G.IsSRGWith 99 14 1 2) : 3 ≤ n3 G ∧ 3 ∣ n3 G ∧ n3 G ≤ 4158",
+    "lemma residue_alone_admits_zero : 3 ∣ (0 : ℕ)",
+    "lemma cap_sharp : 3 ∣ (4158 : ℕ) ∧ (4159 : ℕ) > 4158"
+  ],
+  "file": "code/lean/n3_99_forced_at_least_3.lean",
+  "missing_modules": [],
+  "outcome": "verified",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": true
+}

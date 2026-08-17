@@ -85,6 +85,28 @@ failed sat_solver attempt, agent-run-81 ref in thread `n3-forced`.)
 
 #claim-block
 ```claim
+id: keramatipour-paley9-pattern-holds-on-controls
+statement: Lemma 3.4.1's Paley(9) pattern (Definition 12: for every vertex v
+  and every two matched edges {v1,v2},{v3,v4} of N(v), the 9-vertex induced
+  subgraph on {v, v1..v4, and the four common neighbours of the cross pairs}
+  is Paley(9)) is CONFIRMED present on BOTH existing controls: rook(3) =
+  srg(9,4,1,2) (9 pattern-configurations, all Paley(9)) and bvls = srg(243,22,1,2)
+  (13365 configurations, all Paley(9)), exact check.
+hypotheses: srg(v,k,1,2); the Paley(9) pattern as in Keramatipour Def 12.
+holds-here: yes on both controls. Contrast: Theorem 3.4.2 (asserted-by-source,
+  unchecked) says a putative (99,14,1,2) CANNOT follow the pattern. Since the
+  pattern holds on the k=4 and k=22 members, Theorem 3.4.2's claim is a genuine
+  k=14-specific separator ONLY IF its proof genuinely uses a k=14 dependence
+  absent at k=4,k=22 — the thesis proof is informal and must be independently
+  verified before it is used as a 99-forbidden-configuration deliverable.
+status: checked (this run's exact computation, code/out/paley9_pattern_check_fixed.captured.txt).
+bearing: confirms the control-side of the Paley(9) pattern line; marks
+  Theorem 3.4.2 as the candidate 99-specific forbidden configuration whose
+  soundness (does it rule out rook(3)?) is the open verification.
+anchor: research/sources/keramatipour-sat-conway99-body.full.md
+```
+
+```claim
 id: keramatipour-trian-graph-nk6-3k-6-2
 statement: The triangular graph C3(Gamma) of an (n,k,1,2) strongly regular
   graph Gamma (vertices = triangles, edges = triangles sharing a vertex) has

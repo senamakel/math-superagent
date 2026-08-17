@@ -1,0 +1,15 @@
+k    v      t0      d2     cross   outer     rep   b*3=N*r?
+  4      9     2      4      4       0    0  OK
+  8     33     4     24     24      16    2  OK
+ 14     99     7     84     84     140    5  OK
+ 22    243    11    220    220     660    9  OK
+ 32    513    16    480    480    2240   14  OK
+ 44    969    22    924    924    6160   20  OK
+112   6273    56   6160   6160  110880   54  OK
+994 494019   497 493024 493024 81348960  495  OK
+
+distance-2 vertex counts (feasible k): [4, 84, 220, 6160, 493024]
+outer block counts (feasible k):       [0, 140, 660, 110880, 81348960]
+replication (feasible k):               [0, 5, 9, 54, 495]
+multiplicities f(r) (feasible):         [4, 54, 132, 3280, 250914]
+multiplicities g(s) (feasible):         [4, 44, 110, 2992, 243104]

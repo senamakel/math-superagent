@@ -1,0 +1,41 @@
+========================================================================
+TWO-GRAPH DESCENDANT ARITHMETIC GATE  (exact integer arithmetic)
+========================================================================
+=== 99 :: srg(99,14,1,2) ===
+  k = 14, 2*mu = 4,  k == 2*mu : False
+  descendant n = 2(2k-lam-mu) = 50  (v = 99)
+  -> NOT a descendant (k != 2*mu). The cone by an isolated vertex is NOT a regular two-graph.
+
+oracle controls confirmed: rook(3)=srg(9,4,1,2), bvls=srg(243,22,1,2)
+
+=== rook(3) :: srg(9,4,1,2) ===
+  k = 4, 2*mu = 4,  k == 2*mu : True
+  descendant n = 2(2k-lam-mu) = 10  (v = 9)
+  -> IS a descendant of a regular two-graph (on 10 points).
+
+=== bvls(243) :: srg(243,22,1,2) ===
+  k = 22, 2*mu = 4,  k == 2*mu : False
+  descendant n = 2(2k-lam-mu) = 82  (v = 243)
+  -> NOT a descendant (k != 2*mu). The cone by an isolated vertex is NOT a regular two-graph.
+
+========================================================================
+VERDICT
+========================================================================
+  (99,14,1,2): k=14 vs 2*mu=4  -> descendant? False    (expected False)
+  (9,4,1,2) : k=4  vs 2*mu=4  -> descendant? True     (expected True: Paley two-graph on 10)
+  (243,22,1,2): k=22 vs 2*mu=4 -> descendant? False  (expected False)
+
+Reconciliation of the approach's control-test claim (BvLS descends from a
+244-point ternary-Golay two-graph): the gate says k=22 != 2*mu=4, so BvLS is
+NOT a descendant of a *regular* two-graph under this necessary-and-sufficient
+condition. The 244-point object that does exist (ternary Golay code, adjacent
+iff syndrome difference is a unit column) is a co-edge-regular two-graph whose
+descendants ARE srg(243,22,1,2) — but that two-graph is NOT regular (its Seidel
+matrix has three distinct eigenvalues, not two). So 'associated with a two-graph'
+and 'descendant of a REGULAR two-graph' are different: the gate's k=2*mu criterion
+is about REGULAR two-graphs, and it is exactly there that BvLS (and 99) fail,
+while the looser 'descendant of *some* two-graph' holds for BvLS. No disagreement
+with a sourced theorem: the criterion is the regular-two-graph one.
+
+CONCLUSION: (99,14,1,2) fails k=2*mu and n==2(2k-lam-mu) (14!=4, 99!=50). The
+reformulation to a regular two-graph is INERT for 99 exactly as for 243. Line stays closed.

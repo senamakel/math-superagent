@@ -1,0 +1,47 @@
+PROGRAM: code/search/ca-degree20/diversify_run.py - diversified degree-20 candidate search (div2 batch, 5 families, 18 candidates)
+SCORER: code/search/ca-degree20/score.py - exact sympy Poly.gcd over QQ (canonical; runner re-derives first-failing-j identically and checks agreement)
+BASE RING: QQ ; candidate count: 18 (div2_<family>_<param>.py; trinomial/root-multiset/factored/cyclotomic/chebyshev)
+==================================================================
+18 div2 candidates scored
+
+=== per-candidate (score, first-failing-j) ===
+file                                   family               score     ff
+div2_cheb_h1.py                        CHEBYSHEV                1      2
+div2_cheb_h2.py                        CHEBYSHEV                0      1
+div2_cheb_h3.py                        CHEBYSHEV                1      2
+div2_cyclo_c1.py                       CYCLOTOMIC               3      4
+div2_cyclo_c2.py                       CYCLOTOMIC               1      2
+div2_cyclo_c3.py                       CYCLOTOMIC              15     12
+div2_factored_f1.py                    FACTORED (x-r)^m g      14     15
+div2_factored_f2.py                    FACTORED (x-r)^m g      13     14
+div2_factored_f3.py                    FACTORED (x-r)^m g      15     16
+div2_factored_f4.py                    FACTORED (x-r)^m g      17     15
+div2_rootset_r1.py                     ROOT-MULTISET           15     16
+div2_rootset_r2.py                     ROOT-MULTISET           14     15
+div2_rootset_r3.py                     ROOT-MULTISET            8      8
+div2_trinomial_t1.py                   TRINOMIAL               17      3
+div2_trinomial_t2.py                   TRINOMIAL               17      5
+div2_trinomial_t3.py                   TRINOMIAL               17      6
+div2_trinomial_t4.py                   TRINOMIAL               17      9
+div2_trinomial_t5.py                   TRINOMIAL               17      2
+
+=== first-failing-j DISTRIBUTION BY FAMILY ===
+  CHEBYSHEV            first-fail j=1    : 1
+  CHEBYSHEV            first-fail j=2    : 2
+  CYCLOTOMIC           first-fail j=12   : 1
+  CYCLOTOMIC           first-fail j=2    : 1
+  CYCLOTOMIC           first-fail j=4    : 1
+  FACTORED (x-r)^m g   first-fail j=14   : 1
+  FACTORED (x-r)^m g   first-fail j=15   : 2
+  FACTORED (x-r)^m g   first-fail j=16   : 1
+  ROOT-MULTISET        first-fail j=15   : 1
+  ROOT-MULTISET        first-fail j=16   : 1
+  ROOT-MULTISET        first-fail j=8    : 1
+  TRINOMIAL            first-fail j=2    : 1
+  TRINOMIAL            first-fail j=3    : 1
+  TRINOMIAL            first-fail j=5    : 1
+  TRINOMIAL            first-fail j=6    : 1
+  TRINOMIAL            first-fail j=9    : 1
+
+NO NON-TRIVIAL SCORE-19: bug guard clean. All div2 scores < 19; reaching 19 is exactly the open CA conjecture (only (x-a)^20
+legitimately hits it, which the scorer rejects as the trivial family). So no candidate here is a counterexample -- by construction.

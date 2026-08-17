@@ -1,0 +1,10 @@
+u   k     v        triangles       pentagons p5          coclique alpha
+ 1    4       9            6                  0          3
+ 3   14      99          231              33264         22
+ 4   22     243          891             384912         45
+10  112    6273       117096         1669320576        561
+31  994  494019     81842481     96451036488576      15408
+
+pentagon sequence (feasible u):  [0, 33264, 384912, 1669320576, 96451036488576]
+triangle sequence:                [6, 231, 891, 117096, 81842481]
+coclique-alpha sequence:          [3, 22, 45, 561, 15408]

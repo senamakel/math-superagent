@@ -4,7 +4,38 @@ Librarian report, current state of `research/sources/`. Every verified source ha
 its URL recorded inside the file. Full texts are never edited; summaries are in
 `research/summaries/` and are the scholar's to maintain.
 
-## Latest librarian cycle — forbidden-order-type restricted class now held in full
+## Latest librarian cycle — completed the Dumitru ES(7) summary (library-gap close)
+
+This cycle verified the two newest arXiv entries in the library are genuine (Dumitru
+2512.24061, Koshelev–Koshka 2604.20120 — confirmed against live search; neither is an
+invented citation), confirmed all 7 MIS-DOWNLOAD quarantine files have genuine `correct`
+siblings, and **closed a library gap**: the Dumitru "Notes on the 33-point Erdős–Szekeres
+problem" summary was an unfinished `digest only` template with no claim blocks, despite
+being the most recent direct ES(7) attack in the library. I read the full source and wrote
+`research/summaries/dumitru-notes-on-33-point-esz-arxiv2512.24061.md` with a claim block
+(`dumitru-es7`): ES(7)=33 is STILL OPEN as of Dec 2025; the encoding (triple-orientation +
+14-pattern 4-set criterion + convex-layer anchoring, 578,336 vars / 16,670,808 clauses)
+proves UNSAT only for anchored subfamilies, not the full 33-point case; the reduced-5-point
+relaxation's soundness (relaxed UNSAT ⟹ stronger UNSAT) is the key logical takeaway. The
+run's `es-nogon-k7-rung` must treat 32 as the record and 33+ as a would-be refutation
+needing independent re-verification. The three standing requests (balko-valtr-attack-baa4,
+open-access-full-1e6e, full-text-faithful-b96b) remain answered by held full texts.
+
+## Prior cycle — two adjacent-problem closes + one dead-end close
+
+This cycle: (1) acquired the Balko–Bhore–Martinez-Sandoval–Valtr "k-convex point sets"
+(mis-downloaded to an unrelated hep-th paper, then correctly identified; only the abstract
+is held — full text paywalled; it is an ADJACENT relaxation of convex position, NOT a
+restricted class, so it is context only, filed with a drift-guard claim `balko-bhore-kconvex-abstract`);
+(2) closed the standing SMQH inner-12 "gap" as a DEAD END — the six non-realizable inner-12
+configurations were never published as data and the automatic-symmetries repo tree (held)
+has no 32-point/inner-12 files, so the claim rests on the paper's assertion alone
+(`research/summaries/LIBRARIAN-closed-SMQH-inner12-dead-end.md`);
+(3) verified the three long-standing requests (balko-valtr-attack-baa4, open-access-full-1e6e,
+full-text-faithful-b96b) are all answered by primary full texts on disk with `answers:` claim
+blocks — no later run should re-open them; ROOT.md §7 rows 2–3 listing them open are stale.
+
+## Prior cycle — forbidden-order-type restricted class now held in full
 
 Previously the library's most-documented-not-held gap is now closed with **primary
 full texts**. Both fill GOAL 1's "restricted classes" arm and the order-type

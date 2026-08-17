@@ -7,7 +7,10 @@ status: open
 rests-on: root-difference-identity (proved char-free,
       research/notes/root-difference-identity-verified.md),
       gvb-coefficient-descent-charp (this note),
-      hasse-vs-ordinary (dead), polstra-convex-hull-theorem
+      hasse-vs-ordinary (dead), polstra-convex-hull-theorem,
+      macintyre-goncaroff-bounds (research/summaries/macintyre1949...
+      .md) -- the analytic bounds on the Abel-Goncharoff G_n that the
+      char-0-only collapse step would ultimately be measured against
 next: The char-p break is now NAMED at the pivot level (coefficient descent,
       stops where the first pivot (d choose d-1) = d is not 0 mod p, i.e. the
       witness degree d = p+1). What remains open is the CHAR-0-only ingredient
@@ -20,6 +23,33 @@ next: The char-p break is now NAMED at the pivot level (coefficient descent,
 ```
 
 ## Findings
+
+0b. **The two-shared-roots stratum has a structural source (scholar, Kostov 2020).**
+   Kostov's higher-order-discriminant factorisation
+   Res(D~_m, ∂D~_m/∂a_k, a_k) = A_{m,k} B_{m,k} C_{m,k}² says C_{m,k}=0 is the
+   closure of the parameter set where P and P^(m) share TWO distinct roots
+   (`kostov-higher-order-discriminant-two-shared-roots`). The run's R_i =
+   Res(f, H_i f) are the same resultant family (up to the Hasse unit 1/i! in
+   char 0), so this gives an independent, sourced description of the
+   shared-root-multiplicity stratum the collapse step must rule out in char 0 —
+   and it is irreducible and quasi-homogeneous with weight(a_j)=j, so any
+   collapse argument in the weighted (centroid-pinning) normalisation is
+   consistent with it. Char-0 (C[a]) only; no char-p content.
+
+0. **The named char-p break is NOT (only) per-color Hasse vacuity — confirmed
+   by a fully NON-vacuous char-p refutation at n=6, p=7 (this run, refuter).**
+   f = x^6 − x^2 over F_7: p = 7 > n = 6, so no binomial coefficient C(6,i)
+   vanishes and every Hasse derivative H_1=6x^5+5x, H_2=x^4−1, H_3=6x^3,
+   H_4=x^2, H_5=6x is nonzero; the pinned-centroid descent break p|n−1 also
+   does not occur (7 ∤ 5). Yet f has three F_7-roots {0(mult 2),1,6}, is not a
+   pure power, and shares a root with each H_i. `find_counterexample` on
+   code/refute/ca_deg6_char7.p returns **refuted** (model matches the hand
+   tables entry-for-entry; 7 is the 3rd published degree-6 bad prime, Castryck
+   2012 Table 1). So the char-0 collapse step must fail at n=6,p=7 for a reason
+   OTHER than derivative degeneracy — the missing char-0-only ingredient
+   (Gauss-Lucas / convex-hull propagation) alone carries the obstruction, and
+   any collapse-step argument must survive THIS witness (all H_i ≠ 0), not just
+   x^{p+1}−x^p. → code/out/refute_deg6_char7.md (claim deg6-char7-nonvacuous-refuted)
 
 1. **The identity holds and is a tautology, char-free** (already recorded in
    `root-difference-identity-verified.md`): `H_i(f)(x) = e_{n-i}(x-beta_*)`,

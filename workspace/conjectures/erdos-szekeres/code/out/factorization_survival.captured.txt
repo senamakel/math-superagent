@@ -1,0 +1,34 @@
+$ python code/out/factorization_survival.py
+n=6 block sizes=[1, 4, 6, 4, 1] sum=16 (expect 16)
+
+=== ARC (control, es_construct's own placement) ===
+  [arc] total_convex=802 distinct_patterns=10 factorization=True unresolved=0 mid_sym=None
+      g_0: {0: 1, 1: 1}
+      g_1: {0: 1, 1: 4, 2: 6, 4: 1}
+      g_2: {0: 1, 1: 6, 3: 10}
+      g_3: {0: 1, 1: 4, 2: 6, 4: 1}
+      g_4: {0: 1, 1: 1}
+
+=== SCRAMBLED y (off the arc) ===
+  gp: True
+  [scrambled] total_convex=1464 distinct_patterns=30 factorization=False unresolved=1 mid_sym=None
+      MISMATCH pat=(0, 0, 2, 3, 0) exact=60 model=24
+      MISMATCH pat=(0, 0, 3, 2, 0) exact=60 model=6
+      MISMATCH pat=(0, 1, 2, 2, 0) exact=360 model=144
+      MISMATCH pat=(0, 1, 3, 1, 0) exact=160 model=16
+      MISMATCH pat=(0, 2, 3, 0, 0) exact=60 model=6
+      g_0: {0: 1, 1: 1}
+      g_1: {0: 1, 1: 4, 2: 6, 4: 1}
+      g_2: {0: 1, 1: 6, 2: 6, 3: 1}
+      g_3: {0: 1, 1: 4, 2: 6, 3: 4, 4: 1}
+      g_4: {0: 1, 1: 1}
+
+=== STAIRCASE (x=+i, y=-i) ===
+  gp: True
+  [staircase] total_convex=802 distinct_patterns=10 factorization=True unresolved=0 mid_sym=None
+      g_0: {0: 1, 1: 1}
+      g_1: {0: 1, 1: 4, 2: 6, 4: 1}
+      g_2: {0: 1, 1: 6, 3: 10}
+      g_3: {0: 1, 1: 4, 2: 6, 4: 1}
+      g_4: {0: 1, 1: 1}
+EXIT: 0

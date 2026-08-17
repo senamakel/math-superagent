@@ -8,21 +8,20 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
-| [[extremal-split-stability]] | For every n ≥ 3, ES(n) ≤ 2^{n-2}+1 — i.e. every set of 2^{n-2}+1 points in general position in the plane contains n points in convex position. (The matching… | Let f(n) be the maximum size of a set in general position with no convex n-gon; then ES(n) = f(n)+1, so the goal is equivalent to f(n) ≤ 2^{n-2} for all n ≥ 3.… | live | 3 |
+| [[extremal-split-stability]] | For every n ≥ 3, ES(n) ≤ 2^{n-2}+1 — i.e. every set of 2^{n-2}+1 points in general position in the plane contains n points in convex position. (The matching… | Let f(n) be the maximum size of a set in general position with no convex n-gon; then ES(n) = f(n)+1, so the goal is equivalent to f(n) ≤ 2^{n-2} for all n ≥ 3.… | broken | 0 |
 
-## The open gaps — each one is a task
+## Gaps already discharged
 
-Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
+Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
 
-- [[extremal-split-stability]] `G-cupcap` — (Cup–cap characterization, Erdős–Szekeres 1935.) After a rotation making all x-coordinates distinct: a set X in general position contains n points in convex position if and only if for some k ∈ {2,…,n} it contains a k-cup C and an (n+2−k)-cap D whose leftmost and rightmost points coincide (equivalently, C ∪ D is exactly n points in convex position). A k-cup is k points in increasing x-order with strictly increasing consecutive slopes; a cap has strictly decreasing slopes.
-  - next: Formalize the statement in Lean (convex position and cup/cap over an affine point set, general position, the quantifier order), then verify both directions against the exact oracle on all small order types — all order types through 8 points and random larger sets — comparing "contains n points in convex position" with "contains a shared-endpoint k-cup + (n+2−k)-cap for some k". The lemma is classical; the run should record it as a claim, not re-derive it from scratch.
-  - _no thread — nothing is attacking this_
-- [[extremal-split-stability]] `G-split` — (Extremal splitting / stability.) For every n ≥ 4, every extremal n-avoiding set X (|X| = f(n), no convex n-gon, general position) admits a line ℓ containing no point of X such that each of the two open half-planes' parts of X contains no convex (n−1)-gon. The stronger form believed true — and what the literature calls stability/uniqueness — is that such X is, up to order-type equivalence, the Erdős–Szekeres construction (the "compressed" union of n−1 clusters of sizes binom(n−2,i)); that form implies G-split. If G-split fails for some extremal set, this skeleton is broken (the conjecture…
-  - next: SAT/CP-SAT counterexample search, only after the encoder reproduces ES(5) = 9 and ideally the Peters–Szekeres ES(6) = 17 negative on 16 points. Encode over orientation variables with the signature and transitivity axioms: does there exist an order type on f(n) points with no convex n-gon and no separating line whose two sides are both (n−1)-avoiding? For n = 6 (N = 16) an exhaustive "no" certifies G-split at n = 6; for n = 7 (N = 32) the order-type space is astronomically large, so target the refutation search — a witness kills G-split. Use G-cupcap to phrase "no convex (n−1)-gon in a…
-  - _no thread — nothing is attacking this_
-- [[extremal-split-stability]] `G-split-consistent` — (Consistency on the extremal template.) For n = 5, 6 the Erdős–Szekeres 1960 construction of 2^{n-2} points, realized in exact rational coordinates as es_construct, admits a line separating it into two (n−1)-avoiding halves (2^{n-3} points each) — 4 such splits at n=5, 2 at n=6. At n=7 the exhaustive pair-line search finds 0 such splits, so the construction's recursive decomposition does NOT witness G-split there. Valid split counts go 6,4,2,0 as n goes 4,5,6,7: the splitting-line induction is consistent with the template at n=5,6 and fails on it at n=7.
-  - next: Task `gsplit-enumeration-recheck` (updated per steer 11): Phase 1 is ACCEPTED DONE — the rotating-line enumerator matches the 2^N oracle exactly at N=8,10,12,14,16 (zero missing/zero extra, count N(N-1)). The remaining work is ONE command, not another design pass: re-capture the n=5,6,7 split counts with provenance into `code/out/gsplit_phase2.captured.txt` (exact command in task `gsplit-enumeration-recheck`), then read the capture back. If it reproduces 4 splits at n=5, 2 at n=6, 0 at n=7, promote `gsplit-enum-completeness-and-n7-zero` to checked for the split counts and retire…
-  - _no thread — nothing is attacking this_
+- [[extremal-split-stability]] `G-cupcap` — (Cup–cap characterization, Erdős–Szekeres 1935.) After a rotation making all x-coordinates distinct: a set X in general position contains n points in convex position iff for some k ∈ {2,…,n} it contains a k-cup C and an (n+2−k)-cap D whose leftmost and rightmost points coincide (equivalently, C ∪ D is exactly n points in convex position). (closed by g-cupcap-verified (checked) — the run's own oracle split a set into cups/caps and confirmed the iff on 624 sets, 1220 (set,n) cases, 1220 agreement, 0 mismatch; plus the classical es35-cups-caps-bound and four-point-criterion. No longer a gap.)
+- [[extremal-split-stability]] `G-split-consistent` — (Consistency on the extremal template.) The Erdős–Szekeres 1960 construction of 2^{n-2} points, realized as es_construct, admits a line separating it into two (n−1)-avoiding halves of 2^{n-3} points each. The split counts are 4 (n=5), 2 (n=6), 0 (n=7). (closed by gsplit-enum-completeness-and-n7-zero (checked) — the rotating- line enumerator, validated exactly (zero missing / zero extra, count N(N−1)) against the 2^N oracle at N=8..16, re-captured with provenance (command + EXIT:0), gives 4 splits at n=5, 2 at n=6, 0 at n=7. This supersedes all earlier counts (6/4/2/0 and 57/241/993 / 50/222/946, which came from the dead pair-line enumerator). The n=7 zero is precisely the counterexample that refutes G-split (see G-split).)
+
+## Reductions that broke, and why
+
+A decomposition that does not recombine into the goal is the failure this file exists to make visible. The reason is the useful half; one left blank makes the row worthless.
+
+- [[extremal-split-stability]] (broken): G-split refuted at n=7 by the run's own checked data. Chain: (1) es_construct(7) verified 32-point 7-avoiding => f(7)>=32; (2) f(6)=16 (es-exact-values); (3) G-split at n=7 would give f(7)<=2*f(6)=32, so f(7)=32 and es_construct(7) is extremal; (4) G-split must then split es_construct(7), but gsplit-enum-completeness-and-n7-zero reports 0 splits (all 992 half-planes; a 32-pt split into two 6-avoiding halves forces both =16). Contradiction. G-cupcap discharged by g-cupcap-verified; G-split-consistent discharged by gsplit-enum-completeness-and-n7-zero. The naive splitting-line induction…
 
 ## Resting on nothing recorded
 
@@ -34,3 +33,16 @@ A reduction taking an unrecorded belief as input proves the goal from something 
 
 - `README` has no skeleton block, so nothing can say what it reduces or whether the reduction is sound
 - `checker-vs-construction-disambiguation` has no skeleton block, so nothing can say what it reduces or whether the reduction is sound
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "goals" }
+read_ledger { ledger: "goals", id: "<one of the ids above>" }
+read_ledger { ledger: "goals", status: "<a status above>" }
+read_ledger { ledger: "goals", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: `record_entry` to add or amend a row, `close_entry` to close one. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

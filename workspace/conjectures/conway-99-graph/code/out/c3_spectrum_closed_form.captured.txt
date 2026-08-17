@@ -1,0 +1,9 @@
+rt = (u - 1)*(u + 4)/2
+st = (u - 3)*(u + 2)/2
+rt - st = 2*u + 1    (should be 2u+1)
+nT - v (C3 -3 multiplicity) = (u**2 + 2)*(u**2 + u - 4)*(u**2 + 2*u + 3)/12
+u=1: rt=0 st=-3 gap=3 nminus3=-3
+u=3: rt=7 st=0 gap=7 nminus3=132
+u=4: rt=12 st=3 gap=9 nminus3=648
+u=10: rt=63 st=42 gap=21 nminus3=110823
+u=31: rt=525 st=462 gap=63 nminus3=81348462

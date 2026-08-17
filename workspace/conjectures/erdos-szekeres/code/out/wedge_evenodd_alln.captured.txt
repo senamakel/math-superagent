@@ -1,0 +1,3 @@
+n=5: even/odd split (sizes 4/4, (n-1)-avoiding=True) in open-half-plane sides: False, in double-wedge intersections: True
+n=6: even/odd split (sizes 8/8, (n-1)-avoiding=True) in open-half-plane sides: False, in double-wedge intersections: True
+n=7: even/odd split (sizes 16/16, (n-1)-avoiding=True) in open-half-plane sides: False, in double-wedge intersections: False

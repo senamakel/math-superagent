@@ -1,0 +1,332 @@
+==============================================================================
+min_density_stability: minimum-density UC families on [n], n=2..5
+oracle: lib.uc decide_union_closed + abundance (exact int counts)
+n=5 from validated projection/up-set cascade; n<=4 cascade vs oracle
+
+--- n=2  [oracle+verified-cascade] ---
+   total nonempty UC families        : 12
+   near-n-cube present (exact labell): 1
+   min-present-count==1 class        : 10 families, 3 distinct profiles [WORST(n)=1, BROAD]
+      profile multiset (sorted desc -> #families):
+         (1, 0): 4 families
+         (2, 1): 4 families
+         (1, 1): 2 families
+   per-profile isomorphism (canonical, orbit_size, n_families) for the min-1 class:
+         profile (1, 0): 2 non-isomorphic classes | canon len 1 orbit 2 -> 2 fams; canon len 2 orbit 2 -> 2 fams
+         profile (2, 1): 2 non-isomorphic classes | canon len 2 orbit 2 -> 2 fams; canon len 3 orbit 2 -> 2 fams
+         profile (1, 1): 2 non-isomorphic classes | canon len 2 orbit 1 -> 1 fams; canon len 1 orbit 1 -> 1 fams
+   EQUALITY (true min-density) class  : 2 families
+      profile multiset                  : {(2, 1): 2}
+      near-cube expected profile        : (2, 1)
+         profile (2, 1): canonical (0, 1, 3), 2 families, orbit size 2
+
+--- n=3  [oracle+verified-cascade] ---
+   total nonempty UC families        : 120
+   near-n-cube present (exact labell): 1
+   min-present-count==1 class        : 56 families, 8 distinct profiles [WORST(n)=1, BROAD]
+      profile multiset (sorted desc -> #families):
+         (2, 1, 0): 12 families
+         (3, 2, 1): 12 families
+         (3, 3, 1): 6 families
+         (2, 1, 1): 6 families
+         (1, 0, 0): 6 families
+         (2, 2, 1): 6 families
+         (1, 1, 0): 6 families
+         (1, 1, 1): 2 families
+   per-profile isomorphism (canonical, orbit_size, n_families) for the min-1 class:
+         profile (2, 1, 0): 2 non-isomorphic classes | canon len 2 orbit 6 -> 6 fams; canon len 3 orbit 6 -> 6 fams
+         profile (3, 2, 1): 2 non-isomorphic classes | canon len 3 orbit 6 -> 6 fams; canon len 4 orbit 6 -> 6 fams
+         profile (3, 3, 1): 2 non-isomorphic classes | canon len 5 orbit 3 -> 3 fams; canon len 4 orbit 3 -> 3 fams
+         profile (2, 1, 1): 2 non-isomorphic classes | canon len 3 orbit 3 -> 3 fams; canon len 2 orbit 3 -> 3 fams
+         profile (1, 0, 0): 2 non-isomorphic classes | canon len 2 orbit 3 -> 3 fams; canon len 1 orbit 3 -> 3 fams
+         profile (2, 2, 1): 2 non-isomorphic classes | canon len 2 orbit 3 -> 3 fams; canon len 3 orbit 3 -> 3 fams
+         profile (1, 1, 0): 2 non-isomorphic classes | canon len 1 orbit 3 -> 3 fams; canon len 2 orbit 3 -> 3 fams
+         profile (1, 1, 1): 2 non-isomorphic classes | canon len 2 orbit 1 -> 1 fams; canon len 1 orbit 1 -> 1 fams
+   EQUALITY (true min-density) class  : 3 families
+      profile multiset                  : {(3, 3, 1): 3}
+      near-cube expected profile        : (3, 3, 1)
+         profile (3, 3, 1): canonical (0, 1, 2, 3, 7), 3 families, orbit size 3
+
+--- n=4  [oracle+verified-cascade] ---
+   total nonempty UC families        : 4958
+   near-n-cube present (exact labell): 1
+   min-present-count==1 class        : 590 families, 27 distinct profiles [WORST(n)=1, BROAD]
+      profile multiset (sorted desc -> #families):
+         (4, 3, 2, 1): 48 families
+         (5, 4, 3, 1): 48 families
+         (3, 2, 1, 0): 48 families
+         (4, 4, 3, 1): 48 families
+         (4, 3, 3, 1): 24 families
+         (3, 2, 2, 1): 24 families
+         (3, 3, 1, 0): 24 families
+         (5, 4, 4, 1): 24 families
+         (4, 4, 2, 1): 24 families
+         (2, 1, 0, 0): 24 families
+         (2, 2, 1, 0): 24 families
+         (3, 2, 1, 1): 24 families
+      ... and 15 more profiles (total 27)
+   per-profile isomorphism (canonical, orbit_size, n_families) for the min-1 class:
+         profile (4, 3, 2, 1): 2 non-isomorphic classes | canon len 4 orbit 24 -> 24 fams; canon len 5 orbit 24 -> 24 fams
+         profile (5, 4, 3, 1): 2 non-isomorphic classes | canon len 6 orbit 24 -> 24 fams; canon len 7 orbit 24 -> 24 fams
+         profile (3, 2, 1, 0): 2 non-isomorphic classes | canon len 4 orbit 24 -> 24 fams; canon len 3 orbit 24 -> 24 fams
+         profile (4, 4, 3, 1): 2 non-isomorphic classes | canon len 6 orbit 24 -> 24 fams; canon len 5 orbit 24 -> 24 fams
+         profile (4, 3, 3, 1): 2 non-isomorphic classes | canon len 5 orbit 12 -> 12 fams; canon len 4 orbit 12 -> 12 fams
+         profile (3, 2, 2, 1): 2 non-isomorphic classes | canon len 4 orbit 12 -> 12 fams; canon len 3 orbit 12 -> 12 fams
+         profile (3, 3, 1, 0): 2 non-isomorphic classes | canon len 4 orbit 12 -> 12 fams; canon len 5 orbit 12 -> 12 fams
+         profile (5, 4, 4, 1): 2 non-isomorphic classes | canon len 6 orbit 12 -> 12 fams; canon len 7 orbit 12 -> 12 fams
+         profile (4, 4, 2, 1): 2 non-isomorphic classes | canon len 6 orbit 12 -> 12 fams; canon len 5 orbit 12 -> 12 fams
+         profile (2, 1, 0, 0): 2 non-isomorphic classes | canon len 3 orbit 12 -> 12 fams; canon len 2 orbit 12 -> 12 fams
+         profile (2, 2, 1, 0): 2 non-isomorphic classes | canon len 2 orbit 12 -> 12 fams; canon len 3 orbit 12 -> 12 fams
+         profile (3, 2, 1, 1): 2 non-isomorphic classes | canon len 4 orbit 12 -> 12 fams; canon len 3 orbit 12 -> 12 fams
+         profile (2, 1, 1, 0): 2 non-isomorphic classes | canon len 3 orbit 12 -> 12 fams; canon len 2 orbit 12 -> 12 fams
+         profile (3, 3, 3, 1): 2 non-isomorphic classes | canon len 4 orbit 12 -> 12 fams; canon len 5 orbit 12 -> 12 fams
+         profile (5, 5, 4, 1): 2 non-isomorphic classes | canon len 7 orbit 12 -> 12 fams; canon len 8 orbit 12 -> 12 fams
+         profile (3, 3, 2, 1): 2 non-isomorphic classes | canon len 4 orbit 12 -> 12 fams; canon len 3 orbit 12 -> 12 fams
+         profile (5, 3, 3, 1): 2 non-isomorphic classes | canon len 5 orbit 12 -> 12 fams; canon len 6 orbit 12 -> 12 fams
+         profile (1, 1, 0, 0): 2 non-isomorphic classes | canon len 1 orbit 6 -> 6 fams; canon len 2 orbit 6 -> 6 fams
+         profile (3, 3, 1, 1): 2 non-isomorphic classes | canon len 5 orbit 6 -> 6 fams; canon len 4 orbit 6 -> 6 fams
+         profile (2, 2, 1, 1): 2 non-isomorphic classes | canon len 3 orbit 6 -> 6 fams; canon len 2 orbit 6 -> 6 fams
+         profile (4, 4, 4, 1): 2 non-isomorphic classes | canon len 6 orbit 4 -> 4 fams; canon len 5 orbit 4 -> 4 fams
+         profile (5, 5, 5, 1): 2 non-isomorphic classes | canon len 8 orbit 4 -> 4 fams; canon len 9 orbit 4 -> 4 fams
+         profile (2, 2, 2, 1): 2 non-isomorphic classes | canon len 2 orbit 4 -> 4 fams; canon len 3 orbit 4 -> 4 fams
+         profile (1, 1, 1, 0): 2 non-isomorphic classes | canon len 2 orbit 4 -> 4 fams; canon len 1 orbit 4 -> 4 fams
+         profile (2, 1, 1, 1): 2 non-isomorphic classes | canon len 2 orbit 4 -> 4 fams; canon len 3 orbit 4 -> 4 fams
+         profile (1, 0, 0, 0): 2 non-isomorphic classes | canon len 1 orbit 4 -> 4 fams; canon len 2 orbit 4 -> 4 fams
+         profile (1, 1, 1, 1): 2 non-isomorphic classes | canon len 1 orbit 1 -> 1 fams; canon len 2 orbit 1 -> 1 fams
+   EQUALITY (true min-density) class  : 4 families
+      profile multiset                  : {(5, 5, 5, 1): 4}
+      near-cube expected profile        : (5, 5, 5, 1)
+         profile (5, 5, 5, 1): canonical (0, 1, 2, 3, 4, 5, 6, 7, 15), 4 families, orbit size 4
+
+--- n=5  [cascade] ---
+   total nonempty UC families        : 2771102
+   near-n-cube present (exact labell): 1
+   min-present-count==1 class        : 26182 families, 166 distinct profiles [WORST(n)=1, BROAD]
+      profile multiset (sorted desc -> #families):
+         (7, 6, 5, 4, 1): 720 families
+         (5, 5, 4, 3, 1): 600 families
+         (6, 5, 5, 4, 1): 600 families
+         (6, 5, 5, 3, 1): 600 families
+         (6, 5, 4, 3, 1): 480 families
+         (7, 7, 6, 5, 1): 480 families
+         (8, 7, 6, 5, 1): 480 families
+         (7, 6, 5, 5, 1): 360 families
+         (8, 7, 7, 6, 1): 360 families
+         (7, 6, 4, 4, 1): 360 families
+         (7, 6, 6, 4, 1): 360 families
+         (8, 6, 5, 5, 1): 360 families
+      ... and 154 more profiles (total 166)
+   per-profile isomorphism (canonical, orbit_size, n_families) for the min-1 class:
+         profile (7, 6, 5, 4, 1): 6 non-isomorphic classes | canon len 9 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams
+         profile (5, 5, 4, 3, 1): 6 non-isomorphic classes | canon len 6 orbit 120 -> 120 fams; canon len 6 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams; canon len 6 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams
+         profile (6, 5, 5, 4, 1): 6 non-isomorphic classes | canon len 7 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (6, 5, 5, 3, 1): 6 non-isomorphic classes | canon len 7 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (6, 5, 4, 3, 1): 4 non-isomorphic classes | canon len 7 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 6 orbit 120 -> 120 fams
+         profile (7, 7, 6, 5, 1): 4 non-isomorphic classes | canon len 10 orbit 120 -> 120 fams; canon len 10 orbit 120 -> 120 fams; canon len 11 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams
+         profile (8, 7, 6, 5, 1): 4 non-isomorphic classes | canon len 11 orbit 120 -> 120 fams; canon len 11 orbit 120 -> 120 fams; canon len 10 orbit 120 -> 120 fams; canon len 10 orbit 120 -> 120 fams
+         profile (7, 6, 5, 5, 1): 4 non-isomorphic classes | canon len 9 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 8 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams
+         profile (8, 7, 7, 6, 1): 4 non-isomorphic classes | canon len 11 orbit 120 -> 120 fams; canon len 12 orbit 120 -> 120 fams; canon len 10 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (7, 6, 4, 4, 1): 4 non-isomorphic classes | canon len 8 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams; canon len 9 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (7, 6, 6, 4, 1): 4 non-isomorphic classes | canon len 10 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams; canon len 8 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams
+         profile (8, 6, 5, 5, 1): 4 non-isomorphic classes | canon len 10 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams; canon len 9 orbit 60 -> 60 fams; canon len 10 orbit 60 -> 60 fams
+         profile (7, 6, 6, 5, 1): 4 non-isomorphic classes | canon len 10 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams; canon len 9 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (8, 7, 6, 6, 1): 4 non-isomorphic classes | canon len 11 orbit 120 -> 120 fams; canon len 10 orbit 120 -> 120 fams; canon len 10 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (6, 6, 5, 4, 1): 4 non-isomorphic classes | canon len 8 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams; canon len 8 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams
+         profile (6, 5, 4, 4, 1): 4 non-isomorphic classes | canon len 7 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 6 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams
+         profile (6, 6, 5, 3, 1): 4 non-isomorphic classes | canon len 8 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams; canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (5, 5, 4, 4, 1): 8 non-isomorphic classes | canon len 7 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams; canon len 7 orbit 30 -> 30 fams; canon len 6 orbit 30 -> 30 fams; canon len 8 orbit 30 -> 30 fams; canon len 7 orbit 30 -> 30 fams
+         profile (5, 4, 4, 3, 1): 4 non-isomorphic classes | canon len 6 orbit 120 -> 120 fams; canon len 5 orbit 120 -> 120 fams; canon len 7 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams
+         profile (7, 7, 5, 5, 1): 4 non-isomorphic classes | canon len 10 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams; canon len 9 orbit 30 -> 30 fams; canon len 10 orbit 30 -> 30 fams
+         profile (6, 6, 5, 5, 1): 4 non-isomorphic classes | canon len 9 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams; canon len 8 orbit 30 -> 30 fams; canon len 7 orbit 30 -> 30 fams
+         profile (7, 7, 7, 6, 1): 4 non-isomorphic classes | canon len 11 orbit 120 -> 120 fams; canon len 10 orbit 120 -> 120 fams; canon len 10 orbit 20 -> 20 fams; canon len 11 orbit 20 -> 20 fams
+         profile (5, 4, 3, 1, 0): 2 non-isomorphic classes | canon len 6 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams
+         profile (8, 8, 7, 6, 1): 2 non-isomorphic classes | canon len 12 orbit 120 -> 120 fams; canon len 11 orbit 120 -> 120 fams
+         profile (5, 5, 5, 4, 1): 4 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (6, 4, 4, 3, 1): 2 non-isomorphic classes | canon len 6 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams
+         profile (7, 5, 5, 5, 1): 4 non-isomorphic classes | canon len 8 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams
+         profile (7, 6, 6, 3, 1): 2 non-isomorphic classes | canon len 9 orbit 120 -> 120 fams; canon len 10 orbit 120 -> 120 fams
+         profile (7, 5, 5, 3, 1): 2 non-isomorphic classes | canon len 8 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams
+         profile (8, 7, 7, 7, 1): 4 non-isomorphic classes | canon len 12 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams; canon len 12 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (4, 4, 3, 1, 0): 2 non-isomorphic classes | canon len 6 orbit 120 -> 120 fams; canon len 5 orbit 120 -> 120 fams
+         profile (7, 7, 6, 4, 1): 2 non-isomorphic classes | canon len 10 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams
+         profile (8, 6, 6, 5, 1): 4 non-isomorphic classes | canon len 10 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams; canon len 10 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams
+         profile (4, 3, 2, 1, 0): 2 non-isomorphic classes | canon len 5 orbit 120 -> 120 fams; canon len 4 orbit 120 -> 120 fams
+         profile (7, 6, 6, 6, 1): 4 non-isomorphic classes | canon len 10 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams; canon len 10 orbit 60 -> 60 fams
+         profile (5, 4, 3, 3, 1): 4 non-isomorphic classes | canon len 5 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams
+         profile (4, 4, 4, 3, 1): 4 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams
+         profile (6, 6, 4, 3, 1): 2 non-isomorphic classes | canon len 8 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams
+         profile (8, 6, 5, 4, 1): 2 non-isomorphic classes | canon len 9 orbit 120 -> 120 fams; canon len 10 orbit 120 -> 120 fams
+         profile (8, 7, 6, 4, 1): 2 non-isomorphic classes | canon len 11 orbit 120 -> 120 fams; canon len 10 orbit 120 -> 120 fams
+         profile (8, 7, 7, 5, 1): 4 non-isomorphic classes | canon len 11 orbit 60 -> 60 fams; canon len 10 orbit 60 -> 60 fams; canon len 12 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (7, 7, 5, 4, 1): 2 non-isomorphic classes | canon len 10 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams
+         profile (9, 7, 6, 5, 1): 2 non-isomorphic classes | canon len 12 orbit 120 -> 120 fams; canon len 11 orbit 120 -> 120 fams
+         profile (5, 5, 4, 2, 1): 2 non-isomorphic classes | canon len 7 orbit 120 -> 120 fams; canon len 6 orbit 120 -> 120 fams
+         profile (7, 6, 4, 3, 1): 2 non-isomorphic classes | canon len 8 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams
+         profile (6, 6, 4, 4, 1): 4 non-isomorphic classes | canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (8, 7, 5, 5, 1): 2 non-isomorphic classes | canon len 10 orbit 120 -> 120 fams; canon len 11 orbit 120 -> 120 fams
+         profile (6, 6, 6, 5, 1): 4 non-isomorphic classes | canon len 8 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams; canon len 10 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams
+         profile (7, 5, 4, 3, 1): 2 non-isomorphic classes | canon len 7 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams
+         profile (7, 6, 5, 3, 1): 2 non-isomorphic classes | canon len 9 orbit 120 -> 120 fams; canon len 8 orbit 120 -> 120 fams
+         profile (9, 8, 8, 7, 1): 2 non-isomorphic classes | canon len 13 orbit 120 -> 120 fams; canon len 14 orbit 120 -> 120 fams
+         profile (5, 4, 3, 2, 1): 2 non-isomorphic classes | canon len 6 orbit 120 -> 120 fams; canon len 5 orbit 120 -> 120 fams
+         profile (6, 5, 4, 2, 1): 2 non-isomorphic classes | canon len 8 orbit 120 -> 120 fams; canon len 7 orbit 120 -> 120 fams
+         profile (6, 6, 6, 4, 1): 2 non-isomorphic classes | canon len 8 orbit 120 -> 120 fams; canon len 9 orbit 120 -> 120 fams
+         profile (9, 8, 7, 6, 1): 2 non-isomorphic classes | canon len 12 orbit 120 -> 120 fams; canon len 13 orbit 120 -> 120 fams
+         profile (8, 8, 7, 7, 1): 4 non-isomorphic classes | canon len 13 orbit 60 -> 60 fams; canon len 12 orbit 60 -> 60 fams; canon len 12 orbit 30 -> 30 fams; canon len 11 orbit 30 -> 30 fams
+         profile (4, 4, 3, 3, 1): 4 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams; canon len 5 orbit 30 -> 30 fams; canon len 4 orbit 30 -> 30 fams
+         profile (7, 7, 6, 6, 1): 4 non-isomorphic classes | canon len 9 orbit 60 -> 60 fams; canon len 10 orbit 60 -> 60 fams; canon len 11 orbit 30 -> 30 fams; canon len 10 orbit 30 -> 30 fams
+         profile (6, 5, 5, 5, 1): 4 non-isomorphic classes | canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams; canon len 8 orbit 20 -> 20 fams; canon len 7 orbit 20 -> 20 fams
+         profile (5, 4, 4, 4, 1): 4 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams; canon len 6 orbit 20 -> 20 fams; canon len 5 orbit 20 -> 20 fams
+         profile (3, 2, 2, 1, 0): 2 non-isomorphic classes | canon len 4 orbit 60 -> 60 fams; canon len 3 orbit 60 -> 60 fams
+         profile (9, 7, 7, 5, 1): 2 non-isomorphic classes | canon len 13 orbit 60 -> 60 fams; canon len 12 orbit 60 -> 60 fams
+         profile (5, 5, 5, 3, 1): 2 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams
+         profile (3, 3, 2, 1, 0): 2 non-isomorphic classes | canon len 3 orbit 60 -> 60 fams; canon len 4 orbit 60 -> 60 fams
+         profile (6, 5, 5, 2, 1): 2 non-isomorphic classes | canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (7, 7, 6, 3, 1): 2 non-isomorphic classes | canon len 10 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (8, 7, 7, 4, 1): 2 non-isomorphic classes | canon len 11 orbit 60 -> 60 fams; canon len 12 orbit 60 -> 60 fams
+         profile (8, 8, 7, 5, 1): 2 non-isomorphic classes | canon len 12 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (3, 2, 1, 1, 0): 2 non-isomorphic classes | canon len 3 orbit 60 -> 60 fams; canon len 4 orbit 60 -> 60 fams
+         profile (5, 4, 4, 1, 0): 2 non-isomorphic classes | canon len 7 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams
+         profile (5, 4, 3, 1, 1): 2 non-isomorphic classes | canon len 7 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams
+         profile (9, 7, 7, 7, 1): 2 non-isomorphic classes | canon len 13 orbit 60 -> 60 fams; canon len 12 orbit 60 -> 60 fams
+         profile (4, 4, 4, 2, 1): 2 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams
+         profile (5, 3, 3, 3, 1): 2 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams
+         profile (9, 9, 8, 7, 1): 2 non-isomorphic classes | canon len 14 orbit 60 -> 60 fams; canon len 15 orbit 60 -> 60 fams
+         profile (8, 8, 8, 7, 1): 2 non-isomorphic classes | canon len 13 orbit 60 -> 60 fams; canon len 12 orbit 60 -> 60 fams
+         profile (9, 7, 6, 6, 1): 2 non-isomorphic classes | canon len 12 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (9, 8, 8, 6, 1): 2 non-isomorphic classes | canon len 13 orbit 60 -> 60 fams; canon len 14 orbit 60 -> 60 fams
+         profile (4, 3, 2, 1, 1): 2 non-isomorphic classes | canon len 4 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams
+         profile (4, 4, 3, 1, 1): 2 non-isomorphic classes | canon len 5 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams
+         profile (9, 6, 5, 5, 1): 2 non-isomorphic classes | canon len 10 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (9, 6, 6, 5, 1): 2 non-isomorphic classes | canon len 11 orbit 60 -> 60 fams; canon len 10 orbit 60 -> 60 fams
+         profile (7, 5, 5, 4, 1): 2 non-isomorphic classes | canon len 8 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams
+         profile (7, 7, 7, 4, 1): 2 non-isomorphic classes | canon len 10 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (3, 3, 3, 1, 0): 2 non-isomorphic classes | canon len 4 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams
+         profile (4, 3, 3, 1, 0): 2 non-isomorphic classes | canon len 5 orbit 60 -> 60 fams; canon len 4 orbit 60 -> 60 fams
+         profile (6, 5, 3, 3, 1): 2 non-isomorphic classes | canon len 7 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams
+         profile (3, 2, 1, 0, 0): 2 non-isomorphic classes | canon len 3 orbit 60 -> 60 fams; canon len 4 orbit 60 -> 60 fams
+         profile (4, 4, 3, 2, 1): 2 non-isomorphic classes | canon len 4 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams
+         profile (7, 7, 4, 4, 1): 2 non-isomorphic classes | canon len 9 orbit 60 -> 60 fams; canon len 10 orbit 60 -> 60 fams
+         profile (8, 8, 6, 6, 1): 2 non-isomorphic classes | canon len 12 orbit 60 -> 60 fams; canon len 11 orbit 60 -> 60 fams
+         profile (5, 5, 3, 2, 1): 2 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams
+         profile (8, 5, 5, 4, 1): 2 non-isomorphic classes | canon len 9 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (7, 7, 5, 3, 1): 2 non-isomorphic classes | canon len 10 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams
+         profile (4, 3, 3, 2, 1): 2 non-isomorphic classes | canon len 5 orbit 60 -> 60 fams; canon len 4 orbit 60 -> 60 fams
+         profile (8, 8, 8, 6, 1): 2 non-isomorphic classes | canon len 13 orbit 60 -> 60 fams; canon len 12 orbit 60 -> 60 fams
+         profile (8, 6, 6, 4, 1): 2 non-isomorphic classes | canon len 10 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams
+         profile (4, 4, 2, 1, 0): 2 non-isomorphic classes | canon len 5 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams
+         profile (6, 4, 4, 2, 1): 2 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 7 orbit 60 -> 60 fams
+         profile (5, 3, 3, 1, 0): 2 non-isomorphic classes | canon len 6 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams
+         profile (6, 6, 6, 3, 1): 2 non-isomorphic classes | canon len 8 orbit 60 -> 60 fams; canon len 9 orbit 60 -> 60 fams
+         profile (5, 4, 4, 2, 1): 2 non-isomorphic classes | canon len 5 orbit 60 -> 60 fams; canon len 6 orbit 60 -> 60 fams
+         profile (4, 3, 2, 2, 1): 2 non-isomorphic classes | canon len 5 orbit 60 -> 60 fams; canon len 4 orbit 60 -> 60 fams
+         profile (7, 5, 4, 4, 1): 2 non-isomorphic classes | canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (9, 8, 7, 7, 1): 2 non-isomorphic classes | canon len 12 orbit 60 -> 60 fams; canon len 13 orbit 60 -> 60 fams
+         profile (4, 3, 3, 3, 1): 2 non-isomorphic classes | canon len 4 orbit 60 -> 60 fams; canon len 5 orbit 60 -> 60 fams
+         profile (6, 6, 5, 2, 1): 2 non-isomorphic classes | canon len 9 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (5, 5, 4, 1, 0): 2 non-isomorphic classes | canon len 7 orbit 60 -> 60 fams; canon len 8 orbit 60 -> 60 fams
+         profile (9, 7, 7, 6, 1): 2 non-isomorphic classes | canon len 11 orbit 60 -> 60 fams; canon len 12 orbit 60 -> 60 fams
+         profile (5, 5, 5, 5, 1): 4 non-isomorphic classes | canon len 8 orbit 30 -> 30 fams; canon len 9 orbit 30 -> 30 fams; canon len 7 orbit 5 -> 5 fams; canon len 6 orbit 5 -> 5 fams
+         profile (3, 3, 3, 3, 1): 4 non-isomorphic classes | canon len 4 orbit 20 -> 20 fams; canon len 5 orbit 20 -> 20 fams; canon len 5 orbit 15 -> 15 fams; canon len 4 orbit 15 -> 15 fams
+         profile (5, 3, 3, 1, 1): 2 non-isomorphic classes | canon len 6 orbit 30 -> 30 fams; canon len 5 orbit 30 -> 30 fams
+         profile (6, 6, 3, 3, 1): 2 non-isomorphic classes | canon len 7 orbit 30 -> 30 fams; canon len 8 orbit 30 -> 30 fams
+         profile (3, 3, 3, 1, 1): 2 non-isomorphic classes | canon len 4 orbit 30 -> 30 fams; canon len 5 orbit 30 -> 30 fams
+         profile (3, 3, 2, 1, 1): 2 non-isomorphic classes | canon len 3 orbit 30 -> 30 fams; canon len 4 orbit 30 -> 30 fams
+         profile (2, 2, 1, 1, 0): 2 non-isomorphic classes | canon len 2 orbit 30 -> 30 fams; canon len 3 orbit 30 -> 30 fams
+         profile (3, 3, 1, 0, 0): 2 non-isomorphic classes | canon len 5 orbit 30 -> 30 fams; canon len 4 orbit 30 -> 30 fams
+         profile (4, 3, 3, 1, 1): 2 non-isomorphic classes | canon len 5 orbit 30 -> 30 fams; canon len 4 orbit 30 -> 30 fams
+         profile (3, 3, 2, 2, 1): 2 non-isomorphic classes | canon len 4 orbit 30 -> 30 fams; canon len 3 orbit 30 -> 30 fams
+         profile (9, 9, 8, 8, 1): 2 non-isomorphic classes | canon len 15 orbit 30 -> 30 fams; canon len 14 orbit 30 -> 30 fams
+         profile (3, 3, 1, 1, 0): 2 non-isomorphic classes | canon len 5 orbit 30 -> 30 fams; canon len 4 orbit 30 -> 30 fams
+         profile (4, 4, 2, 1, 1): 2 non-isomorphic classes | canon len 6 orbit 30 -> 30 fams; canon len 5 orbit 30 -> 30 fams
+         profile (5, 4, 4, 1, 1): 2 non-isomorphic classes | canon len 7 orbit 30 -> 30 fams; canon len 6 orbit 30 -> 30 fams
+         profile (5, 5, 3, 3, 1): 2 non-isomorphic classes | canon len 6 orbit 30 -> 30 fams; canon len 5 orbit 30 -> 30 fams
+         profile (3, 2, 2, 1, 1): 2 non-isomorphic classes | canon len 4 orbit 30 -> 30 fams; canon len 3 orbit 30 -> 30 fams
+         profile (5, 5, 4, 1, 1): 2 non-isomorphic classes | canon len 8 orbit 30 -> 30 fams; canon len 7 orbit 30 -> 30 fams
+         profile (2, 1, 1, 0, 0): 2 non-isomorphic classes | canon len 3 orbit 30 -> 30 fams; canon len 2 orbit 30 -> 30 fams
+         profile (9, 9, 7, 7, 1): 2 non-isomorphic classes | canon len 13 orbit 30 -> 30 fams; canon len 14 orbit 30 -> 30 fams
+         profile (4, 4, 2, 2, 1): 2 non-isomorphic classes | canon len 6 orbit 30 -> 30 fams; canon len 5 orbit 30 -> 30 fams
+         profile (2, 2, 1, 0, 0): 2 non-isomorphic classes | canon len 3 orbit 30 -> 30 fams; canon len 2 orbit 30 -> 30 fams
+         profile (4, 4, 4, 4, 1): 2 non-isomorphic classes | canon len 5 orbit 30 -> 30 fams; canon len 6 orbit 30 -> 30 fams
+         profile (8, 8, 8, 5, 1): 2 non-isomorphic classes | canon len 13 orbit 20 -> 20 fams; canon len 12 orbit 20 -> 20 fams
+         profile (2, 1, 0, 0, 0): 2 non-isomorphic classes | canon len 3 orbit 20 -> 20 fams; canon len 2 orbit 20 -> 20 fams
+         profile (9, 8, 8, 8, 1): 2 non-isomorphic classes | canon len 13 orbit 20 -> 20 fams; canon len 14 orbit 20 -> 20 fams
+         profile (3, 2, 2, 2, 1): 2 non-isomorphic classes | canon len 4 orbit 20 -> 20 fams; canon len 3 orbit 20 -> 20 fams
+         profile (9, 5, 5, 5, 1): 2 non-isomorphic classes | canon len 9 orbit 20 -> 20 fams; canon len 10 orbit 20 -> 20 fams
+         profile (4, 4, 4, 1, 0): 2 non-isomorphic classes | canon len 5 orbit 20 -> 20 fams; canon len 6 orbit 20 -> 20 fams
+         profile (9, 9, 9, 8, 1): 2 non-isomorphic classes | canon len 16 orbit 20 -> 20 fams; canon len 15 orbit 20 -> 20 fams
+         profile (2, 2, 2, 1, 0): 2 non-isomorphic classes | canon len 2 orbit 20 -> 20 fams; canon len 3 orbit 20 -> 20 fams
+         profile (8, 5, 5, 5, 1): 2 non-isomorphic classes | canon len 9 orbit 20 -> 20 fams; canon len 8 orbit 20 -> 20 fams
+         profile (5, 5, 5, 1, 0): 2 non-isomorphic classes | canon len 9 orbit 20 -> 20 fams; canon len 8 orbit 20 -> 20 fams
+         profile (7, 7, 7, 5, 1): 2 non-isomorphic classes | canon len 10 orbit 20 -> 20 fams; canon len 9 orbit 20 -> 20 fams
+         profile (6, 6, 6, 2, 1): 2 non-isomorphic classes | canon len 10 orbit 20 -> 20 fams; canon len 9 orbit 20 -> 20 fams
+         profile (8, 6, 6, 6, 1): 2 non-isomorphic classes | canon len 10 orbit 20 -> 20 fams; canon len 9 orbit 20 -> 20 fams
+         profile (6, 4, 4, 4, 1): 2 non-isomorphic classes | canon len 7 orbit 20 -> 20 fams; canon len 6 orbit 20 -> 20 fams
+         profile (3, 2, 1, 1, 1): 2 non-isomorphic classes | canon len 4 orbit 20 -> 20 fams; canon len 3 orbit 20 -> 20 fams
+         profile (9, 6, 6, 6, 1): 2 non-isomorphic classes | canon len 10 orbit 20 -> 20 fams; canon len 11 orbit 20 -> 20 fams
+         profile (3, 3, 3, 2, 1): 2 non-isomorphic classes | canon len 3 orbit 20 -> 20 fams; canon len 4 orbit 20 -> 20 fams
+         profile (5, 5, 5, 2, 1): 2 non-isomorphic classes | canon len 7 orbit 20 -> 20 fams; canon len 6 orbit 20 -> 20 fams
+         profile (2, 1, 1, 1, 0): 2 non-isomorphic classes | canon len 2 orbit 20 -> 20 fams; canon len 3 orbit 20 -> 20 fams
+         profile (7, 7, 7, 7, 1): 2 non-isomorphic classes | canon len 11 orbit 15 -> 15 fams; canon len 10 orbit 15 -> 15 fams
+         profile (6, 6, 6, 6, 1): 2 non-isomorphic classes | canon len 9 orbit 15 -> 15 fams; canon len 8 orbit 15 -> 15 fams
+         profile (2, 2, 1, 1, 1): 2 non-isomorphic classes | canon len 3 orbit 10 -> 10 fams; canon len 2 orbit 10 -> 10 fams
+         profile (1, 1, 0, 0, 0): 2 non-isomorphic classes | canon len 2 orbit 10 -> 10 fams; canon len 1 orbit 10 -> 10 fams
+         profile (2, 2, 2, 1, 1): 2 non-isomorphic classes | canon len 2 orbit 10 -> 10 fams; canon len 3 orbit 10 -> 10 fams
+         profile (5, 5, 5, 1, 1): 2 non-isomorphic classes | canon len 8 orbit 10 -> 10 fams; canon len 9 orbit 10 -> 10 fams
+         profile (4, 4, 4, 1, 1): 2 non-isomorphic classes | canon len 5 orbit 10 -> 10 fams; canon len 6 orbit 10 -> 10 fams
+         profile (3, 3, 1, 1, 1): 2 non-isomorphic classes | canon len 4 orbit 10 -> 10 fams; canon len 5 orbit 10 -> 10 fams
+         profile (1, 1, 1, 0, 0): 2 non-isomorphic classes | canon len 1 orbit 10 -> 10 fams; canon len 2 orbit 10 -> 10 fams
+         profile (1, 1, 1, 1, 0): 2 non-isomorphic classes | canon len 1 orbit 5 -> 5 fams; canon len 2 orbit 5 -> 5 fams
+         profile (9, 9, 9, 9, 1): 2 non-isomorphic classes | canon len 16 orbit 5 -> 5 fams; canon len 17 orbit 5 -> 5 fams
+         profile (2, 2, 2, 2, 1): 2 non-isomorphic classes | canon len 2 orbit 5 -> 5 fams; canon len 3 orbit 5 -> 5 fams
+         profile (8, 8, 8, 8, 1): 2 non-isomorphic classes | canon len 12 orbit 5 -> 5 fams; canon len 13 orbit 5 -> 5 fams
+         profile (1, 0, 0, 0, 0): 2 non-isomorphic classes | canon len 1 orbit 5 -> 5 fams; canon len 2 orbit 5 -> 5 fams
+         profile (2, 1, 1, 1, 1): 2 non-isomorphic classes | canon len 2 orbit 5 -> 5 fams; canon len 3 orbit 5 -> 5 fams
+         profile (1, 1, 1, 1, 1): 2 non-isomorphic classes | canon len 1 orbit 1 -> 1 fams; canon len 2 orbit 1 -> 1 fams
+   EQUALITY (true min-density) class  : 5 families
+      profile multiset                  : {(9, 9, 9, 9, 1): 5}
+      near-cube expected profile        : (9, 9, 9, 9, 1)
+         profile (9, 9, 9, 9, 1): canonical (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 31), 5 families, orbit size 5
+
+==============================================================================
+VERDICT
+  n=2 [oracle+verified-cascade]: equality class = 1 profile(s), total 2 families; all isomorphic to near-2-cube ? True
+  n=3 [oracle+verified-cascade]: equality class = 1 profile(s), total 3 families; all isomorphic to near-3-cube ? True
+  n=4 [oracle+verified-cascade]: equality class = 1 profile(s), total 4 families; all isomorphic to near-4-cube ? True
+  n=5 [cascade]: equality class = 1 profile(s), total 5 families; all isomorphic to near-5-cube ? True
+
+  VERDICT: EVERY minimum-density UC family on n<=5 is isomorphic to the near-n-cube.  The min-density class is exactly ONE isomorphism class, of size n (one choice of the distinct count-1 element); all other coordinates sit at the plateau 2^{n-2}+1.
+
+  The broader min-present-count==1 class is NOT the density minimum.
+  min-present-count==1 only forces m <= 2^{n-1}+1; density equality
+  (1/(2^{n-1}+1)) additionally forces m = 2^{n-1}+1.  The extra
+  min-1 families have m < 2^{n-1}+1, hence density 1/m > 1/2^{n-1}+1,
+  and are not extremal for the density bound.  Every one of them
+  still has a single count-1 element, but the remaining coordinates
+  are NOT all at the plateau 2^{n-2}+1 (see the profiles above).
+
+==============================================================================
+EXEMPLARS (explicit bitmask families)
+  n=5 [non-near-cube with near-cube PROFILE (9,9,9,9,1)]  |F|=16 counts=(9, 9, 9, 9, 1) min_count=1 density-extremal? False (1/16 > 1/17)
+     sets (bitmasks): [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 31]
+
+  n=2 [near-2-cube, canonical]  |F|=3 counts=(2, 1)
+     sets (bitmasks): [0, 1, 3]
+  n=2 [non-near-cube, min-present-count==1]  |F|=1 counts=(1, 0) min_count=1 density-extremal? False
+     sets (bitmasks): [2]
+
+  n=3 [near-3-cube, canonical]  |F|=5 counts=(3, 3, 1)
+     sets (bitmasks): [0, 1, 2, 3, 7]
+  n=3 [non-near-cube, min-present-count==1]  |F|=2 counts=(2, 1, 0) min_count=1 density-extremal? False
+     sets (bitmasks): [2, 3]
+
+  n=4 [near-4-cube, canonical]  |F|=9 counts=(5, 5, 5, 1)
+     sets (bitmasks): [0, 1, 2, 3, 4, 5, 6, 7, 15]
+  n=4 [non-near-cube, min-present-count==1]  |F|=5 counts=(4, 3, 3, 1) min_count=1 density-extremal? False
+     sets (bitmasks): [0, 6, 10, 14, 15]
+
+  n=5 [near-5-cube, canonical]  |F|=17 counts=(9, 9, 9, 9, 1)
+     sets (bitmasks): [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 31]
+  n=5 [non-near-cube, min-present-count==1]  |F|=7 counts=(6, 5, 4, 3, 1) min_count=1 density-extremal? False
+     sets (bitmasks): [4, 13, 16, 20, 28, 29, 31]
+

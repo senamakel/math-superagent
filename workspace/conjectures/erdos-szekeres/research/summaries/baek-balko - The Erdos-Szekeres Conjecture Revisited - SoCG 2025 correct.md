@@ -1,39 +1,23 @@
-# Baek & Balko 2025, "The Erdős–Szekeres Conjecture Revisited", SoCG 2025
+# Baek & Balko, "The Erdős–Szekeres Conjecture Revisited" — SUPERSEDED by full-text digest
 
-Source: https://doi.org/10.4230/LIPIcs.SoCG.2025.13
-Full text: [[baek-balko - The Erdos-Szekeres Conjecture Revisited - SoCG 2025 correct.full]]
-(The mis-download `... SoCG 2025.full.md` is superseded by this correct copy.)
+<!-- source: https://doi.org/10.4230/LIPIcs.SoCG.2025.13; landing page only -->
 
-## What it establishes
+**This note previously held the two `baek-balko-*` claims at `asserted-by-source`,
+because the only held document was the LIPIcs abstract page. The PDF of the full paper
+is now on disk and digested — see the authoritative note:**
 
-```claim
-id: baek-balko-split
-statement: Every set of at least 2^{k-2}+1 points in general position contains a 'split k-gon', and this is tight: 2^{k-2}+1 is exactly the threshold for split k-gons.
-hypotheses: planar, general position
-holds-here: yes
-status: proved
-bearing: a relaxed version of the ES conjecture is TRUE and its threshold equals the conjectured exact value — evidence the 2^{k-2}+1 quantity is the right one, and a template for weakening the convex-position condition.
-anchor: research/sources/baek-balko - The Erdos-Szekeres Conjecture Revisited - SoCG 2025 correct.full.md
-```
+→ **[[baek-balko-ES-conjecture-revisited-SoCG2025.pdf]]** (source:
+`research/sources/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.full.md`)
 
-```claim
-id: baek-balko-decomposable
-statement: The Erdős–Szekeres conjecture ES(k)=2^{k-2}+1 holds for 'decomposable' point sets: every decomposable set of 2^{k-2}+1 points contains k in convex position.
-hypotheses: decomposable point set, general position
-holds-here: yes
-status: proved
-bearing: a restricted class (a natural ≥1 for GOAL/R0OT: restricted classes already settled). Decomposable = recursively built from the ES construction's block structure.
-anchor: research/sources/baek-balko - The Erdos-Szekeres Conjecture Revisited - SoCG 2025 correct.full.md
-```
+That note supersedes this one. The split-gon threshold theorem (Theorem 3/4/6) is proved
+in the full text (Lemma 10 upper bound complete, Lemma 11 abstract lower bound complete,
+with Lemma 9 count and Lemma 12 geometric-lower-bound count deferred as "proof omitted");
+the decomposable-set theorem (Theorem 8) is asserted with "The proof of Theorem 8 is
+omitted" in the SoCG version; the weak-k-gon abstract failure Cweak(7) > 33 (Theorem 7)
+is reported (SAT); and the blow-up construction (Lemma 14 / Theorem 19) is proved with
+the M-set family.
 
-Also: the ordered-3-uniform-hypergraph analogue of ES is NOT true (contrast — shows the geometric
-setting is special); new 2^{k-2}-point no-k-gon constructions generalizing all previously known
-ones, enabling computational attack at large k.
-
-## Significance for the run
-
-This is the strongest currently-known *exact-threshold* result: the split-k-gon relaxation is tight
-at exactly 2^{k-2}+1, and the full conjecture holds for decomposable sets. It suggests the
-structural route: prove convex-position can be forced from a split k-gon + extra structure, or
-that every extremal 2^{k-2}-set is near-decomposable. The decomposition/Tverberg-type machinery in
-the paper is directly reusable for structural lemmas about hypothetical extremal sets.
+**Do not cite this abstract-only file as the evidence anchor for `baek-balko-split` or
+`baek-balko-decomposable`.** Use the full-text digest file above. The claims
+`baek-balko-split` and `baek-balko-decomposable` are now anchored at
+`research/summaries/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.md`.

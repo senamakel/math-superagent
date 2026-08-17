@@ -1,0 +1,15 @@
+=== constructive soundness witness for the symbreak canonical break ===
+rook(3) m=3: conjugates satisfying break = 6/6
+  fix M0 (a break-satisfying conjugate) + break: status=OPTIMAL
+BvLS m=81: diag = [2] (constants, so break A is vacuous; only row0 lex-min)
+constructive search over candidate roots: 0 vertex-root(s) yield a break-satisfying conjugate
+  NO constructed conjugate satisfies the break (sorted-column construction).
+  -> the break has not been shown to admit the real BvLS class;
+
+INTERPRETATION
+  Soundness of the break requires that SOME conjugate satisfies it.  The
+  sorted-column construction is one constructive witness, not an exhaustive
+  proof for BvLS (m=81, 81! conjugates).  If the construction succeeds, the
+  break is confirmed SOUND on the real BvLS class.  If it fails, the break is
+  UNVALIDATED (neither proved sound nor unsound) and a 99 INFEASIBLE from it
+  must be treated as NOT EVIDENCE until resolved, per directive 30.

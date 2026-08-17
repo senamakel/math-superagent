@@ -1,0 +1,24 @@
+{
+  "axioms": [
+    "'union_card_shared_two' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'cupcap_gives_convex' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'g_cupcap' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem union_card_shared_two {C D : Finset (Fin m)} {k n : ℕ} (h2k : 2 ≤ k) (hkn : k ≤ n) (hC : C.card = k) (hD : D.card = n + 2 - k) (hCD : (C ∩ D).card = 2) : (C ∪ D).card = n",
+    "theorem cupcap_gives_convex {n : ℕ} (hn : 2 ≤ n) (convexPos : Finset (Fin m) → Prop) (isCup isCap : Finset (Fin m) → Prop) (sameExtremes : Finset (Fin m) → Finset (Fin m) → Prop) (hSharedTwo : ∀ C D : Finset (Fin m), sameExtremes C D → (C ∩ D).card = 2) (hRHS : ∃ k : ℕ, 2 ≤ k ∧ k ≤ n ∧ ∃ C D : Finset (Fin m), C.card = k ∧ D.card = n + 2 - k ∧ isCup C ∧ isCap D ∧ sameExtremes C D ∧ convexPos (C ∪…",
+    "theorem convex_gives_cupcap {n : ℕ} (convexPos : Finset (Fin m) → Prop) (isCup isCap : Finset (Fin m) → Prop) (sameExtremes : Finset (Fin m) → Finset (Fin m) → Prop) (hSharedTwo : ∀ C D : Finset (Fin m), sameExtremes C D → (C ∩ D).card = 2) (hLHS : ∃ S : Finset (Fin m), S.card = n ∧ convexPos S) : ∃ k : ℕ, 2 ≤ k ∧ k ≤ n ∧ ∃ C D : Finset (Fin m), C.card = k ∧ D.card = n + 2 - k ∧ isCup C ∧ isCap D…",
+    "theorem g_cupcap {n : ℕ} (hn : 2 ≤ n) (convexPos : Finset (Fin m) → Prop) (isCup isCap : Finset (Fin m) → Prop) (sameExtremes : Finset (Fin m) → Finset (Fin m) → Prop) (hSharedTwo : ∀ C D : Finset (Fin m), sameExtremes C D → (C ∩ D).card = 2) : (∃ S : Finset (Fin m), S.card = n ∧ convexPos S) ↔ (∃ k : ℕ, 2 ≤ k ∧ k ≤ n ∧ ∃ C D : Finset (Fin m), C.card = k ∧ D.card = n + 2 - k ∧ isCup C ∧ isCap D ∧…"
+  ],
+  "file": "code/lean/extremal_split_stability_G_cupcap.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/extremal_split_stability_G_cupcap.lean:189:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

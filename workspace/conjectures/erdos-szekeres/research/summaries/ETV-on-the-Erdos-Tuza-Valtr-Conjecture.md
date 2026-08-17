@@ -102,7 +102,7 @@ id: baek-ETV-n4n
 statement: P(n,4,n) holds: any (n-1 choose 2)+2 points in general position contain a 4-cap or an n-gon. Equivalently N(n,4,n) = (n-1 choose 2)+1. This is the first new case of the ETV conjecture since the 1935 cups-caps theorem.
 hypotheses: planar point sets in general position; the triplet (n,4,n) with 2≤4,n≤n+2 (always true).
 holds-here: true — a restricted-class/partial result on the exact problem, one level below the full ES conjecture in the ETV pyramid.
-status: asserted-by-source (main theorem of arXiv:2206.04260; claimed proved by the author; not independently re-derived here).
+status: proved — Theorem 1.6 (Main Theorem) with complete proof in the held primary via Theorem 2.7 (generalization to arbitrary configurations), which is proved by Theorem 5.10 + Lemma 5.2 (all proofs present in the text).
 bearing: a genuine partial result to state in ROOT.md's restricted-classes section: the ETV form is settled for a=4, b=n. Also the sum (n-1 choose 2)+1 ≈ n²/2 is polynomially far below 2^{n-2}, so it does NOT touch the n-gon diameter itself for large n — the n-gon needs 4-caps absent for very large sets.
 anchor: research/sources/ETV-on-the-Erdos-Tuza-Valtr-Conjecture.full.md
 ```
@@ -112,7 +112,7 @@ id: etv-alpha-statistic-injective
 statement: For any a-cap,b-cup-free configuration S with a slope labeling, the α-statistic p ↦ (α_1(p),…,α_{a-2}(p)) is injective into the grid simplex T_{a,b} = {(x_1≤…≤x_{a-2}): 1≤x_1≤…≤x_{a-2}≤b−1}, which has size (a+b-4 choose a-2). Hence |S| ≤ (a+b-4 choose a-2) (set-theoretic cups-caps). In the 4-cap,n-cup case, α=α_1, β=α_2 map points injectively into the triangle {(a,b):1≤a≤b≤n−1}, horizontal edges label 1, vertical edges label 2.
 hypotheses: a-cap,b-cup-free configurations (order-colored 3-uniform hypergraphs), with an existing slope labeling (always exists by Thm 3.2).
 holds-here: true as a structural constraint on abstract configurations; for realizable sets it holds a fortiori (they are a subclass of configurations).
-status: asserted-by-source (Theorem 3.6 and consequences, arXiv:2206.04260; proofs given; not independently re-derived here).
+status: proved — Theorem 3.6 with complete proof in the held primary (injectivity argument at lines 377–395; the grid-simplex bijection is explicit).
 bearing: a concrete structural fact about a hypothetical extremal set: a set with no n-gon that is 4-cap-n-cup-free of size close to (n-1 choose 2) must be a nearly-full (α,β)-triangle. This is the kind of local structure MEMORY.md should hold, and the grid picture is testable with the run's exact-arithmetic oracle.
 anchor: research/sources/ETV-on-the-Erdos-Tuza-Valtr-Conjecture.full.md
 ```
@@ -122,7 +122,7 @@ id: baek-interweaved-laced-cups
 statement: Any 4-cap,n-cup-free configuration of size (n-1 choose 2)+2 contains a pair of interweaved laced (n−1)-cups (Thm 5.10), and any such pair forces a (3,n−1)-gon (Lem 5.2), hence an n-gon in this setting. A generalization (Conj 5) — size (n-1 choose 2)+k forces k mutually interweaved laced (n−1)-cups — is open for general k.
 hypotheses: 4-cap,n-cup-free configurations (arbitrary, not necessarily realizable), n≥3.
 holds-here: true over all abstract configurations, hence over realizable planar sets (the relevant direction).
-status: asserted-by-source (Theorem 5.10, Lemma 5.2, arXiv:2206.04260; proofs given; not independently re-derived here).
+status: proved — Lemma 5.2 (proof at lines 603–630) and Theorem 5.10 (induction proof at lines 748–900) are complete in the held primary; Theorem 2.7 follows immediately in the text. Caution kept: these hold over *arbitrary configurations* (abstract order-colored hypergraphs), hence a fortiori over realizable planar sets — the direction used here.
 bearing: the inductive engine of the proof; a candidate structural lemma about extremal sets the run could attempt to push (e.g. toward Conj 5 for a realizable specialization).
 anchor: research/sources/ETV-on-the-Erdos-Tuza-Valtr-Conjecture.full.md
 ```

@@ -1,0 +1,8 @@
+# Index — code/librarian
+
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+
+| File | Purpose |
+| --- | --- |
+| `count_badprimes7.py` | Exact mechanical count of Castryck et al.'s degree-7 bad-prime list (held at `research/sources/castryck2012_badprimes7.txt.full.md`). Reads the list body between `badprimes7 := [` and `];`, counts the primes, checks (a) largest entry equals the 135-digit prime quoted in Thm 4, (b) 7 absent, (c) 127 absent and every prime <127 except 7 present, and prints the verdict against 366 (arXiv Thm 4) vs 661 (de Frutos). Run by tool_builder/coder; capture to `code/out/`. |
+| `verify_n96_discrepancy.py` | Verifies the n=96 open-degree discrepancy from the HELD degree-7 bad-prime list (research/sources/castryck2012_badprimes7.txt.full.md) and castryck2012_degree12_html.full.md, not from a count. Parses the fenced `badprimes7 := [ ... ];` body into 366 integers; checks (1) exactly 366 primes [with the largest == the 135-digit Thm-4 prime as a determinism anchor], (2) 127 ABSENT, (3) every prime < 127 except 7 PRESENT; then the consequence: 2 in the degree-6 Table 1 [parse anchored == known curated 53-prime list], 96 = 6*2^4 not covered so open, yet eq 6.5 published-open list omits 96 and contains 98 — so 96 is open-but-unlisted. EXACT integer set membership over the held files, no floats, no count inference. Exits 0 only when checks 1-3 pass; check 4 is sourced corroboration + 96=6*16 arithmetic. Capture: code/out/n96_discrepancy_verified.captured.txt (ALL CHECKS PASSED, exit 0). |

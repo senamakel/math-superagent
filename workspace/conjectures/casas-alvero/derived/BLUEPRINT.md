@@ -19,11 +19,22 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 - `full-ca-regular-sequence/G-uniform-nonvanishing` (lemma) — For every n ≥ 1 and every T ∈ {1,…,n}^{n−1}, the integer J_T — the gcd of all C×C minors of the matrix M_T built from the translated…
   - open `research/backward/full-ca-regular-sequence.md`
 
+## Verify these first
+
+Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
+
+- `gvb-lift` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — (as quoted and reformulated by Castryck et al, Theorem 3) Let d>0 and p prime. If no CA-polynomials of degree d exist over F_p-bar, then CA…
+- `bad-prime-minors-criterion` — 1 node(s) rest on it, and the run is already building on it — A prime p is bad for degree n iff p \| J_T for some T ∈ T, where J_T is the greatest common divisor of all C×C minors of the matrix M_T…
+- `bad-prime-upper-bound` — 1 node(s) rest on it, and the run is already building on it — If CA_{n,0} holds and p is a bad prime for n, then p < C! · Π_{i=1}^{n−1} (i+n−2 choose n−2)(d−i+n−2 choose n−2), where d=(n²−3n+4)/2, C=(…
+
+_95 further candidate(s) below these, in the table._
+
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
 | `5p-bad-primes-chellali` | claim | **ready** | — | CA holds for degrees 5p^e (e≥1, p prime) with p ≠ 2,3,7,11,131,193, 599,3541,8009 (Chellali & Salinier 2012, HAL hal-00748843). This… |
+| `abdesselam-chipalkatti-file-mislabeled` | claim | established | — | The file research/sources/abdesselam-chipalkatti-hilbert-covariants.full.md (and its summary) holds the WRONG paper: Campagna & Pagh, "On… |
 | `at-least-five-distinct-roots` | claim | established | — | A non-trivial CA polynomial of degree N≥5 has at least five distinct roots, so N≥6, and at least 4 distinct roots in its open Gauss–Lucas… |
 | `bad-prime-criterion` | claim | established | — | If p is a prime with p \| ((d choose i) − 1) for some i∈{1,…,d−1}, then CA_{d,p} is false. Reason: for such p, no pure power of any a_j… |
 | `bad-prime-lists-hasse-formulation` | claim | established | — | The published small-degree bad-prime lists are for the HASSE formulation of the CA hypothesis (H_i(f) Hasse derivatives): n=3 bad primes… |
@@ -35,6 +46,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `badprimes-n5-minor-criterion-verified` | claim | **ready** | — | For degree n=5, the rank-over-F_p form of the Schaub-Spivakovsky minor criterion certifies exactly the published bad-prime list… |
 | `badprimes-n5-semantic-smallprimes` | claim | **ready** | — | By the literal definition (Castryck et al. 2012 Def 1, Hasse formulation), p is a bad prime for degree 5 iff a counterexample exists over… |
 | `battiston-withdrawn` | claim | **ready** | — | Giulia Battiston's 2015 paper "The Casas-Alvero conjecture" (arXiv:1511.04932, 16 Nov 2015) is a claimed proof that was withdrawn by the… |
+| `berger-smallest-open-degree-20-corroboration` | claim | **ready** | — | Berger's ENS course handout states CA is known for d <= 19 and any d a prime power or twice a prime power, independently corroborating the… |
 | `binomial-criterion-calibration` | claim | **ready** | — | The sufficient binomial bad-prime criterion (Schaub-Spivakovsky 2023 Cor 8, arXiv:2307.05997: p bad for degree d if p \| C(d,i) - 1 for some… |
 | `ca-status-2025` | claim | **ready** | — | A complete proof of the Casas-Alvero conjecture has been CLAIMED (Soham Ghosh, arXiv:2501.09272, Jan 2025, v2 Mar 2026 "major revisions")… |
 | `ca-variety-results` | claim | established | — | CA for degree d is equivalent to V_k(d,t) = ∅ for ANY t∈{0,…,d−2}, where V_k(d,t) ⊂ weighted P is the projective variety cut out by the… |
@@ -49,19 +61,30 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 | `charp-witness-xpp1-xp` | claim | **ready** | — | In characteristic p, f(x) = x^{p+1} − x^p (and relatives) is a CA-polynomial (shares a non-trivial factor with every derivative) that is… |
 | `charp-witness-xpp1-xp-hasse-recheck` | claim | established | — | The clause "f(X^p) without constant term also works since all derivatives vanish" in claim charp-witness-xpp1-xp is ORDINARY-derivative… |
 | `charp-witnesses` | claim | **ready** | — | The char-p witnesses the oracle must recognise as satisfying the hypothesis but NOT being pure powers are: x^{p+1} - x^p in char p… |
+| `chavez-martinez-2018-fixed-roots` | claim | **ready** | — | Chávez Martínez 2018 thesis (UCrea, dir. González-Vega & Tabera) proves CA for char-0 polynomials with 2 and 3 distinct roots, and for… |
 | `computational-boundary` | claim | **ready** | — | Direct verification of CA by Gröbner basis is feasible over ℚ up to about degree 8; degree 12 was settled only by a combination of… |
 | `ddj-not-two` | claim | established | — | The set of common zeroes of a CA polynomial f with its derivatives cannot have cardinality two. (Section 6 of the survey; re-proved as Prop… |
+| `defrutos-discriminant-formulation` | claim | **ready** | — | (de Frutos Marin 2013 thesis, Teo 5.6.6) CA in degree n over C is equivalent to the non-vanishing of the superdiscriminant D_n =… |
+| `defrutos-good-prime-lift-corroborates-gvb` | claim | **ready** | — | Teo 5.6.13(a): if p >= n and p does not divide D_n then p is efficacious for n and CA holds for all degrees n·p^r, r>=0. This is the… |
+| `defrutos-good-prime-lifts` | claim | **ready** | — | (Teo 5.6.13) For n>=3 and prime p>=n: (a) if p does not divide D_n then p is efficacious for n and CA holds for all degrees n·p^r, r>=0;… |
+| `defrutos-n5-badprimes-superdiscriminant` | claim | **ready** | — | The prime divisors of the degree-5 superdiscriminant D_5 = Delta(5,{3})·Delta(5,{2,3})·Delta(5,{1,2,3}) are exactly… |
+| `defrutos-one-exponent-discriminant-equals-binomial-criterion` | claim | established | — | Delta(n,{i}) = 1 - C(n,i) (Def 5.6.5), so p \| Delta(n,{i})  <=>  p \| C(n,i)-1. Hence de Frutos Marin's one-exponent discriminant is… |
+| `defrutos-superdiscriminant-consistent-deg5` | claim | **ready** | — | The union of prime divisors of the degree-5 superdiscriminant factors Delta(5,{3})=3^2, Delta(5,{2,3})=2^2·3^2·11·3541,… |
 | `deg4-char3-refuted` | claim | established | — | CA in degree 4 over F_3 is false in the Hasse formulation: f = x^4 + x = x(x+1)^3 over F_3 has two distinct roots, shares a root with each… |
 | `deg4-char5-refuted` | claim | established | — | CA in degree 4 over F_5 is false in the Hasse-derivative formulation: f = x^4 − x^2 = x^2(x−1)(x+1) has three distinct roots, shares a root… |
 | `deg4-char7-refuted` | claim | established | — | CA in degree 4 over F_7 (Hasse formulation) is false: f = x^4 + x^3 + 4x over F_7 shares a root with each Hasse derivative H_1, H_2, H_3… |
-| `deg5-char2-refuted` | claim | established | — | CA in degree 5 over F_2 is false in the Hasse-derivative formulation: f = x^5 + x^4 = x^4(x+1) over F_2 has two distinct roots {0, 1} (0… |
-| `deg6-char2-refuted` | claim | established | — | CA in degree 6 over F_2 is false in the Hasse-derivative formulation: f = x^6+x^2 = x^2(x+1)^4 has two distinct roots {0,1} (NOT a pure… |
-| `deg6-char5-refuted` | claim | established | — | CA in degree 6 over F_5 is false in the Hasse-derivative formulation: f = x^6 − x^5 = x^5(x−1) has two distinct roots {0,1} (NOT a pure… |
-| `deg7-char2-refuted` | claim | established | — | CA in degree 7 over F_2 is FALSE in the Hasse formulation: f = x^7 + x^3 = x^3(x+1)^4 over F_2 has two distinct roots {0,1} (0 mult 3, 1… |
-| `degree12-settled` | claim | **ready** | — | Conjecture 1 (CA) is true for d=12. Method: restrict to a small scenario list (five 5 scenarios of type 8), run the resultant/Gröbner… |
-| `dobrowolski-2017-withdrawn` | claim | **ready** | — | Dobrowolski, "Casas-Alvero Conjecture is true" (arXiv:1705.01704, 4 May 2017) is a claimed complete proof that was WITHDRAWN by the author… |
-| `full-ca-regular-sequence` | goal | blocked | `charp-false`, `full-ca-regular-sequence/G-bad-prime-extension`, `full-ca-regular-sequence/G-macaulay-rank`, `full-ca-regular-sequence/G-reformulation-equivalence`, `full-ca-regular-sequence/G-uniform-nonvanishing` | Casas–Alvero (CA). Over any field K of characteristic 0, every monic f ∈ K[x] with deg f = n ≥ 1 satisfying gcd(f, f^{(i)}) ≠ 1 for all i =… |
-| `full-ca-regular-sequence/G-bad-prime-extension` | lemma | **ready** | — | The finite computation of J_T over ℤ for n ≤ 7 reproduces the published bad-prime lists (validating Thm 3.1 exactly), and for the first… |
-| `full-ca-regular-sequence/G-macaulay-rank` | lemma | established | — | For homogeneous forms of degrees 1,…,n−1 in n−1 variables over a field, the following are equivalent: (i) they form a regular sequence… |
 
-_41 further nodes not shown._
+_60 further nodes not shown._
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "blueprint" }
+read_ledger { ledger: "blueprint", id: "<one of the ids above>" }
+read_ledger { ledger: "blueprint", status: "<a status above>" }
+read_ledger { ledger: "blueprint", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: nothing directly — it is computed from the skeletons and the claims, so change one of those and this re-derives. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

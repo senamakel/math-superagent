@@ -1,0 +1,9 @@
+combine_constraints_crosscheck.py - independent second route re-verifying combine_constraints.py headline numbers (74 witness count, distribution, canonical witness, pure-count minimum, (E) vacuity).
+Oracle: lib.uc.decide_union_closed / lib.uc.abundance / lib.uc.abundant_elements; exact integer counts, no floats.
+Range: n=1..4 exhaustive - all nonempty subfamilies of [4] (32,767 empty-free) via combinations, and all subfamilies n=1..4 via bit-iterator for the (B)/(E) vacuity count.
+(1) witnesses on [4]: 74 (expected 74) PASS; dist={(4, 5): 13, (4, 7): 61}
+(2) canonical witness [1, 3, 4, 8, 14] in set, not UC, counts=[2, 2, 2, 2], abundant=[] PASS
+(3) smallest n_ground = 3, first witness [0, 1, 6] (n_ground=3, m=3, counts=[1, 1, 1], abundant=[]) PASS
+(4) families in (B) regime: 25695; with (E)-floor >= 0: 0 PASS
+
+CROSSCHECK PASS

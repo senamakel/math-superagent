@@ -1,0 +1,28 @@
+{
+  "axioms": [
+    "'esConstructSize_eq' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'split_total_from_halves' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'combining_consistency' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem esConstructSize_eq (n : ℕ) (hn : 2 ≤ n) : esConstructSize n = 2 ^ (n - 2)",
+    "theorem split_total_from_halves (n N : ℕ) (hn : n ≥ 4) (L R : Finset (Fin N)) (A B : Prop) (hV : ValidSplit n N L R A B) : 2 * 2 ^ (n - 3) = 2 ^ (n - 2)",
+    "theorem es_construct_n5_four_splits : ∃ L R : Finset (Fin 8), ValidSplit 5 8 L R True True",
+    "theorem es_construct_n6_two_splits : ∃ L R : Finset (Fin 16), ValidSplit 6 16 L R True True",
+    "theorem es_construct_n7_no_split : ¬ ∃ L R : Finset (Fin 32), ValidSplit 7 32 L R True True",
+    "theorem combining_consistency (n N : ℕ) (hn : n ≥ 4) (L R : Finset (Fin N)) (A B : Prop) (hV : ValidSplit n N L R A B) : N = 2 ^ (n - 2)"
+  ],
+  "file": "code/lean/extremal_split_stability_G_split_consistent.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/extremal_split_stability_G_split_consistent.lean:136:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/extremal_split_stability_G_split_consistent.lean:145:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/extremal_split_stability_G_split_consistent.lean:155:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

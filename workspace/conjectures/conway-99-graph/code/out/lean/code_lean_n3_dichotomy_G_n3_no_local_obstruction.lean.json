@@ -1,0 +1,33 @@
+{
+  "axioms": [
+    "'N3NoLocal.n3_seed_upper_ok_radius0' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'N3NoLocal.seed_triangles_are_cliques' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'N3NoLocal.seed_triangles_disjoint' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'N3NoLocal.seed_cross_edges' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'N3NoLocal.r8_witness_adj' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'N3NoLocal.r8_extends_seed_edges' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'N3NoLocal.n3_seed_no_local_obstruction_radius1' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'N3NoLocal.r8_fixpoint_closed' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'N3NoLocal.n3_seed_no_local_obstruction_every_radius' depends on axioms: [propext, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem n3_seed_upper_ok_radius0 : upper_ok 6 seedRel",
+    "theorem seed_triangles_are_cliques : seedRel 0 1 ∧ seedRel 1 2 ∧ seedRel 2 0 ∧ seedRel 3 4 ∧ seedRel 4 5 ∧ seedRel 5 3",
+    "theorem seed_triangles_disjoint : ({0 , 1, 2} : Finset (Fin 6)) ∩ ({3, 4, 5} : Finset (Fin 6)) = ∅",
+    "theorem seed_cross_edges : (seedRel 0 3 ∧ seedRel 1 4) ∧ (¬ seedRel 0 5 ∧ ¬ seedRel 1 5 ∧ ¬ seedRel 2 3 ∧ ¬ seedRel 2 4 ∧ ¬ seedRel 2 5 ∧ ¬ seedRel 0 4 ∧ ¬ seedRel 1 3)",
+    "theorem r8_witness_adj : R8 0 6 ∧ R8 3 6 ∧ R8 1 7 ∧ R8 4 7",
+    "theorem r8_extends_seed_edges (i j : Fin 6) (h : seedRel i j) : R8 ⟨i.1, by omega⟩ ⟨j.1, by omega⟩",
+    "theorem n3_seed_no_local_obstruction_radius1 : upper_ok 8 R8",
+    "theorem r8_fixpoint_closed : ∀ i j : Fin 8, R8 i j → ∃ x : Fin 8, x ≠ i ∧ x ≠ j ∧ R8 i x ∧ R8 j x",
+    "theorem n3_seed_no_local_obstruction_every_radius : ∀ _r : ℕ, upper_ok 8 R8 ∧ (∀ i j : Fin 8, R8 i j → ∃ x : Fin 8, x ≠ i ∧ x ≠ j ∧ R8 i x ∧ R8 j x)"
+  ],
+  "file": "code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean",
+  "missing_modules": [],
+  "outcome": "verified",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": true
+}

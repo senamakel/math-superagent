@@ -13,6 +13,7 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 | [[g-reduce]] | no srg(99,14,1,2) exists | supplies the first equivalence in the chain: srg(99,14,1,2) exists iff its vertex-derived design D exists | broken | 0 |
 | [[g-unsat]] | no srg(99,14,1,2) exists | closes the chain: phi(99) UNSAT therefore no srg exists | broken | 0 |
 | [[n3-dichotomy]] | no srg(99,14,1,2) exists | Let Γ be a putative srg(99,14,1,2) and n3(Γ) its count of disjoint-triangle pairs joined by exactly 2 edges. n3(Γ) ∈ ℤ≥0, so n3 = 0 or n3 ≥ 1. G-n3-zero… | live | 1 |
+| [[orbit-matrix-completion]] | Complete the published orbit-matrix programme on residual Z2/Z3 | — | live | 0 |
 
 ## The open gaps — each one is a task
 
@@ -28,7 +29,7 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
   - next: sat_solver runs phi(99) with a stated search space and symmetry reduction (fix v0 and the 7K2), recording the space, worker count, and the wall-clock at which it is abandoned if it does not terminate — that boundary is itself a reportable result. In parallel, inventor/theorem_prover seeks a counting obstruction on the 84-point outer design specific to (84,140,5); any candidate must fail on the rook's graph and BvLS before effort is spent.
   - _no thread — nothing is attacking this_
 - [[n3-dichotomy]] `G-n3-positive` — No srg(99,14,1,2) has n3 ≥ 1. Equivalently: the n3 seed — two disjoint triangles T1 = {a,b,c}, T2 = {d,e,f} joined by exactly 2 edges (cross edges a–d, b–e; the other seven cross pairs non-adjacent) — admits no completion to a graph on 99 vertices that is locally 7K2 with λ = 1 and μ = 2. Since n3-99-forced-at-least-3 sharpens this to n3 ∈ {3, 6, 9, …}, it suffices to rule out any graph containing the seed.
-  - next: grow the *exact* forced closure of the 6-vertex n3 seed by ADDING witness vertices — for each edge, its unique triangle third vertex (λ = 1); for each non-adjacent pair, its two common neighbours (μ = 2) — tracking that the total never exceeds 99 vertices, no vertex exceeds degree 14, and no point lies on more than 7 lines. This is the step the radius-1 result did NOT take: n3-seed-locally-consistent-radius1 uses the relaxed upper-bound criterion (deficits satisfiable by the other ~91 vertices) and is therefore NOT an obstruction. tool_builder enumerates one more shell completely (report the…
+  - next: GLOBAL, not another local shell (G-n3-no-local-obstruction makes the local route a dead end) and NOT an order-k subgraph-count identity. Acquisition of Reimbayev 2025 order-7 paper (arXiv:2511.06572, in library, claim reimbayev-order7-counts-two-free-vars) closes the counting-identity route through order 7: order-7 Hamiltonian counts depend on TWO free variables (n3, h11, 4n3>=h11>=2n3), so no order-<=7 identity forces n3>=1 or pins n3 into an empty range (n3=0 with h11=0 is consistent at every family member). The ONLY remaining route is the EXACT line-/point-replication ledger: 99 points…
   - _no thread — nothing is attacking this_
 
 ## Gaps already discharged
@@ -36,6 +37,7 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
 Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
 
 - [[n3-dichotomy]] `G-n3-zero` — No srg(99,14,1,2) has n3 = 0, where n3 = 0 is Makhnev's condition (*) — no pair of disjoint triangles is joined by exactly 2 edges. Under (*), Makhnev's closure of a triangle forces a subobject Λ₀ = srg(33,12,1,6), which is parameter-infeasible. (closed by makhnev1988-condstar-theorems (sourced, primary Russian full text) with the decisive infeasibility step re-derived as makhnev99-shorter-proof-integrality (checked: the g-numerator 2k+(v−1)(λ−μ) = −136 is not divisible by √Δ = 7, so srg(33,12,1,6) has no integral eigenvalue multiplicity). Admissibility gate passed on both controls in makhnev-condstar-gate-passed (rook(3) and bvls both have n3 = 0 and μ = 2 ≤ 3).)
+- [[n3-dichotomy]] `G-n3-no-local-obstruction` — The n₃ seed — two disjoint triangles T1 = {a,b,c}, T2 = {d,e,f} joined by exactly 2 edges (cross edges a–d, b–e) — admits a completion in every finite-radius shell of a lambda=1, mu=2, locally-7K2 patch grown by the sound upper-bound rule (grow a fresh witness only for adjacent/interior pairs forced to have a common neighbour; adjacent pairs ≤ 1 common neighbour, non-adjacent ≤ 2, degree ≤ 14, 7K2 are checks on excesses; deficits are satisfiable by the ~91 outside vertices). Equivalently: there is NO local obstruction to the seed at any radius. (closed by code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean — lean_check `outcome: verified`, no sorries, no cited axioms. Nine theorems formalised: radius 0 (n3_seed_upper_ok_radius0), radius 1 (n3_seed_no_local_obstruction_radius1 : upper_ok 8 R8), the fixpoint-closure lemma (r8_fixpoint_closed : every edge of R8 already has an interior common neighbour), and the combining step (n3_seed_no_local_obstruction_every_radius : forall r, the radius-1 closure extends to every radius). The fixpoint-closure lemma is exactly why the sound growth rule materialises no fresh witness beyond R8 — the shell is stationary at 8 vertices for every radius, reproducing survivor 0 of code/out/n3_grow_radius.py → code/out/n3_grow_radius.captured.txt (the +0 witness / 8 verts / free-bits 0 branch that persisted through radius 6). The earlier CONTRADICTION capture n3_local_propagation.captured.txt is SUPERSEDED — an over-forcing saturation-branch bug in code/lib/localprop.py.)
 
 ## Reductions that broke, and why
 
@@ -57,3 +59,18 @@ A reduction taking an unrecorded belief as input proves the goal from something 
 ## Skeletons that could not be read
 
 - `README` has no skeleton block, so nothing can say what it reduces or whether the reduction is sound
+- `orbit-matrix-completion` does not say how its lemmas imply the goal, so nothing can check that they do
+- `orbit-matrix-completion` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "goals" }
+read_ledger { ledger: "goals", id: "<one of the ids above>" }
+read_ledger { ledger: "goals", status: "<a status above>" }
+read_ledger { ledger: "goals", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: `record_entry` to add or amend a row, `close_entry` to close one. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

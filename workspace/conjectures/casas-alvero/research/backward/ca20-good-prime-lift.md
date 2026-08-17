@@ -7,50 +7,10 @@ the library). Everything except the good-prime search is discharged; the open
 gap is the degree-20 conjecture in its sharpest finite form.
 
 ```skeleton
-goal: CA_20,0 — over any field K of characteristic 0, every monic f ∈ K[x] of
-  degree 20 that shares a non-constant factor with each of its first 19 Hasse
-  derivatives H_1(f),…,H_19(f) is (x−a)^20. (The smallest open degree,
-  smallest-open-degree.)
-implies: >
-  The load-bearing direction is the reduction-mod-p lift (G-lift): for any
-  prime p, if no CA-polynomial of degree 20 exists over F̄_p (that is, CA_20,p
-  holds), then CA_20,0 holds — the k=0 case of the Graf-von-Bothmer lift
-  "no degree-d CA-polys over F̄_p ⟹ CA in degree d p^k for all k≥0, over
-  char 0 and char p" (gvb-lift; equivalently the p-adic form
-  pdic-valuation-method with n′=20 < p, so any p ≥ 23). The contrapositive is
-  unconditional: a char-0 counterexample f has Res(f,H_i(f))=0 for each i,
-  which reduces mod p to a char-p counterexample for every p; so absence in
-  char p for one p forces absence in char 0.
-  (G-minors-test) gives the exact test for "p good": p is a bad prime for 20
-  iff p | J_T for some T ∈ {1,…,20}^{19}, where J_T is the gcd of all C×C
-  minors of the explicit integer matrix M_T (bad-prime-minors-criterion,
-  Schaub–Spivakovsky Thm 3.1, unconditional as a test). Hence p is good iff
-  rank_{F_p}(M_T) = C for every T, with C = binom(190,18) ≈ 1.0×10^20.
-  (G-upper-bound) — conditional on CA_20,0 — bounds every bad prime for 20 by
-  C!·∏_{i=1}^{19} binom(i+18,18)·binom(d−i+18,18) with d = (20²−3·20+4)/2 = 172,
-  so the good-prime search is in principle a finite filter.
-  Therefore the single remaining content is (G-good-prime): exhibit one good
-  prime p ≥ 23 for n = 20. Chaining (G-minors-test) then (G-lift):
-  rank_{F_p}(M_T) = C for all T ⟹ CA_20,p ⟹ CA_20,0.
-  (G-minors-boundary) names why the direct minors route cannot deliver
-  (G-good-prime): the minors criterion tops out at n = 5 (n = 6
-  rank-infeasible, minors-criterion-feasibility-boundary), and at n = 20 the
-  search space is |T| = 20^19 ≈ 5.2×10^24 tuples × a C ≈ 10^20-rank test, so
-  (G-good-prime) must beat that wall by scenario-type reduction or a finite
-  certificate over a single F_p.
-  Char-p break (the test every argument must pass): this decomposition is a
-  mod-p method by construction, so char p is the working space rather than a
-  pathology. The step that must break in char p is named exactly: J_T ≢ 0 mod
-  p fails precisely at the bad primes p | J_T, which is where the char-p
-  counterexamples x^{p+1}−x^p live. A candidate for (G-good-prime) that also
-  works in every characteristic would prove CA_{20,p} for all p, hence (by the
-  lift) no char-p counterexamples at all — refuted by charp-false — so any
-  proposed (G-good-prime) argument must name the prime p where it is
-  char-0-honest.
+goal: CA_20,0 — over any field K of characteristic 0, every monic f ∈ K[x] of degree 20 that shares a non-constant factor with each of its first 19 Hasse derivatives H_1(f),…,H_19(f) is (x−a)^20. (The smallest open degree, smallest-open-degree.)
+implies: > The load-bearing direction is the reduction-mod-p lift (G-lift): for any prime p, if no CA-polynomial of degree 20 exists over F̄_p (that is, CA_20,p holds), then CA_20,0 holds — the k=0 case of the Graf-von-Bothmer lift "no degree-d CA-polys over F̄_p ⟹ CA in degree d p^k for all k≥0, over char 0 and char p" (gvb-lift; equivalently the p-adic form pdic-valuation-method with n′=20 < p, so any p ≥ 23). The contrapositive is unconditional: a char-0 counterexample f has Res(f,H_i(f))=0 for each i, which reduces mod p to a char-p counterexample for every p; so absence in char p for one p forces absence in char 0. (G-minors-test) gives the exact test for "p good": p is a bad prime for 20 iff p | J_T for some T ∈ {1,…,20}^{19}, where J_T is the gcd of all C×C minors of the explicit integer matrix M_T (bad-prime-minors-criterion, Schaub–Spivakovsky Thm 3.1, unconditional as a test). Hence p is good iff rank_{F_p}(M_T) = C for every T, with C = binom(190,18) ≈ 1.0×10^20. (G-upper-bound) — conditional on CA_20,0 — bounds every bad prime for 20 by C!·∏_{i=1}^{19} binom(i+18,18)·binom(d−i+18,18) with d = (20²−3·20+4)/2 = 172, so the good-prime search is in principle a finite filter. Therefore the single remaining content is (G-good-prime): exhibit one good prime p ≥ 23 for n = 20. Chaining (G-minors-test) then (G-lift): rank_{F_p}(M_T) = C for all T ⟹ CA_20,p ⟹ CA_20,0. (G-minors-boundary) names why the direct minors route cannot deliver (G-good-prime): the minors criterion tops out at n = 5 (n = 6 rank-infeasible, minors-criterion-feasibility-boundary), and at n = 20 the search space is |T| = 20^19 ≈ 5.2×10^24 tuples × a C ≈ 10^20-rank test, so (G-good-prime) must beat that wall by scenario-type reduction or a finite certificate over a single F_p. Char-p break (the test every argument must pass): this decomposition is a mod-p method by construction, so char p is the working space rather than a pathology. The step that must break in char p is named exactly: J_T ≢ 0 mod p fails precisely at the bad primes p | J_T, which is where the char-p counterexamples x^{p+1}−x^p live. A candidate for (G-good-prime) that also works in every characteristic would prove CA_{20,p} for all p, hence (by the lift) no char-p counterexamples at all — refuted by charp-false — so any proposed (G-good-prime) argument must name the prime p where it is char-0-honest.
+rests-on: gvb-lift (k=0 reduction-mod-p lift), pdic-valuation-method, bad-prime-minors-criterion, bad-prime-upper-bound, minors-criterion-feasibility-boundary, smallest-open-degree, charp-false
 status: live
-rests-on: gvb-lift (k=0 reduction-mod-p lift), pdic-valuation-method,
-  bad-prime-minors-criterion, bad-prime-upper-bound,
-  minors-criterion-feasibility-boundary, smallest-open-degree, charp-false
 ```
 
 ```gap
@@ -107,6 +67,10 @@ lemma: There exists a good prime for n = 20 — that is, some prime p ≥ 23 wit
 status: open
 next: Attack the smallest candidate-good prime p = 23 (the first prime not
   certified bad by the binomial criterion, badprimes-n20-certified-frontier).
+  Hedge before starting: p = 23 > 19 = every Hasse order i needed, so i! ≢ 0
+  mod 23 and the ordinary/Hasse derivative convention is unambiguous at this
+  prime — the i ≤ 19 resultants are computed over F_23 with no char-p
+  degeneracy (hasse-vs-ordinary is settled for p ≥ n, and here 23 > n).
   Concretely, a tool_builder/coder can: (i) re-derive the lift direction k=0 —
   for a random monic degree-20 f over ℚ with gcd(f,H_i(f)) ≠ 1, confirm
   Res(f,H_i(f)) ≡ 0 mod 23 for each i, so a char-0 counterexample forces a

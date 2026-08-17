@@ -1,0 +1,15 @@
+[rook(3) Z3 row-shift] orbits=3 (size-3: all=True)
+  row sums all == k=4: True  (min 4, max 4)
+  diagonal entries set within {0,2}: True  (diag=[2])
+  off-diagonal entries in 0..3: True
+  MM^T == 6J + 2I - M  (factor srg(9,4,1,2)): True
+  #triangle orbits (diag=2) T = 3  (f value: g=3T=9)
+
+[bvls Z3 translation] orbits=81 (size-3: all=True)
+  row sums all == k=22: True  (min 22, max 22)
+  diagonal entries set within {0,2}: True  (diag=[2])
+  off-diagonal entries in 0..3: True
+  MM^T == 6J + 20I - M  (factor srg(243,22,1,2)): True
+  #triangle orbits (diag=2) T = 81  (f value: g=3T=243)
+
+All orbit-level srg conditions validated on both real control orbit matrices.

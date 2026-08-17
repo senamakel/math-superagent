@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "gsplit-enum-completeness-and-n7-zero",
+  "source": "code/lean/gsplit_enum_completeness_and_n7_zero.lean",
+  "stage": "decompose"
+}

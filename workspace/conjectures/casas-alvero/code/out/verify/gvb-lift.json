@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "gvb-lift",
+  "source": "code/lean/gvb_lift.lean",
+  "stage": "prove"
+}

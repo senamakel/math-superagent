@@ -109,6 +109,124 @@ what would falsify it.
   general G-split lemma. `code/out/gsplit_phase2.captured.txt` (claim
   `gsplit-enum-completeness-and-n7-zero`, status checked).
 
+- **es-nogon scored search (53 candidates × k=6,7): complete, found nothing new.
+  (computed and checked)** `code/search/es-nogon/score.py` (exact integer via
+  verified `lib.es_geom`, C(N,k) subset enumeration as authority + onion-layer
+  precheck) certified, with a self-test that SCOREs 16/32 and rejects a collinear
+  and an over-16 set: k=6 cap is exactly 16 (matches ES(6)=17); k=7 top score is
+  32, reached only by ~20 affine/perturbation copies of the one verified
+  `es_construct` construction (all isomorphic), and every random/layered/dense
+  candidate is INVALID with a convex-k-gon witness. *Evidence:* computed and
+  checked (106 invocations, ~281 s; 20 full 32-pt k=7 exact C(32,7) runs each
+  ~7-12 s). *Falsified by:* a candidate certifying size 33+ no-convex-7 at k=7
+  (would refute ES(7)=33 and must be re-verified independently), or a genuinely
+  non-isomorphic 32-pt no-7-gon set. **Bounds on its meaning:** the affine orbit
+  is degenerate — one construction counted many times — so the 32 record is
+  reproduced, NOT improved; it contributes nothing toward an ES(7) upper bound.
+  `code/search/es-nogon/SEARCH.md`, `scorer_selftest.captured.txt`.
+
+- **Single open half-planes: 4/2/0 valid splits at n=5/6/7 on es_construct —
+  the single-line splitting induction fails on this template at n=7.
+  (computed and checked, scoped strictly)** Already recorded above
+  (`gsplit_phase2.captured.txt`, EXIT 0, on the validated rotating-line
+  enumerator): over all N(N−1) open half-plane bipartitions, splits into two
+  (n−1)-avoiding halves of size 2^{n−3} exist at n=5 (4) and n=6 (2) and do NOT
+  exist at n=7 (0). *Falsified by:* re-running the validated enumerator giving
+  different counts. This is a property of single-line cuts on this one template,
+  not of all cut families — see the next two bullets, which are exactly why.
+
+- **Double-wedge (side-pair) family: 27 valid splits at n=7 — the n=7 failure
+  is a property of single-line cuts, not of two-ray separations.
+  (computed and checked, scoped strictly)** Enumerating pairs of the 992
+  validated open half-plane sides (C(992,2)=491,536 pairs; 13,030 with
+  |inter|=16; 2,454 distinct size-16 bipartitions), intersecting two sides per
+  pair, gave **27 distinct VALID splits** (both halves 6-avoiding) at n=7 on
+  `es_construct`. Since a convex wedge (angle<π) or its reflex complement is an
+  intersection of two half-planes, the side-pair family is a SUPERSET of every
+  wedge-realizable bipartition — so zero here would have been strictly stronger
+  than zero over wedges, and the 27 is a genuine two-ray separation. Positive
+  control: witness apex (2400,2725) gives a valid split whose bipartition
+  appears among the intersections (PASS). *Falsified by:* an exact orientation
+  table (or a re-run) showing one of the 27 is not a valid split.
+  **Caveat carried from the adjudication: full apex-cell wedge-realizability
+  (a lower bound per split: both boundary lines translatable to one common apex
+  without crossing a point) is NOT claimed for all 27 — they are verified as
+  side-pair intersections only.** `code/out/wedge_sidepair.captured2.txt`,
+  `code/out/wedge_sidepair_adjudication.md` (claim `wedge-sidepair-27-valid-n7`,
+  status checked).
+
+- **The even/odd block bipartition is a side-intersection at n=5,6 but is
+  NEITHER a single side NOR a side-intersection (hence not a wedge cut) at n=7,
+  while both halves remain 6-avoiding. (computed and checked, scoped strictly)**
+  The even/odd split (alternating blocks: at n=7 the even-index blocks
+  T_0,T_2,T_4 = 1+10+5 = 16 points {0,6,7,…,15,26,…,30} vs odd T_1,T_3,T_5 =
+  16 points {1,…,5,16,…,25,31}) is NOT any single open half-plane at n=5,6,7,
+  IS a double-wedge side-intersection at n=5,6, and at n=7 is NEITHER, although
+  each half independently has largest convex subset 5 (no convex 6-gon, exact
+  2^16 verification). *Falsified by:* an exact orientation re-check showing the
+  even/odd bipartition IS a side-intersection at n=7, or a half failing
+  6-avoidance. This is the sharpest open thread: WHICH cut family (if any)
+  realizes the even/odd 16–16 split at n=7 (task
+  `evenodd-cutfamily-which-family-realizes`). `code/out/wedge_evenodd_alln.captured.txt`,
+  `code/out/wedge_evenodd_check.captured.txt` (claim
+  `wedge-evenodd-not-side-intersection-n7`, status checked).
+
+- **Allowable/circular-sequence encoder on es_construct: convexity is readable
+  for |S|≥4; reversal-depth=block-index failed. (computed and checked on this
+  template)** `code/out/allowable_encoder.py` builds the exact Goodman–Pollack
+  circular sequence of `es_construct` (all arithmetic `fractions.Fraction`;
+  directions via exact cross-product, never float), confirmed C(N,2) events and
+  all x distinct at n=4..7. Two findings, each with its own status: (1) *tentative,
+  needs a bug-fix before trusting* — the [A] axiom check is internally
+  inconsistent at n=6,7 (per-event tally says all 120/496 events are single
+  adjacent reversals, replay reports 'non-adjacent swap 11,13 / 11,12 / 2,4');
+  the two sub-checks disagree, so the encoder's own axiom verification is not yet
+  accepted until the replay inconsistency is resolved. (2) *refuted on this
+  template* — the reversal-depth = block-index mechanism FAILED for every
+  statistic S2–S5 at n=4..7 (`exact==blockidx:False`, non-monotone in block
+  everywhere), so the approach file's conjecture 'the C(n−2,i) are reversal
+  depths' is not supported by these statistics and stands refuted here unless a
+  genuinely different order-type-INVARIANT depth statistic recovers the blocks.
+  (3) *checked, holds for k≥4* — the convexity-from-sequence
+  (extreme-in-projection) criterion agreed with the exact oracle on every
+  |S|≥4 subset (n=6: 58651/58659 agree, disagreed only on the 3-subsets
+  [0,1,2],[0,1,3],[0,1,4], where sequence=False but oracle=True because every
+  3 points form a convex triangle — a trivial artefact), so
+  'S in convex position ⟺ every p is extreme in some S-projection' holds for
+  k≥4 and is the live sequential direction. *Evidence:* computed and checked,
+  exact. *Falsified by:* an |S|≥4 subset on which sequence-criterion and oracle
+  disagree (n≥6), or an order-type-invariant depth statistic that does recover
+  the blocks. **Scope: this template; the direction may still generalize.**
+  `code/out/allowable_encoder.captured.txt` (and identical `.captured2.txt`).
+
+- **Wedge (two-ray) cut family on es_construct: 27 valid (n−1)-avoiding splits at
+  n=7, so the split failure is single-line-only; the even/odd blocks are NEITHER a
+  single side NOR a side-intersection at n=7. (computed and checked, scoped
+  strictly)** On the verified `es_construct` (N=2^{n-2}, no convex n-gon), the
+  double-wedge cut family — every pairwise intersection of the validated N(N−1)
+  = 992 open half-plane sides (a SUPERSET of wedge-realizable bipartitions, so
+  richer than wedges) — was enumerated on 28 workers (EXIT 0, positive control
+  apex (2400,2725) PASS): over the 13,030 pairs with |inter|=16 / 2,454 distinct
+  size-16 bipartitions, **27 distinct VALID splits** (both halves 6-avoiding) exist
+  at n=7. So the n=7 split failure seen with single open half-planes (4/2/0 at
+  n=5/6/7) is a property of *single-line* cuts, not of *two-ray* separations: some
+  double-wedge cut does realize an (n−1)-avoiding split of this 2^{n−2}-set into
+  two 2^{n−3}-halves. Separately, the even/odd block bipartition is an intersection
+  of two half-plane sides at n=5,6 but is **NEITHER a single side NOR a
+  side-intersection at n=7**, although both halves remain 6-avoiding (largest
+  convex subset = 5 each, exact 2^16 verification) — so the even/odd split is not
+  wedge-realizable on this template at n=7. *Evidence:* computed and checked, exact
+  integer/Fraction determinants, 28 workers. *Falsified by:* an alternate exact
+  capture finding a valid single-line split at n=7 (above the 4/2/0), or finding
+  the even/odd bipartition as a side-pair intersection at n=7, or a different
+  count of valid side-pair splits than 27. **Caveat carried from the adjudicator's
+  own note (wedges): full wedge-realizability of all 27 (a lower bound per split,
+  requiring a common-apex translation test) is NOT claimed** — they are shown as
+  side-pair intersections only; the even/odd non-membership is exact. **Scope: this
+  template only, at these n** — not other extremal sets, not the general G-split
+  lemma. `code/out/wedge_sidepair_adjudication.md`,
+  `code/out/wedge_sidepair.captured2.txt`, `code/out/wedge_evenodd_check.captured.txt`,
+  `code/out/wedge_evenodd_alln.captured.txt`.
 ## Ruled out
 
 Approaches that failed, and the reason each failed — plus what is excluded from
@@ -125,9 +243,32 @@ counting as progress.
   refutation of G-split (a valid radial placement exists per the literature). The
   genuine question is the exhaustive any-line test, task
   `gsplit-exhaustive-line-test`.
+- **Reversal-depth = block index is NOT an order-type invariant on this template.
+  (refuted)** The adopted allowable-sequence approach's central conjecture — that
+  the ES block sizes C(n−2,i) are the counts of an order-type-invariant per-point
+  reversal-depth statistic in the circular sequence — failed for every statistic
+  tried (S2–S5) at n=4..7 on the verified `es_construct` (`allowable_encoder.py`
+  capture: `exact==blockidx:False` and non-monotone everywhere), and the
+  realization-invariance rows in capture D show only S3 is invariant under both
+  stretch and reflection while S2/S4/S5 are placement artifacts. Do not re-propose
+  "the C(n−2,i) are reversal depths" as a route; the convexity-readable direction
+  (which does hold for k≥4) is where the allowable-sequence line continues.
+
 - **Steering rule in force (steer 4): no new sources.** Phase 1's exit test is
   met; gathering is admissible only against a stated gap in
   `research/REQUESTS.md`. The pending computation must be run first.
+- **All prior wedge apex-sweep counts are retracted (directive 15).** The
+  capture `code/out/wedge_enum_full_captured.txt` (387 apexes) is a FALSE ZERO,
+  not a result: every apex shares the SAME y-coordinate 3000000001/1000000 —
+  it sweeps x along one horizontal line, so it enumerates wedge partitions for
+  apexes on that one line, not for the set. It misses the known-good n=7 witness
+  apex (2400,2725) (y=2725), so a 387/387 has_valid=False would be an artefact
+  of the apex family, exactly the line-family artefact of 2·C(N,2)+1. Do not
+  cite this capture as a completed negative result. The task now requires an
+  asserted positive control on (2400,2725), enumeration over the CELLS of the
+  C(N,2) point-line arrangement (one apex per cell, constant angular order), and
+  partial-progress-with-wall-clock reporting (the old capture timed out at order
+  66/387 with no summary).
 - **All earlier gsplit counts are SUPERSEDED (steer 10).** The
   `gsplit_exhaustive.captured.txt` run was a shell error, not a result: its
   command used `${PIPESTATUS[0]}` (a bash array) under `/bin/sh` and died
@@ -186,8 +327,15 @@ The operator accepted Phase 1 of the rotating-line enumerator: `code/out/gsplit_
   `code/out/checker_vs_construction_resolution.md`, `code/out/verify_es_construct.py`,
   `code/out/verify_es_construct_indep.py` (see `build-oracle` close reason).
 - `es_construct` convex-layer profiles (hull peeling, exact): n=4 [3,1],
-  n=5 [4,4], n=6 [5,5,3,3], n=7 [6,6,6,5,6,3]. The n=6,7 profiles are the
-  steering-named data for the layer-profile conjecture (steer 4 item 4).
+  n=5 [4,4], n=6 [5,5,3,3], n=7 [6,6,6,5,6,3]. These are *onion-layer* sizes,
+  NOT the binomial block sizes C(n-2,i)=[1,4,6,4,1]/[1,5,10,10,5,1] — the fact
+  that the ES construction's layers are not its blocks is what refuted the
+  Gale-transform approach. Conjecture A (resolved PASS at n=5,6,7): the outer
+  convex hull is exactly one point per block T_0..T_{n-2}, n−1 vertices, in
+  block order — `code/out/layer_conjecture_A.captured.txt`.
+- es-nogon search: 53 candidates; k=6 sizes {8,12,14,16} capping at 16; k=7
+  sizes {12,16,20,28,30,32} capping at 32, top reached only by the degenerate
+  ES affine orbit. ~281 s total wall (~7-12 s per full 32-pt k=7 exact run).
 
 ## Recalled
 
@@ -209,37 +357,26 @@ before relying on any cross-run finding.
 
 What the run still needs and has not found.
 
-- **STEERING — head of queue (steer 11): re-capture gsplit Phase 2 with
-  provenance; one command, no further design pass.** Task
-  `gsplit-enumeration-recheck`: Phase 1 is accepted done — the rotating-line
-  enumerator (`code/out/gsplit_enum_definitive.py`) matches the 2^N disjoint-
-  hulls oracle exactly at N=8,10,12,14,16 (zero missing, zero extra, count
-  N(N−1)). Run exactly, with no pipe/tee/arrays:
-  `cd /workspace && { echo "$ python code/out/gsplit_enum_definitive.py"; timeout 550 python code/out/gsplit_enum_definitive.py; echo "EXIT: \0"; } > code/out/gsplit_phase2.captured.txt 2>&1`
-  and read the capture back. If it reproduces 4 splits at n=5, 2 at n=6, 0 at
-  n=7: promote `gsplit-enum-completeness-and-n7-zero` to checked for the split
-  counts too, retire `gsplit-exhaustive-esconstruct` pointing at
-  `code/out/gsplit_phase2.captured.txt`, and write the scoped Established finding
-  (below). If it does NOT reproduce, say so plainly and give the new numbers.
-  Do not start another enumerator. Only after it passes: the scored search under
-  `code/search/es-nogon` (steer 6) — tool_builder writes `PROBLEM.md` +
-  `score.py` against the VERIFIED `lib.es_geom` orientation predicate, k=6 rung
-  caps at exactly 16 before k=7, then ≥50 k=7 candidates; 32 reproduces
-  `es_construct`, 33+ refutes ES(7)=33 and must be re-verified independently.
-  The construction quarantine / layer-profile conjecture stays queued behind it.
+- **gsplit Phase 2 re-capture — DONE (steer 11 fully executed).** The split
+  counts were re-derived with full provenance: `code/out/gsplit_phase2.captured.txt`
+  (command + `EXIT: 0`) reproduces 4 splits at n=5, 2 at n=6, 0 at n=7 on the
+  validated rotating-line enumerator, which also re-matches the 2^N oracle at
+  N=8..16 (zero missing/extra, count N(N−1)). Claims promoted: `gsplit-enum-
+  completeness-and-n7-zero` checked, `gsplit-exhaustive-esconstruct` retired to
+  the new anchor. Task `gsplit-enumeration-recheck` is closed. The old
+  6/4/2/0 and 57/241/993 / 50/222/946 counts are dead (steer 10: pair-line
+  enumerator wrong in both directions).
 
-- **gsplit split counts 4/2/0 at n=5/6/7 — pending the steer-11 provenance
-  re-capture.** The earlier 6/4/2/0 decay and 57/241/993 / 50/222/946 counts are
-  superseded (steer 10: pair-line enumerator wrong in both directions, and the
-  old capture was a shell error). Phase 1 of the rotating-line enumerator is now
-  accepted done (exact N(N−1) oracle match at N=8..16, zero missing/extra). What
-  remains is the single provenance re-capture (task `gsplit-enumeration-recheck`)
-  that must reproduce 4 splits at n=5, 2 at n=6, 0 at n=7 before those split
-  counts are promoted to checked. Claims `gsplit-even-odd-not-line-separable`
-  and `gsplit-exhaustive-esconstruct` (in `code/out/gsplit_exhaustive_claim.md`)
-  carry superseded counts; `gsplit-exhaustive-esconstruct` is to be retired
-  pointing at the new `code/out/gsplit_phase2.captured.txt` anchor on
-  reproduction.
+- **STEERING — head of queue (directive 22): no more spectra of es_construct.** Directive 21's rule stands and directive 22 sharpens it: pattern_finder computes no further counting statistics of es_construct — no k-subset convex spectra (the 09:58-10:06 convex_spectrum round was a violation filed honestly, not work), no OEIS lookups on numbers off this placement, no n=8 extensions of any template quantity. A pattern is worth finding only if defined for EVERY n-avoiding set of size 2^{n-2} and computed on two non-isomorphic sets and compared (e.g. the 32-point record set vs es_construct at the same N, or an order-type invariant that survives re-realization); a quantity computable on only one set is a coordinate, not a pattern. Two tasks lead the queue: (1) `lift-or-declare-strongest-template-fact` — state the strongest surviving template fact (the (n-1)-convex block-shape classification) over EVERY n-avoiding set of size 2^{n-2} and hunt a violating set (perturb es_construct off the corridor, the 32-point record set, any realizable order type), or declare it template-only and stop; do NOT extend template claims to n=8. (2) `nullstellensatz-grid-first-target` — the Nullstellensatz/Alon-Furedi Boolean-cube idea (approach polynomial-rank-nullstellensatz, now adopted): the smallest n where the polynomial criterion can be written/checked exactly with the degree bound stated; critical check that the 2^{n-2} constant is the HOST SIZE (not a recurring 4^n simplex — if so, close it). Do not claim the conjecture proved. The cut-family question (task `evenodd-cutfamily-which-family-realizes`) is DROPPED by directive 21 as template-mapping. Prior steer notes (10/11) above are historical; their work is done.
+- **ADJACENT-PROBLEM STOP (directive 17): Horton/empty-polygon work is drift,
+  not progress.** The tool_builder recall of 'horton verify empty convex 7-gon'
+  is the EMPTY-hexagon problem (H(6)=30, Heule–Scheucher, ROOT.md §5.4) —
+  adjacent per Ruled out, NOT progress toward ES(n)=2^{n-2}+1. ES(n) counts n
+  points in convex position with no emptiness condition; a Horton set has
+  arbitrarily large convex subsets and is no obstruction to ES. Do not spend
+  calls there unless a stated reduction connects it back. (The `horton_verify.py`
+  handoff exists; it confirms a freshly-digested secondary and does not bear on
+  ES.)
 - **Balko–Valtr SAT encoding still only at DOI/abstract.** Needed to reproduce
   ES(5)=9 / ES(6)=17 with our own encoder. Filed as `balko-valtr-attack-baa4` in
   `research/REQUESTS.md`.

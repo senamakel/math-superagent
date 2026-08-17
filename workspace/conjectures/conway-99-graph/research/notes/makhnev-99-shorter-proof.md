@@ -92,15 +92,28 @@ holds-here: yes — check_srg33_12_1_6.py and check_makhnev_n3_counts.py both
   rerun this pass in exact integer arithmetic with the stated verdicts
   (39 / 12 / 60 / 20 / 33 self-consistent; (33,12,1,6) INFEASIBLE by
   multiplicity integrality, -136 not divisible by 7).
-status: checked for the infeasibility step AND for the count layer (both
-  scripts re-run this pass); sourced for the lemma chain (Lemmas 6-9 taken
-  from the primary text, not reproved).
+status: conditional for the theorem-level claims (srg33_12_1_6 infeasible by
+  integrality, and the n3=0 branch of Thm 2's 99 case) — both rest on the Cited
+  axioms Cited.srg_multiplicity_integrality (Bose-Mesner eigenvalue
+  multiplicity integrality) and Cited.makhnev_lemmas_6_9 (the forced-subobject
+  chain), checked in Lean at code/lean/makhnev99_shorter_proof_integrality.lean
+  (lean_check verified, no sorries; #print axioms names the two Cited axioms).
+  The arithmetic kernel only (discriminant 49=7^2, numerator -136, 7 not
+  dividing -136, and the multiplicity-integrality arithmetic) is kernel-checked
+  outright: theorem Makhnev99.not_seven_dvd_33_12_1_6_numerator depends only
+  on propext and Quot.sound. The count layer (39/12/60/20/33) and the
+  exact-integer infeasibility check remain checked in Python as recorded above.
+formalisation: code/lean/makhnev99_shorter_proof_integrality.lean
 bearing: upgrades the short n3 = 0 rejection of srg(99,14,1,2) from a
   sourced theorem with a critical infeasibility to one whose critical step
-  (infeasibility of (33,12,1,6)) is re-derived here in exact integer
-  arithmetic; keeps the whole n3 = 0 branch as the only built-in 99 lever and
-  draws no existence conclusion for srg(99,14,1,2).
-anchor: code/out/check_makhnev_n3_counts.captured.txt,
+  (infeasibility of (33,12,1,6)) is verified in exact integer arithmetic in
+  Python AND whose arithmetic kernel is kernel-checked in Lean; the forced-
+  subobject chain and the spectral integrality step remain sourced (Cited
+  axioms), so the theorem-level statements are conditional, not formalised.
+  Keeps the whole n3 = 0 branch as the only built-in 99 lever and draws no
+  existence conclusion for srg(99,14,1,2).
+anchor: code/lean/makhnev99_shorter_proof_integrality.lean,
+  code/out/check_makhnev_n3_counts.captured.txt,
   code/out/check_srg33_12_1_6.captured.txt,
   research/sources/makhnev-1988-lambda1-russian-fulltext.full.md
 ```

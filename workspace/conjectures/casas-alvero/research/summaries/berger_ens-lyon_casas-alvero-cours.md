@@ -1,43 +1,64 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/berger_ens-lyon_casas-alvero-cours.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Berger, "The Casas-Alvero Conjecture" (ENS Lyon course handout, CApromys.pdf)
 
-<!-- source: https://perso.ens-lyon.fr/laurent.berger/autrestextes/CApromys.pdf | converted from PDF -->
+Source: https://perso.ens-lyon.fr/laurent.berger/autrestextes/CApromys.pdf · Full text:
+`research/sources/berger_ens-lyon_casas-alvero-cours.full.md` ([[berger_ens-lyon_casas-alvero-cours.full]])
 
-## What it claims
+## What this source is
 
-Conjecture 1. Let P (X) = X d + ad−1X d−1 + · · · + a0 be a monic polynomial of degree
-d ≥ 1, with complex coeﬃcients. If for all 1 ≤ i ≤ d − 1, there exists xi ∈ C such that
-P (xi) = P (i)(xi) = 0, then P (X) is of the form (X − λ)d for some λ ∈ C.
+A pedagogical course-project handout (Laurent Berger, UMPA/ENS de Lyon), not a
+research paper. It states the conjecture, walks through the resultant and
+Hasse-derivative machinery, and restates the known settled classes. Its value to
+this run is as an **independent corroboration** of results the run already holds,
+not as a source of new theorems.
 
-This conjecture has been proposed by Eduardo Casas-Alvero around 2000, following his
-work [CA01] on plane curves. It is known for d ≤ 19 as well as for any d which is a prime
-power or twice a prime power.
-If P (X) ∈ C[X], we say that P is a CA polynomial if P and P (i) have a common root for
-all 1 ≤ i ≤ deg(P ) − 1, so that the conjecture above says that CA polynomials have a very
-special shape.
+## Statements it actually establishes
 
-Exercise 1. Prove conjecture 1 for d = 2, 3, 4. If d ≥ 3, you can assume that P is of the
-form P (X) = X 2 · (X − 1) · Q(X) where deg Q = d − 3: why? Can you do d = 5 as well?
+- **Conjecture 1** = the classical CA statement (monic, char 0, ℂ), phrased over ℂ.
+- **"It is known for d ≤ 19 as well as any d a prime power or twice a prime
+  power."** The librarian has checked (librarian-cycle-2, lines 9–17) that every
+  degree ≤ 19 is settled by the union of held families (p^k, 2p^k, and the
+  small-degree verifications). So Berger independently asserts `smallest-open-
+  degree = 20`; it does not extend the boundary, and it agrees with the run's
+  sourced claim `smallest-open-degree` (Castryck–Laterveer–Ounaïes 2012,
+  Schaub–Spivakovsky 2024, Wikipedia).
+- **Section 4, char p**: defines the i-th Hasse derivative
+  H_k P = Σ_j (j choose k) a_j x^{j−k}, notes P^{(k)} = k!·H_k P, and formulates
+  the char-p CA hypothesis **in the Hasse formulation** — an independent restatement
+  of the run's `hasse-vs-ordinary` resolution (the published lists and this
+  course both use Hasse derivatives; the ordinary convention degenerates for
+  p < n).
+- **Theorem 2** (restated from [BLSW] = Graf-von-Bothmer et al. 2007): if K is
+  algebraically closed, p ∤ n, and Question 1 (char-p CA) has a positive answer
+  in degree n, then it has a positive answer in degree d = n·p^e for all e ≥ 1.
+  This is the Graf-von-Bothmer lift theorem, already held (`settled-classes`).
+- **Section 5**: the reduction-mod-p / p-adic-valuation route for degrees p^k,
+  2p^k, and (citing [DdJ11], [CS12]) 3p^e, 4p^e, 5p^e with prime exclusions —
+  again already held.
+- **Exercise 9**: CA equivalent to: for P = X(X−1)(X^{d−2}+…+a_0), some
+  A-linear combination of {res(P,P^{(i)})}_{1≤i≤d−1} equals 1 in
+  A = ℂ[a_0,…,a_{d−3}] — the resultant/Nullstellensatz formulation, consistent
+  with the run's `resultant-reformulation`.
 
-1. Roots of polynomials
+## Hypotheses and whether they hold for this problem
 
-Before we go on, let us explore some properties of the roots of polynomials, using a bit of
-real and complex analysis. The ﬁrst exercise is Rolle’s theorem for polynomials.
+All hypotheses are char 0 (ℂ) for the Conjecture statement; char-p section is the
+Hasse formulation. Both match what the run already holds. holds-here: yes.
 
-Exercise 2. If P (X) ∈ R[X], and if a < b are two real roots of P (X),…
+## Bearing
 
-## Statements it makes
+No new claim. This is a clean, citable, independent source that (a) corroborates
+`smallest-open-degree = 20` and (b) independently restates the Hasse char-p
+convention. The one phrasing that looked like it might extend the boundary
+("d ≤ 19") is exactly the union of held settled families, verified by hand by the
+librarian. Do not re-read this source for new content.
 
-Conjecture 1. Let P (X) = X d + ad−1X d−1 + · · · + a0 be a monic polynomial of degree
-d ≥ 1, with complex coeﬃcients. If for all 1 ≤ i ≤ d − 1, there exists xi ∈ C such that
-P (xi) = P (i)(xi) = 0, then P (X) is of the form (X − λ)d for some λ ∈ C.
-
-Theorem 1. If I is an ideal of A and I ̸= A, then there exists x = (x1, . . . , xn) ∈ C
-n such
-that f (x) = 0 for all f ∈ I.
-
-Theorem 2. Let K be algebraically closed. If p ∤ n and question 1 has a positive answer in
-degree n, then it also has a positive answer in degree d = npe for all e ≥ 1.
-
-Theorem 3. If v is a valuation on K, and L/K is a ﬁeld extension, then v extends to L.
-
-*[digest of a 11079 character source; every section, statement, and proof in full at `research/sources/berger_ens-lyon_casas-alvero-cours.full.md`]*
+```claim
+id: berger-smallest-open-degree-20-corroboration
+statement: Berger's ENS course handout states CA is known for d <= 19 and any d a prime power or twice a prime power, independently corroborating the run's sourced smallest-open-degree = 20; every d <= 19 is settled by the union of held families (no boundary extension).
+hypotheses: char 0 (C for the Conjecture); char-p section uses the Hasse formulation
+holds-here: yes
+status: asserted
+bearing: independent corroboration of smallest-open-degree=20 and of the Hasse char-p convention; no new theorem
+anchor: research/sources/berger_ens-lyon_casas-alvero-cours.full.md
+answers: smallest-open-degree
+```

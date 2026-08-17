@@ -1,0 +1,19 @@
+=== soundness gate for the symbreak encoder's canonical break ===
+Constraint set S = {diag nondecreasing, row0 lex-min} on the orbit
+matrix M satisfying the necessary quotient equation.
+
+--- rook(3) m=3: exhaustive over all 6 conjugates of known-good M0 ---
+conjugates satisfying the break: 6/6
+  fix Mc=[[0, 2, 2], [2, 0, 2], [2, 2, 0]] + break: status=OPTIMAL, solver.WallTime=0.01s
+
+--- BvLS m=81: randomized conjugations of the real orbit matrix ---
+diagonal values: [2]  -> constant, (A) vacuous
+random conjugations tried up to: 20000; found satisfying break: 0
+  NO random conjugate satisfied the break (need larger search or break unsound)
+
+=== SUMMARY ===
+  rook(3): status=OPTIMAL  ->  PASS
+  BvLS(243): status=NONE  ->  FAIL/INCONCLUSIVE
+
+The break rejects the real orbit matrix on a control: UNSOUND, must fix before
+any 99 INFEASIBLE is believed.

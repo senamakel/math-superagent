@@ -1,0 +1,4 @@
+[rook(3)=srg(9,4,1,2)] n=9 vertices, 9 Paley(9)-pattern configurations checked
+[rook(3)=srg(9,4,1,2)] ALL configurations are Paley(9): Lemma 3.4.1 pattern CONFIRMED (checked).
+[BvLS=srg(243,22,1,2)] n=243 vertices, 13365 Paley(9)-pattern configurations checked
+[BvLS=srg(243,22,1,2)] ALL configurations are Paley(9): Lemma 3.4.1 pattern CONFIRMED (checked).

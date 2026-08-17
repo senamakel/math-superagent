@@ -11,6 +11,7 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | [[ghosh-char0-step]] | Where exactly does the claimed Ghosh proof (arXiv:2501.09272) break in characteristic p, and is the ℂ-only Brouwer-degree / Abel-Gontcharoff step the break… | dead | ghosh-2025-claim, ghosh-char0-step, charp-false | closed (directive 9) — the char-0-only step is located and computationally verified; recorded as checked claim ghosh-char0-break-4-18 |
 | [[hasse-vs-ordinary]] | Which derivative convention — ordinary formal derivative or Hasse derivative — do the published char-p bad-prime lists use, and which of the run's char-p… | dead | charp-false, charp-witness-xpp1-xp, gvb-lift-and-bad-primes | closed — decision recorded in claim hasse-vs-ordinary-definitions; {2}/{3,5,7} reproduced under Hasse; char-p claims swept; Ghosh HD verification confirmed… |
 | [[root-difference-coloring]] | Where does the root-difference-coloring collapse step break in characteristic p, and is that the whole of the admissibility test? | open | root-difference-identity | The char-p break is now NAMED at the pivot level (coefficient descent, stops where the first pivot (d choose d-1) = d is not 0 mod p, i.e. the witness degree d… |
+| [[uresultant-converge]] | Does the u-resultant n=4 validation close in reasonable time — compute the u-resultant, certify V(I)={0} as c·u^B, and match B against prod ord_0(R_i)… | open | badprimes-n4-lcm-jt | One tool_builder run from the existing code/uresultant/ scripts (ureesultant_first_step_clean.py plus the underscore probes, each holding one validated piece… |
 
 ## What is in the way
 
@@ -24,7 +25,21 @@ Each blocked or dead thread and what would move it. A blocker stated precisely i
 Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
 
 - [[degree20-scored-search]] rests on `binomial-plateau-finding`, which no claim block on disk establishes
+- [[uresultant-converge]] rests on `badprimes-n4-lcm-jt`, which no claim block on disk establishes
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "threads" }
+read_ledger { ledger: "threads", id: "<one of the ids above>" }
+read_ledger { ledger: "threads", status: "<a status above>" }
+read_ledger { ledger: "threads", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: a fenced `thread` block in `research/threads/<slug>.md`, written with `write_document`. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

@@ -1,5 +1,42 @@
 # Thread: is n_3 ≥ 1 forced for a putative srg(99,14,1,2)?
 
+> **Thread-state update (librarian, this cycle):** acquisition of Reimbayev
+> 2025 order-7 paper (arXiv:2511.06572, now in library) closes the counting-identity
+> route through order 7. Order-7 Hamiltonian-subgraph counts depend on TWO free
+> variables (n3 AND h11, with 4n3>=h11>=2n3), and n3=0 (h11=0) is consistent at every
+> family member including 99; the heptagon bound is parameter-determined. Therefore
+> G-n3-positive CANNOT be closed by any order-<=7 subgraph-count identity — a GLOBAL
+> forced-count obstruction (the line/point-replication ledger) is the only route.
+> See claim `reimbayev-order7-counts-two-free-vars` and note
+> `research/notes/librarian-order7-acquisition.md`.
+>
+> **Thread-state update (scholar, this cycle):** claim
+> `reimbayev-order7-counts-two-free-vars` is now `checked` — exact integer
+> arithmetic at (99,14,1,2) with n3=h11=0 gives all h_i nonnegative integers
+> (h0=1,247,400, h1=914,760, h2=997,920, h3=h4=h6=h9=166,320, h5=h7=83,160,
+> h8=332,640, h12=h17=4,158), 4n3>=h11>=2n3 as 0=0=0, and p7=1,247,400
+> parameter-determined. So the counting-route closure is promoted from asserted
+> to checked (the paper's own Figure-1 recoverability derivations remain
+> asserted). Verification in
+> `research/notes/scholar-order7-verified-and-durable-findings.md`.
+
+> **Thread-state update (directive 39, director, SECOND):** G-n3-positive's one
+> remaining route is the exact line/point-replication ledger — fix the n3 seed in
+> a putative srg(99,14,1,2), count exactly the distinct lines and point-line
+> incidences the seed and its forced radius-6 witnesses occupy, decide whether
+> the residual fits inside 231 lines and 693 incidences at 7 lines/point.
+> **CORRECTION:** the ledger ALREADY EXISTS for 99 (`code/out/n3_global_ledger.py`
+> → `n3_global_ledger.captured.txt`, route 7; the incidence_* captures are
+> p-rank/SNF, a different question, exactly as the directive warns). What it
+> LACKS — and what directive 39 orders — is the CONTROL PASS: the existing
+> capture contains NO rook(3)/bvls run, so it cannot yet claim to measure 99
+> rather than the family. Task `incidence-budget-ledger-controls`: reuse
+> lib.n3patch parameterized to each control, force to the same fixpoint, and
+> require NO spurious over-subscription of each control's budget (6 lines/18
+> incidences at rook(3); 891 lines/2673 incidences at bvls). A control that
+> FAILS means the ledger method is unsound / measures the family, and the 99
+> no-obstruction verdict is not a valid filter.
+
 ```thread
 id: thread-n3-forced
 question: Is n_3 >= 1 forced for a putative srg(99,14,1,2)? n_3 = number of

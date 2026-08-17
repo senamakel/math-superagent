@@ -16,7 +16,7 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
 
 - [[ca20-good-prime-lift]] `G-good-prime` — There exists a good prime for n = 20 — that is, some prime p ≥ 23 with CA_20,p (equivalently rank_{F_p}(M_T) = C for all T ∈ {1,…,20}^{19}, equivalently p ∤ J_T for all T). By G-lift this single prime settles CA_20,0. This is the whole remaining content of the degree-20 problem.
-  - next: Attack the smallest candidate-good prime p = 23 (the first prime not certified bad by the binomial criterion, badprimes-n20-certified-frontier). Concretely, a tool_builder/coder can: (i) re-derive the lift direction k=0 — for a random monic degree-20 f over ℚ with gcd(f,H_i(f)) ≠ 1, confirm Res(f,H_i(f)) ≡ 0 mod 23 for each i, so a char-0 counterexample forces a char-23 one; (ii) encode "∃ degree-20 f over F̄_23, not a pure power, with Res(f,H_i(f))=0 ∀i" by the scenario/rank formulation and run the elimination (Gröbner/resultant over F_23, or a SAT/SMT encoding of rank_{F_23}(M_T) < C for…
+  - next: Attack the smallest candidate-good prime p = 23 (the first prime not certified bad by the binomial criterion, badprimes-n20-certified-frontier). Hedge before starting: p = 23 > 19 = every Hasse order i needed, so i! ≢ 0 mod 23 and the ordinary/Hasse derivative convention is unambiguous at this prime — the i ≤ 19 resultants are computed over F_23 with no char-p degeneracy (hasse-vs-ordinary is settled for p ≥ n, and here 23 > n). Concretely, a tool_builder/coder can: (i) re-derive the lift direction k=0 — for a random monic degree-20 f over ℚ with gcd(f,H_i(f)) ≠ 1, confirm Res(f,H_i(f)) ≡ 0…
   - _no thread — nothing is attacking this_
 - [[full-ca-regular-sequence]] `G-reformulation-equivalence` — For every n, CA_n,0 holds iff for every T ∈ {1,…,n}^{n−1} the sequence (G_{T,1},…,G_{T,n−1}), G_{T,i} = Φ_{j_i}(σ_i(x_1,…,x_{n−1})), is a regular sequence in ℚ[x_1,…,x_{n−1}]. This is the equivalence Ghosh proved (arXiv:2402.18717, Prop 5.2), restated as Conj 1.6/1.7 in Schaub–Spivakovsky (arXiv:2411.13967, §1). It holds over any field regardless of characteristic, so it contributes no char-0 content — that is carried entirely by J_T ≠ 0.
   - next: extract the statement verbatim from research/sources/ghosh2024_finiteness_full.full.md and schaub_spivakovsky_bad-primes_2024.full.md, write the claim block with the exact Φ_j definition and the Hasse-vs-formal derivative convention, then sympy-verify both directions at n = 3, 4 against the exact oracle (in particular: a char-p witness must correspond to a prime p dividing some J_T).
@@ -41,3 +41,16 @@ Do not state these again. Each one is a lemma this run has, and the claim beside
 ## Skeletons that could not be read
 
 - `README` has no skeleton block, so nothing can say what it reduces or whether the reduction is sound
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "goals" }
+read_ledger { ledger: "goals", id: "<one of the ids above>" }
+read_ledger { ledger: "goals", status: "<a status above>" }
+read_ledger { ledger: "goals", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: `record_entry` to add or amend a row, `close_entry` to close one. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

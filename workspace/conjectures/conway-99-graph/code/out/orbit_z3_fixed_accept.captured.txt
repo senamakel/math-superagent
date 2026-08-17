@@ -1,0 +1,36 @@
+=== DIRECTIVE 29: fixed-feasibility acceptance test for orbit-matrix encoder ===
+NOTE: 99 with a fixed-point-free order-3 automorphism has m = 33 orbits,
+      smaller than BvLS m=81 (which timed out in find mode) and larger than
+      rook m=3 (which solved).  A 33-orbit 99 run is plausibly within reach,
+      but only AFTER both fixed-feasibility checks pass, and kept SMALL.
+
+--- verify known-good M0: rook(3) ---
+  m=3, k=4, lam=1, mu=2
+  symmetric: True
+  diagonal values: [0]  (must be subset of {0,2}): True
+  entry range [0,2] within 0..3: True
+  row sums all == k: True
+  M0^2 = (k-mu)I + (lam-mu)M0 + mu*3*J : True  (max |diff|=0)
+  ALL CHECKS PASS: True
+  fixed-feasibility solve (rook(3), m=3): status = OPTIMAL (wall 0.01s, bound max 60s)
+  -> ACCEPTED: constraints are sound even where search is slow.  PASS
+
+--- verify known-good M0: BvLS ---
+  m=81, k=22, lam=1, mu=2
+  symmetric: True
+  diagonal values: [2]  (must be subset of {0,2}): True
+  entry range [0,2] within 0..3: True
+  row sums all == k: True
+  M0^2 = (k-mu)I + (lam-mu)M0 + mu*3*J : True  (max |diff|=0)
+  ALL CHECKS PASS: True
+  fixed-feasibility solve (BvLS, m=81): status = OPTIMAL (wall 3.30s, bound max 60s)
+  -> ACCEPTED: constraints are sound even where search is slow.  PASS
+
+=== SUMMARY ===
+  rook(3): literal solver status = OPTIMAL  ->  PASS (ACCEPTED)
+  BvLS: literal solver status = OPTIMAL  ->  PASS (ACCEPTED)
+
+Both fixed-feasibility checks PASSED: the encoding accepts BvLS m=81 and
+rook m=3 known-good orbit matrices.  The find-mode timeout at m=81 is a
+SEARCH-cost issue, not an encoding error.  A 99 run (m=33 orbits, smaller
+than 81) is now WARRANTED as a next step.

@@ -1,0 +1,69 @@
+Symmetry-break acceptance gate for the orbit-matrix encoder
+===========================================================
+Settled result, exact integer arithmetic, OR-Tools CP-SAT on Z.
+
+QUESTION (directive 30 option 2 / directive 34)
+  The dedicated m=33 fixed-point-free order-3 99 orbit-matrix encoder
+  code/out/orbit_z3_enc_g99_run.py adds a canonical-ordering symmetry break
+  S = { diag nondecreasing, row_0 lex-min } to cut the free S_33
+  orbit-relabelling.  Before any INFEASIBLE from it is evidence, the break
+  must be shown sound: every feasible orbit matrix must retain at least one
+  conjugate satisfying S.  If a real orbit matrix has NO conjugate in S, the
+  break silently deletes solutions and an INFEASIBLE is a FALSE NEGATIVE —
+  the same failure mode the localprop saturation branch already produced once
+  this run (recorded as a workshop-known false positive).
+
+CONTROLS (the two canonical family members, run through lib.srg):
+  rook(3) = srg(9,4,1,2),  BvLS = srg(243,22,1,2).  Both have an order-3
+  automorphism; BvLS's is the z3-translation on Z_3^5 with 81 orbits of
+  length 3 (validated elsewhere: orbit_matrix_verify_equations.captured.txt).
+
+WHAT THE GATE MEASURES
+  For each control's REAL orbit matrix M0 (built by lib.srg.orbit_matrix from
+  the actual graph and the actual automorphism), does some conjugate
+  P M0 P^T satisfy S?  Three independent probes:
+
+  (a) rook(3), m=3: EXHAUSTIVE over all 6 conjugates.  6/6 satisfy S; the
+      fixed+break CP-SAT model is OPTIMAL in 0.01 s.  PASS.
+  (b) BvLS, m=81, canonical_conjugate: the deterministic relabelling in
+      code/out/orbit_z3_symbreak_fixed_accept.py raises
+        AssertionError: row 0 not lex-min
+      i.e. the canonicaliser cannot canonicalise the KNOWN-GOOD BvLS orbit
+      matrix (its claimed lex-min row 0 is not lex-min).  FAIL.
+  (c) BvLS, m=81: 20,000 random conjugations of the real M0 -> 0 satisfy S;
+      and a constructive root-search over all 81 candidate positions of row 0
+      with columns sorted ascending -> 0 break-satisfying conjugates.  The
+      constructible break witness does not exist for BvLS, and the diag is
+      constant (=2) so condition A is vacuous and only row_0 lex-min is in
+      play.  (Random/constructive is a witness SEARCH, not a proof, but the
+      deterministic canonicaliser FAILING on the same matrix is the
+      disqualifying fact.)
+
+VERDICT
+  The canonical symmetry break is UNVALIDATED on the BvLS control.  Passing
+  at m=3 and failing at m=81 is not a partial pass; m=81 is the scale that
+  tells the routine is wrong, exactly as directive 34 states.  Therefore:
+    - No verdict from a symbreak=True 99 run may be reported or filed while
+      the m=81 acceptance fails.
+    - The detached symbreak 99 run that WAS running on this break has been
+      KILLED and its capture (orbit_z3_enc_g99_symbreak_detached.captured.txt)
+      annotated "NOT EVIDENCE — SYMMETRY BREAK UNVALIDATED" before anything
+      could read a verdict from it.
+    - The SOUND unbroken encoder (orbit_z3_encoder.py, validated: rook m=3
+      OPTIMAL 0.01 s, BvLS m=81 OPTIMAL 3.30 s in find/fixed mode, both
+      accepting known-good matrices) is running detached in its place on the
+      99 m=33 case (maxsec 3600), writing to
+      code/out/orbit_z3_enc_g99_plain_detached.captured.txt.  A slow correct
+      search beats a fast unsound one.
+
+SOURCES / PROVENANCE
+  - Encoders: code/out/orbit_z3_encoder.py (sound), code/out/orbit_z3_enc_g99_run.py (symbreak, UNVALIDATED).
+  - Gate runs: code/out/orbit_z3_symbreak_soundness.captured.txt,
+    code/out/orbit_z3_symbreak_constructive.captured.txt,
+    code/out/orbit_z3_symbreak_fixed_accept.py (abort at m=81).
+  - Graph builders: lib.srg.rook(3), lib.srg.bvls_graph(), lib.srg.orbit_matrix.
+  - Ring: exact integer (numpy int64).  System: OR-Tools CP-SAT, 4 workers.
+
+This is a refutation-of-a-method result, not a graph existence claim: it shows
+the canonical ordering break does NOT survive its own acceptance test on the
+existing 243-vertex control, so it cannot gate the 99 search.

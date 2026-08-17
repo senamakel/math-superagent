@@ -10,7 +10,7 @@ Rungs are listed weakest first, which is the order to climb them. Attack the cur
 
 | Ladder | Full-strength goal | Difficulties | Status |
 | --- | --- | --- | --- |
-| [[es-conjecture]] | For every n >= 4, every set of 2^(n-2)+1 points in general position in the plane contains n points in convex position (the upper-bound direction of the… | unbounded n, zero slack, arbitrary order type, stability/uniqueness, search intractability, realizability gap | open |
+| [[es-conjecture]] | For every n >= 4, every set of 2^(n-2)+1 points in general position in the plane contains n points in convex position (the upper-bound direction of the… | unbounded n, zero slack, arbitrary order type, stability/uniqueness, search intractability, realizability gap, adversarial extremal set | open |
 
 ## The rungs, weakest first
 
@@ -18,10 +18,12 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
-| `R-oracle-small-n` | [[es-conjecture]] | Reproduce the exact values ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17 with this run's own tools: an exact integer/rational orientation oracle deciding general… | unbounded n, search intractability, realizability gap | open |
-| `R-one-interior` | [[es-conjecture]] | For every n >= 4, every set of 2^(n-2)+1 points in general position with at most one interior point (a point strictly inside the convex hull of the set)… | arbitrary order type, stability/uniqueness | open |
+| `R-speedrun-exact-small-n` | [[es-conjecture]] | ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17. The run's own exact-arithmetic oracle (lib/es_geom, integer/rational determinants, never float) decides general position… | unbounded n, arbitrary order type, stability/uniqueness, search intractability, adversarial extremal set, realizability gap | **settled** |
+| `R-one-interior` | [[es-conjecture]] | For every n >= 4, every set of 2^(n-2)+1 points in general position with at most one interior point (a point strictly inside the convex hull of the set)… | arbitrary order type, stability/uniqueness, adversarial extremal set | open |
+| `R-h-layers` | [[es-conjecture]] | For every n >= 4 and every fixed h >= 1, every set of 2^(n-2)+1 points in general position whose onion (convex-layer / repeated-hull) depth is at most h… | arbitrary order type, stability/uniqueness, adversarial extremal set | open |
+| `R-split-k-gon` | [[es-conjecture]] | For every n >= 4, every set of 2^(n-2)+1 points in general position contains a "split n-gon" (the Baek–Balko vertex-2-coloring notion), and 2^(n-2)+1 is… | zero slack, stability/uniqueness, adversarial extremal set | **settled** |
+| `R-decomposable` | [[es-conjecture]] | For every n >= 4, every decomposable set of 2^(n-2)+1 points in general position contains n points in convex position, where a decomposable set is one built… | arbitrary order type, stability/uniqueness, adversarial extremal set | **settled** |
 | `R-k-interior` | [[es-conjecture]] | For every n >= 4 and every fixed k >= 0, every set of 2^(n-2)+1 points in general position with at most k interior points contains n points in convex position.… | arbitrary order type, stability/uniqueness | open |
-| `R-h-layers` | [[es-conjecture]] | For every n >= 4 and every fixed h >= 1, every set of 2^(n-2)+1 points in general position whose onion (convex-layer / repeated-hull) depth is at most h… | arbitrary order type, stability/uniqueness | open |
 | `R-es7-computational` | [[es-conjecture]] | ES(7) <= 33: no set of 33 points in general position lacks a convex 7-gon. Established by a SAT/CP-SAT encoding of the orientation variables with the… | unbounded n, realizability gap | open |
 | `R-factor-two` | [[es-conjecture]] | For every n >= 4, every set of 2^(n-1)+1 points in general position contains n points in convex position — i.e. ES(n) <= 2^(n-1)+1, the conjecture with the… | zero slack | open |
 | `R-extremal-structure` | [[es-conjecture]] | Any set S of 2^(n-2) points in general position with no convex n-gon has convex hull of size at most n-1, hence at least 2^(n-2)-(n-1) interior points; in… | zero slack | open |
@@ -31,6 +33,31 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
-- [[es-conjecture]] → `R-oracle-small-n`: Reproduce the exact values ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17 with this run's own tools: an exact integer/rational orientation oracle deciding general position and reporting the largest convex subset, validated by hand against ES(4)=5 and ES(5)=9; exhaustive enumeration over Aichholzer order types (realizable, n <= 10) where applicable; and for n = 6 a SAT encoding that first reproduces the 16-point negative (a 16-point general-position set with no convex 6-gon) before any UNSAT is trusted.
-  - switched off: unbounded n, search intractability, realizability gap
-  - to merge the next difficulty back: The oracle and encoder, once reproducing the known answers, are frozen. To climb to R-one-interior, keep the exact constant 2^(n-2)+1 but take it to all n under the hypothesis "at most one interior point"; the move is a hull-count argument — the hull of a (2^(n-2)+1)-point set with <= 1 interior point has at least 2^(n-2) >= n vertices, and those already form a convex n-gon.
+- [[es-conjecture]] → `R-one-interior`: For every n >= 4, every set of 2^(n-2)+1 points in general position with at most one interior point (a point strictly inside the convex hull of the set) contains n points in convex position.
+  - switched off: arbitrary order type, stability/uniqueness, adversarial extremal set
+  - to merge the next difficulty back: Admit k interior points. The hull then has 2^(n-2)+1-k vertices, so the trivial hull argument dies exactly when k > 2^(n-2)+1-n; from there the first move is to bound, for each interior point, how many hull vertices it can remove from the usable convex n-gon, and to induct on k. That climb switches "adversarial extremal set" back on, since interior points are where the recursion of the ES construction lives.
+
+## Settled — what this run owns
+
+Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
+
+- [[es-conjecture]] `R-speedrun-exact-small-n`: ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17. The run's own exact-arithmetic oracle (lib/es_geom, integer/rational determinants, never float) decides general position and reports the largest convex subset and the cup/cap spectrum, and the verified es_construct 2^(n-2)-point lower-bound set is confirmed to have largest convex subset n-1 at n=4,5,6 (no convex n-gon) and no convex 7-gon at n=7. (off: unbounded n, arbitrary order type, stability/uniqueness, search intractability, adversarial extremal set, realizability gap; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[es-conjecture]] `R-split-k-gon`: For every n >= 4, every set of 2^(n-2)+1 points in general position contains a "split n-gon" (the Baek–Balko vertex-2-coloring notion), and 2^(n-2)+1 is exactly the threshold: some 2^(n-2)-point set has no split n-gon. (off: zero slack, stability/uniqueness, adversarial extremal set; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[es-conjecture]] `R-decomposable`: For every n >= 4, every decomposable set of 2^(n-2)+1 points in general position contains n points in convex position, where a decomposable set is one built recursively from the ES construction's block structure (Baek–Balko definition). (off: arbitrary order type, stability/uniqueness, adversarial extremal set; _nothing named — say which claim established it, or a reader cannot check it_)
+
+## Ladders that could not be read
+
+- `R-one-interior-refutation-report` has no ladder block, so nothing can say what goal its rungs weaken
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "weakened" }
+read_ledger { ledger: "weakened", id: "<one of the ids above>" }
+read_ledger { ledger: "weakened", status: "<a status above>" }
+read_ledger { ledger: "weakened", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: fenced `ladder` and `rung` blocks in `research/weakened/<slug>.md`, written with `write_document`. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

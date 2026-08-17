@@ -1,0 +1,1 @@
+LEMMA B: every factor is a nonzero polynomial on the traceless slice, n=3..7

@@ -1,0 +1,44 @@
+What ran: code/out/half_density_complement.py, code/out/half_density_verify.py, code/out/block_union_atom_check.py
+Oracle: canonical projection/R1/R2 up-set cascade (validated vs A121921 counts 3,13,121,4959,2771103) + exact abundance (integer counts / Fraction densities)
+Range: exhaustive over all nonempty union-closed families on [n], n=1..5
+
+=== 1. half_density_complement.py: coordinate-wise any-element-at-density-1/2 claim ===
+n=1: families with ANY element at density 1/2 = 1, of which Boolean subalgebras = 1, non-Boolean with a half element = 0
+n=2: families with ANY element at density 1/2 = 6, of which Boolean subalgebras = 4, non-Boolean with a half element = 2
+n=3: families with ANY element at density 1/2 = 56, of which Boolean subalgebras = 14, non-Boolean with a half element = 42
+n=4: families with ANY element at density 1/2 = 1869, of which Boolean subalgebras = 51, non-Boolean with a half element = 1818
+n=5: families with ANY element at density 1/2 = 752457, of which Boolean subalgebras = 202, non-Boolean with a half element = 752255
+
+=== 2. half_density_verify.py: max-density=1/2 characterization (Bell(n+1)-1, regular, Boolean subalgebra) ===
+n | half-density count | Bell(n+1)-1 | match | all |F| a power of 2 | all present elements at exactly 1/2 | all are Boolean subalgebras
+1 |   1 |   1 | True  | True  | True  | True 
+2 |   4 |   4 | True  | True  | True  | True 
+3 |  14 |  14 | True  | True  | True  | True 
+4 |  51 |  51 | True  | True  | True  | True 
+5 | 202 | 202 | True  | True  | True  | True 
+
+|F| distribution (m -> count of half-density families) per n:
+  n=1: [(2, 1)]
+  n=2: [(2, 3), (4, 1)]
+  n=3: [(2, 7), (4, 6), (8, 1)]
+  n=4: [(2, 15), (4, 25), (8, 10), (16, 1)]
+  n=5: [(2, 31), (4, 90), (8, 65), (16, 15), (32, 1)]
+
+=== 3. block_union_atom_check.py: atom/partition structure + counting corollary S(n+1,k+1) ===
+n=1: half-density=1, atom-structure failures=0
+n=2: half-density=4, atom-structure failures=0
+n=3: half-density=14, atom-structure failures=0
+n=4: half-density=51, atom-structure failures=0
+n=5: half-density=202, atom-structure failures=0
+
+Counting corollary:
+  n=1: Bell(2)-1=1  sum_|S|>=1 C(n,|S|)Bell(|S|)=1  equal = True
+      S(n+1,k+1) k=1..n: [1]  sum=True
+  n=2: Bell(3)-1=4  sum_|S|>=1 C(n,|S|)Bell(|S|)=4  equal = True
+      S(n+1,k+1) k=1..n: [3, 1]  sum=True
+  n=3: Bell(4)-1=14  sum_|S|>=1 C(n,|S|)Bell(|S|)=14  equal = True
+      S(n+1,k+1) k=1..n: [7, 6, 1]  sum=True
+  n=4: Bell(5)-1=51  sum_|S|>=1 C(n,|S|)Bell(|S|)=51  equal = True
+      S(n+1,k+1) k=1..n: [15, 25, 10, 1]  sum=True
+  n=5: Bell(6)-1=202  sum_|S|>=1 C(n,|S|)Bell(|S|)=202  equal = True
+      S(n+1,k+1) k=1..n: [31, 90, 65, 15, 1]  sum=True

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "n3-dichotomy/G-n3-no-local-obstruction",
+  "source": "code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean",
+  "stage": "decompose"
+}

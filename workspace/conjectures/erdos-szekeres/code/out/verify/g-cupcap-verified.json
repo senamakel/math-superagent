@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "g-cupcap-verified",
+  "source": "code/lean/g_cupcap_verified.lean",
+  "stage": "decompose"
+}

@@ -8,6 +8,17 @@ A claim written `follows-from: a, b` says `a` and `b` together give it. That sin
 
 These add nothing the library did not have. That is not a criticism of them — a consequence worth naming is worth a block — but a *proposal* that lands in this list is not a result, and the cheapest time to find that out is before an attempt is spent on it.
 
-- `n3-99-forced-at-least-3` is covered by `order6-n3-not-forced`, `makhnev99-shorter-proof-integrality`: Combining (a) the order-6 integrality residue n3 ≡ 0 (mod 3) with (b) the sourced+re-derived Makhnev 1988 conditional n3 >= 1 (any putative srg(99,14,1,2) has…
 - `super-simple-22242-exists` is covered by `coclique-alpha22-forces-22242-design`, `super-simple-22242-gap`: A super-simple 2-(22,4,2) design EXISTS. Constructive certificate: code/out/coclique_lift_clean_design.txt, 77 blocks of size 4 on 22 points, every point in…
 
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "entailment" }
+read_ledger { ledger: "entailment", id: "<one of the ids above>" }
+read_ledger { ledger: "entailment", status: "<a status above>" }
+read_ledger { ledger: "entailment", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: nothing directly — it is the transitive closure of the claims' `follows-from` edges, so add the edge to a claim block. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

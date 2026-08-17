@@ -254,3 +254,142 @@ None of this blocks the refuter — let it keep running. This is bookkeeping tha
 I read the ledger, the two open tasks, `scores.jsonl`, `SEARCH.md`, `FINDINGS.md`, `SCORED_ROWS.md`, the capture, and `CONTEXT.md`. Directive 14 is already carried by the plan on disk, so I changed nothing.
 
 `write-step4-verdicts-to-scores-jsonl` is the first open task in the ledger (no `blocked-by`), with the full STEP 4 verdict list and the directive's acceptance test — write verdicts into `scores.jsonl`, re-derive `SEARCH.md`, read it back, confirm `0.421992` is gone and the Yu block `0.3823435642` is the top row — in its detail; `file-coupling-inf-and-bb-feasibility-claims` is the second open task, and there is no competing open mathematics task, so bookkeeping is already ordered ahead of any further mathematics. The refuter is not in the task ledger as an open task and nothing I would change touches it, so it keeps running as directed. `CONTEXT.md` already warns that `SEARCH.md` presents the c0033 exploit as the top result and that both the verdict write-through and the two claims are queued, so amending it would only duplicate that; the directive names no new direction to open a thread for, no direction to mark dead, and no external gap a source could close.
+
+## 15 — from steer
+
+Close two stale rows. Both are done and verified from disk, but they are still the first two entries under Do next, which means the task list is telling every role the wrong thing about what to work on — and with an inventor and two pattern_finders running off that list, a stale row invites rework.
+
+1. write-step4-verdicts-to-scores-jsonl — done. scores.jsonl now has 29 rows: 15 at 0.3823435642 (the Yu plateau) and 14 with a null score (the invalidated candidates). SEARCH.md was re-derived by derive_search.py and 0.421992 appears nowhere in it. Capture: code/out/step4_verdicts_derived.captured.txt.
+
+2. file-coupling-inf-and-bb-feasibility-claims — done. Both claim blocks exist in code/out/coupling_inf_bb_claims.md and are in the store: coupling-true-inf-crossing-4d and coupling-interval-bb-infeasible-10s.
+
+Close each with the evidence above as the reason.
+
+Two notes while you are there, neither urgent.
+
+The Lean file is good work and the right target: code/lean/yu_gamma_half_is_phi_over_2.lean verified with no sorries and only the standard Mathlib axioms, so the collapsed-point algebra behind Gamma-hat(1/2)=phi/2 is now kernel-checked. Keep the status honest in the claim: what is formalised is the algebra at the collapsed point, not the assertion that phi/2 is the global sup over alpha. That second part is still numerical corroboration plus the alpha=0 minimisation, and it must not silently inherit the formalised status from its neighbour.
+
+The librarian has now run record-freshness searches three times (ticks 2, 4 and 6 by my count) on variations of improved constant 2024/2025 and Liu publication status. The frontier is pinned and reproduced; unless a search returns something that changes a number, stop re-asking and spend the calls on the abundance-profile front, which is the other open job in GOAL.md.
+
+Closed the two stale rows and carried both notes into the files each role reads.
+
+- **`write-step4-verdicts-to-scores-jsonl`** and **`file-coupling-inf-and-bb-feasibility-claims`** are closed `done`, each with the evidence verified from disk (`step4_verdicts_derived.captured.txt` — 0.421992 gone, top row the Yu plateau; both claim ids present in `coupling_inf_bb_claims.md`).
+- **Lean status** was already honest on disk — the claim distinguishes the kernel-checked collapsed-point algebra from the numerical global-sup corroboration — so no edit was needed there.
+- **Note 2** I carried into CONTEXT.md's Gaps (the published-record request is now stated as settled, re-run a variant only if a result changes a number) and recorded a fresh open task `abundance-profile-front-continue`, now the sole open row the next attempt picks up: continue the abundance-profile front, which is the other open job in GOAL.md. The freshness request's own ledger row sits in a store I cannot write, but its brief no longer reads as "living."
+
+## 16 — from steer
+
+Two finished results are on disk but outside the record. Both are yours from this attempt and neither is in the claim store.
+
+1. The g(n,m) envelope. code/out/gnm_envelope_finding.md contains NO claim block — grep it for a fenced claim and you get nothing. That note holds the best structural result this attempt has produced: g(n,m) = max(1, m − 2 to the (n−1)), exhaustively verified for n <= 5 with an independent brute-force cross-check at n=4, lower bound proved elementarily (sets missing x are subsets of the other n−1 elements, so no union-closure needed), tightness open with explicit attaining witnesses at n=4 m=10,12,14,16. Write the claim block: status verified-computational for n <= 5, the general statement conjectural, and say in the bearing line which half is proved and which is open. Without a block it cannot be cited and the next attempt will re-derive it.
+
+2. The n=5 min-density uniqueness. code/out/min_density_stability.raw.txt has 332 lines including the n=5 canonical near-cube data (|F|=17, counts 9,9,9,9,1) — the computation that timed out twice and evidently did complete. It is a raw dump, not a capture: no header naming what ran, which oracle, and the exact range, so it does not satisfy GOAL.md's capture rule and nothing downstream will read it. Promote it to min_density_stability.captured.txt with the three-line header, then file the uniqueness claim if the n=5 data supports it — the small-n capture already established uniqueness up to isomorphism for n <= 4 and this extends it.
+
+Note the raw file also records non-near-cube families with min-present-count 1 that are NOT density-extremal (n=4: counts 4,3,3,1; n=5: counts 6,5,4,3,1). That distinction between min-count and min-density matters for the uniqueness statement — state which one the claim is about.
+
+Also, good catch in mroof_enum: the task's stated non-union-closed example was actually union-closed, and you substituted a genuine control rather than running a vacuous guard. Keep doing that.
+
+Directive 16 is fully carried out. 
+
+**What I changed:**
+1. **g(n,m) envelope** — added the fenced claim block `gnm-envelope-rarest-floor-tight` to `code/out/gnm_envelope_finding.md`. Status is `verified-computational` for n≤5 (exhaustive, exact, two code paths, one independent brute-force oracle at n=4), and the bearing line states plainly that the lower-bound half is proved and union-closure-free while the tightness half is open/conjectural — it does not file tightness as proved, and both halves are now separately citable.
+2. **n=5 min-density uniqueness** — wrote `code/out/min_density_stability_claim.md` with the `min-density-uc-families-are-near-n-cube` claim (one isomorphism class for n≤5), and promoted the raw dump to `code/out/min_density_stability.captured.txt` (three-line header + full VERDICT + exemplars). The claim explicitly distinguishes min-**density** (EQUALITY class, one profile) from min-present-count==1 (BROAD class, not density-extremal — the n=4 (4,3,3,1) and n=5 (6,5,4,3,1) cases), the distinction the directive flagged.
+3. Indexed both new files and the edited finding note; recorded and closed the ledger task.
+
+Both claims were verified as returned by `search_claims` before I closed the tasks. One small correction to the directive's premise worth recording: the raw file *did* already carry a three-line header (program / oracle / range) — it was the `.raw.txt` designation and lack of the capture/VERDICT framing, not a missing header, that made it unreadable downstream. Either way it now meets the capture rule.
+
+## 17 — from steer
+
+The g(n,m) envelope proof is good and I agree it is proved — the avoiding-set lower bound, the two constructions (upset G of size c above the (n-1)-cube for m above 2^(n-1)+1; H plus U union {n} for m below it), and the size lemma together give it uniformly in n, not case by case. Two corrections, both small, and then one suggestion.
+
+1. The anchor line reads: anchor: code/out/gnm_envelope_verify.py (constructive proof). A program is not a proof — it is a verification of the proof's instances at n in 1..6. The proof is the prose in your bearing field. Re-anchor so the proof text is the anchor and the program is listed as its verification, otherwise a later reader takes the exit-0 as the argument.
+
+2. The size lemma is cited as constructive induction but the induction is not written anywhere. Write it — it is three lines. The complement of an upset is a downset; if the upset is not everything, a maximal element of the complementary downset can be moved into it and it remains an upset; so every size in 0..2^N is realised, by induction on the size. Right now the one step your general claim rests on is the one step nobody has written down.
+
+3. Suggestion, not an instruction: this is a far better Lean target than the entropy work you already formalised. It is finite combinatorics over a Boolean lattice with no real analysis, no transcendental functions and no interval arithmetic — Finset over Fin n, upward-closed as a predicate, the size lemma by induction, the two constructions explicit. If it compiles, the run has a kernel-checked general theorem rather than a claim that says PROVED in prose. You already have code/lean/ working and lean_check wired, so the cost is low.
+
+Keep the What it is NOT section as written. Stating plainly that g constrains the minimum density and so is not a proof of Frankl is the right instinct and I do not want it softened.
+
+
+
+## 18 — from steer
+
+One queue question, and it is a real fork rather than a nag.
+
+formalise-gnm-envelope-in-lean has sat second in Do next for three cycles while newer work keeps landing above it, and code/lean still holds only the entropy file. I am not asking you to drop what you are doing — constraint_delim.py part 5, the n=7 k=3 boundary for constraint C, is exactly the counterexample-constraint work GOAL.md wants and it is producing output.
+
+Decide the Lean task explicitly, either way, and record the decision:
+
+Work it. The envelope is the cleanest formalisation target this workspace has: finite combinatorics over Finset (Fin n), upward-closed as a predicate, the size lemma by the maximal-element induction you have now written out in prose, and the two constructions explicit. If it compiles you hold a kernel-checked general theorem, which is a different class of object from a claim whose status line says PROVED because a note says so.
+
+Or defer it, with a reason on the row — that the counterexample-constraint front is the better use of the remaining budget, or that the Lean cost is higher than the upgrade is worth right now. A deferred task with a stated reason is a decision. A task that keeps being outranked without anyone choosing is how work silently disappears, and this one only exists because I suggested it, so it has no advocate but the row itself.
+
+Either answer is fine. What I do not want is to find it in the same position next cycle with nothing recorded.
+
+Separately, and only if it is cheap: claims have not moved in roughly forty minutes while constraint_delim, kpt and the envelope verification all produced output. The KPT pair is filed (kpt-thm5-corrob-n4, kpt-thm5-counterexample-corollary), so this is not the unfiled-result problem from earlier — but if part 5 settles the n=7 boundary, file it before starting the next thing rather than after.
+
+Both changes are on the task ledger now. Two or three sentences per the brief:
+
+I deferred `formalise-gnm-envelope-in-lean` explicitly, with the reason recorded on the row itself: the constraint front (constraint_delim part 5) is the active GOAL.md loop the operator asked not to drop, and the g(n,m) envelope is disclaimed as not a proof of Frankl, so its Lean cost exceeds its present value — the row stays open with a re-evaluation trigger. I also opened `file-constraint-delim-part5-boundary` (now first in the queue): no `constraint_delim.captured.txt` exists on disk yet, so part 5 has not settled or been filed — this makes the "file it before the next thing" instruction concrete and stops it silently outranking. CONTEXT.md left untouched: this is a queue decision, not a fact every role needs on every call.
+
+## 19 — from steer
+
+lean_prover is stuck before it starts. Its last execute_command hit the 600s cap and was killed — a throwaway /tmp/test_consA.py whose is_upset walks every superset of every member, called across candidate upsets. That is exponential on top of exponential; it will never return at the sizes you are feeding it.
+
+Two things.
+
+1. You do not need that check at all. Construction A and construction B are ALREADY verified computationally: code/out/gnm_envelope_verify.py ran them for every n in 1..6 and every m in 1..2^n, confirmed each family union-closed via lib.uc, |F|=m, and rare == max(1, m-2^(n-1)), with the upset size lemma checked for N in 0..6 and ALL ASSERTIONS PASS in gnm_envelope_verify.captured.txt. Re-deriving that in a scratch script is repeating finished work, and it is what consumed the ten minutes. If you want a pre-Lean sanity check, read that capture.
+
+2. Go straight to Lean. The proof text in gnm_envelope_finding.md §Proof is complete, including the size-lemma induction. Formalise against it, not against a fresh Python reimplementation. Start with the size lemma alone — upward-closed on Finset (Fin n), complement is a downset, move an inclusion-maximal element across, induct on card — and get THAT compiling under lean_check before touching the constructions. A first file with one theorem and no sorry is worth more than a full development that does not elaborate.
+
+If the Finset API turns out to be heavier than the upgrade justifies, defer the task with that as the recorded reason — that was always an acceptable answer and it still is. What is not useful is spending the remaining budget on exponential scratch scripts that check something the run proved and verified hours ago.
+
+Also: prefer the workspace over /tmp for anything you want to keep. A script in /tmp produces no capture and vanishes.
+
+Carried directive 19 into the run's record. I updated the open task `formalise-gnm-envelope-in-lean` so the next Lean attempt starts with the size lemma alone (formalising against the proof text in `gnm_envelope_finding.md §Proof`, not a fresh Python reimplementation), reads the existing `gnm_envelope_verify.captured.txt` for any pre-Lean sanity check instead of writing exponential `is_upset` scratch, keeps the development in `code/lean/`, and treats defer-with-recorded-reason as the acceptable outcome if the Finset API is too heavy. I also updated the `gnm-envelope-lean` thread to carry the same strategy and to ban re-derivation of the already-verified constructions.
+
+No task was dropped and no other plan changed — the directive refines the one formalisation effort already in flight rather than redirecting or aborting it.
+
+## 20 — from steer
+
+Defer the Lean formalisation, or spawn a prover for it this cycle. Choose now.
+
+formalise-gnm-envelope-in-lean has been the top open row for five cycles. One lean_prover attempted it, died on the 600s command cap running exponential scratch, and no prover has spawned since — three cycles ago. code/lean still holds only the entropy file and derived/LEMMAS.md is unchanged at 13 rows. The task is well specified after directive 19 and nobody is picking it up, which means the scheduler is not reaching it. A row that stays first and never starts is worse than a closed one: it blocks nothing but it makes the queue unreadable.
+
+So either spawn a lean_prover against it this cycle with the size lemma alone as the target, or close it deferred and record the reason — that the abundance-profile and counterexample-constraint fronts are the better use of remaining budget. I have no preference. I want the decision made rather than inherited.
+
+The rest of the run is in good shape and this is not a complaint about pace. What agent-run-78 just did is exactly right: it found three half-density programs sitting on disk with no captured output, ran them, and wrote half_density_finding.md — closing a capture gap I had not spotted. And when its own new up-set generator was buggy, removing maximal elements rather than preserving up-setness, the oracle's decide_union_closed screening caught it and the corrected enumerator reproduced Dedekind M(5)=7581 as a self-check. That is the guard discipline working three separate times in one program. Keep it.
+
+One consequence worth noting in that finding: the up-set bug is the same shape as the size-lemma step you would formalise. Moving a MAXIMAL element of the complementary downset in preserves up-setness; removing a maximal element of the up-set does not. If Lean is deferred, put that sentence in the envelope proof text so the next reader does not repeat the error.
+
+Done. Directive 20 asked me to make the defer-or-spawn decision rather than inherit it, and I closed `formalise-gnm-envelope-in-lean` as deferred on the task ledger with the full reason (I cannot spawn a prover in this role, so leaving a top-open row the scheduler has not reached for five cycles was exactly the inherited state the directive rejects; the size lemma is already proved constructively and verified at n∈1..6, so deferral loses no mathematics, and the directive itself names abundance-profile/counterexample-constraint as the better budget use). I also wrote the up-set-direction warning sentence into the §Proof of `code/out/gnm_envelope_finding.md` so the next reader does not repeat the maximal-element-removal error, which directive 20 asked be recorded on deferral.
+
+Nothing else needed changing — the directive offered only this binary, and it had no preference between them.
+
+## 21 — from steer
+
+STATEMENT BUG in code/lean/ellis_gilmer_conjecture_refuted.lean: two of the four sorry-blocked goals are FALSE as stated and can never be discharged. Do not assign a prover to them until they are restated.
+
+(1) gap_perturbed_strict demands both 0 < hsum f and (sum over i of f i * log (1 / f i)) < 0. But hsum f is DEFINED as exactly that sum, so the goal asserts X > 0 and X < 0 for the same X. Unsatisfiable.
+
+(2) gilmer_refuted_boundary demands a probability distribution f with all f i > 0, sum f i = 1, and (sum of f i * log (1 / f i)) < 0. That sum is Shannon entropy in nats, which is strictly POSITIVE whenever every f i lies in the open interval (0,1). Unsatisfiable.
+
+Both goals mistakenly ask for the ENTROPY of p to be negative. Ellis's refutation says nothing of the kind. What is negative is quantity (1), the DIFFERENCE that LHS and closed already encode: sum of q_s log(1/p_s) minus sum of p_s log(1/p_s), which the file already kernel-checks as (2/25)*log(2/3) < 0 at x = 3/10 via ellis_lhs_negative. Restate both around that difference, not around hsum.
+
+Suggested shapes: gilmer_refuted_boundary should assert existence of x with 0 < x, x < 1/2, all marginals of mass x equal to 1/2, and LHS x < 0 - which ellis_lhs_negative plus boundary_distribution already give at x = 3/10, so it becomes provable now rather than a sorry. gap_perturbed_strict should assert existence of epsilon > 0 and a distribution with every marginal strictly below 1/2, positive entropy, and the (1)-difference negative - stated with a perturbed-LHS function, not with hsum on both sides.
+
+The arithmetic core is fine and is real progress: 8 declarations rest on only propext, Classical.choice, Quot.sound. Keep them. The other two gaps, gap_union_weights and gap_entropy_rewrite, are correctly stated and are the mechanical ones worth proving.
+
+The memory store is temporarily down (its health check timed out), so I won't retry the identical call — the finding is durably carried in the workspace files I edited, which is where this run actually reads it. The core job is done.
+
+**What I changed and why (directive 21):**
+
+1. **Task ledger** — recorded `restate-false-lean-goals-ellis-gilmer` as the top open row: both `gap_perturbed_strict` (asserts `0 < hsum f` *and* `∑ f i·log(1/f i) < 0`, i.e. `X > 0 ∧ X < 0` for the same `X`, since `hsum` is defined as that exact sum) and `gilmer_refuted_boundary` (entropy-in-nats, positive on the open simplex, demanded negative) are false as stated. The task records the directive's restate shapes — `gilmer_refuted_boundary` around `∃ x, 0 < x ∧ x < 1/2`, marginals of `mass x` equal `1/2`, `LHS x < 0` (provable now from `ellis_lhs_negative` + `boundary_distribution`), and `gap_perturbed_strict` with a perturbed-LHS function — and instructs **no prover be assigned until restated**. The 8 kernel-clean declarations and `gap_union_weights`/`gap_entropy_rewrite` are flagged as correct and untouched.
+
+2. **Approach note** (`research/approaches/ellis-gilmer-decomposition.md`) — added the directive-21 correction block and marked the two gap rows "RE-STATEMENT REQUIRED," so a later role reading the decomposition doesn't re-commit to the false statements.
+
+3. **CONTEXT.md** — added a self-contained Established bullet warning every role (any spawned prover above all) that these two goals are unprovable as stated and what the genuine negative quantity is. Repaired the one bullet my edit had orphaned.
+
+4. **`code/lean/INDEX.md`** — noted the statement bug on the file's row.
+
+The restatement edit to the `.lean` itself is the lean role's to make (it must elaborate), which is why I gated it behind the task rather than writing it.

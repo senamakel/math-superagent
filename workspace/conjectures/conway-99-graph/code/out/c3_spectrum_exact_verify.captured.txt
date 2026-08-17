@@ -1,0 +1,56 @@
+=== VERIFICATION OF THE C3 (TRIANGLE-GRAPH) SPECTRUM CLOSED FORM
+    across the lambda=1 SRG family srg(v,k,1,2), k=u^2+u+2, v=1+k^2/2 ===
+
+System: numpy eigvalsh (rounded to integers; all eigenvalues proven integral)
+        over triangle_graph(A) from code/lib, built from the exact integer
+        adjacency matrices of lib.srg.rook(3) and lib.srg.bvls_graph().
+Exact integer family constants computed symbolically (sympy check elsewhere).
+
+Closed form (Phillips / Keramatipour triangular-graph spectrum):
+    rt = k/2 + r - 3 = (u-1)(u+4)/2
+    st = k/2 + s - 3 = (u-3)(u+2)/2
+    m_r = ((v-1) - (2k-(v-1))/(2u+1))/2   multiplicity of rt
+    m_s = ((v-1) + (2k-(v-1))/(2u+1))/2   multiplicity of st
+    -3 eigenspace multiplicity = nT - v,  nT = vk/6 triangles
+    degree d = 3(k/2 - 1)
+
+Family constants (exact integers):
+  u= 1: k=4  v=9   rt=0  st=-3 m_r=4  m_s=4   nT-v=-3    (rook(3), degenerate)
+  u= 3: k=14 v=99  rt=7  st=0  m_r=54 m_s=44  nT-v=132   (99 — PREDICTION)
+  u= 4: k=22 v=243 rt=12 st=3  m_r=132 m_s=110 nT-v=648  (BvLS, exists)
+  u=10: k=112 v=6273  rt=63  st=42 m_r=3280 m_s=2992 nT-v=110823
+  u=31: k=994 v=494019 rt=525 st=462 m_r=250914 m_s=243104 nT-v=81348462
+
+--- verification against ACTUAL triangle graphs (existing members) ---
+
+=== rook(3) [u=1, degenerate] = srg(9,4,1,2) ===
+  actual C3 spectrum: {-3:1, 0:4, 3:1}   (K_{3,3})
+  predicted (merged): rt=0^4, st=-3^4, -3^(-3), d=3^1
+  merged at eigenvalue -3: st mult 4 + (-3 eigenspace mult -3) = 1
+  at eigenvalue 3: d mult 1
+  -> {-3:1, 0:4, 3:1}
+  predicted == actual (accounting the -3 collision): True
+  The negative nT-v = -3 at u=1 is NOT an error: it is the over-count of the
+  -3 eigenspace by the st=-3 term, which collides with (merges into) it. The
+  four contributions sum to 1+4+4-3 = 6 = nT, exactly the vertex count of K_{3,3}.
+
+=== BvLS(243) [u=4, the live control sharing lambda=mu=1,2 with 99] ===
+  actual C3 spectrum: {-3:648, 3:110, 12:132, 30:1}
+  predicted:          rt=12^132, st=3^110, -3^648, d=30^1
+  predicted == actual: True    (EXACT)
+
+=== CONCLUSION ===
+The closed-form triangular-graph spectrum is CONFIRMED exactly at both
+existing members (u=1 degenerate rook, u=4 BvLS), including correct handling
+of the merging degeneracy at u=1.
+
+For a prospective srg(99,14,1,2) (u=3), the C3 triangle graph must therefore
+have spectrum (degree 18, 231 vertices):
+    eigenvalues  {18 : 1,  7 : 54,  0 : 44,  -3 : 132}
+    trace check: 18 + 7*54 + 0*44 + (-3)*132 = 0  (valid graph spectrum)
+This is a testable prediction: any candidate 99-graph's triangle graph must
+realise exactly this spectrum. All four eigenspaces are simple (no merging at
+u=3), so the multiplicities 54/44/132 are not subject to the u=1 ambiguity.
+
+Settles: claim keramatipour-trian-graph-nk6-3k-6-2 spectrum-form validity at
+every existing family member; gives the exact C3 spectrum a 99-graph forces.

@@ -70,10 +70,12 @@ outside, contradicting Lemma 7's "60 points outside" and 9+60≠99. The "closure
    triangles) and produces an srg(33,12,1,6) intermediate with μ_0=6>3 that
    conflicts with Theorem 1. For 9 and 243 the k=2μ / μ≤3 branch holds instead,
    so the mechanism genuinely does not transfer. **The oracle check that rook(3)
-   and BvLS satisfy (∗) is written (code/out/check_makhnev_condition.py) and is
-   PENDING tool_builder/coder execution** — the admissibility run that GOAL.md
-   demands before Theorem 2 is cited as a 99-argument. (Expected on the theory:
-   both satisfy (∗) since μ=2≤3; the oracle must confirm.)
+   and BvLS satisfy (∗) HAS BEEN RUN and PASSED** — `code/out/check_makhnev_condition.py`
+   (capture `code/out/makhnev-1988-condition-captured.txt`, wall 0.59s): both
+   controls pass `is_srg` exactly, T=6 and T=891 with disjoint-join histograms
+   {3:6} and {0:133650, 1:240570, 3:8910}, n3=0, condition (*) holds on BOTH.
+   This satisfies the GOAL.md admissibility gate before citing Makhnev Thm 2 as
+   a 99-argument; claim `makhnev-condstar-gate-passed` is `checked`.
 
 3. **The honest cost of the n_3 route.** Makhnev's Theorem 2 converts
    "n_3=0" into "no 99-graph". But n_3=0 is itself NOT established — it is
@@ -95,7 +97,9 @@ holds-here: yes — directly answers REQUESTS falsifier #1 on the n_3=0 branch:
   Reimbayev's citation is correct; the theorem is real.
 status: sourced (full Russian primary text of Makhnev 1988 now in
   research/sources/makhnev-1988-lambda1-russian-fulltext.full.md; translated
-  above). The oracle verification that rook(3) and BvLS satisfy (*) is pending.
+  above). The oracle verification that rook(3) and BvLS satisfy (*) has been
+  run and PASSED (claim `makhnev-condstar-gate-passed`, checked,
+  code/out/makhnev-1988-condition-captured.txt).
 bearing: legitimises the n_3-pivot route as a real theorem-backed leading
   attack; clarifies that n_3=0 is only a conjecture and that proving n_3>=1
   does not give existence.
@@ -109,5 +113,10 @@ answers: makhnev-1988-condstar (the gap previously recorded as fillable by a
   (JCTA 119, 1414–1426, DOI 10.1016/j.jcta.2012.03.013) — still paywalled; the
   triple-system/partial-line-space route it serves is relevant to the triangle
   geometry but not load-bearing for the n_3 attack (which Makhnev 1988 now covers).
-- Lou & Murin (forbidden 9-vertex subgraph for k=14, per Reimbayev ref [9]) —
-  still untraceable in any index; lead only.
+- Lou & Murin's forbidden-9-vertex-subgraph lead (per Reimbayev ref [9]) is in
+  the library after all: it is the MIT PRIMES-USA 2014 paper
+  `research/summaries/lou-murin-srg991412-2014.md` (open on math.mit.edu),
+  unrefereed. Its Section 7 reduces independence number α=22 to a (22,4,2)
+  block design; whether it contains the exact "forbidden subgraph of order 9"
+  claim Reimbayev cites is not stated in the summary — a lead to verify, not
+  established.

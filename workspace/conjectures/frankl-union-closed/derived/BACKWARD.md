@@ -8,16 +8,42 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
+| [[abundance-profile-odd-filter-minmax]] | Prove/verify: for every non-Boolean union-closed family F on [n], max-density(F) >= 2^{n-1}/(2^n-1). The VALUE is correct; the claimed "attained UNIQUELY by… | — | sketched | 0 |
+| [[uc-via-entropy-coupling-g-iid-half]] | For every dist \u03bc on {0,1}^n with H(\u03bc)>0 and max_i Pr[A_i=1]<1/2, the iid coupling satisfies H(A\u2228B)>H(A) [Gilmer Conj 1] | sub-instance of G-coupling-half; refuted, so the coupling class must be dependent | sketched | 0 |
+| [[uc-via-entropy-coupling-g-yu-twoatom-half]] | Yu/Sawin two-atom conditionally-iid class reaches density 1/2 | sub-instance of G-coupling-half on the restricted two-atom class; capped, so the surviving gap must use the larger class C3 | sketched | 0 |
 | [[uc-via-entropy-coupling]] | (UC) Every finite union-closed family F ⊆ 2^[n] with F ≠ {∅} contains an element lying in at least \|F\|/2 of the members of F. | \| Encode each member of F as its indicator vector in {0,1}^n and set μ = Unif(F), the uniform measure on F; then H(μ) = log\|F\| > 0. Argue the contrapositive.… | live | 1 |
 
 ## The open gaps — each one is a task
 
 Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
 
-- [[uc-via-entropy-coupling]] `G-coupling-half` — For every distribution μ on {0,1}^n with H(μ) > 0 and max_i Pr_{A∼μ}[A_i=1] < 1/2, there is a conditionally-iid coupling (A,B) of (μ,μ) — A,B iid conditioned on an auxiliary variable, the class C of Liu arXiv:2306.08824 — with H(A∨B) > H(A). Equivalently: the finite-dimensional C-coupling optimization of Yu arXiv:2212.00658 has optimal constant exactly 1/2.
-  - next: symbolic_math + coder — implement Yu's finite-dimensional optimization over the conditionally-iid class (auxiliary variable with the cardinality bound of Yu 2212.00658; entropy computed in exact arithmetic / interval arithmetic, never floating point). Two runs: (i) reproduce the published record constants as a correctness check — 0.38234 (Yu) and ≈0.38271 (Liu); (ii) push the constant toward c = 1/2 and certify H(A∨B) > H(A) for all μ with marginals < 1/2, or exhibit the extremal μ where the class optimum stays below 1/2. The latter is a proved barrier for this coupling class — GOAL.md result…
+- [[uc-via-entropy-coupling]] `G-coupling-half` — For every distribution μ on {0,1}^n with H(μ) > 0 and max_i Pr_{A∼μ}[A_i=1] < 1/2, there is a conditionally-iid coupling (A,B) of (μ,μ) — A,B iid conditioned on an auxiliary variable, the class C₃ of Liu arXiv:2306.08824, strictly larger than the refuted two-atom class — with H(A∨B) > H(A). Equivalently: the 9-dimensional C₃-coupling optimization of Liu (claim `liu-9dim-reduction`) has optimal constant exactly 1/2.
+  - next: symbolic_math + coder — implement Liu's 9-dimensional conditionally-iid optimization (Theorem 12 of arXiv:2306.08824, objective (84) over (a₁,a₂,q,b₀..b₅), P₀,P₁ 3-atom) in exact/interval arithmetic, never floating point. Two runs: (i) reproduce the conditional record c'≈0.382709087918741 as a correctness check against claim `liu-conditionally-iid`; (ii) push toward c = 1/2 and certify H(A∨B) > H(A) for all μ with marginals < 1/2 — or exhibit the extremal μ where the C₃ class optimum stays below 1/2 (a proved barrier for the largest known tractable coupling class, itself a GOAL.md result of…
   - _no thread — nothing is attacking this_
+
+## Resting on nothing recorded
+
+A reduction taking an unrecorded belief as input proves the goal from something nobody downstream can check. Either write the claim, or the id is misspelled.
+
+- [[uc-via-entropy-coupling]] rests on `reduction`, `needs`, `only`, `union-closure`, `H`, which no claim block on disk establishes
 
 ## Skeletons that could not be read
 
 - `README` has no skeleton block, so nothing can say what it reduces or whether the reduction is sound
+- `abundance-profile-odd-filter-minmax` does not say how its lemmas imply the goal, so nothing can check that they do
+- `abundance-profile-odd-filter-minmax` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
+- `uc-via-entropy-coupling-g-iid-half` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
+- `uc-via-entropy-coupling-g-yu-twoatom-half` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "goals" }
+read_ledger { ledger: "goals", id: "<one of the ids above>" }
+read_ledger { ledger: "goals", status: "<a status above>" }
+read_ledger { ledger: "goals", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: `record_entry` to add or amend a row, `close_entry` to close one. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

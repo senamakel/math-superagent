@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "extremal-split-stability/G-split-consistent",
+  "source": "code/lean/extremal_split_stability_G_split_consistent.lean",
+  "stage": "decompose"
+}
