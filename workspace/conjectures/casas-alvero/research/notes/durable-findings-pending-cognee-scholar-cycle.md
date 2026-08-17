@@ -79,6 +79,20 @@ Raicu et al 2026 Thm 1.1 **confirms** the Abdesselam–Chipalkatti Conjecture 5.
 cross-link: the two held sources corroborate each other on the structure of power
 loci. Neither impinges on CA's b=1 rational-normal-curve target.
 
+## Finding 6 (2026-09, scholar) — Ghosh FINITENESS accepted at AJM; the full claim is NOT
+
+Source: Hopkins Press AJM accepted list (4/7/2026), author's UW page; arXiv abs 2402.18717.
+
+`Soham Ghosh, "A finiteness result towards the Casas-Alvero Conjecture"`
+(arXiv:2402.18717) is **accepted for publication in the American Journal of
+Mathematics**. This is peer-review acceptance of the **finiteness/dimension**
+results only: Thm A (projectivized CA-var. ≤ 2-dim in every characteristic),
+Thm B / Cor C (finite Z-scheme, finitely many K-points, dim≤1), Thm E
+(j_C(n) ≥ q(n)−1). It is **NOT** acceptance of the full claimed proof of CA
+(arXiv:2501.09272), which remains an unverified 0-citation preprint (v2 Mar 2026).
+CA is still open; smallest open degree stays 20. Claim id:
+`ghosh-finiteness-ajm-accepted` (verified, primary sources).
+
 ## What does not help (scholar verdict, this cycle)
 
 - `eom_resultant`, `eom_groebner-basis`, `eom_newton-diagram`: generic definition-level

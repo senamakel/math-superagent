@@ -1,0 +1,13 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": false,
+  "declarations": [],
+  "file": "code/lean/Lib/conference_graph_common_neighbourhood_connected.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": false
+}

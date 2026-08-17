@@ -1,0 +1,13 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": false,
+  "declarations": [],
+  "file": "code/lean/Lib/hilbert_covariant_iff_perfect_power.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": false
+}

@@ -1,0 +1,13 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": false,
+  "declarations": [],
+  "file": "code/lean/probe/check7.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": false
+}

@@ -4,11 +4,22 @@ Derived from the files under `research/threads/`, and rewritten whenever one of 
 
 This is the library's topic axis. `research/L0…L2` folds by *arrival* and is sealed once, which keeps provenance honest but scatters a subject across batches; a thread gathers one subject and stays live. Dead threads are kept deliberately — a known dead end is a result, and the reason it died is what stops the next attempt paying for it again.
 
-| Thread | Question | Status | Rests on | Next |
-| --- | --- | --- | --- | --- |
-| [[factor-parameterization-psi]] | Give an explicit, indexable description j -> w_j of the k+1 length-k factors of the Fibonacci word (Sturmian, slope 1/phi^2), with each factor's number of 1s,… | open | MH-kplus1-factors, PR-consecutive-factors-lex, PE1006-factors-one-count-necessary, christoffel-conjugate-and-forest, PE1006-factors-dependent-slop-only, Chuan-cyclic-shift-indexed-enumeration, PE1006-extension-formula | use the lex-order consecutive-factor rule to write Psi(k) as a sum over r·ab·s / r·ba·s successors; reduce sum-of-squares to pairwise position-correlation… |
-| [[psi-sum-squares-recurrence]] | How to compute Psi(k) = sum over the k+1 length-k factors w of the Fibonacci word (Sturmian, slope 1/phi^2) of (decimal value of w)^2, in poly(log k), to get… | open | PE1006-kplus1-FACT, PR-consecutive-factors-lex, PE1006-factors-dependent-slop-only, MH-kplus1-factors, Chuan-cyclic-shift-indexed-enumeration, PE1006-extension-formula | derive the closed rotation-sum Psi(F_n) from Chuan's arithmetic-progression positions plus the singular square, then reach k=10^18 from the nearest Fibonacci… |
+_No threads yet. Open one as soon as a direction has a question and a claim under it: `research/threads/<name>.md`, with a fenced `thread` block carrying `question`, `status`, `rests-on`, `blocked-by`, and `next` lines._
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
+- `mechanical-word-floor-sum` has no thread block, so nothing can say what it is chasing or what it rests on
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "threads" }
+read_ledger { ledger: "threads", id: "<one of the ids above>" }
+read_ledger { ledger: "threads", status: "<a status above>" }
+read_ledger { ledger: "threads", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: a fenced `thread` block in `research/threads/<slug>.md`, written with `write_document`. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

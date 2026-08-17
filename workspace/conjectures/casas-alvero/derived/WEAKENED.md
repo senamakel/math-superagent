@@ -10,7 +10,7 @@ Rungs are listed weakest first, which is the order to climb them. Attack the cur
 
 | Ladder | Full-strength goal | Difficulties | Status |
 | --- | --- | --- | --- |
-| [[casas-alvero]] | Every monic polynomial f over a characteristic-0 field of degree n, if f shares a root with each of its first n−1 derivatives, then f is a pure power (x−α)^n. | unbounded-degree, mod-p-stall, five-plus-roots, no-real-structure, scheme-infeasible, char0-usage-unlocated | open |
+| [[casas-alvero]] | Every monic polynomial f over a characteristic-0 field K of degree n, if f shares a root with each of its first n−1 derivatives, then f is a pure power (x−α)^n. | unbounded-degree, five-plus-roots, mod-p-stall, char0-usage-unlocated, no-real-structure, scheme-infeasible | open |
 
 ## The rungs, weakest first
 
@@ -18,10 +18,11 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
-| `R-ca-deg4` | [[casas-alvero]] | CA for n = 4 — every monic quartic over Q sharing a root with f′, f″, f‴ is a pure power. | unbounded-degree, mod-p-stall, five-plus-roots, no-real-structure, scheme-infeasible | **settled** |
-| `R-ca-two-roots` | [[casas-alvero]] | CA for f with at most 2 distinct roots over C — if f = (x−α)^m (x−β)^{n−m}, α ≠ β, shares a root with each derivative, then f is a pure power. | five-plus-roots, no-real-structure, scheme-infeasible, mod-p-stall | **settled** |
-| `R-ca-four-roots` | [[casas-alvero]] | CA for f with at most 4 distinct roots over C — a monic f of degree n with ≤4 distinct roots sharing a root with every derivative is a pure power. | five-plus-roots, no-real-structure, scheme-infeasible, mod-p-stall | **settled** |
-| `R-ca-known-families` | [[casas-alvero]] | CA for every n of the form p^k, 2p^k, 3p^k (p≠2), 4p^k (p≠3,5,7), and 5p^k, 6p^k, 7p^k with their classified bad primes. | unbounded-degree, five-plus-roots, no-real-structure, scheme-infeasible | **settled** |
+| `R-ca-deg4` | [[casas-alvero]] | CA for n = 4 — every monic quartic over Q sharing a root with f′, f″, f‴ is a pure power. | unbounded-degree, five-plus-roots, mod-p-stall, char0-usage-unlocated, no-real-structure, scheme-infeasible | **settled** |
+| `R-ca-known-families` | [[casas-alvero]] | CA for every n of the form p^k, 2p^k, 3p^k (p≠2), 4p^k (p≠3,5,7), and 5p^k, 6p^k, 7p^k with their classified bad primes. | unbounded-degree, five-plus-roots, mod-p-stall, char0-usage-unlocated, no-real-structure, scheme-infeasible | **settled** |
+| `R-ca-two-roots` | [[casas-alvero]] | CA for f with at most 2 distinct roots over C — if f = (x−α)^m (x−β)^{n−m}, α ≠ β, shares a root with each derivative, then f is a pure power. | five-plus-roots, mod-p-stall, char0-usage-unlocated, no-real-structure, scheme-infeasible | **settled** |
+| `R-ca-four-roots` | [[casas-alvero]] | CA for f with at most 4 distinct roots over C — a monic f of degree n with ≤4 distinct roots sharing a root with every derivative is a pure power. | five-plus-roots, mod-p-stall, char0-usage-unlocated, no-real-structure, scheme-infeasible | **settled** |
+| `R-ca-deg6-five-roots` | [[casas-alvero]] | CA for n = 6 with exactly 5 distinct roots, over C — a monic sextic f = (x−a)^2 (x−b)(x−c)(x−d)(x−e) sharing a root with each of f′, f″, f‴, f⁗, f⁗⁗ is a pure… | unbounded-degree, no-real-structure, mod-p-stall, char0-usage-unlocated, scheme-infeasible | open |
 | `R-ca-elim-boundary` | [[casas-alvero]] | CA for each feasible n in {5, 6, 8, 9, 12} by complete elimination of S_n over Q, with the feasibility boundary named. | unbounded-degree, five-plus-roots, no-real-structure, mod-p-stall | open |
 | `R-ca-real-roots` | [[casas-alvero]] | CA for f ∈ R[x] that splits completely over R (all roots real), all n — the real-root case. | no-real-structure, scheme-infeasible, mod-p-stall | **settled** |
 | `R-ca-five-roots` | [[casas-alvero]] | CA for f with at most 5 distinct roots over C — a monic f of degree n with ≤5 distinct roots sharing a root with each derivative is a pure power. | no-real-structure, scheme-infeasible, mod-p-stall | open |
@@ -31,19 +32,19 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
-- [[casas-alvero]] → `R-ca-elim-boundary`: CA for each feasible n in {5, 6, 8, 9, 12} by complete elimination of S_n over Q, with the feasibility boundary named.
-  - switched off: unbounded-degree, five-plus-roots, no-real-structure, mod-p-stall
-  - to merge the next difficulty back: Direct Gröbner/resultant verification over Q tops out ~n=8; n=12 needed scenario reduction + reduction-mod-p + char-p Gröbner (~3 weeks / 90 GB per scenario). name where the computation stops and why (computational-boundary thread).
+- [[casas-alvero]] → `R-ca-deg6-five-roots`: CA for n = 6 with exactly 5 distinct roots, over C — a monic sextic f = (x−a)^2 (x−b)(x−c)(x−d)(x−e) sharing a root with each of f′, f″, f‴, f⁗, f⁗⁗ is a pure power.
+  - switched off: unbounded-degree, no-real-structure, mod-p-stall, char0-usage-unlocated, scheme-infeasible
+  - to merge the next difficulty back: The smallest degree where the ≥5-distinct-roots difficulty genuinely bites (a 6th-degree f can have exactly 5 distinct roots; multiplicity 2 on one root, 1 on the other four, so no free multiplicity pattern). Attackable today: write f = (x−a)^2∏(x−r_j), pin the centroid — top Hasse derivative H_5(f) = 6x + a_1 is linear with root the centroid, and the root-difference identity (verified char-free) forces that centroid to be a shared root. A degree-6, 5-root system is small (≤7 variables) and exact elimination over Q is feasible; the char-0 collapse should force the two singles at the centroid…
 
 ## Settled — what this run owns
 
 Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
 
-- [[casas-alvero]] `R-ca-two-roots`: CA for f with at most 2 distinct roots over C — if f = (x−α)^m (x−β)^{n−m}, α ≠ β, shares a root with each derivative, then f is a pure power. (off: five-plus-roots, no-real-structure, scheme-infeasible, mod-p-stall; _nothing named — say which claim established it, or a reader cannot check it_)
-- [[casas-alvero]] `R-ca-four-roots`: CA for f with at most 4 distinct roots over C — a monic f of degree n with ≤4 distinct roots sharing a root with every derivative is a pure power. (off: five-plus-roots, no-real-structure, scheme-infeasible, mod-p-stall; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[casas-alvero]] `R-ca-deg4`: CA for n = 4 — every monic quartic over Q sharing a root with f′, f″, f‴ is a pure power. (off: unbounded-degree, five-plus-roots, mod-p-stall, char0-usage-unlocated, no-real-structure, scheme-infeasible; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[casas-alvero]] `R-ca-two-roots`: CA for f with at most 2 distinct roots over C — if f = (x−α)^m (x−β)^{n−m}, α ≠ β, shares a root with each derivative, then f is a pure power. (off: five-plus-roots, mod-p-stall, char0-usage-unlocated, no-real-structure, scheme-infeasible; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[casas-alvero]] `R-ca-four-roots`: CA for f with at most 4 distinct roots over C — a monic f of degree n with ≤4 distinct roots sharing a root with every derivative is a pure power. (off: five-plus-roots, mod-p-stall, char0-usage-unlocated, no-real-structure, scheme-infeasible; _nothing named — say which claim established it, or a reader cannot check it_)
 - [[casas-alvero]] `R-ca-real-roots`: CA for f ∈ R[x] that splits completely over R (all roots real), all n — the real-root case. (off: no-real-structure, scheme-infeasible, mod-p-stall; _nothing named — say which claim established it, or a reader cannot check it_)
-- [[casas-alvero]] `R-ca-deg4`: CA for n = 4 — every monic quartic over Q sharing a root with f′, f″, f‴ is a pure power. (off: unbounded-degree, mod-p-stall, five-plus-roots, no-real-structure, scheme-infeasible; _nothing named — say which claim established it, or a reader cannot check it_)
-- [[casas-alvero]] `R-ca-known-families`: CA for every n of the form p^k, 2p^k, 3p^k (p≠2), 4p^k (p≠3,5,7), and 5p^k, 6p^k, 7p^k with their classified bad primes. (off: unbounded-degree, five-plus-roots, no-real-structure, scheme-infeasible; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[casas-alvero]] `R-ca-known-families`: CA for every n of the form p^k, 2p^k, 3p^k (p≠2), 4p^k (p≠3,5,7), and 5p^k, 6p^k, 7p^k with their classified bad primes. (off: unbounded-degree, five-plus-roots, mod-p-stall, char0-usage-unlocated, no-real-structure, scheme-infeasible; _nothing named — say which claim established it, or a reader cannot check it_)
 
 ---
 

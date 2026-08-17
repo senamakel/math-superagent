@@ -17,6 +17,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `baek-balko-signotope-analogue-open` | The signotope analogue of the ES conjecture — every signotope on ≥ 2^{k-2}+1 vertices contains a weak k-gon — is open and equivalent to a conjecture of Goodman–Pollack; with a SAT-based search the authors found NO… | yes | asserted | `research/summaries/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.md` |
 | `baek-balko-split` | ESsplit(k) = 2^{k-2} + 1 (tight threshold for split k-gons); the ES conjecture holds for decomposable sets; the ordered 3-uniform hypergraph generalization fails; new 2^{k-2}-point no-convex-k-gon constructions… | yes | asserted | `research/ROOT.md` |
 | `baek-balko-split` | ESsplit(k) = 2^{k-2}+1 for every k ≥ 2 (Theorem 3), from the exact formula ESsplit(a,u,k) = 1 + Σ_{i=k-a+2}^{u} C(k-2, i-2) for all (a,u,k) ∈ T (Theorem 4). Same formula holds for the abstract Csplit(a,u,k) over all… | yes | proved | `research/summaries/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.md` |
+| `baek-balko-split-proof-status` | In Baek–Balko (SoCG 2025), the abstract split threshold is fully proved — Csplit(a,u,k) = 1 + Σ_{i=k−a+2}^{u} C(k−2,i−2) for all (a,u,k) ∈ T (Theorem 6), via Lemma 10 (upper bound: injective down-set map, complete) and… | yes | asserted | `research/summaries/SCHOLAR-REPORT-verification-split-proof-status.md` |
 | `baek-balko-weak7-fails` | Cweak(7) > 33 (Theorem 7): there is a 2-coloring of K³_{33} with no weak 7-gon; and Cstrong(7) > 33 was already shown by Balko–Valtr. Hence the abstract (all-colorings) analogue of the ES conjecture fails for weak… | no | proved | `research/summaries/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.md` |
 | `baek-interweaved-laced-cups` | Any 4-cap,n-cup-free configuration of size (n-1 choose 2)+2 contains a pair of interweaved laced (n−1)-cups (Thm 5.10), and any such pair forces a (3,n−1)-gon (Lem 5.2), hence an n-gon in this setting. A generalization… | yes | proved | `research/summaries/ETV-on-the-Erdos-Tuza-Valtr-Conjecture.md` |
 | `balko-bhore-kconvex-abstract` | (abstract) Every fixed k and every general-position n-point set contains a k-convex subset of size Ω(log_k n); 3-convex n-point sets exist whose largest convex subset is O(log n). | yes | asserted | `research/summaries/balko-bhore-martinez-sandoval-valtr - Erdos-Szekeres type problems for k-convex point sets - IWOCA2019.md` |
@@ -67,9 +68,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `etv-rr-definition` | rr(k) (Ramsey-remainder) is the least integer such that for n sufficiently large relative to k, every n-point planar general-position set has all but at most rr(k) of its points partitionable into convex sets of size at… | yes | asserted | `research/summaries/etv-ramsey-remainder-fu-berlin-tr-b93-01.abstract.md` |
 | `etv-rr-es-conditional` | The estimates on rr(k) in the paper are best possible IF the Erdős–Szekeres conjecture (ES(n)=2^{n-2}+1) is valid. One-way conditional: ES ⟹ tight rr estimates. | yes | asserted | `research/summaries/etv-ramsey-remainder-fu-berlin-tr-b93-01.abstract.md` |
 | `etv-rr-offdiagonal` | In many types of combinatorial structures (not planar points per se), the Ramsey-remainder equals the off-diagonal Ramsey number r(k,k−1) minus 1. | **unchecked** | asserted | `research/summaries/etv-ramsey-remainder-fu-berlin-tr-b93-01.abstract.md` |
-| `four-point-criterion` | A finite point set in general position is in convex position iff every 4-subset is in convex position. | yes | proved | `research/ROOT.md` |
 
-_63 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_65 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
@@ -80,6 +80,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `baek-balko-decomposable` (research/summaries/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.md) — asserted by the source, not proved there and not checked here
 - `baek-balko-signotope-analogue-open` (research/summaries/baek-balko-ES-conjecture-revisited-SoCG2025.pdf.md) — asserted by the source, not proved there and not checked here
 - `baek-balko-split` (research/ROOT.md) — asserted by the source, not proved there and not checked here
+- `baek-balko-split-proof-status` (research/summaries/SCHOLAR-REPORT-verification-split-proof-status.md) — asserted by the source, not proved there and not checked here
 - `balko-bhore-kconvex-abstract` (research/summaries/balko-bhore-martinez-sandoval-valtr - Erdos-Szekeres type problems for k-convex point sets - IWOCA2019.md) — asserted by the source, not proved there and not checked here
 - `balko-valtr-pseudolinear-verifies` (research/summaries/balko-valtr-A-SAT-attack-on-ES-ENDM2015.md) — asserted by the source, not proved there and not checked here
 - `beagley-order-dimension-esz` (research/summaries/beagley-order-dimension-convex-geometries.md) — asserted by the source, not proved there and not checked here
@@ -100,6 +101,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `karolyi-toth-forbidden-exponential-T1` (research/summaries/karolyi-toth-2012-ES-forbidden-subconfigurations-springer.md) — asserted by the source, not proved there and not checked here
 - `karolyi-toth-triangular-trichotomy-T8` (research/summaries/karolyi-toth-2012-ES-forbidden-subconfigurations-springer.md) — asserted by the source, not proved there and not checked here
 - `karolyi-toth-twin-construction` (research/summaries/karolyi-toth-2012-ES-forbidden-subconfigurations-springer.md) — asserted by the source, not proved there and not checked here
+- `karolyi-toth-twin-explicit` (research/summaries/SCHOLAR-REPORT-verification-split-proof-status.md) — asserted by the source, not proved there and not checked here
 - `kk-h61-h62` (research/summaries/koshelev-koshka-SAT-ASP-esz-linear-subreduction-arxiv2604.20120.md) — asserted by the source, not proved there and not checked here
 - `kk-linear-subreduction` (research/summaries/koshelev-koshka-SAT-ASP-esz-linear-subreduction-arxiv2604.20120.md) — asserted by the source, not proved there and not checked here
 - `kph-32-no7gon-no-realizable-found` (research/summaries/krapivin-przybocki-heule - Toward Satisfiability Modulo Realizability - PointSAT.md) — asserted by the source, not proved there and not checked here

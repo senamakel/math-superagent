@@ -18,7 +18,7 @@ Ranked by how much of the argument rests on each, and within one load by whether
 - `extremal-split-stability/G-cupcap` — 1 node(s) rest on it, and the run is already building on it — (Cup–cap characterization, Erdős–Szekeres 1935.) After a rotation making all x-coordinates distinct: a set X in general position contains n…
 - `extremal-split-stability/G-split-consistent` — 1 node(s) rest on it, and the run is already building on it — (Consistency on the extremal template.) The Erdős–Szekeres 1960 construction of 2^{n-2} points, realized as es_construct, admits a line…
 
-_116 further candidate(s) below these, in the table._
+_118 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -32,6 +32,7 @@ _116 further candidate(s) below these, in the table._
 | `baek-balko-decomposable` | claim | **ready** | — | For a,u ≤ k, every decomposable set of more than S(a,u,k) = Σ_{i=k-a+2}^{u} C(k-2, i-2) points contains an a-cap, a u-cup, or k points in… |
 | `baek-balko-signotope-analogue-open` | claim | **ready** | — | The signotope analogue of the ES conjecture — every signotope on ≥ 2^{k-2}+1 vertices contains a weak k-gon — is open and equivalent to a… |
 | `baek-balko-split` | claim | established | — | ESsplit(k) = 2^{k-2}+1 for every k ≥ 2 (Theorem 3), from the exact formula ESsplit(a,u,k) = 1 + Σ_{i=k-a+2}^{u} C(k-2, i-2) for all (a,u,k)… |
+| `baek-balko-split-proof-status` | claim | established | — | In Baek–Balko (SoCG 2025), the abstract split threshold is fully proved — Csplit(a,u,k) = 1 + Σ_{i=k−a+2}^{u} C(k−2,i−2) for all (a,u,k) ∈… |
 | `baek-balko-weak7-fails` | claim | established | — | Cweak(7) > 33 (Theorem 7): there is a 2-coloring of K³_{33} with no weak 7-gon; and Cstrong(7) > 33 was already shown by Balko–Valtr. Hence… |
 | `baek-interweaved-laced-cups` | claim | established | — | Any 4-cap,n-cup-free configuration of size (n-1 choose 2)+2 contains a pair of interweaved laced (n−1)-cups (Thm 5.10), and any such pair… |
 | `balko-bhore-kconvex-abstract` | claim | **ready** | — | (abstract) Every fixed k and every general-position n-point set contains a k-convex subset of size Ω(log_k n); 3-convex n-point sets exist… |
@@ -63,9 +64,8 @@ _116 further candidate(s) below these, in the table._
 | `es-construction-defective-checker-correct` | claim | established | — | In this workspace the ES lower-bound set es_lower_set(n) does NOT have the defining property (no convex n-gon at 2^{n-2} points). Captured:… |
 | `es-construction-integer-realization` | claim | **ready** | — | The Erdős–Szekeres 1961 lower-bound construction (n = 2^{t-2} points, no convex polygon with more than log₂(n)+1 vertices) can be realized… |
 | `es-convex-bodies` | claim | established | — | c(n) <= c'(n) <= 2^{n + O(sqrt(n log n))} for convex bodies / pseudoline convexity (2^{n+o(n)} type bounds). |
-| `es-exact-values` | claim | established | — | ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17. |
 
-_81 further nodes not shown._
+_83 further nodes not shown._
 
 ## Resting on nothing that exists
 

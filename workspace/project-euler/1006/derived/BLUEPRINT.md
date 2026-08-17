@@ -10,53 +10,44 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
-- `fib-subword-squares/G1-factor-parameterization` (lemma) — For every k >= 1, there exists an explicit description of each of the k+1 distinct length-k factors of the infinite Fibonacci word f = lim…
-  - open `research/backward/fib-subword-squares.md`
-- `fib-subword-squares/G2-sum-closed-form` (lemma) — Using the parameterization from G1, the sum Psi(k) = sum_{j=0}^k (decimal(w_j))^2 can be expressed as a closed form in k, or as a linear…
-  - open `research/backward/fib-subword-squares.md`
-- `fib-subword-squares/G3-fast-evaluation` (lemma) — The expression from G2 can be evaluated at k = 10^18 modulo 101001001 using O(log k) arithmetic operations, by reducing the recurrence to…
-  - open `research/backward/fib-subword-squares.md`
-- `fibonacci-subword-squares/G-closed-form-sum` (lemma) — With the G-factor-parameterization in hand, Psi(k) = sum_{j=0}^k val(w_j)^2 admits a closed form or a fixed-order linear recurrence in k…
-  - open `research/backward/fibonacci-subword-squares.md`
-- `fibonacci-subword-squares/G-factor-parameterization` (lemma) — For every k >= 1 there is an explicit, indexable bijection j -> w_j (0 <= j <= k) between {0,...,k} and the length-k factors of the…
-  - open `research/backward/fibonacci-subword-squares.md`
-- `fibonacci-subword-squares/G-log-k-engine` (lemma) — Psi(k) can be evaluated at k = 10^18 in O(log k) arithmetic operations via the G-closed-form-sum recurrence (matrix exponentiation or fast…
-  - open `research/backward/fibonacci-subword-squares.md`
-- `fibonacci-subword-squares/G-stabilization` (lemma) — For every k >= 1 there is a computable n0(k) such that the set of distinct length-k subwords of S_n is constant for all n >= n0(k), equals…
-  - open `research/backward/fibonacci-subword-squares.md`
+- `pe1006-psi/G1-sturmian-factor-structure` (lemma) — Let F be the infinite Fibonacci word (limit of S_0=S_1... with S_n = S_{n-1}S_{n-2}). For every length k ≥ 1, the set of distinct Fibonacci…
+  - open `research/backward/pe1006-psi.md`
+- `pe1006-psi/G2-mechanical-word-representation` (lemma) — For n with F(n) > k and rational slope a = F(n-1)/F(n), the k+1 length-k factors of F are produced exactly by the rotation/mechanical…
+  - open `research/backward/pe1006-psi.md`
+- `pe1006-psi/G3-telescoped-second-moment` (lemma) — With v(x) = sum_{j=0}^{k-1} digit_j(x) 10^(k-1-j) where digit_j(x) = floor(x+(j+1)a) - floor(x+ja), summation by parts (telescoping) gives…
+  - open `research/backward/pe1006-psi.md`
+- `pe1006-psi/G4-universal-euclidean-floor-sum` (lemma) — The quantity Psi(k) = sum_{m=0}^k v(x_m)^2 mod M, with v(x_m) the telescoped geometric floor-sum from Lemma 3, is evaluated in O(log k)…
+  - open `research/backward/pe1006-psi.md`
+
+## Verify these first
+
+Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
+
+- `pe1006-psi/G1-sturmian-factor-structure` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Let F be the infinite Fibonacci word (limit of S_0=S_1... with S_n = S_{n-1}S_{n-2}). For every length k ≥ 1, the set of distinct Fibonacci…
+- `pe1006-psi/G2-mechanical-word-representation` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For n with F(n) > k and rational slope a = F(n-1)/F(n), the k+1 length-k factors of F are produced exactly by the rotation/mechanical…
+- `pe1006-psi/G3-telescoped-second-moment` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — With v(x) = sum_{j=0}^{k-1} digit_j(x) 10^(k-1-j) where digit_j(x) = floor(x+(j+1)a) - floor(x+ja), summation by parts (telescoping) gives…
+
+_1 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
-| `Chuan-bridge-fibonacci-lengths-handchecked` | claim | **ready** | — | At k = F_n - 1 the problem's k+1=F_n length-k factors equal the set obtained by truncating each of the F_n cyclic shifts T^{js}(q_n) of the… |
-| `Chuan-cyclic-shift-indexed-enumeration` | claim | **ready** | — | The F_n cyclic shifts T^{js}(q_n), 0<=j<F_n, of Chuan's canonical Fibonacci word q_n (length F_n) are the conjugates of the standard… |
-| `MH-kplus1-factors` | claim | established | — | An aperiodic word has p(n) >= n+1 for all n; a balanced word has p(n) <= n+1; hence a balanced aperiodic word (a Sturmian word) has exactly… |
-| `PE1006-M-is-prime` | claim | established | — | 101001001 is prime (its only prime-power factorization is itself). |
-| `PE1006-balanced-bijection-refuted-checked` | claim | established | — | The k+1 length-k factors of the Fibonacci word are NOT in bijection with the balanced binary words of length k that have… |
-| `PE1006-columns-circular-intervals` | claim | established | — | In the (k+1)xk factor matrix of the Fibonacci word (rows=k+1 length-k factors in lex order, columns=positions), every column is a… |
-| `PE1006-extension-formula` | claim | established | — | Psi(k+1) = 100(Psi(k) + v_R(k)^2) + 20 P1(k) + N1(k), where R(k) is the unique right-special length-k factor, P1(k) = sum of values of… |
-| `PE1006-factors-dependent-slop-only` | claim | **ready** | — | Two Sturmian words have the same set of factors iff they have the same slope; the length-k factor set depends only on slope, not on… |
-| `PE1006-factors-one-count-necessary` | claim | **ready** | — | Every length-k factor of the infinite Fibonacci word (Sturmian, slope a=1/phi^2=(3-sqrt5)/2) has either floor(k*a) or ceil(k*a) occurrences… |
-| `PE1006-kplus1-FACT` | claim | established | — | The infinite Fibonacci word F (fixed point of 0->01,1->0, slope (3-sqrt5)/2) is a Sturmian word, so it has exactly k+1 distinct factors of… |
-| `PE1006-modular-structure` | claim | established | — | M = 101001001 is prime; M-1 = 2^3·3·5^3·131·257; ord_10(M) = 50500500 (minimal); Pisano(M) = 101001000 (minimal). Legendre(5/M)=1. |
-| `PE1006-n0-length-guess-refuted-small` | claim | established | — | The candidate threshold n0(k) = smallest n with \|S_{n-1}\| >= k is FALSE: for k=3, \|S_2\|=3>=3 gives n0(3)=3, but S_3="01001" has length-3… |
-| `PE1006-no-loworder-linear-recurrence` | claim | established | — | No constant-coefficient rational linear recurrence of order <= 40 fits Psi(1..150) exactly (rank-inconsistent over every large prime); BM… |
-| `PE1006-no-small-eventual-period` | claim | established | — | r(k) = Psi(k) mod 101001001 for k = 1..150 has no genuine eventual period with period < 150 (a ≥40-aligned-comparison search finds none). |
-| `PE1006-oracle-agreement` | claim | established | — | brute.py reproduces Psi(3)=20302 and Psi(10) ≡ 10699667 (mod 101001001); data.py computes Psi(1..150), agrees with brute on k <= 30, and… |
-| `PE1006-ord10-and-pisano` | claim | established | — | ord_10(101001001)=50500500 and the Pisano period of the Fibonacci recurrence mod 101001001 is 101001000 (M-1). |
-| `PE1006-rightspecial-reverse-prefix` | claim | **ready** | — | The unique right-special length-n factor of the Fibonacci word f is R(n) = f[0..n-1]^R, the reverse of the length-n prefix of f (MSS Thm… |
-| `PE1006-stabilization-candidate-too-small-k3` | claim | established | — | The G-stabilization first-step candidate n0(k)=smallest n with \|S_{n-1}\|>=k is not a valid stabilization threshold. For k=3, n0(3)=3 but… |
-| `PE1006-state-vector-no-linear-recurrence` | claim | established | — | No constant-coefficient linear (or affine) recurrence mod 101001001 of order 1..6 fits the state vector [P,S,N1,N0,P1,vR] (or the enriched… |
-| `PR-consecutive-factors-lex` | claim | established | — | In a Sturmian set F, two equal-length factors u,v are consecutive in lex order iff u=r·ab·s and v=r·ba·s, or u=r·a and v=r·b; the next… |
-| `PerrinRestivo-len8-len10-lists` | claim | **ready** | — | The Fibonacci Sturmian set's length-8 factors are the 8 conjugates of abaababa plus the singular factor babaabab (9 total); its 11… |
-| `christoffel-conjugate-and-forest` | claim | established | — | For coprime a,b the lower and upper Christoffel words of slope b/a are conjugates (Cohn, de Luca–Mignosi); every nontrivial Christoffel… |
-| `fib-subword-squares` | goal | blocked | `PE1006-kplus1-FACT`, `fib-subword-squares/G1-factor-parameterization`, `fib-subword-squares/G2-sum-closed-form`, `fib-subword-squares/G3-fast-evaluation` | Compute Psi(10^18) mod 101001001, where Psi(k) = sum over the k+1 distinct length-k factors of the infinite Fibonacci word f of… |
-| `fib-subword-squares/G1-factor-parameterization` | lemma | **ready** | — | For every k >= 1, there exists an explicit description of each of the k+1 distinct length-k factors of the infinite Fibonacci word f = lim… |
-| `fib-subword-squares/G2-sum-closed-form` | lemma | **ready** | — | Using the parameterization from G1, the sum Psi(k) = sum_{j=0}^k (decimal(w_j))^2 can be expressed as a closed form in k, or as a linear… |
-| `fib-subword-squares/G3-fast-evaluation` | lemma | **ready** | — | The expression from G2 can be evaluated at k = 10^18 modulo 101001001 using O(log k) arithmetic operations, by reducing the recurrence to… |
-| `fibonacci-subword-squares` | goal | blocked | `fibonacci-subword-squares/G-closed-form-sum`, `fibonacci-subword-squares/G-factor-parameterization`, `fibonacci-subword-squares/G-log-k-engine`, `fibonacci-subword-squares/G-stabilization` | Psi(10^18) mod 101001001, where Psi(k) = sum over the k+1 distinct length-k Fibonacci subwords of (integer value of the subword)^2. |
-| `fibonacci-subword-squares/G-closed-form-sum` | lemma | **ready** | — | With the G-factor-parameterization in hand, Psi(k) = sum_{j=0}^k val(w_j)^2 admits a closed form or a fixed-order linear recurrence in k… |
-| `fibonacci-subword-squares/G-factor-parameterization` | lemma | **ready** | — | For every k >= 1 there is an explicit, indexable bijection j -> w_j (0 <= j <= k) between {0,...,k} and the length-k factors of the… |
-| `fibonacci-subword-squares/G-log-k-engine` | lemma | **ready** | — | Psi(k) can be evaluated at k = 10^18 in O(log k) arithmetic operations via the G-closed-form-sum recurrence (matrix exponentiation or fast… |
-| `fibonacci-subword-squares/G-stabilization` | lemma | **ready** | — | For every k >= 1 there is a computable n0(k) such that the set of distinct length-k subwords of S_n is constant for all n >= n0(k), equals… |
+| `pe1006-psi` | goal | blocked | `pe1006-psi/G1-sturmian-factor-structure`, `pe1006-psi/G2-mechanical-word-representation`, `pe1006-psi/G3-telescoped-second-moment`, `pe1006-psi/G4-universal-euclidean-floor-sum` | compute Psi(k) mod M for k = 10^18, M = 101001001, where Psi(k) is the sum of squares of the decimal values of the k+1 distinct Fibonacci… |
+| `pe1006-psi/G1-sturmian-factor-structure` | lemma | **ready** | — | Let F be the infinite Fibonacci word (limit of S_0=S_1... with S_n = S_{n-1}S_{n-2}). For every length k ≥ 1, the set of distinct Fibonacci… |
+| `pe1006-psi/G2-mechanical-word-representation` | lemma | **ready** | — | For n with F(n) > k and rational slope a = F(n-1)/F(n), the k+1 length-k factors of F are produced exactly by the rotation/mechanical… |
+| `pe1006-psi/G3-telescoped-second-moment` | lemma | **ready** | — | With v(x) = sum_{j=0}^{k-1} digit_j(x) 10^(k-1-j) where digit_j(x) = floor(x+(j+1)a) - floor(x+ja), summation by parts (telescoping) gives… |
+| `pe1006-psi/G4-universal-euclidean-floor-sum` | lemma | **ready** | — | The quantity Psi(k) = sum_{m=0}^k v(x_m)^2 mod M, with v(x_m) the telescoped geometric floor-sum from Lemma 3, is evaluated in O(log k)… |
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "blueprint" }
+read_ledger { ledger: "blueprint", id: "<one of the ids above>" }
+read_ledger { ledger: "blueprint", status: "<a status above>" }
+read_ledger { ledger: "blueprint", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: nothing directly — it is computed from the skeletons and the claims, so change one of those and this re-derives. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

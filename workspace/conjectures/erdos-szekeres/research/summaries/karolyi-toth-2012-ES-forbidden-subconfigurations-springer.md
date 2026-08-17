@@ -103,8 +103,7 @@ hypotheses: realizable via arbitrarily small twins about a previous set; directi
   the twin line chosen recursively.
 holds-here: yes — realizable; an alternative near-extremal family to the ES construction.
 status: asserted-by-source (Lemma 2, 3 proved).
-bearing: GOAL 2 — a second family of 2^{n−2}-size n-gon-free sets whose structure is
-  explicit enough to test conjectures about extremal sets.
+bearing: GOAL 2 — a second family whose structure is explicit enough to test conjectures about extremal sets. NOTE THE SCALE: |T_n| = 2^n with no 2^n+1 convex points is near-extremal in the sense of F_𝒮(2n+1) > 2^n (Lemma 3), NOT an n-avoiding set at the ES 2^{n-2} scale; to compare with es_construct at equal N, use T_{n−2} (size 2^{n-2}, no 2^{n-2}+1 convex — still not n-avoiding, so the twin is an alternative near-extremal family, not a second ES-witness family).
 anchor: same file.
 ```
 

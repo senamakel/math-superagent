@@ -6,6 +6,7 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## lesson
 
+- **scholar**: Scholar digest pass (2026) on the three newest held sources. (1) Valabrega-Valla 1978 (Nagoya 72, 93-101): general CI/associated-graded theorem, the NAMED hypothesis of the u-resultant multiplicity certificate (B = prod ord_0(R_i) holds iff gr_{m0} is CM; strictly stronger than CA; mismatch = gr evidence, not a CA counterexample). Verified Thm 2.3 + Cor 2.4 verbatim; claim valabrega-valla-initial-forms-regular-sequence (proved). REPAIR: fixed a dangling entailment edge — uresultant-multiplicity-trees-new followed from the nonexistent samuel-multiplicity-product-of-orders; now correctly… (refers: uresultant-converge, hessian-covariant-transvectant, root-difference-coloring)
 - **scholar**: Scholar digest pass over the held library. Three results: (1) INTEGRITY FLAG — the file research/sources/abdesselam-chipalkatti-hilbert-covariants.full.md is the WRONG paper: it is Campagna & Pagh, 'On Finding Frequent Patterns in Event Sequences' (arXiv:1010.2358, cs.DS, RFID data-mining), not Abdesselam & Chipalkatti, 'On Hilbert covariants' (Canad. J. Math. 2012, arXiv:1010.2667). The intended Hilbert covariants paper is NOT held; the Hessian-iff-perfect-power theorem the hessian-covariant approach cites is currently anchored to a non-sequitur file. The approach was already refuted on the… (refers: hessian-covariant-transvectant, root-difference-coloring, smallest-open-degree, hasse-vs-ordinary)
 - **chisel**: Convergence decision: the three candidates were refuted/grounded honestly. multiplicity-index-avoidance died because the real freedom is the (n-1)-dim coefficient space, not r-1 root positions (and it's the run's own executed negative control, multipattern.py). charp-point-count died hard: its anchor citation "Lu: |X(F_p)|=p iff CA" is NOT in arXiv:1707.04754 (that paper is Combinatorial-Nullstellensatz regular-sequence/dimension, no character sums at all), and the point-count target is wrong-dimensional anyway (V(I) 0-dim, certificate is count=1, not count=p). ADOPTED:… (refers: uresultant-one-var-eliminant, multiplicity-index-avoidance, charp-point-count-mass-formula)
 - **chisel**: Convergence on the inventor's three candidates: moment-hankel and hessian-covariant stay refuted (research was right — the Hankel power-sum matrix is Newton-equivalent to the run's root-difference data, and the Hessian ⟺ pure-power theorem has no bridge to the derivative system). But the gap between my "master determinant" idea and what the literature contains produced a genuinely new line. Castryck's Theorem 2 (arXiv:1208.5404 §3) is a PROVED determinant Δ_f on the *colour* axis — which derivative orders vanish at the centroid — not the *root* axis the run's root-difference-coloring uses. It… (refers: centroid-colour-determinant, root-difference-coloring, moment-hankel-rank, smallest-open-degree, degree12-settled)
@@ -23,6 +24,14 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## offer
 
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+[reducer failed: tool error: agent `reducer` failed: run timed out: subagent run timed out]
+
+Open gaps, read from the ledger:
+- `G-torial-zero-dim` (ca-scheme-weighted-torus): For every n ≥ 1, the ideal I = (R_1,…,R_{n−1}) ⊂ A = ℚ[a_2,…,a_n], where R_i = Res_x(f, H_i f) with f = x^n + Σ_{j=2}^n a_j x^{n−j} (monic traceless), satisfies dim A/I = 0 — equivalently V(R_1,…,R_{n−1}) is finite, equivalently some power of each a_j lies in I, equivalently m_0^M ⊂ I for some M, equivalently CA. Given the two discharged…
 - **chisel**: The u-resultant / Samuel-multiplicity certificate is verified EXACTLY through n=6: the CA traceless-slice scheme QQ[a2..an]/I_n (I=(R_i) Hasse resultants, a1=0) is 0-dim with V(I)={0} (=CA), weighted orders ord_0(R_i)=n(n-i) under w(a_j)=j, and quotient length = Samuel multiplicity = prod ords/n! = n^(n-2) = Cayley labeled-tree count, from two independent exact routes (Singular vdim + Valabrega-Valla identity). The n=2/16/125/1296 (n^(n-2)) pattern holds as far as verified. Now lifting to a theorem: ord_0(R_i)=n(n-i) reduces (via root-difference identity R_i=prod_k H_i(beta_k) and root…
 - **chisel**: Decomposition just opened:
 

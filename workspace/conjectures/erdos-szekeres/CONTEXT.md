@@ -135,41 +135,44 @@ what would falsify it.
   different counts. This is a property of single-line cuts on this one template,
   not of all cut families — see the next two bullets, which are exactly why.
 
-- **Double-wedge (side-pair) family: 27 valid splits at n=7 — the n=7 failure
-  is a property of single-line cuts, not of two-ray separations.
+- **Double-wedge / side-pair family on es_construct: 27 valid (n−1)-avoiding
+  splits at n=7, so the n=7 split failure is single-line-only, not two-ray.
   (computed and checked, scoped strictly)** Enumerating pairs of the 992
   validated open half-plane sides (C(992,2)=491,536 pairs; 13,030 with
-  |inter|=16; 2,454 distinct size-16 bipartitions), intersecting two sides per
-  pair, gave **27 distinct VALID splits** (both halves 6-avoiding) at n=7 on
-  `es_construct`. Since a convex wedge (angle<π) or its reflex complement is an
+  |inter|=16; 2,454 distinct size-16 bipartitions) on 28 workers (EXIT 0,
+  positive control apex (2400,2725) gives a valid split whose bipartition appears
+  among the intersections, PASS): **27 distinct VALID splits** (both halves
+  6-avoiding). Since a convex wedge (angle<π) or its reflex complement is an
   intersection of two half-planes, the side-pair family is a SUPERSET of every
-  wedge-realizable bipartition — so zero here would have been strictly stronger
-  than zero over wedges, and the 27 is a genuine two-ray separation. Positive
-  control: witness apex (2400,2725) gives a valid split whose bipartition
-  appears among the intersections (PASS). *Falsified by:* an exact orientation
-  table (or a re-run) showing one of the 27 is not a valid split.
-  **Caveat carried from the adjudication: full apex-cell wedge-realizability
-  (a lower bound per split: both boundary lines translatable to one common apex
-  without crossing a point) is NOT claimed for all 27 — they are verified as
-  side-pair intersections only.** `code/out/wedge_sidepair.captured2.txt`,
-  `code/out/wedge_sidepair_adjudication.md` (claim `wedge-sidepair-27-valid-n7`,
+  wedge-realizable bipartition — so zero here would have been strictly stronger,
+  and the 27 is a genuine two-ray separation. The single-line counts are
+  4/2/0 valid splits at n=5/6/7 (gsplit_phase2, validated rotating-line
+  enumerator, N(N−1) = 992 sides). **Caveat: full common-apex wedge-realizability
+  is NOT claimed for all 27 — verified as side-pair intersections only.**
+  *Falsified by:* an exact re-run giving different counts, a valid single-line
+  split at n=7, or one of the 27 not 6-avoiding. *Scope: this template only. See
+  the next bullet for the even/odd bipartition (k=3).* 
+  `code/out/wedge_sidepair.captured2.txt`, `code/out/wedge_sidepair_adjudication.md`,
+  `code/out/gsplit_phase2.captured.txt` (claim `wedge-sidepair-27-valid-n7`,
   status checked).
 
-- **The even/odd block bipartition is a side-intersection at n=5,6 but is
-  NEITHER a single side NOR a side-intersection (hence not a wedge cut) at n=7,
-  while both halves remain 6-avoiding. (computed and checked, scoped strictly)**
-  The even/odd split (alternating blocks: at n=7 the even-index blocks
-  T_0,T_2,T_4 = 1+10+5 = 16 points {0,6,7,…,15,26,…,30} vs odd T_1,T_3,T_5 =
-  16 points {1,…,5,16,…,25,31}) is NOT any single open half-plane at n=5,6,7,
-  IS a double-wedge side-intersection at n=5,6, and at n=7 is NEITHER, although
-  each half independently has largest convex subset 5 (no convex 6-gon, exact
-  2^16 verification). *Falsified by:* an exact orientation re-check showing the
-  even/odd bipartition IS a side-intersection at n=7, or a half failing
-  6-avoidance. This is the sharpest open thread: WHICH cut family (if any)
-  realizes the even/odd 16–16 split at n=7 (task
-  `evenodd-cutfamily-which-family-realizes`). `code/out/wedge_evenodd_alln.captured.txt`,
-  `code/out/wedge_evenodd_check.captured.txt` (claim
-  `wedge-evenodd-not-side-intersection-n7`, status checked).
+- **The even/odd block bipartition at n=7 is realizable as a TRIPLE (k=3)
+  open-half-plane intersection — the minimum cut family is exactly 3. (computed
+  and checked, scoped strictly, task `triple-intersection-realizes-evenodd`
+  closed)** The even/odd split (alternating blocks on verified `es_construct`(7):
+  E = T_0∪T_2∪T_4 = {0,6..15,26..30}, O = T_1∪T_3∪T_5 = {1..5,16..25,31}, both
+  16 pts, both 6-avoiding) is NOT a single open half-plane at n=5,6,7 nor a
+  side-PAIR (double-wedge) intersection at n=7 — both k=1 and k=2 FAIL (the n=5,6
+  double-wedge membership stands), but a k=3 intersection of superset sides
+  realizes EACH half exactly: over A_E=A_O=16 superset sides, of C(16,3)=560
+  triples exactly 1 per family equals the target (E witness = global sides
+  740,922,986; O witness = 750,907,991; direct frozenset re-check PASS). So the
+  "which cut family" question is ANSWERED (min k=3, unique per half), NOT an open
+  thread; task `evenodd-cutfamily-which-family-realizes` is dropped. *Falsified
+  by:* an exact re-check showing k=1 or k=2 realizes a half at n=7, or a witness
+  triple whose intersection ≠ the target. *Scope: this template only.*
+  `code/out/triple_inter.captured.txt`, `code/out/evenodd_cutfamily.captured.txt`
+  (claim `wedge-evenodd-not-side-intersection-n7`, status checked).
 
 - **Allowable/circular-sequence encoder on es_construct: convexity is readable
   for |S|≥4; reversal-depth=block-index failed. (computed and checked on this
@@ -199,34 +202,6 @@ what would falsify it.
   the blocks. **Scope: this template; the direction may still generalize.**
   `code/out/allowable_encoder.captured.txt` (and identical `.captured2.txt`).
 
-- **Wedge (two-ray) cut family on es_construct: 27 valid (n−1)-avoiding splits at
-  n=7, so the split failure is single-line-only; the even/odd blocks are NEITHER a
-  single side NOR a side-intersection at n=7. (computed and checked, scoped
-  strictly)** On the verified `es_construct` (N=2^{n-2}, no convex n-gon), the
-  double-wedge cut family — every pairwise intersection of the validated N(N−1)
-  = 992 open half-plane sides (a SUPERSET of wedge-realizable bipartitions, so
-  richer than wedges) — was enumerated on 28 workers (EXIT 0, positive control
-  apex (2400,2725) PASS): over the 13,030 pairs with |inter|=16 / 2,454 distinct
-  size-16 bipartitions, **27 distinct VALID splits** (both halves 6-avoiding) exist
-  at n=7. So the n=7 split failure seen with single open half-planes (4/2/0 at
-  n=5/6/7) is a property of *single-line* cuts, not of *two-ray* separations: some
-  double-wedge cut does realize an (n−1)-avoiding split of this 2^{n−2}-set into
-  two 2^{n−3}-halves. Separately, the even/odd block bipartition is an intersection
-  of two half-plane sides at n=5,6 but is **NEITHER a single side NOR a
-  side-intersection at n=7**, although both halves remain 6-avoiding (largest
-  convex subset = 5 each, exact 2^16 verification) — so the even/odd split is not
-  wedge-realizable on this template at n=7. *Evidence:* computed and checked, exact
-  integer/Fraction determinants, 28 workers. *Falsified by:* an alternate exact
-  capture finding a valid single-line split at n=7 (above the 4/2/0), or finding
-  the even/odd bipartition as a side-pair intersection at n=7, or a different
-  count of valid side-pair splits than 27. **Caveat carried from the adjudicator's
-  own note (wedges): full wedge-realizability of all 27 (a lower bound per split,
-  requiring a common-apex translation test) is NOT claimed** — they are shown as
-  side-pair intersections only; the even/odd non-membership is exact. **Scope: this
-  template only, at these n** — not other extremal sets, not the general G-split
-  lemma. `code/out/wedge_sidepair_adjudication.md`,
-  `code/out/wedge_sidepair.captured2.txt`, `code/out/wedge_evenodd_check.captured.txt`,
-  `code/out/wedge_evenodd_alln.captured.txt`.
 ## Ruled out
 
 Approaches that failed, and the reason each failed — plus what is excluded from
@@ -367,7 +342,7 @@ What the run still needs and has not found.
   6/4/2/0 and 57/241/993 / 50/222/946 counts are dead (steer 10: pair-line
   enumerator wrong in both directions).
 
-- **STEERING — head of queue (directive 23): the approaches are good; run their first steps; stop searching.** Directives 21/22 worked. The three approaches convex-4set-supersaturation, layer-transfer-matrix, polar-arrangement-euler-levels are ADOPTED (directive 23) and their first steps are the current queue (supersedes directive 22's two-template tasks as the immediate head — those stay queued behind). commands.log went silent >30 min on exa_search whose answers will not change what the first steps compute; literature was right while the approaches were being invented, they are invented now. EXECUTE in order, each captured with the AGENTS.md command+EXIT idiom: (1) `con4-supersat-nnc-count` — exact NNC(N) of non-convex 4-subsets on es_construct n=5,6,7 and test NNC*C(N-4,n-4)>=C(N,n) at N=2^{n-2} (cheapest sharpest falsifier); (2) `layer-transfer-matrix-cone-cap` — cross-layer cone capacities on the verified onion layers, exact determinants, es_construct THEN the Karolyi–Toth twin (second family is the point); (3) `polar-dual-exact-verification` — exact rational dual line arrangement of es_construct, verify primal oracle vs dual convex-q-cell criterion to n=6. Then `aichholzer-fetch`: a FETCH of the Aichholzer order-type database (a fetch, not a sweep; claim `aichholzer-order-db` holds the 2002 n≤10 enumeration). All three test against a SECOND family — that is directive 21's all-set quantification, live here. Report numbers, not readings. Do NOT claim the conjecture proved. Stands on verified `lib.es_geom` + verified `es_construct` + held `karolyi-toth-twin-construction`.
+- **STEERING — head of queue (directive 24): FINISH THE SUPERSATURATION TEST; the N+1 falsifier is the half that decides it.** The three approaches convex-4set-supersaturation, layer-transfer-matrix, polar-arrangement-euler-levels are ADOPTED and their first steps are the queue, in this order: (1) `con4-supersat-nnc-count` — the NNC(N)=32,701,12740,213190 counts at n=5..8 are captured, but the deciding test is NOT on disk: the covering inequality NNC(N)*C(N-4,n-4)>=C(N,n) must HOLD at N=2^{n-2} and FAIL one larger, or supersaturation says nothing about ES(n). Compute convex4(N+1) at N+1=9,17,33,65 (C(9,4)=126, C(17,4)=2380, C(33,4)=40920, C(65,4)=677040; the 635376 k=4 row already ran in 26.67s) and test whether the inequality strictly flips at N+1. What the answer must be: at N=9 every 9-point general-position set has a convex pentagon, so no 5-avoiding 9-set exists — the honest test is es_construct(n) PLUS ONE ADDED POINT, saying which set and where the point goes; a test that cannot separate extremal from one-larger is not a test. (2) `layer-transfer-matrix-cone-cap` — cross-layer cone capacities on the verified onion layers, exact determinants, es_construct THEN the Karolyi–Toth twin (second family is the point); (3) `polar-dual-exact-verification` — exact rational dual line arrangement of es_construct, verify primal oracle vs dual convex-q-cell criterion to n=6. Parallel mandates, same directive: the covering inequality must be STATED IN LEAN (code/lean/Lib/ConvexSetSupersat.lean, #print axioms + sorry list reported, task `lean-covering-inequality`) since code/lean has been untouched since 09:53; and re-searching Baek–Balko is STOPPED — it is already established in CONTEXT, five exa_search calls on it are waste (task `stop-baek-balko-research`). Then `aichholzer-fetch`: a FETCH of the Aichholzer order-type database (a fetch, not a sweep; claim `aichholzer-order-db` holds the 2002 n≤10 enumeration). All computations report numbers, not readings, captured with the AGENTS.md command+EXIT idiom; the supersaturation verdict (does the bound separate extremal from one-larger?) decides whether supersaturation is a live upper-bound route at all. Do NOT claim the conjecture proved. Stands on verified `lib.es_geom` + verified `es_construct` + held `karolyi-toth-twin-construction`.
 - **ADJACENT-PROBLEM STOP (directive 17): Horton/empty-polygon work is drift,
   not progress.** The tool_builder recall of 'horton verify empty convex 7-gon'
   is the EMPTY-hexagon problem (H(6)=30, Heule–Scheucher, ROOT.md §5.4) —

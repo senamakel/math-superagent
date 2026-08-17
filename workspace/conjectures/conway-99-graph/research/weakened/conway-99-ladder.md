@@ -21,9 +21,11 @@ Meaning of the difficulties, one obstruction each:
   family-uniform mechanism can reach it.
 - `spectral-route-dead` — every eigenvalue / Krein / absolute-bound /
   interlacing feasibility test passes at v=99, witnessed by the fact that the
-  9 and 243 controls pass them too.
-- `no-symmetry` — the automorphism group is believed small, possibly trivial,
-  which kills symmetry-based search and group-theoretic constructions.
+  9 and 243 controls pass them too. A whole-graph spectral route proves a false
+  statement.
+- `no-symmetry` — the automorphism group is believed small, possibly trivial
+  (|G| ∈ {1,2,3} survives the published exclusions), which kills symmetry-based
+  search and group-theoretic constructions.
 - `sts-unclassified` — the partial STS(99) (231 lines, replication 7) has no
   known classification to reduce the problem to.
 - `nonlocal-mu` — μ=2 constrains *non-collinear* pairs through their common
@@ -71,13 +73,33 @@ merge: Turn `n3-crux-k14` back on — this is the whole remaining difficulty. Th
 
 ---
 
+The orbit/automorphism rungs. `R-involution-fix-structure` is the new bottom
+rung of the whole ladder — the weakest target nobody has settled — and it is
+the well-founded fragment of the orbit programme (finite character arithmetic)
+that survives the route-11 infeasibility closure. `R-aut-99` is the next rung
+up and its attack has been corrected to ride on it rather than on the dead
+plain CP-SAT completion.
+
+```rung
+id: R-involution-fix-structure
+statement: Assume a putative srg(99,14,1,2) Γ has an involution t ∈ Aut(Γ). The projected orbit-character chi2(t) = (4·α₀(t) + α₁(t) − 18)/7 must be an integer — it is the trace of the projection of t onto the 1-dimensional lattice eigenspace, and the 7 = √(4k−7) is 99-specific at k=14 (it is 9 at BvLS k=22, 5 at srg(8)... it measures the 99 member only). The sources (wilbrink-order11-sourced, Makhnev–Minakova 2004) list seven candidate fixed graphs Fix(t) for an involution. Settle, by exact integer arithmetic over Z, which of the seven types satisfy 4·α₀(t)+α₁(t)−18 ≡ 0 (mod 7); the survivors are the only possible fixed structures. This does NOT exclude the involution — it pins down its fixed point-set, a strictly weaker statement than R-aut-99. Expected survivor: the single-vertex fixed graph (per the sources, currently asserted, not yet re-derived here), which is exactly the reduction the next rung needs.
+off: enumeration-ceiling, sporadic-sandwich, spectral-route-dead, sts-unclassified, nonlocal-mu, local-too-weak, n3-crux-k14
+stance: open
+merge: Turn `no-symmetry` back on one notch: with the involution's fixed structure settled (a single vertex being the expected survivor), write the orbit matrix around that unique fixed vertex — a much smaller object than the general order-2 orbit matrix — and seek a completion obstruction. That is R-aut-99. First move: recover the seven candidate fixed-graph types and the α₀/α₁ coefficients from research/sources/makhnev-symmetric-graphs-automorphisms-lecture.full.md (lines ~179-301), tabulate 4·α₀+α₁−18 for each, and reduce mod 7 in exact arithmetic. No encoder is needed — this is seven closed cases.
+```
+
 ```rung
 id: R-aut-99
 statement: Given the sourced exclusion list (claim `automorphism-orders-consolidated`: |G| divides 2·3³·7·11; only primes 2,3; no Z6/S3/Z9/E9; 2||G| ⇒ |G|≤6; 7||G| ⇒ G=Z7, hence |G| ∈ {1,2,3}), settle the next residual case: prove srg(99,14,1,2) has no involution (no Z2), narrowing |G| ∈ {1,2,3} to {1,3}, by exact orbit-matrix enumeration over the fixed-vertex structure of an involution, with the orbit matrices stated and the exhaustiveness argued.
 off: enumeration-ceiling, spectral-route-dead, sts-unclassified, nonlocal-mu, local-too-weak, n3-crux-k14
 stance: open
-merge: Turn `local-too-weak` back on: exhausting the residual {1,3} would prove G trivial, after which the local 7K₂ geometry must carry the argument unaided — that is R-local-config-99. First move: write the orbit-matrix constraints for the involution case and run the CP-SAT encoding, but only after the same encoder is made to FIND the involutions of rook(3) and BvLS — both controls have them, so this is exactly the `sporadic-sandwich` discipline that stays switched on.
+merge: METHOD CORRECTION (from route 11, directive 37): the plain unbroken CP-SAT orbit-matrix completion was closed as computationally infeasible at the order-3 scale (m=33, 41,745 variables, ≈1 var/66s ⇒ ~32 days of presolve alone), and the general order-2 (involution) model has MORE orbits and is strictly worse. So do NOT run a general orbit-matrix CP-SAT completion. Instead ride on R-involution-fix-structure: with Fix(t) settled to a single vertex, shrink the orbit matrix around that fixed vertex before any encoding, and gate any encoder by making it first FIND the involutions of rook(3) and BvLS (both controls have them — exactly the `sporadic-sandwich` discipline that stays switched on). Then turn `local-too-weak` back on: exhausting the residual {1,3} would prove G trivial, after which the local 7K₂ geometry must carry the argument unaided — that is R-local-config-99.
 ```
+
+---
+
+The local / design rungs, and the failed spectral rung. These climb toward the
+goal past the orbit rungs on the difficulty axes they isolate.
 
 ```rung
 id: R-local-config-99
@@ -101,17 +123,19 @@ statement: Prove nonexistence of srg(99,14,1,2) by a spectral or feasibility arg
 off: spectral-route-dead
 stance: failed
 because: every eigenvalue / Krein / absolute-bound / whole-graph-interlacing test passes verbatim for srg(9,4,1,2) and srg(243,22,1,2), so the failing step cannot be located on the controls and the argument would prove a false statement. At v=99 the multiplicities are integral (f=54, g=44), so even the 33 precedent's mechanism is unavailable here.
-merge: What went wrong — every eigenvalue / Krein / absolute-bound / whole-graph-interlacing test passes verbatim for srg(9,4,1,2) and srg(243,22,1,2), so the failing step cannot be located on the controls and the argument would prove a false statement. At v=99 the multiplicities are integral (f=54, g=44), so even the 33 precedent's mechanism is unavailable here. This rung stays on the ladder as a permanent dead end; the climb resumes at orbit matrices. Do not re-propose a spectral-only nonexistence route.
+merge: What went wrong — every eigenvalue / Krein / absolute-bound / whole-graph-interlacing test passes verbatim for srg(9,4,1,2) and srg(243,22,1,2), so the failing step cannot be located on the controls and the argument would prove a false statement. At v=99 the multiplicities are integral (f=54, g=44), so even the 33 precedent's mechanism is unavailable here. This rung stays on the ladder as a permanent dead end; the climb resumes at orbit matrices. Do not re-propose a spectral-only nonexistence route. (Note the boundary with R-involution-fix-structure: the character-arithmetic rung is NOT the whole-graph spectral route — it is a single, 99-specific (÷7) projected-character integrality check, which is what keeps it alive.)
 ```
 
 ---
 
-The two settled control/precedent rungs (R-control-9, R-precedent-33) plus the
-settled crux rung (R-n3-bounds) are banked. The remaining open rungs climb
-toward the goal in the difficulty order: R-aut-99 (orbit matrices), then
-R-local-config-99 (kill the n3-seed globally — where `nonlocal-mu` finally
-bites), then R-sts-restricted-99 (classify a restricted STS), and the two
-difficulties still standing between the top rung and the full goal are
-`enumeration-ceiling` and `sts-unclassified`; `spectral-route-dead` and
-`no-symmetry` are not obstacles to *overcome* so much as facts a real proof
-must route around. The climb is not yet complete, so the ladder is `open`.
+The settled rungs (R-control-9, R-precedent-33, R-n3-bounds) are banked. The
+open rungs climb toward the goal in this order: **R-involution-fix-structure**
+(seven-case character arithmetic — the weakest target nobody has settled, and
+an attempt can settle it today), then R-aut-99 (exclude the involution,
+corrected to shrink the orbit matrix through the fixed-vertex structure), then
+R-local-config-99 (kill the n3-seed globally — where `nonlocal-mu` bites),
+then R-sts-restricted-99 (classify a restricted STS). The two difficulties
+still standing between the top rung and the full goal are `enumeration-ceiling`
+and `sts-unclassified`; `spectral-route-dead` and `no-symmetry` are not
+obstacles to *overcome* so much as facts a real proof must route around. The
+climb is not yet complete, so the ladder is `open`.

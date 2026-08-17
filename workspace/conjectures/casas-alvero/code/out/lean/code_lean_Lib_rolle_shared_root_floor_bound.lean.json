@@ -1,0 +1,13 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": true,
+  "declarations": [],
+  "file": "code/lean/Lib/rolle_shared_root_floor_bound.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": false
+}

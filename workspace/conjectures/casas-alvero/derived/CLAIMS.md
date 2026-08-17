@@ -63,13 +63,13 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `ghosh-complete-intersection` | The intermediate arithmetic CA schemes X_n[j] (1≤j≤n−1, with X_n[n−1]=X_n) have K-points forming an almost complete intersection over any algebraically closed K; CA in degree n over char-0 is equivalent to X_n being a… | yes | asserted | `research/summaries/ghosh2024_finiteness_html.md` |
 | `ghosh-dim-bound` | For n≥3 and any algebraically closed field K (any characteristic), dim ∩_{i=1}^{n−1} X_n^i(K) ≤ 2. Concretely the scheme of shift-equivalence classes of CA polynomials is at most 2-dimensional in every characteristic. | yes | asserted | `research/summaries/ghosh2024_finiteness_html.md` |
 | `ghosh-finiteness` | X_n is a finite Z-scheme of dimension ≤1 for all n≥3, hence affine; the arithmetic CA scheme has finitely many K-rational points over any field K. Concretely, for each n there are at most finitely many counterexamples… | yes | asserted | `research/summaries/ghosh2024_finiteness_html.md` |
+| `ghosh-finiteness-ajm-accepted` | Ghosh's "A finiteness result towards the Casas-Alvero Conjecture" (arXiv:2402.18717) has been ACCEPTED for publication in the American Journal of Mathematics (Hopkins Press list dated 4/7/2026; author's UW page: "to… | yes | asserted | `research/notes/casas-alvero-status.md` |
 | `ghosh-v2-version-record` | arXiv:2501.09272 version history, verified from the arXiv abs page: v1 submitted 16 Jan 2025 (15 KB); v2 submitted 21 Mar 2026 (30 KB, comment "Major revisions"). No withdrawal, no journal publication. The v2 doubles… | yes | asserted | `research/notes/casas-alvero-status.md` |
 | `gvb-coefficient-descent-charp` | For degree d = p^k (and 2p^k), there is NO CA-polynomial over Fbar_p except the pure power x^d: the Hasse derivatives collapse the coefficients by descent (P_{d-1}=a_1 forces a_1=0, then P_{d-2}=a_2, ...) because (d… | yes | proved | `research/notes/gvb-coefficient-descent.md` |
 | `gvb-lift` | (as quoted and reformulated by Castryck et al, Theorem 3) Let d>0 and p prime. If no CA-polynomials of degree d exist over F_p-bar, then CA holds in degree d p^k for all integers k≥0 (over F_p-bar and over char-0).… | yes | asserted | `research/summaries/grafvonbothmer2007_infinitely_many.md` |
 | `gvb-lift-and-bad-primes` | If no CA-polynomials of degree d exist over F_p-bar, then CA holds in degree d p^k for all k≥0 (char 0 and char p). p is "bad" for d iff CA fails in degree d char p. Bad primes: sole bad prime for d=3 is p=2; bad primes… | yes | asserted | `research/summaries/castryck2012_degree12_html.md` |
-| `kostov-discriminant-factorization` | Res_{a_k}(R, ∂R/∂a_k) = c_k · (a_n)^{d(n,k)} · M_k^2 · T_k^3, where c_k ∈ ℚ^*, d(n,k) = min(1,n−k) + max(0,n−k−2), and M_k, T_k ∈ ℂ[a^k] (a^k = all a_j except a_k) have integer coefficients. The sets {M_k=0} and {T_k=0}… | yes | proved | `research/summaries/kostov2020_higher-order-discriminants.md` |
 
-_49 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_50 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Load-bearing but unverified
 
@@ -105,6 +105,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `ghosh-complete-intersection` (research/summaries/ghosh2024_finiteness_html.md) — asserted by the source, not proved there and not checked here
 - `ghosh-dim-bound` (research/summaries/ghosh2024_finiteness_html.md) — asserted by the source, not proved there and not checked here
 - `ghosh-finiteness` (research/summaries/ghosh2024_finiteness_html.md) — asserted by the source, not proved there and not checked here
+- `ghosh-finiteness-ajm-accepted` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
 - `ghosh-v2-version-record` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
 - `gvb-lift` (research/summaries/grafvonbothmer2007_infinitely_many.md) — asserted by the source, not proved there and not checked here
 - `gvb-lift-and-bad-primes` (research/summaries/castryck2012_degree12_html.md) — asserted by the source, not proved there and not checked here
@@ -114,9 +115,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `lu-2017-claim` (research/notes/casas-alvero-status.md) — asserted by the source, not proved there and not checked here
 - `macintyre-goncaroff-bounds` (research/summaries/macintyre1949_zeros-successive-derivatives.md) — asserted by the source, not proved there and not checked here
 - `massri-degree20-no-3-recycled` (research/summaries/massri2018_degree20.md) — asserted by the source, not proved there and not checked here
-- `massri-finiteness-psums` (research/summaries/massri2018_degree20.md) — asserted by the source, not proved there and not checked here
 
-_22 more not shown here; they are in `research/`._
+_23 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 

@@ -76,5 +76,19 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `N3Dichotomy.not_seven_dvd_mult_num` | lemma | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
 | `N3Dichotomy.not_seven_dvd_neg_136` | lemma | verified | : ¬ (7 : ℤ) ∣ (-136 : ℤ) | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
 | `N3Dichotomy.srg33_12_1_6_infeasible` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `Cited.exists_H` | axiom | failed | : | this run's pair-labeling reduction (G-H-unsat; the predicate in | `code/lean/Lib/Conway99PairH.lean` |
+| `IsMatchingPair` | def | failed | (mate : Fin 14 → Fin 14) (p : Finset (Fin 14)) : Prop | — | `code/lean/Lib/Conway99PairH.lean` |
+| `IsPerfectMatching` | def | failed | (mate : Fin 14 → Fin 14) : Prop | — | `code/lean/Lib/Conway99PairH.lean` |
+| `NonMatchingPairs` | def | failed | (mate : Fin 14 → Fin 14) : Finset (Finset (Fin 14)) | — | `code/lean/Lib/Conway99PairH.lean` |
+| `OuterNeighborsContaining` | def | failed | {Out : Type} [Fintype Out] [DecidableEq Out] | — | `code/lean/Lib/Conway99PairH.lean` |
+| `dist2_adj_exactly_two_nbrs` | theorem | failed | (G : SimpleGraph (Fin 99)) [DecidableRel G.Adj] | — | `code/lean/Lib/Conway99PairH.lean` |
+| `distance2_bijects_nonmatching_pairs` | theorem | failed | (G : SimpleGraph (Fin 99)) [DecidableRel G.Adj] | — | `code/lean/Lib/Conway99PairH.lean` |
+| `inner_outer_rule` | theorem | failed | {Out : Type} [Fintype Out] [DecidableEq Out] | — | `code/lean/Lib/Conway99PairH.lean` |
+| `nonmatching_pairs_card` | theorem | failed | (mate : Fin 14 → Fin 14) (hM : IsPerfectMatching mate) : | — | `code/lean/Lib/Conway99PairH.lean` |
+| `outer_12regular` | theorem | failed | {Out : Type} [Fintype Out] (H : SimpleGraph Out) [DecidableRel H.Adj] | — | `code/lean/Lib/Conway99PairH.lean` |
+| `outer_pair_rule` | theorem | failed | {Out : Type} [Fintype Out] [DecidableEq Out] | — | `code/lean/Lib/Conway99PairH.lean` |
+| `Conway99.ConwayFamily` | def | failed | (V : Type) [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] : Prop | — | `code/lean/Lib/Statement.lean` |
 
-68 declarations, 68 of them in a file the kernel has checked.
+_3 more not shown here; they are in `code/lean`._
+
+83 declarations, 68 of them in a file the kernel has checked.

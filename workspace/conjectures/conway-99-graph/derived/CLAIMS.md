@@ -37,6 +37,10 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `c6-resolved-no-bite` | Bagchi 2006 / Brouwer-Neumaier 1988 mu=2 dichotomy does NOT rule out srg(99,14,1,2). The grid conclusion requires both k < 12*lambda*(lambda+3) (forcing K_{1,1,2}-freeness) AND k < (lambda+1)(lambda+2) (to fall in the… | yes | asserted | `research/notes/bagchi-mu2-dichotomy-resolution.md` |
 | `c7-4vertex-mu2-common-neighbour-nonadjacent` | In any srg(v,k,1,2) (in particular a hypothetical srg(99,14,1,2)), the two common neighbours of any nonadjacent pair are nonadjacent to each other. This follows from Sims' criterion: lambda=1 forces alpha=beta=0 in the… | yes | asserted | `research/notes/4vertex-condition-lead.md` |
 | `c8-induced-hexagon-count-bvls` | The number of induced 6-cycles (induced hexagons) in the BvLS graph srg(243,22,1,2) is exactly 4,980,690, equal to the Reimbayev-style closed form (1/12) n k (k-2) (2k^2 - 21k + 53) = (1/12)*243*22*20*559. | yes | asserted | `research/notes/established-claims.md` |
+| `cioaba-guo-ji-mim-spectral-clique` | If every induced cycle of a graph G has four consecutive vertices with a common neighbor, then H1(Cl(G), R) = 0 (over R); for strongly regular graphs it suffices that every induced 4- and 5-cycle does so. The triangle-… | **unchecked** | asserted | `research/summaries/cioaba-guo-ji-mim-clique-complex-cohomology.md` |
+| `cioaba-mim-h1-classification` | For an SRG G, H1(Cl(G),F) != 0 over some field F implies G is the Petersen graph, the Shrikhande graph, a complete bipartite K_{n,n}, a lattice graph L2(n), a conference graph on <= 255 vertices, or an element of the… | yes | asserted | `research/summaries/cioaba-mim-clique-homology-srg.md` |
+| `cioaba-mim-lattice-lambda1-is-rook` | Among lattice graphs L2(n) (n^2, 2(n-1), n-2, 2), the member with lambda=1 is exactly L2(3) = the 3x3 rook's graph (9,4,1,2), the 9-vertex control; no lattice graph has parameters (99,14,1,2). | yes | asserted | `research/summaries/cioaba-mim-clique-homology-srg.md` |
+| `clique-complex-homology-refuted-on-arrival` | The clique-complex homology gate does not separate 99 from the two negative controls: dim H1(Cl(rook(3))) = 4 and dim H1(Cl(BvLS)) = 1540, both non-zero (=(e-v+1)-T since the triangle-boundary map has full rank on both… | yes | checked | `research/notes/clique-complex-homology-gate-refuted.md` |
 | `coclique-alpha22-forces-22242-design` | If a hypothetical srg(99,14,1,2) contained a coclique C of the Hoffman-bound size alpha = v*(-s)/(k-s) = 22, then equality in the ratio bound forces f = 1_C - (alpha/v)1 into the s=-4 eigenspace, hence every vertex… | yes | checked | `research/notes/n3-coclique-design-dead-end.md` |
 | `coclique-bound-closed-form` | For the family srg(v,k,1,2) with k = u^2 + u + 2 and v = 1 + k^2/2, the independence (coclique) bound alpha <= v*(-s)/(k-s), where s is the negative eigenvalue, has the exact closed form alpha = (u*k + 2)/2 = (u^3 + u^2… | yes | checked | `code/out/coclique-bound-closed-form.md` |
 | `diamond-free-srg-iff-pq-2602-grounding` | An SRG is the collinearity graph of a partial quadrangle PQ(s,t,mu) iff it is diamond-free; explicitly PQ(s,t,mu) exists iff the diamond-free srg(1+s(t+1)+s^2 t(t+1)/mu, s(t+1), s-1, mu) exists… | yes | asserted | `research/summaries/mohammadian-diamond-free-srg-ar5iv.md` |
@@ -64,12 +68,16 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `n3-cap-closed-form` | 1 <= n3 <= 4158 lower side: n3 >= 1  -- re-derived Makhnev 1988 Thm 2 chain (n3=0 would force the parameter-infeasible srg(33,12,1,6) subobject); verified-computationally for the integrality step, asserted-by-source for… | yes | checked | `research/notes/n3-cap-closed-form.md` |
 | `n3-dichotomy-G-n3-zero-lean` | No srg(99,14,1,2) has n3 = 0 (Makhnev's condition (*) restricted to disjoint triangle pairs). Kernel-verified at code/lean/n3_dichotomy_G_n3_zero.lean: theorem no_srg_99_14_1_2_n3_zero. The arithmetic kernel (7 does not… | yes | conditional | `research/notes/n3-dichotomy-G-n3-zero-lean.md` |
 | `n3-seed-locally-consistent-radius1` | The n3 configuration — two disjoint triangles joined by exactly two edges — is locally consistent at radius 1 in a lambda=1, mu=2, locally-7K2 graph: under the only criterion arc-consistency may soundly conclude… | yes | checked | `research/notes/n3-seed-locally-consistent-radius1.md` |
-| `n3-zero-four-classical-lambda1-srgs` | The four classical lambda=1 SRGs all have n3 = 0 (no two DISJOINT triangles joined by exactly 2 edges): rook(3)=srg(9,4,1,2) has T=6 with disjoint-join histogram {3:6}; the doily srg(15,6,1,3)=GQ(2,2) has T=15 with… | yes | checked | `code/out/n3-four-graphs-finding.md` |
-| `order6-n3-not-forced` | In the family srg(v,k,1,2), all 62 Reimbayev order-6 induced-subgraph counts are of the form (n,k)-term +/- c*n3 with c in {0, 1/3, 2/3, 4/3, 1, 2, 4, 5, 6, 8, 10, 14}. Requiring every one to be a NONNEGATIVE INTEGER… | yes | checked | `code/out/n3-screening-claims.md` |
-| `pentagon-count-closed-form-verified` | In any srg(v,k,1,2), the number of induced pentagons (C5) is p5 = n·k·(k−2)·(k−4)/5. This is parameter-determined (depends only on (n,k)), and is verified on both existing family members by exact enumeration: rook(3)=0… | yes | checked | `code/out/pentagon-count-verified.md` |
-| `phillips-tau-rho-dead-end` | The rank-10, 13-variable tau/rho linear system that any locally-linear srg must satisfy (from walk-regularity and triangle/quadrangle/5-walk counts around a vertex) admits a non-negative integer solution for every… | yes | asserted | `research/summaries/phillips-2026-clique-triangle-graphs.md` |
 
-_23 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_27 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+
+## Contradictions
+
+Resolve these before building on either side.
+
+- `cioaba-mim-h1-classification` (research/summaries/cioaba-mim-clique-homology-srg.md) contradicts `claim` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `cioaba-mim-h1-classification` (research/summaries/cioaba-mim-clique-homology-srg.md) contradicts `forces` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
+- `cioaba-mim-h1-classification` (research/summaries/cioaba-mim-clique-homology-srg.md) contradicts `H1` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
 ## Load-bearing but unverified
 
@@ -96,6 +104,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `c6-resolved-no-bite` (research/notes/bagchi-mu2-dichotomy-resolution.md) — asserted by the source, not proved there and not checked here
 - `c7-4vertex-mu2-common-neighbour-nonadjacent` (research/notes/4vertex-condition-lead.md) — asserted by the source, not proved there and not checked here
 - `c8-induced-hexagon-count-bvls` (research/notes/established-claims.md) — asserted by the source, not proved there and not checked here
+- `cioaba-mim-h1-classification` (research/summaries/cioaba-mim-clique-homology-srg.md) — asserted by the source, not proved there and not checked here
+- `cioaba-mim-lattice-lambda1-is-rook` (research/summaries/cioaba-mim-clique-homology-srg.md) — asserted by the source, not proved there and not checked here
 - `diamond-free-srg-iff-pq-2602-grounding` (research/summaries/mohammadian-diamond-free-srg-ar5iv.md) — asserted by the source, not proved there and not checked here
 - `existence-status-open` (code/out/feasibility-candidates-corrected.md) — asserted by the source, not proved there and not checked here
 - `five-member-list-vanlint1975` (research/summaries/van-lint-perfect-codes-survey-1975.md) — asserted by the source, not proved there and not checked here
@@ -113,10 +123,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `sts-4vertex-two-families` (research/notes/triangle-geometry-4vertex-enumeration.md) — asserted by the source, not proved there and not checked here
 - `triangle-geometry-enumeration-closed` (research/notes/triangle-geometry-4vertex-enumeration.md) — asserted by the source, not proved there and not checked here
 - `wikipedia-bvls-construction` (research/summaries/wikipedia-berlekamp-vanlint-seidel-graph.md) — asserted by the source, not proved there and not checked here
-- `wikipedia-conway99-statement` (research/summaries/wikipedia-conway-99-graph.md) — asserted by the source, not proved there and not checked here
-- `wilbrink-brouwer-5714ceedings` (research/summaries/wilbrink-brouwer-57141-does-not-exist.md) — asserted by the source, not proved there and not checked here
 
-_1 more not shown here; they are in `research/`._
+_3 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 

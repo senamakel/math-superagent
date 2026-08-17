@@ -1,0 +1,19 @@
+{
+  "axioms": [
+    "'erdos_szekeres_conjecture' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem erdos_szekeres_conjecture (n : ℕ) (hn : 3 ≤ n) : ES n = 2 ^ (n - 2) + 1"
+  ],
+  "file": "code/lean/Lib/Statement.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/Statement.lean:57:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

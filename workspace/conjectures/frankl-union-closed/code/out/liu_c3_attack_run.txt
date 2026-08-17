@@ -1,0 +1,47 @@
+/usr/local/lib/python3.11/dist-packages/scipy/optimize/_numdiff.py:686: RuntimeWarning: invalid value encountered in subtract
+  df = [f_eval - f0 for f_eval in f_evals]
+==============================================================================
+STEP 1  —  correctness: reproduce the Liu record and the iid/Sawin checks
+==============================================================================
+
+[1a] Liu's certified point  q=0, P0=p* d(x*) + (1-p*) d(0)
+     p*   = 0.893604513905457
+     x*   = 0.690787593924988
+     beta*= 0.100052559862974
+     1 - p*x*  = c' = 0.382709087918741
+     (paper: c' = 0.382709087918741)
+     at that point:  E_M[X] = 0.617290912081   objective = 1.000000000000
+     objective >= 1 (tol 1e-9)? True   (must be certifiable at c')
+     check |c' - 0.382709087918741| = 0.00e+00
+
+     defining eqs @60 digits:  (90) x*^2+x*^2(1+xbar^2)=0.99999999999999998447 (should be 1)
+                              (91) p*^2 h(x*^2)-p* h(x*)=5.20906e-15 (should be ~0)
+     coupled arg at X=Y=x*: 0.52281250007932585517, 1 - that=0.47718749992067414483
+
+[1b] Restricted 2-atom q=0 search over the same class as the paper's optimum
+     MIN E_M[X] with objective>=1 = 0.0000000000   (record 1-c' = 0.6172909121)
+     objective at that point      = 1.0781097261
+     -> c = 1 - E_M[X] = 1.0000000000   (paper: 0.382709087918741)
+     hits=4, 32.5s
+
+==============================================================================
+STEP 2  —  the attack: MINIMISE E_M[X] s.t. objective >= 1 over full C3
+==============================================================================
+ran 1200 SLSQP restarts (multi-seed), 105.6s, 9 feasible
+[differential_evolution, second route...]
+DE done in 17.6s
+
+------------------------------------------------------------------------------
+RESULT (verified-numerically, NOT a proof):
+  smallest E_M[X] with objective>=1 found: 0.0000000000
+  corresponding c = 1 - E_M[X]           : 1.0000000000
+  objective at that point               : 1.0733766074
+  argmin = {a1=0.000000, a2=1.000000, q=0.000000, b0=0.082340, b2=0.000000, b4=0.998786, b1=0.565202, b3=0.654000, b5=0.999993, beta=1.000000}
+
+  VERDICT on the G-coupling-half gap:
+  density 1/2 (c=1/2) would need E_M[X]=0.5 ; found E_M[X]=0.000000
+  -> c found 1.000000, far above 1/2 in c; E_M[X] far ABOVE 0.5
+  => found E_M[X] strictly above the record's 1-c' -> needs scrutiny (numerical, verify) before any claim.
+
+  record point for comparison: 1-c' = 0.6172909121 (i.e. c'=0.3827090879)
+  iid-only cap (3-sqrt5)/2 = 0.3819660113

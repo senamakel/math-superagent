@@ -18,18 +18,26 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/derived-design-at-a-vertex.md`
 - `n3-dichotomy/G-n3-positive` (lemma) — No srg(99,14,1,2) has n3 ≥ 1. Equivalently: the n3 seed — two disjoint triangles T1 = {a,b,c}, T2 = {d,e,f} joined by exactly 2 edges…
   - open `research/backward/n3-dichotomy.md`
+- `n3-positive-global/G-H-unsat` (lemma) — For every forced seed subgraph S_i of G-seed-forces-S-in-H (i = 1..t, t finite), there is no graph H on the 84 pair-vertices of…
+  - open `research/backward/n3-positive-global.md`
+- `n3-positive-global/G-budget-oversubscription` (lemma) — There is no partial Steiner triple system on 99 points, 231 lines of size 3, 7 lines through every point (693 point-line incidences),…
+  - open `research/backward/n3-positive-global.md`
+- `n3-positive-global/G-seed-forces-S-in-H` (lemma) — Let Γ be a putative srg(99,14,1,2), n3(Γ) >= 1, and T the n3 seed. Fix any vertex 0 with N(0) = 7K2 and let H be the 12-regular outer graph…
+  - open `research/backward/n3-positive-global.md`
 - `orbit-matrix-completion` (goal) — Complete the published orbit-matrix programme on residual Z2/Z3
   - open `research/backward/orbit-matrix-completion.md`
+- `record-second-subconstituent-nullity-constraint` (goal) — —
+  - open `research/backward/record-second-subconstituent-nullity-constraint.md`
 
 ## Verify these first
 
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
-- `makhnev1988-condstar-theorems` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Makhnev 1988 (primary Russian full text) proves: under condition (*) [any two triangles joined by >=2 edges are joined by exactly 3 edges =…
-- `makhnev99-shorter-proof-integrality` — 1 node(s) rest on it, and the run is already building on it — Under Makhnev 1988 Thm 2's condition (*) [n3 = 0] at (99,14,1,2), the argument forces, from the closure of a triangle and its 60 exterior…
-- `n3-99-forced-at-least-3` — 1 node(s) rest on it, and the run is already building on it — Combining (a) the order-6 integrality residue n3 ≡ 0 (mod 3) with (b) the sourced+re-derived Makhnev 1988 conditional n3 >= 1 (any putative…
+- `makhnev1988-condstar-theorems` — 3 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Makhnev 1988 (primary Russian full text) proves: under condition (*) [any two triangles joined by >=2 edges are joined by exactly 3 edges =…
+- `makhnev99-shorter-proof-integrality` — 2 node(s) rest on it, and the run is already building on it — Under Makhnev 1988 Thm 2's condition (*) [n3 = 0] at (99,14,1,2), the argument forces, from the closure of a triangle and its 60 exterior…
+- `n3-99-forced-at-least-3` — 2 node(s) rest on it, and the run is already building on it — Combining (a) the order-6 integrality residue n3 ≡ 0 (mod 3) with (b) the sourced+re-derived Makhnev 1988 conditional n3 >= 1 (any putative…
 
-_85 further candidate(s) below these, in the table._
+_94 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -64,6 +72,10 @@ _85 further candidate(s) below these, in the table._
 | `c6-resolved-no-bite` | claim | **ready** | — | Bagchi 2006 / Brouwer-Neumaier 1988 mu=2 dichotomy does NOT rule out srg(99,14,1,2). The grid conclusion requires both k <… |
 | `c7-4vertex-mu2-common-neighbour-nonadjacent` | claim | **ready** | — | In any srg(v,k,1,2) (in particular a hypothetical srg(99,14,1,2)), the two common neighbours of any nonadjacent pair are nonadjacent to… |
 | `c8-induced-hexagon-count-bvls` | claim | **ready** | — | The number of induced 6-cycles (induced hexagons) in the BvLS graph srg(243,22,1,2) is exactly 4,980,690, equal to the Reimbayev-style… |
+| `cioaba-guo-ji-mim-spectral-clique` | claim | **ready** | — | If every induced cycle of a graph G has four consecutive vertices with a common neighbor, then H1(Cl(G), R) = 0 (over R); for strongly… |
+| `cioaba-mim-h1-classification` | claim | **ready** | — | For an SRG G, H1(Cl(G),F) != 0 over some field F implies G is the Petersen graph, the Shrikhande graph, a complete bipartite K_{n,n}, a… |
+| `cioaba-mim-lattice-lambda1-is-rook` | claim | **ready** | — | Among lattice graphs L2(n) (n^2, 2(n-1), n-2, 2), the member with lambda=1 is exactly L2(3) = the 3x3 rook's graph (9,4,1,2), the 9-vertex… |
+| `clique-complex-homology-refuted-on-arrival` | claim | established | — | The clique-complex homology gate does not separate 99 from the two negative controls: dim H1(Cl(rook(3))) = 4 and dim H1(Cl(BvLS)) = 1540,… |
 | `coclique-alpha22-forces-22242-design` | claim | established | — | If a hypothetical srg(99,14,1,2) contained a coclique C of the Hoffman-bound size alpha = v*(-s)/(k-s) = 22, then equality in the ratio… |
 | `coclique-bound-closed-form` | claim | established | — | For the family srg(v,k,1,2) with k = u^2 + u + 2 and v = 1 + k^2/2, the independence (coclique) bound alpha <= v*(-s)/(k-s), where s is the… |
 | `derived-design-at-a-vertex` | goal | blocked | `derived-design-at-a-vertex/G-encode`, `derived-design-at-a-vertex/G-reduce`, `derived-design-at-a-vertex/G-unsat` | no srg(99,14,1,2) exists |
@@ -71,12 +83,8 @@ _85 further candidate(s) below these, in the table._
 | `derived-design-at-a-vertex/G-reduce` | lemma | **ready** | — | Fix a vertex v0 of any srg(v,k,1,2) with v = 1 + k + k(k-2)/2 (k even). Then (a) N(v0) induces (k/2)K2 and the k(k-2)/2 vertices at… |
 | `derived-design-at-a-vertex/G-unsat` | lemma | **ready** | — | The vertex-derived design at (99,14,1,2) does not exist: there is no partial Steiner triple system on 84 points with 140 blocks and… |
 | `diamond-free-srg-iff-pq-2602-grounding` | claim | **ready** | — | An SRG is the collinearity graph of a partial quadrangle PQ(s,t,mu) iff it is diamond-free; explicitly PQ(s,t,mu) exists iff the… |
-| `divisor63-multiplicity-integrality` | claim | established | — | Eigenvalue-multiplicity integrality of any srg(v,k,1,2) holds iff a = sqrt(4k-7) = 2u+1 is an odd divisor of 63, i.e. a in {3,7,9,21,63}… |
-| `existence-status-open` | claim | **ready** | — | Existence of srg(99,14,1,2) is open: no construction and no nonexistence proof is known; Brouwer's table marks (99,14,1,2) with '?'. No… |
-| `five-member-list-vanlint1975` | claim | **ready** | — | The parameters of the family converge to exactly the five members (9,4),(99,14),(243,22),(6273,112),(494019,994), equivalently k=u^2+u+2… |
-| `fixed-set-lemma-fails-on-bvls` | claim | established | — | The folklore lemma "under an automorphism of an srg(v,k,1,2), the fixed-point set is a coclique or a smaller strongly regular graph" is… |
 
-_54 further nodes not shown._
+_64 further nodes not shown._
 
 ## Resting on nothing that exists
 

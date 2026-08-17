@@ -1,0 +1,111 @@
+# DRR list status — what held sources and a bounded fetch establish
+
+*Target of request `dumortier-roussarie-rousseau-9c4f`.* This file records, per
+graphic, whether finite cyclicity inside the quadratic family is proved, the
+paper that proved it, and whether the row is open. **Evidence class is stated on
+every row: `sourced-held` (full text in this library), `sourced-text` (verified
+abstract/theorem text), `reported` (a secondary/thesis summary, needs primary
+confirmation).** Nothing here is proved by this run; every row rests on a cited
+paper.
+
+## The frame (established)
+
+- **DRR 1994** (Dumortier–Roussarie–Rousseau, "Hilbert's 16th problem for
+  quadratic vector fields", J. Diff. Eq. 110(1), 86–133): H(2) < ∞ is
+  equivalent to the finite cyclicity of **121 graphics** in `S²×K`, where `K`
+  is the compactified parameter space of quadratic systems with a
+  non-degenerate anti-saddle singular point and `S²` the Poincaré sphere.
+  Evidence: **sourced-held** — confirmed verbatim in Rousseau–Shan–Zhu 2015
+  (arXiv:1502.00689), Ilyashenko 2002 (Centennial History §5.2), and
+  Roussarie–Rousseau 2015. *(Note: the DRR 1994 paper itself is NOT held; the
+  121-row raw catalogue with all 121 labels is not in this library.)*
+- **Count of closed graphics as of 2015: 88.** Rousseau–Shan–Zhu 2015 state
+  verbatim: proving `(I₁₂¹)` and `(I₁₃¹)` "will bring the number of graphics of
+  the program for which finite cyclicity is proved to **88**."
+  Evidence: **sourced-held** (full HTML in
+  `research/sources/rouseau-shan-zhu-nilpotent-saddle-graphics.html.full.md`).
+
+## Established rows (graphic → closure paper → status)
+
+| Graphic | Phase-portrait class | Closure paper | Status |
+|---|---|---|---|
+| `I₁₂¹` | triple nilpotent point of saddle type (hh-type), not surrounding a center | Rousseau–Shan–Zhu 2015, arXiv:1502.00689; **sourced-held** | **closed** |
+| `I₁₃¹` | triple nilpotent point of saddle type + saddle-node central transition, not surrounding a center | Rousseau–Shan–Zhu 2015, arXiv:1502.00689 Thm 4.3; **sourced-held** | **closed** |
+| `I₁₄¹` | triple nilpotent point at infinity, elliptic/saddle type, surrounding a center | Roussarie–Rousseau 2015, Trans. Moscow Math. Soc. (arXiv:1506.07104) Thm 1.2; **sourced-held** | **closed** |
+| `I₆b¹` | triple nilpotent point at infinity, surrounding a center | Roussarie–Rousseau 2015 Thm 1.1 — **boundary limit periodic set only**; full graphic explicitly "intend to address in the next future"; **sourced-held** | **partially closed / open** |
+| `H₁₃³` | triple nilpotent point at infinity, surrounding a center | Roussarie–Rousseau 2015 Thm 1.1 — **boundary limit periodic set only**; full graphic left for future work; **sourced-held** | **partially closed / open** |
+| `DI₂b` | degenerate (line of zeros) at infinity, surrounding a center | Roussarie–Rousseau 2015 Thm 1.1 — **boundary limit periodic set only**; full graphic left for future work; **sourced-held** | **partially closed / open** |
+| `H₁₄³` | triple point at infinity, hemicycle, two semi-hyperbolic points along the equator | named in Roussarie–Rousseau 2015 as the **one** graphic through a triple point at infinity with no partial result; **sourced-held** | **open** |
+| `I₉b²` | triple nilpotent saddle, codimension-3 case | Rousseau–Shan–Zhu 2015, §1 item (2) — same computation as `I₁₂¹` proving finite cyclicity **when the nilpotent point has codimension 3**; **sourced-held** | **closed (codim-3 case); general case not claimed** |
+| `DF1a` | degenerate graphic | Dumortier–Rousseau 2009, Comm. Pure Appl. Anal. 8, 1133–1157; **reported** (Shan 2013 thesis) | **closed** |
+| `DF2a` | degenerate graphic | Dumortier–Rousseau 2009 (ibid.) / Huzak 2018 re-examination; **reported** — see contradiction note below | **closed** (per secondary sources) |
+| `H₇¹`, `F₇a¹`, `H₁₁³`, `I₆a¹` | nilpotent pp-type around a center; exact cyclicity 2 (2 for `H₇¹`,`H₁₁³`; 2 except a discrete subset for `F₇a¹`,`I₆a¹`) | Roussarie–Rousseau 2008, Bull. Belg. Math. Soc. Simon Stevin; **reported** | **closed** (pre-2015, inside the count 88) |
+
+## Explicit open / partially-open rows
+
+| Graphic | Status | Evidence |
+|---|---|---|
+| `H₁₄³` | **open** — the one graphic through a triple point at infinity with no partial result in RR 2015 (hemicycle, two semi-hyperbolic points along the equator) | **sourced-held**: RR 2015 intro, "We have a partial result for every graphic, but one (namely (H₁₄³)), through a triple point at infinity"; they "hope to adapt" the methods to its boundary graphic |
+| `I₆b¹`, `H₁₃³`, `DI₂b` | **open (partially closed)** — only the boundary limit periodic set of each is proved finite (Thm 1.1); the other limit periodic sets, hence the full graphics, are explicitly left "to address in the next future" | **sourced-held**: RR 2015 Thm 1.1 + intro after Thm 1.2 |
+| The 11 degenerate graphics *other than* DF1a, DF2a | **open** (cyclicity unproven) | **reported** (Shan 2013 thesis: "the cyclicity of the rest 11 degenerate graphics are still open") |
+| Sub-problem inside RSZ 2015 | Thm 3.2 (Sxhh5, `(I₉b²)`-type) needs the extra hypothesis μ₁=0 (fixed connection on the blow-up sphere); authors conjecture it can be dropped but could not prove it (RSZ Remark 3.3) | **sourced-held** (RSZ full text) |
+
+## Honest bound on what this run can claim
+
+- **At least 88 of 121** graphics had finite cyclicity proved as of RSZ 2015
+  (that number is the authors' own and is held in full text).
+- Roussarie–Rousseau 2015 (arXiv:1506.07104, held full text) fully closes
+  `(I₁₄¹)` (Thm 1.2) and proves the boundary limit periodic sets of `(I₆b¹)`,
+  `(H₁₃³)`, `(DI₂b)` (Thm 1.1) — the full graphics are left open. By this run's
+  arithmetic: **89 of 121 fully closed** (88 from RSZ + I₁₄¹); **3 partially
+  closed** (I₆b¹, H₁₃³, DI₂b); **(H₁₄³) open** (the one triple-point-at-infinity
+  graphic with no partial result); 11 degenerate graphics open per Shan 2013.
+  RR 2015 does not state a new total, so "89" is this run's arithmetic, not the
+  authors'.
+- **The full 121-row enumeration — every graphic id and its open/closed status —
+  cannot be truthfully produced in this run**, because the DRR 1994 paper's raw
+  catalogue (the only complete list) is not held. Producing a "complete" 121-row
+  table would require inventing ids, which is exactly what this run must not do.
+- Therefore the exact number of still-open graphics and their full id list is a
+  **live gap**: the run establishes ≥ 88 closed, names the rows above, and
+  confirms that the nilpotent/degenerate families are where the open rows lie,
+  but the definitive open count needs the DRR 1994 paper itself (or a
+  post-2020 authoritative ledger) fetched.
+
+## Contradictions / discrepancies (recorded, not resolved)
+
+1. **121 vs 125.** RSZ 2015 / Ilyashenko 2002 / RR 2015 all say **121**; the
+   Shan 2013 thesis summary says **125** graphics in "the standard family around
+   the origin" with 40 challenging cases. Same program, different total — likely
+   a different grouping/counting convention or coarser/finer vertex listing.
+   Not resolved: needs the DRR 1994 paper.
+2. **DF2a closure attribution.** Shan 2013 credits DF1a and DF2a to
+   Dumortier–Rousseau 2009; a search result surfaced a later paper "Cyclicity of
+   degenerate graphic DF2a of Dumortier–Roussarie–Rousseau program" (Huzak 2018
+   per prior library note). Whether DF2a was closed in 2009 and re-examined in
+   2018, or closed only in 2018, is **not** settled by any held full text.
+   Marked **reported** only.
+3. **The "all but one" of RR 2015 is now pinned from the primary text**: the one
+   graphic through a triple point at infinity with NO partial result is
+   `(H₁₄³)` (hemicycle, two semi-hyperbolic points along the equator). The RR
+   2015 intro states: "We have a partial result for every graphic, but one
+   (namely (H₁₄³)), through a triple point at infinity." The deep-research guess
+   `H₁₃⁴` is NOT the label the primary text uses and is dropped.
+4. **Count after RR 2015.** RR 2015 fully closes `(I₁₄¹)`, so read this run as:
+   89 of 121 fully closed (88 from RSZ + I₁₄¹), with `(I₆b¹),(H₁₃³),(DI₂b)`
+   partial (boundary sets only) and `(H₁₄³)` open in that family. RR 2015 does
+   not itself state a new total, so "89" is this run's arithmetic, not the
+   authors' count.
+
+## What would fill the gap (for the requests ledger)
+
+- The **DRR 1994 paper itself** (J. Diff. Eq. 110, 86–133) — the only complete
+  catalogue of all 121 graphic ids; its raw list is the backbone of the full
+  open/closed table.
+- A **post-2020 authoritative ledger** (Rousseau's own survey, or a
+  graphic-by-graphic compilation) with a running closed-count and the paper that
+  closed each row.
+
+*Compiled from held sources and bounded fetch on 2025-06; every count and label
+above is traceable to the cited paper, and rows not traceable are marked
+`reported` or left out.*

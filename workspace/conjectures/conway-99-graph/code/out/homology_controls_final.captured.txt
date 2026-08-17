@@ -1,0 +1,33 @@
+rook(3) = lattice L2(3): |V|=9  |E|=18  dim cycle space=10  #triangles=6  rank(triangle boundaries)=6  dim H1(Cl(.))=4
+BvLS srg(243,22,1,2): |V|=243  |E|=2673  dim cycle space=2431  #triangles=891  rank(triangle boundaries)=891  dim H1(Cl(.))=1540
+
+======================================================================
+VERDICT — clique-complex homology line, gated against the controls
+======================================================================
+   dim H1(Cl(G),Q) = dim cycle space - rank(C2->C1 boundary map)
+                   = (|E| - |V| + cc) - rank(triangle boundaries)
+
+   rook(3) = lattice L2(3)  :  H1 = 4   (nonzero)
+   BvLS srg(243,22,1,2)     :  H1 = 1540 (nonzero)
+
+   Exact-arithmetic cross-check (code/out/homology_verify_exact_rank.py):
+   GF(1000003)-rank of the triangle-boundary matrix equals the full column
+   count (#triangles, 6 and 891) on BOTH controls. Since Q-rank can never
+   exceed the column count, the Q-ranks used above are EXACT (6 and 891),
+   so the dim H1 values rest on exact integer ranks, not float tolerance.
+
+   Gate verdict (Cioaba-Guo-Ji-Mim classification: H1(Cl(G)) != 0 only for
+   Petersen, Shrikhande, complete bipartite, lattice L2(m), conference,
+   exceptional E_m):
+     The classification does NOT separate 99 from the controls. rook(3)=L2(3)
+     IS on the list (lattice L2(m), H1=4), and BvLS srg(243,22,1,2) has
+     H1=1540 != 0 off the list, so "H1 nonzero" is satisfied by graphs with
+     parameters (9,4,1,2) and (243,22,1,2) alike. A putative (99,14,1,2)
+     having H1 != 0 would therefore behave like both controls; the homology
+     criterion is a defect (H1=0), not a distinguishing invariant for 99.
+
+     => REFUTED-ON-ARRIVAL as a 99 argument: nonzero H1 on both controls means
+        the clique-complex-homology line cannot rule 99 out. Per directive 39,
+        do NOT compute H1(Cl) for a 99 candidate — the gate has failed, the
+        line is closed before it becomes a route.
+======================================================================

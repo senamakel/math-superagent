@@ -1,0 +1,19 @@
+{
+  "axioms": [
+    "'Spence.spence_minimal_counterexample_structure' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem spence_minimal_counterexample_structure {α : Type*} [Fintype α] [DecidableEq α] (F : Finset (Finset α)) (huc : IsUnionClosed F) (hne : F.Nonempty) (hntriv : F ≠ ({∅} : Finset (Finset α))) (empty_mem : (∅ : Finset α) ∈ F) (hmin : ∀ G : Finset (Finset α), IsUnionClosed G → G.Nonempty → G ≠ ({∅} : Finset (Finset α)) → G.card < F.card → ∃ a : α, present G a ∧ 2 * count G a ≥ G.card) : ∃ k :…"
+  ],
+  "file": "code/lean/Lib/MinimalCounterexample.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/MinimalCounterexample.lean:107:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

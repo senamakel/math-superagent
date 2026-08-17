@@ -6,6 +6,7 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## dead-end
 
+- **chisel**: Clique-complex-homology line REFUTED-on-arrival (gate result): dim H1(Cl(rook(3)))=4 and dim H1(Cl(bvls))=1540, both NONZERO on the existing controls (code/out/homology_controls_final.captured.txt, exact GF(p) rank cross-check in homology_verify_exact_rank.py). The Cioaba-Mim classification list (Petersen, Shrikhande, complete bipartite, lattice L2(m), conference, exceptional) cannot separate 99 from 243: nonzero H1 already holds on both existing lambda=1 mu=2 members, so 'H1(99)!=0 => nonexistence' refutes on arrival at 243. Do not start a twelfth route here. (refers: clique-complex-homology, gate-clique-complex-homology)
 - **chisel**: Converge round (inventor stepping in, both research+inventor agent runs timed out): closed triangle-graph-pinned-spectrum by computation, not search. The candidate claimed the 99 C3 spectrum has 0-eigenvalue multiplicity 176. The verified value (c3_spectrum_exact_verify.captured.txt, numpy eigvalsh over lib.triangles on exact integer adjacency) is {18:1, 7:54, 0:44, -3:132} — the 132 zero-vectors are the -3 eigenspace, not the 0 eigenspace (st=0 at u=3, no collision). And even corrected it is parameter-determined by the family closed form rt=(u-1)(u+4)/2, st=(u-3)(u+2)/2: BvLS(243) realizes… (refers: triangle-graph-pinned-spectrum, c3-triangle-graph-controls)
 - **chisel**: CLOSED ROUTE (eleventh): the orbit-matrix Z2/Z3 completion is closed by computational infeasibility, NOT mathematics. The plain unbroken CP-SAT encoder on the m=33 order-3 orbit matrix of a putative srg(99,14,1,2) ran its full 3000s budget, exited UNKNOWN: last bound var 41675/41745, constraints 56987/57165, conflicts 5,039,266 (code/out/orbit_order3_final_boundary.captured.txt). Exact extrapolation from the live heartbeat: 18 vars in 1195.53s = one per 66.42s; presolve alone for 41,745 vars ≈ 32 days (verified code/out/orbit_order3_boundary_verify.captured.txt; rate is slowing so a lower…
 - **chisel**: CHECKED NEGATIVE (screening, not proof): the 62 Reimbayev order-6 subgraph-count formulas (each = (n,k)-term ± c·n3) do NOT force n3>=1 at (99,14,1,2). Exact Fraction computation over all 62 formulas, all five family members: every member admits n3=0, the only residue constraint is n3 ≡ 0 (mod 3), and at k=14 the admissible interval is [0, 4158]. So order-6 counting alone cannot separate 99 from the n3=0 controls. Forcing n3=0 (the Makhnev-route hypothesis) needs a k=14-specific GEOMETRIC argument, not the order-6 count identities. Capture: code/out/n3_order6_feasibility.captured.txt. (refers: thread-hexagon-bound, n3-forced-question)
@@ -29,6 +30,19 @@ IMPORTANT correction: the folklore lemma "under an automorphism of an srg(v,k,1,
 
 ## offer
 
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+The skeleton is complete and well-formed. The work is done.
+
+## Report
+
+**Slug:** `n3-positive-global` — written to `research/backward/n3-positive-global.md`, recorded in the `goals` ledger as `live`.
+
+### What I found working backward
+
+This run's goal had already been split by the live `n3-dichotomy` skeleton into **n₃ = 0** (discharged) and **n₃ ≥ 1** (open, the gap `G-n3-positive`). So the *whole* remaining problem is the n₃ ≥ 1 branch — the single lemma the entire run is now blocking on. Rather than…
 - **chisel**: Adopted converge-round line: 6vertex-condition-obstruction. A putative srg(99,14,1,2) is provably NOT rank-3, while both controls (rook(3), BvLS) are rank-3/vertex-transitive and satisfy every t-vertex condition trivially — so the 6-vertex condition is the first rung of the Pech/BIK hierarchy where a non-rank-3 PQ can fail without eliminating 9 or 243, making it control-immune BY CONSTRUCTION. House it on the run's own central lever: n3>=1 (Makhnev Thm 2, re-derived) forces two disjoint triangles joined by exactly 2 edges, which IS a 6-vertex type. CRITICAL correction absorbed: Pech's proven… (refers: 6vertex-condition-obstruction, pq-2-6-2-classification, n3-99-forced-at-least-3, srg99-not-vertex-transitive)
 - **chisel**: Decomposition just opened:
 

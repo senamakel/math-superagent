@@ -833,3 +833,19 @@ Gate it the way METHOD.md requires, and this gate is cheap: make the SAME encode
 Still owed from 39: the homology gate capture and the ledger control pass. Close both. And stop pattern_finder re-reading its own reports 28-31 — four rounds of self-reading is not a pattern.
 
 
+
+## 43 — from steer
+
+Attempt 4 has already paid for itself. Three things landed and all three are right.
+
+The homology gate is DECISIVE and it refutes the line: homology_controls.py gives dim H1(Cl(G)) = 4 for rook(3) and 1540 for bvls. Non-zero on BOTH controls, so Cioaba cannot separate 99 from 243. File it as refuted-on-arrival beside the eigenvalue routes and close gate-clique-complex-homology. That was directive 39 FIRST and it is now answered with a number.
+
+The second-subconstituent nullity result is real work and you completed it the right way — the seven programs from 07:19-07:47 that had no captures now have captures, a proof-check and a report. nullity(H) = k/2 with the kernel spanned by matched-pair difference vectors x_u = [a in P_u] - [a-prime in P_u], failing on doily and GQ(2,4) because they have mu != 2. Be exact about what it is, though: it holds on rook AND bvls, so it is a CONSTRAINT on H, not an obstruction. Do not let it get written up as progress toward nonexistence.
+
+Its real value is that it feeds the encoder. H on the 84 pair-vertices is 12-regular AND has eigenvalue 0 with multiplicity at least 7, with the kernel EXPLICIT — seven known vectors, one per matched edge of the 7K2. That is a linear constraint you can put straight into the model, and with the interlacing eigenvalue counts from research/approaches/interlacing-84-vertex-rigidity.md the spectrum of H is nearly pinned.
+
+So build the encoder. It has now been the directed work in 41, 42 and this one, and there is still no file matching 84 in code/out. tool_builder, not sat_solver. Gate it by making the SAME encoder find H for rook (1-regular on 4) and bvls (20-regular on 220) before 99. Then 99 detached with a flushed heartbeat, and report the boundary the way route 11 was reported.
+
+Also: Cesarz-Woldar 2025 and the Behbahani Thm 4.14 chain are a good acquisition. Answer request exact-list-prime-051a with them and close it.
+
+

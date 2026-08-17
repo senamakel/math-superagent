@@ -9,6 +9,7 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
 | `abe-nakano-modular` | Every finite modular lattice L with \|L\| ≥ 2 satisfies Frankl's conjecture: some join-irreducible x has \|{y: y ≥ x}\| ≤ \|L\|/2. | yes | asserted | `research/summaries/abefrankl-abe-nakano-modular-1998.md` |
+| `abe-strong-semimodular-lattices` | Every finite strong semimodular lattice L with \|L\| >= 2 satisfies Frankl's (union-closed sets) conjecture: some join-irreducible x has \|{y in L : y >= x}\| <= \|L\|/2. | yes | asserted | `research/summaries/abe-strong-semimodular-lattices-frankl-2000.md` |
 | `abundance-not-in-single-variable-hilbert-series` | The abundance count delta(i) = #{A in F : i in A} is multigraded (Z^n-graded) data and is NOT a coefficient of the single-variable Hilbert series of k[x]/I_F, which collapses total degree and counts the complement of F… | yes | asserted | `code/out/three_approach_literature_grounding.md` |
 | `ad-conclusion-is-aggregate-not-per-element` | Ahlswede–Daykin's four-functions theorem (if alpha(A)beta(B) <= gamma(A u B) delta(A n B) for all A,B in P(n) then (sum alpha)(sum beta) <= (sum gamma)(sum delta)) has an AGGREGATE Sigma-product (correlation/overlap)… | yes | asserted | `code/out/three_approach_literature_grounding.md` |
 | `ad-uc-application-is-avg-size-route-known-not-to-force-abundance` | The only application of the AD/FKG-averaging engine to union-closed families in the literature is through the average-set-size / Reimer direction (Balla–Bollobás–Eccles, JCTA 2013, determining minimum average size and… | yes | asserted | `code/out/three_approach_literature_grounding.md` |
@@ -67,9 +68,8 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 | `ellis-gilmer-conjecture-refuted` | Gilmer's Conjecture 1 (iid A,B over subsets of [n], all marginals < 1/2, H(A)>0 ⟹ H(A∪B) + D(A∪B\|\|A) > H(A)) is FALSE. Counterexample on n=2: p(∅)=p({1,2})=x, p({1})=p({2})=1/2−x with x=0.3 gives marginals exactly 1/2… | yes | asserted | `research/summaries/ellis-counterexample-gilmer-conjecture-2022.md` |
 | `ellis-ivan-leader-small-set-3-fails` | For every ε>0 there is a union-closed family with unique smallest set S of size k such that no element of S is in more than (1+o(1))log₂k/(2k) of the sets; for k=3 this is ≈(1+o(1))log₂3/6<1/2. Hence containing a… | yes | proved | `research/summaries/ellis-ivan-leader-small-sets-2022.html.md` |
 | `ellis-ivan-leader-smallest-set-frequency` | For any k >= 3 there is a union-closed family whose unique smallest set S has size k, with every element of S having frequency (1+o(1))·(log2 k)/(2k). For k=3 this is below the conjecture's Sarvate-Renaud 2-set… | yes | proved | `research/summaries/ellis-ivan-leader-small-sets-2022.md` |
-| `falgas-ravry-separating-degree` | A separating union-closed family S on [n] (elements ordered by increasing degree) has d_S(i) ≥ i−1 for all i, so \|S\|≥n−1 and w(S)≥C(n,2), equality iff the staircase T_n or T_n∪{∅}; average degree over Ω is… | yes | proved | `research/summaries/falgas-ravry-minimal-weight-2011.md` |
 
-_151 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_156 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -89,6 +89,7 @@ Each of these was written as a formalised claim and has been recorded as `assert
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it. Search the whole ledger with `search_claims`.
 
 - `abe-nakano-modular` (research/summaries/abefrankl-abe-nakano-modular-1998.md) — asserted by the source, not proved there and not checked here
+- `abe-strong-semimodular-lattices` (research/summaries/abe-strong-semimodular-lattices-frankl-2000.md) — asserted by the source, not proved there and not checked here
 - `abundance-not-in-single-variable-hilbert-series` (code/out/three_approach_literature_grounding.md) — asserted by the source, not proved there and not checked here
 - `ad-conclusion-is-aggregate-not-per-element` (code/out/three_approach_literature_grounding.md) — asserted by the source, not proved there and not checked here
 - `ad-uc-application-is-avg-size-route-known-not-to-force-abundance` (code/out/three_approach_literature_grounding.md) — asserted by the source, not proved there and not checked here
@@ -127,9 +128,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `hu-small-family-to-constant` (research/summaries/massberg-separating-small-families-2015.md) — asserted by the source, not proved there and not checked here
 - `knill-log-bound` (research/summaries/knill-graph-generated-1994.md) — asserted by the source, not proved there and not checked here
 - `kpt-p38-rebuilt-verified` (code/out/constraint_delim_claims.md) — asserted by the source, not proved there and not checked here
-- `kpt-published-status` (research/summaries/kabela-polk-teska-abundant-elements-2022.md) — asserted by the source, not proved there and not checked here
 
-_68 more not shown here; they are in `research/`._
+_72 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 

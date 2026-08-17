@@ -9,9 +9,9 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
 | [[abundance-profile-odd-filter-minmax]] | Prove/verify: for every non-Boolean union-closed family F on [n], max-density(F) >= 2^{n-1}/(2^n-1). The VALUE is correct; the claimed "attained UNIQUELY by… | — | sketched | 0 |
-| [[uc-via-entropy-coupling-g-iid-half]] | For every dist \u03bc on {0,1}^n with H(\u03bc)>0 and max_i Pr[A_i=1]<1/2, the iid coupling satisfies H(A\u2228B)>H(A) [Gilmer Conj 1] | sub-instance of G-coupling-half; refuted, so the coupling class must be dependent | sketched | 0 |
-| [[uc-via-entropy-coupling-g-yu-twoatom-half]] | Yu/Sawin two-atom conditionally-iid class reaches density 1/2 | sub-instance of G-coupling-half on the restricted two-atom class; capped, so the surviving gap must use the larger class C3 | sketched | 0 |
-| [[uc-via-entropy-coupling]] | (UC) Every finite union-closed family F ⊆ 2^[n] with F ≠ {∅} contains an element lying in at least \|F\|/2 of the members of F. | \| Encode each member of F as its indicator vector in {0,1}^n and set μ = Unif(F), the uniform measure on F; then H(μ) = log\|F\| > 0. Argue the contrapositive.… | live | 1 |
+| [[uc-via-entropy-coupling-g-iid-half]] | For every distribution μ on {0,1}^n with H(μ) > 0 and max_i Pr_{A∼μ}[A_i=1] < 1/2, the iid coupling (A,B independent, both ∼μ) satisfies H(A∨B) > H(A).… | this is the sub-instance of G-coupling-half obtained by restricting the coupling class to the independent product coupling; if it held it would prove UC, but… | sketched | 0 |
+| [[uc-via-entropy-coupling-g-yu-twoatom-half]] | The Yu/Sawin two-atom symmetric conditionally-iid coupling class reaches density 1/2: sup_α inf_{P two-atom} g(P,α)/Eh ≥ 1 at t = 1/2. | this is the sub-instance of G-coupling-half obtained by restricting the coupling class to Yu's two-atom family; it is capped, so the surviving gap must use a… | sketched | 0 |
+| [[uc-via-entropy-coupling]] | (UC) Every finite union-closed family F ⊆ 2^[n] with F ≠ {∅} contains an element lying in at least \|F\|/2 of the members of F. | Encode each member of F as its indicator vector in {0,1}^n and set μ = Unif(F), the uniform measure on F; then H(μ) = log\|F\| > 0. Argue the contrapositive. If… | live | 1 |
 
 ## The open gaps — each one is a task
 
@@ -21,19 +21,11 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
   - next: symbolic_math + coder — implement Liu's 9-dimensional conditionally-iid optimization (Theorem 12 of arXiv:2306.08824, objective (84) over (a₁,a₂,q,b₀..b₅), P₀,P₁ 3-atom) in exact/interval arithmetic, never floating point. Two runs: (i) reproduce the conditional record c'≈0.382709087918741 as a correctness check against claim `liu-conditionally-iid`; (ii) push toward c = 1/2 and certify H(A∨B) > H(A) for all μ with marginals < 1/2 — or exhibit the extremal μ where the C₃ class optimum stays below 1/2 (a proved barrier for the largest known tractable coupling class, itself a GOAL.md result of…
   - _no thread — nothing is attacking this_
 
-## Resting on nothing recorded
-
-A reduction taking an unrecorded belief as input proves the goal from something nobody downstream can check. Either write the claim, or the id is misspelled.
-
-- [[uc-via-entropy-coupling]] rests on `reduction`, `needs`, `only`, `union-closure`, `H`, which no claim block on disk establishes
-
 ## Skeletons that could not be read
 
 - `README` has no skeleton block, so nothing can say what it reduces or whether the reduction is sound
 - `abundance-profile-odd-filter-minmax` does not say how its lemmas imply the goal, so nothing can check that they do
 - `abundance-profile-odd-filter-minmax` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
-- `uc-via-entropy-coupling-g-iid-half` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
-- `uc-via-entropy-coupling-g-yu-twoatom-half` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
 
 ---
 

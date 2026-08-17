@@ -42,8 +42,15 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `eq_a053221_derivation.md` | Derived decomposition of EQ(n)=A053221 (KPT Thm5(3)-equality family count) into provable singleton + two-chain counts; labels the necessity-half as the open structural conjecture. |
 | `eq_classify.py` | _(undescribed)_ |
 | `eq_classify_verify.py` | _(undescribed)_ |
+| `eq_clean_verify.py` | _(undescribed)_ |
 | `eq_decomposition_verify.py` | _(undescribed)_ |
+| `eq_lemma_probe.py` | _(undescribed)_ |
+| `eq_lemma_targeted_hunt.py` | _(undescribed)_ |
 | `eq_len2_investigate.py` | _(undescribed)_ |
+| `eq_necessity_n6.py` | _(undescribed)_ |
+| `eq_necessity_n6_m5m6.captured.txt` | _(undescribed)_ |
+| `eq_necessity_n6_m5m6.py` | Extends the EQ(n)=A053221 structural-lemma necessity check at n=6 to family sizes |
+| `eq_necessity_n6_m5m6_finding.md` | Records the pattern-finder finding: the EQ(n)=A053221 necessity lemma (no >=3-set family achieves the KPT equality) now verified exhaustively at n=6 for all |
 | `equality_cases.captured.txt` | _(undescribed)_ |
 | `equality_cases.py` | Lists every UC family attaining equality in the weak k=n Nagel bound; shows they are exactly the n coordinate permutations of the near-n-cube (relabeling artifact). |
 | `extend_tables_n5.py` | Extends four UC-family integer tables (degree1, KPT eq3, emptyfree, A-sat) from n<=4 to n=5 exactly via the validated cascade; source of the EQ(n)=A053221 finding. |
@@ -69,6 +76,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `half_families_list.py` | _(undescribed)_ |
 | `ho_k2_barrier_check.captured.txt` | _(undescribed)_ |
 | `ho_k2_barrier_check.py` | Exact-sympy check of the k=2 case of Ho's generalized Boppana inequality: proves alpha_2=1/phi, alpha_2/(1+alpha_2)=(3-sqrt5)/2, equality point 1/(1+alpha_2)=1/phi, and numerically verifies h(x^2)>=phi*x*h(x) with exact-zero equality at the saturation point 1/phi. EXECUTED: ho_k2_barrier_check.captured.txt, exit 0, all tie-backs OK. |
+| `hsz_transfer_verify.md` | Hand-verified exact algebra of the Hu-Shi-Zhou density-transfer identities (c2 from c1, Nagel iteration identity, one-element-of-any-k-set bounds) with claim block hsz-transfer-identities-check; the numeric targets feed the abundance-profile thread. |
+| `hsz_transfer_verify.py` | Exact sympy verification of the HSZ density-transfer identities (write-only in this scholar pass; executed by a later run with an executor). Companion to hsz_transfer_verify.md. |
 | `iid_barrier_check.py` | High-precision (mpmath 60-digit) computation of the Gilmer iid-OR entropy ratio R=H(X∨Y)/H(X) for X,Y iid uniform on a family, using lib.uc oracle for union-closure/abundance guards. Computes R for 2^[n] (n=2,3,4, all R=h(3/4)=0.81128) and for F={{1},{2},{1,2}} (R=0.62237), shows the constant (3−√5)/2 is a critical product-Bernoulli density p where R(p)=1 (not a ratio value), and verifies Boppana h(x²)≥phi·x·h(x) over a 200001-point grid. Probabilities are exact fractions; all entropy/ratio values numerical (not exact). Correctness: guards pass via lib.uc; hand-derived 2-set R=9h(7/9)/... — verified; Boppana agrees with source claim (Boppana arXiv:2301.09664, AHS arXiv:2211.11731). |
 | `iid_barrier_claim.md` | Claim-block note (id iid-barrier-exact, status checked) stating precisely what the iid-OR exact computation establishes: the only densities with H(X or Y)=H(X) are 0, (3-sqrt5)/2, 1; at p0=(3-sqrt5)/2 the union coordinate has complementary density 1/phi so the iid coupling yields no entropy gain (R=1); R>=1 on [0,p0] with first crossover at p0; hence the iid-OR entropy method certifies no element density above (3-sqrt5)/2. Records falsifiers and the scope note (iid barrier only; Sawin dependent coupling escapes). |
 | `iid_barrier_exact.py` | Exact sympy computation of the iid-OR entropy barrier for the union-closed method. X,Y iid product-Bernoulli(p) on {0,1}^2; R(p)=h(2p-p^2)/h(p). Proves symbolically in QQ(sqrt5)): the only solutions of h(2p-p^2)=h(p) with p in [0,1] are 0, (3-sqrt5)/2, 1 (via branches 2p-p^2=p and 2p-p^2=1-p); at p0=(3-sqrt5)/2, 2p0-p0^2=1-p0=1/phi so H(X or Y)=H(X) exactly and R(p0)=1; R(p)>=1 on [0,p0] verified on an exact-rational 763-point grid at 40 digits with min +5.0e-4. Correctly established: sympy solve returns the closed forms, simplify() differences return exactly 0, and the grid found no negative value. The R>=1-on-interval is a numerical grid check, not a standalone proof; the crossover location is proved exactly by branch solve. No UC claim. |
@@ -143,6 +152,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `profile_scan.captured.txt` | _(undescribed)_ |
 | `profile_scan.py` | Exhaustive scan of all UC families on [n] (n<=4) via lib.uc, computing WORST(n)=1/(2^{n-1}+1), distinct-profile counts, claim A (Nagel k=n) and claim C (degree-1 forces abundance). Verified against expected values 1/2,1/3,1/5,1/9 and the independent brute force. |
 | `psi_alpha_tieback_verify.md` | Algebraic proof that Yuster's ψ_k (root of (1-x)^k=x) equals Ho's α_k/(1+α_k), unifying the two order-k barrier formulations; ψ_2=(3-sqrt5)/2. |
+| `regular_probe_abundance.captured.txt` | _(undescribed)_ |
+| `regular_probe_abundance.py` | _(undescribed)_ |
+| `regular_profile_examples.py` | _(undescribed)_ |
+| `regular_profile_verify.py` | _(undescribed)_ |
+| `regular_profiles.captured.txt` | _(undescribed)_ |
+| `regular_profiles_cascade.py` | _(undescribed)_ |
 | `run_raz_check.sh` | _(undescribed)_ |
 | `run_raz_full.sh` | Shell wrapper to capture Raz 2017 verification output. |
 | `spence_verify.captured.txt` | Captured output (exit 0) of spence_verify.py: confirms Spence 2026 Prop 3.1 (5x4 matrix, every column exactly 2 ones among 5 rows, row set not union-closed) and Prop 4.1 (Schrader t3=0 < |

@@ -1,0 +1,13 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": false,
+  "declarations": [],
+  "file": "code/lean/Lib/graf_von_bothmer_lift.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": false
+}

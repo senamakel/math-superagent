@@ -8,8 +8,6 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 
 | Declaration | Kind | Standing | Statement | Source | File |
 | --- | --- | --- | --- | --- | --- |
-| `X5` | def | unchecked | : Fin 8 → ℤ × ℤ | — | `code/lean/probe_n5.lean` |
-| `or3` | def | unchecked | (P : Fin 8 → ℤ × ℤ) (a b c : Fin 8) : ℤ | — | `code/lean/probe_n5.lean` |
 | `Pt` | abbrev | unchecked | — | — | `code/lean/probe_n5b.lean` |
 | `X5` | def | unchecked | : Fin 8 → Pt | — | `code/lean/probe_n5b.lean` |
 | `convexQuad` | def | unchecked | (a b c d : Pt) : Bool | — | `code/lean/probe_n5b.lean` |
@@ -56,6 +54,19 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `convexQuad` | def | unchecked | (a b c d : Pt) : Bool | — | `code/lean/probe_n6.lean` |
 | `o3` | def | unchecked | (a b c : Pt) : ℤ | — | `code/lean/probe_n6.lean` |
 | `strictInside` | def | unchecked | (p a0 a1 a2 : Pt) : Bool | — | `code/lean/probe_n6.lean` |
+| `ContainsConvexSubset` | def | failed | (S : Finset Point) (n : ℕ) : Prop | — | `code/lean/Lib/Statement.lean` |
+| `ConvexPosition` | def | failed | (S : Finset Point) : Prop | — | `code/lean/Lib/Statement.lean` |
+| `ES` | def | failed | (n : ℕ) : ℕ | — | `code/lean/Lib/Statement.lean` |
+| `EveryNSetHasConvexSubset` | def | failed | (N n : ℕ) : Prop | — | `code/lean/Lib/Statement.lean` |
+| `GeneralPosition` | def | failed | (S : Finset Point) : Prop | — | `code/lean/Lib/Statement.lean` |
+| `Point` | abbrev | failed | — | — | `code/lean/Lib/Statement.lean` |
+| `collinear3` | def | failed | (a b c : Point) : Prop | — | `code/lean/Lib/Statement.lean` |
+| `erdos_szekeres_conjecture` | theorem | failed | (n : ℕ) (hn : 3 ≤ n) : | — | `code/lean/Lib/Statement.lean` |
+| `Cited.ETV_Conjecture` | def | failed | : Prop | — | `code/lean/Lib/etv_equivalent_to_es.lean` |
+| `Cited.ErdősSzekeres` | def | failed | (n : ℕ) : Prop | — | `code/lean/Lib/etv_equivalent_to_es.lean` |
+| `Cited.N` | def | failed | (n a b : ℕ) : ℕ | — | `code/lean/Lib/etv_equivalent_to_es.lean` |
+| `Cited.P` | def | failed | (n a b : ℕ) : Prop | — | `code/lean/Lib/etv_equivalent_to_es.lean` |
+| `Cited.etv_equivalent_to_es` | theorem | failed | (n : ℕ) : P n n n ↔ ErdősSzekeres n | — | `code/lean/Lib/etv_equivalent_to_es.lean` |
 | `Point` | abbrev | failed | — | — | `code/lean/extremal_split_stability_G_cupcap.lean` |
 | `convex_gives_cupcap` | theorem | failed | {n : ℕ} | — | `code/lean/extremal_split_stability_G_cupcap.lean` |
 | `cross2` | def | failed | (u v : Point) : ℤ | — | `code/lean/extremal_split_stability_G_cupcap.lean` |
@@ -77,27 +88,15 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `convex_gives_cupcap` | theorem | failed | {n : ℕ} (hn : 2 ≤ n) | — | `code/lean/g_cupcap_verified.lean` |
 | `convex_gives_geometry` | theorem | failed | {n : ℕ} | — | `code/lean/g_cupcap_verified.lean` |
 | `cross2` | def | failed | (u v : Point) : ℤ | — | `code/lean/g_cupcap_verified.lean` |
-| `cupcap_gives_convex` | theorem | failed | {n : ℕ} (hn : 2 ≤ n) | — | `code/lean/g_cupcap_verified.lean` |
-| `g_cupcap_verified` | theorem | failed | {n : ℕ} (hn : 2 ≤ n) | — | `code/lean/g_cupcap_verified.lean` |
-| `generalPosition` | def | failed | {m : ℕ} (X : Fin m → Point) : Prop | — | `code/lean/g_cupcap_verified.lean` |
-| `or3` | def | failed | (a b c : Point) : ℤ | — | `code/lean/g_cupcap_verified.lean` |
-| `union_card_shared_two` | theorem | failed | {C D : Finset (Fin m)} {k n : ℕ} | — | `code/lean/g_cupcap_verified.lean` |
-| `IsOpenHalfplaneSide` | def | failed | (N : ℕ) (X : Fin N → ℤ × ℤ) (S : Finset (Fin N)) : Prop | — | `code/lean/gsplit_enum_completeness_and_n7_zero.lean` |
-| `PairIdx` | abbrev | failed | (N : ℕ) | — | `code/lean/gsplit_enum_completeness_and_n7_zero.lean` |
-| `ValidSplit` | def | failed | (n N : ℕ) (L R : Finset (Fin N)) : Prop | — | `code/lean/gsplit_enum_completeness_and_n7_zero.lean` |
-| `allSides` | def | failed | (N : ℕ) : Finset (Finset (Fin N)) | — | `code/lean/gsplit_enum_completeness_and_n7_zero.lean` |
-| `allSides_card_parabola` | theorem | failed | (N : ℕ) (hN : 0 < N) : | — | `code/lean/gsplit_enum_completeness_and_n7_zero.lean` |
-| `cyclic_interval_count` | theorem | failed | (N : ℕ) (hN : 0 < N) : | — | `code/lean/gsplit_enum_completeness_and_n7_zero.lean` |
 
-_13 more not shown here; they are in `code/lean`._
+_26 more not shown here; they are in `code/lean`._
 
-93 declarations, 0 of them in a file the kernel has checked.
+106 declarations, 0 of them in a file the kernel has checked.
 
 ## Never checked
 
 These files are in the tree and no `lean_check` verdict exists for them. Nothing on this page from one of them is evidence of anything.
 
-- `code/lean/probe_n5.lean`
 - `code/lean/probe_n5b.lean`
 - `code/lean/probe_n5c.lean`
 - `code/lean/probe_n5d.lean`

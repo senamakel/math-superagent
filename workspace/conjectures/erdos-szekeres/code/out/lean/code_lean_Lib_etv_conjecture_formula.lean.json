@@ -1,0 +1,15 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": false,
+  "declarations": [
+    "theorem etv_conjecture_formula (n a b : ℕ) (ha : 2 ≤ a) (hb : 2 ≤ b) (ha_le_n : a ≤ n) (hb_le_n : b ≤ n) (hsum : n ≤ a + b - 2) : N n a b = ∑ i in Finset.Icc (n - b) (a - 2), Nat.choose (n - 2) i"
+  ],
+  "file": "code/lean/Lib/etv_conjecture_formula.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": true,
+  "sorries": [],
+  "tautologies": [],
+  "verified": false
+}

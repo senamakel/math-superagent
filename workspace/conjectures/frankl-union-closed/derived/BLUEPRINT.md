@@ -12,26 +12,23 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 - `uc-via-entropy-coupling/G-coupling-half` (lemma) — For every distribution μ on {0,1}^n with H(μ) > 0 and max_i Pr_{A∼μ}[A_i=1] < 1/2, there is a conditionally-iid coupling (A,B) of (μ,μ) —…
   - open `research/backward/uc-via-entropy-coupling.md`
-- `uc-via-entropy-coupling-g-iid-half` (goal) — For every dist \u03bc on {0,1}^n with H(\u03bc)>0 and max_i Pr[A_i=1]<1/2, the iid coupling satisfies H(A\u2228B)>H(A) [Gilmer Conj 1]
-  - open `research/backward/uc-via-entropy-coupling-g-iid-half.md`
-- `uc-via-entropy-coupling-g-yu-twoatom-half` (goal) — Yu/Sawin two-atom conditionally-iid class reaches density 1/2
-  - open `research/backward/uc-via-entropy-coupling-g-yu-twoatom-half.md`
 
 ## Verify these first
 
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
-- `ellis-gilmer-conjecture-refuted` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Gilmer's Conjecture 1 (iid A,B over subsets of [n], all marginals < 1/2, H(A)>0 ⟹ H(A∪B) + D(A∪B\|\|A) > H(A)) is FALSE. Counterexample on…
-- `half-density-max-eq-bool-subalgebra` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For every nonempty union-closed family F ⊆ 2^[n], n<=5, whose MAXIMUM element density is exactly 1/2, F is a Boolean subalgebra…
-- `uc-via-entropy-coupling/G-coupling-half` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For every distribution μ on {0,1}^n with H(μ) > 0 and max_i Pr_{A∼μ}[A_i=1] < 1/2, there is a conditionally-iid coupling (A,B) of (μ,μ) —…
+- `ellis-gilmer-conjecture-refuted` — 4 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Gilmer's Conjecture 1 (iid A,B over subsets of [n], all marginals < 1/2, H(A)>0 ⟹ H(A∪B) + D(A∪B\|\|A) > H(A)) is FALSE. Counterexample on…
+- `ahs-barrier-3-minus-rt5-over-2` — 2 node(s) rest on it, and the run is already building on it — min_μ∈ℳ_φ E[H(xy)]−E[H(x)] over independent (μ×μ) copies is minimized at φ*=(√5−1)/2, giving constant 1−φ*=(3−√5)/2 for UC; a natural…
+- `iid-barrier-exact` — 2 node(s) rest on it, and the run is already building on it — For X,Y iid product-Bernoulli(p) on {0,1}^2, the iid-OR entropy ratio R(p)=h(2p-p^2)/h(p) satisfies: (a) R(p)>=1 on [0,p0] with the only…
 
-_201 further candidate(s) below these, in the table._
+_204 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
 | `abe-nakano-modular` | claim | **ready** | — | Every finite modular lattice L with \|L\| ≥ 2 satisfies Frankl's conjecture: some join-irreducible x has \|{y: y ≥ x}\| ≤ \|L\|/2. |
+| `abe-strong-semimodular-lattices` | claim | **ready** | — | Every finite strong semimodular lattice L with \|L\| >= 2 satisfies Frankl's (union-closed sets) conjecture: some join-irreducible x has \|{y… |
 | `abundance-not-in-single-variable-hilbert-series` | claim | **ready** | — | The abundance count delta(i) = #{A in F : i in A} is multigraded (Z^n-graded) data and is NOT a coefficient of the single-variable Hilbert… |
 | `abundance-profile-odd-filter-minmax` | goal | blocked | `half-density-max-eq-bool-subalgebra` | Prove/verify: for every non-Boolean union-closed family F on [n], max-density(F) >= 2^{n-1}/(2^n-1). The VALUE is correct; the claimed… |
 | `ad-conclusion-is-aggregate-not-per-element` | claim | **ready** | — | Ahlswede–Daykin's four-functions theorem (if alpha(A)beta(B) <= gamma(A u B) delta(A n B) for all A,B in P(n) then (sum alpha)(sum beta) <=… |
@@ -70,19 +67,8 @@ _201 further candidate(s) below these, in the table._
 | `colbert-order-2026-version-of-record` | claim | **ready** | — | The journal version of record of Colbert's chain-condition results is now held in the library: Order 43, article 5 (2026), open access (CC… |
 | `colbert-topological-dcc` | claim | established | — | Let (X, τ) be a topological space satisfying the descending chain condition on its open sets, τ ≠ {∅}. Then X has an abundant element of τ… |
 | `coupling-interval-bb-infeasible-10s` | claim | established | — | The rigorous mpmath.iv interval branch-and-bound CANNOT certify t=0.38234 within a 10s budget: the margin of the true infimum above 1 is… |
-| `coupling-true-inf-crossing-0-3824` | claim | established | — | Over the full 4-parameter two-atom class, the true inf of g(P,alpha)/Eh (inf over P taken internally, alpha=0.035) crosses 1 between… |
 
-_169 further nodes not shown._
-
-## Resting on nothing that exists
-
-Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
-
-- `uc-via-entropy-coupling` rests on `reduction`, which does not exist
-- `uc-via-entropy-coupling` rests on `needs`, which does not exist
-- `uc-via-entropy-coupling` rests on `only`, which does not exist
-- `uc-via-entropy-coupling` rests on `union-closure`, which does not exist
-- `uc-via-entropy-coupling` rests on `H`, which does not exist
+_176 further nodes not shown._
 
 ---
 

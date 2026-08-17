@@ -27,6 +27,16 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `GnmEnvelope.isUpset_empty` | theorem | unchecked | {α : Type*} [DecidableEq α] : | — | `code/lean/gnm_envelope.lean` |
 | `GnmEnvelope.isUpset_powerset_univ` | theorem | unchecked | {α : Type*} [DecidableEq α] : | — | `code/lean/gnm_envelope.lean` |
 | `GnmEnvelope.upset_realizable` | theorem | unchecked | {α : Type*} [Fintype α] [DecidableEq α] | — | `code/lean/gnm_envelope.lean` |
+| `Spence.AdmissiblyRemovable` | def | failed | {α : Type*} [DecidableEq α] | — | `code/lean/Lib/MinimalCounterexample.lean` |
+| `Spence.Removable` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) (A : Finset α) : Prop | — | `code/lean/Lib/MinimalCounterexample.lean` |
+| `Spence.spence_minimal_counterexample_structure` | theorem | failed | {α : Type*} [Fintype α] [DecidableEq α] | Spence 2026 zenodo 20800102, Thm 6.3/6.4`). | `code/lean/Lib/MinimalCounterexample.lean` |
+| `UC.IsUnionClosed` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) : Prop | — | `code/lean/Lib/MinimalCounterexample.lean` |
+| `UC.count` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) (a : α) : ℕ | — | `code/lean/Lib/MinimalCounterexample.lean` |
+| `UC.present` | def | failed | {α : Type*} (F : Finset (Finset α)) (a : α) : Prop | — | `code/lean/Lib/MinimalCounterexample.lean` |
+| `UC.IsUnionClosed` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) : Prop | — | `code/lean/Lib/Statement.lean` |
+| `UC.count` | def | failed | {α : Type*} [DecidableEq α] (F : Finset (Finset α)) (a : α) : ℕ | — | `code/lean/Lib/Statement.lean` |
+| `UC.present` | def | failed | {α : Type*} (F : Finset (Finset α)) (a : α) : Prop | — | `code/lean/Lib/Statement.lean` |
+| `UC.union_closed_conjecture` | theorem | failed | {α : Type*} [Fintype α] [DecidableEq α] | — | `code/lean/Lib/Statement.lean` |
 | `EllisGilmer.LHS` | def | failed | (x : ℝ) : ℝ | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
 | `EllisGilmer.LHS_of` | def | failed | (p : Fin 4 → ℝ) : ℝ | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
 | `EllisGilmer.boundary_distribution` | theorem | failed | : | — | `code/lean/ellis_gilmer_conjecture_refuted.lean` |
@@ -70,7 +80,7 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `HalfDensity.max_half_is_block` | theorem | failed | {α : Type*} [Fintype α] [DecidableEq α] | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
 | `HalfDensity.present` | def | failed | {α : Type*} (F : Finset (Finset α)) (a : α) : Prop | — | `code/lean/half_density_max_eq_bool_subalgebra.lean` |
 
-61 declarations, 11 of them in a file the kernel has checked.
+71 declarations, 11 of them in a file the kernel has checked.
 
 ## Never checked
 

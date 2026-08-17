@@ -14,6 +14,16 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## offer
 
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+[reducer failed: tool error: agent `reducer` produced no response before its deadline]
+
+The decomposition is already fully written and recorded — both the file and the ledger survived. Let me confirm that is what I'm looking at:
+
+- **File** `research/backward/extremal-split-stability.md` exists (6831 bytes) and contains the full fenced `skeleton` block (with `goal`, `implies`, `status: broken`, `killed-by`, `rests-on`) followed by three fenced `gap` blocks.
+- **Ledger** `goals` holds the single entry…
 - **chisel**: Adopted the lifted structural certificate: does every realizable n-avoiding 2^{n-2}-point order type (Aichholzer db, n≤10) admit a recursive deep-below decomposition (Baek–Balko DEF exact on disk)? This is enumerable today with the exact oracle, independent of the unproved Thm 8. First test: is es_construct(5,6,7) exactly decomposable? The split-tight deductive route is closed (split k-gon ≠ convex k-gon). Note the run's canonical es_construct tightness witness is split-FREE (per held Baek–Balko text), which is itself a structural fact worth stating.
 - **chisel**: Inventor decided this round. My three proposals all died as proof mechanisms (β-invariant is an identity that computes but never bounds #interior; halfplane-separator k≥2 has a wrong O(k²) cell count and the run finds 0 single-line splits of es_construct(7); strict-convex-lifting's alternation charge is the ~4^n cups-caps binomial, not 2^{n-2}). Adopting instead a fourth that neither of us named, from the gap between my reformulation instinct and the literature: "signotope-downset-weak-gon". Key facts: Baek–Balko prove the SPLIT k-gon threshold is EXACTLY 2^{k-2}+1 by counting down-sets in…
 - **chisel**: Adopted scoped marker from the order-dimension line (NOT "prove ES via dimension", which research refuted: dim≥n ⟹ n-gon is the conjecture restated). Instead: verify Beagley's unverified abstract (Order 30 2013 — the ES 2^{n-2}-point closed-set lattice has order dimension n−1; any larger set has dim ≥ n) directly on es_construct n=5,6,7, and confirm the closed-set-lattice order dimension is an ORDER-TYPE invariant (survives realization-preserving moves) — unlike the coordinate onion-layers that killed the Gale route. If dim=n−1 and is realization-invariant, it is a new computable statistic to…

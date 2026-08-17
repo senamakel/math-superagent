@@ -14,6 +14,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `_repro.py` | _(undescribed)_ |
 | `_run_ang.py` | _(undescribed)_ |
 | `_run_ang.sh` | _(undescribed)_ |
+| `_run_noncov.py` | _(undescribed)_ |
 | `_run_pattern_attack.py` | _(undescribed)_ |
 | `_sweep.py` | _(undescribed)_ |
 | `_time.py` | _(undescribed)_ |
@@ -35,6 +36,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `block_tightness.py` | _(undescribed)_ |
 | `block_tightness_claim.md` | _(undescribed)_ |
 | `block_tightness_n8.py` | _(undescribed)_ |
+| `brute_existing.captured.txt` | _(undescribed)_ |
 | `brute_oracle.captured.txt` | _(undescribed)_ |
 | `cell_premise_audit.py` | _(undescribed)_ |
 | `check_esz_construction.py` | _(undescribed)_ |
@@ -105,6 +107,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `maxconvex_structure_xcheck.captured.txt` | _(undescribed)_ |
 | `maxconvex_structure_xcheck.py` | Independent re-enumeration of the pattern distribution using the 4-point criterion instead of the hull test; proves the per-pattern counts and totals (38/802/39648) are not an artifact of the convexity test implementation. n=7 re-run takes ~334 s. |
 | `merge_geometry_probe.py` | _(undescribed)_ |
+| `nnc_from_captured.py` | Derives the non-convex-4-subset counts NNC(N)=C(N,4)-convex4 of es_construct from already-captured convex-4 rows and evaluates the covering-ratio test NNC*C(N-4,n-4)>=C(N,n) at N=2^{n-2}; the first-step quantity of queued task con4-supersat-nnc-count. |
+| `nnc_from_captured_claim.md` | _(undescribed)_ |
+| `nonconvex4_cover.py` | _(undescribed)_ |
 | `pat_corner_full_check.py` | Exhaustive exact verifier of the corner-block-pair characterization of the six FULL block patterns of es_construct (EXIT 0, n=5..7, all C(N,n-1) subsets). |
 | `pat_sgc_check.py` | Cross-check of split-gon spectrum cup/cap numbers against chains_by_rightmost and es_geom; established that whole-set max cup and max cap are both n-1 (so max union=2n-4 is trivial). |
 | `pattern_bijection_check.py` | Exact verification of the explicit bijection between realized (n-1)-convex block patterns of es_construct and unordered block pairs {L,R}; exhaustive n=4..7, sampled n=8. The formula/answer comes from here. |
@@ -128,6 +133,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_report4.md` | _(undescribed)_ |
 | `pattern_finder_report5.md` | Round-5 pattern-finder report: upgrades the triangular realized-pattern-class count to an explicit verified bijection with unordered block pairs. |
 | `pattern_finder_report6.md` | This round's pattern-finder report: the new exact convex-subset spectrum of es_construct (k=4 row 38,1119,23220,422186 is a real OEIS miss and not low-degree polynomial), the peak-at-k=n-2 unimodality conjecture, and re-confirmation of the established template sequences. Describes the template only; does not bound ES(n). |
+| `pattern_finder_report7.md` | _(undescribed)_ |
+| `pattern_finder_report8.md` | _(undescribed)_ |
+| `pattern_finder_report9.md` | Pattern-finder round 9: re-survey confirms no new sequence since round 8; the only newer artifact is an ES oracle self-check reproduction. Verdict NOTHING FURTHER — inventory of all sequence-bearing data unchanged, cross-family comparison impossible (second family not realized on disk). |
 | `pattern_finder_round2.md` | Pattern-finder round-2 report: the full-transversal count of es_construct equals A001142 (every transversal convex, verified to n=9); the distinct-convex sequence [4,38,802,39648] is not in OEIS and shows no closed form; reversal-symmetry of pattern counts; gsplit/onion counts are non-regularities. |
 | `pattern_hm_n8.py` | Refutes the last unproven non-six pattern (0,0,3,1,1,2,0) as FULL at n=8 with sampled witness [14,9,19,32,52,62,57], completing the six-pattern exactness. |
 | `pattern_layers.py` | Convex-layer peeling and whole-set cup/cap spectra of es_construct.es_set at n=4..7. |

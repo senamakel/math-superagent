@@ -29,7 +29,7 @@ trace to a source is worth less than no statement.
 What this run may treat as known, each marked proved, computed and checked,
 sourced, or conjectured, with a link to what establishes it.
 
-- **Directive 21 (statement bug): two sorry-goals in the Ellis refutation are FALSE and unprovable — do not assign a prover.** In `code/lean/ellis_gilmer_conjecture_refuted.lean`, `gap_perturbed_strict` and `gilmer_refuted_boundary` both ask for the *entropy of `p`* — which `hsum` defines as `∑ f i·log(1/f i)` — to be negative (one adds `0 < hsum f` alongside, i.e. `X > 0 ∧ X < 0` for the same `X`). Both are unsatisfiable. What is negative is the **difference (1)** that `LHS`/`closed` encode, `Σ_s q_s log(1/p_s) − Σ_s p_s log(1/p_s)`, kernel-checked as `(2/25)ln(2/3) < 0` at `x=3/10` via `ellis_lhs_negative`. Restate both around that difference (see task `restate-false-lean-goals-ellis-gilmer`); `gilmer_refuted_boundary` becomes provable at `x=3/10` from `ellis_lhs_negative` + `boundary_distribution`. The 8 kernel-clean core declarations and `gap_union_weights`/`gap_entropy_rewrite` (correctly stated, mechanical) are untouched.
+- **Directive 21 (statement bug) is RESTATED on disk — the restate is done, do not redo it.** The two sorry-goals were originally FALSE (they demanded the *entropy* `hsum p` be negative). `gilmer_refuted_boundary` is now **PROVEN** (no sorry: `refine ⟨3/10, …⟩` to `ellis_lhs_negative` + `boundary_distribution`). `gap_perturbed_strict` has been restated around the correct object — the difference `LHS_of p < 0` (union-pushforward cross-entropy minus entropy), not `hsum` — and is still a `sorry` needing a continuity lemma for `LHS_of` as a function of the distribution (finite sum of `log(1/·)` terms on the positive simplex). `gap_union_weights` and `gap_entropy_rewrite` remain correctly-stated mechanical sorries. A prover can now be assigned to `gap_perturbed_strict` / `gap_union_weights` / `gap_entropy_rewrite`; `gilmer_refuted_boundary` is discharged (`code/lean/ellis_gilmer_conjecture_refuted.lean`). The 8 kernel-clean core declarations are untouched.
 - **The library is finished — stop adding sources.** 62 claims are in
   `research/CLAIMS.md`; `research/ROOT.md` states the minimal-counterexample
   structure, the verification bound, and the settled lattice/graph classes.
@@ -122,6 +122,16 @@ is the one canonical oracle; guards all pass (`code/out/uc_oracle_check.captured
   Existence of a (2,3,7)-construction stays OPEN; the probe is closure-based,
   not exhaustive (`no-two-abundant-k3-n7-found`,
   `kpt-p38-rebuilt-verified`).
+- **Odd-filter min-max, settled: value correct, uniqueness FALSE.** Among
+  NON-Boolean union-closed families, min over F of max density = `2^{n-1}/(2^n-1)`
+  — but the odd filter `2^[n]\{∅}` is NOT the unique minimizer. For every n≥2
+  there are n+1 minimizers: the odd filter plus the n power-set-minus-singleton
+  families `2^[n]\{{x}}` (each |F|=2^n−1, same bound). The n+1-minimizer
+  refutation of uniqueness is unconditional for every n≥2; exhaustive
+  enumeration ceiling is n≤4 (claim `odd-filter-max-density-extremal-nonboolean`,
+  `code/out/odd_filter_claim.md`, `odd_filter_minmax.captured.txt`). Not
+  counterexample-relevant (those families sit far above 1/2); it is a stale-
+  extremal cleanup on the abundance-profile front.
 
 ## Recalled
 
@@ -175,3 +185,11 @@ State a gap precisely enough to be a research request rather than a mood.
   other open job in GOAL.md.
 - **`R-uc-with-three-set` stays open** (the refuted verdict was an encoding bug,
   resolved; see Contradictions).
+- **Three open ledger rows are settled on disk — close them, do not re-run:**
+  `verify-odd-filter-minmax` (claim `odd-filter-max-density-extremal-nonboolean`
+  + capture filed), `restate-false-lean-goals-ellis-gilmer` (`gilmer_refuted_boundary`
+  proven, `gap_perturbed_strict` restated — see Established/Directive 21), and
+  the coupling pair `write-step4-verdicts-to-scores-jsonl` /
+  `file-coupling-inf-and-bb-feasibility-claims` (see Established/Directive 13).
+  The genuinely open work is `abundance-profile-front-continue` and the three
+  `sorry` gaps in the Ellis Lean file.

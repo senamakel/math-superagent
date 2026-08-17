@@ -1,0 +1,17 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem h16_2 : ∀ n : ℕ, ∃ N : ℕ, ∀ f : PlanarPolyField n, f.limitCycleCount ≤ N"
+  ],
+  "file": "code/lean/Lib/Statement.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/Statement.lean:121:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

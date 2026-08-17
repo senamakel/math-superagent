@@ -1,0 +1,36 @@
+{
+  "axioms": [
+    "'dist2_adj_exactly_two_nbrs' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'distance2_bijects_nonmatching_pairs' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'outer_12regular' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'outer_pair_rule' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'inner_outer_rule' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'Cited.exists_H' depends on axioms: [propext, Cited.exists_H, Classical.choice, Quot.sound]"
+  ],
+  "cited": [
+    "Cited.exists_H"
+  ],
+  "compiled": true,
+  "declarations": [
+    "theorem nonmatching_pairs_card (mate : Fin 14 → Fin 14) (hM : IsPerfectMatching mate) : (NonMatchingPairs mate).card = 84",
+    "theorem dist2_adj_exactly_two_nbrs (G : SimpleGraph (Fin 99)) [DecidableRel G.Adj] (hG : G.IsSRGWith 99 14 1 2) (zero : Fin 99) (N0 : Finset (Fin 99)) (hN0 : N0 = G.neighborFinset zero) : ∀ x : Fin 99, x ≠ zero → ¬ G.Adj zero x → ((G.neighborFinset x).filter (fun y : Fin 99 => y ∈ N0)).card = 2",
+    "theorem distance2_bijects_nonmatching_pairs (G : SimpleGraph (Fin 99)) [DecidableRel G.Adj] (hG : G.IsSRGWith 99 14 1 2) (zero : Fin 99) : ∃ (mate : Fin 14 → Fin 14), IsPerfectMatching mate ∧ ∃ (Out : Type) (_ : Fintype Out) (_ : DecidableEq Out), Fintype.card Out = 84 ∧ ∃ (P : Out → Finset (Fin 14)), (∀ u : Out, (P u).card = 2 ∧ ¬ IsMatchingPair mate (P u)) ∧ (∀ p : Finset (Fin 14), p.card = 2 →…",
+    "theorem outer_12regular {Out : Type} [Fintype Out] (H : SimpleGraph Out) [DecidableRel H.Adj] (hcard : Fintype.card Out = 84) : H.IsRegularOfDegree 12",
+    "theorem outer_pair_rule {Out : Type} [Fintype Out] [DecidableEq Out] (H : SimpleGraph Out) [DecidableRel H.Adj] (P : Out → Finset (Fin 14)) (hcard : Fintype.card Out = 84) : ∀ u v : Out, u ≠ v → let s : ℕ",
+    "theorem inner_outer_rule {Out : Type} [Fintype Out] [DecidableEq Out] (mate : Fin 14 → Fin 14) (H : SimpleGraph Out) [DecidableRel H.Adj] (P : Out → Finset (Fin 14)) (hcard : Fintype.card Out = 84) : ∀ (u : Out) (a : Fin 14), OuterNeighborsContaining H P u a = if a ∈ P u then 1 else 2 - (if mate a ∈ P u then 1 else 0)"
+  ],
+  "file": "code/lean/Lib/Conway99PairH.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/Conway99PairH.lean:56:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/Lib/Conway99PairH.lean:72:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/Lib/Conway99PairH.lean:85:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/Lib/Conway99PairH.lean:99:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/Lib/Conway99PairH.lean:110:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/Lib/Conway99PairH.lean:123:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

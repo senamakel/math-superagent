@@ -10,8 +10,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 4 | https://doi.org/10.1007/978-0-8176-4842-8_3 | A Combinatorial Problem in Geometry | cited by Fast Formal Proof of the Erdős–Szekeres Conjecture for Convex Polygons with at Most 6 Points (2009, cited 1264 times) |
 | 4 | https://doi.org/10.1017/s144618110000300x | Computer solution to the 17-point Erdős-Szekeres problem | cited by Fast Formal Proof of the Erdős–Szekeres Conjecture for Convex Polygons with at Most 6 Points (2006, cited 77 times) |
 | 4 | https://doi.org/10.1090%2FS0273-0979-00-00877-6 | 10.1090/S0273-0979-00-00877-6 | on points in convex position—A survey", *[Bulletin of the American Mathematical Society][82]*, **37**(4): 437– 458, [doi][53]: [10.1090/S0273-0979-00-00877-6][83] - Nicolás, Carlos M. (2007), "The… |
-| 4 | https://doi.org/10.1016/j.jcta.2026.106195 | The Erdős–Szekeres conjecture revisited | cites Ramsey-remainder (2026, cited 0 times) |
-| 4 | https://doi.org/10.1016/j.ejc.2024.104085 | https://doi.org/10.1016/j.ejc.2024.104085 | 24/SCI/008). ## References 1. J. Baek. On the Erdős-Tuza-Valtr conjecture. European J. Combin., 124:Paper No. 104085, 15, 2025. URL: [https://doi.org/10.1016/j.ejc.2024.104085][24]. 2. M. Balko.… |
 | 4 | http://www.numdam.org/item?id=CM_1935__2__463_0 | "A combinatorial problem in geometry" | COMPOSITIO MATHEMATICA P. ERDÖS G. SZEKERES A combinatorial problem in geometry Compositio Mathematica, tome 2 (1935), p. 463-470 <http://www.numdam.org/item?id=CM_1935__2__463_0> © Foundation… |
 | 4 | https://link.springer.com/product/springer-plus | View plans | chapters or articles per month - Access and download chapters and articles from more than 300k books and 2,500 journals - Cancel anytime [View plans][7] ## Buy Now Price includes VAT (Kuwait) Instant… |
 | 3 | http://www.emis.de/MATH-item?0958.52018 | MATH | V.: The Erdős–Szekeres problem on points in convex position—a survey. Bull. Am. Math. Soc. **37**, 437–458 (2000) [Article][48] [MATH][49] [Google Scholar][50] 20. Morris, W., Soltan, V.: The… |
@@ -44,8 +42,10 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://doi.org/10.1007/978-1-4613-0039-7 | Lectures on Discrete Geometry | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (2002, cited 1436 times) |
 | 2 | https://doi.org/10.1007/bf02187696 | Upper bounds for configurations and polytopes inR d | cited by THE ERDŐS–SZEKERES PROBLEM FOR NON‐CROSSING CONVEX SETS (1986, cited 117 times) |
 | 2 | https://doi.org/10.1016/0012-365x(80)90096-5 | Proof of a conjecture of Burr, Grünbaum, and Sloane | cited by THE ERDŐS–SZEKERES PROBLEM FOR NON‐CROSSING CONVEX SETS (1980, cited 68 times) |
-| 2 | https://doi.org/10.5169/seals-32945 | Konvexe Fünfecke in ebenen Punktmengen | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (1978, cited 116 times) |
 | 2 | https://openalex.org/W584360559 | Elementary Real Analysis | cited by On Erdős–Szekeres-Type Problems for k-convex Point Sets (1962, cited 69 times) |
+| 2 | https://doi.org/10.11606/d.45.2019.tde-25042019-000504 | Extremal and probabilistic problems in order types | cites Erdős–Szekeres Theorem for Point Sets with Forbidden Subconfigurations (2019, cited 0 times) |
+| 2 | https://arxiv.org/pdf/0910.2700 | https://arxiv.org/abs/0910.2700 | convex fourgons, Geombinatorics, 19(1) (2009), 5–6. - [41] V. Koshelev, On Erdős–Szekeres problem and related problems, 2009, [https://arxiv.org/abs/0910.2700][29] - [42] D. Basu, K. Basu, B. B.… |
+| 2 | https://doi.org/10.1145/3570636 | Convex Hulls of Random Order Types | cites Erdős–Szekeres Theorem for Point Sets with Forbidden Subconfigurations (2022, cited 9 times) |
 
 _1242 further candidates not shown; they are cited once each._
 

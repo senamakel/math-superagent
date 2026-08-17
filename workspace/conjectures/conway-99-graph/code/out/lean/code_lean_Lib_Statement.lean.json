@@ -1,0 +1,25 @@
+{
+  "axioms": [
+    "'Conway99.conway_99_srg_exists' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+    "'Conway99.counting_identity' depends on axioms: [sorryAx]",
+    "'Conway99.v99_forces_k14' depends on axioms: [sorryAx]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem conway_99_srg_exists : ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V) (_ : DecidableRel G.Adj), @SimpleGraph.IsSRGWith V _ G _ 99 14 1 2",
+    "theorem counting_identity (v k : ℕ) (hpos : 0 < k) : k * (k - 1 - 1) = 2 * (v - k - 1) → v = 1 + k + k * (k - 2) / 2",
+    "theorem v99_forces_k14 (k : ℕ) : k * (k - 1 - 1) = 2 * (99 - k - 1) → k = 14"
+  ],
+  "file": "code/lean/Lib/Statement.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/Statement.lean:41:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/Lib/Statement.lean:72:8: warning: declaration uses `sorry`",
+    "/workspace/code/lean/Lib/Statement.lean:79:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

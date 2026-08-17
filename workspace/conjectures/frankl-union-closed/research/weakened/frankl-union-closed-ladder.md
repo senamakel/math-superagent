@@ -9,9 +9,11 @@ a proof of something it did not prove.
 
 ```ladder
 goal: Frankl's union-closed sets conjecture — every finite union-closed family F ≠ {∅} has an element lying in at least |F|/2 of its members.
-difficulties: unbounded-n, unbounded-F, no-class-restriction, tightness-at-half, entropy-coupling-cap, small-set-forcing
+difficulties: unbounded-n, unbounded-F, no-class-restriction, tightness-at-half, entropy-coupling-cap, small-set-forcing, unbounded-chain-length, graph-bipartite-hard
 status: open
 ```
+
+## Lattice / family-restriction axis
 
 ```rung
 id: R-uc-n1
@@ -46,12 +48,30 @@ merge: Settled in the literature (Czédli–Schmidt, Abe–Nakano, Reinhold, Poo
 ```
 
 ```rung
+id: R-uc-graph-classes
+statement: UC (in the Bruhn–Charbit–Schaudt–Telle graph form) holds for every graph in a settled class: chordal bipartite, subcubic bipartite, bipartite series-parallel, and bipartitioned circular interval graphs — each has two adjacent vertices in at most half its maximal stable sets.
+off: no-class-restriction
+stance: settled
+merge: This is the graph-formulation axis, distinct from the lattice axis: the objects are graphs, not lattices, and the equivalence (claim `graph-formulation`) makes general-bipartite the whole conjecture. Settled classes are `graph-settled-classes` (chordal bipartite, subcubic bipartite, bipartite series-parallel, bipartitioned circular interval). To climb, there is no intermediate rung — general bipartite IS the full conjecture (`graph-bipartite-equivalent`), so the only next class is a *new* graph class, and the run's one attackable candidate is Nived's 2-layered decomposition hypothesis (claim `nived-graph-decomposition-class`, Theorem 3.2–3.3: products of maximal-stable-set counts under a 2-layered/common-vertex condition). The difficulty that bites is graph-bipartite-hard: the bipartite heart has no reduction that loses anything.
+```
+
+```rung
+id: R-uc-dimension-2
+statement: Every nontrivial union-closed family of dimension at most two (every chain of sets has at most 3 members, i.e. length |C|−1 ≤ 2) has an abundant element; both finite and infinite families.
+off: unbounded-chain-length
+stance: settled
+merge: Settled by Colbert (dimension ≤ 1 is a lemma; Prop 3.9 / Thm 3.17 of the Order 43 (2026) version of record — claims `colbert-dim-at-most-2`, `colbert-order-2026-version-of-record`). The proof is an injection F∖F_x → F_x that the dimension-2 chain discipline makes available. To climb, lift the dimension bound to ≤ 3 — the difficulty that bites is unbounded-chain-length coming back on, because the injection no longer exists at chain length 4 and no settled result for dimension ≤ 3 is in the library. Note this axis is independent of the n/|F| axes (dimension can be small even with unbounded n).
+```
+
+```rung
 id: R-uc-upper-semimodular
 statement: Every finite upper semimodular lattice L with |L| ≥ 2 has a join-irreducible element below at most half its elements (equivalently: UC holds for the union-closed families arising from upper semimodular lattices).
 off: no-class-restriction
 stance: open
 merge: The genuine fault line of the lattice line. Lower semimodular, modular, geometric, planar semimodular are settled, but whether UC holds for *upper* semimodular lattices in general is OPEN (claim `upper-semimodular-open`; confirmed still open as of Joshi–Waphare 2019). A subclass is settled: upper semimodular with |J(L)\A(L)| ≤ 3 (claim `joshiwaphare-upper-semimodular-3`), and breadth ≤ 2 (claim `joshiwaphare-breadth2`) — so the run's first move is to push the |J(L)\A(L)| ≤ 3 line up or find a violation structure. The difficulty that bites is the absent semimodular-cover discipline on the join-irreducible side: the injection proof that works for lower semimodular / breadth ≤ 2 (constructing the majority set for one join-irreducible) has no upper-semimodular analogue. To climb to the settled lattice rungs' ceiling is exactly to turn no-class-restriction back on.
 ```
+
+## Constant / entropy axis
 
 ```rung
 id: R-constant-gilmer
@@ -77,6 +97,8 @@ stance: settled
 merge: Settled (Sawin 2022; Cambie 2022; Yu 2023; Liu 2023 conditionally — all in the library; the ≈ 0.38234 value is credited to Yu/Cambie). The cap was beaten only by changing the coupling (dependent / conditionally-iid samples), and only to ~0.38234, leaving a gap of ~0.118 to 1/2. The remaining difficulty is not a better coupling alone: closing the whole gap turns tightness-at-half back on and would be the conjecture. The first move is to formalise "entropy argument of Gilmer shape" precisely enough to ask whether any coupling can reach 1/2 — the live frontier, and the run's own coupling work shows the two-atom class caps below it (Ruled out in CONTEXT.md).
 ```
 
+## Small-set-forcing axis
+
 ```rung
 id: R-uc-with-singleton
 statement: Every union-closed family F ≠ {∅} that contains a singleton {x} has an element in at least |F|/2 members.
@@ -90,7 +112,7 @@ id: R-uc-with-two-set
 statement: Every union-closed family F ≠ {∅} that contains a 2-element set {x,y} has an element in at least |F|/2 members.
 off: no-class-restriction, small-set-forcing
 stance: settled
-merge: Folklore / Sarvate–Renaud: one of x, y is abundant, by a local union argument (if not all members contain x, unioning with {x,y} drives up y's count). Still below the forcing boundary. To climb, go to a 3-element member — small-set-forcing fully re-engages, because the size-2 argument has no size-3 analogue.
+merge: Folklore / Sarvate–Renaud / Hu–Shi–Zhou (Prop 3.3: any |A| ≥ 2 member has an element of density ≥ |F|/(2^{|A|−2}+1), tight for 2-sets): one of x, y is abundant. Still below the forcing boundary. To climb, go to a 3-element member — small-set-forcing fully re-engages, because the size-2 argument gives density ≥ 1/2 but the size-3 argument only gives ≥ 1/3, which is below the abundant threshold.
 ```
 
 ```rung
@@ -98,5 +120,5 @@ id: R-uc-with-three-set
 statement: Every union-closed family F ≠ {∅} that contains a 3-element set {x,y,z} has an element (not necessarily in {x,y,z}) in at least |F|/2 members.
 off: no-class-restriction
 stance: open
-merge: This is the first hard rung and the fault line of the small-set-forcing axis. The forcing argument dies here. The claim `ellis-ivan-leader-small-set-3-fails` refutes only the *stronger* conjecture that one of x,y,z is abundant (for any ε>0 a UC family with smallest 3-set whose elements all appear in fraction (1+o(1))(log₂3)/6 < 1/2) — so the rung as stated (some element, possibly outside {x,y,z}) survives and stays open. Its bite is the missing guarantee that the abundant element lies in the forcing set: the local union trick gives nothing. Attack it with the FC-family machinery (Poonen weight criterion, claim `vuckovic-zivkovic-fc-lemma`): decide whether a 3-set is an FC-family, and if not locate the boundary. Note `maric-4-3subsets-7set-fc` shows four 3-subsets of [7] ARE FC, a data point for how much forcing a 3-set needs. The difficulty that bites is small-set-forcing.
+merge: This is the first hard rung and the fault line of the small-set-forcing axis. The forcing argument dies here: the size-2 density transfer gives only ≥ 1/3 for 3-sets (claim `hsz-one-element-of-any-2set-dense`). The claim `ellis-ivan-leader-small-set-3-fails` refutes only the *stronger* conjecture that one of x,y,z is abundant (for any ε>0 a UC family with smallest 3-set whose elements all appear in fraction (1+o(1))(log₂3)/6 < 1/2) — so the rung as stated (some element, possibly outside {x,y,z}) survives and stays open. Its bite is the missing guarantee that the abundant element lies in the forcing set: the local union trick gives nothing. Attack it with the FC-family machinery (Poonen weight criterion, claim `vuckovic-zivkovic-fc-lemma`): decide whether a 3-set is an FC-family, and if not locate the boundary. Data points on how much forcing a 3-set needs: `maric-4-3subsets-7set-fc` (four 3-subsets of [7] ARE FC) and `no-two-abundant-k3-n7-found` (no (2,3,7)-construction in 190k families; the k=3 abundance floor is 3, and whether any family has exactly 2 abundant elements at n=7 stays open). The difficulty that bites is small-set-forcing.
 ```

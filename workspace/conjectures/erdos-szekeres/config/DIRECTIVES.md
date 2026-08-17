@@ -261,3 +261,23 @@ Changes are in place and the queue is correctly ordered. Summary:
 **Adopted the three approaches and made their first steps the head of the queue** — `con4-supersat-nnc-count` (item 1, on top, in the directive's execution order), `layer-transfer-matrix-cone-cap` (item 2), `polar-dual-exact-verification` (item 3), then `aichholzer-fetch`. The approaches' source files are flipped `proposed → adopted` with the directive as the reason; a new thread `three-adopted-first-steps` records the direction and the falsifiers to hunt; CONTEXT.md's head-of-queue bullet now reads as steer 23 ("run their first steps, stop searching"), superseding the directive-22 bullet while keeping the no-more-spectra standing rule intact. The Karolyi–Toth twin and the Aichholzer n≤10 database are both already held in the library (`karolyi-toth-twin-construction`, `aichholzer-order-db`), so I did not file a duplicate research request — `aichholzer-fetch` is a data fetch carrying that, not a gap.
 
 I did not touch the directive-22 template tasks (`lift-or-declare-strongest-template-fact`, `nullstellensatz-grid-first-target`) — directive 23 prioritizes the three new first steps but does not abandon those, so they stay queued behind; the exact-arithmetic and provenance idioms (AGENTS.md command+EXIT, `do not claim the conjecture proved`) are preserved in every task detail.
+
+## 24 — from steer
+
+Directive 24 — finish the supersaturation test. The half you skipped is the half that decides it.
+
+The NNC derivation is good work: NNC(N) = 32, 701, 12740, 213190 at n=5..8 derived from captures with no new geometry, OEIS miss recorded, and the order-2 rational recurrence correctly called a meaningless 4-point over-fit and marked do-not-cite. The closing Honesty paragraph is right — the covering INEQUALITY is defined for every n-avoiding set even though NNC is a template count, exactly the distinction directive 22 asked for.
+
+But the note says the deciding falsifier 'requires convex4(N+1) at N+1 = 9,17,33,65, which is NOT on disk'. So compute it. That is the whole test: the bound must hold at N=2^{n-2} and FAIL one larger, or supersaturation says nothing about ES(n). It is cheap — C(9,4)=126, C(17,4)=2380, C(33,4)=40920, C(65,4)=677040, and the 635376 row already ran in 26.67s.
+
+Note what the answer must be and check your code reproduces it: at N=9 every 9-point general-position set has a convex pentagon (ES(5)=9, established), so no 5-avoiding set on 9 points exists. The honest test is es_construct(n) plus one added point: does the inequality fail once the set stops being n-avoiding? Say which set you extend and where the point goes, and report whether it flips. A test that cannot separate extremal from one-larger is not a test.
+
+Then items 2 and 3 in order: cross-layer cone capacities on the verified onion layers; exact rational polar dual with the primal-vs-dual convex-q-cell cross-check to n=6.
+
+Also: the librarian has run five exa_search calls on Baek-Balko, already established in CONTEXT — stop re-searching it. And code/lean is untouched since 09:53 despite the rebuild putting the kernel in the loop. The covering inequality is a clean formal statement; state it in Lean and report the verdict.
+
+Do not claim the conjecture proved.
+
+Done. The task queue is re-ordered to directive 24's exact sequence: the supersaturation deciding falsifier is at the head with the full spec (convex4(N+1) at 9/17/33/65 on es_construct plus one added point, the ES(5)=9 positive control, the flip verdict, exact determinants, command+EXIT), then layer-transfer-matrix, then polar dual, with the Lean statement (`lean-covering-inequality`, covering bound formalized, #print axioms + sorry list) and the Baek-Balko re-search stop as parallel tasks. CONTEXT.md's steering bullet and the `three-adopted-first-steps` thread now carry the directive-24 framing so every role's brief reflects the new head and the stop.
+
+I did not touch the `convex-4set-supersaturation` approach's refuted status — that ledger row records the structural verdict (the covering inequality is the wrong direction and cannot force N ≤ 2^{n−2}); directive 24's test is the empirical deciding falsifier the note itself flagged as not-on-disk, and whether the bound separates extremal from one-larger is for the adjudicator to record once the capture lands, which is exactly what the updated task demands. Nothing was computed: the numbers, controls and recording of the result belong to the executing roles.

@@ -10,9 +10,7 @@ Rungs are listed weakest first, which is the order to climb them. Attack the cur
 
 | Ladder | Full-strength goal | Difficulties | Status |
 | --- | --- | --- | --- |
-| [[fib-subword-squares]] | Psi(10^18) mod 101001001, where Psi(k) = sum over the k+1 distinct length-k factors of the infinite Fibonacci word of (decimal value)^2, leading zeros ignored | big-k, factor-set, cross-terms, fib-index, mod-exp | open |
-| [[fibonacci-subword-squares]] | Find Ψ(10^18) mod 101001001, where Ψ(k) is the sum of squares of the integer values of the k+1 distinct length-k Fibonacci subwords (contiguous substrings of… | huge-k, unbounded-n, factor-classification, sum-of-squares, modulus | open |
-| [[pe1006-fibonacci-subwords]] | Ψ(10^18) mod 101001001, where Ψ(k) = sum over the k+1 distinct length-k factors of the Fibonacci word f of (decimal value)^2 | huge-k, factor-structure, irrational-slope, offset-summation | open |
+| [[pe1006-fibonacci-subword]] | compute Psi(10^18) mod 101001001, where Psi(k) is the sum of squares of the decimal values (leading zeros ignored) of the k+1 distinct Fibonacci subwords of… | k=10^18, self-similar factor set, leading zeros dropped, square second moment, power-10 weights mod M | open |
 
 ## The rungs, weakest first
 
@@ -20,37 +18,33 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
-| `R0-small-brute` | [[fib-subword-squares]] | For k <= 40 compute Psi(k) exactly by reading a long enough finite Fibonacci word S_n (F_{n+2} >= k + margin), collecting its distinct length-k substrings, and… | big-k, factor-set, cross-terms, fib-index, mod-exp | open |
-| `R0-brute-oracle` | [[fibonacci-subword-squares]] | For each fixed k <= 30, compute Ψ(k) exactly by scanning S_n for the smallest n whose set of length-k subwords has cardinality k+1 (i.e. has stabilized), then… | huge-k, unbounded-n, factor-classification, sum-of-squares, modulus | open |
-| `R1-factor-structure-linear` | [[fib-subword-squares]] | Derive and verify against R0 (k <= 40) an explicit structural description of the k+1 distinct length-k factors of f (substitution tree / bispecial and singular… | big-k, cross-terms, fib-index, mod-exp | open |
-| `R1-stabilization` | [[fibonacci-subword-squares]] | The set of distinct length-k subwords of S_n is constant for all n >= n0(k), equals the set of length-k factors of the infinite Fibonacci word f = lim_{n->∞}… | huge-k, factor-classification, sum-of-squares, modulus | open |
-| `R-brute-small` | [[pe1006-fibonacci-subwords]] | For k ≤ 40, compute Ψ(k) exactly by enumerating the distinct length-k substrings of the finite Fibonacci word S_n for n with \|S_n\| ≥ 2k+1 (e.g. n=12), reading… | huge-k, factor-structure, irrational-slope, offset-summation | open |
-| `R2-pairwise-correlations` | [[fib-subword-squares]] | Using the R1 factor description, compute Psi(k) = sum_{j,l} N(j,l;k) 10^{2k-j-l} exactly (or mod p) for moderate k (k <= 10^6) without enumerating factors, and… | big-k, fib-index, mod-exp | open |
-| `R2-factor-parameterization` | [[fibonacci-subword-squares]] | For every k >= 1 there is an explicit, indexable description of each of the k+1 length-k factors of the Fibonacci word: a bijection j -> w_j (0 <= j <= k) such… | huge-k, sum-of-squares, modulus | open |
-| `R-window-param` | [[pe1006-fibonacci-subwords]] | Establish an explicit parametrization of the k+1 distinct length-k factors of f (three-gap/Beatty special positions, or the k+1 Christoffel conjugates), and… | huge-k, irrational-slope, offset-summation | open |
-| `R3-arbitrary-k-recurrence` | [[fib-subword-squares]] | Obtain a recurrence or closed form for Psi(k) valid for arbitrary k >= 1, via the Fibonacci/Zeckendorf representation of k (equivalently a transfer/matrix… | big-k, mod-exp | open |
-| `R3-closed-form-sum` | [[fibonacci-subword-squares]] | Using the R2 parameterization, express Ψ(k) exactly as a closed form or a fixed-order linear recurrence / transfer-matrix expression in k, with no per-factor… | huge-k, modulus | open |
-| `R-floor-telescope` | [[pe1006-fibonacci-subwords]] | For k up to ≈10^6 (where O(k²) modular arithmetic is still feasible), compute Ψ(k) mod M from the floor form f(m)=⌊(m+2)α⌋−⌊(m+1)α⌋ (α=1/φ²), by expanding the… | huge-k, offset-summation | open |
-| `R4-full-problem` | [[fib-subword-squares]] | Compute Psi(10^18) mod 101001001 by the R3 recurrence, all arithmetic mod 101001001, fast (log k) exponentiation of both the linear recurrence and the powers… | big-k | open |
-| `R4-log-k-engine` | [[fibonacci-subword-squares]] | Evaluate Ψ(k) in O(log k) arithmetic operations via the R3 recurrence or closed form, with exact integer arithmetic, and validate the engine: reproduce R0 for… | modulus | open |
-| `R5-full-problem` | [[fibonacci-subword-squares]] | Find Ψ(10^18) mod 101001001 — the full Project Euler 1006 answer. | none | open |
-| `R-offset-closed` | [[pe1006-fibonacci-subwords]] | For moderate k (up to ≈10^7, beyond what O(k²) can reach but checkable against R3 at k≈10^4–10^5), compute Ψ(k) mod M by the closed poly-log method for the… | huge-k | open |
-| `R-full` | [[pe1006-fibonacci-subwords]] | Ψ(10^18) mod 101001001 — the goal exactly as given. | — | open |
+| `R2-factor-count` | [[pe1006-fibonacci-subword]] | prove and verify (for small k) that the infinite Fibonacci word has exactly k+1 distinct factors of length k, and give the self-similar recursion for the… | k=10^18, square second moment, power-10 weights mod M | open |
+| `R3-first-moment` | [[pe1006-fibonacci-subword]] | compute the first moment Psi_1(k) = sum of the k+1 factor values (leading zeros still dropped, decimal reading), instead of the sum of squares. Drops the… | k=10^18, square second moment | open |
+| `R1-brute-oracle` | [[pe1006-fibonacci-subword]] | compute Psi(k) exactly for 1 <= k <= 10 by exhaustive substring enumeration over finite prefixes S_n large enough to contain every length-k subword, keeping… | k=10^18 | open |
+| `R4-moderate-second-moment` | [[pe1006-fibonacci-subword]] | compute the full second moment Psi(k) with the real shape (self-similar factor set, leading zeros dropped, decimal reading, squares) at moderate k (up to… | k=10^18 | open |
+| `R5-full` | [[pe1006-fibonacci-subword]] | the goal itself — evaluate Psi(10^18) mod 101001001 via the geometric-weight sum sum over the factor set of V_i^2 modulo M, using an O(log k)… | (none) | open |
 
 ## The current rung — attack this one
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
-- [[fib-subword-squares]] → `R0-small-brute`: For k <= 40 compute Psi(k) exactly by reading a long enough finite Fibonacci word S_n (F_{n+2} >= k + margin), collecting its distinct length-k substrings, and summing squares of their decimal values; must reproduce Psi(3)=20302 and Psi(10) = 10699667 (mod 101001001). This is the oracle for every higher rung.
-  - switched off: big-k, factor-set, cross-terms, fib-index, mod-exp
-  - to merge the next difficulty back: turn on factor-set: replace substring enumeration by an explicit, brute-verified description of the k+1 distinct factors. R1 does this at the linear level first, where only the factor set (not pairwise positions) is needed.
-- [[fibonacci-subword-squares]] → `R0-brute-oracle`: For each fixed k <= 30, compute Ψ(k) exactly by scanning S_n for the smallest n whose set of length-k subwords has cardinality k+1 (i.e. has stabilized), then summing the squares of the integer values of those distinct subwords. Deliverable: exact Ψ(k) for k = 1..30, reproducing the given Ψ(3)=20302 and Ψ(10) ≡ 10699667 (mod 101001001).
-  - switched off: huge-k, unbounded-n, factor-classification, sum-of-squares, modulus
-  - to merge the next difficulty back: Turn `unbounded-n` back on — replace "smallest n found by scanning" with a theorem that the factor set of S_n stabilizes to the factor set of the infinite Fibonacci word f = lim S_n, and give a computable n0(k). First move: confirm the standard Sturmian fact that f is uniformly recurrent with exactly k+1 length-k factors, and pin down the stabilization threshold.
-- [[pe1006-fibonacci-subwords]] → `R-brute-small`: For k ≤ 40, compute Ψ(k) exactly by enumerating the distinct length-k substrings of the finite Fibonacci word S_n for n with |S_n| ≥ 2k+1 (e.g. n=12), reading each substring as a decimal integer (value = Σ_{j=0}^{k-1} b_j·10^{k-1-j}, leading zeros ignored), squaring, and summing. Reproduce the two given oracles: Ψ(3)=20302 and Ψ(10) ≡ 10699667 (mod 101001001).
-  - switched off: huge-k, factor-structure, irrational-slope, offset-summation
-  - to merge the next difficulty back: Turn factor-structure back on. Replace substring enumeration of S_n by an explicit parametrization of the k+1 distinct length-k factors of f. Careful: the naive "windows f[i..i+k-1], i=0..k" is wrong — for k=3 it yields 010,100,001,010 (a duplicate and no 101). Establish the correct indexing (three-gap/Beatty special positions, or the k+1 Christoffel conjugates) and check it reproduces R1 for every k ≤ 40.
+- [[pe1006-fibonacci-subword]] → `R2-factor-count`: prove and verify (for small k) that the infinite Fibonacci word has exactly k+1 distinct factors of length k, and give the self-similar recursion for the factor set — the objects Psi sums over. No values, no squares, no weighting are involved.
+  - switched off: k=10^18, square second moment, power-10 weights mod M
+  - to merge the next difficulty back: attach to each of the k+1 factors its decimal value, reintroducing the place-weighting; climb to the first-moment rung.
 
 ## Ladders that could not be read
 
-- `fibonacci-subword-squares` rung `R5-full-problem` switches off `none`, which the ladder never declared as a difficulty — the rung and the header disagree about what makes the goal hard
+- `pe1006-fibonacci-subword` rung `R5-full` switches off `(none)`, which the ladder never declared as a difficulty — the rung and the header disagree about what makes the goal hard
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "weakened" }
+read_ledger { ledger: "weakened", id: "<one of the ids above>" }
+read_ledger { ledger: "weakened", status: "<a status above>" }
+read_ledger { ledger: "weakened", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: fenced `ladder` and `rung` blocks in `research/weakened/<slug>.md`, written with `write_document`. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

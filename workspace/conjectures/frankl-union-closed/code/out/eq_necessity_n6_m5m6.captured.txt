@@ -1,0 +1,11 @@
+extend EQ necessity check at n=6 to |F|=5,6 (small families)
+oracle: lib.uc (decide_union_closed, abundance), exact integers
+range : ALL empty-free UC families on [6] with |F| in {5,6,7}, exhaustive
+  |F|=5: UC families=57015  eq=0  non-single/twochain-equality=0  (2.4s)
+  |F|=6: UC families=187997  eq=0  non-single/twochain-equality=0  (18.5s)
+  |F|=7: UC families=553283  eq=0  non-single/twochain-equality=0  (146.2s)
+
+TOTAL EQ families (|F|=5,6, n=6): 0
+counterexamples to lemma (>=3-set EQ family): 0
+
+verdict: 0 (0 = no >=3-set EQ family among all |F|<=6 at n=6)

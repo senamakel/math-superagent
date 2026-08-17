@@ -6,10 +6,19 @@ Thesis: **"La Conjetura de Casas-Alvero para un número fijo de raíces"** (The 
 conjecture for a fixed number of roots), June 2018, directed by Laureano González Vega and
 Luis Felipe Tabera Alonso (the González-Vega of the Gröbner d≤7 verification).
 
-**Status: full text NOT obtainable.** Both `hdl.handle.net` and `repositorio.unican.es`
-are network-unreachable (same class of failure as every prior cycle's attempt). This note
-holds the abstract, captured from the search result, so the content is not lost. Marks this
-as a documented-blocked fetch — do not re-attempt.
+**Status: full text NOT obtainable THIS RUN (network-blocked), but the direct bitstream
+URL is now CONFIRMED** via `read_sources` triage (2026 cycle): `download_document` fails at
+the network layer for both `hdl.handle.net/10902/15246` and `repositorio.unican.es`, but the
+triage call reads the same pages and confirms the exact PDF bitstream exists at
+
+`https://repositorio.unican.es/xmlui/bitstream/handle/10902/15246/Chavez%20Martinez%20Yemile%20del%20Socorro.pdf?sequence=1&isAllowed=y`
+(size 421 Kb; the read confirms the 302/627 degree-20 result and the methodological
+details in the body). A later pass with working network to UCrea should download that exact
+URL; it is the confirmed full-text address and no longer a guess. Also available:
+`https://repositorio.unican.es/xmlui/handle/10902/15246?show=full`.
+
+This note holds the abstract, captured, so the content is not lost. Mark this as a
+documented-blocked fetch for THIS run — do not re-attempt the download here.
 
 ## Abstract (translated from the Spanish)
 

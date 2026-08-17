@@ -89,6 +89,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `hexagon_count_bvls.captured.txt` | Capture of the independent induced-C6 count on BvLS. Records that BvLS(243,22,1,2) has exactly 4,980,690 induced hexagons, equal to the closed form, established by two independent exact routes (P4-anchored and directed-edge-anchored), with entry guards rook(3)=6, bare C6=1, two triangles=0. |
 | `hexagon_count_bvls.py` | Runs lib.hexagons.count_induced_C6 on lib.srg.bvls_graph() and compares with the closed form. Entry guard rook(3)=6. Established: BvLS(243,22) induced C6 = 4,980,690, equal to (1/12)*243*22*20*559, in 116.5s single-worker. |
 | `hexagon_identity_verified.captured.txt` | Verified Reimbayev hexagon identity n12 = (1/12)nk(k-2)(2k^2-21k+53) + n3 exactly on both control graphs (rook=6+0, BvLS=4980690+0), with n3=0 confirmed two independent ways. |
+| `homology_controls.py` | _(undescribed)_ |
+| `homology_controls_final.captured.txt` | Fresh deterministic capture of the directive-39 homology gate: dim H1(Cl(G),Q) over Q for the two controls. Data lines from homology_controls.py: rook(3)=L2(3) H1=4, BvLS srg(243,22,1,2) H1=1540, both nonzero. Appended verdict: the Cioaba-Guo-Ji-Mim classification (H1!=0 only for Petersen, Shrikhande, complete bipartite, lattice L2(m), conference, exceptional E_m) does NOT separate 99 from the controls — rook(3)=L2(3) is on the list and BvLS is off it, yet H1 is nonzero on both, so the clique-complex-homology line is REFUTED-ON-ARRIVAL as a 99 argument and must NOT be computed for a 99 candidate. Ranks verified exact by code/out/homology_verify_exact_rank.py (GF(1000003) rank equals full column count #triangles on both controls). |
+| `homology_verify_exact_rank.py` | Exact-arithmetic cross-check of the homology gate's triangle-boundary ranks. Since Q-rank of an integer matrix equals rank over GF(p) whenever the GF(p) rank is full (it can never exceed the column count), this recomputes the C2->C1 boundary ranks over GF(1000003) by exact modular Gaussian elimination: rook(3) rank=6 (=#triangles), BvLS rank=891 (=#triangles). PASS confirms the dim H1 values (4 and 1540) in homology_controls_final.captured.txt rest on exact ranks, not numpy SVD float tolerance. Verified by running it; output is the printed RESULT: PASS. |
 | `incidence_gt_relation.captured.txt` | Captured output comparing incidence p-ranks vs graph (I+A) p-ranks. |
 | `incidence_gt_relation.py` | Compares incidence-N p-ranks with graph (I+A) p-ranks mod 2/3, showing they differ. |
 | `incidence_identity_check.captured.txt` | Captured output: NN^T=(k/2)I+A verified on all four controls, rank_3(NN^T)<=rank_3(N) holds. |
@@ -218,6 +221,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_report3.md` | Pattern-finder round-3 report. New checked finding: Hoffman coclique bound for the srg(v,k,1,2) family (k=u^2+u+2) has the exact closed form (u*k+2)/2, with distinct values {3,22,45,561,15408} at the five feasible u; proves the 99 bound (22) is parameter-specific. Confirms no other family sequence has extra structure; OEIS misses recorded. |
 | `pattern_finder_report30.md` | Round-30 independent re-certification of the sequence catalogue: every family count is a divisor-63-governed polynomial in u (divisor pattern a=2u+1 |
 | `pattern_finder_report31.md` | Round 31 pattern-finder report: the 84-vertex pair-labeling gate is control-clean (on-disk gate's inner violations were a counting bug); outer graph H is s-determined on rook(3) but not on bvls (real residual freedom); closed-form s-sharing of non-matching pairs; OEIS misses. |
+| `pattern_finder_report32.md` | Round 32 report: second-subconstituent nullity is k/2 at mu=2 (verified on rook/bvls, parameter-determined, no separating power); one over-claimed proof retracted; weak 2-point conjecture nullity=k/2 predicts nullity 7 at the 84-subconstituent of srg(99,14,1,2). |
+| `pattern_finder_report33.md` | _(undescribed)_ |
+| `pattern_finder_report34.md` | Round 34 pattern-finder report: re-verified the clique-complex H1 family sequence [4,364,1540,227920,163190944] against its proven closed form 2T−v+1, re-hit the recorded OEIS miss, confirmed no artifact postdates round 33, verdict NOTHING FURTHER from sequence tools |
 | `pattern_finder_report4.md` | Round-4 pattern-finder report: the induced-C5 count closed form p5=n*k*(k-2)*(k-4)/5 independently verified on both existing members (rook(3)=0 brute; BvLS=384,912 anchored), promoting p5 to verified. All family count sequences re-confirmed as quartic-in-u forms, no low-order linear recurrence, no OEIS entry. No new structural lever — closes the last untested family count. |
 | `pattern_finder_report5.md` | Round-5 pattern-finder report: (1) induced K4-e count is identically 0 for the whole srg(v,k,1,2) family — checked on both controls and proved from lambda=1 (no edge in two triangles), so the GOAL-named K4-e lever is degenerate and cannot separate 99; (2) eigenvalue-multiplicity sequences formally run through the tools, confirming no low-order recurrence. Re-confirms all family sequences are quartic-in-u closed forms. |
 | `pattern_finder_report6.md` | Round-6 pattern-finder report: the n3 admissibility closed form cap=v*k(k-2)/4 for the srg(v,k,1,2) family, the n3≡0 (mod 3) residue, and the n3>=3 sharpening for a putative (99,14,1,2) by intersecting order-6 integrality with the sourced+re-derived Makhnev n3>=1 conditional. New result not previously recorded. |
@@ -227,8 +233,21 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pattern_finder_true_ic4.py` | _(undescribed)_ |
 | `pattern_finder_verify_closed_forms.py` | _(undescribed)_ |
 | `pattern_finder_verify_mult.py` | _(undescribed)_ |
+| `pattern_h_parameters.captured.txt` | _(undescribed)_ |
+| `pattern_h_parameters.py` | _(undescribed)_ |
+| `pattern_kernel_identity.py` | _(undescribed)_ |
+| `pattern_kernel_independence.py` | _(undescribed)_ |
+| `pattern_kernel_structure.py` | _(undescribed)_ |
+| `pattern_nullity_rank.py` | _(undescribed)_ |
+| `pattern_nullity_verify.captured.txt` | _(undescribed)_ |
+| `pattern_nullity_verify.py` | _(undescribed)_ |
+| `pattern_subconstituent_spectrum.captured.txt` | _(undescribed)_ |
+| `pattern_subconstituent_spectrum.py` | _(undescribed)_ |
+| `pattern_subconstituent_spectrum_4srg.captured.txt` | _(undescribed)_ |
+| `pattern_subconstituent_spectrum_4srg.py` | _(undescribed)_ |
 | `pentagon-count-verified.md` | Records the induced-C5 count closed form p5 = nk(k-2)(k-4)/5 as verified on both controls (rook=0, BvLS=384912), 99 value 33264; claim block pentagon-count-closed-form-verified. |
 | `pf_catalogue_recheck_round16.py` | Pattern-finder round-16 re-check: independently re-derives the whole srg(v,k,1,2) family-count catalogue from closed forms and re-verifies the clean super-simple 2-(22,4,2) design certificate (degree 14, pairs 2, super-simple, intersection histogram {0:1155,1:1540,2:231}). Confirms catalogue unchanged and no new sequence. |
+| `pf_h1_closed_form.py` | Pattern-finder round 33: verifies dim H1(Cl(G)) = vk/3-v+1 = 2T-v+1 closed form on both controls (rook, bvls) via exact rational rank of the triangle-edge boundary map, showing rho=1 (triangle boundaries independent) is the only non-parameter content. Gate refutes the Cioaba-Mim clique-complex homology line as a 99/243 separator (nonzero H1 on both controls). |
 | `pf_indep_c3_bvls_verify.captured.txt` | _(undescribed)_ |
 | `pf_indep_c3_bvls_verify.py` | Independent re-verification that the BvLS(243) triangle graph C3 has exact spectrum {-3:648,3:110,12:132,30:1}, matching the Phillips closed form — the only post-round-22 analysis artifact. |
 | `pf_indep_family_check.py` | Independent reproduction of the whole family-count catalogue from the u-parametrisation (triangles, lines, pentagons, hexagons, outer blocks, distance-2, coclique, n3 cap). |
@@ -242,6 +261,12 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pf_rank_svd_identity.captured.txt` | Captured output of the incidence-identity cross-check: NN^T=(k/2)I+A and N^TN=3I+C3 both True on rook(3) and BvLS; k=14 rank_Q(N)=99 full-row (parameter-determined, not a separator). |
 | `pf_rank_svd_identity.py` | Fresh exact cross-check of the triangle-geometry incidence identities NN^T=(k/2)I+A and N^TN=3I+C3 on rook(3) and BvLS; confirms rank_Q(N)=99 at k=14 is full-row but parameter-determined (not a 99 separator). |
 | `pf_round17_consolidated.py` | Round-17 fresh independent re-derivation of all family-count sequences over u in {1,3,4,10,31} plus difference checks, to ground the 'catalogue exhausted' verdict in this round's own computation. |
+| `pf_second_subconstituent_matched_only.captured.txt` | _(undescribed)_ |
+| `pf_second_subconstituent_matched_only.py` | _(undescribed)_ |
+| `pf_second_subconstituent_nullity.captured.txt` | _(undescribed)_ |
+| `pf_second_subconstituent_nullity.py` | Consolidated exact verification that the second subconstituent of an srg(v,k,1,2) has 0-eigenvalue multiplicity k/2 at mu=2: matched-pair kernel vectors x^{a,a'}_u=[a in P_u]-[a' in P_u] are in the kernel, linearly independent, and span the whole kernel on bvls; no 0-eigenvalue at mu=3,5. |
+| `pf_second_subconstituent_proof_check.captured.txt` | _(undescribed)_ |
+| `pf_second_subconstituent_proof_check.py` | Refutes the set-equality claim A_w=A'_w in the draft proof of the second-subconstituent kernel identity: membership differs on bvls but cardinalities |
 | `pf_supersimple_design_structure.py` | _(undescribed)_ |
 | `pf_supersimple_isolation.py` | _(undescribed)_ |
 | `pf_supersimple_probe.py` | _(undescribed)_ |
@@ -260,6 +285,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `research_pair_label_gate.py` | _(undescribed)_ |
 | `route11_boundary_final_verify.captured.txt` | Captured output of code/out/route11_boundary_final_verify.py: the exact-rational closure of the route-11 orbit-matrix boundary. Shows heartbeat reproduction (15 vars at 694.32 s, 33 at 1889.85 s), delta 18 vars / 1195.53 s, rate 39851/600 = 66.42 s/var, extrapolation 110905333/40 s = 110905333/3456000 days = 32.09 days for all 41,745 vars; the orbit-count argument that order-2 (>=50 point-orbits) is strictly worse than order-3 (33); and the one-line verdict that the route is closed by computational infeasibility, not mathematics. |
 | `route11_boundary_final_verify.py` | Exact-rational closure of the route-11 orbit-matrix boundary. Reproduces the two heartbeat points (15 vars fixed at 694.32 s, 33 at 1889.85 s) and computes exactly: delta = 18 vars / 1195.53 s, rate = 39851/600 s/var = 66.42 s, presolve-only extrapolation 110905333/40 s = 110905333/3456000 days = 32.09 days for all 41,745 vars. Verifies the orbit-count argument that the order-2 model is strictly worse: a fixed-point-free order-3 automorphism on 99 points has 33 point-orbits, while an order-2 automorphism has (99+f)/2 point-orbits, enumerated over all odd f in 1..99, all >= 50 > 33. States the one-line honest verdict: closed by computational infeasibility, NOT by mathematics; no order-3/order-2 exclusion; Aut reduction to {Z2,Z3} and openness stand. All arithmetic via fractions.Fraction, no floats in the computation. Verified against the boundary note's stated ~66 s and ~32 days. |
+| `run_homology_controls.sh` | _(undescribed)_ |
 | `run_integrity.py` | Wraps integrity_pass.py as a subprocess so its exit code is captured. |
 | `scholar_reimbayev_check.py` | Scholar's exact-integer script skeleton for reproducing Reimbayev's c6 Table-3 values and the hexagon/pentagon closed forms across the five family members; the c6 numerators were verified by hand in the note scholar-reimbayev-c6-table-verified.md since code execution here is delegated. |
 | `scholar_verify_core.py` | Scholar verification of load-bearing facts (NOT RUN — no execution tool in the scholar run; identical checks already captured in oracle-controls.captured.txt and oracle_verification.captured.txt). Would assert: positive controls rook/doily/GQ(2,4)/BvLS pass is_srg; negatives exercise the LAMBDA/MU count path; multiplicity integrality reproduces the five-member family and excludes 33. |

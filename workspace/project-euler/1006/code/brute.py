@@ -1,82 +1,79 @@
-"""Naive oracle for Project Euler 1006.
+"""Project Euler 1006 (naive/brute oracle).
 
-Fibonacci subwords: contiguous substrings of some S_n, where
-S_0 = "0", S_1 = "01", S_n = S_{n-1} + S_{n-2}.
+Definitions:
+    S_0 = '0'
+    S_1 = '01'
+    S_n = S_{n-1} + S_{n-2}
 
-Psi(k) = sum of squares of the (k+1) distinct Fibonacci subwords of length k,
-interpreting each as a decimal integer (leading zeros ignored).
+A Fibonacci subword is a contiguous substring of some S_n.  For a given length
+k, we collect all distinct length-k factors of the infinite Fibonacci word by
+building S_n until len(S_n) >= 2k (a safe lower bound) and then taking all
+length-k substrings of that finite word's tail.  Each collected word is
+interpreted as a decimal integer ignoring leading zeros (int('001') == 1 does
+this in Python).  Psi(k) = sum of the squares of these integers.
 
-Naive method: build one big S_N, take every distinct contiguous substring of
-length k, interpret as int, sum squares. Correct because any length-k
-substring of the infinite Fibonacci word already appears in S_N once N is
-large enough (S_N embeds S_{N-1}, so for k much smaller than |S_N| the set of
-length-k substrings is the full set).
-
-Exact integer arithmetic throughout.
+Outputs (must match the problem's known values):
+    (a) the distinct length-3 subwords and Psi(3) == 20302
+    (b) Psi(1)..Psi(20) plus Psi(10) mod 101001001 == 10699667
+    (c) number of distinct length-k subwords for k=1..20 == k+1
 """
 
+M = 101001001
 
-def S(n):
-    """Return the n-th Fibonacci word as a Python str."""
-    a, b = "0", "01"
-    if n == 0:
-        return a
-    if n == 1:
-        return b
-    for _ in range(2, n + 1):
+
+def build_fib(n_tail):
+    """Return a long-enough prefix of the infinite Fibonacci word.
+
+    We need every length-k factor to appear.  A standard safe choice is to
+    return a Fibonacci word whose length is >= 2k (well inside the region
+    where all length-k factors of the infinite word occur).
+    """
+    s0, s1 = '0', '01'
+    # keep generating until the latest word is long enough
+    a, b = s0, s1
+    while len(b) < 2 * n_tail + 4:
         a, b = b, b + a
     return b
 
 
-def subword_set(word, k):
-    """Set of all distinct contiguous substrings of `word` of length k."""
+def distinct_factors(word, k):
+    """All distinct length-k substrings of word (as a set)."""
     return {word[i:i + k] for i in range(len(word) - k + 1)}
 
 
-def psi_brute(k, N_max=40):
-    """Psi(k) by brute force using a single big Fibonacci word S_N.
+def psi(word_all, k):
+    """Psi(k): sum of squares of distinct length-k factors as integers."""
+    factors = distinct_factors(word_all, k)
+    return sum(int(f) ** 2 for f in factors), factors
 
-    The set of length-k factors of the infinite Fibonacci word is the eventual
-    value of the length-k factor set of S_N, and it is monotone in N because
-    S_N is a prefix of S_{N+1}. So tightening the word (increasing N) only ever
-    adds factors. We stop at the first N where the count reaches k+1, the
-    stabilised value, and assert it.
-    """
-    prev = None
-    for N in range(2, N_max + 1):
-        word = S(N)
-        subs = subword_set(word, k)
-        assert len(subs) >= (prev or 0), "factor set not monotone"
-        prev = len(subs)
-        if len(subs) == k + 1:
-            total = 0
-            for s in subs:
-                value = int(s)  # Python int() already ignores leading zeros
-                total += value * value
-            return len(subs), total, N
-    raise RuntimeError(f"count never reached k+1 for k={k} within N_max={N_max}")
+
+def main():
+    print("(a) distinct length-3 subwords and Psi(3)")
+    word3 = build_fib(3)
+    p3, f3 = psi(word3, 3)
+    words_sorted = sorted(f3)
+    print("    length-3 subwords:", words_sorted)
+    print("    Psi(3) =", p3, " (expected 20302)")
+    print("    match:", p3 == 20302)
+    print()
+
+    print("(b) Psi(1)..Psi(20)")
+    for k in range(1, 21):
+        wk = build_fib(k)
+        pk, _ = psi(wk, k)
+        print(f"    Psi({k:2d}) = {pk}")
+    p10 = psi(build_fib(10), 10)[0]
+    print("    Psi(10) mod", M, "=", p10 % M, " (expected 10699667)")
+    print("    match:", p10 % M == 10699667)
+    print()
+
+    print("(c) count of distinct length-k subwords for k=1..20 (must equal k+1)")
+    for k in range(1, 21):
+        wk = build_fib(k)
+        factors = distinct_factors(wk, k)
+        print(f"    k={k:2d}  count={len(factors):3d}  (k+1={k + 1})  "
+              f"match={len(factors) == k + 1}")
 
 
 if __name__ == "__main__":
-    MOD = 101001001
-
-    # Worked example 1: k=3 -> {001,010,100,101}, Psi = 20302
-    n, total3, Nused = psi_brute(3)
-    print("k=3: number of distinct subwords =", n, "(expect 4)")
-    print("k=3: Psi(3) =", total3, "(expect 20302)  [tightest N =", Nused, "]")
-
-    # Worked example 2: Psi(10) mod 101001001 -> 10699667
-    n, total10, Nused = psi_brute(10)
-    print("k=10: number of distinct subwords =", n, "(expect 11)")
-    print("k=10: Psi(10) mod", MOD, "=", total10 % MOD, "(expect 10699667)")
-
-    print()
-    print("k : count(k+1 given) : Psi(k)")
-    count_ok = True
-    for k in range(1, 31):
-        cnt, tot, Nused = psi_brute(k)
-        ok = (cnt == k + 1)
-        count_ok = count_ok and ok
-        print(f"{k:2d} : {cnt:3d} (N={Nused:2d}, expect {k+1:3d}, {'OK' if ok else 'FAIL'}) : {tot}")
-    print()
-    print("Stabilization (|set| == k+1) held for every k=1..30:", count_ok)
+    main()

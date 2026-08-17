@@ -37,7 +37,11 @@ answer the question.
   `behbahani-lam-srg-nontrivial-automorphisms.md` — same result (published form).
 - `crnkovic-maksimovic-*-.md` — no Z6/S3/Z9/E9 automorphism groups.
 - `automorph-putative-conway-99-graph.md` — Cesarz–Woldar published version.
-- `cesarz-woldar-automorph-conway99.md` — same paper, arXiv version (duplicate).
+- `cesarz-woldar-automorph-conway99.md` — same paper, arXiv landing page (abstract only).
+- `cesarz-woldar-automorph-conway99-body.md` — **FULL PROOF BODY** of Cesarz–Woldar
+  (arXiv:2308.02978 HTML): the missing proofs. Sec 3 excludes order-14 automorphisms;
+  Sec 4 proves divisibility by 7 ⟹ G ≅ Z₇ or Frob(21); Secs 5–6 eliminate Frob(21) by
+  computer, giving (1′) 7||G| ⟹ G ≅ Z₇ and (2′) 2||G| ⟹ |G| | 6 (G ∈ {Z₂,Z₆,S₃}).
 
 ## Counting / subgraph structure
 - `reimbayev-hexagon-bound-*.md` — hexagon lower bound; n_3 pivot.

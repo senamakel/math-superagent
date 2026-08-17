@@ -8,24 +8,32 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 
 | Declaration | Kind | Standing | Statement | Source | File |
 | --- | --- | --- | --- | --- | --- |
+| `Test.CAPolynomialDegree` | def | unchecked | {R : Type*} [CommRing R] (f : R[X]) (d : ℕ) : Prop | — | `code/lean/gvb_deg2_probe.lean` |
+| `Test.IsPowerOfLinear` | def | unchecked | {R : Type*} [CommRing R] (f : R[X]) : Prop | — | `code/lean/gvb_deg2_probe.lean` |
+| `Test.NoCAPolynomial` | def | unchecked | (K : Type*) [Field K] (d : ℕ) : Prop | — | `code/lean/gvb_deg2_probe.lean` |
+| `Test.SharedRootWithHasseDeriv` | def | unchecked | {R : Type*} [CommRing R] (f : R[X]) (j : ℕ) : Prop | — | `code/lean/gvb_deg2_probe.lean` |
+| `Test.double_root_degree_two_is_power_of_linear` | lemma | unchecked | {K : Type*} [Field K] | — | `code/lean/gvb_deg2_probe.lean` |
 | `Polynomial.CAPolynomialDegree` | def | unchecked | {R : Type*} [CommRing R] (f : R[X]) (d : ℕ) : Prop | — | `code/lean/gvb_lift.lean` |
 | `Polynomial.SharedRootWithHasseDeriv` | def | unchecked | {R : Type*} [CommRing R] (f : R[X]) (j : ℕ) : Prop | — | `code/lean/gvb_lift.lean` |
 | `Polynomial.SharedRootWithHasseDeriv_unfold` | lemma | unchecked | {R : Type*} [CommRing R] (f : R[X]) (j : ℕ) : | — | `code/lean/gvb_lift.lean` |
 | `Polynomial.degree_one_CA_polynomial` | theorem | unchecked | {K : Type*} [Field K] (f : K[X]) : | — | `code/lean/gvb_lift.lean` |
 | `Polynomial.degree_one_has_no_nontrivial_root_sharing` | lemma | unchecked | — | — | `code/lean/gvb_lift.lean` |
 | `Polynomial.degree_two_CA_polynomial` | theorem | unchecked | {K : Type*} [Field K] [IsAlgClosed K] | — | `code/lean/gvb_lift.lean` |
+| `Cited.casas_graph_count_bounds` | axiom | failed | (u : ℕ → ℕ) (n : ℕ) (hn : 5 ≤ n) : | — | `code/lean/Lib/casas_graph_count_bounds.lean` |
 | `Test.CAPolynomialDegree` | def | failed | {R : Type*} [CommRing R] (f : R[X]) (d : ℕ) : Prop | — | `code/lean/gvb_base_probe.lean` |
 | `Test.IsPowerOfLinear` | def | failed | {R : Type*} [CommRing R] (f : R[X]) : Prop | — | `code/lean/gvb_base_probe.lean` |
 | `Test.NoCAPolynomial` | def | failed | (K : Type*) [Field K] (d : ℕ) : Prop | — | `code/lean/gvb_base_probe.lean` |
 | `Test.SharedRootWithHasseDeriv` | def | failed | {R : Type*} [CommRing R] (f : R[X]) (j : ℕ) : Prop | — | `code/lean/gvb_base_probe.lean` |
 | `degree_one_is_power_of_linear` | theorem | failed | {K : Type*} [Field K] (f : K[X]) | — | `code/lean/gvb_base_probe.lean` |
 
-11 declarations, 0 of them in a file the kernel has checked.
+17 declarations, 0 of them in a file the kernel has checked.
 
 ## Never checked
 
 These files are in the tree and no `lean_check` verdict exists for them. Nothing on this page from one of them is evidence of anything.
 
+- `code/lean/gvb_deg2_probe.lean`
 - `code/lean/gvb_lift.lean`
 - `code/lean/gvb_probe2.lean`
+- `code/lean/probe/full_ineq.lean`
 - `code/lean/probe.lean`

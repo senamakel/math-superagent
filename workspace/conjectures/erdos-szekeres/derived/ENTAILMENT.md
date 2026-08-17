@@ -8,6 +8,8 @@ A claim written `follows-from: a, b` says `a` and `b` together give it. That sin
 
 Every claim these rest on is established, so these are too, whatever status their block carries. Proving one again spends an attempt on something the run already has — update the status instead.
 
+- `baek-balko-split-proof-status` — filed as asserted, follows from `baek-balko-split`
+  - In Baek–Balko (SoCG 2025), the abstract split threshold is fully proved — Csplit(a,u,k) = 1 + Σ_{i=k−a+2}^{u} C(k−2,i−2) for all (a,u,k) ∈ T (Theorem 6), via…
 - `wiki-happy-ending-small-values` — filed as catalogued, follows from `es-exact-values`, `es61-lower-bound`, `horton-no-empty-7gon`, `heule-scheucher-empty6`
   - (encyclopedic) ES(3)=3, ES(4)=5, ES(5)=9, ES(6)=17; ES(7) conjectured 33, open; bounds 2^{n-2}+1 <= ES(n) <= C(2n-4,n-2)+1, with Suk and HMPT asymptotic…
 

@@ -44,7 +44,14 @@ holds-here: not directly (this run is finite-set UC; recorded as a sourced infin
 status: proved (Thm in source).
 bearing: gives the *formalised* sense in which finiteness can be relaxed if chain conditions
   replace it — the recorded boundary of negative control #3.
-anchor: research/sources/colbert-chain-conditions-2412.full.md
+anchor: research/sources/colbert-chain-conditions-2412.full.md;
+  CONFIRMED at the published version of record — Colbert, Order 43:5 (2026),
+  Thm 3.21, full proof in research/sources/colbert-order-2026-openaccess.full.md
+  (lines ~540–560): T0 reduction (separating), Alexandroff, Lemma 3.3 optimal
+  element, Lemma 3.14 Ix={x}, Cor 3.16 abundance. Incremental redundancy: the
+  finite case recovers Mehr (Cor 3.22). The separate claim
+  colbert-order-2026-version-of-record carries this at the journal source.
+follows-from: colbert-order-2026-version-of-record
 ```
 
 ```claim

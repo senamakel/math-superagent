@@ -14,9 +14,10 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 3 | https://gowers.wordpress.com/2016/01/21/ | — | perspective on Frankl’s union closed problem, MathOverﬂow, http://mathoverflow.net/q/154025. [4] , Polymath11 – FUNC, https://gowers.wordpress.com/2016/01/21/… |
 | 3 | https://doi.org/10.1007/978-88-7642-475-5_13 | The union-closed sets conjecture almost holds for almost all random bipartite graphs | cites The graph formulation of the union-closed sets conjecture (2013, cited 5 times) |
 | 3 | https://doi.org/10.1016/j.ejc.2016.06.006 | The union-closed sets conjecture almost holds for almost all random bipartite graphs | cites The graph formulation of the union-closed sets conjecture (2016, cited 7 times) |
-| 3 | https://doi.org/10.1007/s000120050195 | Strong semimodular lattices and Frankl's conjecture | cites Union-closed families (2000, cited 19 times) |
 | 3 | https://doi.org/10.1017/s0963548302005230 | An Average Set Size Theorem | cited by The Journey of the Union-Closed Sets Conjecture (2003, cited 26 times) |
 | 3 | https://dblp.uni-trier.de | DBLP | Change to browse by: [cs][16] ### References & Citations - [NASA ADS][17] - [Google Scholar][18] - [Semantic Scholar][19] ### [DBLP][20] - CS Bibliography [listing][21] \| [bibtex][22] [T.… |
+| 3 | https://www.springernature.com/gp/librarians/licensing/agc/journals | Institutional subscriptions | and 2,500 journals - Cancel anytime [View plans][7] ## Buy Now Price includes VAT (Kuwait) Instant access to the full article PDF. [Institutional subscriptions][8] ### Similar content being viewed by… |
+| 3 | https://link.springer.com/product/springer-plus | View plans | chapters or articles per month - Access and download chapters and articles from more than 300k books and 2,500 journals - Cancel anytime [View plans][7] ## Buy Now Price includes VAT (Kuwait) Instant… |
 | 2 | https://doi.org/10.1017/s0305004100034241 | A lower bound for the critical probability in a certain percolation process | cited by A Stability Result for the Union-Closed Size Problem (1960, cited 624 times) |
 | 2 | https://doi.org/10.1016/0097-3165(91)90021-8 | Compressions and isoperimetric inequalities | cited by A Stability Result for the Union-Closed Size Problem (1991, cited 126 times) |
 | 2 | https://doi.org/10.1525/9780520319875-014 | 12. The Number of Simplices in a Complex | cited by A Stability Result for the Union-Closed Size Problem (1963, cited 565 times) |
@@ -45,9 +46,8 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://arxiv.org/search/cs?searchtype=author&amp;query=Mari%C4%87,+F | Filip Marić | Mathematics **arXiv:1207.3604**(cs) [Submitted on 16 Jul 2012] # Title: Formalizing Frankl's Conjecture: FC-families Authors: [Filip Marić][2], [Miodrag Živković][3], [Bojan Vučković][4] View a PDF… |
 | 2 | https://arxiv.org/search/cs?searchtype=author&amp;query=Vu%C4%8Dkovi%C4%87,+B | Bojan Vučković | [Submitted on 16 Jul 2012] # Title: Formalizing Frankl's Conjecture: FC-families Authors: [Filip Marić][2], [Miodrag Živković][3], [Bojan Vučković][4] View a PDF of the paper titled Formalizing… |
 | 2 | https://jingbol.web.illinois.edu/frankl7.m | https://jingbol.web.illinois.edu/frankl7.m | value of the minimum eigenvalue for up to L = 90 L=90, all confirming the positive semidefinite hypothesis. (Code can be found in [https://jingbol.web.illinois.edu/frankl7.m][4]) ### V-B… |
-| 2 | http://www.contrib.andrew.cmu.edu/~ryanod/?cat=63 | http://www.contrib.andrew.cmu.edu/~ryanod/?cat=63 | for Frankl’s Conjecture. European Journal of Combinatorics, 27 : 269-282. 2006. - [19] R. O’Donnell. Analysis of Boolean Functions. [http://www.contrib.andrew.cmu.edu/~ryanod/?cat=63][4]. - [20]… |
 
-_893 further candidates not shown; they are cited once each._
+_958 further candidates not shown; they are cited once each._
 
 ---
 

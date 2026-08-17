@@ -1,0 +1,19 @@
+{
+  "axioms": [
+    "'UC.union_closed_conjecture' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem union_closed_conjecture {α : Type*} [Fintype α] [DecidableEq α] (F : Finset (Finset α)) (huc : IsUnionClosed F) (hne : F.Nonempty) (hntriv : F ≠ ({∅} : Finset (Finset α))) : ∃ a : α, present F a ∧ 2 * count F a ≥ F.card"
+  ],
+  "file": "code/lean/Lib/Statement.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/Statement.lean:76:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

@@ -10,6 +10,8 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
+- `ca-scheme-weighted-torus/G-torial-zero-dim` (lemma) — For every n ≥ 1, the ideal I = (R_1,…,R_{n−1}) ⊂ A = ℚ[a_2,…,a_n], where R_i = Res_x(f, H_i f) with f = x^n + Σ_{j=2}^n a_j x^{n−j} (monic…
+  - open `research/backward/ca-scheme-weighted-torus.md`
 - `ca20-good-prime-lift/G-good-prime` (lemma) — There exists a good prime for n = 20 — that is, some prime p ≥ 23 with CA_20,p (equivalently rank_{F_p}(M_T) = C for all T ∈ {1,…,20}^{19},…
   - open `research/backward/ca20-good-prime-lift.md`
 - `full-ca-regular-sequence/G-bad-prime-extension` (lemma) — The finite computation of J_T over ℤ for n ≤ 7 reproduces the published bad-prime lists (validating Thm 3.1 exactly), and for the first…
@@ -23,11 +25,11 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
+- `ord0-resultant-weighted-order-proved-all-n` — 2 node(s) rest on it, and the run is already building on it — In the traceless-slice CA ring QQ[a_2..a_n] with weight w(a_j)=j, each Hasse-resultant R_i = Res_x(f, H_i f) satisfies ord_0(R_i) = n(n-i)…
 - `gvb-lift` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — (as quoted and reformulated by Castryck et al, Theorem 3) Let d>0 and p prime. If no CA-polynomials of degree d exist over F_p-bar, then CA…
 - `bad-prime-minors-criterion` — 1 node(s) rest on it, and the run is already building on it — A prime p is bad for degree n iff p \| J_T for some T ∈ T, where J_T is the greatest common divisor of all C×C minors of the matrix M_T…
-- `bad-prime-upper-bound` — 1 node(s) rest on it, and the run is already building on it — If CA_{n,0} holds and p is a bad prime for n, then p < C! · Π_{i=1}^{n−1} (i+n−2 choose n−2)(d−i+n−2 choose n−2), where d=(n²−3n+4)/2, C=(…
 
-_112 further candidate(s) below these, in the table._
+_116 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -49,6 +51,10 @@ _112 further candidate(s) below these, in the table._
 | `battiston-withdrawn` | claim | **ready** | — | Giulia Battiston's 2015 paper "The Casas-Alvero conjecture" (arXiv:1511.04932, 16 Nov 2015) is a claimed proof that was withdrawn by the… |
 | `berger-smallest-open-degree-20-corroboration` | claim | **ready** | — | Berger's ENS course handout states CA is known for d <= 19 and any d a prime power or twice a prime power, independently corroborating the… |
 | `binomial-criterion-calibration` | claim | **ready** | — | The sufficient binomial bad-prime criterion (Schaub-Spivakovsky 2023 Cor 8, arXiv:2307.05997: p bad for degree d if p \| C(d,i) - 1 for some… |
+| `ca-scheme-weighted-torus` | goal | blocked | `ca-scheme-weighted-torus/G-resultant-scheme`, `ca-scheme-weighted-torus/G-torial-zero-dim`, `ca-scheme-weighted-torus/G-weighted-order`, `ord0-resultant-weighted-order-proved-all-n` | Casas–Alvero (CA): over any char-0 field K, every monic f of degree n sharing a factor with each of its first n−1 Hasse derivatives is… |
+| `ca-scheme-weighted-torus/G-resultant-scheme` | lemma | established | `resultant-reformulation` | f = x^n + Σ_{j=2}^n a_j x^{n−j} (monic, traceless, a shared root of H_{n−1} translated to 0) is a Casas–Alvero polynomial iff (a_2,…,a_n)… |
+| `ca-scheme-weighted-torus/G-torial-zero-dim` | lemma | **ready** | — | For every n ≥ 1, the ideal I = (R_1,…,R_{n−1}) ⊂ A = ℚ[a_2,…,a_n], where R_i = Res_x(f, H_i f) with f = x^n + Σ_{j=2}^n a_j x^{n−j} (monic… |
+| `ca-scheme-weighted-torus/G-weighted-order` | lemma | established | `ord0-resultant-weighted-order-proved-all-n` | In the traceless slice, each R_i = Res_x(f, H_i f) is exactly weighted-homogeneous of weight n(n−i) under w(a_j) = j (Theorem A, char-free,… |
 | `ca-status-2025` | claim | **ready** | — | A complete proof of the Casas-Alvero conjecture has been CLAIMED (Soham Ghosh, arXiv:2501.09272, Jan 2025, v2 Mar 2026 "major revisions")… |
 | `ca-variety-results` | claim | established | — | CA for degree d is equivalent to V_k(d,t) = ∅ for ANY t∈{0,…,d−2}, where V_k(d,t) ⊂ weighted P is the projective variety cut out by the… |
 | `ca20-good-prime-lift` | goal | blocked | `ca20-good-prime-lift/G-good-prime`, `ca20-good-prime-lift/G-lift`, `ca20-good-prime-lift/G-minors-boundary`, `ca20-good-prime-lift/G-minors-test`, `ca20-good-prime-lift/G-upper-bound`, `gvb-lift` | CA_20,0 — over any field K of characteristic 0, every monic f ∈ K[x] of degree 20 that shares a non-constant factor with each of its first… |
@@ -69,12 +75,8 @@ _112 further candidate(s) below these, in the table._
 | `ddj-not-two` | claim | established | — | The set of common zeroes of a CA polynomial f with its derivatives cannot have cardinality two. (Section 6 of the survey; re-proved as Prop… |
 | `defrutos-discriminant-formulation` | claim | **ready** | — | (de Frutos Marin 2013 thesis, Teo 5.6.6) CA in degree n over C is equivalent to the non-vanishing of the superdiscriminant D_n =… |
 | `defrutos-good-prime-lift-corroborates-gvb` | claim | **ready** | — | Teo 5.6.13(a): if p >= n and p does not divide D_n then p is efficacious for n and CA holds for all degrees n·p^r, r>=0. This is the… |
-| `defrutos-good-prime-lifts` | claim | **ready** | — | (Teo 5.6.13) For n>=3 and prime p>=n: (a) if p does not divide D_n then p is efficacious for n and CA holds for all degrees n·p^r, r>=0;… |
-| `defrutos-n5-badprimes-superdiscriminant` | claim | **ready** | — | The prime divisors of the degree-5 superdiscriminant D_5 = Delta(5,{3})·Delta(5,{2,3})·Delta(5,{1,2,3}) are exactly… |
-| `defrutos-one-exponent-discriminant-equals-binomial-criterion` | claim | established | — | Delta(n,{i}) = 1 - C(n,i) (Def 5.6.5), so p \| Delta(n,{i})  <=>  p \| C(n,i)-1. Hence de Frutos Marin's one-exponent discriminant is… |
-| `defrutos-superdiscriminant-consistent-deg5` | claim | **ready** | — | The union of prime divisors of the degree-5 superdiscriminant factors Delta(5,{3})=3^2, Delta(5,{2,3})=2^2·3^2·11·3541,… |
 
-_77 further nodes not shown._
+_82 further nodes not shown._
 
 ---
 

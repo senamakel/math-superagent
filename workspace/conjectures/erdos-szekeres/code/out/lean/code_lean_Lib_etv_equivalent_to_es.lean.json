@@ -1,0 +1,17 @@
+{
+  "axioms": [],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem etv_equivalent_to_es (n : ℕ) : P n n n ↔ ErdősSzekeres n"
+  ],
+  "file": "code/lean/Lib/etv_equivalent_to_es.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/etv_equivalent_to_es.lean:39:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

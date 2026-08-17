@@ -36,6 +36,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 6 | https://doi.org/10.1016/s0167-5060(08)70319-4 | Algorithmic Techniques for the Generation and Analysis of Strongly Regular Graphs and… | cited by On triple systems and strongly regular graphs (1978, cited 31 times) |
 | 5 | https://openalex.org/W2064645351 | — | linked from On triple systems and strongly regular graphs |
 | 5 | https://openalex.org/W4205545339 | — | linked from On triple systems and strongly regular graphs |
+| 5 | https://www.gap-system.org | https://www.gap-system.org | of order six, J. Combin. Des. 14 (2006), 301–312. 9. The GAP Group, GAP – Groups, Algorithms, and Programming, version 4.8.10, 2018, https://www.gap-system.org. 10. C. D. Godsil and B. D. McKay,… |
 | 5 | https://link.springer.com/product/springer-plus | View plans | chapters or articles per month - Access and download chapters and articles from more than 300k books and 2,500 journals - Cancel anytime [View plans][7] ## Buy Now Price includes VAT (Kuwait) Instant… |
 | 4 | https://doi.org/10.1017/9781009057226 | Strongly Regular Graphs | cited by On the automorphism group of a putative Conway 99-graph (2022, cited 130 times) |
 | 4 | https://openalex.org/W1602929565 | — | linked from On triple systems and strongly regular graphs |
@@ -45,9 +46,8 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 4 | https://openalex.org/W2125538282 | — | linked from On triple systems and strongly regular graphs |
 | 4 | https://www.springernature.com/gp/librarians/licensing/agc/journals | Institutional subscriptions | and 2,500 journals - Cancel anytime [View plans][7] ## Buy Now Price includes VAT (Kuwait) Instant access to the full article PDF. [Institutional subscriptions][8] ### Similar content being viewed by… |
 | 3 | https://doi.org/10.48550/arxiv.1707.08047 | Not Conway's 99-Graph Problem | found researching: Has any peer-reviewed or arXiv claim been made since 2024 that settles the existence of the Conway 99-graph, the strongly regular graph srg(99,14,1,2) — either … |
-| 3 | https://doi.org/10.48550/arxiv.2604.23037 | Approaching the Conway-99 problem using SAT solvers | found researching: Has any peer-reviewed or arXiv claim been made since 2024 that settles the existence of the Conway 99-graph, the strongly regular graph srg(99,14,1,2) — either … |
 
-_894 further candidates not shown; they are cited once each._
+_895 further candidates not shown; they are cited once each._
 
 ---
 

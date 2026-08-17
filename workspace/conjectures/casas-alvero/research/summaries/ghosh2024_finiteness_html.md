@@ -17,8 +17,9 @@ statement: For n≥3 and any algebraically closed field K (any characteristic),
   of CA polynomials is at most 2-dimensional in every characteristic.
 hypotheses: K algebraically closed, any characteristic, n≥3
 holds-here: yes
-status: asserted-by-source (preprint; proof flagged & fixed after Schaub–Spivakovsky
-  pointed out a gap in an earlier version — see acknowledgement §1.3)
+status: accepted-at-AJM (peer-reviewed acceptance for the finiteness/dimension bound;
+  the proof was flagged & fixed after Schaub–Spivakovsky pointed out a gap in an
+  earlier version — see acknowledgement §1.3)
 bearing: Regardless of the unproved status, this is the strongest *established-in-principle*
   structural bound on counterexample varieties. It shows CA(degree n) reduces to
   "the 1-dimensional piece is empty." Not being char-specific, it CANNOT be the whole
@@ -35,7 +36,7 @@ statement: X_n is a finite Z-scheme of dimension ≤1 for all n≥3, hence affin
   affine transformations, over any field of any characteristic.
 hypotheses: n≥3, any field
 holds-here: yes
-status: asserted-by-source (Corollary 5.7, 5.8, 5.11)
+status: accepted-at-AJM (Corollary 5.7, 5.8, 5.11), peer-reviewed acceptance
 bearing: The run should not hunt an infinite family of counterexamples; there are only
   finitely many per degree. A dimension-0/empty proof for a given n is the whole of CA_n.
 anchor: research/sources/ghosh2024_finiteness_html.full.md (Thm B=5.7, Cor C=5.8)
@@ -59,4 +60,4 @@ falsifies: a peer-review refutation or a computation showing a larger j for some
 ```
 
 ## What it does not settle
-The theorems leave the final "1-dimensional piece is empty" step unproved — that is CA. The 2-dim bound holds in all characteristics, so by itself it cannot rule out the char-p counterexamples; the characteristic-0 content must live in a further step the paper does not supply. **This is exactly the void the run's own scheme argument would have to fill.** Also a preprint, not peer-reviewed (though its finiteness assertions appear to be relied upon by Schaub–Spivakovsky 2024 and Ghosh 2025).
+The theorems leave the final "1-dimensional piece is empty" step unproved — that is CA. The 2-dim bound holds in all characteristics, so by itself it cannot rule out the char-p counterexamples; the characteristic-0 content must live in a further step the paper does not supply. **This is exactly the void the run's own scheme argument would have to fill.** The finiteness result (dim-bound, finiteness, complete-intersection) is now **peer-reviewed, accepted for publication in the American Journal of Mathematics** (2026, per Hopkins Press list and the author's UW page) — separating it clearly from the full claimed proof (arXiv:2501.09272), which remains an unverified 0-citation preprint and is NOT accepted anywhere.
