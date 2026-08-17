@@ -28,27 +28,56 @@ const DEFAULT_MAX_MODEL_CALLS: usize = 250;
 const DEFAULT_MAX_TOOL_CALLS: usize = 4_000;
 /// Wall-clock ceiling for one agent run, in minutes.
 ///
-/// Thirty, and the number is about the *solution loop* rather than about any
-/// single agent. The loop's attempt is one `goals` run, and the judge only
-/// scores an attempt once it returns — so on an open conjecture, where `goals`
-/// is told to pursue the goal until it is met, the attempt never concludes and
-/// nothing is ever judged. Four live runs sat inside attempt 1 for thirty-six
-/// minutes with zero judge verdicts, zero reflections and zero inventor spawns
-/// between them, while all the work happened in children the attempt had
-/// spawned. At two hours a run would have been judged once; at thirty minutes
-/// it is judged four times, and `STUCK_THRESHOLD` and `open_invention` become
-/// reachable within a session instead of within a day.
+/// Sixty, raised from thirty on 2026-08-17, and the number trades one real
+/// failure against another rather than fixing either.
 ///
-/// The cost is real and falls on the children. This bounds *every* agent run,
-/// not only the attempt, and a live `tool_builder` spent 1,362 seconds inside a
-/// single model call — twenty-three minutes of one turn — which leaves very
-/// little of a thirty-minute run. Unlike the model-call cap this path does not
-/// honour `StopWithPartial`, so what is lost is the run's own context and its
-/// report; what is on disk survives, and `continuation_briefing` is what lets
-/// the next attempt pick the work up from there rather than starting over.
-const DEFAULT_RUN_MINUTES: u64 = 30;
+/// The case for thirty was about the *solution loop*, not about any single
+/// agent. The loop's attempt is one `goals` run, and the judge only scores an
+/// attempt once it returns — so on an open conjecture, where `goals` is told to
+/// pursue the goal until it is met, the attempt never concludes and nothing is
+/// ever judged. Four live runs sat inside attempt 1 for thirty-six minutes with
+/// zero judge verdicts, zero reflections and zero inventor spawns between them,
+/// while all the work happened in children the attempt had spawned. Thirty
+/// minutes bought four verdicts a session where two hours bought one.
+///
+/// The case against it is the other side of the same clock, and it falls on the
+/// children. This bounds *every* agent run, not only the attempt, and a live
+/// `tool_builder` spent 1,362 seconds inside a single model call — twenty-three
+/// minutes of one turn — which left almost nothing of a thirty-minute run. A
+/// specialist whose job is a certificate sweep or a Lean development cannot do
+/// it in what remains, and unlike the model-call cap this path does not honour
+/// `StopWithPartial`: the run loses its context and its report. What is on disk
+/// survives, and `continuation_briefing` is what lets the next attempt pick the
+/// work up rather than starting over.
+///
+/// Sixty was chosen deliberately, giving the children room at the cost of
+/// halving the judge's cadence — roughly two verdicts a session where there
+/// were four. If a run stops being scored often enough to reach
+/// `STUCK_THRESHOLD` or `open_invention`, that is this constant, and
+/// `MATH_AGENT_RUN_MINUTES` narrows it for a run that wants the old cadence
+/// back.
+const DEFAULT_RUN_MINUTES: u64 = 60;
 /// Wall-clock ceiling for a single tool call, in minutes.
-const DEFAULT_TOOL_MINUTES: u64 = 10;
+///
+/// Thirty, raised from ten on 2026-08-17, and the raise is about a shape of
+/// work rather than about slow tools. The tool call is where a run's whole
+/// computational arm lives — the enumeration, the exact-rational sweep, the
+/// `lean_check`. Ten minutes bounds all three below anything a certificate
+/// argument needs: the `ProofAtlas` Sendov bundle's finite arm regenerates
+/// 16,862 exact leaves and its Lean build takes twenty minutes at one worker,
+/// so at ten a run cannot even attempt that shape, and the timeout answers the
+/// question before the mathematics does.
+///
+/// It stays *below* [`DEFAULT_RUN_MINUTES`] on purpose, and that is what caps
+/// the raise at half of it. A tool ceiling at or above the run ceiling means
+/// the run clock trips first, and that path does not honour `StopWithPartial` —
+/// the run loses its context and its report, where an expired tool call returns
+/// the output captured so far with the timeout reported as the exit status.
+/// Keeping the tool ceiling the inner bound is what makes a slow computation
+/// evidence instead of a loss, and `budget_test.rs` asserts the ordering.
+/// Raising this past the run ceiling needs `MATH_AGENT_RUN_MINUTES` raised with
+/// it.
+const DEFAULT_TOOL_MINUTES: u64 = 30;
 /// Output tokens allowed in one model turn.
 ///
 /// Left unset, a turn ran to 9,361 tokens and took 2.9 minutes, and longer

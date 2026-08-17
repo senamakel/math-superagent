@@ -373,6 +373,13 @@ fn a_wait_outlives_the_per_tool_ceiling_it_was_never_meant_to_obey() {
     // governed by the first. A live `pattern_finder` asked for 600 seconds,
     // was killed at exactly 600,000 ms by the ten-minute tool ceiling, and
     // lost the run it had commissioned.
+    //
+    // The wait asked for here is the child's whole run budget, which is the
+    // case the invariant is about: a caller collecting the deepest work it
+    // delegated waits that long, and the tool ceiling must not cut it off.
+    // Asking for a fixed 600 seconds tested the same thing only while the tool
+    // ceiling happened to be ten minutes, and stopped meaning anything when it
+    // was raised.
     use tinyagents::harness::tool::ToolTimeout;
 
     let budget = RunBudget::default();
@@ -383,11 +390,17 @@ fn a_wait_outlives_the_per_tool_ceiling_it_was_never_meant_to_obey() {
         .find(|tool| tool.name() == "await_agent")
         .expect("await_agent is registered");
 
+    let full_run = budget.run_timeout.as_secs();
+    assert!(
+        budget.run_timeout > budget.tool_timeout,
+        "the run ceiling is the outer limit, so a full-length wait is the case that needs the \
+         exemption"
+    );
     let asked = crate::agent::ToolCall {
         id: "call-1".into(),
         name: "await_agent".into(),
         invalid: None,
-        arguments: serde_json::json!({ "run_id": "agent-run-1", "wait_seconds": 600 }),
+        arguments: serde_json::json!({ "run_id": "agent-run-1", "wait_seconds": full_run }),
     };
     let deadline = match waiting.timeout_policy(&asked) {
         ToolTimeout::Millis(deadline) => deadline,
@@ -398,7 +411,7 @@ fn a_wait_outlives_the_per_tool_ceiling_it_was_never_meant_to_obey() {
         "the wait outlives the tool ceiling: {deadline}"
     );
     assert!(
-        deadline > 600 * 1_000,
+        deadline > full_run * 1_000,
         "and outlives the wait it was asked for, so the wait returns rather than being cut off"
     );
 

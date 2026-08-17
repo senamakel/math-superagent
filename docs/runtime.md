@@ -331,8 +331,11 @@ features unless the user explicitly expands the product scope.
 
 `RunBudget` in `src/agent/budget.rs` is the single source of truth for what one
 agent run may spend, and it applies to the orchestrator and every specialist
-alike. The defaults are 250 model calls, 4000 tool calls, a two-hour run
-ceiling, and a ten-minute ceiling per tool call. Each is overridable through
+alike. The defaults are 250 model calls, 4000 tool calls, a one-hour run
+ceiling, and a thirty-minute ceiling per tool call. The tool ceiling stays the
+inner one — `budget_test.rs` asserts `run_timeout > tool_timeout`, because the
+run clock does not honour `StopWithPartial` and an expired tool call does.
+Each is overridable through
 `MATH_AGENT_MAX_MODEL_CALLS`, `MATH_AGENT_MAX_TOOL_CALLS`,
 `MATH_AGENT_RUN_MINUTES`, and `MATH_AGENT_TOOL_MINUTES`; an unset, empty,
 unparsable, or zero value keeps the default.
@@ -514,9 +517,10 @@ live container had 643 lines there and none on stdout — so `docker logs` needs
 
 ## The memory cap
 
-The container's memory limit is 16 GiB, and the number is a judgement rather
-than a requirement — what the rule in `AGENTS.md` demands is that *some* limit
-stay. 2 GiB was the wrong judgement, and a live run said so; so were 4 and 8.
+The container's memory limit is 24 GiB, with `memswap_limit` at 56 GiB, and
+both numbers are a judgement rather than a requirement — what the rule in
+`AGENTS.md` demands is that *some* limit stay. 2 GiB was the wrong judgement,
+and a live run said so; so were 4 and 8.
 
 An Erdős–Gyárfás container was OOM-killed mid-attempt: `oom` and then
 `die exit=137` in `docker events`. An OOM kill is the worst failure shape
@@ -547,8 +551,28 @@ something that could have been streamed far more often than by a computation
 that genuinely needs the space, and each raise makes the next one easier to
 ask for. The compose comment used to promise 8 GiB would never move; it moved,
 so the note there now records the history instead of making a firmer promise.
-16 GiB is also close to this box's practical limit — 30 GiB total, with
-`cognee` holding its own 8 GiB — so the next raise starts with `free -g`.
+
+The raise to 24 GiB on 2026-08-17 is the first one no run asked for. It was
+made against a shape of work this runtime has not yet attempted — a proof whose
+last third is a generated certificate, of the kind
+[`research/proofatlas/01-sendov-bundle-anatomy.md`](../research/proofatlas/01-sendov-bundle-anatomy.md)
+takes apart, whose Lean build wanted one worker under a 32 GiB address-space
+limit. Under sixteen a run cannot attempt that at all, so the ceiling was
+settling the question ahead of the method.
+
+It overcommits the box deliberately. 30 GiB of RAM, and `cognee` keeps its own
+8 GiB, so the two can ask for more than is free. `memswap_limit` is the *total*
+of RAM and swap, so 56 GiB grants 24 GiB resident plus 32 GiB of the box's 87
+GiB of swap. Docker already allowed swap — `mem_limit` alone defaults
+`memswap` to twice the memory — so what changed is that the allowance is stated
+rather than inherited.
+
+The failure mode changes with it, and this is the part to internalise. Swap
+converts an OOM kill into a slowdown: the container does not die, it gets
+slower by orders of magnitude, and every tool call reads as hung. `vmstat 5`
+with sustained non-zero `si`/`so` is the signature, and it deserves exactly
+what an OOM deserved — a finding about the method. Streaming still beats
+materialising at 24 GiB for the reason it did at 8.
 
 ## Observability
 

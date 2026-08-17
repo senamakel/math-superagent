@@ -76,11 +76,12 @@ services:
     # simply stopped appearing, which is why the first check after it read as a
     # hung specialist rather than a dead container.
     #
-    # The cap has been raised three times — 2g to 4g, 4g to 8g, and 8g to 16g
-    # on 2026-08-15 — each time because a run met it. That is a rule with no
-    # fixed point, and the previous note here said eight gigabytes "does not
-    # move again". It moved, so the honest version is the one below rather than
-    # a firmer promise that the next run also breaks.
+    # The cap has been raised four times — 2g to 4g, 4g to 8g, 8g to 16g on
+    # 2026-08-15, and 16g to 24g on 2026-08-17 — and only the first three were
+    # because a run met it. That is a rule with no fixed point, and the note
+    # here once said eight gigabytes "does not move again". It moved, so the
+    # honest version is the one below rather than a firmer promise that the
+    # next run also breaks.
     #
     # What has not changed is what an OOM means. The gilbreath run died at 161
     # minutes (exit 137, three `oom` events) materialising a depth-4000
@@ -91,10 +92,29 @@ services:
     # to one a solver can answer. Sixteen gigabytes buys a bigger wrong method
     # a little more room, and nothing else.
     #
-    # Sixteen is also near the practical limit of this box: 30 GiB total, and
-    # the `cognee` service below holds its own 8g cap, so the two together can
-    # already exceed what is free. Raising this again means checking `free -g`
-    # first, not just editing the number.
+    # The 24g raise was asked for rather than met, and it is a bet on a shape
+    # of work this runtime has not yet done: a proof whose last third is a
+    # generated certificate — the ProofAtlas Sendov bundle wanted one Lean
+    # worker under a 32 GiB address-space limit for 4,524 build jobs
+    # (`research/proofatlas/01-sendov-bundle-anatomy.md`). Nothing that size
+    # fits under sixteen, so the ceiling was answering the question before the
+    # method got to.
+    #
+    # 24g overcommits this box on purpose. It holds 30 GiB of RAM, and the
+    # `cognee` service below keeps its own 8g, so the two can ask for more than
+    # is free. `memswap_limit` is what makes that survivable rather than fatal:
+    # it is the *total* of RAM and swap, so 56g grants 24 GiB resident and 32
+    # GiB of the box's 87 GiB of swap. Docker already permitted swap here —
+    # `mem_limit` without `memswap_limit` defaults to twice the memory — so the
+    # change is that the allowance is now deliberate and stated instead of
+    # inherited.
+    #
+    # Swap turns an OOM kill into a slowdown, and the slowdown is the new
+    # failure to watch for. A container thrashing 32 GiB of swap does not die;
+    # it gets slower by orders of magnitude, and every tool call looks hung.
+    # Read `vmstat 5` — sustained non-zero `si`/`so` is the signature — and
+    # treat it exactly as an OOM was treated: a finding about the method.
+    # Streaming beats materialising at 24 GiB for the same reason it did at 8.
     #
     # Read `docker events --filter event=oom` whenever a container vanishes
     # without an error — the kernel writes nothing to the console, so the run
@@ -102,7 +122,8 @@ services:
     # a sandbox limit, never as a mathematical ceiling: problem 763 wrote the
     # old cap into its own notes as "exact BFS stops at N=14", which was never
     # true of the mathematics.
-    mem_limit: 16g
+    mem_limit: 24g
+    memswap_limit: 56g
     volumes:
       - type: bind
         source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}

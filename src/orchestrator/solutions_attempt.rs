@@ -83,17 +83,26 @@ pub(in crate::orchestrator) const UNVERIFIED_THRESHOLD: usize = 2;
 ///
 /// So this is the one condition that does not depend on the run making
 /// progress, which is the whole point of it: it is a backstop against a stalled
-/// loop, not a policy about how long good work may take. Four hours is chosen
-/// to be out of reach of a productive run — a conjecture workspace runs the
-/// same loop and legitimately spends hours on it — while still bounding a
-/// container that has stopped getting anywhere.
+/// loop, not a policy about how long good work may take. It has to sit out of
+/// reach of a productive run — a conjecture workspace runs the same loop and
+/// legitimately spends hours on it — while still bounding a container that has
+/// stopped getting anywhere.
+///
+/// Twelve hours, raised from four on 2026-08-17. Four was out of reach of the
+/// runs this loop had done, and that is the wrong test: it bounds the runs it
+/// has seen rather than the ones it is meant to allow. A conjecture whose
+/// computational arm is a certificate sweep spends hours inside a single
+/// attempt before the first verdict, so at four hours the backstop stops being
+/// a backstop and becomes the policy it says it is not. What has not changed is
+/// the rule for reading one: hitting this is never a result, and a run that
+/// dies here has stalled — go and find the barrier that never closed.
 ///
 /// [`RunBudget::run_timeout`] does not cover this and cannot: it bounds *one
 /// agent run*, so it is what killed each of those arms while leaving the thing
 /// that spawned them untouched.
 ///
 /// [`RunBudget::run_timeout`]: crate::agent::budget::RunBudget::run_timeout
-const RUN_CEILING_HOURS: u64 = 4;
+const RUN_CEILING_HOURS: u64 = 12;
 
 /// The resolved wall-clock ceiling for a whole run.
 ///
