@@ -1,47 +1,35 @@
-# Hieronymi, Ma, Oei, Schaeffer, Schulz & Shallit — Decidability of Sturmian words (LMCS 2024)
+# Hieronymi, Ma, Oei, Schaeffer, Schulz, Shallit — *Decidability for Sturmian Words* (LMCS 20:3, 2024)
 
-<!-- source: https://arxiv.org/pdf/2102.08207 | converted from PDF -->
+Source: https://arxiv.org/pdf/2102.08207 — [[hieronymi-decidability-sturmian-words-ar5iv.full]]
 
-Full text: `research/sources/hieronymi-decidability-sturmian-words-ar5iv.full.md`
-(the 100KB PDF converted lossily; the abstract and statements below are the
-reliable parts).
+## What this source establishes
 
-## What it claims
+A logical-computability paper: the first-order theory of Presburger arithmetic
+plus a Sturmian word predicate is decidable; Sturmian words are uniformly
+ω-automatic in Ostrowski numeration; the decision tool "Pecan" automatically
+reproves classical Sturmian theorems and finds new results on antisquares and
+antipalindromes in characteristic Sturmian words.
 
-The paper proves that the **first-order theory of Sturmian words over Presburger
-arithmetic is decidable**. Using a general adder recognizing addition in
-**Ostrowski numeration systems** (Baranwal–Schaeffer–Shallit), it shows that the
-first-order expansions of Presburger arithmetic by a single Sturmian word are
-uniformly ω-automatic, and deduces the decidability of the theory of the class
-of such structures. An implementation called **Pecan** automatically reproves
-classical theorems about Sturmian words (e.g. balancedness, subword complexity)
-in seconds and obtains new results about antisquares and antipalindromes in
-characteristic Sturmian words.
+Relevant structural facts:
+- Sturmian words are ω-automatic w.r.t. the Ostrowski numeration of their
+  slope; addition is ω-automatic in Ostrowski systems (Baranwal–Schaeffer–Shallit).
+- The characteristic Sturmian word's factors and special factors are
+  first-order expressible; φ(n) = presence of blocks, antisquares, etc. is
+  decidable in principle.
 
-## Key statements it carries
+## What it implies for PE1006
 
-- Fact 1.1 (Hieronymi 2016): For a quadratic irrational α, the theory FO(R_α) is
-  decidable.
-- Fact 2.6–2.9: α-Ostrowski representation of natural numbers (unique
-  representation, comparing via continued fractions) — the numeration system at
-  the heart of directive 1's lag-sum recursion and of the mechanical-word /
-  rotation structure.
-- The ω-automatic/decision-procedure machinery (Pecan).
+**Does not help the computation.** The paper is about *decidability* (the
+existence of a decision procedure, with non-elementary worst-case cost — it
+explicitly says the general procedure is "truly formidable"), not about
+*feasible evaluation* of a specific numeric sum. Ψ(10^18) mod M is one concrete
+quantity; the O(log) universal-Euclidean route (fhq/OI-wiki/LOJ138) is the
+feasible primitive, and this paper neither provides it nor improves on it.
 
-## Why it matters here (adjacent-problem / computational-attacks angle)
+Verdict: tier-3 background. Records that Sturmian-word questions over Presburger
+arithmetic are decidable in principle (so no *impossibility* obstruction exists),
+but nothing here is load-bearing for obtaining Ψ's residue.
 
-- It anchors **Ostrowski numeration** — the continued-fraction-based positional
-  system in which the Fibonacci word's digit structure is automatic — which is
-  the same number-system structure behind the solver's Euclidean/floor-sum
-  reduction (directive 1's `(a·d mod N)` lag sums are an Ostrowski-style
-  object).
-- It is a legitimate *computational* approach to Sturmian-word properties, but
-  it does **not** compute Ψ(k) itself; PE1006's Ψ(10^18) is a specific modular
-  sum that needs the universal-Euclidean O(log) evaluation, not a decider.
-- Also documents that the Fibonacci word is **Fibonacci-automatic** (an
-  Ostrowski/Zeckendorf consequence), and that the bibliography's claimed Sturmian
-  theory is fully standard.
+## Claims anchored here
 
-Status: sourced; used as the adjacent computational/numeration-system reference,
-not as the solving method. Its large full text is on disk but the claim-relevant
-content is reproduced above.
+None.

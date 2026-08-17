@@ -189,6 +189,34 @@ The two confirmed primary sources remain paywalled: Morse–Hedlund 1940
    - Berstel's 1986 "Fibonacci Words — A Survey" (The Book of L) remains
      paywalled; covered by the DLT'95 and 2007 Berstel surveys on disk.
 
+## Scholar digest cycle — completed
+
+All `research/sources/*.full.md` in the library have been read in full and
+every `research/summaries/*.md` replaced with a precise statement-level note
+(no `Digest only` / `Filed by ... not read` templates remain). Details and the
+open solver items are in `research/notes/scholar-digest-complete.md` and
+`research/notes/durable-findings-pe1006.md`.
+
+Key outcomes of the digest:
+- **Slope correction confirmed from two primary sources**: the problem's word
+  is characteristic Sturmian of slope 1/phi^2 (Perrin–Restivo "slope
+  2/(3+sqrt5)"; Berstel DLT'95 "slope 1/tau^2"); the directive's literal slope
+  F(n-1)/F(n) ~ 0.618 is the complement convention and fails at k=3. Recorded
+  in the claims ledger (`steer-d2-literal-slope` contradicts
+  `mechanical-word-digit-rule`).
+- The slope-corrected mechanical-word construction was already verified at
+  k=1..100 (exact rational arithmetic, prior-cycle note
+  `research/notes/mechanical-slope-correction.md`) — recorded in the claim.
+- The four research requests are closed on disk (`requests-closed-recap.md` +
+  `answers:` lines in the governing claims), though the rendered requests
+  ledger still lists them (tooling caveat noted in scholar-digest-complete.md).
+- Sources assessed and classified as not helpful (or duplicate/metadata) with
+  reasons: Hieronymi decidability (tier-3), MathWorld rabbit, A344953,
+  citation graphs, tutorial, atcoder internal header (base-case only),
+  Bugeaud–Reutenauer DMTCS/arXiv landing pages.
+- Memory server: still down this cycle (3rd consecutive); durable findings are
+  on disk and should be relaunched into Cognee when the server recovers.
+
 ## Next steps for the solver (not the librarian)
 
 1. `code/brute.py`: naive Psi enumeration, must hit Psi(3)=20302 and
@@ -196,3 +224,46 @@ The two confirmed primary sources remain paywalled: Morse–Hedlund 1940
 2. Reproduce directive 2's mechanical-word/floor-sum construction vs brute on
    k=1..150, then Psi(10), then k=10^18.
 3. Verify final answer by a second route (directive 1's autocorrelation form).
+
+---
+
+## This cycle (librarian) — finite/standard-word side strengthened
+
+**Added:** Bugeaud & Reutenauer, "On the conjugates of Christoffel words"
+(arXiv:2202.05486v5; DMTCS 27:3 #20, 2025, DOI 10.46298/dmtcs.15140). Full text
+`research/sources/bugeaud-reutenauer-conjugates-christoffel-ar5iv.full.md`;
+summary + claim `research/summaries/bugeaud-reutenauer-conjugates-christoffel.md`;
+journal record page `research/summaries/bugeaud-reutenauer-conjugates-christoffel-2025.md`.
+
+**Why this was the thinnest axis.** The library was strong on the infinite-word
+side (Sturmian/Fibonacci-word factor complexity, mechanical-word/rotation
+construction, universal-Euclidean/floor_sum primitive) but had no dedicated
+source for the *finite* side that directive 1's verification route rests on:
+at k = F_n − 1 the k+1 distinct length-k factors are the F_n rotations
+(conjugates) of the truncated standard/Christoffel word, with the cyclic
+autocorrelation counting A(jp−j). The Introduction's bridge theorem — *a f
+finite word is a conjugate of a Christoffel word iff all its conjugates are
+factors of a Sturmian word* — is the finite↔infinite principle behind that
+identification. The paper also carries the Ostrowski-numeration parametrisation
+of conjugates (Thm 7.3), the same axis as the run's hieronymi source and
+directive 1's O(log) recursion. Claim `conjugate-christoffel-factor-sturmian`
+recorded in the claims ledger.
+
+**Confirmed still unobtainable:** Berstel's "Fibonacci Words — A Survey"
+(The Book of L, 1986) — the author's page `www-igm.univ-mlv.fr/~berstel/
+Articles/1985BookOfL.pdf` refuses the transfer again this cycle; no legitimate
+free mirror. Non-blocking: the DLT'95 and 2007 Berstel surveys, the
+Berstel–Karhumäki tutorial, and the Lothaire C2 chapter (all on disk) cover the
+definitions, factor complexity, and standard-word structure.
+
+**Remaining load-bearing formula without a source:** directive 1's
+A(d) = max(0, m−t) + max(0, m−(N−t)), t = (d·m) mod N — the cyclic
+autocorrelation count of the standard word. No dedicated literature source was
+found (three-distance/balance counts live inside rotation theory but no single
+paper states this exact closed form). It is a verify-in-container counting
+identity, checked against the brute oracle by task `reproduce-dir1`, not a
+result that needs a citation to be used.
+
+**OEIS re-check this cycle:** Ψ(1..5) = 1, 101, 20302, 2042402, 204252402
+still has no OEIS match (consistent with prior records); the frontier now
+carries the 43+27+45 citations of the new source's three downloads.

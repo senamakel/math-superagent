@@ -1,0 +1,11 @@
+== (1) mech_psi vs code/brute.py (string oracle), k = 1..50, exact ==
+    k=1..50: all three agree and (A)==(B) multisets  ->  True
+== (2) slope approximation insensitivity, k = 1..25 ==
+    all q choices agree for k=1..25  ->  True
+== (3) mech_psi vs code/out/psi_exact.txt, k = 1..25 ==
+    k=1..25 agree with recorded exact values  ->  True
+== (4) mech_psi vs code/out/psi_residues.txt, k = 1..400 (q minimal > k) ==
+    k=1..400 agree with recorded residues, (A)==(B), multisets equal  ->  True
+
+== Summary ==
+ALL CHECKS PASSED: mechanical construction reproduces Psi(k) exactly at every oracle-reachable k (brute string oracle k<=50, recorded exact k<=25, recorded residues k<=400), formulation (B) == formulation (A) in every case, and the result is insensitive to the rational slope approximant.

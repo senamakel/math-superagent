@@ -45,7 +45,28 @@ counts k+1, set-stability under extension, Ψ(10) mod M = 10699667.)
 
 - Lmin(k) = floor(k·φ²) is FALSE (fails at k=2; 992 failures for k≤1000).
 
-## Why this closes the search
+## Cycle-2 additions (this run)
+
+New verified regularities, stored in `research/notes/pattern-hunt-pe1006-cycle2.md`
+(memory server down — disk only):
+
+1. **c1(k) = # lead-`1` length-k factors = 1 + ⌊k/φ²⌋ = ⌈k/φ²⌉** — verified
+   exactly three independent ways (factor enumeration; prefix-one count; exact
+   irrational floor) for k = 1..400, extended to k = 2,000,000 with zero
+   mismatches; increments c1(k)−c1(k−1) equal the letters of the Fibonacci
+   word; matches OEIS **A189663**.
+2. **Weight distribution**: the k+1 factors have exactly two weights
+   ⌊k/φ²⌋, ⌈k/φ²⌉ (Sturmian balance) — verified k = 1..500, zero mismatches.
+3. **Pair-correlation translation-invariance holds ONLY at k = F_n − 1**:
+   C(i,j) = #{w : w_i = w_j = 1} is position-independent exactly at
+   k = 1,2,4,7,12,20 (=F_m−1) and violated at every other k ≤ 20. So
+   directive 1's lag-sum reduction does NOT extend to general k; the
+   mechanical-word / floor-sum construction (directive 2) is the general-k
+   route, consistent with the noise-flat residues.
+
+This closes the pattern hunt: no scalar recurrence survives mod M; the
+structure lives in the factor set's Sturmian balance and lead-letter count,
+which are the handles the mechanical-word method uses.
 
 The two regularities above are load-bearing for the efficient method: directive
 1 reduces Ψ at k=F_n−1 to a single lag-sum with geometric weights, and Lmin

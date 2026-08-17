@@ -3,6 +3,20 @@
 Computed this cycle; both conjectures verified EXACTLY over a range, neither
 is a proof. Memory server was down; stored to disk (as earlier cycles did).
 
+## Verification commands run
+
+- `python code/pattern_hunt/verify_c1_formula.py` — three-route c1 check,
+  k=1..400, all agree; wrote `code/out/c1_terms.txt`.
+- `python code/pattern_hunt/check_corr_translation.py` — translation test,
+  k=1..20.
+- `python code/pattern_hunt/check_weight_dist.py` — weight distribution,
+  k=1..30.
+- `python <<EOF` (two inline runs): c1 vs prefix-ones k=1..2,000,000,
+  zero mismatches; weight two-value check k=1..500, zero mismatches.
+
+All exact integer/rational/50-digit-Decimal arithmetic; no floats in the
+comparisons.
+
 ## 1. Lead-1 factor count closed form
 
 `c1(k)` = number of distinct length-k Fibonacci subwords starting with `'1'`.

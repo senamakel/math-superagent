@@ -23,9 +23,22 @@ read second that you follow.
 
 ## Writing code here
 
-- `code/` is a Python package tree and `/workspace/code` is on `PYTHONPATH`, so
-  every folder in it is importable by name from anywhere. Never write
-  `sys.path.insert`: an import that fails means the file is in the wrong place.
+`code/AGENTS.md` is the working agreement for that tree, and it differs by what
+kind of problem this is — an open conjecture leads with the mathematics, a
+Project Euler problem leads with the oracle. Read it before writing a file
+there. What holds either way:
+
+- **`code/lean/` carries the mathematics; every other program is evidence for
+  it.** A program produces a reason to believe something; a statement the kernel
+  accepted is the thing itself. Say which Lean file or claim id a program bears
+  on, or the number it produced is one the next attempt has to compute again.
+- A statement read from the literature is an `axiom` under `namespace Cited`
+  with a docstring naming the source. It earns `conditional`, never
+  `formalised`, and that verdict is read off the kernel rather than typed.
+- `code/` is also a Python package tree, and `/workspace/code` is on
+  `PYTHONPATH`, so every folder in it is importable by name from anywhere. Never
+  write `sys.path.insert`: an import that fails means the file is in the wrong
+  place, and moving it is the fix.
 - Reusable helpers go in `code/lib/<subject>.py`, one subject per module,
   imported as `from lib.<subject> import <name>`. Everything else is grouped by
   the question it attacks, one folder per question.

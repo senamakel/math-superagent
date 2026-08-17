@@ -33,9 +33,6 @@ hypotheses and falsifiers.
   (I¹₁₄); closes only the boundary limit periodic sets of (I⁶b₁), (H₁₃³),
   (DI₂b); **exactly one graphic — (H³₁₄) — through a triple point at infinity
   had no partial result at all (RR 2015 line 63, held)**.
-carry context, not authority; and an H16 claim without these three: (a) a stated
-hypothesis, (b) a stated falsifier, (c) evidence of the class it really has —
-is a claim nobody can attack.
 
 - **Each verified identity must be an executed run.** A note saying an
   algebraic identity was "re-derived by hand with exact arithmetic" is a
@@ -44,23 +41,28 @@ is a claim nobody can attack.
   and a capture (code/out/*.txt, first three lines naming what ran and by
   which definitions) asserts the identity on its produced data. State
   precision, step size and interval widths in every capture.
-- **UPDATE (directive-carrying): Lu, arXiv:2607.13785 (2026, 80pp,
-  UNREFEREED) claims local uniform finite cyclicity of exactly (H³₁₄)**,
-  identified as B=0 in RR 2015 Theorem 3.1's five-parameter family (term-for-
-  term match, both texts held). Ships a reproducibility bundle. **Its finite
-  algebraic core was re-derived by hand with exact arithmetic in this run**:
-  the four bridge identities, Darboux cofactors X(L)=(x+dy)L, X(F)=(2Bx+dy)F,
-  the inverse-integrating-factor cofactor, and the degree-4 Bautin obstruction
-  8L₄=AC+CD+2DF−EF all hold exactly (`lu-finite-core-partially-verified`,
-  note `research/notes/lu-finite-core-verified.md`). The human-proof remainder
+- **UPDATE (directive-carrying): Lu, arXiv:2607.13785 (2026, 80pp, UNREFEREED)
+  claims local uniform finite cyclicity of exactly (H³₁₄)**, identified as B=0
+  in RR 2015 Theorem 3.1's five-parameter family. **Its finite algebraic core is
+  now VERIFIED-computationally in this run**: `code/bautin/verify_lu_core.py`
+  (clean-room, exact sympy, without importing Lu's scripts) executed and its
+  capture `code/out/lu_core.captured.txt` prints "ALL CLEAN-ROOM CHECKS PASS" —
+  the bridge identities, Darboux cofactors X(L)=(x+dy)L and X(F)=(2Bx+dy)F, the
+  inverse-integrating-factor cofactor div X=(x+dy)+(2Bx+dy), the degree-4
+  obstruction 8L₄=AC+CD+2DF−EF, and the degree-6 192·L₆+P30=0 /
+  12·weighted_g6+P30=0 with P30 having 30 monomials. Independently confirmed by
+  `code/lyap_audit.py` (byte-level reconstruction of Lu's own
+  verify_bautin_recurrence.py, PASS) and by `code/out/mono_counts.captured.txt`
+  (L4, L6 residuals zero exactly). The cluster of 30 monomials is emitted in
+  `code/out/p30_coeffs.txt` and transcribed into `code/lean/Lib/Generated/`.
+  **What this does NOT establish**: Lu's Theorem 1 — the human-proof remainder
   (analytic root uniqueness, Hadamard divisibility, domain completeness, zero
-  theorems) is NOT machine-checked; the preprint is not peer-reviewed; the
-  claim is **asserted-by-source, NOT established**. Even if correct it closes
-  ONE graphic — (I⁶b₁),(H₁₃³),(DI₂b) full graphics and ≥11 degenerate graphics
-  (Shan 2013) remain. **Its algebraic core is NOT verified yet**: the identities
-  in the note were claimed by-hand and are not backed by any executed program or
-  capture, so they are UNVERIFIED until `code/bautin/verify_lu_core.py`
-  (clean-room, exact sympy) runs and asserts them (directive 3, FIRST).
+  theorems) is not machine-checked, the preprint is unrefereed, and the
+  cyclicity bound is **existential** (no explicit number). Claim status:
+  **asserted-by-source, NOT established** (thread `lu-h14-3-verification`).
+  Even if correct it closes ONE graphic — (I⁶b₁),(H₁₃³),(DI₂b) full graphics
+  and ≥11 degenerate graphics (Shan 2013) remain. Still not held from the
+  bundle: `verify_h14_center_bautin.py`, `verify_h14_center_global_domains.py`.
 - **Lower bounds (corrected):** H(2)≥4 (Shi; Chen–Wang), H(2)=4 standing
   conjecture OPEN; **H(3)≥13 (Li–Liu–Yang 2009)**, **H(4)≥28 (Prohens–
   Torregrosa 2018)**; M(2)=3 (Bautin); M(3)≥11 (Żołądek); **H(n) ≳ n² log n:
@@ -96,18 +98,27 @@ is a claim nobody can attack.
 
 ## Numbers
 
-- 88/121 graphics closed by 2015; exactly 1 graphic (H³₁₄) left fully open by
-  RR 2015; Lu 2026 preprint claims it, unverified. Open count ≥ 32 + 11
-  degenerate (not a full ledger — DRR 1994 not held).
-- Re-derived exactly: 8L₄ = AC+CD+2DF−EF (degree-4 Bautin obstruction);
-  Darboux cofactors; 4 bridge identities. Degree-6 30-monomial equality
-  transcribed, not yet re-executed (pinned SHA-256).
-- `lyap_audit.py` re-executed, all assertions PASS (L4=(AC+CD+2DF−EF)/8,
-  L6=−P/192, 30 monomials). BUT `lyap_extend.py` (degree-8/10/12 + ideal
-  membership L₈∈⟨L₄,L₆⟩, L₁₀/L₁₂∈⟨L₄,L₆,L₈⟩) CRASHED in `poly_terms`
+- 88/121 closed by 2015 (+I¹₁₄ RR 2015 ⇒ 89 fully closed by this run's
+  arithmetic, authors' count is 88); exactly 1 graphic (H³₁₄) left fully open
+  by RR 2015; Lu 2026 preprint claims it — algebraic core VERIFIED here, full
+  claim unverified. Open/partial: (I⁶b₁),(H₁₃³),(DI₂b) boundary-sets-only;
+  ≥11 degenerate graphics open (Shan 2013) (not a full ledger — DRR 1994 not
+  held).
+- RE-EXECUTED exactly and captured: 8L₄ = AC+CD+2DF−EF (degree-4 Bautin
+  obstruction); Darboux cofactors X(L)=(x+dy)L, X(F)=(2Bx+dy)F; the 4 bridge
+  identities; the degree-6 30-monomial equality 192·L₆+P30=0 (λverif
+  lyap_audit + verify_lu_core, both PASS, captures in code/out/). P30's 30
+  monomials in code/out/p30_coeffs.txt + code/lean/Lib/Generated/P30Data.lean.
+- Monomial counts of the focal-value obstructions L_d (NEW, computed in
+  code/out/mono_counts.captured.txt, exact): L4 4 monomials, L6 30, L8 97, L10
+  236, L12 485, L14 890 (d=4,6,8,10,12,14). Observation only: fraction of
+  homogeneous-5-var space creeps toward ~1/2; no clean recurrence; OEIS no
+  match. Do not chase a closed form.
+- `lyap_audit.py` re-executed, PASS. BUT `lyap_extend.py` (degree-8/10/12 +
+  ideal membership L₈∈⟨L₄,L₆⟩, L₁₀/L₁₂∈⟨L₄,L₆,L₈⟩) CRASHED in `poly_terms`
   (TypeError after computing the degree-12 recurrence, 109s) — the extension
-  and the "Bautin trick" ideal-membership statement are NOT established, and
-  the axis-8/10/12 monomial counts are unrecorded.
+  and the "Bautin trick" ideal-membership statement are NOT established
+  (the monomial counts above were recovered by the separate mono_counts.py).
 - Lower bounds: H(2)≥4, H(3)≥13, H(4)≥28, H(n)≳n²log n, M(2)=3, M(3)≥11.
 
 ## Recalled
@@ -132,19 +143,35 @@ from durable memory.
    each): still NOT in the library. DRR 1994 raw catalogue paywalled; its
    content is partially reproduced in held RSZ/RR. Lu 2026's (H³₁₄) closure is
    the one named recent row.
-2. **Verify Lu 2026**: run the two held scripts (+2 not yet fetched: 
-   verify_h14_center_bautin.py, verify_h14_center_global_domains.py) against
-   pinned SHA-256; then decide the preprint's standing. Its human-proof
-   remainder is exactly the gap between algebraic certification and the theorem.
-3. **`code/lean/Lib/Bautin.lean` fails to compile** — `compiled: false` in the
-   last check; the real Bautin V₁,V₂,V₃ are still placeholders `0`, so
-   `bautin_finitely_generated` is vacuous. The verified identities above are
-   the concrete replacement.
-4. **`code/lean/Lib/Statement.lean`** compiles as a statement with the
-   deliberate `sorry` (h16_2 at line 121); `verified:false` is the expected
-   hole, not a parse error. Mathlib gaps to report: no "limit cycle"/isolated
-   periodic orbit, no packaged degree-≤n polynomial field, no flow of a
-   polynomial field.
+2. **Lu 2026's full claim is NOT verified; only its finite algebraic core is.**
+   The Bautin-recurrence core passed clean-room exact re-derivation
+   (code/out/lu_core.captured.txt, code/lyap_audit.py) and the direction added
+   two bundle scripts still not held — `verify_h14_center_bautin.py`,
+   `verify_h14_center_global_domains.py`. The human-proof remainder (root
+   uniqueness, Hadamard divisibility, domain completeness, zero theorems) is
+   machine-unchecked and the preprint unrefereed; the cyclicity bound is
+   existential.
+3. **`code/lean/Lib/BautinRecurrence.lean` fails to compile (`compiled:false`,
+   lean JSON in code/out/lean/)** — its `h14_p30_check`/`bautin_L6_identity`
+   reference `LuH14.Generated`, and `bautin_L4_identity`/`darboux_identities`
+   are still `trivial→True` placeholders, not the real identities. The
+   directive's SECOND asks this be fixed: Generated data under
+   `code/lean/Lib/Generated/`, checker hand-written outside it, close with
+   `decide`. **Duplicated Generated trees exist**: `code/lean/lib/LuH14/` and
+   `code/lean/LuH14/` (stray; lowercase lib is not the convention) alongside
+   `code/lean/Lib/Generated/` — the directive says keep the coefficient data
+   under one path only and delete the duplicates, and delete the probes
+   `code/lean/Lib/{RingTest,RingTest2,ReduceTest}.lean`.
+4. **`code/lean/Lib/Statement.lean` compiles** (per the held lean JSON
+   `compiled:true`) with the deliberate `sorry` in `h16_2`
+   `(LimitCycleSet f.toMap).Finite ∧ ncard ≤ N`: the degree-≤n hypothesis is now
+   real (`f.P f.Q : MvPolynomial (Fin 2) ℝ` with `totalDegree ≤ n`), and the
+   `Set.ncard`-of-infinite-set-is-0 vacuity is closed by the explicit
+   `.Finite ∧` conjunct. Mathlib gaps to report: no "limit cycle"/isolated
+   periodic orbit (stated by hand), non-obvious import paths
+   (`Data.Set.Finite.Basic`, `Data.Fin.VecNotation`), no packaged flow of a
+   polynomial field. But the JSON also lists `outcome:"failed"` to reconcile —
+   re-run lean_check on the current tree.
 
 ## Approach notes
 

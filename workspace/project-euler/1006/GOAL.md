@@ -45,6 +45,17 @@ Verified against the examples:
 Surprise found: the suggested word-length bound (>= 2k) is NOT sufficient —
 k = 15 needs length 35. brute.py uses >= 3k (safe for all k <= 30).
 
-Not yet done: the efficient computation of Ψ(10^18) mod M at full size, and
-its independent verification. Next step: derive the recurrence/structure
-exploiting the k+1 Sturmian factors, with brute.py as the small-k oracle.
+Done since: the mechanical-route gates. `code/out/check_slope.py`
+(decisive slope check, exact arithmetic): slope 1/φ² (rational F(n−2)/F(n))
+reproduces the factor set for k = 1..8; directive's literal slope 1/φ
+(F(n−1)/F(n)) fails from k = 2. `code/mech/mech_psi.py`: Psi(k) via the
+mechanical construction, exact arithmetic, agrees with brute.py k = 1..50
+(exact), psi_exact.txt k = 1..25, psi_residues.txt k = 1..400 (mod M); two
+independent formulations (arc midpoints vs left limits of the telescoped
+identity) agree in total and per-word multiset; insensitive to the slope
+approximant. Captured: code/out/check_slope.captured.txt,
+code/out/mech_psi.captured.txt.
+
+Not yet done: the O(log) evaluation of the same sum at k = 10^18 (the
+universal-Euclidean second-moment monoid), i.e. code/solution.py, and its
+independent verification.
