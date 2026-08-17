@@ -38,6 +38,15 @@ const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
 /// Overridable with `MATH_AGENT_PROVIDER` when a route is degraded.
 const PREFERRED_PROVIDER: &str = "deepinfra";
 
+/// Public URL used to attribute this application's `OpenRouter` requests.
+const OPENROUTER_APP_URL: &str = "https://opencompany.tinyhumans.ai/";
+
+/// Display name used to attribute this application's `OpenRouter` requests.
+const OPENROUTER_APP_TITLE: &str = "OpenCompany";
+
+/// Marketplace category used to classify this application's `OpenRouter` requests.
+const OPENROUTER_APP_CATEGORY: &str = "personal-agent";
+
 /// The model the Lean scribe runs on, on Mistral's own endpoint.
 ///
 /// A 119B mixture-of-experts trained for Lean 4 proof engineering, free while
@@ -306,7 +315,7 @@ fn openrouter_model(model_name: &str, provider: &str) -> Result<Arc<dyn ChatMode
     // Verify any slug you put here actually routes: `streamlake` sat in this
     // list and silently matched nothing, so the documented preference had no
     // effect at all.
-    let mut model = OpenAiModel::openrouter(api_key)
+    let mut model = openrouter_client(api_key)
         .with_model(model_name)
         .with_default_provider_options(serde_json::json!({
             "provider": { "order": [provider], "allow_fallbacks": true }
@@ -320,6 +329,14 @@ fn openrouter_model(model_name: &str, provider: &str) -> Result<Arc<dyn ChatMode
         model = model.with_model(model_name);
     }
     Ok(Arc::new(model))
+}
+
+/// Builds the shared `OpenRouter` transport, including application attribution.
+fn openrouter_client(api_key: impl Into<String>) -> OpenAiModel {
+    OpenAiModel::openrouter(api_key)
+        .with_header("HTTP-Referer", OPENROUTER_APP_URL)
+        .with_header("X-OpenRouter-Title", OPENROUTER_APP_TITLE)
+        .with_header("X-OpenRouter-Categories", OPENROUTER_APP_CATEGORY)
 }
 
 /// Creates an offline harness suitable for deterministic development and tests.
