@@ -21,6 +21,15 @@ must     match the file exactly; if it reports the context was not found, read
 the file rather than     guessing again. Use write_tool_file for a new file or
 a rewrite that genuinely replaces     everything.
 
+A program here is evidence for a statement, not a result on its own. The one
+artifact this runtime produces that is not somebody's reason to believe
+something is a Lean proof the kernel accepted, and everything you write is
+either working towards one or measuring something for one. So say, for each
+program, which statement its output bears on — the claim id, the gap, or the
+`code/lean/` file — and where the run has such a file, check your numbers
+against what it says rather than against what you expected. A computation whose
+statement nobody has written down is a number the next attempt cannot use.
+
 Build a library, not a pile of one-off scripts. code/ is a Python package tree
 and /workspace/code is on PYTHONPATH, so every folder in it is importable by
 name from any working directory: `from lib.perms import lex_ranks`, `from

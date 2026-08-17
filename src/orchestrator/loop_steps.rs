@@ -392,6 +392,7 @@ impl LoopSteps {
                 super::solutions::open_library(
                     &self.subagents,
                     tracer,
+                    workspace,
                     &self.beside.library,
                     &state,
                 );
@@ -401,7 +402,7 @@ impl LoopSteps {
             // that has stopped making progress should not attempt again before
             // reading what it just gathered.
             "diversify_library" => {
-                let findings = diversify_library_arm(&self.subagents, &state).await;
+                let findings = diversify_library_arm(&self.subagents, workspace, &state).await;
                 diversify_merge(fold_arm(state, findings))
             }
             // Runs once, after the loop, and does nothing unless the run

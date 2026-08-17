@@ -3,7 +3,7 @@
 
 use std::path::{Path, PathBuf};
 
-use super::{Candidate, LIB_DIR, Source, gather, parse_candidates, safe_name};
+use super::{Candidate, LIB_DIR, Source, gather, gather_fresh, parse_candidates, safe_name};
 
 fn candidate(name: &str, cited: bool) -> Candidate {
     Candidate {
@@ -230,4 +230,39 @@ fn a_single_file_is_read_as_itself() {
 fn a_missing_path_yields_nothing_rather_than_failing() {
     let root = tempfile::tempdir().expect("a temporary workspace");
     assert!(gather(root.path(), Path::new("nowhere"), 1_000).0.is_empty());
+}
+
+/// What the loop mills, and what it deliberately does not.
+///
+/// Milling everything on every diversify would re-extract the statements the
+/// last pass landed and spend the budget proving them again. The file clock is
+/// what separates the two: a note written after the newest file in the library
+/// is one the library has taken on since a statement last landed.
+#[test]
+fn the_loop_mills_the_notes_written_since_the_last_statement_landed() {
+    let root = std::env::temp_dir().join("math-agent-mill-fresh");
+    let _ = std::fs::remove_dir_all(&root);
+    let notes = root.join("research/summaries");
+    std::fs::create_dir_all(&notes).expect("the summaries directory is creatable");
+    std::fs::write(notes.join("old.md"), "# old\n\nread before any Lean existed.\n")
+        .expect("the old note is writable");
+
+    // No Lean at all: everything is fresh, which is the state this is most
+    // worth running in and the state 33 of 45 workspaces are in.
+    let (all, _) = gather_fresh(&root, Path::new("research/summaries"), 64 * 1024);
+    assert_eq!(all.len(), 1, "a workspace with no Lean mills what it has");
+
+    let library = root.join(LIB_DIR);
+    std::fs::create_dir_all(&library).expect("the library directory is creatable");
+    std::fs::write(library.join("Old.lean"), "theorem t : True := trivial\n")
+        .expect("the Lean file is writable");
+    // Written after the Lean file, so this is what the library has taken on
+    // since the kernel last saw anything.
+    std::fs::write(notes.join("new.md"), "# new\n\nread afterwards.\n")
+        .expect("the new note is writable");
+
+    let (fresh, _) = gather_fresh(&root, Path::new("research/summaries"), 64 * 1024);
+
+    let labels: Vec<&str> = fresh.iter().map(|(label, _)| label.as_str()).collect();
+    assert_eq!(labels, vec!["research/summaries/new.md"]);
 }

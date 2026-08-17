@@ -378,3 +378,43 @@ Fetching a paper by URL or arXiv id is parsed and then refused with a message
 saying so: the download is the librarian's tool and is not wired to this entry
 point. That is deliberate — milling nothing and reporting a clean pass is the
 failure worth avoiding.
+
+### The mill inside a run
+
+`./lean-mill` is a person deciding a workspace has read too much and formalised
+too little. That decision should not have to be made by hand, so the library arm
+makes it every diversify: after the librarian gathers and the scholar reads,
+`mill::gather_fresh` takes the notes written since the newest file in
+`code/lean/Lib/` and `mill::run` turns up to `mill::LOOP_BUDGET` of them into
+checked statements.
+
+Two numbers differ from the command's, and both for the same reason — this runs
+beside five other arms on every pass of a run that may make hundreds, where the
+command is a job somebody is waiting for. The budget is five rather than
+twenty-five, and the read bound is 64 KB of notes rather than the prompt-context
+ceiling.
+
+The file clock is what stops the arm re-milling its own output. It is a
+heuristic and is allowed to be: its failure modes are milling a note twice — the
+kernel rejects the duplicate, or the library gains a second name for one
+statement — and waiting a pass. Neither loses anything the run had.
+
+## What the loop requires of an attempt
+
+An attempt must end with a `.lean` file the kernel has seen *and* with an
+executed program. The program requirement is the older one and stays — it is
+what stopped attempts that ended in notes — but the order is now stated: a
+program is evidence *for* a statement, and the attempt is asked to say which
+statement each one bears on. What that changes is what a run can be while
+looking productive. It was possible for the whole output of a run to be programs
+and prose, every piece of it a reason to believe something and none of it the
+thing itself.
+
+Beside the opening oracle run, the first attempt also opens a formalisation:
+the problem itself, into `code/lean/Lib/Statement.lean`, `:= by sorry` under it.
+Nobody is asking for a proof there. The point is that a Lean statement cannot be
+written at all without every hypothesis being named, and that the run's two
+scheduled paths to the kernel both need something to rank — `verify` needs a
+statement graph and the mill needs digested notes, and an early run has neither.
+So without this, the opening passes of a run reach the kernel not at all, which
+is exactly when a mis-stated problem is cheapest to catch.

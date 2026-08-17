@@ -333,6 +333,81 @@ pub(super) fn gather(
     (sources, unread)
 }
 
+/// Where the loop's own mill pass reads from.
+///
+/// The scholar's notes rather than the full texts: a note is what the run
+/// decided a source establishes, already compressed to the statements, which is
+/// what the extraction step is looking for. Milling `research/sources/` instead
+/// would hand a whole paper back to a model that has already read it once.
+pub(super) const LOOP_SOURCE: &str = "research/summaries";
+
+/// How many statements one pass of the solution loop mills.
+///
+/// Far under [`DEFAULT_BUDGET`], and for a different reason than that constant
+/// has. A `./lean-mill` invocation is a job somebody started and is waiting for;
+/// this runs inside a diversify, beside five other arms, on every pass of a run
+/// that may make hundreds. Five statements a pass compounds — what it must not
+/// do is make the pass about the mill.
+pub(super) const LOOP_BUDGET: usize = 5;
+
+/// The notes written since the kernel last saw anything, or all of them.
+///
+/// The loop mills on a cadence, so milling everything each time would re-extract
+/// statements it landed on the previous pass and spend the budget re-proving
+/// them. What separates old from new here is the file clock: a note modified
+/// after the newest file in [`LIB_DIR`] is one the library has taken on since
+/// the last statement landed.
+///
+/// A workspace with no Lean at all takes the whole directory, which is the
+/// state this is most worth running in. The clock is a heuristic and is allowed
+/// to be: its two failure modes are milling a note twice — the kernel rejects
+/// the duplicate or the library gains a second name for one statement — and
+/// waiting a pass, neither of which loses anything the run had.
+pub(super) fn gather_fresh(
+    workspace: &Path,
+    relative: &Path,
+    max_bytes: usize,
+) -> (Vec<(String, String)>, usize) {
+    let (sources, unread) = gather(workspace, relative, max_bytes);
+    let Some(landed) = newest_lean(workspace) else {
+        return (sources, unread);
+    };
+    let fresh: Vec<(String, String)> = sources
+        .into_iter()
+        .filter(|(label, _)| {
+            std::fs::metadata(workspace.join(label))
+                .and_then(|data| data.modified())
+                .is_ok_and(|written| written > landed)
+        })
+        .collect();
+    (fresh, unread)
+}
+
+/// When the newest file in the Lean library was written, if there is one.
+fn newest_lean(workspace: &Path) -> Option<std::time::SystemTime> {
+    let mut newest: Option<std::time::SystemTime> = None;
+    let mut stack = vec![workspace.join(LIB_DIR)];
+    while let Some(directory) = stack.pop() {
+        let Ok(entries) = std::fs::read_dir(&directory) else {
+            continue;
+        };
+        for entry in entries.filter_map(std::result::Result::ok) {
+            let path = entry.path();
+            if path.is_dir() {
+                stack.push(path);
+                continue;
+            }
+            if path.extension().is_none_or(|extension| extension != "lean") {
+                continue;
+            }
+            if let Ok(written) = entry.metadata().and_then(|data| data.modified()) {
+                newest = Some(newest.map_or(written, |held| held.max(written)));
+            }
+        }
+    }
+    newest
+}
+
 /// What one mill run did.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub(super) struct Report {

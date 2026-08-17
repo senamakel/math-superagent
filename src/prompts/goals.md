@@ -79,8 +79,17 @@ role you used last:
   the negation, which no program can do.
 - **theorem_prover** when the content is quantifier reasoning over relations —
   group, order, incidence, closure — rather than arithmetic.
-- **lean_prover** when a result matters enough to be checked by a kernel rather
-  than believed.
+- **lean_prover** for the statement, before there is anything to check. This is
+  the one on this list to reach for *first* rather than last: a statement in
+  Lean is what every other role's output is then evidence about, and writing it
+  is what forces every hypothesis to be named. Ask for the statement with
+  `:= by sorry` under it — that is a result, and it is usually the whole
+  deliverable. Ask for a proof of a small lemma once the informal argument
+  treats one as obvious. Do not wait for a result to "matter enough": a run that
+  formalises at the end formalises nothing, which is what three calibration runs
+  measured. Every attempt is required to end with a `.lean` file the kernel has
+  seen *and* with an executed program, so both belong in your first fan-out
+  rather than in sequence.
 
 Everything else here is evidence; a Lean proof is the thing itself. Route a
 result through the strongest role that fits it rather than the most convenient.
