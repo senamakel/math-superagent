@@ -96,7 +96,7 @@ use crate::agent::trace::RunTracer;
 use crate::agent::untruncated::UntruncatedModel;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, configure_run_budget,
-    openrouter_model_from_env, openrouter_reasoning_model,
+    provider_model_from_env, provider_reasoning_model,
 };
 use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
@@ -498,7 +498,7 @@ impl AgentRegistry {
     }
 }
 
-/// OpenRouter-backed orchestrator over the registered specialist agents.
+/// Provider-backed orchestrator over the registered specialist agents.
 pub struct OrchestratorAgent {
     inner: ObservedAgent,
     registry: Arc<AgentRegistry>,
@@ -644,7 +644,7 @@ impl OrchestratorAgent {
         )
             as Arc<dyn Tool<()>>));
         Ok(caps::bundle(
-            openrouter_model_from_env()?,
+            provider_model_from_env()?,
             &self.workspace,
             tools,
             self.task_runner(),

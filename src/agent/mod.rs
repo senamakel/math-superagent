@@ -5,6 +5,7 @@
 
 pub mod accounting;
 pub mod budget;
+pub mod fallback;
 pub mod flow;
 pub mod pace;
 pub mod reflection;
@@ -30,13 +31,26 @@ use tinyagents::harness::providers::{ProviderKind, ProviderSpec};
 use tinyagents::harness::tool::ToolTimeoutSettings;
 
 use budget::RunBudget;
+use fallback::ProviderFallbackModel;
 use trace::RunTracer;
 
+const DEFAULT_SURPLUS_MODEL: &str = "deepseek-v4-flash-0731";
 const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
+const SURPLUS_BASE_URL: &str = "https://api.surplusintelligence.ai/v1";
+const OPENROUTER_BASE_URL: &str = "https://openrouter.ai/api/v1";
 /// Preferred `OpenRouter` provider slug, verified to route to `DeepInfra`.
 ///
 /// Overridable with `MATH_AGENT_PROVIDER` when a route is degraded.
 const PREFERRED_PROVIDER: &str = "deepinfra";
+
+/// Public URL used to attribute this application's `OpenRouter` requests.
+const OPENROUTER_APP_URL: &str = "https://opencompany.tinyhumans.ai/";
+
+/// Display name used to attribute this application's `OpenRouter` requests.
+const OPENROUTER_APP_TITLE: &str = "OpenCompany";
+
+/// Marketplace category used to classify this application's `OpenRouter` requests.
+const OPENROUTER_APP_CATEGORY: &str = "personal-agent";
 
 /// The model the Lean scribe runs on, on Mistral's own endpoint.
 ///
@@ -74,12 +88,12 @@ const SCRIBE_MODEL: &str = "labs-leanstral-1-5";
 /// turn rather than five. What that buys is unmeasured here, and a cost this
 /// repository has not measured a benefit for is one the default should not
 /// carry.
-const REASONING_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
+const REASONING_MODEL: &str = "deepseek-v4-flash-0731";
 
-/// Preferred route for [`REASONING_MODEL`], verified against the endpoint list.
+/// Preferred `OpenRouter` fallback route for [`REASONING_MODEL`].
 ///
-/// `DeepInfra`, which is the run's route for the flash model too, so both
-/// models now leave through one provider.
+/// `DeepInfra`, which is the fallback route for the flash model too, so both
+/// fallback models leave through one provider.
 ///
 /// It was `DeepSeek`'s own endpoint, on an argument that has since expired:
 /// $0.43/$0.87 per million against `DeepInfra`'s $1.30/$2.60, unquantized
@@ -111,7 +125,7 @@ pub use tinyagents::{Result, TinyAgentsError};
 /// channel context.
 pub type SlimAgent = AgentHarness<()>;
 
-/// A `TinyAgents` loop backed by `OpenRouter` and observed through Langfuse.
+/// A provider-backed `TinyAgents` loop observed through Langfuse.
 pub struct ObservedAgent {
     harness: SlimAgent,
     langfuse: LangfuseClient,
@@ -122,25 +136,25 @@ impl std::fmt::Debug for ObservedAgent {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         formatter
             .debug_struct("ObservedAgent")
-            .field("model", &"openrouter")
+            .field("model", &"configured-provider")
             .field("langfuse_endpoint", &self.langfuse.endpoint())
             .finish_non_exhaustive()
     }
 }
 
 impl ObservedAgent {
-    /// Loads `.env`, configures the `OpenRouter` model, and creates the direct
+    /// Loads `.env`, configures the model provider, and creates the direct
     /// Langfuse ingestion client.
     ///
-    /// `OPENROUTER_MODEL` optionally overrides the default `DeepSeek` V4 Flash
-    /// model. Requests are routed through `StreamLake`.
+    /// `MATH_AGENT_MODEL` optionally overrides the default `DeepSeek` V4 Flash
+    /// model, and `MATH_AGENT_API_BASE_URL` replaces the Surplus primary.
     ///
     /// # Errors
     ///
-    /// Returns an error when `OPENROUTER_API_KEY` or any required
+    /// Returns an error when no provider API key or any required
     /// `LANGFUSE_*` variable is missing, or when the Langfuse URL is invalid.
     pub fn from_env() -> Result<Self> {
-        let model = openrouter_model_from_env()?;
+        let model = provider_model_from_env()?;
         let mut harness = SlimAgent::new();
         harness
             .register_model("openrouter", model)
@@ -220,8 +234,12 @@ pub(crate) fn configure_run_budget(harness: &mut SlimAgent, budget: RunBudget) {
         .with_policy(budget.run_policy());
 }
 
-pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
-    let model = openrouter_model(DEFAULT_OPENROUTER_MODEL, PREFERRED_PROVIDER)?;
+pub(crate) fn provider_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
+    let model = provider_model(
+        DEFAULT_SURPLUS_MODEL,
+        DEFAULT_OPENROUTER_MODEL,
+        PREFERRED_PROVIDER,
+    )?;
     Ok(model)
 }
 
@@ -234,13 +252,15 @@ pub(crate) fn openrouter_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
 ///
 /// # Errors
 ///
-/// Returns an error when `OPENROUTER_API_KEY` is missing.
-pub(crate) fn openrouter_reasoning_model() -> Result<Arc<dyn ChatModel<()>>> {
+/// Returns an error when neither supported provider API key is configured.
+pub(crate) fn provider_reasoning_model() -> Result<Arc<dyn ChatModel<()>>> {
     let model =
         env_override("MATH_AGENT_REASONING_MODEL").unwrap_or_else(|| REASONING_MODEL.to_string());
     let provider = env_override("MATH_AGENT_REASONING_PROVIDER")
         .unwrap_or_else(|| REASONING_PROVIDER.to_string());
-    openrouter_model(&model, &provider)
+    let fallback_model = env_override("MATH_AGENT_REASONING_OPENROUTER_MODEL")
+        .unwrap_or_else(|| openrouter_model_name(&model));
+    provider_model(&model, &fallback_model, &provider)
 }
 
 /// Builds the model the Lean scribe runs on, or `None` when it is unavailable.
@@ -283,14 +303,65 @@ fn env_override(name: &str) -> Option<String> {
         .filter(|value| !value.is_empty())
 }
 
-/// Builds an `OpenRouter`-backed model on `model_name`, preferring `provider`.
+/// Builds the configured OpenAI-compatible model on `model_name`.
 ///
-/// `OPENROUTER_MODEL` and `MATH_AGENT_PROVIDER` still override both, so the
-/// operator's global escape hatch keeps working for every role.
-fn openrouter_model(model_name: &str, provider: &str) -> Result<Arc<dyn ChatModel<()>>> {
+/// Surplus is the default. `OpenRouter` is used when the primary fails, or by
+/// itself when no primary key is configured. `MATH_AGENT_API_BASE_URL`,
+/// `MATH_AGENT_API_KEY`, and `MATH_AGENT_MODEL` replace the primary endpoint;
+/// `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` configure the fallback.
+fn provider_model(
+    model_name: &str,
+    fallback_model_name: &str,
+    provider: &str,
+) -> Result<Arc<dyn ChatModel<()>>> {
     let _ = dotenvy::dotenv();
-    let api_key = std::env::var("OPENROUTER_API_KEY")
-        .map_err(|_| TinyAgentsError::Validation("OPENROUTER_API_KEY is required".to_string()))?;
+    let base_url = configured_api_base_url();
+    let model_name = env_override("MATH_AGENT_MODEL").unwrap_or_else(|| model_name.to_string());
+    let fallback_model_name =
+        env_override("OPENROUTER_MODEL").unwrap_or_else(|| fallback_model_name.to_string());
+
+    if is_openrouter_base_url(&base_url) {
+        let api_key = primary_api_key(&base_url)
+            .or_else(|| env_override("OPENROUTER_API_KEY"))
+            .ok_or_else(missing_provider_key)?;
+        return Ok(openrouter_model(api_key, &model_name, provider));
+    }
+
+    let primary_name = if is_surplus_base_url(&base_url) {
+        "surplus"
+    } else {
+        "primary"
+    };
+    let primary = primary_api_key(&base_url).map(|api_key| {
+        let profile_provider = if is_surplus_base_url(&base_url) {
+            "surplus"
+        } else {
+            "openai-compatible"
+        };
+        Arc::new(
+            OpenAiModel::new(api_key)
+                .with_provider(profile_provider)
+                .with_base_url(base_url.clone())
+                .with_model(model_name.clone()),
+        ) as Arc<dyn ChatModel<()>>
+    });
+    let fallback = env_override("OPENROUTER_API_KEY")
+        .map(|api_key| openrouter_model(api_key, &fallback_model_name, provider));
+
+    match (primary, fallback) {
+        (Some(primary), Some(fallback)) => Ok(Arc::new(ProviderFallbackModel::new(
+            primary,
+            primary_name,
+            fallback,
+            "openrouter",
+        ))),
+        (Some(primary), None) => Ok(primary),
+        (None, Some(fallback)) => Ok(fallback),
+        (None, None) => Err(missing_provider_key()),
+    }
+}
+
+fn openrouter_model(api_key: String, model_name: &str, provider: &str) -> Arc<dyn ChatModel<()>> {
     // One preferred provider, with fallbacks. Both halves matter.
     //
     // Preferring a single route is what makes prompt caching pay: the cache is
@@ -306,7 +377,7 @@ fn openrouter_model(model_name: &str, provider: &str) -> Result<Arc<dyn ChatMode
     // Verify any slug you put here actually routes: `streamlake` sat in this
     // list and silently matched nothing, so the documented preference had no
     // effect at all.
-    let mut model = OpenAiModel::openrouter(api_key)
+    let mut model = openrouter_client(api_key)
         .with_model(model_name)
         .with_default_provider_options(serde_json::json!({
             "provider": { "order": [provider], "allow_fallbacks": true }
@@ -316,10 +387,62 @@ fn openrouter_model(model_name: &str, provider: &str) -> Result<Arc<dyn ChatMode
             "provider": { "order": [provider], "allow_fallbacks": true }
         }));
     }
-    if let Some(model_name) = env_override("OPENROUTER_MODEL") {
-        model = model.with_model(model_name);
+    Arc::new(model)
+}
+
+fn missing_provider_key() -> TinyAgentsError {
+    TinyAgentsError::Validation(
+        "SURPLUS_API_KEY, MATH_AGENT_API_KEY, or OPENROUTER_API_KEY is required".to_string(),
+    )
+}
+
+fn primary_api_key(base_url: &str) -> Option<String> {
+    env_override("MATH_AGENT_API_KEY").or_else(|| {
+        is_surplus_base_url(base_url)
+            .then(|| env_override("SURPLUS_API_KEY"))
+            .flatten()
+    })
+}
+
+fn openrouter_model_name(model: &str) -> String {
+    if model.contains('/') {
+        return model.to_string();
     }
-    Ok(Arc::new(model))
+    if model.starts_with("deepseek-") {
+        return format!("deepseek/{model}");
+    }
+    model.to_string()
+}
+
+/// Returns whether the configured endpoint speaks `OpenRouter`'s routing dialect.
+///
+/// Direct OpenAI-compatible endpoints must not receive `OpenRouter`'s nested
+/// `provider` object or its affinity/rerouting wrappers.
+pub(crate) fn configured_endpoint_is_openrouter() -> bool {
+    let _ = dotenvy::dotenv();
+    let base_url = configured_api_base_url();
+    is_openrouter_base_url(&base_url)
+        || (primary_api_key(&base_url).is_none() && env_override("OPENROUTER_API_KEY").is_some())
+}
+
+fn configured_api_base_url() -> String {
+    env_override("MATH_AGENT_API_BASE_URL").unwrap_or_else(|| SURPLUS_BASE_URL.to_string())
+}
+
+fn is_surplus_base_url(base_url: &str) -> bool {
+    base_url.trim_end_matches('/') == SURPLUS_BASE_URL
+}
+
+fn is_openrouter_base_url(base_url: &str) -> bool {
+    base_url.trim_end_matches('/') == OPENROUTER_BASE_URL
+}
+
+/// Builds the shared `OpenRouter` transport, including application attribution.
+fn openrouter_client(api_key: impl Into<String>) -> OpenAiModel {
+    OpenAiModel::openrouter(api_key)
+        .with_header("HTTP-Referer", OPENROUTER_APP_URL)
+        .with_header("X-OpenRouter-Title", OPENROUTER_APP_TITLE)
+        .with_header("X-OpenRouter-Categories", OPENROUTER_APP_CATEGORY)
 }
 
 /// Creates an offline harness suitable for deterministic development and tests.

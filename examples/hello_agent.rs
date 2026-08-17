@@ -1,4 +1,4 @@
-//! Runs the OpenRouter-backed hello-world agent.
+//! Runs the provider-backed hello-world agent.
 //!
 //! ```sh
 //! cargo run --example hello_agent -- "your task"
