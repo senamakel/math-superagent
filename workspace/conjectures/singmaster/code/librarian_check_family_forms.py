@@ -12,6 +12,11 @@ run's (n, k+2) = (F_{2i+2}F_{2i+3}-1, F_{2i}F_{2i+3}+1) — claim: identical to
 Brouwer's pair for the same i. Verify for i = 1..12.
 """
 from math import comb
+import sys
+
+# The common values at i>=5 have far more than 4300 digits; never convert
+# them to str. Only compare exact integers and report digit-length.
+sys.set_int_max_str_digits(0)
 
 def fib(n):
     a, b = 0, 1
@@ -35,7 +40,7 @@ for i in range(1, 13):
                  and n == F2i2 * F2i3 - 1 and k + 2 == F2i * F2i3 + 1)
     eq = (lhs == rhs == lhs2 == rhs2)
     ok = ok and eq and same_pair
-    print(f"i={i}: C({F2i2*F2i3},{F2i*F2i3})={lhs}")
-    print(f"      C({F2i2*F2i3-1},{F2i*F2i3+1})={rhs}  equal={eq} same_param={same_pair}")
+    print(f"i={i}: C({F2i2*F2i3},{F2i*F2i3}) has {len(str(lhs))} digits")
+    print(f"      C({F2i2*F2i3-1},{F2i*F2i3+1}) has {len(str(rhs))} digits  equal={eq} same_param={same_pair}")
 
 print("ALL_IDENTICAL" if ok else "MISMATCH")

@@ -1,0 +1,19 @@
+{
+  "axioms": [
+    "'singmaster_conjecture' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem singmaster_conjecture : ∃ B : ℕ, ∀ a : ℕ, 1 < a → N a ≤ B"
+  ],
+  "file": "code/lean/Lib/Statement.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/Statement.lean:38:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}

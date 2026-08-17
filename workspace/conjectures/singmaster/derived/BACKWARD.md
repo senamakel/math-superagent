@@ -8,7 +8,8 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
-| [[boundary-finite-collisions]] | There is an absolute constant C such that for every a > 1 and every admissible eps in (0,1), the number of nontrivial left-half representatives (n,k) with… | Fix eps in (0,1) and let B(eps) = { (n,k) : 2 <= k <= n/2, k < exp((log n)^{2/3+eps}) } be the boundary region. For a given a, let H_bnd(a) = #{ (n,k) in… | sketched | 4 |
+| [[boundary-finite-collisions-g-nonfibonacci-pairs-are-bounded]] | — | — | sketched | 0 |
+| [[boundary-finite-collisions]] | There is an absolute constant C such that for every a > 1 and every admissible eps in (0,1), the number of nontrivial left-half representatives (n,k) with… | Fix eps in (0,1) and let B(eps) = { (n,k) : 2 <= k <= n/2, k < exp((log n)^{2/3+eps}) } be the boundary region. For a given a let H_bnd(a) = #{ (n,k) in B(eps)… | live | 1 |
 | [[effective-bound-hyperelliptic-k25]] | An explicit effective bound with a computed constant on the integral solutions of C(x,2)=C(y,k) for a fixed hyperelliptic pair, stated with its k-dependence… | The pair {2,k} has genus floor((k-1)/2) (superelliptic-genus-formula), so the curve is hyperelliptic with RHS C(y,k) of degree k. For k=5 the genus is 2, where… | broken | 0 |
 | [[genus-closed-form-proof]] | Prove (not merely check) that for distinct m,n >= 2 the geometric genus of the projective closure of C(x,m)=C(y,n) equals g(m,n) = ((m-1)n - (m-2) -… | View the curve in P^1 x P^1, where C(x,m)=C(y,n) has bidegree (m,n) and arithmetic genus p_a = (m-1)(n-1) (G-bidegree-pa). The geometric genus is p_a - delta,… | **discharged** | 0 |
 | [[singmaster-uniform-bound]] | N(a) is bounded by an absolute constant B, for every a > 1, under the both-mirrors-plus-trivial convention (N(3003)=8). | **This is a conditional reduction.** It assumes MRSTT interior theorem (asserted from primary, not re-derived here) and MRSTT threshold effectiveness (asserted… | live | 3 |
@@ -17,20 +18,11 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
 
-- [[boundary-finite-collisions]] `G-bilu-tichy-exceptional-pairs` — The Bilu-Tichy classification (Bilu-Tichy 2000, Thm 1.1/10.5) and its refinement by Hajdu-Papp-Tijdeman (2022, Thm 2.3) applied to the equal-binomial-coefficient equation C(x,k1)=C(y,k2) imply: for pairs (k1,k2) with 2 <= k1 < k2 not of the form (k, k+1) (the Fibonacci family), the equation has only finitely many integer solutions with k1 <= x/2, k2 <= y/2. For pairs of the form (k, k+1), the only infinite family is the Lind-Singmaster Fibonacci family; all other solutions are finite in number.
-  - next: _no first step — a gap nobody can begin is a research request, not a task_
-  - _no thread — nothing is attacking this_
-- [[boundary-finite-collisions]] `G-known-small-collision-catalogue` — For all pairs (k1,k2) with 2 <= k1 < k2 <= 8, the complete list of integer solutions to C(x,k1)=C(y,k2) with k1 <= x/2, k2 <= y/2 is known exactly (Stroeker-de Weger 1999 for (2,3),(2,4),(2,6),(2,8),(3,4),(3,6),(4,6),(4,8); Avanesov 1967 for (2,3); BMSST 2008 for (2,5)). The union of all a-values arising from these collisions is a finite, explicit set containing the witness set {3003, 120, 210, 1540, 7140, 11628, 24310} plus additional values. For each such a, the number of boundary representatives is computable.
-  - next: _no first step — a gap nobody can begin is a research request, not a task_
-  - _no thread — nothing is attacking this_
-- [[boundary-finite-collisions]] `G-nonfibonacci-pairs-are-bounded` — There exists a computable constant K (depending only on eps) such that for every pair (k1,k2) with 2 <= k1 < k2, if there exists a boundary solution C(x,k1)=C(y,k2)=a with both (x,k1) and (y,k2) in the left-half boundary region B(eps), and {k1,k2} is not of the Fibonacci form {k, k+1}, then max(k1,k2) <= K. Equivalently, the set P of non-Fibonacci boundary-collision pairs is finite and computable.
-  - next: (theorem_prover) This is the core structural gap. One route: combine the genus formula g(k1,k2) = ((k1-1)(k2-1)+1-gcd(k1,k2))/2 (proved, genus-closed-form-derived-by-riemann-hurwitz) with the boundary condition k1 < exp((log x)^{2/3+eps}) and the inequality C(x,k1) >= C(2k1,k1) >= 2^{k1} to bound k1 in terms of k2, then apply Bilu-Tichy/HPT to classify which pairs survive. Concretely: if k1 and k2 are both boundary columns for the same value a, then both satisfy the cut, and from a = C(x,k1) we have k1 <= log2(a) and x approx (k1! a)^{1/k1}. The growth constraints may force |k2 - k1| to be small, reducing to a finite search. Alternatively, use the genus classification: for large |k2 - k1|, the genus g(k1,k2) >= 2 grows, and Faltings gives finitely many rational points — but ineffectively. The effective route needs a different idea.
-  - _no thread — nothing is attacking this_
-- [[boundary-finite-collisions]] `G-boundary-collision-a-finite` — (REVISED — G-fibonacci-boundary-finite refuted.) The original synthesis that A_all is finite relied on G-fibonacci-boundary-finite claiming only finitely many Fibonacci a's enter the boundary. The corrected computation (directive 24) shows the Fibonacci family stays boundary forever for eps >= 1/3. So A_all is NOT finite — infinitely many a's have boundary collisions (the Fibonacci family). This is NOT a problem for the per-a bound: each Fibonacci a has at most 2 boundary left-half reps (the (k,k+1) Fibonacci collision plus possibly a k=2 collision), bounded independently of j. The finite-A_all route is closed; the correct reduction to G-boundary-uniform-count goes through per-a reasoning directly from G-nonfibonacci-pairs-are-bounded (which bounds the columns of non-Fibonacci boundary collisions) plus the Fibonacci-family's per-a contribution (which is already bounded by 2).
-  - next: (decisive computation, directive 26) For j=1..12, count ALL nontrivial representatives of a_j (not just the two from the construction) and test each against the boundary cut. If every a_j has exactly 2 boundary reps, the "plus possibly a k=2 collision" does not occur and C=2 for the Fibonacci subproblem. If additional reps appear and grow with j, C is unbounded — G-boundary-uniform-count is false and singmaster-uniform-bound is broken. The next action after that computation depends on the outcome; see G-boundary-uniform-count.
+- [[boundary-finite-collisions]] `G-nonfibonacci-pairs-are-bounded` — There exists a computable constant K (depending only on eps) such that for every pair (k1,k2) with 2 <= k1 < k2, if there exists a boundary solution C(x,k1)=C(y,k2)=a with both (x,k1) and (y,k2) in the left-half boundary region B(eps), and {k1,k2} is not of the Fibonacci form {k, k+1}, then max(k1,k2) <= K. Equivalently the set P of non-Fibonacci boundary-collision pairs is finite and computable.
+  - next: THE single open task. (a) Establish the column-growth obstruction first: if k1 and k2 are both boundary columns of the same a, then a = C(x,k1) >= C(2k1,k1) >= 2^{k1} gives k1 <= log2(a), and the boundary condition k2 < exp((log x)^{2/3+eps}) with the injection x ~ (k1! a)^{1/k1} forces an inequality linking k1, k2. Show these force |k2 - k1| small, reducing a candidate collision to a finite search over (k1,k2) for each eps. The genus identity g(k1,k2) = ((k1-1)(k2-1)+1-gcd(k1,k2))/2 grows in |k2-k1|, so Faltings excludes large-separation pairs — but ineffectively; the finite-search reduction…
   - _no thread — nothing is attacking this_
 - [[singmaster-uniform-bound]] `G-boundary-uniform-count` — There is an absolute constant C such that for every a > 1 and every admissible eps in (0,1), the number of nontrivial left-half representatives (n,k) with C(n,k)=a and 2 <= k < exp((log n)^{2/3+eps}) is at most C. (Equivalently, counting both mirrors, at most 2C boundary occurrences.) The witness set forces C >= 3: 3003 has boundary representatives (78,2), (15,5), (14,6).
-  - next: (computation, decisive) For the Fibonacci family a_j, j=1..12, count ALL nontrivial boundary representatives — not just the two named by the construction. The answer decides the gap: exactly 2 for every j → C >= 3 remains the live lower bound; the count grows with j → C is unbounded, G-boundary-uniform-count is FALSE, and singmaster-uniform-bound is broken. The computation is the one from directive 26. (structural target, if C stays bounded) reduce to de Weger's Conjecture A — a complete list of nontrivial collisions C(x,k1)=C(y,k2), k1<k2 — by showing every boundary representative outside the Fibonacci family has max(k1,k2) <= K for a computable K, so the boundary count becomes a finite per-pair sum; the K<=8 slice is already solved (deweger-smallk-effective covers (2,3),(2,4),(2,6),(2,8),(3,4),(3,6),(4,6),(4,8)).
+  - next: (do not re-run the Fibonacci scan — done.) Attack G-nonfibonacci-pairs-are-bounded in boundary-finite-collisions.md: the column-growth inequality linking k1,k2 for a shared boundary value a, forcing |k2-k1| small and reducing candidate collisions to a finite effective search.
   - _no thread — nothing is attacking this_
 - [[singmaster-uniform-bound]] `G-interior-bounded` — For each admissible eps in (0,1) there is an effective threshold a_0(eps) such that for every a > a_0, at most 2 left-half representatives (n,k) of C(n,k)=a satisfy exp((log n)^{2/3+eps}) <= k <= n/2 (at most 4 in the full symmetric interior).
   - next: _no first step — a gap nobody can begin is a research request, not a task_
@@ -43,7 +35,6 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
 
 Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
 
-- [[boundary-finite-collisions]] `G-column-injectivity` — For each fixed integer k >= 2 and integer a > 1, the equation C(n,k) = a has at most one solution with n >= 2k. Consequently, a given integer a appears in at most one position per column k in the left half of Pascal's triangle. (closed by Elementary — C(n+1,k)/C(n,k) = (n+1)/(n+1-k) > 1 for all n >= k, so C(n,k) is strictly increasing in n; injectivity follows immediately. Verified numerically for all k <= 100, n <= 1000 as a sanity check.)
 - [[genus-closed-form-proof]] `G-delta-invariant` — The total delta invariant of the singularities of C(x,m)-C(y,n)=0 on P^1 x P^1 (distinct m,n >= 2) is delta(m,n) = ((m-1)(n-1) - 1 + gcd(m,n))/2. Equivalently g = p_a/2 = (m-1)(n-1)/2 whenever gcd(m,n)=1. (closed by The Riemann-Hurwitz derivation (genus-closed-form-proof skeleton, now complete) gives the genus directly without needing the delta invariant.  The delta is a corollary of the genus formula plus p_a = (m-1)(n-1), not a prerequisite.  The Riemann-Hurwitz route (degree + finite ramification + infinity fibre) bypasses the singularity-resolution approach entirely.)
 - [[genus-closed-form-proof]] `G-bidegree-pa` — The projective closure of C(x,m)=C(y,n) in P^1 x P^1 has bidegree (m,n) and arithmetic genus p_a = (m-1)(n-1), with the diagonal m=n reducible and therefore excluded. (closed by genus-symmetric-form-and-delta-prediction (records the bidegree-(m,n) and p_a = (m-1)(n-1) identification; elementary for the degree-m and degree-n binomial polynomials))
 
@@ -53,12 +44,22 @@ A decomposition that does not recombine into the goal is the failure this file e
 
 - [[effective-bound-hyperelliptic-k25]] (broken): The linear form Lambda = ln(3x(x-1)) - ln(y(y-1)(y-2)) is identically zero at every solution of C(x,2)=C(y,3) (equal integers have equal prime factorizations), so Matveev Thm 2.2 (Lambda != 0 hypothesis) does not apply.  The same Lambda=0 problem propagates to every (2,k) pair because both sides compute the same integer a and ln(a/a)=0.  See claim matveev-empty-form-on-solution-locus (proved, capture code/out/matveev_23_obstruction.md).  Surviving: the correct effective tool per (2,k) pair is elliptic-logarithm via SDW 1999 Thm B23 — effective, per-pair, NOT uniform in k.
 
-## Resting on nothing recorded
-
-A reduction taking an unrecorded belief as input proves the goal from something nobody downstream can check. Either write the claim, or the id is misspelled.
-
-- [[singmaster-uniform-bound]] rests on `(asserted)`, `(asserted)`, `(checked)`, which no claim block on disk establishes
-
 ## Skeletons that could not be read
 
 - `README` has no skeleton block, so nothing can say what it reduces or whether the reduction is sound
+- `boundary-finite-collisions-g-nonfibonacci-pairs-are-bounded` names no goal, so it is a note, not a skeleton
+- `boundary-finite-collisions-g-nonfibonacci-pairs-are-bounded` does not say how its lemmas imply the goal, so nothing can check that they do
+- `boundary-finite-collisions-g-nonfibonacci-pairs-are-bounded` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
+
+---
+
+**Working with this ledger.** Sections here are bounded and rows are shortened, so what is above is not all of it. `read_ledger` returns entries in full:
+
+```
+read_ledger { ledger: "goals" }
+read_ledger { ledger: "goals", id: "<one of the ids above>" }
+read_ledger { ledger: "goals", status: "<a status above>" }
+read_ledger { ledger: "goals", query: "<text to search for>" }
+```
+
+`list_ledgers` says what fields and statuses this one has, and what else the workspace keeps. To change it: `record_entry` to add or amend a row, `close_entry` to close one. Editing this file changes nothing — it is re-derived on the next write and your edit goes without a warning.

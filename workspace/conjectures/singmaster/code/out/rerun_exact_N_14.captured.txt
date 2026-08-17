@@ -1,0 +1,9 @@
+Convention: N(a) counts BOTH mirrors + trivial pair C(a,1)=C(a,a-1).
+Fresh per-column exact scan (binary inversion, no triangle, k<=bit_length(a)).
+i=1  a digits=4  live columns=5  half-reps=[(78, 2), (15, 5), (14, 6)]  N(a)=8
+i=2  a digits=29  live columns=48  half-reps=[(104, 39), (103, 40)]  N(a)=6
+i=3  a digits=205  live columns=341  half-reps=[(714, 272), (713, 273)]  N(a)=6
+i=4  a digits=1412  live columns=2346  half-reps=[(4895, 1869), (4894, 1870)]  N(a)=6
+self-check N(120)=4 (expect 6), reps=[(10, 3)]
+self-check N(3003)=8 (expect 8), reps=[(78, 2), (15, 5), (14, 6)]
+DONE
