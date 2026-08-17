@@ -88,6 +88,12 @@ hypotheses and falsifiers.
 - Re-derived exactly: 8L₄ = AC+CD+2DF−EF (degree-4 Bautin obstruction);
   Darboux cofactors; 4 bridge identities. Degree-6 30-monomial equality
   transcribed, not yet re-executed (pinned SHA-256).
+- `lyap_audit.py` re-executed, all assertions PASS (L4=(AC+CD+2DF−EF)/8,
+  L6=−P/192, 30 monomials). BUT `lyap_extend.py` (degree-8/10/12 + ideal
+  membership L₈∈⟨L₄,L₆⟩, L₁₀/L₁₂∈⟨L₄,L₆,L₈⟩) CRASHED in `poly_terms`
+  (TypeError after computing the degree-12 recurrence, 109s) — the extension
+  and the "Bautin trick" ideal-membership statement are NOT established, and
+  the axis-8/10/12 monomial counts are unrecorded.
 - Lower bounds: H(2)≥4, H(3)≥13, H(4)≥28, H(n)≳n²log n, M(2)=3, M(3)≥11.
 
 ## Recalled

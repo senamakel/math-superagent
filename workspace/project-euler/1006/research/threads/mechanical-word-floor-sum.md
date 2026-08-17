@@ -2,7 +2,11 @@
 thread:
   question: Can Psi(k) for PE1006 be computed for k=10^18 in O(log) via the mechanical-word / geometrically weighted floor-sum, evaluated by the universal Euclidean (Chtholly / AtCoder floor_sum) algorithm?
   status: live
-  rests-on: []
+  rests-on:
+    - claims/governing-sturmian
+    - claims/governing-factor-complexity
+    - claims/governing-mechanical-word-reps
+    - claims/governing-universal-euclidean
   blocked-by: []
   next: reproduce code/brute.py oracle (Psi(3)=20302, Psi(10)=10699667 mod M), then reproduce directive-2 mechanical-word construction against brute on k=1..150 before trusting it at 10^18.
 ---
@@ -31,6 +35,15 @@ x = 10^-1 mod M, O(log) per evaluation. M = 101001001; 10 invertible since gcd =
 
 C(j,jp) = A(jp-j) = cyclic autocorrelation of standard word q_n, closed form
 A(d) = max(0, m - t) + max(0, m - (N - t)), N = F_n, m = #ones(q_n), t = (d*m) mod N.
+
+## Library status (updated)
+
+The governing-theory source tier is complete and on disk (see
+`research/notes/sourced-claims-governing-theory.md` and `research/summaries/library-build-status.md`).
+All four `rests-on` claims are filed with anchors to sources in `research/sources/`.
+The Cognee memory server was down for the whole build cycle (every remember_memory and
+every download's auto-vectorisation failed a health check), so durable findings are
+recorded on disk: the claims note, the build-status summary, and this thread.
 
 ## Status
 

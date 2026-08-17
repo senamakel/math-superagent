@@ -6,7 +6,23 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
-_No claims recorded yet._
+| Claim | Statement | Holds here | Evidence | Note |
+| --- | --- | --- | --- | --- |
+| `fibonacci-sturmian-complexity` | The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, equivalently the characteristic Sturmian word of slope 1/phi) is a Sturmian word, and its factor complexity function counts exactly P(f, k) = k + 1… | yes | asserted | `research/summaries/claim-fibonacci-sturmian-complexity.md` |
+| `governing-factor-complexity` | A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1. This is the defining minimal-complexity property of Sturmian words (Morse–Hedlund). Consequently the infinite… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
+| `governing-mechanical-word-reps` | Every length-k factor of a Sturmian word of slope a is generated, over the k+1 different arc-midpoint intercepts x_m (m=0..k), by the mechanical-word digit rule digit_j = floor((j+1)a + x) - floor(j a + x). The k+1… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
+| `governing-sturmian` | The infinite Fibonacci word S = 0100101001001... (the S_n of the problem, S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01, in the limit) is a Sturmian word — specifically the characteristic Sturmian word of slope 2 - phi = (3 -… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
+| `governing-universal-euclidean` | The universal Euclidean algorithm (monoid generalisation of the AtCoder floor_sum, "Chtholly's algorithm") evaluates sums of the form sum_{i=0}^{n-1} x^i * floor((a*i+b)/c)  (and the (count, sum x^i, sum x^i floor, sum… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
+
+## Load-bearing but unverified
+
+Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it. Search the whole ledger with `search_claims`.
+
+- `fibonacci-sturmian-complexity` (research/summaries/claim-fibonacci-sturmian-complexity.md) — asserted by the source, not proved there and not checked here
+- `governing-factor-complexity` (research/notes/sourced-claims-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `governing-mechanical-word-reps` (research/notes/sourced-claims-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `governing-sturmian` (research/notes/sourced-claims-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `governing-universal-euclidean` (research/notes/sourced-claims-governing-theory.md) — asserted by the source, not proved there and not checked here
 
 ---
 
