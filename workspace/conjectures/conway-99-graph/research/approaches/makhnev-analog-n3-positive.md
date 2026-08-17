@@ -26,7 +26,19 @@ mechanism: The seed spans 6 points in 2 lines. Its 7 other cross-pairs are all
   closure produces a real infeasible srg(33,12,1,6), so the same closure
   machinery is a genuine filter, and applying it to the n3>=1 seed is the
   unexplored symmetric case.
-status: proposed
+status: refuted
+killed-by: The n3>=1 seed is locally consistent at EVERY radius (radius-6
+  fixpoint, 19 survivors, never stops extending — discharged lemma
+  G-n3-no-local-obstruction). Makhnev's n3=0 closure is determinate precisely
+  BECAUSE that branch has no free bits (n3=0 fixes all cross-triangle joins),
+  forcing the single object srg(33,12,1,6) which then dies on integrality. The
+  n3>=1 seed, by contrast, has genuinely free cross-pair choices at every shell
+  (which is why it extends locally at every radius), so no determinate global
+  sub-design is forced by the closure machinery — the inventor's own note
+  concedes that if the absorption has free parameters the candidate collapses
+  into n3-seed-fisher-replication, and it does. Re-fighting G-n3-no-local-
+  obstruction in the name of a "global closure" that cannot be pinned down
+  produces no k=14-specific object to test for integrality.
 first-step: (1) Reproduce the Makhnev n3=0 closure in code as a template
   (code/out/check_makhnev_n3_counts.captured.txt already has the counts:
   |Gamma(A)|=39, 12 inner + 20 outer triangles, forced srg(33,12,1,6)).

@@ -1,0 +1,9 @@
+k=4  outer vertices m=4
+  H degree distribution: {2: 4}
+  H: lambda common-neighbour counts: {0: 8}
+  H: mu    common-neighbour counts: {2: 4}
+
+k=22  outer vertices m=220
+  H degree distribution: {20: 220}
+  H: lambda common-neighbour counts: {0: 440, 1: 3960}
+  H: mu    common-neighbour counts: {2: 35860, 1: 7920}

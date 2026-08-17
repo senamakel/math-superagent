@@ -32,15 +32,38 @@ mechanism: Fix the seed T1={a,b,c}, T2={d,e,f} with cross-collinear pairs a-d,
   feasibility problem on (points, lines, point-line incidences) with hard bounds
   (231, 693, 99) and the seed as a fixed partial assignment; UNSAT with the seed
   present + SAT with it absent is the k=14-specific contradiction.
-status: proposed
-first-step: (1) Confirm the exact Fisher values: b = vr/3 = 99*7/3 = 231,
-  incidences = 693. (2) Build the partial-STS CP-SAT model (variables: 99 points
-  x 7 line-slots; constraints: each line is a 3-subset, each pair on at most one
-  line (lambda=1), each non-collinear pair has exactly 2 common neighbours
-  (mu=2), degree 14, at most 231 distinct lines) with the n3 seed pinned in.
-  (3) Solve with and without the seed; require the seed-free instance to be able
-  to realize each control's geometry (rook, BvLS) to validate the encoder, and
-  the seed-present instance at k=14 to be UNSAT before claiming the close.
+status: adopted
+precedent: Fisher's inequality (b >= v) is standard design theory; the exact
+  budget b=231, incidences=693, replication r=7, line size 3 is forced by
+  k=14,lambda=1,mu=2 alone (problem.md derivation; c1). The n3>=1 case is the
+  one surviving branch of the forced dichotomy (Makhnev Thm 2 wins n3=0 via
+  srg(33,12,1,6) at a=7; the n3>=1 branch has no non-local obstruction and no
+  published obstruction). No source was found that closes the n3>=1 branch;
+  the run's own global over-subscription route was named as the live finish in
+  CONTEXT.md/n3 findings and never executed.
+first-step: (1) Confirm the exact Fisher values in code (b=99*7/3=231,
+  incidences=693) and that both controls rook(3) (9 points, 6 lines, r=4) and
+  bvls_graph() (243 points, 891 lines, r=22) saturate THEIR OWN budgets, so the
+  encoder has a real notion of "saturates the budget". (2) Widen the existing
+  n3 growth code (code/lib/localprop.py, sound rules that already terminate at a
+  radius-6 fixpoint) into a full global line-budget model: track, per shell,
+  the running count of distinct points used, distinct lines used, point-line
+  incidences used, and per-point degree against the hard caps (99 points, 231
+  lines, 693 incidences, degree 14, 7 lines per point). (3) Solve the seed-
+  present instance at k=14 for global feasibility; require the seed-free instance
+  to realize rook(3) and a structural slice of BvLS to validate the encoder
+  BEFORE reading any UNSAT. (4) The live claim: seed-present + hard caps
+  over-subscribes (forces >231 distinct lines or >693 incidences before all 99
+  points are placed); if instead a feasible completion is found at k=14 with the
+  seed, that is itself a strong positive structural result (a partial STS with
+  the seed, 7 per point, mu=2) worth reporting. The gate: every consistency
+  rule used must be the SOUND growth rule (adjacent<=1, non-adjacent<=2,
+  degree<=14, 7-lines-per-point), never the buggy over-forcing saturation branch,
+  so an UNSAT is real. This is k=14-specific because the budget 99/231/693/14 is
+  only computed once lambda=1,mu=2,k=14 are fixed; it must fail on 9 and 243
+  only in the sense that those members saturate their own budgets with n3=0 and
+  do NOT carry the 2-edge-joined disjoint triangle seed (n3=0 finding), so the
+  seed's oversubscription cannot refute them.
 ```
 
 ## Notes (inventor)

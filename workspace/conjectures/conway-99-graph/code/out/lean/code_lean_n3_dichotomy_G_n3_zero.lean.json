@@ -1,0 +1,26 @@
+{
+  "axioms": [
+    "'N3Dichotomy.not_seven_dvd_33_12_1_6_numerator' depends on axioms: [propext, Quot.sound]",
+    "'N3Dichotomy.srg33_12_1_6_infeasible' depends on axioms: [propext,",
+    "'N3Dichotomy.no_srg_99_14_1_2_n3_zero' depends on axioms: [propext,"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "lemma discriminant_sq : ((1 : ℤ) - 6)^2 + 4 * ((12 : ℤ) - 6) = (7 : ℤ)^2",
+    "lemma mult_num : (2 * (12 : ℤ) + ((33 : ℤ) - 1) * ((1 : ℤ) - 6)) = -136",
+    "lemma not_seven_dvd_136 : ¬ (7 : ℤ) ∣ (136 : ℤ)",
+    "lemma not_seven_dvd_neg_136 : ¬ (7 : ℤ) ∣ (-136 : ℤ)",
+    "lemma not_seven_dvd_mult_num : ¬ (7 : ℤ) ∣ (2 * (12 : ℤ) + ((33 : ℤ) - 1) * ((1 : ℤ) - 6))",
+    "theorem srg33_12_1_6_infeasible : ¬ ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V) (_ : DecidableRel G.Adj), G.IsSRGWith 33 12 1 6",
+    "theorem no_srg_99_14_1_2_n3_zero : ¬ ∃ (V : Type) (_ : Fintype V) (G : SimpleGraph V) (_ : DecidableRel G.Adj), G.IsSRGWith 99 14 1 2 ∧ n3_zero G",
+    "theorem not_seven_dvd_33_12_1_6_numerator : ¬ (7 : ℤ) ∣ (2 * (12 : ℤ) + ((33 : ℤ) - 1) * ((1 : ℤ) - 6))"
+  ],
+  "file": "code/lean/n3_dichotomy_G_n3_zero.lean",
+  "missing_modules": [],
+  "outcome": "verified",
+  "retired_binder": false,
+  "sorries": [],
+  "tautologies": [],
+  "verified": true
+}

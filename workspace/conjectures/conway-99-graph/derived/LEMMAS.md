@@ -64,5 +64,17 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `N3NoLocal.seed_triangles_are_cliques` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
 | `N3NoLocal.seed_triangles_disjoint` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
 | `N3NoLocal.upper_ok` | def | verified | (n : ℕ) (R : Fin n → Fin n → Prop) [DecidableRel R] : Prop | — | `code/lean/n3_dichotomy_G_n3_no_local_obstruction.lean` |
+| `N3Dichotomy.Cited.makhnev_lemmas_6_9` | axiom | verified | {V : Type} [Fintype V] (G : SimpleGraph V) | Makhnev 1988, Mat. Zametki 44(5), Lemmas 6–9 — a putative | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.Cited.srg_multiplicity_integrality` | axiom | verified | {V : Type} [Fintype V] (G : SimpleGraph V) | standard spectral theory of strongly regular graphs (Bose–Mesner | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.discriminant_sq` | lemma | verified | : ((1 : ℤ) - 6)^2 + 4 * ((12 : ℤ) - 6) = (7 : ℤ)^2 | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.edgeCountBetween` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.mult_num` | lemma | verified | : (2 * (12 : ℤ) + ((33 : ℤ) - 1) * ((1 : ℤ) - 6)) = -136 | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.n3_zero` | def | verified | {V : Type} [Fintype V] (G : SimpleGraph V) [DecidableRel G.Adj] : Prop | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.no_srg_99_14_1_2_n3_zero` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.not_seven_dvd_136` | lemma | verified | : ¬ (7 : ℤ) ∣ (136 : ℤ) | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.not_seven_dvd_33_12_1_6_numerator` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.not_seven_dvd_mult_num` | lemma | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.not_seven_dvd_neg_136` | lemma | verified | : ¬ (7 : ℤ) ∣ (-136 : ℤ) | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
+| `N3Dichotomy.srg33_12_1_6_infeasible` | theorem | verified | : | — | `code/lean/n3_dichotomy_G_n3_zero.lean` |
 
-56 declarations, 56 of them in a file the kernel has checked.
+68 declarations, 68 of them in a file the kernel has checked.

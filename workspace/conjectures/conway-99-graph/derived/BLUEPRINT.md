@@ -29,7 +29,7 @@ Ranked by how much of the argument rests on each, and within one load by whether
 - `makhnev99-shorter-proof-integrality` — 1 node(s) rest on it, and the run is already building on it — Under Makhnev 1988 Thm 2's condition (*) [n3 = 0] at (99,14,1,2), the argument forces, from the closure of a triangle and its 60 exterior…
 - `n3-99-forced-at-least-3` — 1 node(s) rest on it, and the run is already building on it — Combining (a) the order-6 integrality residue n3 ≡ 0 (mod 3) with (b) the sourced+re-derived Makhnev 1988 conditional n3 >= 1 (any putative…
 
-_84 further candidate(s) below these, in the table._
+_85 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -76,7 +76,7 @@ _84 further candidate(s) below these, in the table._
 | `five-member-list-vanlint1975` | claim | **ready** | — | The parameters of the family converge to exactly the five members (9,4),(99,14),(243,22),(6273,112),(494019,994), equivalently k=u^2+u+2… |
 | `fixed-set-lemma-fails-on-bvls` | claim | established | — | The folklore lemma "under an automorphism of an srg(v,k,1,2), the fixed-point set is a coclique or a smaller strongly regular graph" is… |
 
-_53 further nodes not shown._
+_54 further nodes not shown._
 
 ## Resting on nothing that exists
 

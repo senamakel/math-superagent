@@ -38,7 +38,22 @@ mechanism: Lambda=1 says two adjacent vertices of Gamma share exactly one common
   NN^T eigen 44,26^?,17^?; C3 eigen 40,23,14,0's), so the 99-specific pinned
   numbers (18,7,0^176) cannot be shared with 243 — the argument can hold at 99
   without refuting either control.
-status: proposed
+status: refuted
+killed-by: The pinned spectrum claim is (a) computed WRONG and (b) parameter-determined
+  either way. (a) The verified triangle-graph spectrum for a 99-graph is
+  {18:1, 7:54, 0:44, -3:132} (c3_spectrum_exact_verify.captured.txt) — the 0
+  multiplicity is 44, NOT the 176 the candidate asserted (it mis-merged the 132
+  zero-vectors into the 0 eigenspace; they are the -3 eigenvalue, which for 99
+  does not collide because st=0). (b) Even corrected, the spectrum is fixed by
+  the family closed form rt=(u-1)(u+4)/2, st=(u-3)(u+2)/2 and holds identically
+  for every family member: BvLS(243) realizes its own forced C3 spectrum exactly
+  ({-3:648, 3:110, 12:132, 30:1} verified). So the C3 pinned spectrum carries the
+  same separating-power failure as the refuted whole-graph eigenvalue, incidence
+  p-rank, SNF and MacWilliams routes — 9 and 243 both realize their forced
+  values, so a C3-spectral argument cannot distinguish 99. The large -3/0
+  eigenspaces (132+44 of 231) make subgraph counts MORE flexible at 99, not less,
+  exactly the concern the inventor flagged. Separating power must come from
+  something the parameters do NOT determine, which this candidate does not supply.
 first-step: (1) Compute C3(rook(3)) and C3(bvls_graph()) exactly with
   lib.triangles.triangle_graph and verify the pinned spectra including
   0-multiplicity (confirm 0-eigenvalue algebraic multiplicity 176 at 99's

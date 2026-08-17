@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "derived-design-at-a-vertex/G-encode",
+  "source": "code/lean/derived_design_at_a_vertex_G_encode.lean",
+  "stage": "decompose"
+}
