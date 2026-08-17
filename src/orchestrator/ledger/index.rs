@@ -113,6 +113,16 @@ pub(in crate::orchestrator) struct Row<'a> {
 /// `slug` is what `read_ledger` is called with, and it is in the closing line
 /// rather than left implicit: an index that says *there is more* without saying
 /// how to get it is the failure this whole module has to avoid.
+///
+/// Two things are hoisted out of the rows because repeating them per row is
+/// paying for a constant. A status every row shares is stated once — a claims
+/// index whose seventy lines all read `(asserted, yes)` spent six hundred
+/// characters saying nothing that varies. And the closing instruction is one
+/// line rather than a paragraph, because the same instruction is in the ledger
+/// brief above it in every prompt that carries an index. What the line cannot
+/// drop is the call itself: the searcher holds the claim index and is
+/// deliberately *not* sent the brief, so the way to the full entry has to be on
+/// the page.
 pub(in crate::orchestrator) fn render<'a>(
     slug: &str,
     title: &str,
@@ -120,10 +130,15 @@ pub(in crate::orchestrator) fn render<'a>(
     rows: impl IntoIterator<Item = Row<'a>>,
     headline: usize,
 ) -> String {
+    let rows: Vec<Row<'a>> = rows.into_iter().collect();
+    let shared = shared_status(&rows);
     let mut out = format!("# {title} — index\n\n{purpose}\n\n");
+    if let Some(status) = &shared {
+        let _ = write!(out, "Every row below is `{status}`.\n\n");
+    }
     let (body, dropped) = budget::listed(rows, budget::MAX_LISTED, |body, row| {
         let _ = write!(body, "- `{}`", row.id);
-        if !row.status.trim().is_empty() {
+        if shared.is_none() && !row.status.trim().is_empty() {
             let _ = write!(body, " ({})", row.status.trim());
         }
         let summary = headline_of(row.headline, row.id);
@@ -142,15 +157,29 @@ pub(in crate::orchestrator) fn render<'a>(
     }
     let _ = write!(
         out,
-        "\n**This is the index, not the ledger.** Each line is shortened to its \
-         identity. Whatever you actually need — the full statement, the whole reason \
-         something closed, the detail of an entry — is one call away and is *not* \
-         above:\n\n```\nread_ledger {{ ledger: \"{slug}\", id: \"<one of the ids above>\" }}\n\
-         read_ledger {{ ledger: \"{slug}\", status: \"<one of the statuses above>\" }}\n```\n\n\
-         Do not conclude from this page that the run holds nothing more on a subject. It \
-         holds more on every line of it.\n"
+        "\n_Index only — every line above is shortened, and the run holds more on each of them. \
+         `read_ledger {{ ledger: \"{slug}\", id: \"…\" }}` returns one in full; `status`, `query` \
+         and `limit` narrow it._\n"
     );
     out
+}
+
+/// The status every row shares, when they share one.
+///
+/// `None` for a ledger with no statuses, for a single row — one row does not
+/// establish that a value is constant, and hoisting it costs more than it saves
+/// — and for the ordinary case where the status is the thing worth reading.
+fn shared_status(rows: &[Row<'_>]) -> Option<String> {
+    if rows.len() < 2 {
+        return None;
+    }
+    let first = rows.first()?.status.trim();
+    if first.is_empty() {
+        return None;
+    }
+    rows.iter()
+        .all(|row| row.status.trim() == first)
+        .then(|| first.to_string())
 }
 
 #[cfg(test)]

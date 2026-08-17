@@ -925,7 +925,7 @@ pub(super) fn index(workspace: &Path) -> String {
             (
                 node.id.clone(),
                 node.standing.label().replace('*', ""),
-                node.statement.clone(),
+                edges(&graph, node),
             )
         })
         .collect();
@@ -941,6 +941,37 @@ pub(super) fn index(workspace: &Path) -> String {
             }),
         super::ledger::index::HEADLINE,
     )
+}
+
+/// What one node's index line says beyond its id and its standing.
+///
+/// The edges, and not the statement. The statement was here and was the same
+/// text `CLAIMS.md` carries a few thousand characters earlier in the same
+/// prompt — measured on one live workspace, the claims index and this one came
+/// to 17,829 characters between them, over the same seventy ids, and the second
+/// copy was the shorter one. Every role routed this file is routed the claim
+/// ledger too, so the statement is above and one `read_ledger` away, while what
+/// only this ledger knows — what rests on what — was the part being dropped for
+/// space.
+///
+/// Both directions, because which one a node has depends on what it is. A
+/// skeleton rests on its gaps; a gap rests on nothing and is instead *needed
+/// by* the skeleton above it, which is the fact that says what closing it would
+/// buy. A node with neither renders no edge text rather than a filler phrase.
+fn edges(graph: &Blueprint, node: &Node) -> String {
+    if !node.needs.is_empty() {
+        return format!("rests on {}", node.needs.join(", "));
+    }
+    let dependents: Vec<&str> = graph
+        .nodes
+        .values()
+        .filter(|other| other.needs.iter().any(|need| need == &node.id))
+        .map(|other| other.id.as_str())
+        .collect();
+    if dependents.is_empty() {
+        return String::new();
+    }
+    format!("needed by {}", dependents.join(", "))
 }
 
 fn cell(text: &str) -> String {

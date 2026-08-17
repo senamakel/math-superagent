@@ -689,7 +689,7 @@ fn the_index_names_the_call_that_fetches_what_it_dropped() {
     let index = super::index(&spec, &entries);
 
     assert!(
-        index.contains("This is the index, not the ledger."),
+        index.contains("Index only — every line above is shortened"),
         "the copy says it is shortened: {index}"
     );
     assert!(

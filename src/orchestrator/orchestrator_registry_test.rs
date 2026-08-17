@@ -1397,3 +1397,25 @@ fn the_orchestrator_reports_the_tools_its_harness_registers() {
         );
     }
 }
+
+/// A role sent the statement graph is sent the claim ledger too.
+///
+/// The blueprint index carries standings and edges and no longer carries each
+/// node's statement, because that text was the claim ledger's, repeated a few
+/// thousand characters later in the same prompt — 17,829 characters between the
+/// two on one live workspace, over the same ids. The saving is only honest if
+/// the statement is still in front of the same reader, so that is asserted
+/// rather than assumed.
+#[test]
+fn the_graph_never_travels_without_the_statements_it_is_a_graph_over() {
+    for role in ["orchestrator", "goals", "reducer"] {
+        let context = role_context(role);
+        if !context.contains(&"derived/BLUEPRINT.md") {
+            continue;
+        }
+        assert!(
+            context.contains(&"derived/CLAIMS.md"),
+            "`{role}` reads the graph with no statements to read it against"
+        );
+    }
+}

@@ -528,13 +528,15 @@ fn the_queue_holds_only_nodes_a_check_could_settle() {
     );
 }
 
-/// The index keeps every node's standing, which is what this ledger is for.
+/// The index keeps every node's standing and its edges, and drops the
+/// statement.
 ///
 /// `BACKWARD.md` already lists the open lemmas. What the graph adds is that most
 /// of them are blocked and a few are **ready** — pickable up today without
-/// reading the rest of the argument. A line carrying the id and the standing
-/// carries that whole distinction; the dependency edges behind it are only
-/// needed once a node has been chosen.
+/// reading the rest of the argument — and *what each one rests on*, which is
+/// the only fact no other ledger holds. The statement used to be here and was
+/// the claim ledger's text repeated a few thousand characters later in the same
+/// prompt; every role routed this file is routed that one.
 #[test]
 fn the_index_keeps_every_standing() {
     let root = workspace("index-standing");
@@ -571,6 +573,19 @@ fn the_index_keeps_every_standing() {
     assert!(
         !index.contains("start here"),
         "the next step is dropped: {index}"
+    );
+    assert!(
+        !index.contains("A lemma resting on the settled bound"),
+        "the statement is the claim ledger's, not repeated here: {index}"
+    );
+    assert!(
+        index.contains("rests on main/blocked-lemma, main/ready-lemma"),
+        "a skeleton says which gaps it rests on: {index}"
+    );
+    assert!(
+        index.contains("needed by main"),
+        "and a gap says what closing it would unblock, which is the same edge \
+         read from the other end: {index}"
     );
 }
 
