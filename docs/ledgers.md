@@ -245,9 +245,29 @@ attempt six and the literature check that would have killed it never happened.
 An approach is `research/approaches/<slug>.md` with a fenced `approach` block
 — `idea`, `mechanism`, `status`, `precedent`, `first-step`, `killed-by` — whose
 stances are a life cycle rather than a flag: `proposed`, `grounded`, `refuted`,
-`adopted`, `spent`. Empty `precedent` means nobody checked, which is not the same
-as nothing having been found; refuted and spent approaches are kept with their
-reasons, on the dead-thread argument.
+`adopted`, `spent`, `narrowed`, `reserved`. Empty `precedent` means nobody
+checked, which is not the same as nothing having been found; refuted and spent
+approaches are kept with their reasons, on the dead-thread argument.
+
+The last two stances were read off ProofAtlas, whose route dispositions are
+seven-valued where this was five
+([`research/proofatlas/05-open-workspace-shape.md`](../research/proofatlas/05-open-workspace-shape.md)).
+Both hold a *result* the other five discard by collapsing it into `refuted`:
+
+- `narrowed` failed in general and holds on a restriction, named in a required
+  `survives` line. It is deliberately **not** closed — the restriction is live
+  work, and an inventor forbidden to propose it loses the one thing the failure
+  bought. It renders in its own section, *Narrowed, and what survived*.
+- `reserved` did not fail at all; it is unaffordable now, and a required
+  `revive-when` line names the condition that changes that. It **is** closed, so
+  nothing picks it up today, but its rendered reason is the revival condition
+  rather than a refutation it never suffered. A reserved approach with no
+  condition can never be revived, so the renderer says so in those words.
+
+Each stance's field is required by the reader, not by the prompt: a missing one
+is a fault naming the file and the line to add. A stance that records a result
+is worthless as a bare flag, which is what makes these two controls rather than
+vocabulary.
 
 `derived/BACKWARD.md` (`backward.rs`) is the other axis: not what the run has
 tried, but what would be *enough*. An approach is a route to the goal; a

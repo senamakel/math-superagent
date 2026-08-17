@@ -93,14 +93,20 @@ fn an_unchecked_approach_is_distinguished_from_a_fruitless_one() -> std::io::Res
 #[test]
 fn every_stance_parses() -> std::io::Result<()> {
     let root = workspace("stances")?;
-    for (slug, written) in [
-        ("a", "proposed"),
-        ("b", "grounded"),
-        ("c", "refuted"),
-        ("d", "adopted"),
-        ("e", "spent"),
+    for (slug, written, extra) in [
+        ("a", "proposed", ""),
+        ("b", "grounded", ""),
+        ("c", "refuted", ""),
+        ("d", "adopted", ""),
+        ("e", "spent", ""),
+        ("f", "narrowed", "\nsurvives: holds for squarefree n"),
+        ("g", "reserved", "\nrevive-when: the sieve reaches 10^9"),
     ] {
-        approach(&root, slug, &format!("idea: An idea\nstatus: {written}"))?;
+        approach(
+            &root,
+            slug,
+            &format!("idea: An idea\nstatus: {written}{extra}"),
+        )?;
     }
     let approaches = collect(&root);
     let stances: Vec<Stance> = approaches
@@ -115,11 +121,74 @@ fn every_stance_parses() -> std::io::Result<()> {
             Stance::Grounded,
             Stance::Refuted,
             Stance::Adopted,
-            Stance::Spent
+            Stance::Spent,
+            Stance::Narrowed,
+            Stance::Reserved
         ]
     );
-    // Only the two that end an approach count as closed.
-    assert_eq!(approaches.closed().count(), 2);
+    // Refuted, spent and reserved end an approach. Narrowed does not: its
+    // surviving restriction is work, and an inventor forbidden to propose it
+    // would lose the one thing the failure bought.
+    assert_eq!(approaches.closed().count(), 3);
+    Ok(())
+}
+
+/// A narrowed approach is a result, not a failure, and the restriction it still
+/// holds on is the result.
+#[test]
+fn a_narrowed_approach_keeps_the_restriction_that_survived() -> std::io::Result<()> {
+    let root = workspace("narrowed")?;
+    approach(
+        &root,
+        "descent",
+        "idea: Infinite descent on the exponent\n\
+         status: narrowed\n\
+         killed-by: the descent step fails once the exponent exceeds the modulus\n\
+         survives: the argument still closes for exponents below the modulus",
+    )?;
+
+    let approaches = collect(&root);
+    let rendered = approaches.render();
+    assert!(rendered.contains("## Narrowed, and what survived"));
+    assert!(rendered.contains("closes for exponents below the modulus"));
+    // It is live work, so it is not in the do-not-propose list.
+    assert_eq!(approaches.closed().count(), 0);
+    Ok(())
+}
+
+/// A reserved approach did not fail, so its rendered reason is the condition
+/// that would bring it back rather than a refutation it never suffered.
+#[test]
+fn a_reserved_approach_renders_its_revival_condition() -> std::io::Result<()> {
+    let root = workspace("reserved")?;
+    approach(
+        &root,
+        "modular-forms",
+        "idea: Read the count off a weight-2 modular form\n\
+         status: reserved\n\
+         revive-when: the library carries the Eichler-Selberg trace formula",
+    )?;
+
+    let rendered = collect(&root).render();
+    assert!(rendered.contains("revive when the library carries"));
+    // Nothing should read this as a dead idea.
+    assert!(!rendered.contains("no reason recorded"));
+    Ok(())
+}
+
+/// Both new stances record a result rather than a verdict, so each is worthless
+/// as a bare flag and the missing field is a fault by name.
+#[test]
+fn a_stance_that_requires_a_field_faults_without_it() -> std::io::Result<()> {
+    let root = workspace("required")?;
+    approach(&root, "bare-narrow", "idea: An idea\nstatus: narrowed")?;
+    approach(&root, "bare-reserve", "idea: An idea\nstatus: reserved")?;
+
+    let rendered = collect(&root).render();
+    assert!(rendered.contains("`bare-narrow`"), "{rendered}");
+    assert!(rendered.contains("add a `survives` line"), "{rendered}");
+    assert!(rendered.contains("`bare-reserve`"), "{rendered}");
+    assert!(rendered.contains("add a `revive-when` line"), "{rendered}");
     Ok(())
 }
 
