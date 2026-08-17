@@ -326,6 +326,24 @@ pub(super) struct Claim {
     pub(super) formalisation: String,
     /// Where in the source text to check it.
     pub(super) anchor: String,
+    /// What a search covered, and which exhaustive regime it lies outside.
+    ///
+    /// The half of a computational result that says what it is worth. A claim
+    /// backed by a program that swept a space is only as strong as the space,
+    /// and a *negative* one — nothing was found — is worth exactly its frame and
+    /// nothing else. "No counterexample below 10^9" and "no counterexample" are
+    /// different statements, and only the first is a result.
+    ///
+    /// The failure it stops is not hypothetical.
+    /// [`ProofAtlas`](../../research/proofatlas/02-refutation-path.md)'s
+    /// Domineering counterexample was missed by every earlier search because it
+    /// lay outside every frame those searches used — a 9×8 board against sweeps
+    /// bounded at 7×7 and at twenty empty cells. No amount of further compute
+    /// inside those frames would ever have reached it. Neither of that work's
+    /// published pages records a frame, so nobody could see that; recording one
+    /// is what turns "we looked and found nothing" from an absence into a
+    /// bankable result, and what tells the next attempt where to look instead.
+    pub(super) frame: String,
     /// The note the block was found in.
     pub(super) source: String,
 }
@@ -478,6 +496,9 @@ fn is_known(key: &str) -> bool {
             | "anchor"
             | "source"
             | "where"
+            | "search-frame"
+            | "frame"
+            | "swept"
     )
 }
 
@@ -605,6 +626,7 @@ fn set(claim: &mut Claim, key: &str, value: &str) {
             claim.refutation = value.trim().replace(['`', ' '], "");
         }
         "anchor" | "source" | "where" => claim.anchor = value.to_string(),
+        "search-frame" | "frame" | "swept" => claim.frame = value.to_string(),
         _ => {}
     }
 }
@@ -861,7 +883,11 @@ impl Ledger {
              the source. A file that supports neither is recorded as `asserted` and listed below \
              with the reason. Everything else on this page is a word somebody typed.\n\n\
              `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose \
-             hypotheses fail here is worse than no theorem, because it looks like progress.\n\n",
+             hypotheses fail here is worse than no theorem, because it looks like progress.\n\n\
+             A claim a program produced — `status: checked`, or any claim naming a `refutation` — \
+             also takes a `search-frame` line saying what was swept, and where one exists, the \
+             published exhaustive regime it lies outside. A sweep is worth its space and no more, \
+             and one that found nothing is worth nothing at all without it.\n\n",
         );
         if self.claims.is_empty() {
             out.push_str("_No claims recorded yet._\n");
@@ -893,6 +919,7 @@ impl Ledger {
         self.append_unbacked(&mut out);
         self.append_unverified(&mut out);
         self.append_catalogued(&mut out);
+        self.append_unframed(&mut out);
         self.append_faults(&mut out);
         out
     }
@@ -1023,6 +1050,47 @@ impl Ledger {
         out.push_str(&budget::elided(dropped, NOTES_ROOT));
     }
 
+    /// Lists computational claims that never said what they swept.
+    ///
+    /// A claim the run checked with a program is worth its search space, and one
+    /// that names a counterexample is worth the space the counterexample was
+    /// found in. Neither is legible without the space, and the failure is
+    /// asymmetric: a numerical check that *found* something is still evidence
+    /// with no frame, while one that found nothing is evidence of nothing at all
+    /// until the frame is stated.
+    ///
+    /// Rendered as a gap rather than enforced as a downgrade. A sweep really was
+    /// run, and calling it asserted would be a lie in the other direction; what
+    /// is missing is a sentence, and the row asks for that sentence by name.
+    fn append_unframed(&self, out: &mut String) {
+        let unframed = self.claims.iter().filter(|claim| {
+            claim.frame.is_empty()
+                && (claim.status == Status::Checked || !claim.refutation.is_empty())
+        });
+        let (rows, dropped) = budget::listed(unframed, budget::MAX_LISTED, |rows, claim| {
+            let _ = writeln!(
+                rows,
+                "- `{}` ({}) — no `search-frame`: nothing says what was swept",
+                claim.id, claim.source
+            );
+        });
+        if rows.is_empty() {
+            return;
+        }
+        out.push_str(
+            "\n## Searched, with no frame recorded\n\nEach of these rests on a program that swept \
+             something, and none of them says what. Add a `search-frame` line naming the space \
+             covered and, where one exists, the published exhaustive regime it lies outside — \
+             `all n below 10^9`, `boards up to 9x8, which prior sweeps bounded at 7x7`.\n\n\
+             Without it a sweep that found nothing cannot be told from a question nobody asked, \
+             and a later attempt has no way to know it would be searching the same space again. \
+             The frame is also where a *missed* result becomes visible: an object outside every \
+             frame tried is one no further compute inside them would ever have reached.\n\n",
+        );
+        out.push_str(&rows);
+        out.push_str(&budget::elided(dropped, NOTES_ROOT));
+    }
+
     /// Reports blocks that could not be read, rather than dropping them.
     ///
     /// A claim silently discarded for a missing `id` is worse than a visible
@@ -1120,6 +1188,9 @@ pub(super) fn detail(claim: &Claim) -> String {
     );
     if !claim.bearing.is_empty() {
         let _ = writeln!(out, "- Bearing: {}", claim.bearing);
+    }
+    if !claim.frame.is_empty() {
+        let _ = writeln!(out, "- Searched: {}", claim.frame);
     }
     let _ = writeln!(out, "- Note: `{}`", claim.source);
     if !claim.anchor.is_empty() {

@@ -201,7 +201,8 @@ library was a file, and a file is the wrong thing to retrieve: an agent about
 to compute something needs one statement with its hypotheses, not the note that
 happens to contain it. A note may carry fenced `claim` blocks — `id`,
 `statement`, `hypotheses`, `holds-here`, `status`, `bearing`, `anchor`,
-`contradicts`, `answers` — and `search_claims` retrieves those rows. Two checks
+`contradicts`, `answers`, `search-frame` — and `search_claims` retrieves those
+rows. Two checks
 fall out that were previously asked for in a prompt and never verified.
 `contradicts` naming another claim produces a contradiction the run can see,
 which the scholar prompt calls the most valuable thing it can find and which
@@ -210,6 +211,25 @@ load-bearing belief nobody verified, which is the distinction the method policy
 requires and the one a long run forgets it made. A block missing its `id` or
 `statement` is reported rather than dropped: a claim silently discarded leaves
 the note reading as though it recorded something.
+
+`search-frame` is the field a computational claim is worth. A claim with
+`status: checked`, or any claim naming a `refutation`, rests on a program that
+swept a space, and the claim is worth the space and no more — so the ones that
+never say what they swept render as *Searched, with no frame recorded*. The
+asymmetry is why it is a section and not a nicety: a sweep that *found*
+something is evidence with or without a frame, while a sweep that found nothing
+is evidence of nothing at all until the space is stated, and is indistinguishable
+in a table from a question nobody asked.
+
+ProofAtlas supplied the failure
+([`research/proofatlas/02-refutation-path.md`](../research/proofatlas/02-refutation-path.md)).
+Its Domineering counterexample sits on a 9×8 board; every earlier search had been
+bounded at 7×7 and at twenty empty cells, so the witness was outside every frame
+tried and no additional compute inside them would ever have reached it. Neither
+published page records a frame, so nothing on either could have shown that. The
+frame is rendered as a gap rather than enforced as a downgrade — a sweep really
+did run, and calling it asserted would be false in the other direction; what is
+missing is one sentence, and the row asks for that sentence by name.
 
 `status: catalogued` renders its own section, *Taken from a catalogue*, rather
 than joining the unverified list, because the two debts differ: an asserted claim

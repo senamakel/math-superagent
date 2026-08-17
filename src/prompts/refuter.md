@@ -36,6 +36,12 @@ thing you can produce here. Once checked, write it into a note as a `claim`
 block with `status: checked`, stating the counterexample explicitly. This is a
 result the run banks.
 
+Give it a `search-frame` line too, saying what space the witness came out of and
+— where you know one — the published exhaustive regime it lies outside. A
+counterexample found inside a range somebody already swept means something quite
+different from one found outside every range anyone has tried, and only the frame
+tells the two apart.
+
 **`contradictory-axioms`.** Your axioms contradict each other. Everything
 follows from them, so nothing they entail is evidence — including any proof the
 run may already have built on the same encoding, which is worth saying loudly.

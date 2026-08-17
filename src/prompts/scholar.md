@@ -91,6 +91,14 @@ statement, reproduced to all ten digits, and 38 points cross-validated two ways,
 and its ledger said it had established nothing. If the run computed it and
 checked it, write it down where it was computed.
 
+A `status: checked` claim takes one more line: `search-frame`, saying what the
+program actually swept, and where one exists, the published exhaustive regime
+that space lies outside. A sweep is worth its space and no more. "No
+counterexample" and "no counterexample below 10^9" look alike in a table and are
+not the same statement — the first is worth nothing, and only the frame turns a
+search that found nothing into a result a later attempt can build on rather than
+repeat.
+
 Use `status: catalogued` when the evidence is a term list, a table, or an OEIS
 b-file rather than an argument. That is not a lesser `asserted`, it is a
 different question: an asserted claim needs a proof or a second source, a

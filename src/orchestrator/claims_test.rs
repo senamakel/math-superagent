@@ -281,6 +281,91 @@ fn a_catalogued_claim_is_separated_from_an_asserted_one() -> std::io::Result<()>
     Ok(())
 }
 
+/// A sweep is worth its search space and no more, so a computational claim that
+/// never says what it swept is called out by name.
+///
+/// The failure is `ProofAtlas`' Domineering counterexample, which every earlier
+/// search missed because it lay outside their frames rather than beyond their
+/// compute — 9x8 against sweeps bounded at 7x7. No published page recorded a
+/// frame, so nothing could show that.
+#[test]
+fn a_computational_claim_without_a_frame_is_called_out() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-unframed");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L1.0"))?;
+    std::fs::write(
+        root.join("research/L1.0/swept.md"),
+        note(
+            "id: no-small-counterexample\nstatement: No counterexample exists.\n\
+             holds-here: yes\nstatus: checked",
+        ),
+    )?;
+    std::fs::write(
+        root.join("research/L1.0/framed.md"),
+        note(
+            "id: no-counterexample-below-1e9\nstatement: No counterexample below 1e9.\n\
+             holds-here: yes\nstatus: checked\n\
+             search-frame: all n below 1e9, where the published sweep stopped at 1e7",
+        ),
+    )?;
+    let rendered = collect(&root).render();
+
+    assert!(rendered.contains("## Searched, with no frame recorded"));
+    assert!(rendered.contains("`no-small-counterexample`"));
+    let unframed = rendered
+        .split("## Searched, with no frame recorded")
+        .nth(1)
+        .unwrap_or_default();
+    let unframed = unframed.split("\n## ").next().unwrap_or_default();
+    assert!(
+        !unframed.contains("no-counterexample-below-1e9"),
+        "a claim that stated its frame must not be listed as missing one: {rendered}"
+    );
+    Ok(())
+}
+
+/// A claim naming a counterexample is judged the same way, because the witness
+/// is worth the space it was found in.
+#[test]
+fn a_refutation_without_a_frame_is_called_out_too() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-unframed-refutation");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L1.0"))?;
+    std::fs::write(
+        root.join("research/L1.0/witness.md"),
+        note(
+            "id: twelve-vertex-witness\nstatement: A 12-vertex tournament has no Hamilton \
+             decomposition.\nholds-here: yes\nstatus: asserted\nrefutation: witness.p",
+        ),
+    )?;
+    let rendered = collect(&root).render();
+
+    assert!(rendered.contains("## Searched, with no frame recorded"), "{rendered}");
+    assert!(rendered.contains("`twelve-vertex-witness`"));
+    Ok(())
+}
+
+/// The frame reaches a reader who searches for the claim, not only one who
+/// reads the derived table.
+#[test]
+fn a_search_result_carries_the_frame() -> std::io::Result<()> {
+    let root = std::env::temp_dir().join("math-agent-claims-frame-detail");
+    let _ = std::fs::remove_dir_all(&root);
+    std::fs::create_dir_all(root.join("research/L1.0"))?;
+    std::fs::write(
+        root.join("research/L1.0/swept.md"),
+        note(
+            "id: swept-to-1e9\nstatement: No counterexample below 1e9.\nholds-here: yes\n\
+             status: checked\nswept: all n below 1e9",
+        ),
+    )?;
+    let ledger = collect(&root);
+    let found = ledger.search("swept-to-1e9");
+    assert_eq!(found.len(), 1);
+    assert!(super::detail(found[0]).contains("Searched: all n below 1e9"));
+    Ok(())
+}
+
 /// What the run computed counts as much as what it read.
 ///
 /// The ledger walked only `research/`, so a claim could originate only in a
