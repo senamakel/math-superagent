@@ -63,6 +63,9 @@ mod threads;
 mod vcs;
 mod vcs_tool;
 mod vector;
+mod mill;
+mod tiers;
+use tiers::{ModelTier, ModelTiers};
 mod verify;
 mod weakened;
 mod worklock;
@@ -240,6 +243,19 @@ const SPECIALISTS: [&str; 17] = [
 /// second investigation running beside the first.
 const PATTERN_DELEGATES: [&str; 1] = ["tool_builder"];
 
+/// The one role the Lean prover may delegate to.
+///
+/// The prover decides *what* to state and whether the statement it gets back
+/// means what the mathematics said; the scribe writes the Lean and argues with
+/// the kernel until it compiles. Splitting them is what lets the mechanical
+/// half run on a model that is fast and free without putting the judgement
+/// there too.
+///
+/// Recursion is bounded at one level by construction rather than by
+/// instruction, on the same argument as [`INVENTION_BENCH`]: the scribe holds
+/// no delegation tools, so nothing it is handed can spawn further.
+const LEAN_BENCH: [&str; 1] = ["lean_scribe"];
+
 /// Agents the inventor may delegate to.
 ///
 /// Only research, and that is the whole point rather than a restriction. A new
@@ -302,6 +318,19 @@ const REASONING_ROLES: [&str; 6] = [
     "director",
 ];
 
+/// Roles that run on the Lean model rather than the run's default.
+///
+/// One, and it should stay small for the reason the model is here at all: the
+/// scribe tier is fast and free but narrow, measured refusing to drop
+/// `linarith` over a field with no order across eight samples and four rounds
+/// of kernel feedback. It is the right model for writing a routine Mathlib
+/// lemma at volume and the wrong one for deciding what to write.
+///
+/// `lean_prover` is deliberately not here. It keeps the judgement — whether the
+/// Lean statement is faithful to the mathematics, and whether the result earns
+/// a claim — on the run's own model, and hands only the writing down.
+const SCRIBE_ROLES: [&str; 1] = ["lean_scribe"];
+
 /// Agents the top-level orchestrator may delegate to directly.
 const DELEGATES: [&str; 19] = [
     "research",
@@ -353,6 +382,7 @@ const SMT_SOLVER_PROMPT: &str = include_str!("../prompts/smt_solver.md");
 const THEOREM_PROVER_PROMPT: &str = include_str!("../prompts/theorem_prover.md");
 const SYMBOLIC_MATH_PROMPT: &str = include_str!("../prompts/symbolic_math.md");
 const LEAN_PROVER_PROMPT: &str = include_str!("../prompts/lean_prover.md");
+const LEAN_SCRIBE_PROMPT: &str = include_str!("../prompts/lean_scribe.md");
 
 const REFLECTION_PROMPT: &str = include_str!("../prompts/reflection.md");
 
@@ -484,6 +514,9 @@ pub struct OrchestratorAgent {
     tracer: Arc<RunTracer>,
     workspace: PathBuf,
     memory: VectorStore,
+    /// The run's models, kept so the workflow document can publish the tier a
+    /// role *actually* runs on rather than the one a list says it should.
+    models: Arc<ModelTiers>,
 }
 
 impl OrchestratorAgent {
@@ -526,7 +559,56 @@ impl OrchestratorAgent {
     /// one thing this must not be a second list of.
     #[must_use]
     pub fn workflow_agents(&self) -> Vec<tinyflows::model::AgentDefinition> {
-        definitions::workflow_agents(&self.registry)
+        definitions::workflow_agents(&self.registry, &self.models)
+    }
+
+    /// Runs one pass of the formalisation mill over `source`.
+    ///
+    /// Separate from [`Self::solve`] because it answers a different question.
+    /// The loop formalises what its own statement graph ranks, and needs a
+    /// graph; this formalises what a source claims, and needs only the source —
+    /// which is why it is the path that works on a workspace that has never
+    /// been decomposed. See the `mill` module.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when `source` cannot be read as a path, URL, or arXiv
+    /// id, or when a URL or arXiv source is named — fetching one is the
+    /// librarian's, and is not wired to this entry point yet.
+    pub async fn mill(&self, source: &str, budget: Option<usize>) -> Result<String> {
+        let Some(source) = mill::Source::parse(source) else {
+            return Err(tinyagents::TinyAgentsError::Validation(
+                "a mill source must be a workspace path, a URL, or an arXiv id".to_string(),
+            ));
+        };
+        let (sources, unread) = match source {
+            mill::Source::Workspace(relative) => {
+                mill::gather(&self.workspace, &relative, MAX_WORKSPACE_CONTEXT_BYTES)
+            }
+            // Deliberately an error rather than a silent no-op. The fetch is the
+            // librarian's tool and reaching it from here needs a delegation this
+            // entry point does not make yet; saying so beats milling nothing and
+            // reporting a clean pass.
+            mill::Source::Url(_) | mill::Source::Arxiv(_) => {
+                return Err(tinyagents::TinyAgentsError::Validation(
+                    "fetching a paper is not wired to the mill yet: download it with a run first, \
+                     then mill the file it wrote"
+                        .to_string(),
+                ));
+            }
+        };
+        if sources.is_empty() {
+            return Ok("nothing to mill: that path holds no readable Markdown".to_string());
+        }
+        let report = mill::run(
+            &self.subagents,
+            &self.workspace,
+            sources,
+            unread,
+            budget.unwrap_or(mill::DEFAULT_BUDGET),
+        )
+        .await;
+        Ok(report.render())
     }
 
     /// The solution loop as a workflow graph.

@@ -635,9 +635,13 @@ mod stale_mathlib {
     /// A file that compiles is not accused of anything, whatever it contains.
     #[test]
     fn a_compiling_file_is_not_accused() {
+        // The statement says something on purpose. `True` would be refused as
+        // vacuous by `lemmas::tautologies`, which is a different check from the
+        // one under test here — this is about a comment containing `in` not
+        // being mistaken for the retired big-operator binder.
         let checked = parse(
             "code/a.lean",
-            "theorem t : True := by trivial -- for x in xs\n",
+            "theorem t : 2 + 2 = 4 := by norm_num -- for x in xs\n",
             true,
             CLEAN,
         );

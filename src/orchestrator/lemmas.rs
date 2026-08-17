@@ -505,12 +505,50 @@ mod test;
 /// because its sides differ. What this cannot catch is a statement that is
 /// merely *beside the point*, and nothing mechanical can; that is what
 /// `lean_prover.md` asks the role to say in prose and what `holds-here` is for.
+/// Whether a declaration's proposition is literally `True`.
+///
+/// `True` is inhabited by definition, so asserting it says nothing whatever —
+/// the same category of never-informative-and-always-safe-to-refuse as the
+/// identical-sides check below, and caught for the same reason.
+///
+/// It is the shape a model reaches for when it has been asked to state
+/// something it cannot express. Ten statements milled out of Conway-99's
+/// summaries produced six of exactly `axiom <name> : True`, each with a
+/// docstring above it describing the theorem it was standing in for. Without
+/// this they fail for an incidental reason — the verdict finds no declarations
+/// to report — and nothing tells the caller the file was empty rather than
+/// wrong.
+///
+/// Deliberately textual and narrow. A statement that merely *reduces* to `True`
+/// is not caught and cannot be; this refuses the one spelling that is always a
+/// placeholder.
+fn is_vacuous(signature: &str) -> bool {
+    let Some((_, proposition)) = signature.rsplit_once(':') else {
+        return false;
+    };
+    proposition.trim() == "True"
+}
+
 pub(super) fn tautologies(source: &str) -> Vec<String> {
     let mut found = Vec::new();
     for declaration in declarations(source) {
-        // Only a theorem or lemma makes a claim. A `def` of the form `x = x`
-        // is a definition of a proposition, not an assertion of one.
-        if !matches!(declaration.kind.as_str(), "theorem" | "lemma") {
+        // An `axiom` asserts, so it is judged like a theorem here even though
+        // it carries no proof. A file whose whole content is
+        // `axiom foo : True` is the mill's commonest bad output and states
+        // nothing at all — see `is_vacuous`.
+        if !matches!(
+            declaration.kind.as_str(),
+            "theorem" | "lemma" | "axiom"
+        ) {
+            continue;
+        }
+        if is_vacuous(&declaration.signature) {
+            found.push(declaration.name);
+            continue;
+        }
+        // Only a theorem or lemma makes an equational claim. A `def` of the
+        // form `x = x` is a definition of a proposition, not an assertion.
+        if declaration.kind == "axiom" {
             continue;
         }
         // Everything after the last top-level `:` is the proposition. Binders

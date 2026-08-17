@@ -6,9 +6,11 @@
 pub mod accounting;
 pub mod budget;
 pub mod flow;
+pub mod pace;
 pub mod reflection;
 pub mod reroute;
 pub mod resilient;
+pub mod sampling;
 pub mod sticky;
 pub mod trace;
 pub mod untruncated;
@@ -24,6 +26,7 @@ use tinyagents::harness::observability::{
     HarnessEventJournal, InMemoryEventJournal, JournalSink, LangfuseClient, LangfuseTraceConfig,
 };
 use tinyagents::harness::providers::openai::OpenAiModel;
+use tinyagents::harness::providers::{ProviderKind, ProviderSpec};
 use tinyagents::harness::tool::ToolTimeoutSettings;
 
 use budget::RunBudget;
@@ -34,6 +37,15 @@ const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
 ///
 /// Overridable with `MATH_AGENT_PROVIDER` when a route is degraded.
 const PREFERRED_PROVIDER: &str = "deepinfra";
+
+/// The model the Lean scribe runs on, on Mistral's own endpoint.
+///
+/// A 119B mixture-of-experts trained for Lean 4 proof engineering, free while
+/// it is in public preview. Measured against this repository's own kernel it
+/// answers a routine Mathlib lemma in one to four seconds where the run's
+/// default spends three minutes reasoning and still misses — so what it buys
+/// is volume, not depth. Overridable with `MATH_AGENT_SCRIBE_MODEL`.
+const SCRIBE_MODEL: &str = "labs-leanstral-1-5";
 
 /// The model for roles whose work is judging rather than doing.
 ///
@@ -229,6 +241,38 @@ pub(crate) fn openrouter_reasoning_model() -> Result<Arc<dyn ChatModel<()>>> {
     let provider = env_override("MATH_AGENT_REASONING_PROVIDER")
         .unwrap_or_else(|| REASONING_PROVIDER.to_string());
     openrouter_model(&model, &provider)
+}
+
+/// Builds the model the Lean scribe runs on, or `None` when it is unavailable.
+///
+/// Mistral's own endpoint rather than `OpenRouter`, because the Leanstral tier
+/// is free there and answers a routine Mathlib lemma in seconds where the run's
+/// default takes minutes. The base URL and the key's name are read off the
+/// vendored [`ProviderSpec`] rather than restated here, so a vendor bump moves
+/// them in one place.
+///
+/// `None` is the ordinary outcome of an unset `MISTRAL_API_KEY`, not a failure:
+/// this tier is optional, and a run that never asked for it must start exactly
+/// as before. That is also why [`OpenAiModel::from_spec`] is used rather than
+/// `from_spec_env`, which returns an error for a missing key.
+///
+/// `MATH_AGENT_SCRIBE_MODEL` overrides the model under the usual rule. The
+/// `OpenRouter`-only overrides deliberately do not reach here: `provider.order`
+/// is not a concept this endpoint has.
+pub(crate) fn scribe_model() -> Option<Arc<dyn ChatModel<()>>> {
+    let _ = dotenvy::dotenv();
+    let mut spec = ProviderSpec::for_kind(ProviderKind::Mistral);
+    spec.model =
+        env_override("MATH_AGENT_SCRIBE_MODEL").unwrap_or_else(|| SCRIBE_MODEL.to_string());
+    let api_key = env_override(spec.api_key_env.as_deref()?)?;
+    let model = OpenAiModel::from_spec(spec, api_key).ok()?;
+    // Both wrappers go inside the returned handle so no call site can forget
+    // either: the sampling pair is what makes a greedy request legal here at
+    // all, and the pacing is what keeps a fan-out under the account's ceiling.
+    // Pacing outermost, so a call waits for its slot before anything else.
+    let model: Arc<dyn ChatModel<()>> =
+        Arc::new(sampling::GreedySamplingModel::new(Arc::new(model)));
+    Some(Arc::new(pace::PacedModel::scribe_from_env(model)))
 }
 
 /// Reads a non-blank environment override, or `None`.

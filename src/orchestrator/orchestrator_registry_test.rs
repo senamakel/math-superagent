@@ -1499,3 +1499,94 @@ fn the_curator_is_told_when_the_brief_restates_the_claim_ledger() {
         "an ordinary cross-reference is not a finding"
     );
 }
+
+/// The scribe's prompt is small, and small is the whole reason it exists.
+///
+/// `lean_prover`'s assembled prompt measures around 20,000 tokens on a live
+/// workspace, roughly two thirds of it workspace state. The scribe runs on a
+/// model picked for being fast and free rather than for holding an
+/// investigation, and every token of context it is handed is spent on text it
+/// was not trained to use. The bound is asserted rather than intended, because
+/// a prompt grows one reasonable-looking paragraph at a time and nothing else
+/// here would notice.
+///
+/// Two thousand rather than the ~1,500 the prompt actually costs: a bound with
+/// no headroom is one that fails on an unrelated edit, and a bound an order of
+/// magnitude under what it is guarding is still the whole of the control.
+#[test]
+fn the_scribe_is_handed_a_prompt_it_can_afford() {
+    use super::{RolePrompts, estimate_tokens, schools};
+
+    let mut prompts =
+        RolePrompts::for_school(template_workspace(), &schools::ALL[0], false).expect("assembles");
+    let scribe = prompts.lean_scribe();
+    let tokens = estimate_tokens(&scribe);
+    assert!(
+        tokens < 2_000,
+        "the scribe's prompt is {tokens} tokens, which is not a prompt for a small model"
+    );
+
+    // Not merely short: short *because* the workspace is not in it. These are
+    // the headings `load_workspace_files` emits, and any one of them appearing
+    // means the scribe is being sent the investigation after all.
+    for heading in [
+        "\n## CONTEXT.md\n",
+        "\n## derived/CLAIMS.md\n",
+        "\n## derived/LEMMAS.md\n",
+        "\n## derived/TASKS.md\n",
+        "\n## AGENTS.md\n",
+    ] {
+        assert!(
+            !scribe.contains(heading),
+            "the scribe is being sent `{}`",
+            heading.trim()
+        );
+    }
+
+    // The one thing it must say, because it is the measured failure mode: eight
+    // samples and four rounds of kernel feedback did not stop the model
+    // reaching for `linarith` over a field with no order.
+    assert!(scribe.contains("linarith"));
+    assert!(scribe.contains("linear_combination"));
+    // And the two checks a formalisation lies about, as the prover's prompt is
+    // also asserted to carry.
+    assert!(scribe.contains("#print axioms"));
+    assert!(scribe.contains("sorry"));
+    // The other measured failure: asked to state something it could not
+    // express, the model wrote `True` and a docstring describing the theorem it
+    // was standing in for — six times out of ten on one live mill run.
+    assert!(
+        scribe.contains("Never write `True` as a statement"),
+        "the scribe must be told what to do instead of writing a placeholder"
+    );
+}
+
+/// The scribe's grant is two verbs, and the absences are the point.
+///
+/// Asserted because each one was either a deliberate exclusion or a live
+/// failure. The reads are the live one: with them the role spent 180 of 191
+/// tool calls re-issuing a single `grep_workspace` and never wrote a file.
+#[test]
+fn the_scribe_can_write_a_file_and_check_it_and_do_nothing_else() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    let scribe = registry
+        .get(super::lean::SCRIBE_ROLE)
+        .ok_or_else(|| tinyagents::TinyAgentsError::Validation("the scribe is registered".into()))?;
+
+    assert_eq!(scribe.tools, vec!["write_tool_file", "lean_check"]);
+    Ok(())
+}
+
+/// The scribe is bounded tightly enough that a loop ends the run, not the pass.
+#[test]
+fn the_scribe_is_bounded_for_one_file_rather_than_an_investigation() {
+    let base = crate::agent::budget::RunBudget::from_env();
+    let scribe = base.for_scribing();
+    assert!(
+        scribe.max_model_calls < base.max_model_calls,
+        "the scribe writes one file; it must not be budgeted like a role that investigates"
+    );
+    assert!(scribe.max_tool_calls < base.max_tool_calls);
+    // Only ever narrows, like every other narrowed budget here.
+    assert_eq!(scribe.run_timeout, base.run_timeout);
+}

@@ -5,20 +5,20 @@ repository. `CLAUDE.md` points here so every agent follows the same rules.
 
 ## What this repository is
 
-This repository contains a Dockerized mathematical problem-solving agent. Its specialty is
-deep research: it combines mathematical reasoning with source discovery,
-small programs, numerical experiments, and explicit verification.
+This repository contains a Dockerized mathematical problem-solving agent. Its
+specialty is deep research: it combines mathematical reasoning with source
+discovery, small programs, numerical experiments, and explicit verification.
 
 The product should help a reader understand why an answer is true, not merely
-produce a plausible final expression. Preserve that standard in prompts,
-tools, examples, tests, and documentation.
+produce a plausible final expression. Preserve that standard in prompts, tools,
+examples, tests, and documentation.
 
 ## Where the rest of this lives
 
 This file is the working agreement: the rules to follow and the checks to run.
-The design rationale behind them — every threshold that a live run has already
-met, and what it cost — is one level down, so that a rule stays readable and the
-evidence for it stays available.
+The design rationale behind them — every threshold a live run has met, and what
+it cost — is one level down, so a rule stays readable and its evidence stays
+available.
 
 - [`docs/roles.md`](docs/roles.md) — the roles, the source adapters, the two
   recall paths, and which workspace files reach which role's prompt.
@@ -38,8 +38,7 @@ evidence for it stays available.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
-  harness is measured against, the two-layer evidence screen, and what round 1
-  measured.
+  harness is measured against, the evidence screen, and what round 1 measured.
 
 Two pairs read a mathematician's method against this runtime and say what to
 build next. They are why several of the rules above exist, so a change to a
@@ -51,14 +50,13 @@ control should start from the argument that produced it:
   Research in [`research/tao/`](research/tao/).
 - [`docs/methods-gap-analysis.md`](docs/methods-gap-analysis.md) and
   [`docs/methods-proposals.md`](docs/methods-proposals.md) — ten more
-  mathematicians spanning the method space, read for where they *disagree* with
-  Tao and each other. Research in
-  [`research/mathematicians/`](research/mathematicians/), whose
+  mathematicians, read for where they *disagree* with Tao and each other.
+  Research in [`research/mathematicians/`](research/mathematicians/), whose
   `11-harness-inventory.md` is the current capability map.
 
-Keep them consistent with the code. A rule here that the code does not enforce
-is the failure this repository keeps recording: a prompt instruction is not a
-control, and neither is a document.
+Keep them consistent with the code. A rule here the code does not enforce is the
+failure this repository keeps recording: a prompt instruction is not a control,
+and neither is a document.
 
 ## Gating
 
@@ -94,7 +92,6 @@ the attempts and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
   record of what was established — but `read_document` and `grep_workspace`
   refuse it and name `read_ledger`, which bounds and selects by `id`, `status` or
   `query`. Older workspaces migrate once at startup, never overwriting.
-
 - **Lean carries the mathematics, not only the check.** Statements go under
   `code/lean/Lib/`; `derived/LEMMAS.md` derives from them. A result read from the
   literature is an `axiom` under `namespace Cited` and earns `conditional`, never
@@ -102,13 +99,19 @@ the attempts and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
   Only `lean_check` writes `code/out/lean/`, which is why `lean-verdict` cannot,
   being in the image and so reachable from `execute_command`. `./lean-check` and
   `scripts/lean-replay --all` reach the kernel without a run.
-  [`docs/lean-library.md`](docs/lean-library.md).
+- **Two Lean roles: judgement against writing.** `lean_prover` decides what to
+  state, whether the Lean means the mathematics, and files the claim.
+  `lean_scribe` writes the file and argues with the kernel on a model built for
+  it — ~670 prompt tokens, no workspace context, memory, shell or ledger write,
+  reached only from `lean_prover`'s bench. It holds `lean_check` and cannot file
+  a claim; that is the boundary. Unset `MISTRAL_API_KEY` degrades it to the run's
+  model, said aloud; `./lean-mill <ws> <source>` runs it over prose on disk.
 
 ## Candidates
 
 Several candidate solutions run at once, each on its own branch and checkout:
-`spawn_candidates` starts them, `attempt_diff` reads them back, `archivist` keeps
-one.
+`spawn_candidates` starts them, `attempt_diff` reads them back, `archivist`
+keeps one.
 
 - **Fork the files, share the memory.** A candidate's checkout is a linked
   worktree, so `code/`, `research/` and its ledgers are its own; memory is not
@@ -119,7 +122,7 @@ one.
   `abandon_attempt` are the archivist's alone, and it holds no shell and no file
   write — so every trunk change carries a branch and a recorded reason.
 - **Adoption copies named files, and is not a merge** — a merge would also take
-  the losing candidate's account of why it was right.
+  the loser's account of why it was right.
 - **There is no general git tool** — every operation is a named verb with checked
   arguments; one taking a command line is `execute_command` by another name.
 
@@ -186,8 +189,8 @@ creates no container.
 
 Direction never blocks the run: it is queued in `config/directives.jsonl` —
 appended to by the host, never by the run — and picked up at the next boundary,
-so it reaches the work in seconds to minutes whether or not anyone is watching.
-What became of one goes to `config/DIRECTIVES.md`.
+so it reaches the work in seconds to minutes. What became of one goes to
+`config/DIRECTIVES.md`.
 
 A directive is asserted, not established. It is routed into the next attempt as
 an instruction and must never be filed as a claim — which is why the `director`
@@ -205,18 +208,17 @@ Two containers on one workspace is the failure to look for, and it is silent —
 both runs write, and the damage appears later as an interleaved history. Check
 before starting, and **match by mount, not by name**. Stop one with
 `docker rm -f <name>`; the workspace survives and the next `./euler` continues.
-`start.log` is the only place a failed *start* says why, and the runtime's
-console is on the container's **stderr**, so `docker logs` needs `2>&1`.
-[`docs/runtime.md`](docs/runtime.md#watching-a-run) has the commands and the
-runs behind each of these. Every checkout shares the `math-agent:local` tag, so
-a build in one replaces the image another is about to run.
+`start.log` is the only place a failed *start* says why, and the console is on
+**stderr**, so `docker logs` needs `2>&1`. Every checkout shares the
+`math-agent:local` tag, so a build in one replaces the image another is about to
+run. [`docs/runtime.md`](docs/runtime.md#watching-a-run).
 
 ## Calibration runs
 
 An open conjecture gives a run no known destination, so nothing separates a
-harness closing in on a proof from one producing plausible activity, and every
-architecture change is made blind. A **calibration run** supplies the reference:
-a conjecture already solved, stated as open, its answer withheld in code.
+harness closing in on a proof from one producing plausible activity. A
+**calibration run** supplies the reference: a solved conjecture, stated as open,
+its answer withheld in code.
 
 ```sh
 ./calibrate unit-distance-plane-chromatic     # start or continue
@@ -464,28 +466,26 @@ specific boundary matters.
 ## Documentation rules
 
 Keep `README.md`, this file, rustdoc, examples, and runtime behavior consistent.
-Write for a reader who has not seen the code. Prefer a concrete command or
-example over broad claims.
+Write for a reader who has not seen the code, and prefer a concrete command.
 
 Keep this file at 500 lines or fewer. `CLAUDE.md` symlinks here, so it is loaded
-in full every time, which is what makes length a cost rather than a preference.
-Adding a section means finding the lines for it.
+in full every time, which makes length a cost rather than a preference. Adding a
+section means finding the lines for it.
 
 `README.md` is read start to finish by someone new, so it is held to the same
 intent without the number: the fix for its length is moving what a user does not
 need on a first pass, not trimming to a threshold.
 
 **`docs/` is not held to that cap**, because nothing loads those files into a
-prompt and nobody reads one end to end. Splitting one on a line count splits an
-argument where a number fell rather than at a seam; split it when it has stopped
-being about one subject.
+prompt and nobody reads one end to end. Split one when it has stopped being
+about one subject, not when it crosses a number.
 
 The split is by *kind*, not by size. A rule to follow and a check to run stay
 here; the evidence behind a rule — the live run that met a ceiling, the number
 that turned out wrong, the failure a control was written to stop — goes to the
-`docs/` file that owns that subject, listed under *Where the rest of this
-lives*. User-facing instructions stay in `README.md`. Do not grow a third tree:
-a document with no rule above it is one nobody has a reason to open.
+`docs/` file that owns that subject. User-facing instructions stay in
+`README.md`. Do not grow a third tree: a document with no rule above it is one
+nobody has a reason to open.
 
 ## Working agreement for coding agents
 

@@ -1,0 +1,93 @@
+#!/bin/sh
+# Turn prose a workspace already holds into Lean the kernel has accepted.
+#
+# The solution loop formalises what its own statement graph ranks, which needs a
+# graph. Most workspaces do not have one: 33 of 45 hold no Lean at all, and
+# Conway-99 — which does have a graph — carries 246 research files against 16
+# Lean ones. This is the other direction, from the reading to the library, and
+# it needs no decomposition on disk.
+#
+# It runs through `scripts/run-agent`, so it gets the same container, the same
+# workspace mount, the same credentials and the same registered roles a run
+# gets. There is deliberately no host-side path: the mill calls the Lean kernel,
+# and the kernel lives in the image.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$repository_root"
+
+usage() {
+    echo "usage: ./lean-mill <workspace-subfolder> <source> [--budget <n>]" >&2
+    echo "" >&2
+    echo "  <workspace-subfolder>  a path under workspace/, such as" >&2
+    echo "                         conjectures/casas-alvero" >&2
+    echo "  <source>               a workspace-relative file or directory of" >&2
+    echo "                         Markdown, such as research/summaries" >&2
+    echo "  --budget <n>           how many statements to formalise (default 25)" >&2
+    echo "" >&2
+    echo "Only what the kernel accepts is kept. What was found and not" >&2
+    echo "attempted is reported rather than dropped silently." >&2
+}
+
+workspace_subdir=""
+source_arg=""
+budget=""
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        -h|--help|help)
+            usage
+            exit 0
+            ;;
+        --budget)
+            if [ "$#" -lt 2 ]; then
+                echo "--budget needs a number" >&2
+                exit 2
+            fi
+            budget=$2
+            shift 2
+            ;;
+        -*)
+            echo "unknown flag: $1" >&2
+            usage
+            exit 2
+            ;;
+        *)
+            if [ -z "$workspace_subdir" ]; then
+                workspace_subdir=$1
+            elif [ -z "$source_arg" ]; then
+                source_arg=$1
+            else
+                echo "too many arguments" >&2
+                usage
+                exit 2
+            fi
+            shift
+            ;;
+    esac
+done
+
+if [ -z "$workspace_subdir" ] || [ -z "$source_arg" ]; then
+    usage
+    exit 2
+fi
+
+# Validated here as well as in the runtime, because the failure this catches is
+# a mistyped path silently milling nothing and reporting a clean pass.
+if [ ! -e "workspace/$workspace_subdir/$source_arg" ]; then
+    echo "no such source: workspace/$workspace_subdir/$source_arg" >&2
+    exit 2
+fi
+
+if [ -n "$budget" ]; then
+    case "$budget" in
+        ''|*[!0-9]*)
+            echo "--budget must be a positive whole number" >&2
+            exit 2
+            ;;
+    esac
+    exec "$repository_root/scripts/run-agent" --workspace "$workspace_subdir" \
+        run --mill "$source_arg" --budget "$budget"
+fi
+
+exec "$repository_root/scripts/run-agent" --workspace "$workspace_subdir" \
+    run --mill "$source_arg"

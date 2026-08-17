@@ -41,16 +41,31 @@ fn register_resilient(harness: &mut AgentHarness<()>, tool: Arc<dyn Tool<()>>) {
 /// `agent` names the role in the trace, so a cost line can be attributed to
 /// the specialist that incurred it rather than to the run as a whole.
 fn specialist_harness(
-    model: Arc<dyn ChatModel<()>>,
+    models: &ModelTiers,
     budget: RunBudget,
     agent: &str,
     tracer: &Arc<RunTracer>,
 ) -> AgentHarness<()> {
+    // The role names the model, rather than the caller passing one that has to
+    // agree with the name it passes beside it. See `orchestrator::tiers`.
+    let tier = models.tier_for(agent);
+    let model = models.for_role(agent);
     // Give this specialist its own provider affinity. The wrapper is per
     // harness rather than shared, because agents differ in the large fixed
     // prefix they cache, so one agent's fallback must not drag the others onto
     // a provider where their prefix is cold. See `agent::sticky`.
-    let model: Arc<dyn ChatModel<()>> = Arc::new(StickyProviderModel::new(model));
+    //
+    // Only for a tier served through `OpenRouter`. Both this and the rerouting
+    // wrapper below speak that provider's dialect and nothing else: affinity
+    // steers by writing a `provider` object into the request body, which a
+    // direct endpoint receives as an unknown field, and rerouting recognises a
+    // failed route by matching `OpenRouter`'s own error text. Wrapping a direct
+    // provider in either is not a degraded pin, it is a malformed request.
+    let model: Arc<dyn ChatModel<()>> = if tier == ModelTier::Scribe {
+        model
+    } else {
+        Arc::new(StickyProviderModel::new(model))
+    };
     // Account outside the affinity wrapper so the recorded provider is the one
     // that actually served the call, including a fallback the pin did not get.
     let model: Arc<dyn ChatModel<()>> =
@@ -71,9 +86,13 @@ fn specialist_harness(
     // Route around a provider that failed, outermost of all, so the retry is
     // steered by the affinity wrapper's one-request block and reaches a
     // different provider rather than the one that just failed. See
-    // `agent::reroute`.
-    let model: Arc<dyn ChatModel<()>> =
-        Arc::new(ReroutingModel::new(model).with_tracer(tracer.clone(), agent));
+    // `agent::reroute`. Withheld from a direct provider for the reason the
+    // affinity wrapper is, above.
+    let model: Arc<dyn ChatModel<()>> = if tier == ModelTier::Scribe {
+        model
+    } else {
+        Arc::new(ReroutingModel::new(model).with_tracer(tracer.clone(), agent))
+    };
     let mut harness = AgentHarness::new();
     configure_run_budget(&mut harness, budget);
     harness
@@ -81,7 +100,12 @@ fn specialist_harness(
         .set_default_model("openrouter")
         .push_middleware(Arc::new(ContextCompressionMiddleware::with_summarizer(
             compression_policy(),
-            Box::new(ModelSummarizer::new(model)),
+            // Always the run's default model, never the role's. Compression is
+            // not the role's work: it rewrites a transcript, which a fast
+            // general model does well and a narrow one specialised for Lean
+            // does badly — and it would spend the scribe tier's rate limit on
+            // it. See `ModelTiers::default_tier`.
+            Box::new(ModelSummarizer::new(models.default_tier().clone())),
         )))
         // Reflects on a failing tool the moment it fails, rather than waiting
         // for the attempt to end. See `agent::reflection`.

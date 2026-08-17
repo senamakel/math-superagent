@@ -324,14 +324,33 @@ pub(super) fn counts(workspace: &Path) -> (usize, usize) {
     (accepted, attempted)
 }
 
-/// The next node to hand to the kernel, or nothing when there is none.
+/// The nodes still worth handing to the kernel, best first.
 ///
-/// Walks the ranking and takes the first node that is still worth a check:
-/// not already verified, and not past [`MAX_ATTEMPTS`]. Returning `None` is an
-/// ordinary outcome rather than a failure — a run with no skeleton on disk has
-/// no graph, and an arm that delegated anyway would spend a child run asking a
-/// prover to formalise a problem statement nobody has decomposed.
-pub(super) fn next(workspace: &Path) -> Option<Assignment> {
+/// Walks the ranking and takes those still worth a check: not already verified,
+/// and not past [`MAX_ATTEMPTS`]. An empty result is an ordinary outcome rather
+/// than a failure — a run with no skeleton on disk has no graph, and an arm that
+/// delegated anyway would spend a child run asking a prover to formalise a
+/// problem statement nobody has decomposed.
+/// The next `limit` nodes to hand to the kernel, best first.
+///
+/// One walk of the ranking, which is why [`next`] is expressed in terms of this
+/// rather than beside it: two walks are two answers to "what is worth checking
+/// now", and they would diverge the first time either grew a condition.
+///
+/// The bound exists because the ranking is long and a pass is not. Conway-99's
+/// blueprint ranks 87 candidates; taking one per pass, as this arm did when it
+/// was written, is why four of them had ever been attempted. Taking all 87 at
+/// once is the other failure — a pass that fans out unboundedly spends the
+/// run's whole budget on formalisation and starves everything the loop does
+/// besides.
+///
+/// Returns fewer than `limit`, including none, whenever the ranking runs out.
+/// That is an ordinary outcome: a run with no skeleton on disk has no graph.
+pub(super) fn next_batch(workspace: &Path, limit: usize) -> Vec<Assignment> {
+    let mut batch = Vec::new();
+    if limit == 0 {
+        return batch;
+    }
     for target in super::blueprint::collect(workspace).targets() {
         let source = source_for(&target.id);
         let previous = lean::verdict(workspace, &source);
@@ -341,15 +360,37 @@ pub(super) fn next(workspace: &Path) -> Option<Assignment> {
         let Some(stage) = Stage::after(attempts(workspace, &target.id)) else {
             continue;
         };
-        return Some(Assignment {
+        batch.push(Assignment {
             target,
             stage,
             source,
             previous,
         });
+        if batch.len() >= limit {
+            break;
+        }
     }
-    None
+    batch
 }
+
+/// How many nodes one pass of the verification arm takes.
+///
+/// Eight, which is a judgement rather than a measurement: it is well above the
+/// one this arm started with and well below the length of a real ranking, and
+/// the right number depends on how much of a run's budget formalisation should
+/// be — a question this repository has not measured an answer for.
+/// `MATH_AGENT_VERIFY_BATCH` moves it; an unset, empty, unparsable, or zero
+/// value keeps it, so a malformed override never silently stops the arm.
+pub(super) fn batch_size() -> usize {
+    std::env::var("MATH_AGENT_VERIFY_BATCH")
+        .ok()
+        .and_then(|value| value.trim().parse::<usize>().ok())
+        .filter(|value| *value > 0)
+        .unwrap_or(DEFAULT_VERIFY_BATCH)
+}
+
+/// The default for [`batch_size`].
+const DEFAULT_VERIFY_BATCH: usize = 8;
 
 impl Assignment {
     /// What this assignment asks for, rendered for the prover's prompt.

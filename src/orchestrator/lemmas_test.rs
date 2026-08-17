@@ -326,4 +326,59 @@ mod tautologies {
         let found = tautologies("theorem t (n : Nat) (h : 0 < n) : n = n := rfl\n");
         assert_eq!(found, vec!["t"]);
     }
+
+    /// The mill's commonest bad output, refused as a statement rather than as an
+    /// accident.
+    ///
+    /// Ten statements milled from Conway-99's research summaries produced six of
+    /// exactly this shape: a docstring describing a real theorem, and `True`
+    /// underneath it. Without this they fail because the verdict finds no
+    /// declaration to report, which tells a reader nothing about why.
+    #[test]
+    fn a_declaration_that_asserts_true_says_nothing_and_is_refused() {
+        let source = "\
+    import Mathlib
+
+    namespace Cited
+
+    /-- There exists a strongly regular graph with parameters (9,4,1,2). -/
+    axiom srg9_4_1_2_exists : True
+
+    end Cited
+    ";
+        assert_eq!(
+            tautologies(source),
+            vec!["Cited.srg9_4_1_2_exists".to_string()],
+            "the name carries its namespace, as every other declaration here does"
+        );
+    }
+
+    /// A theorem is judged the same way an axiom is.
+    #[test]
+    fn a_theorem_of_true_is_refused_too() {
+        let source = "theorem nothing_at_all : True := trivial\n";
+        assert_eq!(tautologies(source), vec!["nothing_at_all".to_string()]);
+    }
+
+    /// The check must not swallow a real axiom, which is the only way it could harm.
+    #[test]
+    fn an_axiom_that_states_something_is_left_alone() {
+        let source = "\
+    namespace Cited
+
+    /-- Bagchi 2006, Theorem 4. -/
+    axiom bagchi_mu1_k_bound : ∀ (k lam : ℕ), k ≥ (lam + 1) * (lam + 2)
+
+    end Cited
+    ";
+        assert!(tautologies(source).is_empty());
+    }
+
+    /// A `def` whose body is `True` is a definition, not an assertion, and stays
+    /// outside this check for the reason the identical-sides case does.
+    #[test]
+    fn a_definition_is_not_an_assertion() {
+        let source = "def StronglyRegular (_v _k : \u{2115}) : Prop := True\n";
+        assert!(tautologies(source).is_empty());
+    }
 }

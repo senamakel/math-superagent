@@ -38,7 +38,7 @@ use tinyflows::model::{AgentDefinition as FlowAgent, AgentLimits, ToolGrant};
 use crate::agent::budget::RunBudget;
 
 use super::async_subagents::base_role;
-use super::{AgentRegistry, REASONING_ROLES};
+use super::{AgentRegistry, ModelTiers};
 
 /// The budget a role runs on.
 ///
@@ -56,6 +56,7 @@ fn budget_for(role: &str) -> RunBudget {
         "judge" | "reflection" => base.for_judging(),
         "context_curator" | "librarian" => base.for_housekeeping(),
         "inventor" => base.for_invention(),
+        crate::orchestrator::lean::SCRIBE_ROLE => base.for_scribing(),
         _ => base,
     }
 }
@@ -82,20 +83,12 @@ fn limits_for(role: &str) -> AgentLimits {
     }
 }
 
-/// Whether `role` runs on the stronger reasoning model.
-///
-/// The list is `REASONING_ROLES`, which carries the two-question test for
-/// membership. Read rather than copied, for the same reason the tools are.
-fn is_reasoning_role(role: &str) -> bool {
-    REASONING_ROLES.contains(&base_role(role))
-}
-
 /// Derives the workflow agent registry from the run's own registry.
 ///
 /// Ids match one for one, so an `agent_ref` a workflow names is the same string
 /// the harness resolves and the same string `spawn_agent` takes. Anything else
 /// would make a workflow's roles a separate vocabulary from the run's.
-pub(super) fn workflow_agents(registry: &AgentRegistry) -> Vec<FlowAgent> {
+pub(super) fn workflow_agents(registry: &AgentRegistry, models: &ModelTiers) -> Vec<FlowAgent> {
     registry
         .definitions()
         .into_iter()
@@ -107,11 +100,10 @@ pub(super) fn workflow_agents(registry: &AgentRegistry) -> Vec<FlowAgent> {
             // which means nothing outside this process. What a workflow reader
             // wants to know is which tier the role runs on, so the split is
             // published as the concrete choice it actually is.
-            agent.model = Some(if is_reasoning_role(&definition.id) {
-                "reasoning".to_string()
-            } else {
-                "default".to_string()
-            });
+            // Asked of the tiers rather than reconstructed from a list, so a
+            // run whose scribe tier is unconfigured publishes `default` for it
+            // — which is what that role will really use. See `tiers::tier_for`.
+            agent.model = Some(models.tier_for(&definition.id).as_str().to_string());
             agent.tools = definition
                 .tools
                 .iter()

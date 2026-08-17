@@ -108,6 +108,25 @@ const DEFAULT_MAX_BACKOFF_MS: u64 = 60_000;
 /// do.
 const JUDGING_MODEL_CALLS: usize = 12;
 
+/// Model calls one scribing run may spend.
+///
+/// Twenty, and the number comes from a live run rather than a guess. Given
+/// document tools and no bound, the scribe spent 180 of 191 tool calls
+/// re-issuing one identical `grep_workspace` for `SimpleGraph`, 19 output
+/// tokens at a time, and never wrote a file. A small model that has lost the
+/// thread does not notice; it repeats. The tools that fuelled that are gone,
+/// and this is the backstop for the next shape the same failure takes.
+///
+/// Twenty is enough for the work: write the file, check it, and repair it a
+/// handful of times, which is what a measured repair loop took.
+const SCRIBING_MODEL_CALLS: usize = 20;
+
+/// Tool calls one scribing run may spend.
+///
+/// Two per model call is the natural shape here — write, then check — and the
+/// margin is for the reads a repair needs.
+const SCRIBING_TOOL_CALLS: usize = 50;
+
 /// Tool calls one judging run may spend.
 ///
 /// Kept well above the model-call cap for the reason the main budget is: one
@@ -270,6 +289,20 @@ impl RunBudget {
             max_model_calls: self.max_model_calls.min(JUDGING_MODEL_CALLS),
             max_tool_calls: self.max_tool_calls.min(JUDGING_TOOL_CALLS),
             run_timeout: self.run_timeout.min(JUDGING_RUN_TIMEOUT),
+            ..self
+        }
+    }
+
+    /// Narrows this budget to what writing one Lean file needs.
+    ///
+    /// Only ever narrows, like [`Self::for_judging`]. The wall clock is left
+    /// alone: Mathlib elaboration is the slowest thing in the image and a tight
+    /// timeout would fail a file the kernel was about to accept.
+    #[must_use]
+    pub fn for_scribing(self) -> Self {
+        Self {
+            max_model_calls: self.max_model_calls.min(SCRIBING_MODEL_CALLS),
+            max_tool_calls: self.max_tool_calls.min(SCRIBING_TOOL_CALLS),
             ..self
         }
     }

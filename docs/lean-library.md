@@ -261,3 +261,120 @@ the same failure, worse, on a run explicitly told to formalise. It is why the
 lemma index refreshes on a `.lean` *write* and not only on a check: the files a
 role never checks are the ones the index most needs to name, and they are
 exactly the ones that never trigger a check.
+
+## Two roles, and why the writing moved off the run's model
+
+`lean_prover` was one role doing two jobs: deciding what to state, and getting
+Lean to accept it. They want different things. The first is judgement — is this
+statement faithful to the mathematics, does it earn a claim — and wants the
+run's own model with the investigation in front of it. The second is mechanical,
+repetitive, and mostly consists of arguing with the elaborator.
+
+The measurement that split them, taken against this repository's own kernel on
+2026-08-17:
+
+| | Leanstral (`labs-leanstral-1-5`) | the run's default |
+|---|---|---|
+| routine Mathlib lemma | 1–4 s, kernel-`verified` 2/2 | 183 s, failed |
+| output rate | 80–135 tok/s | ~50 tok/s including reasoning |
+| cost per attempt | $0 (free preview) | ~$0.0017 |
+
+Both models then failed the same harder statement — a degree-2 Casas-Alvero
+identity over `ℂ` — and failed it *at the same step*, deriving `a*r*2 + b = 0`
+and being unable to conclude `b = -(a*r*2)`. So the specialised model is not
+smarter. It is roughly fifty times faster and free, which is what makes volume
+affordable, and volume was the thing missing: 33 of 45 workspaces held no Lean
+at all, and Conway-99's blueprint ranked 87 verification candidates of which
+four had ever been attempted.
+
+### The failure mode to design around
+
+Leanstral reaches for `linarith`/`nlinarith` over fields with no order. Across
+four independent samples and a four-round repair loop fed real kernel errors, it
+used them in seven of eight attempts — including when the prompt said in as many
+words that `ℂ` is not ordered and those tactics do not apply. Neither explicit
+instruction nor tool feedback dislodged it.
+
+`src/prompts/lean_scribe.md` therefore says what to reach for *instead*
+(`linear_combination`, `ring_nf`, `field_simp`) rather than only what to avoid,
+and `orchestrator_registry_test.rs` asserts the prompt still carries it. It is
+not a fix — the model did this anyway — but a prompt that only forbids leaves
+nothing in the gap.
+
+### What the split buys, and what it costs
+
+The scribe's assembled prompt is ~670 tokens against `lean_prover`'s ~20,000,
+of which roughly two thirds was workspace state: `CONTEXT.md` at 6,380 tokens,
+`CLAIMS.md` at 2,772, `LEMMAS.md` at 2,008. None of it helps a role that is
+handed one statement and asked for one file, and all of it would be sent on
+every call.
+
+The boundary is that the scribe holds `lean_check` and holds no ledger write. It
+can establish that a file compiles; it cannot file anything saying what that
+means. `only_the_lean_prover_can_mint_a_formalised_claim` is the test.
+
+It also holds no durable memory, which is the second exemption from a rule that
+otherwise reaches every role. The argument is in
+`every_agent_but_the_judge_and_the_scribe_can_write_durable_memory`: what the
+scribe establishes is already durable without a note, because the `.lean` source
+and the kernel verdict are on disk and `LEMMAS.md` re-derives from them.
+
+### The provider, and two things it required
+
+The tier runs on Mistral's own endpoint rather than through OpenRouter, reached
+via the vendored `ProviderSpec` so the base URL and key name are not restated
+here. Two constraints that are not obvious from the outside:
+
+- **`temperature: 0` is rejected unless `top_p: 1` is sent with it** — HTTP 400,
+  `code 3054`. The vendored request builder cannot express this, because both
+  names sit in the `RESERVED` list that the provider-options escape hatch filters
+  out. `agent::sampling` is the decorator that completes the pair.
+- **The account admits ~0.63 requests/second** (5M tokens/min is slack by
+  comparison). `agent::pace` spaces departures rather than bucketing them,
+  because an idle bucket lets a fan-out leave together and 429 together.
+
+`StickyProviderModel` and `ReroutingModel` are withheld from this tier: both
+speak OpenRouter's dialect — one writes a `provider` object into the request
+body, the other matches OpenRouter's error text — and against a direct endpoint
+they produce a malformed request rather than a degraded pin.
+
+An unset `MISTRAL_API_KEY` puts the scribe on the run's default model and says
+so at startup. The workflow document then publishes `default` for that role,
+because it is a record of what ran and not a statement of intent.
+
+**Leanstral is in public preview and free, and enabling Labs models is an
+organisation setting on Mistral's *privacy* page** — prompts sent there may be
+used as training data. That is a reason not to point the mill at an argument the
+run has not published.
+
+## `./lean-mill`: from the reading to the library
+
+The verification arm asks what the most rests on, and needs a statement graph to
+answer. Most workspaces do not have one, and that is exactly where the Lean is
+missing — Conway-99 carries 246 research files against 16 Lean ones, a ratio of
+roughly forty to one by line count.
+
+The mill walks the other way: prose the workspace already holds, to candidate
+statements, to files, to verdicts.
+
+```sh
+./lean-mill conjectures/casas-alvero research/summaries --budget 25
+```
+
+It takes no blueprint and writes no attempt records, so it works on a workspace
+that has never been decomposed. Only what the kernel accepts is kept: a `.lean`
+file that does not compile sitting in the library is worse than an absent one,
+because `LEMMAS.md` re-derives from the sources and a failed file becomes a row
+that reads like work. What was found and not attempted is reported rather than
+dropped, under the same rule every ledger section follows.
+
+A statement the source *proves* becomes a theorem this run must prove. One the
+source merely quotes becomes an `axiom` under `namespace Cited` and earns
+`conditional`. The extractor is asked for that distinction explicitly, because a
+model that marks everything cited produces a library of assumptions and one that
+marks nothing cited produces a library of unprovable obligations.
+
+Fetching a paper by URL or arXiv id is parsed and then refused with a message
+saying so: the download is the librarian's tool and is not wired to this entry
+point. That is deliberate — milling nothing and reporting a clean pass is the
+failure worth avoiding.

@@ -2,7 +2,7 @@
 /// it found.
 /// What the two planning roles' harnesses are built from.
 struct Planners<'a> {
-    model: &'a Arc<dyn ChatModel<()>>,
+    models: &'a ModelTiers,
     budget: RunBudget,
     tracer: &'a Arc<RunTracer>,
     documents: &'a WorkspaceDocuments,
@@ -112,7 +112,7 @@ fn build_planner_harness<const N: usize>(
     role: &'static str,
     bench: [&'static str; N],
 ) -> AgentHarness<()> {
-    let mut harness = specialist_harness(parts.model.clone(), parts.budget, role, parts.tracer);
+    let mut harness = specialist_harness(parts.models, parts.budget, role, parts.tracer);
     for tool in subagents.tools(bench) {
         register_resilient(&mut harness, tool);
     }
@@ -162,7 +162,7 @@ fn build_planner_harness<const N: usize>(
 }
 
 fn build_research_harness(
-    model: &Arc<dyn ChatModel<()>>,
+    models: &ModelTiers,
     budget: RunBudget,
     tracer: &Arc<RunTracer>,
     documents: &WorkspaceDocuments,
@@ -174,7 +174,7 @@ fn build_research_harness(
         oeis,
         discovery,
     } = search;
-    let mut harness = specialist_harness(model.clone(), budget, "research", tracer);
+    let mut harness = specialist_harness(models, budget, "research", tracer);
     for tool in exa.into_iter().chain(oeis).chain(discovery) {
         register_resilient(&mut harness, tool);
     }
@@ -187,7 +187,7 @@ fn build_research_harness(
 
 /// What every code-writing role's harness is built from.
 struct CodeWriters<'a> {
-    model: &'a Arc<dyn ChatModel<()>>,
+    models: &'a ModelTiers,
     budget: RunBudget,
     tracer: &'a Arc<RunTracer>,
     workspace: &'a Path,
@@ -230,13 +230,14 @@ fn register_code_writing_agents(
     roles: [(&str, String); 7],
 ) -> Result<()> {
     for (name, prompt) in roles {
-        // All seven share this harness, and the trace label stays
-        // `tool_builder` for all of them because that is the authority they
-        // share. The ledger tools are told the concrete role instead: write
+        // They share this harness, and the trace label stays `tool_builder`
+        // for all of them because that is the authority they share — except
+        // for the model, which `specialist_harness` now reads off the role, so
+        // the scribe reaches its own tier without a second registration path. The ledger tools are told the concrete role instead: write
         // permission is per-ledger and per-role, so `sat_solver` must be
         // `sat_solver` there even where the trace calls it something else.
         let mut harness = build_tool_builder_harness(
-            parts.model,
+            parts.models,
             parts.budget,
             parts.tracer,
             parts.workspace,
@@ -245,6 +246,12 @@ fn register_code_writing_agents(
             false,
         );
         if name == lean::LEAN_ROLE {
+            // The prover may hand the writing down. Granted here rather than in
+            // the shared loop above because it is the one role with somewhere
+            // to hand it to; see [`LEAN_BENCH`].
+            for tool in subagents.tools(LEAN_BENCH) {
+                register_resilient(&mut harness, tool);
+            }
             register_resilient(
                 &mut harness,
                 Arc::new(
@@ -262,6 +269,56 @@ fn register_code_writing_agents(
         register_scratch(&mut harness, parts.vector_store, true);
         subagents.register(name, Arc::new(harness), prompt)?;
     }
+    Ok(())
+}
+
+/// Registers the Lean scribe: one file, one kernel, and nothing else.
+///
+/// Built here rather than in [`register_code_writing_agents`] because the grant
+/// is the point. The code writers share a shell, `apply_patch`, memory and the
+/// scratch, and every one of those would be wrong here: the scribe runs no
+/// experiments, edits nobody else's file, and is handed everything it needs in
+/// the message. What it holds is `write_tool_file`, `lean_check`, and the reads
+/// — which matches its registry declaration, because a grant declared in the
+/// registry and widened in the harness is a grant that does not exist.
+///
+/// It holds `lean_check` and `lean_prover` keeps the claim ledger, which is the
+/// whole of the split: the scribe can establish that a file compiles and cannot
+/// file anything saying what that means.
+///
+/// # Errors
+///
+/// Returns an error when the name is already registered.
+fn register_lean_scribe(
+    subagents: &AsyncSubagentManager,
+    parts: &CodeWriters<'_>,
+    prompt: String,
+) -> Result<()> {
+    let budget = parts.budget.for_scribing();
+    let mut harness = specialist_harness(parts.models, budget, lean::SCRIBE_ROLE, parts.tracer);
+    register_resilient(
+        &mut harness,
+        Arc::new(
+            WriteToolFile::new(parts.workspace.to_path_buf()).deriving(parts.documents.clone()),
+        ),
+    );
+    register_resilient(
+        &mut harness,
+        Arc::new(
+            lean::LeanCheck::new(parts.workspace.to_path_buf(), budget.tool_timeout)
+                .deriving(parts.documents.clone()),
+        ),
+    );
+    // No document tools, and that is the whole of the fix for a live failure.
+    //
+    // Given the reads, the scribe spent 180 of 191 tool calls re-issuing one
+    // identical `grep_workspace` and never wrote a file. The brief already
+    // carries the statement, the file to write, and the kernel's last
+    // objection; the reads added nothing it needed and gave a small model
+    // somewhere to go instead of writing. A minimal prompt does not make a role
+    // minimal if its tool grant invites browsing.
+    harness.push_middleware(parts.checkpoint.clone());
+    subagents.register(lean::SCRIBE_ROLE, Arc::new(harness), prompt)?;
     Ok(())
 }
 
@@ -295,7 +352,7 @@ fn register_candidate_agents(
         let role = candidates::role_for(&id);
         let mut harness =
             build_tool_builder_harness(
-                parts.model,
+                parts.models,
                 parts.budget,
                 parts.tracer,
                 &checkout,
@@ -321,7 +378,7 @@ fn register_candidate_agents(
 /// Assembles the tool-builder's harness: the only role with shell and
 /// file-write authority.
 fn build_tool_builder_harness(
-    model: &Arc<dyn ChatModel<()>>,
+    models: &ModelTiers,
     budget: RunBudget,
     tracer: &Arc<RunTracer>,
     workspace: &Path,
@@ -332,7 +389,7 @@ fn build_tool_builder_harness(
     // mount every other role is told it works in. See `exec::escapes`.
     confine: bool,
 ) -> AgentHarness<()> {
-    let mut harness = specialist_harness(model.clone(), budget, "tool_builder", tracer);
+    let mut harness = specialist_harness(models, budget, "tool_builder", tracer);
     register_resilient(
         &mut harness,
         Arc::new(WriteToolFile::new(workspace.to_path_buf()).deriving(documents.clone())),
@@ -357,10 +414,9 @@ fn build_tool_builder_harness(
 
 /// The shared pieces every support agent's harness is assembled from.
 struct SupportAgents<'a> {
-    model: &'a Arc<dyn ChatModel<()>>,
-    /// The stronger model, for the one support agent whose output is a
-    /// judgement rather than a report. See [`crate::agent`]'s reasoning model.
-    reasoning: &'a Arc<dyn ChatModel<()>>,
+    /// Every model the run holds, and the decision about which role gets which.
+    /// See [`ModelTiers`].
+    models: &'a ModelTiers,
     budget: RunBudget,
     tracer: &'a Arc<RunTracer>,
     documents: &'a WorkspaceDocuments,
@@ -386,21 +442,6 @@ struct SupportAgents<'a> {
     /// school able to name its own sender could attribute a hunch to a sibling
     /// and the board's whole value is that a reader can tell who found what.
     school: &'static str,
-}
-
-impl SupportAgents<'_> {
-    /// The model `role` runs on.
-    ///
-    /// One place decides it, so which roles are on the stronger model is a
-    /// list to read rather than a property to reconstruct from five call
-    /// sites. See [`REASONING_ROLES`].
-    fn model_for(&self, role: &str) -> Arc<dyn ChatModel<()>> {
-        if REASONING_ROLES.contains(&role) {
-            self.reasoning.clone()
-        } else {
-            self.model.clone()
-        }
-    }
 }
 
 /// Role prompts for the four agents the solution loop adds.
@@ -432,7 +473,7 @@ fn register_pattern_agent(
     prompt: String,
 ) -> Result<()> {
     let mut pattern = specialist_harness(
-        parts.model_for("pattern_finder"),
+        parts.models,
         parts.budget,
         "pattern_finder",
         parts.tracer,
@@ -499,7 +540,7 @@ fn register_inventor(
 ) -> Result<()> {
     let budget = parts.budget.for_invention();
     let mut inventor = specialist_harness(
-        parts.model_for("inventor"),
+        parts.models,
         budget,
         "inventor",
         parts.tracer,
@@ -560,7 +601,8 @@ fn register_reducer(
 ) -> Result<()> {
     let budget = parts.budget.for_invention();
     let mut reducer =
-        specialist_harness(parts.model_for("reducer"), budget, "reducer", parts.tracer);
+        specialist_harness(
+        parts.models, budget, "reducer", parts.tracer);
     for tool in parts.documents.tools_as("reducer") {
         register_resilient(&mut reducer, tool);
     }
@@ -604,7 +646,7 @@ fn register_weakener(
 ) -> Result<()> {
     let budget = parts.budget.for_invention();
     let mut weakener = specialist_harness(
-        parts.model_for("weakener"),
+        parts.models,
         budget,
         "weakener",
         parts.tracer,
@@ -643,7 +685,7 @@ fn register_searcher(
     prompt: String,
 ) -> Result<()> {
     let mut searcher = specialist_harness(
-        parts.model_for("searcher"),
+        parts.models,
         parts.budget,
         "searcher",
         parts.tracer,
@@ -681,7 +723,7 @@ fn register_refuter(
     prompt: String,
 ) -> Result<()> {
     let mut refuter = specialist_harness(
-        parts.model_for("refuter"),
+        parts.models,
         parts.budget,
         "refuter",
         parts.tracer,
@@ -730,7 +772,7 @@ fn register_archivist(
     prompt: &str,
 ) -> Result<()> {
     let mut archivist = specialist_harness(
-        parts.model_for("archivist"),
+        parts.models,
         parts.budget,
         "archivist",
         parts.tracer,
@@ -760,7 +802,7 @@ fn register_support_agents(
     prompts: SupportPrompts,
 ) -> Result<()> {
     let mut reflection = specialist_harness(
-        parts.model_for("reflection"),
+        parts.models,
         parts.budget,
         "reflection",
         parts.tracer,
@@ -797,7 +839,7 @@ fn register_support_agents(
     // judge that can start solving stops judging. It reads the workspace only
     // to check a claim in the report against what is on disk.
     let mut judge = specialist_harness(
-        parts.model_for("judge"),
+        parts.models,
         parts.budget.for_judging(),
         "judge",
         parts.tracer,
@@ -820,7 +862,7 @@ fn register_support_agents(
     register_refuter(subagents, parts, prompts.refuter)?;
 
     let mut librarian = specialist_harness(
-        parts.model_for("librarian"),
+        parts.models,
         parts.budget,
         "librarian",
         parts.tracer,
@@ -847,7 +889,7 @@ fn register_support_agents(
     // keeps it digesting the library the run already has instead of drifting
     // into another search, which is the librarian's job and already done.
     let mut scholar = specialist_harness(
-        parts.model_for("scholar"),
+        parts.models,
         parts.budget,
         "scholar",
         parts.tracer,
@@ -885,7 +927,7 @@ fn register_support_agents(
     // single cycle cost eleven model calls. Frequency and length are separate
     // axes and both need a bound; this is the second one.
     let mut curator = specialist_harness(
-        parts.model_for("context_curator"),
+        parts.models,
         parts.budget.for_housekeeping(),
         "context_curator",
         parts.tracer,
@@ -905,7 +947,7 @@ fn register_support_agents(
     // turned into eleven model calls of its own would make asking for
     // something the most expensive thing an operator can do.
     let mut director = specialist_harness(
-        parts.model_for("director"),
+        parts.models,
         parts.budget.for_housekeeping(),
         "director",
         parts.tracer,
