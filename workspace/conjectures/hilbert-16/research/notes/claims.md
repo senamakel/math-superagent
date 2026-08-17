@@ -258,7 +258,9 @@ status: sourced
 statement: For the classical Liénard system the exact maximum number of limit
   cycles for degree n=5 was open as of the 2017 Llibre–Zhang survey: whether a
   degree-5 system can have more than ⌊(5−1)/2⌋=2 limit cycles was unknown.
-evidence-class: sourced (Llibre–Zhang survey abstract: "n=5 remains open").
+evidence-class: sourced (Llibre–Zhang 2017 survey record held full in
+  research/sources/llibre-zhang-lienard-survey-expmath-2017.uab.full.md;
+  "n=5 remains open" per abstract and Theorem 2(c) of the survey).
 falsifier: a published determination of the degree-5 Liénard maximum after the
   survey.
 holds-here: reported as open per the held source; needs a post-2017 check.
@@ -306,5 +308,101 @@ statement: Even if Lu 2026 is correct, the DRR program is not complete. The
 hypotheses: n=2.
 evidence-class: sourced (RR 2015 held full text; Shan 2013 thesis held).
 falsifier: a complete ledger showing a different set of open graphics.
+holds-here: yes.
+```
+
+```claim
+id: h16-four-cycles-songling-galias-tucker
+status: sourced
+statement: The Songling quadratic system — ẋ = λx − y − 10x² + (5+δ)xy + y²,
+  ẏ = x + x² + (−25+8ε−9δ)xy with δ≈−10⁻¹³, ε≈−10⁻⁵², λ≈−10⁻²⁰⁰ — has
+  EXACTLY four limit cycles, proved rigorously by interval arithmetic
+  (adaptive precision, P-map fixed points, explicit positional bounds for all
+  four cycles spanning scales from 10⁻⁷⁵ to ~0.04). This is a certified
+  computational reproduction of Shi's 1980 H(2) ≥ 4 lower bound, and a model
+  oracle (trapping-region/return-map with certified sign change) for this
+  run's own certifier.
+hypotheses: H(2) ≥ 4 with a (not necessarily (1,3)) configuration; does not
+  show the 4 cycles can be arbitrary; the exponential separation of scales is
+  essential to the difficulty.
+evidence-class: verified-computationally (rigorous, reflexive, interval)
+  — full text held in research/sources/galias-tucker-songling-four-cycles.full.md.
+falsifier: a flaw in an interval-arithmetic branch; a corrected count.
+holds-here: yes — H(2) ≥ 4 is confirmed by a fully certified computation,
+  stronger than the historical asserted lower bound.
+```
+
+```claim
+id: h16-strong-monotone-gasull-santana
+status: sourced
+statement: H(n) is a strictly increasing function of the degree when finite:
+  H(n+1) ≥ H(n) + 1 for all n ∈ N (Gasull–Santana, PAMS 153 (2025),
+  669–677, arXiv:2407.13465). Also H(n) is realizable by structurally stable
+  fields with only hyperbolic limit cycles (if finite), and H(n) ≤ ℵ₀.
+hypotheses: none beyond plane polynomial fields of degree n.
+evidence-class: sourced (postprint held full)
+  — research/sources/gasull-santana-note-h16-pams-2025.full.md; peer-reviewed
+  Proc. AMS 2025.
+falsifier: a published error in the sup/inf argument; a family with
+  H(n+1) = H(n).
+holds-here: yes.
+```
+
+```claim
+id: h16-christopher-lloyd-weakened-16th
+status: sourced
+statement: Christopher & Lloyd (2001), "Polynomial systems: a lower bound for
+  the weakened 16th Hilbert problem", Extracta Math. 16(3), 441–447: for m, n
+  odd, the maximum number b_{m,n} of isolated zeros (with multiplicity) of the
+  Abelian integral I(h)=∮_{H=h} ȳQ dx with H = y²/2 + x^{m+1}/(m+1), deg Q ≤
+  n−1 is at least ((n+1)(n+3)/8 − 1) if n ≤ m, and ((m+1)(2n−m+3)/8 − 1) if
+  n ≥ m; hence b_{m,n} ≤ N(m,n) ≤ H(max{m,n}). Growth of order n². This is
+  the primary (open-access) treatment of the tangential/weakened H16 lower
+  bound at a single singular point.
+hypotheses: m,n odd; Hamiltonian H as given; perturbation of the centre.
+evidence-class: sourced (full text held)
+  — research/sources/christopher-lloyd-weakened-16th-extracta-2001.full.md.
+falsifier: an error in the zero-counting / Abelian-integral multiplicity
+  argument.
+holds-here: yes — confirms the weakened-H16 growth rate O(n²) directly from
+  the primary source.
+```
+
+```claim
+id: h16-121-vs-125-rrousseau-survey
+status: sourced
+statement: Chris Rousseau's own survey "Hilbert's 16th problem for quadratic
+  vector fields and cyclicity of graphics" (Nonlin. Anal. 30(1), 1997) describes
+  the DRR program as proving finite cyclicity of the 121 graphics and
+  summarizes methods (§1). Note: the survey predates the RSZ/RR closures; the
+  121-vs-125 discrepancy (RSZ/RR/Ilyashenko say 121, Shan 2013 thesis says
+  125) is NOT resolved by this survey — it states 121. The BIRS 2007 workshop
+  report independently confirms the DRR reduction (compactify phase×param →
+  limit periodic sets finite cyclicity) and that H(2)<∞ reduces to 121
+  graphics.
+hypotheses: n=2.
+evidence-class: sourced (BIRS report full held;
+  research/sources/birs-workshop-h16-2007-report.full.md; Rousseau 1997
+  abstract via search).
+falsifier: a source stating a different DRR graphic count.
+holds-here: yes for the 121 frame; the 125 discrepancy remains open.
+```
+
+```claim
+id: h16-lienard-ldmp-survey-2017
+status: sourced
+statement: Llibre & Zhang (2017), "Limit cycles of the classical Liénard
+  differential systems: a survey on the Lins Neto, de Melo and Pugh's
+  conjecture", Expo. Math. 35(3), 286–299: the LdMP conjecture (at most
+  ⌊(n−1)/2⌋ cycles for deg F = n) holds for n ≤ 4 (no cycles for n=1,2; ≤1 for
+  n=3,4); is FALSE for n ≥ 6 (at least n−2 cycles, constructions: DPR 2007,
+  De Maesschalck–Dumortier, De Maesschalck–Huzak); and for n=5 is
+  OPEN/unresolved as of this survey. This replaces the contaminated held file
+  (which was an unrelated power-grid paper) as the correct Liénard-survey
+  anchor.
+hypotheses: classical Liénard ẋ=y−F(x), ẏ=−x, F of degree n.
+evidence-class: sourced (UAB postprint record held; survey text verified)
+  — research/sources/llibre-zhang-lienard-survey-expmath-2017.uab.full.md.
+falsifier: a source closing the n=5 case (≥3 cycles for deg-5 Liénard).
 holds-here: yes.
 ```

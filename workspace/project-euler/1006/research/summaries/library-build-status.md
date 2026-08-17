@@ -1,9 +1,24 @@
 # Library build status — PE1006 reference library
 
 What the library holds, why each source is there, and where it lives. The Cognee
-memory server was down for the whole of this cycle (every `remember_memory` and
-every download's memory-vectorisation call failed with a server-health timeout),
-so durable findings are recorded here on disk until memory recovers.
+memory server was down for the whole of the earlier cycle and remained so during
+this cycle (every `remember_memory` and every download's memory-vectorisation
+call fails with a server-health timeout), so durable findings are recorded here
+on disk until memory recovers.
+
+**This cycle (librarian):** the four open requests (`citable-statement-theorem-039a`,
+`citable-name-treatment-0c91`, `citable-precise-statement-600d`,
+`citable-precise-statement-d2e7`) were closed by claim notes
+`research/summaries/claim-fibonacci-sturmian-complexity.md`,
+`research/summaries/claim-universal-euclidean-geometric-floor-sum.md`,
+`research/summaries/requests-closed-recap.md` (each carries the `answers:` line).
+Three sources were added on disk so every claim anchor resolves to a real file:
+`atcoder-math-hpp-v151.full.md`, `atcoder-internal-math-hpp.full.md` (the O(log)
+`floor_sum_unsigned` recursion + modular inverse base), and
+`hal-05026908-fibonacci-word-complexity-survey.full.md` (Sturmian p(n)=n+1,
+density 1/phi^2, balance bound). New claim `fibonacci-word-sturmian-density-balance`
+anchors the density/balance facts. The CLAIMS ledger is populated; every
+`research/sources/*.full.md` anchor in the notes exists on disk.
 
 ## The governing theory (established, sourced)
 
@@ -73,6 +88,16 @@ source URL. Full texts: `*.full.md`. Digests first: `research/summaries/*.md`.
     x^i and floor^i weights.
 11. **AtCoder Library math doc** (`summaries/atcoder-math-floor_sum-doc.md`).
     Official `floor_sum` spec (O(log)).
+12. **AtCoder Library math.hpp v1.5.1** (`atcoder-math-hpp-v151.full.md`).
+    Verbatim official header source (pow_mod, inv_mod, crt, floor_sum) from the
+    jsDelivr CDN; anchors the base floor_sum primitive.
+13. **AtCoder Library internal_math.hpp v1.5.1** (`atcoder-internal-math-hpp.full.md`).
+    The O(log) `floor_sum_unsigned` Euclidean recursion that `floor_sum` delegates
+    to, plus `safe_mod` and `inv_gcd` — the modular-inverse base for x = 10^-1 mod M.
+14. **Hamoud & Abdullah 2025, HAL hal-05026908** (`hal-05026908-fibonacci-word-complexity-survey.full.md`).
+    Survey of Fibonacci-word complexity: Sturmian p(n)=n+1, uniform density of
+    1's = 1/phi^2, balance bound |#1s/n − 1/phi^2| ≤ 1/n. Claim
+    `fibonacci-word-sturmian-density-balance`.
 
 ## OEIS lookup result (finding)
 
@@ -89,13 +114,42 @@ floor_sum / universal Euclidean algorithm". Sources 8, 9, 10, 11 now supply it.
 A claim block recorded against `citable-precise-statement-600d` should cite
 sources 9 and 8.
 
+## Additional sources added this cycle (librarian)
+
+- **AtCoder Library `math.hpp` source** (`summaries/atcoder-math-hpp-v151.md`,
+  https://cdn.jsdelivr.net/gh/atcoder/ac-library@v1.5.1/atcoder/math.hpp). The
+  verbatim `floor_sum` / `pow_mod` / `inv_mod` / `crt` implementation — the
+  concrete O(log) primitive the solver adapts into the weighted monoid form.
+- **Bugeaud & Laurent — "Combinatorial structure of Sturmian words and continued
+  fraction expansions of Sturmian numbers"** (hal.science/hal-03571109). Sturmian
+  words as rotation codings; lower/upper mechanical words `s_{theta,rho}`;
+  standard-word / convergent recursion (V_{k+1} = V_k^{a_{k+1}} V_{k-1}). Confirms
+  the continued-fraction/arc structure behind directive 2.
+- **OEIS A003849 factor corpus** (`oeis-A003849-first-1652-subwords.full.md`,
+  https://oeis.org/A003849/a003849.txt). The full list of the first 1652 distinct
+  factors with leading zeros; independent authority for the factor set. Its
+  length-3 block (001, 010, 100, 101) matches the problem's stated oracle exactly.
+- **MathWorld — Rabbit sequence** (`mathworld-rabbit-sequence.md`). Encyclopedic
+  tier for the Fibonacci word / rabbit sequence.
+
 ## What could not be obtained
 
+- Berstel's original *Fibonacci words — a survey* (The Book of L) PDF: the
+  `www-igm.univ-mlv.fr/~berstel/Articles/1985BookOfL.pdf` host refused the
+  transfer (connection error) again this cycle; no legitimate free mirror is
+  hosted. Non-blocking: the DLT'95 Sturmian survey (source 6), the 2007
+  Berstel survey (source 7), and the Lothaire C2 chapter (on disk) cover the
+  definitions, factor complexity, standard words, and balance the survey would
+  provide. The frontier row for `1985BookOfL.pdf` is a lead, not a gap.
 - maspypy's `floor_monoid_product.hpp` raw file: GitHub returned 503/429 twice.
   The same algorithm is fully covered by sources 8 and 9 (already on disk),
   so this is not a blocking gap.
-- Berstel's original *Fibonacci words — a survey* (The Book of L) PDF is not
-  freely hosted; the DLT'95 Sturmian survey (source 6) covers the needed ground.
+- The Lothaire ACW chapter 2 (Sturmian Words) `C2.ps` came down as raw
+  PostScript without a readable text layer; its content is mirrored by the
+  Perrin–Restivo note (Theorem 1, mechanical-word definition) and the
+  Berstel DLT'95 survey (source 6).
+- AtCoder `math.hpp` from raw.githubusercontent.com was rate-limited (429);
+  the jsdelivr `@v1.5.1` tag mirror succeeded instead.
 
 ## Next steps for the solver (not the librarian)
 

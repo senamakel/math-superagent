@@ -1,44 +1,48 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/christopher-lloyd-weakened-16th-extracta-2001.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Christopher–Lloyd, "Polynomial systems: a lower bound for the weakened 16th Hilbert problem"
 
-<!-- source: https://ddd.uab.cat/pub/artpub/2001/110469/extmat_a2001v16n3p441.pdf | converted from PDF -->
+<!-- source: https://ddd.uab.cat/pub/artpub/2001/110469/extmat_a2001v16n3p441.pdf | Extracta Mathematicae 16(3):441–447 (2001), open access -->
 
-## What it claims
+**Primary treatment of the weakened (tangential) H16 lower bound at one
+singular point.** Let b_{m,n} be the maximum number of isolated zeros (counted
+with multiplicity) of the Abelian integral
 
-In this paper we provide the greatest lower bound about the number of
-(non–inﬁnitesimal) limit cycles surrounding a unique singular point for a pla-
-nar polynomial diﬀerential system of arbitrary degree.
+```
+I(h) = ∮_{H(x,y)=h} ȳ·Q(x,y) dx,   H(x,y) = y²/2 + x^{m+1}/(m+1),
+```
 
-We prove that for m and n odd the maximum number bm,n of isolated
-zeros (taking into account their multiplicity) of the Abelian integral I(h) =∫
+with Q any polynomial of degree ≤ n−1. For m, n odd the paper proves it is
 
-H(x,y)=h y ¯Q(x, y)dx, where H(x, y) = 1
-2 y2 + 1
-m+1 xm+1, and ¯Q and arbitrary
-polynomial of degree at most n − 1 is
+```
+b_{m,n} ≥ (n+1)(n+3)/8 − 1        if n ≤ m
+b_{m,n} ≥ (m+1)(2n − m + 3)/8 − 1 if n ≥ m
+```
 
-(n + 1)(n + 3)
-8 − 1 if n ≤ m , (m + 1)(2n − m + 3)
-8 − 1 if n ≥ m .
+and there are perturbations of the Hamiltonian system ẋ=−∂H/∂y, ẏ=∂H/∂x that
+realise this number of continuous families of limit cycles from prescribed
+periodic orbits of the period annulus. Consequently b_{m,n} ≤ N(m,n) ≤
+H(max{m,n}).
 
-Moreover, there are perturbations of the Hamiltonian system ˙x = −∂H/∂y,
-˙y = ∂H/∂x, such that the indicated maximum number bm,n of continuous
-families of limit cycles can be made to emerge from a corresponding number of
-arbitrarily prescribed periodic orbits within the period annulus of the center.
-Consequently,
- bm,n ≤ N (m, n) ≤ Hmax{m,n} .
+## What it establishes
 
-This result provides the greatest lower bound about the number of (non–
-inﬁnitesimal) limit cycles surrounding a unique singular point for a planar
-polynomial diﬀerential system of arbitrary degree m = n.
+- The number of isolated zeros of the Abelian integral grows like **order n²**
+  (degree n ≥ m: the factor 2n is quadratic); hence the Hilbert number H(n)
+  itself is at least of this order.
+- This is the "weakened"/tangential/infinitesimal H16 at a single singular
+  point: limit cycles bifurcating from a Hamiltonian centre by a polynomial
+  perturbation.
+- The proof counts zeros of a single Abelian integral over ovals of the curve
+  {H = h} — a Chebyshev-type argument with the y²/2 + x^{m+1}/(m+1) Hamiltonian.
 
-441
+## Implication for this problem
 
-4…
+Corroborates the n² (and n² log n) growth of H(n) from the *primary, open-
+access* side, complementary to the held Buzzi–Novaes 2024 note (which estimates
+the upper side and refutes quadratic upper bounds) and to the paywalled
+Christopher–Lloyd 1995. Gives the concrete lower-bound constant.
 
-## Statements it makes
+**Evidence class**: sourced (full text held
+  `research/sources/christopher-lloyd-weakened-16th-extracta-2001.full.md`).
+**Falsifier**: an error in the zero-counting / multiplicity argument.
+**Holds-here**: yes — confirms weakened-H16 growth O(n²) directly.
 
-Theorem. For m and n odd the maximum number bm,n of isolated zeros
-(taking into account their multiplicity) of the Abelian integral (2) with H, P
-and Q given by (4) and (5) is
-
-*[digest of a 12758 character source; every section, statement, and proof in full at `research/sources/christopher-lloyd-weakened-16th-extracta-2001.full.md`]*
+Claims ledger: `h16-christopher-lloyd-weakened-16th`.

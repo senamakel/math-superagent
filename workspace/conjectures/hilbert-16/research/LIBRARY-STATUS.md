@@ -1,8 +1,6 @@
 # Reference library status (librarian report)
 
-Built: first pass. All full texts in `research/sources/`, digests in `research/summaries/`.
-Source URL recorded inside each document. Cognee memory server was down during this
-session; durable findings below are recorded here until the memory store accepts them.
+Built: first pass + second librarian pass. All full texts in `research/sources/`, digests in `research/summaries/`. Source URL recorded inside each document. Cognee memory server was down during these sessions; durable findings are recorded here and in `research/notes/claims.md` until the memory store accepts them.
 
 ## Canonical reference tier now in the library (full text)
 
@@ -77,6 +75,55 @@ session; durable findings below are recorded here until the memory store accepts
      graphics (I^1_6b), (H^3_13), (DI_2b) through a triple nilpotent point at infinity of saddle, elliptic
      or degenerate type surrounding a center — all except one boundary set.
 
+
+## Added in second pass (2025, fills documented gaps)
+
+9. **Z. Galias, W. Tucker, "The Songling system has exactly four limit cycles",
+   Appl. Math. Comput. 415 (2022) 126691**
+   - `research/sources/galias-tucker-songling-four-cycles.full.md`
+   - URL: http://www.zet.agh.edu.pl/~galias/ps/amc2022.pdf (open access, CC BY)
+   - Establishes: the Songling quadratic system (Shi's 1980 H(2)≥4 example),
+     with the three extreme parameter scales, has **exactly** four limit cycles,
+     proved by rigorous adaptive-precision interval arithmetic (P-map fixed
+     points, explicit positional bounds 10⁻⁷⁵ … 0.04, absence-of-cycle chunks).
+     This is a **certified** reproduction of the H(2)≥4 lower bound — exactly
+     the oracle shape this run's GOAL.md asks for. Model for the certified
+     limit-cycle-counter.
+
+10. **A. Gasull, P. Santana, "A note on Hilbert 16th problem", Proc. AMS
+    153(2):669–677 (2025)**, postprint
+    - `research/sources/gasull-santana-note-h16-pams-2025.full.md`
+    - URL: https://ddd.uab.cat/pub/artpub/2025/309367/GasSan24-Postprint.pdf
+    - Establishes: H(n+1) ≥ H(n) + 1 (strictly increasing when finite); H(n)
+      realizable by structurally stable fields with only hyperbolic limit
+      cycles; H(n) ≤ ℵ₀. Peer-reviewed Proc. AMS 2025. Also recalls the
+      Christopher–Lloyd recurrence H(2n+1) ≥ 4H(n).
+
+11. **C. Christopher, N. G. Lloyd, "Polynomial systems: a lower bound for the
+    weakened 16th Hilbert problem", Extracta Math. 16(3):441–447 (2001)**, open access
+    - `research/sources/christopher-lloyd-weakened-16th-extracta-2001.full.md`
+    - URL: https://ddd.uab.cat/pub/artpub/2001/110469/extmat_a2001v16n3p441.pdf
+    - Establishes: the primary, open-access statement of the weakened-H16 lower
+      bound at one singular point: b_{m,n} ≥ ((n+1)(n+3)/8 − 1) if n ≤ m, else
+      ((m+1)(2n−m+3)/8 − 1), for m,n odd; growth of order n².
+
+12. **BIRS 07w5021 workshop report, "Mathematical developments around
+    Hilbert's 16th problem" (2007)**
+    - `research/sources/birs-workshop-h16-2007-report.full.md`
+    - URL: https://www.birs.ca/workshops/2007/07w5021/report07w5021.pdf
+    - Establishes: independently confirms the Roussarie compactification →
+      121-graphics reduction for H(2)<∞; state-of-tools (Picard–Fuchs,
+      Varchenko–Khovanskii) circa 2007.
+
+13. **J. Llibre, X. Zhang, "Limit cycles of the classical Liénard differential
+    systems: a survey on the Lins Neto, de Melo and Pugh's conjecture",
+    Expo. Math. 35(3):286–299 (2017)**, UAB postprint record
+    - `research/sources/llibre-zhang-lienard-survey-expmath-2017.uab.full.md`
+    - URL: http://ddd.uab.cat/record/221320
+    - **REPLACES the contaminated file** `llibre-zhang-lienard-conjecture-survey.full.md`
+      (which was an unrelated power-grid paper, Mureddu arXiv:1612.05532).
+      Establishes the correct Liénard-survey anchor: LdMP conjecture true for
+      n ≤ 4, FALSE for n ≥ 6, **n=5 OPEN** as of 2017.
 
 ## Landing pages (abstract/navigation only, full text not yet obtained)
 

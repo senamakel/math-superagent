@@ -1,62 +1,35 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gasull-santana-note-h16-pams-2025.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Gasull–Santana, "A note on Hilbert 16th problem"
 
-<!-- source: https://ddd.uab.cat/pub/artpub/2025/309367/GasSan24-Postprint.pdf | converted from PDF -->
+<!-- source: https://ddd.uab.cat/pub/artpub/2025/309367/GasSan24-Postprint.pdf | Proc. AMS 153(2):669–677 (2025), also arXiv:2407.13465 -->
 
-## What it claims
+**Monotonicity and realizability of H(n).** Peer-reviewed note (Proc. Amer.
+Math. Soc. 2025). Let H(n) be the supremum of the number of limit cycles over
+planar polynomial fields of degree n, and π(X) the (countable) number for field X.
 
-Abstract. Let H(n) be the maximum number of limit cycles that a planar
-polynomial vector field of degree n can have. In this paper we prove that H(n)
-is realizable by structurally stable vector fields with only hyperbolic limit cycles
-and that it is a strictly increasing function whenever it is finite.
+## What it establishes
 
-1. Introduction and statement of the main results
+- **Theorem 1**: H(n+1) ≥ H(n) + 1 for all n ∈ N. So H(n) is a **strictly
+  increasing function of the degree whenever it is finite**.
+- **Theorem 2**: H(n) is realizable by structurally stable fields with only
+  hyperbolic limit cycles: (a) if H(n) < ∞ there is a structurally stable X of
+  degree n with π(X) = H(n) and all cycles hyperbolic; (b) if H(n) = ∞ then for
+  every k there is X(k) with π(X(k)) ≥ k.
+- **Proposition 3**: any planar analytic field has an enumerable (≤ ℵ₀) number
+  of limit cycles; hence H(n) ≤ ℵ₀ for every n.
+- Recalls the Christopher–Lloyd recurrence H(2n+1) ≥ 4H(n) (via the non-invertible
+  change (x,y) ↦ (u²,v²) and time rescaling, transplanting cycles into the four
+  quadrants).
 
-Consider the planar polynomial system of differential equations X = (P, Q) given
-by
+## Implication for this problem
 
-(1) ˙x = P (x, y), ˙y = Q(x, y),
+Establishes structural facts about the Hilbert number independent of its (open)
+finiteness: monotone in n, realised in the robust hyperbolic regime. The
+Christopher–Lloyd H(2n+1) ≥ 4H(n) recurrence is the concrete mechanism behind
+the n² log n growth. The count of limit cycles is at most countable.
 
-where the dot means the derivative in relation to the independent variable t and P ,
-Q : R2 → R are polynomials. To system (1) corresponds a polynomial vector field
-X = P ∂
-∂x + Q ∂
-∂y in the phase plane of the variables x and y. In this paper we make
-no distinction between system (1) and its respective vector field. The degree of X
-is the maximum of the degrees of P and Q. Given n ∈ N, let X n be the set of the
-planar polynomial systems (1) of degree n, endowed with the coefficients topology.
-Given X ∈ X n, let π(X) ∈ Z⩾0 ∪ {∞} be its number of limit cycles (i.e. isolated
-periodic orbits).
-In his famous address to…
+**Evidence class**: sourced (peer-reviewed postprint held full
+  `research/sources/gasull-santana-note-h16-pams-2025.full.md`).
+**Falsifier**: a published error in the monotonicity/realizability argument.
+**Holds-here**: yes.
 
-## Statements it makes
-
-Theorem 1. Given n ∈ N, it holds H(n + 1) ⩾ H(n) + 1.
-
-Theorem 2. For n ∈ N, the following statements hold.
-
-Theorem 3 ([5]). Let Xα be the family of rotated vector fields (2) and suppose
-that Xα0 has a limit cycle γα0. Then:
-
-Proposition 1. Let Xα be the family of rotated vector fields (2) and suppose that
-Xα0 has a limit cycle γα0 . Then, for |α − α0| > 0 small enough, all the limit cycles
-detailed in Theorem 3 that bifurcate from γα0 are hyperbolic.
-
-Proposition 2. Let X ∈ X n. Then the following statements hold.
-(a) If π(X) < ∞, then there is Y ∈ X n such that πh(Y ) ⩾ π(X).
-(b) If π(X) = ∞, then for each k ∈ N there is Yk ∈ X n such that πh(Yk) ⩾ k.
-
-Lemma 1. Let X ∈ X n and B ⊂ R2 a closed ball centered at the origin. Then
-there is an arbitrarily small perturbation Y of X having a regular point p ∈ R2\B
-such that ℓ ∩ B = ∅, where ℓ is the straight line p + sY (p), s ∈ R.
-
-Theorem 1 is not the first known result about recurrence properties of H(n).
-It follows from the proof of Christopher and Lloyd [4] that H(2n + 1) ⩾ 4H(n).
-Roughly speaking, given X ∈ X n, the authors translate all the limit cycles of
-X to the first quadrant and thus apply the non-invertible transformation (x, y) ↦→
-(u
-2, v2), followed by the rescaling of time dt/dτ = 2uv. Hence, obtaining Y ∈ X 2n+1
-
-Proposition 3. Let X be a planar analytic vector field. Then X has an enumerable
-number of limit cycles. In particular, H(n) ⩽ ℵ0 for every n ∈ N.
-
-*[digest of a 23368 character source; every section, statement, and proof in full at `research/sources/gasull-santana-note-h16-pams-2025.full.md`]*
+Claims ledger: `h16-strong-monotone-gasull-santana`.

@@ -10,37 +10,11 @@ analyticity step (test 1) explicitly, and reduces the whole claim to one
 open-graphic instance.
 
 ```skeleton
-goal:  H(2) < ∞ — every planar quadratic polynomial vector field has a number
-       of limit cycles bounded uniformly over the whole degree-2 family.
-implies: H(2) < ∞  follows by the Roussarie reduction (DRR 1994): it is
-       equivalent to finite cyclicity of every one of the 121 graphics in the
-       DRR list (limit periodic sets of the compactified quadratic family).
-       That equivalence is the frame, named in problem.md and standing on
-       Roussarie 1998 / Dumortier–Roussarie–Rousseau 1994, so the whole claim
-       folds to the conjunction: for each graphic Λ in the list,
-       cycl(Λ) < ∞ uniformly in the family. The core gap is then one graphic
-       (why one: the list is finite, so the conjunction is min over finitely
-       many bounds once each is settled). The four lemmas G-resolve,
-       G-transition, G-zeros, G-uniform combine, for a fixed Λ, into
-       cycl(Λ) ≤ N: resolve gives the vertex normal forms, transition gives the
-       sector expansions from those normal forms, zeros bounds the number of
-       roots of the composed displacement function, uniform upgrades pointwise
-       finiteness to a family-wide bound — and G-uniform is the step that must
-       use compactness of the parameter space, i.e. is the step that would fail
-       if the analyticity input in G-transition were dropped (this is exactly
-       Dulac's 1923 error).
-status: sketched            # no lemma has been proved by this run yet
-rests-on: (none in the claim ledger — this workspace has recorded no claims).
-       Frame rests on the sources already downloaded: Roussarie 1998 reduction,
-       DRR 1994 (both named, not yet turned into claim blocks), and
-       Rousseau–Shan–Zhu 2015 (research/sources/rouseau-shan-zhu-nilpotent-saddle-graphics.full.md)
-       closing I_12^1 and I_13^1. The reduction itself is to be recorded as a
-       claim with a source before the skeleton is marked live.
-killed-by: (not yet) — would break if the analyticity step (G-transition /
-       G-zeros) were replaced by a purely topological or C^∞ argument: a C^∞
-       vector field can have infinitely many limit cycles, so the finiteness
-       lemma must genuinely use analytic/algebraic structure of coefficients,
-       and locating that step is part of stating the argument.
+goal: H(2) < ∞ — every planar quadratic polynomial vector field has a number of limit cycles bounded uniformly over the whole degree-2 family.
+implies: H(2) < ∞  follows by the Roussarie reduction (DRR 1994): it is equivalent to finite cyclicity of every one of the 121 graphics in the DRR list (limit periodic sets of the compactified quadratic family). That equivalence is the frame, named in problem.md and standing on Roussarie 1998 / Dumortier–Roussarie–Rousseau 1994, so the whole claim folds to the conjunction: for each graphic Λ in the list, cycl(Λ) < ∞ uniformly in the family. The core gap is then one graphic (why one: the list is finite, so the conjunction is min over finitely many bounds once each is settled). The four lemmas G-resolve, G-transition, G-zeros, G-uniform combine, for a fixed Λ, into cycl(Λ) ≤ N: resolve gives the vertex normal forms, transition gives the sector expansions from those normal forms, zeros bounds the number of roots of the composed displacement function, uniform upgrades pointwise finiteness to a family-wide bound — and G-uniform is the step that must use compactness of the parameter space, i.e. is the step that would fail if the analyticity input in G-transition were dropped (this is exactly Dulac's 1923 error).
+killed-by: (not yet) — would break if the analyticity step (G-transition / G-zeros) were replaced by a purely topological or C^∞ argument: a C^∞ vector field can have infinitely many limit cycles, so the finiteness lemma must genuinely use analytic/algebraic structure of coefficients, and locating that step is part of stating the argument.
+rests-on: h16-drr-121-graphics, drr-1994-citation-anchor (DRR frame); drr-rr-closes-i14 (89/121); drr-rr-boundary-only-for-3-graphics, drr-lu-claims-h14-3, h16-drr-open-rows (open target set)
+status: live
 ```
 
 ```gap

@@ -9,10 +9,10 @@ Derived from `config/tasks.jsonl` and rewritten on every write. Do not edit this
 
 Most recently added or updated first. Work the first one you can. To raise an older task, record against it — that moves it back to the top.
 
+- `solution-builder` — solution.py: mechanical construction + telescoping + lag collapse verified 1..150
+  - detail: solution.py phases: 1) mechanical construction with corrected slope a=fib(n)/fib(n+2) equals brute factor set for k=1..150; 2) telescoped Psi identity exact-int agreement; 3) lag-collapse C(j,jp)=A(jp-j) and one-dimensional geometric weight form; 4) anchors at k=10^4,10^6.
 - `lean-statement` — Lean statement of mechanical-word lemma kernel-checked
   - detail: lean_prover writes code/Problem1006.lean stating the Fibonacci-word factor structure and mechanical construction, ending in `by sorry`, and lean_check passes.
-- `brute-oracle` — Brute oracle reproduces Ψ(3)=20302 and Ψ(10)≡10699667
-  - detail: tool_builder writes code/brute.py (naive substring enumeration) and runs it; captured output must show Psi(3)=20302 and Psi(10)%101001001=10699667, and counts k+1 for k=1..20.
 - `understand-brute` — Step 1: restate problem in GOAL.md and build/run code/brute.py oracle
   - detail: Restate the problem precisely in /workspace/GOAL.md with every symbol defined (S_n, k, Fibonacci subword, Psi(k), M=101001001). Then have tool_builder write code/brute.py, a naive but obviously-correct program: generate S_n directly (S_0=0,S_1=01,S_n=S_{n-1}S_{n-2}), collect all distinct length-k substrings, read as decimals ignoring leading zeros, square and sum. It MUST reproduce Psi(3)=20302 and Psi(10)=10699667 mod 101001001 (given) and S_2=010, S_3=01001, S_4=01001010. If it cannot, the reading of the definition is wrong and nothing else matters until fixed. Keep brute.py as the oracle…
   - refs: step 1 of run plan
@@ -30,6 +30,14 @@ Most recently added or updated first. Work the first one you can. To raise an ol
   - refs: directive 2; steps 4-5 of run plan
 - `verify-independent` — Verify the final answer by a second independent route
   - detail: Report which: a different derivation, an independent program, or brute-force agreement at the largest size brute.py can reach. Must state the verification command and what it confirmed. Do NOT call this done on the basis of the solution's own internal checks — the whole point is independence from solution.py.
+
+## Recently done
+
+The five most recently finished, with what came of it. Kept, because a run that cannot see what it already did repeats it.
+
+- `brute-oracle` — Brute oracle reproduces Ψ(3)=20302 and Ψ(10)≡10699667
+  - detail: tool_builder writes code/brute.py (naive substring enumeration) and runs it; captured output must show Psi(3)=20302 and Psi(10)%101001001=10699667, and counts k+1 for k=1..20.
+  - reason: code/brute.py reproduces both worked examples (Psi(3)=20302, Psi(10)%M=10699667), count=k+1 for k=1..20; verified output in code/out/brute_oracle_results.md
 
 ---
 

@@ -11,11 +11,16 @@ rests-on: RR 2015 leave H14_3 as the one triple-point-at-infinity graphic with n
           h14_3_reproducibility bundle (Bautin-recurrence and center-basis scripts).
 blocked-by: none for the computational core — Lu's own reproducibility scripts and
           definitions in research/summaries/lu-h14-3-hemicycle.md are the input.
-next: re-derive the Bautin recurrence with exact arithmetic; re-derive the
-      center-basis check; state the finite core as a Lean theorem
-      (code/lean/Lib/LuH14_3.lean) and try to close it with the kernel; report
-      which step reproduced, which not, and what stays existential (the bound B
-      is existential — the paper gives no explicit number).
+next: (directive 3, ordered) FIRST write code/bautin/verify_lu_core.py
+      clean-room from the paper's stated definitions (exact sympy, NOT
+      importing Lu's scripts), capture to code/out/lu_core.captured.txt,
+      then downgrade research/notes/lu-finite-core-verified.md to what the
+      executed run supports — its current identities are UNVERIFIED, not
+      verified-by-hand. SECOND close the vector-field Lean stub: put P30's 30
+      monomials as untrusted defs under code/lean/Lib/Generated/ (no theorems
+      inside), write the checker by hand outside it, close 192*L6+P30=0 with
+      decide (not native_decide). Report which step reproduced, which not, and
+      what stays existential (the bound B is existential — no explicit number).
 ```
 
 ## Why this is the most valuable target in the workspace

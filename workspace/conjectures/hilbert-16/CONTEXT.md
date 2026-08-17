@@ -33,6 +33,17 @@ hypotheses and falsifiers.
   (I¹₁₄); closes only the boundary limit periodic sets of (I⁶b₁), (H₁₃³),
   (DI₂b); **exactly one graphic — (H³₁₄) — through a triple point at infinity
   had no partial result at all (RR 2015 line 63, held)**.
+carry context, not authority; and an H16 claim without these three: (a) a stated
+hypothesis, (b) a stated falsifier, (c) evidence of the class it really has —
+is a claim nobody can attack.
+
+- **Each verified identity must be an executed run.** A note saying an
+  algebraic identity was "re-derived by hand with exact arithmetic" is a
+  measurement nobody can reproduce; it is not a verified identity. Nothing is
+  reported verified-computationally until a program exists, the program ran,
+  and a capture (code/out/*.txt, first three lines naming what ran and by
+  which definitions) asserts the identity on its produced data. State
+  precision, step size and interval widths in every capture.
 - **UPDATE (directive-carrying): Lu, arXiv:2607.13785 (2026, 80pp,
   UNREFEREED) claims local uniform finite cyclicity of exactly (H³₁₄)**,
   identified as B=0 in RR 2015 Theorem 3.1's five-parameter family (term-for-
@@ -46,7 +57,10 @@ hypotheses and falsifiers.
   theorems) is NOT machine-checked; the preprint is not peer-reviewed; the
   claim is **asserted-by-source, NOT established**. Even if correct it closes
   ONE graphic — (I⁶b₁),(H₁₃³),(DI₂b) full graphics and ≥11 degenerate graphics
-  (Shan 2013) remain.
+  (Shan 2013) remain. **Its algebraic core is NOT verified yet**: the identities
+  in the note were claimed by-hand and are not backed by any executed program or
+  capture, so they are UNVERIFIED until `code/bautin/verify_lu_core.py`
+  (clean-room, exact sympy) runs and asserts them (directive 3, FIRST).
 - **Lower bounds (corrected):** H(2)≥4 (Shi; Chen–Wang), H(2)=4 standing
   conjecture OPEN; **H(3)≥13 (Li–Liu–Yang 2009)**, **H(4)≥28 (Prohens–
   Torregrosa 2018)**; M(2)=3 (Bautin); M(3)≥11 (Żołądek); **H(n) ≳ n² log n:

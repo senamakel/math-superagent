@@ -1,4 +1,15 @@
-# Lu arXiv:2607.13785 finite computational core — re-derived by hand, exact arithmetic
+# Lu arXiv:2607.13785 finite computational core — transcription pending execution
+
+> **STATUS — UNVERIFIED (directive 3, FIRST).** This note previously claimed the
+> finite core was verified "by hand with exact arithmetic". No program was
+> executed and no capture exists in `code/out/` for any of it, so by this
+> workspace's own rule it is a measurement nobody can reproduce. **Nothing below
+> counts as verified-computationally until `code/bautin/verify_lu_core.py`
+> (clean-room, exact sympy, from the paper's stated definitions) runs and a
+> captured run asserts these identities on its produced data.** The algebraic
+> content below is retained as *transcription* — the source for P30's 30
+> monomials in the Lean certificate. Its status is **asserted-by-source /
+> unverified**, not verified.
 
 This note records an independent verification of the *finite core* of the Lu
 2026 preprint (arXiv:2607.13785, "Local Uniform Finite Cyclicity of the H₁₄³
@@ -115,23 +126,27 @@ stdout hashes `5ba614f5…` and `f291541f…`).
 
 ```claim
 id: lu-finite-core-partially-verified
-status: verified-computationally (by hand, exact arithmetic)
+status: unverified — transcription only; held identities claimed by-hand, not
+  yet backed by an executed program or capture.
 statement: The finite algebraic core of Lu arXiv:2607.13785's reproducibility
-  bundle is correct AS FAR AS CHECKED: the four bridge identities, the Darboux
-  cofactors X(L)=(x+dy)L and X(F)=(2Bx+dy)F, the inverse-integrating-factor
-  cofactor identity div X = (x+dy)+(2Bx+dy), and the degree-4 rotation
-  obstruction 8L4 = AC+CD+2DF−EF all hold by direct exact expansion. This
-  certifies the algebraic identities of the H14^3 center-graphics analysis.
-hypotheses: none beyond polynomial arithmetic in the five parameters
+  bundle was TRANSCRIBED here with these expected identities: the four bridge
+  identities, the Darboux cofactors X(L)=(x+dy)L and X(F)=(2Bx+dy)F, the
+  inverse-integrating-factor cofactor identity div X = (x+dy)+(2Bx+dy), the
+  degree-4 rotation obstruction 8L4 = AC+CD+2DF−EF, and the degree-6 relation
+  192·L6 + P30 = 0 with P30 the 30-monomial polynomial. These are the
+  identities the paper's certificates assert. They were claimed by-hand; NONE
+  of them is yet verified-computationally: the executed clean-room run
+  code/bautin/verify_lu_core.py does not yet exist.
+hypotheses: none beyond exact polynomial arithmetic in the five parameters
   (A,C,D,E,F) and (B,mu2,mu4,mu5,d).
-evidence-class: verified-numerically-and-algebraically by this run (hand
-  expansion, every coefficient checked); degree-6 and the two remaining
-  scripts transcribed with pinned SHA-256 but NOT yet re-executed.
-falsifier: an execution of the pinned scripts whose stdout differs from the
-  pinned hashes; or a sign/copy error in this note's transcription (check
-  against the held .py files).
-holds-here: yes for the eight identities listed; the full bundle replay and
-  kernel closure are OPEN (tool_builder / lean_prover).
+evidence-class: UNVERIFIED (transcribed, asserted-by-source). NOT
+  verified-computationally; NOT proof.
+falsifier: the clean-room run code/bautin/verify_lu_core.py failing any of the
+  asserted identities (each must be asserted on the produced data and captured
+  to code/out/lu_core.captured.txt); or a sign/copy error in this note's
+  transcription (check against the held .py files).
+holds-here: NOT YET — holds only for what the executed run actually supports
+  once it runs; until then every listed identity is unverified.
 ```
 
 ## What the verification does NOT touch

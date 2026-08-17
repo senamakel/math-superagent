@@ -60,9 +60,13 @@ statement: Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite
   unfolding. This is the graphic Roussarie-Rousseau 2015 left with no partial
   result. Bound existential; proof partly computer-assisted; not yet refereed.
   Its finite algebraic core (bridge identities, Darboux cofactors,
-  degree-4 Bautin obstruction 8L4=AC+CD+2DF-EF) was re-derived by hand with
-  exact arithmetic and verified by this run; the human-proof remainder and the
-  degree-6 30-monomial equality are not yet independently checked.
+  degree-4 Bautin obstruction 8L4=AC+CD+2DF-EF) was TRANSCRIBED into
+  research/notes/lu-finite-core-verified.md with expected identities; that
+  transcription is UNVERIFIED — it was claimed by-hand with no executed program
+  and no capture, so nothing in it counts as verified until
+  code/bautin/verify_lu_core.py runs (directive 3, FIRST). The human-proof
+  remainder and the degree-6 30-monomial equality are also not yet
+  independently checked.
 hypotheses: n=2; five-parameter source-normalized unfolding; fixed collar U.
 holds-here: claimed (preprint, 2026, 0 citations; finite core verified, theorem
   not).
