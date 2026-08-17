@@ -398,17 +398,28 @@ fn the_judge_reads_a_file_and_looks_nothing_up() -> agent::Result<()> {
 }
 
 #[test]
-fn every_agent_but_the_judge_can_write_durable_memory() -> agent::Result<()> {
-    // The judge is the one exemption, and it is a budget rather than a
-    // preference: see `the_judge_reads_a_file_and_looks_nothing_up`. Everything
-    // else that reasons must be able to leave what it established where the
-    // next run finds it.
+fn every_agent_but_the_judge_and_the_scribe_can_write_durable_memory() -> agent::Result<()> {
+    // Two exemptions, each a budget rather than a preference. Everything else
+    // that reasons must be able to leave what it established where the next run
+    // finds it.
+    //
+    // The judge: see `the_judge_reads_a_file_and_looks_nothing_up`.
+    //
+    // The scribe: it does not reason about the investigation. It is handed one
+    // statement, writes one file, and argues with the kernel until that file
+    // compiles — and what it establishes is already durable without a note,
+    // because the `.lean` source and the kernel verdict are on disk and
+    // `derived/LEMMAS.md` re-derives from them. A memory write would add a tool
+    // call and a prompt paragraph to the one role whose whole value is being
+    // small enough to run at volume, and would record in prose what the
+    // repository already records as a verdict.
     let registry = default_registry(true)?;
     for role in registry.definitions() {
-        if role.id == "judge" {
+        if role.id == "judge" || role.id == crate::orchestrator::lean::SCRIBE_ROLE {
             assert!(
                 !role.tools.iter().any(|tool| tool == "remember_memory"),
-                "the judge must not carry durable memory"
+                "{} must not carry durable memory",
+                role.id
             );
             continue;
         }

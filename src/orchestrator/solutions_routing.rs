@@ -191,13 +191,21 @@ pub(in crate::orchestrator) async fn refutation_arm(
 ///
 /// Three things make it affordable, and they are the same three decision.
 ///
-/// **It picks rather than sweeps.** [`super::verify::next`] takes the first
-/// entry of a ranking over the statement graph — what the run is already
-/// building on, ordered by how much rests on it — so one check per pass goes to
-/// the node whose mistake would cost the most. A fleet of provers is the other
-/// way to cover a blueprint; this is the one that fits the container's memory
-/// ceiling, and the queue is written into `derived/BLUEPRINT.md` so what was
-/// not reached is visible.
+/// **It takes the top of a ranking, not the whole of it.**
+/// [`super::verify::next_batch`] takes the first `MATH_AGENT_VERIFY_BATCH`
+/// entries of a ranking over the statement graph — what the run is already
+/// building on, ordered by how much rests on it — so the checks a pass can
+/// afford go to the nodes whose mistakes would cost the most. The queue is
+/// written into `derived/BLUEPRINT.md`, so what was not reached is visible.
+///
+/// This took exactly one node per pass until the batch existed, and the cost of
+/// that is on disk: Conway-99's blueprint ranks 87 candidates and four of them
+/// were ever attempted, while 33 of 45 workspaces hold no Lean at all. One per
+/// pass was the right bound when every attempt was a full reasoning turn on the
+/// run's own model. It stopped being the right bound when the writing moved to
+/// a tier that answers a routine lemma in seconds for nothing — see
+/// [`super::tiers`] — because what the old number was really rationing was
+/// price, and the price changed.
 ///
 /// **It asks for something different the second time.** A node that survived a
 /// proof attempt is asked to be decomposed, and its sub-lemmas become gaps —
@@ -221,6 +229,7 @@ pub(in crate::orchestrator) async fn verification_arm(
     let Some(workspace) = workspace else {
         return Vec::new();
     };
+    let mut failures: Vec<String> = Vec::new();
     // Choosing and recording are one critical section, and the lock is what
     // makes them one. Schools share a workspace and run this arm concurrently:
     // without it, two of them read the same ranking, see the same zero attempts
@@ -228,26 +237,50 @@ pub(in crate::orchestrator) async fn verification_arm(
     // proving it. Taken at the arm's boundary and released before the
     // delegation, so nothing the prover writes can meet it again — the rule
     // `worklock` states, since the mutex is not reentrant.
-    let assignment = {
+    //
+    // The batch is chosen and recorded inside one critical section, not one
+    // section per node: the whole point of the lock is that a sibling reading
+    // the ranking cannot see a node this pass has taken but not yet recorded,
+    // and re-taking the lock between the choice and the record would open
+    // exactly that window for every node after the first.
+    let batch = {
         let _writing = super::worklock::writes().await;
-        let Some(assignment) = super::verify::next(workspace) else {
+        let batch = super::verify::next_batch(workspace, super::verify::batch_size());
+        if batch.is_empty() {
             return Vec::new();
-        };
-        if let Err(error) =
-            super::verify::note_attempt(workspace, &assignment.target.id, assignment.stage).await
-        {
-            return vec![Finding::new(
-                Slot::Verification,
-                format!(
-                    "No formalisation was attempted this pass: the attempt record under `{}` \
-                     could not be written ({error}). Nothing was delegated, because an attempt \
-                     this runtime cannot count is one it cannot stop repeating.",
-                    super::verify::LEDGER_DIR
-                ),
-            )];
         }
-        assignment
+        let mut recorded = Vec::with_capacity(batch.len());
+        for assignment in batch {
+            // A node whose attempt cannot be written is dropped rather than
+            // attempted, on the argument this arm has always made: an attempt
+            // this runtime cannot count is one it cannot stop repeating. The
+            // rest of the batch is unaffected, because one unwritable record
+            // says nothing about the next node's.
+            if let Err(error) =
+                super::verify::note_attempt(workspace, &assignment.target.id, assignment.stage)
+                    .await
+            {
+                failures.push(format!("`{}` ({error})", assignment.target.id));
+                continue;
+            }
+            recorded.push(assignment);
+        }
+        recorded
     };
+    if batch.is_empty() {
+        return vec![Finding::new(
+            Slot::Verification,
+            format!(
+                "No formalisation was attempted this pass: no attempt record under `{}` could be \
+                 written ({}). Nothing was delegated, because an attempt this runtime cannot \
+                 count is one it cannot stop repeating.",
+                super::verify::LEDGER_DIR,
+                failures.join(", ")
+            ),
+        )];
+    }
+    let mut findings = Vec::with_capacity(batch.len());
+    for assignment in batch {
     let instruction = match assignment.stage {
         super::verify::Stage::Prove => {
             "State this in Lean 4 against Mathlib and prove it. Add a `#print axioms` line for \
@@ -304,7 +337,23 @@ pub(in crate::orchestrator) async fn verification_arm(
         ("What the kernel recorded", filed.as_str()),
         ("What the prover reports", report.as_str()),
     ]);
-    vec![Finding::new(Slot::Verification, merged)]
+        findings.push(Finding::new(Slot::Verification, merged));
+    }
+    // Said rather than dropped. A pass that quietly attempted five of eight
+    // nodes reads from the findings exactly like one that attempted five.
+    if !failures.is_empty() {
+        findings.push(Finding::new(
+            Slot::Verification,
+            format!(
+                "{} node(s) in this pass were not attempted, because their attempt record under \
+                 `{}` could not be written: {}.",
+                failures.len(),
+                super::verify::LEDGER_DIR,
+                failures.join(", ")
+            ),
+        ));
+    }
+    findings
 }
 
 /// Checks the literature *after* the run believes it is done.

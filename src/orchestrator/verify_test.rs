@@ -13,6 +13,16 @@ use std::path::{Path, PathBuf};
 
 use super::*;
 
+/// The single best node, which is what most of these tests are about.
+///
+/// `next_batch` is the production entry point; a test asserting which node the
+/// ranking prefers is asking for the head of that list, and says so more
+/// clearly this way than by indexing one out at every call site.
+fn next(workspace: &std::path::Path) -> Option<Assignment> {
+    next_batch(workspace, 1).into_iter().next()
+}
+
+
 /// A clean workspace of its own per test, named so a failure says which.
 fn workspace(name: &str) -> PathBuf {
     let root = std::env::temp_dir().join(format!("math-agent-verify-{name}"));
@@ -279,4 +289,68 @@ async fn a_mathlib_name_probe_is_not_a_formalisation_attempt() {
 
     passing_verdict(&root, &assignment.target.id);
     assert_eq!(counts(&root), (1, 1));
+}
+
+/// The batch takes the ranking in order, and stops where it is told.
+///
+/// The ordering matters as much as the count: a batch that took an arbitrary
+/// subset would spend the same budget on whatever the walk happened to reach
+/// first, which is the thing the ranking exists to prevent.
+#[test]
+fn a_batch_takes_the_top_of_the_ranking_in_order() {
+    let root = two_kinds_of_target("batched");
+
+    let batch = next_batch(&root, 8);
+
+    assert!(
+        batch.len() > 1,
+        "this fixture has several open nodes, so a batch must offer more than one"
+    );
+    assert_eq!(
+        batch.first().map(|assignment| assignment.target.id.as_str()),
+        Some("cauchy-bound"),
+        "the batch must still lead with the node the run is building on"
+    );
+    let ordered = next_batch(&root, 1);
+    assert_eq!(
+        ordered.first().map(|assignment| &assignment.target.id),
+        batch.first().map(|assignment| &assignment.target.id),
+        "a batch of one and the head of a larger batch are the same node"
+    );
+    // No node is offered twice in one pass: two delegations for one statement
+    // would both write the same file.
+    let mut ids: Vec<&str> = batch
+        .iter()
+        .map(|assignment| assignment.target.id.as_str())
+        .collect();
+    let taken = ids.len();
+    ids.sort_unstable();
+    ids.dedup();
+    assert_eq!(ids.len(), taken, "a node appears twice in one batch");
+}
+
+/// A limit is a ceiling, not a demand.
+#[test]
+fn a_batch_larger_than_the_ranking_returns_what_there_is() {
+    let root = two_kinds_of_target("short");
+
+    let batch = next_batch(&root, 1_000);
+
+    assert!(!batch.is_empty());
+    assert!(
+        batch.len() < 1_000,
+        "the fixture cannot supply a thousand nodes"
+    );
+}
+
+/// Zero means zero, rather than the whole ranking.
+///
+/// Asserted because the guard is a bare early return, and the failure it
+/// prevents — a misparsed override sweeping the entire blueprint in one pass —
+/// looks nothing like a zero when it happens.
+#[test]
+fn a_batch_of_none_is_none() {
+    let root = two_kinds_of_target("zero");
+
+    assert!(next_batch(&root, 0).is_empty());
 }

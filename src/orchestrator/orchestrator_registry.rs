@@ -398,6 +398,32 @@ fn register_code_writing_definitions(
                 ),
         )?;
     }
+    // The scribe is registered apart from the six above because its grant is a
+    // different shape rather than a smaller one, and folding it into that loop
+    // would mean carving exceptions out of a list whose point is that its
+    // members share everything.
+    //
+    // Four verbs: write a file, check it, and read what it needs to read. No
+    // shell, because it runs no experiments. No `apply_patch`, because it
+    // rewrites its own file rather than editing anybody else's. No memory and
+    // no scratch, because it is handed everything it needs in the message and
+    // has nothing to carry to the next call. No ledger write of any kind, which
+    // is what keeps the split below honest: it holds `lean_check`, so it can
+    // establish that a file compiles, and it cannot file a claim that says so.
+    registry.register(
+        AgentDefinition::new(
+            lean::SCRIBE_ROLE,
+            "Lean Scribe",
+            "Writes one Lean 4 file against Mathlib and iterates it against the kernel until it \
+             compiles. Holds no mandate over what is worth formalising and files no claims.",
+        )
+        .with_model("openrouter")
+        .with_tools(
+            ["write_tool_file", "lean_check"]
+                .into_iter()
+                .chain(document_tools.iter().copied()),
+        ),
+    )?;
     Ok(())
 }
 

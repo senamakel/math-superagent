@@ -30,6 +30,15 @@ services:
       MATH_AGENT_CONTEXT_MINUTES: ${MATH_AGENT_CONTEXT_MINUTES:-}
       MATH_AGENT_REASONING_MODEL: ${MATH_AGENT_REASONING_MODEL:-}
       MATH_AGENT_REASONING_PROVIDER: ${MATH_AGENT_REASONING_PROVIDER:-}
+      # The Lean scribe's tier. `MISTRAL_API_KEY` is deliberately absent from
+      # this block and arrives through `env_file` instead: this list overrides
+      # the file, so naming it here would set it to the empty string whenever
+      # the host shell lacks it and silently disable the tier. Keys ride `.env`;
+      # run knobs ride this list.
+      MATH_AGENT_SCRIBE_MODEL: ${MATH_AGENT_SCRIBE_MODEL:-}
+      MATH_AGENT_SCRIBE_RPS: ${MATH_AGENT_SCRIBE_RPS:-}
+      MATH_AGENT_SCRIBE_CONCURRENCY: ${MATH_AGENT_SCRIBE_CONCURRENCY:-}
+      MATH_AGENT_VERIFY_BATCH: ${MATH_AGENT_VERIFY_BATCH:-}
       MATH_AGENT_DOSSIER_TOKENS: ${MATH_AGENT_DOSSIER_TOKENS:-}
       # The reading layer. `MATH_AGENT_RLM=off` withholds `map_document`; the
       # rest raise or lower a bound and are empty by default.

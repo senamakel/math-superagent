@@ -39,6 +39,16 @@ use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 /// a model declining to formalise.
 pub(super) const LEAN_ROLE: &str = "lean_prover";
 
+/// The role that writes the Lean and iterates it against the kernel.
+///
+/// Split from [`LEAN_ROLE`] because the two jobs want different models. Judging
+/// whether a Lean statement is faithful to the mathematics it claims to capture
+/// is the prover's, and stays on the run's own model. Producing a file that
+/// compiles is mechanical, repetitive, and the thing a model specialised for
+/// Lean is fast and free at — measured at one to four seconds a file against
+/// three minutes for the run's default. See `orchestrator::tiers`.
+pub(super) const SCRIBE_ROLE: &str = "lean_scribe";
+
 /// Where a verdict is filed, one JSON file per checked source.
 ///
 /// Under `code/out/` rather than in a hidden `config/.*.json`, because a

@@ -24,9 +24,23 @@ impl OrchestratorAgent {
         // transport rather than of the model behind it.
         let reasoning: Arc<dyn ChatModel<()>> =
             Arc::new(BoundedTimeoutModel::new(openrouter_reasoning_model()?));
+        // The Lean tier, absent unless a key for it is configured. Bounded like
+        // the others, because a stalled connection is a property of the
+        // transport rather than of the model behind it.
+        let scribe: Option<Arc<dyn ChatModel<()>>> = crate::agent::scribe_model()
+            .map(|model| Arc::new(BoundedTimeoutModel::new(model)) as Arc<dyn ChatModel<()>>);
+        let scribe_available = scribe.is_some();
+        let models = Arc::new(ModelTiers::new(model.clone(), reasoning, scribe));
+
         let budget = RunBudget::from_env();
         let research_enabled = research_enabled_from_env();
         let tracer = start_tracer(&workspace, budget, research_enabled);
+        if !scribe_available {
+            // Said out loud. A tier that quietly is not there looks exactly
+            // like one that is, and the run would otherwise report Lean written
+            // on a model nobody chose for it.
+            tracer.note("lean_scribe: MISTRAL_API_KEY unset, running on the run's default model");
+        }
         // Every workspace on disk predates `derived/`, so its nine rendered
         // ledgers are still under `research/`. Moved once, never overwriting,
         // and said out loud — a file that changed location silently is one a
@@ -80,8 +94,7 @@ impl OrchestratorAgent {
                 &scoped,
                 school,
                 &Roster {
-                    model: &model,
-                    reasoning: &reasoning,
+                    models: &models,
                     budget,
                     tracer: &tracer,
                     workspace: &workspace,
@@ -119,6 +132,7 @@ impl OrchestratorAgent {
             tracer,
             workspace,
             memory: vector_store,
+            models,
         })
     }
 
@@ -403,8 +417,7 @@ impl OrchestratorAgent {
 /// changes is only which prompts its roles are given. Passing nine arguments to
 /// [`register_school`] once per school would say the opposite.
 struct Roster<'a> {
-    model: &'a Arc<dyn ChatModel<()>>,
-    reasoning: &'a Arc<dyn ChatModel<()>>,
+    models: &'a ModelTiers,
     budget: RunBudget,
     tracer: &'a Arc<RunTracer>,
     workspace: &'a PathBuf,
@@ -432,7 +445,7 @@ fn register_school(
     let mut prompts = RolePrompts::for_school(parts.workspace, school, parts.siblings)?;
 
     let mut research_harness = build_research_harness(
-        parts.model,
+        parts.models,
         parts.budget,
         parts.tracer,
         parts.documents,
@@ -447,7 +460,7 @@ fn register_school(
     )?;
 
     let code_writers = CodeWriters {
-        model: parts.model,
+        models: parts.models,
         budget: parts.budget,
         tracer: parts.tracer,
         workspace: parts.workspace,
@@ -456,6 +469,7 @@ fn register_school(
         vector_store: parts.vector_store,
     };
     register_code_writing_agents(subagents, &code_writers, prompts.code_writers())?;
+    register_lean_scribe(subagents, &code_writers, prompts.lean_scribe())?;
     // One role per candidate slot, sharing the code-writing authority but
     // rooted at its own checkout. See `register_candidate_agents`.
     register_candidate_agents(subagents, &code_writers, &prompts.candidate)?;
@@ -463,8 +477,7 @@ fn register_school(
     register_support_agents(
         subagents,
         &SupportAgents {
-            model: parts.model,
-            reasoning: parts.reasoning,
+            models: parts.models,
             budget: parts.budget,
             tracer: parts.tracer,
             documents: parts.documents,
@@ -482,7 +495,7 @@ fn register_school(
     let orchestrator_harness = register_planners(
         subagents,
         &Planners {
-            model: parts.model,
+            models: parts.models,
             budget: parts.budget,
             tracer: parts.tracer,
             documents: parts.documents,

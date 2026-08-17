@@ -11,6 +11,7 @@ struct RolePrompts {
     theorem_prover: String,
     symbolic_math: String,
     lean_prover: String,
+    lean_scribe: String,
     goals: String,
     reflection: String,
     archivist: String,
@@ -175,6 +176,15 @@ impl RolePrompts {
             ("symbolic_math", std::mem::take(&mut self.symbolic_math)),
             ("lean_prover", std::mem::take(&mut self.lean_prover)),
         ]
+    }
+
+    /// The Lean scribe's prompt.
+    ///
+    /// Taken on its own rather than with the code writers, because the scribe
+    /// does not get their harness: its grant is two verbs and the reads, where
+    /// theirs is a shell and a patch tool. See `register_lean_scribe`.
+    fn lean_scribe(&mut self) -> String {
+        std::mem::take(&mut self.lean_scribe)
     }
 
     /// The support roles' prompts, in one move.
@@ -672,7 +682,7 @@ fn ledger_catalogue(workspace: &Path, role: &str) -> String {
 /// instruction to go and read; withholding it is not the same as taking the
 /// capability away, and a judge checking one claim in a report against the
 /// ledger is exactly the use that should stay available.
-const LEDGER_BRIEF_WITHHELD: [&str; 2] = ["judge", "searcher"];
+const LEDGER_BRIEF_WITHHELD: [&str; 3] = ["judge", "searcher", "lean_scribe"];
 
 const LEDGER_WRITER_ROLES: [&str; 6] = [
     "goals",
@@ -820,6 +830,23 @@ impl RolePrompts {
             let base = format!("{}{base}", school_layer(school, name, siblings));
             Ok(workspace_prompt(&base, &context, &guidance))
         };
+        // A role assembled from its own instructions and nothing else.
+        //
+        // No workspace files, no ledger brief, no shared method policy. That
+        // last one is the part that looks like a hole and is not: the policy is
+        // prose, and prose is not what stops a role doing something — the tool
+        // grant is, and the scribe's is two verbs. What the policy would buy
+        // here is advice about conducting an investigation, to a role that is
+        // handed one statement and asked for one file.
+        //
+        // The point is the size. `lean_prover`'s assembled prompt measures
+        // ~20,000 tokens, 68% of it workspace state, against a model chosen for
+        // being fast and free rather than for holding a run's context. Handing
+        // that model the investigation would spend the tier's whole advantage
+        // on text it cannot use.
+        let bare = |name: &str, base: &str| -> String {
+            format!("{}{}", school_layer(school, name, siblings), base).trim().to_string()
+        };
         Ok(Self {
             orchestrator: role("orchestrator", ORCHESTRATOR_PROMPT)?,
             research: role("research", RESEARCH_PROMPT)?,
@@ -831,6 +858,7 @@ impl RolePrompts {
             theorem_prover: role("theorem_prover", THEOREM_PROVER_PROMPT)?,
             symbolic_math: role("symbolic_math", SYMBOLIC_MATH_PROMPT)?,
             lean_prover: role("lean_prover", LEAN_PROVER_PROMPT)?,
+            lean_scribe: bare("lean_scribe", LEAN_SCRIBE_PROMPT),
             goals: role("goals", GOALS_PROMPT)?,
             reflection: role("reflection", REFLECTION_PROMPT)?,
             archivist: role("archivist", ARCHIVIST_PROMPT)?,
