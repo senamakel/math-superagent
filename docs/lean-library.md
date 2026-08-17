@@ -558,6 +558,28 @@ Forbidding the probes would be wrong, because the need is real. They have
 end: it is scratch by construction, and a probe nobody deleted reads to the next
 run exactly like a statement.
 
+### What a cited statement has to look like to survive
+
+A `Cited` axiom is the mill's *primary* product, and until the parser knew the
+word `axiom` it was the one thing the mill could not keep. `Verdict::declarations`
+read `theorem` and `lemma` only; a file whose whole content is a cited axiom
+therefore declared nothing, `states_something` was false, and `mill::run` deleted
+it as rejected.
+
+A live `conjectures/singmaster` run made it concrete. The mill extracted
+Minkowski's equal-blocks identity from a Beukers–Shorey–Tijdeman note, wrote it
+under `namespace Cited` with its provenance, and the kernel compiled it clean —
+no `sorry`, no tautology, the `∈` binder correct. It was erased seconds later,
+while a sorry-terminated *theorem* beside it was kept as `stated`. The library
+was rejecting citations and keeping holes.
+
+An axiom has no `:=`, so its signature ends where the layout says it does — a
+blank line, a comment, or the next top-level construct. That is the same
+shallow-and-literal rule the rest of this parser follows, one step further: it
+reads Lean's layout and never its meaning, because finding an axiom's true end
+needs the elaborator and a runtime that guessed would file a wrong signature
+beside a right verdict.
+
 ### The mill inside a run
 
 `./lean-mill` is a person deciding a workspace has read too much and formalised

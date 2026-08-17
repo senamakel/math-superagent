@@ -61,13 +61,19 @@ notes; agents should not rebuild them from disk.
   `n=F_{2i+2}F_{2i+3}-1, k=F_{2i}F_{2i+3}-1` (i>=1). i=1 → 3003; i=2 →
   61218182743304701891431482520. Recurrences `n_i=7n_{i-1}-n_{i-2}+6`,
   `k_i=7k_{i-1}-k_{i-2}+9` (order-3 homogenisation `a_n=8a_{n-1}-8a_{n-2}+a_{n-3}`
-  confirmed), growth ratio → φ^4 ≈ 6.854. Verified N(a)>=6 for i=1..5;
-  exact counts (both mirrors + trivial): N=8 at i=1 (3003), N=6 at i=2
-  (29 digits) and i=3 (205 digits) — the i>=2 counts computed by per-k
-  binary inversion, beyond BBW 2017's 10^60 bound
-  (`code/out/verify_fibonacci_identity.captured.txt`). Any `B<6` is
-  refuted. This is the only Jenkins-family curve with infinitely many
-  lattice points (a=b=1).
+  confirmed), growth ratio → φ^4 ≈ 6.854. Verified N(a)>=6 for i=1..6; exact
+  counts (both mirrors + trivial): N=8 at i=1 (3003), N=6 at i=2 (29 digits),
+  i=3 (205 digits), i=4 (1412 digits) and i=5 (9688 digits). Each exact count
+  is an exhaustive per-k binary inversion over every reachable column:
+  i=2,3 in `code/out/verify_fibonacci_identity.captured.txt`, i=4 in
+  `code/out/extend_exact_N_family_i4.captured.txt` (28 workers, 1.9s), i=5 in
+  `code/out/extend_exact_N_family_i5.captured.txt` (32,183 columns, 330.4s,
+  28 workers — i=1..3 runs also cover i=4/5 in the same file). So through i=5
+  each a_i (i>=2) has exactly the two construction reps as nontrivial
+  left-half reps — no extra k=2 collision, no other column, and every one of
+  them is boundary for every eps>1/3. The i>=2 exact counts go beyond BBW
+  2017's 10^60 bound. Any `B<6` is refuted. This is the only Jenkins-family
+  curve with infinitely many lattice points (a=b=1).
 
 - **Lane Clark 2010 — the normal-array template giving every log bound.
   `checked`** (full text
@@ -359,9 +365,16 @@ Each carries the obstruction that closed it; do not re-propose.
   The Fibonacci family is boundary for eps > 1/3 (most of the admissible
   range), so it cannot be set aside as interior; any C must cover it.
   `C >= 3` from 3003 is the current lower bound. The decisive computation
-  (directives 25–26): count ALL nontrivial boundary reps per Fibonacci a_j
-  for j=1..12 — if the count stays at 2, the skeleton survives; if it
-  grows, C is unbounded and singmaster-uniform-bound is refuted.
+  (directives 25–26) — count ALL nontrivial boundary reps per Fibonacci a_j —
+  is **settled through j=5**: exhaustive full-column scans give exactly the
+  two construction reps for j=2,3,4,5 (j=1 has three: 3003's extra k=2 rep),
+  with j=5's 32,183-column scan at 330s the current frontier. If the count
+  stays at 2 for all j, the skeleton survives; if it ever grows, C is
+  unbounded and singmaster-uniform-bound is refuted. Verdict: **no refutation
+  through j=5; the next member (j=6, a six-digit-of-66416, kmax≈220,000) is
+  reachable but costs ~30-60 min at 28 workers with
+  PYTHONINTMAXSTRDIGITS=1000000 — a larger run only extends the same
+  per-j check, it settles nothing new unless a hit appears.**
   `G-interior-bounded` and `G-small-a-bounded` are catalogued.
 - **Directive 25 — Fibonacci family boundary proof and per-a count.**
   `fibonacci-family-is-boundary` filed as proved (structural, k/n→1/φ²,
@@ -371,9 +384,13 @@ Each carries the obstruction that closed it; do not re-propose.
   complete rather than a numerical observation. The consequence for
   G-boundary-uniform-count: the binding case is eps → 1 (larger eps,
   more boundary reps), and the family is boundary throughout (1/3, 1),
-  so it cannot be excluded from the count. **Decisive next computation:**
-  count ALL nontrivial boundary reps per Fibonacci a_j for j=1..12.
-  If always 2 (the construction's two), C≥3 stands; if the count grows,
+  so it cannot be excluded from the count. **Decisive next computation —
+  PARTIALLY ANSWERED (see the Infinite-family entry above):** count ALL
+  nontrivial boundary reps per Fibonacci a_j — settled at exactly 2
+  (construction pair) through j=5 by exhaustive column scans; j=1 (3003)
+  carries 3. j=6 is the only unaudited member, and its scan (~30-60 min,
+  kmax≈220k, 28 workers) would only extend the same check per j. If always
+  2 (the construction's two), C≥3 stands; if the count grows at some j,
   G-boundary-uniform-count is FALSE — a genuine result either way.
 - **The other live partial-result target:** an effective height bound with a
   **computed** constant for a specific (k1,k2) inequality or near-miss family
@@ -383,8 +400,23 @@ Each carries the obstruction that closed it; do not re-propose.
   effective-methods-wall. The exact-solution (2,3) form is closed (vacuity
   above); candidates: a different small pair, or the delta-form |ln a − ln b|
   bounds already computed.
-- Ledger: live counts in TASKS.md (asserted=22, checked=4, proved=3 — genus-closed-form-integrality, genus R–H closed form, fibonacci-family-is-boundary). Every claimed bound must be run
+- **Ledger: live counts in TASKS.md (asserted=22, checked=4, proved=3 — genus-closed-form-integrality, genus R–H closed form, fibonacci-family-is-boundary). Every claimed bound must be run
   against `code/out/witnesses.json`; one not run is `asserted`, never
   `checked`. Compute policy: never build the triangle; invert C(n,k)=a per
   small k by binary search (k ≤ log₂ a); 28 CPUs, parallel over a or
   (k1,k2); `timeout 540`; state workers and ranges in every capture.
+- **Administrative gaps (survey, this cycle):** `tasks` ledger is EMPTY
+  (0 entries) — the run has no open/blocked/done task rows despite a live
+  skeleton and two adopted approaches; `attempts` ledger is EMPTY (0 entries)
+  although `approaches` (20 entries, 14 refuted) and `goals` (4 entries, 2
+  live/1 complete/1 broken) are populated; `code/lean/` DOES NOT EXIST —
+  the run has formalised nothing (no Statement.lean, no Cited namespace), so
+  phase-3's "first-hour Lean" gate is unmet; `TASKS.md` derives from the empty
+  tasks ledger so the "asserted=22, checked=4, proved=3" counts actually live
+  in the claims ledger, not in TASKS. The five uncaptured programs named in
+  the diophantine-curves thread (test_slope_across_rows.py,
+  test_slope_hypothesis.py, effectivegenus/rep_pairs.py, genus/verify_k2_5_row.py,
+  pattern/print_family.py) — `print_family.py` now HAS a capture
+  (`code/out/pattern_print_family.captured.txt`, restored); the other four
+  still have zero captures. `verify_sdw_transformations.py` is written but
+  NOT yet executed.

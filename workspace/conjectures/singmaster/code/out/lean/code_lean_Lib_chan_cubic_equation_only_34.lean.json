@@ -1,0 +1,19 @@
+{
+  "axioms": [
+    "'chan_cubic_equation_only_34' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
+  ],
+  "cited": [],
+  "compiled": true,
+  "declarations": [
+    "theorem chan_cubic_equation_only_34 (a b : ℕ) (ha : a > 0) (hb : b > 0) (h : b * (b + 1) * (b + 2) = 2 * a * (a + 1) * (a + 2)) : a = 3 ∧ b = 4"
+  ],
+  "file": "code/lean/Lib/chan_cubic_equation_only_34.lean",
+  "missing_modules": [],
+  "outcome": "failed",
+  "retired_binder": false,
+  "sorries": [
+    "/workspace/code/lean/Lib/chan_cubic_equation_only_34.lean:7:8: warning: declaration uses `sorry`"
+  ],
+  "tautologies": [],
+  "verified": false
+}
