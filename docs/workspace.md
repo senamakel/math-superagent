@@ -764,6 +764,39 @@ replacing existing files. The runtime appends `AGENTS.md`, `config.toml`,
 policy. `GOAL.md` and `TASKS.md` are also loaded. Workspace context must never
 replace built-in tool or container restrictions.
 
+### Two seeds, and why the working agreements are refreshed
+
+There is a shared base at `workspace/template/` and an overlay per kind of
+problem — `workspace/template-conjecture/` and `workspace/template-euler/` —
+selected by `MATH_AGENT_TEMPLATE`, which each launcher exports and `run-agent`
+otherwise infers from the workspace path. A direct `./agent --workspace …` with
+neither gets the base alone.
+
+The overlay exists because the two kinds want opposite things from `code/`. An
+open conjecture is graded on what it *established*, so the mathematics leads and
+a program is evidence for a statement. A Project Euler problem has one number,
+so the oracle leads and Lean supplies the identity that number rests on. One
+`code/AGENTS.md` cannot say both.
+
+The measurement that forced the split: `code/AGENTS.md` opened with "This is a
+Python package tree", its shape diagram listed `lib/`, `<question>/` and `out/`,
+and neither it nor the root `AGENTS.md` mentioned `code/lean/` anywhere —
+`code/lean` being a runtime constant (`verify::SOURCE_DIR`) the template had
+never heard of. Across eighteen conjecture workspaces that produced **200,145
+lines of Python against 9,628 of Lean, a ratio of 21:1, with nine holding no
+Lean at all** — while `solve-conjecture`'s task text had said "WRITE THE
+MATHEMATICS IN LEAN, FROM THE FIRST HOUR" the entire time, and the verification
+arm sat on a full ranking (`unit-distance-plane-chromatic`: 40 blueprint
+targets, zero Lean files). A prompt instruction is not a control. The working
+agreement for the folder a role is writing in is much closer to one.
+
+Three files are the **runtime's** rather than the run's and are re-copied on
+every launch: `AGENTS.md`, `code/AGENTS.md`, `code/lean/AGENTS.md`. Everything
+else is seeded once and never overwritten, because a `GOAL.md` or an `INDEX.md`
+the run has filled in is its work. Without the refresh an existing workspace
+would keep the agreement it was first seeded with forever — which is precisely
+how the eighteen above stayed Python-first after the task text changed.
+
 The tool-builder also gets `apply_patch` (`src/orchestrator/patch.rs`), which
 applies a Codex-format envelope — `*** Begin Patch`, `*** Add File:` /
 `*** Update File:` / `*** Delete File:` sections, `@@` hunks with ` `/`-`/`+`

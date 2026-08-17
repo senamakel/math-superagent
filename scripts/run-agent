@@ -74,10 +74,12 @@ case "/$workspace_subdir/" in
         exit 2
         ;;
 esac
-if [ "$workspace_subdir" = template ]; then
-    echo "workspace/template is reserved as the workspace seed" >&2
-    exit 2
-fi
+case "$workspace_subdir" in
+    template|template-*)
+        echo "workspace/$workspace_subdir is reserved as a workspace seed" >&2
+        exit 2
+        ;;
+esac
 
 # Extra compose files, applied to every invocation below.
 #
@@ -134,9 +136,51 @@ case "$workspace_path" in
         ;;
 esac
 
-template_path=$workspace_root/template
-if [ -d "$template_path" ]; then
-    cp -R --update=none "$template_path/." "$workspace_path/"
+# Two seeds: a shared base, and an overlay for the kind of problem this is.
+#
+# The overlay exists because the two kinds want opposite things from `code/`. An
+# open conjecture is graded on what it *established*, so the mathematics leads
+# and a program is evidence for a statement. A Project Euler problem has one
+# number, so the oracle leads and Lean supplies the identity that number rests
+# on. One `code/AGENTS.md` cannot say both, and the one it used to say — "this
+# is a Python package tree", with no mention of `code/lean/` anywhere — is
+# measurable: across eighteen conjecture workspaces the ratio of Python to Lean
+# was 21:1 by line count, and nine of them held no Lean at all. The task text in
+# `solve-conjecture` had said "WRITE THE MATHEMATICS IN LEAN, FROM THE FIRST
+# HOUR" that entire time. A prompt instruction is not a control; the folder's
+# own working agreement is closer to one.
+#
+# The kind is passed by the launcher and inferred from the path otherwise, so a
+# direct `./agent --workspace ...` still works and simply gets the base.
+if [ -z "${MATH_AGENT_TEMPLATE:-}" ]; then
+    case "$workspace_subdir" in
+        conjectures/*) MATH_AGENT_TEMPLATE=conjecture ;;
+        project-euler/*) MATH_AGENT_TEMPLATE=euler ;;
+        *) MATH_AGENT_TEMPLATE= ;;
+    esac
+fi
+
+# The working agreements are the runtime's, not the run's, so they are refreshed
+# on every launch. Everything else is seeded once and never overwritten: a
+# `GOAL.md` or an `INDEX.md` the run has filled in is its work, and copying over
+# it would delete that. Without this list an existing workspace would keep the
+# `code/AGENTS.md` it was seeded with forever, which is exactly the eighteen
+# workspaces above.
+seed_workspace() {
+    seed_path=$1
+    [ -d "$seed_path" ] || return 0
+    cp -R --update=none "$seed_path/." "$workspace_path/"
+    for owned in AGENTS.md code/AGENTS.md code/lean/AGENTS.md; do
+        if [ -f "$seed_path/$owned" ]; then
+            mkdir -p "$workspace_path/$(dirname "$owned")"
+            cp "$seed_path/$owned" "$workspace_path/$owned"
+        fi
+    done
+}
+
+seed_workspace "$workspace_root/template"
+if [ -n "$MATH_AGENT_TEMPLATE" ]; then
+    seed_workspace "$workspace_root/template-$MATH_AGENT_TEMPLATE"
 fi
 
 export MATH_AGENT_WORKSPACE_PATH=$workspace_path

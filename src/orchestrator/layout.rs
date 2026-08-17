@@ -63,8 +63,15 @@ pub(super) const LIB_DIR: &str = "code/lib";
 pub(super) const OUTPUT_DIR: &str = "code/out";
 
 /// Extensions that make a file a program.
-const PROGRAM: [&str; 10] = [
-    "py", "sh", "bash", "c", "cpp", "rs", "js", "ts", "sql", "ipynb",
+///
+/// `lean` is here for the same reason `py` is, and its absence was a real
+/// misreading: a `.lean` file is source a role wrote, and without it every
+/// statement in `code/lean/` counted as something a program *produced*. So a
+/// workspace holding nothing but stated lemmas answered yes to
+/// [`has_results`] — reporting results it did not have — and the judge's output
+/// scan collected the Lean library as though it were output data.
+const PROGRAM: [&str; 11] = [
+    "py", "sh", "bash", "c", "cpp", "rs", "js", "ts", "sql", "ipynb", "lean",
 ];
 
 /// How deep under `code/` to look for a result, and how many entries to read.

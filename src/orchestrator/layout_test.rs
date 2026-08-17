@@ -177,6 +177,19 @@ fn programs_and_notes_alone_are_not_results() -> std::io::Result<()> {
     std::fs::write(root.join("code/out/oracle-model-broken.md"), "it returns 0")?;
     assert!(!super::has_results(&root));
 
+    // A stated lemma is source a role wrote, not a result a program produced.
+    // Before `lean` was in `PROGRAM`, this line alone made the workspace report
+    // results it did not have.
+    std::fs::create_dir_all(root.join("code/lean/Lib"))?;
+    std::fs::write(
+        root.join("code/lean/Lib/Statement.lean"),
+        "theorem conjecture : True := by sorry\n",
+    )?;
+    assert!(
+        !super::has_results(&root),
+        "a Lean statement is authored source, not program output"
+    );
+
     // One captured output, wherever it landed, is.
     std::fs::write(root.join("code/brute_OUTPUT.txt"), "g(16,5,5,6) = 9\n")?;
     assert!(super::has_results(&root), "a program produced something");
