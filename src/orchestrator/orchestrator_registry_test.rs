@@ -1419,3 +1419,83 @@ fn the_graph_never_travels_without_the_statements_it_is_a_graph_over() {
         );
     }
 }
+
+/// The two planners differ in exactly one file, and the difference is the job.
+///
+/// They shared an arm, so they read the same eleven files while doing different
+/// work: the goals agent drives an attempt and commissions the programs, the
+/// orchestrator hands out objectives. The reuse index belongs to the first — a
+/// planner that spawns `tool_builder` without it commissions the helper the run
+/// already has — and every role that actually writes code carries it anyway.
+/// Asserted rather than left to the lists, because a file added to one arm and
+/// not the other is invisible until it shows up as tokens.
+#[test]
+fn the_planners_share_their_decision_material_and_differ_in_the_library_index() {
+    let goals = role_context("goals");
+    let orchestrator = role_context("orchestrator");
+
+    assert!(
+        goals.contains(&"code/lib/INDEX.md"),
+        "the role that commissions the programs must see what already exists"
+    );
+    assert!(
+        !orchestrator.contains(&"code/lib/INDEX.md"),
+        "the role that delegates objectives chooses no module"
+    );
+    // And nothing else moved: every other file the goals planner reads is one
+    // the orchestrator reads too.
+    for file in goals.iter().filter(|file| **file != "code/lib/INDEX.md") {
+        assert!(
+            orchestrator.contains(file),
+            "`{file}` reaches one planner and not the other"
+        );
+    }
+    assert_eq!(
+        goals.len(),
+        orchestrator.len() + 1,
+        "the arms have drifted apart by more than the library index"
+    );
+}
+
+/// The curator is told, in numbers, when its brief has become a second claim
+/// ledger.
+#[test]
+fn the_curator_is_told_when_the_brief_restates_the_claim_ledger() {
+    use std::fmt::Write as _;
+
+    let workspace = tempfile::tempdir().expect("a temporary workspace");
+    let root = workspace.path();
+    std::fs::create_dir_all(root.join("research")).expect("the research tree");
+
+    let mut brief = String::from("# Context\n\n## Established\n\n");
+    let mut notes = String::new();
+    for index in 0..10 {
+        let id = format!("established-fact-{index}");
+        let _ = write!(
+            notes,
+            "```claim\nid: {id}\nstatement: A statement the run established.\nstatus: checked\n\
+             holds: yes\n```\n\n"
+        );
+        let _ = writeln!(brief, "- `{id}` — a statement the run established.");
+    }
+    std::fs::write(root.join("research/notes.md"), &notes).expect("the notes");
+    std::fs::write(root.join("CONTEXT.md"), &brief).expect("the brief");
+
+    let briefing = super::shared_context::briefing(root);
+    assert!(
+        briefing.contains("names 10 claim ids"),
+        "the overlap is counted rather than described: {briefing}"
+    );
+    assert!(
+        briefing.contains("read_ledger"),
+        "and the cycle line says where the statement should live: {briefing}"
+    );
+
+    // A brief that cites a couple of claims is doing its job, and is left alone.
+    std::fs::write(root.join("CONTEXT.md"), "# Context\n\n- `established-fact-0` matters.\n")
+        .expect("the smaller brief");
+    assert!(
+        !super::shared_context::briefing(root).contains("claim ids"),
+        "an ordinary cross-reference is not a finding"
+    );
+}

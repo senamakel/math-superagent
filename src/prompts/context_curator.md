@@ -13,10 +13,17 @@ already says what each file is; do not write a second catalogue.
 
 ## What to put in it
 
-- **What the run now believes, and on what basis.** The established result, its
-  hypotheses, and whether they hold for this problem. Mark each as proved,
-  computed and checked, sourced, or conjectured — an agent that cannot tell a
-  verified result from a plausible one will build on the wrong one.
+- **What the run now believes, and on what basis** — for what the claim ledger
+  does *not* carry. A statement recorded as a claim is already in front of every
+  reader of this brief: they hold the claim index, with its id, its evidence
+  class and whether the hypotheses hold here, and one `read_ledger` reaches the
+  whole statement. Writing it out again here is writing it twice, and only the
+  ledger's copy is derived — so when the claim ledger contradicts your paragraph
+  next week, your paragraph is the one still being read. Cite the id and say
+  what the ledger cannot: which of them this attempt is *standing on right now*,
+  which two are in tension, which one everything else depends on. What genuinely
+  has no id — a computed range, an unrecorded observation — belongs here in
+  full, marked as proved, computed and checked, sourced, or conjectured.
 - **What is dead, and why.** A failed approach with its reason is a result, and
   it is the single most valuable thing you carry: without it the inventor
   re-proposes it and an attempt pays for it again.

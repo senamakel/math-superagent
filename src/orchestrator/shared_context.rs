@@ -210,20 +210,60 @@ pub(super) fn clamp(content: &str, budget: u64, notice: &str) -> Option<String> 
 pub(super) fn briefing(workspace: &Path) -> String {
     let standing = standing(workspace);
     let Standing { tokens, budget } = standing;
+    let restated = restated_claims(workspace);
     if standing.excess() > 0 {
         return format!(
             "{CONTEXT_FILE} currently holds ~{tokens} tokens against a budget of {budget}. It is \
              {} over. This cycle is a compression, not an addition: merge duplicated statements, \
              move detail into the file that already holds it and link to it, and drop anything \
-             the run has since disproved. Add nothing until it is back within budget.",
+             the run has since disproved. Add nothing until it is back within budget.{restated}",
             standing.excess()
         );
     }
     format!(
         "{CONTEXT_FILE} currently holds ~{tokens} tokens against a budget of {budget}, so ~{} \
          remain. Spend them only on what an agent would otherwise have to rebuild from disk, and \
-         stay within the budget rather than filling it.",
+         stay within the budget rather than filling it.{restated}",
         standing.headroom()
+    )
+}
+
+/// Claim ids below which naming them in the brief is ordinary cross-reference.
+///
+/// A brief that cites three claims is doing its job. One that cites twenty has
+/// become a second claim ledger, which is the state this measure exists to
+/// catch.
+const RESTATED_CLAIMS: usize = 8;
+
+/// How much of the brief is the claim ledger said again.
+///
+/// Measured rather than left to the curator's judgement, because the failure is
+/// invisible from inside the file: each addition is one more sentence about
+/// something the run established, and the file that results reads as a summary
+/// of the work rather than as a duplicate of a ledger every reader already
+/// holds. One live workspace reached 9,990 characters of `## Established` prose
+/// naming claim ids — ~2,500 tokens, in twenty roles, on every model call.
+///
+/// The empty string is the ordinary case, so a healthy brief's cycle line is
+/// exactly what it was.
+fn restated_claims(workspace: &Path) -> String {
+    let Ok(brief) = std::fs::read_to_string(workspace.join(CONTEXT_FILE)) else {
+        return String::new();
+    };
+    let named = super::claims::collect(workspace)
+        .ids()
+        .into_iter()
+        .filter(|id| brief.contains(id.as_str()))
+        .count();
+    if named < RESTATED_CLAIMS {
+        return String::new();
+    }
+    format!(
+        " It also names {named} claim ids. Every role that reads this brief is sent the claim \
+         index too, so a statement written out here is written twice and only one copy is \
+         derived: cite the id and let `read_ledger` carry the statement, and keep the brief for \
+         what no ledger says — what the run is doing now, what it decided, and what it is \
+         waiting on."
     )
 }
 

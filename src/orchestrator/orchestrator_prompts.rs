@@ -281,35 +281,65 @@ const UNIVERSAL_CONTEXT: [&str; 1] = ["AGENTS.md"];
 /// Order matters, and only at the end: `CONTEXT.md` is moved last whatever
 /// position an arm below writes it in. [`RolePrompts::for_school`] does the
 /// move, and says why it is enforced there rather than trusted to the lists.
+/// What the orchestrator reads: the run's goal, its plan, and every ledger a
+/// decision about what to do next is made from.
+///
+/// The two planners read the same decision material and differ in one file,
+/// which is the difference between deciding *who* works and driving the work.
+/// The arms are separate rather than shared behind a `|` so that difference is
+/// stated once and is visible.
+const ORCHESTRATOR_CONTEXT: &[&str] = &[
+    "GOAL.md",
+    "derived/TASKS.md",
+    "derived/CLAIMS.md",
+    "derived/THREADS.md",
+    "derived/APPROACHES.md",
+    // The open gaps are the run's stock of ready-made tasks: a lemma with a
+    // first move somebody could make today. A planner that cannot see them
+    // plans around them.
+    "derived/BACKWARD.md",
+    // And the graph over them, which answers the question the flat list cannot:
+    // which of those tasks can be handed to a sub-agent *now*, because
+    // everything it rests on is settled. A planner routing work to concurrent
+    // children needs exactly that distinction, and `BACKWARD.md` makes every
+    // open gap look equally attackable.
+    "derived/BLUEPRINT.md",
+    // What the library gives without new work. A planner that cannot see this
+    // schedules an attempt at something the run already holds, which is the
+    // most expensive mistake available to it.
+    "derived/ENTAILMENT.md",
+    // What the other schools have said. A planner deciding what to spend the
+    // next run on is the reader a dead end found once and paid for once was
+    // written for.
+    board::PATH,
+    shared_context::CONTEXT_FILE,
+];
+
+/// What the goals agent reads: the orchestrator's material, plus the reuse
+/// index.
+///
+/// It spawns `tool_builder` and `coder` and reads back what they wrote, so it
+/// has to know which helper already exists; the orchestrator hands out
+/// objectives and never chooses a module, and every role that does write code
+/// carries this index itself.
+const GOALS_CONTEXT: &[&str] = &[
+    "GOAL.md",
+    "derived/TASKS.md",
+    "code/lib/INDEX.md",
+    "derived/CLAIMS.md",
+    "derived/THREADS.md",
+    "derived/APPROACHES.md",
+    "derived/BACKWARD.md",
+    "derived/BLUEPRINT.md",
+    "derived/ENTAILMENT.md",
+    board::PATH,
+    shared_context::CONTEXT_FILE,
+];
+
 fn role_context(role: &str) -> &'static [&'static str] {
     match role {
-        "orchestrator" | "goals" => &[
-            "GOAL.md",
-            "derived/TASKS.md",
-            "code/lib/INDEX.md",
-            "derived/CLAIMS.md",
-            "derived/THREADS.md",
-            "derived/APPROACHES.md",
-            // The open gaps are the run's stock of ready-made tasks: a lemma
-            // with a first move somebody could make today. A planner that
-            // cannot see them plans around them.
-            "derived/BACKWARD.md",
-            // And the graph over them, which answers the question the flat list
-            // cannot: which of those tasks can be handed to a sub-agent *now*,
-            // because everything it rests on is settled. A planner routing work
-            // to concurrent children needs exactly that distinction, and
-            // `BACKWARD.md` makes every open gap look equally attackable.
-            "derived/BLUEPRINT.md",
-            // What the library gives without new work. A planner that cannot
-            // see this schedules an attempt at something the run already holds,
-            // which is the most expensive mistake available to it.
-            "derived/ENTAILMENT.md",
-            // What the other schools have said. A planner deciding what to
-            // spend the next run on is the reader a dead end found once and
-            // paid for once was written for.
-            board::PATH,
-            "CONTEXT.md",
-        ],
+        "goals" => GOALS_CONTEXT,
+        "orchestrator" => ORCHESTRATOR_CONTEXT,
         "tool_builder" | "coder" | "sat_solver" | "smt_solver" | "theorem_prover"
         | "symbolic_math" | "lean_prover" => &[
             "GOAL.md",
