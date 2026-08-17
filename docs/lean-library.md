@@ -469,3 +469,64 @@ scheduled paths to the kernel both need something to rank — `verify` needs a
 statement graph and the mill needs digested notes, and an early run has neither.
 So without this, the opening passes of a run reach the kernel not at all, which
 is exactly when a mis-stated problem is cheapest to catch.
+
+## Known gaps, with what measured them
+
+Five live mill runs across two workspaces produced these. Each is recorded with
+the number that would tell you it had been fixed, because the thing this
+repository keeps getting wrong is a plausible improvement nobody measured.
+
+### The scribe cannot search Mathlib
+
+It holds `write_tool_file` and `lean_check` and nothing else, which is
+deliberate — given the document tools it spent 180 of 191 tool calls re-issuing
+one identical `grep_workspace` and never wrote a file. But `#check` inside a
+file is then its only way to learn whether a name exists, so on a Casas-Alvero
+pass **17 of 26 kernel verdicts were probe files**, and files like this were
+submitted as the deliverable:
+
+```lean
+import Mathlib
+open Polynomial
+#check Polynomial.hasseDerivative
+```
+
+The budget went to the search and left nothing for the statement. A narrow
+`search_mathlib` against the image's prebuilt `.olean` tree would make a name
+cost one cheap call instead of a write/check round trip.
+
+It is not obviously right: a search tool is somewhere to browse, and this role
+browsed the moment it had anywhere to go. Any attempt should bound the result
+count, refuse follow-up navigation, and be judged on **probe files per milled
+statement**. Today's baseline is 1 of 8 `stated with gaps` on
+`./lean-mill conjectures/casas-alvero research/summaries --budget 8`.
+
+### A paper cannot be milled directly
+
+`Source::parse` recognises a URL and an arXiv id and `OrchestratorAgent::mill`
+then refuses both, because fetching is the librarian's tool and is not wired to
+that entry point. The refusal is deliberate — milling nothing and reporting a
+clean pass is the worse failure — but `--paper` is advertised by the parser and
+does not work. Either wire it to the librarian or stop parsing what cannot run.
+
+### One pass cannot read a large directory
+
+`gather` stops at `MAX_WORKSPACE_CONTEXT_BYTES` and reports what it skipped, so
+nothing is silent. But Casas-Alvero's summaries are 584 KB across 121 files and
+a run reads roughly a fifth of them: **19 source files unread** on the last
+pass. Milling a narrower path is the workaround. Chunked passes over one
+directory, with the statements deduplicated across them, is the fix.
+
+### Nothing has been proved yet
+
+Across five runs the mill has produced **zero** `verified` files and one
+`stated with gaps`. That is the honest headline and it should not be read past.
+The statements it produces are blueprint material for `lean_prover` to
+decompose, which is worth something given 33 of 45 workspaces held no Lean at
+all — but it is not what "formalised" means, and the report says so in words for
+that reason.
+
+Conway-99 is close to a worst case and is worth avoiding as a benchmark: its
+statements are about strongly regular graph parameter sets, which Mathlib has no
+vocabulary for, so the scribe must either invent a scaffold or fail. Casas-Alvero
+is the fairer measure because Mathlib covers polynomials over `ℂ` properly.
