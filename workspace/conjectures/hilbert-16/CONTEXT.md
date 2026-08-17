@@ -82,6 +82,25 @@ hypotheses and falsifiers.
   (Buzzi–Novaes 2024, held): contradicts the n² log n lower bound.
 - **Petrovskii–Landis 1955-57 "solution" (H(2)=3) retracted** after
   Novikov–Ilyashenko counterexamples (held, Ilyashenko 2002).
+- **Pedregal's claimed variational resolution of H16.2 is UNREFEREED and
+  suspect, not established** (arXiv:2103.07193, held full text; claims H(n)
+  ≤ quartic-in-n bound and H(2)=4). It counts limit cycles as global
+  minimizers of E0 = (1/2)∫(P y' − Q x')² dt via Morse inequalities +
+  Bezout/Harnack on the divergence curve, with no use of analyticity of the
+  return map — a prima-facie Test-1 (smooth-test) failure, Dulac's error shape.
+  Its prior Llibre–Pedregal variant (arXiv:1411.6814) announced a mistake in
+  counting limit cycles. Community still treats H16.2 as open (held Gasull
+  2024). Thread `pedregal-variational-claim-test`; claim
+  `h16-pedregal-variational-claim-unrefereed`.
+- **The o-minimality route is a genuine independent method for uniform
+  finiteness** (Speissegger arXiv:1804.03585, held). Roussarie's
+  finite-cyclicity conjecture follows from the (OPEN) o-minimality of the
+  language of parametric transition maps, via the uniform-finiteness principle;
+  PROVED for the non-generic class NRH_d (only non-resonant hyperbolic
+  singularities) by Kaiser–Rolin–Speissegger (Crelle 636 (2009) 1–45). This is
+  where a valid uniform-finiteness proof must source its analyticity: tamed
+  quasianalytic asymptotics of the return map — the structural opposite of the
+  Pedregal claim. Claim `h16-ominimality-route-roussarie`.
 - **DRR catalog count:** 121 in DRR1994/RSZ/RR/Ilyashenko; Shan 2013 thesis
   says 125 — unresolved discrepancy, DRR 1994 raw catalogue not held.
 
@@ -151,17 +170,44 @@ from durable memory.
    uniqueness, Hadamard divisibility, domain completeness, zero theorems) is
    machine-unchecked and the preprint unrefereed; the cyclicity bound is
    existential.
-3. **`code/lean/Lib/BautinRecurrence.lean` fails to compile (`compiled:false`,
-   lean JSON in code/out/lean/)** — its `h14_p30_check`/`bautin_L6_identity`
-   reference `LuH14.Generated`, and `bautin_L4_identity`/`darboux_identities`
-   are still `trivial→True` placeholders, not the real identities. The
-   directive's SECOND asks this be fixed: Generated data under
-   `code/lean/Lib/Generated/`, checker hand-written outside it, close with
-   `decide`. **Duplicated Generated trees exist**: `code/lean/lib/LuH14/` and
-   `code/lean/LuH14/` (stray; lowercase lib is not the convention) alongside
-   `code/lean/Lib/Generated/` — the directive says keep the coefficient data
-   under one path only and delete the duplicates, and delete the probes
-   `code/lean/Lib/{RingTest,RingTest2,ReduceTest}.lean`.
+3. **`code/lean/Lib/BautinRecurrence.lean` and `code/lean/Lib/Bautin.lean` are
+   host-fixed and both pass lean_check (Directive 5) — do NOT revert or redo.**
+   `BautinRecurrence.lean` is VERIFIED (no sorry, no cited axiom):
+   `h14_p30_check`, `p30_sound`, `bautin_L6_identity`, `L4num_ne_zero`,
+   `param_identities`, `darboux_L_identity`, `darboux_F_identity`.
+   `Bautin.lean` is CONDITIONAL (no sorry, resting only on `Cited` Bautin-1952
+   axioms). Four anti-revert constraints, stated so nobody rebuilds them the
+   hostile way: FIRST the kernel runs on ONE file with no lake root, so a
+   second-module import fails — the P30 data is inline in a `Generated`
+   namespace carrying no theorem, and `Lib/Generated/P30Data.lean` stays as
+   provenance kept in step by `code/bautin/generate_p30.py`. SECOND `decide`
+   over an MvPolynomial equality does not reduce — it is a Finsupp equality —
+   so the check is coefficientwise over Fin 30 and `p30_sound` proves the
+   bridge to the polynomial identity; never put `decide` back on a polynomial
+   equality. THIRD MvPolynomial is not a division ring, so the degree-4
+   obstruction is `L4num` with the denominator in the name, not `/8`. FOURTH
+   the three focal values are real (computed exactly by
+   code/bautin/lyapunov_quadratic.py, code/out/bautin_focal_values.captured.txt
+   — V1 as a term, V2/V3 as data tables because a 220-term chain will not
+   elaborate), NOT `V1=V2=V3=0`, and the family is the degree-2 one (six
+   coefficients, no a30/a21/b12/b03). **Next Lean task**
+   (`cofactor-certificate-L8-not-in-L4-L6`): membership.captured.txt already
+   shows by exact Gröbner over ℚ that L8∉⟨L4,L6⟩, so three generators are
+   genuinely needed — turn that into a kernel-checked theorem via a cofactor
+   certificate. **MEMBERSHIP HALF SETTLED (Task G-lu-core):**
+   `code/bautin/verify_membership.py` (capture
+   `code/out/membership.captured.txt`, exact over ℚ, lex) recomputes
+   L4..L12 and settles: L8∉⟨L4,L6⟩ (16-monomial remainder), L6∉⟨L4⟩
+   (14-monomial remainder), **L10∈⟨L4,L6,L8⟩ and L12∈⟨L4,L6,L8⟩ (remainder
+   0)** — the Bautin-trick step survives. Each decision triple-checked
+   (remainder==0, G.contains, cofactor identity poly==Σqᵢbᵢ+rem) with
+   positive controls all True. CAVEAT: an earlier capture reported
+   L10,L12∉⟨L4,L6,L8⟩ from reading sympy 1.11 reduce()'s quotient list
+   instead of its remainder — that is VOID; the corrected run is the one
+   above. Next after L8-certificate: cofactor certificates for
+   L10,L12∈⟨L4,L6,L8⟩. CAVEAT: the code/out/lean/*.json files are STALE (still report
+   compiled:false and the pre-fix declarations) — re-capture lean_check against
+   the restored files before trusting any VERIFIED claim on this disk.
 4. **`code/lean/Lib/Statement.lean` compiles** (per the held lean JSON
    `compiled:true`) with the deliberate `sorry` in `h16_2`
    `(LimitCycleSet f.toMap).Finite ∧ ncard ≤ N`: the degree-≤n hypothesis is now

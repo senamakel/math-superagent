@@ -20,6 +20,7 @@ holds-here: true. PE1006's S_n are the finite Fibonacci-word prefixes whose limi
 is the infinite Fibonacci word, so the k+1 distinct Fibonacci subwords of length
 k in the problem ARE the k+1 length-k factors of the infinite Fibonacci word.
 status: sourced
+follows-from: governing-sturmian, governing-factor-complexity
 bearing: Establishes the "there are only k+1 different Fibonacci subwords of
 length k" sentence in the problem statement as the standard factor-complexity
 theorem (Lothaire C2, and Morse–Hedlund minimal complexity), fixing that Psi(k)

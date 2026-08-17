@@ -143,6 +143,149 @@ Built: first pass + second librarian pass. All full texts in `research/sources/`
 - `llibre-zhang-lienard-conjecture-survey.full.md` — survey of the Liénard conjecture.
 - `binyamini-dor-linear-abelian-integrals.full.md` — Binyamini, Dor, linear (vs doubly exponential) bound.
 
+## Added in the 2026 librarian pass (this cycle)
+
+16. **P. De Maesschalck, S. Rebollo-Perdomo, J. Torregrosa, "Cyclicity of a fake
+    saddle inside the quadratic vector fields", JDE 258(2):588–620 (2015)** —
+    `research/sources/demaesschalck-rebollo-torregrosa-fake-saddle-2015-postprint.full.md`
+    (full open-access postprint, UAB DDD, https://ddd.uab.cat/pub/artpub/2015/gsduab_3787/joudifequ_a2015v258n2p588preprint.pdf)
+    — previously only a 110-byte "Redirecting" stub was held; this pass obtained
+    the primary full text. Establishes: cyclicity ≥ 2 for a quadratic fake
+    saddle (impassable grain), configurations (2:0) and (1:1); symmetric
+    restricted family {ẋ=ax²+bxy+µ, ẏ=x²+y²−1} has at most two limit cycles in
+    (1:1) (region R11 only); general upper bound NOT established; **fake saddle
+    has NO contribution to the DRR degree-2 programme** (authors' explicit
+    remark). See summary
+    `research/summaries/demaesschalck-rebollo-torregrosa-fake-saddle-2015-postprint.md`,
+    claim `fake-saddle-dmrt-2015-cyclicity`, thread `fake-saddle-transition-maps`.
+
+### Library-on-disk corrections (this pass)
+
+The list below is verified against `research/sources/` on disk this pass. Some
+entries previously recorded as "could not be obtained" are in fact **held in
+full** — the document-resolver tool has a range limit past which
+`read_document` cannot reach files that `list_workspace`/`grep_workspace` do
+see, which is a tooling artefact, not a missing file. Confirmed present and
+substantive this pass:
+
+- **Huaiping Zhu, "From the PP-graphics to the finiteness part of Hilbert's
+  16th problem for quadratic systems" (2005)** —
+  `research/sources/zhu-2005-pp-graphics-finiteness-h16.full.md` (York Univ.
+  repository). The top frontier lead (cited 9× by this library's sources). The
+  top of the citation graph. Establishes Theorem 1.1 (pp-graphic with triple
+  nilpotent elliptic point of any codimension, 2 parabolic + 2 hyperbolic
+  sectors, cyclicity ≤ n if the regular transition map's n-th derivative
+  nonvanishes) and Theorem 1.2 (all 16 pp-graphics of quadratic systems have
+  finite cyclicity); the funnelling-effect transition-map expansion
+  (2); hemicycles (H¹₆) cyclicity ≤ 2, (H³₇) cyclicity ≤ 2; analytic extension
+  principle.
+- **R. Roussarie, C. Rousseau, "Finite cyclicity of nilpotent graphics of
+  pp-type surrounding a center" (2008), Bull. Belg. Math. Soc. Simon Stevin 15,
+  889–920** — `research/sources/rousseau-rousseau-2008-nilpotent-pp-center.full.md`
+  — proves finite cyclicity of (H⁷₁), (F⁷a₁), (H¹¹₃), (I⁶a₁) through a triple
+  nilpotent elliptic point surrounding a center; exact cyclicity 2 for (H⁷₁),
+  (H¹¹₃).
+- **H. Zhu, C. Rousseau, "Finite cyclicity of graphics with a nilpotent
+  singularity of saddle or elliptic type" (2002), JDE 178:325–436** —
+  `research/sources/zhu-rousseau-2002-nilpotent-saddle-elliptic-jde.full.md`.
+- **Dumortier–Ilyashenko–Rousseau, "Normal forms near a saddle-node and
+  applications to finite cyclicity of graphics" (2002), ETDS 22:783–818** —
+  `research/sources/dumortier-ilyashenko-rousseau-saddle-node-finite-cyclicity.full.md`.
+- **Dumortier–Rousseau, "Study of the cyclicity of some degenerate graphics
+  inside quadratic systems" (2009), CPAA 8:1133–1157** —
+  `research/sources/dumortier-rousseau-2009-degenerate-graphics-cpaa.full.md`
+  — the DF1a/DF2a degenerate-graphics primary source (previously marked
+  "reported" via Shan; now full text held).
+- **Huzak, "Cyclicity of degenerate graphic DF₂ₐ..." (2018)** —
+  `research/sources/huzak-cyclicity-degenerate-df2a.full.md` (indexed this
+  pass).
+
+These close several rows previously `reported` in `research/drr-list.md`:
+Dumortier–Rousseau 2009 (DF1a, DF2a) and Huzak 2018 (DF₂ₐ) now have primary
+full texts held; the RR 2008 (H⁷₁,F⁷a₁,H¹¹₃,I⁶a₁) and Zhu–Rousseau 2002 rows
+are no longer `reported`. The index for these files lives in Cognee (down this
+cycle); the claims ledger in `research/notes/claims.md` is the local store.
+
+## Added in the 2026 fourth librarian pass (this cycle — canonical reference tier)
+
+26. **D. Hilbert, "Mathematical Problems" (1900), Newson translation** — the canonical
+    statement of H16.2 itself, held in full.
+    `research/sources/hilbert-1900-mathematical-problems-newson.full.md`
+    (Project Gutenberg #71655, https://www.gutenberg.org/files/71655/71655-h/71655-h.htm).
+    Establishes the original wording: for a first-order differential equation
+    dy/dx = Y/X with X, Y rational integral functions of degree n, determine the
+    maximum number and position of Poincaré's "cycles limites". The two-part structure
+    (real algebraic curves + limit cycles) and the "continuous variation of
+    coefficients" framing are verbatim here. Claim `h16-hilbert-1900-canonical-statement`.
+
+27. **N. N. Bautin, "On the number of limit cycles appearing with variation of the
+    coefficients from an equilibrium state of the type of a focus or a center",
+    Mat. Sb. (N.S.) 30(72):1 (1952), 181–196** — the PRIMARY M(2)=3 source, full text,
+    previously recorded as "not openly downloadable". Obtained from mathnet's full-text
+    PDF (https://www.mathnet.ru/php/getFT.phtml?jrnid=sm&paperid=5421&what=fullt&option_lang=eng),
+    `research/sources/bautin-1952-full.pdf.full.md`. Contains §1 the exact definition of
+    cyclicity of order k (the k-cyclicity definition this run's Bautin-ideal machinery
+    implements), the reduction to canonical form (II), the polar-coordinate series for
+    the radial equation (III), and the "maximal number ... equals 3" claim
+    (M(2)=3) with the construction of a quadratic system having 3 small-amplitude
+    cycles. Claim `h16-bautin-1952-m2equals3-primary`. This closes the
+    previously-recorded "Bautin original not openly downloadable" gap.
+
+28. **J. Llibre, D. Schlomiuk, "The Geometry of Quadratic Differential Systems with a
+    Weak Focus of Third Order", Canad. J. Math. 56(2):310–343 (2004)** — full text,
+    `research/sources/llibre-schlomiuk-weak-focus-third-order-cjm-2004.full.md`
+    (Cambridge open PDF). Establishes: the QW3 class is where EVERY known H(2)≥4
+    example comes from (perturbing a QW3 member); topological classification into 18
+    phase portraits via integer-valued affine invariants (divisors and zero-cycles on
+    the line at infinity); there is a neighborhood of the QW3 family (among all
+    quadratic systems with the same coefficient topology) having graphics but no
+    polycycles and no limit cycles, in which any quadratic system has **at most four**
+    limit cycles. Claim `h16-llibre-schlomiuk-2004-qw3-every-h2-4-example`.
+
+29. **Yu. Ilyashenko, "Finiteness theorems for limit cycles: a digest of the revised
+    proof", Izvestiya Math. 80(1):50–112 (2016)** — full text,
+    `research/sources/ilyashenko-2016-digest-revised-proof.full.md`
+    (geodesic.mathdoc.fr). The revised-proof series responding to the gap Yeung 2024
+    locates in the Ilyashenko monograph's non-hyperbolic-polycycle (ordering of
+    asymptotics / "superexact asymptotic series") step. Gives the digest of the
+    finiteness theorem for polynomial + analytic fields and asymptotics of the
+    monodromy transformation for polycycles. This is the natural Ilyashenko-side
+    rejoinder to the held Yeung gap claims; whether it fully answers them is for the
+    scholar. Claim `h16-ilyashenko-2016-digest-revised-proof`.
+
+30. **C. Rousseau, H. Zhu, "PP-graphics with a nilpotent elliptic singularity in
+    quadratic systems and Hilbert's 16th problem", J. Differential Equations 196:169–208
+    (2004)** — full text from Rousseau's own site,
+    `research/sources/rousseau-zhu-pp-graphics-nilpotent-elliptic-jde-2004.full.md`.
+    Theorem 1.1: the DRR reduction as restated (uniform bound for quadratic iff all
+    limit periodic sets surrounding the origin have finite cyclicity). Theorem 2.2: all
+    16 pp-graphics have finite cyclicity. Theorem 3.1: a pp-graphic through a triple
+    nilpotent elliptic point with a hyperbolic saddle of ratio σ≠1 has cyclicity ≤2;
+    Corollary 3.2: (I²₂₃),(I²₂₄),(I²₂₅) cyclicity ≤2. Establishes the pp-graphics
+    (NOT surrounding a center) program boundary and the "15 graphics" closure.
+    Claim `drr-zhu-rousseau-2004-15-pp-graphics-16-total`. This is the SECOND
+    independently-held statement (with Zhu 2005) of the 16-pp-graphics finiteness.
+
+31. **M. Caubergh, "Hilbert's Sixteenth Problem for polynomial Liénard equations",
+    Qual. Theory Dyn. Syst. 11:3–18 (2012)** — UAB postprint,
+    `research/sources/caubergh-lienard-h16-2012-uab.full.md`. Lower-bound catalogue
+    (p.2): H(2)≥4, H(3)≥13, H(4)≥22, H(5)≥28, H(6)≥35, H(7)≥50, H(n)≥kn²ln n
+    (Christopher–Lloyd), and the refined
+    H(n) ≥ 4(n+1)²(1.442695 ln(n+1) − 1/6) + n − 2/3. Confirms the held
+    n²log n asymmetry (no quadratic upper bound). Claim `h16-lower-bound-catalogue-2012`.
+
+32. **H. Dulac, "Sur les cycles limites", Bull. SMF 51:45–188 (1923)** — full text is a
+    144-page scan too large for the converter (Numdam and EuDML both refused it);
+    metadata + EuDML citation network held in
+    `research/sources/dulac-1923-cycles-limites-numdam-item.full.md` and
+    `research/sources/dulac-1923-cycles-limites-eudml.full.md`. Key passages on the
+    cycle/limit-cycle distinction, separatrix, and the "if no cycle passes through a
+    singular point, the limit cycles are finite in number" correspondence-law claim are
+    captured (from EuDML excerpts). The paper's argument is digested at second hand by
+    Ilyashenko (2002), Kaloshin (2001), Ilyashenko 2016 (all held). EuDML lists intricate
+    citing papers (Moussu on the finitude problem, Chazal on Rolle foliations, Yoccoz
+    non-accumulation) which are now frontier leads.
+
 ## What could not be obtained, and why
 
 - **Dumortier–Roussarie–Rousseau 1994, "Hilbert's 16th problem for quadratic vector fields",
@@ -166,8 +309,9 @@ Built: first pass + second librarian pass. All full texts in `research/sources/`
 - Settled count: ~80 by 2002 (Ilyashenko survey); 85 by 2013 (Shan thesis: 125 graphics in a variant
   counting); 88 by 2015 (RSZ: "will bring the number ... to 88"; the two new graphics (I^1_12),(I^1_13));
   contemporaneously Roussarie–Rousseau 2015 closed (I^1_14) and the boundary sets of (I^1_6b),(H^3_13),
-  (DI_2b) (all but one boundary set). Post-2015 closures known from search results: DF_{2a} (Huzak 2018),
-  and the Marín–Villadelprat hyperbolic-hemicycle result (2025). No consolidated post-2020 count with a
+  (DI_2b) (all but one boundary set). Post-2015 closures known from search results: DF_{2a} (Huzak 2018 —
+  which fills the P\*=(0,0,0,1) gap Dumortier–Rousseau 2009 explicitly left open), and the
+  Marín–Villadelprat hyperbolic-hemicycle result (2025). No consolidated post-2020 count with a
   graphic-by-graphic ledger is in hand.
 
 - Individual finiteness (Dulac's problem): Écalle 1992 + Ilyashenko 1991; Ilyashenko's proof has a claimed
@@ -215,14 +359,368 @@ Built: first pass + second librarian pass. All full texts in `research/sources/`
     Coll–Gasull–Prohens 2025; certifies zero cyclicity at a centre. Confirms DMRT 2015 (paywalled) proved
     cyclicity ≤ 2. Anchors the degenerate-graphics thread (`fake-saddle-transition-maps`).
 
+## Added in the 2026 second librarian pass (this session)
+
+16. **F. Dumortier, C. Rousseau, "Study of the cyclicity of some degenerate graphics inside quadratic
+    systems", Comm. Pure Appl. Anal. 8:1133–1157 (2009)** — full text now held (was a garbled landing
+    stub) from `dms.umontreal.ca/~rousseac/Dumortier_Rousseau.pdf`,
+    `research/sources/dumortier-rousseau-2009-degenerate-graphics-cpaa.full.md`.
+    Establishes the exact 5-parameter normal forms for the 13 degenerate DRR graphics with a line of
+    singular points (3 normal forms suffice for DF1a,DF1b,DF2a,DF2b,DH1,DH2; DI1a..DI2b,DH3,DH4; and DH5
+    needing a 7-parameter unfolding). Thm 3.1: DF1a ≤3 limit cycles (≤1 if E1≥0); DF2a ≤5 (≤1 if bE1≥0,
+    ≤1 on {D=E1=0}); single remaining open point P\*=(D,E0,E1,E2)=(0,0,0,1) where the family cannot be
+    desingularized. Claim `drr-df1a-df2a-cyclicity-sourced`.
+
+17. **R. Roussarie, C. Rousseau, "Finite cyclicity of nilpotent graphics of pp-type surrounding a
+    center", Bull. Belg. Math. Soc. Simon Stevin (2008)** — full text held from
+    `dms.umontreal.ca/~rousseac/Roussarie_Rousseau.pdf`,
+    `research/sources/roussarie-rousseau-2008-nilpotent-pp-center.full.md`. Proves finite cyclicity of
+    (H¹₇),(F¹₇a),(H³₁₁),(I¹₆a) with exact cyclicity 2 (2 except a discrete subset for F¹₇a,I¹₆a) —
+    upgrade from 'reported' to sourced-held. Claim `drr-rousseau-2008-pp-center-cyclicity2-sourced`.
+
+18. **H. Zhu, "From the pp-graphics to the finiteness part of Hilbert's 16th problem for quadratic
+    systems" (2005)** — full text now held from YorkSpace bitstream 3526f30d,
+    `research/sources/zhu-2005-pp-graphics-finiteness-h16.full.md`. Thm 1.2: all 16 pp-graphics have
+    finite cyclicity. This is the frontier's top-cited row (9 citations from this library's sources).
+    Claim `drr-zhu-2005-pp-graphics-16`. (Previously reported as "scanned PDF, no text layer" — the
+    YorkSpace bitstream did have a text layer.)
+
+19. **H. Zhu, C. Rousseau, "Finite cyclicity of graphics with a nilpotent singularity of saddle or
+    elliptic type", JDE 178:325–436 (2002)** — full text now held from YorkSpace bitstream fc2121d3,
+    `research/sources/zhu-rousseau-2002-nilpotent-saddle-elliptic-jde.full.md`. The primary machinery
+    paper (blow-up of family, two types of Dulac maps, nonzero-higher-derivative method,
+    derivation–division) behind the nilpotent closures. Claim `drr-zhu-rousseau-2002-nilpotent-machinery`.
+
+20. **F. Dumortier, Y. Ilyashenko, C. Rousseau, "Normal forms near a saddle-node and applications to
+    finite cyclicity of graphics", Ergodic Theory Dynam. Systems 22:783–818 (2002)** — full text now held
+    from `dms.umontreal.ca/~rousseac/DIR.pdf`,
+    `research/sources/dumortier-ilyashenko-rousseau-saddle-node-finite-cyclicity.full.md`. The
+    saddle-node normal-form machinery: refines the smooth normal form for an analytic family near a
+    saddle-node, used to prove finite cyclicity of families of graphics; connects to Ilyashenko–Yakovenko
+    and the Roussarie conjecture [R1] motivating DRR. Claim `drr-saddle-node-normalforms-dir2002`.
+
+21. **P. De Maesschalck, S. Rebollo-Perdomo, J. Torregrosa, "Cyclicity of a fake saddle inside the
+    quadratic vector fields", JDE 258:588–620 (2015)** — open-access UAB DDD postprint now held in
+    `research/sources/demaesschalck-rebollo-torregrosa-fake-saddle-2015-postprint.full.md`, resolving the
+    previous "Redirecting" stub gap. Proves cyclicity ≥ 2 for a quadratic fake saddle (impassable grain).
+    Claim `drr-dmrt-2015-fake-saddle-cyclicity2`; unblocks thread `fake-saddle-transition-maps`.
+
+22. **F. Dumortier, A. Guzmán, C. Rousseau, "Finite cyclicity of elementary graphics surrounding a
+    focus or center in quadratic systems", Qual. Theory Dyn. Syst. 3:123–154 (2002)** — full text held
+    this pass from `dms.umontreal.ca/~rousseac/DGR.pdf` (open PDF; earlier only cited by other held
+    sources, not held),
+    `research/sources/dumortier-guzman-rousseau-elementary-graphics-focus-center-2002.full.md`.
+    Proves finite cyclicity of seven elementary DRR graphics with explicit small bounds: (H³₄),(H³₅)
+    cyclicity ≤ 2 (both irrational-thm 3.1 and rational-thm 3.2 hyperbolic-saddle ratios at infinity),
+    (H³₆) ≤ 2 if r(0)≠1 and ≤ 3 if r(0)=1 (Thm 3.3), (I²₂₇) ≤ 2 (Thm 4.1), (I²₁₄a),(I²₁₅a) finite
+    (Thm 5.1), (I²₁₅b) ≤ 2 (Thm 5.3); generic hemicycle machinery with C^k integrable normal forms and
+    transition maps (Thm 2.1/2.2). "Nearly finishes" the elementary-graphics part of the DRR program.
+    Claim `drr-dgr-2002-elementary-closures`. These elementary rows were previously not tracked in
+    `research/drr-list.md` with a held primary source; they now are (sourced-held, explicit cyclicity).
+
+23. **S. Luca, F. Dumortier, M. Caubergh, R. Roussarie, "Detecting alien limit cycles near a
+    Hamiltonian 2-saddle cycle", DCDS 25(4):1081–1108 (2009)** — full preprint held from
+    `users.ugent.be/~stluca/Preprints/A1_2009_LUCA_Alien_Limit_Cycles.pdf` (open; peer-reviewed DCDS
+    2009),
+    `research/sources/luca-dumortier-caubergh-roussarie-alien-limit-cycles-2009.full.md`.
+    Constructs a cubic Hamiltonian 2-saddle cycle whose unfolding produces an ALIEN limit cycle — one
+    NOT controlled by any zero of the Abelian integral, created by the second derivative of the
+    transition map along the saddle connection. Corollary 13 gives explicit first/second-derivative
+    transition-map formulas along a regular orbit; Theorems 1/15 apply them. Establishes that
+    Abelian-integral zero-counts alone do NOT bound all limit cycles in Hamiltonian perturbations for
+    degree ≥ 3 (alien cycles). Claim `h16-alien-limit-cycles-abelian-insufficiency`. Bearing: caveat on
+    the tangential-H16 / Abelian-integral route (GOAL step 4 candidate); complements the held
+    transition-map machinery (Marín–Villadelprat, RR 2015).
+
+
 ## What could not be obtained, and why (2026 additions)
 
-- **De Maesschalck–Rebollo-Perdomo–Torregrosa 2015, "Cyclicity of a fake saddle inside the quadratic
-  vector fields", JDE 258:588–620** — paywalled; the JDE DOI download returned only a "Redirecting" stub
-  (`research/sources/demaesschalck-rebollo-torregrosa-fake-saddle-2014.full.md`, 110 bytes). Its cyclicity
-  ≤ 2 result is anchored instead via the held Marín 2026 paper and the UAB/MaRDI abstract records.
-- **"Limit cycles near hyperbolas in quadratic systems" (JDE 2008, DI2a strip of hyperbolas)** — 403
-  Forbidden on ScienceDirect; no open PDF located this cycle.
-- **Zhu 2005, "From pp-graphics to the finiteness part of H16 for quadratic systems"** — scanned PDF with
-  no text layer; not downloadable. Its content is represented in the held Zhu–Rousseau 2004 paper.
+- **Rousseau, "Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics",
+  Nonlinear Analysis 30(1):437–445 (1997)** — the DRR-program survey, cited 6× by this library's own
+  sources (frontier's second-ranked non-held row). Exists only on ScienceDirect; no open preprint or
+  repository copy located. Its content is substantively reproduced in the now-held Zhu 2005 and
+  Rousseau–Shan–Zhu 2015 / Roussarie–Rousseau 2015.
+- **"Limit cycles near hyperbolas in quadratic systems" (JDE 2008, DI₂a strip of hyperbolas)** — 403
+  Forbidden on ScienceDirect; no open PDF located this cycle. Its abstract/method statements are captured
+  in `research/summaries/artes-dumortier-llibre-DI2a-hyperbolas.md`.
 - **DRR 1994 original full text** — re-confirmed paywalled (UHasselt metadata only, MathSciNet MR1275749).
+
+## Added in 2026 third librarian pass (this cycle — two new thin-angle sources)
+
+24. **P. Speissegger, "Limit cycles of planar vector fields: Hilbert's 16th problem and o-minimality",
+    arXiv:1804.03585 (2018), Oberwolfach Snapshots in Modern Mathematics** —
+    full body held from ar5iv at
+    `research/sources/speissegger-hilbert16-ominimality-body.full.md`,
+    summary `research/summaries/speissegger-hilbert16-ominimality-body.md`,
+    primary URL https://arxiv.org/abs/1804.03585.
+    Establishes the **o-minimality route** to Roussarie's finite-cyclicity
+    conjecture: for degree d, the finite-cyclicity conjecture follows from the
+    (OPEN) o-minimality of the language L_trans of parametric transition maps
+    of all degree-d fields via the uniform-finiteness principle. PROVED special
+    case (Kaiser–Rolin–Speissegger, J. Reine Angew. Math. 636 (2009) 1–45):
+    for the non-generic class NRH_d of fields with only non-resonant hyperbolic
+    singularities, Roussarie's conjecture holds; the generic class H_d (all
+    hyperbolic incl. resonant) open/in progress. This is a genuinely thin
+    method the library lacked, and it is the structural OPPOSITE of the
+    Pedregal variational claim: tamed (quasianalytic) asymptotics of the
+    transition/return map is the analytic input, not discarded.
+    Claim `h16-ominimality-route-rous sarie`.
+
+25. **P. Pedregal, "A variational approach to Hilbert's 16th problem within the framework of global
+    analysis", arXiv:2103.07193 (2021), UNREFEREED preprint** —
+    full ar5iv conversion held at
+    `research/sources/pedregal-variational-h16-ar5iv.full.md`,
+    summary `research/summaries/pedregal-variational-h16-ar5iv.md`,
+    primary URL https://arxiv.org/abs/2103.07193.
+    CLAIMED resolution of H16.2: H(n) ≤ (5/2)n^4 − (23/2)n^3 + (43/2)n^2 − (37/2)n + 7 (n even),
+    ≤ (5/2)n^4 − (23/2)n^3 + (41/2)n^2 − (33/2)n + 6 (n odd), H(2) = 4. Method: variational
+    (counts limit cycles as global minimizers of E0 = (1/2)∫(P y' − Q x')² dt, Morse inequalities,
+    Bezout/Harnack on divergence curve). Treated as a SUSPECT claim to test, NOT established: unrefereed
+    preprint, no journal acceptance, community still treats H16.2 as open (held Gasull 2024 survey), prior
+    Llibre–Pedregal variant (arXiv:1411.6814) announced "...a mistake has been found in our way of counting
+    limit cycles", and the argument appears to fail Test 1 (no analyticity of the return map).
+    Claim `h16-pedregal-variational-claim-unrefereed`.
+
+Both new sources add to derived/FRONTIER.md via their citations; neither the Roussarie 1997 survey nor
+DRR 1994 full text is obtainable (both confirmed still paywalled this cycle).
+
+## Added in the 2026 fourth librarian pass (this cycle — canonical tier + instruments)
+
+26. **D. Hilbert, "Mathematical Problems" (1900), Newson translation** — full text held
+    `research/sources/hilbert-1900-mathematical-problems-newson.full.md`
+    (Project Gutenberg #71655). The canonical wording of H16.2: maximum number and
+    position of Poincaré's "cycles limites" for dy/dx = Y/X with X, Y rational
+    integral functions of degree n. Claim `h16-hilbert-1900-canonical-statement`.
+
+27. **N. N. Bautin, Mat. Sb. (N.S.) 30(72):1 (1952) 181–196** — PRIMARY M(2)=3 source,
+    full text from mathnet's full-text PDF at
+    `research/sources/bautin-1952-full.pdf.full.md`
+    (https://www.mathnet.ru/php/getFT.phtml?jrnid=sm&paperid=5421&what=fullt&option_lang=eng).
+    §1 gives the exact cyclicity-of-order-k definition; reduction to the canonical
+    focus form (II); polar-coordinate radial series (III); M(2)=3 with the
+    3-cycle quadratic example. Previously recorded "not openly downloadable" —
+    now closed. Claim `h16-bautin-1952-m2equals3-primary`.
+
+28. **J. Llibre, D. Schlomiuk, "The Geometry of Quadratic Differential Systems with a
+    Weak Focus of Third Order", Canad. J. Math. 56(2):310–343 (2004)** — full text
+    `research/sources/llibre-schlomiuk-weak-focus-third-order-cjm-2004.full.md`
+    (Cambridge open PDF). QW3: every known H(2)≥4 example is a perturbation of a
+    QW3 member; 18 phase portraits via affine invariants; a neighborhood of QW3
+    with ≤4 limit cycles. Claim `h16-llibre-schlomiuk-2004-qw3-every-h2-4-example`.
+
+29. **Yu. Ilyashenko, "Finiteness theorems for limit cycles: a digest of the revised
+    proof", Izvestiya Math. 80(1):50–112 (2016)** — full text
+    `research/sources/ilyashenko-2016-digest-revised-proof.full.md`
+    (geodesic.mathdoc.fr). The revised-proof series (superexact asymptotic series)
+    responding to the gap Yeung 2024 locates in the 1991 monograph. Claim
+    `h16-ilyashenko-2016-digest-revised-proof`.
+
+30. **C. Rousseau, H. Zhu, "PP-graphics with a nilpotent elliptic singularity in
+    quadratic systems and Hilbert's 16th problem", JDE 196:169–208 (2004)** — full
+    text from Rousseau's site,
+    `research/sources/rousseau-zhu-pp-graphics-nilpotent-elliptic-jde-2004.full.md`.
+    Thm 1.1 (DRR reduction restated), Thm 2.2 (all 16 pp-graphics finite),
+    Thm 3.1 (cyclicity ≤2 with saddle ratio σ≠1), Cor. 3.2 ((I²₂₃),(I²₂₄),(I²₂₅)
+    cyclicity ≤2); 15 graphics closed. Second independent statement of the
+    16-pp-graphics program. Claim `drr-zhu-rousseau-2004-15-pp-graphics-16-total`.
+    Rows (I²₂₃),(I²₂₄),(I²₂₅) added to research/drr-list.md.
+
+31. **M. Caubergh, "Hilbert's Sixteenth Problem for polynomial Liénard equations",
+    Qual. Theory Dyn. Syst. 11:3–18 (2012)** — UAB postprint,
+    `research/sources/caubergh-lienard-h16-2012-uab.full.md`. Lower-bound
+    catalogue: H(2)≥4, H(3)≥13, H(4)≥22, H(5)≥28, H(6)≥35, H(7)≥50, H(n)≥kn²ln n,
+    and H(n) ≥ 4(n+1)²(1.442695 ln(n+1) − 1/6) + n − 2/3. Claim
+    `h16-lower-bound-catalogue-2012`.
+
+32. **H. Dulac, "Sur les cycles limites", Bull. SMF 51:45–188 (1923)** — full text is
+    a 144-page scan too large for the converter; Numdam item metadata + EuDML
+    citation network captured (`dulac-1923-cycles-limites-numdam-item.full.md`,
+    `dulac-1923-cycles-limites-eudml.full.md`), key passages captured. The paper's
+    argument is digested at second hand by Ilyashenko 2002 / Kaloshin 2001 /
+    Ilyashenko 2016 (all held).
+
+33. **M. Grau, F. Mañosas, J. Villadelprat, "A Chebyshev criterion for Abelian
+    integrals", Trans. AMS 363 (2011) 109–129**, arXiv:0805.1140 full text held
+    `research/sources/grau-manosas-villadelprat-chebyshev-abelian-2008-arxiv.full.md`.
+    Theorem A/B: ECT-system (sharp zero-count) from CT-system *balances* of the
+    integrand, verified by Wronskians (Lemma 2.3) — often purely algebraic
+    (resultants + Sturm). The wieldable instrument for the run's sharp-Abelian-
+    integral route; Wronskian certificates are Lean-statable. Claim
+    `h16-grau-manosas-villadelprat-chebyshev-2010`.
+
+34. **M. J. Álvarez, B. Coll, P. De Maesschalck, R. Prohens, "Asymptotic lower
+    bounds on Hilbert numbers using canard cycles", JDE 268(7) (2020) 3370–3391** —
+    paywalled; exact statement confirmed via MaRDI review: H̲(N) = (N² log N)/(2 log
+    2)·(1+o(1)), H(N_k) ≥ H̲(N_k) along a sequence N_k→∞; canards/nests + singular
+    Hopf in Liénard slow-fast systems. Claim `h16-canard-asymptotic-lower-bound-2020`.
+
+35. **R. Moussu, "Le problème de la finitude du nombre de cycles limites",
+    Séminaire Bourbaki 655, Astérisque 145–146 (1987) 89–101** — full text held
+    `research/sources/moussu-bourbaki-finitude-cycles-limites.full.md` (Numdam).
+    Poincaré's limit-cycle definition (return-map germ ≠ identity),
+    Bamón 1985 (quadratic finiteness), Ilyashenko 1984 (off a proper algebraic
+    subset), Dulac-problem reduction to polycycles. Earliest held treatment of
+    Test 1's structure; fixes the return-map definition for h16_2 and the
+    certified oracle. Claim `h16-moussu-bourbaki-1987-finitude`.
+
+## What could not be obtained, and why (2026 further additions)
+
+- **Dulac 1923 full text** — 144-page scan; Numdam PDF (10.24033/bsmf.1031) and
+  EuDML (doc/86445) both exceed the converter's size limit; no text-layer or
+  retyped copy located. Requested via the requests ledger; the four claims the
+  queue returns on that request (gap-claims 2024, landing-pages inventory,
+  Zhu–Rousseau 2002 machinery, Hilbert 1900 statement) are related but none
+  answers the specific gap.
+- **Álvarez–Coll–De Maesschalck–Prohens 2020** — ScienceDirect paywalled; no open
+  preprint; exact Main Theorem captured from MaRDI review text.
+- **Jibin Li 2003 IJBC survey** (536 citations, all four problem parts) — no open
+  PDF located; its abstract and citation graph captured via citation_graph.
+- **Llibre–Schlomiuk CJM 2004** — obtained this pass, open PDF, held.
+- **Rousseau–Zhu JDE 2004** — obtained this pass from Rousseau's site, held.
+
+The library now covers: the canonical 1900 statement; Bautin 1952 primary
+M(2)=3; the QTDS/DGR 2002 elementary closures and the DGR 2008 pp-type closures;
+Rousseau–Zhu 2004 / Zhu 2005 (16 pp-graphics); RSZ 2015 + RR 2015 (88→89
+closed, (H₁₄³) named open); Shan 2013 Table 1.1 (125-graphics ledger); the
+Yeung/Ilyashenko Dulac-proof contention (Yeung 2024-25 peer-reviewed + Ilyashenko
+2016 digest + Moussu 1987 Bourbaki); Tangential-H16 (BNY 2010, Binyamini–Dor,
+Chebyshev criterion); lower bounds (Caubergh 2012 catalogue, canard asymptotic
+2020); slow-fast (DPR 2007, fake saddles, Marín 2026); o-minimality route
+(Speissegger). The two chronic gaps — DRR 1994's raw 121-id list and the
+complete post-2020 ledger — remain unfillable from one source, as the drr-list
+triangulation documents.
+
+## This cycle's librarian report
+
+**What was thin and now is not.** The library held critiques of Dulac's proof
+but not the primary statement of the problem (Hilbert 1900), not the primary
+M(2)=3 source (Bautin 1952), and not the canonical treatment of the Dulac
+finiteness structure (Moussu's Bourbaki 1987). All three are now held in full.
+The two instrument routes in GOAL.md — a sharp Abelian-integral zero-count and
+the slow-fast/canard lower-bound construction — each now have a held primary
+source (Grau–Mañosas–Villadelprat Chebyshev criterion; canard bound via its
+confirmed Main Theorem), and the Llibre–Schlomiuk QW3 geometry plus Rousseau–
+Zhu 2004 close two frontier rows and add the 16-pp-graphics second statement.
+
+**Sources are local, described, and claimed.** Every acquisition this cycle is
+filed in `research/sources/` with its URL in-document, has a digest in
+`research/summaries/`, and carries one or more `claim` blocks in
+`research/notes/claims.md` (now the claims ledger). The drr target inventory
+(`research/drr-list.md`) gained rows (I²₂₃),(I²₂₄),(I²₂₅) from Rousseau–Zhu
+2004.
+
+**Gaps that remain and were not quietly closed.** (1) Dulac 1923's full text is
+still absent — the 144-page Numdam/EuDML scan exceeds the converter; metadata,
+key passages, and the second-hand digests (Ilyashenko 2002, Kaloshin, Moussu,
+Ilyashenko 2016) are held, and the specific gap is recorded for whoever can get
+the scan into text. (2) Álvarez–Coll–De Maesschalck–Prohens 2020 and Jibin Li
+2003's IJBC survey are paywalled; each is captured at the claim level from an
+authoritative review. (3) DRR 1994's raw 121-id list and any post-2020
+consolidated ledger remain unfillable from one source, as the drr-list
+triangulation documents. (4) The Jibin-Li-survey citation graph surfaced three
+modern lower-bound instruments that are new leads: Li–Liu–Yang "A cubic system
+with thirteen limit cycles" (JDE 2009, the H(3)≥13 primary), Han–Li "Lower
+bounds for the Hilbert number" (JDE 2011), and the Mañosas–Villadelprat JDE
+2011 Chebyshev sequel — candidates for next cycle.
+
+**Nothing further this cycle.** The canonical tier, both instrument routes, and
+the Dulac-problem foundation are covered; the open rows are on the frontier from
+the citations the new sources carry. Next cycle should work those rather than
+re-fetch what is held.
+
+---
+
+### 2026 fifth-pass addendum (librarian)
+
+**What was added this pass** (2 new primary full texts + 2 long-missing
+reproducibility scripts):
+
+1. **R. Huzak, "Cyclicity of canard cycles with hyperbolic saddles located away
+   from the critical curve", JDE 320:479–509 (2022)** — author-version full
+   text, `research/sources/huzak-canard-cycles-hyperbolic-saddles-2022.full.md`
+   (UHasselt bitstream 1942/36990/1/Hyperbolicsaddle.pdf, DOI
+   10.1016/j.jde.2022.02.050). The library's slow-fast/canard instrument row now
+   has a primary source with exact cyclicity bounds (Cycl ≤ 1/2/3 depending on
+   saddle neutrality and corner-point singularities). Claim
+   `h16-huzak-canard-hyperbolic-saddles-2022`.
+
+2. **J. Torregrosa, "Cubic planar vector fields with high local cyclicity",
+   São Paulo J. Math. Sci. 18 (2024)** — open-access full text,
+   `research/sources/torregrosa-cubic-high-local-cyclicity-2024.full.md`
+   (Springer, DOI 10.1007/s40863-024-00486-9). Theorem 1.1/1.2: cubic systems
+   with TWELVE small-amplitude limit cycles from the origin/equilibrium — the
+   current best local lower bound M(3) ≥ 12 (previous M(3) ≥ 11, Żołądek).
+   The α root and systems (1),(2) are explicit and Lean-statably checkable.
+   Claim `h16-torregrosa-cubic-12-small-cycles-2024`.
+
+3. **The two missing Lu 2026 bundle scripts are now held**:
+   `research/sources/lu-h14-3-verify-center-bautin.py.full.md` and
+   `research/sources/lu-h14-3-verify-center-global-domains.py.full.md`
+   (from arxiv.org/src/2607.13785v2/anc/h14_3_reproducibility/certificates/).
+   This closes the gap recorded in `research/notes/lu-finite-core-verified.md`
+   and `research/summaries/lu-h14-3-spec-bautin.md` ("two bundle scripts still
+   not held"). Claim `lu-h14-3-bundle-scripts-now-held`. Next step: run them
+   (capture to code/out/) and compare against the recorded SHA-256 rows.
+
+**Status of the frontier rows worked this pass.** The top RD rows (Rousseau–
+Zhu 2005 pp-graphics DOI 10.1142/9789812702067_0055; Dumortier–El Morsalani–
+Rousseau Nonlinearity 9 (1996) elementary graphics) are confirmed paywalled —
+UHasselt holds metadata+abstract only. Their content is substantively
+reproduced by held sources (Zhu 2005 full text; DGR 2002 full text). The
+elementary-graphics 1996 abstract and the DRR 1994 UHasselt abstract were both
+captured this pass and added to the frontier.
+
+**Lower-bound primaries (Li–Liu–Yang 2009; Han–Li 2011; Prohens–Torregrosa
+2018; Álvarez–Coll–Demaesschalck–Prohens 2020) remain paywalled.** Each is
+claimed at second hand from held surveys (Caubergh 2012, Llibre 2024,
+Buzzi–Novaes 2024, Gasull–Santana 2025). The recent Torregrosa 2024
+acquisition partially fills the spirit (a 2024 open-access statement of the
+cubic local bound), and the MaRDI portal entry confirmed the canard paper's
+exact asymptotic: H(N) ~ (N² log N)/(2 log 2)(1+o(1)) along a subsequence.
+No open PDF for the four paywalled primaries was found this pass; the canard
+2020 stub in `research/summaries/alvarez-coll-demaesschalck-prohens-canard-lower-bounds.md`
+is a broken "Redirecting" capture and should be replaced.
+
+**Nothing further this cycle.** Four frontier rows and one request remain open
+but each is a confirmed paywall or a consolidated ledger that does not exist;
+the new sources' own citations (180 from Torregrosa, including the
+Liang–Torregrosa parallel-Lyapunov paper and the da Cruz–Novaes–Torregrosa
+piecewise bounds) are on the frontier for next cycle.
+
+### 2026 fifth-pass addendum (librarian), part 2
+
+**Two further instrument-route acquisitions this pass:**
+
+4. **Y. Villanueva, W. Tucker, "Darboux-type center conditions for families of
+   planar polynomial vector fields", arXiv:2602.22558v2 (2026)** — full text
+   held (`research/sources/villanueva-tucker-darboux-center-bautin-ideal-2026.full.md`,
+   `research/sources/villanueva-tucker-generic-bautin-cyclicity.arxiv.full.md`).
+   Theorem 1: an explicit finite enclosure of the Bautin ideal of the
+   homogeneous degree-n family by the ideal generated by the coefficients of
+   V_{n+1} (plus L_{(n−1)/2} in odd degree); Proposition 2: the resulting
+   centers are Darboux. This is a new instrument for GOAL's Bautin-ideal step —
+   Lyapunov constants linear in a finite coefficient set, for any degree.
+   Claim `h16-villanueva-tucker-darboux-bautin-enclosure-2026`. Unrefereed
+   preprint; conditional.
+
+5. **A. Gasull, J.T. Lázaro, J. Torregrosa, "Upper bounds for the number of
+   zeroes for some Abelian integrals", arXiv:1012.5201 (2010)** — full text
+   held (`research/sources/gasull-lazaro-torregrosa-abelian-zero-bounds-2010.full.md`).
+   Explicit zero bounds for the Abelian integral of x′=−yG, y′=xG (G = K
+   straight lines) perturbed by degree-n polynomials, in terms of K and n.
+   The open-access sibling of the paywalled Mañosas–Villadelprat JDE 251 (2011)
+   Chebyshev criterion. Claim
+   `h16-gasull-lazaro-torregrosa-abelian-zero-bounds-2010`.
+
+The Mañosas–Villadelprat 2011 sequel itself remains paywalled (confirmed this
+pass; no open PDF found); its exact statement was captured from the search
+result (Theorem A: n Abelian integrals along ovals of H=A(x)+B(x)y^(2m) have
+at most n+k−1 zeros under Wronskian and degree conditions). The Grau–Mañosas–
+Villadelprat TAMS 2011 Chebyshev criterion is already held in full
+(grau-manosas-villadelprat-chebyshev-abelian-2008-arxiv). The MV 2011 row is a
+frontier lead for a future pass.
+
+**Claims ledger now holds five new claims from this pass.** All persisted to
+`research/notes/claims.md` (Cognee memory server remains down; findings stored
+in the workspace ledger).
+

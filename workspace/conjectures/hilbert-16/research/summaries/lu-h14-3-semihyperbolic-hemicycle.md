@@ -1,27 +1,29 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/lu-h14-3-semihyperbolic-hemicycle.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Lu 2026 — arXiv abstract page (H¹⁴₃ semihyperbolic hemicycle)
 
-<!-- source: https://arxiv.org/pdf/2607.13785 | converted from HTML -->
+Source: `research/sources/lu-h14-3-semihyperbolic-hemicycle.full.md` [[lu-h14-3-semihyperbolic-hemicycle.full]] — arXiv:2607.13785 abstract page. The full paper is at [[lu-h14-3-hemicycle-html.full]] with the run's complete digest in `research/summaries/lu-h14-3-hemicycle-html.md`.
 
-## What is in it
+## What this page establishes
 
-- Mathematics > Dynamical Systems
-- Title: Local Uniform Finite Cyclicity of the $H_{14}^{3}$ Semihyperbolic Hemicycle
-  - Submission history
-  - Access Paper:
-  - Ancillary files ( [details][13]):
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+Bibliographic record only (the paper's own abstract):
 
+- **Claim**: local uniform finite cyclicity of the labelled H¹⁴₃ semihyperbolic
+  hemicycle of a quadratic vector field — in one fixed annular neighborhood of
+  the compactified graphic, the number of isolated limit cycles is uniformly
+  bounded for all sufficiently small values of the full five-parameter
+  source-normalized quotient unfolding.
+- The paper itself identifies this with the case left open in the quadratic-
+  hemicycle analysis: a noncompact source, two semihyperbolic endpoints, and an
+  upper-equatorial degeneration occurring simultaneously.
+- Method summary (from the abstract): finite atlas of stopped first hits before
+  any full-lap return; an intersection argument counting each cycle by exactly
+  one retained itinerary; matched source estimate; a direct Liénard–Dulac
+  argument on the exact mixed face; hyperbolic, central, strict-lips, middle,
+  and root-scale zero theorems; and a finite specialization argument covering
+  coefficient, boundary, collapse, and identity values.
 
-## What it claims
+## What it implies here
 
-Abstract: We prove local uniform finite cyclicity for the labelled $H_{14}^{3}$ semihyperbolic hemicycle of a quadratic vector field. More precisely, in one fixed annular neighborhood of the compactified graphic, the number of isolated limit cycles is uniformly bounded for all sufficiently small values of the full five-parameter source-normalized quotient unfolding. This is the case left open in the corresponding quadratic-hemicycle analysis because a noncompact source, two semihyperbolic endpoints, and an upper-equatorial degeneration occur simultaneously. The proof constructs a finite atlas of stopped first hits before forming any full-lap return. An intersection argument represents each counted cycle by exactly one retained itinerary. The resulting analytic equations are treated by a matched source estimate, a direct Liénard--Dulac argument on the exact mixed face, and hyperbolic, central, strict-lips, middle, and root-scale zero theorems on the remaining regimes. A finite specialization argument includes coefficient, boundary, collapse, and identity values. The distinctive point…
-
-*[digest of a 11699 character source; every section, statement, and proof in full at `research/sources/lu-h14-3-semihyperbolic-hemicycle.full.md`]*
+No mathematical content beyond the abstract; the substance is in the HTML full
+text. Do **not** cite this page for anything except provenance. The claim itself
+is `drr-lu-claims-h14-3` (status: asserted-by-source, unrefereed, finite
+algebraic core verified by this run — see `research/notes/lu-finite-core-verified.md`).

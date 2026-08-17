@@ -10,6 +10,19 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 What would suffice:
 What the run says would suffice:
+All verified. The claim now renders as `checked` with its sweep frame, the concrete skeleton and the frame skeleton are reconciled with the ledger, and the goals row carries the updated state.
+
+## Report
+
+**Slug:** `h16-2-h14-3-finite-cyclicity` — `research/backward/h16-2-h14-3-finite-cyclicity.md` (also reconciled the frame skeleton `h16-2-finite-cyclicity.md`).
+
+### What I found before writing
+
+The decomposition already existed, but the workspace had moved underneath it. `CONTEXT.md` and…
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
 `research/` uses Cognee for cataloguing, so `describe_file` is correctly refused there; the skeleton and gaps are already recorded in the goals ledger, which is the derived structure that carries them forward. My work is complete.
 
 ## Report

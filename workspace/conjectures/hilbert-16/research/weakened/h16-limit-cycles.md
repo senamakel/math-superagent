@@ -6,6 +6,22 @@ Written by the weakener against the full-strength goal in `GOAL.md` /
 ordered weakest first; a rung marked `settled` is established — with the
 evidence class stated — and is banked, never re-attacked from scratch.
 
+## Correction log (this pass)
+
+- `R-lu-finite-core` was previously marked `open` with the reason "no capture
+  file is held in code/out/, so by this workspace's rule it is not
+  reproducible verification". That reason is now false and is corrected:
+  `code/out/lu_core.captured.txt` is held and prints
+  `ALL CLEAN-ROOM CHECKS PASS` for all six identity groups, and the claims
+  ledger carries `lu-finite-core-partially-verified` as
+  `verified-computationally`. The rung's *computational* half is therefore
+  `settled`. What remains open is its *Lean-kernel* half (the file's own
+  settlement condition required `compiled:true` with no tautologies, which
+  `code/out/lean/code_lean_Lib_BautinRecurrence.lean.json` records as not
+  met: `compiled:false`, `bautin_L4_identity : True`,
+  `darboux_identities : True`). The kernel half is split out as a new bottom
+  rung, `R-lu-core-lean`.
+
 ```ladder
 goal: Hilbert's 16th problem part II: for every n >= 2 and every planar polynomial vector field X = (P,Q) with max(deg P, deg Q) <= n, the number of limit cycles (periodic orbits isolated in the set of periodic orbits) of X is bounded by H(n) < inf, a finite bound depending only on n and not on the coefficients — and, per the second half of the problem, the possible configurations (mutual positions, nestings) of the limit cycles are classifiable. The whole content is uniformity: pointwise finiteness of each individual field (Ecalle-Ilyashenko; Bamon for quadratics) is already a theorem, and the bound must survive over the compactified family.
 difficulties: uniformity-over-family, degenerate-vertices, unbounded-n, full-displacement, infinity-and-global, nesting-classification
@@ -19,6 +35,9 @@ The six difficulties, each a *specific obstruction* (not a topic):
 2. `degenerate-vertices` — nilpotent, semihyperbolic and degenerate points in
    the limit periodic set: the return-map expansion is not the Ramified
    elementary one, needs blow-ups and normal forms; the open DRR rows live here.
+   Its first, generic case (nonzero second-order jet, d > 0) is banked in
+   `R-fake-saddle-transition`; the exceptional set and the assembly into full
+   graphics is what remains.
 3. `unbounded-n` — the degree n varies; an explicit reduction to a finite
    graphic catalogue exists only for n = 2 (DRR 1994, 121 graphics).
 4. `full-displacement` — the displacement function is nonlinear; Melnikov /
@@ -29,11 +48,20 @@ The six difficulties, each a *specific obstruction* (not a topic):
    of k limit cycles are realisable in degree n; almost untouched for n >= 3.
 
 ```rung
-id: R-lu-finite-core
-statement: For the source-normalized H14^3 hemicycle field x' = -y - d x + B(x^2 - y^2), y' = (1+y)(x + d y), and the quadratic-focus rotation recurrence, the following finite algebraic identities hold exactly over Q[symbols]: (i) bridge identities tau = a + c, ell = -alpha, sigma = gamma, beta = tau + ell with a = mu4 + B mu5, c = (1-2B) mu5, alpha = c - d, beta = a + d, gamma = d(B + mu2), tau = mu4 + (1-B) mu5, ell = d - c, sigma = gamma; (ii) Darboux cofactor identities X(L) = (x + d y) L for L = 1 + y, X(F) = (2 B x + d y) F for F = B(B-1)x^2 - B d x y - B^2 y^2 - d(2B-1)x + (d^2 - 2B)y + d^2 - 1, and div X = (x + d y) + (2 B x + d y) (so 1/(L F) is an inverse integrating factor); (iii) the degree-4 Bautin rotation obstruction 8 L4 = A C + C D + 2 D F - E F; (iv) the degree-6 relation 192 L6 + P30 = 0 with P30 the explicit 30-monomial polynomial. Settlement condition: a clean-room exact-sympy run (code/bautin/verify_lu_core.py), written from the paper's stated definitions without importing its scripts, asserting each identity on its produced data, captured to code/out/lu_core.captured.txt; and the identities closed by the Lean kernel over MvPolynomial — generated coefficient data as untrusted defs under code/lean/Lib/Generated/, hand-written checker in the theorem, decide = iff, no theorem inside Generated/.
+id: R-lu-core-lean
+statement: The Lean-kernel half of the Lu H14^3 finite core. For the source-normalized hemicycle field x' = -y - d x + B(x^2 - y^2), y' = (1+y)(x + d y), and the quadratic-focus rotation recurrence (Q1 = A u^2 + C u v + D v^2, Q2 = E u v + F v^2), the four identity groups — (i) bridge tau = a + c, ell = -alpha, sigma = gamma, beta = tau + ell (a = mu4 + B mu5, c = (1-2B) mu5, alpha = c - d, beta = a + d, gamma = d(B + mu2), tau = mu4 + (1-B) mu5, ell = d - c, sigma = gamma); (ii) Darboux cofactors X(L) = (x + d y) L for L = 1 + y, X(F) = (2 B x + d y) F for F = B(B-1)x^2 - B d x y - B^2 y^2 - d(2B-1)x + (d^2 - 2B)y + d^2 - 1, and div X = (x + d y) + (2 B x + d y); (iii) the degree-4 Bautin obstruction 8 L4 = A C + C D + 2 D F - E F; (iv) the degree-6 relation 192 L6 + P30 = 0 with P30 the explicit 30-monomial polynomial — are closed by the Lean kernel over MvPolynomial: the P30 coefficient data lives as untrusted defs under code/lean/Lib/Generated/ only (the duplicate trees code/lean/lib/LuH14/ and code/lean/LuH14/ are deleted, and the probe files RingTest/RingTest2/ReduceTest.lean removed), the checker is written by hand in the theorem outside Generated/, closes with decide (not native_decide), and BautinRecurrence.lean passes lean_check with compiled:true, no sorries, no tautologies (bautin_L4_identity and darboux_identities are no longer `True`; h14_p30_check no longer references a missing LuH14.Generated). Settlement condition: lean_check on code/lean/Lib/BautinRecurrence.lean returns compiled:true with empty tautologies and sorries.
 off: uniformity-over-family, degenerate-vertices, unbounded-n, full-displacement, infinity-and-global, nesting-classification
-stance: open — nothing verified-computationally exists. research/notes/lu-finite-core-verified.md is downgraded to UNVERIFIED (transcription only, no executed program, no capture); claim lu-finite-core-partially-verified is asserted-by-source (the paper's own certificates assert these) and holds-here is not yet yes. code/lyap_audit.py encodes the L4/L6/P30 identities and CONTEXT.md records a PASS, but no capture file is held in code/out/, so by this workspace's rule it is not reproducible verification. BautinRecurrence.lean still has P30 := 0, bautin_L4_identity := True, Divergence := 0 — the Lean side is a stub.
-merge: Nothing is turned back on by the next rung; this rung is the certificate base for one hemicycle proof. The first rung with dynamics in it is R-local-focus-bautin: turning uniformity-over-family and full-displacement back on (n fixed at 2) means showing the displacement germ at a quadratic focus has at most 3 zeros uniformly in the coefficients — first move: run the exact Lyapunov/Bautin-ideal computation and close the M(2)=3 certificate in Lean (replacing the V1=V2=V3=0 placeholders).
+stance: open — THE bottom rung: an attempt can settle it today, because the polynomial data and the statement already exist (code/out/p30_coeffs.txt, the transcription begun at code/lean/Lib/Generated/P30Data.lean, the exact residuals already captured as zero). Not settled yet: code/out/lean/code_lean_Lib_BautinRecurrence.lean.json records compiled:false, outcome failed, bautin_L4_identity and darboux_identities as tautologies True; this is CONTEXT gap 3, named there exactly. The computational truth of the four identities is separately banked (R-lu-finite-core, settled).
+merge: Closing the kernel file turns the Lu finite core into a kernel-checked theorem and unblocks the first rung with dynamics: verifying M(2)=3 (R-local-focus-bautin) in Lean — replacing the V1=V2=V3=0 placeholders in Bautin.lean with the real Bautin-ideal statement and closing the generated-by-three bound with decide/ring over MvPolynomial, the same commutative-algebra shape. First move: write the checker theorem for (iii) 8*L4 == AC+CD+2DF-EF against the data in P30Data.lean and run lean_check on it alone.
+```
+
+```rung
+id: R-lu-finite-core
+statement: For the source-normalized H14^3 hemicycle field x' = -y - d x + B(x^2 - y^2), y' = (1+y)(x + d y), and the quadratic-focus rotation recurrence, the following finite algebraic identities hold exactly over Q[symbols]: (i) bridge identities tau = a + c, ell = -alpha, sigma = gamma, beta = tau + ell with a = mu4 + B mu5, c = (1-2B) mu5, alpha = c - d, beta = a + d, gamma = d(B + mu2), tau = mu4 + (1-B) mu5, ell = d - c, sigma = gamma; (ii) Darboux cofactor identities X(L) = (x + d y) L for L = 1 + y, X(F) = (2 B x + d y) F for F = B(B-1)x^2 - B d x y - B^2 y^2 - d(2B-1)x + (d^2 - 2B)y + d^2 - 1, and div X = (x + d y) + (2 B x + d y) (so 1/(L F) is an inverse integrating factor); (iii) the degree-4 Bautin rotation obstruction 8 L4 = A C + C D + 2 D F - E F; (iv) the degree-6 relation 192 L6 + P30 = 0 with P30 the explicit 30-monomial polynomial.
+off: uniformity-over-family, degenerate-vertices, unbounded-n, full-displacement, infinity-and-global, nesting-classification
+stance: settled — verified-computationally: the clean-room run code/bautin/verify_lu_core.py (exact sympy, written from the paper's stated definitions without importing its scripts) was executed and its capture code/out/lu_core.captured.txt is held, printing all six residual-zero PASS lines and ALL CLEAN-ROOM CHECKS PASS; P30's 30 monomials emitted to code/out/p30_coeffs.txt; independently confirmed by code/lyap_audit.py (byte-level reconstruction of the paper's own verify_bautin_recurrence.py, PASS). Claim lu-finite-core-partially-verified in the claims ledger is verified-computationally, holds-here yes. CORRECTION TO PREVIOUS STANCE: the earlier `open` verdict ("no capture file is held") was wrong — the capture exists and reads PASS. NOT done here: the Lean-kernel closure, which is the separate open rung R-lu-core-lean. Lu's Theorem 1 (finite cyclicity of H14^3) remains asserted-by-source and unrefereed: the analytic remainder (root uniqueness, Hadamard divisibility, domain completeness) is machine-unchecked and the cyclicity bound B is existential — see thread lu-h14-3-verification.
+claim: lu-finite-core-partially-verified — verified-computationally, holds-here yes
+merge: Nothing is turned back on by the next rung; this rung is the certificate base for one hemicycle proof. The kernel closure of these same identities is R-lu-core-lean. The first rung with dynamics in it is R-local-focus-bautin: turning uniformity-over-family and full-displacement back on (n fixed at 2) means showing the displacement germ at a quadratic focus has at most 3 zeros uniformly in the coefficients — first move: run the exact Lyapunov/Bautin-ideal computation and close the M(2)=3 certificate in Lean (replacing the V1=V2=V3=0 placeholders).
 ```
 
 ```rung
@@ -60,22 +88,31 @@ statement: For a fixed elementary polycycle — a graph whose vertices are hyper
 off: degenerate-vertices, unbounded-n, nesting-classification
 claim: h16-kaloshin-uniform-bound, h16-kaloshin-indep-proof — Ilyashenko-Yakovenko finiteness, Kaloshin explicit bound (asserted-by-source, holds-here yes)
 stance: settled — by source: h16-kaloshin-uniform-bound and h16-kaloshin-indep-proof, asserted, holds-here yes; the hypotheses (genericity, elementary vertices only) are exactly the ones stated. The Yeung 2024/25 gap contention against Ilyashenko's monograph concerns semihyperbolic vertices in the polycycle — non-elementary — so it does not touch this rung; hyperbolic/elementary is the sound corner (per h16-gap-claims-2024).
-merge: Turning degenerate-vertices back on is the wall: R-one-degenerate-graphic. At a nilpotent/semihyperbolic vertex the displacement expansion is not the Ramified elementary one; it needs the normal form and blow-up at the singularity, then the transition maps, then a finite-zero argument on the resulting displacement — and every such argument must pass test 1 (analyticity must enter where a C-infinity field would fail, the exact shape of Dulac's 1923 error).
+merge: Turning degenerate-vertices back on is the wall. Its FIRST, generic case is banked in R-fake-saddle-transition (nonzero second-order jet, d > 0, uniform expansion held); the non-generic jets and the assembly into full DRR graphics is R-one-degenerate-graphic. At a nilpotent/semihyperbolic/degenerate vertex the displacement expansion is not the Ramified elementary one; it needs the normal form and blow-up at the singularity, then the transition maps, then a finite-zero argument on the resulting displacement — and every such argument must pass test 1 (analyticity must enter where a C-infinity field would fail, the exact shape of Dulac's 1923 error).
+```
+
+```rung
+id: R-fake-saddle-transition
+statement: For the generic fake-saddle normal-form family X_mu = (x^2 f1 + a(mu) x y + y^2 f2) dx + (x g1 + y g2) y dy with d(mu) = 4(1 - c(mu)) - (a(mu) - b(mu))^2 > 0 and nonzero second-order jet, the Poincare transition map across the singular fiber has the UNIFORM-in-mu asymptotic expansion Pi_omega_alpha(y; mu) = e^{gamma_+- (mu)} y + flat-in-mu remainder, gamma_+-(mu) = PV integral g1/(x f1) dx +- pi(2b - c(a+b))/sqrt(d), with the remainder flat to all orders in the unfolding variables and uniform in the parameters; consequently, in the applied reversible family Z_mu (beta > 1/4), the return map is R(x; mu) = e^{2 pi alpha/(beta sqrt 3)} x + flat-uniform remainder and cyclicity of the origin is ZERO at every mu0 with beta0 > 1/4 (division lemma in the flat class). This is the first rung with degenerate-vertices ON, in its generic case.
+off: unbounded-n, infinity-and-global, nesting-classification
+claim: fake-saddle-uniform-transition-map-marin2026 — sourced, peer-reviewed (EJQTDE 2026 no.5), full text held, holds-here yes
+stance: settled — by source: Marin 2026 (EJQTDE 2026 no.5, 1-10, peer-reviewed, full text held in research/sources/marin-fake-saddles-transition-maps.full.md), claim fake-saddle-uniform-transition-map-marin2026, evidence-class sourced, holds-here yes: it gives the exact transition-map machinery the degenerate DRR D-families at infinity (DI2a etc.) require and certifies zero cyclicity at a centre. It also corrects Coll-Gasull-Prohens 2025 (a necessity condition refuted by Example 3.1). CAUTION: DMRT 2015 (De Maesschalck-Rebollo-Perdomo-Torregrosa, cyclicity <= 2 for the quadratic fake saddle, JDE 258:588-620) is cited here but NOT held in this library — its bound must not be built on this library's word; obtain it first.
+merge: The wall between this rung and R-one-degenerate-graphic is the non-generic part of degenerate-vertices: the exceptional set d = 0, the c=1,a=b semi-hyperbolic case, higher jets, the composition of several transition maps into a full DRR degenerate graphic (e.g. DI2a or one of the >= 11 Shan-2013 degenerate open rows), and the quadratic-family-specific argument that gives the finite cyclicity bound rather than just the leading term. First move toward the next rung: pick one open degenerate graphic whose vertices are generic fake saddles (thread fake-saddle-transition-maps; blocked by DMRT 2015 full text not being held), write out the transition-map composition, and apply the division-in-flat-class lemma to the composite return map.
 ```
 
 ```rung
 id: R-one-degenerate-graphic
-statement: For n = 2, finite cyclicity of one named DRR graphic through a degenerate (nilpotent triple, semihyperbolic, or degenerate) point currently open in the literature, under perturbation inside the quadratic coefficient family: a fixed collar neighbourhood of the graphic and a finite bound, uniform over the coefficients, on limit cycles bifurcating from it. Named candidates after RR 2015 and Lu 2026: (I^1_6b), (H^3_13), (DI_2b) — only their boundary limit periodic sets are proved finite (RR 2015 Thm 1.1), the full graphics are open; H^3_14 is claimed closed by the unrefereed Lu 2026 preprint (unchecked; its finite core is R-lu-finite-core, open); the >= 11 degenerate graphics other than DF1a/DF2a are open per Shan 2013; residual sub-gap mu1 = 0 inside RSZ Thm 3.2 (sourced-held).
+statement: For n = 2, finite cyclicity of one named DRR graphic through a degenerate (nilpotent triple, semihyperbolic, or degenerate) point currently open in the literature, under perturbation inside the quadratic coefficient family: a fixed collar neighbourhood of the graphic and a finite bound, uniform over the coefficients, on limit cycles bifurcating from it. Named candidates after RR 2015, Shan 2013 and Lu 2026: (I^1_6b), (H^3_13), (DI_2b) — only their boundary limit periodic sets are proved finite (RR 2015 Thm 1.1, sourced-held), the full graphics are open; H^3_14 is claimed closed by the unrefereed Lu 2026 preprint (unchecked; its algebraic finite core is banked in R-lu-finite-core and its kernel check is R-lu-core-lean, both below this rung); the >= 11 degenerate graphics other than DF1a/DF2a are open per Shan 2013 (reported); residual sub-gap mu1 = 0 inside RSZ Thm 3.2 (sourced-held, RSZ Remark 3.3).
 off: unbounded-n, nesting-classification
-stance: open — THE rung: every other difficulty is on (uniformity-over-family, full-displacement, degenerate-vertices, infinity-and-global all bite here), and it is a publishable result.
+stance: open — THE rung: every other difficulty is on (uniformity-over-family, full-displacement, degenerate-vertices, infinity-and-global all bite here), and it is a publishable result. The generic fake-saddle transition maps are banked (R-fake-saddle-transition); the non-generic jets, the semihyperbolic vertices, and the assembly into the graphic is this rung. The fully-open named row with no partial result is H^3_14 (Lu 2026 claims it but its Theorem 1 is unrefereed and machine-unchecked); the cleanest unclaimed targets are one of (I^1_6b), (H^3_13), (DI_2b) as full graphics, or one of the degenerate D-family graphics reachable by the fake-saddle machinery.
 merge: Settled for one open graphic, the merge into R-h2-uniform is: settle each remaining open graphic of the DRR list (finite list, one row at a time — this rung is the per-row version of that list), then make the compactness step explicit: pointwise finite cyclicity of each limit periodic set does not mechanically give a uniform H(2) bound unless the finiteness is continuous in the parameter, and the continuity step must be analytic (test 1) — the exact place a purely topological argument would prove a false statement.
 ```
 
 ```rung
 id: R-h2-uniform
-statement: H(2) < infinity: there exists a finite bound, depending only on the degree 2, on the number of limit cycles of every planar quadratic vector field. By the DRR 1994 reduction (h16-drr-121-graphics) this is equivalent to finite cyclicity of every one of the 121 graphics in S^2 x K, the compactified parameter space of quadratic anti-saddle-type systems. This rung is the bound half; classification of configurations in degree 2 is switched off here (nesting-classification off).
+statement: H(2) < infinity: there exists a finite bound, depending only on the degree 2, on the number of limit cycles of every planar quadratic vector field. By the DRR 1994 reduction (h16-drr-121-graphics) this is equivalent to finite cyclicity of every one of the 121 graphics in S^2 x K, the compactified parameter space of quadratic anti-saddle-type systems. This rung is the bound half; classification of configurations in degree 2 is switched off here (nesting-classification off). NOTE the honest count from drr-list.md: >= 89 of 121 fully closed by 2015 (88 from RSZ 2015's own verbatim count + (I^1_14) from RR 2015, this run's arithmetic), (I^1_6b),(H^3_13),(DI_2b) boundary-sets-only, (H^3_14) open with Lu 2026 claiming it, >= 11 degenerate open; the definitive open count is a live gap because the DRR 1994 raw catalogue is not held (drr-ledger-no-consolidated-post2020).
 off: unbounded-n, nesting-classification
-stance: open — H(2) < infinity itself is open; H(2) >= 4 is source-settled (Shi 1982, Chen-Wang 1979, h16-lower-bounds) and H(2) = 4 is the standing conjecture, also open. 88 of 121 graphics closed by RSZ 2015, 89 with (I^1_14) (RR 2015); the remaining rows lie in the nilpotent and degenerate families (h16-drr-open-rows, drr-list.md) — the ladder's R-one-degenerate-graphic is the per-row attack on them.
+stance: open — H(2) < infinity itself is open; H(2) >= 4 is source-settled (Shi 1982, Chen-Wang 1979, h16-lower-bounds) and H(2) = 4 is the standing conjecture, also open. The remaining rows lie in the nilpotent and degenerate families (h16-drr-open-rows, drr-list.md) — the ladder's R-one-degenerate-graphic is the per-row attack on them.
 merge: Turning unbounded-n back on gives R-full. This is NOT a mechanical lift: the DRR-style reduction to a finite graphic catalogue is explicit only for n = 2; no finite catalogue for general n is known, so the uniformity/compactness argument must run directly on the full family while the graphic-level machinery is rebuilt at every degree — and turning nesting-classification back on adds the second half of H16.2, an almost untouched theory for n >= 3.
 ```
 
@@ -83,30 +120,32 @@ merge: Turning unbounded-n back on gives R-full. This is NOT a mechanical lift: 
 id: R-full
 statement: H16.2 in full: for every n >= 2, H(n) < infinity uniformly over all planar polynomial fields of degree <= n, and the possible configurations (mutual positions, nestings) of the limit cycles are classifiable. After the lower-bound test: any claimed bound of order n^2 or below is refuted (h16-hn-lower-bound-asymptotic: liminf H(n)/((n+2)^2 log(n+2)) >= 1/(2 log 2), Christopher-Lloyd 1995 / Han-Li 2012).
 off:
-stance: open — nothing here is settled by this run or, for any n >= 3, by the literature. The gap list also carries a live warning: the pointwise-finiteness pillar (Ecalle-Ilyashenko) is under contention at the semihyperbolic-step (Yeung 2024/25, peer-reviewed 2025), so even the individual-field base is not unanimously accepted; every argument must locate where analyticity enters.
+stance: open — nothing here is settled by this run or, for any n >= 3, by the literature. The gap list also carries a live warning: the pointwise-finiteness pillar (Ecalle-Ilyashenko) is under contention at the semihyperbolic step (Yeung 2024/25, peer-reviewed 2025), so even the individual-field base is not unanimously accepted; every argument must locate where analyticity enters.
 merge: This is the rung reached only when R-h2-uniform is settled and its mechanism is shown to generalise past the quadratic catalogue — the ladder is exhausted only in that event; nothing below implies R-full, and the run must not claim it on prior.
 ```
 
 ## Reading the ladder
 
-- **Settled rungs are banked, with evidence classes**: R-local-focus-bautin,
-  R-tangential-abelian, R-elementary-polycycle are settled **by source**
-  (asserted-by-source, holds-here yes) — not by this run's computation. The
-  run's own *verification* of each (Lean type + certificate) is still open and
-  is recorded inside the rung's `merge`.
-- **The first open rung to attack** is the bottom: R-lu-finite-core. It is the
-  only rung an attempt can settle in a single turn (pure polynomial algebra,
-  exact sympy + Lean `decide`), and the run currently carries an *unverified*
-  claim — `lu-finite-core-partially-verified` — in its ledger that names these
-  identities as holding. Everything downstream of Lu 2026's H^3_14 claim rests
-  on it.
+- **Settled rungs are banked, with evidence classes**: R-lu-finite-core
+  (verified-computationally by this run — capture held), R-local-focus-bautin,
+  R-tangential-abelian, R-elementary-polycycle, R-fake-saddle-transition
+  (settled by source). The run's own *verification* of each source-settled
+  rung (Lean type + certificate) is still open and is recorded inside the
+  rung's `merge`.
+- **The first open rung to attack — the bottom** — is R-lu-core-lean: the
+  Lean-kernel closure of the Lu finite core. It is the only rung an attempt
+  can settle in a single turn (pure polynomial algebra, the data already on
+  disk, close with `decide`), and it converts this run's one
+  verified-computationally claim into a kernel-checked theorem. Everything
+  downstream of Lu 2026's H^3_14 claim rests on it.
 - **The difficulty that will bite** is `degenerate-vertices`. The evidence
   converges on it: the elementary rung is settled (Ilyashenko–Yakovenko–
-  Kaloshin), the tangential rung is settled (BNY/BD), and every open DRR row —
-  (I^1_6b), (H^3_13), (DI_2b), H^3_14, the 11 degenerate graphics — is a graphic
-  through a nilpotent/semihyperbolic/degenerate vertex, where the Ramified
-  expansion of the elementary theory breaks and blow-ups + normal forms take
-  over. Yeung's gap claim against the Dulac proof bites at exactly the same
-  place (semihyperbolic vertices). `uniformity-over-family` is the problem's
+  Kaloshin), the tangential rung is settled (BNY/BD), the generic fake-saddle
+  case is settled (Marín 2026), and every open DRR row — (I^1_6b), (H^3_13),
+  (DI_2b), H^3_14, the >= 11 degenerate graphics — is a graphic through a
+  nilpotent/semihyperbolic/degenerate vertex, where the Ramified expansion of
+  the elementary theory breaks and blow-ups + normal forms take over. Yeung's
+  gap claim against the Dulac proof bites at exactly the same place
+  (semihyperbolic vertices). `uniformity-over-family` is the problem's
   content but is a known, delicate compactness/analyticity step; the place the
   reduction physically stops is the degenerate vertex.

@@ -37,12 +37,16 @@ question: Does the uniform fake-saddle transition-map expansion of Marín 2026,
   combined with a division-in-flat-class step, certify finite cyclicity of an
   open degenerate DRR graphic (e.g. DI₂a)?
 status: open
-rests-on: marín-2026 (held); DMRT 2015 fake-saddle cyclicity ≤2 (not held, cited)
-next: obtain DMRT 2015 (JDE 258:588-620) or its open preprint; identify which
-  DRR degenerate graphic has fake saddles and whether the uniform expansion
-  closes it; re-derive the division-in-flat-class step in Lean.
-blocked-by: DMRT 2015 full text not held; no execution tool in this pass to
-  certify the worked-example calculation.
+rests-on: marín-2026 (held); DMRT 2015 fake-saddle cyclicity (HELD — UAB DDD
+  postprint, full text research/sources/demaesschalck-rebollo-torregrosa-fake-saddle-2015-postprint.full.md)
+next: identify which DRR degenerate graphic has fake saddles and whether the
+  uniform expansion closes it; re-derive the division-in-flat-class step in Lean.
+  NOTE: DMRT 2015 state the fake saddle has NO contribution to the DRR degree-2
+  programme (homogeneous fields avoided by rescalings) — must temper any claim
+  that fake-saddle cyclicity closes a DRR row.
+blocked-by: identifying a specific DRR degenerate graphic whose finite cyclicity
+  the uniform expansion actually closes (none yet named); no execution tool in
+  this pass to certify the worked-example calculation.
 ```
 
 ## Durable record (memory server down)
@@ -50,3 +54,18 @@ blocked-by: DMRT 2015 full text not held; no execution tool in this pass to
 The load-bearing claim is filed as `fake-saddle-uniform-transition-map-marin2026`
 in `research/summaries/marin-fake-saddles-transition-maps.md` and reaches
 derived/CLAIMS.md. Store to Cognee when the memory server recovers.
+
+## Update (librarian pass): DMRT 2015 now held — thread unblocked
+
+The previously-blocked primary source is now in the library in full:
+**De Maesschalck–Rebollo-Perdomo–Torregrosa 2015, "Cyclicity of a fake saddle
+inside the quadratic vector fields", JDE 258(2):588–620** (open-access UAB DDD
+postprint),
+`research/sources/demaesschalck-rebollo-torregrosa-fake-saddle-2015-postprint.full.md`
+(source URL https://ddd.uab.cat/pub/artpub/2015/gsduab_3787/joudifequ_a2015v258n2p588preprint.pdf).
+It proves cyclicity is ≥ 2 for a quadratic fake saddle (impassable grain, a
+degeneracy whose phase portrait is a degenerate flow box with parallel fibers and
+one node on the singular fiber), confirming the DMRT 2015 result the thread cited
+but had not held. This resolves the thread's `blocked-by: DMRT 2015 full text not
+held` and anchors the uniform fake-saddle transition-map expansion of Marín 2026
+to its primary source.

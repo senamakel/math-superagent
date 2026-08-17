@@ -4,71 +4,68 @@
 thread:
   question: Can Psi(k) for PE1006 be computed for k=10^18 in O(log) via the mechanical-word / geometrically weighted floor-sum, evaluated by the universal Euclidean (Chtholly / AtCoder floor_sum) algorithm?
   status: live
-  rests-on:
-    - claims/governing-sturmian
-    - claims/governing-factor-complexity
-    - claims/mechanical-word-digit-rule
-    - claims/governing-universal-euclidean
-  blocked-by: []
-  next: slope correction already verified in-container at k=1..100 (exact rational
-  arithmetic, research/notes/mechanical-slope-correction.md); proceed to implement
-  the universal-Euclidean second-moment monoid and check it against brute on
-  k=1..150 and Psi(10) mod M = 10699667 before running at 10^18.
+  rests-on: governing-sturmian, governing-factor-complexity, mechanical-word-digit-rule, governing-universal-euclidean
+  blocked-by: none
+  next: DIRECTIVE 6 ACCEPTANCE — run the evaluator (code/lib/ueuclid.py, directive-4 monoid, tests 1-3 vs direct loops) and then reproduce, in order: Psi(k) vs mech_psi for k=1..150, Psi(10)=10699667, Psi(10^4)=34432237 (10001 factors), Psi(10^6)=20938836 (1000001 factors), then k=10^18 with F(n)>k and stability across two approximants. The old anchors 16242174/77578256 are DISCARDED (directive 6 confirms phase4-anchors-invalid). The new anchors are asserted from outside the container — verify them in-container before they gate the O(log) run (k=10^4: check_phase4_anchors.py vs the valid direct method; k=10^6: window/residue route). Strictness: NextFib must be the least Fibonacci STRICTLY > k; lib/fibword.py next_fib is strict (bisect_right), so the trap is not live — a non-strict version is one Fibonacci short at k=F_n (k=3 then gives 10101 with 3 of 4 factors). Lean (checked .lean file) is the closing step, gated behind the executable reproducing the anchors.
 ---
 
-# Thread: mechanical-word / floor-sum route (directive 2)
+## Steering redirect (this cycle) — build the universal-Euclidean primitive now
 
-## Status update from the research digest
+The operator directs: build the O(log) evaluator for the geometrically
+weighted floor sum and its second moment ahead of further structural probing.
+Toeplitz defects and extension-recurrence residues (pattern-hunt cycles 2-3)
+are not on the critical path. Spec (verbatim paraphrase):
 
-**Slope correction (discovered while reading Perrin–Restivo against directive 2).**
-The problem's word S is the characteristic Sturmian word of slope α = 1/φ² ≈
-0.382, NOT 1/φ ≈ 0.618 as directive 2's literal "slope a = F(n-1)/F(n)" reads.
+- Walk the lattice path of y = (p*t+q)/r for t = 1..n: one R step per unit of
+  t, one U step per unit increase of floor(y). Take a monoid product over the
+  path, split by the Euclidean recursion as in AtCoder floor_sum, so the path
+  costs O(log) merges.
+- A node carries, for its segment: dR, dU, w = z^dR with z the geometric ratio
+  mod M; S0 = sum of z^t over its R steps; S1 = sum of z^t * floor(y);
+  S2 = sum of z^t * floor(y)^2 — all relative to the segment origin, mod M.
+- Compose left l with right r:
+  dR = l.dR + r.dR; dU = l.dU + r.dU; w = l.w * r.w;
+  S0 = l.S0 + l.w * r.S0;
+  S1 = l.S1 + l.w * (r.S1 + l.dU * r.S0);
+  S2 = l.S2 + l.w * (r.S2 + 2*l.dU*r.S1 + l.dU^2*r.S0).
+  Identity: zeros with w = 1. The dU shifts carry floor values across a
+  segment boundary — the one place this primitive goes wrong; test it hard.
+- Acceptance tests, in order, none skipped:
+  (1) S0 vs a direct loop on random p,q,r,n,z;
+  (2) S1 vs plain floor_sum at z=1 and vs a direct loop at z != 1;
+  (3) S2 vs a direct loop;
+  (4) directive 2's telescoped v evaluated through the primitive vs
+      code/mech/mech_psi.py on k=1..150 and vs Psi(10) = 10699667;
+  (5) DIRECTIVE 6: the old anchors Psi(10^4)=16242174 / Psi(10^6)=77578256
+      are invalid (claim phase4-anchors-invalid) and are discarded. The new
+      anchors, asserted from outside the container by the independent
+      window/residue route, are Psi(10^4)=34432237 (count 10001) and
+      Psi(10^6)=20938836 (count 1000001). Verify them in-container first,
+      then match them exactly and in negligible time.
+  Only after (5) passes, run k=10^18 with a Fibonacci approximant whose
+  denominator exceeds 10^18, and confirm stability across two approximants.
+- If the outer sum over the k+1 representatives resists one pass: the x_m
+  are themselves the orbit frac(-m*a), so m is another floor-sum index —
+  carry the joint state in the same monoid rather than looping over m.
 
-- Perrin–Restivo Example 2: "The Fibonacci word is the characteristic word of
-  slope α = 2/(3+√5)" = (3−√5)/2 = 1/φ².
-- Berstel DLT'95 (Section 2): "The most famous characteristic word is the
-  Fibonacci word f = abaababaabaab… Its slope is 1/τ²" (τ the golden ratio).
-- Exact-arithmetic check at k=3 done by hand in this digest: slope α = 34/89
-  (= F(n−2)/F(n)) with arc-midpoint intercepts reproduces {001,010,100,101} =
-  the problem's factor set; slope 55/89 (= F(n−1)/F(n) ≈ 0.618) produces
-  {010,011,101,110}, whose Ψ = 22522 ≠ 20302. So the directive's literal slope
-  contradicts its own claimed verification at k=3; the corrected slope
-  F(n−2)/F(n) → 1/φ² is the one that works.
-- `code/out/check_slope.py` is written for tool_builder to confirm this
-  mechanically over k=1..8 before the solver trusts the slope at 10^18.
+## Status of the underlying claims
 
-**Convention trap (three sources).** Rabbit-sequence / "slope 1/φ" /
-"cutting-line slope" statements (Sivasankar–Rama, MathWorld, Wikipedia's
-Fibonacci-word page, Berstel Prop 2.3) all describe the digit-complement or
-the line slope, not the problem's word. The factor sets are NOT invariant
-under 0↔1 swap; any source string compared to the problem's factors must be
-digit-matched to S.
-
-## Directive 2 (primary, all k) — corrected
-
-Model the k+1 distinct length-k Fibonacci subwords as a mechanical word of
-rational slope a = F(n-2)/F(n) for F(n) >> k. Cut the unit circle at the k+1
-points frac(-m·a), m = 0..k, take the midpoint x of each of the k+1 arcs;
-digit_j(x) = floor(x + (j+1)a) − floor(x + j a). With v(x) = Σ_j digit_j·10^(k-1-j),
-telescoping gives v(x) = floor(x+ka) − 10^(k-1)·floor(x) + 9·Σ_{j=1}^{k-1}
-10^(k-1-j)·floor(x + j a). Psi(k) = Σ over the k+1 reps of v(x)² — the second
-moment of a geometrically weighted floor sum, evaluated by the universal
-Euclidean algorithm in O(log).
-
-## Directive 1 (checkpoint at k = F_n − 1)
-
-C(j,jp) = A(jp−j) = cyclic autocorrelation of standard word q_n, closed form
-A(d) = max(0, m−t) + max(0, m−(N−t)), N = F_n, m = #ones(q_n), t = (d·m) mod N.
-Same slope caution applies to the standard word's digit convention.
+`governing-sturmian` (slope 1/phi^2, Perrin-Restivo + Berstel DLT'95 anchors),
+`governing-factor-complexity` (k+1, Morse-Hedlund / Perrin-Restivo Thm 1,
+brute-verified k=1..20), `mechanical-word-digit-rule` (arc-midpoint
+construction, exact k=1..100 in-container), `governing-universal-euclidean`
+(O(log) monoid, four anchors: fhq / OI-wiki / LOJ138 / AtCoder floor_sum) —
+all anchors verified present this cycle against the full texts.
 
 ## What the sources now establish (see claim notes)
 
-`governing-sturmian` (slope 1/φ², two anchors), `governing-factor-complexity`
-(k+1, three anchors + brute oracle), `mechanical-word-digit-rule` (arc-midpoint
-construction, source-backed + k=3 exact check), `governing-universal-euclidean`
-(O(log) monoid, four anchors).
-
-## Next step for tool_builder
-
-run `python code/out/check_slope.py`; expected: slope 1/φ² and 34/89 match the
-oracle at every k=1..8, slope 1/φ and 55/89 fail at k=3.
+- The collapse identity C(j,jp)=A(jp-j) is valid exactly at k = F_n - 1; at
+  general k the deviation from translation-invariance is bounded by 1 per cell
+  (pattern-hunt cycle 3, exact k=1..400).
+- `phase4-anchors-invalid`: the acceptance anchors 16242174 / 77578256 are
+  invalid (out of the collapse domain); directive 6 confirms this and replaces
+  them with 34432237 (k=10^4) and 20938836 (k=10^6), asserted from outside
+  the container and pending in-container verification. The prefix-bound
+  strictness trap the directive warns about (NextFib must be strictly greater
+  than k, else k=3 yields 10101 with 3 of 4 factors) is not live in
+  `code/lib/fibword.py`: `next_fib` uses `bisect_right`.

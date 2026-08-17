@@ -8,6 +8,23 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 
 | Declaration | Kind | Standing | Statement | Source | File |
 | --- | --- | --- | --- | --- | --- |
+| `PE1006G1.FactorSet` | def | verified | {α : Type*} (w : List α) (k : ℕ) : Set (List α) | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
+| `PE1006G1.FibSubwords` | def | verified | (k : ℕ) : Set (List Char) | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
+| `PE1006G1.factorSet_chain` | theorem | verified | (k n : ℕ) : | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
+| `PE1006G1.factorSet_chain_any` | theorem | verified | (k n d : ℕ) : | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
+| `PE1006G1.factorSet_prefix_nest` | theorem | verified | {α : Type*} (w r : List α) (k : ℕ) : | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
+| `PE1006G1.fibWord` | def | verified | : ℕ → List Char | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
+| `PE1006G1.fibWord_prefix` | lemma | verified | (n : ℕ) : ∃ r : List Char, fibWord (n + 1) = fibWord n ++ r | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
+| `and` | theorem | verified | is NOT proved here; it is gapped in the companion file. | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
+| `PE1006G2Shell.fib_add_two_pos` | lemma | verified | (n : ℕ) : 0 < Nat.fib (n + 2) | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
+| `PE1006G2Shell.intercept` | def | verified | (n m : ℕ) : ℚ | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
+| `PE1006G2Shell.mechDigit` | def | verified | (a : ℚ) (x : ℚ) (j : ℕ) : ℤ | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
+| `PE1006G2Shell.mechDigit_nonneg` | lemma | verified | (a : ℚ) (x : ℚ) (j : ℕ) (ha0 : 0 ≤ a) : | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
+| `PE1006G2Shell.mechDigit_succ_le` | lemma | verified | (a : ℚ) (x : ℚ) (j : ℕ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1) : | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
+| `PE1006G2Shell.mechWord` | def | verified | (n k m : ℕ) : Fin k → ℤ | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
+| `PE1006G2Shell.mechWord_binary` | theorem | verified | (n k m j : ℕ) (hj : j < k) : | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
+| `PE1006G2Shell.slope` | def | verified | (n : ℕ) : ℚ | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
+| `PE1006G2Shell.slope_mem_Icc` | theorem | verified | (n : ℕ) : | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
 | `PE1006.M` | def | failed | : ℕ | — | `code/lean/Lib/Statement.lean` |
 | `PE1006.Psi` | def | failed | (k : ℕ) : ℕ | — | `code/lean/Lib/Statement.lean` |
 | `PE1006.PsiResidue` | def | failed | (k : ℕ) : ℕ | — | `code/lean/Lib/Statement.lean` |
@@ -20,5 +37,43 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `PE1006.slidingFactors` | def | failed | [DecidableEq α] (w : List α) (k : ℕ) : Finset (List α) | — | `code/lean/Lib/Statement.lean` |
 | `PE1006.ten_invertible` | theorem | failed | : Nat.Coprime 10 M | — | `code/lean/Lib/Statement.lean` |
 | `PE1006.valueOf` | def | failed | : List Char → ℕ | — | `code/lean/Lib/Statement.lean` |
+| `Cited.Balanced` | def | failed | (_x : InfiniteBinaryWord) : Prop | — | `code/lean/Lib/sturmian_three_equivalent_definitions.lean` |
+| `Cited.InfiniteBinaryWord` | def | failed | — | — | `code/lean/Lib/sturmian_three_equivalent_definitions.lean` |
+| `Cited.UltimatelyPeriodic` | def | failed | (_x : InfiniteBinaryWord) : Prop | — | `code/lean/Lib/sturmian_three_equivalent_definitions.lean` |
+| `Cited.factorComplexity` | def | failed | (_x : InfiniteBinaryWord) (_n : ℕ) : ℕ | — | `code/lean/Lib/sturmian_three_equivalent_definitions.lean` |
+| `Cited.lowerMechanical` | def | failed | (_α _ρ : ℝ) : InfiniteBinaryWord | — | `code/lean/Lib/sturmian_three_equivalent_definitions.lean` |
+| `Cited.sturmian_three_equivalent_definitions` | theorem | failed | : ∀ (x : InfiniteBinaryWord), | — | `code/lean/Lib/sturmian_three_equivalent_definitions.lean` |
+| `Cited.upperMechanical` | def | failed | (_α _ρ : ℝ) : InfiniteBinaryWord | — | `code/lean/Lib/sturmian_three_equivalent_definitions.lean` |
+| `PE1006G1.Cited.sturmian_factor_complexity` | axiom | failed | (k : ℕ) (h : 0 < k) : | Morse & Hedlund 1940; Lothaire, *Algebraic Combinatorics on Words* | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.FactorSet` | def | failed | {α : Type*} (w : List α) (k : ℕ) : Set (List α) | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.FibSubwords` | def | failed | (k : ℕ) : Set (List Char) | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.factorSet_chain` | theorem | failed | (k n : ℕ) : | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.factorSet_chain_any` | theorem | failed | (k n d : ℕ) : | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.factorSet_prefix_nest` | theorem | failed | {α : Type*} (w r : List α) (k : ℕ) : | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.factor_limit_stabilises` | theorem | failed | (k : ℕ) : | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.factorsFinset` | def | failed | (w : List Char) (k : ℕ) : Finset (List Char) | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.fibWord` | def | failed | : ℕ → List Char | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.fibWord_prefix` | lemma | failed | (n : ℕ) : ∃ r : List Char, fibWord (n + 1) = fibWord n ++ r | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G1.fib_subword_count` | theorem | failed | (k : ℕ) (h : 1 ≤ k) : | — | `code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` |
+| `PE1006G2.Cited.mechanical_factors` | axiom | failed | (k n : ℕ) (h : k < Nat.fib (n + 2)) : | Perrin–Restivo, *On Sturmian words*, Thm. 1 (and Lothaire Ch. 2): | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.Cited.sturmian_factor_complexity` | axiom | failed | (k : ℕ) (h : 0 < k) : | Lothaire, *Algebraic Combinatorics on Words* (Berstel), Ch. 2 | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.FactorSet` | def | failed | (k : ℕ) : Set (Fin k → ℤ) | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.and` | theorem | failed | not a guess about a floating-point construction. -/ | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.fibInfDigit` | def | failed | (t : ℕ) : ℤ | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.fib_add_two_pos` | lemma | failed | (n : ℕ) : 0 < Nat.fib (n + 2) | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.fracPart` | def | failed | (x : ℚ) : ℚ | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.intercept` | def | failed | (n m : ℕ) : ℚ | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.intercept_fracPart` | lemma | failed | (n m : ℕ) : | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.mechDigit` | def | failed | (a : ℚ) (x : ℚ) (j : ℕ) : ℤ | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.mechDigit_nonneg` | lemma | failed | (a : ℚ) (x : ℚ) (j : ℕ) (ha0 : 0 ≤ a) : | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.mechDigit_succ_le` | lemma | failed | (a : ℚ) (x : ℚ) (j : ℕ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1) : | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.mechFactorSet` | def | failed | (n k : ℕ) : Set (Fin k → ℤ) | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.mechWord` | def | failed | (n k m : ℕ) : Fin k → ℤ | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.mechWord_binary` | theorem | failed | (n k m j : ℕ) (hj : j < k) : | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.mech_reproduces_factors` | theorem | failed | (k n : ℕ) (h : k < Nat.fib (n + 2)) : | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.mech_set_card` | theorem | failed | (k n : ℕ) (h : k < Nat.fib (n + 2)) : | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.slope` | def | failed | (n : ℕ) : ℚ | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.slope_denominator_pos` | lemma | failed | (n : ℕ) : (0 : ℚ) < (Nat.fib (n + 2) : ℚ) | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
+| `PE1006G2.slope_mem_Icc` | theorem | failed | (n : ℕ) : | — | `code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` |
 
-12 declarations, 0 of them in a file the kernel has checked.
+67 declarations, 17 of them in a file the kernel has checked.

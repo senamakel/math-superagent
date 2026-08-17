@@ -10,8 +10,6 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
-- `h16-2-finite-cyclicity/G-drr-status` (lemma) — Which of the 121 DRR graphics remain with finite cyclicity unproved today, and the paper that closed each of the recently closed ones.…
-  - open `research/backward/h16-2-finite-cyclicity.md`
 - `h16-2-finite-cyclicity/G-resolve` (lemma) — A graphic Λ in the DRR list admits a resolution: each vertex (singular point) is brought by finitely many polynomial blow-ups within the…
   - open `research/backward/h16-2-finite-cyclicity.md`
 - `h16-2-finite-cyclicity/G-transition` (lemma) — On each hyperbolic sector of the resolved graphic, the passage (transition) map between the two incoming/outgoing transversals has an…
@@ -20,7 +18,7 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/h16-2-finite-cyclicity.md`
 - `h16-2-finite-cyclicity/G-zeros` (lemma) — The displacement (first-return) function around Λ_0 is the composition of the sector transition maps, so it carries an expansion in a…
   - open `research/backward/h16-2-finite-cyclicity.md`
-- `h16-2-h14-3-finite-cyclicity/G-lean-cert` (lemma) — The finite core of G-lu-core is a kernel-checked Lean certificate: the degree-6 30-monomial identity (192·L₆ + P₃₀ = 0) and the ideal…
+- `h16-2-h14-3-finite-cyclicity/G-lu-core` (lemma) — The finite algebraic core of Lu's verification of cycl(Λ₀)<∞ stands up to clean-room exact recomputation. TWO halves: (identity half, now…
   - open `research/backward/h16-2-h14-3-finite-cyclicity.md`
 - `h16-2-h14-3-finite-cyclicity/G-remainder` (lemma) — The analytic lift from the finite core to cycl(Λ₀)<∞: the displacement function into the collar U, written as Σ aᵢ mᵢ(1+hᵢ) with aᵢ in the…
   - open `research/backward/h16-2-h14-3-finite-cyclicity.md`
@@ -38,26 +36,36 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
 - `drr-1994-citation-anchor` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — DRR 1994 (JDE 110:86-133) gives the list of all graphics and degenerate graphics (limit periodic sets surrounding the origin in quadratic…
+- `drr-lu-claims-h14-3` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite cyclicity of the H^3_14 semihyperbolic hemicycle of quadratic fields: a…
 - `h16-drr-121-graphics` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — H(2) < ∞ is equivalent (via the compactness/DRR program of Dumortier, Roussarie and Rousseau 1994, J. Diff. Eq. 110, 86-133) to proving…
-- `lu-finite-core-partially-verified` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The finite algebraic core of Lu arXiv:2607.13785's reproducibility bundle — the four bridge identities, the Darboux cofactors X(L)=(x+dy)L…
 
-_55 further candidate(s) below these, in the table._
+_85 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `bautin-chart-membership-l8-l10-l12` | claim | established | — | For the Lu/RR five-coefficient chart family Q1 = Au²+Cuv+Dv², Q2 = Euv+Fv² with the rotation recurrence… |
 | `data-contamination-llibre-zhang` | claim | established | — | The file research/sources/llibre-zhang-lienard-conjecture-survey.full.md does not contain the Llibre-Zhang Lienard survey: it is an… |
 | `data-landing-pages-inventory` | claim | established | — | The following held files are landing/record pages with no mathematics beyond an abstract: rouseau-shan-zhu .full.md,… |
 | `drr-1994-citation-anchor` | claim | **ready** | — | DRR 1994 (JDE 110:86-133) gives the list of all graphics and degenerate graphics (limit periodic sets surrounding the origin in quadratic… |
+| `drr-df1a-df2a-cyclicity-sourced` | claim | **ready** | — | Dumortier–Rousseau 2009 (Comm. Pure Appl. Anal. 8:1133–1157, "Study of the cyclicity of some degenerate graphics inside quadratic systems",… |
+| `drr-dgr-2002-elementary-closures` | claim | **ready** | — | Dumortier–Guzmán–Rousseau (2002, "Finite cyclicity of elementary graphics surrounding a focus or center in quadratic systems", Qual. Theory… |
+| `drr-dmrt-2015-fake-saddle-cyclicity2` | claim | **ready** | — | De Maesschalck–Rebollo-Perdomo–Torregrosa 2015 (J. Differential Equations 258(2):588–620, "Cyclicity of a fake saddle inside the quadratic… |
 | `drr-huzak-df2a-closed` | claim | **ready** | — | The degenerate DRR graphic DF_{2a} has finite cyclicity (Huzak 2018, CPA 17(3):1305-1316), completing the study of the DF_{1a} family… |
 | `drr-ledger-no-consolidated-post2020` | claim | **ready** | — | No consolidated graphic-by-graphic ledger of the 121 DRR graphics with a running closed-count and the paper closing each row exists in the… |
 | `drr-lu-claims-h14-3` | claim | **ready** | — | Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite cyclicity of the H^3_14 semihyperbolic hemicycle of quadratic fields: a… |
 | `drr-mv-hemicycle-cyclicity-2` | claim | **ready** | — | For the quadratic D-system (7) with (a0,b0) in (-2,0)x(0,2) (two centers, reversible class Q3^R), the cyclicity of the hyperbolic hemicycle… |
+| `drr-rousseau-2008-pp-center-cyclicity2-sourced` | claim | **ready** | — | Roussarie–Rousseau 2008 (Bull. Belg. Math. Soc. Simon Stevin, "Finite cyclicity of nilpotent graphics of pp-type surrounding a center",… |
 | `drr-rousseau-zhu-15-pp-graphics` | claim | **ready** | — | Any pp-graphic through a multiplicity-3 nilpotent singularity of elliptic type not surrounding a center in the DRR 121 list has finite… |
 | `drr-rr-boundary-only-for-3-graphics` | claim | **ready** | — | For the DRR graphics (I^1_6b), (H^3_13) and (DI_2b) through a triple nilpotent point at infinity surrounding a center, only the boundary… |
 | `drr-rr-closes-i14` | claim | **ready** | — | The DRR graphic (I^1_14), through a triple nilpotent point of saddle or elliptic type at infinity surrounding a center, has finite… |
+| `drr-saddle-node-normalforms-dir2002` | claim | **ready** | — | Dumortier–Ilyashenko–Rousseau 2002 (Ergodic Theory Dynam. Systems 22:783–818, "Normal forms near a saddle-node and applications to finite… |
 | `drr-shan-2013-table11-ledger` | claim | **ready** | — | Shan 2013 (PhD thesis, "Theory and applications of high codimension bifurcations", York Univ.) Table 1.1 is the only primary per-class… |
+| `drr-zhu-2005-pp-graphics-16` | claim | **ready** | — | Zhu 2005 (Proc. proceedings "From the pp-graphics to the finiteness part of Hilbert's 16th problem for quadratic systems", full text held… |
+| `drr-zhu-rousseau-2002-nilpotent-machinery` | claim | **ready** | — | Zhu–Rousseau 2002 (J. Differential Equations 178:325–436, "Finite cyclicity of graphics with a nilpotent singularity of saddle or elliptic… |
+| `drr-zhu-rousseau-2004-15-pp-graphics-16-total` | claim | **ready** | — | Rousseau & Zhu (2004), "PP-graphics with a nilpotent elliptic singularity in quadratic systems and Hilbert's 16th problem", JDE… |
+| `fake-saddle-dmrt-2015-cyclicity` | claim | **ready** | — | De Maesschalck–Rebollo-Perdomo–Torregrosa (2015), "Cyclicity of a fake saddle inside the quadratic vector fields", JDE 258(2):588–620,… |
 | `fake-saddle-uniform-transition-map-marin2026` | claim | **ready** | — | Marín 2026 (EJQTDE 2026 no.5, 1-10, "Fake saddles and their transition maps") characterizes generic fake saddles (zero-linear-part,… |
 | `g-drr-status` | goal | established | — | Which of the 121 DRR graphics have finite cyclicity unproved today. |
 | `g-resolve` | goal | **ready** | — | Resolution of a DRR graphic: finite polynomial blow-ups within the quadratic family reduce each vertex to an elementary normal form;… |
@@ -66,29 +74,19 @@ _55 further candidate(s) below these, in the table._
 | `g-zeros` | goal | **ready** | — | The displacement function around the graphic, as composition of transition expansions, has a bounded number of zeros (Dulac-type… |
 | `h16-121-vs-125-rrousseau-survey` | claim | **ready** | — | Chris Rousseau's own survey "Hilbert's 16th problem for quadratic vector fields and cyclicity of graphics" (Nonlin. Anal. 30(1), 1997)… |
 | `h16-2-finite-cyclicity` | goal | blocked | `drr-1994-citation-anchor`, `h16-2-finite-cyclicity/G-drr-status`, `h16-2-finite-cyclicity/G-resolve`, `h16-2-finite-cyclicity/G-transition`, `h16-2-finite-cyclicity/G-uniform`, `h16-2-finite-cyclicity/G-zeros`, `h16-drr-121-graphics` | H(2) < ∞ — every planar quadratic polynomial vector field has a number of limit cycles bounded uniformly over the whole degree-2 family. |
-| `h16-2-finite-cyclicity/G-drr-status` | lemma | **ready** | — | Which of the 121 DRR graphics remain with finite cyclicity unproved today, and the paper that closed each of the recently closed ones.… |
+| `h16-2-finite-cyclicity/G-drr-status` | lemma | established | `drr-lu-claims-h14-3`, `h16-drr-open-rows` | Which of the 121 DRR graphics remain with finite cyclicity unproved today, and the paper that closed each of the recently closed ones.… |
 | `h16-2-finite-cyclicity/G-resolve` | lemma | **ready** | — | A graphic Λ in the DRR list admits a resolution: each vertex (singular point) is brought by finitely many polynomial blow-ups within the… |
 | `h16-2-finite-cyclicity/G-transition` | lemma | **ready** | — | On each hyperbolic sector of the resolved graphic, the passage (transition) map between the two incoming/outgoing transversals has an… |
 | `h16-2-finite-cyclicity/G-uniform` | lemma | **ready** | — | The pointwise zero bound from G-zeros is uniform over the compact parameter space of the quadratic family near Λ_0; i.e. cycl(Λ_0) < ∞ as a… |
 | `h16-2-finite-cyclicity/G-zeros` | lemma | **ready** | — | The displacement (first-return) function around Λ_0 is the composition of the sector transition maps, so it carries an expansion in a… |
-| `h16-2-h14-3-finite-cyclicity` | goal | blocked | `drr-1994-citation-anchor`, `drr-lu-claims-h14-3`, `h16-2-h14-3-finite-cyclicity/G-lean-cert`, `h16-2-h14-3-finite-cyclicity/G-lu-core`, `h16-2-h14-3-finite-cyclicity/G-remainder`, `h16-drr-121-graphics`, `h16-drr-open-rows`, `lu-finite-core-partially-verified` | cycl(Lambda_0 = H14^3) < infinity: finite cyclicity of the semihyperbolic hemicycle through a triple nilpotent point at infinity, uniformly… |
-| `h16-2-h14-3-finite-cyclicity/G-lean-cert` | lemma | **ready** | — | The finite core of G-lu-core is a kernel-checked Lean certificate: the degree-6 30-monomial identity (192·L₆ + P₃₀ = 0) and the ideal… |
-| `h16-2-h14-3-finite-cyclicity/G-lu-core` | lemma | blocked | `lu-finite-core-partially-verified` | The finite algebraic core of Lu's verification of cycl(Λ₀)<∞ stands up to clean-room exact recomputation from the paper's stated… |
+| `h16-2-h14-3-finite-cyclicity` | goal | blocked | `drr-1994-citation-anchor`, `drr-lu-claims-h14-3`, `h16-2-h14-3-finite-cyclicity/G-lean-cert`, `h16-2-h14-3-finite-cyclicity/G-lu-core`, `h16-2-h14-3-finite-cyclicity/G-remainder`, `h16-drr-121-graphics`, `h16-drr-open-rows`, `lu-finite-core-identity-half-checked` | cycl(Lambda_0 = H14^3) < infinity: finite cyclicity of the semihyperbolic hemicycle through a triple nilpotent point at infinity, uniformly… |
+| `h16-2-h14-3-finite-cyclicity/G-lean-cert` | lemma | established | — | The finite core of G-lu-core is a kernel-checked Lean certificate: the degree-6 30-monomial identity (192·L₆ + P₃₀ = 0) and the degree-4… |
+| `h16-2-h14-3-finite-cyclicity/G-lu-core` | lemma | **ready** | — | The finite algebraic core of Lu's verification of cycl(Λ₀)<∞ stands up to clean-room exact recomputation. TWO halves: (identity half, now… |
 | `h16-2-h14-3-finite-cyclicity/G-remainder` | lemma | **ready** | — | The analytic lift from the finite core to cycl(Λ₀)<∞: the displacement function into the collar U, written as Σ aᵢ mᵢ(1+hᵢ) with aᵢ in the… |
 | `h16-abelian-integral-bounds` | claim | **ready** | — | Tangential/infinitesimal H16: the number of isolated zeros of Abelian integrals (and so limit cycles born in a first-order perturbation of… |
-| `h16-bamon-quadratic-finiteness` | claim | **ready** | — | Every quadratic planar vector field (each individual field, P,Q of degree <= 2) has finitely many limit cycles. |
-| `h16-bamon-romanovskii-quadratic-pointwise` | claim | **ready** | — | Each individual quadratic vector field has finitely many limit cycles; proofs by Bamon (1986) and Romanovskii; Chicone-Shafer proved the… |
-| `h16-bd-abelian-linear-in-m` | claim | **ready** | — | The number of isolated real zeros of an Abelian integral I_{H,omega} (counted with multiplicity, summed over nonsingular ovals), deg H <=… |
-| `h16-bny-abelian-bound` | claim | **ready** | — | The number of isolated zeros of an Abelian integral I_{H,omega}(t), summed over nonsingular ovals and counted with multiplicity, deg H <=… |
-| `h16-christopher-lloyd-weakened-16th` | claim | **ready** | — | Li-Li-Llibre-Zhang (2001), "Polynomial systems: a lower bound for the weakened 16th Hilbert problem", Extracta Math. 16(3), 441–447: for m,… |
-| `h16-drr-121-graphics` | claim | **ready** | — | H(2) < ∞ is equivalent (via the compactness/DRR program of Dumortier, Roussarie and Rousseau 1994, J. Diff. Eq. 110, 86-133) to proving… |
-| `h16-drr-121-vs-125-discrepancy` | claim | **ready** | — | The DRR catalog of quadratic graphics is usually stated as 121 (DRR 1994; RSZ 2015; Ilyashenko 2002; RR 2015), but the Shan 2013 thesis… |
-| `h16-drr-closed-rows-2015` | claim | **ready** | — | As of the 2015 literature, at least 88 of the 121 DRR graphics have finite cyclicity proved inside the quadratic family (Rousseau–Shan–Zhu… |
-| `h16-drr-h14-3-lu-2026-claim` | claim | **ready** | — | H. Lu, "Local Uniform Finite Cyclicity of the H₁₄³ Semihyperbolic Hemicycle", arXiv:2607.13785 (Jul 2026, 80 pp., unrefereed preprint),… |
-| `h16-drr-lu-2026-does-not-complete-program` | claim | **ready** | — | Even if Lu 2026 is correct, the DRR program is not complete. The closure of (H³₁₄) is one graphic. As of RR 2015 the open/partially-open… |
-| `h16-drr-open-rows` | claim | **ready** | — | The DRR program is NOT complete: at least 33 of the 121 graphics were still open as of RSZ 2015 (88 closed), and the open rows lie… |
+| `h16-alien-limit-cycles-abelian-insufficiency` | claim | **ready** | — | Luca–Dumortier–Caubergh–Roussarie (2009, "Detecting alien limit cycles near a Hamiltonian 2-saddle cycle", DCDS 25(4):1081–1108) construct… |
 
-_21 further nodes not shown._
+_50 further nodes not shown._
 
 ---
 

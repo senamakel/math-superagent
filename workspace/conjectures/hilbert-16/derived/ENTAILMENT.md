@@ -4,7 +4,13 @@ Derived from the `follows-from:` lines in every `claim` block, closed transitive
 
 A claim written `follows-from: a, b` says `a` and `b` together give it. That single edge is enough to answer three questions the claim ledger cannot: which claims the run has already established without noticing, which proposals would add nothing, and which pair of held beliefs cannot both be true.
 
-_Nothing to derive yet. Add a `follows-from:` line to a `claim` block naming the claim ids it is a consequence of, and this file fills in._
+## Cannot all be true — read this first
+
+No single block states these. Each is a claim the run holds whose support entails something that contradicts another claim the run holds. One of the two is wrong, and everything resting on either is suspect.
+
+- `h16-dulac-reopened-community-view` rests on ``h16-dulac-proof-contested``, which is recorded as contradicting `h16-dulac-finiteness-theorem`
+- `h16-palma-yeung-dichotomy` rests on ``h16-dulac-proof-contested``, which is recorded as contradicting `h16-dulac-finiteness-theorem`
+- `h16-yeung-natural-levels` rests on ``h16-dulac-proof-contested``, which is recorded as contradicting `h16-dulac-finiteness-theorem`
 
 ---
 

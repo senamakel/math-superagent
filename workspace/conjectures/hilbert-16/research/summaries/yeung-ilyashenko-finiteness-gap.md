@@ -58,5 +58,6 @@ bearing: the pointwise-finiteness pillar is contested at exactly the
   quasi-analyticity step; locates where an argument for a degenerate graphic
   must genuinely use analytic structure.
 anchor: research/sources/yeung-ilyashenko-finiteness-gap.full.md
-contradicts: h16-dulac-finiteness-individual (only the proof, not the statement)
+contradicts: h16-dulac-finiteness-theorem
+follows-from: h16-gap-claims-2024
 ```

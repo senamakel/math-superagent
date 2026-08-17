@@ -10,56 +10,69 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
-- `pe1006-psi/G1-sturmian-factor-structure` (lemma) — Let F be the infinite Fibonacci word (limit of S_0=S_1... with S_n = S_{n-1}S_{n-2}). For every length k ≥ 1, the set of distinct Fibonacci…
-  - open `research/backward/pe1006-psi.md`
-- `pe1006-psi/G2-mechanical-word-representation` (lemma) — For n with F(n) > k and rational slope a = F(n-1)/F(n), the k+1 length-k factors of F are produced exactly by the rotation/mechanical…
-  - open `research/backward/pe1006-psi.md`
-- `pe1006-psi/G3-telescoped-second-moment` (lemma) — With v(x) = sum_{j=0}^{k-1} digit_j(x) 10^(k-1-j) where digit_j(x) = floor(x+(j+1)a) - floor(x+ja), summation by parts (telescoping) gives…
-  - open `research/backward/pe1006-psi.md`
-- `pe1006-psi/G4-universal-euclidean-floor-sum` (lemma) — The quantity Psi(k) = sum_{m=0}^k v(x_m)^2 mod M, with v(x_m) the telescoped geometric floor-sum from Lemma 3, is evaluated in O(log k)…
-  - open `research/backward/pe1006-psi.md`
-- `g1-sturmian-factor-structure` (goal) — Length-k Fibonacci subwords = factors of infinite Fibonacci word; count = k+1 (Sturmian complexity p(k)=k+1).
+- `g1-sturmian-factor-structure/G1-count (fib_subword_count)` (lemma) — the theorem PE1006G1.fib_subword_count : ∀ (k : ℕ) (h : 1 ≤ k), (FibSubwords k).ncard = k + 1
   - open `research/backward/g1-sturmian-factor-structure.md`
-- `g2-mechanical-word-representation` (goal) — The k+1 length-k factors of F are produced exactly by the rotation/mechanical construction with slope a=F(n-1)/F(n), F(n)>k.
-  - open `research/backward/g2-mechanical-word-representation.md`
+- `pe1006-psi/G1-sturmian-factor-structure` (lemma) — The k+1 distinct Fibonacci subwords of length k are exactly the length-k factors of the infinite Fibonacci word F (limit of S_n), and that…
+  - open `research/backward/pe1006-psi.md`
+- `pe1006-psi/G2-mechanical-word-representation` (lemma) — With the corrected slope a = F(n-2)/F(n) (\|S_n\| = F(n+2) indexing), the k+1 factors of F of length k, read as decimal numbers, are exactly…
+  - open `research/backward/pe1006-psi.md`
+- `pe1006-psi/G3-telescoped-second-moment` (lemma) — With v(x) = Σ_{j=0}^{k-1} digit_j(x)·10^(k-1-j) and the digit rule digit_j(x) = floor(x+(j+1)a) - floor(x+ja), the telescoping identity…
+  - open `research/backward/pe1006-psi.md`
+- `pe1006-psi/G4-universal-euclidean-floor-sum` (lemma) — The second-moment floor sum Σ_{m=0}^k v(x_m)^2 mod M is evaluable in O(log k) by the universal Euclidean algorithm: the monoid of…
+  - open `research/backward/pe1006-psi.md`
 - `g3-telescoped-second-moment` (goal) — v(x) = floor(x+ka) - 10^(k-1) floor(x) + 9 sum_{j=1}^{k-1} 10^(k-1-j) floor(x+ja); Psi(k) is the second moment of this geometric floor-sum…
   - open `research/backward/g3-telescoped-second-moment.md`
-- `g4-universal-euclidean-floor-sum` (goal) — The universal Euclidean (Chtholly) algorithm evaluates Psi(k) mod M in O(log k), carrying the tuple (count, sum x^j, sum x^j floor, sum x^j…
-  - open `research/backward/g4-universal-euclidean-floor-sum.md`
 
 ## Verify these first
 
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
-- `pe1006-psi/G1-sturmian-factor-structure` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Let F be the infinite Fibonacci word (limit of S_0=S_1... with S_n = S_{n-1}S_{n-2}). For every length k ≥ 1, the set of distinct Fibonacci…
-- `pe1006-psi/G2-mechanical-word-representation` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — For n with F(n) > k and rational slope a = F(n-1)/F(n), the k+1 length-k factors of F are produced exactly by the rotation/mechanical…
-- `pe1006-psi/G3-telescoped-second-moment` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — With v(x) = sum_{j=0}^{k-1} digit_j(x) 10^(k-1-j) where digit_j(x) = floor(x+(j+1)a) - floor(x+ja), summation by parts (telescoping) gives…
+- `governing-sturmian` — 3 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic…
+- `g1-oracle-length3` — 2 node(s) rest on it, and the run is already building on it — The length-3 Fibonacci subwords are exactly 001, 010, 100, 101 — i.e. the length-3 factor set of S_5 = 0100101001001 has card 4 = 3+1 and…
+- `fibonacci-sturmian-complexity` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word, and its factor…
 
-_16 further candidate(s) below these, in the table._
+_29 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `characteristic-sequence-floor-difference-def` | claim | **ready** | — | The characteristic sequence of an irrational alpha in (0,1) is the lower mechanical word f(alpha) = f_1 f_2 ... with f_n =… |
 | `conjugate-christoffel-factor-sturmian` | claim | **ready** | — | A finite word w is a conjugate of a Christoffel word if and only if all its conjugates (cyclic rotations) are factors of a Sturmian… |
+| `dir1-domain-autocorrelation` | claim | **ready** | — | Directive 1's pair-correlation identity C(j,jp) = A(jp-j), holds ONLY at k = F_n - 1 (k = 1, 2, 4, 7, 12, 20, 33, 54, 88, 143, ...), where… |
+| `distance-encoding-word-structure` | claim | **ready** | — | In the three-distance partition of [0,1] by {ialpha mod 1, i = 0..n-1} U {1}, the leftmost interval is not the longest, and encoding the… |
+| `farey-slope-stabilisation` | claim | **ready** | — | Let p1/q1 < p2/q2 be consecutive m-points de Farey (Farey neighbours of order m) and let alpha in ]p1/q1, p2/q2[. The length-m special… |
+| `fibonacci-least-period-set` | claim | **ready** | — | The set of least periods of factors of the Fibonacci word is exactly the set of Fibonacci numbers. (Currie & Saari, "Least periods of… |
+| `fibonacci-squares-conjugate-finite-word` | claim | **ready** | — | If uu is a square occurring in the Fibonacci word f, then u is conjugate to some finite Fibonacci word; all finite Fibonacci words are… |
+| `fibonacci-standard-factors-l0l1` | claim | **ready** | — | Characterize the standard words that occur as factors of the Fibonacci word: the set is {phi^n(1), phi^n(10), phi^n(101), phi^n(0010010) :… |
 | `fibonacci-sturmian-complexity` | claim | **ready** | — | The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word, and its factor… |
+| `fibonacci-unique-special-factor-reverse` | claim | **ready** | — | The Fibonacci word f has exactly n+1 distinct factors of length n; exactly one of them is right-special (both extensions x0 and x1 are… |
 | `fibonacci-word-sturmian-density-balance` | claim | **ready** | — | The infinite Fibonacci word F (substitution 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word with factor complexity p_F(n) = n… |
-| `g1-sturmian-factor-structure` | goal | **ready** | — | Length-k Fibonacci subwords = factors of infinite Fibonacci word; count = k+1 (Sturmian complexity p(k)=k+1). |
-| `g2-mechanical-word-representation` | goal | **ready** | — | The k+1 length-k factors of F are produced exactly by the rotation/mechanical construction with slope a=F(n-1)/F(n), F(n)>k. |
+| `fibonacci-zeckendorf-parity-characterization` | claim | **ready** | — | The Fibonacci infinite word f = 0100101001001... is the sequence f(n) = (rightmost bit / parity) of the Zeckendorf representation of n;… |
+| `g1-factor-chain-nested` | claim | **ready** | — | For S_n = S_0=0, S_1=01, S_{n+2}=S_{n+1}S_n, the length-k contiguous factor sets form a monotone nested chain: FactorSet(fibWord n, k) ⊆… |
+| `g1-oracle-length3` | claim | established | — | The length-3 Fibonacci subwords are exactly 001, 010, 100, 101 — i.e. the length-3 factor set of S_5 = 0100101001001 has card 4 = 3+1 and… |
+| `g1-sturmian-factor-structure` | goal | blocked | `fibonacci-sturmian-complexity`, `g1-factor-chain-nested`, `g1-oracle-length3`, `g1-sturmian-factor-structure/G1-count (fib_subword_count)`, `governing-factor-complexity`, `governing-sturmian` | Length-k Fibonacci subwords = factors of infinite Fibonacci word; count = k+1 (Sturmian complexity p(k)=k+1). |
+| `g1-sturmian-factor-structure/G1-count (fib_subword_count)` | lemma | **ready** | — | the theorem PE1006G1.fib_subword_count : ∀ (k : ℕ) (h : 1 ≤ k), (FibSubwords k).ncard = k + 1 |
+| `g2-mech-shell-exact-binary` | claim | **verified** | — | For the corrected slope a = fib(n)/fib(n+2), every digit digit_j(x) = floor(x+(j+1)a) - floor(x+ja) of a mechanical word of intercept x =… |
+| `g2-mechanical-word-representation` | goal | blocked | `conjugate-christoffel-factor-sturmian`, `g2-mech-shell-exact-binary`, `governing-sturmian`, `mechanical-word-digit-rule` | The k+1 length-k factors of F are produced exactly by the rotation/mechanical construction with slope a=F(n-2)/F(n) (= fib(n)/fib(n+2), the… |
 | `g3-telescoped-second-moment` | goal | **ready** | — | v(x) = floor(x+ka) - 10^(k-1) floor(x) + 9 sum_{j=1}^{k-1} 10^(k-1-j) floor(x+ja); Psi(k) is the second moment of this geometric floor-sum… |
-| `g4-universal-euclidean-floor-sum` | goal | **ready** | — | The universal Euclidean (Chtholly) algorithm evaluates Psi(k) mod M in O(log k), carrying the tuple (count, sum x^j, sum x^j floor, sum x^j… |
+| `g4-universal-euclidean-floor-sum` | goal | blocked | `governing-universal-euclidean`, `req-close-universal-euclidean`, `universal-euclidean-geometric-floor-sum` | The universal Euclidean (Chtholly) algorithm evaluates Psi(k) mod M in O(log k), carrying the tuple (count, sum x^j, sum x^j floor, sum x^j… |
 | `governing-factor-complexity` | claim | **ready** | — | A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;… |
 | `governing-sturmian` | claim | **ready** | — | The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic… |
 | `governing-universal-euclidean` | claim | **ready** | — | The universal Euclidean algorithm (monoid generalisation of AtCoder floor_sum, "Chtholly's algorithm") evaluates sums of the form… |
 | `mechanical-word-digit-rule` | claim | **ready** | — | Let α in (0,1) and s_{α,ρ}(n) = floor((n+1)α + ρ) - floor(nα + ρ), n >= 0 (lower mechanical word with slope α, intercept ρ). All mechanical… |
-| `pe1006-psi` | goal | blocked | `pe1006-psi/G1-sturmian-factor-structure`, `pe1006-psi/G2-mechanical-word-representation`, `pe1006-psi/G3-telescoped-second-moment`, `pe1006-psi/G4-universal-euclidean-floor-sum` | compute Psi(k) mod M for k = 10^18, M = 101001001, where Psi(k) is the sum of squares of the decimal values of the k+1 distinct Fibonacci… |
-| `pe1006-psi/G1-sturmian-factor-structure` | lemma | **ready** | — | Let F be the infinite Fibonacci word (limit of S_0=S_1... with S_n = S_{n-1}S_{n-2}). For every length k ≥ 1, the set of distinct Fibonacci… |
-| `pe1006-psi/G2-mechanical-word-representation` | lemma | **ready** | — | For n with F(n) > k and rational slope a = F(n-1)/F(n), the k+1 length-k factors of F are produced exactly by the rotation/mechanical… |
-| `pe1006-psi/G3-telescoped-second-moment` | lemma | **ready** | — | With v(x) = sum_{j=0}^{k-1} digit_j(x) 10^(k-1-j) where digit_j(x) = floor(x+(j+1)a) - floor(x+ja), summation by parts (telescoping) gives… |
-| `pe1006-psi/G4-universal-euclidean-floor-sum` | lemma | **ready** | — | The quantity Psi(k) = sum_{m=0}^k v(x_m)^2 mod M, with v(x_m) the telescoped geometric floor-sum from Lemma 3, is evaluated in O(log k)… |
+| `pe1006-psi` | goal | blocked | `fibonacci-sturmian-complexity`, `g1-factor-chain-nested`, `g1-oracle-length3`, `g2-mech-shell-exact-binary`, `governing-factor-complexity`, `governing-sturmian`, `governing-universal-euclidean`, `mechanical-word-digit-rule`, `pe1006-psi/G1-sturmian-factor-structure`, `pe1006-psi/G2-mechanical-word-representation`, `pe1006-psi/G3-telescoped-second-moment`, `pe1006-psi/G4-universal-euclidean-floor-sum`, `req-close-universal-euclidean`, `universal-euclidean-geometric-floor-sum` | compute Ψ(10^18) mod 101001001, where Ψ(k) is the sum of the squares of the k+1 distinct length-k Fibonacci subwords read as decimal numbers |
+| `pe1006-psi/G1-sturmian-factor-structure` | lemma | **ready** | — | The k+1 distinct Fibonacci subwords of length k are exactly the length-k factors of the infinite Fibonacci word F (limit of S_n), and that… |
+| `pe1006-psi/G2-mechanical-word-representation` | lemma | **ready** | — | With the corrected slope a = F(n-2)/F(n) (\|S_n\| = F(n+2) indexing), the k+1 factors of F of length k, read as decimal numbers, are exactly… |
+| `pe1006-psi/G3-telescoped-second-moment` | lemma | **ready** | — | With v(x) = Σ_{j=0}^{k-1} digit_j(x)·10^(k-1-j) and the digit rule digit_j(x) = floor(x+(j+1)a) - floor(x+ja), the telescoping identity… |
+| `pe1006-psi/G4-universal-euclidean-floor-sum` | lemma | **ready** | — | The second-moment floor sum Σ_{m=0}^k v(x_m)^2 mod M is evaluable in O(log k) by the universal Euclidean algorithm: the monoid of… |
+| `phase4-anchors-invalid` | claim | **ready** | — | The Phase-4 acceptance anchors Psi(10^4) mod M = 16242174 and Psi(10^6) mod M = 77578256 are invalid: both were computed by Psi_collapse,… |
 | `req-close-factor-complexity` | claim | **ready** | — | The infinite Fibonacci word is a Sturmian word; a Sturmian word has exactly P(s,n)=n+1 distinct factors of length n for every n >= 0 (the… |
 | `req-close-universal-euclidean` | claim | **ready** | — | The universal Euclidean algorithm (monoid generalisation of AtCoder floor_sum, aka "Chtholly's algorithm" / 万能欧几里得) evaluates sums… |
+| `rotation-arc-factor-frequencies` | claim | **ready** | — | The k+1 points {-ma mod 1 : m = 0..k} cut the circle into k+1 arcs of at most three different lengths, and if three lengths occur one is… |
+| `special-factor-complexity-difference` | claim | **ready** | — | For a recurrent infinite sequence over a finite alphabet, the first difference of the factor complexity is exactly the number of… |
 | `steer-d2-literal-slope` | claim | **ready** | — | Steering directive 2 instructs the run to model the k+1 factors as a mechanical word of "slope a = F(n-1)/F(n)" for F(n) >> k. |
+| `three-gap-three-distance-autocorrelation` | claim | **ready** | — | For an irrational slope alpha in (0,1), the partition of the unit circle by the points {i*alpha}, 0 <= i <= n, has n+1 intervals whose… |
 | `universal-euclidean-geometric-floor-sum` | claim | **ready** | — | Let a,b,c,n be nonnegative integers, c>0. Define the operation string S(a,b,c,n) --- the "universal Euclidean" object --- to have exactly n… |
 
 ---

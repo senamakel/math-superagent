@@ -6,7 +6,18 @@ An approach is what comes *before* a thread. A thread already has a question and
 
 Refuted and spent approaches are kept deliberately. Proposing again what this run already closed is the one failure the inventor exists to avoid, and the reason it closed is the only thing that prevents it.
 
-_No approaches yet. Record one as soon as a line of attack is named: `research/approaches/<name>.md`, with a fenced `approach` block carrying `idea`, `mechanism`, `status`, `precedent`, `first-step`, and `killed-by` lines._
+| Approach | Idea | Status | Precedent | First step |
+| --- | --- | --- | --- | --- |
+| [[pe1006-ostrowski-sawtooth-closed-form]] | The mechanical/floor-sum reduction writes Ψ(k) as the second moment of v(x) = Σ_j digit_j(x) 10^{k-1-j} over the k+1 representatives x_m = frac(−m·a), a =… | **adopted** | -, Weiß, "Deducing, Three, Gap, Theorem, from, Rauzy-Veech, induction", arXiv:1807.11273., -, van, Ravenstein, "The, Three, Gap, Theorem, (Steinhaus,… | (i) FIRST recompute the Phase-4 acceptance anchors correctly: the existing Psi(10^4)=16242174 and Psi(10^6)=77578256 were produced by Psi_collapse, the… |
+| [[pe1006-pair-correlation-boundary]] | Ψ(k) = Σ_{i,j} C(i,j) 10^{2k-2-i-j} with C(i,j) = #{length-k factors w with w_i = w_j = 1} (the factor pair-correlation matrix). This quadratic-form identity… | refuted | -, Perrin, &, Restivo, "A, note, on, Sturmian, words", TCS, 2011, doi:10.1016/j.tcs.2011.12.047, —, Sturmian, =, balanced;, factor, structure., -, Three,… | For k = 1..60 compute C(i,j) exactly (three independent ways: direct factor enumeration, mechanical/residue model, and the cyclic- autocorrelation formula… |
+| [[pe1006-substitution-morphism-moment]] | The infinite Fibonacci word F is built by the substitution 0 -> 01, 1 -> 0 (S_n = S_{n-1} S_{n-2} is exactly the n-th iterate). Carry the *set-valued* quantity… | refuted | -, Perrin, &, Restivo, "A, note, on, Sturmian, words", Theoretical, Computer, Science, 2011, doi:10.1016/j.tcs.2011.12.047, (Sturmian, =, balanced, factor,… | None — closed. If this idea is ever revisited, it must first find a way to make the image lengths coincide (e.g. padding), which changes the decimal value and… |
+
+## What closed, and why
+
+Do not propose these again. A reason stated precisely is what makes that possible; one left blank makes this row worthless. Each reason is shortened here; the whole of it is in that approach's own file under `research/approaches/`.
+
+- [[pe1006-pair-correlation-boundary]] (refuted): Not independent and its decisive payoff is unsupported. The general-k residual R(i,j)=C(i,j)-T(|i-j|) is NOT a low-rank boundary term the literature backs — the thread's own general-k account (dir1-domain-autocorrelation) gives C(j,j+d) as a lattice-point count in an arc whose length depends on d alone, i.e. exactly the floor-sum primitive the committed universal-Euclidean route already evaluates. So the approach closes to the same OCTA floor-sum rather than bypassing it, and its one distinct claim (low-rank Toeplitz correction with no Euclidean machinery) has no source and is the same hard…
+- [[pe1006-substitution-morphism-moment]] (refuted): The substitution does NOT push the factor set of length k onto a single length-(~φk) factor set, so the commuting square that a transfer-matrix recursion needs does not exist. A length-k factor w with c ones is mapped by 0->01,1->0 to a word of length k+c. A Sturmian word is balanced, so the number of ones in its length-k factors takes at most two consecutive values {m, m+1} (Perrin-Restivo, A note on Sturmian words, TCS 2011; Sturmian balance). Hence the images of the k+1 factors have TWO different lengths (k+m and k+m+1), not one, and there is no single factor-set of one length they all…
 
 ## Approaches that could not be read
 

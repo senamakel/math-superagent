@@ -1,0 +1,84 @@
+ran: python code/bautin/verify_membership.py
+definitions: chart family Q1=A u^2+C u v+D v^2, Q2=E u v+F v^2; rotation R(p)=-v dp/du+u dp/dv; V2=(u^2+v^2)/2; recurrence R(c_k)+Q1 V_{k-1,u}+Q2 V_{k-1,v}=L_k (u^2+v^2)^{k/2}, gauge c_{k,0}=0; L_d = d-th focal-value obstruction
+range: even degrees 4..12; exact sympy over QQ, lex Groebner; checks L8 in <L4,L6>, L6 in <L4>, L10 & L12 in <L4,L6,L8>
+degree 3: done (0s cumulative)
+degree 4: done (0s cumulative)
+degree 5: done (0s cumulative)
+degree 6: done (1s cumulative)
+degree 7: done (2s cumulative)
+degree 8: done (6s cumulative)
+degree 9: done (14s cumulative)
+degree 10: done (79s cumulative)
+degree 11: done (113s cumulative)
+degree 12: done (174s cumulative)
+recurrence through degree 12: 174.1s
+sanity guard: 8*L4 == AC+CD+2DF-EF : PASS
+sanity guard: 192*L6 + P30 == 0 (P30 30-monomial) : PASS
+sanity guard: P30 has 30 monomials : PASS
+guards elapsed: 174.2s
+
+d  monomials  hdeg
+4          4  2    
+6         30  4    
+8         97  6    
+10        236  8    
+12        485  10   
+monomial counts L_d: [4, 30, 97, 236, 485]
+
+[m1] generators: <L4, L6> (lex)
+[m1] groebner basis size: 5 (0.0s), reduce: 0.0s
+[m1] reduction remainder == 0 ?  False
+[m1] reduction identity poly == sum(qi*bi)+rem verified :  True
+[m1] nonzero remainder: 16 monomials (certificate of non-membership)
+[m1] G.contains(poly) cross-check :  False
+
+[m2] generators: <L4> (lex)
+[m2] groebner basis size: 1 (0.0s), reduce: 0.0s
+[m2] reduction remainder == 0 ?  False
+[m2] reduction identity poly == sum(qi*bi)+rem verified :  True
+[m2] nonzero remainder: 14 monomials (certificate of non-membership)
+[m2] G.contains(poly) cross-check :  False
+
+[m3] generators: <L4, L6, L8> (lex)
+[m3] groebner basis size: 8 (0.2s), reduce: 0.1s
+[m3] reduction remainder == 0 ?  True
+[m3] reduction identity poly == sum(qi*bi)+rem verified :  True
+[m3] G.contains(poly) cross-check :  True
+
+[m4] generators: <L4, L6, L8> (lex)
+[m4] groebner basis size: 8 (0.2s), reduce: 0.2s
+[m4] reduction remainder == 0 ?  True
+[m4] reduction identity poly == sum(qi*bi)+rem verified :  True
+[m4] G.contains(poly) cross-check :  True
+
+========================================================================
+POSITIVE CONTROLS (machinery soundness: must all be True):
+
+[ctrl1] generators: <L4, L6> (lex)
+[ctrl1] groebner basis size: 5 (0.0s), reduce: 0.0s
+[ctrl1] reduction remainder == 0 ?  True
+[ctrl1] reduction identity poly == sum(qi*bi)+rem verified :  True
+[ctrl1] G.contains(poly) cross-check :  True
+
+[ctrl2] generators: <L4, L6, L8> (lex)
+[ctrl2] groebner basis size: 8 (0.2s), reduce: 0.0s
+[ctrl2] reduction remainder == 0 ?  True
+[ctrl2] reduction identity poly == sum(qi*bi)+rem verified :  True
+[ctrl2] G.contains(poly) cross-check :  True
+
+[ctrl3] generators: <L4, L6> (lex)
+[ctrl3] groebner basis size: 5 (0.0s), reduce: 0.2s
+[ctrl3] reduction remainder == 0 ?  True
+[ctrl3] reduction identity poly == sum(qi*bi)+rem verified :  True
+[ctrl3] G.contains(poly) cross-check :  True
+
+controls all True: True
+
+========================================================================
+MEMBERSHIP SUMMARY (lex order, exact over Q):
+  L8  in <L4,L6>     -> False   (False = third generator independent/needed)
+  L6  in <L4>        -> False    (False = first two generators independent)
+  L10 in <L4,L6,L8>  -> True (True = Bautin-trick step survives)
+  L12 in <L4,L6,L8>  -> True (True = Bautin-trick step survives)
+========================================================================
+total wall time: 177.6s

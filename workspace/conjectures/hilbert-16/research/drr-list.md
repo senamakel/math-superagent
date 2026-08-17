@@ -40,6 +40,14 @@ paper.
 | `DF1a` | degenerate graphic | Dumortier–Rousseau 2009, Comm. Pure Appl. Anal. 8, 1133–1157; **reported** (Shan 2013 thesis) | **closed** |
 | `DF2a` | degenerate graphic | Dumortier–Rousseau 2009 (ibid.) / Huzak 2018 re-examination; **reported** — see contradiction note below | **closed** (per secondary sources) |
 | `H₇¹`, `F₇a¹`, `H₁₁³`, `I₆a¹` | nilpotent pp-type around a center; exact cyclicity 2 (2 for `H₇¹`,`H₁₁³`; 2 except a discrete subset for `F₇a¹`,`I₆a¹`) | Roussarie–Rousseau 2008, Bull. Belg. Math. Soc. Simon Stevin; **reported** | **closed** (pre-2015, inside the count 88) |
+| `H₄³`, `H₅³` | elementary hemicycle, hyperbolic saddles at infinity (irrational AND rational ratios) | Dumortier–Guzmán–Rousseau 2002, QTDS 3:123–154, Thm 3.1/3.2; **sourced-held** | **closed, cyclicity ≤ 2** |
+| `H₆³` | elementary hemicycle, hyperbolic saddles at infinity | Dumortier–Guzmán–Rousseau 2002, QTDS 3, Thm 3.3; **sourced-held** | **closed, cyclicity ≤ 2 if r(0)≠1, ≤ 3 if r(0)=1** |
+| `I²₂₇` | elementary graphic surrounding focus/center | Dumortier–Guzmán–Rousseau 2002, QTDS 3, Thm 4.1; **sourced-held** | **closed, cyclicity ≤ 2** |
+| `I²₁₄a`, `I²₁₅a` | elementary graphics surrounding focus/center | Dumortier–Guzmán–Rousseau 2002, QTDS 3, Thm 5.1; **sourced-held** | **closed (finite cyclicity)** |
+| `I²₁₅b` | elementary graphic surrounding focus/center | Dumortier–Guzmán–Rousseau 2002, QTDS 3, Thm 5.3; **sourced-held** | **closed, cyclicity ≤ 2** |
+| `I²₂₃` | pp-graphic through triple nilpotent elliptic point + hyperbolic saddle (σ≠1) | Rousseau–Zhu 2004, JDE 196, Cor. 3.2; **sourced-held** (full text from Rousseau's site) | **closed, cyclicity ≤ 2** |
+| `I²₂₄` | pp-graphic through triple nilpotent elliptic point + hyperbolic saddle (σ≠1) | Rousseau–Zhu 2004, JDE 196, Cor. 3.2; **sourced-held** | **closed, cyclicity ≤ 2** |
+| `I²₂₅` | pp-graphic through triple nilpotent elliptic point + hyperbolic saddle (σ≠1) | Rousseau–Zhu 2004, JDE 196, Cor. 3.2; **sourced-held** | **closed, cyclicity ≤ 2** |
 
 ## Explicit open / partially-open rows
 
@@ -79,13 +87,28 @@ paper.
    the origin" with 40 challenging cases. Same program, different total — likely
    a different grouping/counting convention or coarser/finer vertex listing.
    Not resolved: needs the DRR 1994 paper.
-2. **DF2a closure attribution.** Shan 2013 credits DF1a and DF2a to
-   Dumortier–Rousseau 2009; a search result surfaced a later paper "Cyclicity of
-   degenerate graphic DF2a of Dumortier–Roussarie–Rousseau program" (Huzak 2018
-   per prior library note). Whether DF2a was closed in 2009 and re-examined in
-   2018, or closed only in 2018, is **not** settled by any held full text.
-   Marked **reported** only.
-3. **The "all but one" of RR 2015 is now pinned from the primary text**: the one
+2. **DF2a closure attribution — RESOLVED (sourced-held).** Dumortier–Rousseau
+   2009 (Comm. Pure Appl. Anal. 8:1133–1157, full text now held from
+   dms.umontreal.ca/~rousseac/Dumortier_Rousseau.pdf) explicitly leaves the
+   single point P\*=(D,E₀,E₁,E₂)=(0,0,0,1) open for both DF1a and DF2a, where
+   the family cannot be desingularized (E₀=D=0, E₁=0); it gives Thm 3.1 with
+   at most 3 limit cycles for DF1a (≤1 if E₁≥0) and at most 5 for DF2a (≤1 if
+   bE₁≥0, ≤1 on {D=E₁=0}). Huzak 2018 (CPA 17(3):1305–1316, abstract confirms
+   "we finish the study ... initiated in [5], more precisely we prove the
+   graphic DF2a has a finite cyclicity") closes P\*. So **DF2a's finite
+   cyclicity was closed by Huzak 2018**, filling the P\* gap; with the Huzak
+   closure neither DF1a nor DF2a is among the "open" rows. The open
+   degenerate rows are the **11 other degenerate graphics** (per Shan 2013)
+   and DH5's full treatment.
+3. **pp-graphics cyclicity-2 rows upgraded to sourced-held.** Roussarie–Rousseau
+   2008 (Bull. Belg. Math. Soc., "Finite cyclicity of nilpotent graphics of
+   pp-type surrounding a center", full text now held from
+   dms.umontreal.ca/~rousseac/Roussarie_Rousseau.pdf) proves (H¹₇),(F¹₇a),
+   (H³₁₁),(I¹₆a) have exact cyclicity 2 (2 except a discrete subset for
+   F¹₇a,I¹₆a) — previously `reported` (Shan), now **sourced-held**.
+   Zhu 2005 (YorkSpace bitstream 3526f30d, held) states Thm 1.2: all 16
+   pp-graphics of quadratic systems have finite cyclicity.
+3b. **The "all but one" of RR 2015 is now pinned from the primary text**: the one
    graphic through a triple point at infinity with NO partial result is
    `(H₁₄³)` (hemicycle, two semi-hyperbolic points along the equator). The RR
    2015 intro states: "We have a partial result for every graphic, but one
@@ -138,10 +161,15 @@ publication records through 2025, the UHasselt/MaRDI/MathSciNet records) confirm
    saddle — the degenerate analogue of what RR 2015 build for nilpotent center
    graphics — and certifies **zero cyclicity** at a centre family. It corrects
    Coll–Gasull–Prohens 2025 and confirms De Maesschalck–Rebollo-Perdomo–
-   Torregrosa 2015 proved cyclicity ≤ 2 for the quadratic fake saddle (that JDE
-   paper itself stayed paywalled — see
-   `research/sources/demaesschalck-rebollo-torregrosa-fake-saddle-2014.full.md`,
-   a "Redirecting" stub). See thread `fake-saddle-transition-maps`.
+   Torregrosa 2015 proved cyclicity ≤ 2 for the quadratic fake saddle. The full
+   open-access postprint is held:
+   `research/sources/demaesschalck-rebollo-torregrosa-fake-saddle-2015-postprint.full.md`
+   (UAB DDD), digested in
+   `research/summaries/demaesschalck-rebollo-torregrosa-fake-saddle-2015-postprint.md`,
+   with the critical caveat that the fake saddle has **no contribution to the
+   DRR degree-2 programme** (homogeneous fields avoided by rescalings). The
+   older `demaesschalck-rebollo-torregrosa-fake-saddle-2014.full.md` is a
+   "Redirecting" stub — superseded. See thread `fake-saddle-transition-maps`.
 
 **Bottom line for the requests ledger:** the target inventory of the DRR
 program is assembled by triangulating RSZ 2015 + RR 2015 + Shan 2013 Table 1.1 +

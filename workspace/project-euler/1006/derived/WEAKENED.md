@@ -10,7 +10,7 @@ Rungs are listed weakest first, which is the order to climb them. Attack the cur
 
 | Ladder | Full-strength goal | Difficulties | Status |
 | --- | --- | --- | --- |
-| [[pe1006-fibonacci-subword]] | compute Psi(10^18) mod 101001001, where Psi(k) is the sum of squares of the decimal values (leading zeros ignored) of the k+1 distinct Fibonacci subwords of… | k=10^18, self-similar factor set, leading zeros dropped, square second moment, power-10 weights mod M | open |
+| [[pe1006-fibonacci-subword]] | compute Psi(10^18) mod 101001001, where Psi(k) is the sum of squares of the decimal values (leading zeros ignored) of the k+1 distinct Fibonacci subwords of… | k=10^18, self-similar factor set, leading zeros dropped, square second moment, power-10 weights mod M, O(log) Euclidean monoid primitive | open |
 
 ## The rungs, weakest first
 
@@ -18,23 +18,27 @@ Each row is a statement weaker than the goal. The more difficulties are off, the
 
 | Rung | Ladder | Weakened target | Off | Status |
 | --- | --- | --- | --- | --- |
-| `R2-factor-count` | [[pe1006-fibonacci-subword]] | prove and verify (for small k) that the infinite Fibonacci word has exactly k+1 distinct factors of length k, and give the self-similar recursion for the… | k=10^18, square second moment, power-10 weights mod M | open |
-| `R3-first-moment` | [[pe1006-fibonacci-subword]] | compute the first moment Psi_1(k) = sum of the k+1 factor values (leading zeros still dropped, decimal reading), instead of the sum of squares. Drops the… | k=10^18, square second moment | open |
-| `R1-brute-oracle` | [[pe1006-fibonacci-subword]] | compute Psi(k) exactly for 1 <= k <= 10 by exhaustive substring enumeration over finite prefixes S_n large enough to contain every length-k subword, keeping… | k=10^18 | open |
-| `R4-moderate-second-moment` | [[pe1006-fibonacci-subword]] | compute the full second moment Psi(k) with the real shape (self-similar factor set, leading zeros dropped, decimal reading, squares) at moderate k (up to… | k=10^18 | open |
-| `R5-full` | [[pe1006-fibonacci-subword]] | the goal itself — evaluate Psi(10^18) mod 101001001 via the geometric-weight sum sum over the factor set of V_i^2 modulo M, using an O(log k)… | (none) | open |
+| `R2-factor-structure` | [[pe1006-fibonacci-subword]] | prove and verify (for small k) that the infinite Fibonacci word is Sturmian and has exactly k+1 distinct factors of length k, giving the structure that… | k=10^18, leading zeros dropped, square second moment, power-10 weights mod M, O(log) Euclidean monoid primitive | **settled** |
+| `R1-brute-oracle` | [[pe1006-fibonacci-subword]] | compute Psi(k) exactly for small k (1 <= k <= ~30) by exhaustive substring enumeration over a finite prefix of the Fibonacci word long enough to contain every… | k=10^18, O(log) Euclidean monoid primitive | **settled** |
+| `R3-mechanical-second-moment` | [[pe1006-fibonacci-subword]] | compute the full second moment Psi(k) with the real shape (self-similar factor set, leading zeros dropped, decimal reading, squares) for small-to-moderate k by… | k=10^18, O(log) Euclidean monoid primitive | **settled** |
+| `R4-moderate-scale-anchors` | [[pe1006-fibonacci-subword]] | compute the full second moment Psi(k) by the valid direct mechanical method at moderate k = 10^3, 10^4, 10^6 and confirm in-container the asserted acceptance… | k=10^18, O(log) Euclidean monoid primitive | open |
+| `R5-olog-monoid` | [[pe1006-fibonacci-subword]] | evaluate the same geometrically weighted second moment through the universal-Euclidean (Chtholly / AtCoder floor_sum) monoid — the (count, sum x^j, sum… | k=10^18 | open |
 
 ## The current rung — attack this one
 
 The weakest statement nobody has settled yet. Aiming higher is how a run spends a budget proving nothing.
 
-- [[pe1006-fibonacci-subword]] → `R2-factor-count`: prove and verify (for small k) that the infinite Fibonacci word has exactly k+1 distinct factors of length k, and give the self-similar recursion for the factor set — the objects Psi sums over. No values, no squares, no weighting are involved.
-  - switched off: k=10^18, square second moment, power-10 weights mod M
-  - to merge the next difficulty back: attach to each of the k+1 factors its decimal value, reintroducing the place-weighting; climb to the first-moment rung.
+- [[pe1006-fibonacci-subword]] → `R4-moderate-scale-anchors`: compute the full second moment Psi(k) by the valid direct mechanical method at moderate k = 10^3, 10^4, 10^6 and confirm in-container the asserted acceptance anchors Psi(10^4) mod M = 34432237 (count 10001) and Psi(10^6) mod M = 20938836 (count 1000001); also confirm the phase4-anchors-invalid conclusion that the old collapse values 16242174 / 77578256 are wrong at these k. O(k^2) big-integer work is still feasible at these sizes.
+  - switched off: k=10^18, O(log) Euclidean monoid primitive
+  - to merge the next difficulty back: the scripts exist (code/out/verify/check_phase4_anchors.py, check_directive6_anchors.py) but are not yet run; running them settles this rung. Once the anchors hold, turning the O(log) Euclidean monoid back on must reproduce exactly these values before anything is trusted at 10^18 — so this rung is the gate for R5.
 
-## Ladders that could not be read
+## Settled — what this run owns
 
-- `pe1006-fibonacci-subword` rung `R5-full` switches off `(none)`, which the ladder never declared as a difficulty — the rung and the header disagree about what makes the goal hard
+Each one is a theorem, weaker than the goal and true. Quote it with the difficulties that were switched off; without them it reads as a proof of something it did not prove.
+
+- [[pe1006-fibonacci-subword]] `R1-brute-oracle`: compute Psi(k) exactly for small k (1 <= k <= ~30) by exhaustive substring enumeration over a finite prefix of the Fibonacci word long enough to contain every length-k subword, keeping the full problem shape (decimal reading, leading zeros dropped, squares, power-10 weights mod M). Must reproduce Psi(3)=20302 and Psi(10) mod 101001001 = 10699667, and factor count exactly k+1. (off: k=10^18, O(log) Euclidean monoid primitive; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[pe1006-fibonacci-subword]] `R2-factor-structure`: prove and verify (for small k) that the infinite Fibonacci word is Sturmian and has exactly k+1 distinct factors of length k, giving the structure that characterizes the objects Psi sums over. No decimal values, squares, or weights are involved. (off: k=10^18, leading zeros dropped, square second moment, power-10 weights mod M, O(log) Euclidean monoid primitive; _nothing named — say which claim established it, or a reader cannot check it_)
+- [[pe1006-fibonacci-subword]] `R3-mechanical-second-moment`: compute the full second moment Psi(k) with the real shape (self-similar factor set, leading zeros dropped, decimal reading, squares) for small-to-moderate k by the mechanical-word (Sturmian) construction, with two independent formulations of the sum agreeing and exact integer arithmetic — not yet at the astronomical scale, and not yet through an O(log) evaluation. (off: k=10^18, O(log) Euclidean monoid primitive; _nothing named — say which claim established it, or a reader cannot check it_)
 
 ---
 

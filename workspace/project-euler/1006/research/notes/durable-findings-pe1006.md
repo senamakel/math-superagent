@@ -6,6 +6,28 @@ relaunch them. Each finding is source-backed and cross-checked; the numbers are
 brute-oracle-verified in `code/out/`; the slope correction is hand-verified in
 exact arithmetic and confirmable mechanically via `code/out/check_slope.py`.
 
+## Cycle note — one genuine claim-block defect fixed; entailment tooling caveat
+
+- **Fixed a malformed claim block.** `research/notes/three-distance-frequency-structure.md`
+  carried claim `dir1-domain-autocorrelation` with the field written as
+  `statement (steer, ...):` instead of `statement:`. The parser read it as
+  having no `statement`, so the claim "claimed nothing" and was flagged by the
+  claims ledger as a block that could not be read. Rewritten to a well-formed
+  `statement: Directive 1's pair-correlation identity C(j,jp)=A(jp-j) holds
+  ONLY at k=F_n-1 ...` (the A(d) clause now lives in the hypotheses field, where
+  it belongs, so no duplication remains). It now parses and appears in
+  derived/CLAIMS.md. `holds-here: unchecked` / `status: asserted` is correct —
+  it is a steer-directive scope statement, recorded so the identity's domain is
+  not forgotten, not a library-proved result.
+- **Entailment tooling caveat (confirmed again).** The rendered `derived/ENTAILMENT.md`
+  still reads "nothing to derive yet" despite `follows-from:` edges now on
+  `mechanical-word-digit-rule`, `fibonacci-sturmian-complexity`, and
+  `req-close-factor-complexity`. Same renderer gap as the `answers:` lines in
+  the requests ledger — the edges are recorded on disk in the claim blocks
+  (what CLAIMS.md consumes); the ENTAILMENT/REQUESTS *renderers* lag. Not a
+  blocking gap; a `request_research` / note re-post may be needed to reflect
+  closure in the rendered ledger.
+
 ## Finding 1 — the problem's word is the characteristic Sturmian word of slope 1/phi^2
 
 The PE1006 word S (S_n = S_{n-1}S_{n-2}, S_0=0, S_1=01) is the characteristic
@@ -71,6 +93,14 @@ Psi(1..5) = 1, 101, 20302, 2042402, 204252402 has no OEIS match; A344953 is a
 different (peripheral) sequence and does not help. OEIS A003849 factor corpus
 (first 1652 subwords) independently matches the problem's length-3 set
 (001,010,100,101) and confirms k+1 per length — an on-disk oracle for small k.
+
+**Librarian re-check (this cycle):** the OEIS lookup was re-run with seven
+oracle-verified terms
+`1, 101, 20302, 2042402, 204252402, 30445654403, 3054587854503`
+(Ψ(1)..Ψ(7), from code/out/brute_oracle_results.md) — still **no OEIS entry
+matches**. The sequence of Ψ-values is not catalogued; do not run the lookup
+again. Structure must come from Sturmian / universal-Euclidean theory, as
+recorded.
 
 ## Open items for the solver
 

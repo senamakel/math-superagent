@@ -1,63 +1,45 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/rouseau-shan-zhu-nilpotent-saddle-graphics.html.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Rousseau–Shan–Zhu 2015 (arXiv:1502.00689), nilpotent saddle graphics
 
-<!-- source: https://arxiv.org/html/1502.00689v1 | converted from HTML -->
+Source: `research/sources/rouseau-shan-zhu-nilpotent-saddle-graphics.html.full.md` [[rouseau-shan-zhu-nilpotent-saddle-graphics.html.full]] — arXiv HTML full text. Record page: [[rouseau-shan-zhu-nilpotent-saddle-graphics.full]].
 
-## What is in it
+## What the source establishes
 
-- Finite cyclicity of some graphics through a nilpotent point of saddle type inside…
-  - 1 Introduction
-  - 2 Preliminaries
-    - 2.1 Normal form for the unfolding of a nilpotent triple point of saddle type
-    - 2.2 Finite cyclicity of a graphic
-        - Definition 2.1.
-    - 2.3 Blow-up of the family
-    - 2.4 Limit periodic sets in the blow-up family
-    - 2.5 Proving the finite cyclicity of a limit periodic set
-    - 2.6 Dulac maps
-      - 2.6.1 First type of Dulac map
-        - Definition 2.2.
-        - Theorem 2.3.
-        - Remark 2.4.
-    - 2.7 Dulac map near a hyperbolic or semi-hyperbolic point
-        - Theorem 2.5.
-        - Definition 2.6.
-        - Theorem 2.7.
-  - 3 Finite cyclicity of convex graphics through a nilpotent saddle of multiplicity 3 3
-- …
+**Main theorem (abstract + Theorem 3.1)**: finite cyclicity of the two graphics
+(I¹₁₂) and (I¹₁₃), through a triple nilpotent point of **saddle type** not
+surrounding a center, inside quadratic vector fields. These complete the
+nilpotent-saddle non-center rows and — in the paper's own words — "**bring the
+number of graphics of the program for which finite cyclicity is proved to 88**".
 
+**The a₀ = −1/2 case (Theorem 3.1).** Prior work ([7], Zhu–Rousseau) proved a
+graphic through a codimension-3 nilpotent saddle has finite cyclicity whenever
+the first return map has derivative ≠ 1 — excluding a₀ = −1/2 (hyperbolicity
+ratio τ = 1 at the saddle, where divergence ≡ μ̄₃). RSZ 2015 closes exactly this
+resonant case:
+- At a₀ = −1/2, μ̄₃ = 0, family (2.6) is **Hamiltonian and symmetric**:
+  H(x̄,ȳ) = ½ȳ² − ½x̄²ȳ + μ̄₂ȳ − μ̄₁x̄; the first return T₀ is shown to be T₀ ≡ id
+  along the fixed connection, turning the resonant case into an integrable one.
+- The displacement map is L_ν = R₃,ν ∘ D₃,ν ∘ T_ν ∘ D₄,ν⁻¹ − D_ν⁻¹ ∘ R₄,ν⁻¹ with
+  Dulac maps D_i (σ₀ = 4), and the intermediate graphic has cyclicity 1 once
+  T′_ν(0) − S′_ν(0)·ν^{σ̄₄−σ̄₃} is bounded away from 0.
+- Also derives the genericity condition for (I¹₁₂) (divergence integral over the
+  invariant parabola ≠ 0), giving (I⁹b²) with codimension-3, and treats a
+  nilpotent saddle + saddle-node with central transition for (I¹₁₃).
 
-## What it claims
+**Definition 2.1 (finite cyclicity of a graphic)** is the DRR notion used
+throughout — a graphic Γ at A₀ has finite cyclicity in S²×K if a neighborhood
+U×V of Γ×{A₀} contains at most N limit cycles for some fixed N.
 
-Christiane Rousseau Affiliation: Department of Mathematics and Statistics and CRM,University of Montreal, Montreal, Canada H3C 3J7 Chunhua Shan Affiliation: Department of Mathematical and Statistical Sciences,University of Alberta, Edmonton, Canada T6G 2G1 Huaiping Zhu Affiliation: Department of Mathematics and Statistics and LAMPS,York University, Toronto, Canada, M3J 1P3
+## What it implies here
 
-Abstract. In this paper we show the finite cyclicity of the two graphics ( I 12 1) (I_{12}^{1}) and ( I 13 1) (I_{13}^{1}) through a triple nilpotent point of saddle type inside quadratic vector fields. These results contribute to the program launched in 1994 by Dumortier, Roussarie and Rousseau (DRR program) to show the existence of a uniform upper bound for the number of limit cycles for planar quadratic vector fields.
+Co-anchor of `h16-drr-121-graphics` (the compactness/121 reduction) and the
+source of the **88-by-2015 count** (claim `h16-drr-closed-rows-2015`). The
+Hamiltonian-completion trick at the resonant value a₀ = −1/2 is the concrete
+mechanism by which finite cyclicity is obtained exactly where the generic
+τ ≠ 1 machinery breaks — a model for how the run's own attack on an open
+nilpotent graphic can go: reduce to the resonant value, find a first integral,
+then count zeros of a one-dimensional displacement map.
 
-Key words. Nilpotent saddle; Graphics; Cyclicity; DDR program; Poincaré first return map; Finiteness part of Hilbert’s 16th problem.
-
-## Statements it makes
-
-###### Definition 2.1.
-
-###### Definition 2.2.
-
-###### Theorem 2.3.
-
-###### Theorem 2.5.
-
-###### Definition 2.6.
-
-###### Theorem 2.7.
-
-###### Theorem 3.1.
-
-###### Theorem 3.2.
-
-###### Corollary 3.4.
-
-###### Proposition 4.1.
-
-###### Theorem 4.2.
-
-###### Theorem 4.3.
-
-*[digest of a 53849 character source; every section, statement, and proof in full at `research/sources/rouseau-shan-zhu-nilpotent-saddle-graphics.html.full.md`]*
+Evidence class: sourced-held — read from the held full HTML text. Hypotheses:
+n = 2 quadratic; nilpotent saddle of multiplicity 3; a₀ = −1/2 resonant case;
+fixed connection for the second family. Falsifier: a quadratic system near
+(I¹₁₂) or (I¹₁₃) with a limit cycle count contradicting the theorem.

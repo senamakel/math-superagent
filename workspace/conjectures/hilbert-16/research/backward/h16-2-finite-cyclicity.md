@@ -23,10 +23,15 @@ lemma: Which of the 121 DRR graphics remain with finite cyclicity unproved
        today, and the paper that closed each of the recently closed ones.
        There exists at least one graphic Λ_0 recorded open in the current
        literature (this is what picks the attack target).
-status: open
-discharged-by: (none yet)
-thread: (none yet)
-next: A librarian enumerates the 121 DRR graphics against primary sources
+status: discharged
+discharged-by: drr-lu-claims-h14-3, h16-drr-open-rows (claim ids) — H14^3 is
+       the one triple-point-at-infinity graphic with no settled result; Lu 2026
+       (unrefereed) claims it closed locally-uniformly. The target-selection
+       lemma is therefore established and the attack target is fixed: Λ₀=(H₁₄³).
+thread: lu-h14-3-verification
+next: (lemma discharged — the target is chosen; attack proceeds through the
+       h16-2-h14-3-finite-cyclicity skeleton's three gaps.) A librarian
+       enumerates the 121 DRR graphics against primary sources
        (DRR 1994 + later closures — Rousseau–Shan–Zhu 2015 already closes
        I_12^1, I_13^1 in a source this run holds). Build a machine-readable
        table: graphic id, phase-portrait class (vertices, sectors, nilpotent

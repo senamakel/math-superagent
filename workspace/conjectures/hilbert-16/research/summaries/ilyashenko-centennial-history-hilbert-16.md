@@ -1,104 +1,19 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/ilyashenko-centennial-history-hilbert-16.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Ilyashenko 2002, "Centennial history of Hilbert's 16th problem" (Bull. AMS 39(3):301–354)
 
-<!-- source: https://www.ams.org/journals/bull/2002-39-03/S0273-0979-02-00946-1/S0273-0979-02-00946-1.pdf | converted from PDF -->
+Source: `research/sources/ilyashenko-centennial-history-hilbert-16.full.md` [[ilyashenko-centennial-history-hilbert-16.full]] — AMS PDF (verified content). A concatenated mirror copy is [[ilyashenko-centennial-history-h16.full]].
 
-## What is in it
+## What the source establishes (canonical survey, verified statements)
 
-- {γ ∩ l}≤ #{F =0, ∗(ω ∧ dF )= 0},(5.4)
-- {z ∈ K|f (z)= 0}≤ γ(U, K)BU,K(f ).
-- {t ∈ σ|I(t)= 0}≤ e2500n
-4 .(7.5)
+- **Theorem 2.1 (Finiteness Theorem)**: a polynomial vector field in the plane has only finitely many limit cycles; same for analytic fields on the 2-sphere. Proved by Écalle (1992) and Ilyashenko (1991). This is the individual-field finiteness (Dulac's problem), not the uniform H(n).
+- **Dulac's error** (Section 3): Dulac inferred triviality of the return map of a polycycle from triviality of its asymptotic expansion — the exact C^∞-vs-analytic failure. Ilyashenko's 1984/85 result: limit cycles cannot accumulate on a polycycle with only hyperbolic saddle vertices (Theorem 3.5); the correspondence map of a hyperbolic saddle is **almost regular** (Lemma 3.4), a quasi-analytic class.
+- **Theorem 2.2 [V, Kh84]**: the upper bound V(n) in the infinitesimal Hilbert 16th problem exists (non-constructive; Varchenko–Khovanskii).
+- **Theorems 2.3–2.4 [IYa95, Kaloshin]**: E(k) exists for families with elementary singular points; E(k) ≤ 2^{25k²}. The Hilbert–Arnold problem is positively solved for elementary-singularity families.
+- **Exactness Theorem 7.1 [I69a,b, Pu]**: for an ultra-Morse H of degree n+1 ≥ 3, if I(t) ≡ 0 over ovals then ω is exact. This yields **Corollary 7.1**: for ultra-Morse H with N = (n²+n)/2 − 1 ovals and any δ > 0, there is a perturbation dH + εω with N limit cycles near those ovals.
+- **Theorem 7.7 [GI\*]**: for H critically balanced (sum of two critically bounded one-variable polynomials), deg ω ≤ n, the number of zeros of the Abelian integral over an oval family is ≤ **e^{2500n⁴}** (explicit, but restricted to critically balanced H — not general ultra-Morse). General V(n) bound: tower of four exponentials (Theorem 7.6).
+- **Petrovskii–Landis** attempted solution refuted by Novikov–Ilyashenko (Section 3); the DRR 121-program and the H(3) "unrealistic" remark at §5.2.
 
+## What it implies here
 
-## What it claims
+Sourced anchors for: `h16-dulac-finiteness-theorem`, `h16-kaloshin-uniform-bound`, `h16-abelian-integral-bounds` (V(n) exists; e^{2500n⁴} for critically balanced; tower-of-4 for the general case). The Exactness Theorem/Corollary 7.1 is the clean quantitative statement behind "M(n) ≥ (n²+n)/2 − 1"-type lower bounds — the dimension-count argument in Liang–Torregrosa's weak-foci work and the (n²+n)/2 − 1 tangential lower bound. The Dulac-error description (Section 3) is the canonical statement of problem.md's smooth test.
 
-Abstract. The second part of Hilbert’s 16th problem deals with polynomial
-diﬀerential equations in the plane. It remains unsolved even for quadratic
-polynomials. There were several attempts to solve it that failed. Yet the prob-
-lem inspired signiﬁcant progress in the geometric theory of planar diﬀerential
-equations, as well as bifurcation theory, normal forms, foliations and some
-topics in algebraic geometry. The dramatic history of the problem, as well as
-related developments, are presented below.
-
-§1. The problem and its counterparts
-
-What may be said about the number and location of limit cycles of a planar
-polynomial vector ﬁeld of degree n? (The limit cycle is an isolated closed orbit
-of a vector ﬁeld.) This second part of Hilbert’s 16th problem appears to be one
-of the most persistent in the famous Hilbert list [H], second only to the Riemann
-ζ-function conjecture.
-Traditionally, Hilbert’s question is split into three, each one requiring a stronger
-answer.
-
-Problem 1. Is it true that a planar polynomial vector ﬁeld has but a ﬁnite number
-of limit cycles?
-
-Problem 2. Is it…
-
-Th…
-
-## Statements it makes
-
-Theorem 2.1 (Finiteness Theorem for Limit Cycles) [E92], [I91]. A polynomial
-vector ﬁeld in the plane has only a ﬁnite number of limit cycles. The same is
-true for analytic vector ﬁelds on the 2-sphere.
-
-Theorem 2.2 [V], [Kh84]. For any n, the upper bound V (n) in the inﬁnitesimal
-Hilbert 16th problem exists.
-
-Theorem 2.3 [IYa95a]. For any k, the number E(k) exists.
-
-Corollary. The Hilbert-Arnold problem has a positive solution for families of vector
-ﬁelds having elementary singular points only.
-
-Theorem 2.4 [K*]. For any k, E(k) ≤ 225k2 .
-
-Theorem 4 is announced in [IK] and proved in [K*]. The estimate given by this
-theorem may be too high. Yet it is one of the ﬁrst Hilbert type numbers (that is,
-bounds to the number of limit cycles) obtained up to now. Other Hilbert type
-numbers are presented in Sections 6 and 7.
-This paper is organized as follows. The main achievement and the mistake of
-Dulac in his attempt to prove the Finiteness Theorem 1 are presented in Section 3,
-together with a sketch of the proof of Theorem 1 for ﬁelds with hyperbolic singular
-points only.
-Some other ingredients of the proof of the Finiteness Theorem, including nonlin-
-ear Stokes phenomena, appear in Section 4. That section is devoted to the theory…
-
-Theorem 3.2 (Dulac’s Theorem) [D]. For any polycycle of an analytic vector
-ﬁeld, a cross-section with the vertex zero on the polycycle may be so chosen that the
-corresponding Poincar´e map will be ﬂat, inverse to ﬂat, or semiregular.
-
-Lemma 3.1 [D]. Let a semiregular map have an inﬁnite number of ﬁxed points
-(for brevity, f ∈ Fix ∞). Then f is the identity.
-
-Theorem 3.3 (Uniqueness theorem for almost regular germs). An almost regular
-germ at inﬁnity is uniquely determined by its asymptotic series.
-
-Theorem 3.4 [Ti]. If a bounded function is holomorphic in C+ and decays faster
-than any exponential on (R+, ∞), then it is identically zero.
-
-Theorem 3.4 implies that H ≡ 0. This proves Theorem 3.3.
-
-Lemma 3.3. Almost regular germs form a group with respect to composition.
-
-Theorem 3.5 [I84]. Limit cycles of an analytic vector ﬁeld on the 2-sphere can-
-not accumulate to a polycycle of this ﬁeld, provided that all of the vertices of the
-polycycle are hyperbolic saddles.
-
-Lemma 3.4 [I84]. The correspondence map of a hyperbolic saddle of an analytic
-vector ﬁeld in the plane is almost regular.
-
-Theorem 3.6 (Desingularization Theorem). Let a real analytic vector ﬁeld have
-a holomorphic extension to the complex plane which has an isolated singular point
-zero. Then, the singular point of the original vector ﬁeld may be split into a ﬁnite
-number of elementary singular points after a ﬁnite number of blow ups.
-
-Theorem 4.1 (Poincar´e). A nonresonant germ of an analytic vector ﬁeld is for-
-mally equivalent to its linear part.
-
-Theo…
-
-
-*[further statements in the full text]*
-
-*[digest of a 162652 character source; every section, statement, and proof in full at `research/sources/ilyashenko-centennial-history-hilbert-16.full.md`]*
+Evidence class: sourced-held — read from the held full text. Hypotheses: as stated per theorem (polynomial fields; ultra-Morse/critically balanced H). Falsifier: a polynomial field with infinitely many limit cycles (would refute Theorem 2.1); a counterexample to the e^{2500n⁴} bound within its hypotheses.

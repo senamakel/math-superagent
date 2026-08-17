@@ -1,0 +1,10 @@
+# Index — code/lean
+
+What each file in this folder is for. Keep it current: describe a file when you create it, and refresh this index after adding, renaming, or deleting files.
+
+| File | Purpose |
+| --- | --- |
+| `pe1006_psi_G1_factor_chain-87f94deb.lean` | The kernel-verified (sorry-free, axioms propext/Quot.sound) provable shell of node G1-sturmian-factor-structure: fibWord/S_n definition, FactorSet (length-k factors), FibSubwords k = union over S_n, and the monotone nesting factorSet_prefix_nest / factorSet_chain / factorSet_chain_any (a factor of S_n is a factor of S_{n+1} since S_n is a prefix of S_{n+1}). Backs claim g1-factor-chain-nested. The count theorem is gapped in the sibling file pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean. |
+| `pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean` | Node G1-sturmian-factor-structure: the full statement of the Sturmian factor-complexity count fib_subword_count : (FibSubwords k).ncard = k+1 with h : 1 ≤ k, left as a declared gap (sorry) — the mathematical heart, not yet formalised; plus factor_limit_stabilises restatement and Cited.sturmian_factor_complexity axiom (unused). The provable nesting shell is split into the sibling verified file pe1006_psi_G1_factor_chain-87f94deb.lean; oracle example (length-3 factors {001,010,100,101}) checked via native_decide. |
+| `pe1006_psi_G2_mech_shell-1f79c34f.lean` | Sorry-free kernel-verified shell of node G2: slope in [0,1], digits in {0,1}, exact-binary mechanical words with corrected slope fib(n)/fib(n+2). Verified by lean_check (axioms propext/Classical.choice/Quot.sound). The deep factor-identity is gapped in the companion node file. |
+| `pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` | Node G2 statement file with corrected slope: formalises the mechanical/rotation representation of the length-k factors of the Fibonacci word. Shell lemmas proved; the deep factor identity mech_reproduces_factors/mech_set_card are declared gaps (sorry + Cited axiom, not formalised). |

@@ -1,39 +1,40 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/yeung-dulac-theorem-revisited.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Yeung, "Dulac's Theorem Revisited" — journal record page (Qual. Theory Dyn. Syst. 24, Art. 57, 2025)
 
-<!-- source: https://doi.org/10.1007/s12346-025-01220-2 | converted from HTML -->
+Source: `research/sources/yeung-dulac-theorem-revisited.full.md` [[yeung-dulac-theorem-revisited.full]] — Springer record page (DOI 10.1007/s12346-025-01220-2).
 
-## What is in it
+## What this page establishes
 
-- Dulac’s Theorem Revisited
-  - Abstract
-  - Access this article
-  - Subscribe and save
-  - Buy Now
-    - Similar content being viewed by others
-    - [Transversal Curves for Finding the Exact Number of Limit Cycles][10]
-    - [Surfaces with Central Configuration and Dulac’s Problem for a Three Dimensional Isolated…
-    - [Fixed and moving limit cycles for Liénard equations][12]
-    - Explore related subjects
-  - Data Availability
-  - References
-  - Acknowledgements
-  - Funding
-  - Author information
-    - Authors and Affiliations
-    - Contributions
-    - Corresponding author
-  - Ethics declarations
-    - Conflict of interest
-  - Additional information
-    - Publisher's Note
-  - Rights and permissions
-- …
+Record page for the **peer-reviewed** publication of the Dulac-gap claim. The
+abstract (the only mathematics on this page) states precisely:
 
+- Dulac's error: inferring **triviality of the return map of a polycycle from
+  triviality of its asymptotic expansion**.
+- Ilyashenko 1985 produced the counterexample showing why Dulac's argument
+  failed, and proved Dulac's theorem valid for **hyperbolic polycycles** (fully
+  understood cornerstone).
+- The paper's new claim: *the approach of Ilyashenko (1991) to Dulac's theorem
+  has a gap* — the arguments that the asymptotics of Ilyashenko (1991) are not
+  themselves oscillatory are insufficient; an **explicit counterexample** is
+  given, and confines are drawn to which Ilyashenko's result may be restricted
+  to keep validity.
+- Author: Melvin Yeung (Hasselt University; FWO 11E6821N; acknowledgements to
+  Novikov, Panazzolo, de Maesschalck, Dumortier, and **Ilyashenko himself for
+  feedback** — so Ilyashenko saw the claim pre-publication).
+- Published: 27 Jan 2025; received 03 Oct 2024; accepted 02 Jan 2025.
 
-## What it claims
+## What it implies here
 
-Dulac’s theorem states that the number of limit cycles of any given polynomial vector field on the plane is finite. After compactifying the phase plane to a sphere and some well known arguments one only has to prove that limit cycles cannot accumulate onto elementary graphics which we will call polycycles. Dulac in his proof unfortunately made an unproved statement by inferring the triviality of the return map of a polycycle from the triviality of its asymptotic expansion. Ilyashenko in (Russ Math Surv 40(6):1–49, 1985. [https://doi.org/10.1070/rm1985v040n06abeh003701][6]) produced a clever counter example, clearly showing why Dulac’s arguments failed and additionally he showed that Dulac’s theorem is valid for hyperbolic polycycles, i.e. polycycles with only hyperbolic equilibria. It is a corner stone that has been completely understood. Afterwards Ilyashenko published his own full proof of Dulac’s theorem in Ilyashenko (in: Translations of mathematical monographs, American Mathematical Society, Providence, 1991). We provide evidence that the approach of Ilyashenko (1991) to the…
+This is the **peer-reviewed** form of claim `h16-gap-claims-2024` (which the
+ledger marks unchecked — the arXiv:2402.12506 version is the readable full text,
+digested in [[yeung-ilyashenko-finiteness-gap]]). The peer-review status upgrades
+the seriousness of the gap claim: it is no longer a lone preprint. The theorem
+itself is NOT claimed false; the *completeness of Ilyashenko's proof* is
+contested. No Ilyashenko-side rebuttal has been located. The references page
+also confirms the modern quasi-analyticity literature (Aschenbrenner–van den
+Dries–van der Hoeven transseries; Galal–Kaiser–Speissegger Ilyashenko algebras;
+Kaiser–Rolin–Speissegger o-minimal transition maps) — the successor tools to
+Ilyashenko's almost-regular germs.
 
-T…
-
-*[digest of a 16470 character source; every section, statement, and proof in full at `research/sources/yeung-dulac-theorem-revisited.full.md`]*
+Evidence class: record page (abstract + provenance). For the mathematical
+content, read `research/sources/yeung-gap-ilyashenko-dulac-html.full.md` (full
+text) — digested in `research/summaries/yeung-ilyashenko-finiteness-gap.md`.

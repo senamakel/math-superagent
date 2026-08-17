@@ -14,6 +14,7 @@ length k" is the standard factor-complexity theorem, and the length-3 set is
 hypotheses: binary aperiodic infinite word, Sturmian (equivalently irrational mechanical, balanced).
 holds-here: true — the S_n limit is the infinite Fibonacci word whose length-k factors are the problem's subwords.
 status: sourced
+follows-from: governing-sturmian, governing-factor-complexity
 bearing: Fixes the object set of the sum at exactly k+1 terms and confirms the statement example.
 anchor: research/sources/lothaire-sturmian-words-C2.full.md (sec 2.1.1, def of complexity and Sturmian, P(s,n)=n+1); research/sources/wikipedia-fibonacci-word.full.md (complexity n+1, lists the 4 length-3 subwords); research/sources/perrin-restivo-note-sturmian-words.full.md (Theorem 1).
 answers: citable-statement-theorem-039a

@@ -1,24 +1,43 @@
-# Dumortier–Rousseau, "Study of the cyclicity of some degenerate graphics inside quadratic systems", CPAA 8(4):1133–1157 (2009)
+# Dumortier–Rousseau 2009, degenerate graphics (CPA 8:1133–1157)
 
-**Source URL:** https://doi.org/10.3934/cpaa.2009.8.1133
-(Article page: https://www.aimsciences.org/article/doi/10.3934/cpaa.2009.8.1133)
+Source: `research/sources/dumortier-rousseau-2009-degenerate-graphics-cpaa.full.md` [[dumortier-rousseau-2009-degenerate-graphics-cpaa.full]] — from `http://www.dms.umontreal.ca/~rousseac/Dumortier_Rousseau.pdf`.
 
-**Evidence class: sourced-abstract.** The AIMS article page converts to HTML containing the **full abstract** (this is what the held file records); the full text PDF is AIMS-hosted but this run's extractor obtained only the abstract page. The abstract is primary-source text. The full mathematical content (which DFn graphics, the specific open problem) is NOT in the library yet — needs the AIMS PDF.
+## What the source establishes
 
-## What it establishes (from the abstract, primary source)
+The paper attacks finite cyclicity of the **degenerate** DRR graphics — the ones
+with a **line of singular points** in the finite plane — which lie outside the
+elementary/nilpotent closures. It gives exact **5-parameter** normal forms for
+the 13 degenerate graphics (3 normal forms suffice):
 
-- Makes **essential steps** in proving the **finite cyclicity of degenerate graphics in quadratic systems having a line of singular points in the finite plane**.
-- **In particular considers the graphics (DF₁ₐ) and (DF₂ₐ)** of the DRR program [8] (Dumortier–Roussarie–Rousseau 1994) toward the finiteness part of Hilbert's 16th problem for quadratic vector fields.
-- **"We make a complete treatment except for one very specific problem that we clearly identify."** — i.e., even the DF1a/DF2a closure is not fully complete; one problem remains, identified in the paper.
-- **Keywords:** finite cyclicity, singular perturbations, blow-up of the family, degenerate graphics, Hilbert's 16th problem for quadratic systems. MSC: 34C07, 34C26, 37G99.
+- **finite-plane line** (DF1a, DF1b, DF2a, DF2b, DH1, DH2):
+  `ẋ = y + bxy − y² + µ1 + µ2x + µ3x²`, `ẏ = xy + µ4`, with a weak focus/centre.
+- **infinity line** (DI1a, DI1b, DI2a, DI2b, DH3, DH4):
+  `ẋ = cx − y + 1 + (1+µ2)x² + µ1xy + µ0y²`, `ẏ = xy − µ3x²`.
+- **DH5**: no analytic 5-parameter normal form exists — needs a 7-parameter
+  unfolding; slow motion is `ẋ = µ0+µ1x+µ2x²` on the line and
+  `ẋ = µ3+µ4v+µ5v²+µ6v³` on the equator. This is the key obstacle for DH5.
 
-## Why it matters to this run
+**Theorem 3.1** (the core cyclicity statement): DF1a (b₀ ∈ (0,2)) has at most
+**3** limit cycles near the graphic (≤1 if E1 ≥ 0); DF2a (b₀ = 0) at most **5**
+(≤1 if bE1 ≥ 0, ≤1 on the circle {D = E1 = 0}).
 
-- This is the **primary closure paper for the two degenerate graphics DF1a, DF2a** that this library previously held only by secondary citation (Shan 2013). Now held as sourced-abstract (not merely "reported").
-- The run's live steering directive retargets to the **eleven open degenerate graphics** (Shan 2013: only DF1a/DF2a done). **The abstract itself says even DF1a/DF2a are "complete except for one very specific problem"** — so the run must NOT treat DF1a/DF2a as fully closed; the exact remaining problem needs the AIMS PDF full text.
-- The method keywords — **singular perturbations, blow-up of the family, degenerate graphics** — are exactly the instruments GOAL.md names (blow-ups of nilpotent/degenerate points, slow–fast). This paper is the template for the degenerate-graphics attack: the DFn family has a **line of singular points in the finite plane**, and the paper's "blow-up of the family" + singular perturbation treatment is what a new open degenerate graphic would need.
+**The single open point**: `P* = (D, E0, E1, E2) = (0,0,0,1)`. At P* the family
+**cannot be desingularized** — E0 = D = 0, E1 = 0 leaves several expected limit
+cycles and no blow-up exists. This is a genuine analytic-algebraic obstruction,
+not a gap in technique. Completed later by Huzak 2018 (DF2a fully closed).
 
-## Status / gaps
+## What it implies here
 
-- **Full text NOT obtained** — AIMS renders only the abstract to the extractor. The AIMS PDF (downloads logged: 64) is behind the article page. A re-fetch targeting the PDF URL or the AIMS article-id URL (`/article/id/158f9fcd-ee53-4fc3-ae38-dbc1f64e01be`) could land the real text.
-- The "one very specific problem" left open in DF1a/DF2a is **not identified** from the abstract. It must be found before any degenerate-graphics claim is made. Recorded as a gap for the requests ledger.
+- Primary source that upgrades the DF1a/DF2a rows from "reported" (Shan 2013
+  thesis) to **sourced-held** — claim `drr-df1a-df2a-cyclicity-sourced`.
+- The P* obstruction is the concrete shape of the `problem.md` **smooth test**:
+  where a family resists desingularization, an asymptotic-only argument cannot
+  decide cyclicity. Any later attempt on degenerate graphics must either
+  desingularize P* or argue it away.
+
+Evidence class: sourced-held — read from the held full text. Hypotheses: n=2,
+degenerate graphics with a line of singular points, x₀ in a compact subset of
+(0,∞).
+
+Claim id `drr-df1a-df2a-cyclicity-sourced` (full statement in
+`research/notes/claims.md`).

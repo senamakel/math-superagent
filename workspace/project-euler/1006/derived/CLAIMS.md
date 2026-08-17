@@ -6,18 +6,36 @@ Derived from the `claim` blocks in the notes under `research/` and `code/out/`, 
 
 `holds-here` is whether the hypotheses hold for *this* problem: a true theorem whose hypotheses fail here is worse than no theorem, because it looks like progress.
 
+A claim a program produced — `status: checked`, or any claim naming a `refutation` — also takes a `search-frame` line saying what was swept, and where one exists, the published exhaustive regime it lies outside. A sweep is worth its space and no more, and one that found nothing is worth nothing at all without it.
+
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `characteristic-sequence-floor-difference-def` | The characteristic sequence of an irrational alpha in (0,1) is the lower mechanical word f(alpha) = f_1 f_2 ... with f_n = floor((n+1)alpha) - floor(n alpha). The Fibonacci word (PE1006's S_n limit) is the… | yes | asserted | `research/summaries/cmb-1993-descriptions-characteristic-sequence.md` |
 | `conjugate-christoffel-factor-sturmian` | A finite word w is a conjugate of a Christoffel word if and only if all its conjugates (cyclic rotations) are factors of a Sturmian (infinite) word; equivalently w is primitive and has exactly \|w\|-1 distinct circular… | yes | asserted | `research/summaries/bugeaud-reutenauer-conjugates-christoffel.md` |
+| `dir1-domain-autocorrelation` | Directive 1's pair-correlation identity C(j,jp) = A(jp-j), holds ONLY at k = F_n - 1 (k = 1, 2, 4, 7, 12, 20, 33, 54, 88, 143, ...), where the k+1 factors are the F_n truncated cyclic rotations of a single standard… | **unchecked** | asserted | `research/notes/three-distance-frequency-structure.md` |
+| `distance-encoding-word-structure` | In the three-distance partition of [0,1] by {ialpha mod 1, i = 0..n-1} U {1}, the leftmost interval is not the longest, and encoding the successive interval lengths from left to right (leftmost -> a, longest -> b, other… | yes | asserted | `research/notes/three-distance-frequency-structure.md` |
+| `farey-slope-stabilisation` | Let p1/q1 < p2/q2 be consecutive m-points de Farey (Farey neighbours of order m) and let alpha in ]p1/q1, p2/q2[. The length-m special factors G_m and D_m (D_m = the expansive factor of the mechanical word of slope… | yes | asserted | `research/notes/three-distance-frequency-structure.md` |
+| `fibonacci-least-period-set` | The set of least periods of factors of the Fibonacci word is exactly the set of Fibonacci numbers. (Currie & Saari, "Least periods of factors of infinite words", RAIRO-ITA 43 (2009) 165-178, Cor. 4; period set of a… | yes | asserted | `research/notes/sourced-claims-least-periods-standard-factors.md` |
+| `fibonacci-squares-conjugate-finite-word` | If uu is a square occurring in the Fibonacci word f, then u is conjugate to some finite Fibonacci word; all finite Fibonacci words are primitive. (Du, Mousavi, Schaeffer & Shallit, | yes | asserted | `research/notes/sourced-claims-least-periods-standard-factors.md` |
+| `fibonacci-standard-factors-l0l1` | Characterize the standard words that occur as factors of the Fibonacci word: the set is {phi^n(1), phi^n(10), phi^n(101), phi^n(0010010) : n >= 0}, phi the Fibonacci morphism (0->01, 1->0) (Richomme, Saari & Zamboni,… | yes | asserted | `research/notes/sourced-claims-least-periods-standard-factors.md` |
 | `fibonacci-sturmian-complexity` | The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word, and its factor complexity function counts exactly P(f, k) = k + 1 distinct factors (subwords) of length… | yes | asserted | `research/summaries/claim-fibonacci-sturmian-complexity.md` |
+| `fibonacci-unique-special-factor-reverse` | The Fibonacci word f has exactly n+1 distinct factors of length n; exactly one of them is right-special (both extensions x0 and x1 are factors), and it is the reverse of the length-n prefix, f[0..n-1]^R. (Du, Mousavi,… | yes | asserted | `research/notes/sourced-claims-least-periods-standard-factors.md` |
 | `fibonacci-word-sturmian-density-balance` | The infinite Fibonacci word F (substitution 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word with factor complexity p_F(n) = n + 1 for every n >= 0, and every length-n factor has a number of 1's within 1 of… | yes | asserted | `research/summaries/claim-fibonacci-density-balance.md` |
+| `fibonacci-zeckendorf-parity-characterization` | The Fibonacci infinite word f = 0100101001001... is the sequence f(n) = (rightmost bit / parity) of the Zeckendorf representation of n; equivalently the finite words f_n = f(0)f(1)...f(F_n-1) satisfy f_n = f_{n-1}… | yes | asserted | `research/notes/sourced-claims-least-periods-standard-factors.md` |
+| `g1-factor-chain-nested` | For S_n = S_0=0, S_1=01, S_{n+2}=S_{n+1}S_n, the length-k contiguous factor sets form a monotone nested chain: FactorSet(fibWord n, k) ⊆ FactorSet(fibWord (n+1), k) for all n, k.  In particular FibSubwords k = ⋃_n… | yes | asserted | `research/notes/g1-formalisation-status.md` |
+| `g1-oracle-length3` | The length-3 Fibonacci subwords are exactly 001, 010, 100, 101 — i.e. the length-3 factor set of S_5 = 0100101001001 has card 4 = 3+1 and equals {001,010,100,101}. | yes | checked | `research/notes/g1-formalisation-status.md` |
+| `g2-mech-shell-exact-binary` | For the corrected slope a = fib(n)/fib(n+2), every digit digit_j(x) = floor(x+(j+1)a) - floor(x+ja) of a mechanical word of intercept x = -m·a lies in {0,1}, the slope lies in [0,1], and the whole construction is… | yes | formalised | `research/notes/g2-formalisation-status.md` |
 | `governing-factor-complexity` | A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity; Perrin–Restivo Theorem 1: s is Sturmian iff mechanical of irrational slope, and… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
 | `governing-sturmian` | The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic word c_α of slope α = 2/(3+sqrt(5)) = (3-sqrt(5))/2 = 1/phi^2, phi =… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
 | `governing-universal-euclidean` | The universal Euclidean algorithm (monoid generalisation of AtCoder floor_sum, "Chtholly's algorithm") evaluates sums of the form sum_{i=0}^{n-1} x^i * floor((a*i+b)/c), and the tuple (count, sum x^i, sum x^i floor, sum… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
 | `mechanical-word-digit-rule` | Let α in (0,1) and s_{α,ρ}(n) = floor((n+1)α + ρ) - floor(nα + ρ), n >= 0 (lower mechanical word with slope α, intercept ρ). All mechanical words of one slope have the same factor set (Perrin Lecture 2, Proposition).… | yes | asserted | `research/notes/sourced-claims-governing-theory.md` |
+| `phase4-anchors-invalid` | The Phase-4 acceptance anchors Psi(10^4) mod M = 16242174 and Psi(10^6) mod M = 77578256 are invalid: both were computed by Psi_collapse, which uses the Toeplitz autocorrelation identity A(d) that Phase 3 of solution.py… | yes | asserted | `research/notes/phase4-anchors-invalid.md` |
 | `req-close-factor-complexity` | The infinite Fibonacci word is a Sturmian word; a Sturmian word has exactly P(s,n)=n+1 distinct factors of length n for every n >= 0 (the defining minimal complexity, Methode–Hedlund). Hence PE1006's "only k+1 different… | yes | asserted | `research/summaries/requests-closed-recap.md` |
 | `req-close-universal-euclidean` | The universal Euclidean algorithm (monoid generalisation of AtCoder floor_sum, aka "Chtholly's algorithm" / 万能欧几里得) evaluates sums sum_{i=0}^{n-1} x^i * floor((a*i+b)/c) — and the (count, sum x^i, sum x^i*floor, sum… | yes | asserted | `research/summaries/requests-closed-recap.md` |
+| `rotation-arc-factor-frequencies` | The k+1 points {-ma mod 1 : m = 0..k} cut the circle into k+1 arcs of at most three different lengths, and if three lengths occur one is the sum of the other two (three-distance theorem,… | yes | asserted | `research/notes/three-distance-frequency-structure.md` |
+| `special-factor-complexity-difference` | For a recurrent infinite sequence over a finite alphabet, the first difference of the factor complexity is exactly the number of right-special factors of that length: p(n+1) - p(n) = #{right-special factors of length… | yes | asserted | `research/summaries/cassaigne-complexite-facteurs-speciaux-1997.md` |
 | `steer-d2-literal-slope` | Steering directive 2 instructs the run to model the k+1 factors as a mechanical word of "slope a = F(n-1)/F(n)" for F(n) >> k. | no | asserted | `research/notes/sourced-claims-governing-theory.md` |
+| `three-gap-three-distance-autocorrelation` | For an irrational slope alpha in (0,1), the partition of the unit circle by the points {i*alpha}, 0 <= i <= n, has n+1 intervals whose lengths take at most three values, one being the sum of the other two, with exact… | yes | asserted | `research/summaries/claim-three-gap-autocorrelation-home.md` |
 | `universal-euclidean-geometric-floor-sum` | Let a,b,c,n be nonnegative integers, c>0. Define the operation string S(a,b,c,n) --- the "universal Euclidean" object --- to have exactly n R's and m = floor((a*n+b)/c) U's, where the i-th R is preceded by… | yes | asserted | `research/summaries/claim-universal-euclidean-geometric-floor-sum.md` |
 
 ## Contradictions
@@ -26,20 +44,55 @@ Resolve these before building on either side.
 
 - `steer-d2-literal-slope` (research/notes/sourced-claims-governing-theory.md) contradicts `mechanical-word-digit-rule`
 
+## Called formalised, not backed by the kernel
+
+Each of these was written as a formalised claim and has been recorded as `asserted` instead, because no passing `lean_check` verdict on disk supports it. Nothing here says the statement is false; it says the workspace does not yet contain a proof of it. Run `lean_check` over the file, fix what it reports, and the status returns on the next derivation.
+
+- `g1-factor-chain-nested` (research/notes/g1-formalisation-status.md) — no `lean_check` verdict exists for `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean(factorSet_prefix_nest,factorSet_chain,factorSet_chain_any;kernelverdict:verified,axiomspropext,Quot.sound—sorry-free)`; run the kernel over it
+
+## Formalised on a verdict with no provenance
+
+A verdict record says what Lean found; a *collected* verdict also says which toolchain ran, how long it took, and what the file contained at the time. Without that stamp the record is a claim about a check rather than evidence of one — and `code/out/lean/` is writable, so the two are not distinguishable by reading it.
+
+Run `lean_check` over each file again. It re-earns the stamp, and these rows disappear.
+
+- `g2-mech-shell-exact-binary` — its verdict carries no collector stamp, so nothing on disk says a kernel produced it
+
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it. Search the whole ledger with `search_claims`.
 
+- `characteristic-sequence-floor-difference-def` (research/summaries/cmb-1993-descriptions-characteristic-sequence.md) — asserted by the source, not proved there and not checked here
 - `conjugate-christoffel-factor-sturmian` (research/summaries/bugeaud-reutenauer-conjugates-christoffel.md) — asserted by the source, not proved there and not checked here
+- `distance-encoding-word-structure` (research/notes/three-distance-frequency-structure.md) — asserted by the source, not proved there and not checked here
+- `farey-slope-stabilisation` (research/notes/three-distance-frequency-structure.md) — asserted by the source, not proved there and not checked here
+- `fibonacci-least-period-set` (research/notes/sourced-claims-least-periods-standard-factors.md) — asserted by the source, not proved there and not checked here
+- `fibonacci-squares-conjugate-finite-word` (research/notes/sourced-claims-least-periods-standard-factors.md) — asserted by the source, not proved there and not checked here
+- `fibonacci-standard-factors-l0l1` (research/notes/sourced-claims-least-periods-standard-factors.md) — asserted by the source, not proved there and not checked here
 - `fibonacci-sturmian-complexity` (research/summaries/claim-fibonacci-sturmian-complexity.md) — asserted by the source, not proved there and not checked here
+- `fibonacci-unique-special-factor-reverse` (research/notes/sourced-claims-least-periods-standard-factors.md) — asserted by the source, not proved there and not checked here
 - `fibonacci-word-sturmian-density-balance` (research/summaries/claim-fibonacci-density-balance.md) — asserted by the source, not proved there and not checked here
+- `fibonacci-zeckendorf-parity-characterization` (research/notes/sourced-claims-least-periods-standard-factors.md) — asserted by the source, not proved there and not checked here
+- `g1-factor-chain-nested` (research/notes/g1-formalisation-status.md) — asserted by the source, not proved there and not checked here
 - `governing-factor-complexity` (research/notes/sourced-claims-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `governing-sturmian` (research/notes/sourced-claims-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `governing-universal-euclidean` (research/notes/sourced-claims-governing-theory.md) — asserted by the source, not proved there and not checked here
 - `mechanical-word-digit-rule` (research/notes/sourced-claims-governing-theory.md) — asserted by the source, not proved there and not checked here
+- `phase4-anchors-invalid` (research/notes/phase4-anchors-invalid.md) — asserted by the source, not proved there and not checked here
 - `req-close-factor-complexity` (research/summaries/requests-closed-recap.md) — asserted by the source, not proved there and not checked here
 - `req-close-universal-euclidean` (research/summaries/requests-closed-recap.md) — asserted by the source, not proved there and not checked here
+- `rotation-arc-factor-frequencies` (research/notes/three-distance-frequency-structure.md) — asserted by the source, not proved there and not checked here
+- `special-factor-complexity-difference` (research/summaries/cassaigne-complexite-facteurs-speciaux-1997.md) — asserted by the source, not proved there and not checked here
+- `three-gap-three-distance-autocorrelation` (research/summaries/claim-three-gap-autocorrelation-home.md) — asserted by the source, not proved there and not checked here
 - `universal-euclidean-geometric-floor-sum` (research/summaries/claim-universal-euclidean-geometric-floor-sum.md) — asserted by the source, not proved there and not checked here
+
+## Searched, with no frame recorded
+
+Each of these rests on a program that swept something, and none of them says what. Add a `search-frame` line naming the space covered and, where one exists, the published exhaustive regime it lies outside — `all n below 10^9`, `boards up to 9x8, which prior sweeps bounded at 7x7`.
+
+Without it a sweep that found nothing cannot be told from a question nobody asked, and a later attempt has no way to know it would be searching the same space again. The frame is also where a *missed* result becomes visible: an object outside every frame tried is one no further compute inside them would ever have reached.
+
+- `g1-oracle-length3` (research/notes/g1-formalisation-status.md) — no `search-frame`: nothing says what was swept
 
 ---
 

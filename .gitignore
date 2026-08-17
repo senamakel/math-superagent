@@ -88,3 +88,7 @@ worktrees/*
 # keeping it out of history means a reader of this repository never has to think
 # about whether a compiled blocklist has drifted from its source.
 /evals/.build/
+
+*.lean.json
+*.jsonl
+.sage

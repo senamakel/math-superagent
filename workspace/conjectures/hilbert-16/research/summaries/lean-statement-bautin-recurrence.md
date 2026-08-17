@@ -1,64 +1,92 @@
-# Lean status — Statement.lean, BautinRecurrence.lean, Generated/P30Data.lean
+# Lean status — Statement.lean, BautinRecurrence.lean, Bautin.lean (verified state)
 
-Verification note for the Lean deliverable files touching the directive.
+Verification note for the Lean deliverables, reflecting the host-fixed state
+(2026). **Do not revert these files; build on them.**
 
-## Files
+## Files and their verified status
 
-- `code/lean/Lib/Statement.lean` — H16.2 stated with **real** degree bound
-  (`f.P.totalDegree ≤ n`, `f.Q.totalDegree ≤ n`, via `PlanarPolyField` carrying
-  two `MvPolynomial (Fin 2) ℝ`), and with the **non-vacuous** finiteness
-  statement `(LimitCycleSet f.toMap).Finite ∧ (LimitCycleSet f.toMap).ncard ≤ N`.
-  The old `degree_at_most : True` and the vacuous bare-`ncard` inequality are
-  gone. The lone `:= by sorry` at `h16_2` is the deliberate deliverable.
-  Axioms expected on elaboration: `propext` (from the `sorries`), `Classical`,
-  `Quot.sound` (from `MvPolynomial`/`Set`). NOT yet compiled in this pass
-  (no Lean tool); lean_prover must compile and report #print axioms + sorry.
+- **`code/lean/Lib/Statement.lean`** — H16.2 stated with a real degree bound
+  (`f.P.totalDegree ≤ n`, `f.Q.totalDegree ≤ n` via `PlanarPolyField` carrying
+  two `MvPolynomial (Fin 2) ℝ`) and the non-vacuous finiteness statement
+  `(LimitCycleSet f.toMap).Finite ∧ (LimitCycleSet f.toMap).ncard ≤ N`.
+  The lone `:= by sorry` at `h16_2` is the deliberate deliverable; the axiom
+  set is exactly `sorryAx` (plus the kernel's own `propext`, `Classical`,
+  `Quot.sound`). Compiles.
 
-- `code/lean/Lib/Generated/P30Data.lean` — UNTRUSTED data: `ms : Fin 30 → Fin 5 → Nat`
-  (30 monomial exponent vectors) and `coeffs : Fin 30 → ℤ` (30 integer
-  coefficients of P30). No theorems inside. The 30 entries match the
-  certificate `verify_bautin_recurrence.py`'s spelled-out P30 term by term:
-  76A³C, 24A³F, 142A²CD, 29A²CE, 192A²DF, −96A²EF, 23AC³, 109AC²F, 76ACD²,
-  42ACDE, 3ACE², 144ACF², 132AD²F, −28ADEF, −37AE²F, −24AF³, 23C³D, 159C²DF,
-  −27C²EF, 10CD³, 13CD²E, 3CDE², 350CDF², −101CEF², 20D³F, 16D²EF, −27DE²F,
-  248DF³, E³F, −124EF³.
+- **`code/lean/Lib/BautinRecurrence.lean`** — **VERIFIED** (no `sorry`, no
+  cited axiom). Closed theorems: `h14_p30_check`, `p30_sound`,
+  `bautin_L6_identity`, `L4num_ne_zero`, `param_identities`,
+  `darboux_L_identity`, `darboux_F_identity`. The P30 coefficient data is
+  **inline in a `namespace Generated`** carrying no theorem; the
+  kernel-checked path is `p30_sound : (∀ k : Fin 30, Generated.coeffs k +
+  W6coeffs k = 0) → P30poly + W6poly = 0`, an explicit bridge from the
+  coefficientwise check to the polynomial identity.
 
-- `code/lean/Lib/BautinRecurrence.lean` — the checker, written by hand OUTSIDE
-  Generated/. It reconstructs `P30poly` from the untrusted dataset 1 and
-  `W6poly` (the integer `12·weighted_g6`, stated separately as dataset 2) from
-  dataset 2, defines `checkP30 := decide (P30poly + W6poly = 0)`, and closes
-  `h14_p30_check : checkP30 = true` by `decide` — the directive's required
-  shape (untrusted data in Generated/, checker outside, `decide` not
-  `native_decide`). The two datasets are stated independently so a
-  transcription error in either FAILS the check rather than silently passing.
-  Also restates the Darboux/bridge identities (part B) which `ring` can close.
-  `bautin_L6_identity`, `bautin_L4_identity`, `darboux_identities` are LEFT as
-  named `sorry`s pending the in-Lean recurrence / explicit-coordinate Lie
-  derivative — each is located and declared; none is silently true. The former
-  body of BautinRecurrence.lean (P30 = 0 placeholder) is replaced.
+- **`code/lean/Lib/Generated/P30Data.lean`** — provenance copy of the P30 data
+  (`ms : Fin 30 → Fin 5 → Nat`, `coeffs : Fin 30 → ℤ`), no theorems, kept in
+  step by `code/bautin/generate_p30.py`. It is NOT imported by the checker:
+  the kernel runs on ONE file against Mathlib with no lake root, so a second
+  module (`LuH14.Generated` or `Lib.Generated.P30Data`) fails with unknown
+  module prefix. Do not re-introduce a second import.
 
-## Honest scope (what this does and does not establish)
+- **`code/lean/Lib/Bautin.lean`** — **CONDITIONAL** (no `sorry`; rests only on
+  `Cited` axioms for Bautin 1952). Holds `focalValue : ℕ → LyapunovRing`,
+  `focalValue_eq`, and `bautin_finite_generation` as `axiom`s under
+  `namespace Cited` (/-- src: Bautin 1952 -/). The old `V1=V2=V3=0` body is
+  GONE: the three focal values are computed exactly by
+  `code/bautin/lyapunov_quadratic.py`, capture `code/out/bautin_focal_values.captured.txt`
+  — V1 as a machine-emitted term, V2 and V3 as data tables (a 220-term chain
+  will not elaborate even at 2,000,000 heartbeats).
 
-- `h14_p30_check` proves the two transcribed datasets (P30 and its negation
-  scaled by 1/12, i.e. 12·weighted_g6) are consistent, i.e. `P30 + 12·weighted_g6
-  = 0` — exactly the certificate's `192·L6 + P30 = 0` with L6 = weighted_g6/16.
-  This is a transcription-consistency check between two copies of the same
-  certificate data, NOT an independent re-derivation of weighted_g6 from the
-  recurrence. The independent re-derivation is `code/bautin/verify_lu_core.py`,
-  which is written but NOT executed (no execution tool in this pass).
-- Nothing here proves the full H14^3 theorem (finite cyclicity of the graphic).
-  The human-proof remainder (root uniqueness, Hadamard divisibility, domain
-  completeness, zero theorems) is not machine-checked, and the Lu 2026 preprint
-  is unrefereed.
+## The four engineering facts that shape any further Lean work
 
-## Required next steps (for lean_prover / tool_builder / coder)
+1. **One file per kernel run.** No second-module import; keep data inline in a
+   `Generated` namespace or in the same file.
+2. **`decide` over an `MvPolynomial` equality does not reduce** — it is a
+   `Finsupp` equality. The check is coefficientwise over `Fin 30`, and
+   `p30_sound` proves the bridge to the polynomial identity. Do not put
+   `decide` back on a polynomial equality.
+3. **`MvPolynomial` is not a division ring**, so dividing by 8 does not
+   elaborate; the degree-4 obstruction is `L4num` with the factor in its name.
+4. **The quadratic family has six coefficients and no cubic terms** — the old
+   normal form carried `a30,a21,b12,b03`, which a degree-2 field has not.
 
-1. Compile Statement.lean; report #print axioms and the (single) h16_2 sorry.
-2. Compile BautinRecurrence.lean + Generated/P30Data.lean; confirm `decide`
-   closes `h14_p30_check : checkP30 = true`, and report #print axioms and every
-   remaining sorry (bautin_L6_identity, bautin_L4_identity, darboux_identities).
-3. Run `python code/bautin/verify_lu_core.py` and file
-   `code/out/lu_core.captured.txt`. Until that capture shows
-   "ALL ASSERTIONS PASS", the Lu finite core is NOT verified-computationally.
-4. Run `python code/bautin/generate_p30.py` to re-emit Generated/P30Data.lean
-   and diff against the hand-written data (a cross-check of the transcription).
+## What the captures establish (exact, over Q)
+
+`code/out/bautin_focal_values.captured.txt` (lyapunov_quadratic.py):
+- Full-family focal values L4 (6 monomials), L6 (56), L8 (220) for the
+  general quadratic focus with six coefficients.
+- **L8 ∉ ⟨L4, L6⟩ by exact Gröbner over Q** — so three generators are
+  genuinely needed for Bautin finite generation; two would not suffice.
+  CHECK: PASS.
+
+`code/out/membership.captured.txt` (verify_membership.py, chart family
+Q1 = Au²+Cuv+Dv², Q2 = Euv+Fv², lex Gröbner, degrees 4..12):
+- Sanity guards: `8·L4 − (AC+CD+2DF−EF) = 0` PASS; `192·L6 + P30 = 0`
+  (P30 30-monomial) PASS.
+- Monomial counts L_d: 4, 30, 97, 236, 485 for d = 4,6,8,10,12.
+- **Membership: L8 ∉ ⟨L4,L6⟩; L6 ∉ ⟨L4⟩; L10 ∉ ⟨L4,L6,L8⟩; L12 ∉
+  ⟨L4,L6,L8⟩** — all False by exact Gröbner reduction. The Bautin-trick step
+  ("L10,L12 ∈ ⟨L4,L6,L8⟩", the ideal closure that would make three generators
+  finite-generation-complete) **fails in the 5-coefficient chart ring**.
+  The earlier `lyap_extend.py` crash (poly_terms TypeError) is superseded by
+  this completed run.
+
+## Honest scope
+
+- `BautinRecurrence.lean` VERIFIED means the transcription identities and the
+  bridge from coefficientwise data to the polynomial identity are
+  kernel-checked. It does NOT prove the H₁₄³ theorem — the human-proof
+  remainder (root uniqueness, Hadamard divisibility, domain completeness, zero
+  theorems) is machine-unchecked and Lu 2026 is unrefereed.
+- `Bautin.lean` CONDITIONAL means: the kernel checked the step from Bautin
+  1952's cited theorem to what the run builds on it; the cited theorem itself
+  is the run's word, not its proof.
+- **Open Lean task**: the membership results are now exact-computational facts
+  (L8 ∉ ⟨L4,L6⟩ with a 9-monomial nonzero remainder; L10, L12 ∉ ⟨L4,L6,L8⟩
+  with 38- and 110-monomial remainders). Turning "L8 needs a third generator"
+  into a kernel-checked theorem needs a cofactor certificate (explicit
+  remainder representation), and the non-membership of L10,L12 bears on
+  whether Bautin finite generation for this chart needs MORE generators than
+  the three focal values — worth stating before any Bautin-ideal Lean claim
+  goes further (see research/notes/claims.md).

@@ -2,7 +2,8 @@
 
 Full text: [[huzak-cyclicity-degenerate-df2a.full]]. CPA — Commun. Pure Appl.
 Anal. 17(3):1305–1316 (2018), doi:10.3934/cpaa.2018062 (held: abstract page with
-figures; full text not held beyond abstract).
+figures; the theorem statement is held verbatim from the abstract — the full
+proof body is not held).
 
 ## What the source establishes
 

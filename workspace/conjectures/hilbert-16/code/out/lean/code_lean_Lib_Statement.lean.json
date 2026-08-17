@@ -4,6 +4,11 @@
     "'H16.h16_2' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
   ],
   "cited": [],
+  "collector": {
+    "elapsed_ms": 6688,
+    "source_digest": "1097c9aa3e468c4713901b99b9ad4d37",
+    "toolchain": ""
+  },
   "compiled": true,
   "declarations": [
     "theorem h16_2 : ∀ n : ℕ, ∃ N : ℕ, ∀ f : PlanarPolyField n, (LimitCycleSet f.toMap).Finite ∧ (LimitCycleSet f.toMap).ncard ≤ N"

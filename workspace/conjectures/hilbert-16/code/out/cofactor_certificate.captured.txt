@@ -1,0 +1,53 @@
+# Certificate for  L8 not in <L4, L6>  — evaluation witness
+
+WHAT RAN:      code/bautin/cofactor_certificate.py, exact sympy
+               rational arithmetic, no floats.
+WHICH DEFS:    u' = -v + a1 u^2 + a2 u v + a3 v^2 ;
+               v' =  u + b1 u^2 + b2 u v + b3 v^2 ;
+               L_d = focal value at degree d, same recurrence as
+               code/bautin/lyapunov_quadratic.py.
+WHICH RANGE:   integer points, coordinates in -2..2, every support
+               size 1..6 in turn (sparsest first), searched for
+               L4 = L6 = 0 and L8 != 0. Each L_d is homogeneous
+               (degrees 2, 4, 6), so zeros are projective and integer
+               points lose no generality.
+
+WHY AN EVALUATION WITNESS AND NOT A COFACTOR IDENTITY:
+  a cofactor identity certifies membership; non-membership has no
+  finite identity. One common zero of L4 and L6 at which L8 does not
+  vanish refutes membership, and is three rational evaluations the
+  Lean kernel can do. It also proves the stronger statement that L8
+  is outside the radical of <L4, L6>.
+
+guard: L4 = a1*a2/8 - a1*b1/4 + a2*a3/8 + a3*b3/4 - b1*b2/8 - b2*b3/8
+guard: L4 monomials 6 | L6 56 | L8 220
+
+points tried: 11679
+
+WITNESS FOUND (sparse: 6 nonzero coordinate(s))
+  a1 = -2
+  a2 = -2
+  a3 = 1
+  b1 = -1
+  b2 = -1
+  b3 = 1
+
+  L4(p) = 0   (must be 0)
+  L6(p) = 0   (must be 0)
+  L8(p) = 25/64   (must be nonzero)
+
+CERTIFICATE VALID: PASS
+
+Lean witness vector, in Bautin.lean's (a1,a2,a3,b1,b2,b3) order:
+  def certPt : ParamIndex -> Q := ![-2, -2, 1, -1, -1, 1]
+
+Cleared-integer evaluations, which is what the Lean kernel checks
+(Vknum = Lk times its common denominator, so the zero/nonzero
+pattern is identical):
+  eval V1num at the witness = 0   (denominator 8)
+  eval V2num at the witness = 0   (denominator 192)
+  eval V3num at the witness = 7200   (denominator 18432)
+
+SCOPE. This certifies L8 not in <L4,L6> — that Bautin's third
+generator is genuinely needed. It says nothing about M(2) = 3 itself,
+which stays cited (Bautin 1952) in code/lean/Lib/Bautin.lean.

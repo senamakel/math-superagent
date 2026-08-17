@@ -9,32 +9,44 @@ Derived from `config/tasks.jsonl` and rewritten on every write. Do not edit this
 
 Most recently added or updated first. Work the first one you can. To raise an older task, record against it — that moves it back to the top.
 
-- `solution-builder` — solution.py: mechanical construction + telescoping + lag collapse verified 1..150
-  - detail: solution.py phases: 1) mechanical construction with corrected slope a=fib(n)/fib(n+2) equals brute factor set for k=1..150; 2) telescoped Psi identity exact-int agreement; 3) lag-collapse C(j,jp)=A(jp-j) and one-dimensional geometric weight form; 4) anchors at k=10^4,10^6.
-- `lean-statement` — Lean statement of mechanical-word lemma kernel-checked
-  - detail: lean_prover writes code/Problem1006.lean stating the Fibonacci-word factor structure and mechanical construction, ending in `by sorry`, and lean_check passes.
-- `understand-brute` — Step 1: restate problem in GOAL.md and build/run code/brute.py oracle
-  - detail: Restate the problem precisely in /workspace/GOAL.md with every symbol defined (S_n, k, Fibonacci subword, Psi(k), M=101001001). Then have tool_builder write code/brute.py, a naive but obviously-correct program: generate S_n directly (S_0=0,S_1=01,S_n=S_{n-1}S_{n-2}), collect all distinct length-k substrings, read as decimals ignoring leading zeros, square and sum. It MUST reproduce Psi(3)=20302 and Psi(10)=10699667 mod 101001001 (given) and S_2=010, S_3=01001, S_4=01001010. If it cannot, the reading of the definition is wrong and nothing else matters until fixed. Keep brute.py as the oracle…
-  - refs: step 1 of run plan
-- `reproduce-dir1` — Reproduce directive-1 pair-correlation route in-container before building on it
-  - detail: Directive's own gate: 'verified outside the container for k=F_n-1 up to n=12; reproduce it here before building on it.' At k=F_n-1 the k+1 factors are the F_n rotations of standard word q_n truncated to k letters; C(j,jp)=A(jp-j) the cyclic autocorrelation of q_n, A(d)=max(0,m-t)+max(0,m-(N-t)), N=F_n, m=#ones, t=(d*m) mod N. Check A(d) for every lag at n=3..12 and that sum_{j,jp} A(jp-j)*10^(2k-2-j-jp) equals the brute Psi(F_n-1). This is a checkpoint, not the final method — directive 2 subsumes it.
-  - refs: directive 1
+- `implement-solution` — Build the universal-Euclidean second-moment monoid and run at k=10^18
+  - detail: Per directive 4+6: build the universal-Euclidean O(log) monoid — the only thing between the run and the answer. Spec as in build-universal-euclidean-primitive (R/U lattice path, Euclidean split, dR,dU,w,S0,S1,S2 compose rules, dU shifts carry floor values across boundaries — test hard). Acceptance in order, none skipped: (1) S0 vs direct loop; (2) S1 vs floor_sum at z=1 and direct loop at z!=1; (3) S2 vs direct loop; (4) telescoped v through the primitive vs mech_psi k=1..150 and Psi(10)=10699667; (5) NEW anchors per directive 6: Psi(10^4)=34432237 and Psi(10^6)=20938836 (old anchors…
+  - refs: directive 2; steps 4-5 of run plan
+- `build-universal-euclidean-primitive` — Write+RUN code/lib/ueuclid.py (directive-4 monoid), post acceptance 1-3 numbers
+  - detail: Put code/lib/ueuclid.py on disk THIS cycle with the monoid of directive 4 (exact integers, mod M=101001001): walk y=(p*t+q)/r, t=1..n, R/U steps, Euclidean split; node (dR,dU,w,S0,S1,S2) with the directive-4 compose rule; identity zeros with w=1. Sequencing per directive 5: this is the FIRST thing done — write and RUN the evaluator in Python now. Acceptance per directive 6, in order, none skipped: (1) S0 vs direct loop, random (p,q,r,n,z); (2) S1 vs plain floor_sum at z=1 and vs direct loop at z!=1; (3) S2 vs direct loop; (4) telescoped v through the primitive vs code/mech/mech_psi.py…
+- `directive-6-anchors` — Record directive-6 anchors and verify them in-container before they gate the O(log) run
+  - detail: Directive 6 (steer) discards 16242174/77578256 as acceptance anchors (confirms phase4-anchors-invalid: both came from the failing Phase-3 collapse) and names new anchors from an outside-container independent route (every distinct length-k window of the Fibonacci word read as a decimal, prefix length k+NextFib(k)-1 with NextFib STRICTLY greater than k, de-duplicated by residues under two moduli with count asserted k+1): Psi(10^4)=34432237 mod M (count 10001), Psi(10^6)=20938836 mod M (count 1000001). That route reproduces Psi(3)=20302 and Psi(10)=10699667 and agrees with a bound-free brute…
+- `lean-statement` — Lean formalisation of the Euclidean recursion — AFTER ueuclid.py reproduces the anchors
+  - detail: Sequence per directive 5: Lean comes only after code/lib/ueuclid.py has been written and RUN and reproduces the acceptance anchors (tests 1-3 this cycle, then 4 and 5). A formal statement of a primitive whose arithmetic was never executed can be internally perfect and still evaluate to the wrong residue, so the executable gate comes first. Then lean_prover writes code/Problem1006.lean stating the mechanical-word factor structure and the Euclidean recursion and lean_check passes. The attempt still closes with a checked .lean file.
 - `governing-theory` — Identify and record the governing theory under Established in CONTEXT.md
   - detail: Named theory: Fibonacci subwords / mechanical (Sturmian) words, the k+1 distinct factors of length k, and the universal Euclidean algorithm / floor_sum (Chtholly) primitive. Record precise statement + hypotheses in CONTEXT.md Established; if from a source, cite the returned URLs (already have research/sources/wikipedia-fibonacci-word and fibonacci-word-2d-factor-complexity) and add a claim block so it reaches research/CLAIMS.md. Use research/ for definitions and standard algorithms. Never search for a published PE1006 answer or forum thread.
   - refs: step 2 of run plan
 - `derive-method` — Derive the efficient method and write it to /workspace/solution.md
   - detail: Primary route: directive 2, the mechanical-word / geometrically weighted floor sum — v(x) = sum_j digit_j * 10^(k-1-j) with digit_j(x)=floor(x+(j+1)a)-floor(x+ja), telescoping to v(x)=floor(x+ka)-10^(k-1)floor(x)+9*sum_{j=1}^{k-1} 10^(k-1-j) floor(x+ja); Psi(k) is the second moment over the k+1 arc-midpoint representatives with rational slope a=F(n-1)/F(n), F(n)>>k. State the result it rests on, why it applies, what it reduces the work to (O(log) not 10^18 terms). A method whose cost grows with the bound is wrong.
   - refs: directive 2; step 3 of run plan
-- `implement-solution` — Implement directive-2 mechanical-word method as code/solution.py and run at k=10^18
-  - detail: Exact integer/rational arithmetic throughout. Build the universal Euclidean algorithm (monoid generalisation of AtCoder floor_sum / Chtholly's algorithm) carrying (count, sum x^j, sum x^j*floor, sum x^j*floor^2) mod M=101001001 with x = 10^-1 mod M (10 invertible since gcd(10,M)=1). Gate before full size: agree with code/brute.py on k=1..150 and reproduce Psi(10)=10699667 mod M and every statement example. Then run at k=10^18 with a Fibonacci index F(n) > 10^18. Report the final answer.
-  - refs: directive 2; steps 4-5 of run plan
 - `verify-independent` — Verify the final answer by a second independent route
   - detail: Report which: a different derivation, an independent program, or brute-force agreement at the largest size brute.py can reach. Must state the verification command and what it confirmed. Do NOT call this done on the basis of the solution's own internal checks — the whole point is independence from solution.py.
+
+## Do not do
+
+Ruled out, with the reason. Re-proposing one of these is the cheapest mistake available, and the reason beside it is what prevents it.
+
+- `reproduce-dir1` — Reproduce directive-1 pair-correlation route in-container before building on it
+  - detail: Directive 3 (steer) resolves the Phase 3 failure in code/out/solution_checks.md: the autocorrelation identity C(j,jp)=A(jp-j) of directive 1 holds ONLY at k=F_n-1 (k=1,2,4,7,12,20,33,54,88,143,...). The Phase 3 failures at k=3, k=200, k=10^4 are because those tests ran OUTSIDE the identity's stated domain — expected, not a defect. Do NOT weaken or rewrite the identity to fit them. Re-test it only at k=F_n-1 (the F_n rotations of q_n truncated to k letters, A(d)=max(0,m-t)+max(0,m-(N-t))), and it should pass exactly there. For general k the correct replacement is the arc version of directive 3…
+  - reason: Directive 4 deprioritises it: 'Toeplitz defects and extension-recurrence residues are not on the critical path'. The directive-1 pair-correlation/C=A checkpoint is not the primary route and nothing about it is needed before the monoid; the general-k arc identity it would validate is already corroborated (three-gap/three-distance claim). Re-openable later if the monoid route fails.
+  - refs: directive 1
+- `solution-builder` — solution.py: mechanical construction + telescoping + lag collapse verified 1..150
+  - detail: solution.py phases: 1) mechanical construction with corrected slope a=fib(n)/fib(n+2) equals brute factor set for k=1..150; 2) telescoped Psi identity exact-int agreement; 3) lag-collapse C(j,jp)=A(jp-j) and one-dimensional geometric weight form; 4) anchors at k=10^4,10^6.
+  - reason: Phases 1-2 executed and pass (mechanical construction == brute k=1..150; telescoped Psi exact k=1..60, mod M 61..150); phase 3 (lag collapse) is valid only at k=F_n-1 per directive 3 and is not part of the route; phase 4's anchors 16242174/77578256 are refuted (phase4-anchors-invalid) and directive 4 test (5) replaces them with valid direct-method values at k=1000,10000. The remaining monoid work now lives in build-universal-euclidean-primitive / implement-solution.
 
 ## Recently done
 
 The five most recently finished, with what came of it. Kept, because a run that cannot see what it already did repeats it.
 
+- `understand-brute` — Step 1: restate problem in GOAL.md and build/run code/brute.py oracle
+  - detail: Restate the problem precisely in /workspace/GOAL.md with every symbol defined (S_n, k, Fibonacci subword, Psi(k), M=101001001). Then have tool_builder write code/brute.py, a naive but obviously-correct program: generate S_n directly (S_0=0,S_1=01,S_n=S_{n-1}S_{n-2}), collect all distinct length-k substrings, read as decimals ignoring leading zeros, square and sum. It MUST reproduce Psi(3)=20302 and Psi(10)=10699667 mod 101001001 (given) and S_2=010, S_3=01001, S_4=01001010. If it cannot, the reading of the definition is wrong and nothing else matters until fixed. Keep brute.py as the oracle…
+  - reason: Step 1 is complete: GOAL.md carries the precise restatement with all symbols defined, and code/brute.py (naive factor enumeration) reproduces Psi(3)=20302, Psi(10)=10699667 mod M, and count k+1 for k=1..20; captured in code/out/brute_oracle_results.md and GOAL.md's verified section. No further step-1 work remains before the primitive.
+  - refs: step 1 of run plan
 - `brute-oracle` — Brute oracle reproduces Ψ(3)=20302 and Ψ(10)≡10699667
   - detail: tool_builder writes code/brute.py (naive substring enumeration) and runs it; captured output must show Psi(3)=20302 and Psi(10)%101001001=10699667, and counts k+1 for k=1..20.
   - reason: code/brute.py reproduces both worked examples (Psi(3)=20302, Psi(10)%M=10699667), count=k+1 for k=1..20; verified output in code/out/brute_oracle_results.md
