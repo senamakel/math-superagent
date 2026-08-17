@@ -47,7 +47,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://www.sciencedirect.com/journal/nonlinear-analysis | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
 | 2 | https://www.sciencedirect.com/journal/nonlinear-analysis/vol/30/issue/1 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
 
-_680 further candidates not shown; they are cited once each._
+_681 further candidates not shown; they are cited once each._
 
 ---
 
