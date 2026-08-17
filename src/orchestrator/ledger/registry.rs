@@ -233,6 +233,186 @@ fn tasks() -> Value {
     })
 }
 
+/// What the run is driving the problem *down to*, and how far the two sides are apart.
+///
+/// The ledger this runtime did not have, and the gap is visible in its own
+/// output. `backward` answers *what would be enough* and answers it with a
+/// decomposition — lemmas that recombine into the goal. Every skeleton a live
+/// casas-alvero run produced is a restatement of somebody's published theorem
+/// (`G-resultant-scheme`, `G-macaulay-rank`), which is real work and is not the
+/// other kind: collapsing a problem onto one or two scalar parameters and
+/// fighting there. Nothing in the runtime could even *state* that goal, so no
+/// role pursued it and no ledger recorded a run getting closer to it.
+///
+/// The shape is read off a proof that used it. `research/proofatlas/` takes
+/// apart a Sendov development whose whole architecture is: normalise, reduce to
+/// `1+λ ≤ (m+1)E_m(λ)`, prove the strict reverse, collide them. Two bounds on
+/// one scalar, driven together. `lower` and `upper` are separate fields because
+/// they are separately provable and usually proved by different arms — the
+/// obstruction forces one, an estimate plus a certificate forces the other —
+/// and a run holding one of them is halfway rather than nowhere.
+///
+/// `identity` is the status that makes this a bank rather than a scoreboard,
+/// and it is the one to keep. A reduction is a chain, and its middle links are
+/// algebraic identities with no consequence yet: an integration by parts, a
+/// cleared factorisation, a coefficient bridge. None of them is a claim, none
+/// earns a verdict, and under every other ledger here a turn that produced one
+/// filed nothing — so the loop scored it as a pass with no progress, and the
+/// restart cap ate the chain before it closed. A link recorded against its
+/// target is progress the next attempt can see and the judge can count.
+fn reductions() -> Value {
+    json!({
+        "slug": "reductions",
+        "title": "Reductions",
+        "purpose": "What this run is trying to collapse the problem down to, and how far apart \
+                    the two sides are. One row is one reduction target — a scalar statement, in \
+                    named parameters, that the obstruction forces one way and an estimate has to \
+                    force the other. Read it before starting an attempt: a run with a live target \
+                    works on the gap, and a run with none is looking for one.",
+        "source": "queue",
+        "path": "config/reductions.jsonl",
+        "derived": "derived/REDUCTIONS.md",
+        // Five prose fields is more than any other ledger here carries, and the
+        // engine charges for each on every rendered row. It is paid because the
+        // row *is* the mathematics: a target with no parameter named is a mood,
+        // and a target whose two bounds are not written separately cannot show
+        // a run which half it already has. The row caps below are cut to match.
+        "fields": [
+            { "name": "id", "role": "id", "required": true },
+            { "name": "target", "role": "title", "required": true },
+            { "name": "parameter", "role": "prose", "required": true },
+            { "name": "lower", "role": "prose" },
+            { "name": "upper", "role": "prose" },
+            { "name": "gap", "role": "prose" },
+            { "name": "reason", "role": "prose" },
+            { "name": "refs", "role": "refs" },
+            { "name": "status", "role": "status" }
+        ],
+        "statuses": [
+            { "name": "proposed" },
+            { "name": "identity" },
+            { "name": "bounded" },
+            { "name": "closed", "closed": true, "needs_reason": true },
+            { "name": "broken", "closed": true, "needs_reason": true },
+            { "name": "spent", "closed": true, "needs_reason": true }
+        ],
+        "sections": [
+            {
+                "heading": "Driving at",
+                "blurb": "Live targets, most recently touched first. `gap` is what still \
+                          separates the two sides — work that, not the target again.",
+                "statuses": ["proposed", "bounded"],
+                "cap": 6,
+                "order": "recent"
+            },
+            {
+                "heading": "Banked — links established, chain not closed",
+                "blurb": "Identities and algebraic steps this run has established on the way to a \
+                          target. None of these is a result on its own; together they are the \
+                          reduction. Read them before deriving one again.",
+                "statuses": ["identity"],
+                "cap": 12,
+                "order": "recent"
+            },
+            {
+                "heading": "Closed",
+                "blurb": "Targets whose two sides met. The reason says which arm supplied which \
+                          bound.",
+                "statuses": ["closed"],
+                "cap": 6
+            },
+            {
+                "heading": "Abandoned — do not re-propose",
+                "blurb": "Targets that broke or ran out, each with what killed it. A reason \
+                          naming the obstruction — 'the majorant is not tight below m=5' — saves \
+                          the next attempt.",
+                "statuses": ["broken", "spent"],
+                "cap": 8
+            }
+        ],
+        "checks": ["required-field", "known-status", "closed-needs-reason"],
+        // The reducer owns the target; the two planners and the prover bank the
+        // links they establish; reflection closes one it has just judged. The
+        // inventor is absent on purpose — it proposes *routes*, and a route
+        // recorded as a reduction target is a wish with a parameter in it.
+        "writers": ["reducer", "goals", "orchestrator", "lean_prover", "reflection"]
+    })
+}
+
+/// The standing bet about how this problem falls, carried across runs.
+///
+/// Every other ledger here records what the run *did*. None records what it
+/// believes, and the difference is the one a long investigation turns on. The
+/// Sendov development that prompted this had a human holding a thesis steady
+/// across months and many dead ends — the disclosure calls it selecting and
+/// reconciling outputs — while the machine explored under it. This runtime has
+/// no such holder: `archivist` adopts a candidate, `inventor` proposes a route,
+/// and neither carries an argument from one run into the next.
+///
+/// It persists for free and that is the point. A workspace's `config/` is
+/// committed and a run continues one rather than starting it, so a thesis
+/// written in run one is in front of run nine without any mechanism at all. The
+/// ledger exists to give it a shape that can be *revised* rather than
+/// accumulated: `refuted-by` is required before it opens, because a belief with
+/// no stated way to lose is not a thesis, it is a mood, and it will survive
+/// every run that should have killed it.
+///
+/// Capped hard and read every round. Two live theses is a run hedging; four is
+/// a run with none.
+fn thesis() -> Value {
+    json!({
+        "slug": "thesis",
+        "title": "Thesis",
+        "purpose": "What this run believes about how the problem falls, and what would refute it. \
+                    Carried across runs — a thesis written weeks ago is still the standing bet \
+                    unless something here revised it. Read it first and work under it; if the \
+                    evidence has turned against one, revise it rather than quietly working around \
+                    it.",
+        "source": "queue",
+        "path": "config/thesis.jsonl",
+        "derived": "derived/THESIS.md",
+        "fields": [
+            { "name": "id", "role": "id", "required": true },
+            { "name": "bet", "role": "title", "required": true },
+            { "name": "because", "role": "prose", "required": true },
+            { "name": "refuted-by", "role": "prose", "required": true },
+            { "name": "reason", "role": "prose" },
+            { "name": "refs", "role": "refs" },
+            { "name": "status", "role": "status" }
+        ],
+        "statuses": [
+            { "name": "standing" },
+            { "name": "revised" },
+            { "name": "vindicated", "closed": true },
+            { "name": "abandoned", "closed": true, "needs_reason": true }
+        ],
+        "sections": [
+            {
+                "heading": "The standing bet",
+                "blurb": "Work under this. `refuted-by` is the evidence that would end it — if \
+                          the run has produced that evidence, say so and revise, because a thesis \
+                          nothing can refute costs a run its whole budget.",
+                "statuses": ["standing", "revised"],
+                "cap": 3,
+                "order": "recent"
+            },
+            {
+                "heading": "Settled",
+                "blurb": "Bets this run has finished with, and what became of each.",
+                "statuses": ["vindicated", "abandoned"],
+                "cap": 6
+            }
+        ],
+        "checks": ["required-field", "known-status", "closed-needs-reason"],
+        // Narrow on purpose. A thesis every role may rewrite is one nobody
+        // holds, which is the failure this ledger exists to fix. The two
+        // planners set it, reflection revises it against what a round actually
+        // produced, and the archivist — the only role that already decides what
+        // the trunk believes — settles it.
+        "writers": ["orchestrator", "goals", "reflection", "archivist"]
+    })
+}
+
 /// The nine that keep their own modules, registered so every tool reaches them.
 ///
 /// `written_by` is not decoration. None of these takes `record_entry`, so the
@@ -257,6 +437,8 @@ fn builtins() -> Vec<Value> {
     vec![
         tasks(),
         attempts(),
+        reductions(),
+        thesis(),
         // `goals` is the sub-goal decomposition under another name. A planner
         // asking this runtime for "the goals" means the propositions that would
         // suffice, which is what a skeleton's gaps are — and `GOAL.md` itself

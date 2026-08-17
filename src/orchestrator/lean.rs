@@ -187,6 +187,22 @@ pub struct Verdict {
     /// model trained before that writes the old form. One reply wrote `∈`
     /// correctly in its own docstring and `in` in the code beneath it.
     pub(super) retired_binder: bool,
+    /// Conclusions declared inside a generated certificate module.
+    ///
+    /// The certificate boundary, refused rather than reported: a generator that
+    /// states its own theorem has put the statement the kernel checks under the
+    /// control of the thing being checked. See
+    /// [`super::lemmas::generated_conclusions`].
+    pub(super) generated_conclusions: Vec<String>,
+    /// Statements that divide by something they do not say is nonzero.
+    ///
+    /// The one advisory field here, and the only one that never changes the
+    /// outcome. It cannot be made exact — see
+    /// [`super::lemmas::uncleared_divisions`] — and a wrong refusal on a
+    /// correct file is worse than a note a reader can dismiss. It is carried
+    /// anyway because Lean makes the mistake silent: `x / 0 = 0`, so the file
+    /// compiles and the theorem is quietly not the one that was wanted.
+    pub(super) uncleared: Vec<String>,
     /// Modules the file imported that this Mathlib does not have.
     ///
     /// Parsed rather than left inside the error text, because it is the one
@@ -268,6 +284,7 @@ impl Verdict {
         self.compiled
             && !self.declarations.is_empty()
             && self.tautologies.is_empty()
+            && self.generated_conclusions.is_empty()
             && !self.retired_binder
     }
 
@@ -281,6 +298,7 @@ impl Verdict {
     pub(super) fn outcome(&self) -> Outcome {
         let structurally_sound = self.compiled
             && self.tautologies.is_empty()
+            && self.generated_conclusions.is_empty()
             && self.sorries.is_empty()
             && !self.axioms.is_empty()
             && !self.axioms.iter().any(|line| line.contains("sorryAx"));
@@ -401,6 +419,18 @@ impl Verdict {
                 names(&self.tautologies)
             ));
         }
+        if !self.generated_conclusions.is_empty() {
+            return Some(format!(
+                "`{}` is a generated data module and declares {} — generated data may be wrong, \
+                 so it may not conclude anything, and a theorem here is the generator vouching \
+                 for itself. Keep the `def`s and move the conclusion out: a hand-written checker \
+                 elsewhere that decides the property of one row, a soundness theorem that its \
+                 truth implies the mathematics, and `theorem … = true := by decide` for the \
+                 kernel to reduce",
+                self.file,
+                names(&self.generated_conclusions)
+            ));
+        }
         if self.axioms.is_empty() {
             return Some(format!(
                 "`{}` has no `#print axioms` line, so what the proof rests on is unstated",
@@ -451,6 +481,8 @@ impl Verdict {
             "missing_modules": self.missing_modules,
             "retired_binder": self.retired_binder,
             "tautologies": self.tautologies,
+            "generated_conclusions": self.generated_conclusions,
+            "uncleared": self.uncleared,
             "cited": self.cited_axioms(),
             "verified": self.verified(),
             "outcome": self.outcome().as_str(),
@@ -477,6 +509,8 @@ impl Verdict {
                 .and_then(serde_json::Value::as_bool)
                 .unwrap_or_default(),
             tautologies: strings(value.get("tautologies")),
+            generated_conclusions: strings(value.get("generated_conclusions")),
+            uncleared: strings(value.get("uncleared")),
         })
     }
 
@@ -492,6 +526,22 @@ impl Verdict {
         out.push_str(&list("#print axioms", &self.axioms));
         out.push_str(&list("cited axioms", &self.cited_axioms()));
         out.push_str(&list("checked", &self.declarations));
+        // Advisory, and printed whatever the outcome — including on a pass,
+        // which is the case it is for. An uncleared division does not stop the
+        // kernel and never will: `x / 0 = 0` is a theorem of Lean, so the file
+        // compiles and the statement is quietly weaker than the one intended.
+        // Nothing else in this verdict would ever mention it.
+        if !self.uncleared.is_empty() {
+            let _ = write!(
+                out,
+                "\nCheck the denominators in {}: each divides by something the statement does not \
+                 say is nonzero. Lean defines `x / 0 = 0`, so this compiles either way and the \
+                 theorem may be true of a case you did not mean. Either add the hypothesis, or — \
+                 better — clear the division and state the multiplied form, which is what lets a \
+                 proof carry degenerate cases instead of excluding them.\n",
+                names(&self.uncleared)
+            );
+        }
         match (self.outcome(), self.objection()) {
             (Outcome::Conditional, _) => out.push_str(
                 "\nThis verdict stands behind a `status: conditional` claim, and not a \
@@ -753,6 +803,8 @@ fn parse(file: &str, source: &str, exit_ok: bool, output: &str) -> Verdict {
         axioms,
         declarations: declarations(source),
         tautologies: super::lemmas::tautologies(source),
+        generated_conclusions: super::lemmas::generated_conclusions(file, source),
+        uncleared: super::lemmas::uncleared_divisions(source),
         retired_binder,
         missing_modules,
     }

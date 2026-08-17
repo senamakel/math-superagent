@@ -128,6 +128,83 @@ was actually checked. A claim written as `conditional` over a clean file is left
 alone: understating what you have is not something the ledger should correct
 behind a role's back.
 
+## The certificate arm: making a computation the strongest row rather than the weakest
+
+A run enumerates, sieves and sweeps constantly, and until this existed every one
+of those results reached the ledger as prose somebody typed — `asserted`, the
+weakest status there is. That is backwards. An exact computation is the *most*
+checkable thing a run produces, and the arrangement that makes it checkable is
+read off a proof that used it at scale: nine tenths of the ProofAtlas Sendov
+formalisation is certificate, 110,406 lines of it against a 10,527-line
+argument, and it earns the same `verified` verdict as the argument does.
+[`../research/proofatlas/01-sendov-bundle-anatomy.md`](../research/proofatlas/01-sendov-bundle-anatomy.md)
+has the anatomy and the counts.
+
+Four parts, and the order is the whole content:
+
+```
+code/lean/Lib/<Topic>/Generated/Data499.lean   def rows499 : … := [ … ]   ← untrusted
+code/lean/Lib/<Topic>/Schema.lean              def check (r : Row) : Bool
+                                               theorem check_spec : check r = true ↔ P r
+code/lean/Lib/<Topic>/Replay499.lean           theorem ok : checkAll rows499 = true := by decide
+```
+
+**Generated data may not conclude anything, and that is enforced.** A `theorem`,
+`lemma`, or `axiom` in a path containing a `Generated/` segment fails the
+`lean_check` verdict and names the declaration — `lemmas::generated_conclusions`,
+refused in `Verdict::objection`, and excluded from `states_something` so it
+cannot even be kept as a partial statement to build on.
+
+The failure that rule stops is the one that looks most like success. A generator
+emitting both its data *and* the theorem about it produces a file that compiles,
+carries no `sorry`, rests on Lean's three axioms, and proves whatever statement
+the generator chose to make — so the kernel check is real and vouches for
+nothing. Every one of the 559 generated modules in that bundle says so in its own
+header: *"All declarations below are untrusted certificate data. Mathematical
+conclusions must pass through the human-written replay and block checkers."* The
+difference here is that it is a control rather than a header.
+
+**A checker that reduces a Boolean over data is exactly the right thing to
+write**, and is only wrong in the file the generator produced. The check is about
+provenance, not shape: the identical theorem outside `Generated/` passes.
+
+**Data nothing reads is a file, not evidence.** The other half cannot be checked
+one file at a time, so it lives in the derivation: `derived/LEMMAS.md` renders
+*Generated, and nothing reads it* listing every generated module whose declared
+names appear in no hand-written module. Name containment rather than an import
+graph, deliberately — a checker reaches its data by naming a declaration, and the
+two tests fail in opposite directions. Name containment can be fooled by a file
+that mentions a name idly, which is a false pass a reader can see; an import test
+would report every module reached through a re-export, which is a false alarm on
+correct work, and a check that cries wolf is one a run learns to ignore.
+
+**`decide`, never `native_decide`.** Already enforced through the axiom list —
+`Lean.ofReduceBool` fails a verdict — and worth restating here because the
+certificate arm is where the temptation is strongest and the loss is largest.
+The Sendov bundle uses `decide +kernel` 1,010 times and `native_decide` zero
+times, which is the same line this runtime draws, drawn independently.
+
+## Clearing the denominators
+
+`lean_check` names any statement that divides by something the statement does not
+say is nonzero. It is the one check here that **reports and never refuses**: it
+cannot be made exact — `lemmas::uncleared_divisions` is a textual scan that skips
+numerals and accepts `≠ 0`, `0 <`, `0 ≠`, `.Pos` and `.ne'` in the binders — and
+a wrong refusal on a correct file costs more than a note a reader can dismiss.
+
+It is carried anyway because Lean makes the mistake silent. `x / 0 = 0` is a
+theorem, so an unguarded division compiles and the statement is quietly weaker
+than the one intended; nothing else in a verdict would ever mention it.
+
+The discipline behind it is one the Sendov proof follows everywhere and states
+out loud at each step — *no division by `J`, a root, or a product occurs*, *only
+the positive scalar `n²` is cancelled*, *`j = 0` is retained*. Keeping every
+identity cleared is why that argument needs no nonvanishing side conditions, and
+therefore why repeated roots, zeros on the boundary and nonmonic polynomials cost
+it no case analysis at all. The advisory prefers the multiplied form over the
+extra hypothesis for that reason: a cleared identity carries its degenerate cases
+instead of excluding them one at a time.
+
 ## What does not move into Lean
 
 Lean carries statements, definitions and dependencies. It does not carry:

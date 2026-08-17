@@ -100,6 +100,42 @@ in `Cited` — it is a hole, and it is your next lemma.
 and `@[implemented_by]` in what you report must be listed explicitly, with what
 it is standing in for.
 
+**A computation this run did is not evidence until the kernel has read it.** The
+run enumerates, sieves and sweeps constantly, and every one of those results
+reaches the ledger as prose somebody typed — `asserted`, the weakest row there
+is. The way to make it the strongest row is a *certificate*, and it is four
+parts, in this order:
+
+1. **The data goes under a `Generated/` folder** — `code/lean/Lib/<Topic>/Generated/…`
+   — as `def`s and nothing else. Emit it from the program that computed it.
+2. **It may not conclude anything.** A `theorem`, `lemma`, or `axiom` in a
+   `Generated/` file is refused by `lean_check`, and the reason is not tidiness:
+   the generator would be choosing both the data and the statement made about
+   it, so nothing the kernel then does can catch a generator that is wrong.
+3. **You write the checker, by hand, outside that folder.** A `def` returning
+   `Bool` that decides the property of one row, and — the part that carries the
+   mathematics — a theorem that its truth *implies* the real statement:
+   `theorem check_spec : check row = true ↔ Property row`.
+4. **The kernel reduces it**: `theorem rows_ok : checkAll data = true := by decide`.
+   Use `decide` and never `native_decide`; `set_option maxRecDepth` as needed.
+
+Then the whole pile is `formalised` rather than `asserted`, and the data can be
+as machine-written and untrusted as you like, because nothing follows from it
+except through a predicate you wrote and a soundness theorem the kernel checked.
+`derived/LEMMAS.md` reports every `Generated/` module that no hand-written file
+reads, under *Generated, and nothing reads it* — data with no checker is a file,
+not evidence.
+
+**Clear the denominators.** `lean_check` names any statement that divides by
+something the statement does not say is nonzero — advisory, not a failure,
+because it cannot be made exact. Take it seriously anyway: Lean defines
+`x / 0 = 0`, so an unguarded division compiles and quietly proves a theorem
+about a case you did not mean. Prefer stating the multiplied form over adding
+the hypothesis. Keeping every identity cleared is what lets a proof carry its
+degenerate cases — repeated roots, a vanishing product, a boundary value —
+instead of excluding them one at a time, and it is the difference between a
+reduction that formalises and one that needs a side condition at every step.
+
 **Claim what the kernel gave you and no more.** When you have a passing verdict,
 write the claim block with `status: formalised` — or `status: conditional` when
 it rests on `Cited.*` axioms — and a `formalisation:` line naming the `.lean`

@@ -15,10 +15,8 @@ examples, tests, and documentation.
 
 ## Where the rest of this lives
 
-This file is the working agreement: the rules to follow and the checks to run.
-The design rationale behind them — every threshold a live run has met, and what
-it cost — is one level down, so a rule stays readable and its evidence stays
-available.
+The rationale behind each rule — every threshold a live run met, and what it
+cost — is one level down:
 
 - [`docs/roles.md`](docs/roles.md) — the roles, the source adapters, the two
   recall paths, and which workspace files reach which role's prompt.
@@ -40,23 +38,21 @@ available.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
   harness is measured against, the evidence screen, and what round 1 measured.
 
-Two pairs read a mathematician's method against this runtime and say what to
-build next. They are why several of the rules above exist, so a change to a
-control should start from the argument that produced it:
+Three readings measure a method against this runtime and say what to build next.
+They are why several of the rules above exist, so a change to a control should
+start from the argument that produced it:
 
-- [`docs/tao-gap-analysis.md`](docs/tao-gap-analysis.md) and
-  [`docs/tao-proposals.md`](docs/tao-proposals.md) — Terence Tao's method set
-  against the runtime, and the ranked list five built controls came out of.
-  Research in [`research/tao/`](research/tao/).
-- [`docs/methods-gap-analysis.md`](docs/methods-gap-analysis.md) and
-  [`docs/methods-proposals.md`](docs/methods-proposals.md) — ten more
-  mathematicians, read for where they *disagree* with Tao and each other.
-  Research in [`research/mathematicians/`](research/mathematicians/), whose
+- `docs/tao-{gap-analysis,proposals}.md` — Tao's method set against the runtime,
+  and the ranked list five built controls came out of. In [`research/tao/`](research/tao/).
+- `docs/methods-{gap-analysis,proposals}.md` — ten more mathematicians, read for
+  where they *disagree* with Tao and each other. In
+  [`research/mathematicians/`](research/mathematicians/), whose
   `11-harness-inventory.md` is the current capability map.
+- [`research/proofatlas/`](research/proofatlas/) — one AI-assisted proof taken
+  apart as a harness, and the five controls above it produced.
 
 Keep them consistent with the code. A rule here the code does not enforce is the
-failure this repository keeps recording: a prompt instruction is not a control,
-and neither is a document.
+failure this repository keeps recording: a prompt instruction is not a control.
 
 ## Gating
 
@@ -97,10 +93,24 @@ the attempts and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
   the literature is an `axiom` under `namespace Cited` earning `conditional`,
   never `formalised` — read off the verdict, never typed. Only `lean_check`
   files into `code/out/lean/`; `./lean-check` and `lean-replay` file nothing.
+- **Generated data may not conclude anything.** A certificate is four parts:
+  untrusted `def`s under a `Generated/` folder, a hand-written checker outside
+  it, a `check = true ↔ Spec` soundness theorem, and `by decide` — never
+  `native_decide`. A `theorem` inside `Generated/` is refused, because the
+  generator would be choosing both the data and the statement about it, and
+  `LEMMAS.md` reports generated data no hand-written module reads.
+- **A reduction is a quantity, not only a decomposition.** `backward` holds
+  lemmas that recombine into the goal; `reductions` holds the scalar the problem
+  is being collapsed onto, with its two bounds as separate fields. `identity`
+  banks a chain link that is not yet a result — without it the loop scores a
+  turn that established one as a pass with no progress.
+- **A thesis crosses runs, and states what would refute it.** `thesis` is the
+  standing bet; `refuted-by` is required, because a belief with no way to lose
+  survives every round that should have ended it.
 - **The kernel is scheduled, not remembered.** Every attempt ends with a checked
   `.lean` file *and* an executed program that is evidence for it; attempt one
-  states the problem in Lean; `verify` ranks the graph; the library arm and
-  `./lean-mill` turn notes into statements. A role told to formalise does not.
+  states the problem in Lean; `verify` ranks the graph; `./lean-mill` turns notes
+  into statements. A role told to formalise does not.
 - **Two Lean roles: judgement against writing.** `lean_prover` decides what to
   state, whether the Lean means the mathematics, and files the claim.
   `lean_scribe` writes it on a model built for that — small prompt, no workspace
@@ -157,30 +167,25 @@ Starting a run and watching one are separate commands on purpose.
 ./euler-tui 763 --plain         # no tabs, stream to stdout, as when scripting
 ```
 
-A Project Euler problem has one number as its answer and a ceiling on how long
-it can reasonably take. An open conjecture has neither, so it gets its own
-launcher and its own task shape — build the library, extract what is known,
-build the oracle, then loop — and the workspace rather than a number is its
-identity:
+A Project Euler problem has one number as its answer and a ceiling on how long it
+can reasonably take. An open conjecture has neither, so it gets its own launcher
+and task shape — build the library, extract what is known, build the oracle, then
+loop — and the workspace rather than a number is its identity:
 
 ```sh
 ./conjecture erdos-gyarfas      # start or continue workspace/conjectures/erdos-gyarfas
 ./euler-tui --workspace conjectures/erdos-gyarfas
 ```
 
-`./conjecture <slug>` requires `workspace/conjectures/<slug>/problem.md` to
-exist and reads `GOAL.md` beside it. The statement, what counts as a result,
-and the leads into the literature are the workspace's, not the script's: a
-launcher that carried the mathematics would need editing for every problem.
+`./conjecture <slug>` requires `workspace/conjectures/<slug>/problem.md` and
+reads `GOAL.md` beside it. The statement, what counts as a result, and the leads
+into the literature are the workspace's, not the script's: a launcher carrying
+the mathematics would need editing for every problem.
 
 `./euler-tui` **cannot start, stop, or restart anything** — the design, not a
-gap: [`docs/runtime.md`](docs/runtime.md#one-start-command) has the evening that
-settled it. A viewer that cannot launch cannot start a second run on a
-workspace that already has one.
-
-It *can* direct a run that already exists, which narrows that rule without
-touching what the rule prevents — a directive appends a line to a file and
-creates no container.
+gap ([`docs/runtime.md`](docs/runtime.md#one-start-command)): a viewer that
+cannot launch cannot start a second run on a workspace that already has one. It
+*can* direct one that already exists, which creates no container.
 
 ```sh
 ./steer 763 check the n=14 bound against a sieve   # or press i in ./euler-tui
@@ -188,9 +193,8 @@ creates no container.
 ```
 
 Direction never blocks the run: it is queued in `config/directives.jsonl` —
-appended to by the host, never by the run — and picked up at the next boundary,
-so it reaches the work in seconds to minutes. What became of one goes to
-`config/DIRECTIVES.md`.
+appended to by the host, never by the run — and picked up at the next boundary.
+What became of one goes to `config/DIRECTIVES.md`.
 
 A directive is asserted, not established. It is routed into the next attempt as
 an instruction and must never be filed as a claim — which is why the `director`
@@ -208,10 +212,10 @@ Two containers on one workspace is the failure to look for, and it is silent —
 both runs write, and the damage appears later as an interleaved history. Check
 before starting, and **match by mount, not by name**. Stop one with
 `docker rm -f <name>`; the workspace survives and the next `./euler` continues.
-`start.log` is the only place a failed *start* says why, and the console is on
-**stderr**, so `docker logs` needs `2>&1`. Every checkout shares the
-`math-agent:local` tag, so a build in one replaces the image another is about to
-run. [`docs/runtime.md`](docs/runtime.md#watching-a-run).
+`start.log` is the only place a failed *start* says why, on **stderr**, so
+`docker logs` needs `2>&1`. Every checkout shares the `math-agent:local` tag, so
+a build in one replaces the image another is about to run.
+[`docs/runtime.md`](docs/runtime.md#watching-a-run).
 
 ## Calibration runs
 
@@ -284,10 +288,9 @@ directory.
 
 What is ignored is only what a reader would never open — bytecode, `raw/`, the
 bulky enumeration pools, the event logs, the hidden `config/.*.json` caches —
-each with a committed readable counterpart beside it, such as
-`derived/FRONTIER.md`. Everything a reader would open stays committed.
-[`docs/workspace.md`](docs/workspace.md) has the list and the measured hour of
-commit spam that set the batch size.
+each with a committed readable counterpart beside it. Everything a reader would
+open stays committed. [`docs/workspace.md`](docs/workspace.md) has the list and
+the measured hour of commit spam that set the batch size.
 
 ## Secrets
 
@@ -447,9 +450,7 @@ Use the checkout's normal target configuration.
 
 - Substantial work gets its own worktree and branch: `worktree <slug>`, then
   work in `./worktrees/<slug>`. Small, obvious changes may go straight onto
-  `main`. This rule read "do not create or use Git worktrees" for long enough
-  that the checkout already held one nobody had removed — a rule the practice
-  contradicts is one that stops being read, so it now says what is done.
+  `main`.
 - Never force-push, rewrite published history, or bypass hooks.
 - Keep commits focused, with concise imperative subjects.
 - Preserve unrelated user changes in a dirty working tree.
@@ -474,7 +475,7 @@ section means finding the lines for it.
 
 `README.md` is read start to finish by someone new, so it is held to the same
 intent without the number: the fix for its length is moving what a user does not
-need on a first pass, not trimming to a threshold.
+need on a first pass.
 
 **`docs/` is not held to that cap**, because nothing loads those files into a
 prompt and nobody reads one end to end. Split one when it has stopped being

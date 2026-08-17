@@ -382,3 +382,127 @@ mod tautologies {
         assert!(tautologies(source).is_empty());
     }
 }
+
+/// The certificate boundary: generated data may not conclude anything.
+///
+/// The rule the `ProofAtlas` Sendov development states in the header of every one
+/// of its 559 generated modules and keeps to in all of them. A `def` holding
+/// machine-written rows is data, and harmless because nothing follows from it;
+/// a `theorem` beside it is the generator vouching for its own output, and no
+/// amount of kernel checking downstream repairs that.
+mod certificates {
+    use super::super::{generated_conclusions, is_generated, uncleared_divisions};
+
+    #[test]
+    fn a_generated_module_may_hold_data() {
+        let source = "\
+def finiteReplayInput499 : List (Nat × Int) := [(5, 1), (6, 2)]
+def finiteDepth499 : Nat := 13
+";
+        assert!(
+            generated_conclusions("code/lean/Lib/Certificate/Generated/Data499.lean", source)
+                .is_empty(),
+            "rows of data are what a generated module is for"
+        );
+    }
+
+    #[test]
+    fn a_generated_module_may_not_conclude() {
+        let source = "\
+def finiteReplayInput499 : List Nat := [5, 6]
+theorem finiteReplay499Check : degreeReplayCheck finiteReplayInput499 = true := by decide
+";
+        assert_eq!(
+            generated_conclusions("code/lean/Lib/Certificate/Generated/Data499.lean", source),
+            vec!["finiteReplay499Check".to_string()],
+            "the conclusion belongs in a hand-written checker, not beside the data"
+        );
+    }
+
+    /// The same file outside `Generated/` is ordinary work and is left alone.
+    ///
+    /// The check is about provenance rather than about shape: a checker that
+    /// reduces a Boolean over data is exactly the right thing to write, and it
+    /// is only wrong in the file the generator produced.
+    #[test]
+    fn a_hand_written_checker_is_the_point_and_is_not_refused() {
+        let source =
+            "theorem replay499 : degreeReplayCheck input499 = true := by decide\n";
+        assert!(
+            generated_conclusions("code/lean/Lib/Certificate/Replay499.lean", source).is_empty()
+        );
+        assert!(!is_generated("code/lean/Lib/Certificate/Replay499.lean"));
+        assert!(is_generated("code/lean/Lib/Certificate/Generated/Data499.lean"));
+    }
+
+    /// A generated module nothing reads establishes nothing, and says so.
+    #[test]
+    fn generated_data_with_no_consumer_is_reported() {
+        let root = super::workspace_with(
+            "orphan-generated",
+            "Certificate/Generated/Data007.lean",
+            "def leafRows007 : List Nat := [7]\n",
+        );
+        let lemmas = super::collect(&root);
+        assert_eq!(
+            lemmas.orphan_generated,
+            vec!["code/lean/Certificate/Generated/Data007.lean"],
+            "nothing the kernel checked has read it"
+        );
+        assert!(lemmas.render().contains("Generated, and nothing reads it"));
+    }
+
+    /// Once a checker names the data, the module is consumed and drops off.
+    #[test]
+    fn generated_data_a_checker_names_is_not_an_orphan() {
+        let root = super::workspace_with(
+            "consumed-generated",
+            "Certificate/Generated/Data008.lean",
+            "def leafRows008 : List Nat := [8]\n",
+        );
+        std::fs::write(
+            root.join(super::super::LEAN_DIR)
+                .join("Certificate/Replay008.lean"),
+            "theorem replay008 : check leafRows008 = true := by decide\n",
+        )
+        .expect("the checker is written");
+        assert!(
+            super::collect(&root).orphan_generated.is_empty(),
+            "a checker naming the data is what consumption means"
+        );
+    }
+
+    /// The clearing discipline, which reports and never refuses.
+    ///
+    /// `x / 0 = 0` in Lean, so an unguarded denominator compiles and the
+    /// theorem is quietly about a case nobody meant.
+    #[test]
+    fn a_division_with_no_nonvanishing_hypothesis_is_named() {
+        let source = "theorem mean_bound (m : \u{211d}) (q : \u{211d}) : q / m \u{2264} 1 := by sorry\n";
+        assert_eq!(uncleared_divisions(source), vec!["mean_bound".to_string()]);
+    }
+
+    #[test]
+    fn a_guarded_division_is_left_alone() {
+        let source = "\
+theorem mean_bound (m : \u{211d}) (hm : m \u{2260} 0) (q : \u{211d}) : q / m \u{2264} 1 := by sorry
+";
+        assert!(uncleared_divisions(source).is_empty());
+    }
+
+    /// The commonest denominator in mathematics must never be reported, or the
+    /// advisory becomes noise and stops being read.
+    #[test]
+    fn a_numeral_denominator_is_never_reported() {
+        let source = "theorem half_le (x : \u{211d}) : x / 2 \u{2264} x := by sorry\n";
+        assert!(uncleared_divisions(source).is_empty());
+    }
+
+    #[test]
+    fn a_positivity_hypothesis_counts_as_clearing_it() {
+        let source = "\
+theorem mean_bound (m : \u{211d}) (hm : 0 < m) (q : \u{211d}) : q / m \u{2264} 1 := by sorry
+";
+        assert!(uncleared_divisions(source).is_empty());
+    }
+}

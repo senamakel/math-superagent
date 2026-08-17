@@ -119,6 +119,71 @@ fn a_proof_closed_by_native_decide_does_not_pass() {
     );
 }
 
+/// A generated data module that states its own theorem does not pass.
+///
+/// The certificate boundary, enforced at the verdict rather than asked for in a
+/// prompt. This is the failure that looks most like success: the file compiles,
+/// carries no `sorry`, rests on Lean's three axioms, and the theorem the kernel
+/// checked was chosen by the same generator that wrote the data it is about.
+#[test]
+fn a_generated_module_stating_its_own_theorem_does_not_pass() {
+    let checked = parse(
+        "code/lean/Lib/Certificate/Generated/Data499.lean",
+        "def rows499 : List Nat := [5]\ntheorem rows499_ok : check rows499 = true := by decide\n",
+        true,
+        "'rows499_ok' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    );
+    assert!(
+        !checked.verified(),
+        "the kernel accepted it, and it still may not carry a claim"
+    );
+    assert!(
+        !checked.states_something(),
+        "nor may it be kept as a partial statement to build on"
+    );
+    let objection = checked
+        .objection()
+        .expect("a conclusion in generated data is an objection");
+    assert!(
+        objection.contains("rows499_ok") && objection.contains("generated data"),
+        "the objection names the declaration and what to do instead: {objection}"
+    );
+}
+
+/// The same module holding only data is fine, and the checker beside it passes.
+#[test]
+fn generated_data_alone_is_not_an_objection() {
+    let checked = parse(
+        "code/lean/Lib/Certificate/Generated/Data499.lean",
+        "def rows499 : List Nat := [5, 6]\n",
+        true,
+        "'rows499' does not depend on any axioms",
+    );
+    assert!(
+        checked.generated_conclusions.is_empty(),
+        "data is what a generated module is for"
+    );
+}
+
+/// An unguarded denominator is reported and never refused.
+///
+/// Advisory on purpose: it cannot be made exact, and a wrong refusal on a
+/// correct file would cost more than a note a reader can dismiss.
+#[test]
+fn an_uncleared_division_is_reported_without_failing_the_check() {
+    let checked = parse(
+        "code/lean/Lib/Mean.lean",
+        "theorem mean_bound (m q : \u{211d}) : q / m \u{2264} 1 := by sorry\n",
+        true,
+        "'mean_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    );
+    assert_eq!(checked.uncleared, vec!["mean_bound".to_string()]);
+    assert!(
+        checked.objection().is_none_or(|objection| !objection.contains("denominator")),
+        "the advisory never becomes the reason a verdict failed"
+    );
+}
+
 /// The trusted three, in any order and any subset, are what a Mathlib proof
 /// actually rests on — so none of them may be read as untrusted.
 #[test]
