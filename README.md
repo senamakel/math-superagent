@@ -56,7 +56,7 @@ verifying the result before presenting it.
 │          ▼  /workspace: goal, tasks, research artifacts, code/lib/       │
 └───────┬─────────────────────────┬─────────────────────┬──────────────────┘
         │                         │                     │
-  workspace/<name>/         Cognee + Neo4j       Surplus/OpenRouter, Exa,
+  workspace/<name>/         Cognee + Neo4j       local router, Exa,
   committed to git          durable memory       Langfuse, trace.jsonl
 ```
 
@@ -192,13 +192,13 @@ lessons, sources, and failed approaches, and the three roles whose output is
 durable knowledge can store them. Pass `--no-research` to withhold web search;
 Cognee recall remains available.
 
-All model calls use DeepSeek V4 Flash through Surplus Intelligence by default,
-with OpenRouter as an independently configured fallback. A Surplus provider or
-transport failure is retried once through OpenRouter; when `SURPLUS_API_KEY` is
-unset, an existing `OPENROUTER_API_KEY` installation runs on OpenRouter alone.
-Set `MATH_AGENT_API_KEY`, `MATH_AGENT_API_BASE_URL`, and `MATH_AGENT_MODEL` to
-replace the primary with another OpenAI-compatible endpoint. `OPENROUTER_MODEL`
-and `MATH_AGENT_PROVIDER` configure the fallback route.
+All general model calls go through the authenticated OpenAI-compatible router
+on port 6969. Ordinary roles send model id `flash`; the roles listed in
+`REASONING_ROLES` send `reasoning`. Both tiers advertise a one-million-token
+context window, while the router owns the provider, price, and fallback ladder.
+Host-side calls default to `http://localhost:6969/v1`; Compose reaches that same
+host service through `host.docker.internal`. The router must listen on a host
+address Docker can reach rather than binding only to `127.0.0.1`.
 TinyAgents provides the model loop, tools, delegation, and middleware.
 
 
@@ -209,7 +209,7 @@ tool result, labelled with the agent that produced it:
 
 ```text
 [00:00] orchestrator     run started (run-1)
-[00:00] orchestrator     model call #1 -> deepseek/deepseek-v4-flash-0731
+[00:00] orchestrator     model call #1 -> flash
 [00:14] orchestrator     model done    13820ms in=9241 cached=8960 out=612 | profile model 96% tool 0% idle 4% | cache 96% | $0.0031
 [00:14] orchestrator     tool  call #1 -> spawn_agent
 [00:14] tool_builder/agent-run-2  spawned: Read /workspace/problem.md and extract the exact statement...
@@ -314,7 +314,7 @@ replay of what it had already seen.
 Requirements:
 
 - Docker
-- Surplus (or fallback OpenRouter), Exa, and Langfuse credentials
+- local router, Exa, and Langfuse credentials
 
 Copy the environment template and fill in the local values:
 

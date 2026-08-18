@@ -65,7 +65,7 @@ mod vcs_tool;
 mod vector;
 mod mill;
 mod tiers;
-use tiers::{ModelTier, ModelTiers};
+use tiers::ModelTiers;
 mod verify;
 mod weakened;
 mod worklock;
@@ -89,9 +89,7 @@ use tinyagents::harness::summarization::{
 use crate::agent::accounting::AccountingModel;
 use crate::agent::budget::RunBudget;
 use crate::agent::reflection::ReflectionMiddleware;
-use crate::agent::reroute::ReroutingModel;
 use crate::agent::resilient::{BoundedTimeoutModel, ResilientTool};
-use crate::agent::sticky::StickyProviderModel;
 use crate::agent::trace::RunTracer;
 use crate::agent::untruncated::UntruncatedModel;
 use crate::agent::{

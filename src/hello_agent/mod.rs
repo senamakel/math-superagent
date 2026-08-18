@@ -44,16 +44,16 @@ impl HelloAgent {
 
         let mut child_harness: AgentHarness<()> = AgentHarness::new();
         child_harness
-            .register_model("openrouter", model.clone())
-            .set_default_model("openrouter");
+            .register_model("router", model.clone())
+            .set_default_model("router");
         configure_run_budget(&mut child_harness, budget);
         let async_subagents = AsyncSubagentManager::new(budget, None);
         async_subagents.register("helper", Arc::new(child_harness), SUBAGENT_PROMPT)?;
 
         let mut parent_harness: AgentHarness<()> = AgentHarness::new();
         parent_harness
-            .register_model("openrouter", model)
-            .set_default_model("openrouter")
+            .register_model("router", model)
+            .set_default_model("router")
             .register_tool(Arc::new(EchoTool))
             .register_tool(Arc::new(AddTool))
             .register_tool(Arc::new(ExaSearchTool::from_env()?));
