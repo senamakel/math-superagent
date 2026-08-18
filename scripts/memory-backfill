@@ -1,0 +1,279 @@
+#!/usr/bin/env python3
+"""Files every workspace document the library is missing.
+
+Usage:
+    scripts/memory-backfill [--dry-run] [--limit N] <workspace-label>...
+    scripts/memory-backfill [--dry-run] [--limit N] --all
+
+`download_document` files each source it fetches into that project's Cognee
+library as it arrives, and that write is best-effort by design: the download
+has already succeeded, so a memory that refuses the document must not fail the
+tool call. The consequence is a library that drifts behind the workspace, and
+it drifts *silently* — `docs/memory.md` records the shape, a
+`200 {"status":"running"}` for a document the ingest pipeline then drops. One
+live workspace holds 371 documents under `research/` and 189 of them in the
+library.
+
+This is the repair pass. It reads what the library actually holds, compares it
+against what is on disk, and posts only the difference, under exactly the
+dataset and node set `src/orchestrator/vector_store.rs` writes — so a document
+filed here is reachable by the same `recall_memory` call as one filed by the
+run that downloaded it, and re-running costs nothing.
+
+What counts as a document is every `.md` under `research/`, with two
+exceptions. `research/sources/*.full.md` is not a document of its own: it is
+the complete text of the summary beside it, and it is uploaded *as* that
+summary's body, which is what the runtime does with the bytes it downloaded.
+And `derived/` is not under `research/` at all — it is rendered from the
+ledgers and `read_ledger` already reaches it.
+
+Nothing about a per-problem Cognee is published to the host, so every request
+goes through a throwaway container on that stack's network, the way
+`scripts/memory-inventory` does.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import subprocess
+import sys
+import tempfile
+import time
+from pathlib import Path
+
+REPOSITORY_ROOT = Path(__file__).resolve().parent.parent
+WORKSPACE_ROOT = REPOSITORY_ROOT / "workspace"
+
+# Mirrors `slug` in `src/orchestrator/vector_values.rs`. It has to, or a
+# document filed here lands under a name the runtime would never look for, and
+# the backfill silently doubles the library instead of completing it.
+def slug(value: str) -> str:
+    mapped = "".join(
+        character.lower() if character.isascii() and character.isalnum() else "_"
+        for character in value
+    ).strip("_")
+    return mapped or "default"
+
+
+# `math_agent_library__<project>` / `library:<project>`, from the same two
+# constants in `src/orchestrator/vector.rs`.
+def library_dataset(project: str) -> str:
+    return f"math_agent_library__{project}"
+
+
+def library_node_set(project: str) -> str:
+    return f"library:{project}"
+
+
+def run(command: list[str], timeout: int = 120) -> str:
+    result = subprocess.run(command, capture_output=True, timeout=timeout)
+    return result.stdout.decode("utf-8", "replace")
+
+
+def memory_network(label: str) -> str:
+    """Brings the problem's stack up if needed and returns its network."""
+    result = subprocess.run(
+        [str(REPOSITORY_ROOT / "scripts" / "memory-up"), label],
+        capture_output=True,
+        timeout=900,
+    )
+    network = result.stdout.decode().strip().splitlines()
+    if result.returncode != 0 or not network:
+        sys.stderr.write(result.stderr.decode("utf-8", "replace"))
+        raise SystemExit(f"backfill: could not bring up memory for {label}")
+    return network[-1]
+
+
+def cognee_get(network: str, path: str) -> object:
+    body = run(
+        ["docker", "run", "--rm", "--network", network, "curlimages/curl:latest",
+         "-s", "--max-time", "60", f"http://cognee:8000{path}"]
+    )
+    try:
+        return json.loads(body)
+    except ValueError:
+        raise SystemExit(f"backfill: unreadable response from {path}: {body[:200]}")
+
+
+def library_contents(network: str, project: str) -> set[str]:
+    """The keys the library already holds.
+
+    A row's `name` comes back with its extension stripped, so the comparison is
+    on the stem alone — `source-research_summaries_x`, the name
+    `remember_source` gives the document part. The companion card
+    (`source-<slug of the path *with* .md>`) is not what is checked: a run that
+    filed the card and lost the document holds nothing searchable, and this
+    pass should replace it rather than count it as present.
+    """
+    datasets = cognee_get(network, "/api/v1/datasets")
+    dataset_id = next(
+        (entry["id"] for entry in datasets if entry.get("name") == library_dataset(project)),
+        None,
+    )
+    if dataset_id is None:
+        return set()
+    rows = cognee_get(network, f"/api/v1/datasets/{dataset_id}/data")
+    return {row["name"] for row in rows if row.get("name")}
+
+
+def documents_on_disk(workspace: Path) -> list[tuple[str, Path]]:
+    """Every `research/` document, paired with the file holding its full text.
+
+    Returned as `(workspace-relative path, file to upload)`. The two differ
+    exactly where a download was split: the summary is the addressable path and
+    `research/sources/<name>.full.md` is the text, which is the pairing
+    `full_text_path` in `src/orchestrator/documents_paths.rs` creates.
+    """
+    research = workspace / "research"
+    if not research.is_dir():
+        return []
+    sources = research / "sources"
+    documents: list[tuple[str, Path]] = []
+    for path in sorted(research.rglob("*.md")):
+        if not path.is_file():
+            continue
+        relative = path.relative_to(workspace).as_posix()
+        if path.parent == sources and path.name.endswith(".full.md"):
+            continue
+        full = sources / (path.name[: -len(".md")] + ".full.md")
+        documents.append((relative, full if full.is_file() else path))
+    return documents
+
+
+def file_document(network: str, dataset: str, node_set: str, relative: str, body: Path) -> str:
+    """Posts one document and its card, as `remember_source` does.
+
+    Both parts go in one request deliberately: a card whose companion failed to
+    upload describes a document the library does not hold, which is the state
+    this pass exists to repair and must not create more of.
+    """
+    stem = slug(relative[: -len(".md")] if relative.endswith(".md") else relative)
+    card = (
+        f"# Source\n\nProject: {dataset.removeprefix('math_agent_library__')}\n"
+        f"Path: {relative}\nURL: (filed by scripts/memory-backfill from the workspace)\n\n"
+        f"The document itself was filed alongside this card as `source-{stem}.md`. "
+        f"Read `{relative}` in the workspace for the converted text.\n"
+    )
+    with tempfile.TemporaryDirectory() as staging:
+        # Copied into a directory of its own, under the name the upload must
+        # carry: Cognee reads the part's filename, not the path on disk.
+        document_file = Path(staging) / f"source-{stem}.md"
+        document_file.write_bytes(body.read_bytes())
+        card_file = Path(staging) / f"source-{slug(relative)}.md"
+        card_file.write_text(card, encoding="utf-8")
+        # The curl image runs as a uid that owns neither file; a bind mount
+        # keeps host permissions, so an unreadable staging directory fails the
+        # upload with an empty body and a zero exit code.
+        os.chmod(staging, 0o755)
+        for staged in (document_file, card_file):
+            os.chmod(staged, 0o644)
+        return run(
+            ["docker", "run", "--rm", "--network", network,
+             "-v", f"{staging}:/upload:ro", "curlimages/curl:latest",
+             "-s", "--max-time", "120", "-w", "\n%{http_code}",
+             "-X", "POST",
+             "-F", f"datasetName={dataset}",
+             "-F", f"node_set={node_set}",
+             "-F", "run_in_background=true",
+             "-F", f"data=@/upload/{document_file.name};type=text/markdown",
+             "-F", f"data=@/upload/{card_file.name};type=text/markdown",
+             "http://cognee:8000/api/v1/remember"],
+            timeout=180,
+        )
+
+
+def backfill(label: str, dry_run: bool, limit: int | None, pause: float) -> tuple[int, int, int]:
+    workspace = WORKSPACE_ROOT / label
+    if not workspace.is_dir():
+        print(f"== {label}: no such workspace", file=sys.stderr)
+        return (0, 0, 0)
+
+    project = slug(label)
+    network = memory_network(label)
+    held = library_contents(network, project)
+    documents = documents_on_disk(workspace)
+    missing = [
+        (relative, body)
+        for relative, body in documents
+        if f"source-{slug(relative[: -len('.md')] if relative.endswith('.md') else relative)}"
+        not in held
+    ]
+
+    print(f"== {label}")
+    print(f"   {len(documents)} documents on disk, {len(held)} rows in the library, "
+          f"{len(missing)} to file")
+    if dry_run:
+        for relative, _ in missing[: limit or len(missing)]:
+            print(f"     would file {relative}")
+        return (len(documents), len(missing), 0)
+
+    filed = 0
+    failed = 0
+    for relative, body in missing[: limit or len(missing)]:
+        response = file_document(network, library_dataset(project), library_node_set(project),
+                                 relative, body)
+        code = response.rsplit("\n", 1)[-1].strip()
+        if code in {"200", "201", "202"}:
+            filed += 1
+        else:
+            failed += 1
+            print(f"     refused ({code or 'no response'}) {relative}", file=sys.stderr)
+        if filed % 25 == 0 and filed:
+            print(f"     filed {filed}/{len(missing)}", flush=True)
+        # Cognee indexes in the background, one LLM extraction per document.
+        # Posting a few hundred as fast as the loop can send them is how the
+        # queue outruns the pipeline that drains it, which is the same drop
+        # this pass exists to repair.
+        time.sleep(pause)
+
+    print(f"   filed {filed}, refused {failed}")
+    return (len(documents), len(missing), filed)
+
+
+def all_labels() -> list[str]:
+    """Every workspace with a memory stack, from the compose projects."""
+    listing = run(["docker", "compose", "ls", "--all", "--format", "json"])
+    try:
+        projects = [entry["Name"] for entry in json.loads(listing)]
+    except (ValueError, KeyError, TypeError):
+        return []
+    labels = []
+    for project in projects:
+        if not project.startswith("cognee-"):
+            continue
+        slugged = project[len("cognee-"):]
+        for candidate in WORKSPACE_ROOT.rglob("*"):
+            if candidate.is_dir() and slug(candidate.relative_to(WORKSPACE_ROOT).as_posix()) == slug(slugged):
+                labels.append(candidate.relative_to(WORKSPACE_ROOT).as_posix())
+                break
+    return sorted(set(labels))
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("labels", nargs="*", help="workspace labels, e.g. conjectures/hilbert-16")
+    parser.add_argument("--all", action="store_true", help="every workspace with a memory stack")
+    parser.add_argument("--dry-run", action="store_true", help="report the gap, file nothing")
+    parser.add_argument("--limit", type=int, default=None, help="file at most this many per workspace")
+    parser.add_argument("--pause", type=float, default=1.0,
+                        help="seconds between documents (default 1.0)")
+    arguments = parser.parse_args()
+
+    labels = arguments.labels
+    if arguments.all:
+        labels = labels + all_labels()
+    if not labels:
+        parser.print_usage(sys.stderr)
+        raise SystemExit(2)
+
+    totals = [0, 0, 0]
+    for label in labels:
+        counts = backfill(label, arguments.dry_run, arguments.limit, arguments.pause)
+        totals = [running + one for running, one in zip(totals, counts)]
+    print(f"\n{totals[0]} documents on disk, {totals[1]} missing, {totals[2]} filed")
+
+
+if __name__ == "__main__":
+    main()
