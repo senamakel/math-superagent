@@ -205,7 +205,8 @@ Host-side calls default to `http://localhost:6969/v1`; Compose reaches that same
 router as `http://ladder:6969/v1` on a shared internal network and publishes it
 only on host loopback. One ladder serves every checkout and every problem on the
 box — it lives in `compose.shared.yaml` beside the graph store, not in any one
-run's project. The pinned image mounts the sibling
+run's project, and tracks `ghcr.io/senamakel/llm-ladder-router:latest` so a fix
+in the router repository arrives on the next `scripts/shared-up`. The pinned image mounts the sibling
 `llm-ladder-router/config.toml`; `LADDER_CONFIG_PATH` and `LADDER_ENV_FILE`
 override those host paths when the repositories live elsewhere.
 TinyAgents provides the model loop, tools, delegation, and middleware.

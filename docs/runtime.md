@@ -253,15 +253,27 @@ pricing, caching, and fallback. The runtime sends only two stable model ids:
 a one-million-token context window to the harness, so compression is based on
 the router's real capacity rather than an unrecognized alias.
 
-`compose.shared.yaml` installs the pinned ladder image, mounts the sibling
-router checkout's `config.toml`, and every stack reaches it as
+`compose.shared.yaml` runs the ladder from `ghcr.io/senamakel/llm-ladder-router:latest`
+with `pull_policy: always`, mounts the sibling router checkout's `config.toml`, and every stack reaches it as
 `http://ladder:6969/v1` on a stable internal network. The one-off agent
 container joins that network and its per-problem Cognee network; each problem's
 Cognee joins it too, for the entity extraction and summarisation its own
 ingestion performs. The ladder also joins a provider-egress network nothing
 else sees. One ladder for the box, rather than one per checkout: the ladder used
 to live in `compose.yaml`, whose project name is the checkout directory's, so a
-second checkout brought up a second ladder and the two fought over port 6969. Changing `COGNEE_NETWORK` therefore does not recreate the ladder or
+second checkout brought up a second ladder and the two fought over port 6969.
+
+The tag is `latest` rather than a sha, and `pull_policy: always` is what makes
+that mean anything — Compose otherwise keeps serving whatever `latest` meant
+when it first pulled. The router's CI republishes the tag on every push to its
+main, so a fix there reaches every problem here through `scripts/shared-up`
+rather than an edit to this repository. What that buys was measured on
+2026-08-18: a fifteen-minute Surplus edge outage answered `403 Forbidden` to
+every ladder, the router classed it as a caller error and handed it back
+unreplayed, and five live runs died inside the same minute with a working
+second provider one rung below. The fix — 401/403/407 advance the ladder and
+park the rung — is a router change, and pinning a sha is what would have kept
+it out of this stack. Changing `COGNEE_NETWORK` therefore does not recreate the ladder or
 interrupt another run, and the internal router network does not give a
 calibration container a route around its proxy. The calibration overlay puts
 `ladder` in `NO_PROXY` so model traffic stays on that internal link. Host access

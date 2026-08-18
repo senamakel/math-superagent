@@ -123,12 +123,14 @@ services:
       - neo4j-data:/data
 
   ladder:
-    # sha-277e873: the failover fix. Before it, a provider answering 401/403
-    # was classed as a caller error and handed straight back, so a fifteen
-    # minute Surplus edge outage killed five runs at once with a working
-    # second provider one rung below. Built locally and not yet pushed to
-    # ghcr — `docker login ghcr.io` and push it before another box pulls this.
-    image: ghcr.io/senamakel/llm-ladder-router:sha-277e873
+    # `latest`, not a sha. The router is a sibling repository whose CI rebuilds
+    # and republishes this tag on every push to its main, so a fix there
+    # reaches every problem here by restarting one container rather than by
+    # editing this line. It moves under us by design; `pull_policy: always`
+    # below is what makes that actually happen, since Compose would otherwise
+    # keep serving whatever `latest` meant the first time it pulled.
+    image: ghcr.io/senamakel/llm-ladder-router:latest
+    pull_policy: always
     restart: unless-stopped
     # This used to live in `compose.yaml`, whose project name is the checkout
     # directory's, so a second checkout brought up a second ladder and the two
