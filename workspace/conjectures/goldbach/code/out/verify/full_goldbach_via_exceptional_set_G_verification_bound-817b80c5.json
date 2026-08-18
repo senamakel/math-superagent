@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "full-goldbach-via-exceptional-set/G-verification-bound",
+  "source": "code/lean/full_goldbach_via_exceptional_set_G_verification_bound-817b80c5.lean",
+  "stage": "decompose"
+}

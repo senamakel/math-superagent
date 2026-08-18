@@ -209,38 +209,62 @@ searches share one request path on `VectorStore::search`, differing only in
 Cognee's `search_type`, so a correction to one cannot drift from the other.
 
 The research agent has Exa plus `recall_research` and `remember_research` tools.
-Cognee persists the notes, and the server is **shared rather than per-checkout**:
-it scopes its graph by project, so one instance serves every checkout on the box
-with the datasets kept apart. `compose.yaml` therefore joins an external network
-named by `COGNEE_NETWORK` (default `cognee-local_default`) and reaches the
-server as `cognee:8000`, with no `depends_on` — the memory server outlives any
-one run, and a run must never be able to take it down.
+Cognee persists the notes, and the server is **one process for the whole box,
+with each problem as a tenant on it**. `compose.yaml` joins its network —
+external, named by `MEMORY_NETWORK` — and reaches the server as `cognee:8000`,
+with no `depends_on`: the memory server outlives any one run, and a run must
+never be able to take it down.
 
-`docker compose -f compose.yaml config --services` yields `agent` alone. The
-two things it talks to are somebody else's stack: this problem's Cognee, from
-`compose.memory.yaml` (`scripts/memory-up`), and the shared backbone — one
-Neo4j Enterprise instance and one ladder — from `compose.shared.yaml`
-(`scripts/shared-up`). `./agent` starts them in that order; neither is in the
-agent's own project, which is what stops a run being able to take either down.
+`docker compose -f compose.yaml config --services` yields `agent` alone. What it
+talks to is somebody else's stack: `compose.shared.yaml` (`scripts/shared-up`),
+holding one Neo4j Enterprise instance, one Cognee and one ladder. `./agent`
+starts it first; it is not in the agent's own project, which is what stops a run
+being able to take it down.
 
-What is shared is the graph store, not Cognee. The contention that split the
-memory server per problem was measured against one shared *Cognee* process —
-four concurrent runs produced a `409 Conflict` on a `recall_memory` that had
-already hung the full ten-minute tool ceiling — and Cognee is still one
-container per problem. Underneath, each is pointed at its own Neo4j database
-(`GRAPH_DATABASE_NAME`, `p<workspace-slug>`, created by `scripts/memory-up`).
-That boundary is the Bolt protocol's: a driver session is bound to one named
-database, and a container pointed at one got `[]` back from `SHOW DATABASES`
-run inside its own session, with a literal Cypher `MATCH` for another problem's
-data coming back empty. It does not depend on Cognee's query-time dataset
-filtering, which `docs/memory.md` records as unenforced. Multiple databases
-need Neo4j **Enterprise**; Community cannot create one at all.
+## One memory server, one tenant per problem
 
-`scripts/memory-migrate <workspace-label>` is the one-time move for a problem
-whose graph is still in a private Neo4j: it dumps that store and loads it into
-the shared instance under the problem's database name. Cognee's own metadata
-and vector stores do not move — they are volumes of the `cognee-<slug>` project
-and stay exactly where they are.
+Two things separate one problem's memory from another's, and neither is a filter
+in this runtime.
+
+The **key** is the first. `ENABLE_BACKEND_ACCESS_CONTROL=true` makes each
+problem a Cognee user; `scripts/memory-up <label>` registers it and mints an API
+key, `scripts/memory-up --key <label>` prints it, `scripts/run-agent` passes it
+in as `COGNEE_API_KEY`, and `VectorStore::from_env` puts it on the HTTP client as
+a default `X-Api-Key` header so no call site can forget it. Probed live: a
+tenant asking for another tenant's dataset by name gets `404
+DatasetNotFoundError`, and a request with no key at all gets `401`. This is also
+what makes Cognee honour the `datasets` field, which in single-user mode it
+documents as unenforced and which this repository measured leaking
+(`docs/memory.md`).
+
+The **graph database** is the second, and it is unchanged in effect from the
+per-problem shape it replaced: under access control a Cognee dataset *is* a
+Neo4j database, named `cognee<dataset-uuid-hex>`, created by Cognee itself on
+first ingest rather than by `scripts/memory-up`. A driver session is bound to one
+named database at the Bolt protocol level — a container pointed at one got `[]`
+back from `SHOW DATABASES` run inside its own session, and a literal Cypher
+`MATCH` for another problem's data came back empty. Multiple databases need
+Neo4j **Enterprise**; Community cannot create one at all.
+
+Because a dataset is a graph database, the runtime writes **one dataset per
+problem** rather than one per store: the brain, the sessions, the library and
+the scratch share `math_agent__<project>` and differ by `node_set`. Four
+datasets would put a source and the session that read it in graphs with no edge
+possible between them, and the entity linking across the two is the reason a
+graph store is worth its cost.
+
+What this bought is the box. One Cognee per problem meant one Python server and
+one resident embedding model per problem — measured between 0.6g and a problem
+pinned at 3.96g of its 4g cap during cognify — so a dozen problems reserved 24g
+of ceiling for their memory alone. One server, capped at `COGNEE_MEM_LIMIT`
+(8g), replaces that.
+
+What it costs is contention, which is the failure that split the memory server
+per problem in the first place: four concurrent runs against one shared Cognee
+produced a `409 Conflict` on a `recall_memory` that had already hung the full
+ten-minute tool ceiling, and a run cannot retry ten minutes it has already
+spent. Cognee serialises per *dataset* now rather than globally, which is the
+reason to try again and not a proof; `docs/memory.md` says what to measure.
 
 The parent and both children use context-compression middleware with an
 estimated 300,000-token trigger. The summary should retain mathematical
@@ -273,7 +297,8 @@ every ladder, the router classed it as a caller error and handed it back
 unreplayed, and five live runs died inside the same minute with a working
 second provider one rung below. The fix — 401/403/407 advance the ladder and
 park the rung — is a router change, and pinning a sha is what would have kept
-it out of this stack. Changing `COGNEE_NETWORK` therefore does not recreate the ladder or
+it out of this stack. The ladder lives in the shared project rather than in any
+run's, so bringing a run up does not recreate the ladder or
 interrupt another run, and the internal router network does not give a
 calibration container a route around its proxy. The calibration overlay puts
 `ladder` in `NO_PROXY` so model traffic stays on that internal link. Host access
@@ -517,11 +542,21 @@ The narrow exception is direction. `./steer` reaches a run that already exists,
 which does not touch what the rule prevents: a directive appends a line to a
 file and creates no container.
 
-Check for a collision by **mount**, never by name. The Compose project name is
-derived from the checkout directory, so a run started from a worktree is called
+A run's container is **named for its workspace** — `math-agent-<workspace
+subdir>`, e.g. `math-agent-conjectures-hilbert-16` — which is what makes the
+collision loud rather than silent: Docker refuses a duplicate name, so a second
+`./conjecture hilbert-16` fails at once and says which container already holds
+the workspace. `docker ps` also reads as a list of problems being worked on
+rather than of random ids.
+
+Checking by **mount** is still the reliable check and is what
+`scripts/calibrate-run` does, because the name only covers runs this launcher
+started: a container started by hand, or by an older checkout, carries
+Compose's generated `<project>-agent-run-<id>` instead — and the project name
+is derived from the checkout directory, so a run started from a worktree is
 `<worktree>-agent-run-<id>` and a `grep riemann-agent-run` sees nothing at all
-while a container is live. `scripts/calibrate-run` resolves it by mount for this
-reason.
+while it is live. A shell (`./agent shell`) keeps the generated name on
+purpose, so that it can be opened alongside a live run on the same workspace.
 
 ## Watching a run
 
@@ -560,10 +595,12 @@ live container had 643 lines there and none on stdout — so `docker logs` needs
 
 ## The memory cap
 
-The container's memory limit is 24 GiB, with `memswap_limit` at 56 GiB, and
-both numbers are a judgement rather than a requirement — what the rule in
-`AGENTS.md` demands is that *some* limit stay. 2 GiB was the wrong judgement,
-and a live run said so; so were 4 and 8.
+A run's container is capped at 4 GiB with `memswap_limit` at 8 GiB and 250 MiB
+reserved; the shared Neo4j and Cognee are capped at 16 GiB each with 1 GiB
+reserved each. Every number is a judgement rather than a requirement — what the
+rule in `AGENTS.md` demands is that *some* limit stay. 2 GiB was the wrong
+judgement for a run, and a live run said so; so were 4 and 8, under the
+arrangement described below.
 
 An Erdős–Gyárfás container was OOM-killed mid-attempt: `oom` and then
 `die exit=137` in `docker events`. An OOM kill is the worst failure shape
@@ -595,27 +632,40 @@ that genuinely needs the space, and each raise makes the next one easier to
 ask for. The compose comment used to promise 8 GiB would never move; it moved,
 so the note there now records the history instead of making a firmer promise.
 
-The raise to 24 GiB on 2026-08-17 is the first one no run asked for. It was
-made against a shape of work this runtime has not yet attempted — a proof whose
-last third is a generated certificate, of the kind
+The raise to 24 GiB on 2026-08-17 is the only one no run asked for. It was made
+against a shape of work this runtime has not yet attempted — a proof whose last
+third is a generated certificate, of the kind
 [`research/proofatlas/01-sendov-bundle-anatomy.md`](../research/proofatlas/01-sendov-bundle-anatomy.md)
 takes apart, whose Lean build wanted one worker under a 32 GiB address-space
-limit. Under sixteen a run cannot attempt that at all, so the ceiling was
-settling the question ahead of the method.
+limit — and it did not survive the move to a shared memory server. The
+accounting that argued for it was per problem: each problem kept its own Cognee
+beside the shared Neo4j, and the run's own ceiling was one term in a sum nobody
+was adding up.
 
-It overcommits the box deliberately. 30 GiB of RAM, and `cognee` keeps its own
-8 GiB, so the two can ask for more than is free. `memswap_limit` is the *total*
-of RAM and swap, so 56 GiB grants 24 GiB resident plus 32 GiB of the box's 87
-GiB of swap. Docker already allowed swap — `mem_limit` alone defaults
-`memswap` to twice the memory — so what changed is that the allowance is stated
-rather than inherited.
+The sum is what the current numbers are about. Several runs are live at once, so
+a per-run ceiling that overcommits by itself overcommits by the number of runs;
+4 GiB per run against 250 MiB reserved is a shape that stays inside the box when
+a dozen of them are up. The shared half is sized once, together: Neo4j and
+Cognee each reserve 1 GiB and are capped at 16 GiB. The reservations do the work
+the ceilings do not — they are the floor the scheduler holds for a service that
+is idle between a run's turns, which is what stops a busy neighbour from
+squeezing the store every other run reads through.
+
+`memswap_limit` is the *total* of RAM and swap, so 8 GiB grants 4 GiB resident
+plus 4 GiB of the box's swap. Docker already allowed swap — `mem_limit` alone
+defaults `memswap` to twice the memory — so what changed is that the allowance
+is stated rather than inherited.
+
+The 4,524-job Lean build is the one shape that genuinely does not fit, and it
+wants a deliberately raised run — `MATH_AGENT_MEM_LIMIT` in the environment —
+rather than a standing ceiling every problem is handed.
 
 The failure mode changes with it, and this is the part to internalise. Swap
 converts an OOM kill into a slowdown: the container does not die, it gets
 slower by orders of magnitude, and every tool call reads as hung. `vmstat 5`
 with sustained non-zero `si`/`so` is the signature, and it deserves exactly
 what an OOM deserved — a finding about the method. Streaming still beats
-materialising at 24 GiB for the reason it did at 8.
+materialising at 4 GiB for the reason it did at 8, and the reason it did at 24.
 
 ## Observability
 

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "cdm2021-curvature-scale-certificate",
+  "source": "code/lean/cdm2021_curvature_scale_certificate-979b32b3.lean",
+  "stage": "decompose"
+}

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "drrt-2015-fake-saddle-cyclicity-lower-bound",
+  "source": "code/lean/drrt_2015_fake_saddle_cyclicity_lower_bound-25dddb77.lean",
+  "stage": "decompose"
+}

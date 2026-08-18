@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "halbeisen-102m-bound",
+  "source": "code/lean/halbeisen_102m_bound-8c28c8a6.lean",
+  "stage": "decompose"
+}

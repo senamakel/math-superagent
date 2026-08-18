@@ -47,7 +47,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 17 | https://openalex.org/W356699451 | — | linked from Centennial History of Hilbert's 16th Problem |
 | 17 | https://openalex.org/W595524075 | — | linked from Centennial History of Hilbert's 16th Problem |
 
-_3867 further candidates not shown; they are cited once each._
+_4005 further candidates not shown; they are cited once each._
 
 ---
 

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "akeno-2025-small-gaps-goldbach-primes",
+  "source": "code/lean/akeno_2025_small_gaps_goldbach_primes-eb07bfc5.lean",
+  "stage": "decompose"
+}

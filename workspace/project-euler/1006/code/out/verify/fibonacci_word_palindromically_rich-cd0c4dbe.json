@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "fibonacci-word-palindromically-rich",
+  "source": "code/lean/fibonacci_word_palindromically_rich-cd0c4dbe.lean",
+  "stage": "decompose"
+}

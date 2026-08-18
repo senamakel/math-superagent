@@ -394,11 +394,13 @@ intermediate nobody named lives. The cap rose from ten to forty, because ten
 split across two retrievers is five passages.
 
 Which search types are reachable is a **security** boundary, not a menu.
-`node_name` is the only scoping this deployment applies — dataset filtering
-needs `ENABLE_BACKEND_ACCESS_CONTROL`, which `compose.memory.yaml` sets to
-`false`, and that is the explanation for the leak `visible_datasets` closed. So
-a type is usable exactly when its retriever accepts `node_name`, and several do
-not: `SUMMARIES` and `CHUNKS_LEXICAL` take a `top_k` and nothing else, `CYPHER`
+`node_name` is what separates this project's four stores from each other, and
+they share one dataset (`docs/runtime.md`), so a retriever that ignores it
+returns the scratch as durable recall. The cross-*problem* boundary is the
+server's now — one tenant per problem, and another tenant's dataset is a `404` —
+which is narrower than the leak this list was written against and does not
+retire it. So a type is usable exactly when its retriever accepts `node_name`,
+and several do not: `SUMMARIES` and `CHUNKS_LEXICAL` take a `top_k` and nothing else, `CYPHER`
 and `NATURAL_LANGUAGE` run against the whole graph. `SCOPE_SAFE_SEARCH_TYPES`
 lists the four that are safe, `search_in` refuses the rest, and a test asserts
 both halves. The loss is worth naming: `CHUNKS_LEXICAL` would match the exact

@@ -312,9 +312,13 @@ sample.
 It was not closed here because the comment at that line records a real reason: a
 shared server was the earlier arrangement and it failed on availability — four
 concurrent runs turned `recall_memory` into a ten-minute hang ending in `409
-Conflict`. `COGNEE_NETWORK` already opts back into sharing. This is an
-operational decision about a store's availability, not a missing capability, and
-it is the user's to make.
+Conflict`. This is an operational decision about a store's availability, not a
+missing capability, and it is the user's to make.
+
+*Since this reading:* the decision was made on the deployment side — one Cognee
+for the box, one tenant per problem (`compose.shared.yaml`). That is not the
+same as making the *brain* shared, which is what this gap is about and which is
+still open; `docs/tao-proposals.md` #6 has what is left.
 
 ## What is still open, and why each was left
 

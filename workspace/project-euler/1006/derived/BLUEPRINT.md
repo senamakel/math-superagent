@@ -10,18 +10,18 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
-- `pe1006-psi/pe1006-psi/G4-joint-intercept-evaluation` (lemma) — There exists an explicitly defined state σ(a,k) of dimension independent of k, with an associative composition ○ computable in time…
+- `pe1006-psi/pe1006-psi/G4-joint-intercept-evaluation` (lemma) — There exists an explicitly defined fixed-dimensional state σ(a,k), with associative composition whose evaluation costs O(log k), that…
   - open `research/backward/pe1006-psi.md`
 
 ## Verify these first
 
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
-- `governing-sturmian` — 5 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic…
-- `governing-factor-complexity` — 3 node(s) rest on it, and the run is already building on it — A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;…
-- `monoid-composition-formulas-verified` — 3 node(s) rest on it, and the run is already building on it — For the geometric second-moment floor-sum monoid over a Euclidean path (n R's, i-th R preceded by floor((p·i+r)/q) U's), composing segment…
+- `governing-sturmian` — 3 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic…
+- `governing-factor-complexity` — 2 node(s) rest on it, and the run is already building on it — A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;…
+- `monoid-composition-formulas-verified` — 2 node(s) rest on it, and the run is already building on it — For the geometric second-moment floor-sum monoid over a Euclidean path (n R's, i-th R preceded by floor((p·i+r)/q) U's), composing segment…
 
-_65 further candidate(s) below these, in the table._
+_62 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -68,13 +68,16 @@ _65 further candidate(s) below these, in the table._
 | `governing-factor-complexity` | claim | established | — | A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;… |
 | `governing-fibonacci-sturmian-mechanical` | claim | **ready** | — | The infinite Fibonacci word fixed by 0→01, 1→0 is a characteristic Sturmian word of slope 1/φ². Sturmian words have exactly k+1 distinct… |
 
-_39 further nodes not shown._
+_36 further nodes not shown._
 
 ## Resting on nothing that exists
 
 Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
 
 - `g4-universal-euclidean-floor-sum` rests on `req-close-universal-euclidean`, which does not exist
+- `pe1006-psi` rests on `pe1006-psi/G1-finite-subword-limit-identification`, which does not exist
+- `pe1006-psi` rests on `pe1006-psi/G2-mechanical-factor-parametrisation`, which does not exist
+- `pe1006-psi` rests on `pe1006-psi/G3-telescoped-decimal-second-moment`, which does not exist
 
 ---
 

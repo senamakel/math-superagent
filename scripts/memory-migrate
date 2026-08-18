@@ -5,12 +5,25 @@
 # Usage: scripts/memory-migrate <workspace-label> [<workspace-label>...]
 #        scripts/memory-migrate --all
 #
-# This is the one-time step between the old arrangement — one Neo4j *and* one
-# Cognee per problem — and the current one, where the graph store is shared and
-# only Cognee stays private. Cognee's own state does not move: its metadata
-# store and its vector store are volumes of the `cognee-<slug>` compose
-# project, and that project keeps its name, so they are still there when the
-# container comes back pointed at the shared instance. Only the graph travels.
+# This is the one-time step between the oldest arrangement — one Neo4j *and*
+# one Cognee per problem — and the one after it, where the graph store was
+# shared and only Cognee stayed private.
+#
+# **Neither is today's shape**, and this script is kept for a box that has not
+# caught up rather than for the current one. Today there is one Cognee for the
+# box with each problem as a tenant on it, and a tenant's graph database is
+# created by Cognee itself (`compose.shared.yaml`), so nothing here runs as
+# part of an ordinary run. What it still does correctly is move a graph out of
+# a private Neo4j and into the shared instance under a name you choose — which
+# is the operation you want if an old per-problem stack turns up holding
+# something worth keeping. Reaching it from a *tenant* is a second step this
+# script does not do: a tenant reads the database Cognee named after its
+# dataset, so the graph would have to be loaded under that name, which
+# `scripts/memory-inventory <label>` prints.
+#
+# Cognee's own state does not move: its metadata store and its vector store are
+# volumes of the `cognee-<slug>` compose project, and that project keeps its
+# name, so they are still there. Only the graph travels.
 #
 # The graph travels as a dump rather than a copy, because the old instance is
 # Community and the new one is Enterprise: `neo4j-admin database dump` writes

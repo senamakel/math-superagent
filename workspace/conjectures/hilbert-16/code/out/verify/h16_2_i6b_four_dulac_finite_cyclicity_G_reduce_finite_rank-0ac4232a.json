@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "h16-2-i6b-four-dulac-finite-cyclicity/G-reduce-finite-rank",
   "source": "code/lean/h16_2_i6b_four_dulac_finite_cyclicity_G_reduce_finite_rank-0ac4232a.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "full-goldbach-via-exceptional-set/G-exceptional-density",
+  "source": "code/lean/full_goldbach_via_exceptional_set_G_exceptional_density-eb9ec380.lean",
+  "stage": "decompose"
+}

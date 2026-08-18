@@ -1,23 +1,31 @@
-# Efficient-method status
+# Efficient-method assessment
 
 ## Structural reduction
 
-The governing theorem is Sturmian factor complexity: the Fibonacci fixed point has exactly k+1 length-k factors. Mechanical-word coding parameterizes those factors by the k+1 cells of the irrational rotation orbit. For a cell representative x, the corresponding binary word has digits
+The governing result is the Sturmian complexity theorem: the Fibonacci fixed point has exactly `k+1` length-`k` factors. Mechanical-word rotation coding represents these factors by the `k+1` cells cut out by the orbit of an irrational rotation of slope `alpha=1/phi^2`. For a cell/intercept `rho`, its digits are
 
- d_j(x)=⌊x+(j+1)α⌋−⌊x+jα⌋,  α=1/φ².
+`d_j(rho)=floor(alpha*(j+1)+rho)-floor(alpha*j+rho)`.
 
-Its decimal value telescopes to
+The decimal value is then
 
- v(x)=⌊x+kα⌋−10^{k−1}⌊x⌋+9 Σ_{j=1}^{k−1}10^{k−1−j}⌊x+jα⌋.
+`V_k(rho)=sum_{j=0}^{k-1} d_j(rho) 10^{k-1-j}`,
 
-Therefore Ψ(k)=Σ_cells v(x)^2. This is an exact integer/rational floor-sum formulation.
+and the target is the exact joint moment
 
-## Why the obvious fast primitive is insufficient
+`Psi(k)=sum_{rho in the k+1 factor cells} V_k(rho)^2`.
 
-Universal Euclidean/Chtholly recursion evaluates weighted moments for one fixed intercept in logarithmic coefficient complexity. Ψ needs a *joint* second moment over all k+1 intercept cells. Existing local derivations and tests show that replacing this joint observable by one pinned intercept is false already at k=1; a low-dimensional additive block summary also has a k=2 collision. Thus no justified O(log k) full-size evaluator is currently established in this workspace.
+This is the correct reduction because the factors are exactly the mechanical factors, not a sample of them.
 
-Consequently an honest implementation cannot compute Ψ(10^18) yet. The existing `code/solution.py` is intentionally non-answering until this missing aggregation theorem is proved. Reporting a numerical final answer would be unsupported.
+## Complexity requirement and current status
 
-## Oracle evidence
+A full-size solution must evaluate the joint second moment without iterating over `k+1` factors, because `k=10^18`. The standard Euclidean floor-sum recursion can evaluate weighted moments along one fixed floor path in logarithmic coefficient complexity, but it does not by itself evaluate the coupled sum over all `k+1` intercept cells. A fixed-dimensional associative state for that joint observable would be sufficient; the local reference set does not establish such a state.
 
-The naive oracle is `code/brute.py`, with exponential cost and intended only for small k. It reproduces F_3, Ψ(3)=20302, and Ψ(10)≡10699667 mod 101001001. Mechanical implementations in the existing workspace independently agree with the oracle on their tested small ranges and with large finite anchors, but those are evidence for the reduction, not a proof of the missing joint aggregation.
+Accordingly, this workspace does not have a justified efficient evaluator or a verified numerical answer. `code/solution.py` remains an explicit placeholder rather than silently presenting an unsupported result.
+
+## Counterexample discipline
+
+Any proposed collapse of the joint moment must first agree with the naive oracle at `k=1,2,3`, then with larger small cases. In particular, replacing the joint cell sum by one pinned intercept or by an additive triple `(count, sum V, sum V^2)` is not justified: the local research notes record failures of these reductions at the smallest cases.
+
+## Verification status
+
+The required execution of `code/brute.py` could not be performed in this interface because the mandated `tool_builder` execution namespace is unavailable. Therefore the worked examples are recorded as assertions in the program but are not claimed as executed evidence here. No full-size answer is reported.

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "explicit-goldbach-summatory-2024",
+  "source": "code/lean/explicit_goldbach_summatory_2024-05062f27.lean",
+  "stage": "decompose"
+}

@@ -1,16 +1,40 @@
 # The memory: what it holds, and the audit that found it holding nothing
 
-The runtime's memory is one Cognee server per problem, with four stores inside
-it: the shared **brain** (`remember_memory`), this project's **sessions** (one
-document per finished agent run), its **library** (every downloaded source), and
-its **scratch** (`note_scratch`, provisional work, unreachable from durable
-recall). The graph store underneath is *not* per problem: one Neo4j Enterprise
-instance holds one database per problem, and Cognee is statically pointed at
-its own. That boundary is the Bolt protocol's rather than Cognee's, which
-matters here because the leak recorded below was Cognee's own dataset filtering
-going unenforced — see `compose.shared.yaml` for the probe. `src/orchestrator/vector.rs` and the three files it includes are the
-whole of the client; [`docs/roles.md`](roles.md#recall-the-two-ways-back-into-what-is-known)
-says which role holds which tool.
+The runtime's memory is **one Cognee server for the box, with each problem as a
+tenant on it**, and four stores inside each tenant: the **brain**
+(`remember_memory`), the **sessions** (one document per finished agent run), the
+**library** (every downloaded source), and the **scratch** (`note_scratch`,
+provisional work, unreachable from durable recall). `src/orchestrator/vector.rs`
+and the three files it includes are the whole of the client;
+[`docs/roles.md`](roles.md#recall-the-two-ways-back-into-what-is-known) says
+which role holds which tool, and [`docs/runtime.md`](runtime.md) has the
+tenancy: how a tenant is provisioned, what the key does, and what one Cognee
+replaced.
+
+Three consequences matter for reading the rest of this file, because most of it
+was measured against the shape that came before.
+
+- **A tenant is one dataset**, `math_agent__<project>`, and the four stores
+  differ by `node_set` inside it. Under access control a Cognee dataset is a
+  Neo4j database, so four datasets would put a source and the session that read
+  it in graphs with no edge possible between them.
+- **The cross-problem boundary moved into the server.** It used to be a Bolt-
+  level fact about a container statically pointed at one database, with an
+  allowlist in this runtime computing which datasets to name. It is now the
+  server refusing: a tenant asking for another tenant's dataset gets `404
+  DatasetNotFoundError`, and no key at all gets `401`. Access control is also
+  what makes Cognee honour the `datasets` field, whose being silently unenforced
+  is the leak recorded further down.
+- **Contention is the live risk again.** One shared Cognee is what produced a
+  `409 Conflict` on a `recall_memory` that had already hung the full ten-minute
+  tool ceiling, under four concurrent runs. Cognee serialises per dataset rather
+  than globally now, and the server is three minor versions on, and neither of
+  those is a measurement. What to measure, from `config/trace.jsonl` across the
+  concurrently running workspaces: the `recall_memory` and `remember_memory`
+  latency distribution against the number of runs live at the time, and any
+  `409` at all. A tail that grows with concurrency is this failure returning,
+  and the answer is to shard tenants across a second Cognee — the compose file
+  starts one per project name — rather than to raise the tool ceiling.
 
 This file is the evidence behind the rules that guard it. It exists because an
 audit on 2026-08-16 asked one question — *can a run recall what its earlier
@@ -19,15 +43,18 @@ that nothing in the runtime said so.
 
 ## What the audit did
 
-Every Cognee is per problem and nothing about it is published to the host, so
-each probe below was a `curl` container joined to that stack's compose network,
-sending the exact request shapes `VectorStore` sends:
+Nothing about Cognee is published to the host, so each probe below was a `curl`
+container joined to the memory network, sending the exact request shapes
+`VectorStore` sends. The audit ran against the per-problem servers this
+deployment used at the time; the equivalent commands today name the one shared
+network and carry the problem's tenant key:
 
 ```sh
 scripts/memory-inventory conjectures/casas-alvero   # health, then every document
 scripts/memory-up conjectures/casas-alvero          # prints the network name
-docker run --rm --network cognee-conjectures-casas-alvero_default \
-  curlimages/curl:latest -s http://cognee:8000/health/detailed
+scripts/memory-up --key conjectures/casas-alvero    # prints the tenant's key
+docker run --rm --network math-agent-shared_memory \
+  -H "X-Api-Key: $key" curlimages/curl:latest -s http://cognee:8000/health/detailed
 ```
 
 `scripts/memory-inventory` came out of the audit and is the first thing to run
@@ -124,7 +151,7 @@ into an empty memory:
 
 ```sh
 printf 'shell %s\n' "$(printf %s "$OPENROUTER_API_KEY" | sha256sum | cut -c1-12)"
-docker exec <stack>-cognee-1 sh -c \
+docker exec math-agent-shared-cognee-1 sh -c \
   'printf "server %s\n" "$(printf %s "$LLM_API_KEY" | sha256sum | cut -c1-12)"'
 docker run --rm --network <network> curlimages/curl:latest -s \
   http://cognee:8000/health/detailed
@@ -143,8 +170,12 @@ whose inherited value it had to override. An override is still one edit to
 `.env` away, which is the one place this repository keeps credentials.
 
 **The memory indexes on its own key.** `OPENROUTER_MEMORY_API_KEY` is what
-`compose.memory.yaml` hands Cognee, falling back to `OPENROUTER_API_KEY` when
-unset. Sharing one key meant the memory stopped storing at exactly the moment
+`compose.shared.yaml` hands the *ladder*, through its `env_file`. Cognee itself
+is given the ladder's own `MATH_AGENT_API_KEY`, because its `LLM_ENDPOINT` is
+the router rather than a provider: handing it an OpenRouter key reaches the
+ladder as a bearer token it does not recognise, and every ingest fails `409
+AuthenticationError` while `/health/detailed` still reports the model endpoint
+healthy. Sharing one key meant the memory stopped storing at exactly the moment
 the run had been working hardest: the limit is spent by the run's own model
 calls, and the ingest that carries what the run just learned is the write that
 gets dropped. A separate key also makes the memory's spend readable on its own,

@@ -7,7 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `AGENTS.md` | _(undescribed)_ |
 | `PE1006.lean` | _(undescribed)_ |
 | `Problem1006.lean` | Lean statements (all := by sorry) of the PE1006 structural claim: the infinite Fibonacci word as a characteristic/mechanical Sturmian word of slope 1/phi^2; the count |
-| `brute.py` | Naive exponential oracle for Fibonacci subwords; reproduces the statement's F3, Psi(3), and Psi(10) anchors. |
+| `brute.py` | Naive exponential Fibonacci-word factor oracle; reproduces every worked example and is retained only for small-instance verification. |
 | `check_christoffel_class.py` | _(undescribed)_ |
 | `directive9_transfer.py` | Finite doubled-Fibonacci contiguous-window rolling transfer recurrence for directive-9 validation; compares the k+1 window square sum with mech_psi for k<=150. This is an O(N) oracle/diagnostic, not a full-size solver. |
 | `explore.lean` | _(undescribed)_ |

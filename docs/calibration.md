@@ -414,14 +414,14 @@ Three of these were silently corrupting results.
   flagged terms separately, and looks for the run **describing its own recall**
   (*"the recalled Huang lower bound"*), which is a stronger signal than any term
   because no blocklist has to have guessed the word.
-- **Parallel runs could not share a Compose project.** The project's `memory`
-  network resolves to `$COGNEE_NETWORK`, which is per-problem, so starting a
-  second run rewrote the first's network reference and Compose recreated
-  services underneath a live container. Each problem now gets its own
-  `calibrate-<slug>` project; the cost is one extra proxy, five megabytes, per
-  run.
-- **Health timeouts were sized for one stack.** Three cognee servers starting
-  together load the box enough that a healthy server fails a five-second probe —
+- **Parallel runs could not share a Compose project.** Two runs in one project
+  fight over one `screen-proxy` and one `agent-egress` network: the second `up`
+  recreates services underneath the first's live container, and both proxies
+  answer to one name. Each problem now gets its own `calibrate-<slug>` project;
+  the cost is one extra proxy, five megabytes, per run.
+- **Health timeouts were sized for one stack.** Back when a run started its own
+  Cognee, three starting together loaded the box enough that a healthy server
+  failed a five-second probe —
   the health log read `Health check exceeded timeout (5s)` while the server's own
   log showed a normal startup. The probe is now 20s and the launcher waits 420s.
   This is why `hypercube-induced-degree` failed to start on the first attempt.

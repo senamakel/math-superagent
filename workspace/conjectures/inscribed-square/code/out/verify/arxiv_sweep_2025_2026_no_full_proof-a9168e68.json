@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "arxiv-sweep-2025-2026-no-full-proof",
+  "source": "code/lean/arxiv_sweep_2025_2026_no_full_proof-a9168e68.lean",
+  "stage": "decompose"
+}

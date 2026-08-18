@@ -205,16 +205,27 @@ see the toolchain survey for why the binary was the wrong answer.
 of the argument, and the two fastest results in `02` — the sunflower rewrite and
 PFR — both consisted of picking up existing output rather than starting cold.
 
-**Gap:** `scripts/run-agent:110-126` gives each problem its own Cognee stack.
+**Gap:** each problem used to get its own Cognee stack.
 
-**What to build:** not a code change first. The decision is whether to run one
-shared store, and the comment at that line records why the previous shared
-arrangement was abandoned — four concurrent runs, a ten-minute `recall_memory`
-hang, `409 Conflict`. `COGNEE_NETWORK` already opts back in, so the cheapest
-honest experiment is to set it for two concurrent runs and measure recall
-latency before writing anything. If it holds, the code change that follows is a
-`remember_research` discipline: a claim worth carrying across problems is stated
-without the problem's own notation.
+**Half of this shipped, and not the half this proposal asked for.** There is one
+Cognee now (`compose.shared.yaml`), but each problem is a *tenant* on it, so the
+saving is the box's — one Python server and one resident embedding model instead
+of a dozen — and no memory crosses between problems. The isolation is the
+server's rather than the deployment's: another tenant's dataset is a `404`.
+
+**What is still to build:** the thing this proposal was actually about. A shared
+store means a shared *brain*, and today's brain is per tenant, which is exactly
+what the per-problem servers gave. Sharing one dataset across tenants is a
+Cognee permission grant rather than a new deployment, so the experiment is now
+cheap: grant one brain dataset to two tenants, run both problems, and measure
+recall latency and whether either recalls anything it should not. The code
+change that follows is a `remember_research` discipline: a claim worth carrying
+across problems is stated without the problem's own notation.
+
+**And the measurement this proposal asked for is now owed rather than optional.**
+The `409 Conflict` under four concurrent runs was measured against a shared
+Cognee, and there is a shared Cognee again — `docs/memory.md` says what to read
+from `config/trace.jsonl` to find out whether it returned.
 
 **Cost:** an afternoon to measure; unknown to fix if it does not hold.
 

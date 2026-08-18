@@ -23,128 +23,225 @@ trace to a source is worth less than no statement.
 
 ## State of the workspace
 
-**Library established — phase 1 substantially complete.** The workspace holds:
+**Phase 1 (library) complete; computation and Lean started; the run's central
+thesis is refuted and must not be re-proposed as a live bet.**
 
-- `research/ROOT.md` — meets the phase-1 exit test: counterexample structure
-  (divergent orbit or non-trivial cycle), current verification bound
-  (2^71.02, Barina) and its method, ≥3 restricted classes settled with
-  hypotheses, Tao's theorem stated exactly (and what it does not claim),
-  current non-trivial-cycle exclusion bound (m ≥ 92; length ≥ 355,504,839,929).
-- `research/sources/` — 25 full texts (primary and encyclopedic): Lagarias
-  overview + two bibliographies, Tao, Barina 2021+2025 + project page, Hercher,
-  Simons–de Weger preprint, Crandall, Kurtz–Simon, Zudilin, Halbeisen–
-  Hungerbühler, Eliahou–Fromentin–Simonetto, Chamberland, Kontorovich–Lagarias,
-  Mol, Yolcu–Aaronson–Heule, Honda–Ito–Nakano, Roosendaal, Oliveira e Silva
-  page, OEIS A006577, Wikipedia, and the Terras failure record.
-- `research/summaries/` — one note per source with fenced `claim` blocks;
-  `derived/CLAIMS.md` holds ~45 claims.
-- `code/` — still empty of programs and Lean; `code/lean/Lib/Statement.lean`
-  does not exist yet. The run's own mathematics has not started.
-- Ledgers: `claims` populated; `threads`/`approaches`/`tasks`/`attempts`
-  empty — no direction of attack has been opened yet.
+- `research/ROOT.md` meets the phase-1 exit test: counterexample structure,
+  verification bound, ≥3 restricted classes, Tao's theorem stated exactly,
+  cycle-exclusion bound. 25+ sources under `research/sources/`, ~105 claims in
+  `derived/CLAIMS.md`, summaries in `research/summaries/`.
+- `code/lean/Lib/Statement.lean` states the conjecture (compiles, deliberate
+  sorries, `#print axioms [sorryAx]`).
+- **Code now holds executed programs and captured output** (the brief below was
+  written before this): the oracle `code/brute.py` +
+  `code/r-small-n-direct/verify_small.py` (verified n ≤ 2^20 reach 1, exact,
+  cross-checked against the naive oracle on n=1..1000), `code/collatz_oracle.py`
+  (naive, checked 1..10000), `code/cf-log23/` (continued fraction of log2 3,
+  terms checked against Crandall), `code/cycles/` (Böhm–Sontacchi formula
+  oracle), `code/no-cycle-diophantine/collision_table.py` (Hercher/Diophantine
+  table). Captured outputs in `code/out/` with fenced claim blocks.
+- **Ledgers populated**: `attempts` (1: `diophantine-collision-first-attack`,
+  adopted — the run's only attempt), `tasks` (1 done), `reductions` (1 broken),
+  `thesis` (1 **abandoned**), `goals` (1: no-nontrivial-cycle, sketched),
+  `approaches` (3: one refuted, one **adopted** = lte-divisibility-obstruction,
+  one narrowed), `threads` (reference-digestion, active, but rests on 4 claim
+  ids of which only 2 exist on disk), `weakened` (collatz ladder, 7 rungs).
+- `research/backward/no-nontrivial-cycle.md` — the proof skeleton for sub-claim
+  (b); one gap open (`G-min-element-lower`), two discharged by literature.
+- Open requests: Simons–de Weger published PDF (HTTP 502), Simons 2008 text
+  layer; four answered (best effective μ, best cycle exclusion, verification
+  record, Tao exact statement).
 
 ## Established
 
-The library now holds primary sources; every claim below traces to a file under
+The library holds primary sources; each claim below traces to a file under
 `research/sources/` and a claim id in `derived/CLAIMS.md`. Evidence classes:
-proved (theorem in source), asserted-by-source, verified-numerically, conjectured.
+proved (theorem in source), asserted-by-source, verified-numerically, checked
+(computed here), conjectured, conditional (Lean, resting on a Cited axiom).
 
-- **Counterexample structure** (`lagarias-counterexample-structure`): a
-  counterexample is either (a) an orbit diverging to infinity, or (b) an orbit
-  entering a non-trivial cycle other than 1→4→2→1. Both open; no method
-  approaches either (Lagarias overview §6.1, §7).
-- **Verification record** (`barina-2075-2p60`): all n < 2075×2^60 ≈ 2^71.02
-  verified to reach 1 (Barina project page, 2026-08-18 snapshot; 2^71 verified
-  2025-01-15). Method: accelerated/Syracuse form, 3^k sieves, GPU/CPU, work
-  unit 2^40 (`barina-method`, `barina-2021-method`: O(N) tables replace O(2^N);
-  speeds 4.2e9 CPU / 2.2e11 GPU per sec). Supersedes Oliveira e Silva's
-  20×2^58 (`lagarias-W1`).
+**The two live obstructions** (`lagarias-counterexample-structure`): a
+counterexample is (a) a divergent orbit or (b) an orbit entering a non-trivial
+cycle. Sub-claims (a) and (b) are independent; this run works on (b), and
+closing (b) alone does NOT close the conjecture.
+
+- **Verification record** (`barina-2075-2p60`, `barina-2p71-library-update`,
+  asserted-by-source): all n < 2075×2^60 ≈ 2^71.02 reach 1 (Barina project
+  page 2026-08-18 snapshot; 2^71 verified 2025-01-15). Method
+  (`barina-2021-method`, `barina-method`): accelerated/Syracuse form, 3^k
+  sieves, GPU/CPU; O(N) lookup tables replace O(2^N).
 - **Cycle-length consequence** (`barina-cycle-length-355b`): at verification
-  limit 2^71, any non-trivial cycle has length ≥ 355,504,839,929 (Barina 2025
-  line 253).
-- **Tao's theorem** (`tao-almost-all`, proved): for any f(N)→∞,
-  Col_min(N) < f(N) for almost all N in logarithmic-density sense. It does NOT
-  rule out divergent orbits or non-trivial cycles (`tao-does-not-close`).
-  Korec baseline: θ > log 3/log 4 ≈ 0.7924, Col_min(N) ≤ N^θ almost all N.
-- **Cycle exclusion** (`hercher-m92`, proved): no Collatz m-cycle with m ≤ 91
-  local minima; m ≥ 92 needed. (`hercher-K-1p375e11`, proved): if all n ≤
-  3×2^69 verified, any non-trivial cycle has K > 1.375×10^11 odd members
-  (hypothesis now satisfied by Barina). Eliahou via Lagarias (`lagarias-W2`):
-  trivial cycle only one with period < 10,439,860,591 or < 6,586,818,670 odd
-  integers (now superseded by `barina-cycle-length-355b` for length).
-- **Diophantine lever** (`zudilin-mu-8616`, proved): μ(γ) < 8.616 for any
-  nonzero γ ∈ Q log 2 + Q log 3, so |log 3/log 2 − p/q| > c/q^{8.616} — the
-  effective irrationality measure that converts cycle shapes into cycle-length
-  bounds. This corrects the earlier guess of 13.3.
-- **Undecidability** (`kurtz-simon-pi02`, proved): generalized Collatz problem
-  is Π^0_2-complete; does NOT apply to the specific 3x+1 function.
-  (`conway-1972-unsolvable`): Conway's unsolvable iteration problem.
-  (`mol-collatz-tag-system`): Collatz reduces to halting of TS(3,2) — rules
-  a0→a1a2, a1→a0, a2→a0a0a0; explains why generic machinery is unavailable.
-- **Automated-deduction flank** (`yah-rewriting-equivalence`, proved): Collatz
-  ⇔ termination of an SRS over mixed binary-ternary strings.
-  (`yah-no-natural-matrix-interp`, proved): natural matrix interpretations
-  cannot prove termination of Zantema's unary system — a closed route.
-  (`yah-weakenings-automated`): arctic interpretations prove weakenings only.
-- **Stochastic shadow** (`kl-stochastic-heuristic`): MRP and negative-drift
-  BRW models predict bounded orbits and σ∞(n) ~ c log n, but are heuristic —
-  the unproved independence assumption; any result built on them does not touch
-  the conjecture. (`kl-kontorovich-sinai-gbm`): scaled initial trajectories
-  converge to geometric Brownian motion (rigorous, typical only).
-- **2-adic ergodicity** (`lagarias-2adic-ergodic`): the 3x+1 map extends to Z_2
-  ergodically (conjugate to shift); the difficulty is Z ⊂ Z_2, a dense
-  measure-zero subset — why average-case control misses the conjecture.
-- **Counts** (`lagarias-W5`): ≥ X^0.84 integers ≤ X iterate to 1
-  (Krasikov–Lagarias). (`lagarias-W3`): infinitely many n take ≥ 6.143 log n
-  steps (Applegate–Lagarias).
+  limit 2^71, any non-trivial cycle has length ≥ 355,504,839,929 (Barina 2025,
+  citing the Eliahou-type formula).
+- **Cycle exclusions, strongest to weakest**:
+  - `hercher-m92` (conditional, Lean-checked): no m-cycle with m ≤ 91 local
+    minima; any non-trivial cycle has m ≥ 92. Formalised in
+    `code/lean/hercher_m92-97b13fb9.lean` (cited axiom `Cited.no_m_cycle_le_91`).
+  - `hercher-K-7p76e19` (proved): m ≤ 98 ⇒ K ≥ 7.76×10^19 odd members.
+    `hercher-table-K-bounds-m-92-200` (checked here): exact published table
+    rows, m=92..200, source lines 1190-1210.
+  - `hercher-K-1p375e11` (proved, conditional Lean): if all n ≤ 3×2^69
+    verified (hypothesis now satisfied), any non-trivial cycle has K >
+    1.375×10^11 odd members.
+  - `lagarias-W2` (asserted, Eliahou 1993): trivial cycle is the only one with
+    period < 10,439,860,591 or < 6,586,818,670 odd integers. Cross-checked by
+    `ghosh-beta-loop-bound` (same number, independent derivation).
+- **Diophantine lever** (`zudilin-mu-8616`): μ(γ) < 8.616 for nonzero γ ∈
+  Q log 2 + Q log 3; the effective constant c₀ is source-effective but has NOT
+  been extracted here. **Notation trap**: the cycle gives |log 3/log 2 −
+  (K+L)/K| with K odd, L even — the approximating fraction's numerator is the
+  EVEN-step count; getting this backwards turns a lower bound into an upper one
+  (this exact error killed the run's first attempt, see Ruled out).
+- **Bridge** (Hercher Thm 16 / Simons–de Weger Lemma 1, discharged in
+  `G-cycle-diophantine-bridge`): 2^(K+L) = ∏(3 + 1/n) over odd members; upper
+  bound (K+L)/K < log_2 3 + (3 log 2/K)·Σ T(n_i). Formalised abstractly in
+  `code/lean/no_nontrivial_cycle_G_cycle_diophantine_bridge-33fd98af.lean`
+  (verified, no sorry).
+- **Tao's theorem** (`tao-almost-all`, proved): for every f(N)→∞,
+  Col_min(N) < f(N) for almost all N (logarithmic density). Does NOT rule out
+  divergent orbits or non-trivial cycles (`tao-does-not-close`). Korec
+  baseline: θ > log 3/log 4 ≈ 0.7924, Col_min(N) ≤ N^θ almost all N.
+- **Restricted classes / reductions**: Monks 2006 (`monks-ap-sufficient`,
+  proved): every nonconstant arithmetic progression is sufficient for the
+  accelerated map, and separately for the divergence and non-trivial-cycle
+  sub-conjectures. Everett (`everett-density-1-finite-stopping-time`, proved):
+  density-one finite stopping time. `efs-falling-time-14`,
+  `efs-sft-9` (asserted): falling-time bounds for n ≡ 3 mod 4, n < 2^35.
+  Knight 2025: excludes only the Christoffel-word extremal parity class (via
+  Böhm–Sontacchi + divisibility) — a restricted class, does not touch general
+  cycles or divergence.
+- **Böhm–Sontacchi / Halbeisen–Hungerbühler** (`bohmsontacchi-cycle-formula`,
+  `halbeisen-rational-cycle-formula`, proved): a cycle with L steps, m odd, has
+  x = S(L,m,gaps)/(2^L − 3^m); a rational cycle exists iff 2^L > 3^m.
+  **This is the load-bearing reformulation of the adopted approach.**
+  `halbeisen-optimal-criterion`: the staircase parity pattern is extremal for
+  cycle-length bounds.
+- **Undecidability / failure context**: Kurtz–Simon Π^0_2-completeness of the
+  generalized problem (`kurtz-simon-pi02`, proved — does NOT apply to 3x+1);
+  Mol's tag-system encoding (`mol-collatz-tag-system`); Zantema SRS rewriting
+  + natural matrix interpretations closed (`yah-no-natural-matrix-interp`);
+  stochastic models are heuristic (`kl-stochastic-heuristic`);
+  `kl-kontorovich-sinai-gbm` (rigorous, typical only); 2-adic ergodicity
+  (`lagarias-2adic-ergodic`) explains why average-case control misses the
+  conjecture.
 - **Crandall** (`crandall-finite-cycles`, proved): finitely many cycles per
-  period k; (`crandall-conjecture-H`, conjectured): H(x) ~ 2 log x / log(16/9).
+  period k. Brox 2000 (`brox-finite-cycles-few-descents`, proved): finitely
+  many cycles with few descents.
+- **Lean**: `Statement.lean` (3 sorries, `[sorryAx]`); `hercher_m92` and
+  `hercher_K_1p375e11` (conditional, no sorries); `lagarias_W2` (conditional);
+  `zudilin_mu_8616` file currently FAILS (span-membership `sorry` +
+  `Cited.zudilin_theorem_3`); `cycle_collision.lean` (blueprint, theorem open
+  `:= by sorry`, three Cited axioms — **the theorem it states is FALSE over
+  the cited hypotheses**, see Ruled out; do not build on it).
 
-Open requests still unfilled: the full texts of Eliahou 1993 and Simons–de Weger
-2005 (paywalled/502), Steiner 1977 (conference proceedings, no free PDF), Korec
-1994 (DML scanned no text layer), **Terras 1976** (scanned, no text layer — the
-file once filed under this name was the wrong paper, Morton 1992, and has been
-removed; its density-1 finite-stopping-time result is asserted-by-source via
-Garner 1981, Gluck–Taylor 2001, Hercher 2022), Oliveira e Silva's chapter
-(paywalled). The numbers from each are captured in the claims above via
-secondary sources; the primary texts remain gaps.
+## Ruled out — do not re-propose
 
-## Ruled out
-
-Nothing has been tried in this workspace — no approaches, no attempts, no
-refuted claims on file. The standing obstruction any approach must beat
-(problem.md): the parity-independence heuristic is unproved, and a worst-case
-argument is required — average-case control does not narrow the open case.
+1. **The Diophantine collision (x_min lower bound from K)** — the run's first
+   and only attempt, REFUTED two independent ways (`attempts`
+   `diophantine-collision-first-attack`; `thesis` `diophantine-cycle-collision`
+   **abandoned**; `reductions` `cycle-xmin-vs-mu-threshold` broken;
+   `research/approaches/diophantine-collision-refuted.md`):
+   - Hercher's Corollary 24 Table 1 bounds **K (number of odd members), not
+     x_min**. `research/ROOT.md`'s line 48 "min element ≥ 7.76e19" is a
+     conflation — ROOT.md still carries this error and must be repaired.
+   - Lean arithmetic (`code/lean/Lib/cycle_collision.lean`): the cited
+     estimates imply S > c₀·m^(μ−1)/(3 log 2) and hence x_min < (3 log
+     2/c₀)·m^(2−μ) — the **reverse** of the claimed lower bound. The proposed
+     collision cannot be inferred and is algebraically false over the cited
+     hypotheses. Consequence: **a lower bound on x_min is NOT available from
+     Hercher's K-bounds + Zudilin's measure**; the "deficit" table
+     (`collision-deficit-grows-with-m`) compares K against a threshold and is
+     evidence about the WRONG quantity.
+2. **backward-transducer-covering** (`approaches`, refuted): the stabilization
+   hypothesis (composed transducers converge to a finite covering language) is
+   not a theorem in the cited literature (Stérin 2019/2020) and is contradicted
+   by published k-dependent growth bounds.
+3. **parity-rationality-conjugacy** (`approaches`, narrowed): the 2-adic
+   conjugacy survives as a TOOL; the divergence-via-three-distance bridge is
+   closed — no lemma links v₂(T^k(n)+1) to an irrational rotation.
+4. **yah-no-natural-matrix-interp**: natural matrix interpretations cannot
+   prove termination of Zantema's system.
+5. **Statistical/density approaches as progress**: Tao, Everett, Korec,
+   Kontorovich–Sinai, stochastic models — do NOT touch the open case; do not
+   report them as narrowing it.
+6. **Unverified source claims that must not be used as established** (digest
+   `2026-08-18-digest.md`): Laurore's claimed σ=ω for all positive integers
+   (uncorroborated, must be independently certified before reliance);
+   Angeltveit 2026 (method proposal, tested only to 2^60 — no new record);
+   Ansari 2025 (recursive-sufficiency arithmetic NOT formally checked here;
+   claimed frontier 4·3^44+2 ≈ 3.939e21 ≈ 2^71.74 is conditional on exact
+   arithmetic + source theorem).
 
 ## Numbers
 
-None. No computation has been run; `code/out/` is empty.
+- **Verified here (exact)**: every 1 ≤ n ≤ 2^20 reaches 1
+  (`r-small-n-direct-2^20`, checked; cross-check vs naive oracle on 1..1000
+  AGREE; worked example 1→4→2→1 reproduced; no cycle, no divergence observed).
+  Naive oracle `code/collatz_oracle.py` checked 1..10000.
+- **Hercher K-table (exact, checked here)**: m≤98: K>7.76e19; m≤117: K>2.74e19;
+  m≤276: K>4.68e18; m≤3079: K>3.97e17; m≤12055: K>1.30e17; m≤948987: K>4.30e15;
+  m≤1.14e6: K>3.81e15; m≤1.33e9: K>1.64e12; m≤1.54e9: K>8.90e11; m≤9.46e9:
+  K>1.37e11; all m: K>7.20e10. (Source lines 1190-1210, published JIS version
+  — differs from arXiv v1; use published.)
+- **Böhm–Sontacchi formula hand-verified here** against four real
+  accelerated-map cycles on Z: (L,m,gaps)=(2,1,(2))→x=1; (1,1,(1))→x=−1;
+  (3,2,(1,2))→x=−5; (11,7,(1,1,1,2,1,1,4))→x=2363/(−139)=−17
+  (`research/approaches/lte-divisibility-obstruction.md` step 0).
+  Hand-computed UNSAT for shape (5,2): D=23, S∈{5,7,11,19}, none divisible.
+- **cf-log23**: continued fraction of log2 3 — first 50 terms match Crandall
+  1978; exact convergent numerators/denominators match published cycle bounds
+  (`code/cf-log23/continued_fraction_log2_3.py`).
+- **Lean check verdicts** (json in `code/out/lean/` and `code/out/verify/`):
+  Statement.lean outcome failed (3 sorries); hercher_m92 conditional; zudilin
+  file failed (1 sorry). `hercher_ladder.txt` is EMPTY — the
+  `verify_hercher_ladder.py` run timed out; its ladder comparison is
+  unverified and must not support a claim.
 
 ## Recalled
 
-Cognee holds nothing for this problem — no prior runs, no library, no memory.
+Cognee holds the phase-1 library summary, the `Statement.lean` formalisation
+record, and the Hercher table extraction (K-not-x_min). `research/LOCAL_MEMORY.md`
+and `MEMORY.md` are the local fallback copies from the period when the memory
+service was down — check them only for what Cognee lacks.
 
 ## Contradictions
 
-None on file. (The known tension between Tao's density result and the
-conjecture itself is a fact about the literature, not a finding of this run.)
+- **`derived/THREADS.md`** lists `reference-digestion` as resting on
+  `ansari-verification-extension-4p3p44`, `knight-no-integer-high-cycles`,
+  `zudilin-mu-8616` — none of these ids exists as a claim block on disk (grep
+  finds them only as prose mentions). `zudilin-mu-8616` and
+  `knight-no-integer-high-cycles` are load-bearing in the brief but unrecorded
+  as claims; the thread's `rests-on` must be repaired to real ids.
+- `research/ROOT.md` line 48 conflates K with x_min ("min element ≥ 7.76e19") —
+  refuted by `hercher-table-K-bounds-m-92-200`; ROOT.md needs the repair the
+  closed task `first-executed-partial-result` demanded.
+- `derived/CLAIMS.md` flags `lagarias-W2` and `lagarias-W2-formal` as "called
+  formalised, not backed by the kernel": `code/lean/lagarias_W2-eb4a08bf.lean`
+  has changed since the kernel checked it — re-check before relying on it.
+- `code/lean/Lib/Statement.lean` on disk (accelerated map T) differs from the
+  version Cognee's memory describes (plain map, `collatzStep`): the memory is
+  of an earlier session; the disk file is current.
 
 ## Gaps — the obvious next unresolved things
 
-1. **Primary texts still missing** — the full texts of Eliahou 1993
-   (paywalled), Simons–de Weger 2005 published PDF (IMPAN 502 / no text layer;
-   preprint v1.44 held), Steiner 1977, Korec 1994, **Terras 1976** (scanned;
-   the file once filed under this name was the wrong paper — Morton 1992 — and
-   has been removed), Oliveira e Silva's verification chapter. All captured via
-   secondary sources; the primaries remain open requests.
-2. **No Lean statement** — `code/lean/Lib/Statement.lean` (the conjecture as a
-   type, ending `:= by sorry`) does not exist. This is the next deliverable
-   after the library; the phase-1 library criterion (ROOT.md with counterexample
-   structure, verification bound, ≥3 restricted classes, Tao exactly, cycle
-   exclusion bound) is met.
-3. **Cycle-length bound not in Lean** — the Eliahou-type formula and the
-   Barina 355,504,839,929 consequence deserve Lean `Cited` statements so the
-   cycle-exclusion arm builds on kernel-checked statements.
-4. **No oracle** — no exact Collatz checker exists yet to reproduce the
-   literature's verification bound before anything is computed past it. The
-   oracle should reproduce the O(N)-table idea from `barina-2021-method`.
+1. **The adopted approach is not yet executed**: `lte-divisibility-obstruction`
+   (status adopted) — exclude cycle shapes by testing the necessary
+   divisibility (2^L−3^m) | S directly, prime by prime. Its own first step
+   (run `code/cycles/run_oracle.py` to validate the formula against trivial
+   and negative cycles, then enumerate shapes) is recorded but NOT done — the
+   file exists but was never executed. This is the natural next task.
+   The load-bearing completeness lemma to state in Lean first: for p prime,
+   e = v_p(2^L−3^m), the map gaps → S mod p^e factors through
+   (V_1,…,V_{m−1}) mod ord_{p^e}(2). Blind spot already identified: shapes
+   with |2^L−3^m| = 1 (the trivial cycle's (2,1)) impose no constraint.
+2. **G-min-element-lower is open and must be reformulated**: the old target
+   (x_min lower bound colliding with the Diophantine arm) is dead; a correct
+   statement relating K to x_min or S, or a genuinely independent x_min bound,
+   is required before any new collision attempt (`reductions`, `goals`).
+3. **c₀ not extracted**: the effective constant of Zudilin's μ<8.616 has not
+   been read off the construction; every numerical threshold is currently
+   computed at c₀=1.
+4. **zudilin_mu_8616 Lean file fails**: span-membership proof gap + sorry;
+   the brief and skeleton treat μ<8.616 as discharged by literature, which is
+   true as a claim but not as a Lean artifact.
+5. **Open source requests**: Simons–de Weger 2005 published PDF (HTTP 502,
+   preprint v1.44 held), Simons 2008 text layer.

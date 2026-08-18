@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "fibonacci-zeckendorf-parity-characterization",
+  "source": "code/lean/fibonacci_zeckendorf_parity_characterization-ce061c8b.lean",
+  "stage": "decompose"
+}

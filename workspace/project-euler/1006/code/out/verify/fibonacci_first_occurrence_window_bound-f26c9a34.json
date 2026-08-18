@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "fibonacci-first-occurrence-window-bound",
+  "source": "code/lean/fibonacci_first_occurrence_window_bound-f26c9a34.lean",
+  "stage": "decompose"
+}

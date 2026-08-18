@@ -205,6 +205,12 @@ impl VectorStore {
         Ok((!sections.is_empty()).then(|| sections.join("\n\n")))
     }
 
+    /// Builds the store from the environment the container was started with.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error when `COGNEE_API_URL` or `COGNEE_API_KEY` is missing or
+    /// empty, or when the key cannot be sent as a header.
     pub(super) fn from_env() -> Result<Self> {
         let base_url = std::env::var("COGNEE_API_URL").map_err(|_| {
             tinyagents::TinyAgentsError::Validation("COGNEE_API_URL is required".into())
@@ -215,6 +221,13 @@ impl VectorStore {
                 "COGNEE_API_URL cannot be empty".into(),
             ));
         }
+        let client = authenticated_client(&std::env::var("COGNEE_API_KEY").map_err(|_| {
+            tinyagents::TinyAgentsError::Validation(
+                "COGNEE_API_KEY is required: the memory server is shared and this run reaches it \
+                 as its own tenant"
+                    .into(),
+            )
+        })?)?;
         let project =
             slug(&std::env::var("MATH_AGENT_WORKSPACE_LABEL").unwrap_or_else(|_| "default".into()));
         let nanos = std::time::SystemTime::now()
@@ -231,17 +244,13 @@ impl VectorStore {
         // restarted eight times in a day left eight datasets, seven of them
         // unreachable. The dataset is the project; the run is a field.
         let session = format!("s{nanos:x}-{}", std::process::id());
-        let session_dataset = format!("{SESSION_DATASET_PREFIX}{project}");
-        let scratch_dataset = format!("{SCRATCH_DATASET_PREFIX}{project}");
-        let library_dataset = format!("{LIBRARY_DATASET_PREFIX}{project}");
+        let dataset = format!("{PROJECT_DATASET_PREFIX}{project}");
         Ok(Self {
-            client: reqwest::Client::new(),
+            client,
             base_url,
             project,
             session,
-            session_dataset,
-            scratch_dataset,
-            library_dataset,
+            dataset,
             indexing: Arc::new(tokio::sync::Mutex::new(None)),
         })
     }
@@ -328,7 +337,7 @@ impl VectorStore {
         self.enqueue(
             document,
             format!("scratch-{}-{id}.md", slug(topic)),
-            &self.scratch_dataset,
+            &self.dataset,
             &scratch_node_set(&self.project),
         )
         .await?;
@@ -341,15 +350,15 @@ impl VectorStore {
     ///
     /// Returns an error when Cognee is unreachable or refuses the request.
     pub(super) async fn recall_scratch(&self, query: &str, limit: u64) -> Result<Option<String>> {
-        // A project that has not written a scratch note yet has no scratch
-        // dataset, and naming one Cognee does not hold is the single request
-        // shape it refuses outright — "No datasets found". Nothing recorded is
-        // an answer rather than a failure, so it is answered here.
-        if !self.dataset_exists(&self.scratch_dataset).await? {
+        // A project that has written nothing at all has no dataset yet, and
+        // naming one Cognee does not hold is the single request shape it
+        // refuses outright — "No datasets found". Nothing recorded is an answer
+        // rather than a failure, so it is answered here.
+        if !self.dataset_exists(&self.dataset).await? {
             return Ok(None);
         }
         self.search_in(
-            vec![self.scratch_dataset.clone()],
+            vec![self.dataset.clone()],
             vec![scratch_node_set(&self.project)],
             query,
             CHUNK_SEARCH,
@@ -378,8 +387,8 @@ impl VectorStore {
         self.enqueue(
             document,
             format!("memory-{id}.md"),
-            BRAIN_DATASET,
-            "math_agent_brain",
+            &self.dataset,
+            BRAIN_NODE_SET,
         )
         .await?;
         Ok(id)
@@ -451,7 +460,7 @@ impl VectorStore {
             ENQUEUE_TIMEOUT,
             self.post_parts(
                 vec![source_part, card_part],
-                &self.library_dataset,
+                &self.dataset,
                 &library_node_set(&self.project),
             ),
         )
@@ -459,7 +468,7 @@ impl VectorStore {
         .map_err(|_| {
             tinyagents::TinyAgentsError::Tool(format!(
                 "Cognee did not accept the source for `{}` within {} seconds",
-                self.library_dataset,
+                self.dataset,
                 ENQUEUE_TIMEOUT.as_secs()
             ))
         })?
@@ -480,7 +489,7 @@ impl VectorStore {
         self.enqueue(
             document,
             format!("session-{}-{}.md", slug(agent), slug(run_id)),
-            &self.session_dataset,
+            &self.dataset,
             &session_node_set(&self.project),
         )
         .await
@@ -559,15 +568,19 @@ impl VectorStore {
         Ok(())
     }
 
-    /// Returns shared brain/research datasets plus this project's session
-    /// dataset, excluding every other project's.
+    /// Returns this project's dataset, or nothing when it does not exist yet.
+    ///
+    /// There is one, and no allowlist is computed from the server's listing any
+    /// more: a tenant is shown its own datasets and nothing else, so the
+    /// listing this used to filter now contains only what this project wrote.
+    /// The call survives as an existence check — a run that has stored nothing
+    /// must answer "nothing recorded" rather than propagate the `404` the
+    /// server returns for a dataset it does not hold.
     async fn recall_datasets(&self) -> Result<Vec<String>> {
-        let datasets = self.list_datasets().await?;
-        Ok(visible_datasets(
-            &datasets,
-            &self.session_dataset,
-            &self.library_dataset,
-        ))
+        if self.dataset_exists(&self.dataset).await? {
+            return Ok(vec![self.dataset.clone()]);
+        }
+        Ok(Vec::new())
     }
 
     /// Says whether Cognee holds a dataset under this name.

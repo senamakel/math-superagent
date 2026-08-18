@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "simons-2008-inverse-collatz",
+  "source": "code/lean/simons_2008_inverse_collatz-16082d3c.lean",
+  "stage": "decompose"
+}

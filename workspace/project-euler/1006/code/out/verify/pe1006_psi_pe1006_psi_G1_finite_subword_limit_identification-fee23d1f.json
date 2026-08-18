@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "pe1006-psi/pe1006-psi/G1-finite-subword-limit-identification",
   "source": "code/lean/pe1006_psi_pe1006_psi_G1_finite_subword_limit_identification-fee23d1f.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

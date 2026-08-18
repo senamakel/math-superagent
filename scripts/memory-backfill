@@ -57,10 +57,12 @@ def slug(value: str) -> str:
     return mapped or "default"
 
 
-# `math_agent_library__<project>` / `library:<project>`, from the same two
-# constants in `src/orchestrator/vector.rs`.
-def library_dataset(project: str) -> str:
-    return f"math_agent_library__{project}"
+# `math_agent__<project>` / `library:<project>`, from the same two constants in
+# `src/orchestrator/vector.rs`. One dataset per project holds all four stores
+# now — they differ by node set — so the library is selected by the node set
+# alone, and the dataset is the project's.
+def project_dataset(project: str) -> str:
+    return f"math_agent__{project}"
 
 
 def library_node_set(project: str) -> str:
@@ -72,24 +74,30 @@ def run(command: list[str], timeout: int = 120) -> str:
     return result.stdout.decode("utf-8", "replace")
 
 
-def memory_network(label: str) -> str:
-    """Brings the problem's stack up if needed and returns its network."""
+def memory_up(label: str, *flags: str) -> str:
+    """Brings the shared stack up if needed and provisions this problem's tenant.
+
+    Returns the memory network, or the tenant's API key under `--key`. One
+    server holds every problem now, so the key is what makes a request this
+    problem's rather than another's; without it the server answers `401`.
+    """
     result = subprocess.run(
-        [str(REPOSITORY_ROOT / "scripts" / "memory-up"), label],
+        [str(REPOSITORY_ROOT / "scripts" / "memory-up"), *flags, label],
         capture_output=True,
         timeout=900,
     )
-    network = result.stdout.decode().strip().splitlines()
-    if result.returncode != 0 or not network:
+    printed = result.stdout.decode().strip().splitlines()
+    if result.returncode != 0 or not printed:
         sys.stderr.write(result.stderr.decode("utf-8", "replace"))
         raise SystemExit(f"backfill: could not bring up memory for {label}")
-    return network[-1]
+    return printed[-1]
 
 
-def cognee_get(network: str, path: str) -> object:
+def cognee_get(network: str, api_key: str, path: str) -> object:
     body = run(
         ["docker", "run", "--rm", "--network", network, "curlimages/curl:latest",
-         "-s", "--max-time", "60", f"http://cognee:8000{path}"]
+         "-s", "--max-time", "60", "-H", f"X-Api-Key: {api_key}",
+         f"http://cognee:8000{path}"]
     )
     try:
         return json.loads(body)
@@ -97,7 +105,7 @@ def cognee_get(network: str, path: str) -> object:
         raise SystemExit(f"backfill: unreadable response from {path}: {body[:200]}")
 
 
-def library_contents(network: str, project: str) -> set[str]:
+def library_contents(network: str, api_key: str, project: str) -> set[str]:
     """The keys the library already holds.
 
     A row's `name` comes back with its extension stripped, so the comparison is
@@ -107,14 +115,14 @@ def library_contents(network: str, project: str) -> set[str]:
     filed the card and lost the document holds nothing searchable, and this
     pass should replace it rather than count it as present.
     """
-    datasets = cognee_get(network, "/api/v1/datasets")
+    datasets = cognee_get(network, api_key, "/api/v1/datasets")
     dataset_id = next(
-        (entry["id"] for entry in datasets if entry.get("name") == library_dataset(project)),
+        (entry["id"] for entry in datasets if entry.get("name") == project_dataset(project)),
         None,
     )
     if dataset_id is None:
         return set()
-    rows = cognee_get(network, f"/api/v1/datasets/{dataset_id}/data")
+    rows = cognee_get(network, api_key, f"/api/v1/datasets/{dataset_id}/data")
     return {row["name"] for row in rows if row.get("name")}
 
 
@@ -142,7 +150,8 @@ def documents_on_disk(workspace: Path) -> list[tuple[str, Path]]:
     return documents
 
 
-def file_document(network: str, dataset: str, node_set: str, relative: str, body: Path) -> str:
+def file_document(network: str, api_key: str, dataset: str, node_set: str,
+                  relative: str, body: Path) -> str:
     """Posts one document and its card, as `remember_source` does.
 
     Both parts go in one request deliberately: a card whose companion failed to
@@ -173,7 +182,7 @@ def file_document(network: str, dataset: str, node_set: str, relative: str, body
             ["docker", "run", "--rm", "--network", network,
              "-v", f"{staging}:/upload:ro", "curlimages/curl:latest",
              "-s", "--max-time", "120", "-w", "\n%{http_code}",
-             "-X", "POST",
+             "-X", "POST", "-H", f"X-Api-Key: {api_key}",
              "-F", f"datasetName={dataset}",
              "-F", f"node_set={node_set}",
              "-F", "run_in_background=true",
@@ -191,8 +200,9 @@ def backfill(label: str, dry_run: bool, limit: int | None, pause: float) -> tupl
         return (0, 0, 0)
 
     project = slug(label)
-    network = memory_network(label)
-    held = library_contents(network, project)
+    network = memory_up(label)
+    api_key = memory_up(label, "--key")
+    held = library_contents(network, api_key, project)
     documents = documents_on_disk(workspace)
     missing = [
         (relative, body)
@@ -212,8 +222,8 @@ def backfill(label: str, dry_run: bool, limit: int | None, pause: float) -> tupl
     filed = 0
     failed = 0
     for relative, body in missing[: limit or len(missing)]:
-        response = file_document(network, library_dataset(project), library_node_set(project),
-                                 relative, body)
+        response = file_document(network, api_key, project_dataset(project),
+                                 library_node_set(project), relative, body)
         code = response.rsplit("\n", 1)[-1].strip()
         if code in {"200", "201", "202"}:
             filed += 1
@@ -233,21 +243,28 @@ def backfill(label: str, dry_run: bool, limit: int | None, pause: float) -> tupl
 
 
 def all_labels() -> list[str]:
-    """Every workspace with a memory stack, from the compose projects."""
-    listing = run(["docker", "compose", "ls", "--all", "--format", "json"])
-    try:
-        projects = [entry["Name"] for entry in json.loads(listing)]
-    except (ValueError, KeyError, TypeError):
-        return []
+    """Every workspace that has a tenant on the shared memory server.
+
+    Read from the server rather than from the compose projects, which is where
+    this used to look: there is one stack now, so a per-problem project name is
+    no longer evidence that a problem has a memory.
+    """
+    listing = run([str(REPOSITORY_ROOT / "scripts" / "memory-up"), "--list"], timeout=900)
+    tenants = {line.strip() for line in listing.splitlines() if line.strip()}
     labels = []
-    for project in projects:
-        if not project.startswith("cognee-"):
+    for candidate in WORKSPACE_ROOT.rglob("*"):
+        if not candidate.is_dir():
             continue
-        slugged = project[len("cognee-"):]
-        for candidate in WORKSPACE_ROOT.rglob("*"):
-            if candidate.is_dir() and slug(candidate.relative_to(WORKSPACE_ROOT).as_posix()) == slug(slugged):
-                labels.append(candidate.relative_to(WORKSPACE_ROOT).as_posix())
-                break
+        relative = candidate.relative_to(WORKSPACE_ROOT).as_posix()
+        # `memory-up` folds a label to a tenant name the same way, and both
+        # sides have to agree or a workspace with a memory looks like one
+        # without.
+        tenant = "".join(
+            character.lower() if character.isascii() and character.isalnum() else "-"
+            for character in relative
+        ).strip("-")
+        if tenant in tenants:
+            labels.append(relative)
     return sorted(set(labels))
 
 

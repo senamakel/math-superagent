@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "fibonacci-word-contiguous-factors-position-theorem",
+  "source": "code/lean/fibonacci_word_contiguous_factors_position_theorem-8f65bf81.lean",
+  "stage": "decompose"
+}

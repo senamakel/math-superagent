@@ -5,8 +5,8 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `AGENTS.md` | _(undescribed)_ |
-| `CONTEXT.md` | Sourced governing Sturmian/mechanical-word theory and explicit statement of the unresolved joint-moment gap. |
-| `GOAL.md` | Precise Project Euler 1006 definition, symbols, modulus, and official test oracles. |
+| `CONTEXT.md` | Source-backed governing theory: Fibonacci fixed point, Sturmian factor complexity, mechanical words, and rotation coding, with local source URLs. |
+| `GOAL.md` | Precise Project Euler 1006 definition, symbol glossary, modulus, and worked examples used as executable test oracles. |
 | `README.md` | _(undescribed)_ |
 | `problem.md` | _(undescribed)_ |
-| `solution.md` | Current derivation status: sourced structural reduction, oracle execution record, and explicit unresolved full-size joint-moment gap. |
+| `solution.md` | Honest derivation and status report: Sturmian/mechanical reduction, required asymptotic complexity, and the unproved joint-moment obstruction. |

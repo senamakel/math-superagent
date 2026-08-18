@@ -1,24 +1,42 @@
 # The harness, one container per run. Everything it talks to is somebody
 # else's stack, joined by name:
 #
-#   compose.shared.yaml   one Neo4j Enterprise and one ladder, for every
-#                         problem      (scripts/shared-up)
-#   compose.memory.yaml   this problem's own Cognee   (scripts/memory-up)
+#   compose.shared.yaml   one Neo4j Enterprise, one Cognee and one ladder,
+#                         for every problem      (scripts/shared-up)
 #
-# Both networks below are therefore `external: true`: this file does not own
-# either, the lifetime of both is longer than any one run, and a run must never
-# be able to take one down. `./agent` brings them up in order and says so
+# Both shared networks below are therefore `external: true`: this file does not
+# own either, the lifetime of both is longer than any one run, and a run must
+# never be able to take one down. `./agent` brings them up in order and says so
 # plainly when it cannot.
 networks:
+  # `compose.shared.yaml`'s Cognee, reached as `cognee:8000`. One server for
+  # every problem, which the run addresses as its own tenant with the
+  # `COGNEE_API_KEY` below; `scripts/memory-up` provisions that tenant and
+  # prints this network's name.
+  #
+  # Gatewayless, like `router` and for the same reason. It used to be a
+  # per-problem bridge, and joining it was also how an ordinary run reached the
+  # internet — which meant a calibration run's isolation depended on bringing
+  # the memory up through a second overlay that marked that bridge internal. It
+  # is internal always now, and the run's egress is `agent-egress` below, which
+  # `compose.eval.yaml` removes. A boundary that holds unless somebody passes a
+  # flag is not a boundary.
   memory:
     external: true
-    name: ${COGNEE_NETWORK:-cognee-local_default}
-  # `compose.shared.yaml`'s ladder, reached as `ladder:6969`. Stable across
-  # per-problem memory networks and deliberately gatewayless: the agent can
-  # reach the router without gaining an escape route during a calibration run.
+    name: ${MEMORY_NETWORK:-math-agent-shared_memory}
+  # `compose.shared.yaml`'s ladder, reached as `ladder:6969`. Deliberately
+  # gatewayless: the agent can reach the router without gaining an escape route
+  # during a calibration run.
   router:
     external: true
     name: ${LADDER_NETWORK:-math-agent-shared_router}
+  # The run's own way out, and the only one it has. Owned by this file rather
+  # than shared, so that an overlay can take it off this one service without
+  # touching anything another problem is using: `compose.eval.yaml` replaces
+  # this attachment with the screened proxy's network, and a calibration run is
+  # then left with two internal networks and no default route.
+  agent-egress:
+    driver: bridge
 
 services:
   agent:
@@ -30,6 +48,21 @@ services:
     environment:
       AGENT_WORKSPACE: /workspace
       COGNEE_API_URL: http://cognee:8000
+      # This run's tenant on the shared memory server, sent as an `X-Api-Key`
+      # header on every request. `scripts/memory-up --key <workspace-label>`
+      # provisions the tenant and prints it; `scripts/run-agent` passes it
+      # through.
+      #
+      # Defaulted to empty rather than declared required (`:?`), and the
+      # refusal lives in `VectorStore::from_env` instead. Compose interpolates
+      # the whole file before it does anything with it, so a required variable
+      # here also fails `./agent build` and `docker compose config --quiet` —
+      # neither of which starts a run or touches the memory. An empty key is
+      # still not an anonymous run: the server answers `401` to every call
+      # while the run reports storing what it learned, which is the failure
+      # shape `docs/memory.md` was written about, so the runtime refuses to
+      # start rather than proceeding without one.
+      COGNEE_API_KEY: ${COGNEE_API_KEY:-}
       MATH_AGENT_CONTAINER: "1"
       # Run controls forwarded from the host wrapper. Empty means "use the
       # built-in default", so an unset variable never widens or narrows a run.
@@ -116,19 +149,30 @@ services:
     # to one a solver can answer. Sixteen gigabytes buys a bigger wrong method
     # a little more room, and nothing else.
     #
-    # The 24g raise was asked for rather than met, and it is a bet on a shape
-    # of work this runtime has not yet done: a proof whose last third is a
-    # generated certificate — the ProofAtlas Sendov bundle wanted one Lean
-    # worker under a 32 GiB address-space limit for 4,524 build jobs
-    # (`research/proofatlas/01-sendov-bundle-anatomy.md`). Nothing that size
-    # fits under sixteen, so the ceiling was answering the question before the
-    # method got to.
+    # 24g was the cap until the memory became one shared server. It was a bet
+    # on a shape of work this runtime has not yet done — a proof whose last
+    # third is a generated certificate, the ProofAtlas Sendov bundle wanting
+    # one Lean worker under a 32 GiB address-space limit for 4,524 build jobs
+    # (`research/proofatlas/01-sendov-bundle-anatomy.md`) — and it was asked
+    # for rather than met.
     #
-    # 24g overcommits this box on purpose. It holds 30 GiB of RAM, and every
-    # problem's Cognee keeps its own 4g beside the shared Neo4j's 8g, so the
-    # set of them can ask for more than is free. `memswap_limit` is what makes that survivable rather than fatal:
-    # it is the *total* of RAM and swap, so 56g grants 24 GiB resident and 32
-    # GiB of the box's 87 GiB of swap. Docker already permitted swap here —
+    # 4g now, with 250m reserved, and the reason is arithmetic about the box
+    # rather than about any one run: several runs are live at once, and a
+    # ceiling that overcommits by itself overcommits by the number of them.
+    # The reservation is the other half of the same decision — it is what the
+    # scheduler holds back for a container that is idle between turns, so a
+    # busy neighbour cannot leave a waking run with nothing.
+    #
+    # This narrows what a single run may materialise, and the note above is
+    # what to read when one meets it: the answer is to stream, to count rather
+    # than collect, or to reduce the question — not to raise this line. The
+    # 4,524-job case is the one shape that genuinely does not fit, and it
+    # wants its own deliberately-raised run rather than a standing ceiling
+    # every problem is given.
+    #
+    # `memswap_limit` is what makes a spike survivable rather than fatal:
+    # it is the *total* of RAM and swap, so 8g grants 4 GiB resident and 4
+    # GiB of the box's swap. Docker already permitted swap here —
     # `mem_limit` without `memswap_limit` defaults to twice the memory — so the
     # change is that the allowance is now deliberate and stated instead of
     # inherited.
@@ -146,19 +190,40 @@ services:
     # a sandbox limit, never as a mathematical ceiling: problem 763 wrote the
     # old cap into its own notes as "exact BFS stops at N=14", which was never
     # true of the mathematics.
-    mem_limit: 24g
-    memswap_limit: 56g
+    mem_limit: ${MATH_AGENT_MEM_LIMIT:-4g}
+    memswap_limit: ${MATH_AGENT_MEMSWAP_LIMIT:-8g}
+    mem_reservation: 250m
+    # A deliberately loose ceiling, and looser than the box has cores on
+    # purpose. A run is bursty — `nauty-geng`, a Lean build, a sieve — and for
+    # most of its life it is waiting on a model call using nothing at all, so a
+    # tight per-run limit would idle the box to protect it from a spike that
+    # only one run is having at a time. Several runs at eight simply contend,
+    # which is the intended behaviour: `cpus` is a ceiling, not a reservation.
+    #
+    # What stops that contention from starving the memory is the *weight*
+    # rather than this number. `compose.shared.yaml` gives Neo4j and Cognee
+    # `cpu_shares: 2048` against the default 1024 here, so under full load each
+    # shared service gets twice the slice of one run — enough that a dozen
+    # busy runs cannot make every problem's recall slow at once.
+    cpus: ${MATH_AGENT_CPUS:-8}
     volumes:
       - type: bind
         source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}
         target: /workspace
-    # `COGNEE_NETWORK` names the compose network this problem's own Cognee
-    # stack is on, so the agent joins it and reaches the server as
-    # `cognee:8000`; `scripts/memory-up` prints that name and `./agent` passes
-    # it through. There is no `depends_on` for either network's services —
-    # neither is in this project, both are expected to be up already, and the
-    # launcher starts them in order rather than this file declaring an edge it
-    # cannot express across projects.
+    # There is no `depends_on` for the shared networks' services — neither is
+    # in this project, both are expected to be up already, and the launcher
+    # starts them in order rather than this file declaring an edge it cannot
+    # express across projects.
+    #
+    # `priority` decides which attachment supplies the **default route**, and
+    # it is load-bearing rather than cosmetic. `memory` and `router` are both
+    # `internal`, so a container that took its default route from either has no
+    # gateway and every provider call fails as a connection error. The egress
+    # attachment must win, which is what these numbers say.
     networks:
-      - router
-      - memory
+      agent-egress:
+        priority: 100
+      router:
+        priority: 10
+      memory:
+        priority: 5

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "asano-ike-2022-lift-convergence-role",
+  "source": "code/lean/asano_ike_2022_lift_convergence_role-bab7e113.lean",
+  "stage": "decompose"
+}

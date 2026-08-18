@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "hardy-littlewood-singular-series",
+  "source": "code/lean/hardy_littlewood_singular_series-1d4436af.lean",
+  "stage": "decompose"
+}

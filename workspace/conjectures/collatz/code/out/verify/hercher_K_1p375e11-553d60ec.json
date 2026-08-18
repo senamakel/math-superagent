@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "hercher-K-1p375e11",
   "source": "code/lean/hercher_K_1p375e11-553d60ec.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

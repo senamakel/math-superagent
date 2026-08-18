@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "hercher-m92",
   "source": "code/lean/hercher_m92-97b13fb9.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

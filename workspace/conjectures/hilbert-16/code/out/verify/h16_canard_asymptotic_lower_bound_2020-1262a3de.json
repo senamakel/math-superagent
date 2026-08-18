@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "h16-canard-asymptotic-lower-bound-2020",
+  "source": "code/lean/h16_canard_asymptotic_lower_bound_2020-1262a3de.lean",
+  "stage": "decompose"
+}

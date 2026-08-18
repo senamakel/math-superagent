@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "aikl2025-coisotropic-c0-rigidity",
   "source": "code/lean/aikl2025_coisotropic_c0_rigidity-fe871eba.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

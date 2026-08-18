@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "goldbach-binary-statement",
+  "source": "code/lean/goldbach_binary_statement-4f4eb08d.lean",
+  "stage": "decompose"
+}

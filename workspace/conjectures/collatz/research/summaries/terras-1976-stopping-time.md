@@ -1,36 +1,71 @@
-# Terras 1976 — NOT OBTAINED (corrected failure record)
+<!-- source: https://doi.org/10.4064/aa-30-3-241-252 | converted from HTML -->
 
-**Status: failed download, do not cite as held.**
+A stopping time problem on the positive integersAll
 
-Terras, R., "A stopping time problem on the positive integers", Acta Arith.
-30(3) (1976), 241–252. Full text **not held**; only the EuDML metadata record
-was retrieved (correct EuDML id confirmed: **eudml.org/doc/205476**, pages
-241–252, MR 0568274). The EuDML record's full-text link is
-`http://matwbn.icm.edu.pl/ksiazki/aa/aa30/aa3034.pdf` — the matwbn scan,
-which has **no text layer** (the converter refuses it). No other host with a
-text-layer copy was found. IMPAN's live Acta Arithmetica page (which the
-search reports as CC-BY free download) is behind the same 502 outage as the
-other IMPAN volumes.
+You are using an **outdated**browser. Please [upgrade your browser][1] to improve your experience.
 
-## What this record corrects
+# [Instytut Matematyczny Polskiej Akademii Nauk][2] / [pl][2] / [Wydawnictwa][3] / [Czasopisma IMPAN][4] / [Acta Arithmetica][5] / [Wszystkie zeszyty][6]
 
-- The earlier failure note guessed EuDML id 206498 and landed on Morton 1992
-  (the wrong paper). The correct id is **205476**; do not try 206498 again.
-- The bibliotekanauki issue index mislists the paper at pages 253–255 in
-  vol 30/3; the authoritative EuDML record (and the standard citation, also
-  used by Korec 1994's bibliography: "TERRAS R., A stopping time on the
-  positive integers. Acta Arith. XXX (1976), 241–252") gives 241–252.
+## Acta Arithmetica**
 
-## What the paper establishes (asserted-by-source, via secondaries)
+Przeszukaj wydawnictwa IMPAN **
 
-The set of positive integers with finite stopping time (orbits that eventually
-drop below the start) has asymptotic density 1. Captured via Garner 1981,
-Gluck–Taylor 2001, Hercher 2022, and Korec 1994's abstract ("C. J. Everett
-[3] and R. Terras [6] proved that the asymptotic density of
-{y ∈ N : (∃n)(T^n(y) < y)} is 1"). Claim status: asserted-by-source, not read
-from the primary.
+-->
 
-## What would close this gap
+## A stopping time problem on the positive integers
 
-A text-layer PDF of Acta Arith. 30 (1976) 241–252, or a rehost of the matwbn
-scan with OCR. Until then the claim stays asserted-by-source.
+### [Tom 30 / 1976][7]
+
+Riho Terras Acta Arithmetica 30 (1976), 241-252 DOI: 10.4064/aa-30-3-241-252
+
+#### Autorzy
+
+- Riho Terras
+
+[Pobierz zgodnie z CC-BY][8]
+
+Przeszukaj wydawnictwa IMPAN **
+
+- [9]
+- [10]
+- [11]
+- [12]
+- [13]
+- [14]
+-
+- [15]
+- [16]
+
+-->
+
+## Przeszukaj wydawnictwa IMPAN
+
+Zbyt krótkie zapytanie. Wpisz co najmniej 4 znaki.
+
+## Przepisz kod z obrazka
+
+Odśwież obrazek
+
+Odśwież obrazek
+
+Wyjdź
+
+
+## Links
+
+[1]: http://browsehappy.com/
+[2]: /
+[3]: https://www.impan.pl/pl/wydawnictwa
+[4]: https://www.impan.pl/pl/wydawnictwa/czasopisma-i-serie-wydawnicze
+[5]: https://www.impan.pl/pl/wydawnictwa/czasopisma-i-serie-wydawnicze/acta-arithmetica
+[6]: https://www.impan.pl/pl/wydawnictwa/czasopisma-i-serie-wydawnicze/acta-arithmetica/all
+[7]: pl/wydawnictwa/czasopisma-i-serie-wydawnicze/acta-arithmetica/all/30
+[8]: /shop/publication/transaction/download/product/101028
+[9]: https://www.impan.pl/pl/instytut/dofinansowane-projekty
+[10]: http://bip.impan.pl/index.php
+[11]: /pl/instytut/o-nas/gazeta
+[12]: https://www.impan.pl/en/insitute/a-plus
+[13]: https://www.impan.pl/pl/inne/strategia-hr
+[14]: https://www.impan.pl/en/mathematical-world/organisations/wcnm
+[15]: https://www.impan.pl/pl/dzialalnosc/biblioteka/ozwrcin
+[16]: http://rcin.org.pl/impan/dlibra?action=ChangeLanguageAction&language=en

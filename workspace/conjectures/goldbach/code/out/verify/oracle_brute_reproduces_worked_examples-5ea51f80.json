@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "oracle-brute-reproduces-worked-examples",
+  "source": "code/lean/oracle_brute_reproduces_worked_examples-5ea51f80.lean",
+  "stage": "decompose"
+}

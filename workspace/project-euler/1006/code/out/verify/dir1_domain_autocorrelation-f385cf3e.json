@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "dir1-domain-autocorrelation",
+  "source": "code/lean/dir1_domain_autocorrelation-f385cf3e.lean",
+  "stage": "decompose"
+}

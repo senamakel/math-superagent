@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "fibonacci-least-period-set",
+  "source": "code/lean/fibonacci_least_period_set-cf30c27a.lean",
+  "stage": "decompose"
+}

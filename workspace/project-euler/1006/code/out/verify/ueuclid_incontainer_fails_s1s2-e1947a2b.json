@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "ueuclid-incontainer-fails-s1s2",
   "source": "code/lean/ueuclid_incontainer_fails_s1s2-e1947a2b.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

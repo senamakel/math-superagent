@@ -213,20 +213,51 @@ fi
 # outrank this checkout's silently. See `scripts/dotenv`.
 . "$repository_root/scripts/dotenv"
 
-# This problem's own memory server, brought up before the agent and joined by
-# name. `COGNEE_NETWORK` is what `compose.yaml` resolves its external `memory`
-# network to, and the agent reaches the server as `cognee:8000` inside it, so
-# pointing the variable at a per-problem stack is the whole of the change — the
-# runtime is unaware there is more than one.
+# This problem's tenant on the shared memory server, provisioned before the
+# agent starts. There is one Cognee for the box; what makes this run's memory
+# its own is the key, not the address. `COGNEE_NETWORK` is what `compose.yaml`
+# resolves its external `memory` network to and the agent reaches the server as
+# `cognee:8000` inside it; `COGNEE_API_KEY` is the tenant, and every request
+# the runtime sends carries it as an `X-Api-Key` header.
 #
-# A shared server was the earlier arrangement and its failure was availability,
-# not privacy: four concurrent runs turned `recall_memory` into a ten-minute
-# hang ending in `409 Conflict`, and a run cannot retry ten minutes it has
-# already spent. Set `COGNEE_NETWORK` yourself to opt back into a shared stack.
+# Both are provisioned rather than assumed, and both are overridable: setting
+# either yourself points a run at another server or another tenant, which is
+# how a second checkout shares one problem's memory deliberately.
+#
+# The failure to watch for here is availability rather than privacy. A shared
+# Cognee was the arrangement before the per-problem one, and four concurrent
+# runs turned `recall_memory` into a ten-minute hang ending in `409 Conflict`.
+# Cognee now serialises per dataset rather than globally, which is why this is
+# a shared server again; `docs/memory.md` says what to measure if it returns.
 if [ -z "${COGNEE_NETWORK:-}" ]; then
     COGNEE_NETWORK=$("$repository_root/scripts/memory-up" "$workspace_subdir")
     export COGNEE_NETWORK
 fi
+if [ -z "${COGNEE_API_KEY:-}" ]; then
+    COGNEE_API_KEY=$("$repository_root/scripts/memory-up" --key "$workspace_subdir")
+    export COGNEE_API_KEY
+fi
+
+# The container is named for the workspace it is working on, rather than left
+# to Compose's `<project>-agent-run-<random>`. Two things come of that, and the
+# second is the reason.
+#
+# It is readable: `docker ps` says which problem each container is solving, and
+# `docker logs`, `docker stats` and `docker rm -f` can be pointed at one by
+# name instead of by cross-referencing mounts.
+#
+# And it makes the silent failure loud. Two runs on one workspace both write to
+# it, and the damage shows up later as an interleaved history — nothing at the
+# time says anything is wrong. Docker refuses a duplicate container name, so
+# the second `./conjecture hilbert-16` now fails immediately, saying which
+# container already holds the workspace, instead of starting quietly beside the
+# first.
+#
+# A shell is deliberately outside that: it is opened *alongside* a live run to
+# look at the same workspace, so giving it the run's name would refuse the one
+# case it exists for. It keeps Compose's generated name.
+run_name=math-agent-$(printf '%s' "$workspace_subdir" \
+    | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g; s/^[^a-z0-9]*//')
 
 if [ "$action" = shell ]; then
     # shellcheck disable=SC2086
@@ -236,4 +267,4 @@ fi
 # shellcheck disable=SC2086
 docker compose $compose_files build --quiet agent
 # shellcheck disable=SC2086
-exec docker compose $compose_files run --rm agent "$@"
+exec docker compose $compose_files run --rm --name "$run_name" agent "$@"

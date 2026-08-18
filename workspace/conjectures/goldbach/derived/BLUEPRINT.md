@@ -10,18 +10,18 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
-- `full-goldbach-via-exceptional-set/G-structural-closure` (lemma) — If n_0 is the least even integer not representable as a sum of two primes, then the set of counterexamples has positive lower asymptotic…
+- `full-goldbach-via-exceptional-set/G-structural-closure` (lemma) — If a least even counterexample exists, then the exceptional set of binary Goldbach numbers has positive lower asymptotic density: there is…
   - open `research/backward/full-goldbach-via-exceptional-set.md`
 
 ## Verify these first
 
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
-- `full-goldbach-via-exceptional-set/G-exceptional-density` — 1 node(s) rest on it, and the run is already building on it — There exists an absolute δ > 0 such that the number E(X) of even integers n ≤ X not representable as a sum of two primes satisfies E(X) ≪…
-- `full-goldbach-via-exceptional-set/G-verification-bound` — 1 node(s) rest on it, and the run is already building on it — Every even integer n with 4 ≤ n ≤ 4·10^18 is the sum of two primes.
-- `full-goldbach-via-exceptional-set/G-structural-closure` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — If n_0 is the least even integer not representable as a sum of two primes, then the set of counterexamples has positive lower asymptotic…
+- `full-goldbach-via-exceptional-set/G-structural-closure` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — If a least even counterexample exists, then the exceptional set of binary Goldbach numbers has positive lower asymptotic density: there is…
+- `montgomery-vaughan-1975` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — (Montgomery–Vaughan 1975) There exists a positive δ > 0 such that E(X) ≪ X^{1−δ} for all large X. This improved Vaughan's 1972 E(X) ≪…
+- `verification-4e18` — 1 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The binary Goldbach conjecture holds for every even n with 4 < n ≤ 4·10^18, by exhaustive distributed computation.
 
-_50 further candidate(s) below these, in the table._
+_48 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -44,10 +44,8 @@ _50 further candidate(s) below these, in the table._
 | `exceptional-set-definition` | claim | **ready** | — | E(X) := #{n ≤ X : n even, n ≠ p1 + p2 for any primes p1, p2}. The binary Goldbach conjecture is equivalent to E(X) = 2 for all X ≥ 4 (only… |
 | `explicit-goldbach-summatory-2024` | claim | **ready** | — | The authors obtain explicit numerical estimates for the average order of a smooth Goldbach summatory function, both classically and in… |
 | `fgis-2021-weak-hl-no-exceptional-zeros` | claim | **ready** | — | A weak form of the Hardy–Littlewood conjecture on the Goldbach problem suffices to disprove the existence of exceptional zeros of Dirichlet… |
-| `full-goldbach-via-exceptional-set` | goal | blocked | `full-goldbach-via-exceptional-set/G-exceptional-density`, `full-goldbach-via-exceptional-set/G-structural-closure`, `full-goldbach-via-exceptional-set/G-verification-bound` | Every even integer n > 2 is the sum of two primes (binary Goldbach). |
-| `full-goldbach-via-exceptional-set/G-exceptional-density` | lemma | established | — | There exists an absolute δ > 0 such that the number E(X) of even integers n ≤ X not representable as a sum of two primes satisfies E(X) ≪… |
-| `full-goldbach-via-exceptional-set/G-structural-closure` | lemma | **ready** | — | If n_0 is the least even integer not representable as a sum of two primes, then the set of counterexamples has positive lower asymptotic… |
-| `full-goldbach-via-exceptional-set/G-verification-bound` | lemma | established | — | Every even integer n with 4 ≤ n ≤ 4·10^18 is the sum of two primes. |
+| `full-goldbach-via-exceptional-set` | goal | blocked | `full-goldbach-via-exceptional-set/G-structural-closure`, `montgomery-vaughan-1975`, `verification-4e18` | If every sufficiently large even integer is a sum of two primes and all even integers up to 4·10^18 are verified, then every even integer n… |
+| `full-goldbach-via-exceptional-set/G-structural-closure` | lemma | **ready** | — | If a least even counterexample exists, then the exceptional set of binary Goldbach numbers has positive lower asymptotic density: there is… |
 | `goldbach-binary-statement` | claim | **ready** | — | Every even integer n > 2 is a sum of two primes p + q (p, q prime). Open since 1742. |
 | `goldston-suriajaya-2021-siegel-zero` | claim | **ready** | — | The work of Fei, Bhowmik–Halupczok, and Jia relating the Goldbach conjecture to real zeros of Dirichlet L-functions is generalized: a weak… |
 | `goldston-suriajaya-fujii-unconditional` | claim | **ready** | — | Fujii's formula for the average number of Goldbach representations, whose lower-order terms are a sum over zeros of ζ(s) plus a smaller… |
@@ -67,33 +65,10 @@ _50 further candidate(s) below these, in the table._
 | `montgomery-vaughan-1975` | claim | **ready** | — | (Montgomery–Vaughan 1975) There exists a positive δ > 0 such that E(X) ≪ X^{1−δ} for all large X. This improved Vaughan's 1972 E(X) ≪… |
 | `odd-goldbach-8.37e26` | claim | **ready** | — | Using Ramaré–Saouter (J. Number Theory 98 (2003) 10–33) and the 4×10^18 binary verification, the ternary Goldbach conjecture holds for all… |
 | `oracle-brute-reproduces-worked-examples` | claim | established | — | code/lib/goldbach.py's is_prime / goldbach_partitions / satisfies_goldbach reproduce all three worked examples in problem.md (4 = 2 + 2… |
+| `parity-problem-barrier` | claim | **ready** | — | The parity problem in sieve theory: classical sieve methods (upper-bound sieves) cannot distinguish numbers with an even number of prime… |
+| `parity-problem-survey-2022` | claim | **ready** | — | (Friedlander–Iwaniec 2022, "Exceptional zeros, sieve parity, Goldbach", Essential Number Theory 1(1), 13–39) The parity problem is a proven… |
 
-_14 further nodes not shown._
-
-## Resting on nothing that exists
-
-Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
-
-- `full-goldbach-via-exceptional-set` rests on `speculation`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `that`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `the`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `exceptional`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `set`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `can`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `be`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `shown`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `to`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `be`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `closed`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `under`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `a`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `density-generating`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `this`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `is`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `the`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `core`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `open`, which does not exist
-- `full-goldbach-via-exceptional-set` rests on `gap.`, which does not exist
+_12 further nodes not shown._
 
 ---
 

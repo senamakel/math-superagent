@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "everett-density-1-finite-stopping-time",
+  "source": "code/lean/everett_density_1_finite_stopping_time-350a472e.lean",
+  "stage": "decompose"
+}

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "granville-goldbach-rh-equivalence",
+  "source": "code/lean/granville_goldbach_rh_equivalence-0979f404.lean",
+  "stage": "decompose"
+}

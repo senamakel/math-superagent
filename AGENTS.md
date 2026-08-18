@@ -209,10 +209,10 @@ Start a run detached so it outlives the terminal, then watch it:
 nohup ./euler 763 > workspace/project-euler/763/config/start.log 2>&1 &
 ```
 
-Two containers on one workspace is the failure to look for, and it is silent —
-both runs write, and the damage appears later as an interleaved history. Check
-before starting, and **match by mount, not by name**. Stop one with
-`docker rm -f <name>`; the workspace survives and `./euler` continues it.
+Two containers on one workspace is the failure to look for. A run is named for
+its workspace (`math-agent-conjectures-hilbert-16`), so Docker refuses the
+second — but **match by mount**, since only this launcher's runs carry that
+name. `docker rm -f <name>` stops one; the workspace survives.
 `start.log` is the only place a failed *start* says why, on **stderr**, so
 `docker logs` needs `2>&1`. Every checkout shares the `math-agent:local` tag, so
 a build in one replaces the image another is about to run.

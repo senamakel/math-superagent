@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "drr-ledger-no-consolidated-post2020",
+  "source": "code/lean/drr_ledger_no_consolidated_post2020-925e512c.lean",
+  "stage": "decompose"
+}

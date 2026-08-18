@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "mod3-law-minimal-goldbach",
+  "source": "code/lean/mod3_law_minimal_goldbach-823a3ba6.lean",
+  "stage": "decompose"
+}

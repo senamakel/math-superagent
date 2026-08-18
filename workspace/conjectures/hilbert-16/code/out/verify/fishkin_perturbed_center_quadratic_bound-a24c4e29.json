@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "fishkin-perturbed-center-quadratic-bound",
+  "source": "code/lean/fishkin_perturbed_center_quadratic_bound-a24c4e29.lean",
+  "stage": "decompose"
+}

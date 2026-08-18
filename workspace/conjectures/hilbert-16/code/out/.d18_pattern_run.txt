@@ -1,0 +1,8 @@
+degree 3: done (0s cumulative)
+degree 4: done (0s cumulative)
+degree 5: done (0s cumulative)
+degree 6: done (1s cumulative)
+degree 7: done (2s cumulative)
+degree 8: done (5s cumulative)
+degree 9: done (12s cumulative)
+degree 10: done (101s cumulative)

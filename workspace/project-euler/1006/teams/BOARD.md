@@ -25,6 +25,28 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 What would suffice:
 What the run says would suffice:
+[reducer failed: tool error: agent `reducer` failed: graph error: model error: local-router returned HTTP 403: <html>
+<head><title>403 Forbidden</title></head>
+<body>
+<center><h1>403 Forbidden</h1></center>
+</body>
+</html>
+]
+
+[reducer failed: tool error: agent `reducer` failed: graph error: model error: local-router returned HTTP 403: <html>
+<head><title>403 Forbidden</title></head>
+<body>
+<center><h1>403 Forbidden</h1></center>
+</body>
+</html>
+]
+
+Open gaps, read from the ledger:
+-…
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
 The requests ledger holds four requests, all about the primitive and the Sturmian complexity — all now answered by existing claims (`universal-euclidean-geometric-floor-sum`, `monoid-composition-formulas-verified`, `fibonacci-sturmian-complexity`); none covers the actual G4 obstruction, which is correctly *not* a research request but a construction task with cheap refuters. Nothing to duplicate, nothing to post.
 
 My audit is complete. Here is the report.

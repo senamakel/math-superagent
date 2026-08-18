@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "lagarias-W2",
   "source": "code/lean/lagarias_W2-eb4a08bf.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

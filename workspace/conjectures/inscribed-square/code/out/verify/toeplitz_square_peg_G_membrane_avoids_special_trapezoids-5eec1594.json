@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "toeplitz-square-peg/G-membrane-avoids-special-trapezoids",
   "source": "code/lean/toeplitz_square_peg_G_membrane_avoids_special_trapezoids-5eec1594.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

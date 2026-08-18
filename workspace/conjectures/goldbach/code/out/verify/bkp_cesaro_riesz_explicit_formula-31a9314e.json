@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "bkp-cesaro-riesz-explicit-formula",
+  "source": "code/lean/bkp_cesaro_riesz_explicit_formula-31a9314e.lean",
+  "stage": "decompose"
+}

@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "farey-slope-stabilisation",
   "source": "code/lean/farey_slope_stabilisation-ab3f4c35.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

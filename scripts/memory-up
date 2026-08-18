@@ -1,100 +1,156 @@
 #!/bin/sh
-# Brings up this problem's own Cognee container and prints the network to
-# join.
+# Provisions this problem's tenant on the shared memory server, and prints what
+# a run needs to reach it.
 #
-# One Cognee per problem, from `compose.memory.yaml`, sharing the graph store
-# (`compose.shared.yaml`) and the LLM router (`compose.yaml`'s `ladder`) with
-# every other problem. The compose *project name* is what separates one
-# problem's Cognee from another's: `-p cognee-<slug>` gives that problem its
-# own container, its own volumes, and its own network, and nothing here
-# publishes a host port, so any number can run at once. See the header of
-# `compose.memory.yaml` for the isolation this relies on and how it was
-# probed. The shared backbone is brought up first, by `scripts/shared-up`, and
-# this problem's own Neo4j database created before Cognee can ask for it.
+# There is one Cognee for the whole box (`compose.shared.yaml`), and each
+# problem is a *tenant* on it: a Cognee user, holding its own datasets, reached
+# with an `X-Api-Key` header. The server refuses one tenant's request for
+# another's dataset — probed live, `404 DatasetNotFoundError` — so the boundary
+# is the server's rather than this script's. This used to start a whole Cognee
+# container per problem; see `compose.shared.yaml` for why it no longer does.
 #
-# Usage: scripts/memory-up <workspace-label>   e.g. project-euler/620
-#        scripts/memory-up --down <workspace-label>
+# Usage: scripts/memory-up <workspace-label>        e.g. project-euler/620
+#        scripts/memory-up --key <workspace-label>  print its API key
+#        scripts/memory-up --down <workspace-label> forget the tenant's key
 #        scripts/memory-up --list
 #
-# Prints the compose network name on stdout and nothing else, so a caller can
-# read it directly:
+# Prints the memory network name on stdout and nothing else, so a caller can
+# read it directly, and the key under `--key` for the same reason:
 #
 #     COGNEE_NETWORK=$(scripts/memory-up project-euler/620)
+#     COGNEE_API_KEY=$(scripts/memory-up --key project-euler/620)
 #
-# Progress goes to stderr for exactly that reason.
+# Progress goes to stderr for exactly that reason. Both forms provision, so
+# either order works and a second call costs one HTTP round trip.
 set -eu
 
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
 cd "$repository_root"
 
-compose_file=compose.memory.yaml
-prefix=cognee-
-# Extra compose files, in order. `--eval` appends the overlay that takes this
-# stack's network off the internet; see `compose.memory.eval.yaml`.
-overlay=
+shared_project=${SHARED_PROJECT:-math-agent-shared}
+memory_network=${MEMORY_NETWORK:-math-agent-shared_memory}
+
+# A tenant's login, derived from the workspace label alone so that continuing a
+# problem finds the tenant it left rather than making another. The password is
+# a fixed local one, like `NEO4J_AUTH` in `compose.shared.yaml`: this server
+# publishes no host port, and anything that can reach it is already inside the
+# box's docker networks. `.local` and the other reserved suffixes are rejected
+# by the server's own email validation, hence a real one nothing sends mail to.
+tenant_domain=tenant.math-agent.dev
+tenant_password=${COGNEE_TENANT_PASSWORD:-cognee-local-tenant}
 
 usage() {
-    echo "usage: scripts/memory-up [--eval] [--down] <workspace-label>" >&2
+    echo "usage: scripts/memory-up [--key|--down] <workspace-label>" >&2
     echo "       scripts/memory-up --list" >&2
-    echo "" >&2
-    echo "  --eval  put the stack on an internal network, for a calibration" >&2
-    echo "          run: the agent keeps cognee:8000 and loses its route out" >&2
 }
 
-# Every compose invocation below has to carry the same file list, or `down`
-# would address a different project than `up` created.
-compose() {
-    # shellcheck disable=SC2086
-    docker compose -p "$project" -f "$compose_file" $overlay "$@"
-}
-
-# Compose project names accept lowercase letters, digits, dashes and
-# underscores only, so `project-euler/620` has to become `project-euler-620`.
-# Every other character folds to a dash rather than being dropped: dropping
-# would let `a/b` and `ab` name the same server, which is the one mistake this
-# script must not make.
+# Compose project names accepted lowercase letters, digits, dashes and
+# underscores only, and the same folding is kept here so that a workspace keeps
+# the tenant it had before this became a tenant. Every other character folds to
+# a dash rather than being dropped: dropping would let `a/b` and `ab` name the
+# same tenant, which is the one mistake this script must not make.
 slug_of() {
     printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_-]/-/g; s/^-*//; s/-*$//'
 }
 
-# A Neo4j database name, derived from the compose slug rather than reused
-# directly: Neo4j additionally forbids underscores, requires a leading letter,
-# and caps the name at 63 characters — none of which the compose slug rules
-# guarantee. `p` + the slug with underscores folded to dashes covers the
-# leading-letter and character-set rules for every slug this produces;
-# truncating leaves room for the prefix.
-neo4j_db_name_of() {
-    printf 'p%s' "$1" | tr '_' '-' | cut -c1-63
-}
-
-# The shared backbone is brought up rather than merely checked for. It is
-# idempotent (`up -d --wait` on a healthy stack returns immediately), and the
-# alternative — asking a human to remember that `compose.shared.yaml` comes
-# first — is the ordering mistake this script exists to absorb.
 ensure_shared() {
     "$repository_root/scripts/shared-up" >&2
 }
 
-# Idempotent: `IF NOT EXISTS` makes a second run against an already-running
-# problem a no-op, which is the same guarantee `compose up -d` already gives
-# below. `CREATE DATABASE` is only valid against the `system` database, which
-# is where `scripts/shared-up --cypher` sends it.
-create_graph_database() {
-    "$repository_root/scripts/shared-up" --cypher "CREATE DATABASE \`$1\` IF NOT EXISTS" >&2
+# One request cycle against the server, from inside the server. `exec` rather
+# than a container joined to the memory network: Cognee is already here, it has
+# Python, and naming it through compose means this keeps working if the network
+# name ever moves. Nothing is published to the host, so there is no other way
+# in that does not create a container.
+tenant_api_key() {
+    docker compose -p "$shared_project" -f compose.shared.yaml \
+        exec -T -e TENANT_EMAIL="$1@$tenant_domain" -e TENANT_PASSWORD="$tenant_password" \
+        cognee python - <<'PY'
+import json, os, sys, urllib.error, urllib.parse, urllib.request
+
+BASE = "http://localhost:8000"
+email = os.environ["TENANT_EMAIL"]
+password = os.environ["TENANT_PASSWORD"]
+
+
+def call(path, data=None, form=False, token=None):
+    headers = {"Accept": "application/json"}
+    body = None
+    if data is not None:
+        if form:
+            body = urllib.parse.urlencode(data).encode()
+            headers["Content-Type"] = "application/x-www-form-urlencoded"
+        else:
+            body = json.dumps(data).encode()
+            headers["Content-Type"] = "application/json"
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    request = urllib.request.Request(BASE + path, data=body, headers=headers)
+    try:
+        with urllib.request.urlopen(request, timeout=120) as response:
+            return response.status, response.read().decode()
+    except urllib.error.HTTPError as error:
+        return error.code, error.read().decode()
+
+
+def login():
+    return call("/api/v1/auth/login", {"username": email, "password": password}, form=True)
+
+
+# Register first only when the tenant is new: registering an existing one is a
+# 400 that says so, and reading that as failure would break every continuation.
+status, body = login()
+if status != 200:
+    status, body = call("/api/v1/auth/register", {"email": email, "password": password})
+    if status not in (200, 201):
+        sys.exit(f"could not create the tenant {email}: {status} {body}")
+    status, body = login()
+    if status != 200:
+        sys.exit(f"could not log the tenant {email} in: {status} {body}")
+
+token = json.loads(body)["access_token"]
+
+# Reuse the key this tenant already has. Minting one per call would leave a
+# workspace continued ten times owning ten keys, all of them valid.
+status, body = call("/api/v1/auth/api-keys", token=token)
+if status != 200:
+    sys.exit(f"could not list the tenant's keys: {status} {body}")
+keys = [key["key"] for key in json.loads(body) if key.get("key", "").strip("*")]
+
+if not keys:
+    status, body = call("/api/v1/auth/api-keys", {"name": email}, token=token)
+    if status != 200:
+        sys.exit(f"could not create a key for the tenant: {status} {body}")
+    keys = [json.loads(body)["key"]]
+
+print(keys[0])
+PY
 }
 
-
 action=up
-while [ "${1:-}" = --eval ]; do
-    overlay="-f compose.memory.eval.yaml"
-    shift
-done
-
 case "${1:-}" in
     --list)
-        docker compose ls --all --format json 2>/dev/null \
-            | tr ',' '\n' | grep -o "\"${prefix}[a-z0-9_-]*\"" | tr -d '"' | sort -u
+        # Every workspace that has ever had a memory here, which is not every
+        # problem currently running. Filtered to this runtime's tenant domain:
+        # the server also carries Cognee's own built-in default user, which is
+        # no workspace's and would read as one.
+        docker compose -p "$shared_project" -f compose.shared.yaml \
+            exec -T cognee python -c "
+import sqlite3
+# The server's own relational store. Read directly rather than over HTTP
+# because listing users is an admin question and the API answers it only for
+# the caller's own account — and this has to work before any tenant exists.
+rows = sqlite3.connect('/app/cognee/.cognee_system/databases/cognee_db').execute(
+    'select email from users order by email'
+)
+for (email,) in rows:
+    print(email)
+" 2>/dev/null | grep "@$tenant_domain\$" | sed "s/@$tenant_domain\$//" | sort -u
         exit 0
+        ;;
+    --key)
+        action=key
+        shift
         ;;
     --down)
         action=down
@@ -117,18 +173,15 @@ if [ -z "$slug" ]; then
     echo "workspace label '$label' has no usable characters" >&2
     exit 2
 fi
-project=$prefix$slug
-graph_database_name=$(neo4j_db_name_of "$slug")
-# Compose parses `${GRAPH_DATABASE_NAME:?...}` at config-load time, so even
-# `compose down` needs it set — a database name that no longer matters once
-# the container is gone, but Compose does not know that.
-GRAPH_DATABASE_NAME=$graph_database_name
-export GRAPH_DATABASE_NAME
 
 if [ "$action" = down ]; then
-    # Volumes go with it. A memory server kept for a problem nobody is running
-    # is the shared server's storage problem back again, one directory lower.
-    compose down -v >&2
+    # Deliberately not a delete. A tenant's datasets are its memory of the
+    # problem, its graph databases are named after them, and a workspace is
+    # continued far more often than it is abandoned — so the destructive
+    # reading of "down" is the wrong default for a server that now holds every
+    # problem's memory rather than one. `docs/memory.md` has the deletion path.
+    echo "memory: tenants are not torn down; $slug keeps its datasets" >&2
+    echo "memory: see docs/memory.md to delete one deliberately" >&2
     exit 0
 fi
 
@@ -144,35 +197,15 @@ fi
 
 ensure_shared
 
-echo "memory: ensuring Neo4j database '$graph_database_name' exists" >&2
-create_graph_database "$graph_database_name"
+echo "memory: provisioning tenant $slug on the shared server" >&2
+key=$(tenant_api_key "$slug" | tr -d '\r' | tail -1)
+if [ -z "$key" ]; then
+    echo "memory: could not provision a tenant for $slug" >&2
+    exit 1
+fi
 
-echo "memory: bringing up $project for $label" >&2
-# `up -d` on a stack that is already up is a no-op that returns immediately, so
-# a second run against the same problem costs nothing and starts nothing twice.
-compose up -d >&2
-
-# Wait for the API rather than assuming it. Nothing binds *this script* to
-# cognee's own readiness, and an agent that starts against an unhealthy
-# server spends its first minutes failing recall calls it will never retry.
-waited=0
-# 420s rather than 180s. A single stack comes up well inside three minutes; three
-# starting together do not, and the first symptom is a launcher giving up on a
-# server that is still initialising.
-while [ "$waited" -lt 420 ]; do
-    state=$(compose ps \
-        --format '{{.Service}} {{.Health}}' 2>/dev/null | grep '^cognee ' || true)
-    case "$state" in
-        *healthy*)
-            echo "memory: $project ready after ${waited}s" >&2
-            printf '%s_default\n' "$project"
-            exit 0
-            ;;
-    esac
-    sleep 5
-    waited=$((waited + 5))
-done
-
-echo "memory: $project did not become healthy within ${waited}s" >&2
-compose ps >&2
-exit 1
+if [ "$action" = key ]; then
+    printf '%s\n' "$key"
+else
+    printf '%s\n' "$memory_network"
+fi

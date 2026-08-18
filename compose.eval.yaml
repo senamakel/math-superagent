@@ -36,17 +36,23 @@
 # through tools that can be screened.
 
 networks:
-  # `compose.yaml` declares this as the external network of the problem's own
-  # Cognee stack. `scripts/memory-up --eval` brings that stack up with
-  # `compose.memory.eval.yaml`, which marks the network `internal: true` and
-  # gives Cognee — and only Cognee — a second, routable network of its own.
+  # The one line that takes the run's default route away.
   #
-  # So the name and the externality are unchanged here; what changed is the
-  # network the name refers to, which now has no gateway. The agent keeps
-  # reaching `cognee:8000` and loses everything else.
-  memory:
-    external: true
-    name: ${COGNEE_NETWORK:?set COGNEE_NETWORK with scripts/memory-up --eval}
+  # `compose.yaml` gives the agent `agent-egress`, an ordinary bridge, and that
+  # is the only routable network it has — `memory` and `router` are both
+  # declared `internal` by `compose.shared.yaml`. Marking the same network
+  # `internal` here leaves the attachment in place and removes its gateway, so
+  # the agent keeps reaching `cognee:8000` and `ladder:6969` and loses
+  # everything else.
+  #
+  # It is done this way round because a Compose override *merges* a service's
+  # network list and cannot remove an attachment from it. Redefining the
+  # network is what an overlay can do, and the effect is the same. The network
+  # belongs to this run's own project, so the proxy below can sit on it without
+  # appearing on anything another problem is using.
+  agent-egress:
+    driver: bridge
+    internal: true
 
   # The proxy's own way out. Only the proxy is on it.
   egress:
@@ -69,7 +75,7 @@ services:
       # made the higher-priority attachment.
       egress:
         priority: 100
-      memory:
+      agent-egress:
         priority: 10
     # The allowlist. Every entry is an API the runtime itself needs, and
     # nothing here serves documents to a human reader.

@@ -10,10 +10,13 @@
 #
 # Usage: scripts/memory-inventory <workspace-label>   e.g. conjectures/gilbreath
 #
-# Brings the stack up if it is not already up (`scripts/memory-up` is a no-op on
-# one that is), then prints the server's ingest health followed by every dataset
-# and the documents in it. Nothing is published to the host, so every request
-# goes through a throwaway container joined to that stack's network.
+# Brings the shared stack up if it is not already (`scripts/memory-up` is a
+# no-op on one that is) and provisions this problem's tenant, then prints the
+# server's ingest health followed by every dataset the tenant holds and the
+# documents in it. One server holds every problem now, so the datasets listed
+# are this tenant's alone — that is the server's answer, not a filter applied
+# here. Nothing is published to the host, so every request goes through a
+# throwaway container joined to the memory network.
 set -eu
 
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
@@ -26,9 +29,11 @@ if [ -z "$label" ]; then
 fi
 
 network=$(scripts/memory-up "$label")
+api_key=$(scripts/memory-up --key "$label")
 
 get() {
-    docker run --rm --network "$network" curlimages/curl:latest -s "http://cognee:8000$1"
+    docker run --rm --network "$network" curlimages/curl:latest \
+        -s -H "X-Api-Key: $api_key" "http://cognee:8000$1"
 }
 
 echo "== ingest health"
@@ -53,10 +58,11 @@ datasets=$(get /api/v1/datasets)
 printf '%s' "$datasets" | python3 -c '
 import json, subprocess, sys
 
-network = sys.argv[1]
+network, api_key = sys.argv[1], sys.argv[2]
 for dataset in json.load(sys.stdin):
     listing = subprocess.run(
         ["docker", "run", "--rm", "--network", network, "curlimages/curl:latest", "-s",
+         "-H", f"X-Api-Key: {api_key}",
          f"http://cognee:8000/api/v1/datasets/{dataset['"'"'id'"'"']}/data"],
         capture_output=True, text=True).stdout
     try:
@@ -66,4 +72,4 @@ for dataset in json.load(sys.stdin):
     print(f"\n== {dataset['"'"'name'"'"']}  ({len(rows)} documents)")
     for row in sorted(rows, key=lambda row: row.get("createdAt") or ""):
         print("   ", (row.get("createdAt") or "")[:19], (row.get("name") or "")[:72])
-' "$network"
+' "$network" "$api_key"

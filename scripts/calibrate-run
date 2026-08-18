@@ -163,14 +163,17 @@ for leaked in GROUND_TRUTH.md RUBRIC.md screen.terms screen.json; do
 done
 
 # ---------------------------------------------------------------------------
-# 4. Bring up this problem's memory stack with no route to the internet.
+# 4. Provision this problem's tenant on the shared memory server.
 #
-# `--eval` marks the stack's network internal, so the agent that joins it to
-# reach `cognee:8000` does not also get a default route out. Everything the run
-# legitimately needs then arrives through `screen-proxy`.
+# Nothing here has to ask for isolation. The memory network is `internal` in
+# `compose.shared.yaml` and always has been gatewayless; what a calibration run
+# removes is the agent's own egress attachment, which `compose.eval.yaml` does
+# by redefining it. There is no memory-side flag to forget.
 # ---------------------------------------------------------------------------
-COGNEE_NETWORK=$(scripts/memory-up --eval "$workspace_subdir")
+COGNEE_NETWORK=$(scripts/memory-up "$workspace_subdir")
 export COGNEE_NETWORK
+COGNEE_API_KEY=$(scripts/memory-up --key "$workspace_subdir")
+export COGNEE_API_KEY
 
 # The Langfuse host has to reach the proxy allowlist, and it is deployment
 # specific. Read from `.env` without printing it: only the host is extracted,
@@ -187,11 +190,10 @@ export MATH_AGENT_EVAL_SLUG
 
 # Each calibration problem gets its own Compose project, so several can run at
 # once. Without this they share one project derived from the checkout directory,
-# and the shared pieces are not actually shareable: the project's `memory`
-# network resolves to `$COGNEE_NETWORK`, which is per-problem, so starting a
-# second run rewrites the first run's network reference and Compose recreates
-# services underneath a live container. The cost of isolating is one extra
-# proxy — five megabytes — per run.
+# and two runs would fight over one `screen-proxy` and one `agent-egress`
+# network — the second `up` recreating services underneath the first's live
+# container, and both proxies answering to one name. The cost of isolating is
+# one extra proxy — five megabytes — per run.
 COMPOSE_PROJECT_NAME=calibrate-$slug
 export COMPOSE_PROJECT_NAME
 MATH_AGENT_COMPOSE_EXTRA=compose.eval.yaml
@@ -201,7 +203,7 @@ echo "calibrate: $slug" >&2
 echo "  workspace  workspace/$workspace_subdir" >&2
 echo "  schools    $schools" >&2
 echo "  screen     evals/.build/$slug/screen.json" >&2
-echo "  network    $COGNEE_NETWORK (internal)" >&2
+echo "  memory     $COGNEE_NETWORK (internal, this problem's tenant)" >&2
 echo "  egress     screen-proxy allowlist only" >&2
 echo "" >&2
 echo "  watch      ./euler-tui --workspace $workspace_subdir" >&2

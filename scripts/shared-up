@@ -1,9 +1,9 @@
 #!/bin/sh
-# Brings up the shared backbone: one Neo4j Enterprise instance and one LLM
-# router, for every problem on the box.
+# Brings up the shared backbone: one Neo4j Enterprise instance, one Cognee and
+# one LLM router, for every problem on the box.
 #
 # Usage: scripts/shared-up            start or reconcile, waiting for health
-#        scripts/shared-up --down     stop it; the graph volume survives
+#        scripts/shared-up --down     stop it; the volumes survive
 #        scripts/shared-up --cypher <statement>   one statement, as admin
 #        scripts/shared-up --cypher-in <db> <statement>   ... in one database
 #
@@ -101,5 +101,10 @@ if [ -z "${LADDER_CONFIG_PATH:-}" ] || [ -z "${LADDER_ENV_FILE:-}" ]; then
     export LADDER_CONFIG_PATH LADDER_ENV_FILE
 fi
 
-echo "shared: bringing up $project (neo4j, ladder)" >&2
+# Cognee is waited for along with the rest: it has a healthcheck, and a run
+# that starts against a server still initialising spends its first minutes
+# failing recall calls it will never retry. A cold volume is the slow case —
+# the embedding model is fetched on first start — so `--wait` here is doing
+# real work rather than confirming the obvious.
+echo "shared: bringing up $project (neo4j, cognee, ladder)" >&2
 compose up -d --wait >&2

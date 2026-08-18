@@ -1,27 +1,32 @@
+#!/usr/bin/env python3
 from pathlib import Path
-from ast import literal_eval
+import ast
 
 def ints(path):
-    vals=[]
-    for line in Path(path).read_text().splitlines():
-        s=line.strip()
-        if s and s.lstrip('-').isdigit(): vals.append(int(s))
-    return vals
+    text=Path(path).read_text()
+    return [int(x) for x in text.split() if x.lstrip('-').isdigit()]
 
 def pairs(path):
     out=[]
     for line in Path(path).read_text().splitlines():
-        z=line.split()
-        if len(z)==2 and all(x.lstrip('-').isdigit() for x in z): out.append((int(z[0]),int(z[1])))
+        a=line.split()
+        if len(a)==2 and all(x.lstrip('-').isdigit() for x in a):
+            out.append((int(a[0]),int(a[1])))
     return out
 
-for name,path in [('r50000','code/out/seq_rn_50000.txt'),('r999','code/out/seq_rn.txt'),('g999','code/out/seq_gn.txt')]:
-    a=ints(path)
-    print(name,len(a),a[:12],a[-5:])
+for f in ['code/out/seq_sp_vec_10000000.txt','code/out/seq_sp_50000.txt']:
+    a=pairs(f)
+    s=[y for _,y in a]
+    p=[x for x,_ in a]
+    print(f, 'pairs',len(a),'p_first_last',p[:5],p[-5:],'S_first_last',s[:5],s[-5:])
+    print('all S even:',all(x%2==0 for x in s))
+    print('p>7 residue violations:',[(x,y) for x,y in a if x>7 and ((x%3==1 and y%6!=2) or (x%3==2 and y%6!=4))][:10])
+    print('S divisible by 6 for p>7:',[(x,y) for x,y in a if x>7 and y%6==0][:10])
 
-for path in ['code/out/seq_sp_vec_10000000.txt','code/out/seq_sp_vec_2000000.txt','code/out/seq_sp_50000.txt']:
-    a=pairs(path); print(Path(path).name,'pairs',len(a),'first',a[:5],'last',a[-5:])
-    # S in first-appearance order is file order
-    S=[x[1] for x in a]; P=[x[0] for x in a]
-    print(' C_bad',[(p,s) for p,s in a if p>7 and s%6==0][:5])
-    print(' congr_bad',[(p,s) for p,s in a if p>3 and ((p%3==1 and s%6!=2) or (p%3==2 and s%6!=4))][:5])
+for f in ['code/out/seq_rn.txt','code/out/seq_gn.txt','code/out/seq_rn_50000.txt']:
+    a=ints(f)
+    print(f,'terms',len(a),'head',a[:12],'tail',a[-12:])
+    print('min,max',min(a),max(a),'gcd',__import__('math').gcd(*a))
+
+fail=[302,332,458,542,632,692,872,902,1544,1964,2522,2642,2834,4544,4952,6932,7442,9170,11114,11672,12224,13562,17072,22922,34082,34892,35912]
+print('Chen failures',len(fail),'all 2 mod 6',all(x%6==2 for x in fail),'gaps',[b-a for a,b in zip(fail,fail[1:])])

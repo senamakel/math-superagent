@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "chen-prime-goldbach-check-1e8",
+  "source": "code/lean/chen_prime_goldbach_check_1e8-d94e6118.lean",
+  "stage": "decompose"
+}

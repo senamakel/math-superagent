@@ -20,4 +20,26 @@ Theorem 1.1: a Jordan curve c : S¹ → R² admitting a continuous Legendrian li
 
 What would suffice:
 What the run says would suffice:
+[reducer failed: tool error: agent `reducer` failed: graph error: model error: local-router returned HTTP 403: <html>
+<head><title>403 Forbidden</title></head>
+<body>
+<center><h1>403 Forbidden</h1></center>
+</body>
+</html>
+]
+
+[reducer failed: tool error: agent `reducer` failed: graph error: model error: local-router returned HTTP 403: <html>
+<head><title>403 Forbidden</title></head>
+<body>
+<center><h1>403 Forbidden</h1></center>
+</body>
+</html>
+]
+
+Open gaps, read from the ledger:
+-…
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
 [reducer failed: tool error: agent `reducer` failed: graph error: model error: local-router returned HTTP 400 (request_rejected): Provider returned 400: {"error":{"message":"Provider returned error","code":400,"metadata":{"raw":"{\"message\":\"Expected dict in tool call arguments, got <class 'str'>\",\"type\":\"Bad Request\",\"c. Unusual bug? Email support@surplusintelligence.ai with request id 01M0A4WY5P3TV6KGS53V1AZ55W and a description of what happened, or open a ticket in Discord:…

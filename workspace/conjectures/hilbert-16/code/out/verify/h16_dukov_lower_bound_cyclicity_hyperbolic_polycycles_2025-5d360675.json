@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "h16-dukov-lower-bound-cyclicity-hyperbolic-polycycles-2025",
   "source": "code/lean/h16_dukov_lower_bound_cyclicity_hyperbolic_polycycles_2025-5d360675.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

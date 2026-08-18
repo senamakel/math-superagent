@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "chen-prime-goldbach-all-even-1e9",
+  "source": "code/lean/chen_prime_goldbach_all_even_1e9-e369722b.lean",
+  "stage": "decompose"
+}

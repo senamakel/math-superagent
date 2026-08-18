@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "toeplitz-square-peg/G-nondegeneracy-bound-on-C",
   "source": "code/lean/toeplitz_square_peg_G_nondegeneracy_bound_on_C-eeae5287.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "sdw-2005-lambda-bounds",
+  "source": "code/lean/sdw_2005_lambda_bounds-2755abfd.lean",
+  "stage": "decompose"
+}

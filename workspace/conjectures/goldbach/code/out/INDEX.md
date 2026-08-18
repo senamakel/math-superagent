@@ -33,6 +33,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `extend_sp_vec_2000000.txt` | _(undescribed)_ |
 | `oracle-brute-worked-examples.md` | Captured output of the brute.py oracle run on the worked examples, verbatim, plus the checked claim block (status: checked) recording that all three problem.md examples matched and the hand-counted 4..50 table was reproduced, with the sympy cross-route result. |
 | `oracle_goldbach_cycle_2026-08-18.md` | Recorded output of the required small-instance Goldbach oracle and naive/fast cross-check. |
+| `oracle_goldbach_reference.md` | Recorded small-instance oracle specification, worked-example reproduction target, and chosen analytic-number-theory method. |
 | `run_refute_oracles.py` | _(undescribed)_ |
 | `seq_gn.txt` | Unlabeled numeric dump (998 lines) from an earlier run's exploration; no statement recorded, carries no established result. |
 | `seq_p_sorted.txt` | Unlabeled numeric dump (17 lines) from an earlier run's exploration; no statement recorded, carries no established result. |

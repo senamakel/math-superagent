@@ -106,22 +106,26 @@ export MATH_AGENT_LOCAL_GID=$(id -g)
 # needs the same credentials rule the launchers apply. See `scripts/dotenv`.
 . "$repository_root/scripts/dotenv"
 
-# ...and the same network rule, for the same reason. `compose.yaml` declares its
-# `memory` network as external and resolves it to
-# `${COGNEE_NETWORK:-cognee-local_default}`, so a `docker compose run` with the
-# variable unset demands a network nobody created. `run-agent` sets it — but
-# `exec`s only after this fetch, so on a problem whose memory stack has never
-# been up, the statement fetch died before the agent ever started:
+# ...and the same memory rule, for the same reason. `compose.yaml` declares its
+# `memory` network as external and requires `COGNEE_API_KEY`, so a
+# `docker compose run` with either unset fails before it starts a container:
 #
-#     network cognee-local_default declared as external, but could not be found
+#     network math-agent-shared_memory declared as external, but could not be found
 #
-# and `set -eu` took the launcher down with it. It went unnoticed because every
-# workspace that has run once already has its own stack. Resolving the network
-# here rather than skipping it keeps one answer to "which memory does this
-# problem use"; the stack is started seconds earlier than it otherwise would be.
+# and `set -eu` took the launcher down with it. `run-agent` resolves both — but
+# `exec`s only after this fetch, so on a box where the shared stack had never
+# been up, the statement fetch died before the agent ever started. It went
+# unnoticed because every box that has run once already has the stack.
+# Resolving here rather than skipping keeps one answer to "which memory does
+# this problem use"; the stack is started seconds earlier than it otherwise
+# would be.
 if [ -z "${COGNEE_NETWORK:-}" ]; then
     COGNEE_NETWORK=$("$repository_root/scripts/memory-up" "$workspace_subdir")
     export COGNEE_NETWORK
+fi
+if [ -z "${COGNEE_API_KEY:-}" ]; then
+    COGNEE_API_KEY=$("$repository_root/scripts/memory-up" --key "$workspace_subdir")
+    export COGNEE_API_KEY
 fi
 
 docker compose run --rm --no-deps --entrypoint /bin/sh agent -c '

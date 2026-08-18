@@ -1,49 +1,64 @@
-# The shared backbone: one Neo4j Enterprise instance and one LLM router,
-# reused by every problem. Brought up once and left running (`restart:
+# The shared backbone: one Neo4j Enterprise instance, one Cognee, one LLM
+# router, reused by every problem. Brought up once and left running (`restart:
 # unless-stopped`) — not torn down between runs, not owned by any one problem.
 #
 #   scripts/shared-up            # start or reconcile; waits for health
-#   scripts/shared-up --down     # stop it (the volume survives)
+#   scripts/shared-up --down     # stop it (the volumes survive)
 #
 # `scripts/memory-up` calls `scripts/shared-up` itself, and `./agent` calls
 # `scripts/memory-up`, so an ordinary `./conjecture <slug>` brings the whole
 # thing up in order without anyone naming this file.
 #
-# # What is shared and what is not
+# # One Cognee, one tenant per problem
 #
-# Shared: the graph store and the router. Per problem: a Cognee container
-# (`compose.memory.yaml`) and the harness itself (`compose.yaml`). That split
-# is the point, and it is where the two failures this repository measured live:
+# This used to run one Cognee container per problem, each pointed at its own
+# pre-created Neo4j database. A dozen problems meant a dozen Python servers,
+# a dozen embedding models resident in RAM, and a `mem_limit` per problem that
+# decided whether the tenth stack fit on the box. The isolation that shape
+# bought is now Cognee's own, and one process serves every problem:
 #
-# - **Contention** was measured against one shared *Cognee* process fielding
-#   every problem's requests — four concurrent runs produced a `409 Conflict`
-#   on a `recall_memory` that had already hung the full ten-minute tool
-#   ceiling. Cognee stays per-problem, so that shape does not come back. Neo4j
-#   and the router are request-per-connection services with no such serialising
-#   layer, and the router was already shared by every run on the box.
-# - **Leakage** was a Cognee application-layer bug: asking its search API for
-#   one project's dataset by name returned another project's chunk regardless,
-#   because the dataset field was silently unenforced (`docs/memory.md`,
-#   `src/orchestrator/vector_store.rs`). That bug lived in query-time
-#   filtering. Isolation here does not depend on it: each problem's Cognee is
-#   statically pointed at its own pre-created Neo4j database
-#   (`GRAPH_DATABASE_NAME` in `compose.memory.yaml`), and a Neo4j driver
-#   session is bound to one named database at the Bolt protocol level. Probed
-#   live, a container pointed at `pe1` got `[]` back from `SHOW DATABASES` run
-#   inside its own session, and a literal Cypher `MATCH` naming another
-#   problem's sentinel came back empty — it cannot enumerate another problem's
-#   database, let alone query it, whatever Cognee's own scoping code does.
+# - **`ENABLE_BACKEND_ACCESS_CONTROL=true`** makes each problem a Cognee
+#   *user* — its tenant — reached with an `X-Api-Key` header
+#   (`scripts/memory-up` provisions one per workspace). Every dataset belongs
+#   to the user that created it, and the server refuses a request for anybody
+#   else's: probed live, one tenant asking for another's dataset by name got
+#   `404 DatasetNotFoundError`, and an unauthenticated request got `401`.
+# - **The graph is still one database per problem**, and Cognee now creates it
+#   rather than `scripts/memory-up`: with the `neo4j` dataset-database handler
+#   (selected automatically for the `neo4j` provider) each dataset gets its own
+#   Neo4j database, named `cognee<dataset-uuid-hex>`, created and brought
+#   online on first ingest. The Bolt-level isolation the previous shape relied
+#   on is unchanged — a driver session is bound to one named database — but
+#   nothing outside Cognee has to know the name.
+# - **The vector store is per dataset too** (`lancedb`, the default handler),
+#   so one problem's embeddings live in their own table directory.
+#
+# The runtime therefore writes and reads exactly one dataset per problem, with
+# the four stores — brain, sessions, library, scratch — separated by
+# `node_set`, which is the scoping this repository has measured as actually
+# enforced (`docs/memory.md`). One dataset per problem is also what keeps the
+# knowledge graph *connected*: a dataset is a graph database, so splitting the
+# four stores across four datasets would put a source and the session that read
+# it in different graphs, and the entity linking between them — the reason a
+# graph store is worth its cost — would have nothing to link across.
+#
+# # What this costs, and the failure to watch for
+#
+# The failure this shape reintroduces is **contention**, and it is the one that
+# broke the last shared Cognee: four concurrent runs against a single server
+# produced a `409 Conflict` on a `recall_memory` that had already hung the full
+# ten-minute tool ceiling. Two things are different now and neither is a proof:
+# Cognee serialises per *dataset* rather than globally (`dataset_queue`), and
+# the server is three minor versions on. Treat a hung or conflicting recall
+# under load as this failure returning — `config/trace.jsonl` counts it — and
+# `docs/memory.md` records what to measure before concluding otherwise.
 #
 # Multiple databases need Neo4j **Enterprise**: Community cannot create one at
 # all (`Local Neo4j multi-user mode requires a Neo4j deployment that supports
 # CREATE/DROP DATABASE`, measured directly against the Community image).
 # `NEO4J_ACCEPT_LICENSE_AGREEMENT=yes` accepts the licence for this deployment;
 # the commercial agreement behind it is handled outside this repository.
-#
-# No Cognee auth or multi-tenant machinery is involved — `REQUIRE_AUTHENTICATION`
-# and `ENABLE_BACKEND_ACCESS_CONTROL` both stay false, so every call
-# `src/orchestrator/vector.rs` sends is exactly as unauthenticated as before and
-# no Rust change was needed for any of this.
+
 networks:
   # Cognee reaches `neo4j:7687` here. Internal: the graph store has no reason
   # to be routable, and nothing on this network needs egress.
@@ -52,13 +67,30 @@ networks:
     internal: true
   # The agent and every problem's Cognee reach `ladder:6969` here. Internal and
   # gatewayless on purpose: joining it must not hand a calibration run a route
-  # out. `compose.yaml` and `compose.memory.yaml` join it by name.
+  # out. `compose.yaml` joins it by name.
   router:
     name: ${LADDER_NETWORK:-math-agent-shared_router}
     internal: true
   # The ladder alone needs provider egress. Keeping this attachment off every
   # other service is what preserves the calibration network boundary.
   ladder-egress:
+    driver: bridge
+  # Every run reaches `cognee:8000` here, and this is the only network the
+  # agent has that carries a service it talks to. Internal and gatewayless, as
+  # `router` is and for the same reason: joining it must never be how a run
+  # gets a route out. That is what makes a calibration run's isolation a
+  # property of the shared stack rather than of an overlay somebody has to
+  # remember to pass — `compose.yaml` gives an ordinary run its egress as a
+  # separate attachment, and `compose.eval.yaml` takes that one away.
+  memory:
+    name: ${MEMORY_NETWORK:-math-agent-shared_memory}
+    internal: true
+  # Cognee's own way out, and nothing else is on it. Its model calls go through
+  # the ladder on the internal `router` network and need nothing from this, but
+  # the embedding provider fetches its model from Hugging Face on a cold
+  # volume, so removing this turns a fresh stack into a startup failure rather
+  # than a tighter boundary.
+  cognee-egress:
     driver: bridge
   # Neo4j's published ports, for reading the graph from a browser or Neo4j
   # Desktop on this box. A container attached only to an `internal` network
@@ -95,11 +127,24 @@ services:
       timeout: 5s
       retries: 30
       start_period: 20s
-    mem_limit: 8g
+    # One instance holding every problem's graph, so the ceiling is the box's
+    # rather than one problem's. 1g is reserved — the floor the scheduler keeps
+    # for it while it is idle, which is what stops a busy run from starving the
+    # store every other run reads through — and 16g is the ceiling, above the
+    # 4g heap and 2g page cache configured above with room for the query load
+    # a dozen live databases put on it.
+    mem_reservation: 1g
+    mem_limit: ${NEO4J_MEM_LIMIT:-16g}
+    # See the note on `cognee` below: the two shared services are sized
+    # together, and the weight is the half that does the work.
+    cpus: ${NEO4J_CPUS:-4}
+    cpu_shares: 2048
     # 7474 is the Neo4j Browser, 7687 is Bolt for Neo4j Desktop or
     # `cypher-shell`. Log in as `neo4j` / `cognee-local` and pick a problem's
     # database from the selector — one database per problem, named
-    # `p<workspace-slug>`.
+    # `cognee<dataset-uuid-hex>` and created by Cognee itself. The mapping from
+    # a workspace to its database is Cognee's dataset table, not a name you can
+    # read off the slug: `scripts/memory-inventory <label>` prints it.
     #
     # `NEO4J_BIND_ADDRESS` defaults to the loopback interface, so out of the
     # box this is reachable from a browser on this box and from nowhere else.
@@ -171,5 +216,134 @@ services:
       router:
         priority: 10
 
+  cognee:
+    image: cognee/cognee:1.4.2
+    restart: unless-stopped
+    environment:
+      LLM_PROVIDER: custom
+      # litellm (Cognee's LLM client) requires a provider prefix on the model
+      # string even against a custom OpenAI-compatible endpoint — bare `flash`
+      # raises `BadRequestError: LLM Provider NOT provided` on every call,
+      # which the health check then reports as a flat 30s timeout since each
+      # attempt fails instantly and litellm's own retry/backoff eats the
+      # budget. `openai/` is litellm's convention for "treat this as an
+      # OpenAI-compatible endpoint"; the ladder is the actual routing, and
+      # `flash` is the router's ordinary-role ladder — the same tier
+      # `MATH_AGENT_MODEL` defaults to for every non-reasoning role.
+      LLM_MODEL: openai/flash
+      # The ladder's key, not a provider's: `LLM_ENDPOINT` below is the router,
+      # and the router holds the upstream credentials. Handing Cognee an
+      # OpenRouter key here reaches the ladder as a bearer token it does not
+      # recognise, and every ingest fails `409 AuthenticationError` — measured,
+      # while `/health/detailed` reported the model endpoint healthy.
+      # `OPENROUTER_MEMORY_API_KEY` is the memory's own upstream budget and it
+      # reaches the ladder through the ladder's `env_file`, which is where a
+      # provider credential belongs.
+      LLM_API_KEY: ${MATH_AGENT_API_KEY}
+      LLM_ENDPOINT: http://ladder:6969/v1
+      LLM_ARGS: '{"max_tokens":8192}'
+      EMBEDDING_PROVIDER: fastembed
+      EMBEDDING_MODEL: BAAI/bge-small-en-v1.5
+      EMBEDDING_DIMENSIONS: 384
+      HUGGINGFACE_TOKENIZER: BAAI/bge-small-en-v1.5
+      GRAPH_DATABASE_PROVIDER: neo4j
+      GRAPH_DATABASE_URL: bolt://neo4j:7687
+      GRAPH_DATABASE_USERNAME: neo4j
+      GRAPH_DATABASE_PASSWORD: cognee-local
+      # No `GRAPH_DATABASE_NAME`. Under access control the graph database is
+      # per dataset and Cognee creates it — `CREATE DATABASE cognee<hex> IF NOT
+      # EXISTS` against the shared instance, then waits for it to come online
+      # before the first ingest touches it. A name set here would be the
+      # single-tenant default database and would mean every problem sharing one
+      # graph, which is the mistake this deployment must not make.
+      VECTOR_DB_PROVIDER: lancedb
+      # The two switches that make this one server multi-tenant. Access control
+      # is what scopes a dataset to the user that created it — and what makes
+      # Cognee honour the `datasets` field at all, which in single-user mode it
+      # documents as unenforced and this repository measured leaking
+      # (`docs/memory.md`). Authentication is not independent of it: multi-user
+      # mode requires a user, and Cognee forces authentication on and logs a
+      # warning if these two disagree. Set explicitly rather than left to the
+      # image's default, because the default is a property of the image tag and
+      # this is a property of the deployment.
+      ENABLE_BACKEND_ACCESS_CONTROL: "true"
+      REQUIRE_AUTHENTICATION: "true"
+      # Keep a tenant's key readable back off the server. `scripts/memory-up`
+      # is idempotent because it can list an existing key and hand the same one
+      # to the next run; hashed, it could only ever mint another, and a
+      # workspace continued ten times would own ten keys. The key is a local
+      # credential for a server with no published port, on the same footing as
+      # `NEO4J_AUTH` above.
+      HASH_API_KEY: "false"
+      # Lets `/api/v1/add` take a URL as well as an uploaded file, so a source
+      # can be handed over by reference. Note what it grants: the *server* then
+      # performs the fetch, from inside this network, where the runtime
+      # container's own egress rules do not apply. Nothing here publishes a
+      # host port, which is what kept that fetch off-box before and still does.
+      ALLOW_HTTP_REQUESTS: "true"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8000/health"]
+      interval: 10s
+      # 20s, not 5s. A healthy server under load fails a five-second probe —
+      # the health log read `Health check exceeded timeout (5s)` three times
+      # over while the server's own log showed it coming up normally. A probe
+      # that times out under load reports the wrong thing about the service.
+      timeout: 20s
+      retries: 30
+      start_period: 30s
+    # One process for every problem on the box, so this is the whole memory
+    # budget rather than one problem's share of it. The per-problem shape it
+    # replaces was capped at 2g each and measured between 0.6g and a problem
+    # pinned at 3.96g of its 4g during cognify — a dozen of those reserved 24g
+    # of ceiling for what is now one server.
+    #
+    # 1g reserved and 16g capped, matching Neo4j: the pair are the shared half
+    # of the box and are sized together. The reservation matters more here than
+    # the ceiling does — ingest is bursty and the server is idle between a
+    # run's turns, so without a floor it is exactly the process a busy
+    # neighbour squeezes, and the symptom is every problem's recall slowing at
+    # once. A repeated OOM kill here is a finding about the ingest — it now
+    # stops *every* problem's memory rather than one, so read
+    # `docker events --filter event=oom` before raising it.
+    mem_reservation: 1g
+    mem_limit: ${COGNEE_MEM_LIMIT:-16g}
+    # Four of the box's cores, and twice the default scheduling weight.
+    #
+    # The weight is the half that matters, because nothing else here is CPU
+    # bounded: a dozen run containers are unlimited, so on a busy box the
+    # shared services compete against them at equal priority and lose by
+    # sheer number. `cpu_shares` is a *relative* weight applied only under
+    # contention — 2048 against the default 1024 means that when every core is
+    # wanted, Cognee and Neo4j get twice the slice one run container does, and
+    # when the box is idle it changes nothing.
+    #
+    # `cpus` is the ceiling on top of that. Ingest is the CPU-hungry part —
+    # fastembed embeds on the CPU here, and chunking and entity extraction run
+    # per document — and one problem cognifying a large source should not be
+    # able to take the box from every other problem's recall. Four leaves ten
+    # for the runs.
+    cpus: ${COGNEE_CPUS:-4}
+    cpu_shares: 2048
+    networks:
+      - memory
+      - graph
+      - router
+      - cognee-egress
+    volumes:
+      - cognee-system:/app/cognee/.cognee_system
+      - cognee-data:/app/cognee/.data_storage
+      # A bind-mount over a vendored prompt, ranked below the env keys because
+      # there is no environment variable for a prompt template. Cognee's own
+      # `summarize_content` prompt tells the model to "Output two sections
+      # only" as free text, while `instructor` wraps the same call in a
+      # JSON-schema tool call for `{summary, description}`. The model's visible
+      # reasoning on a failed chunk showed it noticing the contradiction and
+      # guessing at how to reconcile the two — sometimes emitting `{}`, once a
+      # JSON key with a stray leading quote. The corrected copy says once,
+      # explicitly, that `summary` is the one string to fill.
+      - ./cognee-overrides/summarize_content.txt:/app/cognee/infrastructure/llm/prompts/summarize_content.txt:ro
+
 volumes:
   neo4j-data:
+  cognee-system:
+  cognee-data:

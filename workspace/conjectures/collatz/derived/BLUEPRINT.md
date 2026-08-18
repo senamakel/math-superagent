@@ -10,6 +10,10 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
+- `collatz-conjecture/G-no-divergent-orbit` (lemma) — Every positive integer has a bounded accelerated Collatz orbit; more strongly, for every n there exists k with T^k(n) < n (or an equivalent…
+  - open `research/backward/collatz-conjecture.md`
+- `collatz-conjecture/G-no-nontrivial-cycle` (lemma) — The accelerated Collatz map T(n)=n/2 for even n and (3n+1)/2 for odd n has no positive-integer cycle other than the trivial cycle;…
+  - open `research/backward/collatz-conjecture.md`
 - `no-nontrivial-cycle/G-min-element-lower` (lemma) — For every non-trivial m-cycle, the quantity S := sum_{i=1}^{m} T(n_i) (the Hercher sum of reciprocal-orbit terms over the local minima)…
   - open `research/backward/no-nontrivial-cycle.md`
 
@@ -18,10 +22,10 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
 - `hercher-m92` — 2 node(s) rest on it, and the run is already building on it — There is no Collatz m-cycle with m ≤ 91 local minima; any non-trivial cycle has at least m = 92 local minima (Main Theorem 23).
+- `collatz-conjecture/G-cycle-structural-termination` — 1 node(s) rest on it, and the run is already building on it — If every positive T-orbit is bounded and T has no non-trivial positive cycle, then every positive orbit reaches the trivial cycle and hence…
 - `crandall-finite-cycles` — 1 node(s) rest on it, and the run is already building on it — For any given period k there are finitely many cyclic trajectories of the 3x+1 map with period k (Corollary 7.2), via continued-fraction…
-- `hercher-K-1p375e11` — 1 node(s) rest on it, and the run is already building on it — If all Collatz sequences of integers ≤ 3×2^69 = 1536×2^60 enter the trivial cycle, then every non-trivial cycle contains at least K >…
 
-_83 further candidate(s) below these, in the table._
+_86 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -38,6 +42,10 @@ _83 further candidate(s) below these, in the table._
 | `brox-finite-cycles-few-descents` | claim | established | — | There are only finitely many Collatz cycles Γ with δ(Γ) < 2 log\|Γ\|, where δ(Γ) is the number of descending elements (odd x with 2-adic… |
 | `brox-finitely-many-cycles` | claim | **ready** | — | Brox (2000) proved there are finitely many cycles with σ_1 < 2 log(σ_1 + σ_3), where σ_i = number of terms in a cycle congruent to i mod 4. |
 | `chamberland-cycle-sum` | claim | **ready** | — | For any cycle Ω of the accelerated map T, Σ_{x∈Ω_even} x = Σ_{x∈Ω_odd} x + \|Ω_odd\| (rearranging Σ_{x∈Ω} x = Σ_{x∈Ω} T(x)). (Chamberland… |
+| `collatz-conjecture` | goal | blocked | `collatz-conjecture/G-cycle-structural-termination`, `collatz-conjecture/G-no-divergent-orbit`, `collatz-conjecture/G-no-nontrivial-cycle`, `lagarias-counterexample-structure`, `lagarias-map-reduction` | For every positive integer n, iterating C(n)=n/2 when n is even and C(n)=3n+1 when n is odd eventually reaches 1 (equivalently, the… |
+| `collatz-conjecture/G-cycle-structural-termination` | lemma | established | — | If every positive T-orbit is bounded and T has no non-trivial positive cycle, then every positive orbit reaches the trivial cycle and hence… |
+| `collatz-conjecture/G-no-divergent-orbit` | lemma | **ready** | — | Every positive integer has a bounded accelerated Collatz orbit; more strongly, for every n there exists k with T^k(n) < n (or an equivalent… |
+| `collatz-conjecture/G-no-nontrivial-cycle` | lemma | **ready** | — | The accelerated Collatz map T(n)=n/2 for even n and (3n+1)/2 for odd n has no positive-integer cycle other than the trivial cycle;… |
 | `collision-deficit-grows-with-m` | claim | established | — | Over m = 92..200, deficit = log10(3*log2) + 8.616*log10(m) - log10(H(m)) grows strictly with m: min -2.6519 at m=92, max +1.4734 at m=200… |
 | `conway-1972-unsolvable` | claim | **ready** | — | Conway (1972) exhibited an unsolvable iteration problem for a particular generalized 3x+1 function: deciding whether some iterate of the… |
 | `crandall-conjecture-H` | claim | **ready** | — | Crandall's Conjecture (3.1): H(x) ~ 2 log x / log(16/9) for the maximum height reached by x under iteration; if true it implies the main… |
@@ -63,12 +71,8 @@ _83 further candidate(s) below these, in the table._
 | `hercher-K-1p375e11` | claim | established | — | If all Collatz sequences of integers ≤ 3×2^69 = 1536×2^60 enter the trivial cycle, then every non-trivial cycle contains at least K >… |
 | `hercher-K-7p76e19` | claim | established | — | Corollary 24 (Table 1): if there is an m-cycle with m ≤ 98, it consists of at least K ≥ 7.76×10^19 odd members. |
 | `hercher-m92` | claim | established | — | There is no Collatz m-cycle with m ≤ 91 local minima; any non-trivial cycle has at least m = 92 local minima (Main Theorem 23). |
-| `hercher-m92-cited-axiom` | claim | established | — | Cited.no_m_cycle_le_91 — for every non-trivial accelerated Collatz cycle Ω and every m with localMinimaCount Ω = m, ¬ m ≤ 91. |
-| `hercher-table-K-bounds-m-92-200` | claim | established | — | The published Hercher Corollary 24 Table 1 (JIS 2023, lines 1190-1210) gives exact K lower bounds: m<=98: K > 7.76e19; m<=117: K > 2.74e19;… |
-| `kl-5x1-divergence-conjecture` | claim | **ready** | — | For the 5x+1 map it is conjectured that a density-one set of integers lie on divergent trajectories, with finitely many periodic orbits… |
-| `kl-kontorovich-sinai-gbm` | claim | **ready** | — | Suitably scaled initial trajectories of the accelerated Collatz iteration converge in a limit to geometric Brownian motion… |
 
-_48 further nodes not shown._
+_52 further nodes not shown._
 
 ## Resting on nothing that exists
 

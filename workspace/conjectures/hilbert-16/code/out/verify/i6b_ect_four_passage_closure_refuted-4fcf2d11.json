@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "i6b-ect-four-passage-closure-refuted",
   "source": "code/lean/i6b_ect_four_passage_closure_refuted-4fcf2d11.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "h16-dulac-finiteness-theorem",
+  "source": "code/lean/h16_dulac_finiteness_theorem-7a190afa.lean",
+  "stage": "decompose"
+}

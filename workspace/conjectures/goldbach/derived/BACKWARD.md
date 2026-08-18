@@ -8,28 +8,15 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 
 | Skeleton | Goal | Reduces to | Status | Open gaps |
 | --- | --- | --- | --- | --- |
-| [[full-goldbach-via-exceptional-set]] | Every even integer n > 2 is the sum of two primes (binary Goldbach). | r(n) > 0 for all even n > 2. The proof runs by contradiction: let n_0 be the least even counterexample. - Lemma C (finite verification) gives n_0 > 4·10^18. -… | sketched | 1 |
+| [[full-goldbach-via-exceptional-set]] | If every sufficiently large even integer is a sum of two primes and all even integers up to 4·10^18 are verified, then every even integer n > 2 is a sum of two… | Combine G-exceptional-density with G-verification-bound and G-structural-closure: a least counterexample would force E(X) ≥ cX for all sufficiently large X,… | live | 1 |
 
 ## The open gaps — each one is a task
 
 Prove any of these and the skeleton it belongs to moves. Pick the one with a first step.
 
-- [[full-goldbach-via-exceptional-set]] `G-structural-closure` — If n_0 is the least even integer not representable as a sum of two primes, then the set of counterexamples has positive lower asymptotic density. More precisely, E(X) ≫ X for all sufficiently large X. Equivalently: the exceptional set is either empty or has positive lower asymptotic density.
-  - next: The first move is to find a concrete operation on counterexamples that generates new counterexamples with positive density.  Candidate approaches: (a) Show that if n is a counterexample then n·p is also a counterexample for all sufficiently large primes p (or for a positive-density set of p). This would follow if, for every prime q, the condition "n − q is prime" implies "np − q is prime" for some large class of p — which is a statement about the distribution of primes in arithmetic progressions. (b) Show that the set of counterexamples is closed under translation by a multiple of a fixed…
+- [[full-goldbach-via-exceptional-set]] `G-structural-closure` — If a least even counterexample exists, then the exceptional set of binary Goldbach numbers has positive lower asymptotic density: there is c > 0 such that E(X) ≥ cX for all sufficiently large X.
+  - next: Prove or refute the claimed density-generating closure from least-counterexample minimality; specifically identify an operation preserving failure that produces linearly many distinct even exceptions, and check the claim against the known obstruction that primality of summands is not preserved under translation or multiplication.
   - _no thread — nothing is attacking this_
-
-## Gaps already discharged
-
-Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
-
-- [[full-goldbach-via-exceptional-set]] `G-exceptional-density` — There exists an absolute δ > 0 such that the number E(X) of even integers n ≤ X not representable as a sum of two primes satisfies E(X) ≪ X^{1−δ} for all sufficiently large X. The best known unconditional δ = 1/3 is sufficient for this skeleton. (closed by Pintz (2004, announced); δ = 1/3.  Recorded in Kumchev–Tolev survey §1 eq. (1.6) and the Pintz (2018) preprint, lines 40–76 of the source. The δ = 1/3 exponent is attributed to Pintz's announcement in June 2004; the next best published value is δ = 0.086 (Li 2000) and the most recent published is δ = 0.28 (Zhao 2025, E(X) = O(X^{7/10})).  Discharged as sourced from the literature; not independently verified by this run.)
-- [[full-goldbach-via-exceptional-set]] `G-verification-bound` — Every even integer n with 4 ≤ n ≤ 4·10^18 is the sum of two primes. (closed by Oliveira e Silva, Herzog, and Pardi (2014).  Verified on the project page at sweet.ua.pt/tos/goldbach.html; all even n up to 4·10^18 checked, and double-checked up to 4·10^17.  About 781.8 CPU-years of computation.  The method is a segmented sieve of Eratosthenes plus Goldbach-partition search.)
-
-## Resting on nothing recorded
-
-A reduction taking an unrecorded belief as input proves the goal from something nobody downstream can check. Either write the claim, or the id is misspelled.
-
-- [[full-goldbach-via-exceptional-set]] rests on `speculation`, `that`, `the`, `exceptional`, `set`, `can`, `be`, `shown`, `to`, `be`, `closed`, `under`, `a`, `density-generating`, `this`, `is`, `the`, `core`, `open`, `gap.`, which no claim block on disk establishes
 
 ## Skeletons that could not be read
 

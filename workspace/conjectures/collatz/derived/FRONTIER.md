@@ -8,17 +8,24 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | --- | --- | --- | --- |
 | 5 | https://doi.org/10.1017/fmp.2022.8 | Almost all orbits of the Collatz map attain almost bounded values | cites Convergence verification of the Collatz problem (2022, cited 144 times) |
 | 5 | https://submission.nature.com/new-submission/11227/3 | Submit manuscript | article [Download PDF][2] [Save article][3] [View saved research][4] [The Journal of Supercomputing][5] [Aims and scope][6] [Submit manuscript][7] Improved verification limit for the convergence of… |
+| 4 | https://openalex.org/W2076882011 | — | linked from Theoretical and computational bounds for m-cycles of the 3n+1-problem |
+| 4 | https://openalex.org/W2908191471 | — | linked from Theoretical and computational bounds for m-cycles of the 3n+1-problem |
+| 4 | https://openalex.org/W2013547425 | — | linked from Almost all orbits of the Collatz map attain almost bounded values |
 | 4 | https://doi.org/10.1214/aoap/1177005779 | https://doi.org/10.1214/aoap/1177005779 | [Google Scholar][84] 13. Lagarias JC, Weiss A (1992) The \(3x + 1\) problem: two stochastic models. Annals Appl Probab 2(1):229–261. [https://doi.org/10.1214/aoap/1177005779][85] [Article][86]… |
 | 4 | https://doi.org/10.1016%2F0898-1221%2892%2990034-F | Article | GT, Vermeulen M (1992) 3x+1 Search programs. Comput Math Appl 24(11):79–99. [https://doi.org/10.1016/0898-1221(92)90034-F][71] [Article][72] [MathSciNet][73] [MATH][74] [Google Scholar][75] 7.… |
 | 3 | https://doi.org/10.1007/978-3-031-74498-3_30 | Generating the Convergence Stairs of the Collatz Program | cites The 3x+1 problem: new lower bounds on nontrivial cycle lengths (2024, cited 1 times) |
 | 3 | https://doi.org/10.1016%2F0012-365X%2893%2990052-U | "The 3 x + 1 problem: new lower bounds on nontrivial cycle lengths" | **82**(1): 19– 22. [doi][123]: [10.1090/S0002-9939-1981-0603593-2][160]. [JSTOR][125] [2044308][162]. 14. 1 2 Eliahou, Shalom (1993). **["The 3 x + 1 problem: new lower bounds on nontrivial cycle… |
-| 3 | https://openalex.org/W2076882011 | — | linked from Theoretical and computational bounds for m-cycles of the 3n+1-problem |
-| 3 | https://openalex.org/W2908191471 | — | linked from Theoretical and computational bounds for m-cycles of the 3n+1-problem |
+| 3 | https://openalex.org/W4246319563 | — | linked from Theoretical and computational bounds for m-cycles of the 3n+1-problem |
+| 3 | https://openalex.org/W43767022 | — | linked from Theoretical and computational bounds for m-cycles of the 3n+1-problem |
 | 3 | https://link.springer.com/content/pdf/10.1007/s11227-025-07337-0.pdf | "Improved verification limit for the convergence of the Collatz conjecture" | on 27 March 2023. Retrieved 14 March 2020. (Note: "Delay records" are total stopping time records.) 12. 1 2 Barina, David (2025). ["Improved verification limit for the convergence of the Collatz… |
+| 3 | https://openalex.org/W3038600788 | — | linked from Improved verification limit for the convergence of the Collatz conjecture |
 | 3 | https://www.fit.vut.cz/research/result/c197809/.cs | Improved verification limit for the convergence of the Collatz conjecture | resembles https://link.springer.com/article/10.1007/s11227-025-07337-0 |
 | 3 | http://matwbn.icm.edu.pl/ksiazki/aa/aa30/aa3034.pdf | "A stopping time problem on the positive integers" | URL status unknown ( [link][169]) 16. ↑ Lagarias (1985), [2] section " [A heuristic argument"][170]. 17. 1 2 Terras, Riho (1976). ["A stopping time problem on the positive integers"][171] (PDF).… |
 | 3 | http://www.ams.org/mathscinet-getitem?mr=1613719 | MathSciNet | problem: computational results. Math Comput 68(225):371–384. [https://doi.org/10.1090/S0025-5718-99-01031-5][77] [Article][78] [MathSciNet][79] [MATH][80] [Google Scholar][81] 12. Hercher C (2023)… |
 | 3 | https://doi.org/10.1090%2FS0025-5718-99-01031-5 | Article | for the \(3x+1\) problem: computational results. Math Comput 68(225):371–384. [https://doi.org/10.1090/S0025-5718-99-01031-5][77] [Article][78] [MathSciNet][79] [MATH][80] [Google Scholar][81] 12.… |
+| 3 | https://openalex.org/W2093458350 | — | linked from Almost all orbits of the Collatz map attain almost bounded values |
+| 3 | https://openalex.org/W2132253312 | — | linked from Almost all orbits of the Collatz map attain almost bounded values |
+| 3 | https://openalex.org/W2151214850 | — | linked from Almost all orbits of the Collatz map attain almost bounded values |
 | 3 | https://doi.org/10.1090/S0025-5718-99-01031-5 | https://doi.org/10.1090/S0025-5718-99-01031-5 | (1999) Maximum excursion and stopping time record-holders for the \(3x+1\) problem: computational results. Math Comput 68(225):371–384. [https://doi.org/10.1090/S0025-5718-99-01031-5][77]… |
 | 3 | https://doi.org/10.21203/rs.3.rs-3845558/v1 | Computational Verification of the Collatz Problem | resembles https://link.springer.com/article/10.1007/s11227-025-07337-0 |
 | 3 | https://www.researchsquare.com/article/rs-3845558/v1 | Computational Verification of the Collatz Problem | resembles https://link.springer.com/article/10.1007/s11227-025-07337-0 |
@@ -33,21 +40,14 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 3 | https://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=search&amp;term=David%20Barina | PubMed | Bozetechova 1/2, Brno, Czech Republic David Barina Authors 1. David Barina [View author publications][91] Search author on: [PubMed][92] [Google Scholar][93] ### Corresponding author Correspondence… |
 | 3 | http://www.emis.de/MATH-item?0742.60027 | MATH | two stochastic models. Annals Appl Probab 2(1):229–261. [https://doi.org/10.1214/aoap/1177005779][85] [Article][86] [MathSciNet][87] [MATH][88] [Google Scholar][89] [Download references][90] ##… |
 | 3 | https://link.springer.com/product/springer-plus | View plans | chapters or articles per month - Access and download chapters and articles from more than 300k books and 2,500 journals - Cancel anytime [View plans][5] ## Buy Now Chapter EUR 29.95 Price includes… |
+| 2 | https://www.arxiv.org/pdf/math/0309224v8 | 1Terminology | found researching: Survey the authoritative literature on the Collatz conjecture as of 2026, focusing on exact current computational verification bounds, nontrivial-cycle exclusio… |
 | 2 | https://doi.org/10.1090/s0025-5718-99-01031-5 | Maximum excursion and stopping time record-holders for the problem: Computational results | cites The 3x+1 problem: new lower bounds on nontrivial cycle lengths (1999, cited 49 times) |
 | 2 | http://www.ams.org/mathscinet-getitem?mr=1230053 | MathSciNet | 4. S. Eliahou, *The*3x+1 *problem: new lower bounds on nontrivial cycle lengths*, Discrete Math. 11 (1993), 45–56. [Article][21] [MathSciNet][22] [MATH][23] [Google Scholar][24] 5. C. J. Everett,… |
 | 2 | https://doi.org/10.1090/proc/16627 | Linear dynamics of an operator associated to the Collatz map | cites The 3x+1 problem: new lower bounds on nontrivial cycle lengths (2023, cited 1 times) |
 | 2 | https://doi.org/10.1007/978-3-031-65064-2_18 | Increasing-Decreasing Patterns in the Iteration of an Arithmetic Function | cites The 3x+1 problem: new lower bounds on nontrivial cycle lengths (2025, cited 0 times) |
-| 2 | https://openalex.org/W4246319563 | — | linked from Theoretical and computational bounds for m-cycles of the 3n+1-problem |
-| 2 | https://openalex.org/W43767022 | — | linked from Theoretical and computational bounds for m-cycles of the 3n+1-problem |
 | 2 | https://openalex.org/W898122667 | — | linked from Theoretical and computational bounds for m-cycles of the 3n+1-problem |
-| 2 | https://doi.org/10.33187/jmsm.972781 | Boolean Hypercubes, Classification of Natural Numbers, and the Collatz Conjecture | cites Convergence verification of the Collatz problem (2022, cited 3 times) |
-| 2 | https://link.springer.com/ | — | linked from Improved verification limit for the convergence of the Collatz conjecture \| The Journal of Supercomputing \| Springer Nature Link |
-| 2 | https://link.springer.com/10.1007/978-3-319-93031-2_22 | — | linked from Improved verification limit for the convergence of the Collatz conjecture \| The Journal of Supercomputing \| Springer Nature Link |
-| 2 | https://link.springer.com/10.1007/s11227-020-03368-x | — | linked from Improved verification limit for the convergence of the Collatz conjecture \| The Journal of Supercomputing \| Springer Nature Link |
-| 2 | https://link.springer.com/10.1007/s40840-018-0632-y | — | linked from Improved verification limit for the convergence of the Collatz conjecture \| The Journal of Supercomputing \| Springer Nature Link |
-| 2 | https://link.springer.com/article/10.1007/s11227-025-07337-0#Sec10 | — | linked from Improved verification limit for the convergence of the Collatz conjecture \| The Journal of Supercomputing \| Springer Nature Link |
 
-_754 further candidates not shown; they are cited once each._
+_811 further candidates not shown; they are cited once each._
 
 ---
 

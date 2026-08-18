@@ -2,9 +2,10 @@
 
     use super::{
         CHUNK_SEARCH, DEFAULT_LIMIT, EXTENDED_GRAPH_SEARCH, GRAPH_SEARCH, IngestHealth, MAX_LIMIT,
-        SCOPE_SAFE_SEARCH_TYPES, UNSUPPORTED_TRIPLET_SEARCH, durable_node_sets, indexing_health,
-        library_node_set, limit_argument, limit_property, point_id, render_result,
-        scratch_node_set, session_node_set, slug, source_file_name, source_mime, visible_datasets,
+        PROJECT_DATASET_PREFIX, SCOPE_SAFE_SEARCH_TYPES, UNSUPPORTED_TRIPLET_SEARCH,
+        authenticated_client, durable_node_sets, indexing_health, library_node_set, limit_argument,
+        limit_property, point_id, render_result, scratch_node_set, session_node_set, slug,
+        source_file_name, source_mime,
     };
 
     #[test]
@@ -79,129 +80,50 @@
         assert!(opaque.contains("0.9"), "{opaque}");
     }
 
-    /// This project's library, named the way `VectorStore::from_env` names it.
-    const LIBRARY: &str = "math_agent_library__project_euler_903";
+    /// This project's dataset, named the way `VectorStore::from_env` names it.
+    fn project_dataset(project: &str) -> String {
+        format!("{PROJECT_DATASET_PREFIX}{project}")
+    }
 
     #[test]
-    fn session_recall_is_limited_to_the_current_project_run() {
-        let datasets = json!([
-            {"name": "math_agent_brain"},
-            {"name": LIBRARY},
-            {"name": "math_agent_sessions__project_euler_903__current"},
-            {"name": "math_agent_sessions__project_euler_904__other"}
-        ]);
+    fn a_project_owns_exactly_one_dataset() {
+        // Four datasets became one when the memory server became shared, and
+        // the reason is the server's storage model: under access control a
+        // dataset *is* a graph database, so a library and the sessions that
+        // read it would land in graphs with no edge possible between them.
+        // The four stores are separated by node set inside this one name.
         assert_eq!(
-            visible_datasets(
-                &datasets,
-                "math_agent_sessions__project_euler_903__current",
-                LIBRARY
-            ),
-            vec![
-                "math_agent_brain",
-                LIBRARY,
-                "math_agent_sessions__project_euler_903__current"
-            ]
+            project_dataset(&slug("project-euler/903")),
+            "math_agent__project_euler_903"
         );
         assert_eq!(slug("project-euler/903"), "project_euler_903");
         assert_eq!(slug("---"), "default");
     }
 
     #[test]
-    fn an_unrecognised_dataset_is_not_this_run_s_to_read() {
-        // A live server carried `project_euler_903_L0` — thirty-six sources an
-        // earlier build ingested — and the old denylist passed it, so every
-        // run on the box searched another problem's literature. Anything this
-        // runtime does not name belongs to another project or an older build.
-        let datasets = json!([
-            {"name": "math_agent_brain"},
-            {"name": "project_euler_903_L0"},
-            {"name": "math_agent_library__project_euler_763"},
-            {"name": "something_a_person_uploaded"},
-            {"name": "math_agent_library__project_euler_185"},
-            {"name": "math_agent_sessions__project_euler_185"}
-        ]);
-        assert_eq!(
-            visible_datasets(
-                &datasets,
-                "math_agent_sessions__project_euler_185",
-                "math_agent_library__project_euler_185"
-            ),
-            vec![
-                "math_agent_brain",
-                "math_agent_library__project_euler_185",
-                "math_agent_sessions__project_euler_185"
-            ]
-        );
-    }
-
-    #[test]
-    fn a_rerun_of_the_same_problem_reuses_its_dataset_and_reaches_earlier_runs() {
-        // The dataset used to carry the run id — nanoseconds and a pid — so
-        // every restart opened a new one and could see only itself. One problem
-        // restarted eight times left eight datasets, seven unreachable. The
-        // name is now the project, and the per-run datasets an older build
-        // stranded underneath it are readable again.
-        let ours = "math_agent_sessions__project_euler_185";
-        let datasets = json!([
-            {"name": "math_agent_brain"},
-            {"name": "math_agent_sessions__project_euler_185"},
-            {"name": "math_agent_sessions__project_euler_185__s18cb030630d9e2be-1"},
-            {"name": "math_agent_sessions__project_euler_185__s18cb0306ffffffff-9"},
-            {"name": "math_agent_sessions__project_euler_763"}
-        ]);
-        let visible = visible_datasets(&datasets, ours, "math_agent_library__project_euler_185");
-        assert!(visible.contains(&ours.to_string()));
-        assert!(visible.contains(&"math_agent_brain".to_string()));
-        assert!(
-            visible.contains(&format!("{ours}__s18cb030630d9e2be-1")),
-            "a run must reach the session memory of earlier runs on the same problem"
-        );
-        assert!(
-            !visible.contains(&"math_agent_sessions__project_euler_763".to_string()),
-            "another problem's session memory must stay out"
-        );
-    }
-
-    #[test]
-    fn provisional_work_never_reaches_durable_recall() {
-        // The scratch replaces SCRATCHPAD.md, and the file was withheld from
-        // reflection on purpose: unsettled arithmetic is not evidence of
-        // progress, and a loop that reads it as such keeps retrying. Durable
-        // recall must therefore not reach the scratch even for this project —
-        // `recall_scratch` is the only way in.
-        let ours = "math_agent_sessions__project_euler_185";
-        let datasets = json!([
-            {"name": "math_agent_brain"},
-            {"name": "math_agent_sessions__project_euler_185"},
-            {"name": "math_agent_scratch__project_euler_185"},
-            {"name": "math_agent_scratch__project_euler_763"}
-        ]);
-        let visible = visible_datasets(&datasets, ours, "math_agent_library__project_euler_185");
-        assert_eq!(
-            visible,
-            vec!["math_agent_brain", "math_agent_sessions__project_euler_185"]
-        );
-    }
-
-    #[test]
     fn a_shorter_project_name_does_not_swallow_a_longer_one() {
-        // `euler_18` is a prefix of `euler_185`, so the ownership test has to
-        // require the `__` separator or one problem reads another's memory.
-        let datasets = json!([
-            {"name": "math_agent_sessions__euler_18"},
-            {"name": "math_agent_sessions__euler_185"},
-            {"name": "math_agent_sessions__euler_18__s1-2"}
-        ]);
-        let visible = visible_datasets(
-            &datasets,
-            "math_agent_sessions__euler_18",
-            "math_agent_library__euler_18",
-        );
-        assert!(visible.contains(&"math_agent_sessions__euler_18".to_string()));
-        assert!(visible.contains(&"math_agent_sessions__euler_18__s1-2".to_string()));
+        // `euler_18` is a prefix of `euler_185`. Nothing tests a prefix any
+        // more — a tenant is shown its own datasets and no others, so the
+        // question is only whether two problems can be handed the same name.
+        assert_ne!(project_dataset("euler_18"), project_dataset("euler_185"));
+        assert_ne!(session_node_set("euler_18"), session_node_set("euler_185"));
+    }
+
+    #[test]
+    fn every_request_carries_the_tenant_key() {
+        // The boundary between one problem's memory and another's is this
+        // header: the server holds every problem's datasets and decides which
+        // tenant is asking. A client built without it would be answered `401`
+        // by a server that has the run's whole memory, which reads as a store
+        // that is simply empty.
+        assert!(authenticated_client("a-tenant-key").is_ok());
         assert!(
-            !visible.contains(&"math_agent_sessions__euler_185".to_string()),
-            "euler_18 must not read euler_185's memory"
+            authenticated_client("   ").is_err(),
+            "an empty key is a misconfiguration, not an anonymous run"
+        );
+        assert!(
+            authenticated_client("bad\nvalue").is_err(),
+            "a key that cannot be sent as a header must fail at construction"
         );
     }
 
@@ -219,9 +141,12 @@
 
     #[test]
     fn durable_recall_never_reaches_the_scratch() {
-        // The separation the three stores rest on. It used to hold because
-        // `visible_datasets` omitted the scratch dataset; the server does not
-        // apply the dataset filter, so it holds here or nowhere.
+        // The scratch replaces SCRATCHPAD.md, and the file was withheld from
+        // reflection on purpose: unsettled arithmetic is not evidence of
+        // progress, and a loop that reads it as such keeps retrying. It shares
+        // a dataset with everything else this project stores now, so the whole
+        // of the separation is the node set — `recall_scratch` names it, and
+        // `durable_node_sets` must not.
         let project = "project_euler_185";
         assert!(
             !durable_node_sets(project).contains(&scratch_node_set(project)),
@@ -242,11 +167,11 @@
     /// Every search type the runtime can ask for is one the server will
     /// actually scope.
     ///
-    /// `node_name` is the only filter this deployment applies — dataset
-    /// filtering needs `ENABLE_BACKEND_ACCESS_CONTROL`, which the memory
-    /// compose file turns off — so a retriever that ignores it searches every
-    /// problem on the box. That is the leak `visible_datasets` closed, and
-    /// naming a different search type is the way back into it.
+    /// `node_name` is what separates this project's four stores from each
+    /// other, and they share one dataset, so a retriever that ignores it
+    /// returns the scratch as durable recall. The cross-problem boundary is
+    /// the server's — one tenant per problem — but this one is only ever the
+    /// filter, and naming a different search type is the way around it.
     #[test]
     fn no_search_type_the_server_cannot_scope_is_reachable() {
         for unscoped in [
@@ -365,7 +290,7 @@
 
     #[test]
     fn a_shorter_project_name_does_not_swallow_a_longer_one_in_node_sets() {
-        // The same failure `visible_datasets` guards against, one layer down:
+        // The same failure the node-set scoping guards against, one layer down:
         // node-set matching is exact, so a prefix cannot widen the scope.
         assert_ne!(session_node_set("euler_18"), session_node_set("euler_185"));
         assert!(!durable_node_sets("euler_18").contains(&session_node_set("euler_185")));

@@ -594,27 +594,38 @@ assistant when the stakes justify it.
 one service: `agent`, the Rust orchestrator and its specialist tools.
 `docker compose config --services` returns `agent` alone.
 
-The memory server is **shared rather than per-checkout**. Cognee scopes its graph
-by project, so one instance serves every checkout on the box with the datasets
-kept apart; `compose.yaml` joins an external network named by `COGNEE_NETWORK`
-(default `cognee-local_default`) and reaches it as `cognee:8000`. There is no
-`depends_on`: the memory server outlives any one run, and a run must never be
-able to take it down.
+The memory server is **one Cognee for the whole box, with each problem as a
+tenant on it** ([`compose.shared.yaml`](compose.shared.yaml), alongside Neo4j
+and the ladder). `compose.yaml` joins its network — external, named by
+`MEMORY_NETWORK` — and reaches it as `cognee:8000`. There is no `depends_on`:
+the memory server outlives any one run, and a run must never be able to take it
+down.
 
-The graph store underneath is shared instead: one Neo4j Enterprise instance,
-brought up with `scripts/shared-up` alongside the ladder, with **one database
-per problem**. `scripts/memory-up` creates that database (`p<workspace-slug>`)
-before starting the problem's Cognee, which is statically pointed at it. A
-Neo4j driver session is bound to one named database at the Bolt protocol level,
-so one problem's container cannot enumerate another's database, let alone query
-it — the isolation does not rest on Cognee's own query-time dataset filtering,
-which a live probe measured as unenforced. Read any of it in a browser at
-`http://localhost:7474` (`neo4j` / `cognee-local`), or from another machine by
-setting `NEO4J_BIND_ADDRESS` and `NEO4J_ADVERTISED_ADDRESS`.
+What separates one problem's memory from another's is the **key**, not the
+address. `scripts/memory-up <workspace-label>` provisions that problem's tenant
+and prints its network; `scripts/memory-up --key <workspace-label>` prints the
+API key, which the runtime sends as an `X-Api-Key` header on every request. The
+server refuses one tenant's request for another's dataset — probed live, `404
+DatasetNotFoundError`, and `401` with no key at all — so the boundary is
+enforced by the thing holding the data rather than by a filter in the client.
 
-A workspace whose graph still lives in an old private Neo4j moves across with
-`scripts/memory-migrate <workspace-label>`, which dumps that instance's store
-and loads it into the shared one under the problem's own database name.
+Underneath, each problem still gets **its own graph database** in the shared
+Neo4j Enterprise instance, and Cognee now creates it: a dataset under access
+control is a graph database, named `cognee<dataset-uuid-hex>` and brought
+online on first ingest. A Neo4j driver session is bound to one named database
+at the Bolt protocol level, so one problem's graph cannot be enumerated from
+another's. Read any of it in a browser at `http://localhost:7474` (`neo4j` /
+`cognee-local`), or from another machine by setting `NEO4J_BIND_ADDRESS` and
+`NEO4J_ADVERTISED_ADDRESS`; `scripts/memory-inventory <workspace-label>` says
+which datasets a problem actually holds.
+
+This replaced one Cognee container per problem, which cost a Python server and
+a resident embedding model per problem and made the `mem_limit` of the tenth
+stack the question of whether it fit on the box at all. The failure to watch
+for in return is contention: a shared Cognee is what produced a `409 Conflict`
+on a `recall_memory` that had already hung the full ten-minute tool ceiling,
+under four concurrent runs. [`docs/memory.md`](docs/memory.md) has what to
+measure if it returns.
 
 Cognee publishes a native Rust SDK, but it is an embedded engine rather than a
 client for a running service. The agent therefore uses Cognee's `/api/v1` HTTP

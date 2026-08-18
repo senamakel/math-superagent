@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "h16-lower-bounds",
+  "source": "code/lean/h16_lower_bounds-a414d232.lean",
+  "stage": "prove"
+}

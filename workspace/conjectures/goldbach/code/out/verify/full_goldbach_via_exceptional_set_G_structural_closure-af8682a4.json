@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "full-goldbach-via-exceptional-set/G-structural-closure",
+  "source": "code/lean/full_goldbach_via_exceptional_set_G_structural_closure-af8682a4.lean",
+  "stage": "decompose"
+}

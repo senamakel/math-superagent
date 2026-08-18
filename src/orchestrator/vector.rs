@@ -19,25 +19,34 @@ use std::time::{Duration, Instant};
 
 use crate::agent::{Result, Tool, ToolCall, ToolResult, ToolSchema};
 
-const BRAIN_DATASET: &str = "math_agent_brain";
-const SESSION_DATASET_PREFIX: &str = "math_agent_sessions__";
-
-/// The prefix of the per-project dataset holding provisional work.
+/// The prefix of the one dataset this project owns on the memory server.
 ///
-/// Scoped to the *project* rather than the run, for the reason recorded on
-/// [`VectorStore::from_env`]: `./euler 763` continues from what is on disk, and
-/// a scratch that vanished on restart would be worse than the file it replaces.
-const SCRATCH_DATASET_PREFIX: &str = "math_agent_scratch__";
-
-/// The prefix of the per-project dataset holding the downloaded library.
+/// One, not four. The four stores below are separated by `node_set` inside it,
+/// and the reason is the server's storage model rather than a simplification:
+/// under access control a Cognee dataset *is* a graph database, so filing the
+/// library and the sessions as separate datasets would put a source and the
+/// session that read it in different graphs, with no edge possible between
+/// them. The entity linking across the two is the whole reason a graph store
+/// is worth its cost, so the stores share a dataset and differ by node set —
+/// which is also the only scoping this deployment has measured as enforced.
 ///
-/// Scoped to the project because a source is fetched to answer *this* problem:
-/// another run's library is a different subject, and reading it is how a run
-/// meets a paper nobody here asked for. The brain stays shared; the sources do
-/// not.
-const LIBRARY_DATASET_PREFIX: &str = "math_agent_library__";
+/// Scoped to the *project* rather than the run: `./euler 763` continues from
+/// what is on disk, and a memory that vanished on restart would be worse than
+/// the files it sits beside.
+///
+/// Another project's dataset is not merely filtered out, it is unreachable:
+/// this runtime authenticates as one tenant per project, and the server
+/// answers a request for another tenant's dataset `404 DatasetNotFoundError`.
+const PROJECT_DATASET_PREFIX: &str = "math_agent__";
 
 /// The node set every durable brain document is ingested under.
+///
+/// Unprefixed, where the other three carry the project: it is the store whose
+/// contents are *about* method rather than about this problem. It is still one
+/// per tenant — this runtime has never had a brain that spanned problems, the
+/// per-problem server made sure of that — and making one would now be a
+/// deliberate act of sharing a dataset between tenants rather than a
+/// consequence of a name.
 const BRAIN_NODE_SET: &str = "math_agent_brain";
 
 /// The prefix of the node set this project's completed sessions carry.
@@ -94,13 +103,15 @@ const GRAPH_SEARCH: &str = "GRAPH_COMPLETION";
 
 /// Every search type this runtime is allowed to ask for.
 ///
-/// Not a style rule. `node_name` is the *only* scoping this server actually
-/// applies — [`VectorStore::search_in`] records the probe, and the server's own
-/// code says why: dataset filtering is documented as available only under
-/// `ENABLE_BACKEND_ACCESS_CONTROL`, which `compose.memory.yaml` sets to
-/// `false`. So a search type is safe here exactly when its retriever accepts
-/// `node_name`, and reading the server's retriever registry shows that several
-/// do not:
+/// Not a style rule. `node_name` is the scoping that separates this project's
+/// four stores from each other — [`VectorStore::search_in`] records the probe
+/// — and a retriever that ignores it reads the whole tenant, scratch included.
+/// The cross-*project* boundary is the server's now (`compose.shared.yaml`:
+/// one tenant per problem, and a request for another tenant's dataset is a
+/// `404`), so what is at stake here is narrower than it was and still real:
+/// provisional arithmetic returned as durable recall is how a run comes to
+/// believe something nobody checked. Reading the server's retriever registry
+/// shows several that take no node filter at all:
 ///
 /// - `SUMMARIES` takes `top_k` and a session id and no node filter at all.
 /// - `CHUNKS_LEXICAL` (BM25) takes `top_k` alone.
@@ -175,9 +186,8 @@ pub(super) struct VectorStore {
     base_url: String,
     project: String,
     session: String,
-    session_dataset: String,
-    scratch_dataset: String,
-    library_dataset: String,
+    /// The one dataset this project owns; see [`PROJECT_DATASET_PREFIX`].
+    dataset: String,
     /// The last health verdict and when it was taken, shared by every clone.
     ///
     /// Shared deliberately: the store is cloned into each tool, and a per-tool

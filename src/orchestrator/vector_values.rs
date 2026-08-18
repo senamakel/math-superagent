@@ -130,48 +130,46 @@ fn durable_node_sets(project: &str) -> Vec<String> {
     ]
 }
 
-/// Picks the datasets one run may read: the shared brain, plus this project's
-/// own session memory and library, and nothing else.
+/// Builds the HTTP client every request to the memory server goes through,
+/// carrying this run's tenant key on all of them.
 ///
-/// An allowlist rather than a denylist, and that is the correction of a
-/// measured leak. The rule used to be "everything except another project's
-/// sessions and any scratch", which passes anything a name does not classify —
-/// so a live server carrying `project_euler_903_L0`, thirty-six sources an
-/// earlier build had ingested, was searched by every run on the box. For a
-/// Project Euler problem that is another problem's literature arriving
-/// unasked, and at worst its answer. A dataset this runtime does not recognise
-/// belongs to another project or an older build, and neither is this run's.
+/// A default header rather than a per-call one, because the failure of getting
+/// it wrong is silent in the direction that matters: a request that forgets the
+/// key is answered `401` by a server that holds the run's whole memory, and one
+/// call site out of eleven forgetting it would look like a store that
+/// intermittently has nothing. There is one place to add a header and no place
+/// to omit one.
 ///
-/// A session dataset belongs to this project when it *is* this project's
-/// dataset, or when it is one of the per-run datasets an older build created
-/// underneath it — `<project>__s<nanos>-<pid>`. Matching those too is what lets
-/// a run reach the session memory of every earlier run on the same problem
-/// instead of only its own, and it recovers the datasets already stranded by
-/// the old naming.
+/// # Errors
 ///
-/// The `__` in the prefix test is load-bearing: without it, project `euler_18`
-/// would read `euler_185`'s memory.
-///
-/// No scratch dataset is ever visible here, not even this project's own. The
-/// scratch holds arithmetic that has not survived anything yet, and durable
-/// recall returning it would restate the mistake `role_context` was built to
-/// avoid: provisional work read as evidence of progress. `recall_scratch` is
-/// the only way in, and only the roles doing provisional work hold it.
-fn visible_datasets(datasets: &Value, current_session: &str, library: &str) -> Vec<String> {
-    let owned_session = format!("{current_session}__");
-    datasets
-        .as_array()
-        .into_iter()
-        .flatten()
-        .filter_map(|dataset| dataset.get("name").and_then(Value::as_str))
-        .filter(|name| {
-            *name == BRAIN_DATASET
-                || *name == library
-                || *name == current_session
-                || name.starts_with(&owned_session)
+/// Returns an error when the key is empty or holds bytes a header cannot carry.
+fn authenticated_client(api_key: &str) -> Result<reqwest::Client> {
+    let api_key = api_key.trim();
+    if api_key.is_empty() {
+        return Err(tinyagents::TinyAgentsError::Validation(
+            "COGNEE_API_KEY is empty: the memory server is shared and this run reaches it as its \
+             own tenant, so an unset key is a `401` on every memory call rather than an \
+             unauthenticated one. `scripts/memory-up --key <workspace-label>` prints it"
+                .into(),
+        ));
+    }
+    let mut value = reqwest::header::HeaderValue::from_str(api_key).map_err(|_| {
+        tinyagents::TinyAgentsError::Validation(
+            "COGNEE_API_KEY holds characters an HTTP header cannot carry".into(),
+        )
+    })?;
+    // The key identifies the tenant whose memory this is. Marked sensitive so
+    // that it stays out of the request logging `reqwest` and its middleware
+    // emit, on the same rule the rest of this repository keeps for `.env`.
+    value.set_sensitive(true);
+    let mut headers = reqwest::header::HeaderMap::new();
+    headers.insert("X-Api-Key", value);
+    reqwest::Client::builder()
+        .default_headers(headers)
+        .build()
+        .map_err(|error| {
+            tinyagents::TinyAgentsError::Tool(format!("could not build the memory client: {error}"))
         })
-        .map(ToOwned::to_owned)
-        .collect()
 }
 
 /// Reads Cognee's `/health/detailed` report as a verdict on whether a document

@@ -302,9 +302,9 @@ directory nothing outside the workspace reads.
 
 **Build:** not a code change first. This is `docs/tao-proposals.md` #6 — the
 shared technique library — arriving from a fourth direction, and #6's own
-conclusion holds: the decision is operational, the cheapest honest experiment is
-to measure recall latency under `COGNEE_NETWORK` for two concurrent runs, and
-the code change only follows if that holds.
+conclusion holds with its situation updated: one Cognee now serves every problem
+as a tenant, so what is left is granting one brain dataset across tenants and
+measuring what that recalls, not standing a shared server up.
 
 **Cost:** unknown, and gated on #6's measurement.
 

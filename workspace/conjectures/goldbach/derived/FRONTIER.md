@@ -22,13 +22,14 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 3 | https://msp.org/soon/coming.php?jpath=ent | To appear | [Editorial board][14] \| \| [Subscriptions][15] \| --> \| ISSN 2834-4634 (online) \| ISSN 2834-4626 (print) \| [Author index][16] \| [To appear][17] \| \| [Other MSP Journals][18] \| \| \| \| \| [Exceptional… |
 | 3 | https://ef.msp.org/submit/ent | Submission form | The Journal \| [About the journal][9] \| [Ethics and policies][10] \| [Peer-review process][11] \| \| [Submission guidelines][12] \| [Submission form][13] \| [Editorial board][14] \| \| [Subscriptions][15] \|… |
 | 3 | https://msp.org/index/ai.php?jpath=ent | Author index | form][13] \| [Editorial board][14] \| \| [Subscriptions][15] \| --> \| ISSN 2834-4634 (online) \| ISSN 2834-4626 (print) \| [Author index][16] \| [To appear][17] \| \| [Other MSP Journals][18] \| \| \| \| \|… |
+| 2 | https://ar5iv.labs.arxiv.org/html/2607.27282 | The exceptional set of the Goldbach problem | found researching: Survey the authoritative current literature on the binary Goldbach conjecture as of August 2026. Identify the canonical statement, the refereed computational ve… |
+| 2 | https://doi.org/10.4064/aa220728-31-3 | A new explicit formula in the additive theory of primes with applications I. The explicit… | found researching: What is the current state of the art on the exceptional set for the binary Goldbach conjecture (the set of even integers up to X not expressible as a sum of two… |
 | 2 | https://doi.org/10.4064/aa105-2-3 | On the Vinogradov bound in the three primes Goldbach conjecture | cited by Explicit Chen's theorem (2002, cited 36 times) |
 | 2 | https://doi.org/10.1112/plms/s3-64.2.265 | Zero-Free Regions for Dirichlet L-Functions, and the Least Prime in an Arithmetic… | cited by A new explicit formula in the additive theory of primes with applications II. The exceptional set in Goldbach's problem (1992, cited 232 times) |
 | 2 | https://doi.org/10.48550/arxiv.1810.05244 | A computational history of prime numbers and Riemann zeros | cites The ternary Goldbach conjecture is true (2018, cited 11 times) |
 | 2 | https://doi.org/10.14760/snap-2014-003-en | The ternary Goldbach problem | cites The ternary Goldbach conjecture is true (2014, cited 11 times) |
 | 2 | https://arxiv.org/pdf/2104.09407v1 | arXiv:2104.09407v1 | 36(3-4):343– 350, 2018. [6] D. A. Goldston and A. I. Suriajaya. Note on the Goldbach conjecture and Landau-Siegel zeros. Preprint, arXiv:2104.09407v1, 2021. [7] G. Harman. Prime-detecting sieves,… |
 | 2 | https://doi.org/10.1007/bf02882266 | The number of powers of 2 in a representation of large even integers II | cites The exceptional set of Goldbach's problem (1998, cited 42 times) |
-| 2 | https://doi.org/10.5802/jtnb.676 | Landau’s problems on primes | cites The exceptional set of Goldbach's problem (2009, cited 44 times) |
 | 2 | https://arxiv.org/archive/math.NT | math.NT | Russian), 1940, no. 7, 7–46. 14. ↑ Helfgott, H. A. (2013). "The ternary Goldbach conjecture is true". [arXiv][132]: [1312.7748][133] [[math.NT][134]]. 15. ↑ |
 | 2 | https://doi.org/10.1093/philmat/nkw022 | Proof and the Virtues of Shared Enquiry | cites The ternary Goldbach conjecture is true (2016, cited 6 times) |
 | 2 | https://doi.org/10.1112/plms.12181 | Correlations of the von Mangoldt and higher divisor functions I. Long shift ranges | cites The exceptional set of Goldbach's problem (2018, cited 22 times) |
@@ -43,11 +44,10 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 2 | https://www.ams.org/journals/mcom/2014-83-288/S0025-5718-2013-02787-1/S0025-5718-2013-02787-1.pdf | "Empirical Verification of the Even Goldbach Conjecture and Computation of up to 4 · 10… | Oliviera e Silva, Tomas; Herzog, Siegfried; Pardi, Silvio (July 2014). ["Empirical Verification of the Even Goldbach Conjecture and Computation of up to 4 · 10 18 "][164] (PDF). *Mathematics of… |
 | 2 | http://www.emis.de/MATH-item?0830.11001 | MATH | linked from On the exceptional set in Goldbach’s problem in short intervals \| Monatshefte für Mathematik \| Springer Nature Link |
 | 2 | https://arxiv.org/search/math?searchtype=author&amp;query=Bhowmik,+G | Gautami Bhowmik | on 29 Jul 2026 ( [v1][2]), last revised 13 Aug 2026 (this version, v2)] # Title: The exceptional set of the Goldbach problem Authors: [Gautami Bhowmik][3], [Lasse Grimmelt][4] View a PDF of the paper… |
-| 2 | https://doi.org/10.1360/ya1973-16-2-157 | ON THE REPRESENTATION OF A LARGER EVEN INTEGER AS THE SUM OF A PRIME AND THE PRODUCT OF… | cited by Explicit Chen's theorem (1973, cited 337 times) |
-| 2 | https://doi.org/10.22271/math.2023.v4.i2a.104 | https://doi.org/10.22271/math.2023.v4.i2a.104 | linked from A NUMERICAL VERIFICATION OF THE STRONG GOLDBACH CONJECTURE UP TO 9 × 10 18 \| Zenodo |
-| 2 | https://doi.org/10.24018/ejmath.2023.4.4.249 | https://doi.org/10.24018/ejmath.2023.4.4.249 | linked from A NUMERICAL VERIFICATION OF THE STRONG GOLDBACH CONJECTURE UP TO 9 × 10 18 \| Zenodo |
+| 2 | https://bibliotekanauki.pl/ | — | linked from The exceptional set of Goldbach's problem — H. M… — Library of Science |
+| 2 | https://bibliotekanauki.pl/articles/1393586.pdf | — | linked from The exceptional set of Goldbach's problem — H. M… — Library of Science |
 
-_890 further candidates not shown; they are cited once each._
+_989 further candidates not shown; they are cited once each._
 
 ---
 

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "cdm2021-FTCWC-does-not-cover-wild-curves",
+  "source": "code/lean/cdm2021_FTCWC_does_not_cover_wild_curves-4a9b5ea0.lean",
+  "stage": "decompose"
+}

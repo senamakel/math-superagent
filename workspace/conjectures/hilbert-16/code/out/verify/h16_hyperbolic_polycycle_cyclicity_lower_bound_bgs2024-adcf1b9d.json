@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "h16-hyperbolic-polycycle-cyclicity-lower-bound-bgs2024",
+  "source": "code/lean/h16_hyperbolic_polycycle_cyclicity_lower_bound_bgs2024-adcf1b9d.lean",
+  "stage": "prove"
+}

@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "h16-ftv2013-chebyshev-abelian-ca",
+  "source": "code/lean/h16_ftv2013_chebyshev_abelian_ca-7072d94d.lean",
+  "stage": "decompose"
+}

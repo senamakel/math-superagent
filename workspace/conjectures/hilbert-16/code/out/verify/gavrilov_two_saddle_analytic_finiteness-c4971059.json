@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "gavrilov-two-saddle-analytic-finiteness",
+  "source": "code/lean/gavrilov_two_saddle_analytic_finiteness-c4971059.lean",
+  "stage": "decompose"
+}

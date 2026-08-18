@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "fgis-2021-weak-hl-no-exceptional-zeros",
+  "source": "code/lean/fgis_2021_weak_hl_no_exceptional_zeros-28e99dc3.lean",
+  "stage": "decompose"
+}
