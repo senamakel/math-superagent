@@ -60,6 +60,15 @@ networks:
   # other service is what preserves the calibration network boundary.
   ladder-egress:
     driver: bridge
+  # Neo4j's published ports, for reading the graph from a browser or Neo4j
+  # Desktop on this box. A container attached only to an `internal` network
+  # has no route a published port can be forwarded over, so the publication
+  # needs an ordinary bridge to land on — this is that bridge and nothing
+  # else is on it. It does not widen what any *run* can reach: the agent is
+  # never on this network, and in a calibration run it is not on `graph`
+  # either.
+  graph-admin:
+    driver: bridge
 
 services:
   neo4j:
@@ -74,6 +83,12 @@ services:
       # against real usage once a dozen databases are live here.
       NEO4J_server_memory_heap_max__size: 4g
       NEO4J_server_memory_pagecache_size: 2g
+      # The Browser is served over HTTP from this container but speaks Bolt
+      # from the *browser*, to whatever address the server advertises. Left at
+      # the container's own hostname it would advertise a name that resolves
+      # to nothing on the host, and the Browser hangs on "connecting"; the
+      # published Bolt port below is what `localhost` here refers to.
+      NEO4J_server_default__advertised__address: ${NEO4J_ADVERTISED_ADDRESS:-localhost}
     healthcheck:
       test: ["CMD-SHELL", "cypher-shell -u neo4j -p cognee-local 'RETURN 1' >/dev/null"]
       interval: 10s
@@ -81,8 +96,29 @@ services:
       retries: 30
       start_period: 20s
     mem_limit: 8g
+    # 7474 is the Neo4j Browser, 7687 is Bolt for Neo4j Desktop or
+    # `cypher-shell`. Log in as `neo4j` / `cognee-local` and pick a problem's
+    # database from the selector — one database per problem, named
+    # `p<workspace-slug>`.
+    #
+    # `NEO4J_BIND_ADDRESS` defaults to the loopback interface, so out of the
+    # box this is reachable from a browser on this box and from nowhere else.
+    # Set it to a Tailscale address to read the graph from another of your own
+    # machines, and set `NEO4J_ADVERTISED_ADDRESS` to the same thing — the
+    # Browser is served over HTTP from here but speaks Bolt from the
+    # *browser*, to whatever address the server advertises, so a mismatch
+    # leaves it hanging on "connecting". Both belong in `.env`.
+    #
+    # Note what widening the bind grants: `NEO4J_AUTH` above is a fixed local
+    # password, so anything that can reach the port can read every problem's
+    # graph. A tailnet of your own machines is the intended ceiling for that;
+    # `0.0.0.0` is not.
+    ports:
+      - "${NEO4J_BIND_ADDRESS:-127.0.0.1}:${NEO4J_HTTP_PORT:-7474}:7474"
+      - "${NEO4J_BIND_ADDRESS:-127.0.0.1}:${NEO4J_BOLT_PORT:-7687}:7687"
     networks:
       - graph
+      - graph-admin
     volumes:
       - neo4j-data:/data
 

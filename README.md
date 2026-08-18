@@ -202,8 +202,10 @@ the deepest thinking setting its model family accepts. All three tiers
 advertise a one-million-token context window, while the router owns the
 provider, price, depth, and fallback ladder.
 Host-side calls default to `http://localhost:6969/v1`; Compose reaches that same
-router as `http://ladder:6969/v1` on the project network and publishes it only
-on host loopback. The pinned image mounts the sibling
+router as `http://ladder:6969/v1` on a shared internal network and publishes it
+only on host loopback. One ladder serves every checkout and every problem on the
+box — it lives in `compose.shared.yaml` beside the graph store, not in any one
+run's project. The pinned image mounts the sibling
 `llm-ladder-router/config.toml`; `LADDER_CONFIG_PATH` and `LADDER_ENV_FILE`
 override those host paths when the repositories live elsewhere.
 TinyAgents provides the model loop, tools, delegation, and middleware.
@@ -598,12 +600,20 @@ kept apart; `compose.yaml` joins an external network named by `COGNEE_NETWORK`
 `depends_on`: the memory server outlives any one run, and a run must never be
 able to take it down.
 
-The self-hosted stack — `cognee`, its Neo4j graph store, and the experimental UI
-on `http://localhost:3000` — is still defined but parked behind
-`--profile own-memory`. Starting a second copy beside the shared one is a
-failure rather than a preference: both bind the same local ports, so the second
-does not come up, and running two graph stores against one project splits the
-run's memory in half.
+The graph store underneath is shared instead: one Neo4j Enterprise instance,
+brought up with `scripts/shared-up` alongside the ladder, with **one database
+per problem**. `scripts/memory-up` creates that database (`p<workspace-slug>`)
+before starting the problem's Cognee, which is statically pointed at it. A
+Neo4j driver session is bound to one named database at the Bolt protocol level,
+so one problem's container cannot enumerate another's database, let alone query
+it — the isolation does not rest on Cognee's own query-time dataset filtering,
+which a live probe measured as unenforced. Read any of it in a browser at
+`http://localhost:7474` (`neo4j` / `cognee-local`), or from another machine by
+setting `NEO4J_BIND_ADDRESS` and `NEO4J_ADVERTISED_ADDRESS`.
+
+A workspace whose graph still lives in an old private Neo4j moves across with
+`scripts/memory-migrate <workspace-label>`, which dumps that instance's store
+and loads it into the shared one under the problem's own database name.
 
 Cognee publishes a native Rust SDK, but it is an embedded engine rather than a
 client for a running service. The agent therefore uses Cognee's `/api/v1` HTTP

@@ -4,7 +4,11 @@ The runtime's memory is one Cognee server per problem, with four stores inside
 it: the shared **brain** (`remember_memory`), this project's **sessions** (one
 document per finished agent run), its **library** (every downloaded source), and
 its **scratch** (`note_scratch`, provisional work, unreachable from durable
-recall). `src/orchestrator/vector.rs` and the three files it includes are the
+recall). The graph store underneath is *not* per problem: one Neo4j Enterprise
+instance holds one database per problem, and Cognee is statically pointed at
+its own. That boundary is the Bolt protocol's rather than Cognee's, which
+matters here because the leak recorded below was Cognee's own dataset filtering
+going unenforced — see `compose.shared.yaml` for the probe. `src/orchestrator/vector.rs` and the three files it includes are the
 whole of the client; [`docs/roles.md`](roles.md#recall-the-two-ways-back-into-what-is-known)
 says which role holds which tool.
 
@@ -15,8 +19,8 @@ that nothing in the runtime said so.
 
 ## What the audit did
 
-Every memory stack is per problem and nothing is published to the host, so each
-probe below was a `curl` container joined to that stack's compose network,
+Every Cognee is per problem and nothing about it is published to the host, so
+each probe below was a `curl` container joined to that stack's compose network,
 sending the exact request shapes `VectorStore` sends:
 
 ```sh

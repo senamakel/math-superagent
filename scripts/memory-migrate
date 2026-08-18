@@ -163,6 +163,7 @@ migrate_one() {
     docker run --rm \
         -v "${shared_project}_neo4j-data:/data" \
         -v "$dump_dir:/dumps" \
+        -e NEO4J_ACCEPT_LICENSE_AGREEMENT=yes \
         "$target_image" \
         neo4j-admin database load "$database" --from-path=/dumps --overwrite-destination=true >&2
     shared_cypher "START DATABASE \`$database\` WAIT" >&2

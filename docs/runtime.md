@@ -216,12 +216,31 @@ named by `COGNEE_NETWORK` (default `cognee-local_default`) and reaches the
 server as `cognee:8000`, with no `depends_on` — the memory server outlives any
 one run, and a run must never be able to take it down.
 
-The self-hosted stack is still defined but parked behind `--profile own-memory`,
-so `docker compose config --services` yields `agent` alone. Starting a second
-copy alongside the shared one is not a preference, it is a failure: both bind
-`127.0.0.1:8000` and `127.0.0.1:3000`, so the second simply does not come up,
-and running two graph stores against one project splits the run's memory in
-half.
+`docker compose -f compose.yaml config --services` yields `agent` alone. The
+two things it talks to are somebody else's stack: this problem's Cognee, from
+`compose.memory.yaml` (`scripts/memory-up`), and the shared backbone — one
+Neo4j Enterprise instance and one ladder — from `compose.shared.yaml`
+(`scripts/shared-up`). `./agent` starts them in that order; neither is in the
+agent's own project, which is what stops a run being able to take either down.
+
+What is shared is the graph store, not Cognee. The contention that split the
+memory server per problem was measured against one shared *Cognee* process —
+four concurrent runs produced a `409 Conflict` on a `recall_memory` that had
+already hung the full ten-minute tool ceiling — and Cognee is still one
+container per problem. Underneath, each is pointed at its own Neo4j database
+(`GRAPH_DATABASE_NAME`, `p<workspace-slug>`, created by `scripts/memory-up`).
+That boundary is the Bolt protocol's: a driver session is bound to one named
+database, and a container pointed at one got `[]` back from `SHOW DATABASES`
+run inside its own session, with a literal Cypher `MATCH` for another problem's
+data coming back empty. It does not depend on Cognee's query-time dataset
+filtering, which `docs/memory.md` records as unenforced. Multiple databases
+need Neo4j **Enterprise**; Community cannot create one at all.
+
+`scripts/memory-migrate <workspace-label>` is the one-time move for a problem
+whose graph is still in a private Neo4j: it dumps that store and loads it into
+the shared instance under the problem's database name. Cognee's own metadata
+and vector stores do not move — they are volumes of the `cognee-<slug>` project
+and stay exactly where they are.
 
 The parent and both children use context-compression middleware with an
 estimated 300,000-token trigger. The summary should retain mathematical
@@ -234,11 +253,15 @@ pricing, caching, and fallback. The runtime sends only two stable model ids:
 a one-million-token context window to the harness, so compression is based on
 the router's real capacity rather than an unrecognized alias.
 
-Compose installs the pinned ladder image, mounts the sibling router checkout's
-`config.toml`, and reaches it as `http://ladder:6969/v1` on a stable internal
-network. The one-off agent container joins that network and its per-problem
-Cognee network; the ladder also joins a provider-egress network the agent never
-sees. Changing `COGNEE_NETWORK` therefore does not recreate the ladder or
+`compose.shared.yaml` installs the pinned ladder image, mounts the sibling
+router checkout's `config.toml`, and every stack reaches it as
+`http://ladder:6969/v1` on a stable internal network. The one-off agent
+container joins that network and its per-problem Cognee network; each problem's
+Cognee joins it too, for the entity extraction and summarisation its own
+ingestion performs. The ladder also joins a provider-egress network nothing
+else sees. One ladder for the box, rather than one per checkout: the ladder used
+to live in `compose.yaml`, whose project name is the checkout directory's, so a
+second checkout brought up a second ladder and the two fought over port 6969. Changing `COGNEE_NETWORK` therefore does not recreate the ladder or
 interrupt another run, and the internal router network does not give a
 calibration container a route around its proxy. The calibration overlay puts
 `ladder` in `NO_PROXY` so model traffic stays on that internal link. Host access
