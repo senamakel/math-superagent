@@ -1,0 +1,14 @@
+SOURCE: Dumortier--Rousseau 2009, Prop. 2.2, equations (2.7)--(2.12).
+Held source limitation: no explicit ADL DI2a parameterization or solved delta map is held.
+Affine map (2.10): (x,y)=(X+delta1*Y+delta3, delta2*X+Y+delta4).
+Base first-order B-vector =
+Matrix([[-delta2], [-c0*delta2 + delta4], [delta2 + delta3], [delta1]])
+Computed/source Jacobian M =
+Matrix([[0, -1, 0, 0], [0, -c0, 0, 1], [0, 1, 1, 0], [1, 0, 0, 0]])
+M equals source matrix: True
+det(M) = -1
+Unique first-order normalization delta at the base: Matrix([[0], [0], [0], [0]])
+Canonical strip specialization: mu0=mu1=mu2=mu3=0, c=c0.
+Naive coefficient oracle residual: (0, 0)
+Exact residual after reduction: (0, 0)
+Residual is zero: True

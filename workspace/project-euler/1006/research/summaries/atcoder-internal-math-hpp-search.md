@@ -1,32 +1,13 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/atcoder-internal-math-hpp-search.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# AtCoder internal_math.hpp — GitHub browser page (duplicate of the jsDelivr fetch)
 
-<!-- source: https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp | converted from HTML -->
+<!-- source: https://github.com/atcoder/ac-library/blob/master/atcoder/internal_math.hpp | 2026-08-19 -->
 
-## What is in it
+## Verdict: duplicate, superseded by the jsDelivr fetch
 
-    - Uh oh!
-  - Files Expand file tree
-- internal_math.hpp
-  - Latest commit
-  - History
-- internal_math.hpp
-  - File metadata and controls
-- ifndef ATCODER_INTERNAL_MATH_HPP
-- define ATCODER_INTERNAL_MATH_HPP 1
-- include <utility>
-- ifdef _MSC_VER
-- include <intrin.h>
-- endif
-- ifdef _MSC_VER
-- else
-- endif
-- endif // ATCODER_INTERNAL_MATH_HPP
+The on-disk "full text" `research/sources/atcoder-internal-math-hpp-search.full.md` is the GitHub *browser page* of `atcoder/internal_math.hpp` at master. It carries the same 212-line header (safe_mod, barrett, pow_mod_constexpr, is_prime_constexpr, inv_gcd, primitive_root_constexpr, **floor_sum_unsigned**) as `research/sources/atcoder-internal-math-hpp.full.md`, which was fetched from the pinned jsDelivr mirror at tag v1.5.1.
 
+Use the pinned v1.5.1 fetch, not the master-branch browser page: the pinned file has a stable version reference, while master can drift. The summary in `research/summaries/atcoder-internal-math-hpp.md` (floor_sum_unsigned = the O(log) Euclidean recursion behind atcoder::floor_sum; inv_gcd computes 10^{-1} mod 101001001; barrett = fast modular mul) applies unchanged to both.
 
-## What it claims
+## What it does NOT add
 
-You signed in with another tab or window. [Reload][1] to refresh your session. You signed out in another tab or window. [Reload][1] to refresh your session. You switched accounts on another tab or window. [Reload][1] to refresh your session. Dismiss alert
-
-{{ message }}
-
-*[digest of a 7221 character source; every section, statement, and proof in full at `research/sources/atcoder-internal-math-hpp-search.full.md`]*
+Nothing beyond the pinned fetch. No new statement for PE1006; the primitive anchor is already `governing-universal-euclidean` + `monoid-composition-formulas-verified`.

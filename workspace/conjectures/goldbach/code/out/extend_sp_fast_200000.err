@@ -1,0 +1,4 @@
+N=200000, pi(N)=17984, sieve 0.0s
+unassigned n <= 200000 with p(n) > 2000: 0
+distinct minimal primes: 61 (0.6s)
+saved seq_sp_eff_200000.txt

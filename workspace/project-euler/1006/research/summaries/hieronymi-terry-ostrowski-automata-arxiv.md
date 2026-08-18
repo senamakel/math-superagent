@@ -1,88 +1,23 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hieronymi-terry-ostrowski-automata-arxiv.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hieronymi–Terry — Ostrowski numeration systems, addition and finite automata (arXiv:1407.7000; Notre Dame J. Formal Logic)
 
-<!-- source: https://ar5iv.labs.arxiv.org/html/1407.7000 | converted from HTML -->
+<!-- source: https://arxiv.org/pdf/1407.7000 (PDF) and https://ar5iv.labs.arxiv.org/html/1407.7000 (HTML) | read 2026-08-19 -->
 
-## What is in it
+Full text: `[[hieronymi-terry-ostrowski-automata-arxiv.full]]` (ar5iv HTML, 70 KB) and `[[ostrowski-numeration-addition-finite-automata.pdf.full]]` (PDF conversion) — the same paper in two formats. `research/sources/hieronymi-terry-ostrowski-numeration-addition.full.md` is the publisher (Notre Dame J. Formal Logic) landing page only — use the arXiv files.
 
-- Ostrowski numeration systems, addition and finite automata Thanks: The first author was…
-        - Abstract.
-  - 1. Introduction
-        - Theorem A.
-        - Theorem B.
-    - Notation
-  - 2. Ostrowski addition
-        - Algorithm 1.
-        - Proposition 2.1.
-        - Proof.
-        - Proposition 2.2.
-        - Lemma 2.3.
-        - Proof.
-        - Lemma 2.4.
-        - Proof.
-        - Proof of Proposition 2.2.
-        - Algorithm 2.
-        - Lemma 2.5.
-        - Proof.
-        - Algorithm 3.
-        - Proposition 2.6.
-        - Lemma 2.7.
-        - Proof.
-        - Proof of Propositon 2.6.
-        - Corollary 2.8.
-  - 3. Proof of Theorem A
-        - Definition 3.1.
-        - Definition 3.2.
-- …
+## What it establishes
 
+An elementary **three-pass algorithm for addition in Ostrowski numeration systems** (Prop 2.1–Cor 2.8: Algorithms 1–3 normalize the digit representation of M+N so it satisfies the Ostrowski conditions), and the automata-theoretic consequences:
 
-## What it claims
+- **Theorem A**: when α is quadratic, addition in the Ostrowski numeration system based on α is **recognizable by a finite automaton**.
+- **Theorem B** (Def 3.1–3.9, Thm 3.10): X ⊆ ℕⁿ is definable in (ℕ, +, V_α) — where V_α(x) = the smallest convergent denominator of α appearing with non-zero coefficient in the Ostrowski representation of x — iff the set of Ostrowski representations of elements of X is recognizable by a finite automaton. **Decidability of the theory of (ℕ,+,V_α) follows.**
+- Lemma 3.8: the parity structure of the Ostrowski digits of n (all even-index digits ≤ 1 / odd digits = 0, etc.) characterizes membership in the even/odd sets U_e, U_o.
 
-We present an elementary three pass algorithm for computing addition in Ostrowski numerations systems. When a a is quadratic, addition in the Ostrowski numeration system based on a a is recognizable by a finite automaton. We deduce that a subset of X ⊆ ℕ n X\subseteq\mathbb{N}^{n} is definable in ( ℕ, +, V a) (\mathbb{N},+,V_{a}), where V a V_{a} is the function that maps a natural number x x to the smallest denominator of a convergent of a a that appears in the Ostrowski representation based on a a of x x with a non-zero coefficient, if and only if the set of Ostrowski representations of elements of X X is recognizable by a finite automaton. The decidability of the theory of ( ℕ, +, V a) (\mathbb{N},+,V_{a}) follows.
+## Why it matters here
 
-## Statements it makes
+- **For the Fibonacci word**: α = 1/φ² is quadratic, so addition in the Fibonacci/Ostrowski numeration is finite-automaton-recognizable — the machinery behind the run's *automatic-digit-DP* idea. **But** (as the run already established via Cobham–Bès–Frougny, claim `cobham-bes-frougny-multiplicatively-independent-conversion`): automata over the Fibonacci numeration cannot convert to the base-10 weights Ψ(k) needs — 10 and φ are multiplicatively independent. So this paper supplies the *Ostrowski-side* recognizability and nothing on the decimal side: it does not unlock a base-10 automaton for Ψ.
+- Corroborates the Ostrowski-representation machinery the run's `ostrowski-prefix-decomposition-characteristic` and the division-property/Fici factorization axis rest on.
+- **Does NOT give Ψ(k)**: no decimal weighting, no squares, no joint-intercept aggregation. It is the numeration-system/automata reference, not a second-moment engine.
 
-###### Algorithm 1.
+## Claims anchored here
 
-###### Proposition 2.1.
-
-Algorithm 1 leaves the value represented unchanged. That is, for every k ∈ ℕ k\in\mathbb{N} with 3 ≤ k ≤ m + 1 3\leq k\leq m+1
-
-###### Proposition 2.2.
-
-###### Lemma 2.3.
-
-###### Lemma 2.4.
-
-###### Algorithm 2.
-
-###### Lemma 2.5.
-
-###### Algorithm 3.
-
-###### Proposition 2.6.
-
-###### Lemma 2.7.
-
-###### Corollary 2.8.
-
-###### Definition 3.1.
-
-###### Definition 3.2.
-
-###### Definition 3.3.
-
-###### Definition 3.4.
-
-###### Lemma 3.5.
-
-###### Definition 3.6.
-
-###### Definition 3.7.
-
-###### Lemma 3.8.
-
-###### Definition 3.9.
-
-###### Theorem 3.10.
-
-*[digest of a 70471 character source; every section, statement, and proof in full at `research/sources/hieronymi-terry-ostrowski-automata-arxiv.full.md`]*
+Corroborates `ostrowski-prefix-decomposition-characteristic` and the Cobham-based refutation `pe1006-zeckendorf-automatic-digit-dp` (Fibonacci-side addition is automatic; the decimal-weight conversion is not). No new claim block.

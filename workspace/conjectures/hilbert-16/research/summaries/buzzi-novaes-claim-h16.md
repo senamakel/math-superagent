@@ -50,7 +50,7 @@ status: asserted
 bearing: Test-2 reference; refutes any polynomial upper bound of order < n^2 log n,
   including the Entropy-2024 quadratic closed form.
 anchor: research/sources/buzzi-novaes-claim-h16.full.md
-contradicts: a quadratic-upper-bound claim (none held except the refuted one)
+contradicts: h16-quadratic-closed-form-refuted
 follows-from: h16-lower-bounds
 ```
 

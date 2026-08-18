@@ -10,6 +10,12 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
+- `h16-2-degenerate-graphics-finite-cyclicity/G-degenerate-normal-forms` (lemma) — For the three DR 2009 normal-form families, the quadratic family near the degenerate graphic reduces, by an affine change of coordinates…
+  - open `research/backward/h16-2-degenerate-graphics-finite-cyclicity.md`
+- `h16-2-degenerate-graphics-finite-cyclicity/G-degenerate-pstar-and-center` (lemma) — The residual strata of each normal-form family are bounded. (i) Center strata where the SDI vanishes identically: closed by the parameter…
+  - open `research/backward/h16-2-degenerate-graphics-finite-cyclicity.md`
+- `h16-2-degenerate-graphics-finite-cyclicity/G-degenerate-slow-divergence` (lemma) — On the desingularized charts of the family blow-up at the contact point of a normal-form family, the displacement map's derivative is C^∞…
+  - open `research/backward/h16-2-degenerate-graphics-finite-cyclicity.md`
 - `h16-2-finite-cyclicity/G-resolve` (lemma) — A graphic Λ in the DRR list admits a resolution: each vertex (singular point) is brought by finitely many polynomial blow-ups within the…
   - open `research/backward/h16-2-finite-cyclicity.md`
 - `h16-2-finite-cyclicity/G-transition` (lemma) — On each sector of the resolved graphic, the passage (transition) map between the two incoming/outgoing transversals has an asymptotic…
@@ -20,6 +26,14 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/h16-2-finite-cyclicity.md`
 - `h16-2-h14-3-finite-cyclicity/G-remainder` (lemma) — The analytic lift from the finite core to cycl(Λ₀)<∞. In the compact five-parameter neighbourhood Λ of the H₁₄³ hemicycle, the displacement…
   - open `research/backward/h16-2-h14-3-finite-cyclicity.md`
+- `h16-2-i6b-four-dulac-finite-cyclicity/G-ect-certificates` (lemma) — The reduced finite-dimensional family from G-reduce-finite-rank is an ECT-system on the common section uniformly over the compact closure…
+  - open `research/backward/h16-2-i6b-four-dulac-finite-cyclicity.md`
+- `h16-2-i6b-four-dulac-finite-cyclicity/G-endpoint-germs` (lemma) — For each semi-hyperbolic endpoint of the non-boundary I^1_6b center strata (RR 1/2 < B < 1), the second-type Dulac map Tᵢ admits the RSZ…
+  - open `research/backward/h16-2-i6b-four-dulac-finite-cyclicity.md`
+- `h16-2-i6b-four-dulac-finite-cyclicity/G-reduce-finite-rank` (lemma) — The complete I^1_6b displacement — the coupled two-equation problem in (r₁,ρ₁,r₂,ρ₂) with rᵢρᵢ = νᵢ — admits a zero-count-preserving…
+  - open `research/backward/h16-2-i6b-four-dulac-finite-cyclicity.md`
+- `h16-2-i6b-four-dulac-finite-cyclicity/G-specialise-uniform-bound` (lemma) — The conditional theorem full_graphic_zero_bound (SlowDivergenceECTPartial.lean) is completed: from endpoint_maps,…
+  - open `research/backward/h16-2-i6b-four-dulac-finite-cyclicity.md`
 - `h16-sharp-abelian-named-family/G-ect-apply` (lemma) — For the specific named family, the balance chain and the Wronskians W₀,…,W_{μ−1} are computed exactly over Q, and the ECT/CT-system…
   - open `research/backward/h16-sharp-abelian-named-family.md`
 - `h16-sharp-abelian-named-family/G-pf` (lemma) — For the named family, the module of Abelian integrals of H is free of finite rank μ (Petrov/Gavrilov), and I(h) satisfies the rank-μ…
@@ -36,6 +50,12 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/g-uniform.md`
 - `g-zeros` (goal) — The displacement function around the graphic, as composition of transition expansions, has a bounded number of zeros (Dulac-type…
   - open `research/backward/g-zeros.md`
+- `h16-2-degenerate-graphics-finite-cyclicity-g-degenerate-normal-forms` (goal) — For the three DR 2009 normal-form families, the quadratic family near the degenerate graphic reduces, by an affine change of coordinates…
+  - open `research/backward/h16-2-degenerate-graphics-finite-cyclicity-g-degenerate-normal-forms.md`
+- `h16-2-degenerate-graphics-finite-cyclicity-g-degenerate-pstar-and-center` (goal) — The residual strata of each normal-form family are bounded. (i) Center strata where the SDI vanishes identically: closed by parameter…
+  - open `research/backward/h16-2-degenerate-graphics-finite-cyclicity-g-degenerate-pstar-and-center.md`
+- `h16-2-degenerate-graphics-finite-cyclicity-g-degenerate-slow-divergence` (goal) — On the desingularized charts of the family blow-up at the contact point of a normal-form family, the displacement map's derivative is C∞…
+  - open `research/backward/h16-2-degenerate-graphics-finite-cyclicity-g-degenerate-slow-divergence.md`
 - `h16-2-finite-cyclicity-g-zeros` (goal) — —
   - open `research/backward/h16-2-finite-cyclicity-g-zeros.md`
 
@@ -43,72 +63,73 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
 
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
-- `drr-1994-citation-anchor` — 2 node(s) rest on it, and the run is already building on it — DRR 1994 (JDE 110:86-133) gives the list of all graphics and degenerate graphics (limit periodic sets surrounding the origin in quadratic…
+- `h16-drr-121-graphics` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — H(2)<∞ is equivalent to the finite cyclicity of the 121 graphics (limit periodic sets surrounding the origin) in the compactified family of…
+- `h16-drr-open-rows` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The graphics of the DRR program with no settled finite-cyclicity proof as of the held record are: (H^3_14) — the one graphic through a…
 - `h16-2-finite-cyclicity/G-drr-status` — 1 node(s) rest on it, and the run is already building on it — Which of the 121 DRR graphics remain with finite cyclicity unproved today, and the paper that closed each of the recently closed ones.…
-- `h16-2-h14-3-finite-cyclicity/G-lean-cert` — 1 node(s) rest on it, and the run is already building on it — The finite core of G-lu-core is a kernel-checked Lean certificate: the degree-6 30-monomial identity (192·L6 + P30 = 0) and the degree-4…
 
-_56 further candidate(s) below these, in the table._
+_88 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
-| `clt-2024-book-weak-h16-n2-chapter` | claim | **ready** | — | Christopher, Li, Torregrosa, "Limit Cycles of Differential Equations", 2nd ed., Birkhauser CRM Barcelona (2024), DOI… |
+| `artes-mota-rezende-2024-infinite-nilpotent-normal-form` | claim | **ready** | — | > Every nondegenerate quadratic system with three real finite singular points plus either an infinite nilpotent elliptic-saddle or an… |
+| `brieskorn-1970-quasiunipotent-monodromy` | claim | **ready** | — | For an isolated hypersurface singularity, there is an algebraic description of the local Picard–Lefschetz monodromy: a regular singular… |
+| `clt-2024-book-weak-h16-n2-chapter` | claim | established | — | Christopher, Li, Torregrosa, "Limit Cycles of Differential Equations", 2nd ed., Birkhauser CRM Barcelona (2024), DOI… |
 | `data-canard-2020-summary-broken-capture` | claim | established | — | The held summary/source for Álvarez–Coll–De Maesschalck–Prohens (canard lower bounds, JDE 268 (2020) 3370–3391) is a broken "Redirecting"… |
-| `data-landing-pages-inventory` | claim | established | — | The following held files are landing/record pages with no mathematics beyond an abstract: rouseau-shan-zhu .full.md,… |
 | `data-landing-pages-inventory-2b244073` | claim | **verified** | — | LandingPageInventory, where the formal definition is True; this captures only the provenance fact that the listed files are treated as… |
-| `drr-1994-citation-anchor` | claim | established | — | DRR 1994 (JDE 110:86-133) gives the list of all graphics and degenerate graphics (limit periodic sets surrounding the origin in quadratic… |
 | `drr-DI2a-partial-only` | claim | **ready** | — | The finite cyclicity of the degenerate DRR graphic (DI2a) is NOT proved in the held record. Artés–Dumortier–Llibre 2009 ("Limit cycles near… |
-| `drr-demr-1996-elementary-graphics-abstract` | claim | **ready** | — | Dumortier, El Morsalani, Rousseau, "Hilbert's 16th problem for quadratic systems and cyclicity of elementary graphics", Nonlinearity 9(5)… |
-| `drr-huzak-df2a-hypotheses-limited` | claim | **ready** | — | Huzak 2018, as held here, establishes finite cyclicity only for the quadratic DRR graphic DF₂a (b=0 in the DF₁a family) using its own… |
-| `ecalle-1990-accelerosommation-record` | claim | **ready** | — | Ecalle, "Finitude des cycles-limites et accelero-sommation de l'application de retour", in Francoise-Roussarie (eds), Bifurcations of… |
+| `drr-ledger-no-consolidated-post2020` | claim | **ready** | — | No consolidated post-2020 graphic-by-graphic ledger of the 121 DRR graphics exists in the public record. Rousseau has published no status… |
+| `drr-rr-boundary-only-for-3-graphics` | claim | **ready** | — | Roussarie–Rousseau 2015 proves finite cyclicity of the boundary limit periodic sets of the graphics (I^1_6b), (H^3_13) and (DI_2b) — all… |
+| `drr-rr-closes-i14` | claim | **ready** | — | Roussarie–Rousseau 2015 (arXiv:1506.07104, Trans. Moscow Math. Soc.) proves finite cyclicity of the graphic (I^1_14) — a graphic through a… |
+| `drr-shan-2013-table11-ledger` | claim | **ready** | — | Shan 2013 (PhD thesis, "Finite cyclicity of some graphics through a nilpotent singularity", York University, hdl.handle.net/10315/32000)… |
+| `drrt-2015-fake-saddle-cyclicity-lower-bound` | claim | **ready** | — | De Maesschalck–Rebollo-Perdomo–Torregrosa (JDE 258(2):588–620, 2015) prove that the cyclicity of a quadratic fake saddle (impassable grain:… |
+| `drrt-2015-fake-saddle-no-drr-contribution` | claim | **ready** | — | DMRT 2015 state verbatim that the study of the quadratic fake saddle singularity "has in fact no contribution in the degree-2 programme… |
 | `ecalle-1990-accelerosommation-record-lean` | claim | **verified** | — | The held bibliographic record has year 1990, page interval 74 ≤ 159, and a nonempty title string. |
+| `ecalle-1992-analysable-proof-architecture` | claim | **ready** | — | Écalle's 1992 book (Hermann, Actualités mathématiques, ISBN 2-7056-6199-9) proves Dulac's conjecture (finitely many limit cycles for an… |
 | `fake-saddle-uniform-transition-map-marin2026` | claim | established | — | Under the stated generic fake-saddle hypotheses and d>0, the transition map has a parameter-uniform leading multiplier plus flat remainder;… |
+| `fishkin-perturbed-center-quadratic-bound` | claim | **ready** | — | A. Yu. Fishkin, "On the number of limit cycles of planar quadratic vector fields with a perturbed center", Trans. Moscow Math. Soc. 71… |
+| `g-degenerate-normal-forms` | claim | established | — | For the three DR 2009 normal-form families, the quadratic family near the degenerate graphic reduces, by an affine change of coordinates… |
 | `g-drr-status` | goal | established | — | Which of the 121 DRR graphics have finite cyclicity unproved today. |
 | `g-resolve` | goal | **ready** | — | Resolution of a DRR graphic: finite polynomial blow-ups within the quadratic family reduce each vertex to an elementary normal form;… |
 | `g-transition` | goal | **ready** | — | Sector transition maps carry an asymptotic expansion in a class determined by the vertex normal form — the classical Dulac power-times-log… |
 | `g-uniform` | goal | **ready** | — | The zero bound is uniform over the compact quadratic parameter space near the graphic (cycl(Lambda) < infinity as a family bound). Requires… |
 | `g-zeros` | goal | **ready** | — | The displacement function around the graphic, as composition of transition expansions, has a bounded number of zeros (Dulac-type… |
 | `gasull-gasull-gioacchini-invariant-curves-restricted-counts-formalisation` | claim | **verified** | — | A TwoInvariantCurveFamily with proofs of its two invariant-curve predicates and restriction predicate has an effective finite bound. |
-| `gasull-giacomini-invariant-curves-restricted-counts` | claim | **ready** | — | Invariant algebraic/generalized curves yield effective restricted limit-cycle bounds, including at-most-one results in listed quadratic… |
-| `gasull-santana-2024-structural-status` | claim | **ready** | — | H(n+1)>=H(n)+1; finiteness conditionally implies realization by a structurally stable hyperbolic field, while H(2)<infinity remains open. |
-| `gmv-ect-does-not-cover-i6b-four-dulac` | claim | **ready** | — | GMV's ECT criterion applies to specified first-order Abelian-integral families over separated Hamiltonian ovals, not directly to the… |
-| `h16-2-finite-cyclicity` | goal | blocked | `drr-1994-citation-anchor`, `h16-2-finite-cyclicity/G-drr-status`, `h16-2-finite-cyclicity/G-resolve`, `h16-2-finite-cyclicity/G-transition`, `h16-2-finite-cyclicity/G-uniform`, `h16-2-finite-cyclicity/G-zeros` | H(2) < ∞ — every planar quadratic polynomial vector field has a number of limit cycles bounded uniformly over the whole degree-2 family. |
+| `gavrilov-two-saddle-analytic-finiteness` | claim | **ready** | — | Every heteroclinic two-saddle cycle (a k=2 saddle graphic with two nondegenerate saddles joined by two separatrix connections) occurring in… |
+| `gmv2008-ect-criterion` | claim | **ready** | — | For analytic Abelian integrals I_i(h)=∮_{γ_h} f_i(x)g(y)dx over ovals of H=Φ(x)+Ψ(y), the balances B_{σ1}(f_i/Φ') and B_{σ2}(g_i), with… |
+| `h16-2-degenerate-graphics-finite-cyclicity` | goal | blocked | `h16-2-degenerate-graphics-finite-cyclicity/G-degenerate-normal-forms`, `h16-2-degenerate-graphics-finite-cyclicity/G-degenerate-pstar-and-center`, `h16-2-degenerate-graphics-finite-cyclicity/G-degenerate-slow-divergence` | cycl(Λ) < ∞ for every degenerate DRR graphic Λ in the open set {DF1b, DF2b, DH1, DH2, DI1a, DI1b, DI2a, DI2b, DH3, DH4, DH5} — the 11… |
+| `h16-2-degenerate-graphics-finite-cyclicity-g-degenerate-normal-forms` | goal | **ready** | — | For the three DR 2009 normal-form families, the quadratic family near the degenerate graphic reduces, by an affine change of coordinates… |
+| `h16-2-degenerate-graphics-finite-cyclicity-g-degenerate-pstar-and-center` | goal | **ready** | — | The residual strata of each normal-form family are bounded. (i) Center strata where the SDI vanishes identically: closed by parameter… |
+| `h16-2-degenerate-graphics-finite-cyclicity-g-degenerate-slow-divergence` | goal | **ready** | — | On the desingularized charts of the family blow-up at the contact point of a normal-form family, the displacement map's derivative is C∞… |
+| `h16-2-degenerate-graphics-finite-cyclicity/G-degenerate-normal-forms` | lemma | **ready** | — | For the three DR 2009 normal-form families, the quadratic family near the degenerate graphic reduces, by an affine change of coordinates… |
+| `h16-2-degenerate-graphics-finite-cyclicity/G-degenerate-pstar-and-center` | lemma | **ready** | — | The residual strata of each normal-form family are bounded. (i) Center strata where the SDI vanishes identically: closed by the parameter… |
+| `h16-2-degenerate-graphics-finite-cyclicity/G-degenerate-slow-divergence` | lemma | **ready** | — | On the desingularized charts of the family blow-up at the contact point of a normal-form family, the displacement map's derivative is C^∞… |
+| `h16-2-finite-cyclicity` | goal | blocked | `h16-2-finite-cyclicity/G-drr-status`, `h16-2-finite-cyclicity/G-resolve`, `h16-2-finite-cyclicity/G-transition`, `h16-2-finite-cyclicity/G-uniform`, `h16-2-finite-cyclicity/G-zeros`, `h16-drr-121-graphics` | H(2) < ∞ — every planar quadratic polynomial vector field has a number of limit cycles bounded uniformly over the whole degree-2 family. |
 | `h16-2-finite-cyclicity-G-uniform` | claim | **verified** | — | Given a compact parameter set K and a family Z of zero sets, if the finite-dimensional/algebraic expansion principle supplies a common… |
 | `h16-2-finite-cyclicity-g-zeros` | goal | **ready** | — | — |
-| `h16-2-finite-cyclicity/G-drr-status` | lemma | established | — | Which of the 121 DRR graphics remain with finite cyclicity unproved today, and the paper that closed each of the recently closed ones.… |
+| `h16-2-finite-cyclicity/G-drr-status` | lemma | established | `h16-drr-open-rows` | Which of the 121 DRR graphics remain with finite cyclicity unproved today, and the paper that closed each of the recently closed ones.… |
 | `h16-2-finite-cyclicity/G-resolve` | lemma | **ready** | — | A graphic Λ in the DRR list admits a resolution: each vertex (singular point) is brought by finitely many polynomial blow-ups within the… |
 | `h16-2-finite-cyclicity/G-transition` | lemma | **ready** | — | On each sector of the resolved graphic, the passage (transition) map between the two incoming/outgoing transversals has an asymptotic… |
 | `h16-2-finite-cyclicity/G-uniform` | lemma | **ready** | — | The pointwise zero bound from G-zeros is uniform over the compact parameter space of the quadratic family near Λ_0; i.e. cycl(Λ_0) < ∞ as a… |
 | `h16-2-finite-cyclicity/G-zeros` | lemma | **ready** | — | The displacement (first-return) function around Λ_0 is the composition of the sector transition maps, so it carries an expansion in a… |
-| `h16-2-h14-3-finite-cyclicity` | goal | blocked | `drr-1994-citation-anchor`, `h16-2-h14-3-finite-cyclicity/G-lean-cert`, `h16-2-h14-3-finite-cyclicity/G-lu-core`, `h16-2-h14-3-finite-cyclicity/G-remainder` | cycl(Lambda_0 = H14^3) < infinity: finite cyclicity of the semihyperbolic hemicycle through a triple nilpotent point at infinity, uniformly… |
-| `h16-2-h14-3-finite-cyclicity/G-lean-cert` | lemma | established | — | The finite core of G-lu-core is a kernel-checked Lean certificate: the degree-6 30-monomial identity (192·L6 + P30 = 0) and the degree-4… |
-| `h16-2-h14-3-finite-cyclicity/G-lu-core` | lemma | established | — | The finite algebraic core of Lu's verification of cycl(Λ₀)<∞ stands up to clean-room exact recomputation: (identity half, DISCHARGED) the… |
-| `h16-2-h14-3-finite-cyclicity/G-remainder` | lemma | **ready** | — | The analytic lift from the finite core to cycl(Λ₀)<∞. In the compact five-parameter neighbourhood Λ of the H₁₄³ hemicycle, the displacement… |
-| `h16-bamon-quadratic-finiteness` | claim | **ready** | — | Every quadratic planar vector field (each individual field, P,Q of degree <= 2) has finitely many limit cycles. |
-| `h16-bamon-romanovskii-quadratic-pointwise` | claim | **verified** | — | Every fixed quadratic field, represented by polynomial coordinate functions P,Q over ℝ with totalDegree ≤ 2, has a finite set of isolated… |
-| `h16-bd-abelian-linear-in-m` | claim | **ready** | — | The number of isolated real zeros of an Abelian integral I_{H,omega} (counted with multiplicity, summed over nonsingular ovals), deg H <=… |
-| `h16-bny-abelian-bound` | claim | **ready** | — | The number of isolated zeros of an Abelian integral I_{H,omega}(t), summed over nonsingular ovals and counted with multiplicity, deg H <=… |
-| `h16-dukov-lower-bound-cyclicity-hyperbolic-polycycles-2025` | claim | **ready** | — | Dukov (2025), "Lower bound for the cyclicity of hyperbolic polycycles", Mat. Sb. / Sbornik Mathematics, DOI 10.4213/sm10206e: Theorem 1 --… |
-| `h16-dukov-multiplicity-hyperbolic-polycycles-2023` | claim | **ready** | — | Dukov (2023), "Multiplicities of limit cycles appearing after perturbations of hyperbolic polycycles", Mat. Sb. 214(2):90-111 / Sb. Math.… |
-| `h16-geometry-limitcycle-defn-refuted` | claim | **ready** | — | The "information-geometry" definition of a limit cycle (count of singularities of \|R\| for a Fisher-information scalar curvature) is neither… |
-| `h16-hn-lower-bound-asymptotic` | claim | **ready** | — | The Hilbert number H(n) grows at least as fast as (n+2)^2 log(n+2)/(2 log 2); equivalently liminf H(n)/((n+2)^2 log(n+2)) >= 1/(2 log 2);… |
 
-_31 further nodes not shown._
+_66 further nodes not shown._
 
 ## Resting on nothing that exists
 
 Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
 
-- `h16-2-finite-cyclicity` rests on `h16-drr-121-graphics`, which does not exist
-- `h16-2-h14-3-finite-cyclicity` rests on `h16-drr-121-graphics`, which does not exist
+- `h16-2-degenerate-graphics-finite-cyclicity` rests on `drr-1994-citation-anchor`, which does not exist
+- `h16-2-finite-cyclicity` rests on `drr-1994-citation-anchor`, which does not exist
+- `h16-2-h14-3-finite-cyclicity` rests on `drr-1994-citation-anchor`, which does not exist
 - `h16-2-h14-3-finite-cyclicity` rests on `drr-lu-claims-h14-3`, which does not exist
-- `h16-2-h14-3-finite-cyclicity` rests on `h16-drr-open-rows`, which does not exist
 - `h16-2-h14-3-finite-cyclicity` rests on `lu-finite-core-identity-half-checked`, which does not exist
 - `h16-2-h14-3-finite-cyclicity` rests on `bautin-chart-membership-l8-l10-l12`, which does not exist
 - `h16-2-h14-3-finite-cyclicity` rests on `drr-saddle-node-normalforms-dir2002`, which does not exist
 - `h16-2-h14-3-finite-cyclicity` rests on `drr-zhu-rousseau-2002-nilpotent-machinery`, which does not exist
-- `h16-sharp-abelian-named-family` rests on `h16-abelian-integral-bounds`, which does not exist
+- `h16-2-i6b-four-dulac-finite-cyclicity` rests on `gmv-ect-does-not-cover-i6b-four-dulac`, which does not exist
+- `h16-2-i6b-four-dulac-finite-cyclicity` rests on `drr-1994-citation-anchor`, which does not exist
 - `h16-sharp-abelian-named-family` rests on `h16-alien-limit-cycles-abelian-insufficiency`, which does not exist
 
 ---

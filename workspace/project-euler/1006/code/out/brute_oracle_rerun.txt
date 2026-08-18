@@ -1,4 +1,10 @@
-F3 ['001', '010', '100', '101']
-Psi(3) 20302
-Psi(10) mod 101001001 10699667
-ALL WORKED EXAMPLES PASSED
+Fresh capture of `python3 code/brute.py` (timeout 60) — run at the worked-example sizes only (k=3, k=10).
+
+3 ['001', '010', '100', '101'] 20302 20302
+10 ['0010010100', '0010100100', '0010100101', '0100100101', '0100101001', '0101001001', '0101001010', '1001001010', '1001010010', '1010010010', '1010010100'] 4085011557551094804 10699667
+
+Checks:
+- F_3 = {001, 010, 100, 101}: MATCH (statement's list exactly)
+- Psi(3) = 20302: MATCH (1^2 + 10^2 + 100^2 + 101^2 = 1+100+10000+10201 = 20302)
+- #length-10 factors = 11 = k+1: MATCH (statement's count claim)
+- Psi(10) mod 101001001 = 10699667: MATCH

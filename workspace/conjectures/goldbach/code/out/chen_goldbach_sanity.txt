@@ -1,0 +1,8 @@
+sanity ordinary_goldbach_4_to_1000: PASS
+hand classifications: p=2 -> 4=2*2; p=3 -> 5 prime; p=7 -> 9=3*3: PASS
+bound_requested: 1000
+bound_reached: 1000
+first_failure: None
+witness_at_last_n: (17, 983)
+tested_numbers: 167
+elapsed_seconds: 0.000294176978059113

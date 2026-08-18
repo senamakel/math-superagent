@@ -15,14 +15,18 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `DumortierRoussarieRousseau1994.lean` | _(undescribed)_ |
 | `ECT.lean` | _(undescribed)_ |
 | `ECTSlowDivergence.lean` | Kernel-checked abstract ECT-family zero-bound lemma: a nontrivial linear combination on a finite-dimensional family has at most card(index)-1 zeros, conditional on the explicit ECT certificate; deliberately omits the open slow-divergence analytic reduction. |
+| `FiguerasTuckerVilladelprat2013.lean` | _(undescribed)_ |
 | `FullCheck.lean` | _(undescribed)_ |
 | `FullCheck2.lean` | _(undescribed)_ |
 | `FullCheck3.lean` | _(undescribed)_ |
 | `FullCheck4.lean` | _(undescribed)_ |
 | `GMV.lean` | _(undescribed)_ |
+| `HuzakDeMaesschalckDumortier2014.lean` | _(undescribed)_ |
+| `IlyashenkoLlibreRestricted.lean` | Cited axiom + kernel-checked wrapper for the Ilyashenko–Llibre restricted H16.2 bound (Thm 5): δ-tame limit cycles of normalized quadratic fields σ-distant from centers and κ-distant from singular fields are ≤ |log σ|·exp(exp(10²⁵δ^{−31}κ^{−2})). All hypotheses are opaque axioms (not True/0 definitions), so the wrapper is conditional, never formalised; the analytic content is the paper's. |
 | `L8NotInIdeal_alt.lean` | Second INDEPENDENT route to L8 ∉ ⟨L4,L6⟩ (same statement as Bautin.lean's V3_not_mem_span_V1_V2). Route A: quotient-homomorphism certificate at a second, non-proportional evaluation point certPt2=(-3,-3,2,0,1,-1) — kernel-closed (second_point_route). Route B: graded/degree-6 linear-algebra reformulation, stated with by-sorry gap (graded_membership_shape). Cross-checks the certPt proof via a fresh full-box search (cofactor_certificate2.py). |
 | `LuH14Remainder.lean` | Lean statement of the conditional jointly-uniform analytic remainder bound needed to lift Lu's finite Bautin core to a displacement zero bound; proof intentionally open. |
 | `Marin2026.lean` | _(undescribed)_ |
+| `Mourtada2009.lean` | Lean statement of Mourtada 2009 Théorème 0 as Cited axiom + wrapper: uniform N (count) and L (multiplicity) bound on limit cycles in analytic unfoldings of monodromic hyperbolic polycycles. Self-contained (single-file kernel constraint: inlines IsLimitCycle/LimitCycleSet from Statement.lean instead of importing Lib). Multiplicity is an abstract placeholder pending the displacement formalism. Analytic input for Lu H14^3 QRH thread. UNCOMPILED — needs lean_check run. |
 | `Probe.lean` | _(undescribed)_ |
 | `Search.lean` | _(undescribed)_ |
 | `Search2.lean` | _(undescribed)_ |
@@ -34,13 +38,16 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `SourceSummary.lean` | _(undescribed)_ |
 | `Statement.lean` | H16.2 stated in Lean: PlanarPolyField n carries P Q : MvPolynomial (Fin 2) ℝ with totalDegree ≤ n; IsLimitCycle = non-constant periodic integral curve isolated in the set of periodic orbits; h16_2 states ∀ n, ∃ N, ∀ f, (LimitCycleSet f.toMap).Finite ∧ ncard ≤ N, ending in by sorry. Compiles via lean_check (only axiom beyond the kernel's own three is sorryAx from the intentional sorry). |
 | `StatementLibraryCycle.lean` | Typed blueprint for H16.2 used in the library-building cycle; exposes the missing flow, periodic-orbit, and isolatedness interfaces instead of claiming Mathlib already provides them. |
+| `center_characterization_by_first_integral.lean` | _(undescribed)_ |
 | `claimed_hilbert_number_formula.lean` | _(undescribed)_ |
 | `cycle-index-note.md` | _(undescribed)_ |
 | `g_drr_status-a0a5b3a8.lean` | _(undescribed)_ |
 | `g_drr_status.lean` | _(undescribed)_ |
 | `global_uniform_bound_elementary_sphere_family.lean` | _(undescribed)_ |
 | `hyperbolic_polycycle_delta_zero_iff_all_ratios_one.lean` | _(undescribed)_ |
+| `kernel_of_monomial_map.lean` | _(undescribed)_ |
 | `node_g_transition.lean` | _(undescribed)_ |
 | `research_summary.lean` | _(undescribed)_ |
+| `symmetry_component_dimension.lean` | _(undescribed)_ |
 | `target.lean` | _(undescribed)_ |
 | `target_node.lean` | _(undescribed)_ |

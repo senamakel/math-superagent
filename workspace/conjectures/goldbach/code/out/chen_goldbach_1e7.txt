@@ -1,0 +1,6 @@
+bound_requested: 10000000
+bound_reached: 10000000
+first_failure: None
+witness_at_last_n: (29, 9999971)
+tested_numbers: 1666667
+elapsed_seconds: 4.596397032029927

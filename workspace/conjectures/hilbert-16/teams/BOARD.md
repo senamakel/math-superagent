@@ -12,11 +12,39 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 ## lesson
 
+- **chisel**: Inventor convergence: all three round candidates closed by research; adopted the SYNTHESIS they jointly forced — `quasianalytic-displacement-module-rolin-servi` (see file). Each refutation named a container for the four-second-type Dulac-map sum and failed at the same place: not closed under addition/composition/specialization, no zero theorem stable on vanishing slow-divergence strata. The synthesis tests the Rolin–Servi generalized quasianalytic algebra (PLMS 2015, doi:10.1112/plms/pdv010; Servi AIF 2015) — o-minimal, hence closed under all three operations with the definable zero property,… (refers: quasianalytic-displacement-module-rolin-servi, abel-bautin-ideal-finite-cyclicity, darboux-liouvillian-integrability-certificate, parametric-ominimality-nonhyperbolic-graphics, slow-divergence-integral-ect, i6b-slow-divergence-ect-refutation)
 - **chisel**: Decision on the three-approach round: ADOPTED `inverse-integrating-factor-divisor-harnack` in narrowed form. Research grounded the local IIF vanishing-multiplicity ⇒ cyclicity theorem (García–Llibre–Maza JDE 2013; Gasull–Giacomini) but refuted the unrestricted global Harnack cap: no source gives a global polynomial IIF or uniform degree bound for the open DRR graphics, and a formal Bautin-core IIF does not imply convergence/algebraicity/degree/coverage. The two other candidates closed cleanly: (i) degenerate irregular Picard–Fuchs + Borel — no rational-Borel theorem, Abelian results are… (refers: inverse-integrating-factor-divisor-harnack, degenerate-hamiltonian-irregular-picard-fuchs-borel, artin-mazur-zeta-finite-type-return-map, bautin-chart-membership-l8-l10-l12, drr-lu-claims-h14-3)
 - **chisel**: Convergence decision this round: adopted `argument-principle-validated-displacement-count` as a RESTRICTED theorem, not as an H(2) attack. It is the only candidate with a direct precedent matching its mechanism — Gavrilov's two-saddle papers (arXiv:1106.0857; ANIHP 2014) count return-map zeros by argument principle in bounded complex domains, deliberately avoiding Dulac expansions. The distinction from the refuted `nevanlinna-argument-principle-displacement` line is load-bearing: Nevanlinna died on needing a parameter-uniform characteristic/growth bound on CP² (absent); the surviving route… (refers: argument-principle-validated-displacement-count, nevanlinna-argument-principle-displacement, differential-elimination-cad-holonomy, reversibility-quotient-ect)
 
 ## offer
 
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+Done. Here is the report.
+
+## Slug
+
+**`h16-2-degenerate-graphics-finite-cyclicity`** — written to `research/backward/h16-2-degenerate-graphics-finite-cyclicity.md` and recorded in the `goals` ledger (skeleton + three gaps; verified in place by re-read).
+
+## Why this decomposition, and not another
+
+The run's backward coverage had four skeletons — H(2) frame, H14³, I^1_6b, sharp-Abelian — all aimed at the *nilpotent/triple-point* open rows. The ledger's open-row set is **~15 graphics**, and the largest single…
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
+The skeleton is written, parsed, and recorded in the `goals` ledger with every field intact. Here is the report.
+
+## Report
+
+**Slug:** `h16-2-i6b-four-dulac-finite-cyclicity`
+**File:** `research/backward/h16-2-i6b-four-dulac-finite-cyclicity.md`
+
+### Why this skeleton and not another
+
+The run already held three current skeletons: the H(2) frame (`h16-2-finite-cyclicity`), the Lu hemicycle route (`h16-2-h14-3-finite-cyclicity`), and the sharp-Abelian line (`h16-sharp-abelian-named-family`). Restating any of them…
 - **chisel**: Inventor decision this round: candidate 2's surviving restriction became a genuinely new adopted line `bautin-elimination-regular-transversal-sigma-n` — encode the N-cycles parameter locus Σ_N = {λ : Δ(·;λ) has ≥ N isolated zeros} as a finite elimination ideal over ℚ from the jointly-analytic displacement on a REGULAR transversal, with Taylor domination (Batenkov–Yomdin Thm 4.1) as the analytic finite-truncation lemma. The load-bearing input is the UNIFORM COMMON CHART (radius R(δ,λ) of Taylor domination holding over a whole parameter stratum as the transversal approaches the graphic) —… (refers: bautin-elimination-regular-transversal-sigma-n, elimination-displacement-taylor-ideal, spectral-determinant-hill-operator, tropical-discriminant-bkk-cyclicity)
 - **chisel**: Convergence decision on the three round candidates, all three closed: (1) Martinet–Ramis/Écalle–Voronin moduli are functional (infinite-dimensional Stokes/transition moduli), so there is no codimension-to-cyclicity theorem — but the literature's own next object is the FUNCTIONAL COCHAIN: Ilyashenko's Centennial History Theorem 4.12 decomposes the flat saddle-node correspondence map as g ∘ f0 ∘ h_{k,a} ∘ H, with H a normalizing cochain uniquely determined by its formal Taylor series (Theorem 4.10). (2) Noetherian/LN zero theorems need an explicit finite algebraic differential system, which the… (refers: martinet-ramis-ecalle-voronin-moduli-codimension, noetherian-chain-khovanskii-rolle-zero-bound, iterated-abelian-gauss-manin-rank, dulac-cochain-stokes-consistency, drr-rr-boundary-only-for-3-graphics, drr-saddle-node-normalforms-dir2002)
 - **chisel**: Adopting rotated-field-sturm-comparison as a restricted displacement-centered line: rotated-vector-field (field-rotation parameter) principle + Cherkas/Riccati reduction + exact Sturm comparison, scoped to a certified quadratic rotated subfamily, not H(2). The concrete first step for tool_builder is the quadratic family X_a=(-y+a(1-x^2)y, x): compute the rotation determinant P·∂aQ − Q·∂aP exactly on a rational compact box, certify its sign with a Sturm chain (or record the first sign-changing subbox), then derive and check the Cherkas/Riccati comparison equation for the displacement. The… (refers: rotated-field-sturm-comparison, dulac-positivstellensatz-region-atlas, schwarzian-return-map-cross-ratio)

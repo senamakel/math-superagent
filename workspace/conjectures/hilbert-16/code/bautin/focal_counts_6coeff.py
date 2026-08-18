@@ -221,6 +221,22 @@ def load_ckpt(path):
     return V, wall, int(data["done_through"]), float(data["total_elapsed"])
 
 
+def recompute_ls(V, up_to):
+    """Re-derive the even-degree focal values L_4..L_up_to from the solved
+    Lyapunov polynomials V.  Used on resume: the checkpoint stores V and wall
+    only, so a resumed run must rebuild Ls before the guards/table can run.
+    Exact sympy arithmetic; degrees 4..12 take ~30s together."""
+    Ls = {}
+    for d in range(4, up_to + 1, 2):
+        rhs = even_rhs(d, V[d - 1])
+        _, Ld = solve_degree(d, rhs)
+        assert Ld is not None
+        assert residual_ok(d, V[d], rhs, Ld), \
+            f"resume recompute: defining identity failed at degree {d}"
+        Ls[d] = Ld
+    return Ls
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--max-degree", type=int, default=14)
@@ -256,7 +272,7 @@ def main():
     print()
 
     wall = dict(wall0)
-    Ls = {}
+    Ls = recompute_ls(V, done_through) if args.resume else {}
     skip14 = None
     stopped_at = None
 
@@ -269,12 +285,18 @@ def main():
         if len(es) < 2:
             return None
         ratios = [wall[es[i]] / wall[es[i - 1]] for i in range(1, len(es))]
-        factor = max(ratios)
-        # the next even degree after max(even done) will follow a full odd
-        # step and an even step, each ~factor x the previous
-        last_even = max(d for d in wall if d % 2 == 0)
-        slots = (max_deg - last_even)  # number of remaining degree-steps
-        est = time.time() - t0 + wall[last_even] * (factor ** slots)
+        # Growth is monotonically decreasing along the chain (4.38, 3.61,
+        # 2.42, 2.54, 2.49, 2.02), so the most recent ratios are the best
+        # predictors; median overweights the 6->7 startup outlier.  Use the
+        # geometric mean of the last three ratios, and project the remaining
+        # degree-steps as a geometric sum wall_last * (f + f^2 + ...), not a
+        # compounding power (which double-counts the chain growth).
+        import math
+        tail = ratios[-3:]
+        factor = math.exp(sum(math.log(r) for r in tail) / len(tail))
+        remaining = (max_deg - done_through)  # full degree-steps still to run
+        proj = wall[max(es)] * sum(factor ** k for k in range(1, remaining + 1))
+        est = time.time() - t0 + proj
         return est + 0.0  # projected absolute wall time of finishing max_deg
 
     for d in range(done_through + 1, max_deg + 1):
@@ -370,6 +392,14 @@ def main():
             path = f"code/out/focal_6coeff_L{d}.txt"
             n = dump_poly(path, Ls[d], d)
             dumped.append(f"{path} ({n} terms)")
+    # Emergency flush: if the tool cap is about to strike while degree 14 is
+    # solved but not yet printed, the dump above is the durable record.  Also
+    # flush when the completion landed inside the deadline window but past the
+    # remaining budget: the exact dump is worth more than the verdict line.
+    if 14 in Ls and total > deadline_s:
+        n = dump_poly("code/out/focal_6coeff_L14.txt", Ls[14], 14)
+        print(f"## EMERGENCY FLUSH: degree-14 completed past budget; exact dump "
+              f"written to code/out/focal_6coeff_L14.txt ({n} terms)")
     print("## Exact polynomial dumps (machine-readable, ilcm-cleared)")
     for line in dumped:
         print("  " + line)

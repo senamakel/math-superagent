@@ -4,27 +4,30 @@ Derived from the `follows-from:` lines in every `claim` block, closed transitive
 
 A claim written `follows-from: a, b` says `a` and `b` together give it. That single edge is enough to answer three questions the claim ledger cannot: which claims the run has already established without noticing, which proposals would add nothing, and which pair of held beliefs cannot both be true.
 
+## Established for free
+
+Every claim these rest on is established, so these are too, whatever status their block carries. Proving one again spends an attempt on something the run already has — update the status instead.
+
+- `clt-2024-book-weak-h16-n2-chapter` — filed as catalogued, follows from `h16-abelian-integral-bounds`
+  - Christopher, Li, Torregrosa, "Limit Cycles of Differential Equations", 2nd ed., Birkhauser CRM Barcelona (2024), DOI 10.1007/978-3-030-59656-9: textbook TOC…
+
+
+## Supporting themselves
+
+Each of these follows, through the edges on disk, from itself. Whatever the statements are worth, this chain establishes none of them, and nothing above counts them as support.
+
+- `h16-hn-lower-bound-asymptotic`
+- `h16-lower-bounds`
 
 ## Following from nothing recorded
 
 Each edge below names a claim no block on disk carries. Either the id is misspelled, or the run is deriving something from a belief nobody wrote down.
 
-- `clt-2024-book-weak-h16-n2-chapter` follows from `h16-abelian-integral-bounds`, which does not exist
-- `data-canard-2020-summary-broken-capture` follows from `h16-canard-asymptotic-lower-bound-2020`, which does not exist
-- `drr-1994-citation-anchor` follows from `h16-drr-121-graphics`, which does not exist
-- `drr-demr-1996-elementary-graphics-abstract` follows from `h16-drr-121-graphics`, which does not exist
-- `ecalle-1990-accelerosommation-record` follows from `h16-dulac-finiteness-theorem`, which does not exist
-- `fake-saddle-uniform-transition-map-marin2026` follows from `Cited.marin_fake_saddle_transition`, which does not exist
-- `h16-dukov-lower-bound-cyclicity-hyperbolic-polycycles-2025` follows from `h16-drr-121-graphics`, which does not exist
-- `h16-dukov-lower-bound-cyclicity-hyperbolic-polycycles-2025` follows from `h16-dulac-finiteness-theorem`, which does not exist
-- `h16-dukov-lower-bound-cyclicity-hyperbolic-polycycles-2025` follows from `h16-mourtada-1991-hyperbolic-finite-cyclicity-primary`, which does not exist
-- `h16-dukov-multiplicity-hyperbolic-polycycles-2023` follows from `h16-drr-121-graphics`, which does not exist
-- `h16-dukov-multiplicity-hyperbolic-polycycles-2023` follows from `h16-dulac-finiteness-theorem`, which does not exist
-- `h16-dukov-multiplicity-hyperbolic-polycycles-2023` follows from `h16-mourtada-1991-hyperbolic-finite-cyclicity-primary`, which does not exist
-- `h16-hn-lower-bound-asymptotic` follows from `h16-lower-bounds`, which does not exist
-- `h16-hyperbolic-polycycle-cyclicity-lower-bound-bgs2024` follows from `h16-drr-121-graphics`, which does not exist
-- `h16-hyperbolic-polycycle-cyclicity-lower-bound-bgs2024` follows from `h16-dulac-finiteness-theorem`, which does not exist
-- `h16-kaloshin-indep-proof` follows from `h16-kaloshin-uniform-bound`, which does not exist
+- `h16-hyperbolic-polycycle-cyclicity-lower-bound-bgs2024` follows from `drr-1994-citation-anchor`, which does not exist
+- `huzak-kristiansen-2022-regularized-piecewise-unbounded` follows from `De`, which does not exist
+- `huzak-kristiansen-2022-regularized-piecewise-unbounded` follows from `framework`, which does not exist
+- `huzak-kristiansen-2022-regularized-piecewise-unbounded` follows from `of`, which does not exist
+- `huzak-kristiansen-2022-regularized-piecewise-unbounded` follows from `slow-divergence-integral`, which does not exist
 
 ---
 

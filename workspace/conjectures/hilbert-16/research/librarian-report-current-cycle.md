@@ -1,75 +1,107 @@
-# Librarian cycle report — monomial-count variant, trivial-monodromy Abelian integrals, DRR status re-confirmed
+# Librarian cycle report — finiteness-theorem primary texts, DRR ledger re-confirmed
 
-## What was added this pass
+## What was added this pass (both primary, verified by first lines)
 
-1. **Gasull & Santana, "On a variant of Hilbert's 16th problem" (arXiv:2405.04281,
-   Nonlinearity 2024) — NEW library addition, published source.**
-   - Full: `research/sources/gasull-santana-monomial-hilbert-variant-arxiv-html.full.md`
-     (+ abstract page `...-arxiv.full.md`); summary
-     `research/summaries/gasull-santana-monomial-hilbert-variant.md`.
-   - Counts limit cycles by NUMBER OF MONOMIALS m instead of degree: H^M(m).
-     Theorem 1: H^M(m) >= (1/2)m^2 - 3m - 8 for m >= 9 (quadratic growth).
-     Theorem 2: H^M(4..10) >= 12,12,12,16,20,24,32. Methods: Abelian integrals
-     (Poincare-Pontryagin/Melnikov) for the quadratic bound and H^M(9)>=24;
-     reversible-center + weak-focus cyclicity for H^M(4)>=12 (planar-S system).
-   - Why: **adjacent problem the library had no source on** — the first
-     monomial-count Hilbert analogue held. It independently reproduces and
-     improves the O(n^2 ln n) lower bound on H(n) (ties to
-     `h16-canard-asymptotic-lower-bound-2020`), and is a test-bed for the
-     adopted sharp-Abelian approach. Claim: `h16-gasull-santana-monomial-hilbert-variant-2024`.
+1. **Ilyashenko 1990, "Finiteness theorems for limit cycles"** (Russian Math.
+   Surveys 45:2, 129-203; UMN 45:2, 143-200) — NEW full text.
+   - File: `research/sources/ilyashenko-1990-finiteness-theorems-rms-primary.full.md`
+     (3.4 MB PDF source → 163 KB Markdown, 3863 lines).
+   - URL: `https://www.mathnet.ru/php/getFT.phtml?jrnid=rm&paperid=4718&what=fullteng&option_lang=eng`
+     — **mathnet paperid `rm4718`** (found via a citation URL `mathnet.ru/rus/rm4718`,
+     NOT guessed; a guessed `rm4668` fetched Rozanova's PDE paper instead and was
+     neutralised — see the wrong-fetch record below).
+   - Content (verified from first 40 lines): Theorems I-IV — (I) polynomial planar
+     fields have finitely many limit cycles; (II) analytic fields on closed
+     2-surfaces have finitely many; (III) a neighbourhood of a singular point free
+     of limit cycles; (IV) elementary compound cycles have a limit-cycle-free
+     neighbourhood. §1 expansion of monodromy transformations into terms with
+     incommensurable rates of decrease; §2 functional cochains (simple and
+     sectorial); §3 Phragmén–Lindelöf for cochains; §4 superaccurate asymptotic
+     series. This is the **canonical survey of the Dulac finiteness theorem and
+     its proof structure** — the Ilyashenko side of the Écalle-side frontier row
+     (Écalle 1992 book), and the 19-citation frontier target
+     `10.1070/rm1990v045n02abeh002335` now held.
+   - Why it matters here: the finiteness theorem is the pointwise side of the
+     H16.2 uniformity gap; its proof structure (cochains, Phragmén–Lindelöf,
+     superaccurate series) is exactly where the run's `dulac-cochain-stokes-consistency`
+     approach lives, and where Yeung 2024 claims a gap. Now the primary text is on
+     disk for the scholar to check those claims against.
 
-2. **Muciño-Raymundo & Rebollo-Perdomo, "Abelian integrals for polynomials with
-   trivial global monodromy on C^2" (arXiv:2508.15925, 2025) — NEW, directly
-   relevant to the adopted sharp-Abelian approach.**
-   - Full: `research/sources/mucino-rebollo-abelian-trivial-monodromy-html.full.md`
-     (2117 lines) + abstract page; summary
-     `research/summaries/mucino-rebollo-abelian-trivial-monodromy.md`.
-   - Trivial-global-monodromy structure makes Abelian integrals POLYNOMIALS of
-     the level c, so degree-bounds replace Picard-Fuchs/argument-principle
-     machinery. Theorem 23 (primitive type (0,2)): at most floor((n+1)m/2)
-     isolated zeros; three-cycle example bounds; worked n=3 case with 15 distinct
-     zeros. **Caveat recorded**: Remark 9's "infinitely many complex limit
-     cycles" across homology classes is a complex-algebraic phenomenon and must
-     NOT be misread as a real-planar counterexample/challenge to H16.2.
-   - Claim: `h16-mucino-rebollo-abelian-trivial-monodromy-2025`.
+2. **Ilyashenko 2016, "Finiteness theorems for limit cycles: a digest of the
+   revised proof"** (Izvestiya: Mathematics 80:1, 50-112, part 1 of 2) — full text
+   now held.
+   - Files: `research/sources/ilyashenko-2016-digest-revised-proof-fulltext.full.md`
+     (763 KB PDF → 155 KB Markdown; digest at
+     `research/summaries/ilyashenko-2016-digest-revised-proof-fulltext.md`).
+   - URL: `https://www.mathnet.ru/php/getFT.phtml?jrnid=im&paperid=8352&what=fullteng&option_lang=eng`
+     — paperid `im8352` (from the held abstract page's getFT link, not guessed).
+   - Content (digest verified): Theorems 0.1-0.12 — finiteness for polynomial
+     fields and analytic fields on closed surfaces; non-accumulation theorem for
+     elementary polycycles; identity theorem (countably many fixed points ⇒
+     monodromy is identity); asymptotics theorem; almost-regular germs extend to
+     quadratic domains; Phragmén–Lindelöf for almost-regular germs; sectorial
+     normalization; correspondence maps TO/FROM a centre manifold of a degenerate
+     elementary point; monodromy as a finite composition of almost-regular maps
+     and TO/FROM maps. This is Ilyashenko's **revised-proof digest**, directly
+     relevant to the `dulac-cochain-stokes-consistency` thread and to checking
+     Yeung's claimed gap.
+   - Part 2 (the series' second paper) was NOT fetched: its mathnet paperid is
+     not derivable by guessing (im8353 is a 404) and no citation URL for it is
+     held. Recorded as a gap, not guessed again.
 
-3. **Shao & Li hyperelliptic Liénard (EJQTDE 2024) — capture attempt recorded as
-   landing-page-only.** The journal DOI resolved only to the home page (no
-   mathematics). Claim `data-shao-li-hyperelliptic-lienard-landing-only` records
-   that the paper is NOT held, so the search-summary's "at most six limit cycles"
-   claim survives only at recall level and must not be cited as held.
+## Wrong-fetch record (kept as a lesson, neutralised as a source)
 
-## DRR / open-requests status — re-confirmed by deep research (no new closure)
+`research/sources/ilyashenko-1990-finiteness-theorems-rms-fulltext.full.md` was
+created by a **guessed** mathnet paperid (`rm4668`) and contains **O. S.
+Rozanova's PDE paper** (Communications of the Moscow Mathematical Society), not
+Ilyashenko. It has been overwritten with a WRONG-FETCH header pointing to the
+correct file, and the incident is recorded at
+`research/findings/wrong-fetch-rozanova-mislabeled-ilyashenko-1990.md`. Lesson:
+**never guess a mathnet paperid**; get it from a citation URL that carries
+`mathnet.ru/rus/rmNNNN`, then verify the first lines of the landing text against
+the expected title.
 
-The open request `complete-current-ledger-cb3d` / `dumortier-roussarie-rousseau-9c4f`
-(the full 121-graphics open count) was re-attacked with `deep_research`
-bounded to 2023-2026. Result: **no new peer-reviewed closure beyond the 2015
-picture**. The literature universally reports:
-- 88 of 121 closed by 2015; RR 2015 fully closed I^1_14 + boundary sets only of
-  (I^1_6b),(H^3_13),(DI_2b);
-- **exactly one graphic, (H^3_14), with no full finite-cyclicity proof**, and
-  Lu arXiv:2607.13785 (2026, unrefereed preprint) is the sole claim to it.
-This corroborates the run's existing triangulated inventory — the open-count
-question's falsifier (a source showing a different open count or a new closure)
-did NOT appear. No new download warranted; the DRR open ledger remains the
-88/121 + I^1_14 + (3 boundary-only) + H^3_14 picture, with Lu unrefereed.
+## DRR ledger — re-confirmed, not changed
 
-## Not obtained (re-confirmed genuine)
+No new closure of any open DRR graphic appeared in this pass's searches (bounded
+to 2026): the held picture stands — ≥89/121 fully closed by 2015 (88 RSZ +
+(I^1_14) RR), (I^1_6b),(H^3_13),(DI_2b) boundary-sets-only, (H^3_14) open with
+Lu arXiv:2607.13785 (v2, 17 Jul 2026, unrefereed) the sole claim, 11 degenerate
+graphics open per Shan 2013. The two open requests
+(`complete-current-ledger-cb3d`, `dumortier-roussarie-rousseau-9c4f`) remain
+unfillable from a single public source — no consolidated post-2020 ledger exists
+and DRR 1994's raw catalogue is paywalled. Re-confirmed via the Fishkin search
+that the field has moved on (Marín–Villadelprat hemicycles; the 2024-2026
+surveys) without closing the DRR rows.
 
-- Shao-Li EJQTDE 2024 full text (landing page only).
-- DRR 1994 raw catalogue, Roussarie 1998 book, Planar Dynamical Systems
-  (De Gruyter) — unchanged, prior passes recorded them unobtainable.
+## Fishkin — constants still unverified
 
-## Frontier work
+The AMS PDF for Fishkin 2010 (Trans. Moscow Math. Soc. 71,
+DOI 10.1090/s0077-1554-2010-00181-1) was rate-limited three times (HTTP 429).
+The search-result abstract quotes the constants (σ = exp(-10^73 κ - 2δ - 33),
+bound exp(exp(10^72 κ - 2δ - 33))) but that is still recall-level; the claim
+`fishkin-perturbed-center-quadratic-bound` remains abstract-level only. The
+thread `restricted-h2-bounds` stays open; the next attempt should use the
+mathnet mirror of the Russian original (Trudy Moskov. Mat. Obshch. 71, 2010)
+rather than ams.org.
 
-Top frontier rows remain ScienceDirect paywall shells and the two known
-unobtainable items (DRR 1994, Planar Dynamical Systems). The Gasull-Santana and
-Muciño-Rebollo downloads added ~120 citations to the frontier; those re-point
-into the already-deep core. Library remains well-covered across every axis the
-goal names (finiteness, DRR, Abelian integrals, lower bounds, Liénard, canards,
-o-minimality, Dulac gap/contention).
+## Requests ledger — status
+
+- `complete-current-ledger-cb3d` / `dumortier-rousseau-rousseau-9c4f` (DRR
+  ledger): still open; unfillable from one source, triangulated instead.
+- Gasull–Santana structural-status comparison: answered by held claims
+  (`h16-gasull-santana-2024-structural-status`); no new fetch needed.
+- Best special-family Abelian-integral bound: answered by held sources
+  (BD linear-in-m, BNY double-exponential, FTV2013 Chebyshev ECT, Gavrilov 2001);
+  no new fetch needed.
 
 ## Memory
 
-`remember_memory` stored both new findings (Gasull-Santana monomial variant;
-Muciño-Rebollo trivial-monodromy Abelian integrals) for cross-run recall.
+`remember_memory` was attempted for both new holdings; the Cognee service
+failed (health check timeout) on every call this pass, so the durable record of
+this cycle is this report + the source files themselves. When memory recovers,
+store: (a) Ilyashenko 1990 RMS 45:2 full text held at
+`research/sources/ilyashenko-1990-finiteness-theorems-rms-primary.full.md`
+(mathnet rm4718); (b) Ilyashenko 2016 digest part 1 full text held at
+`research/sources/ilyashenko-2016-digest-revised-proof-fulltext.full.md`
+(mathnet im8352); (c) the mathnet paperid lesson.

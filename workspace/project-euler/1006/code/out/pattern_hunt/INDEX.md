@@ -28,6 +28,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `sequence_audit_final_2026-08-18.md` | Final exact audit of stored PE1006 integer sequences: recurrence searches, structural checks, OEIS lookup status, and first falsifiers; no new exploitable recurrence found. |
 | `sequence_audit_requested.out` | _(undescribed)_ |
 | `sequence_survey_2026-08-18.md` | Consolidated exact survey of all previously unsurveyed integer sequence artifacts, listing surviving finite regularities, first falsifiers, recurrence/OEIS results, and reproducible commands. |
+| `sequence_task_report_2026-08-18.md` | Fresh sequence-structure audit report: files read, commands and outputs, exact bounded regularities, falsifiers, recurrence results, and failed OEIS lookup. |
 | `sequence_tools_audit_2026-08-18.md` | _(undescribed)_ |
 | `sequence_tools_followup_2026-08-18.md` | Exact follow-up survey of every stored pattern-hunt sequence, including newly rerun d_j analysis, exact Wythoff checks, deliberate falsifiers, and bounded negative recurrence results. |
 | `survey_requested.py` | Read-only survey of existing integer-sequence result files; tests simple formulas and exact linear recurrences, reporting first falsifiers. It does not alter core solution. |

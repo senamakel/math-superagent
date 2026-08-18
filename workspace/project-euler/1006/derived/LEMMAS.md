@@ -89,9 +89,9 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `PE1006G2Shell.slope_mem_Icc` | theorem | verified | (n : ℕ) : | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
 | `PE1006PsiG2.Cited.mechanical_factor_parametrisation` | axiom | verified | (k n : ℕ) (h : k < Nat.fib (n + 2)) : | Berstel, *Recent Results on Sturmian Words*, rotational-factor theorem; | `code/lean/pe1006_psi_G2_mechanical_factor_parametrisation-3b6fbf7e.lean` |
 
-_278 more not shown here; they are in `code/lean`._
+_328 more not shown here; they are in `code/lean`._
 
-358 declarations, 100 of them in a file the kernel has checked.
+408 declarations, 98 of them in a file the kernel has checked.
 
 ## Never checked
 
@@ -101,26 +101,11 @@ These files are in the tree and no `lean_check` verdict exists for them. Nothing
 - `code/lean/Lib/PE1006/problem.lean`
 - `code/lean/Lib/pe1006-directive9-transfer-captured.lean`
 - `code/lean/mechanical_word_digit_rule-f4995b0e.lean`
-- `code/lean/probe/explore10.lean`
-- `code/lean/probe/explore11.lean`
-- `code/lean/probe/explore12.lean`
-- `code/lean/probe/explore13.lean`
-- `code/lean/probe/explore14.lean`
-- `code/lean/probe/explore9.lean`
-- `code/lean/probe/fib10.lean`
-- `code/lean/probe/fib11.lean`
-- `code/lean/probe/fib12.lean`
-- `code/lean/probe/fib13.lean`
-- `code/lean/probe/fib14.lean`
-- `code/lean/probe/fib3.lean`
-- `code/lean/probe/fib4.lean`
-- `code/lean/probe/fib5.lean`
-- `code/lean/probe/fib6.lean`
-- `code/lean/probe/fib7.lean`
-- `code/lean/probe/fib8.lean`
-- `code/lean/probe/fib9.lean`
+- `code/lean/probe/summary.lean`
 - `code/lean/probe_algebra.lean`
+- `code/lean/probe_anchor.lean`
 - `code/lean/probe_char_binary.lean`
 - `code/lean/probe_floor_normnum.lean`
 - `code/lean/probe_lowshift.lean`
 - `code/lean/probe_wiki.lean`
+- `code/lean/ueuclid_incontainer_fails_s1s2-e1947a2b.lean`

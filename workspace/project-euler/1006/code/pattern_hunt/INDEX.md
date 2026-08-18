@@ -67,7 +67,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `run_gap_check.py` | _(undescribed)_ |
 | `sequence_audit_requested.py` | Exact disk-based audit of the requested psi, c1, lmin, dj, and Toeplitz-defect sequences; fits rational homogeneous recurrences through order 12 and reports exact candidate formulas with first falsifiers. |
 | `sequence_report.py` | Exact artifact survey of psi, c1, counts, Lmin, and recurrence candidates; computes first falsifiers without published-sequence lookup. |
-| `sequence_tools_new_run.py` | Fresh exact audit of supplied Psi, c1, Lmin, d_j, and Toeplitz sequences using rational recurrence fitting, modular BM diagnostics, and first-falsifier tests; catches artifact-column hazards. |
+| `sequence_tools_new_run.py` | Fresh exact and modular sequence survey over stored PE1006 sequences: SymPy simple-recurrence search, Berlekamp–Massey orders, and finite differences. It reports only supplied-term evidence, not proofs. |
 | `survey_sequences.py` | Independent artifact survey: tests Psi mod-100/mod-1000, Lmin, factor counts, and run-gap conjectures on genuine recorded terms; reports first falsifiers. |
 | `targeted_relations.py` | Independent exact checks of candidate relations: Psi residues versus c1 modulo 100/1000, c1 differences, dj recurrence temptations, and V-run gap structure. |
 | `verify_R_runs_wythoff.py` | Verifies exactly (k=1..3000) that the right-special factors' constant-value runs start at the upper Wythoff numbers s_j=floor(j*phi^2), left zero-padding within runs, run lengths in {1,2,3}, S1-run containment, J(k)=1+floor((k+1)/phi^2), and the exact Psi recurrence; also detects Psi(k) digit-palindromes. Writes code/out/r_runs_wythoff.txt, s1_exact.txt, vR_exact.txt. |

@@ -1,0 +1,14 @@
+worked example: orbit of 1 (4 terms) = [1, 4, 2, 1]
+  collatz_step(1) = 4  collatz_step(4) = 2  collatz_step(2) = 1
+  matched 1 -> 4 -> 2 -> 1: True
+  n =   1: reaches 1 = True
+  n =   2: reaches 1 = True
+  n =   3: reaches 1 = True
+  n =   4: reaches 1 = True
+  n =   5: reaches 1 = True
+  n =   6: reaches 1 = True
+  n =   7: reaches 1 = True
+  n =   8: reaches 1 = True
+  n =   9: reaches 1 = True
+  n =  10: reaches 1 = True
+  n =  27: reaches 1 = True

@@ -1,0 +1,51 @@
+oracle_check — exact rational oracle for inscribed polygon squares
+========================================================================
+sanity: exact known polygons
+  unit square -> 1 squares; vertex-only agrees: True
+    first: ((Fraction(0, 1), Fraction(0, 1)), (Fraction(0, 1), Fraction(1, 1)), (Fraction(1, 1), Fraction(1, 1)), (Fraction(1, 1), Fraction(0, 1)))
+  2x1 rectangle -> 0 squares; vertex-only agrees: False
+  diamond -> 1 squares; vertex-only agrees: True
+    first: ((Fraction(-1, 1), Fraction(0, 1)), (Fraction(0, 1), Fraction(-1, 1)), (Fraction(1, 1), Fraction(0, 1)), (Fraction(0, 1), Fraction(1, 1)))
+------------------------------------------------------------------------
+ellipse approximation: a=2 b=1, polygon n = 8
+  smooth ellipse has exactly one square (CDM 2022 Prop 26)
+  polygon squares found: 0
+  exact vertex Hausdorff upper bound: 16/17 = 0.9411764705882353
+ellipse approximation: a=2 b=1, polygon n = 12
+  smooth ellipse has exactly one square (CDM 2022 Prop 26)
+  polygon squares found: 0
+  exact vertex Hausdorff upper bound: 24/37 = 0.6486486486486487
+ellipse approximation: a=2 b=1, polygon n = 16
+  smooth ellipse has exactly one square (CDM 2022 Prop 26)
+  polygon squares found: 0
+  exact vertex Hausdorff upper bound: 32/65 = 0.49230769230769234
+ellipse approximation: a=2 b=1, polygon n = 20
+  smooth ellipse has exactly one square (CDM 2022 Prop 26)
+  polygon squares found: 0
+  exact vertex Hausdorff upper bound: 40/101 = 0.39603960396039606
+ellipse approximation: a=2 b=1, polygon n = 24
+  smooth ellipse has exactly one square (CDM 2022 Prop 26)
+  polygon squares found: 0
+  exact vertex Hausdorff upper bound: 48/145 = 0.3310344827586207
+ellipse approximation: a=2 b=1, polygon n = 32
+  smooth ellipse has exactly one square (CDM 2022 Prop 26)
+  polygon squares found: 0
+  exact vertex Hausdorff upper bound: 64/257 = 0.2490272373540856
+ellipse convergence statement: fixed n gives a polygon, not the smooth ellipse;
+the exact error certificate is the displayed rational bound, tending to 0 as n grows.
+------------------------------------------------------------------------
+unit circle: infinitely many inscribed squares; regular n-gon check
+  n = 8 squares found: 0
+  n = 12 squares found: 0
+  n = 16 squares found: 0
+  n = 20 squares found: 0
+  n = 24 squares found: 0
+  n = 32 squares found: 0
+------------------------------------------------------------------------
+grid-curve verification bound note (no 13x13 search today):
+  Pettersson-Tverberg-Ostergard 2014 Theorem 4: Conjecture C holds
+  for every grid Jordan curve with o(J) <= 13 (n x n grid, n <= 13),
+  by exhaustive DFS over chordless cycles.  A 13x13 grid-curve
+  reproduction would mean re-running that entire search over
+  chordless cycles with an exact checker; a single 13x13 curve is
+  not the verification target, and is not run today.

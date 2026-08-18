@@ -1,29 +1,43 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gavrilov-iliev-bifurcations-infinity-quadratic-cjm-2002.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Gavrilov–Iliev, *Bifurcations of Limit Cycles From Infinity in Quadratic Systems*, Canad. J. Math. 54 (2002) 1038–1064
 
-<!-- source: https://www.cambridge.org/core/journals/canadian-journal-of-mathematics/article/bifurcations-of-limit-cycles-from-infinity-in-quadratic-systems/36C5A681760C46C97A5B1FBDE46F0E1E | converted from HTML -->
+<!-- source: https://www.cambridge.org/core/journals/canadian-journal-of-mathematics/article/bifurcations-of-limit-cycles-from-infinity-in-quadratic-systems/36C5A681760C46C97A5B1FBDE46F0E1E ; DOI 10.4153/CJM-2002-038-6 -->
 
-## What is in it
+Record + abstract held: [[gavrilov-iliev-bifurcations-infinity-quadratic-cjm-2002.full]]. **Full text NOT obtained** (paywalled at Cambridge; the author's own PDF at math.univ-toulouse.fr/~gavrilov/publications/32.pdf is malformed for the text extractor; no arXiv version exists; direct Cambridge PDF filename 404s). Dead ends recorded so nobody retries them.
 
-  - Article contents
-- Bifurcations of Limit Cycles From Infinity in Quadratic Systems
-  - Abstract
-  - Keywords
-  - Information
-  - References
-- Cited by
-        - This article has been cited by the following publications. This list is generated based…
-- Save article to Kindle
-- Save article to Dropbox
-- Save article to Google Drive
-      - Reply to: Submit a response
+**What this is.** The reference treatment of bifurcation of limit cycles from a
+degenerate critical point at infinity in quadratic systems — the mathematics of
+the infinity-graphics setting of the open DRR center graphics (`I^1_6b`, `H^3_13`,
+`DI_2b`, `H^3_14`).
 
+## Established (from the abstract, NOT verified against full text)
 
-## What it claims
+- Three types of quadratic systems have an elliptic critical point at infinity
+  that bifurcates limit cycles around it in one-parameter unfoldings.
+- A degenerate transformation reduces the system to a small perturbation of a
+  reversible system with a center; the displacement function expands in a
+  Puiseux series in the small parameter, with coefficients expressed as Abelian
+  integrals.
+- In four cases (elliptic Bogdanov–Takens; isochronous center `S_3`; two more)
+  the space of bifurcation functions has the **Chebyshev property** (every
+  function has fewer real zeros than the space dimension), proved by
+  constructing the bifurcation diagram of zeros of Abelian integrals in a
+  complex domain.
 
-Core share and HTML view are not available for this content. However, as you have access to this content, a full PDF is available via the 'Save PDF' action button.
+## For this problem
 
-We investigate the bifurcation of limit cycles in one-parameter unfoldings of quadractic differential systems in the plane having a degenerate critical point at infinity. It is shown that there are three types of quadratic systems possessing an elliptic critical point which bifurcates from infinity together with eventual limit cycles around it. We establish that these limit cycles can be studied by performing a degenerate transformation which brings the system to a small perturbation of certain well-known reversible systems having a center. The corresponding displacement function is then expanded in a Puiseux series with respect to the small parameter and its coefficients are expressed in terms of Abelian integrals. Finally, we investigate in more detail four of the cases, among them the elliptic case (Bogdanov-Takens system) and the isochronous center ${{\mathcal{S}}_{3}}$. We show that in each of these cases the…
+This is the origin of the Puiseux/Abelian-integral technology for cycles
+bifurcating from infinity that the held 2025 sources (`sun-dai-hyperelliptic-zeros-2025`,
+`an-dai-hu-chebyshev-hyperelliptic-2025`) extend. It is a methodological
+precedent for the infinity-graphics angle of the open DRR graphics; it does not
+prove finite cyclicity of any DRR graphic.
 
----
+## Boundary — does not help beyond the abstract level
 
-*[digest of a 18797 character source; every section, statement, and proof in full at `research/sources/gavrilov-iliev-bifurcations-infinity-quadratic-cjm-2002.full.md`]*
+Nothing in this source is verified against full text: the Chebyshev-positivity
+and Puiseux/Abelian statements are the authors' abstract claims, held at record
+level only. Any theorem this run builds on the infinity-graphics technology
+should cite the held 2025 full texts or the Gavrilov–Iliev claims as
+`asserted`/`unchecked` — never as a verified result.
+
+- Claim block: `h16-gavrilov-iliev-2002-infinity-quadratic` in `research/claims/`
+  (status `asserted`, holds-here `unchecked`).

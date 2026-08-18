@@ -1,0 +1,1 @@
+Formalised claim recorded by the kernel verdict for `code/lean/toeplitz_square_peg_G_named_class_membrane-77cb53e4.lean`. The theorem is conditional on the explicit hypothesis `hC`; the geometric existence of such a generator for the proposed concrete class remains unproved.

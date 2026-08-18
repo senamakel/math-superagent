@@ -13,7 +13,10 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `analyze_sequences.py` | Exact integer/modular sequence analyzer for stored Psi, c1, Lmin, and recurrence-output columns; reports terms, first differences, and Berlekamp–Massey order modulo 101001001. |
 | `bivariate_diagonal_closure_attack.md` | _(undescribed)_ |
 | `bivariate_investigation_2026-08-18.md` | Bounded report documenting required brute-oracle reproduction, existing O(k) validation, and the exact corrected counterexample against aggregate bivariate floor-moment closure; explicitly withholds Psi(10^18). |
-| `brute_oracle_rerun.txt` | _(undescribed)_ |
+| `boundary_psi_exact.txt` | _(undescribed)_ |
+| `boundary_psi_modM.txt` | _(undescribed)_ |
+| `brute_oracle_audit_2026-08-18.md` | Step-1/2 audit recording the required artifact checks and the executed naive-oracle anchor reproduction. |
+| `brute_oracle_rerun.txt` | Fresh verbatim capture of `python3 code/brute.py` (timeout 60): k=3 factors 001/010/100/101, Psi(3)=20302; k=10 gives 11 factors, Psi(10) mod 101001001=10699667 — both statement anchors match. |
 | `brute_oracle_results.md` | Verified output of code/brute.py: Psi(3)=20302, Psi(10) mod 101001001=10699667, factor counts k+1 for k=1..20, full Psi(1..20) table; records the 2k-prefix sufficiency bug fix (bound 4k+8). |
 | `c1_terms.txt` | c1(k) = number of distinct length-k Fibonacci subwords starting with '1', k=1..400, from verify_c1_formula.py; should equal 1+floor(k/phi^2). |
 | `check_slope.captured.txt` | _(undescribed)_ |
@@ -50,7 +53,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `reduction_indexing_attack.command.txt` | Records the exact command used to execute the small-k indexing attack. |
 | `reduction_indexing_attack.txt` | Artifact header for the bounded indexing/final-evaluator attack; execution output is appended by the shell run. |
 | `reduction_status.latest.md` | Captured status of the attempted Psi-to-ueuclid reduction: primitive and small-k indexing validations, finite transfer checks, and the unresolved k+1-intercept obstruction. |
-| `reference-build-status.md` | Cycle report for the reference-library build: searches performed, sources available, verified theorem scope, and the precise missing algorithmic result. |
+| `reference-build-status.md` | Status report for the local reference library and the remaining source-backed mathematical gap. |
 | `refutation_report.md` | _(undescribed)_ |
 | `s1_exact.txt` | Exact values of S1(k)=sum V(w) over w in F_k with w*'1' in F_{k+1} (right-extension ones sum), k=1..3000, from verify_R_runs_wythoff.py. |
 | `s1_res.txt` | _(undescribed)_ |

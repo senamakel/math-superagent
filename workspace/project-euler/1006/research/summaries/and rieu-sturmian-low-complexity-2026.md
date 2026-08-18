@@ -1,28 +1,21 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/and rieu-sturmian-low-complexity-2026.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Andrieu — Infinite Words with very Low Factor Complexity (arXiv:2603.07816)
 
-<!-- source: https://doi.org/10.48550/arxiv.2603.07816 | converted from HTML -->
+**Source:** Mélodie Andrieu, "Infinite Words with very Low Factor Complexity: an introduction to Combinatorics on Words", arXiv:2603.07816 [math.CO] (submitted 2026-03-08; based on a Dyadisc 2024 lecture).
+**Status: abstract page only** — the on-disk "full text" (`research/sources/and rieu-sturmian-low-complexity-2026.full.md`) is the arXiv landing page, not the paper body. (Filename "and rieu" is a mangled "Andrieu".)
+**Full text:** https://arxiv.org/html/2603.07816v1 (not downloaded).
 
-## What is in it
+## What it is
 
-- Mathematics > Combinatorics
-- Title: Infinite Words with very Low Factor Complexity: an introduction to Combinatorics…
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+Lecture notes introducing combinatorics on words via low factor complexity: what is the minimal complexity of a non-trivial infinite word, which words attain it (Sturmian words, Rauzy graphs), and how "non-triviality" is formalised. Chapter 3 covers Tijdeman's 1999 theorem generalising Morse–Hedlund 1938, with a new algebraic proof due to Cassaigne and the author (2022).
 
+## What it establishes for PE1006
 
-## What it claims
+Nothing new. It is an *introductory survey* aimed at the low-complexity boundary; the Sturmian factor-complexity facts it covers (minimal complexity, Sturmian words as the extremal case) are already held in-library in stronger, primary form (Lothaire C2, Perrin–Restivo, Cassaigne 1997, Coven–Hedlund 1973). The Tijdeman/Cassaigne material concerns complexity of *aperiodic* words generally, not the decimal second moment of Fibonacci-word factors.
 
-Abstract: These lecture notes provide an introduction to combinatorics on words and its interactions with dynamics, algebra, and arithmetic. The central theme is the notion of low factor complexity for infinite words. We investigate the following guiding questions: What is the minimal complexity of a non-trivial infinite word over a binary, ternary, or more generally finite alphabet? How should ''non-triviality'' be formalized? Which words achieve this minimal complexity? Are there many? Are they interesting? In exploring these questions, we introduce classical objects and tools from combinatorics on words -- such as Sturmian words and Rauzy graphs -- as well as little-known and new results. In particular, the third chapter is devoted to a theorem by R. Tijdeman from 1999, which generalizes a seminal result of M. Morse and G. Hedlund from 1938. We provide a new, algebraic proof of this theorem (due to J. Cassaigne and the author, 2022) and develop its consequences.
+## Verdict
 
-Comments: | This text is based on a lecture delivered during the 7th edition of the international conference Dyadisc,…
+Does not help G4. Background/reference only; no claim block. Do not re-fetch unless a full-text copy of the Cassaigne–Andrieu algebraic proof of Tijdeman's theorem is wanted for the general Morse–Hedlund framing — and even then it is tangential to the joint-intercept aggregation.
 
-*[digest of a 6731 character source; every section, statement, and proof in full at `research/sources/and rieu-sturmian-low-complexity-2026.full.md`]*
+## Discrepancy note
+
+This summary was still a digest template (the 31-file scholar backlog recorded in `research/notes/library-cycle-2026-08-19.md`); replaced now. The source carries only the abstract, so the note above is complete for what is on disk.

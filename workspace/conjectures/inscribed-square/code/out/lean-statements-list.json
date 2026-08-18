@@ -1,0 +1,332 @@
+[
+  {
+    "name": "stromquist_locally_monotone_square",
+    "statement": "For every locally monotone Jordan curve γ : S1 → R2 (for every point x ∈ S1 there is a neighborhood U of x and a linear functional ℓ : R2 → R such that ℓ ∘ γ|U is strictly monotone), there exist four distinct points on γ that are the vertices of a square.",
+    "source": "research/sources/matschke2014-survey-square-peg.full.md, Theorem 2 (Stromquist); also research/sources/rius-casado-2019-square-peg-problem-thesis.full.md Theorem 3.36 (proved there)",
+    "cited": true
+  },
+  {
+    "name": "stromquist_locally_monotone_square_proved",
+    "statement": "If w : R/2πZ → R2 is a locally monotone closed curve in R2 (for every point of the curve there is a neighborhood in which the curve is the graph of a function of one coordinate, equivalently each point has a neighborhood and a direction u such that the segment is strictly monotone in the direction of u), then w admits an inscribed square.",
+    "source": "research/sources/rius-casado-2019-square-peg-problem-thesis.full.md, Theorem 3.36 (proved in full in the thesis)",
+    "cited": false
+  },
+  {
+    "name": "stromquist_condition_a_quadrilateral",
+    "statement": "If a closed curve w in Rn satisfies Condition A — each point w(y) of the curve has a neighborhood U(y) in Rn such that no two chords of w within U(y) are perpendicular — then w admits an inscribed quadrilateral with equal sides and equal diagonals.",
+    "source": "research/sources/rius-casado-2019-square-peg-problem-thesis.full.md, Theorem 3.31 (proved)",
+    "cited": false
+  },
+  {
+    "name": "stromquist_smooth_curve_quadrilateral",
+    "statement": "For every smooth curve (having a continuously turning tangent) in Rn, there is a quadrilateral with equal sides and equal diagonals whose vertices lie on the curve; in the plane this implies an inscribed square.",
+    "source": "research/sources/stromquist-1989-cambridge-abstract.full.md, Abstract (asserted; no proof in the material — only the abstract)",
+    "cited": true
+  },
+  {
+    "name": "jordan_curve_theorem",
+    "statement": "The complement in the plane R2 of a Jordan curve J (the homeomorphic image of S1) consists of two connected components, each of which has J as its boundary.",
+    "source": "research/sources/rius-casado-2019-square-peg-problem-thesis.full.md, Theorem 2.2 (proved in the thesis)",
+    "cited": false
+  },
+  {
+    "name": "vaughan_inscribed_rectangle",
+    "statement": "Any continuous embedding γ : S1 → R2 inscribes a rectangle (four points on γ that are the vertices of a rectangle).",
+    "source": "research/sources/matschke2014-survey-square-peg.full.md, Theorem 7 (Vaughan; quoted in the survey, no proof in the survey)",
+    "cited": true
+  },
+  {
+    "name": "fenn_table_theorem",
+    "statement": "Let f : R2 → R≥0 be a non-negative function that is zero outside a compact convex disc D, and let a > 0. Then there exists a square in the plane with side length a whose center point belongs to D such that f takes the same value on the four vertices of the square.",
+    "source": "research/sources/matschke2014-survey-square-peg.full.md, Theorem 3 (Fenn; quoted in the survey)",
+    "cited": true
+  },
+  {
+    "name": "matschke_special_trapezoid_criterion",
+    "statement": "Let γ : S1 → R2 be a Jordan curve. Assume there is 0 < ε < 2π such that γ contains no special trapezoids of size ε, or generically an even number of them, where a special trapezoid is a 4-tuple of pairwise distinct clockwise points x1,...,x4 ∈ S1 with Pi = γ(xi) satisfying |P1−P2| = |P2−P3| = |P3−P4| > |P4−P1| and |P1−P3| = |P2−P4|, and its size is the length of the clockwise arc of S1 from x1 to x4. Then γ inscribes a square.",
+    "source": "research/sources/matschke2014-survey-square-peg.full.md, Theorem 4 (Matschke; quoted in the survey)",
+    "cited": true
+  },
+  {
+    "name": "matschke_annulus_criterion",
+    "statement": "Let A = {x ∈ R2 : 1 ≤ |x| ≤ 1 + √2} be the annulus. Suppose γ : S1 → A is a continuous closed curve in A that is nonzero in π1(A) = Z. Then γ inscribes a square of side length at least √2.",
+    "source": "research/sources/matschke2014-survey-square-peg.full.md, Theorem 5 (Matschke; quoted in the survey)",
+    "cited": true
+  },
+  {
+    "name": "nielsen_triangle_theorem",
+    "statement": "Let T be an arbitrary triangle and γ : S1 → R2 an embedded circle. Then there are infinitely many triangles inscribed in γ which are similar to T, and if one fixes a vertex of smallest angle in T, the set of the corresponding vertices on γ is dense in γ.",
+    "source": "research/sources/matschke2014-survey-square-peg.full.md, Theorem 6 (Nielsen; quoted in the survey)",
+    "cited": true
+  },
+  {
+    "name": "nielsen_wright_symmetric_continuum_rectangle",
+    "statement": "Let Q be any rectangle and K ⊂ Rd (d ≥ 2) a continuum which is either symmetric across a hyperplane or symmetric through a point z ∉ K. Then K contains the vertices of a rectangle similar to Q which exhibits the same symmetry as K.",
+    "source": "research/sources/nielsen-wright-1995-rectangles-symmetric-continua.full.md, Abstract (asserted; only the abstract is in the material, no proof)",
+    "cited": true
+  },
+  {
+    "name": "makeev_karasev_crosspolytope",
+    "statement": "Let n be an odd prime power. Then every smooth embedding Γ : S^{n−1} → Rn contains the vertices of a regular n-dimensional crosspolytope.",
+    "source": "research/sources/matschke2014-survey-square-peg.full.md, Theorem 11 (Makeev–Karasev; quoted in the survey)",
+    "cited": true
+  },
+  {
+    "name": "gromov_simplex_theorem",
+    "statement": "Any compact set S ⊂ Rd with C1-boundary and nonzero Euler characteristic inscribes an arbitrary given simplex up to similarity on its boundary ∂S.",
+    "source": "research/sources/matschke2014-survey-square-peg.full.md, Theorem 12 (Gromov; quoted in the survey)",
+    "cited": true
+  },
+  {
+    "name": "asano_ike_main_theorem",
+    "statement": "Let c : S1 → R2 be a Jordan curve such that there exists a sequence of smooth Jordan curves (cn : S1 → R2)n with: (1) cn converges to c in the C0-sense; and (2) letting fn be a primitive of (cn ∘ e)*λ where e : R → R/2πZ ≅ S1 is the quotient map and λ is the Liouville form ξ dx on R2 ≅ T*R, the sequence fn converges uniformly on every compact subset to a continuous function f on R. Then c inscribes a θ-rectangle for every θ ∈ (0, π) (a θ-rectangle being a rectangle whose diagonals meet at angle θ).",
+    "source": "research/sources/asano-ike-2024-rectifiable-rectangular-peg.full.md, Theorem 1.1 (proved, Sections 4–5)",
+    "cited": false
+  },
+  {
+    "name": "asano_ike_rectifiable_theta_rectangle",
+    "statement": "Every rectifiable Jordan curve (a Jordan curve of finite length) inscribes a θ-rectangle for every θ ∈ (0, π).",
+    "source": "research/sources/asano-ike-2024-rectifiable-rectangular-peg.full.md, Corollary 1.2 = Corollary 5.9 (proved)",
+    "cited": false
+  },
+  {
+    "name": "asano_ike_locally_monotone_theta_rectangle",
+    "statement": "Every locally monotone Jordan curve (for every p ∈ R there is an open connected neighborhood Up of p and a unit vector v(p) such that q ↦ c(q)·v(p) is strictly monotone on Up) inscribes a θ-rectangle for every θ ∈ (0, π).",
+    "source": "research/sources/asano-ike-2024-rectifiable-rectangular-peg.full.md, Corollary 1.3 = Corollary 5.12 (proved)",
+    "cited": false
+  },
+  {
+    "name": "asano_ike_locally_monotone_admits_lift",
+    "statement": "A locally monotone Jordan curve satisfies the assumptions of Theorem 1.1 of Asano–Ike 2024: there is a sequence of smooth Jordan curves converging to it in C0 whose primitives of the pullback Liouville form converge uniformly on compact subsets.",
+    "source": "research/sources/asano-ike-2024-rectifiable-rectangular-peg.full.md, Proposition 5.11 (proved)",
+    "cited": false
+  },
+  {
+    "name": "asano_ike_2022_tamarkin_completeness",
+    "statement": "The Tamarkin category D(X) is complete with respect to the pseudo-distance d_D(X) (the interleaving distance).",
+    "source": "research/sources/asano-ike-2022-sheaf-quantization-nonsmooth.full.md, Theorem 1.1 (proved)",
+    "cited": false
+  },
+  {
+    "name": "asano_ike_2022_hamiltonian_stability",
+    "statement": "For compactly supported Hamiltonian diffeomorphisms φ, φ′ ∈ Hamc(T*M), one has d_D(M²)(K_φ, K_φ′) ≤ d_H(φ, φ′), where K_φ is the sheaf quantization of φ and d_H is the Hofer distance.",
+    "source": "research/sources/asano-ike-2022-sheaf-quantization-nonsmooth.full.md, Theorem 1.2 (proved)",
+    "cited": false
+  },
+  {
+    "name": "asano_ike_2022_arnold_type_theorem",
+    "statement": "Assume M is compact and let L be a compact exact Lagrangian submanifold of T*M. Let φ∞ be a Hamiltonian homeomorphism of T*M. If the number of spectral invariants of φ∞(L) is smaller than cl(M) + 1 (cl(M) the cup-length of M over k), then 0_M ∩ φ∞(L) is cohomologically non-trivial in M, hence infinite.",
+    "source": "research/sources/asano-ike-2022-sheaf-quantization-nonsmooth.full.md, Theorem 1.4 (proved)",
+    "cited": false
+  },
+  {
+    "name": "feller_golla_locally_1_lipschitz_rectangles",
+    "statement": "Let Γ ⊂ R2 be a locally 1-Lipschitz Jordan curve (for each point p ∈ Γ there is a neighborhood U of p such that Γ ∩ U is the graph of a 1-Lipschitz function). Then for all integers n ≥ 2 there exists an integer 1 ≤ k ≤ n−1 such that Γ has an inscribed rectangle with aspect ratio tan(kπ/2n). In particular Γ has an inscribed square and an inscribed rectangle with aspect ratio √3.",
+    "source": "research/sources/feller-golla-2022-locally-1-lipschitz-rectangles.full.md, Theorem 1.1 (proved)",
+    "cited": false
+  },
+  {
+    "name": "feller_golla_torus_knot_mobius_band",
+    "statement": "Let K ⊂ S2 × S1 be the torus knot K_{1,2n}, i.e. {(e^{2πit}, e^{2πi(2n)t}) : t ∈ R} ⊂ S2 × S1. If n is not a square, then K does not bound a locally-flat Möbius band in D3 × S1.",
+    "source": "research/sources/feller-golla-2022-locally-1-lipschitz-rectangles.full.md, Theorem 1.2 (proved)",
+    "cited": false
+  },
+  {
+    "name": "feller_golla_nonorientable_4_genus",
+    "statement": "For each integer n ≥ 5, γ4^top(T_{2n−1,2n}) < γ4(T_{2n−1,2n}), where γ4(K) is the smallest first Betti number of a smooth non-orientable surface in B4 with boundary K ⊂ S3 = ∂B4 and γ4^top is the same quantity for locally-flat surfaces.",
+    "source": "research/sources/feller-golla-2022-locally-1-lipschitz-rectangles.full.md, Theorem 1.3 (proved)",
+    "cited": false
+  },
+  {
+    "name": "feller_golla_torus_knots_mod_8",
+    "statement": "Let p ≡ 5 (mod 8) be a positive integer. Then the torus knot T_{p,p±1} in S3 does not bound a locally-flat Möbius band in B4.",
+    "source": "research/sources/feller-golla-2022-locally-1-lipschitz-rectangles.full.md, Proposition 1.4 (proved)",
+    "cited": false
+  },
+  {
+    "name": "feller_golla_psi_n_injective_iff_rectangle",
+    "statement": "For a Jordan curve Γ ⊂ C with parametrization α : S1 → C, and for n ≥ 2, the map Ψn : M → C2, {s,t} ↦ ((α(s)+α(t))/2, (α(s)−α(t))^{2n}) (where M = S1×S1/(Z/2Z) is the Möbius band) is injective if and only if there exists an integer 1 ≤ k ≤ n−1 such that Γ has an inscribed rectangle with aspect ratio tan(kπ/2n).",
+    "source": "research/sources/feller-golla-2022-locally-1-lipschitz-rectangles.full.md, Remark 2.1 (stated as an observation, no proof given in the text)",
+    "cited": true
+  },
+  {
+    "name": "feller_golla_psi_1_mobius_band",
+    "statement": "For any Jordan curve Γ ⊂ C with injective continuous parametrization α : S1 → C, the map Ψ1 : M → C2, {s,t} ↦ ((α(s)+α(t))/2, (α(s)−α(t))²) is injective and its image M := Ψ1(M) ⊂ C2 is a locally-flat Möbius band. Furthermore there is a regular neighborhood N of C×{0} such that ∂N intersects M transversely and the pair (∂N, M ∩ ∂N) is homeomorphic to (C × S1, K_{1,2}).",
+    "source": "research/sources/feller-golla-2022-locally-1-lipschitz-rectangles.full.md, Lemma 2.3 (proved)",
+    "cited": false
+  },
+  {
+    "name": "feller_golla_lipschitz_midpoint_lemma",
+    "statement": "Let g : R → R be 1-Lipschitz. For every t ∈ R and r ≥ 0 there exists a unique η_r(t) ∈ [0, r/2] such that |(t + η_r(t)) + i g(t + η_r(t)) − ((t − η_r(t)) + i g(t − η_r(t)))| = r. Moreover the map (r, t) ↦ η_r(t) is continuous.",
+    "source": "research/sources/feller-golla-2022-locally-1-lipschitz-rectangles.full.md, Lemma 3.2 (proved)",
+    "cited": false
+  },
+  {
+    "name": "greene_lobb_rectangular_peg_smooth",
+    "statement": "For every smooth Jordan curve γ and rectangle R in the Euclidean plane, there exists a rectangle similar to R whose vertices lie on γ.",
+    "source": "research/sources/greene-lobb-2021-rectangular-peg.full.md, Theorem (proved)",
+    "cited": false
+  },
+  {
+    "name": "greene_lobb_cyclic_quadrilateral_smooth",
+    "statement": "Every cyclic quadrilateral inscribes in every smooth Jordan curve in the Euclidean plane (i.e., every quadrilateral that itself inscribes in a circle admits an inscription, up to orientation-preserving similarity, in every smooth Jordan curve).",
+    "source": "research/sources/greene-lobb-2023-cyclic-quadrilaterals-invent.full.md, Theorem (proved)",
+    "cited": false
+  },
+  {
+    "name": "greene_lobb_floer_rectifiable_interval",
+    "statement": "If γ ⊂ R2 is a rectifiable Jordan curve, then there exists an interval I ⊂ (0, π) of length at least Area(γ)/Rad(γ)² such that γ inscribes every θ-rectangle with θ ∈ I, where Area(γ) is the area of the region γ encloses and Rad(γ) = (1/2) sup{|z−w| : z, w ∈ γ}.",
+    "source": "research/sources/greene-lobb-2024-floer-homology-square-pegs.full.md, Theorem A (proved)",
+    "cited": false
+  },
+  {
+    "name": "greene_lobb_floer_square_corollary",
+    "statement": "If γ is a rectifiable Jordan curve and encloses more than half the area of a circle of equal radius (Area(γ)/Rad(γ)² > π/2), then γ inscribes a square.",
+    "source": "research/sources/greene-lobb-2024-floer-homology-square-pegs.full.md, Corollary after Theorem A (proved)",
+    "cited": false
+  },
+  {
+    "name": "greene_lobb_two_graphs_theta_rectangle",
+    "statement": "If 0 < θ ≤ π/2 and f, g : [0,1] → R have Lipschitz constant less than tan((θ+π)/4), with f(0) = g(0), f(1) = g(1) and f(t) > g(t) for all 0 < t < 1, then the Jordan curve γ(f,g) = Graph f ∪ Graph g inscribes a θ-rectangle.",
+    "source": "research/sources/greene-lobb-2024-square-pegs-between-graphs.full.md, Theorem A (proved)",
+    "cited": false
+  },
+  {
+    "name": "greene_lobb_two_graphs_square",
+    "statement": "If f, g : [0,1] → R have Lipschitz constant less than 1 + √2, with f(0) = g(0), f(1) = g(1) and f(t) > g(t) for all 0 < t < 1, then the Jordan curve γ(f,g) = Graph f ∪ Graph g inscribes a square.",
+    "source": "research/sources/greene-lobb-2024-square-pegs-between-graphs.full.md, Corollary B (proved)",
+    "cited": false
+  },
+  {
+    "name": "greene_lobb_two_graphs_lipschitz_1",
+    "statement": "If f, g : [0,1] → R have Lipschitz constant 1, with f(0) = g(0), f(1) = g(1) and f(t) > g(t) for all 0 < t < 1, then the Jordan curve γ(f,g) = Graph f ∪ Graph g inscribes a θ-rectangle for every θ ∈ (0, π/2].",
+    "source": "research/sources/greene-lobb-2024-square-pegs-between-graphs.full.md, Corollary C (proved)",
+    "cited": false
+  },
+  {
+    "name": "greene_lobb_positive_measure_rectangles",
+    "statement": "Suppose γ ⊂ C is a Jordan curve of diameter 2R which encloses a region of area A. Then there exists a subset I ⊂ (0, π) of measure at least A/R² such that if θ ∈ I, then there exist four points on γ at the vertices of a rectangle whose diagonals meet at angle θ.",
+    "source": "research/sources/greene-lobb-2026-positive-measure-rectangles.full.md, Abstract (asserted; only the abstract is in the material)",
+    "cited": true
+  },
+  {
+    "name": "tao_two_lipschitz_graphs_square",
+    "statement": "Let [t₀, t₁] be an interval and let f, g : [t₀, t₁] → R be (1−ε)-Lipschitz functions for some ε > 0. Suppose f(t₀) = g(t₀), f(t₁) = g(t₁), and f(t) < g(t) for all t₀ < t < t₁. Then the set Graph f([t₀,t₁]) ∪ Graph g([t₀,t₁]) inscribes a square.",
+    "source": "research/sources/tao2017-integration-approach-arxiv.full.md, Theorem 1.2 (proved)",
+    "cited": false
+  },
+  {
+    "name": "rifford_quantitative_square",
+    "statement": "There is a universal constant C > 0 such that the following holds: for any interval I = [T₀, T₁] and 1-Lipschitz functions f, g : I → R with f(T₀) = g(T₀), f(T₁) = g(T₁) and f(t) < g(t) for all t ∈ (T₀, T₁), the set Graph f(I) ∪ Graph g(I) inscribes a square of sidelength at least C · max_{t∈I}(g(t) − f(t)).",
+    "source": "research/sources/rifford2021-quantitative-tao.full.md, Theorem 1.1 (proved)",
+    "cited": false
+  },
+  {
+    "name": "vrecica_zivaljevic_c1_square",
+    "statement": "Every simple closed curve Γ ⊂ R2 which is C1-smooth, i.e. has a non-vanishing and continuously moving tangent vector at each point, admits an inscribed square.",
+    "source": "research/sources/vrecica-zivaljevic-2011-cyclohedra-polygonal-pegs.full.md, Theorem 5 (proved in Section 5.5)",
+    "cited": false
+  },
+  {
+    "name": "akopyan_avvakumov_cyclic_convex_c1",
+    "statement": "Any cyclic quadrilateral (a quadrilateral that inscribes in a circle) can be inscribed in any closed convex C1-curve.",
+    "source": "research/sources/akopyan-avvakumov-2018-cyclic-quadrilateral.full.md, Theorem 1 (proved)",
+    "cited": false
+  },
+  {
+    "name": "akopyan_avvakumov_rectangle_convex",
+    "statement": "Any rectangle can be inscribed in any closed convex curve.",
+    "source": "research/sources/akopyan-avvakumov-2018-cyclic-quadrilateral.full.md, Theorem 2 (proved)",
+    "cited": false
+  },
+  {
+    "name": "cdm_generic_odd_squarelike_quadrilaterals",
+    "statement": "For any C1 curve in Rk, there is a C1-close curve γ such that C⁰₄[γ] ∩ Slq is an odd, finite set of inscribed square-like quadrilaterals, where Slq is the space of quadrilaterals with equal sides (|ab| = |bc| = |cd| = |da|) and equal diagonals (|ac| = |bd|), and C⁰₄[γ] is the space of 4-tuples of points on γ in cyclic order.",
+    "source": "research/sources/cantarella-denne-mccleary-2022-square-peg-theorem.full.md, Theorem 24 (proved)",
+    "cited": false
+  },
+  {
+    "name": "cdm_ftcwc_squarelike_quadrilateral",
+    "statement": "Any closed curve in Rn of finite total curvature with no cusps (a cusp being a corner whose one-sided tangent vectors point in opposite directions, i.e. have turning angle π) has at least one inscribed square-like quadrilateral (four points on the curve forming a quadrilateral with equal sides and equal diagonals).",
+    "source": "research/sources/cantarella-denne-mccleary-2022-square-peg-theorem.full.md, Theorem 32 = Theorem 40 (proved)",
+    "cited": false
+  },
+  {
+    "name": "cdm_transversality_configuration_spaces",
+    "statement": "Let M and N be smooth manifolds, with M compact, and i : M → N ⊂ Rk a smooth embedding with a corresponding embedding of compactified configuration spaces Cn[i] : Cn[M] → Cn[N]. Assume Z is a closed topological space contained in Cn[N], such that Z ∩ Cn(N) is a submanifold of Cn(N), ∂Z ⊂ ∂Cn[N], and ∂Z is disjoint from ∂Cn[i(M)]. Then for any ε > 0, there is a C∞-open neighborhood of i in which there is, for all m, a Cm-dense set of smooth embeddings i′ : M → N, with ‖Cn[i′] − Cn[i]‖₀ < ε, Cn[i′] ⋔ Z, and ∂Z and ∂Cn[i′(M)] disjoint in ∂Cn[N].",
+    "source": "research/sources/cantarella-denne-mccleary-2022-published-config-spaces.full.md, Theorem 17 (proved)",
+    "cited": false
+  },
+  {
+    "name": "fung_rhombi_open_interval",
+    "statement": "Let γ : S1 → R2 be a Jordan curve. Then there exists an open interval of angles such that there exist inscribed rhombi of all these angles. Furthermore, if γ does not contain a special corner (a point p ∈ im γ for which there exists an angle θ such that both the line of angle θ through p and the line of angle θ+π/2 through p intersect im γ only at p), then there exist inscribed rhombi of all angles.",
+    "source": "research/sources/fung-2021-uncountably-many-rhombi.full.md, Theorem 1.1 (proved)",
+    "cited": false
+  },
+  {
+    "name": "schwartz_trichotomy",
+    "statement": "Let γ be an arbitrary Jordan loop. Then the space I(γ) of inscribed labeled rectangles in γ contains a connected set S satisfying one of: (1) members of S have uniformly large area, every point of γ is a vertex of a rectangle in S, and aspect ratio 1 occurs in S; (2) members of S have uniformly large diameter, the aspect ratios in S are all of (0,∞), and all but at most 4 points of γ are vertices of rectangles in S; (3) S has members of every sufficiently small diameter, and all but at most 2 points of γ are vertices of rectangles in S. Moreover S ⊂ G(γ), the space of gracefully inscribed rectangles (rectangles whose vertices occur on γ in the same cyclic order as on the rectangle).",
+    "source": "research/sources/schwartz-2020-trichotomy-rectangles.full.md, Theorem 1.1 (proved)",
+    "cited": false
+  },
+  {
+    "name": "schwartz_graceful_rectangles_cofinite",
+    "statement": "Let γ be any Jordan loop. Then all but at most 4 points of γ are vertices of rectangles gracefully inscribed in γ (rectangles whose vertices appear on γ in the same cyclic order as on the rectangle).",
+    "source": "research/sources/schwartz-2020-trichotomy-rectangles.full.md, Corollary 1.2 (proved)",
+    "cited": false
+  },
+  {
+    "name": "hugelmeyer_bad_jordan_curve_square_envelope",
+    "statement": "Every bad Jordan curve (a Jordan curve with no inscribed squares) has a square envelope: a pair of continuous functions e1, e2 : R → R2 such that (1) e1(x), e2(x) lie in the open exterior of γ for all x; (2) the two other corners S1(e1(x),e2(x)) and S2(e1(x),e2(x)) of the square spanned by e1(x), e2(x) lie in the open interior of γ for all x; (3) |e2(x) − e1(x)| → 0 as x → ±∞; and (4) the closed curve formed by following e1 from e1(−λ) to e1(λ), then a straight line to e2(λ), then e2 to e2(−λ), then back to e1(−λ), has winding number 1 around every point inside γ for all sufficiently large λ.",
+    "source": "research/sources/hugelmeyer-2023-square-envelopes.full.md, Theorem 1 (proved)",
+    "cited": false
+  },
+  {
+    "name": "hugelmeyer_spiral_conjecture_implies_square",
+    "statement": "Assume the spiral conjecture (about relation-avoiding origin paths, Conjecture 2 of the paper). Then any Jordan curve γ which is smooth except at finitely many points has an inscribed square.",
+    "source": "research/sources/hugelmeyer-2023-square-envelopes.full.md, Theorem 3 (proved as an implication)",
+    "cited": false
+  },
+  {
+    "name": "barber_isosceles_trapezoid_lipschitz_graphical",
+    "statement": "Let γ be a locally Lipschitz-graphical Jordan curve (a locally monotone Jordan curve for which the local graph representation is K-Lipschitz for some constant K) bounding area Area(γ) and of radius Rad(γ). Then γ inscribes an isosceles trapezoid of angle θ and aspect ratio r for every 0 < θ < Area(γ)/(2(1−r)Rad(γ)²).",
+    "source": "research/sources/barber-2026-isosceles-trapezoids-jordan-curves.full.md, Theorem A (proved)",
+    "cited": false
+  },
+  {
+    "name": "barber_isosceles_trapezoid_spectral",
+    "statement": "Let γ be a rectifiable or locally monotone Jordan curve, r ∈ (0, 1/2] an aspect ratio, and assume lim_{θ→π} l₂(γ, r, θ) ≠ 0 where l₂ is the spectral invariant attached to the top-dimensional generator of the isosceles-trapezoid Jordan Floer homology. Then γ inscribes an isosceles trapezoid of aspect ratio r and angle θ for every 0 < θ < Area(γ)/(2(1−r)Rad(γ)²).",
+    "source": "research/sources/barber-2026-isosceles-trapezoids-jordan-curves.full.md, Theorem B (proved)",
+    "cited": false
+  },
+  {
+    "name": "matschke_piecewise_c1_no_cusps_trapezoid",
+    "statement": "Every piecewise C1 Jordan curve without cusps inscribes every isosceles trapezoid.",
+    "source": "research/sources/barber-2026-isosceles-trapezoids-jordan-curves.full.md, Theorem 1.4 (Matschke; quoted in Barber, no proof in this source)",
+    "cited": true
+  },
+  {
+    "name": "asano_ike_rectifiable_or_locally_monotone_every_rectangle",
+    "statement": "Let γ be a rectifiable or locally monotone Jordan curve. Then γ inscribes every rectangle.",
+    "source": "research/sources/barber-2026-isosceles-trapezoids-jordan-curves.full.md, Theorem 1.5 (Asano–Ike; quoted in Barber, no proof in this source)",
+    "cited": true
+  },
+  {
+    "name": "chambers_square_peg_stability",
+    "statement": "If γ : S1 → R2 is a Jordan curve which is close to a C2 Jordan curve β : S1 → R2, then γ contains an inscribed square of positive sidelength. In particular, if κ > 0 is the maximum unsigned curvature of γ and there is a continuous function f from the image of β to the image of γ so that |f(β(s)) − γ(s)| < 1/(10κ) for every s ∈ S1 and f ∘ β is homotopic to γ in the image of γ, then β contains a square of positive sidelength.",
+    "source": "research/sources/chambers-2025-square-peg-stability.full.md, Abstract (asserted; only the abstract is in the material)",
+    "cited": true
+  },
+  {
+    "name": "pettersson_lattice_square_maximum_size",
+    "statement": "At least one inscribed square of maximum size on a curve J in the family 𝒥′ of finite Jordan curves composed of unit horizontal and vertical segments between integer lattice points has all four corners on lattice points.",
+    "source": "research/sources/pettersson-tverberg-ostergard-2014-toeplitz-note.full.md, Theorem 2 (proved)",
+    "cited": false
+  },
+  {
+    "name": "pettersson_conjecture_c_implies_toeplitz",
+    "statement": "Conjecture C implies Conjecture T: if every curve J in the family 𝒥′ of finite Jordan curves composed of unit horizontal and vertical lattice segments contains four lattice points forming the corners of a square of side length at least i(J)/√2 (where i(J) is the side length of the largest axis-parallel open square contained in the bounded component of R²\J), then every Jordan curve in R² contains four points forming the corners of a square.",
+    "source": "research/sources/pettersson-tverberg-ostergard-2014-toeplitz-note.full.md, Theorem 1 (proved)",
+    "cited": false
+  }
+]

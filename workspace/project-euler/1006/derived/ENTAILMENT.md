@@ -4,7 +4,17 @@ Derived from the `follows-from:` lines in every `claim` block, closed transitive
 
 A claim written `follows-from: a, b` says `a` and `b` together give it. That single edge is enough to answer three questions the claim ledger cannot: which claims the run has already established without noticing, which proposals would add nothing, and which pair of held beliefs cannot both be true.
 
-_Nothing to derive yet. Add a `follows-from:` line to a `claim` block naming the claim ids it is a consequence of, and this file fills in._
+
+## Following from nothing recorded
+
+Each edge below names a claim no block on disk carries. Either the id is misspelled, or the run is deriving something from a belief nobody wrote down.
+
+- `christoffel-strong-factor-symmetry` follows from `independent`, which does not exist
+- `christoffel-strong-factor-symmetry` follows from `primary`, which does not exist
+- `christoffel-strong-factor-symmetry` follows from `recent`, which does not exist
+- `fibonacci-word-palindromically-rich` follows from `Sturmian`, which does not exist
+- `fibonacci-word-palindromically-rich` follows from `episturmian`, which does not exist
+- `fibonacci-word-palindromically-rich` follows from `rich`, which does not exist
 
 ---
 

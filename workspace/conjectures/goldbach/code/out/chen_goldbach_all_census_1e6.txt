@@ -1,0 +1,16 @@
+census all even n in [4, 1000000]:
+failures: [302, 332, 458, 542, 632, 692, 872, 902, 1544, 1964, 2522, 2642, 2834, 4544, 4952, 6932, 7442, 9170, 11114, 11672, 12224, 13562, 17072, 22922, 34082, 34892, 35912]
+failure residues mod 6: [2]
+number of failures: 27
+hardest_n (smallest witness p largest):
+  n=884342: smallest p=99991, q=784351
+  n=543962: smallest p=74071, q=469891
+  n=665972: smallest p=73651, q=592321
+  n=996272: smallest p=68161, q=928111
+  n=566612: smallest p=66271, q=500341
+  n=886934: smallest p=61687, q=825247
+  n=397412: smallest p=61231, q=336181
+  n=703082: smallest p=58411, q=644671
+  n=495674: smallest p=57037, q=438637
+  n=878462: smallest p=56101, q=822361
+wall_time_seconds: 16.395

@@ -1,0 +1,3 @@
+# Durable findings pending memory service recovery
+
+The PE1006 library is broad and contains primary/encyclopedic sources: Lothaire's Sturmian chapter, Perrin's mechanical-word lecture, Berstel–Vuillon rotation codings, Sivasankar–Rama Fibonacci factor location, and universal Euclidean floor-moment sources. Verified theory: the Fibonacci fixed point is characteristic Sturmian of slope 1/phi^2 and has exactly k+1 length-k factors; factors are mechanical floor-difference codings over k+1 rotation cells. No source currently proves a fixed-dimensional O(log k) aggregation of the decimal weighted second moment over all cells; the full-size answer remains unestablished. Submit this to durable memory when the memory service recovers.

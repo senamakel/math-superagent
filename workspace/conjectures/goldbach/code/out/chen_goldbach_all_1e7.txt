@@ -1,0 +1,19 @@
+bound: 10000000
+first_failure: 302
+mod6_4_first_failure: none up to 10000000
+mod6_4_tested_numbers: 1666667
+witness_at_last_n: None
+tested_numbers: 150
+hardest_n (n, smallest Chen witness p):
+  (290, 109)
+  (278, 67)
+  (248, 37)
+  (98, 31)
+  (68, 31)
+  (226, 29)
+  (220, 23)
+  (176, 19)
+  (158, 19)
+  (128, 19)
+wall_time_seconds: 4.293609
+command: python -m chen_goldbach.check 10000000

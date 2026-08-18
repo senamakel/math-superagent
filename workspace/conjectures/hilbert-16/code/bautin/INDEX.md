@@ -10,6 +10,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `complement_symmetry_probe.py` | Refutes monomial-pairing (permutation-involution) explanation of the Bautin monomial-count complement c(h)=dim-2*a_d: enumerates all 26 permutation involutions on (A,C,D,E,F), shows |
 | `complement_symmetry_probe2.py` | Refutes the signed-permutation-involution pairing explanation of the Bautin monomial-count complement: enumerates all 312 signed involutions on 5 letters, shows |
 | `denom_factor.py` | Exact factorization of the Bautin clearing denominators D_d (d=4..14) and their p-adic valuations — prints the factorization rows 2^3, 2^6*3, ... used as the basis of the provisional threshold-affine valuation observations. |
+| `denom_mechanism_probe.py` | Exact rational matrix inverse of the shared rotation-operator system M_d for d=4..12 to test whether focal-value denominators D_d are determined by the operator alone; refuted (last-row denominator lcm is pure 2-power, observed D_d has 3,5,7 factors). |
 | `focal_counts_6coeff.py` | _(undescribed)_ |
 | `focal_denoms.py` | _(undescribed)_ |
 | `generate_p30.py` | Sympy generator emitting the untrusted 30-monomial P30 data as Lean (Generated/P30Data.lean); deterministic lexicographic monomial order; same recurrence as verify_lu_core.py. |

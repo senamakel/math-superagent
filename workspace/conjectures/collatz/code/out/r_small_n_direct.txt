@@ -1,0 +1,4 @@
+cross-check vs code/brute.py orbit_reaches_one on n=1..1000: AGREE
+count of n checked: 1048576
+sweep wall time: 1.327 s
+VERDICT: ALL n <= 2^20 REACH 1

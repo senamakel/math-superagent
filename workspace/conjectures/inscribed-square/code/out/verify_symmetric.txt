@@ -1,0 +1,13 @@
+verify_symmetric — exact Fraction arithmetic
+sanity cases from code/brute.py
+PASS unit square find_squares= 1 naive_vertex_squares= 1 expected= 1
+  square: ((0, 0), (0, 1), (1, 1), (1, 0))
+PASS 2x1 rectangle find_squares= 0 naive_vertex_squares= 0 expected= 0
+PASS diamond find_squares= 1 naive_vertex_squares= 1 expected= 1
+  square: ((-1, 0), (0, -1), (1, 0), (0, 1))
+Nielsen–Wright line-symmetric hexagon
+PASS Jordan polygon: True vertices distinct and nonadjacent edges disjoint
+exact squares found: 1
+  square: ((0, 0), (0, 2), (2, 2), (2, 0))
+non-symmetric irregular pentagon
+squares found: 0 no

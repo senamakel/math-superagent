@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "no-nontrivial-cycle/G-cycle-diophantine-bridge",
+  "source": "code/lean/no_nontrivial_cycle_G_cycle_diophantine_bridge-33fd98af.lean",
+  "stage": "prove"
+}

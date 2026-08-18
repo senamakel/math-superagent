@@ -10,7 +10,9 @@ Derived from `config/tasks.jsonl` and rewritten on every write. Do not edit this
 Most recently added or updated first. Work the first one you can. To raise an older task, record against it — that moves it back to the top.
 
 - `i6b-four-passage-analytic-gap` — Finite four-passage ECT reduction remains the exact analytic gap
-  - detail: RSZ/RR sources do not provide the required full I^1_6b four-second-type composition; arbitrary flat oscillatory remainders defeat finite truncation, while ECT zero bound is kernel-checked once membership is supplied.
+  - detail: Kernel-checked conditional theorem now closed (claim slow-divergence-ect-partial-specialisation-formalised): ECTReduction K delta with representation, nonzero, ect_property gives the uniform bound N = dimension-1 over compact K, axioms = kernel's three. The analytic content (endpoint_maps, analytic_uniform_remainder — the actual four second-type Dulac germs, the finite-rank reduction, the ECT certificates) is the remaining gap, which is exactly G-endpoint-germs, G-reduce-finite-rank, G-ect-certificates.
+- `bautin-membership-l14-l16` — Extend Bautin-trick membership chain to L14/L16
+  - detail: tool_builder extends code/bautin/verify_membership.py past L12: compute L14, L16 exactly over Q, test membership in <L4,L6,L8> (Bautin's finite-generation assertion at the next two degrees; a False means a bug in the recurrence or test). Reproduce the membership.captured.txt boundary first. Capture to code/out/bautin_membership_L14_L16.captured.txt.
 - `bautin-m2-oracle` — Reproduce Bautin M(2)=3 via exact Lyapunov quantities / Bautin ideal over Q
   - detail: tool_builder writes code/bautin/lyapunov_quadratic.py computing Lyapunov quantities of a quadratic focus over Q, forms the Bautin ideal, computes a Groebner basis over Q, and verifies cyclicity M(2)=3. Capture to code/out/bautin_m2.txt. This is evidence for code/lean/Lib/Bautin.lean.
 
@@ -18,6 +20,9 @@ Most recently added or updated first. Work the first one you can. To raise an ol
 
 The five most recently finished, with what came of it. Kept, because a run that cannot see what it already did repeats it.
 
+- `close-full-graphic-zero-bound-sorry` — Close the sorry in SlowDivergenceECTPartial.full_graphic_zero_bound
+  - detail: lean_prover finishes G-specialise-uniform-bound: rewrite the zero set via reduction.representation, apply reduction.ect_property p hp (reduction.coefficient p) (reduction.nonzero p hp), take N = reduction.dimension - 1 (uniform in p). Report #print axioms full_graphic_zero_bound — must be exactly propext, choice, Quot.sound.
+  - reason: The `sorry` in SlowDivergenceECTPartial.full_graphic_zero_bound is closed: rewrite through reduction.representation + reduction.ect_property p hp (coefficient p) (nonzero p hp), uniform N = dimension - 1. lean_check outcome verified, no sorries, axioms exactly [propext, Classical.choice, Quot.sound]. Claim filed: research/claims/slow-divergence-ect-partial-specialisation-formalised.md. The conditional content (endpoint_maps, analytic_uniform_remainder) remains the open analytic gap.
 - `i6b-ect-partial-result` — Bank the restricted I^1_6b ECT obstruction and conditional theorem
   - detail: Exact oracle and capture reproduce all worked examples and refute naive passage-wise ECT closure under summation; Lean file SlowDivergenceECTPartial.lean compiles with no sorry and proves only the conditional implication from explicit endpoint-map, analytic-uniform-remainder, and ECT hypotheses to a uniform zero bound. Full I^1_6b remains open.
 - `slow-divergence-ect-partial-result` — Test slow-divergence ECT route on open I6b/DF2a cases
@@ -27,10 +32,8 @@ The five most recently finished, with what came of it. Kept, because a run that 
 - `verify-lu-h14-3-finite-core` — Independently verify/refute the finite computational core of Lu arXiv:2607.13785 (H14_3)
   - detail: Exact naive oracle reproduced all worked examples; four-passage ECT diagnostic executed and captured. It refutes only the shortcut, not I^1_6b finite cyclicity. See code/out/i6b_ect_diagnostic.captured.txt and research/findings/attempt2-i6b-ect-result.md.
   - refs: research/notes/lu-h14-3-open-graphic-claim.md; research/summaries/lu-h14-3-hemicycle.md; claim h16-drr-h14-3-lu-2026-claim
-- `bautin-lean-statement` — State Bautin M(2)=3 and H16.2 in Lean (Bautin.lean, Statement.lean)
-  - detail: Actual four-Dulac ECT shortcut is refuted by exact toy cancellation; preserve precise scope and missing hypotheses in research/findings/attempt2-i6b-ect-result.md. Lean abstract ECT theorem verified; concrete I^1_6b bridge remains open.
 
-_11 more not shown here; they are in `config/tasks.jsonl`._
+_12 more not shown here; they are in `config/tasks.jsonl`._
 
 ## Entries that could not be read
 

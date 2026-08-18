@@ -1,4 +1,4 @@
-<!-- source: https://arxiv.org/pdf/2508.15925 | converted from HTML -->
+<!-- source: https://doi.org/10.48550/arxiv.2508.15925 | converted from HTML -->
 
 [2508.15925] Abelian integrals for polynomials with trivial global monodromy on $\mathbb{C}^2$
 

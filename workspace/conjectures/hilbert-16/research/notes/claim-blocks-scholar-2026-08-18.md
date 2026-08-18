@@ -47,7 +47,7 @@ holds-here: yes
 status: asserted
 bearing: identifies concrete remaining displacement-function targets.
 anchor: research/sources/rousseau-roussarie-center-graphics-nilpotent.full.md
-contradicts: drr-88-then-closed-all-four
+contradicts: drr-rr-boundary-only-for-3-graphics
 follows-from:
 answers:
 ```
@@ -73,7 +73,7 @@ holds-here: yes
 status: asserted
 bearing: calibration and mandatory lower-bound test for every proposed upper bound.
 anchor: research/sources/bautin-1952-full.pdf.full.md; research/sources/galias-tucker-songling-four-cycles.full.md; research/sources/buzzi-novaes-claim-h16.full.md
-contradicts: quadratic-upper-bound
+contradicts: h16-quadratic-closed-form-refuted
 follows-from:
 answers:
 ```

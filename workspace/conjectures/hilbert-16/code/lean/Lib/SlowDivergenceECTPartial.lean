@@ -15,10 +15,12 @@ the `basis` family. `endpoint_maps`, `analytic_uniform_remainder`, and `_hK`
 were unused (`_`-prefixed) decoration. `ECTReduction` now states the actual
 ECT hypothesis — every nontrivial linear combination of the basis has a
 bounded, finite zero set, matching `Lib/ECTSlowDivergence.ECTFamily` — and the
-theorem specialises it to the one representation `δ` is given by, left
-`sorry` since that specialisation is the genuine (if routine, given
-`ECTSlowDivergence.displacement_zero_bound`) step this node has not yet
-discharged.
+theorem specialises it to the one representation `δ` is given by: per `p ∈ K`,
+rewrite the zero set through `reduction.representation p hp` and apply
+`reduction.ect_property p hp (reduction.coefficient p) (reduction.nonzero p
+hp)`, with the uniform bound `N := reduction.dimension - 1` pulled out of the
+`∀ p`.  Closed; kernel-verified with axioms exactly
+`[propext, Classical.choice, Quot.sound]`.
 -/
 namespace SlowDivergenceECTPartial
 
@@ -57,7 +59,19 @@ theorem full_graphic_zero_bound
     ∃ N : ℕ, ∀ p ∈ K,
       ({x : Section | δ p x = 0}).Finite ∧
       Set.ncard {x : Section | δ p x = 0} ≤ N := by
-  sorry
+  refine ⟨reduction.dimension - 1, ?_⟩
+  intro p hp
+  have hz : {x : Section | δ p x = 0} =
+      {x : Section | (∑ i, reduction.coefficient p i * reduction.basis i p x) = 0} := by
+    ext x
+    simp only [Set.mem_ofPred_eq]
+    constructor
+    · intro h
+      rw [← reduction.representation p hp x, h]
+    · intro h
+      rw [reduction.representation p hp x, h]
+  rw [hz]
+  exact reduction.ect_property p hp (reduction.coefficient p) (reduction.nonzero p hp)
 
 #print axioms full_graphic_zero_bound
 
@@ -66,14 +80,13 @@ id: slow-divergence-ect-partial-specialisation
 lemma: ∀ (K, δ, hK, endpoint_maps, analytic_uniform_remainder,
   reduction : ECTReduction K δ holding), ∃ N, ∀ p ∈ K, δ's zero set on the
   section is finite with ncard ≤ N
-status: sorry
-next: rewrite `{x | δ p x = 0}` as `{x | ∑ i, reduction.coefficient p i *
-  reduction.basis i p x = 0}` via `reduction.representation`, then apply
-  `reduction.ect_property p hp reduction.coefficient (reduction.nonzero p hp)`
-  — the same rewrite-then-apply shape `ECTSlowDivergence.displacement_zero_
-  bound` already uses for the single-point case; the remaining work is
-  threading it through the `∀ p ∈ K` quantifier and picking a uniform `N`
-  (e.g. `reduction.dimension - 1`, since the ECT bound is uniform in `p`).
+status: closed
+next: none — closed by rewrite-through-representation + ect_property, uniform
+  N = dimension - 1; verified 2026-08-18, axioms [propext, choice,
+  Quot.sound].  The three binder hypotheses hK, hendpoint, hanalytic are
+  intentionally unused by this specialisation step and remain in the
+  statement (they carry the conditional content of the node, to be supplied
+  by the endpoint-maps and analytic-remainder work).
 -/
 
 end SlowDivergenceECTPartial

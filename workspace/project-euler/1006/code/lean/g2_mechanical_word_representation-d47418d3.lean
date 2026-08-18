@@ -20,20 +20,52 @@ def fibInfDigit (t : ℕ) : ℤ := 0
 def FactorSet (k : ℕ) : Set (Fin k → ℤ) :=
   { w | ∃ m : ℕ, w = fun j : Fin k => fibInfDigit (m + (j : ℕ)) }
 
-namespace Cited
-/-- src: Berstel, Recent Results on Sturmian Words, rotational-factor theorem;
-formal citation placeholder for the Fibonacci characteristic-word instance. -/
-axiom mechanical_factors (k n : ℕ) (h : k < Nat.fib (n + 2)) :
-    mechFactorSet n k = FactorSet k
-end Cited
+/-!
+The decomposition separates the theorem into: (i) the arithmetic properties of
+convergent slopes, (ii) the rotation coding/factor correspondence, and (iii)
+the finite intercept representatives.  Only (ii) is genuinely external here.
+-/
 
-/-- The binders `k n` are the factor length and convergent index; `h` is the
-hypothesis that the convergent denominator `fib (n+2)` exceeds `k`. The sets
-are the rotation/mechanical words and the length-k factors, respectively. -/
+lemma slope_denominator (n k : ℕ) (h : k < Nat.fib (n + 2)) :
+    k < Nat.fib (n + 2) := by
+  exact h
+
+lemma convergent_slope_identity (n : ℕ) :
+    slope n = (Nat.fib n : ℚ) / (Nat.fib (n + 2) : ℚ) := by
+  rfl
+
+lemma intercept_representatives (n k : ℕ) :
+    mechFactorSet n k = {w | ∃ m : ℕ, m ≤ k ∧ w = mechWord n k m} := by
+  rfl
+
+/- gap
+id: g2-mechanical-factors-cited-correspondence
+lemma: ∀ k n : ℕ, k < Nat.fib (n + 2) → mechFactorSet n k = FactorSet k
+status: open
+next: Check the exact rotational-factor theorem in the cited Sturmian literature and formalise its Fibonacci characteristic-word instantiation, including the slope convention and intercept representatives.
+-/
+lemma mechanical_factors_correspondence (k n : ℕ) (h : k < Nat.fib (n + 2)) :
+    mechFactorSet n k = FactorSet k := by
+  sorry
+
+/- gap
+id: g2-mechanical-word-convergent-limit
+lemma: ∀ k : ℕ, ∃ n : ℕ, k < Nat.fib (n + 2) ∧ slope n is a continued-fraction convergent to 1/phi^2
+status: open
+next: State the convergent property over an exact irrational target (or use the standard Fibonacci continued-fraction theorem) and prove denominator growth supplies n.
+-/
+lemma convergent_limit (k : ℕ) :
+    ∃ n : ℕ, k < Nat.fib (n + 2) := by
+  sorry
+
+/-- Combining step: the desired rotation/mechanical representation follows
+from the correspondence lemma; the denominator condition is the stated
+finite-convergent hypothesis. -/
 theorem mech_reproduces_factors (k n : ℕ) (h : k < Nat.fib (n + 2)) :
     mechFactorSet n k = FactorSet k := by
-  exact Cited.mechanical_factors k n h
+  exact mechanical_factors_correspondence k n h
 
 #print axioms PE1006G2.mech_reproduces_factors
-#print axioms PE1006G2.Cited.mechanical_factors
+#print axioms PE1006G2.mechanical_factors_correspondence
+#print axioms PE1006G2.convergent_slope_identity
 end PE1006G2

@@ -17,6 +17,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `conjugate_christoffel_factor_sturmian-0be2e715.lean` | Decomposes the conjugate-Christoffel/Sturmian-factor node into explicit Lean gaps and a kernel-checkable combining equivalence. |
 | `directive6_anchors_verified_incontainer-c98a97b5.lean` | Lean theorem formalising the numerical anchor residues and factor-count equalities for the directive-6 verification node. |
 | `explore.lean` | _(undescribed)_ |
+| `farey_slope_stabilisation-ab3f4c35.lean` | Formal statement shell for the Farey/Sturmian special-factor coincidence node; currently exposes the cited mathematical gap. |
 | `fibonacci_position_theorem_contiguous_windows-af501dab.lean` | Formal statement of the Fibonacci contiguous-window position theorem, with finite-word definitions and an explicitly cited Proposition 1 axiom; the theorem is checked as a conditional implication. |
 | `fibonacci_sturmian_complexity-1649cd8e.lean` | Decomposition of node fibonacci-sturmian-complexity: the count (FibSubwords k).ncard = k+1 split into subword_count_upper (≤ k+1) and subword_count_lower (≥ k+1, the constructive/existence half), with a kernel-checked combining theorem fib_subword_count = le_antisymm of the two. Provable shell (factor-chain nesting) reproduced sorry-free; the two bounds are declared gaps with next-moves; Cited.fibonacci_word_factor_complexity held as a conditional route only. Finite decide-certificates for k=3,4,5. |
 | `g1_factor_chain_nested-de74dba9.lean` | Statement-graph node g1-factor-chain-nested: monotone nesting of PE1006 length-k factor sets. Defines fibWord (S_n), FactorSet, FibSubwords, and proves factorSet_chain (FactorSet(fibWord n) k ⊆ FactorSet(fibWord (n+1)) k) and factorSet_chain_any (monotone across n+d) sorry-free, axioms propext/Quot.sound only. |
@@ -37,14 +38,22 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `pe1006_psi_G2_mech_shell-1f79c34f.lean` | Sorry-free kernel-verified shell of node G2: slope in [0,1], digits in {0,1}, exact-binary mechanical words with corrected slope fib(n)/fib(n+2). Verified by lean_check (axioms propext/Classical.choice/Quot.sound). The deep factor-identity is gapped in the companion node file. |
 | `pe1006_psi_G2_mechanical_factor_parametrisation-3b6fbf7e.lean` | Conditional Lean formalisation of the G2 mechanical-factor parametrisation statement, with explicit convergent, intercept, digit, word, and factor-set binders. |
 | `pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean` | Node G2 statement file with corrected slope: formalises the mechanical/rotation representation of the length-k factors of the Fibonacci word. Shell lemmas proved; the deep factor identity mech_reproduces_factors/mech_set_card are declared gaps (sorry + Cited axiom, not formalised). |
+| `pe1006_psi_G3_telescoped_decimal_second_moment-89c7a94a.lean` | _(undescribed)_ |
 | `pe1006_psi_G3_telescoped_v-1f79c34f.lean` | G3 telescoped-v identity statement: wordVal a x k = telescoped a x k (digit-weighted mechanical word value equals its telescoped second-moment floor-sum form), stated with the hypotheses 1≤k, 0<a<1, proof left := by sorry. Kernel-checked. |
+| `pe1006_psi_G4_joint_intercept_evaluation-fd780321.lean` | _(undescribed)_ |
 | `pe1006_psi_G4_universal_euclidean_floor_sum-7383014a.lean` | G4 decomposition of the PE1006 universal-Euclidean double-sum claim into node composition, recursion semantics, quadratic moment extraction, and orbit-index encoding lemmas. |
 | `pe1006_psi_goal-1f79c34f.lean` | Overall PE1006 goal in the mechanical-word second-moment language: G3 telescoped-v identity, digit/wordVal/telescoped defs, arc-midpoint representatives, PsiMech (sum of v(x_m)^2), and the two key theorems psi_mech_reduction (Psi(k) ≡ PsiMech a k mod M) and pe1006_answer_active (the k=10^18 residue, given existentially). All theorems := by sorry, kernel-checked. |
+| `pe1006_psi_pe1006_psi_G1_finite_subword_limit_identification-fee23d1f.lean` | _(undescribed)_ |
+| `pe1006_psi_pe1006_psi_G2_mechanical_factor_parametrisation-5857f6ca.lean` | Lean formalisation of the G2 mechanical-factor parametrisation statement; the implication is checked conditional on the explicitly cited Sturmian rotational-factor axiom. |
+| `pe1006_psi_pe1006_psi_G3_telescoped_decimal_second_moment-f2d769d6.lean` | _(undescribed)_ |
+| `pe1006_psi_pe1006_psi_G4_joint_intercept_evaluation-5dbefc6d.lean` | _(undescribed)_ |
 | `probe_algebra.lean` | _(undescribed)_ |
+| `probe_anchor.lean` | _(undescribed)_ |
 | `probe_char_binary.lean` | _(undescribed)_ |
 | `probe_floor_normnum.lean` | _(undescribed)_ |
 | `probe_lowshift.lean` | _(undescribed)_ |
 | `probe_wiki.lean` | _(undescribed)_ |
 | `research.lean` | _(undescribed)_ |
+| `ueuclid_incontainer_fails_s1s2-e1947a2b.lean` | _(undescribed)_ |
 | `ueuclid_s1s2_false_alarm_refuted-b0766630.lean` | Kernel-checkable 1-indexed S1/S2 arithmetic refuting the false alarm; proves the stated instance values 547 and 2551. |
 | `universal_euclidean_geometric_floor_sum-8768a07e.lean` | _(undescribed)_ |

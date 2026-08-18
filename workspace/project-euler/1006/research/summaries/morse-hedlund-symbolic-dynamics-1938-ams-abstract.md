@@ -1,62 +1,34 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/morse-hedlund-symbolic-dynamics-1938-ams-abstract.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Morse–Hedlund 1938 "Symbolic dynamics" — NOT obtained (paywalled)
 
-<!-- source: https://doi.org/10.1090/s0002-9904-1938-06743-2 | converted from HTML -->
+<!-- source: https://doi.org/10.1090/s0002-9904-1938-06743-2 | download failed, 2026-08-19 -->
 
-## What is in it
+## Attempted download
 
-- Digital content for Bulletin of the American Mathematical Society
-  - Journal Details
-  - Free Archive (1891 - 2026)
-  - Journal overview:
-  - Editorial Board [Past Editorial Board Members][12]
-    - Editorial Board for Articles
-    - Editorial Board for Book Reviews
-    - Consultant to the Editors
-- Submission
-  - After Acceptance
-  - Useful Tools
+Morse, M. and Hedlund, G. A. "Symbolic dynamics." *Bull. Amer. Math. Soc.* 44 (1938) 815–866.
+DOI https://doi.org/10.1090/s0002-9904-1938-06743-2 (this DOI is the Bulletin's abstract record;
+the JSTOR record is https://doi.org/10.2307/2371264).
 
+Both routes failed:
+- AMS DOI → journal landing page, not paper text (full text held on disk is journal chrome only;
+  `research/sources/morse-hedlund-symbolic-dynamics-1938-ams-abstract.full.md` is marked
+  DOWNLOAD FAILED).
+- JSTOR DOI (10.2307/2371441, the 1940 "Symbolic dynamics II. Sturmian trajectories") → paywall
+  "Client Challenge" stub; no source file was created for it.
 
-## What it claims
+## What the library holds instead (equivalent coverage)
 
-The Bulletin publishes expository articles on contemporary mathematical research, written in a way that gives insight to mathematicians who may not be experts in the particular topic. The Bulletin also publishes reviews of selected books in mathematics and short articles in the Mathematical Perspectives section, both by invitation only.
+The theorem this paper is famous for — aperiodic ⇒ factor complexity p(n) ≥ n+1, and the
+aperiodic words attaining p(n)=n+1 are exactly the Sturmian sequences — is stated and proved in
+modern, freely available sources already in the library:
 
-ISSN 1088-9485 (online) ISSN 0273-0979 (print)
+- `research/sources/mathworld-morse-hedlund-theorem.full.md` (encyclopedic statement, 1940 reference)
+- `research/sources/mathworld-sturmian-sequence.full.md` (definition + the 0→01, 1→0 example = PE1006's word)
+- `research/sources/coven-hedlund-sequences-minimal-block-growth-1973.full.md` (Coven–Hedlund 1973, free AMS re-proof of the minimal-block-growth theorem)
+- `research/sources/lothaire-sturmian-words-C2.full.md` (Lothaire Ch. 2, "Sturmian words", DOI 10.1017/CBO9781107326019.003 — the canonical modern treatment)
+- `research/sources/perrin-restivo-sturmian-lecture.full.md` (Perrin–Restivo lecture notes)
 
-The 2024 MCQ for Bulletin of the American Mathematical Society is 0.84. *Subscribers to MathSciNet may click through for more detailed information." tabindex="0" style="cursor:pointer;" >*
+## Status
 
-- Current volume
-- Articles in press
-- All issues
-- Selected Volume
-- Selected Article
-- About
-- Editorial Board
-- Author Submission Info
-
-Share this page via the icons above, or by copying the link below:
-
-Copy To Clipboard
-
-Successfully Copied!
-
--->
-
-**Toggle favorite**
-
--->
-
-Contents of Issue 63
-
-HTML articles powered by AMS MathViewer **[2]
-
-Articles in press
-
-Papers are displayed alphabetically by first author listed
-Early View PDF articles are an AMS member benefit
-
-Recently published articles
-
-HTML articles…
-
-*[digest of a 25883 character source; every section, statement, and proof in full at `research/sources/morse-hedlund-symbolic-dynamics-1938-ams-abstract.full.md`]*
+Not in library as a primary source. **Do not cite the landing-page file as if it were the paper.**
+If an open scan of the original appears (Project Euclid has the Bulletin archive), it should be
+downloaded and this note replaced.

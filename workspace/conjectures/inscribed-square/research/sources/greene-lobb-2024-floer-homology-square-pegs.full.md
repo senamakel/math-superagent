@@ -1,0 +1,1803 @@
+<!-- source: https://arxiv.org/pdf/2404.05179 | converted from PDF -->
+
+arXiv:2404.05179v2  [math.SG]  13 Jul 2024
+FLOER HOMOLOGY AND SQUARE PEGS
+
+JOSHUA EVAN GREENE AND ANDREW LOBB
+
+Abstract. We construct a version of Lagrangian Floer homology whose chain complex is generated
+by the inscriptions of a rectangle into a real analytic Jordan curve. By using its associated spectral
+invariants, we establish that a rectiﬁable Jordan curve admits inscriptions of a whole interval of
+rectangles. In particular, it inscribes a square if the area it encloses is more than half that of a circle
+of equal diameter.
+ 1. Introduction.
+
+This paper is motivated by the Square Peg Problem:
+
+Does every Jordan curve in the plane inscribe a square?
+
+Here a curve γ inscribes a polygon Q – and Q inscribes in γ – if γ contains the vertices of an orientation-
+preserving similar copy of Q. The problem was posed by Otto Toeplitz in 1911 [16]. It was aﬃrmatively
+solved for smooth curves by Schnirelmann in 1929 [15], and it is known to be true for several other
+classes of curves [9]. However, the general case of continuous curves remains open to this day. The
+diﬃculty with promoting the solution for smooth curves to continuous curves is the issue of shrinkout.
+
+1.1. Shrinkout and symplectic geometry. To describe the issue, suppose that γ is a (continuous)
+Jordan curve and γn is a sequence of smooth Jordan curves approximating it. Schnirelmann’s result
+shows that each γn contains the vertices of a square □n. It is tempting to use compactness to pass
+to a subsequence of □n and conclude that they limit to a square □ whose vertices are contained in
+γ. However, the subsequence may limit to a single point • ∈ γ. Surmounting shrinkout has impeded
+progress on the Square Peg Problem for nearly a century.
+
+The goal of this paper is to show how to preclude shrinkout for a wide class of curves using tools
+from symplectic geometry. In order to describe the framework, we recall our earlier result speciﬁc to
+the case of smooth curves:
+
+Theorem 1.1 ([6]). Every smooth Jordan curve in the plane inscribes every cyclic quadrilateral. In
+other words, every quadrilateral which inscribes in a circle also inscribes in every smooth Jordan curve.
+
+The proof of Theorem 1.1 proceeds by constructing a pair of embedded Lagrangian tori L0 and L1 in
+standard symplectic C2 associated with a cyclic quadrilateral Q and a smooth Jordan curve γ. The
+intersection between L0 and L1 consists of a clean loop C and a disjoint set P . The set P parametrizes
+the inscriptions of Q in γ. The loop C parametrizes degenerate inscriptions, regarding each point on
+γ as an degenerate copy of Q. By surgering C away, a single immersed Lagrangian torus L results,
+and it self-intersects precisely in the set P . This torus has minimum Maslov number 4. On the other
+hand, an embedded Lagrangian torus in C2 has minimum Maslov number 2. (This is the resolution of
+Audin’s conjecture for tori in C2, independently due to Polterovich [12] and Viterbo [17].) This shows
+
+JEG was supported by the National Science Foundation under Award No. DMS-2304856 and by a Simons Fellowship.
+
+1
+
+2 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+that L self-intersects, so P is non-empty, and this implies the existence of the desired inscription of Q
+in γ.
+
+Theorem 1.1 is optimal in a couple of senses. Firstly, certainly no other quadrilateral can inscribe
+in every smooth Jordan curve since the circle is itself such a curve. Secondly, the regularity condition
+on the curves cannot be weakened from smooth all the way down to continuous. Indeed, for every
+cyclic quadrilateral which is not an isosceles trapezoid, there exists a continuous Jordan curve (even a
+triangle) which does not inscribe it. This underscores the seriousness of shrinkout. For suppose that
+Q is a cyclic quadrilateral which is not an isosceles trapezoid, γ is a triangle which does not inscribe
+Q, and γn is a sequence of smooth approximations to γ with γn → γ as n → ∞. Theorem 1.1 shows
+that there exists a copy Qn of Q inscribed in each γn. However, they necessarily limit to a single
+point • ∈ γ.
+
+1.2. Jordan Floer homology. Nevertheless, the framework for proving Theorem 1.1 contains a clue
+to precluding shrinkout for squares and, more generally, for rectangles. The reason is that when Q is a
+rectangle, the associated tori L0 and L1 are monotone and Hamiltonian isotopic to one another. This
+suggests deﬁning a version of Lagrangian Floer homology for the pair (L0, L1) in order to gain greater
+control over inscribed rectangles in γ. A large part of this paper carries out such a construction.
+
+In sketch, the construction begins with a chain complex JFC(γ, θ) associated with a generic pair of
+a real analytic Jordan curve γ and an angle 0 < θ < π. The restriction to this class of curves is made
+to overcome an analytical issue, but such curves are C0-dense in the space of all Jordan curves. The
+complex is generated by the set P of inscriptions of a θ-rectangle Qθ in γ (a θ-rectangle is one whose
+diagonals meet in the angle θ). The diﬀerential ∂ on the complex counts pseudoholomorphic strips
+with boundary on L0 and L1 which join pairs of points in P ⊂ L0 ∩ L1. A novelty in the construction,
+and a key part of the proof that ∂2 = 0, is that the strips must avoid a complex line which cuts through
+both L0 and L1 in the loop C.
+
+The construction furnishes chain homotopy equivalences JFC(γ, θ1) ≃ JFC(γ, θ2) for diﬀerent choices
+of angles 0 < θ1, θ2 < π, and for θ close to 0 we identify JFC(γ, θ) with a relative Morse chain complex of
+the pair (L0, C). These properties lead to the fact that the total homology JF(γ, θ) is two-dimensional.
+Associated to each homology generator of JF(γ, θ) is a spectral invariant, a real number induced from
+a ﬁltration on the complex JFC by action. The spectral invariants are robust under approximation of
+an arbitrary Jordan curve by real analytic ones. This robustness provides control over shrinkout for
+rectangles for a wide class of curves.
+
+1.3. Square pegs. The application we give is the following result. Recall that a Jordan curve γ ⊂ R2
+
+of ﬁnite length is rectiﬁable; in other words, γ is rectiﬁable if it can be approximated by a sequence
+of smooth curves of uniformly bounded length. Let Area(γ) denote the area of the region that γ
+encloses, and let Rad(γ) denote half of its diameter, Rad(γ) = 1
+2 sup{|z − w| : z, w ∈ γ}. Note that
+Area(γ)/Rad(γ)
+2 ≤ π, with equality exactly when γ is a circle.
+
+Theorem A. If γ ⊂ R2 is a rectiﬁable Jordan curve, then there exists an interval I ⊂ (0, π) of length
+at least Area(γ)/Rad(γ)
+2 such that γ inscribes every θ-rectangle with θ ∈ I.
+
+The following corollary is immediate.
+
+Corollary. If γ is rectiﬁable and encloses more than half the area of a circle of equal radius, then γ
+inscribes a square. □
+
+FLOER HOMOLOGY AND SQUARE PEGS 3
+
+1.4. Overview of the construction of Jordan Floer homology. The paper unfolds as follows. In
+Section 2, we begin with a triple of
+
+• a real analytic Jordan curve γ ⊂ R2 = C,
+• an angle θ ∈ (0, π), and
+• analytic data D consisting of an admissible Hamiltonian and almost-complex structure.
+
+From it we construct a Z-graded, R-ﬁltered, F2-chain complex
+
+JFC∗(γ, θ, D),
+
+which we shall term the Jordan Floer complex. Generically, JFC∗(γ, θ, D) is freely generated by the
+transverse points of intersection between a pair of cleanly intersecting, monotone Lagrangian tori:
+
+L0 = γ × γ ⊂ C2 and L1 = Rθ(L0) ⊂ C2.
+
+Here Rθ : C2 → C2 denotes rotation through angle θ about the diagonal complex line
+
+∆(C) := {(z, z) : z ∈ C} ⊂ C2.
+
+It is also the time-θ ﬂow generated by the Hamiltonian function
+
+H : C2 −→ R : (z, w) ↦−→ 1
+4 |z − w|2,
+
+which shows that L1 is Hamiltonian isotopic to L0. The transverse points of intersection between L0
+and L1 are in one-to-one correspondence with inscriptions of Qθ in γ:
+
+(z, w) ∈ L0 ∩ L1 ⇐⇒ (z, w), Rθ(z, w) span diagonals of an inscription of Qθ in γ.
+
+The clean loop of intersection
+ ∆(γ) = {(z, z) : z ∈ γ} ⊂ L0 ∩ L1
+
+corresponds to degenerate inscriptions in which the four vertices of the rectangle degenerate to a single
+point on the curve.
+
+We introduce a class of admissible Hamiltonians ht in Section 2.2. Their function is to treat the
+case in which L0 and L1 do not intersect transversely away from ∆(γ). We introduce the moduli
+spaces of strips that we study in Section 2.3 and the class of admissible almost-complex structures Jt
+we require in Section 2.4. The key requirement on an admissible Jt is that it agrees with the standard
+almost-complex structure Jstd in a neighborhood of ∆(C), so that ∆(C) is a Jt-holomorphic divisor. We
+describe the relationship between the construction of JFC(γ, θ, D) presented here with a formulation
+in terms of Hamiltonian trajectories which begin and end on L0 in Section 2.5
+
+We deﬁne the diﬀerential ∂ on JFC∗(γ, θ, D) in Section 2.6. It counts certain pseudoholomorphic
+strips u : R × [0, 1] → C2. As usual, the strips
+
+(1) obey the Cauchy-Riemann equation ∂Du = 0,
+(2) satisfy the boundary conditions u(R × 0) ⊂ L0 and u(R × 1) ⊂ L1,
+(3) have bounded energy, and
+(4) have Maslov index 1.
+
+Crucially, we impose one more condition:
+
+(5) the closure of the image u(R × [0, 1]) is disjoint from ∆(C).
+
+4 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+Proving that ∂2 = 0 is the main content of Section 2.6. This fact does not seem to follow from any
+known constructions. The main issue is to analyze what happens in a smooth, 1-parameter family of
+strips ur which satisfy (1)-(3) above and such that some strip satisﬁes the disjointness condition (5).
+As we show, the disjointness condition is then inherited by all other strips ur and their Gromov limits.
+This requires a careful argument, since the divisor ∆(C) cuts through both tori L0 and L1. This is
+where we use the fact that γ is real analytic and invoke the conditions on our analytic data.
+
+Theorem 2.23 asserts that the homology group is two-dimensional, supported in homological (Maslov)
+gradings 1 and 2: JF∗(γ, θ, D) = (F2)(2) ⊕ (F2)(1).
+
+This follows by examining the dependence of the complex on θ and D. For a diﬀerent choice of angle
+0 < θ′ < π and analytic data D′, we modify the deﬁnition of the diﬀerential to deﬁne a ﬁltered chain
+homotopy equivalence JFC∗(γ, θ, D) ∼
+→ JFC∗(γ, θ′, D′). This is done over the course of Section 2.7.
+When θ is chosen close to 0 or π, we show that JFC∗(γ, θ, D) is isomorphic to the relative Morse chain
+complex CM∗(γ × γ, ∆(γ); H), whose homology is in turn isomorphic to (F2)(2) ⊕ (F2)(1). This is
+carried out in Section 2.8. Note that the group is Z-graded, instead of Z2-graded, as one might expect
+for a monotone Lagrangian with minimum Maslov number two. The enhancement arises from using
+diagonal-avoiding strips in the construction of the invariant.
+
+1.5. Spectral invariants. As remarked, JFC∗(γ, θ, D) also comes with an R-valued action ﬁltration.
+The action ﬁltration of a generator is treated concretely in Section 3.
+
+The action ﬁltration on JFC∗(γ, θ, D) descends to a ﬁltration on JF∗(γ, θ, D) studied in Section 4.
+Each homology class in the group JF∗(γ, θ, D) possesses a spectral invariant, its induced ﬁltration
+grading. All of the information in our setting is contained in the spectral invariant ℓ(γ, θ) attached to
+the top dimensional generator. As the notation suggests, it is independent of the choice of analytic
+data D.
+
+The application to Theorem A follows from properties of this spectral invariant collected in Propo-
+sition 4.1. More precisely, ℓ(γ, θ) is a continuous, monotonic non-decreasing function of θ ∈ (0, π)
+which limits to 0 as θ → 0 and to Area(γ) as θ → π. Since it is monotonic, it is diﬀerentiable almost
+everywhere, and its derivative is bounded above by Rad(γ)
+2. These properties enable us to establish
+Theorem A for a real analytic Jordan curve γ with bounds on the spectral invariants of the inscriptions
+of Qθ in γ with θ ∈ I.
+
+If γ is a rectiﬁable Jordan curve, then we may approximate it by a sequence of real analytic Jordan
+curves γn of bounded length by the Riesz-Prasolov theorem, a precise form of the Riemann mapping
+theorem for a domain with rectiﬁable boundary [13, Theorem 6.8]. If θ ∈ I and Qn is an inscription of
+a θ-rectangle in γn, then the action bound on Qn and the length bound on γn combine to show that
+the sequence Qn converges to a nondegenerate θ-rectangle Q inscribed in γ.
+
+1.6. Varying the curve. In this paper we study how JF(γ, θ) (and in particular its spectral invariants)
+vary with θ. It is a natural idea to try to perform the same kind of analysis while varying rather the
+Jordan curve γ by a Hamiltonian ﬂow on C. There are some diﬃculties with this idea, the ﬁrst analytic
+and the others topological, which we summarize here.
+
+The analytic diﬃculty is that it is tricky to deﬁne continuation maps giving chain homotopy equiv-
+alences between chain complexes JFC(γ, θ) for varying γ. The problem is to guarantee that diagonal-
+avoiding strips do not degenerate in 1-parameter families to strips meeting the diagonal. In a sequel [7],
+we overcome this analytic diﬃculty by abandoning continuation maps and turning to Floer’s original
+
+FLOER HOMOLOGY AND SQUARE PEGS 5
+
+approach for deﬁning chain maps, the bifurcation method [3]. In the current paper we borrow from
+this method in Section 4 when studying the rate of change of spectral invariants.
+
+The second diﬃculty is that it seems hard, even in this setting, to circumvent the rectiﬁability
+hypothesis.
+
+The third diﬃculty is that one would like to control the rate of change of the action with varying γ
+in a way that might, for example, lead to the resolution of the Square Peg Problem for all rectiﬁable
+curves. Looking ahead to Figures 6 and 9 which depict the action associated to an inscribed rectangle,
+we warn the reader that this example shows the rectangle elegantly inscribed in the Jordan curve. It
+seems unlikely that for a general real analytic Jordan curve one should expect the spectral invariant to
+be attained by the action of such a rectangle. For the Jordan curve γ and rectangle Q in Figure 6, any
+local isotopy of γ, performed away from the vertices of γ, that adds ǫ to the area bounded by γ, will
+change the action of the rectangle by at most ǫ. On the other hand, given any N ≫ 0, it is possible
+to draw a Jordan curve with an inscribed rectangle whose action changes, under a small local isotopy
+adding ǫ to the area bounded by the curve, by N ǫ. That such bad rectangles can exist is at the root
+of this third diﬃculty. The sequel [7] examines a case in which a priori all inscriptions are elegant,
+leading to some inscription results which fall outside the scope of Theorem A.
+
+Acknowledgments.
+
+We thank several mathematicians for useful conversations and sparing us their time during the course
+of this work: Denis Auroux, Paul Biran, Martin Bridgeman, Cole Hugelmeyer, Michael Hutchings,
+Joe Johns, Dusa McDuﬀ, Tom Mrowka, Dietmar Salamon, Felix Schm¨ashke, and Chris Wendl. In
+particular, Michael Hutchings pointed out that we were working with spectral invariants without
+knowing the term for them, which opened up the literature for us.
+
+Part of this research was performed in Fall 2022 while the authors were visiting the Simons Laufer
+Mathematical Sciences Institute, which is supported by the National Science Foundation (Grant No.
+DMS-1928930). We also gratefully acknowledge the Simons Foundation for hosting our visit to the
+2024 Simons Collaboration on New Structures in Low-Dimensional Topology Annual Meeting.
+
+6 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+2. Jordan Floer homology.
+
+This section deﬁnes the Jordan Floer chain complex JFC(γ, θ, ht, Jt) for an admissible quadruple of
+Jordan curve γ, angle θ, Hamiltonian perturbation ht, and almost-complex structure Jt.
+
+The ﬁrst major result we prove in this section is that the boundary operator on the complex is indeed
+a diﬀerential. The proof of this involves checking what happens as moduli spaces of strips degenerate,
+and verifying that these degenerations take place away from the diagonal ∆(C).
+
+The remaining results follow from considering degenerations of more elaborate families of strips.
+The reasons that these degenerations also stay away from the diagonal are already present in the proof
+of the ﬁrst result, so we spend more time on this than the following results. These results include that
+there exist continuation maps deﬁning chain maps JFC(γ, θ1, h1
+t , J 1
+t ) → JFC(γ, θ2, h2
+t , J 2
+t ) for pairs of
+admissible quadruples with ﬁxed γ. Furthermore these chain maps are compatible with one another
+in the sense that any composition of any two such chain maps
+
+JFC(γ, θ1, h1
+t , J 1
+t ) −→ JFC(γ, θ2, h2
+t , J 2
+t ) −→ JFC(γ, θ3, h3
+t , J 3
+t )
+
+is chain homotopy equivalent to any such chain map
+
+JFC(γ, θ1, h1
+t , J 1
+t ) −→ JFC(γ, θ3, h3
+t , J 3
+t ).
+
+It follows ﬁrstly that we get a well-deﬁned Jordan Floer homology group JF(γ, θ). Secondly, we get
+compatible isomorphisms JF(γ, θ1) −→ JF(γ, θ2)
+for any choices 0 < θ1, θ2 < π.
+
+2.1. Hamiltonians. We recall some notation from the Introduction. Our main interest lies in a very
+simple Hamiltonian:
+ H : C2 −→ R : (z, w) ↦−→ |z − w|2
+
+4 .
+
+We write the time-θ ﬂow of this Hamiltonian Φθ
+H as Rθ : C2 → C2; this is a rotation of C2 by an angle
+of θ about the axis given by the diagonal ∆(C) = {(z, z) : z ∈ C} ⊂ C2.
+
+Deﬁnition 2.1. Let β : [0, 1] → [0, ∞) be a smooth function such that ∫ 1
+0 β = 1 and β(t) = 0 for
+0 ≤ t ≤ 0.1 and for 0.9 ≤ t ≤ 1.
+
+We deﬁne Ht(z, w) = β(t)H(z, w) for 0 ≤ t ≤ 1 and (z, w) ∈ C2.
+
+The function Ht is a time-dependent Hamiltonian version of the Hamiltonian H, useful to us since
+for technical reasons we will wish our Hamiltonians to have zero derivative near t = 0, 1. Again notice
+that the time-θ ﬂow of Ht is just Φθ
+Ht = Rθ. In fact, we shall generally prefer ﬂowing the Hamiltonian
+θHt for time 1, which again gives Φ1
+θHt = Φθ
+Ht = Rθ.
+
+2.2. The chain group of an admissible triple. Now let γ ⊂ R2 = C denote a smooth Jordan
+curve. As such, it is Lagrangian with respect to the standard symplectic form on C, hence so is
+γ × γ ⊂ (C2, ωstd). We would like, if we could, to study the Lagrangian Floer homology of the pair of
+Lagrangians L0 = γ × γ, L1 = Rθ(γ × γ).
+The ﬁrst problem is that these Lagrangians have a clean loop of intersection ∆(γ), and we plan to
+avoid this loop by analytic arguments which will involve restricting γ to being real analytic. The second
+problem is one that Lagrangian Floer theorists have well-developed techniques to handle – that the
+remaining intersection points of γ × γ and Rθ(γ × γ) may not be transverse. The usual way to deal
+
+FLOER HOMOLOGY AND SQUARE PEGS 7
+
+with this diﬃculty is by introducing a small Hamiltonian perturbation ht to achieve transversality. We
+ﬁrst introduce a distance which will be useful in choosing how close to the diagonal ∆(C) we take the
+small perturbations.
+
+Deﬁnition 2.2 (Width). The width of a real analytic Jordan curve γ is the inﬁmal diameter Width(γ)
+of the inscribed rectangles in γ.
+
+Since the curvature of a smooth Jordan curve is uniformly bounded above (by compactness), a short
+argument (again by compactness) shows that width is positive: Width(γ) > 0.
+
+Deﬁnition 2.3 (Admissible triple). An admissible triple (γ, θ, ht) is a real analytic Jordan curve γ,
+an angle 0 < θ < π, and a time-dependent Hamiltonian perturbation ht : C2 → R for times 0 ≤ t ≤ 1
+satisfying the following conditions.
+
+(1) We have ht = 0 whenever 0 ≤ t ≤ 0.1 or 0.9 ≤ t ≤ 1.
+(2) We have ht(z, w) = 0 whenever |z − w| ≤ Width(γ)/2.
+(3) The Lagrangians γ × γ and Φ1
+θHt+ht (γ × γ) intersect cleanly along ∆(γ) and everywhere else
+transversely.
+
+Notice that condition (2) ensures that Φ1
+θHt+ht (γ × γ) coincides with Rθ(γ × γ) in a neighborhood
+of ∆(γ). Therefore, the condition that it intersects γ × γ cleanly along ∆(γ) actually follows from
+condition (2). Since intersection points γ × γ ∩ Rθ(γ × γ) are either in ∆(γ) or are at a distance of at
+least Width(γ) from ∆(C), every pair (θ, γ) admits admissible ht.
+
+We write XHt for the time-dependent Hamiltonian vector ﬁeld associated to a Hamiltonian Ht.
+
+Deﬁnition 2.4 (Trajectory). A trajectory τ : [0, 1] → C of θHt + ht is an integral curve of the vector
+ﬁeld XθHt+ht τ ′(t) = XθHt+ht ◦ τ (t)
+such that τ (0), τ (1) ∈ γ × γ.
+
+Trajectories thus correspond to intersection points of γ × γ and ΦθHt+ht(γ × γ). In particular, in
+the unperturbed case ht = 0, these are points of (γ × γ) ∩ Rθ(γ × γ).
+
+In Lagrangian Floer theory, one typically works with generators drawn from the space of pairs
+(τ, [̂τ ]), where ̂τ : [0, 1] × [0, 1] → C2 is a capping of τ . A capping is a smooth map obeying the
+conditions
+ ̂τ (0, t) = τ (t), ̂τ (s, 0) = τ (0), ̂τ (s, 1) = τ (1), ̂τ (1, t) ∈ γ × γ, ∀s, t ∈ [0, 1],
+
+and [̂τ ] denotes its homotopy class relative to these conditions. The construction of the Jordan Floer
+homology chain complex is smaller, due to the following result.
+
+Lemma 2.5 (Preferred capping). Each trajectory τ which is disjoint from the diagonal possesses a
+unique homotopy class of capping [̂τ ] such that ̂τ is disjoint from the diagonal: im(̂τ ) ∩ ∆(C) = ∅.
+
+Proof. This is clear once one makes the observation that the core curve of the cylinder γ × γ \ ∆(γ)
+has winding number 1 around ∆(C) ⊂ C2. □
+
+Deﬁnition 2.6 (Generators of the Jordan Floer chain complex). Given an admissible triple (γ, θ, ht),
+let G(γ, θ, ht) denote the set of non-constant trajectories of θHt + ht:
+
+(1) τ : [0, 1] → C2, τ (0), τ (1) ∈ γ × γ, τ ′(t) = XθHt+ht ◦ τ (t).
+
+Let JFC(γ, θ) denote the F2-vector space freely generated by G(γ, θ, ht).
+
+8 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+Thus if (γ, θ, 0) is admissible we may identify G(γ, θ, 0) with the set
+
+(γ × γ ∩ Rθ(γ × γ)) \ ∆(γ).
+
+A trajectory obeying (1) is constant if and only if it is contained in the diagonal. It follows that each
+τ ∈ G(γ, θ) has a preferred homotopy class of capping.
+
+Lemma 2.7 (Trajectories stay away from the diagonal). Each trajectory τ ∈ G(γ, θ, ht) remains at
+distance > Width(γ)/2 from ∆(C): if τ (t) = (z, w), then |z − w| > Width(γ)/2.
+
+Proof. The ﬂow of XθHt+ht preserves the level sets of |z − w| in the neighborhood
+
+N = {(z, w) : |z − w| ≤ Width(γ)/2},
+
+since the ﬂow of XθHt does so and ht vanishes on this set. Hence any trajectory of XθHt+ht which
+enters N is in fact contained in N and is thus a trajectory of XθHt. On the other hand, a nonconstant
+trajectory of XθHt begins at a point (z, w) which consists of the endpoints of a diagonal of an inscribed
+θ-rectangle, and therefore obeys |z − w| ≥ Width(γ). Hence no nonconstant trajectory of XθHt+ht can
+enter N . □
+
+The importance of Lemma 2.7 becomes apparent in Section 2.4 and beyond. All trajectories in
+G(γ, θ, ht) lie entirely outside the neighborhood in which the almost-complex structures we use are
+prescribed to be standard. This is important in achieving transversality for the moduli spaces used in
+deﬁning the Lagrangian Floer package of diﬀerentials, chain maps, and chain homotopy equivalences.
+
+2.3. Strips. The Jordan Floer chain group JFC(γ, θ, ht) depends on a triple of data. The Floer
+diﬀerential is deﬁned in terms of a count of ‘strips’ satisfying a Cauchy-Riemann-Floer equation, and
+shall therefore moreover require a choice of almost-complex structure.
+
+Let J (C2, ω) denote the space of smooth, almost-complex structures on C2 which are compatible
+with ω in the usual sense that | · |J := ω(·, J·)
+deﬁnes a positive deﬁnite quadratic form on T C2. Distinguished amongst these is the standard almost-
+complex structure Jstd induced from multiplication by √
+−1. All almost-complex structures on C2 to
+follow are understood to be smooth and ω-compatible.
+
+Suppose that (γ, θ, ht) is an admissible triple and Jt is a time-dependent almost-complex structure.
+We deﬁne the strip Σ = R × [0, 1].
+We shall typically refer to points of Σ by coordinates (s, t) ∈ Σ. We consider smooth maps
+
+u : Σ −→ C2
+
+which satisfy the boundary conditions
+
+(BC)
+ 
+
+
+
+u(R × {0}) ⊂ γ × γ,
+
+u(R × {1}) ⊂ γ × γ;
+
+which satisfy the non-linear Cauchy-Riemann-Floer equation
+
+(CRF) ∂su + Jt(∂tu − XθHt+ht ◦ u) = 0;
+
+and which have bounded energy
+
+(BE) ∫ |∂su|2
+Jtds dt < ∞.
+
+FLOER HOMOLOGY AND SQUARE PEGS 9
+
+Subject to (BC) and (CRF), the condition (BE) is equivalent to the condition that the limits
+
+(LIM) u(±∞, t) := lim
+s→±∞ u(s, t)
+
+exist (with exponential convergence in s) and deﬁne Hamiltonian trajectories of θHt + ht in the sense
+of (1). Note that either trajectory u(−∞, t), u(∞, t) could be constant. It follows in any case that u
+extends uniquely to a continuous function on the extended strip Σ = [−∞, ∞] × [0, 1], where [−∞, ∞]
+is topologized as the end compactiﬁcation of R = (−∞, ∞).
+
+Deﬁnition 2.8 (Moduli spaces of strips). We deﬁne the moduli space of strips
+
+M(γ, θ, ht, Jt) := {u ∈ C∞(Σ, C2) : (BC), (CRF), (BE)},
+
+the restricted subspace of those strips whose which limit to non-constant trajectories
+
+M◦(γ, θ, ht, Jt) = {u ∈ M(γ, θ, ht, Jt) : u(±∞, t) ∈ G(γ, θ, ht)},
+
+and the diagonal-avoiding subspace of those strips whose closures are disjoint from the diagonal
+
+M∆(γ, θ, ht, Jt) = {u ∈ M(γ, θ, ht, Jt) : u(Σ) ∩ ∆(C) = ∅}.
+
+Since all constant trajectories lie in the diagonal ∆(γ) ⊂ ∆(C), we have
+
+M∆(γ, θ, ht, Jt) ⊆ M◦(γ, θ, ht, Jt) ⊆ M(γ, θ, ht, Jt).
+
+2.4. Admissible quadruples and the diﬀerential. We now wish to complete an admissible triple
+(γ, θ, ht) to a quadruple (γ, θ, ht, Jt) by choosing a suitable almost-complex structure Jt. The suitability
+of Jt will entail Jt meeting the requirements of transversality and furthermore being well-behaved (in
+fact, being standard) in a neighborhood of the diagonal ∆(C) and of the boundary of the strip ∂Σ.
+The former requirements are a necessity for showing that the diﬀerential is well-deﬁned and squares
+to zero and would be addressed in any reasonable introduction to Floer homology. The latter good
+behavior is a feature of our situation which will allow us to keep our strips from degenerating at the
+clean intersection ∆(C).
+
+Proposition 2.9 (Regularity). Let (γ, θ, ht) be an admissible triple. There exists a Baire subset
+
+Jreg(γ, θ, ht) ⊂ C∞([0, 1], J (C2, ω))
+
+of time-dependent almost-complex structures with the following properties for all Jt ∈ Jreg(γ, θ, ht).
+
+(1) The restricted moduli space M◦(γ, θ, ht, Jt) is a smooth manifold.
+(2) In each dimension, M◦(γ, θ, ht, Jt) contains ﬁnitely many components.
+(3) The component of M◦(γ, θ, ht, Jt) containing the map u has dimension equal to the Maslov
+index µ(u) ∈ Z.
+(4) Finally, Jt(z, w) = Jstd if 0 ≤ t ≤ 0.1, 0.9 ≤ t ≤ 1, or |z − w| ≤ Width(γ)/2.
+
+Proof. Without condition (4), the result is standard: see Auroux’s survey [2, Section 1.4] for a quick
+discussion, McDuﬀ and Salamon’s volume [10, Sections 3.1 and 3.3] for an account of related results
+for closed holomorphic curves, and Schm¨aschke’s thesis [14] for a thorough treatment. With condition
+(4) in play, we must additionally check that there is an open set VC2 ⊂ C2 and an open subset VΣ ⊂ Σ
+such that Jt is unconstrained at points of VΣ when they are mapped into VC2 . Furthermore, for any
+continuous strip w : Σ → C2 with Lagrangian boundary conditions and limiting at either end to non-
+constant trajectories, we must verify that w necessarily maps an open subset of VΣ into VC2. (We thank
+Dusa McDuﬀ for elucidating this point.) In our case Lemma 2.7 tells us that each point w(±∞, t) lies
+at distance greater than Width(γ)/2 away from ∆(C), and the same is therefore true of w(s, t) for all
+
+10 JOSHUA EVAN GREENE AND ANDREW LOBBs| > S for some S ≫ 0. Hence we may take VΣ = R × (0.1, 0.9) and VC2 = {(z, w) ∈ C2 : |z − w| >
+Width(γ)/2}. □
+
+Deﬁnition 2.10 (Admissible quadruple). If (γ, θ, ht) is an admissible triple and Jt ∈ Jreg(γ, θ, ht)
+then we call (γ, θ, ht, Jt)
+an admissible quadruple.
+
+We brieﬂy remark on condition (4) for the admissibility of Jt, which gets applied in proving that ∂2 = 0
+in Section 2.6. The condition that Jt is standard close to the boundary of Σ in the source is used to
+rule out disk bubbling in the Gromov boundary of M∆(γ, θ, ht, Jt). The condition that Jt is standard
+close to ∆(C) in the target is used to argue that a family of strips disjoint from ∆(C) cannot limit to
+a (possibly broken) strip which intersects ∆(C).
+
+2.5. A reformulation. The moduli space M(γ, θ, ht, Jt) admits a useful reformulation by a technique
+explained brieﬂy in [
+2, Remark 1.10] and in more detail in [1, Chapter 8]. The idea is that trajectories
+of a Hamiltonian vector ﬁeld which start and end on a Lagrangian correspond to intersection points
+of that Lagrangian with its time-1 ﬂow under the vector ﬁeld. If one also suitably ﬂows the strips
+of the moduli space then one arrives at new strips with boundary components on each Lagrangian,
+limiting at their ends to intersection points. This reformulation gets used in the proof of Lemma 2.17
+and elsewhere.
+
+Consider the pair of transformations
+
+(2) u′(s, t) = (Φt
+θHt+ht)
+−1 ◦ u(s, t), J ′
+t = (dΦt
+θHt+ht)
+−1 ◦ Jt ◦ (dΦt
+θHt+ht )
+
+of the spaces C∞(Σ, C2) and C∞([0, 1], J (C2, ω)).
+
+Lemma 2.11. If Jt ∈ J (γ, θ, ht) then J ′
+t(z, w) of (2) agrees with Jstd whenever |z − w| < Width(γ)/2
+and whenever 0 ≤ t ≤ 0.1 or 0.9 ≤ t ≤ 1.
+
+Proof. Suppose that Jt ∈ J (γ, θ, ht). Then Jt(z, w) = Jstd whenever |z − w| < Width(z, w). The
+transformation Φt
+θHt+ht eﬀects a rotation (through angle θ ∫ t
+0 β(r)dr) of C2 about ∆(C) for all 0 ≤ t ≤ 1.
+This implies that Φt
+θHt+ht is an automorphism of Jstd and that it preserves H. Applying the ﬁrst of
+these facts to 0 ≤ t ≤ 0.1 and 0.9 ≤ t ≤ 1, it follows that
+
+J ′
+t = (dΦt
+θHt+ht )
+−1 ◦ Jt ◦ (dΦt
+θHt+ht ) = (dΦt
+θHt+ht )
+−1 ◦ Jstd ◦ (dΦt
+θHt+ht ) = Jstd.
+
+Applying the second of these facts to a point (z, w) with H(z, w) ≤ w(γ, θ)/2, we ﬁnd that Jt = Jstd
+at the point Φt
+θHt+ht (z, w). Now a similar derivation to the last, paying attention to the points of C2
+
+where the endomorphisms are applied, shows that J ′
+t = Jstd at (z, w). □
+
+Fix Jt ∈ J (γ, θ, ht) and let J ′
+t be the resulting almost-complex structure from (2). Now consider
+smooth maps u′ : Σ −→ C2
+
+which satisfy the boundary conditions
+
+(BC′)
+ 
+
+
+
+u′(R × {0}) ⊂ γ × γ,
+
+u′(R × {1}) ⊂ (Φ1
+θHt+ht )
+−1(γ × γ);
+
+the non-linear Cauchy-Riemann equation
+
+(CR
+′) ∂su′ + J ′
+t(∂tu′) = 0;
+
+FLOER HOMOLOGY AND SQUARE PEGS 11
+
+and which have bounded energy
+
+(BE′) ∫ |∂su′|2
+J ′
+t ds dt < ∞.
+
+Similar to before, subject to conditions (BC′) and (CR
+′), condition (BE′) is equivalent to the condition
+that the limits
+
+(LIM’) u′(±∞, t) := lim
+s→±∞ u′(s, t)
+
+exist, are independent of t, and equal points of intersection between γ × γ and (Φ1
+θHt+ht)
+−1(γ × γ).
+
+Deﬁne the moduli spaces
+
+M′(γ, θ, ht, J ′
+t) := {u′ ∈ C∞(Σ, C2) : (BC′), (CR
+′), (BE′)}
+
+and (M′)
+∆(γ, θ, ht, J ′
+t) := {u′ ∈ M′(γ, θ, ht, J ′
+t) : u′(Σ) ∩ ∆ = ∅}.
+
+The proof of the following result follows that of [2, Remark 1.10].
+
+Proposition 2.12. The transformation (2) carries M(γ, θ, ht, Jt) to M′(γ, θ, ht, J ′
+t) and furthermore
+carries M∆(γ, θ, ht, Jt) to (M′)
+∆(γ, θ, ht, J ′
+t). □
+
+2.6. Proof that ∂ is a diﬀerential. We ﬁx an admissible quadruple (γ, θ, ht, Jt) of real analytic
+Jordan curve, angle, Hamiltonian perturbation, and almost-complex structure. In this subsection we
+shall deﬁne a map ∂ = ∂(γ,θ,ht,Jt) : JFC(γ, θ, ht) −→ JFC(γ, θ, ht)
+
+and verify that it is a diﬀerential: ∂2 = 0. We can then make the following deﬁnition.
+
+Deﬁnition 2.13. We deﬁne the Jordan Floer homology
+
+JF(γ, θ, ht, Jt) := ker ∂(γ,θ,ht,Jt)
+im∂(γ,θ,ht,Jt) .
+
+Later we shall see that there is no dependence on the choice of perturbation ht or admissible almost-
+complex structure Jt, so that we can write rather JF(γ, θ).
+
+Let Mk denote the union of the k-dimensional components of a manifold M. All of the restricted
+and diagonal-avoiding moduli spaces M deﬁned above support free R-actions by reparametrization:
+r · u(s, t) = u(r + s, t) for r ∈ R and u(s, t) ∈ M. We let ̂M = M/R and let ̂u ∈ ̂M denote the
+unparametrized strip corresponding to the R-equivalence class of u ∈ M.
+
+Deﬁnition 2.14 (Diﬀerential on the Jordan Floer chain complex). Let τ ∈ G(γ, θ, ht) be a generator
+of the F2-vector space JFC(γ, θ, ht) (see Deﬁnition 2.6). We deﬁne the map
+
+∂ = ∂(γ,θ,ht,Jt) : JFC(γ, θ, ht) −→ JFC(γ, θ, ht)
+
+by requiring that ∂(τ ) = ∑
+
+τ ′∈G(γ,θ,ht)
+
+̂u∈ ̂M∆
+1 (γ,θ,ht,Jt)
+u(−∞,t)=τ (t)
+u(∞,t)=τ ′(t)
+ τ ′.
+
+We now conﬁrm that we have a well-deﬁned chain complex by verifying that ∂2 = 0.
+
+12 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+Theorem 2.15 (∂2 = 0). Suppose that (γ, θ, ht, Jt) is an admissible quadruple. Then the boundary
+operator ∂ = ∂(γ,θ,ht,Jt) on JFC(γ, θ, ht) satisﬁes ∂2 = 0.
+
+To prove this theorem we lean on the usual technology of Floer homology. The diﬃculties arise
+because we are limiting our attention to the diagonal-avoiding moduli spaces. The proof of Theo-
+rem 2.15 consists of verifying that the 1-dimensional reduced diagonal-avoiding moduli spaces can
+be compactiﬁed by adding in products of appropriate pairs of elements of the 0-dimensional reduced
+diagonal-avoiding moduli spaces. This will establish the theorem since we know that, for admissible
+quadruples (γ, θ, ht, Jt), moduli spaces of strips limiting at each end to non-constant trajectories are
+manifolds of the expected dimension.
+
+Schm¨aschke [14] (see in particular Chapter 5) considers the case (of which ours is an example)
+of two monotone Lagrangians in clean intersection, and studies the possible degenerations of strips
+with Lagrangian boundary conditions satisfying the Cauchy-Riemann-Floer equation. He uses this to
+establish that moduli spaces of strips in this setting admit Gromov compactiﬁcations. Essentially the
+situation is very similar to that of Lagrangians in transverse intersection. Schm¨aschke establishes ([14,
+Theorem 5.1.4] gives a precise statement) that moduli spaces of strips may limit to concatenations of
+strips and trees of bubbles.
+
+Let M ⊆ ̂M◦
+2(γ, θ, ht, Jt) be a 1-dimensional component of the moduli space of restricted un-
+parametrized strips. For 0 ≤ r < 1, we consider a possible path ̂ur in this component represented by
+parametrized diagonal-avoiding strips ur ∈ M∆
+2 (γ, θ, ht, Jt). There is a well-deﬁned limit “strip” ̂u1
+that could a priori fall into one of several classes.
+
+(1) Touching the diagonal. The limit ̂u1 ∈ ̂M◦
+2(γ, θ, ht, Jt) \ ̂M∆
+2 (γ, θ, ht, Jt).
+
+(2) Breaking at the diagonal. The limit ̂u1 is the concatenation of two strips ̂u1 = ̂u−
+1 # ̂u+
+1 in
+which u−
+1 and u+
+1 are strips satisfying lims→+∞ u−
+1 (s, t) = (p, p) = lims→−∞ u+
+1 (s, t) for some
+p ∈ γ and for all 0 ≤ t ≤ 1.
+(3) Sphere bubbling. The limit ̂u1 contains a sphere bubble.
+(4) Disk bubbling. The limit ̂u1 contains a disk bubble.
+(5) Good breaking. The limit ̂u1 ∈ ̂M∆
+2 (γ, θ, ht, Jt) ∪ ( ̂M∆
+1 (γ, θ, ht, Jt) × ̂M∆
+1 (γ, θ, ht, Jt)).
+
+We would like to verify that the ﬁrst cases do not occur, so that we necessarily land in the ﬁnal case.
+In the ﬁnal case, if we have that ̂u1 ∈ ̂M∆
+2 (γ, θ, ht, Jt), this is verifying that a path of diagonal-avoiding
+Cauchy-Riemann-Floer strips cannot wander up to and touch the diagonal (hence leaving the space of
+diagonal-avoiding strips). On the other hand, if we have that u1 ∈ ̂M∆
+1 (γ, θ, ht, Jt) × ̂M∆
+1 (γ, θ, ht, Jt)
+
+this is verifying that the 1-dimensional space ̂M∆
+2 (γ, θ, ht, Jt) can be compactiﬁed by adding suitable
+
+elements of ̂M∆
+1 (γ, θ, ht, Jt) × ̂M∆
+1 (γ, θ, ht, Jt).
+
+Proof of Theorem 2.15. We establish Theorem 2.15 by verifying Lemmas 2.16, 2.17, 2.18, and 2.19,
+which exclude cases (1), (2), (3), (4) of the above discussion in turn. □
+
+Lemma 2.16 (Touching the diagonal). The limit ̂u1 /∈ ̂M2(γ, θ, ht, Jt) \ ̂M∆
+2 (γ, θ, ht, Jt).
+
+Proof. Suppose for a contradiction that we have ̂u1 ∈ ̂M2(γ, θ, ht, Jt) \ ̂M∆
+2 (γ, θ, ht, Jt).
+
+We write ∂Σ = (R × {0, 1}) ∪ ({−∞, +∞} × [0, 1]), and we choose u1 : Σ → C2, a parametrized
+representative of ̂u1.
+ FLOER HOMOLOGY AND SQUARE PEGS 13
+
+If we are in the case where u1(∂Σ) ∩ ∆(C) = ∅, then u1(∂Σ) is a loop that has zero winding
+number around ∆(C), since each ur(∂Σ) has zero winding number for 0 ≤ r < 1. The condition
+that ̂u1 ∈ ̂M2(γ, θ, ht, Jt) \ ̂M∆
+2 (γ, θ, ht, Jt) implies that there must be at least one point p ∈ Σ \ ∂Σ
+such that u1(p) ∈ ∆(C). If all such p are isolated then this will contradict the positivity of such
+isolated intersection points. Here we refer to [5, Lemma 4.3] which establishes positivity of intersection
+between holomorphic divisors preserved by Hamiltonian ﬂow and strips satisfying the Hamiltonian-
+perturbed Cauchy-Riemann-Floer equation. In our case, Jt is Jstd near the complex line ∆(C), while
+the derivative of the Hamiltonian θHt + ht vanishes on ∆(C).
+
+If, on the other hand, not every such p is isolated then analytic continuation implies that u1(Σ) ⊆ ∆
+which would give another contradiction.
+
+Suppose then that u1(s0, t0) = (p, p) ∈ ∆(γ) ⊂ ∆(C) for some s0 ∈ R and t0 ∈ {0, 1}. Choose
+parametrized representatives ur : Σ → C2 for 0 ≤ r < 1 so that r ↦→ ur(s, t) is smooth for all (s, t) ∈ Σ.
+
+Each ur satisﬁes the Cauchy-Riemann-Floer equation and has boundary conditions on γ × γ. Near
+the boundaries of the strip Σ we have chosen the Hamiltonian perturbation ht and the almost complex
+structure Jt so that the Cauchy-Riemann-Floer equation reduces to the Cauchy-Riemann equation
+with respect to the standard complex structure Jstd.
+
+More precisely, there exists an ǫ0 > 0 (indeed, ǫ0 = 0.1) such that the restrictions to a half-disc
+ur|Σ∩BR2 ((s0,t0),ǫ0) satisfy the Cauchy-Riemann equation with respect to Jstd for all 0 ≤ r ≤ 1. Recall
+now that γ is real analytic, so we have that γ × γ is real analytic with respect to Jstd. The Schwarz
+reﬂection principle then tells us that there exists a small disc BR2((s0, t0), ǫ1) where 0 < ǫ1 < ǫ0
+has been chosen uniformly by compactness such that ur|Σ∩BR2 ((s0,t0),ǫ1) admits a Jstd-holomorphic
+extension to ur : BR2 ((s0, t0), ǫ1) −→ C2.
+
+Let B ⊂ C2 denote a neighborhood of (p, p) such that J|B = Jstd, which contains the images of
+all ur when r is close enough to 1, and such that Schwarz reﬂection across (γ × γ) ∩ B carries B into
+itself. Since the diagonal ∆(C) is Jstd-holomorphic, both ∆(C) ∩ B and its image under the Schwarz
+reﬂection are Jstd-holomorphic. Since they intersect along the codimension 1 curve ∆(γ), they coincide
+by analytic continuation. Thus, ∆(C) ∩ B is taken into itself by Schwarz reﬂection. It follows that any
+point of intersection between ur and ∆(C) is either a point of intersection between ur and ∆(C) or is
+the image of such a point under the reﬂection. However, ur is disjoint from ∆(C), so the same follows
+for ur.
+
+If (p, p) is a non-isolated intersection point between u1 and ∆(C), then analytic continuation implies
+that the image of u1 is contained in ∆(C), and further continuation implies that the image of u1 is
+contained in ∆(C), a contradiction.
+
+On the other hand, if (p, p) is an isolated intersection point, then it must be a positive intersection
+point and in particular an intersection point of non-zero multiplicity. Hence for r close to 1, ur must
+also intersect ∆(C), contradicting that ur is disjoint from ∆(C). □
+
+Lemma 2.17 (Breaking at the diagonal). We do not have diagonal breaking.
+
+Proof. Suppose for a contradiction that ̂u1 is the concatenation of two strips ̂u1 = ̂u−
+1 # ̂u+
+1 in which the
+parametrized strips u−
+1 and u+
+1 satisfy lims→+∞ u−
+1 (s, t) = (p, p) = lims→−∞ u+
+1 (s, t) for some p ∈ γ
+and for all 0 ≤ t ≤ 1.
+
+First note that one can port the argument from the proof of Lemma 2.16 to show that we cannot
+have u−
+1 (Σ) or u+
+1 (Σ) having non-empty intersection with ∆(C).
+
+14 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+We choose R ≫ 0 so that u−
+1 ([R, ∞) × [0, 1]) and u+
+1 ((−∞, −R] × [0, 1]) are close enough to the
+diagonal so that Jt is Jstd for all points of u−
+1 ([R, ∞) × [0, 1]) ∪ u+
+1 ((−∞, −R] × [0, 1]).
+
+We work with the reparametrizations v+
+1 , v−
+1 of u+
+1 , u−
+1 respectively
+
+v±
+1 (s, t) = (Φt
+θHt+ht )
+−1 ◦ u±
+1 (s, t),
+
+which we introduced in Subsection 2.5. It follows from Lemma 2.11 that v+
+1 |s≤R and v−
+1 |s≥R satisfy
+the Cauchy-Riemann equation ∂sv±
+1 + Jstd∂tv±
+1 = 0
+with respect to the standard almost complex structure Jstd.
+
+Our plan is to study the projections of the holomorphic curves v±
+1 under the map
+
+(3) πd : C2 −→ C : (z, w) ↦−→ z − w,
+
+using ‘d’ for ‘diﬀerence’. Note that this projection map is holomorphic with respect to Jstd and maps
+the diagonal ∆(C) ⊂ C2 to the origin 0 ∈ C. We are going to be concerned in particular with the
+arguments of points on the curves v±
+1 under this projection map.
+
+Choose a point p ∈ γ and a non-zero v ∈ Tpγ ⊂ TpC = C. Next let A ⊂ γ be a small open arc with
+p ∈ A. By taking A to be small enough we may ensure that
+
+{arg(z − w) : z, w ∈ A, z ̸= w} ⊂ (arg(v) − ǫ, arg(v) + ǫ) ∪ (arg(v) + π − ǫ, arg(v) + π + ǫ) ⊂ R/2πZ = S1
+
+for any small ǫ > 0 that we choose. In fact, we shall now choose ǫ > 0 to be small relative to θ:
+
+ǫ < θ/2 and ǫ < (π − θ)/2
+
+and choose the small interval A ⊂ γ accordingly.
+
+By increasing R if necessary, we ensure that
+
+v−
+1 ([R, ∞) × {0}) ∪ v+
+1 ((−∞, −R] × {0}) ⊂ A × A
+
+and v−
+1 ([R, ∞) × {1}) ∪ v+
+1 ((−∞, −R] × {1}) ⊂ R−1
+θ (A × A) = R−θ(A × A).
+
+Write W ⊂ C for the region of the complex plane consisting of all points whose arguments lie in the
+set (arg(v) − ǫ, arg(v) + ǫ) ∪ (arg(v) + π − ǫ, arg(v) + π + ǫ).
+
+Then we see that
+ πd ◦ v−
+1 ([R, ∞) × {0}) ∪ πd ◦ v+
+1 ((−∞, −R] × {0}) ⊂ W
+
+and πd ◦ v−
+1 ([R, ∞) × {1}) ∪ πd ◦ v+
+1 ((−∞, −R] × {1}) ⊂ e−iθW ,
+but W ∩ e−iθW = {0}.
+
+Note also that for r ̸= 1 we have that vr does not meet the diagonal ∆(C). Hence we see that
+πd ◦ v−
+1 ([R, ∞) × {0}) ∪ πd ◦ v+
+1 ((−∞, −R] × {0}) lies entirely in one component of W \ {0} while
+πd ◦ v−
+1 ([R, ∞) × {1}) ∪ πd ◦ v+
+1 ((−∞, −R] × {1}) lies entirely in one component of e−iθW \ {0}.
+
+In Figure 1 we have indicated the closed loop Λ in the plane given by
+
+Λ = πd ◦ v−
+1 ({R, ∞} × [0, 1] ∪ [R, ∞] × {0, 1}).
+
+Letting δ > 0 stand for the minimum distance from the origin of the union
+
+πd ◦ v−
+1 ({R} × [0, 1]) ∪ πd ◦ v+
+1 ({−R} × [0, 1]),
+
+FLOER HOMOLOGY AND SQUARE PEGS 15
+
+a
+ W
+
+e−iθW
+
+Figure 1. We show the two regions W and e−iθW of the plane. Within them we
+have drawn in bold πd ◦ v−
+1 ({R} × [0, 1]) and with a ﬁner nib πd ◦ v−
+1 ([R, ∞) × {0, 1}).
+By adding in {0} = πd ◦ v−
+1 ({∞} × [0, 1]) we obtain a closed loop Λ (possibly self-
+intersecting) in the plane. The loop Λ winds around the point in the plane labelled
+with an a.
+
+we choose a point a ∈ C with |a| = δ/2 and a /∈ (W ∪ e−iθW ) such that the winding number of Λ
+around a is non-zero. It follows in particular that we have
+
+a ∈ πd ◦ v−
+1 ((R, ∞) × (0, 1)).
+
+Finally, we observe that for all r ∈ (0, 1) suﬃciently close to 1 we may choose ̃Rr, ̃Rr ′ ∈ R with
+̃Rr < ̃Rr ′ so that
+
+• vr(∂([̃Rr, ̃R′
+r] × [0, 1])) → v−
+1 (∂([R, ∞] × [0, 1])) ∪ v+
+1 (∂([−∞, −R] × [0, 1])) as r → 1,
+
+• πd ◦ vr is holomorphic on [̃Rr, ̃Rr ′] × [0, 1],
+• πd ◦ vr({ ̃Rr, ̃Rr ′} × [0, 1]) is distance at least 3δ/4 from the origin,
+• πd ◦ vr([̃Rr, ̃Rr ′] × {0}) ⊂ (a component of W \ {0}),
+• πd ◦ vr([̃Rr, ̃Rr ′] × {1}) ⊂ (a component of e−iθW \ {0}), and
+• a ∈ πd ◦ vr((̃Rr, ̃Rr ′) × (0, 1)).
+
+We have illustrated this in Figure 2.
+
+Since πd ◦ vr is holomorphic, it follows that the winding number of
+
+πd ◦ vr({ ̃Rr, ̃Rr ′} × [0, 1] ∪ [̃Rr, ̃Rr ′] × {0, 1})
+
+around a ∈ C is positive so, in particular, non-zero. Then, since the origin 0 ∈ C is in the same
+connected component of
+ C \ πd ◦ vr({ ̃Rr, ̃Rr ′} × [0, 1] ∪ [̃Rr, ̃Rr′] × {0, 1})
+
+as a ∈ C it follows that the image of vr intersects the diagonal ∆(C), which contradicts our hypotheses.
+□
+
+Lemma 2.18 (Sphere bubbling). There is no sphere bubbling.
+
+Proof. The argument is well-known. For sake of contradiction, a sphere bubble would entail the
+existence of a non-constant map of the Riemann sphere v : CP1 → C2 which is J-holomorphic for
+
+16 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+a
+ W
+
+e−iθW
+
+Figure 2. We have drawn in bold the two arcs πd ◦ vr({ ̃Rr, ̃Rr ′} × [0, 1]) and with a
+ﬁner nib πd ◦vr([̃Rr, ̃Rr ′]×{0}) ⊂ W and πd ◦vr([̃Rr, ̃Rr ′]×{1}) ⊂ e−iθW . Their union
+gives the image of a loop in the plane. The point a ∈ C lies in the same connected
+component as 0 of the complement of this loop.
+
+some J ∈ J (C2, ω). Since v is non-constant, its energy is positive. On the other hand, since v is
+J-holomorphic, its energy equals [ω](v∗[CP 1]). Since H2(C2) = 0, this value vanishes, and we reach a
+contradiction. □
+
+Lemma 2.19 (Disc bubbling). There is no disc bubbling.
+
+Proof. The main case of disc bubbling to exclude will be when the bubbling happens at a point on
+∆(γ). Let us begin by arguing why the other cases cannot occur. Note that it is not possible for a
+disc bubble to be disjoint from ∆(C) in both its interior and its boundary circle, since any loop on
+(γ × γ) \ ∆(γ) either bounds a disc of zero symplectic area (and hence cannot bound a disc bubble),
+or has non-zero winding number around ∆(C) (and hence any disc bubble it bounds must intersect
+∆(C) in its interior). On the other hand, the local arguments of Lemma 2.16 can be applied mutatis
+mutandis to show that a disc bubble cannot meet the diagonal at any point except that at which it
+bubbles oﬀ, and likewise neither can the resulting strip.
+
+Suppose then that for r = 1, a disc bubbles oﬀ at (p, p) ∈ ∆(γ) and assume that this bubble meets
+the diagonal only at this point. For a point ⋆ ∈ ∂Σ ⊂ Σ ⊂ C, let D⋆ be the closed unit disc externally
+tangent to Σ at ⋆. We model the bubbling as a map
+
+u1 : Σ ∪ D⋆ −→ C2
+
+where u1|Σ satisﬁes the perturbed Cauchy-Riemann-Floer equation and u1|D⋆ is Jstd-holomorphic.
+
+Let Bǫ be the closed disc of radius ǫ > 0 centred at ⋆ ∈ C. Then for small enough ǫ, u1|Bǫ∩Σ
+satisﬁes the Cauchy-Riemann equation (since the Hamiltonian and its perturbation vanish near the
+boundary of the strip, and the almost-complex structure is Jstd near ∆(C)). This then allows us, for
+small enough ǫ, to Schwarz-reﬂect u1|Bǫ∩Σ and u1|Bǫ∩D⋆ across γ × γ to obtain two holomorphic discs
+in C2 which each meet ∆(C) exactly in the point (p, p). By positivity of intersection their boundary
+circles must each have positive winding number around ∆(C).
+
+Now for r < 1 we take a smoothly varying family of properly embedded arcs A
+1
+r, A
+2
+r ⊂ Σ cobounding
+rectangles ρr ⊂ Σ so that ur(A
+1
+r) → u1(∂Bǫ ∩ D⋆) and ur(A
+2
+r) → u1(∂Bǫ ∩ Σ). If we have chosen
+ǫ small enough, then for r suﬃciently close to 1, the rectangles ρr may be Schwarz-reﬂected to give
+
+FLOER HOMOLOGY AND SQUARE PEGS 17
+
+Bǫ ∩ D⋆ Bǫ ∩ Σ
+
+ρr ⊂ Σ
+
+ur|ρr reﬂected. u1|Bǫ∩(Σ∪D⋆) reﬂected
+
+r −→ 1
+
+Figure 3. On the left we have shown the embedded rectangle ρr ⊂ Σ and its image,
+(along with its Schwarz reﬂection) in C2 – this is a holomorphic cylinder. On the right
+we have shown the bubbling degeneration as r → 1. The cylinder degenerates to the
+union of two holomorphic discs which meet at the point (p, p) at which the bubble
+occurs. These discs each meet the diagonal ∆(C) positively, so for r close to 1, the
+cylinders must also.
+
+holomorphic cylinders in C2, which degenerate to at r = 1 to a pair of holomorphic discs meeting at
+the point (p, p).
+
+We illustrate the situation in Figure 3.
+
+Since the winding numbers around ∆(C) of each boundary component of the cylinders is positive,
+it follows that the cylinders must intersect ∆(C) in their interiors. Therefore ur must meet ∆(C) and
+we have a contradiction. □
+
+2.7. The continuation package. Once one has deﬁned a Lagrangian Floer chain complex for a
+choice of Lagrangian, Hamiltonian, Hamiltonian perturbation, and almost-complex structure, there is
+a general procedure available for showing that its chain homotopy type is independent of choice of
+perturbation and almost-complex structure, and moreover for setting up isomorphisms between the
+homologies corresponding to diﬀerent choice of Hamiltonian. This general procedure involves counts of
+moduli spaces of strips in which the Hamiltonians and the almost-complex structures are now allowed
+to be strip-dependent. The chain maps are sometimes known as continuation maps, and we refer to
+the collection of strip counts from which one can deﬁne chain maps, chain homotopies, and so on as
+the ‘continuation package’. For a readable account we refer the reader to [2, Section 1.5].
+
+We begin by addressing chain maps in our setting. Suppose that we are considering the admissible
+quadruples (γ, θ1, h1
+t , J 1
+t ) and (γ, θ2, h2
+t , J 2
+t ). We choose a smooth monotonic function β′ : R → [0, 1]
+which is 0 in a neighborhood of (−∞, 0] and 1 in a neighborhood of [1, ∞). Then we deﬁne the
+strip-dependent Hamiltonian H 12
+st by
+
+H 12
+st = (1 − β′(s))θ1Ht + β′(s)θ2Ht.
+
+We also choose a smooth path of J 12
+st of almost-complex structures such that J 12
+st = J 1
+t for s ≤ 0
+and J 12
+st = J 2
+t for s ≥ 1, and choose these J 12
+st to be standard Jstd again, as usual, suﬃciently near the
+boundaries of the strip and the diagonal ∆(C).
+
+18 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+The choices so far have been made without a view towards establishing transversality of moduli
+spaces. When we were trying to achieve this in the case of the diﬀerential, we were careful with our
+choice of almost-complex structure Jt. In the case of these continuation strips, the usual approach is to
+introduce a strip-dependent Hamiltonian perturbation. For our purposes we wish to add a perturbation
+term of the form h12
+st : C2 −→ R
+
+in which we make the requirement that h12
+st is zero outside the region (s, t) ∈ (0, 1) × (0.1, 0.9) ⊂ Σ,
+h12
+st = h1
+t when s ≤ 0, h12
+st = h2
+t when s ≥ 1, and moreover we require that all the partial derivatives of
+h12
+st vanish to inﬁnite order at the diagonal ∆(C). That such perturbations suﬃce for transversality is
+shown by Audin-Damian [1, Section 11.1.b].
+
+We then deﬁne a chain map
+ JFC(γ, θ1, h1
+t , J 1
+t ) −→ JFC(γ, θ2, h2
+t , J 2
+t )
+
+as a matrix with respect to the bases G(γ, θ1, h1
+t ) and G(γ, θ2, h2
+t ) in which the coeﬃcients of the matrix
+are given by counts of 0-dimensional moduli spaces of strips with Lagrangian boundary conditions on
+γ ×γ, satisfying the Cauchy-Riemann-Floer equation with respect to the Hamiltonian H 12
+st +h12
+st and the
+almost-complex structure J 12
+st , limiting at either end to non-constant trajectories, and whose closures
+in C2 are disjoint from ∆(C).
+
+The proof that a map deﬁned in such a way does deﬁne a chain map results from analysing the
+Gromov boundary degenerations of the 1-dimensional moduli spaces of such strips. Again, the main
+concern for us will be in verifying that such degenerations consist of concatenations of diagonal-avoiding
+strips.
+
+Supposing for moment that one has successfully performed this veriﬁcation, there remains the ques-
+tion of whether the chain maps thus deﬁned are in fact chain-homotopy equivalences. That brings
+us to the next component of the continuation package. The continuation approach to proving this
+result is to make a count of strips (or now, rather, a count from among a 1-parameter family of
+strips which come with strip-dependent Hamiltonians, almost complex structures, and Hamiltonian
+perturbations) of Maslov index −1 to deﬁne a chain homotopy h. The boundary degenerations of the
+1-parameter family of Maslov index 0 strips should then add up to 0 modulo 2, allowing one to verify
+that id + F ◦ G + ∂ ◦ h + h ◦ ∂ = 0 where id is the identity chain map, F and G are two chain maps
+constructed as above such that F ◦ G and G ◦ F are both deﬁned, and ∂ is the Floer diﬀerential.
+
+Again, the main question for us is whether this can all be carried out for diagonal-avoiding strips.
+That is, we must make the same checks as before: verifying that a 1-parameter family of such strips
+cannot wander up to and touch the diagonal, cannot bubble oﬀ a disc at the diagonal, and cannot
+break at the diagonal. The proofs proceed as they did in verifying ∂2 = 0 in Section 2.6, but the case
+of diagonal breaking needs a little modiﬁcation.
+
+First, let us list some important features of the Hamiltonians and almost-complex structures that
+show up in our situation in the setting of the strips of the continuation package. We begin with a pair
+of admissible quadruples (γ, θi, hi
+t, J i
+t ) for i = 1, 2. We write h12
+st for the Hamiltonian perturbation, H 12
+st
+for the ‘prescribed’ Hamiltonian (so that the Hamiltonian used in the Cauchy-Riemann-Floer equation
+is H 12
+st + h12
+st ), and Jst for the almost complex structure. We have the following:
+
+• For some S ≫ 0 and for all s < −S we have H 12
+st = θ1Ht, h12
+st = h1
+t , and J 12
+st = J 1
+t , and for all
+s > S we have H 12
+st = θ2Ht, h12
+st = h2
+t , and J 12
+st = J 2
+t .
+• For all ﬁxed s0, we have H 12
+s0t = θ0Ht for some θ0 lying between θ1 and θ2.
+• We have that h12
+st and all its partial derivatives up to inﬁnite order vanish at the diagonal ∆(C).
+
+FLOER HOMOLOGY AND SQUARE PEGS 19
+
+• We have J 12
+st = Jstd and h12
+st = 0 for 0 ≤ t < 0.1 and 0.9 < t ≤ 1.
+• We have J 12
+st (z, w) = Jstd whenever |z − w| < Width(γ)/2.
+
+Lemma 2.20 (Touching the diagonal, sphere bubbling, disc bubbling). If ur, 0 ≤ r < 1 is
+1-parameter family of continuation strips such that ur is diagonal-avoiding, then the Gromov limit u1
+cannot be a diagonal-intersecting strip, or a strip with a disc or sphere bubble.
+
+Proof. The proofs of Lemmas 2.16, 2.18, and 2.19 carry over to this setting. □
+
+For the case of diagonal breaking, we begin with a preparatory lemma which gives the reason that
+we have imposed the vanishing to inﬁnite order of the partial derivatives of the perturbations hst at
+the diagonal.
+
+Lemma 2.21 (Angular bound). Let ht : C2 → R be a time-dependent Hamiltonian all of whose partial
+derivatives vanish to inﬁnite order at the diagonal ∆(C).
+
+We write πd : C2 → C : (z, w) ↦→ z − w for the projection. Suppose that C ⊂ ∆(C) is a compact
+subset of the diagonal and for ǫ > 0 write
+
+Cǫ := {(z, w) ∈ C2 : d((z, w), C) ≤ ǫ}
+
+for the compact subset of points of distance at most ǫ from C.
+
+Let 0 < θ < π and δ > 0. Then by choosing ǫ small enough we can ensure that whenever (z, w) ∈
+Cǫ \ ∆(C) we have arg(πd(z, w)) − arg(πd(Φ1
+θHt+ht(z, w))) ∈ (θ − δ, θ + δ).
+
+Proof. First note that the result certainly follows if ht is identically zero, since in this case the Hamil-
+tonian ﬂow is just rotation about the diagonal by angle θ. The lemma is stating that, close enough to
+the diagonal, the perturbed Hamiltonian looks as near enough to such a rotation as we like.
+
+By compactness and second-order vanishing of the derivatives, we can ﬁnd some M > 0 such that
+
+|dht| < M |(z, w)|2
+
+whenever (z, w) ∈ Cǫ. Hence we see that the Hamiltonian vector ﬁeld Xht associated to ht satisﬁes
+
+|Xht| < M |(z, w)|2.
+
+Possibly shrinking Cǫ if necessary by intersection with a closed tubular neighborhood of ∆(C), we
+thus ensure that the ∂/∂θ component of Xht is of norm at most δ|z − w| in magnitude. Shrinking again
+if necessary to a neighborhood not leaving the previous neighborhood under the ﬂow, we are done since
+
+XθHt+ht = XθHt + Xht.
+ □
+
+Lemma 2.22 (Breaking at the diagonal). Suppose for 0 ≤ r < 1 that ur : Σ → C2 is a 1-parameter
+family of diagonal-avoiding continuation strips. Then the Gromov limit at r = 1 is a never a broken
+strip that somewhere meets the diagonal.
+
+Proof. As in Lemma 2.17, we may rule out meeting the diagonal anywhere, except for the possibility
+of one of the breaking points being at the diagonal. The rest of the proof will take the proof of Lemma
+2.17 as its guide, but some modiﬁcation will be required.
+
+Let us assume for concision of notation that we have a single breakpoint, as this assumption will
+not materially aﬀect the argument.
+
+20 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+a
+ W
+
+e−iθ−W
+
+e−iθ+ W
+
+Figure 4. We show the three regions W , e−iθ−W , and e−iθ+W of the plane. Within
+them we have drawn in bold both πd ◦v−
+1 ({R}×[0, 1]) and πd ◦v+
+1 ({−R}×[0, 1]). Using
+a ﬁner nib we have drawn πd ◦ v−
+1 ([R, ∞) × {0, 1}) and πd ◦ v+
+1 ((−∞, −R] × {0, 1}). By
+adding in {0} = πd◦v−
+1 ({∞}×[0, 1]) to πd◦v−
+1 ({R}×[0, 1]) and πd◦v−
+1 ([R, ∞)×{0, 1}),
+we obtain the image of a closed loop Λ (possibly self-intersecting) in the plane. The
+loop Λ winds around the point in the plane labelled with an a.
+
+Then we have, say u1 = u−
+1 #u+
+1 so that u−
+1 (s, t), u1(−s, t) → (p, p) ∈ ∆(γ) as s → ∞.
+
+The strip u−
+1 satisﬁes a Cauchy-Riemann-Floer equation in which the total Hamiltonian H−
+st is only
+time-dependent for large enough values of s ≫ 0. Within distance Width(γ)/2 of the diagonal ∆(C),
+this time-dependent Hamiltonian agrees with θ−Ht for some angle 0 < θ− < π. Similarly, the strip
+u+
+1 satisﬁes a Cauchy-Riemann-Floer equation in which the Hamiltonian agrees with θ+Ht for small
+enough s ≪ 0 and within Width(γ)/2 of ∆(C).
+
+We proceed as in Lemma 2.17 and choose a large R ≫ 0, such that the reformulated versions v−
+1
+and v+
+1 of u−
+1 and u+
+1 respectively (following Subsection 2.5) are both holomorphic with respect to Jstd
+when restricted to [R, ∞) × [0, 1] and (−∞, −R] × [0, 1] respectively. Furthermore R is chosen large
+enough so that v−
+1 and v+
+1 satisfy the following:
+
+πd ◦ v−
+1 ([R, ∞) × {0}) ∪ πd ◦ v+
+1 ((−∞, −R] × {0}) ⊂ W ,
+
+πd ◦ v−
+1 ([R, ∞) × {1}) ⊂ e−iθ−W ,
+
+and πd ◦ v+
+1 ((−∞, −R] × {1}) ⊂ e−iθ+W.
+
+And we have W ∩ e−iθ−W = W ∩ e−iθ+W = e−iθ−W ∩ e−iθ+W = {0}.
+
+We illustrate the situation in Figure 4. An important point for us to note, looking at Figure 4, is
+that πd ◦ v−
+1 ([R, ∞) × {0}) and πd ◦ v+
+1 ((−∞, −R] × {0}) both lie in the same component of W \ {0}.
+Similarly, if πd ◦ v+
+1 ((−∞, −R] × {1}) lies in component C of e−iθ+W \ {0}, then πd ◦ v−
+1 ([R, ∞) × {1})
+lies in component ei(θ+−θ−)C of e−iθ−W \ {0}. These points both follow from the hypothesis that ur
+avoids the diagonal ∆(C) for r close to 1.
+
+As in the proof of Lemma 2.17, we have also chosen a point a ∈ C, in this case lying outside
+W ∪ e−iθ−W ∪ e−iθ+W , which is at a distance to the origin of less than half the minimal distance from
+the origin of πd ◦ v−
+1 ({R} × [0, 1]) ∪ πd ◦ v+
+1 ({−R} × [0, 1]). The point a ∈ C is chosen so that the loop
+
+Λ− := πd ◦ v−
+1 ({R} × [0, 1]) ∪ πd ◦ v−
+1 ([R, ∞) × {0}) ∪ πd ◦ v−
+1 ([R, ∞) × {0, 1}) ∪ {0}
+
+FLOER HOMOLOGY AND SQUARE PEGS 21
+
+has non-zero winding number around a. This means that we must have a ∈ πd ◦ v−
+1 ((R, ∞) × (0, 1)),
+so that in fact the winding number is strictly positive due to the holomorphicity of v−
+1 . Since v+
+1 is
+holomorphic when restricted to (−∞, −R] × [0, 1], it follows that the loop
+
+Λ+ := πd ◦ v+
+1 ({−R} × [0, 1]) ∪ πd ◦ v+
+1 ((−∞, −R] × {0}) ∪ πd ◦ v+
+1 ((−∞, −R] × {0, 1}) ∪ {0}
+
+(when given the natural orientation) must have non-negative winding number around a.
+
+We now turn to Figure 5.
+
+Again, similarly to our approach in the proof of Lemma 2.17 we now wish to consider approximations
+to the broken strips by reformulations vr of strips ur following Subsection 2.5. A subtlety here is that
+the reformulation will not necessarily result in holomorphic strips (with respect to a reformulated
+almost complex structure) because the Hamiltonian on ur is possibly strip-dependent and not merely
+time-dependent. Our interest is less analytic than topological, however.
+
+We observe that we may choose ̃Rr, ̃Rr ′ ∈ R with ̃Rr < ̃Rr ′ so that
+
+vr(∂([̃Rr, ̃Rr ′] × [0, 1])) → v−
+1 (∂([R, ∞] × [0, 1])) ∪ v+
+1 (∂([−∞, R] × [0, 1]))
+
+and, in particular,
+ πd ◦ vr(∂([̃Rr, ̃Rr ′] × [0, 1])) → Λ− ∪ Λ+ as r → 1.
+
+We make our choices so that for all r suﬃciently close to 1 we have the following
+
+• πd ◦ vr({ ̃Rr, ̃Rr ′} × [0, 1]) is distance at least 3δ/4 from the origin,
+• πd ◦ vr([̃Rr, ̃Rr ′] × {0}) ⊂ (a component of W \ {0}),
+• and πd ◦ vr([̃Rr, ̃Rr ′] × {1}) ⊂ (a component of ⋃
+
+0≤θ≤θ+−θ− ei(θ−θ+)W \ {0}).
+
+The ﬁrst and second points follow simply from continuity, while the third follows from Lemma 2.21
+1,
+so long as one is working within a neighborhood Cǫ as in the statement of that Lemma. This can be
+achieved by starting the proof of the current lemma again, but with a possibly larger value of R to
+begin with so that v−
+1 (∂([R, ∞) × [0, 1])) and v+
+1 (∂((−∞, −R] × [0, 1])))
+
+both lie in such a neighborhood.
+
+Since 0 and a lie in the same component of C as the complement of the loop πd ◦ vr(∂([̃Rr, ̃Rr′] ×
+[0, 1])), it follows that the winding number of this loop is the same about 0 as about a. On the other
+hand, for r suﬃciently close to 1, this winding number agrees with the winding number of Λ− ∪ Λ+
+
+around a, which is positive. Thus we must have that
+
+vr(∂((̃Rr, ̃Rr ′) × (0, 1))) ∩ ∆(C) ̸= ∅,
+
+giving a contradiction. □
+
+2.7.1. Conclusion. We have shown that the continuation package of maps continues to function without
+modiﬁcation when restricted to our setting of diagonal-avoiding strips. Thus we have well-deﬁned
+homology groups JF(γ, θ) for pairs of a real analytic Jordan curve and angle 0 < θ < π. These are
+deﬁned as limits of directed systems of homology groups depending on choices of analytic data. We
+further have well-deﬁned isomorphisms JF(γ, θ1) → JF(γ, θ2) for any pairs 0 < θ1, θ2 < π.
+
+1Technically from an r-dependent version of Lemma 2.21, since the perturbation hr
+st may have smooth dependence
+on r. But this is again a simple application of compactness, so we preferred to relegate mention of it to this footnote.
+
+22 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+a
+ W
+
+e−iθ−W
+
+e−iθ+ W
+
+Figure 5. We have drawn in bold the two arcs πd ◦ vr({ ̃Rr, ̃Rr ′} × [0, 1]) and with
+a ﬁner nib πd ◦ vr([̃Rr, ̃Rr ′] × {0}) ⊂ W and πd ◦ vr([̃Rr, ̃Rr ′] × {1}). Their union
+gives the image of a loop in the plane. The point a ∈ C lies in the same connected
+component as 0 of the complement of this loop.
+
+2.7.2. An observation and a warning. We close this subsection with an observation about the proof of
+Lemma 2.22: that it was important for the winding number arguments that we had 0 < θ−, θ+ < π.
+There is nothing to stop the reader deﬁning Jordan Floer homology groups for pairs (γ, θ) in which
+θ < 0 or θ > π, but they should be wary of an attempt, for example, to deﬁne a continuation map
+following the principles above to give an isomorphism JF(γ, −θ) → JF(γ, θ) for 0 < θ < π. Such
+an attempt is doomed to fail simply by virtue of the support of the homologies in diﬀerent Maslov
+degrees: on the left the support is in degrees 0, 1, while on the right it is in degrees 1, 2, as we shall see
+in Section 2.8. In this paper we only use angles within the range 0 < θ < π, so we do not investigate
+this further here.
+
+2.8. Comparison with Morse homology. The existence of the chain homotopy equivalences of the
+previous section establishes that the chain homotopy type of JFC∗(γ, θ, ht, Jt) depends only on γ.
+By a familiar argument originating with Floer [4, Theorem 2], a judicious choice of data identiﬁes
+this complex with a Morse chain complex from which we may compute the isomorphism type of the
+homology group. In our setting, we obtain an identiﬁcation with a Morse-Bott chain complex of the
+pair (γ × γ, ∆(γ)) ≈ (S1 × S1, ∆(S1)), which yields:
+
+Theorem 2.23 (Isomorphism type). For every admissible quadruple (γ, θ, ht, Jt), we have
+
+JF∗(γ, θ) := H∗(JFC∗(γ, θ, ht, Jt)) ≈ (F2)(2) ⊕ (F2)(1)
+
+In preparation, we review an argument of Oh [11] which leads to a spectral sequence from the
+Morse homology group HM∗(L0) to the self-Floer homology group HF∗(L0, L0). With γ ﬁxed, choose
+the angle θ > 0 suﬃciently small so that the Lagrangian Rθ(γ × γ) is contained within a Weinstein
+neighborhood N of L0 = γ × γ in C2. If we perturb Rθ(γ × γ) by a small Hamiltonian into L′
+1
+made transverse to L0 and still contained within N , then there exists a small energy ℏ > 0 such that
+every strip u counted by the diﬀerential in the usual Floer chain complex CF∗(L0, L′
+1, Jt) with energy
+E(u) < ℏ has image contained in N . Moreover, for a suitable choice of almost-complex structure
+Jt, metric g on L0, and perturbation h, the assignment u ↦→ u(s, 0) puts these strips into one-to-
+one correspondence with Morse trajectories counted by the diﬀerential on the Morse chain complex
+CM∗(L0, H + h, g). Here H denotes the restriction of our Hamiltonian H(z, w) = 1
+4 |z − w|2 to L0 and
+h : L0 → R is chosen to make H + h a Morse function.
+
+FLOER HOMOLOGY AND SQUARE PEGS 23
+
+The higher diﬀerentials in the Oh spectral sequence count strips of higher energy in the Floer chain
+complex. By contrast, counting the low-energy strips in our setting recovers the entire Jordan Floer
+chain complex.
+
+Proof. We sketch the modiﬁcation to Oh’s argument required in our setting. We work with the La-
+grangian L1 = Φ−1
+θHt+ht (γ × γ) for an admissible choice of ht, chosen suﬃciently small. In this case,
+as before, all low-energy strips in M∆
+1 (γ, θ, ht, Jt) are contained in N . Now, however, the assignment
+u ↦→ u(s, 0) put these strips into one-to-one correspondence with Morse trajectories between nondegen-
+erate critical points counted by the diﬀerential on the Morse-Bott chain complex CM∗(L0, H + h, g).
+Here h is chosen so that H + h is a non-negative Morse-Bott function, its nondegenerate critical
+points are the transverse points of L0 ∩ L1, and ∆(γ) = H −1(0) = (H + h)
+−1(0) is a circle of critical
+points. It follows that we recover precisely the trajectories counted by the diﬀerential on the relative
+Morse-Bott chain complex CM∗(L0, ∆(L0), H + h, g). As noted, its homology is nothing other than
+H∗(S1 × S1, ∆(S1); F2) ≈ (F2)(2) ⊕ (F2)(1).
+
+It remains to explain why all of the strips in M∆
+1 (γ, θ, ht, Jt) have low energy, so that in fact
+JFC∗(γ, θ, ht, Jt) is isomorphic to the relative Morse-Bott complex. As we explain in Section 3,
+each generator τ ∈ G(γ, θ, ht) has an associated action A(τ ) = AθHt+ht (τ ). Suppose that u ∈
+M∆(γ, θ, ht, Jt) is a strip from τ to τ ′. Then u#̂τ is a capping of τ ′ disjoint from ∆(C), so [u#̂τ ] = [ ̂τ ′].
+It follows that E(u) = ∫ u∗ω = A(τ ′) − A(τ ). The actions of the trajectories in G(γ, θ, ht) can be made
+uniformly and arbitrarily close to 0 by choosing both ht and θ suﬃciently close to 0. It follows that all
+strips in u ∈ M∆(γ, θ, ht, Jt) have suﬃciently low energy E(u) < ℏ to guarantee that their images are
+contained in N . □
+
+Lastly, we remark that if H restricts to a Morse function on γ × γ, then the generating set of
+CM∗(γ × γ, ∆(γ), H, g) admits a nice interpretation. Namely, it consists of the binormals of γ, i.e.
+pairs (z, w) ∈ γ × γ − ∆(γ) such that the tangent lines to γ at z and w are perpendicular to the line
+segment zw. Thus we obtain a limiting group JF (γ, 0, H) which we may regard as the Jordan Morse
+homology of γ.
+ 3. Actions and rectangles.
+
+Suppose that τ ∈ Ω(γ × γ) (the space of paths starting and ending on γ × γ) and that τ is disjoint
+from the diagonal ∆(C). Its action with respect to a time-dependent Hamiltonian Ht is given by
+
+AHt (τ ) = ∫ 1
+
+0 Ht ◦ τ (t)dt − ∫
+
+[0,1]2 ̂τ ∗ω
+
+where ̂τ denotes a preferred capping of τ .
+
+We shall mostly be concerned with the action of non-constant trajectories τ ∈ G(γ, θ, 0) of the
+Hamiltonian θHt. Recall that these correspond to (nondegenerate) inscribed θ-rectangles Q ⊂ γ (we
+think of a rectangle as its set of vertices).
+
+We now look at an example in order to get a handle on what the action AθHt (τQ) is telling us
+about the inscribed rectangle Q. Figure 6 shows an example of an elegantly inscribed θ-rectangle: the
+Jordan curve is isotopic through Jordan curves into the rectangle Q, keeping the vertices of Q ﬁxed.
+The computation of the action more involved for an inelegantly inscribed rectangle, but the case of an
+elegant inscription is nevertheless instructive.
+
+24 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+γ
+
+θ r1
+
+r2
+
+r3
+ r4
+
+Figure 6. An example of an inscribed rectangle Q = {r1, r2, r3, r4} ⊂ γ ⊂ C of
+aspect angle θ. We have included the diagonals of the rectangle and two circular arcs
+of diameter equal to the diameter of the rectangle.
+
+Figure 7. The ﬁrst term in the formula for the action A(τQ) is the total area of the
+regions shown.
+
+The action AθHt (τQ) is the sum of two terms. Notice that θHt(τQ(t)) = θβ(t)Rad(Q)
+2, where
+Rad(Q) denotes half the length of the diagonal of Q.
+
+The ﬁrst term is just ∫ 1
+
+0 θHt ◦ τQ(t)dt = θRad(Q)
+2 ∫ 1
+
+0 β(t)dt = θRad(Q)
+2,
+
+and this is nothing more than the total area of the two regions shown in Figure 7.
+
+To compute the second term in the formula for the action, we ﬁrst choose a preferred capping ̂τQ.
+In Figure 7, there is an embedded disk D1 cobounded by the circular arc from r1 to r2 and the short
+arc of γ from r1 to r2. From it we obtain a map φ1 : [0, 1] × [0, 1] → C with image D1 such that φ1(t, 0)
+parametrizes the circular arc from r1 to r2 at constant speed for t ∈ [0, 1], φ1(s, 0) = r1, φ1(s, 1) = r2,
+and φ1(1, t) ∈ γ for all s, t ∈ [0, 1]. There is another embedded disk D2, giving rise to a map φ2,
+with the points r3, r4 in place of r1, r2. Then ̂τQ = (φ1, φ2) gives a capping of τQ with complementary
+boundary P ⊂ γ ×γ, and it is disjoint from ∆(C), because the images of φ1 and φ2 are the disjoint disks
+D1 and D2. A similar method for constructing a preferred capping works with minor modiﬁcation for
+any elegantly inscribed rectangle.
+
+Continuing with the computation of the second term of the action, we consider the coordinate
+projections
+ π1 : C2 −→ C : (z, w) ↦−→ z, and π2 : C2 −→ C : (z, w) ↦−→ w.
+
+FLOER HOMOLOGY AND SQUARE PEGS 25
+
+Figure 8. The second term in the formula for the action ∫
+
+[0,1]2 ̂τ ∗ω is the total area
+of the two regions shown.
+
+Figure 9. The action A(τQ) corresponding to the inscribed rectangle Q is the area
+of the (positive) region shown.
+
+We have that ∫
+
+[0,1]2 ̂τ ∗ω = ∫
+
+[0,1]2 (π1 ◦ ̂τQ)
+∗dxdy + ∫
+
+[0,1]2(π2 ◦ ̂τQ)
+∗dxdy
+
+and this is nothing more than the sum of the areas bounded by the loops
+
+π1(τQ ∪ P ) and π2(τQ ∪ P ).
+
+We show these in Figure 8.
+
+The second term of the action functional comes with a negative sign, so one needs to think carefully
+about orientations in order to make sense of it. Once that thinking has been undertaken and successfully
+completed, the conclusion is that the action AθHt (τQ) is the (positive) area of the ‘double ice-cream
+cone’ regions shown in Figure 9.
+ 4. Spectral Invariants.
+
+A useful reference for the general discussion in this section is provided by [8].
+
+We are interested in studying the spectral invariants of the group JF(γ, θ) for pairs consisting of
+a real analytic Jordan curve γ and aspect angle 0 < θ < π. Spectral invariants are, in our case,
+real numbers associated to a choice of Jordan Floer homology class. They arise since the Jordan Floer
+
+26 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+diﬀerential (and the Floer diﬀerential in general) respects the action ﬁltration, allowing one to associate
+to a non-zero homology class the largest action among cycle representatives of that class.
+
+More precisely, the action AθHt+ht gives a map
+
+AθHt+ht : G(γ, θ, ht) −→ R
+
+on the set of generators of the chain group of an admissible triple (γ, θ, ht). We then ﬁlter this chain
+group JFC(γ, θ, ht) by subgroups JFC
+a(γ, θ, ht) generated by all elements of G(γ, θ, ht) whose action
+is less than a. Choosing an admissible Jt ∈ Jreg(γ, θ, ht) gives a chain map ∂ = ∂(γ,θ,ht,Jt) and this
+respects the ﬁltration.
+
+Then each non-zero homology class g ∈ JF(γ, θ, ht, Jt) has a ﬁltration grading in the induced ﬁltra-
+tion on JF, and this is called the spectral invariant of g:
+
+ℓ(γ, θ, ht, Jt, g) ∈ R.
+
+Since we have continuation maps establishing independence of the chain homotopy class on almost-
+complex structures, and those continuation maps are ﬁltered of ﬁltration degree arbitrarily close to
+zero, we can remove the dependence of ℓ on Jt, so we obtain ℓ(γ, θ, ht, g). Furthermore, spectral
+invariants satisfy a continuity property elaborated below (see continuity result of [8, Theorem 36]).
+Taking ht → 0, we arrive at a spectral invariant
+
+ℓ(γ, θ, g) ∈ R,
+
+which is the action of some trajectory τ of the Hamiltonian vector ﬁeld XθHt (see spectrality result of
+[8, Theorem 36]). Such trajectories correspond to inscribed rectangles Qτ in γ of aspect angle θ.
+
+Spectral invariants satisfy several important properties, and they will be used to establish Theo-
+rem A. Recall that JF(γ, θ) = ⟨α, β⟩, where α, β are homogeneous of Maslov degree |α| = 1, |β| = 2.
+We note without proof that the spectral invariants ℓ(γ, θ, α) and ℓ(γ, θ, β) satisfy a duality property:
+
+ℓ(γ, θ, α) + ℓ(γ, π − θ, β) = Area(γ).
+
+We shall not need to invoke this duality in what follows, but it justiﬁes restricting our attention to
+
+ℓ(γ, θ) := ℓ(γ, θ, β)
+
+in order to simplify notation in the rest of this paper. The duality property is proven in the sequel [7].
+Extend the domain of the spectral invariant to [0, π] by setting ℓ(γ, 0) = 0 and ℓ(γ, π) = Area(γ).
+
+Proposition 4.1 (Properties of spectral invariants). Let γ be a real analytic Jordan curve. Then the
+spectral invariant ℓ(γ, ·) : [0, π] −→ R : θ ↦−→ ℓ(γ, θ)
+satisﬁes the following properties:
+
+• Spectrality. The value ℓ(γ, θ) is equal to the action of an inscribed θ-rectangle of γ.
+• Monotonicity. The function ℓ(γ, ·) : [0, π] −→ R is monotonic increasing.
+• Area bound. 0 ≤ ℓ(γ, θ) ≤ Area(γ).
+• Lipschitz bound. The function ℓ(γ, ·) : [0, π] −→ R is Lipschitz continuous with Lipschitz con-
+stant Rad(γ)
+2.
+
+Proof. These properties follow from corresponding properties of the spectral invariants collected in [8,
+Theorem 3], which carry over directly to our setting without change:
+
+• Spectrality is immediate.
+• Monotonicity on (0, π) follows from monotonicity in [8, Theorem 3], taking H = θ1 · |z − w|2/4
+and K = θ2 · |z − w|2/4 with 0 < θ1 < θ2 < π.
+
+FLOER HOMOLOGY AND SQUARE PEGS 27
+
+• The area bound can be inferred from [8, Section 4]. More concretely, for θ suﬃciently close
+to 0 or π, a θ-rectangle inscribed in γ is elegant and contained in a small neighborhood of a
+binormal of γ. This implies that it will have double ice-cream area in (0, Area(γ)) and very
+close to 0 or to Area(γ), respectively. The area bound then follows for all θ by monotonicity
+on (0, π); and monotonicity on all of [0, π] follows in turn.
+• The Lipschitz bound follows by combining continuity and Lagrangian control in [8, Theorem
+3], noting that, by deﬁnition, max{θ · |z − w|2/4 : (z, w) ∈ γ × γ} = θ · Rad(γ)
+2.
+ □
+
+The following corollary follows immediately:
+
+Corollary 4.2. Let γ be a real analytic Jordan curve, and let 0 < ǫ < Area(γ)/2. Then there exists
+an interval I ⊂ (0, π) of width |I| ≥ (Area(γ) − 2ǫ)/Rad(γ)
+2 such that for every θ ∈ I, there exists a
+θ-rectangle Q ⊂ γ of associated action A(τQ) satisfying
+
+ǫ < A(τQ) < Area(γ) − ǫ.
+
+Proof. Take a = inf{θ : ℓ(γ, θ) ≥ ǫ}, b = sup{θ : ℓ(γ, θ) ≤ Area(γ) − ǫ}, and I = (a, b). Certainly a
+and b are well-deﬁned, since ℓ(γ, π) = Area(γ) > ǫ and ℓ(γ, 0) = 0 < ǫ. By monotonicity, ǫ < ℓ(γ, θ) <
+Area(γ) − ǫ for all θ ∈ I. By the Lipschitz bound, Area(γ) − 2ǫ = ℓ(γ, b) − ℓ(γ, a) ≤ Rad(γ)
+2 · (b − a),
+so |I| ≥ (Area(γ) − 2ǫ)/Rad(γ)
+2. The result now follows by spectrality. □
+
+5. Inscriptions.
+
+We now turn to the question of how bounds on spectral invariants may be used to show that
+rectiﬁable curves inscribe non-degenerate θ-rectangles.
+
+The core of the argument is the following lemma:
+
+Lemma 5.1 (No shrinkout). Suppose that γn is a sequence of parametrized real analytic Jordan curves
+of bounded length, which converge in C0 to a Jordan curve γ, with Area(γn) = Area(γ) for all n.
+Suppose further that each γn inscribes a non-degenerate θ-rectangle Qn ⊂ γn of associated action
+A(τQn ) satisfying ǫ < A(τQn ) < Area(γ) − ǫ
+
+for some ǫ > 0. Then γ inscribes a non-degenerate θ-rectangle Q.
+
+If we omit the hypothesis that the γn have bounded length, and γ does not inscribe a non-degenerate
+θ-rectangle, then the proof of Lemma 5.1 shows that every convergent subsequence of the Qn shrinks
+out to a point of non-rectiﬁability of γ.
+
+Proof. First, by passing to a subsequence if necessary, we use compactness to ﬁnd a (possibly de-
+generate) rectangle Q such that Qn → Q. Assume for a contradiction that Q is degenerate. The
+contradiction we derive shall take the form of showing that A(τQn ) → 0 ∈ R/Area(γ)Z as n → ∞.
+
+Each γn \ Qn consists of four components γ1
+n, γ2
+n, γ3
+n, γ4
+n. Since γ is a Jordan curve (and by possibly
+reordering) we may assume that γ2
+n, γ3
+n, γ4
+n → Q in the Hausdorﬀ metric while γ1
+n → γ. For convenience,
+we choose shrinking discs Bn ⊂ C, centred at Q, such that Bn → Q and γn \ γ1
+n ⊂ Bn. Now we consider
+the action
+ AθHt (τQn ) = ∫ 1
+
+0 θHt ◦ τQn (t)dt − ∫
+ ̂τQn ω.
+
+28 JOSHUA EVAN GREENE AND ANDREW LOBB
+
+There are two terms to this action. The ﬁrst term satisﬁes
+∫ 1
+
+0 θHt ◦ τQn (t)dt = θRad(Qn)
+2 −→ 0.
+
+To compute the second term we would like to ﬁnd an admissible cap ̂τQn for the trajectory τQn . In
+particular we are interested in the boundary of this cap which will be a loop τQn ∪ Pn where Pn is a
+path on γn × γn connecting the two endpoints of τQn .
+
+We start by choosing a path Pn on (γn × γn) \ ∆(γn) such that π1 ◦ Pn and π2 ◦ Pn are both injective
+paths on γn. Note that we can ensure that we avoid the diagonal ∆(γn) by choosing Pn so that π1 ◦ Pn
+and π2 ◦ Pn travel in the same direction around γn.
+
+Our ﬁrst candidate for the boundary of ̂τQn is τQn ∪ Pn. The problem is that this cap may have
+non-zero winding number around the diagonal ∆(C). To rectify this, we change Pn by winding a
+number of times around the core curve of γn × γn \ ∆(γn), which has winding number 1 around the
+diagonal ∆(C). This results in the curve P ′
+n.
+
+Now, computing inside R/Area(γ)Z, we have
+∫
+ ̂τQn ω = ∫
+
+τQn ∪P ′
+n η = ∫
+
+τRn ∪Pn η
+
+(where dη = ω) since a core curve of γn × γn \ ∆(γn) bounds area 2Area(γ).
+
+On the other hand, we have
+∫
+
+τQn ∪Pn η = ∫
+
+π1(τQn ∪Pn) xdy + ∫
+
+π2(τQn ∪Pn) xdy
+
+which is nothing more than the sum of the areas of the two regions bounded by the (possibly self-
+intersecting) closed curves π1(τQn ∪ Pn) and π2(τQn ∪ Pn).
+
+Now for i = 1, 2, πi(τQn ∪ Pn) is a curve that is the union of a small circular arc contained in Bn,
+and the closures of a subset of the arcs γ1
+n, γ2
+n, γ3
+n, γ4
+n. At the expense of possibly changing the area
+by ±Area(γ) by adding on ±γn, this is the area enclosed by a curve of length bounded by 2L + 1 (for
+large enough n) entirely contained in Bn, where L denotes a uniform upper bound on the length of the
+γn. But the area enclosed by such a curve contained in Bn can be at most
+2L + 1
+Circumference(Bn) Area(Bn)
+
+and this tends to 0 as n → ∞.
+
+Thus we see that as n → ∞, the second term of the action tends to 0 ∈ R/Area(γ)Z, and so we
+have arrived at a contradiction. □
+
+Proof of Theorem A. Suppose that γ is a rectiﬁable Jordan curve. The Riesz-Privalov theorem implies
+that γ can be approximated in C0 by a sequence of real analytic Jordan curves γn of bounded length
+[13, Theorem 6.8]. By rescaling these curves, we may assume additionally that Area(γn) = Area(γ)
+for all n. Now apply Corollary 4.2 and Lemma 5.1, taking ǫ → 0, in order to obtain the desired result
+for γ. □
+
+FLOER HOMOLOGY AND SQUARE PEGS 29
+
+References
+
+1. Mich`ele Audin and Mihai Damian, Morse theory and Floer homology, Universitext, Springer, London; EDP Sciences,
+Les Ulis, 2014, Translated from the 2010 French original by Reinie Ern´e.
+2. Denis Auroux, A beginner’s introduction to Fukaya categories, Contact and symplectic topology, Bolyai Soc. Math.
+Stud., vol. 26, J´anos Bolyai Math. Soc., Budapest, 2014, pp. 85–136.
+3. Andreas Floer, Morse theory for Lagrangian intersections, J. Diﬀerential Geom. 28 (1988), no. 3, 513–547.
+4. Andreas Floer, Witten’s complex and inﬁnite-dimensional Morse theory, J. Diﬀerential Geom. 30 (1989), no. 1,
+207–221.
+5. Sheel Ganatra and Daniel Pormeleano, A log PSS morphism with applications to Lagrangian embeddings, J. Topol.
+14 (2021), 291–368.
+6. Joshua Evan Greene and Andrew Lobb, Cyclic quadrilaterals and smooth Jordan curves, Invent. Math. 234 (2023),
+no. 3, 931–935.
+7. , Square pegs between two graphs, arxiv.org/2407.07798 (2024).
+8. R´emi Leclercq and Frol Zapolsky, Spectral invariants for monotone Lagrangians, J. Topol. Anal. 10 (2018), no. 3,
+627–700.
+9. Benjamin Matschke, A survey on the square peg problem, Notices Amer. Math. Soc. 61 (2014), no. 4, 346–352.
+10. Dusa McDuﬀ and Dietmar Salamon, J-holomorphic curves and quantum cohomology, American Mathematical So-
+ciety, Providence, RI, 1994.
+11. Yong-Geun Oh, Floer cohomology, spectral sequences, and the Maslov class of Lagrangian embeddings, Internat.
+Math. Res. Notices (1996), no. 7, 305–346.
+12. Leonid Polterovich, The Maslov class of the Lagrange surfaces and Gromov’s pseudo-holomorphic curves, Trans.
+Amer. Math. Soc. 325 (1991), no. 1, 241–248.
+13. Christian Pommerenke, Boundary behavior of conformal maps, Springer-Verlag, Berlin, 1992.
+14. Felix Schm¨aschke, Abelianization and Floer homology of Lagrangians in clean intersection, Ph.D. thesis, Universit¨at
+Leipzig, 2017.
+15. Lev Schnirelmann, On certain geometrical properties of closed curves, Uspehi Matem. Nauk 10 (1944), 34–44.
+16. Otto Toeplitz, Ueber einige Aufgaben der Analysis situs, Verhandlungen der Schweizerischen Naturforschenden
+Gesellschaft (1911), no. 4, 197.
+17. Claude Viterbo, A new obstruction to embedding Lagrangian tori, Invent. Math. 100 (1990), no. 2, 301–320.
+
+Department of Mathematics, Boston College, USA
+
+Email address: joshua.greene@bc.edu
+
+URL: https://sites.google.com/bc.edu/joshua-e-greene
+
+Mathematical Sciences, Durham University, UK
+
+Email address: andrew.lobb@durham.ac.uk
+
+URL: http://www.maths.dur.ac.uk/users/andrew.lobb/

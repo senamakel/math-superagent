@@ -1,68 +1,35 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/perrin-restivo-sturmian-lecture.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Perrin & Restivo — A note on Sturmian words (TCS 429 (2012) 243–250)
 
-<!-- source: https://hal.science/hal-00828351v1/file/noteSturmianWords.pdf | converted from PDF -->
+<!-- source: https://hal.science/hal-00828351v1/file/noteSturmianWords.pdf | read 2026-08-19 -->
 
-## What it claims
+Full text: `research/sources/perrin-restivo-sturmian-lecture.full.md`
 
-We describe an algorithm which, given a factor of a Sturmian word, computes the next
-factor of the same length in the lexicographic order in linear time. It is based on a combinatorial
-property of Sturmian words which is related with the Burrows-Wheeler transformation.
+## What it establishes
 
-1 Introduction
+A paper on generating the set of factors of a Sturmian word in lexicographic order (via the Burrows–Wheeler connection). Alphabet {a,b}. **The Fibonacci word appears as the running example, with slope α = 2/(3+√5) = [0;2,1,1,…] and convergents 1/2, 1/3, 2/5, 3/8, 5/13…** (this is PE1006's S_∞ under a↔b).
 
-Sturmian words are inﬁnite words over a binary alphabet that have exactly n + 1 factors of length
-n for each n ≥ 0. Their origin can be traced back to the astronomer J. Bernoulli III. Their ﬁrst
-in-depth study is by Morse and Hedlund [11]. Many combinatorial properties were described in
-the paper by Coven and Hedlund [5]. Sturmian words, also called mechanical words, are used in
-computer graphics as digital approximation of straight lines. See [8] for a general exposition on
-Sturmian words.
-In this note, we describe an algorithm which, given a factor of a Sturmian word, computes the
-next factor of the same length in the lexicographic order in linear time. It may be used to generate
-the set of factors of a Sturmian word of given length in lexicographic order.
-This algorithm is based on a…
+**Theorem 2 (consecutive factors).** Two words u,v of F of the same length are consecutive in the lexicographic order iff u = r·a·b·s and v = r·b·a·s, or u = r·a and v = r·b. (The prefix r is the "principal prefix", always right-special.)
 
-1
+**Proposition 2.** The first and last elements of F∩Aⁿ have the form a·s and b·s.
 
-is…
+**Proposition 3 (right border).** Ordering F∩Aⁿ lexicographically as (u₀,…,uₙ) and writing the last letters a₀a₁…aₙ, this "right border" word is conjugate to a word in a∗b∗. Equivalently (with the matrix M whose rows are the factors), each column of M is conjugate to a word in a∗b∗.
 
-2…
+**Theorem 3.** T(w) = b^p a^q (p,q coprime) iff w is a conjugate of a standard word — the Burrows–Wheeler connection; for the Fibonacci word w = abaababa, T(w) = b³a⁵.
 
-W…
+**The factor set at Fibonacci lengths (the section after Theorem 3, matching Wen–Wen).** For m = |sₙ| (a Fibonacci length, sₙ the standard/Fibonacci word), F∩Aᵐ is the union of the set X of **conjugates of sₙ** and the **singular factor** of length m; the singular factor is always the first or last element of F∩Aᵐ, and is of the form wₙ = x·sₙ·y⁻¹ = x·pₙ·x with pₙ palindromic. Example 10 (length 8): factors = conjugates of abaababa plus the singular factor babaabab.
 
-## Statements it makes
+**§5 — the exact integer algorithm for the characteristic word.** Given coprime u>v: `Characteristic(u,v,n)` with d←v; for i=1..n: if d+v < u then d←d+v, s[i]←a else d←d+v−u, s[i]←b. For a continued-fraction approximation v/u of α and n ≤ u−2, this returns the length-n prefix of the characteristic word — a Christoffel word when n = u−1. Example 11 runs it for (13,5,11) on the Fibonacci slope. **This is precisely the integer mechanical construction the run's solver implements** (slope 1/φ², exact rational approximant, floor-difference digits).
 
-Theorem 1 An inﬁnite word s is Sturmian if and only if it is mechanical of irrational slope.
+## Why it matters for PE1006
 
-Proposition 1 Let s be a Sturmian word with slope α. Then w ∈ F (s) if and only if for any
-factor u of w one has |u|b − 1 < α|u| < |u|b + 1. (1)
+- **Theorem 2 + Proposition 3 give the lexicographic skeleton of the k+1 factors**: consecutive factors differ by an ab→ba swap at a right-special prefix; the right-border/column structure says the last-letter sequence is a∗b∗-conjugate. This is exactly the kind of structural constraint the run's Ψ-sum could exploit to order the k+1 factors and their decimal values.
+- The singular-factor statement (conjugates + one singular word at Fibonacci lengths) is an independent statement of the Wen–Wen structure, in the standard-word convention.
+- The Characteristic(u,v,n) integer algorithm is the exact primitive the run's mechanical construction (`mechanical-word-digit-rule`) uses, source-pinned with correctness conditions (n ≤ u−2, v/u a continued-fraction approximant).
 
-Corollary 1 Let F be a Sturmian set. If ra, rba ∈ F , then rab ∈ F .
+## What it does NOT establish
 
-Corollary 2 Let F be a Sturmian set. If rabsa, rbasb, bsb ∈ F , then rabsb ∈ F .
+- No Ψ(k), no decimal weighting, no floor-sum evaluation, no O(log) method. The generation algorithm is O(n²) to list all factors (fine for small k, not the full-size route).
 
-Theorem 2 Let F be a Sturmian set. Two words u, v of F of the same length are consecutive in
-the lexicographic order if and only if u = rabs and v = rbas or if u = ra and v = rb.
+## Claims anchored here
 
-Corollary 3 Let F be a Sturmian set and let n ≥ 1. For any word u in F ∩ A
-n which is not
-maximal for the lexicographic order in F ∩ A
-n, there is a preﬁx r of u such that
-
-Proposition 2 Let F be a Sturmian set and let n ≥ 1. The ﬁrst and the last elements of F ∩ A
-n
-
-Proposition 3 For n ≥ 1, the right border of the set F ∩ A
-n is conjugate to a word in a∗b∗.
-
-Proposition 3 is related with another result proved in [10] that we introduce now.
-
-Theorem 3 One has T (w) = bpaq with p, q relatively prime if and only if w is a conjugate of a
-standard word.
-
-Proposition 4 The function PrincipalPrefix(u) returns the principal preﬁx of u if u is not
-maximal in the set of elements of F of the same length and −1 otherwise.
-
-Proposition 5 The algorithm Sturm generates the elements of length n of a Sturmian set in
-lexicographic order in quadratic time O(n2).
-
-*[digest of a 26561 character source; every section, statement, and proof in full at `research/sources/perrin-restivo-sturmian-lecture.full.md`]*
+Corroborates `governing-sturmian` (slope 1/φ², convergents), `mechanical-word-digit-rule` (integer Characteristic algorithm + correctness condition n ≤ u−2), `unique-right-special-sturmian-sourced` (principal prefix always right-special), `sivasankar-rama-position-theorem`/Wen–Wen (conjugates + singular factor at Fibonacci lengths).

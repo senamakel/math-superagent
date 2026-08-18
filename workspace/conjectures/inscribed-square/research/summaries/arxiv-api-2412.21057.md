@@ -1,0 +1,3 @@
+<!-- source: http://export.arxiv.org/api/query?id_list=2412.21057 | converted from HTML -->
+
+https://arxiv.org/api/UNehtlDmG1iXYrsEVKf5eD36yEw arXiv Query: search_query=&id_list=2412.21057&start=0&max_results=10 2026-08-18T10:10:21Z 10 1 0 http://arxiv.org/abs/2412.21057v3 The rectifiable rectangular peg problem 2026-01-05T11:13:26Z We give an affirmative answer to the rectangular peg problem for a large class of continuous Jordan curves that contains all rectifiable curves and Stromquist's locally monotone curves. Our proof is based on microlocal sheaf theory and inspired by recent work of Greene and Lobb. 2024-12-30T16:18:37Z 30 pages, v3:Revised. v2:An error in Section 5 fixed. Many typos fixed Tomohiro Asano Yuichi Ike

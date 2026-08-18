@@ -1,85 +1,29 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/sivasankar-rama-fibonacci-factors-2022.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Sivasankar & Rama — Fibonacci Sequences of 1D and 2D Words: Enumerating and Locating the Factors (arXiv:2207.04304)
 
-<!-- source: https://arxiv.org/html/2207.04304 | converted from HTML -->
+<!-- source: https://arxiv.org/html/2207.04304 | full text read 2026-08-19 -->
 
-## What is in it
+Full text: `research/sources/sivasankar-rama-fibonacci-factors-2022.full.md`
 
-- Fibonacci Sequences of 1 ​ D 1D, 2 ​ D 2D Words: Enumerating and Locating the Factors of…
-        - Abstract
-        - Keywords:
-  - 1 Introduction
-  - 2 Preliminaries
-    - 2.1 One-dimensional Words
-    - 2.2 Two-dimensional Words
-        - Definition 1.
-        - Definition 2.
-    - 2.3 Fibonacci Words
-        - Remark 1.
-        - Remark 2.
-        - Definition 3.
-        - Lemma 1.
-    - 2.4 The 2 ​ D 2D Infinite Fibonacci Word, f ∞, ∞ f_{\infty,\infty}
-  - 3 Enumeration Using Subword Graphs
-    - 3.1 Cross Product of D ​ A ​ W ​ G DAWG s
-        - Definition 4.
-    - 3.2 Rooted Product of D ​ A ​ W ​ G DAWG s
-        - Definition 5.
-    - 3.3 Enumerating the subwords: The D ​ A ​ W ​ G DAWG way
-- …
+## What it establishes (the 1D part; the 2D part is off-topic)
 
+**Convention.** 1D Fibonacci words f₀ = a, f₁ = b, fₙ = f_{n−1}f_{n−2}; f_∞ = abaababaabaab… (this is the a↔b, 0↔1 complement of PE1006's S_∞ = 0100101001001…). F(n) = |fₙ| is the n-th Fibonacci number (F(0)=F(1)=1, F(2)=2, F(3)=3, F(4)=5, …). T is the cyclic rotation operator: T(a₁…aₙ) = a₂…aₙa₁, T^{−1}(a₁…aₙ) = aₙa₁…a_{n−1}.
 
-## What it claims
+**Lemma 2 (the positional theorem, verbatim).** Let qₙ = T^{F(n)−1}(fₙ) if n even, T^{F(n−1)−1}(fₙ) if n odd (the "special conjugate" of fₙ). Then for each k with 1 ≤ k < F(n), the k+1 length-k prefixes of T⁰(qₙ), T^{−1}(qₙ), …, T^{−k}(qₙ) are the k+1 distinct factors of f_∞ of length k.
 
-Given an infinite word, enumerating its factors is an important exercise for understanding the structure of the word. The process of finding all the factors is quite tricky for two-dimensional words. In this paper, two possible ways of enumerating the factors of the fixed point ( f ∞, ∞ f_{\infty,\infty}) of the sequence of Fibonacci arrays and a method for locating these factors in f ∞, ∞ f_{\infty,\infty} are explored. In addition, the factor complexity and the locations of the factors of the fixed point of Fibonacci sequence of arrays are also analysed.
+**Worked example (k=4, n=4).** f₄ = abaab, F(4)=5, q₄ = T⁴(abaab) = babaa. The five length-4 factors baba, abab, aaba, baab, abaa are exactly the length-4 prefixes of babaa, ababa, aabab, baaba, abaab.
 
-## Statements it makes
+## Why it matters for PE1006
 
-###### Definition 1.
+- This is the **primary, sourced statement of the contiguous-window theorem** the run's `fibonacci-position-theorem-contiguous-windows` claim uses: the k+1 distinct length-k factors occur as consecutive windows (cyclic shifts) of a single finite Fibonacci word qₙ, not scattered over the infinite word.
+- It gives the run a *finite* model: for k with F(n−1) ≤ k < F(n), all k+1 factors appear as prefixes of k+1 consecutive rotations of qₙ, so the factor set is a contiguous window family in a word of length F(n). This is the structural basis for the directive-9 window/prefix approach.
+- The paper's Corollary 1 (1D reading): there are exactly k+1 subwords of length k — the same count as the Sturmian complexity p(k)=k+1, cross-validating the complexity claim from a different (DAWG/conjugation) direction.
+- Convention caveat: a↔b swap sends f_∞ = abaab… to PE1006's S_∞ = 01001… = the same word under 0↔1; the rotation/prefix structure is invariant under letter relabeling, so the theorem transfers unchanged.
 
-###### Definition 2.
+## What it does NOT establish
 
-###### Definition 3.
+- No formula for Ψ(k) or any weighted sum of factors; it fixes *which* strings are the factors and *where* they occur, not their decimal values.
+- The 2D extension (Theorems 1-5, Corollary 1, Example 1) is about the 2D Fibonacci array f_{∞,∞} and is irrelevant to PE1006.
 
-###### Lemma 1.
+## Claims anchored here
 
-###### Definition 4.
-
-###### Definition 5.
-
-###### Theorem 1.
-
-Theorem 1 can be proved by taking " rooted product " of " 𝒢 ∞ \mathcal{G}_{\infty} for columns" and " 𝒢 ∞ \mathcal{G}_{\infty} for rows". In that case, first we have to traverse a vertical path of length k k, then a horizontal path of length l l to obtain the first column and the last row of the subword in that order. Finding the other rows can be done similar to the process explained in the proof.
-
-###### Corollary 1.
-
-###### Lemma 2.
-
-###### Definition 6.
-
-###### Definition 7.
-
-###### Theorem 2.
-
-###### Proposition 1.
-
-Proposition 1 is extended to f ∞, ∞ f_{\infty,\infty} as below.
-
-###### Proposition 2.
-
-###### Definition 8.
-
-###### Lemma 3.
-
-###### Proposition 3.
-
-###### Corollary 2.
-
-###### Definition 9.
-
-###### Theorem 3.
-
-###### Theorem 4.
-
-###### Theorem 5.
-
-*[digest of a 111732 character source; every section, statement, and proof in full at `research/sources/sivasankar-rama-fibonacci-factors-2022.full.md`]*
+`fibonacci-position-theorem-contiguous-windows` (asserted, now source-pinned to Lemma 2 verbatim), corroborates `governing-factor-complexity` / `governing-sturmian`.

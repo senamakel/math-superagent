@@ -1,122 +1,25 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/formal-intercepts-sturmian-2018.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Wojcik — Formal intercepts of Sturmian words (arXiv:1803.02073)
 
-<!-- source: https://ar5iv.labs.arxiv.org/html/1803.02073 | converted from HTML -->
+<!-- source: https://ar5iv.labs.arxiv.org/html/1803.02073 | read 2026-08-19 (§3 full) -->
 
-## What is in it
+Full text: `[[formal-intercepts-sturmian-2018.full]]` (66 KB, 857 lines).
 
-- Formal intercepts of Sturmian words
-        - Abstract
-  - 1 Basic properties
-    - 1.1 The Morse-Hedlund theorem
-        - Definition 1.
-        - Theorem 1 (Morse-Hendlund).
-        - Proof.
-        - Definition 2.
-    - 1.2 Slopes and balanced words
-        - Definition 3.
-        - Lemma 1.
-        - Proof.
-        - Theorem 2.
-        - Proof.
-        - Proposition 1.
-        - Proof.
-        - Definition 4.
-        - Theorem 3.
-        - Proof.
-        - Definition 5.
-        - Proposition 2.
-        - Proof.
-    - 1.3 Caracteristic words and continued fractions
-        - Theorem 4.
-        - Proof.
-    - 1.4 Standard and central words
-        - Definition 6.
-        - Proposition 3.
-- …
+## What it establishes
 
+A combinatorial treatment of the **second parameter** (the intercept) of Sturmian words via Ostrowski expansions.
 
-## What it claims
+- **Ostrowski conditions (Prop 8)**: N = Σ_{i=0}^{k−1} b_{i+1} q_i with the prefix sums < q_l iff (i) 0 ≤ b_1 ≤ a_1−1; (ii) 0 ≤ b_i ≤ a_i for all i; (iii) b_{i+1} = a_{i+1} ⇒ b_i = 0. **Prop 9**: every N ∈ [0, q_n) has a unique such representation — the Ostrowski numeration in terms of the continuants q_i of the slope's CF.
+- **Formal intercept (Def 12)**: I_α = { (k_n)_{n>0} ∈ ∏ [0,q_n) : k_n = k_{n+1} mod q_n } — the projective limit of the finite ranges [0,q_n), i.e. an integer sequence that is coherent mod each q_n. Every Sturmian word of slope α is T^ρ(c_α) for a **unique** formal intercept ρ (Prop 12); the shifts T^{ρ_n}(c_α) agree on prefixes of length q_n−1 (Prop 10).
+- **Prefix-extension bound (Prop 10–11)**: T^ρ(c_α) and T^{ρ_n}(c_α) share a common prefix of length λ_n = q_{n+1} + q_n − ρ_{n+1} − 2, and λ_n → ∞; the exact longest-common-prefix length is λ_N where N ≥ n is the first index with b_{N+1} ≠ 0.
+- Example: the words 0·c_α and 1·c_α have formal intercepts Σ_{i≥0} a_{2i+2} q_{2i+1} and (a_1−1) + Σ_{i≥1} a_{2i+1} q_{2i}.
+- §1–2: re-proves Morse–Hedlund, balanced ⟺ Sturmian, characteristic words from CF, standard/central words, the repetition function (Prop 5: R(n) = q_{k+1} + q_k + q_{k−1} − 2 for q_k ≤ n < q_{k+1}, from the Rauzy-graph cycles), Rauzy graph structure of Sturmian words.
 
-We introduce the concept of formal intercept of Sturmian words, defined as an infinite sequence of integers written in Ostrowski expansion. We first recall the combinatorial proofs of basics properties of sturmian words. Then, we study the Rauzy graphs and repetition functions of Sturmian words. In the last part, we define the formal intercept associated to a sturmian word.
+## Why it matters here
 
-Sturmian words are defined as the infinite words having lowest unbounded complexity. They enjoy rich combinatorial structures, that are sometimes difficult to quantify. However, unlike most of other dynamical systems, in the case of sturmian words one can hope to find some explicit combinatorial formulas.
+- Gives the **Ostrowski parametrisation of the intercept** — the exact coordinate in which the run's k+1 arc-midpoint intercepts x_m = frac(−m·a) live. The k+1 intercepts of PE1006 are a finite slice of formal intercepts; the prefix-extension bound λ_n is the precise version of "how far must a window range reach" that the run's first-occurrence / contiguous-window theorems (Cassaigne's Φ+1 bound, Lmin(k) = k + NextFib(k) − 1) quantify.
+- Prop 8–9 is the source-level statement of the Ostrowski conditions the run's Ostrowski-prefix-decomposition axis (`ostrowski-prefix-decomposition-characteristic`) uses, with the canonical CF-continuant representation for α = 1/φ² = [0;2,1,1,…].
+- **Does NOT give Ψ(k)**: no decimal weights, no squares, no joint-intercept aggregation. It fixes the numeration/coordinate machinery, not the weighted second moment.
 
-In order to describe the combinatorial properties of Sturmian words, we give here a combinatorial description of the second parameter in the caracterisation of sturmian words. The first parameter, well-known, is the slope, which is an irrational number in ] 0, 1 []0,1[, whose continued fraction expansion describes the set of factors of a sturmian word. The second parameter, the intercept, has been defined…
+## Claims anchored here
 
-In…
-
-## Statements it makes
-
-###### Definition 1.
-
-###### Theorem 1 (Morse-Hendlund).
-
-###### Definition 2.
-
-###### Definition 3.
-
-###### Lemma 1.
-
-###### Theorem 2.
-
-###### Proposition 1.
-
-###### Definition 4.
-
-###### Theorem 3.
-
-###### Definition 5.
-
-###### Proposition 2.
-
-###### Theorem 4.
-
-###### Definition 6.
-
-###### Proposition 3.
-
-###### Definition 7.
-
-###### Proposition 4.
-
-###### Definition 8.
-
-###### Definition 9 (Repetition function).
-
-###### Proposition 5.
-
-###### Definition 10 (Rauzy graph).
-
-###### Proposition 6.
-
-###### Theorem 5.
-
-###### Lemma 2.
-
-###### Lemma 3.
-
-###### Corollary 1.
-
-###### Proposition 7.
-
-###### Definition 11.
-
-###### Theorem 6.
-
-###### Lemma 4.
-
-###### Proposition 8.
-
-###### Proposition 9.
-
-###### Definition 12.
-
-###### Proposition 10.
-
-###### Definition 13.
-
-###### Proposition 11.
-
-###### Proposition 12.
-
-*[digest of a 63357 character source; every section, statement, and proof in full at `research/sources/formal-intercepts-sturmian-2018.full.md`]*
+Corroborates `ostrowski-prefix-decomposition-characteristic` (Ostrowski representation of prefixes/positions), `fibonacci-first-occurrence-window-bound` (prefix-extension/recurrence structure). No new claim block.

@@ -7,17 +7,10 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
 | [[drr-status]] | Which of the 121 DRR graphics have finite cyclicity proved, which remain open, and the paper closing each recently closed row? | settled | h16-drr-121-graphics, h16-drr-closed-rows-2015, h16-drr-open-rows, drr-rr-closes-i14, drr-rr-boundary-only-for-3-graphics | the enumeration is answered — RR 2015 leave exactly one graphic (H14_3) with no partial result; Lu 2026 claims it. Live action is verification of Lu's finite… |
-| [[fake-saddle-transition-maps]] | Does the uniform fake-saddle transition-map expansion of Marín 2026, combined with a division-in-flat-class step, certify finite cyclicity of an open… | open | — | identify which DRR degenerate graphic has fake saddles and whether the uniform expansion closes it; re-derive the division-in-flat-class step in Lean. NOTE:… |
+| [[fake-saddle-transition-maps]] | Does the uniform fake-saddle transition-map expansion of Marín 2026, combined with a division-in-flat-class step, certify finite cyclicity of an open… | open | drrt-2015-fake-saddle-cyclicity-lower-bound, drrt-2015-fake-saddle-no-drr-contribution, fake-saddle-uniform-transition-map-marin2026 | the uniform expansion survives only as a division-in-flat-class template for the slow-divergence/ECT route; identify a concrete degenerate graphic whose finite… |
 | [[lu-h14-3-verification]] | Does the finite computational core of Lu arXiv:2607.13785 (local uniform finite cyclicity of the H14_3 semihyperbolic hemicycle) stand up to independent exact… | open | drr-rr-boundary-only-for-3-graphics | (directive 5) The algebraic core is VERIFIED and kernel-closed — code/bautin/verify_lu_core.py passed clean-room (capture code/out/lu_core.captured.txt), and… |
 | [[pedregal-variational-claim-test]] | Does the claimed variational resolution of H16.2 by Pedregal (arXiv:2103.07193, H(n) quartic bound, H(2)=4) survive the three problem.md tests, or is it… | open | h16-pedregal-variational-claim-unrefereed, h16-ominimality-route-roussarie | The concrete test — isolate where the paper proves that limit cycles, which are ISOLATED closed orbits (defined by the dynamical return map), are in exact… |
-
-## Resting on nothing recorded
-
-Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
-
-- [[drr-status]] rests on `h16-drr-121-graphics`, `h16-drr-closed-rows-2015`, `h16-drr-open-rows`, `drr-rr-closes-i14`, `drr-rr-boundary-only-for-3-graphics`, which no claim block on disk establishes
-- [[lu-h14-3-verification]] rests on `drr-rr-boundary-only-for-3-graphics`, which no claim block on disk establishes
-- [[pedregal-variational-claim-test]] rests on `h16-pedregal-variational-claim-unrefereed`, `h16-ominimality-route-roussarie`, which no claim block on disk establishes
+| [[restricted-h2-bounds]] | What are the exact numerical constants in Fishkin 2010 Theorems 1 and 2 (Trans. Moscow Math. Soc. 71, DOI 10.1090/s0077-1554-2010-00181-1)? The held claim… | open | fishkin-perturbed-center-quadratic-bound, ilyashenko-llibre-restricted-h16-quadratic-bound | retry the AMS free-archive PDF (vol 71 is >5 years old, so retrieval is legitimate) when the server allows; verify or strike the quoted exponents; upgrade the… |
 
 ## Threads that could not be read
 

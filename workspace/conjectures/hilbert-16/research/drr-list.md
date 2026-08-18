@@ -55,7 +55,7 @@ paper.
 |---|---|---|
 | `H₁₄³` | **open** — the one graphic through a triple point at infinity with no partial result in RR 2015 (hemicycle, two semi-hyperbolic points along the equator) | **sourced-held**: RR 2015 intro, "We have a partial result for every graphic, but one (namely (H₁₄³)), through a triple point at infinity"; they "hope to adapt" the methods to its boundary graphic |
 | `I₆b¹`, `H₁₃³`, `DI₂b` | **open (partially closed)** — only the boundary limit periodic set of each is proved finite (Thm 1.1); the other limit periodic sets, hence the full graphics, are explicitly left "to address in the next future" | **sourced-held**: RR 2015 Thm 1.1 + intro after Thm 1.2 |
-| The 11 degenerate graphics *other than* DF1a, DF2a | **open** (cyclicity unproven) | **reported** (Shan 2013 thesis: "the cyclicity of the rest 11 degenerate graphics are still open") |
+| The 11 degenerate graphics *other than* DF1a, DF2a — **named: `DF1b`, `DF2b`, `DH1`, `DH2`, `DI1a`, `DI1b`, `DI2a`, `DI2b`, `DH3`, `DH4`, `DH5`** | **open** (cyclicity unproven). `DI2a` included — ADL 2009 is partial results only (see claim `drr-DI2a-partial-only`). `DH5` (two lines of singular points) is the hardest per DR 2009: no analytic 5-parameter normal form exists, a natural one needs 7 parameters | **sourced-held** (Shan 2013 thesis prose: "the cyclicity of the rest 11 degenerate graphics are still open"; DR 2009 full text enumeration lines 114, 179, 250) |
 | Sub-problem inside RSZ 2015 | Thm 3.2 (Sxhh5, `(I₉b²)`-type) needs the extra hypothesis μ₁=0 (fixed connection on the blow-up sphere); authors conjecture it can be dropped but could not prove it (RSZ Remark 3.3) | **sourced-held** (RSZ full text) |
 
 ## Honest bound on what this run can claim

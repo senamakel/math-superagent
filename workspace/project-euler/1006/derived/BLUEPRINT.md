@@ -10,27 +10,36 @@ A node is **ready** when everything it rests on is settled. A node is **blocked*
 
 Everything these rest on is settled, so each can be attacked on its own, by a role that has not read the rest of the argument. This is the list to schedule from.
 
-- `pe1006-psi/G4-joint-intercept-evaluation` (lemma) — For the rational Fibonacci convergent a=p/q used for length k (q>k+2), there is an explicitly defined state of dimension independent of k…
+- `pe1006-psi/pe1006-psi/G4-joint-intercept-evaluation` (lemma) — There exists an explicitly defined state σ(a,k) of dimension independent of k, with an associative composition ○ computable in time…
   - open `research/backward/pe1006-psi.md`
 
 ## Verify these first
 
 Ranked by how much of the argument rests on each, and within one load by whether the run is already building on it. An unchecked lemma three other nodes cite is used as a black box, so a mistake in it stays uncaught and everything above it inherits it — where a node nothing rests on is used by nothing, whatever its standing. This is the queue the verification arm works, one entry per pass.
 
-- `governing-sturmian` — 6 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic…
-- `governing-factor-complexity` — 4 node(s) rest on it, and the run is already building on it — A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;…
-- `fibonacci-sturmian-complexity` — 4 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word, and its factor…
+- `governing-sturmian` — 5 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic…
+- `governing-factor-complexity` — 3 node(s) rest on it, and the run is already building on it — A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;…
+- `monoid-composition-formulas-verified` — 3 node(s) rest on it, and the run is already building on it — For the geometric second-moment floor-sum monoid over a Euclidean path (n R's, i-th R preceded by floor((p·i+r)/q) U's), composing segment…
 
-_54 further candidate(s) below these, in the table._
+_65 further candidate(s) below these, in the table._
 
 ## Every node
 
 | Node | Kind | Standing | Rests on | Statement |
 | --- | --- | --- | --- | --- |
+| `babichev-six-moment-floor-kernel-closure` | claim | **ready** | — | The six-moment family H_{p,q}(n;m,a,b) = Σ_{x=0}^{n-1} x^p ⌊(ax+b)/m⌋^q, q≥1, p+q≤3 (i.e.… |
+| `berthe-holton-zamboni-initial-critical-exponent` | claim | **ready** | — | For the characteristic Sturmian sequence omega of slope alpha, ind*(alpha) = 1 + ice(omega) (Thm 1.2), where ice is the initial critical… |
+| `bonardo-frid-shallit-valid-factorizations-formula` | claim | **ready** | — | For the Fibonacci word f (fixed point of mu: a->ab, b->a) and V(n) the number of valid factorizations of the length-n prefix f(0..n] into a… |
+| `brown-shiue-fractional-part-sum-explicit-formula` | claim | **ready** | — | For irrational α, 0<α<1, and C_α(n)=Σ_{1≤k≤n}({kα}−1/2), an explicit closed form for C_α(n) holds in terms of the simple continued fraction… |
+| `bwt-standard-sturmian-characterization` | claim | **ready** | — | The BWT characterizes standard Sturmian words: a binary word has the minimum possible number of BWT runs (total clustering of each… |
+| `cassaigne-special-factor-complexity` | claim | **ready** | — | For a factorial extendable language L over a binary alphabet with factor complexity p(n), the number s(n) of right-special (equivalently… |
 | `characteristic-sequence-floor-difference-def` | claim | **ready** | — | The characteristic sequence of an irrational alpha in (0,1) is the lower mechanical word f(alpha) = f_1 f_2 ... with f_n =… |
+| `christoffel-strong-factor-symmetry` | claim | **ready** | — | For a word w over {a,b} with Parikh image (p,q) and delta_w(i,j) the number of distinct factors of w with Parikh image (i,j), w is strongly… |
 | `chuan-fibonacci-words-rotation-structure` | claim | **ready** | — | For distinct letters x,y and the n-th stage Fibonacci words (w_1=x, w_2=y, w_{n+1}=w_n w_{n-1} or w_{n-1} w_n with arbitrary binary… |
 | `cobham-bes-frougny-multiplicatively-independent-conversion` | claim | **ready** | — | Two linear numeration systems (over Pisot bases) are mutually recognisable / convertible by finite automata only if their bases are… |
 | `conjugate-christoffel-factor-sturmian` | claim | **ready** | — | A finite word w is a conjugate of a Christoffel word if and only if all its conjugates (cyclic rotations) are factors of a Sturmian… |
+| `deluca-1981-palindrome-factorisation-fibonacci` | claim | **ready** | — | For n≥4, the finite Fibonacci word f_n (f_1=a, f_2=b, f_{n+1}=f_n f_{n-1}) is the product of two uniquely determined palindrome words of… |
+| `deluca-division-property-fibonacci-word` | claim | **ready** | — | The infinite Fibonacci word f (PE1006's S_n limit, 0->01, 1->0 convention) is the concatenation of the reversals of the even finite… |
 | `dir1-domain-autocorrelation` | claim | **ready** | — | Directive 1's pair-correlation identity C(j,jp) = A(jp-j), holds ONLY at k = F_n - 1 (k = 1, 2, 4, 7, 12, 20, 33, 54, 88, 143, ...), where… |
 | `distance-encoding-word-structure` | claim | **ready** | — | In the three-distance partition of [0,1] by {ialpha mod 1, i = 0..n-1} U {1}, the leftmost interval is not the longest, and encoding the… |
 | `farey-slope-stabilisation` | claim | **ready** | — | Let p1/q1 < p2/q2 be consecutive m-points de Farey (Farey neighbours of order m) and let alpha in ]p1/q1, p2/q2[. The length-m special… |
@@ -42,6 +51,7 @@ _54 further candidate(s) below these, in the table._
 | `fibonacci-sturmian-complexity` | claim | **ready** | — | The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word, and its factor… |
 | `fibonacci-unique-special-factor-reverse` | claim | **ready** | — | The Fibonacci word f has exactly n+1 distinct factors of length n; exactly one of them is right-special (both extensions x0 and x1 are… |
 | `fibonacci-word-contiguous-factors-position-theorem` | claim | **ready** | — | The k+1 distinct length-k factors of the (rabbit, 1<->0 complement of PE1006's S) Fibonacci word occur as contiguous windows at… |
+| `fibonacci-word-palindromically-rich` | claim | **ready** | — | The Fibonacci word f (PE1006's S_n limit, fixed point of 0->01, 1->0) is a rich (palindromically rich) infinite word: every length-k factor… |
 | `fibonacci-word-sturmian-density-balance` | claim | **ready** | — | The infinite Fibonacci word F (substitution 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word with factor complexity p_F(n) = n… |
 | `fibonacci-zeckendorf-parity-characterization` | claim | **ready** | — | The Fibonacci infinite word f = 0100101001001... is the sequence f(n) = (rightmost bit / parity) of the Zeckendorf representation of n;… |
 | `g1-factor-chain-nested` | claim | **verified** | — | For S_n = S_0=0, S_1=01, S_{n+2}=S_{n+1}S_n, the length-k contiguous factor sets form a monotone nested chain: FactorSet(fibWord n, k) ⊆… |
@@ -51,24 +61,20 @@ _54 further candidate(s) below these, in the table._
 | `g2-mech-shell-exact-binary` | claim | **verified** | — | For the corrected slope a = fib(n)/fib(n+2), every digit digit_j(x) = floor(x+(j+1)a) - floor(x+ja) of a mechanical word of intercept x =… |
 | `g2-mechanical-word-representation` | goal | established | `conjugate-christoffel-factor-sturmian`, `g2-mech-shell-exact-binary`, `governing-sturmian`, `mechanical-word-digit-rule` | The k+1 length-k factors of F are produced exactly by the rotation/mechanical construction with slope a=F(n-2)/F(n) (= fib(n)/fib(n+2), the… |
 | `g3-telescoped-second-moment` | goal | established | — | v(x) = floor(x+ka) - 10^(k-1) floor(x) + 9 sum_{j=1}^{k-1} 10^(k-1-j) floor(x+ja); Psi(k) is the second moment of this geometric floor-sum… |
-| `g4-universal-euclidean-floor-sum` | goal | blocked | `governing-universal-euclidean`, `monoid-composition-formulas-verified`, `req-close-universal-euclidean`, `universal-euclidean-geometric-floor-sum` | The universal Euclidean (Chtholly) algorithm evaluates Psi(k) mod M in O(log k), carrying the tuple (count, sum x^j, sum x^j floor, sum x^j… |
+| `g4-universal-euclidean-floor-sum` | goal | abandoned | `governing-universal-euclidean`, `monoid-composition-formulas-verified`, `universal-euclidean-geometric-floor-sum` | (superseded — the open content of this skeleton, a fixed-dimensional O(log k) evaluation of Ψ(k) mod M, is carried as gap… |
 | `geometric-sum-division-algorithm` | claim | **ready** | — | For the geometric sum G_n(x) = 1 + x + ... + x^{n-1}, Euclid's division n = mq + r (0 <= r < m <= n) gives the recursion G_{r+mq}(x) = x^r… |
 | `ghs-automatic-decision-procedure` | claim | **ready** | — | Let x be a k-automatic sequence over a finite alphabet (n-th term a finite-state function of the base-k representation of n). Any property… |
+| `glen-justin-sturmian-lexicographic-inequality` | claim | **ready** | — | For a standard Sturmian word s on {a<b}, the lexicographic extremal-factor limits satisfy as <= min(s) <= max(s) <= bs (Pirillo/Veerman,… |
 | `governing-factor-complexity` | claim | established | — | A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;… |
 | `governing-fibonacci-sturmian-mechanical` | claim | **ready** | — | The infinite Fibonacci word fixed by 0→01, 1→0 is a characteristic Sturmian word of slope 1/φ². Sturmian words have exactly k+1 distinct… |
-| `governing-sturmian` | claim | **ready** | — | The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic… |
-| `governing-universal-euclidean` | claim | **ready** | — | The universal Euclidean algorithm (monoid generalisation of AtCoder floor_sum, "Chtholly's algorithm") evaluates sums of the form… |
-| `hegedus-nagy-circular-words-fibonacci-trees` | claim | **ready** | — | For the finite Fibonacci words f_1=b, f_2=a, f_n=f_{n-1}f_{n-2}, the tree of the circular word (f_i)° has exactly one branching node on… |
-| `lothaire-sturmian-complexity` | claim | **ready** | — | A Sturmian infinite binary word has exactly n+1 distinct contiguous factors of length n, and Sturmian words are mechanical words of… |
-| `mechanical-word-digit-rule` | claim | **ready** | — | Let α in (0,1) and s_{α,ρ}(n) = floor((n+1)α + ρ) - floor(nα + ρ), n >= 0 (lower mechanical word with slope α, intercept ρ). All mechanical… |
-| `monoid-composition-formulas-verified` | claim | established | — | For the geometric second-moment floor-sum monoid over a Euclidean path (n R's, i-th R preceded by floor((p·i+r)/q) U's), composing segment… |
-| `morse-hedlund-minimal-complexity` | claim | **ready** | — | The Sturmian/minimal-complexity framework gives n+1 length-n factors for the relevant aperiodic binary trajectories. |
-| `oeis-A213975-lexicographic-subwords` | claim | **ready** | — | A213975 lists the factors (subwords) of the Fibonacci word A003842 (1->12, 2->1 substitution: 12112121112...), one length at a time, in… |
-| `ostrowski-prefix-decomposition-characteristic` | claim | **ready** | — | For a characteristic Sturmian word w with directive sequence (d_i) and standard words s_i, the prefix w(0..N] equals s_n^{k_n}···s_0^{k_0}… |
-| `pe1006` | goal | abandoned | — | (superseded — the live, canonical decomposition is research/backward/pe1006-psi.md, which carries gaps G1–G4 and was sharpened in the same… |
-| `pe1006-contiguous-window-prefix` | goal | refuted | `fibonacci-position-theorem-contiguous-windows`, `monoid-composition-formulas-verified`, `pe1006-contiguous-window-prefix/CW1-terminal-window-set`, `pe1006-contiguous-window-prefix/CW2-rolling-window-recurrence`, `pe1006-contiguous-window-prefix/CW3-summary-composition`, `pe1006-contiguous-window-prefix/CW4-fixed-dimensional-fibonacci-renormalisation`, `pe1006-contiguous-window-prefix/CW5-terminal-correction` | Collapse the contiguous-window prefix sum of decimal squares over Fibonacci blocks to O(log k): Ψ(k)=Σ_{r=N-k-1}^{N-1}V_r² for a doubled… |
 
-_28 further nodes not shown._
+_39 further nodes not shown._
+
+## Resting on nothing that exists
+
+Each edge below names a lemma or claim no file on disk carries. Either the id is misspelled, or the run is taking something as given that nobody wrote down.
+
+- `g4-universal-euclidean-floor-sum` rests on `req-close-universal-euclidean`, which does not exist
 
 ---
 

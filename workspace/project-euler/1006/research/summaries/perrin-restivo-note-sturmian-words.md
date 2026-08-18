@@ -1,66 +1,34 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/perrin-restivo-note-sturmian-words.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Perrin — Sturmian words, Lecture 1: complexity, balance, slope (Master 2011)
 
-<!-- source: http://www-igm.univ-mlv.fr/~perrin/Enseignement/Master2011/Slides/Lecture1/slides1.pdf | converted from PDF -->
+<!-- source: http://www-igm.univ-mlv.fr/~perrin/Enseignement/Master2011/Slides/Lecture1/slides1.pdf | read 2026-08-19 -->
 
-## What it claims
+Full text: `research/sources/perrin-restivo-note-sturmian-words.full.md`
 
-A Sturmian word is an inﬁnite word x such that P(x, n) = n + 1
-for any integer n ≥ 0.
-A word u ∈ F (x) is right-special if u0, u1 ∈ F (x). The word x is
-Sturmian if and only if there is exactly one right-special word of
-each length.
- Dominique Perrin Sturmian words, Lecture 1
+## What it establishes
 
-Complexity of an inﬁnite word
-Balance
-Slope of a word
+Lecture-1 slides (of Perrin's 2011 Sturmian-words minicourse, based on Berstel–Séébold in Lothaire ACW 2002). Uses exactly PE1006's convention: alphabet {0,1}, Fibonacci word x = 0100101001001… = fixed point of φ(0)=01, φ(1)=0, finite words uₙ = φⁿ(0) with u_{n+1} = uₙu_{n−1} (= the problem's Sₙ).
 
-Theorem (Coven, Hedlund,1973)
+**Complexity.** P(x,n) = Card(Fₙ(x)). A Sturmian word has P(x,n) = n+1 ∀n. **x is Sturmian iff there is exactly one right-special word of each length** (u is right-special if u0, u1 ∈ F(x)).
 
-The following conditions are equivalent for an inﬁnite word x.
+**Coven–Hedlund 1973.** For an infinite word: eventually periodic ⇔ P(x,n)=P(x,n+1) for some n ⇔ P(x,n) < n+1 for some n ≥ 1 ⇔ P(x,n) bounded. (The Morse–Hedlund dichotomy: an aperiodic word has P ≥ n+1 for all n.)
 
-1 x is eventually periodic.
+**Fibonacci word is Sturmian.** Proof sketch: every factor recurs; the left-special words are exactly the prefixes of x (φ(0uₙ)=01u_{n+1}, φ(1uₙ)=0u_{n+1}, and conversely u = φ(v) or φ(v)0 with v left-special).
 
-2 P(x, n) = P(x, n + 1) for some n.
+**Balance.** h(x) = number of 1's (height); δ(x,y) = |h(x)−h(y)|; a set is balanced iff |δ| ≤ 1 on equal lengths. **A balanced factorial set X has Card(X∩Aⁿ) ≤ n+1.** X unbalanced iff ∃ palindrome w with 0w0, 1w1 ∈ X.
 
-3 P(x, n) < n + 1 for some n ≥ 1.
+**Morse–Hedlund 1940.** x is Sturmian ⇔ x is balanced and aperiodic.
 
-4 P(x, n) is bounded.
+**Slope.** π(x) = h(x)/|x|; an infinite balanced word has slope α = lim π(xₙ); the **Fibonacci word has slope 1/τ² = 1/(3+√5)** (from |fₙ|=Fₙ, h(fₙ)=F_{n−2}); every factor u satisfies |π(u) − α| ≤ 1/|u|.
 
-1⇒ 4. If x = uv ω, then P(x, n) ≤ |uv |.
-4⇒ 3.
-3⇒ 2. If P(x, m − 1) < P(x, m) for m = 0, . . . , n, then
-P(x, n) ≥ n + 1, a contradiction.
-2⇒ 1. Uses the factor graph Gn(x). The edges are the words in
-Fn(x) and the edges the words in Fn+1(x). The edge aub goes
-from au to ub.
-If P(x, n) = P(x, n + 1), the strongly connected components are
-simple circuits.
- Dominique Perrin Sturmian words, Lecture 1
+## Why it matters for PE1006
 
-Complexity of an inﬁnite word
-Balance
-Slope of a word
-The Fibonacci word
+- First lecture in the same series as the (already digested) Lecture 2; pins, in the problem's own 0/1 convention: the k+1 count (Morse–Hedlund/Coven–Hedlund), the unique right-special factor per length (the run's R_k hinge), the balance bound (heights of length-k factors differ by ≤ 1), and the slope 1/τ² with factor-height bound |π(u)−α| ≤ 1/k.
+- The balance bound Card(X∩Aⁿ) ≤ n+1 is the elementary reason there are at most k+1 factors; combined with the Fibonacci word's construction showing exactly k+1, this is a self-contained proof of the problem statement's "only k+1 different Fibonacci subwords of length k".
 
-The Fibonacci word
+## What it does NOT establish
 
-x = 0100101001001010010100100101001001 · · ·
+- No Ψ(k), no decimal weighting, no floor-sum evaluation, no O(log) method. Slides: statements with proof sketches.
 
-is…
+## Claims anchored here
 
-u…
-
-## Statements it makes
-
-Theorem (Coven, Hedlund,1973)
-
-Proposition
-
-Theorem (Morse,Hedlund,1940)
-
-Proposition
-
-Proposition
-
-*[digest of a 6162 character source; every section, statement, and proof in full at `research/sources/perrin-restivo-note-sturmian-words.full.md`]*
+`governing-factor-complexity` (Morse–Hedlund k+1; balance ≤ n+1), `governing-sturmian` (slope 1/τ²), `unique-right-special-sturmian-sourced` (exactly one right-special per length).

@@ -1,16 +1,16 @@
 {
   "axioms": [
-    "'PE1006.projectEuler1006' depends on axioms: [sorryAx]"
+    "'PE1006.projectEuler1006' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
   ],
   "cited": [],
   "collector": {
-    "elapsed_ms": 2930,
-    "source_digest": "fc024e8ef0eff84d8e605e646c80d429",
+    "elapsed_ms": 5835,
+    "source_digest": "3f11ddf9a33f26d5af50f42d50574f8a",
     "toolchain": ""
   },
   "compiled": true,
   "declarations": [
-    "theorem projectEuler1006 : psi 1000000000000000000 % 101001001 = 0"
+    "theorem projectEuler1006 : psi (10^18) % M = answer % M"
   ],
   "file": "code/lean/Lib/Statement.lean",
   "generated_conclusions": [],
@@ -18,7 +18,7 @@
   "outcome": "failed",
   "retired_binder": false,
   "sorries": [
-    "/workspace/code/lean/Lib/Statement.lean:21:8: warning: declaration uses `sorry`"
+    "/workspace/code/lean/Lib/Statement.lean:93:8: warning: declaration uses `sorry`"
   ],
   "tautologies": [],
   "uncleared": [],

@@ -1,0 +1,15 @@
+# Collatz oracle run output
+
+The naive oracle in `code/collatz_oracle.py` was executed. Its printed examples were:
+
+```text
+1 [1]
+2 [2, 1]
+3 [3, 10, 5, 16, 8, 4, 2, 1]
+6 [6, 3, 10, 5, 16, 8, 4, 2, 1]
+oracle checked 1..10000
+```
+
+This output is a mechanical check of the implementation against standard small
+examples and a finite range only. It is not evidence for the conjecture at
+unbounded size.

@@ -7,6 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `__init__.py` | _(undescribed)_ |
 | `_run_indep.py` | _(undescribed)_ |
 | `bautin_membership_independent.py` | _(undescribed)_ |
+| `center_ideal_zero_division.p` | Minimal first-order refutation encoding for the weakened center-ideal zero-division claim; deliberately tests whether uniform small remainders alone imply a one-zero bound. |
 | `degenerate-graphic.p` | Minimal TPTP finite-model attack on the open finite-cyclicity claim for a DRR degenerate graphic; deliberately records only the abstract finite-bound fragment. |
 | `finite_uniformity.p` | Minimal TPTP attack on the invalid general bridge from pointwise finiteness to a parameter-uniform bound. |
 | `finite_uniformity_small.p` | Minimal TPTP attack on the tempting but invalid inference from pointwise finite cyclicity to a parameter-uniform bound. |

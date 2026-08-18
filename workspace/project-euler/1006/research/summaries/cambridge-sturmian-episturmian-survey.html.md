@@ -1,28 +1,21 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/cambridge-sturmian-episturmian-survey.html.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Glen — On Sturmian and episturmian words, and related topics (Bull. Austral. Math. Soc. 74 (2006) 155–160)
 
-<!-- source: https://www.cambridge.org/core/journals/bulletin-of-the-australian-mathematical-society/article/on-sturmian-and-episturmian-words-and-related-topics/78D71DD926F9C9BA49311966010453F7 | converted from HTML -->
+<!-- source: https://www.cambridge.org/core/journals/bulletin-of-the-australian-mathematical-society/article/on-sturmian-and-episturmian-words-and-related-topics/78D71DD926F9C9BA49311966010453F7 | 2026-08-19. STATUS: on-disk "full text" is the Cambridge *landing page*: no abstract available, no paper body. The article itself is a 5-page note; the survey content it summarizes is already covered in-library by berstel-sturmian-episturmian-survey-2007, glen-sturmian-episturmian-survey, bucci-puzynina-zamboni-sturmian-survey, lothaire-sturmian-words-C2. -->
 
-## What is in it
+Full text: `research/sources/cambridge-sturmian-episturmian-survey.html.full.md` (landing page only)
 
-  - Article contents
-- On Sturmian and episturmian words, and related topics
-  - Abstract
-  - Information
-  - References
-- Cited by
-        - This article has been cited by the following publications. This list is generated based…
-- Save article to Kindle
-- Save article to Dropbox
-- Save article to Google Drive
-      - Reply to: Submit a response
+## What it establishes
 
+Nothing usable from the on-disk file: it is a Cambridge Core landing page with "An abstract is not available for this content". The only established facts are bibliographic: Amy Glen, "On Sturmian and episturmian words, and related topics", Bull. Austral. Math. Soc. 74(1) (2006) 155–160, DOI 10.1017/S0004972700047559, published online 17 April 2009, first page image present but no text.
 
-## What it claims
+## Why it matters for PE1006
 
-An abstract is not available for this content so a preview has been provided. As you have access to this content, a full PDF is available via the ‘Save PDF’ action button.
+It does not help. It is a short survey note whose substance is fully covered by the on-disk Berstel 2007 Sturmian/episturmian survey, the Glen–Justin episturmian survey, and Lothaire Ch. 2 — all already digested. Do not cite this file for any mathematical claim; cite the surveys instead.
 
-[image: Image of the first page of this content. For PDF version, please use the ‘Save PDF’ preceeding this image.']
+## Status honesty
 
----
+Landing page only; do not re-read expecting content. Not on the run's critical path.
 
-*[digest of a 28403 character source; every section, statement, and proof in full at `research/sources/cambridge-sturmian-episturmian-survey.html.full.md`]*
+## Claims anchored here
+
+None.

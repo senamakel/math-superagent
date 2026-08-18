@@ -1,0 +1,22 @@
+=== naive oracle: limit-cycle count, exact rational arithmetic ===
+[PASS] cubic normal form (one limit cycle at r=1)
+        count=1 roots=['1.00000000000000']
+        A(u)=1 - u  B(u)=1
+[PASS] linear centre x'=-y, y'=x  -> 0 cycles
+        count=0 roots=[]
+        A(u)=0  B(u)=1
+[PASS] linear expanding focus x'=x-2y, y'=2x+y  -> 0 cycles
+        count=0 roots=[]
+        A(u)=1  B(u)=2
+[PASS] van der Pol-like field -> refused as non-radial
+        reason: field is not radially symmetric; the displacement function cannot be computed exactly by this oracle
+[PASS] linear saddle x'=x, y'=-y -> refused as non-radial
+        reason: field is not radially symmetric; the displacement function cannot be computed exactly by this oracle
+[PASS] two-cycle field A=(1-u)(2-u): two cycles at u=1, u=2
+        count=2 roots=['1.00000000000000', '2.00000000000000']
+        A(u)=u**2 - 3*u + 2  B(u)=1
+[PASS] semi-stable case A=(1-u)^2(2-u): certified count = 1 (u=1 double root: not hyperbolic, not counted)
+        count=1 roots=['2.00000000000000']
+        A(u)=-u**3 + 4*u**2 - 5*u + 2  B(u)=1
+
+=== oracle bound: degrees <= 3, one band, 1 CPU, ran in seconds ===

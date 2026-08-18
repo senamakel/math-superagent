@@ -1,0 +1,6 @@
+N=10000000, pi(N)=664579, sieve 0.6s
+candidate primes p <= 20000: 2262
+assignment done 21.5s
+unassigned with p(n) > 20000: 0; first: []
+distinct minimal primes: 112 (23.3s)
+saved seq_sp_vec_10000000.txt

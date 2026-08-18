@@ -57,7 +57,7 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `SlowDivergenceECTPartial.Parameter` | abbrev | verified | — | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
 | `SlowDivergenceECTPartial.Section` | abbrev | verified | — | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
 | `SlowDivergenceECTPartial.full_graphic_zero_bound` | theorem | verified | — | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
-| `specialises` | theorem | verified | it to the one representation `δ` is given by, left | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
+| `specialises` | theorem | verified | it to the one representation `δ` is given by: per `p ∈ K`, | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
 | `Cited.torregrosa_two_families` | axiom | verified | : ∃ F₁ F₂ : CubicFamily, UnfoldsTwelve F₁ ∧ UnfoldsTwelve F₂ | Torregrosa, “Cubic planar vector fields with high local cyclicity”, São Paulo J. Math.… | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
 | `CubicFamily` | def | verified | — | — | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
 | `SmallAmplitudeLimitCycle` | def | verified | (X : ℝ × ℝ → ℝ × ℝ) (r : ℝ) : Prop | — | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
@@ -89,9 +89,9 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `DRR.Cited.secondary_sources_each_report` | theorem | verified | : | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
 | `DRR.FinitelyCyclic` | axiom | verified | : GraphicId → Prop | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
 
-_557 more not shown here; they are in `code/lean`._
+_607 more not shown here; they are in `code/lean`._
 
-637 declarations, 464 of them in a file the kernel has checked.
+687 declarations, 488 of them in a file the kernel has checked.
 
 ## Never checked
 
@@ -101,6 +101,10 @@ These files are in the tree and no `lean_check` verdict exists for them. Nothing
 - `code/lean/Lib/DRR.lean`
 - `code/lean/Lib/DRR_citation.lean`
 - `code/lean/Lib/DRR_citations.lean`
+- `code/lean/Lib/FiguerasTuckerVilladelprat2013.lean`
+- `code/lean/Lib/HuzakDeMaesschalckDumortier2014.lean`
+- `code/lean/Lib/IlyashenkoLlibreRestricted.lean`
+- `code/lean/Lib/Mourtada2009.lean`
 - `code/lean/Lib/SourceSummary.lean`
 - `code/lean/Lib/StatementLibraryCycle.lean`
 - `code/lean/Lib/kernel_of_monomial_map.lean`

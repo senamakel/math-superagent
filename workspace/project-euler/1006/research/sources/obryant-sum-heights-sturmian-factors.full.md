@@ -1,4 +1,4 @@
-<!-- source: https://doi.org/10.48550/arxiv.math/0611365 | converted from HTML -->
+<!-- source: https://arxiv.org/pdf/math/0611365 | converted from HTML -->
 
 [math/0611365] On the Sum of the Heights of Sturmian Factors
 

@@ -1,0 +1,5 @@
+N=2000000, pi(N)=148933, sieve 0.1s
+candidate minimal primes: 2262 (p <= 20000)
+unassigned (p(n) > 20000): 0; first: []
+distinct minimal primes found: 86 (4.0s)
+saved seq_sp_vec_2000000.txt

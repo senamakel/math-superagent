@@ -1,0 +1,5 @@
+=== S(p) extension up to n=50000 ===
+primes <= 50000: 5133  (0.0s)
+
+wrote seq_rn_50000.txt and seq_sp_50000.txt
+total time 12.8s

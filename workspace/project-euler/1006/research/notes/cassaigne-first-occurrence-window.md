@@ -14,10 +14,8 @@ statement: For the Fibonacci word f, the first-occurrence quotient
            Sec. 3.2 / Theorem 3.4 context. Moreover R'(n) - n + 1 is the
            maximal first-occurrence position of a length-n factor, so a prefix
            of length ~ (Phi+1)·k contains every length-k factor.
-evidence: asserted (sourced) — Cassaigne Theorem 3.4 region; the constant
-          Phi+1 for f is stated in the paper; optimality across all words is
-          NOT attained by f but by another Sturmian word with rho'*=(29-2sqrt10)/9.
-bearing: justifies brute.py's "prefix length >= 3k is safe": 3 > Phi+1 ~= 2.618,
+evidence: asserted (sourced) — Cassaigne §3.2 "First occurrence" (lines 429-463) and §5 summary table: ρ′*(f)=Φ+1 stated in the running text; Theorem 3.4 itself is about the *other* Sturmian word u (slope (5−√10)/5) with ρ′*(u)=(29−2√10)/9≈2.519 < Φ+1≈2.618, and that is the optimal value across all non-eventually-periodic words. The Φ+1 for f is the paper's contrast value, not its Theorem 3.4 — do not cite Thm 3.4 for ρ′*(f).
+bearing: justifies brute.py's "prefix length >= 3k is safe": 3 > Φ+1 ~= 2.618,
          and the documented worst cases (k=15 needs 35; k=30 needs 63) sit at
          35/15=2.33 and 63/30=2.1, both below 2.618. It also bounds directive 9's
          contiguous-window range {F_n - k - 1 .. F_n - 1} of q_n q_n, which must

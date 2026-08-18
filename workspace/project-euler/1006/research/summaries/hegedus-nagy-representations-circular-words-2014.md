@@ -1,50 +1,33 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hegedus-nagy-representations-circular-words-2014.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hegedüs & Nagy — Representations of Circular Words (arXiv:1405.5607; EPTCS 151, AFL 2014, 261–270)
 
-<!-- source: https://doi.org/10.4204/eptcs.151.18 | converted from HTML -->
+<!-- source: https://arxiv.org/abs/1405.5607 (full text at research/sources/hegedus-nagy-representations-circular-words-arxiv.full.md) | read 2026-08-19 -->
 
-## What is in it
+Full text: `research/sources/hegedus-nagy-representations-circular-words-arxiv.full.md`
+(`research/sources/hegedus-nagy-representations-circular-words-2014.full.md` is only the arXiv *abstract page*; the -arxiv file is the actual paper.)
 
-- Computer Science > Formal Languages and Automata Theory
-- Title: Representations of Circular Words
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+## What it establishes
 
+**Objects.** Circular words (necklaces) over {a,b}; tree representation φᵢ of the circular Fibonacci word (fᵢ)°, where paths from root to level-ℓ nodes are the length-ℓ factors of the circular word.
 
-## What it claims
+**Theorem 3.** For the tree φᵢ of the finite Fibonacci word fᵢ, every level has exactly **one branching node**, except the last two levels. Proof: the number of distinct length-k factors of the infinite Fibonacci word is k+1 (Sturmian complexity), all appear in the tree because (fᵢ)° contains fᵢ², and a primitive word of length n has exactly n branching nodes in its tree, so all must sit on distinct levels.
 
-Abstract: In this article we give two different ways of representations of circular words. Representations with tuples are intended as a compact notation, while representations with trees give a way to easily process all conjugates of a word. The latter form can also be used as a graphical representation of periodic properties of finite (in some cases, infinite) words. We also define iterative representations which can be seen as an encoding utilizing the flexible properties of circular words. Every word over the two letter alphabet can be constructed starting from ab by applying the fractional power and the cyclic shift operators one after the other, iteratively.
+**Corollary 1.** If j > i then φᵢ is a subtree of φⱼ — the trees are nested, and the limit tree φ of the infinite Fibonacci word is well-defined; each path in φ is an infinite suffix of the Fibonacci word.
 
-Comments: | In Proceedings AFL 2014, [arXiv:1405.5272][6] |
+**Theorem 4.** In any φᵢ, two branching nodes u,u′ on the same path with no branching node between them satisfy |ℓ(u) − ℓ(u′)| a Fibonacci number. Proof: otherwise the infinite Fibonacci word would contain a square vv whose v is not conjugate to a Fibonacci word, contradicting the well-known square-factor characterization (Lemma 2).
 
-Subjects: | Formal Languages and Automata Theory (cs.FL) |
+**§3 (tuples/iterative representations).** Every binary circular word can be built from ab by iterated fractional-power and cyclic-shift operations; the greedy algorithm (Figure 2) finds an iterative representation but not always an optimal one.
 
-ACM classes: | F.4.3 |
+## Why it matters for PE1006
 
-Cite as: | [arXiv:1405.5607][7] [cs.FL] |
+- The branching-node structure of the circular-Fibonacci tree is the factor-extension skeleton: the single branching node per level (except the last two) is exactly the **unique right-special factor** R_k of each length k, and the two children of R_k are the two extensions used in the run's extension recurrence Ψ(k+1) = 100Ψ(k) + 100V(R_k)² + 20S1(k) + J(k).
+- Corollary 1's nesting is the finite-word justification that the k+1 length-k factors of the *infinite* word are exactly the level-k nodes of the circular tree of a sufficiently large fᵢ — matching the Sivasankar–Rama positional theorem (prefixes of rotations of qₙ).
+- Theorems 3-4 confirm the Sturmian complexity count k+1 from the circular/tree side, an independent corroboration of `governing-factor-complexity`.
 
-| (or [arXiv:1405.5607v1][8] [cs.FL] for this version)  |
+## What it does NOT establish
 
-| [https://doi.org/10.48550/arXiv.1405.5607][9]
+- No formula for Ψ(k), no decimal weighting, no floor-sum evaluation. It is a structural/combinatorial source about the factor tree, not about weighted sums.
+- Theorem 4's Fibonacci-gap structure of branching nodes is suggestive for block-collapse but not directly a Ψ identity.
 
-Focus to learn more
+## Claims anchored here
 
-arXiv-issued DOI via DataCite
-
-|
-
-Journal reference: | EPTCS 151, 2014, pp. 261-270 |
-
-Related DOI:  |…
-
-Focu…
-
-*[digest of a 6428 character source; every section, statement, and proof in full at `research/sources/hegedus-nagy-representations-circular-words-2014.full.md`]*
+Corroborates `governing-factor-complexity`, `fibonacci-unique-special-factor-reverse` (the unique right-special factor per level), `sivasankar-rama-position-theorem`. No new claim block needed.

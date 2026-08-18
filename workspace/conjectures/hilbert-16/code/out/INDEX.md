@@ -5,6 +5,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | File | Purpose |
 | --- | --- |
 | `README.md` | _(undescribed)_ |
+| `brute_oracle.captured.txt` | Executed capture of code/brute.py (the naive oracle), run 2026-08-18: exact rational limit-cycle counts for radially symmetric fields x'=A(r²)x−B(r²)y, y'=B(r²)x+A(r²)y, A,B∈Q[u]. All 7 worked examples PASS: cubic normal form→1 at r=1; linear centre→0; linear expanding focus→0; van der Pol-like→refused; linear saddle→refused; A=(1−u)(2−u)→2 at u=1,2; A=(1−u)²(2−u)→1 (u=1 double root excluded). Bears on the problem.md claim that the displacement function of such fields is exactly computable and its sign-change roots are the limit cycles. |
 | `bautin_focal_values.captured.txt` | _(undescribed)_ |
 | `cofactor_certificate.captured.txt` | Capture of code/bautin/cofactor_certificate.py: evaluation-witness certificate that L8 ∉ ⟨L4,L6⟩ (Bautin focal values over Q). Witness (a1,a2,a3,b1,b2,b3)=(-2,-2,1,-1,-1,1) with L4=0, L6=0, L8=25/64; cleared-integer evaluations V1num=0, V2num=0, V3num=7200; CERTIFICATE VALID: PASS; 11679 points searched. Independently recomputed by direct sympy. Evidence for proving L8∉⟨L4,L6⟩ in code/lean/Lib/Bautin.lean (task cofactor-certificate-L8-not-in-L4-L6). |
 | `cofactor_certificate2.captured.txt` | _(undescribed)_ |

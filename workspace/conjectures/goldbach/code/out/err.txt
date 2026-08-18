@@ -1,0 +1,4 @@
+=== Goldbach analysis up to n=2000 ===
+Prime count: 303
+
+Files written to code/out/
