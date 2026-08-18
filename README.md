@@ -56,7 +56,7 @@ verifying the result before presenting it.
 │          ▼  /workspace: goal, tasks, research artifacts, code/lib/       │
 └───────┬─────────────────────────┬─────────────────────┬──────────────────┘
         │                         │                     │
-  workspace/<name>/         Cognee + Neo4j       OpenRouter, Exa,
+  workspace/<name>/         Cognee + Neo4j       local router, Exa,
   committed to git          durable memory       Langfuse, trace.jsonl
 ```
 
@@ -192,10 +192,13 @@ lessons, sources, and failed approaches, and the three roles whose output is
 durable knowledge can store them. Pass `--no-research` to withhold web search;
 Cognee recall remains available.
 
-All model calls use DeepSeek V4 Flash through OpenRouter, preferring the
-DeepInfra route by default so the large fixed prompt prefix keeps hitting one
-provider's cache. Fallbacks stay enabled, so a busy provider never halts the
-runtime. Set `OPENROUTER_MODEL` or `MATH_AGENT_PROVIDER` to change either.
+All general model calls go through the authenticated OpenAI-compatible router
+on port 6969. Ordinary roles send model id `flash`; the roles listed in
+`REASONING_ROLES` send `reasoning`. Both tiers advertise a one-million-token
+context window, while the router owns the provider, price, and fallback ladder.
+Host-side calls default to `http://localhost:6969/v1`; Compose reaches that same
+host service through `host.docker.internal`. The router must listen on a host
+address Docker can reach rather than binding only to `127.0.0.1`.
 TinyAgents provides the model loop, tools, delegation, and middleware.
 
 
@@ -206,7 +209,7 @@ tool result, labelled with the agent that produced it:
 
 ```text
 [00:00] orchestrator     run started (run-1)
-[00:00] orchestrator     model call #1 -> deepseek/deepseek-v4-flash-0731
+[00:00] orchestrator     model call #1 -> flash
 [00:14] orchestrator     model done    13820ms in=9241 cached=8960 out=612 | profile model 96% tool 0% idle 4% | cache 96% | $0.0031
 [00:14] orchestrator     tool  call #1 -> spawn_agent
 [00:14] tool_builder/agent-run-2  spawned: Read /workspace/problem.md and extract the exact statement...
@@ -311,7 +314,7 @@ replay of what it had already seen.
 Requirements:
 
 - Docker
-- OpenRouter, Exa, and Langfuse credentials
+- local router, Exa, and Langfuse credentials
 
 Copy the environment template and fill in the local values:
 
@@ -613,7 +616,7 @@ restrictions:
   `/workspace`;
 - the repository and Docker socket are not mounted.
 
-Network access stays enabled because OpenRouter, Exa, and Langfuse require it.
+Network access stays enabled because the model providers, Exa, and Langfuse require it.
 The tool-builder can change files under `/workspace`, but it cannot change the
 host repository through the container.
 
@@ -632,7 +635,7 @@ scripts/                    the helpers' implementations
 workspace/                  selectable agent workspaces, committed with their runs
 └── template/               seed instructions, prompts, and config
 src/prompts/                built-in role prompts, included at compile time
-src/agent/                  TinyAgents facade, OpenRouter, budget, tracing
+src/agent/                  TinyAgents facade, providers, budget, tracing
 src/orchestrator/           registry, specialists, workspace and document tools
 src/bin/euler_tui.rs        the tabbed console, behind the `tui` feature
 examples/                   the Docker entry point and two direct examples

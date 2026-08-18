@@ -1,22 +1,21 @@
 //! Unit tests for the embedded `TinyAgents` runtime.
 
-use super::{Message, mock, openrouter_client};
-use tinyagents::harness::model::{ChatModel as _, ModelRequest};
+use super::{Message, ROUTER_CONTEXT_WINDOW, mock, router_model};
+use tinyagents::harness::model::ModelRequest;
 
-#[tokio::test]
-async fn openrouter_requests_identify_opencompany() -> super::Result<()> {
+async fn capture_router_request(model_name: &str) -> super::Result<String> {
     use tokio::io::{AsyncReadExt as _, AsyncWriteExt as _};
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
         .await
         .map_err(|error| {
             tinyagents::TinyAgentsError::Model(format!(
-                "attribution test could not bind loopback: {error}"
+                "router test could not bind loopback: {error}"
             ))
         })?;
     let address = listener.local_addr().map_err(|error| {
         tinyagents::TinyAgentsError::Model(format!(
-            "attribution test could not read its address: {error}"
+            "router test could not read its address: {error}"
         ))
     })?;
     let (sent, received) = tokio::sync::oneshot::channel();
@@ -39,29 +38,38 @@ async fn openrouter_requests_identify_opencompany() -> super::Result<()> {
         let _ = socket.write_all(response.as_bytes()).await;
     });
 
-    let model = openrouter_client("test-key")
-        .with_base_url(format!("http://{address}/v1"))
-        .with_model("test-model");
+    let model = router_model(
+        "test-key".to_string(),
+        &format!("http://{address}/v1"),
+        model_name,
+    );
+    assert_eq!(
+        model.profile().and_then(|profile| profile.max_input_tokens),
+        Some(ROUTER_CONTEXT_WINDOW)
+    );
     model
         .invoke(&(), ModelRequest::new(vec![Message::user("hello")]))
         .await?;
 
-    let request = received.await.map_err(|error| {
+    received.await.map_err(|error| {
         tinyagents::TinyAgentsError::Model(format!("test server dropped request: {error}"))
-    })?;
-    let request = request.to_ascii_lowercase();
-    assert!(
-        request.contains("http-referer: https://opencompany.tinyhumans.ai/\r\n"),
-        "request omitted the OpenCompany URL: {request}"
-    );
-    assert!(
-        request.contains("x-openrouter-title: opencompany\r\n"),
-        "request omitted the OpenCompany title: {request}"
-    );
-    assert!(
-        request.contains("x-openrouter-categories: personal-agent\r\n"),
-        "request omitted the OpenCompany category: {request}"
-    );
+    })
+}
+
+#[tokio::test]
+async fn router_sends_authenticated_flash_and_reasoning_tiers() -> super::Result<()> {
+    for model_name in ["flash", "reasoning"] {
+        let request = capture_router_request(model_name).await?;
+        let request = request.to_ascii_lowercase();
+        assert!(
+            request.contains("authorization: bearer test-key\r\n"),
+            "router request omitted bearer authentication"
+        );
+        assert!(
+            request.contains(&format!(r#""model":"{model_name}""#)),
+            "router request omitted the `{model_name}` tier id"
+        );
+    }
     Ok(())
 }
 

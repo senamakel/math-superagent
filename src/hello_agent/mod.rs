@@ -10,7 +10,7 @@ use serde_json::{Value, json};
 use crate::agent::budget::RunBudget;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, ToolResult, ToolSchema,
-    configure_run_budget, openrouter_model_from_env,
+    configure_run_budget, provider_model_from_env,
 };
 use crate::orchestrator::async_subagents::AsyncSubagentManager;
 
@@ -24,7 +24,7 @@ const SYSTEM_PROMPT: &str = "You are a friendly hello-world agent. Use tools whe
 const SUBAGENT_PROMPT: &str = "You are a concise helper sub-agent. Complete only the delegated \
     task, report the useful result clearly, and do not invent tool output.";
 
-/// A small OpenRouter-backed agent with deterministic tools and delegation.
+/// A small provider-backed agent with deterministic tools and delegation.
 #[derive(Debug)]
 pub struct HelloAgent {
     inner: ObservedAgent,
@@ -36,24 +36,24 @@ impl HelloAgent {
     ///
     /// # Errors
     ///
-    /// Returns an error when the required `OpenRouter` or Langfuse environment
+    /// Returns an error when the required provider or Langfuse environment
     /// variables are missing or invalid.
     pub fn from_env() -> Result<Self> {
-        let model = openrouter_model_from_env()?;
+        let model = provider_model_from_env()?;
         let budget = RunBudget::from_env();
 
         let mut child_harness: AgentHarness<()> = AgentHarness::new();
         child_harness
-            .register_model("openrouter", model.clone())
-            .set_default_model("openrouter");
+            .register_model("router", model.clone())
+            .set_default_model("router");
         configure_run_budget(&mut child_harness, budget);
         let async_subagents = AsyncSubagentManager::new(budget, None);
         async_subagents.register("helper", Arc::new(child_harness), SUBAGENT_PROMPT)?;
 
         let mut parent_harness: AgentHarness<()> = AgentHarness::new();
         parent_harness
-            .register_model("openrouter", model)
-            .set_default_model("openrouter")
+            .register_model("router", model)
+            .set_default_model("router")
             .register_tool(Arc::new(EchoTool))
             .register_tool(Arc::new(AddTool))
             .register_tool(Arc::new(ExaSearchTool::from_env()?));

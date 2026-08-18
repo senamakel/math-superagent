@@ -299,7 +299,7 @@ contents. Document variable names and placeholders in `.env.example`.
 
 The runtime currently expects:
 
-- `OPENROUTER_API_KEY`, and optional `OPENROUTER_MODEL`
+- `MATH_AGENT_API_KEY`, for the local model router on port 6969
 - `OPENROUTER_MEMORY_API_KEY`, the memory's own; unset shares the run's limit
 - `EXA_API_KEY`
 - `LANGFUSE_BASE_URL`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`
