@@ -7,14 +7,6 @@ use tinyflows::validate::validate_all;
 
 use super::*;
 
-/// The run's models, for building a graph in a test.
-fn test_tiers() -> crate::orchestrator::tiers::ModelTiers {
-    use crate::agent::MockModel;
-    use std::sync::Arc;
-    use tinyagents::harness::model::ChatModel;
-    let model = || Arc::new(MockModel::constant("ok")) as Arc<dyn ChatModel<()>>;
-    crate::orchestrator::tiers::ModelTiers::new(model(), model(), model(), None)
-}
 use crate::orchestrator::definitions::workflow_agents;
 use crate::orchestrator::schools::Thresholds;
 use crate::orchestrator::solutions::{
@@ -35,7 +27,7 @@ fn chisel() -> Thresholds {
 
 fn graph() -> WorkflowGraph {
     let registry = default_registry(true).expect("the default registry builds");
-    solution_loop("find the largest x", workflow_agents(&registry, &test_tiers()))
+    solution_loop("find the largest x", workflow_agents(&registry))
 }
 
 /// One loop state, as `run_loop_step` returns it.

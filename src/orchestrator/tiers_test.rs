@@ -13,53 +13,33 @@ fn model() -> Arc<dyn ChatModel<()>> {
     Arc::new(MockModel::constant("ok"))
 }
 
-fn tiers(with_scribe: bool) -> ModelTiers {
-    ModelTiers::new(model(), model(), model(), with_scribe.then(model))
-}
-
 #[test]
-fn a_scribe_role_runs_on_the_scribe_tier_when_the_model_is_there() {
-    let tiers = tiers(true);
+fn a_scribe_role_runs_on_the_scribe_tier() {
     for role in SCRIBE_ROLES {
-        assert_eq!(tiers.tier_for(role), ModelTier::Scribe);
-    }
-}
-
-#[test]
-fn a_scribe_role_falls_back_to_the_default_when_the_key_is_unset() {
-    let tiers = tiers(false);
-    for role in SCRIBE_ROLES {
-        assert_eq!(
-            tiers.tier_for(role),
-            ModelTier::Default,
-            "a run without the key must report the tier it will really use"
-        );
+        assert_eq!(ModelTier::of(role), ModelTier::Scribe);
     }
 }
 
 #[test]
 fn the_reasoning_roles_keep_their_tier() {
-    let tiers = tiers(true);
     for role in REASONING_ROLES {
-        assert_eq!(tiers.tier_for(role), ModelTier::Reasoning);
+        assert_eq!(ModelTier::of(role), ModelTier::Reasoning);
     }
 }
 
 #[test]
 fn the_deepest_roles_keep_their_tier() {
-    let tiers = tiers(true);
     for role in MAX_REASONING_ROLES {
-        assert_eq!(tiers.tier_for(role), ModelTier::MaxReasoning);
+        assert_eq!(ModelTier::of(role), ModelTier::MaxReasoning);
     }
 }
 
 /// A school qualifies a registration; it must not drop a role a tier.
 #[test]
 fn a_schooled_role_stays_on_the_deepest_tier() {
-    let tiers = tiers(true);
     for role in MAX_REASONING_ROLES {
         assert_eq!(
-            tiers.tier_for(&format!("{role}@rising-sea")),
+            ModelTier::of(&format!("{role}@rising-sea")),
             ModelTier::MaxReasoning,
             "`{role}@rising-sea` fell off the deepest tier"
         );
@@ -78,9 +58,8 @@ fn each_tier_is_named_after_the_ladder_it_selects() {
 
 #[test]
 fn an_ordinary_role_is_on_the_default_tier() {
-    let tiers = tiers(true);
     for role in ["coder", "research", "lean_prover", "tool_builder"] {
-        assert_eq!(tiers.tier_for(role), ModelTier::Default);
+        assert_eq!(ModelTier::of(role), ModelTier::Default);
     }
 }
 
@@ -104,10 +83,9 @@ fn no_role_is_in_two_tiers() {
 
 #[test]
 fn a_school_qualified_name_keeps_its_tier() {
-    let tiers = tiers(true);
-    assert_eq!(tiers.tier_for("lean_scribe@rising-sea"), ModelTier::Scribe);
-    assert_eq!(tiers.tier_for("judge@rising-sea"), ModelTier::Reasoning);
-    assert_eq!(tiers.tier_for("coder@rising-sea"), ModelTier::Default);
+    assert_eq!(ModelTier::of("lean_scribe@rising-sea"), ModelTier::Scribe);
+    assert_eq!(ModelTier::of("judge@rising-sea"), ModelTier::Reasoning);
+    assert_eq!(ModelTier::of("coder@rising-sea"), ModelTier::Default);
 }
 
 #[test]
@@ -121,4 +99,38 @@ fn the_published_tier_names_are_distinct() {
     sorted.sort_unstable();
     sorted.dedup();
     assert_eq!(sorted.len(), names.len(), "two tiers publish the same name");
+}
+
+/// The decision and the handout agree: whichever tier a role resolves to is the
+/// model it is actually given.
+///
+/// Four distinct handles, compared by identity rather than by behaviour — two
+/// mocks that answer the same string are indistinguishable by their answers,
+/// which is exactly the mistake this is meant to catch.
+#[test]
+fn each_tier_hands_out_its_own_model() {
+    let (default, reasoning, max_reasoning, scribe) = (model(), model(), model(), model());
+    let tiers = ModelTiers::new(
+        default.clone(),
+        reasoning.clone(),
+        max_reasoning.clone(),
+        scribe.clone(),
+    );
+
+    for (role, expected) in [
+        ("coder", &default),
+        ("judge", &reasoning),
+        ("inventor", &max_reasoning),
+        ("lean_scribe", &scribe),
+    ] {
+        assert!(
+            Arc::ptr_eq(&tiers.for_role(role), expected),
+            "`{role}` was handed the wrong tier's model"
+        );
+    }
+
+    // Transcript compression is nobody's role and must stay on the default: a
+    // rewrite of a transcript on the Lean tier would spend the scarcest model
+    // in the run on the job a fast general one does better.
+    assert!(Arc::ptr_eq(tiers.default_tier(), &default));
 }

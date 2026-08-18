@@ -528,9 +528,6 @@ pub struct OrchestratorAgent {
     tracer: Arc<RunTracer>,
     workspace: PathBuf,
     memory: VectorStore,
-    /// The run's models, kept so the workflow document can publish the tier a
-    /// role *actually* runs on rather than the one a list says it should.
-    models: Arc<ModelTiers>,
 }
 
 impl OrchestratorAgent {
@@ -573,7 +570,7 @@ impl OrchestratorAgent {
     /// one thing this must not be a second list of.
     #[must_use]
     pub fn workflow_agents(&self) -> Vec<tinyflows::model::AgentDefinition> {
-        definitions::workflow_agents(&self.registry, &self.models)
+        definitions::workflow_agents(&self.registry)
     }
 
     /// Runs one pass of the formalisation mill over `source`.

@@ -2,21 +2,8 @@
 #![allow(clippy::expect_used, clippy::panic)]
 
 use super::*;
-use crate::orchestrator::tiers::ModelTier;
-
-/// The run's models, for the tests that publish a tier.
-///
-/// `with_scribe` says whether this run has the Lean tier configured, which is
-/// the difference between a workflow document that names it and one that
-/// honestly reports the fallback.
-fn tiers(with_scribe: bool) -> ModelTiers {
-    use crate::agent::MockModel;
-    use std::sync::Arc;
-    use tinyagents::harness::model::ChatModel;
-    let model = || Arc::new(MockModel::constant("ok")) as Arc<dyn ChatModel<()>>;
-    ModelTiers::new(model(), model(), model(), with_scribe.then(model))
-}
 use crate::orchestrator::default_registry;
+use crate::orchestrator::tiers::ModelTier;
 
 fn registry(research_enabled: bool) -> AgentRegistry {
     default_registry(research_enabled).expect("the default registry builds")
@@ -31,7 +18,7 @@ fn registry(research_enabled: bool) -> AgentRegistry {
 #[test]
 fn every_role_is_granted_exactly_the_tools_it_has_today() {
     let registry = registry(true);
-    let derived = workflow_agents(&registry, &tiers(true));
+    let derived = workflow_agents(&registry);
 
     assert_eq!(derived.len(), registry.definitions().len());
     for definition in registry.definitions() {
@@ -56,7 +43,7 @@ fn every_role_is_granted_exactly_the_tools_it_has_today() {
 /// gaining them — still a silent change of authority.
 #[test]
 fn no_grant_is_a_pattern() {
-    for agent in workflow_agents(&registry(true), &tiers(true)) {
+    for agent in workflow_agents(&registry(true)) {
         for grant in &agent.tools {
             assert!(
                 !grant.slug.contains('*'),
@@ -73,7 +60,7 @@ fn no_grant_is_a_pattern() {
 /// reimplemented on it — that is the property, and this is the test of it.
 #[test]
 fn research_off_removes_the_search_grant_rather_than_relying_on_a_rule_here() {
-    let gated = workflow_agents(&registry(false), &tiers(true));
+    let gated = workflow_agents(&registry(false));
     for agent in &gated {
         for grant in &agent.tools {
             assert_ne!(
@@ -86,7 +73,7 @@ fn research_off_removes_the_search_grant_rather_than_relying_on_a_rule_here() {
 
     // And the same registry with research on does grant it, or the assertion
     // above would pass on a registry that never had the tool.
-    let ungated = workflow_agents(&registry(true), &tiers(true));
+    let ungated = workflow_agents(&registry(true));
     assert!(
         ungated
             .iter()
@@ -101,7 +88,7 @@ fn research_off_removes_the_search_grant_rather_than_relying_on_a_rule_here() {
 #[test]
 fn ids_match_the_registry_one_for_one() {
     let registry = registry(true);
-    let derived: Vec<String> = workflow_agents(&registry, &tiers(true))
+    let derived: Vec<String> = workflow_agents(&registry)
         .into_iter()
         .map(|agent| agent.id)
         .collect();
@@ -118,7 +105,7 @@ fn ids_match_the_registry_one_for_one() {
 /// and fifteen model calls reading files while the finished attempt waited.
 #[test]
 fn a_judging_role_declares_a_narrower_budget_than_a_solving_one() {
-    let derived = workflow_agents(&registry(true), &tiers(true));
+    let derived = workflow_agents(&registry(true));
     let limits = |id: &str| {
         derived
             .iter()
@@ -145,12 +132,11 @@ fn a_judging_role_declares_a_narrower_budget_than_a_solving_one() {
 /// role runs on without reading Rust.
 #[test]
 fn the_reasoning_roles_are_published_as_a_different_tier() {
-    let models = tiers(true);
-    let derived = workflow_agents(&registry(true), &models);
+    let derived = workflow_agents(&registry(true));
     for agent in &derived {
         assert_eq!(
             agent.model.as_deref(),
-            Some(models.tier_for(&agent.id).as_str()),
+            Some(ModelTier::of(&agent.id).as_str()),
             "`{}` is on the wrong tier",
             agent.id
         );
@@ -164,20 +150,22 @@ fn the_reasoning_roles_are_published_as_a_different_tier() {
     }
 }
 
-/// A tier the run cannot serve is not published as if it could be.
+/// The scribe is published on its own tier, which is the name of the ladder the
+/// router will actually resolve.
 ///
-/// The workflow document is a record of what ran, not a statement of intent. A
-/// run with no `MISTRAL_API_KEY` really does put the scribe on the default
-/// model, and saying otherwise would make the document a claim.
+/// The workflow document is a record of what ran, not a statement of intent.
+/// This used to be the awkward case — the tier held its own endpoint and its
+/// own key, so an unset key silently moved the role to the default model and
+/// the document had to say so. Now every tier is a ladder, and a run that
+/// started holds all four.
 #[test]
-fn an_unconfigured_scribe_tier_is_published_as_the_default() {
-    let derived = workflow_agents(&registry(true), &tiers(false));
+fn the_scribe_tier_is_published_under_its_ladder_name() {
+    let derived = workflow_agents(&registry(true));
     let scribe = derived
         .iter()
         .find(|agent| agent.id == crate::orchestrator::lean::SCRIBE_ROLE)
         .expect("the scribe is registered");
-    assert_eq!(scribe.model.as_deref(), Some("default"));
-    assert!(!derived.iter().any(|a| a.model.as_deref() == Some("scribe")));
+    assert_eq!(scribe.model.as_deref(), Some("scribe"));
 }
 
 /// A school qualifies a registration; it does not change what the role is.
@@ -200,7 +188,7 @@ fn a_schooled_role_keeps_its_own_budget_and_tier() {
         );
         assert_eq!(limits_for(&schooled), limits_for(role));
         assert_eq!(
-            tiers(true).tier_for(&schooled),
+            ModelTier::of(&schooled),
             tier,
             "`{schooled}` must stay on the {} tier",
             tier.as_str()
@@ -233,7 +221,7 @@ fn a_multi_school_registry_carries_one_copy_of_every_role_per_school() {
         }
     }
     // The derived workflow registry agrees, suffix and all.
-    let derived = workflow_agents(&schooled, &tiers(true));
+    let derived = workflow_agents(&schooled);
     let judge = derived
         .iter()
         .find(|agent| agent.id == "judge@rising-sea")

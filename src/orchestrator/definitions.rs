@@ -38,7 +38,8 @@ use tinyflows::model::{AgentDefinition as FlowAgent, AgentLimits, ToolGrant};
 use crate::agent::budget::RunBudget;
 
 use super::async_subagents::base_role;
-use super::{AgentRegistry, ModelTiers};
+use super::AgentRegistry;
+use super::tiers::ModelTier;
 
 /// The budget a role runs on.
 ///
@@ -88,7 +89,7 @@ fn limits_for(role: &str) -> AgentLimits {
 /// Ids match one for one, so an `agent_ref` a workflow names is the same string
 /// the harness resolves and the same string `spawn_agent` takes. Anything else
 /// would make a workflow's roles a separate vocabulary from the run's.
-pub(super) fn workflow_agents(registry: &AgentRegistry, models: &ModelTiers) -> Vec<FlowAgent> {
+pub(super) fn workflow_agents(registry: &AgentRegistry) -> Vec<FlowAgent> {
     registry
         .definitions()
         .into_iter()
@@ -102,8 +103,8 @@ pub(super) fn workflow_agents(registry: &AgentRegistry, models: &ModelTiers) -> 
             // published as the concrete choice it actually is.
             // Asked of the tiers rather than reconstructed from a list, so a
             // run whose scribe tier is unconfigured publishes `default` for it
-            // — which is what that role will really use. See `tiers::tier_for`.
-            agent.model = Some(models.tier_for(&definition.id).as_str().to_string());
+            // — which is what that role will really use. See `ModelTier::of`.
+            agent.model = Some(ModelTier::of(&definition.id).as_str().to_string());
             agent.tools = definition
                 .tools
                 .iter()

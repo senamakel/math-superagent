@@ -32,7 +32,9 @@ services:
       MATH_AGENT_SCHOOLS: ${MATH_AGENT_SCHOOLS:-}
       MATH_AGENT_LOOP_MINUTES: ${MATH_AGENT_LOOP_MINUTES:-}
       # Provider endpoint/model are ordinary run knobs. The API key is omitted
-      # deliberately and arrives through env_file, like MISTRAL_API_KEY below.
+      # deliberately and arrives through env_file: this list overrides the file,
+      # so naming a key here would set it to the empty string whenever the host
+      # shell lacks it. Keys ride `.env`; run knobs ride this list.
       MATH_AGENT_API_BASE_URL: ${MATH_AGENT_API_BASE_URL:-http://ladder:6969/v1}
       MATH_AGENT_MODEL: ${MATH_AGENT_MODEL:-flash}
       MATH_AGENT_REQUEST_SECONDS: ${MATH_AGENT_REQUEST_SECONDS:-}
@@ -48,12 +50,11 @@ services:
       # while the model thinks longer. Point it at `reasoning` to opt the tier
       # back out without a rebuild.
       MATH_AGENT_MAX_REASONING_MODEL: ${MATH_AGENT_MAX_REASONING_MODEL:-max-reasoning}
-      # The Lean scribe's tier. `MISTRAL_API_KEY` is deliberately absent from
-      # this block and arrives through `env_file` instead: this list overrides
-      # the file, so naming it here would set it to the empty string whenever
-      # the host shell lacks it and silently disable the tier. Keys ride `.env`;
-      # run knobs ride this list.
-      MATH_AGENT_SCRIBE_MODEL: ${MATH_AGENT_SCRIBE_MODEL:-}
+      # The Lean scribe's tier: the router's one-rung `scribe` ladder, reaching
+      # Leanstral at Mistral directly because no marketplace resells it. The
+      # Mistral credential lives beside the ladder, in `LADDER_ENV_FILE`, and no
+      # longer enters this container. Point this at `flash` to opt the tier out.
+      MATH_AGENT_SCRIBE_MODEL: ${MATH_AGENT_SCRIBE_MODEL:-scribe}
       MATH_AGENT_SCRIBE_RPS: ${MATH_AGENT_SCRIBE_RPS:-}
       MATH_AGENT_SCRIBE_CONCURRENCY: ${MATH_AGENT_SCRIBE_CONCURRENCY:-}
       MATH_AGENT_VERIFY_BATCH: ${MATH_AGENT_VERIFY_BATCH:-}

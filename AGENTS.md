@@ -115,7 +115,8 @@ the attempts and the ten in [`docs/ledgers.md`](docs/ledgers.md) are this shape.
   state, whether the Lean means the mathematics, and files the claim.
   `lean_scribe` writes it on a model built for that — small prompt, no workspace
   context, memory, shell or ledger write, `lean_check` but no claim, from
-  `lean_prover`'s bench alone; unset `MISTRAL_API_KEY` degrades it, said aloud.
+  `lean_prover`'s bench alone; its tier is the router's one-rung `scribe`
+  ladder, and `MATH_AGENT_SCRIBE_MODEL=flash` opts out.
 
 ## Candidates
 

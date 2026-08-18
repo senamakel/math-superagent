@@ -28,12 +28,10 @@ impl OrchestratorAgent {
         // the model thinks longer. Same bound again, and for the same reason.
         let max_reasoning: Arc<dyn ChatModel<()>> =
             Arc::new(BoundedTimeoutModel::new(provider_max_reasoning_model()?));
-        // The Lean tier, absent unless a key for it is configured. Bounded like
-        // the others, because a stalled connection is a property of the
-        // transport rather than of the model behind it.
-        let scribe: Option<Arc<dyn ChatModel<()>>> = crate::agent::scribe_model()
-            .map(|model| Arc::new(BoundedTimeoutModel::new(model)) as Arc<dyn ChatModel<()>>);
-        let scribe_available = scribe.is_some();
+        // The Lean tier. Bounded like the others, because a stalled connection
+        // is a property of the transport rather than of the model behind it.
+        let scribe: Arc<dyn ChatModel<()>> =
+            Arc::new(BoundedTimeoutModel::new(crate::agent::scribe_model()?));
         let models = Arc::new(ModelTiers::new(
             model.clone(),
             reasoning,
@@ -44,12 +42,6 @@ impl OrchestratorAgent {
         let budget = RunBudget::from_env();
         let research_enabled = research_enabled_from_env();
         let tracer = start_tracer(&workspace, budget, research_enabled);
-        if !scribe_available {
-            // Said out loud. A tier that quietly is not there looks exactly
-            // like one that is, and the run would otherwise report Lean written
-            // on a model nobody chose for it.
-            tracer.note("lean_scribe: MISTRAL_API_KEY unset, running on the run's default model");
-        }
         // Every workspace on disk predates `derived/`, so its nine rendered
         // ledgers are still under `research/`. Moved once, never overwriting,
         // and said out loud — a file that changed location silently is one a
@@ -141,7 +133,6 @@ impl OrchestratorAgent {
             tracer,
             workspace,
             memory: vector_store,
-            models,
         })
     }
 

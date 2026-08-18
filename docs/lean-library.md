@@ -449,9 +449,15 @@ and the kernel verdict are on disk and `LEMMAS.md` re-derives from them.
 
 ### The provider, and two things it required
 
-The tier runs on Mistral's own endpoint rather than through OpenRouter, reached
-via the vendored `ProviderSpec` so the base URL and key name are not restated
-here. Two constraints that are not obvious from the outside:
+The tier runs on the router's one-rung `scribe` ladder, which reaches Mistral
+directly because no marketplace resells Leanstral. It did not always: the tier
+used to hold that endpoint and its own `MISTRAL_API_KEY` inside the container,
+which made it the only tier outside the router's pacing, session pinning and
+rate-limit cooldowns, and the only credential that had to be in two places. The
+endpoint is now a routing decision, and the key lives beside the ladder.
+
+Two constraints survive that move, because both are properties of the model at
+the end of the ladder rather than of how it is reached:
 
 - **`temperature: 0` is rejected unless `top_p: 1` is sent with it** — HTTP 400,
   `code 3054`. The vendored request builder cannot express this, because both
@@ -459,16 +465,24 @@ here. Two constraints that are not obvious from the outside:
   out. `agent::sampling` is the decorator that completes the pair.
 - **The account admits ~0.63 requests/second** (5M tokens/min is slack by
   comparison). `agent::pace` spaces departures rather than bucketing them,
-  because an idle bucket lets a fan-out leave together and 429 together.
+  because an idle bucket lets a fan-out leave together and 429 together. This
+  stays on the runtime's side of the router deliberately: the router answers a
+  429 by parking the rung for a cooldown, and a one-rung ladder with its rung
+  parked has nothing to fall to — so queueing under the ceiling is cheaper than
+  crossing it and being locked out.
 
 `StickyProviderModel` and `ReroutingModel` are withheld from this tier: both
 speak OpenRouter's dialect — one writes a `provider` object into the request
-body, the other matches OpenRouter's error text — and against a direct endpoint
-they produce a malformed request rather than a degraded pin.
+body, the other matches OpenRouter's error text — and against the endpoint at
+the end of this ladder they produce a malformed request rather than a degraded
+pin.
 
-An unset `MISTRAL_API_KEY` puts the scribe on the run's default model and says
-so at startup. The workflow document then publishes `default` for that role,
-because it is a record of what ran and not a statement of intent.
+`MATH_AGENT_SCRIBE_MODEL=flash` puts the scribe on the run's default model, and
+the workflow document then publishes `flash` for that role, because it is a
+record of what ran and not a statement of intent. The router is what decides
+whether the ladder can be served at all; a `scribe` ladder missing from its
+configuration is an unknown-ladder error the run reports rather than a silent
+downgrade.
 
 **Leanstral is in public preview and free, and enabling Labs models is an
 organisation setting on Mistral's *privacy* page** — prompts sent there may be

@@ -8,9 +8,10 @@
 //! three chances for them to disagree about something a reader would take at
 //! face value.
 //!
-//! So the tiers own both the models and the decision. `tier_for` is the only
-//! thing that reads the role lists, `for_role` is the only thing that hands out
-//! a model, and the name a workflow reader sees comes off the same enum.
+//! So the tiers own both the models and the decision. `ModelTier::of` is the
+//! only thing that reads the role lists, `for_role` is the only thing that
+//! hands out a model, and the name a workflow reader sees comes off the same
+//! enum.
 //!
 //! [`SupportAgents`]: super::orchestrator_agents
 
@@ -36,6 +37,36 @@ pub(in crate::orchestrator) enum ModelTier {
 }
 
 impl ModelTier {
+    /// The tier `role` runs on.
+    ///
+    /// Every tier is a ladder the router resolves, so a tier is always
+    /// available and this is a question about the role alone. It was not always:
+    /// the scribe used to hold its own endpoint and its own key, and an unset
+    /// key silently moved those roles to the default model — which the workflow
+    /// document then had to be careful not to claim otherwise. A run that has
+    /// reached this far holds all four. Since nothing about the run's models
+    /// can change the answer any more, this is an associated function rather
+    /// than a method.
+    ///
+    /// School-qualified names resolve through [`base_role`], so
+    /// `lean_scribe@rising-sea` needs no row of its own.
+    pub(in crate::orchestrator) fn of(role: &str) -> Self {
+        let role = base_role(role);
+        if SCRIBE_ROLES.contains(&role) {
+            return Self::Scribe;
+        }
+        // Asked before the reasoning tier, and the two lists are disjoint —
+        // asserted in `tiers_test`, because a role in both would resolve by the
+        // order of these two lines rather than by a decision anybody made.
+        if MAX_REASONING_ROLES.contains(&role) {
+            return Self::MaxReasoning;
+        }
+        if REASONING_ROLES.contains(&role) {
+            return Self::Reasoning;
+        }
+        Self::Default
+    }
+
     /// What the tier is called in the workflow document.
     ///
     /// The one place a tier is spelled, so a reader comparing the document to
@@ -55,16 +86,12 @@ pub(in crate::orchestrator) struct ModelTiers {
     default: Arc<dyn ChatModel<()>>,
     reasoning: Arc<dyn ChatModel<()>>,
     max_reasoning: Arc<dyn ChatModel<()>>,
-    /// `None` when `MISTRAL_API_KEY` is unset. See [`ModelTiers::tier_for`].
-    scribe: Option<Arc<dyn ChatModel<()>>>,
+    scribe: Arc<dyn ChatModel<()>>,
 }
 
 impl std::fmt::Debug for ModelTiers {
     fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        formatter
-            .debug_struct("ModelTiers")
-            .field("scribe", &self.scribe.is_some())
-            .finish_non_exhaustive()
+        formatter.debug_struct("ModelTiers").finish_non_exhaustive()
     }
 }
 
@@ -74,7 +101,7 @@ impl ModelTiers {
         default: Arc<dyn ChatModel<()>>,
         reasoning: Arc<dyn ChatModel<()>>,
         max_reasoning: Arc<dyn ChatModel<()>>,
-        scribe: Option<Arc<dyn ChatModel<()>>>,
+        scribe: Arc<dyn ChatModel<()>>,
     ) -> Self {
         Self {
             default,
@@ -84,45 +111,13 @@ impl ModelTiers {
         }
     }
 
-    /// The tier `role` actually runs on.
-    ///
-    /// Availability is part of the answer, not a separate question asked later:
-    /// a run without `MISTRAL_API_KEY` reports `Default` for the scribe roles
-    /// because that is what they will really use. A tier that named a model the
-    /// run does not hold would make the workflow document a claim rather than a
-    /// record.
-    ///
-    /// School-qualified names resolve through [`base_role`], so
-    /// `lean_scribe@rising-sea` needs no row of its own.
-    pub(in crate::orchestrator) fn tier_for(&self, role: &str) -> ModelTier {
-        let role = base_role(role);
-        if SCRIBE_ROLES.contains(&role) && self.scribe.is_some() {
-            return ModelTier::Scribe;
-        }
-        // Asked before the reasoning tier, and the two lists are disjoint —
-        // asserted in `tiers_test`, because a role in both would resolve by the
-        // order of these two lines rather than by a decision anybody made.
-        if MAX_REASONING_ROLES.contains(&role) {
-            return ModelTier::MaxReasoning;
-        }
-        if REASONING_ROLES.contains(&role) {
-            return ModelTier::Reasoning;
-        }
-        ModelTier::Default
-    }
-
     /// The model `role` runs on.
     pub(in crate::orchestrator) fn for_role(&self, role: &str) -> Arc<dyn ChatModel<()>> {
-        match self.tier_for(role) {
+        match ModelTier::of(role) {
             ModelTier::Default => self.default.clone(),
             ModelTier::Reasoning => self.reasoning.clone(),
             ModelTier::MaxReasoning => self.max_reasoning.clone(),
-            // `tier_for` only answers `Scribe` when the model is present, so
-            // the fallback here is unreachable rather than a second policy.
-            ModelTier::Scribe => self
-                .scribe
-                .clone()
-                .unwrap_or_else(|| self.default.clone()),
+            ModelTier::Scribe => self.scribe.clone(),
         }
     }
 
