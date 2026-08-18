@@ -5,7 +5,7 @@
 
 pub mod accounting;
 pub mod budget;
-pub mod fallback;
+mod context_window;
 pub mod flow;
 pub mod pace;
 pub mod reflection;
@@ -31,26 +31,14 @@ use tinyagents::harness::providers::{ProviderKind, ProviderSpec};
 use tinyagents::harness::tool::ToolTimeoutSettings;
 
 use budget::RunBudget;
-use fallback::ProviderFallbackModel;
+use context_window::ContextWindowModel;
 use trace::RunTracer;
 
-const DEFAULT_SURPLUS_MODEL: &str = "deepseek-v4-flash-0731";
-const DEFAULT_OPENROUTER_MODEL: &str = "deepseek/deepseek-v4-flash-0731";
-const SURPLUS_BASE_URL: &str = "https://api.surplusintelligence.ai/v1";
-const OPENROUTER_BASE_URL: &str = "https://openrouter.ai/api/v1";
-/// Preferred `OpenRouter` provider slug, verified to route to `DeepInfra`.
-///
-/// Overridable with `MATH_AGENT_PROVIDER` when a route is degraded.
-const PREFERRED_PROVIDER: &str = "deepinfra";
-
-/// Public URL used to attribute this application's `OpenRouter` requests.
-const OPENROUTER_APP_URL: &str = "https://opencompany.tinyhumans.ai/";
-
-/// Display name used to attribute this application's `OpenRouter` requests.
-const OPENROUTER_APP_TITLE: &str = "OpenCompany";
-
-/// Marketplace category used to classify this application's `OpenRouter` requests.
-const OPENROUTER_APP_CATEGORY: &str = "personal-agent";
+const LOCAL_ROUTER_BASE_URL: &str = "http://localhost:6969/v1";
+const DEFAULT_MODEL: &str = "flash";
+/// Stable tier id the router resolves to its current reasoning ladder.
+const REASONING_MODEL: &str = "reasoning";
+const ROUTER_CONTEXT_WINDOW: u64 = 1_000_000;
 
 /// The model the Lean scribe runs on, on Mistral's own endpoint.
 ///
@@ -60,59 +48,6 @@ const OPENROUTER_APP_CATEGORY: &str = "personal-agent";
 /// default spends three minutes reasoning and still misses — so what it buys
 /// is volume, not depth. Overridable with `MATH_AGENT_SCRIBE_MODEL`.
 const SCRIBE_MODEL: &str = "labs-leanstral-1-5";
-
-/// The model for roles whose work is judging rather than doing.
-///
-/// The run's default is a flash model, chosen for speed because most roles
-/// spend their turns writing programs, reading files, and reporting what
-/// happened — work where the model's job is to be quick and to not confabulate,
-/// and where the method policy's mechanical checks catch it when it does. A
-/// handful of roles produce something no tool can check: whether a
-/// reformulation is genuinely different, whether an attempt was conducted well,
-/// whether what an attempt established is a new fact or the same method at a
-/// larger size. That is what a stronger model buys, and it is wasted everywhere
-/// else. `orchestrator::REASONING_ROLES` is the list, and carries the test for
-/// membership.
-///
-/// It is also what makes the inventor's dossier worth assembling. Sixteen
-/// thousand tokens of record only pays off if the model reading it can hold the
-/// whole thing against a new idea.
-///
-/// **It is the flash model today**, which is to say the split is switched off
-/// at its default while every part of the mechanism stays: `REASONING_ROLES`
-/// still selects the four roles, `MATH_AGENT_REASONING_MODEL` still moves them,
-/// and turning the split back on is one variable rather than a rewrite. The
-/// reason is price — `deepseek-v4-pro` cost $0.43/$0.87 per million when the
-/// paragraph above was written and $0.66/$1.98 on 2026-08-17, against
-/// $0.08/$0.18 for flash, so a judgement now costs roughly ten times a working
-/// turn rather than five. What that buys is unmeasured here, and a cost this
-/// repository has not measured a benefit for is one the default should not
-/// carry.
-const REASONING_MODEL: &str = "deepseek-v4-flash-0731";
-
-/// Preferred `OpenRouter` fallback route for [`REASONING_MODEL`].
-///
-/// `DeepInfra`, which is the fallback route for the flash model too, so both
-/// fallback models leave through one provider.
-///
-/// It was `DeepSeek`'s own endpoint, on an argument that has since expired:
-/// $0.43/$0.87 per million against `DeepInfra`'s $1.30/$2.60, unquantized
-/// against fp4. `DeepSeek` has raised its prices — the same endpoint reads
-/// $0.66/$1.98 on 2026-08-17, a completion rate more than doubled — and
-/// `DeepInfra` now serves this model at fp8 rather than fp4, so the precision
-/// half of that argument is gone as well.
-///
-/// What the pin does *not* buy is a cheaper route. `DeepInfra` is still the
-/// dearer of the two per token, and `StreamLake` ($0.40/$0.79, fp8) and `Baidu`
-/// ($0.41/$0.81, fp8) are cheaper than either — `MATH_AGENT_REASONING_PROVIDER`
-/// moves it in one variable, and the endpoint list is worth re-reading before
-/// leaving it where it is.
-///
-/// The usual argument for one pinned provider — prompt caching across a large
-/// fixed prefix — is weak for these roles: the inventor's prompt carries a
-/// dossier rebuilt from disk on every call, and the judge and reflection are
-/// handed a different attempt report each time.
-const REASONING_PROVIDER: &str = "deepinfra";
 
 pub use tinyagents::harness::message::Message;
 pub use tinyagents::harness::model::ModelResponse;
@@ -146,8 +81,8 @@ impl ObservedAgent {
     /// Loads `.env`, configures the model provider, and creates the direct
     /// Langfuse ingestion client.
     ///
-    /// `MATH_AGENT_MODEL` optionally overrides the default `DeepSeek` V4 Flash
-    /// model, and `MATH_AGENT_API_BASE_URL` replaces the Surplus primary.
+    /// `MATH_AGENT_MODEL` optionally overrides the `flash` tier id, and
+    /// `MATH_AGENT_API_BASE_URL` replaces the local router endpoint.
     ///
     /// # Errors
     ///
@@ -157,8 +92,8 @@ impl ObservedAgent {
         let model = provider_model_from_env()?;
         let mut harness = SlimAgent::new();
         harness
-            .register_model("openrouter", model)
-            .set_default_model("openrouter");
+            .register_model("router", model)
+            .set_default_model("router");
         Self::from_harness(harness)
     }
 
@@ -235,32 +170,20 @@ pub(crate) fn configure_run_budget(harness: &mut SlimAgent, budget: RunBudget) {
 }
 
 pub(crate) fn provider_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
-    let model = provider_model(
-        DEFAULT_SURPLUS_MODEL,
-        DEFAULT_OPENROUTER_MODEL,
-        PREFERRED_PROVIDER,
-    )?;
-    Ok(model)
+    router_model_from_env("MATH_AGENT_MODEL", DEFAULT_MODEL)
 }
 
 /// Builds the reasoning model one role runs on, when that role is not on the
 /// run's default.
 ///
-/// `MATH_AGENT_REASONING_MODEL` overrides the model and
-/// `MATH_AGENT_REASONING_PROVIDER` the route, under the same rule as every
-/// other override here: blank or missing keeps the default.
+/// `MATH_AGENT_REASONING_MODEL` overrides the tier id under the same rule as
+/// every other override here: blank or missing keeps the default.
 ///
 /// # Errors
 ///
-/// Returns an error when neither supported provider API key is configured.
+/// Returns an error when `MATH_AGENT_API_KEY` is not configured.
 pub(crate) fn provider_reasoning_model() -> Result<Arc<dyn ChatModel<()>>> {
-    let model =
-        env_override("MATH_AGENT_REASONING_MODEL").unwrap_or_else(|| REASONING_MODEL.to_string());
-    let provider = env_override("MATH_AGENT_REASONING_PROVIDER")
-        .unwrap_or_else(|| REASONING_PROVIDER.to_string());
-    let fallback_model = env_override("MATH_AGENT_REASONING_OPENROUTER_MODEL")
-        .unwrap_or_else(|| openrouter_model_name(&model));
-    provider_model(&model, &fallback_model, &provider)
+    router_model_from_env("MATH_AGENT_REASONING_MODEL", REASONING_MODEL)
 }
 
 /// Builds the model the Lean scribe runs on, or `None` when it is unavailable.
@@ -276,9 +199,8 @@ pub(crate) fn provider_reasoning_model() -> Result<Arc<dyn ChatModel<()>>> {
 /// as before. That is also why [`OpenAiModel::from_spec`] is used rather than
 /// `from_spec_env`, which returns an error for a missing key.
 ///
-/// `MATH_AGENT_SCRIBE_MODEL` overrides the model under the usual rule. The
-/// `OpenRouter`-only overrides deliberately do not reach here: `provider.order`
-/// is not a concept this endpoint has.
+/// `MATH_AGENT_SCRIBE_MODEL` overrides the model under the usual rule. Router
+/// overrides deliberately do not reach this separate endpoint.
 pub(crate) fn scribe_model() -> Option<Arc<dyn ChatModel<()>>> {
     let _ = dotenvy::dotenv();
     let mut spec = ProviderSpec::for_kind(ProviderKind::Mistral);
@@ -303,146 +225,31 @@ fn env_override(name: &str) -> Option<String> {
         .filter(|value| !value.is_empty())
 }
 
-/// Builds the configured OpenAI-compatible model on `model_name`.
-///
-/// Surplus is the default. `OpenRouter` is used when the primary fails, or by
-/// itself when no primary key is configured. `MATH_AGENT_API_BASE_URL`,
-/// `MATH_AGENT_API_KEY`, and `MATH_AGENT_MODEL` replace the primary endpoint;
-/// `OPENROUTER_API_KEY` and `OPENROUTER_MODEL` configure the fallback.
-fn provider_model(
-    model_name: &str,
-    fallback_model_name: &str,
-    provider: &str,
-) -> Result<Arc<dyn ChatModel<()>>> {
+/// Builds one authenticated tier on the OpenAI-compatible local router.
+fn router_model_from_env(model_env: &str, default_model: &str) -> Result<Arc<dyn ChatModel<()>>> {
     let _ = dotenvy::dotenv();
     let base_url = configured_api_base_url();
-    let model_name = env_override("MATH_AGENT_MODEL").unwrap_or_else(|| model_name.to_string());
-    let fallback_model_name =
-        env_override("OPENROUTER_MODEL").unwrap_or_else(|| fallback_model_name.to_string());
-
-    if is_openrouter_base_url(&base_url) {
-        let api_key = primary_api_key(&base_url)
-            .or_else(|| env_override("OPENROUTER_API_KEY"))
-            .ok_or_else(missing_provider_key)?;
-        return Ok(openrouter_model(api_key, &model_name, provider));
-    }
-
-    let primary_name = if is_surplus_base_url(&base_url) {
-        "surplus"
-    } else {
-        "primary"
-    };
-    let primary = primary_api_key(&base_url).map(|api_key| {
-        let profile_provider = if is_surplus_base_url(&base_url) {
-            "surplus"
-        } else {
-            "openai-compatible"
-        };
-        Arc::new(
-            OpenAiModel::new(api_key)
-                .with_provider(profile_provider)
-                .with_base_url(base_url.clone())
-                .with_model(model_name.clone()),
-        ) as Arc<dyn ChatModel<()>>
-    });
-    let fallback = env_override("OPENROUTER_API_KEY")
-        .map(|api_key| openrouter_model(api_key, &fallback_model_name, provider));
-
-    match (primary, fallback) {
-        (Some(primary), Some(fallback)) => Ok(Arc::new(ProviderFallbackModel::new(
-            primary,
-            primary_name,
-            fallback,
-            "openrouter",
-        ))),
-        (Some(primary), None) => Ok(primary),
-        (None, Some(fallback)) => Ok(fallback),
-        (None, None) => Err(missing_provider_key()),
-    }
+    let model = env_override(model_env).unwrap_or_else(|| default_model.to_string());
+    let api_key = env_override("MATH_AGENT_API_KEY").ok_or_else(missing_provider_key)?;
+    Ok(router_model(api_key, &base_url, &model))
 }
 
-fn openrouter_model(api_key: String, model_name: &str, provider: &str) -> Arc<dyn ChatModel<()>> {
-    // One preferred provider, with fallbacks. Both halves matter.
-    //
-    // Preferring a single route is what makes prompt caching pay: the cache is
-    // per-provider, so a run that bounces between providers re-sends its whole
-    // system prompt and transcript at full price every turn. These agents carry
-    // a large fixed prefix, so the cached reads are most of the saving.
-    //
-    // Allowing fallbacks is what keeps a busy provider from stopping the
-    // runtime. An exclusive `only` pin previously left requests hanging for
-    // minutes and exhausting their retries while other providers serving the
-    // same model sat idle.
-    //
-    // Verify any slug you put here actually routes: `streamlake` sat in this
-    // list and silently matched nothing, so the documented preference had no
-    // effect at all.
-    let mut model = openrouter_client(api_key)
-        .with_model(model_name)
-        .with_default_provider_options(serde_json::json!({
-            "provider": { "order": [provider], "allow_fallbacks": true }
-        }));
-    if let Some(provider) = env_override("MATH_AGENT_PROVIDER") {
-        model = model.with_default_provider_options(serde_json::json!({
-            "provider": { "order": [provider], "allow_fallbacks": true }
-        }));
-    }
-    Arc::new(model)
+fn router_model(api_key: String, base_url: &str, model_name: &str) -> Arc<dyn ChatModel<()>> {
+    let model: Arc<dyn ChatModel<()>> = Arc::new(
+        OpenAiModel::new(api_key)
+            .with_provider("local-router")
+            .with_base_url(base_url)
+            .with_model(model_name),
+    );
+    Arc::new(ContextWindowModel::new(model, ROUTER_CONTEXT_WINDOW))
 }
 
 fn missing_provider_key() -> TinyAgentsError {
-    TinyAgentsError::Validation(
-        "SURPLUS_API_KEY, MATH_AGENT_API_KEY, or OPENROUTER_API_KEY is required".to_string(),
-    )
-}
-
-fn primary_api_key(base_url: &str) -> Option<String> {
-    env_override("MATH_AGENT_API_KEY").or_else(|| {
-        is_surplus_base_url(base_url)
-            .then(|| env_override("SURPLUS_API_KEY"))
-            .flatten()
-    })
-}
-
-fn openrouter_model_name(model: &str) -> String {
-    if model.contains('/') {
-        return model.to_string();
-    }
-    if model.starts_with("deepseek-") {
-        return format!("deepseek/{model}");
-    }
-    model.to_string()
-}
-
-/// Returns whether the configured endpoint speaks `OpenRouter`'s routing dialect.
-///
-/// Direct OpenAI-compatible endpoints must not receive `OpenRouter`'s nested
-/// `provider` object or its affinity/rerouting wrappers.
-pub(crate) fn configured_endpoint_is_openrouter() -> bool {
-    let _ = dotenvy::dotenv();
-    let base_url = configured_api_base_url();
-    is_openrouter_base_url(&base_url)
-        || (primary_api_key(&base_url).is_none() && env_override("OPENROUTER_API_KEY").is_some())
+    TinyAgentsError::Validation("MATH_AGENT_API_KEY is required".to_string())
 }
 
 fn configured_api_base_url() -> String {
-    env_override("MATH_AGENT_API_BASE_URL").unwrap_or_else(|| SURPLUS_BASE_URL.to_string())
-}
-
-fn is_surplus_base_url(base_url: &str) -> bool {
-    base_url.trim_end_matches('/') == SURPLUS_BASE_URL
-}
-
-fn is_openrouter_base_url(base_url: &str) -> bool {
-    base_url.trim_end_matches('/') == OPENROUTER_BASE_URL
-}
-
-/// Builds the shared `OpenRouter` transport, including application attribution.
-fn openrouter_client(api_key: impl Into<String>) -> OpenAiModel {
-    OpenAiModel::openrouter(api_key)
-        .with_header("HTTP-Referer", OPENROUTER_APP_URL)
-        .with_header("X-OpenRouter-Title", OPENROUTER_APP_TITLE)
-        .with_header("X-OpenRouter-Categories", OPENROUTER_APP_CATEGORY)
+    env_override("MATH_AGENT_API_BASE_URL").unwrap_or_else(|| LOCAL_ROUTER_BASE_URL.to_string())
 }
 
 /// Creates an offline harness suitable for deterministic development and tests.

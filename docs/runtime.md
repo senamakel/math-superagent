@@ -228,26 +228,24 @@ estimated 300,000-token trigger. The summary should retain mathematical
 assumptions, intermediate results, source URLs, tool output, and unfinished
 work.
 
-Surplus Intelligence is the primary and uses `deepseek-v4-flash-0731` unless
-`MATH_AGENT_MODEL` overrides it. OpenRouter is the independent fallback and
-uses `deepseek/deepseek-v4-flash-0731` unless `OPENROUTER_MODEL` overrides it.
-On that fallback, `DeepInfra` is preferred through `provider.order`,
-overridable with `MATH_AGENT_PROVIDER`, and `allow_fallbacks` is enabled. An
-installation with no `SURPLUS_API_KEY` keeps its earlier behavior and runs on
-OpenRouter alone.
+The authenticated OpenAI-compatible router on port 6969 owns model selection,
+pricing, caching, and fallback. The runtime sends only two stable model ids:
+`flash` for the default tier and `reasoning` for reasoning roles. Both publish
+a one-million-token context window to the harness, so compression is based on
+the router's real capacity rather than an unrecognized alias.
 
-Preferring one provider is what makes prompt caching pay: the cache is
-per-provider, and these agents carry a large fixed prefix, so bouncing between
-routes re-sends the whole system prompt at full price every turn. Allowing
-fallbacks is what stops a busy provider halting the runtime. Do not restore
-`provider.only`: an exclusive pin makes every other provider unreachable, so a
-rate limit on one route stalls everything while providers serving the same
-model sit idle. Verify any slug before relying on it — `streamlake` sat here
-and silently matched nothing.
+Direct host-side calls default to `http://localhost:6969/v1`. Docker cannot use
+the host's loopback, so Compose maps `host.docker.internal` to the host gateway
+and defaults the container endpoint to
+`http://host.docker.internal:6969/v1`. `MATH_AGENT_API_BASE_URL` remains an
+override for a router running somewhere else. The host router must listen on an
+address reachable from Docker, not only `127.0.0.1`; host networking cannot be
+used here because per-problem Cognee instances live on their own Compose
+networks. `MATH_AGENT_API_KEY` is the required bearer credential.
 
-Four roles run on a stronger model instead: `inventor`, `judge`, `reflection`,
-and `director`, listed in `REASONING_ROLES` and resolved in one place by
-`SupportAgents::model_for`. Membership is two questions and a role has to pass
+Six roles run on the reasoning tier: `inventor`, `reducer`, `weakener`, `judge`,
+`reflection`, and `director`, listed in `REASONING_ROLES` and resolved in one
+place by `ModelTiers::tier_for`. Membership is two questions and a role has to pass
 both. Is its output a judgement nothing mechanical can check — as against a
 report of what a program did, which the method policy already routes through
 something that checks it? And is it cheap: short output, few calls, not on a
@@ -262,46 +260,9 @@ the code writers execute rather than judge; the planners drive every turn.
 Three tests assert the split in both directions, because the mistake is
 silent: adding a role costs money on every run and nothing fails to say so.
 
-The primary model is `deepseek-v4-flash-0731` — the model every other role
-uses — so **the split is off at its default**, and only the default:
-`REASONING_ROLES` still selects the four, and `MATH_AGENT_REASONING_MODEL`
-turns it back on in one variable. Its OpenRouter fallback uses the corresponding
-provider-qualified id.
-
-Price is why, and it is the numbers that moved rather than the reasoning above.
-`deepseek-v4-pro` was $0.43/$0.87 per million when this section was written and
-$0.66/$1.98 on 2026-08-17, against $0.08/$0.18 for flash: a judgement went from
-five working turns to ten, and what it buys has never been measured here. The
-route moved with it. Pro used to leave through DeepSeek's own endpoint, which
-was then both cheaper than DeepInfra's $1.30/$2.60 and unquantized against its
-fp4; DeepSeek's rise and DeepInfra's move to fp8 spent both halves of that
-argument, so one provider now serves both models. Neither is the cheapest route
-— StreamLake ($0.40/$0.79, fp8) and Baidu ($0.41/$0.81, fp8) undercut both — so
-read the endpoint list before settling.
-
-Every price in this section was true the day it was written and is a guess after
-it, which is how a comment came to argue from $0.43/$0.87 for a route charging
-$0.66/$1.98. `scripts/model-prices` prints the live table from OpenRouter's
-public endpoint listing — input, output and cache-read rates per provider, with
-the pinned row marked and the cheapest one beside it — for whichever models this
-checkout actually pins, read from the constants rather than a list of its own.
-It needs no credentials, so it costs nothing to check before changing a route. The caching argument barely applies to
-the inventor anyway, whose prompt carries a dossier rebuilt from disk on every
-call. `MATH_AGENT_REASONING_MODEL` changes the primary;
-`MATH_AGENT_REASONING_OPENROUTER_MODEL` and `MATH_AGENT_REASONING_PROVIDER`
-change its fallback.
-
-Within OpenRouter-only mode, preference alone is not enough, because every
-provider fallback costs twice: once for
-the cold call on the new provider, and again next turn when routing swings back
-to the preferred one and finds its cache cold too. `StickyProviderModel`
-(`src/agent/sticky.rs`) closes that gap by reading which provider actually
-served each response and pinning subsequent requests to it, so a fallback
-becomes the new home rather than an oscillation. The pin keeps
-`allow_fallbacks` on — it is an affinity, not an exclusion — and each
-specialist holds its own, because agents differ in the prefix they cache and
-one agent's fallback must not drag the others onto a route where their prefix
-is cold. Exa handles search. Langfuse ingestion
+`MATH_AGENT_MODEL` and `MATH_AGENT_REASONING_MODEL` can replace the two ids for
+development, but provider ladders do not belong here: changing the providers or
+their price ceilings is a router operation. Exa handles search. Langfuse ingestion
 is best effort and must not turn a successful answer into a failed run.
 
 Langfuse is also available for querying and reviewing recorded turns. Use

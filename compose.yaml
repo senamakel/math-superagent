@@ -10,6 +10,12 @@ services:
     image: math-agent:local
     env_file:
       - .env
+    # The router listens on the host. Linux containers resolve this stable name
+    # through the host-gateway mapping; direct host-side calls still use
+    # localhost:6969. The router must listen on a host address Docker can reach,
+    # not only on 127.0.0.1.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       AGENT_WORKSPACE: /workspace
       COGNEE_API_URL: http://cognee:8000
@@ -21,9 +27,8 @@ services:
       MATH_AGENT_LOOP_MINUTES: ${MATH_AGENT_LOOP_MINUTES:-}
       # Provider endpoint/model are ordinary run knobs. The API key is omitted
       # deliberately and arrives through env_file, like MISTRAL_API_KEY below.
-      MATH_AGENT_API_BASE_URL: ${MATH_AGENT_API_BASE_URL:-}
-      MATH_AGENT_MODEL: ${MATH_AGENT_MODEL:-}
-      MATH_AGENT_PROVIDER: ${MATH_AGENT_PROVIDER:-}
+      MATH_AGENT_API_BASE_URL: ${MATH_AGENT_API_BASE_URL:-http://host.docker.internal:6969/v1}
+      MATH_AGENT_MODEL: ${MATH_AGENT_MODEL:-flash}
       MATH_AGENT_REQUEST_SECONDS: ${MATH_AGENT_REQUEST_SECONDS:-}
       MATH_AGENT_MAX_MODEL_CALLS: ${MATH_AGENT_MAX_MODEL_CALLS:-}
       MATH_AGENT_MAX_TOOL_CALLS: ${MATH_AGENT_MAX_TOOL_CALLS:-}
@@ -32,8 +37,7 @@ services:
       MATH_AGENT_TURN_OUTPUT_TOKENS: ${MATH_AGENT_TURN_OUTPUT_TOKENS:-}
       MATH_AGENT_CONTEXT_TOKENS: ${MATH_AGENT_CONTEXT_TOKENS:-}
       MATH_AGENT_CONTEXT_MINUTES: ${MATH_AGENT_CONTEXT_MINUTES:-}
-      MATH_AGENT_REASONING_MODEL: ${MATH_AGENT_REASONING_MODEL:-}
-      MATH_AGENT_REASONING_PROVIDER: ${MATH_AGENT_REASONING_PROVIDER:-}
+      MATH_AGENT_REASONING_MODEL: ${MATH_AGENT_REASONING_MODEL:-reasoning}
       # The Lean scribe's tier. `MISTRAL_API_KEY` is deliberately absent from
       # this block and arrives through `env_file` instead: this list overrides
       # the file, so naming it here would set it to the empty string whenever

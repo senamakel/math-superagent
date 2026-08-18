@@ -15,8 +15,8 @@
 //!
 //! The recursion is a *spend*. One `map_document` over a 428 KB source is
 //! eighteen provider calls that the caller did not individually authorise, and
-//! there are runs where that is the wrong trade: a cheap model behind
-//! `OPENROUTER_MODEL` where eighteen chunk reads cost more than they are worth,
+//! there are runs where that is the wrong trade: a cheap router tier where
+//! eighteen chunk reads cost more than they are worth,
 //! a calibration run being measured on what the harness can do without it, or
 //! an offline reproduction where the run must not spend at all. So it is
 //! optional, and `MATH_AGENT_RLM=off` withholds it.
