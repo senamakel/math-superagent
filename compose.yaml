@@ -164,7 +164,7 @@ services:
       - memory
 
   ladder:
-    image: ghcr.io/senamakel/llm-ladder-router:sha-c553b7357251a35ac850ba71a8dd982cc6a2ed56
+    image: ghcr.io/senamakel/llm-ladder-router:sha-073fda7ca4d408c2c64356246cebcde95a7d279f
     restart: unless-stopped
     # The run's `.env` contributes the independent memory key. The router's
     # file comes second so its code OpenRouter and Surplus credentials win when
