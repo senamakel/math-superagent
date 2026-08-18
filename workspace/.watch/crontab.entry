@@ -1,0 +1,14 @@
+# Watch the conjecture fleet every 30 minutes and REPORT when one of them has a
+# kernel-verified proof of its own conjecture. See scripts/watch-conjectures for
+# what counts, and why a claim written in prose deliberately does not.
+#
+# `--detect-only` is deliberate: it writes workspace/.watch/PENDING.md and stops
+# nothing. A verified Statement.lean says the proof is sound, never that the
+# theorem is the conjecture -- on 2026-08-18 a vacuous `Finset.card_le_card` in
+# hilbert-15 stopped all 41 runs. Read the candidate, then either
+# `scripts/watch-conjectures` to stop the fleet or `--dismiss <slug>` to reject it.
+#
+# Absolute paths throughout: cron runs from $HOME, not the checkout, and a
+# relative path here fails silently every half hour.
+PATH=/usr/local/bin:/usr/bin:/bin
+*/30 * * * * /home/enamakel/work/riemann/scripts/watch-conjectures --detect-only >> /home/enamakel/work/riemann/workspace/.watch/cron.log 2>&1

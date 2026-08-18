@@ -1,0 +1,341 @@
+#!/bin/sh
+# Watch every running conjecture and stop the fleet when one of them actually
+# proves its conjecture.
+#
+# The hard part is not the stopping, it is deciding what counts. A run that says
+# it has a proof has said a word; `derived/CLAIMS.md` puts it plainly — "everything
+# else on this page is a word somebody typed". So this script never reads prose,
+# never reads a status line, and never reads `solution.md`. It reads one machine
+# artifact: the `lean_check` verdict for `code/lean/Lib/Statement.lean`, which is
+# the file `scripts/solve-conjecture` tells every run to put the conjecture itself
+# in, and whose `outcome` the runtime computes in `src/orchestrator/lean.rs`.
+#
+# `outcome: "verified"` is the runtime's own word, not this script's, and it is
+# reached only when the file compiles, has no `sorry`, states no tautology,
+# concludes nothing from generated data, and rests on no axiom beyond Lean's own
+# three -- in particular on nothing under `namespace Cited`. That last exclusion
+# is why `conditional` does not trigger: a proof resting on somebody's paper as
+# an axiom is a real result and is not a proof of the conjecture.
+#
+# Deriving rather than restating is deliberate. This script re-checks the fields
+# defensively but takes `outcome` from the JSON, so the definition of a passing
+# Lean file lives in one place and this is not a second answer to it.
+#
+# A sound proof and a proved conjecture are not the same fact, and on
+# 2026-08-18 the difference cost a fleet. `hilbert-15` filed a Statement.lean
+# whose one theorem was `Finset.card_le_card` over an abstract pair of
+# `Finset` -- honest, unconditional, no `sorry`, and about nothing. Every guard
+# below passed, because they all ask whether the proof is sound and none of
+# them can ask whether the statement is the conjecture. Forty-one runs stopped.
+#
+# So the stop is no longer automatic. `--detect-only` is what cron runs: it
+# reports a candidate to `PENDING.md` and stops nothing, leaving the judgement
+# no artifact can make -- does this Lean text state *this* conjecture -- to
+# somebody who reads it. The stopping half is unchanged and one command away.
+#
+# Usage: scripts/watch-conjectures                  check once; stop the fleet on a proof
+#        scripts/watch-conjectures --detect-only    report a candidate; stop nothing
+#        scripts/watch-conjectures --dry-run        check and report; stop nothing
+#        scripts/watch-conjectures --status         what the last checks saw
+#        scripts/watch-conjectures --arm            clear the stamp and re-arm after a stop
+#        scripts/watch-conjectures --dismiss <slug> record a candidate as read and rejected
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+cd "$repository_root"
+
+state_dir=${WATCH_STATE_DIR:-$repository_root/workspace/.watch}
+log_file=$state_dir/watch.log
+stamp_file=$state_dir/stopped.stamp
+report_file=$state_dir/SOLVED.md
+pending_file=$state_dir/PENDING.md
+
+# Candidates already read and rejected. Keyed by slug *and* the verdict's
+# `source_digest`, never by slug alone: dismissing `hilbert-15` must not silence
+# that workspace when it later files a different Statement.lean, which is
+# precisely the proof this watcher exists to catch.
+reviewed_file=$state_dir/reviewed.keys
+
+# Which containers the fleet is. Every run this repository starts is named for
+# its workspace (`math-agent-conjectures-<slug>`); the shared backbone is not in
+# this pattern and is deliberately left running -- killing Neo4j or Cognee
+# mid-write is how a memory gets corrupted, and stopping a run does not need it.
+fleet_pattern=${WATCH_FLEET_PATTERN:-^math-agent-conjectures-}
+
+# The digest of a workspace's Statement.lean verdict, or empty. Read from the
+# record the runtime wrote rather than hashed here, so "the same candidate" means
+# the same thing to `--dismiss` as it does to the report.
+digest_of() {
+    WATCH_SLUG=$1 python3 -c 'import json, os, pathlib
+p = pathlib.Path("workspace/conjectures") / os.environ["WATCH_SLUG"] / "code/out/lean/code_lean_Lib_Statement.lean.json"
+try:
+    print(json.loads(p.read_text()).get("collector", {}).get("source_digest", ""))
+except Exception:
+    print("")'
+}
+
+dry_run=no
+detect_only=no
+case "${1:-}" in
+    --dry-run) dry_run=yes ;;
+    --detect-only) detect_only=yes ;;
+    --dismiss)
+        [ -n "${2:-}" ] || { echo "usage: scripts/watch-conjectures --dismiss <slug>" >&2; exit 2; }
+        mkdir -p "$state_dir"
+        dismiss_digest=$(digest_of "$2")
+        [ -n "$dismiss_digest" ] || { echo "no Statement.lean verdict to dismiss for $2" >&2; exit 2; }
+        echo "$2:$dismiss_digest" >> "$reviewed_file"
+        echo "dismissed $2 at digest $dismiss_digest; a different Statement.lean reports again" >&2
+        exit 0
+        ;;
+    --status)
+        [ -f "$log_file" ] && tail -40 "$log_file" || echo "no checks recorded yet" >&2
+        [ -f "$report_file" ] && { echo; cat "$report_file"; }
+        exit 0
+        ;;
+    --arm)
+        rm -f "$stamp_file"
+        echo "re-armed; the next proof will stop the fleet again" >&2
+        exit 0
+        ;;
+    -h|--help|help)
+        sed -n '2,30p' "$0" | sed 's/^# \{0,1\}//'
+        exit 0
+        ;;
+    "") ;;
+    *) echo "unknown argument: $1" >&2; exit 2 ;;
+esac
+
+mkdir -p "$state_dir"
+now=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+
+note() {
+    echo "$now $*" >> "$log_file"
+}
+
+# Already fired. Left as a hard stop rather than a re-check: a second sweep
+# would stop containers a human restarted deliberately to look at the result.
+# The stamp records that the fleet was *stopped*, so it must not suppress a
+# detect-only report: those two facts are independent.
+if [ -f "$stamp_file" ] && [ "$detect_only" = no ]; then
+    note "skipped: already stopped the fleet at $(cat "$stamp_file")"
+    exit 0
+fi
+
+# One workspace's verdict, read by Python because the field this turns on is
+# nested JSON and `grep` on it would be the restatement this script exists to
+# avoid.
+#
+# Prints one line: "<verdict> <slug> <detail>", where <verdict> is
+#   proof     -- kernel-verified, unconditional, the conjecture itself
+#   near      -- verified but conditional on cited axioms, or verified elsewhere
+#   open      -- anything else, including no file at all
+verdict_of() {
+    WATCH_SLUG=$1 python3 - <<'PY'
+import json, os, pathlib, sys
+
+slug = os.environ["WATCH_SLUG"]
+lean_out = pathlib.Path("workspace/conjectures") / slug / "code/out/lean"
+statement = lean_out / "code_lean_Lib_Statement.lean.json"
+
+
+def load(path):
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return None
+
+
+def sound(record):
+    """Defensive re-check of the fields `outcome` already folds in.
+
+    Not a second definition: `outcome` still decides. This only refuses a
+    record whose own fields contradict it, which would mean the verdict was
+    written by something other than this runtime.
+    """
+    return (
+        record.get("compiled") is True
+        and not record.get("sorries")
+        and not record.get("tautologies")
+        and not record.get("generated_conclusions")
+        and not record.get("retired_binder")
+        and record.get("declarations")
+    )
+
+
+record = load(statement)
+if record and record.get("outcome") == "verified" and sound(record) and not record.get("cited"):
+    count = len(record.get("declarations", []))
+    print(f"proof {slug} Statement.lean verified, {count} declaration(s), no cited axioms")
+    sys.exit(0)
+
+if record and record.get("outcome") == "conditional" and sound(record):
+    cited = ", ".join(record.get("cited", [])) or "cited axioms"
+    print(f"near {slug} Statement.lean conditional on {cited}")
+    sys.exit(0)
+
+# A run may state the conjecture in a file it named itself. Report that, but
+# never stop on it: only `Lib/Statement.lean` is known to carry the conjecture
+# rather than a lemma, and stopping forty runs on a verified lemma is the
+# false positive this whole script is shaped to avoid.
+for other in sorted(lean_out.glob("*.json")):
+    if other == statement:
+        continue
+    other_record = load(other)
+    if other_record and other_record.get("outcome") == "verified" and sound(other_record):
+        print(f"near {slug} {other_record.get('file', other.name)} verified (not Statement.lean)")
+        sys.exit(0)
+
+if record is None:
+    print(f"open {slug} no Statement.lean verdict yet")
+else:
+    print(f"open {slug} Statement.lean {record.get('outcome', 'unknown')}")
+PY
+}
+
+proofs=""
+nears=0
+checked=0
+
+for workspace in workspace/conjectures/*/; do
+    slug=$(basename "$workspace")
+    [ -f "$workspace/problem.md" ] || continue
+    checked=$((checked + 1))
+    line=$(verdict_of "$slug" 2>/dev/null || echo "open $slug verdict unreadable")
+    case "$line" in
+        proof\ *)
+            proofs="$proofs$line
+"
+            note "PROOF $line"
+            ;;
+        near\ *)
+            nears=$((nears + 1))
+            note "near  $line"
+            ;;
+    esac
+done
+
+if [ -z "$proofs" ]; then
+    note "checked $checked workspaces: no unconditional proof; $nears near"
+    exit 0
+fi
+
+# A candidate. In detect-only mode this is where the script ends: it reports
+# what it found and stops nothing, because `outcome: "verified"` says the proof
+# is sound and says nothing about whether the statement is the conjecture.
+if [ "$detect_only" = yes ]; then
+    fresh_file=$state_dir/.fresh
+    rm -f "$fresh_file"
+    printf '%s' "$proofs" | while read -r _ slug detail; do
+        digest=$(digest_of "$slug")
+        if [ -n "$digest" ] && grep -qxF "$slug:$digest" "$reviewed_file" 2>/dev/null; then
+            note "candidate $slug already reviewed at digest $digest"
+        else
+            printf '%s\t%s\t%s\n' "$slug" "$digest" "$detail" >> "$fresh_file"
+        fi
+    done
+
+    if [ ! -s "$fresh_file" ]; then
+        rm -f "$fresh_file"
+        note "checked $checked workspaces: candidate(s) all previously reviewed; $nears near"
+        exit 0
+    fi
+
+    {
+        echo "# A run may have proved its conjecture"
+        echo
+        echo "Found at $now by \`scripts/watch-conjectures --detect-only\`."
+        echo "**Nothing was stopped.**"
+        echo
+        echo "The kernel checked \`code/lean/Lib/Statement.lean\` and reported"
+        echo "\`outcome: \"verified\"\` — it compiles, has no \`sorry\`, states no tautology,"
+        echo "concludes nothing from generated data, and rests on no axiom beyond Lean's"
+        echo "own three. That makes the proof sound. It does **not** say the theorem is"
+        echo "the conjecture, which is the one thing no artifact here can check and the"
+        echo "whole reason this mode stops nothing."
+        echo
+        echo "## Read before acting"
+        echo
+        while IFS='	' read -r slug digest detail; do
+            echo "- \`$slug\` — $detail"
+            echo "  - \`workspace/conjectures/$slug/code/lean/Lib/Statement.lean\` — read the theorem"
+            echo "  - \`workspace/conjectures/$slug/problem.md\` — does it state *that*?"
+            echo "  - digest \`$digest\`"
+        done < "$fresh_file"
+        echo
+        echo "## If it is real"
+        echo
+        echo '```sh'
+        echo "scripts/watch-conjectures        # stop the fleet"
+        echo '```'
+        echo
+        echo "## If it is not"
+        echo
+        echo '```sh'
+        while IFS='	' read -r slug _ _; do
+            echo "scripts/watch-conjectures --dismiss $slug"
+        done < "$fresh_file"
+        echo '```'
+    } > "$pending_file"
+
+    note "PENDING $(wc -l < "$fresh_file") candidate(s) reported; nothing stopped"
+    rm -f "$fresh_file"
+    cat "$pending_file"
+    exit 0
+fi
+
+# A proof. Write the report before touching anything, so the reason survives
+# even if the stop half fails.
+{
+    echo "# A run proved its conjecture"
+    echo
+    echo "Found at $now by \`scripts/watch-conjectures\`."
+    echo
+    echo "The trigger is a \`lean_check\` verdict of \`outcome: \"verified\"\` on"
+    echo "\`code/lean/Lib/Statement.lean\` — the kernel checked the conjecture itself,"
+    echo "with no \`sorry\`, no tautology, no conclusion drawn from generated data, and"
+    echo "no axiom beyond Lean's own three. No prose, claim status or \`solution.md\` was"
+    echo "read. **Verify it by hand before believing it.**"
+    echo
+    echo "## What fired"
+    echo
+    printf '%s' "$proofs" | while read -r _ slug detail; do
+        echo "- \`$slug\` — $detail"
+        echo "  - \`workspace/conjectures/$slug/code/lean/Lib/Statement.lean\`"
+        echo "  - \`workspace/conjectures/$slug/code/out/lean/code_lean_Lib_Statement.lean.json\`"
+    done
+    echo
+    echo "## Containers stopped"
+    echo
+} > "$report_file"
+
+if [ "$dry_run" = yes ]; then
+    note "DRY RUN: would have stopped the fleet"
+    echo "(dry run — nothing stopped)" >> "$report_file"
+    cat "$report_file"
+    exit 0
+fi
+
+running=$(docker ps --format '{{.Names}}' | grep -E "$fleet_pattern" || true)
+if [ -n "$running" ]; then
+    echo "$running" | while read -r name; do
+        echo "- \`$name\`" >> "$report_file"
+    done
+    # `stop`, not `rm`: the workspace and the container both survive, and
+    # `./conjecture <slug>` continues any of them.
+    #
+    # `-t 60` rather than the default ten seconds. `worklock.rs` serialises the
+    # write cascade and the checkpoint, so a run killed partway through one can
+    # leave its workspace inconsistent -- and the workspace is the whole record
+    # of how the answer was reached. A minute is long enough for a cascade to
+    # finish and costs nothing, since this path runs exactly once.
+    # shellcheck disable=SC2086
+    docker stop -t 60 $(echo "$running" | tr '\n' ' ') >/dev/null 2>&1 || true
+    note "stopped $(echo "$running" | wc -l) containers"
+else
+    echo "- none were running" >> "$report_file"
+    note "a proof, but no containers were running"
+fi
+
+echo "$now" > "$stamp_file"
+cat "$report_file"
