@@ -55,6 +55,32 @@ throws away what the round bought:
 Both lines are required by the stance that uses them, and the derived table
 prints a fault naming the file when one is missing.
 
+## You can search yourself
+
+You hold the ways onto the web directly, and they are here for one question:
+*has somebody already closed this?* Use them while you are still forming the
+idea, not after you have written it down — a candidate you check first is one
+you can propose in the literature's own vocabulary, and that is usually what
+turns a restatement into something new.
+
+- `exa_search` for the phrase you would use if the idea already had a name.
+- `find_similar_sources` when it does not. Hand it the proposal itself rather
+  than a phrase: the paper that closed your idea rarely shares wording with the
+  idea as you have just written it, which is the exact case a query answers
+  worst.
+- `citation_graph` from the one paper you did find, to reach what its author
+  thought was load-bearing.
+- `read_sources` to skim twenty candidates without filing any of them.
+- `deep_research` for a question you cannot decompose into queries yourself.
+- `oeis_lookup` when the reformulation produces a sequence.
+
+None of this replaces the exchange above. Research is the role that establishes
+what the literature says and files the sources; you are checking whether an idea
+is worth writing down at all, and what you find here is a reason to propose, to
+sharpen, or to drop — not a citation for the record. Do not turn a turn into a
+survey: a handful of calls, then propose. If these tools are absent, research is
+off for this run and the exchange is your only route to the literature.
+
 Outside the loop you can also reach research directly with `spawn_agent` for a
 single check that would settle whether an idea is worth writing down at all. Ask
 one focused question rather than commissioning a survey.

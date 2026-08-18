@@ -270,8 +270,8 @@ silent: adding a role costs money on every run and nothing fails to say so.
 
 ### The deepest tier
 
-Four roles sit one tier further up, in `MAX_REASONING_ROLES`: `inventor`,
-`reflection`, `weakener`, and `orchestrator`. They answer a second question on
+Three roles sit one tier further up, in `MAX_REASONING_ROLES`: `inventor`,
+`reflection`, and `weakener`. They answer a second question on
 top of the reasoning tier's — *does the answer keep improving while the model
 thinks longer* — and they run on the router's `max-reasoning` ladder, which
 carries higher price ceilings and asks each rung for the deepest setting its
@@ -286,12 +286,17 @@ from a new fact is exactly the call a fast model gets wrong. `inventor` is the
 run's one generative role, and `weakener` decides whether what is left after a
 difficulty is switched off is still worth solving.
 
-`orchestrator` is here despite failing the reasoning tier's cheapness test
-outright — it is on every turn — and that is the deliberate cost of the tier
-rather than an oversight: every other role's work is downstream of what it
-decides to commission, so a cheap wrong delegation is paid for again by every
-role it spawns. `goals` stays off, being the higher-volume of the two planners.
-The two lists are asserted disjoint, and the deepest one is asserted small.
+What the three have in common besides depth is that they are *rare*: the
+inventor runs at a diversify, the weakener beside it, and reflection once per
+attempt. That is the other half of what keeps the tier affordable, and it is
+why `orchestrator` was moved back down to `reasoning` after a spell up here.
+The argument for promoting it was real — every other role's work is downstream
+of what the driver commissions — but it is on every turn, and its judgement is
+*which bench to commission next*: a choice between a bounded set of named roles
+rather than an open question whose answer improves while a model thinks longer.
+`goals` never came up, being the higher-volume of the two planners. The two
+lists are asserted disjoint, the driver is asserted on the cheaper one from
+both sides, and the deepest list is asserted small.
 
 `MATH_AGENT_MODEL`, `MATH_AGENT_REASONING_MODEL` and
 `MATH_AGENT_MAX_REASONING_MODEL` can replace the three ids for development —

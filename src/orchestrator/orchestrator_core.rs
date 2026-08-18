@@ -278,6 +278,8 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 /// its output a *judgement* no tool can check — as against a report of what a
 /// program did, which the method policy already routes through something
 /// mechanical? And is it cheap: short output, few calls, and not on a schedule?
+/// The driver is the one deliberate exception to the second, and its bullet
+/// says what buys it.
 ///
 /// - `reducer` — whether a set of lemmas actually implies the goal. That is the
 ///   definition of a judgement no tool can check: a decomposition into three
@@ -287,6 +289,15 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 ///   Capped at twelve calls and five minutes, and answers in four lines.
 /// - `director` — reads a human directive against what the run is doing.
 ///   Housekeeping's budget, and it only wakes when somebody steers.
+/// - `orchestrator` — the run's driver, and the one member that fails the
+///   cheapness question outright: it is on every turn. It is here rather than a
+///   tier up because that frequency is what makes the deepest ladder the wrong
+///   place for it, and because a driver's judgement is *which bench to
+///   commission next* — a choice between a bounded set of named roles, not an
+///   open question whose answer keeps improving while a model thinks longer. It
+///   was on [`MAX_REASONING_ROLES`] briefly, on the argument that every other
+///   role's work is downstream of what it decides to commission; what that
+///   argument leaves out is the volume it decides at.
 ///
 /// Deliberately excluded, each for a stated reason. `context_curator` is a
 /// judgement role and fails the second question outright: it is the measured
@@ -296,7 +307,7 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 /// drives every turn of an attempt. The roles whose judgement keeps improving
 /// with depth are not here either — they are one tier further up, in
 /// [`MAX_REASONING_ROLES`].
-const REASONING_ROLES: [&str; 3] = ["judge", "director", "reducer"];
+const REASONING_ROLES: [&str; 4] = ["judge", "director", "reducer", "orchestrator"];
 
 /// Roles that run on the deepest ladder the router holds, rather than the
 /// reasoning one.
@@ -320,17 +331,17 @@ const REASONING_ROLES: [&str; 3] = ["judge", "director", "reducer"];
 /// - `weakener` — which difficulties can be switched off and whether what is
 ///   left is still worth solving. A statement weakened until it is vacuous
 ///   reads exactly like one weakened until it is tractable.
-/// - `orchestrator` — the run's driver. It is here despite being the expensive
-///   case by the reasoning tier's own test: it is on every turn, so this is the
-///   deliberate cost of the change rather than an oversight. What buys it is
-///   that every other role's work is downstream of what this one decides to
-///   commission, and a cheap wrong delegation is paid for by every role it
-///   spawns. `goals` deliberately stays off — it drives an attempt turn by turn
-///   and is the higher-volume of the two planners.
 ///
-/// `judge`, `director` and `reducer` stay on `reasoning`: each is cheap,
-/// short-output housekeeping whose answer does not visibly improve with depth.
-const MAX_REASONING_ROLES: [&str; 4] = ["inventor", "reflection", "weakener", "orchestrator"];
+/// Every member is *rare*, and that is the second half of what keeps the tier
+/// affordable: the inventor runs at a diversify, the weakener beside it, and
+/// reflection once per attempt. A role on every turn does not belong here
+/// however good its judgement — `orchestrator` was on this list and is now on
+/// `reasoning`, and `goals` never was, both for the same reason.
+///
+/// `judge`, `director`, `reducer` and `orchestrator` stay on `reasoning`: each
+/// is either cheap, short-output housekeeping or high-volume driving, and
+/// neither shape visibly improves with depth.
+const MAX_REASONING_ROLES: [&str; 3] = ["inventor", "reflection", "weakener"];
 
 /// Roles that run on the Lean model rather than the run's default.
 ///

@@ -453,6 +453,21 @@ fn the_inventor_sees_what_already_failed() {
     assert!(super::INVENTOR_PROMPT.contains("recall_memory"));
 }
 
+/// The inventor is granted every way onto the web, and a grant a prompt never
+/// mentions is a tool the role does not use: this one's prompt described
+/// reaching research by delegation and nothing else, so the search it held went
+/// unspent. Asserted per tool, because the grant is per tool.
+#[test]
+fn the_inventor_is_told_it_can_search_for_itself() {
+    for tool in DISCOVERY_TOOLS {
+        assert!(
+            super::INVENTOR_PROMPT.contains(tool),
+            "the inventor holds `{tool}` and is never told so"
+        );
+    }
+    assert!(super::INVENTOR_PROMPT.contains("exa_search"));
+}
+
 #[test]
 fn the_pattern_agent_sees_the_raw_data_it_analyses() {
     let context = role_context("pattern_finder");

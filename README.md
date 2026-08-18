@@ -194,8 +194,9 @@ Cognee recall remains available.
 
 All general model calls go through the authenticated OpenAI-compatible router
 on port 6969. Ordinary roles send model id `flash`; the roles listed in
-`REASONING_ROLES` send `reasoning`; and the four in `MAX_REASONING_ROLES` —
-`inventor`, `reflection`, `weakener`, `orchestrator` — send `max-reasoning`,
+`REASONING_ROLES` — the judge, the director, the reducer and the orchestrator
+itself — send `reasoning`; and the three in `MAX_REASONING_ROLES` —
+`inventor`, `reflection`, `weakener` — send `max-reasoning`,
 the router's deepest ladder, which pays more per token and asks each rung for
 the deepest thinking setting its model family accepts. All three tiers
 advertise a one-million-token context window, while the router owns the

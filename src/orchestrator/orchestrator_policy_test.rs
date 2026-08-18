@@ -49,12 +49,24 @@ fn the_reasoning_model_reaches_the_judgement_roles() {
             "{role} judges and should be on the reasoning model"
         );
     }
-    for role in ["inventor", "reflection", "weakener", "orchestrator"] {
+    for role in ["inventor", "reflection", "weakener"] {
         assert!(
             MAX_REASONING_ROLES.contains(&role),
             "{role}'s judgement keeps improving with depth and should be on the deepest ladder"
         );
     }
+    // The driver judges too, and is on `reasoning` rather than above it because
+    // it judges on every turn. Asserted from both sides: on the cheaper list
+    // and off the deeper one, so moving it back up fails here rather than in a
+    // month's bill.
+    assert!(
+        REASONING_ROLES.contains(&"orchestrator"),
+        "the driver has lost its reasoning tier"
+    );
+    assert!(
+        !MAX_REASONING_ROLES.contains(&"orchestrator"),
+        "the driver is on every turn and must not be on the deepest ladder"
+    );
 }
 
 /// No role is on two tiers at once.
@@ -77,7 +89,7 @@ fn the_two_reasoning_tiers_are_disjoint() {
 #[test]
 fn the_deepest_tier_stays_small() {
     assert!(
-        MAX_REASONING_ROLES.len() <= 5,
+        MAX_REASONING_ROLES.len() <= 4,
         "the max-reasoning tier has stopped being the exception"
     );
     for role in ["goals", "context_curator", "scholar", "research", "coder"] {
@@ -89,16 +101,12 @@ fn the_deepest_tier_stays_small() {
 }
 
 /// Every role on the deepest ladder must be one the runtime actually builds.
-///
-/// `orchestrator` is the exception and is checked by name: it is the top-level
-/// harness rather than a delegate, so it is absent from the subagent registry
-/// while still resolving its model through the tiers like any other role.
 #[test]
 fn every_max_reasoning_role_is_a_registered_agent() -> agent::Result<()> {
     let registry = default_registry(true)?;
     for role in MAX_REASONING_ROLES {
         assert!(
-            role == "orchestrator" || registry.get(role).is_some(),
+            registry.get(role).is_some(),
             "{role} is on the deepest ladder but is not registered"
         );
     }
@@ -129,12 +137,16 @@ fn the_reasoning_model_is_kept_from_the_expensive_and_the_mechanical() {
 
 /// Every role on the reasoning model must be one the runtime actually
 /// registers, or the list is quietly describing a role that does not exist.
+///
+/// `orchestrator` is the exception and is checked by name: it is the top-level
+/// harness rather than a delegate, so it is absent from the subagent registry
+/// while still resolving its model through the tiers like any other role.
 #[test]
 fn every_reasoning_role_is_a_registered_agent() -> agent::Result<()> {
     let registry = default_registry(true)?;
     for role in REASONING_ROLES {
         assert!(
-            registry.get(role).is_some(),
+            role == "orchestrator" || registry.get(role).is_some(),
             "{role} is on the reasoning model but is not registered"
         );
     }
