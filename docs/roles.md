@@ -165,9 +165,13 @@ per candidate slot when several solutions are explored at once.
   assembled from disk at delegation time rather than the workspace as it stood
   when the container started, which on a twelve-hour run is the difference
   between seeing the work and seeing an empty workspace. It is one of the four
-  roles on the stronger reasoning model — see `REASONING_ROLES` and
+  roles on the deepest ladder the router holds — see `MAX_REASONING_ROLES` and
   [`docs/runtime.md`](runtime.md) — because its whole output is a judgement
-  nothing mechanical can check.
+  nothing mechanical can check *and* one that keeps improving the longer the
+  model thinks. It searches for itself as well as delegating: it holds
+  `exa_search`, the OEIS adapter, and all four discovery tools, because whether
+  a line of attack is already closed is the question a plain query answers
+  worst.
 - The reducer works backward from the goal, and is the inventor's opposite
   number rather than its variant. The inventor asks what *else* could get us
   there and answers with a route; the reducer asks what would be *enough* and
@@ -187,9 +191,10 @@ per candidate slot when several solutions are explored at once.
   gaps), and no scratch (a gap opened on unsettled arithmetic is a task nothing
   can close). It is also denied `derived/APPROACHES.md`, in its prompt context
   and in its dossier, because a role holding the method ledger drifts into
-  proposing methods. Like the inventor it is on the stronger reasoning model:
-  whether a set of lemmas actually implies the goal is the definition of a
-  judgement no tool can check.
+  proposing methods. It is on the stronger reasoning model —
+  `REASONING_ROLES`, one tier below the inventor's — because whether a set of
+  lemmas actually implies the goal is the definition of a judgement no tool can
+  check, while being short, infrequent work.
 - The weakener is the third direction, and the only role permitted to move the
   target. The inventor asks what *else* reaches the goal and the reducer what
   would be *enough*; both hold it fixed. This one asks what would be *easier*. It
@@ -199,9 +204,9 @@ per candidate slot when several solutions are explored at once.
   `derived/WEAKENED.md` is derived. A rung does not imply the goal, which is not
   a defect in it. A failed rung stays on the ladder with its reason, because
   deleting it is how the same one is proposed again three attempts later. Its
-  tool set is the reducer's exactly, and it is on the stronger reasoning model
-  because a statement weakened until vacuous reads exactly like one weakened
-  until tractable. Its one dangerous failure is reporting a rung as the goal, so
+  tool set is the reducer's exactly, and it is on the deepest ladder
+  (`MAX_REASONING_ROLES`) because a statement weakened until vacuous reads
+  exactly like one weakened until tractable. Its one dangerous failure is reporting a rung as the goal, so
   the ledger records which difficulties were off when each one landed.
 - The searcher does not reason toward an object; it writes programs that build
   one, keeps what scores well, and proposes again from those. What makes the

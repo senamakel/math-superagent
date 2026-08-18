@@ -194,8 +194,12 @@ Cognee recall remains available.
 
 All general model calls go through the authenticated OpenAI-compatible router
 on port 6969. Ordinary roles send model id `flash`; the roles listed in
-`REASONING_ROLES` send `reasoning`. Both tiers advertise a one-million-token
-context window, while the router owns the provider, price, and fallback ladder.
+`REASONING_ROLES` send `reasoning`; and the four in `MAX_REASONING_ROLES` —
+`inventor`, `reflection`, `weakener`, `orchestrator` — send `max-reasoning`,
+the router's deepest ladder, which pays more per token and asks each rung for
+the deepest thinking setting its model family accepts. All three tiers
+advertise a one-million-token context window, while the router owns the
+provider, price, depth, and fallback ladder.
 Host-side calls default to `http://localhost:6969/v1`; Compose reaches that same
 router as `http://ladder:6969/v1` on the project network and publishes it only
 on host loopback. The pinned image mounts the sibling

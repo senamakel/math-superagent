@@ -43,12 +43,66 @@ fn every_role_with_memory_can_query_the_graph_and_not_only_the_chunks() -> agent
 /// every run and nothing fails to say so.
 #[test]
 fn the_reasoning_model_reaches_the_judgement_roles() {
-    for role in ["inventor", "reducer", "judge", "reflection", "director"] {
+    for role in ["reducer", "judge", "director"] {
         assert!(
             REASONING_ROLES.contains(&role),
             "{role} judges and should be on the reasoning model"
         );
     }
+    for role in ["inventor", "reflection", "weakener", "orchestrator"] {
+        assert!(
+            MAX_REASONING_ROLES.contains(&role),
+            "{role}'s judgement keeps improving with depth and should be on the deepest ladder"
+        );
+    }
+}
+
+/// No role is on two tiers at once.
+///
+/// Without this the answer would come from the order of two lines in
+/// `tier_for` rather than from a decision anybody made, and the losing list
+/// would keep reading as though it applied.
+#[test]
+fn the_two_reasoning_tiers_are_disjoint() {
+    for role in MAX_REASONING_ROLES {
+        assert!(
+            !REASONING_ROLES.contains(&role),
+            "{role} is on both reasoning tiers"
+        );
+    }
+}
+
+/// The deepest tier stays small, because every role added to it costs more per
+/// call than the same role one tier down and nothing fails to say so.
+#[test]
+fn the_deepest_tier_stays_small() {
+    assert!(
+        MAX_REASONING_ROLES.len() <= 5,
+        "the max-reasoning tier has stopped being the exception"
+    );
+    for role in ["goals", "context_curator", "scholar", "research", "coder"] {
+        assert!(
+            !MAX_REASONING_ROLES.contains(&role),
+            "{role} is frequent or bulk work and must not be on the deepest ladder"
+        );
+    }
+}
+
+/// Every role on the deepest ladder must be one the runtime actually builds.
+///
+/// `orchestrator` is the exception and is checked by name: it is the top-level
+/// harness rather than a delegate, so it is absent from the subagent registry
+/// while still resolving its model through the tiers like any other role.
+#[test]
+fn every_max_reasoning_role_is_a_registered_agent() -> agent::Result<()> {
+    let registry = default_registry(true)?;
+    for role in MAX_REASONING_ROLES {
+        assert!(
+            role == "orchestrator" || registry.get(role).is_some(),
+            "{role} is on the deepest ladder but is not registered"
+        );
+    }
+    Ok(())
 }
 
 /// The roles kept off it, each for a reason the constant records: the curator
@@ -65,7 +119,6 @@ fn the_reasoning_model_is_kept_from_the_expensive_and_the_mechanical() {
         "tool_builder",
         "coder",
         "goals",
-        "orchestrator",
     ] {
         assert!(
             !REASONING_ROLES.contains(&role),

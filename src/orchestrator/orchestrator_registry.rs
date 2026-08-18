@@ -50,19 +50,20 @@ struct SearchTools {
     /// would have to rewrite an option.
     ///
     /// This one reaches the OEIS and nothing else, and it is deliberately the
-    /// *narrow* list: it is registered into `pattern_finder` and `inventor`,
-    /// which have no web search on purpose. A tool that reaches the open web
-    /// must not be added here, because the registry says those roles cannot
-    /// search and the harness is what actually decides.
+    /// *narrow* list: it is what `pattern_finder` gets, and that role has no
+    /// web search on purpose. A tool that reaches the open web must not be
+    /// added here, because the registry says that role cannot search and the
+    /// harness is what actually decides.
     oeis: Vec<Arc<dyn Tool<()>>>,
     /// The ways onto the web that are not a query.
     ///
     /// Separate from [`Self::oeis`] because the two have different audiences,
     /// and a list is where that distinction is enforced rather than described:
-    /// these go only to the roles the registry grants [`DISCOVERY_TOOLS`] to.
-    /// Folding them into the adapters would have handed `pattern_finder` a deep
-    /// research agent while the comment above its registration still read "the
-    /// one search this role may have".
+    /// these go only to the roles the registry grants [`DISCOVERY_TOOLS`] to —
+    /// `research`, `librarian` and `inventor`. Folding them into the adapters
+    /// would have handed `pattern_finder` a deep research agent while the
+    /// comment above its registration still read "the one search this role may
+    /// have".
     discovery: Vec<Arc<dyn Tool<()>>>,
 }
 
@@ -546,6 +547,18 @@ fn support_agents(
                 .then_some("exa_search")
                 .into_iter()
                 .chain(research_enabled.then_some("oeis_lookup"))
+                // Every way onto the web, on the librarian's argument applied
+                // to a different job. The inventor's hard question is whether a
+                // line of attack is already closed, and that is exactly the
+                // question a query answers worst: the paper that closed it
+                // rarely shares vocabulary with the idea as this run phrased
+                // it. `find_similar_sources` takes the proposal itself as the
+                // query, `citation_graph` walks out from the one paper it did
+                // find, `read_sources` skims twenty candidates without filing
+                // any, and `deep_research` takes the question it cannot
+                // decompose. An inventor holding only `exa_search` rephrases
+                // until its budget is gone and then proposes the idea anyway.
+                .chain(research_enabled.then_some(DISCOVERY_TOOLS).into_iter().flatten())
                 // A literature question it cannot settle from its own search
                 // becomes one delegated check rather than an abandoned idea.
                 // The singular pair, as with the pattern agent: this role asks

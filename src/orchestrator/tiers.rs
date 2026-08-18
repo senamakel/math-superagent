@@ -1,6 +1,6 @@
 //! Which model a role runs on, decided in one place.
 //!
-//! There are three tiers and one question: given a role name, which model does
+//! There are four tiers and one question: given a role name, which model does
 //! it get. Before this file the question had two answers — [`SupportAgents`]
 //! resolved it for the support roles and [`super::definitions`] published it
 //! for the workflow document — and the code writers had a third, which was to
@@ -19,7 +19,7 @@ use std::sync::Arc;
 use tinyagents::harness::model::ChatModel;
 
 use super::async_subagents::base_role;
-use super::{REASONING_ROLES, SCRIBE_ROLES};
+use super::{MAX_REASONING_ROLES, REASONING_ROLES, SCRIBE_ROLES};
 
 /// Which of the run's models a role runs on.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -28,6 +28,9 @@ pub(in crate::orchestrator) enum ModelTier {
     Default,
     /// For roles whose work is judging rather than doing.
     Reasoning,
+    /// For the few roles whose whole output is a judgement, on the deepest
+    /// ladder the router holds.
+    MaxReasoning,
     /// For roles that write Lean, on a model specialised for it.
     Scribe,
 }
@@ -41,6 +44,7 @@ impl ModelTier {
         match self {
             Self::Default => "default",
             Self::Reasoning => "reasoning",
+            Self::MaxReasoning => "max-reasoning",
             Self::Scribe => "scribe",
         }
     }
@@ -50,6 +54,7 @@ impl ModelTier {
 pub(in crate::orchestrator) struct ModelTiers {
     default: Arc<dyn ChatModel<()>>,
     reasoning: Arc<dyn ChatModel<()>>,
+    max_reasoning: Arc<dyn ChatModel<()>>,
     /// `None` when `MISTRAL_API_KEY` is unset. See [`ModelTiers::tier_for`].
     scribe: Option<Arc<dyn ChatModel<()>>>,
 }
@@ -68,11 +73,13 @@ impl ModelTiers {
     pub(in crate::orchestrator) fn new(
         default: Arc<dyn ChatModel<()>>,
         reasoning: Arc<dyn ChatModel<()>>,
+        max_reasoning: Arc<dyn ChatModel<()>>,
         scribe: Option<Arc<dyn ChatModel<()>>>,
     ) -> Self {
         Self {
             default,
             reasoning,
+            max_reasoning,
             scribe,
         }
     }
@@ -92,6 +99,12 @@ impl ModelTiers {
         if SCRIBE_ROLES.contains(&role) && self.scribe.is_some() {
             return ModelTier::Scribe;
         }
+        // Asked before the reasoning tier, and the two lists are disjoint —
+        // asserted in `tiers_test`, because a role in both would resolve by the
+        // order of these two lines rather than by a decision anybody made.
+        if MAX_REASONING_ROLES.contains(&role) {
+            return ModelTier::MaxReasoning;
+        }
         if REASONING_ROLES.contains(&role) {
             return ModelTier::Reasoning;
         }
@@ -103,6 +116,7 @@ impl ModelTiers {
         match self.tier_for(role) {
             ModelTier::Default => self.default.clone(),
             ModelTier::Reasoning => self.reasoning.clone(),
+            ModelTier::MaxReasoning => self.max_reasoning.clone(),
             // `tier_for` only answers `Scribe` when the model is present, so
             // the fallback here is unreachable rather than a second policy.
             ModelTier::Scribe => self

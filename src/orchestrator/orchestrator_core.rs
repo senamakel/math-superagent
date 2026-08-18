@@ -94,7 +94,7 @@ use crate::agent::trace::RunTracer;
 use crate::agent::untruncated::UntruncatedModel;
 use crate::agent::{
     AgentHarness, Message, ObservedAgent, Result, Tool, ToolCall, configure_run_budget,
-    provider_model_from_env, provider_reasoning_model,
+    provider_max_reasoning_model, provider_model_from_env, provider_reasoning_model,
 };
 use crate::hello_agent::ExaSearchTool;
 use async_subagents::AsyncSubagentManager;
@@ -279,25 +279,12 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 /// program did, which the method policy already routes through something
 /// mechanical? And is it cheap: short output, few calls, and not on a schedule?
 ///
-/// - `inventor` — whether a reformulation is genuinely different, whether a
-///   theorem's hypotheses hold here, whether the literature suggests something
-///   better than what was proposed. Runs only at a diversify.
 /// - `reducer` — whether a set of lemmas actually implies the goal. That is the
 ///   definition of a judgement no tool can check: a decomposition into three
 ///   attractive statements that do not recombine reads exactly like one that
 ///   does. It writes one file and is opened at most a handful of times in a run.
-/// - `weakener` — which of a problem's difficulties can be switched off, and
-///   whether what is left is still worth solving. Nothing mechanical can check
-///   that: a statement weakened until it is vacuous reads exactly like one
-///   weakened until it is tractable, and only the second is worth an attempt.
-///   Like the reducer, it writes one file on a cadence.
 /// - `judge` — scores how an attempt was conducted and rarely stops the run.
 ///   Capped at twelve calls and five minutes, and answers in four lines.
-/// - `reflection` — solved, progressed, and now what *kind* of progress. That
-///   last one decides whether a run reporting progress every attempt is sent to
-///   diversify anyway, and telling a new bound from a new fact is exactly the
-///   subtle call a fast model gets wrong. Its output is three fields and a
-///   sentence.
 /// - `director` — reads a human directive against what the run is doing.
 ///   Housekeeping's budget, and it only wakes when somebody steers.
 ///
@@ -305,16 +292,45 @@ const INVENTION_BENCH: [&str; 1] = ["research"];
 /// judgement role and fails the second question outright: it is the measured
 /// top consumer of a run, once at 28 model calls, and it runs on a schedule.
 /// `scholar` and `research` read whole documents, so their turns are large.
-/// `pattern_finder` and the code writers execute rather than judge, and the
-/// planners drive every turn of the run.
-const REASONING_ROLES: [&str; 6] = [
-    "inventor",
-    "reducer",
-    "weakener",
-    "judge",
-    "reflection",
-    "director",
-];
+/// `pattern_finder` and the code writers execute rather than judge, and `goals`
+/// drives every turn of an attempt. The roles whose judgement keeps improving
+/// with depth are not here either — they are one tier further up, in
+/// [`MAX_REASONING_ROLES`].
+const REASONING_ROLES: [&str; 3] = ["judge", "director", "reducer"];
+
+/// Roles that run on the deepest ladder the router holds, rather than the
+/// reasoning one.
+///
+/// The reasoning tier answers "is this judgement worth a stronger model". This
+/// one answers a second question on top of it: *does the answer keep improving
+/// while the model thinks longer*. Only a handful of roles clear both, and the
+/// separation is what keeps the depth affordable — the router's `max-reasoning`
+/// ladder carries higher price ceilings and asks each rung for the deepest
+/// setting its model family accepts, so a role added here costs materially more
+/// per call than one on `reasoning`.
+///
+/// - `inventor` — the run's one generative role. What it produces is a *new*
+///   line of attack, and thinking longer is the only thing that turns a
+///   restatement of what was already tried into something genuinely different.
+///   It runs at a diversify and nowhere else.
+/// - `reflection` — solved, progressed, and what *kind* of progress. That last
+///   call decides whether a run reporting progress every attempt is sent to
+///   diversify anyway, and it is the single most consequential judgement in the
+///   loop: getting it wrong spends the rest of the run on a line already dead.
+/// - `weakener` — which difficulties can be switched off and whether what is
+///   left is still worth solving. A statement weakened until it is vacuous
+///   reads exactly like one weakened until it is tractable.
+/// - `orchestrator` — the run's driver. It is here despite being the expensive
+///   case by the reasoning tier's own test: it is on every turn, so this is the
+///   deliberate cost of the change rather than an oversight. What buys it is
+///   that every other role's work is downstream of what this one decides to
+///   commission, and a cheap wrong delegation is paid for by every role it
+///   spawns. `goals` deliberately stays off — it drives an attempt turn by turn
+///   and is the higher-volume of the two planners.
+///
+/// `judge`, `director` and `reducer` stay on `reasoning`: each is cheap,
+/// short-output housekeeping whose answer does not visibly improve with depth.
+const MAX_REASONING_ROLES: [&str; 4] = ["inventor", "reflection", "weakener", "orchestrator"];
 
 /// Roles that run on the Lean model rather than the run's default.
 ///

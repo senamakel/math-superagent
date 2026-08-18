@@ -13,7 +13,7 @@ fn test_tiers() -> crate::orchestrator::tiers::ModelTiers {
     use std::sync::Arc;
     use tinyagents::harness::model::ChatModel;
     let model = || Arc::new(MockModel::constant("ok")) as Arc<dyn ChatModel<()>>;
-    crate::orchestrator::tiers::ModelTiers::new(model(), model(), None)
+    crate::orchestrator::tiers::ModelTiers::new(model(), model(), model(), None)
 }
 use crate::orchestrator::definitions::workflow_agents;
 use crate::orchestrator::schools::Thresholds;

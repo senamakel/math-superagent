@@ -425,10 +425,11 @@ struct SupportAgents<'a> {
     ///
     /// Held whole rather than as separate fields because the three lists inside
     /// it have different audiences and the boundary between them is the point:
-    /// `search` and `oeis` go to the pattern agent and the inventor, and
-    /// `discovery` does not, because both are denied web search in the registry
-    /// and a harness that registered these anyway would make that denial a
-    /// comment.
+    /// `oeis` goes to the pattern agent, which is denied web search in the
+    /// registry, and `discovery` does not — a harness that registered these
+    /// anyway would make that denial a comment. The inventor is granted all
+    /// three, because deciding whether a line of attack is already closed is a
+    /// literature question.
     search: SearchTools,
     /// The jail root, for the one support agent allowed to execute.
     workspace: PathBuf,
@@ -549,6 +550,13 @@ fn register_inventor(
         register_resilient(&mut inventor, exa);
     }
     for tool in parts.search.oeis.iter().cloned() {
+        register_resilient(&mut inventor, tool);
+    }
+    // The ways onto the web that are not a query. See the inventor's grant in
+    // the registry for why this role gets all of them: its hard question is
+    // whether an idea is already closed, and the paper that closed it rarely
+    // shares vocabulary with the idea as this run phrased it.
+    for tool in parts.search.discovery.iter().cloned() {
         register_resilient(&mut inventor, tool);
     }
     for tool in parts.documents.tools_as("inventor") {

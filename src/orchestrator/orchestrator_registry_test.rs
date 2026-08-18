@@ -319,18 +319,21 @@ fn pattern_finder_can_test_a_conjecture_but_not_search() -> agent::Result<()> {
     Ok(())
 }
 
-/// The four ways onto the web that are not a query reach exactly two roles.
+/// The four ways onto the web that are not a query reach exactly three roles.
 ///
 /// They are gated with `exa_search` because they reach the same open web, and
 /// granted no more widely because everything else about the boundary already
 /// says so: the pattern agent is denied search so a bounded structural question
 /// cannot become a second investigation, and giving it a deep research agent
 /// would be a larger version of the same mistake.
+///
+/// The inventor is the third, and is a grant rather than an oversight: it
+/// already searches, and its hard question — is this line of attack already
+/// closed — is the one a query answers worst.
 #[test]
-fn discovery_tools_reach_the_two_gathering_roles_and_are_gated_with_search()
--> agent::Result<()> {
+fn discovery_tools_reach_the_gathering_roles_and_are_gated_with_search() -> agent::Result<()> {
     let enabled = default_registry(true)?;
-    for role in ["research", "librarian"] {
+    for role in ["research", "librarian", "inventor"] {
         let agent = enabled
             .get(role)
             .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
@@ -341,7 +344,7 @@ fn discovery_tools_reach_the_two_gathering_roles_and_are_gated_with_search()
             );
         }
     }
-    for role in ["pattern_finder", "inventor", "scholar", "reducer", "coder"] {
+    for role in ["pattern_finder", "scholar", "reducer", "coder"] {
         let agent = enabled
             .get(role)
             .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;
@@ -355,7 +358,7 @@ fn discovery_tools_reach_the_two_gathering_roles_and_are_gated_with_search()
     // Withheld by not being granted, on the rule the whole research gate rests
     // on: a prompt instruction is not a control.
     let disabled = default_registry(false)?;
-    for role in ["research", "librarian"] {
+    for role in ["research", "librarian", "inventor"] {
         let agent = disabled
             .get(role)
             .ok_or_else(|| tinyagents::TinyAgentsError::Validation(format!("{role} registered")))?;

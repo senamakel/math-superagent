@@ -253,26 +253,51 @@ raw `docker run --env-file`: Docker preserves surrounding dotenv quotes in the
 credential value, which was measured reaching OpenRouter as a missing
 authorization header. `MATH_AGENT_API_KEY` is the caller bearer credential.
 
-Six roles run on the reasoning tier: `inventor`, `reducer`, `weakener`, `judge`,
-`reflection`, and `director`, listed in `REASONING_ROLES` and resolved in one
-place by `ModelTiers::tier_for`. Membership is two questions and a role has to pass
+Three roles run on the reasoning tier: `judge`, `director`, and `reducer`,
+listed in `REASONING_ROLES` and resolved in one place by
+`ModelTiers::tier_for`. Membership is two questions and a role has to pass
 both. Is its output a judgement nothing mechanical can check — as against a
 report of what a program did, which the method policy already routes through
 something that checks it? And is it cheap: short output, few calls, not on a
-schedule? Reflection is the clearest case: one of its three fields now decides
-whether a run reporting progress every attempt is diverted anyway, and telling
-a new bound from a new fact is exactly the call a fast model gets wrong.
+schedule?
 
 `context_curator` is excluded although it judges, because it fails the second
 question outright — a run's measured top consumer at 28 model calls, on a
 schedule. `scholar` and `research` read whole documents; the pattern agent and
-the code writers execute rather than judge; the planners drive every turn.
-Three tests assert the split in both directions, because the mistake is
+the code writers execute rather than judge; `goals` drives every turn of an
+attempt. Tests assert the split in both directions, because the mistake is
 silent: adding a role costs money on every run and nothing fails to say so.
 
-`MATH_AGENT_MODEL` and `MATH_AGENT_REASONING_MODEL` can replace the two ids for
-development, but provider ladders do not belong here: changing the providers or
-their price ceilings is a router operation. Exa handles search. Langfuse ingestion
+### The deepest tier
+
+Four roles sit one tier further up, in `MAX_REASONING_ROLES`: `inventor`,
+`reflection`, `weakener`, and `orchestrator`. They answer a second question on
+top of the reasoning tier's — *does the answer keep improving while the model
+thinks longer* — and they run on the router's `max-reasoning` ladder, which
+carries higher price ceilings and asks each rung for the deepest setting its
+model family accepts. The depth is the router's to apply: it injects
+`reasoning_effort` per rung, because the accepted values belong to the model
+that ends up serving and a rejected one is a 400 the failover loop hands back
+rather than stepping past.
+
+Reflection is the clearest case: one of its three fields decides whether a run
+reporting progress every attempt is diverted anyway, and telling a new bound
+from a new fact is exactly the call a fast model gets wrong. `inventor` is the
+run's one generative role, and `weakener` decides whether what is left after a
+difficulty is switched off is still worth solving.
+
+`orchestrator` is here despite failing the reasoning tier's cheapness test
+outright — it is on every turn — and that is the deliberate cost of the tier
+rather than an oversight: every other role's work is downstream of what it
+decides to commission, so a cheap wrong delegation is paid for again by every
+role it spawns. `goals` stays off, being the higher-volume of the two planners.
+The two lists are asserted disjoint, and the deepest one is asserted small.
+
+`MATH_AGENT_MODEL`, `MATH_AGENT_REASONING_MODEL` and
+`MATH_AGENT_MAX_REASONING_MODEL` can replace the three ids for development —
+pointing the last at `reasoning` is how a run opts the deepest tier out without
+a rebuild — but provider ladders do not belong here: changing the providers,
+their price ceilings, or a ladder's reasoning depth is a router operation. Exa handles search. Langfuse ingestion
 is best effort and must not turn a successful answer into a failed run.
 
 Langfuse is also available for querying and reviewing recorded turns. Use

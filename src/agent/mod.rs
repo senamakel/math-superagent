@@ -38,6 +38,14 @@ const LOCAL_ROUTER_BASE_URL: &str = "http://localhost:6969/v1";
 const DEFAULT_MODEL: &str = "flash";
 /// Stable tier id the router resolves to its current reasoning ladder.
 const REASONING_MODEL: &str = "reasoning";
+/// Stable tier id the router resolves to its deepest ladder.
+///
+/// A separate ladder rather than a parameter on the reasoning one, because
+/// *how hard to think* is a property of the model that ends up serving: the
+/// router injects the effort word each rung's model family accepts, and a
+/// runtime asking for one directly would be guessing on behalf of a rung it
+/// cannot see. See the router's `max-reasoning` ladder.
+const MAX_REASONING_MODEL: &str = "max-reasoning";
 const ROUTER_CONTEXT_WINDOW: u64 = 1_000_000;
 
 /// The model the Lean scribe runs on, on Mistral's own endpoint.
@@ -184,6 +192,21 @@ pub(crate) fn provider_model_from_env() -> Result<Arc<dyn ChatModel<()>>> {
 /// Returns an error when `MATH_AGENT_API_KEY` is not configured.
 pub(crate) fn provider_reasoning_model() -> Result<Arc<dyn ChatModel<()>>> {
     router_model_from_env("MATH_AGENT_REASONING_MODEL", REASONING_MODEL)
+}
+
+/// Builds the deepest-thinking model, for the handful of roles whose whole
+/// output is a judgement nothing mechanical can check.
+///
+/// `MATH_AGENT_MAX_REASONING_MODEL` overrides the tier id under the same rule
+/// as every other override here: blank or missing keeps the default. Pointing
+/// it at `reasoning` is how a run opts the whole tier back out without a
+/// rebuild.
+///
+/// # Errors
+///
+/// Returns an error when `MATH_AGENT_API_KEY` is not configured.
+pub(crate) fn provider_max_reasoning_model() -> Result<Arc<dyn ChatModel<()>>> {
+    router_model_from_env("MATH_AGENT_MAX_REASONING_MODEL", MAX_REASONING_MODEL)
 }
 
 /// Builds the model the Lean scribe runs on, or `None` when it is unavailable.

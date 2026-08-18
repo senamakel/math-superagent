@@ -7,14 +7,14 @@ use tinyagents::harness::model::ChatModel;
 
 use super::{ModelTier, ModelTiers};
 use crate::agent::MockModel;
-use crate::orchestrator::{REASONING_ROLES, SCRIBE_ROLES};
+use crate::orchestrator::{MAX_REASONING_ROLES, REASONING_ROLES, SCRIBE_ROLES};
 
 fn model() -> Arc<dyn ChatModel<()>> {
     Arc::new(MockModel::constant("ok"))
 }
 
 fn tiers(with_scribe: bool) -> ModelTiers {
-    ModelTiers::new(model(), model(), with_scribe.then(model))
+    ModelTiers::new(model(), model(), model(), with_scribe.then(model))
 }
 
 #[test]
@@ -43,6 +43,37 @@ fn the_reasoning_roles_keep_their_tier() {
     for role in REASONING_ROLES {
         assert_eq!(tiers.tier_for(role), ModelTier::Reasoning);
     }
+}
+
+#[test]
+fn the_deepest_roles_keep_their_tier() {
+    let tiers = tiers(true);
+    for role in MAX_REASONING_ROLES {
+        assert_eq!(tiers.tier_for(role), ModelTier::MaxReasoning);
+    }
+}
+
+/// A school qualifies a registration; it must not drop a role a tier.
+#[test]
+fn a_schooled_role_stays_on_the_deepest_tier() {
+    let tiers = tiers(true);
+    for role in MAX_REASONING_ROLES {
+        assert_eq!(
+            tiers.tier_for(&format!("{role}@rising-sea")),
+            ModelTier::MaxReasoning,
+            "`{role}@rising-sea` fell off the deepest tier"
+        );
+    }
+}
+
+/// The tier a reader sees in the workflow document is the ladder the router
+/// actually holds, spelled the same way.
+#[test]
+fn each_tier_is_named_after_the_ladder_it_selects() {
+    assert_eq!(ModelTier::Default.as_str(), "default");
+    assert_eq!(ModelTier::Reasoning.as_str(), "reasoning");
+    assert_eq!(ModelTier::MaxReasoning.as_str(), "max-reasoning");
+    assert_eq!(ModelTier::Scribe.as_str(), "scribe");
 }
 
 #[test]

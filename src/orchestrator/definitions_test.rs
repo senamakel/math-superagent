@@ -14,7 +14,7 @@ fn tiers(with_scribe: bool) -> ModelTiers {
     use std::sync::Arc;
     use tinyagents::harness::model::ChatModel;
     let model = || Arc::new(MockModel::constant("ok")) as Arc<dyn ChatModel<()>>;
-    ModelTiers::new(model(), model(), with_scribe.then(model))
+    ModelTiers::new(model(), model(), model(), with_scribe.then(model))
 }
 use crate::orchestrator::default_registry;
 
@@ -156,7 +156,7 @@ fn the_reasoning_roles_are_published_as_a_different_tier() {
         );
     }
     // At least one of each, or the assertion above is vacuous.
-    for tier in ["reasoning", "default", "scribe"] {
+    for tier in ["reasoning", "max-reasoning", "default", "scribe"] {
         assert!(
             derived.iter().any(|a| a.model.as_deref() == Some(tier)),
             "no role is published on the `{tier}` tier"
@@ -188,7 +188,10 @@ fn an_unconfigured_scribe_tier_is_published_as_the_default() {
 /// narrowed judging budget was written to stop, reintroduced by a suffix.
 #[test]
 fn a_schooled_role_keeps_its_own_budget_and_tier() {
-    for role in ["judge", "reflection"] {
+    for (role, tier) in [
+        ("judge", ModelTier::Reasoning),
+        ("reflection", ModelTier::MaxReasoning),
+    ] {
         let schooled = format!("{role}@rising-sea");
         assert_eq!(
             budget_for(&schooled).max_model_calls,
@@ -198,8 +201,9 @@ fn a_schooled_role_keeps_its_own_budget_and_tier() {
         assert_eq!(limits_for(&schooled), limits_for(role));
         assert_eq!(
             tiers(true).tier_for(&schooled),
-            ModelTier::Reasoning,
-            "`{schooled}` must stay on the reasoning tier"
+            tier,
+            "`{schooled}` must stay on the {} tier",
+            tier.as_str()
         );
     }
     assert!(

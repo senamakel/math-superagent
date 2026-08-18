@@ -19,18 +19,27 @@ impl OrchestratorAgent {
         // the first retry.
         let model: Arc<dyn ChatModel<()>> =
             Arc::new(BoundedTimeoutModel::new(provider_model_from_env()?));
-        // The one role that is not on the run's default model. It gets the same
-        // timeout bound, because a stalled connection is a property of the
-        // transport rather than of the model behind it.
+        // The judging roles, which are not on the run's default model. They get
+        // the same timeout bound, because a stalled connection is a property of
+        // the transport rather than of the model behind it.
         let reasoning: Arc<dyn ChatModel<()>> =
             Arc::new(BoundedTimeoutModel::new(provider_reasoning_model()?));
+        // The deepest ladder, for the roles whose answer keeps improving while
+        // the model thinks longer. Same bound again, and for the same reason.
+        let max_reasoning: Arc<dyn ChatModel<()>> =
+            Arc::new(BoundedTimeoutModel::new(provider_max_reasoning_model()?));
         // The Lean tier, absent unless a key for it is configured. Bounded like
         // the others, because a stalled connection is a property of the
         // transport rather than of the model behind it.
         let scribe: Option<Arc<dyn ChatModel<()>>> = crate::agent::scribe_model()
             .map(|model| Arc::new(BoundedTimeoutModel::new(model)) as Arc<dyn ChatModel<()>>);
         let scribe_available = scribe.is_some();
-        let models = Arc::new(ModelTiers::new(model.clone(), reasoning, scribe));
+        let models = Arc::new(ModelTiers::new(
+            model.clone(),
+            reasoning,
+            max_reasoning,
+            scribe,
+        ));
 
         let budget = RunBudget::from_env();
         let research_enabled = research_enabled_from_env();

@@ -44,6 +44,10 @@ services:
       MATH_AGENT_CONTEXT_TOKENS: ${MATH_AGENT_CONTEXT_TOKENS:-}
       MATH_AGENT_CONTEXT_MINUTES: ${MATH_AGENT_CONTEXT_MINUTES:-}
       MATH_AGENT_REASONING_MODEL: ${MATH_AGENT_REASONING_MODEL:-reasoning}
+      # The deepest ladder, for the four roles whose answer keeps improving
+      # while the model thinks longer. Point it at `reasoning` to opt the tier
+      # back out without a rebuild.
+      MATH_AGENT_MAX_REASONING_MODEL: ${MATH_AGENT_MAX_REASONING_MODEL:-max-reasoning}
       # The Lean scribe's tier. `MISTRAL_API_KEY` is deliberately absent from
       # this block and arrives through `env_file` instead: this list overrides
       # the file, so naming it here would set it to the empty string whenever
