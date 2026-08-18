@@ -165,13 +165,28 @@ const ENQUEUE_TIMEOUT: Duration = Duration::from_secs(30);
 /// How long the server's own health report may take before a write gives up on
 /// it and treats the silence as the answer.
 ///
-/// A healthy server answers `/health/detailed` in tens of milliseconds for its
-/// stores and a second or two for the model check behind them. A broken one
-/// answers in **thirty seconds** — the report's `llm_provider.response_time_ms`
-/// was exactly `30000`, the timeout of the connection test Cognee runs before
-/// every ingest pipeline — so waiting for the answer is waiting for the failure.
-/// Eight seconds is past the healthy case and well short of the broken one.
-const HEALTH_TIMEOUT: Duration = Duration::from_secs(8);
+/// The number that anchors this is the *broken* case, not the healthy one. A
+/// server that cannot index answers in **thirty seconds** — the report's
+/// `llm_provider.response_time_ms` was exactly `30000`, the timeout of the
+/// connection test Cognee runs before every ingest pipeline — so waiting for
+/// the answer is waiting for the failure, and anything at or past 30s stops
+/// being a probe at all.
+///
+/// It was eight seconds, chosen when the healthy case was tens of milliseconds:
+/// one Cognee per problem, on a Docker network, on this box. Both halves of
+/// that changed. One server now serves every problem, it can be on another
+/// machine, and a *healthy* server under load is slow rather than absent —
+/// measured with eight runs live against a Cognee pinned at its four-core cap,
+/// `/health` answered `200` in **13.7s and 14.0s**. Eight seconds classified
+/// that as broken and refused the writes: two `note_scratch` documents in one
+/// live `conjectures/hilbert-16` run were declined by a server that was working.
+///
+/// Twenty seconds is past the loaded-healthy case measured and still ten short
+/// of the broken one. The gap is what the control needs, and it is narrower
+/// than it was — a healthy server that takes longer than this is a finding
+/// about the deployment's headroom (`docs/memory.md`), not a reason to move
+/// this closer to 30.
+const HEALTH_TIMEOUT: Duration = Duration::from_secs(20);
 
 /// How long one health verdict stands before a write asks again.
 ///

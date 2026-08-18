@@ -1,0 +1,33 @@
+#!/bin/sh
+# One status line per Hilbert run, for the babysitting loop.
+#
+# Columns: slug, container state, minutes since its log last moved, the number
+# of judge verdicts seen so far, and the latest verdict word. `solved` in the
+# last column is the signal the loop is watching for — every other verdict is
+# ordinary progress. Staleness is measured from the log's mtime rather than
+# from the container's uptime, because a wedged run keeps its container.
+set -eu
+cd "$(dirname "$0")/.."
+now=$(date +%s)
+printf '%-12s %-10s %7s %5s %s\n' SLUG STATE STALE_MIN VERDS LAST_VERDICT
+for slug in hilbert-3 hilbert-10 hilbert-11 hilbert-12 hilbert-13 \
+            hilbert-14 hilbert-15 hilbert-17 hilbert-18 hilbert-21; do
+    log=workspace/conjectures/$slug/config/start.log
+    state=$(docker ps --format '{{.Names}}' | grep -qx "math-agent-conjectures-$slug" && echo up || echo GONE)
+    if [ -f "$log" ]; then
+        stale=$(( (now - $(stat -c %Y "$log")) / 60 ))
+        verds=$(grep -c "verdict " "$log" 2>/dev/null || true)
+        verds=${verds:-0}
+        last=$(grep -o "verdict [a-z_]*" "$log" 2>/dev/null | tail -1 | cut -d' ' -f2)
+    else
+        stale=-1; verds=0; last=no-log
+    fi
+    printf '%-12s %-10s %7s %5s %s\n' "$slug" "$state" "$stale" "$verds" "${last:--}"
+done
+echo
+hits=$(grep -l "verdict solved" workspace/conjectures/hilbert-*/config/start.log* 2>/dev/null || true)
+if [ -n "$hits" ]; then
+    echo "SOLVED-VERDICT in:"; echo "$hits"
+else
+    echo "no solved verdict"
+fi

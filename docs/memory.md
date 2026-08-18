@@ -93,9 +93,26 @@ The control is `VectorStore::refuse_if_not_indexable`, on the one path every
 store's write passes through. It reads `/health/detailed`, which names each
 component and its status, and refuses the write in the server's own words when
 one is unhealthy. A verdict stands for a minute so the busiest tool in the run
-does not double its request count; the probe itself is bounded at eight seconds,
-and a probe that does not answer is a refusal, because the broken case *is* the
-slow case — a failed model check answers in exactly 30,000 ms.
+does not double its request count; the probe itself is bounded at twenty
+seconds, and a probe that does not answer is a refusal, because the broken case
+*is* the slow case — a failed model check answers in exactly 30,000 ms.
+
+That bound was eight seconds until 2026-08-18, and what moved it is worth
+recording, because the control did not fail — its evidence changed underneath
+it. Eight seconds was chosen when a healthy answer took tens of milliseconds:
+one Cognee per problem, on a Docker network, on the same box. Against one shared
+server on another machine, with eight runs live and Cognee pinned at its
+four-core cap, `/health` answered `200` in **13.7s and 14.0s** — healthy, and
+merely saturated. The probe read that as broken and refused two `note_scratch`
+writes in a live `conjectures/hilbert-16` run.
+
+So the healthy case is no longer a constant, and the number that anchors the
+bound is the broken one: 30,000 ms, exactly. Twenty seconds is past the
+loaded-healthy case measured and ten short of the failure. A healthy server that
+takes longer than that is a finding about the deployment's headroom — the first
+thing to read is `docker stats` on the memory host, where the same incident
+showed 393% of a four-core cap — and not a reason to move the bound closer to
+thirty, which is where it stops being a probe at all.
 
 What it deliberately does not do is fail a write because the *probe* could not
 be sent. An unreachable server is reported by the write that follows it.
