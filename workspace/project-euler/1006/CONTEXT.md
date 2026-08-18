@@ -114,6 +114,23 @@ directive 6's new anchors are not yet (task `directive-6-anchors`).
    attempt. A formal statement of a primitive whose arithmetic was never
    executed can be internally perfect and still evaluate to the wrong residue,
    so the executable gate precedes Lean.
+6. **Directive 8 (steer, this cycle) — primitive sound; run 1–3, then the
+   reduction.** `code/lib/ueuclid.py` is CORRECT and O(log), verified outside
+   the container on a copy (30 random trials p,q,r≤1e6, n≤3000, random z:
+   ueuclid == ueuclid_direct == plain loop on S0/S1/S2, dR=n,
+   dU=floor((p·n+q)/r), zero failures; scaling ueuclid(514229,3,1346269,10^18,
+   inv10) = 0.3 ms, dU=381966011250351898 = 10^18/φ² to the digit). This is
+   ASSERTED steering, not an in-workspace claim. Run tests 1–3 to record the
+   numbers on our own record (code/out/ueuclid_acceptance.txt) but do NOT spend
+   a cycle debugging a primitive without one. Then move to the reduction
+   (supersedes directive 7's "not the Psi evaluation this cycle"): wire mech_psi
+   formulation (B) through the monoid, check Psi(k) k=1..150 and Psi(10)=
+   10699667, then anchors 34432237/20938836, then k=10^18 with two Fibonacci
+   approximants confirmed to agree. THE HAZARD the reduction must pin first:
+   S1/S2 are indexed with the segment's first R step at weight z^0, so an
+   off-by-one in which power of 10 the j-th digit carries passes every monoid
+   test but gives a wrong answer — pin it against mech_psi at SMALL k before
+   trusting any large k.
 6. **Directive 6 (steer) — anchors corrected.** 16242174 / 77578256 are
    invalid (confirmed: they came from the Phase-3 collapse) and are DISCARDED
    as acceptance criteria. New anchors, recomputed outside the container by the
@@ -130,6 +147,66 @@ directive 6's new anchors are not yet (task `directive-6-anchors`).
    $k$ is itself Fibonacci — $k=3$ then yields $10101$ with only 3 of the 4
    factors. Checked this cycle: `code/lib/fibword.py` `next_fib` is STRICT
    (`bisect_right`), so the trap is not live.
+7. **Directive 7 (steer, this cycle) — stop re-verifying settled ground; write
+   `code/lib/ueuclid.py` NOW.** The task has been top for three cycles while
+   cycles went to source curation, reading, and re-running `brute.py` (already
+   validated, tells us nothing new). This cycle's whole deliverable is the file
+   + acceptance tests 1–3 pass/fail counts to `code/out` — not Ψ(10^18), not
+   Lean, not more sources. If the Euclidean recursion is the hard part, land
+   the O(n) DIRECT version of the same monoid FIRST under the same interface
+   and prove the composition rule correct against a loop; then the recursion is
+   a drop-in replacement with a test that already exists to catch it. Minimum
+   file content: node (dR,dU,w,S0,S1,S2) ints mod M; compose per directive 4;
+   identity zeros with w=1; `ueuclid(p,q,r,n,z)` via Euclidean split, O(log);
+   run against a direct loop for ≥20 random (p,q,r,n,z) with n in the low
+   thousands; post pass/fail to code/out.
+8. **Directive 9 (steer, this cycle) — the contiguous-window prefix route
+   avoids the O(k)-intercept obstruction; check its three claims against
+   mech_psi first.** The joint-monoid double-sum of `psi-to-ueuclid-reduction.md`
+   fights an O(k) distinct-intercept term (one intercept per l). Directive 9
+   replaces it: (1) the $k+1$ DISTINCT length-$k$ factors = exactly the $k+1$
+   CONTIGUOUS windows at positions $r=F_n-k-1..F_n-1$ of the doubled standard
+   word $q_n q_n$, as sets (k=3: windows of $0100101001$ are $010,100,001,010,
+   101$, last four distinct, $20302$), so $\Psi(k)=\sum v_r^2$ over that range —
+   no multiplicity, no de-dup, no O(k)-intercept l-sum; (2) $\Psi(k)$ = (full
+   cyclic sum over all $F_n$ windows) − (sum over the FIRST $F_n-k-1$ windows);
+   (3) the full cyclic sum $=\sum_{j,jp}A(jp-j)10^{2k-2-j-jp}$, $A$ the cyclic
+   autocorrelation of $q_n$, for ANY $k<F_n$ — directive 1's identity was never
+   restricted to $k=F_n-1$ as a statement about the CYCLIC sum, only about that
+   sum equalling $\Psi$, which claim 2 corrects. Claim 3's lag-sum
+   $\sum_d(ad\bmod N)x^d$ is the universal-Euclidean/Ostrowski recursion — the
+   primitive of directive 4 serves it. The one new object is the partial sum of
+   $v_r^2$ over the prefix window range via $v_{r+1}=10v_r-y_r10^k+y_{r+k}$,
+   state $(v,\sum v^2,\sum v,1)$ as a constant-size transfer matrix over the
+   pair $(y_r,y_{r+k})$, collapsed by Fibonacci-block renormalisation (~87
+   blocks at $10^{18}$). ALL THREE claims are ASSERTED (steer), not
+   established — check each against `code/mech/mech_psi.py` BEFORE building on
+   it (see thread `directive9-contiguous-window-prefix`). Acceptance unchanged:
+   k=1..150, $\Psi(10)=10699667$, anchors 34432237/20938836, then $k=10^{18}$
+   stable across two approximants.
+
+10. **Directive 10 (steer, this cycle) — no lean_scribe/lean_prover until the
+    anchors are reproduced; the Python-before-Lean ordering is now BINDING.**
+    Three consecutive cycles spent themselves in the Lean arm at this exact
+    junction (103 of the last events lean_scribe, probes like a bare
+    `#check Fib`, no file written, neither anchor reproduced). Directive 5 had
+    already ordered Python before Lean and the Lean task was marked
+    blocked-by the primitive, but the roles were still being spawned — so
+    directive 10 makes it a **hard gate: no lean_scribe or lean_prover run is
+    to be spawned until `code/out` holds a captured file showing
+    $\Psi(10^4)=34432237$ and $\Psi(10^6)=20938836$ recomputed inside the
+    container.** The Lean work is NOT cancelled (the attempt still closes with
+    a checked `.lean` file); it is deferred behind two numbers. What takes the
+    cycle instead, in order: (1) wire formulation (B) of
+    `code/mech/mech_psi.py` through `code/lib/ueuclid.py` (built, verified on current code per directive 11 — in-container record pending the module `__main__` run);
+    (2) reproduce $\Psi(k)$ k=1..150 and $\Psi(10)=10699667$ through
+    that wiring; (3) reproduce the two anchors and capture them to
+    `code/out`; (4) run $k=10^{18}$ under two Fibonacci approximants and check
+    they agree. Directive 9 removed the O(k)-intercept obstruction (the $k+1$
+    distinct factors are the contiguous windows at $r=F_n-k-1..F_n-1$, so no
+    dedup and no multi-intercept sum); its three claims **stand — the refuter
+    posted no counterexample to any of them** — and are to be checked against
+    `mech_psi` as part of step (1).
 
 ## Ruled out
 
@@ -146,6 +223,7 @@ directive 6's new anchors are not yet (task `directive-6-anchors`).
 
 - Oracle reproduced by `code/brute.py`: $\Psi(3)=20302$; $\Psi(10)\equiv10699667\pmod{101001001}$; factor count exactly k+1 for k=1..20. Captured in `code/out/brute_oracle_results.md` and `GOAL.md`.
 - Mechanical construction `code/mech/mech_psi.py`: agrees with brute exactly k=1..50, with recorded exact values k=1..25, and with recorded residues k=1..400 (mod M); formulation (A)==(B); slope-insensitive. Captured in `code/out/mech_psi.captured.txt`.
+- Universal-Euclidean monoid `code/lib/ueuclid.py` (13.9 KB on disk) is **verified in-container**: the earlier "65 FAILURES" claim (`ueuclid-incontainer-fails-s1s2`) was a FALSE ALARM (0/30 run used a 0-indexed oracle/docstring against the module's 1-indexed recursion; index-convention mismatch, not a compose bug). The module passes its own `__main__` — capture `code/out/ueuclid_main.captured.txt`: acceptance 1-3 30/30, floor_sum 30/30, deterministic 6/6, ue0 30/30, large-n dU=381966011250351898 == (514229·10^18+3)//1346269 in 0.29 ms. Convention is 1-INDEXED (t=1..n, weight z^(t-1)); 0-indexed wrapper `ue0(p,q-p,...)`. See `research/notes/refuter-ueuclid-s1s2-false-alarm.md` (claim `ueuclid-s1s2-false-alarm-refuted`). The verified compose formulas (claim `monoid-composition-formulas-verified`) hold. Remaining risk is reduction indexing (which power of 10 the j-th digit of telescoped v carries), to pin against mech_psi at small k.
 - Known invalid: Psi(10^4)=16242174 and Psi(10^6)=77578256 (computed by the out-of-domain collapse — see Contradictions). **Directive-6 anchors, asserted from outside the container (pending in-container verification): Psi(10^4)=34432237, Psi(10^6)=20938836** (independent window/residue route, counts 10001/1000001). Valid direct-method values at k=1000, 10000 are not yet computed.
 
 ## Recalled
@@ -156,6 +234,7 @@ directive 6's new anchors are not yet (task `directive-6-anchors`).
 
 ## Contradictions
 
+- ~~The universal-Euclidean monoid fails its own acceptance tests in-container~~ — **RESOLVED, false alarm.** The `ueuclid-incontainer-fails-s1s2` claim ("65 failures, compose dU boundary-shift bug") was a 0-indexed-vs-1-indexed convention mismatch in the hand-check and the then-stale oracle/docstring, NOT a bug in the O(log) recursion. Module on disk passes `__main__` 30/30/30/30 + 6/6 (claim `ueuclid-s1s2-false-alarm-refuted`, `refuter-ueuclid-s1s2-false-alarm.md`). It does NOT block acceptance 4, the anchors, or Psi(10^18). The real remaining hazard is reduction indexing, not the primitive.
 - **Phase-4 anchors 16242174 / 77578256 are invalid acceptance criteria** —
   the directive-2 record conflicted with the run's own exact checks. Both
   numbers were computed by `Psi_collapse`, which uses the Toeplitz identity
@@ -178,11 +257,7 @@ directive 6's new anchors are not yet (task `directive-6-anchors`).
   against 34432237), k=10^6 via the window/residue route
   (prefix length k+NextFib(k)-1, NextFib strictly greater than k, distinct
   count asserted k+1). Task `directive-6-anchors`.
-- **The O(log) monoid is unbuilt.** The mechanical construction and telescoped
-  $v$ are verified in-container (`code/mech/mech_psi.py` == brute k≤400,
-  two formulations agree, slope-insensitive); what does not exist yet is the
-  universal-Euclidean primitive of directive 4 and its five acceptance tests,
-  then the $k=10^{18}$ run with stability across two approximants.
+- **The universal-Euclidean monoid is sound in-container** (`code/lib/ueuclid.py`, claim `ueuclid-s1s2-false-alarm-refuted`); the old "fix the dU cross terms" instruction is dead. The open gap is the **reduction wiring**: formulate the telescoped `v` (formulation B of `code/mech/mech_psi.py`) as a segment of the monoid and reproduce Psi(k) k=1..150 + Psi(10)=10699667 through `ueuclid`, PINNING the z^0/10-power reduction indexing against mech_psi at small k first (this indexing is untested and is the genuine remaining hazard). Then reproduce the two anchors 34432237/20938836 as the monoid's own output (currently verified only by the independent window/residue route), then k=10^18 stable across two Fibonacci approximants. Task `implement-solution`.
 - **Primality of $101001001$ is asserted, not shown.** Only invertibility of
   $10$ (proved by $\gcd$) is needed for $x=10^{-1}\bmod M$, but if any step
   cites primeness, verify it.

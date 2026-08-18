@@ -1,0 +1,54 @@
+# Second evaluation witness for  L8 not in <L4, L6>
+
+WHAT RAN:      code/bautin/cofactor_certificate2.py, exact sympy,
+               rational arithmetic, no floats.
+WHICH DEFS:    same recurrence as cofactor_certificate.py /
+               lyapunov_quadratic.py: u' = -v + a1 u^2 + a2 u v + a3 v^2 ;
+               v' =  u + b1 u^2 + b2 u v + b3 v^2 ;
+               L_d = focal value at degree d.
+WHICH RANGE:   FULL BOX sweep over {-3..3}^6 (all 7^6 points), no
+               support-size restriction, unlike the first search
+               (support 1..6, values +-1,+-2). L4,L6,L8 are homogeneous
+               (degrees 2,4,6), so zeros are projective: the new point
+               is required NOT to be a rational scalar multiple of the
+               first witness certPt = (-2,-2,1,-1,-1,1).
+
+WHY A SECOND POINT (independent cross-check):
+   the certPt proof is three evaluations; if the focal-value tables
+   had one consistent arithmetic coincidence, both L4=L6=0 and L8!=0
+   could in principle fire together at a single point. A second point,
+   non-proportional to the first, makes the coincidence hypothesis
+   need to hold at two independent places of the variety L4=L6=0.
+   The Lean theorem is then proved TWICE, through two evaluations,
+   both kernel-checked (Bautin.lean and L8NotInIdeal_alt.lean).
+
+guard: L4 = a1*a2/8 - a1*b1/4 + a2*a3/8 + a3*b3/4 - b1*b2/8 - b2*b3/8
+guard: L4 monomials 6 | L6 56 | L8 220
+points tried: 6743 (excluding the certPt line: 7^6 - 1 = 117648)
+distinct witnesses found in this box: 4 (incl. certPt)
+
+SECOND WITNESS FOUND (non-proportional to certPt):
+  a1 = -3
+  a2 = -3
+  a3 = 2
+  b1 = 0
+  b2 = 1
+  b3 = -1
+  a1..b3 vector: (-3, -3, 2, 0, 1, -1)
+  L4(p) = 0  (must be 0)
+  L6(p) = 0  (must be 0)
+  L8(p) = -25/8  (must be nonzero)
+  proportional to certPt? False  (must be False)
+
+CERTIFICATE VALID: PASS
+
+Lean witness vector, in Bautin.lean (a1,a2,a3,b1,b2,b3) order:
+  def certPt2 : ParamIndex -> Q := ![-3, -3, 2, 0, 1, -1]
+
+Cleared-integer evaluations:
+  eval V1num at the witness = 0   (denominator 8)
+  eval V2num at the witness = 0   (denominator 192)
+  eval V3num at the witness = -57600   (denominator 18432)
+
+SCOPE. Same statement as cofactor_certificate.py: L8 not in <L4,L6>.
+Says nothing about M(2)=3 itself (cited Bautin 1952, Bautin.lean).

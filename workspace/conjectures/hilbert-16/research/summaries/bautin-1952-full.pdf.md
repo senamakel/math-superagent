@@ -1,125 +1,57 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/bautin-1952-full.pdf.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Bautin (1952), "On the number of limit cycles...", Mat. Sb. 30(72):1, 181-196
 
-<!-- source: https://www.mathnet.ru/php/getFT.phtml?jrnid=sm&paperid=5421&what=fullt&option_lang=eng | converted from PDF -->
+<!-- source: https://www.mathnet.ru/php/getFT.phtml?jrnid=sm&paperid=5421&what=fullt&option_lang=eng | Russian full text. Full text: [[bautin-1952-full.pdf.full]]. Claim `h16-bautin-1952-m2equals3-primary`. -->
 
-1952  МАТЕМАТИЧЕСКИЙ СБОРНИК  Т. 30 (72), № I
+## What it establishes — the literature boundary M(2) = 3 (Primary source!)
 
-О числе предельных циклов, появляющихся при
-изменении коэффициентов из состояния равновесия
-типа фокуса или центра *
+**Theorem.** The maximum number of small-amplitude limit cycles that can appear
+from a focus/center equilibrium state of a quadratic system as the coefficients
+vary (over ALL coefficient variations) is **3**. A quadratic system (A2) with 3
+limit cycles is exhibited.
 
-Н. Н. Баутин (Горький)
+Note the careful statement: this is the *local* problem — small-amplitude cycles
+around a single focus/center under all coefficient changes — NOT the global
+H(2) (4 cycles via Shi/Chen-Wang are a *global* bound from separate nests). The
+distinction is load-bearing for GOAL step 4.
 
-В настоящей работе рассматривается вопрос о максимальном числе
-предельных циклов, появляющихся из состояния равновесия типа фо­
-куса или центра системы
+## The exact machinery (needed to reproduce M(2)=3)
 
-i+fc=l i+k=l
+- §1: precise definition of **cyclicity of order k** of the equilibrium:
+  (a) there is an ε₀-neighbourhood of the coefficient point and a δ₀-neighbourhood
+  of (0,0) containing no system with >k limit cycles in the δ₀-neighbourhood;
+  (b) for any smaller ε<ε₀, δ<δ₀, there is a system within ε of the point with
+  exactly k limit cycles in the δ-neighbourhood. Conditions: `a₁₀b₀₁−a₀₁b₁₀ > 0`
+  and `a₁₀+b₀₁ = 0`.
+- §2: reduction under
+  `(a₁₀−b₀₁)²+4a₁₀b₀₁ < 0` to the **canonical focus form (II)** in the six
+  coefficients λ₁,…,λ₅, where `λ₁=λ₄=λ₅=0` is exactly the center condition
+  (P_x+Q_y=0). This is the origin of the run's "five-coefficient chart ring".
+- §3: passage to polar coordinates; the radial equation (III) is expanded in
+  powers of ρ — the Lyapunov quantities.
 
-при всевозможных изменениях коэффициентов а^, Ьщ< Указанное мак­
-симальное число предельных циклов оказывается равным 3. Тем самым
-приводится пример системы (А2), имеющей 3 предельных цикла **.
-§ 1. Каждую совокупность значений коэффициентов системы (А2)
+This is precisely the machine the run's oracle (GOAL step 4) must reproduce
+exactly over Q before trusting anything past it.
 
-aih bik (/, k -0 , 1, 2; 1< * + Л<2 )
+## Hypotheses / holds here
 
-можно рассматривать как точку в десятимерном эвклидовом простран­
-стве Е = Е
-10. Каждой системе вида (к,) будет соответствовать точка
-в пространстве Е и обратно.
-Определение . Мы скажем, что состояни е равновеси я
-х = 0, у = 0 систем ы (А2) с заданными коэффициентами, для кото­
-рых выполняются условия
+Quadratic systems, small-amplitude cycles about a single focus/center. **Holds
+here: yes** — this is the boundary the run reproduces before trusting any
+Bautin-ideal computation past M(2)=3.
 
-tficAi — ЯоАо > 0 и а10 + Ь01 = 0,***
+**Evidence class: sourced** (PRIMARY full text now held from mathnet's
+full-text PDF; previously recorded as "not openly downloadable").
 
-имее т по отношени ю к пространств у Е цикличност ь
-порядк а k (k > 0), если:
-а) можно указать такие числа %^>0 и о 0 >0 , что внутри е0-окрест-
-ности точки пространства Е, соответствующей заданной системе (А2),
-не существует ни одной точки, которой бы соответствовала система
-вида (А2), имеющая внутри 80-окрестности точки х = 0, у = 0 плоско­
-сти х9 у более k предельных циклов;
+## Falsifier
 
-* См. [1].
-** По сведениям автора до сих пор не были известны примеры систем (А2),
-имеющих б.олее одного предельного цикла. Пример системы (А2), имеющей один пре­
-дельный цикл, был впервые указан Фроммером [2].
-*** Некоторые или даже все коэффициенты aik, bik (l < / + £<[ 2) могут быть
-равны нулю.
- \Ф0
+A quadratic system with 4 small-amplitude cycles from a single focus would
+contradict M(2)=3. None known; M(2)=3 is the standard accepted boundary.
 
-<10 ^01  (А2
+## Bearing / implication
 
-182  Н. Н. Баутин
-
-б) каковы бы ни были положительные числа £<С
-£о и &<^о0, всегда
-можно указать внутри e-окрестности точки пространства Е, соответ­
-ствующей заданной системе (А2), такую точку, которой соответствует
-система вида (А2), имеющая внутри S-окрестности точки х = 0, у = 0
-k предельных циклов.
-§ 2. Система (А2) при условиях
-
-а10Ь01 — а01Ь10 > О и (а10 — Ь01)
-2 + 4 ai0b0l < О
-
-всегда может быть приведена подстановкой
-
-х = — ж [(Дю - ai)
- Ti +
- bA у = —-^--4
-
-к так называемому каноническому виду:
-
-dl
-
-dti = Ь£ + ам + Д805* + Blxbi + £0дД )
-
-i  (I)
-
-dti =all-b1rl + A20¥ + A ^ + AQrf, )
-
-где ах и bx — действительная и мнимая части корней
-
-!xi —
- ai+ b±i, |А.2 = аг — bxi
-
-характеристического уравнения
-
-Кроме того, поворотом системы координат на соответствующим обра­
-зом подобранный угол можно добиться того, чтобы выполнялось усло­
-вие В20 + В02 = 0. Так как Ьг, в силу условия (а10 — b01)
-2 + 4a10b01 <0 ,
-ни при каких рассматриваемых значениях параметров не обращается
-в нуль, то (разделив все коэффициенты системы (I) на Ьг) можно си­
-стему (I) преобразовать к виду
-
-** = llX _ j ; _ } Х2 + (2),2 + Х5) Ху + 1^ = Р (х, у), )
-dt ^ (П )
-% = x + } ^ + l2x* + (2l3 + l,)xy-l^ = Q(x,y).)
-
-Здесь Хх =-у^- и соответственно положено t=b1t1. Коэффициенты Х4
-и Х5 вводятся таким образом, чтобы условие 1г = ) 4 = Х5 = 0 соответ­
-ствовало случаю центра Рх + Qy = 0.
-Очевидно, что если состояние равновесия х = 0, у = 0 системы
-(А2) с заданными коэффициентами имеет цикличность порядка k по
-отношению к пространству коэффициентов а.% ЬЩ (1*0* + ^ ^ 2), то
-и в преобразованной системе (II) состояние равновесия х = 0, _у = О
-будет иметь цикличность порядка k относительно пространства коэф­
-фициентов \% (i = 1, 2,... , 6) и обратно.
-
-О числе предельных циклов  183
-
-Переходя к полярным координатам x = pcos<p, .y = psincp и исклю­
-чая U получим:
-
-dp р {Лх + р [— Х8 cos Ф + (ЗХа + Х8) соз 8 ф si n Ф + (2Х8 + Х4 + Ю cos Ф sin" <р — Ха Б1П 8 Ф] }
-
-d<$ 1 + р [Хя cos 3 Ф + (ЗХ8 + Х4) cos 2 Ф si n Ф — (ЗХа + Ю cos <р sin 2 Ф — Х6 sin* ф] "^ . (III)
-
-Правая часть уравнения (III) может быть развернута в ряд, располо­
-женный по степеням р:
-
-
-*[excerpt ends; 24155 characters not shown — see `research/sources/bautin-1952-full.pdf.full.md`]*
+- The six-coefficient canonical focus form and the λ-centre condition are the
+  exact chart the run's `verify_lu_core` / Bautin-recurrence Lean files use —
+  and the warning from the claim ledger: this chart ring is NOT the full
+  six-parameter family, and its L8∉⟨L4,L6⟩ etc. membership facts must not be
+  quoted as M(2)=3 evidence either way.
+- Reproducing Bautin's M(2)=3 exactly (Lyapunov quantities over Q + the ideal
+  they generate) is the declared feasibility-boundary task.

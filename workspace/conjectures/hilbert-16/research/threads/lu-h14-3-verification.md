@@ -5,10 +5,10 @@ question: Does the finite computational core of Lu arXiv:2607.13785 (local unifo
           finite cyclicity of the H14_3 semihyperbolic hemicycle) stand up to
           independent exact re-derivation and a kernel check, or does it fail?
 status: open
-rests-on: RR 2015 leave H14_3 as the one triple-point-at-infinity graphic with no
-          partial result (research/threads/drr-status.md); Lu's paper is an
-          unrefereed 2026 preprint claiming to close it, shipping a
-          h14_3_reproducibility bundle (Bautin-recurrence and center-basis scripts).
+rests-on: drr-rr-boundary-only-for-3-graphics (RR 2015 leave H14_3 with no partial
+          result — the one triple-point-at-infinity graphic), h16-drr-open-rows,
+          h16-drr-h14-3-lu-2026-claim, lu-h14-3-bundle-scripts-now-held,
+          g-lean-cert-kernel-checked (identity half kernel-closed).
 blocked-by: none for the computational core — Lu's own reproducibility scripts and
           definitions in research/summaries/lu-h14-3-hemicycle.md are the input.
 next: (directive 5) The algebraic core is VERIFIED and kernel-closed —
@@ -33,9 +33,26 @@ next: (directive 5) The algebraic core is VERIFIED and kernel-closed —
       re-capture lean_check: code/out/lean/*.json is stale (still reports
       compiled:false and pre-fix declarations). What stays existential, and
       asserted-by-source rather than established: Lu's Theorem 1 (finite
-      cyclicity of H14_3, unrefereed, bound B existential; the two bundle
-      scripts verify_h14_center_bautin.py and
-      verify_h14_center_global_domains.py still not held).
+      cyclicity of H14_3, unrefereed, bound B existential).
+
+UPDATE (scholar, this cycle): the two bundle scripts are now HELD —
+      research/sources/lu-h14-3-verify-center-bautin.py.full.md and
+      lu-h14-3-verify-center-global-domains.py.full.md (claim
+      lu-h14-3-bundle-scripts-now-held, notes in research/summaries/).
+      verify_h14_center_bautin.py reproduces the (B9)-(B10) focal values:
+      L1=(AC+CD+2DF-EF)/8, the omega-parametrization reduced L1 numerator
+      ell1 (denominator 8w^5), both centre components (a=0,d=0; m=-B,d=-a)
+      annihilating L2, and L2|ell1=0 = (a(B+m)/48)eps^2 -> U(0)=1/48.
+      verify_h14_center_global_domains.py checks the two global centre
+      components (reversible first integral zero Lie derivative + barrier
+      identity; quadratic inverse integrating factor (1+y)k/(a^2-1) + gate
+      point + axis factor). IMPORTANT: both scripts are HELD but NOT
+      re-executed in this workspace yet — the U(0)=1/48 and
+      both-components-vanishing and global-domain-barrier statements remain
+      asserted-by-source. The identity half these scripts share with the
+      clean-room run (8L4, 192L6+P30, Darboux cofactors) IS verified here.
+      next-step: clean-room re-run of both scripts, capture to code/out, to
+      upgrade the bundle rows from `asserted` to `checked`.
 ```
 
 ## Why this is the most valuable target in the workspace

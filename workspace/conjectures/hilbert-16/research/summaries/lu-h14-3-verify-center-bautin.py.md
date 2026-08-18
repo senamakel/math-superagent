@@ -1,128 +1,74 @@
-<!-- source: https://arxiv.org/src/2607.13785v2/anc/h14_3_reproducibility/certificates/verify_h14_center_bautin.py | converted from plain text -->
+# Lu (2026) bundle script — verify_h14_center_bautin.py
 
-#!/usr/bin/env python3
-"""Reproduce the focal calculations used in blueprint equations (B9)-(B10)."""
+<!-- src: arxiv.org/src/2607.13785v2/anc/h14_3_reproducibility/certificates/verify_h14_center_bautin.py | plain text. Full text: [[lu-h14-3-verify-center-bautin.py.full]]. -->
 
-import sympy as sp
+```claim
+id: lu-h14-3-bautin-focal-values-u0
+statement: In the H14^3 chart, the Bautin/Lyapunov recurrence gives L1=(AC+CD+2DF-EF)/8.
+  Under the H14 omega-parametrization A=B/w, C=a(2B-1)/w^2, D=(a^2(B-1)+m-ad)/w^3,
+  E=1/w, F=(a+d)/w^2 with w^2=1-a^2, the reduced L1 numerator (mod w^2=1-a^2) is
+  ell1=2B^2a+2Bam-Ba-2a^2d+am-2ad^2-a+2md-d with denominator 8w^5. Both exact centre
+  components (a=0,d=0) and (m=-B,d=-a) annihilate the second focal value L2, and
+  along the L1=0 branch L2|ell1=0 = (a(B+m)/48)*eps^2 + O(eps^3), i.e. the
+  coefficient U(0)=1/48.
+hypotheses: H14^3 five-coefficient chart; the rotation recurrence of
+  verify_bautin_recurrence/verify_lu_core with radial gauge c_{k,0}=0.
+holds-here: yes
+status: asserted
+bearing: supplies the second focal value's structure on each centre component —
+  the content behind Lu's Bautin-trick division of the displacement; a clean-room
+  re-run (capture to code/out/) would upgrade to checked.
+anchor: research/sources/lu-h14-3-verify-center-bautin.py.full.md
+follows-from: lu-finite-core-identity-half-checked, lu-h14-3-bundle-scripts-now-held
+```
 
-u, v = sp.symbols("u v")
-A, C, D, E, F = sp.symbols("A C D E F")
-a, B, m, d, w, eps = sp.symbols("a B m d w eps")
+## What this script establishes (reproducibility certificate for blueprint (B9)–(B10))
 
-q1 = A * u**2 + C * u * v + D * v**2
-q2 = E * u * v + F * v**2
+Exact sympy recomputation of the focal values of the H14³ center-ideal machinery:
 
-def linear_part(poly):
-    return sp.expand(-v * sp.diff(poly, u) + u * sp.diff(poly, v))
+1. **Focal-value recurrence.** With V₂=(u²+v²)/2 and the rotation
+   `R = −v∂_u + u∂_v`, iterates the degree-3..6 system
+   `R(V_k) + Q₁∂V_{k−1}/∂u + Q₂∂V_{k−1}/∂v = L_{k/2}·(u²+v²)^{k/2}`
+   (Q₁=Au²+Cuv+Dv², Q₂=Euv+Fv²), radial-gauge c_{k,0}=0, recovering
+   `L₁ = (AC+CD+2DF−EF)/8` (degree 4) and the degree-6 focal value L₂.
 
-def quadratic_part(poly):
-    return sp.expand(q1 * sp.diff(poly, u) + q2 * sp.diff(poly, v))
+2. **H14 ω-parametrization** of the five coefficients:
+   `A=B/w, C=a(2B−1)/w², D=(a²(B−1)+m−ad)/w³, E=1/w, F=(a+d)/w², w²=1−a²`.
+   Substituting reduces L₁ (mod w²=1−a²) to the numerator
+   `ℓ₁ = 2B²a+2Bam−Ba−2a²d+am−2ad²−a+2md−d` with denominator 8w⁵.
 
-V = {2: (u**2 + v**2) / 2}
-focal = {}
+3. **Both exact center components annihilate L₂**: `L₂|(a=0,d=0)=0` and
+   `L₂|(m=−B,d=−a)=0`.
 
-for degree in range(3, 7):
-    coeffs = sp.symbols(f"c{degree}_0:{degree + 1}")
-    candidate = sum(
-        coeffs[j] * u ** (degree - j) * v**j
-        for j in range(degree + 1)
-    )
-    unknowns = list(coeffs)
-    target = 0
-    if degree % 2 == 0:
-        obstruction = sp.symbols(f"L{degree // 2 - 1}")
-        unknowns.append(obstruction)
-        target = obstruction * (u**2 + v**2) ** (degree // 2)
+4. **Along the L₁=0 branch** (ℓ₁ solved to 2nd order in the radial ε-scaling,
+   d=−εa+…) the reduced second focal value is
+   `L₂|ℓ₁=0 = (a(B+m)/48)·ε² + O(ε³)`, i.e. **U(0)=1/48** — the coefficient
+   that measures how the second focal value opens away from the centre
+   components.
 
-    equation = sp.Poly(
-        linear_part(candidate) + quadratic_part(V[degree - 1]) - target,
-        u,
-        v,
-    )
-    equations = [
-        equation.coeff_monomial(u ** (degree - j) * v**j)
-        for j in range(degree + 1)
-    ]
-    if degree % 2 == 0:
-        equations.append(coeffs[0])  # radial gauge
+## Hypotheses / holds here
 
-    solution = sp.solve(
-        equations, unknowns, dict=True, simplify=False, rational=True
-    )[0]
-    V[degree] = sp.expand(candidate.subs(solution))
-    if degree % 2 == 0:
-        focal[degree] = sp.factor(solution[obstruction])
+Quadratic H14³ source-normalized family; the Bautin/Lyapunov recurrence and the
+two known centre components. **Holds here: yes as asserted-by-source** — the
+script is now HELD (the long-missing bundle row is closed), and the algebraic
+content it checks (focal-value recurrence, L₁ numerator, both-components
+vanishing, U(0)=1/48) is consistent with this run's clean-room verification of
+the same recurrence (`code/bautin/verify_lu_core.py`, capture
+`code/out/lu_core.captured.txt`). But this specific script's output has **not**
+been re-executed byte-for-byte in this workspace yet — the identity half
+(`192·L₆+P30=0`, Darboux cofactors, `8L₄=AC+CD+2DF−EF`) was independently
+verified; the two-center-components-vanishing and U(0)=1/48 statements remain
+asserted-by-source until run.
 
-expected_L1 = (A * C + C * D + 2 * D * F - E * F) / 8
-assert sp.simplify(focal[4] - expected_L1) == 0
+**Evidence class: asserted-by-source** (original bundle script held; not yet
+re-executed here).
 
-omega_substitution = {
-    A: B / w,
-    C: a * (2 * B - 1) / w**2,
-    D: (a**2 * (B - 1) + m - a * d) / w**3,
-    E: 1 / w,
-    F: (a + d) / w**2,
-}
+## Bearing / implication
 
-ell1 = (
-    2 * B**2 * a
-    + 2 * B * a * m
-    - B * a
-    - 2 * a**2 * d
-    + a * m
-    - 2 * a * d**2
-    - a
-    + 2 * m * d
-    - d
-)
-
-L1_sub = sp.together(focal[4].subs(omega_substitution))
-num1, den1 = sp.fraction(L1_sub)
-num1 = sp.rem(
-    sp.Poly(num1, w), sp.Poly(w**2 - (1 - a**2), w)
-).as_expr()
-assert sp.factor(num1 - ell1) == 0
-assert sp.factor(den1 - 8 * w**5) == 0
-
-L2_sub = sp.together(focal[6].subs(omega_substitution))
-num2, den2 = sp.fraction(L2_sub)
-num2 = sp.rem(
-    sp.Poly(num2, w), sp.Poly(w**2 - (1 - a**2), w)
-).as_expr()
-
-# Both exact center components annihilate the second focal obstruction.
-assert sp.factor(num2.subs({a: 0, d: 0})) == 0
-assert sp.factor(num2.subs({m: -B, d: -a})) == 0
-
-# Solve ell1=0 along the radial scaling through the order needed for U(0).
-d2, d3 = sp.symbols("d2 d3")
-d_series = -eps * a + eps**2 * d2 + eps**3 * d3
-scaled_ell1 = sp.expand(
-    ell1.subs({a: eps * a, B: eps * B, m: eps * m, d: d_series})
-)
-eq2 = sp.expand(scaled_ell1).coeff(eps, 2)
-solution_d2 = sp.solve(eq2, d2)[0]
-d_series = sp.expand(d_series.subs(d2, solution_d2))
-scaled_ell1 = sp.expand(
-    ell1.subs({a: eps * a, B: eps * B, m: eps * m, d: d_series})
-)
-eq3 = sp.expand(scaled_ell1).coeff(eps, 3)
-solution_d3 = sp.solve(eq3, d3)[0]
-d_series = sp.expand(d_series.subs(d3, solution_d3))
-
-root_to_second_order = -a + solution_d2
-unscaled_L2 = focal[6].subs(omega_substitution).subs(
-    {d: root_to_second_order, w: sp.sqrt(1 - a**2)}
-)
-scaled_L2 = unscaled_L2.subs(
-    {a: eps * a, B: eps * B, m: eps * m}, simultaneous=True
-)
-series_L2 = sp.series(scaled_L2, eps, 0, 4).removeO().expand()
-assert sp.factor(series_L2.coeff(eps, 2) - a * (B + m) / 48) == 0
-
-print("L1 =", sp.factor(focal[4]))
-print("L2 universal numerator terms =", len(sp.Poly(sp.together(focal[6]).as_numer_denom()[0], A, C, D, E, F).terms()))
-print("H14 L1 numerator check: OK")
-print("L2 vanishes on both center components: OK")
-print("L2|L1=0 =", sp.factor(series_L2.coeff(eps, 2)), "+ O(eps^3)")
-print("U(0) = 1/48")
+- Closes CONTEXT gap‑2's "two bundle scripts still not held" for this script.
+- Supplies the second focal value's structure on each centre component — the
+  concrete content behind Lu's Bautin-trick division of the displacement; a
+  clean-room re-run (capture to code/out/) is the next verification step and
+  would upgrade this row to `checked`.
+- Does NOT establish Lu's Theorem 1 (the analytic/domain remainder; existential
+  bound); it verifies only the finite algebraic core behind (B9)–(B10).

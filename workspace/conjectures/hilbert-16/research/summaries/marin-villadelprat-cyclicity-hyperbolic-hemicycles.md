@@ -1,6 +1,6 @@
 # Marín–Villadelprat 2025 — cyclicity of hyperbolic hemicycles
 
-Full text: [[marin-villadelprat-cyclicity-hyperbolic-hemicycles.full]]. arXiv:2501.16924 (J. Diff. Eq. 2025).
+Full text: [[marin-villadelprat-cyclicity-hyperbolic-hemicycles.full]]. arXiv:2501.16924; **published** as J. Differential Equations 258, doi:10.1016/j.jde.2025.113281 (2025).
 
 ## What the source establishes (held full text)
 

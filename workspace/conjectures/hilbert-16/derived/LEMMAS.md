@@ -8,88 +8,90 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 
 | Declaration | Kind | Standing | Statement | Source | File |
 | --- | --- | --- | --- | --- | --- |
-| `LuH14.P30poly` | def | unchecked | : PRing | — | `code/lean/Lib/CheckProof.lean` |
-| `LuH14.PRing` | abbrev | unchecked | — | — | `code/lean/Lib/CheckProof.lean` |
-| `LuH14.W6coeffs` | def | unchecked | : Fin 30 → ℤ | — | `code/lean/Lib/CheckProof.lean` |
-| `LuH14.W6poly` | def | unchecked | : PRing | — | `code/lean/Lib/CheckProof.lean` |
-| `LuH14.Xv` | def | unchecked | (i : Fin 5) : PRing | — | `code/lean/Lib/CheckProof.lean` |
-| `LuH14.h14_p30_check` | theorem | unchecked | : P30poly + W6poly = 0 | — | `code/lean/Lib/CheckProof.lean` |
-| `LuH14.monomial` | def | unchecked | (m : Fin 5 → ℕ) : PRing | — | `code/lean/Lib/CheckProof.lean` |
-| `LuH14.w6_is_neg_coeffs` | theorem | unchecked | (k : Fin 30) : W6coeffs k = - Generated.coeffs k | — | `code/lean/Lib/CheckProof.lean` |
-| `LuH14.w6poly_eq_neg` | theorem | unchecked | : W6poly = - P30poly | — | `code/lean/Lib/CheckProof.lean` |
-| `Bautin.Cited.bautin_finite_generation` | axiom | failed | : | Bautin 1952, as above. | `code/lean/Lib/Bautin.lean` |
-| `Bautin.Cited.cyclicity` | axiom | failed | : QuadraticFocusField → ℕ | Bautin 1952. The number of limit cycles bifurcating from a weak focus | `code/lean/Lib/Bautin.lean` |
-| `Bautin.Cited.cyclicity_eq_three_attained` | axiom | failed | : ∃ f : QuadraticFocusField, cyclicity f = 3 | Bautin 1952. **M(2) = 3, the realisation** — without it the bound alone | `code/lean/Lib/Bautin.lean` |
-| `Bautin.Cited.cyclicity_le_three` | axiom | failed | : ∀ f : QuadraticFocusField, cyclicity f ≤ 3 | Bautin 1952. **M(2) = 3, the bound.** | `code/lean/Lib/Bautin.lean` |
-| `Bautin.Cited.focalValue` | axiom | failed | : ℕ → LyapunovRing | N. N. Bautin, "On the number of limit cycles which appear with the | `code/lean/Lib/Bautin.lean` |
-| `Bautin.Cited.focalValue_eq` | axiom | failed | : | as `focalValue`. The cited sequence's first three members are the three | `code/lean/Lib/Bautin.lean` |
-| `Bautin.LyapunovRing` | abbrev | failed | — | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.M_two_eq_three` | theorem | failed | : | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.ParamIndex` | abbrev | failed | — | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.QuadraticFocusField` | structure | failed | where | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.QuadraticFocusField.coeffVec` | def | failed | (f : QuadraticFocusField) : ParamIndex → ℚ | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V1` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V1_ne_zero` | theorem | failed | : V1 ≠ 0 | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V1num` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V1num_ne_zero` | theorem | failed | : V1num ≠ 0 | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V2` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V2num` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V3` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.V3num` | def | failed | : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.bautinIdeal` | def | failed | : Ideal LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.bautinIdeal3` | def | failed | : Ideal LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.bautin_ideal_eq_span_three` | theorem | failed | : bautinIdeal = bautinIdeal3 | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.evalAt` | def | failed | (V : LyapunovRing) (f : QuadraticFocusField) : ℚ | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.mono` | def | failed | (m : ParamIndex → ℕ) : LyapunovRing | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.scaled_ne_zero` | theorem | failed | {q : ℚ} (hq : q ≠ 0) {p : LyapunovRing} (hp : p ≠ 0) : | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.v2coeffs` | def | failed | : Fin 56 → ℤ | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.v2coeffs_nontrivial` | theorem | failed | : ∃ k : Fin 56, v2coeffs k ≠ 0 | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.v2ms` | def | failed | : Fin 56 → ParamIndex → ℕ | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.v3coeffs` | def | failed | : Fin 220 → ℤ | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.v3coeffs_nontrivial` | theorem | failed | : ∃ k : Fin 220, v3coeffs k ≠ 0 | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.v3ms` | def | failed | : Fin 220 → ParamIndex → ℕ | — | `code/lean/Lib/Bautin.lean` |
-| `Bautin.wit` | def | failed | : ParamIndex → ℚ | — | `code/lean/Lib/Bautin.lean` |
-| `below,.LuH14.F` | def | failed | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.FiveParam` | structure | failed | where | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.Generated.Var` | abbrev | failed | — | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.Generated.coeffs` | def | failed | : Fin 30 → ℤ | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.Generated.ms` | def | failed | : Fin 30 → Var → Nat | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.L` | def | failed | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.L4num` | def | failed | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.P30poly` | def | failed | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.PRing` | abbrev | failed | — | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.W6coeffs` | def | failed | : Fin 30 → ℤ | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.W6poly` | def | failed | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.X` | def | failed | (p : FiveParam) : (ℝ × ℝ) → (ℝ × ℝ) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.Xv` | def | failed | (i : Fin 5) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.a` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.alpha` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.bautin_L4_identity` | theorem | failed | : | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.bautin_L6_identity` | theorem | failed | : P30poly + W6poly = 0 | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.beta` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.c` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.darboux_F_identity` | theorem | failed | (p : FiveParam) (x y : ℝ) : | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.darboux_L_identity` | theorem | failed | (p : FiveParam) (x y : ℝ) : | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.ell` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.gamma` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.monomial` | def | failed | (m : Fin 5 → ℕ) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.param_identities` | theorem | failed | (p : FiveParam) : | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.sigma` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.tau` | def | failed | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `below,.LuH14.w6_neg` | theorem | failed | : ∀ k : Fin 30, W6coeffs k = -Generated.coeffs k | — | `code/lean/Lib/BautinRecurrence.lean` |
-| `LuH14.Generated.Var` | abbrev | failed | — | — | `code/lean/Lib/Generated/P30Data.lean` |
-| `LuH14.Generated.coeffs` | def | failed | : Fin 30 → ℤ | — | `code/lean/Lib/Generated/P30Data.lean` |
-| `LuH14.Generated.ms` | def | failed | : Fin 30 → Var → Nat | — | `code/lean/Lib/Generated/P30Data.lean` |
-| `H16.IsLimitCycle` | def | failed | (X : Plane → Plane) (γ : ℝ → Plane) : Prop | — | `code/lean/Lib/Statement.lean` |
-| `H16.LimitCycleSet` | def | failed | (X : Plane → Plane) : Set (Set Plane) | — | `code/lean/Lib/Statement.lean` |
-| `H16.PlanarPolyField` | structure | failed | (n : ℕ) where | — | `code/lean/Lib/Statement.lean` |
-| `H16.PlanarPolyField.limitCycleCount` | def | failed | (f : PlanarPolyField n) : ℕ | — | `code/lean/Lib/Statement.lean` |
-| `H16.PlanarPolyField.toMap` | def | failed | (f : PlanarPolyField n) : Plane → Plane | — | `code/lean/Lib/Statement.lean` |
-| `H16.Plane` | abbrev | failed | : Type | — | `code/lean/Lib/Statement.lean` |
-| `H16.h16_2` | theorem | failed | : | — | `code/lean/Lib/Statement.lean` |
-| `H16.now` | theorem | failed | states `(LimitCycleSet f.toMap).Finite ∧ ...ncard ≤ N`. | — | `code/lean/Lib/Statement.lean` |
+| `below,.LuH14.F` | def | verified | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.FiveParam` | structure | verified | where | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.Generated.Var` | abbrev | verified | — | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.Generated.coeffs` | def | verified | : Fin 30 → ℤ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.Generated.ms` | def | verified | : Fin 30 → Var → Nat | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.L` | def | verified | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.L4num` | def | verified | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.L4num_ne_zero` | theorem | verified | : L4num ≠ 0 | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.P30poly` | def | verified | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.PRing` | abbrev | verified | — | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.W6coeffs` | def | verified | : Fin 30 → ℤ | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.W6poly` | def | verified | : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.X` | def | verified | (p : FiveParam) : (ℝ × ℝ) → (ℝ × ℝ) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.Xv` | def | verified | (i : Fin 5) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.a` | def | verified | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.alpha` | def | verified | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.bautin_L4_identity` | theorem | verified | : | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.bautin_L6_identity` | theorem | verified | : P30poly + W6poly = 0 | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.beta` | def | verified | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.c` | def | verified | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.darboux_F_identity` | theorem | verified | (p : FiveParam) (x y : ℝ) : | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.darboux_L_identity` | theorem | verified | (p : FiveParam) (x y : ℝ) : | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.ell` | def | verified | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.gamma` | def | verified | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.monomial` | def | verified | (m : Fin 5 → ℕ) : PRing | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.param_identities` | theorem | verified | (p : FiveParam) : | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.sigma` | def | verified | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.tau` | def | verified | (p : FiveParam) | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `below,.LuH14.w6_neg` | theorem | verified | : ∀ k : Fin 30, W6coeffs k = -Generated.coeffs k | — | `code/lean/Lib/BautinRecurrence.lean` |
+| `Certificate.eval_cert_nonmem` | theorem | verified | — | — | `code/lean/Lib/Certificate.lean` |
+| `Certificate.eval_point_cert_nonmem` | theorem | verified | — | — | `code/lean/Lib/Certificate.lean` |
+| `DRR.Cited.finite_cyclicity_implies_uniform_bound` | axiom | verified | : | DRR 1994, "Hilbert's 16th problem for quadratic vector fields", JDE | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.Cited.ilyashenko_reports_121` | axiom | verified | : Fintype.card GraphicId = 121 | Ilyashenko 2002, "Centennial history of Hilbert's 16th problem", | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.Cited.rrs_reports_121` | axiom | verified | : Fintype.card GraphicId = 121 | Roussarie-Rousseau 2015, arXiv:1506.07104, intro (Trans. Moscow Math. | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.Cited.rsz_reports_121` | axiom | verified | : Fintype.card GraphicId = 121 | Rousseau-Shan-Zhu 2015, arXiv:1502.00689, intro. RSZ reports the count | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.Cited.secondary_sources_agree` | theorem | verified | : | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.Cited.secondary_sources_each_report` | theorem | verified | : | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.FinitelyCyclic` | axiom | verified | : GraphicId → Prop | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.GraphicId` | abbrev | verified | : Type | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.QuadraticSystem` | structure | verified | where | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.UniformQuadraticBound` | def | verified | : Prop | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.drr_reduction` | theorem | verified | : | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `DRR.nLimitCycles` | axiom | verified | (f : QuadraticSystem) : ℕ | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
+| `LuH14.Cited.hemicycle_local_uniform_cyclicity` | axiom | verified | : | H. Lu, "Local Uniform Finite Cyclicity of the H1^4_3 Semihyperbolic | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.F` | def | verified | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.FiveParam` | structure | verified | where | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.Generated.Var` | abbrev | verified | — | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.Generated.coeffs` | def | verified | : Fin 30 → ℤ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.Generated.ms` | def | verified | : Fin 30 → Var → Nat | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.L` | def | verified | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.L4num` | def | verified | : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.L4num_ne_zero` | theorem | verified | : L4num ≠ 0 | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.L4wit` | def | verified | : Fin 5 → ℤ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.P30coeffs_nontrivial` | theorem | verified | : ∃ k : Fin 30, Generated.coeffs k ≠ 0 | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.P30poly` | def | verified | : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.PRing` | abbrev | verified | — | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.Unfolding` | structure | verified | where | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.W6coeffs` | def | verified | : Fin 30 → ℤ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.W6poly` | def | verified | : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.X` | def | verified | (p : FiveParam) : (ℝ × ℝ) → (ℝ × ℝ) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.Xv` | def | verified | (i : Fin 5) : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.a` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.alpha` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.beta` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.bridge_identities` | theorem | verified | (p : FiveParam) : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.c` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.darboux_F_identity` | theorem | verified | (p : FiveParam) (x y : ℝ) : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.darboux_L_identity` | theorem | verified | (p : FiveParam) (x y : ℝ) : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.degree4_obstruction` | theorem | verified | : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.degree6_identity` | theorem | verified | : P30poly + W6poly = 0 | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.div_X_cofactor` | theorem | verified | (p : FiveParam) (x y : ℝ) : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.drr_lu_claims_h14_3` | theorem | verified | : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.ell` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.gamma` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.monomial` | def | verified | (m : Fin 5 → ℕ) : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.nLimitCyclesInCollar` | axiom | verified | (lam : Unfolding) (U : Set (ℝ × ℝ)) : ℕ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.sigma` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.tau` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.w6_neg` | theorem | verified | : ∀ k : Fin 30, W6coeffs k = -Generated.coeffs k | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
+| `LuH14.F` | def | verified | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/h16_2_h14_3_finite_cyclicity_G_lean_cert-d8de5a7b.lean` |
 
-80 declarations, 0 of them in a file the kernel has checked.
+_183 more not shown here; they are in `code/lean`._
+
+263 declarations, 200 of them in a file the kernel has checked.
 
 ## Never checked
 
@@ -97,3 +99,5 @@ These files are in the tree and no `lean_check` verdict exists for them. Nothing
 
 - `code/lean/Lib/CheckProof.lean`
 - `code/lean/check/lakefile.lean`
+- `code/lean/del_attribution_probe.lean`
+- `code/lean/h16_dulac_finiteness-ed8142ab.lean`

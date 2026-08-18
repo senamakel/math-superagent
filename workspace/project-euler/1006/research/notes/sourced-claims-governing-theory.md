@@ -58,7 +58,8 @@ hypotheses: binary word, Sturmian (irrational mechanical / balanced and
 aperiodic).
 holds-here: yes — the problem asserts the k+1 count; the theorem is the
 standard explanation and the brute oracle confirms count = k+1 for k=1..20.
-status: sourced (confirmable in-container via code/out/PE1006-verification.md)
+status: conditional
+formalisation: code/lean/governing_factor_complexity-542ce8cd.lean
 anchor: research/sources/perrin-restivo-note-sturmian-words.full.md (Theorem 1,
 definition in Section 2); research/sources/perrin-sturmian-words-lecture2-mechanical.full.md
 (Morse–Hedlund 1940 equivalence); research/sources/fibonacci-word-2d-factor-complexity-ar5iv.full.md
@@ -66,6 +67,22 @@ definition in Section 2); research/sources/perrin-sturmian-words-lecture2-mechan
 bearing: Confirms the object set: exactly k+1 distinct subwords per length,
 so Psi(k) is a sum of squares over k+1 decimals.
 answers: citable-statement-theorem-039a
+status: conditional (kernel-checked implication; hypotheses are literature) —
+  formalisation: code/lean/governing_factor_complexity-542ce8cd.lean
+- The governing clause is PROVED sorry-free: `governing_theorem_pos` — a
+  Sturmian word (Morse–Hedlund definition: factorComplexity s n = n+1 ∀ n) has
+  exactly k+1 length-k factors; axioms propext/Classical.choice/Quot.sound only.
+- The Fibonacci-word consequence `fib_subword_count : (FibSubwords k).ncard =
+  k+1` (the problem's "only k+1 different Fibonacci subwords of length k") is
+  CONDITIONAL, kernel-checked on two Cited axioms:
+  * Cited.fibonacci_sturmian — infinite Fibonacci word F is Sturmian
+    (Perrin–Restivo Thm 1, mechanical word of irrational slope 1/phi^2);
+  * Cited.factors_stabilise — (FibSubwords k).ncard = factorComplexity F k,
+    stabilisation of the nested S_n factor chain (needs a formal limit word F,
+    not in Mathlib; the monotone shell is proved in
+    code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean).
+  Both are declared open gaps (gond-fib-sturmian, gond-stabilisation) with
+  `next` moves in the file's decomposition map.
 ```
 
 ```claim
@@ -139,6 +156,33 @@ research/sources/atcoder-math-hpp-v151.full.md (floor_sum)
 bearing: This is the O(log) primitive that makes Psi(10^18) mod M computable
 without enumerating ~10^18 terms.
 answers: citable-name-treatment-0c91, citable-precise-statement-600d, citable-precise-statement-d2e7
+```
+
+---
+
+```claim
+id: fibonacci-position-theorem-contiguous-windows
+statement: For the 1D Fibonacci word f_∞ (rabbit/1<->0-complement convention,
+f_∞ = abaababaabaab...), with F(n) the n-th Fibonacci number and f_n the finite
+Fibonacci word f_0=a, f_1=ab, f_{n+1}=f_n f_{n-1}: for n >= 2 and
+F(n) <= k < F(n+1), the k+1 distinct length-k factors of f_∞ are exactly the
+length-k prefixes/contiguous windows of T^i(f_{n+1}) for
+i in {0,...,F(n)-1} U {F(n+2)-k-1,...,F(n+1)-1}, where T is left rotation.
+Equivalently (Lemma 2, conjugate-prefix form): for 1 <= k < F(n), the k+1
+prefixes of length k of T^0(q_n), T^{-1}(q_n), ..., T^{-k}(q_n) (q_n the special
+conjugate of f_n) are the k+1 distinct length-k factors.
+hypotheses: f_∞ the 1D Fibonacci word (characteristic Sturmian of slope the
+complement of PE1006's; factor sets invariant under digit complement), F(n) the
+Fibonacci numbers, k in the stated range.
+holds-here: yes (factor sets of the Fibonacci word, digit-complement invariant;
+this is the citable statement behind directive 9 Claim 1's "k+1 distinct
+length-k factors = contiguous windows at prescribed positions").
+status: sourced
+anchor: research/sources/fibonacci-1d-2d-enumerate-locate-factors-ar5iv.full.md
+(arXiv:2207.04304, Lemma 2 and Proposition 1); convention/caveat in
+research/summaries/fibonacci-1d-2d-enumerate-locate-factors-ar5iv.md.
+answers: (directive 9, Claim 1 — the missing citable statement for the
+contiguous-window claim; check exact absolute window indices against mech_psi)
 ```
 
 ---

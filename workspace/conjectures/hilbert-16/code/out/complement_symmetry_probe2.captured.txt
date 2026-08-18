@@ -1,0 +1,17 @@
+== Signed-permutation involutions on 5 letters ==
+number: 312
+attainable fixed counts at h=4: [6, 22, 70]
+10 attainable at h=4? False
+
+== full match search over h = 2,4,6,8,10,12,14 ==
+exact matches over all 7 h: 0
+
+== best partial match: how many of the 7 targets are hit ==
+  hits 1/7  perm=(0, 1, 2, 4, 3) signs=(1, 1, 1, 1, 1) counts=(7, 22, 50, 95, 161, 252, 372)
+  hits 1/7  perm=(0, 1, 2, 4, 3) signs=(1, 1, 1, -1, -1) counts=(7, 22, 50, 95, 161, 252, 372)
+  hits 1/7  perm=(0, 1, 2, 4, 3) signs=(1, 1, -1, 1, 1) counts=(7, 22, 50, 95, 161, 252, 372)
+  hits 1/7  perm=(0, 1, 2, 4, 3) signs=(1, 1, -1, -1, -1) counts=(7, 22, 50, 95, 161, 252, 372)
+  hits 1/7  perm=(0, 1, 2, 4, 3) signs=(1, -1, 1, 1, 1) counts=(7, 22, 50, 95, 161, 252, 372)
+
+VERDICT: oddness under a signed-permutation involution explains a_d
+only if a full match exists; otherwise the pairing picture is dead.

@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "pe1006-psi/G2-mechanical-word-representation",
   "source": "code/lean/pe1006_psi_G2_mechanical_word_representation-1f79c34f.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

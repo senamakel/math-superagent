@@ -10,17 +10,30 @@ A claim a program produced — `status: checked`, or any claim naming a `refutat
 
 | Claim | Statement | Holds here | Evidence | Note |
 | --- | --- | --- | --- | --- |
+| `approach-certified-lower-bound-target-escalated` | The certified-lower-bound approach must escalate its target: a "twelfth small-amplitude cycle at a cubic focus" is ALREADY ACHIEVED in the literature — Torregrosa, "Cubic planar vector fields with high local cyclicity",… | yes | checked | `research/notes/claims.md` |
+| `approach-fewnomial-short-dulac-refuted` | The approach "model the whole displacement function around an open DRR graphic as a short (standard) Dulac germ — a finite sum of x^α(log x)^k terms plus a flat remainder — and bound its zeros by Ilyashenko's… | yes | checked | `research/notes/claims.md` |
 | `bautin-chart-membership-l8-l10-l12` | For the Lu/RR five-coefficient chart family Q1 = Au²+Cuv+Dv², Q2 = Euv+Fv² with the rotation recurrence R(c_k)+Q1·∂V_{k−1}/∂u+Q2·∂V_{k−1}/∂v = L_k·(u²+v²)^{k/2}, exact Gröbner over Q (lex,… | yes | checked | `research/notes/claims.md` |
+| `clt-2024-book-weak-h16-n2-chapter` | Christopher, Li, Torregrosa, "Limit Cycles of Differential Equations", 2nd ed., Birkhauser CRM Barcelona (2024), DOI 10.1007/978-3-030-59656-9: textbook TOC (held) shows Part II Ch. 4 "A Unified Proof of the Weak… | yes | catalogued | `research/summaries/christopher-li-torregrosa-limit-cycles-2024.md` |
+| `data-canard-2020-summary-broken-capture` | The held summary/source for Álvarez–Coll–De Maesschalck–Prohens (canard lower bounds, JDE 268 (2020) 3370–3391) is a broken "Redirecting" HTML capture with no mathematics; the paper's claims are carried at MaRDI-review… | yes | checked | `research/summaries/alvarez-coll-demaesschalck-prohens-canard-lower-bounds.md` |
 | `data-contamination-llibre-zhang` | The file research/sources/llibre-zhang-lienard-conjecture-survey.full.md does not contain the Llibre-Zhang Lienard survey: it is an unrelated arXiv paper on the German power grid (Mureddu, arXiv:1612.05532). Claims… | yes | checked | `research/summaries/llibre-zhang-lienard-conjecture-survey.md` |
+| `data-dulac-1923-fulltext-not-obtainable` | Dulac, "Sur les cycles limites", Bull. Soc. Math. Fr. 51 (1923) 45-188 — the canonical paper whose asymptotic-expansion error drives Test 1 (the smooth test) — remains unavailable as full text in this library. The… | yes | checked | `research/notes/claims.md` |
 | `data-landing-pages-inventory` | The following held files are landing/record pages with no mathematics beyond an abstract: rouseau-shan-zhu .full.md, yakovenko-quantitative-ode .full.md and .html.full.md, kaloshin .full.md, binyamini-novikov-yakovenko… | yes | checked | `research/summaries/landing-pages-inventory.md` |
-| `drr-1994-citation-anchor` | DRR 1994 (JDE 110:86-133) gives the list of all graphics and degenerate graphics (limit periodic sets surrounding the origin in quadratic systems) whose finite cyclicity implies a uniform bound on the number of limit… | yes | asserted | `research/summaries/dumortier-roussarie-rousseau-1994-121-graphics.md` |
+| `data-shao-li-hyperelliptic-lienard-landing-only` | The attempt to capture Shao & Li, "Limit cycles bifurcations of Liénard system with a hyperelliptic Hamiltonian of degree five" (EJQTDE 2024, doi:10.14232/ejqtde.2024.1.62) succeeded only to the level of the journal's… | yes | checked | `research/notes/claims.md` |
+| `data-stale-gap-2-lu-scripts-held` | CONTEXT.md Gap 2 lists verify_h14_center_bautin.py and verify_h14_center_global_domains.py as "still not held", but both ARE held in the library (research/sources/lu-h14-3-verify-center-bautin.py.full.md and… | yes | checked | `research/notes/claims.md` |
+| `drr-1994-citation-anchor` | DRR 1994 (JDE 110:86-133) gives the list of all graphics and degenerate graphics (limit periodic sets surrounding the origin in quadratic systems) whose finite cyclicity implies a uniform bound on the number of limit… | yes | conditional | `research/summaries/dumortier-roussarie-rousseau-1994-121-graphics.md` |
+| `drr-1994-record-held-verbatim` | The DRR 1994 paper "Hilbert's 16th problem for quadratic vector fields" (Dumortier, Roussarie, Rousseau; J. Differential Equations 110(1):86-133, 1994) is held as a verbatim bibliographic + abstract record from the… | yes | asserted | `research/notes/claims.md` |
+| `drr-demr-1996-elementary-graphics-abstract` | Dumortier, El Morsalani, Rousseau, "Hilbert's 16th problem for quadratic systems and cyclicity of elementary graphics", Nonlinearity 9(5) 1996, DOI 10.1088/0951-7715/9/5/008 — abstract + record held… | yes | asserted | `research/notes/claims.md` |
+| `drr-demr-1996-elementary-graphics-abstract` | Dumortier, El Morsalani, Rousseau, "Hilbert's 16th problem for quadratic systems and cyclicity of elementary graphics", Nonlinearity 9(5) 1996, DOI 10.1088/0951-7715/9/5/008 (abstract + record held; PDF paywalled):… | yes | asserted | `research/summaries/dumortier-rousseau-rousseau-1996-elementary-graphics-full.md` |
 | `drr-df1a-df2a-cyclicity-sourced` | Dumortier–Rousseau 2009 (Comm. Pure Appl. Anal. 8:1133–1157, "Study of the cyclicity of some degenerate graphics inside quadratic systems", full text now held from dms.umontreal.ca/~rousseac/ Dumortier_Rousseau.pdf)… | yes | asserted | `research/notes/claims.md` |
 | `drr-dgr-2002-elementary-closures` | Dumortier–Guzmán–Rousseau (2002, "Finite cyclicity of elementary graphics surrounding a focus or center in quadratic systems", Qual. Theory Dyn. Syst. 3:123–154) prove explicit small cyclicity bounds for seven named… | yes | asserted | `research/notes/claims.md` |
 | `drr-dmrt-2015-fake-saddle-cyclicity2` | De Maesschalck–Rebollo-Perdomo–Torregrosa 2015 (J. Differential Equations 258(2):588–620, "Cyclicity of a fake saddle inside the quadratic vector fields", open-access UAB DDD postprint now held in… | yes | asserted | `research/notes/claims.md` |
+| `drr-drr94-cyclicity-1-2-abstract` | Dumortier, Roussarie, Rousseau, "Elementary graphics of cyclicity 1 and 2", Nonlinearity 7(3):1001, 1994, DOI 10.1088/0951-7715/7/3/013 — abstract + record held… | yes | asserted | `research/notes/claims.md` |
+| `drr-drr94-cyclicity-1-2-abstract` | Dumortier, Roussarie, Rousseau, "Elementary graphics of cyclicity 1 and 2", Nonlinearity 7(3):1001, 1994, DOI 10.1088/0951-7715/7/3/013 (abstract + record held; PDF paywalled): (C^infinity, general) a graphic through… | yes | asserted | `research/summaries/roussarie-1994-elementary-graphics-cyclicity-1-2.md` |
 | `drr-huzak-df2a-closed` | The degenerate DRR graphic DF_{2a} has finite cyclicity (Huzak 2018, CPA 17(3):1305-1316), completing the study of the DF_{1a} family (DF_{1a} by Dumortier-Rousseau 2009). Technique: family blow-up + slow divergence… | yes | asserted | `research/summaries/huzak-cyclicity-degenerate-df2a.md` |
 | `drr-ledger-no-consolidated-post2020` | No consolidated graphic-by-graphic ledger of the 121 DRR graphics with a running closed-count and the paper closing each row exists in the published literature, as of this run's searches (2023-2025). Christiane Rousseau… | yes | asserted | `research/notes/claims.md` |
 | `drr-lu-claims-h14-3` | Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite cyclicity of the H^3_14 semihyperbolic hemicycle of quadratic fields: a fixed annular neighborhood and a finite uniform bound B over the full… | **unchecked** | asserted | `research/summaries/lu-h14-3-hemicycle.md` |
 | `drr-mv-hemicycle-cyclicity-2` | For the quadratic D-system (7) with (a0,b0) in (-2,0)x(0,2) (two centers, reversible class Q3^R), the cyclicity of the hyperbolic hemicycle Gamma_u (resp Gamma_l), perturbed inside the whole quadratic family, is exactly… | yes | asserted | `research/summaries/marin-villadelprat-cyclicity-hyperbolic-hemicycles.md` |
+| `drr-no-consolidated-post2020-ledger` | A consolidated, graphic-by-graphic, post-2020 ledger of the 121 DRR graphics (finite-cyclicity status per graphic, with the paper closing each row) does not exist in the published literature. Confirmed by a… | yes | asserted | `research/notes/claims.md` |
 | `drr-rousseau-2008-pp-center-cyclicity2-sourced` | Roussarie–Rousseau 2008 (Bull. Belg. Math. Soc. Simon Stevin, "Finite cyclicity of nilpotent graphics of pp-type surrounding a center", full text held from dms.umontreal.ca/~rousseac/Roussarie_Rousseau.pdf) proves… | yes | asserted | `research/notes/claims.md` |
 | `drr-rousseau-zhu-15-pp-graphics` | Any pp-graphic through a multiplicity-3 nilpotent singularity of elliptic type not surrounding a center in the DRR 121 list has finite cyclicity inside quadratic systems; Rousseau-Zhu (2002) prove this for 15 graphics.… | yes | asserted | `research/summaries/rousseau-zhu-pp-graphics-nilpotent-elliptic.md` |
 | `drr-rr-boundary-only-for-3-graphics` | For the DRR graphics (I^1_6b), (H^3_13) and (DI_2b) through a triple nilpotent point at infinity surrounding a center, only the boundary limit periodic set obtained in the blow-up has proved finite cyclicity (Theorem… | yes | asserted | `research/summaries/rousseau-roussarie-center-graphics-nilpotent.md` |
@@ -30,8 +43,13 @@ A claim a program produced — `status: checked`, or any claim naming a `refutat
 | `drr-zhu-2005-pp-graphics-16` | Zhu 2005 (Proc. proceedings "From the pp-graphics to the finiteness part of Hilbert's 16th problem for quadratic systems", full text held from YorkSpace bitstream 3526f30d) states Theorem 1.2: all 16 pp-graphics of… | yes | asserted | `research/notes/claims.md` |
 | `drr-zhu-rousseau-2002-nilpotent-machinery` | Zhu–Rousseau 2002 (J. Differential Equations 178:325–436, "Finite cyclicity of graphics with a nilpotent singularity of saddle or elliptic type", full text held from YorkSpace bitstream fc2121d3) proves finite cyclicity… | yes | asserted | `research/notes/claims.md` |
 | `drr-zhu-rousseau-2004-15-pp-graphics-16-total` | Rousseau & Zhu (2004), "PP-graphics with a nilpotent elliptic singularity in quadratic systems and Hilbert's 16th problem", JDE 196:169-208: (i) Theorem 1.1 restates the DRR reduction (uniform bound for quadratic iff… | yes | asserted | `research/notes/claims.md` |
+| `ecalle-1990-accelerosommation-record` | Écalle, "Finitude des cycles-limites et accéléro-sommation de l'application de retour", in Françoise–Roussarie (eds), Bifurcations of Planar Vector Fields, Luminy 1989, Lecture Notes in Mathematics 1455, Springer 1990,… | yes | asserted | `research/notes/claims.md` |
+| `ecalle-1990-accelerosommation-record` | Ecalle, "Finitude des cycles-limites et accelero-sommation de l'application de retour", in Francoise-Roussarie (eds), Bifurcations of Planar Vector Fields, Luminy 1989, LNM 1455 (Springer 1990), pp. 74-159:… | yes | asserted | `research/summaries/ecalle-1990-finitude-accelerosommation.md` |
 | `fake-saddle-dmrt-2015-cyclicity` | De Maesschalck–Rebollo-Perdomo–Torregrosa (2015), "Cyclicity of a fake saddle inside the quadratic vector fields", JDE 258(2):588–620, doi:10.1016/j.jde.2014.09.024: near an unfolded fake saddle (impassable grain, a… | yes | asserted | `research/notes/claims.md` |
 | `fake-saddle-uniform-transition-map-marin2026` | Marín 2026 (EJQTDE 2026 no.5, 1-10, "Fake saddles and their transition maps") characterizes generic fake saddles (zero-linear-part, non-zero-second-order-jet degenerate singularities, a.k.a. impassable grains) and gives… | yes | asserted | `research/summaries/marin-fake-saddles-transition-maps.md` |
+| `g-drr-status-exists-open-graphic` | The target-selection lemma of the H(2)<∞ DRR skeleton: "there exists at least one graphic Λ₀ recorded open in the current literature". Formalised as `GDRRStatus.exists_open_graphic : ∃ Λ₀ : GraphicId, ¬ Cited.closed Λ₀`… | yes | conditional | `research/notes/claims.md` |
+| `g-lean-cert-kernel-checked` | The finite core of G-lu-core is a kernel-checked Lean certificate (node h16-2-h14-3-finite-cyclicity/G-lean-cert). Over ℤ[A,C,D,E,F] (Fin 5) the kernel checks: (i) the degree-6 30-monomial identity 192·L6 + P30 = 0 in… | yes | formalised | `research/notes/claims.md` |
+| `g-resolve-resolution-exists` | The node G-resolve of research/backward/h16-2-finite-cyclicity.md: "a graphic Λ in the DRR list admits a resolution: each vertex (singular point) is brought by finitely many polynomial blow-ups within the quadratic… | yes | conditional | `research/notes/claims.md` |
 | `h16-121-vs-125-rrousseau-survey` | Chris Rousseau's own survey "Hilbert's 16th problem for quadratic vector fields and cyclicity of graphics" (Nonlin. Anal. 30(1), 1997) describes the DRR program as proving finite cyclicity of the 121 graphics and… | yes | asserted | `research/notes/claims.md` |
 | `h16-abelian-integral-bounds` | Tangential/infinitesimal H16: the number of isolated zeros of Abelian integrals (and so limit cycles born in a first-order perturbation of a Hamiltonian polynomial field) is uniformly bounded. Varchenko, Khovanskii… | yes | asserted | `research/notes/claims.md` |
 | `h16-alien-limit-cycles-abelian-insufficiency` | Luca–Dumortier–Caubergh–Roussarie (2009, "Detecting alien limit cycles near a Hamiltonian 2-saddle cycle", DCDS 25(4):1081–1108) construct a cubic Hamiltonian 2-saddle cycle (saddles at (−1,0),(1,0)) whose unfolding… | yes | asserted | `research/notes/claims.md` |
@@ -50,28 +68,10 @@ A claim a program produced — `status: checked`, or any claim naming a `refutat
 | `h16-drr-h14-3-lu-2026-claim` | H. Lu, "Local Uniform Finite Cyclicity of the H₁₄³ Semihyperbolic Hemicycle", arXiv:2607.13785 (Jul 2026, 80 pp., unrefereed preprint), claims finite cyclicity for exactly the (H³₁₄) graphic that Roussarie– Rousseau… | **unchecked** | asserted | `research/notes/claims.md` |
 | `h16-drr-lu-2026-does-not-complete-program` | Even if Lu 2026 is correct, the DRR program is not complete. The closure of (H³₁₄) is one graphic. As of RR 2015 the open/partially-open rows also include full graphics (I₆b¹), (H₁₃³), (DI₂b) (only boundary sets closed)… | yes | asserted | `research/notes/claims.md` |
 | `h16-drr-open-rows` | The DRR program is NOT complete: at least 33 of the 121 graphics were still open as of RSZ 2015 (88 closed), and the open rows lie overwhelmingly in the nilpotent and degenerate families. Named open / partially-open… | yes | asserted | `research/notes/claims.md` |
-| `h16-dulac-finiteness-theorem` | A planar polynomial vector field has only finitely many limit cycles; the same holds for an analytic vector field on the 2-sphere. Proved independently by Ilyashenko (1991) and Écalle (1992), after Ilyashenko found… | yes | asserted | `research/notes/claims.md` |
-| `h16-dulac-proof-contested` | The published proof (Ilyashenko's approach) of finiteness of limit cycles for the non-hyperbolic-polycycle case has a gap: the argument that the asymptotics admit proper leading terms (ordering) is insufficient, with an… | **unchecked** | asserted | `research/summaries/yeung-ilyashenko-finiteness-gap.md` |
-| `h16-dulac-reopened-community-view` | As of 2024, the mathematical community (per the Llibre survey) treats Dulac's finitude problem for individual fields as again under review: the proofs of Ecalle and Ilyashenko are not fully accepted, with a preprint… | yes | asserted | `research/summaries/llibre-abel-to-hilbert16-survey-2024.md` |
-| `h16-four-cycles-songling-galias-tucker` | The Songling quadratic system — ẋ = λx − y − 10x² + (5+δ)xy + y², ẏ = x + x² + (−25+8ε−9δ)xy with δ≈−10⁻¹³, ε≈−10⁻⁵², λ≈−10⁻²⁰⁰ — has EXACTLY four limit cycles, proved rigorously by interval arithmetic (adaptive… | yes | asserted | `research/notes/claims.md` |
-| `h16-gap-claims-2024` | The gap claim in Ilyashenko's approach to Dulac's finite-limits theorem is now made in PEER-REVIEWED form: Yeung, "Dulac's Theorem Revisited", Qual. Theory Dyn. Syst. 24 (2025) Art. 57, doi:10.1007/s12346-025-01220-2… | **unchecked** | asserted | `research/notes/claims.md` |
-| `h16-gasull-lazaro-torregrosa-abelian-zero-bounds-2010` | Gasull, Lázaro & Torregrosa (arXiv:1012.5201, 2010), "Upper bounds for the number of zeroes for some Abelian integrals": for the planar vector field x'=−yG(x,y), y'=xG(x,y) whose critical set {G=0} is K straight lines… | yes | asserted | `research/notes/claims.md` |
-| `h16-geometry-limitcycle-defn-refuted` | The "information-geometry" definition of limit cycle (count of singularities of \|R\| for a Fisher-information scalar curvature, arXiv 2024, H(n) = 2(n−1)(4(n−1)−2)) is NEITHER necessary NOR sufficient for the existence… | **unchecked** | asserted | `research/notes/claims.md` |
-| `h16-geometry-limitcycle-defn-refuted` | The "information-geometry" definition of a limit cycle (count of singularities of \|R\| for a Fisher-information scalar curvature) is neither necessary nor sufficient for limit cycles, so it cannot bound H(n). | yes | asserted | `research/summaries/buzzi-novaes-claim-h16.md` |
-| `h16-grau-manosas-villadelprat-chebyshev-2010` | Grau, Mañosas, Villadelprat, "A Chebyshev criterion for Abelian integrals", Trans. AMS (2010) — an extended Chebyshev-system criterion for bounding the number of zeros of Abelian integrals from the number of critical… | yes | asserted | `research/notes/claims.md` |
-| `h16-grau-manosas-villadelprat-chebyshev-2010` | Grau, Mañosas, Villadelprat, "A Chebyshev criterion for Abelian integrals", Trans. AMS 363 (2011) 109-129 (arXiv:0805.1140, held full): an extended Chebyshev criterion for Abelian integrals. Theorem A: for… | yes | asserted | `research/notes/claims.md` |
-| `h16-hilbert-1900-canonical-statement` | Hilbert's 16th problem, original 1900 wording (Newson translation, Bull. AMS 8 (1902) 437-479): for a first-order differential equation dy/dx = Y/X where X, Y are rational integral functions of degree n, determine the… | yes | asserted | `research/notes/claims.md` |
-| `h16-hn-lower-bound-asymptotic` | The Hilbert number H(n) grows at least as fast as (n+2)^2 log(n+2)/(2 log 2); equivalently liminf H(n)/((n+2)^2 log(n+2)) >= 1/(2 log 2); so H(n) is not bounded above by any quadratic polynomial in n. | yes | asserted | `research/summaries/buzzi-novaes-claim-h16.md` |
-| `h16-huzak-canard-hyperbolic-saddles-2022` | Huzak (2022), "Cyclicity of canard cycles with hyperbolic saddles located away from the critical curve", J. Differential Equations 320:479-509: for smooth (ε,µ)-families of planar slow-fast systems ẋ=f(x,y,ε,µ),… | yes | asserted | `research/notes/claims.md` |
-| `h16-ilyashenko-2016-digest-revised-proof` | Ilyashenko (2016), "Finiteness theorems for limit cycles: a digest of the revised proof", Izvestiya Math. 80(1):50-112 (first of two papers): a digest of the revised proof of the finiteness theorem for limit cycles of a… | yes | asserted | `research/notes/claims.md` |
-| `h16-kaloshin-indep-proof` | Kaloshin's weak local Hilbert-Arnold theorem gives an independent proof of the Ilyashenko-Yakovenko finiteness theorem: cyclicity of an elementary polycycle in a generic k-parameter family is finite. | yes | asserted | `research/summaries/kaloshin-around-hilbert-arnold.md` |
-| `h16-kaloshin-uniform-bound` | Hilbert–Arnold problem for elementary polycycles: for a generic k-parameter family of smooth planar fields with only elementary singular points, cyclicity is finite with explicit bound E(k) ≤ 2^{25 k²} (Kaloshin);… | yes | asserted | `research/notes/claims.md` |
-| `h16-liang-torregrosa-weak-foci` | Weak-focus order (hence lower bounds for M(n)) can be as large as n^2+n-2 for even n (Qiu-Yang class, n=4..18) and (n-1)^2 for n <= 100; Christopher's center-cyclicity method extends to weak foci, giving cyclicity by… | **unchecked** | asserted | `research/summaries/liang-torregrosa-weak-foci-cyclicity.md` |
-| `h16-lienard-ldmp-disproved` | The Lins–de Melo–Pugh conjecture — classical Liénard ẋ=y−F(x), ẏ=−x with deg F = n has at most ⌊(n−1)/2⌋ limit cycles — is FALSE for n ≥ 6. A degree-6 f with 4 limit cycles exists (survey's own construction following De… | yes | asserted | `research/notes/claims.md` |
-| `h16-lienard-ldmp-n6` | The Lins-de Melo-Pugh conjecture fails for n >= 6: a degree-6 classical Lienard system has 4 limit cycles (per the held Llibre-Zhang 2017 full text, the degree-6 base case uses De Maesschalck-Huzak 2015's slow… | yes | asserted | `research/summaries/dpr-lienard-more-limit-cycles.md` |
-| `h16-lienard-ldmp-survey-2017` | Llibre & Zhang (2017), "Limit cycles of the classical Liénard differential systems: a survey on the Lins Neto, de Melo and Pugh's conjecture", Expo. Math. 35(3), 286–299: the LdMP conjecture (at most ⌊(n−1)/2⌋ cycles… | yes | asserted | `research/notes/claims.md` |
+| `h16-dukov-lower-bound-cyclicity-hyperbolic-polycycles-2025` | Dukov (2025), "Lower bound for the cyclicity of hyperbolic polycycles", Mat. Sb. / Sbornik Mathematics, DOI 10.4213/sm10206e: Theorem 1 -- for a monodromic hyperbolic polycycle gamma_M with n distinct saddles and… | yes | asserted | `research/summaries/dukov-lower-bound-cyclicity-hyperbolic-polycycles-2025.md` |
+| `h16-dukov-multiplicity-hyperbolic-polycycles-2023` | Dukov (2023), "Multiplicities of limit cycles appearing after perturbations of hyperbolic polycycles", Mat. Sb. 214(2):90-111 / Sb. Math. 214(2):226-245, arXiv:2201.03652: for a hyperbolic polycycle gamma with n… | yes | asserted | `research/summaries/dukov-multiplicity-limit-cycles-hyperbolic-polycycles-2023-arxiv.md` |
 
-_19 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_64 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -84,17 +84,28 @@ Resolve these before building on either side.
 - `h16-hn-lower-bound-asymptotic` (research/summaries/buzzi-novaes-claim-h16.md) contradicts `quadratic-upper-bound` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 - `h16-hn-lower-bound-asymptotic` (research/summaries/buzzi-novaes-claim-h16.md) contradicts `claim` — _no claim of that id is on disk; either it was never written down or the id is misspelled_
 
+## Called formalised, not backed by the kernel
+
+Each of these was written as a formalised claim and has been recorded as `asserted` instead, because no passing `lean_check` verdict on disk supports it. Nothing here says the statement is false; it says the workspace does not yet contain a proof of it. Run `lean_check` over the file, fix what it reports, and the status returns on the next derivation.
+
+- `lu-h14-3-finite-algebraic-core-lean-formalised` (research/notes/claims.md) — the claim names no `formalisation:` file, so there is nothing to check it against
+
 ## Load-bearing but unverified
 
 Taken to hold here on a source's word alone. Verify by a second route, or say the result is unverified when reporting it. Search the whole ledger with `search_claims`.
 
-- `drr-1994-citation-anchor` (research/summaries/dumortier-roussarie-rousseau-1994-121-graphics.md) — asserted by the source, not proved there and not checked here
+- `drr-1994-record-held-verbatim` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
+- `drr-demr-1996-elementary-graphics-abstract` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
+- `drr-demr-1996-elementary-graphics-abstract` (research/summaries/dumortier-rousseau-rousseau-1996-elementary-graphics-full.md) — asserted by the source, not proved there and not checked here
 - `drr-df1a-df2a-cyclicity-sourced` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-dgr-2002-elementary-closures` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-dmrt-2015-fake-saddle-cyclicity2` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
+- `drr-drr94-cyclicity-1-2-abstract` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
+- `drr-drr94-cyclicity-1-2-abstract` (research/summaries/roussarie-1994-elementary-graphics-cyclicity-1-2.md) — asserted by the source, not proved there and not checked here
 - `drr-huzak-df2a-closed` (research/summaries/huzak-cyclicity-degenerate-df2a.md) — asserted by the source, not proved there and not checked here
 - `drr-ledger-no-consolidated-post2020` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-mv-hemicycle-cyclicity-2` (research/summaries/marin-villadelprat-cyclicity-hyperbolic-hemicycles.md) — asserted by the source, not proved there and not checked here
+- `drr-no-consolidated-post2020-ledger` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-rousseau-2008-pp-center-cyclicity2-sourced` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-rousseau-zhu-15-pp-graphics` (research/summaries/rousseau-zhu-pp-graphics-nilpotent-elliptic.md) — asserted by the source, not proved there and not checked here
 - `drr-rr-boundary-only-for-3-graphics` (research/summaries/rousseau-roussarie-center-graphics-nilpotent.md) — asserted by the source, not proved there and not checked here
@@ -104,6 +115,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `drr-zhu-2005-pp-graphics-16` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-zhu-rousseau-2002-nilpotent-machinery` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-zhu-rousseau-2004-15-pp-graphics-16-total` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
+- `ecalle-1990-accelerosommation-record` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
+- `ecalle-1990-accelerosommation-record` (research/summaries/ecalle-1990-finitude-accelerosommation.md) — asserted by the source, not proved there and not checked here
 - `fake-saddle-dmrt-2015-cyclicity` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `fake-saddle-uniform-transition-map-marin2026` (research/summaries/marin-fake-saddles-transition-maps.md) — asserted by the source, not proved there and not checked here
 - `h16-121-vs-125-rrousseau-survey` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
@@ -121,15 +134,14 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `h16-drr-121-graphics` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `h16-drr-closed-rows-2015` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `h16-drr-lu-2026-does-not-complete-program` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
-- `h16-drr-open-rows` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
-- `h16-dulac-finiteness-theorem` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
-- `h16-dulac-reopened-community-view` (research/summaries/llibre-abel-to-hilbert16-survey-2024.md) — asserted by the source, not proved there and not checked here
-- `h16-four-cycles-songling-galias-tucker` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
-- `h16-gasull-lazaro-torregrosa-abelian-zero-bounds-2010` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
-- `h16-geometry-limitcycle-defn-refuted` (research/summaries/buzzi-novaes-claim-h16.md) — asserted by the source, not proved there and not checked here
-- `h16-grau-manosas-villadelprat-chebyshev-2010` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 
-_22 more not shown here; they are in `research/`._
+_54 more not shown here; they are in `research/`._
+
+## Taken from a catalogue
+
+These are lookups, not derivations. A catalogue is good evidence that a result is right and no evidence at all about why, so one of these may confirm a final answer and may never be the reason for it. Reproduce the terms with a program that does not read the catalogue, then say so; until then, report the result as looked up.
+
+- `clt-2024-book-weak-h16-n2-chapter` (research/summaries/christopher-li-torregrosa-limit-cycles-2024.md) — read from a catalogue; no derivation here reproduces it
 
 ## Searched, with no frame recorded
 
@@ -137,8 +149,14 @@ Each of these rests on a program that swept something, and none of them says wha
 
 Without it a sweep that found nothing cannot be told from a question nobody asked, and a later attempt has no way to know it would be searching the same space again. The frame is also where a *missed* result becomes visible: an object outside every frame tried is one no further compute inside them would ever have reached.
 
+- `approach-certified-lower-bound-target-escalated` (research/notes/claims.md) — no `search-frame`: nothing says what was swept
+- `approach-fewnomial-short-dulac-refuted` (research/notes/claims.md) — no `search-frame`: nothing says what was swept
+- `data-canard-2020-summary-broken-capture` (research/summaries/alvarez-coll-demaesschalck-prohens-canard-lower-bounds.md) — no `search-frame`: nothing says what was swept
 - `data-contamination-llibre-zhang` (research/summaries/llibre-zhang-lienard-conjecture-survey.md) — no `search-frame`: nothing says what was swept
+- `data-dulac-1923-fulltext-not-obtainable` (research/notes/claims.md) — no `search-frame`: nothing says what was swept
 - `data-landing-pages-inventory` (research/summaries/landing-pages-inventory.md) — no `search-frame`: nothing says what was swept
+- `data-shao-li-hyperelliptic-lienard-landing-only` (research/notes/claims.md) — no `search-frame`: nothing says what was swept
+- `data-stale-gap-2-lu-scripts-held` (research/notes/claims.md) — no `search-frame`: nothing says what was swept
 - `h16-yakovenko-notes-landing-only` (research/summaries/yakovenko-quantitative-ode.html.md) — no `search-frame`: nothing says what was swept
 
 ---

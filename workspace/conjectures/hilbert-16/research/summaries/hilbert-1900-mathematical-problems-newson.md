@@ -1,56 +1,42 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/hilbert-1900-mathematical-problems-newson.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Hilbert (1900), "Mathematical Problems" — Problem 16, original wording
 
-<!-- source: https://www.gutenberg.org/files/71655/71655-h/71655-h.htm | converted from HTML -->
+<!-- source: https://www.gutenberg.org/files/71655/71655-h/71655-h.htm (Newson 1902 trans., Bull. AMS 8 (1902) 437-479). Full text: [[hilbert-1900-mathematical-problems-newson.full]]. Claim `h16-hilbert-1900-canonical-statement`. -->
 
-## What is in it
+## What it establishes — the canonical statement of H16
 
-  - The Project Gutenberg eBook of Mathematical Problems by David Hilbert
-- MATHEMATICAL PROBLEMS
-  - CONTENTS
-  - 1. CANTOR'S PROBLEM OF THE CARDINAL NUMBER OF THE CONTINUUM.
-  - 2. THE COMPATIBILITY OF THE ARITHMETICAL AXIOMS.
-  - 3. THE EQUALITY OF THE VOLUMES OF TWO TETRAHEDRA OF EQUAL BASES AND EQUAL ALTITUDES.
-  - 4. PROBLEM OF THE STRAIGHT LINE AS THE SHORTEST DISTANCE BETWEEN TWO POINTS.
-  - 5. LIE'S CONCEPT OF A CONTINUOUS GROUP OF TRANSFORMATIONS WITHOUT THE ASSUMPTION OF THE…
-  - 6. MATHEMATICAL TREATMENT OF THE AXIOMS OF PHYSICS.
-  - 7. IRRATIONALITY AND TRANSCENDENCE OF CERTAIN NUMBERS.
-  - 8. PROBLEMS OF PRIME NUMBERS.
-  - 9. PROOF OF THE MOST GENERAL LAW OF RECIPROCITY IN ANY NUMBER FIELD.
-- …
+For a first-order differential equation `dy/dx = Y/X`, where X, Y are **rational
+integral functions of degree n** (polynomial vector fields), determine:
 
+> "the relative position of the cycles consisting of the integral curves in the
+> neighbourhood of which the integral curves form a spiralling motion" — i.e.
+> **the maximum number and relative position of Poincaré's "cycles limites"
+> (boundary cycles / limit cycles).**
 
-## What it claims
+Two load-bearing facts in the original:
 
-This ebook is for the use of anyone anywhere in the United States and most other parts of the world at no cost and with almost no restrictions whatsoever. You may copy it, give it away or re-use it under the terms of the Project Gutenberg License included with this ebook or online at [www.gutenberg.org][1]. If you are not located in the United States, you will have to check the laws of the country where you are located before using this eBook.
+1. **Uniformity is the content.** Hilbert frames H16 as answerable by the same
+   method of "continuous variation of coefficients" as the algebraic part. So
+   H(N) is defined as a **uniform bound over the whole family of degree-n
+   fields** (max over all fields, all locations) — not a pointwise bound. This is
+   the reading the run's Lean statement `h16_2` implements (`∃N`, every degree-≤n
+   field has ≤ N limit cycles), and it is what separates H16.2 from the
+   (settled-but-contested) Écalle–Ilyashenko individual finiteness.
+2. The two halves (real algebraic curves; limit cycles of a differential
+   equation) share a number and are posed together. Part I — real schemes — is
+   out of scope for this run (per GOAL), but the shared-number framing is why the
+   two parts are historically linked.
 
-**Title: **Mathematical Problems
+## Hypotheses / holds here
 
-**Subtitle: **Lecture delivered before the International Congress of Mathematicians at Paris in 1900
+Polynomial vector fields (X,Y rational integral of degree n). **Holds here:
+yes** — anchors the uniform-bound reading of H16.2 used throughout.
 
-**Author: **David Hilbert
+**Evidence class: sourced** (Hilbert 1900, Newson 1902 translation, full text
+held from Project Gutenberg #71655).
 
-**Translator: **Mary Frances Winston Newson
+## Bearing / implication
 
-**Release Date: **September 15, 2023 [eBook #71655]
-
-**Language: **English
-
-**Credits: **Laura Natal Rodrigues (Images generously made available by The Internet Archive.)
-
-*** START OF THE PROJECT GUTENBERG EBOOK MATHEMATICAL PROBLEMS ***
-
-BULLETIN OF THE
-AMERICAN
-MATHEMATICAL SOCIETY
-
-CONTINUATION OF THE BULLETIN OF THE NEW YORK
-MATHEMATICAL SOCIETY.
-
-A HISTORICAL AND CRITICAL REVIEW
-OF MATHEMATICAL SCIENCE
-
-EDITED BY F.N. COLE,…
-
-VOL.…
-
-*[digest of a 115827 character source; every section, statement, and proof in full at `research/sources/hilbert-1900-mathematical-problems-newson.full.md`]*
+Fixes the definition of H(n) the whole run computes against: a uniform bound
+over the family. Any claimed upper bound must be uniform over degree-n fields
+(test 2 in problem.md); the local/small-amplitude bounds (M(n)) are the weaker
+local version.

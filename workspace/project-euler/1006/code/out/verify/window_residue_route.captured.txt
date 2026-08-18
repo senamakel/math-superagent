@@ -1,0 +1,23 @@
+Sliding-window residue route — directive-6 anchor verification
+M = 101001001  (second modulus M2 = 1000000007)
+============================================================
+k=3    prefix L=10 NextFib=5
+       factor set = [1, 10, 100, 101]
+       Psi(3) = 20302  (want 20302), count=4 (want 4)
+       match = True
+k=10   prefix L=32 NextFib=13
+       Psi(10) mod M = 10699667  (want 10699667), pair-count=11 (want 11), single-count=10
+       match = True
+k=10^4 prefix L=30945 NextFib=10946  (0.0s)
+       Psi(10^4) mod M = 34432237  (want 34432237), distinct=10001 (want 10001), single-count=10001
+       match = True
+k=10^6 prefix L=3346268 NextFib=1346269  (1.2s wall)
+       Psi(10^6) mod M = 20938836  (want 20938836), distinct=1000001 (want 1000001), single-count=995071
+       match = True
+============================================================
+Cross-check k=1..60 against code/brute.py psi_of
+       mismatches: none
+       all agree with oracle on value and count = True
+============================================================
+ALL CHECKS PASS = True
+Wall time for k=10^6: 1.2s

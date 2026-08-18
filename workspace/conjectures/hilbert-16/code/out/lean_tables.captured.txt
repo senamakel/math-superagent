@@ -1,0 +1,35 @@
+# verify_lean_tables.py - SECOND independent route to "L8 not in <L4,L6>"
+# checks the data tables the LEAN KERNEL sees in code/lean/Lib/Bautin.lean
+# defs parsed: V1num (6 explicit terms), v2coeffs/v2ms, v3coeffs/v3ms, certPt
+
+WHAT RAN:  code/bautin/verify_lean_tables.py, stdlib-only parser +
+           exact INTEGER polynomial arithmetic over the six coefficient
+           variables (a1,a2,a3,b1,b2,b3). No sympy, no recurrence, no
+           floats. Input: the raw text of code/lean/Lib/Bautin.lean - the
+           exact tables the Lean kernel elaborates.
+WHICH DEFS: V1num, v2coeffs, v2ms, v3coeffs, v3ms, certPt;
+           claimed identities eval V1num = 0, eval V2num = 0,
+           eval V3num = 7200 at certPt = (-2,-2,1,-1,-1,1);
+           monomial counts 6 / 56 / 220.
+
+table lengths:
+  V1num (explicit terms): 6
+  v2coeffs entries: 56
+  v2ms entries: 56
+  V2num  distinct nonzero monomials: 56
+  v3coeffs entries: 220
+  v3ms entries: 220
+  V3num  distinct nonzero monomials: 220
+  certPt coordinates: 6
+
+evaluations at certPt (exact integers):
+  eval V1num = 0   (must be 0)
+  eval V2num = 0   (must be 0)
+  eval V3num = 7200   (must be 7200)
+
+monomial-count checks (6/56/220):          PASS
+table-shape checks (56/56/220/220, len 6): PASS
+distinct-nonzero-monomial checks:           PASS
+evaluation checks (0 / 0 / 7200):           PASS
+
+CERTIFICATE VALID: PASS

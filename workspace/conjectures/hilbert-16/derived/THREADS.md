@@ -6,20 +6,14 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 
 | Thread | Question | Status | Rests on | Next |
 | --- | --- | --- | --- | --- |
+| [[drr-status]] | Which of the 121 DRR graphics have finite cyclicity proved, which remain open, and the paper closing each recently closed row? | settled | h16-drr-121-graphics, h16-drr-closed-rows-2015, h16-drr-open-rows, drr-rr-closes-i14, drr-rr-boundary-only-for-3-graphics | the enumeration is answered — RR 2015 leave exactly one graphic (H14_3) with no partial result; Lu 2026 claims it. Live action is verification of Lu's finite… |
 | [[fake-saddle-transition-maps]] | Does the uniform fake-saddle transition-map expansion of Marín 2026, combined with a division-in-flat-class step, certify finite cyclicity of an open… | open | — | identify which DRR degenerate graphic has fake saddles and whether the uniform expansion closes it; re-derive the division-in-flat-class step in Lean. NOTE:… |
-| [[lu-h14-3-verification]] | Does the finite computational core of Lu arXiv:2607.13785 (local uniform finite cyclicity of the H14_3 semihyperbolic hemicycle) stand up to independent exact… | open | RR, 2015, leave, H14_3, as, the, one, triple-point-at-infinity, graphic, with, no, partial, result | (directive 5) The algebraic core is VERIFIED and kernel-closed — code/bautin/verify_lu_core.py passed clean-room (capture code/out/lu_core.captured.txt), and… |
+| [[lu-h14-3-verification]] | Does the finite computational core of Lu arXiv:2607.13785 (local uniform finite cyclicity of the H14_3 semihyperbolic hemicycle) stand up to independent exact… | open | drr-rr-boundary-only-for-3-graphics | (directive 5) The algebraic core is VERIFIED and kernel-closed — code/bautin/verify_lu_core.py passed clean-room (capture code/out/lu_core.captured.txt), and… |
 | [[pedregal-variational-claim-test]] | Does the claimed variational resolution of H16.2 by Pedregal (arXiv:2103.07193, H(n) quartic bound, H(2)=4) survive the three problem.md tests, or is it… | open | h16-pedregal-variational-claim-unrefereed, h16-ominimality-route-roussarie | The concrete test — isolate where the paper proves that limit cycles, which are ISOLATED closed orbits (defined by the dynamical return map), are in exact… |
-
-## Resting on nothing recorded
-
-Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
-
-- [[lu-h14-3-verification]] rests on `RR`, `2015`, `leave`, `H14_3`, `as`, `the`, `one`, `triple-point-at-infinity`, `graphic`, `with`, `no`, `partial`, `result`, which no claim block on disk establishes
 
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on
-- `drr-status` has no thread block, so nothing can say what it is chasing or what it rests on
 
 ---
 

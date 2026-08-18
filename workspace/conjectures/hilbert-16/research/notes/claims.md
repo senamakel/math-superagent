@@ -1,4 +1,62 @@
 ```claim
+id: h16-prohens-torregrosa-h4-28-primary
+status: sourced
+statement: Prohens & Torregrosa, "New lower bounds for the Hilbert numbers
+  using reversible centers", Nonlinearity 32(1):331–355 (2019), open postprint
+  held (research/sources/prohens-torregrosa-lower-bounds-reversible-centers-2019.full.md,
+  src https://ddd.uab.cat/pub/artpub/2019/204392/newlowbou_a2019v32n1p331.pdf).
+  Theorem 1: H(4)≥28, H(5)≥37, H(6)≥53, H(7)≥74, H(8)≥96, H(9)≥120, H(10)≥142,
+  via simultaneous degenerate Hopf bifurcations from symmetric Darboux
+  reversible centers (three-nest configurations ⟨8,12,8⟩ … ⟨45,52,45⟩).
+  Corollary 2: H(13)≥212, H(17)≥384, H(21)≥568, H(31)≥1184, H(35)≥1536,
+  H(39)≥1920, H(43)≥2272, and H(N) ≥ K0·N²/(N0+1)² for (N0,K0) in the listed
+  pairs. This is now the held PRIMARY source for H(4)≥28 (previously only
+  reported via surveys).
+hypotheses: planar polynomial systems of degree N = 4..10 (and the corollary
+  degrees); reversible-center construction with simultaneous degenerate Hopf
+  bifurcation; Lyapunov-quantity computations (parallelised).
+evidence-class: sourced (peer-reviewed Nonlinearity; full postprint held from
+  UAB DDD open repository; values recorded as the paper's, not independently
+  re-derived by this run).
+falsifier: a certified construction of a degree-4 (resp N) field with more than
+  28 (resp the stated K) limit cycles — none is known; or a located gap in the
+  paper's Lyapunov-quantity computation.
+holds-here: yes — the current best explicit lower bounds for H(4)..H(10),
+  against which any claimed upper bound must be checked (problem.md test 2);
+  Prop. 6's object is a RATIONAL first integral
+  (2x⁴−x²+y²−2x−2)⁵/(8x⁵−5x³+5xy²−10x²−5x−4)⁴ (not a polynomial Hamiltonian),
+  whose reversible quartic system has the three centers (0,0),(1,±2); the
+  three-centre condition (α>0, a₀₃=1, xc²+yc²≠0) is the Lean-statable part for
+  the Bautin-ideal instrument route.
+```
+
+```claim
+id: h16-lienard-n5-rychkov-odd-vs-general
+status: sourced
+statement: Rychkov (Differ. Uravn. 11 (1975) 390–391) proved the ODD-ONLY
+  degree-5 classical Liénard system ẋ=y−Σᵢaᵢx^{2i+1}, ẏ=−x has at most 2 limit
+  cycles. This class is NARROWER than the general degree-5 classical Liénard
+  system (mixed-parity F). The general degree-5 case (LdMP predicts at most
+  ⌊(5−1)/2⌋=2) remains OPEN as of the held Llibre–Zhang 2017 survey, whose
+  stated open problem is the maximum number of limit cycles for n≥5. The
+  library's earlier `h16-lienard-n5-open` claim is NOT struck but is refined:
+  it refers to the general mixed-parity degree-5 case; the odd-only degree-5
+  case is settled (=2, Rychkov, second-hand).
+hypotheses: classical Liénard form ẏ=−x, ẋ=y−F(x); odd-only F of degree 5 for
+  Rychkov's part; general F of degree 5 for the open part.
+evidence-class: sourced (Llibre–Zhang 2017 held full survey; Rychkov's own
+  paper not held — asserted-by-source, confirmed by multiple independent
+  citations incl. Llibre–Valls 2013, Giacomini–Neukirch 1998, Gasull–Giacomini–
+  Grau 2018; note research/notes/lienard-n5-rychkov-odd-vs-general.md).
+falsifier: a source showing the general degree-5 Liénard maximum is a settled
+  value ≠ 2; or a primary text of Rychkov showing he treated the general (not
+  odd-only) degree-5 class.
+holds-here: yes — refines the Liénard status row in CONTEXT.md; important for
+  the slow–fast / Liénard lower-bound route (problem.md test 3) and for not
+  over-claiming that degree-5 Liénard is fully open.
+```
+
+```claim
 id: h16-gasull-lazaro-torregrosa-abelian-zero-bounds-2010
 status: sourced
 statement: Gasull, Lázaro & Torregrosa (arXiv:1012.5201, 2010), "Upper bounds
@@ -17,9 +75,13 @@ statement: Gasull, Lázaro & Torregrosa (arXiv:1012.5201, 2010), "Upper bounds
 hypotheses: unperturbed systems of the form x'=−yG, y'=xG with G polynomial,
   {G=0} = K straight lines in two orthogonal directions; polynomial
   perturbations of degree n; first-order (Abelian/Melnikov) bifurcation.
-evidence-class: sourced (arXiv abstract page full text held,
+evidence-class: sourced-at-abstract-level (only the arXiv landing page is held,
   research/sources/gasull-lazaro-torregrosa-abelian-zero-bounds-2010.full.md;
-  PDF at research/summaries/gasull-lazaro-torregrosa-abelian-zero-bounds-2010.md).
+  the abstract states the K-lines setup, first-order Abelian control, and that
+  K ≤ 4 recovers/improves earlier results — the exact per-(K,n) zero bounds and
+  the new real-function zero-count lemma are NOT in the held file; the claim's
+  bound statements are a summary of the abstract, not quoted verbatim from a
+  held body).
 falsifier: a specific (K,n) instance where the stated zero bound fails — the
   paper's bounds are explicit, so a counterexample system within the class
   would refute; none is known.
@@ -27,6 +89,36 @@ holds-here: yes as a named instrument for GOAL's "sharp zero-count for Abelian
   integrals in one named Hamiltonian family" route — an explicit,
   algebraically-checkable zero bound for a concrete family of Hamiltonian
   systems, statable in Lean (bounds depend only on K and n).
+```
+
+```claim
+id: h16-yang-2025-cubic-isochronous-period-annulus-sharp
+status: sourced
+statement: Yang (2025), "The cyclicity of period annulus of cubic isochronous
+  Hamiltonian systems", arXiv:2512.19046 (full HTML text held): for the
+  asymmetric cubic isochronous Hamiltonian normal form
+  H(x,y)=½x²+λx³+½λx⁴+½λ⁻¹y²+xy+x²y (0<λ<1), system (1.6)
+  ẋ=−λ⁻¹y−x−x²+εΣ_{i+j≤n}aᵢⱼxⁱyʲ, ẏ=x+y+2xy+3λx²+2λx³+εΣ_{i+j≤n}bᵢⱼxⁱyʲ,
+  the number of limit cycles bifurcating from the period annulus
+  Γ_h={H=h}, h∈(0,∞), is at most n−1 for n≥2, counted with multiplicity,
+  and this bound is SHARP (attained). Theorem 1.1 restates
+  Cima–Mañosas–Villadelprat 1999: a cubic Hamiltonian system is isochronous
+  at the origin iff H=k₁²x²+(k₂y+k₃x+k₄x²)², k₁k₂≠0.
+hypotheses: cubic Hamiltonian (1.6) with isochronous center at origin, 0<λ<1,
+  perturbation degree n≥2, first-order Abelian-integral bifurcation from the
+  open period annulus; no symmetry assumed (generators grow with n).
+evidence-class: asserted-by-source (arXiv preprint, unrefereed; full HTML held,
+  theorem statements verbatim; the algebraic core — explicit Abelian integral,
+  generator classification, linear-independence induction — is machine-checkable
+  but not yet re-executed in this run).
+falsifier: a perturbation of degree n within the class producing more than n−1
+  limit cycles from the period annulus, or a failure of the sharpness
+  construction; none known.
+holds-here: yes — this is directly the GOAL result-type-3 sharp-Abelian-count
+  shape and a fresh, fully explicit validation exemplar for the adopted
+  approach abelian-picard-fuchs-argument-principle-sharp-count (first step:
+  validate the Chebyshev/PF machinery against a published sharp count).
+anchor: research/sources/yang-2025-cubic-isochronous-period-annulus-html.full.md
 ```
 
 ```claim
@@ -334,25 +426,6 @@ holds-here: yes — this is the canonical statement of Poincaré's limit-cycle
 ```
 
 ```claim
-id: h16-grau-manosas-villadelprat-chebyshev-2010
-status: sourced
-statement: Grau, Mañosas, Villadelprat, "A Chebyshev criterion for Abelian
-  integrals", Trans. AMS (2010) — an extended Chebyshev-system criterion for
-  bounding the number of zeros of Abelian integrals from the number of critical
-  points and the geometry of the Hamiltonian level curves; the standard modern
-  instrument for sharp zero-counts in specific Hamiltonian families.
-hypotheses: Abelian integrals over ovals of a polynomial Hamiltonian; the
-  criterion verifies that the generating functions form an extended complete
-  Chebyshev system (ECT-system).
-evidence-class: cited by the held Jibin Li 2003 survey's citation graph (174
-  citations), abstract verified via search; full text NOT yet held.
-falsifier: full text showing the criterion's hypotheses fail for a family this
-  run would apply it to.
-holds-here: yes as a named instrument for GOAL's "sharp zero-count for Abelian
-  integrals in one named Hamiltonian family" route; to be downloaded next.
-```
-
-```claim
 id: h16-alvarez-coll-demaesschalck-prohens-canard-lower-bounds-2020
 status: sourced
 statement: Álvarez, Coll, De Maesschalck, Prohens, "Asymptotic lower bounds on
@@ -654,6 +727,14 @@ falsifier: a graphic of the 121 proved to have INFINITE cyclicity, or a
   open graphic like (H³₁₄) being closed or shown open in a later paper.
 holds-here: yes. NOTE 121-vs-125 discrepancy (Shan 2013 thesis counts 125) —
   to be settled from the DRR 1994 paper itself.
+anchor: code/lean/h16_drr_121_graphics-c9bd1dd4.lean (formalisation,
+  CONDITIONAL not formalised: the theorem `DRR121.drr_121_graphics` packages
+  the Cited axioms — drr_h2_finite_iff_finite_cyclicity (DRR 1994),
+  count_is_121, rsz_closed_at_least_88, degenerate_df_closed,
+  triple_nilpotent_status — as an equivalence H2Finite ↔ (∀ G, FinitelyCyclic G)
+  plus the count/closure/status conjuncts; kernel-checked verified, no sorry,
+  no native_decide; the open hypothesis ∀ G, FinitelyCyclic G is an opaque
+  axiom the kernel cannot discharge, so H2Finite is never asserted).
 ```
 
 
@@ -1248,6 +1329,72 @@ holds-here: NO — treated as a suspect claim to test, not a result. The run's
   Gasull 2024 survey); no peer acceptance of this preprint found.
 ```
 
+```claim
+id: approach-fewnomial-short-dulac-refuted
+status: checked
+statement: The approach "model the whole displacement function around an open
+  DRR graphic as a short (standard) Dulac germ — a finite sum of x^α(log x)^k
+  terms plus a flat remainder — and bound its zeros by Ilyashenko's finite-rank
+  short-functions module plus a fewnomial bound" is refuted for the open DRR
+  graphics. The short-function class A∘(-log) (Ilyashenko's almost-regular
+  germs) is quasianalytic and closed under composition, and gives the finite
+  power-times-log representation, but ONLY for hyperbolic polycycles
+  (Ilyashenko, Bull. AMS 39 (2002) doi:10.1090/bull/2002-39-03; Speissegger,
+  Canad. J. Math. 2016/2017, doi:10.4153/cjm-2016-048-x). Return maps of
+  NON-hyperbolic polycycles — through semi-hyperbolic saddle-nodes, nilpotent
+  and degenerate points, exactly the open (I₆b¹),(H₁₃³),(DI₂b),(H³₁₄) graphics
+  — expand as TRANSSERIES with ITERATED LOGARITHMS AND EXPONENTIALS and
+  parameter-dependent exponents, so they are NOT short and the finite-rank /
+  fewnomial bound does not transfer. Sources: Peran–Resman–Rolin–Servi, J. Math.
+  Anal. Appl. 2021, doi:10.1016/j.jmaa.2021.125833; Mardesić–Resman, Russian
+  Math. Surveys 76 (2021), doi:10.1070/rm10001; Peran, arXiv:2302.14527 and
+  arXiv:2112.12187 (parabolic case with iterated logs); Yeung, arXiv:2409.13630
+  (depth D counts semi-hyperbolic saddles — the non-hyperbolic case costs extra
+  log/exp levels). This re-proposes Ilyashenko's own finiteness method, which
+  already stops at the hyperbolic case.
+hypotheses: planar analytic vector fields near polycycles; the DRR non-hyperbolic
+  graphics are the target.
+evidence-class: sourced — the cited papers (Peran–Resman–Rolin–Servi,
+  Mardesić–Resman, Peran, Yeung) state the transseries structure of non-hyperbolic
+  Dulac maps explicitly.
+falsifier: a citation showing the return map of a NON-hyperbolic polycycle is
+  itself a short function (finite power-times-log), or a published finite
+  cyclicity proof for (I₆b¹) obtained purely from the fewnomial/rank bound on a
+  short representation.
+holds-here: yes — the open DRR graphics are precisely the non-hyperbolic case.
+```
+
+```claim
+id: approach-certified-lower-bound-target-escalated
+status: checked
+statement: The certified-lower-bound approach must escalate its target: a
+  "twelfth small-amplitude cycle at a cubic focus" is ALREADY ACHIEVED in the
+  literature — Torregrosa, "Cubic planar vector fields with high local
+  cyclicity", São Paulo J. Math. Sci. 18 (2024), doi:10.1007/s40863-024-00486-9
+  (held full; claim h16-torregrosa-cubic-12-small-cycles-2024): two one-parameter
+  cubic families each unfold TWELVE small-amplitude limit cycles from an
+  equilibrium via degenerate Hopf bifurcation, all Lyapunov computations exact
+  polynomial arithmetic, exceptional parameter values located by Sturm
+  sequences. This supersedes M(3)≥11 (Żołądek). The certified-existence method
+  itself is grounded: Immler–Tan, "The Poincaré–Bendixson theorem in
+  Isabelle/HOL", CPP 2020, doi:10.1145/3372885.3373833 (trapping region +
+  Bendixson → constructive limit-cycle existence, interval arithmetic over
+  verified ODE reachability); the run's own certified Songling 4-cycle
+  (h16-four-cycles-songling-galias-tucker). New honest targets: (a) a certified
+  (interval-arithmetic + Lean-stated sign conditions) re-certification of a
+  published 12-cycle configuration — Torregrosa's verification is CAS exactness,
+  not a topological certificate; (b) a search past 12, i.e. M(3)≥13 at one cubic
+  focus or H(3)≥14 globally (H(3)≥13 = Li–Liu–Yang 2009, held,
+  doi:10.1016/j.jde.2009.01.038).
+hypotheses: planar cubic vector fields; degenerate Hopf bifurcation at one
+  equilibrium; rigorous interval-arithmetic existence certificates.
+evidence-class: sourced (primary sources cited above, most held full).
+falsifier: a cleaner certified 12-cycle construction already published that
+  this approach would only re-derive without interval certificates, or a
+  published M(3)≥13 / H(3)≥14 that removes the target.
+holds-here: yes.
+```
+
 ## Separate: the information-geometry refutation is already recorded
 
 ```claim
@@ -1341,3 +1488,778 @@ holds-here: NO — treated as a suspect claim to test, not a result. The run's
 ```
 
 
+
+```claim
+id: lu-h14-3-finite-algebraic-core-lean-formalised
+status: formalised
+statement: The finite algebraic core of Lu arXiv:2607.13785 (2026) — the part a
+  kernel can check — is now FORMALISED in Lean: (I) bridge identities
+  tau=a+c, ell=-alpha, sigma=gamma, beta=tau+ell; (II) Darboux cofactor
+  identities X(L)=(x+dy)L, X(F)=(2Bx+dy)F and the inverse-integrating-factor
+  cofactor div X = (x+dy)+(2Bx+dy); (III) the degree-4 obstruction numerator
+  L4num = AC+CD+2DF-EF (certificate's L4 has 8·L4 = L4num), with L4num ≠ 0;
+  (V) the degree-6 identity P30 + 12·weighted_g6 = 0 in coefficient form,
+  closed by `decide` on the ground integer transcriptions. The DEEP claim —
+  Local Uniform Finite Cyclicity of the H^3_14 hemicycle (Theorem 1 of the
+  preprint) — is stated as a Cited axiom (unrefereed preprint, computer-
+  assisted, bound existential) and therefore its theorem is conditional.
+hypotheses: (A) five normalized coefficients (A,C,D,E,F) of the Bautin
+  recurrence; (B) five real parameters (B,mu2,mu4,mu5,d) of the source-
+  normalized H1^4_3 field; Darboux line L=1+y and conic F.
+evidence-class: formalised (Lean 4 + Mathlib, kernel-checked, `lean_check`
+  verdict verified, no sorry, no native_decide; axioms are only propext/
+  Classical.choice/Quot.sound for the algebraic core; the deep theorem adds
+  the Cited axiom).
+falsifier: a lean_check failure of code/lean/drr_lu_claims_h14_3-f0dbf821.lean;
+  none found (compiled, verified).
+holds-here: yes — the two P30 transcriptions agree coefficient-wise (w6_neg by
+  decide); neither transcription is certified against the recurrence here —
+  that is answered by execution (code/out/lu_core.captured.txt).
+anchor: code/lean/drr_lu_claims_h14_3-f0dbf821.lean (formalisation);
+  research/sources/lu-h14-3-spec-bautin.full.md; code/out/p30_coeffs.txt.
+```
+
+```claim
+id: g-lean-cert-kernel-checked
+status: formalised
+formalisation: code/lean/h16_2_h14_3_finite_cyclicity_G_lean_cert-d8de5a7b.lean
+statement: The finite core of G-lu-core is a kernel-checked Lean certificate
+  (node h16-2-h14-3-finite-cyclicity/G-lean-cert). Over ℤ[A,C,D,E,F]
+  (Fin 5) the kernel checks: (i) the degree-6 30-monomial identity
+  192·L6 + P30 = 0 in its coefficient form P30poly + W6poly = 0, via
+  `w6_neg : ∀ k : Fin 30, W6coeffs k = -Generated.coeffs k` closed by
+  `decide` on the ground integer transcriptions (the soundness bridge from
+  untrusted Generated data to the polynomial identity); (ii) the degree-4
+  obstruction numerator L4num = AC + CD + 2DF - EF (certificate's L4 satisfies
+  8·L4 = L4num), with L4num ≠ 0; (iii) the four bridge parameter identities
+  tau=a+c, ell=-alpha, sigma=gamma, beta=tau+ell; (iv) the Darboux cofactor
+  identities X(L)=(x+dy)L and X(F)=(2Bx+dy)F. The P30 data lives as untrusted
+  `def`s in namespace Generated carrying no theorem; the checker is
+  hand-written outside it.
+hypotheses: none beyond universal data — the five coefficients (A,C,D,E,F) of
+  the Bautin recurrence, the five real parameters (B,mu2,mu4,mu5,d), and
+  points (x,y) of the plane. No binder is a real hypothesis, so no theorem here
+  is conditional.
+evidence-class: formalised (Lean 4 + Mathlib, `lean_check` verdict verified,
+  compiled:true, outcome:verified, no sorry, no native_decide, no cited
+  axiom; axioms are only propext/Classical.choice/Quot.sound).
+falsifier: a lean_check failure of the named file; none found.
+holds-here: yes — the two P30 transcriptions agree coefficient-wise by
+  `decide`; neither transcription is certified against the recurrence by the
+  kernel — that agreement-with-the-recurrence is answered by execution
+  (code/out/lu_core.captured.txt, "ALL CLEAN-ROOM CHECKS PASS").
+anchor: code/lean/h16_2_h14_3_finite_cyclicity_G_lean_cert-d8de5a7b.lean;
+  code/lean/Lib/Generated/P30Data.lean (provenance).
+```
+
+```claim
+id: g-drr-status-exists-open-graphic
+status: conditional
+formalisation: code/lean/h16_2_finite_cyclicity_G_drr_status-4c4d5cdf.lean
+statement: The target-selection lemma of the H(2)<∞ DRR skeleton: "there exists
+  at least one graphic Λ₀ recorded open in the current literature". Formalised
+  as `GDRRStatus.exists_open_graphic : ∃ Λ₀ : GraphicId, ¬ Cited.closed Λ₀`
+  in the named file. The kernel
+  PROVES the implication from two Cited axioms: (a) Cited.h14_no_partial_result
+  — Roussarie–Rousseau 2015 (Trans. Moscow Math. Soc., arXiv:1506.07104) intro:
+  "We have a partial result for every graphic, but one (namely (H³₁₄)), through
+  a triple point at infinity", so some graphic is not even boundary-closed;
+  (b) Cited.closed_implies_boundary — a fully closed graphic is in particular
+  boundary-closed. From (a)+(b) the open graphic exists (take the
+  no-partial-result graphic; it is not closed). This picks the attack target:
+  the identification of Λ₀ as (H³₁₄) is the content of the cited source (RR
+  2015 intro), recorded in the docstring and claim graph — it is NOT loaded
+  onto the bare Fin 121 index, which does not encode DRR names.
+hypotheses: Fin 121 graphics; `Cited.closed` = "finite cyclicity proved in held
+  literature"; `Cited.boundaryClosed` = "boundary limit periodic set from the
+  blow-up proved finite"; the two cited axioms (a) and (b).
+evidence-class: conditional — Lean 4 + Mathlib kernel-checked
+  (`lean_check` verdict conditional, compiled:true, no sorry, no native_decide);
+  the hypothesis is a cited literature fact, not this run's to prove.
+falsifier: a lean_check failure of the file (none found), or a held source
+  showing every DRR graphic actually has a partial/closed result recorded in the
+  current literature (contradicting (a)).
+holds-here: yes — this is the node G-drr-status of
+  research/backward/h16-2-finite-cyclicity.md; the existence of an open graphic
+  fixes the attack target. It does NOT establish the full 121-id open/closed
+  ledger (DRR 1994 raw catalogue not held) nor which index is (H³₁₄).
+anchor: code/lean/h16_2_finite_cyclicity_G_drr_status-4c4d5cdf.lean
+  (formalisation); research/threads/drr-status.md; research/drr-list.md.
+```
+
+status: conditional
+statement: Lu arXiv:2607.13785 Theorem 1 (local uniform finite cyclicity of the
+  H^3_14 semihyperbolic hemicycle of quadratic fields: fixed annular
+  neighborhood U and finite uniform bound B over the full five-parameter
+  unfolding) is stated in Lean and its theorem `drr_lu_claims_h14_3` is
+  kernel-checked as following from a Cited axiom. This is the graphic
+  Roussarie-Rousseau 2015 left with no partial result. The kernel checked the
+  implication; the hypothesis is an unrefereed computer-assisted preprint with
+  an existential (non-explicit) bound.
+hypotheses: five-parameter unfolding (B,mu2,mu3,mu4,mu5) (Unfolding structure);
+  fixed two-sided annular collar U; neighborhood Lambda of 0 in parameter
+  space; finite constant B; opaque count nLimitCyclesInCollar(lam,U) of
+  isolated limit cycles in the collar.
+evidence-class: conditional — the implication is Lean-kernel-checked, the
+  Cited axiom (sourced to arXiv:2607.13785, 2026) is not this run's to prove.
+falsifier: a peer-reviewed rejection, a published counterexample to Theorem 1,
+  or an error found in the preprint's human-proof remainder (root uniqueness,
+  Hadamard divisibility, domain completeness, zero theorems) — none known.
+holds-here: yes but NOT established (asserted-by-source); the closed DRR row is
+  a claim, not a verified closure. Even if correct, Lu closes ONE graphic.
+anchor: code/lean/drr_lu_claims_h14_3-f0dbf821.lean; research/summaries/
+  lu-h14-3-hemicycle.md.
+```
+
+```claim
+id: lu-finite-core-identity-half-checked
+status: formalised
+formalisation: code/lean/lu_finite_core_identity_half_checked-1a774637.lean
+statement: The identity half of Lu arXiv:2607.13785's finite algebraic core is
+  kernel-checked in Lean: (A) the degree-6 obstruction P30 + 12·weighted_g6 = 0
+  (equivalently 192·L6 + P30 = 0 under the executed recurrence relation
+  L6 = weighted_g6/16) with P30 exactly the certificate's 30-monomial
+  polynomial, and the degree-4 numerator L4num = AC + CD + 2DF − EF (8·L4 =
+  L4num); (B) the Darboux cofactor identities X(L) = (x+dy)·L and
+  X(F) = (2Bx+dy)·F and the inverse-integrating-factor cofactor identity
+  div X = (x+dy) + (2Bx+dy) for the H14^3 field
+  x' = −y − d x + B(x²−y²),  y' = (1+y)(x + d y) with L = 1 + y and F the
+  paper's conic. Kernel-checked theorems: w6_neg, p30_plus_w6,
+  bautin_L4_identity, L4num_ne_zero, darboux_L_identity, darboux_F_identity,
+  div_cofactor_identity. No sorry, no cited axiom: axioms are exactly
+  [propext, Classical.choice, Quot.sound].
+hypotheses: n=2 quadratic focus normal form; homogeneous quadratic part
+  Q1 = A u² + C uv + D v², Q2 = E uv + F v² (variables 0:A 1:C 2:D 3:E 4:F);
+  rotation R(p) = −v p_u + u p_v; recurrence R(c_k)+Q1 V_{k-1,u}+Q2 V_{k-1,v}
+  = L_k (u²+v²)^{k/2} with gauge c_{k,0}=0; H14^3 field P = −y−dx+B(x²−y²),
+  Q = (1+y)(x+dy), L = 1 + y, F the conic. All binders are data (every p, x, y,
+  k), none is an unestablished hypothesis — the identities hold for all
+  parameter and coordinate values.
+evidence-class: formalised — Lean 4 + Mathlib kernel-checked
+  (lean_check verdict: compiled:true, outcome:verified, no sorry, no
+  native_decide). What the kernel checks is the two transcriptions of P30
+  agree (P30 + 12·weighted_g6 = 0, coefficientwise by decide over Fin 30) and
+  the genuine Darboux/div/ring identities; the recurrence-OUTPUT-to-polynomial
+  step is executed, not kernel-checked (evidence code/out/lu_core.captured.txt:
+  rows (A) 8*L4==AC+CD+2DF−EF : PASS, 192*L6+P30==0 : PASS,
+  12*weighted_g6+P30==0 : PASS, X(L), X(F), div cofactor PASS; cross-confirmed
+  by code/out/mono_counts.captured.txt).
+falsifier: a lean_check failure on the file (none: fresh verified verdict), or
+  an executed clean-room run contradicting the transcriptions (none: the
+  executing run passed, checks I–VI), or a correction to Lu's certificate data.
+holds-here: yes — this is the identity half of the finite core of the H14^3
+  finite-cyclicity claim (the content G-lean-cert and G-lu-core identity half
+  must carry to the kernel). It does NOT establish finite cyclicity (the
+  analytic remainder G-remainder and the ideal-membership extension half remain
+  open; the preprint is unrefereed; the bound is existential).
+anchor: code/lean/lu_finite_core_identity_half_checked-1a774637.lean
+  (formalisation); code/out/lu-core-identity-checked.md;
+  code/out/lu_core.captured.txt; code/out/mono_counts.captured.txt.
+```
+```claim
+id: g-resolve-resolution-exists
+status: conditional
+formalisation: code/lean/h16_2_finite_cyclicity_G_resolve-bc64f726.lean
+statement: The node G-resolve of research/backward/h16-2-finite-cyclicity.md:
+  "a graphic Λ in the DRR list admits a resolution: each vertex (singular
+  point) is brought by finitely many polynomial blow-ups within the quadratic
+  family to a normal form whose singularities are elementary, and the
+  hyperbolic sectors between the vertices are identified. Each vertex's normal
+  form determines the local transition data." Formalised as the structure
+  `GResolve.Resolution Λ` carrying every hypothesis as a field (nVertices,
+  vertices, blowUps, elementaryNormalForm, sectors, transition), the existence
+  `GResolve.exists_resolution : ∀ Λ, Nonempty (Resolution Λ)` carried from the
+  Cited axiom `Cited.exists_resolution` (standing conditional), and two proved
+  theorems: `vertex_normal_form_determines_transition_data` (each vertex's
+  elementary normal form determines its local transition datum — kernel-proved,
+  resting only on Lean's own axioms, formalised) and
+  `resolve_gives_local_transition_data` (the conjunction: a resolution exists
+  AND at every elementary vertex the transition datum determining the sector
+  expansion is well-defined). The connecting step to the downstream node
+  G-transition is that `R.transition i` is the local transition datum in the
+  shape G-transition expands against.
+hypotheses: Fin 121 graphics; the Resolution structure; the single Cited axiom
+  `Cited.exists_resolution` (Dumortier's blow-up theory for nilpotent and
+  degenerate singularities; DRR 1994 JDE 110:86-133; case-by-case closures in
+  RSZ 2015 / RR 2015).
+evidence-class: conditional — Lean 4 + Mathlib kernel-checked (`lean_check`
+  verdict conditional, compiled:true, no sorry, no native_decide, no Quot.sound
+  dependence); the hypothesis `Cited.exists_resolution` is a cited literature
+  fact, not this run's to prove. `vertex_normal_form_determines_transition_data`
+  in the same file is `formalised` (rests only on propext/choice/Quot.sound).
+falsifier: a lean_check failure of the named file (none found); or a held
+  source showing some DRR graphic does NOT admit such a blow-up resolution
+  within the quadratic family (contradicting cited existence).
+holds-here: yes — this is the node G-resolve; it provides the normal forms and
+  local transition data that G-transition expands against. It does NOT by
+  itself give finite cyclicity (that needs G-transition + G-zeros + G-uniform,
+  the remaining open nodes), and it does not compute any specific vertex's
+  normal form / exponent list (done case-by-case in the program, not derived).
+anchor: code/lean/h16_2_finite_cyclicity_G_resolve-bc64f726.lean
+  (formalisation); research/backward/h16-2-finite-cyclicity.md
+  (node G-resolve, status open → now partially discharged: the resolution
+  machinery exists-formally; the per-vertex content and the finiteness
+  combination remain open).
+```
+
+```claim
+id: drr-1994-record-held-verbatim
+status: sourced
+statement: The DRR 1994 paper "Hilbert's 16th problem for quadratic vector
+  fields" (Dumortier, Roussarie, Rousseau; J. Differential Equations
+  110(1):86-133, 1994) is held as a verbatim bibliographic + abstract record
+  from the UHasselt Document Server handle http://hdl.handle.net/1942/3763
+  (held as the verbatim record pages
+  research/summaries/drr-1994-hilbert-16-quadratic-full-record.md and
+  research/summaries/drr-dumortier-roussarie-rousseau-1994-hilbert-16-quadratic.md;
+  NOTE the full text was never saved to a .full source file — the record
+  summaries are the only held content for DRR 1994). The paper's
+  own abstract states the method: "describe the limit periodic sets surrounding
+  the origin in a family of quadratic vector fields and prove that they have
+  finite cyclicity. In this paper we give the list of all graphics and
+  degenerate graphics that should be considered." The full DRR text (with the
+  complete 121-item catalogue) remains paywalled at ScienceDirect; the
+  121-graphics framing is corroborated by held sources RSZ 2015, RR 2015,
+  Ilyashenko 2002, Zhu 2005, BIRS 2007.
+hypotheses: none beyond the bibliographic identity of DRR 1994.
+evidence-class: sourced (repository record with verbatim abstract; the full
+  catalogue page count 121 is asserted by the held secondary sources, not by
+  this record alone).
+falsifier: a source showing the DRR 1994 catalogue is not 121 graphics, or
+  that the given abstract is misattributed; none found.
+holds-here: yes — anchors the DRR-program target inventory at the primary
+  record level; the per-graphic open/closed status remains as in
+  research/drr-list.md.
+```
+
+```claim
+id: drr-no-consolidated-post2020-ledger
+status: finding
+statement: A consolidated, graphic-by-graphic, post-2020 ledger of the 121 DRR
+  graphics (finite-cyclicity status per graphic, with the paper closing each
+  row) does not exist in the published literature. Confirmed by a
+  deep-research pass (2023-2025 window) and a 40-work citation walk on DRR
+  1994 (10.1006/jdeq.1994.1061). Status is fragmented across papers: RSZ 2015
+  close (I^1_12),(I^1_13); RR 2015 close (I^1_14) and boundary sets only of
+  (I^1_6b),(H^3_13),(DI_2b), leaving (H^3_14) with no partial result;
+  Rousseau-Zhu 2004 close 15 pp-graphics; Shan 2013 (125 count, 85 closed) is
+  outdated. No single authoritative table exists; requests row
+  complete-current-ledger-cb3d is unfillable from one source.
+hypotheses: the searches covered arXiv, publisher pages, and repositories as
+  of 2023-2025; a paper published after this cycle could appear.
+evidence-class: finding (negative: absence of a single consolidated source;
+  positive rows are each anchored in held primary texts as listed).
+falsifier: appearance of a published graphic-by-graphic DRR ledger with
+  closure citations for all 121 (none known as of this cycle).
+holds-here: yes — justifies the run's policy of building research/drr-list.md
+  row-by-row from held primary rows rather than seeking one canonical table;
+  and makes "a single unsettled graphic proved finitely cyclic" a well-posed,
+  publishable target (problem.md).
+```
+
+```claim
+id: drr-demr-1996-elementary-graphics-abstract
+status: sourced
+statement: Dumortier, El Morsalani, Rousseau, "Hilbert's 16th problem for
+  quadratic systems and cyclicity of elementary graphics", Nonlinearity 9(5)
+  1996, DOI 10.1088/0951-7715/9/5/008 — abstract + record held
+  (research/sources/dumortier-rousseau-rousseau-1996-elementary-graphics-full.full.md).
+  Establishes finite cyclicity of several elementary graphics of quadratic
+  systems (non-identical return map) by the Khovanskii method, normal forms at
+  elementary singular points, compensation between singular points when the
+  graphic surrounds a center, and that some regular transition maps are not
+  tangent to the identity. NOTE author-list correction: the fetched IOP record
+  and OpenAlex list the authors as F. Dumortier, M. El Morsalani, C. Rousseau
+  (the earlier library report attributed it to Dumortier-Roussarie-Rousseau).
+  Full PDF paywalled at IOP; this is the class-closure paper behind the
+  elementary DRR rows.
+hypotheses: quadratic systems, elementary graphics, Khovanskii method.
+evidence-class: sourced (abstract-level; record from publisher page; PDF not
+  held).
+falsifier: any of the abstract's claims contradicted by a held primary text;
+  or a finding that the authors are different from the record's listing.
+holds-here: yes — background/method anchor for the elementary-graphics rows of
+  the DRR inventory; the closures themselves are recorded under
+  drr-dgr-2002-elementary-closures (held full text) and
+  roussarie-1994 cyclicity-1/2 (abstract, below).
+```
+
+```claim
+id: drr-drr94-cyclicity-1-2-abstract
+status: sourced
+statement: Dumortier, Roussarie, Rousseau, "Elementary graphics of cyclicity 1
+  and 2", Nonlinearity 7(3):1001, 1994, DOI 10.1088/0951-7715/7/3/013 —
+  abstract + record held (research/summaries/roussarie-1994-elementary-graphics-cyclicity-1-2.md;
+  NOTE the full text was never saved to a .full source file — the record
+  summary is the only held content for this paper).
+  Establishes: (C^∞) a graphic through any number of attracting hyperbolic
+  saddles (hyperbolicity ratio r>1) and attracting semi-hyperbolic points has
+  cyclicity 1; a graphic with one hyperbolic and one semi-hyperbolic
+  singularity of opposite character has cyclicity 2; 33 graphics appearing
+  among quadratic systems (listed in the preceding DRR paper) have cyclicity
+  at most 2, five only under generic conditions. Full PDF paywalled at IOP;
+  abstracts held.
+hypotheses: C^∞ planar vector fields for the general theorems; quadratic
+  systems for the 33-graphics specialization; fixed connections.
+evidence-class: sourced (abstract-level; publisher record; PDF not held).
+falsifier: a contradicting primary text; none known.
+holds-here: yes — the cyclicity-1/2 backbone of the elementary DRR rows
+  (hemicycles, hyperbolic saddles at infinity), complementary to the held
+  DGR 2002 full text.
+```
+
+```claim
+id: ecalle-1990-accelerosommation-record
+status: sourced
+statement: Écalle, "Finitude des cycles-limites et accéléro-sommation de
+  l'application de retour", in Françoise–Roussarie (eds), Bifurcations of
+  Planar Vector Fields, Luminy 1989, Lecture Notes in Mathematics 1455,
+  Springer 1990, pp. 74-159, DOI 10.1007/BFb0085391 — record + Écalle's own
+  reference list held (research/sources/ecalle-1990-finitude-accelerosommation.full.md,
+  research/summaries/ecalle-1990-finitude-accelerosommation.md) via the
+  Springer chapter page; body paywalled. The held reference list is the
+  Écalle-side spine of the Dulac finiteness proof: the resurgent-functions
+  trilogy (Pub. Math. Orsay 1981/1985), his "Preuve de la conjecture de Dulac
+  et accéléro-sommation de l'application de retour", the Écalle–Martinet–
+  Moussu–Ramis CRAS 304 (1987) "Non-accumulation des cycles-limites" I/II
+  pp. 375-378/431-434, Seidenberg's desingularization, Françoise–Pugh 1986,
+  Moussu Bourbaki 655, Yoccoz Bourbaki 690, Ilyashenko 1984/1987/1991,
+  Petrovskii–Landis, Mandelbrojt. The library had NO Écalle-side primary of
+  any form before this record (only the Chicone 1993 book review of the
+  Ilyashenko monograph mentioned it).
+hypotheses: the Écalle side of Dulac's finiteness theorem (individual analytic
+  planar fields; non-accumulation of limit cycles on polycycles via
+  accelero-summation of the return map).
+evidence-class: sourced (record + bibliography; body text not held — no
+  theorem statement of the 1990 chapter is in this library yet; the EMMR 1987
+  CRAS note carrying the proof's announcement is also not open).
+falsifier: a held full text showing the 1990 chapter's theorem hypotheses
+  differ from the Ilyashenko-side statement as recorded (h16-dulac-finiteness-
+  theorem), or that Écalle's side does NOT use analyticity (which would matter
+  for problem.md test 1); none currently held.
+holds-here: yes as the reference spine for the Écalle side; the run's
+  Dulac-status rows (settled-but-contested; Yeung 2024-25 challenges the
+  Ilyashenko side) now have both sides' primary records at least
+  bibliographically, and the EMMR 1987 CRAS note is identified as the
+  open-format target most likely to carry the Écalle-side proof concisely.
+```
+
+```claim
+id: lu-h14-3-bundle-scripts-now-held
+status: finding
+statement: CONTEXT.md gap-2's "two bundle scripts still not held —
+  verify_h14_center_bautin.py, verify_h14_center_global_domains.py" is STALE:
+  both scripts ARE held in this library.
+  research/sources/lu-h14-3-verify-center-bautin.py.full.md (src
+  arxiv.org/src/2607.13785v2/anc/h14_3_reproducibility/certificates/
+  verify_h14_center_bautin.py, plain text held) and
+  research/sources/lu-h14-3-verify-center-global-domains.py.full.md (src
+  .../verify_h14_center_global_domains.py). The bautin script establishes:
+  the H14^3 five-coefficient Bautin recurrence recovering L1=(AC+CD+2DF-EF)/8;
+  the H14 omega-parametrization A=B/w, C=a(2B-1)/w^2, D=(a^2(B-1)+m-ad)/w^3,
+  E=1/w, F=(a+d)/w^2, w^2=1-a^2, reducing L1 to numerator ell1 = 2B^2a+2Bam-
+  Ba-2a^2d+am-2ad^2-a+2md-d over 8w^5; both exact centre components
+  (a=0,d=0) and (m=-B,d=-a) annihilate L2; along the L1=0 branch,
+  L2|ell1=0 = (a(B+m)/48)*eps^2+O(eps^3), i.e. U(0)=1/48. Its output has
+  NOT been re-executed in this workspace; evidence class asserted-by-source
+  until a clean-room run (code/out/ capture) upgrades it.
+hypotheses: H14^3 five-coefficient chart; Lu's rotation recurrence; radial
+  gauge c_{k,0}=0.
+evidence-class: finding (corrects a stale library-status row; the script's
+  algebraic content matches this run's clean-room verification of the core
+  recurrence, code/bautin/verify_lu_core.py, capture
+  code/out/lu_core.captured.txt, but this specific script is not re-run).
+falsifier: a re-execution of the bundle script in this workspace that fails
+  or disagrees with the recorded identities (none found; not yet attempted).
+holds-here: yes — closes CONTEXT gap-2's "scripts not held" half; the
+  remaining unverified part of Lu 2026 is the human-proof analytic/domain
+  remainder of Theorem 1 (thread lu-h14-3-verification).
+```
+
+```claim
+id: roussarie-1986-separatrix-loop-record
+status: sourced
+statement: Roussarie, "On the number of limit cycles which appear by
+  perturbation of separatrix loop of planar vector fields", Bol. Soc. Bras.
+  Mat. 17(2):67-101, 1986, DOI 10.1007/BF02584827 — record + reference list
+  held (research/sources/roussarie-1986-separatrix-loop-limit-cycles.full.md)
+  via the Springer gateway landing page; body text paywalled. The held
+  reference list establishes the paper's own bibliography (Cherkas successor
+  function, Andronov-Leontovich-Gordon-Maier, Dulac 1923, Sternberg, Ilyashenko
+  1984, Khovanskii Bezout). This is the founding derivation-division paper
+  underlying the DRR finite-cyclicity proofs (generalized in DR 2001,
+  Zhu-Rousseau 2002, RR 2015).
+hypotheses: planar vector fields, perturbation of a separatrix loop (the
+  elementary/hyperbolic polycycle case).
+evidence-class: sourced (record + bibliography; no body text — the mathematical
+  content itself is asserted via the later held sources that generalize it).
+falsifier: a held source showing the derivation-division method originates
+  elsewhere, or that the bibliographic identity is wrong; none found.
+holds-here: yes — provenance anchor for the derivation-division instruments
+  used throughout the DRR program; the method's statements-as-used are read
+  from the held Zhu-Rousseau 2002 / DR 2001 full texts.
+```
+
+```claim
+id: l8-notin-l4l6-lean-tables-second-route
+status: checked
+statement: The data tables the Lean kernel sees in code/lean/Lib/Bautin.lean
+  (V1num's six explicit terms, v2coeffs/v2ms with 56 entries, v3coeffs/v3ms
+  with 220 entries, certPt = [-2,-2,1,-1,-1,1]) are validated by a SECOND
+  independent route — code/bautin/verify_lean_tables.py parses them directly
+  from the file text (no sympy, no focal-value recurrence), reconstructs
+  V1num, V2num, V3num as exact integer polynomials over (a1,a2,a3,b1,b2,b3),
+  and evaluates at certPt: eval V1num = 0, eval V2num = 0, eval V3num = 7200,
+  with monomial counts 6/56/220. CERTIFICATE VALID: PASS (exit 0), capture
+  code/out/lean_tables.captured.txt. These are exactly the three evaluations
+  that are the premises of theorem V3_not_mem_span_V1_V2 in Bautin.lean —
+  "L8 ∉ ⟨L4,L6⟩" — so the kernel-checked non-membership rests on tables that
+  pass an independent validation of the emitted text itself. Structural audit:
+  monomial degrees are {2}/{4}/{6} (matching homogeneity of L4/L6/L8), all
+  exponent vectors distinct, no zero coefficients; spot-check V1num = 8·L4 and
+  7200/18432 = 25/64 agree with cofactor_certificate.captured.txt.
+hypotheses: the six-coefficient quadratic focus
+  u' = -v + a1 u² + a2 u v + a3 v², v' = u + b1 u² + b2 u v + b3 v²;
+  V1num = 8·L4, V2num = 192·L6, V3num = 18432·L8 (cleared denominators);
+  common-zero-of-L4,L6 witness at which L8 ≠ 0 refutes membership in the
+  radical (stronger than membership).
+search-frame: exact integer arithmetic, stdlib-only parser; every entry of all
+  three tables parsed and evaluated; tamper test (corrupt one v3 coefficient
+  89450→89449) correctly yields eval V3num = 7232 ≠ 7200 and CERTIFICATE
+  VALID: FAIL, exit 1 — the checker is not vacuous. Published exhaustive
+  regime: none needed (three rational evaluations are the finite certificate).
+evidence-class: verified-computationally (executed capture
+  code/out/lean_tables.captured.txt; exit 0 PASS; tamper test FAILs).
+  Distinct from, and independent of, the Gröbner route
+  (verify_membership.py, membership.captured.txt) and the sympy recurrence
+  route (lyapunov_quadratic.py) to the same statement.
+falsifier: a re-parse or corrected reading of Bautin.lean whose evaluations
+  differ; a kernel-checked cofactor certificate for L8 ∈ ⟨L4,L6⟩ (would
+  refute the "third generator needed" reading); the tamper test shows the
+  checker detects single-coefficient corruption.
+holds-here: yes — the Lean kernel's V3_not_mem_span_V1_V2 rests on these
+  evaluations; this validates the emitted tables independently of the program
+  that generated them. It says nothing about M(2)=3, which stays Cited
+  (Bautin 1952).
+```
+
+```claim
+id: h16-ominimality-route-roussarie-primary
+status: sourced
+statement: Kaiser, Rolin, Speissegger, "Transition maps at non-resonant
+  hyperbolic singularities are o-minimal", J. Reine Angew. Math. 636 (2009)
+  1-45 (arXiv:math/0612745, full text now added). They construct a model
+  complete and o-minimal, polynomially bounded expansion R_Q of the real field
+  — which defines all convergent generalized power series with natural support
+  — such that the transition map of any planar analytic vector field at any
+  isolated NON-RESONANT hyperbolic singularity is definable in R_Q. Hence
+  (with the uniform finiteness principle) Roussarie's finite cyclicity
+  conjecture holds for the class NRH_d of fields whose singularities are all
+  non-resonant hyperbolic.
+hypotheses: planar analytic vector fields; isolated non-resonant hyperbolic
+  singularities (real eigenvalues, irrational ratio); the R_Q expansion is
+  definable.
+evidence-class: asserted-by-source (full text held,
+  research/sources/kaiser-rolin-speissegger-transition-maps-ominimal.full.md).
+falsifier: a counterexample to o-minimality of some NRH_d transition map, or a
+  refinement showing non-resonance is not enough for a uniform cyclicity
+  bound; a failing of R_Q's model-completeness would break the unif. finiteness
+  step.
+holds-here: yes — this is the PRIMARY source for the Established
+  h16-ominimality-route-roussarie claim, and the structural location of the
+  analyticity input (Test 1) in the o-minimality route.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```
+
+```claim
+id: h16-scholarpedia-encyclopedic-tier
+status: sourced
+statement: Han, Li, Li, "Limit cycles of planar polynomial vector fields",
+  Scholarpedia 5(8):9648 (full text now added) — the canonical encyclopedic
+  entry for Hilbert's 16th problem part 2. Confirms: H(2)>=4 by L. Chen and
+  M. Wang (1979, Acta Math. Sinica 22:751-758) and by S. Shi (1980), and
+  "widely conjectured H(2)=4"; Petrovsky-Landis 1955-57 proof of H(2)=3
+  contained errors; Lins-de Melo-Pugh conjecture H(m,1)=[m/2] disproved with 4
+  limit cycles for degree m=6 (n=1); H(1,1)=0; H(2,1)=1 (LMP 1977); H(1,2)=1
+  (Coppel 1988); H(2,2)=1 (Li 1986; Dumortier-Li).
+hypotheses: none — encyclopedic record.
+evidence-class: asserted-by-source (full text held,
+  research/sources/han-li-li-scholarpedia-limit-cycles.full.md).
+falsifier: a primary source correcting any of the lower bounds or the LMP
+  disproof attribution.
+holds-here: yes — independently corroborates the CONTEXT.md Established lower
+  bounds and Liénard rows from a different (encyclopedic, Chinese-school)
+  tier.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```
+
+```claim
+id: h16-yu-zeng-near-integrable-4cycles-construction
+status: sourced
+statement: Yu, Zeng, "Visualization of four limit cycles in near-integrable
+  quadratic polynomial systems", IJBC 30(15) (2020), full open preprint held
+  (research/sources/yu-zeng-four-limit-cycles-near-integrable-2020.full.md).
+  Carries the explicit quadratic systems realising H(2)>=4: the Shi Songling
+  system (dx/dt = lambda x - y - 10x^2 + (5+delta)xy + y^2, dy/dt = x + x^2 +
+  (-25+8eps-9delta)xy with specific parameter choices) and a near-integrable
+  two-center quadratic system whose quadratic perturbation yields four limit
+  cycles in (3,1) distribution.
+hypotheses: quadratic planar systems; the four cycles are exhibited by
+  bifurcation/numerical analysis.
+evidence-class: asserted-by-source (held full text); explicitly a
+  visualization/numerical paper, NOT a certified existence proof — the four
+  cycles are not interval-certified here.
+falsifier: a certified count showing one of the four cycles is spurious; a
+  re-derivation that a stated parameter regime yields fewer cycles.
+holds-here: yes as the construction record for H(2)>=4 (the primary Shi
+  1980 Scientia Sinica remains paywalled); for certification one must apply
+  the trapping-annulus oracle, not this paper.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```
+
+```claim
+id: data-stale-gap-2-lu-scripts-held
+status: checked
+statement: CONTEXT.md Gap 2 lists verify_h14_center_bautin.py and
+  verify_h14_center_global_domains.py as "still not held", but both ARE held
+  in the library (research/sources/lu-h14-3-verify-center-bautin.py.full.md
+  and lu-h14-3-verify-center-global-domains.py.full.md, from
+  arxiv.org/src/2607.13785v2/anc/...). Only verify_h14_center_basis.py among
+  the named bundle members remains not held.
+hypotheses: none — a provenance fact about the library.
+evidence-class: checked (grep of research/sources).
+falsifier: a listing of research/sources showing those two files absent.
+holds-here: yes — the CONTEXT.md gap row and the verification thread should be
+  corrected accordingly.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```
+
+```claim
+id: data-dulac-1923-fulltext-not-obtainable
+status: checked
+statement: Dulac, "Sur les cycles limites", Bull. Soc. Math. Fr. 51 (1923)
+  45-188 — the canonical paper whose asymptotic-expansion error drives Test 1
+  (the smooth test) — remains unavailable as full text in this library. The
+  Numdam full PDF (numdam.org/item/10.24033/bsmf.1031.pdf) was refused by
+  download_document ("downloaded document is too large"); landing/reference
+  records already held. Chicone 1993 AMS Bulletin review of the finiteness
+  monographs also unobtainable as review text (web shell only).
+hypotheses: none — provenance facts.
+evidence-class: checked (both fetch attempts recorded).
+falsifier: a full-text capture of either appearing in research/sources.
+holds-here: yes — the canonical tier for Test 1 is only at record level; the
+  substance of Dulac's error and the Écalle/Ilyashenko repairs is carried by
+  held Ilyashenko 2002 and the survey sources.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```
+
+```claim
+id: h16-gasull-santana-monomial-hilbert-variant-2024
+status: sourced
+statement: Gasull & Santana (arXiv:2405.04281v3, 2024; published Nonlinearity,
+  doi:10.1088/1361-6544/ad8c1b), "On a variant of Hilbert's 16th problem":
+  count limit cycles of planar polynomial vector fields by NUMBER OF MONOMIALS
+  m (not degree). H^M(m) = sup{pi(X) : X has exactly m monomials}. Theorem 1:
+  for m >= 9, H^M(m) >= (1/2)m^2 - 3m - 8  (quadratic growth, O(m^2)),
+  a corollary of the sharper Proposition 1 (for any n,r>=0 there are fields
+  with n+r+4 monomials and >= 2n(r+1) + n(1+(-1)^r) limit cycles). Theorem 2
+  (small m): H^M(4)>=12, H^M(5)>=12, H^M(6)>=12, H^M(7)>=16, H^M(8)>=20,
+  H^M(9)>=24, H^M(10)>=32. Method: Abelian integrals (Poincare-Pontryagin /
+  Melnikov) for the quadratic bound and the H^M(9)>=24 field; reversible-center
+  constructions and weak-focus cyclicity for H^M(4)>=12 (planar-S system).
+  This reproduces the O(n^2 ln n) lower bound on H(n) (Lienard-type fields,
+  Alvarez et al) as the earlier O(m ln m) bound, then improves it to O(m^2).
+hypotheses: planar polynomial vector fields, count via number of monomials;
+  first-order (Abelian/Melnikov) bifurcation for most constructions; for the
+  weak-focus cases, focal-value cyclicity.
+evidence-class: asserted-by-source (paper published in Nonlinearity; full HTML
+  held, theorem statements verbatim). Not re-derived computationally in this
+  run.
+falsifier: a planar polynomial vector field with m monomials (m in the
+  stated range) and more limit cycles than the stated lower bound, contradicting
+  neither (a lower bound is not contradicted by more cycles); the real
+  falsifier would be a bug in the Abelian-integral zero-count making the bound
+  invalid. None known.
+holds-here: yes as an adjacent, independently-published 2024 corroboration that
+  limit-cycle counts grow at least quadratically in a monomial/degree measure —
+  consistent with `h16-bd-abelian-linear-in-m`, `h16-canard-asymptotic-lower-
+  bound-2020`; and a test-bed for the adopted approach
+  `abelian-picard-fuchs-argument-principle-sharp-count` (Abelian-integral
+  zero-counts are its engine).
+anchor: research/summaries/gasull-santana-monomial-hilbert-variant.md
+```
+
+```claim
+id: h16-mucino-rebollo-abelian-trivial-monodromy-2025
+status: sourced
+statement: Muciño-Raymundo & Rebollo-Perdomo (arXiv:2508.15925, 2025),
+  "Abelian integrals for polynomials with trivial global monodromy on C^2":
+  for H primitive with trivial global monodromy in C^2 (deg H = m+1) and
+  omega a polynomial 1-form of degree <= n, the Abelian integral I(c)=prod_{gamma(c)} omega
+  along any cycle class of the generic fiber is a POLYNOMIAL function of c,
+  so its zeros are bounded by a degree count. Concrete: for the Neumann-Norbury
+  normal form of primitive type (0,2), Theorem 23 gives the unique Abelian
+  integral is a polynomial with at most floor((n+1)m/2) isolated zeros; for the
+  three-cycle example Z(I1)<=3n-2, Z(I2)<=3n-2, Z(I3)<=n-1 and
+  N_BC(H)(omega) <= 2(3n-2)+(n-1); worked n=3 example gives 15 distinct zeros.
+  Remark 9 exhibits an infinite family of homology cycles beta_l (l in Z) each
+  giving its own pair of limit cycles of the COMPLEX perturbed Hamiltonian
+  system dH+eps*omega_0=0 — infinitely many complex limit cycles across
+  homology classes, a complex-algebraic phenomenon, NOT a real-planar
+  counterexample to H16.2.
+hypotheses: H primitive with trivial global monodromy in C^2, deg H = m+1;
+  omega non-exact polynomial 1-form of degree <= n; Abelian (first-order
+  Melnikov / infinitesimal-Hamiltonian) bifurcation.
+evidence-class: asserted-by-source (arXiv preprint, unrefereed; full HTML held,
+  the explicit polynomial identities and bounds read from the body verbatim;
+  the n=3 worked example's I_1,I_2,I_3 are explicitly written and machine-
+  checkable but not yet re-executed in this run).
+falsifier: a primitive (0,2) polynomial H and 1-form exceeding the stated
+  floor((n+1)m/2) or per-cycle bounds — the bounds are explicit and the exact
+  integrals are written out for the example, so a counter-system would refute;
+  none known.
+holds-here: yes as a 2025 primary source for the adopted approach
+  `abelian-picard-fuchs-argument-principle-sharp-count` (trivial-monodromy
+  structure turns Abelian integrals into polynomials with clean degree bounds —
+  the structural opposite of the double-exponential h16-bny-abelian-bound).
+  The Remark-9 "infinite limit cycles" must be read as complex-homology, not as
+  contradicting H16.2 finiteness.
+anchor: research/summaries/mucino-rebollo-abelian-trivial-monodromy.md
+```
+
+```claim
+id: h16-novikov-yakovenko-modules-picard-fuchs-2002
+status: sourced
+statement: D. Novikov (with Yakovenko), "Modules of Abelian integrals and
+  Picard-Fuchs systems", Nonlinearity 15 (2002) 1435–1450, arXiv:math/0110126
+  (full text NOW HELD, research/sources/novikov-yakovenko-modules-abelian-
+  picard-fuchs.arxiv.full.md, src https://arxiv.org/pdf/math/0110126). For a
+  bivariate polynomial H with nondegenerate highest homogeneous part, the
+  C[t]-module of relative cohomologies Λ²/(dH∧Λ¹) is ISOMORPHIC to the
+  C[t]-module of Abelian integrals; via this isomorphism the period matrix of
+  any basis ω₁..ω_μ (μ = tr D deg/deg H = Σ deg ωᵢ/(n+1)) is a nondegenerate
+  solution of a first-order system (∂/∂t + (B₀+tB₁)⁻¹B₁)X = 0 of RANK μ (the
+  minimal irredundant Picard–Fuchs system; Theorem 1). Lemma 1: the period
+  matrix admits a converging expansion X(t)=t^{-m}X₀(1+O(t^{-1})); Corollary 1:
+  det X(t) is a polynomial of degree ≤ m=tr D ≤ Σ deg ωᵢ/(n+1); Prop 1
+  (Gavrilov): any Abelian integral is a polynomial-in-t linear combination of
+  integrals of the ωᵢ when {dωᵢ} are independent mod the gradient ideal;
+  Prop 2: the matrix A=B₁⁻¹... has as eigenvalues exactly the critical values
+  of H (with multiplicities) and eigenvectors the corresponding vanishing cycles;
+  Prop 3: for homogeneous dωᵢ ordered by degree, B₀,B₁ lower triangular, B₀
+  diagonal entries = deg ωᵢ/deg H, B₁²=0, and B₀+tB₁ invertible for all t.
+hypotheses: H ∈ C[x,y] regular at infinity with nondegenerate highest
+  homogeneous part (so the fiber homology has the right rank); ωᵢ polynomial
+  one-forms; the isomorphism is C[t]-linear.
+evidence-class: sourced (peer-reviewed Nonlinearity 2002; arXiv full text held
+  and read; the Picard–Fuchs existence + rank-μ irredundancy + eigenvalue/singular-
+  value structure are the load-bearing tools of the adopted sharp-Abelian route).
+falsifier: a located error in the module isomorphism (e.g. a Hamiltonian H with
+  nondegenerate leading part whose C[t]-module of Abelian integrals is NOT free
+  of the claimed rank), which would collapse the Picard–Fuchs approach for that
+  H; none known.
+holds-here: yes — the explicit rank-μ minimal Picard–Fuchs system and the
+  eigenvalue structure (critical values of H are eigenvalues of A) are exactly
+  what the adopted approach (abelian-picard-fuchs-argument-principle-sharp-count)
+  needs to write the Wronskian/Chebyshev chain for a named Hamiltonian family in
+  Lean; gives the finite-dimensional linear ODE that the ECT criterion reduces
+  to a resultant/sign condition.
+anchor: research/sources/novikov-yakovenko-modules-abelian-picard-fuchs.arxiv.full.md
+```
+
+```claim
+id: h16-gavrilov-abelian-morse-hamiltonian-aif-1999
+status: sourced
+statement: L. Gavrilov, "Abelian integrals related to Morse polynomials and
+  perturbations of plane Hamiltonian vector fields", Ann. Inst. Fourier
+  (Grenoble) 49(2) (1999) 611–652 (full text NOW HELD from Numdam,
+  research/sources/gavrilov-abelian-morse-hamiltonian-aif-1999.full.md,
+  src http://www.numdam.org/article/AIF_1999__49_2_611_0.pdf). The PRIMARY
+  source for the Petrov/bounded module machinery: Theorem 1 — for f a
+  semiweighted-homogeneous polynomial of wdeg d and type w, the K[t] module
+  P_f of Abelian integrals is FREE and finitely generated by μ=(d−wx)(d−wy)/wxwy
+  polynomial one-forms; Theorem 2 — if f has only Morse critical points, the
+  bundle E_δ compatible with the real structure and satisfying condition (*),
+  the R[t] module A_δ is free finitely generated of rank = rank E_δ. §6 gives
+  the ABELIAN INTEGRALS in polynomial perturbations of QUADRATIC HAMILTONIAN
+  vector fields with a center (generic and reversible cases), with the explicit
+  Chebyshev/non-oscillation result (the n−1 bound shape for the period-annulus
+  perturbation of a quadratic center). Parts 2–4 build the module/Milnor-bundle
+  machinery and the argument-principle zero-count.
+hypotheses: f semiweighted-homogeneous (Morse critical points for Thm 2);
+  H real polynomial, real vanishing cycles compatible with the real structure
+  + condition (*) for the R[t] free module A_δ; quadratic-Hamiltonian-with-center
+  for the §6 Chebyshev result.
+evidence-class: sourced (peer-reviewed Ann. Inst. Fourier 1999, open access
+  Numdam full text held and read; the module-freeness → rank-μ Chebyshev bound
+  is the origin of the sharp n−1-type counts the adopted approach re-runs).
+falsifier: a semiweighted-homogeneous f with isolated critical points whose
+  Petrov module P_f is NOT free of rank μ (contradicting Theorem 1), or a Morse
+  f failing the condition-(*) / real-structure hypotheses where A_δ is not free
+  of the claimed rank; none known.
+holds-here: yes — the freeness/finite-generation of the P_f module and the §6
+  quadratic-Hamiltonian-center Chebyshev bound are the structural backbone of the
+  sharp Abelian zero-count; the γ vs e μ' generators are what a Lean finite core
+  would reduce to a resultant/Sturm check.
+anchor: research/sources/gavrilov-abelian-morse-hamiltonian-aif-1999.full.md
+```
+
+```claim
+id: h16-ggi-quadratic-centers-genus-one-2009
+status: sourced
+statement: S. Gautier, L. Gavrilov, I. D. Iliev, "Perturbations of quadratic
+  centers of genus one", DCDS 25(2):511–535 (2009), arXiv:0705.1609 (full text
+  NOW HELD, research/sources/gautier-gavrilov-iliev-quadratic-centers-genus-one.arxiv.full.md,
+  src https://arxiv.org/pdf/0705.1609). The program paper for the cyclicity of
+  period annuli of quadratic systems with genus-one centers: classifies the
+  reversible and generic Lotka-Volterra genus-one families (Thms 1–2, Props
+  1–3); determines the essential one-parameter quadratic perturbations and the
+  associated Poincaré-Pontryagin-Melnikov functions; Prop 4 gives the
+  Picard-Fuchs dimension (3 in (r1),(r3)-(r4) b=-1/3,(r6) b=2,(r9),(r11)-(r12),
+  (r17)-(r18); 4 otherwise); Thm 3: the exact upper bound of the number of
+  limit cycles from the period annulus under quadratic perturbations of the
+  reversible system (r18) or (r11) is TWO; Thm 4: the 3-dim space of Abelian
+  integrals J(t)=I'(t), t∈[-1/6,0), is Chebyshev — at most two zeros counted
+  with multiplicity. Conjectures 1–2: cyclicity three in (r1) a*<a<4, (r3)
+  7/3<a<4, (r4) 4<a<5, (r5) a=4, (r6) a>4, (r10), (rlv1); two otherwise.
+hypotheses: planar quadratic systems with a center whose phase curves are
+  genus one; small quadratic (degree-2) perturbations of the same family;
+  period annulus surrounding the center at the origin; Abelian-integral
+  (first-order Poincaré-Pontryagin-Melnikov) control.
+evidence-class: sourced (peer-reviewed DCDS 2009; arXiv full text held and
+  read; Theorem 3 gives exact sharp upper bounds, Theorem 4 a Chebyshev bound —
+  the established sharp counts in the shape of GOAL result-type 3).
+falsifier: a located error in the Melnikov-function computation for (r11)/(r18)
+  (would change the exact bound 2); or a certified quadratic perturbation
+  producing more than two limit cycles from the (r11)/(r18) annulus; none known.
+holds-here: yes — the exact validation targets for the adopted sharp-Abelian
+  route (abelian-picard-fuchs-argument-principle-sharp-count): (r11),(r18)
+  established sharp counts to re-run clean-room; the conjectural r-classes are
+  where a re-derivation could graduate or refute a conjecture. Combined with
+  the GMV Chebyshev criterion (held), Novikov-Yakovenko 2002 (held this cycle)
+  and Gavrilov 1999 (held this cycle), the instrument loop for the run's
+  adopted approach is complete.
+anchor: research/sources/gautier-gavrilov-iliev-quadratic-centers-genus-one.arxiv.full.md
+```
+
+```claim
+id: data-shao-li-hyperelliptic-lienard-landing-only
+status: checked
+statement: The attempt to capture Shao & Li, "Limit cycles bifurcations of
+  Liénard system with a hyperelliptic Hamiltonian of degree five" (EJQTDE
+  2024, doi:10.14232/ejqtde.2024.1.62) succeeded only to the level of the
+  journal's landing/home page (research/summaries/shao-li-hyperelliptic-
+  lienard-ejqtde-2024.md = the whole capture, 2316 bytes, with no mathematics).
+  The search-result summary (Chen & Xiang: a degree-five hyperelliptic Liénard,
+  at most six limit cycles from the period annulus via ECT/Chebyshev
+  semi-algebraic zero-counts) survives only at recall level, NOT backed by a
+  held primary text.
+hypotheses: none — a provenance fact.
+evidence-class: checked (capture attempt recorded).
+falsifier: a full-text capture of the Shao-Li paper appearing in
+  research/sources.
+holds-here: yes as a warning — an abstract-level summary of this paper exists
+  in the search record but the paper itself is NOT in the library; do not cite
+  it as held.
+anchor: research/summaries/shao-li-hyperelliptic-lienard-ejqtde-2024.md
+```

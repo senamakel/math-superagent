@@ -1,0 +1,109 @@
+```claim
+id: h16-ominimality-route-roussarie-primary
+status: sourced
+statement: Kaiser, Rolin, Speissegger, "Transition maps at non-resonant
+  hyperbolic singularities are o-minimal", J. Reine Angew. Math. 636 (2009)
+  1-45 (arXiv:math/0612745, full text now added). They construct a model
+  complete and o-minimal, polynomially bounded expansion R_Q of the real field
+  — which defines all convergent generalized power series with natural support
+  — such that the transition map of any planar analytic vector field at any
+  isolated NON-RESONANT hyperbolic singularity is definable in R_Q. Hence
+  (with the uniform finiteness principle) Roussarie's finite cyclicity
+  conjecture holds for the class NRH_d of fields whose singularities are all
+  non-resonant hyperbolic.
+hypotheses: planar analytic vector fields; isolated non-resonant hyperbolic
+  singularities (real eigenvalues, irrational ratio); the R_Q expansion is
+  definable.
+evidence-class: asserted-by-source (full text held,
+  research/sources/kaiser-rolin-speissegger-transition-maps-ominimal.full.md).
+falsifier: a counterexample to o-minimality of some NRH_d transition map, or a
+  refinement showing non-resonance is not enough for a uniform cyclicity
+  bound; a failing of R_Q's model-completeness would break the unif. finiteness
+  step.
+holds-here: yes — this is the PRIMARY source for the Established
+  h16-ominimality-route-roussarie claim, and the structural location of the
+  analyticity input (Test 1) in the o-minimality route.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```
+
+```claim
+id: h16-scholarpedia-encyclopedic-tier
+status: sourced
+statement: Han, Li, Li, "Limit cycles of planar polynomial vector fields",
+  Scholarpedia 5(8):9648 (full text now added) — the canonical encyclopedic
+  entry for Hilbert's 16th problem part 2. Confirms: H(2)>=4 by L. Chen and
+  M. Wang (1979, Acta Math. Sinica 22:751-758) and by S. Shi (1980), and
+  "widely conjectured H(2)=4"; Petrovsky-Landis 1955-57 proof of H(2)=3
+  contained errors; Lins-de Melo-Pugh conjecture H(m,1)=[m/2] disproved with 4
+  limit cycles for degree m=6 (n=1); H(1,1)=0; H(2,1)=1 (LMP 1977); H(1,2)=1
+  (Coppel 1988); H(2,2)=1 (Li 1986; Dumortier-Li).
+hypotheses: none — encyclopedic record.
+evidence-class: asserted-by-source (full text held,
+  research/sources/han-li-li-scholarpedia-limit-cycles.full.md).
+falsifier: a primary source correcting any of the lower bounds or the LMP
+  disproof attribution.
+holds-here: yes — independently corroborates the CONTEXT.md Established lower
+  bounds and Liénard rows from a different (encyclopedic, Chinese-school)
+  tier.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```
+
+```claim
+id: h16-yu-zeng-near-integrable-4cycles-construction
+status: sourced
+statement: Yu, Zeng, "Visualization of four limit cycles in near-integrable
+  quadratic polynomial systems", IJBC 30(15) (2020), full open preprint held
+  (research/sources/yu-zeng-four-limit-cycles-near-integrable-2020.full.md).
+  Carries the explicit quadratic systems realising H(2)>=4: the Shi Songling
+  system (dx/dt = lambda x - y - 10x^2 + (5+delta)xy + y^2, dy/dt = x + x^2 +
+  (-25+8eps-9delta)xy with specific parameter choices) and a near-integrable
+  two-center quadratic system whose quadratic perturbation yields four limit
+  cycles in (3,1) distribution.
+hypotheses: quadratic planar systems; the four cycles are exhibited by
+  bifurcation/numerical analysis.
+evidence-class: asserted-by-source (held full text); explicitly a
+  visualization/numerical paper, NOT a certified existence proof — the four
+  cycles are not interval-certified here.
+falsifier: a certified count showing one of the four cycles is spurious; a
+  re-derivation that a stated parameter regime yields fewer cycles.
+holds-here: yes as the construction record for H(2)>=4 (the primary Shi
+  1980 Scientia Sinica remains paywalled); for certification one must apply
+  the trapping-annulus oracle, not this paper.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```
+
+```claim
+id: data-stale-gap-2-lu-scripts-held
+status: checked
+statement: CONTEXT.md Gap 2 lists verify_h14_center_bautin.py and
+  verify_h14_center_global_domains.py as "still not held", but both ARE held
+  in the library (research/sources/lu-h14-3-verify-center-bautin.py.full.md
+  and lu-h14-3-verify-center-global-domains.py.full.md, from
+  arxiv.org/src/2607.13785v2/anc/...). Only verify_h14_center_basis.py among
+  the named bundle members remains not held.
+hypotheses: none — a provenance fact about the library.
+evidence-class: checked (grep of research/sources).
+falsifier: a listing of research/sources showing those two files absent.
+holds-here: yes — the CONTEXT.md gap row and the verification thread should be
+  corrected accordingly.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```
+
+```claim
+id: data-dulac-1923-fulltext-not-obtainable
+status: checked
+statement: Dulac, "Sur les cycles limites", Bull. Soc. Math. Fr. 51 (1923)
+  45-188 — the canonical paper whose asymptotic-expansion error drives Test 1
+  (the smooth test) — remains unavailable as full text in this library. The
+  Numdam full PDF (numdam.org/item/10.24033/bsmf.1031.pdf) was refused by
+  download_document ("downloaded document is too large"); landing/reference
+  records already held. Chicone 1993 AMS Bulletin review of the finiteness
+  monographs also unobtainable as review text (web shell only).
+hypotheses: none — provenance facts.
+evidence-class: checked (both fetch attempts recorded).
+falsifier: a full-text capture of either appearing in research/sources.
+holds-here: yes — the canonical tier for Test 1 is only at record level; the
+  substance of Dulac's error and the Écalle/Ilyashenko repairs is carried by
+  held Ilyashenko 2002 and the survey sources.
+anchor: research/notes/librarian-cycle-h16-ominimal-scholarpedia-4cycles.md
+```

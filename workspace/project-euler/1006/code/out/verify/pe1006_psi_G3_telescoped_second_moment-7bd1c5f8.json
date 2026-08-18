@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "pe1006-psi/G3-telescoped-second-moment",
   "source": "code/lean/pe1006_psi_G3_telescoped_second_moment-7bd1c5f8.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

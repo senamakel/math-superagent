@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "req-close-universal-euclidean",
+  "source": "code/lean/req_close_universal_euclidean-4773c60b.lean",
+  "stage": "decompose"
+}

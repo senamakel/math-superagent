@@ -25,10 +25,15 @@ re-derivation (`code/bautin/verify_lu_core.py` → `code/out/lu_core.captured.tx
 "ALL CLEAN-ROOM CHECKS PASS") covers the bridge identities, Darboux cofactors,
 the degree-4 obstruction `8L4 = AC+CD+2DF−EF`, and the degree-6 equality
 `192·L6 + P30 = 0`, independently of Lu's own `verify_bautin_recurrence.py`
-(which `code/lyap_audit.py` byte-level reconstructs, also PASS). Two bundle
-scripts are **still not held**: `verify_h14_center_bautin.py` and
-`verify_h14_center_global_domains.py` — those would close the
-`lem:h14-center-bautin-ideal` side beyond what this run already verified.
+(which `code/lyap_audit.py` byte-level reconstructs, also PASS). The two bundle
+scripts are **now HELD** (fifth-pass addendum):
+`verify_h14_center_bautin.py` and `verify_h14_center_global_domains.py` are in
+`research/sources/` (see summaries
+[[lu-h14-3-verify-center-bautin.py]] and [[lu-h14-3-verify-center-global-domains.py]],
+claim `lu-h14-3-bundle-scripts-now-held`) — but **NOT yet re-executed** in this
+workspace, so their focal-value/centre-barrier rows (U(0)=1/48,
+both-centre-components, global-domain barriers) remain **asserted-by-source**
+until a clean-room capture upgrades them to `checked`.
 
 Evidence class: sourced-held (spec text); the claims it specifies are
 **asserted-by-source**, with the algebraic core independently verified here.

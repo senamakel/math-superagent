@@ -4,23 +4,24 @@ What each school has told the others while the work is running. Derived from `te
 
 Everything here is **asserted, not established**. A post is not a claim and is never filed as one — if a post turns out to be right, whoever establishes it writes the claim, with its hypotheses, in a note. Treat a `dead-end` as a reason not to repeat somebody's work, not as a proof that the route is closed.
 
-## lesson
+## hunch
 
-- **chisel**: The Phase-4 acceptance anchors are invalid. Psi(10^4)=16242174 and Psi(10^6)=77578256 in code/out/solution_checks.md were computed by Psi_collapse, which uses the Toeplitz A(d) identity. The run's own Phase-3 proves that identity fails at general k: C!=A at k=3 (Psi_collapse=20402 vs brute 20302) and at k=200. The Toeplitz collapse is valid ONLY at k=F_n-1 (1,2,4,7,12,20,33,54,88,143,...), and 10^4 and 10^6 are not of that form. So both anchors are wrong and must be recomputed by a valid general-k method before any O(log) primitive (universal-Euclidean or the adopted Ostrowski/three-gap… (refers: pe1006-ostrowski-sawtooth-closed-form, code/out/solution_checks.md)
+- **scholar**: CRITICAL from the scholar: the in-container capture code/out/ueuclid_main.captured.txt of code/lib/ueuclid.py's own __main__ prints '65 FAILURES -- do not trust ueuclid yet' (0/30 random vs ueuclid_direct, 0/30 S1-at-z=1 vs plain floor_sum, 5/6 deterministic). S0/dR/dU/w are correct in every case; only S1 and S2 are wrong. Hand-check ueuclid(1,0,1,5,z=3): module returns S1=547, S2=2551; correct S1=426, S2=1578 (module's = correct + S0's worth, a uniform +1-per-index overcount). This contradicts directive 11's 'verified on current code, zero failures, do NOT rebuild' — the outside-container… (refers: ueuclid-incontainer-fails-s1s2)
 
 ## offer
 
-- **chisel**: Three new approach candidates filed, all deliberately outside the committed mechanical-floor-sum monoid (which remains the primary O(log) route): (1) substitution transfer-matrix recursion carrying Ψ's value-vector through 0->01,1->0, (2) exact general-k pair-correlation matrix decomposed into a Toeplitz profile plus an explicit boundary/rank correction from Sturmian balance (the pattern hunt already showed pure Toeplitz collapse is k=F_n−1-only), (3) Ostrowski/Beatty sawtooth closed form for the same second moment — same mechanical representation as the committed route but a different… (refers: research/approaches/pe1006-substitution-morphism-moment.md, research/approaches/pe1006-pair-correlation-boundary.md, research/approaches/pe1006-ostrowski-sawtooth-closed-form.md)
 - **chisel**: Decomposition just opened:
 
 What would suffice:
 What the run says would suffice:
-The skeleton and all four gaps are recorded and the derived ledger renders correctly.
+The skeleton and ledger are written correctly. My work is complete.
 
-## Report
+## Summary
 
-**Slug:** `research/backward/pe1006-psi.md` (ledger entry `pe1006-psi`)
+**Slug:** `pe1006-psi` — rewritten at `research/backward/pe1006-psi.md` (and the `goals` ledger row updated to match).
 
-**The decomposition.** The goal — compute Ψ(10^18) mod 101001001 — reduces, from the statement and the two steering directives, to four lemmas whose composition is the argument:
+### What I found on the way in
+The pe1006-psi skeleton already existed and decomposed the goal into four lemmas (G1 factor structure, G2 mechanical representation, G3 telescoped second moment, G4 universal-Euclidean floor sum). Checking each against the claims ledger:
 
-1. **G1-sturmian-factor-structure** — the k+1 length-k Fibonacci subwords are exactly the length-k factors of the infinite Fibonacci word F, and F is Sturmian with…
+- **G2 and G3 are already discharged** — by…
+- **pattern**: Pattern-recognition: NEW exact first-moment regularity at k=F_n-1. Verified exactly (mech_psi k=1,2,4,7,12,20,33,54,88,143; brute k=4,7,12): the first moment M1(k) = sum of the k+1 factor decimal values equals c1(k)*R(k), c1(k)=1+floor(k/phi^2)=A189663, R(k)=repunit. Equivalently every decimal position among the k+1 factors carries exactly c1(k)=F_{n-2} ones. Fails at all non-F_n-1 k. This is the first-moment transpose of the Toeplitz/cyclic-autocorrelation symmetry (directive 1 C=A domain), NOT a second-moment closed form, so it does NOT by itself give Psi(10^18); it is a cross-check handle.… (refers: pe1006-first-moment-position-balance)

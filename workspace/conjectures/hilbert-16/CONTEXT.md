@@ -14,6 +14,23 @@ source), and `research/threads/` (attack directions).
 Each mark = its evidence class. `claims.md` holds the full rows with
 hypotheses and falsifiers.
 
+- **The tangential-H16 / Abelian-integral instrument chain is now primary-sourced
+  in full.** The adopted sharp-Abelian approach names four instruments; all four
+  hold full primary texts: GMV 2010/2011 Chebyshev criterion (held earlier);
+  **Novikov–Yakovenko 2002 (arXiv:math/0110126, held this cycle)** — C[t]-module
+  isomorphism Λ²/(dH∧Λ¹) ≅ module of Abelian integrals, minimal rank-μ
+  Picard–Fuchs system with μ=Σdegωᵢ/degH, det-X polynomiality, eigenvalue–
+  critical-value correspondence (`h16-novikov-yakovenko-modules-picard-fuchs-2002`);
+  **Gavrilov AIF 1999 (Numdam, held)** — Petrov-module freeness P_f (rank μ for
+  semiweighted-homogeneous f; Morse + real-cycle + condition-(*) ⇒ R[t]-module
+  free), §6 quadratic-Hamiltonian-center Chebyshev result
+  (`h16-gavrilov-abelian-morse-hamiltonian-aif-1999`); **Gautier–Gavrilov–Iliev
+  DCDS 2009 (arXiv:0705.1609, held)** — genus-one quadratic centers, exact
+  cyclicity-2 for (r11),(r18), Chebyshev 3-dim Abelian space, conjectures 3-vs-2
+  (`h16-ggi-quadratic-centers-genus-one-2009`). (r11),(r18) are the exact
+  validation targets to re-run clean-room before anything new. All asserted-by-
+  source (peer-reviewed, full text read); none independently re-derived yet.
+
 - **Individual finiteness (Dulac's problem) is settled-but-contested.** Écalle
   (1992) and Ilyashenko (1991) proved a planar polynomial field has finitely
   many limit cycles (`h16-dulac-finiteness-theorem`, sourced: Ilyashenko 2002
@@ -162,6 +179,13 @@ from durable memory.
    each): still NOT in the library. DRR 1994 raw catalogue paywalled; its
    content is partially reproduced in held RSZ/RR. Lu 2026's (H³₁₄) closure is
    the one named recent row.
+1b. **Marín–Villadelprat 2026 corrigendum to the MV 2020 local-setting paper
+   (SSRN 6809315) is NOT held** (SSRN 403'd the converter on both DOI and direct
+   URL; no open copy). Must be read before *quantitative* use of MV 2020
+   Theorems A/B — the displacement-function / fake-saddle thread rests on the
+   local Dulac-map expansion. Caveat already carried on
+   `h16-mv-dulac-map-local-expansion-2020`; requested in
+   `research/LIBRARY-STATUS.md`.
 2. **Lu 2026's full claim is NOT verified; only its finite algebraic core is.**
    The Bautin-recurrence core passed clean-room exact re-derivation
    (code/out/lu_core.captured.txt, code/lyap_audit.py) and the direction added

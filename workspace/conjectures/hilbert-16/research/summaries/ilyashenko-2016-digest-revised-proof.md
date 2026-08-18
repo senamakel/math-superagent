@@ -1,49 +1,42 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/ilyashenko-2016-digest-revised-proof.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Ilyashenko, "Finiteness theorems for limit cycles: a digest of the revised proof" (Izvestiya Math. 80(1), 2016, 50-112)
 
-<!-- source: http://geodesic.mathdoc.fr/item/IM2_2016_80_1_a3/ | converted from HTML -->
+<!-- source: http://geodesic.mathdoc.fr/item/IM2_2016_80_1_a3/ (mathdoc record page; full text not held here). Claim `h16-ilyashenko-2016-digest-revised-proof`. -->
 
-## What is in it
+## What it establishes (by author's abstract/claim — record page only)
 
-  - Parcourir par
+First of two papers giving a **digest of the revised proof of the finiteness
+theorem** for limit cycles of a planar polynomial vector field, plus sketches of
+(a) the analytic-field analogue and (b) the asymptotics of the monodromy
+transformation for polycycles.
 
-
-## What it claims
-
-This is the first paper in a series of two presenting a digest of the proof of the finiteness theorem for limit cycles of a planar polynomial vector field. At the same time we sketch the proof of the following two theorems: an analogous result for analytic vector fields, and a description of the asymptotics of the monodromy transformation for polycycles of such fields.
-
-- Détail
-- **Citer cet article
-
-2025-09-23
--->
-
+The revised proof uses **"superexact asymptotic series"** — the corrected notion
+aimed directly at the non-hyperbolic / oscillatory-asymptotics step where
+Yeung's 2024-25 gap claim locates the failure in Ilyashenko's 1991 monograph.
 Keywords: elementary polycycles, superexact asymptotic series.
-Mots-clés : limit cycles, functional cochains
 
-```
-Yu. S. Ilyashenko. Finiteness theorems for limit cycles: a digest of the revised proof. Izvestiya. Mathematics, Tome 80 (2016) no. 1, pp. 50-112. http://geodesic.mathdoc.fr/item/IM2_2016_80_1_a3/
-```
+## Caveat on this file
 
-- BibTeX
-- RIS
-- EndNote
+This held file is the **mathdoc bibliographic record page** (citation, BibTeX,
+RIS), NOT the article body. So the substance here is asserted-by-record: the
+paper exists (Izvestiya Math. 80(1) 2016, 50-112) and its stated content is the
+revised (superexact) proof. The claim block records this honestly as sourced.
 
-```
-@article{IM2_2016_80_1_a3,
-     author = {Yu. S. Ilyashenko},
-     title = {Finiteness theorems for limit cycles: a digest of the revised proof},
-     journal = {Izvestiya. Mathematics},
-     pages = {50--112},
-     year = {2016},
-     volume = {80},
-     number = {1},
-     language = {en},
-     url =…
+## Hypotheses / holds here
 
-[14]
+Individual fields. **Holds here: yes as an Ilyashenko-side rejoinder** — the
+exact relation to the Yeung counterexample is for the scholar to adjudicate:
+if Yeung's gap is correct and this digest does NOT repair the non-hyperbolic
+step, the Ilyashenko-side proof remains incomplete; if it does, the gap claim is
+answered.
 
-```
-TY  - JOUR
-AU  -…
+**Evidence class: sourced (record page; full body not held).**
 
-*[digest of a 6643 character source; every section, statement, and proof in full at `research/sources/ilyashenko-2016-digest-revised-proof.full.md`]*
+## Bearing / implication
+
+- This is the live contest over Dulac's problem (per CONTEXT.md Contradictions):
+  Écalle/Ilyashenko "settled" vs Yeung 2024-25 peer-reviewed gap claim vs the
+  community view that Dulac's problem is again open. This source is the
+  Ilyashenko-side 2016 revision.
+- It does NOT change the fact that individual quadratic finiteness stands on the
+  independent pillar of Bamón/Romanovskii/Chicone–Shafer (n=2 pointwise) per the
+  claims.

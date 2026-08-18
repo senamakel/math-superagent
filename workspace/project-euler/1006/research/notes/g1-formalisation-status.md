@@ -20,9 +20,9 @@ hypotheses: S_n defined as in PE1006; k, n any naturals (no k≥1 needed here).
 holds-here: true — the factor of a prefix is a factor of the whole word, and
       S_n is a prefix of S_{n+1}.
 status: formalised
-formalisation: code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean
-      (factorSet_prefix_nest, factorSet_chain, factorSet_chain_any; kernel
-      verdict: verified, axioms propext, Quot.sound — sorry-free)
+formalisation: code/lean/g1_factor_chain_nested-de74dba9.lean
+kernel: factorSet_prefix_nest, factorSet_chain, factorSet_chain_any; verified
+      by lean_check, axioms propext, Quot.sound — sorry-free
 bearing: fixes the nesting that underlies "the set of Fibonacci subwords" once
       the limit word is introduced; the shell of the node.
 anchor: code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean
@@ -35,10 +35,11 @@ statement: The length-3 Fibonacci subwords are exactly 001, 010, 100, 101 —
       equals {001,010,100,101}.
 hypotheses: S_5 = 0100101001001 (S_4++S_3 = 01001010 ++ 01001).
 holds-here: true — matches problem.md's example exactly.
-status: checked (computed by native_decide in the same file)
+status: formalised
+formalisation: code/lean/g1_oracle_length3-ed70ff6a.lean
 bearing: reproduces the statement's own worked oracle, so the formal FactorSet
       definition agrees with the problem's notion of distinct length-k subword.
-anchor: code/lean/pe1006_psi_G1_sturmian_factor_structure-87f94deb.lean
+anchor: code/lean/g1_oracle_length3-ed70ff6a.lean
 ```
 
 The count theorem `fib_subword_count : (FibSubwords k).ncard = k+1` remains a

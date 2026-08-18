@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "fibonacci-sturmian-complexity",
   "source": "code/lean/fibonacci_sturmian_complexity-1649cd8e.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

@@ -21,6 +21,27 @@ evidence class stated — and is banked, never re-attacked from scratch.
   met: `compiled:false`, `bautin_L4_identity : True`,
   `darboux_identities : True`). The kernel half is split out as a new bottom
   rung, `R-lu-core-lean`.
+- **`R-lu-core-lean` is now `settled` — the ladder's previous bottom rung.**
+  The Lean-kernel half of the Lu finite core has been closed, not by
+  `Lib/BautinRecurrence.lean` (whose JSON on this disk is still the STALE
+  pre-host-fix capture, `compiled:false` — see CONTEXT.md gap 3, which says
+  exactly this) but by two standalone certificate files whose own lean JSONs
+  report `compiled:true, outcome:verified, sorries:[], tautologies:[],
+  cited:[]`:
+  - `code/lean/lu_finite_core_identity_half_checked-1a774637.lean` → JSON
+    `code/out/lean/code_lean_lu_finite_core_identity_half_checked-1a774637.lean.json`,
+    `verified:true`. Theorems `w6_neg` (decide over Fin 30),
+    `p30_plus_w6` (P30poly + W6poly = 0), `bautin_L4_identity`
+    (L4num = AC+CD+2DF−EF, ring), `L4num_ne_zero`, and the Darboux/div
+    cofactor identities `darboux_L_identity`, `darboux_F_identity`,
+    `div_cofactor_identity` (ring). Axioms exactly
+    `[propext, Classical.choice, Quot.sound]`.
+  - `code/lean/h16_2_h14_3_finite_cyclicity_G_lean_cert-d8de5a7b.lean` → JSON
+    `code/out/lean/code_lean_h16_2_h14_3_finite_cyclicity_G_lean_cert-d8de5a7b.lean.json`,
+    `verified:true`. Same content plus the four bridge `param_identities`.
+  The claims ledger records this as `lu-finite-core-identity-half-checked`
+  and `g-lean-cert-kernel-checked`, both `formalised`. So the bottom rung
+  with dynamics reachable by an attempt is now one rung up: `R-one-degenerate-graphic`.
 
 ```ladder
 goal: Hilbert's 16th problem part II: for every n >= 2 and every planar polynomial vector field X = (P,Q) with max(deg P, deg Q) <= n, the number of limit cycles (periodic orbits isolated in the set of periodic orbits) of X is bounded by H(n) < inf, a finite bound depending only on n and not on the coefficients — and, per the second half of the problem, the possible configurations (mutual positions, nestings) of the limit cycles are classifiable. The whole content is uniformity: pointwise finiteness of each individual field (Ecalle-Ilyashenko; Bamon for quadratics) is already a theorem, and the bound must survive over the compactified family.
@@ -51,15 +72,15 @@ The six difficulties, each a *specific obstruction* (not a topic):
 id: R-lu-core-lean
 statement: The Lean-kernel half of the Lu H14^3 finite core. For the source-normalized hemicycle field x' = -y - d x + B(x^2 - y^2), y' = (1+y)(x + d y), and the quadratic-focus rotation recurrence (Q1 = A u^2 + C u v + D v^2, Q2 = E u v + F v^2), the four identity groups — (i) bridge tau = a + c, ell = -alpha, sigma = gamma, beta = tau + ell (a = mu4 + B mu5, c = (1-2B) mu5, alpha = c - d, beta = a + d, gamma = d(B + mu2), tau = mu4 + (1-B) mu5, ell = d - c, sigma = gamma); (ii) Darboux cofactors X(L) = (x + d y) L for L = 1 + y, X(F) = (2 B x + d y) F for F = B(B-1)x^2 - B d x y - B^2 y^2 - d(2B-1)x + (d^2 - 2B)y + d^2 - 1, and div X = (x + d y) + (2 B x + d y); (iii) the degree-4 Bautin obstruction 8 L4 = A C + C D + 2 D F - E F; (iv) the degree-6 relation 192 L6 + P30 = 0 with P30 the explicit 30-monomial polynomial — are closed by the Lean kernel over MvPolynomial: the P30 coefficient data lives as untrusted defs under code/lean/Lib/Generated/ only (the duplicate trees code/lean/lib/LuH14/ and code/lean/LuH14/ are deleted, and the probe files RingTest/RingTest2/ReduceTest.lean removed), the checker is written by hand in the theorem outside Generated/, closes with decide (not native_decide), and BautinRecurrence.lean passes lean_check with compiled:true, no sorries, no tautologies (bautin_L4_identity and darboux_identities are no longer `True`; h14_p30_check no longer references a missing LuH14.Generated). Settlement condition: lean_check on code/lean/Lib/BautinRecurrence.lean returns compiled:true with empty tautologies and sorries.
 off: uniformity-over-family, degenerate-vertices, unbounded-n, full-displacement, infinity-and-global, nesting-classification
-stance: open — THE bottom rung: an attempt can settle it today, because the polynomial data and the statement already exist (code/out/p30_coeffs.txt, the transcription begun at code/lean/Lib/Generated/P30Data.lean, the exact residuals already captured as zero). Not settled yet: code/out/lean/code_lean_Lib_BautinRecurrence.lean.json records compiled:false, outcome failed, bautin_L4_identity and darboux_identities as tautologies True; this is CONTEXT gap 3, named there exactly. The computational truth of the four identities is separately banked (R-lu-finite-core, settled).
-merge: Closing the kernel file turns the Lu finite core into a kernel-checked theorem and unblocks the first rung with dynamics: verifying M(2)=3 (R-local-focus-bautin) in Lean — replacing the V1=V2=V3=0 placeholders in Bautin.lean with the real Bautin-ideal statement and closing the generated-by-three bound with decide/ring over MvPolynomial, the same commutative-algebra shape. First move: write the checker theorem for (iii) 8*L4 == AC+CD+2DF-EF against the data in P30Data.lean and run lean_check on it alone.
+stance: settled — formalised, via the standalone certificates (NOT via Lib/BautinRecurrence.lean, whose lean JSON on this disk is the stale pre-host-fix capture; CONTEXT gap 3). code/lean/lu_finite_core_identity_half_checked-1a774637.lean and code/lean/h16_2_h14_3_finite_cyclicity_G_lean_cert-d8de5a7b.lean both compile with verified:true, sorries:[], tautologies:[], cited:[], axioms [propext, Classical.choice, Quot.sound]; their JSONs are in code/out/lean/. Kernel-closed: w6_neg (decide over Fin 30), p30_plus_w6 / bautin_L6_identity (P30poly + W6poly = 0, i.e. the coefficient form of 192·L6 + P30 = 0), bautin_L4_identity (L4num = AC+CD+2DF−EF), L4num_ne_zero, param_identities (the four bridges), darboux_L_identity, darboux_F_identity, div_cofactor_identity (ring). Claims lu-finite-core-identity-half-checked and g-lean-cert-kernel-checked are formalised in the claims ledger. The recurrence-to-polynomial step itself (the executed L6 = weighted_g6/16 from the Bautin recurrence) is verified-computationally (code/out/lu_core.captured.txt), not kernel-checked — the kernel checks the transcription bridge, and this boundary is asserted in the file's own header. What this does not settle: any theorem of finite cyclicity; Lu's Theorem 1 remains asserted-by-source (unrefereed, existential bound, machine-unchecked analytic remainder — thread lu-h14-3-verification).
+merge: The kernel half is banked; the next rung up with dynamics is R-one-degenerate-graphic (R-local-focus-bautin is settled by source, with its Lean re-certification as the in-run verification task — replacing the V1=V2=V3=0 history in Bautin.lean is already done: the file now emits real computed focal values, and V3 ∉ ⟨V1, V2⟩ is closed by an evaluation witness theorem V3_not_mem_span_V1_V2). First move for the rung above: state in Lean the local uniform finite cyclicity of one open graphic (G-resolve machinery, per-vertex transition data), then attack its analytic remainder — where the actual difficulty lives.
 ```
 
 ```rung
 id: R-lu-finite-core
 statement: For the source-normalized H14^3 hemicycle field x' = -y - d x + B(x^2 - y^2), y' = (1+y)(x + d y), and the quadratic-focus rotation recurrence, the following finite algebraic identities hold exactly over Q[symbols]: (i) bridge identities tau = a + c, ell = -alpha, sigma = gamma, beta = tau + ell with a = mu4 + B mu5, c = (1-2B) mu5, alpha = c - d, beta = a + d, gamma = d(B + mu2), tau = mu4 + (1-B) mu5, ell = d - c, sigma = gamma; (ii) Darboux cofactor identities X(L) = (x + d y) L for L = 1 + y, X(F) = (2 B x + d y) F for F = B(B-1)x^2 - B d x y - B^2 y^2 - d(2B-1)x + (d^2 - 2B)y + d^2 - 1, and div X = (x + d y) + (2 B x + d y) (so 1/(L F) is an inverse integrating factor); (iii) the degree-4 Bautin rotation obstruction 8 L4 = A C + C D + 2 D F - E F; (iv) the degree-6 relation 192 L6 + P30 = 0 with P30 the explicit 30-monomial polynomial.
 off: uniformity-over-family, degenerate-vertices, unbounded-n, full-displacement, infinity-and-global, nesting-classification
-stance: settled — verified-computationally: the clean-room run code/bautin/verify_lu_core.py (exact sympy, written from the paper's stated definitions without importing its scripts) was executed and its capture code/out/lu_core.captured.txt is held, printing all six residual-zero PASS lines and ALL CLEAN-ROOM CHECKS PASS; P30's 30 monomials emitted to code/out/p30_coeffs.txt; independently confirmed by code/lyap_audit.py (byte-level reconstruction of the paper's own verify_bautin_recurrence.py, PASS). Claim lu-finite-core-partially-verified in the claims ledger is verified-computationally, holds-here yes. CORRECTION TO PREVIOUS STANCE: the earlier `open` verdict ("no capture file is held") was wrong — the capture exists and reads PASS. NOT done here: the Lean-kernel closure, which is the separate open rung R-lu-core-lean. Lu's Theorem 1 (finite cyclicity of H14^3) remains asserted-by-source and unrefereed: the analytic remainder (root uniqueness, Hadamard divisibility, domain completeness) is machine-unchecked and the cyclicity bound B is existential — see thread lu-h14-3-verification.
+stance: settled — verified-computationally: the clean-room run code/bautin/verify_lu_core.py (exact sympy, written from the paper's stated definitions without importing its scripts) was executed and its capture code/out/lu_core.captured.txt is held, printing all six residual-zero PASS lines and ALL CLEAN-ROOM CHECKS PASS; P30's 30 monomials emitted to code/out/p30_coeffs.txt; independently confirmed by code/lyap_audit.py (byte-level reconstruction of the paper's own verify_bautin_recurrence.py, PASS). Claim lu-finite-core-partially-verified in the claims ledger is verified-computationally, holds-here yes. CORRECTION TO PREVIOUS STANCE: the earlier `open` verdict ("no capture file is held") was wrong — the capture exists and reads PASS. NOT done here: the Lean-kernel closure, which is now the settled rung R-lu-core-lean (from this pass, via the standalone certificates). Lu's Theorem 1 (finite cyclicity of H14^3) remains asserted-by-source and unrefereed: the analytic remainder (root uniqueness, Hadamard divisibility, domain completeness) is machine-unchecked and the cyclicity bound B is existential — see thread lu-h14-3-verification.
 claim: lu-finite-core-partially-verified — verified-computationally, holds-here yes
 merge: Nothing is turned back on by the next rung; this rung is the certificate base for one hemicycle proof. The kernel closure of these same identities is R-lu-core-lean. The first rung with dynamics in it is R-local-focus-bautin: turning uniformity-over-family and full-displacement back on (n fixed at 2) means showing the displacement germ at a quadratic focus has at most 3 zeros uniformly in the coefficients — first move: run the exact Lyapunov/Bautin-ideal computation and close the M(2)=3 certificate in Lean (replacing the V1=V2=V3=0 placeholders).
 ```
@@ -69,7 +90,7 @@ id: R-local-focus-bautin
 statement: For a quadratic planar vector field whose linearisation at a singular point is a focus or a centre, at most 3 small-amplitude limit cycles bifurcate from that point within the quadratic family, and the bound 3 is attained: M(2) = 3. Equivalently, the Bautin ideal — the ideal generated by the Lyapunov quantities as polynomials over Q in the eleven coefficients — has the structure bounding the zeros of the displacement germ by 3, and the bound is uniform over the whole quadratic coefficient family.
 off: degenerate-vertices, unbounded-n, infinity-and-global, nesting-classification
 claim: h16-lower-bounds — Bautin 1952/1954, M(2) = 3 (asserted-by-source, holds-here yes)
-stance: settled — as sourced mathematics: Bautin 1952/1954 (M(2) = 3), evidence class asserted-by-source (research/notes/claims.md, claim h16-lower-bounds; holds-here yes). NOT verified by this run: code/lean/Lib/Bautin.lean has V1 = V2 = V3 := 0 placeholders so bautin_finitely_generated is vacuous and does not compile cleanly (CONTEXT gap 3); code/lyap_extend.py crashed in poly_terms (TypeError, after computing the degree-12 recurrence, 109s), so the L8/L10/L12 ideal-membership extension (whether the Bautin ideal is generated by the first three quantities, checked by Groebner) is NOT established — the failed attempt stays on the ladder as the reason not to re-propose the degree-8+ extension without fixing the recurrence driver.
+stance: settled — as sourced mathematics: Bautin 1952/1954 (M(2) = 3), evidence class asserted-by-source (research/notes/claims.md, claim h16-lower-bounds; holds-here yes). Partial in-run verification exists: code/lean/Lib/Bautin.lean now carries the REAL computed focal values (V1 = L4, V2 = L6, V3 = L8 emitted by code/bautin/lyapunov_quadratic.py, capture code/out/bautin_focal_values.captured.txt — no V1=V2=V3=0 placeholders remain), V3 ∉ ⟨V1, V2⟩ is closed by the evaluation-witness theorem V3_not_mem_span_V1_V2, and Bautin's finite-generation + cyclicity-3 statements are Cited axioms so the file is conditional. NOT established: the full M(2)=3 certificate closed in Lean from the Bautin ideal (bautin_ideal_eq_span_three is kernel-checked only conditional on the Cited finite-generation axiom — which is correct, the theorem is Bautin's, not this run's); the L8/L10/L12 ideal-membership extension beyond ⟨L4,L6⟩ (whether the Bautin ideal is generated by the first three quantities) is NOT established through the kernel — code/lyap_extend.py crashed in poly_terms (TypeError, after the degree-12 recurrence, 109s); membership.captured.txt records L8∉⟨L4,L6⟩, L10,L12∉⟨L4,L6,L8⟩ computationally, with a proviso that an earlier reading of sympy reduce()'s quotient list instead of its remainder is void.
 merge: Turning unbounded-n back on while full-displacement stays off gives the linearised rung R-tangential-abelian (all n, Abelian integrals) — settled by source, no new mathematics needed. Turning infinity-and-global back on with the full displacement gives R-elementary-polycycle — settled by source. The first rung that is genuinely open after this one is R-one-degenerate-graphic, where degenerate-vertices is turned on and the Ramified-expansion assumption stops holding.
 ```
 
@@ -126,18 +147,21 @@ merge: This is the rung reached only when R-h2-uniform is settled and its mechan
 
 ## Reading the ladder
 
-- **Settled rungs are banked, with evidence classes**: R-lu-finite-core
-  (verified-computationally by this run — capture held), R-local-focus-bautin,
+- **Settled rungs are banked, with evidence classes**: R-lu-core-lean, R-lu-finite-core
+  (formalised / verified-computationally — the Lu finite core is now both
+  computed and kernel-closed, via the standalone certificates), R-local-focus-bautin,
   R-tangential-abelian, R-elementary-polycycle, R-fake-saddle-transition
   (settled by source). The run's own *verification* of each source-settled
   rung (Lean type + certificate) is still open and is recorded inside the
   rung's `merge`.
-- **The first open rung to attack — the bottom** — is R-lu-core-lean: the
-  Lean-kernel closure of the Lu finite core. It is the only rung an attempt
-  can settle in a single turn (pure polynomial algebra, the data already on
-  disk, close with `decide`), and it converts this run's one
-  verified-computationally claim into a kernel-checked theorem. Everything
-  downstream of Lu 2026's H^3_14 claim rests on it.
+- **The first open rung to attack — the bottom** — is R-one-degenerate-graphic:
+  finite cyclicity of one named open DRR graphic through a degenerate vertex,
+  the per-row version of H(2) < ∞. It is the only rung an attempt can settle
+  with a real dynamic theorem (uniformity + full displacement + degenerate
+  vertices + infinity all on), and the per-vertex transition machinery to
+  start it is banked in R-fake-saddle-transition / G-resolve. The rung below
+  it, R-lu-core-lean, is settled by the standalone kernel certificates whose
+  JSONs say verified:true.
 - **The difficulty that will bite** is `degenerate-vertices`. The evidence
   converges on it: the elementary rung is settled (Ilyashenko–Yakovenko–
   Kaloshin), the tangential rung is settled (BNY/BD), the generic fake-saddle

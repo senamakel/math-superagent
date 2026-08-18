@@ -1,0 +1,24 @@
+degree 3: done (0s cumulative)
+degree 4: done (0s cumulative)
+degree 5: done (0s cumulative)
+degree 6: done (1s cumulative)
+degree 7: done (2s cumulative)
+degree 8: done (5s cumulative)
+degree 9: done (12s cumulative)
+degree 10: done (27s cumulative)
+degree 11: done (56s cumulative)
+degree 12: done (109s cumulative)
+recurrence through degree 12: 109.2s
+sanity guard: 8*L4 == AC+CD+2DF-EF : True
+
+d  monomials  hdeg
+4           4  2  
+6          30  4  
+8          97  6  
+10        236  8  
+12        485  10 
+monomial counts L_d (d=4..12 even): [4, 30, 97, 236, 485]
+L10 in <L4,L6,L8>: reduce->True  contains->True  agree=True (0.4s)
+monomial count L10: 236
+SUMMARY (sanity run): L10 in <L4,L6,L8> = True
+total: 111s

@@ -1,0 +1,25 @@
+d     h      a_d   dim(h)  c(h)   q(h)   conj_a   match
+   4     2       4     15      7      5        4  False
+   6     4      30     70     10     10       30  True
+   8     6      97    210     16     16       97  True
+  10     8     236    495     23     23      236  True
+  12    10     485   1001     31     31      485  True
+  14    12     890   1820     40     40      890  True
+  16    14    1505   3060     50     50     1505  True
+
+ALL COMPUTED TERMS MATCH: False
+
+c(h) - q(h) residuals: [2, 0, 0, 0, 0, 0, 0]
+
+parity failures (h even, 4..40): [] -> none
+
+predictions (conjecture):
+  a_18 (h=16) = (C(20,4) - q(16))/2 = (4845 - 61)/2 = 2392
+  a_20 (h=18) = (C(22,4) - q(18))/2 = (7315 - 73)/2 = 3621
+  a_22 (h=20) = (C(24,4) - q(20))/2 = (10626 - 86)/2 = 5270
+  a_24 (h=22) = (C(26,4) - q(22))/2 = (14950 - 100)/2 = 7425
+  a_26 (h=24) = (C(28,4) - q(24))/2 = (20475 - 115)/2 = 10180
+
+FALSIFIER: first term that would refute the conjecture is a_18;
+the predicted value is 2392. If the d=18 recurrence gives anything
+else, the quadratic complement conjecture dies.

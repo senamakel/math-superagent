@@ -38,10 +38,16 @@ statement: DRR 1994 (JDE 110:86-133) gives the list of all graphics and
   RSZ 2015, Roussarie-Rousseau 2015).
 hypotheses: n=2, compactified family.
 holds-here: yes
-status: asserted
+status: conditional
+formalisation: code/lean/drr_1994_citation_anchor-985be4d5.lean
+note: kernel-checked DRR.drr_reduction (compiled:true, verified, no sorry) —
+  rests on Cited.* axioms (finite_cyclicity_implies_uniform_bound,
+  ilyashenko_reports_121, rsz_reports_121, rrs_reports_121) plus the opacity
+  count nLimitCycles, so CONDITIONAL not formalised: the kernel checks the
+  reduction from the cited literature, and nothing about the literature.
 bearing: the bibliographic and methodological anchor of the DRR reduction; the
   exact 121-row list is not held (paywalled) but its constituent rows are used
   throughout the held follow-up papers.
-anchor: research/sources/dumortier-roussarie-rousseau-1994-121-graphics.full.md
+anchor: research/summaries/dumortier-roussarie-rousseau-1994-121-graphics.md
 follows-from: h16-drr-121-graphics
 ```

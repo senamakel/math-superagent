@@ -1,0 +1,30 @@
+Summarize the chunk for retrieval.
+
+Return the `summary` field as ONE string holding two sections, in this exact
+order, separated by a blank line. Do not return anything outside that one
+string — no separate fields, no prose before or after it, no markdown code
+fence.
+
+This chunk is about:
+- <Category>: <names or topics>
+- <Category>: <names or topics>
+
+Facts:
+- <self-contained fact>
+- <self-contained fact>
+
+Rules for "This chunk is about":
+1. List entity/topic categories. Do not list facts here.
+2. Use only clear, useful categories.
+3. Good categories include People, Companies, Organizations, Places, Roles, Projects, Products, Systems, Concepts, Events, and Topics.
+4. Keep category lines short.
+
+Rules for "Facts":
+1. Write complete sentences with clear subjects from the first section.
+2. Each fact must stand alone without the chunk or the other facts.
+3. Order facts by: time first, category second, entity/topic third.
+4. Do not group all facts about one entity if that makes the facts jump backward or forward in time.
+5. Make sure the facts cover the full content of the chunk.
+6. Do not invent.
+
+Max 200 tokens for the whole `summary` string.

@@ -26,8 +26,14 @@ What this does NOT establish (unchanged): Theorem 1 of Lu 2026 (finite
 cyclicity of H14^3). The spec's human-proof remainder (analytic root
 uniqueness, Hadamard divisibility, domain completeness, zero theorems)
 carries the theorem and is not machine-checked; the preprint is unrefereed.
-Also NOT yet held: `verify_h14_center_bautin.py` and
-`verify_h14_center_global_domains.py`.
+UPDATE (fifth-pass addendum): `verify_h14_center_bautin.py` and
+`verify_h14_center_global_domains.py` ARE now held
+(`research/sources/lu-h14-3-verify-center-bautin.py.full.md`,
+`lu-h14-3-verify-center-global-domains.py.full.md`, claim
+`lu-h14-3-bundle-scripts-now-held`) but are NOT yet re-executed in this
+workspace — their focal-value/centre-barrier rows (U(0)=1/48,
+both-centre-components) stay asserted-by-source until a clean-room capture
+upgrades them to `checked` (see thread `lu-h14-3-verification`).
 
 This note is the honest downgrade of the earlier "re-derived by hand, exact
 arithmetic" claim. The by-hand expansion in the previous version of this note
@@ -115,9 +121,10 @@ of an expression the program has asserted is structurally zero).
 None of this establishes Theorem 1 of Lu 2026 (finite cyclicity of H₁₄³). The
 spec's human-proof remainder (analytic root uniqueness, Hadamard divisibility,
 domain completeness, zero theorems) carries the theorem and is not
-machine-checked. The preprint is unrefereed. Also NOT yet held: the two other
-bundle scripts `verify_h14_center_bautin.py` and
-`verify_h14_center_global_domains.py`.
+machine-checked. The preprint is unrefereed. The two other bundle scripts
+`verify_h14_center_bautin.py` and `verify_h14_center_global_domains.py` are
+now HELD (see the update above) but not yet re-executed here — asserted, not
+checked.
 
 ## Status / falsifier
 

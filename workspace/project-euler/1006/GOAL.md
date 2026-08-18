@@ -59,3 +59,30 @@ code/out/mech_psi.captured.txt.
 Not yet done: the O(log) evaluation of the same sum at k = 10^18 (the
 universal-Euclidean second-moment monoid), i.e. code/solution.py, and its
 independent verification.
+
+## Acceptance chain (directive 6, this cycle)
+
+The old Phase-4 anchors Psi(10^4)=16242174 and Psi(10^6)=77578256 are INVALID
+(computed by the Phase-3 Toeplitz collapse, valid only at k=F_n-1; claim
+phase4-anchors-invalid). The corrected anchors, recomputed outside the
+container by the independent window/residue route (every distinct length-k
+window of the Fibonacci word read as a decimal, squares summed mod M, on a
+prefix of length k + NextFib(k) - 1 with NextFib STRICTLY greater than k,
+de-duplicated by residues under two moduli with the distinct count asserted
+equal to k+1):
+
+- Psi(10^4) = 34432237 mod 101001001, distinct count 10001
+- Psi(10^6) = 20938836 mod 101001001, distinct count 1000001
+
+That route reproduces Psi(3)=20302 and Psi(10)=10699667 and agrees with the
+bound-free brute oracle at every k=1..120. Strictness trap: the non-strict
+NextFib is one Fibonacci short at k=F_n (k=3 then gives 10101 with 3 of 4
+factors); code/lib/fibword.py next_fib uses bisect_right (strict) — checked.
+
+Acceptance order for the universal-Euclidean evaluator (code/lib/ueuclid.py,
+directive 4 spec): (1) S0 vs direct loop on random (p,q,r,n,z); (2) S1 vs
+plain floor_sum at z=1 and vs direct loop at z!=1; (3) S2 vs direct loop;
+(4) telescoped v through the primitive vs code/mech/mech_psi.py at k=1..150
+and vs Psi(10)=10699667; (5) match the two anchors above exactly and in
+negligible time; only then run k=10^18 with a Fibonacci approximant
+F(n) > 10^18 and confirm stability across two approximants.

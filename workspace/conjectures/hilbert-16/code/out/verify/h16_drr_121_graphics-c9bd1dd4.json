@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "h16-drr-121-graphics",
+  "source": "code/lean/h16_drr_121_graphics-c9bd1dd4.lean",
+  "stage": "prove"
+}

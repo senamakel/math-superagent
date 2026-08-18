@@ -92,3 +92,5 @@ worktrees/*
 *.lean.json
 *.jsonl
 .sage
+out/*.json
+out/**/*.json

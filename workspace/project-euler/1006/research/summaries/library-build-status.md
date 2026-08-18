@@ -1,5 +1,44 @@
 # Library build status — PE1006 reference library
 
+## This cycle (librarian) — academic anchor for the geometric-sum Euclidean recursion
+
+Cognee came back this cycle (remember_memory stored). The cycle's one true gap,
+still open in the requests ledger, was `citable-name-treatment-0c91`: the
+universal-Euclidean primitive (directive 2 / G4) had only competitive-programming
+anchors (oi-wiki, cnblogs/fhq, LOJ138, AtCoder) — no published treatment of the
+geometric-weighted recursion.
+
+**New primary source:** Patrício & Hartwig, "From Euclid to Corner Sums — a trail
+of telescoping tricks", Filomat 35:14 (2021) 4613–4636.
+`research/sources/patricio-hartwig-euclid-corner-sums.full.md` (full PDF from the
+publisher's own mirror, http://elib.mi.sanu.ac.rs/files/journals/flmt/177/flmn177p4613-4636.pdf).
+Extends Euclid's algorithm to geometric sums and corner sums (Prop 2.4, eq (33)–(35)):
+**G_{r+mq}(x) = x^r G_m(x^q) G_q(x) + G_r(x)**, the geometric-sum division algorithm,
+and G_{mq}(x)=G_m(x)G_q(x^m). This is the published, O(log) geometric-weight split the
+universal-Euclidean monoid implements; it answers `citable-name-treatment-0c91`.
+Claim `geometric-sum-division-algorithm` (sourced) in
+`research/notes/patricio-hartwig-geometric-sum-recursion.md`.
+
+**What it does not cover:** the floor-moment tuple (S0/S1/S2) is not carried by this
+paper — those remain anchored by the run's proven formula
+(claim `monoid-composition-formulas-verified`, note scholar-verified-monoid-primitive)
+and the fhq/LOJ138/oi-wiki monoids. So the two halves of the request are now covered:
+the geometric-weight recursion by Patrício–Hartwig, the moment closure by the
+already-proven formula + competitive-programming sources.
+
+**Library state:** still mature across all axes — Sturmian complexity (Lothaire,
+Perrin, Berstel, Cassaigne, Hal survey), position theorem (Sivasankar–Rama), standard
+factors (Richomme–Saari–Zamboni), least periods (Currie–Saari), three-distance
+(Alessandri–Berthé, van Ravenstein, Berthe–Reutenauer), floor-moment primitive
+(oi-wiki, fhq, LOJ138, AtCoder, lattice-rectangles, Brown). Requests ledger shows the
+four `citable-*` rows still open in the rendered copy, but each carries an `answers:`
+line in the claim notes on disk (requests-closed-recap.md), so they are closed in the
+claims ledger; the shorthand in the rendered REQUESTS.md is stale, not the actual state.
+
+**Still not obtained (unchanged):** Chuan & Ho "Locating factors" (TCS 2005, paywalled);
+Chuan "Moments of conjugacy classes" (TCS 2003, paywalled); Berthé "Autour du système
+de numération d'Ostrowski" (2001, paywalled). Each covered by in-library equivalents.
+
 ## This cycle (librarian) — NextFib check + four structural anchors (memory down)
 
 Cognee remains unhealthy; durable record on disk (cycle note
@@ -186,6 +225,36 @@ sources 9 and 8.
 - **MathWorld — Rabbit sequence** (`mathworld-rabbit-sequence.md`). Encyclopedic
   tier for the Fibonacci word / rabbit sequence.
 
+### This librarian cycle — the two remaining sources of the adopted routes
+
+- **Weiß — "Deducing the Three Gap Theorem from Rauzy–Veech Induction"**
+  (`sources/weiss-three-gap-rauzy-veeche.full.md`,
+  arXiv:1807.11273). The Three Gap Theorem with **exact continued-fraction /
+  Ostrowski gap lengths L1,L2,L3=L1+L2 and counts
+  N1=N−b_m·q_m−q_{m−1}, N2=N−q_m, N3=q_m−N1** for the Kronecker sequence
+  ({nz})_{n=1..N−1}, N=Σ b_j q_j, q_m+1≤N<q_{m+1}+q_m. This is ingredient (i)
+  of the adopted Ostrowski verification route; closes the count-carrying
+  statement the approach cites. Summary at
+  `summaries/weiss-three-gap-rauzy-veeche.md` (replaced the digest).
+  Caveat recorded: z is irrational in the theorem; the run's slope
+  a=F(n−2)/F(n) is rational — the rational case follows by truncated
+  continued fraction, must be covered by small-k oracle checks.
+- **Coven & Nitecki — "On the Genesis of Symbolic Dynamics as We Know It"**
+  (`sources/coven-nitecki-genesis-symbolic-dynamics.full.md`,
+  arXiv:math/0611322). Reproduces the original Morse–Hedlund 1940 definition
+  of Sturmian trajectories (block-length balance: any two maximal blocks of a
+  symbol differ in length by at most one) and the motivation from the Sturm
+  Separation Theorem. Primary/historical anchor for the Sturmian definition;
+  does NOT itself state p(k)=k+1.
+- **Citation correction** (filed to memory, do not re-derive): the Ostrowski
+  note's "Rockett & Szusz, JNT 1985, 0022314X85710128" is actually
+  **T.C. Brown & P.J. Shiue, JNT 50 (1995) 181-192** (doi 10.1006/jnth.1995.1012),
+  giving the fractional-part closed form C(n)=Σ({kα}−1/2) and
+  C(m,α,γ)=Σ({nα+γ}−1/2) — ingredient (ii), still NOT on disk and paywalled
+  (Sci-Hub-free search returned no free full text). Not required for the
+  committed universal-Euclidean monoid, which needs only the three-gap counts
+  and the floor-sum primitive.
+
 ## What could not be obtained
 
 - Berstel's original *Fibonacci words — a survey* (The Book of L) PDF: the
@@ -268,8 +337,40 @@ Key outcomes of the digest:
   reasons: Hieronymi decidability (tier-3), MathWorld rabbit, A344953,
   citation graphs, tutorial, atcoder internal header (base-case only),
   Bugeaud–Reutenauer DMTCS/arXiv landing pages.
-- Memory server: still down this cycle (3rd consecutive); durable findings are
-  on disk and should be relaunched into Cognee when the server recovers.
+- Memory server: earlier cycles reported it down; as of this cycle recall_memory
+  returns passages again, and the durable findings have been relaunched into
+  Cognee (see below).
+
+## Scholar cycle — memory relaunched; library fully digested; ueuclid found broken
+
+- **Library digestion is now complete.** Every `research/sources/*.full.md`
+  has a precise statement-level note; the last four template rows were replaced
+  this cycle: `frid-sturmian-numeration-palindromes-2018` (Ostrowski prefix
+  decomposition — background), `frougny-mult-dep-linear-numeration-2002-irif`
+  (Cobham obstruction — rules out the finite-automaton Zeckendorf digit-DP
+  route), `schaeffer-ostrowski-local-period-sturmian-2012` (local periods —
+  background), `choffrut-karhumaki-combinatorics-of-words-1997` (paywalled
+  chapter — not obtained, no gap). The remaining "not read" rows are the
+  citation-graph metadata files only (correctly not evidence).
+- **Cognee memory server is UP again** (recall_memory returns passages). The
+  durable findings that prior cycles kept only on disk have been stored to
+  memory: slope correction (F(n-2)/F(n)), governing Sturmian theory, verified
+  monoid composition formulas, phase-4 anchors invalid, brute oracle numbers,
+  OEIS miss, not-obtained records.
+- **RESOLVED: `code/lib/ueuclid.py` was never broken; the "65 FAILURES" was a
+  convention mismatch.** The O(log) recursion is 1-INDEXED (t=1..n, weight
+  z^(t-1), floors floor((p*t+q)/r)) — verbatim fhq/LOJ138/OI-wiki — while the
+  old `ueuclid_direct` oracle and docstring were 0-indexed, so the oracle and
+  the recursion disagreed and the old capture printed 65 FAILURES. The
+  "correct" S1=426 hand-check was itself the 0-indexed value; the correct
+  1-indexed value ueuclid(1,0,1,5,3).S1=547. There is NO compose boundary-shift
+  bug (see claim `ueuclid-s1s2-false-alarm-refuted`). The session made the
+  module self-consistent (recursion core untouched): ueuclid_direct rewritten
+  to 1-indexed, docstrings/comments updated, documented 0-indexed wrapper
+  `ue0(p,q,r,n,z)=ueuclid(p,q-p,..)` added (NOT q+p — draft sign error; q+p
+  fails 0/40, q-p matches 30/30). `code/out/ueuclid_main.captured.txt` now
+  shows ALL MONOID TESTS PASSED (acceptance 1-3 30/30, floor_sum 30/30,
+  deterministic 6/6, ue0 30/30, large-n dU=381966011250351898, dR=10^18).
 
 ## Next steps for the solver (not the librarian)
 
@@ -517,3 +618,156 @@ run's established on-disk catalogue is this file, not an INDEX.md.
 3. **OEIS re-issued with seven oracle terms** (1, 101, 20302, 2042402,
    204252402, 30445654403, 3054587854503 = Ψ(1..7)) — still no match. Recorded
    in durable-findings note; not to be re-run.
+
+## This librarian cycle — de Luca 1997 standard-Sturmian survey added; Berstel 1986 confirmed unobtainable again
+
+**Memory/Cognee is UP again this cycle** (the latest `remember_memory` returned
+a stored note id `18384240392754943270`); durable findings now flow into Cognee
+again. The rendered requests ledger still lists the four closures as open
+(tooling caveat, not a gap).
+
+**Added:**
+1. **de Luca, "Sturmian words: structure, combinatorics, and their arithmetics"**
+   (TCS 183, 1997, DOI 10.1016/S0304-3975(96)00310-6) — full+intro captured from
+   the DocsLib mirror:
+   `research/sources/deluca-sturmian-words-structure-arithmetics-1997-docslib.full.md`
+   (https://docslib.org/doc/3630572). Summary
+   `research/summaries/deluca-sturmian-words-structure-arithmetics-1997.md`;
+   claim `standard-sturmian-PER-farey-construction` in
+   `research/notes/deluca-standard-sturmian-PER-farey.md`. **Honest limitation:**
+   only the abstract + full Introduction converted, not the numbered body;
+   it defines the Fibonacci word as the canonical Sturmian word (p(n)=n+1),
+   the geometric lattice-cut definition (factor set depends only on slope), the
+   standard-Sturmian q_n recursion, the PER set with palindrome left-closure,
+   and the Farey correspondence (PER ↔ irreducible p/q; A_n suffixes =
+   right-special factors). This is the finite/standard-word side of directive 1's
+   rotation argument; proofs overlap the on-disk Berstel DLT'95/2007, Lothaire C2,
+   Perrin–Restivo. This was a frontier row cited by 2 of the library's own
+   sources — now held in partial form.
+2. **HAL record for Berstel, "Fibonacci words — a survey" (The Book of L, 1986)**
+   (`research/sources/berstel-fibonacci-words-survey-bookofl-1986.hal.full.md`,
+   https://hal.science/hal-00620647) — metadata only: the record states
+   **"Fichier non déposé"** (no file deposited). Kept as the authoritative
+   bibliographic anchor; DOI 10.1007/978-3-642-95486-3_2, pages 13–27.
+
+**Confirmed still unobtainable (this cycle, concrete reasons):**
+- **Berstel, "Fibonacci words — a survey" (The Book of L, 1986)** — author page
+  `www-igm.univ-mlv.fr/~berstel/Articles/1985BookOfL.pdf` connection refused
+  again ("error sending request"); HAL record hal-00620647 has **no file
+  deposited**; Springer chapter paywalled. This is the third+ confirmation;
+  nobody re-searches. Covered on disk by the Berstel DLT'95 and 2007 surveys,
+  Berstel–Karhumäki tutorial, Lothaire C2 chapter, and now de Luca 1997.
+- **de Luca 1997 full body** — the DocsLib mirror converted only the abstract
+  and Introduction; no free publisher copy is openly hosted (IRIS record
+  https://hdl.handle.net/11588/138874 says "Non ci sono file associati";
+  ScienceDirect arXiv-grade PII is paywalled). Non-blocking: the structural
+  content is covered by the Berstel/Lothaire/Perrin sources on disk.
+
+**Frontier:** the de Luca download added 14 citations to `derived/FRONTIER.md`
+(Dekking substitution-invariant Sturmian words, O'Bryant Sturmian permutations,
+Berstel–Séébold morphic Sturmian words, the Christoffel-words book, the
+*-Sturmian words + complexity paper, Vuillon return-words, Pānsiot Fibonacci
+morphism rigidity, etc.). No new open request was posted: the four prior
+requests remain answerable from the on-disk library.
+
+## This librarian cycle (3) — verification audit; library confirmed at saturation
+
+Audit cycle: confirmed the on-disk library resolves every load-bearing claim and
+that all five recorded open requests carry `answers:` marks (they are closed).
+**61 full texts** now sit under `research/sources/` (up from 41), one digest
+each under `research/summaries/`.
+
+**Canonical reference tier — verified present (full text, not just citations):**
+- Wikipedia *Fibonacci word* (`wikipedia-fibonacci-word.full.md`) and *Sturmian
+  word* (`wikipedia-sturmian-word.full.md`) — Sturmian, complexity, mechanical
+  digit formula.
+- MathWorld *Sturmian sequence* (full text embedded in
+  `research/summaries/mathworld-sturmian-sequence.md`; the Morse–Hedlund 1940
+  Amer. J. Math. 62, 1-42 DOI citation) and *Rabbit sequence*
+  (`research/summaries/mathworld-rabbit-sequence.md`) — convention trap
+  documented (problem's word = rabbit with digits swapped and shifted).
+- OEIS A003849 (the infinite Fibonacci word, the exact `S(0)=0, S(1)=01,
+  S(n)=S(n-1)S(n-2)` recurrence) + A003849 first-1652-subwords list + A213975
+  (lexicographic subword catalogue). A003849's comment block restates the run's
+  generation rule verbatim and gives the mechanical digit formula
+  `a(n) = floor((n+2)r) - floor((n+1)r)`, r = 2-phi.
+
+**Load-bearing tiers all on disk (audited):**
+1. **Sturmian / factor-complexity** — the k+1-subword fact: Lothaire C2,
+   Perrin–Restivo (Thm 1), Perrin Lecture 2 (mechanical digit rule),
+   Berstel DLT'95 + 2007 surveys, Cassaigne special factors, Coven–Hedlund 1973.
+2. **Position theorem** (directive 9's contiguous-window claim) — Sivasankar–Rama
+   2204.13977 (Thm 7) and 2207.04304 (Prop 1 / Lemma 2, the verbatim
+   contiguous-window statement), plus the conjugate-Christoffel bridge
+   (Bugeaud–Reutenauer).
+3. **Universal-Euclidean floor-sum primitive** (the O(log) second-moment engine)
+   — fhq/Chtholly 6-component monoid, OI-wiki merge/flip recursion, LOJ138
+   moment-array, plus AtCoder official `math.hpp` and `internal_math.hpp`
+   (`floor_sum_unsigned` recursion) and `patricio-hartwig-euclid-corner-sums`.
+4. **Three-distance / three-gap** — Alessandri–Berthe, van Ravenstein, Weiss
+   (Rauzy–Veech), Berthe–Reutenauer 2024.
+
+**Re-attempted this cycle, failed as recorded (no re-burn budget):**
+- Berstel 1986 *Fibonacci Words — A Survey* full text — `univ-mlv.fr` host
+  refused transfer again; only the bibliographic/abstract record is on disk.
+  Non-blocking: content covered by Lothaire C2 + Berstel 2007 + Perrin–Restivo.
+- Morse–Hedlund 1940 "Symbolic Dynamics II" — paywalled; content held via
+  Coven–Hedlund 1973 and Lothaire C2.
+
+**OEIS status:** raw Ψ(k) sequence NOT catalogued (grows ~10^2k); recorded miss
+in `research/notes/oeis-psi-miss-recorded.md`. Known matches stand: Lmin(k)
+=A344953, c1(k)=A189663. Nothing re-searched.
+
+**Bottom line:** the library is saturated on the load-bearing tiers; the run's
+bottleneck is now the solver's wiring (mech_psi formulation B through ueuclid,
+the two directive-6 anchors, then k=10^18), not missing references. No new
+request was posted.
+
+## This librarian cycle (2) — contiguous-window steer mapped to sources; board incident
+
+**Memory/Cognee is up** (this cycle's `remember_memory` returned note ids
+`18384240392754943270` and `7067968702083485589`).
+
+**Steering handled (librarian part).** The operator redirect (contiguous-window
+reformulation of Ψ) was applied to the librarian role: no contradiction with
+library-building — the route's three claims + algorithm were mapped onto the
+on-disk source anchors and recorded in
+`research/notes/librarian-steering-contiguous-window.md` and remembered to
+Cognee. The verification of Claims 1–3 is a solver (tool_builder) task against
+`mech_psi`/`brute`, not a literature hunt. **Key librarian finding: the exact
+contiguous-position claim is NOT stated verbatim in any held source** — the
+Sivasankar–Rama position theorem (Theorem 7, `fibonacci-word-2d-factor-complexity-ar5iv.full.md`),
+the standard-word/PER/Farey structure (de Luca 1997, Berstel DLT'95,
+richomme-saari-zamboni), and the conjugate-Christoffel bridge (bugeaud-reutenauer)
+are the supporting constituents, but the exact "windows at F_n−k−1..F_n−1 of
+q_n q_n" formula is a solver-verification, not a citation. No literature search
+for it returned a dedicated source.
+
+**Incident — board ledger clobbered and recovered.** A `write_document` call
+to `teams/board.jsonl` (intended to post the steering to the board) **overwrote
+the 4 original JSONL entries** with markdown. This role has no `record_entry`
+tool, so the JSONL could not be re-entered in its schema. The four original
+posts' content was transcribed into
+`research/notes/board-recovery-preserved-posts.md` before it was lost from the
+JSONL, and the last correct rendered `teams/BOARD.md` was the transcription
+source. **A role with `record_entry` must re-enter the four posts** (two from
+the `pe1006-psi` decomposition / approach candidates, the `lesson` about
+invalid Phase-4 anchors, the `offer`) from that recovery note, and refresh
+`derived/BOARD.md`. Lesson recorded: **never `write_document` a ledger source
+file (JSONL) — it is not a document; use `record_entry` or hand the post to the
+role that holds it.**
+
+**Cassaigne DLT'95** ("Special factors of sequences with linear subword
+complexity", the Ferenczi-conjecture proof) attempted again at
+`iml.univ-mrs.fr/~cassaign/publis/ferenczi.pdf` — connection refused on both
+http and https (same as recorded in a prior cycle). The French 1997 Bull. Belg.
+Math. Soc. version of the same special-factor tool is already on disk
+(`cassaigne-complexite-facteurs-speciaux-1997.full.md`, claim
+`special-factor-complexity-difference`). Non-blocking; not re-attempted.
+
+**Sources on disk now total 41 in `research/sources/`** (including this
+cycle's de Luca 1997 and the Berstel 1986 HAL metadata record). Every claim
+anchor in the notes resolves to a real file on disk (audit this cycle: the
+`atcoder-math-floor_sum-doc.md` anchor resolves under its actual name; all
+`*.full.md` anchors exist). No open request was posted — the four prior
+requests are answerable from the on-disk library.

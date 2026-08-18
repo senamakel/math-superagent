@@ -3,21 +3,23 @@
     "'LuH14.w6_neg' depends on axioms: [propext]",
     "'LuH14.bautin_L6_identity' depends on axioms: [propext, Classical.choice, Quot.sound]",
     "'LuH14.bautin_L4_identity' depends on axioms: [propext, Classical.choice, Quot.sound]",
+    "'LuH14.L4num_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]",
     "'LuH14.param_identities' depends on axioms: [propext, Classical.choice, Quot.sound]",
     "'LuH14.darboux_L_identity' depends on axioms: [propext, Classical.choice, Quot.sound]",
     "'LuH14.darboux_F_identity' depends on axioms: [propext, Classical.choice, Quot.sound]"
   ],
   "cited": [],
   "collector": {
-    "elapsed_ms": 1888,
-    "source_digest": "c18615996659b0ac56ff3e5364784754",
+    "elapsed_ms": 2980,
+    "source_digest": "2674e45dacc7f8f9ce48effd2f75754a",
     "toolchain": ""
   },
-  "compiled": false,
+  "compiled": true,
   "declarations": [
     "theorem w6_neg : ∀ k : Fin 30, W6coeffs k = -Generated.coeffs k",
     "theorem bautin_L6_identity : P30poly + W6poly = 0",
     "theorem bautin_L4_identity : L4num = X (0 : Fin 5) * X 1 + X 1 * X 2 + 2 * (X 2 * X 4) - X 3 * X 4",
+    "theorem L4num_ne_zero : L4num ≠ 0",
     "theorem param_identities (p : FiveParam) : tau p = a p + c p ∧ ell p = -alpha p ∧ sigma p = gamma p ∧ beta p = tau p + ell p",
     "theorem darboux_L_identity (p : FiveParam) (x y : ℝ) : (0) * (-y - p.d * x + p.B * (x^2 - y^2)) + (1) * ((1 + y) * (x + p.d * y)) = (x + p.d * y) * (1 + y)",
     "theorem darboux_F_identity (p : FiveParam) (x y : ℝ) : let P"
@@ -25,10 +27,10 @@
   "file": "code/lean/Lib/BautinRecurrence.lean",
   "generated_conclusions": [],
   "missing_modules": [],
-  "outcome": "failed",
+  "outcome": "verified",
   "retired_binder": false,
   "sorries": [],
   "tautologies": [],
   "uncleared": [],
-  "verified": false
+  "verified": true
 }

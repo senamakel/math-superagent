@@ -1,7 +1,17 @@
 # DRR status — settled state (thread)
 
-**Question:** Which of the 121 DRR graphics have finite cyclicity proved, which
-remain open, and the paper closing each recently closed row?
+```thread
+question: Which of the 121 DRR graphics have finite cyclicity proved, which
+          remain open, and the paper closing each recently closed row?
+status: settled
+rests-on: h16-drr-121-graphics, h16-drr-closed-rows-2015, h16-drr-open-rows,
+          drr-rr-closes-i14, drr-rr-boundary-only-for-3-graphics
+next: the enumeration is answered — RR 2015 leave exactly one graphic
+      (H14_3) with no partial result; Lu 2026 claims it. Live action is
+      verification of Lu's finite core, in thread lu-h14-3-verification.
+```
+
+## Established (from held primary text)
 
 ## Established (from held primary text)
 

@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "g1-oracle-length3",
+  "source": "code/lean/g1_oracle_length3-ed70ff6a.lean",
+  "stage": "prove"
+}

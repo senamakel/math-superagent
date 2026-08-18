@@ -49,37 +49,64 @@ lemma: A graphic Λ in the DRR list admits a resolution: each vertex (singular
        quadratic family to a normal form whose singularities are elementary,
        and the hyperbolic sectors between the vertices are identified. Each
        vertex's normal form determines the local transition data.
-status: open
-discharged-by: (none yet; largely done case-by-case in the DRR literature but
-       not recorded as a claim in this workspace)
-thread: (none yet)
-next: For the concrete target Λ_0 chosen from G-drr-status, compute the
+status: partial — the existence-form is formally established (conditional), the
+       per-vertex content is not
+discharged-by: g-resolve-resolution-exists (claim id) — code/lean/
+       h16_2_finite_cyclicity_G_resolve-bc64f726.lean, lean_check verdict
+       conditional: the `Resolution Λ` structure carries every hypothesis, the
+       existence `Nonempty (Resolution Λ)` is Cited from DRR blow-up machinery,
+       and `vertex_normal_form_determines_transition_data` (each elementary
+       vertex's normal form determines its local transition datum) is
+       kernel-proved. What is NOT established: the concrete blow-up list and
+       normal-form exponent data for any specific graphic (that is computed
+       case-by-case, over Q, on the target Λ₀ chosen from G-drr-status) and the
+       finiteness combination (G-transition + G-zeros + G-uniform).
+thread: (none yet; the formal existence-form is now recorded)
+next: For the concrete target Λ₀ chosen from G-drr-status, compute the
        blow-up normal form of each vertex symbolically with sympy (exact,
        over Q). Validate the whole method on a graphic the run already has
        closed — reproduce the blow-up list and normal forms for I_12^1 from the
-       Rousseau–Shan–Zhu source as a live check before trusting it on Λ_0.
+       Rousseau–Shan–Zhu source as a live check before trusting it on Λ₀.
 ```
+
 
 ```gap
 id: G-transition
-lemma: On each hyperbolic sector of the resolved graphic, the passage (transition)
-       map between the two incoming/outgoing transversals has an asymptotic
-       expansion of the shape  Σ c_i x^{a_i} (log x)^{k_i} whose exponents and
-       coefficients are determined by the vertex normal form. This is the step
-       where analyticity of the coefficients enters, and it is the step that
-       fails for C^∞ fields (no such expansion constrains the map — Dulac's
-       error). It must invoke a genuine finiteness source: Écalle / Ilyashenko
-       almost-regular germs, or the Ilyashenko–Yakovenko explicit bound for
-       elementary polycycles; the open content is the nilpotent/degenerate
-       vertex (where the elementary hypothesis fails).
+lemma: On each sector of the resolved graphic, the passage (transition) map
+       between the two incoming/outgoing transversals has an asymptotic
+       expansion in a class of generalized functions determined by the vertex
+       normal form. For an ELEMENTARY (hyperbolic) vertex this is the classical
+       Dulac expansion Σ c_i x^{a_i} (log x)^{k_i} (Écalle/Ilyashenko
+       almost-regular germs; Ilyashenko–Yakovenko explicit bounds). For the
+       open DRR graphics — through semi-hyperbolic saddle-nodes, nilpotent and
+       degenerate points — the class is LARGER: the run's own refuted approach
+       (claim approach-fewnomial-short-dulac-refuted, checked) establishes
+       that these return maps expand as TRANSSERIES with iterated logarithms
+       and exponentials and parameter-dependent exponents, so they are NOT
+       short, and the finite-rank fewnomial zero bound does not transfer; the
+       second-type Dulac maps at the semi-hyperbolic endpoints are the
+       non-elementary content. This is the step where analyticity of the
+       coefficients enters, and it is the step that fails for C^∞ fields (no
+       such expansion constrains the map — Dulac's error). It must invoke a
+       genuine finiteness source for the transseries class actually present;
+       the published machinery for the target vertices is Dulac-map normal
+       forms and the generalized derivation–division (Rolle) procedure
+       (drr-saddle-node-normalforms-dir2002,
+       drr-zhu-rousseau-2002-nilpotent-machinery).
 status: open
-discharged-by: (none yet)
+discharged-by: (none yet) — the expansion class question is PARTIALLY settled
+       by the refutation claim approach-fewnomial-short-dulac-refuted (the
+       class is NOT short; it is transseries with iterated logs/exp), but no
+       claim records the actual transseries expansions for any specific open
+       graphic's sectors.
 thread: (none yet)
 next: For the resolved target Λ_0, write down the transition expansion for each
-       sector from the normal form, as explicit formulas over Q. First move:
-       reproduce the displacement expansion Rousseau–Shan–Zhu use for I_12^1
-       (symbolically, sympy + the sector transition formula) so the method's
-       output can be compared against a published answer.
+       sector from the normal form, as explicit formulas over Q, in the
+       transseries class (not the short class). First move: reproduce the
+       displacement expansion Rousseau–Shan–Zhu use for I_12^1 (symbolically,
+       sympy + the sector transition formula) as the elementary-class
+       validation, then the second-type Dulac expansion at a semi-hyperbolic
+       endpoint of Λ₀ as the non-elementary content.
 ```
 
 ```gap

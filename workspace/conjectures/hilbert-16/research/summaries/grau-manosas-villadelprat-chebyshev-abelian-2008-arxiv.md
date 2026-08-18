@@ -1,40 +1,72 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/grau-manosas-villadelprat-chebyshev-abelian-2008-arxiv.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Grau, Mañosas & Villadelprat, "A Chebyshev criterion for Abelian integrals" (TAMS, arXiv:0805.1140)
 
-<!-- source: https://ar5iv.labs.arxiv.org/html/0805.1140 | converted from HTML -->
+<!-- source: https://ar5iv.labs.arxiv.org/html/0805.1140 | converted from HTML. Full text pushed to research/notes/claims.md claim `h16-grau-manosas-villadelprat-chebyshev-2010`. [[grau-manosas-villadelprat-chebyshev-abelian-2008-arxiv.full]] -->
 
-## What is in it
+## What it establishes
 
-- A Chebyshev criterion for Abelian integrals 0 0 footnotetext: 2000 AMS Subject…
-        - Abstract
-  - 1 Introduction and statement of the result
-        - Theorem A.
-        - Theorem B.
-  - 2 Chebyshev systems
-        - Lemma 2.3.
-  - 3 Proof of the main results
-        - Lemma 3.1.
-        - Proposition 3.3.
-  - 4 Applications
-        - Lemma 4.1.
-    - 4.1 Results on the program of Gautier, Gavrilov and Iliev
-  - 5 Appendix
-    - 5.1 Resultant of two polynomials
-    - 5.2 Sturm’s Theorem
-  - References
+A sufficient **Chebyshev criterion** for a collection of Abelian integrals to be an
+**extended complete Chebyshev (ECT) system** — the instrument for sharp, explicit
+zero counts of Abelian integrals (infinitesimal Hilbert 16 / Arnold). The
+criterion reduces the hard analytic problem to **algebra**: verifying that certain
+functions form a Chebyshev system, checkable by non-vanishing of Wronskians
+computed via **resultants** and **Sturm's theorem**.
 
+**Setup.** Near a period annulus of a center, Abelian integrals reduce to
+`I_i(h) = ∫_{γ_h} f_i(x) g(y) dx` (i=0..n−1) over the oval `γ_h ⊂ {H=h}`,
+`H = Φ(x) + Ψ(y)` separated variables (or `H = A(x) + B(x)y^{2m}`).
 
-## What it claims
+**Theorem A** (H=Φ+Ψ). `(I_0,…,I_{n−1})` is an ECT-system on (0,h₀) if the
+"balances" `ℬ_σ1(f_i/Φ')` (with σ₁ the involution of Φ) form a CT-system on
+(0,x_r), and `ℬ_σ2(g_i)` (σ₂ the involution of Ψ, `g_{i+1}=g'_i/Ψ'`) form a
+CT-system on (0,y_r) with the o-order condition `ℬ_σ2(g₀)(y)=o(y^{2m(n−2)})`.
 
-We present a criterion that provides an easy sufficient condition in order that a collection of Abelian integrals has the Chebyshev property. This condition involves the functions in the integrand of the Abelian integrals and can be checked, in many cases, in a purely algebraic way. By using this criterion, several known results are obtained in a shorter way and some new results, which could not be tackled by the known standard methods, can also be deduced.
+**Theorem B** (H=A(x)+B(x)y^{2m}, g=y^{2s−1}). `(I_0,…,I_{n−1})` is an
+ECT-system on (0,h₀) if `s > m(n−2)` and the balances
+`ℓ_i = ℬ_σ(f_i/(A'B^{(2s−1)/(2m)}))` form a CT-system on (0,x_r).
 
-## Statements it makes
+Since CT/ECT-property is checked on the Wronskians (Lemma 2.3: CT ⇔ continuous
+Wronskians never vanish; T ⇔ discrete Wronskians never vanish on L^k), the whole
+criterion is **algorithmic**: compute Wronskians as rational functions in
+`(x, σ(x))`, eliminate σ via the involution relation `q(x,σ(x))=0`, take
+resultants, and discharge non-vanishing on the interval by Sturm.
 
-###### Lemma 2.3.
+## Application — the run's key harvest
 
-###### Lemma 3.1.
+Applied to the **Gautier–Gavrilov–Iliev (2008)** program for the cyclicity of
+period annuli of quadratic centers of genus one (26 open cases):
 
-###### Proposition 3.3.
+- reproves the GGI case **(r11)** (first integral
+  `H = x²(x+3)/(6(x+1)³) + y²/(2(x+1)³)`) → period-annulus cyclicity **2**;
+- **proves the GGI conjecture in four NEW cases: (r7-r14), (r15), (r17), (rlv3)**,
+  each shown to have period-annulus cyclicity **2** under quadratic perturbations;
+- case (r18) is noted as *not* solvable by this criterion (needs other methods).
 
-###### Lemma 4.1.
+Each case is closed by explicit rational first integral, explicit
+`f_i, l_i`, explicit rational Wronskians, and a **Sturm argument that a polynomial's
+Wronskians never vanish on the annulus interval** — every step algebraic and
+Lean-certifiable (resultant + Sturm is exactly the kind of finite algebraic core GOAL
+wants to push to a kernel-checked theorem).
 
-*[digest of a 84414 character source; every section, statement, and proof in full at `research/sources/grau-manosas-villadelprat-chebyshev-abelian-2008-arxiv.full.md`]*
+## Hypotheses / holds here
+
+Analytic (or smooth) integrand functions; separated-variable or
+`A(x)+B(x)y^{2m}` Hamiltonians; period annulus about a center; first-order
+(Melnikov) bifurcation. **Holds here: yes** — sharp Abelian-integral zero counts
+for concrete quadratic centers is GOAL's "sharp zero-count in one named
+Hamiltonian family" route, and the resultant+Sturm method is genuinely
+Lean-statablycheckable. The GGI genus-one cases bear directly on the quadratic
+(DRR) program's open native rows.
+
+**Evidence class: sourced** (peer-reviewed Trans. AMS, full text held,
+arXiv:0805.1140).
+
+## Bearing / implication
+
+- Gives the standard modern Chebyshev instrument (matches claim
+  `h16-grau-manosas-villadelprat-chebyshev-2010`, whose "not held" note is now
+  corrected — full text IS held).
+- Proves period-annulus cyclicity 2 for five named quadratic centers of genus
+  one — concrete, explicit, and fully algebraic (ideal target for a Lean
+  statement + resultant/Sturm certificate).
+- Reinforces the run's Chebyshev/Wronskian machinery from Gasull–Lázaro–
+  Torregrosa and Mañosas–Villadelprat.

@@ -1,0 +1,25 @@
+# Focal values of the general quadratic focus beyond degree 8 — exact
+WHAT RAN:      code/bautin/focal_counts_6coeff.py --max-degree 12 --deadline-min 30
+               computed every degree 3..12 exactly; the tool cap killed the process
+               while printing the table. This recovery prints the table rows that its
+               own exact dumps (focal_6coeff_L10.txt / L12.txt) carry. Recovered by
+               code/bautin/focal_recover_table.py (exact integers, no re-solve).
+WHICH DEFS:    u' = -v + a1 u^2 + a2 u v + a3 v^2;  v' = u + b1 u^2 + b2 u v + b3 v^2;
+               rot(p) = -v p_u + u p_v;  V2 = (u^2+v^2)/2;  gauge c_{d,0}=0;
+               L_d = radial obstruction at even d. Exact sympy rational arithmetic;
+               no floats.
+
+Guards printed by the exact run (focal6_L10_L12.captured.txt, earlier lines):
+  L4 == a1*a2/8 - a1*b1/4 + a2*a3/8 + a3*b3/4 - b1*b2/8 - b2*b3/8 : True
+  monomial counts L4,L6,L8 == 6,56,220                            : True
+  defining identities rot(V4),rot(V6),rot(V8),rot(V10) == 0       : True
+
+ d    monomials   ilcm-denominator       L1(cleared)     hdeg
+ ---  ----------  ------------------  ----------------  -----
+ 10         628              1105920        45749273332   8
+ 12        1481          22295347200   71349983990231814   10
+
+# Mesh with the exact run's checkpoint: done_through = 12, so L10 and L12
+# were solved and dumped before the cap. Degree-12 solve completed at 26.6 min
+# (cumulative 1595s) -- within the 30-min deadline, so L12 belongs in the table.
+CHECK (homogeneity hdeg == d-2): PASS

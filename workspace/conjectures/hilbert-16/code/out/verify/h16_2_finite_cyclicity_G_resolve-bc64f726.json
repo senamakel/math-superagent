@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "h16-2-finite-cyclicity/G-resolve",
+  "source": "code/lean/h16_2_finite_cyclicity_G_resolve-bc64f726.lean",
+  "stage": "prove"
+}

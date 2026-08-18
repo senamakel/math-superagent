@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "g1-factor-chain-nested",
+  "source": "code/lean/g1_factor_chain_nested-de74dba9.lean",
+  "stage": "prove"
+}

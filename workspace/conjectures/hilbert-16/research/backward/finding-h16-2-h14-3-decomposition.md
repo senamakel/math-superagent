@@ -1,5 +1,17 @@
 # Reducer finding — H16.2 folded onto the open graphic (H₁₄³)
 
+**STATUS (updated this run): superseded in its details by
+`research/backward/h16-2-h14-3-finite-cyclicity.md`, which is now the live
+record. The decomposition stands; the gap inventory has moved: G-lu-core (both
+halves) and G-lean-cert are DISCHARGED (claims `lu-finite-core-identity-half-
+checked`, `bautin-chart-membership-l8-l10-l12` with the CORRECTED three-
+generator structure — L8 ∉ ⟨L4,L6⟩ while L10,L12,L14 ∈ ⟨L4,L6,L8⟩ — and
+`g-lean-cert-kernel-checked`), and the single open mathematical gap is
+G-remainder (the analytic lift), constrained by the refuted short-Dulac model
+(`approach-fewnomial-short-dulac-refuted`) to work on transseries with iterated
+logs/exp, not finite power-times-log sums. Read the skeleton file for the
+current state; this file is kept as provenance of the original decomposition.**
+
 Durable decomposition, recorded while the Cognee memory server is down (see
 CONTEXT.md "Recalled"). Re-deriving this finding would cost a later run a whole
 turn; here it is, with every load taken from the claim ledger rather than from a

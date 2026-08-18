@@ -1,0 +1,8 @@
+== Each permutation-involution's fixed-degree-h monomial count, h=2,4,6,8 ==
+target c(h) = [7, 10, 16, 23]
+number of permutation involutions on 5 letters: 26
+NO permutation involution reproduces the fixed counts (7,10,16,23...):
+  c(h) is NOT the fixed-monomial-count of a single variable permutation,
+  so a simple oddness (sign-permutation) symmetry does NOT explain a_d.
+  Sequence of permutation-fixed counts for h=4: [6, 22, 70]
+  (observed c(4) = 10 must be among these for a pairing explanation; check if 10 is present -> False

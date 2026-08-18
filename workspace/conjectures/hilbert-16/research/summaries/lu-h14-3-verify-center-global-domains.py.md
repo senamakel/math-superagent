@@ -1,104 +1,73 @@
-<!-- source: https://arxiv.org/src/2607.13785v2/anc/h14_3_reproducibility/certificates/verify_h14_center_global_domains.py | converted from plain text -->
+# Lu (2026) bundle script — verify_h14_center_global_domains.py
 
-#!/usr/bin/env python3
-"""Exact symbolic checks for the two global H14 center components."""
+<!-- src: arxiv.org/src/2607.13785v2/anc/h14_3_reproducibility/certificates/verify_h14_center_global_domains.py | plain text. Full text: [[lu-h14-3-verify-center-global-domains.py.full]]. -->
 
-import sympy as sp
+```claim
+id: lu-h14-3-global-center-domains-checked-statements
+statement: For the H14^3 reversible centre component x'=-y+Bx^2+my^2, y'=x(1+y)
+  (z=1+y), H=(1/2)z^(-2B)x^2+V(z) with V_z=z^(-2B-1)((z-1)-m(z-1)^2) is a first
+  integral (zero Lie derivative), the extra critical point is (0,1/m), and the
+  source-minus-saddle potential barrier equals
+  2(B+m)/((-2B)(1-2B)(2-2B))*((1+m)/m)^(1-2B). For the quadratic centre
+  component x'=-y+Bx^2-By^2+ax, y'=(1+y)(x-ay), (1+y)k/(a^2-1) (with the given
+  invariant conic k) is an inverse integrating factor, the gate point
+  (-a/B,-1/B) is critical with Jacobian determinant (B-1)(a-1)(a+1)/B, and the
+  conic restricts to (a-1)(a+1)(By+1)^2 on x=ay.
+hypotheses: H14^3 two global centre components as in Lu arXiv:2607.13785v2;
+  exact symbolic polynomial identities.
+holds-here: yes
+status: asserted
+bearing: the domain/barrier half of Lu's Theorem-1 remainder that is at least
+  machine-checkable; closes CONTEXT gap-2 at the holding level; a clean-room
+  re-run would upgrade to checked.
+anchor: research/sources/lu-h14-3-verify-center-global-domains.py.full.md
+follows-from: lu-h14-3-bundle-scripts-now-held
+answers: the Lu-2026-bundle-scripts gap (gap-2 in CONTEXT)
+```
 
-x, y, B, m, a = sp.symbols("x y B m a", real=True)
-z = sp.symbols("z", positive=True)
+## What this script establishes (exact checks on the two global H14 centre components)
 
-def check_reversible_component() -> None:
-    p = -y + B * x**2 + m * y**2
-    q = x * (1 + y)
+Symbolic-identity checks for both known centre components of the H14³ protein
+field, i.e. the **domain-completeness / barrier half** of the claim (the part of
+Lu's Theorem-1 human-proof remainder that is at least machine-checkable):
 
-    # H_x and H_y follow from H=(1/2)z^(-2B)x^2+V(z),
-    # V_z=z^(-2B-1)((z-1)-m(z-1)^2).
-    h_x = z ** (-2 * B) * x
-    h_y = (
-        -B * z ** (-2 * B - 1) * x**2
-        + z ** (-2 * B - 1) * ((z - 1) - m * (z - 1) ** 2)
-    )
-    lie = sp.factor((h_x * p + h_y * q).subs(y, z - 1))
-    assert lie == 0
+**Reversible component** — `ẋ = −y + Bx² + my², ẏ = x(1+y)` (z=1+y):
+- First integral `H = ½ z^{−2B}x² + V(z)` with `V_z = z^{−2B−1}((z−1) − m(z−1)²)`
+  has **zero Lie derivative** (assert `X(H)=0`).
+- Extra critical point `(x,y)=(0,1/m)`; the potential's second derivative at the
+  gate `z_s=1+1/m` is `−(m+1)/(m(1+1/m)^{2B})`.
+- **Source-minus-saddle barrier identity**: the potential difference
+  `V(−∞)−V(z_s)` equals
+  `2(B+m)/((−2B)(1−2B)(2−2B)) · ((1+m)/m)^{1−2B}`.
 
-    z_s = 1 + 1 / m
-    potential_second = sp.factor(
-        z * sp.diff(z ** (-2 * B) * (z - 1) * (1 - m * (z - 1)), z)
-    )
-    at_saddle = sp.factor(potential_second.subs(z, z_s))
-    assert sp.simplify(
-        at_saddle + (m + 1) / (m * (1 + 1 / m) ** (2 * B))
-    ) == 0
+**Quadratic component** — `ẋ = −y + Bx² − By² + ax, ẏ = (1+y)(x−ay)`:
+- **Inverse integrating factor** `(1+y)·k/(a²−1)` with the invariant conic `k`
+  (degree-2 polynomial given in full) satisfies the inverse-factor PDE
+  `p·k_x + q·k_y = div(p,q)·k`.
+- Gate (extra) critical point `(x,y)=(−a/B, −1/B)`: p, q, k all vanish there;
+  gate Jacobian determinant `= (B−1)(a−1)(a+1)/B`.
+- Invariant-conic restriction to the axis `x=ay` factors as
+  `(a−1)(a+1)(By+1)²`.
 
-    omega = (z ** (-2 * B) - 1) / (2 * B)
-    potential = (
-        (1 + m) * omega
-        + (1 + 2 * m) * (z ** (1 - 2 * B) - 1) / (1 - 2 * B)
-        - m * (z ** (2 - 2 * B) - 1) / (2 - 2 * B)
-    )
-    potential_minus = (
-        -(1 + m) / (2 * B)
-        - (1 + 2 * m) / (1 - 2 * B)
-        + m / (2 - 2 * B)
-    )
-    barrier_difference = sp.factor(
-        potential_minus - potential.subs(z, z_s)
-    )
-    expected_difference = (
-        2
-        * (B + m)
-        / ((-2 * B) * (1 - 2 * B) * (2 - 2 * B))
-        * ((1 + m) / m) ** (1 - 2 * B)
-    )
-    assert sp.simplify(barrier_difference - expected_difference) == 0
+## Hypotheses / holds here
 
-    print("reversible first-integral Lie derivative: OK")
-    print("reversible extra critical point: (x,y)=(0,1/m)")
-    print("reversible potential second derivative at gate:", at_saddle)
-    print("reversible source-minus-saddle barrier identity: OK")
+Quadratic H14³ reversible and quadratic centre components. **Holds here: yes as
+asserted-by-source** — the script is HELD (closes the second missing-bundle row),
+and the statements it checks are exact algebraic identities. **Not yet
+re-executed in this workspace**; unlike the focal-value half it overlaps only
+partially with this run's clean-room verify_lu_core.py (which covered the
+Darboux cofactors, not these global domain/barrier identities), so these remain
+asserted-by-source until a clean-room run is captured.
 
-def check_quadratic_component() -> None:
-    p = -y + B * x**2 - B * y**2 + a * x
-    q = (1 + y) * (x - a * y)
+**Evidence class: asserted-by-source** (original bundle script held; not yet
+re-executed here).
 
-    k = (
-        B**2 * x**2
-        - B**2 * y**2
-        + B * a * x * y
-        + 2 * B * a * x
-        - B * x**2
-        - 2 * B * y
-        + a**2 * y
-        + a**2
-        - a * x
-        - 1
-    )
-    inverse_factor = (1 + y) * k / (a**2 - 1)
-    inverse_factor_identity = sp.factor(
-        p * sp.diff(inverse_factor, x)
-        + q * sp.diff(inverse_factor, y)
-        - (sp.diff(p, x) + sp.diff(q, y)) * inverse_factor
-    )
-    assert inverse_factor_identity == 0
+## Bearing / implication
 
-    gate = {x: -a / B, y: -1 / B}
-    assert sp.factor(p.subs(gate)) == 0
-    assert sp.factor(q.subs(gate)) == 0
-    assert sp.factor(k.subs(gate)) == 0
-
-    jacobian = sp.Matrix([[sp.diff(p, x), sp.diff(p, y)], [sp.diff(q, x), sp.diff(q, y)]])
-    gate_det = sp.factor(jacobian.det().subs(gate))
-    assert gate_det == (B - 1) * (a - 1) * (a + 1) / B
-
-    axis_factor = sp.factor(k.subs(x, a * y))
-    assert axis_factor == (a - 1) * (a + 1) * (B * y + 1) ** 2
-
-    print("quadratic-center inverse integrating factor: OK")
-    print("quadratic-center extra critical point: (x,y)=(-a/B,-1/B)")
-    print("quadratic-center gate determinant:", gate_det)
-    print("invariant-conic restriction to x=a*y:", axis_factor)
-
-if __name__ == "__main__":
-    check_reversible_component()
-    check_quadratic_component()
+- Together with verify_h14_center_bautin.py, closes CONTEXT gap‑2 (both bundle
+  scripts now held) at the level of *holding*, not verification.
+- This is the domain/barrier input that Lu's existential-cyclicity conclusion
+  needs; a clean-room re-run in code/ (capture to code/out/) is the honest next
+  verification step and would upgrade this row to `checked`.
+- Does NOT establish the analytic root-uniqueness / domain completeness of Lu's
+  Theorem 1 in full — only that these exact algebraic checks pass.

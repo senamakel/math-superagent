@@ -44,7 +44,29 @@ services:
       # Unset falls back to the run's key, which is the old arrangement.
       LLM_API_KEY: ${OPENROUTER_MEMORY_API_KEY:-${OPENROUTER_API_KEY}}
       LLM_ENDPOINT: https://openrouter.ai/api/v1
-      LLM_ARGS: '{"extra_headers":{"HTTP-Referer":"https://opencompany.tinyhumans.ai/","X-OpenRouter-Title":"OpenCompany","X-OpenRouter-Categories":"personal-agent"}}'
+      # `deepseek-v4-flash-0731` is a reasoning model: on OpenRouter's default
+      # completion budget it was spending its entire allowance on
+      # `reasoning_content` and returning `{}` (or a malformed tail) for the
+      # actual answer, which `SummarizedContent`/other cognee response models
+      # then rejected with a pydantic `Field required` error — no exception the
+      # retry ladder could route around, since the call itself reported
+      # success. Traced by reading the completion object logged on the failed
+      # attempt: `content: '{}'` beside `reasoning_tokens` in the thousands and
+      # a `completion_tokens` total too small to hold both the reasoning and
+      # the JSON. `acreate_structured_output` in cognee's GenericAPIAdapter
+      # never forwards its own `max_completion_tokens` (config default 16384)
+      # into the completion call — only `LLM_ARGS` reaches every request,
+      # `merged_kwargs = {**self.llm_args, **kwargs}` — so the fix has to live
+      # here, not in a cognee setting. A first pass at `max_tokens: 8192` with
+      # `reasoning.max_tokens: 3072` still failed on a long chunk (a judge
+      # verdict's prose ran the model's own reasoning past 3072 regardless —
+      # OpenRouter's `reasoning.max_tokens` is advisory per-provider and this
+      # route (DeepInfra) does not appear to enforce it). `deepseek-v4-flash`
+      # supports up to ~390K output tokens (`litellm.model_cost`), so the
+      # correction is generous headroom rather than a tighter cap: 24000 leaves
+      # room for a reasoning chain an order of magnitude longer than anything
+      # observed so far, plus the actual summary.
+      LLM_ARGS: '{"extra_headers":{"HTTP-Referer":"https://opencompany.tinyhumans.ai/","X-OpenRouter-Title":"OpenCompany","X-OpenRouter-Categories":"personal-agent"},"max_tokens":24000,"reasoning":{"max_tokens":8000}}'
       EMBEDDING_PROVIDER: fastembed
       EMBEDDING_MODEL: BAAI/bge-small-en-v1.5
       EMBEDDING_DIMENSIONS: 384
@@ -79,6 +101,20 @@ services:
     volumes:
       - cognee-system:/app/cognee/.cognee_system
       - cognee-data:/app/cognee/.data_storage
+      # The `max_tokens`/`reasoning.max_tokens` fix above stops the reasoning
+      # model from running out of budget, but a second, rarer failure of the
+      # same `SummarizedContent` schema survived it: this prompt tells the
+      # model to "Output two sections only" as free text, while `instructor`
+      # wraps the same call in a JSON-schema tool call for `{summary,
+      # description}`. The model's own visible reasoning on a failed chunk
+      # showed it noticing the contradiction and guessing at how to reconcile
+      # a two-section text format with a JSON object — sometimes emitting `{}`,
+      # once emitting a JSON key with a stray leading quote. The corrected copy
+      # says once, explicitly, that `summary` is the one string to fill; ranked
+      # below the two `LLM_ARGS` env keys because it is a bind-mount over a
+      # vendored file rather than a value Cognee exposes as configuration —
+      # there is no env var for a prompt template.
+      - ./cognee-overrides/summarize_content.txt:/app/cognee/infrastructure/llm/prompts/summarize_content.txt:ro
     depends_on:
       neo4j:
         condition: service_healthy

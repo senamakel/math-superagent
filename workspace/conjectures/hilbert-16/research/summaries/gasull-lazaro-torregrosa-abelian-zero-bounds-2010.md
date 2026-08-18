@@ -1,42 +1,51 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/gasull-lazaro-torregrosa-abelian-zero-bounds-2010.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Gasull, Lázaro & Torregrosa, "Upper bounds for the number of zeroes for some Abelian integrals" (arXiv:1012.5201, 2010)
 
-<!-- source: https://arxiv.org/pdf/1012.5201 | converted from HTML -->
+<!-- source: https://arxiv.org/pdf/1012.5201 | arXiv landing page. Full text: [[gasull-lazaro-torregrosa-abelian-zero-bounds-2010.full]]. Claim `h16-gasull-lazaro-torregrosa-abelian-zero-bounds-2010`. -->
 
-## What is in it
+## Status of this held file — landing page only
 
-- Mathematics > Dynamical Systems
-- Title: Upper bounds for the number of zeroes for some Abelian integrals
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+The held `.full.md` for this source is the **arXiv abstract/browse page, not the
+paper body** (228 lines: abstract, submission history, citation tools — no
+mathematics beyond the abstract). So the accurate content of this note is the
+abstract-level statement, with the exact theorem numbers and bounds **not**
+recoverable from what is held.
 
+## What the abstract establishes (asserted-by-source, abstract level)
 
-## What it claims
+For the unperturbed planar field
+`ẋ = −yG(x,y), ẏ = xG(x,y)` whose critical set `{G=0}` is `K` straight lines
+(not through the origin, parallel to one or two orthogonal directions), perturb
+by a general polynomial of degree `n`. The maximum number of limit cycles that
+can bifurcate from the period annulus of the origin is controlled in terms of
+`K` and `n`. Method: explicit computation of the governing Abelian integral plus
+a new bound on the zeroes of the family of real functions arising. For `K ≤ 4`
+the bounds recover or improve earlier results.
 
-Abstract: Consider the vector field $x'= -yG(x, y), y'=xG(x, y),$ where the set of critical points $\{G(x, y) = 0\}$ is formed by $K$ straight lines, not passing through the origin and parallel to one or two orthogonal directions. We perturb it with a general polynomial perturbation of degree $n$ and study which is the maximum number of limit cycles that can bifurcate from the period annulus of the origin in terms of $K$ and $n.$ Our approach is based on the explicit computation of the Abelian integral that controls the bifurcation and in a new result for bounding the number of zeroes of a certain family of real functions. When we apply our results for $K\le4$ we recover or improve some results obtained in several previous works.
+## Hypotheses / holds here
 
-Subjects: | Dynamical Systems (math.DS) |
+Unperturbed systems of the form ẋ=−yG, ẏ=xG with {G=0} = K straight lines in
+two orthogonal directions; polynomial perturbations of degree n; first-order
+(Abelian/Melnikov) bifurcation. **Holds here: yes** — it is the open-access
+sibling of the paywalled Mañosas–Villadelprat JDE 251 (2011) Chebyshev
+zero-bound result, and bears on the run's sharp-Abelian-integral instrument route
+(GOAL step 4's Abelian candidate).
 
-MSC classes: | 34C08, 34C07, 34C23, 37C27 |
+**Evidence class: asserted-by-source (abstract only)** — the exact bounds are NOT
+in the held file and must not be cited numerically.
 
-Cite as: | [arXiv:1012.5201][7] [math.DS] |
+## Bearing / implication
 
-| (or [arXiv:1012.5201v1][8] [math.DS] for this version)  |
+- Same Chebyshev/Wronskian machinery as the held Grau–Mañosas–Villadelprat
+  criterion and the Binyamini–Dor/BNY Abelian bounds — it is a *specific-family*
+  (G = K-lines) upper bound, narrower than the general BNY/Dor results but with
+  the parameters K and n made explicit and Lean-statably checkable once the
+  paper body is obtained.
+- Because only the abstract is held, **no new exact numeric bound is
+  establishable from this source here.** If a sharp Abelian zero-count for this
+  G-K-line family is needed, the full PDF must be fetched.
 
-| [https://doi.org/10.48550/arXiv.1012.5201][9]
+## Falsifier / watch item
 
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-*[digest of a 6345 character source; every section, statement, and proof in full at `research/sources/gasull-lazaro-torregrosa-abelian-zero-bounds-2010.full.md`]*
+Do not cite a specific numeric zero-count from this source — no such count is in
+the held file; a number would be fabricated. The claim ledger keeps this at
+abstract level.

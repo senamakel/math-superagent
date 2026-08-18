@@ -5,6 +5,11 @@
     "'PE1006.fib_word_factor_count' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]"
   ],
   "cited": [],
+  "collector": {
+    "elapsed_ms": 1555,
+    "source_digest": "58ba4469324fbf47e98a695fee94d6f7",
+    "toolchain": ""
+  },
   "compiled": true,
   "declarations": [
     "theorem modulus_prime : Nat.Prime M",
@@ -14,6 +19,7 @@
     "theorem pe1006 : ∃ A : ℕ, A < M ∧ PsiResidue 1000000000000000000 = A"
   ],
   "file": "code/lean/Lib/Statement.lean",
+  "generated_conclusions": [],
   "missing_modules": [],
   "outcome": "failed",
   "retired_binder": false,
@@ -25,5 +31,6 @@
     "/workspace/code/lean/Lib/Statement.lean:101:8: warning: declaration uses `sorry`"
   ],
   "tautologies": [],
+  "uncleared": [],
   "verified": false
 }

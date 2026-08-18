@@ -1,0 +1,28 @@
+== acceptance tests for code/lib/ueuclid.py ==
+modulus M = 101001001
+PASS  identity sanity (z=1)
+PASS  associativity sanity (z=1)
+PASS  identity sanity (z=101001000)
+PASS  associativity sanity (z=101001000)
+PASS  identity sanity (z=10)
+PASS  associativity sanity (z=10)
+PASS  identity sanity (z=271828)
+PASS  associativity sanity (z=271828)
+PASS  identity sanity (z=99999999)
+PASS  associativity sanity (z=99999999)
+PASS  random[30] S0 match (30/30)  [0 fails]
+PASS  random[30] S1 match (30/30)  [0 fails]
+PASS  random[30] S2 match (30/30)  [0 fails]
+PASS  random[30] dR match (30/30)  [0 fails]
+PASS  random[30] dU match (30/30)  [0 fails]
+  (trials: n_trials=30, seed=12345)
+PASS  plane floor_sum z=1: S1 == floor_sum, S0 == n (50 trials)  [0 fails]
+
+== small hand-checkable cases ==
+PASS  hand-case z=1 S1 = 1+3+4+6 = 14  [S1=14]
+PASS  hand-case z=1 S0 = 4
+PASS  hand-case dU = 6
+PASS  hand-case z=2 S0 = 2+4+8+16 = 30
+
+==== 20/20 checks passed ====
+ALL PASS
