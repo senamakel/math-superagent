@@ -4,6 +4,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `analyze_existing_sequences.py` | Exact inspection of stored PE1006 sequences: count/c1/Lmin identities and small linear-recurrence attempts; reports first counterexamples without altering solution. |
 | `boundary_subseqs.py` | Extracts Fibonacci-boundary subsequences (Psi at k=F_m-1, F_m, F_m+1) from recorded tables for OEIS/sequence tools; superseded by the established directive-1 autocorrelation route. |
 | `check_R_runs.py` | Analyzes run structure of the right-special factors R_k (constant-V runs of length 2/3) and S1(k) noise; writes code/out/s1_res.txt and vR_res.txt. |
 | `check_c1_weight.py` | Fresh brute verification of c1(k)=1+floor(k/phi^2), the two-weight distribution {floor,ceil(k/phi^2)}, and c0=(k+1)-c1 for k=1..100. |
@@ -48,6 +49,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `probe_noise.py` | Statistical probe of residue sequence (autocorr, chi2, collisions): noise-flat. |
 | `probe_weak_leading_digits.py` | _(undescribed)_ |
 | `push_lmin_k6764.py` | Third standalone Lmin verifier k=1..6764. |
+| `survey_sequences.py` | Independent artifact survey: tests Psi mod-100/mod-1000, Lmin, factor counts, and run-gap conjectures on genuine recorded terms; reports first falsifiers. |
 | `verify_R_runs_wythoff.py` | Verifies exactly (k=1..3000) that the right-special factors' constant-value runs start at the upper Wythoff numbers s_j=floor(j*phi^2), left zero-padding within runs, run lengths in {1,2,3}, S1-run containment, J(k)=1+floor((k+1)/phi^2), and the exact Psi recurrence; also detects Psi(k) digit-palindromes. Writes code/out/r_runs_wythoff.txt, s1_exact.txt, vR_exact.txt. |
 | `verify_c1_formula.py` | Verifies c1(k)=1+floor(k/phi^2) three independent routes k=1..400; writes code/out/c1_terms.txt. |
 | `verify_lmin_formula.py` | Check Lmin(k)=k+NextFib(k)-1 for k=1..2583. |

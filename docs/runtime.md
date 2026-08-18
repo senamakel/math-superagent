@@ -234,14 +234,24 @@ pricing, caching, and fallback. The runtime sends only two stable model ids:
 a one-million-token context window to the harness, so compression is based on
 the router's real capacity rather than an unrecognized alias.
 
-Direct host-side calls default to `http://localhost:6969/v1`. Docker cannot use
-the host's loopback, so Compose maps `host.docker.internal` to the host gateway
-and defaults the container endpoint to
-`http://host.docker.internal:6969/v1`. `MATH_AGENT_API_BASE_URL` remains an
-override for a router running somewhere else. The host router must listen on an
-address reachable from Docker, not only `127.0.0.1`; host networking cannot be
-used here because per-problem Cognee instances live on their own Compose
-networks. `MATH_AGENT_API_KEY` is the required bearer credential.
+Compose installs the pinned ladder image, mounts the sibling router checkout's
+`config.toml`, and reaches it as `http://ladder:6969/v1` on a stable internal
+network. The one-off agent container joins that network and its per-problem
+Cognee network; the ladder also joins a provider-egress network the agent never
+sees. Changing `COGNEE_NETWORK` therefore does not recreate the ladder or
+interrupt another run, and the internal router network does not give a
+calibration container a route around its proxy. The calibration overlay puts
+`ladder` in `NO_PROXY` so model traffic stays on that internal link. Host access
+is published on `127.0.0.1:6969`. `LADDER_CONFIG_PATH`, `LADDER_ENV_FILE`, and
+`LADDER_PORT` override the host-side deployment inputs;
+`MATH_AGENT_API_BASE_URL` still replaces the endpoint entirely.
+
+The run's `.env` supplies the memory OpenRouter key and the router checkout's
+`.env` supplies its code OpenRouter and Surplus keys. The latter is applied
+second when Compose builds the ladder environment. Do not replace that with a
+raw `docker run --env-file`: Docker preserves surrounding dotenv quotes in the
+credential value, which was measured reaching OpenRouter as a missing
+authorization header. `MATH_AGENT_API_KEY` is the caller bearer credential.
 
 Six roles run on the reasoning tier: `inventor`, `reducer`, `weakener`, `judge`,
 `reflection`, and `director`, listed in `REASONING_ROLES` and resolved in one

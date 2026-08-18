@@ -20,6 +20,14 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/h16-2-finite-cyclicity.md`
 - `h16-2-h14-3-finite-cyclicity/G-remainder` (lemma) — The analytic lift from the finite core to cycl(Λ₀)<∞. In the compact five-parameter neighbourhood Λ of the H₁₄³ hemicycle, the displacement…
   - open `research/backward/h16-2-h14-3-finite-cyclicity.md`
+- `h16-sharp-abelian-named-family/G-ect-apply` (lemma) — For the specific named family, the balance chain and the Wronskians W₀,…,W_{μ−1} are computed exactly over Q, and the ECT/CT-system…
+  - open `research/backward/h16-sharp-abelian-named-family.md`
+- `h16-sharp-abelian-named-family/G-pf` (lemma) — For the named family, the module of Abelian integrals of H is free of finite rank μ (Petrov/Gavrilov), and I(h) satisfies the rank-μ…
+  - open `research/backward/h16-sharp-abelian-named-family.md`
+- `h16-sharp-abelian-named-family/G-sharpness` (lemma) — The bound N = μ−1 is attained: there are explicit degree-≤n polynomial coefficients (rational parameters) for which I has N simple zeros on…
+  - open `research/backward/h16-sharp-abelian-named-family.md`
+- `h16-sharp-abelian-named-family/G-sign-lean` (lemma) — The finite sign/Sturm conditions produced by G-ect-apply are discharged by the Lean kernel: "the Wronskian chain W₀,…,W_{μ−1} is an…
+  - open `research/backward/h16-sharp-abelian-named-family.md`
 - `g-resolve` (goal) — Resolution of a DRR graphic: finite polynomial blow-ups within the quadratic family reduce each vertex to an elementary normal form;…
   - open `research/backward/g-resolve.md`
 - `g-transition` (goal) — Sector transition maps carry an asymptotic expansion in a class determined by the vertex normal form — the classical Dulac power-times-log…
@@ -37,7 +45,7 @@ Ranked by how much of the argument rests on each, and within one load by whether
 - `lu-finite-core-identity-half-checked` — 2 node(s) rest on it, and the run is already building on it — The identity half of Lu arXiv:2607.13785's finite algebraic core is verified by an executed clean-room run: the Bautin/Lyapunov recurrence…
 - `drr-lu-claims-h14-3` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite cyclicity of the H^3_14 semihyperbolic hemicycle of quadratic fields: a…
 
-_125 further candidate(s) below these, in the table._
+_130 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -84,7 +92,7 @@ _125 further candidate(s) below these, in the table._
 | `g-resolve` | goal | **ready** | — | Resolution of a DRR graphic: finite polynomial blow-ups within the quadratic family reduce each vertex to an elementary normal form;… |
 | `g-resolve-resolution-exists` | claim | established | — | The node G-resolve of research/backward/h16-2-finite-cyclicity.md: "a graphic Λ in the DRR list admits a resolution: each vertex (singular… |
 
-_91 further nodes not shown._
+_97 further nodes not shown._
 
 ---
 

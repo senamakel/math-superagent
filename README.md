@@ -197,8 +197,10 @@ on port 6969. Ordinary roles send model id `flash`; the roles listed in
 `REASONING_ROLES` send `reasoning`. Both tiers advertise a one-million-token
 context window, while the router owns the provider, price, and fallback ladder.
 Host-side calls default to `http://localhost:6969/v1`; Compose reaches that same
-host service through `host.docker.internal`. The router must listen on a host
-address Docker can reach rather than binding only to `127.0.0.1`.
+router as `http://ladder:6969/v1` on the project network and publishes it only
+on host loopback. The pinned image mounts the sibling
+`llm-ladder-router/config.toml`; `LADDER_CONFIG_PATH` and `LADDER_ENV_FILE`
+override those host paths when the repositories live elsewhere.
 TinyAgents provides the model loop, tools, delegation, and middleware.
 
 

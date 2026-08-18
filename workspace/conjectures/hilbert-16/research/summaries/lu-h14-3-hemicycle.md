@@ -39,14 +39,26 @@ the mathematical proof. Ancillary reproducibility certificates included
   80 pages, recent, 0 citations, with a reproducibility bundle — stress-testing
   its main theorem would itself be a real contribution, per GOAL.md: "stress-test
   the key step").
-- **Finite algebraic core partially verified by this run** (hand re-derivation,
-  exact arithmetic, in `research/notes/lu-finite-core-verified.md`): the four
-  bridge identities, Darboux cofactors X(L)=(x+dy)L and X(F)=(2Bx+dy)F, the
-  inverse-integrating-factor cofactor, and the degree-4 Bautin obstruction
-  8L₄ = AC+CD+2DF−EF all hold. This certifies the *algebraic identities* the
-  proof depends on, NOT the theorem (the human-proof remainder — analytic root
-  uniqueness, Hadamard divisibility, domain completeness, zero theorems — is
-  unverified and is exactly where a gap would live).
+- **Finite algebraic core VERIFIED-computationally and kernel-closed by this
+  run.** `code/bautin/verify_lu_core.py` (clean-room, exact sympy, not importing
+  Lu's scripts) ran with exit 0 and its capture `code/out/lu_core.captured.txt`
+  prints each identity PASS ending "ALL CLEAN-ROOM CHECKS PASS": the four bridge
+  identities, Darboux cofactors X(L)=(x+dy)L and X(F)=(2Bx+dy)F, the
+  inverse-integrating-factor cofactor div X=(x+dy)+(2Bx+dy), the degree-4 Bautin
+  obstruction 8L₄=AC+CD+2DF−EF, and the degree-6 30-monomial equality
+  192·L₆+P30=0. Independently confirmed by `code/lyap_audit.py` and by the
+  monomial counts in `code/out/mono_counts.captured.txt` (L4, L6 residuals
+  zero exactly). The identity half is kernel-checked in Lean
+  (`lu-finite-core-identity-half-checked`, formalised: `w6_neg`,
+  `p30_plus_w6`, `bautin_L4_identity`, `L4num_ne_zero`, `darboux_L_identity`,
+  `darboux_F_identity`, `div_cofactor_identity`; axioms exactly
+  [propext, Classical.choice, Quot.sound]), and L8∉⟨L4,L6⟩ is a kernel-checked
+  theorem in Bautin.lean via evaluation witness. **This certifies the algebraic
+  identities the proof depends on, NOT the theorem** — the human-proof
+  remainder (analytic root uniqueness, Hadamard divisibility, domain
+  completeness, zero theorems) is machine-unchecked and is exactly where a gap
+  would live; the preprint is unrefereed and the cyclicity bound is
+  existential.
 - The remaining solidly-open DRR rows per the strongest held sources: (I¹₆b),
   (H³₁₃), (DI₂b) — full finite cyclicity open (RR 2015 only closed their boundary
   sets) — plus whatever non-center triangles/other rows were never touched. The
@@ -60,13 +72,15 @@ statement: Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite
   unfolding. This is the graphic Roussarie-Rousseau 2015 left with no partial
   result. Bound existential; proof partly computer-assisted; not yet refereed.
   Its finite algebraic core (bridge identities, Darboux cofactors,
-  degree-4 Bautin obstruction 8L4=AC+CD+2DF-EF) was TRANSCRIBED into
-  research/notes/lu-finite-core-verified.md with expected identities; that
-  transcription is UNVERIFIED — it was claimed by-hand with no executed program
-  and no capture, so nothing in it counts as verified until
-  code/bautin/verify_lu_core.py runs (directive 3, FIRST). The human-proof
-  remainder and the degree-6 30-monomial equality are also not yet
-  independently checked.
+  degree-4 Bautin obstruction 8L4=AC+CD+2DF-EF, degree-6 192*L6+P30=0) is
+  VERIFIED-computationally (code/bautin/verify_lu_core.py clean-room run,
+  capture code/out/lu_core.captured.txt, "ALL CLEAN-ROOM CHECKS PASS";
+  independently by code/lyap_audit.py) and kernel-closed in Lean
+  (lu-finite-core-identity-half-checked; L8∉⟨L4,L6⟩ kernel-checked in
+  Bautin.lean). The DEEP claim — Theorem 1 itself — remains UNVERIFIED: the
+  human-proof remainder (analytic root uniqueness, Hadamard divisibility,
+  domain completeness, zero theorems) is machine-unchecked, the preprint
+  unrefereed, the cyclicity bound existential.
 hypotheses: n=2; five-parameter source-normalized unfolding; fixed collar U.
 holds-here: claimed (preprint, 2026, 0 citations; finite core verified, theorem
   not).

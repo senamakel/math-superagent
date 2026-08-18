@@ -14,6 +14,10 @@ Everything these rest on is settled, so each can be attacked on its own, by a ro
   - open `research/backward/g1-sturmian-factor-structure.md`
 - `pe1006-psi/G4-universal-euclidean-floor-sum` (lemma) — Let x_m = mid of the m-th arc of the partition by {frac(−m·a) : m = 0..k} (equivalently an orbit point of the rotation by a), and let v be…
   - open `research/backward/pe1006-psi.md`
+- `pe1006-psi-g1-sturmian-factor-structure` (goal) — —
+  - open `research/backward/pe1006-psi-g1-sturmian-factor-structure.md`
+- `pe1006-psi-g4-universal-euclidean-floor-sum` (goal) — —
+  - open `research/backward/pe1006-psi-g4-universal-euclidean-floor-sum.md`
 
 ## Verify these first
 
@@ -21,9 +25,9 @@ Ranked by how much of the argument rests on each, and within one load by whether
 
 - `governing-sturmian` — 4 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The infinite Fibonacci word S = 0100101001001... (the limit of the problem's S_n = S_{n-1} S_{n-2}, S_0=0, S_1=01) is the characteristic…
 - `governing-factor-complexity` — 3 node(s) rest on it, and the run is already building on it — A Sturmian word has exactly k+1 distinct factors (contiguous substrings) of length k for every k >= 1 (Morse–Hedlund minimal complexity;…
-- `fibonacci-sturmian-complexity` — 3 node(s) rest on it, and it is open, so it has to be proved before it can be checked — The infinite Fibonacci word f (limit of the morphism 0 -> 01, 1 -> 0, the S_n limit of PE1006) is a Sturmian word, and its factor…
+- `monoid-composition-formulas-verified` — 3 node(s) rest on it, and the run is already building on it — For the geometric second-moment floor-sum monoid over a Euclidean path (n R's, i-th R preceded by floor((p·i+r)/q) U's), composing segment…
 
-_46 further candidate(s) below these, in the table._
+_48 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -66,11 +70,11 @@ _46 further candidate(s) below these, in the table._
 | `oeis-A189663-c1-leading-1-count` | claim | **ready** | — | The number of distinct length-k factors of the infinite Fibonacci word that start with digit 1 is c1(k) = 1 + floor(k/phi^2) (equivalently… |
 | `oeis-A213975-lexicographic-subwords` | claim | **ready** | — | A213975 lists the factors (subwords) of the Fibonacci word A003842 (1->12, 2->1 substitution: 12112121112...), one length at a time, in… |
 | `ostrowski-prefix-decomposition-characteristic` | claim | **ready** | — | For a characteristic Sturmian word w with directive sequence (d_i) and standard words s_i, the prefix w(0..N] equals s_n^{k_n}···s_0^{k_0}… |
-| `pe1006-psi` | goal | blocked | `fibonacci-sturmian-complexity`, `g1-factor-chain-nested`, `g1-oracle-length3`, `g2-mech-shell-exact-binary`, `g3-telescoped-second-moment`, `governing-factor-complexity`, `governing-sturmian`, `mechanical-word-digit-rule`, `pe1006-psi/G1-sturmian-factor-structure`, `pe1006-psi/G2-mechanical-word-representation`, `pe1006-psi/G3-telescoped-second-moment`, `pe1006-psi/G4-universal-euclidean-floor-sum` | compute Ψ(10^18) mod 101001001, where Ψ(k) is the sum of the squares of the k+1 distinct length-k Fibonacci subwords read as decimal numbers |
-| `pe1006-psi/G1-sturmian-factor-structure` | lemma | blocked | `fibonacci-sturmian-complexity`, `g1-factor-chain-nested`, `governing-factor-complexity`, `governing-sturmian` | The k+1 distinct Fibonacci subwords of length k are exactly the length-k factors of the infinite Fibonacci word F (limit of S_n), and that… |
-| `pe1006-psi/G2-mechanical-word-representation` | lemma | established | `mechanical-word-digit-rule` | With the corrected slope a = F(n-2)/F(n) (\|S_n\| = F(n+2) indexing), the k+1 factors of F of length k, read as decimal numbers, are exactly… |
+| `pe1006-psi` | goal | blocked | `fibonacci-sturmian-complexity`, `g1-factor-chain-nested`, `g1-oracle-length3`, `g2-mech-shell-exact-binary`, `governing-factor-complexity`, `governing-sturmian`, `governing-universal-euclidean`, `mechanical-word-digit-rule`, `monoid-composition-formulas-verified`, `pe1006-psi/G1-sturmian-factor-structure`, `pe1006-psi/G2-mechanical-word-representation`, `pe1006-psi/G3-telescoped-second-moment`, `pe1006-psi/G4-universal-euclidean-floor-sum`, `req-close-universal-euclidean`, `ueuclid-s1s2-false-alarm-refuted`, `universal-euclidean-geometric-floor-sum` | compute Ψ(10^18) mod 101001001, where Ψ(k) is the sum of the squares of the k+1 distinct length-k Fibonacci subwords read as decimal numbers |
+| `pe1006-psi-g1-sturmian-factor-structure` | goal | **ready** | — | — |
+| `pe1006-psi-g4-universal-euclidean-floor-sum` | goal | **ready** | — | — |
 
-_16 further nodes not shown._
+_18 further nodes not shown._
 
 ---
 

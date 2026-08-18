@@ -12,6 +12,8 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 | [[g2-mechanical-word-representation]] | The k+1 length-k factors of F are produced exactly by the rotation/mechanical construction with slope a=F(n-2)/F(n) (= fib(n)/fib(n+2), the continued-fraction… | This is what rewrites the factor set (which is what Psi is over) into a sum over m=0..k of v(x_m), the object Lemmas 3-4 can handle. | **discharged** | 0 |
 | [[g3-telescoped-second-moment]] | v(x) = floor(x+ka) - 10^(k-1) floor(x) + 9 sum_{j=1}^{k-1} 10^(k-1-j) floor(x+ja); Psi(k) is the second moment of this geometric floor-sum over m=0..k. | Reduces the squares-of-values to one geometrically-weighted floor-sum whose second moment Lemma 4 evaluates; also removes the factor enumeration entirely. | **discharged** | 0 |
 | [[g4-universal-euclidean-floor-sum]] | The universal Euclidean (Chtholly) algorithm evaluates Psi(k) mod M in O(log k), carrying the tuple (count, sum x^j, sum x^j floor, sum x^j floor^2), x = 10^-1… | The final step: makes Psi(10^18) computable in exact integers without enumerating 10^18 representatives; the cleanest closing lemma of the reduction. | sketched | 0 |
+| [[pe1006-psi-g1-sturmian-factor-structure]] | — | — | sketched | 0 |
+| [[pe1006-psi-g4-universal-euclidean-floor-sum]] | — | — | sketched | 0 |
 | [[pe1006-psi]] | compute Ψ(10^18) mod 101001001, where Ψ(k) is the sum of the squares of the k+1 distinct length-k Fibonacci subwords read as decimal numbers | The four lemmas compose left-to-right and the chain of quantifiers closes with no free parameter. G1 fixes the index set: the k+1 distinct length-k Fibonacci… | live | 2 |
 
 ## The open gaps — each one is a task
@@ -21,7 +23,7 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
 - [[g1-sturmian-factor-structure]] `G1-count (fib_subword_count)` — the theorem PE1006G1.fib_subword_count : ∀ (k : ℕ) (h : 1 ≤ k), (FibSubwords k).ncard = k + 1
   - next: The count is the Sturmian factor-complexity theorem (Morse–Hedlund 1940; Lothaire/Berstel AACoW Ch.2 §2.1.1 p.89: Sturmian ⇔ P(s,n) = n+1; the Fibonacci word is the characteristic Sturmian word of slope 1/φ²). Two routes: (1) prove the full Sturmian chain in Lean — too large for Mathlib as it stands (no Sturmian library); (2) fewer options — close the stabilisation `factor_limit_stabilises` and then cite `Cited.sturmian_factor_complexity`, yielding a *conditional* verdict. A small first step that is already provable by native computation: for any fixed k with m = fib(max index),…
   - _no thread — nothing is attacking this_
-- [[pe1006-psi]] `G1-sturmian-factor-structure` — The k+1 distinct Fibonacci subwords of length k are exactly the length-k factors of the infinite Fibonacci word F (limit of S_n), and that count is k+1 for every k ≥ 1 (F is Sturmian with complexity k+1). The finite chain FactorSet(S_n,k) is nested and stabilises, giving FibSubwords k = the length-k factor set of F.
+- [[pe1006-psi]] `G1-sturmian-factor-structure` — (count half — discharged) For every k ≥ 1 there are exactly k+1 distinct length-k Fibonacci subwords: the infinite Fibonacci word F (limit of S_n) is Sturmian, so its factor complexity is k+1. (identification half — open) FibSubwords k, the union over all finite S_n of its length-k factor set, equals the length-k factor set of the infinite limit word F — the nested chain FactorSet(S_n,k) stabilises into it.
   - next: finite oracle check k = 1..60 that the length-k factor set of S_n stabilises for n ≥ 3k+1 and equals FibSubwords k; then close factor_limit_stabilises to promote the count to a conditional verdict in Lean. A theorem_prover / oracle task; safe to defer behind G4.
   - _no thread — nothing is attacking this_
 - [[pe1006-psi]] `G4-universal-euclidean-floor-sum` — Let x_m = mid of the m-th arc of the partition by {frac(−m·a) : m = 0..k} (equivalently an orbit point of the rotation by a), and let v be the G3 telescoped form. The double sum Ψ(k) = Σ_{m=0}^k v(x_m)^2 mod M is evaluable in O(log k) — NOT O(k) outer steps each O(log k) — by a universal-Euclidean monoid product carrying (count, Σz^t, Σz^t·floor, Σz^t·floor²) mod M with z = 10^(−1) mod M, because x_m itself runs with m as a floor-sum index, so the outer m-sum and inner j-sum merge into one jointly-indexed monoid product. The dU boundary shifts carry floor values across segment boundaries.
@@ -33,13 +35,7 @@ Prove any of these and the skeleton it belongs to moves. Pick the one with a fir
 Do not state these again. Each one is a lemma this run has, and the claim beside it is where to read it.
 
 - [[pe1006-psi]] `G2-mechanical-word-representation` — With the corrected slope a = F(n-2)/F(n) (|S_n| = F(n+2) indexing), the k+1 factors of F of length k, read as decimal numbers, are exactly the values v(x_m) where x_m is the midpoint of the m-th arc of the partition of the unit circle by {frac(−m·a) : m = 0..k} and digit_j(x) = floor(x + (j+1)a) − floor(x + ja). The literal slope F(n-1)/F(n) is refuted (steer-d2-literal-slope holds no). (closed by mechanical-word-digit-rule (same-slope factor-set identity), g2-mech-shell-exact-binary (the exact/binary construction shell), and the in-container machine check mech_psi == brute at k = 1..50 on the string oracle (code/out/mech_psi.captured.txt) — the set {v(x_m)} equals the factor-set decimal values at every k tested.)
-- [[pe1006-psi]] `G3-telescoped-second-moment` — With v(x) = Σ_{j=0}^{k-1} digit_j(x)·10^(k-1-j) and the digit rule digit_j(x) = floor(x + (j+1)a) − floor(x + ja), the telescoping identity v(x) = floor(x + ka) − 10^(k-1)·floor(x) + 9·Σ_{j=1}^{k-1} 10^(k-1-j)·floor(x + ja) holds, so Ψ(k) = Σ_{m=0}^k v(x_m)^2 is the second moment of this geometrically weighted floor sum over m. (closed by this is exactly formulation (B) of code/mech/mech_psi.py, whose captured record (code/out/mech_psi.captured.txt) shows (A)==(B) in total and per-word multiset at k = 1..400, reproducing Ψ(3) = 20302 and Ψ(10) ≡ 10699667 mod 101001001 against the brute oracle.)
-
-## Resting on nothing recorded
-
-A reduction taking an unrecorded belief as input proves the goal from something nobody downstream can check. Either write the claim, or the id is misspelled.
-
-- [[pe1006-psi]] rests on `g3-telescoped-second-moment`, which no claim block on disk establishes
+- [[pe1006-psi]] `G3-telescoped-second-moment` — With v(x) = Σ_{j=0}^{k-1} digit_j(x)·10^(k-1-j) and the digit rule digit_j(x) = floor(x + (j+1)a) − floor(x + ja), the telescoping identity v(x) = floor(x + ka) − 10^(k-1)·floor(x) + 9·Σ_{j=1}^{k-1} 10^(k-1-j)·floor(x + ja) holds, so Ψ(k) = Σ_{m=0}^k v(x_m)^2 is the second moment of this geometrically weighted floor sum over m. (closed by this is exactly formulation (B) of code/mech/mech_psi.py, whose captured record (code/out/mech_psi.captured.txt) shows (A)==(B) in total and per-word multiset at k = 1..400, reproducing Ψ(3) = 20302 and Ψ(10) ≡ 10699667 mod 101001001 against the brute oracle. The telescoping identity v(x) = floor(x+ka) − 10^(k−1)·floor(x) + 9·Σ_{j=1}^{k−1} 10^(k−1−j)·floor(x+ja) is elementary algebra (one partial summation of the digit-difference sum), so it carries no claim id of its own; the discharge is this checked computation, not a cited theorem.)
 
 ## Skeletons that could not be read
 
@@ -47,6 +43,12 @@ A reduction taking an unrecorded belief as input proves the goal from something 
 - `g2-mechanical-word-representation` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
 - `g3-telescoped-second-moment` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
 - `g4-universal-euclidean-floor-sum` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
+- `pe1006-psi-g1-sturmian-factor-structure` names no goal, so it is a note, not a skeleton
+- `pe1006-psi-g1-sturmian-factor-structure` does not say how its lemmas imply the goal, so nothing can check that they do
+- `pe1006-psi-g1-sturmian-factor-structure` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
+- `pe1006-psi-g4-universal-euclidean-floor-sum` names no goal, so it is a note, not a skeleton
+- `pe1006-psi-g4-universal-euclidean-floor-sum` does not say how its lemmas imply the goal, so nothing can check that they do
+- `pe1006-psi-g4-universal-euclidean-floor-sum` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
 
 ---
 

@@ -8,7 +8,9 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | --- | --- | --- | --- |
 | 14 | https://doi.org/10.1142/9789812702067_0055 | FROM THE PP-GRAPHICS TO THE FINITENESS PART OF HILBERT'S 16TH PROBLEM FOR QUADRATIC… | found researching: What is the current status (as of 2023-2025) of the Dumortier–Roussarie–Rousseau program for Hilbert's 16th problem for quadratic vector fields: exactly which o… |
 | 12 | https://doi.org/10.1515/9783110298369 | Planar Dynamical Systems | cites PP-graphics with a nilpotent elliptic singularity in quadratic systems and Hilbert's 16th problem (2014, cited 19 times) |
+| 10 | https://openalex.org/W102382135 | Introduction aux fonctions analysables et preuve constructive de la conjecture de Dulac | linked from Centennial History of Hilbert's 16th Problem |
 | 8 | https://www.sciencedirect.com/science/article/abs/pii/S0362546X97001752 | Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * | found researching: What is the current status (as of 2023-2025) of the Dumortier–Roussarie–Rousseau program for Hilbert's 16th problem for quadratic vector fields: exactly which o… |
+| 8 | https://openalex.org/W625401248 | On the number of limit cycles which appear with the variation of coefficients from an… | linked from Centennial History of Hilbert's 16th Problem |
 | 8 | http://gateway.isiknowledge.com/gateway/Gateway.cgi?GWVersion=2&amp;SrcAuth=Alerting&amp;SrcApp=Alerting&amp;DestApp=WOS&amp;DestLinkType=FullRecord;KeyUT=A1994NP96700005 | A1994NP96700005 | F, LIMBURGS UNIV CENTRUM,UNIV CAMPUS,B-3610 DIEPENBEEK,BELGIUM. \| Document URI: \| [http://hdl.handle.net/1942/3763][8] \| ISI #: \| [A1994NP96700005][9] \| Type: \| Journal Contribution \| Appears in… |
 | 7 | https://www.sciencedirect.com/ | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
 | 7 | https://www.sciencedirect.com/browse/journals-and-books | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
@@ -16,7 +18,6 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 7 | https://www.sciencedirect.com/search | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
 | 6 | http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.489.8724 | PP-graphics with a nilpotent elliptic singularity and Hilbert’s 16th theorem for… | found researching: What is the current status (as of 2023-2025) of the Dumortier–Roussarie–Rousseau program for Hilbert's 16th problem for quadratic vector fields: exactly which o… |
 | 6 | https://doi.org/10.3934/cpaa.2009.8.1133 | Study of the cyclicity of some degenerate graphics inside quadratic systems | found researching: As of 2023–2025, what is the exact current status of the Dumortier–Roussarie–Rousseau program for Hilbert's 16th problem for quadratic vector fields: how many o… |
-| 6 | https://doi.org/10.1006/jdeq.2001.4017 | Finite Cyclicity of Graphics with a Nilpotent Singularity of Saddle or Elliptic Type | cites Hilbert′s 16th Problem for Quadratic Vector Fields (2002, cited 40 times) |
 | 6 | http://elsmediakits.com/ | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
 | 6 | https://doi.org/10.1016/S0362-546X(97)00175-2 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
 | 6 | https://doi.org/10.1142/S0218127403006352 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
@@ -40,14 +41,13 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 6 | https://www.sciencedirect.com/science/article/pii/S0022247X09008920 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
 | 6 | https://www.sciencedirect.com/science/article/pii/S0362546X97001752 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
 | 6 | https://www.sciencedirect.com/science/article/pii/S1571065316300646 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 5 | https://doi.org/10.48550/arxiv.math/0104140 | Quantitative theory of ordinary differential equations and tangential Hilbert 16th problem | found researching: What is the current status (as of 2023-2025) of the Dumortier–Roussarie–Rousseau program for Hilbert's 16th problem for quadratic vector fields: exactly which o… |
-| 5 | https://www.sciencedirect.com/science/article/pii/S0022039601940173 | Regular Article Finite Cyclicity of Graphics with a Nilpotent Singularity of Saddle or… | found researching: As of the most recent literature, how many of the 121 quadratic graphics in the Dumortier–Roussarie–Rousseau (1994) program have had finite cyclicity proved, an… |
-| 5 | https://documentserver.uhasselt.be/ | — | linked from Hilberts 16th problem for quadratic vector-fields \| Document Server@UHasselt |
-| 5 | https://documentserver.uhasselt.be/browse?type=author&amp;authority=rp00098 | — | linked from Hilberts 16th problem for quadratic vector-fields \| Document Server@UHasselt |
-| 5 | https://documentserver.uhasselt.be/browse?type=author&amp;value=ROUSSEAU%2C+C | — | linked from Hilberts 16th problem for quadratic vector-fields \| Document Server@UHasselt |
-| 5 | https://documentserver.uhasselt.be/browse?type=author&amp;value=Roussarie%2C+R | — | linked from Hilberts 16th problem for quadratic vector-fields \| Document Server@UHasselt |
+| 6 | https://openalex.org/W1539776296 | Theory of bifurcations of dynamic systems on a plane | linked from Centennial History of Hilbert's 16th Problem |
+| 6 | https://openalex.org/W135561972 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 6 | https://openalex.org/W1531890399 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 6 | https://openalex.org/W2004611416 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 6 | https://www.springernature.com/gp/librarians/licensing/agc/journals | Institutional subscriptions | and 2,500 journals - Cancel anytime [View plans][9] ## Buy Now Price includes VAT (Kuwait) Instant access to the full article PDF. [Institutional subscriptions][10] ### Similar content being viewed… |
 
-_1418 further candidates not shown; they are cited once each._
+_1770 further candidates not shown; they are cited once each._
 
 ---
 

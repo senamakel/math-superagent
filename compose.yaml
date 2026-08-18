@@ -2,6 +2,15 @@ networks:
   memory:
     external: true
     name: ${COGNEE_NETWORK:-cognee-local_default}
+  # Stable across per-problem memory networks and deliberately has no gateway:
+  # the agent can reach the ladder without gaining an escape route during a
+  # calibration run.
+  router:
+    internal: true
+  # The ladder alone needs provider egress. Keeping this attachment off the
+  # agent preserves the calibration network boundary.
+  ladder-egress:
+    driver: bridge
 
 services:
   agent:
@@ -10,12 +19,9 @@ services:
     image: math-agent:local
     env_file:
       - .env
-    # The router listens on the host. Linux containers resolve this stable name
-    # through the host-gateway mapping; direct host-side calls still use
-    # localhost:6969. The router must listen on a host address Docker can reach,
-    # not only on 127.0.0.1.
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    depends_on:
+      ladder:
+        condition: service_healthy
     environment:
       AGENT_WORKSPACE: /workspace
       COGNEE_API_URL: http://cognee:8000
@@ -27,7 +33,7 @@ services:
       MATH_AGENT_LOOP_MINUTES: ${MATH_AGENT_LOOP_MINUTES:-}
       # Provider endpoint/model are ordinary run knobs. The API key is omitted
       # deliberately and arrives through env_file, like MISTRAL_API_KEY below.
-      MATH_AGENT_API_BASE_URL: ${MATH_AGENT_API_BASE_URL:-http://host.docker.internal:6969/v1}
+      MATH_AGENT_API_BASE_URL: ${MATH_AGENT_API_BASE_URL:-http://ladder:6969/v1}
       MATH_AGENT_MODEL: ${MATH_AGENT_MODEL:-flash}
       MATH_AGENT_REQUEST_SECONDS: ${MATH_AGENT_REQUEST_SECONDS:-}
       MATH_AGENT_MAX_MODEL_CALLS: ${MATH_AGENT_MAX_MODEL_CALLS:-}
@@ -149,7 +155,40 @@ services:
     # no `depends_on` for the same reason — the server is expected to be up
     # already, and `./agent` says so plainly when it is not.
     networks:
+      - router
       - memory
+
+  ladder:
+    image: ghcr.io/senamakel/llm-ladder-router:sha-c553b7357251a35ac850ba71a8dd982cc6a2ed56
+    restart: unless-stopped
+    # The run's `.env` contributes the independent memory key. The router's
+    # file comes second so its code OpenRouter and Surplus credentials win when
+    # both files name the same upstream variable. Compose parses quoted dotenv
+    # values; `docker run --env-file` does not, and sends the quote as part of
+    # the bearer token.
+    env_file:
+      - .env
+      - ${LADDER_ENV_FILE:-../llm-ladder-router/.env}
+    volumes:
+      - type: bind
+        source: ${LADDER_CONFIG_PATH:-../llm-ladder-router/config.toml}
+        target: /etc/ladder/config.toml
+        read_only: true
+    ports:
+      - "127.0.0.1:${LADDER_PORT:-6969}:6969"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    networks:
+      ladder-egress:
+        priority: 100
+      router:
+        priority: 10
 
   cognee:
     image: cognee/cognee:1.4.2

@@ -115,8 +115,8 @@ services:
       http_proxy: http://screen-proxy:8888
       https_proxy: http://screen-proxy:8888
       # Reached over the internal network, so it must not be proxied.
-      NO_PROXY: cognee,neo4j,localhost,127.0.0.1
-      no_proxy: cognee,neo4j,localhost,127.0.0.1
+      NO_PROXY: ladder,cognee,neo4j,localhost,127.0.0.1
+      no_proxy: ladder,cognee,neo4j,localhost,127.0.0.1
       # Arms the tool-layer screen. Named but unreadable is a hard startup
       # failure by design; see `orchestrator::screen::policy`.
       MATH_AGENT_SCREEN: /etc/riemann/screen.json
