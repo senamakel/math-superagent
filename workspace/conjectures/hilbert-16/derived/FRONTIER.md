@@ -47,7 +47,7 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 | 5 | https://documentserver.uhasselt.be/browse?type=author&amp;value=ROUSSEAU%2C+C | — | linked from Hilberts 16th problem for quadratic vector-fields \| Document Server@UHasselt |
 | 5 | https://documentserver.uhasselt.be/browse?type=author&amp;value=Roussarie%2C+R | — | linked from Hilberts 16th problem for quadratic vector-fields \| Document Server@UHasselt |
 
-_1413 further candidates not shown; they are cited once each._
+_1418 further candidates not shown; they are cited once each._
 
 ---
 

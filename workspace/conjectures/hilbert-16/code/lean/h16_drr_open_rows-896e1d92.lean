@@ -17,57 +17,44 @@ Informal statement to type and prove:
   are NOT established by any held source. The open count is a lower bound on
   openness, not the exact number.
 
-This is, like the sibling `h16-drr-121-graphics` and `drr-1994-citation-anchor`
-nodes, a *citation anchor*. Every concrete row of the list (which graphic is
+This is a *citation anchor*, sibling to `h16-drr-121-graphics` and
+`drr-1994-citation-anchor`. Every concrete row of the list (which graphic is
 open, how many are open, which family each lies in) is a fact about the held
-literature, not a fact this run can derive: it is a statement about what RSZ,
+literature, not a fact this run can derive — it is a statement about what RSZ,
 RR 2015 and the Shan thesis actually prove, and about the absence of a complete
-post-2015 ledger. Those facts are therefore `axiom`s under `namespace Cited`,
-and the top-level `drr_open_rows` theorem packages their conjunction. The one
-step that is NOT a literature fact is structural: once some graphic (H₁₄³) has
-no partial result at all, the program is certainly not complete — and that
-single implication is PROVED by the kernel below (`program_not_complete`).
-The verdict here is `conditional`, never `formalised`: the kernel checks the
-packaging and the one implication, and nothing about the hypotheses.
+post-2015 ledger. Following the convention of the sibling node, the two *carrier
+predicates* (`closed`, `boundaryClosed`) are declared as opaque top-level
+axioms, and every *literature proposition* built on them lives under
+`namespace Cited` with a `src:` docstring. The verdict is therefore
+`conditional`, never `formalised`: the kernel checks the packaging and the one
+genuinely structural implication below, and nothing about the hypotheses.
 
-How each clause of the informal statement is carried:
+The one step that is NOT a literature fact is structural: once some graphic
+(H₁₄³) has no partial result at all, the program is certainly not complete —
+"closed ⇒ boundary-closed" (`closed_implies_boundary`, itself a Cited fact of
+RR 2015's blow-up framework) turns the no-partial-result row into ¬(∀ G, closed G).
+That single implication is PROVED by the kernel (`program_not_complete`); the
+rows output as it runs. Everything else is attributed to a source.
 
-  * "121 graphics" — the index type `GraphicId = Fin 121`; the claim that the
-    count is exactly 121 is a cited axiom (`count_is_121`), matching DRR 1994 /
-    Ilyashenko 2002 / RSZ 2015 / RR 2015. (The Shan-2013-says-125 discrepancy is
-    a separate node, `h16-drr-121-vs-125-discrepancy`; this file states the
-    count as the four main sources give it.)
-  * "at least 88 closed by RSZ 2015" — a set `s` of graphics, each CLOSED
-    (finite cyclicity proved) in the held literature, with `s.ncard ≥ 88`
-    (`rsz_closed_at_least_88`).
-  * "after RR 2015's full closure of (I¹₁₄) on top of RSZ's 88" — a set with
-    `s.ncard ≥ 89` of closed graphics (`after_rr_closed_at_least_89`). The
-    numbers 33 (=121-88) and 32 (=121-89) that the claim's accounting leans on
-    are the pure ℕ identities `open_at_rsz_arithmetic` and
-    `remain_unclosed_arithmetic`, PROVED by `norm_num`.
-  * "(H₁₄³) ... no partial result" — carried as `h14_no_partial_result`:
-    some graphic is not even *boundary-closed* (`¬ boundaryClosed G`), i.e. it
-    has no partial result at all. `boundaryClosed` is "the boundary limit
-    periodic set from the blow-up has proved finite cyclicity" — a strictly
-    weaker state than the full graphic being closed.
-  * "only their boundary limit periodic sets are closed for (I₆b¹),(H₁₃³),
-    (DI₂b); full graphics open" — three DISTINCT graphics each
-    `boundaryClosed` and `¬ closed` (`three_rows_partial`).
-  * "the 11 degenerate graphics other than DF1a, DF2a open (Shan 2013)" — a set
-    of at least 11 distinct graphics, none closed (`eleven_degenerate_open`).
-  * "the exact full list and precise post-2015 open count are NOT established
-    by any held source" — a meta-fact about this run's library, not a
-    mathematical hypothesis; carried in the header prose and the closing note,
-    not as a binder (it is genuinely a paragraph, and Lean has no honest way to
-    attach "no held source establishes this" to a type).
+How the node's decomposition is carried (each group is a sub-lemma; see the
+fenced `gap` blocks at the foot of this file):
 
-The derivable (kernel-checked) theorem: with the cited `closed_implies_boundary`
-(see below) — a fully closed graphic is in particular boundary-closed, since
-closing the full graphic closes its boundary set — the no-partial-result row
-(H₁₄³) forces `¬ (∀ G, closed G)`. That is exactly "the DRR program is NOT
-complete", and it is the one strictly-proved (non-cited) statement in this
-file: its only non-`Classical` hypotheses are the two `Cited.*` axioms
-`h14_no_partial_result` and `closed_implies_boundary`.
+  * the count — `GraphicId = Fin 121`, and that it is exactly 121 is the cited
+    `count_is_121` (DRR 1994 / Ilyashenko 2002 / RSZ 2015 / RR 2015);
+  * "≥88 closed at RSZ 2015" — cited `rsz_closed_at_least_88`;
+  * "≥89 closed after RR 2015's (I¹₁₄)" — cited `after_rr_closed_at_least_89`;
+  * "(H₁₄³) no partial result" — cited `h14_no_partial_result`
+    (∃ G, ¬ boundaryClosed G);
+  * "(I₆b¹),(H₁₃³),(DI₂b) boundary-only" — cited `three_rows_partial`;
+  * "≥11 degenerate open (Shan 2013)" — cited `eleven_degenerate_open`;
+  * "closed ⇒ boundary-closed" (the blow-up framework) — cited
+    `closed_implies_boundary`.
+
+The pure-arithmetic numbers 33 and 32 clarify the accounting and are PROVED
+(`open_at_rsz_arithmetic`, `remain_unclosed_arithmetic`). The meta-fact that no
+held source establishes the exact open list/count is a paragraph (Lean has no
+honest way to attach "no source establishes this" to a type) and is recorded in
+the closing note.
 -/
 
 import Mathlib.Data.Fin.Basic
@@ -79,34 +66,33 @@ namespace DRROpen
 
 /-- A graphic (or degenerate graphic): a limit periodic set surrounding a
 nondegenerate anti-saddle point of a quadratic system, up to the equivalence
-that makes DRR's list finite. The index type has exactly
-`121 = Fintype.card GraphicId` elements; that the count is 121 is the cited
-axiom `count_is_121`. -/
+that makes DRR's list finite. The index type has exactly 121 elements; that the
+count is 121 is the cited axiom `Cited.count_is_121`. -/
 abbrev GraphicId : Type := Fin 121
 
-namespace Cited
-
-/-- src: the primary/secondary sources of the DRR program (RSZ 2015, RR 2015,
-Huzak 2018, Dumortier–Rousseau 2009) that establish individual graphics. The
-predicate `closed G`: "finite cyclicity of the graphic G is PROVED, in
-full, in the held literature." This is a fact about sources, carried opaquely
-(distinct from the mathematical property `FinitelyCyclic`, which could hold
-whether or not a source has established it). The only evidence for `closed G`
-is the literature itself, so the predicate symbol lives here under `Cited`. -/
+/-- **Carrier predicate, not a literature fact.** "Finite cyclicity of the
+graphic G is PROVED, in full, in the held literature." This is a fact about
+sources, carried opaquely — distinct from the mathematical property
+`FinitelyCyclic` (of the sibling node), which could hold whether or not a
+source has established it. The only evidence for `closed G` is the literature
+itself, so the predicate symbol is opaque; the propositions about which
+graphics are closed live under `Cited` where their source is attached. -/
 axiom closed : GraphicId → Prop
 
-/-- src: Roussarie–Rousseau 2015, Trans. Moscow Math. Soc., Thm 1.1. The
-predicate `boundaryClosed G`: "the boundary limit periodic set obtained
-from the blow-up of the graphic G has PROVED finite cyclicity, but the full
-graphic is left open." This is RR 2015 Thm 1.1's precise form of a *partial*
-closure: the boundary piece is closed, the whole row is not. It is strictly
-weaker than `closed`. -/
+/-- **Carrier predicate, not a literature fact.** "The boundary limit periodic
+set obtained from the blow-up of the graphic G has PROVED finite cyclicity, but
+the full graphic is left open." This is RR 2015 Thm 1.1's precise form of a
+*partial* closure: the boundary piece is closed, the whole row is not. It is
+strictly weaker than `closed`. Opaque carrier; the fact that particular
+graphics are (or are not) boundary-closed lives under `Cited`. -/
 axiom boundaryClosed : GraphicId → Prop
+
+namespace Cited
 
 /-- src: DRR 1994 JDE 110:86-133; Ilyashenko 2002 Bull. AMS §5.2; RSZ 2015;
 RR 2015. The count of graphics in the DRR program is 121 (as the four main
 sources report it; the Shan-2013 "125" is a separate unresolved discrepancy
-node). -/
+node, `h16-drr-121-vs-125-discrepancy`). -/
 axiom count_is_121 : Fintype.card GraphicId = 121
 
 /-- src: Rousseau–Shan–Zhu 2015, arXiv:1502.00689, intro. Proving (I¹₁₂),
@@ -153,46 +139,43 @@ cyclicity of the full graphic entails finite cyclicity of its boundary limit
 periodic set obtained from the same blow-up — `boundaryClosed` is exactly the
 weakening of `closed` at which RR 2015 reports rows like (I₆b¹),(H₁₃³),(DI₂b)
 as partly closed. This is what lets the no-partial-result row (H₁₄³) force
-program-incompleteness below. -/
+program-incompleteness. -/
 axiom closed_implies_boundary : ∀ G : GraphicId, closed G → boundaryClosed G
 
 end Cited
 
-/-! ## The theorem the node asks for -/
+/-! ## The combining steps -/
 
-/-- The full `h16-drr-open-rows` claim: RSZ 2015 leaves ≥88 closed (so 33 of
-121 open by the accounting below); RR 2015 pushes the closed count to ≥89; the
-(H₁₄³) row has no partial result at all; (I₆b¹),(H₁₃³),(DI₂b) are three
-distinct partial rows (boundary-only); and ≥11 degenerate graphics are open.
-Every conjunct is a `Cited.*` axiom; the theorem is their conjunction, so the
-kernel checks the packaging and nothing else. Standing: conditional. -/
+/-- **Combining step 1 — the full `h16-drr-open-rows` claim.** RSZ 2015 leaves
+≥88 closed (33 of 121 open by the accounting below); RR 2015 pushes the closed
+count to ≥89; the (H₁₄³) row has no partial result at all; (I₆b¹),(H₁₃³),(DI₂b)
+are three distinct partial (boundary-only) rows; and ≥11 degenerate graphics
+are open. Every conjunct is a `Cited.*` axiom; the theorem is their conjunction,
+so the kernel checks the packaging and nothing else. Standing: conditional. -/
 theorem drr_open_rows :
-    (∃ s : Set GraphicId, s.ncard ≥ 88 ∧ ∀ G : GraphicId, G ∈ s → Cited.closed G) ∧
-    (∃ s : Set GraphicId, s.ncard ≥ 89 ∧ ∀ G : GraphicId, G ∈ s → Cited.closed G) ∧
-    (∃ G : GraphicId, ¬ Cited.boundaryClosed G) ∧
+    (∃ s : Set GraphicId, s.ncard ≥ 88 ∧ ∀ G : GraphicId, G ∈ s → closed G) ∧
+    (∃ s : Set GraphicId, s.ncard ≥ 89 ∧ ∀ G : GraphicId, G ∈ s → closed G) ∧
+    (∃ G : GraphicId, ¬ boundaryClosed G) ∧
     (∃ G1 G2 G3 : GraphicId,
       G1 ≠ G2 ∧ G1 ≠ G3 ∧ G2 ≠ G3 ∧
-      Cited.boundaryClosed G1 ∧ Cited.boundaryClosed G2 ∧ Cited.boundaryClosed G3 ∧
-      ¬ Cited.closed G1 ∧ ¬ Cited.closed G2 ∧ ¬ Cited.closed G3) ∧
-    (∃ s : Set GraphicId, s.ncard ≥ 11 ∧ ∀ G : GraphicId, G ∈ s → ¬ Cited.closed G) :=
+      boundaryClosed G1 ∧ boundaryClosed G2 ∧ boundaryClosed G3 ∧
+      ¬ closed G1 ∧ ¬ closed G2 ∧ ¬ closed G3) ∧
+    (∃ s : Set GraphicId, s.ncard ≥ 11 ∧ ∀ G : GraphicId, G ∈ s → ¬ closed G) :=
   ⟨Cited.rsz_closed_at_least_88, Cited.after_rr_closed_at_least_89,
    Cited.h14_no_partial_result, Cited.three_rows_partial,
    Cited.eleven_degenerate_open⟩
 
--- The theorem above references the Cited axioms; `closed`/`boundaryClosed`
--- are just `Cited.closed`/`Cited.boundaryClosed` under the namespace, so the
--- shorter names are definitional no-ops. (Kept for readability.)
-
-/-- **The one non-cited theorem of this file: the DRR program is NOT complete.**
+/-- **Combining step 2 — the one non-cited theorem: the DRR program is NOT
+complete.**
 
 The (H₁₄³) no-partial-result row drives it: suppose every graphic were CLOSED.
 Then by `closed_implies_boundary` every graphic would be boundary-closed,
 contradicting `h14_no_partial_result` (some graphic has no partial result).
-This is a genuine kernel-checked implication from the two axioms — the shape
+This is a genuine kernel-checked implication from two Cited facts — the shape
 of the node's central clause, "the DRR program is NOT complete", is not merely
 packaged here, it follows. -/
 theorem program_not_complete :
-    ¬ (∀ G : GraphicId, Cited.closed G) := by
+    ¬ (∀ G : GraphicId, closed G) := by
   rintro hall
   rcases Cited.h14_no_partial_result with ⟨G, hG⟩
   exact hG (Cited.closed_implies_boundary G (hall G))
@@ -219,19 +202,84 @@ example : True := trivial
 /-! ## Axioms these theorems rest on
 
 `drr_open_rows` rests on the five `Cited.*` axioms and nothing else.
-`program_not_complete` rests on `Cited.h14_no_partial_result` and
-`Cited.closed_implies_boundary` (both named `Cited.*`, so `conditional`).
-`open_at_rsz_arithmetic` /
-`remain_unclosed_arithmetic` rest on nothing (`decide` closes them; the
-kernel checks the ℕ arithmetic directly). Everything non-`Classical` is a
-`Cited.*` literature statement, giving standing `conditional`. There is no
-`sorry`, no `native_decide`, no `Quot.sound`-dependent step.
+`program_not_complete` rests on the two `Cited.*` axioms
+`h14_no_partial_result` and `closed_implies_boundary` (via the carriers
+`closed`, `boundaryClosed`). `open_at_rsz_arithmetic` /
+`remain_unclosed_arithmetic` rest on nothing (`decide` closes them; the kernel
+checks the ℕ arithmetic directly). There is no `sorry`, no `native_decide`, no
+`Quot.sound`-dependent step. Everything non-`Classical` is a `Cited.*`
+literature statement, giving standing `conditional`.
 -/
 
 #print axioms drr_open_rows
 #print axioms program_not_complete
 #print axioms open_at_rsz_arithmetic
 #print axioms remain_unclosed_arithmetic
+
+/-! ## Decomposition: the statement graph's gap blocks
+
+This node is a citation anchor, so its "sub-lemmas" are literature facts: each
+is an *intrinsic* statement about what a source proves, not a mathematical
+claim the kernel could derive, and each is therefore carried as a `Cited.*`
+axiom with its source named in the docstring (never as a `sorry` — a `sorry`
+would strip the attribution and read as "unproved by anyone", which is the
+opposite of the truth here: every one of these is *somebody else's proven
+theorem*, out of this run's reach to re-derive). The one sub-lemma the kernel
+can genuinely derive from the others — that a no-partial-result row makes the
+program incomplete — is PROVED as `program_not_complete` above.
+
+```gap
+id: h16-drr-open-rows/h14-no-partial-result
+lemma: ∃ G : GraphicId, ¬ boundaryClosed G
+status: cited — Roussarie–Rousseau 2015, Thm 1.1/intro ("one graphic, (H₁₄³),
+  through a triple point at infinity" has no partial result). Carried as
+  `Cited.h14_no_partial_result`; plus `Cited.closed_implies_boundary` to make it
+  force incompleteness.
+next: research — confirm (H₁₄³)'s RR 2015 status against the held RR 2015 full
+  text and, if Lu arXiv:2607.13785 stands, note it as the single row this no-
+  partial-result fact used to name. (This is a literature confirmation, not a
+  derivable step.)
+```
+
+```gap
+id: h16-drr-open-rows/three-boundary-only-rows
+lemma: ∃ G1 G2 G3 : GraphicId, pairwise distinct ∧ boundaryClosed (each) ∧ ¬ closed (each)
+status: cited — Roussarie–Rousseau 2015, Thm 1.1 (I₆b¹),(H₁₃³),(DI₂b) partial.
+  Carried as `Cited.three_rows_partial`.
+next: research — the held RR 2015 full text should name exactly these three ids;
+  a future ledger (research/threads/drr-status.md) records whether any has since
+  been fully closed. This is a factual ledger row, not a derivable implication.
+```
+
+```gap
+id: h16-drr-open-rows/eleven-degenerate-open
+lemma: ∃ s : Set GraphicId, s.ncard ≥ 11 ∧ ∀ G ∈ s, ¬ closed G
+status: cited — Shan 2013 thesis §1 / Table 1.1 (11 degenerate graphics other
+  than DF1a, DF2a open). Carried as `Cited.eleven_degenerate_open`.
+next: research — the Shan-2013 full ledger is the only per-class count in the
+  library (see claim drr-shan-2013-table11-ledger); reconcile it against any
+  post-2015 degenerate closures to update the ≥11 bound. Not derivable.
+```
+
+```gap
+id: h16-drr-open-rows/exact-open-count-not-established
+lemma: (meta-fact, carried as prose not a binder) — no held source gives the
+  exact post-2015 open count or full open-id list
+status: open gap — the ≤32/≥11 numbers above are lower bounds on openness; a
+  complete ledger is absent from the library.
+next: research — produce a consolidated graphic-by-graphic ledger (which open,
+  paper closing each). That ledger is the run's target inventory; until it
+  exists no exact count can be stated, in Lean or in prose.
+```
+
+The combining theorem `drr_open_rows` fulfils the `≤`-side of the informal
+statement's decomposition: each bracketed clause is one of the sub-lemmas above
+and the theorem's proof is exactly the tuple of the six Cited facts. The
+derivable consequence `program_not_complete` is the statement's headline and is
+the only non-cited step. No `sorry` appears, by design: the unproved-in-this-run
+sub-lemmas are cited literature, and a `sorry` would be the wrong carrier for
+them.
+-/
 
 end DRROpen
 

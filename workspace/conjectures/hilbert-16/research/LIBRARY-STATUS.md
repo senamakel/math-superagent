@@ -1050,3 +1050,49 @@ Rousseau 1997 Nonlinear Analysis survey (paywalled, content subsumed by held
 RSZ/RR + Ilyashenko surveys); DRR 1994 primary catalogue (paywalled;
 metadata-only anchor held).
 
+### 2026 DRR-companion cycle (librarian) — canonical-tier verification
+
+**Two DRR companion full texts re-confirmed unobtainable (abstract-only).**
+Both are elementary-graphics papers and both were this cycle re-attempted from
+every route available to the converter:
+
+1. **DRR 1994 "Elementary graphics of cyclicity 1 and 2"**, Nonlinearity
+   7(3):1001, DOI 10.1088/0951-7715/7/3/013, cited 67× — the cyclicity-1/2
+   backbone of the elementary DRR rows. This was a genuine gap (prior cycles
+   held only an abstract summary with the note "no .full on disk"). This cycle
+   captured the IOP record page and the UHasselt record
+   (hdl 1942/3790) as `.full.md` sources:
+   - `research/sources/drr-elementary-graphics-cyclicity-1-2-nonlinearity-1994.full.md` (IOP record+abstract; PDF route hit Radware bot-captcha)
+   - `research/summaries/drr-elementary-cyclicity-1-2-uhasselt.md` (UHasselt record, summary only — no `.full.md` on disk; record page carry no hosted PDF)
+   The full text itself is **not obtained**. The abstract-level claim
+   `drr-drr94-cyclicity-1-2-abstract` (cyclicity 1 for attracting
+   hyperbolic+attracting semi-hyperbolic; cyclicity 2 for one-hyperbolic-one-
+   semi-hyperbolic-of-opposite-character; 33 quadratic graphics c ≤ 2, five
+   generic) is unchanged and now rests on a held record file as well as the
+   summary.
+2. **DRR 1996 "Hilbert's 16th problem for quadratic systems and cyclicity of
+   elementary graphics"**, Nonlinearity 9(5):1209, DOI 10.1088/0951-7715/9/5/008,
+   cited 33×. Abstract already held
+   (`dumortier-rousseau-rousseau-1996-elementary-graphics-full.full.md`); the
+   direct PDF attempt again hit the bot-captcha. Full text **not obtained**.
+   Method content (Khovanskii fewnomial method, normal forms of elementary
+   points, two-point compensation when the graphic surrounds a centre,
+   transition maps not tangent to identity) is corroborated by held full texts
+   using the same techniques (DGR 2002, RR 2015).
+
+**Impact on the run — nil.** These are elementary-graphics papers, and the
+elementary part of the DRR inventory is essentially closed with small explicit
+bounds in held full texts (DGR 2002: seven rows ≤ 2/3). The genuinely open DRR
+rows are nilpotent/degenerate — pp-type, fake saddles, the (H³₁₄) semihyperbolic
+hemicycle — all covered by held full texts. No attack target lacks a held primary
+source on its object class.
+
+**Frontier disposition:** the top unheld ranked rows remain ScienceDirect paywall
+shells (Rousseau 1997 Nonlinear Analysis S0362546X97001752) and the two
+confirmed-unobtainable books; the DRR 1994 catalogue (the 121-row list itself)
+remains the one material item that is paywalled and not reproduced verbatim
+anywhere, though its constituent rows are used throughout held follow-up papers
+and the run's own `research/drr-list.md` is the triangulated inventory.
+
+**Full cycle report:** `research/librarian-report-canonical-tier-and-drr-companions.md`. Cognee memory server down; findings persisted in the workspace ledger and this file.
+

@@ -37,7 +37,7 @@ Ranked by how much of the argument rests on each, and within one load by whether
 - `lu-finite-core-identity-half-checked` — 2 node(s) rest on it, and the run is already building on it — The identity half of Lu arXiv:2607.13785's finite algebraic core is verified by an executed clean-room run: the Bautin/Lyapunov recurrence…
 - `drr-lu-claims-h14-3` — 2 node(s) rest on it, and it is open, so it has to be proved before it can be checked — Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite cyclicity of the H^3_14 semihyperbolic hemicycle of quadratic fields: a…
 
-_124 further candidate(s) below these, in the table._
+_125 further candidate(s) below these, in the table._
 
 ## Every node
 
@@ -60,6 +60,7 @@ _124 further candidate(s) below these, in the table._
 | `drr-dgr-2002-elementary-closures` | claim | **ready** | — | Dumortier–Guzmán–Rousseau (2002, "Finite cyclicity of elementary graphics surrounding a focus or center in quadratic systems", Qual. Theory… |
 | `drr-dmrt-2015-fake-saddle-cyclicity2` | claim | **ready** | — | De Maesschalck–Rebollo-Perdomo–Torregrosa 2015 (J. Differential Equations 258(2):588–620, "Cyclicity of a fake saddle inside the quadratic… |
 | `drr-drr94-cyclicity-1-2-abstract` | claim | **ready** | — | Dumortier, Roussarie, Rousseau, "Elementary graphics of cyclicity 1 and 2", Nonlinearity 7(3):1001, 1994, DOI 10.1088/0951-7715/7/3/013… |
+| `drr-drr94-cyclicity-1-2-record-captured-this-cycle` | claim | **ready** | — | This cycle re-attempted the full text of Dumortier, Roussarie, Rousseau, "Elementary graphics of cyclicity 1 and 2" (Nonlinearity… |
 | `drr-huzak-df2a-closed` | claim | **ready** | — | The degenerate DRR graphic DF_{2a} has finite cyclicity (Huzak 2018, CPA 17(3):1305-1316), completing the study of the DF_{1a} family… |
 | `drr-ledger-no-consolidated-post2020` | claim | **ready** | — | No consolidated graphic-by-graphic ledger of the 121 DRR graphics with a running closed-count and the paper closing each row exists in the… |
 | `drr-lu-claims-h14-3` | claim | **ready** | — | Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite cyclicity of the H^3_14 semihyperbolic hemicycle of quadratic fields: a… |
@@ -82,9 +83,8 @@ _124 further candidate(s) below these, in the table._
 | `g-lean-cert-kernel-checked` | claim | **verified** | — | The finite core of G-lu-core is a kernel-checked Lean certificate (node h16-2-h14-3-finite-cyclicity/G-lean-cert). Over ℤ[A,C,D,E,F] (Fin… |
 | `g-resolve` | goal | **ready** | — | Resolution of a DRR graphic: finite polynomial blow-ups within the quadratic family reduce each vertex to an elementary normal form;… |
 | `g-resolve-resolution-exists` | claim | established | — | The node G-resolve of research/backward/h16-2-finite-cyclicity.md: "a graphic Λ in the DRR list admits a resolution: each vertex (singular… |
-| `g-transition` | goal | **ready** | — | Sector transition maps carry an asymptotic expansion in a class determined by the vertex normal form — the classical Dulac power-times-log… |
 
-_90 further nodes not shown._
+_91 further nodes not shown._
 
 ---
 

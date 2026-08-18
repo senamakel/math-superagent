@@ -2263,3 +2263,28 @@ holds-here: yes as a warning — an abstract-level summary of this paper exists
   it as held.
 anchor: research/summaries/shao-li-hyperelliptic-lienard-ejqtde-2024.md
 ```
+
+```claim
+id: drr-drr94-cyclicity-1-2-record-captured-this-cycle
+status: sourced
+statement: This cycle re-attempted the full text of Dumortier, Roussarie,
+  Rousseau, "Elementary graphics of cyclicity 1 and 2" (Nonlinearity 7(3):1001,
+  1994, DOI 10.1088/0951-7715/7/3/013). The IOP PDF route returns a Radware
+  bot-captcha; the IOP landing page and the UHasselt record (hdl 1942/3790) are
+  paywalled/metadata-only. A record-and-abstract page was captured to
+  research/sources/drr-elementary-graphics-cyclicity-1-2-nonlinearity-1994.full.md
+  (IOP, indexed) and the UHasselt record to
+  research/summaries/drr-elementary-cyclicity-1-2-uhasselt.md (summary only).
+  The full text is NOT held; the abstract-level claim
+  drr-drr94-cyclicity-1-2-abstract is unchanged and now additionally rests on
+  the captured record file. Same for the 1996 companion (Nonlinearity 9(5):1209,
+  PDF bot-captcha again; abstract held). Both papers are elementary-graphics
+  closures whose content is otherwise carried by held full texts (DGR 2002:
+  seven rows <=2/3).
+hypotheses: n/a (access finding).
+evidence-class: finding (access).
+falsifier: a held full text of either paper appearing.
+holds-here: yes — records the access status so a later pass does not re-spend
+  the cycle re-fetching; the abstract-level claims stay asserted-by-source.
+anchor: research/librarian-report-canonical-tier-and-drr-companions.md
+```

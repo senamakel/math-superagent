@@ -89,9 +89,9 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `LuH14.w6_neg` | theorem | verified | : ∀ k : Fin 30, W6coeffs k = -Generated.coeffs k | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
 | `LuH14.F` | def | verified | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/h16_2_h14_3_finite_cyclicity_G_lean_cert-d8de5a7b.lean` |
 
-_183 more not shown here; they are in `code/lean`._
+_195 more not shown here; they are in `code/lean`._
 
-263 declarations, 200 of them in a file the kernel has checked.
+275 declarations, 200 of them in a file the kernel has checked.
 
 ## Never checked
 

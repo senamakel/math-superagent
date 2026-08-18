@@ -29,6 +29,7 @@ A claim a program produced — `status: checked`, or any claim naming a `refutat
 | `drr-dmrt-2015-fake-saddle-cyclicity2` | De Maesschalck–Rebollo-Perdomo–Torregrosa 2015 (J. Differential Equations 258(2):588–620, "Cyclicity of a fake saddle inside the quadratic vector fields", open-access UAB DDD postprint now held in… | yes | asserted | `research/notes/claims.md` |
 | `drr-drr94-cyclicity-1-2-abstract` | Dumortier, Roussarie, Rousseau, "Elementary graphics of cyclicity 1 and 2", Nonlinearity 7(3):1001, 1994, DOI 10.1088/0951-7715/7/3/013 — abstract + record held… | yes | asserted | `research/notes/claims.md` |
 | `drr-drr94-cyclicity-1-2-abstract` | Dumortier, Roussarie, Rousseau, "Elementary graphics of cyclicity 1 and 2", Nonlinearity 7(3):1001, 1994, DOI 10.1088/0951-7715/7/3/013 (abstract + record held; PDF paywalled): (C^infinity, general) a graphic through… | yes | asserted | `research/summaries/roussarie-1994-elementary-graphics-cyclicity-1-2.md` |
+| `drr-drr94-cyclicity-1-2-record-captured-this-cycle` | This cycle re-attempted the full text of Dumortier, Roussarie, Rousseau, "Elementary graphics of cyclicity 1 and 2" (Nonlinearity 7(3):1001, 1994, DOI 10.1088/0951-7715/7/3/013). The IOP PDF route returns a Radware… | yes | asserted | `research/notes/claims.md` |
 | `drr-huzak-df2a-closed` | The degenerate DRR graphic DF_{2a} has finite cyclicity (Huzak 2018, CPA 17(3):1305-1316), completing the study of the DF_{1a} family (DF_{1a} by Dumortier-Rousseau 2009). Technique: family blow-up + slow divergence… | yes | asserted | `research/summaries/huzak-cyclicity-degenerate-df2a.md` |
 | `drr-ledger-no-consolidated-post2020` | No consolidated graphic-by-graphic ledger of the 121 DRR graphics with a running closed-count and the paper closing each row exists in the published literature, as of this run's searches (2023-2025). Christiane Rousseau… | yes | asserted | `research/notes/claims.md` |
 | `drr-lu-claims-h14-3` | Lu (arXiv:2607.13785, 2026, preprint) claims local uniform finite cyclicity of the H^3_14 semihyperbolic hemicycle of quadratic fields: a fixed annular neighborhood and a finite uniform bound B over the full… | **unchecked** | asserted | `research/summaries/lu-h14-3-hemicycle.md` |
@@ -69,9 +70,8 @@ A claim a program produced — `status: checked`, or any claim naming a `refutat
 | `h16-drr-lu-2026-does-not-complete-program` | Even if Lu 2026 is correct, the DRR program is not complete. The closure of (H³₁₄) is one graphic. As of RR 2015 the open/partially-open rows also include full graphics (I₆b¹), (H₁₃³), (DI₂b) (only boundary sets closed)… | yes | asserted | `research/notes/claims.md` |
 | `h16-drr-open-rows` | The DRR program is NOT complete: at least 33 of the 121 graphics were still open as of RSZ 2015 (88 closed), and the open rows lie overwhelmingly in the nilpotent and degenerate families. Named open / partially-open… | yes | asserted | `research/notes/claims.md` |
 | `h16-dukov-lower-bound-cyclicity-hyperbolic-polycycles-2025` | Dukov (2025), "Lower bound for the cyclicity of hyperbolic polycycles", Mat. Sb. / Sbornik Mathematics, DOI 10.4213/sm10206e: Theorem 1 -- for a monodromic hyperbolic polycycle gamma_M with n distinct saddles and… | yes | asserted | `research/summaries/dukov-lower-bound-cyclicity-hyperbolic-polycycles-2025.md` |
-| `h16-dukov-multiplicity-hyperbolic-polycycles-2023` | Dukov (2023), "Multiplicities of limit cycles appearing after perturbations of hyperbolic polycycles", Mat. Sb. 214(2):90-111 / Sb. Math. 214(2):226-245, arXiv:2201.03652: for a hyperbolic polycycle gamma with n… | yes | asserted | `research/summaries/dukov-multiplicity-limit-cycles-hyperbolic-polycycles-2023-arxiv.md` |
 
-_64 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
+_65 further claims not shown. A library with this many distinct claims is asking to be folded: seal what is settled so the table is the run's live beliefs rather than its whole history._
 
 ## Contradictions
 
@@ -102,6 +102,7 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `drr-dmrt-2015-fake-saddle-cyclicity2` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-drr94-cyclicity-1-2-abstract` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-drr94-cyclicity-1-2-abstract` (research/summaries/roussarie-1994-elementary-graphics-cyclicity-1-2.md) — asserted by the source, not proved there and not checked here
+- `drr-drr94-cyclicity-1-2-record-captured-this-cycle` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-huzak-df2a-closed` (research/summaries/huzak-cyclicity-degenerate-df2a.md) — asserted by the source, not proved there and not checked here
 - `drr-ledger-no-consolidated-post2020` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `drr-mv-hemicycle-cyclicity-2` (research/summaries/marin-villadelprat-cyclicity-hyperbolic-hemicycles.md) — asserted by the source, not proved there and not checked here
@@ -133,9 +134,8 @@ Taken to hold here on a source's word alone. Verify by a second route, or say th
 - `h16-christopher-lloyd-weakened-16th` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `h16-drr-121-graphics` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 - `h16-drr-closed-rows-2015` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
-- `h16-drr-lu-2026-does-not-complete-program` (research/notes/claims.md) — asserted by the source, not proved there and not checked here
 
-_54 more not shown here; they are in `research/`._
+_55 more not shown here; they are in `research/`._
 
 ## Taken from a catalogue
 

@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "h16-2-finite-cyclicity/G-drr-status",
   "source": "code/lean/h16_2_finite_cyclicity_G_drr_status-4c4d5cdf.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }
