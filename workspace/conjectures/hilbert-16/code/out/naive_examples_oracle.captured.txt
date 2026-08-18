@@ -1,0 +1,6 @@
+cubic A=1-u: got=1, expected=1, check=True
+linear centre A=0: got=0, expected=0, check=True
+linear expanding focus A=1: got=0, expected=0, check=True
+two cycles A=(1-u)(2-u): got=2, expected=2, check=True
+semi-stable A=(1-u)^2(2-u): got=1, expected=1, check=True
+ALL WORKED EXAMPLES PASS

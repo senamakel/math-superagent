@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "bautin-chart-membership-l8-l10-l12",
   "source": "code/lean/bautin_chart_membership_l8_l10_l12-675036ab.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

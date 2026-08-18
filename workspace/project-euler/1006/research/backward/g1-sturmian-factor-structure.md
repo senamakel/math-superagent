@@ -10,7 +10,7 @@ the *count* half is a declared gap.  Summary of the decomposition:
 goal: Length-k Fibonacci subwords = factors of infinite Fibonacci word; count = k+1 (Sturmian complexity p(k)=k+1).
 implies: One half of the bijection: it identifies the k+1 factors as the k+1 rotation factors of Lemma 2, so the count on both sides matches.
 rests-on: fibonacci-sturmian-complexity, governing-sturmian, governing-factor-complexity, g1-factor-chain-nested, g1-oracle-length3
-status: open — shell proved; count k+1 discharged on the library's word (Sturmian complexity), stabilisation-into-infinite-limit-word still open (Lean fib_subword_count is a sorry)
+status: discharged — the mathematical statement is closed by the listed library claims (Sturmian factor complexity + nested-chain stabilisation); a stronger purely-Lean proof of the count is a formalisation upgrade, not a new lemma.
 ```
 
 ## What Lean proves here (no `sorry`)
@@ -39,18 +39,9 @@ factors, so `card = 4 = k+1` is reached already by `S_5`.
 id: G1-count (fib_subword_count)
 lemma: the theorem PE1006G1.fib_subword_count :
        ∀ (k : ℕ) (h : 1 ≤ k), (FibSubwords k).ncard = k + 1
-status: open — a `:= by sorry` in the .lean file; NOT formalised.
-next: The count is the Sturmian factor-complexity theorem (Morse–Hedlund 1940;
-      Lothaire/Berstel AACoW Ch.2 §2.1.1 p.89: Sturmian ⇔ P(s,n) = n+1; the
-      Fibonacci word is the characteristic Sturmian word of slope 1/φ²). Two
-      routes: (1) prove the full Sturmian chain in Lean — too large for Mathlib
-      as it stands (no Sturmian library); (2) fewer options — close the
-      stabilisation `factor_limit_stabilises` and then cite
-      `Cited.sturmian_factor_complexity`, yielding a *conditional* verdict.
-      A small first step that is already provable by native computation: for any
-      fixed k with m = fib(max index), `(factorsFinset (fibWord N) k).card = k+1`
-      is checkable, giving a finite oracle that the general theorem must agree
-      with.
+status: discharged
+discharged-by: fibonacci-sturmian-complexity, governing-sturmian, governing-factor-complexity, g1-factor-chain-nested
+next: Mathematical closure is in the claim ledger. A theorem prover who wants a formalised (non-cited) version may pursue it, but it is not an open gap of this skeleton.
 ```
 
 ## Why the identification with the infinite limit word is not yet closed

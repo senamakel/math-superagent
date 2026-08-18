@@ -1,0 +1,3 @@
+# Library note
+
+The local reference library already contains primary/near-primary treatments of the governing mathematics: Lothaire's Sturmian Words chapter (Cambridge URL in source), Berstel–Vuillon Coding rotations on intervals (https://arxiv.org/abs/math/0106217), Morse–Hedlund's Symbolic dynamics II (JSTOR DOI URL recorded in local references), Perrin mechanical-word notes, and universal-Euclidean/geometric weighted floor-sum references. GOAL.md and CONTEXT.md now state the precise problem and Sturmian/rotation/floor-sum theory. The currently available code does not prove the needed fixed-dimensional closure for k=10^18, so no honest full-size answer is established.

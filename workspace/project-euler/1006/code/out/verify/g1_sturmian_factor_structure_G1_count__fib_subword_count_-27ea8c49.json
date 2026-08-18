@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "g1-sturmian-factor-structure/G1-count (fib_subword_count)",
+  "source": "code/lean/g1_sturmian_factor_structure_G1_count__fib_subword_count_-27ea8c49.lean",
+  "stage": "decompose"
+}

@@ -1,0 +1,25 @@
+oracle Psi(3) = 20302
+oracle Psi(10) mod M = 10699667
+existing O(k) evaluator vs mechanical k=1..150: PASS
+block-window reproduction k=1..40: PASS
+additive summary composition k=1..40: PASS
+level recurrence sum, k=1, levels=4..11: orders=[1]
+level recurrence sum, k=2, levels=4..11: orders=[1]
+level recurrence sum, k=3, levels=4..11: orders=[1]
+level recurrence sum, k=5, levels=4..11: orders=[1]
+level recurrence sum, k=8, levels=4..11: orders=[1]
+level recurrence sum, k=13, levels=4..11: orders=[1]
+level recurrence sum, k=21, levels=4..11: orders=[1]
+level recurrence sum, k=34, levels=4..11: orders=[1]
+level recurrence sumsq, k=1, levels=4..11: orders=[1]
+level recurrence sumsq, k=2, levels=4..11: orders=[1]
+level recurrence sumsq, k=3, levels=4..11: orders=[1]
+level recurrence sumsq, k=5, levels=4..11: orders=[1]
+level recurrence sumsq, k=8, levels=4..11: orders=[1]
+level recurrence sumsq, k=13, levels=4..11: orders=[1]
+level recurrence sumsq, k=21, levels=4..11: orders=[1]
+level recurrence sumsq, k=34, levels=4..11: orders=[1]
+boundary state requirement: each concatenation split has k-1 crossing windows;
+their values depend on suffix/prefix digits, so the tested 3-number summary
+does not determine the Fibonacci-block concatenation correction.
+Psi(10^18): NOT COMPUTED; no validated fixed-dimensional collapse found.

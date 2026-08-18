@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "pe1006-contiguous-window-prefix/CW2-rolling-window-recurrence",
+  "source": "code/lean/pe1006_contiguous_window_prefix_CW2_rolling_window_recurrence-240fc05d.lean",
+  "stage": "decompose"
+}

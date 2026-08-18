@@ -1,0 +1,5 @@
+# Research cycle 2026-08-18
+
+Searched broadly for Sturmian/Fibonacci factor complexity, weighted factor sums, Rauzy graphs, and three-distance structure. Triage found no source giving the required squared-decimal sum algorithm. Existing local sources already cover the canonical theory and universal Euclidean floor sums. New source downloaded: `research/sources/berthe-reutenauer-three-distance-2024.full.md`, with summary in `research/summaries/berthe-reutenauer-three-distance-2024.md`; it supplies three-distance/rotation encoding context but not the target arithmetic algorithm. ScienceDirect's factor-counting page returned 403, and the Widmer thesis landing page was bot-protected; duplicate local summaries already exist for both.
+
+The decisive gap remains a proved fixed-dimensional aggregation over all rotation intercept cells. Scaling current O(k) code would not settle that gap, so no larger run was made.

@@ -1,0 +1,16 @@
+RUN: bounded exact Taylor probe for Lu H^3_14 analytic remainder
+RANGE: vanishing orders 1..10; rational polynomial truncations; no full-size search
+order=1 leading=1 roots=[-1, 0] local_roots=[0]
+order=2 leading=1 roots=[-1, 0] local_roots=[0]
+order=3 leading=1 roots=[-1, 0] local_roots=[0]
+order=4 leading=1 roots=[-1, 0] local_roots=[0]
+order=5 leading=1 roots=[-1, 0] local_roots=[0]
+order=6 leading=1 roots=[-1, 0] local_roots=[0]
+order=7 leading=1 roots=[-1, 0] local_roots=[0]
+order=8 leading=1 roots=[-1, 0] local_roots=[0]
+order=9 leading=1 roots=[-1, 0] local_roots=[0]
+order=10 leading=1 roots=[-1, 0] local_roots=[0]
+counterprobe R=z^2*(1-z^2): roots=[-1, 0, 1]
+RESULT: finite Taylor data confirms order bookkeeping, but refutes
+the inference that analyticity plus a nonzero remainder alone gives uniqueness.
+STATUS: analytic-remainder issue remains unresolved; Lu theorem not verified.

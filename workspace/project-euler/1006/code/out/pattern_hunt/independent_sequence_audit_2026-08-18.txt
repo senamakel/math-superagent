@@ -1,0 +1,45 @@
+SCHEMA-AWARE INTEGER SEQUENCE AUDIT
+counts.txt: rows=400 schema=index,value range=1..400 head=[2, 3, 4, 5, 6] recurrence=(2, [Fraction(2, 1), Fraction(-1, 1)])
+c1_terms.txt: rows=400 schema=index,value range=1..400 head=[1, 1, 2, 2, 2] recurrence=None
+lmin.txt: rows=400 schema=index,value range=1..400 head=[2, 4, 7, 8, 12] recurrence=None
+psi_exact.txt: rows=25 schema=index,value range=1..25 head=[1, 101, 20302, 2042402, 204252402] recurrence=None
+psi_residues.txt: rows=400 schema=index,value range=1..400 head=[1, 101, 20302, 2042402, 2250400] recurrence=None
+ext_recurrence.txt: rows=40 schema=index,value range=1..40 head=[0, 10, 10, 10, 10010] recurrence=None
+extrecur_res.txt: rows=400 schema=index,value range=1..400 head=[0, 10, 10, 10, 10010] recurrence=None
+dj_raw.txt: rows=1145 schema=index,value range=1..1145 head=[1, 1, 3, 2, 1] recurrence=None
+dj_mod.txt: rows=1145 schema=index,value range=1..1145 head=[1, 1, 3, 2, 1] recurrence=None
+topelitz_defects.txt: rows=400 schema=index,value range=1..400 head=[0, 0, 2, 0, 2] recurrence=None
+vr_rungaps.txt: rows=153 schema=value-only range=1..153 head=[1, 3, 2, 3, 3] recurrence=None
+vr_runvals.txt: rows=154 schema=value-only range=1..154 head=[0, 10, 10010, 1010010, 1001010010] recurrence=None
+vR_exact.txt: rows=3000 schema=index,value range=1..3000 head=[0, 10, 10, 10, 10010] recurrence=None
+vR_res.txt: rows=400 schema=index,value range=1..400 head=[0, 10, 10, 10, 10010] recurrence=None
+s1_exact.txt: rows=3000 schema=index,value range=1..3000 head=[0, 10, 110, 110, 20210] recurrence=None
+s1_res.txt: rows=400 schema=index,value range=1..400 head=[0, 10, 110, 110, 20210] recurrence=None
+r_runs_wythoff.txt: rows=27 schema=last-numeric-column (ambiguous) range=1..27 head=[157, 3000, 1146, 4, 6] recurrence=None
+vr_runvals.txt: rows=154 schema=value-only range=1..154 head=[0, 10, 10010, 1010010, 1001010010] recurrence=None
+counts=k+1 first bad: None
+c1 floor law first bad: None
+Lmin strict-next-Fibonacci law first bad: None
+psi_residues.txt == c1_terms.txt mod 100 first bad: (5, 2250400, 2)
+psi_residues.txt == c1_terms.txt mod 1000 first bad: (2, 101, 1)
+psi_residues.txt == c1_terms.txt mod 101001001 first bad: (2, 101, 1)
+cross c1_terms.txt vs lmin.txt: affine_slope=None first_affine_bad=None difference_ratio=None first_difference_bad=None
+cross dj_raw.txt vs vr_rungaps.txt: affine_slope=None first_affine_bad=None difference_ratio=None first_difference_bad=None
+cross s1_exact.txt vs vR_exact.txt: affine_slope=1 first_affine_bad=(3, 110, 10) difference_ratio=0 first_difference_bad=(2, 10, 10)
+counts.txt Fibonacci-index additive first bad: (3, 4, 5)
+c1_terms.txt Fibonacci-index additive first bad: (4, 2, 3)
+lmin.txt Fibonacci-index additive first bad: (3, 7, 6)
+psi_exact.txt Fibonacci-index additive first bad: (3, 20302, 102)
+psi_residues.txt Fibonacci-index additive first bad: (3, 20302, 102)
+ext_recurrence.txt Fibonacci-index additive first bad: (4, 10, 20)
+extrecur_res.txt Fibonacci-index additive first bad: (4, 10, 20)
+dj_raw.txt Fibonacci-index additive first bad: (3, 3, 2)
+dj_mod.txt Fibonacci-index additive first bad: (3, 3, 2)
+topelitz_defects.txt Fibonacci-index additive first bad: (3, 2, 0)
+vr_rungaps.txt Fibonacci-index additive first bad: (3, 2, 4)
+vr_runvals.txt Fibonacci-index additive first bad: (3, 10010, 10)
+vR_exact.txt Fibonacci-index additive first bad: (4, 10, 20)
+vR_res.txt Fibonacci-index additive first bad: (4, 10, 20)
+s1_exact.txt Fibonacci-index additive first bad: (3, 110, 10)
+s1_res.txt Fibonacci-index additive first bad: (3, 110, 10)
+r_runs_wythoff.txt Fibonacci-index additive first bad: (3, 1146, 3157)

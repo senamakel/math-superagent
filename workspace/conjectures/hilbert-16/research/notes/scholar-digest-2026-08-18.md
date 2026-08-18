@@ -1,42 +1,51 @@
-# Scholar digest — Hilbert 16.2 investigation
+# Scholar digest: reference library against H16.2
 
-The reference library was read against `problem.md` and `GOAL.md`. Durable-memory writes were attempted for each finding but the Cognee memory server timed out; this note is the fallback durable workspace record.
+Memory indexing was unavailable during this digest; this durable workspace note records the source-backed findings pending later `remember_memory` retry.
 
-## Load-bearing sources and implications
+## Core frame
 
-- **DRR 1994; RSZ 2015; RR 2015; Zhu–Rousseau 2002/2004; Zhu 2005; DGR 2002; DIR 2002; Roussarie–Rousseau 2008; Dumortier–Rousseau 2009; Huzak 2018.** These establish the reduction of quadratic H(2) to finite cyclicity of the DRR graphics and prove finite cyclicity for restricted elementary, pp, nilpotent, saddle-node, center and some degenerate classes. RR 2015 fully closes `(I^1_14)` but only the boundary limit-periodic sets of `(I^1_6b)`, `(H^3_13)`, `(DI_2b)`; their full cyclicity remains open. There is no authoritative consolidated post-2020 121-row ledger; Shan's 125 count uses a different convention. Implication: target a named unresolved graphic, not H(2) globally.
+- **DRR 1994**, JDE 110:86–133: lists the quadratic compactified graphics/degenerate graphics whose finite cyclicity would imply a uniform quadratic bound. The held record supports the 121 count as the conventional DRR count, but the raw list is not held; Shan later reports 125 under another counting convention. Do not claim the exact open-row inventory is settled.
+- **Panazzolo–Rousseau 2017**, arXiv:1702.04965: every limit periodic set of a polynomial planar family is topologically equivalent to a compact connected semialgebraic subset of S² with empty interior; limit sets reduce topologically to singular points, periodic orbits, polycycles, or degenerate cycles. This supports the compactification/limit-set frame, not finite cyclicity.
+- **Rousseau–Shan–Zhu 2015**, arXiv:1502.00689: proves finite cyclicity inside quadratic systems for graphics I¹₁₂ and I¹₁₃ through a triple nilpotent saddle point. The hypotheses include the stated normal forms, blow-up charts, and return derivative conditions in the local theorems. It closes two DRR rows, not H(2)<∞.
+- **Rousseau–Rousseau 2015**, arXiv:1506.07104: proves full finite cyclicity of I¹₁₄; proves only boundary limit-periodic-set results for I¹₆b, H³₁₃, DI₂b. The boundary theorem is explicitly insufficient for full graphic cyclicity because other blown-up limit sets must also be controlled. The unresolved coupled second-type Dulac maps are the important obstacle.
+- **Rousseau–Zhu 2004**: all 16 pp-graphics have finite cyclicity; in the stated nilpotent elliptic/hyperbolic-saddle setting with hyperbolicity ratio σ≠1, cyclicity is ≤2. This is a restricted non-center class and cannot be transferred to center-surrounding graphics without hypotheses.
+- **Dumortier–Rousseau 2009**: gives 5-parameter normal forms and finite cyclicity bounds for degenerate line-of-singularities families DF1a (≤3, with a stronger sign case) and DF2a (≤5, with sign exceptions). The unresolved P* obstruction is failure of desingularization at a special parameter. **Huzak 2018** later asserts DF2a finite cyclicity via blow-up/slow divergence/slow-fast methods, but the held record lacks theorem-level domains and does not cover I¹₆b.
 
-- **Ilyashenko/Écalle; Kaloshin; Ilyashenko 2016; Yeung 2024/25.** Ilyashenko/Écalle sources state individual analytic/polynomial finiteness; Ilyashenko 2016 advertises a revised “superexact asymptotic series” proof. Yeung claims a gap in the non-hyperbolic polycycle ordering step, with an explicit obstruction. The theorem is not disproved, but proof completeness is contested. Bamón independently supports individual quadratic finiteness. Implication: never infer uniformity from pointwise finiteness; locate the analytic/quasianalytic displacement-map step explicitly.
+## Analytic finiteness and uniformity
 
-- **Speissegger 2018; Kaiser–Rolin–Speissegger 2009.** If parametric transition-map relations are definable in an o-minimal structure, finite fibers imply a uniform bound. Full transition-map o-minimality is open; the non-resonant hyperbolic class is proved. This gives the correct uniformity mechanism and does not cover nilpotent/semi-hyperbolic DRR targets.
+- **Ilyashenko book / Écalle 1990**: individual analytic/polynomial fields have finitely many limit cycles by analysis of monodromy/return maps, using complex domain, resolution, normal forms, and superexact/resurgent asymptotics. This is pointwise, not coefficient-uniform.
+- **Ilyashenko–Yakovenko 2000 and Kaloshin**: elementary polycycles in generic finite-parameter families have finite cyclicity; elementarity is load-bearing. Kaloshin's notes state an explicit bound of shape 2^(25 k²) for k parameters. Nilpotent/degenerate vertices are outside this theorem.
+- **Gavrilov 2011**, arXiv:1106.0857: analytic finite-parameter families of analytic fields have finite cyclicity for heteroclinic two-saddle cycles, by complex continuation and argument principle/Petrov trick. Valid restricted model for where analyticity enters; no global H16 bound.
+- **Yeung 2024/25**: contests completeness of Ilyashenko's proof for semi-hyperbolic polycycles, exhibiting failure of the claimed ordering/differential-algebra step in logarithmic asymptotic classes. It does not disprove the finiteness theorem, and does not question the hyperbolic case or Écalle route. This contradicts any unqualified statement that the published Ilyashenko proof is settled in all non-hyperbolic cases.
+- **Speissegger 2018**: full transition-map o-minimality route would imply Roussarie uniform finite cyclicity via definable-fiber uniform finiteness; full language remains open. Kaiser–Rolin–Speissegger prove the restricted non-resonant hyperbolic class. This provides a structurally valid uniformity mechanism and explicitly separates it from pointwise finiteness.
 
-- **Novikov–Yakovenko 2002; Gavrilov 1999; Binyamini–Novikov–Yakovenko 2010; Binyamini–Dor 2012; GMV and GGI.** Under regular-at-infinity/nondegenerate-leading-part or Morse/nonsingular-oval hypotheses, Abelian integrals form finite-rank Picard–Fuchs/Petrov modules and have explicit zero bounds: BNY double exponential in degree, BD linear in `deg ω`. GGI gives exact cyclicity two for named genus-one quadratic centers. These are first-order/tangential results only and do not control nonlinear displacement near singular/polycycle levels.
+## Abelian-integral restriction
 
-- **Bautin 1952 and workspace exact algebra.** Bautin proves local quadratic focus/center cyclicity `M(2)=3`, not global `H(2)`. Exact workspace recurrence checks `8L4=AC+CD+2DF−EF`, `192L6+P30=0`, `L8 ∉ <L4,L6>`, and `L10,L12 ∈ <L4,L6,L8>`; Lean checks the finite certificates. This is useful finite algebra, not a proof of graphic finite cyclicity.
+- **Binyamini–Novikov–Yakovenko 2010**, arXiv:0808.2952: explicit doubly-exponential bound for zeros of Abelian integrals, hence infinitesimal H16 for nonsingular Hamiltonian ovals under small nonconservative perturbations. It says nothing for critical/nonsmooth levels or identically vanishing first Melnikov integrals.
+- **Binyamini–Dor 2011**, arXiv:1108.1846: explicit zero bound linear in deg ω, exponential/doubly-exponential dependence on deg H as specified by the theorem; improves the general BNY dependence in the perturbation-form degree. Still only the infinitesimal Abelian-integral problem.
+- Gavrilov 1999, Novikov–Yakovenko, and GMV Chebyshev/Picard–Fuchs sources support Petrov modules, Gauss–Manin/Picard–Fuchs systems, and special-family Chebyshev methods. They are useful restricted instruments, not a proof of nonlinear H16.2.
 
-- **Lower bounds.** Galias–Tucker certify exactly four cycles in the Songling quadratic system, hence `H(2)≥4`. Held literature gives `H(3)≥13`, `H(4)≥28`, `M(3)≥12` (Torregrosa 2024), and asymptotic lower growth at least order `n^2 log n`; the latter rules out quadratic upper formulas. Constructions remain source-backed unless independently recertified.
+## Lower bounds / warnings
 
-- **Lu 2026.** The unrefereed preprint claims local uniform finite cyclicity of `(H^3_14)`, formerly the graphic with no partial result. The exact Bautin/Darboux core is independently computed and Lean-checked in this workspace, but root uniqueness, domain completeness, Hadamard divisibility and zero-theorem steps remain unchecked; the bound is existential. Treat the theorem as asserted-by-source, not established. The bundle scripts are held but not clean-room re-executed; stale memory saying they were not held is contradicted by the library.
+- **Bautin 1952** primary: local quadratic-focus cyclicity M(2)=3, with explicit canonical focus form and Lyapunov quantities. This is local, not global H(2).
+- **Shi/Chen–Wang**: H(2)≥4 is the accepted lower bound; the held Chen–Wang note is too thin for independent verification, so evidence remains sourced rather than reproduced here.
+- **Li–Liu–Yang 2009**: H(3)≥13 is recorded, but the held summary is only a redirect page; do not upgrade beyond asserted-by-source.
+- **Christopher–Lloyd 1995**: lower growth H(n) ≳ n² log n is recorded in the library, though the held file is mainly bibliographic; use as sourced working fact, not independently derived.
+- **Torregrosa 2024**: explicit cubic families with twelve small-amplitude cycles; local lower-bound/validation target, not H(3) upper bound. This corrects any plan treating “twelfth cubic local cycle” as an open target.
+- **DPR / De Maesschalck–Huzak Liénard work**: degree-6 classical Liénard systems with four cycles and broader slow-fast constructions refute the Lins–de Melo–Pugh sharp conjecture. This is a slow-fast stress test, not an H(2) result.
+- **Pedregal 2021**: unrefereed variational paper claims a quartic H(n) upper bound and H(2)=4. It is not established; its proof does not use analytic return-map structure and therefore fails the workspace smooth-test audit prima facie. Do not cite it as a solution.
 
-- **Pedregal 2021 and Buzzi–Novaes 2024.** Pedregal's variational claim `H(n)` quartic and `H(2)=4` is unrefereed and does not analyze analytic return-map/displacement zeros, so it fails the smooth/analyticity test prima facie. Buzzi–Novaes reject the related closed formula and cite the `n^2 log n` lower growth. Do not use either as a solution.
+## Sources that do not help / evidence limits
 
-## Sources that do not help directly
+- Landing/record pages (Chen–Wang lower bound, Li–Liu–Yang cubic 13, Christopher–Lloyd Crossref, Huzak abstract record, DPR PAMS record) provide metadata or abstracts rather than enough proof detail for independent verification; retain as asserted-by-source only.
+- The captured `speissegger-hilbert16-ominimality.md` UBC page is a blocked landing page; use `speissegger-hilbert16-ominimality-body.md` instead.
+- `yeung-gap-ilyashenko-dulac.md` abstract page adds no mathematics beyond provenance; substantive claims are in `yeung-ilyashenko-finiteness-gap.md`.
+- Any source concerning Part I real algebraic curves is irrelevant to this pass.
+- The held Llibre–Zhang file named as a survey is contaminated by an unrelated power-grid paper; do not use that file for Liénard claims.
 
-- Hilbert 1900 is only the canonical problem statement.
-- BIRS 2007, Ilyashenko 2002, Han–Li–Li and the 2024 textbook are surveys/context, useful for framing but not new proof ingredients.
-- Gasull–Santana's monomial-count variant addresses a different invariant, not degree-based H(n).
-- Liénard surveys and canard/slow–fast papers provide restricted constructions/lower bounds, not a uniform degree-n upper bound.
-- Galias–Tucker/Yu–Zeng lower-bound papers do not prove upper bounds; numerical phase portraits alone would not certify cycles, though Galias–Tucker's interval proof is useful oracle methodology.
-- Landing pages, bibliographic records, paywalled abstracts, and the contaminated `llibre-zhang-lienard-conjecture-survey` file (actually an unrelated power-grid paper) cannot support mathematical claims. Dulac's full 1923 scan was not obtainable.
+## Contradictions to flag
 
-## Contradictions flagged
-
-1. Individual finiteness “proved” by Écalle/Ilyashenko versus Yeung's published gap claim: theorem status is contested, not refuted.
-2. DRR count 121 versus Shan's 125 convention.
-3. RR 2015 closes one full center graphic, not four; earlier “all four closed” wording is wrong.
-4. Lu bundle scripts are held, contrary to stale memory, but not independently verified.
-5. `M(3)≥12` supersedes older `M(3)≥11`; `H(2)=4` remains a lower bound/conjecture, not equality.
-
-## Partial-result conclusion
-
-The defensible next attack is a displacement-function proof for one of `(I^1_6b)`, `(H^3_13)`, `(DI_2b)`, using RR's center-ideal/Bautin-trick and blow-up framework, with the missing analytic zero theorem isolated. The finite algebraic core can be carried in Lean; the analytic transition-map and uniformity steps cannot yet be claimed formalised. No source establishes H(2)<∞ or H(2)=4.
+1. Pointwise analytic finiteness treated as settled in Ilyashenko/Écalle summaries versus Yeung's published gap claim for the Ilyashenko non-hyperbolic proof. Correct wording: theorem/proof status contested; no theorem-falsity claim.
+2. DRR count 121 versus Shan's 125 due to counting conventions; exact consolidated row-by-row status remains unavailable.
+3. Any claim that RR 2015 closed I¹₆b, H³₁₃, or DI₂b entirely contradicts its explicit boundary-only qualification.
+4. Any claim H(2)=4 or H(n)<∞ contradicts the open-problem status and is unsupported by Pedregal.

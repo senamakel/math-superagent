@@ -1,0 +1,7 @@
+# Library refresh: 2026-08-18
+
+The local library already contains broad coverage of the relevant theory: Sturmian/mechanical words, Fibonacci factor enumeration and location, Rauzy graphs, Ostrowski numeration, and floor-sum algorithms. This cycle searched independently for (i) authoritative Sturmian complexity/mechanical-word treatments, (ii) factor-location/enumeration papers, and (iii) a citable geometric-weight universal Euclidean algorithm. The first two areas have strong primary/lecture coverage; the third search did not find a reliable scholarly source for the exact weighted second-moment monoid claimed by the current approach. The existing OI Wiki document is an algorithmic reference, not a proof of the full PE1006 aggregation.
+
+New search leads: Perrin's lecture PDF (already downloaded locally), Sivasankar–Rama's Fibonacci factor paper (already downloaded), and the 2026 lattice-rectangle paper on weighted floor sums (search lead only; future download requires triage and is not directly about this problem). No published Project Euler solution was searched or downloaded.
+
+Conclusion: library coverage is adequate for the governing theory but not for the missing final aggregation. The unresolved request for a source-backed exact weighted-floor-moment recurrence remains open.

@@ -11,6 +11,14 @@ This is the library's topic axis. `research/L0…L2` folds by *arrival* and is s
 | [[lu-h14-3-verification]] | Does the finite computational core of Lu arXiv:2607.13785 (local uniform finite cyclicity of the H14_3 semihyperbolic hemicycle) stand up to independent exact… | open | drr-rr-boundary-only-for-3-graphics | (directive 5) The algebraic core is VERIFIED and kernel-closed — code/bautin/verify_lu_core.py passed clean-room (capture code/out/lu_core.captured.txt), and… |
 | [[pedregal-variational-claim-test]] | Does the claimed variational resolution of H16.2 by Pedregal (arXiv:2103.07193, H(n) quartic bound, H(2)=4) survive the three problem.md tests, or is it… | open | h16-pedregal-variational-claim-unrefereed, h16-ominimality-route-roussarie | The concrete test — isolate where the paper proves that limit cycles, which are ISOLATED closed orbits (defined by the dynamical return map), are in exact… |
 
+## Resting on nothing recorded
+
+Either the belief was never written down as a claim — in which case nobody downstream can check it — or the id is misspelled.
+
+- [[drr-status]] rests on `h16-drr-121-graphics`, `h16-drr-closed-rows-2015`, `h16-drr-open-rows`, `drr-rr-closes-i14`, `drr-rr-boundary-only-for-3-graphics`, which no claim block on disk establishes
+- [[lu-h14-3-verification]] rests on `drr-rr-boundary-only-for-3-graphics`, which no claim block on disk establishes
+- [[pedregal-variational-claim-test]] rests on `h16-pedregal-variational-claim-unrefereed`, `h16-ominimality-route-roussarie`, which no claim block on disk establishes
+
 ## Threads that could not be read
 
 - `README` has no thread block, so nothing can say what it is chasing or what it rests on

@@ -1,0 +1,7 @@
+RUN: exact minimal ECT closure and specialization falsifier
+ORACLE: two affine ECT pairs and one rank-scaled pair
+RANGE: symbolic x,a; exact integer arithmetic; no floats
+W(p)= 1 W(q)= -1 sum= [0, 0] W(sum)= 0
+W([a,a*x])= a**2 at a=0 -> 0
+RESULT: inference refuted algebraically; missing non-cancellation and stratum-uniform rank hypotheses
+STATUS: not a dynamical counterexample

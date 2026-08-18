@@ -1,0 +1,5 @@
+# Library refresh assessment — 2026-08-18
+
+The newly reviewed research does not supply the missing final PE1006 reduction. Sivasankar–Rama gives a citable contiguous-window/location theorem for the k+1 Fibonacci factors, strengthening the structural route and aligning with the existing task, subject to convention/index checks. Babichev–Babichev and Babichev–Shpakova independently support constant-size Euclidean closure for polynomial/weighted floor moments, while fhq/LOJ138 remain the exact sources for geometric-weight and moment-array recursions. Mousavi–Schaeffer–Shallit gives Fibonacci-automatic decision procedures, but not a base-10 weighted transducer. Hartwig–Patricio is general algebraic Euclidean background only.
+
+No source contradicts the established Sturmian slope/complexity theory. The important existing caveat remains: the cyclic pair-correlation identity is restricted to k=F_n−1, and cannot be generalized to arbitrary k. The unresolved issue is still the fixed-dimensional joint-intercept aggregation and its independently verified implementation; no final Ψ(10^18) residue is justified by these sources.

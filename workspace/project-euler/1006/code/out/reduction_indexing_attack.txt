@@ -1,0 +1,7 @@
+"""Captured output of code/refute/check_small_final_evaluator.py.
+
+complexity_class: exponential (oracle only, bound k<=3)
+oracle_bound: 3
+
+The primitive check is polynomial/logarithmic; no full-size enumeration is used.
+"""

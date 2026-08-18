@@ -1,0 +1,3 @@
+# Sequence scratch: Bautin monomial-count complement
+
+Exact computed sequence a_d=(4,30,97,236,485,890,1505) for d=4,6,...,16. The complement c(h)=C(h+4,4)-2a_d with h=d-2 equals (7,10,16,23,31,40,50). Exact program code/sequence_falsifier_check.py ran and confirms c(h)=(h^2+14h+8)/8 for h=4,6,...,14 (d=6..16), while d=4 is exceptional. First falsifier is d=18 (h=16), predicted a_18=2392; existing d18 run reached recurrence degree 17 but did not produce L18. analyze_sequence found no low-degree polynomial; find_linear_recurrence found no constant recurrence order<=6; OEIS no match. This is a conjecture, not established.

@@ -1,0 +1,22 @@
+METHOD: exact radial normal-form oracle; square-free factorization plus Sturm root count.
+ORACLE: code/naive_examples_oracle.py and code/brute.py; exact Q arithmetic, no floats.
+RANGE/PARAMETERS: every worked example in problem.md; u=r^2 band 1/10<u<10 (or 1/20<u<20 in two-cycle guards); degrees <=3.
+LEAN/CLAIM: evidence for GOAL.md item 3 certified-counter guard and the radial restriction statement; not a proof of H16.2.
+
+EXECUTION: python code/naive_examples_oracle.py
+cubic A=1-u: got=1, expected=1, check=True
+linear centre A=0: got=0, expected=0, check=True
+linear expanding focus A=1: got=0, expected=0, check=True
+two cycles A=(1-u)(2-u): got=2, expected=2, check=True
+semi-stable A=(1-u)^2(2-u): got=1, expected=1, check=True
+ALL WORKED EXAMPLES PASS
+
+EXECUTION: python code/brute.py
+[PASS] cubic normal form (one limit cycle at r=1)
+[PASS] linear centre x'=-y, y'=x  -> 0 cycles
+[PASS] linear expanding focus x'=x-2y, y'=2x+y  -> 0 cycles
+[PASS] van der Pol-like field -> refused as non-radial
+[PASS] linear saddle x'=x, y'=-y -> refused as non-radial
+[PASS] two-cycle field A=(1-u)(2-u): two cycles at u=1, u=2
+[PASS] semi-stable case A=(1-u)^2(2-u): certified count = 1
+ORACLE BOUND: degrees <=3, five examples plus two guards; bounded exponential oracle only, never used at full H16 size.

@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "pe1006-psi/G2-mechanical-factor-parametrisation",
+  "source": "code/lean/pe1006_psi_G2_mechanical_factor_parametrisation-3b6fbf7e.lean",
+  "stage": "prove"
+}

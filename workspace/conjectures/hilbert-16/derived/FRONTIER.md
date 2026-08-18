@@ -6,48 +6,48 @@ Ranked by how many of the library's sources cite it, then by how closely the cit
 
 | Cited by | Source | Called | Why it was cited |
 | --- | --- | --- | --- |
-| 14 | https://doi.org/10.1142/9789812702067_0055 | FROM THE PP-GRAPHICS TO THE FINITENESS PART OF HILBERT'S 16TH PROBLEM FOR QUADRATIC… | found researching: What is the current status (as of 2023-2025) of the Dumortier–Roussarie–Rousseau program for Hilbert's 16th problem for quadratic vector fields: exactly which o… |
-| 12 | https://doi.org/10.1515/9783110298369 | Planar Dynamical Systems | cites PP-graphics with a nilpotent elliptic singularity in quadratic systems and Hilbert's 16th problem (2014, cited 19 times) |
-| 10 | https://openalex.org/W102382135 | Introduction aux fonctions analysables et preuve constructive de la conjecture de Dulac | linked from Centennial History of Hilbert's 16th Problem |
-| 8 | https://www.sciencedirect.com/science/article/abs/pii/S0362546X97001752 | Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * | found researching: What is the current status (as of 2023-2025) of the Dumortier–Roussarie–Rousseau program for Hilbert's 16th problem for quadratic vector fields: exactly which o… |
-| 8 | https://openalex.org/W625401248 | On the number of limit cycles which appear with the variation of coefficients from an… | linked from Centennial History of Hilbert's 16th Problem |
-| 8 | http://gateway.isiknowledge.com/gateway/Gateway.cgi?GWVersion=2&amp;SrcAuth=Alerting&amp;SrcApp=Alerting&amp;DestApp=WOS&amp;DestLinkType=FullRecord;KeyUT=A1994NP96700005 | A1994NP96700005 | F, LIMBURGS UNIV CENTRUM,UNIV CAMPUS,B-3610 DIEPENBEEK,BELGIUM. \| Document URI: \| [http://hdl.handle.net/1942/3763][8] \| ISI #: \| [A1994NP96700005][9] \| Type: \| Journal Contribution \| Appears in… |
-| 7 | https://www.sciencedirect.com/ | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 7 | https://www.sciencedirect.com/browse/journals-and-books | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 7 | https://www.sciencedirect.com/science/article/pii/S0022039684710618 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 7 | https://www.sciencedirect.com/search | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.489.8724 | PP-graphics with a nilpotent elliptic singularity and Hilbert’s 16th theorem for… | found researching: What is the current status (as of 2023-2025) of the Dumortier–Roussarie–Rousseau program for Hilbert's 16th problem for quadratic vector fields: exactly which o… |
-| 6 | https://doi.org/10.3934/cpaa.2009.8.1133 | Study of the cyclicity of some degenerate graphics inside quadratic systems | found researching: As of 2023–2025, what is the exact current status of the Dumortier–Roussarie–Rousseau program for Hilbert's 16th problem for quadratic vector fields: how many o… |
-| 6 | http://elsmediakits.com/ | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://doi.org/10.1016/S0362-546X(97)00175-2 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://doi.org/10.1142/S0218127403006352 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://doi.org/10.1142/S0218127408022226 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://plu.mx/plum/a/?doi=10.1016%2FS0362-546X%2897%2900175-2&hideUsage=true&theme=plum-sciencedirect-theme | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://s100.copyright.com/AppDispatchServlet?contentID=S0362546X97001752&orderBeanReset=true&publisherName=ELS | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://sd-cart.elsevier.com/ | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://service.elsevier.com/app/contact/supporthub/sciencedirect/ | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.elsevier.com/ | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.elsevier.com/legal/elsevier-website-terms-and-conditions | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.elsevier.com/solutions/sciencedirect | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.relx.com/ | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/getaccess/pii/S0362546X97001752/purchase | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/journal/nonlinear-analysis | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/journal/nonlinear-analysis/vol/30/issue/1 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/science/article/pii/S0022039614004690 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/science/article/pii/S0022039615006853 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/science/article/pii/S0022039616000905 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/science/article/pii/S0022039616302157 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/science/article/pii/S002203961730462X | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/science/article/pii/S0022247X09008920 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/science/article/pii/S0362546X97001752 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://www.sciencedirect.com/science/article/pii/S1571065316300646 | — | linked from Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics * |
-| 6 | https://openalex.org/W1539776296 | Theory of bifurcations of dynamic systems on a plane | linked from Centennial History of Hilbert's 16th Problem |
-| 6 | https://openalex.org/W135561972 | — | linked from Centennial History of Hilbert's 16th Problem |
-| 6 | https://openalex.org/W1531890399 | — | linked from Centennial History of Hilbert's 16th Problem |
-| 6 | https://openalex.org/W2004611416 | — | linked from Centennial History of Hilbert's 16th Problem |
-| 6 | https://www.springernature.com/gp/librarians/licensing/agc/journals | Institutional subscriptions | and 2,500 journals - Cancel anytime [View plans][9] ## Buy Now Price includes VAT (Kuwait) Instant access to the full article PDF. [Institutional subscriptions][10] ### Similar content being viewed… |
+| 54 | https://openalex.org/W102382135 | Introduction aux fonctions analysables et preuve constructive de la conjecture de Dulac | linked from Centennial History of Hilbert's 16th Problem |
+| 31 | https://openalex.org/W625401248 | On the number of limit cycles which appear with the variation of coefficients from an… | linked from Centennial History of Hilbert's 16th Problem |
+| 30 | https://openalex.org/W1539776296 | Theory of bifurcations of dynamic systems on a plane | linked from Centennial History of Hilbert's 16th Problem |
+| 26 | https://openalex.org/W135561972 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 25 | https://doi.org/10.1007/978-1-4612-3940-6 | Singularities of Differentiable Maps | cited by On the Number of Zeros of Abelian Integrals: A Constructive Solution of the Infinitesimal Hilbert Sixteenth Problem (1988, cited 1265 times) |
+| 25 | https://openalex.org/W1566141765 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 25 | https://openalex.org/W1980673640 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 25 | https://openalex.org/W1981047244 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 25 | https://openalex.org/W2004611416 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 23 | https://doi.org/10.1007/bf02584827 | On the number of limit cycles which appear by perturbation of separatrix loop of planar… | cited by On the Number of Zeros of Abelian Integrals: A Constructive Solution of the Infinitesimal Hilbert Sixteenth Problem (1986, cited 246 times) |
+| 23 | https://openalex.org/W3042646585 | A CONCRETE EXAMPLE OF THE EXISTENCE OF FOUR LIMIT CYCLES FOR PLANE QUADRATIC SYSTEMS | cited by Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics (1980, cited 74 times) |
+| 22 | https://openalex.org/W1531890399 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 20 | https://openalex.org/W1992299830 | — | linked from The cyclicity of hyperbolic hemicycles |
+| 19 | https://doi.org/10.1070/rm1990v045n02abeh002335 | Finiteness theorems for limit cycles | cited by Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics (1990, cited 200 times) |
+| 19 | https://doi.org/10.1515/9781400881819?locatt=mode:legacy | Singular points of complex hypersurfaces | cited by On the Number of Zeros of Abelian Integrals: A Constructive Solution of the Infinitesimal Hilbert Sixteenth Problem (1968, cited 2334 times) |
+| 18 | https://doi.org/10.1007/bf01077820 | Estimate of the number of zeros of an abelian integral depending on a parameter and limit… | cited by On the Number of Zeros of Abelian Integrals: A Constructive Solution of the Infinitesimal Hilbert Sixteenth Problem (1984, cited 109 times) |
+| 18 | https://doi.org/10.1360/ya1980-23-2-153 | A CONCRETE EXAMPLE OF THE EXISTENCE OF FOUR LIMIT CYCLES FOR PLANE QUADRATIC SYSTEMS | cited by Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics (1980, cited 138 times) |
+| 18 | https://openalex.org/W176407471 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 18 | https://openalex.org/W2113034974 | — | linked from Finite cyclicity of some center graphics through a nilpotent point inside quadratic systems |
+| 17 | https://doi.org/10.1007/bf03025291 | Mathematical problems for the next century | cited by HILBERT'S 16TH PROBLEM AND BIFURCATIONS OF PLANAR POLYNOMIAL VECTOR FIELDS (1998, cited 1256 times) |
+| 17 | https://openalex.org/W561614213 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 17 | https://openalex.org/W649888304 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 17 | https://openalex.org/W73183433 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 16 | https://doi.org/10.1016/0022-0396(66)90070-2 | A survey of quadratic systems | cited by HILBERT'S 16TH PROBLEM AND BIFURCATIONS OF PLANAR POLYNOMIAL VECTOR FIELDS (1966, cited 278 times) |
+| 16 | https://doi.org/10.1016/s0007-4497(99)80004-9 | Petrov modules and zeros of Abelian integrals | cited by On the Number of Zeros of Abelian Integrals: A Constructive Solution of the Infinitesimal Hilbert Sixteenth Problem (1998, cited 114 times) |
+| 16 | https://openalex.org/W1564263151 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 16 | https://openalex.org/W2009734469 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 16 | https://openalex.org/W2024356403 | — | linked from Finite cyclicity of some center graphics through a nilpotent point inside quadratic systems |
+| 15 | https://doi.org/10.1007/978-1-4684-0147-9 | Geometrical Methods in the Theory of Ordinary Differential Equations | cited by LIMIT CYCLE BIFURCATIONS IN NEAR-HAMILTONIAN SYSTEMS BY PERTURBING A NILPOTENT CENTER (1983, cited 1581 times) |
+| 15 | https://doi.org/10.1007/s00222-010-0244-0 | https://doi.org/10.1007/s00222-010-0244-0 | DOI via DataCite \| Journal reference: \| Inventiones mathematicae, August 2010, Volume 181, Issue 2, pp 227-289 \| Related DOI: \| [https://doi.org/10.1007/s00222-010-0244-0][11] Focus to learn more… |
+| 15 | https://doi.org/10.1017/s0143385700008725 | Successive derivatives of a first return map, application to the study of quadratic… | cited by On the Number of Zeros of Abelian Integrals: A Constructive Solution of the Infinitesimal Hilbert Sixteenth Problem (1996, cited 162 times) |
+| 15 | https://doi.org/10.1090/gsm/086 | Lectures on Analytic Differential Equations | cites Centennial History of Hilbert's 16th Problem (2007, cited 342 times) |
+| 15 | https://doi.org/10.1090/mmono/094 | https://doi.org/10.1090/mmono/094 | Theorems for Limit Cycles. In: Translations of Mathematical Monographs, vol. 94. American Mathematical Society, Providence (1991). [https://doi.org/10.1090/mmono/094][45] 9. Ecalle, J.: Introduction… |
+| 15 | https://doi.org/10.1515/9783110298369 | Planar Dynamical Systems | cites PP-graphics with a nilpotent elliptic singularity in quadratic systems and Hilbert's 16th problem (2014, cited 19 times) |
+| 15 | https://openalex.org/W116565880 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 15 | https://openalex.org/W1626578717 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 15 | https://openalex.org/W186906267 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 15 | https://openalex.org/W1965024435 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 15 | https://openalex.org/W1968053575 | — | linked from Centennial History of Hilbert's 16th Problem |
+| 15 | https://openalex.org/W1968936725 | — | linked from Centennial History of Hilbert's 16th Problem |
 
-_1770 further candidates not shown; they are cited once each._
+_3446 further candidates not shown; they are cited once each._
 
 ---
 

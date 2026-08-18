@@ -1,0 +1,21 @@
+cubic A=1-u: got=1, expected=1, check=True
+linear centre A=0: got=0, expected=0, check=True
+linear expanding focus A=1: got=0, expected=0, check=True
+two cycles A=(1-u)(2-u): got=2, expected=2, check=True
+semi-stable A=(1-u)^2(2-u): got=1, expected=1, check=True
+ALL WORKED EXAMPLES PASS
+RUN: bounded exact transseries composition / iterated-log ECT oracle
+ORACLE: fixed four second-type passages; z<=3,t<=3,log(t)<=2,loglog(t)<=1
+PRECISION: exact Fractions and SymPy; no floating point; no candidate enumeration
+D1=1*z^0t^0l^1ll^0 + 1/2*z^0t^1l^0ll^0 + 1*z^1t^0l^0ll^1
+D2=2*z^0t^0l^1ll^0 + -1/3*z^0t^1l^0ll^0 + 1*z^1t^0l^0ll^1
+D3=1*z^0t^0l^0ll^1 + 2/5*z^0t^1l^0ll^0 + 1*z^1t^0l^1ll^0
+D4=1*z^0t^0l^0ll^1 + -3/7*z^0t^1l^0ll^0 + 2*z^1t^0l^1ll^0
+F=3*z^0t^0l^1ll^0 + 1/6*z^0t^1l^0ll^0 + -3/7*z^0t^1l^0ll^1 + -6/35*z^0t^2l^0ll^0 + 2*z^1t^0l^0ll^1 + 1*z^1t^0l^1ll^1 + -3/7*z^1t^1l^1ll^0 + 2*z^2t^0l^2ll^0
+G=-1*z^0t^0l^1ll^1 + 5/6*z^0t^1l^0ll^1 + -43/35*z^0t^1l^1ll^0 + -17/210*z^0t^2l^0ll^0 + -29/35*z^1t^1l^0ll^1 + 4/3*z^1t^1l^1ll^0 + 1*z^2t^0l^1ll^1
+projected F=2*L**2 + L*LL - 3*L*t/7 + 3*L - 3*LL*t/7 + 2*LL - 6*t**2/35 + t/6
+projected G=11*L*t/105 + LL*t/210 - 17*t**2/210
+J=-3*L*t/35 + LL*t/210 + 3*t**2/70 - 41*t/210
+W3=-(108*L - 26*LL + 697)*(2*L**2 + L*LL + 3*L + 2*LL)/22050
+RESULT: no counterexample to finite ECT closure found for this fixed bounded toy; W3= -(108*L - 26*LL + 697)*(2*L**2 + L*LL + 3*L + 2*LL)/22050
+STATUS: unverified toy evidence only; exact I^1_6b coefficients and domain are absent

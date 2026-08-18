@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "fibonacci-position-theorem-contiguous-windows",
+  "source": "code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean",
+  "stage": "prove"
+}

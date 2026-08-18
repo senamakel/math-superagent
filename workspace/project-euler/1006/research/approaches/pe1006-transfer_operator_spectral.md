@@ -1,0 +1,12 @@
+# Approach: transfer-operator / Ruelle–Perron–Frobenius on the rotation coding
+
+```approach
+id: pe1006-transfer_operator_spectral
+idea: Ruelle-Perron-Frobenius transfer operator on the irrational rotation's function space — carry the base-10 weighted word value v(w) = (Σ_j w_j 10^{k-1-j})^2 as a functional and push it through continued-fraction/Rauzy-Veech renormalisation, seeking finite-dimensional invariant-subspace closure of its tensor square.
+mechanism: The factor set is a coding of the irrational rotation, so each length-k factor is a cylinder observable. If the tensor-square of the weighted observable stays in a finite-dimensional invariant subspace under one renormalisation step, then Psi is a spectral/renormalisation fixed-point equation computable in O(log k) from the Ostrowski digits of k, with no per-intercept loop.
+status: refuted
+precedent: https://doi.org/10.1051/ita:2007026; https://www.cambridge.org/core/journals/canadian-mathematical-bulletin/article/on-gibbs-measures-and-spectra-of-ruelle-transfer-operators/CB2551C056FCA34005BC6EA1B4C9DBB3; https://arxiv.org/1807.11273; governing-sturmian; governing-universal-euclidean
+killed-by: Literature supports rotation codings, Rauzy/continued-fraction renormalisation, and general Ruelle-Perron-Frobenius spectral theory, but no source establishes finite-dimensional closure for the base-10 weighted cylinder observable or applies it to Psi. The closest Sturmian substitution result (Berthé–Ei–Ito–Rao) says two-letter invertible-substitution Rauzy fractals are intervals; it does not provide the proposed tensor-square invariant space. Thus the decisive hypothesis is unproved and the candidate supplies no O(log k) reduction. It is not refuted as a theorem that such closure is impossible; it is refuted as a supported solution route.
+```
+
+Assessment: The reformulation is a transfer-operator/renormalisation approach for a Sturmian rotation coding. The precise RPF theorem in the general source is spectral (under standard expanding/Hölder hypotheses), not a theorem that arbitrary cylinder observables form a finite-dimensional invariant subspace. Those hypotheses do not imply finite-rank closure here. The Fibonacci word is a Sturmian coding, so the dynamical setting holds; the proposed finite-dimensional base-10 observable closure does not follow and was not found applied to PE1006. Potential payoff would be O(log k) renormalisation if closure were separately proved, but literature does not supply that missing lemma.

@@ -1,0 +1,26 @@
+import Mathlib
+
+#check g_drr_status
+#check drr_status
+#check drr
+#check DRR
+#check drr_graph
+#check drr_boundary
+#check drr_closed
+#check drr_unproved
+#check boundaryClosed
+#check isClosed
+#check SimpleGraph.IsDRR
+#check SimpleGraph.DRR
+#check SimpleGraph.drr
+#check Finset
+#check Finset.filter
+#check Finset.filter
+#check List.filter
+#check Array.filter
+#check Set
+#check Set.filter
+#check SetLike
+#check Set.Subset
+#check Finset.Subset
+#check Finset.Subset

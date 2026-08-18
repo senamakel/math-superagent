@@ -39,6 +39,48 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `below,.LuH14.w6_neg` | theorem | verified | : ∀ k : Fin 30, W6coeffs k = -Generated.coeffs k | — | `code/lean/Lib/BautinRecurrence.lean` |
 | `Certificate.eval_cert_nonmem` | theorem | verified | — | — | `code/lean/Lib/Certificate.lean` |
 | `Certificate.eval_point_cert_nonmem` | theorem | verified | — | — | `code/lean/Lib/Certificate.lean` |
+| `ECTSlowDivergence.ECTFamily` | def | verified | {ι α : Type} [Fintype ι] | — | `code/lean/Lib/ECTSlowDivergence.lean` |
+| `ECTSlowDivergence.Family` | def | verified | (ι α : Type) | — | `code/lean/Lib/ECTSlowDivergence.lean` |
+| `ECTSlowDivergence.IsDisplacement` | def | verified | {ι α : Type} [Fintype ι] | — | `code/lean/Lib/ECTSlowDivergence.lean` |
+| `ECTSlowDivergence.ZeroSet` | def | verified | {α : Type} (D : Set α) (u : α → ℝ) : Set α | — | `code/lean/Lib/ECTSlowDivergence.lean` |
+| `ECTSlowDivergence.displacement_zero_bound` | theorem | verified | {ι α : Type} [Fintype ι] | — | `code/lean/Lib/ECTSlowDivergence.lean` |
+| `SecondTypeDulac.AnalyticRemainderData` | structure | verified | (K : Set Parameter) (δ : Parameter → Section → ℝ) where | — | `code/lean/Lib/SecondTypeDulacRemainder.lean` |
+| `SecondTypeDulac.Parameter` | abbrev | verified | — | — | `code/lean/Lib/SecondTypeDulacRemainder.lean` |
+| `SecondTypeDulac.Section` | abbrev | verified | — | — | `code/lean/Lib/SecondTypeDulacRemainder.lean` |
+| `SecondTypeDulac.second_type_displacement_finite_zero_bound` | theorem | verified | — | — | `code/lean/Lib/SecondTypeDulacRemainder.lean` |
+| `SlowDivergenceECTBound.ECTCertificate` | def | verified | {ι α : Type} [Fintype ι] (D : Set α) (f : Family ι α) : Prop | — | `code/lean/Lib/SlowDivergenceECTBound.lean` |
+| `SlowDivergenceECTBound.Family` | def | verified | (ι α : Type) | — | `code/lean/Lib/SlowDivergenceECTBound.lean` |
+| `SlowDivergenceECTBound.HasECTDisplacement` | def | verified | {ι α : Type} [Fintype ι] (D : Set α) (f : Family ι α) (δ : α → ℝ) : Prop | — | `code/lean/Lib/SlowDivergenceECTBound.lean` |
+| `SlowDivergenceECTBound.ZeroSet` | def | verified | {α : Type} (D : Set α) (u : α → ℝ) : Set α | — | `code/lean/Lib/SlowDivergenceECTBound.lean` |
+| `SlowDivergenceECTBound.displacement_finite_zero_bound` | theorem | verified | {ι α : Type} [Fintype ι] | — | `code/lean/Lib/SlowDivergenceECTBound.lean` |
+| `SlowDivergenceECTPartial.ECTReduction` | structure | verified | (K : Set Parameter) | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
+| `SlowDivergenceECTPartial.Parameter` | abbrev | verified | — | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
+| `SlowDivergenceECTPartial.Section` | abbrev | verified | — | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
+| `SlowDivergenceECTPartial.full_graphic_zero_bound` | theorem | verified | — | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
+| `specialises` | theorem | verified | it to the one representation `δ` is given by, left | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
+| `Cited.torregrosa_two_families` | axiom | verified | : ∃ F₁ F₂ : CubicFamily, UnfoldsTwelve F₁ ∧ UnfoldsTwelve F₂ | Torregrosa, “Cubic planar vector fields with high local cyclicity”, São Paulo J. Math.… | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
+| `CubicFamily` | def | verified | — | — | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
+| `SmallAmplitudeLimitCycle` | def | verified | (X : ℝ × ℝ → ℝ × ℝ) (r : ℝ) : Prop | — | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
+| `UnfoldsTwelve` | def | verified | (F : CubicFamily) : Prop | — | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
+| `approach_certified_lower_bound_target_escalated` | theorem | verified | : | — | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
+| `BautinChartMembership.L6_not_mem_of_eval` | theorem | verified | — | — | `code/lean/bautin_chart_membership_l8_l10_l12-675036ab.lean` |
+| `BautinChartMembership.L8_not_mem_of_eval` | theorem | verified | — | — | `code/lean/bautin_chart_membership_l8_l10_l12-675036ab.lean` |
+| `BautinChartMembership.ParamIndex` | abbrev | verified | — | — | `code/lean/bautin_chart_membership_l8_l10_l12-675036ab.lean` |
+| `BautinChartMembership.Ring` | abbrev | verified | — | — | `code/lean/bautin_chart_membership_l8_l10_l12-675036ab.lean` |
+| `BautinChartMembership.chartPoint` | def | verified | : ParamIndex → ℚ | — | `code/lean/bautin_chart_membership_l8_l10_l12-675036ab.lean` |
+| `BautinChartMembership.corrected_membership_node` | theorem | verified | — | — | `code/lean/bautin_chart_membership_l8_l10_l12-675036ab.lean` |
+| `BautinChartMembership.eval_nonmem` | theorem | verified | — | — | `code/lean/bautin_chart_membership_l8_l10_l12-675036ab.lean` |
+| `HeldCaptureStatus` | def | verified | : Prop | — | `code/lean/data_canard_2020_summary_broken_capture-56696a4c.lean` |
+| `held_capture_is_broken` | theorem | verified | : HeldCaptureStatus | — | `code/lean/data_canard_2020_summary_broken_capture-56696a4c.lean` |
+| `isLlibreZhangLienardSurveyRecord` | def | verified | : Prop | — | `code/lean/data_contamination_llibre_zhang-bcac5b18.lean` |
+| `isMuredduPowerGridRecord` | def | verified | : Prop | — | `code/lean/data_contamination_llibre_zhang-bcac5b18.lean` |
+| `sourceArxiv` | def | verified | : String | — | `code/lean/data_contamination_llibre_zhang-bcac5b18.lean` |
+| `sourceAuthor` | def | verified | : String | — | `code/lean/data_contamination_llibre_zhang-bcac5b18.lean` |
+| `sourceSubject` | def | verified | : String | — | `code/lean/data_contamination_llibre_zhang-bcac5b18.lean` |
+| `sourceTitle` | def | verified | : String | — | `code/lean/data_contamination_llibre_zhang-bcac5b18.lean` |
+| `source_is_mureddu_not_llibrez` | theorem | verified | : | — | `code/lean/data_contamination_llibre_zhang-bcac5b18.lean` |
+| `LandingPageInventory` | def | verified | : Prop | — | `code/lean/data_landing_pages_inventory-2b244073.lean` |
+| `data_landing_pages_inventory` | theorem | verified | : LandingPageInventory | — | `code/lean/data_landing_pages_inventory-2b244073.lean` |
 | `DRR.Cited.finite_cyclicity_implies_uniform_bound` | axiom | verified | : | DRR 1994, "Hilbert's 16th problem for quadratic vector fields", JDE | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
 | `DRR.Cited.ilyashenko_reports_121` | axiom | verified | : Fintype.card GraphicId = 121 | Ilyashenko 2002, "Centennial history of Hilbert's 16th problem", | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
 | `DRR.Cited.rrs_reports_121` | axiom | verified | : Fintype.card GraphicId = 121 | Roussarie-Rousseau 2015, arXiv:1506.07104, intro (Trans. Moscow Math. | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
@@ -46,60 +88,25 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `DRR.Cited.secondary_sources_agree` | theorem | verified | : | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
 | `DRR.Cited.secondary_sources_each_report` | theorem | verified | : | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
 | `DRR.FinitelyCyclic` | axiom | verified | : GraphicId → Prop | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.GraphicId` | abbrev | verified | : Type | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.QuadraticSystem` | structure | verified | where | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.UniformQuadraticBound` | def | verified | : Prop | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.drr_reduction` | theorem | verified | : | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.nLimitCycles` | axiom | verified | (f : QuadraticSystem) : ℕ | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `LuH14.Cited.hemicycle_local_uniform_cyclicity` | axiom | verified | : | H. Lu, "Local Uniform Finite Cyclicity of the H1^4_3 Semihyperbolic | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.F` | def | verified | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.FiveParam` | structure | verified | where | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.Generated.Var` | abbrev | verified | — | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.Generated.coeffs` | def | verified | : Fin 30 → ℤ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.Generated.ms` | def | verified | : Fin 30 → Var → Nat | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.L` | def | verified | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.L4num` | def | verified | : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.L4num_ne_zero` | theorem | verified | : L4num ≠ 0 | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.L4wit` | def | verified | : Fin 5 → ℤ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.P30coeffs_nontrivial` | theorem | verified | : ∃ k : Fin 30, Generated.coeffs k ≠ 0 | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.P30poly` | def | verified | : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.PRing` | abbrev | verified | — | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.Unfolding` | structure | verified | where | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.W6coeffs` | def | verified | : Fin 30 → ℤ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.W6poly` | def | verified | : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.X` | def | verified | (p : FiveParam) : (ℝ × ℝ) → (ℝ × ℝ) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.Xv` | def | verified | (i : Fin 5) : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.a` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.alpha` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.beta` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.bridge_identities` | theorem | verified | (p : FiveParam) : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.c` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.darboux_F_identity` | theorem | verified | (p : FiveParam) (x y : ℝ) : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.darboux_L_identity` | theorem | verified | (p : FiveParam) (x y : ℝ) : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.degree4_obstruction` | theorem | verified | : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.degree6_identity` | theorem | verified | : P30poly + W6poly = 0 | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.div_X_cofactor` | theorem | verified | (p : FiveParam) (x y : ℝ) : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.drr_lu_claims_h14_3` | theorem | verified | : | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.ell` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.gamma` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.monomial` | def | verified | (m : Fin 5 → ℕ) : PRing | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.nLimitCyclesInCollar` | axiom | verified | (lam : Unfolding) (U : Set (ℝ × ℝ)) : ℕ | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.sigma` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.tau` | def | verified | (p : FiveParam) | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.w6_neg` | theorem | verified | : ∀ k : Fin 30, W6coeffs k = -Generated.coeffs k | — | `code/lean/drr_lu_claims_h14_3-f0dbf821.lean` |
-| `LuH14.F` | def | verified | (p : FiveParam) : (ℝ × ℝ) → ℝ | — | `code/lean/h16_2_h14_3_finite_cyclicity_G_lean_cert-d8de5a7b.lean` |
 
-_200 more not shown here; they are in `code/lean`._
+_557 more not shown here; they are in `code/lean`._
 
-280 declarations, 200 of them in a file the kernel has checked.
+637 declarations, 464 of them in a file the kernel has checked.
 
 ## Never checked
 
 These files are in the tree and no `lean_check` verdict exists for them. Nothing on this page from one of them is evidence of anything.
 
 - `code/lean/Lib/CheckProof.lean`
-- `code/lean/Lib/linear_abelian_integral_zero_bound.lean`
+- `code/lean/Lib/DRR.lean`
+- `code/lean/Lib/DRR_citation.lean`
+- `code/lean/Lib/DRR_citations.lean`
+- `code/lean/Lib/SourceSummary.lean`
+- `code/lean/Lib/StatementLibraryCycle.lean`
+- `code/lean/Lib/kernel_of_monomial_map.lean`
 - `code/lean/_probe_src.lean`
 - `code/lean/check/lakefile.lean`
 - `code/lean/del_attribution_probe.lean`
 - `code/lean/h16_dulac_finiteness-ed8142ab.lean`
+- `code/lean/inspect_target.lean`
+- `code/lean/probe/test6.lean`

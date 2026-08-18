@@ -1,32 +1,9 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/binyamini-dor-nonlinearity-2012.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Binyamini–Dor 2012 — explicit Abelian-integral bound
 
-<!-- source: https://beta.iopscience.iop.org/article/10.1088/0951-7715/25/6/1931 | converted from HTML -->
+[[binyamini-dor-nonlinearity-2012.full]]
 
-## What is in it
+Source: https://doi.org/10.1088/0951-7715/25/6/1931.
 
-- An explicit linear estimate for the number of zeros of Abelian integrals
-  - Authors
-  - Article metrics
-  - Permissions
-  - Share this article
-  - Article information
-  - Dates
-  - Abstract
-  - You may also like
+The source states that the infinitesimal Hilbert-sixteenth problem asks for zero bounds for Abelian integrals in terms of the Hamiltonian and form degrees; Petrov–Khovanskii give existential linear growth in deg(omega), while Binyamini–Novikov–Yakovenko give an explicit doubly-exponential bound. Binyamini–Dor combine the methods to obtain an explicit bound growing linearly with deg(omega). This concerns the tangential/Abelian-integral problem, not the full nonlinear H16.2 return map.
 
-
-## What it claims
-
-An Abelian integral is the integral over the level curves of a Hamiltonian *H*of an algebraic form ω. The infinitesimal Hilbert sixteenth problem calls for the study of the number of zeros of Abelian integrals in terms of the degrees *H*and ω. Petrov and Khovanskii have shown that this number grows at most linearly with the degree of ω, but gave a purely existential bound. Binyamini, Novikov and Yakovenko have given an *explicit*bound growing doubly exponentially with the degree.
-
-We combine the techniques used in the proofs of these two results, to obtain an explicit bound on the number of zeros of Abelian integrals growing linearly with deg ω.
-
-Export citation and abstract [BibTeX][17] [RIS][18]
-
-****[Previous article in issue][19]
-
-Recommended by A R Its
-
-10.1088/0951-7715/25/6/1931
-
-*[digest of a 4109 character source; every section, statement, and proof in full at `research/sources/binyamini-dor-nonlinearity-2012.full.md`]*
+Implication: supports the current distinction between solved infinitesimal H16 and open uniform nonlinear H16.2; no new global bound is supplied here.

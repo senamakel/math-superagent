@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "h16-2-finite-cyclicity-g-zeros",
+  "source": "code/lean/h16_2_finite_cyclicity_g_zeros-b824cb6f.lean",
+  "stage": "prove"
+}

@@ -9,13 +9,8 @@ Derived from `config/tasks.jsonl` and rewritten on every write. Do not edit this
 
 Most recently added or updated first. Work the first one you can. To raise an older task, record against it — that moves it back to the top.
 
-- `verify-lu-h14-3-finite-core` — Independently verify/refute the finite computational core of Lu arXiv:2607.13785 (H14_3)
-  - detail: Directive 3 splits this into two concrete, ordered sub-jobs: (verify-lu-core-executable) the clean-room executable re-derivation with a capture the workspace can reproduce, and (p30-lean-generated-certificate) the kernel-closed P30 identity in Lean. Keep this as the umbrella for the wider question - what the paper leaves existential, the not-yet-fetched two remaining scripts, the overall standing of the H14_3 claim - and work its concrete parts through the two child tasks. Do NOT report the algebraic core as verified until the executed run has passed and is captured.
-  - refs: research/notes/lu-h14-3-open-graphic-claim.md; research/summaries/lu-h14-3-hemicycle.md; claim h16-drr-h14-3-lu-2026-claim
-- `fix-statement-lean-compile` — Make h16_2 actually state H16.2: real degree_at_most and finite-count fix in Statement.lean
-  - detail: Directive 3 (THIRD, and 'do that one first' - the pass's primary deliverable): Statement.lean still carries degree_at_most : True (asserts nothing) and the Set.ncard hole, so h16_2 still does not state H16.2. Make the type actually carry every hypothesis: replace degree_at_most : True with the real statement that each coordinate function of the field is in MvPolynomial (Fin 2) RR with totalDegree ≤ n (tie the Plane -> Plane map to the polynomial and bound its degree); fix the Set.ncard hole (ncard of an arbitrary set is 0 when infinite, so the claim trivially holds for infinite sets - the…
-- `bautin-lean-statement` — State Bautin M(2)=3 and H16.2 in Lean (Bautin.lean, Statement.lean)
-  - detail: lean_prover writes code/lean/Lib/Bautin.lean (Bautin ideal finitely generated, cyclicity 3) and code/lean/Lib/Statement.lean (H16.2 over Mathlib flow API), ending in := by sorry where proof is missing; report #print axioms and each sorry. The statements are the deliverable before the oracle's number means anything.
+- `i6b-four-passage-analytic-gap` — Finite four-passage ECT reduction remains the exact analytic gap
+  - detail: RSZ/RR sources do not provide the required full I^1_6b four-second-type composition; arbitrary flat oscillatory remainders defeat finite truncation, while ECT zero bound is kernel-checked once membership is supplied.
 - `bautin-m2-oracle` — Reproduce Bautin M(2)=3 via exact Lyapunov quantities / Bautin ideal over Q
   - detail: tool_builder writes code/bautin/lyapunov_quadratic.py computing Lyapunov quantities of a quadratic focus over Q, forms the Bautin ideal, computes a Groebner basis over Q, and verifies cyclicity M(2)=3. Capture to code/out/bautin_m2.txt. This is evidence for code/lean/Lib/Bautin.lean.
 
@@ -23,24 +18,34 @@ Most recently added or updated first. Work the first one you can. To raise an ol
 
 The five most recently finished, with what came of it. Kept, because a run that cannot see what it already did repeats it.
 
-- `cofactor-certificate-l8-not-in-l4-l6` — Make the L8 ∉ ⟨L4, L6⟩ theorem's JSON verdict fresh, and stand the general certificate lemma + membership cofactor data
-  - detail: CONFIRMED IN Bautin.lean (host-fixed): V3_not_mem_span_V1_V2 is a full kernel-checked proof via evaluation witness certPt = (-2,-2,1,-1,-1,1): eval V1num=0, V2num=0, V3num=7200, done by the general lemma 'every element of the span vanishes at a common zero'. This proves the STRONGER statement L8 outside the radical of <L4,L6>. Remaining work: (1) re-capture lean_check on the current tree — the code/out/lean/*.json files are STALE (compiled:false, reference deleted declarations, false sorries) and must be re-run before 'verified' is trusted; (2) write code/lean/Lib/Certificate.lean, the…
-  - reason: L8 ∉ ⟨L4,L6⟩ is now a kernel-checked Lean theorem, not a computational claim. Bautin.lean's V3_not_mem_span_V1_V2 proves it by evaluation witness certPt=(-2,-2,1,-1,-1,1) (eval V1num=0, V2num=0, V3num=7200), axioms exactly [propext, Classical.choice, Quot.sound], re-captured fresh (code/out/lean/code_lean_Lib_Bautin.lean.json now compiled:true, conditional, sorries:[]). Two independent routes cross-confirm: (1) verify_lean_tables.py parses the exact tables the kernel sees and re-evaluates to 0/0/7200 with exact integer arithmetic, PASS (capture code/out/lean_tables.captured.txt, tamper-tested…
-  - refs: code/out/membership.captured.txt; code/out/bautin_focal_values.captured.txt; code/lean/Lib/Bautin.lean
-- `p30-lean-generated-certificate` — Spell out P30 in BautinRecurrence.lean via Generated/ and close 192*L6+P30=0 with decide
-  - detail: Directive 3 (SECOND): code/lean/Lib/BautinRecurrence.lean line ~90 defines P30 as the literal 0 with a placeholder comment, so the theorem 192*L6 + P30 = 0 is a statement about zero and proves nothing about the paper. Spell out all thirty monomials of P (the degree-6 30-monomial polynomial from verify_bautin_recurrence.py, transcribed in research/summaries/verify_bautin_recurrence.md), or state the identity over an explicit finite coefficient list. Certificate shape: put the generated coefficient data as UNTRUSTED defs under code/lean/Lib/Generated/ (no theorems inside Generated/), write the…
-  - reason: Delivered by the host fix (Directive 5) in a different, working shape: BautinRecurrence.lean is VERIFIED (no sorry, no cited axiom) with h14_p30_check, p30_sound, bautin_L6_identity (192·L6+P30=0 closed over MvPolynomial), L4num_ne_zero, param_identities, darboux_L_identity, darboux_F_identity. The certificate shape changed for kernel reasons recorded in CONTEXT.md gap 3: the single-file kernel rejects a second-module import, so P30 data is inline in a Generated namespace carrying no theorem, with Lib/Generated/P30Data.lean kept as provenance in step via code/bautin/generate_p30.py; decide…
-- `verify-lu-core-executable` — Write code/bautin/verify_lu_core.py clean-room and capture to code/out/lu_core.captured.txt
-  - detail: Directive 3 (FIRST): research/notes/lu-finite-core-verified.md claims the finite core was re-derived BY HAND with exact arithmetic (bridge identities, Darboux cofactors X(L)=(x+dy)L and X(F)=(2Bx+dy)F, deg-4 obstruction 8L4=AC+CD+2DF-EF, deg-6 relation) but there is NO executed program and NO capture anywhere in code/out for any of it - a measurement nobody can reproduce, which the workspace's own rule forbids building on. Write code/bautin/verify_lu_core.py, CLEAN-ROOM from the paper's stated definitions (not by importing the paper's scripts), exact rational or symbolic arithmetic via sympy,…
-  - reason: Executed and captured: code/bautin/verify_lu_core.py (clean-room, exact sympy, not importing Lu's scripts) ran with exit 0 and code/out/lu_core.captured.txt prints each identity PASS ending "ALL CLEAN-ROOM CHECKS PASS" — bridge identities, Darboux cofactors X(L)=(x+dy)L and X(F)=(2Bx+dy)F, div-X cofactor, 8L4=AC+CD+2DF−EF, 192*L6+P30=0, P30 has 30 monomials. research/notes/lu-finite-core-verified.md was downgraded from the by-hand claim and now carries STATUS: VERIFIED-computationally with the capture and falsifier; the claim block lu-finite-core-partially-verified is updated to match.…
-- `verify-lu-ideal-memberships` — Verify L8,L10,L12 in Bautin ideal exactly
-  - detail: G-lu-core extension half in flight (agent-run-13): fresh exact sympy script over Q checking L8 in <L4,L6>, L10,L12 in <L4,L6,L8> via groebner, with the held audit (L4=../8, 192*L6+P30=0) as guard; capture to code/out/membership.captured.txt.
-  - reason: Executed and captured (code/out/membership.captured.txt): exact sympy over ℚ, lex Gröbner, checks L8 in ⟨L4,L6⟩ (False — remainder nonzero, 9 monomials), L6 in ⟨L4⟩ (False), L10/L12 in ⟨L4,L6,L8⟩ (False), plus the sanity guards 8·L4=AC+CD+2DF−EF and 192·L6+P30=0 PASS. This is the computational half. The directive's NEXT step is turning L8∉⟨L4,L6⟩ into a kernel-checked Lean theorem via a cofactor certificate — that is now its own top task, cofactor-certificate-L8-not-in-L4-L6.
-- `fix-bautin-recurrence-lean-compile` — Make BautinRecurrence.lean compile with no tautologies
-  - detail: R-lu-core-lean / G-lean-cert in flight (agent-run-12): fix import to Lib/Generated/P30Data.lean, delete duplicate LuH14 trees + probe files, replace bautin_L4_identity and darboux_identities True-placeholders with real ring-closable statements over MvPolynomial, keep h14_p30_check/bautin_L6_identity closed by decide, run lean_check and capture JSON.
-  - reason: Directive 5 delivered the fix from the host: BautinRecurrence.lean is VERIFIED (no sorry, no cited axiom: h14_p30_check, p30_sound, bautin_L6_identity, L4num_ne_zero, param_identities, darboux_L_identity, darboux_F_identity) and Bautin.lean is CONDITIONAL (resting only on Cited Bautin-1952 axioms); both pass lean_check. Do NOT redo or revert. Four anti-revert constraints recorded in CONTEXT.md gap 3 (single-file kernel: no second-module import, P30 inline in a Generated namespace; coefficientwise-over-Fin-30 decide with p30_sound bridging, never decide on a polynomial equality; L4num not /8…
+- `i6b-ect-partial-result` — Bank the restricted I^1_6b ECT obstruction and conditional theorem
+  - detail: Exact oracle and capture reproduce all worked examples and refute naive passage-wise ECT closure under summation; Lean file SlowDivergenceECTPartial.lean compiles with no sorry and proves only the conditional implication from explicit endpoint-map, analytic-uniform-remainder, and ECT hypotheses to a uniform zero bound. Full I^1_6b remains open.
+- `slow-divergence-ect-partial-result` — Test slow-divergence ECT route on open I6b/DF2a cases
+  - detail: Use exact oracle plus Lean ECT consequence and attack closure under sums/vanishing strata; preserve precise obstruction if actual Dulac reduction is missing.
+- `fix-statement-lean-compile` — Make h16_2 actually state H16.2: real degree_at_most and finite-count fix in Statement.lean
+  - detail: Use bounded symbolic transseries evidence and the ECT Lean lemma; do not treat the refutation witness as a quadratic-field counterexample.
+- `verify-lu-h14-3-finite-core` — Independently verify/refute the finite computational core of Lu arXiv:2607.13785 (H14_3)
+  - detail: Exact naive oracle reproduced all worked examples; four-passage ECT diagnostic executed and captured. It refutes only the shortcut, not I^1_6b finite cyclicity. See code/out/i6b_ect_diagnostic.captured.txt and research/findings/attempt2-i6b-ect-result.md.
+  - refs: research/notes/lu-h14-3-open-graphic-claim.md; research/summaries/lu-h14-3-hemicycle.md; claim h16-drr-h14-3-lu-2026-claim
+- `bautin-lean-statement` — State Bautin M(2)=3 and H16.2 in Lean (Bautin.lean, Statement.lean)
+  - detail: Actual four-Dulac ECT shortcut is refuted by exact toy cancellation; preserve precise scope and missing hypotheses in research/findings/attempt2-i6b-ect-result.md. Lean abstract ECT theorem verified; concrete I^1_6b bridge remains open.
 
-_1 more not shown here; they are in `config/tasks.jsonl`._
+_11 more not shown here; they are in `config/tasks.jsonl`._
+
+## Entries that could not be read
+
+Reported rather than dropped: an entry silently discarded leaves the ledger reading as though it recorded something.
+
+- `bautin-lean-statement` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `fix-statement-lean-compile` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `verify-lu-h14-3-finite-core` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `attack-lu-analytic-remainder` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `i6b-four-second-type-ect-probe` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `ect-slow-divergence-lean-statement` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `actual-open-second-type-remainder` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `i6b-four-passage-ect-obstruction` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `slow-divergence-ect-partial-result` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
+- `i6b-ect-partial-result` was closed as `done` with no `reason` — a row that does not say why is worth nothing to whoever reads it next
 
 ---
 

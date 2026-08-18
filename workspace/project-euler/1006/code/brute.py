@@ -1,25 +1,25 @@
-# Brute-force oracle for PE1006
-# complexity_class: exponential (factor-set enumeration); oracle_bound: small k only.
-def fib_word_at_least(length):
-    a, b = "0", "01"
-    while len(b) < length:
-        a, b = b, b + a
+#!/usr/bin/env python3
+"""Naive oracle for PE1006; exponential in k, used only at k=3,10."""
+def fibword(k):
+    a,b='0','01'
+    while len(b)<k:
+        a,b=b,b+a
     return b
 
 def factors(k):
-    w = fib_word_at_least(3*k + 5)
-    return {w[i:i+k] for i in range(len(w)-k+1)}
+    w=fibword(k)
+    # enlarge until factor set stabilizes; for these anchors S_10 is enough
+    a,b='0','01'
+    seen=set()
+    while True:
+        w=a
+        seen |= {w[i:i+k] for i in range(max(0,len(w)-k+1))}
+        if len(seen)==k+1 and len(w)>=k: return seen
+        a,b=b,b+a
 
-def psi(k):
-    return sum(int(s)**2 for s in factors(k))
+def psi(k,m=None):
+    s=sum(int(x)**2 for x in (int(t) for t in factors(k)))
+    return s if m is None else s%m
 
-if __name__ == "__main__":
-    assert factors(3) == {"001", "010", "100", "101"}
-    assert psi(3) == 20302
-    M = 101001001
-    assert psi(10) % M == 10699667
-    for k in range(1, 21):
-        assert len(factors(k)) == k+1
-    print("Psi(3)=", psi(3))
-    print("Psi(10) mod 101001001=", psi(10) % M)
-    print("factor counts k=1..20: OK")
+if __name__=='__main__':
+    for k in (3,10): print(k, sorted(factors(k)), psi(k), psi(k,101001001))

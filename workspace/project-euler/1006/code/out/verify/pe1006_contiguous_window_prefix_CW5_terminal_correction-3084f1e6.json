@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "pe1006-contiguous-window-prefix/CW5-terminal-correction",
+  "source": "code/lean/pe1006_contiguous_window_prefix_CW5_terminal_correction-3084f1e6.lean",
+  "stage": "decompose"
+}

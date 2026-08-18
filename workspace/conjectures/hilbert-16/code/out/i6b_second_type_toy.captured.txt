@@ -1,0 +1,24 @@
+oracle: exact symbolic four-second-type-Dulac iterated-log toy; claim=I6b-ECT
+range: t>0, c,d symbolic; four passages D1..D4; boundary check L=0 only
+precision/workers: SymPy exact rationals, symbolic differentiation, 1 CPU, no floats
+D1 = L*d + c + t/2
+D2 = 2*L*d + c - t/3
+D3 = L*c + d + 2*t/5
+D4 = L*c + d - 3*t/7
+F = L**2*c**2 + 2*L*c*d - L*c*t/35 + 3*L*d + 2*c + d**2 - d*t/35 - 6*t**2/35 + t/6
+G = -L**2*c*d + 5*L*c*t/6 - L*d**2 - 43*L*d*t/35 - 29*c*t/35 + 5*d*t/6 - 17*t**2/210
+J=F_cG_d-F_dG_c = -2*L**4*c**2 - 4*L**3*c*d - 17*L**3*c*t/7 + 3*L**3*d - 2*L**2*c - 2*L**2*d**2 - 17*L**2*d*t/7 + 43*L**2*t**2/1225 - 5*L**2*t/2 + 58*L*c*t/35 - 4*L*d + L*t/35 + 58*d*t/35 - 29*t**2/1225 + 5*t/3
+specialized family (c=d=0):
+f1 = t*(35 - 36*t)/210
+f2 = -17*t**2/210
+f3 = t*(258*L**2*t - 18375*L**2 + 210*L - 174*t + 12250)/7350
+exact Wronskians W1,W2,W3 (L=log(t) retained):
+W1 = t*(35 - 36*t)/210
+W2 = -17*t**2/1260
+W3 = 0
+boundary specialization L=0:
+W1|L=0 = t*(35 - 36*t)/210
+W2|L=0 = -17*t**2/1260
+W3|L=0 = 0
+RESULT: W3|L=0 = 0, so this toy does NOT support a 3-function ECT claim
+STATUS: toy refutes the naive ECT shortcut at the boundary; it does not refute I6b finiteness

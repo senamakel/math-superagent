@@ -1,0 +1,8 @@
+RUN: bounded exact I^1_6b ECT falsifier
+ORACLE: four affine second-type passage surrogates; residuals F,G; J=F_c G_d-F_d G_c
+RANGE: coefficient box [-2,2]^4; stopped after first 5 exact W3 failures
+PRECISION/WORKERS: SymPy exact integer arithmetic, 1 CPU, no floats
+TESTED: 1 coefficient tuples
+FIRST_FAILURES: [(-2, -2, -2, -2)]
+RESULT: bounded toy family contains exact rank-loss cases (W3 identically zero)
+STATUS: bounded failed search against shortcut only; not a faithful dynamical counterexample

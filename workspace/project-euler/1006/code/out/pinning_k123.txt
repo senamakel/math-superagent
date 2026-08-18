@@ -1,0 +1,18 @@
+Method policy: this is the required immediate small program. It tests only the z^0 indexing interface and the proposed one-intercept aggregate.
+
+$ python code/verify_z_index.py
+z = 90900901
+k=1: all ue0 moments = True
+k=1: mech A=B=1, values=[0, 1]
+k=2: all ue0 moments = True
+k=2: mech A=B=101, values=[0, 1, 10]
+k=3: all ue0 moments = True
+k=3: mech A=B=20302, values=[1, 10, 100, 101]
+INDEXING HARNESS PASSED: k=1,2,3; ue0 weights z^0..z^k.
+
+The indexing is therefore pinned: ue0 is correct. It is not the missing reduction. The single-intercept aggregation is falsified immediately:
+$ python code/refute/reduction_boundary_harness.py
+k=1: mech_psi=1, single-intercept-S2=0, equal=False
+k=2: mech_psi=101, single-intercept-S2=0, equal=False
+k=3: mech_psi=20302, single-intercept-S2=100900000, equal=False
+Conclusion: formulation B has k+1 intercepts; fixing indexing cannot repair this reduction.

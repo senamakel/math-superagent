@@ -27,18 +27,18 @@ mechanism: The gap between k+1 equally-spaced points on the circle is governed
 
 status: adopted
 
-adopted-reason: The only grounded candidate that is also an genuinely
+adopted-reason: The only grounded candidate that is also a genuinely
       independent evaluation of the SAME Psi(k) (three-gap/Ostrowski closed form
       instead of the universal-Euclidean monoid) — exactly what step-5
       verification needs. It inherits the verified mechanical slope/intercept
       work and replaces the single hard primitive with the three-gap exact
-      counts, giving a second route to one number. It also carries the first
-      step that must happen before ANY O(log) method (this run's or the
-      committed one) can be judged: the previous acceptance anchors
-      Psi(10^4)=16242174 and Psi(10^6)=77578256 were computed by Psi_collapse,
-      the Toeplitz A(d) collapse the run itself proved invalid outside
-      k=F_n-1 — so they are wrong and must be recomputed by a valid general-k
-      method.
+      counts, giving a second route to one number. Reaffirmed by the follow-up
+      round: the three alternative engines (transfer-operator spectral,
+      weighted-language diagonal, Fourier orbit correlation) were closed or
+      narrowed by the literature, and the Fourier candidate's needed engine —
+      continued-fraction renormalisation of fractional-part sums (J. Number
+      Theory 1985; Ralston arXiv:1105.5810) — is exactly this route, so the
+      synthesis folds into Ostrowski rather than creating a fourth engine.
 
 mechanism-checked: Every ingredient is standard and cited.
       (i) The k+1 points frac(−m·a) are exactly N points of a circle rotation
@@ -82,23 +82,21 @@ precedent:
       - Floor-sum with geometric weight: luogu P5170; cnblogs mizu164 "LOJ138
         类欧几里得算法【万能欧几里得】" (the universal-Euclidean primitive).
 
-first-step: (i) FIRST recompute the Phase-4 acceptance anchors correctly: the
-      existing Psi(10^4)=16242174 and Psi(10^6)=77578256 were produced by
-      Psi_collapse, the Toeplitz A(d) collapse that the run's own Phase-3
-      proved invalid outside k=F_n-1 (10^4, 10^6 are not of that form) — so
-      they are wrong. Replace them with a valid general-k O(k) program:
-      Psi(k) = sum over the k+1 arc-midpoint factors of (decimal value mod M)^2
-      (each v(x_m) in O(k) modular digit ops), and confirm the result equals
-      brute Psi at every oracle-reachable k. (ii) Then fix small k (1..60) and
-      slope a=F(n-2)/F(n): for each position j print the multiset
-      { floor(x_m + j a) : m=0..k } and confirm it is a Beatty/Ostrowski
-      multiset (two or three consecutive values; counts from the three-gap
-      numbers N1,N2,N3 of the continued fraction of a). (iii) Evaluate
-      Psi(k)=sum_m v(x_m)^2 from those counts alone and match brute. (iv) If
-      the count formula is exact for k=1..60, promote to the O(log)
-      three-distance/Ostrowski closed form and reproduce the corrected
-      anchors. Only that counts as the independent step-5 route for the
-      committed universal-Euclidean method.
+first-step: Implement the three-distance count function directly and verify it
+      against the mechanical multiset before any O(log) claim. Concretely: for
+      fixed k and rational slope a = F(n-2)/F(n) (F(n) > k, strict), compute
+      the k+1 sorted points frac(-m·a), m = 0..k; get their gap multiset via
+      the exact three-distance theorem (gap lengths and counts N1,N2,N3 from
+      the continued fraction of a — Weiß arXiv:1807.11273, van Ravenstein);
+      and for each digit position j confirm that the count of ones
+      #{m : floor(x_m + j·a) - floor(x_m + (j-1)·a) = 1} equals the value the
+      three-gap counts predict, for k = 1..60 against code/mech/mech_psi.py.
+      The acceptance anchors are already corrected (Psi(10^4)=34432237,
+      Psi(10^6)=20938836, claim directive6-anchors-verified-incontainer), so
+      this route's gate is: reproduce Psi(k) for k=1..150, then Psi(10)=10699667,
+      then the two corrected anchors, by a three-gap/Ostrowski closed form —
+      no universal-Euclidean monoid, no Toeplitz collapse. Only then is it the
+      independent step-5 route for the committed method.
 ```
 
 ## Assessment for the run

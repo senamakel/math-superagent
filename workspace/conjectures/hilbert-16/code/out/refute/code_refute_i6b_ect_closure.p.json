@@ -1,0 +1,6 @@
+{
+  "finding": "refuted",
+  "model": "tff('declare_$i1',type,'fmb_$i_1':$i).\ntff('declare_$i2',type,'fmb_$i_2':$i).\ntff('finite_domain_$i',axiom,\n      ! [X:$i] : (\n         X = 'fmb_$i_1' | X = 'fmb_$i_2'\n      ) ).\n\ntff('distinct_domain_$i',axiom,\n         'fmb_$i_1' != 'fmb_$i_2'\n).\n\ntff(declare_pair1,type,pair1:$i).\ntff(pair1_definition,axiom,pair1 = 'fmb_$i_1').\ntff(declare_nonzero,type,nonzero:$i).\ntff(nonzero_definition,axiom,nonzero = 'fmb_$i_1').\ntff(declare_pair2,type,pair2:$i).\ntff(pair2_definition,axiom,pair2 = 'fmb_$i_1').\ntff(declare_sum_pair,type,sum_pair:$i).\ntff(sum_pair_definition,axiom,sum_pair = 'fmb_$i_2').\ntff(declare_wronskian,type,wronskian: ($i * $i) > $o).\ntff(predicate_wronskian,axiom,\n           wronskian('fmb_$i_1','fmb_$i_1')\n         & wronskian('fmb_$i_1','fmb_$i_2')\n         & ~wronskian('fmb_$i_2','fmb_$i_1')\n         & ~wronskian('fmb_$i_2','fmb_$i_2')\n\n).\n\n",
+  "problem": "code/refute/i6b_ect_closure.p",
+  "status": "CounterSatisfiable"
+}

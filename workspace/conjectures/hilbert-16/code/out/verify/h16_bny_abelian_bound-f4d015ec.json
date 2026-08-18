@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "h16-bny-abelian-bound",
+  "source": "code/lean/h16_bny_abelian_bound-f4d015ec.lean",
+  "stage": "decompose"
+}

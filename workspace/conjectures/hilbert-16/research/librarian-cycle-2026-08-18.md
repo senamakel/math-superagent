@@ -1,10 +1,7 @@
-# Cycle digest: reference library build
+# Library-build note
 
-- Read `/workspace/problem.md` and `/workspace/GOAL.md` first.
-- Searched broadly by DRR status, canonical H16 orientation, elementary polycycles, Abelian-integral bounds, and lower bounds.
-- Used citation graphs from Ilyashenko 2002 and BNY 2008, and similar-source search; frontier was expanded.
-- Downloaded and filed: `research/sources/encyclopedia-hilbert16-wikipedia.full.md`, `kaloshin-hilbert-arnold-2001.full.md`, `kaleda-shchurov-elementary-polycycles-2011.full.md`, `binyamini-dor-uniform-petrov-khovanskii-2011.full.md`, `binyamini-dor-nonlinearity-2012.full.md`, and `li-abelian-integrals-limit-cycles-survey-2011.full.md`.
-- `research/ROOT.md` now states the minimal counterexample structure, verification boundary, and at least three settled restricted classes.
-- `describe_file`/`refresh_index` cannot be used under `research/` because this workspace reserves research cataloguing to Cognee; Cognee was unavailable, so the durable digest is this file and `research/ROOT.md`.
-- `remember_memory` failed because the memory server health check timed out; retry when service recovers.
-- Failed duplicate downloads were not retried: Ilyashenko 2002 and Gasull–Santana 2025 were already represented in the library.
+The source library is now sufficient for the first phase. A new primary source is held at `research/sources/yeung-dulac-monomial-gap-2024.full.md`, with digest `research/summaries/yeung-dulac-monomial-gap-2024.md`; its URL is https://doi.org/10.48550/arxiv.2402.12506. It documents a claimed gap in the Ilyashenko proof of individual Dulac finiteness, without disproving the theorem.
+
+The existing corpus and `research/ROOT.md` cover: (i) the definition and open status of uniform H16.2, including the quadratic case; (ii) the DRR/Roussarie reduction and its unresolved 121/125 catalogue issue; (iii) elementary-polycycle finite cyclicity, including Kaloshin's and Kaleda–Shchurov's bounds; (iv) explicit Abelian-integral zero bounds of Binyamini–Dor and Binyamini–Novikov–Yakovenko; and (v) lower bounds and the distinction between individual and uniform finiteness.
+
+Further search should now be gap-driven through the frontier/requests ledgers, not broad repetition. Cognee indexing was unavailable, so the full durable record is the accompanying librarian-cycle document.

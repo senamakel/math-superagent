@@ -1,0 +1,13 @@
+RUN: exact four-passage/ECT oracle with naive worked-example guard
+ORACLE: naive_count for problem.md examples; exact Wronskians over Q[a,x]
+PARAMETERS: x symbolic; a in {0,1}; polynomial representatives degree <=2
+PRECISION: exact SymPy rationals/symbolics; no floating point
+GUARD cubic A=1-u: got=1, expected=1, check=True
+GUARD linear centre A=0: got=0, expected=0, check=True
+GUARD linear expanding focus A=1: got=0, expected=0, check=True
+GUARD two cycles A=(1-u)(2-u): got=2, expected=2, check=True
+GUARD semi-stable A=(1-u)^2(2-u): got=1, expected=1, check=True
+W(pair1)=1; W(pair2)=1; summed=[0, 0]; W(sum)=0
+family=[a, a*x]; W(family)=a**2; boundary a=0=[0, 0]; W(boundary)=0
+RESULT: proposed ECT closure under four-passage addition is REFUTED
+SCOPE: obstruction is algebraic/logical, not a faithful I^1_6b dynamical counterexample

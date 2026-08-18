@@ -1,0 +1,20 @@
+Directive-9 finite transfer validation (code/directive9_transfer.py)
+
+Method: doubled Fibonacci prefix, contiguous windows r=F-k-1..F-1, rolling exact decimal recurrence
+v[r+1] = 10 v[r] - y[r] 10^k + y[r+k].
+The block summary is (count, sum(v), sum(v^2)) modulo M; adjacent summaries compose by componentwise addition.
+This is a bounded oracle/diagnostic, not a full-size implementation.
+
+Run: python code/directive9_transfer.py
+
+Output:
+directive9 finite transfer checks k=1..150: PASS
+summary composition checks k=1..150: PASS
+3 5 20302 20302
+10 13 10699667 10699667
+
+Independent anchor check:
+python code/out/verify/check_directive6_anchors.py 10000
+k=10000 NextFib(k)=10946 prefix length=20945
+Psi(10000) mod M = 34432237 count=10001
+MATCH? True

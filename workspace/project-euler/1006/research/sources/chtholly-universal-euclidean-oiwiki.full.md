@@ -1,4 +1,4 @@
-<!-- source: https://oi-wiki.org/math/number-theory/euclidean-like-algorithm/ | converted from HTML -->
+<!-- source: https://oi-wiki.org/math/euclidean-like-algorithm/ | converted from HTML -->
 
 404 Not Found - OI Wiki
 

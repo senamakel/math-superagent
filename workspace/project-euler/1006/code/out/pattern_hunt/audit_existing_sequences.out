@@ -1,0 +1,43 @@
+[psi_exact.txt] count=50 prefix=[1, 1, 2, 101, 3, 20302, 4, 2042402, 5, 204252402, 6, 30445654403]
+  diff prefix= [0, 1, 99, -98, 20299, -20298, 2042398, -2042397, 204252397, -204252396, 30445654397, -30445654396] constant-diff= (2, 1)
+  fib-index equality= [(2, 1), (5, 3)]
+[psi_residues.txt] count=800 prefix=[1, 1, 2, 101, 3, 20302, 4, 2042402, 5, 2250400, 6, 44353102]
+  diff prefix= [0, 1, 99, -98, 20299, -20298, 2042398, -2042397, 2250395, -2250394, 44353096, -44353095] constant-diff= (2, 1)
+  fib-index equality= [(2, 1), (5, 3)]
+[c1_terms.txt] count=800 prefix=[1, 1, 2, 1, 3, 2, 4, 2, 5, 2, 6, 3]
+  diff prefix= [0, 1, -1, 2, -1, 2, -2, 3, -3, 4, -3, 4] constant-diff= (2, 1)
+  fib-index equality= [(2, 1), (5, 3)]
+  block 2 sums [2, 3, 5, 6, 7]
+  block 3 sums [4, 6, 11, 11, 18]
+  block 5 sums [8, 15, 27, 31, 46]
+  block 8 sums [16, 38, 60, 82, 104]
+  block 13 sums [39, 93, 160, 206, 281]
+  block 21 sums [92, 238, 403, 536, 714]
+  block 34 sums [220, 619, 1019, 1418, 1818]
+[lmin.txt] count=800 prefix=[1, 2, 2, 4, 3, 7, 4, 8, 5, 12, 6, 13]
+  diff prefix= [1, 0, 2, -1, 4, -3, 4, -3, 7, -6, 7, -6] constant-diff= (2, 0)
+  fib-index equality= [(5, 3)]
+[dj_raw.txt] count=2290 prefix=[1, 1, 2, 1, 3, 3, 4, 2, 5, 1, 6, 5]
+  diff prefix= [0, 1, -1, 2, 0, 1, -2, 3, -4, 5, -1, 2] constant-diff= (2, 1)
+  fib-index equality= [(2, 1), (5, 3)]
+[dj_mod.txt] count=2290 prefix=[1, 1, 2, 1, 3, 3, 4, 2, 5, 1, 6, 5]
+  diff prefix= [0, 1, -1, 2, 0, 1, -2, 3, -4, 5, -1, 2] constant-diff= (2, 1)
+  fib-index equality= [(2, 1), (5, 3)]
+[counts.txt] count=800 prefix=[1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7]
+  diff prefix= [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0] constant-diff= (2, 0)
+  fib-index equality= [(5, 3)]
+  exact linear recurrence order 3 (1, 1, -1)
+  exact linear recurrence order 4 (c3 + 1, 1 - c3, -c3 - 1, c3)
+  exact linear recurrence order 5 (c3 + c4 + 1, 1 - c3, -c3 - 2*c4 - 1, c3, c4)
+[vr_runvals.txt] count=154 prefix=[0, 10, 10010, 1010010, 1001010010, 1001001010010, 101001001010010, 100101001001010010, 10100101001001010010, 10010100101001001010010, 10010010100101001001010010, 1010010010100101001001010010]
+  diff prefix= [10, 10000, 1000000, 1000000000, 1000000000000, 100000000000000, 100000000000000000, 10000000000000000000, 10000000000000000000000, 10000000000000000000000000, 1000000000000000000000000000, 1000000000000000000000000000000] constant-diff= (2, 10000)
+  fib-index equality= [(1, 0)]
+[vr_rungaps.txt] count=153 prefix=[1, 3, 2, 3, 3, 2, 3, 2, 3, 3, 2, 3]
+  diff prefix= [2, -1, 1, 0, -1, 1, -1, 1, 0, -1, 1, 0] constant-diff= (2, -1)
+  fib-index equality= [(5, 3)]
+[ext_recurrence.txt] count=200 prefix=[1, 0, 1, 1, 0, 2, 10, 2, 2, 10, 3, 10]
+  diff prefix= [-1, 1, 0, -1, 2, 8, -8, 0, 8, -7, 7, -8] constant-diff= (2, 1)
+  fib-index equality= [(3, 1)]
+[extrecur_res.txt] count=1600 prefix=[1, 0, 1, 0, 2, 10, 2, 10, 3, 10, 2, 110]
+  diff prefix= [-1, 1, -1, 2, 8, -8, 8, -7, 7, -8, 108, -106] constant-diff= (2, 1)
+  fib-index equality= [(3, 1)]

@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "drr-saddle-node-normalforms-dir2002",
   "source": "code/lean/drr_saddle_node_normalforms_dir2002-4977e1ed.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

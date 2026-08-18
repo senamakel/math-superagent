@@ -1,0 +1,3 @@
+> **Source:** https://doi.org/10.3934/cpaa.2026012
+>
+> Gasull–Santana study planar polynomial systems with a prescribed nondegenerate invariant algebraic curve, defining corresponding HC-numbers. Their theorem relates the number of limit cycles obtainable in the constrained class to the Hilbert numbers: if H(n) is finite, a system can realize at least H(n) plus contributions from ovals of the invariant curve; if H(n) is infinite, arbitrarily many hyperbolic cycles can be transferred to the constrained class. This is a reduction/lower-bound result, not an upper bound and does not settle H(n). It is relevant as an adjacent structural transformation and preserves the distinction between finite and infinite H(n). Evidence: asserted-by-source until independently formalized.

@@ -9,6 +9,10 @@ Derived from `config/attempts.jsonl` and rewritten on every write. Do not edit t
 
 Candidates still being written or still being judged, most recently touched first. Read one with `attempt_diff`.
 
+- `wiring-mechpsi-ueuclid-attempt` — Attempted the full mech_psi→ueuclid reduction; failed at k=1..150 ((1,2,1),(2,363,101),(3,10102,20302)); one boundary-term patch left the k+1-intercept aggregation unresolved, so no 10^18 run and no anchor reproduction.
+  - score: unsolved
+  - reason: No final answer. Re-ran already-established brute examples and primitive acceptance 1-3, wrote a Lean statement with an intentional sorry, then wired the reduction and hit the z^0-index/intercept-aggregation hazard already flagged in the open implement-solution task and the banked verify-ueuclid-incontainer attempt; correcting one boundary term did not resolve it. No claim block carries the finding, so this is not banked. The report's 'no previous attempts' is false.
+  - refs: implement-solution task; attempts/verify-ueuclid-incontainer; code/mech/mech_psi.py; code/lib/ueuclid.py
 - `verify-ueuclid-incontainer` — Verified the O(log) ueuclid monoid in-container and fixed the ue0 0-indexed wrapper (intercept q-p, not p+q); no final answer produced.
   - score: banked
   - reason: Real, on-disk-result: ue0 wrapper bug found and fixed (0/40 -> 40/40 vs literal loop, 5/5 spots, module __main__ ALL PASSED), overturning the earlier ueuclid-incontainer-fails-s1s2 claim. But no Psi(10^18) mod M number was produced: acceptance steps 4-5 (mech_psi agreement k=1..150, both directive-6 anchors, k=10^18 stability across two approximants) were never run, so the goal is unreached. The report claimed 'all steps complete' one paragraph after naming step 4 as still open — a self-contradiction.

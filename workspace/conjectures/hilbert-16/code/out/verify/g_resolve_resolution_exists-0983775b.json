@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "g-resolve-resolution-exists",
   "source": "code/lean/g_resolve_resolution_exists-0983775b.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

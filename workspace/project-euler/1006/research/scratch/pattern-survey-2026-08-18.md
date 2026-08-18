@@ -1,0 +1,1 @@
+Surveyed current artifacts: psi_exact 1..25, residues 1..400, c1 1..400, and reports. Existing durable findings already cover no low-order recurrence and floor/Fibonacci-block regularities. Awaiting independent agent to test whether any stronger relation exists; do not promote old finite patterns as new.

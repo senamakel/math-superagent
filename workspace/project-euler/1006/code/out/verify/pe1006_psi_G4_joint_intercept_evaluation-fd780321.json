@@ -1,0 +1,6 @@
+{
+  "attempts": 1,
+  "node": "pe1006-psi/G4-joint-intercept-evaluation",
+  "source": "code/lean/pe1006_psi_G4_joint_intercept_evaluation-fd780321.lean",
+  "stage": "prove"
+}

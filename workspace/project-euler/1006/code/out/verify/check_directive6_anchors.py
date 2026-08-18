@@ -16,6 +16,7 @@ the largest feasible k and extrapolate the residue, or use an independent
 O(k)-per-number scheme.
 """
 import sys, time
+sys.set_int_max_str_digits(10_000_000)
 sys.path.insert(0, "/workspace/code")
 from lib.fibword import fib_prefix, next_fib, fibs_upto
 

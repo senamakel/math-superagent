@@ -1,4 +1,4 @@
-<!-- source: https://doi.org/10.1090/s1061-0022-2011-01158-6 | converted from HTML -->
+<!-- source: https://doi.org/10.1090/S1061-0022-2011-01158-6 | converted from HTML -->
 
 St. Petersburg Mathematical Journal
 

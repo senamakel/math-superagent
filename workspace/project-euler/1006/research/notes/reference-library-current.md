@@ -1,0 +1,5 @@
+# Reference-library build report (2026-08-18)
+
+Search covered Sturmian factor complexity, mechanical/rotation codings, Fibonacci-factor location/enumeration, and weighted Euclidean floor-moment algorithms. Search results included Perrin/Restivo and Berstel/Vuillon treatments, Sivasankar–Rama factor-location work, and universal Euclidean/floor-sum references. The relevant primary and reference-tier material is already present under `research/sources/` with summaries under `research/summaries/`; notably Lothaire, Morse–Hedlund, Berstel–Vuillon, Perrin–Restivo, Sivasankar–Rama, and OI-Wiki/AtCoder-style Euclidean floor-sum sources. The attempted HAL download was refused as duplicate because the work is already represented in the library.
+
+The library supports the Sturmian/mechanical reduction and individual floor-sum evaluation. It does not contain a source proving the needed fixed-dimensional aggregation of all decimal-weighted contiguous Fibonacci windows. That gap is recorded in the existing approach notes and remains the blocker.

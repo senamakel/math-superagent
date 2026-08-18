@@ -1,0 +1,5 @@
+RUN: exact four-passage/ECT oracle with naive worked-example guard
+ORACLE: code/i6b_four_passage_oracle.py; naive_count plus exact Wronskians
+CLAIM: h16-i6b-four-passage-ect-obstruction
+PARAMETERS: x symbolic; a in {0,1}; polynomial representatives degree <=2
+PRECISION: exact SymPy rationals/symbolics; no floating point

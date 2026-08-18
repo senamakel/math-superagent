@@ -1,0 +1,25 @@
+# Scholar reference synthesis — H16.2 (2026-08-18)
+
+## Object and structural reduction
+The target is H(n), the supremum of isolated periodic orbits of planar polynomial fields of degree ≤ n; the displacement function is return map minus identity. The DRR/Roussarie reduction says quadratic uniform finiteness is equivalent to finite cyclicity of the 121 listed limit-periodic graphics in the quadratic normal-form family. Panazzolo–Rousseau classify compactified polynomial limit-periodic sets topologically as connected semialgebraic subsets of S² of dimension 0 or 1, but do not prove finite cyclicity. The exact 121/125 catalogue discrepancy remains unresolved.
+
+## What is established in restricted classes
+Mourtada and Ilyashenko–Yakovenko/Kaloshin give finite cyclicity for generic elementary/hyperbolic polycycles in smooth finite-parameter families; Kaloshin gives E(k)≤2^(25k²), while Kaleda–Shchurov gives a polynomial-in-parameter estimate under elementary hypotheses. Mourtada is local/open-dense, not a global uniform theorem. Marín–Villadelprat 2025 gives sharp cyclicity 2 for generic individual quadratic hyperbolic hemicycles and simultaneous cyclicity 3 for a pair. Dukov 2023 bounds multiplicity, not distinct-cycle count. These do not cover nilpotent/degenerate graphics.
+
+Zhu–Rousseau 2002 proves finite cyclicity for several generic multiplicity-3 nilpotent saddle/elliptic graphics by weighted blow-up, Dulac maps and generalized derivation–division, with explicit hypotheses and an untreated concave saddle class. Roussarie–Rousseau 2008 closes four pp center graphics H^1_7,F^1_7a,H^3_11,I^1_6a; Rousseau–Zhu closes 15 pp elliptic non-center graphics; Rousseau–Shan–Zhu 2015 closes I^1_12 and I^1_13. Roussarie–Rousseau 2015 closes I^1_14 and only boundary limit-periodic sets for I^1_6b,H^3_13,DI_2b. Huzak 2018 concerns DF2a only, not I^1_6b. Full H(2) therefore remains open.
+
+## Individual finiteness and contradictions
+Bamón gives finite cycles for each fixed quadratic field independently of the disputed general Dulac proof. Écalle/Ilyashenko are classical general analytic finiteness results, but Yeung 2024/25 challenges completeness of Ilyashenko’s ordering-of-asymptotics step for semi-hyperbolic polycycles; the theorem itself is not disproved and hyperbolic case is not questioned. Llibre et al. 2024 reports the community treats Dulac finiteness as under review. This is a genuine contradiction in proof-status memory, not evidence that the theorem is false.
+
+## Abelian/tangential route
+BNY prove an explicit double-exponential zero bound for Abelian integrals over nonsingular ovals and first-order Hamiltonian perturbation cycles, approximately 2^(2^(O(n^61))). Binyamini–Dor refine it to exp⁺(n²)m+exp⁺(n²), linear in deg ω. Novikov–Yakovenko provide Petrov-module/Picard–Fuchs structure; Gavrilov gives module freeness in suitable Morse/semiweighted settings; GMV’s ECT criteria require separated Hamiltonians, involutions and CT hypotheses. GGI gives exact cyclicity 2 for named quadratic genus-one classes r11/r18. Yang 2025 claims sharp n−1 for a cubic isochronous annulus, but is unrefereed. An–Dai–Hu claim three special hyperelliptic Chebyshev classes (bound 1); Sun–Dai reports at least two zeros in another quintic family and leaves upper bound 2 open. None applies directly to a full degenerate DRR displacement.
+
+## Bounds and recent claims
+Galias–Tucker rigorously interval-certify Songling’s quadratic system has exactly four cycles, hence H(2)≥4; H(2)=4 remains conjectural. Held source claims give H(3)≥13; Prohens–Torregrosa gives H(4)≥28 and larger-degree values; Torregrosa 2024 gives 12 small-amplitude cubic cycles. Christopher–Lloyd and later canard constructions give H(n)≳n²log n (the 2020 canard paper itself is not held full). Liénard slow-fast constructions disprove the Lins–de Melo–Pugh sharp count for degree ≥6.
+
+Lu 2026 claims local uniform finite cyclicity for H^3_14, but only finite algebraic identities are independently exact-checked and Lean-checked. Root uniqueness, common-domain/itinerary completeness, Hadamard division and analytic zero theorems remain unverified. Marín 2026 supplies a fake-saddle transition-map template, not H^3_14 or I^1_6b. Pedregal 2021 claims a quartic global bound and H(2)=4 via variational minimizers, but is unrefereed, lacks a visible return-map analyticity step, and follows an earlier variant acknowledging a counting mistake. Buzzi–Novaes refute a different quadratic closed form using n²log n.
+
+## Sources that do not help as proof evidence
+Landing/record-only captures (Kaleda–Shchurov local capture, Li–Liu–Yang 2009 landing, DPR 2007 landing, Ilyashenko AMS landing), encyclopedia/MathWorld/Scholarpedia, the broken Elsevier redirect for canard 2020, the contaminated Llibre–Zhang filename (power-grid paper), and duplicate summaries do not establish the mathematics claimed. They orient or corroborate only.
+
+Durable-memory storage was attempted through `remember_memory` but the memory service timed out; this file is the local durable fallback and should be retried only after service recovery.

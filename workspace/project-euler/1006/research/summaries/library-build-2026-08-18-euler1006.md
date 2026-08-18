@@ -1,0 +1,7 @@
+# Library build report — 2026-08-18
+
+The local library already covers the statement, Fibonacci/Sturmian theory, mechanical rotations, Fibonacci automaticity, Rauzy graphs, Ostrowski numeration, three-distance structure, and weighted universal-Euclidean floor sums. This cycle searched three additional angles: (i) exact height/factor statistics (O’Bryant), (ii) lexicographic/standard-factor algorithms (Perrin–Restivo), and (iii) published weighted floor-power/Dedekind recurrences (Brown). Triage found no authoritative published algorithm directly evaluating Ψ(k) in polylogarithmic time.
+
+A new source was downloaded: `research/sources/obryant-sum-heights-sturmian-factors.full.md`, with digest `research/summaries/obryant-sum-heights-sturmian-factors.md`. It establishes the height definition, characteristic-word representation, and a parity theorem, but not the decimal weighted second moment required here. The other triaged sources were already represented locally or were not sufficiently targeted to download.
+
+The missing theorem remains precise: a fixed-dimensional recurrence that jointly carries all decimal boundary offsets and quadratic cross terms through Fibonacci/Ostrowski blocks, giving Ψ(k) modulo M in time polynomial in log k. A larger finite run would only test the existing O(k) evaluator and would not settle this structural gap.

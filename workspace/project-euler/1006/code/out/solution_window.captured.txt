@@ -1,0 +1,6 @@
+window evaluator vs mech_psi k=1..150: PASS
+Psi(1) mod 101001001 = 1
+Psi(2) mod 101001001 = 101
+Psi(3) mod 101001001 = 20302
+Psi(10) mod 101001001 = 10699667
+Psi(10^18): NOT RUN; this certified evaluator is O(k), not the requested O(log) method

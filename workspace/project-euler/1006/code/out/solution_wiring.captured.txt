@@ -1,0 +1,15 @@
+Command: `python code/brute.py`
+Output:
+```
+Psi(3) = 20302
+Psi(10) mod 101001001 = 10699667
+length-3 factors = ['001', '010', '100', '101']
+```
+
+Command: `python -m lib.ueuclid`
+Output: acceptance 1-3 random 30/30, floor_sum 30/30, deterministic 6/6, ue0 30/30, and large-n dU=381966011250351898.
+
+Command: `python code/solution.py`
+The floor-moment indexing smoke test passed, but the attempted direct wiring failed already at k=1 (first mismatch 2 versus 1 before the missing boundary correction was patched). The run therefore does not claim an evaluator result.
+
+Status: no valid O(log) reduction from the k+1 intercept/arc aggregation to the single universal-Euclidean call was present in the artifacts. The contiguous-window alternative is explicitly refuted as an independent O(log) route in `research/approaches/pe1006-contiguous-window-cyclic-minus-prefix.md`. Consequently the corrected anchors and k=10^18 were not recomputed by `code/solution.py`; reporting a residue would be unsupported.

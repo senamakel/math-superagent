@@ -1,0 +1,13 @@
+# Approach: Fourier / Parseval on the rotation orbit
+
+```approach
+id: pe1006-fourier-rotation-correlation
+idea: Discrete Fourier / Parseval on the finite rotation orbit — expand each floor-difference digit by its sawtooth Fourier series on the rational p/q grid and put Psi into a quadratic form in Fourier coefficients, where orthogonality collapses the orbit average and leaves frequency-indexed sums with finite geometric-sum coefficients.
+mechanism: The k+1 intercepts x_m = frac(-m·a) are a finite rotation orbit whose DFT is known; the residual rational exponential sums are Gauss/Kloosterman-shaped and are candidates for continued-fraction/Euclidean reduction. This is a different engine (frequency collapse) from the Beatty-multiset three-gap counting of the adopted route, but the residual sums it leaves are the same object the Ostrowski/continued-fraction route evaluates.
+status: narrowed
+survives: Fourier analysis of fractional-part sums and exponential sums is valid for irrational rotations and can re-express the floor/sawtooth correlations; it does not currently establish a cheaper independent evaluator for Psi.
+precedent: https://www.sciencedirect.com/science/article/pii/S0022314X97920801; https://doi.org/10.48550/arxiv/1105.5810; https://doi.org/10.1051/ita:2007026; rotation-arc-factor-frequencies; governing-universal-euclidean
+revive-when: A source or proved lemma gives a finite, uniform evaluation of the resulting rational exponential sums for the Fibonacci slope and geometric base-10 weights, rather than merely bounds or another floor-sum recursion.
+```
+
+Assessment: The reformulation is Fourier analysis of a finite rotation orbit, with sawtooth expansions and Parseval/correlation identities. The classical Fourier facts require periodic/rational or suitably convergent expansions and summability/regularisation; for the rational approximants used here those hypotheses hold, while the irrational limit is handled by standard discrepancy/convergence arguments. Literature such as the fractional-part-sum paper gives continued-fraction formulas and bounds for sums of {n alpha+gamma}; Ralston gives substitution/continued-fraction renormalisation of rotation discrepancy. These are relevant precedent, but neither applies the proposed quadratic decimal observable to PE1006 nor proves the claimed Gauss/Kloosterman reduction. The route may buy an alternative derivation and perhaps a cross-check; as presently formulated it reduces to the same continued-fraction/Euclidean arithmetic as the adopted method, so it is narrowed rather than grounded as an independent solution.

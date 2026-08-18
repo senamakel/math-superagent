@@ -1,0 +1,5 @@
+# Reference-library status (2026-08-18)
+
+The library is already broad and locally readable: canonical Sturmian/mechanical-word sources, Fibonacci factor-location papers, standard-factor and circular-word treatments, OEIS catalogues, and several Euclidean/floor-sum algorithm references are present under `research/sources/`, with bounded notes under `research/summaries/`. This cycle re-read the governing claims, checked the source graph for Perrin–Restivo, the Fibonacci factor-location paper, and Berstel's survey, and found no missing canonical tier worth downloading without duplicating held material. The remaining gap is not bibliography but the solver's own reduction from the mechanical second moment to the tested monoid; it is recorded as an open project derivation rather than misrepresented as a literature theorem.
+
+Useful source-backed claims are indexed in `derived/CLAIMS.md`, especially `fibonacci-sturmian-complexity`, `governing-sturmian`, and `universal-euclidean-geometric-floor-sum`. The official statement is in `problem.md` and also held in the source tier. No published Project Euler solution was searched for or downloaded.

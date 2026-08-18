@@ -1,0 +1,3 @@
+"""Output capture helper is intentionally not executable; run command:
+python code/refute/check_small_final_evaluator.py
+"""

@@ -1,0 +1,16 @@
+exact tabular survey
+psi_exact.txt: rows=25, widths=Counter({2: 25}), head=[[1, 1], [2, 101], [3, 20302], [4, 2042402], [5, 204252402], [6, 30445654403], [7, 3054587854503], [8, 407470828064704]]
+psi_residues.txt: rows=400, widths=Counter({2: 400}), head=[[1, 1], [2, 101], [3, 20302], [4, 2042402], [5, 2250400], [6, 44353102], [7, 14581260], [8, 65706380]]
+c1_terms.txt: rows=400, widths=Counter({2: 400}), head=[[1, 1], [2, 1], [3, 2], [4, 2], [5, 2], [6, 3], [7, 3], [8, 4]]
+lmin.txt: rows=400, widths=Counter({2: 400}), head=[[1, 2], [2, 4], [3, 7], [4, 8], [5, 12], [6, 13], [7, 14], [8, 20]]
+vr_rungaps.txt: rows=153, widths=Counter({1: 153}), head=[[1], [3], [2], [3], [3], [2], [3], [2]]
+psi exact first affine failure (2, 101)
+psi exact first Fibonacci-add failure (2, 101)
+psi residues BM order mod 101001001 200
+c1 first floating formula failure (diagnostic) none through 400
+c1 difference prefix [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0]
+lmin formula first failure none through 400
+lmin first differences [2, 3, 1, 4, 1, 1, 6, 1, 1, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 14, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+deliberate lmin wrong formula failure (2, 4)
+deliberate psi mod-constant failure (2, 101)
+new conjecture: none; all tested patterns match stored known formulas or fail immediately as reported

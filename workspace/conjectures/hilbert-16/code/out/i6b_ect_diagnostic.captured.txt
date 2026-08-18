@@ -1,0 +1,7 @@
+RUN: exact diagnostic for four second-type Dulac passages and vanishing slow divergence
+ORACLE: exact Wronskians and first-order coefficient test; four passage blocks represented by two ECT pairs
+RANGE: symbolic x, eps; polynomial degree <=2; no floating point
+W(A)= 1 W(B)= 1 W(A+B)= 0
+D(eps,x)= eps**3*(x - 2)**2 + eps**2*(x - 1) ; first-order coefficient= 0 ; second= x - 1
+RESULT: naive closure and nonzero-first-order assumptions are both refuted in the toy model
+STATUS: diagnostic only; no faithful dynamical counterexample and no conclusion about I^1_6b finiteness

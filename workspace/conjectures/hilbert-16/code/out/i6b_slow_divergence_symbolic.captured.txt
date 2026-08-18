@@ -1,0 +1,5 @@
+RUN: exact symbolic ECT obstruction probe for I^1_6b
+ORACLE: fixed polynomial candidates on (0,2), degrees <= 2
+Wronskian(1,x,(x-1)^2)= 0
+Wronskian identically zero: True
+RESULT: candidate family is not ECT; sum-of-four passage claim needs independent structure

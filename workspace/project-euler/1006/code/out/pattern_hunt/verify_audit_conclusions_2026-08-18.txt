@@ -1,0 +1,7 @@
+counts k+1: None
+c1 floor law: None
+Lmin law: None
+Psi mod100=c1 first: (5, 2250400, 2)
+Psi mod1000=c1 first: (2, 101, 1)
+S1=VR first: (3, 110, 10)
+dj Fibonacci additive first: (3, 3, 2)

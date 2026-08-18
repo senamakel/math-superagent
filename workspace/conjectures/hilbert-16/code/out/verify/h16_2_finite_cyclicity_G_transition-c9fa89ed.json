@@ -1,0 +1,6 @@
+{
+  "attempts": 2,
+  "node": "h16-2-finite-cyclicity/G-transition",
+  "source": "code/lean/h16_2_finite_cyclicity_G_transition-c9fa89ed.lean",
+  "stage": "decompose"
+}

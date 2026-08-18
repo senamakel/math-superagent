@@ -1,0 +1,14 @@
+```approach
+idea: Replace displacement zero counting by the Artin–Mazur zeta function of a return map, ζ_P(z)=exp(Σ_{n≥1}N_n z^n/n), where N_n counts isolated fixed points of P^n; hope rationality/finite type yields a finite bound on N_1.
+status: refuted
+precedent:
+- https://doi.org/10.48550/arxiv.2405.10560 (Olivares-Vinales, survey/results on Artin–Mazur zeta for interval maps)
+- https://doi.org/10.1090/s0002-9904-1967-11798-1 (Smale, differentiable dynamical systems; Artin–Mazur theorem)
+- https://doi.org/10.1007/s00605-009-0118-y (Baake–Lau–Paškūnas, rational zeta for toral endomorphisms)
+- https://www.cambridge.org/core/journals/ergodic-theory-and-dynamical-systems/article/open-index-pairs-the-fixed-point-index-and-rationality-of-zeta-functions/05352D0184B248E2B401ED2F875C026A
+- claim:h16-drr-121-graphics
+- claim:h16-dulac-finiteness-theorem
+assessment: The precise Artin–Mazur definition requires every iterate P^n to have finitely many isolated fixed points; N_n is their count and ζ is the formal exponential generating series. Artin–Mazur's theorem, as summarized in Smale, says that for a dense subset of diffeomorphisms of a compact manifold the counts grow at most exponentially, giving positive radius of convergence—not rationality and not a bound on N_1. Rationality is proved for special global systems such as Axiom-A/no-cycle diffeomorphisms, shifts, and toral maps, generally through symbolic or homological structure. No theorem found applies rational Artin–Mazur zeta or finite-type dynamics to a one-dimensional analytic Poincaré/Dulac return germ at a nonhyperbolic polycycle.
+killed-by: The proposed implication “rational ζ numerator degree bounds |Fix(P)|” is false as stated: ζ encodes all iterate counts but rationality alone does not supply a bound on the number of fixed points of P from numerator degree; even the claimed equivalence between rationality and finite type is not a general Artin–Mazur theorem. A one-dimensional analytic germ is not a compact global dynamical system, and its iterates may have infinitely many/non-isolated fixed points unless additional hypotheses are proved. Finite determinacy of an analytic germ does not imply finite-type dynamics or rational zeta, and no composition theorem for second-type Dulac maps was found.
+what-it-buys: On a separately proved compact invariant hyperbolic/basic-set model, zeta methods can encode periodic orbit data and rationality can follow from a finite Markov partition. That regime excludes the nonhyperbolic open DRR graphics; at most this is a diagnostic invariant after constructing such a model, not an H16 route.
+```

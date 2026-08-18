@@ -1,0 +1,5 @@
+# Library refresh — 2026-08-18
+
+This cycle searched broadly across Sturmian/Fibonacci factor complexity, mechanical rotation coding, factor-location algorithms, Rauzy graphs, Fibonacci-automatic methods, and weighted floor sums. The local library already contains primary/survey material for the governing theory and several adjacent computational approaches. A new deep-research pass added the Rauzy-graph source lead https://doi.org/10.48550/arxiv.2210.08629 to the frontier; its synthesis explicitly says it does not solve the decimal second-moment aggregation. The already-held Sivasankar–Rama source was read at its digest and enumeration section; it supports graph-based factor enumeration, not a logarithmic Ψ evaluator.
+
+No source currently establishes the exact missing recurrence for the base-10 weighted second moment at k=10^18. This gap is recorded rather than papered over. No final answer is claimed in this refresh.

@@ -1,0 +1,3 @@
+# Digest execution record
+
+The user required reading problem.md, GOAL.md, ROOT.md before digesting; all were read. The reference library was searched by claims and source summaries. `remember_memory` was attempted for the central DRR finding but the memory server timed out; the full source-backed digest is therefore stored at `research/notes/library-digest-2026-08-18.md` until memory recovers. No source was silently promoted beyond its evidence class. In particular, the 121/125 catalogue discrepancy and the Yeung/Ilyashenko proof-status contradiction remain flagged.

@@ -1,0 +1,3 @@
+# Library refresh, 2026-08-18 cycle 6
+
+Search covered Fibonacci/Sturmian factor complexity, factor-location algorithms, and weighted floor sums. The canonical sources are already present locally; attempted duplicate downloads were correctly refused. Relevant local files include `research/sources/lothaire-sturmian-words-C2.full.md`, `research/sources/perrin-sturmian-words-lecture2-mechanical.full.md`, `research/sources/sivasankar-rama-fibonacci-factors-2022.full.md`, and `research/sources/oi-wiki-universal-euclidean-floor-sum.full.md`. No new source was added. The unresolved issue is the exact fixed-dimensional aggregation needed for Psi(10^18), not the governing word theory.

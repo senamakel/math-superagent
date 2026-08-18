@@ -1,0 +1,7 @@
+# The cyclicity of hyperbolic hemicycles
+
+Source: https://arxiv.org/html/2501.16924v1 (García, Llibre, Novaes, 2025; full text at `research/sources/hyperbolic-hemicycles-2025.full.md`).
+
+This primary paper studies an unbounded polycycle (hemicycle) consisting, after Poincaré compactification, of an affine line and half the line at infinity, with two hyperbolic saddles at infinity. For quadratic systems in the reversible integrable class Q_3^R, two hemicycles Γ_u and Γ_l surround centers. Theorems A–D analyze cyclicity under connection-preserving perturbations and under the full quadratic family. In the parameter region (a_0,b_0)∈(-2,0)×(0,2), each hemicycle has cyclicity exactly 2 when a_0≠−1 and at least 2 at a_0=−1; the paper also gives results for simultaneous bifurcation from both hemicycles and examples of simultaneous alien cycles. The proof uses Dulac-map asymptotics, Melnikov/return-map analysis and exact parameter-region distinctions.
+
+Status: asserted-by-source, not independently verified here. This is a restricted settled class, not a proof of H(2)<∞. It is useful as a primary source for a concrete hyperbolic hemicycle and for the distinction between local cyclicity and the global uniform quadratic problem.

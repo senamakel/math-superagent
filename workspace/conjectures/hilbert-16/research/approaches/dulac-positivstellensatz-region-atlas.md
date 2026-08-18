@@ -1,0 +1,13 @@
+```approach
+slug: dulac-positivstellensatz-region-atlas
+status: refuted
+idea: Stratify compactified coefficient/phase space into finitely many semialgebraic cells and search a bounded-degree Dulac multiplier B per cell, discharging div(BX) strict sign by Putinar/Schmüdgen Positivstellensatz (SOS) certificates — a semialgebraic atlas of certified no-cycle regions.
+mechanism: Bendixson–Dulac: div(BX) of constant nonzero sign on a simply connected region excludes periodic orbits there. Putinar/Schmüdgen turn strict positivity on a compact basic closed semialgebraic set into a certificate identity plus coefficient inequalities — kernel-checkable. This proves no-cycle on covered cells only; cells that support a cycle are excluded rather than counted.
+precedent: https://doi.org/10.3934/dcds.2010.27.217 (Gasull–Giacomini, Theorem A / Dulac pairs); https://doi.org/10.3934/jcd.2022017 (August–Barahona, SOS/Positivstellensatz certificates for invariant sets and stable cycles); https://hdl.handle.net/10459.1/48991 (Bendixson–Dulac theorem); claim:gasull-giacomini-invariant-curves-restricted-counts
+killed-by: As a line of attack on the displacement zero-count it is closed: a Dulac atlas certifies only no-cycle (exclusion) regions, and every cell that supports a cycle must be excluded rather than counted, so it can never bound the zeros of the displacement function on the cycle-supporting cells. Its surviving certificate aspect is exactly the run's already-planned Dulac nonexistence oracle (GOAL oracle #2), not a new attack line.
+first-step: (none — closed; the certificate machinery it would have used is the run's existing Dulac/SOS oracle)
+```
+
+**Why not adopted.** The run's objective is the displacement function — how many zeros it can have. A finite semialgebraic atlas of Bendixson–Dulac exclusions is a *nonexistence* certificate: on cells where div(BX) has strict sign it proves no cycle, but on any cell containing or supporting a cycle the certificate degenerates and the atlas says nothing. Those are exactly the cells that carry the displacement zero count, so the atlas contributes a "0 cycles here" verdict per cell and nothing else. That is a legitimate and already-planned oracle (GOAL §3 lists the Dulac/SOS nonexistence certificate), not a distinct route to the partial result. It also overlaps the already-grounded restricted Dulac/invariant-curve direction (Gasull–Giacomini 2023, claim `gasull-giacomini-invariant-curves-restricted-counts`).
+
+**What was preserved.** Nothing new: the SOS/Positivstellensatz sign discharge and the invariant-curve Dulac bounds remain in the library for the nonexistence oracle and as negative controls.

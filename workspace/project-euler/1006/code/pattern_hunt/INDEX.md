@@ -4,7 +4,9 @@ What each file in this folder is for. Keep it current: describe a file when you 
 
 | File | Purpose |
 | --- | --- |
+| `analyze_exact_new.py` | Exact finite recurrence survey for stored integer sequences; solves rational homogeneous recurrences and reports Berlekamp–Massey behavior modulo several moduli, without claiming global validity. |
 | `analyze_existing_sequences.py` | Exact inspection of stored PE1006 sequences: count/c1/Lmin identities and small linear-recurrence attempts; reports first counterexamples without altering solution. |
+| `audit_sequences_independent.py` | Fresh schema-aware exact audit of every compact integer sequence artifact under code/out; separates index/value columns, tests exact rational recurrences, named structural laws, and cross-sequence affine/difference/modular relations. |
 | `boundary_subseqs.py` | Extracts Fibonacci-boundary subsequences (Psi at k=F_m-1, F_m, F_m+1) from recorded tables for OEIS/sequence tools; superseded by the established directive-1 autocorrelation route. |
 | `check_R_runs.py` | Analyzes run structure of the right-special factors R_k (constant-V runs of length 2/3) and S1(k) noise; writes code/out/s1_res.txt and vR_res.txt. |
 | `check_c1_weight.py` | Fresh brute verification of c1(k)=1+floor(k/phi^2), the two-weight distribution {floor,ceil(k/phi^2)}, and c0=(k+1)-c1 for k=1..100. |
@@ -32,13 +34,26 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `check_weight_dist.py` | Tabulates length-k Fibonacci subword counts by weight; confirms exactly two weights floor/ceil(k/phi^2). |
 | `check_wythoff_gaps.py` | Probe of the V-run gap structure; verifies starts match floor(j*phi^2) and gaps lie in {2,3} plus cross-checks c1(10^18) via integer sqrt. Superseded by check_wythoff_gaps2.py which is more robust. |
 | `check_wythoff_gaps2.py` | Verifies V-run start positions equal floor(j*phi^2)=A001950 (upper Wythoff) exactly for j=1..1146 and that the run-gap sequence takes only values {2,3} (the infinite Fibonacci word rewritten {2,3}, OEIS A282162/A076662). |
+| `current_sequence_tools.py` | Reads stored integer sequence artifacts and prints exact prefixes and difference diagnostics for the current structural survey. |
 | `digit_probe.py` | Probes digit-excess at targeted larger k to see whether excess (digits(Psi)-(2k-1)) ever reaches +2; part of the digit-length dead end (refuted as a closed form). |
 | `digit_step_wide.py` | Tests digit-excess step pattern over k=1..2000 to find first falsifier of the {0 for k<=23, 1 for k>=24} claim; part of the digit-length dead end. |
 | `digit_structure.py` | _(undescribed)_ |
 | `digit_thresholds.py` | Binary-searches the exact digit-excess transition points of C(k)=len(Psi(k))-(2k-1); part of the digit-length dead end. |
+| `direct_sequence_hunt.py` | Direct exact finite analysis of supplied Psi, c1, Lmin, d_j, and Toeplitz-defect sequences; reports differences, bounded rational linear recurrences, known-formula falsifiers, and zero-defect indices. |
+| `extend_requested_patterns.py` | Efficient exact extension of c1, Psi mod 100, strict-next-Fibonacci Lmin, and V/run-start floor(j phi^2) regularities; reports first falsifiers and boundary values. |
+| `extend_sequence_checks.py` | Independent exact recheck of c1 floor law, least-prefix Fibonacci formula, and Toeplitz-defect zero locations from stored tables. |
 | `extract_subseqs.py` | Extract subsequences Psi mod M at k=F_m-1/F_m/F_m+1; superseded. |
 | `extract_vr_runs.py` | Extracts V(R_k) run starts, gaps and values to code/out/vr_rungaps.txt and vr_runvals.txt for OEIS/sequence analysis. |
+| `final_new_sequence_audit.py` | Final independent exact audit of every compact integer sequence artifact in code/out; tests exact low-order recurrences and recorded floor/Fibonacci/Wythoff laws, reporting first falsifiers. |
+| `fresh_c1_lmin_check.py` | Fresh independent extension check: compares c1's Fibonacci-word prefix-count law with the exact irrational-slope floor formula through 10000, and checks Lmin against the strict-next-Fibonacci formula by plain substring scanning through 10000. |
+| `fresh_sequence_tool_audit.py` | Fresh exact audit of c1, Lmin, Toeplitz defects, run starts/gaps, and Psi residues; reports exact terms, recurrence diagnostics, and first falsifiers. |
 | `gen_sequences.py` | Generate PE1006 integer sequences (Psi exact 1..25, Psi mod M 1..400, Lmin 1..400); writes code/out/*.txt. |
+| `independent_compact_audit.py` | Independent exact recurrence audit of compact integer sequence artifacts; confirms no genuinely new low-order recurrence candidate. |
+| `independent_nonpsi_hunt.py` | Independent exact finite-range checks of leading-1 factor counts and first-occurrence prefix lengths; direct factor extraction through k=1000, used as evidence for conjectured c1 and Lmin formulas. |
+| `independent_psi_patterns.py` | Independent exact/residue tests for affine, Fibonacci, decimal-shift, Fibonacci-boundary, and low-order linear recurrence hypotheses; reports first falsifiers from stored Psi terms. |
+| `independent_tabular_survey.py` | Compact exact survey of psi, c1, lmin and run/gap tables; checks recurrences and deliberate counterexamples. Its output is diagnostic evidence for the tabulated claims. |
+| `inspect_requested_sequences.py` | Exact survey of psi, c1, ext-recurrence, and V-run sequences; tests bounded recurrence conjectures, formulas, and local OEIS evidence without full-size Euler evaluation. |
+| `inspect_tabular.py` | _(undescribed)_ |
 | `pattern_verify_full.py` | Verifies the right-extension recurrence mod M=101001001 for k=1..199, J(k)=c1(k+1)=1+floor((k+1)/phi^2), and V(R_k) run lengths in {1,2,3} by brute factor enumeration. |
 | `pattern_verify_runs.py` | Independently re-verifies the right-extension recurrence Psi(k+1)=100Psi(k)+100V(R_k)^2+20S1(k)+J(k) (k=1..24 exact) and computes V(R_k) run structure by fresh brute factor enumeration. |
 | `probe_digitlen_bisect.py` | Bisects the C(k)=len(Psi(k))-(2k-1) transitions using the sliding-window exact route; superseded by check_digit_excess.py which uses the recurrence pipeline. |
@@ -49,8 +64,14 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `probe_noise.py` | Statistical probe of residue sequence (autocorr, chi2, collisions): noise-flat. |
 | `probe_weak_leading_digits.py` | _(undescribed)_ |
 | `push_lmin_k6764.py` | Third standalone Lmin verifier k=1..6764. |
+| `run_gap_check.py` | _(undescribed)_ |
+| `sequence_audit_requested.py` | Exact disk-based audit of the requested psi, c1, lmin, dj, and Toeplitz-defect sequences; fits rational homogeneous recurrences through order 12 and reports exact candidate formulas with first falsifiers. |
+| `sequence_report.py` | Exact artifact survey of psi, c1, counts, Lmin, and recurrence candidates; computes first falsifiers without published-sequence lookup. |
+| `sequence_tools_new_run.py` | Fresh exact audit of supplied Psi, c1, Lmin, d_j, and Toeplitz sequences using rational recurrence fitting, modular BM diagnostics, and first-falsifier tests; catches artifact-column hazards. |
 | `survey_sequences.py` | Independent artifact survey: tests Psi mod-100/mod-1000, Lmin, factor counts, and run-gap conjectures on genuine recorded terms; reports first falsifiers. |
+| `targeted_relations.py` | Independent exact checks of candidate relations: Psi residues versus c1 modulo 100/1000, c1 differences, dj recurrence temptations, and V-run gap structure. |
 | `verify_R_runs_wythoff.py` | Verifies exactly (k=1..3000) that the right-special factors' constant-value runs start at the upper Wythoff numbers s_j=floor(j*phi^2), left zero-padding within runs, run lengths in {1,2,3}, S1-run containment, J(k)=1+floor((k+1)/phi^2), and the exact Psi recurrence; also detects Psi(k) digit-palindromes. Writes code/out/r_runs_wythoff.txt, s1_exact.txt, vR_exact.txt. |
+| `verify_audit_conclusions.py` | Independent second-route exact verification of the positive stored formulas and first cross-sequence falsifiers found by audit_sequences_independent.py. |
 | `verify_c1_formula.py` | Verifies c1(k)=1+floor(k/phi^2) three independent routes k=1..400; writes code/out/c1_terms.txt. |
 | `verify_lmin_formula.py` | Check Lmin(k)=k+NextFib(k)-1 for k=1..2583. |
 | `verify_lmin_formula_f20.py` | Primary Lmin verifier k=1..6764 via bit-mask; helper-driven from code/lib/fibword.py. |

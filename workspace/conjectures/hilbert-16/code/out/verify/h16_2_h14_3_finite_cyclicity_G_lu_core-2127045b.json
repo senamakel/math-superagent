@@ -1,6 +1,6 @@
 {
-  "attempts": 1,
+  "attempts": 2,
   "node": "h16-2-h14-3-finite-cyclicity/G-lu-core",
   "source": "code/lean/h16_2_h14_3_finite_cyclicity_G_lu_core-2127045b.lean",
-  "stage": "prove"
+  "stage": "decompose"
 }

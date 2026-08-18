@@ -1,0 +1,5 @@
+# Reference-library cycle — 2026-08-18
+
+Searched broadly for (i) Sturmian/Fibonacci factor theory, (ii) weighted floor sums and Euclidean recursion, and (iii) Rauzy-graph structure. Triage found Glen's survey and Widmer's thesis useful; Glen was downloaded to `research/sources/glen-sturmian-episturmian-survey.full.md`, and Widmer to `research/sources/widmer-topics-word-complexity.full.md`. Citation graph for Glen was run and added 20 leads to the frontier. The official Project Euler page is already stored locally; duplicate downloads were correctly refused. The Rauzy-graph candidate was already represented in the library and was not redownloaded.
+
+The library now has primary/survey coverage for Sturmian complexity, Fibonacci words, mechanical coding, Rauzy graphs, and Euclidean floor-sum methods. The unresolved mathematical gap is the constant-dimensional aggregation of all rotation cells for the decimal second moment at k=10^18.

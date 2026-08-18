@@ -1,0 +1,3 @@
+# Library refresh: 2026-08-18
+
+Search covered: official statement, Sturmian/mechanical-word theory, Fibonacci factor-location algorithms, and weighted floor-sum algorithms. Existing local primary/secondary sources were read rather than duplicated. The OI-Wiki Chtholly URL currently stored is a 404 and is not evidence; the local `oiwiki-universal-euclidean-floor-sum-2026.full.md` should be preferred after checking its summary. The library already contains broad coverage, but no source located in this cycle supplies the missing exact aggregation needed for Ψ(10^18).

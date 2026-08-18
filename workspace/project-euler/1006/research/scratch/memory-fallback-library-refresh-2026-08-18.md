@@ -1,0 +1,3 @@
+# Memory fallback: library refresh 2026-08-18
+
+Cognee indexing was unavailable during this cycle. Durable finding to store when it recovers: the local library has authoritative treatments for Fibonacci/Sturmian mechanical coding, factor complexity k+1, and factor location/enumeration. Searches did not produce a scholarly source proving the exact geometric-weighted floor-sum second-moment monoid needed for the final PE1006 aggregation; the local OI Wiki reference is algorithmic but insufficient. The final O(polylog k) aggregation remains unproved and no target answer should be asserted.

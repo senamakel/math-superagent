@@ -8,6 +8,29 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 
 | Declaration | Kind | Standing | Statement | Source | File |
 | --- | --- | --- | --- | --- | --- |
+| `PE1006Corrected.Cited.fibonacci_mechanical_factor_representation` | axiom | verified | — | Berstel, Recent Results on Sturmian Words, rotational-factor theorem; | `code/lean/CorrectedMechanicalWord.lean` |
+| `PE1006Corrected.corrected_mechanical_word_representation` | theorem | verified | — | — | `code/lean/CorrectedMechanicalWord.lean` |
+| `PE1006Corrected.intercept` | def | verified | (n m : ℕ) : ℚ | — | `code/lean/CorrectedMechanicalWord.lean` |
+| `PE1006Corrected.mechDigit` | def | verified | (a x : ℚ) (j : ℕ) : ℤ | — | `code/lean/CorrectedMechanicalWord.lean` |
+| `PE1006Corrected.mechFactorSet` | def | verified | (n k : ℕ) : Set (Fin k → ℤ) | — | `code/lean/CorrectedMechanicalWord.lean` |
+| `PE1006Corrected.mechWord` | def | verified | (n k m : ℕ) (j : Fin k) : ℤ | — | `code/lean/CorrectedMechanicalWord.lean` |
+| `PE1006Corrected.slope` | def | verified | (n : ℕ) : ℚ | — | `code/lean/CorrectedMechanicalWord.lean` |
+| `PE1006G4BlockState.Summary` | abbrev | verified | — | — | `code/lean/G4BlockStateNonClosure.lean` |
+| `PE1006G4BlockState.cross` | def | verified | (u v : List ℕ) : ℕ | — | `code/lean/G4BlockStateNonClosure.lean` |
+| `PE1006G4BlockState.k2_summary_nonclosure` | theorem | verified | : | — | `code/lean/G4BlockStateNonClosure.lean` |
+| `PE1006G4BlockState.summary` | def | verified | (w : List ℕ) : Summary | — | `code/lean/G4BlockStateNonClosure.lean` |
+| `PE1006Anchors.directive6_anchors_verified_incontainer` | theorem | verified | : | — | `code/lean/directive6_anchors_verified_incontainer-c98a97b5.lean` |
+| `FibonacciPosition.Cited.proposition_one` | axiom | verified | — | Sivasankar and Rama, arXiv:2207.04304, Proposition 1. | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.Word` | abbrev | verified | — | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.fibLen` | def | verified | (n : Nat) : Nat | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.fibWord` | def | verified | : Nat → Word | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.fibonacciFactors` | def | verified | (k : Nat) : Set Word | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.fibonacci_position_theorem_contiguous_windows` | theorem | verified | — | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.finiteFactors` | def | verified | (w : Word) (k : Nat) : Set Word | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.rot` | def | verified | (w : Word) (i : Nat) : Word | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.windowIndices` | def | verified | (n k : Nat) : Finset Nat | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.windows` | def | verified | (n k : Nat) : Set Word | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
+| `FibonacciPosition.wordPrefix` | def | verified | (k : Nat) (w : Word) : Word | — | `code/lean/fibonacci_position_theorem_contiguous_windows-af501dab.lean` |
 | `PE1006G1.FactorSet` | def | verified | {α : Type*} (w : List α) (k : ℕ) : Set (List α) | — | `code/lean/g1_factor_chain_nested-de74dba9.lean` |
 | `PE1006G1.FibSubwords` | def | verified | (k : ℕ) : Set (List Char) | — | `code/lean/g1_factor_chain_nested-de74dba9.lean` |
 | `PE1006G1.factorSet_chain` | theorem | verified | (k n : ℕ) : | — | `code/lean/g1_factor_chain_nested-de74dba9.lean` |
@@ -20,6 +43,8 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `PE1006G1.oracle_length3_card` | theorem | verified | : (factorsFinset (fibWord 5) 3).card = 3 + 1 | — | `code/lean/g1_oracle_length3-ed70ff6a.lean` |
 | `PE1006G1.oracle_length3_factors` | theorem | verified | : | — | `code/lean/g1_oracle_length3-ed70ff6a.lean` |
 | `PE1006G1.oracle_s5` | lemma | verified | : fibWord 5 = ['0','1','0','0','1','0','1','0','0','1','0','0','1'] | — | `code/lean/g1_oracle_length3-ed70ff6a.lean` |
+| `PE1006G3.telescoped_second_moment` | theorem | verified | — | — | `code/lean/g3_telescoped_second_moment-6c18394c.lean` |
+| `PE1006G3.v` | def | verified | (x a : ℚ) (k : ℕ) : ℤ | — | `code/lean/g3_telescoped_second_moment-6c18394c.lean` |
 | `GoverningFactorComplexity.Cited.factors_stabilise` | axiom | verified | (k : ℕ) : | stabilisation of the nested `S_n` factor chain (proved as a shell in | `code/lean/governing_factor_complexity-542ce8cd.lean` |
 | `GoverningFactorComplexity.Cited.fibInf` | axiom | verified | : InfiniteBinaryWord | — | `code/lean/governing_factor_complexity-542ce8cd.lean` |
 | `GoverningFactorComplexity.Cited.fibonacci_sturmian` | axiom | verified | : IsSturmian Cited.fibInf | Perrin & Restivo, *On Sturmian words*, Thm 1 (a word is Sturmian iff | `code/lean/governing_factor_complexity-542ce8cd.lean` |
@@ -34,6 +59,17 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `GoverningFactorComplexity.fib_subword_count` | theorem | verified | (k : ℕ) (h : 1 ≤ k) : | — | `code/lean/governing_factor_complexity-542ce8cd.lean` |
 | `GoverningFactorComplexity.governing_theorem_pos` | theorem | verified | (s : InfiniteBinaryWord) (hs : IsSturmian s) | — | `code/lean/governing_factor_complexity-542ce8cd.lean` |
 | `GoverningFactorComplexity.wordFactorSet` | def | verified | {α : Type*} (w : List α) (k : ℕ) : Set (List α) | — | `code/lean/governing_factor_complexity-542ce8cd.lean` |
+| `PE1006CW1.Word` | abbrev | verified | — | — | `code/lean/pe1006_contiguous_window_prefix_CW1_terminal_window_set-ce5f2423.lean` |
+| `PE1006CW1.cw1_terminal_window_set` | theorem | verified | — | — | `code/lean/pe1006_contiguous_window_prefix_CW1_terminal_window_set-ce5f2423.lean` |
+| `PE1006CW1.factors` | def | verified | (k : Nat) : Set Word | — | `code/lean/pe1006_contiguous_window_prefix_CW1_terminal_window_set-ce5f2423.lean` |
+| `PE1006CW1.fibLen` | def | verified | : Nat → Nat | — | `code/lean/pe1006_contiguous_window_prefix_CW1_terminal_window_set-ce5f2423.lean` |
+| `PE1006CW1.fibWord` | def | verified | : Nat → Word | — | `code/lean/pe1006_contiguous_window_prefix_CW1_terminal_window_set-ce5f2423.lean` |
+| `PE1006CW1.terminalWindows` | def | verified | (q : Word) (k : Nat) : Set Word | — | `code/lean/pe1006_contiguous_window_prefix_CW1_terminal_window_set-ce5f2423.lean` |
+| `PE1006CW1.windows` | def | verified | (w : Word) (k : Nat) : Set Word | — | `code/lean/pe1006_contiguous_window_prefix_CW1_terminal_window_set-ce5f2423.lean` |
+| `PE1006CW3.AddSummary` | def | verified | (x y : ℕ × ℕ × ℕ) : ℕ × ℕ × ℕ | — | `code/lean/pe1006_contiguous_window_prefix_CW3_summary_composition-2dd515e8.lean` |
+| `PE1006CW3.Summary` | def | verified | (V : ℕ → ℕ) (s : Finset ℕ) : ℕ × ℕ × ℕ | — | `code/lean/pe1006_contiguous_window_prefix_CW3_summary_composition-2dd515e8.lean` |
+| `PE1006CW3.summary_add_assoc` | theorem | verified | (x y z : ℕ × ℕ × ℕ) : | — | `code/lean/pe1006_contiguous_window_prefix_CW3_summary_composition-2dd515e8.lean` |
+| `PE1006CW3.summary_union_add` | theorem | verified | — | — | `code/lean/pe1006_contiguous_window_prefix_CW3_summary_composition-2dd515e8.lean` |
 | `PE1006G1.FactorSet` | def | verified | {α : Type*} (w : List α) (k : ℕ) : Set (List α) | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
 | `PE1006G1.FibSubwords` | def | verified | (k : ℕ) : Set (List Char) | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
 | `PE1006G1.factorSet_chain` | theorem | verified | (k n : ℕ) : | — | `code/lean/pe1006_psi_G1_factor_chain-87f94deb.lean` |
@@ -51,53 +87,38 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `PE1006G2Shell.mechWord_binary` | theorem | verified | (n k m j : ℕ) (hj : j < k) : | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
 | `PE1006G2Shell.slope` | def | verified | (n : ℕ) : ℚ | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
 | `PE1006G2Shell.slope_mem_Icc` | theorem | verified | (n : ℕ) : | — | `code/lean/pe1006_psi_G2_mech_shell-1f79c34f.lean` |
-| `PE1006DigitRule.FibFactorSet` | def | unchecked | (k : ℕ) : Set (Fin k → ℤ) | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.arc_midpoint_card` | theorem | unchecked | (k n : ℕ) (hk : 0 < k) (hkf : k < Nat.fib (n + 2)) | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.arc_midpoints_are_factors` | theorem | unchecked | (k n : ℕ) (hk : 0 < k) (hkf : k < Nat.fib (n + 2)) | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.cutPoint` | def | unchecked | (n m : ℕ) : ℚ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.cutsDistinct` | def | unchecked | (n k : ℕ) : Prop | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.cuts_distinct` | theorem | unchecked | (k n : ℕ) (hkf : k < Nat.fib (n + 2)) : | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.fibDigit` | def | unchecked | (t : ℕ) : ℤ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.fib_add_two_pos` | lemma | unchecked | (n : ℕ) : 0 < Nat.fib (n + 2) | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.fracPart` | def | unchecked | (x : ℚ) : ℚ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.k3_midpoints_distinct` | theorem | unchecked | : | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.k3_midpoints_oracle` | theorem | unchecked | : | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.mechDigit` | def | unchecked | (a x : ℚ) (j : ℕ) : ℤ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.mechDigit_binary` | theorem | unchecked | (n : ℕ) (m j : ℕ) : | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.mechDigit_nonneg` | lemma | unchecked | (a : ℚ) (x : ℚ) (j : ℕ) (ha0 : 0 ≤ a) : | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.mechDigit_succ_le` | lemma | unchecked | (a : ℚ) (x : ℚ) (j : ℕ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1) : | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.mechFactorSetAt` | def | unchecked | (a : ℚ) (x : ℚ) (k : ℕ) : Set (Fin k → ℤ) | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.mechWord` | def | unchecked | (a x : ℚ) (k : ℕ) : Fin k → ℤ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.mechWordSet` | def | unchecked | (a : ℚ) (k : ℕ) (ρ : Fin (k + 1) → ℚ) : Set (Fin k → ℤ) | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.mechanical_word_digit_rule` | theorem | unchecked | (k n : ℕ) (hk : 0 < k) (hkf : k < Nat.fib (n + 2)) | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.rho0` | def | unchecked | : ℚ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.rho1` | def | unchecked | : ℚ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.rho2` | def | unchecked | : ℚ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.rho3` | def | unchecked | : ℚ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.same_slope_same_factors` | theorem | unchecked | (a : ℚ) (ha0 : 0 ≤ a) (ha1 : a ≤ 1) | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.slope` | def | unchecked | (n : ℕ) : ℚ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.slope_mem_Icc` | theorem | unchecked | (n : ℕ) : | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `PE1006DigitRule.word3` | def | unchecked | (a x : ℚ) : List ℤ | — | `code/lean/mechanical_word_digit_rule-f4995b0e.lean` |
-| `alpha` | def | unchecked | : ℝ | — | `code/lean/probe_algebra.lean` |
-| `charDigit` | def | unchecked | (n : ℕ) : ℤ | — | `code/lean/probe_algebra.lean` |
-| `charDigitPhi` | def | unchecked | (n : ℕ) : ℤ | — | `code/lean/probe_algebra.lean` |
-| `char_binary` | theorem | unchecked | : ∀ n : ℕ, charDigit n = 0 ∨ charDigit n = 1 | — | `code/lean/probe_algebra.lean` |
-| `density` | theorem | unchecked | : ∀ N : ℕ, (∑ n ∈ Finset.range N, charDigit n) = Int.floor (((N + 1 : ℕ) : ℝ) * alpha) | — | `code/lean/probe_algebra.lean` |
-| `lowDigit` | def | unchecked | (n : ℕ) : ℤ | — | `code/lean/probe_algebra.lean` |
-| `lowDigitPhi` | def | unchecked | (n : ℕ) : ℤ | — | `code/lean/probe_algebra.lean` |
-| `low_shift` | theorem | unchecked | (n : ℕ) (h : 1 ≤ n) : charDigit (n - 1) = lowDigit n | — | `code/lean/probe_algebra.lean` |
-| `phi` | def | unchecked | : ℝ | — | `code/lean/probe_algebra.lean` |
-| `alpha` | def | unchecked | : ℝ | — | `code/lean/probe_char_binary.lean` |
+| `PE1006PsiG2.Cited.mechanical_factor_parametrisation` | axiom | verified | (k n : ℕ) (h : k < Nat.fib (n + 2)) : | Berstel, *Recent Results on Sturmian Words*, rotational-factor theorem; | `code/lean/pe1006_psi_G2_mechanical_factor_parametrisation-3b6fbf7e.lean` |
 
-_111 more not shown here; they are in `code/lean`._
+_278 more not shown here; they are in `code/lean`._
 
-191 declarations, 43 of them in a file the kernel has checked.
+358 declarations, 100 of them in a file the kernel has checked.
 
 ## Never checked
 
 These files are in the tree and no `lean_check` verdict exists for them. Nothing on this page from one of them is evidence of anything.
 
+- `code/lean/Lib/CW1-terminal-window-set.lean`
+- `code/lean/Lib/PE1006/problem.lean`
+- `code/lean/Lib/pe1006-directive9-transfer-captured.lean`
 - `code/lean/mechanical_word_digit_rule-f4995b0e.lean`
+- `code/lean/probe/explore10.lean`
+- `code/lean/probe/explore11.lean`
+- `code/lean/probe/explore12.lean`
+- `code/lean/probe/explore13.lean`
+- `code/lean/probe/explore14.lean`
+- `code/lean/probe/explore9.lean`
+- `code/lean/probe/fib10.lean`
+- `code/lean/probe/fib11.lean`
+- `code/lean/probe/fib12.lean`
+- `code/lean/probe/fib13.lean`
+- `code/lean/probe/fib14.lean`
+- `code/lean/probe/fib3.lean`
+- `code/lean/probe/fib4.lean`
+- `code/lean/probe/fib5.lean`
+- `code/lean/probe/fib6.lean`
+- `code/lean/probe/fib7.lean`
+- `code/lean/probe/fib8.lean`
+- `code/lean/probe/fib9.lean`
 - `code/lean/probe_algebra.lean`
 - `code/lean/probe_char_binary.lean`
 - `code/lean/probe_floor_normnum.lean`

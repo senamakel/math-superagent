@@ -1,0 +1,16 @@
+RUN: exact DF2a slow-divergence/ECT symbolic validation model
+ORACLE: brute.verify_all; then exact Wronskians for 1,t,t^2,t^2 log(t)
+RANGE: t>0 symbolic; compact test interval 1<=t<=2; no parameter enumeration
+PRECISION: exact SymPy arithmetic; log differentiated symbolically; no floats
+GUARD: reproduced 7 problem.md worked examples: PASS
+FORMAL_W1=1
+FORMAL_W2=1
+FORMAL_W3=2
+FORMAL_W4=0
+EXACT_LOG_W1=1
+EXACT_LOG_W2=1
+EXACT_LOG_W3=2
+EXACT_LOG_W4=4/t
+RESULT: exact logarithmic channel gives W4=4/t; hence nonzero on t>0
+LIMITATION: this certifies only the displayed local ECT toy, not DF2a global cyclicity
+LIMITATION: no paper-specific normal form, transition maps, parameter domain, or zero bound was encoded

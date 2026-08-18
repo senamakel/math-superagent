@@ -1,0 +1,5 @@
+# Dekking, Substitution Invariant Sturmian Words and Binary Trees
+
+Source: https://arxiv.org/html/1705.08607
+
+The paper gives a structural treatment of substitution-invariant Sturmian sequences. It states the mechanical-word representation s_{α,ρ}(n)=floor((n+1)α+ρ)-floor(nα+ρ), and identifies the Fibonacci word as the fixed point of 0→01, 1→0 with slope α=(3−√5)/2=1/φ² (under the problem's convention). It develops continued-fraction/morphism trees and characterizes homogeneous and selected inhomogeneous substitution-invariant Sturmian words. For PE1006 this independently supports the governing objects: the recursively defined finite words converge to a morphic, mechanical Fibonacci/Sturmian word, so rotation-intercept and continued-fraction methods apply. It does not supply the missing fixed-dimensional aggregation theorem for the decimal square sum Ψ(10^18).

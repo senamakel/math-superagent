@@ -1,36 +1,19 @@
-# Huzak 2018 — Cyclicity of degenerate graphic DF₂ₐ
+# Huzak 2018 — DF₂a (hypothesis audit)
 
-Full text: [[huzak-cyclicity-degenerate-df2a.full]]. CPA — Commun. Pure Appl.
-Anal. 17(3):1305–1316 (2018), doi:10.3934/cpaa.2018062 (held: abstract page with
-figures; the theorem statement is held verbatim from the abstract — the full
-proof body is not held).
+Full text: [[huzak-cyclicity-degenerate-df2a.full]]; DOI: https://doi.org/10.3934/cpaa.2018062.
 
-## What the source establishes
-
-**Finite cyclicity of the degenerate graphic DF₂ₐ** of the DRR program. This
-"finishes the study of the cyclicity of DF₂ₐ ... initiated in [5]" (Dumortier–
-Rousseau). Techniques: geometric singular perturbation theory, family blow-up,
-slow divergence integral, slow–fast systems. DF₂ₐ is the b=0 case of the DF₁ₐ
-family of degenerate graphics (two figures held).
-
-## What it lets this run conclude
-
-- Confirms the claims-ledger row: **DF₂ₐ was closed by Huzak 2018**, not earlier.
-  The claim ledger's `h16-drr-121-graphics` statement already records this
-  ("DF2a (Huzak 2018)"), and the open-rows claim lists "the 11 degenerate graphics
-  other than DF1a, DF2a" as open per Shan 2013 — consistent.
-- DF₁ₐ was Dumortier–Rousseau 2009 (CPA 8). So the degenerate DF-family has two
-  closed rows and (per Shan 2013) 11 open degenerate rows.
+The held HTML is an abstract/figure record, not the proof body. It explicitly states only that the **quadratic** DRR graphic DF₂a (the b=0 member of the DF₁a family; DF₁a has b∈(0,2)) has finite cyclicity. The advertised machinery is family blow-up, geometric singular perturbation, slow divergence integral, and slow–fast systems. Figures identify a three-parameter rescaled space (B₀,B₁,B₂), with canard cycles near DF₂a possible only in a slow-fast Hopf region. No theorem-level parameter box, normal form, endpoint maps, remainder class, or extension statement to I¹₆b is present in the captured source.
 
 ```claim
-id: drr-huzak-df2a-closed
-statement: The degenerate DRR graphic DF_{2a} has finite cyclicity (Huzak 2018,
-  CPA 17(3):1305-1316), completing the study of the DF_{1a} family (DF_{1a} by
-  Dumortier-Rousseau 2009). Technique: family blow-up + slow divergence integral.
-hypotheses: n=2; degenerate graphics DF_{1a}, DF_{2a}; b in ]0,2[ resp. b=0.
+id: drr-huzak-df2a-hypotheses-limited
+statement: Huzak 2018, as held here, establishes finite cyclicity only for the quadratic DRR graphic DF₂a (b=0 in the DF₁a family) using its own family blow-up/slow-divergence slow-fast analysis; it does not establish a theorem for the I¹₆b four-Dulac displacement.
+hypotheses: quadratic DRR DF₂a family; b=0; Huzak's specific blow-up and slow-fast hypotheses (exact proof hypotheses unavailable in held capture)
 holds-here: yes
 status: asserted
-bearing: two degenerate DF rows closed; 11 other degenerate rows still reported
-  open (per Shan 2013 thesis).
+bearing: prevents transferring DF₂a's slow-divergence argument to I¹₆b without a new normal-form and uniform-remainder proof
 anchor: research/sources/huzak-cyclicity-degenerate-df2a.full.md
+contradicts: none
+answers: drr-huzak-df2a-extension-audit
 ```
+
+Falsifier: the complete Huzak proof must contain a statement whose family, graphic, and displacement domain include I¹₆b (or a theorem explicitly covering the same four-Dulac configuration), with hypotheses checked here. It does not appear in the held record.

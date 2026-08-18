@@ -13,8 +13,9 @@ Every open gap below is a task. A gap with a `next` a tool_builder or a theorem_
 | [[g-transition]] | Sector transition maps carry an asymptotic expansion in a class determined by the vertex normal form — the classical Dulac power-times-log class for elementary… | Supplies the expansions G-zeros composes into the displacement function; the single non-topological step; the second-type Dulac maps at the semi-hyperbolic… | sketched | 0 |
 | [[g-uniform]] | The zero bound is uniform over the compact quadratic parameter space near the graphic (cycl(Lambda) < infinity as a family bound). Requires compactness of the… | Upgrades G-zeros to finite cyclicity, completing cycl(Lambda_0) < infinity and, with every graphic, H(2) < infinity. | sketched | 0 |
 | [[g-zeros]] | The displacement function around the graphic, as composition of transition expansions, has a bounded number of zeros (Dulac-type finiteness, pointwise in… | Bounds the limit cycles born from the graphic for a fixed field. | sketched | 0 |
+| [[h16-2-finite-cyclicity-g-zeros]] | — | — | sketched | 0 |
 | [[h16-2-finite-cyclicity]] | H(2) < ∞ — every planar quadratic polynomial vector field has a number of limit cycles bounded uniformly over the whole degree-2 family. | H(2) < ∞  follows by the Roussarie reduction (DRR 1994): it is equivalent to finite cyclicity of every one of the 121 graphics in the DRR list (limit periodic… | live | 4 |
-| [[h16-2-h14-3-finite-cyclicity]] | cycl(Lambda_0 = H14^3) < infinity: finite cyclicity of the semihyperbolic hemicycle through a triple nilpotent point at infinity, uniformly over its… | H(2)<infinity folds to the 121-graphic maximum (h16-drr-121-graphics, drr-1994-citation-anchor). Lambda_0 is the discharged open target (drr-lu-claims-h14-3,… | live | 1 |
+| [[h16-2-h14-3-finite-cyclicity]] | cycl(Lambda_0 = H14^3) < infinity: finite cyclicity of the semihyperbolic hemicycle through a triple nilpotent point at infinity, uniformly over its… | H(2)<infinity folds to the 121-graphic maximum (h16-drr-121-graphics, drr-1994-citation-anchor). Lambda_0 is the discharged open target (drr-lu-claims-h14-3,… | sketched | 1 |
 | [[h16-sharp-abelian-named-family]] | For a named Hamiltonian family (H, Γ) with a center and period annulus Γ = {H = h : h ∈ (0,h₀)} meeting GMV Theorem A or B, and for the perturbation form of… | Fix (H, Γ, ω) as above. G-model reduces the dynamical count to the zero count: in the first-order (Melnikov/Abelian) regime, limit cycles bifurcating from Γ… | live | 4 |
 
 ## The open gaps — each one is a task
@@ -59,6 +60,14 @@ Do not state these again. Each one is a lemma this run has, and the claim beside
 - [[h16-sharp-abelian-named-family]] `G-model` — The first-order (Poincaré–Pontryagin / Melnikov) reduction: for a Hamiltonian field X_H perturbed by ε(ω) within a polynomial family, the limit cycles bifurcating from the nonsingular ovals γ_h of the period annulus Γ correspond one-to-one, for ε small and counted with multiplicity, to isolated zeros of the Abelian integral I(h) = ∮_{γ_h} ω on (0,h₀). The reduction is valid precisely because Γ consists of regular ovals; it FAILS for saddle-connection polycycles (alien cycles), which is what confines this skeleton to center period annuli. (closed by h16-alien-limit-cycles-abelian-insufficiency (states the reduction holds for regular ovals and fails for polycycles — the scope hypothesis), h16-abelian-integral-bounds and h16-bny-abelian-bound (the reduction plus its uniform bound, asserted-by-source). Cited, not re-derived: the first-order reduction is the standard Melnikov theorem; the run holds it as literature.)
 - [[h16-sharp-abelian-named-family]] `G-ect-criterion` — The extended-Chebyshev criterion (GMV 2011 Theorem A/B): for H = Φ(x)+Ψ(y) (Theorem A) or H = A(x)+B(x)y^{2m} (Theorem B), the Abelian integrals I_i form an ECT-system on (0,h₀) iff the balance chain ℬ_{σ₁}(f_i/Φ′), ℬ_{σ₂}(g_i) is a CT-system, verifiable through Wronskians; an ECT-system of dimension μ has at most μ−1 zeros (counted with multiplicity) on (0,h₀). This is the cited transcendental-to-algebraic bridge. (closed by h16-grau-manosas-villadelprat-chebyshev-2010 (asserted, full text held, arXiv:0805.1140). Cited theorem — the run must not re-derive it; it enters Lean as a `Cited` axiom with the source in the docstring.)
 
+## Resting on nothing recorded
+
+A reduction taking an unrecorded belief as input proves the goal from something nobody downstream can check. Either write the claim, or the id is misspelled.
+
+- [[h16-2-finite-cyclicity]] rests on `h16-drr-121-graphics`, which no claim block on disk establishes
+- [[h16-2-h14-3-finite-cyclicity]] rests on `h16-drr-121-graphics`, `drr-lu-claims-h14-3`, `h16-drr-open-rows`, `lu-finite-core-identity-half-checked`, `bautin-chart-membership-l8-l10-l12`, `drr-saddle-node-normalforms-dir2002`, `drr-zhu-rousseau-2002-nilpotent-machinery`, which no claim block on disk establishes
+- [[h16-sharp-abelian-named-family]] rests on `h16-abelian-integral-bounds`, `h16-alien-limit-cycles-abelian-insufficiency`, which no claim block on disk establishes
+
 ## Skeletons that could not be read
 
 - `README` has no skeleton block, so nothing can say what it reduces or whether the reduction is sound
@@ -68,6 +77,9 @@ Do not state these again. Each one is a lemma this run has, and the claim beside
 - `g-transition` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
 - `g-uniform` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
 - `g-zeros` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
+- `h16-2-finite-cyclicity-g-zeros` names no goal, so it is a note, not a skeleton
+- `h16-2-finite-cyclicity-g-zeros` does not say how its lemmas imply the goal, so nothing can check that they do
+- `h16-2-finite-cyclicity-g-zeros` has no gaps, so it either claims the goal outright or nobody wrote down what is missing
 
 ---
 

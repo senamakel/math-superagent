@@ -1,0 +1,5 @@
+# Library cycle 3
+
+This cycle searched broadly for (i) exact Fibonacci-factor enumeration/location, (ii) weighted methods, and (iii) universal Euclidean/floor-sum methods. Existing local sources already cover the official statement, OEIS A003849, Fibonacci/Sturmian encyclopedic entries, Sivasankar–Rama factor location, Fici factorizations, and universal Euclidean notes. New search results added useful leads but no source establishing the missing fixed-dimensional aggregation for Ψ(10^18). The closest relevant results are Sivasankar–Rama, arXiv:2207.04304, for k+1 factors and locations, and Huang–Wen, arXiv:1404.4269, for singular-kernel/gap structure. The weighted-floor search returned unrelated or only adjacent methods; it does not justify the PE1006 observable. No published solution was searched for or downloaded.
+
+URLs searched/read: https://projecteuler.net/minimal=1006; https://oeis.org/A003849; https://en.wikipedia.org/wiki/Fibonacci_word; https://en.wikipedia.org/wiki/Sturmian_word; https://arxiv.org/html/2207.04304; https://ar5iv.labs.arxiv.org/html/1508.06754; https://arxiv.org/pdf/1404.4269; https://www.numdam.org/articles/10.1051/ita/2016010/.

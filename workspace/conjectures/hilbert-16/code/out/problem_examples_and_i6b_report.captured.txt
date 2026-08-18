@@ -1,0 +1,13 @@
+RUN: exact worked-example reproduction plus I^1_6b ECT gate
+ORACLE: naive_count; exact polynomial Wronskians
+RANGE: five radial examples; ECT surrogates over Q[a,x], boundary a=0
+PRECISION: exact integers/rationals/symbolics; no floating point
+EXAMPLE cubic A=1-u: got=1, expected=1, check=True
+EXAMPLE linear centre A=0: got=0, expected=0, check=True
+EXAMPLE linear expanding focus A=1: got=0, expected=0, check=True
+EXAMPLE two cycles A=(1-u)(2-u): got=2, expected=2, check=True
+EXAMPLE semi-stable A=(1-u)^2(2-u): got=1, expected=1, check=True
+ECT gate: W(p)=1, W(q)=1, W(p+q)=0
+boundary gate: W(a,a*x)=a**2, W|a=0=0
+RESULT: examples reproduced; ECT shortcut blocked, not a dynamical refutation
+BLOCKER: exact RR four second-type Dulac maps, uniform remainder class, and stratum-wise zero theorem are unavailable

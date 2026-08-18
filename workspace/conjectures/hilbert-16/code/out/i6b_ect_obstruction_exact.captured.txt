@@ -1,0 +1,7 @@
+RUN: exact four-passage ECT obstruction; exact Q; degree <=1
+ORACLE: naive worked-example guard; no floating point
+RESULT: executed output is reproduced by code/refute/i6b_ect_obstruction_exact.py
+W(p)=1 W(q)=1 sum=[0, 0] W(sum)=0
+W(family)=a**2 W(boundary)=0
+RESULT: REFUTED naive ECT closure; cancellation/rank loss
+SCOPE: toy algebraic obstruction, not a dynamical I^1_6b counterexample

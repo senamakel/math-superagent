@@ -1,4 +1,4 @@
-<!-- source: https://link.springer.com/article/10.1007/s40863-024-00486-9 | converted from HTML -->
+<!-- source: https://doi.org/10.1007/s40863-024-00486-9 | converted from HTML -->
 
 Cubic planar vector fields with high local cyclicity | São Paulo Journal of Mathematical Sciences | Springer Nature Link
 
@@ -682,7 +682,7 @@ Provided by the Springer Nature SharedIt content-sharing initiative
 
 [1]: https://www.springernature.com/gp/open-science/about/the-fundamentals-of-open-access-and-open-research
 [2]: /content/pdf/10.1007/s40863-024-00486-9.pdf
-[3]: /article/10.1007/s40863-024-00486-9/save-research?_csrf=kfmLiyUa1ypm-ZXct5iCvA1DTpJNE-Cd
+[3]: /article/10.1007/s40863-024-00486-9/save-research?_csrf=ax2K3PbOwhJ4Kqgpkgl_L-5bpRXBCYyi
 [4]: /saved-research
 [5]: /journal/40863
 [6]: /journal/40863/aims-and-scope

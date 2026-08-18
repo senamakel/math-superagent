@@ -1,0 +1,1 @@
+Plan: independently parse psi_exact, psi_residues, c1, lmin and run/gap tables, test finite differences, Fibonacci recurrences, c1 Beatty formula, lmin next-Fibonacci formula, and deliberate likely failures. The larger run is not needed: the question is whether existing finite tables support a new exact pattern, not extending a bound.

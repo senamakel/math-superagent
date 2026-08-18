@@ -1,0 +1,1 @@
+Execution delegated to shell unavailable in tool set; no stdout captured here.
