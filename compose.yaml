@@ -1,16 +1,24 @@
+# The harness, one container per run. Everything it talks to is somebody
+# else's stack, joined by name:
+#
+#   compose.shared.yaml   one Neo4j Enterprise and one ladder, for every
+#                         problem      (scripts/shared-up)
+#   compose.memory.yaml   this problem's own Cognee   (scripts/memory-up)
+#
+# Both networks below are therefore `external: true`: this file does not own
+# either, the lifetime of both is longer than any one run, and a run must never
+# be able to take one down. `./agent` brings them up in order and says so
+# plainly when it cannot.
 networks:
   memory:
     external: true
     name: ${COGNEE_NETWORK:-cognee-local_default}
-  # Stable across per-problem memory networks and deliberately has no gateway:
-  # the agent can reach the ladder without gaining an escape route during a
-  # calibration run.
+  # `compose.shared.yaml`'s ladder, reached as `ladder:6969`. Stable across
+  # per-problem memory networks and deliberately gatewayless: the agent can
+  # reach the router without gaining an escape route during a calibration run.
   router:
-    internal: true
-  # The ladder alone needs provider egress. Keeping this attachment off the
-  # agent preserves the calibration network boundary.
-  ladder-egress:
-    driver: bridge
+    external: true
+    name: ${LADDER_NETWORK:-math-agent-shared_router}
 
 services:
   agent:
@@ -19,9 +27,6 @@ services:
     image: math-agent:local
     env_file:
       - .env
-    depends_on:
-      ladder:
-        condition: service_healthy
     environment:
       AGENT_WORKSPACE: /workspace
       COGNEE_API_URL: http://cognee:8000
@@ -119,9 +124,9 @@ services:
     # fits under sixteen, so the ceiling was answering the question before the
     # method got to.
     #
-    # 24g overcommits this box on purpose. It holds 30 GiB of RAM, and the
-    # `cognee` service below keeps its own 8g, so the two can ask for more than
-    # is free. `memswap_limit` is what makes that survivable rather than fatal:
+    # 24g overcommits this box on purpose. It holds 30 GiB of RAM, and every
+    # problem's Cognee keeps its own 4g beside the shared Neo4j's 8g, so the
+    # set of them can ask for more than is free. `memswap_limit` is what makes that survivable rather than fatal:
     # it is the *total* of RAM and swap, so 56g grants 24 GiB resident and 32
     # GiB of the box's 87 GiB of swap. Docker already permitted swap here —
     # `mem_limit` without `memswap_limit` defaults to twice the memory — so the
@@ -147,149 +152,13 @@ services:
       - type: bind
         source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}
         target: /workspace
-    # The memory backend is shared rather than per-checkout. Cognee scopes its
-    # graph by project, so one server serves every checkout on the box with the
-    # datasets kept apart, and standing this stack up twice would mean two graph
-    # stores, two Neo4j instances, and a fight over ports 8000 and 3000 — the
-    # second copy simply fails to bind.
-    #
-    # `COGNEE_NETWORK` names the compose network that stack is on, so the agent
-    # joins it and reaches the server as `cognee:8000`. It is external because
-    # this file does not own it: the lifetime of the memory server is longer
-    # than any one run, and a run must never be able to take it down. There is
-    # no `depends_on` for the same reason — the server is expected to be up
-    # already, and `./agent` says so plainly when it is not.
+    # `COGNEE_NETWORK` names the compose network this problem's own Cognee
+    # stack is on, so the agent joins it and reaches the server as
+    # `cognee:8000`; `scripts/memory-up` prints that name and `./agent` passes
+    # it through. There is no `depends_on` for either network's services —
+    # neither is in this project, both are expected to be up already, and the
+    # launcher starts them in order rather than this file declaring an edge it
+    # cannot express across projects.
     networks:
       - router
       - memory
-
-  ladder:
-    image: ghcr.io/senamakel/llm-ladder-router:sha-073fda7ca4d408c2c64356246cebcde95a7d279f
-    restart: unless-stopped
-    # The run's `.env` contributes the independent memory key. The router's
-    # file comes second so its code OpenRouter and Surplus credentials win when
-    # both files name the same upstream variable. Compose parses quoted dotenv
-    # values; `docker run --env-file` does not, and sends the quote as part of
-    # the bearer token.
-    env_file:
-      - .env
-      - ${LADDER_ENV_FILE:-../llm-ladder-router/.env}
-    volumes:
-      - type: bind
-        source: ${LADDER_CONFIG_PATH:-../llm-ladder-router/config.toml}
-        target: /etc/ladder/config.toml
-        read_only: true
-    ports:
-      - "127.0.0.1:${LADDER_PORT:-6969}:6969"
-    read_only: true
-    tmpfs:
-      - /tmp:rw,nosuid,nodev,noexec,size=16m
-    cap_drop:
-      - ALL
-    security_opt:
-      - no-new-privileges:true
-    pids_limit: 64
-    networks:
-      ladder-egress:
-        priority: 100
-      router:
-        priority: 10
-
-  cognee:
-    image: cognee/cognee:1.4.2
-    # Only with `--profile own-memory`. The shared server on the external
-    # `memory` network is the default; standing a second one up would bind the
-    # same host ports and fail.
-    profiles:
-      - own-memory
-    restart: unless-stopped
-    environment:
-      LLM_PROVIDER: custom
-      LLM_MODEL: openrouter/deepseek/deepseek-v4-flash-0731
-      # The memory's own key; see `compose.memory.yaml`, where the same line
-      # carries the argument. Unset falls back to the run's.
-      LLM_API_KEY: ${OPENROUTER_MEMORY_API_KEY:-${OPENROUTER_API_KEY}}
-      LLM_ENDPOINT: https://openrouter.ai/api/v1
-      LLM_ARGS: '{"extra_headers":{"HTTP-Referer":"https://opencompany.tinyhumans.ai/","X-OpenRouter-Title":"OpenCompany","X-OpenRouter-Categories":"personal-agent"}}'
-      EMBEDDING_PROVIDER: fastembed
-      EMBEDDING_MODEL: BAAI/bge-small-en-v1.5
-      EMBEDDING_DIMENSIONS: 384
-      HUGGINGFACE_TOKENIZER: BAAI/bge-small-en-v1.5
-      GRAPH_DATABASE_PROVIDER: neo4j
-      GRAPH_DATABASE_URL: bolt://neo4j:7687
-      GRAPH_DATABASE_NAME: neo4j
-      GRAPH_DATABASE_USERNAME: neo4j
-      GRAPH_DATABASE_PASSWORD: cognee-local
-      REQUIRE_AUTHENTICATION: "false"
-      ENABLE_BACKEND_ACCESS_CONTROL: "false"
-      # Lets `/api/v1/add` and `/api/v1/remember` take a URL as well as an
-      # uploaded file, so a source can be handed over by reference rather than
-      # by bytes. The download path does not use it — the runtime has the bytes
-      # already, and a URL would skip the 5 MiB bound, the frontier's fetch
-      # ledger, and the `raw/` archive — but the memory server is shared, and
-      # this stack must match the one actually serving the box.
-      #
-      # Note what it grants: the *server* performs the fetch, from inside the
-      # Docker network, where the runtime container's egress rules do not
-      # apply. Keep the API bound to 127.0.0.1, as the port mapping below does;
-      # that binding is what stops the fetch being reachable from off-box.
-      ALLOW_HTTP_REQUESTS: "true"
-      UI_APP_URL: http://localhost:3000
-    ports:
-      - "127.0.0.1:8000:8000"
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 30
-      start_period: 30s
-    mem_limit: 8g
-    volumes:
-      - cognee-system:/app/cognee/.cognee_system
-      - cognee-data:/app/cognee/.data_storage
-    depends_on:
-      neo4j:
-        condition: service_healthy
-
-  neo4j:
-    image: neo4j:5.26
-    # Only with `--profile own-memory`. The shared server on the external
-    # `memory` network is the default; standing a second one up would bind the
-    # same host ports and fail.
-    profiles:
-      - own-memory
-    restart: unless-stopped
-    environment:
-      NEO4J_AUTH: neo4j/cognee-local
-      NEO4J_PLUGINS: '["apoc"]'
-    healthcheck:
-      test: ["CMD-SHELL", "cypher-shell -u neo4j -p cognee-local 'RETURN 1' >/dev/null"]
-      interval: 10s
-      timeout: 5s
-      retries: 30
-      start_period: 20s
-    volumes:
-      - neo4j-data:/data
-
-  cognee-ui:
-    build:
-      context: https://github.com/topoteretes/cognee.git#v1.4.2:cognee-frontend
-    image: cognee-ui:1.4.2-local
-    # Only with `--profile own-memory`. The shared server on the external
-    # `memory` network is the default; standing a second one up would bind the
-    # same host ports and fail.
-    profiles:
-      - own-memory
-    restart: unless-stopped
-    environment:
-      NEXT_PUBLIC_LOCAL_API_URL: http://localhost:8000
-    ports:
-      - "127.0.0.1:3000:3000"
-    depends_on:
-      cognee:
-        condition: service_healthy
-
-volumes:
-  cognee-system:
-  cognee-data:
-  neo4j-data:

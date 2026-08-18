@@ -1,0 +1,177 @@
+#!/bin/sh
+# Moves one problem's graph out of its private Neo4j and into the shared
+# instance, as that problem's own database.
+#
+# Usage: scripts/memory-migrate <workspace-label> [<workspace-label>...]
+#        scripts/memory-migrate --all
+#
+# This is the one-time step between the old arrangement — one Neo4j *and* one
+# Cognee per problem — and the current one, where the graph store is shared and
+# only Cognee stays private. Cognee's own state does not move: its metadata
+# store and its vector store are volumes of the `cognee-<slug>` compose
+# project, and that project keeps its name, so they are still there when the
+# container comes back pointed at the shared instance. Only the graph travels.
+#
+# The graph travels as a dump rather than a copy, because the old instance is
+# Community and the new one is Enterprise: `neo4j-admin database dump` writes
+# a portable store and `load` reads it into a database of a different name,
+# which a file copy could not do.
+#
+# Safe to re-run. Every step is idempotent except the load, which is guarded:
+# a database that already holds data is left alone unless `--overwrite` says
+# otherwise, so a second run does not silently discard an hour of a live run's
+# writes.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+cd "$repository_root"
+
+prefix=cognee-
+shared_project=${SHARED_PROJECT:-math-agent-shared}
+dump_dir=$repository_root/.migration-dumps
+overwrite=no
+
+# Community, matching the instance the dump is read from. A newer binary can
+# read an older store; the reverse is not guaranteed, and the store being read
+# here was written by this exact image.
+source_image=neo4j:5.26
+target_image=neo4j:5.26-enterprise
+
+usage() {
+    echo "usage: scripts/memory-migrate [--overwrite] <workspace-label>..." >&2
+    echo "       scripts/memory-migrate [--overwrite] --all" >&2
+    echo "" >&2
+    echo "  --all        every cognee-* project that still has a private Neo4j" >&2
+    echo "  --overwrite  replace the shared database even if it holds data" >&2
+}
+
+slug_of() {
+    printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_-]/-/g; s/^-*//; s/-*$//'
+}
+
+neo4j_db_name_of() {
+    printf 'p%s' "$1" | tr '_' '-' | cut -c1-63
+}
+
+shared_cypher() {
+    "$repository_root/scripts/shared-up" --cypher "$1"
+}
+
+# Every project with a `neo4j-data` volume still holding a private graph. The
+# volume outlives the container, so this finds a problem whose stack is
+# stopped as readily as one still running — which is the point, since a
+# migration should not depend on what happens to be up.
+list_unmigrated() {
+    docker volume ls --format '{{.Name}}' \
+        | sed -n "s/^${prefix}\\(.*\\)_neo4j-data$/\\1/p" | sort -u
+}
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --overwrite)
+            overwrite=yes
+            shift
+            ;;
+        --all)
+            shift
+            set -- "$@" $(list_unmigrated)
+            break
+            ;;
+        -h|--help|help)
+            usage
+            exit 0
+            ;;
+        -*)
+            usage
+            exit 2
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+
+if [ "$#" -eq 0 ]; then
+    usage
+    exit 2
+fi
+
+mkdir -p "$dump_dir"
+# World-writable on purpose, and the reason is uid rather than laziness: both
+# images below run `neo4j-admin` as their own `neo4j` user, which must read a
+# `/data` volume it owns *and* write a dump into this host directory, which it
+# does not. Nothing secret passes through here — it holds a graph this
+# repository already commits the sources of — and the directory is deleted once
+# the migration is confirmed.
+chmod 777 "$dump_dir"
+"$repository_root/scripts/shared-up" >&2
+
+migrate_one() {
+    label=$1
+    slug=$(slug_of "$label")
+    project=$prefix$slug
+    volume=${project}_neo4j-data
+    database=$(neo4j_db_name_of "$slug")
+
+    if ! docker volume inspect "$volume" >/dev/null 2>&1; then
+        echo "migrate: $label has no private graph volume ($volume); nothing to move" >&2
+        return 0
+    fi
+
+    # Cognee first, so nothing is writing to the graph while it is dumped, and
+    # then Neo4j, because `neo4j-admin database dump` needs the store offline.
+    # Stopped, not removed: if a step below fails, the old stack is one
+    # `docker compose start` from being exactly as it was.
+    echo "migrate: [$label] stopping the private stack" >&2
+    # By compose label rather than `docker compose -p ... stop`, which needs
+    # the configuration file the project was created from — and that file no
+    # longer declares a `neo4j` service to stop.
+    running=$(docker ps -q --filter "label=com.docker.compose.project=$project")
+    if [ -n "$running" ]; then
+        # shellcheck disable=SC2086
+        docker stop $running >/dev/null
+    fi
+
+    echo "migrate: [$label] dumping its graph" >&2
+    rm -f "$dump_dir/neo4j.dump" "$dump_dir/$database.dump"
+    docker run --rm \
+        -v "$volume:/data" \
+        -v "$dump_dir:/dumps" \
+        "$source_image" \
+        neo4j-admin database dump neo4j --to-path=/dumps >&2
+    # `load` looks for `<target-database>.dump`, so the name of the file is
+    # what decides the name of the database it lands in.
+    mv "$dump_dir/neo4j.dump" "$dump_dir/$database.dump"
+
+    # Created first and stopped, rather than loaded into a data directory the
+    # running server has never heard of: this is Neo4j's own documented
+    # restore path, and it leaves the `system` database's record of the
+    # database and the store on disk agreeing at every point.
+    shared_cypher "CREATE DATABASE \`$database\` IF NOT EXISTS WAIT" >&2
+
+    if [ "$overwrite" = no ]; then
+        nodes=$("$repository_root/scripts/shared-up" --cypher-in "$database" \
+            "MATCH (n) RETURN count(n) AS c" 2>/dev/null | tr -dc '0-9' || true)
+        if [ -n "${nodes:-}" ] && [ "$nodes" -gt 0 ] 2>/dev/null; then
+            echo "migrate: [$label] shared database '$database' already holds $nodes nodes; skipping (pass --overwrite to replace)" >&2
+            return 0
+        fi
+    fi
+
+    echo "migrate: [$label] loading into shared database '$database'" >&2
+    shared_cypher "STOP DATABASE \`$database\` WAIT" >&2
+    docker run --rm \
+        -v "${shared_project}_neo4j-data:/data" \
+        -v "$dump_dir:/dumps" \
+        "$target_image" \
+        neo4j-admin database load "$database" --from-path=/dumps --overwrite-destination=true >&2
+    shared_cypher "START DATABASE \`$database\` WAIT" >&2
+
+    echo "migrate: [$label] done; bring it back up with scripts/memory-up $label" >&2
+}
+
+for label in "$@"; do
+    migrate_one "$label"
+done
+
+echo "migrate: dumps kept in $dump_dir; delete them once the migrated stacks look right" >&2

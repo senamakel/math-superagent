@@ -1,0 +1,132 @@
+# The shared backbone: one Neo4j Enterprise instance and one LLM router,
+# reused by every problem. Brought up once and left running (`restart:
+# unless-stopped`) — not torn down between runs, not owned by any one problem.
+#
+#   scripts/shared-up            # start or reconcile; waits for health
+#   scripts/shared-up --down     # stop it (the volume survives)
+#
+# `scripts/memory-up` calls `scripts/shared-up` itself, and `./agent` calls
+# `scripts/memory-up`, so an ordinary `./conjecture <slug>` brings the whole
+# thing up in order without anyone naming this file.
+#
+# # What is shared and what is not
+#
+# Shared: the graph store and the router. Per problem: a Cognee container
+# (`compose.memory.yaml`) and the harness itself (`compose.yaml`). That split
+# is the point, and it is where the two failures this repository measured live:
+#
+# - **Contention** was measured against one shared *Cognee* process fielding
+#   every problem's requests — four concurrent runs produced a `409 Conflict`
+#   on a `recall_memory` that had already hung the full ten-minute tool
+#   ceiling. Cognee stays per-problem, so that shape does not come back. Neo4j
+#   and the router are request-per-connection services with no such serialising
+#   layer, and the router was already shared by every run on the box.
+# - **Leakage** was a Cognee application-layer bug: asking its search API for
+#   one project's dataset by name returned another project's chunk regardless,
+#   because the dataset field was silently unenforced (`docs/memory.md`,
+#   `src/orchestrator/vector_store.rs`). That bug lived in query-time
+#   filtering. Isolation here does not depend on it: each problem's Cognee is
+#   statically pointed at its own pre-created Neo4j database
+#   (`GRAPH_DATABASE_NAME` in `compose.memory.yaml`), and a Neo4j driver
+#   session is bound to one named database at the Bolt protocol level. Probed
+#   live, a container pointed at `pe1` got `[]` back from `SHOW DATABASES` run
+#   inside its own session, and a literal Cypher `MATCH` naming another
+#   problem's sentinel came back empty — it cannot enumerate another problem's
+#   database, let alone query it, whatever Cognee's own scoping code does.
+#
+# Multiple databases need Neo4j **Enterprise**: Community cannot create one at
+# all (`Local Neo4j multi-user mode requires a Neo4j deployment that supports
+# CREATE/DROP DATABASE`, measured directly against the Community image).
+# `NEO4J_ACCEPT_LICENSE_AGREEMENT=yes` accepts the licence for this deployment;
+# the commercial agreement behind it is handled outside this repository.
+#
+# No Cognee auth or multi-tenant machinery is involved — `REQUIRE_AUTHENTICATION`
+# and `ENABLE_BACKEND_ACCESS_CONTROL` both stay false, so every call
+# `src/orchestrator/vector.rs` sends is exactly as unauthenticated as before and
+# no Rust change was needed for any of this.
+networks:
+  # Cognee reaches `neo4j:7687` here. Internal: the graph store has no reason
+  # to be routable, and nothing on this network needs egress.
+  graph:
+    name: ${GRAPH_NETWORK:-math-agent-shared_graph}
+    internal: true
+  # The agent and every problem's Cognee reach `ladder:6969` here. Internal and
+  # gatewayless on purpose: joining it must not hand a calibration run a route
+  # out. `compose.yaml` and `compose.memory.yaml` join it by name.
+  router:
+    name: ${LADDER_NETWORK:-math-agent-shared_router}
+    internal: true
+  # The ladder alone needs provider egress. Keeping this attachment off every
+  # other service is what preserves the calibration network boundary.
+  ladder-egress:
+    driver: bridge
+
+services:
+  neo4j:
+    image: neo4j:5.26-enterprise
+    restart: unless-stopped
+    environment:
+      NEO4J_AUTH: neo4j/cognee-local
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
+      NEO4J_PLUGINS: '["apoc"]'
+      # Sized for many problems' graphs landing in one instance, rather than
+      # the defaults a single problem's private instance ran on. Revisit
+      # against real usage once a dozen databases are live here.
+      NEO4J_server_memory_heap_max__size: 4g
+      NEO4J_server_memory_pagecache_size: 2g
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p cognee-local 'RETURN 1' >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    mem_limit: 8g
+    networks:
+      - graph
+    volumes:
+      - neo4j-data:/data
+
+  ladder:
+    image: ghcr.io/senamakel/llm-ladder-router:sha-073fda7ca4d408c2c64356246cebcde95a7d279f
+    restart: unless-stopped
+    # This used to live in `compose.yaml`, whose project name is the checkout
+    # directory's, so a second checkout brought up a second ladder and the two
+    # fought over port 6969 — the loser simply failed to bind. One ladder,
+    # named once, is what every checkout and every problem now reaches.
+    #
+    # The run's `.env` contributes the independent memory key. The router's
+    # file comes second so its own OpenRouter and Surplus credentials win when
+    # both files name the same upstream variable. Compose parses quoted dotenv
+    # values; `docker run --env-file` does not, and sends the quote as part of
+    # the bearer token.
+    env_file:
+      - .env
+      - ${LADDER_ENV_FILE:-../llm-ladder-router/.env}
+    volumes:
+      - type: bind
+        source: ${LADDER_CONFIG_PATH:-../llm-ladder-router/config.toml}
+        target: /etc/ladder/config.toml
+        read_only: true
+    ports:
+      - "127.0.0.1:${LADDER_PORT:-6969}:6969"
+    # No `healthcheck:` here on purpose — the image carries its own, which is
+    # what `scripts/shared-up --wait` and the old `depends_on` both read.
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,noexec,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    networks:
+      # `priority` decides which attachment supplies the default route. The
+      # egress network must win, or the ladder inherits a gatewayless route
+      # from `router` and every provider call fails as a connection error.
+      ladder-egress:
+        priority: 100
+      router:
+        priority: 10
+
+volumes:
+  neo4j-data:

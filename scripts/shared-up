@@ -1,0 +1,105 @@
+#!/bin/sh
+# Brings up the shared backbone: one Neo4j Enterprise instance and one LLM
+# router, for every problem on the box.
+#
+# Usage: scripts/shared-up            start or reconcile, waiting for health
+#        scripts/shared-up --down     stop it; the graph volume survives
+#        scripts/shared-up --cypher <statement>   one statement, as admin
+#        scripts/shared-up --cypher-in <db> <statement>   ... in one database
+#
+# Idempotent: `up -d --wait` against a stack that is already healthy returns
+# immediately and starts nothing twice, which is why `scripts/memory-up` can
+# call this on every problem it brings up rather than asking a human to
+# remember the ordering.
+#
+# Nothing here is per-problem. `compose.shared.yaml` has the argument for what
+# is shared and what deliberately is not.
+set -eu
+
+repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
+cd "$repository_root"
+
+project=${SHARED_PROJECT:-math-agent-shared}
+compose_file=compose.shared.yaml
+
+compose() {
+    docker compose -p "$project" -f "$compose_file" "$@"
+}
+
+# Runs against the `system` database, which is where `CREATE DATABASE` is the
+# only valid place to send it. `exec` rather than a one-off `docker run` on the
+# graph network: the container is already here, and naming it through compose
+# means this keeps working if the network name ever moves.
+admin_cypher() {
+    compose exec -T neo4j cypher-shell -u neo4j -p cognee-local "$@"
+}
+
+case "${1:-up}" in
+    --down)
+        compose down >&2
+        exit 0
+        ;;
+    --cypher)
+        if [ "$#" -lt 2 ]; then
+            echo "usage: scripts/shared-up --cypher <statement>" >&2
+            exit 2
+        fi
+        admin_cypher "$2"
+        exit 0
+        ;;
+    --cypher-in)
+        # The same, against one problem's database rather than `system`.
+        # `-d` rather than a `:use` line, because cypher-shell only reads
+        # client commands from a script and not from a statement argument.
+        if [ "$#" -lt 3 ]; then
+            echo "usage: scripts/shared-up --cypher-in <database> <statement>" >&2
+            exit 2
+        fi
+        admin_cypher -d "$2" "$3"
+        exit 0
+        ;;
+    -h|--help|help)
+        sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'
+        exit 0
+        ;;
+    up)
+        ;;
+    *)
+        echo "unknown argument: $1" >&2
+        exit 2
+        ;;
+esac
+
+if [ ! -f .env ]; then
+    echo "missing .env; copy .env.example and provide credentials" >&2
+    exit 1
+fi
+
+# The checkout's credentials, over anything the calling shell exported. The
+# ladder reads `.env` for the memory key and its own file for the provider
+# ones; see `scripts/dotenv`.
+. "$repository_root/scripts/dotenv"
+
+# The ladder's configuration and credentials live beside the checkout, not in
+# it, and `compose.shared.yaml` says so as a path relative to itself. That
+# resolves correctly from the main checkout and nowhere else: from
+# `worktrees/<slug>` the same `../llm-ladder-router` points at a sibling
+# worktree that does not exist, and Compose then fails on a missing env file
+# rather than on anything to do with the ladder. Falling back to the main
+# checkout's sibling makes a worktree able to start the shared stack, which is
+# the whole point of the stack being shared.
+if [ -z "${LADDER_CONFIG_PATH:-}" ] || [ -z "${LADDER_ENV_FILE:-}" ]; then
+    ladder_home=$repository_root/../llm-ladder-router
+    if [ ! -f "$ladder_home/config.toml" ]; then
+        main_checkout=$(git -C "$repository_root" worktree list 2>/dev/null | head -1 | awk '{print $1}')
+        if [ -n "$main_checkout" ] && [ -f "$main_checkout/../llm-ladder-router/config.toml" ]; then
+            ladder_home=$main_checkout/../llm-ladder-router
+        fi
+    fi
+    LADDER_CONFIG_PATH=${LADDER_CONFIG_PATH:-$ladder_home/config.toml}
+    LADDER_ENV_FILE=${LADDER_ENV_FILE:-$ladder_home/.env}
+    export LADDER_CONFIG_PATH LADDER_ENV_FILE
+fi
+
+echo "shared: bringing up $project (neo4j, ladder)" >&2
+compose up -d --wait >&2

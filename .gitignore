@@ -94,3 +94,6 @@ worktrees/*
 .sage
 out/*.json
 out/**/*.json
+# One-time Neo4j store dumps written by `scripts/memory-migrate`, while a
+# problem's graph moves from its old private instance into the shared one.
+.migration-dumps/

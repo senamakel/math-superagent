@@ -1,11 +1,16 @@
 #!/bin/sh
-# Brings up this problem's own memory server and prints the network to join.
+# Brings up this problem's own Cognee container and prints the network to
+# join.
 #
-# One Cognee and one Neo4j per problem, from `compose.memory.yaml`. The compose
-# *project name* is what separates them: `-p cognee-<slug>` gives that problem
-# its own containers, its own volumes, and its own network, and nothing here
+# One Cognee per problem, from `compose.memory.yaml`, sharing the graph store
+# (`compose.shared.yaml`) and the LLM router (`compose.yaml`'s `ladder`) with
+# every other problem. The compose *project name* is what separates one
+# problem's Cognee from another's: `-p cognee-<slug>` gives that problem its
+# own container, its own volumes, and its own network, and nothing here
 # publishes a host port, so any number can run at once. See the header of
-# `compose.memory.yaml` for why a shared server was not enough.
+# `compose.memory.yaml` for the isolation this relies on and how it was
+# probed. The shared backbone is brought up first, by `scripts/shared-up`, and
+# this problem's own Neo4j database created before Cognee can ask for it.
 #
 # Usage: scripts/memory-up <workspace-label>   e.g. project-euler/620
 #        scripts/memory-up --down <workspace-label>
@@ -52,6 +57,33 @@ slug_of() {
     printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_-]/-/g; s/^-*//; s/-*$//'
 }
 
+# A Neo4j database name, derived from the compose slug rather than reused
+# directly: Neo4j additionally forbids underscores, requires a leading letter,
+# and caps the name at 63 characters — none of which the compose slug rules
+# guarantee. `p` + the slug with underscores folded to dashes covers the
+# leading-letter and character-set rules for every slug this produces;
+# truncating leaves room for the prefix.
+neo4j_db_name_of() {
+    printf 'p%s' "$1" | tr '_' '-' | cut -c1-63
+}
+
+# The shared backbone is brought up rather than merely checked for. It is
+# idempotent (`up -d --wait` on a healthy stack returns immediately), and the
+# alternative — asking a human to remember that `compose.shared.yaml` comes
+# first — is the ordering mistake this script exists to absorb.
+ensure_shared() {
+    "$repository_root/scripts/shared-up" >&2
+}
+
+# Idempotent: `IF NOT EXISTS` makes a second run against an already-running
+# problem a no-op, which is the same guarantee `compose up -d` already gives
+# below. `CREATE DATABASE` is only valid against the `system` database, which
+# is where `scripts/shared-up --cypher` sends it.
+create_graph_database() {
+    "$repository_root/scripts/shared-up" --cypher "CREATE DATABASE \`$1\` IF NOT EXISTS" >&2
+}
+
+
 action=up
 while [ "${1:-}" = --eval ]; do
     overlay="-f compose.memory.eval.yaml"
@@ -86,6 +118,12 @@ if [ -z "$slug" ]; then
     exit 2
 fi
 project=$prefix$slug
+graph_database_name=$(neo4j_db_name_of "$slug")
+# Compose parses `${GRAPH_DATABASE_NAME:?...}` at config-load time, so even
+# `compose down` needs it set — a database name that no longer matters once
+# the container is gone, but Compose does not know that.
+GRAPH_DATABASE_NAME=$graph_database_name
+export GRAPH_DATABASE_NAME
 
 if [ "$action" = down ]; then
     # Volumes go with it. A memory server kept for a problem nobody is running
@@ -104,15 +142,19 @@ fi
 # nothing; see `scripts/dotenv`.
 . "$repository_root/scripts/dotenv"
 
+ensure_shared
+
+echo "memory: ensuring Neo4j database '$graph_database_name' exists" >&2
+create_graph_database "$graph_database_name"
+
 echo "memory: bringing up $project for $label" >&2
 # `up -d` on a stack that is already up is a no-op that returns immediately, so
 # a second run against the same problem costs nothing and starts nothing twice.
 compose up -d >&2
 
-# Wait for the API rather than assuming it. `depends_on: service_healthy` binds
-# cognee to neo4j inside the stack, but nothing binds *this script* to cognee,
-# and an agent that starts against an unhealthy server spends its first minutes
-# failing recall calls it will never retry.
+# Wait for the API rather than assuming it. Nothing binds *this script* to
+# cognee's own readiness, and an agent that starts against an unhealthy
+# server spends its first minutes failing recall calls it will never retry.
 waited=0
 # 420s rather than 180s. A single stack comes up well inside three minutes; three
 # starting together do not, and the first symptom is a launcher giving up on a
