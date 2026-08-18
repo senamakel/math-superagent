@@ -1,30 +1,23 @@
 # Bamón 1986 — quadratic fields have finitely many limit cycles
 
-Full text: [[bamon-quadratic-finite-limit-cycles.full]].
-Publ. Math. IHÉS 64 (1986) 111–142, doi:10.1007/BF02699193. Note: the stored file is
-the **landing/record page** (title, bibtex, references); the paper's proofs are not
-held. Claim sourced at title/metadata level, and cross-confirmed by the Ilyashenko
-survey's history (Dulac→gap→Écalle/Ilyashenko) — Bamón 1986 is the n=2 case solved
-before the general theorem, explicitly a special case of Dulac's problem.
+Full text (primary, Numdam scan): [[primary-bamon-quadratic-finiteness.pdf.full]]
+(Publ. Math. IHÉS 64 (1986) 111–142, doi:10.1007/BF02699193).
+The landing/record page is also held at [[bamon-quadratic-finite-limit-cycles.full]].
 
-## What the source establishes
+## What the source establishes (primary full text, verbatim)
 
-Every individual quadratic planar vector field has a **finite** number of limit
-cycles. This is the n=2 instance of the individual-finiteness (Dulac) theorem —
-proved in 1986, before Écalle (1992) / Ilyashenko (1991) settled the general case
-(gap in Dulac's 1923 proof found 1981). It is pointwise, per field; it gives no
-uniform bound over the quadratic family — H(2) < ∞ remains open.
+**Theorem A.** Every quadratic vector field in ℝ² has a finite number of limit cycles.
+**Theorem B.** All graphs (bounded or unbounded) of quadratic vector fields in ℝ² are finite (not accumulated by limit cycles).
+Proof by Poincaré compactification and graph analysis; bounded-graph case an alternative to Chicone–Shafer 1983. The introduction recalls Dulac's 1923 claim and its gap (Ilyashenko found the error).
 
 ## What it implies here
 
-- Confirms the classical folklore "finiteness for a fixed quadratic field was
-  known before Écalle/Ilyashenko" — the pointwise pillar holds for n=2
-  independently of the contested general proof (Yeung 2024). So even if the
-  general Dulac proof has a gap, the n=2 pointwise statement stands on Bamón.
-- It does NOT make progress on uniformity: H(2) < ∞ still requires the DRR
-  finite-cyclicity reduction. The value: isolates Bamón as a distinct source for
-  pointwise quadratic finiteness, removing dependence on the contested step for
-  the n=2 frame.
+- The n=2 instance of the individual-finiteness (Dulac) theorem — proved in 1986,
+  before Écalle (1992) / Ilyashenko (1991) settled the general case. Pointwise,
+  per field; no uniform bound over the quadratic family — H(2) < ∞ remains open.
+- The n=2 frame does NOT depend on the contested general proof (Yeung 2024): even
+  if the general Dulac proof has a gap, the n=2 pointwise statement stands on
+  Bamón alone (Theorem A) and its non-accumulation stands on Theorem B.
 
 ```claim
 id: h16-bamon-quadratic-finiteness
@@ -36,5 +29,5 @@ status: asserted
 bearing: the pointwise-finiteness pillar for n=2 held independently of the
   contested general Dulac proof (Bamon 1986) -- the n=2 frame does not depend on
   the Yeung 2024 contention. Uniformity (H(2) < infinity) remains open.
-anchor: research/sources/bamon-quadratic-finite-limit-cycles.full.md
+anchor: research/sources/primary-bamon-quadratic-finiteness.pdf.full.md (Theorems A and B verbatim at lines 60-66)
 ```

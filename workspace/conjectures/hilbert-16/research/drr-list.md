@@ -48,6 +48,9 @@ paper.
 | `I²₂₃` | pp-graphic through triple nilpotent elliptic point + hyperbolic saddle (σ≠1) | Rousseau–Zhu 2004, JDE 196, Cor. 3.2; **sourced-held** (full text from Rousseau's site) | **closed, cyclicity ≤ 2** |
 | `I²₂₄` | pp-graphic through triple nilpotent elliptic point + hyperbolic saddle (σ≠1) | Rousseau–Zhu 2004, JDE 196, Cor. 3.2; **sourced-held** | **closed, cyclicity ≤ 2** |
 | `I²₂₅` | pp-graphic through triple nilpotent elliptic point + hyperbolic saddle (σ≠1) | Rousseau–Zhu 2004, JDE 196, Cor. 3.2; **sourced-held** | **closed, cyclicity ≤ 2** |
+| `I²₅`, `I¹₉`, `H²₅` | elementary graphics with two semi-hyperbolic points surrounding a center | Rousseau–Świrszcz–Żołądek 1998, JDCS 4:149–189; **abstract-held** (body paywalled) | **closed, cyclicity exactly 2** |
+| `H¹₁₁` | elementary graphic with two semi-hyperbolic points surrounding a center | Rousseau–Świrszcz–Żołądek 1998, JDCS 4:149–189; **abstract-held** | **closed, cyclicity exactly 3** |
+| `H¹₈`, `H¹₁₀`, `I²₄` | elementary graphics with semi-hyperbolic points | Rousseau–Świrszcz–Żołądek 1998, JDCS 4; **abstract-held** — improves earlier finiteness-only results | **closed, cyclicity exactly 2** |
 
 ## Explicit open / partially-open rows
 

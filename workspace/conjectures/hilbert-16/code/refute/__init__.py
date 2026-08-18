@@ -1,1 +1,1 @@
-"""Refutation attempts for the run's committed statements."""
+"""Exact refutation oracles for the open finite-cyclicity claims."""

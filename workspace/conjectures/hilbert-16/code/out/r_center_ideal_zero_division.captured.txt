@@ -1,0 +1,51 @@
+CAPTURE: code/r_center_ideal_zero_division.py (corrected o(1) semantics)
+ORACLE: Delta_N(z) = -z*sin(Nz) = m1*(1+h1) + m2*(1+h2), m1=1, m2=-1, h2=z*sin(Nz), exact zeros at k*pi/N
+RANGE: N in 7..12, collar 0<z<=1, k=2; certified lower bound floor(7N/22) via pi < 22/7; no full-size search
+
+RUN: exact finite Bautin-expansion zero-division diagnostic (corrected o(1) semantics)
+CLAIM: h_i = o(1) remainders + ideal coefficients alone do NOT imply a uniform k-1 zero bound
+FAMILY: k=2, m1=1, m2=-1, a1=a2=1, h1=0, h2=z*sin(Nz);  Delta_N = -z sin(Nz)
+RANGE: N in 7..12; collar 0 < z <= 1; exact arithmetic with pi
+
+limit h_2(z) = z*sin(Nz) as z->0+ : 0
+h_2(0) = 0: OK   (Lean Admissible clause h i p 0 = 0)
+|h_2(z)| <= z (hence o(1), uniform in N): OK   (remainder_bound = z, C = 1)
+
+generic zero check  Delta_N(k*pi/N) = -0  (sin(k*pi) = 0)
+
+certified zeros in (0,1]: z_k = k*pi/N, k = 1..floor(7N/22)
+(lower bound guaranteed by pi < 22/7; true count is floor(N/pi))
+claimed k-1 bound = 1
+N=7: certified_count>=2 (true floor(N/pi)=2); sample zero z_1=pi/7; all certified points exact zeros: OK
+N=8: certified_count>=2 (true floor(N/pi)=2); sample zero z_1=pi/8; all certified points exact zeros: OK
+N=9: certified_count>=2 (true floor(N/pi)=2); sample zero z_1=pi/9; all certified points exact zeros: OK
+N=10: certified_count>=3 (true floor(N/pi)=3); sample zero z_1=pi/10; all certified points exact zeros: OK
+N=11: certified_count>=3 (true floor(N/pi)=3); sample zero z_1=pi/11; all certified points exact zeros: OK
+N=12: certified_count>=3 (true floor(N/pi)=3); sample zero z_1=pi/12; all certified points exact zeros: OK
+
+RESULT: COUNTEREXAMPLE FOUND
+For every N >= 7 the displacement Delta_N satisfies every stated
+remainder hypothesis (h_i = o(1), h_i(0)=0, uniform in N) yet has
+at least floor(7N/22) >= 2 zeros, so no uniform k-1 = 1 bound holds.
+The zero counts are finite per N but unbounded across N: this is
+exactly the Ilyashenko-Ecalle-vs-H16.2 gap (pointwise finite, not uniform).
+
+SCOPE: refutes only the abstract implication; the conditional Lean
+theorem (with the analytic zero_division binder) stands; the analytic
+zero-division theorem on the transseries class is proven load-bearing,
+and the rank-1 leading-cancellation mode is the failure mode a proof
+must exclude (ECT/Wronskian or quasianalytic structure of the m_i).
+
+--- positive control: the same shape with a genuine ECT family ---
+ECT family {1, z}: Wronskian W(1,z) = 1
+any nontrivial c1 + c2*z has at most 1 positive zero: OK (degree <= 1)
+counterfamily {1, -1}: Wronskian W(1,-1) = 0
+-> the counterexample is exactly the rank-deficient-monomial case;
+   the ECT/derivation-division hypothesis is what the bound needs.
+
+--- smooth-test annotation ---
+h_2(z) = z*sin(Nz) is real-analytic (entire): the counterexample is C^omega,
+so the missing hypothesis is not smoothness but the structure of the monomial
+family (ECT/Wronskian/quasianalytic) AND uniformity across the family.
+Per-N finiteness holds; the uniform-in-N bound fails: exactly the
+Ilyashenko-Ecalle-vs-H16.2 pointwise-vs-uniform gap at the abstract level.

@@ -4,37 +4,23 @@
 #   compose.shared.yaml   one Neo4j Enterprise, one Cognee and one ladder,
 #                         for every problem      (scripts/shared-up)
 #
-# Both shared networks below are therefore `external: true`: this file does not
-# own either, the lifetime of both is longer than any one run, and a run must
-# never be able to take one down. `./agent` brings them up in order and says so
-# plainly when it cannot.
+# That stack is reached over the **network**, by address, rather than by
+# joining its Docker networks. It used to be joined by name — `cognee:8000`,
+# `ladder:6969`, two `external: true` networks — which only works while it is
+# on this box, and it no longer has to be: `MATH_AGENT_MEMORY_URL` and
+# `MATH_AGENT_API_BASE_URL` point wherever it runs, and `docs/runtime.md` has
+# the split deployment those defaults assume.
+#
+# `host.docker.internal` below is what keeps a single-box deployment working
+# without a special case: the shared stack publishes its ports to the host, and
+# a run reaches them through the host gateway rather than through a shared
+# bridge.
 networks:
-  # `compose.shared.yaml`'s Cognee, reached as `cognee:8000`. One server for
-  # every problem, which the run addresses as its own tenant with the
-  # `COGNEE_API_KEY` below; `scripts/memory-up` provisions that tenant and
-  # prints this network's name.
-  #
-  # Gatewayless, like `router` and for the same reason. It used to be a
-  # per-problem bridge, and joining it was also how an ordinary run reached the
-  # internet — which meant a calibration run's isolation depended on bringing
-  # the memory up through a second overlay that marked that bridge internal. It
-  # is internal always now, and the run's egress is `agent-egress` below, which
-  # `compose.eval.yaml` removes. A boundary that holds unless somebody passes a
-  # flag is not a boundary.
-  memory:
-    external: true
-    name: ${MEMORY_NETWORK:-math-agent-shared_memory}
-  # `compose.shared.yaml`'s ladder, reached as `ladder:6969`. Deliberately
-  # gatewayless: the agent can reach the router without gaining an escape route
-  # during a calibration run.
-  router:
-    external: true
-    name: ${LADDER_NETWORK:-math-agent-shared_router}
-  # The run's own way out, and the only one it has. Owned by this file rather
-  # than shared, so that an overlay can take it off this one service without
-  # touching anything another problem is using: `compose.eval.yaml` replaces
-  # this attachment with the screened proxy's network, and a calibration run is
-  # then left with two internal networks and no default route.
+  # The run's own way out, and the only one it has — the shared stack is on the
+  # far side of it now, along with the providers. Owned by this file rather
+  # than shared, so an overlay can change it without touching anything another
+  # problem is using: `compose.eval.yaml` redefines it as `internal`, and a
+  # calibration run is then left with no default route.
   agent-egress:
     driver: bridge
 
@@ -47,7 +33,10 @@ services:
       - .env
     environment:
       AGENT_WORKSPACE: /workspace
-      COGNEE_API_URL: http://cognee:8000
+      # The shared memory server, by address. `host.docker.internal` is the
+      # host this container runs on, which is where the stack publishes when it
+      # is on the same box; point it at a tailnet address when it is not.
+      COGNEE_API_URL: ${MATH_AGENT_MEMORY_URL:-http://host.docker.internal:8000}
       # This run's tenant on the shared memory server, sent as an `X-Api-Key`
       # header on every request. `scripts/memory-up --key <workspace-label>`
       # provisions the tenant and prints it; `scripts/run-agent` passes it
@@ -73,7 +62,7 @@ services:
       # deliberately and arrives through env_file: this list overrides the file,
       # so naming a key here would set it to the empty string whenever the host
       # shell lacks it. Keys ride `.env`; run knobs ride this list.
-      MATH_AGENT_API_BASE_URL: ${MATH_AGENT_API_BASE_URL:-http://ladder:6969/v1}
+      MATH_AGENT_API_BASE_URL: ${MATH_AGENT_API_BASE_URL:-http://host.docker.internal:6969/v1}
       MATH_AGENT_MODEL: ${MATH_AGENT_MODEL:-flash}
       MATH_AGENT_REQUEST_SECONDS: ${MATH_AGENT_REQUEST_SECONDS:-}
       MATH_AGENT_MAX_MODEL_CALLS: ${MATH_AGENT_MAX_MODEL_CALLS:-}
@@ -193,37 +182,43 @@ services:
     mem_limit: ${MATH_AGENT_MEM_LIMIT:-4g}
     memswap_limit: ${MATH_AGENT_MEMSWAP_LIMIT:-8g}
     mem_reservation: 250m
-    # A deliberately loose ceiling, and looser than the box has cores on
-    # purpose. A run is bursty — `nauty-geng`, a Lean build, a sieve — and for
-    # most of its life it is waiting on a model call using nothing at all, so a
-    # tight per-run limit would idle the box to protect it from a spike that
-    # only one run is having at a time. Several runs at eight simply contend,
-    # which is the intended behaviour: `cpus` is a ceiling, not a reservation.
+    # 0.1 to 4 vCPU, and the two halves are enforced by different mechanisms
+    # because Docker only offers one of them outside Swarm.
     #
-    # What stops that contention from starving the memory is the *weight*
-    # rather than this number. `compose.shared.yaml` gives Neo4j and Cognee
-    # `cpu_shares: 2048` against the default 1024 here, so under full load each
-    # shared service gets twice the slice of one run — enough that a dozen
-    # busy runs cannot make every problem's recall slow at once.
-    cpus: ${MATH_AGENT_CPUS:-8}
+    # The **ceiling** is `cpus`, and it is real: 4 of the box's 14 cores, hard
+    # capped. A run is bursty — `nauty-geng`, a Lean build, a sieve — and for
+    # most of its life it is waiting on a model call using nothing at all, so
+    # four is loose enough that no ordinary run meets it and tight enough that
+    # one enumeration cannot take the box from a dozen siblings.
+    #
+    # The **floor** is not expressible. `deploy.resources.reservations.cpus` is
+    # accepted by the schema and silently dropped by Compose in non-Swarm mode
+    # — measured: `limits.cpus: 4` becomes `NanoCpus=4000000000` while
+    # `reservations.cpus: 0.1` leaves `CpuShares=0`, no floor of any kind. So
+    # the floor is expressed the only way the engine offers, as a *relative*
+    # weight that applies under contention and does nothing when the box is
+    # idle. 256 against the default 1024 is a run saying "when every core is
+    # wanted, take mine" — which is what a tenth of a core amounts to — while
+    # still reaching its full four whenever the cores are there.
+    #
+    # That is also what keeps a dozen busy runs from starving the memory. The
+    # shared services carry `cpu_shares: 2048` (`compose.shared.yaml`), so
+    # under full load Cognee and Neo4j each get eight times the slice of one
+    # run container, and every problem's recall does not slow at once.
+    cpus: ${MATH_AGENT_CPUS:-4}
+    cpu_shares: 256
     volumes:
       - type: bind
         source: ${MATH_AGENT_WORKSPACE_PATH:-./workspace/default}
         target: /workspace
-    # There is no `depends_on` for the shared networks' services — neither is
-    # in this project, both are expected to be up already, and the launcher
-    # starts them in order rather than this file declaring an edge it cannot
-    # express across projects.
-    #
-    # `priority` decides which attachment supplies the **default route**, and
-    # it is load-bearing rather than cosmetic. `memory` and `router` are both
-    # `internal`, so a container that took its default route from either has no
-    # gateway and every provider call fails as a connection error. The egress
-    # attachment must win, which is what these numbers say.
+    # There is no `depends_on` for the shared stack — it is not in this
+    # project, may not be on this machine, and is expected to be up already.
+    # The launcher starts it rather than this file declaring an edge it cannot
+    # express across projects, let alone across hosts.
     networks:
-      agent-egress:
-        priority: 100
-      router:
-        priority: 10
-      memory:
-        priority: 5
+      - agent-egress
+    # Resolves the host this container runs on, so a shared stack published to
+    # the host is reachable without naming an address that changes per box.
+    # Docker Desktop provides this name natively; on Linux it needs saying.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -1,159 +1,61 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/arxiv-math-0010174-kaloshin-elementary-polycycle.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
-
-<!-- source: https://arxiv.org/html/math/0010174 | converted from HTML -->
-
-## What is in it
-
-- The Hilbert 16-th problem and an estimate for cyclicity of an elementary polycycle…
-  - 1. Introduction
-        - Definition 1.
-        - Definition 2.
-        - Definition 3.
-        - Definition 4.
-        - Definition 5.
-        - Corollary 1.
-        - Corollary 2.
-    - 1.1. Three stages of the proof
-    - 1.2. Normal forms of local families and their integration
-    - 1.3. Singular-regular systems determining the number of limit cycles
-    - 1.4. The Khovansky reduction method.
-    - 1.5. a P a_{P} -stratification and Bezout’s theorem for a chain map P ∘ F P\circ F with a…
-      - 1.5.1. A Heuristic description
-        - Proposition 1.
-  - 2. Normal forms for local families and their applications.
-- …
-
-
-## What it claims
-
-(1) |  | d ​ y d ​ x = P n ​ ( x, y) Q n ​ ( x, y), P n, Q n − polynomials , deg ⁡ P n, Q n ≤ n. \displaystyle\frac{dy}{dx}=\frac{P_{n}(x,y)}{Q_{n}(x,y)},\ P_{n},Q_{n}-{\text{ polynomials }},\deg P_{n},Q_{n}\leq n. |  |
-
-| H ( n) = uniform bound for the number of limit cycle of ( 1). \displaystyle H(n)=\boxed{\text{uniform bound for the number of limit cycle of}\ (\ref{H}).} |  |
-
-One way to formulate the Hilbert 16-th Problem is the following:
-
-Hilbert 16-th Problem (HP). Find an estimate for H ⁡ ( n) H(n) for any n ∈ ℤ + n\in\mathbb{Z}_{+}.
-
-We shall discuss problems related to the following:
-
-Existential Hilbert 16-th Problem (EHP). Prove that H ⁡ ( n) < ∞ H(n)<\infty for any n ∈ ℤ + n\in\mathbb{Z}_{+}.
-
-The problem about finiteness of number of limit cycles for an individual polynomial line field ( 1) is called Dulac problem since the pioneering work of Dulac who claimed in 1923 to solve this problem, but an error was found by Ilyashenko.
-
-The Dulac problem was solved by two independent and rather different proofs given almost simultaneously by Ilyashenko [I] and Ecalle [E].…
-
-Co…
-
-## Statements it makes
-
-###### Definition 1.
-
-###### Definition 2.
-
-###### Definition 3.
-
-###### Definition 4.
-
-###### Definition 5.
-
-###### Corollary 1.
-
-###### Corollary 2.
-
-###### Proposition 1.
-
-###### Definition 6.
-
-###### Theorem 7.
-
-###### Definition 8.
-
-###### Theorem 9.
-
-###### Definition 10.
-
-###### Definition 11.
-
-###### Definition 12.
-
-###### Definition 13.
-
-###### Definition 14.
-
-###### Definition 15.
-
-###### Theorem 16.
-
-###### Lemma 1.
-
-###### Corollary 3.
-
-###### Theorem 17.
-
-###### Corollary 4.
-
-###### Theorem 18.
-
-###### Theorem 19.
-
-###### Theorem 20.
-
-###### Definition 21.
-
-###### Theorem 22.
-
-###### Definition 23.
-
-###### Definition 24.
-
-###### Definition 25.
-
-###### Theorem 26.
-
-###### Theorem 27.
-
-###### Definition 28.
-
-###### Definition 29.
-
-###### Definition 30.
-
-###### Definition 31.
-
-###### Definition 32.
-
-###### Definition 33.
-
-###### Proposition 2.
-
-###### Definition 34.
-
-###### Proposition 3.
-
-###### Theorem 35.
-
-###### Definition 36.
-
-###### Theorem 37.
-
-###### Definition 38.
-
-###### Definition 39.
-
-###### Definition 40.
-
-###### Theorem 41.
-
-###### Definition 42.
-
-###### Theorem 43.
-
-###### Lemma 2.
-
-###### Proposition 4.
-
-###### Lemma 3.
-
-###### Lemma 4.
-
-*[digest of a 166018 character source; every section, statement, and proof in full at `research/sources/arxiv-math-0010174-kaloshin-elementary-polycycle.full.md`]*
+# Kaloshin 2000/2003 — estimate for cyclicity of an elementary polycycle
+
+Full text: [[arxiv-math-0010174-kaloshin-elementary-polycycle.full]]
+(arXiv:math/0010174, lecture notes) and [[primary-kaloshin-elementary-polycycles.html.full]].
+Published: V. A. Kaloshin, "The Existential Hilbert 16-th problem and an estimate for
+cyclicity of elementary polycycles", Invent. Math. 151 (2003) 451–512.
+
+## What the source establishes (held full text, verbatim)
+
+**E(k) ≤ 2^{25k²}** (equation (1.5), held full text line 149). This is the first
+explicit general estimate for cyclicity of an elementary polycycle in a generic
+k-parameter family: the bifurcation number B(k) — maximal cyclicity of a nontrivial
+polycycle occurring in a generic k-parameter family — is finite and bounded by the
+double-exponential-type shape in k.
+
+**Context it supplies (definitions that the run's frame uses):**
+- The **Hilbert–Arnold Problem (HAP)**: prove that in a generic finite-parameter family
+  of vector fields on S² with compact base B, the number of limit cycles is uniformly
+  bounded. Solved under the elementary-singularities assumption (line 99: "any generic
+  finite parameter family ... with only elementary singularities has a uniform upper
+  bound for the number of limit cycles").
+- The **Global Finiteness Conjecture (GFC)** [Roussarie]: for any family of line fields
+  on S² with compact parameter base, the number of limit cycles is uniformly bounded.
+  This is the exact conjecture Roussarie's reduction to finite cyclicity serves, and it
+  is what H(2)<∞ would discharge for the quadratic family.
+- The **individual finiteness theorem** (IFT, Ilyashenko–Écalle) is the pointwise pillar;
+  the HAP/GFC is the uniform pillar. Kaloshin's own route is an independent proof of the
+  Ilyashenko–Yakovenko finiteness theorem for elementary polycycles.
+
+**What it does NOT cover:** nonelementary polycycles. The source explicitly says
+extending (1.5) to generic nonelementary polycycles needs a Desingularization Theorem
+for families of generic C^∞ vector fields (Denkowska–Roussarie, Trifonov approaches),
+and that singular perturbation (curves of equilibria after blow-up) is the phenomenon
+that appears. This is exactly the DRR degenerate-graphics obstruction.
+
+## What it lets this run conclude
+
+- The elementary-polycycle restricted class (ROOT.md row 1) is anchored with the exact
+  constant 2^{25k²}, verified verbatim in the held full text. The `E(k)≤2^(25 k^2)`
+  ROOT.md citation is CORRECT.
+- It is the precedent for the run's `compensator-pfaffian-mourtada-moussu-synthesis`
+  and `pfaffian-chain-return-map` approaches: the diagnostic is to prove a uniform
+  Pfaffian-chain representation of the displacement including all parameter-dependent
+  exponents and passages; without it, no bound for an open graphic.
+- It confirms the separation drawn in ROOT.md and in `h16-drr-121-graphics`: elementary
+  = settled (Mourtada, IY, Kaloshin, Kaleda–Shchurov); nilpotent/degenerate = the open
+  content.
+
+```claim
+id: h16-kaloshin-elementary-polycycle-bound
+statement: In a generic k-parameter family of C^infty planar (or S^2) vector fields, the cyclicity E(k) of an elementary polycycle is at most 2^{25k^2} (Kaloshin, equation (1.5)). More precisely the bifurcation number B(k), the maximal cyclicity of a nontrivial polycycle in a generic k-parameter family, satisfies this bound; the Hilbert–Arnold problem is solved for generic families with only elementary singularities.
+hypotheses: generic k-parameter family; all singular points elementary (nonzero eigenvalues); polycycle (compact invariant graph of the singular foliation).
+holds-here: yes — restricted class; the open DRR graphics are non-elementary so this does not close them.
+status: asserted
+evidence: held full text verbatim (research/sources/primary-kaloshin-elementary-polycycles.html.full.md line 149: "E(k) ≤ 2^{25k²}"); lecture notes arXiv:math/0010174.
+falsifier: a counterexample elementary polycycle in a generic k-parameter family with cyclicity exceeding 2^{25k²}, or a correction to the paper.
+sources: https://arxiv.org/abs/math/0010174 ; https://doi.org/10.1007/s00222-002-0244-9
+anchor: research/sources/primary-kaloshin-elementary-polycycles.html.full.md
+follows-from:
+answers:
+```

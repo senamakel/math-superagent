@@ -1,34 +1,42 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/drr-1994-jde-mardi-record.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# DRR 1994 — MaRDI record and citer list (primary text not held)
 
-<!-- source: https://portal.mardi4nfdi.de/wiki/Publication:1329269 | converted from HTML -->
+Full text: [[drr-1994-jde-mardi-record.full]] (MaRDI portal record of DRR 1994,
+JDE 110(1):86–133, DOI 10.1006/jdeq.1994.1061).
 
-## What is in it
+## What is established from the held capture
 
-- Hilbert's 16th problem for quadratic vector fields
+- **Bibliographic record + citer list only.** The MaRDI record confirms the paper's
+  metadata (Hilbert's 16th problem for quadratic vector fields; MSC 34C05/34C23/34C25;
+  keywords incl. Bautin's theorem, Dulac problem, cyclicity, weak focus) and lists 96
+  citing works. **No mathematics of the paper itself is held** — the 121-graphic
+  catalogue and the H(2)<∞-⇔-finite-cyclicity reduction are carried by companions
+  (RSZ 2015, RR 2015, Ilyashenko 2002 centennial, Panazzolo–Rousseau 2017, the
+  drr-list synthesis), not by this record.
+- **The 96-item citer list has NO post-2015 closure of any open DRR row** (librarian
+  cycle 2026-08-19 walk): all closure-looking citers resolve to 1998–2008 work or
+  already-held papers (DMRT fake-saddle 2015). This strengthens the standing open-row
+  inventory: ≥89/121 closed by 2015 (88 RSZ + I¹₁₄ RR), (I¹₆b),(H³₁₃),(DI₂b)
+  boundary-sets-only, (H³₁₄) open with Lu 2026 unrefereed sole claim, ≥11 degenerate
+  graphics open.
 
+## What it lets this run conclude
 
-## What it claims
+- The DRR frame's primary text is genuinely unobtainable (ScienceDirect paywall); the
+  run's target inventory rests on the verbatim companions and the citer walk, and the
+  requests for an authoritative post-2015 graphic-by-graphic ledger stay open.
+- Claim `drr-1994-citation-anchor` exists so that claims resting on the DRR frame can
+  name it without pretending the 1994 text is held.
 
-[bifurcation][18] [cyclicity][19] [center][20] [weak focus][21] [quadratic vector fields][22] [Dulac problem][23] [Bautin's theorem][24] [number and relative position of the limit cycles][25] [polynomial vector field in the plane][26] [second part of Hilbert's 16th problem][27]
-
-[Mathematics Subject Classification ID][28]
-
-[Topological structure of integral curves, singular points, limit cycles of ordinary differential equations (34C05)][29] [Bifurcation theory for ordinary differential equations (34C23)][30] [Periodic solutions to ordinary differential equations (34C25)][31]
-
-Recommendations
-
-- [Quadratic vector fields in the plane have a finite number of limit cycles][32]
-- [scientific article; zbMATH DE number 4107805][33]
-- [Hilbert's 16-th problem for quadratic vector fields and cyclicity of graphics][34]
-- [Cyclicity of graphics with semi-hyperbolic points inside quadratic systems][35]
-- [A restricted version of Hilbert's 16th problem for quadratic vector fields][36]
-
-Cited in
-
-(96)
-
-- [Phase portraits of separable quadratic systems and a bibliographical survey on quadratic…
-
-T…
-
-*[digest of a 19194 character source; every section, statement, and proof in full at `research/sources/drr-1994-jde-mardi-record.full.md`]*
+```claim
+id: drr-1994-mardi-record-citers
+statement: The MaRDI record of DRR 1994 (JDE 110(1):86–133, DOI 10.1006/jdeq.1994.1061) is bibliographic only (no mathematics); its 96-item citer list contains no post-2015 closure of any open DRR row — all closure-looking citers resolve to 1998–2008 work or already-held papers. The standing inventory: ≥89/121 closed by 2015, (I^1_6b),(H^3_13),(DI_2b) boundary-only, (H^3_14) open with Lu 2026 unrefereed sole claim, ≥11 degenerate open.
+hypotheses: DRR 1994 121-graphic inventory; citer list completeness up to the MaRDI snapshot.
+holds-here: yes.
+status: asserted
+evidence: held MaRDI record (research/sources/drr-1994-jde-mardi-record.full.md); librarian citer walk research/findings/librarian-drr-status-synthesis-2026-08-19.md.
+falsifier: a post-2015 citer of DRR 1994 that closes one of the open rows (would update the inventory), or the raw DRR catalogue contradicting a row's status.
+sources: https://portal.mardi4nfdi.de/wiki/Publication:1329269
+anchor: research/sources/drr-1994-jde-mardi-record.full.md
+follows-from: h16-drr-121-graphics
+answers:
+```

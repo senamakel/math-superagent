@@ -221,6 +221,51 @@ holding one Neo4j Enterprise instance, one Cognee and one ladder. `./agent`
 starts it first; it is not in the agent's own project, which is what stops a run
 being able to take it down.
 
+## The stack is reached by address, and need not be on this box
+
+The shared stack is every problem's memory and none of its compute, so it is the
+half worth moving off a machine that is doing the runs. Set
+`MATH_AGENT_SHARED_HOST` to an ssh host and `scripts/shared-up` drives Compose
+there; the runs reach it over the network instead of by joining its Docker
+networks:
+
+| variable | what it names |
+| --- | --- |
+| `MATH_AGENT_SHARED_HOST` | ssh host running the stack; empty means this box |
+| `MATH_AGENT_SHARED_PATH` | the stack's directory on that host |
+| `MATH_AGENT_MEMORY_URL` | where Cognee answers |
+| `MATH_AGENT_API_BASE_URL` | where the ladder answers |
+
+Compose is run **over ssh** rather than through `DOCKER_HOST=ssh://…`, and the
+difference is not stylistic: with a remote `DOCKER_HOST`, Compose resolves the
+file's bind mounts against the *client's* filesystem and sends paths that mean
+nothing on the daemon's. The stack's files therefore live beside it, in
+`MATH_AGENT_SHARED_PATH`.
+
+A run used to reach `cognee:8000` and `ladder:6969` by name over two gatewayless
+Docker networks. That is gone, and with it the property that a run container had
+no route out at all. What replaces it:
+
+- **`host.docker.internal`** is the default for both addresses, so a single-box
+  deployment still works with no configuration: the stack publishes its ports to
+  the host it runs on and the run reaches them through the host gateway.
+- **The API is authenticated.** Each problem is a tenant with its own key; an
+  unkeyed request is `401` and another tenant's dataset is `404`. The boundary
+  travels with the request rather than with the network, which is what makes
+  publishing acceptable at all. Bind to a tailnet address, not `0.0.0.0`.
+- **A calibration run keeps its isolation, differently.** `compose.eval.yaml`
+  still leaves the container without a default route, and the memory server and
+  the ladder are now two entries in the screen proxy's allowlist rather than two
+  networks it is joined to. `scripts/calibrate-run` derives those entries from
+  the addresses above rather than taking them separately, because a second place
+  to write them down is a second place for them to disagree — and disagreeing
+  produces a run with no memory and no model that reads as a broken harness.
+
+The images are not all multi-arch: the ladder is published for amd64 only, so on
+an Apple Silicon host it runs emulated. That is acceptable for a proxy, which is
+I/O bound rather than compute bound, and `platform: linux/amd64` says so in the
+file rather than leaving it to be discovered.
+
 ## One memory server, one tenant per problem
 
 Two things separate one problem's memory from another's, and neither is a filter
@@ -650,6 +695,28 @@ Cognee each reserve 1 GiB and are capped at 16 GiB. The reservations do the work
 the ceilings do not — they are the floor the scheduler holds for a service that
 is idle between a run's turns, which is what stops a busy neighbour from
 squeezing the store every other run reads through.
+
+CPU is bounded too, and it is worth knowing that only half of a CPU range is
+enforceable here. A run gets **0.1 to 4 vCPU**. The 4 is a hard ceiling
+(`cpus`). The 0.1 is not a floor Docker can give: `deploy.resources.
+reservations.cpus` is accepted by the Compose schema and silently dropped
+outside Swarm — measured on this box, `limits.cpus: 4` became
+`NanoCpus=4000000000` while `reservations.cpus: 0.1` left `CpuShares=0` and no
+floor of any kind.
+
+So the floor is expressed as scheduling weight instead, which is *relative* and
+applies only under contention: a run carries `cpu_shares: 256` against the
+default 1024, which says "when every core is wanted, take mine" while still
+letting it reach its full four whenever the cores are free. That fits what a run
+is — bursty, and for most of its life waiting on a model call using nothing at
+all.
+
+The same mechanism is what keeps contention off the memory. Neo4j and Cognee are
+capped at 4 cores each and carry `cpu_shares: 2048`, eight times a run's, so
+under full load each shared service gets eight times the slice of one run
+container. Without it they would compete against a dozen runs at equal priority
+and lose by number, and the symptom would be every problem's recall slowing at
+once rather than any one run failing.
 
 `memswap_limit` is the *total* of RAM and swap, so 8 GiB grants 4 GiB resident
 plus 4 GiB of the box's swap. Docker already allowed swap — `mem_limit` alone

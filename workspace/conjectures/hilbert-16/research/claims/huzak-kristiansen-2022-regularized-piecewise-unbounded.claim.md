@@ -22,6 +22,5 @@ falsifies: (a) a correction/withdrawal of Theorem 1.1; (b) a source proving H(2)
   open graphics' return maps are provably not o-minimally definable — that would disconnect
   o-minimality from uniform boundedness. Neither known.
 note: research/findings/huzak-kristiansen-2022-ominimality-converse-2026-08-18.md
-follows-from: [slow-divergence-integral framework of De Maesschalck–Dumortier–Roussarie]
 related: h16-ominimality-route-roussarie
 ```

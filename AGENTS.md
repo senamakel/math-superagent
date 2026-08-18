@@ -258,9 +258,9 @@ Watch it with `./diagnose` / `./euler-tui --workspace conjectures/<slug>`.
 
 ## Docker and workspace rules
 
-The orchestrator must run through `./agent`, which starts the runtime and Qdrant
-through Docker Compose. Do not add a host-side fallback for tool execution. The
-Docker boundary is part of the security model:
+`./agent` is the only way to run the orchestrator: it starts the runtime and the
+shared memory stack (possibly on another machine — `MATH_AGENT_SHARED_HOST`).
+Never add a host-side fallback for tool execution. Docker is part of the model:
 
 - Run as an unprivileged user, with the root filesystem read-only, all Linux
   capabilities dropped, and `no-new-privileges` enabled.

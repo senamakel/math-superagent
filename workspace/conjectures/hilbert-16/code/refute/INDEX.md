@@ -7,6 +7,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `__init__.py` | _(undescribed)_ |
 | `_run_indep.py` | _(undescribed)_ |
 | `bautin_membership_independent.py` | _(undescribed)_ |
+| `center_ideal_kminus1_oracle.py` | Exact symbolic minimal counterexample to the abstract k−1 zero-bound inference: k=2 identical monomials with cancelling coefficients and a flat oscillatory remainder; documents the missing quasianalytic/ECT hypothesis. |
 | `center_ideal_zero_division.p` | Minimal first-order refutation encoding for the weakened center-ideal zero-division claim; deliberately tests whether uniform small remainders alone imply a one-zero bound. |
 | `degenerate-graphic.p` | Minimal TPTP finite-model attack on the open finite-cyclicity claim for a DRR degenerate graphic; deliberately records only the abstract finite-bound fragment. |
 | `finite_uniformity.p` | Minimal TPTP attack on the invalid general bridge from pointwise finiteness to a parameter-uniform bound. |
@@ -23,6 +24,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `i6b_slow_divergence_symbolic.py` | Exact minimal symbolic probe showing that an ECT conclusion does not follow merely from combining several passage contributions; supports the I^1_6b slow-divergence attack. |
 | `i6b_transseries_counterexample.py` | Exact counterexample hunt showing finite compensator truncation does not control arbitrary flat oscillatory remainders. |
 | `lu_core_zero_bound.p` | Minimal TPTP consistency attack on the displayed Lu Bautin obstruction equations; checks whether the encoded finite core can force a zero bound. |
+| `run_center_ideal_kminus1_oracle.py` | Runs center_ideal_kminus1_oracle.py and captures its stdout to code/out/center_ideal_kminus1_oracle.captured.txt, writing to a temp file and moving on exit 0. |
 | `run_i6b_transseries_counterexample.py` | Runner for the exact I^1_6b transseries falsifier, used to produce a reproducible capture. |
-| `run_indep.py` | _(undescribed)_ |
+| `run_indep.py` | Host runner for the exact center-ideal k−1 oracle; executes the oracle from /workspace and prints its output. |
 | `uniform_finiteness_counterexample.p` | Minimal TPTP attack on the unsupported inference from pointwise finite cyclicity to a uniform parameter-family bound; deliberately omits compactness/algebraicity to test that load-bearing hypothesis. |

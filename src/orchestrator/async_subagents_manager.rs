@@ -18,7 +18,14 @@ impl AsyncSubagentManager {
             steering: SteeringRegistry::new(),
             budget,
             tracer,
-            langfuse: LangfuseClient::from_env().ok().map(Arc::new),
+            // One switch decides both halves. `payload_capture` stops a run
+            // *retaining* what it sent, and this stops it building an exporter
+            // for bytes it is no longer keeping; leaving the client here while
+            // capture is off would ship traces with empty prompt panels.
+            langfuse: crate::agent::budget::telemetry_enabled()
+                .then(LangfuseClient::from_env)
+                .and_then(Result::ok)
+                .map(Arc::new),
             slots: Arc::new(Semaphore::new(concurrency)),
             session: session_id(),
             memory: None,

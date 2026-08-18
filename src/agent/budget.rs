@@ -389,10 +389,10 @@ impl RunBudget {
 
     /// Builds the run policy that enforces this budget.
     ///
-    /// The policy stops with partial results instead of erroring at a cap, so
-    /// a long investigation still returns the work it completed, and it
-    /// captures model and tool payloads so the Langfuse trace shows what each
-    /// agent actually sent and received.
+    /// The policy stops with partial results instead of erroring at a cap, so a
+    /// long investigation still returns the work it completed, and it captures
+    /// model and tool payloads — but only when something is going to read them;
+    /// see [`payload_capture`].
     #[must_use]
     pub fn run_policy(&self) -> RunPolicy {
         let mut policy = RunPolicy::default();
@@ -400,7 +400,7 @@ impl RunBudget {
         policy.limits.max_tool_calls = self.max_tool_calls;
         policy.limits.max_wall_clock_ms = Some(self.run_timeout_ms());
         policy.limits.behavior = LimitBehavior::StopWithPartial;
-        policy.capture = PayloadCapture::all();
+        policy.capture = payload_capture();
 
         // The loop takes the stricter of these two caps, so raising the retry
         // policy alone would change nothing: `RunLimits::max_retries_per_call`
@@ -429,6 +429,89 @@ pub(crate) fn positive_env(name: &str) -> Option<u64> {
         .parse::<u64>()
         .ok()
         .filter(|value| *value > 0)
+}
+
+/// Whether this run's telemetry is switched on, and therefore whether anything
+/// will read a captured payload.
+///
+/// `MATH_AGENT_LANGFUSE=off` is the switch, on the same convention as
+/// `MATH_AGENT_RESEARCH` and `MATH_AGENT_RLM`. It is *off by default* while the
+/// retention below is unfixed, which is the one place in this runtime a default
+/// says "less observability" — stated here rather than in a prompt, because a
+/// capability that is withheld is withheld by not being wired up.
+///
+/// Langfuse being unconfigured counts as off too. Reading it here rather than
+/// asking `LangfuseClient::from_env()` keeps the decision on one line and out
+/// of an error path, and the two agree: the client is built from exactly these
+/// variables.
+pub(crate) fn telemetry_enabled() -> bool {
+    let configured = |name: &str| std::env::var(name).is_ok_and(|value| !value.trim().is_empty());
+    telemetry_from(
+        std::env::var("MATH_AGENT_LANGFUSE").ok().as_deref(),
+        configured("TINYHUMANS_LANGFUSE_PROXY_URL") && configured("TINYHUMANS_AUTH_TOKEN"),
+        configured("LANGFUSE_BASE_URL")
+            && configured("LANGFUSE_PUBLIC_KEY")
+            && configured("LANGFUSE_SECRET_KEY"),
+    )
+}
+
+/// The decision itself, with the environment already read.
+///
+/// Split out because it is the only part worth testing and the only part that
+/// can be: this crate is Rust 2024, where `set_var` is `unsafe` and racy across
+/// parallel tests, so a test that mutated the environment to check a switch
+/// would be less trustworthy than the switch.
+fn telemetry_from(switch: Option<&str>, proxy_configured: bool, direct_configured: bool) -> bool {
+    let switched_on = match switch.map(str::trim) {
+        // Off by default, and an empty or unparsable value is not an opt-in:
+        // the cost this withholds is paid by the run rather than by whoever
+        // set the variable, so only an explicit word turns it on.
+        None | Some("") => false,
+        Some(value) => {
+            let value = value.to_ascii_lowercase();
+            value == "on" || value == "1" || value == "true"
+        }
+    };
+    switched_on && (proxy_configured || direct_configured)
+}
+
+/// What a run retains of its own model and tool traffic.
+///
+/// Payload capture is what makes a Langfuse trace show the prompt and the
+/// completion rather than a timing, and it is not free in the way an
+/// observability switch usually is. Captured payloads go into the in-memory
+/// event journal, whose per-run `Vec` is read once when the run *ends*, so
+/// nothing trims it while the run is going. Each `ModelCompleted` carries the
+/// whole request — which is the whole conversation so far — so call *n* retains
+/// a copy of everything calls 1..n-1 already retained. Retention is quadratic
+/// in the number of model calls, not linear.
+///
+/// Measured on a live `conjectures/hilbert-16` run: 337 model calls against
+/// 1.8 GiB of anonymous memory, ~5.5 MB retained per call at inputs of ~114k
+/// tokens, climbing about 1.9 MiB/s and monotonic. Under a 4 GiB container cap
+/// that is an OOM in twenty minutes.
+///
+/// So the capture follows the consumer. With telemetry off nothing will ever
+/// read these bytes, and retaining them is pure cost; with it on, the run is
+/// paying for its traces knowingly. The real fix is upstream — export
+/// incrementally and trim the journal behind the export, so that having traces
+/// does not mean keeping every one of them resident — and this is the half that
+/// can be decided here.
+fn payload_capture() -> PayloadCapture {
+    capture_for(telemetry_enabled())
+}
+
+/// What is retained for a given telemetry posture.
+///
+/// Separate from [`payload_capture`] for the reason [`telemetry_from`] is
+/// separate: it is the assertion worth making, and it can be made without
+/// touching the environment.
+fn capture_for(telemetry: bool) -> PayloadCapture {
+    if telemetry {
+        PayloadCapture::all()
+    } else {
+        PayloadCapture::default()
+    }
 }
 
 #[cfg(test)]

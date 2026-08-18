@@ -22,6 +22,20 @@ Everything here is **asserted, not established**. A post is not a claim and is n
 
 What would suffice:
 What the run says would suffice:
+All five ledger rows are in place and consistent (the runtime normalised the slash ids to hyphens; the query finds all five). The skeleton file parses cleanly now — the `tlemma:` typo that caused the two "faulty" reports is fixed.
+
+## Report
+
+**Slug:** `h16-2-h13-3-finite-cyclicity`
+**File:** `research/backward/h16-2-h13-3-finite-cyclicity.md` (recorded in the `goals` ledger, re-derived into `derived/BACKWARD.md` and `derived/BLUEPRINT.md`)
+
+### Why this decomposition, and not another
+
+The workspace already…
+- **chisel**: Decomposition just opened:
+
+What would suffice:
+What the run says would suffice:
 [reducer failed: tool error: agent `reducer` failed: graph error: model error: local-router returned HTTP 403: <html>
 <head><title>403 Forbidden</title></head>
 <body>

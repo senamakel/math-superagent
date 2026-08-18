@@ -14,10 +14,10 @@
 #        scripts/memory-up --down <workspace-label> forget the tenant's key
 #        scripts/memory-up --list
 #
-# Prints the memory network name on stdout and nothing else, so a caller can
+# Prints the memory server's URL on stdout and nothing else, so a caller can
 # read it directly, and the key under `--key` for the same reason:
 #
-#     COGNEE_NETWORK=$(scripts/memory-up project-euler/620)
+#     MATH_AGENT_MEMORY_URL=$(scripts/memory-up project-euler/620)
 #     COGNEE_API_KEY=$(scripts/memory-up --key project-euler/620)
 #
 # Progress goes to stderr for exactly that reason. Both forms provision, so
@@ -28,7 +28,9 @@ repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
 cd "$repository_root"
 
 shared_project=${SHARED_PROJECT:-math-agent-shared}
-memory_network=${MEMORY_NETWORK:-math-agent-shared_memory}
+shared_host=${MATH_AGENT_SHARED_HOST:-}
+shared_path=${MATH_AGENT_SHARED_PATH:-math-agent-shared}
+
 
 # A tenant's login, derived from the workspace label alone so that continuing a
 # problem finds the tenant it left rather than making another. The password is
@@ -57,18 +59,32 @@ ensure_shared() {
     "$repository_root/scripts/shared-up" >&2
 }
 
-# One request cycle against the server, from inside the server. `exec` rather
-# than a container joined to the memory network: Cognee is already here, it has
-# Python, and naming it through compose means this keeps working if the network
-# name ever moves. Nothing is published to the host, so there is no other way
-# in that does not create a container.
+# Runs a command inside one of the shared stack's containers, wherever the
+# stack is. Only `--list` needs this: it reads the server's own user table,
+# which is an admin question the API answers for the caller's account alone and
+# has to work before any tenant exists.
+remote_exec() {
+    if [ -n "$shared_host" ]; then
+        # shellcheck disable=SC2029
+        ssh "$shared_host" "cd '$shared_path' && docker compose -p '$shared_project' \
+            -f compose.shared.yaml exec -T $*"
+    else
+        docker compose -p "$shared_project" -f compose.shared.yaml exec -T "$@"
+    fi
+}
+
+# One request cycle against the server, over its published API.
+#
+# This used to run inside the container, because nothing was published to the
+# host. The server can be on another machine now, so the transport is the same
+# HTTP the runtime itself speaks — which also means provisioning needs no
+# Docker access at all, only a reachable address.
 tenant_api_key() {
-    docker compose -p "$shared_project" -f compose.shared.yaml \
-        exec -T -e TENANT_EMAIL="$1@$tenant_domain" -e TENANT_PASSWORD="$tenant_password" \
-        cognee python - <<'PY'
+    TENANT_EMAIL="$1@$tenant_domain" TENANT_PASSWORD="$tenant_password" \
+        MEMORY_URL="$memory_url" python3 - <<'PY'
 import json, os, sys, urllib.error, urllib.parse, urllib.request
 
-BASE = "http://localhost:8000"
+BASE = os.environ["MEMORY_URL"].rstrip("/")
 email = os.environ["TENANT_EMAIL"]
 password = os.environ["TENANT_PASSWORD"]
 
@@ -134,8 +150,7 @@ case "${1:-}" in
         # problem currently running. Filtered to this runtime's tenant domain:
         # the server also carries Cognee's own built-in default user, which is
         # no workspace's and would read as one.
-        docker compose -p "$shared_project" -f compose.shared.yaml \
-            exec -T cognee python -c "
+        remote_exec cognee python -c "
 import sqlite3
 # The server's own relational store. Read directly rather than over HTTP
 # because listing users is an admin question and the API answers it only for
@@ -195,6 +210,18 @@ fi
 # nothing; see `scripts/dotenv`.
 . "$repository_root/scripts/dotenv"
 
+# Where the memory server answers, from *this* box, resolved only now: the
+# address lives in `.env`, so reading it before `scripts/dotenv` has run would
+# silently fall back to the single-box default and then fail to connect to a
+# server that is on another machine.
+#
+# The runtime inside a container is told the same address through
+# `MATH_AGENT_MEMORY_URL`. Its default names the host gateway, which resolves to
+# nothing from the host itself, so that one spelling is rewritten here — which
+# is what lets a single variable configure both sides of the common case.
+memory_url=${MATH_AGENT_MEMORY_HOST_URL:-${MATH_AGENT_MEMORY_URL:-http://127.0.0.1:8000}}
+memory_url=$(printf '%s' "$memory_url" | sed 's|host\.docker\.internal|127.0.0.1|')
+
 ensure_shared
 
 echo "memory: provisioning tenant $slug on the shared server" >&2
@@ -207,5 +234,5 @@ fi
 if [ "$action" = key ]; then
     printf '%s\n' "$key"
 else
-    printf '%s\n' "$memory_network"
+    printf '%s\n' "$memory_url"
 fi

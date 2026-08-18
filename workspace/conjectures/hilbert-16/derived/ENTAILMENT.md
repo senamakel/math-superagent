@@ -10,24 +10,12 @@ Every claim these rest on is established, so these are too, whatever status thei
 
 - `clt-2024-book-weak-h16-n2-chapter` — filed as catalogued, follows from `h16-abelian-integral-bounds`
   - Christopher, Li, Torregrosa, "Limit Cycles of Differential Equations", 2nd ed., Birkhauser CRM Barcelona (2024), DOI 10.1007/978-3-030-59656-9: textbook TOC…
-
-
-## Supporting themselves
-
-Each of these follows, through the edges on disk, from itself. Whatever the statements are worth, this chain establishes none of them, and nothing above counts them as support.
-
-- `h16-hn-lower-bound-asymptotic`
-- `h16-lower-bounds`
-
-## Following from nothing recorded
-
-Each edge below names a claim no block on disk carries. Either the id is misspelled, or the run is deriving something from a belief nobody wrote down.
-
-- `h16-hyperbolic-polycycle-cyclicity-lower-bound-bgs2024` follows from `drr-1994-citation-anchor`, which does not exist
-- `huzak-kristiansen-2022-regularized-piecewise-unbounded` follows from `De`, which does not exist
-- `huzak-kristiansen-2022-regularized-piecewise-unbounded` follows from `framework`, which does not exist
-- `huzak-kristiansen-2022-regularized-piecewise-unbounded` follows from `of`, which does not exist
-- `huzak-kristiansen-2022-regularized-piecewise-unbounded` follows from `slow-divergence-integral`, which does not exist
+- `h16-llx2025-hyperelliptic-zero-bound` — filed as asserted, follows from `h16-abelian-integral-bounds`
+  - Li–Liu–Xiao (2025, Sci. China Math., DOI 10.1007/s11425-023-2334-8): for the hyperelliptic integrals I(h)=∮_{Γ_h}(α+βx)ydx over ovals of {y²+P₅(x)=h} with P₅…
+- `h16-malev-novikov-2009-linear-abelian-rlv3` — filed as asserted, follows from `h16-abelian-integral-bounds`
+  - Malev–Novikov (arXiv:0903.5056, Ann. Fac. Sci. Toulouse 19 (2010)): for H=x^2 y(1−x−y), ovals δ(t)⊂{H=t}, t∈(0,1/64), and deg ω = n, the complete Abelian…
+- `h16-yang-2025-cubic-isochronous-period-annulus-sharp` — filed as asserted, follows from `h16-abelian-integral-bounds`
+  - Jihua Yang, "The cyclicity of period annulus of cubic isochronous Hamiltonian systems", arXiv:2512.19046 (22 Dec 2025, preprint): for the asymmetric cubic…
 
 ---
 

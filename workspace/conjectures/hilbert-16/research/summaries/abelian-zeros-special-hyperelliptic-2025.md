@@ -1,45 +1,46 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/abelian-zeros-special-hyperelliptic-2025.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Li–Liu–Xiao 2025 — lowest upper bound for a class of hyperelliptic Abelian integrals
 
-<!-- source: https://doi.org/10.1007/s11425-023-2334-8 | converted from HTML -->
+Full text: [[abelian-zeros-special-hyperelliptic-2025.full]] (Sci. China Math.,
+DOI 10.1007/s11425-023-2334-8).
 
-## What is in it
+## What the source establishes (held full text)
 
-- The lowest upper bound on the number of zeros of a class of hyperelliptic Abelian…
-  - Abstract
-  - Access this article
-  - Subscribe and save
-  - Buy Now
-    - Similar content being viewed by others
-    - [On the Chebyshev Property of a Class of Hyperelliptic Abelian Integrals][9]
-    - [On the Algebraic Structure and the Number of Zeros of Abelian Integral for a Class of…
-    - [On the Number of Zeros of Abelian Integral for a Class of Cubic Hamilton Systems with…
-    - Explore related subjects
-  - References
-  - Acknowledgements
-  - Author information
-    - Authors and Affiliations
-    - Corresponding author
-  - Rights and permissions
-  - About this article
-    - Cite this article
-    - Share this article
-- …
+**Object:** isolated zeros of hyperelliptic Abelian integrals
+I(h) = ∮_{Γ_h} (α + βx) y dx, α,β ∈ ℝ, where Γ_h is a compact component of
+{y² + P₅(x) = h} with P₅ of degree five in the Liu–Xiao normal form
+P₅(x) = −(uv/2)x² + ((u+v+uv)/3)x³ − ((1+u+v)/4)x⁴ + (1/5)x⁵.
 
+**Known lower bound:** for (v,u) ∈ Θ = {v = ū, Im(v) ≠ 0, (Re(u)−2)² + (Im(v))² < 1},
+there exist α,β with I(h) having **at least two isolated zeros** (Liu–Xiao 2013).
 
-## What it claims
+**This paper's contribution:** a new simplification technique reducing the degree of a
+polynomial by at least half, to attack the question whether **two is also the upper
+bound** of the number of isolated zeros of I(h) for (v,u) ∈ Θ. The abstract states the
+technique; the resolution of the two-is-the-upper-bound question is the paper's
+content (the digest is truncated before the main theorem statement).
 
-This paper is devoted to the number of isolated zeros of the hyperelliptic integrals
+## What it lets this run conclude
 
-$$I(h) = \oint_{{\Gamma _h}} {({\alpha + \beta x})ydx,\;\;\; \alpha ,\beta \in \mathbb{R},}$$
+- This is a special-family Abelian-integral zero count (GOAL result-type 3, the
+  `h16-sharp-abelian-named-family` goal): a named hyperelliptic family with an
+  explicit sharp-count question (2 or fewer zeros), and a *simplification technique*
+  that reduces polynomial degree by half — potentially the exact kind of
+  kernel-checkable reduction the run's Wronskian/ECT pipeline can validate.
+- The hypothesis structure (Liu–Xiao normal form, Θ region, α,β real) is explicit and
+  machine-checkable in principle: the run could clean-room verify "the simplification
+  reduces the degree by ≥ half" and the zero-count bound for specific (v,u).
+- It does not touch H16.2 or any graphic cyclicity.
 
-where Γ*h*is a compact component of the hyperelliptic cures {(*x,y*) ∣ *y*2 + *P*5 (*x*) = *h, h*∈ Σ}; here, Σ is a maximal open interval on which a continuous family of ovals Γ*h*exists, and *P**5*(*x*) is a polynomial of *x*with degree five. As is shown in Liu and Xiao (2013), *P*5 (*x*) can be assumed to have the form
-
-$${P_5}(x) = - {{uv} \over 2}{x^2} + {{u + v + uv} \over 3}{x^3} - {{1 + u + v} \over 4}{x^4} + {1 \over 5}{x^5},$$
-
-and there exist some real numbers *α*and *β*such that *I*(*h*) has at least two isolated zeros if (*v, u*) ∈ Θ, where
-
-$$\Theta=\{(v,u):v=\bar{u},\;\text{Im}(v)\ne0\;\text{and}\;(\text{Re}(u)-2)^{2}+(\text{Im}(v))^{2}<1\}.$$
-
-However, the problem whether two is also the upper bound of the number of isolated zeros of *I*(*h*) remains open for (*v,u*) ∈ Θ. In this paper, we propose a new simplification technique, which can reduce the degree of a polynomial by at least half.…
-
-*[digest of a 28155 character source; every section, statement, and proof in full at `research/sources/abelian-zeros-special-hyperelliptic-2025.full.md`]*
+```claim
+id: h16-llx2025-hyperelliptic-zero-bound
+statement: Li–Liu–Xiao (2025, Sci. China Math., DOI 10.1007/s11425-023-2334-8): for the hyperelliptic integrals I(h)=∮_{Γ_h}(α+βx)ydx over ovals of {y²+P₅(x)=h} with P₅ in Liu–Xiao normal form, there exist α,β with at least two isolated zeros for (v,u)∈Θ (Liu–Xiao 2013 lower bound), and the paper's simplification technique (reducing polynomial degree by at least half) attacks whether two is the upper bound. The two-is-upper-bound statement's status is the paper's content; the digest does not establish it as a theorem of this note.
+hypotheses: P₅ degree five in Liu–Xiao normal form; (v,u) ∈ Θ; α,β ∈ ℝ; Γ_h compact ovals over a maximal interval Σ.
+holds-here: yes — a named special-family Abelian zero-count target for the sharp-abelian goal; does not affect H16.2.
+status: asserted
+evidence: full text held at research/sources/abelian-zeros-special-hyperelliptic-2025.full.md; abstract states the lower bound (Liu–Xiao 2013) and the technique.
+falsifier: a (v,u) ∈ Θ with three isolated zeros of I(h) for some α,β (if the paper claims two is the upper bound), or an error in the simplification technique.
+sources: https://doi.org/10.1007/s11425-023-2334-8
+anchor: research/sources/abelian-zeros-special-hyperelliptic-2025.full.md
+follows-from: h16-abelian-integral-bounds
+answers:
+```

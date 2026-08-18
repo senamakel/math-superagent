@@ -22,8 +22,29 @@ cd "$repository_root"
 project=${SHARED_PROJECT:-math-agent-shared}
 compose_file=compose.shared.yaml
 
+# Where the shared stack runs. Empty means this box, which is the single-machine
+# deployment and the default. Set `MATH_AGENT_SHARED_HOST` to an ssh host to put
+# Neo4j, Cognee and the ladder on a machine of their own — they are the memory
+# of every problem and none of the compute, so a box that only holds them frees
+# the run box for runs.
+#
+# Run over ssh rather than through `DOCKER_HOST=ssh://…`, and the difference is
+# not stylistic: with a remote `DOCKER_HOST`, Compose resolves this file's bind
+# mounts against the *client's* filesystem and sends paths that mean nothing on
+# the daemon's. The stack's own files therefore live beside it, in
+# `MATH_AGENT_SHARED_PATH`, and compose runs there.
+shared_host=${MATH_AGENT_SHARED_HOST:-}
+shared_path=${MATH_AGENT_SHARED_PATH:-math-agent-shared}
+
 compose() {
-    docker compose -p "$project" -f "$compose_file" "$@"
+    if [ -n "$shared_host" ]; then
+        # `cd` on the far side, so the compose project and its relative binds
+        # resolve against the stack's own directory.
+        # shellcheck disable=SC2029
+        ssh "$shared_host" "cd '$shared_path' && docker compose -p '$project' -f '$compose_file' $*"
+    else
+        docker compose -p "$project" -f "$compose_file" "$@"
+    fi
 }
 
 # Runs against the `system` database, which is where `CREATE DATABASE` is the
@@ -31,7 +52,16 @@ compose() {
 # graph network: the container is already here, and naming it through compose
 # means this keeps working if the network name ever moves.
 admin_cypher() {
-    compose exec -T neo4j cypher-shell -u neo4j -p cognee-local "$@"
+    if [ -n "$shared_host" ]; then
+        # shellcheck disable=SC2029
+        ssh "$shared_host" "cd '$shared_path' && docker compose -p '$project' \
+            -f '$compose_file' exec -T neo4j cypher-shell -u neo4j -p cognee-local $(
+                for argument in "$@"; do printf "'%s' " "$argument"; done
+            )"
+    else
+        docker compose -p "$project" -f "$compose_file" \
+            exec -T neo4j cypher-shell -u neo4j -p cognee-local "$@"
+    fi
 }
 
 case "${1:-up}" in
@@ -70,7 +100,9 @@ case "${1:-up}" in
         ;;
 esac
 
-if [ ! -f .env ]; then
+# A remote stack keeps its own `.env` beside it, so nothing here needs this
+# checkout's credentials — and must not send them.
+if [ -z "$shared_host" ] && [ ! -f .env ]; then
     echo "missing .env; copy .env.example and provide credentials" >&2
     exit 1
 fi
@@ -78,7 +110,9 @@ fi
 # The checkout's credentials, over anything the calling shell exported. The
 # ladder reads `.env` for the memory key and its own file for the provider
 # ones; see `scripts/dotenv`.
-. "$repository_root/scripts/dotenv"
+if [ -f .env ]; then
+    . "$repository_root/scripts/dotenv"
+fi
 
 # The ladder's configuration and credentials live beside the checkout, not in
 # it, and `compose.shared.yaml` says so as a path relative to itself. That
@@ -106,5 +140,9 @@ fi
 # failing recall calls it will never retry. A cold volume is the slow case —
 # the embedding model is fetched on first start — so `--wait` here is doing
 # real work rather than confirming the obvious.
-echo "shared: bringing up $project (neo4j, cognee, ladder)" >&2
+if [ -n "$shared_host" ]; then
+    echo "shared: bringing up $project on $shared_host (neo4j, cognee, ladder)" >&2
+else
+    echo "shared: bringing up $project (neo4j, cognee, ladder)" >&2
+fi
 compose up -d --wait >&2

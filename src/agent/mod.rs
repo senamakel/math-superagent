@@ -138,7 +138,13 @@ impl ObservedAgent {
 
         let result = self.harness.invoke_in_context(&(), context, input).await;
         journal_sink.flush();
-        if let Ok(observations) = journal.read_from(&run_id, 0).await
+        // Skipped rather than sent-and-ignored when telemetry is off. With
+        // capture off these observations carry timings and no payloads, so the
+        // export would be a request per run whose trace shows an empty prompt
+        // panel — worse than no trace, because it reads as a run that sent
+        // nothing. `budget::telemetry_enabled` is the one switch.
+        if crate::agent::budget::telemetry_enabled()
+            && let Ok(observations) = journal.read_from(&run_id, 0).await
             && !observations.is_empty()
         {
             let _ = self

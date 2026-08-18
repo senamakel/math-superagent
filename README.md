@@ -594,12 +594,14 @@ assistant when the stakes justify it.
 one service: `agent`, the Rust orchestrator and its specialist tools.
 `docker compose config --services` returns `agent` alone.
 
-The memory server is **one Cognee for the whole box, with each problem as a
+The memory server is **one Cognee for every problem, with each problem as a
 tenant on it** ([`compose.shared.yaml`](compose.shared.yaml), alongside Neo4j
-and the ladder). `compose.yaml` joins its network — external, named by
-`MEMORY_NETWORK` — and reaches it as `cognee:8000`. There is no `depends_on`:
-the memory server outlives any one run, and a run must never be able to take it
-down.
+and the ladder). A run reaches it by address — `MATH_AGENT_MEMORY_URL`,
+defaulting to the host gateway — rather than by joining its Docker network, so
+the whole stack can live on a machine of its own: it is every problem's memory
+and none of its compute, and `MATH_AGENT_SHARED_HOST` is what puts it there.
+There is no `depends_on`: the memory server outlives any one run, and a run must
+never be able to take it down.
 
 What separates one problem's memory from another's is the **key**, not the
 address. `scripts/memory-up <workspace-label>` provisions that problem's tenant

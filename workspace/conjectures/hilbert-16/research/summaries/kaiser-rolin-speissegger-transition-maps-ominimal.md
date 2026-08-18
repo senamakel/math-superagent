@@ -1,173 +1,45 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/kaiser-rolin-speissegger-transition-maps-ominimal.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
-
-<!-- source: https://ar5iv.labs.arxiv.org/html/math/0612745 | converted from HTML -->
-
-## What is in it
-
-- Transition maps at non-resonant hyperbolic singularities are o-minimal Thanks: Supported…
-        - Abstract.
-        - Key words and phrases:
-        - 1991 Mathematics Subject Classification
-  - Introduction
-        - Theorem A 0.
-        - Theorem B 0.
-        - Corollary 0.
-  - 1. Generalized power series with natural support
-        - Definition 1.1.
-    - Convention
-        - Definition 1.2.
-        - Remark.
-    - Differentiation
-        - Lemma 1.3.
-        - Proof.
-    - Representation
-        - Lemma 1.4.
-        - Proof.
-        - Definition 1.5.
-        - Remark 1.6.
-        - Definition 1.7.
-        - Remark 1.8.
-        - Example 1.9.
-        - Lemma 1.10.
-        - Proof.
-    - Blow-up substitutions
-- …
-
-
-## What it claims
-
-We construct a model complete and o-minimal expansion ℝ 𝒬 \mathbb{R}_{\mathcal{Q}} of the field of real numbers such that, for any planar analytic vector field ξ \xi and any isolated, non-resonant hyperbolic singularity p p of ξ \xi, a transition map for ξ \xi at p p is definable in ℝ 𝒬 \mathbb{R}_{\mathcal{Q}}. This expansion also defines all convergent generalized power series with natural support and is polynomially bounded.
-
-## Statements it makes
-
-###### Corollary 0.
-
-###### Definition 1.1.
-
-###### Definition 1.2.
-
-###### Lemma 1.3.
-
-###### Lemma 1.4.
-
-###### Definition 1.5.
-
-###### Definition 1.7.
-
-###### Lemma 1.10.
-
-###### Proposition 1.12.
-
-###### Proposition 1.13.
-
-###### Definition 2.1.
-
-###### Definition 2.3.
-
-###### Definition 2.4.
-
-###### Definition 2.6.
-
-###### Proposition 2.8.
-
-###### Proposition 2.9.
-
-###### Definition 2.10.
-
-###### Proposition 2.11.
-
-###### Corollary 2.12.
-
-###### Corollary 2.13.
-
-###### Proposition 2.14.
-
-###### Proposition 2.15.
-
-###### Corollary 2.16.
-
-###### Proposition 3.2.
-
-###### Definition 3.4 (Translation).
-
-###### Lemma 3.6.
-
-###### Corollary 3.7.
-
-###### Proposition 3.9.
-
-###### Lemma 3.10.
-
-###### Lemma 3.11.
-
-###### Definition 4.1.
-
-###### Proposition 4.2.
-
-###### Definition 4.3.
-
-###### Proposition 4.4.
-
-###### Definition 5.1.
-
-###### Corollary 5.3.
-
-###### Definition 5.4.
-
-###### Lemma 5.5.
-
-###### Proposition 5.6.
-
-###### Corollary 5.7.
-
-###### Proposition 5.8.
-
-###### Lemma 5.9.
-
-###### Proposition 5.10.
-
-###### Proposition 5.11.
-
-###### Proposition 5.12.
-
-###### Definition 5.13.
-
-###### Corollary 5.14.
-
-###### Proposition 5.15.
-
-###### Definition 5.16.
-
-###### Corollary 5.17.
-
-###### Proposition 6.1.
-
-###### Corollary 6.2 (Implicit Function Theorem).
-
-###### Proposition 6.3 (Symmetric Function Theorem).
-
-###### Proposition 6.4 (Weierstrass Preparation).
-
-###### Definition 7.1.
-
-###### Proposition 7.3.
-
-###### Definition 7.4.
-
-###### Definition 7.5.
-
-###### Lemma 7.7.
-
-###### Proposition 7.8.
-
-###### Theorem 7.9.
-
-###### Lemma 7.10.
-
-###### Proposition 8.1.
-
-###### Lemma 8.2.
-
-###### Lemma 8.3.
-
-*[digest of a 182527 character source; every section, statement, and proof in full at `research/sources/kaiser-rolin-speissegger-transition-maps-ominimal.full.md`]*
+# Kaiser–Rolin–Speissegger 2007 — transition maps at non-resonant hyperbolic singularities are o-minimal
+
+Full text: [[kaiser-rolin-speissegger-transition-maps-ominimal.full]]
+(arXiv:math/0612745; published Adv. Math. 224 (2010) 2535–2553).
+
+## What the source establishes (held full text, abstract verbatim)
+
+**Main result:** there is a model-complete and o-minimal expansion ℝ_𝒬 of the real
+field such that, for any planar analytic vector field ξ and any isolated, non-resonant
+hyperbolic singularity p of ξ, a transition map for ξ at p is definable in ℝ_𝒬. The
+expansion also defines all convergent generalized power series with natural support
+and is polynomially bounded.
+
+**Hypotheses (load-bearing):** isolated, **non-resonant hyperbolic** singularities;
+analytic field. The non-resonance is essential — resonant hyperbolic points and
+non-hyperbolic (nilpotent/semi-hyperbolic/degenerate) points are outside the
+theorem's scope.
+
+## What it lets this run conclude
+
+- This is the o-minimality route's positive boundary: the NRH_d class (planar analytic
+  fields whose limit periodic sets have only non-resonant hyperbolic singularities)
+  is the settled restricted class behind claim `h16-ominimality-route-roussarie`.
+- The open DRR graphics contain resonant hyperbolic, nilpotent, semi-hyperbolic, and
+  degenerate singularities — precisely the complement of this theorem's hypotheses.
+  O-minimality of the transition maps for THOSE vertices is exactly the open
+  conjecture (Roussarie's programme), not a theorem this source supplies.
+- It is the primary anchor for why the run's `h16-ominimality-route-roussarie` claim
+  is a restricted-class result: the settled NRH_d class does not include the open
+  graphics, and a candidate argument for a degenerate graphic cannot invoke
+  o-minimality of its transitions without proving it.
+
+```claim
+id: h16-kaiser-rolin-speissegger-nrh-transition-ominimal
+statement: Kaiser–Rolin–Speissegger (arXiv:math/0612745, Adv. Math. 224 (2010) 2535): there is a model-complete o-minimal expansion R_Q of the real field in which transition maps at isolated NON-RESONANT hyperbolic singularities of planar analytic vector fields are definable; R_Q also defines all convergent generalized power series with natural support and is polynomially bounded.
+hypotheses: planar analytic vector field; isolated non-resonant hyperbolic singularity; transition map on a transversal.
+holds-here: yes — for the NRH_d restricted class; NOT for the open DRR graphics (resonant/nilpotent/semi-hyperbolic/degenerate vertices).
+status: asserted
+evidence: full text held at research/sources/kaiser-rolin-speissegger-transition-maps-ominimal.full.md; abstract states the main theorem.
+falsifier: a non-resonant hyperbolic transition map not definable in any such expansion, or an error in the model-completeness proof.
+sources: https://arxiv.org/abs/math/0612745
+anchor: research/sources/kaiser-rolin-speissegger-transition-maps-ominimal.full.md
+follows-from: h16-ominimality-route-roussarie
+answers:
+```

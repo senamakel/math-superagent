@@ -86,7 +86,16 @@ services:
     # this overlay exists to close. Their content is still reachable through
     # Exa, whose fetches happen at Exa and come back through a screened tool.
     environment:
+      # The shared stack is the one *infrastructure* entry here, and it is the
+      # entry that makes a calibration run possible at all: the memory server
+      # and the ladder used to sit on gatewayless Docker networks the container
+      # was joined to, and a run that cannot reach them has no memory and no
+      # model. It is set from `MATH_AGENT_SHARED_ALLOWLIST` rather than written
+      # in, because it is an address for this deployment rather than a fact
+      # about the run — and it is a host this deployment owns, which is what
+      # separates it from the sources deliberately kept out below.
       ALLOWED_HOSTS: >-
+        ${MATH_AGENT_SHARED_ALLOWLIST:-host.docker.internal},
         openrouter.ai,
         api.exa.ai,
         oeis.org,
@@ -120,9 +129,15 @@ services:
       HTTPS_PROXY: http://screen-proxy:8888
       http_proxy: http://screen-proxy:8888
       https_proxy: http://screen-proxy:8888
-      # Reached over the internal network, so it must not be proxied.
-      NO_PROXY: ladder,cognee,neo4j,localhost,127.0.0.1
-      no_proxy: ladder,cognee,neo4j,localhost,127.0.0.1
+      # The memory server and the ladder are reached by address now, and that
+      # address may be another machine — so unlike everything else here they
+      # are *allowed* rather than unreachable, and they go through the proxy
+      # like any other host. `MATH_AGENT_SHARED_ALLOWLIST` names them in the
+      # proxy's own list below; there is nothing to exempt here.
+      #
+      # Localhost stays exempt because it never leaves the container.
+      NO_PROXY: localhost,127.0.0.1
+      no_proxy: localhost,127.0.0.1
       # Arms the tool-layer screen. Named but unreadable is a hard startup
       # failure by design; see `orchestrator::screen::policy`.
       MATH_AGENT_SCREEN: /etc/riemann/screen.json

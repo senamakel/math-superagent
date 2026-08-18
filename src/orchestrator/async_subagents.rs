@@ -29,6 +29,32 @@ static NEXT_RUN_ID: AtomicU64 = AtomicU64::new(1);
 
 /// A completed research run hands its new sources to the scholar. The scholar
 /// stores durable findings in Cognee, so no filing follow-up is needed.
+/// How often a run ships what it has journalled so far.
+///
+/// Paired with [`JOURNAL_MAX_ENTRIES_PER_RUN`] and not independently
+/// adjustable: the cap is only safe while the export empties the journal faster
+/// than the run fills it. Five seconds against 512 entries leaves two orders of
+/// magnitude of headroom — a run producing a hundred observations a second
+/// would still be shipping them before any were trimmed — and a run that goes
+/// quiet costs one no-op wakeup every five seconds.
+const EXPORT_INTERVAL: Duration = Duration::from_secs(5);
+
+/// How many observations one run's journal retains behind the export.
+///
+/// Not a tuning knob so much as the other half of [`EXPORT_INTERVAL`]. The
+/// journal used to be unbounded within a run, and with payload capture on every
+/// `ModelCompleted` carries the whole request — the whole conversation so far —
+/// so retention was quadratic in the number of model calls rather than linear.
+/// Measured on a live `conjectures/hilbert-16` run: 337 model calls against
+/// 1.8 GiB of resident memory, about 5.5 MB per call at ~114k-token inputs,
+/// climbing 1.9 MiB/s and monotonic until the container cap killed the run.
+///
+/// 512 is chosen against the export cadence rather than against a memory
+/// figure: it has to be comfortably more than one interval's worth of
+/// observations, because an entry trimmed before the export reads it is an
+/// entry missing from the trace.
+const JOURNAL_MAX_ENTRIES_PER_RUN: usize = 512;
+
 const FOLLOW_UPS: [(&str, &[FollowUpStep]); 1] = [("research", &[DIGEST_AFTER_RESEARCH])];
 
 /// One queued run in a trigger's follow-up sequence.
@@ -225,7 +251,11 @@ impl AgentExecutor for HarnessExecutor {
         steering: SteeringHandle,
         tracer: Option<Arc<RunTracer>>,
     ) -> Result<String> {
-        let journal = Arc::new(InMemoryEventJournal::new());
+        // Bounded, and the bound is only safe because the export below runs
+        // *while* the run does. See [`JOURNAL_MAX_ENTRIES_PER_RUN`].
+        let journal = Arc::new(InMemoryEventJournal::with_max_entries_per_run(
+            JOURNAL_MAX_ENTRIES_PER_RUN,
+        ));
         let durable: Arc<dyn HarnessEventJournal> = journal.clone();
         let journal_sink = Arc::new(JournalSink::new(durable, RunId::new(run_id)));
         let events = EventSink::with_stream_id(run_id);
@@ -241,6 +271,11 @@ impl AgentExecutor for HarnessExecutor {
         let context = RunContext::new(config, ())
             .with_steering(steering)
             .with_events(events);
+        // Ships what the run has produced so far, on a cadence, so the journal
+        // above can be trimmed behind it. Started before the run rather than
+        // after it, because a run that never returns is exactly the one whose
+        // journal grows.
+        let exporter = self.spawn_incremental_export(run_id, &journal);
         let result = self
             .harness
             .invoke_in_context(
@@ -253,24 +288,39 @@ impl AgentExecutor for HarnessExecutor {
             )
             .await;
         journal_sink.flush();
-        self.export_to_langfuse(run_id, &journal).await;
+        // Stop the periodic export before the final drain, so the two cannot
+        // read the same offset and ship one observation twice.
+        let shipped = exporter.stop().await;
+        self.export_to_langfuse(run_id, &journal, shipped).await;
         Ok(result?.text().unwrap_or_default())
     }
 }
 
 impl HarnessExecutor {
-    /// Ships this specialist run's observations to Langfuse.
+    /// Ships this specialist run's observations to Langfuse, from `offset` on.
+    ///
+    /// Delivery is best effort in both directions: a missing Langfuse
+    /// configuration and a failed send are both ignored, because telemetry must
+    /// never turn a completed derivation into a failed run.
     ///
     /// Specialist runs are where most of the work happens, so a trace that
     /// covers only the orchestrator hides the part an operator needs when a run
-    /// goes wrong. Delivery is best effort in both directions: a missing
-    /// Langfuse configuration and a failed send are both ignored, because
-    /// telemetry must never turn a completed derivation into a failed run.
-    async fn export_to_langfuse(&self, run_id: &str, journal: &Arc<InMemoryEventJournal>) {
+    /// goes wrong.
+    async fn export_to_langfuse(
+        &self,
+        run_id: &str,
+        journal: &Arc<InMemoryEventJournal>,
+        offset: u64,
+    ) {
         let Some(langfuse) = self.langfuse.as_ref() else {
             return;
         };
-        if let Ok(observations) = journal.read_from(run_id, 0).await {
+        // A trimmed offset is an error rather than a short answer, by the
+        // journal's own contract. It means the export fell far enough behind
+        // that entries were dropped before it read them, so nothing useful can
+        // be recovered here and the loss belongs in the run's own journal
+        // rather than in a panic.
+        if let Ok(observations) = journal.read_from(run_id, offset).await {
             let observations = worth_exporting(observations);
             if !observations.is_empty() {
                 let _ = langfuse
@@ -286,6 +336,113 @@ impl HarnessExecutor {
                     .await;
             }
         }
+    }
+
+    /// Starts shipping this run's observations while the run is still going.
+    ///
+    /// The export used to happen once, when the run returned, which meant the
+    /// journal had to retain every observation until then. With payload capture
+    /// on, each `ModelCompleted` carries the whole request — the whole
+    /// conversation so far — so that retention was quadratic in the number of
+    /// model calls: measured on a live `conjectures/hilbert-16` run, 337 calls
+    /// against 1.8 GiB of resident memory, climbing about 1.9 MiB/s and
+    /// monotonic. A long run met the container cap and was killed.
+    ///
+    /// Exporting on a cadence is what makes [`JOURNAL_MAX_ENTRIES_PER_RUN`]
+    /// safe: an entry is only dropped after something has shipped it. The two
+    /// are one decision and must move together — raising the cadence without
+    /// raising the cap is how observations start being trimmed before they are
+    /// read.
+    ///
+    /// Returns a handle that must be stopped before the final drain, so the
+    /// periodic export and the drain cannot read the same offset and ship one
+    /// observation twice.
+    fn spawn_incremental_export(
+        &self,
+        run_id: &str,
+        journal: &Arc<InMemoryEventJournal>,
+    ) -> IncrementalExport {
+        let exported = Arc::new(AtomicU64::new(0));
+        let Some(langfuse) = self.langfuse.clone() else {
+            // Nothing consumes the journal, so nothing has to be shipped before
+            // it is trimmed. The cap still applies, which is the point: with
+            // telemetry off the payloads are not captured either, and the
+            // journal stays small for both reasons.
+            return IncrementalExport {
+                handle: None,
+                exported,
+            };
+        };
+        let run_id = run_id.to_string();
+        let journal = journal.clone();
+        let session = self.session.clone();
+        let role = self.role.clone();
+        let position = exported.clone();
+        let handle = tokio::spawn(async move {
+            loop {
+                tokio::time::sleep(EXPORT_INTERVAL).await;
+                let offset = position.load(Ordering::SeqCst);
+                let Ok(batch) = journal.read_from(&run_id, offset).await else {
+                    // The export fell behind the trim. Advancing past the loss
+                    // is the only way to keep shipping the rest, and stopping
+                    // here would turn a gap in a trace into no trace at all.
+                    continue;
+                };
+                if batch.is_empty() {
+                    continue;
+                }
+                // Advance by what was *read*, not by what survives the filter:
+                // the offset counts journal entries, and the filtered-out
+                // middleware events occupy offsets like any other.
+                position.fetch_add(batch.len() as u64, Ordering::SeqCst);
+                let batch = worth_exporting(batch);
+                if batch.is_empty() {
+                    continue;
+                }
+                let _ = langfuse
+                    .send_observations(
+                        trace_config(&session, &role, &run_id, workspace_label().as_deref()),
+                        &batch,
+                    )
+                    .await;
+            }
+        });
+        IncrementalExport {
+            handle: Some(handle),
+            exported,
+        }
+    }
+}
+
+/// A running incremental export, and how far it has got.
+struct IncrementalExport {
+    handle: Option<tokio::task::JoinHandle<()>>,
+    exported: Arc<AtomicU64>,
+}
+
+impl IncrementalExport {
+    /// Stops the periodic export, waits for it to be off the journal, and
+    /// returns the offset the final drain should start from.
+    ///
+    /// Awaited rather than merely aborted, and that is the difference between a
+    /// correct handover and a plausible one: `abort` only requests cancellation,
+    /// so without the await the task can still be inside a send, and the two
+    /// exports would ship the same observations. Consuming `self` is what makes
+    /// reading the offset afterwards impossible to get wrong — there is no
+    /// handle left to read a stale position from.
+    ///
+    /// A cancelled task is the expected outcome, not an error: the loop never
+    /// returns on its own.
+    async fn stop(self) -> u64 {
+        if let Some(handle) = self.handle {
+            // Both, in this order. The loop never returns on its own, so an
+            // await alone would hang the run forever; an abort alone only
+            // *requests* cancellation, leaving the task free to finish a send
+            // the final drain is about to repeat.
+            handle.abort();
+            let _ = handle.await;
+        }
+        self.exported.load(Ordering::SeqCst)
     }
 }
 

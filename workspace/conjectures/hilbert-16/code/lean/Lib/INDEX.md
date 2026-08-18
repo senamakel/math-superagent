@@ -22,12 +22,14 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `FullCheck4.lean` | _(undescribed)_ |
 | `GMV.lean` | _(undescribed)_ |
 | `HuzakDeMaesschalckDumortier2014.lean` | _(undescribed)_ |
-| `IlyashenkoLlibreRestricted.lean` | Cited axiom + kernel-checked wrapper for the Ilyashenko–Llibre restricted H16.2 bound (Thm 5): δ-tame limit cycles of normalized quadratic fields σ-distant from centers and κ-distant from singular fields are ≤ |log σ|·exp(exp(10²⁵δ^{−31}κ^{−2})). All hypotheses are opaque axioms (not True/0 definitions), so the wrapper is conditional, never formalised; the analytic content is the paper's. |
+| `IlyashenkoLlibreRestricted.lean` | Cited axiom + kernel-checked wrapper for the Ilyashenko–Llibre restricted H16.2 bound (Thm 5): δ-tame limit cycles of normalized quadratic fields σ-distant from centers and κ-distant from singular fields are ≤ |
 | `L8NotInIdeal_alt.lean` | Second INDEPENDENT route to L8 ∉ ⟨L4,L6⟩ (same statement as Bautin.lean's V3_not_mem_span_V1_V2). Route A: quotient-homomorphism certificate at a second, non-proportional evaluation point certPt2=(-3,-3,2,0,1,-1) — kernel-closed (second_point_route). Route B: graded/degree-6 linear-algebra reformulation, stated with by-sorry gap (graded_membership_shape). Cross-checks the certPt proof via a fresh full-box search (cofactor_certificate2.py). |
 | `LuH14Remainder.lean` | Lean statement of the conditional jointly-uniform analytic remainder bound needed to lift Lu's finite Bautin core to a displacement zero bound; proof intentionally open. |
 | `Marin2026.lean` | _(undescribed)_ |
 | `Mourtada2009.lean` | Lean statement of Mourtada 2009 Théorème 0 as Cited axiom + wrapper: uniform N (count) and L (multiplicity) bound on limit cycles in analytic unfoldings of monodromic hyperbolic polycycles. Self-contained (single-file kernel constraint: inlines IsLimitCycle/LimitCycleSet from Statement.lean instead of importing Lib). Multiplicity is an abstract placeholder pending the displacement formalism. Analytic input for Lu H14^3 QRH thread. UNCOMPILED — needs lean_check run. |
 | `Probe.lean` | _(undescribed)_ |
+| `RCenterIdealZeroDivision.lean` | Conditional R-center-ideal zero-division lemma: the abstract G-remainder interface for the H^3_14 route. Given compact parameter box + collar, a finite generalized-monomial family, coefficient-ideal membership (InCoefficientIdeal), uniform remainder control and remainder vanishing at the section origin (Admissible), and the analytic zero-division theorem as an explicit binder hypothesis, the displacement's zero set on K×collar is finite with a uniform ncard bound. Kernel-checked (outcome=verified, axioms exactly [propext, Classical.choice, Quot.sound], no sorry); the load-bearing analytic theorem is an open binder hypothesis — the run's G-remainder gap — deliberately not a Cited axiom. States nothing about H(2) or limit cycles. |
+| `RCenterIdealZeroDivisionRefuted.lean` | Kernel-checked counterexample skeleton for the bare R-center-ideal zero-division rung: defines z*sin(1/z), proves its explicit pi-lattice zeros, and derives infinitude from injectivity; collar membership and strict distinctness remain explicitly declared sorry gaps. |
 | `Search.lean` | _(undescribed)_ |
 | `Search2.lean` | _(undescribed)_ |
 | `Search3.lean` | _(undescribed)_ |
@@ -45,6 +47,7 @@ What each file in this folder is for. Keep it current: describe a file when you 
 | `g_drr_status.lean` | _(undescribed)_ |
 | `global_uniform_bound_elementary_sphere_family.lean` | _(undescribed)_ |
 | `hyperbolic_polycycle_delta_zero_iff_all_ratios_one.lean` | _(undescribed)_ |
+| `hyperelliptic_integral_two_zero_lower_bound.lean` | _(undescribed)_ |
 | `kernel_of_monomial_map.lean` | _(undescribed)_ |
 | `node_g_transition.lean` | _(undescribed)_ |
 | `research_summary.lean` | _(undescribed)_ |

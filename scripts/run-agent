@@ -214,11 +214,11 @@ fi
 . "$repository_root/scripts/dotenv"
 
 # This problem's tenant on the shared memory server, provisioned before the
-# agent starts. There is one Cognee for the box; what makes this run's memory
-# its own is the key, not the address. `COGNEE_NETWORK` is what `compose.yaml`
-# resolves its external `memory` network to and the agent reaches the server as
-# `cognee:8000` inside it; `COGNEE_API_KEY` is the tenant, and every request
-# the runtime sends carries it as an `X-Api-Key` header.
+# agent starts. There is one Cognee for every problem, and it need not be on
+# this machine: what makes this run's memory its own is the key, not the
+# address. `MATH_AGENT_MEMORY_URL` is where the server answers and
+# `COGNEE_API_KEY` is the tenant, sent as an `X-Api-Key` header on every
+# request the runtime makes.
 #
 # Both are provisioned rather than assumed, and both are overridable: setting
 # either yourself points a run at another server or another tenant, which is
@@ -229,9 +229,11 @@ fi
 # runs turned `recall_memory` into a ten-minute hang ending in `409 Conflict`.
 # Cognee now serialises per dataset rather than globally, which is why this is
 # a shared server again; `docs/memory.md` says what to measure if it returns.
-if [ -z "${COGNEE_NETWORK:-}" ]; then
-    COGNEE_NETWORK=$("$repository_root/scripts/memory-up" "$workspace_subdir")
-    export COGNEE_NETWORK
+if [ -z "${MATH_AGENT_MEMORY_URL:-}" ]; then
+    MATH_AGENT_MEMORY_URL=$("$repository_root/scripts/memory-up" "$workspace_subdir")
+    export MATH_AGENT_MEMORY_URL
+else
+    "$repository_root/scripts/memory-up" "$workspace_subdir" >/dev/null
 fi
 if [ -z "${COGNEE_API_KEY:-}" ]; then
     COGNEE_API_KEY=$("$repository_root/scripts/memory-up" --key "$workspace_subdir")

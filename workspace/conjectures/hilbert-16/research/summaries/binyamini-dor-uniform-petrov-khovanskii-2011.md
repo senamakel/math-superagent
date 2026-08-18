@@ -1,44 +1,44 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/binyamini-dor-uniform-petrov-khovanskii-2011.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Binyamini–Dor 2011 — A uniform version of the Petrov–Khovanskii theorem
 
-<!-- source: https://doi.org/10.48550/arxiv.1108.1846 | converted from HTML -->
+Full text: [[binyamini-dor-uniform-petrov-khovanskii-2011.full]] (arXiv:1108.1846;
+published Nonlinearity 25 (2012) 1931–1946). The held capture is the arXiv abstract
+page; the published statement is also carried by
+[[binyamini-dor-linear-abelian-integrals.full]] (landing page) and the claim
+`h16-bd-abelian-linear-in-m`.
 
-## What is in it
+## What the source establishes (abstract verbatim)
 
-- Mathematics > Classical Analysis and ODEs
-- Title: A Uniform Version of the Petrov-Khovanskii Theorem
-  - Submission history
-  - Access Paper:
-    - Current browse context:
-    - References & Citations
-  - BibTeX formatted citation
-    - Bookmark
-- Bibliographic and Citation Tools
-- Code, Data and Media Associated with this Article
-- Demos
-- Recommenders and Search Tools
-- arXivLabs: experimental projects with community collaborators
+An Abelian integral is the integral over the level curves of a Hamiltonian H of an
+algebraic form ω. The infinitesimal Hilbert 16th problem asks for the number of zeros
+of Abelian integrals in terms of deg H and deg ω. **Petrov–Khovanskii:** the number
+grows at most linearly with deg ω, but their bound is purely existential.
+**BNY:** an explicit bound growing doubly-exponentially with the degree. **This
+paper:** combines the two techniques to obtain an **explicit bound on the number of
+zeros growing linearly with deg ω**.
 
+## What it lets this run conclude
 
-## What it claims
+- The best explicit two-parameter bound for the tangential problem is
+  linear-in-degω with uniformly-exponential cost in deg H — the claim
+  `h16-bd-abelian-linear-in-m` (N(n,m) ≤ exp⁺(n²)·m + exp⁺(n²)) records the form.
+- Same hypotheses as BNY (nonsingular ovals, non-conservative perturbation); it
+  refines `h16-bny-abelian-bound` but does not touch H16.2 or graphic cyclicity.
+- For the run's `h16-sharp-abelian-named-family` goal, Malev–Novikov's explicit
+  (7/4)n+9 for one named H is the per-family sharp-type bound; Binyamini–Dor is the
+  uniform-across-H bound. The two are the upper bounds against which a new named-family
+  count is checked (Test 2: a claimed sharp count below the true number is refuted by
+  a certified example; a claimed uniform bound above B-D's is not an improvement).
 
-Abstract: An Abelian integral is the integral over the level curves of a Hamiltonian $H$ of an algebraic form $\omega$. The infinitesimal Hilbert sixteenth problem calls for the study of the number of zeros of Abelian integrals in terms of the degrees $H$ and $\omega$. Petrov and Khovanskii have shown that this number grows at most linearly with the degree of $\omega$, but gave a purely existential bound. Binyamini, Novikov and Yakovenko have given an \emph{explicit} bound growing doubly-exponentially with the degree. We combine the techniques used in the proofs of these two results, to obtain an explicit bound on the number of zeros of Abelian integrals growing linearly with $°\omega$.
-
-Subjects: | Classical Analysis and ODEs (math.CA); Complex Variables (math.CV); Dynamical Systems (math.DS) |
-
-MSC classes: | 34C07, 34C08 (Primary) 34M10, 34M60, 14Q20, 32S40 (Secondary) |
-
-Cite as: | [arXiv:1108.1846][6] [math.CA] |
-
-| (or [arXiv:1108.1846v1][7] [math.CA] for this version)  |
-
-| [https://doi.org/10.48550/arXiv.1108.1846][8]
-
-Focus to learn more
-
-arXiv-issued DOI via DataCite
-
-|
-
-Jo…
-
-*[digest of a 6530 character source; every section, statement, and proof in full at `research/sources/binyamini-dor-uniform-petrov-khovanskii-2011.full.md`]*
+```claim
+id: h16-bd-2011-uniform-petrov-khovanskii
+statement: Binyamini–Dor (arXiv:1108.1846, Nonlinearity 25 (2012) 1931): explicit bound on the number of zeros of Abelian integrals growing linearly with deg ω (uniform in deg H with exponential cost), combining Petrov–Khovanskii's linear-in-degω existential bound with BNY's explicit doubly-exponential bound. Held at abstract level; the exact constants are carried by claim h16-bd-abelian-linear-in-m (N(n,m) ≤ exp^+(n^2)·m + exp^+(n^2)).
+hypotheses: polynomial Hamiltonian H, algebraic form ω, nonsingular ovals, non-conservative perturbation (tangential problem).
+holds-here: yes — the tangential problem's best explicit two-parameter bound; not H16.2.
+status: asserted
+evidence: arXiv abstract page held (research/sources/binyamini-dor-uniform-petrov-khovanskii-2011.full.md); claim h16-bd-abelian-linear-in-m.
+falsifier: a counterexample with more zeros than the bound, or a correction to the published constants.
+sources: https://doi.org/10.48550/arXiv.1108.1846
+anchor: research/sources/binyamini-dor-uniform-petrov-khovanskii-2011.full.md
+follows-from: h16-bny-abelian-bound
+answers:
+```

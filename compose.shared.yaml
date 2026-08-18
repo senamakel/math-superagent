@@ -5,6 +5,20 @@
 #   scripts/shared-up            # start or reconcile; waits for health
 #   scripts/shared-up --down     # stop it (the volumes survive)
 #
+# # This stack does not have to be on the run box
+#
+# It is every problem's memory and none of its compute, which makes it the half
+# worth moving off a box that is doing the runs. Set `MATH_AGENT_SHARED_HOST`
+# to an ssh host and `scripts/shared-up` drives it there; the runs then reach
+# it by address — `MATH_AGENT_MEMORY_URL`, `MATH_AGENT_API_BASE_URL` — rather
+# than by joining Docker networks, and the ports below are published for
+# exactly that. `docs/runtime.md` has the split, including what publishing
+# grants and what still carries the security when the network no longer does.
+#
+# Everything sized in this file is overridable for the same reason: the box
+# that holds this stack decides its ceilings, and a heap larger than the host's
+# Docker VM is a startup failure rather than a slow server.
+#
 # `scripts/memory-up` calls `scripts/shared-up` itself, and `./agent` calls
 # `scripts/memory-up`, so an ordinary `./conjecture <slug>` brings the whole
 # thing up in order without anyone naming this file.
@@ -113,8 +127,12 @@ services:
       # Sized for many problems' graphs landing in one instance, rather than
       # the defaults a single problem's private instance ran on. Revisit
       # against real usage once a dozen databases are live here.
-      NEO4J_server_memory_heap_max__size: 4g
-      NEO4J_server_memory_pagecache_size: 2g
+      # Sized for many problems' graphs in one instance. Overridable because
+      # this stack is meant to be movable: the box it runs on decides these,
+      # and a heap larger than the host's Docker VM is a startup failure rather
+      # than a slow server.
+      NEO4J_server_memory_heap_max__size: ${NEO4J_HEAP:-4g}
+      NEO4J_server_memory_pagecache_size: ${NEO4J_PAGECACHE:-2g}
       # The Browser is served over HTTP from this container but speaks Bolt
       # from the *browser*, to whatever address the server advertises. Left at
       # the container's own hostname it would advertise a name that resolves
@@ -133,7 +151,7 @@ services:
     # store every other run reads through — and 16g is the ceiling, above the
     # 4g heap and 2g page cache configured above with room for the query load
     # a dozen live databases put on it.
-    mem_reservation: 1g
+    mem_reservation: ${NEO4J_MEM_RESERVATION:-1g}
     mem_limit: ${NEO4J_MEM_LIMIT:-16g}
     # See the note on `cognee` below: the two shared services are sized
     # together, and the weight is the half that does the work.
@@ -175,6 +193,12 @@ services:
     # below is what makes that actually happen, since Compose would otherwise
     # keep serving whatever `latest` meant the first time it pulled.
     image: ghcr.io/senamakel/llm-ladder-router:latest
+    # The image is published for amd64 only. Declaring it is a no-op on an
+    # amd64 host and is what lets this stack run on an Apple Silicon box, where
+    # Docker emulates it — acceptable for a proxy, which is I/O bound rather
+    # than compute bound, and verified running there before anything depended
+    # on it.
+    platform: linux/amd64
     pull_policy: always
     restart: unless-stopped
     # This used to live in `compose.yaml`, whose project name is the checkout
@@ -195,10 +219,20 @@ services:
         source: ${LADDER_CONFIG_PATH:-../llm-ladder-router/config.toml}
         target: /etc/ladder/config.toml
         read_only: true
+    # Loopback by default, so an ordinary single-box deployment publishes this
+    # to itself and nowhere else. Set `LADDER_BIND_ADDRESS` to a Tailscale
+    # address when the runs are on a different machine from this stack; see the
+    # note on Cognee's publication for what that grants and what it does not.
     ports:
-      - "127.0.0.1:${LADDER_PORT:-6969}:6969"
+      - "${LADDER_BIND_ADDRESS:-127.0.0.1}:${LADDER_PORT:-6969}:6969"
     # No `healthcheck:` here on purpose — the image carries its own, which is
     # what `scripts/shared-up --wait` and the old `depends_on` both read.
+    # Capped like everything else in this stack. Measured at 55 MiB serving a
+    # live run, so 512m is headroom rather than a budget — but an uncapped
+    # container on a box whose whole Docker VM is a few gigabytes is one bad
+    # response away from taking the memory server down with it, and the memory
+    # server is every problem's.
+    mem_limit: ${LADDER_MEM_LIMIT:-512m}
     read_only: true
     tmpfs:
       - /tmp:rw,nosuid,nodev,noexec,size=16m
@@ -305,7 +339,20 @@ services:
     # once. A repeated OOM kill here is a finding about the ingest — it now
     # stops *every* problem's memory rather than one, so read
     # `docker events --filter event=oom` before raising it.
-    mem_reservation: 1g
+    # Published so a run on another machine can reach it. Bound to loopback by
+    # default, which is where this used to publish nothing at all: on a
+    # single-box deployment the agent joins the `memory` network and reaches
+    # `cognee:8000` by name, and this publication is unused.
+    #
+    # Widening it to a Tailscale address is what a split deployment needs, and
+    # it is worth being clear about what carries the security then. The API is
+    # authenticated — each problem is a tenant with its own key, an unkeyed
+    # request is `401` and another tenant's dataset is `404` — so the boundary
+    # travels with the request rather than with the network. `0.0.0.0` is not
+    # the intended ceiling: a tailnet of your own machines is.
+    ports:
+      - "${COGNEE_BIND_ADDRESS:-127.0.0.1}:${COGNEE_PORT:-8000}:8000"
+    mem_reservation: ${COGNEE_MEM_RESERVATION:-1g}
     mem_limit: ${COGNEE_MEM_LIMIT:-16g}
     # Four of the box's cores, and twice the default scheduling weight.
     #

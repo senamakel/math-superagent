@@ -1,0 +1,11 @@
+# Focal values of the general quadratic focus beyond degree 8 — exact
+WHAT RAN:      code/bautin/focal_counts_6coeff.py (exact sympy rational
+               arithmetic, no floats); extends lyapunov_quadratic.py
+               beyond degree 8 (RESUMED).
+WHICH DEFS:    u' = -v + a1 u^2 + a2 u v + a3 v^2;  v' = u + b1 u^2
+               + b2 u v + b3 v^2 (the task's 'b3 v^3' read as the
+               quadratic term b3 v^2, matching the referenced file);
+               rot(p) = -v p_u + u p_v;  V2 = (u^2+v^2)/2;
+               gauge c_{d,0} = 0;  L_d = radial obstruction at even d.
+WHICH DEGREES: recurrence degrees 3..14; reported even focal
+               values [4, 6, 8, 10, 12, 14]; degree 14 included only if it finishes within 300 min of the run start.

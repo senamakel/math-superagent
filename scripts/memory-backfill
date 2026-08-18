@@ -77,9 +77,10 @@ def run(command: list[str], timeout: int = 120) -> str:
 def memory_up(label: str, *flags: str) -> str:
     """Brings the shared stack up if needed and provisions this problem's tenant.
 
-    Returns the memory network, or the tenant's API key under `--key`. One
-    server holds every problem now, so the key is what makes a request this
-    problem's rather than another's; without it the server answers `401`.
+    Returns the memory server's URL, or the tenant's API key under `--key`. One
+    server holds every problem now — and need not be on this machine — so the
+    key is what makes a request this problem's rather than another's; without
+    it the server answers `401`.
     """
     result = subprocess.run(
         [str(REPOSITORY_ROOT / "scripts" / "memory-up"), *flags, label],
@@ -93,11 +94,10 @@ def memory_up(label: str, *flags: str) -> str:
     return printed[-1]
 
 
-def cognee_get(network: str, api_key: str, path: str) -> object:
+def cognee_get(memory_url: str, api_key: str, path: str) -> object:
     body = run(
-        ["docker", "run", "--rm", "--network", network, "curlimages/curl:latest",
-         "-s", "--max-time", "60", "-H", f"X-Api-Key: {api_key}",
-         f"http://cognee:8000{path}"]
+        ["curl", "-s", "--max-time", "60", "-H", f"X-Api-Key: {api_key}",
+         f"{memory_url}{path}"]
     )
     try:
         return json.loads(body)
@@ -105,7 +105,7 @@ def cognee_get(network: str, api_key: str, path: str) -> object:
         raise SystemExit(f"backfill: unreadable response from {path}: {body[:200]}")
 
 
-def library_contents(network: str, api_key: str, project: str) -> set[str]:
+def library_contents(memory_url: str, api_key: str, project: str) -> set[str]:
     """The keys the library already holds.
 
     A row's `name` comes back with its extension stripped, so the comparison is
@@ -115,14 +115,14 @@ def library_contents(network: str, api_key: str, project: str) -> set[str]:
     filed the card and lost the document holds nothing searchable, and this
     pass should replace it rather than count it as present.
     """
-    datasets = cognee_get(network, api_key, "/api/v1/datasets")
+    datasets = cognee_get(memory_url, api_key, "/api/v1/datasets")
     dataset_id = next(
         (entry["id"] for entry in datasets if entry.get("name") == project_dataset(project)),
         None,
     )
     if dataset_id is None:
         return set()
-    rows = cognee_get(network, api_key, f"/api/v1/datasets/{dataset_id}/data")
+    rows = cognee_get(memory_url, api_key, f"/api/v1/datasets/{dataset_id}/data")
     return {row["name"] for row in rows if row.get("name")}
 
 
@@ -150,7 +150,7 @@ def documents_on_disk(workspace: Path) -> list[tuple[str, Path]]:
     return documents
 
 
-def file_document(network: str, api_key: str, dataset: str, node_set: str,
+def file_document(memory_url: str, api_key: str, dataset: str, node_set: str,
                   relative: str, body: Path) -> str:
     """Posts one document and its card, as `remember_source` does.
 
@@ -178,17 +178,18 @@ def file_document(network: str, api_key: str, dataset: str, node_set: str,
         os.chmod(staging, 0o755)
         for staged in (document_file, card_file):
             os.chmod(staged, 0o644)
+        # Posted from the host rather than from a container joined to a Docker
+        # network: the server is reached by address now and may not be on this
+        # machine at all, so the upload is an ordinary HTTP request.
         return run(
-            ["docker", "run", "--rm", "--network", network,
-             "-v", f"{staging}:/upload:ro", "curlimages/curl:latest",
-             "-s", "--max-time", "120", "-w", "\n%{http_code}",
+            ["curl", "-s", "--max-time", "120", "-w", "\n%{http_code}",
              "-X", "POST", "-H", f"X-Api-Key: {api_key}",
              "-F", f"datasetName={dataset}",
              "-F", f"node_set={node_set}",
              "-F", "run_in_background=true",
-             "-F", f"data=@/upload/{document_file.name};type=text/markdown",
-             "-F", f"data=@/upload/{card_file.name};type=text/markdown",
-             "http://cognee:8000/api/v1/remember"],
+             "-F", f"data=@{document_file};type=text/markdown",
+             "-F", f"data=@{card_file};type=text/markdown",
+             f"{memory_url}/api/v1/remember"],
             timeout=180,
         )
 
@@ -200,9 +201,9 @@ def backfill(label: str, dry_run: bool, limit: int | None, pause: float) -> tupl
         return (0, 0, 0)
 
     project = slug(label)
-    network = memory_up(label)
+    memory_url = memory_up(label)
     api_key = memory_up(label, "--key")
-    held = library_contents(network, api_key, project)
+    held = library_contents(memory_url, api_key, project)
     documents = documents_on_disk(workspace)
     missing = [
         (relative, body)
@@ -222,7 +223,7 @@ def backfill(label: str, dry_run: bool, limit: int | None, pause: float) -> tupl
     filed = 0
     failed = 0
     for relative, body in missing[: limit or len(missing)]:
-        response = file_document(network, api_key, project_dataset(project),
+        response = file_document(memory_url, api_key, project_dataset(project),
                                  library_node_set(project), relative, body)
         code = response.rsplit("\n", 1)[-1].strip()
         if code in {"200", "201", "202"}:

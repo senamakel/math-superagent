@@ -1,81 +1,48 @@
-> **Digest only — read this first.** This is a structural digest of the source: its outline, what it claims, and the statements it makes. The complete text is at `research/sources/kaleda-shchurov-elementary-polycycles-2011-primary.full.md`; open that only when this file does not answer the question, because it is large. Replace this digest with a summary of what the source establishes and what it implies for this problem — under 1000 tokens, specific enough that nobody needs the full text, and wikilinking it so they can still reach it.
+# Kaleda–Shchurov 2011 — elementary-polycycle cyclicity bound (primary NOT held)
 
-<!-- source: https://arxiv.org/pdf/1102.1234 | converted from PDF -->
+**IMPORTANT — WRONG FETCH on the "primary" file.** The file
+`research/sources/kaleda-shchurov-elementary-polycycles-2011-primary.full.md` does NOT
+contain this paper: it is arXiv:1102.1234, a homotopy-theory paper on topological Quillen
+homology (wrong content under the wrong name). See
+`research/findings/wrong-fetch-kaleda-shchurov-primary-homotopy-2026-08-19.md`.
 
-## What it claims
+## What is established (held evidence only)
 
-Abstract. Working in the context of symmetric spectra, we describe and
-study a homotopy completion tower for algebras and left modules over operads
-in the category of modules over a commutative ring spectrum (e.g., structured
-ring spectra). We prove a strong convergence theorem that for 0-connected
-algebras and modules over a (−1)-connected operad, the homotopy completion
-tower interpolates (in a strong sense) between topological Quillen homology
-and the identity functor.
-By systematically exploiting strong convergence, we prove several theo-
-rems concerning the topological Quillen homology of algebras and modules
-over operads. These include a theorem relating ﬁniteness properties of topo-
-logical Quillen homology groups and homotopy groups that can be thought
-of as a spectral algebra analog of Serre’s ﬁniteness theorem for spaces and
-H.R. Miller’s boundedness result for simplicial commutative rings (but in re-
-verse form). We also prove absolute and relative Hurewicz theorems and a
-corresponding Whitehead theorem for topological Quillen homology. Further-
-more, we prove a…
+**Citation abstract (DOI 10.1090/S1061-0022-2011-01158-6, St. Petersburg Math. J. 2011/2012,**
+held in `research/summaries/citations_w2034778875.md`): "An estimate is found for the
+number of limit cycles arising from polycycles in generic finite-parameter families of
+differential equations on the two-sphere. It is proved that if the polycycles have a fixed
+number of singular points and all the singular points are elementary, then an estimate of
+cyclicity holds true, which is polynomial in the number of parameters of the family."
 
-Associat…
+**Explicit form via Dukov 2023** (held full text, summary
+`research/summaries/dukov-multiplicity-limit-cycles-hyperbolic-polycycles-2023-arxiv.md`
+line 46): `E(n,k) ≤ C(n) k^{3n}` with `C(n) = 2^{5n²+20n}`, for polycycles with n fixed
+elementary singular points in generic k-parameter C^∞ families. Carried at second-hand
+level — Dukov's survey quotes it; the primary full text is NOT held.
 
-## Statements it makes
+## What it lets this run conclude
 
-Theorem 1.5 (TQ ﬁniteness theorem for structured ring spectra). Let O be an
-operad in R-modules such that O[0] is trivial. Let X be a 0-connected O-algebra
-(resp. left O-module) and assume that O, R are (−1)-connected and πkO[r], πkR
-are ﬁnitely generated abelian groups for every k, r.
-(a) If the topological Quillen homology groups πkTQ(X) (resp. πkTQ(X)[r])
-are ﬁnite for every k, r, then the homotopy groups πkX (resp. πkX[r]) are
-ﬁnite for every k, r.
-(b) If the topological Quillen homology groups πkTQ(X) (resp. πkTQ(X)[r]) are
-ﬁnitely generated abelian groups for every k, r, then the homotopy groups
-πkX (resp. πkX[r]) are ﬁnitely generated abelian groups for every k, r.
+- The elementary-polycycle restricted class (ROOT.md row 1) is settled with an explicit
+  polynomial-in-k bound for fixed n: this is a genuine restricted-class result and the
+  sharpest elementary-polycycle bound this run holds.
+- The bounds are **elementary-only** (nonzero eigenvalues): they do not cover nilpotent or
+  degenerate DRR graphics, which is exactly the separation ROOT.md's obstruction section
+  draws.
+- The exact constant C(n)=2^{5n²+20n} must be re-verified against the real primary before
+  any load-bearing use beyond "polynomial in k for fixed n" (which the citation abstract
+  does establish).
 
-Corollary 1.6 (TQ ﬁniteness theorem for non-unital commutative ring spectra).
-Let X be a 0-connected non-unital commutative ring spectrum. If the topologi-
-cal Quillen homology groups πkTQ(X) are ﬁnite (resp. ﬁnitely generated abelian
-groups) for every k, then the homotopy groups πkX are ﬁnite (resp. ﬁnitely gener-
-ated abelian groups) for every k.
-
-Theorem 1.8 (TQ Hurewicz theorem for structured ring spectra). Let O be an
-operad in R-modules such that O[0] is trivial. Let X be a 0-connected O-algebra
-(resp. left O-module), n ≥ 0, and assume that O, R are (−1)-connected.
-(a) Topological Quillen homology TQ(X) is n-connected if and only if X is
-n-connected.
-(b) If topological Quillen homology TQ(X) is n-connected, then the natural
-Hurewicz map πkX−→πkTQ(X) is an isomorphism for k ≤ 2n + 1 and
-a surjection for k = 2n + 2.
-
-Theorem 1.9 (TQ relative Hurewicz theorem for structured ring spectra). Let O
-be an operad in R-modules such that O[0] is trivial. Let f : X−→Y be a map of
-O-algebras (resp. left O-modules) and n ≥ 0. Assume that O, R are (−1)-connected.
-(a) If X, Y are 0-connected, then f is n-connected if and only if f induces an
-n-connected map TQ(X)−→TQ(Y ) on topological Quillen homology.
-(b) If X, Y are (−1)-connected and f is (n − 1)-connected, then f induces an
-(n − 1)-connected map TQ(X)−→TQ(Y ) on topological Quillen homology.
-(c) If f induces an n-connected map TQ(X)−→TQ(Y ) on topological Quillen
-homology between (−1)-connected objects, then f induces an (n−1)-connected
-map X h∧−→Y h∧ on…
-
-Corollary 1.11 (TQ Whitehead theorem for structured ring spectra). Let O be
-an operad in R-modules such that O[0] is trivial. Let f : X−→Y be a map of O-
-algebras (resp. left O-modules). Assume that O, R are (−1)-connected. If X, Y are
-0-connected, then f is a weak equivalence if and only if f induces a weak equivalence
-TQ(X) ≃ TQ(Y ) on topological Quillen homology.
-
-Theorem 1.12 (Homotopy completion strong convergence theorem). Let O be an
-operad in R-modules such that O[0] is trivial. Let f : X−→Y be a map of O-algebras
-(resp. left O-modules).
-
-Proposition 2.4. Consider symmetric sequences in C. Let A1, . . . , At ∈ SymSeq
-and R ∈ Σ, with r := |R|. There are natural isomorphisms
-
-
-*[further statements in the full text]*
-
-*[digest of a 193735 character source; every section, statement, and proof in full at `research/sources/kaleda-shchurov-elementary-polycycles-2011-primary.full.md`]*
+```claim
+id: h16-kaleda-shchurov-elementary-polycycle-bound
+statement: For polycycles with a fixed number n of elementary singular points in generic k-parameter C^infty families of differential equations on the two-sphere, an estimate of cyclicity holds that is polynomial in k: E(n,k) <= C(n) k^{3n} with C(n) = 2^{5n^2+20n} (explicit form quoted via Dukov 2023; citation abstract establishes the polynomial-in-k statement).
+hypotheses: fixed number n of singular points; all singular points elementary; generic k-parameter C^infty family.
+holds-here: yes — restricted class only; the open DRR graphics are nilpotent/degenerate, not elementary.
+status: asserted
+evidence: citation abstract held (research/summaries/citations_w2034778875.md); explicit constant via Dukov 2023 summary (research/summaries/dukov-multiplicity-limit-cycles-hyperbolic-polycycles-2023-arxiv.md line 46); primary full text NOT held (the file claiming to be it is a wrong fetch — homotopy theory).
+falsifier: the real Kaleda–Shchurov primary text giving a different bound shape; or a counterexample elementary polycycle in a generic k-parameter family with more than C(n)k^{3n} cycles.
+sources: https://doi.org/10.1090/S1061-0022-2011-01158-6
+anchor: research/summaries/citations_w2034778875.md
+follows-from:
+answers:
+```

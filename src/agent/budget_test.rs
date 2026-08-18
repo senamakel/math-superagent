@@ -2,7 +2,7 @@
 
 use tinyagents::harness::limits::LimitBehavior;
 
-use super::RunBudget;
+use super::{RunBudget, capture_for, telemetry_from};
 
 #[test]
 fn default_budget_is_far_above_the_tinyagents_defaults() {
@@ -21,11 +21,12 @@ fn tool_cap_stays_out_of_reach_of_the_model_cap() {
 }
 
 #[test]
-fn policy_stops_with_partial_results_and_captures_payloads() {
+fn policy_stops_with_partial_results_rather_than_erroring() {
+    // Capture is deliberately not asserted here: it follows the telemetry
+    // switch rather than the budget, and reads the environment. What it does
+    // for a given posture is `nothing_is_retained_for_a_reader_that_does_not_exist`.
     let policy = RunBudget::default().run_policy();
     assert_eq!(policy.limits.behavior, LimitBehavior::StopWithPartial);
-    assert!(policy.capture.model_io);
-    assert!(policy.capture.tool_io);
     assert_eq!(
         policy.limits.max_wall_clock_ms,
         Some(RunBudget::default().run_timeout_ms())
@@ -192,4 +193,37 @@ fn an_operator_who_raised_the_turn_cap_keeps_their_value() {
         ..RunBudget::default()
     };
     assert_eq!(generous.for_invention().max_turn_output_tokens, 64_000);
+}
+
+#[test]
+fn nothing_is_retained_for_a_reader_that_does_not_exist() {
+    // Captured payloads go into the in-memory event journal, which is read
+    // once when the run *ends*, so nothing trims it while the run is going.
+    // Each `ModelCompleted` carries the whole request — the whole conversation
+    // so far — so call n retains a copy of what calls 1..n-1 already retained,
+    // and retention is quadratic in the number of model calls. Measured on a
+    // live `conjectures/hilbert-16` run: 337 calls, 1.8 GiB of anonymous
+    // memory, ~1.9 MiB/s and monotonic. With telemetry off nobody ever reads
+    // those bytes, so keeping them is pure cost.
+    assert!(capture_for(false).is_disabled());
+    assert!(!capture_for(true).is_disabled());
+}
+
+#[test]
+fn telemetry_is_off_unless_it_is_switched_on_and_configured() {
+    // Off by default while the retention above is unfixed. Both halves are
+    // required: a switch with no credentials would capture payloads for an
+    // exporter that cannot be built, which is the worst of both.
+    assert!(telemetry_from(Some("on"), false, true));
+    assert!(telemetry_from(Some("on"), true, false));
+    assert!(!telemetry_from(Some("on"), false, false));
+    assert!(!telemetry_from(None, true, true));
+    assert!(!telemetry_from(Some("off"), true, true));
+    // Neither an empty value nor a typo is an opt-in: the cost is paid by the
+    // run, not by whoever set the variable.
+    assert!(!telemetry_from(Some(""), true, true));
+    assert!(!telemetry_from(Some("yes"), true, true));
+    // Spelling and spacing a person would reasonably use still work.
+    assert!(telemetry_from(Some(" ON "), true, true));
+    assert!(telemetry_from(Some("true"), true, true));
 }

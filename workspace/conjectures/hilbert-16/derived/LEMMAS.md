@@ -44,6 +44,13 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `ECTSlowDivergence.IsDisplacement` | def | verified | {ι α : Type} [Fintype ι] | — | `code/lean/Lib/ECTSlowDivergence.lean` |
 | `ECTSlowDivergence.ZeroSet` | def | verified | {α : Type} (D : Set α) (u : α → ℝ) : Set α | — | `code/lean/Lib/ECTSlowDivergence.lean` |
 | `ECTSlowDivergence.displacement_zero_bound` | theorem | verified | {ι α : Type} [Fintype ι] | — | `code/lean/Lib/ECTSlowDivergence.lean` |
+| `RCenterIdealZeroDivision.Admissible` | def | verified | (K : Set Parameter) (collar : Set Section) (m : ℕ) | — | `code/lean/Lib/RCenterIdealZeroDivision.lean` |
+| `RCenterIdealZeroDivision.GeneralizedMonomialFamily` | structure | verified | (m : ℕ) where | — | `code/lean/Lib/RCenterIdealZeroDivision.lean` |
+| `RCenterIdealZeroDivision.InCoefficientIdeal` | def | verified | (K : Set Parameter) (g : Finset ι) | — | `code/lean/Lib/RCenterIdealZeroDivision.lean` |
+| `RCenterIdealZeroDivision.Parameter` | abbrev | verified | — | — | `code/lean/Lib/RCenterIdealZeroDivision.lean` |
+| `RCenterIdealZeroDivision.Section` | abbrev | verified | — | — | `code/lean/Lib/RCenterIdealZeroDivision.lean` |
+| `RCenterIdealZeroDivision.ZeroSet` | def | verified | (K : Set Parameter) (collar : Set Section) | — | `code/lean/Lib/RCenterIdealZeroDivision.lean` |
+| `RCenterIdealZeroDivision.r_center_ideal_zero_division` | theorem | verified | — | — | `code/lean/Lib/RCenterIdealZeroDivision.lean` |
 | `SecondTypeDulac.AnalyticRemainderData` | structure | verified | (K : Set Parameter) (δ : Parameter → Section → ℝ) where | — | `code/lean/Lib/SecondTypeDulacRemainder.lean` |
 | `SecondTypeDulac.Parameter` | abbrev | verified | — | — | `code/lean/Lib/SecondTypeDulacRemainder.lean` |
 | `SecondTypeDulac.Section` | abbrev | verified | — | — | `code/lean/Lib/SecondTypeDulacRemainder.lean` |
@@ -58,6 +65,7 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `SlowDivergenceECTPartial.Section` | abbrev | verified | — | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
 | `SlowDivergenceECTPartial.full_graphic_zero_bound` | theorem | verified | — | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
 | `specialises` | theorem | verified | it to the one representation `δ` is given by: per `p ∈ K`, | — | `code/lean/Lib/SlowDivergenceECTPartial.lean` |
+| `Cited.hyperelliptic_integral_two_zero_lower_bound` | axiom | verified | — | — | `code/lean/Lib/hyperelliptic_integral_two_zero_lower_bound.lean` |
 | `Cited.torregrosa_two_families` | axiom | verified | : ∃ F₁ F₂ : CubicFamily, UnfoldsTwelve F₁ ∧ UnfoldsTwelve F₂ | Torregrosa, “Cubic planar vector fields with high local cyclicity”, São Paulo J. Math.… | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
 | `CubicFamily` | def | verified | — | — | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
 | `SmallAmplitudeLimitCycle` | def | verified | (X : ℝ × ℝ → ℝ × ℝ) (r : ℝ) : Prop | — | `code/lean/approach_certified_lower_bound_target_escalated-e7ec278b.lean` |
@@ -80,18 +88,10 @@ The standing is a fact about the *file*, not about the one declaration: Lean fai
 | `sourceTitle` | def | verified | : String | — | `code/lean/data_contamination_llibre_zhang-bcac5b18.lean` |
 | `source_is_mureddu_not_llibrez` | theorem | verified | : | — | `code/lean/data_contamination_llibre_zhang-bcac5b18.lean` |
 | `LandingPageInventory` | def | verified | : Prop | — | `code/lean/data_landing_pages_inventory-2b244073.lean` |
-| `data_landing_pages_inventory` | theorem | verified | : LandingPageInventory | — | `code/lean/data_landing_pages_inventory-2b244073.lean` |
-| `DRR.Cited.finite_cyclicity_implies_uniform_bound` | axiom | verified | : | DRR 1994, "Hilbert's 16th problem for quadratic vector fields", JDE | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.Cited.ilyashenko_reports_121` | axiom | verified | : Fintype.card GraphicId = 121 | Ilyashenko 2002, "Centennial history of Hilbert's 16th problem", | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.Cited.rrs_reports_121` | axiom | verified | : Fintype.card GraphicId = 121 | Roussarie-Rousseau 2015, arXiv:1506.07104, intro (Trans. Moscow Math. | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.Cited.rsz_reports_121` | axiom | verified | : Fintype.card GraphicId = 121 | Rousseau-Shan-Zhu 2015, arXiv:1502.00689, intro. RSZ reports the count | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.Cited.secondary_sources_agree` | theorem | verified | : | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.Cited.secondary_sources_each_report` | theorem | verified | : | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
-| `DRR.FinitelyCyclic` | axiom | verified | : GraphicId → Prop | — | `code/lean/drr_1994_citation_anchor-985be4d5.lean` |
 
-_607 more not shown here; they are in `code/lean`._
+_626 more not shown here; they are in `code/lean`._
 
-687 declarations, 488 of them in a file the kernel has checked.
+706 declarations, 496 of them in a file the kernel has checked.
 
 ## Never checked
 

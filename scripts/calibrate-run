@@ -170,10 +170,25 @@ done
 # removes is the agent's own egress attachment, which `compose.eval.yaml` does
 # by redefining it. There is no memory-side flag to forget.
 # ---------------------------------------------------------------------------
-COGNEE_NETWORK=$(scripts/memory-up "$workspace_subdir")
-export COGNEE_NETWORK
+MATH_AGENT_MEMORY_URL=$(scripts/memory-up "$workspace_subdir")
+export MATH_AGENT_MEMORY_URL
 COGNEE_API_KEY=$(scripts/memory-up --key "$workspace_subdir")
 export COGNEE_API_KEY
+
+# The memory server and the ladder are the only infrastructure a calibration
+# run may reach, and they are reached by address rather than over a Docker
+# network. Derived from the addresses themselves rather than configured
+# separately: a second place to write them down is a second place for them to
+# disagree, and the failure of disagreeing is a run with no memory and no model
+# that reads as a broken harness.
+if [ -z "${MATH_AGENT_SHARED_ALLOWLIST:-}" ]; then
+    MATH_AGENT_SHARED_ALLOWLIST=$(
+        printf '%s\n%s\n' "$MATH_AGENT_MEMORY_URL" "${MATH_AGENT_API_BASE_URL:-}" \
+            | sed -n 's|^[a-z]*://\([^/:]*\).*|\1|p' \
+            | sort -u | paste -sd, -
+    )
+    export MATH_AGENT_SHARED_ALLOWLIST
+fi
 
 # The Langfuse host has to reach the proxy allowlist, and it is deployment
 # specific. Read from `.env` without printing it: only the host is extracted,
@@ -203,8 +218,9 @@ echo "calibrate: $slug" >&2
 echo "  workspace  workspace/$workspace_subdir" >&2
 echo "  schools    $schools" >&2
 echo "  screen     evals/.build/$slug/screen.json" >&2
-echo "  memory     $COGNEE_NETWORK (internal, this problem's tenant)" >&2
+echo "  memory     $MATH_AGENT_MEMORY_URL (this problem's tenant)" >&2
 echo "  egress     screen-proxy allowlist only" >&2
+echo "  shared     $MATH_AGENT_SHARED_ALLOWLIST (memory and ladder)" >&2
 echo "" >&2
 echo "  watch      ./euler-tui --workspace $workspace_subdir" >&2
 echo "  diagnose   ./diagnose --workspace $workspace_subdir" >&2
