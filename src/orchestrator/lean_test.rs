@@ -931,3 +931,67 @@ fn an_axiom_ends_at_the_next_construct() {
         ]
     );
 }
+
+#[test]
+fn lean_limits_default_to_the_constants() {
+    // Read together rather than one at a time: the pool size and the ceiling
+    // are one decision, and a change to either alone is the bug this asserts
+    // against.
+    let limits = super::lean_limits();
+    assert_eq!(limits.memory_mb, super::LEAN_MEMORY_MB);
+    assert_eq!(limits.threads, super::LEAN_THREADS);
+    assert_eq!(limits.stack_kb, super::LEAN_STACK_KB);
+}
+
+#[test]
+fn the_lean_ceiling_stays_under_the_containers() {
+    // `compose.yaml` grants 8 GiB resident and `lean` is not alone in it: the
+    // agent, its tools and the checkout's page cache share the cgroup. If this
+    // ever fails, the kernel killer is back to being reached before Lean's own
+    // ceiling, which is the failure this whole change exists to remove.
+    // Read from the file Compose reads, so the two cannot drift apart: a
+    // constant repeated here would assert against yesterday's ceiling.
+    let compose = std::fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/compose.yaml"))
+        .expect("compose.yaml is beside Cargo.toml");
+    let resident_gib: u64 = compose
+        .lines()
+        .find_map(|line| {
+            line.trim()
+                .strip_prefix("mem_limit: ${MATH_AGENT_MEM_LIMIT:-")?
+                .strip_suffix("g}")?
+                .parse()
+                .ok()
+        })
+        .expect("compose.yaml declares a default mem_limit in whole gibibytes");
+    assert!(
+        super::LEAN_MEMORY_MB * 2 <= resident_gib * 1024,
+        "lean's {} MB ceiling must leave the {resident_gib}g cgroup room for the agent too",
+        super::LEAN_MEMORY_MB
+    );
+}
+
+#[test]
+fn a_signalled_lean_is_reported_as_a_kernel_kill() {
+    // The marker is what `run` retries on, so a typo in either half would
+    // silently turn the retry off.
+    assert!(super::was_oom_killed(&format!(
+        "{} (signal 9)",
+        super::OOM_MARKER
+    )));
+    assert!(!super::was_oom_killed("error: unknown identifier 'foo'"));
+    assert!(!super::was_oom_killed(""));
+}
+
+#[test]
+fn a_bad_override_keeps_the_constant() {
+    // An operator's typo must not hand Lean a one-megabyte ceiling, which
+    // would fail every check in a way that reads as a mathematical error.
+    for bad in [None, Some(""), Some("  "), Some("0"), Some("not-a-number"), Some("-1")] {
+        assert_eq!(
+            super::parse_positive(bad),
+            None,
+            "override {bad:?} should have been rejected"
+        );
+    }
+    assert_eq!(super::parse_positive(Some(" 6144 ")), Some(6144));
+}
