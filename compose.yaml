@@ -179,8 +179,25 @@ services:
     # a sandbox limit, never as a mathematical ceiling: problem 763 wrote the
     # old cap into its own notes as "exact BFS stops at N=14", which was never
     # true of the mathematics.
-    mem_limit: ${MATH_AGENT_MEM_LIMIT:-4g}
-    memswap_limit: ${MATH_AGENT_MEMSWAP_LIMIT:-8g}
+    #
+    # 8g/24g since 2026-08-19, and the reason is that the arithmetic above
+    # changed twice. A dozen concurrent runs is not what this box does now —
+    # four is — so the ceiling that has to be divided by the fleet can be
+    # twice as large for a quarter as many. And the box has 30 GiB of RAM
+    # against 87 GiB of swap, so the resident half is the scarce one and the
+    # swap half is nearly free; granting 8 resident and 16 more of swap costs
+    # a run's *speed* when it overruns, which is recoverable, rather than its
+    # life, which is not.
+    #
+    # This is a backstop and no longer the first thing a large elaboration
+    # meets. `lean` is now given its own `-M` ceiling under this one
+    # (`LEAN_MEMORY_MB` in `src/orchestrator/lean.rs`), so a file too big to
+    # check stops with Lean saying so and a verdict on disk, instead of the
+    # kernel killing the largest process in the cgroup and taking the run with
+    # it. Three of those on 2026-08-19 ended two runs mid-attempt. Reaching
+    # *this* line still means what the note above says it means.
+    mem_limit: ${MATH_AGENT_MEM_LIMIT:-8g}
+    memswap_limit: ${MATH_AGENT_MEMSWAP_LIMIT:-24g}
     mem_reservation: 250m
     # 0.1 to 4 vCPU, and the two halves are enforced by different mechanisms
     # because Docker only offers one of them outside Swarm.

@@ -104,6 +104,124 @@ const MAX_SIGNATURE_CHARS: usize = 400;
 /// the one tactic that means it did not.
 const TRUSTED_AXIOMS: [&str; 3] = ["propext", "Classical.choice", "Quot.sound"];
 
+/// The memory ceiling handed to `lean` itself, in megabytes.
+///
+/// The container already has one, and that is exactly the problem this
+/// constant exists to fix. A cgroup ceiling is enforced by the kernel killing
+/// whichever process is largest, which is `lean`, and the kill takes the whole
+/// container with it: the run stops appearing, `docker compose run --rm`
+/// removes the evidence, and the last line of the log is a `lean_check` that
+/// never returned. Three of those on 2026-08-19 ended two runs mid-attempt,
+/// with `total-vm` between 26 and 35 GiB against an 8 GiB cgroup total.
+///
+/// `lean -M` is the same ceiling expressed where the process can *report* it.
+/// Lean stops and says it ran out of memory, `lean_check` files a verdict
+/// saying so, and the role reads it as what it is — a statement too big to
+/// elaborate the way it is written, which is a finding about the
+/// formalisation. The container cap stays as the backstop it should have been.
+///
+/// Deliberately under the container's resident allowance, because `lean` is
+/// not the only thing in the cgroup: the agent, its tools and the checkout's
+/// page cache share it. Raise it with `MATH_AGENT_LEAN_MEMORY_MB` for a run
+/// that genuinely needs it, and read the note on `mem_limit` in `compose.yaml`
+/// first — the answer is usually to state the mathematics differently.
+const LEAN_MEMORY_MB: u64 = 3_072;
+
+/// How many threads `lean` may use.
+///
+/// Unset, Lean sizes its thread pool from the *host's* core count — 14 here —
+/// and each worker reserves an arena whether or not it fills it. That is what
+/// put `total-vm` at 35 GiB for a file whose resident set was under 4. The
+/// container is capped at 4 vCPU, so the extra ten workers never ran; they
+/// only reserved.
+///
+/// Matched to `cpus` in `compose.yaml`, and the two must move together.
+const LEAN_THREADS: usize = 4;
+
+/// Thread stack, in kilobytes, for each of the above.
+///
+/// Lean's deep recursion needs more than the 8 MiB a Linux thread gets by
+/// default, and Lean's own default is generous enough to matter once it is
+/// multiplied by the pool. Stated here so the pool's reservation is a number
+/// this file chose rather than one it inherited.
+const LEAN_STACK_KB: usize = 65_536;
+
+/// What `lean` printed when the kernel killed it rather than Lean stopping.
+///
+/// A marker rather than a parse of Lean's output, because there is nothing to
+/// parse: a process killed by a signal has already been replaced by the time
+/// its parent is woken, so the only evidence is the exit status.
+const OOM_MARKER: &str = "error: lean was killed by the kernel out-of-memory killer";
+
+/// The resource ceiling one `lean` invocation runs under.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+struct Limits {
+    memory_mb: u64,
+    threads: usize,
+    stack_kb: usize,
+}
+
+/// The ceiling for this run, with the three environment overrides applied.
+///
+/// Overrides are read per call rather than cached, so a test can set one and
+/// a long run can be started under a different one without a rebuild. An
+/// unparseable or zero value keeps the constant: a typo in an operator's
+/// environment must not silently hand Lean a one-megabyte ceiling.
+fn lean_limits() -> Limits {
+    Limits {
+        memory_mb: positive_env("MATH_AGENT_LEAN_MEMORY_MB").unwrap_or(LEAN_MEMORY_MB),
+        threads: positive_env("MATH_AGENT_LEAN_THREADS")
+            .and_then(|value| usize::try_from(value).ok())
+            .unwrap_or(LEAN_THREADS),
+        stack_kb: positive_env("MATH_AGENT_LEAN_STACK_KB")
+            .and_then(|value| usize::try_from(value).ok())
+            .unwrap_or(LEAN_STACK_KB),
+    }
+}
+
+/// Reads a strictly positive integer from the environment.
+fn positive_env(name: &str) -> Option<u64> {
+    parse_positive(std::env::var(name).ok().as_deref())
+}
+
+/// The parse behind [`positive_env`], separated so it can be tested.
+///
+/// The crate forbids `unsafe`, and `std::env::set_var` now requires it, so a
+/// test cannot reach the environment. Keeping the decision in a pure function
+/// is what makes the rejection rule — the part with a real failure mode —
+/// assertable at all.
+fn parse_positive(value: Option<&str>) -> Option<u64> {
+    value?
+        .trim()
+        .parse::<u64>()
+        .ok()
+        .filter(|parsed| *parsed > 0)
+}
+
+/// The signal that ended the process, when one did.
+///
+/// `SIGKILL` is the cgroup out-of-memory killer's only way of speaking, so it
+/// is what this is looking for; the others are reported for the same reason,
+/// which is that a signalled `lean` is never a mathematical verdict.
+#[cfg(unix)]
+fn terminating_signal(status: std::process::ExitStatus) -> Option<i32> {
+    use std::os::unix::process::ExitStatusExt as _;
+    status.signal()
+}
+
+/// Non-Unix hosts have no signals, so nothing here can be a kernel kill.
+#[cfg(not(unix))]
+fn terminating_signal(_status: std::process::ExitStatus) -> Option<i32> {
+    None
+}
+
+/// Whether the text is this module's own out-of-memory report.
+fn was_oom_killed(text: &str) -> bool {
+    text.contains(OOM_MARKER)
+}
+
+
+
 /// The namespace an axiom must sit in to be read as *cited* rather than *assumed*.
 ///
 /// A library written in Lean has to be able to say "this theorem is in the
@@ -1155,8 +1273,40 @@ impl LeanCheck {
     /// for is a kernel verdict and there is no partial one. A timeout is
     /// therefore reported as "did not compile", which is what it means here.
     async fn run(&self, file: &Path) -> Result<(bool, String)> {
+        let (success, text) = self.run_once(file, lean_limits()).await?;
+        if !was_oom_killed(&text) {
+            return Ok((success, text));
+        }
+        // One retry, single-threaded and at half the ceiling. The pool is the
+        // usual reason a file that fits does not: four arenas reserve four
+        // times over, and a serial elaboration of the same file often lands
+        // well inside the cgroup. If it does not, the second verdict is the
+        // honest one and says both attempts.
+        let narrowed = Limits {
+            threads: 1,
+            memory_mb: lean_limits().memory_mb / 2,
+            ..lean_limits()
+        };
+        let (retried, second) = self.run_once(file, narrowed).await?;
+        Ok((
+            retried,
+            clipped(&format!(
+                "error: lean was killed by the kernel out-of-memory killer at \
+                 {} MB across {} threads; retried single-threaded at {} MB\n{second}",
+                lean_limits().memory_mb,
+                lean_limits().threads,
+                narrowed.memory_mb,
+            )),
+        ))
+    }
+
+    /// One `lean` invocation under an explicit resource ceiling.
+    async fn run_once(&self, file: &Path, limits: Limits) -> Result<(bool, String)> {
         let mut command = tokio::process::Command::new("lean");
         let child = command
+            .arg(format!("--memory={}", limits.memory_mb))
+            .arg(format!("--threads={}", limits.threads))
+            .arg(format!("--tstack={}", limits.stack_kb))
             .arg(file)
             .current_dir(&self.workspace)
             .kill_on_drop(true)
@@ -1177,6 +1327,12 @@ impl LeanCheck {
         })?;
         let mut text = String::from_utf8_lossy(&output.stdout).into_owned();
         text.push_str(&String::from_utf8_lossy(&output.stderr));
+        if let Some(signal) = terminating_signal(output.status) {
+            // A signalled `lean` prints nothing, so without this the verdict
+            // would read as a clean "did not compile" and the role would go
+            // looking for a mathematical error that is not there.
+            let _ = write!(text, "{OOM_MARKER} (signal {signal})");
+        }
         Ok((output.status.success(), clipped(&text)))
     }
 
