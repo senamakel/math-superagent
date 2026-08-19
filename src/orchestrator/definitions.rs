@@ -57,6 +57,9 @@ fn budget_for(role: &str) -> RunBudget {
         "judge" | "reflection" => base.for_judging(),
         "context_curator" | "librarian" => base.for_housekeeping(),
         "inventor" => base.for_invention(),
+        // `goals` is the whole attempt and its children run inside its clock,
+        // so it is the one role that must outlast what it delegates to.
+        "goals" => base.for_orchestration(),
         crate::orchestrator::lean::SCRIBE_ROLE => base.for_scribing(),
         _ => base,
     }

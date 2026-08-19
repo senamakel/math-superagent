@@ -227,6 +227,40 @@ const HOUSEKEEPING_TOOL_CALLS: usize = 300;
 /// that narrowing silently reintroduce the truncation it was written for.
 const INVENTION_TURN_OUTPUT_TOKENS: u32 = 32_000;
 
+/// Wall-clock ceiling for a role whose children run inside its own clock.
+///
+/// Three hours, and the number is a ratio rather than a duration: it is the
+/// same invariant as [`DEFAULT_TOOL_MINUTES`] sitting below
+/// [`DEFAULT_RUN_MINUTES`], applied one level up. A tool call must fit inside
+/// the run that makes it; a *delegating* run must likewise fit its children,
+/// and `goals` is the role that fans out and collects. Left on the default it
+/// was given exactly the ceiling its own children have, so a single child that
+/// used its allowance exhausted the parent's — the parent could not finish
+/// inside a bound it shared with the work it was waiting on.
+///
+/// Measured on the ten-run Erdős fleet on 2026-08-19, before this existed:
+/// **52 of 57 `goals` runs failed**, every one on
+/// `run timed out: exceeded its remaining wall-clock`. The call caps were
+/// nowhere near binding — the failures spent a median of 31 model calls
+/// against [`DEFAULT_MAX_MODEL_CALLS`] of 250, and 25–94 tool calls against
+/// 4,000 — so the ceiling that fails a run outright was tripping at under a
+/// quarter of the one that stops gracefully. That is the inversion the note on
+/// housekeeping already forbids, and this is that rule applied to the role it
+/// binds.
+///
+/// A model-call cap deliberately is *not* the fix here, and the measurement is
+/// why: completed runs spent a median of 30 model calls and failed runs 31, so
+/// the two are indistinguishable by call count. What separates them is time per
+/// call, which no call cap can see — narrowing one would cut the runs that
+/// succeed by exactly as much as the ones that time out.
+///
+/// It widens rather than narrows, like [`RunBudget::for_invention`], and `max`
+/// rather than assignment so an operator who raised `MATH_AGENT_RUN_MINUTES`
+/// above it keeps their value. [`DEFAULT_TOOL_MINUTES`] stays the inner bound,
+/// so an expired tool call still returns its output rather than failing the
+/// run.
+const ORCHESTRATION_RUN_MINUTES: u64 = 180;
+
 // There is deliberately no housekeeping wall-clock ceiling. Narrowing one to
 // ten minutes was tried and was a mistake: 25 model calls at the turn lengths
 // this runtime actually sees do not fit in ten minutes, so the organizer
@@ -371,6 +405,27 @@ impl RunBudget {
             max_turn_output_tokens: self
                 .max_turn_output_tokens
                 .max(INVENTION_TURN_OUTPUT_TOKENS),
+            ..self
+        }
+    }
+
+    /// Widens this budget for a role that delegates and waits on the result.
+    ///
+    /// The second place a budget widens rather than narrows, and for the same
+    /// kind of reason as [`Self::for_invention`]: the wall clock is a safety
+    /// ceiling, not a grant of authority, and on this role it was failing the
+    /// work rather than bounding a pathological run. See
+    /// `ORCHESTRATION_RUN_MINUTES` for the 52-of-57 measurement.
+    ///
+    /// Only the run clock moves. The call caps are left alone so they stay the
+    /// graceful trip, and the tool clock is left alone so it stays the inner
+    /// bound.
+    #[must_use]
+    pub fn for_orchestration(self) -> Self {
+        Self {
+            run_timeout: self
+                .run_timeout
+                .max(Duration::from_secs(ORCHESTRATION_RUN_MINUTES * 60)),
             ..self
         }
     }

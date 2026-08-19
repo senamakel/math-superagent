@@ -21,6 +21,47 @@ fn tool_cap_stays_out_of_reach_of_the_model_cap() {
 }
 
 #[test]
+fn a_delegating_role_outlasts_the_children_it_waits_on() {
+    // `goals` runs its children inside its own clock, so sharing their ceiling
+    // meant one child spending its allowance exhausted the parent's. This is
+    // the same ordering `run_timeout > tool_timeout` already asserts, one
+    // level up. On the fleet that produced it, 52 of 57 `goals` runs died on
+    // the wall clock with the call caps nowhere near binding.
+    let base = RunBudget::default();
+    let orchestration = base.for_orchestration();
+    assert!(orchestration.run_timeout > base.run_timeout);
+    // The tool clock stays the inner bound, so a slow tool still returns its
+    // output instead of failing the run.
+    assert!(orchestration.run_timeout > orchestration.tool_timeout);
+}
+
+#[test]
+fn orchestration_widens_only_the_run_clock() {
+    // The call caps stay the graceful trip, and widening authority was never
+    // the point: a failing wall clock discards the work, a call cap does not.
+    let base = RunBudget::default();
+    let orchestration = base.for_orchestration();
+    assert_eq!(orchestration.max_model_calls, base.max_model_calls);
+    assert_eq!(orchestration.max_tool_calls, base.max_tool_calls);
+    assert_eq!(orchestration.tool_timeout, base.tool_timeout);
+    assert_eq!(
+        orchestration.max_turn_output_tokens,
+        base.max_turn_output_tokens
+    );
+}
+
+#[test]
+fn orchestration_keeps_an_operators_larger_run_clock() {
+    // `max`, not assignment: an operator who raised MATH_AGENT_RUN_MINUTES
+    // past this ceiling meant it.
+    let base = RunBudget {
+        run_timeout: std::time::Duration::from_hours(10),
+        ..RunBudget::default()
+    };
+    assert_eq!(base.for_orchestration().run_timeout, base.run_timeout);
+}
+
+#[test]
 fn policy_stops_with_partial_results_rather_than_erroring() {
     // Capture is deliberately not asserted here: it follows the telemetry
     // switch rather than the budget, and reads the environment. What it does

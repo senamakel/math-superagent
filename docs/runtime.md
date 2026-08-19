@@ -509,8 +509,23 @@ total and does not separate them.
 
 The inventor keeps a 32000 floor (`RunBudget::for_invention`) even though the default now exceeds
 it, so an operator who narrows the cap for a cheap run does not silently reintroduce the
-truncation it was written for. `for_invention` is the one budget method that widens; the rest
-bound authority, which only narrows.
+truncation it was written for. `for_invention` and `for_orchestration` are the two budget methods
+that widen; the rest bound authority, which only narrows.
+
+`goals` runs on `RunBudget::for_orchestration`, whose only effect is a 180-minute run clock. The
+reason is an ordering rather than a duration: a tool call must fit inside the run that makes it,
+and a *delegating* run must fit the children it waits on. `goals` fans out and collects, so on the
+default it held exactly the ceiling its own children hold, and one child spending its allowance
+exhausted the parent's. Measured on the ten-run Erdős fleet on 2026-08-19, before the split: **52
+of 57 `goals` runs failed**, every one on `run timed out: exceeded its remaining wall-clock`, while
+the call caps were nowhere near binding — a median of 31 model calls against 250, and 25–94 tool
+calls against 4,000.
+
+A call cap is deliberately not the fix, and the measurement is why: completed runs spent a median
+of 30 model calls and failed runs 31, so the two cannot be told apart by call count. What separates
+them is time per call, which no call cap can see. `budget_test.rs` asserts the ordering, and
+`solutions_attempt.rs` keeps its salvage path regardless — a wall clock that stops failing is not a
+reason to trust one agent to return.
 
 `ReroutingModel` is outermost, so every provider failure passes it once, and it now notes the cause
 and agent on the way past: `AgentEvent::RetryScheduled` carries a call id and an attempt but no
