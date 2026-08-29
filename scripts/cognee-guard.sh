@@ -13,6 +13,11 @@
 
 set -u
 
+# Cognee only, by construction: it watches one named Cognee container. It is a
+# launchd/cron job rather than something a launcher calls, so it names the
+# engine here rather than reading `MATH_AGENT_MEMORY` from an environment it
+# does not have. Under `MATH_AGENT_MEMORY=cortex` nothing should schedule it.
+
 DOCKER=/usr/local/bin/docker
 CONTAINER=math-agent-shared-cognee-1
 STATE_DIR="$HOME/math-agent-shared/.cognee-guard"

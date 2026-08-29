@@ -1,6 +1,12 @@
 #!/bin/sh
-# Brings up the shared backbone: one Neo4j Enterprise instance, one Cognee and
-# one LLM router, for every problem on the box.
+# Brings up the shared backbone for every problem on the box: one memory server
+# and one LLM router.
+#
+# Which memory server is `MATH_AGENT_MEMORY`. Unset it is `cortex` — one
+# CortexDB, which carries its own graph and its own vector index. `cognee`
+# starts the alternative instead, which is a Cognee *and* the Neo4j Enterprise
+# instance it stores its graph in; both carry a Compose profile so neither runs
+# when it is not the selected engine.
 #
 # Usage: scripts/shared-up            start or reconcile, waiting for health
 #        scripts/shared-up --down     stop it; the volumes survive
@@ -22,6 +28,14 @@ cd "$repository_root"
 project=${SHARED_PROJECT:-math-agent-shared}
 compose_file=compose.shared.yaml
 
+# Which Compose profiles `compose()` runs with. Empty is the CortexDB half,
+# which carries no profile; the Cognee half and its Neo4j both do. Every verb
+# below sets this for itself, and the `up` path resolves it from
+# `MATH_AGENT_MEMORY` *after* `scripts/dotenv` has run — reading it here would
+# ignore an engine named in `.env`, which is the same ordering bug
+# `scripts/memory-up` records against the memory address.
+engine_profiles=""
+
 # Where the shared stack runs. Empty means this box, which is the single-machine
 # deployment and the default. Set `MATH_AGENT_SHARED_HOST` to an ssh host to put
 # Neo4j, Cognee and the ladder on a machine of their own — they are the memory
@@ -41,9 +55,10 @@ compose() {
         # `cd` on the far side, so the compose project and its relative binds
         # resolve against the stack's own directory.
         # shellcheck disable=SC2029
-        ssh "$shared_host" "cd '$shared_path' && docker compose -p '$project' -f '$compose_file' $*"
+        ssh "$shared_host" "cd '$shared_path' && docker compose -p '$project' -f '$compose_file' $engine_profiles $*"
     else
-        docker compose -p "$project" -f "$compose_file" "$@"
+        # shellcheck disable=SC2086
+        docker compose -p "$project" -f "$compose_file" $engine_profiles "$@"
     fi
 }
 
@@ -66,10 +81,19 @@ admin_cypher() {
 
 case "${1:-up}" in
     --down)
+        # Every profile, not the selected one. A stack switched from Cognee to
+        # CortexDB and then stopped would otherwise keep a Neo4j and a Cognee
+        # running that nothing is pointed at, which is several gigabytes held
+        # by a service no run can name.
+        engine_profiles="--profile cognee"
         compose down >&2
         exit 0
         ;;
     --cypher)
+        # Cognee's graph store only; CortexDB holds its graph itself and speaks
+        # no Bolt. Selecting the profile explicitly so the verb works without
+        # `MATH_AGENT_MEMORY=cognee` having been exported first.
+        engine_profiles="--profile cognee"
         if [ "$#" -lt 2 ]; then
             echo "usage: scripts/shared-up --cypher <statement>" >&2
             exit 2
@@ -78,6 +102,7 @@ case "${1:-up}" in
         exit 0
         ;;
     --cypher-in)
+        engine_profiles="--profile cognee"
         # The same, against one problem's database rather than `system`.
         # `-d` rather than a `:use` line, because cypher-shell only reads
         # client commands from a script and not from a statement argument.
@@ -135,14 +160,27 @@ if [ -z "${LADDER_CONFIG_PATH:-}" ] || [ -z "${LADDER_ENV_FILE:-}" ]; then
     export LADDER_CONFIG_PATH LADDER_ENV_FILE
 fi
 
-# Cognee is waited for along with the rest: it has a healthcheck, and a run
-# that starts against a server still initialising spends its first minutes
-# failing recall calls it will never retry. A cold volume is the slow case —
-# the embedding model is fetched on first start — so `--wait` here is doing
-# real work rather than confirming the obvious.
+# The memory server is waited for along with the rest: it has a healthcheck,
+# and a run that starts against a server still initialising spends its first
+# minutes failing recall calls it will never retry. A cold volume is the slow
+# case, so `--wait` here is doing real work rather than confirming the obvious.
+#
+# CortexDB's healthcheck is `/v1/admin/ready` rather than `/v1/admin/health`,
+# which matters more than it looks: health answers 200 while the server is
+# pinned to mock embeddings, so waiting on it would report a memory that stores
+# nothing findable as ready.
+case "${MATH_AGENT_MEMORY:-cortex}" in
+    cortex|cortexdb) engine_profiles="" ; engine_services="cortexdb, ladder" ;;
+    cognee)          engine_profiles="--profile cognee" ; engine_services="neo4j, cognee, ladder" ;;
+    *)
+        echo "MATH_AGENT_MEMORY='${MATH_AGENT_MEMORY:-}' names no memory engine; it is cortex or cognee" >&2
+        exit 2
+        ;;
+esac
+
 if [ -n "$shared_host" ]; then
-    echo "shared: bringing up $project on $shared_host (neo4j, cognee, ladder)" >&2
+    echo "shared: bringing up $project on $shared_host ($engine_services)" >&2
 else
-    echo "shared: bringing up $project (neo4j, cognee, ladder)" >&2
+    echo "shared: bringing up $project ($engine_services)" >&2
 fi
 compose up -d --wait >&2

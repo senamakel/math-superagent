@@ -172,8 +172,8 @@ done
 # ---------------------------------------------------------------------------
 MATH_AGENT_MEMORY_URL=$(scripts/memory-up "$workspace_subdir")
 export MATH_AGENT_MEMORY_URL
-COGNEE_API_KEY=$(scripts/memory-up --key "$workspace_subdir")
-export COGNEE_API_KEY
+MATH_AGENT_MEMORY_KEY=$(scripts/memory-up --key "$workspace_subdir")
+export MATH_AGENT_MEMORY_KEY
 
 # The memory server and the ladder are the only infrastructure a calibration
 # run may reach, and they are reached by address rather than over a Docker

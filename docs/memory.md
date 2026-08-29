@@ -1,45 +1,188 @@
-# The memory: what it holds, and the audit that found it holding nothing
+# The memory: two engines, the four stores, and the audit that found one holding nothing
 
-The runtime's memory is **one Cognee server for the box, with each problem as a
-tenant on it**, and four stores inside each tenant: the **brain**
-(`remember_memory`), the **sessions** (one document per finished agent run), the
-**library** (every downloaded source), and the **scratch** (`note_scratch`,
-provisional work, unreachable from durable recall). `src/orchestrator/vector.rs`
-and the three files it includes are the whole of the client;
+The runtime's memory is **one server for the box, with four stores inside it per
+problem**: the **brain** (`remember_memory`), the **sessions** (one document per
+finished agent run), the **library** (every downloaded source), and the
+**scratch** (`note_scratch`, provisional work, unreachable from durable recall).
+
+Which server is `MATH_AGENT_MEMORY`, and there are two:
+
+| | `cortex` (default) | `cognee` |
+|---|---|---|
+| Server | `cortexdb/cortexdb:v0.9.8` | `cognee/cognee:1.4.2` + Neo4j 5.26 Enterprise |
+| Graph | its own | Neo4j, one database per dataset |
+| Vectors | its own (HNSW over `RocksDB`) | LanceDB, one table per dataset |
+| Embeddings | the ladder's `vectors` rung, 3072-dim | `fastembed`, on the server's CPU |
+| The four stores are | four scopes | four `node_set`s in one dataset |
+| Cross-problem boundary | this runtime's scope construction | the server's, one tenant per problem |
+| A write returns when | the index has taken it | the upload has been queued |
+
+`src/orchestrator/vector.rs` is the façade both sit behind — it keeps the type
+name every other module already threads through, and turns the *question* a
+tool is asking into whichever retriever the selected engine spells it with.
+`cortex.rs` and `cognee.rs` are the two clients.
 [`docs/roles.md`](roles.md#recall-the-two-ways-back-into-what-is-known) says
 which role holds which tool, and [`docs/runtime.md`](runtime.md) has the
-tenancy: how a tenant is provisioned, what the key does, and what one Cognee
-replaced.
+deployment.
 
-Three consequences matter for reading the rest of this file, because most of it
-was measured against the shape that came before.
+## Why the engine moved, and what it fixed
+
+Two of the three failures audited below are **structural** under CortexDB
+rather than guarded against, which is the whole argument for the change.
+
+- **A write is a verdict.** `POST /v1/experience?wait=indexed` answers when the
+  lexical and vector indexes have taken the document, and names the stages that
+  completed: `["captured","extracted","indexed","consolidated","compressed"]`.
+  Finding 1 below — a `200` for a document that was then silently dropped — has
+  no shape here, because the response *is* the answer to "will this be
+  recallable". `CogneeStore::refuse_if_not_indexable` had to reconstruct that
+  from a separate health probe; `reached_barrier` just reads it.
+- **The scratch boundary is a list rather than a filter.** Durable recall reads
+  the scopes in `DURABLE_STORES` one at a time and the scratch is not one of
+  them, so it is excluded by never being asked for — checkable by reading four
+  lines. It also sits at `{root}/scratch:{slug}`, a *sibling* of the durable
+  subtree, so a future reader reaching for a traversal does not pick it up.
+- **Finding 2 has no counterpart at all.** The graph half of a fused recall
+  failed on 122 of 136 calls under Cognee because nothing here ran the pipeline
+  its retriever needed. CortexDB's derived layers are the ordinary read path,
+  and `relate_memory` reads `facts`/`beliefs` and, on `reach: extended`,
+  `understanding` — synthesised concepts each carrying the events that support
+  them, a stance and a confidence.
+
+### Measured on 2026-08-29, against the local image and this deployment's ladder
+
+Every number below is from probing `cortexdb/cortexdb:v0.9.8` on this box, with
+`CORTEX_LLM_URL` and `CORTEX_EMBEDDING_URL` pointed at the ladder.
+
+- **Readiness is honest and health is not.** With no provider key the server
+  starts, reports `/v1/admin/health` `{"status":"healthy"}`, and pins the data
+  directory to `mock::3072` embeddings — storing documents whose vectors mean
+  nothing, permanently, because the pinning outlives the outage. `ready`
+  reported `degraded: true` throughout. That is Finding 1 wearing a different
+  coat, so `refuse_if_degraded` refuses a write on `degraded` and the compose
+  healthcheck reads `/v1/admin/ready`. **Never gate on `/v1/admin/health`** —
+  the vendor's own manifest says so.
+- **The gate is on `OPENAI_API_KEY`, not the per-lane key.** With only
+  `CORTEX_EMBEDDING_API_KEY` set the server still fell back to mock embeddings.
+  `compose.shared.yaml` therefore hands the ladder's key under the name the gate
+  reads. This is the same class of failure as Finding 4 below and was found the
+  same way — by reading the startup log rather than the health endpoint.
+- **A durable write costs one to two seconds, not five.** The distribution is
+  bimodal and the first measurement taken here read the wrong mode: 4,951 ms was
+  a *first* write to a scope the server had not seen. Steady state is
+  **1.0–1.9 s** to `indexed`, **~5 s** for the first write to each new scope,
+  and **7–8 ms** to `captured`. The tail belongs to the router rather than the
+  memory — three consecutive bare `flash` completions through the same ladder
+  measured 960 ms, 6,661 ms and 810 ms, so a ten-second write is that spike
+  landing on a first write. Confirmed through the runtime: the first two live
+  `remember_memory` calls took 895 ms and 765 ms.
+
+  So the brain, the sessions and the library wait for `indexed` and the scratch
+  waits for `captured`. Against Cognee's measured 66, 114 and 177 seconds — and
+  one call killed at the ten-minute tool ceiling — a second and a half for a
+  *confirmed* write is the better half of both trades. The mistake is worth
+  keeping: one sample of a bimodal latency is a number that will be wrong in
+  whichever direction it is later quoted.
+- **A repeated write is free, and looks alarming in a log.** Live runs show
+  `remember_memory ... in 0ms`, which is the idempotency key doing its job:
+  several roles storing the *same* sentence produce the same key, and the server
+  replays rather than writing again. Checked against the server rather than
+  assumed — the brain held two events for many such calls, both distinct and
+  both real.
+- **`view: "descend"` is not usable and durable recall no longer uses it.**
+  This is the one finding that changed the design after it was written. Reading
+  the three durable stores as one traversal of their parent worked on the scope
+  it was developed against, and then on a live run's workspace returned **zero
+  events** while a `granular` recall addressed straight at the brain returned
+  **nineteen** — with the brain listed in `/v1/scopes/list` as a registered
+  scope the whole time. The same `descend` also returned three events for a
+  stranger's actor and zero for the scope's own owner, so it was incoherent and
+  not merely incomplete.
+
+  `CortexStore::search` therefore issues three concurrent `granular` recalls
+  against `DURABLE_STORES`, a literal list in the source. That costs two extra
+  requests, and buys a set of stores that can be read and tested rather than
+  inferred, a scratch excluded by never being named, and no dependency on the
+  `scope.read.descend` capability. Measured through the runtime afterwards:
+  `recall_memory` in **1,069 ms** returning 15 KB.
+
+  The general lesson is the one this file keeps recording. A boundary that
+  depends on a server behaviour this runtime cannot predict is not a boundary,
+  and the failure mode here was the exact one the engine was chosen to end — a
+  recall that silently misses the brain and reports nothing wrong.
+- **The scratch boundary holds.** It is now held by the store list above rather
+  than by a traversal: the scratch is not in `DURABLE_STORES`, so durable recall
+  never asks for it. Its sibling scope placement remains as the second line.
+  Live, a run wrote five scratch notes and durable recall returned none of them,
+  while a recall addressed at the scratch scope returned them.
+- **A source keeps its bytes.** `POST /v1/blobs` takes the file raw, with
+  `Content-Type` declaring what it is, and returns a `blob_id` an envelope
+  references as `{"kind":"blob_ref"}` — which routes it through the server's own
+  content processors. Multipart is refused `415`, which is worth knowing because
+  multipart is exactly what the Cognee path sends.
+- **The `understanding` layer earns its cost.** One sentence about
+  Casas-Alvero produced two concepts with `supported_by` event ids, `stance:
+  "supported"`, `confidence: 0.7` and a `coverage_score` — and one of them said
+  what the memory did *not* hold. That is the answer `relate_memory` was always
+  supposed to give and never once did.
+
+### What it does not fix, stated plainly
+
+**The cross-problem boundary is no longer the server's.** Cognee made each
+problem a tenant and answered a request for another tenant's dataset `404`. The
+self-hosted CortexDB image cannot: `POST /v1/auth/tokens` answers
+`{"error_code":"NOT_CONFIGURED"}`, no environment variable enables the minter,
+and the one static `CORTEX_API_KEY` carries every capability the deployment has
+— `scope.read.descend` and `scope.read.cross_tenant` included.
+
+What holds the line instead is that every scope is built inside `cortex.rs` from
+the workspace label, and **no tool argument reaches a scope**: a role cannot name
+another problem's memory because nothing in any schema takes one. That is
+weaker, and a bug in scope construction there is a leak nothing outside that file
+would report.
+
+Where it actually matters it is not relied on. A calibration run gets its **own
+CortexDB and its own data directory** (`compose.eval.yaml`), because the thing
+such a run must not reach is another problem's memory — a sibling working on the
+same literature is exactly where a withheld answer would be written down — and a
+separate process is not a better filter but the absence of a store to filter.
+[`docs/calibration.md`](calibration.md) has the rest of that argument.
+
+The vendor also marks its own `self_hosted` and `local_docker_profile` as
+**blocked**, meaning untested by them ("no isolated Docker execution environment
+restored since Phase 0"). Everything above is this deployment's own measurement
+rather than a supported claim, which is a reason to keep `cognee` selectable and
+a reason to re-probe on every image bump.
+
+## The Cognee engine, and the audit behind its controls
+
+Everything from here down is about `MATH_AGENT_MEMORY=cognee`. It is kept
+because the controls it describes are still live code, and because a memory
+engine is a claim about what a run can recall — the only way to hold one to that
+claim is to be able to run the other.
+
+Three consequences matter for reading the rest of this file.
 
 - **A tenant is one dataset**, `math_agent__<project>`, and the four stores
   differ by `node_set` inside it. Under access control a Cognee dataset is a
   Neo4j database, so four datasets would put a source and the session that read
   it in graphs with no edge possible between them.
-- **The cross-problem boundary moved into the server.** It used to be a Bolt-
-  level fact about a container statically pointed at one database, with an
-  allowlist in this runtime computing which datasets to name. It is now the
-  server refusing: a tenant asking for another tenant's dataset gets `404
-  DatasetNotFoundError`, and no key at all gets `401`. Access control is also
-  what makes Cognee honour the `datasets` field, whose being silently unenforced
-  is the leak recorded further down.
-- **Contention is the live risk again.** One shared Cognee is what produced a
-  `409 Conflict` on a `recall_memory` that had already hung the full ten-minute
-  tool ceiling, under four concurrent runs. Cognee serialises per dataset rather
-  than globally now, and the server is three minor versions on, and neither of
-  those is a measurement. What to measure, from `config/trace.jsonl` across the
-  concurrently running workspaces: the `recall_memory` and `remember_memory`
-  latency distribution against the number of runs live at the time, and any
-  `409` at all. A tail that grows with concurrency is this failure returning,
-  and the answer is to shard tenants across a second Cognee — the compose file
-  starts one per project name — rather than to raise the tool ceiling.
+- **The cross-problem boundary is in the server.** A tenant asking for another
+  tenant's dataset gets `404 DatasetNotFoundError`, and no key at all gets
+  `401`. Access control is also what makes Cognee honour the `datasets` field,
+  whose being silently unenforced is the leak recorded further down.
+- **Contention is the live risk.** One shared Cognee is what produced a `409
+  Conflict` on a `recall_memory` that had already hung the full ten-minute tool
+  ceiling, under four concurrent runs. Cognee serialises per dataset rather than
+  globally now, and neither that nor a version bump is a measurement. What to
+  measure, from `config/trace.jsonl` across concurrently running workspaces: the
+  `recall_memory` and `remember_memory` latency distribution against the number
+  of runs live at the time, and any `409` at all.
 
-This file is the evidence behind the rules that guard it. It exists because an
-audit on 2026-08-16 asked one question — *can a run recall what its earlier
-sessions established?* — and found that on some problems the answer was no, and
-that nothing in the runtime said so.
+The rest of this file is the evidence behind the rules that guard it. It exists
+because an audit on 2026-08-16 asked one question — *can a run recall what its
+earlier sessions established?* — and found that on some problems the answer was
+no, and that nothing in the runtime said so.
 
 ## What the audit did
 

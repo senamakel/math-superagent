@@ -40,7 +40,15 @@ services:
       # This run's tenant on the shared memory server, sent as an `X-Api-Key`
       # header on every request. `scripts/memory-up --key <workspace-label>`
       # provisions the tenant and prints it; `scripts/run-agent` passes it
-      # through.
+      # through as `MATH_AGENT_MEMORY_KEY`.
+      #
+      # One host-side variable names the credential for both engines, because
+      # the launchers should not have to know which one is up: the two spellings
+      # below are what each client reads, and `MATH_AGENT_MEMORY_KEY` is what
+      # sets either. The same holds for the address — one
+      # `MATH_AGENT_MEMORY_URL`, two per-engine fallbacks for when nothing set
+      # it, which differ only because the two servers listen on different
+      # ports.
       #
       # Defaulted to empty rather than declared required (`:?`), and the
       # refusal lives in `VectorStore::from_env` instead. Compose interpolates
@@ -51,7 +59,31 @@ services:
       # while the run reports storing what it learned, which is the failure
       # shape `docs/memory.md` was written about, so the runtime refuses to
       # start rather than proceeding without one.
-      COGNEE_API_KEY: ${COGNEE_API_KEY:-}
+      COGNEE_API_KEY: ${MATH_AGENT_MEMORY_KEY:-${COGNEE_API_KEY:-}}
+      # Which memory engine this run reaches: `cortex` (the default) or
+      # `cognee`. It selects between two clients in `VectorStore::from_env`,
+      # and it must match what `scripts/shared-up` actually started — a run
+      # pointed at an engine that is not up has no memory and says so on every
+      # call. `scripts/memory-up` reads the same variable and brings up the
+      # matching half of the shared stack, which is what keeps the two in step.
+      MATH_AGENT_MEMORY: ${MATH_AGENT_MEMORY:-cortex}
+      # The shared CortexDB, by address, on the same argument as
+      # `COGNEE_API_URL` above.
+      CORTEX_API_URL: ${MATH_AGENT_MEMORY_URL:-http://host.docker.internal:3141}
+      # The deployment's operator credential, sent as `Authorization: Bearer`.
+      # One key for the server rather than one per problem: the self-hosted
+      # image cannot mint scoped tokens, so what separates one problem's memory
+      # from another's is the scope every request is built with and the fact
+      # that no tool argument reaches a scope. `src/orchestrator/cortex.rs`
+      # states what that is and is not worth.
+      #
+      # Defaulted rather than required for the same reason as `COGNEE_API_KEY`:
+      # a `:?` here would fail `./agent build` and `docker compose config`,
+      # neither of which touches the memory.
+      CORTEX_API_KEY: ${MATH_AGENT_MEMORY_KEY:-${CORTEX_API_KEY:-cortex-local-shared}}
+      # The scope subtree this deployment owns. Two deployments sharing one
+      # server set this differently, or their problems collide by slug.
+      CORTEX_SCOPE_ROOT: ${CORTEX_SCOPE_ROOT:-ws:math-agent}
       MATH_AGENT_CONTAINER: "1"
       # Run controls forwarded from the host wrapper. Empty means "use the
       # built-in default", so an unset variable never widens or narrows a run.

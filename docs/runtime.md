@@ -204,22 +204,29 @@ and using it as a search box. The distinction is worth stating in each prompt
 that needs it: the inventor asks what the memory relates the obstruction to
 before proposing a new line, the scholar asks what is already connected to a new
 source's central object so its digest can say where the source agrees or
-conflicts, and the pattern agent asks before calling a regularity new. Both
-searches share one request path on `VectorStore::search`, differing only in
-Cognee's `search_type`, so a correction to one cannot drift from the other.
+conflicts, and the pattern agent asks before calling a regularity new. Both searches share one request path on `VectorStore::search`, differing only in
+the `Lookup` handed to it, so a correction to one cannot drift from the other.
+`Lookup` is a semantic enum — passages, connections, connections extended — and
+it is what a tool asks for; each engine spells it as its own retriever. Two
+shipped bugs came from a tool naming Cognee's retrievers directly, so the
+vocabulary at that boundary is now the runtime's rather than one server's.
 
 The research agent has Exa plus `recall_research` and `remember_research` tools.
-Cognee persists the notes, and the server is **one process for the whole box,
-with each problem as a tenant on it**. `compose.yaml` joins its network —
-external, named by `MEMORY_NETWORK` — and reaches the server as `cognee:8000`,
-with no `depends_on`: the memory server outlives any one run, and a run must
-never be able to take it down.
+The memory server persists the notes, and it is **one process for the whole
+box**, with no `depends_on`: it outlives any one run, and a run must never be
+able to take it down.
+
+Which server is `MATH_AGENT_MEMORY` — `cortex` (a CortexDB, the default) or
+`cognee` — and `docs/memory.md` has the comparison, the measurements and the
+boundary each one holds. Everything else in this file is the same for both.
 
 `docker compose -f compose.yaml config --services` yields `agent` alone. What it
 talks to is somebody else's stack: `compose.shared.yaml` (`scripts/shared-up`),
-holding one Neo4j Enterprise instance, one Cognee and one ladder. `./agent`
-starts it first; it is not in the agent's own project, which is what stops a run
-being able to take it down.
+holding one ladder and one memory server — a CortexDB, or under
+`MATH_AGENT_MEMORY=cognee` a Cognee and the Neo4j Enterprise instance it stores
+its graph in, both behind a Compose profile so neither starts otherwise.
+`./agent` starts it first; it is not in the agent's own project, which is what
+stops a run being able to take it down.
 
 ## The stack is reached by address, and need not be on this box
 
@@ -233,7 +240,9 @@ networks:
 | --- | --- |
 | `MATH_AGENT_SHARED_HOST` | ssh host running the stack; empty means this box |
 | `MATH_AGENT_SHARED_PATH` | the stack's directory on that host |
-| `MATH_AGENT_MEMORY_URL` | where Cognee answers |
+| `MATH_AGENT_MEMORY` | which engine: `cortex` (default) or `cognee` |
+| `MATH_AGENT_MEMORY_URL` | where the memory server answers |
+| `MATH_AGENT_MEMORY_KEY` | the credential for it, from `scripts/memory-up --key` |
 | `MATH_AGENT_API_BASE_URL` | where the ladder answers |
 
 Compose is run **over ssh** rather than through `DOCKER_HOST=ssh://…`, and the
@@ -242,7 +251,13 @@ file's bind mounts against the *client's* filesystem and sends paths that mean
 nothing on the daemon's. The stack's files therefore live beside it, in
 `MATH_AGENT_SHARED_PATH`.
 
-A run used to reach `cognee:8000` and `ladder:6969` by name over two gatewayless
+One variable names two servers, which listen on different ports — 3141 and
+8000 — so an address pinned for one engine is wrong for the other.
+`scripts/memory-up` checks that it answers the selected engine's readiness
+endpoint before printing it, which turns that into a message rather than a run
+whose memory silently never answers.
+
+A run used to reach the memory server and `ladder:6969` by name over two gatewayless
 Docker networks. That is gone, and with it the property that a run container had
 no route out at all. What replaces it:
 
@@ -266,15 +281,31 @@ an Apple Silicon host it runs emulated. That is acceptable for a proxy, which is
 I/O bound rather than compute bound, and `platform: linux/amd64` says so in the
 file rather than leaving it to be discovered.
 
-## One memory server, one tenant per problem
+## One memory server, and what separates one problem's memory from another's
 
-Two things separate one problem's memory from another's, and neither is a filter
-in this runtime.
+**Under `cortex`, this runtime.** The self-hosted CortexDB image cannot mint
+scoped tokens — `POST /v1/auth/tokens` answers `NOT_CONFIGURED` — so there is
+one operator `CORTEX_API_KEY` for the deployment and it carries every capability
+the server has. What holds the line instead is that every scope is built inside
+`cortex.rs` from the workspace label, and **no tool argument reaches a scope**:
+a role cannot name another problem's memory because nothing in any schema takes
+one. The stores are four scopes under `${CORTEX_SCOPE_ROOT}` —
+`project:<slug>/store:{brain,session,library}` and, deliberately a *sibling*
+rather than a child, `scratch:<slug>`, so a `descend` recall from the project
+cannot reach the scratch by construction.
+
+That is a weaker guarantee than what follows, and it is not relied on where it
+matters: a calibration run gets its own CortexDB and its own data directory
+(`compose.eval.yaml`), because a sibling run on the same literature is exactly
+where a withheld answer would be written down.
+
+**Under `cognee`, the server.** Two things separate one problem's memory from
+another's, and neither is a filter in this runtime.
 
 The **key** is the first. `ENABLE_BACKEND_ACCESS_CONTROL=true` makes each
 problem a Cognee user; `scripts/memory-up <label>` registers it and mints an API
 key, `scripts/memory-up --key <label>` prints it, `scripts/run-agent` passes it
-in as `COGNEE_API_KEY`, and `VectorStore::from_env` puts it on the HTTP client as
+in as `MATH_AGENT_MEMORY_KEY`, and the client puts it on every request as
 a default `X-Api-Key` header so no call site can forget it. Probed live: a
 tenant asking for another tenant's dataset by name gets `404
 DatasetNotFoundError`, and a request with no key at all gets `401`. This is also

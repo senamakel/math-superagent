@@ -1,13 +1,27 @@
 #!/bin/sh
-# Provisions this problem's tenant on the shared memory server, and prints what
-# a run needs to reach it.
+# Brings up the shared memory server and prints what a run needs to reach it.
 #
-# There is one Cognee for the whole box (`compose.shared.yaml`), and each
-# problem is a *tenant* on it: a Cognee user, holding its own datasets, reached
-# with an `X-Api-Key` header. The server refuses one tenant's request for
-# another's dataset — probed live, `404 DatasetNotFoundError` — so the boundary
-# is the server's rather than this script's. This used to start a whole Cognee
-# container per problem; see `compose.shared.yaml` for why it no longer does.
+# There is one server for the whole box (`compose.shared.yaml`), and which one
+# is `MATH_AGENT_MEMORY`. What this script has to do differs between the two,
+# and the difference is the whole of the security note in
+# `src/orchestrator/cortex.rs`:
+#
+# - **cortex** (the default) has nothing per-problem to provision. The
+#   self-hosted image cannot mint scoped tokens, so there is one operator
+#   credential for the deployment and each problem is separated by the *scope*
+#   its requests are built with, inside the runtime. This prints that one key.
+# - **cognee** makes each problem a *tenant*: a Cognee user holding its own
+#   datasets, reached with an `X-Api-Key` header, and the server refuses one
+#   tenant's request for another's dataset — probed live, `404
+#   DatasetNotFoundError`. That boundary is the server's rather than this
+#   script's, and provisioning the tenant is what this script exists for.
+#
+# Either way it checks that the address actually answers *the selected
+# engine's* readiness endpoint before printing it. That check is not
+# ceremonial: `MATH_AGENT_MEMORY_URL` is one variable naming two servers that
+# listen on different ports, so an address left pinned to the engine that is no
+# longer selected is the easy mistake, and it would otherwise surface a run
+# later as a memory that simply never answers.
 #
 # Usage: scripts/memory-up <workspace-label>        e.g. project-euler/620
 #        scripts/memory-up --key <workspace-label>  print its API key
@@ -18,7 +32,7 @@
 # read it directly, and the key under `--key` for the same reason:
 #
 #     MATH_AGENT_MEMORY_URL=$(scripts/memory-up project-euler/620)
-#     COGNEE_API_KEY=$(scripts/memory-up --key project-euler/620)
+#     MATH_AGENT_MEMORY_KEY=$(scripts/memory-up --key project-euler/620)
 #
 # Progress goes to stderr for exactly that reason. Both forms provision, so
 # either order works and a second call costs one HTTP round trip.
@@ -146,6 +160,20 @@ PY
 action=up
 case "${1:-}" in
     --list)
+        if [ "${MATH_AGENT_MEMORY:-cortex}" != cognee ]; then
+            # CortexDB has no tenant table to read; what it has is the scope
+            # tree every write created, which is the same question asked of the
+            # structure that actually separates the problems.
+            . "$repository_root/scripts/dotenv"
+            list_url=${MATH_AGENT_MEMORY_HOST_URL:-${MATH_AGENT_MEMORY_URL:-http://127.0.0.1:3141}}
+            list_url=$(printf '%s' "$list_url" | sed 's|host\.docker\.internal|127.0.0.1|')
+            curl -sf --max-time 30 "${list_url%/}/v1/scopes/list" \
+                -H "Authorization: Bearer ${CORTEX_API_KEY:-cortex-local-shared}" \
+                -H "X-Cortex-Actor: agent:memory-up" \
+                | tr ',' '\n' | sed -n 's|.*\("'"${CORTEX_SCOPE_ROOT:-ws:math-agent}"'/[^"]*\)".*|\1|p' \
+                | sort -u
+            exit 0
+        fi
         # Every workspace that has ever had a memory here, which is not every
         # problem currently running. Filtered to this runtime's tenant domain:
         # the server also carries Cognee's own built-in default user, which is
@@ -190,7 +218,7 @@ if [ -z "$slug" ]; then
 fi
 
 if [ "$action" = down ]; then
-    # Deliberately not a delete. A tenant's datasets are its memory of the
+    # Deliberately not a delete, on either engine. A tenant's datasets are its memory of the
     # problem, its graph databases are named after them, and a workspace is
     # continued far more often than it is abandoned — so the destructive
     # reading of "down" is the wrong default for a server that now holds every
@@ -219,10 +247,43 @@ fi
 # `MATH_AGENT_MEMORY_URL`. Its default names the host gateway, which resolves to
 # nothing from the host itself, so that one spelling is rewritten here — which
 # is what lets a single variable configure both sides of the common case.
-memory_url=${MATH_AGENT_MEMORY_HOST_URL:-${MATH_AGENT_MEMORY_URL:-http://127.0.0.1:8000}}
+memory_engine=${MATH_AGENT_MEMORY:-cortex}
+case "$memory_engine" in
+    cortex|cortexdb) memory_engine=cortex ; default_url=http://127.0.0.1:3141 ; ready_path=/v1/admin/ready ;;
+    cognee)          default_url=http://127.0.0.1:8000 ; ready_path=/health ;;
+    *)
+        echo "MATH_AGENT_MEMORY='$memory_engine' names no memory engine; it is cortex or cognee" >&2
+        exit 2
+        ;;
+esac
+
+memory_url=${MATH_AGENT_MEMORY_HOST_URL:-${MATH_AGENT_MEMORY_URL:-$default_url}}
 memory_url=$(printf '%s' "$memory_url" | sed 's|host\.docker\.internal|127.0.0.1|')
 
 ensure_shared
+
+# The address answers the engine that is selected, or this stops here. See the
+# header: one variable names two servers on two ports, and a stale pin is
+# otherwise a run with a memory that never answers and never says why.
+if ! curl -sf -o /dev/null --max-time 30 "${memory_url%/}$ready_path"; then
+    echo "memory: $memory_url does not answer $memory_engine's $ready_path" >&2
+    echo "memory: unset MATH_AGENT_MEMORY_URL to use $default_url, or point it at this engine" >&2
+    exit 1
+fi
+
+if [ "$memory_engine" = cortex ]; then
+    # One operator credential for the deployment, defaulted to the same literal
+    # `compose.shared.yaml` hands the server, so the two sides cannot disagree
+    # about what the key is. There is no per-problem provisioning to do: what
+    # separates one problem's memory from another's is the scope the runtime
+    # builds, and no tool argument reaches a scope.
+    if [ "$action" = key ]; then
+        printf '%s\n' "${CORTEX_API_KEY:-cortex-local-shared}"
+    else
+        printf '%s\n' "$memory_url"
+    fi
+    exit 0
+fi
 
 echo "memory: provisioning tenant $slug on the shared server" >&2
 key=$(tenant_api_key "$slug" | tr -d '\r' | tail -1)

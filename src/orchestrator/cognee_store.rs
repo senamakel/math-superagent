@@ -1,11 +1,11 @@
-impl VectorStore {
-    /// Runs one search against this project's datasets and renders the hits.
+impl CogneeStore {
+    /// Runs one lookup against this project's datasets and renders the hits.
     ///
-    /// `search_type` is Cognee's: [`CHUNK_SEARCH`] for passages,
-    /// [`GRAPH_SEARCH`] for the relationships between entities. Both tools
-    /// share this because the only thing that differs between them is that
-    /// string, and a second copy of the request would drift from the first the
-    /// moment either is corrected.
+    /// [`search_type`] turns the question into Cognee's own name for it:
+    /// [`CHUNK_SEARCH`] for passages, [`GRAPH_SEARCH`] for the relationships
+    /// between entities. Every lookup shares this because the only thing that
+    /// differs between them is that string, and a second copy of the request
+    /// would drift from the first the moment either is corrected.
     ///
     /// Returns `Ok(None)` when the memory has nothing, so each caller can say
     /// so in its own words rather than returning an empty result the model has
@@ -18,7 +18,7 @@ impl VectorStore {
     pub(super) async fn search(
         &self,
         query: &str,
-        search_type: &str,
+        lookup: Lookup,
         limit: u64,
     ) -> Result<Option<String>> {
         let datasets = self.recall_datasets().await?;
@@ -26,7 +26,7 @@ impl VectorStore {
             datasets,
             durable_node_sets(&self.project),
             query,
-            search_type,
+            search_type(lookup),
             limit,
         )
         .await
@@ -34,14 +34,14 @@ impl VectorStore {
 
     /// Runs one search against exactly the datasets and node sets named.
     ///
-    /// Split from [`VectorStore::search`] so the scratch can be read without
+    /// Split from [`CogneeStore::search`] so the scratch can be read without
     /// being listed among the datasets durable recall reaches. Sharing the
     /// request is what keeps a correction to one from drifting from the other.
     ///
     /// `node_sets` is the scoping that actually holds, and that is the
     /// correction of a measured leak rather than a belt-and-braces addition.
     /// `datasets` is the boundary this runtime was built around — the
-    /// allowlist in [`visible_datasets`] exists to compute it — and the server
+    /// allowlist that used to compute it is gone — and the server
     /// does not apply it: a live probe asking for one project's session
     /// dataset, then another's, then a third's by UUID, returned the *same*
     /// chunk from a fourth project every time, while a name that matched no
@@ -133,78 +133,6 @@ impl VectorStore {
         ))
     }
 
-    /// Runs two searches at once and returns both answers under one heading
-    /// each.
-    ///
-    /// The two retrievers answer different questions about the same memory and
-    /// miss in opposite directions. `CHUNKS` returns the passages nearest a
-    /// phrase, so it finds what a source said and is blind to anything nobody
-    /// wrote in one place. `GRAPH_COMPLETION` returns the nodes and edges the
-    /// graph holds around the query, so it finds what the run connected across
-    /// sources and is blind to the wording. A run that only ever asks for
-    /// chunks is paying for a graph store and using it as a search box — which
-    /// is what this runtime did for as long as recall meant one search.
-    ///
-    /// The graph half was [`UNSUPPORTED_TRIPLET_SEARCH`] until a live probe
-    /// showed this server refuses it outright, so the half that was supposed to
-    /// make recall more than a search box had never once answered. It is
-    /// `GRAPH_COMPLETION` now, which the same probe answered with nodes and
-    /// edges — and answered while the model endpoint was down, because
-    /// `only_context` returns the retrieved context rather than prose about it.
-    ///
-    /// Concurrent because they are independent and the slower one is what the
-    /// caller waits for either way; sequential would make the richer answer
-    /// cost twice the latency, which is how a richer answer stops being asked
-    /// for.
-    ///
-    /// One side failing is not a failed recall. A graph half that errors while
-    /// the passage half answers still leaves the caller better off than the
-    /// error would, so a failure becomes a line in the result saying which half
-    /// is missing. Both failing propagates the passage side's error, because
-    /// then there is nothing to return and silence would read as "nothing
-    /// known".
-    ///
-    /// # Errors
-    ///
-    /// Returns an error when both searches fail.
-    pub(super) async fn search_fused(&self, query: &str, limit: u64) -> Result<Option<String>> {
-        // Split between the two, with the passage side favoured: it is the one
-        // that returns readable text, and a triple is worth less per row.
-        let graph_limit = (limit / 3).max(1);
-        let chunk_limit = limit.saturating_sub(graph_limit).max(1);
-        let (passages, triples) = tokio::join!(
-            self.search(query, CHUNK_SEARCH, chunk_limit),
-            self.search(query, GRAPH_SEARCH, graph_limit)
-        );
-        let passages = match passages {
-            Ok(found) => found,
-            Err(error) => {
-                let Ok(triples) = triples else {
-                    return Err(error);
-                };
-                return Ok(triples.map(|triples| {
-                    format!(
-                        "## What this memory connects\n\n{triples}\n\n(The passage search failed: \
-                         {error}. Only the graph half of this recall answered.)"
-                    )
-                }));
-            }
-        };
-        let mut sections: Vec<String> = Vec::new();
-        if let Some(passages) = passages {
-            sections.push(format!("## Passages\n\n{passages}"));
-        }
-        match triples {
-            Ok(Some(triples)) => sections.push(format!("## What this memory connects\n\n{triples}")),
-            Ok(None) => {}
-            Err(error) => sections.push(format!(
-                "(The graph half of this recall failed: {error}. What is above is the passage \
-                 search alone.)"
-            )),
-        }
-        Ok((!sections.is_empty()).then(|| sections.join("\n\n")))
-    }
-
     /// Builds the store from the environment the container was started with.
     ///
     /// # Errors
@@ -257,7 +185,7 @@ impl VectorStore {
 
     /// Refuses a write the server would accept and then drop.
     ///
-    /// Called by [`VectorStore::post_parts`], so every store — durable, scratch,
+    /// Called by [`CogneeStore::post_parts`], so every store — durable, scratch,
     /// session and library — passes through it, and the check is one place
     /// rather than five. See [`IngestHealth`] for the failure it is written
     /// against: a `200 {"status":"running"}` for a document the ingest pipeline
@@ -609,9 +537,4 @@ impl VectorStore {
             tinyagents::TinyAgentsError::Tool(format!("Cognee returned invalid JSON: {error}"))
         })
     }
-}
-
-#[derive(Debug)]
-pub(super) struct RememberMemoryTool {
-    store: VectorStore,
 }

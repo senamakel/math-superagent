@@ -32,7 +32,7 @@ cost — is one level down:
   the failure each stops, what bounds them, and how a run declares one.
 - [`docs/lean-library.md`](docs/lean-library.md) — writing the mathematics as
   Lean rather than prose, the `Cited` namespace, and the first replay's numbers.
-- [`docs/memory.md`](docs/memory.md) — the four memory stores, and their audit.
+- [`docs/memory.md`](docs/memory.md) — the two memory engines, and their audit.
 - [`docs/schools.md`](docs/schools.md) — why several mathematicians run one
   problem, each school's bet, and the locking that made it safe.
 - [`docs/calibration.md`](docs/calibration.md) — the solved conjectures the
@@ -271,6 +271,10 @@ Never add a host-side fallback for tool execution. Docker is part of the model:
   [`docs/runtime.md`](docs/runtime.md#the-memory-cap). Read
   `docker events --filter event=oom` when a container vanishes.
 - Keep network access because provider, search, and telemetry calls need it.
+- **`MATH_AGENT_MEMORY` picks the engine** — `cortex` (default) or `cognee`,
+  one façade, a tool asking a *question* and never a retriever's name. Under
+  `cortex` **no tool argument reaches a scope**, and a calibration run gets its
+  own server rather than trusting that.
 
 Every agent working directory is `/workspace`. The helper accepts
 `--workspace <relative-subfolder>` or `MATH_AGENT_WORKSPACE` and must reject
@@ -302,9 +306,8 @@ The runtime currently expects:
 
 - `MATH_AGENT_API_KEY`, for the router; its sibling `.env` supplies `SURPLUS_API_KEY` and the code `OPENROUTER_API_KEY`
 - `OPENROUTER_MEMORY_API_KEY`, the memory's own; unset shares the run's limit
-- `EXA_API_KEY`
+- `CORTEX_API_KEY`, the memory server's, and `EXA_API_KEY`, for search
 - `LANGFUSE_BASE_URL`, `LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`
-- `QDRANT_URL`, normally supplied by Compose
 
 The launchers export `.env` over the shell (`scripts/dotenv`), because Compose
 prefers the environment to the file and a stale exported key silently outranked

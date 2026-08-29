@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Files every workspace document the library is missing.
 
+`MATH_AGENT_MEMORY=cognee` only: this posts to Cognee's own `/api/v1` contract,
+which CortexDB does not serve. See `docs/memory.md`.
+
 Usage:
     scripts/memory-backfill [--dry-run] [--limit N] <workspace-label>...
     scripts/memory-backfill [--dry-run] [--limit N] --all

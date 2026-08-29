@@ -1,3 +1,8 @@
+#[derive(Debug)]
+pub(super) struct RememberMemoryTool {
+    store: VectorStore,
+}
+
 impl RememberMemoryTool {
     pub(super) fn new(store: VectorStore) -> Self {
         Self { store }
@@ -11,7 +16,8 @@ impl Tool<()> for RememberMemoryTool {
     }
 
     fn description(&self) -> &'static str {
-        "Stores a concise durable finding, lesson, decision, or failed approach in Cognee."
+        "Stores a concise durable finding, lesson, decision, or failed approach in the \
+         project's durable memory."
     }
 
     fn schema(&self) -> ToolSchema {
@@ -108,7 +114,7 @@ impl Tool<()> for RecallMemoryTool {
         // only through a second tool most roles never called.
         let rendered = if call.arguments.get("strategy").and_then(Value::as_str) == Some("passages")
         {
-            self.store.search(&query, CHUNK_SEARCH, limit).await?
+            self.store.search(&query, Lookup::Passages, limit).await?
         } else {
             self.store.search_fused(&query, limit).await?
         };
@@ -193,9 +199,11 @@ impl Tool<()> for RelateMemoryTool {
             // immediate neighbourhood needs no model and answered throughout,
             // so a failed extension falls back to it and says so rather than
             // returning nothing about a subject the graph does know.
-            match self.store.search(&query, EXTENDED_GRAPH_SEARCH, limit).await {
+            match self.store
+                .search(&query, Lookup::ConnectionsExtended, limit)
+                .await {
                 Ok(found) => found,
-                Err(error) => self.store.search(&query, GRAPH_SEARCH, limit).await?.map(
+                Err(error) => self.store.search(&query, Lookup::Connections, limit).await?.map(
                     |direct| {
                         format!(
                             "{direct}\n\n(The extended walk failed: {error}. This is the immediate \
@@ -205,7 +213,7 @@ impl Tool<()> for RelateMemoryTool {
                 ),
             }
         } else {
-            self.store.search(&query, GRAPH_SEARCH, limit).await?
+            self.store.search(&query, Lookup::Connections, limit).await?
         };
         Ok(ToolResult::text(
             call.id,
