@@ -56,7 +56,7 @@ verifying the result before presenting it.
 │          ▼  /workspace: goal, tasks, research artifacts, code/lib/       │
 └───────┬─────────────────────────┬─────────────────────┬──────────────────┘
         │                         │                     │
-  workspace/<name>/         Cognee + Neo4j       local router, Exa,
+  workspace/<name>/         CortexDB             local router, Exa,
   committed to git          durable memory       Langfuse, trace.jsonl
 ```
 
@@ -81,7 +81,7 @@ The runtime uses a small registry of specialist agents:
   tool-builder about producing a running program quickly, the coder about the
   program being correct.
 - `reflection` is the learning agent: it recalls prior lessons, judges one
-  attempt, and has its new lesson stored automatically in Cognee. It has no
+  attempt, and has its new lesson stored automatically. It has no
   research or execution tools, so it cannot drift into solving what it judges.
 - `pattern_finder` runs exact sequence analysis over results already computed:
   forward differences and polynomial degree, common divisors, residue
@@ -95,7 +95,7 @@ The runtime uses a small registry of specialist agents:
   `MATH_AGENT_CONTEXT_MINUTES` (five by default) and keeps that one file current
   and within `MATH_AGENT_CONTEXT_TOKENS` (ten thousand): the established results
   and their basis, the approaches that died and why, what the numbers look like,
-  and what Cognee holds from earlier runs on this problem — which is invisible to
+  and what the memory holds from earlier runs on this problem — invisible to
   this one until somebody carries it into the file everyone already reads. It has
   no shell, no web search, and no delegation, so curating what the run knows
   cannot become a second investigation beside the solve.
@@ -108,12 +108,13 @@ The runtime uses a small registry of specialist agents:
   hypotheses, whether they hold here, what backs it — so the library is
   retrievable one statement at a time.
 
-Every role has `recall_memory` and `remember_memory`. Cognee is the only
-cross-run memory; research sources and program output remain ordinary current-run
-artifacts. Every completed or failed agent session is also queued into a Cognee
-dataset named for the workspace project and runtime session. Recall sees the
-shared brain and research datasets plus only the current project/run session
-dataset, so session traces do not leak across projects.
+Every role has `recall_memory` and `remember_memory`. The memory server is the
+only cross-run memory; research sources and program output remain ordinary
+current-run artifacts. Every completed or failed agent session is also stored,
+named for the workspace project and runtime session. Recall reaches this
+problem's brain, library and sessions, and never its scratch — provisional work
+is not durable knowledge. Which server that is, and what keeps one problem's
+memory out of another's, is [`docs/memory.md`](docs/memory.md).
 
 ## The solution loop
 
@@ -170,7 +171,7 @@ artifacts.
 A recoverable tool failure never ends a run. Every tool is registered through a
 resilient wrapper that turns an error into a result the model can read and
 correct, and middleware appends advice and escalates when the same tool keeps
-failing. A Cognee request failure, a bad path, or a non-UTF-8 download costs a
+failing. A memory request failure, a bad path, or a non-UTF-8 download costs a
 turn rather than the run's accumulated work.
 
 A single tool call may run for ten minutes and a whole agent run for two hours.
@@ -187,10 +188,10 @@ concrete `oracle_bound` — brute force validating the real method on small
 instances is legitimate, an unbounded search is not — and so is a declaration
 that names a search strategy instead of a cost.
 
-Cognee is the sole durable memory service. Every role can recall prior results,
-lessons, sources, and failed approaches, and the three roles whose output is
-durable knowledge can store them. Pass `--no-research` to withhold web search;
-Cognee recall remains available.
+One memory server is the sole durable memory. Every role can recall prior
+results, lessons, sources, and failed approaches, and the three roles whose
+output is durable knowledge can store them. Pass `--no-research` to withhold web
+search; recall remains available.
 
 All general model calls go through the authenticated OpenAI-compatible router
 on port 6969. Ordinary roles send model id `flash`; the roles listed in
@@ -494,7 +495,7 @@ dropping rows for files that are gone. Descriptions are left to explicit calls
 because only the agent that wrote a file knows why, so a forgotten one shows as
 a visible gap rather than as an index quietly disagreeing with its folder.
 Research and learning folders deliberately have no `INDEX.md`; their durable
-catalogue and recall path is Cognee.
+catalogue and recall path is the memory server.
 
 Each agent receives only the working files its role actually needs: reflection
 sees the goal and the record but never the scratchpad, because provisional
@@ -594,45 +595,50 @@ assistant when the stakes justify it.
 one service: `agent`, the Rust orchestrator and its specialist tools.
 `docker compose config --services` returns `agent` alone.
 
-The memory server is **one Cognee for every problem, with each problem as a
-tenant on it** ([`compose.shared.yaml`](compose.shared.yaml), alongside Neo4j
-and the ladder). A run reaches it by address — `MATH_AGENT_MEMORY_URL`,
-defaulting to the host gateway — rather than by joining its Docker network, so
-the whole stack can live on a machine of its own: it is every problem's memory
-and none of its compute, and `MATH_AGENT_SHARED_HOST` is what puts it there.
-There is no `depends_on`: the memory server outlives any one run, and a run must
-never be able to take it down.
+The memory server is **one process for every problem**
+([`compose.shared.yaml`](compose.shared.yaml), alongside the ladder). A run
+reaches it by address — `MATH_AGENT_MEMORY_URL`, defaulting to the host gateway
+— rather than by joining its Docker network, so the whole stack can live on a
+machine of its own: it is every problem's memory and none of its compute, and
+`MATH_AGENT_SHARED_HOST` is what puts it there. There is no `depends_on`: the
+memory server outlives any one run, and a run must never be able to take it
+down.
 
-What separates one problem's memory from another's is the **key**, not the
-address. `scripts/memory-up <workspace-label>` provisions that problem's tenant
-and prints its network; `scripts/memory-up --key <workspace-label>` prints the
-API key, which the runtime sends as an `X-Api-Key` header on every request. The
-server refuses one tenant's request for another's dataset — probed live, `404
-DatasetNotFoundError`, and `401` with no key at all — so the boundary is
-enforced by the thing holding the data rather than by a filter in the client.
+`MATH_AGENT_MEMORY` picks which one. **`cortex`**, the default, is a CortexDB:
+it carries its own knowledge graph and its own vector index, embeds through the
+ladder, and answers a write only once the indexes have taken it — so a write
+that returns is a document that can be recalled, which is not a property the
+alternative has. **`cognee`** is that alternative, a Cognee plus the Neo4j
+Enterprise instance it stores its graph in; both sit behind a Compose profile,
+so an ordinary `scripts/shared-up` starts neither.
 
-Underneath, each problem still gets **its own graph database** in the shared
-Neo4j Enterprise instance, and Cognee now creates it: a dataset under access
-control is a graph database, named `cognee<dataset-uuid-hex>` and brought
-online on first ingest. A Neo4j driver session is bound to one named database
-at the Bolt protocol level, so one problem's graph cannot be enumerated from
-another's. Read any of it in a browser at `http://localhost:7474` (`neo4j` /
-`cognee-local`), or from another machine by setting `NEO4J_BIND_ADDRESS` and
-`NEO4J_ADVERTISED_ADDRESS`; `scripts/memory-inventory <workspace-label>` says
-which datasets a problem actually holds.
+The four stores — the brain, the sessions, the library and the scratch — are
+the same either way, and so is the rule that durable recall cannot reach the
+scratch. What differs is what separates one problem's memory from another's:
+under `cognee` the server refuses another tenant's dataset outright, and under
+`cortex` it is the scope the runtime builds from the workspace label, with no
+tool argument able to name one. [`docs/memory.md`](docs/memory.md) is the
+comparison, the measurements behind the switch, and what the weaker boundary
+costs — including why a calibration run gets a memory server of its own rather
+than relying on it.
 
-This replaced one Cognee container per problem, which cost a Python server and
-a resident embedding model per problem and made the `mem_limit` of the tenth
-stack the question of whether it fit on the box at all. The failure to watch
-for in return is contention: a shared Cognee is what produced a `409 Conflict`
-on a `recall_memory` that had already hung the full ten-minute tool ceiling,
-under four concurrent runs. [`docs/memory.md`](docs/memory.md) has what to
-measure if it returns.
+`scripts/memory-up <workspace-label>` resolves and checks the address;
+`scripts/memory-up --key <workspace-label>` prints the credential. Under
+`cognee`, `scripts/memory-inventory <workspace-label>` says which datasets a
+problem holds, and its graph is readable in a browser at
+`http://localhost:7474` (`neo4j` / `cognee-local`).
 
-Cognee publishes a native Rust SDK, but it is an embedded engine rather than a
-client for a running service. The agent therefore uses Cognee's `/api/v1` HTTP
-contract, so it and the UI always read and write the same service-owned database
-instead of opening independent embedded stores.
+One shared server replaced one container per problem, which cost a server and a
+resident embedding model each and made the `mem_limit` of the tenth stack the
+question of whether it fit on the box at all. The failure to watch for in return
+is contention: a shared Cognee is what produced a `409 Conflict` on a
+`recall_memory` that had already hung the full ten-minute tool ceiling, under
+four concurrent runs. [`docs/memory.md`](docs/memory.md) has what to measure if
+it returns.
+
+Both engines are reached over their HTTP APIs rather than as embedded libraries,
+so the runtime and anything else looking at the same server always read and
+write one service-owned store instead of opening independent copies of it.
 
 ## Docker boundary
 
@@ -661,7 +667,7 @@ euler-tui                   tabbed console for one run, a tab per team
 langfuse-turns              recorded-turn query helper
 langfuse-review             recorded-turn review helper
 Dockerfile                  build and runtime jail
-compose.yaml                agent, Cognee UI/API, and Neo4j services
+compose.yaml                the agent service, one container per run
 scripts/                    the helpers' implementations
 workspace/                  selectable agent workspaces, committed with their runs
 └── template/               seed instructions, prompts, and config
