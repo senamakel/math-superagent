@@ -36,6 +36,16 @@
 # writes.
 set -eu
 
+# `MATH_AGENT_MEMORY=cognee` only. This reads Cognee's own API and storage, and
+# has no CortexDB equivalent — the two answer "what does this problem's memory
+# hold" through different endpoints entirely. `docs/memory.md` has the
+# CortexDB path.
+if [ "${MATH_AGENT_MEMORY:-cortex}" != cognee ]; then
+    echo "$(basename "$0"): Cognee only; MATH_AGENT_MEMORY is ${MATH_AGENT_MEMORY:-cortex}" >&2
+    exit 2
+fi
+
+
 repository_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd -P)
 cd "$repository_root"
 

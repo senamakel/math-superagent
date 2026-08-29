@@ -119,6 +119,14 @@ networks:
 services:
   neo4j:
     image: neo4j:5.26-enterprise
+    # Cognee's graph store, and nothing else on this box uses it. Both carry the
+    # `cognee` profile so an ordinary `scripts/shared-up` starts neither: the
+    # default engine is CortexDB, which brings its own graph and its own vector
+    # index, and a Neo4j Enterprise instance nobody queries is several gigabytes
+    # of reservation held against a box doing runs.
+    #
+    #     MATH_AGENT_MEMORY=cognee scripts/shared-up
+    profiles: ["cognee"]
     restart: unless-stopped
     environment:
       NEO4J_AUTH: neo4j/cognee-local
@@ -250,8 +258,133 @@ services:
       router:
         priority: 10
 
+  cortexdb:
+    # Pinned, not `latest`. The vendor's own agent manifest says it outright —
+    # `latest` is a moving pointer, so a digest resolved through it is not a
+    # reproducible release identity — and this is the process holding every
+    # problem's memory. Bump it deliberately, and re-read
+    # https://cortexdb.ai/agent/manifest.json when you do: that file is
+    # generated from the release and is where the current server version, the
+    # write barriers and the error contract are stated.
+    image: cortexdb/cortexdb:v0.9.8
+    restart: unless-stopped
+    environment:
+      # The one operator credential. Unset, the server generates a key, prints
+      # it to its log once, and serves nothing without it — which is a fine
+      # default for a laptop and useless for a stack a dozen runs authenticate
+      # against, since nothing could read it back. `CORTEX_INSECURE_NO_AUTH`
+      # exists and is not used: this publishes a host port.
+      #
+      # It is one key for the deployment rather than one per problem, and that
+      # is a real difference from the Cognee shape above. The self-hosted image
+      # cannot mint scoped tokens — `POST /v1/auth/tokens` answers
+      # `NOT_CONFIGURED` — so the cross-problem boundary is the runtime's scope
+      # construction rather than the server's authorization.
+      # `src/orchestrator/cortex.rs` states exactly what that is worth, and
+      # `compose.eval.yaml` is where a calibration run declines to rely on it.
+      # The default is a fixed local credential, on the same footing as
+      # `NEO4J_AUTH` above and for the same reason: out of the box this is
+      # published to loopback and nowhere else. Set `CORTEX_API_KEY` in `.env`
+      # before widening `CORTEX_BIND_ADDRESS` to a tailnet address —
+      # `scripts/memory-up --key` reads the same variable with the same
+      # default, so the two sides cannot disagree about what the key is.
+      CORTEX_API_KEY: ${CORTEX_API_KEY:-cortex-local-shared}
+      # Everything that thinks goes through the ladder, which is the same
+      # arrangement Cognee has above and for the same reason: the router holds
+      # the upstream credentials and the memory's own budget
+      # (`OPENROUTER_MEMORY_API_KEY`, reaching the ladder through its
+      # `env_file`), so no provider key is named here.
+      #
+      # The server gates on `OPENAI_API_KEY` / `LLM_API_KEY` rather than on the
+      # per-lane keys when it decides whether it has a real provider at all —
+      # measured: with only `CORTEX_EMBEDDING_API_KEY` set it fell back to MOCK
+      # embeddings and reported `degraded: true` while looking otherwise
+      # healthy. So the ladder's key is given under the name the gate reads.
+      OPENAI_API_KEY: ${MATH_AGENT_API_KEY}
+      # Entity extraction, on the ordinary-role ladder. This is the model that
+      # runs on the write path, which is what makes a durable write cost about
+      # five seconds; `flash` is the cheapest rung that does it well.
+      CORTEX_LLM_URL: ${LLM_ENDPOINT:-http://ladder:6969/v1}
+      CORTEX_LLM_MODEL: flash
+      # Fact augmentation. Without it the `facts` and `beliefs` layers stay
+      # empty — measured — and `relate_memory` then has only `understanding` to
+      # answer from, which is the layer that costs the most to build.
+      CORTEX_ENRICHMENT_MODEL: flash
+      # `/v1/answer` and the answer verifier. Neither is on any path this
+      # runtime takes — it reads packs and renders them itself rather than
+      # asking the memory to write prose — but a server pointed at
+      # `api.openai.com` by its own image defaults would try to reach it from a
+      # gatewayless network and fail slowly. Pointing them at the ladder costs
+      # nothing and removes a class of timeout.
+      CORTEX_ANSWER_PROVIDER: openai
+      CORTEX_ANSWER_URL: ${LLM_ENDPOINT:-http://ladder:6969/v1}
+      CORTEX_ANSWER_MODEL: flash
+      CORTEX_VERIFIER_URL: ${LLM_ENDPOINT:-http://ladder:6969/v1}
+      CORTEX_VERIFIER_MODEL: flash
+      # The embeddings surface, which is a different ladder rather than a
+      # different price band: an embedding model cannot answer a chat request,
+      # and the router refuses the wrong pairing at the door. `vectors` resolves
+      # to a 3072-dimension model, which is one of the seven dimensions the
+      # server accepts — a value outside that set is a startup failure, not a
+      # slow server.
+      CORTEX_EMBEDDING_URL: ${LLM_ENDPOINT:-http://ladder:6969/v1}
+      CORTEX_EMBEDDING_MODEL: ${CORTEX_EMBEDDING_MODEL:-vectors}
+      CORTEX_EMBEDDING_DIMS: ${CORTEX_EMBEDDING_DIMS:-3072}
+      # Build the derived layers in the background. Off by default — the
+      # image's vector-only default rebuilds episodes, beliefs and concepts only
+      # when a build endpoint is called, and nothing here calls one. Left off,
+      # `relate_memory` would answer from layers that never fill.
+      CORTEX_V1_LAYERS_AUTO: "1"
+      # The hot vector tier is uncapped by default and the server says so in a
+      # startup warning: at roughly 1.1 KB a vector, an unbounded tier is an OOM
+      # with the box's whole memory behind it. This is the watermark above which
+      # vectors are demoted rather than held, and it is sized against
+      # `mem_limit` below rather than against the host.
+      CORTEX_VECTOR_RESIDENT_MAX: ${CORTEX_VECTOR_RESIDENT_MAX:-4000000}
+      CORTEX_EVICT_VECTORS_ON_ENRICH: "1"
+    healthcheck:
+      # `/v1/admin/ready`, never `/v1/admin/health`. The manifest is explicit
+      # that health returns 200 with unreadable storage or mock providers and
+      # must not gate traffic; readiness answers 503 with the same body shape
+      # when a required check fails. The runtime reads the same endpoint before
+      # every write, for the same reason.
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:3141/v1/admin/ready || exit 1"]
+      interval: 10s
+      timeout: 20s
+      retries: 30
+      start_period: 30s
+    # Sized like Cognee was, because it holds the same thing: every problem's
+    # memory rather than one problem's. The reservation matters more than the
+    # ceiling — ingest is bursty and the server is idle between a run's turns,
+    # so without a floor it is exactly the process a busy neighbour squeezes,
+    # and the symptom is every problem's recall slowing at once.
+    mem_reservation: ${CORTEX_MEM_RESERVATION:-1g}
+    mem_limit: ${CORTEX_MEM_LIMIT:-16g}
+    cpus: ${CORTEX_CPUS:-4}
+    cpu_shares: 2048
+    # Published so a run on another machine can reach it, bound to loopback by
+    # default. On a single-box deployment the agent joins the `memory` network
+    # and reaches `cortexdb:3141` by name, and this publication is unused.
+    # Widening it to a Tailscale address is what a split deployment needs; what
+    # carries the security then is `CORTEX_API_KEY`, and a tailnet of your own
+    # machines is the intended ceiling rather than `0.0.0.0`.
+    ports:
+      - "${CORTEX_BIND_ADDRESS:-127.0.0.1}:${CORTEX_PORT:-3141}:3141"
+    # No egress attachment, and that is the difference from Cognee. Its
+    # embedding provider fetched a model from Hugging Face on a cold volume, so
+    # it needed a way out; this one embeds through the ladder like everything
+    # else, so `memory` and `router` are the whole of its network.
+    networks:
+      - memory
+      - router
+    volumes:
+      - cortexdb-data:/data
+
   cognee:
     image: cognee/cognee:1.4.2
+    # See `neo4j` above: the alternative engine, started only under
+    # `MATH_AGENT_MEMORY=cognee`.
+    profiles: ["cognee"]
     restart: unless-stopped
     environment:
       LLM_PROVIDER: custom
@@ -391,6 +524,7 @@ services:
       - ./cognee-overrides/summarize_content.txt:/app/cognee/infrastructure/llm/prompts/summarize_content.txt:ro
 
 volumes:
+  cortexdb-data:
   neo4j-data:
   cognee-system:
   cognee-data:

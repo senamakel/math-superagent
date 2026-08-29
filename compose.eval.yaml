@@ -58,7 +58,86 @@ networks:
   egress:
     driver: bridge
 
+volumes:
+  # This calibration run's memory, and no other run's. Named for the slug so
+  # two calibration problems on one box do not share a data directory, and so
+  # the directory survives a continuation the way the shared one does.
+  eval-memory:
+    name: ${MATH_AGENT_EVAL_SLUG:?set MATH_AGENT_EVAL_SLUG, or use ./calibrate}-cortexdb
+
 services:
+  # This run's own memory server, replacing the shared one for the duration.
+  #
+  # The shared CortexDB holds every problem's memory behind one operator key,
+  # and the self-hosted image cannot mint a scoped token to divide it — so what
+  # keeps one problem out of another's memory there is the scope the runtime
+  # builds, which is code in this repository rather than a refusal from the
+  # server (`src/orchestrator/cortex.rs` states it plainly). That is an
+  # acceptable boundary for an ordinary run and not for this one: the thing a
+  # calibration run must not reach is *another problem's memory*, because a
+  # sibling working on the same literature is exactly where the withheld answer
+  # would be written down. A separate process with a separate data directory is
+  # not a better filter, it is the absence of a shared store to filter.
+  #
+  # Cognee needs no equivalent and gets none: it makes each problem a tenant
+  # and answers another tenant's dataset `404`, so `MATH_AGENT_MEMORY=cognee`
+  # on a calibration run keeps using the shared server.
+  eval-memory:
+    image: cortexdb/cortexdb:v0.9.8
+    restart: unless-stopped
+    environment:
+      # A per-run credential, and it never leaves this Compose project. It is
+      # not read from `.env`: this server holds nothing worth reaching from
+      # anywhere else, and giving it the deployment key would be one more way
+      # for a run to end up talking to the shared one.
+      CORTEX_API_KEY: eval-local-${MATH_AGENT_EVAL_SLUG}
+      OPENAI_API_KEY: ${MATH_AGENT_API_KEY}
+      CORTEX_LLM_URL: ${MATH_AGENT_API_BASE_URL:-http://host.docker.internal:6969/v1}
+      CORTEX_LLM_MODEL: flash
+      CORTEX_ENRICHMENT_MODEL: flash
+      CORTEX_EMBEDDING_URL: ${MATH_AGENT_API_BASE_URL:-http://host.docker.internal:6969/v1}
+      CORTEX_EMBEDDING_MODEL: ${CORTEX_EMBEDDING_MODEL:-vectors}
+      CORTEX_EMBEDDING_DIMS: ${CORTEX_EMBEDDING_DIMS:-3072}
+      CORTEX_ANSWER_PROVIDER: openai
+      CORTEX_ANSWER_URL: ${MATH_AGENT_API_BASE_URL:-http://host.docker.internal:6969/v1}
+      CORTEX_ANSWER_MODEL: flash
+      CORTEX_VERIFIER_URL: ${MATH_AGENT_API_BASE_URL:-http://host.docker.internal:6969/v1}
+      CORTEX_VERIFIER_MODEL: flash
+      CORTEX_V1_LAYERS_AUTO: "1"
+      # Smaller than the shared server's, because this one holds one problem.
+      CORTEX_VECTOR_RESIDENT_MAX: ${CORTEX_EVAL_VECTOR_RESIDENT_MAX:-500000}
+      CORTEX_EVICT_VECTORS_ON_ENRICH: "1"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://127.0.0.1:3141/v1/admin/ready || exit 1"]
+      interval: 10s
+      timeout: 20s
+      retries: 30
+      start_period: 30s
+    # Nothing is published. The agent reaches it by name on the run's own
+    # network, which is what keeps this server invisible to every other run on
+    # the box — including the other direction, which is the one that matters.
+    mem_limit: ${CORTEX_EVAL_MEM_LIMIT:-4g}
+    cpus: ${CORTEX_EVAL_CPUS:-2}
+    networks:
+      # `egress` is the proxy's own way out, and this server needs it for the
+      # same narrow reason the proxy does: its extraction and embedding calls
+      # go to the ladder, which is reached by address rather than over a shared
+      # Docker network.
+      #
+      # Note what that grants and what it does not. This container has a route
+      # out that the *agent* does not, so it is worth being explicit: nothing
+      # the run can do turns that into a read. The agent's only writes here are
+      # text and bytes it already holds, and the only thing this server fetches
+      # is a model completion for text the run supplied. There is no path by
+      # which a URL the run names is retrieved and handed back — that is
+      # `download_document`, which is on the agent and behind the proxy.
+      egress:
+        priority: 100
+      agent-egress:
+        priority: 10
+    volumes:
+      - eval-memory:/data
+
   screen-proxy:
     build:
       context: .
@@ -119,7 +198,14 @@ services:
   agent:
     depends_on:
       - screen-proxy
+      - eval-memory
     environment:
+      # This run's own memory server, by name on the run's own network, in
+      # place of the shared one `compose.yaml` points at. `NO_PROXY` below
+      # covers it: it is inside this Compose project, so routing it through the
+      # proxy would be asking the allowlist about a host that never leaves.
+      CORTEX_API_URL: http://eval-memory:3141
+      CORTEX_API_KEY: eval-local-${MATH_AGENT_EVAL_SLUG}
       # Convenience, not enforcement. Every HTTP client in the container reads
       # these, so well-behaved traffic goes straight to the proxy — but a
       # client that ignores them does not thereby escape, because there is no
@@ -136,8 +222,8 @@ services:
       # proxy's own list below; there is nothing to exempt here.
       #
       # Localhost stays exempt because it never leaves the container.
-      NO_PROXY: localhost,127.0.0.1
-      no_proxy: localhost,127.0.0.1
+      NO_PROXY: localhost,127.0.0.1,eval-memory
+      no_proxy: localhost,127.0.0.1,eval-memory
       # Arms the tool-layer screen. Named but unreadable is a hard startup
       # failure by design; see `orchestrator::screen::policy`.
       MATH_AGENT_SCREEN: /etc/riemann/screen.json
