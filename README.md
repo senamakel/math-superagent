@@ -16,6 +16,11 @@
 > 
 > The entire system was run on a 32 GB RAM, 30 core CPU Linux machine and a 2 TB NVME SSD.
 
+> [!NOTE]
+> NOTE #2
+>
+> I've shifted my work towards OpenCompany and hivemind based agents.
+
 This is a Dockerized agent for solving mathematical problems through careful
 derivation, computation, and source-backed research. It is meant for problems
 where a good answer may require several kinds of work: understanding the
